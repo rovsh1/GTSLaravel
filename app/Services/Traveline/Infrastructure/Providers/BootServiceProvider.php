@@ -7,13 +7,16 @@ use GTS\Shared\Interface\Common\Http\Middleware\VerifyCsrfToken as SharedVerifyC
 use Illuminate\Support\ServiceProvider;
 
 
-class BootServiceProvider extends ServiceProvider {
+class BootServiceProvider extends ServiceProvider
+{
 
-    public function register() {
+    public function register()
+    {
         $this->app->bind(SharedVerifyCsrfToken::class, VerifyCsrfToken::class);
     }
 
-    public function boot() {
+    public function boot()
+    {
 
     }
 
