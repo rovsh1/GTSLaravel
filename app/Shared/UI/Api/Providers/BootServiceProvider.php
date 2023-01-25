@@ -8,14 +8,12 @@ class BootServiceProvider extends ServiceProvider
 {
 
     private $providers = [
-        RouteServiceProvider::class,
+        //RouteServiceProvider::class,
     ];
 
     public function register()
     {
-        foreach ($this->providers as $provider) {
-            $this->app->register($provider);
-        }
+        $this->app->register(\GTS\Services\Traveline\UI\Api\Providers\BootServiceProvider::class);
     }
 
 }

@@ -16,3 +16,6 @@ indent_size = 2
 
 [docker-compose.yml]
 indent_size = 4
+
+[{*.ctp,*.hphp,*.inc,*.module,*.php,*.php4,*.php5,*.phtml}]
+ij_php_if_brace_force = never

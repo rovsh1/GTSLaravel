@@ -29,7 +29,7 @@
 |   |-- /ValueObject
 |   |-- /Service - Aggragates
 |-- /Infrastructure - Data layer
-|   |-- /Api - Интерфейсы обращения к модулю 
+|   |-- /Facade - Интерфейсы обращения к модулю 
 |   |-- /Adapter - Интерфейсы обращения модуля к другим модулям и сервисам
 |   |-- /Model - ORM models
 |   |-- /Query - Query handlers
