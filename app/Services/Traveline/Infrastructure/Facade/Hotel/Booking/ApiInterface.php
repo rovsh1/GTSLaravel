@@ -1,6 +1,6 @@
 <?php
 
-namespace GTS\Services\Traveline\Infrastructure\Api\Hotel\Booking;
+namespace GTS\Services\Traveline\Infrastructure\Facade\Hotel\Booking;
 
 use Carbon\CarbonInterface;
 

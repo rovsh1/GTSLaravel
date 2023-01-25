@@ -1,6 +1,6 @@
 <?php
 
-namespace GTS\Services\Traveline\Infrastructure\Api\Hotel\Search;
+namespace GTS\Services\Traveline\Infrastructure\Facade\Hotel\Search;
 
 interface ApiInterface
 {

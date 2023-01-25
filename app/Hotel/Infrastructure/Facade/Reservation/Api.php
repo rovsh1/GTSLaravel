@@ -1,6 +1,6 @@
 <?php
 
-namespace GTS\Hotel\Infrastructure\Api\Reservation;
+namespace GTS\Hotel\Infrastructure\Facade\Reservation;
 
 use GTS\Hotel\Application\Command\ReserveQuota;
 use GTS\Hotel\Application\Query\GetActiveReservations;

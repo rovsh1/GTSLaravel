@@ -1,5 +1,5 @@
 <?php
 
-namespace GTS\Hotel\Infrastructure\Api\Search;
+namespace GTS\Hotel\Infrastructure\Facade\Search;
 
 interface ApiInterface { }

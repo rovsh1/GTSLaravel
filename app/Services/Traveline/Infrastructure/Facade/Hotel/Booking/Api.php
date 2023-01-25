@@ -1,6 +1,6 @@
 <?php
 
-namespace GTS\Services\Traveline\Infrastructure\Api\Hotel\Booking;
+namespace GTS\Services\Traveline\Infrastructure\Facade\Hotel\Booking;
 
 use GTS\Services\Traveline\Application\Command\GetReservations;
 use GTS\Shared\Application\Command\CommandBusInterface;

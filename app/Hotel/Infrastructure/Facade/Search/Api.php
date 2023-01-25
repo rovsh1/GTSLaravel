@@ -1,6 +1,6 @@
 <?php
 
-namespace GTS\Hotel\Infrastructure\Api\Search;
+namespace GTS\Hotel\Infrastructure\Facade\Search;
 
 use GTS\Hotel\Domain\Repository\HotelRepositoryInterface;
 

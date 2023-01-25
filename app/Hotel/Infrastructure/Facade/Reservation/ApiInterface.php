@@ -1,5 +1,5 @@
 <?php
 
-namespace GTS\Hotel\Infrastructure\Api\Reservation;
+namespace GTS\Hotel\Infrastructure\Facade\Reservation;
 
 interface ApiInterface { }
