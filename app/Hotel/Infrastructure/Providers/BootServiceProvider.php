@@ -4,14 +4,8 @@ namespace GTS\Hotel\Infrastructure\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-//use Ustabor\Request\Domain\Factory\RequestFactoryInterface;
-//use Ustabor\Request\Domain\Repository\RequestRepositoryInterface;
-//use Ustabor\Request\Domain\Repository\ServiceRepositoryInterface;
-//use Ustabor\Request\Infrastructure\Api;
-//use Ustabor\Request\Infrastructure\Factory\RequestFactory;
-//use Ustabor\Request\Infrastructure\Repository\RequestRepository;
-//use Ustabor\Request\Infrastructure\Repository\ServiceRepository;
-//use Ustabor\Shared\Domain\Event\DomainEventDispatcherInterface;
+use GTS\Hotel\Infrastructure\Api;
+
 
 class BootServiceProvider extends ServiceProvider
 {
@@ -25,16 +19,13 @@ class BootServiceProvider extends ServiceProvider
         //$this->app->register(EventServiceProvider::class);
         //$this->app->addDeferredServices([EventServiceProvider::class]);
 
-        //$this->registerInterfaces();
+        $this->registerInterfaces();
     }
 
-//    private function registerInterfaces()
-//    {
-//        $this->app->singleton(Api\Registration\ApiInterface::class, Api\Registration\Api::class);
-//        $this->app->singleton(RequestRepositoryInterface::class, RequestRepository::class);
-//        $this->app->singleton(RequestFactoryInterface::class, RequestFactory::class);
-//
-//        $this->app->singleton(Api\Services\ApiInterface::class, Api\Services\Api::class);
-//        $this->app->singleton(ServiceRepositoryInterface::class, ServiceRepository::class);
-//    }
+    private function registerInterfaces()
+    {
+        $this->app->singleton(Api\Reservation\ApiInterface::class, Api\Reservation\Api::class);
+        //$this->app->singleton(RequestRepositoryInterface::class, RequestRepository::class);
+        //$this->app->singleton(RequestFactoryInterface::class, RequestFactory::class);
+    }
 }
