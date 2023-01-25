@@ -2,12 +2,12 @@
 
 namespace GTS\Services\Traveline\Infrastructure\Adapter\Hotel;
 
-use GTS\Hotel\Infrastructure\Api\Search\Api;
+use GTS\Hotel\Infrastructure\Facade\Search\Facade;
 
 class Adapter implements AdapterInterface
 {
 
-    public function __construct(private readonly Api $hotelApi)
+    public function __construct(private readonly Facade $hotelApi)
     {
     }
 
