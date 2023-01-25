@@ -2,9 +2,10 @@
 
 namespace GTS\Hotel\Infrastructure\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use GTS\Hotel\Domain;
+use GTS\Hotel\Infrastructure;
 
-use GTS\Hotel\Infrastructure\Api;
+use Illuminate\Support\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {
@@ -23,8 +24,8 @@ class BootServiceProvider extends ServiceProvider
 
     private function registerInterfaces()
     {
-        $this->app->singleton(Api\Reservation\ApiInterface::class, Api\Reservation\Api::class);
-        //$this->app->singleton(RequestRepositoryInterface::class, RequestRepository::class);
-        //$this->app->singleton(RequestFactoryInterface::class, RequestFactory::class);
+        $this->app->singleton(Infrastructure\Api\Reservation\ApiInterface::class, Infrastructure\Api\Reservation\Api::class);
+
+        $this->app->singleton(Domain\Repository\HotelRepositoryInterface::class, Infrastructure\Repository\HotelRepository::class);
     }
 }

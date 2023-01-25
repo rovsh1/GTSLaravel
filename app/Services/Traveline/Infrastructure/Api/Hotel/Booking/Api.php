@@ -13,11 +13,10 @@ class Api implements ApiInterface
     public function __construct(
         private CommandBusInterface $commandBus
     )
-    {
-    }
+    {}
 
-    public function getBookings(?int $hotelId = null, ?CarbonInterface $startDate = null, ?int $bookingId = null)
+    public function getBookings(?int $bookingId = null, ?int $hotelId = null, ?CarbonInterface $startDate = null)
     {
-        return $this->commandBus->execute(new GetReservations($bookingId));
+        return $this->commandBus->execute(new GetReservations($bookingId, $hotelId, $startDate));
     }
 }

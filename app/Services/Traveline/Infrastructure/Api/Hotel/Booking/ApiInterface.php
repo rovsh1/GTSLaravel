@@ -7,6 +7,6 @@ use Carbon\CarbonInterface;
 interface ApiInterface
 {
 
-    public function getBookings(?int $bookingId = null, ?int $hotelId = null, ?CarbonInterface $startDate = null,);
+    public function getBookings(?int $bookingId = null, ?int $hotelId = null, ?CarbonInterface $startDate = null);
 
 }

@@ -2,12 +2,14 @@
 
 namespace GTS\Services\Traveline\UI\Api\Http\Actions;
 
-use Illuminate\Http\Request;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use GTS\Services\Traveline\UI\Api\Http\Requests\AbstractTravelineRequest;
 use GTS\Services\Traveline\UI\Api\Http\Requests\ConfirmBookingsActionRequest;
 use GTS\Services\Traveline\UI\Api\Http\Requests\GetBookingsActionRequest;
 use GTS\Services\Traveline\UI\Api\Http\Requests\GetRoomsAndRatePlansActionRequest;
 use GTS\Services\Traveline\UI\Api\Http\Requests\UpdateActionRequest;
+
+use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class IndexAction
 {
@@ -27,9 +29,17 @@ class IndexAction
         };
     }
 
-    private function action($request, $requestClass, $actionClass)
+    /**
+     * @param Request $request
+     * @param class-string|AbstractTravelineRequest $requestClass
+     * @param class-string $actionClass
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Throwable
+     */
+    private function action(Request $request, string $requestClass, string $actionClass)
     {
         $parsedRequest = $requestClass::createFrom($request);
+        $request->validate($parsedRequest->rules());
 
         return app($actionClass)->handle($parsedRequest);
     }
