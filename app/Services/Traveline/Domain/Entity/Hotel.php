@@ -1,6 +1,6 @@
 <?php
 
-namespace GTS\Services\Traveline\Domain\Model;
+namespace GTS\Services\Traveline\Domain\Entity;
 
 class Hotel
 {

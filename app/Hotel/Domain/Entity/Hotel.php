@@ -1,6 +1,6 @@
 <?php
 
-namespace GTS\Hotel\Domain\Model;
+namespace GTS\Hotel\Domain\Entity;
 
 class Hotel
 {

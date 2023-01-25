@@ -2,7 +2,7 @@
 
 namespace GTS\Hotel\Domain\Repository;
 
-use GTS\Hotel\Domain\Model\Hotel;
+use GTS\Hotel\Domain\Entity\Hotel;
 
 interface HotelRepositoryInterface
 {
