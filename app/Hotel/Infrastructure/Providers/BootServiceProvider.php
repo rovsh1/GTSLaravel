@@ -6,7 +6,6 @@ use Illuminate\Support\ServiceProvider;
 
 use GTS\Hotel\Infrastructure\Api;
 
-
 class BootServiceProvider extends ServiceProvider
 {
     public function boot()
