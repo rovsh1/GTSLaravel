@@ -5,14 +5,13 @@ namespace GTS\Services\Traveline\Infrastructure\Facade\Hotel\Search;
 use GTS\Services\Traveline\Application\Command\GetRoomsAndRatePlans;
 use GTS\Shared\Application\Command\CommandBusInterface;
 
-class Api implements ApiInterface
+class Facade implements FacadeInterface
 {
 
     public function __construct(
         private CommandBusInterface $commandBus
     )
-    {
-    }
+    {}
 
     public function getRoomsAndRatePlans(int $hotelId)
     {

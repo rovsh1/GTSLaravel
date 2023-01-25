@@ -4,7 +4,7 @@ namespace GTS\Hotel\Infrastructure\Facade\Search;
 
 use GTS\Hotel\Domain\Repository\HotelRepositoryInterface;
 
-class Api implements ApiInterface
+class Facade implements FacadeInterface
 {
 
     public function __construct(

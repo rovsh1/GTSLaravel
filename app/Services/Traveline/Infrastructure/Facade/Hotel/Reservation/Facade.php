@@ -1,13 +1,13 @@
 <?php
 
-namespace GTS\Services\Traveline\Infrastructure\Facade\Hotel\Booking;
+namespace GTS\Services\Traveline\Infrastructure\Facade\Hotel\Reservation;
 
 use GTS\Services\Traveline\Application\Command\GetReservations;
 use GTS\Shared\Application\Command\CommandBusInterface;
 
 use Carbon\CarbonInterface;
 
-class Api implements ApiInterface
+class Facade implements FacadeInterface
 {
 
     public function __construct(
@@ -15,7 +15,7 @@ class Api implements ApiInterface
     )
     {}
 
-    public function getBookings(?int $bookingId = null, ?int $hotelId = null, ?CarbonInterface $startDate = null)
+    public function getReservations(?int $bookingId = null, ?int $hotelId = null, ?CarbonInterface $startDate = null)
     {
         return $this->commandBus->execute(new GetReservations($bookingId, $hotelId, $startDate));
     }

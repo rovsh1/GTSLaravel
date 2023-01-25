@@ -2,16 +2,16 @@
 
 namespace GTS\Hotel\UI\Admin\Http\Actions\Reservation;
 
-use GTS\Hotel\Infrastructure\Api\Reservation\ApiInterface;
+use GTS\Hotel\Infrastructure\Facade\Reservation\FacadeInterface;
 
 class ReserveQuota
 {
 
-    public function __construct(private ApiInterface $api) { }
+    public function __construct(private FacadeInterface $facade) { }
 
     public function handle($roomId, $date)
     {
-        $result = $this->api->reserveQuota($roomId, $date);
+        $result = $this->facade->reserveQuota($roomId, $date);
 
         return [];
     }

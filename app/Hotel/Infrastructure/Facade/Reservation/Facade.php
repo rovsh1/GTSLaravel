@@ -7,14 +7,13 @@ use GTS\Hotel\Application\Query\GetActiveReservations;
 use GTS\Shared\Application\Command\CommandBusInterface;
 use GTS\Shared\Application\Query\QueryBusInterface;
 
-class Api implements ApiInterface
+class Facade implements FacadeInterface
 {
 
     public function __construct(
         private CommandBusInterface $commandBus,
         private QueryBusInterface $queryBus,
-    ) {
-    }
+    ) {}
 
     public function getActiveReservations()
     {

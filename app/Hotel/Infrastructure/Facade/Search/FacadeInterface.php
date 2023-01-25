@@ -2,4 +2,4 @@
 
 namespace GTS\Hotel\Infrastructure\Facade\Search;
 
-interface ApiInterface { }
+interface FacadeInterface { }

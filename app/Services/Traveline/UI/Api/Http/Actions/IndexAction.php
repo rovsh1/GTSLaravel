@@ -4,7 +4,7 @@ namespace GTS\Services\Traveline\UI\Api\Http\Actions;
 
 use GTS\Services\Traveline\UI\Api\Http\Requests\AbstractTravelineRequest;
 use GTS\Services\Traveline\UI\Api\Http\Requests\ConfirmBookingsActionRequest;
-use GTS\Services\Traveline\UI\Api\Http\Requests\GetBookingsActionRequest;
+use GTS\Services\Traveline\UI\Api\Http\Requests\GetReservationsActionRequest;
 use GTS\Services\Traveline\UI\Api\Http\Requests\GetRoomsAndRatePlansActionRequest;
 use GTS\Services\Traveline\UI\Api\Http\Requests\UpdateActionRequest;
 
@@ -22,7 +22,7 @@ class IndexAction
     {
         return match ($request->get('action')) {
             self::GetRoomsAndRatePlans => $this->action($request, GetRoomsAndRatePlansActionRequest::class, GetRoomsAndRatePlansAction::class),
-            self::GetBookings => $this->action($request, GetBookingsActionRequest::class, GetBookingsAction::class),
+            self::GetBookings => $this->action($request, GetReservationsActionRequest::class, GetReservationsAction::class),
             self::ConfirmBookings => $this->action($request, ConfirmBookingsActionRequest::class, ConfirmBookingsAction::class),
             self::Update => $this->action($request, UpdateActionRequest::class, UpdateAction::class),
             default => throw new BadRequestHttpException('Unknown Traveline request')

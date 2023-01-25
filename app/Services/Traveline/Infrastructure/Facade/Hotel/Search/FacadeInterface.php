@@ -2,7 +2,7 @@
 
 namespace GTS\Services\Traveline\Infrastructure\Facade\Hotel\Search;
 
-interface ApiInterface
+interface FacadeInterface
 {
 
     public function getRoomsAndRatePlans(int $hotelId);

@@ -2,4 +2,4 @@
 
 namespace GTS\Hotel\Infrastructure\Facade\Reservation;
 
-interface ApiInterface { }
+interface FacadeInterface { }

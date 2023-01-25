@@ -2,7 +2,7 @@
 
 namespace GTS\Services\Traveline\UI\Api\Http\Requests;
 
-class GetBookingsActionRequest extends AbstractTravelineRequest
+class GetReservationsActionRequest extends AbstractTravelineRequest
 {
 
     public function rules()
