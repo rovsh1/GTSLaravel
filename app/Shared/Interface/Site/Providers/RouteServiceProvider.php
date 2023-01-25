@@ -2,9 +2,8 @@
 
 namespace GTS\Shared\Interface\Site\Providers;
 
-use Illuminate\Support\Facades\Route;
-
 use GTS\Shared\Interface\Common\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Route;
 
 class RouteServiceProvider extends ServiceProvider
 {

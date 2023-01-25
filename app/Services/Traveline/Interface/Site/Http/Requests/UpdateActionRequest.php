@@ -2,10 +2,10 @@
 
 namespace GTS\Services\Traveline\Interface\Site\Http\Requests;
 
-class GetRoomsAndRatePlansActionRequest extends AbstractTravelineRequest
+class UpdateActionRequest extends AbstractTravelineRequest
 {
 
-    public const ACTION_NAME = 'get-rooms-and-rate-plans';
+    public const ACTION_NAME = 'update';
 
     public function rules()
     {
