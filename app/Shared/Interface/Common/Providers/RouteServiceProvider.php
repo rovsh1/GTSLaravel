@@ -3,12 +3,11 @@
 namespace GTS\Shared\Interface\Common\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
-use function Symfony\Component\String\s;
 
-class RouteServiceProvider extends ServiceProvider
-{
-    protected function getModulesRoutes($port): array
-    {
+class RouteServiceProvider extends ServiceProvider {
+
+
+    protected function getModulesRoutes($port): array {
         $routes = [];
         foreach (app('modules')->paths() as $path) {
             $route = $path . '/Interface/' . $port . '/routes.php';

@@ -19,7 +19,8 @@ use GTS\Shared\Infrastructure\Support\ModulesCollection;
 class AppServiceProvider extends ServiceProvider
 {
     private array $modules = [
-        'Hotel'
+        'Hotel',
+        'Services\\Traveline'
     ];
 
     public function register()
