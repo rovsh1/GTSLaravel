@@ -1,7 +1,7 @@
 <?php
 
-use GTS\Services\Traveline\Interface\Site\Http\Controllers\TravelineController;
-use GTS\Services\Traveline\Interface\Site\Http\Middleware\Authorize;
+use GTS\Services\Traveline\Interface\Api\Http\Controllers\TravelineController;
+use GTS\Services\Traveline\Interface\Api\Http\Middleware\Authorize;
 use Illuminate\Support\Facades\Route;
 
 Route::group([

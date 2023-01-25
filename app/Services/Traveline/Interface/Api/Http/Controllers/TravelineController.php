@@ -1,11 +1,11 @@
 <?php
 
-namespace GTS\Services\Traveline\Interface\Site\Http\Controllers;
+namespace GTS\Services\Traveline\Interface\Api\Http\Controllers;
 
-use GTS\Services\Traveline\Interface\Site\Http\Requests\ConfirmBookingsActionRequest;
-use GTS\Services\Traveline\Interface\Site\Http\Requests\GetBookingsActionRequest;
-use GTS\Services\Traveline\Interface\Site\Http\Requests\GetRoomsAndRatePlansActionRequest;
-use GTS\Services\Traveline\Interface\Site\Http\Requests\UpdateActionRequest;
+use GTS\Services\Traveline\Interface\Api\Http\Requests\ConfirmBookingsActionRequest;
+use GTS\Services\Traveline\Interface\Api\Http\Requests\GetBookingsActionRequest;
+use GTS\Services\Traveline\Interface\Api\Http\Requests\GetRoomsAndRatePlansActionRequest;
+use GTS\Services\Traveline\Interface\Api\Http\Requests\UpdateActionRequest;
 use GTS\Shared\Interface\Common\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;

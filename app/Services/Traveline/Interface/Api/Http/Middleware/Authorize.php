@@ -1,6 +1,6 @@
 <?php
 
-namespace GTS\Services\Traveline\Interface\Site\Http\Middleware;
+namespace GTS\Services\Traveline\Interface\Api\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
