@@ -48,7 +48,7 @@ $app = require_once __DIR__.'/../../bootstrap/app.php';
 
 $app->instance(
     GTS\Shared\UI\Common\Contracts\DomainServiceProvider::class,
-    GTS\Shared\UI\Site\Providers\BootServiceProvider::class
+    GTS\Shared\UI\Api\Providers\BootServiceProvider::class
 );
 
 $kernel = $app->make(Kernel::class);
