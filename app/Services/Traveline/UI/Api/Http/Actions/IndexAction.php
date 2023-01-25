@@ -11,33 +11,27 @@ use GTS\Services\Traveline\UI\Api\Http\Requests\UpdateActionRequest;
 
 class IndexAction
 {
+    const GetRoomsAndRatePlans = 'get-rooms-and-rate-plans';
+    const GetBookings = 'get-bookings';
+    const ConfirmBookings = 'confirm-bookings';
+    const Update = 'update';
 
     public function handle(Request $request)
     {
-        $action = $request->get('action');
-        $responseData = [];
-        $parsedRequest = null;
-        if ($action === GetRoomsAndRatePlansActionRequest::ACTION_NAME) {
-            $parsedRequest = GetRoomsAndRatePlansActionRequest::createFrom($request);
-            $responseData = app(GetRoomsAndRatePlansAction::class)->handle($parsedRequest);
-        }
-        if ($action === GetBookingsActionRequest::ACTION_NAME) {
-            $parsedRequest = GetBookingsActionRequest::createFrom($request);
-            $responseData = app(GetBookingsAction::class)->handle($parsedRequest);
-        }
-        if ($action === ConfirmBookingsActionRequest::ACTION_NAME) {
-            $parsedRequest = ConfirmBookingsActionRequest::createFrom($request);
-            $responseData = app(ConfirmBookingsAction::class)->handle($parsedRequest);
-        }
-        if ($action === UpdateActionRequest::ACTION_NAME) {
-            $parsedRequest = UpdateActionRequest::createFrom($request);
-            $responseData = app(UpdateAction::class)->handle($parsedRequest);
-        }
-        if ($parsedRequest === null) {
-            throw new BadRequestHttpException('Unknown Traveline request');
-        }
+        return match ($request->get('action')) {
+            self::GetRoomsAndRatePlans => $this->action($request, GetRoomsAndRatePlansActionRequest::class, GetRoomsAndRatePlansAction::class),
+            self::GetBookings => $this->action($request, GetBookingsActionRequest::class, GetBookingsAction::class),
+            self::ConfirmBookings => $this->action($request, ConfirmBookingsActionRequest::class, ConfirmBookingsAction::class),
+            self::Update => $this->action($request, UpdateActionRequest::class, UpdateAction::class),
+            default => throw new BadRequestHttpException('Unknown Traveline request')
+        };
+    }
 
-        return $responseData;
+    private function action($request, $requestClass, $actionClass)
+    {
+        $parsedRequest = $requestClass::createFrom($request);
+
+        return app($actionClass)->handle($parsedRequest);
     }
 
 }

@@ -190,7 +190,7 @@ return [
          * Application Service Providers...
          */
         GTS\Shared\Infrastructure\Providers\AppServiceProvider::class,
-        GTS\Shared\Interface\Common\Providers\AppServiceProvider::class,
+        GTS\Shared\UI\Common\Providers\AppServiceProvider::class,
         // App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         // App\Providers\EventServiceProvider::class,
