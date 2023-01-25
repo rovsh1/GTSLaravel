@@ -18,25 +18,26 @@
 ```
 /{Domain}
 |-- /Application - Buisiness logic, rules & services layer
-|   |-- /Command - Commands & handlers
+|   |-- /Command - Commands & command handlers
 |   |-- /Query - Queries
-|   |-- /Event - DomainEventHandlers
+|   |-- /Event - Domain event handlers
 |-- /Domain - Buisiness model layer
 |   |-- /Entity
 |   |-- /Event - Domain events
-|   |-- /Exception
-|   |-- /Repository - interfaces
+|   |-- /Exception - Domain exceptions
+|   |-- /Repository - Repositories interfaces
 |   |-- /ValueObject
 |   |-- /Service - Aggragates
 |-- /Infrastructure - Data layer
-|   |-- /Api - Input requests api
-|   |-- /Adapter - Output requests adapters
+|   |-- /Api - Интерфейсы обращения к модулю 
+|   |-- /Adapter - Интерфейсы обращения модуля к другим модулям и сервисам
 |   |-- /Model - ORM models
 |   |-- /Query - Query handlers
 |   |-- /Providers - Domain service providers
 |   |-- /Repository - Domain repository implementation
-|-- /Interface - UI layer
+|-- /UI - Interfaces layer
 |   |-- /Admin
+|   |   |-- /Exception - Exception handler & UI exceptions
 |   |   |-- /Http
 |   |   |   |-- /Actions
 |   |   |   |-- /Controllers
