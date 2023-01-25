@@ -35,7 +35,7 @@
 |   |-- /Query - Query handlers
 |   |-- /Providers - Domain service providers
 |   |-- /Repository - Domain repository implementation
-|-- /Interface - UI layer
+|-- /UI - Interfaces layer
 |   |-- /Admin
 |   |   |-- /Http
 |   |   |   |-- /Actions
