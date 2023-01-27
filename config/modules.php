@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'Administrator' => [
+        'path' => app_path('Administrator')
+    ],
     'Hotel' => [
         'path' => app_path('Hotel')
     ],

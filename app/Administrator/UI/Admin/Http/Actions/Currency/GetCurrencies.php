@@ -12,6 +12,9 @@ class GetCurrencies
     {
         // Отсюда уходит DTO
         $params = new \stdClass();
+        $params->limit = 10;
+        $params->offset = 0;
+
         return $this->facade->getCurrencies($params);
     }
 }

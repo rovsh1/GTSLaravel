@@ -6,7 +6,7 @@ use GTS\Shared\Application\Query\QueryBusInterface;
 
 use GTS\Administrator\Application\Query\GetCurrencies;
 
-class CurrencyInterface implements CurrencyFacadeInterface
+class CurrencyFacade implements CurrencyFacadeInterface
 {
     public function __construct(private QueryBusInterface $queryBus) {}
 

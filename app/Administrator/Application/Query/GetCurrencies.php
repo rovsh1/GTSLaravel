@@ -7,7 +7,7 @@ use GTS\Shared\Application\Query\QueryInterface;
 class GetCurrencies implements QueryInterface
 {
     public function __construct(
-        public readonly $limit = 10,
-        public readonly $offset = 0
+        public readonly int $limit = 10,
+        public readonly int $offset = 0
     ) {}
 }
