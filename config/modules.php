@@ -7,6 +7,9 @@ return [
     'Hotel' => [
         'path' => app_path('Hotel')
     ],
+    'Administrator' => [
+        'path' => app_path('Administrator')
+    ],
     'Traveline' => [
         'enabled' => env('TRAVELINE_ENABLED', true),
         'path' => app_path('Services/Traveline'),

@@ -27,7 +27,10 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->app->singleton(CommandBusInterface::class, function ($app) {
-            return new Bus\CommandBus($app, $app->get(ValidatorPipelineBehaviorInterface::class));
+            //$app->get(ValidatorPipelineBehaviorInterface::class)
+            return new Bus\CommandBus($app, [
+                Bus\Middleware\ValidationMiddleware::class
+            ]);
         });
 
         $this->app->singleton(QueryBusInterface::class, function ($app) {

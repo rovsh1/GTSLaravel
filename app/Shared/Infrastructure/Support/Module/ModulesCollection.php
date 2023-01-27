@@ -2,8 +2,6 @@
 
 namespace GTS\Shared\Infrastructure\Support\Module;
 
-use function GTS\Shared\Infrastructure\Support\app_path;
-
 class ModulesCollection
 {
     public function __construct(

@@ -19,8 +19,9 @@
 /{Domain}
 |-- /Application - Buisiness logic, rules & services layer
 |   |-- /Command - Commands & command handlers
-|   |-- /Query - Queries
+|   |-- /Dto
 |   |-- /Event - Domain event handlers
+|   |-- /Query - Queries
 |-- /Domain - Buisiness model layer
 |   |-- /Entity
 |   |-- /Event - Domain events
