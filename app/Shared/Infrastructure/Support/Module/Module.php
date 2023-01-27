@@ -35,11 +35,11 @@ class Module
 
     public function path(string $path = null): string
     {
-        return $this->get('path') . DIRECTORY_SEPARATOR . trim($path, DIRECTORY_SEPARATOR);
+        return $this->config('path') . DIRECTORY_SEPARATOR . trim($path, DIRECTORY_SEPARATOR);
     }
 
     public function namespace(string $namespace = null): string
     {
-        return $this->get('namespace') . '\\' . trim($namespace, '\\');
+        return $this->config('namespace') . '\\' . trim($namespace, '\\');
     }
 }

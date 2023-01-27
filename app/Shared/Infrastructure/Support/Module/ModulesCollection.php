@@ -22,11 +22,11 @@ class ModulesCollection
 
     public function names(): array
     {
-        return array_map(fn(string $module) => $module->name(), $this->modules);
+        return array_map(fn(Module $module) => $module->name(), $this->modules);
     }
 
     public function paths(): array
     {
-        return array_map(fn(string $module) => $module->path(), $this->modules);
+        return array_map(fn(Module $module) => $module->path(), $this->modules);
     }
 }
