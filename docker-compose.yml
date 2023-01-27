@@ -23,7 +23,7 @@ services:
     ports:
       - '9000:9000'
     environment:
-      XDEBUG: true
+      XDEBUG: 'true'
       PHP_IDE_CONFIG: "serverName=phpstorm-server"
       REMOTE_HOST: "host.docker.internal"
     volumes:

@@ -43,8 +43,9 @@ class AppServiceProvider extends ServiceProvider
     {
         $modules = [];
         foreach (config('modules') as $name => $config) {
-            if (isset($config['enabled']) && $config['enabled'] === false)
+            if (isset($config['enabled']) && $config['enabled'] === false) {
                 continue;
+            }
 
             $modules[] = $this->moduleFactory($name, $config);
         }
@@ -58,8 +59,9 @@ class AppServiceProvider extends ServiceProvider
 
     private function moduleFactory($name, $config): Module
     {
-        if (!isset($config['path']))
+        if (!isset($config['path'])) {
             $config['path'] = app_path($name);
+        }
 
         if (!isset($config['namespace'])) {
             $ns = str_replace(app_path(), '', $config['path']);

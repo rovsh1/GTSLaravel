@@ -6,17 +6,16 @@ use function GTS\Shared\Infrastructure\Support\app_path;
 
 class ModulesCollection
 {
-
     public function __construct(
         private readonly array $modules
-    ) {
-    }
+    ) {}
 
     public function get(string $name): ?Module
     {
         foreach ($this->modules as $module) {
-            if ($module->name() === $name)
+            if ($module->name() === $name) {
                 return $module;
+            }
         }
         return null;
     }
