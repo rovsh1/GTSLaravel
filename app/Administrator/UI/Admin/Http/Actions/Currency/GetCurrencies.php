@@ -11,10 +11,9 @@ class GetCurrencies
     public function handle()
     {
         // Отсюда уходит DTO
-        $params = new \stdClass();
-        $params->limit = 10;
-        $params->offset = 0;
-
-        return $this->facade->getCurrencies($params);
+        return $this->facade->getCurrencies((object)[
+            'limit' => 10,
+            'offset' => 0
+        ]);
     }
 }
