@@ -24,7 +24,7 @@ class BootServiceProvider extends ServiceProvider
 
     private function registerInterfaces()
     {
-        $this->app->singleton(Infrastructure\Api\Reservation\ApiInterface::class, Infrastructure\Api\Reservation\Api::class);
+        $this->app->singleton(Infrastructure\Facade\Reservation\FacadeInterface::class, Infrastructure\Facade\Reservation\Facade::class);
 
         $this->app->singleton(Domain\Repository\HotelRepositoryInterface::class, Infrastructure\Repository\HotelRepository::class);
     }

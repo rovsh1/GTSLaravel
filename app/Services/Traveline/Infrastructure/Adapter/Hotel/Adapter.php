@@ -6,7 +6,6 @@ use GTS\Hotel\Infrastructure\Facade\Search\Facade;
 
 class Adapter implements AdapterInterface
 {
-
     public function __construct(private readonly Facade $hotelApi) {}
 
     public function getRoomsAndRatePlans(int $hotelId)
