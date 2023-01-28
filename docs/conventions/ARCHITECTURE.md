@@ -11,6 +11,7 @@
 |   |-- /{ServiceDomain1}
 |   |-- /{ServiceDomain2}
 |-- /Shared - common app & domains classes
+|   |-- /Custom - custom classes, framework extends
 ```
 
 #### Domain structure
