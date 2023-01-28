@@ -1,6 +1,6 @@
 <?php
 
-namespace GTS\Administrator\Infrastructure\Query;
+namespace GTS\Shared\Infrastructure\Query;
 
 class SearchQuery
 {
@@ -47,9 +47,9 @@ class SearchQuery
         return $this;
     }
 
-    protected function param($key)
+    protected function param($key, $default = null)
     {
-        return $this->params[$key] ?? null;
+        return $this->params[$key] ?? $default;
     }
 
     protected function filter(): void {}
@@ -57,9 +57,9 @@ class SearchQuery
     protected function prepareDefault(): void
     {
         $this->query
-            ->when($this->param('orderBy'), fn($q, $name) => $q->orderBy($name, $this->param('sortOrder')))
+            ->when($this->param('orderBy'), fn($q, $name) => $q->orderBy($name, $this->param('sortOrder') === 'desc' ? 'desc' : 'asc'))
             ->when($this->param('limit'), fn($q, $limit) => $q->limit($limit))
-            ->offset($this->param('offset'));
+            ->offset($this->param('offset', 0));
     }
 
     protected function dtoToArray($paramsDto): array

@@ -3,6 +3,7 @@
 namespace GTS\Administrator\Infrastructure\Query;
 
 use GTS\Administrator\Infrastructure\Models\Country;
+use GTS\Shared\Infrastructure\Query\SearchQuery;
 
 class CountrySearchQuery extends SearchQuery
 {

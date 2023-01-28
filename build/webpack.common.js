@@ -66,6 +66,9 @@ module.exports = {
         const resourcesPath = 'resources/' + source + '/js';
         const publicPath = 'public/' + source + '/js';
 
+        if (!fs.existsSync(publicPath))
+            fs.mkdirSync(publicPath);
+
         rmdir(publicPath, ['tinymce']);
 
         readdir(resourcesPath + '/page').forEach(function (entry) {
@@ -78,6 +81,9 @@ module.exports = {
     sass: function (source) {
         const resourcesPath = 'resources/' + source + '/sass';
         const publicPath = 'public/' + source + '/css';
+
+        if (!fs.existsSync(publicPath))
+            fs.mkdirSync(publicPath);
 
         rmdir(publicPath, []);
 

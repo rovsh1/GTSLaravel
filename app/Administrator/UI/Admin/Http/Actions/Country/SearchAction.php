@@ -6,6 +6,7 @@ use GTS\Administrator\Infrastructure\Facade\Reference\CountryFacadeInterface;
 
 use Gsdk\Grid\Grid;
 use Gsdk\Navigation\Paginator;
+use GTS\Shared\UI\Admin\View\Grid\GridBuilder;
 
 class SearchAction
 {
@@ -17,26 +18,20 @@ class SearchAction
         //$dto->default = false;
         //$dto->flag = 'ru';
 
-        $paginator = new Paginator();
-        $paginator->setStep(20);
-        $paginator->setCount($this->facade->count($dto));
-
-        $dto->orderBy = 'id';
-        $dto->sortOrder = 'desc';
-        $dto->limit = $paginator->step;
-
-        $result = $this->facade->search($dto);
-        //dd($result, $paginator->getCount());
-
-        $grid = (new Grid())
-            ->paginator($paginator)
-            ->text('id', ['text' => 'ID'])
-            ->text('name', ['text' => 'Name'])
-            ->data($result);
-
         return app('layout')
             ->view('country.index', [
-                'grid' => $grid
+                'grid' => $this->gridFactory($dto)
             ]);
+    }
+
+    private function gridFactory($dto)
+    {
+        return (new GridBuilder())
+            ->paginator($this->facade->count($dto), 20)
+            ->id('id', ['text' => 'ID'])
+            ->text('name', ['text' => 'Name'])
+            ->orderBy('id', 'asc')
+            ->callFacadeSearch($this->facade, $dto)
+            ->getGrid();
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace GTS\Administrator\Infrastructure\Repository;
+namespace GTS\Shared\Infrastructure\Repository;
 
 use GTS\Shared\Domain\Exception\EntityNotFoundException;
 

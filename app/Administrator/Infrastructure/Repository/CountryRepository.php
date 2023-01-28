@@ -6,6 +6,7 @@ use GTS\Administrator\Domain\Repository\CountryRepositoryInterface;
 use GTS\Administrator\Infrastructure\Models\Country;
 use GTS\Administrator\Infrastructure\Query\CountrySearchQuery;
 use GTS\Shared\Application\Query\QueryBusInterface;
+use GTS\Shared\Infrastructure\Repository\AbstractCrudRepository;
 
 class CountryRepository extends AbstractCrudRepository implements CountryRepositoryInterface
 {
