@@ -14,6 +14,6 @@ class CountryController extends Controller
 
     public function index()
     {
-        return app(Actions\GetCountriesAction::class)->handle();
+        return app(Actions\SearchAction::class)->handle();
     }
 }

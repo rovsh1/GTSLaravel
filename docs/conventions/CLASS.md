@@ -9,5 +9,13 @@ use GTS
 
 use VENDORS
 
-class ExampleClass {}
+class ExampleClass {
+    public function importantMethod() {}
+    
+    private function importantMethod() {}
+    
+    private function rareMethod() {}
+    
+    protected function rareMethod() {}
+}
 ```

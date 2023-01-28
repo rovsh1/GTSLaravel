@@ -4,7 +4,7 @@ namespace GTS\Administrator\Application\Query;
 
 use GTS\Shared\Application\Query\QueryInterface;
 
-abstract class AbstractSearchQuery implements QueryInterface
+class AbstractSearch implements QueryInterface
 {
     public function __construct(
         private readonly array $filters,
@@ -12,8 +12,7 @@ abstract class AbstractSearchQuery implements QueryInterface
         private readonly ?string $sortOrder,
         private readonly ?int $limit,
         private readonly ?int $offset
-    ) {
-    }
+    ) {}
 
     public function __get(string $name)
     {

@@ -4,7 +4,7 @@ namespace GTS\Administrator\UI\Admin\Http\Actions\Country;
 
 use GTS\Administrator\Infrastructure\Facade\Reference\CountryFacadeInterface;
 
-class GetCountriesAction
+class SearchAction
 {
     public function __construct(private CountryFacadeInterface $facade) { }
 
@@ -13,7 +13,7 @@ class GetCountriesAction
         $dto = new \stdClass();
         $dto->orderBy = 'id';
         $dto->sortOrder = 'desc';
-        $dto->limit = 2;
+        $dto->limit = 4;
         $dto->default = false;
         $dto->flag = 'ru';
 
