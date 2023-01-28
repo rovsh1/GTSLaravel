@@ -18,4 +18,9 @@ class Adapter implements AdapterInterface
 
         return $hotelDto;
     }
+
+    public function updateQuotasAndPlans(): void
+    {
+        // TODO: Implement updateQuotasAndPlans() method.
+    }
 }

@@ -11,4 +11,9 @@ class Adapter implements AdapterInterface
     {
         // TODO: Implement getReservations() method.
     }
+
+    public function confirmReservation(int $id): void
+    {
+        // TODO: Implement confirmReservation() method.
+    }
 }

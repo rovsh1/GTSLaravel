@@ -1,12 +1,12 @@
 <?php
 
-namespace GTS\Services\Traveline\Infrastructure\Adapter\Reservation;
+namespace GTS\Services\Traveline\Infrastructure\Facade\Reservation;
 
 use Carbon\CarbonInterface;
 
-interface AdapterInterface
+interface FacadeInterface
 {
     public function getReservations(?int $id = null, ?int $hotelId = null, ?CarbonInterface $startDate = null);
 
-    public function confirmReservation(int $id): void;
+    public function confirmReservations();
 }

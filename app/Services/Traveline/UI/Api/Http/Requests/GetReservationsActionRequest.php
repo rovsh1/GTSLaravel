@@ -11,9 +11,9 @@ class GetReservationsActionRequest extends AbstractTravelineRequest
     public function rules()
     {
         return array_merge([
-            'data.startTime' => 'nullalbe|date',
-            'data.number' => 'nullalbe|numeric',
-            'data.hotelId' => 'nullalbe|numeric',
+            'data.startTime' => 'nullable|date',
+            'data.number' => 'nullable|numeric',
+            'data.hotelId' => 'nullable|numeric',
         ], parent::rules());
     }
 

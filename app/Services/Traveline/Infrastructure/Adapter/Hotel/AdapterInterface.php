@@ -7,4 +7,6 @@ interface AdapterInterface
 
     public function getRoomsAndRatePlans(int $hotelId);
 
+    public function updateQuotasAndPlans();
+
 }

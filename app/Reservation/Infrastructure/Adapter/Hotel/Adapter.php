@@ -2,18 +2,18 @@
 
 namespace GTS\Reservation\Infrastructure\Adapter\Hotel;
 
-use GTS\Hotel\Infrastructure\Api\Search\Api;
+use GTS\Hotel\Infrastructure\Facade\Search\FacadeInterface;
 
 class Adapter implements AdapterInterface
 {
 
-    public function __construct(private readonly Api $hotelApi)
+    public function __construct(private readonly FacadeInterface $hotelFacade)
     {
     }
 
     public function findById(int $id)
     {
-        $hotelDto = $this->hotelApi->findById($id);
+        $hotelDto = $this->hotelFacade->findById($id);
 
         return $hotelDto;
     }
