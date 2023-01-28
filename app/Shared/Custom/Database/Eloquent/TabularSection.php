@@ -1,6 +1,6 @@
 <?php
 
-namespace GTS\Shared\Custom;
+namespace GTS\Shared\Custom\Database\Eloquent;
 
 use Illuminate\Support\Facades\DB;
 

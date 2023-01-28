@@ -2,9 +2,9 @@
 
 namespace GTS\Administrator\Infrastructure\Repository;
 
-use GTS\Administrator\Application\Query\Country\Search;
 use GTS\Administrator\Domain\Repository\CountryRepositoryInterface;
 use GTS\Administrator\Infrastructure\Models\Country;
+use GTS\Administrator\Infrastructure\Query\CountrySearchQuery;
 use GTS\Shared\Application\Query\QueryBusInterface;
 
 class CountryRepository extends AbstractCrudRepository implements CountryRepositoryInterface
@@ -16,7 +16,14 @@ class CountryRepository extends AbstractCrudRepository implements CountryReposit
 
     public function search(mixed $paramsDto)
     {
-        return $this->queryBus->execute(Search::fromDto($paramsDto));
+        return (new CountrySearchQuery($paramsDto))->get();
+        //return $this->queryBus->execute(Search::fromDto($paramsDto));
+    }
+
+    public function count(mixed $paramsDto): int
+    {
+        return (new CountrySearchQuery($paramsDto))->count();
+        //return $this->queryBus->execute(Count::fromDto($paramsDto));
     }
 
     protected function createEntityFromModel($model)

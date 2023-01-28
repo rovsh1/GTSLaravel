@@ -7,41 +7,16 @@ use GTS\Shared\Application\Query\QueryInterface;
 class AbstractSearch implements QueryInterface
 {
     public function __construct(
-        private readonly array $filters,
-        private readonly ?string $orderBy,
-        private readonly ?string $sortOrder,
-        private readonly ?int $limit,
-        private readonly ?int $offset
+        public readonly array $filters,
+        public readonly ?string $orderBy,
+        public readonly ?string $sortOrder,
+        public readonly ?int $limit,
+        public readonly ?int $offset
     ) {}
 
     public function __get(string $name)
     {
         return $this->filters[$name] ?? null;
-    }
-
-    public function filters(): array
-    {
-        return $this->filters;
-    }
-
-    public function orderBy(): ?string
-    {
-        return $this->orderBy;
-    }
-
-    public function sortOrder(): ?string
-    {
-        return $this->sortOrder;
-    }
-
-    public function limit(): ?int
-    {
-        return $this->limit;
-    }
-
-    public function offset(): ?int
-    {
-        return $this->offset;
     }
 
     public static function fromDto($dto): static

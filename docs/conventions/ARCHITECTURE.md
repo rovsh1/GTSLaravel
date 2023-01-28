@@ -23,13 +23,14 @@
 |   |-- /Dto
 |   |-- /Event - Domain event handlers
 |   |-- /Query - Queries
+|   |-- /Service - Used by external consumers to talk to your system (think Web Services). If consumers need access to CRUD operations, they would be exposed here.
 |-- /Domain - Buisiness model layer
 |   |-- /Entity
 |   |-- /Event - Domain events
 |   |-- /Exception - Domain exceptions
 |   |-- /Repository - Repositories interfaces
 |   |-- /ValueObject
-|   |-- /Service - Aggragates
+|   |-- /Service - Encapsulates business logic that doesn't naturally fit within a domain object, and are NOT typical CRUD operations – those would belong to a Repository.
 |-- /Infrastructure - Data layer
 |   |-- /Facade - Интерфейсы обращения к модулю 
 |   |-- /Adapter - Интерфейсы обращения модуля к другим модулям и сервисам
@@ -37,6 +38,7 @@
 |   |-- /Query - Query handlers
 |   |-- /Providers - Domain service providers
 |   |-- /Repository - Domain repository implementation
+|   |-- /Services - Used to abstract technical concerns (e.g. MSMQ, email provider, etc).
 |-- /UI - Interfaces layer
 |   |-- /Admin
 |   |   |-- /Exception - Exception handler & UI exceptions
