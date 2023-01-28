@@ -6,7 +6,5 @@ use GTS\Shared\Application\Command\CommandInterface;
 
 class GetRoomsAndRatePlans implements CommandInterface
 {
-    public function __construct(public readonly int $hotelId)
-    {
-    }
+    public function __construct(public readonly int $hotelId) {}
 }

@@ -8,8 +8,7 @@ use GTS\Services\Traveline\UI\Api\Http\Requests\GetReservationsActionRequest;
 class GetReservationsAction
 {
 
-    public function __construct(private FacadeInterface $facade)
-    {}
+    public function __construct(private FacadeInterface $facade) {}
 
     public function handle(GetReservationsActionRequest $request)
     {

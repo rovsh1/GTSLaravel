@@ -8,8 +8,7 @@ use GTS\Services\Traveline\UI\Api\Http\Requests\GetRoomsAndRatePlansActionReques
 class GetRoomsAndRatePlansAction
 {
 
-    public function __construct(private FacadeInterface $facade)
-    {}
+    public function __construct(private FacadeInterface $facade) {}
 
     public function handle(GetRoomsAndRatePlansActionRequest $request)
     {

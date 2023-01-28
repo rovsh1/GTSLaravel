@@ -7,8 +7,7 @@ use GTS\Services\Traveline\UI\Api\Http\Requests\ConfirmBookingsActionRequest;
 
 class ConfirmBookingsAction
 {
-    public function __construct(private FacadeInterface $facade)
-    {}
+    public function __construct(private FacadeInterface $facade) {}
 
     public function handle(ConfirmBookingsActionRequest $request)
     {

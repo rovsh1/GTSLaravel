@@ -7,7 +7,6 @@ use Carbon\CarbonInterface;
 
 class GetReservationsActionRequest extends AbstractTravelineRequest
 {
-
     public function rules()
     {
         return array_merge([

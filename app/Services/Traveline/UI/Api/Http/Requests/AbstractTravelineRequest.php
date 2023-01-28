@@ -6,7 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 abstract class AbstractTravelineRequest extends FormRequest
 {
-
     public function rules()
     {
         return [
@@ -18,5 +17,4 @@ abstract class AbstractTravelineRequest extends FormRequest
     {
         return $this->post('data');
     }
-
 }

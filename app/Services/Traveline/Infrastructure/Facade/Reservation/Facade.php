@@ -3,7 +3,6 @@
 namespace GTS\Services\Traveline\Infrastructure\Facade\Reservation;
 
 use Carbon\CarbonInterface;
-
 use GTS\Services\Traveline\Application\Command\ConfirmReservations;
 use GTS\Services\Traveline\Application\Command\GetReservations;
 use GTS\Shared\Application\Command\CommandBusInterface;

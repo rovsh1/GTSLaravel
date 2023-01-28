@@ -2,9 +2,10 @@
 
 namespace GTS\Services\Traveline\UI\Api\Http\Controllers;
 
+use Illuminate\Http\Request;
+
 use GTS\Services\Traveline\UI\Api\Http\Actions\IndexAction;
 use GTS\Shared\UI\Common\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 
 class TravelineController extends Controller
 {

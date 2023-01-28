@@ -12,7 +12,5 @@ class GetReservations implements CommandInterface
         public readonly ?int             $reservationId,
         public readonly ?int             $hotelId,
         public readonly ?CarbonInterface $startDate,
-    )
-    {
-    }
+    ) {}
 }

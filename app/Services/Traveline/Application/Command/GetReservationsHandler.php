@@ -9,8 +9,7 @@ use GTS\Shared\Application\Command\CommandInterface;
 
 class GetReservationsHandler implements CommandHandlerInterface
 {
-    public function __construct(private AdapterInterface $adapter)
-    {}
+    public function __construct(private AdapterInterface $adapter) {}
 
     /**
      * @param CommandInterface|GetReservations $command

@@ -14,7 +14,8 @@ class ConfirmReservationsHandler implements CommandHandlerInterface
      * @param CommandInterface|ConfirmReservations $command
      * @return void
      */
-    public function handle(CommandInterface $command) {
+    public function handle(CommandInterface $command)
+    {
         $this->adapter->confirmReservation();
     }
 }

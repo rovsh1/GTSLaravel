@@ -4,7 +4,6 @@ namespace GTS\Services\Traveline\UI\Api\Http\Requests;
 
 class GetRoomsAndRatePlansActionRequest extends AbstractTravelineRequest
 {
-
     public function rules()
     {
         return array_merge([
@@ -16,5 +15,4 @@ class GetRoomsAndRatePlansActionRequest extends AbstractTravelineRequest
     {
         return $this->getData()['hotelId'];
     }
-
 }
