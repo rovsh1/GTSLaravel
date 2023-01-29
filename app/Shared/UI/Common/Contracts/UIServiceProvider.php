@@ -2,7 +2,4 @@
 
 namespace GTS\Shared\UI\Common\Contracts;
 
-interface DomainServiceProvider
-{
-
-}
+interface UIServiceProvider { }

@@ -47,7 +47,7 @@ require __DIR__.'/../../vendor/autoload.php';
 $app = require_once __DIR__.'/../../bootstrap/app.php';
 
 $app->instance(
-    GTS\Shared\UI\Common\Contracts\DomainServiceProvider::class,
+    GTS\Shared\UI\Common\Contracts\UIServiceProvider::class,
     GTS\Shared\UI\Admin\Providers\BootServiceProvider::class
 );
 

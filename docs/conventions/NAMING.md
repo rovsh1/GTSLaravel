@@ -24,7 +24,7 @@ interface {ClassName}Interface {}
 
 enum {EnumName}Enum {}
 
-enum {EnumName}Enum {}
+abstract class Abstract{ClassName} {}
 ```
 
 

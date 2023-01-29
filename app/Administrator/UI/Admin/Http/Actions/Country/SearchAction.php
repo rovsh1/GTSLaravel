@@ -3,16 +3,13 @@
 namespace GTS\Administrator\UI\Admin\Http\Actions\Country;
 
 use GTS\Administrator\Infrastructure\Facade\Reference\CountryFacadeInterface;
-
-use Gsdk\Grid\Grid;
-use Gsdk\Navigation\Paginator;
 use GTS\Shared\UI\Admin\View\Grid\GridBuilder;
 
 class SearchAction
 {
     public function __construct(public readonly CountryFacadeInterface $facade) {}
 
-    public function handle()
+    public function handle(array $params = [])
     {
         $dto = new \stdClass();
         //$dto->default = false;

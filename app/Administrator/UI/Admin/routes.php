@@ -9,7 +9,10 @@ Route::prefix('reference')->group(function () {
         Route::get('/', 'index');
     });
 
-    Route::controller(Controllers\CountryController::class)->prefix('country')->group(function () {
-        Route::get('/', 'index');
-    });
+    Route::controller(Controllers\CountryController::class)
+        ->prefix('country')
+        ->name('country.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+        });
 });

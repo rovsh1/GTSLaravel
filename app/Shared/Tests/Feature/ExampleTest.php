@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\Feature;
+namespace GTS\Shared\Tests\Feature;
 
 // use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+use GTS\Shared\Tests\TestCase;
 
 class ExampleTest extends TestCase
 {

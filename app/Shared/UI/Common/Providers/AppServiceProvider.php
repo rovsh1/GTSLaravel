@@ -4,7 +4,7 @@ namespace GTS\Shared\UI\Common\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-use GTS\Shared\UI\Common\Contracts\DomainServiceProvider;
+use GTS\Shared\UI\Common\Contracts\UIServiceProvider;
 
 //use Ustabor\UIs\Contracts\DomainServiceProvider;
 //use Ustabor\UIs\Providers\AuthServiceProvider;
@@ -36,14 +36,14 @@ class AppServiceProvider extends ServiceProvider
 //
 //		$this->app->singleton('release', fn() => new ReleaseInfo(base_path('package.json')));
 
-        if ($this->app->has(DomainServiceProvider::class)) {
-            $this->app->register($this->app->get(DomainServiceProvider::class));
+        if ($this->app->has(UIServiceProvider::class)) {
+            $this->app->register($this->app->get(UIServiceProvider::class));
         }
     }
 
     public function boot()
     {
-        app('translator')->addJsonPath(resource_path('system/lang'));
+        //app('translator')->addJsonPath(resource_path('system/lang'));
     }
 
 }
