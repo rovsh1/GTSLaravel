@@ -2,10 +2,10 @@
 
 namespace GTS\Shared\UI\Admin\Providers;
 
-use GTS\Shared\UI\Admin\View\Grid as GridNamespace;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
+use GTS\Shared\UI\Admin\View\Grid as GridNamespace;
 use GTS\Shared\UI\Admin\View\Layout;
 
 class ViewServiceProvider extends ServiceProvider
