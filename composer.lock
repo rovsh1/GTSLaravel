@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5ab92089b685b626b7174e22d404c8e2",
+    "content-hash": "cac45e72dd8b9856b0cf5df20c97702a",
     "packages": [
         {
             "name": "brick/math",
@@ -609,6 +609,228 @@
                 }
             ],
             "time": "2022-07-30T15:56:11+00:00"
+        },
+        {
+            "name": "gsdk/format",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/s16121986/gsdk-format.git",
+                "reference": "e49a82ca04ab8f6a631f5bc268f20b1a0f6b1277"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/s16121986/gsdk-format/zipball/e49a82ca04ab8f6a631f5bc268f20b1a0f6b1277",
+                "reference": "e49a82ca04ab8f6a631f5bc268f20b1a0f6b1277",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Gsdk\\Format\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sergey Guryanov",
+                    "email": "s16121986@yandex.ru"
+                }
+            ],
+            "description": "Allows format values",
+            "keywords": [
+                "format",
+                "gsdk"
+            ],
+            "support": {
+                "issues": "https://github.com/s16121986/gsdk-format/issues",
+                "source": "https://github.com/s16121986/gsdk-format/tree/v1.0.0"
+            },
+            "time": "2023-01-06T21:22:08+00:00"
+        },
+        {
+            "name": "gsdk/grid",
+            "version": "2.0.0.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/s16121986/gsdk-grid.git",
+                "reference": "43ce0cd0c6c3271b21be8fd6031190881b942627"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/s16121986/gsdk-grid/zipball/43ce0cd0c6c3271b21be8fd6031190881b942627",
+                "reference": "43ce0cd0c6c3271b21be8fd6031190881b942627",
+                "shasum": ""
+            },
+            "require": {
+                "gsdk/format": ">=1.0.0",
+                "gsdk/navigation": ">=1.0.0",
+                "php": ">=8.0.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Gsdk\\Grid\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sergey Guryanov",
+                    "email": "s16121986@yandex.ru"
+                }
+            ],
+            "description": "Allows detect client timezone from cookies",
+            "keywords": [
+                "gsdk",
+                "meta"
+            ],
+            "support": {
+                "issues": "https://github.com/s16121986/gsdk-grid/issues",
+                "source": "https://github.com/s16121986/gsdk-grid/tree/2.0.0"
+            },
+            "time": "2023-01-28T20:31:30+00:00"
+        },
+        {
+            "name": "gsdk/meta-page",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/s16121986/gsdk-meta-page.git",
+                "reference": "b3d214588325d890fb4c1f3d588f9ee050d069d5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/s16121986/gsdk-meta-page/zipball/b3d214588325d890fb4c1f3d588f9ee050d069d5",
+                "reference": "b3d214588325d890fb4c1f3d588f9ee050d069d5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Gsdk\\MetaPage\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sergey Guryanov",
+                    "email": "s16121986@yandex.ru"
+                }
+            ],
+            "description": "Allows detect client timezone from cookies",
+            "keywords": [
+                "gsdk",
+                "meta"
+            ],
+            "support": {
+                "issues": "https://github.com/s16121986/gsdk-meta-page/issues",
+                "source": "https://github.com/s16121986/gsdk-meta-page/tree/1.0.0"
+            },
+            "time": "2023-01-06T21:22:48+00:00"
+        },
+        {
+            "name": "gsdk/navigation",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/s16121986/gsdk-navigation.git",
+                "reference": "0b39e792e131c3f1f1b1c3a373ea68d6c09d02fa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/s16121986/gsdk-navigation/zipball/0b39e792e131c3f1f1b1c3a373ea68d6c09d02fa",
+                "reference": "0b39e792e131c3f1f1b1c3a373ea68d6c09d02fa",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Gsdk\\Navigation\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sergey Guryanov",
+                    "email": "s16121986@yandex.ru"
+                }
+            ],
+            "description": "Menus library",
+            "keywords": [
+                "gsdk"
+            ],
+            "support": {
+                "issues": "https://github.com/s16121986/gsdk-navigation/issues",
+                "source": "https://github.com/s16121986/gsdk-navigation/tree/v1.0.0"
+            },
+            "time": "2023-01-06T21:20:58+00:00"
+        },
+        {
+            "name": "gsdk/view-layout",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/s16121986/gsdk-view-layout.git",
+                "reference": "78ca04007052a50e231db4a8bce35b2d207f01f9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/s16121986/gsdk-view-layout/zipball/78ca04007052a50e231db4a8bce35b2d207f01f9",
+                "reference": "78ca04007052a50e231db4a8bce35b2d207f01f9",
+                "shasum": ""
+            },
+            "require": {
+                "gsdk/meta-page": ">=1.0.0",
+                "php": ">=8.0.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Gsdk\\ViewLayout\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sergey Guryanov",
+                    "email": "s16121986@yandex.ru"
+                }
+            ],
+            "description": "View layout helper",
+            "keywords": [
+                "gsdk",
+                "view"
+            ],
+            "support": {
+                "issues": "https://github.com/s16121986/gsdk-view-layout/issues",
+                "source": "https://github.com/s16121986/gsdk-view-layout/tree/v1.0.0"
+            },
+            "time": "2023-01-06T21:23:17+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -8056,12 +8278,14 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "gsdk/grid": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "^8.1"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.2.0"
 }
