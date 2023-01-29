@@ -10,10 +10,9 @@ use GTS\Shared\Infrastructure\Repository\AbstractCrudRepository;
 
 class CountryRepository extends AbstractCrudRepository implements CountryRepositoryInterface
 {
-
     protected string $model = Country::class;
 
-    public function __construct(private readonly QueryBusInterface $queryBus) {}
+    public function __construct(public readonly QueryBusInterface $queryBus) {}
 
     public function search(mixed $paramsDto)
     {

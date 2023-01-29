@@ -7,7 +7,7 @@ use GTS\Shared\Application\Query\QueryInterface;
 class AbstractCount implements QueryInterface
 {
     public function __construct(
-        private readonly array $filters
+        public readonly array $filters
     ) {}
 
     public function __get(string $name)

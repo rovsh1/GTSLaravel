@@ -16,7 +16,7 @@ class SearchQuery
         $this->params = $this->dtoToArray($paramsDto);
     }
 
-    protected function __get(string $name)
+    public function __get(string $name)
     {
         return $this->param($name);
     }

@@ -18,5 +18,4 @@ class CountrySearchQuery extends SearchQuery
             ->when('default', fn($q, $flag) => $q->where('default', $flag))
             ->when('flag', fn($q, $flag) => $q->where('flag', $flag));
     }
-
 }

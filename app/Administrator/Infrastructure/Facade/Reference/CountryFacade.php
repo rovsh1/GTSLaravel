@@ -6,7 +6,7 @@ use GTS\Administrator\Domain\Repository\CountryRepositoryInterface;
 
 class CountryFacade implements CountryFacadeInterface
 {
-    public function __construct(private readonly CountryRepositoryInterface $repository) {}
+    public function __construct(public readonly CountryRepositoryInterface $repository) {}
 
     public function search(mixed $params = null)
     {
