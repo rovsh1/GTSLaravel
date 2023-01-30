@@ -7,6 +7,7 @@ use Illuminate\Support\ServiceProvider;
 
 use GTS\Shared\UI\Admin\View\Grid as GridNamespace;
 use GTS\Shared\UI\Admin\View\Layout;
+use GTS\Shared\UI\Admin\View\Sidebar\Sidebar;
 
 class ViewServiceProvider extends ServiceProvider
 {
@@ -14,7 +15,7 @@ class ViewServiceProvider extends ServiceProvider
     {
         $this->app->singleton('layout', Layout::class);
 
-        //$this->app->singleton('sidebar', Sidebar::class);
+        $this->app->singleton('sidebar', Sidebar::class);
 
         View::addLocation(resource_path('admin/views'));
         //$this->app->singleton('breadcrumbs', function () { return app('layout')->menu('breadcrumbs'); });
