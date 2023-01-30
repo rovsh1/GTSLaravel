@@ -2,7 +2,4 @@
 
 namespace GTS\Shared\Domain\Exception;
 
-class AttributeRequiredException extends \RuntimeException
-{
-
-}
+class AttributeRequiredException extends \RuntimeException { }
