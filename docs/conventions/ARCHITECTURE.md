@@ -51,4 +51,22 @@
 |   |-- /Api
 |   |-- /Site
 |-- /Tests
+|   |-- /Feature
+|   |   |-- /Http
+|   |   |   |-- /Admin
+|   |   |   |   |-- /Controllers
+|   |-- /Unit
+```
+
+#### Resources
+
+```
+/resources
+|-- /admin
+|   |-- /sass
+|   |   |-- /page - webpack compile css files
+|   |-- /js
+|   |   |-- /page - webpack compile js files
+|   |-- /views
+|-- /site
 ```
