@@ -20,6 +20,7 @@ class BootServiceProvider extends ServiceProvider
         $config = $module->config();
 
         $this->app->singleton(Facade\ReaderFacadeInterface::class, Facade\ReaderFacade::class);
+        $this->app->singleton(Facade\WriterFacadeInterface::class, Facade\WriterFacade::class);
 
         $this->app->singleton(DomainService\PathGeneratorInterface::class, function () use ($config) {
             return new DomainService\PathGenerator(
@@ -36,7 +37,9 @@ class BootServiceProvider extends ServiceProvider
             );
         });
 
-        $this->app->singleton(StorageRepositoryInterface::class, StorageRepository::class);
+        $this->app->singleton(StorageRepositoryInterface::class, function () use ($config) {
+            return new StorageRepository($config, app(DomainService\PathGeneratorInterface::class));
+        });
         $this->app->singleton(DatabaseRepositoryInterface::class, DatabaseRepository::class);
     }
 }

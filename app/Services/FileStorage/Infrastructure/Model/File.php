@@ -14,21 +14,31 @@ class File extends BaseModel
 
     protected $primaryKey = 'guid';
 
+    protected $keyType = 'string';
+
     public $incrementing = false;
 
     protected $fillable = [
         'type',
-        'parent_id',
+        'entity_id',
         'name',
         'index'
     ];
 
-    public static function createFromParent(string $fileType, int $parentId, ?string $name = null)
+    public static function boot()
+    {
+        parent::boot();
+
+        self::creating(function ($model) {
+            $model->guid = static::generateGuid();
+        });
+    }
+
+    public static function createFromParent(string $fileType, int $entityId, ?string $name = null)
     {
         return static::create([
-            'guid' => static::generateGuid(),
             'type' => static::hashType($fileType),
-            'parent_id' => $parentId,
+            'entity_id' => $entityId,
             'name' => $name
         ]);
     }
@@ -48,9 +58,9 @@ class File extends BaseModel
         $query->where('type', static::hashType($fileType));
     }
 
-    public static function scopeWhereParent($query, $parent)
+    public static function scopeWhereEntity($query, $entity)
     {
-        $query->where('parent_id', is_object($parent) ? $parent->id : $parent);
+        $query->where('entity_id', is_object($entity) ? $entity->id : $entity);
     }
 
     public static function scopeParentColumn(Builder $builder, string $fileType, string $columnName)

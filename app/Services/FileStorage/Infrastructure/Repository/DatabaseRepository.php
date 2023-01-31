@@ -22,7 +22,7 @@ class DatabaseRepository implements DatabaseRepositoryInterface
     public function findEntityImage(string $fileType, ?int $entityId): ?File
     {
         $model = Model::whereType($fileType)
-            ->whereParent($entityId)
+            ->whereEntity($entityId)
             ->first();
 
         return $model ? DataMapper::modelToFile($model) : null;
@@ -31,12 +31,12 @@ class DatabaseRepository implements DatabaseRepositoryInterface
     public function getEntityImages(string $fileType, ?int $entityId)
     {
         return Model::whereType($fileType)
-            ->whereParent($entityId)
+            ->whereEntity($entityId)
             ->get()
             ->map(fn($r) => DataMapper::modelToFile($r));
     }
 
-    public function create(string $fileType, ?int $entityId, ?string $name): File
+    public function create(string $fileType, ?int $entityId, string $name = null): File
     {
         $model = Model::createFromParent($fileType, $entityId, $name);
 
