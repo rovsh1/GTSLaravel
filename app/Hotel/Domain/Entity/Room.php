@@ -1,10 +1,8 @@
 <?php
 
-namespace GTS\Hotel\Application\Dto\Info;
+namespace GTS\Hotel\Domain\Entity;
 
-use GTS\Shared\Application\Dto\AbstractDto;
-
-class HotelDto extends AbstractDto
+class Room
 {
     public function __construct(
         public readonly int    $id,

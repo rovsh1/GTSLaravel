@@ -11,6 +11,7 @@ use GTS\Shared\Infrastructure\Models\Model;
  * @property string $name
  * @property \Illuminate\Support\Carbon|null $created
  * @property \Illuminate\Support\Carbon|null $updated
+ * @property-read \Illuminate\Database\Eloquent\Collection|Room[] $rooms
  * @mixin \Illuminate\Database\Eloquent\Model
  */
 class Hotel extends Model
@@ -18,4 +19,9 @@ class Hotel extends Model
     public const CREATED_AT = 'created';
     public const UPDATED_AT = 'updated';
     protected $table = 'hotels';
+
+    public function rooms()
+    {
+        return $this->hasMany(Room::class, 'hotel_id', 'id');
+    }
 }

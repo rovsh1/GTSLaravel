@@ -4,7 +4,7 @@ namespace GTS\Hotel\Application\Dto\Info;
 
 use GTS\Shared\Application\Dto\AbstractDto;
 
-class HotelDto extends AbstractDto
+class RoomDto extends AbstractDto
 {
     public function __construct(
         public readonly int    $id,

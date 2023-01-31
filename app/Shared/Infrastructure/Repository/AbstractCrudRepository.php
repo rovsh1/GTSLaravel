@@ -2,6 +2,8 @@
 
 namespace GTS\Shared\Infrastructure\Repository;
 
+use Illuminate\Database\Eloquent\Collection;
+
 use GTS\Shared\Domain\Exception\EntityNotFoundException;
 
 abstract class AbstractCrudRepository
@@ -38,11 +40,12 @@ abstract class AbstractCrudRepository
         return true;
     }
 
-    protected function createEntityFromModel($model)
+    protected function createEntitiesFromModels(Collection $collection): array
     {
-        // Convert to domain entity
-        return $model;
+        return $collection->map(fn($model) => $this->createEntityFromModel($model))->all();
     }
+
+    abstract protected function createEntityFromModel($model);
 
     protected function mapDtoToData(mixed $dto): array
     {

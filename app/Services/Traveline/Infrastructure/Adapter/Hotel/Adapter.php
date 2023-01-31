@@ -2,17 +2,17 @@
 
 namespace GTS\Services\Traveline\Infrastructure\Adapter\Hotel;
 
-use GTS\Hotel\Infrastructure\Facade\Search\Facade;
+use GTS\Hotel\Infrastructure\Facade\Info\FacadeInterface;
 
 class Adapter implements AdapterInterface
 {
-    public function __construct(private readonly Facade $hotelApi) {}
+    public function __construct(private readonly FacadeInterface $hotelApi) {}
 
     public function getRoomsAndRatePlans(int $hotelId)
     {
         $hotelDto = $this->hotelApi->findById($hotelId);
-        //@todo собираем объект
-
+        $roomsDto = $this->hotelApi->getRoomsByHotelId($hotelId);
+        dd($roomsDto);
         return $hotelDto;
     }
 
