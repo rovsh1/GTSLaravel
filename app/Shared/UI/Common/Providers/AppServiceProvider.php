@@ -6,7 +6,6 @@ use Illuminate\Support\ServiceProvider;
 
 use GTS\Shared\UI\Common\Contracts\UIServiceProvider;
 
-//use Ustabor\UIs\Contracts\DomainServiceProvider;
 //use Ustabor\UIs\Providers\AuthServiceProvider;
 //use Ustabor\UIs\Providers\DateTimeServiceProvider;
 //use Ustabor\UIs\Providers\EventServiceProvider;
@@ -23,7 +22,6 @@ class AppServiceProvider extends ServiceProvider
 {
     public function register()
     {
-//		$this->app->register(SettingsServiceProvider::class);
 //		$this->app->register(AuthServiceProvider::class);
 //		$this->app->register(ViewServiceProvider::class);
 //		$this->app->register(FormatServiceProvider::class);

@@ -1,0 +1,10 @@
+<?php
+
+namespace GTS\Services\FileStorage\Domain\Service;
+
+interface PathGeneratorInterface
+{
+    public function relativePath(string $guid, int $part = null): string;
+
+    public function path(string $guid, int $part = null): string;
+}
