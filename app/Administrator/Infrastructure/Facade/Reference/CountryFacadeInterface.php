@@ -2,6 +2,4 @@
 
 namespace GTS\Administrator\Infrastructure\Facade\Reference;
 
-interface CountryFacadeInterface
-{
-}
+interface CountryFacadeInterface { }

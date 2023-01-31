@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use GTS\Services\FileStorage\Domain\Service as DomainService;
 use GTS\Services\FileStorage\Domain\Repository\DatabaseRepositoryInterface;
 use GTS\Services\FileStorage\Domain\Repository\StorageRepositoryInterface;
+use GTS\Services\FileStorage\Infrastructure\Services\FileUploader;
 use GTS\Services\FileStorage\Infrastructure\Repository\DatabaseRepository;
 use GTS\Services\FileStorage\Infrastructure\Repository\StorageRepository;
 use GTS\Services\FileStorage\Infrastructure\Facade;
@@ -41,5 +42,7 @@ class BootServiceProvider extends ServiceProvider
             return new StorageRepository($config, app(DomainService\PathGeneratorInterface::class));
         });
         $this->app->singleton(DatabaseRepositoryInterface::class, DatabaseRepository::class);
+
+        $this->app->bind('fileUploader', FileUploader::class);
     }
 }
