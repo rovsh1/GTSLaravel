@@ -59,7 +59,7 @@ class Room extends Model
     public function frontName(): Attribute
     {
         $baseName = $this->nameTranslation?->name;
-        //@todo что делать если не найдено базовое название
+        //@todo что делать если не найдено базовое название (для выбранного языка)
         return Attribute::get(fn() => "{$baseName} ($this->custom_name)");
     }
 
