@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 use GTS\Administrator\Infrastructure\Facade\Reference\AclFacadeInterface;
 
-class BootAclRules
+class SetAclRules
 {
     public function __construct(private readonly AclFacadeInterface $aclFacade) {}
 
