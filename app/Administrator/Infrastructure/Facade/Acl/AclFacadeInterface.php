@@ -1,5 +1,5 @@
 <?php
 
-namespace GTS\Administrator\Infrastructure\Facade\Reference;
+namespace GTS\Administrator\Infrastructure\Facade\Acl;
 
 interface AclFacadeInterface { }
