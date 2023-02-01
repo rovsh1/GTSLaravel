@@ -6,17 +6,17 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 
-trait HasTranslantableName
+trait HasTranslatableName
 {
     protected $translationLocale;
 
-    public static function bootHasTranslantableName()
+    public static function bootHasTranslatableName()
     {
         static::addGlobalScope('translatableName', function (Builder $builder) {
             $modelTable = with(new static)->getTable();
             $builder->addSelect($modelTable . '.*');
 
-            static::scopeJoinTranslantableName($builder, ['name']);
+            static::scopeJoinTranslatableName($builder, ['name']);
         });
 
         static::saving(function ($model) {
@@ -24,13 +24,13 @@ trait HasTranslantableName
         });
     }
 
-    public static function scopeJoinTranslantableName($query, $columns = null, $language = null)
+    public static function scopeJoinTranslatableName($query, $columns = null, $language = null)
     {
         if (null === $language) {
             $language = App::currentLocale();
         }
 
-        $translatableTable = with(new static())->getTranslationTable();
+        $translatableTable = with(new static())->getTranslatableNameTable();
         $modelTable = with(new static)->getTable();
 
         $query->leftJoin(
@@ -52,7 +52,7 @@ trait HasTranslantableName
         }
     }
 
-    public function getTranslationTable(): string
+    public function getTranslatableNameTable(): string
     {
         return 'r_enums_translation';
     }
@@ -69,10 +69,10 @@ trait HasTranslantableName
         return $this;
     }
 
-    public function saveTranslantableName(array $options = []): void
+    public function saveTranslatableName(array $options = []): void
     {
         $translationData = ['name' => $this->name, 'language' => $this->getLocale(), 'translatable_id' => $this->name_id];
-        DB::table($this->getTranslationTable())->upsert($translationData, 'translatable_id', ['name', 'language']);
+        DB::table($this->getTranslatableNameTable())->upsert($translationData, 'translatable_id', ['name', 'language']);
         $this->offsetUnset('name');
     }
 }
