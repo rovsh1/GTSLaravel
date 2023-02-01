@@ -6,14 +6,13 @@ use GuzzleHttp\ClientInterface;
 
 class Adapter implements AdapterInterface
 {
-    public function __construct(private ClientInterface $httpClient) {}
+    public function __construct(
+        private ClientInterface $httpClient,
+        private string          $notificationsUrl
+    ) {}
 
     public function sendReservationNotification(): void
     {
-        $url = config('services.traveline.notifications_url');
-        if (empty($url)) {
-            return;
-        }
-        $this->httpClient->request('GET', $url);
+        $this->httpClient->request('GET', $this->notificationsUrl);
     }
 }

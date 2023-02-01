@@ -15,7 +15,7 @@ class RouteServiceProvider extends ServiceProvider
                 'prefix' => 'traveline',
                 'as' => 'traveline.',
                 'middleware' => ['api']
-            ], app_path('Services/Traveline/UI/Api/routes.php'));
+            ], module('Traveline')->path('UI/Api/routes.php'));
         });
     }
 }

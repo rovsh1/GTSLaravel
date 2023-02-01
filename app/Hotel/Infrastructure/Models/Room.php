@@ -44,6 +44,10 @@ class Room extends Model
         'index',
     ];
 
+    public function scopeJoinName(){
+        //@todo когда имя содержится в другой модели
+    }
+
     public function nameTranslation()
     {
         return $this->hasOneThrough(

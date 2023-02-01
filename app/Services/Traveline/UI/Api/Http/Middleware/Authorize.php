@@ -24,7 +24,8 @@ class Authorize
         if ($username === null || $password === null) {
             throw new AccessDeniedHttpException();
         }
-        if ($username . $password !== config('services.traveline.username') . config('services.traveline.password')) {
+        $module = module('Traveline');
+        if ($username . $password !== $module->config('auth.username') . $module->config('auth.password')) {
             throw new AccessDeniedHttpException();
         }
         return $next($request);

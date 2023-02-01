@@ -2,6 +2,7 @@
 
 namespace GTS\Hotel\Infrastructure\Models\Room;
 
+use GTS\Shared\Custom\Database\Eloquent\HasTranslations;
 use Illuminate\Database\Eloquent\Builder;
 
 use GTS\Shared\Infrastructure\Models\Model;
@@ -17,6 +18,8 @@ use GTS\Shared\Infrastructure\Models\Model;
  */
 class Name extends Model
 {
+    use HasTranslations;
+
     public const CREATED_AT = null;
     public const UPDATED_AT = null;
 

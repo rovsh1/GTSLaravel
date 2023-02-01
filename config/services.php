@@ -30,11 +30,4 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
-
-    'traveline' => [
-        'username' => env('TRAVELINE_USERNAME'),
-        'password' => env('TRAVELINE_PASSWORD'),
-        'notifications_url' => env('TRAVELINE_NOTIFICATIONS_URL'),
-    ],
-
 ];

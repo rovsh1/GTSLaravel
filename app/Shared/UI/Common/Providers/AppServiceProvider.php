@@ -2,6 +2,8 @@
 
 namespace GTS\Shared\UI\Common\Providers;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use Illuminate\Support\ServiceProvider;
 
 use GTS\Shared\UI\Common\Contracts\UIServiceProvider;
@@ -33,6 +35,8 @@ class AppServiceProvider extends ServiceProvider
 //		$this->app->register(VariablesServiceProvider::class);
 //
 //		$this->app->singleton('release', fn() => new ReleaseInfo(base_path('package.json')));
+
+        $this->app->bind(ClientInterface::class, Client::class);
 
         if ($this->app->has(UIServiceProvider::class)) {
             $this->app->register($this->app->get(UIServiceProvider::class));
