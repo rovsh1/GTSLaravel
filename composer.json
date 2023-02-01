@@ -16,7 +16,8 @@
         "spatie/laravel-data": "^2.2",
         "gsdk/view-layout": "^1.0.0",
         "gsdk/navigation": "^1.0.0",
-        "gsdk/grid": "^2.0.0.x-dev"
+        "gsdk/format": "^1.0.0",
+        "gsdk/grid": "^2.0.0"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.12",
