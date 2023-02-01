@@ -2,12 +2,11 @@
 
 namespace GTS\Shared\Infrastructure\Providers;
 
-use Illuminate\Support\ServiceProvider;
-
 use GTS\Shared\Application\Command\CommandBusInterface;
 use GTS\Shared\Application\Query\QueryBusInterface;
 use GTS\Shared\Application\Validation\ValidatorPipelineBehaviorInterface;
 use GTS\Shared\Infrastructure\Bus;
+use GTS\Shared\Infrastructure\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {

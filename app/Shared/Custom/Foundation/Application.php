@@ -6,9 +6,13 @@ class Application extends \Illuminate\Foundation\Application
 {
     private ModulesRepository $modules;
 
+    private ModuleLoader $moduleLoader;
+
     public function __construct($basePath = null)
     {
         $this->modules = new ModulesRepository($this);
+        $this->moduleLoader = new ModuleLoader($this);
+
         parent::__construct($basePath);
     }
 
@@ -30,5 +34,17 @@ class Application extends \Illuminate\Foundation\Application
     public function moduleLoaded(string $name): bool
     {
         return $this->modules->get($name)->isLoaded();
+    }
+
+    protected function getConcrete($abstract)
+    {
+        $concrete = parent::getConcrete($abstract);
+        if ($concrete instanceof \Closure)
+            return $concrete;
+
+        if ($this->moduleLoader->load($abstract)) {
+            return parent::getConcrete($abstract);
+        } else
+            return $abstract;
     }
 }

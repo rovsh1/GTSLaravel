@@ -51,12 +51,12 @@ class ModulesRepository
             $this->registerModule($name, $config);
         }
 
-        foreach ($this->registeredModules as $module) {
-            if ($module->isDeferred())
-                continue;
-
-            $this->loadModule($module);
-        }
+//        foreach ($this->registeredModules as $module) {
+//            if ($module->isDeferred())
+//                continue;
+//
+//            $this->loadModule($module);
+//        }
     }
 
     public function loadModule(Module|string $module): void
@@ -73,11 +73,13 @@ class ModulesRepository
 
         $this->app->register($module->namespace('Infrastructure\Providers\BootServiceProvider'));
 
-        if (($required = $module->config('required'))) {
-            foreach ($required as $name) {
-                $this->loadModule($name);
-            }
-        }
+        $module->loaded();
+
+//        if (($required = $module->config('required'))) {
+//            foreach ($required as $name) {
+//                $this->loadModule($name);
+//            }
+//        }
     }
 
     public function registerModulesUI(string $port): void

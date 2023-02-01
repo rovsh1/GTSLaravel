@@ -53,4 +53,9 @@ class Module
     {
         return $this->loaded;
     }
+
+    public function loaded(): void
+    {
+        $this->loaded = true;
+    }
 }

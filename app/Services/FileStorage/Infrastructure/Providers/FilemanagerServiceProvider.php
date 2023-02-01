@@ -2,8 +2,7 @@
 
 namespace GTS\Services\FileStorage\Infrastructure\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Storage;
+use GTS\Shared\Infrastructure\Support\ServiceProvider;
 
 class FilemanagerServiceProvider extends ServiceProvider
 {

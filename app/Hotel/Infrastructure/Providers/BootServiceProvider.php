@@ -4,8 +4,7 @@ namespace GTS\Hotel\Infrastructure\Providers;
 
 use GTS\Hotel\Domain;
 use GTS\Hotel\Infrastructure;
-
-use Illuminate\Support\ServiceProvider;
+use GTS\Shared\Infrastructure\Support\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {
