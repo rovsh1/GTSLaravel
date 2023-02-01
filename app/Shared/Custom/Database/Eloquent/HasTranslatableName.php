@@ -20,7 +20,8 @@ trait HasTranslatableName
         });
 
         static::saving(function ($model) {
-            $model->saveTranslantableName();
+            $model->saveTranslatableName();
+            $model->flushTranslatableName();
         });
     }
 
@@ -73,6 +74,10 @@ trait HasTranslatableName
     {
         $translationData = ['name' => $this->name, 'language' => $this->getLocale(), 'translatable_id' => $this->name_id];
         DB::table($this->getTranslatableNameTable())->upsert($translationData, 'translatable_id', ['name', 'language']);
+    }
+
+    public function flushTranslatableName(): void
+    {
         $this->offsetUnset('name');
     }
 }
