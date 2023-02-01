@@ -26,9 +26,6 @@ class AbstractEntityFactory
             return array_map(fn(array $model) => static::create($entityClass, $model), $collection);
         }
         return $collection->map(function ($model) use ($entityClass) {
-            if ($model instanceof Arrayable) {
-                return static::create($entityClass, $model->toArray());
-            }
             return static::create($entityClass, $model);
         })->all();
     }
