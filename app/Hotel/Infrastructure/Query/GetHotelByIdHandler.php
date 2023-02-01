@@ -4,7 +4,7 @@ namespace GTS\Hotel\Infrastructure\Query;
 
 use GTS\Hotel\Application\Query\GetHotelById;
 use GTS\Hotel\Domain\Entity\Hotel;
-use GTS\Hotel\Infrastructure\DomainModelMapper\HotelModelMapper;
+use GTS\Hotel\Domain\Factory\EntityFactory;
 use GTS\Hotel\Infrastructure\Models\Hotel as HotelEloquent;
 use GTS\Shared\Application\Query\QueryHandlerInterface;
 use GTS\Shared\Application\Query\QueryInterface;
@@ -20,6 +20,6 @@ class GetHotelByIdHandler implements QueryHandlerInterface
         $hotel = HotelEloquent::find($query->id);
         //@todo что делать если не найден?
 
-        return HotelModelMapper::from($hotel);
+        return EntityFactory::create(Hotel::class, $hotel);
     }
 }

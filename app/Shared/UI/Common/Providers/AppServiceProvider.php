@@ -24,6 +24,9 @@ class AppServiceProvider extends ServiceProvider
 {
     public function register()
     {
+        if ($this->app->isLocal()) {
+            $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
+        }
 //		$this->app->register(AuthServiceProvider::class);
 //		$this->app->register(ViewServiceProvider::class);
 //		$this->app->register(FormatServiceProvider::class);

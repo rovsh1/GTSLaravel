@@ -3,8 +3,8 @@
 namespace GTS\Hotel\Infrastructure\Query;
 
 use GTS\Hotel\Application\Query\GetRoomsByHotelId;
-use GTS\Hotel\Infrastructure\DomainModelMapper\RoomModelMapper;
-use GTS\Hotel\Infrastructure\Models\Room;
+use GTS\Hotel\Domain\Entity\Room;
+use GTS\Hotel\Domain\Factory\EntityFactory;
 use GTS\Hotel\Infrastructure\Models\Room as RoomEloquent;
 use GTS\Shared\Application\Query\QueryHandlerInterface;
 use GTS\Shared\Application\Query\QueryInterface;
@@ -19,6 +19,6 @@ class GetRoomsByHotelIdHandler implements QueryHandlerInterface
     {
         $rooms = RoomEloquent::query()->where('hotel_id', $query->hotelId)->get();
 
-        return RoomModelMapper::collection($rooms);
+        return EntityFactory::createCollection(Room::class, $rooms);
     }
 }

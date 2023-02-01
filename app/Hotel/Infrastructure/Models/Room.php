@@ -15,16 +15,28 @@ use GTS\Shared\Infrastructure\Models\Model;
  * @property int $hotel_id
  * @property int $type_id
  * @property int $name_id
- * @property string $custom_name
+ * @property string|null $custom_name
  * @property int $rooms_number
  * @property int $guests_number
- * @property int $size
- * @property int $price_discount
+ * @property int|null $size
+ * @property int|null $price_discount
  * @property int $data_flags
  * @property int $index
- * @property-read NameTranslation|null $nameTranslation
- * @property-read string $front_name
- * @mixin \Illuminate\Database\Eloquent\Model
+ * @method static \Illuminate\Database\Eloquent\Builder|Room newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Room newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Room query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Room whereCustomName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Room whereDataFlags($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Room whereGuestsNumber($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Room whereHotelId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Room whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Room whereIndex($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Room whereNameId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Room wherePriceDiscount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Room whereRoomsNumber($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Room whereSize($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Room whereTypeId($value)
+ * @mixin \Eloquent
  */
 class Room extends Model
 {
@@ -67,4 +79,11 @@ class Room extends Model
         return Attribute::get(fn() => "{$baseName} ($this->custom_name)");
     }
 
+    public function toArray()
+    {
+        return array_merge(parent::toArray(), [
+                'name' => $this->front_name,
+            ]
+        );
+    }
 }
