@@ -1,6 +1,6 @@
 <?php
 
-namespace GTS\Administrator\Infrastructure\Facade\Reference;
+namespace GTS\Administrator\Infrastructure\Facade\Acl;
 
 use GTS\Administrator\Domain\Repository\AclRepositoryInterface;
 use GTS\Administrator\Domain\Service\Acl\AccessControlInterface;
