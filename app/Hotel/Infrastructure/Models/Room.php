@@ -78,12 +78,4 @@ class Room extends Model
         //@todo что делать если не найдено базовое название (для выбранного языка)
         return Attribute::get(fn() => "{$baseName} ($this->custom_name)");
     }
-
-    public function toArray()
-    {
-        return array_merge(parent::toArray(), [
-                'name' => $this->front_name,
-            ]
-        );
-    }
 }

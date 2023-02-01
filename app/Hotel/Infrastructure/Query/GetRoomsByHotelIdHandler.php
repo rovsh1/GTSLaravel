@@ -19,6 +19,7 @@ class GetRoomsByHotelIdHandler implements QueryHandlerInterface
     {
         $rooms = RoomEloquent::query()->where('hotel_id', $query->hotelId)->get();
 
+        //@todo тут нужно указать front_name как name или прописывать маппер вручную
         return EntityFactory::createCollection(Room::class, $rooms);
     }
 }
