@@ -2,14 +2,11 @@
 
 namespace GTS\Shared\UI\Site\Providers;
 
-//use Ustabor\Domain\Site\Providers\AuthServiceProvider;
-//use Ustabor\Infrastructure\Enums\AppSource;
-use Illuminate\Support\ServiceProvider;
+use GTS\Shared\UI\Common\Support\BootServiceProvider as ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {
-
-    private $providers = [
+    protected $providers = [
         //FormatServiceProvider::class,
         RouteServiceProvider::class,
         //AuthServiceProvider::class
@@ -17,11 +14,8 @@ class BootServiceProvider extends ServiceProvider
 
     public function register()
     {
-        //$this->app->instance('appSource', AppSource::API);
+        parent::register();
 
-        foreach ($this->providers as $provider) {
-            $this->app->register($provider);
-        }
+        app('modules')->registerModulesUI('Site');
     }
-
 }

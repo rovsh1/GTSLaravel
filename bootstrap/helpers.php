@@ -1,6 +1,6 @@
 <?php
 
-use GTS\Shared\Infrastructure\Support\Module\Module;
+use GTS\Shared\Custom\Foundation\Module;
 
 function module(string $name): ?Module
 {

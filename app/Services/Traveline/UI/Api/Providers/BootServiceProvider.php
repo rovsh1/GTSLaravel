@@ -2,20 +2,15 @@
 
 namespace GTS\Services\Traveline\UI\Api\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use GTS\Shared\UI\Common\Support\BootServiceProvider as ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {
-
-    private $providers = [
-        RouteServiceProvider::class,
+    protected $requiredModules = [
+        'Traveline'
     ];
 
-    public function register()
-    {
-        foreach ($this->providers as $provider) {
-            $this->app->register($provider);
-        }
-    }
-
+    protected $providers = [
+        RouteServiceProvider::class,
+    ];
 }

@@ -1,13 +1,12 @@
 <?php
 
 return [
-    'Administrator' => [
-        'path' => app_path('Administrator')
-    ],
     'Hotel' => [
         'path' => app_path('Hotel')
     ],
     'Administrator' => [
+        'deferred' => true,
+        //'required' => ['Traveline'],
         'path' => app_path('Administrator')
     ],
     'FileStorage' => [
@@ -19,6 +18,7 @@ return [
     ],
     'Traveline' => [
         'enabled' => env('TRAVELINE_ENABLED', true),
+        'deferred' => true,
         'path' => app_path('Services/Traveline'),
         'auth' => [
             'username' => env('TRAVELINE_USERNAME'),

@@ -11,10 +11,9 @@
 |
 */
 
-$app = new Illuminate\Foundation\Application(
+$app = new \GTS\Shared\Custom\Foundation\Application(
     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 );
-
 /*
 |--------------------------------------------------------------------------
 | Bind Important Interfaces

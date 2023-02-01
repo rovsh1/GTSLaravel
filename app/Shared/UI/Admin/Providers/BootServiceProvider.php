@@ -2,11 +2,15 @@
 
 namespace GTS\Shared\UI\Admin\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use GTS\Shared\UI\Common\Support\BootServiceProvider as ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {
-    private $providers = [
+    protected $requiredModules = [
+        'Administrator'
+    ];
+
+    protected $providers = [
         FormatServiceProvider::class,
         RouteServiceProvider::class,
         ViewServiceProvider::class
@@ -14,14 +18,8 @@ class BootServiceProvider extends ServiceProvider
 
     public function register()
     {
-        foreach ($this->providers as $provider) {
-            $this->app->register($provider);
-        }
+        parent::register();
 
-        foreach (app('modules') as $module) {
-            $provider = $module->namespace('UI\Admin\Providers\BootServiceProvider');
-            if (class_exists($provider))
-                $this->app->register($provider);
-        }
+        app('modules')->registerModulesUI('Admin');
     }
 }
