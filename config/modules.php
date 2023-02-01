@@ -4,6 +4,9 @@ return [
     'Hotel' => [
         'path' => app_path('Hotel')
     ],
+    'Reservation' => [
+        'path' => app_path('Hotel')
+    ],
     'Administrator' => [
         //'required' => ['Traveline'],
         'path' => app_path('Administrator')
@@ -14,6 +17,9 @@ return [
         'url' => env('APP_URL'),
         'nesting_level' => 2,
         'path_name_length' => 2
+    ],
+    'Scheduler' => [
+        'path' => app_path('Services/Scheduler')
     ],
     'Traveline' => [
         'enabled' => env('TRAVELINE_ENABLED', true),

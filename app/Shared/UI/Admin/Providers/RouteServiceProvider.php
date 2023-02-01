@@ -14,7 +14,7 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->routes(function () {
             $routes = $this->getModulesRoutes('Admin');
-            //$routes[] = app_path('Port/Site/routes.php');
+            $routes[] = app_path('Shared/UI/Admin/routes.php');
 
             Route::middleware(['web', 'admin'])->group($routes);
         });
