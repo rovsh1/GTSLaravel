@@ -4,8 +4,7 @@ namespace GTS\Hotel\Infrastructure\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
-use GTS\Hotel\Infrastructure\Models\Room\Name;
-use GTS\Hotel\Infrastructure\Models\Room\NameTranslation;
+use GTS\Shared\Custom\Database\Eloquent\HasTranslantableName;
 use GTS\Shared\Infrastructure\Models\Model;
 
 /**
@@ -22,6 +21,8 @@ use GTS\Shared\Infrastructure\Models\Model;
  * @property int|null $price_discount
  * @property int $data_flags
  * @property int $index
+ * @property string $name
+ * @property-read string $front_name
  * @method static \Illuminate\Database\Eloquent\Builder|Room newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Room newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Room query()
@@ -40,9 +41,13 @@ use GTS\Shared\Infrastructure\Models\Model;
  */
 class Room extends Model
 {
+    use HasTranslantableName;
+
     public const CREATED_AT = null;
     public const UPDATED_AT = null;
+
     protected $table = 'hotel_rooms';
+
     protected $fillable = [
         'hotel_id',
         'type_id',
@@ -56,26 +61,8 @@ class Room extends Model
         'index',
     ];
 
-    public function scopeJoinName(){
-        //@todo когда имя содержится в другой модели
-    }
-
-    public function nameTranslation()
-    {
-        return $this->hasOneThrough(
-            NameTranslation::class,
-            Name::class,
-            'id',
-            'translatable_id',
-            'name_id',
-            'id'
-        );
-    }
-
     public function frontName(): Attribute
     {
-        $baseName = $this->nameTranslation?->name;
-        //@todo что делать если не найдено базовое название (для выбранного языка)
-        return Attribute::get(fn() => "{$baseName} ($this->custom_name)");
+        return Attribute::get(fn() => "{$this->name} ($this->custom_name)");
     }
 }
