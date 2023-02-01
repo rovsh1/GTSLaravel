@@ -70,7 +70,7 @@ trait HasTranslatableName
         return $this;
     }
 
-    public function saveTranslatableName(array $options = []): void
+    public function saveTranslatableName(): void
     {
         $translationData = ['name' => $this->name, 'language' => $this->getLocale(), 'translatable_id' => $this->name_id];
         DB::table($this->getTranslatableNameTable())->upsert($translationData, 'translatable_id', ['name', 'language']);
