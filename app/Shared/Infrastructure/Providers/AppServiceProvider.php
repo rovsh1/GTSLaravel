@@ -19,9 +19,7 @@ class AppServiceProvider extends ServiceProvider
 
     private function registerServices()
     {
-        $this->app->singleton(ValidatorPipelineBehaviorInterface::class, function ($app) {
-            return new Bus\ValidatorPipelineBehavior($app);
-        });
+        $this->app->singleton(ValidatorPipelineBehaviorInterface::class, fn($app) => new Bus\ValidatorPipelineBehavior($app));
 
         $this->app->singleton(CommandBusInterface::class, function ($app) {
             //$app->get(ValidatorPipelineBehaviorInterface::class)
@@ -30,9 +28,9 @@ class AppServiceProvider extends ServiceProvider
             ]);
         });
 
-        $this->app->singleton(QueryBusInterface::class, function ($app) {
-            return new Bus\QueryBus($app);
-        });
+        $this->app->singleton(QueryBusInterface::class, fn($app) => new Bus\QueryBus($app));
+
+        $this->app->singleton(Bus\PortGatewayInterface::class, fn($app) => new Bus\PortGateway($app));
 
 //		$this->app->singleton(DomainEventDispatcherInterface::class, function ($app) {
 //			return new DomainEventDispatcher($app);

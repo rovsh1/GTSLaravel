@@ -42,7 +42,7 @@ class Application extends \Illuminate\Foundation\Application
         if ($concrete instanceof \Closure)
             return $concrete;
 
-        if ($this->moduleLoader->load($abstract)) {
+        if ($this->moduleLoader->loadByAbstract($abstract)) {
             return parent::getConcrete($abstract);
         } else
             return $abstract;

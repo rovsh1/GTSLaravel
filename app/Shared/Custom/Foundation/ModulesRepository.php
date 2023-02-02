@@ -13,6 +13,11 @@ class ModulesRepository
         return $this->registeredModules;
     }
 
+    public function loadedModules(): array
+    {
+        return array_filter($this->registeredModules, fn($m) => $m->isLoaded());
+    }
+
     public function get(string $name): ?Module
     {
         foreach ($this->registeredModules as $module) {

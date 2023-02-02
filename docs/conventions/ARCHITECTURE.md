@@ -32,8 +32,10 @@
 |   |-- /ValueObject
 |   |-- /Service - Encapsulates business logic that doesn't naturally fit within a domain object, and are NOT typical CRUD operations – those would belong to a Repository.
 |-- /Infrastructure - Data layer
-|   |-- /Facade - Интерфейсы обращения к модулю 
-|   |-- /Adapter - Интерфейсы обращения модуля к другим модулям и сервисам
+|   |-- /IO
+|   |   |-- /Adapter - Интерфейсы обращения модуля к другим модулям и сервисам
+|   |   |-- /Facade - Интерфейсы обращения к UI внутри модуля
+|   |   |-- /Port - Интерфейсы обращения к модулю (через PortGateway)
 |   |-- /Model - ORM models
 |   |-- /Query - Query handlers
 |   |-- /Providers - Domain service providers
