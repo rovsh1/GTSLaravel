@@ -7,8 +7,11 @@ use Illuminate\Support\Collection;
 
 class AbstractEntityFactory
 {
-    public static function create(string $entityClass, array|Arrayable $data)
+    public static function create(string $entityClass, null|array|Arrayable $data)
     {
+        if ($data === null) {
+            return null;
+        }
         return app(DataFromArrayResolver::class)->execute(
             $entityClass,
             collect($data)

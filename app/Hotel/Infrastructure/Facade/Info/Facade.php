@@ -5,7 +5,7 @@ namespace GTS\Hotel\Infrastructure\Facade\Info;
 use GTS\Hotel\Application\Dto\Info\HotelDto;
 use GTS\Hotel\Application\Dto\Info\RoomDto;
 use GTS\Hotel\Application\Query\GetHotelById;
-use GTS\Hotel\Application\Query\GetRoomsByHotelId;
+use GTS\Hotel\Application\Query\GetRoomsWithPriceRateByHotelId;
 use GTS\Hotel\Domain\Entity\Hotel;
 use GTS\Hotel\Domain\Entity\Room;
 use GTS\Shared\Application\Query\QueryBusInterface;
@@ -22,10 +22,10 @@ class Facade implements FacadeInterface
         return HotelDto::from($hotel);
     }
 
-    public function getRoomsByHotelId(int $id): array
+    public function getRoomsWithPriceRateByHotelId(int $id): array
     {
         /** @var Room[] $rooms */
-        $rooms = $this->queryBus->execute(new GetRoomsByHotelId($id));
+        $rooms = $this->queryBus->execute(new GetRoomsWithPriceRateByHotelId($id));
 
         return RoomDto::collection($rooms)->all();
     }

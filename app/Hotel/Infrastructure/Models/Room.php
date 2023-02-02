@@ -2,10 +2,10 @@
 
 namespace GTS\Hotel\Infrastructure\Models;
 
-use Illuminate\Database\Eloquent\Casts\Attribute;
-
 use GTS\Shared\Custom\Database\Eloquent\HasTranslatableName;
 use GTS\Shared\Infrastructure\Models\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 /**
  * GTS\Hotel\Infrastructure\Models\Room
@@ -23,20 +23,22 @@ use GTS\Shared\Infrastructure\Models\Model;
  * @property int $index
  * @property string $name
  * @property-read string $front_name
- * @method static \Illuminate\Database\Eloquent\Builder|Room newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Room newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Room query()
- * @method static \Illuminate\Database\Eloquent\Builder|Room whereCustomName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Room whereDataFlags($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Room whereGuestsNumber($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Room whereHotelId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Room whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Room whereIndex($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Room whereNameId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Room wherePriceDiscount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Room whereRoomsNumber($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Room whereSize($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Room whereTypeId($value)
+ * @property-read \GTS\Hotel\Infrastructure\Models\PriceRate|null $priceRate
+ * @method static Builder|Room newModelQuery()
+ * @method static Builder|Room newQuery()
+ * @method static Builder|Room query()
+ * @method static Builder|Room whereCustomName($value)
+ * @method static Builder|Room whereDataFlags($value)
+ * @method static Builder|Room whereGuestsNumber($value)
+ * @method static Builder|Room whereHotelId($value)
+ * @method static Builder|Room whereId($value)
+ * @method static Builder|Room whereIndex($value)
+ * @method static Builder|Room whereNameId($value)
+ * @method static Builder|Room wherePriceDiscount($value)
+ * @method static Builder|Room whereRoomsNumber($value)
+ * @method static Builder|Room whereSize($value)
+ * @method static Builder|Room whereTypeId($value)
+ * @method static Builder|Room withPriceRate()
  * @mixin \Eloquent
  */
 class Room extends Model
@@ -64,5 +66,22 @@ class Room extends Model
     public function frontName(): Attribute
     {
         return Attribute::get(fn() => "{$this->name} ($this->custom_name)");
+    }
+
+    public function scopeWithPriceRate(Builder $builder)
+    {
+        $localKey = "{$this->getTable()}.{$this->getKeyName()}";
+        $builder->join('hotel_price_rate_rooms', $localKey, '=', 'hotel_price_rate_rooms.room_id')
+            ->select('hotel_price_rate_rooms.rate_id')
+            ->with('priceRate');
+    }
+
+    public function priceRate()
+    {
+        return $this->hasOne(
+            PriceRate::class,
+            'id',
+            'rate_id'
+        );
     }
 }

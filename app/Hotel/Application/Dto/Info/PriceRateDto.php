@@ -1,8 +1,10 @@
 <?php
 
-namespace GTS\Hotel\Domain\Entity;
+namespace GTS\Hotel\Application\Dto\Info;
 
-class PriceRate
+use GTS\Shared\Application\Dto\AbstractDto;
+
+class PriceRateDto extends AbstractDto
 {
     public function __construct(
         public readonly int    $id,

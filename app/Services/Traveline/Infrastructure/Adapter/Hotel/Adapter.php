@@ -11,7 +11,7 @@ class Adapter implements AdapterInterface
     public function getRoomsAndRatePlans(int $hotelId)
     {
         $hotelDto = $this->hotelApi->findById($hotelId);
-        $roomsDto = $this->hotelApi->getRoomsByHotelId($hotelId);
+        $roomsDto = $this->hotelApi->getRoomsWithPriceRateByHotelId($hotelId);
         dd($roomsDto);
         return $hotelDto;
     }

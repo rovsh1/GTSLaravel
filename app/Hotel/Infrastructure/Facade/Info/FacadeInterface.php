@@ -13,5 +13,5 @@ interface FacadeInterface
      * @param int $id
      * @return RoomDto[]
      */
-    public function getRoomsByHotelId(int $id): array;
+    public function getRoomsWithPriceRateByHotelId(int $id): array;
 }
