@@ -2,6 +2,7 @@
 
 namespace GTS\Hotel\Infrastructure\Models;
 
+use GTS\Shared\Custom\Database\Eloquent\Scope\TranslationsModelScope;
 use GTS\Shared\Infrastructure\Models\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -69,15 +70,6 @@ class Room extends Model
     public function scopeWithPriceRates(Builder $builder)
     {
         $builder->with('priceRates');
-    }
-
-    public function scopeTest($q){
-        (new Scope($q,'hotel_room_translations'))//r_enum_translations
-            ->join(Room\Name::class,['name'])
-            ->join('r_enum_translations',['name']);
-
-        //scope code
-        $this->getTable().'_tranlsations';
     }
 
     public function priceRates()
