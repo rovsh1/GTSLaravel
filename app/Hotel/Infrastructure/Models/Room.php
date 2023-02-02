@@ -6,6 +6,7 @@ use GTS\Shared\Custom\Database\Eloquent\HasTranslatableName;
 use GTS\Shared\Infrastructure\Models\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Collection;
 
 /**
  * GTS\Hotel\Infrastructure\Models\Room
@@ -23,7 +24,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  * @property int $index
  * @property string $name
  * @property-read string $display_name
- * @property-read \GTS\Hotel\Infrastructure\Models\PriceRate|null $priceRate
+ * @property-read Collection|\GTS\Hotel\Infrastructure\Models\PriceRate[] $priceRates
  * @method static Builder|Room newModelQuery()
  * @method static Builder|Room newQuery()
  * @method static Builder|Room query()
@@ -38,7 +39,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  * @method static Builder|Room whereRoomsNumber($value)
  * @method static Builder|Room whereSize($value)
  * @method static Builder|Room whereTypeId($value)
- * @method static Builder|Room withPriceRate()
+ * @method static Builder|Room withPriceRates()
  * @mixin \Eloquent
  */
 class Room extends Model
@@ -68,18 +69,27 @@ class Room extends Model
         return Attribute::get(fn() => "{$this->name} ($this->custom_name)");
     }
 
-    public function scopeWithPriceRate(Builder $builder)
+    public function scopeWithPriceRates(Builder $builder)
     {
-        $localKey = "{$this->getTable()}.{$this->getKeyName()}";
-        $builder->join('hotel_price_rate_rooms', $localKey, '=', 'hotel_price_rate_rooms.room_id')
-            ->select('hotel_price_rate_rooms.rate_id')
-            ->with('priceRate');
+        $builder->with('priceRates');
     }
 
-    public function priceRate()
+    public function scopeTest($q){
+        (new Scope($q,'hotel_room_translations'))//r_enum_translations
+            ->join(Room\Name::class,['name'])
+            ->join('r_enum_translations',['name']);
+
+        //scope code
+        $this->getTable().'_tranlsations';
+    }
+
+    public function priceRates()
     {
-        return $this->hasOne(
+        return $this->hasManyThrough(
             PriceRate::class,
+            Room\PriceRate::class,
+            'room_id',
+            'id',
             'id',
             'rate_id'
         );

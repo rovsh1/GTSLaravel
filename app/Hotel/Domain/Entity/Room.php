@@ -7,6 +7,7 @@ class Room
     public function __construct(
         public readonly int    $id,
         public readonly string $name,
-        public readonly ?PriceRate $priceRate
+        /** @var PriceRate[] $priceRates */
+        public readonly array $priceRates
     ) {}
 }

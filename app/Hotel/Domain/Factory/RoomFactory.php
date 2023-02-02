@@ -12,7 +12,7 @@ class RoomFactory extends EntityFactory
         return new $entityClass(
             $data['id'],
             $data['display_name'],
-            EntityFactory::create(PriceRate::class, $data['priceRate'])
+            EntityFactory::createCollection(PriceRate::class, $data['priceRates'])
         );
     }
 }
