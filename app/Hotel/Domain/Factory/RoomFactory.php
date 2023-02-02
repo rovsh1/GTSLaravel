@@ -2,17 +2,28 @@
 
 namespace GTS\Hotel\Domain\Factory;
 
-use GTS\Hotel\Domain\Entity\PriceRate;
-use Illuminate\Contracts\Support\Arrayable;
+use GTS\Hotel\Domain\Entity\Room;
+use GTS\Shared\Domain\Factory\AbstractEntityFactory;
+use GTS\Shared\Domain\Factory\EntityCollectionOf;
 
-class RoomFactory extends EntityFactory
+class RoomFactory extends AbstractEntityFactory
 {
-    public static function create(string $entityClass, null|array|Arrayable $data)
+    public static string $entity = Room::class;
+
+    public function __construct(
+        public readonly int              $id,
+        public readonly string           $name,
+        /** @var PriceRateFactory[] $priceRates */
+        #[EntityCollectionOf(PriceRateFactory::class)]
+        public readonly array $priceRates
+    ) {}
+
+    public static function fromModel(\GTS\Hotel\Infrastructure\Models\Room $room)
     {
-        return new $entityClass(
-            $data['id'],
-            $data['display_name'],
-            EntityFactory::createCollection(PriceRate::class, $data['priceRates'])
+        return new self(
+            $room->id,
+            $room->name ?? $room->custom_name,
+            PriceRateFactory::createCollectionFrom($room->priceRates)
         );
     }
 }

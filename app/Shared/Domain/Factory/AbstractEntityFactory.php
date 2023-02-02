@@ -2,34 +2,43 @@
 
 namespace GTS\Shared\Domain\Factory;
 
+use Illuminate\Contracts\Pagination\CursorPaginator;
+use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Support\Collection;
+use Illuminate\Pagination\AbstractCursorPaginator;
+use Illuminate\Pagination\AbstractPaginator;
+use Illuminate\Support\Enumerable;
+use Spatie\LaravelData\Data;
+use Spatie\LaravelData\DataCollection;
 
-class AbstractEntityFactory
+abstract class AbstractEntityFactory extends Data implements FactoryInterface
 {
-    public static function create(string $entityClass, null|array|Arrayable $data)
+    public static string $entity;
+
+    protected static string $collectionClass = EntityCollection::class;
+
+    protected static string $paginatedCollectionClass = PaginatedEntityCollection::class;
+
+    protected static string $cursorPaginatedCollectionClass = CursorPaginatedEntityCollection::class;
+
+    public static function createFrom(mixed ...$payloads)
     {
-        if ($data === null) {
-            return null;
-        }
-        return app(DataFromArrayResolver::class)->execute(
-            $entityClass,
-            collect($data)
-        );
+        $factory = static::from(...$payloads);
+        return static::createEntity($factory);
     }
 
-    /**
-     * @param string $entityClass
-     * @param Collection<int, Arrayable>|array<int, array> $collection
-     * @return array
-     */
-    public static function createCollection(string $entityClass, $collection): array
+    public static function createCollectionFrom(Enumerable|array|AbstractPaginator|Paginator|AbstractCursorPaginator|CursorPaginator|DataCollection $items): array
     {
-        if (is_array($collection) && \Arr::isList($collection)) {
-            return array_map(fn(array $model) => static::create($entityClass, $model), $collection);
+        $factory = static::collection($items);
+        return array_map(fn($item) => static::createEntity($item), $factory->items());
+    }
+
+    protected static function createEntity(array|Arrayable $data)
+    {
+        $preparedArgs = $data;
+        if ($data instanceof Arrayable) {
+            $preparedArgs = $data->toArray();
         }
-        return $collection->map(function ($model) use ($entityClass) {
-            return static::create($entityClass, $model);
-        })->all();
+        return new (static::$entity)(...$preparedArgs);
     }
 }
