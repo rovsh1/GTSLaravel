@@ -6,7 +6,7 @@ use Attribute;
 use Spatie\LaravelData\Attributes\DataCollectionOf;
 
 #[Attribute(Attribute::TARGET_PROPERTY)]
-class AbstractDtoCollectionOf extends DataCollectionOf
+class DtoCollectionOf extends DataCollectionOf
 {
 
 }

@@ -2,18 +2,17 @@
 
 namespace GTS\Hotel\Application\Dto\Info;
 
-use GTS\Shared\Application\Dto\AbstractDto;
-use GTS\Shared\Application\Dto\AbstractDtoCollection;
-use GTS\Shared\Application\Dto\AbstractDtoCollectionOf;
-use Spatie\LaravelData\Attributes\DataCollectionOf;
-use Spatie\LaravelData\DataCollection;
+use GTS\Shared\Application\Dto\Dto;
+use GTS\Shared\Application\Dto\DtoCollection;
+use GTS\Shared\Application\Dto\DtoCollectionOf;
 
-class RoomDto extends AbstractDto
+class RoomDto extends Dto
 {
     public function __construct(
         public readonly int                   $id,
         public readonly string                $name,
-        #[DataCollectionOf(PriceRateDto::class)]
-        public readonly DataCollection $priceRates
+        /** @var PriceRateDto[] $priceRates */
+        #[DtoCollectionOf(PriceRateDto::class)]
+        public readonly DtoCollection $priceRates
     ) {}
 }
