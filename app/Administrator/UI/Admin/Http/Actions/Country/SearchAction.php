@@ -3,6 +3,8 @@
 namespace GTS\Administrator\UI\Admin\Http\Actions\Country;
 
 use GTS\Administrator\Infrastructure\Facade\Reference\CountryFacadeInterface;
+use GTS\Services\FileStorage\Infrastructure\Facade\ReaderFacade;
+use GTS\Services\FileStorage\Infrastructure\Facade\ReaderFacadeInterface;
 use GTS\Shared\UI\Admin\View\Grid\GridBuilder;
 
 class SearchAction
@@ -14,6 +16,8 @@ class SearchAction
         $dto = new \stdClass();
         //$dto->default = false;
         //$dto->flag = 'ru';
+
+        app(ReaderFacadeInterface::class);
 
         return app('layout')
             ->view('country.index', [

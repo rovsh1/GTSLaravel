@@ -1,14 +1,15 @@
 <?php
 
-namespace GTS\Shared\Infrastructure\Support\Module;
+namespace GTS\Shared\Custom\Foundation;
 
 class Module
 {
+    private bool $loaded = false;
+
     public function __construct(
         private readonly string $name,
         private readonly array $config = []
-    ) {
-    }
+    ) {}
 
     public function config(string $name = null)
     {
@@ -41,5 +42,20 @@ class Module
     public function namespace(string $namespace = null): string
     {
         return $this->config('namespace') . '\\' . trim($namespace, '\\');
+    }
+
+    public function isDeferred(): bool
+    {
+        return true === $this->config('deferred');
+    }
+
+    public function isLoaded(): bool
+    {
+        return $this->loaded;
+    }
+
+    public function loaded(): void
+    {
+        $this->loaded = true;
     }
 }
