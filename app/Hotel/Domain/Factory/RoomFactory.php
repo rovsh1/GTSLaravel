@@ -11,7 +11,7 @@ class RoomFactory extends EntityFactory
     {
         return new $entityClass(
             $data['id'],
-            $data['front_name'],
+            $data['display_name'],
             EntityFactory::create(PriceRate::class, $data['priceRate'])
         );
     }

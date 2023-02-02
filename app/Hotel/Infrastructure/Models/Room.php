@@ -22,7 +22,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  * @property int $data_flags
  * @property int $index
  * @property string $name
- * @property-read string $front_name
+ * @property-read string $display_name
  * @property-read \GTS\Hotel\Infrastructure\Models\PriceRate|null $priceRate
  * @method static Builder|Room newModelQuery()
  * @method static Builder|Room newQuery()
@@ -63,7 +63,7 @@ class Room extends Model
         'index',
     ];
 
-    public function frontName(): Attribute
+    public function displayName(): Attribute
     {
         return Attribute::get(fn() => "{$this->name} ($this->custom_name)");
     }
