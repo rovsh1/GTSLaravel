@@ -11,6 +11,5 @@ class ModulesServiceProvider extends ServiceProvider
         $this->app->bind('modules', fn($app) => $app->modules());
 
         $this->app->modules()->load(config('modules'));
-        //$this->app->beforeResolving(\Closure::fromCallable([$this, 'moduleAutoload']));
     }
 }

@@ -2,9 +2,12 @@
 
 namespace GTS\Administrator\UI\Admin\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use GTS\Shared\UI\Common\Support\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {
-    public function register() {}
+    public function register()
+    {
+        $this->app->register(RouteServiceProvider::class);
+    }
 }
