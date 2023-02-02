@@ -22,7 +22,7 @@ class RoomFactory extends AbstractEntityFactory
     {
         return new self(
             $room->id,
-            $room->name ?? $room->custom_name,
+            $room->display_name,
             PriceRateFactory::createCollectionFrom($room->priceRates)
         );
     }
