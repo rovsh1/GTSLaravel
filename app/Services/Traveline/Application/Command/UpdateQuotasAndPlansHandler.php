@@ -2,7 +2,7 @@
 
 namespace GTS\Services\Traveline\Application\Command;
 
-use GTS\Services\Traveline\Infrastructure\Adapter\Hotel\AdapterInterface;
+use GTS\Services\Traveline\Domain\Adapter\Hotel\AdapterInterface;
 use GTS\Shared\Application\Command\CommandHandlerInterface;
 use GTS\Shared\Application\Command\CommandInterface;
 

@@ -4,6 +4,8 @@ namespace GTS\Services\Traveline\Infrastructure\Adapter\Reservation;
 
 use Carbon\CarbonInterface;
 
+use GTS\Services\Traveline\Domain\Adapter\Reservation\AdapterInterface;
+
 class Adapter implements AdapterInterface
 {
 

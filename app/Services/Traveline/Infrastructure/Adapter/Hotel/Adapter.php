@@ -2,16 +2,17 @@
 
 namespace GTS\Services\Traveline\Infrastructure\Adapter\Hotel;
 
-use GTS\Hotel\Infrastructure\Facade\Info\FacadeInterface;
+use GTS\Services\Traveline\Domain\Adapter\Hotel\AdapterInterface;
+use GTS\Shared\Infrastructure\Bus\PortGatewayInterface;
 
 class Adapter implements AdapterInterface
 {
-    public function __construct(private readonly FacadeInterface $hotelApi) {}
+    public function __construct(private PortGatewayInterface $portGateway) {}
 
     public function getRoomsAndRatePlans(int $hotelId)
     {
-        $hotelDto = $this->hotelApi->findById($hotelId);
-        $roomsDto = $this->hotelApi->getRoomsWithPriceRatesByHotelId($hotelId);
+        $hotelDto = $this->portGateway->call($hotelId);
+        $roomsDto = $this->portGateway->call($hotelId);
         dd($roomsDto);
         return $hotelDto;
     }

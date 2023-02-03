@@ -2,6 +2,8 @@
 
 namespace GTS\Services\Traveline\Infrastructure\Adapter\Traveline;
 
+use GTS\Services\Traveline\Domain\Adapter\Traveline\AdapterInterface;
+
 use GuzzleHttp\ClientInterface;
 
 class Adapter implements AdapterInterface

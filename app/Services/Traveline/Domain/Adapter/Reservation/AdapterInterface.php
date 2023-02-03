@@ -1,6 +1,6 @@
 <?php
 
-namespace GTS\Services\Traveline\Infrastructure\Adapter\Reservation;
+namespace GTS\Services\Traveline\Domain\Adapter\Reservation;
 
 use Carbon\CarbonInterface;
 
