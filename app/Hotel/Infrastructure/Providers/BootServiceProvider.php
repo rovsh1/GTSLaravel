@@ -23,8 +23,8 @@ class BootServiceProvider extends ServiceProvider
 
     private function registerInterfaces()
     {
-        $this->app->singleton(Infrastructure\Facade\Reservation\FacadeInterface::class, Infrastructure\Facade\Reservation\Facade::class);
-        $this->app->singleton(Infrastructure\Facade\Search\FacadeInterface::class, Infrastructure\Facade\Search\Facade::class);
-        $this->app->singleton(Infrastructure\Facade\Info\FacadeInterface::class, Infrastructure\Facade\Info\Facade::class);
+        $this->app->singleton(Infrastructure\Facade\ReservationFacadeInterface::class, Infrastructure\Facade\ReservationReservationFacade::class);
+        $this->app->singleton(Infrastructure\Facade\SearchFacadeInterface::class, Infrastructure\Facade\SearchFacade::class);
+        $this->app->singleton(Infrastructure\Port\InfoPortInterface::class, Infrastructure\Port\InfoPort::class);
     }
 }

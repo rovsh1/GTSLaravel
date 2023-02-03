@@ -4,11 +4,13 @@ namespace GTS\Shared\Custom\Foundation;
 
 class Module
 {
+    private const PORT_INTERFACE_REGEX = '/([a-zA-Z]+)PortInterface\.php/m';
     private bool $loaded = false;
 
     public function __construct(
         private readonly string $name,
-        private readonly array $config = []
+        private readonly array  $config = [],
+        private ?array          $ports = null
     ) {}
 
     public function config(string $name = null)
@@ -44,6 +46,28 @@ class Module
         return $this->config('namespace') . '\\' . trim($namespace, '\\');
     }
 
+    public function portNamespace(string $portName)
+    {
+        return $this->namespace("Infrastructure\\Port\\{$portName}PortInterface");
+    }
+
+    /**
+     * @return string[]
+     */
+    public function availablePorts(): array
+    {
+        if ($this->ports === null) {
+            $files = scandir($this->portsPath());
+            $this->ports = array_filter(array_map(function (string $fileName) {
+                if (!preg_match(self::PORT_INTERFACE_REGEX, $fileName, $matches)) {
+                    return null;
+                }
+                return $matches[1];
+            }, $files));
+        }
+        return $this->ports;
+    }
+
     public function isDeferred(): bool
     {
         return true === $this->config('deferred');
@@ -59,8 +83,13 @@ class Module
         $this->loaded = true;
     }
 
-    public function manifest(): string
+    public function manifestPath(): string
     {
         return $this->path('manifest.json');
+    }
+
+    private function portsPath(): string
+    {
+        return $this->path('Infrastructure/Port');
     }
 }

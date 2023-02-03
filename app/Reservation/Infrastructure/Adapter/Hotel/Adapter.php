@@ -2,12 +2,12 @@
 
 namespace GTS\Reservation\Infrastructure\Adapter\Hotel;
 
-use GTS\Hotel\Infrastructure\Facade\Search\FacadeInterface;
+use GTS\Hotel\Infrastructure\Facade\SearchFacadeInterface;
 
 class Adapter implements AdapterInterface
 {
 
-    public function __construct(private readonly FacadeInterface $hotelFacade)
+    public function __construct(private readonly SearchFacadeInterface $hotelFacade)
     {
     }
 

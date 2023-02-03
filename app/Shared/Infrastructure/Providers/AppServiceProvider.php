@@ -30,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->singleton(QueryBusInterface::class, fn($app) => new Bus\QueryBus($app));
 
-        $this->app->singleton(Bus\PortGatewayInterface::class, fn($app) => new Bus\PortGateway($app));
+        $this->app->singleton(Bus\Port\GatewayInterface::class, fn($app) => new Bus\Port\Gateway($app));
 
 //		$this->app->singleton(DomainEventDispatcherInterface::class, function ($app) {
 //			return new DomainEventDispatcher($app);
