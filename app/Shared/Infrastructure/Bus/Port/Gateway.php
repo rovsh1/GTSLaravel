@@ -2,13 +2,14 @@
 
 namespace GTS\Shared\Infrastructure\Bus\Port;
 
+use Illuminate\Contracts\Container\Container;
+
 use GTS\Shared\Domain\Adapter\Manifest\Analyser;
 use GTS\Shared\Domain\Adapter\RequestInterface;
 use GTS\Shared\Infrastructure\Bus\Port\Exception\InvalidArgumentsException;
 use GTS\Shared\Infrastructure\Bus\Port\Exception\ModuleNotFoundException;
 use GTS\Shared\Infrastructure\Bus\Port\Exception\PortNotFoundException;
 use GTS\Shared\Infrastructure\Bus\Port\Exception\UndefinedPortMethodException;
-use Illuminate\Contracts\Container\Container;
 
 class Gateway implements GatewayInterface
 {
