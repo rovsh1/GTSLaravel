@@ -4,6 +4,8 @@ namespace GTS\Shared\UI\Common\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
+use GTS\Shared\UI\Common\Http\Middleware as CommonMiddleware;
+
 class Kernel extends HttpKernel
 {
     /**
@@ -15,11 +17,11 @@ class Kernel extends HttpKernel
      */
     protected $middleware = [
         // \App\Http\Middleware\TrustHosts::class,
-        \GTS\Shared\UI\Common\Http\Middleware\TrustProxies::class,
+        CommonMiddleware\TrustProxies::class,
         \Illuminate\Http\Middleware\HandleCors::class,
-        \GTS\Shared\UI\Common\Http\Middleware\PreventRequestsDuringMaintenance::class,
+        CommonMiddleware\PreventRequestsDuringMaintenance::class,
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
-        \GTS\Shared\UI\Common\Http\Middleware\TrimStrings::class,
+        CommonMiddleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
     ];
 
@@ -30,15 +32,17 @@ class Kernel extends HttpKernel
      */
     protected $middlewareGroups = [
         'web' => [
-            \GTS\Shared\UI\Common\Http\Middleware\EncryptCookies::class,
+            CommonMiddleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-            \GTS\Shared\UI\Common\Http\Middleware\VerifyCsrfToken::class,
+            CommonMiddleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
 
-        'admin' => [],
+        'admin' => [
+            'auth:admin'
+        ],
 
         'api' => [
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
@@ -55,14 +59,14 @@ class Kernel extends HttpKernel
      * @var array<string, class-string|string>
      */
     protected $routeMiddleware = [
-        'auth' => \GTS\Shared\UI\Common\Http\Middleware\Authenticate::class,
+        'auth' => CommonMiddleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
-        'guest' => \GTS\Shared\UI\Common\Http\Middleware\RedirectIfAuthenticated::class,
+        'guest' => CommonMiddleware\RedirectIfAuthenticated::class,
         'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
-        'signed' => \GTS\Shared\UI\Common\Http\Middleware\ValidateSignature::class,
+        'signed' => CommonMiddleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
     ];
