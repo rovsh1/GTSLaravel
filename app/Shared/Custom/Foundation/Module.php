@@ -58,4 +58,9 @@ class Module
     {
         $this->loaded = true;
     }
+
+    public function manifest(): string
+    {
+        return $this->path('manifest.json');
+    }
 }

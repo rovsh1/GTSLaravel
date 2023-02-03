@@ -25,6 +25,7 @@
 |   |-- /Query - Queries
 |   |-- /Service - Used by external consumers to talk to your system (think Web Services). If consumers need access to CRUD operations, they would be exposed here.
 |-- /Domain - Buisiness model layer
+|   |-- /Adapter - Adapters interfaces (Обращение к внешним модулям и сервисам)
 |   |-- /Entity
 |   |-- /Event - Domain events
 |   |-- /Exception - Domain exceptions
@@ -32,14 +33,13 @@
 |   |-- /ValueObject
 |   |-- /Service - Encapsulates business logic that doesn't naturally fit within a domain object, and are NOT typical CRUD operations – those would belong to a Repository.
 |-- /Infrastructure - Data layer
-|   |-- /IO
-|   |   |-- /Adapter - Интерфейсы обращения модуля к другим модулям и сервисам
-|   |   |-- /Facade - Интерфейсы обращения к UI внутри модуля
-|   |   |-- /Port - Интерфейсы обращения к модулю (через PortGateway)
+|   |-- /Adapter - Domain addapter implementation (репозитории для внешних источников)
+|   |-- /Facade - Интерфейсы обращения к UI внутри модуля
+|   |-- /Port - Интерфейсы обращения к модулю (через PortGateway)
 |   |-- /Model - ORM models
 |   |-- /Query - Query handlers
 |   |-- /Providers - Domain service providers
-|   |-- /Repository - Domain repository implementation
+|   |-- /Repository - Domain repository implementation (ORM репозитории)
 |   |-- /Services - Used to abstract technical concerns (e.g. MSMQ, email provider, etc).
 |-- /UI - Interfaces layer
 |   |-- /Admin
