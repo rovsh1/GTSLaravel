@@ -21,8 +21,4 @@ class PortRequestBuilder implements RequestBuilderInterface
     {
         return $this->methodRequestBuilder->build();
     }
-
-    private function validate(mixed $data) {
-
-    }
 }

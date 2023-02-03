@@ -35,6 +35,7 @@ class Gateway implements GatewayInterface
         $manifestAnalyzer = new Analyser($module->manifestPath());
         $rules = $manifestAnalyzer->getMethodArgumentsRules($request->port(), $request->method());
         $validator = \Validator::make($request->arguments(), $rules);
+        //@todo валидация классов и интерфейсов
         if (!$validator->passes()) {
             throw new InvalidArgumentsException();
         }

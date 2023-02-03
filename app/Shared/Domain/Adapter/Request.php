@@ -2,7 +2,6 @@
 
 namespace GTS\Shared\Domain\Adapter;
 
-use GTS\Shared\Domain\Adapter\Exception\InvalidRequestArgumentsException;
 use GTS\Shared\Domain\Adapter\Exception\InvalidRequestException;
 
 class Request implements RequestInterface
@@ -20,9 +19,6 @@ class Request implements RequestInterface
             ['module' => $module, 'port' => $port, 'method' => $method, 'arguments' => $arguments] = $data;
         } catch (\Throwable $e) {
             throw new InvalidRequestException($e->getMessage());
-        }
-        if (!\Arr::isAssoc($arguments)) {
-            throw new InvalidRequestArgumentsException('Arguments should be assoc array');
         }
         return new self($module, $port, $method, $arguments);
     }

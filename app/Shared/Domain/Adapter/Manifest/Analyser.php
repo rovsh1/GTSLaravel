@@ -27,17 +27,4 @@ class Analyser
         $rules = array_map(fn(Argument $argument) => $argument->validationRules(), $method->arguments->items());
         return array_merge(...$rules);
     }
-
-    public function isPortExist(string $portName): bool
-    {
-        return $this->manifest->ports->first(fn(Port $port) => $port->name === $portName) !== null;
-    }
-
-    public function isPortMethodExist(string $portName, string $methodName): bool
-    {
-        /** @var Port $port */
-        $port = $this->manifest->ports->first(fn(Port $port) => $port->name === $portName);
-        return $port->methods->first(fn(Method $method) => $method->name === $methodName);
-    }
-
 }
