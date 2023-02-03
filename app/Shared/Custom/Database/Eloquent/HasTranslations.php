@@ -6,9 +6,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\App;
 use Illuminate\Database\Eloquent\Builder;
 
+use GTS\Shared\Custom\Database\Query\TranslationQueryBuilder;
+
 trait HasTranslations
 {
-
     protected $translationLocale;
 
     protected $translationData;
@@ -17,44 +18,26 @@ trait HasTranslations
 
     public static function bootHasTranslations()
     {
+        //static::addGlobalTranslationScope();
+        static::saved(function ($model) { $model->saveTranslations(); });
+    }
+
+    protected static function addGlobalTranslationScope(): void
+    {
         static::addGlobalScope('translatable', function (Builder $builder) {
             $modelTable = with(new static)->getTable();
             $columns = with(new static)->translatable;
             $builder->addSelect($modelTable . '.*');
 
-            static::scopeJoinTranslations($builder, $columns);
-        });
-
-        static::saved(function ($model) {
-            $model->saveTranslations();
+            $builder->joinTranslations($columns);
         });
     }
 
-    public static function scopeJoinTranslations($query, $columns = null, $language = null)
+    public function scopeJoinTranslations($query, $columns = null, $locale = null): void
     {
-        if (null === $language)
-            $language = App::currentLocale();
-
-        $translatableTable = with(new static)->getTranslationTable();
-        $modelTable = with(new static)->getTable();
-
-        $query->leftJoin(
-            DB::raw('(SELECT t.* FROM ' . $translatableTable . ' as t WHERE t.language="' . $language . '") as ' . $translatableTable),
-            function ($join) use ($translatableTable, $modelTable) {
-                $join->on($translatableTable . '.translatable_id', '=', $modelTable . '.id');
-            }
-        );
-
-        if ($columns) {
-            if (!is_array($columns))
-                $columns = [$columns];
-
-            $query->addSelect(
-                array_map(function ($c) use ($translatableTable) {
-                    return $translatableTable . '.' . $c . '';
-                }, $columns)
-            );
-        }
+        (new TranslationQueryBuilder($query))
+            ->locale($locale)
+            ->leftJoin(static::class, $columns);
     }
 
     public function getTranslationTable(): string
@@ -210,5 +193,4 @@ trait HasTranslations
 
         $this->translationAttributes = [];
     }
-
 }

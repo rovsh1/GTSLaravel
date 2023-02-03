@@ -12,6 +12,12 @@ class CountrySearchQuery extends SearchQuery
         parent::__construct(Country::class, $paramsDto);
     }
 
+    protected function beforeSelect(): void
+    {
+        $this
+            ->joinTranslations();
+    }
+
     protected function filter(): void
     {
         $this

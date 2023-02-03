@@ -21,8 +21,16 @@ class SearchQuery
         return $this->param($name);
     }
 
+    public function __call(string $name, array $arguments)
+    {
+        $this->query->$name(...$arguments);
+        return $this;
+    }
+
     public function get()
     {
+        $this->beforeSelect();
+
         $this->filter();
 
         $this->prepareDefault();
@@ -51,6 +59,8 @@ class SearchQuery
     {
         return $this->params[$key] ?? $default;
     }
+
+    protected function beforeSelect(): void {}
 
     protected function filter(): void {}
 
