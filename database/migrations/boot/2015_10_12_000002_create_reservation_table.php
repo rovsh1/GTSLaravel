@@ -17,11 +17,12 @@ return new class extends Migration {
     {
         Schema::create('reservation_requests', function (Blueprint $table) {
             $table->integer('id')->unsigned()->autoIncrement();
-            $this->addAdministratorColumn($table);
             $this->addReservationColumns($table);
+            $this->addAdministratorColumn($table);
             $table->tinyInteger('type')->unsigned();
             $table->tinyInteger('source')->unsigned();
             $table->tinyInteger('status')->unsigned();
+            $table->char('file', 32);
             $table->dateTime('closed_at');
             $table->timestamps();
         });
@@ -29,12 +30,12 @@ return new class extends Migration {
 
     private function upChanges()
     {
-        Schema::create('reservation_changes', function (Blueprint $table) {
+        Schema::create('reservation_editing_history', function (Blueprint $table) {
             $this->addReservationColumns($table);
-            $table->string('attribute', 45);
-            $table->string('value', 255)->nullable();
-            $table->string('flag_added')->unsigned()->default(0);
-            $table->string('flag_deleted')->unsigned()->default(0);
+            $this->addAdministratorColumn($table);
+            $table->string('event', 45);
+            $table->string('data', 225);
+            $table->tinyInteger('revision')->unsigned();
             $table->dateTime('created_at');
         });
     }
@@ -54,8 +55,14 @@ return new class extends Migration {
     private function addReservationColumns($table)
     {
         $table->integer('reservation_id')->unsigned();
-        $table->tinyInteger('reservation_type');
-        $table->index(['reservation_id', 'reservation_type'], $table->getTable() . 'idx_reservation');
+        $table->foreign('reservation_id', $table->getTable() . '_fkey_reservation_id')
+            ->references('id')
+            ->on('reservations')
+            ->cascadeOnDelete()
+            ->cascadeOnUpdate();
+        //$table->tinyInteger('reservation_type');
+        //$table->index(['reservation_id', 'reservation_type'], $table->getTable() . 'idx_reservation');
+        //$table->index('reservation_id', 'reservation_type'], $table->getTable() . 'idx_reservation');
     }
 
     private function addAdministratorColumn($table)

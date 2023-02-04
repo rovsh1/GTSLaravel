@@ -2,7 +2,7 @@
 
 namespace GTS\Reservation\Domain\ValueObject;
 
-enum StatusEnum: int
+enum ReservationStatusEnum: int
 {
     case DRAFT = 0;
     case CREATED = 1;
