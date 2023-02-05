@@ -1,6 +1,6 @@
 <?php
 
-namespace GTS\Reservation\Domain\Service\DocumentGenerator;
+namespace GTS\Reservation\Domain\Service\DocumentGenerator\HotelReservation;
 
 use GTS\Reservation\Domain\Entity\Document\ChangeRequest;
 use GTS\Reservation\Domain\Entity\ReservationRequestableInterface;

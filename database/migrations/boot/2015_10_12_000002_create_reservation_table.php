@@ -10,7 +10,7 @@ return new class extends Migration {
         return;
         $this->upRequests();
         $this->upChanges();
-        $this->upStatusHistory();
+        $this->upEvents();
     }
 
     private function upRequests()
@@ -40,14 +40,33 @@ return new class extends Migration {
         });
     }
 
-    private function upStatusHistory()
+    private function upEvents()
     {
-        Schema::create('reservation_status_history', function (Blueprint $table) {
+        Schema::create('reservation_events', function (Blueprint $table) {
             $this->addReservationColumns($table);
-            $this->addAdministratorColumn($table);
-            $table->tinyInteger('source')->unsigned();
-            $table->tinyInteger('status')->unsigned();
-            $table->string('description', 255)->nullable();
+            //$this->addAdministratorColumn($table);
+            $table->string('event', 45);
+            $table->string('data', 225);
+            $table->dateTime('created_at');
+        });
+//        Schema::create('reservation_status_history', function (Blueprint $table) {
+//            $this->addReservationColumns($table);
+//            $this->addAdministratorColumn($table);
+//            $table->tinyInteger('source')->unsigned();
+//            $table->tinyInteger('status')->unsigned();
+//            $table->string('description', 255)->nullable();
+//            $table->dateTime('created_at');
+//        });
+    }
+
+    private function upRequests1()
+    {
+        Schema::create('reservation_requests', function (Blueprint $table) {
+            $table->integer('id')->unsigned()->autoIncrement();
+            $this->addReservationColumns($table);
+            $table->string('event', 45);
+            $table->string('data', 225);
+            $table->tinyInteger('revision')->unsigned();
             $table->dateTime('created_at');
         });
     }

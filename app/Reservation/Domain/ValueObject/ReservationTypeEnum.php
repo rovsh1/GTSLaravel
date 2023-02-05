@@ -4,13 +4,13 @@ namespace GTS\Reservation\Domain\ValueObject;
 
 use GTS\Reservation\Domain\Entity;
 
-enum ReservationTypeEnum
+enum ReservationTypeEnum: int
 {
-    case GROUP;
-    case HOTEL;
-    case TRANSFER;
-    case AIRPORT;
-    case ADDITIONAL;
+    case GROUP = 1;
+    case HOTEL = 2;
+    case TRANSFER = 3;
+    case AIRPORT = 4;
+    case ADDITIONAL = 5;
 
     public static function fromEntity(Entity\ReservationInterface $reservation): self
     {

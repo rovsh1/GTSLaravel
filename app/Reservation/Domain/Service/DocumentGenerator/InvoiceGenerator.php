@@ -7,5 +7,5 @@ use GTS\Reservation\Domain\Entity\ReservationInterface;
 
 class InvoiceGenerator extends AbstractGenerator
 {
-    public function generate(ReservationInterface $document): Invoice {}
+    public function generate(ReservationInterface $reservation): Invoice {}
 }
