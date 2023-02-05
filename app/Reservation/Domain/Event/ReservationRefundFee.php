@@ -2,9 +2,7 @@
 
 namespace GTS\Reservation\Domain\Event;
 
-use GTS\Shared\Domain\Event\EventInterface;
-
-class ReservationRefundFee implements EventInterface
+class ReservationRefundFee implements EventInterface, StatusEventInterface
 {
 
 }

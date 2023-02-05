@@ -2,9 +2,7 @@
 
 namespace GTS\Reservation\Domain\Event;
 
-use GTS\Shared\Domain\Event\EventInterface;
-
-class GuestNotCheckIn implements EventInterface
+class GuestNotCheckIn implements EventInterface, StatusEventInterface
 {
     public function __construct(int $reservationId) {}
 }

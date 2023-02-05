@@ -2,9 +2,7 @@
 
 namespace GTS\Reservation\Domain\Event;
 
-use GTS\Shared\Domain\Event\EventInterface;
-
-class GuestDeleted implements EventInterface
+class GuestDeleted implements EventInterface, EditEventInterface
 {
     public function __construct(
         public readonly int $roomId,

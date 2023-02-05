@@ -2,9 +2,7 @@
 
 namespace GTS\Reservation\Domain\Event;
 
-use GTS\Shared\Domain\Event\EventInterface;
-
-class ChangeRequestSent implements EventInterface
+class ChangeRequestSent implements EventInterface, StatusEventInterface, RequestEventInterface
 {
 
 }
