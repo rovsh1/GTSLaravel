@@ -2,7 +2,7 @@
 
 namespace GTS\Shared\Domain\Event;
 
-interface EventInterface
+interface DomainEventInterface
 {
 
 }

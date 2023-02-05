@@ -2,10 +2,10 @@
 
 namespace GTS\Reservation\Application\Event;
 
-use GTS\Shared\Application\Event\EventListenerInterface;
-use GTS\Shared\Domain\Event\EventInterface;
+use GTS\Shared\Application\Event\DomainEventListenerInterface;
+use GTS\Shared\Domain\Event\DomainEventInterface;
 
-class ReservationRequestSentListener implements EventListenerInterface
+class ReservationRequestSentListener implements DomainEventListenerInterface
 {
-    public function handle(EventInterface $event) {}
+    public function handle(DomainEventInterface $event) {}
 }
