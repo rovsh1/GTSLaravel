@@ -5,7 +5,7 @@ return [
         'path' => app_path('Hotel')
     ],
     'Reservation' => [
-        'path' => app_path('Hotel')
+        'path' => app_path('Reservation')
     ],
     'Administrator' => [
         //'required' => ['Traveline'],

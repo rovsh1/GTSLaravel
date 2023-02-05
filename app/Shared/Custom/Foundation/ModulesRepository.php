@@ -20,20 +20,12 @@ class ModulesRepository
 
     public function get(string $name): ?Module
     {
-        foreach ($this->registeredModules as $module) {
-            if ($module->name() === $name)
-                return $module;
-        }
-        return null;
+        return $this->registeredModules[$name] ?? null;
     }
 
     public function has(string $name): bool
     {
-        foreach ($this->registeredModules as $module) {
-            if ($module->name() === $name)
-                return true;
-        }
-        return false;
+        return $this->registeredModules[$name] ?? false;
     }
 
     public function names(): array
@@ -67,14 +59,16 @@ class ModulesRepository
     public function loadModule(Module|string $module): void
     {
         if (is_string($module)) {
-            if (!$this->has($module))
+            if (!$this->has($module)) {
                 throw new \Exception('Module [' . $module . '] not found');
+            }
 
             $module = $this->get($module);
         }
 
-        if ($module->isLoaded())
+        if ($module->isLoaded()) {
             return;
+        }
 
         $this->app->register($module->namespace('Infrastructure\Providers\BootServiceProvider'));
 
@@ -93,8 +87,9 @@ class ModulesRepository
 
         foreach ($this->registeredModules as $module) {
             $provider = $module->namespace($bootProviderNamespace);
-            if (class_exists($provider))
+            if (class_exists($provider)) {
                 $this->app->register($provider);
+            }
         }
     }
 
@@ -110,6 +105,6 @@ class ModulesRepository
             $config['namespace'] = 'GTS' . $ns;
         }
 
-        $this->registeredModules[] = new Module($name, $config);
+        $this->registeredModules[$name] = new Module($name, $config);
     }
 }
