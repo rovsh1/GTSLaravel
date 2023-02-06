@@ -10,8 +10,6 @@
     "require": {
         "php": "^8.1",
         "gsdk/format": "^1.0.0",
-        "gsdk/grid": "^2.0.0",
-        "gsdk/navigation": "^1.0.0",
         "gsdk/view-layout": "^1.0.0",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.19",
@@ -36,7 +34,9 @@
         ],
         "psr-4": {
             "GTS\\": "app/",
-            "PortGateway\\" : "app/Services/PortGateway/Request",
+            "PortGateway\\": "app/Services/PortGateway/Request",
+            "Gsdk\\Grid\\": "app/Shared/Custom/View/Grid",
+            "Gsdk\\Navigation\\": "app/Shared/Custom/View/Navigation",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
         }
