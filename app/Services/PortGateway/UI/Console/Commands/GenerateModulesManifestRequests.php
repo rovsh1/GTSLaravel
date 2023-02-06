@@ -14,7 +14,7 @@ class GenerateModulesManifestRequests extends Command
      *
      * @var string
      */
-    protected $signature = 'port-gateway:build-requests';
+    protected $signature = 'port-gateway:generate-requests';
 
     /**
      * The console command description.
