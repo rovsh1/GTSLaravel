@@ -25,7 +25,14 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__ . '/Commands');
+        $loadPaths = [__DIR__ . '/Commands'];
+        foreach (app('modules')->paths() as $modulePath) {
+            $commandsPath = $modulePath . '/UI/Console/Commands';
+            if (is_dir($commandsPath)) {
+                $loadPaths[] = $commandsPath;
+            }
+        }
+        $this->load($loadPaths);
 
         require __DIR__ . '/routes.php';
     }
