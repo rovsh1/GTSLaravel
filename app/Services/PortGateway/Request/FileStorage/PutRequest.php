@@ -1,9 +1,9 @@
 <?php
+/** ATTENTION! DO NOT MODIFY THIS FILE BECAUSE IT WAS GENERATED AUTOMATICALLY */
 
 namespace PortGateway\FileStorage;
 
 class PutRequest implements \GTS\Shared\Domain\Port\RequestInterface {
-
     public function __construct(
         public readonly string $guid,
         public readonly string $contents,

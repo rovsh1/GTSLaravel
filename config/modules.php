@@ -23,7 +23,7 @@ return [
     ],
     'Traveline' => [
         'enabled' => env('TRAVELINE_ENABLED', true),
-        'path' => app_path('Services/Traveline'),
+        'path' => app_path('Services/Integration/Traveline'),
         'auth' => [
             'username' => env('TRAVELINE_USERNAME'),
             'password' => env('TRAVELINE_PASSWORD'),

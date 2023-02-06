@@ -18,7 +18,7 @@ class GetHotelByIdHandler implements QueryHandlerInterface
     public function handle(QueryInterface $query): ?Hotel
     {
         $hotel = HotelEloquent::find($query->id);
-        //@todo проверить обработку createFrom если передать null
+
         return HotelFactory::createFrom($hotel);
     }
 }

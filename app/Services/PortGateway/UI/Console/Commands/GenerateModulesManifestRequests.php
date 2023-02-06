@@ -2,9 +2,10 @@
 
 namespace GTS\Services\PortGateway\UI\Console\Commands;
 
-use GTS\Services\PortGateway\Domain\ValueObject\Mainfest\Manifest;
-use GTS\Shared\Custom\Foundation\Module;
 use Illuminate\Console\Command;
+
+use GTS\Shared\Custom\Foundation\Module;
+use GTS\Shared\Infrastructure\Service\Manifest\Models\Manifest;
 
 class GenerateModulesManifestRequests extends Command
 {
@@ -13,7 +14,7 @@ class GenerateModulesManifestRequests extends Command
      *
      * @var string
      */
-    protected $signature = 'modules:build-manifest-requests';
+    protected $signature = 'port-gateway:build-requests';
 
     /**
      * The console command description.

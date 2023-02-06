@@ -1,12 +1,12 @@
 <?php
+/** ATTENTION! DO NOT MODIFY THIS FILE BECAUSE IT WAS GENERATED AUTOMATICALLY */
 
 namespace PortGateway\FileStorage;
 
 class FileInfoRequest implements \GTS\Shared\Domain\Port\RequestInterface {
-
     public function __construct(
         public readonly string $guid,
-        public readonly ?int $part,
+        public readonly ?int $part  = null  ,
     ) {}
 
     public function module(): string {
