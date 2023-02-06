@@ -22,7 +22,7 @@ class InfoPort implements InfoPortInterface
         return HotelDto::from($hotel);
     }
 
-    public function getRoomsWithPriceRatesByHotelId(int $id, QueryBusInterface $queryBus): array
+    public function getRoomsWithPriceRatesByHotelId(int $id): array
     {
         /** @var Room[] $rooms */
         $rooms = $this->queryBus->execute(new GetRoomsWithPriceRatesByHotelId($id));
