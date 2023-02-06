@@ -17,9 +17,12 @@ class WriterFacade implements WriterFacadeInterface
         private readonly UrlGeneratorInterface $urlGenerator,
     ) {}
 
-    public function create(string $fileType, ?int $entityId, string $name = null): FileDto
+    public function create(string $fileType, ?int $entityId, string $name = null, string $contents = null): FileDto
     {
         $file = $this->databaseRepository->create($fileType, $entityId, $name);
+
+        if (null !== $contents)
+            $this->storageRepository->put($file->guid(), $contents);
 
         return (new DataMapper($this->urlGenerator))->fileToDto($file);
     }

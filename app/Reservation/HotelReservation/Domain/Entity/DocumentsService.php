@@ -5,15 +5,15 @@ namespace GTS\Reservation\HotelReservation\Domain\Entity;
 use GTS\Reservation\HotelReservation\Domain\Event;
 use GTS\Reservation\HotelReservation\Domain\Repository\RequestRepositoryInterface;
 use GTS\Reservation\HotelReservation\Domain\Service\DocumentGenerator;
+use GTS\Reservation\HotelReservation\Infrastructure\Adapter\FileStorageAdapterInterface;
 use GTS\Shared\Domain\Event\DomainEventDispatcherInterface;
-use GTS\Shared\Domain\Port\PortGatewayInterface;
 
 class DocumentsService
 {
     public function __construct(
         private readonly DomainEventDispatcherInterface $eventDispatcher,
-        private readonly RequestRepositoryInterface     $requestRepository,
-        private readonly PortGatewayInterface           $portGateway,
+        private readonly RequestRepositoryInterface $requestRepository,
+        private readonly FileStorageAdapterInterface $filesAdapter,
     ) {}
 
     public function sendReservationRequest(Reservation $reservation)
@@ -44,12 +44,12 @@ class DocumentsService
     {
         $fileName = str_replace(__NAMESPACE__ . '\\', '', $documentClass);
 
-        $fileDto = $this->portGateway->call('fileStorage.create', [
-            'type' => $documentClass,
-            'entity_id' => $reservation->id(),
-            'name' => $this->getFileName($fileName),
-            'contents' => (new $fileGeneratorClass())->generate($reservation),
-        ]);
+        $fileDto = $this->filesAdapter->create(
+            $documentClass,
+            $reservation->id(),
+            $this->getFileName($fileName),
+            (new $fileGeneratorClass())->generate($reservation)
+        );
 
         return $this->requestRepository->create(
             $reservation->id(),
