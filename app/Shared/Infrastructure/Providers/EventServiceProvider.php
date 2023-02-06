@@ -2,7 +2,7 @@
 
 namespace GTS\Shared\Infrastructure\Providers;
 
-use GTS\Shared\Application\Event\DomainEventDispatcher;
+use GTS\Services\EventBus\Infrastructure\Bus\DomainEventDispatcher;
 use GTS\Shared\Domain\Event\DomainEventDispatcherInterface;
 use GTS\Shared\Infrastructure\Support\ServiceProvider;
 

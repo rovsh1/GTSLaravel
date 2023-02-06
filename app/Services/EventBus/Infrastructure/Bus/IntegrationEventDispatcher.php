@@ -1,11 +1,12 @@
 <?php
 
-namespace GTS\Shared\Application\Event;
+namespace GTS\Services\EventBus\Infrastructure\Bus;
 
+use GTS\Shared\Application\Event\Container;
 use GTS\Shared\Domain\Event\DomainEventDispatcherInterface;
 use GTS\Shared\Domain\Event\DomainEventInterface;
 
-class DomainEventDispatcher implements DomainEventDispatcherInterface
+class IntegrationEventDispatcher implements DomainEventDispatcherInterface
 {
     private array $listeners = [];
 

@@ -3,10 +3,10 @@
 namespace GTS\Services\Traveline\Application\Event;
 
 use GTS\Services\Traveline\Infrastructure\Adapter\Traveline\AdapterInterface;
-use GTS\Shared\Application\Event\EventHandlerInterface;
+use GTS\Shared\Application\Event\DomainEventListenerInterface;
 use GTS\Shared\Domain\Event\DomainEventInterface;
 
-class SendReservationNotificationHandler implements EventHandlerInterface
+class SendReservationNotificationListener implements DomainEventListenerInterface
 {
     public function __construct(private AdapterInterface $adapter) {}
 

@@ -17,7 +17,6 @@ class Reservation implements ReservationItemInterface, ReservationRequestableInt
         private readonly ValueObject\ReservationPeriod $reservationPeriod,
         private readonly ValueObject\ReservationDetails $details,
         //private readonly ValueObject\Price $price,
-
     ) {}
 
     public function identifier(): ValueObject\ReservationIdentifier
