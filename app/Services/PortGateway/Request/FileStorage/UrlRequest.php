@@ -1,5 +1,6 @@
 <?php
-namespace GTS\Services\PortGateway\Request\FileStorage;
+
+namespace PortGateway\Request\FileStorage;
 
 class UrlRequest implements \GTS\Shared\Domain\Port\RequestInterface {
 

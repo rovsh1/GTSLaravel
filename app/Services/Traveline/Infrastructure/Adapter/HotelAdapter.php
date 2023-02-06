@@ -11,8 +11,10 @@ class HotelAdapter implements HotelAdapterInterface
 
     public function getRoomsAndRatePlans(int $hotelId)
     {
-        $hotelDto = $this->portGateway->call($hotelId);
-        $roomsDto = $this->portGateway->call($hotelId);
+        $hotelRequest = new \PortGateway\Request\Hotel\Info\FindByIdRequest($hotelId);
+        $hotelDto = $this->portGateway->call($hotelRequest);
+        $roomsRequest = new \PortGateway\Request\Hotel\Info\GetRoomsWithPriceRatesByHotelIdRequest($hotelId);
+        $roomsDto = $this->portGateway->call($hotelRequest);
         dd($roomsDto);
         return $hotelDto;
     }

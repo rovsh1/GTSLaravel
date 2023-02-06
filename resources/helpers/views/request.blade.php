@@ -1,6 +1,7 @@
 <?= '<?php' ?>
 
-namespace GTS\Services\PortGateway\Request\{{$module}}@if(strlen($port)>0)\{{$port}}@endif;
+
+namespace PortGateway\Request\{{$module}}@if(strlen($port)>0)\{{$port}}@endif;
 
 class {{\Str::ucfirst($method)}}Request implements \GTS\Shared\Domain\Port\RequestInterface {
 

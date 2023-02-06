@@ -1,5 +1,6 @@
 <?php
-namespace GTS\Services\PortGateway\Request\FileStorage;
+
+namespace PortGateway\Request\FileStorage;
 
 class DeleteRequest implements \GTS\Shared\Domain\Port\RequestInterface {
 

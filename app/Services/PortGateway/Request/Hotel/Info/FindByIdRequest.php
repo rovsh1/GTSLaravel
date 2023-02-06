@@ -1,5 +1,6 @@
 <?php
-namespace GTS\Services\PortGateway\Request\Hotel\Info;
+
+namespace PortGateway\Request\Hotel\Info;
 
 class FindByIdRequest implements \GTS\Shared\Domain\Port\RequestInterface {
 
