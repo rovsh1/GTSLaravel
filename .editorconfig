@@ -18,5 +18,4 @@ indent_size = 2
 indent_size = 4
 
 [{*.ctp,*.hphp,*.inc,*.module,*.php,*.php4,*.php5,*.phtml}]
-ij_php_if_brace_force = never
 ij_php_force_empty_methods_in_one_line = true

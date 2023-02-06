@@ -6,8 +6,8 @@ use Gsdk\Navigation\Paginator;
 
 class Grid
 {
-    use Concerns\HasExtensions,
-        Concerns\HasColumns;
+    use Concerns\HasColumns;
+    use Concerns\HasExtensions;
 
     protected Support\Options $options;
 
@@ -17,7 +17,7 @@ class Grid
 
     protected Data\DataInterface $data;
 
-    protected $paginator;
+    protected ?Paginator $paginator;
 
     public function __construct($options = [])
     {
@@ -29,15 +29,16 @@ class Grid
 
     public function __call(string $name, array $arguments)
     {
-        if (!isset($arguments[0]))
+        if (!isset($arguments[0])) {
             throw new \ArgumentCountError('Argument required');
+        }
 
-        if ($this->options->hasOption($name))
+        if ($this->options->hasOption($name)) {
             $this->options->set($name, $arguments[0] ?? null);
-        else {
+        } else {
             $id = $arguments[0];
             unset($arguments[0]);
-            $this->addColumn($id, $name, $arguments);
+            $this->addColumn($id, $name, $arguments[1] ?? []);
         }
 
         return $this;
@@ -57,10 +58,11 @@ class Grid
     {
         if (null === $paginator) {
             $this->paginator = new Paginator();
-        } elseif (is_numeric($paginator))
+        } elseif (is_numeric($paginator)) {
             $this->paginator = new Paginator($paginator);
-        else
+        } else {
             $this->paginator = $paginator;
+        }
 
         return $this;
     }
@@ -70,16 +72,16 @@ class Grid
         return $this->paginator;
     }
 
+    public function getData(): Data\DataInterface
+    {
+        return $this->data;
+    }
+
     public function data($data): static
     {
         $this->data = Data\DataFactory::factory($data);
 
         return $this;
-    }
-
-    public function getData(): Data\DataInterface
-    {
-        return $this->data;
     }
 
     public function orderBy($name, $order = 'asc'): static
@@ -103,8 +105,9 @@ class Grid
 
     protected function prepareData(): void
     {
-        if ($this->paginator)
+        if ($this->paginator) {
             $this->data->paginator($this->paginator);
+        }
 
         $this->data->sorting($this->sorting);
     }
