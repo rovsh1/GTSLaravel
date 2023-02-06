@@ -1,5 +1,5 @@
-<ul class="menu-sub">
-    @if (isset($menu))
+@if (isset($menu))
+    <ul class="menu-sub">
         @foreach ($menu as $submenu)
             {{-- active menu method --}}
             @php
@@ -39,5 +39,5 @@
                 @endif
             </li>
         @endforeach
-    @endif
-</ul>
+    </ul>
+@endif

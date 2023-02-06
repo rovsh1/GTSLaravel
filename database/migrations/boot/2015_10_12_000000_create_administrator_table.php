@@ -23,6 +23,7 @@ return new class extends Migration {
             $table->char('password', 60)->nullable();
             $table->string('email', 50)->nullable();
             $table->string('phone', 50)->nullable();
+            $table->string('remember_token', 100)->nullable();
             $table->tinyInteger('status')->unsigned()->default(0);
             $table->tinyInteger('superuser')->unsigned()->default(0);
             $table->timestamps();
