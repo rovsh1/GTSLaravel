@@ -4,7 +4,7 @@ namespace GTS\Administrator\UI\Admin\Http\Actions\Currency;
 
 use GTS\Administrator\Infrastructure\Facade\Reference\CurrencyFacadeInterface;
 
-class GetCurrencies
+class SearchAction
 {
     public function __construct(private CurrencyFacadeInterface $facade) { }
 

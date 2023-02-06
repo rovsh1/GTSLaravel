@@ -1,0 +1,21 @@
+{
+    "menu": [
+        {
+            "name": "Справочники",
+            "icon": "menu-icon tf-icons bx bx-collection",
+            "slug": "reference",
+            "submenu": [
+                {
+                    "url": "/reference/currency",
+                    "name": "Валюты",
+                    "slug": "layouts-fluid"
+                },
+                {
+                    "url": "/reference/country",
+                    "name": "Страны",
+                    "slug": "layouts-fluid"
+                }
+            ]
+        }
+    ]
+}

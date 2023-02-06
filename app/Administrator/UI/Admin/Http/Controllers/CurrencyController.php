@@ -15,6 +15,6 @@ class CurrencyController extends Controller
 
     public function index()
     {
-        return app(Actions\GetCurrencies::class)->handle();
+        return app(Actions\SearchAction::class)->handle();
     }
 }
