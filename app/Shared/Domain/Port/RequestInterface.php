@@ -11,7 +11,7 @@ interface RequestInterface
     public function method(): string;
 
     /**
-     * @return array<string, string>
+     * @return array<string, mixed>
      */
     public function arguments(): array;
 }
