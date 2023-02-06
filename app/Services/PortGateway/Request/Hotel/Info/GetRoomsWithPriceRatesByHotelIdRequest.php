@@ -1,6 +1,6 @@
 <?php
 
-namespace PortGateway\Request\Hotel\Info;
+namespace PortGateway\Hotel\Info;
 
 class GetRoomsWithPriceRatesByHotelIdRequest implements \GTS\Shared\Domain\Port\RequestInterface {
 

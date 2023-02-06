@@ -1,6 +1,6 @@
 <?php
 
-namespace PortGateway\Request\FileStorage;
+namespace PortGateway\FileStorage;
 
 class GetContentsRequest implements \GTS\Shared\Domain\Port\RequestInterface {
 

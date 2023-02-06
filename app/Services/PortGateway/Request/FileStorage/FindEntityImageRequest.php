@@ -1,6 +1,6 @@
 <?php
 
-namespace PortGateway\Request\FileStorage;
+namespace PortGateway\FileStorage;
 
 class FindEntityImageRequest implements \GTS\Shared\Domain\Port\RequestInterface {
 
