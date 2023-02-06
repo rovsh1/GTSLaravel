@@ -36,6 +36,7 @@
         ],
         "psr-4": {
             "GTS\\": "app/",
+            "PortGateway\\" : "app/Services/PortGateway",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
         }

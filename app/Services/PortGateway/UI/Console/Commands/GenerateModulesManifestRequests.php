@@ -31,6 +31,7 @@ class GenerateModulesManifestRequests extends Command
     {
         /** @var Module[] $modules */
         $modules = app('modules')->registeredModules();
+        $portGatewayModule = module('PortGateway');
         foreach ($modules as $module) {
             $manifestPath = $module->manifestPath();
             if (!file_exists($manifestPath)) {
@@ -39,10 +40,11 @@ class GenerateModulesManifestRequests extends Command
             }
             $manifestData = file_get_contents($manifestPath);
             $moduleManifest = Manifest::from($manifestData);
-            $modulePath = app_path("Shared/Domain/Adapter/Request/{$module->name()}");
-            \File::deleteDirectory($modulePath);
+            //@todo изменить путь
+            $moduleRequestsPath = $portGatewayModule->path("Request/{$module->name()}");
+            \File::deleteDirectory($moduleRequestsPath);
             foreach ($moduleManifest->ports as $port) {
-                $portPath = $modulePath . DIRECTORY_SEPARATOR . $port->name;
+                $portPath = $moduleRequestsPath . DIRECTORY_SEPARATOR . $port->name;
                 \File::ensureDirectoryExists($portPath);
                 foreach ($port->methods as $method) {
                     $classData = [

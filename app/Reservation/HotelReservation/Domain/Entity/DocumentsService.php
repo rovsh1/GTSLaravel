@@ -5,15 +5,15 @@ namespace GTS\Reservation\HotelReservation\Domain\Entity;
 use GTS\Reservation\HotelReservation\Domain\Event;
 use GTS\Reservation\HotelReservation\Domain\Repository\RequestRepositoryInterface;
 use GTS\Reservation\HotelReservation\Domain\Service\DocumentGenerator;
-use GTS\Services\PortGateway\GatewayInterface;
 use GTS\Shared\Domain\Event\DomainEventDispatcherInterface;
+use GTS\Shared\Domain\Port\PortGatewayInterface;
 
 class DocumentsService
 {
     public function __construct(
         private readonly DomainEventDispatcherInterface $eventDispatcher,
-        private readonly RequestRepositoryInterface $requestRepository,
-        private readonly GatewayInterface $portGateway,
+        private readonly RequestRepositoryInterface     $requestRepository,
+        private readonly PortGatewayInterface           $portGateway,
     ) {}
 
     public function sendReservationRequest(Reservation $reservation)

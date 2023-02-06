@@ -1,8 +1,8 @@
 <?= '<?php' ?>
 
-namespace GTS\Shared\Domain\Adapter\Request\{{$module}}\{{$port}};
+namespace GTS\Services\PortGateway\Request\{{$module}}\{{$port}};
 
-class {{\Str::ucfirst($method)}}Request implements \GTS\Shared\Domain\Adapter\RequestInterface {
+class {{\Str::ucfirst($method)}}Request implements \GTS\Shared\Domain\Port\RequestInterface {
 
     public function __construct(
     @foreach($arguments as $index => $argument)

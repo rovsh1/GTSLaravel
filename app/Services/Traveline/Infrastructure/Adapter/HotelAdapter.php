@@ -2,12 +2,12 @@
 
 namespace GTS\Services\Traveline\Infrastructure\Adapter;
 
-use GTS\Services\PortGateway\GatewayInterface;
 use GTS\Services\Traveline\Domain\Adapter\HotelAdapterInterface;
+use GTS\Shared\Domain\Port\PortGatewayInterface;
 
 class HotelAdapter implements HotelAdapterInterface
 {
-    public function __construct(private GatewayInterface $portGateway) {}
+    public function __construct(private PortGatewayInterface $portGateway) {}
 
     public function getRoomsAndRatePlans(int $hotelId)
     {

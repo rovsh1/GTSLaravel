@@ -63,7 +63,7 @@ class BuildModulesManifest extends Command
             }
             $manifest = new Manifest($module->name(), Port::collection($manifestModulePorts));
             $manifestPath = $module->manifestPath();
-            file_put_contents($manifestPath, $manifest->toJson());
+            \File::put($manifestPath, $manifest->toJson());
         }
 
         return Command::SUCCESS;
