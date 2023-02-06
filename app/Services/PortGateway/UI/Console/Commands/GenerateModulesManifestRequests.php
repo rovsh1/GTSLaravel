@@ -13,14 +13,14 @@ class GenerateModulesManifestRequests extends Command
      *
      * @var string
      */
-    protected $signature = 'modules:build-manifest-helpers';
+    protected $signature = 'modules:build-manifest-requests';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Build manifest helper files for all modules';
+    protected $description = 'Build requests by manifest for all modules';
 
     /**
      * Execute the console command.
@@ -38,9 +38,8 @@ class GenerateModulesManifestRequests extends Command
                 $this->warn("Module '{$module->name()}' mainfest.json not found");
                 continue;
             }
-            $manifestData = file_get_contents($manifestPath);
+            $manifestData = \File::get($manifestPath);
             $moduleManifest = Manifest::from($manifestData);
-            //@todo изменить путь
             $moduleRequestsPath = $portGatewayModule->path("Request/{$module->name()}");
             \File::deleteDirectory($moduleRequestsPath);
             foreach ($moduleManifest->ports as $port) {
@@ -48,7 +47,7 @@ class GenerateModulesManifestRequests extends Command
                 \File::ensureDirectoryExists($portPath);
                 foreach ($port->methods as $method) {
                     $classData = [
-                        'module' => $module,
+                        'module' => $module->name(),
                         'port' => $port->name,
                         'method' => $method->name,
                         'arguments' => $method->arguments

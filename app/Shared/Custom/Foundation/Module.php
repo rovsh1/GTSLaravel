@@ -4,12 +4,14 @@ namespace GTS\Shared\Custom\Foundation;
 
 class Module
 {
-    private const PORT_INTERFACE_REGEX = '/([a-zA-Z]+)PortInterface\.php/m';
+    private const PORT_INTERFACE_REGEX = '/(([a-zA-Z]+)|)PortInterface\.php/m';
+    private const DEFAULT_PORT_NAME = 'Default';
     private bool $loaded = false;
 
     public function __construct(
         private readonly string $name,
         private readonly array  $config = [],
+        /** @var Port[] $ports */
         private ?array          $ports = null
     ) {}
 
@@ -57,12 +59,15 @@ class Module
     public function availablePorts(): array
     {
         if ($this->ports === null) {
+            if (!file_exists($this->portsPath())) {
+                return [];
+            }
             $files = scandir($this->portsPath());
             $this->ports = array_filter(array_map(function (string $fileName) {
                 if (!preg_match(self::PORT_INTERFACE_REGEX, $fileName, $matches)) {
                     return null;
                 }
-                return $matches[1];
+                return new Port($matches[1]);
             }, $files));
         }
         return $this->ports;

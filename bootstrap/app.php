@@ -36,6 +36,11 @@ $app->singleton(
 );
 
 $app->singleton(
+    Illuminate\Contracts\Console\Kernel::class,
+    GTS\Services\PortGateway\UI\Console\Kernel::class
+);
+
+$app->singleton(
     Illuminate\Contracts\Debug\ExceptionHandler::class,
     GTS\Shared\UI\Common\Exceptions\Handler::class
 );
