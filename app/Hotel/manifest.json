@@ -1,0 +1,1 @@
+{"moduleName":"Hotel","ports":[{"name":"Info","methods":[{"name":"findById","arguments":[{"name":"id","type":"int","isNullable":false,"isDefaultValueAvailable":false,"defaultValue":null}]},{"name":"getRoomsWithPriceRatesByHotelId","arguments":[{"name":"id","type":"int","isNullable":false,"isDefaultValueAvailable":false,"defaultValue":null}]}]}]}

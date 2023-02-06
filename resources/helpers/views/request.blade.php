@@ -1,12 +1,12 @@
 <?= '<?php' ?>
 
-namespace GTS\Services\PortGateway\Request\{{$module}}\{{$port}};
+namespace GTS\Services\PortGateway\Request\{{$module}}@if(strlen($port)>0)\{{$port}}@endif;
 
 class {{\Str::ucfirst($method)}}Request implements \GTS\Shared\Domain\Port\RequestInterface {
 
     public function __construct(
     @foreach($arguments as $index => $argument)
-        public readonly {{$argument->isNullable ? '?' : ''}}\{{$argument->type}} ${{$argument->name}} @if($argument->isDefaultValueAvailable ? " = {$argument->defaultValue}" : '') @endif,
+    public readonly {{$argument->isNullable ? '?' : ''}}@if(!$argument->isScalarType())\@endif{{$argument->type}} ${{$argument->name}}@if($argument->isDefaultValueAvailable ? " = {$argument->defaultValue}" : '')@endif,
     @endforeach
 {!! ')' !!} {}
 
@@ -24,9 +24,9 @@ class {{\Str::ucfirst($method)}}Request implements \GTS\Shared\Domain\Port\Reque
 
     public function arguments(): array {
         return [
-        @foreach($arguments as $argument)
-            '{{$argument->name}}' => $this->{{$argument->name}},
-        @endforeach
-        ];
+    @foreach($arguments as $argument)
+        '{{$argument->name}}' => $this->{{$argument->name}},
+    @endforeach
+    ];
     }
 }

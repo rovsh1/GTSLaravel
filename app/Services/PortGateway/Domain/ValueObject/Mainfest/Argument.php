@@ -14,16 +14,9 @@ class Argument extends Data
         public readonly mixed  $defaultValue = null
     ) {}
 
-    public function validationRules(): array
+    public function isScalarType(): bool
     {
-        $rule = [];
-        if (in_array($this->type, $this->scalarTypes())) {
-            $rule[] = $this->type;
-        }
-        if ($this->isNullable) {
-            $rule = 'nullable';
-        }
-        return [$this->name => $rule];
+        return in_array($this->type, $this->scalarTypes());
     }
 
     private function scalarTypes(): array
