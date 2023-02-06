@@ -4,6 +4,7 @@ namespace GTS\Services\Integration\Traveline\UI\Api\Http\Actions;
 
 use GTS\Services\Integration\Traveline\Infrastructure\Facade\HotelFacadeInterface;
 use GTS\Services\Integration\Traveline\UI\Api\Http\Requests\GetRoomsAndRatePlansActionRequest;
+use GTS\Services\Integration\Traveline\UI\Api\Http\Responses\GetRoomsAndRatePlansActionResponse;
 
 class GetRoomsAndRatePlansAction
 {
@@ -12,7 +13,8 @@ class GetRoomsAndRatePlansAction
 
     public function handle(GetRoomsAndRatePlansActionRequest $request)
     {
-        return $this->facade->getRoomsAndRatePlans($request->getHotelId());
+        $roomsAndRatePlans = $this->facade->getRoomsAndRatePlans($request->getHotelId());
+        return new GetRoomsAndRatePlansActionResponse($roomsAndRatePlans);
     }
 
 }

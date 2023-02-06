@@ -15,7 +15,8 @@ class RoomFactory extends AbstractEntityFactory
         public readonly string           $name,
         /** @var PriceRateFactory[] $priceRates */
         #[EntityCollectionOf(PriceRateFactory::class)]
-        public readonly array $priceRates
+        public readonly array $priceRates,
+        public readonly int $guestsNumber,
     ) {}
 
     public static function fromModel(\GTS\Hotel\Infrastructure\Models\Room $room)
@@ -24,7 +25,8 @@ class RoomFactory extends AbstractEntityFactory
         return new self(
             $room->id,
             $room->display_name,
-            PriceRateFactory::createCollectionFrom($room->priceRates)
+            PriceRateFactory::createCollectionFrom($room->priceRates),
+            $room->guests_number,
         );
     }
 }

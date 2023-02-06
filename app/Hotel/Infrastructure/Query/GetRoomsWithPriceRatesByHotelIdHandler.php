@@ -19,6 +19,7 @@ class GetRoomsWithPriceRatesByHotelIdHandler implements QueryHandlerInterface
     {
         $rooms = RoomEloquent::query()->where('hotel_id', $query->hotelId)
             ->withPriceRates()
+            ->withBeds()
             ->get();
 
         return RoomFactory::createCollectionFrom($rooms);

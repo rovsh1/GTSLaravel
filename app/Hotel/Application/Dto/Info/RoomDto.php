@@ -13,6 +13,8 @@ class RoomDto extends Dto
         public readonly string                $name,
         /** @var PriceRateDto[] $priceRates */
         #[DtoCollectionOf(PriceRateDto::class)]
-        public readonly DtoCollection $priceRates
+        public readonly DtoCollection $priceRates,
+        #[DtoCollectionOf(PriceRateDto::class)]
+        public readonly int $guestsNumber,
     ) {}
 }

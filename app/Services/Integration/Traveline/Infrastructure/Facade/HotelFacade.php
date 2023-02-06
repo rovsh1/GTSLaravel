@@ -21,7 +21,9 @@ class HotelFacade implements HotelFacadeInterface
         $rooms = $this->adapter->getRoomsAndRatePlans($hotelId);
 
         $roomsDto = RoomDto::collection($rooms);
-        $hotelDto = HotelDto::from($hotel)->additional($roomsDto);
+        $hotelDto = HotelDto::from($hotel)->additional([
+            'roomsAndRatePlans' => $roomsDto
+        ]);
         return $hotelDto;
     }
 

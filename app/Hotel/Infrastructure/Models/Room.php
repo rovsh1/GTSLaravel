@@ -2,7 +2,7 @@
 
 namespace GTS\Hotel\Infrastructure\Models;
 
-use GTS\Shared\Custom\Database\Eloquent\Scope\TranslationsModelScope;
+use GTS\Hotel\Infrastructure\Models\Room\Bed;
 use GTS\Shared\Infrastructure\Models\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -25,6 +25,7 @@ use Illuminate\Database\Eloquent\Collection;
  * @property string $name
  * @property-read string $display_name
  * @property-read Collection|\GTS\Hotel\Infrastructure\Models\PriceRate[] $priceRates
+ * @property-read Collection|\GTS\Hotel\Infrastructure\Models\Room\Bed[] $beds
  * @method static Builder|Room newModelQuery()
  * @method static Builder|Room newQuery()
  * @method static Builder|Room query()
@@ -40,6 +41,7 @@ use Illuminate\Database\Eloquent\Collection;
  * @method static Builder|Room whereSize($value)
  * @method static Builder|Room whereTypeId($value)
  * @method static Builder|Room withPriceRates()
+ * @method static Builder|Room withBeds()
  * @mixin \Eloquent
  */
 class Room extends Model
@@ -72,6 +74,11 @@ class Room extends Model
         $builder->with('priceRates');
     }
 
+    public function scopeWithBeds(Builder $builder)
+    {
+        $builder->with('beds');
+    }
+
     public function priceRates()
     {
         return $this->hasManyThrough(
@@ -82,5 +89,10 @@ class Room extends Model
             'id',
             'rate_id'
         );
+    }
+
+    public function beds()
+    {
+        return $this->hasMany(Bed::class, 'room_id', 'id');
     }
 }
