@@ -5,7 +5,6 @@ namespace GTS\Shared\Custom\Foundation;
 class Module
 {
     private const PORT_INTERFACE_REGEX = '/(([a-zA-Z]+)|)PortInterface\.php/m';
-    private const DEFAULT_PORT_NAME = 'Default';
     private bool $loaded = false;
 
     public function __construct(

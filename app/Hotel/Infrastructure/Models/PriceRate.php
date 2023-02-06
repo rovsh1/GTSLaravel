@@ -20,4 +20,9 @@ class PriceRate extends Model
         'hotel_id',
         'name'
     ];
+
+    public static function booted()
+    {
+        static::addGlobalTranslationScope();
+    }
 }

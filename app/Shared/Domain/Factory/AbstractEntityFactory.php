@@ -23,7 +23,10 @@ abstract class AbstractEntityFactory extends Data implements FactoryInterface
 
     public static function createFrom(mixed ...$payloads)
     {
-        $factory = static::from(...$payloads);
+        $factory = static::optional(...$payloads);
+        if ($factory === null) {
+            return null;
+        }
         return static::createEntity($factory);
     }
 

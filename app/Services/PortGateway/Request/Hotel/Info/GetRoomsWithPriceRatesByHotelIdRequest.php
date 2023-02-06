@@ -1,9 +1,9 @@
 <?php
+/** ATTENTION! DO NOT MODIFY THIS FILE BECAUSE IT WAS GENERATED AUTOMATICALLY */
 
 namespace PortGateway\Hotel\Info;
 
 class GetRoomsWithPriceRatesByHotelIdRequest implements \GTS\Shared\Domain\Port\RequestInterface {
-
     public function __construct(
         public readonly int $id,
     ) {}

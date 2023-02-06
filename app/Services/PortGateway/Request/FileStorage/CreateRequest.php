@@ -1,13 +1,13 @@
 <?php
+/** ATTENTION! DO NOT MODIFY THIS FILE BECAUSE IT WAS GENERATED AUTOMATICALLY */
 
 namespace PortGateway\FileStorage;
 
 class CreateRequest implements \GTS\Shared\Domain\Port\RequestInterface {
-
     public function __construct(
         public readonly string $fileType,
         public readonly ?int $entityId,
-        public readonly ?string $name,
+        public readonly ?string $name  = null  ,
     ) {}
 
     public function module(): string {
