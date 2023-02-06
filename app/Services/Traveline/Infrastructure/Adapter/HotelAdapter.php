@@ -2,8 +2,8 @@
 
 namespace GTS\Services\Traveline\Infrastructure\Adapter;
 
+use GTS\Services\PortGateway\GatewayInterface;
 use GTS\Services\Traveline\Domain\Adapter\HotelAdapterInterface;
-use GTS\Shared\Infrastructure\Bus\Port\GatewayInterface;
 
 class HotelAdapter implements HotelAdapterInterface
 {

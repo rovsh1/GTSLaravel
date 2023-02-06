@@ -1,6 +1,6 @@
 <?php
 
-namespace GTS\Shared\Domain\Adapter\Manifest\Models;
+namespace GTS\Services\PortGateway\Domain\ValueObject\Mainfest;
 
 use Spatie\LaravelData\Data;
 

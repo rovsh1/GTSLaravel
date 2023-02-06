@@ -1,8 +1,8 @@
 <?php
 
-namespace GTS\Shared\Domain\Adapter;
+namespace GTS\Services\PortGateway;
 
-use GTS\Shared\Domain\Adapter\Exception\InvalidRequestException;
+use GTS\Services\PortGateway\Domain\Exception\InvalidRequestException;
 
 class Request implements RequestInterface
 {

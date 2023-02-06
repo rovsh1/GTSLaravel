@@ -1,8 +1,6 @@
 <?php
 
-namespace GTS\Shared\Infrastructure\Bus\Port;
-
-use GTS\Shared\Domain\Adapter\RequestInterface;
+namespace GTS\Services\PortGateway;
 
 interface GatewayInterface
 {

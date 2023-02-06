@@ -1,6 +1,6 @@
 <?php
 
-namespace GTS\Shared\Infrastructure\Bus\Port\Exception;
+namespace GTS\Services\PortGateway\Domain\Exception;
 
 class UndefinedPortMethodException extends \RuntimeException
 {

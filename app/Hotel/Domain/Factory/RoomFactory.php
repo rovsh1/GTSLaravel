@@ -20,6 +20,7 @@ class RoomFactory extends AbstractEntityFactory
 
     public static function fromModel(\GTS\Hotel\Infrastructure\Models\Room $room)
     {
+        //@todo доменная модель стала зависимой от Eloquent модели
         return new self(
             $room->id,
             $room->display_name,

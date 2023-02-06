@@ -1,6 +1,6 @@
 <?php
 
-namespace GTS\Shared\Domain\Adapter\Exception;
+namespace GTS\Services\PortGateway\Domain\Exception;
 
 class InvalidRequestException extends \RuntimeException
 {

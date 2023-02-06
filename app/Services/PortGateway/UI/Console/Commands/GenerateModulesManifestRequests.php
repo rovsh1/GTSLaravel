@@ -1,11 +1,12 @@
 <?php
 
-namespace GTS\Shared\UI\Console\Commands;
+namespace GTS\Services\PortGateway\UI\Console\Commands;
 
-use GTS\Shared\Domain\Adapter\Manifest\Models\Manifest;
+use GTS\Services\PortGateway\Domain\ValueObject\Mainfest\Manifest;
+use GTS\Shared\Custom\Foundation\Module;
 use Illuminate\Console\Command;
 
-class GenerateModulesManifestHelpers extends Command
+class GenerateModulesManifestRequests extends Command
 {
     /**
      * The name and signature of the console command.
@@ -28,24 +29,17 @@ class GenerateModulesManifestHelpers extends Command
      */
     public function handle()
     {
-        //@todo получение всех модулей
-        $modules = [
-            'Reservation',
-            'Hotel',
-        ];
+        /** @var Module[] $modules */
+        $modules = app('modules')->registeredModules();
         foreach ($modules as $module) {
-            if (module($module) === null) {
-                $this->warn("Module '{$module}' undefined");
-                continue;
-            }
-            $manifestPath = module($module)->manifestPath();
+            $manifestPath = $module->manifestPath();
             if (!file_exists($manifestPath)) {
-                $this->warn("Module '{$module}' mainfest.json not found");
+                $this->warn("Module '{$module->name()}' mainfest.json not found");
                 continue;
             }
             $manifestData = file_get_contents($manifestPath);
             $moduleManifest = Manifest::from($manifestData);
-            $modulePath = app_path("Shared/Domain/Adapter/Request/{$module}");
+            $modulePath = app_path("Shared/Domain/Adapter/Request/{$module->name()}");
             \File::deleteDirectory($modulePath);
             foreach ($moduleManifest->ports as $port) {
                 $portPath = $modulePath . DIRECTORY_SEPARATOR . $port->name;
@@ -57,12 +51,12 @@ class GenerateModulesManifestHelpers extends Command
                         'method' => $method->name,
                         'arguments' => $method->arguments
                     ];
-                    $classView = view('request', $classData)->render();
+                    //@todo сейчас не подтягивается из-за того что views лежать внутри других папок
+                    $classView = view('helpers.request', $classData)->render();
                     $className = \Str::ucfirst($method->name) . 'Request.php';
                     \File::put($portPath . DIRECTORY_SEPARATOR . $className, $classView);
                 }
             }
-
         }
 
         return Command::SUCCESS;

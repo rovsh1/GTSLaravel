@@ -1,11 +1,12 @@
 <?php
 
-namespace GTS\Shared\UI\Console\Commands;
+namespace GTS\Services\PortGateway\UI\Console\Commands;
 
-use GTS\Shared\Domain\Adapter\Manifest\Models\Argument;
-use GTS\Shared\Domain\Adapter\Manifest\Models\Manifest;
-use GTS\Shared\Domain\Adapter\Manifest\Models\Method;
-use GTS\Shared\Domain\Adapter\Manifest\Models\Port;
+use GTS\Services\PortGateway\Domain\ValueObject\Mainfest\Argument;
+use GTS\Services\PortGateway\Domain\ValueObject\Mainfest\Manifest;
+use GTS\Services\PortGateway\Domain\ValueObject\Mainfest\Method;
+use GTS\Services\PortGateway\Domain\ValueObject\Mainfest\Port;
+use GTS\Shared\Custom\Foundation\Module;
 use Illuminate\Console\Command;
 
 class BuildModulesManifest extends Command
@@ -31,17 +32,14 @@ class BuildModulesManifest extends Command
      */
     public function handle()
     {
-        //@todo получение всех модулей
-        $modules = [
-            'Hotel',
-        ];
-        $manifestModules = [];
+        /** @var Module[] $modules */
+        $modules = app('modules')->registeredModules();
         foreach ($modules as $module) {
-            $modulePorts = module($module)->availablePorts();
+            $modulePorts = $module->availablePorts();
 
             $manifestModulePorts = [];
             foreach ($modulePorts as $port) {
-                $portInterface = module($module)->portNamespace($port);
+                $portInterface = $module->portNamespace($port);
                 $portInstance = app($portInterface);
                 $class = new \ReflectionClass($portInstance);
                 $methods = $class->getMethods();
@@ -63,8 +61,8 @@ class BuildModulesManifest extends Command
 
                 $manifestModulePorts[] = new Port($port, Method::collection(array_values($manifestMethods)));
             }
-            $manifest = new Manifest($module, Port::collection($manifestModulePorts));
-            $manifestPath = module($module)->manifestPath();
+            $manifest = new Manifest($module->name(), Port::collection($manifestModulePorts));
+            $manifestPath = $module->manifestPath();
             file_put_contents($manifestPath, $manifest->toJson());
         }
 

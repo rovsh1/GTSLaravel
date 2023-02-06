@@ -2,11 +2,11 @@
 
 namespace GTS\Reservation\HotelReservation\Domain\Entity;
 
+use GTS\Reservation\HotelReservation\Domain\Event;
 use GTS\Reservation\HotelReservation\Domain\Repository\RequestRepositoryInterface;
 use GTS\Reservation\HotelReservation\Domain\Service\DocumentGenerator;
-use GTS\Reservation\HotelReservation\Domain\Event;
+use GTS\Services\PortGateway\GatewayInterface;
 use GTS\Shared\Domain\Event\DomainEventDispatcherInterface;
-use GTS\Shared\Infrastructure\Bus\Port\GatewayInterface;
 
 class DocumentsService
 {

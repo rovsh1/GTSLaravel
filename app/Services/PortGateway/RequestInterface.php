@@ -1,6 +1,6 @@
 <?php
 
-namespace GTS\Shared\Domain\Adapter;
+namespace GTS\Services\PortGateway;
 
 interface RequestInterface
 {
