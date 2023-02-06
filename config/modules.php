@@ -4,8 +4,8 @@ return [
     'Hotel' => [
         'path' => app_path('Hotel')
     ],
-    'Reservation' => [
-        'path' => app_path('Reservation')
+    'HotelReservation' => [
+        'path' => app_path('Reservation/HotelReservation')
     ],
     'Administrator' => [
         //'required' => ['Traveline'],

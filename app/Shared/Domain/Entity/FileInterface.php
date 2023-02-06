@@ -2,4 +2,7 @@
 
 namespace GTS\Shared\Domain\Entity;
 
-interface FileInterface { }
+interface FileInterface
+{
+    public function guid(): string;
+}

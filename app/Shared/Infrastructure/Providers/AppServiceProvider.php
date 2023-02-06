@@ -15,6 +15,7 @@ class AppServiceProvider extends ServiceProvider
         $this->registerServices();
 
         $this->app->register(ModulesServiceProvider::class);
+        $this->app->register(EventServiceProvider::class);
     }
 
     private function registerServices()
