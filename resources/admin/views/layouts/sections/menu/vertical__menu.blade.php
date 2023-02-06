@@ -2,7 +2,7 @@
     <div class="app-brand demo">
         <a href="{{url('/')}}" class="app-brand-link">
             <span class="app-brand-logo demo">
-                @include('_partials.macros',["width"=>25,"withbg"=>'#696cff'])
+                @include('_partials.macros')
             </span>
         </a>
         <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-autod-block d-xl-none">
@@ -26,14 +26,8 @@
                     if ($currentRouteName === $menu->slug) {
                         $activeClass = 'active';
                     } elseif (isset($menu->submenu)) {
-                        if (gettype($menu->slug) === 'array') {
-                            foreach($menu->slug as $slug){
-                                if (str_contains($currentRouteName,$slug) and strpos($currentRouteName,$slug) === 0) {
-                                    $activeClass = 'active open';
-                                }
-                            }
-                        } else {
-                            if (str_contains($currentRouteName,$menu->slug) and strpos($currentRouteName,$menu->slug) === 0) {
+                        foreach ($menu->submenu as $submenu) {
+                            if ($currentRouteName === $submenu->slug) {
                                 $activeClass = 'active open';
                             }
                         }

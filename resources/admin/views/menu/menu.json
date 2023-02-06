@@ -8,12 +8,12 @@
                 {
                     "url": "/reference/currency",
                     "name": "Валюты",
-                    "slug": "layouts-fluid"
+                    "slug": "currency.index"
                 },
                 {
                     "url": "/reference/country",
                     "name": "Страны",
-                    "slug": "layouts-fluid"
+                    "slug": "country.index"
                 }
             ]
         }
