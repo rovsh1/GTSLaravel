@@ -2,7 +2,7 @@
 
 namespace GTS\Reservation\Common\Domain\Entity;
 
-interface RequestInterface
+interface DocumentInterface
 {
 
 }

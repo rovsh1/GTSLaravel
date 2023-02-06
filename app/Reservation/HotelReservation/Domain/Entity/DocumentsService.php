@@ -18,23 +18,29 @@ class DocumentsService
 
     public function sendReservationRequest(Reservation $reservation)
     {
-        $request = $this->createRequest($reservation, ReservationRequest::class, DocumentGenerator\ReservationRequestGenerator::class);
+        $request = $this->createDocument($reservation, ReservationRequest::class, DocumentGenerator\ReservationRequestGenerator::class);
 
-        $this->eventDispatcher->dispatch(new Event\ReservationRequestSent($reservation->id()));
+        $this->eventDispatcher->dispatch(
+            new Event\ReservationRequestSent(
+                $reservation->id(),
+                $request->id(),
+                $request->guid(),
+            )
+        );
 
         return $request;
     }
 
     public function sendVoucher($reservation)
     {
-        $request = $this->createRequest($reservation, Voucher::class, DocumentGenerator\VoucherGenerator::class);
+        $request = $this->createDocument($reservation, Voucher::class, DocumentGenerator\VoucherGenerator::class);
 
         //$this->eventDispatcher->dispatch(new Event\VoucherSent($reservation->id()));
 
         return $request;
     }
 
-    private function createRequest(Reservation $reservation, string $documentClass, string $fileGeneratorClass)
+    private function createDocument(Reservation $reservation, string $documentClass, string $fileGeneratorClass)
     {
         $fileName = str_replace(__NAMESPACE__ . '\\', '', $documentClass);
 

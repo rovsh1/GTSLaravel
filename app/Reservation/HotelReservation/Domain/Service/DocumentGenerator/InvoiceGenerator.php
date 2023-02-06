@@ -8,7 +8,7 @@ class InvoiceGenerator extends AbstractGenerator
 {
     protected function getTemplateName(): string
     {
-        return 'hotel_invoice.html';
+        return 'invoice.html';
     }
 
     protected function getReservationAttributes(Reservation $reservation): array

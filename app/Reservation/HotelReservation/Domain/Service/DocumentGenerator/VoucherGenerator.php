@@ -8,7 +8,7 @@ class VoucherGenerator extends AbstractGenerator
 {
     protected function getTemplateName(): string
     {
-        return 'hotel_voucher.html';
+        return 'voucher.html';
     }
 
     protected function getReservationAttributes(Reservation $reservation): array

@@ -8,7 +8,7 @@ class ReservationRequestGenerator extends AbstractGenerator
 {
     protected function getTemplateName(): string
     {
-        return 'hotel_reservation_request.html';
+        return 'reservation_request.html';
     }
 
     protected function getReservationAttributes(Reservation $reservation): array
