@@ -7,8 +7,6 @@ use GTS\Shared\Application\Query\QueryBusInterface;
 use GTS\Shared\Application\Validation\ValidatorPipelineBehaviorInterface;
 use GTS\Shared\Domain\Port\PortGatewayInterface;
 use GTS\Shared\Infrastructure\Bus;
-use GTS\Shared\Infrastructure\Service\Manifest\ManifestGenerator;
-use GTS\Shared\Infrastructure\Service\Manifest\ManifestGeneratorInterface;
 use GTS\Shared\Infrastructure\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -35,8 +33,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(QueryBusInterface::class, fn($app) => new Bus\QueryBus($app));
 
         $this->app->singleton(PortGatewayInterface::class, fn($app) => new \GTS\Services\PortGateway\Infrastructure\Service\PortGateway($app));
-
-        $this->app->singleton(ManifestGeneratorInterface::class, ManifestGenerator::class);
 
 //		$this->app->singleton(DomainEventDispatcherInterface::class, function ($app) {
 //			return new DomainEventDispatcher($app);

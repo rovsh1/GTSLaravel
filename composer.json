@@ -34,7 +34,6 @@
         ],
         "psr-4": {
             "GTS\\": "app/",
-            "PortGateway\\": "app/Services/PortGateway/Request",
             "Gsdk\\Grid\\": "app/Shared/Custom/View/Grid",
             "Gsdk\\Navigation\\": "app/Shared/Custom/View/Navigation",
             "Database\\Factories\\": "database/factories/",
