@@ -25,8 +25,9 @@ class StorageRepository implements StorageRepositoryInterface
     public function get(string $guid, int $part = null): ?string
     {
         $filename = $this->pathGenerator->path($guid, $part);
-        if (!file_exists($filename))
+        if (!file_exists($filename)) {
             return null;
+        }
 
         return (string)file_get_contents($filename);
     }
@@ -42,11 +43,13 @@ class StorageRepository implements StorageRepositoryInterface
         }
 
         $lock = false;
-        if (false === file_put_contents($filename, $contents, $lock ? LOCK_EX : 0))
+        if (false === file_put_contents($filename, $contents, $lock ? LOCK_EX : 0)) {
             return false;
+        }
 
-        if ($createdFlag)
+        if ($createdFlag) {
             $this->chmod($filename, $umask);
+        }
 
         return true;
     }
@@ -60,13 +63,17 @@ class StorageRepository implements StorageRepositoryInterface
     {
         $filename = $this->pathGenerator->path($guid, $part);
         //$info->path = $filename;
-
-        return new FileInfoDto(
-            file_exists($filename),
-            filesize($filename),
-            finfo_file(finfo_open(FILEINFO_MIME_TYPE), $filename),
-            filemtime($filename)
-        );
+        $exists = file_exists($filename);
+        if ($exists) {
+            return new FileInfoDto(
+                true,
+                filesize($filename),
+                finfo_file(finfo_open(FILEINFO_MIME_TYPE), $filename),
+                filemtime($filename)
+            );
+        } else {
+            return new FileInfoDto(false, 0, '', 0);
+        }
     }
 
     private function chmod($filename, $umask): void
@@ -74,17 +81,20 @@ class StorageRepository implements StorageRepositoryInterface
         chmod($filename, $this->config['fileMode']);
         umask($umask);
 
-        if ($this->config['group'])
+        if ($this->config['group']) {
             chgrp($filename, $this->config['group']);
+        }
 
-        if ($this->config['user'])
+        if ($this->config['user']) {
             chown($filename, $this->config['user']);
+        }
     }
 
     private static function checkFileDirectory($path, $mode): void
     {
-        if (is_dir($path))
+        if (is_dir($path)) {
             return;
+        }
 
         try {
             mkdir($path, $mode, true);
