@@ -10,18 +10,15 @@
     <div class="container-xxl">
         <div class="authentication-wrapper authentication-basic container-p-y">
             <div class="authentication-inner">
-                <!-- Register -->
                 <div class="card">
                     <div class="card-body">
-                        <!-- Logo -->
                         <div class="app-brand justify-content-center">
                             <a href="{{url('/')}}" class="app-brand-link gap-2">
-                                <span class="app-brand-logo demo">@include('_partials.macros', ["width"=>25,"withbg"=>'#696cff'])</span>
+                                <span class="app-brand-logo demo">@include('_partials.macros', ['wordbg' => '#566a7f'])</span>
                                 <span class="app-brand-text demo text-body fw-bolder">{{config('variables.templateName')}}</span>
                             </a>
                         </div>
-                        <!-- /Logo -->
-                        <h4 class="mb-2">Добро пожаловать в {{config('variables.bo.login_title')}}! 👋</h4>
+                        <h4 class="mb-2">Добро пожаловать! 👋</h4>
                         <p class="mb-4">Пожалуйста, войдите в свой аккаунт</p>
 
                         <form id="formAuthentication" class="mb-3" action="{{url('/login')}}" method="POST">
@@ -48,7 +45,6 @@
                     </div>
                 </div>
             </div>
-            <!-- /Register -->
         </div>
     </div>
 @endsection
