@@ -15,17 +15,29 @@ class ModulesRepository
 
     public function loadedModules(): array
     {
-        return array_filter($this->registeredModules, fn($m) => $m->isLoaded());
+        return array_filter($this->registeredModules, fn($m) => $m->isBooted());
     }
 
     public function get(string $name): ?Module
     {
-        return $this->registeredModules[$name] ?? null;
+        foreach ($this->registeredModules as $module) {
+            if ($module->is($name)) {
+                return $module;
+            }
+        }
+
+        return null;
     }
 
     public function has(string $name): bool
     {
-        return $this->registeredModules[$name] ?? false;
+        foreach ($this->registeredModules as $module) {
+            if ($module->is($name)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function names(): array
@@ -66,19 +78,7 @@ class ModulesRepository
             $module = $this->get($module);
         }
 
-        if ($module->isLoaded()) {
-            return;
-        }
-
-        $this->app->register($module->namespace('Infrastructure\Providers\BootServiceProvider'));
-
-        $module->loaded();
-
-//        if (($required = $module->config('required'))) {
-//            foreach ($required as $name) {
-//                $this->loadModule($name);
-//            }
-//        }
+        $module->boot();
     }
 
     public function registerModulesUI(string $port): void

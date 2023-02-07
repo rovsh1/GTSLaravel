@@ -8,7 +8,7 @@ class EventServiceProvider extends ServiceProvider
 {
     protected $listen = [];
 
-    public function register()
+    public function boot()
     {
         $eventDispatcher = $this->app->get(DomainEventDispatcherInterface::class);
 
@@ -22,8 +22,9 @@ class EventServiceProvider extends ServiceProvider
                 foreach ($listeners as $listenerClass) {
                     $eventDispatcher->listen($eventClass, $listenerClass);
                 }
-            } else
+            } else {
                 $eventDispatcher->listen($eventClass, $listeners);
+            }
         }
     }
 }

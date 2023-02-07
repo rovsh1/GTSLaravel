@@ -14,6 +14,8 @@ class Application extends \Illuminate\Foundation\Application
         $this->moduleLoader = new ModuleLoader($this);
 
         parent::__construct($basePath);
+
+        $this->bind('modules', fn($app) => $app->modules());
     }
 
     public function module(string $name): ?Module
@@ -33,18 +35,25 @@ class Application extends \Illuminate\Foundation\Application
 
     public function moduleLoaded(string $name): bool
     {
-        return $this->modules->get($name)->isLoaded();
+        return $this->modules->get($name)->isBooted();
     }
 
     protected function getConcrete($abstract)
     {
         $concrete = parent::getConcrete($abstract);
-        if ($concrete instanceof \Closure)
+        if ($concrete instanceof \Closure) {
             return $concrete;
+        }
 
         if ($this->moduleLoader->loadByAbstract($abstract)) {
             return parent::getConcrete($abstract);
-        } else
+        } else {
             return $abstract;
+        }
+    }
+
+    public function registerModules()
+    {
+        $this->modules->load(config('modules'));
     }
 }

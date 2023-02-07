@@ -13,6 +13,7 @@ return [
     ],
     'FileStorage' => [
         'path' => app_path('Services/FileStorage'),
+        'alias' => 'files',
         'disk' => 'files',
         'url' => env('APP_URL'),
         'nesting_level' => 2,

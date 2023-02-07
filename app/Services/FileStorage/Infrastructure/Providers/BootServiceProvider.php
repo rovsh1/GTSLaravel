@@ -16,9 +16,9 @@ use GTS\Shared\Infrastructure\Support\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function boot()
     {
-        $module = module('FileStorage');
+        $module = $this->app;
         $config = $module->config();
 
         $this->app->singleton(Port\PortInterface::class, Port\Port::class);
