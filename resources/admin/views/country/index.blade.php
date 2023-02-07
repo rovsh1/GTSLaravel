@@ -12,8 +12,10 @@
 
     <div class="card">
         <h5 class="card-header">Страны</h5>
-        <div class="table-responsive text-nowrap">
-            <?= $grid ?>
+        <div class="card-body">
+            <div class="table-responsive text-nowrap">
+                <?=$grid?>
+            </div>
         </div>
     </div>
 @endsection

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "186b8b72d0e0f2a506ee819b222e398c",
+    "content-hash": "6f4ca83834f79a1b72e7d0b145cf42f7",
     "packages": [
         {
             "name": "brick/math",
@@ -611,52 +611,6 @@
             "time": "2023-02-03T11:57:28+00:00"
         },
         {
-            "name": "gsdk/grid",
-            "version": "2.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/s16121986/gsdk-grid.git",
-                "reference": "801027bda8450b8ad4cdc1ef77dac93bbf3e0c1b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/s16121986/gsdk-grid/zipball/801027bda8450b8ad4cdc1ef77dac93bbf3e0c1b",
-                "reference": "801027bda8450b8ad4cdc1ef77dac93bbf3e0c1b",
-                "shasum": ""
-            },
-            "require": {
-                "gsdk/format": ">=1.0.0",
-                "gsdk/navigation": ">=1.0.0",
-                "php": ">=8.0.2"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Gsdk\\Grid\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Sergey Guryanov",
-                    "email": "s16121986@yandex.ru"
-                }
-            ],
-            "description": "Allows detect client timezone from cookies",
-            "keywords": [
-                "gsdk",
-                "meta"
-            ],
-            "support": {
-                "issues": "https://github.com/s16121986/gsdk-grid/issues",
-                "source": "https://github.com/s16121986/gsdk-grid/tree/v2.0.0"
-            },
-            "time": "2023-02-03T11:59:55+00:00"
-        },
-        {
             "name": "gsdk/meta-page",
             "version": "1.0.0",
             "source": {
@@ -699,49 +653,6 @@
                 "source": "https://github.com/s16121986/gsdk-meta-page/tree/1.0.0"
             },
             "time": "2023-01-06T21:22:48+00:00"
-        },
-        {
-            "name": "gsdk/navigation",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/s16121986/gsdk-navigation.git",
-                "reference": "2c1c0465c3331160328deee516a62a5ca1a11be0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/s16121986/gsdk-navigation/zipball/2c1c0465c3331160328deee516a62a5ca1a11be0",
-                "reference": "2c1c0465c3331160328deee516a62a5ca1a11be0",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.0.2"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Gsdk\\Navigation\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Sergey Guryanov",
-                    "email": "s16121986@yandex.ru"
-                }
-            ],
-            "description": "Menus library",
-            "keywords": [
-                "gsdk"
-            ],
-            "support": {
-                "issues": "https://github.com/s16121986/gsdk-navigation/issues",
-                "source": "https://github.com/s16121986/gsdk-navigation/tree/v1.0.0"
-            },
-            "time": "2023-01-29T07:51:28+00:00"
         },
         {
             "name": "gsdk/view-layout",
@@ -1837,16 +1748,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "2.9.0",
+            "version": "2.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "e1c0ae1528ce313a450e5e1ad782765c4a8dd3cb"
+                "reference": "f259e2b15fb95494c83f52d3caad003bbf5ffaa1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/e1c0ae1528ce313a450e5e1ad782765c4a8dd3cb",
-                "reference": "e1c0ae1528ce313a450e5e1ad782765c4a8dd3cb",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/f259e2b15fb95494c83f52d3caad003bbf5ffaa1",
+                "reference": "f259e2b15fb95494c83f52d3caad003bbf5ffaa1",
                 "shasum": ""
             },
             "require": {
@@ -1923,7 +1834,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Seldaek/monolog/issues",
-                "source": "https://github.com/Seldaek/monolog/tree/2.9.0"
+                "source": "https://github.com/Seldaek/monolog/tree/2.9.1"
             },
             "funding": [
                 {
@@ -1935,7 +1846,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-02-05T13:07:32+00:00"
+            "time": "2023-02-06T13:44:46+00:00"
         },
         {
             "name": "mpdf/mpdf",
@@ -9171,5 +9082,5 @@
         "php": "^8.1"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.2.0"
 }

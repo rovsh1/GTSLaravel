@@ -19,10 +19,9 @@ class SearchAction
 
         app(ReaderFacadeInterface::class);
 
-        return app('layout')
-            ->view('country.index', [
-                'grid' => $this->gridFactory($dto)
-            ]);
+        return app('layout')->view('country.index', [
+            'grid' => $this->gridFactory($dto)
+        ]);
     }
 
     private function gridFactory($dto)
@@ -30,7 +29,8 @@ class SearchAction
         return (new GridBuilder())
             ->paginator($this->facade->count($dto), 20)
             ->id('id', ['text' => 'ID'])
-            ->text('name', ['text' => 'Name'])
+            ->text('name', ['text' => 'Наименование'])
+            ->text('phone_code', ['text' => 'Код телефона'])
             ->orderBy('id', 'asc')
             ->callFacadeSearch($this->facade, $dto)
             ->getGrid();
