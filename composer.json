@@ -30,7 +30,7 @@
     },
     "autoload": {
         "files": [
-            "bootstrap/helpers.php"
+            "src/Illuminate/Foundation/helpers.php"
         ],
         "psr-4": {
             "GTS\\": "app/",

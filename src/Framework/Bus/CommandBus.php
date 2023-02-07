@@ -2,11 +2,10 @@
 
 namespace Custom\Framework\Bus;
 
-use Illuminate\Contracts\Container\Container;
+use Custom\Framework\Container\Container;
 
 class CommandBus implements CommandBusInterface
 {
-
     private array $handlers = [];
 
     private array $handlersMiddlewares = [

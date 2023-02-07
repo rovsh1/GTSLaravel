@@ -11,7 +11,7 @@
 |
 */
 
-$app = new GTS\Application(
+$app = new \Custom\Illuminate\Foundation\Application(
     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 );
 /*

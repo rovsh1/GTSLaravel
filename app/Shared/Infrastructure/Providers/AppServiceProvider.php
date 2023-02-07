@@ -3,8 +3,7 @@
 namespace GTS\Shared\Infrastructure\Providers;
 
 use Custom\Framework\Foundation\Support\ServiceProvider;
-use Custom\Framework\Port\PortGatewayInterface;
-use GTS\Services\PortGateway\Infrastructure\Client\Client;
+use GTS\Services\PortGateway\Client as PortGateway;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -12,6 +11,6 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->registerModules();
 
-        $this->app->singleton(PortGatewayInterface::class, Client::class);
+        $this->app->singleton('portGateway', PortGateway::class);
     }
 }

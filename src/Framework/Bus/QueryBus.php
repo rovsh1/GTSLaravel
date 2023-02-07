@@ -2,14 +2,14 @@
 
 namespace Custom\Framework\Bus;
 
-use Illuminate\Contracts\Container\Container;
+use Custom\Framework\Container\Container;
 
 class QueryBus implements QueryBusInterface
 {
 
     private array $handlers = [];
 
-    public function __construct(private readonly Container $container) { }
+    public function __construct(private readonly Container $container) {}
 
     public function subscribe(string $queryClassName, string $handlerClassName)
     {
@@ -23,8 +23,9 @@ class QueryBus implements QueryBusInterface
         }*/
 
         $queryHandler = $this->getQueryHandler($query);
-        if (!$queryHandler)
+        if (!$queryHandler) {
             throw new \Exception('Query [' . $query::class . '] handler undefined');
+        }
 
         return $queryHandler->handle($query);
     }
@@ -36,12 +37,14 @@ class QueryBus implements QueryBusInterface
 
     private function getQueryHandler(QueryInterface $query)
     {
-        if ($this->hasQueryHandler($query))
+        if ($this->hasQueryHandler($query)) {
             return $this->container->make($this->handlers[get_class($query)]);
+        }
 
         $handlerClass = str_replace('Application', 'Infrastructure', $query::class) . 'Handler';
-        if (class_exists($handlerClass))
+        if (class_exists($handlerClass)) {
             return $this->container->make($handlerClass);
+        }
 
         return null;
     }

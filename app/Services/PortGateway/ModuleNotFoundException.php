@@ -1,6 +1,6 @@
 <?php
 
-namespace GTS\Services\PortGateway\Infrastructure\Client\Exception;
+namespace GTS\Services\PortGateway;
 
 class ModuleNotFoundException extends \RuntimeException
 {

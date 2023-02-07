@@ -4,7 +4,9 @@ namespace Custom\Framework\Foundation;
 
 use Illuminate\Support\ServiceProvider;
 
-class Module extends \Illuminate\Container\Container
+use Custom\Framework\Container\Container;
+
+class Module extends Container
 {
     private bool $booted = false;
 
@@ -156,9 +158,9 @@ class Module extends \Illuminate\Container\Container
 
     protected function registerBaseServiceProviders()
     {
-        $this->register(Providers\PortServiceProvider::class);
         $this->register(Providers\EventServiceProvider::class);
         $this->register(Providers\BusServiceProvider::class);
+        $this->register(Providers\RouteServiceProvider::class);
         //$this->register(SharedProviders\LogServiceProvider::class);
     }
 

@@ -1,12 +1,14 @@
 <?php
 
-namespace Custom\Framework\Foundation;
+namespace Custom\Illuminate\Foundation;
+
+use Custom\Framework\Foundation\Module;
 
 class ModulesRepository
 {
     private array $registeredModules = [];
 
-    public function __construct() {}
+    public function __construct(private $app) {}
 
     public function registeredModules(): array
     {

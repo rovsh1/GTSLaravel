@@ -1,8 +1,6 @@
 <?php
 
-namespace GTS\Services\PortGateway\Infrastructure\Client;
-
-use Custom\Framework\Port\PortGatewayInterface;
+namespace GTS\Services\PortGateway;
 
 class Client implements PortGatewayInterface
 {
@@ -17,15 +15,11 @@ class Client implements PortGatewayInterface
     {
         $module = module($request->module());
         if ($module === null) {
-            throw new Exception\ModuleNotFoundException("Module '{$request->module()}' not found");
+            throw new ModuleNotFoundException("Module '{$request->module()}' not found");
         }
 
         $module->boot();
 
-        $route = $module->get('router')->get($request->path());
-
-        $action = $module->make($route);
-
-        return $action->handle((object)$request->attributes());
+        return $module->get('router')->request($request->path(), $request->attributes());
     }
 }

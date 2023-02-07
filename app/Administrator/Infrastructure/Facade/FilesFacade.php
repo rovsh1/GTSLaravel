@@ -12,6 +12,6 @@ class FilesFacade implements FilesFacadeInterface
 
     public function create()
     {
-        $this->filesAdapter->create('test', 3, 'ffff.jpg', 'asdsd');
+        return $this->filesAdapter->create('test', 3, 'ffff.jpg', 'asdsd');
     }
 }

@@ -1,8 +1,6 @@
 <?php
 
-namespace Custom\Framework\Foundation;
-
-use GTS\Application;
+namespace Custom\Illuminate\Foundation;
 
 class ModuleLoader
 {

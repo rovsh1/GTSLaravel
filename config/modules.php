@@ -30,8 +30,5 @@ return [
             'password' => env('TRAVELINE_PASSWORD'),
         ],
         'notifications_url' => env('TRAVELINE_NOTIFICATIONS_URL'),
-    ],
-    'PortGateway' => [
-        'path' => app_path('Services/PortGateway'),
     ]
 ];

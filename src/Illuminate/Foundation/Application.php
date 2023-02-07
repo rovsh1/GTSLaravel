@@ -1,10 +1,8 @@
 <?php
 
-namespace GTS;
+namespace Custom\Illuminate\Foundation;
 
 use Custom\Framework\Foundation\Module;
-use Custom\Framework\Foundation\ModuleLoader;
-use Custom\Framework\Foundation\ModulesRepository;
 
 class Application extends \Illuminate\Foundation\Application
 {
@@ -14,7 +12,7 @@ class Application extends \Illuminate\Foundation\Application
 
     public function __construct($basePath = null)
     {
-        $this->modules = new ModulesRepository();
+        $this->modules = new ModulesRepository($this);
         $this->moduleLoader = new ModuleLoader($this);
 
         parent::__construct($basePath);

@@ -2,6 +2,7 @@
 
 namespace GTS\Services\FileStorage\UI\Port\Controllers;
 
+use Custom\Framework\Port\Request;
 use GTS\Services\FileStorage\Application\Dto\FileDto;
 use GTS\Services\FileStorage\Infrastructure\Facade\WriterFacadeInterface;
 

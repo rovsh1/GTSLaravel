@@ -1,5 +1,5 @@
 <?php
 
-namespace Custom\Framework\Port;
+namespace GTS\Services\PortGateway;
 
 interface PortGatewayInterface { }

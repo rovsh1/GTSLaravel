@@ -1,6 +1,6 @@
 <?php
 
-namespace GTS\Services\PortGateway\Infrastructure\Client;
+namespace GTS\Services\PortGateway;
 
 class Request
 {

@@ -2,8 +2,8 @@
 
 namespace Custom\Framework\Bus;
 
+use Custom\Framework\Container\Container;
 use Custom\Framework\Validation\ValidatorPipelineBehaviorInterface;
-use Illuminate\Contracts\Container\Container;
 
 class ValidatorPipelineBehavior implements ValidatorPipelineBehaviorInterface
 {

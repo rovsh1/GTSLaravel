@@ -2,7 +2,7 @@
 
 namespace Custom\Framework\Event;
 
-use Illuminate\Contracts\Container\Container;
+use Custom\Framework\Container\Container;
 
 class DomainEventDispatcher implements DomainEventDispatcherInterface
 {
