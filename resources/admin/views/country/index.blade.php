@@ -1,5 +1,7 @@
 @extends('layouts/default')
 
+@section('title', 'Страны')
+
 @section('content')
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">

@@ -3,7 +3,6 @@
 @section('title', 'Вход в BO')
 
 @section('page-style')
-    <!-- Page -->
     <link rel="stylesheet" href="{{asset('assets/vendor/css/pages/page-auth.css')}}">
 @endsection
 
@@ -29,14 +28,14 @@
                             @csrf
                             <div class="mb-3">
                                 <label for="login" class="form-label">Логин</label>
-                                <input type="text" class="form-control" id="login" name="login" placeholder="Введите логин" autofocus>
+                                <input type="text" class="form-control @error('login') is-invalid @enderror" id="login" name="login" placeholder="Введите логин" autofocus>
                             </div>
                             <div class="mb-3 form-password-toggle">
                                 <div class="d-flex justify-content-between">
                                     <label class="form-label" for="password">Пароль</label>
                                 </div>
                                 <div class="input-group input-group-merge">
-                                    <input type="password" id="password" class="form-control" name="password"
+                                    <input type="password" id="password" class="form-control @error('password') is-invalid @enderror" name="password"
                                            placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                                            aria-describedby="password"/>
                                     <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
