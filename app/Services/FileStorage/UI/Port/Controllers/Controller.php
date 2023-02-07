@@ -14,6 +14,13 @@ class Controller
 
     public function create(Request $request): FileDto
     {
+        $validated = $request->validate([
+            'fileType' => 'required|string',
+            'entityId' => 'required|int',
+            'name' => 'nullable|string',
+            'contents' => 'nullable|string',
+        ]);
+
         return $this->writerFacade->create($request->fileType, $request->entityId, $request->name, $request->contents);
     }
 }

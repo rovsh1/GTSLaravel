@@ -2,6 +2,10 @@
 
 namespace Custom\Framework\Port;
 
+use Illuminate\Support\Facades\Validator;
+
+use Custom\Framework\Exception\ValidationException;
+
 class Request
 {
     public function __construct(
@@ -22,5 +26,15 @@ class Request
     public function attributes(): array
     {
         return $this->attributes;
+    }
+
+    public function validate(array $rules): array
+    {
+        $validator = Validator::make($this->attributes, $rules);
+        if ($validator->fails()) {
+            throw new ValidationException('Validation failed: ' . $validator->errors());
+        }
+
+        return $validator->validated();
     }
 }
