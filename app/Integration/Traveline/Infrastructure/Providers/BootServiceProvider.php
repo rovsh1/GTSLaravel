@@ -2,9 +2,9 @@
 
 namespace GTS\Integration\Traveline\Infrastructure\Providers;
 
-use GTS\Services\Traveline\Domain;
-use GTS\Services\Traveline\Infrastructure;
-use GTS\Services\Traveline\Infrastructure\Facade;
+use GTS\Integration\Traveline\Domain;
+use GTS\Integration\Traveline\Infrastructure;
+use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use Illuminate\Support\ServiceProvider;
 
@@ -19,6 +19,8 @@ class BootServiceProvider extends ServiceProvider
 
     private function registerInterfaces()
     {
+        $this->app->bind(ClientInterface::class, Client::class);
+
         $this->app->singleton(\GTS\Integration\Traveline\Infrastructure\Facade\ReservationFacadeInterface::class, \GTS\Integration\Traveline\Infrastructure\Facade\ReservationFacade::class);
         $this->app->singleton(\GTS\Integration\Traveline\Infrastructure\Facade\HotelFacadeInterface::class, \GTS\Integration\Traveline\Infrastructure\Facade\HotelFacade::class);
 
