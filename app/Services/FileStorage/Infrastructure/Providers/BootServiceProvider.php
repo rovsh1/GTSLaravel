@@ -39,8 +39,8 @@ class BootServiceProvider extends ServiceProvider
             );
         });
 
-        $this->app->singleton(StorageRepositoryInterface::class, function () use ($config) {
-            return new StorageRepository($config, app(DomainService\PathGeneratorInterface::class));
+        $this->app->singleton(StorageRepositoryInterface::class, function ($app) use ($config) {
+            return new StorageRepository($config, $app->get(DomainService\PathGeneratorInterface::class));
         });
         $this->app->singleton(DatabaseRepositoryInterface::class, DatabaseRepository::class);
 

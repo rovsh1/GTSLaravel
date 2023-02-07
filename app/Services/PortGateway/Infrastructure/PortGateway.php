@@ -20,6 +20,8 @@ class PortGateway implements PortGatewayInterface
             throw new Exception\ModuleNotFoundException("Module '{$request->module()}' not found");
         }
 
+        $module->boot();
+
         return $module->get('router')->request($request->path(), $request->attributes());
     }
 }
