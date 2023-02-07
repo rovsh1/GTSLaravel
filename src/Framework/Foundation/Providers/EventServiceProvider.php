@@ -2,9 +2,9 @@
 
 namespace Custom\Framework\Foundation\Providers;
 
+use Custom\Framework\Contracts\Event\DomainEventDispatcherInterface;
 use Custom\Framework\Event\DomainEventDispatcher;
-use Custom\Framework\Event\DomainEventDispatcherInterface;
-use Custom\Framework\Foundation\Support\ServiceProvider;
+use Custom\Framework\Foundation\Support\Providers\ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
 {

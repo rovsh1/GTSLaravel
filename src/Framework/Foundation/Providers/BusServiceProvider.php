@@ -3,10 +3,9 @@
 namespace Custom\Framework\Foundation\Providers;
 
 use Custom\Framework\Bus;
-use Custom\Framework\Bus\CommandBusInterface;
-use Custom\Framework\Bus\QueryBusInterface;
-use Custom\Framework\Foundation\Support\ServiceProvider;
-use Custom\Framework\Validation\ValidatorPipelineBehaviorInterface;
+use Custom\Framework\Contracts\Bus\CommandBusInterface;
+use Custom\Framework\Contracts\Bus\QueryBusInterface;
+use Custom\Framework\Foundation\Support\Providers\ServiceProvider;
 
 class BusServiceProvider extends ServiceProvider
 {
@@ -14,7 +13,7 @@ class BusServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        $this->app->singleton(ValidatorPipelineBehaviorInterface::class, fn($app) => new Bus\ValidatorPipelineBehavior($app));
+//        $this->app->singleton(ValidatorPipelineBehaviorInterface::class, fn($app) => new Bus\ValidatorPipelineBehavior($app));
 
         $this->app->singleton(CommandBusInterface::class, function ($app) {
             //$app->get(ValidatorPipelineBehaviorInterface::class)

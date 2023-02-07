@@ -2,7 +2,7 @@
 
 namespace GTS\Integration\Traveline\Infrastructure\Facade;
 
-use Custom\Framework\Bus\CommandBusInterface;
+use Custom\Framework\Contracts\Bus\CommandBusInterface;
 use GTS\Integration\Traveline\Application\Command\UpdateQuotasAndPlans;
 use GTS\Integration\Traveline\Application\Dto\HotelDto;
 use GTS\Integration\Traveline\Application\Dto\RoomDto;

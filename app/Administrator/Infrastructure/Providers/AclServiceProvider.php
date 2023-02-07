@@ -2,7 +2,7 @@
 
 namespace GTS\Administrator\Infrastructure\Providers;
 
-use Custom\Framework\Foundation\Support\ServiceProvider;
+use Custom\Framework\Foundation\Support\Providers\ServiceProvider;
 use GTS\Administrator\Domain\Repository\AclRepositoryInterface;
 use GTS\Administrator\Domain\Service\Acl;
 use GTS\Administrator\Infrastructure\Repository\AclRepository;

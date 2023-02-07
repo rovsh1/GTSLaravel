@@ -2,8 +2,8 @@
 
 namespace GTS\Hotel\Infrastructure\Facade;
 
-use Custom\Framework\Bus\CommandBusInterface;
-use Custom\Framework\Bus\QueryBusInterface;
+use Custom\Framework\Contracts\Bus\CommandBusInterface;
+use Custom\Framework\Contracts\Bus\QueryBusInterface;
 use GTS\Hotel\Application\Command\ReserveQuota;
 use GTS\Hotel\Application\Query\GetActiveReservations;
 

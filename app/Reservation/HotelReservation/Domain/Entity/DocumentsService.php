@@ -2,7 +2,7 @@
 
 namespace GTS\Reservation\HotelReservation\Domain\Entity;
 
-use Custom\Framework\Event\DomainEventDispatcherInterface;
+use Custom\Framework\Contracts\Event\DomainEventDispatcherInterface;
 use GTS\Reservation\HotelReservation\Domain\Adapter\FileStorageAdapterInterface;
 use GTS\Reservation\HotelReservation\Domain\Event;
 use GTS\Reservation\HotelReservation\Domain\Repository\RequestRepositoryInterface;

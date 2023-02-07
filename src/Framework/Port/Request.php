@@ -2,9 +2,8 @@
 
 namespace Custom\Framework\Port;
 
+use Custom\Framework\Foundation\Exception\ValidationException;
 use Illuminate\Support\Facades\Validator;
-
-use Custom\Framework\Exception\ValidationException;
 
 class Request
 {

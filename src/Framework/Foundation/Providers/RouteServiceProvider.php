@@ -2,7 +2,7 @@
 
 namespace Custom\Framework\Foundation\Providers;
 
-use Custom\Framework\Foundation\Support\ServiceProvider;
+use Custom\Framework\Foundation\Support\Providers\ServiceProvider;
 use Custom\Framework\Routing\Router;
 
 class RouteServiceProvider extends ServiceProvider

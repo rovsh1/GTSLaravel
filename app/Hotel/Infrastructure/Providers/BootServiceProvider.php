@@ -2,7 +2,7 @@
 
 namespace GTS\Hotel\Infrastructure\Providers;
 
-use Custom\Framework\Foundation\Support\ServiceProvider;
+use Custom\Framework\Foundation\Support\Providers\ServiceProvider;
 use GTS\Hotel\Domain;
 use GTS\Hotel\Infrastructure;
 

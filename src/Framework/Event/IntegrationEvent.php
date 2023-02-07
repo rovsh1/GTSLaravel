@@ -2,6 +2,8 @@
 
 namespace Custom\Framework\Event;
 
+use Custom\Framework\Contracts\Event\DomainEventInterface;
+
 class IntegrationEvent
 {
     public function __construct(

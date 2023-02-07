@@ -2,7 +2,7 @@
 
 namespace GTS\Integration\Traveline\Application\Command;
 
-use Custom\Framework\Bus\CommandInterface;
+use Custom\Framework\Contracts\Bus\CommandInterface;
 
 class ConfirmReservations implements CommandInterface
 {

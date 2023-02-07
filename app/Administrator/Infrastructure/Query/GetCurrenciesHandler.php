@@ -2,8 +2,8 @@
 
 namespace GTS\Administrator\Infrastructure\Query;
 
-use Custom\Framework\Bus\QueryHandlerInterface;
-use Custom\Framework\Bus\QueryInterface;
+use Custom\Framework\Contracts\Bus\QueryHandlerInterface;
+use Custom\Framework\Contracts\Bus\QueryInterface;
 
 class GetCurrenciesHandler implements QueryHandlerInterface
 {

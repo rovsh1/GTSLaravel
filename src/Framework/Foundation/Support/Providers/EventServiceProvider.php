@@ -1,8 +1,8 @@
 <?php
 
-namespace Custom\Framework\Foundation\Support;
+namespace Custom\Framework\Foundation\Support\Providers;
 
-use Custom\Framework\Event\DomainEventDispatcherInterface;
+use Custom\Framework\Contracts\Event\DomainEventDispatcherInterface;
 
 class EventServiceProvider extends ServiceProvider
 {

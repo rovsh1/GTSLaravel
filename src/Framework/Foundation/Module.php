@@ -52,7 +52,9 @@ class Module extends Container
             return $this->is($name->name());
         }
 
-        return $this->name === $name || $this->config('alias') == $name;
+        $name = strtolower($name);
+
+        return strtolower($this->name) === $name || $this->config('alias') === $name;
     }
 
     public function path(string $path = null): string

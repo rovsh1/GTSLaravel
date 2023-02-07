@@ -2,10 +2,10 @@
 
 namespace GTS\Reservation\HotelReservation\Application\Command;
 
-use Custom\Framework\Bus\CommandHandlerInterface;
-use Custom\Framework\Bus\CommandInterface;
-use Custom\Framework\Bus\QueryBusInterface;
-use Custom\Framework\Exception\EntityNotFoundException;
+use Custom\Framework\Contracts\Bus\CommandHandlerInterface;
+use Custom\Framework\Contracts\Bus\CommandInterface;
+use Custom\Framework\Contracts\Bus\QueryBusInterface;
+use Custom\Framework\Foundation\Exception\EntityNotFoundException;
 use GTS\Reservation\HotelReservation\Application\Query\Find;
 use GTS\Reservation\HotelReservation\Domain\Entity\DocumentsService;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Custom\Framework\Bus;
+namespace Custom\Framework\Contracts\Bus;
 
 interface QueryHandlerInterface
 {

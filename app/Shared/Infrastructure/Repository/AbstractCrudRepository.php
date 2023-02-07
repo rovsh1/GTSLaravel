@@ -2,7 +2,7 @@
 
 namespace GTS\Shared\Infrastructure\Repository;
 
-use Custom\Framework\Exception\EntityNotFoundException;
+use Custom\Framework\Foundation\Exception\EntityNotFoundException;
 use Illuminate\Database\Eloquent\Collection;
 
 abstract class AbstractCrudRepository

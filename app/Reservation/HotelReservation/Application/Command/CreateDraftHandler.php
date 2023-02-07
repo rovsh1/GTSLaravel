@@ -2,8 +2,8 @@
 
 namespace GTS\Reservation\HotelReservation\Application\Command;
 
-use Custom\Framework\Bus\CommandHandlerInterface;
-use Custom\Framework\Bus\CommandInterface;
+use Custom\Framework\Contracts\Bus\CommandHandlerInterface;
+use Custom\Framework\Contracts\Bus\CommandInterface;
 
 class CreateDraftHandler implements CommandHandlerInterface
 {

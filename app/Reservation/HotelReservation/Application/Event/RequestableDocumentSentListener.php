@@ -2,8 +2,8 @@
 
 namespace GTS\Reservation\HotelReservation\Application\Event;
 
-use Custom\Framework\Event\DomainEventInterface;
-use Custom\Framework\Event\DomainEventListenerInterface;
+use Custom\Framework\Contracts\Event\DomainEventInterface;
+use Custom\Framework\Contracts\Event\DomainEventListenerInterface;
 
 class RequestableDocumentSentListener implements DomainEventListenerInterface
 {
