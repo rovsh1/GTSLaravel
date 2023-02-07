@@ -1,20 +1,30 @@
-<nav class="paginator">
-	<ul>
-		<?php
-		if ($pages->previous) { ?>
-		<li class="page prev"><?php echo $paginator->link($pages->previous, '&larr; назад'); ?></li><?php }
-		if ($pages->firstPageInRange > 2)
-			echo '<li class="page first">', $paginator->link(1), '</li><li class="dot">...</li>';
-		foreach ($pages->pagesInRange as $page) { ?>
-		<li class="page<?php echo($page == $pages->current ? ' current' : ''); ?>">
-			<?php if ($page != $pages->current)
-				echo $paginator->link($page);
-			else echo $page; ?>
-		</li><?php }
-		if ($pages->lastPageInRange < $pages->last - 1)
-			echo '<li class="dot">...</li><li class="last">', $paginator->link($pages->last), '</li>';
-		if ($pages->next) { ?>
-		<li class="next" title=""><?php echo $paginator->link($pages->next, 'вперед &rarr;'); ?></li><?php } ?>
-		<li class="count">Всего: <?php echo $paginator->getCount(); ?></li>
+<nav class="paginator mt-3 d-flex align-items-center">
+	<ul class="pagination mb-0">
+        @if ($pages->previous)
+            <li class="page-item prev">
+                <?=$paginator->link($pages->previous, '<i class="tf-icon bx bx-chevrons-left"></i>', 'page-link')?>
+            </li>
+        @endif
+        @if ($pages->firstPageInRange > 2)
+            <li class="page-item"><?=$paginator->link(1, null, 'page-link')?></li>
+            <li class="page-item">
+                <span class="page-link">...</span>
+            </li>
+        @endif
+        @foreach ($pages->pagesInRange as $page)
+            <li class="page-item <?=($page == $pages->current ? ' active' : '')?>">
+                <?=$paginator->link($page, null, 'page-link')?>
+            </li>
+        @endforeach
+        @if ($pages->lastPageInRange < $pages->last - 1)
+            <li class="page-item">
+                <span class="page-link">...</span>
+            </li>
+            <li class="page-item"><?=$paginator->link($pages->last, null, 'page-link')?></li>
+        @endif
+        @if ($pages->next)
+            <li class="page-item next" title=""><?=$paginator->link($pages->next, '<i class="tf-icon bx bx-chevrons-right"></i>', 'page-link')?></li>
+        @endif
 	</ul>
+    <div class="ms-2">Всего: <b><?=$paginator->getCount()?></b></div>
 </nav>

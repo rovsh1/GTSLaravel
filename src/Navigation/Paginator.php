@@ -6,8 +6,10 @@ use Illuminate\Support\Facades\Request;
 
 class Paginator
 {
-
-	protected $options = [
+    protected $current;
+    protected int $count = 0;
+    protected mixed $query;
+	protected array $options = [
 		'step' => 10,
 		'pagesStep' => 4,
 		'prevText' => '{{lang:Prev}}',
@@ -16,12 +18,6 @@ class Paginator
 		'queryParam' => 'p',
 		'view' => 'layouts.paginator'
 	];
-
-	protected $current;
-
-	protected $count = 0;
-
-	protected $query;
 
 	public function __get($name)
 	{
@@ -38,10 +34,11 @@ class Paginator
 
 	public function __construct($options = null)
 	{
-		if (is_int($options))
-			$this->setOptions(['step' => $options]);
-		else if ($options)
-			$this->setOptions($options);
+		if (is_int($options)) {
+            $this->setOptions(['step' => $options]);
+        } else if ($options) {
+            $this->setOptions($options);
+        }
 	}
 
 	public function setOptions($options): static
@@ -86,14 +83,16 @@ class Paginator
 
 	public function getCurrentPage(): int
 	{
-		if (null !== $this->current)
-			return $this->current;
+		if (null !== $this->current) {
+            return $this->current;
+        }
 
 		$this->current = (int)$this->getQuery($this->queryParam);
-		if ($this->current > $this->getPageCount())
-			$this->current = $this->getPageCount();
-		else if ($this->current < 1)
-			$this->current = 1;
+		if ($this->current > $this->getPageCount()) {
+            $this->current = $this->getPageCount();
+        } else if ($this->current < 1) {
+            $this->current = 1;
+        }
 
 		return $this->current;
 	}
@@ -103,32 +102,37 @@ class Paginator
 		return ceil($this->count / $this->step);
 	}
 
-	public function link($page, $text = null): string
+	public function link($page, $text = null, $class = ''): string
 	{
-		if (null === $text)
-			$text = $page;
+		if (null === $text) {
+            $text = $page;
+        }
 
 		$url = $this->baseUrl;
-		if (null === $url)
-			$this->baseUrl = '/' . Request::path();
+		if (null === $url) {
+            $this->baseUrl = '/' . Request::path();
+        }
 
 		$params = Request::query();
-		if ($page == 1)
-			unset($params[$this->queryParam]);
-		else
-			$params[$this->queryParam] = $page;
+		if ($page == 1) {
+            unset($params[$this->queryParam]);
+        } else {
+            $params[$this->queryParam] = $page;
+        }
 
-		if ($params)
-			$url .= '?' . http_build_query($params);
+		if ($params) {
+            $url .= '?' . http_build_query($params);
+        }
 
-		return '<a href="' . $url . '">' . $text . '</a>';
+		return '<a class="' . $class . '" href="' . $url . '">' . $text . '</a>';
 	}
 
 	private function getPages(): ?\stdClass
 	{
 		$pageCount = $this->getPageCount();
-		if ($pageCount <= 1)
-			return null;
+		if ($pageCount <= 1) {
+            return null;
+        }
 
 		$pages = new \stdClass();
 		$pages->count = $this->count;
@@ -139,19 +143,23 @@ class Paginator
 		$pages->previous = null;
 		$pages->next = null;
 
-		if ($pages->current - 1 > 0)
-			$pages->previous = $pages->current - 1;
+		if ($pages->current - 1 > 0) {
+            $pages->previous = $pages->current - 1;
+        }
 
-		if ($pages->current + 1 <= $pageCount)
-			$pages->next = $pages->current + 1;
+		if ($pages->current + 1 <= $pageCount) {
+            $pages->next = $pages->current + 1;
+        }
 
 		$firstPageInRange = $pages->current - $this->pagesStep;
 		$lastPageInRange = $pages->current + $this->pagesStep;
-		if ($firstPageInRange <= 2)
-			$firstPageInRange = 1;
+		if ($firstPageInRange <= 2) {
+            $firstPageInRange = 1;
+        }
 
-		if ($lastPageInRange > $pages->last - 2)
-			$lastPageInRange = $pages->last;
+		if ($lastPageInRange > $pages->last - 2) {
+            $lastPageInRange = $pages->last;
+        }
 
 		$pagesInRange = [];
 		for ($i = $firstPageInRange; $i <= $lastPageInRange; $i++) {
@@ -169,17 +177,17 @@ class Paginator
 	{
 		$count = $query->count();
 		$this->setCount($count);
-		$query
-			->limit($this->step)
-			->offset($this->getStartIndex());
+		$query->limit($this->step)->offset($this->getStartIndex());
+
 		return $this;
 	}
 
 	public function render($view = null)
 	{
 		$pages = $this->getPages();
-		if (!$pages)
-			return '';
+		if (!$pages) {
+            return '';
+        }
 
 		return view($view ?? $this->view, [
 			'pages' => $pages,
@@ -191,5 +199,4 @@ class Paginator
 	{
 		return (string)$this->render();
 	}
-
 }

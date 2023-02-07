@@ -6,7 +6,7 @@ class Options
 {
     protected array $options = [
         'emptyText' => '',
-        'class' => 'table-grid',
+        'class' => 'table table-striped',
         'header' => true,
         'view' => 'Table',
         'viewConfig' => null,
