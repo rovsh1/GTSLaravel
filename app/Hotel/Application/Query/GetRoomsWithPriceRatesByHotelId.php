@@ -2,7 +2,7 @@
 
 namespace GTS\Hotel\Application\Query;
 
-use GTS\Shared\Application\Query\QueryInterface;
+use Custom\Framework\Bus\QueryInterface;
 
 class GetRoomsWithPriceRatesByHotelId implements QueryInterface
 {

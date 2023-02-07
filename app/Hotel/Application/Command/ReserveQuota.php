@@ -2,7 +2,7 @@
 
 namespace GTS\Hotel\Application\Command;
 
-use GTS\Shared\Application\Command\CommandInterface;
+use Custom\Framework\Bus\CommandInterface;
 
 class ReserveQuota implements CommandInterface
 {

@@ -2,13 +2,13 @@
 
 namespace GTS\Hotel\Infrastructure\Port;
 
+use Custom\Framework\Bus\QueryBusInterface;
 use GTS\Hotel\Application\Dto\Info\HotelDto;
 use GTS\Hotel\Application\Dto\Info\RoomDto;
 use GTS\Hotel\Application\Query\GetHotelById;
 use GTS\Hotel\Application\Query\GetRoomsWithPriceRatesByHotelId;
 use GTS\Hotel\Domain\Entity\Hotel;
 use GTS\Hotel\Domain\Entity\Room;
-use GTS\Shared\Application\Query\QueryBusInterface;
 
 class InfoPort implements InfoPortInterface
 {

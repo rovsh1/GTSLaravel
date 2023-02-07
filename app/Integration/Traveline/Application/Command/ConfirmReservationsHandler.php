@@ -2,9 +2,9 @@
 
 namespace GTS\Integration\Traveline\Application\Command;
 
+use Custom\Framework\Bus\CommandHandlerInterface;
+use Custom\Framework\Bus\CommandInterface;
 use GTS\Integration\Traveline\Domain\Adapter\ReservationAdapterInterface;
-use GTS\Shared\Application\Command\CommandHandlerInterface;
-use GTS\Shared\Application\Command\CommandInterface;
 
 class ConfirmReservationsHandler implements CommandHandlerInterface
 {

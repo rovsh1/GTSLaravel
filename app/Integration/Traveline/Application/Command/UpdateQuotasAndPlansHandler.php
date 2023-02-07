@@ -2,9 +2,9 @@
 
 namespace GTS\Integration\Traveline\Application\Command;
 
+use Custom\Framework\Bus\CommandHandlerInterface;
+use Custom\Framework\Bus\CommandInterface;
 use GTS\Integration\Traveline\Domain\Adapter\HotelAdapterInterface;
-use GTS\Shared\Application\Command\CommandHandlerInterface;
-use GTS\Shared\Application\Command\CommandInterface;
 
 class UpdateQuotasAndPlansHandler implements CommandHandlerInterface
 {

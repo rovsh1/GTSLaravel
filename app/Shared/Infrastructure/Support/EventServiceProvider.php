@@ -2,7 +2,7 @@
 
 namespace GTS\Shared\Infrastructure\Support;
 
-use GTS\Shared\Domain\Event\DomainEventDispatcherInterface;
+use Custom\Framework\Event\DomainEventDispatcherInterface;
 
 class EventServiceProvider extends ServiceProvider
 {

@@ -2,11 +2,11 @@
 
 namespace GTS\Integration\Traveline\Infrastructure\Facade;
 
+use Custom\Framework\Bus\CommandBusInterface;
 use GTS\Integration\Traveline\Application\Command\UpdateQuotasAndPlans;
 use GTS\Integration\Traveline\Application\Dto\HotelDto;
 use GTS\Integration\Traveline\Application\Dto\RoomDto;
 use GTS\Integration\Traveline\Domain\Adapter\HotelAdapterInterface;
-use GTS\Shared\Application\Command\CommandBusInterface;
 
 class HotelFacade implements HotelFacadeInterface
 {

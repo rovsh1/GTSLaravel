@@ -3,9 +3,9 @@
 namespace GTS\Integration\Traveline\Infrastructure\Facade;
 
 use Carbon\CarbonInterface;
+use Custom\Framework\Bus\CommandBusInterface;
 use GTS\Integration\Traveline\Application\Command\ConfirmReservations;
 use GTS\Integration\Traveline\Domain\Adapter\ReservationAdapterInterface;
-use GTS\Shared\Application\Command\CommandBusInterface;
 
 class ReservationFacade implements ReservationFacadeInterface
 {

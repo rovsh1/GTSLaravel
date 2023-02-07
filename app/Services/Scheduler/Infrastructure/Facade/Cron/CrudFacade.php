@@ -2,8 +2,8 @@
 
 namespace GTS\Services\Scheduler\Infrastructure\Facade\Cron;
 
+use Custom\Framework\Exception\EntityNotFoundException;
 use GTS\Services\Scheduler\Infrastructure\Models\Cron;
-use GTS\Shared\Domain\Exception\EntityNotFoundException;
 
 class CrudFacade implements CrudFacadeInterface
 {

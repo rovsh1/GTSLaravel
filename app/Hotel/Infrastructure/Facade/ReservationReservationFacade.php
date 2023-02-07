@@ -2,10 +2,10 @@
 
 namespace GTS\Hotel\Infrastructure\Facade;
 
+use Custom\Framework\Bus\CommandBusInterface;
+use Custom\Framework\Bus\QueryBusInterface;
 use GTS\Hotel\Application\Command\ReserveQuota;
 use GTS\Hotel\Application\Query\GetActiveReservations;
-use GTS\Shared\Application\Command\CommandBusInterface;
-use GTS\Shared\Application\Query\QueryBusInterface;
 
 class ReservationReservationFacade implements ReservationFacadeInterface
 {

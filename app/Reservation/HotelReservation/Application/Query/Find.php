@@ -2,7 +2,7 @@
 
 namespace GTS\Reservation\HotelReservation\Application\Query;
 
-use GTS\Shared\Application\Query\QueryInterface;
+use Custom\Framework\Bus\QueryInterface;
 
 class Find implements QueryInterface
 {

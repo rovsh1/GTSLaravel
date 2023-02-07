@@ -2,7 +2,7 @@
 
 namespace GTS\Shared\Domain\ValueObject;
 
-use GTS\Shared\Domain\Exception\ValidationException;
+use Custom\Framework\Exception\ValidationException;
 
 class Phone
 {

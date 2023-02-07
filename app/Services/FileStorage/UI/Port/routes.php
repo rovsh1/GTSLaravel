@@ -1,7 +1,7 @@
 <?php
 
-use GTS\Services\FileStorage\UI\Port\Actions\FileCreateAction;
+use GTS\Services\FileStorage\UI\Port\Controllers\Controller;
 
 $this
-    ->register('create', FileCreateAction::class);
+    ->register('create', [Controller::class, 'create']);
 //$gateway->register('fileCreate', FileCreateAction::class);

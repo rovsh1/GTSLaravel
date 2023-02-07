@@ -11,7 +11,7 @@
 |
 */
 
-$app = new \GTS\Shared\Custom\Foundation\Application(
+$app = new GTS\Application(
     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 );
 /*

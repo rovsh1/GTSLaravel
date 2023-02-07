@@ -2,10 +2,10 @@
 
 namespace GTS\Reservation\HotelReservation\Infrastructure\Query;
 
+use Custom\Framework\Bus\QueryHandlerInterface;
+use Custom\Framework\Bus\QueryInterface;
 use GTS\Reservation\HotelReservation\Domain\Entity\Reservation as Entity;
 use GTS\Reservation\HotelReservation\Infrastructure\Models\Reservation as Model;
-use GTS\Shared\Application\Query\QueryHandlerInterface;
-use GTS\Shared\Application\Query\QueryInterface;
 
 class FindHandler implements QueryHandlerInterface
 {

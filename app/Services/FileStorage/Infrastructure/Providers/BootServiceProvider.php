@@ -10,7 +10,6 @@ use GTS\Services\FileStorage\Domain\Repository\StorageRepositoryInterface;
 use GTS\Services\FileStorage\Infrastructure\Services\FileUploader;
 use GTS\Services\FileStorage\Infrastructure\Repository\DatabaseRepository;
 use GTS\Services\FileStorage\Infrastructure\Repository\StorageRepository;
-use GTS\Services\FileStorage\Infrastructure\Port;
 use GTS\Services\FileStorage\Infrastructure\Facade;
 use GTS\Shared\Infrastructure\Support\ServiceProvider;
 
@@ -20,7 +19,6 @@ class BootServiceProvider extends ServiceProvider
     {
         $config = $this->app->config();
 
-        $this->app->singleton(Port\PortInterface::class, Port\Port::class);
         $this->app->singleton(Facade\ReaderFacadeInterface::class, Facade\ReaderFacade::class);
         $this->app->singleton(Facade\WriterFacadeInterface::class, Facade\WriterFacade::class);
 

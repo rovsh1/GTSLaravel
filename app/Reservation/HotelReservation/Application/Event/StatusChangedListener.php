@@ -2,9 +2,9 @@
 
 namespace GTS\Reservation\HotelReservation\Application\Event;
 
+use Custom\Framework\Event\DomainEventInterface;
+use Custom\Framework\Event\DomainEventListenerInterface;
 use GTS\Reservation\HotelReservation\Domain\Entity\StatusHistoryService;
-use GTS\Shared\Application\Event\DomainEventListenerInterface;
-use GTS\Shared\Domain\Event\DomainEventInterface;
 
 class StatusChangedListener implements DomainEventListenerInterface
 {

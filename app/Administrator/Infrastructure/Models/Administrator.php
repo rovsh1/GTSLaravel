@@ -2,15 +2,14 @@
 
 namespace GTS\Administrator\Infrastructure\Models;
 
+use Custom\Framework\Database\Eloquent\HasQuicksearch;
+use GTS\Shared\Custom\TabularSection;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
-
-use GTS\Shared\Custom\TabularSection;
-use GTS\Shared\Custom\Database\Eloquent\HasQuicksearch;
+use Illuminate\Support\Facades\Hash;
 
 class Administrator extends Authenticatable
 {

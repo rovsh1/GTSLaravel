@@ -2,8 +2,8 @@
 
 namespace GTS\Hotel\Infrastructure\Query;
 
-use GTS\Shared\Application\Query\QueryHandlerInterface;
-use GTS\Shared\Application\Query\QueryInterface;
+use Custom\Framework\Bus\QueryHandlerInterface;
+use Custom\Framework\Bus\QueryInterface;
 
 class GetActiveReservationsHandler implements QueryHandlerInterface
 {

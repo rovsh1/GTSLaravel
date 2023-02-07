@@ -34,8 +34,9 @@
         ],
         "psr-4": {
             "GTS\\": "app/",
-            "Gsdk\\Grid\\": "app/Shared/Custom/View/Grid",
-            "Gsdk\\Navigation\\": "app/Shared/Custom/View/Navigation",
+            "Gsdk\\Grid\\": "src/Grid",
+            "Gsdk\\Navigation\\": "src/Navigation",
+            "Custom\\": "src",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
         }

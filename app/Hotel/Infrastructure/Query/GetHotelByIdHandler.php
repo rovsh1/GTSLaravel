@@ -2,12 +2,12 @@
 
 namespace GTS\Hotel\Infrastructure\Query;
 
+use Custom\Framework\Bus\QueryHandlerInterface;
+use Custom\Framework\Bus\QueryInterface;
 use GTS\Hotel\Application\Query\GetHotelById;
 use GTS\Hotel\Domain\Entity\Hotel;
 use GTS\Hotel\Domain\Factory\HotelFactory;
 use GTS\Hotel\Infrastructure\Models\Hotel as HotelEloquent;
-use GTS\Shared\Application\Query\QueryHandlerInterface;
-use GTS\Shared\Application\Query\QueryInterface;
 
 class GetHotelByIdHandler implements QueryHandlerInterface
 {

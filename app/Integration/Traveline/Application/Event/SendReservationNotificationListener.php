@@ -2,9 +2,9 @@
 
 namespace GTS\Integration\Traveline\Application\Event;
 
+use Custom\Framework\Event\DomainEventInterface;
+use Custom\Framework\Event\DomainEventListenerInterface;
 use GTS\Services\Traveline\Infrastructure\Adapter\Traveline\AdapterInterface;
-use GTS\Shared\Application\Event\DomainEventListenerInterface;
-use GTS\Shared\Domain\Event\DomainEventInterface;
 
 class SendReservationNotificationListener implements DomainEventListenerInterface
 {

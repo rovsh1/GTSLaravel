@@ -2,11 +2,11 @@
 
 namespace GTS\Services\FileStorage\Infrastructure\Repository;
 
+use Custom\Framework\Exception\EntityNotFoundException;
 use GTS\Services\FileStorage\Domain\Entity\File;
 use GTS\Services\FileStorage\Domain\Repository\DatabaseRepositoryInterface;
 use GTS\Services\FileStorage\Domain\Repository\StorageRepositoryInterface;
 use GTS\Services\FileStorage\Infrastructure\Model\File as Model;
-use GTS\Shared\Domain\Exception\EntityNotFoundException;
 
 class DatabaseRepository implements DatabaseRepositoryInterface
 {

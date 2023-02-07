@@ -2,7 +2,7 @@
 
 namespace GTS\Hotel\Domain\Event;
 
-use GTS\Shared\Domain\Event\DomainEventInterface;
+use Custom\Framework\Event\DomainEventInterface;
 
 class QuotasEnded implements DomainEventInterface
 {

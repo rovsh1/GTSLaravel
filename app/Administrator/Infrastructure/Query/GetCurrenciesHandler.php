@@ -2,10 +2,8 @@
 
 namespace GTS\Administrator\Infrastructure\Query;
 
-use GTS\Shared\Application\Query\QueryHandlerInterface;
-use GTS\Shared\Application\Query\QueryInterface;
-
-use GTS\Administrator\Infrastructure\Models\Currency;
+use Custom\Framework\Bus\QueryHandlerInterface;
+use Custom\Framework\Bus\QueryInterface;
 
 class GetCurrenciesHandler implements QueryHandlerInterface
 {

@@ -2,7 +2,7 @@
 
 namespace GTS\Hotel\Infrastructure\Models\Room;
 
-use GTS\Shared\Custom\Database\Eloquent\HasTranslations;
+use Custom\Framework\Database\Eloquent\HasTranslations;
 use GTS\Shared\Infrastructure\Models\Model;
 use Illuminate\Database\Eloquent\Builder;
 

@@ -2,12 +2,12 @@
 
 namespace GTS\Services\FileStorage\Infrastructure\Facade;
 
+use Custom\Framework\Exception\EntityNotFoundException;
 use GTS\Services\FileStorage\Application\Dto\FileDto;
 use GTS\Services\FileStorage\Domain\Entity\File;
 use GTS\Services\FileStorage\Domain\Repository\DatabaseRepositoryInterface;
 use GTS\Services\FileStorage\Domain\Repository\StorageRepositoryInterface;
 use GTS\Services\FileStorage\Domain\Service\UrlGeneratorInterface;
-use GTS\Shared\Domain\Exception\EntityNotFoundException;
 
 class WriterFacade implements WriterFacadeInterface
 {

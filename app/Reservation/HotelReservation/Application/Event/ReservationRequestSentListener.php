@@ -2,8 +2,8 @@
 
 namespace GTS\Reservation\HotelReservation\Application\Event;
 
-use GTS\Shared\Application\Event\DomainEventListenerInterface;
-use GTS\Shared\Domain\Event\DomainEventInterface;
+use Custom\Framework\Event\DomainEventInterface;
+use Custom\Framework\Event\DomainEventListenerInterface;
 
 class ReservationRequestSentListener implements DomainEventListenerInterface
 {

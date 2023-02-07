@@ -2,7 +2,7 @@
 
 namespace GTS\Integration\Traveline\Application\Command;
 
-use GTS\Shared\Application\Command\CommandInterface;
+use Custom\Framework\Bus\CommandInterface;
 
 class UpdateQuotasAndPlans implements CommandInterface
 {

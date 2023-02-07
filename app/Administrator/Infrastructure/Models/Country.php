@@ -2,8 +2,8 @@
 
 namespace GTS\Administrator\Infrastructure\Models;
 
-use GTS\Shared\Custom\Database\Eloquent\HasQuicksearch;
-use GTS\Shared\Custom\Database\Eloquent\HasTranslations;
+use Custom\Framework\Database\Eloquent\HasQuicksearch;
+use Custom\Framework\Database\Eloquent\HasTranslations;
 use GTS\Shared\Infrastructure\Models\Model;
 
 class Country extends Model
