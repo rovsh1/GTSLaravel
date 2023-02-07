@@ -27,7 +27,7 @@ class BootServiceProvider extends ServiceProvider
         $this->app->singleton(\GTS\Integration\Traveline\Domain\Adapter\ReservationAdapterInterface::class, \GTS\Integration\Traveline\Infrastructure\Adapter\ReservationAdapter::class);
         $this->app->singleton(\GTS\Integration\Traveline\Domain\Adapter\HotelAdapterInterface::class, \GTS\Integration\Traveline\Infrastructure\Adapter\HotelAdapter::class);
         $this->app->singleton(\GTS\Integration\Traveline\Domain\Adapter\TravelineAdapterInterface::class, function ($app) {
-            $notificationsUrl = module('Traveline')->config('notifications_url');
+            $notificationsUrl = $app->config('notifications_url');
             return new \GTS\Integration\Traveline\Infrastructure\Adapter\TravelineAdapter(app(ClientInterface::class), $notificationsUrl);
         });
     }

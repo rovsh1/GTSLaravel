@@ -2,8 +2,6 @@
 
 namespace GTS\Shared\Infrastructure\Adapter;
 
-use GTS\Shared\Domain\Port\PortGatewayInterface;
-
 abstract class AbstractPortAdapter
 {
     public function __construct(

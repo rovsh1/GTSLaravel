@@ -10,7 +10,7 @@ class Application extends \Illuminate\Foundation\Application
 
     public function __construct($basePath = null)
     {
-        $this->modules = new ModulesRepository($this);
+        $this->modules = new ModulesRepository();
         $this->moduleLoader = new ModuleLoader($this);
 
         parent::__construct($basePath);

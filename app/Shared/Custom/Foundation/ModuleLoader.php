@@ -8,20 +8,23 @@ class ModuleLoader
 
     public function loadByAbstract($abstract): bool
     {
-        $module = $this->findInterface($abstract, 'Facade')
-            ?? $this->findInterface($abstract, 'Port');
-        if (!$module)
+        $module = $this->findInterface($abstract, 'Facade');
+        if (!$module) {
             return false;
+        }
 
         $this->app->modules()->loadModule($module);
+
+        $this->app->bind($abstract, fn() => $module->get($abstract));
 
         return true;
     }
 
     private function findInterface($abstract, $prefix)
     {
-        if (!str_ends_with($abstract, $prefix . 'Interface'))
+        if (!str_ends_with($abstract, $prefix . 'Interface')) {
             return null;
+        }
         //!str_starts_with($abstract, 'GTS\\')
         //|| str_starts_with($abstract, 'GTS\\Shared')
 

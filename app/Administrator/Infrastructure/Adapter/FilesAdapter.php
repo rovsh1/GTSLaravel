@@ -1,11 +1,11 @@
 <?php
 
-namespace GTS\Reservation\HotelReservation\Infrastructure\Adapter;
+namespace GTS\Administrator\Infrastructure\Adapter;
 
-use GTS\Reservation\HotelReservation\Domain\Adapter\FileStorageAdapterInterface;
+use GTS\Administrator\Domain\Adapter\FilesAdapterInterface;
 use GTS\Shared\Infrastructure\Adapter\AbstractPortAdapter;
 
-class FileStorageAdapter extends AbstractPortAdapter implements FileStorageAdapterInterface
+class FilesAdapter extends AbstractPortAdapter implements FilesAdapterInterface
 {
     public function create(string $fileType, int $entityId, string $name = null, string $contents = null)
     {

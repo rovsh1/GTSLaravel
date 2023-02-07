@@ -18,8 +18,7 @@ class BootServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        $module = $this->app;
-        $config = $module->config();
+        $config = $this->app->config();
 
         $this->app->singleton(Port\PortInterface::class, Port\Port::class);
         $this->app->singleton(Facade\ReaderFacadeInterface::class, Facade\ReaderFacade::class);

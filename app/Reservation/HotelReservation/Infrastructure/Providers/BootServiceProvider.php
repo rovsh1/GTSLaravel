@@ -2,8 +2,8 @@
 
 namespace GTS\Reservation\HotelReservation\Infrastructure\Providers;
 
+use GTS\Reservation\HotelReservation\Domain\Adapter\FileStorageAdapterInterface;
 use GTS\Reservation\HotelReservation\Infrastructure\Adapter\FileStorageAdapter;
-use GTS\Reservation\HotelReservation\Infrastructure\Adapter\FileStorageAdapterInterface;
 use GTS\Shared\Infrastructure\Support\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider

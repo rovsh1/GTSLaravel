@@ -1,10 +1,10 @@
 <?php
 
-namespace GTS\Services\PortGateway\Infrastructure\Router;
+namespace GTS\Services\PortGateway\Infrastructure;
 
-use GTS\Services\PortGateway\Infrastructure\Port\Exception;
+use GTS\Shared\Infrastructure\Adapter\PortGatewayInterface;
 
-class Router
+class PortGateway implements PortGatewayInterface
 {
     public function __construct() {}
 
@@ -20,13 +20,6 @@ class Router
             throw new Exception\ModuleNotFoundException("Module '{$request->module()}' not found");
         }
 
-        $moduleClient = $this->clientFactory();
-
-        return $moduleClient->request($request->path(), $request->attributes());
-    }
-
-    private function clientFactory()
-    {
-        //TODO get module router
+        return $module->get('router')->request($request->path(), $request->attributes());
     }
 }

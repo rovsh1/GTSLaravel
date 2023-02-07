@@ -3,12 +3,10 @@
 namespace GTS\Integration\Traveline\Infrastructure\Adapter;
 
 use GTS\Integration\Traveline\Domain\Adapter\HotelAdapterInterface;
-use GTS\Shared\Domain\Port\PortGatewayInterface;
+use GTS\Shared\Infrastructure\Adapter\AbstractPortAdapter;
 
-class HotelAdapter implements HotelAdapterInterface
+class HotelAdapter extends AbstractPortAdapter implements HotelAdapterInterface
 {
-    public function __construct(private PortGatewayInterface $portGateway) {}
-
     public function getHotelById(int $hotelId)
     {
 //        $hotelRequest = new \PortGateway\Hotel\Info\FindByIdRequest($hotelId);
