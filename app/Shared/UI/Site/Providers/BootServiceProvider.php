@@ -2,7 +2,7 @@
 
 namespace GTS\Shared\UI\Site\Providers;
 
-use GTS\Shared\UI\Common\Support\ServiceProvider;
+use GTS\Shared\UI\Common\Support\BootServiceProvider as ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {
@@ -12,6 +12,6 @@ class BootServiceProvider extends ServiceProvider
         //FormatServiceProvider::class,
         //AuthServiceProvider::class
 
-        app('modules')->registerModulesUI('Site');
+        $this->registerModulesUI('Site');
     }
 }

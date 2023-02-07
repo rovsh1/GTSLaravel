@@ -2,12 +2,12 @@
 
 namespace GTS\Shared\UI\Api\Providers;
 
-use GTS\Shared\UI\Common\Support\ServiceProvider;
+use GTS\Shared\UI\Common\Support\BootServiceProvider as ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        app('modules')->registerModulesUI('Api');
+        $this->registerModulesUI('Api');
     }
 }

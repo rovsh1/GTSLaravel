@@ -6,7 +6,7 @@ class ModulesRepository
 {
     private array $registeredModules = [];
 
-    public function __construct(private readonly Application $app) {}
+    public function __construct() {}
 
     public function registeredModules(): array
     {
@@ -79,18 +79,6 @@ class ModulesRepository
         }
 
         $module->boot();
-    }
-
-    public function registerModulesUI(string $port): void
-    {
-        $bootProviderNamespace = 'UI\\' . $port . '\Providers\BootServiceProvider';
-
-        foreach ($this->registeredModules as $module) {
-            $provider = $module->namespace($bootProviderNamespace);
-            if (class_exists($provider)) {
-                $this->app->register($provider);
-            }
-        }
     }
 
     private function registerModule($name, $config): void

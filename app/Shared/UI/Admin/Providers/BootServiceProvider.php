@@ -2,7 +2,7 @@
 
 namespace GTS\Shared\UI\Admin\Providers;
 
-use GTS\Shared\UI\Common\Support\ServiceProvider;
+use GTS\Shared\UI\Common\Support\BootServiceProvider as ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {
@@ -13,6 +13,6 @@ class BootServiceProvider extends ServiceProvider
         $this->app->register(MenuServiceProvider::class);
         $this->app->register(ViewServiceProvider::class);
 
-        app('modules')->registerModulesUI('Admin');
+        $this->registerModulesUI('Admin');
     }
 }
