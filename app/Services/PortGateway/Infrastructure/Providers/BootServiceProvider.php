@@ -3,7 +3,7 @@
 namespace GTS\Services\PortGateway\Infrastructure\Providers;
 
 
-use GTS\Shared\Infrastructure\Support\ServiceProvider;
+use Custom\Framework\Foundation\Support\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {

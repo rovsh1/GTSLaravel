@@ -2,9 +2,9 @@
 
 namespace Custom\Framework\Foundation\Providers;
 
+use Custom\Framework\Foundation\Support\ServiceProvider;
+use Custom\Framework\Port\PortGatewayInterface;
 use Custom\Framework\Routing\Router;
-use GTS\Shared\Infrastructure\Adapter\PortGatewayInterface;
-use GTS\Shared\Infrastructure\Support\ServiceProvider;
 
 class PortServiceProvider extends ServiceProvider
 {

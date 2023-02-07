@@ -2,16 +2,15 @@
 
 namespace GTS\Services\FileStorage\Infrastructure\Providers;
 
-use Illuminate\Support\Facades\Storage;
-
-use GTS\Services\FileStorage\Domain\Service as DomainService;
+use Custom\Framework\Foundation\Support\ServiceProvider;
 use GTS\Services\FileStorage\Domain\Repository\DatabaseRepositoryInterface;
 use GTS\Services\FileStorage\Domain\Repository\StorageRepositoryInterface;
-use GTS\Services\FileStorage\Infrastructure\Services\FileUploader;
+use GTS\Services\FileStorage\Domain\Service as DomainService;
+use GTS\Services\FileStorage\Infrastructure\Facade;
 use GTS\Services\FileStorage\Infrastructure\Repository\DatabaseRepository;
 use GTS\Services\FileStorage\Infrastructure\Repository\StorageRepository;
-use GTS\Services\FileStorage\Infrastructure\Facade;
-use GTS\Shared\Infrastructure\Support\ServiceProvider;
+use GTS\Services\FileStorage\Infrastructure\Services\FileUploader;
+use Illuminate\Support\Facades\Storage;
 
 class BootServiceProvider extends ServiceProvider
 {

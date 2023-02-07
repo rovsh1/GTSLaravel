@@ -27,8 +27,6 @@ class ModuleLoader
         if (!str_ends_with($abstract, $prefix . 'Interface')) {
             return null;
         }
-        //!str_starts_with($abstract, 'GTS\\')
-        //|| str_starts_with($abstract, 'GTS\\Shared')
 
         foreach ($this->app->modules()->registeredModules() as $module) {
             if (str_starts_with($abstract, $module->namespace('\\Infrastructure\\' . $prefix . '\\'))) {

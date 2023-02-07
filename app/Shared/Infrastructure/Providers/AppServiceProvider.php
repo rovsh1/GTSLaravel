@@ -2,9 +2,9 @@
 
 namespace GTS\Shared\Infrastructure\Providers;
 
+use Custom\Framework\Foundation\Support\ServiceProvider;
+use Custom\Framework\Port\PortGatewayInterface;
 use GTS\Services\PortGateway\Infrastructure\Client\Client;
-use GTS\Shared\Infrastructure\Adapter\PortGatewayInterface;
-use GTS\Shared\Infrastructure\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {

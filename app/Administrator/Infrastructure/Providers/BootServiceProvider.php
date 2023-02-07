@@ -2,10 +2,10 @@
 
 namespace GTS\Administrator\Infrastructure\Providers;
 
+use Custom\Framework\Foundation\Support\ServiceProvider;
 use GTS\Administrator\Domain;
 use GTS\Administrator\Infrastructure;
 use GTS\Administrator\Infrastructure\Facade;
-use GTS\Shared\Infrastructure\Support\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {

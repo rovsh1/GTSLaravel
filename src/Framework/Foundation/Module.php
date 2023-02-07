@@ -2,7 +2,6 @@
 
 namespace Custom\Framework\Foundation;
 
-use GTS\Shared\Custom\Foundation\Providers;
 use Illuminate\Support\ServiceProvider;
 
 class Module extends \Illuminate\Container\Container
@@ -157,9 +156,9 @@ class Module extends \Illuminate\Container\Container
 
     protected function registerBaseServiceProviders()
     {
-        $this->register(\Custom\Framework\Foundation\Providers\PortServiceProvider::class);
-        $this->register(\Custom\Framework\Foundation\Providers\EventServiceProvider::class);
-        $this->register(\Custom\Framework\Foundation\Providers\BusServiceProvider::class);
+        $this->register(Providers\PortServiceProvider::class);
+        $this->register(Providers\EventServiceProvider::class);
+        $this->register(Providers\BusServiceProvider::class);
         //$this->register(SharedProviders\LogServiceProvider::class);
     }
 

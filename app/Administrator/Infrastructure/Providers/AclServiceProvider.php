@@ -2,10 +2,10 @@
 
 namespace GTS\Administrator\Infrastructure\Providers;
 
+use Custom\Framework\Foundation\Support\ServiceProvider;
 use GTS\Administrator\Domain\Repository\AclRepositoryInterface;
-use GTS\Administrator\Infrastructure\Repository\AclRepository;
 use GTS\Administrator\Domain\Service\Acl;
-use GTS\Shared\Infrastructure\Support\ServiceProvider;
+use GTS\Administrator\Infrastructure\Repository\AclRepository;
 
 class AclServiceProvider extends ServiceProvider
 {

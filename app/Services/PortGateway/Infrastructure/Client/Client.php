@@ -2,7 +2,7 @@
 
 namespace GTS\Services\PortGateway\Infrastructure\Client;
 
-use GTS\Shared\Infrastructure\Adapter\PortGatewayInterface;
+use Custom\Framework\Port\PortGatewayInterface;
 
 class Client implements PortGatewayInterface
 {

@@ -2,9 +2,9 @@
 
 namespace GTS\Hotel\Infrastructure\Providers;
 
+use Custom\Framework\Foundation\Support\ServiceProvider;
 use GTS\Hotel\Domain;
 use GTS\Hotel\Infrastructure;
-use GTS\Shared\Infrastructure\Support\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {

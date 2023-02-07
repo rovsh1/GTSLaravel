@@ -1,6 +1,6 @@
 <?php
 
-namespace GTS\Shared\Infrastructure\Support;
+namespace Custom\Framework\Foundation\Support;
 
 use Custom\Framework\Event\DomainEventDispatcherInterface;
 
