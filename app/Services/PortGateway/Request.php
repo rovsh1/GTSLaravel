@@ -19,7 +19,7 @@ class Request
 
     public function module(): string
     {
-        return $this->module;
+        return \Str::ucfirst($this->module);
     }
 
     public function path(): string

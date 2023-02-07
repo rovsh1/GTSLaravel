@@ -9,14 +9,12 @@ class HotelAdapter extends AbstractPortAdapter implements HotelAdapterInterface
 {
     public function getHotelById(int $hotelId)
     {
-//        $hotelRequest = new \PortGateway\Hotel\Info\FindByIdRequest($hotelId);
-        return $this->portGateway->call();
+        return $this->request('hotel/findById', ['id' => $hotelId]);
     }
 
     public function getRoomsAndRatePlans(int $hotelId)
     {
-//        $roomsRequest = new \PortGateway\Hotel\Info\GetRoomsWithPriceRatesByHotelIdRequest($hotelId);
-        return $this->portGateway->call();
+        return $this->request('hotel/getRoomsWithPriceRatesByHotelId', ['id' => $hotelId]);
     }
 
     public function updateQuotasAndPlans(): void

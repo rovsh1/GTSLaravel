@@ -1,11 +1,11 @@
 <?php
 
-namespace GTS\Hotel\Infrastructure\Port;
+namespace GTS\Hotel\Infrastructure\Facade;
 
 use GTS\Hotel\Application\Dto\Info\HotelDto;
 use GTS\Hotel\Application\Dto\Info\RoomDto;
 
-interface InfoPortInterface
+interface InfoFacadeInterface
 {
     public function findById(int $id): HotelDto;
 

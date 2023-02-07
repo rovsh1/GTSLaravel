@@ -1,6 +1,6 @@
 <?php
 
-namespace GTS\Hotel\Infrastructure\Port;
+namespace GTS\Hotel\Infrastructure\Facade;
 
 use Custom\Framework\Bus\QueryBusInterface;
 use GTS\Hotel\Application\Dto\Info\HotelDto;
@@ -10,7 +10,7 @@ use GTS\Hotel\Application\Query\GetRoomsWithPriceRatesByHotelId;
 use GTS\Hotel\Domain\Entity\Hotel;
 use GTS\Hotel\Domain\Entity\Room;
 
-class InfoPort implements InfoPortInterface
+class InfoFacade implements InfoFacadeInterface
 {
     public function __construct(private QueryBusInterface $queryBus) {}
 
