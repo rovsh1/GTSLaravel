@@ -34,6 +34,7 @@
         ],
         "psr-4": {
             "GTS\\": "app/",
+            "Gsdk\\Form\\": "src/Form",
             "Gsdk\\Grid\\": "src/Grid",
             "Gsdk\\Navigation\\": "src/Navigation",
             "Custom\\": "src",

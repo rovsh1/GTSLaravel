@@ -45,13 +45,13 @@ abstract class AbstractColumn implements ColumnInterface
         $this->init();
     }
 
-    public function setName($name)
+    public function setName($name): static
     {
         $this->options['name'] = $name;
         return $this;
     }
 
-    public function setOptions($options)
+    public function setOptions($options): static
     {
         foreach ($options as $k => $v) {
             $this->setOption($k, $v);
@@ -59,7 +59,7 @@ abstract class AbstractColumn implements ColumnInterface
         return $this;
     }
 
-    public function setOption($key, $option)
+    public function setOption($key, $option): static
     {
         $this->options[$key] = $option;
         return $this;

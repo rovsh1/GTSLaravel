@@ -20,3 +20,7 @@ Route::prefix('reference')->group(function () {
         Route::get('/', 'index')->name('index');
     });
 });
+
+Route::controller(Controllers\TestController::class)->prefix('test')->group(function () {
+    Route::match(['get', 'post'], '/form', 'form');
+});
