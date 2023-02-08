@@ -2,45 +2,29 @@
 
 namespace Custom\Framework\Routing;
 
-use Custom\Framework\Port\Request;
+use Custom\Framework\Foundation\Module;
 
 class Router
 {
-    private $routes = [];
+    private RoutesCollection $routesCollection;
 
-    public function __construct(private $module) {}
-
-    public function loadRoutes($path): void
+    public function __construct(private readonly Module $module)
     {
-        include $path;
+        $this->routesCollection = new RoutesCollection();
     }
 
-    public function register(string $path, $action): static
+    public function registerRoute(Route $route): void
     {
-        $this->routes[$path] = $action;
-        return $this;
+        $this->routesCollection->add($route);
     }
 
     public function request(string $path, array $attributes = [])
     {
-        if (!isset($this->routes[$path])) {
-            throw new \RuntimeException('Module path [' . $path . '] not found');
+        $route = $this->routesCollection->findByPath($path);
+        if (!$route) {
+            throw new \RuntimeException('Module route [' . $path . '] not found');
         }
 
-        $request = new Request($path, $attributes);
-        $action = $this->routes[$path];
-        if (is_string($action)) {
-            $action = $this->module->make($action);
-            if (method_exists($action, 'handle')) {
-                return $action->handle($request);
-            } else {
-                return $action($request);
-            }
-        } elseif (is_array($action)) {
-            $controller = $this->module->make($action[0]);
-            return $controller->{$action[1]}($request);
-        } else {
-            throw new \LogicException('Module route [' . $path . '] invalid');
-        }
+        return (new RouteHandler($this->module))->handle($route, $attributes);
     }
 }

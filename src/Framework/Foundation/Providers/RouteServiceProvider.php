@@ -3,6 +3,7 @@
 namespace Custom\Framework\Foundation\Providers;
 
 use Custom\Framework\Foundation\Support\Providers\ServiceProvider;
+use Custom\Framework\Routing\RouteLoader;
 use Custom\Framework\Routing\Router;
 
 class RouteServiceProvider extends ServiceProvider
@@ -12,7 +13,7 @@ class RouteServiceProvider extends ServiceProvider
         $this->app->singleton('router', function ($module) {
             $router = new Router($module);
 
-            $router->loadRoutes($module->path('UI/Port/routes.php'));
+            (new RouteLoader($router))->load($module->path('UI/Port/routes.php'));
 
             return $router;
         });
