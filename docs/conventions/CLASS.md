@@ -5,6 +5,8 @@ namespace
 
 use FRAMEWORKS
 
+use CUSTOM
+
 use GTS
 
 use VENDORS
