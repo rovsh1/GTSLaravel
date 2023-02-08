@@ -34,8 +34,7 @@
 |   |-- /Service - Encapsulates business logic that doesn't naturally fit within a domain object, and are NOT typical CRUD operations – those would belong to a Repository.
 |-- /Infrastructure - Data layer
 |   |-- /Adapter - Domain addapter implementation (репозитории для внешних источников)
-|   |-- /Facade - Интерфейсы обращения к UI внутри модуля
-|   |-- /Port - Интерфейсы обращения к модулю (через PortGateway)
+|   |-- /Facade - Интерфейсы обращения UI к модулю (UI взаимодействует с бизнес логикой только через эти фасады)
 |   |-- /Model - ORM models
 |   |-- /Query - Query handlers
 |   |-- /Providers - Domain service providers
@@ -51,6 +50,7 @@
 |   |   |-- /Providers - UI service providers
 |   |   |-- /routes.php
 |   |-- /Api
+|   |-- /Port - Контроллеры обращения к модулю (через PortGateway)
 |   |-- /Site
 |-- /Tests
 |   |-- /Feature
@@ -58,6 +58,14 @@
 |   |   |   |-- /Admin
 |   |   |   |   |-- /Controllers
 |   |-- /Unit
+```
+
+#### Custom structure
+
+```
+/src
+|-- /Framework - Фреймворк для работы модулей
+|-- /Illuminate - Laravel extends
 ```
 
 #### Resources
