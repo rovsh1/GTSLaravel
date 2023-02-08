@@ -1,6 +1,6 @@
 <?php
 
-namespace Custom\EntityFactory;
+namespace Custom\Framework\Foundation\Support\EntityFactory;
 
 use Illuminate\Contracts\Pagination\CursorPaginator;
 use Illuminate\Contracts\Pagination\Paginator;

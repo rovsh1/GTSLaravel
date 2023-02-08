@@ -1,6 +1,6 @@
 <?php
 
-namespace Custom\Dto;
+namespace Custom\Framework\Foundation\Support\Dto;
 
 use Spatie\LaravelData\PaginatedDataCollection;
 

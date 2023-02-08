@@ -2,8 +2,8 @@
 
 namespace GTS\Integration\Traveline\Application\Dto;
 
-use Custom\Dto\Attributes\MapOutputName;
-use Custom\Dto\Dto;
+use Custom\Framework\Foundation\Support\Dto\Attributes\MapOutputName;
+use Custom\Framework\Foundation\Support\Dto\Dto;
 
 class RatePlanDto extends Dto
 {

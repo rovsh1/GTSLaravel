@@ -1,6 +1,6 @@
 <?php
 
-namespace Custom\Dto\Attributes;
+namespace Custom\Framework\Foundation\Support\Dto\Attributes;
 
 use Attribute;
 

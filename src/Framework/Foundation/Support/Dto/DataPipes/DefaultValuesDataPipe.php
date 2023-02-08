@@ -1,8 +1,8 @@
 <?php
 
-namespace Custom\Dto\DataPipes;
+namespace Custom\Framework\Foundation\Support\Dto\DataPipes;
 
-use Custom\Dto\Optional;
+use Custom\Framework\Foundation\Support\Dto\Optional;
 use Illuminate\Support\Collection;
 use Spatie\LaravelData\Support\DataClass;
 use Spatie\LaravelData\Support\DataProperty;

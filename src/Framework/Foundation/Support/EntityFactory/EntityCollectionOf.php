@@ -1,6 +1,6 @@
 <?php
 
-namespace Custom\EntityFactory;
+namespace Custom\Framework\Foundation\Support\EntityFactory;
 
 use Attribute;
 use Spatie\LaravelData\Attributes\DataCollectionOf;

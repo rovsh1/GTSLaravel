@@ -2,7 +2,7 @@
 
 namespace GTS\Hotel\Application\Dto\Info;
 
-use Custom\Dto\Dto;
+use Custom\Framework\Foundation\Support\Dto\Dto;
 
 class PriceRateDto extends Dto
 {
