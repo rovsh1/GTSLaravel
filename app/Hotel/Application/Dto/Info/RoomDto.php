@@ -2,9 +2,9 @@
 
 namespace GTS\Hotel\Application\Dto\Info;
 
-use GTS\Shared\Application\Dto\Dto;
-use GTS\Shared\Application\Dto\DtoCollection;
-use GTS\Shared\Application\Dto\DtoCollectionOf;
+use Custom\Dto\Dto;
+use Custom\Dto\DtoCollection;
+use Custom\Dto\DtoCollectionOf;
 
 class RoomDto extends Dto
 {

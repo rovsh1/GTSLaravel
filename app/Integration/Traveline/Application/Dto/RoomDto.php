@@ -2,13 +2,13 @@
 
 namespace GTS\Integration\Traveline\Application\Dto;
 
-use GTS\Shared\Application\Dto\Attributes\MapInputName;
-use GTS\Shared\Application\Dto\Attributes\MapOutputName;
-use GTS\Shared\Application\Dto\Attributes\WithCast;
-use GTS\Shared\Application\Dto\Dto;
-use GTS\Shared\Application\Dto\DtoCollection;
-use GTS\Shared\Application\Dto\DtoCollectionOf;
-use GTS\Shared\Application\Dto\Optional;
+use Custom\Dto\Attributes\MapInputName;
+use Custom\Dto\Attributes\MapOutputName;
+use Custom\Dto\Attributes\WithCast;
+use Custom\Dto\Dto;
+use Custom\Dto\DtoCollection;
+use Custom\Dto\DtoCollectionOf;
+use Custom\Dto\Optional;
 
 class RoomDto extends Dto
 {

@@ -1,11 +1,9 @@
 <?php
 
-namespace GTS\Shared\Application\Dto\DataPipes;
+namespace Custom\Dto\DataPipes;
 
+use Custom\Dto\Optional;
 use Illuminate\Support\Collection;
-
-use GTS\Shared\Application\Dto\Optional;
-
 use Spatie\LaravelData\Support\DataClass;
 use Spatie\LaravelData\Support\DataProperty;
 

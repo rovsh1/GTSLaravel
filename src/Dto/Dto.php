@@ -1,10 +1,9 @@
 <?php
 
-namespace GTS\Shared\Application\Dto;
+namespace Custom\Dto;
 
-
+use Custom\Dto\DataPipes\DefaultValuesDataPipe;
 use GTS\Shared\Infrastructure\Facade\DomainModelNormalizer;
-use GTS\Shared\Application\Dto\DataPipes\DefaultValuesDataPipe;
 
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\DataPipeline;

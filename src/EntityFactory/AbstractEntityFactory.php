@@ -1,6 +1,6 @@
 <?php
 
-namespace GTS\Shared\Domain\Factory;
+namespace Custom\EntityFactory;
 
 use Illuminate\Contracts\Pagination\CursorPaginator;
 use Illuminate\Contracts\Pagination\Paginator;

@@ -1,6 +1,6 @@
 <?php
 
-namespace GTS\Shared\Domain\Factory;
+namespace Custom\EntityFactory;
 
 use Spatie\LaravelData\PaginatedDataCollection;
 

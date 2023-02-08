@@ -5,8 +5,9 @@ namespace GTS\Integration\Traveline\Infrastructure\Adapter;
 use Carbon\CarbonInterface;
 
 use GTS\Integration\Traveline\Domain\Adapter\ReservationAdapterInterface;
+use GTS\Shared\Infrastructure\Adapter\AbstractPortAdapter;
 
-class ReservationAdapter implements ReservationAdapterInterface
+class ReservationAdapter extends AbstractPortAdapter implements ReservationAdapterInterface
 {
 
     public function getReservations(?int $id = null, ?int $hotelId = null, ?CarbonInterface $startDate = null)

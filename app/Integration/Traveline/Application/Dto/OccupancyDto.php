@@ -2,8 +2,8 @@
 
 namespace GTS\Integration\Traveline\Application\Dto;
 
-use GTS\Shared\Application\Dto\Attributes\MapOutputName;
-use GTS\Shared\Application\Dto\Dto;
+use Custom\Dto\Attributes\MapOutputName;
+use Custom\Dto\Dto;
 
 class OccupancyDto extends Dto
 {

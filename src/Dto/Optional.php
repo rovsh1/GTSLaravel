@@ -1,6 +1,6 @@
 <?php
 
-namespace GTS\Shared\Application\Dto;
+namespace Custom\Dto;
 
 class Optional extends \Spatie\LaravelData\Optional
 {

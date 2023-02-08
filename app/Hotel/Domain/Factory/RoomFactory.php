@@ -2,9 +2,9 @@
 
 namespace GTS\Hotel\Domain\Factory;
 
+use Custom\EntityFactory\AbstractEntityFactory;
+use Custom\EntityFactory\EntityCollectionOf;
 use GTS\Hotel\Domain\Entity\Room;
-use GTS\Shared\Domain\Factory\AbstractEntityFactory;
-use GTS\Shared\Domain\Factory\EntityCollectionOf;
 
 class RoomFactory extends AbstractEntityFactory
 {

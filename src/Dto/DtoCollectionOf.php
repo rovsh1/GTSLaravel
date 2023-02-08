@@ -1,12 +1,12 @@
 <?php
 
-namespace GTS\Shared\Domain\Factory;
+namespace Custom\Dto;
 
 use Attribute;
 use Spatie\LaravelData\Attributes\DataCollectionOf;
 
 #[Attribute(Attribute::TARGET_PROPERTY)]
-class EntityCollectionOf extends DataCollectionOf
+class DtoCollectionOf extends DataCollectionOf
 {
 
 }

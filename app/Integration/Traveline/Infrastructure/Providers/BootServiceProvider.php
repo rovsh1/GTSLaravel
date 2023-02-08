@@ -2,11 +2,12 @@
 
 namespace GTS\Integration\Traveline\Infrastructure\Providers;
 
-use GTS\Integration\Traveline\Domain;
-use GTS\Integration\Traveline\Infrastructure;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use Illuminate\Support\ServiceProvider;
+
+use GTS\Integration\Traveline\Domain;
+use GTS\Integration\Traveline\Infrastructure;
 
 class BootServiceProvider extends ServiceProvider
 {
@@ -21,14 +22,14 @@ class BootServiceProvider extends ServiceProvider
     {
         $this->app->bind(ClientInterface::class, Client::class);
 
-        $this->app->singleton(\GTS\Integration\Traveline\Infrastructure\Facade\ReservationFacadeInterface::class, \GTS\Integration\Traveline\Infrastructure\Facade\ReservationFacade::class);
-        $this->app->singleton(\GTS\Integration\Traveline\Infrastructure\Facade\HotelFacadeInterface::class, \GTS\Integration\Traveline\Infrastructure\Facade\HotelFacade::class);
+        $this->app->singleton(Infrastructure\Facade\ReservationFacadeInterface::class, Infrastructure\Facade\ReservationFacade::class);
+        $this->app->singleton(Infrastructure\Facade\HotelFacadeInterface::class, Infrastructure\Facade\HotelFacade::class);
 
-        $this->app->singleton(\GTS\Integration\Traveline\Domain\Adapter\ReservationAdapterInterface::class, \GTS\Integration\Traveline\Infrastructure\Adapter\ReservationAdapter::class);
-        $this->app->singleton(\GTS\Integration\Traveline\Domain\Adapter\HotelAdapterInterface::class, \GTS\Integration\Traveline\Infrastructure\Adapter\HotelAdapter::class);
-        $this->app->singleton(\GTS\Integration\Traveline\Domain\Adapter\TravelineAdapterInterface::class, function ($app) {
+        $this->app->singleton(Domain\Adapter\ReservationAdapterInterface::class, Infrastructure\Adapter\ReservationAdapter::class);
+        $this->app->singleton(Domain\Adapter\HotelAdapterInterface::class, Infrastructure\Adapter\HotelAdapter::class);
+        $this->app->singleton(Domain\Adapter\TravelineAdapterInterface::class, function ($app) {
             $notificationsUrl = $app->config('notifications_url');
-            return new \GTS\Integration\Traveline\Infrastructure\Adapter\TravelineAdapter(app(ClientInterface::class), $notificationsUrl);
+            return new Infrastructure\Adapter\TravelineAdapter(app(ClientInterface::class), $notificationsUrl);
         });
     }
 }

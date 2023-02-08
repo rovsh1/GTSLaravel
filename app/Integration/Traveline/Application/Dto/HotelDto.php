@@ -2,11 +2,11 @@
 
 namespace GTS\Integration\Traveline\Application\Dto;
 
-use GTS\Shared\Application\Dto\Attributes\MapOutputName;
-use GTS\Shared\Application\Dto\Dto;
-use GTS\Shared\Application\Dto\DtoCollection;
-use GTS\Shared\Application\Dto\DtoCollectionOf;
-use GTS\Shared\Application\Dto\Optional;
+use Custom\Dto\Attributes\MapOutputName;
+use Custom\Dto\Dto;
+use Custom\Dto\DtoCollection;
+use Custom\Dto\DtoCollectionOf;
+use Custom\Dto\Optional;
 
 class HotelDto extends Dto
 {

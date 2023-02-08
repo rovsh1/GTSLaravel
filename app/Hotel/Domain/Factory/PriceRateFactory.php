@@ -2,8 +2,8 @@
 
 namespace GTS\Hotel\Domain\Factory;
 
+use Custom\EntityFactory\AbstractEntityFactory;
 use GTS\Hotel\Domain\Entity\PriceRate;
-use GTS\Shared\Domain\Factory\AbstractEntityFactory;
 
 class PriceRateFactory extends AbstractEntityFactory
 {

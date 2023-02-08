@@ -1,6 +1,6 @@
 <?php
 
-namespace GTS\Shared\Application\Dto\Attributes;
+namespace Custom\Dto\Attributes;
 
 use Attribute;
 
