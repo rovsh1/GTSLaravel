@@ -2,7 +2,7 @@
 
 namespace GTS\Services\Scheduler\Infrastructure\Providers;
 
-use Custom\Framework\Foundation\Support\ServiceProvider;
+use Custom\Framework\Foundation\Support\Providers\ServiceProvider;
 use GTS\Services\Scheduler\Infrastructure\Facade\Cron\CrudFacade;
 use GTS\Services\Scheduler\Infrastructure\Facade\Cron\CrudFacadeInterface;
 

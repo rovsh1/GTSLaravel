@@ -2,8 +2,8 @@
 
 namespace GTS\Reservation\HotelReservation\Infrastructure\Query;
 
-use Custom\Framework\Bus\QueryHandlerInterface;
-use Custom\Framework\Bus\QueryInterface;
+use Custom\Framework\Contracts\Bus\QueryHandlerInterface;
+use Custom\Framework\Contracts\Bus\QueryInterface;
 use GTS\Reservation\HotelReservation\Domain\Entity\Reservation as Entity;
 use GTS\Reservation\HotelReservation\Infrastructure\Models\Reservation as Model;
 

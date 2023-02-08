@@ -3,7 +3,8 @@
 namespace Custom\Framework\Bus;
 
 use Custom\Framework\Container\Container;
-use Custom\Framework\Validation\ValidatorPipelineBehaviorInterface;
+use Custom\Framework\Contracts\Bus\CommandInterface;
+use Custom\Framework\Contracts\Validation\ValidatorPipelineBehaviorInterface;
 
 class ValidatorPipelineBehavior implements ValidatorPipelineBehaviorInterface
 {

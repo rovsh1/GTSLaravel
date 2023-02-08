@@ -1,5 +1,5 @@
 <?php
 
-namespace Custom\Framework\Exception;
+namespace Custom\Framework\Foundation\Exception;
 
 class AttributeRequiredException extends \RuntimeException { }

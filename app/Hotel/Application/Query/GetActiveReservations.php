@@ -2,7 +2,7 @@
 
 namespace GTS\Hotel\Application\Query;
 
-use Custom\Framework\Bus\QueryInterface;
+use Custom\Framework\Contracts\Bus\QueryInterface;
 
 class GetActiveReservations implements QueryInterface
 {

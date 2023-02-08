@@ -1,6 +1,6 @@
 <?php
 
-namespace Custom\Framework\Validation;
+namespace Custom\Framework\Contracts\Validation;
 
 interface CommandValidatorInterface
 {

@@ -2,8 +2,8 @@
 
 namespace Custom\Framework\Bus\Middleware;
 
-use Custom\Framework\Bus\CommandInterface;
 use Custom\Framework\Container\Container;
+use Custom\Framework\Contracts\Bus\CommandInterface;
 
 class ValidationMiddleware
 {

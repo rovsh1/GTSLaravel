@@ -2,7 +2,7 @@
 
 namespace GTS\Administrator\Infrastructure\Providers;
 
-use Custom\Framework\Foundation\Support\ServiceProvider;
+use Custom\Framework\Foundation\Support\Providers\ServiceProvider;
 use GTS\Administrator\Domain;
 use GTS\Administrator\Infrastructure;
 use GTS\Administrator\Infrastructure\Facade;

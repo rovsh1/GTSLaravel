@@ -2,7 +2,7 @@
 
 namespace GTS\Hotel\Infrastructure\Facade;
 
-use Custom\Framework\Bus\QueryBusInterface;
+use Custom\Framework\Contracts\Bus\QueryBusInterface;
 use GTS\Hotel\Application\Dto\Info\HotelDto;
 use GTS\Hotel\Application\Dto\Info\RoomDto;
 use GTS\Hotel\Application\Query\GetHotelById;

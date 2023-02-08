@@ -2,7 +2,7 @@
 
 namespace GTS\Services\FileStorage\Infrastructure\Facade;
 
-use Custom\Framework\Exception\EntityNotFoundException;
+use Custom\Framework\Foundation\Exception\EntityNotFoundException;
 use GTS\Services\FileStorage\Application\Dto\FileDto;
 use GTS\Services\FileStorage\Domain\Entity\File;
 use GTS\Services\FileStorage\Domain\Repository\DatabaseRepositoryInterface;

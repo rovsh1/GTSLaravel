@@ -1,6 +1,6 @@
 <?php
 
-namespace Custom\Framework\Event;
+namespace Custom\Framework\Contracts\Event;
 
 interface DomainEventInterface
 {

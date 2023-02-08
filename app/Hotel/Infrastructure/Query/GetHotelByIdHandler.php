@@ -2,8 +2,8 @@
 
 namespace GTS\Hotel\Infrastructure\Query;
 
-use Custom\Framework\Bus\QueryHandlerInterface;
-use Custom\Framework\Bus\QueryInterface;
+use Custom\Framework\Contracts\Bus\QueryHandlerInterface;
+use Custom\Framework\Contracts\Bus\QueryInterface;
 use GTS\Hotel\Application\Query\GetHotelById;
 use GTS\Hotel\Domain\Entity\Hotel;
 use GTS\Hotel\Domain\Factory\HotelFactory;

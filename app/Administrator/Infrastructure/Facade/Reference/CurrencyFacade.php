@@ -2,7 +2,7 @@
 
 namespace GTS\Administrator\Infrastructure\Facade\Reference;
 
-use Custom\Framework\Bus\QueryBusInterface;
+use Custom\Framework\Contracts\Bus\QueryBusInterface;
 use GTS\Administrator\Application\Query\GetCurrencies;
 
 class CurrencyFacade implements CurrencyFacadeInterface

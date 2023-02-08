@@ -2,7 +2,7 @@
 
 namespace GTS\Reservation\HotelReservation\Infrastructure\Providers;
 
-use Custom\Framework\Foundation\Support\ServiceProvider;
+use Custom\Framework\Foundation\Support\Providers\ServiceProvider;
 use GTS\Reservation\HotelReservation\Domain\Adapter\FileStorageAdapterInterface;
 use GTS\Reservation\HotelReservation\Infrastructure\Adapter\FileStorageAdapter;
 

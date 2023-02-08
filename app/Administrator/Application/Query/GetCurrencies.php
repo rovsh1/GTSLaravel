@@ -2,7 +2,7 @@
 
 namespace GTS\Administrator\Application\Query;
 
-use Custom\Framework\Bus\QueryInterface;
+use Custom\Framework\Contracts\Bus\QueryInterface;
 
 class GetCurrencies implements QueryInterface
 {

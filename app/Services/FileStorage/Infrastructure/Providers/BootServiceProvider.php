@@ -2,7 +2,7 @@
 
 namespace GTS\Services\FileStorage\Infrastructure\Providers;
 
-use Custom\Framework\Foundation\Support\ServiceProvider;
+use Custom\Framework\Foundation\Support\Providers\ServiceProvider;
 use GTS\Services\FileStorage\Domain\Repository\DatabaseRepositoryInterface;
 use GTS\Services\FileStorage\Domain\Repository\StorageRepositoryInterface;
 use GTS\Services\FileStorage\Domain\Service as DomainService;

@@ -3,6 +3,8 @@
 namespace Custom\Framework\Event;
 
 use Custom\Framework\Container\Container;
+use Custom\Framework\Contracts\Event\DomainEventDispatcherInterface;
+use Custom\Framework\Contracts\Event\DomainEventInterface;
 
 class IntegrationEventDispatcher implements DomainEventDispatcherInterface
 {

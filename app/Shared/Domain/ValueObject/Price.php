@@ -2,7 +2,7 @@
 
 namespace GTS\Shared\Domain\ValueObject;
 
-use Custom\Framework\Exception\ValidationException;
+use Custom\Framework\Foundation\Exception\ValidationException;
 
 class Price
 {

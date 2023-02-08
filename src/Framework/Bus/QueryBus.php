@@ -3,6 +3,8 @@
 namespace Custom\Framework\Bus;
 
 use Custom\Framework\Container\Container;
+use Custom\Framework\Contracts\Bus\QueryBusInterface;
+use Custom\Framework\Contracts\Bus\QueryInterface;
 
 class QueryBus implements QueryBusInterface
 {

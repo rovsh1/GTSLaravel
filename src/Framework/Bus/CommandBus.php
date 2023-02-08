@@ -3,6 +3,8 @@
 namespace Custom\Framework\Bus;
 
 use Custom\Framework\Container\Container;
+use Custom\Framework\Contracts\Bus\CommandBusInterface;
+use Custom\Framework\Contracts\Bus\CommandInterface;
 
 class CommandBus implements CommandBusInterface
 {

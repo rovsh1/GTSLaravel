@@ -2,7 +2,7 @@
 
 namespace GTS\Services\PortGateway;
 
-class Client implements PortGatewayInterface
+class Client
 {
     public function __construct() {}
 
