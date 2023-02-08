@@ -9,7 +9,9 @@ use GTS\Shared\UI\Admin\View\Grid\GridBuilder;
 
 class SearchAction
 {
-    public function __construct(public readonly CountryFacadeInterface $facade) {}
+    public function __construct(
+        public readonly CountryFacadeInterface $facade
+    ) {}
 
     public function handle(array $params = [])
     {

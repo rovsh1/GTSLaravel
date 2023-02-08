@@ -19,6 +19,10 @@ class BootServiceProvider extends ServiceProvider
         $this->app->singleton(Facade\FilesFacadeInterface::class, Facade\FilesFacade::class);
         $this->app->singleton(Domain\Adapter\FilesAdapterInterface::class, Infrastructure\Adapter\FilesAdapter::class);
 
+        $this->app->singleton(Facade\AuthFacadeInterface::class, Facade\AuthFacade::class);
+
+        $this->app->singleton(Domain\Repository\AdministratorRepositoryInterface::class, Infrastructure\Repository\AdministratorRepository::class);
+
         $this->app->register(AclServiceProvider::class);
     }
 }

@@ -3,6 +3,7 @@
 namespace GTS\Administrator\Infrastructure\Repository;
 
 use Custom\Framework\Contracts\Bus\QueryBusInterface;
+
 use GTS\Administrator\Domain\Repository\CountryRepositoryInterface;
 use GTS\Administrator\Infrastructure\Models\Country;
 use GTS\Administrator\Infrastructure\Query\CountrySearchQuery;

@@ -3,11 +3,21 @@
 namespace GTS\Administrator\Infrastructure\Facade\Reference;
 
 use Custom\Framework\Contracts\Bus\QueryBusInterface;
+
+use GTS\Administrator\Domain\Repository\CurrencyRepositoryInterface;
 use GTS\Administrator\Application\Query\GetCurrencies;
 
 class CurrencyFacade implements CurrencyFacadeInterface
 {
-    public function __construct(private QueryBusInterface $queryBus) {}
+    public function __construct(
+        private readonly CurrencyRepositoryInterface $currencyRepository,
+        private readonly QueryBusInterface $queryBus
+    ) {}
+
+    public function findById()
+    {
+        return $this->currencyRepository->find();
+    }
 
     public function getCurrencies($params)
     {
