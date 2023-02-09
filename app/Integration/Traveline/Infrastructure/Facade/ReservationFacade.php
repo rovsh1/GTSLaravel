@@ -4,21 +4,23 @@ namespace GTS\Integration\Traveline\Infrastructure\Facade;
 
 use Carbon\CarbonInterface;
 use Custom\Framework\Contracts\Bus\CommandBusInterface;
+use Custom\Framework\Contracts\Bus\QueryBusInterface;
 use GTS\Integration\Traveline\Application\Command\ConfirmReservations;
-use GTS\Integration\Traveline\Domain\Adapter\ReservationAdapterInterface;
+use GTS\Integration\Traveline\Application\Query\GetReservations;
+use GTS\Reservation\HotelReservation\Application\Dto\ReservationDto;
 
 class ReservationFacade implements ReservationFacadeInterface
 {
     public function __construct(
         private CommandBusInterface $commandBus,
-        private ReservationAdapterInterface $adapter
+        private QueryBusInterface   $queryBus
     ) {}
 
-    public function getReservations(?int $id = null, ?int $hotelId = null, ?CarbonInterface $startDate = null)
+    public function getReservations(?int $id = null, ?int $hotelId = null, ?CarbonInterface $startDate = null): array
     {
-        $reservationsDto = $this->adapter->getReservations($id, $hotelId, $startDate);
+        $reservations = $this->queryBus->execute(new GetReservations($id, $hotelId, $startDate));
 
-        return $reservationsDto;
+        return ReservationDto::collection($reservations)->all();
     }
 
     public function confirmReservations()

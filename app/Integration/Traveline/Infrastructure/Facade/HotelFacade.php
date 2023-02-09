@@ -15,7 +15,7 @@ class HotelFacade implements HotelFacadeInterface
         private HotelAdapterInterface $adapter
     ) {}
 
-    public function getRoomsAndRatePlans(int $hotelId)
+    public function getRoomsAndRatePlans(int $hotelId): HotelDto
     {
         $hotel = $this->adapter->getHotelById($hotelId);
         $rooms = $this->adapter->getRoomsAndRatePlans($hotelId);

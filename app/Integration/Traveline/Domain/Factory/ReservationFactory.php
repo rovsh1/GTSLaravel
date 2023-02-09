@@ -1,10 +1,9 @@
 <?php
 
-namespace GTS\Reservation\HotelReservation\Domain\Factory;
+namespace GTS\Integration\Traveline\Domain\Factory;
 
 use Custom\Framework\Foundation\Support\EntityFactory\AbstractEntityFactory;
-
-use GTS\Reservation\HotelReservation\Domain\Entity\Reservation;
+use GTS\Integration\Traveline\Domain\Entity\Reservation;
 
 class ReservationFactory extends AbstractEntityFactory
 {

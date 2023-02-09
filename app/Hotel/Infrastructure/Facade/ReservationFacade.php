@@ -7,7 +7,7 @@ use Custom\Framework\Contracts\Bus\QueryBusInterface;
 use GTS\Hotel\Application\Command\ReserveQuota;
 use GTS\Hotel\Application\Query\GetActiveReservations;
 
-class ReservationReservationFacade implements ReservationFacadeInterface
+class ReservationFacade implements ReservationFacadeInterface
 {
 
     public function __construct(
