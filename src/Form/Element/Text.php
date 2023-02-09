@@ -8,7 +8,7 @@ class Text extends Input
         'inputType' => 'text'
     ];
 
-    protected $attributes = ['autocomplete', 'list', 'maxlength', 'minlength', 'pattern', 'placeholder', 'readonly', 'required', 'size', 'spellcheck'];
+    protected array $attributes = ['readonly', 'required', 'autocomplete', 'list', 'maxlength', 'minlength', 'pattern', 'placeholder', 'size', 'spellcheck'];
 
     protected function prepareValue($value)
     {

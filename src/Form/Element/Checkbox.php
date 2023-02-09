@@ -12,7 +12,7 @@ class Checkbox extends Input
         'checkedValue' => 1,
         'uncheckedValue' => 0
     ];
-    protected $attributes = [];//'indeterminate'
+    protected array $attributes = ['readonly', 'required'];//'indeterminate'
 
     public function __construct(string $name, array $options = [])
     {
@@ -65,8 +65,6 @@ class Checkbox extends Input
     public function getHtml(): string
     {
         return '<input'
-            . ' id="' . $this->getInputId() . '"'
-            . ' name="' . $this->getInputName() . '"'
             . ' type="' . ($this->inputType ?? 'checkbox') . '"'
             . ' class="' . ($this->class ?? 'input-' . $this->inputType) . '"'
             . ($this->isChecked() ? ' checked' : '')

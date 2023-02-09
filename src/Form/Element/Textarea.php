@@ -12,7 +12,7 @@ class Textarea extends AbstractElement
         'unsafe' => true
     ];
 
-    protected $attributes = ['placeholder', 'maxlength', 'required', 'autofocus', 'readonly'];
+    private array $attributes = ['placeholder', 'maxlength', 'required', 'autofocus', 'readonly'];
 
     protected function prepareValue($value)
     {
@@ -39,10 +39,9 @@ class Textarea extends AbstractElement
 
     public function getHtml(): string
     {
-        return '<textarea name="' . $this->getInputName() . '"'
+        return '<textarea'
             . ' class="' . $this->class . '"'
-            . ' id="' . $this->getInputId() . '"'
-            . (new InputAttributes($this))->render() . '>'
+            . (new InputAttributes($this))->render($this->attributes) . '>'
             . $this->getValue()
             . '</textarea>';
     }

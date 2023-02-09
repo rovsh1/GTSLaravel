@@ -8,7 +8,7 @@ class Email extends Input
         'inputType' => 'email'
     ];
 
-    protected $attributes = ['maxlength', 'autocomplete', 'minlength', 'multiple', 'pattern', 'placeholder', 'readonly', 'size'];
+    protected array $attributes = ['readonly', 'required', 'maxlength', 'autocomplete', 'minlength', 'multiple', 'pattern', 'placeholder', 'size'];
 
     public function checkValue($value): bool
     {

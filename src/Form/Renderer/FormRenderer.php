@@ -9,7 +9,7 @@ class FormRenderer
     public function render(Form $form): string
     {
         if (($view = $form->getOption('view'))) {
-            return view($view, $this->getViewData($form));
+            return (string)view($view, $this->getViewData($form));
         } else {
             return Compiler::compile('form', $this->getViewData($form));
         }

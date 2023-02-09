@@ -16,6 +16,12 @@ class TestForm extends Form
                 'number.in' => 'Number out of range'
             ])
             ->csrf()
+            ->select('currency', [
+                'label' => 'Currency',
+                'emptyItem' => '-Not selected-',
+                'groups' => [3, 5, 12, 65],
+                'items' => [['id' => 56, 'parent_id' => 5], 3, 5, 12, 65]//,
+            ])
             ->checkbox('flag', ['label' => 'Checked', 'checkedValue' => 'asdasd', 'uncheckedValue' => 66, 'required' => true])
             ->hidden('id', ['label' => '', 'cast' => 'int', 'required' => true])
             ->text('name', ['label' => 'Name', 'required' => true])

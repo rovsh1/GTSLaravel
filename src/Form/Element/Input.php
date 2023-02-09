@@ -10,7 +10,7 @@ class Input extends AbstractElement
         'inputType' => 'text'
     ];
 
-    protected $attributes = [];
+    protected array $attributes = ['readonly', 'required'];
 
     public function type(): string
     {
@@ -20,12 +20,10 @@ class Input extends AbstractElement
     public function getHtml(): string
     {
         return '<input'
-            . ' name="' . $this->getInputName() . '"'
-            . ' id="' . $this->getInputId() . '"'
             . ' type="' . ($this->inputType ?? 'text') . '"'
             . ' class="' . ($this->class ?? 'input-' . $this->inputType) . '"'
             . $this->getListAttribute()
-            . (new InputAttributes($this))->render()
+            . (new InputAttributes($this))->render($this->attributes)
             . ' value="' . self::escape($this->getValue()) . '">'
             . $this->getListHtml();
     }

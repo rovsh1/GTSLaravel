@@ -12,7 +12,7 @@ class Number extends Input
         'nonnegative' => false
     ];
 
-    protected $attributes = ['min', 'max', 'step', 'autocomplete', 'list', 'pattern', 'placeholder', 'readonly', 'required', 'size'];
+    protected array $attributes = ['readonly', 'required', 'min', 'max', 'step', 'autocomplete', 'list', 'pattern', 'placeholder', 'size'];
 
     public function checkValue($value): bool
     {

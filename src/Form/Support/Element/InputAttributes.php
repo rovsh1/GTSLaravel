@@ -28,11 +28,14 @@ class InputAttributes
 
     public function __construct(private readonly ElementInterface $element) {}
 
-    public function render(): string
+    public function render(array $allowed = null): string
     {
-        $s = '';
+        $s = 'name="' . $this->element->getInputName() . '" id="' . $this->element->getInputId() . '"';
+
         foreach (self::$attributesCasts as $k => $cast) {
-            $s .= $this->cast($this->element->$k, $cast, $k);
+            if (null === $allowed || in_array($k, $allowed)) {
+                $s .= $this->cast($this->element->$k, $cast, $k);
+            }
         }
 
         if (($v = $this->element->autocomplete)) {
