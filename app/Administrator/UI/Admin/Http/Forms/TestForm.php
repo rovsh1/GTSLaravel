@@ -19,8 +19,20 @@ class TestForm extends Form
             ->select('currency', [
                 'label' => 'Currency',
                 'emptyItem' => '-Not selected-',
+                'default' => 12,
                 'groups' => [3, 5, 12, 65],
                 'items' => [['id' => 56, 'parent_id' => 5], 3, 5, 12, 65]//,
+            ])
+            ->radio('gender', [
+                'label' => 'Gender',
+                'value' => 'female',
+                'items' => ['male', 'female']//,
+            ])
+            ->radio('items', [
+                'label' => 'Gender',
+                'value' => [2, 5],
+                'multiple' => true,
+                'items' => [2, 6, 7, 8, 5]
             ])
             ->checkbox('flag', ['label' => 'Checked', 'checkedValue' => 'asdasd', 'uncheckedValue' => 66, 'required' => true])
             ->hidden('id', ['label' => '', 'cast' => 'int', 'required' => true])

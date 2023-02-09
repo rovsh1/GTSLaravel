@@ -24,7 +24,7 @@ abstract class AbstractElement implements ElementInterface
 
     public function __construct(private readonly string $name, array $options = [])
     {
-        $value = $options['value'] ?? null;
+        $value = $options['value'] ?? $options['default'] ?? null;
         unset($options['value']);
 
         if (isset($options['default'])) {
