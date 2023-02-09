@@ -5,13 +5,11 @@ namespace GTS\Administrator\Infrastructure\Facade\Reference;
 use Custom\Framework\Contracts\Bus\QueryBusInterface;
 
 use GTS\Administrator\Domain\Repository\CurrencyRepositoryInterface;
-use GTS\Administrator\Application\Query\GetCurrencies;
 
 class CurrencyFacade implements CurrencyFacadeInterface
 {
     public function __construct(
-        private readonly CurrencyRepositoryInterface $currencyRepository,
-        private readonly QueryBusInterface $queryBus
+        private readonly CurrencyRepositoryInterface $currencyRepository
     ) {}
 
     public function findById()
@@ -19,9 +17,14 @@ class CurrencyFacade implements CurrencyFacadeInterface
         return $this->currencyRepository->find();
     }
 
-    public function getCurrencies($params)
+    public function search(mixed $params = null)
     {
-        // Из DTO формируем запрос
-        return $this->queryBus->execute(new GetCurrencies($params->limit, $params->offset));
+        // map to dto collection
+        return $this->currencyRepository->search($params);
+    }
+
+    public function count(mixed $params = null): int
+    {
+        return $this->currencyRepository->count($params);
     }
 }

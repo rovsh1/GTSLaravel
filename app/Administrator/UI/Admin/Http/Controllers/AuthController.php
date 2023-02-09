@@ -11,6 +11,9 @@ class AuthController extends Controller
 {
     public function index()
     {
+        // Todo переделать после изменения вебпака
+        app('layout')->head->addStyle(asset('assets/vendor/css/pages/page-auth.css'));
+
         return app('layout')
             ->layout('layouts.blank')
             ->view('auth.login');

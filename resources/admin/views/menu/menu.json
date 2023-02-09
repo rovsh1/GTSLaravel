@@ -8,12 +8,16 @@
                 {
                     "url": "/reference/currency",
                     "name": "Валюты",
-                    "slug": "currency.index"
+                    "slug": [
+                        "currency.index", "currency.create", "currency.edit"
+                    ]
                 },
                 {
                     "url": "/reference/country",
                     "name": "Страны",
-                    "slug": "country.index"
+                    "slug": [
+                        "country.index"
+                    ]
                 }
             ]
         }

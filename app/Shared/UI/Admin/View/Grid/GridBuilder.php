@@ -44,6 +44,7 @@ class GridBuilder
 
     public function getGrid(): Grid
     {
+        //dd($this->grid->getColumns());
         return $this->grid;
     }
 

@@ -2,14 +2,14 @@
 
 namespace GTS\Administrator\Infrastructure\Query;
 
-use GTS\Administrator\Infrastructure\Models\Country;
+use GTS\Administrator\Infrastructure\Models\Currency;
 use GTS\Shared\Infrastructure\Query\SearchQuery;
 
-class CountrySearchQuery extends SearchQuery
+class CurrencySearchQuery extends SearchQuery
 {
     public function __construct(mixed $paramsDto)
     {
-        parent::__construct(Country::class, $paramsDto);
+        parent::__construct(Currency::class, $paramsDto);
     }
 
     protected function beforeSelect(): void
@@ -19,7 +19,7 @@ class CountrySearchQuery extends SearchQuery
 
     protected function filter(): void
     {
-        $this->when('default', fn($q, $flag) => $q->where('default', $flag))
-            ->when('flag', fn($q, $flag) => $q->where('flag', $flag));
+        // $this->when('default', fn($q, $flag) => $q->where('default', $flag))
+        //    ->when('flag', fn($q, $flag) => $q->where('flag', $flag));
     }
 }

@@ -24,7 +24,7 @@ class LoginAction
         $administratorDto = $this->authFacade->login($validated['login'], $validated['password']);
 
         if (!empty($administratorDto)) {
-            return redirect(route('country.index'));
+            return redirect(route('currency.index'));
         }
 
         return redirect(route('auth.login'));
