@@ -6,13 +6,13 @@ use Gsdk\Form\Support\Element\InputAttributes;
 
 class Checkbox extends Input
 {
-
     protected array $options = [
         'inputType' => 'checkbox',
         'checkedValue' => 1,
         'uncheckedValue' => 0
     ];
-    protected array $attributes = ['readonly', 'required'];//'indeterminate'
+
+    //protected array $attributes = ['readonly', 'required', 'disabled'];//'indeterminate'
 
     public function __construct(string $name, array $options = [])
     {
@@ -71,5 +71,4 @@ class Checkbox extends Input
             . (new InputAttributes($this))->render()
             . ' value="' . self::escape($this->checkedValue) . '">';
     }
-
 }

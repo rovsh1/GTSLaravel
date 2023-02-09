@@ -21,22 +21,20 @@ class Select extends AbstractElement
 
     private array $items = [];
 
-    private array $attributes = ['size', 'multiple', 'required', 'autofocus'];
+    private array $attributes = ['required', 'readonly', 'disabled', 'size', 'multiple', 'autofocus'];
 
     public function __construct(string $name, array $options = [])
     {
-        if (isset($options['items'])) {
-            $this->setItems($options['items']);
-            unset($options['items']);
-        }
-
         if (isset($options['groups'])) {
             $this->setGroups($options['groups']);
             unset($options['groups']);
         }
 
-        if (isset($options['enum'])) {
-            //$this->setItems($options['items']);
+        if (isset($options['items'])) {
+            $this->setItems($options['items']);
+            unset($options['items']);
+        } elseif (isset($options['enum'])) {
+            $this->items = OptionBuilder::fromEnum($options['enum']);
         }
 
         parent::__construct($name, $options);
@@ -65,24 +63,29 @@ class Select extends AbstractElement
     public function isSelected($value): bool
     {
         $selected = $this->getValue();
+        $item = $this->getItem($value);
+        if (!$selected || !$item) {
+            return false;
+        }
 
         if (!$this->multiple) {
-            return ($value === $selected);
+            return ($item->originalValue === $selected);
         } elseif (is_array($selected)) {
-            return in_array($value, $selected);
+            return in_array($item->originalValue, $selected);
         } else {
             return false;
         }
     }
 
-    public function valueExists($value): bool
+    private function getItem($value): ?\stdClass
     {
+        $optionValue = OptionBuilder::formatValue($value);
         foreach ($this->items as $item) {
-            if ($item->value === $value) {
-                return true;
+            if ($item->originalValue === $value || $optionValue === $item->value) {
+                return $item;
             }
         }
-        return false;
+        return null;
     }
 
     protected function prepareValue($value)
@@ -102,13 +105,13 @@ class Select extends AbstractElement
                     $val = $val->id;
                 }
 
-                if ($this->valueExists($val)) {
-                    $values[] = $val;
+                if ($r = $this->getItem($val)) {
+                    $values[] = $r->originalValue;
                 }
             }
             return $values;
         } else {
-            return $value;
+            return $this->getItem($value)?->originalValue;
         }
     }
 

@@ -10,7 +10,7 @@ class Input extends AbstractElement
         'inputType' => 'text'
     ];
 
-    protected array $attributes = ['readonly', 'required'];
+    protected array $attributes = ['readonly', 'required', 'disabled'];
 
     public function type(): string
     {

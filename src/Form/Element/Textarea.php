@@ -12,7 +12,7 @@ class Textarea extends AbstractElement
         'unsafe' => true
     ];
 
-    private array $attributes = ['placeholder', 'maxlength', 'required', 'autofocus', 'readonly'];
+    private array $attributes = ['required', 'readonly', 'disabled', 'placeholder', 'maxlength', 'autofocus'];
 
     protected function prepareValue($value)
     {

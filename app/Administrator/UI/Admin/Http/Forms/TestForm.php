@@ -4,10 +4,18 @@ namespace GTS\Administrator\UI\Admin\Http\Forms;
 
 use GTS\Shared\UI\Admin\View\Form\Form;
 
+enum TestEnum: int
+{
+    case ONE = 1;
+    case TWO = 2;
+    case THREE = 3;
+}
+
 class TestForm extends Form
 {
     protected function boot()
     {
+        //dd(TestEnum::cases(), TestEnum::ONE, enum_exists(TestEnum::ONE::class));
         $this
             ->view('default.form.edit')
             ->messages([
@@ -19,9 +27,14 @@ class TestForm extends Form
             ->select('currency', [
                 'label' => 'Currency',
                 'emptyItem' => '-Not selected-',
-                'default' => 12,
+                'default' => '12',
                 'groups' => [3, 5, 12, 65],
                 'items' => [['id' => 56, 'parent_id' => 5], 3, 5, 12, 65]//,
+            ])
+            ->select('enum', [
+                'label' => 'Enum',
+                'emptyItem' => '-Not selected-',
+                'enum' => TestEnum::class
             ])
             ->radio('gender', [
                 'label' => 'Gender',

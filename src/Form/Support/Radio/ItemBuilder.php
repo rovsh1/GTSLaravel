@@ -8,9 +8,35 @@ class ItemBuilder
 
     private static array $valueKeys = ['id', 'key', 'value'];
 
-    private \stdClass $data;
+    protected \stdClass $data;
 
-    private \stdClass $option;
+    protected \stdClass $option;
+
+    public static function fromEnum(string $enum): array
+    {
+        if (!enum_exists($enum)) {
+            throw new \Exception('Enum undefined');
+        }
+
+        $items = [];
+        foreach ($enum::cases() as $r) {
+            $item = new \stdClass();
+            $item->originalValue = $r;
+            $item->value = $r->value ?? $r->name;
+            $item->text = $r->name;
+            $items[] = $item;
+        }
+        return $items;
+    }
+
+    public static function formatValue($value)
+    {
+        if (is_object($value) && enum_exists($value::class)) {
+            return $value->value ?? $value->name;
+        } else {
+            return (string)$value;
+        }
+    }
 
     public function __construct(mixed $data)
     {
@@ -29,16 +55,16 @@ class ItemBuilder
 
     public function setValue($key): static
     {
-        return $this->setParam('value', $key, self::$valueKeys);
+        $this->option->originalValue = $this->find('value', $key, self::$valueKeys);
+        $this->option->value = self::formatValue($this->option->originalValue);
+
+        return $this;
     }
 
     public function setText($key): static
     {
-        $this->setParam('text', $key, self::$textKeys);
-
-        if (!isset($this->option->text)) {
-            $this->option->text = $this->option->value;
-        }
+        $this->option->text = $this->find('text', $key, self::$textKeys)
+            ?? $this->option->value;
 
         return $this;
     }
@@ -48,23 +74,19 @@ class ItemBuilder
         return $this->option;
     }
 
-    protected function setParam($key, $defaultKey, $autoKeys = []): static
+    protected function find($key, $defaultKey, $autoKeys = [])
     {
-        $this->option->$key = null;
-
         if (isset($this->data->$key)) {
-            $this->option->$key = $this->data->$key;
+            return $this->data->$key;
         } elseif (isset($this->data->$defaultKey)) {
-            $this->option->$key = $this->data->$defaultKey;
+            return $this->data->$defaultKey;
         } else {
             foreach ($autoKeys as $k) {
                 if (isset($this->data->$k)) {
-                    $this->option->$key = $this->data->$k;
-                    break;
+                    return $this->data->$k;
                 }
             }
+            return null;
         }
-
-        return $this;
     }
 }
