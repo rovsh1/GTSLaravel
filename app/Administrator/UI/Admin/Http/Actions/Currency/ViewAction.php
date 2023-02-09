@@ -12,10 +12,6 @@ class ViewAction
 
     public function handle()
     {
-        // Отсюда уходит DTO
-        return $this->currencyFacade->getCurrencies((object)[
-            'limit' => 10,
-            'offset' => 0
-        ]);
+        //
     }
 }

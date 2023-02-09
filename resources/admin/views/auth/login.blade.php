@@ -1,11 +1,3 @@
-@extends('layouts/blank')
-
-@section('title', 'Вход в BO')
-
-@section('page-style')
-    <link rel="stylesheet" href="{{asset('assets/vendor/css/pages/page-auth.css')}}">
-@endsection
-
 @section('content')
     <div class="container-xxl">
         <div class="authentication-wrapper authentication-basic container-p-y">
@@ -15,7 +7,6 @@
                         <div class="app-brand justify-content-center">
                             <a href="{{url('/')}}" class="app-brand-link gap-2">
                                 <span class="app-brand-logo demo">@include('_partials.macros', ['wordbg' => '#566a7f'])</span>
-                                <span class="app-brand-text demo text-body fw-bolder">{{config('variables.templateName')}}</span>
                             </a>
                         </div>
                         <h4 class="mb-2">Добро пожаловать! 👋</h4>

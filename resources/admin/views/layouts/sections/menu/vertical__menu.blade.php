@@ -27,7 +27,7 @@
                         $activeClass = 'active';
                     } elseif (isset($menu->submenu)) {
                         foreach ($menu->submenu as $submenu) {
-                            if ($currentRouteName === $submenu->slug) {
+                            if (in_array($currentRouteName, $submenu->slug)) {
                                 $activeClass = 'active open';
                             }
                         }
