@@ -23,12 +23,20 @@ class ViewServiceProvider extends ServiceProvider
 
         GridNamespace\Grid::registerNamespace(GridNamespace::class . '\\Column');
 
-//        FormNamespace\Form::registerNamespace(FormNamespace::class . '\\Element');
+        $this->registerForm();
+    }
+
+    private function registerForm()
+    {
+        //        FormNamespace\Form::registerNamespace(FormNamespace::class . '\\Element');
         FormNamespace\Form::setDefaults([
 //            'view' => 'default.form.edit'
         ]);
         FormNamespace\Form::setElementDefaults([
             'class' => null
+        ]);
+        FormNamespace\Form::setDefaultMessages([
+            'required' => 'The :attribute field is required.',
         ]);
     }
 }

@@ -27,12 +27,12 @@ class HttpAction
         $sentData = Request::input($form->getName());
         $validatedData = $form->getValidator()->validate($sentData);
 
-        $this->setValidatedData($validatedData);
+        $this->setElementsData($sentData);
 
         return $form->isValid();
     }
 
-    private function setValidatedData($validatedData): void
+    private function setElementsData($validatedData): void
     {
         foreach ($this->form->getElements() as $element) {
             if ($element->disabled || !$element->isSubmittable()) {

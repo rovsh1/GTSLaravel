@@ -12,7 +12,7 @@ class InputAttributes
         'disabled' => 'attr',
         'readonly' => 'attr',
         'multiple' => 'attr',
-        'required' => 'attr',
+        //'required' => 'attr',
         'spellcheck' => 'bool',
         'minlength' => 'int',
         'maxlength' => 'int',

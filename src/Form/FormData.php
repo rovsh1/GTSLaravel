@@ -46,7 +46,7 @@ class FormData
         $this->model->save();
     }
 
-    public function toArray(): array
+    public function valid(): array
     {
         $data = [];
 
@@ -54,6 +54,24 @@ class FormData
             if ($element->disabled
                 || !$element->readable
                 || $element->hasError()
+//                || ($element->isEmpty() && !$element->isEmptyAllowed())
+            ) {
+                continue;
+            }
+
+            $data[$element->name] = $element->getValue();
+        }
+
+        return $data;
+    }
+
+    public function toArray(): array
+    {
+        $data = [];
+
+        foreach ($this->form->getElements() as $element) {
+            if ($element->disabled
+                || !$element->readable
 //                || ($element->isEmpty() && !$element->isEmptyAllowed())
             ) {
                 continue;

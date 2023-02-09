@@ -6,6 +6,7 @@ use Gsdk\Form\ElementInterface;
 use Gsdk\Form\ElementsParentInterface;
 use Gsdk\Form\Form;
 use Gsdk\Form\Label;
+use Gsdk\Form\Support\Element\RulesBuilder;
 
 abstract class AbstractElement implements ElementInterface
 {
@@ -15,9 +16,9 @@ abstract class AbstractElement implements ElementInterface
 
     protected Label $label;
 
-    protected mixed $value;
+    protected mixed $value = null;
 
-    protected ?string $error = null;
+    protected array $errors = [];
 
     protected bool $rendered = false;
 
@@ -133,20 +134,26 @@ abstract class AbstractElement implements ElementInterface
         $this->value = $this->validateValue($value);
     }
 
-    public function getError(): ?string
+    public function getErrors(): array
     {
-        return $this->error;
+        return $this->errors;
     }
 
-    public function setError(string $error): static
+    public function setErrors(string|array|null $error): static
     {
-        $this->error = $error;
+        if (is_null($error)) {
+            $this->errors = [];
+        } elseif (is_array($error)) {
+            $this->errors = $error;
+        } else {
+            $this->errors = [$error];
+        }
         return $this;
     }
 
     public function hasError(): bool
     {
-        return $this->error !== null;
+        return !empty($this->errors);
     }
 
     public function isHidden(): bool
@@ -171,7 +178,7 @@ abstract class AbstractElement implements ElementInterface
 
     public function isRenderable(): bool
     {
-        return true;
+        return false !== $this->render;
     }
 
     public function isValid(): bool
@@ -216,26 +223,13 @@ abstract class AbstractElement implements ElementInterface
         return $this->rendered;
     }
 
-    public function rules()
+    public function rules(): array|string
     {
         if ($this->rules) {
             return $this->rules;
+        } else {
+            return (new RulesBuilder())->build($this);
         }
-
-        $rules = [];
-        if ($this->isRequired()) {
-            $rules[] = 'required';
-        }
-
-        if ($this->nullable) {
-            $rules[] = 'nullable';
-        }
-
-        if ($this->cast) {
-            $rules[] = $this->cast;
-        }
-
-        return $rules ? implode('|', $rules) : '';
     }
 
     public function __toString(): string

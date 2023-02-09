@@ -22,13 +22,13 @@ class Validator
 
         if ($validator->fails()) {
             $messages = $validator->messages();
+            //dd($messages, $this->buildRules());
             foreach ($messages->keys() as $key) {
                 $element = $this->form->getElement($key);
-                $message = $this->formatMessage($messages->get($key));
                 if ($element) {
-                    $element->setError($message);
+                    $element->setErrors($messages->get($key));
                 } else {
-                    $this->addError($message);
+                    $this->addError($messages->get($key));
                 }
             }
         }
@@ -43,7 +43,7 @@ class Validator
 
     public function setMessages(array $messages): void
     {
-        $this->messages = $messages;
+        $this->messages = array_merge($this->messages, $messages);
     }
 
     public function getErrors(bool $withElementsErrors = true): array
@@ -56,16 +56,20 @@ class Validator
 
         foreach ($this->form->getElements() as $element) {
             if ($element->hasError()) {
-                $errors[$element->name] = $element->getError();
+                $errors = array_merge($errors, $element->getErrors());
             }
         }
 
         return $errors;
     }
 
-    public function addError($error): void
+    public function addError(string|array $error): void
     {
-        $this->errors[] = $error;
+        if (is_string($error)) {
+            $this->errors[] = $error;
+        } else {
+            $this->errors = array_merge($this->errors, $error);
+        }
     }
 
     public function isValid(): bool

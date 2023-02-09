@@ -10,17 +10,25 @@ class TestForm extends Form
     {
         $this
             ->view('default.form.edit')
+            ->messages([
+                'id.required' => 'ID undefined!',
+                'pass.regex' => 'Password need to match regex',
+                'number.in' => 'Number out of range'
+            ])
             ->csrf()
+            ->checkbox('flag', ['label' => 'Checked', 'checkedValue' => 'asdasd', 'uncheckedValue' => 66, 'required' => true])
             ->hidden('id', ['label' => '', 'cast' => 'int', 'required' => true])
             ->text('name', ['label' => 'Name', 'required' => true])
             ->tel('phone', ['label' => 'Phone', 'nullable' => true])
-            ->color('color', ['label' => 'color'])
+            ->color('color', ['label' => 'color', 'render' => false])
             ->file('file', ['label' => 'file'])
+            ->password('pass', ['label' => 'Пароль', 'rules' => 'regex:/^\d+$/'])
             ->month('month', ['label' => 'month', 'required' => true])
             ->range('range', ['label' => 'range', 'min' => 1, 'max' => 10])
             ->date('date', ['label' => 'date'])
             ->time('time', ['label' => 'time'])
-            ->number('number', ['label' => 'Number']);
+            ->textarea('notes', ['label' => 'ds', 'placeholder' => 'Notes placeholder'])
+            ->number('number', ['label' => 'Number', 'rules' => 'min:4|in:5,6']);
     }
 
     public function setTestData()
@@ -35,3 +43,6 @@ class TestForm extends Form
         ]);
     }
 }
+//, 'rules' => [
+//    ['regex' => '/^\d+$/']
+//]

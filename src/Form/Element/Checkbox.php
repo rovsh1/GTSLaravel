@@ -65,12 +65,13 @@ class Checkbox extends Input
     public function getHtml(): string
     {
         return '<input'
+            . ' id="' . $this->getInputId() . '"'
             . ' name="' . $this->getInputName() . '"'
             . ' type="' . ($this->inputType ?? 'checkbox') . '"'
             . ' class="' . ($this->class ?? 'input-' . $this->inputType) . '"'
             . ($this->isChecked() ? ' checked' : '')
             . (new InputAttributes($this))->render()
-            . ' value="' . self::escape($this->getValue()) . '">';
+            . ' value="' . self::escape($this->checkedValue) . '">';
     }
 
 }

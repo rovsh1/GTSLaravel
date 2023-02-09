@@ -35,6 +35,7 @@ class Form implements ElementsParentInterface
     {
         $this->httpAction = new Support\HttpAction($this);
         $this->validator = new Validator($this);
+        $this->validator->setMessages(self::$defaultMessages);
 
         if (is_string($options)) {
             $options = ['name' => $options];
@@ -126,7 +127,12 @@ class Form implements ElementsParentInterface
         return $this->getFormData()->toArray();
     }
 
-    public function error($error): static
+    public function getValidData(): array
+    {
+        return $this->getFormData()->valid();
+    }
+
+    public function error(string|array $error): static
     {
         $this->validator->addError($error);
 

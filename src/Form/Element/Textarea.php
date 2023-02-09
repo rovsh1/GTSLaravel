@@ -2,7 +2,6 @@
 
 namespace Gsdk\Form\Element;
 
-use Gsdk\Form\Element\Concerns\AbstractElement;
 use Gsdk\Form\Support\Element\InputAttributes;
 
 class Textarea extends AbstractElement
@@ -40,7 +39,9 @@ class Textarea extends AbstractElement
 
     public function getHtml(): string
     {
-        return '<textarea name="' . $this->getInputName() . '" class="' . $this->class . '"'
+        return '<textarea name="' . $this->getInputName() . '"'
+            . ' class="' . $this->class . '"'
+            . ' id="' . $this->getInputId() . '"'
             . (new InputAttributes($this))->render() . '>'
             . $this->getValue()
             . '</textarea>';

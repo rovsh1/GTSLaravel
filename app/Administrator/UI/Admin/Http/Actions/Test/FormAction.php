@@ -12,11 +12,12 @@ class FormAction
     {
         $form = new TestForm('data');
 
-        $form->error('User not found!');
+        //$form->error('User not found!');
         if ($this->submit($form)) {
             dd('submitted');
             redirect();
         }
+        dump($form->getData());
 
         $form->setTestData();
 

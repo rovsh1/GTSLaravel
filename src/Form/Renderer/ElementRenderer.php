@@ -31,7 +31,6 @@ class ElementRenderer
 
     private function getViewData($element): array
     {
-        $error = null;
         $cls = 'form-field field-' . $element->type;
         if ($element->name !== $element->type) {
             $cls .= ' field-' . $element->name;
@@ -39,7 +38,6 @@ class ElementRenderer
 
         if ($element->hasError()) {
             $cls .= ' field-invalid';
-            $error = $element->getError();
         }
 
         if ($element->required) {
@@ -50,7 +48,7 @@ class ElementRenderer
             'element' => $element,
             'label' => $element->getLabel(),
             'hint' => $element->hint,
-            'error' => $error,
+            'errors' => $element->getErrors(),
             'class' => $cls
         ];
     }

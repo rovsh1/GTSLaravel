@@ -1,7 +1,5 @@
 <div class="<?= $class ?>">
-    <?php if ($label) { ?>
-    <label for="<?= $element->id ?>"><?= $label ?></label>
-    <?php } ?>
+    <?= $label ?>
 
     <?= $element ?>
 
@@ -9,7 +7,7 @@
     <div class="form-element-hint"><?= $hint ?></div>
     <?php } ?>
 
-    <?php if ($error) { ?>
-    <div class="error"><?= $error ?></div>
+    <?php if ($errors) { ?>
+    <div class="error"><?= implode('<br>', $errors) ?></div>
     <?php } ?>
 </div>
