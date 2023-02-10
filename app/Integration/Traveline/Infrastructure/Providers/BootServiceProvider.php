@@ -31,5 +31,7 @@ class BootServiceProvider extends ServiceProvider
             $notificationsUrl = $app->config('notifications_url');
             return new Infrastructure\Adapter\TravelineAdapter(app(ClientInterface::class), $notificationsUrl);
         });
+        $this->app->singleton(Domain\Repository\HotelRepositoryInterface::class, Infrastructure\Repository\HotelRepository::class);
+
     }
 }
