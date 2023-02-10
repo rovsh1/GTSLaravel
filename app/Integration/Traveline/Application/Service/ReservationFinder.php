@@ -19,18 +19,16 @@ class ReservationFinder
      * @param CarbonInterface|null $dateUpdate
      * @return ReservationDto[]
      */
-    public function getReservations(?int $reservationId = null, ?int $hotelId = null, ?CarbonInterface $dateUpdate = null): array {
+    public function getReservations(?int $reservationId = null, ?int $hotelId = null, ?CarbonInterface $dateUpdate = null): array
+    {
         $reservations = [];
         if ($reservationId === null && $hotelId === null && $dateUpdate === null) {
             $reservations = $this->adapter->getActiveReservations();
-        }
-        if ($dateUpdate !== null) {
+        } elseif ($dateUpdate !== null) {
             $reservations = $this->adapter->getUpdatedReservations($dateUpdate, $hotelId);
-        }
-        if ($dateUpdate === null && $hotelId !== null) {
+        } elseif ($dateUpdate === null && $hotelId !== null) {
             $reservations = $this->adapter->getActiveReservationsByHotelId($hotelId);
-        }
-        if ($reservationId !== null) {
+        } elseif ($reservationId !== null) {
             $reservation = $this->adapter->getActiveReservationById($reservationId);
             //@todo логика если что-то не так
             $reservations = [$reservation];
