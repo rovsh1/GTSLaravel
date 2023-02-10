@@ -2,16 +2,13 @@
 
 namespace Custom\Framework\Foundation\Support\EntityFactory;
 
-use Illuminate\Contracts\Pagination\CursorPaginator;
-use Illuminate\Contracts\Pagination\Paginator;
-use Illuminate\Pagination\AbstractCursorPaginator;
-use Illuminate\Pagination\AbstractPaginator;
-use Illuminate\Support\Enumerable;
-use Spatie\LaravelData\DataCollection;
+use Illuminate\Database\Eloquent\Collection;
 
 interface FactoryInterface
 {
-    public static function createFrom(mixed ...$payloads);
+    public function createFrom(mixed $data);
 
-    public static function createCollectionFrom(Enumerable|array|AbstractPaginator|Paginator|AbstractCursorPaginator|CursorPaginator|DataCollection $items): array;
+    public function createCollectionFrom(Collection|array $items): array;
+
+    public function toArray(mixed $data): array;
 }

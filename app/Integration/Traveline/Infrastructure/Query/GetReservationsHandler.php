@@ -29,10 +29,10 @@ class GetReservationsHandler implements QueryHandlerInterface
             $reservations = $this->adapter->getUpdatedReservations($query->dateUpdate, $query->hotelId);
         }
         if ($query->dateUpdate === null && $query->hotelId !== null) {
-            $reservations = $this->adapter->getReservationsByHotelId($query->hotelId);
+            $reservations = $this->adapter->getActiveReservationsByHotelId($query->hotelId);
         }
         if ($query->reservationId !== null) {
-            $reservation = $this->adapter->getReservationById($query->reservationId);
+            $reservation = $this->adapter->getActiveReservationById($query->reservationId);
             //@todo логика если что-то не так
             $reservations = [$reservation];
         }

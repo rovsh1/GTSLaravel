@@ -22,6 +22,6 @@ class GetRoomsWithPriceRatesByHotelIdHandler implements QueryHandlerInterface
             ->withBeds()
             ->get();
 
-        return RoomFactory::createCollectionFrom($rooms);
+        return app(RoomFactory::class)->createCollectionFrom($rooms);
     }
 }

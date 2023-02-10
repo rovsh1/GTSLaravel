@@ -2,19 +2,26 @@
 
 namespace GTS\Integration\Traveline\Application\Dto;
 
-use Custom\Framework\Foundation\Support\Dto\Attributes\MapOutputName;
 use Custom\Framework\Foundation\Support\Dto\Dto;
-use Custom\Framework\Foundation\Support\Dto\DtoCollection;
-use Custom\Framework\Foundation\Support\Dto\DtoCollectionOf;
-use Custom\Framework\Foundation\Support\Dto\Optional;
 
 class HotelDto extends Dto
 {
     public function __construct(
-        #[MapOutputName('hotelId')]
-        public readonly int                    $id,
+        public readonly int   $hotelId,
         /** @var RoomDto[] $roomsAndRatePlans */
-        #[DtoCollectionOf(RoomDto::class)]
-        public readonly DtoCollection|Optional $roomsAndRatePlans,
+        public readonly array $roomsAndRatePlans,
     ) {}
+
+    /**
+     * @param mixed $hotelData
+     * @param RoomDto[] $roomsAndRatePlans
+     * @return static
+     */
+    public static function fromHotel(mixed $hotelData, array $roomsAndRatePlans): self
+    {
+        return new self(
+            $hotelData->id,
+            $roomsAndRatePlans
+        );
+    }
 }

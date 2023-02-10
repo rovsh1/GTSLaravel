@@ -18,12 +18,12 @@ class ReservationAdapter extends AbstractPortAdapter implements ReservationAdapt
         return [];
     }
 
-    public function getReservationById(int $id): mixed
+    public function getActiveReservationById(int $id): mixed
     {
         return $this->request('hotelReservation/findById', ['id' => $id]);
     }
 
-    public function getReservationsByHotelId(int $hotelId): array
+    public function getActiveReservationsByHotelId(int $hotelId): array
     {
         return [];
     }

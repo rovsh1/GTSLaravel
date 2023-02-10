@@ -2,46 +2,54 @@
 
 namespace Custom\Framework\Foundation\Support\EntityFactory;
 
-use Illuminate\Contracts\Pagination\CursorPaginator;
-use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Pagination\AbstractCursorPaginator;
-use Illuminate\Pagination\AbstractPaginator;
-use Illuminate\Support\Enumerable;
-use Spatie\LaravelData\Data;
-use Spatie\LaravelData\DataCollection;
+use Illuminate\Database\Eloquent\Collection;
 
-abstract class AbstractEntityFactory extends Data implements FactoryInterface
+abstract class AbstractEntityFactory implements FactoryInterface
 {
-    public static string $entity;
+    protected string $entity;
 
-    protected static string $collectionClass = EntityCollection::class;
+    public function __construct() {}
 
-    protected static string $paginatedCollectionClass = PaginatedEntityCollection::class;
-
-    protected static string $cursorPaginatedCollectionClass = CursorPaginatedEntityCollection::class;
-
-    public static function createFrom(mixed ...$payloads)
+    public function createFrom(mixed $data)
     {
-        $factory = static::optional(...$payloads);
-        if ($factory === null) {
-            return null;
+        $entityData = $this->toArray($data);
+        return $this->createEntity($entityData);
+    }
+
+    public function createCollectionFrom(Collection|array $items): array
+    {
+        $preparedItems = $items;
+        if ($items instanceof Collection) {
+            $preparedItems = $items->all();
         }
-        return static::createEntity($factory);
+        return array_map(fn($itemData) => $this->createFrom($itemData), $preparedItems);
     }
 
-    public static function createCollectionFrom(Enumerable|array|AbstractPaginator|Paginator|AbstractCursorPaginator|CursorPaginator|DataCollection $items): array
+    public function toArray(mixed $data): array
     {
-        $factory = static::collection($items);
-        return array_map(fn($item) => static::createEntity($item), $factory->items());
-    }
-
-    protected static function createEntity(array|Arrayable $data)
-    {
-        $preparedArgs = $data;
+        $preparedData = $data;
         if ($data instanceof Arrayable) {
-            $preparedArgs = $data->toArray();
+            $preparedData = $data->toArray();
         }
-        return new (static::$entity)(...$preparedArgs);
+        return $preparedData;
+    }
+
+    protected function createEntity(array $data)
+    {
+        if ($this->entity === null) {
+            throw new \Exception('Entity not defined');
+        }
+        $entityClass = new \ReflectionClass($this->entity);
+        if ($entityClass->getConstructor() === null) {
+            throw new \Exception('Entity not instantiable');
+        }
+        $arguments = $entityClass->getConstructor()->getParameters();
+        $preparedArguments = [];
+        foreach ($arguments as $argument) {
+            $argumentName = $argument->getName();
+            $preparedArguments[$argumentName] = $data[$argumentName] ?? null;
+        }
+        return new $this->entity(...$preparedArguments);
     }
 }
