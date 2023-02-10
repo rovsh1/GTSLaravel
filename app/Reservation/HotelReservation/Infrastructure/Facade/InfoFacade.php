@@ -14,6 +14,6 @@ class InfoFacade implements InfoFacadeInterface
     {
         $reservation = $this->queryBus->execute(new Find($id));
 
-        return ReservationDto::from($reservation);
+        return ReservationDto::fromEntity($reservation);
     }
 }

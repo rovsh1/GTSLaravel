@@ -6,11 +6,14 @@ use Carbon\CarbonInterface;
 
 use GTS\Integration\Traveline\Application\Dto\ReservationDto;
 use GTS\Integration\Traveline\Domain\Adapter\ReservationAdapterInterface;
+use GTS\Integration\Traveline\Domain\Exception\HotelNotConnectedException;
+use GTS\Integration\Traveline\Domain\Repository\HotelRepositoryInterface;
 
 class ReservationFinder
 {
     public function __construct(
-        private ReservationAdapterInterface $adapter
+        private ReservationAdapterInterface $adapter,
+        private HotelRepositoryInterface    $hotelRepository
     ) {}
 
     /**
@@ -21,6 +24,9 @@ class ReservationFinder
      */
     public function getReservations(?int $reservationId = null, ?int $hotelId = null, ?CarbonInterface $dateUpdate = null): array
     {
+        if ($hotelId !== null && !$this->hotelRepository->isHotelIntegrationEnabled($hotelId)) {
+            throw new HotelNotConnectedException();
+        }
         $reservations = [];
         if ($reservationId === null && $hotelId === null && $dateUpdate === null) {
             $reservations = $this->adapter->getActiveReservations();

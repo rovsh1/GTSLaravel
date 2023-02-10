@@ -13,10 +13,10 @@ class FindHandler implements QueryHandlerInterface
 {
     public function handle(QueryInterface $query): ?Entity
     {
-        $model = Model::find($query->id);
+        $model = Model::query()->withClientType()->find($query->id);
         if (!$model) {
             return null;
         }
-        return ReservationFactory::createFrom($model);
+        return app(ReservationFactory::class)->createFrom($model);
     }
 }

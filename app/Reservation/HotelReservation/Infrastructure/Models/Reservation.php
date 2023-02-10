@@ -2,6 +2,8 @@
 
 namespace GTS\Reservation\HotelReservation\Infrastructure\Models;
 
+use Illuminate\Database\Eloquent\Builder;
+
 use GTS\Shared\Infrastructure\Models\Model;
 
 /**
@@ -10,6 +12,7 @@ use GTS\Shared\Infrastructure\Models\Model;
  * @property int $id
  * @property int|null $administrator_id
  * @property int|null $client_id
+ * @property-read int|null $client_type
  * @property int|null $legal_id
  * @property int|null $manager_id
  * @property int|null $user_id
@@ -74,6 +77,7 @@ use GTS\Shared\Infrastructure\Models\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereTotalNetHotel($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Reservation withClientType()
  * @mixin \Eloquent
  */
 class Reservation extends Model
@@ -118,7 +122,17 @@ class Reservation extends Model
     ];
 
     protected $casts = [
-        'date_checkin'=>'date',
-        'date_checkout'=>'date',
+        'date_checkin' => 'date',
+        'date_checkout' => 'date',
     ];
+
+    public function scopeWithClientType(Builder $builder)
+    {
+        $builder->addSelect("{$this->getTable()}.*");
+
+        $clientsTable = with(new Client)->getTable();
+        $builder->leftJoin($clientsTable, function ($join) use ($clientsTable) {
+            $join->on("{$clientsTable}.id", '=', "{$this->getTable()}.client_id");
+        })->addSelect(["{$clientsTable}.type as client_type"]);
+    }
 }
