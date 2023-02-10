@@ -37,7 +37,8 @@ abstract class AbstractElement implements ElementInterface
 
         $this->label = new Label(
             array_merge($this->options, [
-                'text' => $this->options['label'] ?? null
+                'text' => $this->options['label'] ?? null,
+                'class' => 'col-sm-2 col-form-label'
             ])
         );
         $this->label->setElement($this);

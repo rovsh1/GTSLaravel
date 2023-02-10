@@ -8,6 +8,7 @@ class Textarea extends AbstractElement
 {
 
     protected array $options = [
+        'class' => 'form-control',
         'stripTags' => false,
         'unsafe' => true
     ];

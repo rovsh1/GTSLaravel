@@ -5,6 +5,7 @@ namespace Gsdk\Form\Element;
 class Text extends Input
 {
     protected array $options = [
+        'class' => 'form-control',
         'inputType' => 'text'
     ];
 

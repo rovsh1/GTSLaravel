@@ -9,6 +9,7 @@ use Gsdk\Form\Support\SelectBox\OptionBuilder;
 class Select extends AbstractElement
 {
     protected array $options = [
+        'class' => 'form-control',
         'valueIndex' => 'id',
         'textIndex' => 'name',
         'groupIndex' => '',
@@ -117,7 +118,7 @@ class Select extends AbstractElement
 
     public function getHtml(): string
     {
-        $html = '<select ' . (new InputAttributes($this))->render($this->attributes) . '>';
+        $html = '<select class="' . ($this->class ?? '') . '" ' . (new InputAttributes($this))->render($this->attributes) . '>';
 
         if (null !== $this->emptyItem) {
             $html .= '<option value="' . $this->emptyItemValue . '">' . $this->emptyItem . '</option>';
