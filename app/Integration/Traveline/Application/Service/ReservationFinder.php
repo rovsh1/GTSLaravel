@@ -27,6 +27,8 @@ class ReservationFinder
         if ($hotelId !== null && !$this->hotelRepository->isHotelIntegrationEnabled($hotelId)) {
             throw new HotelNotConnectedException();
         }
+
+        //@todo подумать как получать брони только по тем отелям, которые подключены к тревелайну
         $reservations = [];
         if ($reservationId === null && $hotelId === null && $dateUpdate === null) {
             $reservations = $this->adapter->getActiveReservations();
