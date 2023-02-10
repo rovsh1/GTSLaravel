@@ -7,9 +7,9 @@ use GTS\Shared\UI\Admin\View\Form\Form;
 
 class Grid extends Base
 {
-    protected Form $searchForm;
+    protected ?Form $searchForm = null;
 
-    protected Quicksearch $quicksearch;
+    protected ?Quicksearch $quicksearch = null;
 
     public function __get(string $name)
     {
