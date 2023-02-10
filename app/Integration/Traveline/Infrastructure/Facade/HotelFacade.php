@@ -3,26 +3,22 @@
 namespace GTS\Integration\Traveline\Infrastructure\Facade;
 
 use Custom\Framework\Contracts\Bus\CommandBusInterface;
+use Custom\Framework\Contracts\Bus\QueryBusInterface;
+
 use GTS\Integration\Traveline\Application\Command\UpdateQuotasAndPlans;
 use GTS\Integration\Traveline\Application\Dto\HotelDto;
-use GTS\Integration\Traveline\Application\Dto\RoomDto;
-use GTS\Integration\Traveline\Domain\Adapter\HotelAdapterInterface;
+use GTS\Integration\Traveline\Application\Query\GetHotelRoomsAndRatePlans;
 
 class HotelFacade implements HotelFacadeInterface
 {
     public function __construct(
-        private CommandBusInterface   $commandBus,
-        private HotelAdapterInterface $adapter
+        private CommandBusInterface $commandBus,
+        private QueryBusInterface   $queryBus
     ) {}
 
     public function getRoomsAndRatePlans(int $hotelId): HotelDto
     {
-        //@todo вынести в запрос и добавить логику проверки на подключенность отеля к интеграции isHotelIntegrationEnabled
-        $hotel = $this->adapter->getHotelById($hotelId);
-        $rooms = $this->adapter->getRoomsAndRatePlans($hotelId);
-
-        $roomsDto = RoomDto::collectionFromHotelRooms($rooms);
-        return HotelDto::fromHotel($hotel, $roomsDto);
+        return $this->queryBus->execute(new GetHotelRoomsAndRatePlans($hotelId));
     }
 
     public function updateQuotasAndPlans()
