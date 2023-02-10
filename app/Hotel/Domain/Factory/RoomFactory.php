@@ -9,13 +9,13 @@ class RoomFactory extends AbstractEntityFactory
 {
     protected string $entity = Room::class;
 
-    public function toArray(mixed $data): array
+    protected function fromArray(array $data): mixed
     {
-        return [
-            'id' => $data->id,
-            'name' => $data->display_name,
-            'priceRates' => app(PriceRateFactory::class)->createCollectionFrom($data->priceRates),
-            'guestsNumber' => $data->guests_number
-        ];
+        return new Room(
+            $data['id'],
+            $data['display_name'],
+            app(PriceRateFactory::class)->createCollectionFrom($data['price_rates']),
+            $data['guests_number']
+        );
     }
 }

@@ -13,8 +13,11 @@ abstract class AbstractEntityFactory implements FactoryInterface
 
     public function createFrom(mixed $data)
     {
-        $entityData = $this->toArray($data);
-        return $this->createEntity($entityData);
+        $entityData = $data;
+        if ($data instanceof Arrayable) {
+            $entityData = $data->toArray();
+        }
+        return $this->fromArray($entityData);
     }
 
     public function createCollectionFrom(Collection|array $items): array
@@ -26,16 +29,7 @@ abstract class AbstractEntityFactory implements FactoryInterface
         return array_map(fn($itemData) => $this->createFrom($itemData), $preparedItems);
     }
 
-    public function toArray(mixed $data): array
-    {
-        $preparedData = $data;
-        if ($data instanceof Arrayable) {
-            $preparedData = $data->toArray();
-        }
-        return $preparedData;
-    }
-
-    protected function createEntity(array $data)
+    protected function fromArray(array $data): mixed
     {
         if ($this->entity === null) {
             throw new \Exception('Entity not defined');
