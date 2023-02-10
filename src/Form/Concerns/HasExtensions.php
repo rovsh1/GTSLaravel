@@ -7,7 +7,7 @@ use Gsdk\Form\ElementInterface;
 
 trait HasExtensions
 {
-    private static string $defaultNamespace = 'Gsdk\Form\Element\\';
+    private static string $defaultNamespace = 'Gsdk\Form\Element';
 
     private static array $extendedNamespaces = [];
 
@@ -40,7 +40,8 @@ trait HasExtensions
             $type = self::$aliases[$type];
         }
 
-        $class = self::getExtendedClass($type)
+        $class = self::$extendedElements[$type]
+            ?? self::getExtendedClass($type)
             ?? self::getDefaultClass($type)
             ?? self::getClassFromType($type);
         if (!$class) {
@@ -77,7 +78,7 @@ trait HasExtensions
 
     private static function getClassInNamespace(string $namespace, string $type): ?string
     {
-        $class = $namespace . ucfirst($type);
+        $class = $namespace . '\\' . ucfirst($type);
         if (!class_exists($class)) {
             return null;
         }

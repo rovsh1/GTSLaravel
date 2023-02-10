@@ -24,6 +24,7 @@ class TestForm extends Form
                 'number.in' => 'Number out of range'
             ])
             ->csrf()
+            ->country('country_id', ['label' => 'Country'])
             ->select('currency', [
                 'label' => 'Currency',
                 'emptyItem' => '-Not selected-',
