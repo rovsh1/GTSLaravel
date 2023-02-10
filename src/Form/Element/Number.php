@@ -5,6 +5,7 @@ namespace Gsdk\Form\Element;
 class Number extends Input
 {
     protected array $options = [
+        'class' => 'form-control',
         'inputType' => 'number',
         'allowZero' => true,
         'nullToZero' => false,

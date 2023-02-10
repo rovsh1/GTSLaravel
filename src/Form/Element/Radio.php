@@ -7,9 +7,13 @@ use Gsdk\Form\Support\Radio\ItemBuilder;
 class Radio extends AbstractElement
 {
     protected array $options = [
+        'class' => 'form-check',
+        'classInput' => 'form-check-input',
+        'classLabel' => 'form-check-label',
         'valueIndex' => 'id',
         'textIndex' => 'name',
-        'multiple' > false
+        'multiple' => false,
+        'inline' => true
     ];
 
     private array $items = [];
@@ -102,13 +106,14 @@ class Radio extends AbstractElement
     {
         $inputId = $this->getInputId() . '_' . $item->value;
 
-        return '<div class="radio-item">'
+        return '<div class="radio-item ' . ($this->class ?? '') . ' ' . ($this->inline ? 'form-check-inline' : '') . '">'
             . '<input type="' . $type . '"'
+            . ' class="' . ($this->classInput ?? '') . '"'
             . ' value="' . htmlspecialchars($item->value) . '"'
             . ' name="' . $inputName . '"'
             . ' id="' . $inputId . '"'
             . ($this->isChecked($item->value) ? ' checked' : '') . '>'
-            . '<label for="' . $inputId . '">' . $item->text . '</label>'
+            . '<label class="' . ($this->classLabel ?? '') . '" for="' . $inputId . '">' . $item->text . '</label>'
             . '</div>';
     }
 }
