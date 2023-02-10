@@ -10,43 +10,46 @@ use Gsdk\Navigation\Paginator;
 
 class EloquentQuery implements DataInterface
 {
-	private $data;
+    private $data;
 
-	public static function isEloquentQuery($data): bool
-	{
-		return $data instanceof Builder
-			|| $data instanceof QueryBuilder
-			|| $data instanceof Relation;
-	}
+    public static function isEloquentQuery($data): bool
+    {
+        return $data instanceof Builder
+            || $data instanceof QueryBuilder
+            || $data instanceof Relation;
+    }
 
-	public function __construct(private $query)
-	{
-	}
+    public function __construct(private $query) {}
 
-	public function paginator(Paginator $paginator): static
-	{
-		$paginator->query($this->query);
-		return $this;
-	}
+    public function getQuery()
+    {
+        return $this->query;
+    }
 
-	public function sorting(Sorting $sorting): static
-	{
-		$sorting->query($this->query);
-		return $this;
-	}
+    public function paginator(Paginator $paginator): static
+    {
+        $paginator->query($this->query);
+        return $this;
+    }
 
-	public function get(): iterable
-	{
-		return $this->data ?? ($this->data = $this->query->get());
-	}
+    public function sorting(Sorting $sorting): static
+    {
+        $sorting->query($this->query);
+        return $this;
+    }
 
-	public function isEmpty(): bool
-	{
-		return $this->get()->isEmpty();
-	}
+    public function get(): iterable
+    {
+        return $this->data ?? ($this->data = $this->query->get());
+    }
 
-	public function cursor()
-	{
-		return $this->query->cursor();
-	}
+    public function isEmpty(): bool
+    {
+        return $this->get()->isEmpty();
+    }
+
+    public function cursor()
+    {
+        return $this->query->cursor();
+    }
 }

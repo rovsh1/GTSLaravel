@@ -2,6 +2,7 @@
 
 namespace GTS\Shared\UI\Admin\View\Grid;
 
+use GTS\Shared\UI\Admin\View\Form\Form;
 use GTS\Shared\UI\Admin\View\Navigation\Paginator;
 
 class GridBuilder
@@ -30,6 +31,18 @@ class GridBuilder
 
         $this->grid->paginator($paginator);
 
+        return $this;
+    }
+
+    public function quicksearch(): static
+    {
+        $this->grid->enableQuicksearch();
+        return $this;
+    }
+
+    public function search(Form $form): static
+    {
+        $this->grid->setSearchForm($form);
         return $this;
     }
 
@@ -63,5 +76,15 @@ class GridBuilder
         $paginator = $this->grid->getPaginator();
         $dto->offset = $paginator->getOffset();
         $dto->limit = $paginator->step;
+
+        if ($this->grid->quicksearch && ($term = $this->grid->quicksearch->getTerm())) {
+            $dto->quicksearch = $term;
+        }
+
+        if (($search = $this->grid->search)) {
+            foreach ($search->getData() as $k => $v) {
+                $dto->$k = $v;
+            }
+        }
     }
 }
