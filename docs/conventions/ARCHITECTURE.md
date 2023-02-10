@@ -19,10 +19,10 @@
 ```
 /{Domain}
 |-- /Application - Buisiness logic, rules & services layer
-|   |-- /Command - Commands & command handlers
+|   |-- /Command - Commands & command handlers (Методы изменяют состояние объекта)
 |   |-- /Dto
 |   |-- /Event - Domain event handlers
-|   |-- /Query - Queries
+|   |-- /Query - Queries (Методы возвращают результат, не изменяя состояние объекта.)
 |   |-- /Service - Used by external consumers to talk to your system (think Web Services). If consumers need access to CRUD operations, they would be exposed here.
 |-- /Domain - Buisiness model layer
 |   |-- /Adapter - Adapters interfaces (Обращение к внешним модулям и сервисам)
