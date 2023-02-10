@@ -17,6 +17,7 @@ class HotelFacade implements HotelFacadeInterface
 
     public function getRoomsAndRatePlans(int $hotelId): HotelDto
     {
+        //@todo вынести в запрос и добавить логику проверки на подключенность отеля к интеграции isHotelIntegrationEnabled
         $hotel = $this->adapter->getHotelById($hotelId);
         $rooms = $this->adapter->getRoomsAndRatePlans($hotelId);
 
