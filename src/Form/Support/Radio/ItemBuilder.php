@@ -8,7 +8,7 @@ class ItemBuilder
 
     private static array $valueKeys = ['id', 'key', 'value'];
 
-    protected \stdClass $data;
+    protected mixed $data;
 
     protected \stdClass $option;
 

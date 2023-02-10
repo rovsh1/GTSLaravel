@@ -28,7 +28,7 @@ class ViewServiceProvider extends ServiceProvider
 
     private function registerForm()
     {
-        //        FormNamespace\Form::registerNamespace(FormNamespace::class . '\\Element');
+        FormNamespace\Form::registerNamespace(FormNamespace::class . '\\Element');
         FormNamespace\Form::setDefaults([
 //            'view' => 'default.form.edit'
         ]);
