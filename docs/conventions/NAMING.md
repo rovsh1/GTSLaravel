@@ -29,5 +29,3 @@ enum {EnumName}Enum {}
 
 abstract class Abstract{ClassName} {}
 ```
-
-
