@@ -11,7 +11,7 @@ class RouteServiceProvider extends ServiceProvider
         $this->moduleUIRoutes([
             'prefix' => 'traveline',
             'as' => 'traveline.',
-//            'middleware' => ['api']
+            'middleware' => ['api']
         ], 'Traveline', 'Api');
     }
 }
