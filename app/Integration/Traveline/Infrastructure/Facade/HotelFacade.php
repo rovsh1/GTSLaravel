@@ -12,7 +12,7 @@ class HotelFacade implements HotelFacadeInterface
 {
     public function __construct(
         private CommandBusInterface $commandBus,
-        private HotelFinder $hotelFinder
+        private HotelFinder         $hotelFinder
     ) {}
 
     public function getRoomsAndRatePlans(int $hotelId): HotelDto
@@ -20,10 +20,11 @@ class HotelFacade implements HotelFacadeInterface
         return $this->hotelFinder->getHotelRoomsAndRatePlans($hotelId);
     }
 
-    public function updateQuotasAndPlans()
+    public function updateQuotasAndPlans(int $hotelId, array $updates)
     {
-        $hotel = $this->commandBus->execute(new UpdateQuotasAndPlans());
+       $domainResponse = $this->commandBus->execute(new UpdateQuotasAndPlans($hotelId, $updates));
 
-        return $hotel; //TODO convert to DTO
+       //@todo конвертация в DTO
+       return $domainResponse;
     }
 }

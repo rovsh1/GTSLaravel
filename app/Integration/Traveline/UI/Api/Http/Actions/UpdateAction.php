@@ -11,8 +11,7 @@ class UpdateAction
 
     public function handle(UpdateActionRequest $request)
     {
-        //@todo кто подготавливает ответ для тревелайна
-        $this->facade->updateQuotasAndPlans();
+        $response = $this->facade->updateQuotasAndPlans($request->getHotelId(), $request->getUpdates());
     }
 
 }

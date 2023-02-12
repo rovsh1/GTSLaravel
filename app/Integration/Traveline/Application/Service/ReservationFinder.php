@@ -3,7 +3,6 @@
 namespace GTS\Integration\Traveline\Application\Service;
 
 use Carbon\CarbonInterface;
-
 use GTS\Integration\Traveline\Application\Dto\ReservationDto;
 use GTS\Integration\Traveline\Domain\Adapter\ReservationAdapterInterface;
 use GTS\Integration\Traveline\Domain\Exception\HotelNotConnectedException;
@@ -28,7 +27,6 @@ class ReservationFinder
             throw new HotelNotConnectedException();
         }
 
-        //@todo подумать как получать брони только по тем отелям, которые подключены к тревелайну
         $reservations = [];
         if ($reservationId === null && $hotelId === null && $dateUpdate === null) {
             $reservations = $this->adapter->getActiveReservations();
@@ -37,9 +35,7 @@ class ReservationFinder
         } elseif ($dateUpdate === null && $hotelId !== null) {
             $reservations = $this->adapter->getActiveReservationsByHotelId($hotelId);
         } elseif ($reservationId !== null) {
-            $reservation = $this->adapter->getActiveReservationById($reservationId);
-            //@todo логика если что-то не так
-            $reservations = [$reservation];
+            $reservations[] = $this->adapter->getActiveReservationById($reservationId);
         }
         return ReservationDto::collection($reservations)->all();
     }

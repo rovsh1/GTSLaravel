@@ -1,6 +1,6 @@
 <?php
 
-namespace GTS\Integration\Traveline\UI\Api\Http\Responses;
+namespace GTS\Integration\Traveline\Domain\Api\Response;
 
 class GetRoomsAndRatePlansActionResponse extends AbstractTravelineResponse
 {

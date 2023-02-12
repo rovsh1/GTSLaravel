@@ -2,6 +2,8 @@
 
 namespace GTS\Integration\Traveline\Infrastructure\Adapter;
 
+use Carbon\CarbonPeriod;
+
 use GTS\Integration\Traveline\Domain\Adapter\HotelAdapterInterface;
 use GTS\Shared\Infrastructure\Adapter\AbstractPortAdapter;
 
@@ -17,8 +19,23 @@ class HotelAdapter extends AbstractPortAdapter implements HotelAdapterInterface
         return $this->request('hotel/getRoomsWithPriceRatesByHotelId', ['id' => $hotelId]);
     }
 
-    public function updateQuotasAndPlans(): void
+    public function updateRoomQuota(CarbonPeriod $period, int $roomId, int $quota)
     {
-        // TODO: Implement updateQuotasAndPlans() method.
+        // TODO: Implement updateRoomQuota() method.
+    }
+
+    public function updateRoomRatePrice(CarbonPeriod $period, int $roomId, int $rateId, string $currencyCode, float $price)
+    {
+        // TODO: Implement updateRoomRatePrice() method.
+    }
+
+    public function openRoomRate(CarbonPeriod $period, int $roomId, int $rateId)
+    {
+        // TODO: Implement openRoomRate() method.
+    }
+
+    public function closeRoomRate(CarbonPeriod $period, int $roomId, int $rateId)
+    {
+        // TODO: Implement closeRoomRate() method.
     }
 }

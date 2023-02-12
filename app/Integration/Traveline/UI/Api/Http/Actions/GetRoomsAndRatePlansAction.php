@@ -2,11 +2,11 @@
 
 namespace GTS\Integration\Traveline\UI\Api\Http\Actions;
 
+use GTS\Integration\Traveline\Domain\Api\Response\GetRoomsAndRatePlansActionResponse;
+use GTS\Integration\Traveline\Domain\Api\Response\HotelNotConnectedResponse;
 use GTS\Integration\Traveline\Domain\Exception\HotelNotConnectedException;
 use GTS\Integration\Traveline\Infrastructure\Facade\HotelFacadeInterface;
 use GTS\Integration\Traveline\UI\Api\Http\Requests\GetRoomsAndRatePlansActionRequest;
-use GTS\Integration\Traveline\UI\Api\Http\Responses\GetRoomsAndRatePlansActionResponse;
-use GTS\Integration\Traveline\UI\Api\Http\Responses\HotelNotConnectedResponse;
 
 class GetRoomsAndRatePlansAction
 {

@@ -8,5 +8,5 @@ interface HotelFacadeInterface
 {
     public function getRoomsAndRatePlans(int $hotelId): HotelDto;
 
-    public function updateQuotasAndPlans();
+    public function updateQuotasAndPlans(int $hotelId, array $updates);
 }
