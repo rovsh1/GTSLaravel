@@ -4,7 +4,8 @@ namespace GTS\Integration\Traveline\Application\Command;
 
 use Custom\Framework\Contracts\Bus\CommandHandlerInterface;
 use Custom\Framework\Contracts\Bus\CommandInterface;
-use GTS\Integration\Traveline\Domain\Service\Api\UpdaterService;
+
+use GTS\Integration\Traveline\Domain\Api\Service\UpdaterService;
 
 class UpdateQuotasAndPlansHandler implements CommandHandlerInterface
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace GTS\Integration\Traveline\Domain\Service\Api;
+namespace GTS\Integration\Traveline\Domain\Api\Service;
 
 use GTS\Integration\Traveline\Domain\Adapter\HotelAdapterInterface;
 use GTS\Integration\Traveline\Domain\Api\Request\Update;
