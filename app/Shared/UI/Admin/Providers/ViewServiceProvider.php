@@ -36,11 +36,16 @@ class ViewServiceProvider extends ServiceProvider
             'view' => 'default.form.field',
             'class' => 'form-control'
         ]);
-//        FormNamespace\Element\Checkbox::setDefaults([
-//            //'class' => 'form-check-input'
-//        ]);
         FormNamespace\Element\Checkbox::setDefaults([
-            //'class' => 'form-check-input'
+            'class' => 'form-check-input'
+        ]);
+        FormNamespace\Element\Radio::setDefaults([
+            'itemClass' => 'form-check form-check-inline',
+            'inputClass' => 'form-check-input',
+            'labelClass' => 'form-check-label'
+        ]);
+        FormNamespace\Element\Range::setDefaults([
+            'class' => 'form-range'
         ]);
         FormNamespace\Form::setDefaultMessages([
             'required' => 'The :attribute field is required.',
