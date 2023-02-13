@@ -30,13 +30,17 @@ class ViewServiceProvider extends ServiceProvider
     {
         FormNamespace\Form::registerNamespace('GTS\Shared\UI\Admin\View\Form\Element');
         FormNamespace\Label::setDefaults([
-            'class' => 'col-sm-2 col-form-label'
-        ]);
-        FormNamespace\Form::setDefaults([
-//            'view' => 'default.form.edit'
+            'class' => 'col-sm-4 col-form-label'
         ]);
         FormNamespace\Form::setElementDefaults([
+            'view' => 'default.form.field',
             'class' => 'form-control'
+        ]);
+//        FormNamespace\Element\Checkbox::setDefaults([
+//            //'class' => 'form-check-input'
+//        ]);
+        FormNamespace\Element\Checkbox::setDefaults([
+            //'class' => 'form-check-input'
         ]);
         FormNamespace\Form::setDefaultMessages([
             'required' => 'The :attribute field is required.',
