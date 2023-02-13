@@ -56,9 +56,9 @@ trait HasOptions
         return $this->options[$key] ?? null;
     }
 
-    public static function mergeElementOptions($defaultOptions, $options): array
+    public static function mergeElementOptions($staticOptions, $defaultOptions, $options): array
     {
-        return array_merge(self::$elementDefaults, $defaultOptions, $options);
+        return array_merge(self::$elementDefaults, $staticOptions, $defaultOptions, $options);
     }
 
     protected function mergeOptions(array $options): void

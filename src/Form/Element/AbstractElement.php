@@ -6,10 +6,13 @@ use Gsdk\Form\ElementInterface;
 use Gsdk\Form\ElementsParentInterface;
 use Gsdk\Form\Form;
 use Gsdk\Form\Label;
+use Gsdk\Form\Support\HasDefaultOptions;
 use Gsdk\Form\Support\Element\RulesBuilder;
 
 abstract class AbstractElement implements ElementInterface
 {
+    use HasDefaultOptions;
+
     protected array $options = [];
 
     protected ?ElementsParentInterface $parent = null;
@@ -31,14 +34,14 @@ abstract class AbstractElement implements ElementInterface
             $options['default'] = $this->prepareValue($options['default']);
         }
 
-        $this->options = Form::mergeElementOptions($this->options, $options);
+        $this->options = Form::mergeElementOptions(static::$defaultOptions, $this->options, $options);
 
         $this->setValue($value);
 
         $this->label = new Label(
             array_merge($this->options, [
                 'text' => $this->options['label'] ?? null,
-                'class' => 'col-sm-2 col-form-label'
+                'class' => $this->options['labelClass'] ?? null
             ])
         );
         $this->label->setElement($this);
@@ -286,5 +289,4 @@ abstract class AbstractElement implements ElementInterface
 
         return str_replace('"', '&quot;', $val);
     }
-
 }

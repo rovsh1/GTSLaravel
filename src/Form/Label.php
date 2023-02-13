@@ -2,8 +2,12 @@
 
 namespace Gsdk\Form;
 
+use Gsdk\Form\Support\HasDefaultOptions;
+
 class Label
 {
+    use HasDefaultOptions;
+
     protected array $options = [
         'requiredLabel' => ''
     ];
@@ -12,7 +16,7 @@ class Label
 
     public function __construct($options = [])
     {
-        $this->setOptions($options);
+        $this->setOptions(array_merge(static::$defaultOptions, $options));
     }
 
     public function __set($name, $value)
