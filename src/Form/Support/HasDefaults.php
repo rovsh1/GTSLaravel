@@ -2,7 +2,7 @@
 
 namespace Gsdk\Form\Support;
 
-trait HasDefaultOptions
+trait HasDefaults
 {
     protected static array $defaultOptions = [];
 

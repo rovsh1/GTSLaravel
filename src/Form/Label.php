@@ -2,14 +2,15 @@
 
 namespace Gsdk\Form;
 
-use Gsdk\Form\Support\HasDefaultOptions;
+use Gsdk\Form\Support\HasDefaults;
 
 class Label
 {
-    use HasDefaultOptions;
+    use HasDefaults;
 
     protected array $options = [
-        'requiredLabel' => ''
+        'requiredLabel' => '',
+        'class' => 'form-label',
     ];
 
     protected ?ElementInterface $element;

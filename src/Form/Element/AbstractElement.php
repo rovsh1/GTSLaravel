@@ -6,12 +6,12 @@ use Gsdk\Form\ElementInterface;
 use Gsdk\Form\ElementsParentInterface;
 use Gsdk\Form\Form;
 use Gsdk\Form\Label;
-use Gsdk\Form\Support\HasDefaultOptions;
+use Gsdk\Form\Support\HasDefaults;
 use Gsdk\Form\Support\Element\RulesBuilder;
 
 abstract class AbstractElement implements ElementInterface
 {
-    use HasDefaultOptions;
+    use HasDefaults;
 
     protected array $options = [];
 
@@ -38,12 +38,11 @@ abstract class AbstractElement implements ElementInterface
 
         $this->setValue($value);
 
-        $this->label = new Label(
-            array_merge($this->options, [
-                'text' => $this->options['label'] ?? null,
-                'class' => $this->options['labelClass'] ?? null
-            ])
-        );
+        $labelOptions = $this->options['label'] ?? [];
+        if (is_string($labelOptions)) {
+            $labelOptions = ['text' => $labelOptions];
+        }
+        $this->label = new Label($labelOptions);
         $this->label->setElement($this);
     }
 
