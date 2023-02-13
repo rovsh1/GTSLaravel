@@ -8,7 +8,7 @@ trait HasOptions
 
     protected static array $defaultMessages = [];
 
-    protected static array $elementDefaults = [
+    protected static array $elementsDefaults = [
         'required' => false,
         'nullable' => false,
         'disabled' => false,
@@ -27,7 +27,7 @@ trait HasOptions
 
     public static function setElementDefaults(array $options): void
     {
-        self::$elementDefaults = array_merge(self::$elementDefaults, $options);
+        self::$elementsDefaults = array_merge(self::$elementsDefaults, $options);
     }
 
     public static function setDefaultMessages(array $messages): void
@@ -58,7 +58,7 @@ trait HasOptions
 
     public static function mergeElementOptions($staticOptions, $defaultOptions, $options): array
     {
-        return array_merge(self::$elementDefaults, $staticOptions, $defaultOptions, $options);
+        return array_merge(self::$elementsDefaults, $staticOptions, $defaultOptions, $options);
     }
 
     protected function mergeOptions(array $options): void

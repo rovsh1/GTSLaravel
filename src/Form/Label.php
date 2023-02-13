@@ -2,11 +2,14 @@
 
 namespace Gsdk\Form;
 
-use Gsdk\Form\Support\HasDefaults;
-
 class Label
 {
-    use HasDefaults;
+    protected static array $defaultOptions = [];
+
+    public static function setDefaults(array $options): void
+    {
+        static::$defaultOptions = $options;
+    }
 
     protected array $options = [
         'requiredLabel' => '',
