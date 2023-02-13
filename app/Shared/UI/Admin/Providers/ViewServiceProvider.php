@@ -5,7 +5,7 @@ namespace GTS\Shared\UI\Admin\Providers;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
-use GTS\Shared\UI\Admin\View\Form as FormNamespace;
+use Gsdk\Form as FormNamespace;
 use GTS\Shared\UI\Admin\View\Grid as GridNamespace;
 use GTS\Shared\UI\Admin\View\Layout;
 use GTS\Shared\UI\Admin\View\Sidebar\Sidebar;
@@ -28,12 +28,15 @@ class ViewServiceProvider extends ServiceProvider
 
     private function registerForm()
     {
-        FormNamespace\Form::registerNamespace(FormNamespace::class . '\\Element');
+        FormNamespace\Form::registerNamespace('GTS\Shared\UI\Admin\View\Form\Element');
+        FormNamespace\Label::setDefaults([
+            'class' => 'col-sm-2 col-form-label'
+        ]);
         FormNamespace\Form::setDefaults([
 //            'view' => 'default.form.edit'
         ]);
         FormNamespace\Form::setElementDefaults([
-            'class' => null
+            'class' => 'form-control'
         ]);
         FormNamespace\Form::setDefaultMessages([
             'required' => 'The :attribute field is required.',

@@ -18,7 +18,7 @@
         </h5>
         <div class="card-body">
             <div class="table-responsive text-nowrap">
-                Тут будет редактирование валюты с ID = {{ $currency->id }}
+                {!! $form !!}
             </div>
         </div>
     </div>

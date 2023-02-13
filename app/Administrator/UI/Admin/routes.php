@@ -16,15 +16,17 @@ Route::controller(Controllers\AuthController::class)->group(function () {
 Route::prefix('reference')->group(function () {
     // Todo можно так упростить создание базовых роутов. Однако может быть зарегистрирован лишний
     Route::resource('currency', Controllers\CurrencyController::class);
+    Route::resource('country', Controllers\CountryController::class);
+    Route::resource('city', Controllers\CityController::class);
 
 //        ->group(function () {
 //        Route::get('/', 'index')->name('index');
 //        Route::get('/create', 'create')->name('create');
 //    });
 
-    Route::controller(Controllers\CountryController::class)->prefix('country')->name('country.')->group(function () {
-        Route::get('/', 'index')->name('index');
-    });
+//    Route::controller(Controllers\CountryController::class)->prefix('country')->name('country.')->group(function () {
+//        Route::get('/', 'index')->name('index');
+//    });
 });
 
 Route::controller(Controllers\TestController::class)->prefix('test')->group(function () {

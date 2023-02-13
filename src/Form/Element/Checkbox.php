@@ -7,7 +7,6 @@ use Gsdk\Form\Support\Element\InputAttributes;
 class Checkbox extends Input
 {
     protected array $options = [
-        'class' => 'form-check-input',
         'inputType' => 'checkbox',
         'checkedValue' => 1,
         'uncheckedValue' => 0

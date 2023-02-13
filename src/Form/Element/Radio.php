@@ -7,9 +7,9 @@ use Gsdk\Form\Support\Radio\ItemBuilder;
 class Radio extends AbstractElement
 {
     protected array $options = [
-        'class' => 'form-check',
-        'classInput' => 'form-check-input',
-        'classLabel' => 'form-check-label',
+        'itemClass' => 'radio-item',
+        'inputClass' => '',
+        'labelClass' => '',
         'valueIndex' => 'id',
         'textIndex' => 'name',
         'multiple' => false,
@@ -106,14 +106,14 @@ class Radio extends AbstractElement
     {
         $inputId = $this->getInputId() . '_' . $item->value;
 
-        return '<div class="radio-item ' . ($this->class ?? '') . ' ' . ($this->inline ? 'form-check-inline' : '') . '">'
+        return '<div class="' . ($this->itemClass ?? '') . '">'
             . '<input type="' . $type . '"'
-            . ' class="' . ($this->classInput ?? '') . '"'
+            . ' class="' . ($this->inputClass ?? '') . '"'
             . ' value="' . htmlspecialchars($item->value) . '"'
             . ' name="' . $inputName . '"'
             . ' id="' . $inputId . '"'
             . ($this->isChecked($item->value) ? ' checked' : '') . '>'
-            . '<label class="' . ($this->classLabel ?? '') . '" for="' . $inputId . '">' . $item->text . '</label>'
+            . '<label class="' . ($this->labelClass ?? '') . '" for="' . $inputId . '">' . $item->text . '</label>'
             . '</div>';
     }
 }

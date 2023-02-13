@@ -7,7 +7,6 @@ use Gsdk\Form\Support\Element\InputAttributes;
 class Input extends AbstractElement
 {
     protected array $options = [
-        'class' => 'form-control',
         'inputType' => 'text'
     ];
 

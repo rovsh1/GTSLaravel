@@ -16,7 +16,14 @@
                     "url": "/reference/country",
                     "name": "Страны",
                     "slug": [
-                        "country.index"
+                        "country.index", "country.create", "country.edit"
+                    ]
+                },
+                {
+                    "url": "/reference/city",
+                    "name": "Города",
+                    "slug": [
+                        "city.index", "city.create", "city.edit"
                     ]
                 }
             ]

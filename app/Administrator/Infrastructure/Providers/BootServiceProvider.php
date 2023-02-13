@@ -17,6 +17,9 @@ class BootServiceProvider extends ServiceProvider
         $this->app->singleton(Facade\Reference\CurrencyFacadeInterface::class, Facade\Reference\CurrencyFacade::class);
         $this->app->singleton(Domain\Repository\CurrencyRepositoryInterface::class, Infrastructure\Repository\CurrencyRepository::class);
 
+        $this->app->singleton(Facade\Reference\CityFacadeInterface::class, Facade\Reference\CityFacade::class);
+        $this->app->singleton(Domain\Repository\CityRepositoryInterface::class, Infrastructure\Repository\CityRepository::class);
+
         $this->app->singleton(Facade\FilesFacadeInterface::class, Facade\FilesFacade::class);
         $this->app->singleton(Domain\Adapter\FilesAdapterInterface::class, Infrastructure\Adapter\FilesAdapter::class);
 

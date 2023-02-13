@@ -9,7 +9,6 @@ use Gsdk\Form\Support\SelectBox\OptionBuilder;
 class Select extends AbstractElement
 {
     protected array $options = [
-        'class' => 'form-control',
         'valueIndex' => 'id',
         'textIndex' => 'name',
         'groupIndex' => '',

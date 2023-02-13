@@ -1,9 +1,7 @@
-<div class="row mb-3 <?=$class?>">
+<div class="<?=$class?>">
     <?=$label?>
 
-    <div class="col-sm-10 d-flex align-items-center">
-        <?=$element?>
-    </div>
+    <?=$element?>
 
     <?php if ($hint): ?>
         <div class="form-element-hint"><?=$hint?></div>

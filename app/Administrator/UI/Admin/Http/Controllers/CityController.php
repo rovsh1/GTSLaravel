@@ -5,9 +5,9 @@ namespace GTS\Administrator\UI\Admin\Http\Controllers;
 use Illuminate\Http\Request;
 
 use GTS\Shared\UI\Common\Http\Controllers\Controller;
-use GTS\Administrator\UI\Admin\Http\Actions\Currency as Actions;
+use GTS\Administrator\UI\Admin\Http\Actions\City as Actions;
 
-class CurrencyController extends Controller
+class CityController extends Controller
 {
     public function __construct() {}
 
@@ -29,23 +29,20 @@ class CurrencyController extends Controller
     }
 
     // Todo тут скорее всего в экшн
-    public function edit(\GTS\Administrator\Infrastructure\Models\Currency $currency)
+    public function edit(\GTS\Administrator\Infrastructure\Models\City $city)
     {
-        return app(Actions\EditAction::class)->handle($currency->toArray());
-        return app('layout')
-            ->title('Редактирование валюты')
-            ->view('currency.edit', compact('currency'));
+        return app(Actions\EditAction::class)->handle($city->toArray());
     }
 
     // Todo тут скорее всего в экшн
-    public function update(Request $request, \GTS\Administrator\Infrastructure\Models\Currency $currency)
+    public function update(Request $request, \GTS\Administrator\Infrastructure\Models\City $city)
     {
-        dd($request, $currency);
+        dd($request, $city);
     }
 
     // Todo тут скорее всего в экшн
-    public function destroy(\GTS\Administrator\Infrastructure\Models\Currency $currency)
+    public function destroy(\GTS\Administrator\Infrastructure\Models\City $city)
     {
-        dd($currency);
+        dd($city);
     }
 }
