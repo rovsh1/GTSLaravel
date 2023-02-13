@@ -38,7 +38,7 @@ abstract class AbstractElement implements ElementInterface
             $options['default'] = $this->prepareValue($options['default']);
         }
 
-        $this->options = Form::mergeElementOptions(static::$defaultOptions[static::class] ?? [], $this->options, $options);
+        $this->options = Form::mergeElementOptions($this->options, static::$defaultOptions[static::class] ?? [], $options);
 
         $this->setValue($value);
 

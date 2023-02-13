@@ -106,14 +106,14 @@ class Radio extends AbstractElement
     {
         $inputId = $this->getInputId() . '_' . $item->value;
 
-        return '<div class="' . ($this->itemClass ?? '') . '">'
+        return '<div class="' . $this->itemClass . '">'
             . '<input type="' . $type . '"'
-            . ' class="' . ($this->inputClass ?? '') . '"'
+            . ' class="' . $this->inputClass . '"'
             . ' value="' . htmlspecialchars($item->value) . '"'
             . ' name="' . $inputName . '"'
             . ' id="' . $inputId . '"'
             . ($this->isChecked($item->value) ? ' checked' : '') . '>'
-            . '<label class="' . ($this->labelClass ?? '') . '" for="' . $inputId . '">' . $item->text . '</label>'
+            . '<label class="' . $this->labelClass . '" for="' . $inputId . '">' . $item->text . '</label>'
             . '</div>';
     }
 }
