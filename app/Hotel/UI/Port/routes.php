@@ -7,4 +7,8 @@ use GTS\Hotel\UI\Port\Controllers\ReservationController;
 
 Route::register('findById', [InfoController::class, 'findById']);
 Route::register('getRoomsWithPriceRatesByHotelId', [InfoController::class, 'getRoomsWithPriceRatesByHotelId']);
-Route::register('reserveQuota', [ReservationController::class, 'reserveQuota']);
+
+Route::register('updateRoomQuota', [ReservationController::class, 'updateRoomQuota']);
+Route::register('openRoomQuota', [ReservationController::class, 'openRoomQuota']);
+Route::register('closeRoomQuota', [ReservationController::class, 'closeRoomQuota']);
+Route::register('updateRoomRatePrice', [ReservationController::class, 'updateRoomRatePrice']);

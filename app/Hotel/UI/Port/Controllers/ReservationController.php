@@ -10,20 +10,53 @@ class ReservationController
 {
     public function __construct(private ReservationFacadeInterface $reservationFacade) {}
 
-    public function reserveQuota(Request $request)
+    public function updateRoomQuota(Request $request)
     {
         $request->validate([
             'room_id' => 'required|numeric',
             'date_from' => 'required|date',
             'date_to' => 'required|date',
-            'count' => 'nullable|int',
+            'quota' => 'required|int',
         ]);
 
-        return $this->reservationFacade->reserveQuota(
+        return $this->reservationFacade->updateRoomQuota(
             $request->room_id,
             new CarbonPeriod($request->date_from, $request->date_to),
-            $request->count ?? 1
+            $request->quota
         );
     }
 
+    public function updateRoomRatePrice(Request $request)
+    {
+        $request->validate([
+            'room_id' => 'required|numeric',
+            'rate_id' => 'required|numeric',
+            'currency_code' => 'required|string',
+            'date_from' => 'required|date',
+            'date_to' => 'required|date',
+        ]);
+
+    }
+
+    public function openRoomQuota(Request $request) {
+        $request->validate([
+            'room_id' => 'required|numeric',
+            'rate_id' => 'required|numeric',
+            'date_from' => 'required|date',
+            'date_to' => 'required|date',
+        ]);
+
+
+    }
+
+    public function closeRoomQuota(Request $request) {
+        $request->validate([
+            'room_id' => 'required|numeric',
+            'rate_id' => 'required|numeric',
+            'date_from' => 'required|date',
+            'date_to' => 'required|date',
+        ]);
+
+
+    }
 }

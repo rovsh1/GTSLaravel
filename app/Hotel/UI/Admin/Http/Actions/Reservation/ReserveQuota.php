@@ -11,7 +11,8 @@ class ReserveQuota
 
     public function handle($roomId, $date)
     {
-        $result = $this->facade->reserveQuota($roomId, $date);
+        //этот метод юзать нельзя, он для других целей
+//        $result = $this->facade->updateRoomQuota($roomId, $date);
 
         return [];
     }

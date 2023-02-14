@@ -1,10 +1,10 @@
 <?php
 
-namespace GTS\Hotel\Infrastructure\Facade;
+namespace GTS\Hotel\Domain\Repository;
 
 use Carbon\CarbonPeriod;
 
-interface ReservationFacadeInterface
+interface RoomQuotaRepositoryInterface
 {
     public function updateRoomQuota(int $roomId, CarbonPeriod $period, int $quota);
 }
