@@ -26,5 +26,7 @@ class BootServiceProvider extends ServiceProvider
         $this->app->singleton(Infrastructure\Facade\ReservationFacadeInterface::class, Infrastructure\Facade\ReservationFacade::class);
         $this->app->singleton(Infrastructure\Facade\SearchFacadeInterface::class, Infrastructure\Facade\SearchFacade::class);
         $this->app->singleton(Infrastructure\Facade\InfoFacadeInterface::class, Infrastructure\Facade\InfoFacade::class);
+
+        $this->app->singleton(Domain\Repository\QuotaRepositoryInterface::class, Infrastructure\Repository\QuotaRepository::class);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace GTS\Hotel\Infrastructure\Facade;
 
+use Carbon\CarbonInterface;
 use Custom\Framework\Contracts\Bus\CommandBusInterface;
 use Custom\Framework\Contracts\Bus\QueryBusInterface;
 use GTS\Hotel\Application\Command\ReserveQuota;
@@ -20,8 +21,8 @@ class ReservationFacade implements ReservationFacadeInterface
         return $this->queryBus->execute(new GetActiveReservations());
     }
 
-    public function reserveQuota($roomId, $date)
+    public function reserveQuota(int $roomId, CarbonInterface $date, int $count)
     {
-        return $this->commandBus->execute(new ReserveQuota($roomId, $date));
+        return $this->commandBus->execute(new ReserveQuota($roomId, $date, $count));
     }
 }

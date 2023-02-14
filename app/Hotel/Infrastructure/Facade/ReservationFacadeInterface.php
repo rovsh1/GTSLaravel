@@ -2,4 +2,9 @@
 
 namespace GTS\Hotel\Infrastructure\Facade;
 
-interface ReservationFacadeInterface { }
+use Carbon\CarbonInterface;
+
+interface ReservationFacadeInterface
+{
+    public function reserveQuota(int $roomId, CarbonInterface $date, int $count);
+}
