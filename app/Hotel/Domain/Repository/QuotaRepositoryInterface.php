@@ -2,9 +2,9 @@
 
 namespace GTS\Hotel\Domain\Repository;
 
-use Carbon\CarbonInterface;
+use Carbon\CarbonPeriod;
 
 interface QuotaRepositoryInterface
 {
-    public function reserveRoomQuotaByDate(int $roomId, CarbonInterface $date, int $quota);
+    public function reserveRoomQuotaByDate(int $roomId, CarbonPeriod $period, int $quota);
 }

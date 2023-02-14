@@ -21,9 +21,10 @@ class HotelAdapter extends AbstractPortAdapter implements HotelAdapterInterface
 
     public function updateRoomQuota(CarbonPeriod $period, int $roomId, int $quota)
     {
-        return $this->request('reserveQuota', [
+        return $this->request('hotel/reserveQuota', [
             'room_id' => $roomId,
-            'date' => $period->getStartDate(),
+            'date_from' => $period->getStartDate(),
+            'date_to' => $period->getEndDate(),
             'count' => $quota
         ]);
     }

@@ -18,6 +18,6 @@ class ReserveQuotaHandler implements CommandHandlerInterface
      */
     public function handle(CommandInterface $command)
     {
-        $this->quotaRepository->reserveRoomQuotaByDate($command->roomId, $command->date, $command->count);
+        $this->quotaRepository->reserveRoomQuotaByDate($command->roomId, $command->period, $command->count);
     }
 }
