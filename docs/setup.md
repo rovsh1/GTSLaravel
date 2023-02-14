@@ -1,10 +1,3 @@
-# README
-
-## Urls
-
-- [Web Site](http://www.gotostans.com/)
-- [Dev Admin panel](http://bspems.qcthmb.gotostans.com/)
-
 ## Контейнеры
 
 1. php
