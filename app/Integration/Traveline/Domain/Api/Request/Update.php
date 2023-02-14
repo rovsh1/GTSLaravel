@@ -26,6 +26,26 @@ class Update
         return new CarbonPeriod($this->startDateYmd, $this->endDateYmd);
     }
 
+    public function hasQuota(): bool
+    {
+        return $this->quota !== null;
+    }
+
+    public function hasPrices(): bool
+    {
+        return $this->prices !== null;
+    }
+
+    public function isClosed(): bool
+    {
+        return $this->closed !== null && $this->closed;
+    }
+
+    public function isOpened(): bool
+    {
+        return $this->closed !== null && !$this->closed;
+    }
+
     public static function fromArray(array $data): self
     {
         $prices = array_key_exists('prices', $data)
