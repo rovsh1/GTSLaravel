@@ -36,9 +36,16 @@ class ReservationController
             'date_to' => 'required|date',
         ]);
 
+        return $this->reservationFacade->updateRoomPriceRate(
+            $request->room_id,
+            new CarbonPeriod($request->date_from, $request->date_to),
+            $request->rate_id,
+            $request->currency_code,
+        );
     }
 
-    public function openRoomQuota(Request $request) {
+    public function openRoomQuota(Request $request)
+    {
         $request->validate([
             'room_id' => 'required|numeric',
             'rate_id' => 'required|numeric',
@@ -46,10 +53,15 @@ class ReservationController
             'date_to' => 'required|date',
         ]);
 
-
+        return $this->reservationFacade->openRoomQuota(
+            $request->room_id,
+            new CarbonPeriod($request->date_from, $request->date_to),
+            $request->rate_id,
+        );
     }
 
-    public function closeRoomQuota(Request $request) {
+    public function closeRoomQuota(Request $request)
+    {
         $request->validate([
             'room_id' => 'required|numeric',
             'rate_id' => 'required|numeric',
@@ -57,6 +69,10 @@ class ReservationController
             'date_to' => 'required|date',
         ]);
 
-
+        return $this->reservationFacade->closeRoomQuota(
+            $request->room_id,
+            new CarbonPeriod($request->date_from, $request->date_to),
+            $request->rate_id,
+        );
     }
 }
