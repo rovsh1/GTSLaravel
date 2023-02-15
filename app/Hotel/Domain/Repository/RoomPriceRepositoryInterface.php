@@ -2,7 +2,9 @@
 
 namespace GTS\Hotel\Domain\Repository;
 
+use Carbon\CarbonInterface;
+
 interface RoomPriceRepositoryInterface
 {
-    public function updateRoomPrice(int $roomId, int $rateId, float $price);
+    public function updateRoomPrices(int $roomId, int $seasonId, int $rateId, int $guestsNumber, int $type, CarbonInterface $date, float $price);
 }

@@ -5,14 +5,17 @@ namespace GTS\Integration\Traveline\Domain\Api\Request;
 class Price
 {
     public function __construct(
-        public readonly int   $code,
-        public readonly float $price
+        public readonly int   $roomId,
+        public readonly int   $guestsNumber,
+        public readonly float $price,
     ) {}
 
     public static function fromArray(array $data): self
     {
+        [$roomId, $guestsNumber] = explode('_', $data['code']);
         return new self(
-            $data['code'],
+            $roomId,
+            $guestsNumber,
             $data['price'],
         );
     }

@@ -24,19 +24,11 @@ class RoomDto extends Dto
 
     public static function fromHotelRoom(mixed $hotelRoomData): self
     {
-        $occupancies = [];
-        for ($i = 1; $i <= $hotelRoomData->guestsNumber; $i++) {
-            $occupancies[] = [
-                'id' => $hotelRoomData->id,
-                'personQuantity' => $i
-            ];
-        }
-
         return new self(
             $hotelRoomData->id,
             $hotelRoomData->name,
             RatePlanDto::collection($hotelRoomData->priceRates),
-            OccupancyDto::collection($occupancies),
+            OccupancyDto::createByGuestsNumber($hotelRoomData->id, $hotelRoomData->guestsNumber),
         );
     }
 }

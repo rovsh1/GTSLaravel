@@ -3,7 +3,6 @@
 namespace GTS\Integration\Traveline\Infrastructure\Adapter;
 
 use Carbon\CarbonPeriod;
-
 use GTS\Integration\Traveline\Domain\Adapter\HotelAdapterInterface;
 use GTS\Shared\Infrastructure\Adapter\AbstractPortAdapter;
 
@@ -29,11 +28,12 @@ class HotelAdapter extends AbstractPortAdapter implements HotelAdapterInterface
         ]);
     }
 
-    public function updateRoomPrice(CarbonPeriod $period, int $roomId, int $rateId, string $currencyCode, float $price)
+    public function updateRoomPrice(CarbonPeriod $period, int $roomId, int $rateId, int $guestsNumber, string $currencyCode, float $price)
     {
         return $this->request('hotel/updateRoomPrice', [
             'room_id' => $roomId,
             'rate_id' => $rateId,
+            'guests_number' => $guestsNumber,
             'currency_code' => $currencyCode,
             'price' => $price,
             'date_from' => $period->getStartDate(),

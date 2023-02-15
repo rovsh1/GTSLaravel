@@ -44,8 +44,9 @@ class QuotaUpdater
             foreach ($updateRequest->prices as $price) {
                 $this->responses[] = $this->adapter->updateRoomPrice(
                     $updateRequest->getDatePeriod(),
-                    $updateRequest->roomTypeId,
+                    $price->roomId,
                     $updateRequest->ratePlanId,
+                    $price->guestsNumber,
                     $updateRequest->currencyCode,
                     $price->price
                 );

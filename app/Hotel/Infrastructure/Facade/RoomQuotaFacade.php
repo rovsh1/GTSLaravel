@@ -5,13 +5,10 @@ namespace GTS\Hotel\Infrastructure\Facade;
 use Carbon\CarbonPeriod;
 
 use Custom\Framework\Contracts\Bus\CommandBusInterface;
-use Custom\Framework\Contracts\Bus\QueryBusInterface;
 
 use GTS\Hotel\Application\Command\CloseRoomQuota;
 use GTS\Hotel\Application\Command\OpenRoomQuota;
-use GTS\Hotel\Application\Command\UpdateRoomPrice;
 use GTS\Hotel\Application\Command\UpdateRoomQuota;
-use GTS\Hotel\Application\Query\GetActiveReservations;
 
 class RoomQuotaFacade implements RoomQuotaFacadeInterface
 {

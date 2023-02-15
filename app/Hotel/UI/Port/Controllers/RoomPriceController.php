@@ -20,6 +20,7 @@ class RoomPriceController
             'room_id' => 'required|numeric',
             'rate_id' => 'required|numeric',
             'price' => 'required|numeric',
+            'guests_number' => 'required|int',
             'currency_code' => 'required|string',
             'date_from' => 'required|date',
             'date_to' => 'required|date',
@@ -29,6 +30,7 @@ class RoomPriceController
             $request->room_id,
             new CarbonPeriod($request->date_from, $request->date_to),
             $request->rate_id,
+            $request->guests_number,
             $request->price,
             $request->currency_code,
         );

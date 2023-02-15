@@ -13,9 +13,11 @@ use GTS\Shared\Infrastructure\Models\Model;
  * @property int $guests_number
  * @property int $type
  * @property string $price
+ * @property \Custom\Framework\Support\DateTime $date
  * @method static \Illuminate\Database\Eloquent\Builder|Price newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Price newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Price query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Price whereDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Price whereGuestsNumber($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Price wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Price whereRateId($value)
@@ -29,7 +31,7 @@ class Price extends Model
     public const CREATED_AT = null;
     public const UPDATED_AT = null;
 
-    protected $table = 'hotel_room_prices';
+    protected $table = 'hotel_room_price_days';
 
     protected $fillable = [
         'rate_id',
@@ -38,5 +40,10 @@ class Price extends Model
         'guests_number',
         'type',
         'price',
+        'date',
+    ];
+
+    protected $casts = [
+        'date' => 'date'
     ];
 }

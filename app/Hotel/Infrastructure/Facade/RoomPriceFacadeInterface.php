@@ -6,5 +6,5 @@ use Carbon\CarbonPeriod;
 
 interface RoomPriceFacadeInterface
 {
-    public function updateRoomPrice(int $roomId, CarbonPeriod $period, int $rateId, float $price, string $currencyCode);
+    public function updateRoomPrice(int $roomId, CarbonPeriod $period, int $rateId, int $guestsNumber, float $price, string $currencyCode);
 }

@@ -3,17 +3,23 @@
 namespace GTS\Hotel\Infrastructure\Facade;
 
 use Carbon\CarbonPeriod;
-use Custom\Framework\Contracts\Bus\CommandBusInterface;
-use GTS\Hotel\Application\Command\UpdateRoomPrice;
+use GTS\Hotel\Application\Service\RoomPriceUpdater;
 
 class RoomPriceFacade implements RoomPriceFacadeInterface
 {
     public function __construct(
-        private CommandBusInterface $commandBus,
+        private RoomPriceUpdater $roomPriceUpdater,
     ) {}
 
-    public function updateRoomPrice(int $roomId, CarbonPeriod $period, int $rateId, float $price, string $currencyCode)
+    public function updateRoomPrice(int $roomId, CarbonPeriod $period, int $rateId, int $guestsNumber, float $price, string $currencyCode)
     {
-        return $this->commandBus->execute(new UpdateRoomPrice($roomId, $period, $rateId, $price, $currencyCode));
+        $this->roomPriceUpdater->updateRoomPriceByDate(
+            $roomId,
+            $period,
+            $rateId,
+            $guestsNumber,
+            $price,
+            $currencyCode
+        );
     }
 }
