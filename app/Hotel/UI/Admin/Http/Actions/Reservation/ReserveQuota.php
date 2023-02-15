@@ -2,12 +2,12 @@
 
 namespace GTS\Hotel\UI\Admin\Http\Actions\Reservation;
 
-use GTS\Hotel\Infrastructure\Facade\ReservationFacadeInterface;
+use GTS\Hotel\Infrastructure\Facade\RoomQuotaFacadeInterface;
 
 class ReserveQuota
 {
 
-    public function __construct(private ReservationFacadeInterface $facade) { }
+    public function __construct(private RoomQuotaFacadeInterface $facade) { }
 
     public function handle($roomId, $date)
     {

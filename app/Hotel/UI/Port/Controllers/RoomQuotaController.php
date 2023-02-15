@@ -4,11 +4,14 @@ namespace GTS\Hotel\UI\Port\Controllers;
 
 use Carbon\CarbonPeriod;
 use Custom\Framework\Port\Request;
-use GTS\Hotel\Infrastructure\Facade\ReservationFacadeInterface;
 
-class ReservationController
+use GTS\Hotel\Infrastructure\Facade\RoomQuotaFacadeInterface;
+
+class RoomQuotaController
 {
-    public function __construct(private ReservationFacadeInterface $reservationFacade) {}
+    public function __construct(
+        private RoomQuotaFacadeInterface $roomQuotaFacade,
+    ) {}
 
     public function updateRoomQuota(Request $request)
     {
@@ -19,30 +22,10 @@ class ReservationController
             'quota' => 'required|int',
         ]);
 
-        return $this->reservationFacade->updateRoomQuota(
+        return $this->roomQuotaFacade->updateRoomQuota(
             $request->room_id,
             new CarbonPeriod($request->date_from, $request->date_to),
             $request->quota
-        );
-    }
-
-    public function updateRoomPrice(Request $request)
-    {
-        $request->validate([
-            'room_id' => 'required|numeric',
-            'rate_id' => 'required|numeric',
-            'price' => 'required|numeric',
-            'currency_code' => 'required|string',
-            'date_from' => 'required|date',
-            'date_to' => 'required|date',
-        ]);
-
-        return $this->reservationFacade->updateRoomPrice(
-            $request->room_id,
-            new CarbonPeriod($request->date_from, $request->date_to),
-            $request->rate_id,
-            $request->price,
-            $request->currency_code,
         );
     }
 
@@ -55,7 +38,7 @@ class ReservationController
             'date_to' => 'required|date',
         ]);
 
-        return $this->reservationFacade->openRoomQuota(
+        return $this->roomQuotaFacade->openRoomQuota(
             $request->room_id,
             new CarbonPeriod($request->date_from, $request->date_to),
             $request->rate_id,
@@ -71,7 +54,7 @@ class ReservationController
             'date_to' => 'required|date',
         ]);
 
-        return $this->reservationFacade->closeRoomQuota(
+        return $this->roomQuotaFacade->closeRoomQuota(
             $request->room_id,
             new CarbonPeriod($request->date_from, $request->date_to),
             $request->rate_id,

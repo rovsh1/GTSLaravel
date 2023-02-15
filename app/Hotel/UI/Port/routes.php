@@ -3,12 +3,14 @@
 use Custom\Framework\Support\Facades\Route;
 
 use GTS\Hotel\UI\Port\Controllers\InfoController;
-use GTS\Hotel\UI\Port\Controllers\ReservationController;
+use GTS\Hotel\UI\Port\Controllers\RoomQuotaController;
+use GTS\Hotel\UI\Port\Controllers\RoomPriceController;
 
 Route::register('findById', [InfoController::class, 'findById']);
 Route::register('getRoomsWithPriceRatesByHotelId', [InfoController::class, 'getRoomsWithPriceRatesByHotelId']);
 
-Route::register('updateRoomQuota', [ReservationController::class, 'updateRoomQuota']);
-Route::register('openRoomQuota', [ReservationController::class, 'openRoomQuota']);
-Route::register('closeRoomQuota', [ReservationController::class, 'closeRoomQuota']);
-Route::register('updateRoomPrice', [ReservationController::class, 'updateRoomPrice']);
+Route::register('updateRoomQuota', [RoomQuotaController::class, 'updateRoomQuota']);
+Route::register('openRoomQuota', [RoomQuotaController::class, 'openRoomQuota']);
+Route::register('closeRoomQuota', [RoomQuotaController::class, 'closeRoomQuota']);
+
+Route::register('updateRoomPrice', [RoomPriceController::class, 'updateRoomPrice']);
