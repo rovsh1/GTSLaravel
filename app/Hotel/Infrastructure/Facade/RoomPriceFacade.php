@@ -3,7 +3,7 @@
 namespace GTS\Hotel\Infrastructure\Facade;
 
 use Carbon\CarbonPeriod;
-use GTS\Hotel\Application\Service\RoomPriceUpdater;
+use GTS\Hotel\Domain\Service\RoomPriceUpdater;
 
 class RoomPriceFacade implements RoomPriceFacadeInterface
 {

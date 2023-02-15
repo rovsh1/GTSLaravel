@@ -11,7 +11,7 @@ class RoomFactory extends AbstractEntityFactory
 
     protected function fromArray(array $data): mixed
     {
-        return new Room(
+        return new $this->entity(
             $data['id'],
             $data['display_name'],
             app(PriceRateFactory::class)->createCollectionFrom($data['price_rates']),
