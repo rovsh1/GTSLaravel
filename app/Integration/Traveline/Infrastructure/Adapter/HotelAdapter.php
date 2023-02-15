@@ -3,6 +3,7 @@
 namespace GTS\Integration\Traveline\Infrastructure\Adapter;
 
 use Carbon\CarbonPeriod;
+
 use GTS\Integration\Traveline\Domain\Adapter\HotelAdapterInterface;
 use GTS\Shared\Infrastructure\Adapter\AbstractPortAdapter;
 

@@ -20,4 +20,13 @@ class InfoController
         return $this->infoFacade->findById($request->id);
     }
 
+    public function getByHotelId(Request $request): array
+    {
+        $request->validate([
+            'hotel_id' => 'required|int',
+        ]);
+        //@todo получение бронирований по id отеля
+//        return $this->infoFacade->findById($request->id);
+    }
+
 }
