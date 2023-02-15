@@ -30,11 +30,6 @@ class ReservationAdapter extends AbstractPortAdapter implements ReservationAdapt
         return $this->request('hotelReservation/findById', ['id' => $id]);
     }
 
-    public function getActiveReservationsByHotelId(int $hotelId): array
-    {
-        return [];
-    }
-
     public function getUpdatedReservations(CarbonInterface $startDate = null, ?int $hotelId = null): array
     {
         return [];

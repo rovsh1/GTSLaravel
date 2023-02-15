@@ -6,15 +6,15 @@ use Custom\Framework\Contracts\Bus\CommandBusInterface;
 use Custom\Framework\Contracts\Bus\QueryBusInterface;
 use GTS\Hotel\Application\Query\GetActiveReservations;
 
-class ReservationsFacade implements ReservationsFacadeInterface
+class ReservationFacade implements ReservationFacadeInterface
 {
     public function __construct(
         private CommandBusInterface $commandBus,
         private QueryBusInterface   $queryBus,
     ) {}
 
-    public function getActiveReservations(): array
+    public function getActiveReservations(int $hotelId): array
     {
-        return $this->queryBus->execute(new GetActiveReservations());
+        return $this->queryBus->execute(new GetActiveReservations($hotelId));
     }
 }
