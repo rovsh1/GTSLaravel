@@ -1,8 +1,8 @@
 <?php
 
-namespace GTS\Integration\Traveline\Domain\Api\Response;
+namespace GTS\Integration\Traveline\Domain\Api\Response\Error;
 
-class TravelineError implements \JsonSerializable
+abstract class AbstractTravelineError implements \JsonSerializable
 {
     public function __construct(
         public readonly int    $code,

@@ -2,10 +2,12 @@
 
 namespace GTS\Integration\Traveline\Domain\Api\Response;
 
-class AbstractErrorResponse extends AbstractTravelineResponse
+use GTS\Integration\Traveline\Domain\Api\Response\Error\AbstractTravelineError;
+
+abstract class AbstractErrorResponse extends AbstractTravelineResponse
 {
     public function __construct(
-        /** @var TravelineError[] $errors */
+        /** @var AbstractTravelineError[] $errors */
         public readonly array $errors
     )
     {
