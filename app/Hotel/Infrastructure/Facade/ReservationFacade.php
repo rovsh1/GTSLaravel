@@ -9,7 +9,7 @@ use Custom\Framework\Contracts\Bus\QueryBusInterface;
 
 use GTS\Hotel\Application\Command\CloseRoomQuota;
 use GTS\Hotel\Application\Command\OpenRoomQuota;
-use GTS\Hotel\Application\Command\UpdateRoomPriceRate;
+use GTS\Hotel\Application\Command\UpdateRoomPrice;
 use GTS\Hotel\Application\Command\UpdateRoomQuota;
 use GTS\Hotel\Application\Query\GetActiveReservations;
 
@@ -40,8 +40,8 @@ class ReservationFacade implements ReservationFacadeInterface
         return $this->commandBus->execute(new CloseRoomQuota($roomId, $period, $rateId));
     }
 
-    public function updateRoomPriceRate(int $roomId, CarbonPeriod $period, int $rateId, string $currencyCode)
+    public function updateRoomPrice(int $roomId, CarbonPeriod $period, int $rateId, float $price, string $currencyCode)
     {
-        return $this->commandBus->execute(new UpdateRoomPriceRate($roomId, $period, $rateId, $currencyCode));
+        return $this->commandBus->execute(new UpdateRoomPrice($roomId, $period, $rateId, $price, $currencyCode));
     }
 }

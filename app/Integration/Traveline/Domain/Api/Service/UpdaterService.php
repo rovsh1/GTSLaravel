@@ -42,7 +42,7 @@ class UpdaterService
 
         if ($updateRequest->hasPrices()) {
             foreach ($updateRequest->prices as $price) {
-                $this->responses[] = $this->adapter->updateRoomRatePrice(
+                $this->responses[] = $this->adapter->updateRoomPrice(
                     $updateRequest->getDatePeriod(),
                     $updateRequest->roomTypeId,
                     $updateRequest->ratePlanId,

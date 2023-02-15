@@ -11,4 +11,4 @@ Route::register('getRoomsWithPriceRatesByHotelId', [InfoController::class, 'getR
 Route::register('updateRoomQuota', [ReservationController::class, 'updateRoomQuota']);
 Route::register('openRoomQuota', [ReservationController::class, 'openRoomQuota']);
 Route::register('closeRoomQuota', [ReservationController::class, 'closeRoomQuota']);
-Route::register('updateRoomRatePrice', [ReservationController::class, 'updateRoomRatePrice']);
+Route::register('updateRoomRatePrice', [ReservationController::class, 'updateRoomPrice']);

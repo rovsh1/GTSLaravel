@@ -26,20 +26,22 @@ class ReservationController
         );
     }
 
-    public function updateRoomRatePrice(Request $request)
+    public function updateRoomPrice(Request $request)
     {
         $request->validate([
             'room_id' => 'required|numeric',
             'rate_id' => 'required|numeric',
+            'price' => 'required|numeric',
             'currency_code' => 'required|string',
             'date_from' => 'required|date',
             'date_to' => 'required|date',
         ]);
 
-        return $this->reservationFacade->updateRoomPriceRate(
+        return $this->reservationFacade->updateRoomPrice(
             $request->room_id,
             new CarbonPeriod($request->date_from, $request->date_to),
             $request->rate_id,
+            $request->price,
             $request->currency_code,
         );
     }

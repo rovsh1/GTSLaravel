@@ -12,5 +12,5 @@ interface ReservationFacadeInterface
 
     public function closeRoomQuota(int $roomId, CarbonPeriod $period, int $rateId);
 
-    public function updateRoomPriceRate(int $roomId, CarbonPeriod $period, int $rateId, string $currencyCode);
+    public function updateRoomPrice(int $roomId, CarbonPeriod $period, int $rateId, float $price, string $currencyCode);
 }
