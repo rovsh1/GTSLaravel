@@ -20,8 +20,6 @@ class SeasonRepository implements SeasonRepositoryInterface
         $seasons = EloquentSeason::whereHotelId($hotelId)
             ->where('date_from', '<=', $period->getStartDate())
             ->where('date_to', '>=', $period->getEndDate())
-            ->withHotel()
-            ->withContract()
             ->get();
 
         return app(SeasonFactory::class)->createCollectionFrom($seasons);

@@ -11,7 +11,7 @@ class RoomPriceFacade implements RoomPriceFacadeInterface
         private RoomPriceUpdater $roomPriceUpdater,
     ) {}
 
-    public function updateRoomPrice(int $roomId, CarbonPeriod $period, int $rateId, int $guestsNumber, float $price, string $currencyCode)
+    public function updateRoomPriceByPeriod(int $roomId, CarbonPeriod $period, int $rateId, int $guestsNumber, float $price, string $currencyCode)
     {
         $this->roomPriceUpdater->updateRoomPriceByDate(
             $roomId,

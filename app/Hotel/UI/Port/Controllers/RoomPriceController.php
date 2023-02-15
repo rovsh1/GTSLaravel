@@ -26,7 +26,7 @@ class RoomPriceController
             'date_to' => 'required|date',
         ]);
 
-        return $this->roomPriceFacade->updateRoomPrice(
+        return $this->roomPriceFacade->updateRoomPriceByPeriod(
             $request->room_id,
             new CarbonPeriod($request->date_from, $request->date_to),
             $request->rate_id,

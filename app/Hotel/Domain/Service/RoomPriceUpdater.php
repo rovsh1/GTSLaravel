@@ -23,7 +23,7 @@ class RoomPriceUpdater
         if ($currencyCode !== 'USZ') {
             throw new \Exception('Currency not supported');
         }
-        //@todo получение отеля (видимо по комнате)
+        //@todo получение ID отеля (видимо по комнате)
         $this->hotelSeasons = $this->seasonRepository->getActiveSeasonsIncludesPeriod(333, $period);
         if (count($this->hotelSeasons) === 0) {
             throw new \Exception('Not found hotel season for period');

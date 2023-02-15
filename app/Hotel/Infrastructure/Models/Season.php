@@ -3,7 +3,6 @@
 namespace GTS\Hotel\Infrastructure\Models;
 
 use GTS\Shared\Infrastructure\Models\Model;
-use Illuminate\Database\Eloquent\Builder;
 
 /**
  * GTS\Hotel\Infrastructure\Models\Season
@@ -14,6 +13,8 @@ use Illuminate\Database\Eloquent\Builder;
  * @property string $name
  * @property \Custom\Framework\Support\DateTime $date_from
  * @property \Custom\Framework\Support\DateTime $date_to
+ * @property-read \GTS\Hotel\Infrastructure\Models\Contract|null $contract
+ * @property-read \GTS\Hotel\Infrastructure\Models\Hotel|null $hotel
  * @method static \Illuminate\Database\Eloquent\Builder|Season newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Season newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Season query()
@@ -23,8 +24,6 @@ use Illuminate\Database\Eloquent\Builder;
  * @method static \Illuminate\Database\Eloquent\Builder|Season whereHotelId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Season whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Season whereName($value)
- * @method static Builder|Season withContract()
- * @method static Builder|Season withHotel()
  * @mixin \Eloquent
  */
 class Season extends Model
@@ -47,11 +46,13 @@ class Season extends Model
         'date_to' => 'date',
     ];
 
-    public function scopeWithHotel(Builder $builder) {
-
+    public function hotel()
+    {
+        return $this->belongsTo(Hotel::class, 'hotel_id', 'id');
     }
 
-    public function scopeWithContract(Builder $builder) {
-
+    public function contract()
+    {
+        return $this->belongsTo(Contract::class, 'contract_id', 'id');
     }
 }
