@@ -4,18 +4,18 @@ namespace GTS\Integration\Traveline\Application\Command;
 
 use Custom\Framework\Contracts\Bus\CommandHandlerInterface;
 use Custom\Framework\Contracts\Bus\CommandInterface;
-use GTS\Integration\Traveline\Domain\Adapter\ReservationAdapterInterface;
+use GTS\Integration\Traveline\Domain\Api\Service\Booking;
 
 class ConfirmReservationsHandler implements CommandHandlerInterface
 {
-    public function __construct(private ReservationAdapterInterface $adapter) {}
+    public function __construct(private Booking $bookingService) {}
 
     /**
-     * @param CommandInterface|ConfirmReservations $command
+     * @param ConfirmReservations $command
      * @return void
      */
     public function handle(CommandInterface $command)
     {
-        $this->adapter->confirmReservation();
+        $this->bookingService->confirmReservations($command->reservations);
     }
 }

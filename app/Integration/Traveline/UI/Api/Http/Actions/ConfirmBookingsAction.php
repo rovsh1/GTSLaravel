@@ -2,6 +2,7 @@
 
 namespace GTS\Integration\Traveline\UI\Api\Http\Actions;
 
+use GTS\Integration\Traveline\Domain\Api\Response\EmptySuccessResponse;
 use GTS\Integration\Traveline\Infrastructure\Facade\ReservationFacadeInterface;
 use GTS\Integration\Traveline\UI\Api\Http\Requests\ConfirmBookingsActionRequest;
 
@@ -11,7 +12,7 @@ class ConfirmBookingsAction
 
     public function handle(ConfirmBookingsActionRequest $request)
     {
-        //@todo тут приходит пачка броней, где обрабатывать пачку?
-        $this->facade->confirmReservations();
+        $this->facade->confirmReservations($request->getReservations());
+        return new EmptySuccessResponse();
     }
 }

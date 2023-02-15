@@ -7,7 +7,7 @@ use GTS\Integration\Traveline\Domain\Api\Request\Update;
 use GTS\Integration\Traveline\Domain\Exception\HotelNotConnectedException;
 use GTS\Integration\Traveline\Domain\Repository\HotelRepositoryInterface;
 
-class UpdaterService
+class QuotaUpdater
 {
     private array $responses = [];
 

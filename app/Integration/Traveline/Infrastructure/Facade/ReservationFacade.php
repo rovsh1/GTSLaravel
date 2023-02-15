@@ -20,8 +20,8 @@ class ReservationFacade implements ReservationFacadeInterface
         return $this->reservationFinder->getReservations($id, $hotelId, $startDate);
     }
 
-    public function confirmReservations()
+    public function confirmReservations(array $reservations)
     {
-        return $this->commandBus->execute(new ConfirmReservations());
+        return $this->commandBus->execute(new ConfirmReservations($reservations));
     }
 }

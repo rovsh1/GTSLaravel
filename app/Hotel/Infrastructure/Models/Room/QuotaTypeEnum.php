@@ -4,7 +4,7 @@ namespace GTS\Hotel\Infrastructure\Models\Room;
 
 enum QuotaTypeEnum: int
 {
-    case OPEN = 1;
-    case CLOSE = 2;
+    case Open = 1;
+    case Close = 2;
 
 }

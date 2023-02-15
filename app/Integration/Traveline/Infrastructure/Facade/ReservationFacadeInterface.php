@@ -15,5 +15,5 @@ interface ReservationFacadeInterface
      */
     public function getReservations(?int $id = null, ?int $hotelId = null, ?CarbonInterface $startDate = null): array;
 
-    public function confirmReservations();
+    public function confirmReservations(array $reservations);
 }

@@ -5,11 +5,11 @@ namespace GTS\Integration\Traveline\Application\Command;
 use Custom\Framework\Contracts\Bus\CommandHandlerInterface;
 use Custom\Framework\Contracts\Bus\CommandInterface;
 
-use GTS\Integration\Traveline\Domain\Api\Service\UpdaterService;
+use GTS\Integration\Traveline\Domain\Api\Service\QuotaUpdater;
 
 class UpdateQuotasAndPlansHandler implements CommandHandlerInterface
 {
-    public function __construct(private UpdaterService $updaterService) {}
+    public function __construct(private QuotaUpdater $updaterService) {}
 
     /**
      * @param UpdateQuotasAndPlans $command
@@ -17,6 +17,6 @@ class UpdateQuotasAndPlansHandler implements CommandHandlerInterface
      */
     public function handle(CommandInterface $command)
     {
-        return $this->updaterService->updateQuotasAndPlans($command->hotelId, $command->updates);
+        $this->updaterService->updateQuotasAndPlans($command->hotelId, $command->updates);
     }
 }
