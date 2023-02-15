@@ -12,6 +12,8 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->registerModules();
 
+        $this->app->register(DateServiceProvider::class);
+
         $this->app->singleton(PortGatewayInterface::class, PortGateway::class);
         $this->app->alias(PortGatewayInterface::class, 'portGateway');
     }
