@@ -15,11 +15,14 @@ class Client
     {
         $module = module($request->module());
         if ($module === null) {
-            throw new ModuleNotFoundException("Module '{$request->module()}' not found");
+            throw new Exception\ModuleNotFoundException("Module '{$request->module()}' not found");
         }
-
         $module->boot();
 
-        return $module->get('router')->request($request->path(), $request->attributes());
+        try {
+            return $module->get('router')->request($request->path(), $request->attributes());
+        } catch (\Throwable $e) {
+            throw new Exception\BasePortGatewayException($e->getMessage(), $e->getCode(), $e);
+        }
     }
 }
