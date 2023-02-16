@@ -29,12 +29,14 @@ class ReservationFinder
             throw new HotelNotConnectedException();
         }
 
+        //@todo отфильтровать брони по ID подключенных отелей (Сделать ORM к таблице броней, где будут лежать id, hotelId и dateUpdate, с нужными мне фильтрами, а получать брони буду по id)
         $reservations = [];
         if ($reservationId === null && $hotelId === null && $dateUpdate === null) {
             $reservations = $this->adapter->getActiveReservations();
         } elseif ($dateUpdate !== null) {
             $reservations = $this->adapter->getUpdatedReservations($dateUpdate, $hotelId);
         } elseif ($dateUpdate === null && $hotelId !== null) {
+            //@todo получить из модуля бронирования
             $reservations = $this->hotelAdapter->getActiveReservations($hotelId);
         } elseif ($reservationId !== null) {
             $reservations[] = $this->adapter->getActiveReservationById($reservationId);

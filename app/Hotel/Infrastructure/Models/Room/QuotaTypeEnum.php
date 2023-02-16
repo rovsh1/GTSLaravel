@@ -6,5 +6,4 @@ enum QuotaTypeEnum: int
 {
     case Open = 1;
     case Close = 2;
-
 }

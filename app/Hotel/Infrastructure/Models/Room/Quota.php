@@ -41,6 +41,6 @@ class Quota extends Model
     ];
 
     protected $casts = [
-        'date' => 'date'
+        'date' => 'date',
     ];
 }

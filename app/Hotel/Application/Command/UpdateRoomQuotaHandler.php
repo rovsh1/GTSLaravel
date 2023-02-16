@@ -4,6 +4,7 @@ namespace GTS\Hotel\Application\Command;
 
 use Custom\Framework\Contracts\Bus\CommandHandlerInterface;
 use Custom\Framework\Contracts\Bus\CommandInterface;
+
 use GTS\Hotel\Domain\Repository\RoomQuotaRepositoryInterface;
 
 class UpdateRoomQuotaHandler implements CommandHandlerInterface

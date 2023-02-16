@@ -3,7 +3,8 @@
 namespace GTS\Hotel\Infrastructure\Facade;
 
 use Carbon\CarbonPeriod;
-use GTS\Hotel\Domain\Service\RoomPriceUpdater;
+
+use GTS\Hotel\Application\Service\RoomPriceUpdater;
 
 class RoomPriceFacade implements RoomPriceFacadeInterface
 {
@@ -13,6 +14,7 @@ class RoomPriceFacade implements RoomPriceFacadeInterface
 
     public function updateRoomPriceByPeriod(int $roomId, CarbonPeriod $period, int $rateId, int $guestsNumber, float $price, string $currencyCode)
     {
+        //@todo конвертация Currency в Shared/ValueObject/Price
         $this->roomPriceUpdater->updateRoomPriceByDate(
             $roomId,
             $period,

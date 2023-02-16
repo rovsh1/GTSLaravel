@@ -1,6 +1,6 @@
 <?php
 
-namespace GTS\Hotel\Domain\Service;
+namespace GTS\Hotel\Application\Service;
 
 use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
@@ -23,23 +23,28 @@ class RoomPriceUpdater
         if ($currencyCode !== 'USZ') {
             throw new \Exception('Currency not supported');
         }
-        //@todo получение ID отеля (видимо по комнате)
+
+        //@todo получение сезона по комнате + join hotel_rooms (Через query)
         $this->hotelSeasons = $this->seasonRepository->getActiveSeasonsIncludesPeriod(333, $period);
         if (count($this->hotelSeasons) === 0) {
-            throw new \Exception('Not found hotel season for period');
+            //@todo уточнить у Анвара
+            \Log::warning('Not found hotel season for period');
+            return;
         }
 
         foreach ($period as $date) {
             $seasonId = $this->getSeasonIdByDate($date);
             if ($seasonId === null) {
-                throw new \Exception("Not found season for date: {$date}");
+                //@todo уточнить у Анвара
+                \Log::warning("Not found season for date: {$date}");
+                continue;
             }
             $this->roomPriceRepository->updateRoomPrices(
                 $roomId,
                 $seasonId,
                 $rateId,
                 $guestsNumber,
-                1,//вроде резидент/нерезидент
+                1,//@todo вроде резидент/нерезидент - узнать у Анвара
                 $date,
                 $price
             );
