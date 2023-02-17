@@ -48,9 +48,9 @@ class QuotaAndPriceUpdater
                     $price->roomId,
                     $updateRequest->ratePlanId,
                     $price->guestsNumber,
+                    $this->isPricesForResidents,
                     $updateRequest->currencyCode,
                     $price->price,
-                    $this->isPricesForResidents
                 );
             }
         }

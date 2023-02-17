@@ -12,7 +12,7 @@ class RoomPriceFacade implements RoomPriceFacadeInterface
         private RoomPriceUpdater $roomPriceUpdater,
     ) {}
 
-    public function updateRoomPriceByPeriod(int $roomId, CarbonPeriod $period, int $rateId, int $guestsNumber, float $price, string $currencyCode, bool $isResident)
+    public function updateRoomPriceByPeriod(int $roomId, CarbonPeriod $period, int $rateId, int $guestsNumber, bool $isResident, float $price, string $currencyCode)
     {
         //@todo конвертация Currency в Shared/ValueObject/Price
         $this->roomPriceUpdater->updateRoomPriceByDate(
@@ -20,9 +20,9 @@ class RoomPriceFacade implements RoomPriceFacadeInterface
             $period,
             $rateId,
             $guestsNumber,
+            $isResident,
             $price,
             $currencyCode,
-            $isResident
         );
     }
 }

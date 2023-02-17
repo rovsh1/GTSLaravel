@@ -28,7 +28,7 @@ class HotelAdapter extends AbstractPortAdapter implements HotelAdapterInterface
         ]);
     }
 
-    public function updateRoomPrice(CarbonPeriod $period, int $roomId, int $rateId, int $guestsNumber, string $currencyCode, float $price, bool $isResident)
+    public function updateRoomPrice(CarbonPeriod $period, int $roomId, int $rateId, int $guestsNumber, bool $isResident, string $currencyCode, float $price)
     {
         return $this->request('hotel/updateRoomPrice', [
             'room_id' => $roomId,

@@ -32,9 +32,9 @@ class RoomPriceController
             new CarbonPeriod($request->date_from, $request->date_to),
             $request->rate_id,
             $request->guests_number,
+            $request->is_resident,
             $request->price,
             $request->currency_code,
-            $request->is_resident
         );
     }
 }

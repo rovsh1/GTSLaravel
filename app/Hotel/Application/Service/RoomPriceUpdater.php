@@ -19,7 +19,7 @@ class RoomPriceUpdater
         private array                        $hotelSeasons = [],
     ) {}
 
-    public function updateRoomPriceByDate(int $roomId, CarbonPeriod $period, int $rateId, int $guestsNumber, float $price, string $currencyCode, bool $isResident)
+    public function updateRoomPriceByDate(int $roomId, CarbonPeriod $period, int $rateId, int $guestsNumber, bool $isResident, float $price, string $currencyCode)
     {
         //@todo нормальная проверка на валюту и норм. ексепшн
         if ($currencyCode !== 'USZ') {
