@@ -28,7 +28,6 @@ class RoomPriceUpdater
 
         $this->hotelSeasons = $this->queryBus->execute(new GetActiveSeasonsByRoomIdIncludesPeriod($roomId, $period));
         if (count($this->hotelSeasons) === 0) {
-            //@todo уточнить у Анвара
             \Log::warning('Not found hotel season for period');
             return;
         }

@@ -19,8 +19,7 @@ class GetActiveSeasonsByRoomIdIncludesPeriodHandler implements QueryHandlerInter
     public function handle(QueryInterface $query): array
     {
         $seasons = EloquentSeason::query()
-            ->withRooms()
-            ->where('room_id', $query->roomId)
+            ->whereRoomId($query->roomId)
             ->where('date_from', '<=', $query->period->getStartDate())
             ->where('date_to', '>=', $query->period->getEndDate())
             ->get();
