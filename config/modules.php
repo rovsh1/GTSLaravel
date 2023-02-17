@@ -30,6 +30,6 @@ return [
             'password' => env('TRAVELINE_PASSWORD'),
         ],
         'notifications_url' => env('TRAVELINE_NOTIFICATIONS_URL'),
-        'is_prices_for_residents' => env('TRAVELINE_IS_PRICES_FOR_RESIDENTS'),
+        'is_prices_for_residents' => env('TRAVELINE_IS_PRICES_FOR_RESIDENTS', false),
     ]
 ];

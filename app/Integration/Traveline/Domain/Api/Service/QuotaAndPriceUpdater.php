@@ -28,6 +28,7 @@ class QuotaAndPriceUpdater
             $this->handleRequest($updateRequest);
         }
 
+        //@todo скорее всего тут можно вернуть void
         dd($this->responses);
     }
 
