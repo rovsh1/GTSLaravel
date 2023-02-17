@@ -61,11 +61,4 @@ class HotelAdapter extends AbstractPortAdapter implements HotelAdapterInterface
             'date_to' => $period->getEndDate(),
         ]);
     }
-
-    public function getActiveReservations(int $hotelId): array
-    {
-        return $this->request('hotel/getActiveReservations', [
-            'hotel_id' => $hotelId,
-        ]);
-    }
 }

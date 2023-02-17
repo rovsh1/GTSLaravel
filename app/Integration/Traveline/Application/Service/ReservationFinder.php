@@ -3,8 +3,8 @@
 namespace GTS\Integration\Traveline\Application\Service;
 
 use Carbon\CarbonInterface;
+
 use GTS\Integration\Traveline\Application\Dto\ReservationDto;
-use GTS\Integration\Traveline\Domain\Adapter\HotelAdapterInterface;
 use GTS\Integration\Traveline\Domain\Adapter\ReservationAdapterInterface;
 use GTS\Integration\Traveline\Domain\Exception\HotelNotConnectedException;
 use GTS\Integration\Traveline\Domain\Repository\HotelRepositoryInterface;
@@ -13,7 +13,6 @@ class ReservationFinder
 {
     public function __construct(
         private ReservationAdapterInterface $adapter,
-        private HotelAdapterInterface $hotelAdapter,
         private HotelRepositoryInterface    $hotelRepository
     ) {}
 
@@ -36,8 +35,7 @@ class ReservationFinder
         } elseif ($dateUpdate !== null) {
             $reservations = $this->adapter->getUpdatedReservations($dateUpdate, $hotelId);
         } elseif ($dateUpdate === null && $hotelId !== null) {
-            //@todo получить из модуля бронирования
-            $reservations = $this->hotelAdapter->getActiveReservations($hotelId);
+            $reservations = $this->adapter->getActiveReservationByHotelId($hotelId);
         } elseif ($reservationId !== null) {
             $reservations[] = $this->adapter->getActiveReservationById($reservationId);
         }

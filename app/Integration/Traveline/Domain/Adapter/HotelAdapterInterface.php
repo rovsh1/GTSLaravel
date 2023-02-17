@@ -17,6 +17,4 @@ interface HotelAdapterInterface
     public function openRoomRate(CarbonPeriod $period, int $roomId, int $rateId);
 
     public function closeRoomRate(CarbonPeriod $period, int $roomId, int $rateId);
-
-    public function getActiveReservations(int $hotelId);
 }

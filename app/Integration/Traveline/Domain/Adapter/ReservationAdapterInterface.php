@@ -10,6 +10,8 @@ interface ReservationAdapterInterface
 
     public function getActiveReservationById(int $id): mixed;
 
+    public function getActiveReservationByHotelId(int $hotelId): mixed;
+
     public function getUpdatedReservations(?CarbonInterface $startDate = null, ?int $hotelId = null): array;
 
     public function confirmReservation(int $id): void;

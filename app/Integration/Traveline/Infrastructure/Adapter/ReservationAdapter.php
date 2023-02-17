@@ -10,8 +10,8 @@ class ReservationAdapter extends AbstractPortAdapter implements ReservationAdapt
 {
     /**
      * Бронирования делаются в вашей системы из свободной квоты, передаются в средство размещения автоматически и не нуждаются в дополнительном подтверждении со стороны отеля. Задача данной функции обеспечить подтверждение факта успешности технической доставки бронирования из вашей системы в менеджер каналов.
-    Если менеджер каналов НЕ подтверждает получение брони ответом, содержащим «success»: true, то каналу необходимо хранить и отдавать в последующих запросах данное бронирование на своей стороне до момента подтверждения менеджером каналов его получения.
-    Менеджер каналов подтверждает факт успешного приема бронирований функцией GetBookingsActionRS.
+     * Если менеджер каналов НЕ подтверждает получение брони ответом, содержащим «success»: true, то каналу необходимо хранить и отдавать в последующих запросах данное бронирование на своей стороне до момента подтверждения менеджером каналов его получения.
+     * Менеджер каналов подтверждает факт успешного приема бронирований функцией GetBookingsActionRS.
      * @param int $id
      * @return void
      */
@@ -23,6 +23,11 @@ class ReservationAdapter extends AbstractPortAdapter implements ReservationAdapt
     public function getActiveReservations(): array
     {
         return [];
+    }
+
+    public function getActiveReservationByHotelId(int $hotelId): mixed
+    {
+        return $this->request('hotelReservation/getByHotelId', ['hotel_id' => $hotelId]);
     }
 
     public function getActiveReservationById(int $id): mixed
