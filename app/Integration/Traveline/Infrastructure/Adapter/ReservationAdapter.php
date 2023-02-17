@@ -22,12 +22,12 @@ class ReservationAdapter extends AbstractPortAdapter implements ReservationAdapt
 
     public function getActiveReservations(): array
     {
-        return [];
+        return $this->request('hotelReservation/searchActiveReservations');
     }
 
     public function getActiveReservationByHotelId(int $hotelId): mixed
     {
-        return $this->request('hotelReservation/getByHotelId', ['hotel_id' => $hotelId]);
+        return $this->request('hotelReservation/searchActiveReservations', ['hotel_id' => $hotelId]);
     }
 
     public function getActiveReservationById(int $id): mixed
@@ -35,8 +35,11 @@ class ReservationAdapter extends AbstractPortAdapter implements ReservationAdapt
         return $this->request('hotelReservation/findById', ['id' => $id]);
     }
 
-    public function getUpdatedReservations(CarbonInterface $startDate = null, ?int $hotelId = null): array
+    public function getUpdatedReservations(CarbonInterface $startDate, ?int $hotelId = null): array
     {
-        return [];
+        return $this->request('hotelReservation/searchUpdatedReservations', [
+            'date_update' => $startDate,
+            'hotel_id' => $hotelId
+        ]);
     }
 }

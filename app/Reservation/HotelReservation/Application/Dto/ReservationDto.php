@@ -18,4 +18,9 @@ class ReservationDto extends Dto
             $reservation->id()
         );
     }
+
+    public static function collectionFromEntity(array $reservations): array
+    {
+        return array_map(fn($reservation) => static::fromEntity($reservation), $reservations);
+    }
 }

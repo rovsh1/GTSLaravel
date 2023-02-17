@@ -21,13 +21,22 @@ class InfoController
         return $this->infoFacade->findById($request->id);
     }
 
-    public function getByHotelId(Request $request): array
+    public function searchActiveReservations(Request $request): array
     {
         $request->validate([
-            'hotel_id' => 'required|int',
+            'hotel_id' => 'nullable|int',
         ]);
-        //@todo получение бронирований по id отеля
-//        return $this->infoFacade->findById($request->id);
+        return $this->infoFacade->searchActiveReservations($request->hotel_id);
+    }
+
+    public function searchUpdatedReservations(Request $request): array
+    {
+        $request->validate([
+            'date_update' => 'required|date',
+            'hotel_id' => 'nullable|int',
+        ]);
+        //@todo как передавать критерии поиска?
+        return $this->infoFacade->searchReservations($request->attributes());
     }
 
 }

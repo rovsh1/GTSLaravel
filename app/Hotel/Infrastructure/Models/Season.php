@@ -59,7 +59,7 @@ class Season extends Model
             function (JoinClause $join) use ($joinableTable) {
                 $join->on("{$joinableTable}.hotel_id", '=', "{$this->getTable()}.hotel_id");
             }
-        )->addSelect(["{$joinableTable}.id as room_id"]);
+        )->addSelect("{$joinableTable}.id as room_id");
 
         $builder->where("{$joinableTable}.id", $roomId);
     }

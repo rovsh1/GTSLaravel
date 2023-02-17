@@ -2,9 +2,8 @@
 
 namespace GTS\Reservation\HotelReservation\Infrastructure\Models;
 
-use Illuminate\Database\Eloquent\Builder;
-
 use GTS\Shared\Infrastructure\Models\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * GTS\Reservation\HotelReservation\Infrastructure\Models\Reservation
@@ -124,6 +123,7 @@ class Reservation extends Model
     protected $casts = [
         'date_checkin' => 'date',
         'date_checkout' => 'date',
+        'status' => ReservationStatusEnum::class,
     ];
 
     public function scopeWithClientType(Builder $builder)
@@ -131,8 +131,11 @@ class Reservation extends Model
         $builder->addSelect("{$this->getTable()}.*");
 
         $clientsTable = with(new Client)->getTable();
-        $builder->leftJoin($clientsTable, function ($join) use ($clientsTable) {
-            $join->on("{$clientsTable}.id", '=', "{$this->getTable()}.client_id");
-        })->addSelect(["{$clientsTable}.type as client_type"]);
+        $builder->rightJoin(
+            $clientsTable,
+            function ($join) use ($clientsTable) {
+                $join->on("{$clientsTable}.id", '=', "{$this->getTable()}.client_id");
+            }
+        )->addSelect("{$clientsTable}.type as client_type");
     }
 }
