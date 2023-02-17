@@ -7,13 +7,14 @@ use GTS\Integration\Traveline\Domain\Api\Request\Update;
 use GTS\Integration\Traveline\Domain\Exception\HotelNotConnectedException;
 use GTS\Integration\Traveline\Domain\Repository\HotelRepositoryInterface;
 
-class QuotaUpdater
+class QuotaAndPriceUpdater
 {
     private array $responses = [];
 
     public function __construct(
         private HotelAdapterInterface    $adapter,
-        private HotelRepositoryInterface $hotelRepository
+        private HotelRepositoryInterface $hotelRepository,
+        private bool                     $isPricesForResidents = false
     ) {}
 
     public function updateQuotasAndPlans(int $hotelId, array $updates)
@@ -48,7 +49,8 @@ class QuotaUpdater
                     $updateRequest->ratePlanId,
                     $price->guestsNumber,
                     $updateRequest->currencyCode,
-                    $price->price
+                    $price->price,
+                    $this->isPricesForResidents
                 );
             }
         }

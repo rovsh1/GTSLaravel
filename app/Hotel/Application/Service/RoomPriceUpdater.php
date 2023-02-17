@@ -5,27 +5,28 @@ namespace GTS\Hotel\Application\Service;
 use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
 
+use Custom\Framework\Contracts\Bus\QueryBusInterface;
+
+use GTS\Hotel\Application\Query\GetActiveSeasonsByRoomIdIncludesPeriod;
 use GTS\Hotel\Domain\Entity\Season;
 use GTS\Hotel\Domain\Repository\RoomPriceRepositoryInterface;
-use GTS\Hotel\Domain\Repository\SeasonRepositoryInterface;
 
 class RoomPriceUpdater
 {
     public function __construct(
         private RoomPriceRepositoryInterface $roomPriceRepository,
-        private SeasonRepositoryInterface    $seasonRepository,
+        private QueryBusInterface            $queryBus,
         private array                        $hotelSeasons = [],
     ) {}
 
-    public function updateRoomPriceByDate(int $roomId, CarbonPeriod $period, int $rateId, int $guestsNumber, float $price, string $currencyCode)
+    public function updateRoomPriceByDate(int $roomId, CarbonPeriod $period, int $rateId, int $guestsNumber, float $price, string $currencyCode, bool $isResident)
     {
         //@todo нормальная проверка на валюту и норм. ексепшн
         if ($currencyCode !== 'USZ') {
             throw new \Exception('Currency not supported');
         }
 
-        //@todo получение сезона по комнате + join hotel_rooms (Через query)
-        $this->hotelSeasons = $this->seasonRepository->getActiveSeasonsIncludesPeriod(333, $period);
+        $this->hotelSeasons = $this->queryBus->execute(new GetActiveSeasonsByRoomIdIncludesPeriod($roomId, $period));
         if (count($this->hotelSeasons) === 0) {
             //@todo уточнить у Анвара
             \Log::warning('Not found hotel season for period');
@@ -44,7 +45,7 @@ class RoomPriceUpdater
                 $seasonId,
                 $rateId,
                 $guestsNumber,
-                1,//@todo вроде резидент/нерезидент - узнать у Анвара
+                $isResident,
                 $date,
                 $price
             );

@@ -6,6 +6,27 @@ use Custom\Framework\Database\Eloquent\HasTranslations;
 use GTS\Shared\Infrastructure\Models\Model;
 use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * GTS\Hotel\Infrastructure\Models\Room\Name
+ *
+ * @property int $id
+ * @property int $group_id
+ * @property int|null $display_in_report
+ * @property int|null $reservation_status
+ * @property int $deletion_mark
+ * @property-read string $name
+ * @property-write array $translatable
+ * @method static Builder|Name joinTranslations($columns = null, $locale = null)
+ * @method static Builder|Name newModelQuery()
+ * @method static Builder|Name newQuery()
+ * @method static Builder|Name query()
+ * @method static Builder|Name whereDeletionMark($value)
+ * @method static Builder|Name whereDisplayInReport($value)
+ * @method static Builder|Name whereGroupId($value)
+ * @method static Builder|Name whereId($value)
+ * @method static Builder|Name whereReservationStatus($value)
+ * @mixin \Eloquent
+ */
 class Name extends Model
 {
     use HasTranslations;
@@ -26,6 +47,7 @@ class Name extends Model
 
     public static function booted()
     {
+        static::addGlobalTranslationScope();
         static::addGlobalScope('roomName', function (Builder $builder) {
             //@todo 2 - это айди енума, нужно как то их получать
             $builder->where('group_id', 2);

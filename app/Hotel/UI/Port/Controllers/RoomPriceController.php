@@ -24,6 +24,7 @@ class RoomPriceController
             'currency_code' => 'required|string',
             'date_from' => 'required|date',
             'date_to' => 'required|date',
+            'is_resident'=>'required|boolean'
         ]);
 
         return $this->roomPriceFacade->updateRoomPriceByPeriod(
@@ -33,6 +34,7 @@ class RoomPriceController
             $request->guests_number,
             $request->price,
             $request->currency_code,
+            $request->is_resident
         );
     }
 }

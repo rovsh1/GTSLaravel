@@ -22,8 +22,8 @@ use Illuminate\Database\Eloquent\Collection;
  * @property int|null $price_discount
  * @property int $data_flags
  * @property int $index
- * @property string $name
  * @property-read string $display_name
+ * @property-read \GTS\Hotel\Infrastructure\Models\Room\Name|null $name
  * @property-read Collection|\GTS\Hotel\Infrastructure\Models\PriceRate[] $priceRates
  * @property-read Collection|\GTS\Hotel\Infrastructure\Models\Room\Bed[] $beds
  * @method static Builder|Room newModelQuery()
@@ -42,6 +42,7 @@ use Illuminate\Database\Eloquent\Collection;
  * @method static Builder|Room whereTypeId($value)
  * @method static Builder|Room withPriceRates()
  * @method static Builder|Room withBeds()
+ * @method static Builder|Room withName()
  * @mixin \Eloquent
  */
 class Room extends Model
@@ -66,7 +67,7 @@ class Room extends Model
 
     public function displayName(): Attribute
     {
-        return Attribute::get(fn() => "{$this->name} ($this->custom_name)");
+        return Attribute::get(fn() => "{$this->name?->name} ($this->custom_name)");
     }
 
     public function scopeWithPriceRates(Builder $builder)
@@ -77,6 +78,11 @@ class Room extends Model
     public function scopeWithBeds(Builder $builder)
     {
         $builder->with('beds');
+    }
+
+    public function scopeWithName(Builder $builder)
+    {
+        $builder->with('name');
     }
 
     public function priceRates()
@@ -94,5 +100,10 @@ class Room extends Model
     public function beds()
     {
         return $this->hasMany(Bed::class, 'room_id', 'id');
+    }
+
+    public function name()
+    {
+        return $this->hasOne(Room\Name::class, 'id', 'name_id');
     }
 }

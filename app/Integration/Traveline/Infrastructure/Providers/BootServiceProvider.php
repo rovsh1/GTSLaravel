@@ -2,12 +2,11 @@
 
 namespace GTS\Integration\Traveline\Infrastructure\Providers;
 
+use GTS\Integration\Traveline\Domain;
+use GTS\Integration\Traveline\Infrastructure;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use Illuminate\Support\ServiceProvider;
-
-use GTS\Integration\Traveline\Domain;
-use GTS\Integration\Traveline\Infrastructure;
 
 class BootServiceProvider extends ServiceProvider
 {
@@ -32,6 +31,14 @@ class BootServiceProvider extends ServiceProvider
             return new Infrastructure\Adapter\TravelineAdapter(app(ClientInterface::class), $notificationsUrl);
         });
         $this->app->singleton(Domain\Repository\HotelRepositoryInterface::class, Infrastructure\Repository\HotelRepository::class);
+
+        $this->app->singleton(Domain\Api\Service\QuotaAndPriceUpdater::class, function ($app) {
+            return new Domain\Api\Service\QuotaAndPriceUpdater(
+                app(Infrastructure\Adapter\HotelAdapter::class),
+                app(Infrastructure\Repository\HotelRepository::class),
+                $app->config('is_prices_for_residents')
+            );
+        });
 
     }
 }

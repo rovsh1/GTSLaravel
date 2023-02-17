@@ -44,6 +44,7 @@ class Price extends Model
     ];
 
     protected $casts = [
-        'date' => 'date'
+        'date' => 'date',
+        'type' => PriceTypeEnum::class
     ];
 }

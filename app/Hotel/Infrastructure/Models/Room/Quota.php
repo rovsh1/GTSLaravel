@@ -42,5 +42,6 @@ class Quota extends Model
 
     protected $casts = [
         'date' => 'date',
+        'type' => QuotaTypeEnum::class
     ];
 }
