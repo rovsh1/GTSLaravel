@@ -15,7 +15,7 @@ class RoomPriceFacade implements RoomPriceFacadeInterface
     public function updateRoomPriceByPeriod(int $roomId, CarbonPeriod $period, int $rateId, int $guestsNumber, bool $isResident, float $price, string $currencyCode)
     {
         //@todo конвертация Currency в Shared/ValueObject/Price
-        $this->roomPriceUpdater->updateRoomPriceByDate(
+        $this->roomPriceUpdater->updateRoomPriceByPeriod(
             $roomId,
             $period,
             $rateId,

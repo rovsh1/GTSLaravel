@@ -19,7 +19,25 @@ class RoomPriceUpdater
         private array                        $hotelSeasons = [],
     ) {}
 
-    public function updateRoomPriceByDate(int $roomId, CarbonPeriod $period, int $rateId, int $guestsNumber, bool $isResident, float $price, string $currencyCode)
+    public function updateRoomPriceByCriteria(int $priceId, float $price, string $currencyCode) {
+        //@todo ищу цену по ID (Domain/Price)
+        $price = $this->queryBus->execute(new FindDatePrice(
+            $date,
+            $seasonId,
+            $roomId,
+            $rateId,
+            $guestsNumber,
+            $residentType,
+            $aggregatorId,
+        ));
+        //если найдена - обновляю, если нет - то создаю
+
+        $price = new ValueObject\Price($price, $currencyCode);
+        //@todo ->setPrice($price)
+        $this->priceRepository->store($price);
+    }
+
+    public function updateRoomPriceByPeriod(int $roomId, CarbonPeriod $period, int $rateId, int $guestsNumber, bool $isResident, float $price, string $currencyCode)
     {
         //@todo нормальная проверка на валюту и норм. ексепшн
         if ($currencyCode !== 'USZ') {
