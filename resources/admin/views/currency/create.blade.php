@@ -17,8 +17,10 @@
             <a href="{{ route('currency.index') }}"><button type="button" class="btn btn-primary float-end">Назад</button></a>
         </h5>
         <div class="card-body">
-            <div class="table-responsive text-nowrap">
-                {!! $form !!}
+            <div class="row">
+                <div class="col-md-6">
+                    {!! $form !!}
+                </div>
             </div>
         </div>
     </div>

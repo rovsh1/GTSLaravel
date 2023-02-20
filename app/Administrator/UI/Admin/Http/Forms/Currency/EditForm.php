@@ -11,7 +11,7 @@ class EditForm extends Form
         $this->view('default.form.edit')
             ->csrf()
             ->text('name', ['label' => 'Наименование', 'required' => true])
-            ->text('code_num', ['label' => 'Код (цифровой)', 'required' => true])
+            ->number('code_num', ['label' => 'Код (цифровой)', 'required' => true])
             ->text('code_char', ['label' => 'Код (символьный)', 'required' => true])
             ->text('sign', ['label' => 'Символ', 'required' => true]);
     }

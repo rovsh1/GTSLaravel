@@ -2,11 +2,9 @@
 
 namespace GTS\Administrator\UI\Admin\Http\Actions\Auth;
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 use GTS\Administrator\Infrastructure\Facade\AuthFacadeInterface;
-use GTS\Administrator\Infrastructure\Models\Administrator;
 
 class LoginAction
 {

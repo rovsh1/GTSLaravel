@@ -20,7 +20,7 @@ class SearchAction
             ->view('currency.index', [
                 'grid' => (new GridBuilder())
                     ->paginator($this->facade->count($dto), 20)
-                    ->id('id', ['text' => 'ID'])
+                    // ->id('id', ['text' => 'ID'])
                     ->text('name', ['text' => 'Наименование'])
                     ->text('code_num', ['text' => 'Код (цифровой)'])
                     ->text('code_char', ['text' => 'Код (символьный)'])

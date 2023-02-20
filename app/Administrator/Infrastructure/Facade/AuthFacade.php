@@ -2,11 +2,8 @@
 
 namespace GTS\Administrator\Infrastructure\Facade;
 
-use Illuminate\Support\Facades\Auth;
-
 use Custom\Framework\Contracts\Bus\CommandBusInterface;
 
-use GTS\Administrator\Infrastructure\Models\Administrator;
 use GTS\Administrator\Application\Command\LoginByPassword;
 
 class AuthFacade implements AuthFacadeInterface

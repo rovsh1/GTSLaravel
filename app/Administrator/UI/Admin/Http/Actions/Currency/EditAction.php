@@ -8,26 +8,19 @@ use GTS\Administrator\UI\Admin\Http\Forms\Currency\EditForm;
 class EditAction
 {
     public function __construct(
-        // private CurrencyFacadeInterface $currencyFacade
+        private CurrencyFacadeInterface $currencyFacade
     ) {}
 
-    public function handle(array $data = [])
+    public function handle(int $id)
     {
-        $form = new EditForm('data');
-
-        //$form->error('User not found!');
-//        if ($this->submit($form)) {
-//            dd('submitted');
-//            redirect();
-//        }
-        //dump($form->getData());
-
-        $form->data($data);
+        $currency = $this->currencyFacade->findById($id);
 
         return app('layout')
             ->title('Редактирование валюты')
             ->view('currency.edit', [
-                'form' => $form
+                'form' => (new EditForm('data'))->data($currency->toArray())
+                    ->method('put')
+                    ->route(route('currency.update', $currency))
             ]);
     }
 

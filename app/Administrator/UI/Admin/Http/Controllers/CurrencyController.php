@@ -16,31 +16,26 @@ class CurrencyController extends Controller
         return app(Actions\SearchAction::class)->handle($request->input());
     }
 
-    // Todo тут скорее всего в экшн
     public function create()
     {
         return app(Actions\CreateAction::class)->handle();
     }
 
-    // Todo тут скорее всего в экшн
     public function store(Request $request)
     {
-        dd($request);
+        return app(Actions\StoreAction::class)->handle($request);
     }
 
     // Todo тут скорее всего в экшн
-    public function edit(\GTS\Administrator\Infrastructure\Models\Currency $currency)
+    public function edit(int $id)
     {
-        return app(Actions\EditAction::class)->handle($currency->toArray());
-        return app('layout')
-            ->title('Редактирование валюты')
-            ->view('currency.edit', compact('currency'));
+        return app(Actions\EditAction::class)->handle($id);
     }
 
     // Todo тут скорее всего в экшн
     public function update(Request $request, \GTS\Administrator\Infrastructure\Models\Currency $currency)
     {
-        dd($request, $currency);
+        dd('update', $request, $currency);
     }
 
     // Todo тут скорее всего в экшн

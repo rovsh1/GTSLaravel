@@ -13,33 +13,10 @@ class CreateAction
 
     public function handle()
     {
-        $form = new EditForm('data');
-
-        //$form->error('User not found!');
-        if ($this->submit($form)) {
-            dd('submitted');
-            redirect();
-        }
-        //dump($form->getData());
-
-        //$form->setTestData();
-
         return app('layout')
             ->title('Добавление валюты')
             ->view('currency.create', [
-                'form' => $form
+                'form' => (new EditForm('data'))->route(route('currency.store'))
             ]);
-    }
-
-    public function submit($form)
-    {
-        if (!$form->submit()) {
-            return false;
-        }
-
-        $data = $form->getData();
-        //dd($data);
-
-        return false;
     }
 }

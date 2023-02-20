@@ -2,4 +2,7 @@
 
 namespace GTS\Administrator\Infrastructure\Facade;
 
-interface AuthFacadeInterface { }
+interface AuthFacadeInterface
+{
+    public function login(string $login, string $password);
+}

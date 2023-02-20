@@ -14,7 +14,7 @@ class CurrencyRepository extends AbstractCrudRepository implements CurrencyRepos
     protected string $model = Currency::class;
 
     public function __construct(
-        public readonly QueryBusInterface $queryBus
+        //public readonly QueryBusInterface $queryBus
     ) {}
 
     public function search(mixed $paramsDto)
@@ -25,6 +25,11 @@ class CurrencyRepository extends AbstractCrudRepository implements CurrencyRepos
     public function count(mixed $paramsDto): int
     {
         return (new CurrencySearchQuery($paramsDto))->count();
+    }
+
+    public function store(mixed $paramsDto)
+    {
+        return $this->create($paramsDto);
     }
 
     protected function createEntityFromModel($model)

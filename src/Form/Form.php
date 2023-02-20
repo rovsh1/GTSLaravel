@@ -17,7 +17,8 @@ class Form implements ElementsParentInterface
     protected array $options = [
         'id' => 'form_data',
         'name' => null,
-        'method' => 'post'
+        'method' => 'post',
+        'route' => ''
     ];
 
     protected bool $submitted = false;
@@ -84,6 +85,11 @@ class Form implements ElementsParentInterface
     public function method(string $method): static
     {
         return $this->setOption('method', $method);
+    }
+
+    public function route(string $route): static
+    {
+        return $this->setOption('route', $route);
     }
 
     public function getName(): ?string

@@ -20,7 +20,7 @@ class SearchAction
             ->view('city.index', [
                 'grid' => (new GridBuilder())
                     ->paginator($this->facade->count($dto), 20)
-                    ->id('id', ['text' => 'ID'])
+                    // ->id('id', ['text' => 'ID'])
                     ->text('name', ['text' => 'Наименование'])
                     ->actions('actions', ['route' => route('city.index')])
                     ->orderBy('id', 'asc')

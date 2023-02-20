@@ -11,12 +11,15 @@ class Currency extends Model
 {
     use HasTranslations, HasQuicksearch;
 
+    public $timestamps = false;
+
     protected array $quicksearch = ['id', 'name%'];
     protected array $translatable = ['name'];
 
     protected $table = 'r_currencies';
 
     protected $fillable = [
+        'name',
         'code_num',
         'code_char',
         'sign',

@@ -30,7 +30,7 @@ class SearchAction
     {
         return (new GridBuilder())
             ->paginator($this->facade->count($dto), 20)
-            ->id('id', ['text' => 'ID'])
+            // ->id('id', ['text' => 'ID'])
             ->text('name', ['text' => 'Наименование'])
             ->text('phone_code', ['text' => 'Код телефона'])
             ->orderBy('id', 'asc')
