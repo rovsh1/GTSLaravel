@@ -2,10 +2,10 @@
 
 namespace GTS\Administrator\Infrastructure\Repository;
 
-use GTS\Administrator\Domain\Repository\AdministratorRepositoryInterface;
-use GTS\Administrator\Domain\Factory\AdministratorFactory;
-use GTS\Administrator\Infrastructure\Models\Administrator;
+use App\Admin\Models\Administrator;
 use GTS\Administrator\Domain\Entity\Administrator as AdministratorEntity;
+use GTS\Administrator\Domain\Factory\AdministratorFactory;
+use GTS\Administrator\Domain\Repository\AdministratorRepositoryInterface;
 
 class AdministratorRepository implements AdministratorRepositoryInterface
 {

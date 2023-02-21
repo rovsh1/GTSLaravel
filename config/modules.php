@@ -2,17 +2,13 @@
 
 return [
     'Hotel' => [
-        'path' => app_path('Hotel')
+        'path' => modules_path('Hotel')
     ],
     'HotelReservation' => [
-        'path' => app_path('Reservation/HotelReservation')
-    ],
-    'Administrator' => [
-        //'required' => ['Traveline'],
-        'path' => app_path('Administrator')
+        'path' => modules_path('Reservation/HotelReservation')
     ],
     'FileStorage' => [
-        'path' => app_path('Services/FileStorage'),
+        'path' => modules_path('Services/FileStorage'),
         'alias' => 'files',
         'disk' => 'files',
         'url' => env('APP_URL'),
@@ -20,11 +16,11 @@ return [
         'path_name_length' => 2
     ],
     'Scheduler' => [
-        'path' => app_path('Services/Scheduler')
+        'path' => modules_path('Services/Scheduler')
     ],
     'Traveline' => [
         'enabled' => env('TRAVELINE_ENABLED', true),
-        'path' => app_path('Integration/Traveline'),
+        'path' => modules_path('Integration/Traveline'),
         'auth' => [
             'username' => env('TRAVELINE_USERNAME'),
             'password' => env('TRAVELINE_PASSWORD'),

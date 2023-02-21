@@ -11,7 +11,8 @@
 |
 */
 
-$app = new \Custom\Illuminate\Foundation\Application(
+define('APP_ROOT', realpath(__DIR__ . '/../../../'));
+$app = new App\Core\Application(
     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 );
 /*
@@ -27,17 +28,17 @@ $app = new \Custom\Illuminate\Foundation\Application(
 
 $app->singleton(
     Illuminate\Contracts\Http\Kernel::class,
-    GTS\Shared\UI\Common\Http\Kernel::class
+    App\Core\Http\Kernel::class
 );
 
 $app->singleton(
     Illuminate\Contracts\Console\Kernel::class,
-    GTS\Shared\UI\Console\Kernel::class
+    App\Core\Console\Kernel::class
 );
 
 $app->singleton(
     Illuminate\Contracts\Debug\ExceptionHandler::class,
-    GTS\Shared\UI\Common\Exceptions\Handler::class
+    App\Core\Exceptions\Handler::class
 );
 
 /*

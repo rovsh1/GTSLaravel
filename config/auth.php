@@ -70,7 +70,7 @@ return [
         ],
         'admin' => [
             'driver' => 'eloquent',
-            'model' => \GTS\Administrator\Infrastructure\Models\Administrator::class
+            'model' => \App\Admin\Models\Administrator::class
         ],
     ],
 

@@ -1,8 +1,8 @@
 <?php
 
-use GTS\Integration\Traveline\UI\Api\Http\Controllers\TravelineController;
-use GTS\Integration\Traveline\UI\Api\Http\Middleware\Authorize;
 use Illuminate\Support\Facades\Route;
+use Module\Integration\Traveline\UI\Api\Http\Controllers\TravelineController;
+use Module\Integration\Traveline\UI\Api\Http\Middleware\Authorize;
 
 Route::controller(TravelineController::class)
     ->middleware([Authorize::class])

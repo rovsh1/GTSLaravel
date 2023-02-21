@@ -30,14 +30,18 @@
     },
     "autoload": {
         "files": [
-            "src/Illuminate/Foundation/helpers.php"
+            "apps/core/helpers.php"
         ],
         "psr-4": {
-            "GTS\\": "app/",
-            "Gsdk\\Form\\": "src/Form",
-            "Gsdk\\Grid\\": "src/Grid",
-            "Gsdk\\Navigation\\": "src/Navigation",
-            "Custom\\": "src",
+            "App\\Core\\": "apps/core/app/",
+            "App\\Site\\": "apps/site/app/",
+            "App\\Admin\\": "apps/admin/app/",
+            "App\\Api\\": "apps/api/app/",
+            "Module\\": "modules/",
+            "Gsdk\\Form\\": "src/Form/",
+            "Gsdk\\Grid\\": "src/Grid/",
+            "Gsdk\\Navigation\\": "src/Navigation/",
+            "Custom\\": "src/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
         }

@@ -3,7 +3,7 @@
 namespace Custom\Framework\Foundation\Support\Dto;
 
 use Custom\Framework\Foundation\Support\Dto\DataPipes\DefaultValuesDataPipe;
-use GTS\Shared\Infrastructure\Facade\DomainModelNormalizer;
+use Module\Shared\Infrastructure\Facade\DomainModelNormalizer;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\DataPipeline;
 use Spatie\LaravelData\DataPipes\AuthorizedDataPipe;

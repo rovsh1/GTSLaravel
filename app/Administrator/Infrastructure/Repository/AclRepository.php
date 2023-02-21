@@ -2,8 +2,8 @@
 
 namespace GTS\Administrator\Infrastructure\Repository;
 
+use App\Admin\Models\Access\Rule;
 use GTS\Administrator\Domain\Repository\AclRepositoryInterface;
-use GTS\Administrator\Infrastructure\Models\Access\Rule;
 
 class AclRepository implements AclRepositoryInterface
 {

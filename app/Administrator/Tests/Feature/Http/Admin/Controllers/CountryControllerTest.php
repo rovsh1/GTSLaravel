@@ -2,7 +2,7 @@
 
 namespace GTS\Administrator\Tests\Feature\Http\Admin\Controllers;
 
-use GTS\Shared\Tests\AdminTestCase;
+use Module\Shared\Tests\AdminTestCase;
 
 class CountryControllerTest extends AdminTestCase
 {

@@ -20,7 +20,7 @@ class Module extends Container
     ) {
         $this->registerBaseBindings();
         $this->registerBaseServiceProviders();
-        $this->register($this->namespace('Infrastructure\Providers\BootServiceProvider'));
+        $this->register($this->namespace('Providers\BootServiceProvider'));
     }
 
     public function config(string $name = null)
