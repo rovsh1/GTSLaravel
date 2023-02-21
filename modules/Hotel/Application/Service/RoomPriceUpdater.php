@@ -19,6 +19,7 @@ class RoomPriceUpdater
 
     public function updateRoomPriceByPeriod(int $roomId, CarbonPeriod $period, int $rateId, int $guestsNumber, bool $isResident, float $price, string $currencyCode)
     {
+        //@todo конвертация Currency в Shared/ValueObject/Price
         //@todo нормальная проверка на валюту и норм. ексепшн
         if ($currencyCode !== 'UZS') {
             throw new \Exception('Currency not supported');

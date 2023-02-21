@@ -17,7 +17,6 @@ class QuotaRepository implements QuotaRepositoryInterface
             ->get();
 
         if ($existQuotas->count() === 0) {
-            //@todo какая-то ошибка, скорее всего неподключенный отель
             return;
         }
 
@@ -33,7 +32,6 @@ class QuotaRepository implements QuotaRepositoryInterface
 //                    ->update($updateData);
             } catch (\Throwable $e) {
                 dd($e->getMessage());
-                //@todo какое-то исключение
                 return;
             }
         }
