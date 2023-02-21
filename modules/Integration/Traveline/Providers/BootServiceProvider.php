@@ -5,7 +5,6 @@ namespace Module\Integration\Traveline\Providers;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use Illuminate\Support\ServiceProvider;
-
 use Module\Integration\Traveline\Domain;
 use Module\Integration\Traveline\Infrastructure;
 
@@ -30,8 +29,8 @@ class BootServiceProvider extends ServiceProvider
         });
         $this->app->singleton(Domain\Repository\HotelRepositoryInterface::class, Infrastructure\Repository\HotelRepository::class);
 
-        $this->app->singleton(Domain\Api\Service\QuotaAndPriceUpdater::class, function ($app) {
-            return new Domain\Api\Service\QuotaAndPriceUpdater(
+        $this->app->singleton(\Module\Integration\Traveline\Application\Service\QuotaAndPriceUpdater::class, function ($app) {
+            return new \Module\Integration\Traveline\Application\Service\QuotaAndPriceUpdater(
                 app(Infrastructure\Adapter\HotelAdapter::class),
                 app(Infrastructure\Repository\HotelRepository::class),
                 $app->config('is_prices_for_residents')

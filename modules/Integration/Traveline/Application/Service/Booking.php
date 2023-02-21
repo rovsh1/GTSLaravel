@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Integration\Traveline\Domain\Api\Service;
+namespace Module\Integration\Traveline\Application\Service;
 
 use Module\Integration\Traveline\Domain\Adapter\ReservationAdapterInterface;
 use Module\Integration\Traveline\Domain\Api\Request\Reservation;

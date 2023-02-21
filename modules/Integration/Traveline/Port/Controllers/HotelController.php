@@ -5,7 +5,7 @@ namespace Module\Integration\Traveline\Port\Controllers;
 use Custom\Framework\Port\Request;
 use Module\Integration\Traveline\Application\Dto\HotelDto;
 use Module\Integration\Traveline\Application\Service\HotelFinder;
-use Module\Integration\Traveline\Domain\Api\Service\QuotaAndPriceUpdater;
+use Module\Integration\Traveline\Application\Service\QuotaAndPriceUpdater;
 
 class HotelController
 {

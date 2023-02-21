@@ -4,7 +4,7 @@ namespace Module\Integration\Traveline\Application\Command;
 
 use Custom\Framework\Contracts\Bus\CommandHandlerInterface;
 use Custom\Framework\Contracts\Bus\CommandInterface;
-use Module\Integration\Traveline\Domain\Api\Service\Booking;
+use Module\Integration\Traveline\Application\Service\Booking;
 
 class ConfirmReservationsHandler implements CommandHandlerInterface
 {
