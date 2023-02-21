@@ -24,8 +24,7 @@ class RouteServiceProvider extends ServiceProvider
         Route::pattern('id', '[0-9]+');
 
         $this->routes(function () {
-            Route::middleware(['api'])
-                ->prefix('traveline')
+            Route::prefix('traveline')
                 ->as('traveline.')
                 ->group(base_path('routes/traveline.php'));
         });
