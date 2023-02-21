@@ -4,7 +4,7 @@ namespace Module\Integration\Traveline\Application\Event;
 
 use Custom\Framework\Contracts\Event\DomainEventInterface;
 use Custom\Framework\Contracts\Event\DomainEventListenerInterface;
-use GTS\Services\Traveline\Infrastructure\Adapter\Traveline\AdapterInterface;
+use Module\Services\Traveline\Infrastructure\Adapter\Traveline\AdapterInterface;
 
 class SendReservationNotificationListener implements DomainEventListenerInterface
 {

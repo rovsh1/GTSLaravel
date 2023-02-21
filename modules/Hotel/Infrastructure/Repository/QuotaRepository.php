@@ -3,8 +3,8 @@
 namespace Module\Hotel\Infrastructure\Repository;
 
 use Carbon\CarbonPeriod;
-use GTS\Hotel\Domain\Repository\QuotaRepositoryInterface;
-use GTS\Hotel\Infrastructure\Repository\QuotaEvents;
+use Module\Hotel\Domain\Repository\QuotaRepositoryInterface;
+use Module\Hotel\Infrastructure\Repository\QuotaEvents;
 use Module\Hotel\Infrastructure\Models\Room\Quota as EloquentQuota;
 
 class QuotaRepository implements QuotaRepositoryInterface
@@ -17,7 +17,6 @@ class QuotaRepository implements QuotaRepositoryInterface
             ->get();
 
         if ($existQuotas->count() === 0) {
-            //@todo какая-то ошибка, скорее всего неподключенный отель
             return;
         }
 
@@ -33,7 +32,6 @@ class QuotaRepository implements QuotaRepositoryInterface
 //                    ->update($updateData);
             } catch (\Throwable $e) {
                 dd($e->getMessage());
-                //@todo какое-то исключение
                 return;
             }
         }

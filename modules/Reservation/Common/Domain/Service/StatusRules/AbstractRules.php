@@ -2,7 +2,7 @@
 
 namespace Module\Reservation\Common\Domain\Service\StatusRules;
 
-use GTS\Reservation\Domain\ValueObject\StatusEnum;
+use Module\Reservation\Domain\ValueObject\StatusEnum;
 
 class AbstractRules
 {

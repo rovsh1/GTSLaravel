@@ -2,7 +2,7 @@
 
 namespace Module\Reservation\HotelReservation\Infrastructure\Repository;
 
-use GTS\Reservation\Infrastructure\Repository\ReservationRequest;
+use Module\Reservation\Infrastructure\Repository\ReservationRequest;
 use Module\Reservation\HotelReservation\Domain\Repository\ReservationEventsRepositoryInterface;
 
 class RequestRepository implements ReservationEventsRepositoryInterface

@@ -5,7 +5,7 @@ namespace Module\Hotel\Infrastructure\Models;
 use Module\Shared\Infrastructure\Models\Model;
 
 /**
- * GTS\Hotel\Infrastructure\Models\Contract
+ * Module\Hotel\Infrastructure\Models\Contract
  *
  * @property int $id
  * @property int $hotel_id

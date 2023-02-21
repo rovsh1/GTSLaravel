@@ -9,7 +9,7 @@ use Module\Hotel\Infrastructure\Models\Room\Bed;
 use Module\Shared\Infrastructure\Models\Model;
 
 /**
- * GTS\Hotel\Infrastructure\Models\Room
+ * Module\Hotel\Infrastructure\Models\Room
  *
  * @property int $id
  * @property int $hotel_id

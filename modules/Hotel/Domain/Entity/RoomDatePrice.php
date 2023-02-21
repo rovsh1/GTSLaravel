@@ -3,7 +3,7 @@
 namespace Module\Hotel\Domain\Entity;
 
 use Custom\Framework\Support\DateTimeInterface;
-use GTS\Hotel\Domain\ValueObject\RoomPrice as ValueObject;
+use Module\Hotel\Domain\ValueObject\RoomPrice as ValueObject;
 
 class RoomDatePrice
 {

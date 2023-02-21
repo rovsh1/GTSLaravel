@@ -2,7 +2,7 @@
 
 namespace Module\Services\Scheduler\UI\Admin\Http\Controllers;
 
-use GTS\Services\Scheduler\UI\Admin\Http\Controllers\Controller;
+use Module\Services\Scheduler\UI\Admin\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class CronController extends Controller

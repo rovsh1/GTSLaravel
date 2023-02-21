@@ -4,7 +4,7 @@ namespace Module\Services\Scheduler\Application\Service;
 
 //use Ustabor\Infrastructure\Models\System\Cron;
 
-use GTS\Services\Scheduler\Application\Service\Cron;
+use Module\Services\Scheduler\Application\Service\Cron;
 
 class Service
 {

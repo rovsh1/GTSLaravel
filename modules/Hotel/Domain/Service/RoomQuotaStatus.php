@@ -4,7 +4,7 @@ namespace Module\Hotel\Domain\Service;
 
 use Custom\Framework\Contracts\Event\DomainEventDispatcherInterface;
 use Custom\Framework\Support\DateTimeInterface;
-use GTS\Hotel\Domain\Repository\QuotaRepositoryInterface;
+use Module\Hotel\Domain\Repository\QuotaRepositoryInterface;
 use Module\Hotel\Domain\Event\BookingClosed;
 use Module\Hotel\Domain\Event\BookingOpened;
 

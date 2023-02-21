@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Module\Shared\Infrastructure\Models\Model;
 
 /**
- * GTS\Hotel\Infrastructure\Models\Room\Name
+ * Module\Hotel\Infrastructure\Models\Room\Name
  *
  * @property int $id
  * @property int $group_id

@@ -3,7 +3,7 @@
 namespace App\Admin\Models;
 
 use Custom\Framework\Database\Eloquent\HasQuicksearch;
-use GTS\Shared\Custom\TabularSection;
+use Module\Shared\Custom\TabularSection;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;

@@ -19,7 +19,7 @@ class OccupancyDto extends Dto
         $occupancies = [];
         for ($i = 1; $i <= $guestsNumber; $i++) {
             $occupancies[] = [
-                //@todo подумать как формировать этот код и разбирать в одном и том же месте app/Integration/Traveline/Domain/Api/Request/Price.php:15
+                //@todo подумать как формировать этот код и разбирать в одном и том же месте Domain/Api/Request/Price.php:15
                 'code' => "{$roomId}_{$i}",
                 'personQuantity' => $i
             ];

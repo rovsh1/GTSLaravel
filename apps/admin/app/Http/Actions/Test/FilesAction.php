@@ -2,7 +2,7 @@
 
 namespace App\Admin\Http\Actions\Test;
 
-use GTS\Administrator\Infrastructure\Facade\FilesFacadeInterface;
+use Module\Administrator\Infrastructure\Facade\FilesFacadeInterface;
 
 class FilesAction
 {

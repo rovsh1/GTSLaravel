@@ -2,7 +2,7 @@
 
 namespace Module\Reservation\Common\Domain\ValueObject;
 
-use GTS\Reservation\Domain\Entity;
+use Module\Reservation\Domain\Entity;
 
 enum ReservationTypeEnum: int
 {

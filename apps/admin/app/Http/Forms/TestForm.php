@@ -35,7 +35,7 @@ class TestForm extends Form
             ->select('enum', [
                 'label' => 'Enum',
                 'emptyItem' => '-Not selected-',
-                'enum' => \GTS\Administrator\UI\Admin\Http\Forms\TestEnum::class
+                'enum' => \Module\Administrator\UI\Admin\Http\Forms\TestEnum::class
             ])
             ->radio('gender', [
                 'label' => 'Gender',
