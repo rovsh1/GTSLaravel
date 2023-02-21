@@ -2,7 +2,7 @@
 
 namespace Module\Hotel\Infrastructure\Models\Room;
 
-use Module\Shared\Infrastructure\Models\Model;
+use Custom\Framework\Database\Eloquent\Model;
 
 /**
  * Module\Hotel\Infrastructure\Models\Room\Quota

@@ -4,7 +4,7 @@ namespace App\Admin\Models;
 
 use Custom\Framework\Database\Eloquent\HasQuicksearch;
 use Custom\Framework\Database\Eloquent\HasTranslations;
-use Module\Shared\Infrastructure\Models\Model;
+use Custom\Framework\Database\Eloquent\Model;
 
 class City extends Model
 {

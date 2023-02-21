@@ -3,8 +3,8 @@
 namespace Module\Hotel\Infrastructure\Models\Room;
 
 use Custom\Framework\Database\Eloquent\HasTranslations;
+use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Module\Shared\Infrastructure\Models\Model;
 
 /**
  * Module\Hotel\Infrastructure\Models\Room\Name

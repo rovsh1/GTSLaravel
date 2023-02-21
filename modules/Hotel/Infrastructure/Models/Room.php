@@ -2,11 +2,11 @@
 
 namespace Module\Hotel\Infrastructure\Models;
 
+use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Module\Hotel\Infrastructure\Models\Room\Bed;
-use Module\Shared\Infrastructure\Models\Model;
 
 /**
  * Module\Hotel\Infrastructure\Models\Room

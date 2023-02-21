@@ -2,7 +2,7 @@
 
 namespace Module\Integration\Traveline\Infrastructure\Models;
 
-use Module\Shared\Infrastructure\Models\Model;
+use Custom\Framework\Database\Eloquent\Model;
 
 /**
  * Module\Integration\Traveline\Infrastructure\Models\TravelineHotel

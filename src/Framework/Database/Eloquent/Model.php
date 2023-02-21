@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Shared\Infrastructure\Models;
+namespace Custom\Framework\Database\Eloquent;
 
 class Model extends \Illuminate\Database\Eloquent\Model
 {

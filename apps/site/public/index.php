@@ -46,11 +46,6 @@ require __DIR__.'/../../vendor/autoload.php';
 
 $app = require_once __DIR__.'/../../bootstrap/app.php';
 
-$app->instance(
-    \Module\Shared\UI\Common\Contracts\UIServiceProvider::class,
-    \Module\Shared\UI\Site\Providers\BootServiceProvider::class
-);
-
 $kernel = $app->make(Kernel::class);
 
 $response = $kernel->handle(

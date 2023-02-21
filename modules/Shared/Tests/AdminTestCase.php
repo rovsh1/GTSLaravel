@@ -11,11 +11,6 @@ abstract class AdminTestCase extends BaseTestCase
     {
         $app = require __DIR__ . '/../../../bootstrap/app.php';
 
-        $app->instance(
-            \Module\Shared\UI\Common\Contracts\UIServiceProvider::class,
-            \Module\Shared\UI\Admin\Providers\BootServiceProvider::class
-        );
-
 //        $app->singleton(
 //            \Illuminate\Contracts\Debug\ExceptionHandler::class,
 //            \Ustabor\Domain\Site\Exceptions\Handler::class

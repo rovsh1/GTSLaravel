@@ -10,6 +10,10 @@ class AppServiceProvider extends ServiceProvider
 {
     public function register()
     {
+        if ($this->app->isLocal()) {
+            $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
+        }
+
         $this->app->registerModules();
 
         $this->app->register(DateServiceProvider::class);
@@ -18,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->alias(PortGatewayInterface::class, 'portGateway');
 
         $namespace = $this->app->getNamespace();
-        if ($namespace) {
+        if ($namespace && class_exists($namespace . 'Providers\BootServiceProvider')) {
             $this->app->register($namespace . 'Providers\BootServiceProvider');
         }
     }

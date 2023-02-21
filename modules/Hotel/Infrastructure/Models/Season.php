@@ -2,9 +2,9 @@
 
 namespace Module\Hotel\Infrastructure\Models;
 
+use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\JoinClause;
-use Module\Shared\Infrastructure\Models\Model;
 
 /**
  * Module\Hotel\Infrastructure\Models\Season

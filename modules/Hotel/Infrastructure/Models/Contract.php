@@ -2,7 +2,7 @@
 
 namespace Module\Hotel\Infrastructure\Models;
 
-use Module\Shared\Infrastructure\Models\Model;
+use Custom\Framework\Database\Eloquent\Model;
 
 /**
  * Module\Hotel\Infrastructure\Models\Contract

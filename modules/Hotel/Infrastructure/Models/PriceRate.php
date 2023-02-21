@@ -3,7 +3,7 @@
 namespace Module\Hotel\Infrastructure\Models;
 
 use Custom\Framework\Database\Eloquent\HasTranslations;
-use Module\Shared\Infrastructure\Models\Model;
+use Custom\Framework\Database\Eloquent\Model;
 
 class PriceRate extends Model
 {
