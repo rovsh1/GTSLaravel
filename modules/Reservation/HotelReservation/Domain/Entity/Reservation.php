@@ -9,42 +9,42 @@ use Module\Reservation\Common\Domain\Entity\ReservationRequestableInterface;
 class Reservation implements ReservationItemInterface, ReservationRequestableInterface
 {
     public function __construct(
-        private readonly \Module\Reservation\HotelReservation\Domain\ValueObject\ReservationIdentifier $identifier,
+        private readonly ValueObject\ReservationIdentifier $identifier,
         //private readonly Manager $author,
-        private readonly \Module\Reservation\HotelReservation\Domain\ValueObject\ReservationStatus $status,
-        private readonly \Module\Reservation\HotelReservation\Domain\ValueObject\Client $client,
-        private readonly \Module\Reservation\HotelReservation\Domain\ValueObject\Hotel $hotel,
-        private readonly \Module\Reservation\HotelReservation\Domain\ValueObject\ReservationPeriod $reservationPeriod,
-        private readonly \Module\Reservation\HotelReservation\Domain\ValueObject\ReservationDetails $details,
+        private readonly ValueObject\ReservationStatus $status,
+        private readonly ValueObject\Client $client,
+        private readonly ValueObject\Hotel $hotel,
+        private readonly ValueObject\ReservationPeriod $reservationPeriod,
+        private readonly ValueObject\ReservationDetails $details,
         //private readonly ValueObject\Price $price,
     ) {}
 
-    public function identifier(): \Module\Reservation\HotelReservation\Domain\ValueObject\ReservationIdentifier
+    public function identifier(): ValueObject\ReservationIdentifier
     {
         return $this->identifier;
     }
 
-    public function status(): \Module\Reservation\HotelReservation\Domain\ValueObject\ReservationStatus
+    public function status(): ValueObject\ReservationStatus
     {
         return $this->status;
     }
 
-    public function client(): \Module\Reservation\HotelReservation\Domain\ValueObject\Client
+    public function client(): ValueObject\Client
     {
         return $this->client;
     }
 
-    public function hotel(): \Module\Reservation\HotelReservation\Domain\ValueObject\Hotel
+    public function hotel(): ValueObject\Hotel
     {
         return $this->hotel;
     }
 
-    public function period(): \Module\Reservation\HotelReservation\Domain\ValueObject\ReservationPeriod
+    public function period(): ValueObject\ReservationPeriod
     {
         return $this->reservationPeriod;
     }
 
-    public function details(): \Module\Reservation\HotelReservation\Domain\ValueObject\ReservationDetails
+    public function details(): ValueObject\ReservationDetails
     {
         return $this->details;
     }

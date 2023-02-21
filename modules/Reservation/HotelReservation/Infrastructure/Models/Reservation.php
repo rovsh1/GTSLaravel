@@ -4,6 +4,7 @@ namespace Module\Reservation\HotelReservation\Infrastructure\Models;
 
 use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Module\Reservation\HotelReservation\Infrastructure\Models\Hotel\Option;
 
 /**
  * Module\Reservation\HotelReservation\Infrastructure\Models\Reservation
@@ -11,7 +12,6 @@ use Illuminate\Database\Eloquent\Builder;
  * @property int $id
  * @property int|null $administrator_id
  * @property int|null $client_id
- * @property-read int|null $client_type
  * @property int|null $legal_id
  * @property int|null $manager_id
  * @property int|null $user_id
@@ -20,16 +20,16 @@ use Illuminate\Database\Eloquent\Builder;
  * @property int $source
  * @property int $type
  * @property string|null $number
- * @property \Illuminate\Support\Carbon $date_checkin
- * @property \Illuminate\Support\Carbon $date_checkout
+ * @property \Custom\Framework\Support\DateTime $date_checkin
+ * @property \Custom\Framework\Support\DateTime $date_checkout
  * @property int $nights_number
- * @property int $status
+ * @property \Module\Reservation\HotelReservation\Infrastructure\Models\ReservationStatusEnum $status
  * @property int $flag_request
  * @property int $flag_invoice
  * @property int $flag_voucher
  * @property string|null $note
  * @property int $deletion_mark
- * @property \Illuminate\Support\Carbon $created
+ * @property \Custom\Framework\Support\DateTime $created
  * @property string|null $penalty_gross
  * @property string|null $penalty_net
  * @property string|null $date_penalty_net
@@ -41,42 +41,45 @@ use Illuminate\Database\Eloquent\Builder;
  * @property string|null $total_net_hotel
  * @property string|null $hash
  * @property int|null $payment_card_type
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation query()
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereAdministratorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereChangedGross($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereChangedNet($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereCityId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereClientId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereCreated($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereDateChangedNet($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereDateCheckin($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereDateCheckout($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereDatePenaltyNet($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereDeletionMark($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereFlagInvoice($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereFlagRequest($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereFlagVoucher($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereHash($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereHotelId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereLegalId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereManagerId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereNightsNumber($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereNote($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereNumber($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation wherePaymentCardType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation wherePenaltyGross($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation wherePenaltyNet($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereSource($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereTotalGross($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereTotalNet($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereTotalNetHotel($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation whereUserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Reservation withClientType()
+ * @method static Builder|Reservation newModelQuery()
+ * @method static Builder|Reservation newQuery()
+ * @method static Builder|Reservation query()
+ * @method static Builder|Reservation whereAdministratorId($value)
+ * @method static Builder|Reservation whereChangedGross($value)
+ * @method static Builder|Reservation whereChangedNet($value)
+ * @method static Builder|Reservation whereCityId($value)
+ * @method static Builder|Reservation whereClientId($value)
+ * @method static Builder|Reservation whereCreated($value)
+ * @method static Builder|Reservation whereDateChangedNet($value)
+ * @method static Builder|Reservation whereDateCheckin($value)
+ * @method static Builder|Reservation whereDateCheckout($value)
+ * @method static Builder|Reservation whereDatePenaltyNet($value)
+ * @method static Builder|Reservation whereDeletionMark($value)
+ * @method static Builder|Reservation whereFlagInvoice($value)
+ * @method static Builder|Reservation whereFlagRequest($value)
+ * @method static Builder|Reservation whereFlagVoucher($value)
+ * @method static Builder|Reservation whereHash($value)
+ * @method static Builder|Reservation whereHotelId($value)
+ * @method static Builder|Reservation whereId($value)
+ * @method static Builder|Reservation whereLegalId($value)
+ * @method static Builder|Reservation whereManagerId($value)
+ * @method static Builder|Reservation whereNightsNumber($value)
+ * @method static Builder|Reservation whereNote($value)
+ * @method static Builder|Reservation whereNumber($value)
+ * @method static Builder|Reservation wherePaymentCardType($value)
+ * @method static Builder|Reservation wherePenaltyGross($value)
+ * @method static Builder|Reservation wherePenaltyNet($value)
+ * @method static Builder|Reservation whereSource($value)
+ * @method static Builder|Reservation whereStatus($value)
+ * @method static Builder|Reservation whereTotalGross($value)
+ * @method static Builder|Reservation whereTotalNet($value)
+ * @method static Builder|Reservation whereTotalNetHotel($value)
+ * @method static Builder|Reservation whereType($value)
+ * @method static Builder|Reservation whereUserId($value)
+ * @method static Builder|Reservation withClientType()
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Option> $hotelOptions
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Module\Reservation\HotelReservation\Infrastructure\Models\Room> $rooms
+ * @property-read int $client_type
  * @mixin \Eloquent
  */
 class Reservation extends Model
@@ -137,5 +140,23 @@ class Reservation extends Model
                 $join->on("{$clientsTable}.id", '=', "{$this->getTable()}.client_id");
             }
         )->addSelect("{$clientsTable}.type as client_type");
+    }
+
+    public function rooms()
+    {
+        return $this->hasMany(
+            Room::class,
+            'reservation_id',
+            'id'
+        );
+    }
+
+    public function hotelOptions()
+    {
+        return $this->hasMany(
+            Option::class,
+            'hotel_id',
+            'hotel_id',
+        );
     }
 }

@@ -8,7 +8,8 @@ use Module\Reservation\HotelReservation\Domain\Entity\Reservation;
 class ReservationDto extends Dto
 {
     public function __construct(
-        public readonly int $id,
+        public readonly int       $id,
+        public readonly HotelInfo $hotelInfo
     ) {}
 
     public static function fromEntity(Reservation $reservation): static
