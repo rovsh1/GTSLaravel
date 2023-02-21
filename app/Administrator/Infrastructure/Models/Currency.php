@@ -25,4 +25,9 @@ class Currency extends Model
         'sign',
         'rate'
     ];
+
+    public static function booted()
+    {
+        static::addGlobalTranslationScope();
+    }
 }

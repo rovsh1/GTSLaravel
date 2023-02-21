@@ -26,21 +26,18 @@ class CurrencyController extends Controller
         return app(Actions\StoreAction::class)->handle($request);
     }
 
-    // Todo тут скорее всего в экшн
     public function edit(int $id)
     {
         return app(Actions\EditAction::class)->handle($id);
     }
 
-    // Todo тут скорее всего в экшн
-    public function update(Request $request, \GTS\Administrator\Infrastructure\Models\Currency $currency)
+    public function update(Request $request, int $id)
     {
-        dd('update', $request, $currency);
+        return app(Actions\UpdateAction::class)->handle($id, $request);
     }
 
-    // Todo тут скорее всего в экшн
-    public function destroy(\GTS\Administrator\Infrastructure\Models\Currency $currency)
+    public function destroy(int $id)
     {
-        dd($currency);
+        return app(Actions\DeleteAction::class)->handle($id);
     }
 }

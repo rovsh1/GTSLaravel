@@ -6,13 +6,13 @@ use Illuminate\Http\Request;
 
 use GTS\Administrator\Infrastructure\Facade\Reference\CurrencyFacadeInterface;
 
-class StoreAction
+class UpdateAction
 {
     public function __construct(
         private CurrencyFacadeInterface $currencyFacade
     ) {}
 
-    public function handle(Request $request)
+    public function handle(int $id, Request $request)
     {
         // Todo точно так валидировать?
         $validated = $request->validate([
@@ -23,7 +23,7 @@ class StoreAction
         ]);
 
         // Todo точно $validated['data']?
-        $currencyId = $this->currencyFacade->store($validated['data']);
+        $currencyId = $this->currencyFacade->update($id, $validated['data']);
 
         if ($currencyId !== null) {
             return redirect(route('currency.index'));

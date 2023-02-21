@@ -27,11 +27,6 @@ class CurrencyRepository extends AbstractCrudRepository implements CurrencyRepos
         return (new CurrencySearchQuery($paramsDto))->count();
     }
 
-    public function store(mixed $paramsDto)
-    {
-        return $this->create($paramsDto);
-    }
-
     protected function createEntityFromModel($model)
     {
         // Convert to domain entity

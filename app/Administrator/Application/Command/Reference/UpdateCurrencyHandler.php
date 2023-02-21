@@ -7,19 +7,19 @@ use Custom\Framework\Contracts\Bus\CommandInterface;
 
 use GTS\Administrator\Domain\Repository\CurrencyRepositoryInterface;
 
-class StoreCurrencyHandler implements CommandHandlerInterface
+class UpdateCurrencyHandler implements CommandHandlerInterface
 {
     public function __construct(
         private readonly CurrencyRepositoryInterface $currencyRepository
     ) {}
 
     /**
-     * @param StoreCurrency $command
+     * @param UpdateCurrency $command
      * @return int|null
      */
     public function handle(CommandInterface $command): ?int
     {
-        $currency = $this->currencyRepository->create($command->params);
+        $currency = $this->currencyRepository->update($command->id, $command->params);
 
         return $currency->id ?? null;
     }

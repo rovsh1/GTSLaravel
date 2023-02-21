@@ -23,16 +23,4 @@ class EditAction
                     ->route(route('currency.update', $currency))
             ]);
     }
-
-    public function submit($form)
-    {
-        if (!$form->submit()) {
-            return false;
-        }
-
-        $data = $form->getData();
-        //dd($data);
-
-        return false;
-    }
 }

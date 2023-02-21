@@ -14,7 +14,7 @@ class CurrencySearchQuery extends SearchQuery
 
     protected function beforeSelect(): void
     {
-        $this->joinTranslations();
+        // $this->joinTranslations();
     }
 
     protected function filter(): void
