@@ -3,27 +3,37 @@
 namespace Module\Integration\Traveline\Port\Controllers;
 
 use Custom\Framework\Port\Request;
+use Module\Integration\Traveline\Application\Dto\HotelDto;
+use Module\Integration\Traveline\Application\Service\HotelFinder;
+use Module\Integration\Traveline\Domain\Api\Service\QuotaAndPriceUpdater;
 
 class HotelController
 {
+    public function __construct(
+        private HotelFinder          $hotelFinder,
+        private QuotaAndPriceUpdater $quotaUpdaterService
+    ) {}
+
     public function update(Request $request)
     {
         $request->validate([
-            'hotel_id' => '',
-            'updates' => ''
+            'hotel_id' => 'required|numeric',
+            'updates' => 'required|array'
         ]);
 
-        //@todo вызов команд/сервисов/запросов
+        $domainResponse = $this->quotaUpdaterService->updateQuotasAndPlans($request->hotel_id, $request->updates);
+
         //@todo конвертация в DTO
+        return $domainResponse;
     }
 
-    public function getRoomsAndRatePlans(Request $request): array
+    public function getRoomsAndRatePlans(Request $request): HotelDto
     {
         $request->validate([
-            'hotel_id' => '',
+            'hotel_id' => 'required|numeric',
         ]);
 
-        return [];
+        return $this->hotelFinder->getHotelRoomsAndRatePlans($request->hotel_id);
     }
 
 }

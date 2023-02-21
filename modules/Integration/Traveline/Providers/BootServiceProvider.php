@@ -22,9 +22,6 @@ class BootServiceProvider extends ServiceProvider
     {
         $this->app->bind(ClientInterface::class, Client::class);
 
-        $this->app->singleton(Infrastructure\Facade\ReservationFacadeInterface::class, Infrastructure\Facade\ReservationFacade::class);
-        $this->app->singleton(Infrastructure\Facade\HotelFacadeInterface::class, Infrastructure\Facade\HotelFacade::class);
-
         $this->app->singleton(Domain\Adapter\ReservationAdapterInterface::class, Infrastructure\Adapter\ReservationAdapter::class);
         $this->app->singleton(Domain\Adapter\HotelAdapterInterface::class, Infrastructure\Adapter\HotelAdapter::class);
         $this->app->singleton(Domain\Adapter\TravelineAdapterInterface::class, function ($app) {
