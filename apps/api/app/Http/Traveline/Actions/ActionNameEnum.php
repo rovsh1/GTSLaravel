@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Api\Http\Actions;
+namespace App\Api\Http\Traveline\Actions;
 
-use App\Api\Http\Requests\ConfirmBookingsActionRequest;
-use App\Api\Http\Requests\GetReservationsActionRequest;
-use App\Api\Http\Requests\GetRoomsAndRatePlansActionRequest;
-use App\Api\Http\Requests\UpdateActionRequest;
+use App\Api\Http\Traveline\Requests\ConfirmBookingsActionRequest;
+use App\Api\Http\Traveline\Requests\GetReservationsActionRequest;
+use App\Api\Http\Traveline\Requests\GetRoomsAndRatePlansActionRequest;
+use App\Api\Http\Traveline\Requests\UpdateActionRequest;
 use Illuminate\Http\Request;
 
 enum ActionNameEnum: string

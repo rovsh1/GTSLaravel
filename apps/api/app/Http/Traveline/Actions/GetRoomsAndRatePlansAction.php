@@ -1,22 +1,23 @@
 <?php
 
-namespace App\Api\Http\Actions;
+namespace App\Api\Http\Traveline\Actions;
 
-use App\Api\Http\Requests\GetRoomsAndRatePlansActionRequest;
+use App\Api\Http\Traveline\Requests\GetRoomsAndRatePlansActionRequest;
 use Module\Integration\Traveline\Domain\Api\Response\GetRoomsAndRatePlansActionResponse;
 use Module\Integration\Traveline\Domain\Api\Response\HotelNotExistInChannelResponse;
 use Module\Integration\Traveline\Domain\Exception\HotelNotConnectedException;
-use Module\Integration\Traveline\Infrastructure\Facade\HotelFacadeInterface;
+use Module\Shared\Infrastructure\Adapter\PortGatewayInterface;
 
 class GetRoomsAndRatePlansAction
 {
-
-    public function __construct(private HotelFacadeInterface $facade) {}
+    public function __construct(private PortGatewayInterface $portGateway) {}
 
     public function handle(GetRoomsAndRatePlansActionRequest $request)
     {
         try {
-            $roomsAndRatePlans = $this->facade->getRoomsAndRatePlans($request->getHotelId());
+            $roomsAndRatePlans = $this->portGateway->request('traveline/getRoomsAndRatePlans', [
+                'hotel_id' => $request->getHotelId()
+            ]);
         } catch (HotelNotConnectedException $exception) {
             return new HotelNotExistInChannelResponse();
         }

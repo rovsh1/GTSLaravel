@@ -4,12 +4,13 @@ namespace Module\Services\PortGateway;
 
 use Module\Services\PortGateway\Exception\BasePortGatewayException;
 use Module\Services\PortGateway\Exception\ModuleNotFoundException;
+use Module\Shared\Infrastructure\Adapter\PortGatewayInterface;
 
-class Client
+class Client implements PortGatewayInterface
 {
     public function __construct() {}
 
-    public function request(string $route, array $attributes = [])
+    public function request(string $route, array $attributes = []): mixed
     {
         return $this->call(Request::fromRoute($route, $attributes));
     }

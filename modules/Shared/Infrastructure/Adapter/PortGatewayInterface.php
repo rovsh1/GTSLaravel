@@ -2,4 +2,7 @@
 
 namespace Module\Shared\Infrastructure\Adapter;
 
-interface PortGatewayInterface { }
+interface PortGatewayInterface
+{
+    public function request(string $route, array $attributes = []): mixed;
+}

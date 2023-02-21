@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Api\Http\Middleware;
+namespace App\Api\Http\Traveline\Middleware;
 
 use Closure;
 use Illuminate\Http\RedirectResponse;

@@ -1,7 +1,7 @@
 <?php
 
-use App\Api\Http\Controllers\TravelineController;
-use App\Api\Http\Middleware\Authorize;
+use App\Api\Http\Traveline\Controllers\TravelineController;
+use App\Api\Http\Traveline\Middleware\Authorize;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(TravelineController::class)

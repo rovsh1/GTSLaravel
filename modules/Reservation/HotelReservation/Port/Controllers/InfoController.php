@@ -11,8 +11,7 @@ class InfoController
     public function __construct(
         private InfoFacadeInterface $infoFacade
     )
-    {
-    }
+    {}
 
     public function findById(Request $request): ReservationDto
     {

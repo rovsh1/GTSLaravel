@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Api\Http\Actions;
+namespace App\Api\Http\Traveline\Actions;
 
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class IndexAction
 {
-
     public function handle(Request $request)
     {
         $action = ActionNameEnum::tryFrom($request->get('action'));
@@ -19,5 +18,4 @@ class IndexAction
 
         return $action->getAction()->handle($parsedRequest);
     }
-
 }
