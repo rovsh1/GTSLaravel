@@ -12,11 +12,7 @@ class OpenRoomQuotaHandler implements CommandHandlerInterface
         private RoomQuotaRepositoryInterface $quotaRepository
     ) {}
 
-    /**
-     * @param OpenRoomQuota $command
-     * @return void
-     */
-    public function handle(CommandInterface $command)
+    public function handle(CommandInterface|OpenRoomQuota $command): void
     {
         $this->quotaRepository->openRoomQuota($command->roomId, $command->period);
     }

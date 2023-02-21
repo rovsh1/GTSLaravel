@@ -12,11 +12,7 @@ class CloseRoomQuotaHandler implements CommandHandlerInterface
         private RoomQuotaRepositoryInterface $quotaRepository
     ) {}
 
-    /**
-     * @param CloseRoomQuota $command
-     * @return void
-     */
-    public function handle(CommandInterface $command)
+    public function handle(CommandInterface|CloseRoomQuota $command): void
     {
         $this->quotaRepository->closeRoomQuota($command->roomId, $command->period);
     }

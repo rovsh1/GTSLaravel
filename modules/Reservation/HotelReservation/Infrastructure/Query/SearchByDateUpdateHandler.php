@@ -14,7 +14,7 @@ class SearchByDateUpdateHandler implements QueryHandlerInterface
      * @param SearchByDateUpdate $query
      * @return void
      */
-    public function handle(QueryInterface $query)
+    public function handle(QueryInterface|SearchByDateUpdate $query)
     {
         $modelsQuery = Model::withClientType()
             //@todo сейчас нет даты обновления в базе

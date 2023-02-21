@@ -15,7 +15,7 @@ class GetActiveHandler implements QueryHandlerInterface
      * @param GetActive $query
      * @return array
      */
-    public function handle(QueryInterface $query)
+    public function handle(QueryInterface|GetActive $query)
     {
         $modelsQuery = Model::withClientType()
             //@todo уточнить по поводу статуса

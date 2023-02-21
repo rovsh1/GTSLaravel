@@ -15,7 +15,7 @@ class GetRoomsWithPriceRatesByHotelIdHandler implements QueryHandlerInterface
      * @param GetRoomsWithPriceRatesByHotelId $query
      * @return Room[]
      */
-    public function handle(QueryInterface $query): array
+    public function handle(QueryInterface|GetRoomsWithPriceRatesByHotelId $query): array
     {
         $rooms = RoomEloquent::query()->where('hotel_id', $query->hotelId)
             ->withName()

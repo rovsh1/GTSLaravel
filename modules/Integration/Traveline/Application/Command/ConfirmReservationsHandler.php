@@ -10,11 +10,7 @@ class ConfirmReservationsHandler implements CommandHandlerInterface
 {
     public function __construct(private Booking $bookingService) {}
 
-    /**
-     * @param ConfirmReservations $command
-     * @return void
-     */
-    public function handle(CommandInterface $command)
+    public function handle(CommandInterface|ConfirmReservations $command): void
     {
         $this->bookingService->confirmReservations($command->reservations);
     }
