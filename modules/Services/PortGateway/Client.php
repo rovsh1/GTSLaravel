@@ -2,6 +2,9 @@
 
 namespace Module\Services\PortGateway;
 
+use Module\Services\PortGateway\Exception\BasePortGatewayException;
+use Module\Services\PortGateway\Exception\ModuleNotFoundException;
+
 class Client
 {
     public function __construct() {}
@@ -15,14 +18,14 @@ class Client
     {
         $module = module($request->module());
         if ($module === null) {
-            throw new \Module\Services\PortGateway\Exception\ModuleNotFoundException("Module '{$request->module()}' not found");
+            throw new ModuleNotFoundException("Module '{$request->module()}' not found");
         }
         $module->boot();
 
         try {
             return $module->get('router')->request($request->path(), $request->attributes());
         } catch (\Throwable $e) {
-            throw new \Module\Services\PortGateway\Exception\BasePortGatewayException($e->getMessage(), $e->getCode(), $e);
+            throw new BasePortGatewayException($e->getMessage(), $e->getCode(), $e);
         }
     }
 }

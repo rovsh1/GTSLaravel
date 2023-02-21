@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Admin\Http\Controllers;
 
-Route::get('/', fn() => redirect(route('currency.index')))->name('index');
+Route::get('/', fn() => redirect(route('country.index')))->name('home');
 
 Route::controller(Controllers\AuthController::class)->group(function () {
     Route::withoutMiddleware('auth:admin')->get('/login', 'index')->name('auth.login');
