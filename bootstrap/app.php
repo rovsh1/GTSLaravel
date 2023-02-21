@@ -11,7 +11,6 @@
 |
 */
 
-define('APP_ROOT', realpath(__DIR__ . '/../../../'));
 $app = new App\Core\Application(
     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 );
