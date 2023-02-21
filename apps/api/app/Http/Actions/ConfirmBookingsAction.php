@@ -1,10 +1,10 @@
 <?php
 
-namespace Module\Integration\Traveline\UI\Api\Http\Actions;
+namespace App\Api\Http\Actions;
 
+use App\Api\Http\Requests\ConfirmBookingsActionRequest;
 use Module\Integration\Traveline\Domain\Api\Response\EmptySuccessResponse;
 use Module\Integration\Traveline\Infrastructure\Facade\ReservationFacadeInterface;
-use Module\Integration\Traveline\UI\Api\Http\Requests\ConfirmBookingsActionRequest;
 
 class ConfirmBookingsAction
 {

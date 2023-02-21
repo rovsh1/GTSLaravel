@@ -1,12 +1,12 @@
 <?php
 
-namespace Module\Integration\Traveline\UI\Api\Http\Actions;
+namespace App\Api\Http\Actions;
 
+use App\Api\Http\Requests\UpdateActionRequest;
 use Module\Integration\Traveline\Domain\Api\Response\EmptySuccessResponse;
 use Module\Integration\Traveline\Domain\Api\Response\HotelNotConnectedToChannelManagerResponse;
 use Module\Integration\Traveline\Domain\Exception\HotelNotConnectedException;
 use Module\Integration\Traveline\Infrastructure\Facade\HotelFacadeInterface;
-use Module\Integration\Traveline\UI\Api\Http\Requests\UpdateActionRequest;
 
 class UpdateAction
 {

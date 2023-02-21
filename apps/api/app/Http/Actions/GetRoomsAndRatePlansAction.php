@@ -1,12 +1,12 @@
 <?php
 
-namespace Module\Integration\Traveline\UI\Api\Http\Actions;
+namespace App\Api\Http\Actions;
 
+use App\Api\Http\Requests\GetRoomsAndRatePlansActionRequest;
 use Module\Integration\Traveline\Domain\Api\Response\GetRoomsAndRatePlansActionResponse;
 use Module\Integration\Traveline\Domain\Api\Response\HotelNotExistInChannelResponse;
 use Module\Integration\Traveline\Domain\Exception\HotelNotConnectedException;
 use Module\Integration\Traveline\Infrastructure\Facade\HotelFacadeInterface;
-use Module\Integration\Traveline\UI\Api\Http\Requests\GetRoomsAndRatePlansActionRequest;
 
 class GetRoomsAndRatePlansAction
 {
