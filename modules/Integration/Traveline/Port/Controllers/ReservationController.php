@@ -6,6 +6,10 @@ use Custom\Framework\Contracts\Bus\CommandBusInterface;
 use Custom\Framework\Port\Request;
 use Module\Integration\Traveline\Application\Command\ConfirmReservations;
 use Module\Integration\Traveline\Application\Service\ReservationFinder;
+use Module\Integration\Traveline\Domain\Api\Response\EmptySuccessResponse;
+use Module\Integration\Traveline\Domain\Api\Response\GetReservationsActionResponse;
+use Module\Integration\Traveline\Domain\Api\Response\HotelNotConnectedToChannelManagerResponse;
+use Module\Integration\Traveline\Domain\Exception\HotelNotConnectedException;
 
 class ReservationController
 {
@@ -22,11 +26,16 @@ class ReservationController
             'date_update' => 'nullable|date',
         ]);
 
-        return $this->reservationFinder->getReservations(
-            $request->id,
-            $request->hotel_id,
-            $request->date_update
-        );
+        try {
+            $reservations = $this->reservationFinder->getReservations(
+                $request->id,
+                $request->hotel_id,
+                $request->date_update
+            );
+        } catch (HotelNotConnectedException $exception) {
+            return new HotelNotConnectedToChannelManagerResponse();
+        }
+        return new GetReservationsActionResponse($reservations);
     }
 
     public function confirmReservations(Request $request): mixed
@@ -38,7 +47,9 @@ class ReservationController
             'reservations.*.status' => 'required|string',
         ]);
 
-        return $this->commandBus->execute(new ConfirmReservations($request->reservations));
+        $this->commandBus->execute(new ConfirmReservations($request->reservations));
+
+        return new EmptySuccessResponse();
     }
 
 }

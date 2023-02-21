@@ -3,9 +3,13 @@
 namespace Module\Integration\Traveline\Port\Controllers;
 
 use Custom\Framework\Port\Request;
-use Module\Integration\Traveline\Application\Dto\HotelDto;
 use Module\Integration\Traveline\Application\Service\HotelFinder;
 use Module\Integration\Traveline\Application\Service\QuotaAndPriceUpdater;
+use Module\Integration\Traveline\Domain\Api\Response\EmptySuccessResponse;
+use Module\Integration\Traveline\Domain\Api\Response\GetRoomsAndRatePlansActionResponse;
+use Module\Integration\Traveline\Domain\Api\Response\HotelNotConnectedToChannelManagerResponse;
+use Module\Integration\Traveline\Domain\Api\Response\HotelNotExistInChannelResponse;
+use Module\Integration\Traveline\Domain\Exception\HotelNotConnectedException;
 
 class HotelController
 {
@@ -21,19 +25,26 @@ class HotelController
             'updates' => 'required|array'
         ]);
 
-        $domainResponse = $this->quotaUpdaterService->updateQuotasAndPlans($request->hotel_id, $request->updates);
-
-        //@todo конвертация в DTO
-        return $domainResponse;
+        try {
+            $this->quotaUpdaterService->updateQuotasAndPlans($request->hotel_id, $request->updates);
+        } catch (HotelNotConnectedException $exception) {
+            return new HotelNotConnectedToChannelManagerResponse();
+        }
+        return new EmptySuccessResponse();
     }
 
-    public function getRoomsAndRatePlans(Request $request): HotelDto
+    public function getRoomsAndRatePlans(Request $request): mixed
     {
         $request->validate([
             'hotel_id' => 'required|numeric',
         ]);
 
-        return $this->hotelFinder->getHotelRoomsAndRatePlans($request->hotel_id);
+        try {
+            $roomsAndRatePlans = $this->hotelFinder->getHotelRoomsAndRatePlans($request->hotel_id);
+        } catch (HotelNotConnectedException $exception) {
+            return new HotelNotExistInChannelResponse();
+        }
+        return new GetRoomsAndRatePlansActionResponse($roomsAndRatePlans);
     }
 
 }

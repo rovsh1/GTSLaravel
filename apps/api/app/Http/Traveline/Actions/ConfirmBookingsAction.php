@@ -3,7 +3,6 @@
 namespace App\Api\Http\Traveline\Actions;
 
 use App\Api\Http\Traveline\Requests\ConfirmBookingsActionRequest;
-use Module\Integration\Traveline\Domain\Api\Response\EmptySuccessResponse;
 use Module\Shared\Infrastructure\Adapter\PortGatewayInterface;
 
 class ConfirmBookingsAction
@@ -12,9 +11,8 @@ class ConfirmBookingsAction
 
     public function handle(ConfirmBookingsActionRequest $request)
     {
-        $this->portGateway->request('traveline/confirmReservations', [
+        return $this->portGateway->request('traveline/confirmReservations', [
             'reservations' => $request->getReservations()
         ]);
-        return new EmptySuccessResponse();
     }
 }
