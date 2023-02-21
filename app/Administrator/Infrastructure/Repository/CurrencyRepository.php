@@ -4,7 +4,7 @@ namespace GTS\Administrator\Infrastructure\Repository;
 
 use Custom\Framework\Contracts\Bus\QueryBusInterface;
 
-use GTS\Shared\Infrastructure\Repository\AbstractCrudRepository;
+use Module\Shared\Infrastructure\Repository\AbstractCrudRepository;
 use GTS\Administrator\Domain\Repository\CurrencyRepositoryInterface;
 use GTS\Administrator\Infrastructure\Models\Currency;
 use GTS\Administrator\Infrastructure\Query\CurrencySearchQuery;

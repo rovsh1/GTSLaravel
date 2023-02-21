@@ -5,7 +5,7 @@ namespace GTS\Administrator\Infrastructure\Models;
 use Custom\Framework\Database\Eloquent\HasQuicksearch;
 use Custom\Framework\Database\Eloquent\HasTranslations;
 
-use GTS\Shared\Infrastructure\Models\Model;
+use Module\Shared\Infrastructure\Models\Model;
 
 class Currency extends Model
 {

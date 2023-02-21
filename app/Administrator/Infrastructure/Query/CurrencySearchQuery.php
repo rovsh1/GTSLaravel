@@ -3,7 +3,7 @@
 namespace GTS\Administrator\Infrastructure\Query;
 
 use GTS\Administrator\Infrastructure\Models\Currency;
-use GTS\Shared\Infrastructure\Query\SearchQuery;
+use Module\Shared\Infrastructure\Query\SearchQuery;
 
 class CurrencySearchQuery extends SearchQuery
 {

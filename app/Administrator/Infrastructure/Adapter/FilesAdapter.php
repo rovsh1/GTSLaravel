@@ -3,7 +3,7 @@
 namespace GTS\Administrator\Infrastructure\Adapter;
 
 use GTS\Administrator\Domain\Adapter\FilesAdapterInterface;
-use GTS\Shared\Infrastructure\Adapter\AbstractPortAdapter;
+use Module\Shared\Infrastructure\Adapter\AbstractPortAdapter;
 
 class FilesAdapter extends AbstractPortAdapter implements FilesAdapterInterface
 {
