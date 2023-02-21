@@ -17,6 +17,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(PortGatewayInterface::class, PortGateway::class);
         $this->app->alias(PortGatewayInterface::class, 'portGateway');
 
-        $this->app->registerAppProviders();
+        $namespace = $this->app->getNamespace();
+        if ($namespace) {
+            $this->app->register($namespace . 'Providers\BootServiceProvider');
+        }
     }
 }

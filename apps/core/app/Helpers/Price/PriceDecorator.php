@@ -1,6 +1,9 @@
 <?php
 
-namespace GTS\Shared\UI\Common\Helpers\Price;
+namespace App\Core\Helpers\Price;
+
+use function GTS\Shared\UI\Common\Helpers\Price\app;
+use function GTS\Shared\UI\Common\Helpers\Price\lang;
 
 class PriceDecorator
 {

@@ -93,9 +93,4 @@ class Application extends \Illuminate\Foundation\Application
     {
         $this->modules->load(config('modules'));
     }
-
-    public function registerAppProviders()
-    {
-        $this->register($this->namespace . 'Providers\BootServiceProvider');
-    }
 }
