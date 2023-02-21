@@ -2,10 +2,12 @@
 
 namespace Module\Reservation\HotelReservation\Infrastructure\Facade;
 
+use Carbon\CarbonInterface;
 use Custom\Framework\Contracts\Bus\QueryBusInterface;
 use Module\Reservation\HotelReservation\Application\Dto\ReservationDto;
 use Module\Reservation\HotelReservation\Application\Query\Find;
 use Module\Reservation\HotelReservation\Application\Query\GetActive;
+use Module\Reservation\HotelReservation\Application\Query\SearchByDateUpdate;
 
 class InfoFacade implements InfoFacadeInterface
 {
@@ -25,11 +27,10 @@ class InfoFacade implements InfoFacadeInterface
         return ReservationDto::collectionFromEntity($reservations);
     }
 
-    public function searchReservations(array $criteria): array
+    public function searchReservationsByDateUpdate(CarbonInterface $dateUpdate, ?int $hotelId): array
     {
-        $reservations = [];
+        $reservations = $this->queryBus->execute(new SearchByDateUpdate($dateUpdate, $hotelId));
 
-        // TODO: Implement searchReservations() method.
         return ReservationDto::collectionFromEntity($reservations);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Module\Reservation\HotelReservation\Infrastructure\Facade;
 
+use Carbon\CarbonInterface;
 use Module\Reservation\HotelReservation\Application\Dto\ReservationDto;
 
 interface InfoFacadeInterface
@@ -14,5 +15,10 @@ interface InfoFacadeInterface
      */
     public function searchActiveReservations(?int $hotelId = null): array;
 
-    public function searchReservations(array $criteria): array;
+    /**
+     * @param CarbonInterface $dateUpdate
+     * @param int|null $hotelId
+     * @return ReservationDto[]
+     */
+    public function searchReservationsByDateUpdate(CarbonInterface $dateUpdate, ?int $hotelId): array;
 }

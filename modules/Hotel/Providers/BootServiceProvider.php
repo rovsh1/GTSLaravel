@@ -3,6 +3,8 @@
 namespace Module\Hotel\Providers;
 
 use Custom\Framework\Foundation\Support\Providers\ServiceProvider;
+use Module\Hotel\Domain;
+use Module\Hotel\Infrastructure;
 
 class BootServiceProvider extends ServiceProvider
 {
@@ -21,12 +23,12 @@ class BootServiceProvider extends ServiceProvider
 
     private function registerInterfaces()
     {
-        $this->app->singleton(\Module\Hotel\Infrastructure\Facade\RoomQuotaFacadeInterface::class, \Module\Hotel\Infrastructure\Facade\RoomQuotaFacade::class);
-        $this->app->singleton(\Module\Hotel\Infrastructure\Facade\RoomPriceFacadeInterface::class, \Module\Hotel\Infrastructure\Facade\RoomPriceFacade::class);
-        $this->app->singleton(\Module\Hotel\Infrastructure\Facade\SearchFacadeInterface::class, \Module\Hotel\Infrastructure\Facade\SearchFacade::class);
-        $this->app->singleton(\Module\Hotel\Infrastructure\Facade\InfoFacadeInterface::class, \Module\Hotel\Infrastructure\Facade\InfoFacade::class);
+        $this->app->singleton(Infrastructure\Facade\RoomQuotaFacadeInterface::class, Infrastructure\Facade\RoomQuotaFacade::class);
+        $this->app->singleton(Infrastructure\Facade\RoomPriceFacadeInterface::class, Infrastructure\Facade\RoomPriceFacade::class);
+        $this->app->singleton(Infrastructure\Facade\SearchFacadeInterface::class, Infrastructure\Facade\SearchFacade::class);
+        $this->app->singleton(Infrastructure\Facade\InfoFacadeInterface::class, Infrastructure\Facade\InfoFacade::class);
 
-        $this->app->singleton(\Module\Hotel\Domain\Repository\RoomQuotaRepositoryInterface::class, \Module\Hotel\Infrastructure\Repository\RoomQuotaRepository::class);
-        $this->app->singleton(\Module\Hotel\Domain\Repository\RoomPriceRepositoryInterface::class, \Module\Hotel\Infrastructure\Repository\RoomPriceRepository::class);
+        $this->app->singleton(Domain\Repository\RoomQuotaRepositoryInterface::class, Infrastructure\Repository\RoomQuotaRepository::class);
+        $this->app->singleton(Domain\Repository\RoomPriceRepositoryInterface::class, Infrastructure\Repository\RoomPriceRepository::class);
     }
 }

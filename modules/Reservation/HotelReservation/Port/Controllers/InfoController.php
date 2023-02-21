@@ -10,7 +10,9 @@ class InfoController
 {
     public function __construct(
         private InfoFacadeInterface $infoFacade
-    ) {}
+    )
+    {
+    }
 
     public function findById(Request $request): ReservationDto
     {
@@ -34,8 +36,10 @@ class InfoController
             'date_update' => 'required|date',
             'hotel_id' => 'nullable|int',
         ]);
-        //@todo как передавать критерии поиска?
-        return $this->infoFacade->searchReservations($request->attributes());
+        return $this->infoFacade->searchReservationsByDateUpdate(
+            $request->date_update,
+            $request->hotel_id
+        );
     }
 
 }
