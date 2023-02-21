@@ -2,7 +2,7 @@
 
 namespace Module\Services\Scheduler\UI\Admin\Http\Actions\Cron;
 
-use GTS\Services\Scheduler\UI\Admin\Http\Actions\Cron\Form;
+use Module\Services\Scheduler\UI\Admin\Http\Actions\Cron\Form;
 use Module\Services\Scheduler\Infrastructure\Facade\Cron\CrudFacadeInterface;
 
 class EditAction

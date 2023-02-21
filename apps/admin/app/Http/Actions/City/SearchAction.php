@@ -3,7 +3,7 @@
 namespace App\Admin\Http\Actions\City;
 
 use App\Admin\Http\View\Grid\GridBuilder;
-use GTS\Administrator\Infrastructure\Facade\Reference\CityFacadeInterface;
+use Module\Administrator\Infrastructure\Facade\Reference\CityFacadeInterface;
 
 class SearchAction
 {

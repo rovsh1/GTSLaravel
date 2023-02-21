@@ -3,8 +3,8 @@
 namespace Module\Reservation\HotelReservation\Domain\Entity;
 
 use Custom\Framework\Contracts\Event\DomainEventDispatcherInterface;
-use GTS\Reservation\HotelReservation\Domain\Event;
-use GTS\Reservation\HotelReservation\Domain\Service\DocumentGenerator;
+use Module\Reservation\HotelReservation\Domain\Event;
+use Module\Reservation\HotelReservation\Domain\Service\DocumentGenerator;
 use Module\Reservation\HotelReservation\Domain\Adapter\FileStorageAdapterInterface;
 use Module\Reservation\HotelReservation\Domain\Repository\RequestRepositoryInterface;
 

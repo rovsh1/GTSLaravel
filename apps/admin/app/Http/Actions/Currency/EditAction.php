@@ -3,7 +3,7 @@
 namespace App\Admin\Http\Actions\Currency;
 
 use App\Admin\Http\Forms\Currency\EditForm;
-use GTS\Administrator\Infrastructure\Facade\Reference\CurrencyFacadeInterface;
+use Module\Administrator\Infrastructure\Facade\Reference\CurrencyFacadeInterface;
 
 class EditAction
 {

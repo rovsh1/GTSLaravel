@@ -2,7 +2,7 @@
 
 namespace App\Admin\Models\Access;
 
-use GTS\Shared\Custom\TabularSection;
+use Module\Shared\Custom\TabularSection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 

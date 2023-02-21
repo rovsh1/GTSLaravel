@@ -2,7 +2,7 @@
 
 namespace App\Admin\Http\Actions\Currency;
 
-use GTS\Administrator\Infrastructure\Facade\Reference\CurrencyFacadeInterface;
+use Module\Administrator\Infrastructure\Facade\Reference\CurrencyFacadeInterface;
 use Illuminate\Http\Request;
 
 class DeleteAction

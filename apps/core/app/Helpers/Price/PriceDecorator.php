@@ -2,8 +2,8 @@
 
 namespace App\Core\Helpers\Price;
 
-use function GTS\Shared\UI\Common\Helpers\Price\app;
-use function GTS\Shared\UI\Common\Helpers\Price\lang;
+use function Module\Shared\UI\Common\Helpers\Price\app;
+use function Module\Shared\UI\Common\Helpers\Price\lang;
 
 class PriceDecorator
 {

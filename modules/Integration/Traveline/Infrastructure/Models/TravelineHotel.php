@@ -5,7 +5,7 @@ namespace Module\Integration\Traveline\Infrastructure\Models;
 use Module\Shared\Infrastructure\Models\Model;
 
 /**
- * GTS\Integration\Traveline\Infrastructure\Models\TravelineHotel
+ * Module\Integration\Traveline\Infrastructure\Models\TravelineHotel
  *
  * @property int $id
  * @property int $hotel_id

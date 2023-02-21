@@ -6,7 +6,7 @@ use Module\Shared\Infrastructure\Models\Model;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * GTS\Reservation\HotelReservation\Infrastructure\Models\Reservation
+ * Module\Reservation\HotelReservation\Infrastructure\Models\Reservation
  *
  * @property int $id
  * @property int|null $administrator_id

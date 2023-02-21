@@ -2,7 +2,7 @@
 
 namespace Module\Reservation\HotelReservation\Domain\Entity;
 
-use GTS\Reservation\HotelReservation\Domain\ValueObject;
+use Module\Reservation\HotelReservation\Domain\ValueObject;
 use Module\Reservation\Common\Domain\Entity\ReservationItemInterface;
 use Module\Reservation\Common\Domain\Entity\ReservationRequestableInterface;
 

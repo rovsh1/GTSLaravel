@@ -2,8 +2,8 @@
 
 namespace Module\Services\Scheduler\Console\Commands;
 
-use GTS\Services\Scheduler\UI\Console\Commands\Cron;
-use GTS\Services\Scheduler\UI\Console\Commands\CronService;
+use Module\Services\Scheduler\UI\Console\Commands\Cron;
+use Module\Services\Scheduler\UI\Console\Commands\CronService;
 use Illuminate\Console\Command;
 
 class Job extends Command

@@ -2,7 +2,7 @@
 
 namespace Module\Services\FileStorage\UI\Site\Http\Controllers;
 
-use GTS\Services\FileStorage\UI\Site\Http\Actions;
+use Module\Services\FileStorage\UI\Site\Http\Actions;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 

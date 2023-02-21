@@ -3,7 +3,7 @@
 namespace App\Admin\Http\Actions\Currency;
 
 use App\Admin\Http\View\Grid\GridBuilder;
-use GTS\Administrator\Infrastructure\Facade\Reference\CurrencyFacadeInterface;
+use Module\Administrator\Infrastructure\Facade\Reference\CurrencyFacadeInterface;
 
 class SearchAction
 {
