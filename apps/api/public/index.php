@@ -3,6 +3,7 @@
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
 
+define('APP_ROOT', realpath(__DIR__ . '/../../../'));
 define('LARAVEL_START', microtime(true));
 
 /*
@@ -16,7 +17,7 @@ define('LARAVEL_START', microtime(true));
 |
 */
 
-if (file_exists($maintenance = __DIR__ . '/../../storage/framework/maintenance.php')) {
+if (file_exists($maintenance = APP_ROOT . '/storage/framework/maintenance.php')) {
     require $maintenance;
 }
 
@@ -31,7 +32,7 @@ if (file_exists($maintenance = __DIR__ . '/../../storage/framework/maintenance.p
 |
 */
 
-require __DIR__ . '/../../vendor/autoload.php';
+require APP_ROOT . '/vendor/autoload.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -44,12 +45,10 @@ require __DIR__ . '/../../vendor/autoload.php';
 |
 */
 
-$app = require_once __DIR__ . '/../../bootstrap/app.php';
+$app = require_once APP_ROOT . '/bootstrap/app.php';
 
-$app->instance(
-    \Module\Shared\UI\Common\Contracts\UIServiceProvider::class,
-    \Module\Shared\UI\Api\Providers\BootServiceProvider::class
-);
+$app->setBasePath(dirname(__DIR__));
+$app->setNamespace('App\\Api\\');
 
 $kernel = $app->make(Kernel::class);
 
