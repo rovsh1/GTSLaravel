@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Integration\Traveline\UI\Api\Http\Requests;
+namespace App\Api\Http\Requests;
 
 class GetRoomsAndRatePlansActionRequest extends AbstractTravelineRequest
 {

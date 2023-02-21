@@ -2,10 +2,7 @@
 
 namespace App\Api\Providers;
 
-use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 
 class RouteServiceProvider extends ServiceProvider
@@ -27,7 +24,8 @@ class RouteServiceProvider extends ServiceProvider
         Route::pattern('id', '[0-9]+');
 
         $this->routes(function () {
-            Route::middleware(['web', 'api'])
+            Route::prefix('traveline')
+                ->as('traveline.')
                 ->group(base_path('routes/traveline.php'));
         });
     }

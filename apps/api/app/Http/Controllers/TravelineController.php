@@ -1,10 +1,10 @@
 <?php
 
-namespace Module\Integration\Traveline\UI\Api\Http\Controllers;
+namespace App\Api\Http\Controllers;
 
+use App\Api\Http\Actions\IndexAction;
 use App\Core\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Module\Integration\Traveline\UI\Api\Http\Actions\IndexAction;
 
 class TravelineController extends Controller
 {

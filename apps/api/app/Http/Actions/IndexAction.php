@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Integration\Traveline\UI\Api\Http\Actions;
+namespace App\Api\Http\Actions;
 
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;

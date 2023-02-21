@@ -13,7 +13,7 @@ class RouteServiceProvider extends ServiceProvider
         $this->app->singleton('router', function ($module) {
             $router = new Router($module);
 
-            (new RouteLoader($router))->load($module->path('UI/Port/routes.php'));
+            (new RouteLoader($router))->load($module->path('Port/routes.php'));
 
             return $router;
         });
