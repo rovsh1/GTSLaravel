@@ -83,11 +83,6 @@ mix.webpackConfig({
 });
 
 mix.alias({
-    '@site': resourcesPath + '/site/js',
-    '@admin': resourcesPath + '/admin/js',
-
-    '~site': resourcesPath + '/site/sass',
-    '~admin': resourcesPath + '/admin/sass'
 });
 
 /*
@@ -131,7 +126,7 @@ const rmdir = function (dirPath, exclude) {
 const mixAssetsDir = function (source, query, cb) {
     (glob.sync('resources/shared/assets/' + query) || []).forEach(f => {
         f = f.replace(/[\\\/]+/g, '/');
-        cb(f, f.replace('resources/shared/assets/', 'public/' + source + '/assets/'));
+        cb(f, f.replace('resources/shared/assets/', 'public/assets/'));
     });
 }
 
@@ -142,8 +137,8 @@ module.exports = {
     resourcesPath: resourcesPath,
     readdir: readdir,
     js: function (source) {
-        const resourcesPath = 'resources/' + source + '/js';
-        const publicPath = 'public/' + source + '/js';
+        const resourcesPath = 'resources/js';
+        const publicPath = 'public/js';
 
         if (!fs.existsSync(publicPath))
             fs.mkdirSync(publicPath);
@@ -158,8 +153,8 @@ module.exports = {
         return mix;
     },
     sass: function (source) {
-        const resourcesPath = 'resources/' + source + '/sass';
-        const publicPath = 'public/' + source + '/css';
+        const resourcesPath = 'resources/sass';
+        const publicPath = 'public/css';
 
         if (!fs.existsSync(publicPath))
             fs.mkdirSync(publicPath);

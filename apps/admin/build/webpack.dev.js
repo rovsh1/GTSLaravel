@@ -1,6 +1,6 @@
 const common = require('./webpack.common');
 
-common.mix.setPublicPath('public/admin');
+common.mix.setPublicPath('public');
 
 common.sass('admin');
 common.js('admin');
