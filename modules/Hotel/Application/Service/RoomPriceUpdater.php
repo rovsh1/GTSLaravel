@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Hotel\Application\Service;
+namespace GTS\Hotel\Application\Service;
 
 use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
@@ -19,7 +19,8 @@ class RoomPriceUpdater
         private array                        $hotelSeasons = [],
     ) {}
 
-    public function updateRoomPriceByCriteria(int $priceId, float $price, string $currencyCode) {
+    public function updateRoomPriceByCriteria(int $priceId, float $price, string $currencyCode)
+    {
         //@todo ищу цену по ID (Domain/Price)
         $price = $this->queryBus->execute(new FindDatePrice(
             $date,
@@ -40,21 +41,20 @@ class RoomPriceUpdater
     public function updateRoomPriceByPeriod(int $roomId, CarbonPeriod $period, int $rateId, int $guestsNumber, bool $isResident, float $price, string $currencyCode)
     {
         //@todo нормальная проверка на валюту и норм. ексепшн
-        if ($currencyCode !== 'USZ') {
+        if ($currencyCode !== 'UZS') {
             throw new \Exception('Currency not supported');
         }
 
         $this->hotelSeasons = $this->queryBus->execute(new GetActiveSeasonsByRoomIdIncludesPeriod($roomId, $period));
         if (count($this->hotelSeasons) === 0) {
-            \Log::warning('Not found hotel season for period');
+            \Log::warning('Not found hotel season for period', ['period' => $period]);
             return;
         }
 
         foreach ($period as $date) {
             $seasonId = $this->getSeasonIdByDate($date);
             if ($seasonId === null) {
-                //@todo уточнить у Анвара
-                \Log::warning("Not found season for date: {$date}");
+                \Log::warning("Not found season for date: {$date}", ['date' => $date]);
                 continue;
             }
             $this->roomPriceRepository->updateRoomPrices(
