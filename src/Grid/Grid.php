@@ -25,6 +25,8 @@ class Grid
         $this->sorting = new Support\Sorting($options);
         $this->renderer = new Renderer\Renderer($options);
         $this->data = new Data\EmptyData();
+
+        $this->build();
     }
 
     public function __call(string $name, array $arguments)
@@ -111,4 +113,6 @@ class Grid
 
         $this->data->sorting($this->sorting);
     }
+
+    protected function build(): void {}
 }

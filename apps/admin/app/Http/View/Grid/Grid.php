@@ -20,16 +20,18 @@ class Grid extends Base
         };
     }
 
-    public function enableQuicksearch(): void
+    public function enableQuicksearch(): static
     {
         $this->quicksearch = new Quicksearch(['method' => 'GET']);
         $this->quicksearch->text('quicksearch', ['placeholder' => 'Быстрый поиск', 'autocomplete' => false]);
         $this->quicksearch->submit();
+        return $this;
     }
 
-    public function setSearchForm(Form $form): void
+    public function setSearchForm(Form $form): static
     {
         $this->searchForm = $form;
         $this->searchForm->submit();
+        return $this;
     }
 }
