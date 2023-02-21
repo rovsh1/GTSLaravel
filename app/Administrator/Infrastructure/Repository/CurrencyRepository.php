@@ -2,12 +2,10 @@
 
 namespace GTS\Administrator\Infrastructure\Repository;
 
-use Custom\Framework\Contracts\Bus\QueryBusInterface;
-
-use Module\Shared\Infrastructure\Repository\AbstractCrudRepository;
+use App\Admin\Models\Currency;
 use GTS\Administrator\Domain\Repository\CurrencyRepositoryInterface;
-use GTS\Administrator\Infrastructure\Models\Currency;
 use GTS\Administrator\Infrastructure\Query\CurrencySearchQuery;
+use Module\Shared\Infrastructure\Repository\AbstractCrudRepository;
 
 class CurrencyRepository extends AbstractCrudRepository implements CurrencyRepositoryInterface
 {

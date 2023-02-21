@@ -17,7 +17,7 @@ class Country extends Select
     private function getCountries()
     {
         //TODO TEST! Replace to port
-        return \GTS\Administrator\Infrastructure\Models\Country::joinTranslations()
+        return \App\Admin\Models\Country::joinTranslations()
             ->orderBy('name')
             ->get();
 //        return app('portGateway')->request('administrator/search-countries', []);

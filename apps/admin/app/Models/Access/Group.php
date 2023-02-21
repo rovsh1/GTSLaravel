@@ -1,11 +1,10 @@
 <?php
 
-namespace GTS\Administrator\Infrastructure\Models\Access;
-
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
+namespace App\Admin\Models\Access;
 
 use GTS\Shared\Custom\TabularSection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Group extends Model
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace GTS\Administrator\Infrastructure\Models;
+namespace App\Admin\Models;
 
 use Custom\Framework\Database\Eloquent\HasQuicksearch;
 use GTS\Shared\Custom\TabularSection;
@@ -58,7 +58,7 @@ class Administrator extends Authenticatable
 
     public function accessGroups()
     {
-        return Access\Group::whereUser($this);
+        return \App\Admin\Models\Access\Group::whereUser($this);
     }
 
     public function groups(): TabularSection

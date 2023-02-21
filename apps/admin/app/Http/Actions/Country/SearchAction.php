@@ -3,8 +3,7 @@
 namespace App\Admin\Http\Actions\Country;
 
 use App\Admin\Http\View\Grid\GridBuilder;
-use GTS\Administrator\Infrastructure\Facade\Reference\CountryFacadeInterface;
-use Module\Services\FileStorage\Infrastructure\Facade\ReaderFacadeInterface;
+use App\Admin\Models\Country;
 
 class SearchAction
 {
@@ -24,12 +23,12 @@ class SearchAction
     private function gridFactory($dto)
     {
         return (new GridBuilder())
-            //->paginator($this->facade->count($dto), 20)
+            ->paginator(Country::count(), 20)
             // ->id('id', ['text' => 'ID'])
             ->text('name', ['text' => 'Наименование'])
             ->text('phone_code', ['text' => 'Код телефона'])
             ->orderBy('id', 'asc')
-            //->callFacadeSearch($this->facade, $dto)
+            ->data(Country::joinTranslations())
             ->getGrid();
     }
 }

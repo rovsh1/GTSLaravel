@@ -2,12 +2,11 @@
 
 namespace GTS\Administrator\Infrastructure\Repository;
 
+use App\Admin\Models\Currency;
 use Custom\Framework\Contracts\Bus\QueryBusInterface;
-
-use Module\Shared\Infrastructure\Repository\AbstractCrudRepository;
 use GTS\Administrator\Domain\Repository\CityRepositoryInterface;
-use GTS\Administrator\Infrastructure\Models\Currency;
 use GTS\Administrator\Infrastructure\Query\CitySearchQuery;
+use Module\Shared\Infrastructure\Repository\AbstractCrudRepository;
 
 class CityRepository extends AbstractCrudRepository implements CityRepositoryInterface
 {

@@ -1,10 +1,9 @@
 <?php
 
-namespace GTS\Administrator\Infrastructure\Models;
+namespace App\Admin\Models;
 
 use Custom\Framework\Database\Eloquent\HasQuicksearch;
 use Custom\Framework\Database\Eloquent\HasTranslations;
-
 use Module\Shared\Infrastructure\Models\Model;
 
 class City extends Model

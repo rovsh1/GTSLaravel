@@ -1,6 +1,6 @@
 <?php
 
-namespace GTS\Administrator\Infrastructure\Models\Access;
+namespace App\Admin\Models\Access;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;

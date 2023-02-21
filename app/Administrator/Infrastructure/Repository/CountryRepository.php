@@ -2,10 +2,9 @@
 
 namespace GTS\Administrator\Infrastructure\Repository;
 
+use App\Admin\Models\Country;
 use Custom\Framework\Contracts\Bus\QueryBusInterface;
-
 use GTS\Administrator\Domain\Repository\CountryRepositoryInterface;
-use GTS\Administrator\Infrastructure\Models\Country;
 use GTS\Administrator\Infrastructure\Query\CountrySearchQuery;
 use Module\Shared\Infrastructure\Repository\AbstractCrudRepository;
 

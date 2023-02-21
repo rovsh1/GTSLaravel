@@ -27,19 +27,19 @@ class CityController extends Controller
     }
 
     // Todo тут скорее всего в экшн
-    public function edit(\GTS\Administrator\Infrastructure\Models\City $city)
+    public function edit(\App\Admin\Models\City $city)
     {
         return app(\App\Admin\Http\Actions\City\EditAction::class)->handle($city->toArray());
     }
 
     // Todo тут скорее всего в экшн
-    public function update(Request $request, \GTS\Administrator\Infrastructure\Models\City $city)
+    public function update(Request $request, \App\Admin\Models\City $city)
     {
         dd($request, $city);
     }
 
     // Todo тут скорее всего в экшн
-    public function destroy(\GTS\Administrator\Infrastructure\Models\City $city)
+    public function destroy(\App\Admin\Models\City $city)
     {
         dd($city);
     }
