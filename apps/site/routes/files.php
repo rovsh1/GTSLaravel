@@ -1,7 +1,7 @@
 <?php
 
+use App\Site\Http\Controllers\FileController;
 use Illuminate\Support\Facades\Route;
-use Module\Services\FileStorage\UI\Site\Http\Controllers\FileController;
 
 Route::controller(FileController::class)
     ->group(function () {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Providers;
+namespace App\Site\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
@@ -24,8 +24,8 @@ class RouteServiceProvider extends ServiceProvider
         Route::pattern('id', '[0-9]+');
 
         $this->routes(function () {
-            Route::middleware(['web', 'admin'])
-                ->group(base_path('routes/web.php'));
+            Route::middleware(['web', 'site'])
+                ->group(base_path('routes/files.php'));
         });
     }
 }

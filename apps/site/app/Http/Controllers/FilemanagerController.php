@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Services\FileStorage\UI\Site\Http\Controllers;
+namespace App\Site\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;

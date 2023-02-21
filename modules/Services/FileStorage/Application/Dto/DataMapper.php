@@ -1,8 +1,7 @@
 <?php
 
-namespace Module\Services\FileStorage\Infrastructure\Facade;
+namespace Module\Services\FileStorage\Application\Dto;
 
-use Module\Services\FileStorage\Application\Dto\FileDto;
 use Module\Services\FileStorage\Domain\Entity\File;
 use Module\Services\FileStorage\Domain\Service\UrlGeneratorInterface;
 
