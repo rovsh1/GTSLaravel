@@ -3,8 +3,8 @@
 namespace Module\Hotel\Infrastructure\Repository;
 
 use Carbon\CarbonPeriod;
-use GTS\Hotel\Domain\Repository\QuotaRepositoryInterface;
-use GTS\Hotel\Infrastructure\Repository\QuotaEvents;
+use Module\Hotel\Domain\Repository\QuotaRepositoryInterface;
+use Module\Hotel\Infrastructure\Repository\QuotaEvents;
 use Module\Hotel\Infrastructure\Models\Room\Quota as EloquentQuota;
 
 class QuotaRepository implements QuotaRepositoryInterface

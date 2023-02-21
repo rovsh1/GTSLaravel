@@ -1,12 +1,10 @@
 <?php
 
-namespace GTS\Hotel\Application\Service;
+namespace Module\Hotel\Application\Service;
 
 use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
 use Custom\Framework\Contracts\Bus\QueryBusInterface;
-use GTS\Hotel\Application\Service\FindDatePrice;
-use GTS\Hotel\Application\Service\ValueObject;
 use Module\Hotel\Application\Query\GetActiveSeasonsByRoomIdIncludesPeriod;
 use Module\Hotel\Domain\Entity\Season;
 use Module\Hotel\Domain\Repository\RoomPriceRepositoryInterface;
@@ -18,25 +16,6 @@ class RoomPriceUpdater
         private QueryBusInterface            $queryBus,
         private array                        $hotelSeasons = [],
     ) {}
-
-    public function updateRoomPriceByCriteria(int $priceId, float $price, string $currencyCode)
-    {
-        //@todo ищу цену по ID (Domain/Price)
-        $price = $this->queryBus->execute(new FindDatePrice(
-            $date,
-            $seasonId,
-            $roomId,
-            $rateId,
-            $guestsNumber,
-            $residentType,
-            $aggregatorId,
-        ));
-        //если найдена - обновляю, если нет - то создаю
-
-        $price = new ValueObject\Price($price, $currencyCode);
-        //@todo ->setPrice($price)
-        $this->priceRepository->store($price);
-    }
 
     public function updateRoomPriceByPeriod(int $roomId, CarbonPeriod $period, int $rateId, int $guestsNumber, bool $isResident, float $price, string $currencyCode)
     {

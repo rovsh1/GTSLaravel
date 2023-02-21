@@ -2,7 +2,7 @@
 
 namespace Module\Hotel\Infrastructure\Facade;
 
-use GTS\Hotel\Domain\Repository\HotelRepositoryInterface;
+use Module\Hotel\Domain\Repository\HotelRepositoryInterface;
 
 class SearchFacade implements SearchFacadeInterface
 {

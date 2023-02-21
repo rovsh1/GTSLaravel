@@ -3,7 +3,7 @@
 namespace Module\Hotel\UI\Admin\Http\Controllers;
 
 use App\Core\Http\Controllers\Controller;
-use GTS\Hotel\Infrastructure\Api\Reservation\ApiInterface as ReservationApiInterface;
+use Module\Hotel\Infrastructure\Api\Reservation\ApiInterface as ReservationApiInterface;
 use Illuminate\Http\Request;
 
 class ReservationController extends Controller

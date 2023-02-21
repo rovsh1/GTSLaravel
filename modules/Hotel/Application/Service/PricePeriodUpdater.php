@@ -4,10 +4,10 @@ namespace Module\Hotel\Application\Service;
 
 use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
-use GTS\Hotel\Application\Service\FindDatePrice;
-use GTS\Hotel\Application\Service\RoomPrices;
-use GTS\Hotel\Application\Service\ValueObject;
-use GTS\Hotel\Domain\Repository\SeasonRepositoryInterface;
+use Module\Hotel\Application\Service\FindDatePrice;
+use Module\Hotel\Application\Service\RoomPrices;
+use Module\Hotel\Application\Service\ValueObject;
+use Module\Hotel\Domain\Repository\SeasonRepositoryInterface;
 use Module\Hotel\Domain\Repository\RoomPriceRepositoryInterface;
 
 class PricePeriodUpdater

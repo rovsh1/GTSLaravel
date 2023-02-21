@@ -7,7 +7,7 @@ use Illuminate\Database\Query\JoinClause;
 use Module\Shared\Infrastructure\Models\Model;
 
 /**
- * GTS\Hotel\Infrastructure\Models\Season
+ * Module\Hotel\Infrastructure\Models\Season
  *
  * @property int $id
  * @property int $hotel_id
