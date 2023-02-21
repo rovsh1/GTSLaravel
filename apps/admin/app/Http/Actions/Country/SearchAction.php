@@ -2,20 +2,32 @@
 
 namespace App\Admin\Http\Actions\Country;
 
-use App\Admin\Http\Grids\CountriesGrid;
+use App\Admin\Models\Country;
+use App\Admin\Support\Http\AbstractSearchAction;
 
-class SearchAction
+class SearchAction extends AbstractSearchAction
 {
-    public function __construct() {}
+    protected $model = Country::class;
 
-    public function handle(array $params = [])
+    protected $title = 'Страны';
+
+    protected function boot()
     {
-        $dto = new \stdClass();
-        //$dto->default = false;
-        //$dto->flag = 'ru';
+        $this->enableQuicksearch();
+    }
 
-        return app('layout')->view('country.index', [
-            'grid' => new CountriesGrid()
-        ]);
+    protected function prepareSelectQuery($query)
+    {
+        $query->joinTranslations();
+    }
+
+    protected function applySearch($query, array $filters) {}
+
+    protected function gridFactory()
+    {
+        return parent::gridFactory()
+            ->text('name', ['text' => 'Наименование', 'order' => true])
+            ->text('phone_code', ['text' => 'Код телефона'])
+            ->orderBy('name', 'asc');
     }
 }

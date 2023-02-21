@@ -17,7 +17,7 @@ class Grid
 
     protected Data\DataInterface $data;
 
-    protected ?Paginator $paginator;
+    protected ?Paginator $paginator = null;
 
     public function __construct($options = [])
     {
@@ -110,6 +110,8 @@ class Grid
         if ($this->paginator) {
             $this->data->paginator($this->paginator);
         }
+
+        $this->sorting->fromRequest();
 
         $this->data->sorting($this->sorting);
     }
