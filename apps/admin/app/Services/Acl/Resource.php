@@ -1,6 +1,6 @@
 <?php
 
-namespace GTS\Administrator\Domain\Service\Acl;
+namespace App\Admin\Services\Acl;
 
 class Resource
 {

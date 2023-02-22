@@ -1,9 +1,9 @@
 <?php
 
-namespace GTS\Administrator\Infrastructure\Repository;
+namespace App\Admin\Services\Acl;
 
 use App\Admin\Models\Access\Rule;
-use GTS\Administrator\Domain\Repository\AclRepositoryInterface;
+use Module\Administrator\Domain\Repository\AclRepositoryInterface;
 
 class AclRepository implements AclRepositoryInterface
 {

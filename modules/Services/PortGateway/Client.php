@@ -21,6 +21,7 @@ class Client implements PortGatewayInterface
         if ($module === null) {
             throw new ModuleNotFoundException("Module '{$request->module()}' not found");
         }
+
         $module->boot();
 
         try {

@@ -2,7 +2,6 @@
 
 namespace App\Core;
 
-use App\Core\Support\ModuleLoader;
 use App\Core\Support\ModulesRepository;
 use Custom\Framework\Foundation\Module;
 
@@ -10,12 +9,9 @@ class Application extends \Illuminate\Foundation\Application
 {
     private ModulesRepository $modules;
 
-    private ModuleLoader $moduleLoader;
-
     public function __construct(private string $rootPath)
     {
         $this->modules = new ModulesRepository($this);
-        $this->moduleLoader = new ModuleLoader($this);
 
         parent::__construct();
 
@@ -91,20 +87,6 @@ class Application extends \Illuminate\Foundation\Application
         $this->instance('path.core', $appsPath . DIRECTORY_SEPARATOR . 'core');
         $this->instance('path.site', $appsPath . DIRECTORY_SEPARATOR . 'site');
         $this->instance('path.api', $appsPath . DIRECTORY_SEPARATOR . 'api');
-    }
-
-    protected function getConcrete($abstract)
-    {
-        $concrete = parent::getConcrete($abstract);
-        if ($concrete instanceof \Closure) {
-            return $concrete;
-        }
-
-        if ($this->moduleLoader->loadByAbstract($abstract)) {
-            return parent::getConcrete($abstract);
-        } else {
-            return $abstract;
-        }
     }
 
     public function registerModules()
