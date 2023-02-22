@@ -2,20 +2,21 @@
 
 namespace Module\Services\FileStorage\Port\Controllers;
 
+use Custom\Framework\Contracts\Bus\QueryBusInterface;
 use Custom\Framework\Port\Request;
-use Module\Services\FileStorage\Application\Dto\DataMapper;
 use Module\Services\FileStorage\Application\Dto\FileDto;
 use Module\Services\FileStorage\Application\Dto\FileInfoDto;
-use Module\Services\FileStorage\Domain\Repository\DatabaseRepositoryInterface;
+use Module\Services\FileStorage\Application\Query\FindByGuid;
+use Module\Services\FileStorage\Application\Query\GetEntityImages;
 use Module\Services\FileStorage\Domain\Repository\StorageRepositoryInterface;
 use Module\Services\FileStorage\Domain\Service\UrlGeneratorInterface;
 
 class ReadController
 {
     public function __construct(
-        private readonly DatabaseRepositoryInterface $databaseRepository,
         private readonly StorageRepositoryInterface $storageRepository,
         private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly QueryBusInterface $queryBus,
     ) {}
 
     public function find(Request $request): ?FileDto
@@ -24,9 +25,7 @@ class ReadController
             'guid' => 'required|string',
         ]);
 
-        $file = $this->databaseRepository->find($request->guid);
-
-        return $file ? (new DataMapper($this->urlGenerator))->fileToDto($file) : null;
+        return $this->queryBus->execute(new FindByGuid($request->guid));
     }
 
     public function findEntityImage(Request $request): ?FileDto
@@ -36,9 +35,7 @@ class ReadController
             'entityId' => 'nullable|int',
         ]);
 
-        $file = $this->databaseRepository->findEntityImage($request->fileType, $request->entityId);
-
-        return $file ? (new DataMapper($this->urlGenerator))->fileToDto($file) : null;
+        return $this->queryBus->execute(new FindByGuid($request->fileType, $request->entityId));
     }
 
     public function getEntityImages(Request $request): array
@@ -48,9 +45,7 @@ class ReadController
             'entityId' => 'nullable|int',
         ]);
 
-        $mapper = new DataMapper($this->urlGenerator);
-
-        return array_map(fn($r) => $mapper->fileToDto($r), $this->databaseRepository->getEntityImages($request->fileType, $request->entityId));
+        return $this->queryBus->execute(new GetEntityImages($request->fileType, $request->entityId));
     }
 
     public function getContents(Request $request): ?string
