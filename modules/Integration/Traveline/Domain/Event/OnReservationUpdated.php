@@ -2,7 +2,9 @@
 
 namespace Module\Integration\Traveline\Domain\Event;
 
-class OnReservationUpdated
+use Custom\Framework\Contracts\Event\DomainEventInterface;
+
+class OnReservationUpdated implements DomainEventInterface
 {
 
 }

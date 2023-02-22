@@ -2,12 +2,14 @@
 
 namespace Module\Reservation\HotelReservation\Domain\ValueObject;
 
-class Hotel
+use Module\Shared\Domain\ValueObject\ValueObjectInterface;
+
+class Hotel implements ValueObjectInterface
 {
     public function __construct(
         private readonly int $id,
-        public readonly string $checkInTime,
-        public readonly string $checkOutTime,
+        public ?string       $checkInTime = null,
+        public ?string       $checkOutTime = null,
     ) {}
 
     public function id(): int

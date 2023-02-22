@@ -28,7 +28,7 @@ class ReservationController
 
         try {
             $reservations = $this->reservationFinder->getReservations(
-                $request->id,
+                $request->reservation_id,
                 $request->hotel_id,
                 $request->date_update
             );

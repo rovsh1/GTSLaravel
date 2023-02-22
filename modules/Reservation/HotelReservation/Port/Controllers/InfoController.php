@@ -2,23 +2,25 @@
 
 namespace Module\Reservation\HotelReservation\Port\Controllers;
 
+use Custom\Framework\Contracts\Bus\QueryBusInterface;
 use Custom\Framework\Port\Request;
 use Module\Reservation\HotelReservation\Application\Dto\ReservationDto;
-use Module\Reservation\HotelReservation\Infrastructure\Facade\InfoFacadeInterface;
+use Module\Reservation\HotelReservation\Application\Query\Find;
+use Module\Reservation\HotelReservation\Application\Query\GetActive;
+use Module\Reservation\HotelReservation\Application\Query\SearchByDateUpdate;
 
 class InfoController
 {
     public function __construct(
-        private InfoFacadeInterface $infoFacade
-    )
-    {}
+        private QueryBusInterface $queryBus
+    ) {}
 
     public function findById(Request $request): ReservationDto
     {
         $request->validate([
             'id' => 'required|int',
         ]);
-        return $this->infoFacade->findById($request->id);
+        return $this->queryBus->execute(new Find($request->id));
     }
 
     public function searchActiveReservations(Request $request): array
@@ -26,7 +28,7 @@ class InfoController
         $request->validate([
             'hotel_id' => 'nullable|int',
         ]);
-        return $this->infoFacade->searchActiveReservations($request->hotel_id);
+        return $this->queryBus->execute(new GetActive($request->hotel_id));
     }
 
     public function searchUpdatedReservations(Request $request): array
@@ -35,10 +37,7 @@ class InfoController
             'date_update' => 'required|date',
             'hotel_id' => 'nullable|int',
         ]);
-        return $this->infoFacade->searchReservationsByDateUpdate(
-            $request->date_update,
-            $request->hotel_id
-        );
+        return $this->queryBus->execute(new SearchByDateUpdate($request->date_update, $request->hotel_id));
     }
 
 }

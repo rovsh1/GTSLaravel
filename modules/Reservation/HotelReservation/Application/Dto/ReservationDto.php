@@ -2,25 +2,30 @@
 
 namespace Module\Reservation\HotelReservation\Application\Dto;
 
-use Custom\Framework\Foundation\Support\Dto\Dto;
 use Module\Reservation\HotelReservation\Domain\Entity\Reservation;
+use Module\Shared\Application\Dto\AbstractDomainBasedDto;
+use Module\Shared\Domain\Entity\EntityInterface;
+use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 
-class ReservationDto extends Dto
+class ReservationDto extends AbstractDomainBasedDto
 {
     public function __construct(
-        public readonly int       $id,
-        public readonly HotelInfo $hotelInfo
+        public readonly int      $id,
+        public readonly HotelDto $hotelInfo,
+        /** @var RoomDto[]|null $rooms */
+        public readonly ?array   $rooms = null
     ) {}
 
-    public static function fromEntity(Reservation $reservation): static
+    public static function fromDomain(EntityInterface|ValueObjectInterface|Reservation $reservation): static
     {
-        return new static(
-            $reservation->id()
-        );
-    }
+        $rooms = $reservation->rooms() !== null
+            ? RoomDto::collectionFromDomain($reservation->rooms())
+            : null;
 
-    public static function collectionFromEntity(array $reservations): array
-    {
-        return array_map(fn($reservation) => static::fromEntity($reservation), $reservations);
+        return new static(
+            $reservation->id(),
+            HotelDto::fromDomain($reservation->hotel()),
+            $rooms
+        );
     }
 }

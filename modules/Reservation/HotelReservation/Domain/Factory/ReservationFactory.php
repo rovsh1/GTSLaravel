@@ -20,8 +20,8 @@ class ReservationFactory extends AbstractEntityFactory
     protected function fromArray(array $data): mixed
     {
         return new Reservation(
-            //@todo сейчас number = null во всей таблице
-            new ReservationIdentifier($data['id'], $data['number']),
+        //@todo сейчас number = null во всей таблице
+            new ReservationIdentifier($data['id'], $data['number'] ?? ''),
             new ReservationStatus(
                 null,
             ),

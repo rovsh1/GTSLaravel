@@ -1,22 +1,27 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Module\Reservation\HotelReservation\Domain\Entity;
 
-use Module\Reservation\HotelReservation\Domain\ValueObject;
 use Module\Reservation\Common\Domain\Entity\ReservationItemInterface;
 use Module\Reservation\Common\Domain\Entity\ReservationRequestableInterface;
+use Module\Reservation\HotelReservation\Domain\ValueObject;
+use Module\Shared\Domain\Entity\EntityInterface;
 
-class Reservation implements ReservationItemInterface, ReservationRequestableInterface
+class Reservation implements EntityInterface, ReservationItemInterface, ReservationRequestableInterface
 {
     public function __construct(
         private readonly ValueObject\ReservationIdentifier $identifier,
         //private readonly Manager $author,
-        private readonly ValueObject\ReservationStatus $status,
-        private readonly ValueObject\Client $client,
-        private readonly ValueObject\Hotel $hotel,
-        private readonly ValueObject\ReservationPeriod $reservationPeriod,
-        private readonly ValueObject\ReservationDetails $details,
+        private readonly ValueObject\ReservationStatus     $status,
+        private readonly ValueObject\Client                $client,
+        private readonly ValueObject\Hotel                 $hotel,
+        private readonly ValueObject\ReservationPeriod     $reservationPeriod,
+        private readonly ValueObject\ReservationDetails    $details,
         //private readonly ValueObject\Price $price,
+        /** @var Room[]|null $rooms */
+        private ?array                                     $rooms = null,
     ) {}
 
     public function identifier(): ValueObject\ReservationIdentifier
@@ -72,5 +77,22 @@ class Reservation implements ReservationItemInterface, ReservationRequestableInt
     public function dateTo(): \DateTime
     {
         return $this->reservationPeriod->dateTo();
+    }
+
+    /**
+     * @param Room[] $rooms
+     * @return void
+     */
+    public function appendRooms(array $rooms): void
+    {
+        $this->rooms = $rooms;
+    }
+
+    /**
+     * @return Room[]|null
+     */
+    public function rooms(): ?array
+    {
+        return $this->rooms;
     }
 }
