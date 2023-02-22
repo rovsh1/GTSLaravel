@@ -1,9 +1,9 @@
 ## Architecture
 
-#### App structure
+#### Modules structure
 
 ```
-/app
+/modules
 |-- /{Domain1}
 |-- /{Domain2}
 |-- /{Domain3}
@@ -34,24 +34,15 @@
 |   |-- /Service - Encapsulates business logic that doesn't naturally fit within a domain object, and are NOT typical CRUD operations – those would belong to a Repository.
 |-- /Infrastructure - Data layer
 |   |-- /Adapter - Domain addapter implementation (репозитории для внешних источников)
-|   |-- /Facade - Интерфейсы обращения UI к модулю (UI взаимодействует с бизнес логикой только через эти фасады)
 |   |-- /Model - ORM models
 |   |-- /Query - Query handlers
 |   |-- /Providers - Domain service providers
 |   |-- /Repository - Domain repository implementation (ORM репозитории)
 |   |-- /Services - Used to abstract technical concerns (e.g. MSMQ, email provider, etc).
-|-- /UI - Interfaces layer
-|   |-- /Admin
-|   |   |-- /Exception - Exception handler & UI exceptions
-|   |   |-- /Http
-|   |   |   |-- /Actions
-|   |   |   |-- /Controllers
-|   |   |   |-- /Middleware
-|   |   |-- /Providers - UI service providers
-|   |   |-- /routes.php
-|   |-- /Api
-|   |-- /Port - Контроллеры обращения к модулю (через PortGateway)
-|   |-- /Site
+|-- /Port - Обращение к модулю извне
+|   |-- /Controllers
+|   |-- /routes.php
+|-- /Providers - Провайдеры инициализации модуля
 |-- /Tests
 |   |-- /Feature
 |   |   |-- /Http
