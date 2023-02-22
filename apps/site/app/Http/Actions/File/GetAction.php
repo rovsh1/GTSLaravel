@@ -1,13 +1,15 @@
 <?php
 
-namespace Module\Services\FileStorage\UI\Site\Http\Actions;
+namespace App\Site\Http\Actions\File;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
-use Module\Services\FileStorage\Infrastructure\Facade\ReaderFacadeInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
+use Module\Services\FileStorage\Infrastructure\Facade\ReaderFacadeInterface;
+use Module\Shared\Infrastructure\Adapter\PortGatewayInterface;
 
 class GetAction
 {
@@ -16,21 +18,23 @@ class GetAction
     ];
 
     public function __construct(
-        private readonly ReaderFacadeInterface $readerFacade,
+        private readonly PortGatewayInterface $portGateway,
         private readonly Request $request
     ) {}
 
     public function handle(string $guid, int $part = null)
     {
-        $fileInfo = $this->readerFacade->fileInfo($guid, $part);
-        if (!$fileInfo->exists)
+        $fileInfo = $this->portGateway->request('files/fileInfo', compact('guid', 'part'));
+        if (!$fileInfo->exists) {
             return $this->sendNotFound();
+        }
 
         $requestIdentifier = $this->getCacheId($guid, $part);
-        if ($this->notModified($fileInfo))
+        if ($this->notModified($fileInfo)) {
             return Response::make()->setNotModified();
+        }
 
-        $response = Response::make($this->readerFacade->getContents($guid, $part));
+        $response = Response::make($this->portGateway->request('files/contents', compact('guid', 'part')));
         $response->headers->add($this->responseHeaders($fileInfo, $requestIdentifier));
 
         return $response;
@@ -46,8 +50,9 @@ class GetAction
         $path = $this->request->getPathInfo();
 
         foreach ($this->defaultImages as $prefix => $v) {
-            if (str_starts_with($path, $prefix))
+            if (str_starts_with($path, $prefix)) {
                 return $this->renderNotFoundImage(public_path($v));
+            }
         }
 
         throw new NotFoundHttpException('File was not found.');

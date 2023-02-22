@@ -59,7 +59,7 @@ class Module extends Container
 
     public function path(string $path = null): string
     {
-        return $this->config('path') . DIRECTORY_SEPARATOR . trim($path, DIRECTORY_SEPARATOR);
+        return $this->config('path') . ($path ? DIRECTORY_SEPARATOR . trim($path, DIRECTORY_SEPARATOR) : '');
     }
 
     public function namespace(string $namespace = null): string

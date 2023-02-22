@@ -30,6 +30,11 @@ class Application extends \Illuminate\Foundation\Application
         $this->namespace = $namespace;
     }
 
+    public function rootPath($path = '')
+    {
+        return $this->rootPath . ($path != '' ? DIRECTORY_SEPARATOR . $path : '');
+    }
+
     public function bootstrapPath($path = '')
     {
         return $this->rootPath . DIRECTORY_SEPARATOR . 'bootstrap' . ($path != '' ? DIRECTORY_SEPARATOR . $path : '');
@@ -73,6 +78,19 @@ class Application extends \Illuminate\Foundation\Application
     public function moduleLoaded(string $name): bool
     {
         return $this->modules->get($name)->isBooted();
+    }
+
+    protected function bindPathsInContainer()
+    {
+        parent::bindPathsInContainer();
+
+        $this->instance('path.modules', $this->modulesPath());
+
+        $appsPath = $this->rootPath . DIRECTORY_SEPARATOR . 'apps';
+        $this->instance('path.admin', $appsPath . DIRECTORY_SEPARATOR . 'admin');
+        $this->instance('path.core', $appsPath . DIRECTORY_SEPARATOR . 'core');
+        $this->instance('path.site', $appsPath . DIRECTORY_SEPARATOR . 'site');
+        $this->instance('path.api', $appsPath . DIRECTORY_SEPARATOR . 'api');
     }
 
     protected function getConcrete($abstract)

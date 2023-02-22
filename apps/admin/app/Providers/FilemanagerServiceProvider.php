@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Services\FileStorage\Providers;
+namespace App\Admin\Providers;
 
 use Custom\Framework\Foundation\Support\Providers\ServiceProvider;
 

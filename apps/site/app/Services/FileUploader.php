@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Services\FileStorage\Infrastructure\Services;
+namespace App\Site\Services;
 
 use Illuminate\Http\UploadedFile;
 use Module\Services\FileStorage\Infrastructure\Facade\WriterFacadeInterface;
