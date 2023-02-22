@@ -4,8 +4,6 @@ namespace App\Admin\Providers;
 
 use App\Admin\Services\Acl;
 use Custom\Framework\Foundation\Support\Providers\ServiceProvider;
-use GTS\Administrator\Domain\Service\Acl;
-use Module\Administrator\Domain\Repository\AclRepositoryInterface;
 
 class AclServiceProvider extends ServiceProvider
 {
@@ -13,7 +11,7 @@ class AclServiceProvider extends ServiceProvider
     {
         //$this->app->singleton(AclRepositoryInterface::class, AclRepository::class);
 
-        $this->app->singleton(AccessControlInterface::class, function () {
+        $this->app->singleton(Acl\AccessControlInterface::class, function () {
             $acl = new \App\Admin\Services\Acl\AccessControl();
 
             $this->bootResources($acl);
@@ -21,7 +19,7 @@ class AclServiceProvider extends ServiceProvider
             return $acl;
         });
 
-        $this->app->alias(AccessControlInterface::class, 'acl');
+        $this->app->alias(Acl\AccessControlInterface::class, 'acl');
     }
 
     private function bootResources($acl)
@@ -46,6 +44,6 @@ class AclServiceProvider extends ServiceProvider
 
     private function addResource($resources, string $resourceId, array $permissions = ['create', 'read', 'update', 'delete'])
     {
-        $resources->add(new \App\Admin\Services\Acl\Resource($resourceId, $permissions));
+        $resources->add(new Acl\Resource($resourceId, $permissions));
     }
 }

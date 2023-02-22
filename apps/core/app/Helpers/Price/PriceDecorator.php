@@ -2,9 +2,6 @@
 
 namespace App\Core\Helpers\Price;
 
-use function Module\Shared\UI\Common\Helpers\Price\app;
-use function Module\Shared\UI\Common\Helpers\Price\lang;
-
 class PriceDecorator
 {
     public function __construct(

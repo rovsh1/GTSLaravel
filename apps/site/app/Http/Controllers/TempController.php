@@ -7,9 +7,6 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 
-use function Module\Services\FileStorage\UI\Site\Http\Controllers\abort;
-use function Module\Services\FileStorage\UI\Site\Http\Controllers\response;
-
 class TempController extends Controller
 {
     private $storage;
@@ -23,10 +20,11 @@ class TempController extends Controller
     {
         if (!$request->hasFile('file')) {
             $upload = $request->file('file');
-            if ($upload)
+            if ($upload) {
                 throw new \UnexpectedValueException($upload->getErrorMessage());
-            else
+            } else {
                 throw new \InvalidArgumentException('File undefined');
+            }
         }
 
         $upload = $request->file('file');
@@ -43,8 +41,9 @@ class TempController extends Controller
     public function unlink(Request $request, $tmpname)
     {
         $filename = $tmpname;
-        if (!$this->storage->exists($filename))
+        if (!$this->storage->exists($filename)) {
             return abort(404);
+        }
 
         $this->storage->delete($filename);
 
@@ -54,8 +53,9 @@ class TempController extends Controller
     public function tmp(Request $request, $tmpname)
     {
         $filename = $tmpname;
-        if (!$this->storage->exists($filename))
+        if (!$this->storage->exists($filename)) {
             return abort(404);
+        }
 
         $response = Response::make($this->storage->get($filename));
         $response->headers->add([
