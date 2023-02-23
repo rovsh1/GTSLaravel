@@ -136,7 +136,7 @@ module.exports = {
     rootPath: rootPath,
     resourcesPath: resourcesPath,
     readdir: readdir,
-    js: function (source) {
+    js: function () {
         const resourcesPath = 'resources/js';
         const publicPath = 'public/js';
 
@@ -152,7 +152,7 @@ module.exports = {
 
         return mix;
     },
-    sass: function (source) {
+    sass: function () {
         const resourcesPath = 'resources/sass';
         const publicPath = 'public/css';
 
