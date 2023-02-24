@@ -123,13 +123,6 @@ const rmdir = function (dirPath, exclude) {
     });
 };
 
-const mixAssetsDir = function (source, query, cb) {
-    (glob.sync('resources/shared/assets/' + query) || []).forEach(f => {
-        f = f.replace(/[\\\/]+/g, '/');
-        cb(f, f.replace('resources/shared/assets/', 'public/assets/'));
-    });
-}
-
 module.exports = {
     mix: mix,
     fs: fs,
