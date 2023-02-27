@@ -1,6 +1,6 @@
 @extends('layouts/default')
 
-@section('title', 'Страны')
+@section('title', $layout->title)
 
 @section('content')
     <?php //$layout->menu('breadcrumbs') ?>

@@ -10,6 +10,8 @@ class Country extends Model
 {
     use HasTranslations, HasQuicksearch;
 
+    public $timestamps = false;
+
     protected array $quicksearch = ['id', 'name%'];
     protected array $translatable = ['name'];
 
@@ -19,9 +21,16 @@ class Country extends Model
         'name',
         'flag',
         'default',
+        'phone_code',
+        'language'
     ];
 
     protected $casts = [
         'default' => 'bool'
     ];
+
+    public static function booted()
+    {
+        static::addGlobalTranslationScope();
+    }
 }

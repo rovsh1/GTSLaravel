@@ -67,7 +67,7 @@ class Checkbox extends Input
         return '<input'
             . ' type="' . ($this->inputType ?? 'checkbox') . '"'
             . ' class="' . ($this->class ?? 'input-' . $this->inputType) . '"'
-            . ($this->isChecked() ? ' checked' : '')
+            . ($this->isChecked() ? ' checked ' : '')
             . (new InputAttributes($this))->render()
             . ' value="' . self::escape($this->checkedValue) . '">';
     }

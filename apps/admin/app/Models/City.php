@@ -10,13 +10,21 @@ class City extends Model
 {
     use HasTranslations, HasQuicksearch;
 
+    public $timestamps = false;
+
     protected array $quicksearch = ['id', 'name%'];
-    protected array $translatable = ['name'];
+    protected array $translatable = ['name', 'text'];
 
     protected $table = 'r_cities';
 
     protected $fillable = [
         'name',
         'country_id',
+        'text'
     ];
+
+    public static function booted()
+    {
+        static::addGlobalTranslationScope();
+    }
 }

@@ -2,8 +2,13 @@
 
 namespace App\Admin\Http\Controllers;
 
-use App\Core\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+
+use App\Admin\Support\Http\CRUD;
+use App\Admin\Http\Requests\Currency as Requests;
+use App\Admin\Http\Actions\Currency as Actions;
+use App\Admin\Http\Forms\Currency\EditForm;
+use App\Admin\Models\Currency;
 
 class CurrencyController extends Controller
 {
@@ -11,31 +16,43 @@ class CurrencyController extends Controller
 
     public function index(Request $request)
     {
-        return app(\App\Admin\Http\Actions\Currency\SearchAction::class)->handle($request->input());
+        return app(Actions\SearchAction::class)->handle($request->input());
     }
 
     public function create()
     {
-        return app(\App\Admin\Http\Actions\Currency\CreateAction::class)->handle();
+        return app('layout')
+            ->title('Новая валюта')
+            ->view('reference.currency.form', [
+                'form' => (new EditForm('data'))
+                    ->route(route('currency.store'))
+            ]);
     }
 
-    public function store(Request $request)
+    public function store(Requests\StoreRequest $request, Currency $currency)
     {
-        return app(\App\Admin\Http\Actions\Currency\StoreAction::class)->handle($request);
+        return app(CRUD\StoreAction::class)->handle($request, $currency);
     }
 
-    public function edit(int $id)
+    public function edit(Currency $currency)
     {
-        return app(\App\Admin\Http\Actions\Currency\EditAction::class)->handle($id);
+        return app('layout')
+            ->title($currency->name)
+            ->view('reference.currency.form', [
+                'form' => (new EditForm('data'))
+                    ->data($currency->toArray())
+                    ->method('put')
+                    ->route(route('currency.update', $currency))
+            ]);
     }
 
-    public function update(Request $request, int $id)
+    public function update(Requests\UpdateRequest $request, Currency $currency)
     {
-        return app(\App\Admin\Http\Actions\Currency\UpdateAction::class)->handle($id, $request);
+        return app(CRUD\UpdateAction::class)->handle($request, $currency);
     }
 
-    public function destroy(int $id)
+    public function destroy(Requests\DeleteRequest $request, Currency $currency)
     {
-        return app(\App\Admin\Http\Actions\Currency\DeleteAction::class)->handle($id);
+        return app(CRUD\DeleteAction::class)->handle($request, $currency);
     }
 }

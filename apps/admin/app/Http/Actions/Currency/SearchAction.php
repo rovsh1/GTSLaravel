@@ -2,34 +2,30 @@
 
 namespace App\Admin\Http\Actions\Currency;
 
-use App\Admin\Http\View\Grid\GridBuilder;
-use Module\Administrator\Infrastructure\Facade\Reference\CurrencyFacadeInterface;
+use App\Admin\Models\Currency;
+use App\Admin\Support\Http\AbstractSearchAction;
 
-class SearchAction
+class SearchAction extends AbstractSearchAction
 {
-    public function __construct(
-        private readonly CurrencyFacadeInterface $facade
-    ) {}
+    protected $model = Currency::class;
+    protected $title = 'Валюты';
+    protected $view = 'reference.currency.index';
 
-    public function handle(array $params = [])
+    protected function boot()
     {
-        $dto = new \stdClass();
+        $this->enableQuicksearch();
+    }
 
-        return app('layout')
-            ->title('Валюты')
-            ->view('currency.index', [
-                'grid' => (new GridBuilder())
-                    ->paginator($this->facade->count($dto), 20)
-                    // ->id('id', ['text' => 'ID'])
-                    ->text('name', ['text' => 'Наименование'])
-                    ->text('code_num', ['text' => 'Код (цифровой)'])
-                    ->text('code_char', ['text' => 'Код (символьный)'])
-                    ->text('sign', ['text' => 'Символ'])
-                    ->text('rate', ['text' => 'Курс'])
-                    ->actions('actions', ['route' => route('currency.index')])
-                    ->orderBy('id', 'asc')
-                    ->callFacadeSearch($this->facade, $dto)
-                    ->getGrid()
-            ]);
+    protected function gridFactory()
+    {
+        return parent::gridFactory()
+            ->text('id', ['text' => 'ID', 'order' => true])
+            ->text('name', ['text' => 'Наименование', 'order' => true])
+            ->text('code_num', ['text' => 'Код (цифровой)'])
+            ->text('code_char', ['text' => 'Код (символьный)'])
+            ->text('sign', ['text' => 'Символ'])
+            ->text('rate', ['text' => 'Курс', 'order' => true])
+            ->actions('actions', ['route' => route('currency.index')])
+            ->orderBy('id', 'asc');
     }
 }

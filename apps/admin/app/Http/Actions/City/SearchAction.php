@@ -2,30 +2,32 @@
 
 namespace App\Admin\Http\Actions\City;
 
-use App\Admin\Http\View\Grid\GridBuilder;
-use Module\Administrator\Infrastructure\Facade\Reference\CityFacadeInterface;
+use App\Admin\Models\Country;
+use App\Admin\Models\City;
+use App\Admin\Support\Http\AbstractSearchAction;
 
-class SearchAction
+class SearchAction extends AbstractSearchAction
 {
-    public function __construct(
-        private readonly CityFacadeInterface $facade
-    ) {}
+    protected $model = City::class;
+    protected $title = 'Города';
+    protected $view = 'reference.city.index';
 
-    public function handle(array $params = [])
+    protected function boot()
     {
-        $dto = new \stdClass();
+        $this->enableQuicksearch();
+    }
 
-        return app('layout')
-            ->title('Города')
-            ->view('city.index', [
-                'grid' => (new GridBuilder())
-                    ->paginator($this->facade->count($dto), 20)
-                    // ->id('id', ['text' => 'ID'])
-                    ->text('name', ['text' => 'Наименование'])
-                    ->actions('actions', ['route' => route('city.index')])
-                    ->orderBy('id', 'asc')
-                    ->callFacadeSearch($this->facade, $dto)
-                    ->getGrid()
-            ]);
+    protected function gridFactory()
+    {
+        $countries = Country::all()->pluck('name', 'id');
+
+        return parent::gridFactory()
+            ->text('id', ['text' => 'ID', 'order' => true])
+            ->text('name', ['text' => 'Наименование', 'order' => true])
+            ->text('country_id', ['text' => 'Страна', 'renderer' => function ($row) use ($countries) {
+                return $countries->has($row->country_id) ? $countries->get($row->country_id) : '-';
+            }])
+            ->actions('actions', ['route' => route('city.index')])
+            ->orderBy('name', 'asc');
     }
 }

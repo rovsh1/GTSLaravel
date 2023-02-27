@@ -6,6 +6,7 @@ use App\Admin\Http\View\Form\Form;
 use App\Admin\Http\View\Grid\Grid;
 use App\Admin\Http\View\Grid\Quicksearch;
 use App\Admin\Http\View\Navigation\Paginator;
+use function Symfony\Component\String\s;
 
 abstract class AbstractSearchAction extends AbstractAction
 {
