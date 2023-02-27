@@ -15,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
         }
         $this->app->register(\Spatie\LaravelData\LaravelDataServiceProvider::class);
 
-        $this->app->registerModules();
+        $this->app->register(ModulesServiceProvider::class);
 
         $this->app->register(DateServiceProvider::class);
 

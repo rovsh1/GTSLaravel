@@ -66,7 +66,12 @@ class Application extends \Illuminate\Foundation\Application
         return $this->modules;
     }
 
-    public function loadModule(string $name)
+    public function registerModule(Module $module): void
+    {
+        $this->modules->registerModule($module);
+    }
+
+    public function loadModule(string $name): void
     {
         $this->modules->loadModule($name);
     }
@@ -87,10 +92,5 @@ class Application extends \Illuminate\Foundation\Application
         $this->instance('path.core', $appsPath . DIRECTORY_SEPARATOR . 'core');
         $this->instance('path.site', $appsPath . DIRECTORY_SEPARATOR . 'site');
         $this->instance('path.api', $appsPath . DIRECTORY_SEPARATOR . 'api');
-    }
-
-    public function registerModules()
-    {
-        $this->modules->load(config('modules'));
     }
 }
