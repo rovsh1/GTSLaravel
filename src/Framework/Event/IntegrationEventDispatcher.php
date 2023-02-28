@@ -2,42 +2,32 @@
 
 namespace Custom\Framework\Event;
 
-use Custom\Framework\Container\Container;
 use Custom\Framework\Contracts\Event\DomainEventDispatcherInterface;
-use Custom\Framework\Contracts\Event\DomainEventInterface;
+use Custom\Framework\Contracts\Event\IntegrationEventInterface;
+use Custom\Framework\Foundation\Module;
 
 class IntegrationEventDispatcher implements DomainEventDispatcherInterface
 {
     private array $listeners = [];
 
-    public function __construct(private readonly Container $container) {}
+    public function __construct(private readonly Module $module) {}
 
     public function listen(string $eventClass, string $listenerClass)
     {
-        if (!$this->listeners[$eventClass]) {
+        if (!isset($this->listeners[$eventClass])) {
             $this->listeners[$eventClass] = [];
         }
         $this->listeners[$eventClass][] = $listenerClass;
     }
 
-    public function dispatch(DomainEventInterface $event): void
+    public function dispatch(IntegrationEventInterface $event): void
     {
-        /*foreach ($this->middlewareHandlers as $middlewareHandler) {
-            $middlewareHandler($command);
-        }*/
-        $this->dispatchApplicationListener($event);
-
-        foreach ($this->listeners as $eventClass => $listeners) {
-            if (is_subclass_of($event, $eventClass)) {
-                $this->dispatchListeners($event, $listeners);
-            }
-        }
+        $this->dispatchListeners($event, $this->listeners[$event->key()] ?? []);
 
         $this->dispatchGlobalListeners($event);
-        // TODO send event to queue
     }
 
-    private function dispatchGlobalListeners(DomainEventInterface $event)
+    private function dispatchGlobalListeners(IntegrationEventInterface $event)
     {
         if (!isset($this->listeners['*'])) {
             return;
@@ -46,22 +36,11 @@ class IntegrationEventDispatcher implements DomainEventDispatcherInterface
         $this->dispatchListeners($event, $this->listeners['*']);
     }
 
-    private function dispatchListeners(DomainEventInterface $event, array $listeners)
+    private function dispatchListeners(IntegrationEventInterface $event, array $listeners)
     {
         foreach ($listeners as $listenerClass) {
-            $listener = $this->container->make($listenerClass);
+            $listener = $this->module->make($listenerClass);
             $listener->handle($event);
         }
-    }
-
-    private function dispatchApplicationListener(DomainEventInterface $event)
-    {
-        $listenerClass = str_replace('Domain', 'Application', $event::class) . 'Listener';
-        if (!class_exists($listenerClass)) {
-            return;
-        }
-
-        $listener = $this->container->make($listenerClass);
-        $listener->handle($event);
     }
 }

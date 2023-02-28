@@ -4,7 +4,7 @@ namespace App\Core\Support;
 
 use Custom\Framework\Foundation\Module;
 
-class ModulesRepository
+class ModulesRepository implements ModulesRepositoryInterface
 {
     private array $registeredModules = [];
 

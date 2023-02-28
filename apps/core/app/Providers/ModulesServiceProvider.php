@@ -2,6 +2,7 @@
 
 namespace App\Core\Providers;
 
+use Custom\Framework\Contracts\Event\IntegrationEventHandlerInterface;
 use Custom\Framework\Foundation\Module;
 use Custom\Framework\Foundation\Support\Providers\ServiceProvider;
 
@@ -35,6 +36,9 @@ class ModulesServiceProvider extends ServiceProvider
             $config['namespace'] = 'Module' . $ns;
         }
 
-        $this->app->registerModule(new Module($name, $config));
+        $module = new Module($name, $config);
+        $module->instance(IntegrationEventHandlerInterface::class, $this->app->get(IntegrationEventHandlerInterface::class));
+
+        $this->app->registerModule($module);
     }
 }

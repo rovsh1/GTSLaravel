@@ -3,6 +3,7 @@
 namespace App\Core;
 
 use App\Core\Support\ModulesRepository;
+use App\Core\Support\ModulesRepositoryInterface;
 use Custom\Framework\Foundation\Module;
 
 class Application extends \Illuminate\Foundation\Application
@@ -18,7 +19,8 @@ class Application extends \Illuminate\Foundation\Application
         $this->useStoragePath($this->rootPath . DIRECTORY_SEPARATOR . 'storage');
         $this->useDatabasePath($this->rootPath . DIRECTORY_SEPARATOR . 'database');
 
-        $this->bind('modules', fn($app) => $app->modules());
+        $this->bind(ModulesRepositoryInterface::class, fn($app) => $app->modules());
+        $this->alias(ModulesRepositoryInterface::class, 'modules');
     }
 
     public function setNamespace(string $namespace)

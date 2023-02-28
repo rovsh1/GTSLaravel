@@ -8,17 +8,17 @@ use Module\Hotel\Infrastructure;
 
 class BootServiceProvider extends ServiceProvider
 {
-    public function boot()
-    {
-        //$this->loadMigrationsFrom(__DIR__ . '/../Infrastructure/Database/Migrations');
-    }
-
     public function register()
     {
-        //$this->app->register(EventServiceProvider::class);
+        $this->app->register(EventServiceProvider::class);
         //$this->app->addDeferredServices([EventServiceProvider::class]);
 
         $this->registerInterfaces();
+    }
+
+    public function boot()
+    {
+        //$this->loadMigrationsFrom(__DIR__ . '/../Infrastructure/Database/Migrations');
     }
 
     private function registerInterfaces()

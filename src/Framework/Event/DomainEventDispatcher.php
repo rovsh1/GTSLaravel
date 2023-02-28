@@ -2,22 +2,23 @@
 
 namespace Custom\Framework\Event;
 
-use Custom\Framework\Container\Container;
 use Custom\Framework\Contracts\Event\DomainEventDispatcherInterface;
+use Custom\Framework\Contracts\Event\DomainEventHandlerInterface;
 use Custom\Framework\Contracts\Event\DomainEventInterface;
+use Custom\Framework\Foundation\Module;
 
 class DomainEventDispatcher implements DomainEventDispatcherInterface
 {
     private array $listeners = [];
 
     public function __construct(
-        private readonly Container $container,
-        private readonly IntegrationEventDispatcher $integrationEventsDispatcher
+        private readonly Module $module,
+        private readonly DomainEventHandlerInterface $domainEventHandler
     ) {}
 
     public function listen(string $eventClass, string $listenerClass)
     {
-        if (!$this->listeners[$eventClass]) {
+        if (!isset($this->listeners[$eventClass])) {
             $this->listeners[$eventClass] = [];
         }
         $this->listeners[$eventClass][] = $listenerClass;
@@ -38,7 +39,7 @@ class DomainEventDispatcher implements DomainEventDispatcherInterface
 
         $this->dispatchGlobalListeners($event);
 
-        $this->integrationEventsDispatcher->dispatch($event);
+        $this->domainEventHandler->handle($event);
     }
 
     private function dispatchGlobalListeners(DomainEventInterface $event)
@@ -53,19 +54,8 @@ class DomainEventDispatcher implements DomainEventDispatcherInterface
     private function dispatchListeners(DomainEventInterface $event, array $listeners)
     {
         foreach ($listeners as $listenerClass) {
-            $listener = $this->container->make($listenerClass);
+            $listener = $this->module->make($listenerClass);
             $listener->handle($event);
         }
-    }
-
-    private function dispatchApplicationListener(DomainEventInterface $event)
-    {
-        $listenerClass = str_replace('Domain', 'Application', $event::class) . 'Listener';
-        if (!class_exists($listenerClass)) {
-            return;
-        }
-
-        $listener = $this->container->make($listenerClass);
-        $listener->handle($event);
     }
 }
