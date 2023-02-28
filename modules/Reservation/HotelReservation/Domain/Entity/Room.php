@@ -5,17 +5,20 @@ declare(strict_types=1);
 namespace Module\Reservation\HotelReservation\Domain\Entity;
 
 use Module\Reservation\HotelReservation\Domain\Entity\Room\Guest;
+use Module\Reservation\HotelReservation\Domain\ValueObject\Price;
 use Module\Shared\Domain\Entity\EntityInterface;
 
 class Room implements EntityInterface
 {
     public function __construct(
-        private int     $id,
+        private int         $id,
         /** @var Guest[] $guests */
-        private array   $guests,
-        private int     $rateId,
-        private ?string $checkInTime,
-        private ?string $checkOutTime,
+        private array       $guests,
+        private int         $rateId,
+        private Price       $priceNetto,
+        private string|null $checkInTime,
+        private string|null $checkOutTime,
+        private string|null $guestNote = null,
     ) {}
 
     /**
@@ -56,5 +59,15 @@ class Room implements EntityInterface
     public function checkOutTime(): ?string
     {
         return $this->checkOutTime;
+    }
+
+    public function guestNote(): ?string
+    {
+        return $this->guestNote;
+    }
+
+    public function priceNetto(): Price
+    {
+        return $this->priceNetto;
     }
 }

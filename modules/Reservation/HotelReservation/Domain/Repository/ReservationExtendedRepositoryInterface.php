@@ -5,7 +5,7 @@ namespace Module\Reservation\HotelReservation\Domain\Repository;
 use Carbon\CarbonInterface;
 use Module\Reservation\HotelReservation\Domain\Entity\Reservation;
 
-interface ReservationRepositoryInterface
+interface ReservationExtendedRepositoryInterface
 {
     public function find(int $id): ?Reservation;
 

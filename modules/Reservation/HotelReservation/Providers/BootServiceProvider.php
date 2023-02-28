@@ -16,6 +16,6 @@ class BootServiceProvider extends ServiceProvider
 
         $this->app->singleton(FileStorageAdapterInterface::class, FileStorageAdapter::class);
 
-        $this->app->singleton(Domain\Repository\ReservationRepositoryInterface::class, Infrastructure\Repository\ReservationRepository::class);
+        $this->app->singleton(Domain\Repository\ReservationExtendedRepositoryInterface::class, Infrastructure\Repository\ReservationExtendedRepository::class);
     }
 }

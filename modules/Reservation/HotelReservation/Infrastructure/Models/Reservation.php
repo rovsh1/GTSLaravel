@@ -76,7 +76,7 @@ use Module\Reservation\HotelReservation\Infrastructure\Models\Hotel\Option;
  * @method static Builder|Reservation whereTotalNetHotel($value)
  * @method static Builder|Reservation whereType($value)
  * @method static Builder|Reservation whereUserId($value)
- * @method static Builder|Reservation withClientType()
+ * @method static Builder|Reservation withClient()
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Option> $hotelOptions
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Module\Reservation\HotelReservation\Infrastructure\Models\Room> $rooms
  * @property-read int $client_type
@@ -129,7 +129,7 @@ class Reservation extends Model
         'status' => ReservationStatusEnum::class,
     ];
 
-    public function scopeWithClientType(Builder $builder)
+    public function scopeWithClient(Builder $builder)
     {
         $builder->addSelect("{$this->getTable()}.*");
 
@@ -139,7 +139,10 @@ class Reservation extends Model
             function ($join) use ($clientsTable) {
                 $join->on("{$clientsTable}.id", '=', "{$this->getTable()}.client_id");
             }
-        )->addSelect("{$clientsTable}.type as client_type");
+        )->addSelect([
+            "{$clientsTable}.type as client_type",
+            "{$clientsTable}.name as client_name",
+        ]);
     }
 
     public function rooms()

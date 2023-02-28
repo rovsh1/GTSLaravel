@@ -2,18 +2,28 @@
 
 namespace Module\Reservation\HotelReservation\Domain\ValueObject;
 
-use Module\Shared\Domain\ValueObject\ValueObjectInterface;
+use Module\Shared\Domain\Entity\EntityInterface;
 
-class Hotel implements ValueObjectInterface
+class Hotel implements EntityInterface
 {
     public function __construct(
         private readonly int $id,
-        public ?string       $checkInTime = null,
-        public ?string       $checkOutTime = null,
+        private ?string      $checkInTime = null,
+        private ?string      $checkOutTime = null,
     ) {}
 
     public function id(): int
     {
         return $this->id;
+    }
+
+    public function checkInTime(): ?string
+    {
+        return $this->checkInTime;
+    }
+
+    public function checkOutTime(): ?string
+    {
+        return $this->checkOutTime;
     }
 }

@@ -13,6 +13,7 @@ class GuestFactory extends AbstractEntityFactory
     protected function fromArray(array $data): mixed
     {
         return new $this->entity(
+            $data['id'],
             $data['fullname'],
             $data['nationality_id'],
             GenderEnum::from($data['gender'])

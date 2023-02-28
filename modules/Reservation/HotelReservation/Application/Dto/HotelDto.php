@@ -19,8 +19,8 @@ class HotelDto extends AbstractDomainBasedDto
     {
         return new self(
             $hotel->id(),
-            $hotel->checkInTime,
-            $hotel->checkOutTime,
+            $hotel->checkInTime(),
+            $hotel->checkOutTime(),
         );
     }
 }

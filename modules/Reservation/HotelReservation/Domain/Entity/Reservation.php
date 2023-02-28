@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Reservation\HotelReservation\Domain\Entity;
 
+use Carbon\CarbonInterface;
 use Module\Reservation\Common\Domain\Entity\ReservationItemInterface;
 use Module\Reservation\Common\Domain\Entity\ReservationRequestableInterface;
 use Module\Reservation\HotelReservation\Domain\ValueObject;
@@ -20,8 +21,7 @@ class Reservation implements EntityInterface, ReservationItemInterface, Reservat
         private readonly ValueObject\ReservationPeriod     $reservationPeriod,
         private readonly ValueObject\ReservationDetails    $details,
         //private readonly ValueObject\Price $price,
-        /** @var Room[]|null $rooms */
-        private ?array                                     $rooms = null,
+        private readonly CarbonInterface                   $createdDate,
     ) {}
 
     public function identifier(): ValueObject\ReservationIdentifier
@@ -79,20 +79,8 @@ class Reservation implements EntityInterface, ReservationItemInterface, Reservat
         return $this->reservationPeriod->dateTo();
     }
 
-    /**
-     * @param Room[] $rooms
-     * @return void
-     */
-    public function appendRooms(array $rooms): void
+    public function createdDate(): CarbonInterface
     {
-        $this->rooms = $rooms;
-    }
-
-    /**
-     * @return Room[]|null
-     */
-    public function rooms(): ?array
-    {
-        return $this->rooms;
+        return $this->createdDate;
     }
 }

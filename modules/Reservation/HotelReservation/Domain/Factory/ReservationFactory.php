@@ -5,6 +5,7 @@ namespace Module\Reservation\HotelReservation\Domain\Factory;
 use Carbon\Carbon;
 use Custom\Framework\Foundation\Support\EntityFactory\AbstractEntityFactory;
 use Module\Reservation\Common\Domain\ValueObject\ClientTypeEnum;
+use Module\Reservation\Common\Domain\ValueObject\ReservationStatusEnum;
 use Module\Reservation\HotelReservation\Domain\Entity\Reservation;
 use Module\Reservation\HotelReservation\Domain\ValueObject\Client;
 use Module\Reservation\HotelReservation\Domain\ValueObject\Hotel;
@@ -19,15 +20,16 @@ class ReservationFactory extends AbstractEntityFactory
 
     protected function fromArray(array $data): mixed
     {
-        return new Reservation(
+        return new $this->entity(
         //@todo сейчас number = null во всей таблице
             new ReservationIdentifier($data['id'], $data['number'] ?? ''),
             new ReservationStatus(
-                null,
+                ReservationStatusEnum::from($data['status']),
             ),
             new Client(
                 $data['client_id'],
-                ClientTypeEnum::from($data['client_type'])
+                ClientTypeEnum::from($data['client_type']),
+                $data['client_name'],
             ),
             new Hotel($data['hotel_id']),
             new ReservationPeriod(
@@ -37,7 +39,8 @@ class ReservationFactory extends AbstractEntityFactory
             ),
             new ReservationDetails(
                 $data['note']
-            )
+            ),
+            new Carbon($data['created']),
         );
     }
 }

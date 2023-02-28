@@ -14,8 +14,10 @@ class RoomDto extends AbstractDomainBasedDto
         /** @var GuestDto[] $guests */
         public readonly array   $guests,
         public readonly int     $rateId,
+        public readonly float   $priceNetto,
         public readonly ?string $checkInTime,
         public readonly ?string $checkOutTime,
+        public readonly ?string $guestNote,
     ) {}
 
     public static function fromDomain(EntityInterface|ValueObjectInterface|Room $room): static
@@ -24,8 +26,10 @@ class RoomDto extends AbstractDomainBasedDto
             $room->id(),
             GuestDto::collectionFromDomain($room->guests()),
             $room->rateId(),
+            $room->priceNetto()->value(),
             $room->checkInTime(),
             $room->checkOutTime(),
+            $room->guestNote(),
         );
     }
 }

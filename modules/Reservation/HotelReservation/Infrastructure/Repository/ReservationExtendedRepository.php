@@ -6,20 +6,16 @@ use Carbon\CarbonInterface;
 use Module\Reservation\HotelReservation\Domain\Entity\Reservation;
 use Module\Reservation\HotelReservation\Domain\Entity\Reservation as Entity;
 use Module\Reservation\HotelReservation\Domain\Factory\ReservationFactory;
-use Module\Reservation\HotelReservation\Domain\Factory\RoomFactory;
-use Module\Reservation\HotelReservation\Domain\Repository\ReservationRepositoryInterface;
+use Module\Reservation\HotelReservation\Domain\Repository\ReservationExtendedRepositoryInterface;
 use Module\Reservation\HotelReservation\Infrastructure\Models\Reservation as Model;
 use Module\Reservation\HotelReservation\Infrastructure\Models\ReservationStatusEnum;
 
-class ReservationRepository implements ReservationRepositoryInterface
+class ReservationExtendedRepository implements ReservationExtendedRepositoryInterface
 {
     public function find(int $id): ?Reservation
     {
         $model = Model::query()
-            ->with([
-                ...$this->getRoomsAndGuestsRelations(),
-            ])
-            ->withClientType()
+            ->withClient()
             ->find($id);
 
         if (!$model) {
@@ -27,8 +23,6 @@ class ReservationRepository implements ReservationRepositoryInterface
         }
         /** @var Entity $reservation */
         $reservation = app(ReservationFactory::class)->createFrom($model);
-        $rooms = app(RoomFactory::class)->createCollectionFrom($model->rooms);
-        $reservation->appendRooms($rooms);
 
         return $reservation;
     }
@@ -36,10 +30,7 @@ class ReservationRepository implements ReservationRepositoryInterface
     public function searchByDateUpdate(CarbonInterface $dateUpdate, ?int $hotelId): array
     {
         $modelsQuery = Model::query()
-            ->with([
-                ...$this->getRoomsAndGuestsRelations(),
-            ])
-            ->withClientType()
+            ->withClient()
             //@todo сейчас нет даты обновления в базе
             ->where('', '>=', $dateUpdate);
 
@@ -55,12 +46,9 @@ class ReservationRepository implements ReservationRepositoryInterface
     public function searchActive(?int $hotelId): array
     {
         $modelsQuery = Model::query()
-            ->with([
-                ...$this->getRoomsAndGuestsRelations(),
-            ])
-            ->withClientType()
-            //@todo уточнить по поводу статуса
-            ->where('reservation.status', ReservationStatusEnum::Created);
+            ->withClient()
+            //@todo уточнить по поводу статуса у Анвара
+            ->where('reservation.status', ReservationStatusEnum::WaitingConfirmation);
 
         if ($hotelId !== null) {
             $modelsQuery->where('hotel_id', $hotelId);
