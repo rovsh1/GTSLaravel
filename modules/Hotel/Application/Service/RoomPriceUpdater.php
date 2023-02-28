@@ -4,28 +4,27 @@ namespace Module\Hotel\Application\Service;
 
 use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
-use Custom\Framework\Contracts\Bus\QueryBusInterface;
-use Module\Hotel\Application\Query\GetActiveSeasonsByRoomIdIncludesPeriod;
 use Module\Hotel\Domain\Entity\Season;
 use Module\Hotel\Domain\Repository\RoomPriceRepositoryInterface;
+use Module\Hotel\Domain\Repository\SeasonRepositoryInterface;
 
 class RoomPriceUpdater
 {
     public function __construct(
-        private RoomPriceRepositoryInterface $roomPriceRepository,
-        private QueryBusInterface            $queryBus,
-        private array                        $hotelSeasons = [],
+        private readonly RoomPriceRepositoryInterface $roomPriceRepository,
+        private readonly SeasonRepositoryInterface    $seasonRepository,
+        private array                                 $hotelSeasons = [],
     ) {}
 
     public function updateRoomPriceByPeriod(int $roomId, CarbonPeriod $period, int $rateId, int $guestsNumber, bool $isResident, float $price, string $currencyCode)
     {
-        //@todo конвертация Currency в Shared/ValueObject/Price
-        //@todo нормальная проверка на валюту и норм. ексепшн
-        if ($currencyCode !== 'UZS') {
-            throw new \Exception('Currency not supported');
+        if ($currencyCode !== env('DEFAULT_CURRENCY_CODE')) {
+            //@todo конвертация валюты + уточнить у Анвара требования
+            \Log::warning('Currency not supported', ['currencyCode' => $currencyCode, 'room_id' => $roomId, 'rate_id' => $rateId, 'guests_number' => $guestsNumber]);
+            return;
         }
 
-        $this->hotelSeasons = $this->queryBus->execute(new GetActiveSeasonsByRoomIdIncludesPeriod($roomId, $period));
+        $this->hotelSeasons = $this->seasonRepository->getActiveSeasonsByRoomIdIncludesPeriod($roomId, $period);
         if (count($this->hotelSeasons) === 0) {
             \Log::warning('Not found hotel season for period', ['period' => $period]);
             return;

@@ -2,15 +2,17 @@
 
 namespace Module\Hotel\Port\Controllers;
 
+use Custom\Framework\Contracts\Bus\QueryBusInterface;
 use Custom\Framework\Port\Request;
 use Module\Hotel\Application\Dto\Info\HotelDto;
 use Module\Hotel\Application\Dto\Info\RoomDto;
-use Module\Hotel\Infrastructure\Facade\InfoFacadeInterface;
+use Module\Hotel\Application\Query\GetHotelById;
+use Module\Hotel\Application\Query\GetRoomsWithPriceRatesByHotelId;
 
 class InfoController
 {
     public function __construct(
-        private InfoFacadeInterface $infoFacade
+        private readonly QueryBusInterface $queryBus
     ) {}
 
     public function findById(Request $request): HotelDto
@@ -18,7 +20,7 @@ class InfoController
         $request->validate([
             'id' => 'required|int',
         ]);
-        return $this->infoFacade->findById($request->id);
+        return $this->queryBus->execute(new GetHotelById($request->id));
     }
 
     /**
@@ -30,7 +32,7 @@ class InfoController
         $request->validate([
             'id' => 'required|int',
         ]);
-        return $this->infoFacade->getRoomsWithPriceRatesByHotelId($request->id);
+        return $this->queryBus->execute(new GetRoomsWithPriceRatesByHotelId($request->id));
     }
 
 }

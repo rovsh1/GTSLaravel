@@ -4,12 +4,12 @@ namespace Module\Hotel\Port\Controllers;
 
 use Carbon\CarbonPeriod;
 use Custom\Framework\Port\Request;
-use Module\Hotel\Infrastructure\Facade\RoomPriceFacadeInterface;
+use Module\Hotel\Application\Service\RoomPriceUpdater;
 
 class RoomPriceController
 {
     public function __construct(
-        private RoomPriceFacadeInterface $roomPriceFacade
+        private readonly RoomPriceUpdater $roomPriceUpdater,
     ) {}
 
     public function updateRoomPrice(Request $request)
@@ -22,10 +22,10 @@ class RoomPriceController
             'currency_code' => 'required|string',
             'date_from' => 'required|date',
             'date_to' => 'required|date',
-            'is_resident'=>'required|boolean'
+            'is_resident' => 'required|boolean'
         ]);
 
-        return $this->roomPriceFacade->updateRoomPriceByPeriod(
+        return $this->roomPriceUpdater->updateRoomPriceByPeriod(
             $request->room_id,
             new CarbonPeriod($request->date_from, $request->date_to),
             $request->rate_id,
