@@ -2,8 +2,13 @@
 
 namespace App\Admin\Http\Controllers;
 
-use App\Core\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+
+use App\Admin\Support\Http\CRUD;
+use App\Admin\Http\Requests\City as Requests;
+use App\Admin\Http\Actions\City as Actions;
+use App\Admin\Http\Forms\City\EditForm;
+use App\Admin\Models\City;
 
 class CityController extends Controller
 {
@@ -11,36 +16,43 @@ class CityController extends Controller
 
     public function index(Request $request)
     {
-        return app(\App\Admin\Http\Actions\City\SearchAction::class)->handle($request->input());
+        return app(Actions\SearchAction::class)->handle($request->input());
     }
 
-    // Todo тут скорее всего в экшн
     public function create()
     {
-        return app(\App\Admin\Http\Actions\City\CreateAction::class)->handle();
+        return app('layout')
+            ->title('Новый город')
+            ->view('reference.city.form', [
+                'form' => (new EditForm('data'))
+                    ->route(route('city.store'))
+            ]);
     }
 
-    // Todo тут скорее всего в экшн
-    public function store(Request $request)
+    public function store(Requests\StoreRequest $request, City $city)
     {
-        dd($request);
+        return app(CRUD\StoreAction::class)->handle($request, $city);
     }
 
-    // Todo тут скорее всего в экшн
-    public function edit(\App\Admin\Models\City $city)
+    public function edit(City $city)
     {
-        return app(\App\Admin\Http\Actions\City\EditAction::class)->handle($city->toArray());
+        return app('layout')
+            ->title($city->name)
+            ->view('reference.city.form', [
+                'form' => (new EditForm('data'))
+                    ->data($city->toArray())
+                    ->method('put')
+                    ->route(route('city.update', $city))
+            ]);
     }
 
-    // Todo тут скорее всего в экшн
-    public function update(Request $request, \App\Admin\Models\City $city)
+    public function update(Requests\UpdateRequest $request, City $city)
     {
-        dd($request, $city);
+        return app(CRUD\UpdateAction::class)->handle($request, $city);
     }
 
-    // Todo тут скорее всего в экшн
-    public function destroy(\App\Admin\Models\City $city)
+    public function destroy(Requests\DeleteRequest $request, City $city)
     {
-        dd($city);
+        return app(CRUD\DeleteAction::class)->handle($request, $city);
     }
 }

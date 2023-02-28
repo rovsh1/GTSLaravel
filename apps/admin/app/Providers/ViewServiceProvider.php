@@ -36,7 +36,7 @@ class ViewServiceProvider extends ServiceProvider
 
     private function registerForm()
     {
-        FormNamespace\Form::registerNamespace('Module\Shared\UI\Admin\View\Form\Element');
+        FormNamespace\Form::registerNamespace('App\Admin\Http\View\Form\Element');
         FormNamespace\Label::setDefaults([
             'class' => 'col-sm-4 col-form-label'
         ]);

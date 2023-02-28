@@ -4,9 +4,9 @@ namespace App\Admin\Http\View\Form\Element;
 
 use Gsdk\Form\Element\Select;
 
-use App\Admin\Models\Country as Model;
+use App\Admin\Models\Currency as Model;
 
-class Country extends Select
+class Currency extends Select
 {
     public function __construct(string $name, array $options = [])
     {

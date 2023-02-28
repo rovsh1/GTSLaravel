@@ -8,20 +8,10 @@ class EditForm extends Form
 {
     protected function boot()
     {
-        $this->view('default.form.edit')
+        $this->view('default.form')
             ->csrf()
             ->country('country_id', ['label' => 'Страна', 'required' => true])
-            ->text('name', ['label' => 'Наименование', 'required' => true]);
+            ->text('name', ['label' => 'Наименование', 'required' => true])
+            ->textarea('text', ['label' => 'Описание']);
     }
-
-//    public function setTestData()
-//    {
-//        $this->data([
-//            'id' => 'dfdf123asds',
-//            'name' => 'Узбекский сум',
-//            'code_num' => '860',
-//            'code_char' => 'UZS',
-//            'sign' => 'сўм'
-//        ]);
-//    }
 }

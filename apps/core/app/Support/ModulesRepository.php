@@ -52,22 +52,9 @@ class ModulesRepository
         return array_map(fn(Module $module) => $module->path(), $this->registeredModules);
     }
 
-    public function load(array $modulesConfig): void
+    public function registerModule(Module $module): void
     {
-        foreach ($modulesConfig as $name => $config) {
-            if (isset($config['enabled']) && $config['enabled'] === false) {
-                continue;
-            }
-
-            $this->registerModule($name, $config);
-        }
-
-//        foreach ($this->registeredModules as $module) {
-//            if ($module->isDeferred())
-//                continue;
-//
-//            $this->loadModule($module);
-//        }
+        $this->registeredModules[] = $module;
     }
 
     public function loadModule(Module|string $module): void
@@ -81,20 +68,5 @@ class ModulesRepository
         }
 
         $module->boot();
-    }
-
-    private function registerModule($name, $config): void
-    {
-        if (!isset($config['path'])) {
-            $config['path'] = app_path($name);
-        }
-
-        if (!isset($config['namespace'])) {
-            $ns = str_replace(modules_path(), '', $config['path']);
-            $ns = str_replace('/', '\\', $ns);
-            $config['namespace'] = 'Module' . $ns;
-        }
-
-        $this->registeredModules[$name] = new Module($name, $config);
     }
 }
