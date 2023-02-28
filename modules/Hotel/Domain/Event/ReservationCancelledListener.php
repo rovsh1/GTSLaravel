@@ -1,5 +1,6 @@
 <?php
 
+//FIXME TEST
 namespace Module\Hotel\Domain\Event;
 
 use Custom\Framework\Contracts\Event\IntegrationEventInterface;

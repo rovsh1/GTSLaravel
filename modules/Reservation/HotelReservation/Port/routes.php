@@ -8,4 +8,5 @@ Route::register('findById', [InfoController::class, 'findById']);
 Route::register('searchActiveReservations', [InfoController::class, 'searchActiveReservations']);
 Route::register('searchUpdatedReservations', [InfoController::class, 'searchUpdatedReservations']);
 
+//FIXME TEST
 Route::register('reservation-cancel', [ReservationController::class, 'cancel']);

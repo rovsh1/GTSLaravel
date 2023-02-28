@@ -1,5 +1,6 @@
 <?php
 
+//FIXME TEST
 namespace App\Admin\Http\Controllers;
 
 use Illuminate\Http\Request;

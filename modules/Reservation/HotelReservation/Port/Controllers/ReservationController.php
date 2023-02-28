@@ -12,7 +12,7 @@ class ReservationController
         private readonly DomainEventDispatcherInterface $eventDispatcher
     ) {}
 
-    //TODO TEST method
+    //FIXME TEST
     public function cancel(Request $request)
     {
         $this->eventDispatcher->dispatch(new ReservationCancelled(12, 'Test cancel'));
