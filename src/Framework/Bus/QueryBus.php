@@ -43,7 +43,7 @@ class QueryBus implements QueryBusInterface
             return $this->container->make($this->handlers[get_class($query)]);
         }
 
-        $handlerClass = str_replace('Application', 'Infrastructure', $query::class) . 'Handler';
+        $handlerClass = $query::class . 'Handler';
         if (class_exists($handlerClass)) {
             return $this->container->make($handlerClass);
         }
