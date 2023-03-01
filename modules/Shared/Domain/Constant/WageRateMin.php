@@ -2,4 +2,7 @@
 
 namespace Module\Shared\Domain\Constant;
 
-class WageRateMin implements ConstantInterface { }
+final class WageRateMin extends AbstractConstant
+{
+    protected string $cast = 'int';
+}
