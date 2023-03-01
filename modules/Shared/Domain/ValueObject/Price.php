@@ -12,8 +12,9 @@ class Price
 
     public function __construct(?float $value = null, ?string $currency = null)
     {
-        if ($value && !$currency)
+        if ($value && !$currency) {
             throw new \ArgumentCountError('Price currency required');
+        }
 
         $this->setValue($value);
         $this->setCurrency($currency);
@@ -49,15 +50,22 @@ class Price
         $this->currency = null;
     }
 
+    public function __toString(): string
+    {
+        return $this->value ? $this->value . ' ' . $this->currency : '';
+    }
+
     private function validateValue(float $value): void
     {
-        if (!$value < 0)
+        if (!$value < 0) {
             throw new ValidationException('Price value validation failed');
+        }
     }
 
     private function validateCurrency(string $currency): void
     {
-        if (!preg_match('/^[A-Z]{3}$/', $currency))
+        if (!preg_match('/^[A-Z]{3}$/', $currency)) {
             throw new ValidationException('Price currency validation failed');
+        }
     }
 }

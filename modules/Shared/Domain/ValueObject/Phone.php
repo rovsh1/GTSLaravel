@@ -12,8 +12,9 @@ class Phone
 
     public function __construct(?string $country = null, ?string $number = null)
     {
-        if ($country && !$number)
+        if ($country && !$number) {
             throw new \ArgumentCountError('Phone number required');
+        }
 
         $this->setCountry($country);
         $this->setNumber($number);
@@ -43,6 +44,11 @@ class Phone
         $this->number = $number;
     }
 
+    public function __toString(): string
+    {
+        return (string)$this->number;
+    }
+
     public function reset(): void
     {
         $this->country = null;
@@ -51,13 +57,15 @@ class Phone
 
     private function validateCountry(string $country): void
     {
-        if (!preg_match('/^\w{2}$/', $country))
+        if (!preg_match('/^\w{2}$/', $country)) {
             throw new ValidationException('Phone country validation failed');
+        }
     }
 
     private function validateNumber(string $number): void
     {
-        if (!preg_match('/^\d+$/', $number))
+        if (!preg_match('/^\d+$/', $number)) {
             throw new ValidationException('Phone number validation failed');
+        }
     }
 }

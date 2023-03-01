@@ -1,8 +1,6 @@
 <?php
 
-namespace Module\Shared\UI\Common\Helpers\Phone\Format;
-
-use Module\Shared\UI\Common\Helpers\Phone\Format\FormatInterface;
+namespace Module\Shared\Infrastructure\Services\PhoneDecorator\Format;
 
 class DefaultFormat implements FormatInterface
 {

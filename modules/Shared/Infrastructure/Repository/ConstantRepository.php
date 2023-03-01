@@ -9,11 +9,18 @@ use Module\Shared\Infrastructure\Models\Constant;
 
 class ConstantRepository implements ConstantRepositoryInterface
 {
-    public function findByKey(string $key): ConstantInterface
+    public function findByKey(string $keyOrClass): ConstantInterface
     {
-        $cls = ConstantsNamespace::class . '\\' . $key;
+        if (str_contains($keyOrClass, '\\')) {
+            $key = substr($keyOrClass, strrpos($keyOrClass, '\\') + 1);
+            $cls = $keyOrClass;
+        } else {
+            $key = $keyOrClass;
+            $cls = ConstantsNamespace::class . '\\' . $keyOrClass;
+        }
+
         if (!class_exists($cls)) {
-            throw new \Exception('Constant [' . $key . '] undefined');
+            throw new \Exception('Constant [' . $keyOrClass . '] undefined');
         }
 
         $value = Constant::where('key', $key)

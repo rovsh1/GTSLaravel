@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Shared\UI\Common\Helpers\Phone;
+namespace Module\Shared\Infrastructure\Services\PhoneDecorator;
 
 class PhoneDecorator
 {
@@ -8,7 +8,7 @@ class PhoneDecorator
 
     private string $value = '';
 
-    private \Module\Shared\UI\Common\Helpers\Phone\Format\FormatInterface $format;
+    private Format\FormatInterface $format;
 
     public function __construct(
         ?string $original,
@@ -16,8 +16,9 @@ class PhoneDecorator
     ) {
         $this->original = $original;
 
-        if ($original)
+        if ($original) {
             $this->value = trim(preg_replace('/[^0-9]/', '', $original));
+        }
 
         $this->setCountry($country);
     }
@@ -26,13 +27,15 @@ class PhoneDecorator
     {
         if ($country) {
             $cls = __NAMESPACE__ . '\\Format\\' . ucfirst($country);
-            if (class_exists($cls))
+            if (class_exists($cls)) {
                 $this->format = new $cls($this);
-            else
-                $this->format = new \Module\Shared\UI\Common\Helpers\Phone\Format\DefaultFormat($this);
+            } else {
+                $this->format = new Format\DefaultFormat($this);
+            }
             //throw new \Exception('Phone country format not found');
-        } else
-            $this->format = new \Module\Shared\UI\Common\Helpers\Phone\Format\DefaultFormat($this);
+        } else {
+            $this->format = new Format\DefaultFormat($this);
+        }
     }
 
     public function getOriginal(): ?string
