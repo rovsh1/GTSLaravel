@@ -15,6 +15,11 @@ class IntegrationEventHandler implements IntegrationEventHandlerInterface
 
     public function handle(IntegrationEventInterface $event)
     {
+        $this->broadcastModules($event);
+    }
+
+    private function broadcastModules(IntegrationEventInterface $event)
+    {
         foreach ($this->modulesRepository->registeredModules() as $module) {
             if (!$module->is($event->module())) {
                 $module->get(IntegrationEventDispatcherInterface::class)->dispatch($event);
