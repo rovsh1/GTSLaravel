@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Http\View\Grid;
+namespace App\Admin\View\Grid;
 
 use Gsdk\Grid\Grid as Base;
 

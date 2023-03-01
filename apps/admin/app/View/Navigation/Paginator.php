@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Http\View\Navigation;
+namespace App\Admin\View\Navigation;
 
 use Gsdk\Navigation\Paginator as Base;
 

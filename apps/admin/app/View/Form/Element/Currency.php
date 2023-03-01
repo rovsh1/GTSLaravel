@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Admin\Http\View\Form\Element;
-
-use Gsdk\Form\Element\Select;
+namespace App\Admin\View\Form\Element;
 
 use App\Admin\Models\Currency as Model;
+use Gsdk\Form\Element\Select;
 
 class Currency extends Select
 {

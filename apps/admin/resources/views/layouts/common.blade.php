@@ -2,7 +2,7 @@
 
 {{--<html class="light-style layout-menu-fixed" data-theme="theme-default" data-assets-path="{{ asset('/assets') . '/' }}" data-base-url="{{url('/')}}" data-framework="laravel" data-template="vertical-menu-laravel-template-free">--}}
 <head>
-    {!! Meta::render() !!}
+    {!! Layout::meta() !!}
 </head>
 
 <body>

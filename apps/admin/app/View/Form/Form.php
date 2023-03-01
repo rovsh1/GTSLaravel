@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Http\View\Form;
+namespace App\Admin\View\Form;
 
 use Gsdk\Form\Form as Base;
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Admin\Http\View\Grid;
+namespace App\Admin\View\Grid;
 
-use App\Admin\Http\View\Form\Form;
-use App\Admin\Http\View\Navigation\Paginator;
+use App\Admin\View\Form\Form;
+use App\Admin\View\Navigation\Paginator;
 
 class GridBuilder
 {

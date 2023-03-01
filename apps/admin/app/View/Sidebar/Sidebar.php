@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Http\View\Sidebar;
+namespace App\Admin\View\Sidebar;
 
 class Sidebar
 {

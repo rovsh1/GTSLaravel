@@ -2,7 +2,7 @@
 
 namespace App\Admin\Http\Forms\Currency;
 
-use App\Admin\Http\View\Form\Form;
+use App\Admin\View\Form\Form;
 
 class EditForm extends Form
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Admin\Http\View\Grid;
+namespace App\Admin\View\Grid;
 
-use App\Admin\Http\View\Form\Form;
+use App\Admin\View\Form\Form;
 
 class Quicksearch extends Form
 {

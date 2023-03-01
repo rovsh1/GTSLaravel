@@ -1,7 +1,7 @@
 @extends('layouts/default')
 
 @section('content')
-    <h1>sdfsdf</h1>
+    <h1>{{$title}}</h1>
 
     <div class="page-wrap">
         <?= $form ?>

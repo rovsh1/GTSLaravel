@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Http\View\Grid\Column;
+namespace App\Admin\View\Grid\Column;
 
 use Gsdk\Grid\Column\Number;
 
