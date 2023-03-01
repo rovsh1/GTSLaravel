@@ -4,7 +4,7 @@ namespace Custom\Framework\Event;
 
 use Custom\Framework\Contracts\Event\IntegrationEventInterface;
 
-class IntegrationEvent implements IntegrationEventInterface
+final class IntegrationEvent implements IntegrationEventInterface
 {
     public function __construct(
         private readonly string $module,
