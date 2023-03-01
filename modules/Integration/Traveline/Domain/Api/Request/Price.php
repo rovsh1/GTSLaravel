@@ -2,6 +2,9 @@
 
 namespace Module\Integration\Traveline\Domain\Api\Request;
 
+use Module\Integration\Traveline\Domain\Service\HotelRoomCodeGeneratorInterface;
+use Module\Integration\Traveline\Domain\ValueObject\HotelRoomCode;
+
 class Price
 {
     public function __construct(
@@ -12,10 +15,12 @@ class Price
 
     public static function fromArray(array $data): self
     {
-        [$roomId, $guestsNumber] = explode('_', $data['code']);
+        //@todo тут работать не будет
+        /** @var HotelRoomCode $roomCode */
+        $roomCode = app(HotelRoomCodeGeneratorInterface::class)->parseRoomCode($data['code']);
         return new self(
-            $roomId,
-            $guestsNumber,
+            $roomCode->roomId,
+            $roomCode->personQuantity,
             $data['price'],
         );
     }

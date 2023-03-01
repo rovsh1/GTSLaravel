@@ -32,7 +32,7 @@ class ReservationDto extends AbstractDomainBasedDto
             $reservation->hotel()->checkOutTime(),
             $reservation->createdDate(),
             ClientDto::fromDomain($reservation->client()),
-            $reservation->status()->id()
+            $reservation->status()->id()->value
         );
     }
 }

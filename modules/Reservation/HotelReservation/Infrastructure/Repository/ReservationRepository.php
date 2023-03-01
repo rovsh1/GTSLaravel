@@ -6,11 +6,11 @@ use Carbon\CarbonInterface;
 use Module\Reservation\HotelReservation\Domain\Entity\Reservation;
 use Module\Reservation\HotelReservation\Domain\Entity\Reservation as Entity;
 use Module\Reservation\HotelReservation\Domain\Factory\ReservationFactory;
-use Module\Reservation\HotelReservation\Domain\Repository\ReservationExtendedRepositoryInterface;
+use Module\Reservation\HotelReservation\Domain\Repository\ReservationRepositoryInterface;
 use Module\Reservation\HotelReservation\Infrastructure\Models\Reservation as Model;
 use Module\Reservation\HotelReservation\Infrastructure\Models\ReservationStatusEnum;
 
-class ReservationExtendedRepository implements ReservationExtendedRepositoryInterface
+class ReservationRepository implements ReservationRepositoryInterface
 {
     public function find(int $id): ?Reservation
     {
@@ -57,19 +57,5 @@ class ReservationExtendedRepository implements ReservationExtendedRepositoryInte
         $models = $modelsQuery->get();
 
         return app(ReservationFactory::class)->createCollectionFrom($models);
-    }
-
-    /**
-     * @return string[]
-     */
-    private function getRoomsAndGuestsRelations(): array
-    {
-        return [
-            'rooms',
-            'rooms.guests',
-            'rooms.checkInCondition',
-            'rooms.checkOutCondition',
-            'rooms.dailyPrices',
-        ];
     }
 }

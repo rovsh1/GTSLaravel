@@ -5,6 +5,7 @@ namespace Module\Integration\Traveline\Application\Dto;
 use Custom\Framework\Foundation\Support\Dto\Dto;
 use Custom\Framework\Foundation\Support\Dto\DtoCollection;
 use Custom\Framework\Foundation\Support\Dto\Optional;
+use Module\Integration\Traveline\Domain\Service\HotelRoomCodeGeneratorInterface;
 
 class RoomDto extends Dto
 {
@@ -17,18 +18,18 @@ class RoomDto extends Dto
         public readonly DtoCollection|Optional $occupancies
     ) {}
 
-    public static function collectionFromHotelRooms(mixed $hotelRoomsData): array
+    public static function collectionFromHotelRooms(HotelRoomCodeGeneratorInterface $codeGenerator, mixed $hotelRoomsData): array
     {
-        return array_map(fn($hotelRoomData) => static::fromHotelRoom($hotelRoomData), $hotelRoomsData);
+        return array_map(fn($hotelRoomData) => static::fromHotelRoom($codeGenerator, $hotelRoomData), $hotelRoomsData);
     }
 
-    public static function fromHotelRoom(mixed $hotelRoomData): self
+    public static function fromHotelRoom(HotelRoomCodeGeneratorInterface $codeGenerator, mixed $hotelRoomData): self
     {
         return new self(
             $hotelRoomData->id,
             $hotelRoomData->name,
             RatePlanDto::collection($hotelRoomData->priceRates),
-            OccupancyDto::createByGuestsNumber($hotelRoomData->id, $hotelRoomData->guestsNumber),
+            OccupancyDto::createByGuestsNumber($codeGenerator, $hotelRoomData->id, $hotelRoomData->guestsNumber),
         );
     }
 }

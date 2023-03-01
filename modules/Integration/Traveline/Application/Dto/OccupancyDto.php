@@ -3,6 +3,8 @@
 namespace Module\Integration\Traveline\Application\Dto;
 
 use Custom\Framework\Foundation\Support\Dto\Dto;
+use Module\Integration\Traveline\Domain\Service\HotelRoomCodeGeneratorInterface;
+use Module\Integration\Traveline\Domain\ValueObject\HotelRoomCode;
 
 class OccupancyDto extends Dto
 {
@@ -14,13 +16,14 @@ class OccupancyDto extends Dto
         public readonly string $bedType = self::DEFAULT_BED_TYPE,
     ) {}
 
-    public static function createByGuestsNumber(int $roomId, int $guestsNumber)
+    public static function createByGuestsNumber(HotelRoomCodeGeneratorInterface $codeGenerator, int $roomId, int $guestsNumber)
     {
         $occupancies = [];
         for ($i = 1; $i <= $guestsNumber; $i++) {
+            /** @var string $roomCode */
+            $roomCode = $codeGenerator->stringifyRoomCode(new HotelRoomCode($roomId, $i));
             $occupancies[] = [
-                //@todo подумать как формировать этот код и разбирать в одном и том же месте Domain/Api/Request/Price.php:15
-                'code' => "{$roomId}_{$i}",
+                'code' => $roomCode,
                 'personQuantity' => $i
             ];
         }

@@ -11,4 +11,9 @@ class HotelRepository implements HotelRepositoryInterface
     {
         return TravelineHotel::whereHotelId($hotelId)->exists();
     }
+
+    public function getIntegratedHotelIds(): array
+    {
+        return TravelineHotel::all()->pluck('hotel_id')->toArray();
+    }
 }

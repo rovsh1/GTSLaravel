@@ -6,7 +6,7 @@ use Custom\Framework\Foundation\Exception\ValidationException;
 
 class Price
 {
-    private ?string $value;
+    private ?float $value;
 
     private ?string $currency;
 
@@ -19,7 +19,7 @@ class Price
         $this->setCurrency($currency);
     }
 
-    public function value(): string
+    public function value(): float
     {
         return $this->value;
     }

@@ -3,7 +3,7 @@
 namespace Module\Reservation\HotelReservation\Port\Controllers;
 
 use Custom\Framework\Port\Request;
-use Module\Reservation\HotelReservation\Application\Dto\ReservationDto;
+use Module\Reservation\HotelReservation\Application\Dto\ExtendedReservationDto;
 use Module\Reservation\HotelReservation\Application\Service\InfoService;
 
 class InfoController
@@ -12,7 +12,7 @@ class InfoController
         private InfoService $infoService
     ) {}
 
-    public function findById(Request $request): ?ReservationDto
+    public function findById(Request $request): ?ExtendedReservationDto
     {
         $request->validate([
             'id' => 'required|int',
