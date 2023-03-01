@@ -12,8 +12,8 @@ class TestController extends Controller
 
     public function form(Request $request)
     {
-        $f = $this->portGateway->request('HotelReservation/reservation-cancel', ['id' => '1']);
-        dd($f);
+        //$f = $this->portGateway->request('HotelReservation/reservation-cancel', ['id' => '1']);
+       // dd($f);
         return app(\App\Admin\Http\Actions\Test\FormAction::class)->handle();
     }
 }

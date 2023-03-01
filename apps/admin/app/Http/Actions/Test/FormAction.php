@@ -22,10 +22,9 @@ class FormAction
         $form->setTestData();
 
         return app('layout')
-            ->layout('layouts.test')
+            ->title('adasd')
             //->style('login.js')
             //->script('login.css')
-            ->title('adasd')
             ->view('test.form', [
                 'form' => $form
             ]);

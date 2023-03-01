@@ -3,10 +3,12 @@
 namespace App\Admin\Providers;
 
 use App\Admin\Http\View\Grid\Grid;
-use App\Admin\Http\View\Layout;
 use App\Admin\Http\View\Sidebar\Sidebar;
 use App\Admin\View\Grid as GridNamespace;
+use App\Admin\View\Layout;
 use Gsdk\Form as FormNamespace;
+use Gsdk\Meta\Meta;
+use Gsdk\Meta\MetaServiceProvider;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -14,6 +16,9 @@ class ViewServiceProvider extends ServiceProvider
 {
     public function register()
     {
+        $this->app->register(MetaServiceProvider::class);
+        class_alias(Meta::class, 'Meta');
+
         $this->app->singleton('layout', Layout::class);
 
         $this->app->singleton('sidebar', Sidebar::class);

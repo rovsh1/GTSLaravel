@@ -41,6 +41,7 @@
             "Gsdk\\Form\\": "src/Form/",
             "Gsdk\\Grid\\": "src/Grid/",
             "Gsdk\\Navigation\\": "src/Navigation/",
+            "Gsdk\\Meta\\": "src/Meta/",
             "Custom\\": "src/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"

@@ -1,6 +1,10 @@
-<h1>sdfsdf</h1>
+@extends('layouts/default')
 
-<div class="page-wrap">
-    <?= $form ?>
-</div>
+@section('content')
+    <h1>sdfsdf</h1>
+
+    <div class="page-wrap">
+        <?= $form ?>
+    </div>
+@endsection
 
