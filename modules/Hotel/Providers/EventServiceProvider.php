@@ -2,16 +2,20 @@
 
 namespace Module\Hotel\Providers;
 
-use Custom\Framework\Contracts\Event\IntegrationEventDispatcherInterface;
-use Custom\Framework\Foundation\Support\Providers\ServiceProvider;
+use Custom\Framework\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Module\Hotel\Domain\Event\ReservationCancelledListener;
 
 class EventServiceProvider extends ServiceProvider
 {
-    public function register()
-    {
-        $events = $this->app->get(IntegrationEventDispatcherInterface::class);
+    protected $listen = [
+        //FIXME TEST
+        'HotelReservation\ReservationCancelled' => [
+            ReservationCancelledListener::class
+        ]
+    ];
 
-        $events->listen('HotelReservation\ReservationCancelled', ReservationCancelledListener::class);
+    public function registerListeners($eventDispatcher)
+    {
+        parent::registerListeners($eventDispatcher);
     }
 }

@@ -2,15 +2,15 @@
 
 namespace Custom\Framework\Foundation\Support\Providers;
 
-use Custom\Framework\Contracts\Event\DomainEventDispatcherInterface;
+use Custom\Framework\Contracts\Event\IntegrationEventDispatcherInterface;
 
 class EventServiceProvider extends ServiceProvider
 {
     protected $listen = [];
 
-    public function boot()
+    public function register()
     {
-        $eventDispatcher = $this->app->get(DomainEventDispatcherInterface::class);
+        $eventDispatcher = $this->app->get(IntegrationEventDispatcherInterface::class);
 
         $this->registerListeners($eventDispatcher);
     }
