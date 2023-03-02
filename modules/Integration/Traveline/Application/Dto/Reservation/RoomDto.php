@@ -31,7 +31,8 @@ class RoomDto extends Dto
         public readonly ?CustomerDto  $customer = null,
         public readonly ?array        $bookingPerDayPrices = null,
 
-        #[MapInputName('priceNetto'), WithCast(TotalCast::class)]
+//        #[MapInputName('priceNetto'), WithCast(TotalCast::class)]
+        #[MapInputName('priceNetto')]
         public readonly TotalDto      $total,
 
         #[MapInputName('guestNote')]

@@ -22,7 +22,7 @@ class BootServiceProvider extends ServiceProvider
     {
         $this->app->bind(ClientInterface::class, Client::class);
 
-        $this->app->singleton(Domain\Adapter\ReservationAdapterInterface::class, Infrastructure\Adapter\ReservationAdapter::class);
+        $this->app->singleton(Domain\Adapter\ReservationAdapterInterface::class, Infrastructure\Adapter\Legacy\ReservationAdapter::class);
         $this->app->singleton(Domain\Adapter\HotelAdapterInterface::class, Infrastructure\Adapter\HotelAdapter::class);
         $this->app->singleton(Domain\Adapter\TravelineAdapterInterface::class, function ($app) {
             $notificationsUrl = $app->config('notifications_url');
