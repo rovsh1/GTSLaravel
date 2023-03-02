@@ -18,35 +18,14 @@ class ReservationAdapter extends AbstractPortAdapter implements ReservationAdapt
      * @param int $id
      * @return void
      */
-    public function confirmReservation(int $id): void
+    public function confirmReservation(int $id, string $status): void
     {
         // TODO: Implement confirmReservation() method.
-        //@todo скорее всего придется делать таблицу traveline_reservations, чтобы хранить статус брони + флаг (принят/не принят тревелайном) + тогда делать и это modules/Integration/Traveline/Application/Service/ReservationFinder.php:44 в ORM
-
-        //@todo логика: помечаем флагом последнюю бронь по номеру и статусу
+        //todo логика: помечаем флагом последнюю бронь по номеру и статусу
     }
 
     public function getActiveReservations(): array
     {
-        //@todo В примере запрашиваются все бронирования, которые были сделаны/ модифицированы/ аннулированы в канале и их статус не был подтвержден менеджером каналов методом ConfirmBookingsActionRQ.
-
-        /**
-         * 1. Бронь создана (id 123)
-         * -- создал запись в ОРМ
-         * 2. Бронь изменена (id 123)
-         * -- изменил запись в ОРМ
-         * -- Тревелайн запросил брони
-         * 3. Бронь изменена (id 123)
-         * 4. Бронь изменена (id 123)
-         */
-        /**
-         * reservation_id
-         * status
-         * data (json DTO со всеми полями)
-         * created_at
-         * updated_at
-         * accepted_at
-         */
         $reservationsDto = $this->request('hotelReservation/searchActiveReservations');
         return $this->buildReservationDtos($reservationsDto);
     }
@@ -66,7 +45,6 @@ class ReservationAdapter extends AbstractPortAdapter implements ReservationAdapt
 
     public function getUpdatedReservations(CarbonInterface $startDate, ?int $hotelId = null): array
     {
-        //@todo ВАЖНО: Если параметр startTime опущен, то должны возвращаться только не подтвержденные (без флага в моей ОРМ), если параметр передан - игнорируем флаг
         $reservationsDto = $this->request('hotelReservation/searchUpdatedReservations', [
             'date_update' => $startDate,
             'hotel_id' => $hotelId
@@ -83,7 +61,6 @@ class ReservationAdapter extends AbstractPortAdapter implements ReservationAdapt
         return array_map(function ($reservation) {
             $customerDto = Reservation\CustomerDto::from($reservation->reservation->client);
             $rooms = array_map(function ($room) use ($customerDto, $reservation) {
-                //@todo перенести в резервейшн модуль калькуляцию цен по дням
                 $bookingPerDayPrices = $this->buildRoomPerDayPrices($reservation->reservation->reservationPeriod, $room->priceNetto);
 
                 return Reservation\RoomDto::from($room)->additional([
@@ -100,7 +77,7 @@ class ReservationAdapter extends AbstractPortAdapter implements ReservationAdapt
     }
 
     /**
-     * @param mixed $reservation
+     * @param CarbonPeriod $period
      * @return Reservation\Room\DayPriceDto[]
      */
     private function buildRoomPerDayPrices(CarbonPeriod $period, float $allDaysPrice): array

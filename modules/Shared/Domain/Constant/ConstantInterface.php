@@ -2,4 +2,9 @@
 
 namespace Module\Shared\Domain\Constant;
 
-interface ConstantInterface { }
+interface ConstantInterface
+{
+    public function key(): string;
+
+    public function value(): mixed;
+}

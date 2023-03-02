@@ -2,7 +2,7 @@
 
 namespace App\Admin\Http\Forms;
 
-use App\Admin\Http\View\Form\Form;
+use App\Admin\View\Form\Form;
 
 enum TestEnum: int
 {
@@ -17,13 +17,15 @@ class TestForm extends Form
     {
         //dd(TestEnum::cases(), TestEnum::ONE, enum_exists(TestEnum::ONE::class));
         $this
-            ->view('default.form.edit')
+            ->view('default.form')
             ->messages([
                 'id.required' => 'ID undefined!',
                 'pass.regex' => 'Password need to match regex',
                 'number.in' => 'Number out of range'
             ])
             ->csrf()
+            ->language('language', ['label' => 'Lang'])
+            ->localeText('locale_name', ['label' => 'Name'])
             ->country('country_id', ['label' => 'Country'])
             ->select('currency', [
                 'label' => 'Currency',
@@ -32,11 +34,11 @@ class TestForm extends Form
                 'groups' => [3, 5, 12, 65],
                 'items' => [['id' => 56, 'parent_id' => 5], 3, 5, 12, 65]//,
             ])
-            ->select('enum', [
-                'label' => 'Enum',
-                'emptyItem' => '-Not selected-',
-                'enum' => \Module\Administrator\UI\Admin\Http\Forms\TestEnum::class
-            ])
+//            ->select('enum', [
+//                'label' => 'Enum',
+//                'emptyItem' => '-Not selected-',
+//                'enum' => \Module\Administrator\UI\Admin\Http\Forms\TestEnum::class
+//            ])
             ->radio('gender', [
                 'label' => 'Gender',
                 'value' => 'female',

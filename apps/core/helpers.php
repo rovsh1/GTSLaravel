@@ -1,6 +1,7 @@
 <?php
 
 use Custom\Framework\Foundation\Module;
+use Module\Shared\Domain\Repository\ConstantRepositoryInterface;
 
 function module(string $name): ?Module
 {
@@ -35,4 +36,9 @@ function api_path($path = ''): string
 function modules_path($path = '')
 {
     return app()->modulesPath($path);
+}
+
+function app_constant(string $keyOrClass)
+{
+    return app(ConstantRepositoryInterface::class)->getConstantValue($keyOrClass);
 }

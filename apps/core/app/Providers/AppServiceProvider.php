@@ -2,6 +2,7 @@
 
 namespace App\Core\Providers;
 
+use App\Core\Components\Locale\Languages;
 use Custom\Framework\Foundation\Support\Providers\ServiceProvider;
 use Module\Services\PortGateway\Client as PortGateway;
 use Module\Shared\Infrastructure\Adapter\PortGatewayInterface;
@@ -20,6 +21,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->alias(PortGatewayInterface::class, 'portGateway');
 
         $this->registerApp();
+
+        $this->registerComponents();
     }
 
     private function registerServices()
@@ -36,5 +39,10 @@ class AppServiceProvider extends ServiceProvider
         if ($namespace && class_exists($namespace . 'Providers\BootServiceProvider')) {
             $this->app->register($namespace . 'Providers\BootServiceProvider');
         }
+    }
+
+    private function registerComponents()
+    {
+        $this->app->singleton('languages', fn($app) => new Languages($app['config']['languages']));
     }
 }

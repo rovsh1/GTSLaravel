@@ -5,11 +5,14 @@ namespace App\Core\Providers;
 use Custom\Framework\Contracts\Event\IntegrationEventHandlerInterface;
 use Custom\Framework\Foundation\Module;
 use Custom\Framework\Foundation\Support\Providers\ServiceProvider;
+use Module\Shared\Providers\BootServiceProvider;
 
 class ModulesServiceProvider extends ServiceProvider
 {
     public function register()
     {
+        $this->app->register(BootServiceProvider::class);
+
         $this->load(config('modules'));
     }
 

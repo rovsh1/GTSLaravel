@@ -1,3 +1,5 @@
+@extends('layouts/default')
+
 @section('content')
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -14,7 +16,9 @@
     <div class="card">
         <h5 class="card-header">
             {{ $layout->page->H1 }}
-            <a href="{{ route('country.index') }}"><button type="button" class="btn btn-primary float-end">Назад</button></a>
+            <a href="{{ route('country.index') }}">
+                <button type="button" class="btn btn-primary float-end">Назад</button>
+            </a>
         </h5>
         <div class="card-body">
             <div class="row">

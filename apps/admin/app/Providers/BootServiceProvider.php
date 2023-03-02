@@ -4,6 +4,8 @@ namespace App\Admin\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
+use Gsdk\Filemanager\FilemanagerServiceProvider;
+
 class BootServiceProvider extends ServiceProvider
 {
     /**
@@ -15,6 +17,7 @@ class BootServiceProvider extends ServiceProvider
         $this->app->register(FormatServiceProvider::class);
         $this->app->register(MenuServiceProvider::class);
         $this->app->register(ViewServiceProvider::class);
+        $this->app->register(FilemanagerServiceProvider::class);
     }
 
     /**
