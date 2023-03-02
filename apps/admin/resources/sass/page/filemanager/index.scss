@@ -1,5 +1,5 @@
-@use "../../common";
-//@use "~admin/style/window";
+@use "../../common/fonts/open-sans";
+@use "~gsv-pkg/sass/reset";
 @use "../../env";
 
 $background-hover: rgba(128, 128, 128, .1);
@@ -96,20 +96,20 @@ body.dragging .fm-container .files-wrap {overflow: unset;}
 .fm-container.view-list .name {flex-grow: 1;}
 
 @each $type, $icon in (xls, xls-file),
-	(folder, folder),
-	(image, image-file),
-	(zip, zip),
-	(rar, rar),
-	(tar, tar),
-	(archive, archive),
-	(txt, txt),
-	(doc, doc),
-	(xls, xls),
-	(xml, xml),
-	(pdf, pdf),
-	(code, code-file) {
-	.fm-container.view-grid .image-wrap.#{$type} { background-image: url("/images/filemanager/type/30/#{$icon}.png");}
-	.fm-container.view-list .image-wrap.#{$type} { background-image: url("/images/filemanager/type/16/#{$icon}.png");}
+    (folder, folder),
+    (image, image-file),
+    (zip, zip),
+    (rar, rar),
+    (tar, tar),
+    (archive, archive),
+    (txt, txt),
+    (doc, doc),
+    (xls, xls),
+    (xml, xml),
+    (pdf, pdf),
+    (code, code-file) {
+    .fm-container.view-grid .image-wrap.#{$type} { background-image: url("/images/filemanager/type/30/#{$icon}.png");}
+    .fm-container.view-list .image-wrap.#{$type} { background-image: url("/images/filemanager/type/16/#{$icon}.png");}
 }
 
 div.shadow {}

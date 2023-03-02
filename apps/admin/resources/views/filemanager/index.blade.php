@@ -1,7 +1,4 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<?= $meta->head; ?>
-<body class="">
+@extends('layouts/common')
+@section('layout__content')
 
-</body>
-</html>
+@endsection

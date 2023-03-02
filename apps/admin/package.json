@@ -13,7 +13,7 @@
         "highlight.js": "~9.17.1",
         "masonry-layout": "~4.2.1",
         "perfect-scrollbar": "~1.5.1",
-        "gsv-pkg": "^1.0.4",
+        "gsv-pkg": "^1.1.3",
         "jquery": "^3.6.0",
         "jquery-mask-plugin": "^1.14.16",
         "jquery-ui": "^1.13.0",

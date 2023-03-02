@@ -18,9 +18,7 @@
 @section('layout__content')
     <div class="layout-wrapper layout-content-navbar {{ $isMenu ? '' : 'layout-without-menu' }}">
         <div class="layout-container">
-            @if ($isMenu)
-                @include('layouts/sections/menu/vertical__menu')
-            @endif
+            {!! Layout::sidebar() !!}
 
             <div class="layout-page">
                 @if ($isNavbar)
@@ -32,6 +30,8 @@
                     @else
                         <div class="{{$container}} flex-grow-1 container-p-y">
                     @endif
+
+                        {!! Layout::breadcrumbs() !!}
 
                         @yield('content')
                     </div>
