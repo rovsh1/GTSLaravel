@@ -13,7 +13,7 @@ class Booking
     {
         $reservationRequests = Reservation::collectionFromArray($reservations);
         foreach ($reservationRequests as $reservationRequest) {
-            $this->adapter->confirmReservation($reservationRequest->number);
+            $this->adapter->confirmReservation($reservationRequest->number, $reservationRequest->status->value);
         }
     }
 }

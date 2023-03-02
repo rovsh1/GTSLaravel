@@ -40,8 +40,8 @@ class ReservationFinder
                 $reservations[] = $reservation;
             }
         }
-        //todo подумать как сделать это лучше (через ORM)
-        $integratedHotelIds = $this->hotelRepository->getIntegratedHotelIds();
+        //todo после перехода на новую базу тут будет проверка на подключенность отеля к интеграции
+//        $integratedHotelIds = $this->hotelRepository->getIntegratedHotelIds();
 //        $reservations = array_filter($reservations, fn($reservation) => in_array($reservation->hotelId, $integratedHotelIds));
 
         return $reservations;

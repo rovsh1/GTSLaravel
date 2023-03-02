@@ -27,5 +27,5 @@ interface ReservationAdapterInterface
      */
     public function getUpdatedReservations(CarbonInterface $startDate, ?int $hotelId = null): array;
 
-    public function confirmReservation(int $id): void;
+    public function confirmReservation(int $id, string $status): void;
 }
