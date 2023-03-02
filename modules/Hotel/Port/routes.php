@@ -6,7 +6,6 @@ use Module\Hotel\Port\Controllers\RoomPriceController;
 use Module\Hotel\Port\Controllers\RoomQuotaController;
 
 
-//@todo убрать фасады и переделать на новую структуру (без UI)
 Route::register('findById', [InfoController::class, 'findById']);
 Route::register('getRoomsWithPriceRatesByHotelId', [InfoController::class, 'getRoomsWithPriceRatesByHotelId']);
 
