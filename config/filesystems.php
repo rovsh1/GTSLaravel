@@ -52,8 +52,9 @@ return [
         'upload' => [
             'driver' => 'local',
             'root' => storage_path('app/upload'),
-            //'url' => env('APP_URL') . '/storage',
+            'url' => '/upload',
             'visibility' => 'public',
+            'throw' => false,
         ],
 
         's3' => [
@@ -82,7 +83,8 @@ return [
     */
 
     'links' => [
-        public_path('storage') => storage_path('app/public'),
+        //base_path('apps/admin/public/storage') => storage_path('app/public'),
+        root_path('apps/admin/public/upload') => storage_path('app/upload'),
     ],
 
 ];

@@ -6,9 +6,6 @@ use Gsdk\Filemanager\Services\StorageService;
 use Gsdk\Filemanager\Services\PathReader;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\Storage;
 
 class FilemanagerController extends Controller
 {
@@ -104,48 +101,5 @@ class FilemanagerController extends Controller
         }
 
         return ['success' => 1];
-    }
-
-    public function file(Request $request, $path)
-    {
-        $filename = $this->storageService->path($path);
-
-        if (!file_exists($filename) || !is_file($filename)) {
-            return $this->isImageFilename($filename)
-                ? $this->renderNotFoundImage($this->noPhotoPath)
-                : abort(404);
-        }
-
-        $response = Response::make(file_get_contents($filename));
-        $response->headers->add([
-            'Content-Type' => File::mimeType($filename)
-        ]);
-
-        return $response;
-    }
-
-    protected function renderNotFoundImage($destination)
-    {
-        $response = Response::make(file_get_contents($destination));
-        $response->headers->add([
-            'Content-Type' => File::mimeType($destination),
-            'Cache-Control' => 'public'
-        ]);
-
-        return $response;
-    }
-
-    protected function isImageFilename($filename): bool
-    {
-        $ext = substr($filename, strrpos($filename, '.'));
-
-        return in_array(strtolower($ext), [
-            '.jpg',
-            '.jpeg',
-            '.svg',
-            '.png',
-            '.gif',
-            '.tiff',
-        ]);
     }
 }

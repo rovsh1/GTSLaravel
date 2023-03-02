@@ -35,6 +35,7 @@ class PathReader
                 $file->type = 'folder';
             } else {
                 $file->type = 'file';
+                $file->url = $this->storageService->url(($path ? $path . DIRECTORY_SEPARATOR : '') . $entry);
                 $file->size = File::size($filename);
                 $file->mime_type = File::mimeType($filename);
             }

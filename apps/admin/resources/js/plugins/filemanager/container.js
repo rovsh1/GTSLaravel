@@ -172,7 +172,7 @@ class Container {
                 this.#manager.moveSelectedTo(path);
         };
         const fileFactory = function (f) {
-            f.src = self.#relativePath + '/' + f.name;
+            f.src = f.url;//self.#relativePath + '/' + f.name;
             const file = new File(f);
             file
                 .bind('choose', onChoose)
