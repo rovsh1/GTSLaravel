@@ -15,7 +15,7 @@ class Img
 
     public static function blank(array $attributes = []): string
     {
-        return self::src(self::blankSrc(), $attributes);
+        return HTML::img(self::blankSrc(), $attributes);
     }
 
     public static function noPhotoSrc(): string
@@ -25,7 +25,7 @@ class Img
 
     public static function noPhoto(array $attributes = []): string
     {
-        return self::src(self::noPhotoSrc(), $attributes);
+        return HTML::img(self::noPhotoSrc(), $attributes);
     }
 
     public static function emptyAvatarSrc(): string
@@ -35,7 +35,7 @@ class Img
 
     public static function emptyAvatar(array $attributes = []): string
     {
-        return self::src(self::emptyAvatarSrc(), $attributes);
+        return HTML::img(self::emptyAvatarSrc(), $attributes);
     }
 
     public static function image(?string $guid, int $part = null, array $attributes = []): string
@@ -43,7 +43,7 @@ class Img
         if (empty($guid)) {
             return self::noPhoto($attributes);
         } else {
-            return self::src($guid, $attributes);
+            return HTML::img($guid, $attributes);
         }
     }
 
@@ -52,33 +52,7 @@ class Img
         if (empty($guid)) {
             return self::emptyAvatar($attributes);
         } else {
-            return self::src($guid, $attributes);
+            return HTML::img($guid, $attributes);
         }
-    }
-
-    public static function src(string $src, array $attributes = []): string
-    {
-        return self::tag('img', array_merge($attributes, ['src' => $src]));
-    }
-
-    private static function tag(string $tag, array $attributes, bool $closeTag = false): string
-    {
-        $html = '<' . $tag;
-
-        foreach ($attributes as $k => $v) {
-            if (is_string($k)) {
-                $html .= ' ' . $k . '="' . $v . '"';
-            } else {
-                $html .= ' ' . $k;
-            }
-        }
-
-        $html .= '>';
-
-        if ($closeTag) {
-            $html .= '</' . $tag . '>';
-        }
-
-        return $html;
     }
 }

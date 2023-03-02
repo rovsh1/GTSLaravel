@@ -41,6 +41,7 @@
             "Gsdk\\Grid\\": "src/Grid/",
             "Gsdk\\Navigation\\": "src/Navigation/",
             "Gsdk\\Meta\\": "src/Meta/",
+            "Gsdk\\Filemanager\\": "src/Filemanager/",
             "Custom\\": "src/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
