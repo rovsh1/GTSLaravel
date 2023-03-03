@@ -43,6 +43,7 @@ class Kernel extends HttpKernel
 
         'admin' => [
             \App\Admin\Http\Middleware\VerifyCsrfToken::class,
+            \App\Admin\Http\Middleware\AclPermission::class,
             'auth:admin'
         ],
 

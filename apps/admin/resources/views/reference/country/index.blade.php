@@ -4,7 +4,7 @@
     <div class="card">
         <h5 class="card-header">
             {{ $title }}
-            <a href="{{ route('country.create') }}">
+            <a href="{{ route('reference.country.create') }}">
                 <button type="button" class="btn btn-primary float-end">Добавить</button>
             </a>
         </h5>

@@ -3,8 +3,8 @@
 namespace App\Admin\Providers;
 
 use Illuminate\Support\ServiceProvider;
-
 use Gsdk\Filemanager\FilemanagerServiceProvider;
+use App\Admin\Services\Acl\AclServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {
@@ -13,6 +13,7 @@ class BootServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->app->register(AclServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
         $this->app->register(FormatServiceProvider::class);
         $this->app->register(MenuServiceProvider::class);

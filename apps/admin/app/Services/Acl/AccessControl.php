@@ -2,16 +2,13 @@
 
 namespace App\Admin\Services\Acl;
 
-class AccessControl implements AccessControlInterface
+class AccessControl
 {
     private readonly Rules $rules;
 
-    private readonly ResourcesCollection $resources;
-
-    public function __construct()
+    public function __construct(private readonly ResourcesCollection $resources)
     {
         $this->rules = new Rules($this);
-        $this->resources = new ResourcesCollection();
     }
 
     public function rules(): Rules
@@ -24,8 +21,21 @@ class AccessControl implements AccessControlInterface
         return $this->resources;
     }
 
-    public function isAllowed(string $resourceId, string $permission): bool
+    public function getResource(string $key): ?Resource
     {
-        return $this->rules->isAllowed($resourceId, $permission);
+        return $this->resources->get($key);
+    }
+
+    public function isAllowed(string $resource, string $permission = null): bool
+    {
+        if (null === $permission) {
+            [$resource, $permission] = $this->resources->parseSlug($resource);
+        }
+
+        return $this->rules->isAllowed($resource, $permission);
+    }
+
+    public function setUser($user) {
+        //$this->rules
     }
 }

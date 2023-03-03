@@ -1,0 +1,16 @@
+{
+    "name": "Hotel",
+    "key": "hotel",
+    "group": "hotel",
+    "prefix": "hotel.",
+    "model": "App\\Admin\\Models\\Country",
+    "repository": "App\\Admin\\Repositories\\CountryRepository",
+    "titles": {
+        "index": "Страны",
+        "create": "Новая страна"
+    },
+    "views": {
+        "form": "default.form"
+    },
+    "permissions": "crud"
+}

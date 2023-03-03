@@ -30,34 +30,39 @@ class Rules
     public function setPermission(string $resourceId, ?string $permission, bool $flag): void
     {
         $resource = $this->acl->resources()->get($resourceId);
-        if (!$resource)
+        if (!$resource) {
             throw new \Exception('Resource [' . $resourceId . '] undefined');
-
-        elseif (!$resource->hasPermission($permission))
+        } elseif (!$resource->hasPermission($permission)) {
             throw new \Exception('Resource [' . $resourceId . '] permission [' . $permission . '] undefined');
+        }
 
-        if (!isset($this->permissions[$resourceId]))
+        if (!isset($this->permissions[$resourceId])) {
             $this->permissions[$resourceId] = [];
+        }
 
         if (null === $permission) {
             foreach ($resource->permissions() as $permission) {
                 $this->permissions[$resourceId][$permission] = $flag;
             }
-        } else
+        } else {
             $this->permissions[$resourceId][$permission] = $flag;
+        }
     }
 
     public function isAllowed(string $resourceId, string $permission): bool
     {
-        if ($this->superuser)
+        if ($this->superuser) {
             return true;
+        }
 
         $resource = $this->acl->resources()->get($resourceId);
-        if (!$resource)
+        if (!$resource) {
             return false;
+        }
 
-        if (isset($this->permissions[$resourceId][$permission]))
+        if (isset($this->permissions[$resourceId][$permission])) {
             return $this->permissions[$resourceId][$permission];
+        }
 
         return (bool)$resource->defaultRule($permission);
     }

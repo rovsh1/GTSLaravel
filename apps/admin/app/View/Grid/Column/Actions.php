@@ -1,6 +1,8 @@
 <?php
 
-namespace Gsdk\Grid\Column;
+namespace App\Admin\View\Grid\Column;
+
+use Gsdk\Grid\Column\AbstractColumn;
 
 class Actions extends AbstractColumn
 {

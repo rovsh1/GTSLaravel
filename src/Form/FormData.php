@@ -30,9 +30,7 @@ class FormData
     {
         $data = (object)$data;
         foreach ($this->form->getElements() as $element) {
-            if (isset($data->{$element->name})) {
-                $element->setValue($data->{$element->name});
-            }
+            $element->setValue($data->{$element->name} ?? null);
         }
     }
 
