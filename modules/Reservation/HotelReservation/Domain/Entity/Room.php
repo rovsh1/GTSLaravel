@@ -70,10 +70,4 @@ class Room implements EntityInterface
     {
         return $this->priceNetto;
     }
-
-    public function averageDailyPrice(): Price
-    {
-        //@todo в комнате нету периода бронирования, он в бронировании
-        return new Price($this->priceNetto()->value(), $this->priceNetto()->currency());
-    }
 }

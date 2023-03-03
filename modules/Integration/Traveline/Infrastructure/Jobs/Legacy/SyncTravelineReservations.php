@@ -5,6 +5,7 @@ namespace Module\Integration\Traveline\Infrastructure\Jobs\Legacy;
 use Carbon\CarbonPeriod;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
@@ -13,13 +14,13 @@ use Module\Integration\Traveline\Application\Dto;
 use Module\Integration\Traveline\Application\Dto\Reservation\CustomerDto;
 use Module\Integration\Traveline\Application\Dto\Reservation\RoomDto;
 use Module\Integration\Traveline\Application\Dto\ReservationDto;
-use Module\Integration\Traveline\Domain\Repository\HotelRepositoryInterface;
 use Module\Integration\Traveline\Infrastructure\Models\Legacy\Guest;
 use Module\Integration\Traveline\Infrastructure\Models\Legacy\Reservation;
 use Module\Integration\Traveline\Infrastructure\Models\Legacy\ReservationStatusEnum;
 use Module\Integration\Traveline\Infrastructure\Models\Legacy\Room;
 use Module\Integration\Traveline\Infrastructure\Models\Legacy\TravelineReservation;
 use Module\Integration\Traveline\Infrastructure\Models\Legacy\TravelineReservationStatusEnum;
+use Module\Integration\Traveline\Infrastructure\Models\TravelineHotel;
 
 class SyncTravelineReservations implements ShouldQueue
 {
@@ -40,70 +41,94 @@ class SyncTravelineReservations implements ShouldQueue
      *
      * @return void
      */
-    public function handle(HotelRepositoryInterface $hotelRepository)
+    public function handle()
     {
-        $hotelIds = $hotelRepository->getIntegratedHotelIds();
-        $reservations = [];
-        foreach (array_chunk($hotelIds, 100) as $hotelIds) {
-            $reservations[] = Reservation::whereIn('hotel_id', $hotelIds)
-                ->withClient()
-                ->with([
-                    'rooms',
-                    'rooms.guests',
-                    'rooms.checkInCondition',
-                    'rooms.checkOutCondition',
-                    'hotelDefaultCheckInStart',
-                    'hotelDefaultCheckOutEnd',
-                ])
-                ->get()
-                ->all();
-        }
-        $reservations = collect(array_merge(...$reservations))->keyBy('id');
+        $this->addNewReservations();
+        $this->updateExistsReservations();
+    }
 
-        $hotelReservationIds = $reservations->keys()->toArray();
-        $existReservationIds = TravelineReservation::query()
-            ->select('reservation_id')
-            ->get()
-            ->pluck('reservation_id')
-            ->toArray();
-        $toCreateReservationIds = array_diff($hotelReservationIds, $existReservationIds);
-        $toCreateReservations = $reservations->only($toCreateReservationIds);
-        $this->createTravelineReservations($toCreateReservations);
-
-        $travelineReservations = TravelineReservation::query()
-            ->whereNotIn('reservation_id', $toCreateReservationIds)
-            ->get()
-            ->keyBy('reservation_id');
-        $reservations->except($toCreateReservationIds)
-            ->map(function (Reservation $reservation) use ($travelineReservations) {
-                /** @var TravelineReservation $travelineReservation */
-                $travelineReservation = $travelineReservations[$reservation->id];
-
-                $oldHash = md5(json_encode($travelineReservation->data));
-                $newDto = $this->convertHotelReservationToDto($reservation);
-                $newHash = md5(json_encode($newDto));
-                if ($oldHash === $newHash) {
-                    return null;
-                }
-
-                //@todo уточнить по поводу проверки на отмененный статус
-                $isCancelled = $reservation->status === $this->getCancelHotelReservationStatus();
-                $travelineReservationStatus = $isCancelled ? TravelineReservationStatusEnum::Cancelled : TravelineReservationStatusEnum::Modified;
-
-                return [
-                    'reservation_id' => $reservation->id,
-                    'data' => json_encode($newDto),
-                    'status' => $travelineReservationStatus,
-                    'created_at' => $reservation->created,
-                    'updated_at' => now(),
-                    'accepted_at' => null,
-                ];
-            })
-            ->filter()
-            ->chunk(100)
-            ->each(function (Collection $travelineReservations) {
-                TravelineReservation::upsert($travelineReservations->toArray(), 'reservation_id', ['data', 'status', 'updated_at', 'accepted_at']);
+    private function addNewReservations(): void
+    {
+        $q = $this->getReservationQuery()
+            ->whereNotExists(function ($query) {
+                $query->select(\DB::raw(1))
+                    ->from("{$this->getTravelineReservationsTable()} as t")
+                    ->whereColumn('t.reservation_id', 'reservation.id');
             });
+
+        $this->createTravelineReservations($q->get());
+    }
+
+    private function updateExistsReservations(): void
+    {
+        $q = $this->getReservationQuery()
+            ->whereExists(function ($query) {
+                $query->select(\DB::raw(1))
+                    ->from("{$this->getTravelineReservationsTable()} as t")
+                    ->whereColumn('t.reservation_id', 'reservation.id');
+            })
+            ->whereNotNull('accepted_at')
+            ->join($this->getTravelineReservationsTable(), function ($join) {
+                $hotelReservationsTable = with(new Reservation)->getTable();
+                $join->on("{$this->getTravelineReservationsTable()}.reservation_id", '=', "{$hotelReservationsTable}.id");
+            })
+            ->addSelect($this->getTravelineReservationsTable() . '.data as data');
+
+        $q->chunk(100, function (Collection $collection) {
+            $updateData = $collection->map(fn(Reservation $reservation) => $this->mapReservationsToTravelineUpdateData($reservation))
+                ->filter()
+                ->all();
+
+            TravelineReservation::upsert($updateData, 'reservation_id', ['data', 'status', 'updated_at', 'accepted_at']);
+        });
+    }
+
+    private function getReservationQuery(): Builder
+    {
+        return Reservation::query()
+            ->whereExists(function ($query) {
+                $travelineHotelsTable = with(new TravelineHotel)->getTable();
+                $query->select(\DB::raw(1))
+                    ->from("{$travelineHotelsTable} as t")
+                    ->whereColumn('t.hotel_id', 'reservation.hotel_id');
+            })
+            ->withClient()
+            ->with([
+                'rooms',
+                'rooms.guests',
+                'rooms.checkInCondition',
+                'rooms.checkOutCondition',
+                'hotelDefaultCheckInStart',
+                'hotelDefaultCheckOutEnd',
+            ]);
+    }
+
+    private function mapReservationsToTravelineUpdateData(Reservation $reservation): ?array
+    {
+        $oldHash = md5($reservation->data);
+        $newDto = $this->convertHotelReservationToDto($reservation);
+        $newHash = md5(json_encode($newDto));
+        if ($oldHash === $newHash) {
+            return null;
+        }
+
+        //@todo уточнить по поводу проверки на отмененный статус
+        $isCancelled = $reservation->status === $this->getCancelHotelReservationStatus();
+        $travelineReservationStatus = $isCancelled ? TravelineReservationStatusEnum::Cancelled : TravelineReservationStatusEnum::Modified;
+
+        return [
+            'reservation_id' => $reservation->id,
+            'data' => json_encode($newDto),
+            'status' => $travelineReservationStatus,
+            'created_at' => $reservation->created,
+            'updated_at' => now(),
+            'accepted_at' => null,
+        ];
+    }
+
+    private function getTravelineReservationsTable(): string
+    {
+        return with(new TravelineReservation)->getTable();
     }
 
     private function createTravelineReservations(Collection $hotelReservations): void
@@ -111,7 +136,7 @@ class SyncTravelineReservations implements ShouldQueue
         $preparedReservations = $hotelReservations->map(fn(Reservation $reservation) => [
             'reservation_id' => $reservation->id,
             'data' => json_encode($this->convertHotelReservationToDto($reservation)),
-            'status' => 'new',
+            'status' => TravelineReservationStatusEnum::New,
             'created_at' => $reservation->created,
             'updated_at' => $reservation->created,
         ])->all();
