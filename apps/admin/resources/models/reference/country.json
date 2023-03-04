@@ -3,13 +3,12 @@
     "key": "reference.country",
     "group": "reference",
     "model": "App\\Admin\\Models\\Country",
-    "repository": "App\\Admin\\Repositories\\CountryRepository",
     "titles": {
         "index": "Страны",
         "create": "Новая страна"
     },
     "views": {
-        "form": "default.form"
+        "form": "reference.country.form"
     },
     "permissions": "crud"
 }

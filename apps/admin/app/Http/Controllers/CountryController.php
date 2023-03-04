@@ -3,22 +3,12 @@
 namespace App\Admin\Http\Controllers;
 
 use App\Admin\Http\Resources\Country\CountriesResource;
-use App\Admin\Support\Http\Controllers\AbstractCrudController;
 use App\Admin\Http\Forms\Country\EditForm;
-use App\Admin\Models\Country;
+use App\Admin\Support\Http\Controllers\AbstractResourceController;
 
-class CountryController extends AbstractCrudController
+class CountryController extends AbstractResourceController
 {
-    protected string $model = Country::class;
-
-    protected array $titles = [
-        'index' => 'Страны',
-        'create' => 'Новая страна'
-    ];
-
-    protected array $views = [
-        'form' => 'reference.country.form'
-    ];
+    protected $resource = 'reference.country';
 
     protected function indexResourceFactory()
     {

@@ -4,7 +4,6 @@
     "group": "reference",
     "prefix": "city.",
     "model": "App\\Admin\\Models\\City",
-    "repository": "App\\Admin\\Repositories\\CityRepository",
     "titles": {
         "index": "Страны",
         "create": "Новая страна"

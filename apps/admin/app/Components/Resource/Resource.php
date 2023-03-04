@@ -1,24 +1,21 @@
 <?php
 
-namespace App\Admin\Services\Acl;
+namespace App\Admin\Components\Resource;
 
 use App\Admin\Enums\ResourceGroup;
 
 class Resource
 {
-    public readonly string $name;
-
     public readonly string $key;
 
     public readonly ResourceGroup $group;
 
-    private array $permissions;
+    protected array $permissions;
 
-    private array $config;
+    protected array $config = [];
 
     public function __construct(array $config)
     {
-        $this->name = $config['name'];
         $this->key = $config['key'];
         $this->group = ResourceGroup::from($config['group']);
         $this->permissions = $this->parsePermissions($config['permissions']);
@@ -29,29 +26,26 @@ class Resource
         $this->config = $config;
     }
 
-    public function repository(): string
+    public function config(string $key)
     {
-        return $this->repository;
+        return $this->config[$key] ?? null;
     }
 
-    public function title(string ...$keys): ?string
+    public function makeRepository(): ResourceRepositoryInterface
     {
-        foreach ($keys as $key) {
-            if (isset($this->config['titles'][$key])) {
-                return $this->config['titles'][$key];
-            }
-        }
-        return null;
+        return isset($this->config['repository'])
+            ? app()->make($this->config['repository'])
+            : new DefaultRepository($this->config['model']);
     }
 
-    public function view(string ...$keys): ?string
+    public function title(string $key): ?string
     {
-        foreach ($keys as $key) {
-            if (isset($this->config['views'][$key])) {
-                return $this->config['views'][$key];
-            }
-        }
-        return null;
+        return $this->config['titles'][$key] ?? null;
+    }
+
+    public function view(string $key): ?string
+    {
+        return $this->config['views'][$key] ?? null;
     }
 
     public function routeName(string $method = null): string
@@ -71,12 +65,12 @@ class Resource
 
     public function permissions(): array
     {
-        return array_keys($this->permissions);
+        return $this->permissions;
     }
 
     public function hasPermission(string $name): bool
     {
-        return array_key_exists($name, $this->permissions);
+        return in_array($name, $this->permissions);
     }
 
     public function permissionSlug(string $permission): string
@@ -84,27 +78,14 @@ class Resource
         return $this->routeName($permission);
     }
 
-    public function defaultRule(string $name): ?bool
-    {
-        return $this->permissions[$name];
-    }
-
     private function parsePermissions($value): array
     {
         if ($value === 'crud') {
-            return ['create' => null, 'read' => null, 'update' => null, 'delete' => null];
+            return ['create', 'read', 'update', 'delete'];
         } elseif (is_string($value)) {
             return [$value => null];
         } elseif (is_array($value)) {
-            $a = [];
-            foreach ($value as $k => $v) {
-                if (is_string($k)) {
-                    $a[$k] = (bool)$v;
-                } else {
-                    $a[$v] = null;
-                }
-            }
-            return $a;
+            return $value;
         } else {
             return [];
         }

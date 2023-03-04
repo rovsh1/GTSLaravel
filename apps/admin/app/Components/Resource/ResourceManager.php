@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Admin\Services\Acl;
+namespace App\Admin\Components\Resource;
 
-class ResourcesCollection
+class ResourceManager
 {
     private array $resources = [];
 
     public function __construct() {}
 
-    public function add(Resource $resource): void
+    public function addResource(Resource $resource): void
     {
         $this->resources[] = $resource;
     }
 
-    public function has(string $key): bool
+    public function hasResource(string $key): bool
     {
         foreach ($this->resources as $resource) {
             if ($resource->key === $key) {
@@ -23,7 +23,7 @@ class ResourcesCollection
         return false;
     }
 
-    public function get(string $key): ?Resource
+    public function getResource(string $key): ?Resource
     {
         foreach ($this->resources as $resource) {
             if ($resource->key === $key) {

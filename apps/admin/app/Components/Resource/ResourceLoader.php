@@ -1,8 +1,6 @@
 <?php
 
-namespace App\Admin\Services\Acl\Support;
-
-use App\Admin\Services\Acl\Resource;
+namespace App\Admin\Components\Resource;
 
 class ResourceLoader
 {

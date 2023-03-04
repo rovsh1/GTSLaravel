@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Admin\Services\Acl\Routing;
+namespace App\Admin\Components\Acl;
 
-use App\Admin\Services\Acl\Resource;
-use Illuminate\Support\Facades\Route;
+use App\Admin\Components\Resource\Resource;
 use Illuminate\Routing\RouteRegistrar as BaseRegistrar;
+use Illuminate\Support\Facades\Route;
 
 class RouteRegistrar
 {
@@ -104,46 +104,51 @@ class RouteRegistrar
             $methods = array_diff($methods, (array)$options['except']);
         }
 
+        $base = str_replace('-', '_', $this->resource->key);
+        if (str_contains($base, '.')) {
+            $base = substr($base, strrpos($base, '.') + 1);
+        }
+
         foreach ($methods as $method) {
-            $this->{'addResource' . ucfirst($method)}();
+            $this->{'addResource' . ucfirst($method)}($base);
         }
 
         return $this->controller($controller);
     }
 
-    private function addResourceIndex(): void
+    private function addResourceIndex($base): void
     {
         $this->get('/', 'index', 'read');
     }
 
-    private function addResourceShow(): void
+    private function addResourceShow($base): void
     {
-        $this->get('/{' . $this->resource->key . '}', 'show', 'read');
+        $this->get('/{' . $base . '}', 'show', 'read');
     }
 
-    private function addResourceCreate(): void
+    private function addResourceCreate($base): void
     {
         $this->get('/create', 'create', 'create');
     }
 
-    private function addResourceStore(): void
+    private function addResourceStore($base): void
     {
         $this->post('/', 'store', 'create');
     }
 
-    private function addResourceEdit(): void
+    private function addResourceEdit($base): void
     {
-        $this->get('/{' . $this->resource->key . '}/edit', 'edit', 'update');
+        $this->get('/{' . $base . '}/edit', 'edit', 'update');
     }
 
-    private function addResourceUpdate(): void
+    private function addResourceUpdate($base): void
     {
-        $this->match(['PUT', 'PATCH'], '/{' . $this->resource->key . '}', 'update', 'update');
+        $this->match(['PUT', 'PATCH'], '/{' . $base . '}', 'update', 'update');
     }
 
-    private function addResourceDestroy(): void
+    private function addResourceDestroy($base): void
     {
-        $this->delete('/{' . $this->resource->key . '}', 'destroy', 'delete');
+        $this->delete('/{' . $base . '}', 'destroy', 'delete');
     }
 
     public function register(): void

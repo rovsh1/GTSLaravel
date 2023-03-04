@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Admin\Services\Acl\Facades;
+namespace App\Admin\Support\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class Route extends Facade
+class AclRoute extends Facade
 {
     protected static function getFacadeAccessor()
     {

@@ -4,7 +4,6 @@
     "group": "hotel",
     "prefix": "hotel.",
     "model": "App\\Admin\\Models\\Country",
-    "repository": "App\\Admin\\Repositories\\CountryRepository",
     "titles": {
         "index": "Страны",
         "create": "Новая страна"

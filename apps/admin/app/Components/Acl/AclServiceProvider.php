@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Services\Acl;
+namespace App\Admin\Components\Acl;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
@@ -10,19 +10,11 @@ class AclServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(AccessControl::class, function () {
-            $resources = new ResourcesCollection();
-            $resourceLoader = new Support\ResourceLoader(resource_path('acl'));
-            foreach ($resourceLoader->loadResources() as $resource) {
-                $resources->add($resource);
-            }
-            return new AccessControl($resources);
+            return new AccessControl(app('resources'));
         });
         $this->app->alias(AccessControl::class, 'acl');
 
-        $this->app->bind('acl.resources', fn() => app('acl')->resources());
-
-        $this->app->singleton(Routing\Router::class, fn() => new Routing\Router(app('acl')));
-        $this->app->alias(Routing\Router::class, 'acl.router');
+        $this->app->bind('acl.router', fn() => app('acl')->router());
     }
 
     public function boot()
@@ -34,7 +26,7 @@ class AclServiceProvider extends ServiceProvider
     {
         // role
         Blade::directive('role', function ($expression) {
-            return "<?php if (Auth::check() && Auth::user()->hasRole({$expression})): ?>";
+            return "<?php if (app('acl')->hasRole({$expression})): ?>";
         });
 
         Blade::directive('endrole', function () {
@@ -43,7 +35,7 @@ class AclServiceProvider extends ServiceProvider
 
         // permission
         Blade::directive('permission', function ($expression) {
-            return "<?php if (Auth::check() && Auth::user()->hasPermission({$expression})): ?>";
+            return "<?php if (app('acl')->isAllowed({$expression})): ?>";
         });
 
         Blade::directive('endpermission', function () {
