@@ -3,12 +3,10 @@
 namespace App\Admin\Providers;
 
 use App\Admin\Helpers;
-use App\Admin\View as ViewNamespace;
-use App\Admin\View\Grid as GridNamespace;
+use App\Admin\Support\View as ViewNamespace;
+use App\Admin\Support\View\Grid as GridNamespace;
 use Gsdk\Form as FormNamespace;
 use Gsdk\Meta\MetaServiceProvider;
-use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class ViewServiceProvider extends ServiceProvider
@@ -31,7 +29,7 @@ class ViewServiceProvider extends ServiceProvider
 
     private function registerForm()
     {
-        FormNamespace\Form::registerNamespace('App\Admin\View\Form\Element');
+        FormNamespace\Form::registerNamespace('App\Admin\Support\View\Form\Element');
         FormNamespace\Label::setDefaults([
             'class' => 'col-sm-4 col-form-label'
         ]);

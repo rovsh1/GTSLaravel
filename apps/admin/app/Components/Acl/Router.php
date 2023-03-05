@@ -2,19 +2,17 @@
 
 namespace App\Admin\Components\Acl;
 
-use App\Admin\Components\Source\SourceManager;
-
 class Router
 {
     private array $permissions = [];
 
     public function __construct(
-        private readonly SourceManager $resources
+        private readonly ResourcesCollection $resources
     ) {}
 
     public function for(string $resource): RouteRegistrar
     {
-        return new RouteRegistrar($this, $this->resources->getResource($resource));
+        return new RouteRegistrar($this, $this->resources->get($resource));
     }
 
     public function resource(string $key, string $controller, array $options = []): RouteRegistrar

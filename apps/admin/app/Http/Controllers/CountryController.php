@@ -2,21 +2,40 @@
 
 namespace App\Admin\Http\Controllers;
 
-use App\Admin\Http\Resources\Country\CountriesResource;
-use App\Admin\Http\Forms\Country\EditForm;
-use App\Admin\Support\Http\Controllers\AbstractResourceController;
+use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
+use App\Admin\Support\View\Form\Form;
+use App\Admin\Support\View\Grid\Grid;
 
-class CountryController extends AbstractResourceController
+class CountryController extends AbstractPrototypeController
 {
-    protected $resource = 'reference.country';
-
-    protected function indexResourceFactory()
-    {
-        return new CountriesResource();
-    }
+    protected $prototype = 'reference.country';
 
     protected function formFactory()
     {
-        return new EditForm('data');
+        return (new Form())
+            //->view('default.form')
+            ->csrf()
+            ->text('name', ['label' => 'Наименование', 'required' => true])
+            ->language('language', ['label' => 'Язык', 'emptyItem' => '-Не выбрано-'])
+            ->text('flag', ['label' => 'Код флага', 'required' => true])
+            ->text('phone_code', ['label' => 'Код телефона', 'required' => true])
+            ->currency('currency_id', ['label' => 'Валюта'])
+            ->checkbox('default', ['label' => 'По умолчанию']);
+    }
+
+    protected function gridFactory()
+    {
+        return (new Grid())
+            ->enableQuicksearch()
+            ->paginator(20)
+            ->text('id', ['text' => 'ID', 'order' => true])
+            ->text('name', ['text' => 'Наименование', 'order' => true])
+            ->text('phone_code', ['text' => 'Код телефона'])
+            ->text('default', [
+                'text' => 'Основная',
+                'renderer' => fn($row) => $row->default ? 'Да' : 'Нет'
+            ])
+            ->actions('actions', ['route' => $this->prototype->route('index')])
+            ->orderBy('name', 'asc');
     }
 }

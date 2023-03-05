@@ -2,7 +2,7 @@
 
 namespace App\Admin\Http\Forms;
 
-use App\Admin\View\Form\Form;
+use App\Admin\Support\View\Form\Form;
 
 enum TestEnum: int
 {

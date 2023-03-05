@@ -2,7 +2,7 @@
 
 namespace Module\Services\Scheduler\UI\Admin\Http\Actions\Cron;
 
-use App\Admin\View\Grid\Grid;
+use App\Admin\Support\View\Grid\Grid;
 use Illuminate\Support\Facades\Artisan;
 
 class IndexAction

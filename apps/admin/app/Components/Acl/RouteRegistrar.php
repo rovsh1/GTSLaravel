@@ -2,7 +2,6 @@
 
 namespace App\Admin\Components\Acl;
 
-use App\Admin\Components\Source\Source;
 use Illuminate\Routing\RouteRegistrar as BaseRegistrar;
 use Illuminate\Support\Facades\Route;
 
@@ -16,7 +15,7 @@ class RouteRegistrar
 
     public function __construct(
         private readonly Router $router,
-        private readonly Source $resource
+        private readonly Resource $resource
     ) {
         $this->routeRegistrar = new BaseRegistrar(Route::getFacadeRoot());
     }

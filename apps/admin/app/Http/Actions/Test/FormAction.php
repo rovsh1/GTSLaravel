@@ -22,7 +22,6 @@ class FormAction
         $form->setTestData();
 
         app('breadcrumbs')
-            ->addRoute('reference.country.index', 'Страны')
             ->add('Test form');
 
         return app('layout')
