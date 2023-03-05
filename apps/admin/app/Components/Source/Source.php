@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Admin\Components\Resource;
+namespace App\Admin\Components\Source;
 
 use App\Admin\Enums\ResourceGroup;
 
-class Resource
+class Source
 {
     public readonly string $key;
 
@@ -31,7 +31,7 @@ class Resource
         return $this->config[$key] ?? null;
     }
 
-    public function makeRepository(): ResourceRepositoryInterface
+    public function makeRepository(): SourceRepositoryInterface
     {
         return isset($this->config['repository'])
             ? app()->make($this->config['repository'])

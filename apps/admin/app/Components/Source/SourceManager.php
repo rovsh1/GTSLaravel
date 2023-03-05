@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Admin\Components\Resource;
+namespace App\Admin\Components\Source;
 
-class ResourceManager
+class SourceManager
 {
     private array $resources = [];
 
     public function __construct() {}
 
-    public function addResource(Resource $resource): void
+    public function addResource(Source $resource): void
     {
         $this->resources[] = $resource;
     }
@@ -23,7 +23,7 @@ class ResourceManager
         return false;
     }
 
-    public function getResource(string $key): ?Resource
+    public function getResource(string $key): ?Source
     {
         foreach ($this->resources as $resource) {
             if ($resource->key === $key) {

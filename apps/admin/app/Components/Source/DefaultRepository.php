@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Admin\Components\Resource;
+namespace App\Admin\Components\Source;
 
 use Illuminate\Database\Eloquent\Model;
 
-class DefaultRepository implements ResourceRepositoryInterface
+class DefaultRepository implements SourceRepositoryInterface
 {
     public function __construct(protected readonly string $model) {}
 

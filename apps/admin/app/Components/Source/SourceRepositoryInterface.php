@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Admin\Components\Resource;
+namespace App\Admin\Components\Source;
 
 use App\Admin\Support\Repository\RepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
 
-interface ResourceRepositoryInterface extends RepositoryInterface
+interface SourceRepositoryInterface extends RepositoryInterface
 {
     public function find(int $id): Model;
 

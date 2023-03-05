@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Admin\Components\Resource;
+namespace App\Admin\Components\Source;
 
 use Illuminate\Support\ServiceProvider;
 
-class ResourceServiceProvider extends ServiceProvider
+class SourceServiceProvider extends ServiceProvider
 {
     public function register()
     {
         $this->app->singleton('resources', function () {
-            $resources = new ResourceManager();
-            $resourceLoader = new ResourceLoader(resource_path('models'));
+            $resources = new SourceManager();
+            $resourceLoader = new SourceLoader(resource_path('sources'));
             foreach ($resourceLoader->loadResources() as $resource) {
                 $resources->addResource($resource);
             }

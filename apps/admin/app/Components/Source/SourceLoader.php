@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Admin\Components\Resource;
+namespace App\Admin\Components\Source;
 
-class ResourceLoader
+class SourceLoader
 {
     public function __construct(private readonly string $resourcesPath) {}
 
@@ -37,9 +37,9 @@ class ResourceLoader
         closedir($handle);
     }
 
-    private function makeResource($filename): Resource
+    private function makeResource($filename): Source
     {
         $config = json_decode(file_get_contents($filename), true);
-        return new Resource($config);
+        return new Source($config);
     }
 }

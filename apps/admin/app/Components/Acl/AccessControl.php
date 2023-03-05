@@ -2,14 +2,14 @@
 
 namespace App\Admin\Components\Acl;
 
-use App\Admin\Components\Resource\ResourceManager;
+use App\Admin\Components\Source\SourceManager;
 
 class AccessControl
 {
     private readonly Permissions $permissions;
     private readonly Router $router;
 
-    public function __construct(private readonly ResourceManager $resources)
+    public function __construct(private readonly SourceManager $resources)
     {
         $this->permissions = new Permissions();
         $this->router = new Router($this->resources);
