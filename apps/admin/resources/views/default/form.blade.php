@@ -1,4 +1,4 @@
-<form action="{{ $form->route }}" method="{{ strtoupper($form->method) === 'GET' ? 'GET' : 'POST' }}" enctype="multipart/form-data">
+<form action="{{ $form->action }}" method="{{ strtoupper($form->method) === 'GET' ? 'GET' : 'POST' }}" enctype="multipart/form-data">
     {!! $csrf !!}
     {!! $errors !!}
     @method(strtoupper($form->method))

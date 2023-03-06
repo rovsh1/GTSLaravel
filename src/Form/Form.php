@@ -3,6 +3,8 @@
 namespace Gsdk\Form;
 
 use Gsdk\Form\Validation\Validator;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Session;
 
 class Form implements ElementsParentInterface
 {
@@ -85,6 +87,11 @@ class Form implements ElementsParentInterface
     public function method(string $method): static
     {
         return $this->setOption('method', $method);
+    }
+
+    public function action(string $action): static
+    {
+        return $this->setOption('action', $action);
     }
 
     public function route(string $route): static
@@ -179,11 +186,26 @@ class Form implements ElementsParentInterface
 
     public function render(): string
     {
+        if (!$this->isSubmitted()) {
+            $this->fillFromSession();
+        }
+
         return (new Renderer\FormRenderer())->render($this);
     }
 
     public function __toString(): string
     {
         return $this->render();
+    }
+
+    private function fillFromSession()
+    {
+        if (($data = Request::old($this->getName()))) {
+            $this->data($data);
+        }
+
+        if (Session::has('errors')) {
+            $this->validator->setErrors(Session::get('errors'));
+        }
     }
 }

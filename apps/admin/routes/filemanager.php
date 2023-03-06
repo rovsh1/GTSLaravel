@@ -9,7 +9,6 @@ Route::controller(FilemanagerController::class)
     ->prefix('filemanager')
     ->group(function () {
         Route::get('/', 'index');
-        Route::get('/file/{path}', 'file')->where('path', '.*');
         Route::get('/files', 'files');
         Route::post('/upload', 'upload');
         Route::post('/move', 'move');

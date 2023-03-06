@@ -27,6 +27,11 @@ class StorageService
         return self::$storage->path($this->cd . ($path ? DIRECTORY_SEPARATOR . $path : ''));
     }
 
+    public function url(string $path)
+    {
+        return self::$storage->url($path);
+    }
+
     public function cd(string $path): static
     {
         if (!str_starts_with($path, '/')) {

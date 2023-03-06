@@ -1,0 +1,15 @@
+{
+    "name": "City",
+    "key": "city",
+    "group": "reference",
+    "prefix": "city.",
+    "model": "App\\Admin\\Models\\City",
+    "titles": {
+        "index": "Страны",
+        "create": "Новая страна"
+    },
+    "views": {
+        "form": "default.form"
+    },
+    "permissions": "crud"
+}

@@ -2,57 +2,40 @@
 
 namespace App\Admin\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
+use App\Admin\Support\View\Form\Form;
+use App\Admin\Support\View\Grid\Grid;
 
-use App\Admin\Support\Http\CRUD;
-use App\Admin\Http\Requests\Country as Requests;
-use App\Admin\Http\Actions\Country as Actions;
-use App\Admin\Http\Forms\Country\EditForm;
-use App\Admin\Models\Country;
-
-class CountryController extends Controller
+class CountryController extends AbstractPrototypeController
 {
-    public function __construct() {}
+    protected $prototype = 'reference.country';
 
-    public function index(Request $request)
+    protected function formFactory()
     {
-        return app(Actions\SearchAction::class)->handle($request->input());
+        return (new Form())
+            //->view('default.form')
+            ->csrf()
+            ->text('name', ['label' => 'Наименование', 'required' => true])
+            ->language('language', ['label' => 'Язык', 'emptyItem' => '-Не выбрано-'])
+            ->text('flag', ['label' => 'Код флага', 'required' => true])
+            ->text('phone_code', ['label' => 'Код телефона', 'required' => true])
+            ->currency('currency_id', ['label' => 'Валюта'])
+            ->checkbox('default', ['label' => 'По умолчанию']);
     }
 
-    public function create()
+    protected function gridFactory()
     {
-        return app('layout')
-            ->title('Новая страна')
-            ->view('reference.country.form', [
-                'form' => (new EditForm('data'))
-                    ->route(route('country.store'))
-            ]);
-    }
-
-    public function store(Requests\StoreRequest $request, Country $country)
-    {
-        return app(CRUD\StoreAction::class)->handle($request, $country);
-    }
-
-    public function edit(Country $country)
-    {
-        return app('layout')
-            ->title($country->name)
-            ->view('reference.country.form', [
-                'form' => (new EditForm('data'))
-                    ->data($country->toArray())
-                    ->method('put')
-                    ->route(route('country.update', $country))
-            ]);
-    }
-
-    public function update(Requests\UpdateRequest $request, Country $country)
-    {
-        return app(CRUD\UpdateAction::class)->handle($request, $country);
-    }
-
-    public function destroy(Requests\DeleteRequest $request, Country $country)
-    {
-        return app(CRUD\DeleteAction::class)->handle($request, $country);
+        return (new Grid())
+            ->enableQuicksearch()
+            ->paginator(20)
+            ->text('id', ['text' => 'ID', 'order' => true])
+            ->text('name', ['text' => 'Наименование', 'order' => true])
+            ->text('phone_code', ['text' => 'Код телефона'])
+            ->text('default', [
+                'text' => 'Основная',
+                'renderer' => fn($row) => $row->default ? 'Да' : 'Нет'
+            ])
+            ->actions('actions', ['route' => $this->prototype->route('index')])
+            ->orderBy('name', 'asc');
     }
 }
