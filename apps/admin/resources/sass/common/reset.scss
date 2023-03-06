@@ -35,7 +35,7 @@ ol, ul { list-style: none;}
 blockquote, q { quotes: none;}
 
 blockquote:before, blockquote:after,
-q:before, q:after { content: ""; content: none;}
+q:before, q:after {content: none;}
 
 :focus { outline: 0px;}
 
@@ -65,7 +65,5 @@ textarea { overflow: auto; vertical-align: top;}
 
 fieldset { margin: 0; padding: 0; border: none;}
 
-
 a { text-decoration: none; outline: 0;}
-
-a:hover { text-decoration: underline;}
+a:hover { text-decoration: none;}

@@ -11,13 +11,27 @@ class Layout
         return Meta::render();
     }
 
-    public static function breadcrumbs(): string
+    public static function breadcrumbs()
     {
         return app('breadcrumbs')->render();
     }
 
-    public static function sidebar(): string
+    public static function sidebar()
     {
-        return view('layouts/dashboard/sidebar');
+        return app('sidebar')->render();
+    }
+
+    public static function actions()
+    {
+        if (app()->resolved('menu.actions')) {
+            return app('menu.actions')->render();
+        } else {
+            return '';
+        }
+    }
+
+    public static function buttonBack()
+    {
+        //app('back')->url();
     }
 }

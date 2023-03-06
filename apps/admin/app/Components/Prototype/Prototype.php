@@ -43,7 +43,7 @@ class Prototype
             : new DefaultRepository($this->config['model']);
     }
 
-    public function title(string $key): ?string
+    public function title(string $key = 'index'): ?string
     {
         return $this->config['titles'][$key] ?? null;
     }
@@ -63,7 +63,7 @@ class Prototype
         return $this->config['routeUriPrefix'] . $uri;
     }
 
-    public function route(string $method, $params = []): string
+    public function route(string $method = 'index', $params = []): string
     {
         return route($this->routeName($method), $params);
     }

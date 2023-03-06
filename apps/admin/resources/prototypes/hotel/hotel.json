@@ -2,14 +2,14 @@
     "name": "Hotel",
     "key": "hotel",
     "group": "hotel",
-    "prefix": "hotel.",
     "model": "App\\Admin\\Models\\Hotel\\Hotel",
     "titles": {
-        "index": "Страны",
-        "create": "Новая страна"
+        "index": "Отели",
+        "create": "Новый отель"
     },
     "views": {
-        "form": "default.form"
+        "form": "hotel.form",
+        "show": "hotel.show"
     },
     "permissions": "crud"
 }

@@ -5,149 +5,183 @@ namespace Gsdk\Navigation;
 class Menu
 {
 
-	protected static array $itemAttributes = ['id', 'title', 'target'];
+    protected static array $itemAttributes = ['id', 'title', 'target'];
 
-	protected array $items = [];
+    protected array $items = [];
 
-	protected $current;
+    protected $current;
 
-	protected $view;
+    protected array $options = [];
 
-	public function __construct()
-	{
-		$this->boot();
-	}
+    public function __construct(array $options = [])
+    {
+        $this->options = array_merge($this->options, $options);
+        $this->build();
+    }
 
-	public function view($view): static
-	{
-		$this->view = $view;
-		return $this;
-	}
+    public function view($view): static
+    {
+        return $this->setOption('view', $view);
+    }
 
-	public function current($current = null): static
-	{
-		$this->current = $current ?? request()->route()->getName();
+    public function setOption(string $key, $value): static
+    {
+        $this->options[$key] = $value;
+        return $this;
+    }
 
-		return $this;
-	}
+    public function getOption(string $key, $default = null)
+    {
+        return $this->options[$key] ?? $default;
+    }
 
-	public function add($params): static
-	{
-		$this->items[] = $this->itemFactory($params);
-		return $this;
-	}
+    public function current($current = null): static
+    {
+        $this->current = $current ?? request()->route()->getName();
 
-	public function addUrl($url, $params): static
-	{
-		if (is_string($params))
-			$params = ['text' => $params];
+        return $this;
+    }
 
-		return $this->add(array_merge($params, ['url' => $url]));
-	}
+    public function add($params): static
+    {
+        $this->items[] = $this->itemFactory($params);
+        return $this;
+    }
 
-	public function addRoute($route, $params): static
-	{
-		if (is_string($params))
-			$params = ['text' => $params];
+    public function addUrl($url, $params): static
+    {
+        if (is_string($params)) {
+            $params = ['text' => $params];
+        }
 
-		return $this->add(
-			array_merge($params, [
-				'id' => $route,
-				'url' => route($route)
-			])
-		);
-	}
+        return $this->add(array_merge($params, ['url' => $url]));
+    }
 
-	public function hr(): static
-	{
-		$this->items[] = '-';
+    public function addRoute($route, $params): static
+    {
+        if (is_string($params)) {
+            $params = ['text' => $params];
+        }
 
-		return $this;
-	}
+        return $this->add(
+            array_merge($params, [
+                'id' => $route,
+                'url' => route($route)
+            ])
+        );
+    }
 
-	public function items(): array
-	{
-		return $this->items;
-	}
+    public function hr(): static
+    {
+        $this->items[] = '-';
 
-	public function render(): string
-	{
-		if ($this->view)
-			return (string)view($this->view, ['menu' => $this]);
+        return $this;
+    }
 
-		$menu = '<nav>';
-		$menu .= $this->renderItems();
-		$menu .= '</nav>';
+    public function items(): array
+    {
+        return $this->items;
+    }
 
-		return $menu;
-	}
+    public function isEmpty(): bool
+    {
+        return empty($this->items);
+    }
 
-	public function __toString(): string
-	{
-		return $this->render();
-	}
+    public function render(): string
+    {
+        if ($this->isEmpty()) {
+            return '';
+        }
 
-	protected function boot()
-	{
-	}
+        if (!empty($this->options['view'])) {
+            return (string)view($this->options['view'], $this->getViewData());
+        }
 
-	protected function itemFactory($params): \stdClass
-	{
-		$item = new \stdClass();
-		foreach (static::$itemAttributes as $k) {
-			$item->$k = $params[$k] ?? null;
-		}
-		$item->key = $params['key'] ?? $item->id;
-		$item->url = $params['href'] ?? $params['url'] ?? '#';
-		$item->icon = $params['icon'] ?? '';
-		$item->text = $params['text'] ?? '';
-		$item->class = $params['class'] ?? $params['cls'] ?? null;
+        $menu = '<nav class="' . $this->getOption('class') . '">';
+        $menu .= $this->renderItems();
+        $menu .= '</nav>';
 
-		return $item;
-	}
+        return $menu;
+    }
 
-	protected function renderItems(): string
-	{
-		$menu = '';
-		foreach ($this->items as $item) {
-			if ($item === '-')
-				$menu .= $this->renderHr();
-			else
-				$menu .= $this->renderItem($item);
-		}
+    public function __toString(): string
+    {
+        return $this->render();
+    }
 
-		return $menu;
-	}
+    protected function build() {}
 
-	protected function renderHr(): string
-	{
-		return '<hr>';
-	}
+    protected function getViewData(): array
+    {
+        return [
+            'menu' => $this,
+            'items' => $this->items
+        ];
+    }
 
-	protected function renderItem($item): string
-	{
-		$cls = [];
-		if ($item->class)
-			$cls[] = $item->class;
+    protected function itemFactory($params): \stdClass
+    {
+        $item = new \stdClass();
+        foreach (static::$itemAttributes as $k) {
+            $item->$k = $params[$k] ?? null;
+        }
+        $item->key = $params['key'] ?? $item->id;
+        $item->url = $params['href'] ?? $params['url'] ?? '#';
+        $item->icon = $params['icon'] ?? '';
+        $item->text = $params['text'] ?? '';
+        $item->class = $params['class'] ?? $params['cls'] ?? null;
 
-		if ($this->current === $item->key)
-			$cls[] = 'current';
+        return $item;
+    }
 
-		$html = '<a href="' . $item->url . '"';
-		foreach (static::$itemAttributes as $k) {
-			if ($item->$k)
-				$html .= ' ' . $k . '="' . $item->$k . '"';
-		}
+    protected function renderItems(): string
+    {
+        $menu = '';
+        foreach ($this->items as $item) {
+            if ($item === '-') {
+                $menu .= $this->renderHr();
+            } else {
+                $menu .= $this->renderItem($item);
+            }
+        }
 
-		if ($cls)
-			$html .= ' class="' . implode(' ', $cls) . '"';
+        return $menu;
+    }
 
-		$html .= '>';
-		$html .= $item->icon;
-		$html .= $item->text;
-		$html .= '</a>';
+    protected function renderHr(): string
+    {
+        return '<hr>';
+    }
 
-		return $html;
-	}
+    protected function renderItem($item): string
+    {
+        $cls = [];
+        if ($item->class) {
+            $cls[] = $item->class;
+        }
+
+        if ($this->current === $item->key) {
+            $cls[] = 'current';
+        }
+
+        $html = '<a href="' . $item->url . '"';
+        foreach (static::$itemAttributes as $k) {
+            if ($item->$k) {
+                $html .= ' ' . $k . '="' . $item->$k . '"';
+            }
+        }
+
+        if ($cls) {
+            $html .= ' class="' . implode(' ', $cls) . '"';
+        }
+
+        $html .= '>';
+        $html .= $item->icon;
+        $html .= $item->text;
+        $html .= '</a>';
+
+        return $html;
+    }
 
 }

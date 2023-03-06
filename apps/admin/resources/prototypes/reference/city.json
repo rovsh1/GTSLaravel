@@ -1,15 +1,12 @@
 {
     "name": "City",
-    "key": "city",
+    "key": "reference.city",
     "group": "reference",
-    "prefix": "city.",
-    "model": "App\\Admin\\Models\\City",
+    "model": "App\\Admin\\Models\\Reference\\City",
     "titles": {
-        "index": "Страны",
-        "create": "Новая страна"
+        "index": "Города",
+        "create": "Новый город"
     },
-    "views": {
-        "form": "default.form"
-    },
+    "views": {},
     "permissions": "crud"
 }

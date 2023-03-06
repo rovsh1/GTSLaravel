@@ -3,15 +3,11 @@
     "key": "reference.country",
     "alias": "reference.country",
     "group": "reference",
-    "model": "App\\Admin\\Models\\Country",
-    "form": "App\\Admin\\Http\\Forms\\Country\\EditForm",
+    "model": "App\\Admin\\Models\\Reference\\Country",
     "titles": {
         "index": "Страны",
         "create": "Новая страна"
     },
-    "views": {
-        "form": "reference.country.form",
-        "index": "reference.country.index"
-    },
+    "views": {},
     "permissions": "crud"
 }

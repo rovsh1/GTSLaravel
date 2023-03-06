@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Http\Controllers;
+namespace App\Admin\Http\Controllers\Reference;
 
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form;
@@ -12,7 +12,7 @@ class CountryController extends AbstractPrototypeController
 
     protected function formFactory()
     {
-        return (new Form())
+        return (new Form('data'))
             //->view('default.form')
             ->csrf()
             ->text('name', ['label' => 'Наименование', 'required' => true])
@@ -27,7 +27,7 @@ class CountryController extends AbstractPrototypeController
     {
         return (new Grid())
             ->enableQuicksearch()
-            ->paginator(20)
+            ->paginator(self::GRID_LIMIT)
             ->text('id', ['text' => 'ID', 'order' => true])
             ->text('name', ['text' => 'Наименование', 'order' => true])
             ->text('phone_code', ['text' => 'Код телефона'])

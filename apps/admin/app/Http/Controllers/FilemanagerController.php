@@ -12,6 +12,6 @@ class FilemanagerController extends Controller
         return app('layout')
             ->title('FileManager')
             ->ss('filemanager/index')
-            ->view('filemanager.index');
+            ->view('filemanager');
     }
 }

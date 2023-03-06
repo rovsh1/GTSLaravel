@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Route;
 
 abstract class AbstractPrototypeController extends Controller
 {
+    public const GRID_LIMIT = 20;
+
     protected $prototype;
 
     protected $repository;
@@ -29,6 +31,8 @@ abstract class AbstractPrototypeController extends Controller
 
         $grid->data($this->repository->queryWithCriteria($grid->getSearchCriteria()));
 
+        $this->buildGridActions(app('menu.actions'));
+
         return app('layout')
             ->title($this->prototype->title('index'))
             ->view($this->prototype->view('index') ?? $this->prototype->view('grid') ?? 'default.grid', [
@@ -47,6 +51,8 @@ abstract class AbstractPrototypeController extends Controller
         $this->breadcrumbs()
             ->add($title);
 
+        $this->buildShowActions(app('menu.actions'), $model);
+
         return app('layout')
             ->title($title)
             ->view($this->prototype->view('show'), $this->getShowViewData($model));
@@ -61,10 +67,13 @@ abstract class AbstractPrototypeController extends Controller
             ->method('post')
             ->action($this->prototype->route('store'));
 
+        //TODO back button
+
         return app('layout')
             ->title($this->prototype->title('create'))
             ->view($this->prototype->view('create') ?? $this->prototype->view('form') ?? 'default.form', [
-                'form' => $form
+                'form' => $form,
+                'cancelUrl' => $this->prototype->route('index')
             ]);
     }
 
@@ -90,12 +99,14 @@ abstract class AbstractPrototypeController extends Controller
 
         $title = (string)$model;
         $breadcrumbs = $this->breadcrumbs();
-        if (Route::has($this->prototype->routeName('show'))) {//method_exists($this, 'show')
+        if ($this->hasShowAction()) {
             $breadcrumbs->addUrl($this->prototype->route('show'), $title);
         } else {
             $breadcrumbs->add($title);
         }
         $breadcrumbs->add($this->prototype->title('edit') ?? 'Редактирование');
+
+        $this->buildEditActions(app('menu.actions'), $model);
 
         $form = $this->formFactory()
             ->method('put')
@@ -139,6 +150,33 @@ abstract class AbstractPrototypeController extends Controller
         return new $this->grid();
     }
 
+    protected function buildGridActions($menu)
+    {
+        if ($this->prototype->hasPermission('create')) {
+            $menu->addUrl(
+                $this->prototype->route('create'),
+                $this->prototype->title('add') ?? $this->prototype->title('create') ?? 'Добавить'
+            );
+        }
+    }
+
+    protected function buildShowActions($menu, $model)
+    {
+        if ($this->prototype->hasPermission('delete')) {
+            $menu->addUrl(
+                $this->prototype->route('create'),
+                $this->prototype->title('delete') ?? 'Удалить'
+            );
+        }
+    }
+
+    protected function buildEditActions($menu, $model)
+    {
+        if (!$this->hasShowAction()) {
+            $this->buildShowActions($menu, $model);
+        }
+    }
+
     protected function formFactory()
     {
         return new $this->form('data');
@@ -155,5 +193,10 @@ abstract class AbstractPrototypeController extends Controller
     {
         return app('breadcrumbs')
             ->addUrl($this->prototype->route('index'), $this->prototype->title('index') ?? 'Default index');
+    }
+
+    protected function hasShowAction(): bool
+    {
+        return Route::has($this->prototype->routeName('show'));
     }
 }

@@ -1,41 +1,33 @@
 <?php
 
-namespace App\Admin\Models;
+namespace App\Admin\Models\Reference;
 
 use Custom\Framework\Database\Eloquent\HasQuicksearch;
 use Custom\Framework\Database\Eloquent\HasTranslations;
 use Custom\Framework\Database\Eloquent\Model;
 
-class Country extends Model
+class Currency extends Model
 {
-    use HasTranslations, HasQuicksearch;
+    use HasQuicksearch;
+    use HasTranslations;
 
     public $timestamps = false;
 
     protected array $quicksearch = ['id', 'name%'];
     protected array $translatable = ['name'];
 
-    protected $table = 'r_countries';
+    protected $table = 'r_currencies';
 
     protected $fillable = [
         'name',
-        'flag',
-        'default',
-        'phone_code',
-        'language'
-    ];
-
-    protected $casts = [
-        'default' => 'bool'
+        'code_num',
+        'code_char',
+        'sign',
+        'rate'
     ];
 
     public static function booted()
     {
         static::addGlobalTranslationScope();
-    }
-
-    public function __toString()
-    {
-        return (string)$this->name;
     }
 }

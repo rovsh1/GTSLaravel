@@ -2,7 +2,7 @@
 
 namespace App\Admin\Support\View\Form\Element;
 
-use App\Admin\Models\Country as Model;
+use App\Admin\Models\Reference\Country as Model;
 use Gsdk\Form\Element\Select;
 
 class Country extends Select

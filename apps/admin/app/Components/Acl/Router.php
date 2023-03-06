@@ -12,6 +12,10 @@ class Router
 
     public function for(string $resource): RouteRegistrar
     {
+        if (!$this->resources->has($resource)) {
+            throw new \Exception('Resource [' . $resource . '] undefined');
+        }
+
         return new RouteRegistrar($this, $this->resources->get($resource));
     }
 

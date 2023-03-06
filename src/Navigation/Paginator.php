@@ -6,10 +6,7 @@ use Illuminate\Support\Facades\Request;
 
 class Paginator
 {
-    protected $current;
-    protected int $count = 0;
-    protected mixed $query;
-    protected array $options = [
+    protected static array $defaultOptions = [
         'step' => 10,
         'pagesStep' => 4,
         'prevText' => '{{lang:Prev}}',
@@ -18,6 +15,19 @@ class Paginator
         'queryParam' => 'p',
         'view' => 'layouts.paginator'
     ];
+
+    protected $current;
+
+    protected int $count = 0;
+
+    protected mixed $query;
+
+    protected array $options = [];
+
+    public static function setDefaults(array $options): void
+    {
+        self::$defaultOptions = array_merge(self::$defaultOptions, $options);
+    }
 
     public function __get($name)
     {
@@ -32,15 +42,15 @@ class Paginator
         $this->options[$name] = $value;
     }
 
-    public function __construct($options = null)
+    public function __construct(int|array $options = null)
     {
         if (is_int($options)) {
-            $this->setOptions(['step' => $options]);
-        } else {
-            if ($options) {
-                $this->setOptions($options);
-            }
+            $options = ['step' => $options];
+        } elseif (!$options) {
+            $options = [];
         }
+
+        $this->setOptions(array_merge(self::$defaultOptions, $this->options, $options));
     }
 
     public function setOptions($options): static
