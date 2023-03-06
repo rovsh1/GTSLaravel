@@ -18,8 +18,6 @@ class Layout
 
     public static function sidebar(): string
     {
-        //FIXME use sidebar
-        return view('layouts/sections/menu/vertical__menu');
-        //return app('sidebar')->render();
+        return view('layouts/dashboard/sidebar');
     }
 }

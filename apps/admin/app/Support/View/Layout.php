@@ -85,10 +85,10 @@ class Layout
 
     private function bootStyles(): void
     {
-        $style = $this->options['style'] ?? 'main';
+        $style = $this->options['style'] ?? 'dashboard';
 
         $this->meta
-            ->addScript(($this->options['script'] ?? $style ?? 'main') . '.js?' . $this->version, ['defer' => true])
+            ->addScript(($this->options['script'] ?? $style ?? 'dashboard') . '.js?' . $this->version, ['defer' => true])
             ->addLinkRel('preload', '/css/' . $style . '.css?' . $this->version, ['as' => 'style'])
             ->addStyle($style . '.css?' . $this->version);
         //$this->head->addStyle('print.css?' . $this->version);

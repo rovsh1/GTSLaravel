@@ -20,7 +20,7 @@ class Form implements ElementsParentInterface
         'id' => 'form_data',
         'name' => null,
         'method' => 'post',
-        'route' => ''
+        'action' => ''
     ];
 
     protected bool $submitted = false;
@@ -52,14 +52,19 @@ class Form implements ElementsParentInterface
             $this->mergeOptions($options);
         }
 
-        $this->boot();
+        $this->build();
     }
 
-    protected function boot() {}
+    protected function build() {}
 
     public function __get($name)
     {
         return $this->options[$name] ?? null;
+    }
+
+    public function name(string $name): static
+    {
+        return $this->setOption('name', $name);
     }
 
     public function data($data): static
@@ -92,11 +97,6 @@ class Form implements ElementsParentInterface
     public function action(string $action): static
     {
         return $this->setOption('action', $action);
-    }
-
-    public function route(string $route): static
-    {
-        return $this->setOption('route', $route);
     }
 
     public function getName(): ?string

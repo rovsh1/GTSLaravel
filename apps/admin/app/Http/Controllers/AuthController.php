@@ -3,6 +3,7 @@
 namespace App\Admin\Http\Controllers;
 
 use App\Admin\Http\Actions\Auth as Actions;
+use App\Admin\Http\Forms\LoginForm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,8 +13,7 @@ class AuthController extends Controller
     {
         return app('layout')
             ->style('auth')
-            ->layout('layouts.blank')
-            ->view('auth.login');
+            ->view('auth.login', ['form' => new LoginForm('data')]);
     }
 
     public function login(Request $request)

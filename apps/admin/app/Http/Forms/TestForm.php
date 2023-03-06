@@ -13,7 +13,7 @@ enum TestEnum: int
 
 class TestForm extends Form
 {
-    protected function boot()
+    protected function build()
     {
         //dd(TestEnum::cases(), TestEnum::ONE, enum_exists(TestEnum::ONE::class));
         $this
