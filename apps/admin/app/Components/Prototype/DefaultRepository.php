@@ -55,6 +55,11 @@ class DefaultRepository implements PrototypeRepositoryInterface
     {
         if (isset($criteria['quicksearch'])) {
             $query->quicksearch($criteria['quicksearch']);
+            unset($criteria['quicksearch']);
+        }
+
+        foreach ($criteria as $k => $v) {
+            $query->where($k, $v);
         }
     }
 }

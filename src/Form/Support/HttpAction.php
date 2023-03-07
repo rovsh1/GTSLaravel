@@ -13,7 +13,7 @@ class HttpAction
     public function isSent(): bool
     {
         return Request::method() === strtoupper($this->form->getOption('method'))
-            && Request::has($this->form->getName());
+            && (!$this->form->getName() || Request::has($this->form->getName()));
     }
 
     public function submit(): bool

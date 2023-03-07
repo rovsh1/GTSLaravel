@@ -1,11 +1,13 @@
 @extends('layouts/dashboard')
 
 @section('content')
-    <div class="card">
+    <div class="card grid-card">
         <div class="card-header">
             {{ $title }}
-
-            {!! Layout::actions() !!}
+            <form method="get" class="grid-filters">
+                <div class="search-wrapper">{!! $searchForm !!}</div>
+                <div class="quicksearch-wrapper">{!! $quicksearch !!}</div>
+            </form>
         </div>
         <div class="card-body">
             <div class="table-responsive text-nowrap">

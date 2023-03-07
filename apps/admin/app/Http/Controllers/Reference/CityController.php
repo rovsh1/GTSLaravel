@@ -3,7 +3,7 @@
 namespace App\Admin\Http\Controllers\Reference;
 
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
-use App\Admin\Support\View\Form\Form;
+use App\Admin\Support\View\Form\SearchForm;
 use App\Admin\Support\View\Grid\Grid;
 
 class CityController extends AbstractPrototypeController
@@ -21,9 +21,13 @@ class CityController extends AbstractPrototypeController
 
     protected function gridFactory()
     {
+        $form = (new SearchForm())
+            ->country('country_id', ['label' => __('labels.country'), 'emptyItem' => __('select-all')]);
+
         return (new Grid())
             ->enableQuicksearch()
             ->paginator(self::GRID_LIMIT)
+            ->setSearchForm($form)
             ->text('id', ['text' => 'ID', 'order' => true])
             ->text('name', ['text' => 'Наименование', 'order' => true])
             ->text('country_name', ['text' => 'Страна'])
