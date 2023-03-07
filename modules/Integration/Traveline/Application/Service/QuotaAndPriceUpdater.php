@@ -6,15 +6,17 @@ use Module\Integration\Traveline\Domain\Adapter\HotelAdapterInterface;
 use Module\Integration\Traveline\Domain\Api\Request\Update;
 use Module\Integration\Traveline\Domain\Exception\HotelNotConnectedException;
 use Module\Integration\Traveline\Domain\Repository\HotelRepositoryInterface;
+use Module\Integration\Traveline\Domain\Service\HotelRoomCodeGeneratorInterface;
 
 class QuotaAndPriceUpdater
 {
     private array $responses = [];
 
     public function __construct(
-        private HotelAdapterInterface    $adapter,
-        private HotelRepositoryInterface $hotelRepository,
-        private bool                     $isPricesForResidents = false
+        private readonly HotelAdapterInterface           $adapter,
+        private readonly HotelRepositoryInterface        $hotelRepository,
+        private readonly HotelRoomCodeGeneratorInterface $codeGenerator,
+        private readonly bool                            $isPricesForResidents = false
     ) {}
 
     public function updateQuotasAndPlans(int $hotelId, array $updates)
@@ -23,8 +25,7 @@ class QuotaAndPriceUpdater
         if (!$isHotelIntegrationEnabled) {
             throw new HotelNotConnectedException();
         }
-        //@todo парсинг кода комнаты (сейчас фатал)
-        $updateRequests = Update::collectionFromArray($updates);
+        $updateRequests = Update::collectionFromArray($updates, $this->codeGenerator);
         foreach ($updateRequests as $updateRequest) {
             $this->handleRequest($updateRequest);
         }

@@ -5,6 +5,7 @@ namespace Module\Integration\Traveline\Domain\Api\Request;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
+use Module\Integration\Traveline\Domain\Service\HotelRoomCodeGeneratorInterface;
 
 class Update
 {
@@ -46,10 +47,10 @@ class Update
         return $this->closed !== null && !$this->closed;
     }
 
-    public static function fromArray(array $data): self
+    public static function fromArray(array $data, HotelRoomCodeGeneratorInterface $codeGenerator): self
     {
         $prices = array_key_exists('prices', $data)
-            ? Price::collectionFromArray($data['prices'])
+            ? Price::collectionFromArray($data['prices'], $codeGenerator)
             : null;
 
         return new self(
@@ -68,8 +69,8 @@ class Update
      * @param array $items
      * @return self[]
      */
-    public static function collectionFromArray(array $items): array
+    public static function collectionFromArray(array $items, HotelRoomCodeGeneratorInterface $codeGenerator): array
     {
-        return array_map(fn(array $data) => static::fromArray($data), $items);
+        return array_map(fn(array $data) => static::fromArray($data, $codeGenerator), $items);
     }
 }
