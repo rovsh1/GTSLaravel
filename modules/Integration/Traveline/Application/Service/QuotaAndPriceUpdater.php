@@ -27,9 +27,7 @@ class QuotaAndPriceUpdater
         foreach ($updateRequests as $updateRequest) {
             $this->handleRequest($updateRequest);
         }
-
         //@todo скорее всего тут можно вернуть void
-        dd($this->responses);
     }
 
     private function handleRequest(Update $updateRequest): void
