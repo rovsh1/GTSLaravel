@@ -23,6 +23,7 @@ class QuotaAndPriceUpdater
         if (!$isHotelIntegrationEnabled) {
             throw new HotelNotConnectedException();
         }
+        //@todo парсинг кода комнаты (сейчас фатал)
         $updateRequests = Update::collectionFromArray($updates);
         foreach ($updateRequests as $updateRequest) {
             $this->handleRequest($updateRequest);
