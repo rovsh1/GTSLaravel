@@ -15,7 +15,7 @@ class Breadcrumbs
 
     public function __construct()
     {
-        $this->boot();
+        $this->build();
     }
 
     public function view($view): static
@@ -104,7 +104,7 @@ class Breadcrumbs
         return $this->render();
     }
 
-    protected function boot() {}
+    protected function build() {}
 
     protected function itemFactory($params): \stdClass
     {

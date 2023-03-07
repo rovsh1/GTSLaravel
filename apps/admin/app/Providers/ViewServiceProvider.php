@@ -7,6 +7,7 @@ use App\Admin\Support\View as ViewNamespace;
 use App\Admin\Support\View\Grid as GridNamespace;
 use Gsdk\Form as FormNamespace;
 use Gsdk\Meta\MetaServiceProvider;
+use Gsdk\Navigation\Paginator;
 use Illuminate\Support\ServiceProvider;
 
 class ViewServiceProvider extends ServiceProvider
@@ -16,6 +17,7 @@ class ViewServiceProvider extends ServiceProvider
         $this->registerLayout();
         $this->registerGrid();
         $this->registerForm();
+        $this->registerUi();
         $this->registerHelpers();
         $this->registerComponents();
     }
@@ -30,11 +32,14 @@ class ViewServiceProvider extends ServiceProvider
     private function registerForm()
     {
         FormNamespace\Form::registerNamespace('App\Admin\Support\View\Form\Element');
+        FormNamespace\Form::setElementDefaults([
+            //'view' => 'layouts.ui.form.field'
+        ]);
         FormNamespace\Label::setDefaults([
             'class' => 'col-sm-4 col-form-label'
         ]);
         FormNamespace\Form::setElementDefaults([
-            'view' => 'default.form.field',
+            'view' => 'layouts.ui.form.field',
             'class' => 'form-control'
         ]);
         FormNamespace\Element\Checkbox::setDefaults([
@@ -60,9 +65,22 @@ class ViewServiceProvider extends ServiceProvider
         $this->app->singleton('layout', ViewNamespace\Layout::class);
         class_alias(Helpers\Layout::class, 'Layout');
 
-        $this->app->singleton('sidebar', ViewNamespace\Navigation\Sidebar::class);
+        $this->app->singleton('sidebar', ViewNamespace\Sidebar\Sidebar::class);
 
         $this->app->singleton('breadcrumbs', ViewNamespace\Navigation\Breadcrumbs::class);
+    }
+
+    private function registerUi()
+    {
+        Paginator::setDefaults([
+            'step' => 20,
+            'pagesStep' => 4,
+            'prevText' => 'Назад',
+            'nextText' => 'Вперед',
+            'view' => 'layouts.ui.paginator'
+        ]);
+
+        $this->app->singleton('menu.actions', ViewNamespace\Navigation\ActionsMenu::class);
     }
 
     private function registerHelpers() {}

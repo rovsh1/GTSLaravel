@@ -4,10 +4,10 @@ namespace App\Admin\Components\Prototype;
 
 enum PrototypeGroups: string
 {
-    case ADMINISTRATOR = 'administrator';
-    case REFERENCE = 'reference';
-    case HOTEL = 'hotel';
     case RESERVATION = 'reservation';
+    case HOTEL = 'hotel';
+    case REFERENCE = 'reference';
+    case ADMINISTRATOR = 'administrator';
     case SITE = 'site';
     case CUSTOMER = 'customer';
 }

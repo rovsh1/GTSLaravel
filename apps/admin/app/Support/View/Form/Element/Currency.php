@@ -2,7 +2,7 @@
 
 namespace App\Admin\Support\View\Form\Element;
 
-use App\Admin\Models\Currency as Model;
+use App\Admin\Models\Reference\Currency as Model;
 use Gsdk\Form\Element\Select;
 
 class Currency extends Select

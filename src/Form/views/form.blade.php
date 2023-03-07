@@ -1,2 +1,3 @@
 <?= $errors ?>
+<?= $csrf ?>
 <?= $elements ?>

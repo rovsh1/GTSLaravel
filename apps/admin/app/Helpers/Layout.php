@@ -11,15 +11,27 @@ class Layout
         return Meta::render();
     }
 
-    public static function breadcrumbs(): string
+    public static function breadcrumbs()
     {
         return app('breadcrumbs')->render();
     }
 
-    public static function sidebar(): string
+    public static function sidebar()
     {
-        //FIXME use sidebar
-        return view('layouts/sections/menu/vertical__menu');
-        //return app('sidebar')->render();
+        return app('sidebar')->render();
+    }
+
+    public static function actions()
+    {
+        if (app()->resolved('menu.actions')) {
+            return app('menu.actions')->render();
+        } else {
+            return '';
+        }
+    }
+
+    public static function buttonBack()
+    {
+        //app('back')->url();
     }
 }
