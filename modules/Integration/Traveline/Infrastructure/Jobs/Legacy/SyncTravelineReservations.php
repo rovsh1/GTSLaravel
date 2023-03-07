@@ -112,7 +112,6 @@ class SyncTravelineReservations implements ShouldQueue
             return null;
         }
 
-        //@todo уточнить по поводу проверки на отмененный статус
         $isCancelled = $reservation->status === $this->getCancelHotelReservationStatus();
         $travelineReservationStatus = $isCancelled ? TravelineReservationStatusEnum::Cancelled : TravelineReservationStatusEnum::Modified;
 
@@ -195,7 +194,6 @@ class SyncTravelineReservations implements ShouldQueue
      */
     private function buildRoomPerDayPrices(CarbonPeriod $period, float $allDaysPrice): array
     {
-        //@todo вынести в бронирование цену за один день (средняя стоимость дня) в домене
         $countDays = $period->count();
         $dailyPrice = $allDaysPrice / $countDays;
         $prices = [];
