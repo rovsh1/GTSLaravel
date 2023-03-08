@@ -4,12 +4,15 @@ namespace Module\Integration\Traveline\Application\Service;
 
 use Module\Integration\Traveline\Domain\Adapter\HotelAdapterInterface;
 use Module\Integration\Traveline\Domain\Api\Request\Update;
+use Module\Integration\Traveline\Domain\Api\Response\Error\AbstractTravelineError;
+use Module\Integration\Traveline\Domain\Api\Response\Error\InvalidCurrencyCode;
 use Module\Integration\Traveline\Domain\Exception\HotelNotConnectedException;
 use Module\Integration\Traveline\Domain\Repository\HotelRepositoryInterface;
 use Module\Integration\Traveline\Domain\Service\HotelRoomCodeGeneratorInterface;
 
 class QuotaAndPriceUpdater
 {
+    /** @var array<AbstractTravelineError|null> $responses */
     private array $responses = [];
 
     public function __construct(
@@ -19,7 +22,13 @@ class QuotaAndPriceUpdater
         private readonly bool                            $isPricesForResidents = false
     ) {}
 
-    public function updateQuotasAndPlans(int $hotelId, array $updates)
+    /**
+     * @param int $hotelId
+     * @param array $updates
+     * @return AbstractTravelineError[]|null[]
+     * @throws HotelNotConnectedException
+     */
+    public function updateQuotasAndPlans(int $hotelId, array $updates): array
     {
         $isHotelIntegrationEnabled = $this->hotelRepository->isHotelIntegrationEnabled($hotelId);
         if (!$isHotelIntegrationEnabled) {
@@ -29,7 +38,7 @@ class QuotaAndPriceUpdater
         foreach ($updateRequests as $updateRequest) {
             $this->handleRequest($updateRequest);
         }
-        //@todo скорее всего тут можно вернуть void
+        return $this->responses;
     }
 
     private function handleRequest(Update $updateRequest): void
@@ -43,17 +52,13 @@ class QuotaAndPriceUpdater
         }
 
         if ($updateRequest->hasPrices()) {
-            foreach ($updateRequest->prices as $price) {
-                $this->responses[] = $this->adapter->updateRoomPrice(
-                    $updateRequest->getDatePeriod(),
-                    $price->roomId,
-                    $updateRequest->ratePlanId,
-                    $price->guestsNumber,
-                    $this->isPricesForResidents,
-                    $updateRequest->currencyCode,
-                    $price->price,
-                );
+            $isSupportedCurrency = $updateRequest->currencyCode !== env('DEFAULT_CURRENCY_CODE');
+            if ($isSupportedCurrency) {
+                $updateResponse = $this->updatePrices($updateRequest);
+            } else {
+                $updateResponse = new InvalidCurrencyCode();
             }
+            $this->responses[] = $updateResponse;
         }
 
         if ($updateRequest->isClosed()) {
@@ -71,6 +76,23 @@ class QuotaAndPriceUpdater
                 $updateRequest->ratePlanId
             );
         }
+    }
+
+    private function updatePrices(Update $updateRequest): mixed
+    {
+        foreach ($updateRequest->prices as $price) {
+            $this->adapter->updateRoomPrice(
+                $updateRequest->getDatePeriod(),
+                $price->roomId,
+                $updateRequest->ratePlanId,
+                $price->guestsNumber,
+                $this->isPricesForResidents,
+                $updateRequest->currencyCode,
+                $price->price,
+            );
+        }
+        //@todo для тревелайна апдейт цен по нескольким дням - это один запрос, для нас несколько. Подумать как возвращать массив ответов на один запрос. (скорее всего не пригодтися)
+        return null;
     }
 
 }
