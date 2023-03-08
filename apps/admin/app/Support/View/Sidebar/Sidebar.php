@@ -2,43 +2,29 @@
 
 namespace App\Admin\Support\View\Sidebar;
 
-use App\Admin\Components\Prototype\PrototypeGroups;
-
 class Sidebar
 {
     public function render()
     {
-        return view('layouts/dashboard/sidebar', [
-            'groups' => $this->getGroups()
+        return view('layouts/main/sidebar', [
+            'sidebars' => $this->sidebars()
         ]);
     }
 
-    private function getGroups(): \Generator
+    private function sidebars(): \Generator
     {
-        foreach (PrototypeGroups::cases() as $case) {
-            $group = new \stdClass();
-            $group->items = $this->getItems($case);
-            if (empty($group->items)) {
-                continue;
-            }
-            $group->title = $case->value;
-            yield $group;
-        }
-    }
+        $sidebars = [
+            Groups\Reservations::class
+        ];
 
-    private function getItems(PrototypeGroups $group): array
-    {
-        $items = [];
-        foreach (app('prototypes')->all() as $prototype) {
-            if ($prototype->group !== $group) {
-                continue;
-            }
+        foreach ($sidebars as $cls) {
+            $sidebar = new $cls();
 
-            $item = new \stdClass();
-            $item->text = $prototype->title();
-            $item->href = $prototype->route();
-            $items[] = $item;
+            $dto = new \stdClass();
+            $dto->title = $sidebar->title();
+            $dto->groups = $sidebar->groups();
+
+            yield $dto;
         }
-        return $items;
     }
 }

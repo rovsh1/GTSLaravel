@@ -1,0 +1,19 @@
+aside.sidebar {
+    display: flex;
+    z-index: 20;
+    overflow: hidden;
+    width: 280px;
+    position: fixed;
+    height: 100vh;
+    box-shadow: 7px 0 60px rgb(0 0 0 / 5%);
+    -ms-flex-direction: column;
+    flex-direction: column;
+    transition: all .3s ease;
+    background: #fff;
+
+    div.logo {
+        height: 56px;
+        background: url("/images/logo.svg") 16px 50% no-repeat;
+        background-size: 146px 30px;
+    }
+}

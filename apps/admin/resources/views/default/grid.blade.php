@@ -1,4 +1,4 @@
-@extends('layouts/dashboard')
+@extends('layouts/main')
 
 @section('content')
     <div class="card grid-card">
@@ -9,10 +9,8 @@
                 <div class="quicksearch-wrapper">{!! $quicksearch !!}</div>
             </form>
         </div>
-        <div class="card-body">
-            <div class="table-responsive text-nowrap">
-                {!! $grid  !!}
-            </div>
+        <div class="table-responsive text-nowrap">
+            {!! $grid  !!}
         </div>
     </div>
 @endsection

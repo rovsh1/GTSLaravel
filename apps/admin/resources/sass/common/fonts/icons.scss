@@ -1,0 +1,17 @@
+@use "fontawesome/fontawesome";
+
+$icons: (
+    edit: "pen",
+    delete: "trash",
+    prev: "angle-left",
+    next: "angle-right",
+    down: "angle-down",
+);
+
+@mixin icon($icon) {
+    @include fontawesome.fa-icon-thin($icon);
+}
+
+@each $i, $icon in $icons {
+    .icon-#{$i} {@include fontawesome.fa-icon-thin($icon)}
+}

@@ -1,6 +1,0 @@
-@use 'common/base';
-
-body, input, textarea, select, button {font-family: "Open Sans", sans-serif;font-size: 14px;color: #000;}
-body {min-width: 320px;}
-
-.unselectable {-moz-user-select: -moz-none;-khtml-user-select: none;-webkit-user-select: none;-o-user-select: none;user-select: none;}

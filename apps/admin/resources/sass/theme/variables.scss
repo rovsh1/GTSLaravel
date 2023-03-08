@@ -1,0 +1,96 @@
+$primary: #007bff;
+
+$font-family-sans-serif: "Open Sans", sans-serif;
+$body-bg: #fff;
+//$body-color: #000;
+
+$enable-caret: false;
+$enable-shadows: true;
+
+$link-decoration: none;
+
+$box-shadow: 0 2px 6px 0 rgb(67 89 113 / 12%);
+$box-shadow-sm: 0 2px 6px 0 rgb(67 89 113 / 12%);
+$box-shadow-lg: 0 2px 6px 0 rgb(67 89 113 / 12%);
+
+$font-size-root: 16px;
+$font-size-base: .8rem;
+//$font-size-xl: 1.25rem !default; // (C)
+//$font-size-lg: 1rem !default;
+//$font-size-sm: 0.75rem !default;
+//$font-size-xs: $font-size-sm !default; // (C)
+
+//$line-height-base: 1.5;
+
+// scss-docs-start card-variables
+$card-border-width: 0;
+$card-cap-bg: #fff;
+$card-bg: #fff;
+$card-box-shadow: 0 2px 6px 0 rgb(67 89 113 / 12%);
+
+// scss-docs-start table-variables
+//$table-cell-padding-y: 4px;
+//$table-cell-padding-x: 8px;
+//$table-cell-padding-y-sm: 4px;
+//$table-cell-padding-x-sm: 8px;
+
+//$table-color:                 $body-color !default;
+
+$table-striped-color: #697a8d;
+$table-striped-bg: #f9fafb;
+
+//$table-active-color:          $table-color !default;
+
+//$table-hover-color:           $table-color !default;
+
+//$table-border-width:          $border-width !default;
+//$table-border-color:          $border-color !default;
+
+
+// scss-docs-start input-btn-variables
+//$input-btn-padding-y: 8px;
+//$input-btn-padding-x: 16px;
+
+//$input-btn-focus-width: .25rem !default;
+//$input-btn-padding-y-sm: .25rem !default;
+//$input-btn-padding-x-sm: .5rem !default;
+
+// scss-docs-start pagination-variables
+$pagination-padding-y: .375rem !default;
+$pagination-padding-x: .75rem !default;
+$pagination-padding-y-sm: .25rem !default;
+$pagination-padding-x-sm: .5rem !default;
+$pagination-padding-y-lg: .75rem !default;
+$pagination-padding-x-lg: 1.5rem !default;
+
+$pagination-bg: #fff;
+//$pagination-border-width: $border-width !default;
+//$pagination-border-radius: $border-radius !default;
+//$pagination-margin-start: -$pagination-border-width !default;
+//$pagination-border-color: $gray-300 !default;
+
+//$pagination-focus-color: $link-hover-color !default;
+//$pagination-focus-bg: $gray-200 !default;
+//$pagination-focus-box-shadow: $input-btn-focus-box-shadow !default;
+//$pagination-focus-outline: 0 !default;
+//
+//$pagination-hover-color: $link-hover-color !default;
+//$pagination-hover-bg: $gray-200 !default;
+//$pagination-hover-border-color: $gray-300 !default;
+//
+//$pagination-active-color: $component-active-color !default;
+//$pagination-active-bg: $component-active-bg !default;
+//$pagination-active-border-color: $pagination-active-bg !default;
+//
+//$pagination-disabled-color: $gray-600 !default;
+//$pagination-disabled-bg: $white !default;
+//$pagination-disabled-border-color: $gray-300 !default;
+//
+//$pagination-transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out !default;
+//
+//$pagination-border-radius-sm: $border-radius-sm !default;
+//$pagination-border-radius-lg: $border-radius-lg !default;
+
+$input-focus-width: 1px;
+$input-box-shadow: null;
+$input-focus-box-shadow: 0 0 0 rgba(0, 0, 0, 0);
