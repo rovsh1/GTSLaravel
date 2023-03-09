@@ -3,6 +3,7 @@
 namespace App\Core\Providers;
 
 use App\Core\Components\Locale\Languages;
+use Custom\Framework\Database\Eloquent\MacrosServiceProvider;
 use Custom\Framework\Foundation\Support\Providers\ServiceProvider;
 use Module\Services\PortGateway\Client as PortGateway;
 use Module\Shared\Infrastructure\Adapter\PortGatewayInterface;
@@ -16,6 +17,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(EventServiceProvider::class);
         $this->app->register(ModulesServiceProvider::class);
         $this->app->register(DateServiceProvider::class);
+        $this->app->register(MacrosServiceProvider::class);
 
         $this->app->singleton(PortGatewayInterface::class, PortGateway::class);
         $this->app->alias(PortGatewayInterface::class, 'portGateway');
