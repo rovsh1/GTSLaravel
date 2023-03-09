@@ -29,10 +29,11 @@ class CityController extends AbstractPrototypeController
             ->enableQuicksearch()
             ->paginator(self::GRID_LIMIT)
             ->setSearchForm($form)
-            ->id('id', ['text' => 'ID', 'order' => true])
+            ->edit(['route' => $this->prototype->routeName('edit')])
+            //->id('id', ['text' => 'ID', 'order' =
             ->text('name', ['text' => 'Наименование', 'order' => true])
             ->text('country_name', ['text' => 'Страна'])
-            ->actions('actions', ['route' => $this->prototype->route('index')])
+            //->actions('actions', ['route' => $this->prototype->route('index')])
             ->orderBy('name', 'asc');
     }
 }

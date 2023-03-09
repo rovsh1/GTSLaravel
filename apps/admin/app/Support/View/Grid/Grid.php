@@ -11,6 +11,16 @@ class Grid extends Base
 
     protected ?Quicksearch $quicksearch = null;
 
+    public function edit(array $options = []): static
+    {
+        return $this->addColumn(new Column\Edit('edit', $options));
+    }
+
+    public function actions(array $options = []): static
+    {
+        return $this->addColumn(new Column\Actions('actions', $options));
+    }
+
     public function getSearchCriteria(): array
     {
         $criteria = [];

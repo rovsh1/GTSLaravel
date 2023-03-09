@@ -8,21 +8,20 @@
             {!! Layout::actions() !!}
         </h5>
         <div class="card-body">
-            <div class="row">
-                <div class="col-md-6">
-                    <form action="{{ $form->action }}" method="{{ strtoupper($form->method) === 'GET' ? 'GET' : 'POST' }}" enctype="multipart/form-data">
-                        <div class="form-group">{!! $form !!}</div>
+            <form action="{{ $form->action }}" method="{{ strtoupper($form->method) === 'GET' ? 'GET' : 'POST' }}" enctype="multipart/form-data">
+                <div class="form-group">{!! $form !!}</div>
 
-                        <div class="form-buttons">
-                            @if(isset($cancelUrl))
-                                <a href="{{ $cancelUrl }}" type="submit" class="btn btn-secondary">Отмена</a>
-                            @endif
-                            <button type="submit" class="btn btn-primary">{{ $submitText ?? 'Сохранить' }}</button>
-                        </div>
-                    </form>
-
+                <div class="form-buttons">
+                    <button type="submit" class="btn btn-primary">{{ $submitText ?? 'Сохранить' }}</button>
+                    @if(isset($cancelUrl))
+                        <a href="{{ $cancelUrl }}" class="btn btn-light">Отмена</a>
+                    @endif
+                    <div class="spacer"></div>
+                    @if(isset($deleteUrl) && $deleteUrl)
+                        <a href="#" data-url="{{ $deleteUrl }}" class="btn btn-delete btn-light">Удалить</a>
+                    @endif
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 @endsection

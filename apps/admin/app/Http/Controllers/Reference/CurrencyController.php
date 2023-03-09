@@ -25,13 +25,13 @@ class CurrencyController extends AbstractPrototypeController
         return (new Grid())
             ->enableQuicksearch()
             ->paginator(self::GRID_LIMIT)
-            ->id('id', ['text' => 'ID', 'order' => true])
+            ->edit(['route' => $this->prototype->routeName('edit')])
+            //->id('id', ['text' => 'ID', 'order' => true])
             ->text('name', ['text' => 'Наименование', 'order' => true])
             ->text('code_num', ['text' => 'Код (цифровой)'])
             ->text('code_char', ['text' => 'Код (символьный)'])
             ->text('sign', ['text' => 'Символ'])
-            ->text('rate', ['text' => 'Курс', 'order' => true])
-            ->actions('actions', ['route' => $this->prototype->route('index')])
+            ->number('rate', ['text' => 'Курс', 'order' => true])
             ->orderBy('id', 'asc');
     }
 }
