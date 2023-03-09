@@ -2,7 +2,7 @@
 
 namespace Module\Integration\Traveline\Domain\Api\Response\Error;
 
-abstract class AbstractTravelineError implements \JsonSerializable
+abstract class AbstractTravelineError implements \JsonSerializable, TravelineResponseErrorInterface
 {
     public function __construct(
         public readonly int    $code,
