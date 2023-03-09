@@ -14,7 +14,7 @@ class Update
         public readonly CarbonInterface $endDateYmd,
         public readonly int             $roomTypeId,
         public readonly ?int            $ratePlanId,
-        //@todo тут скорее всего модель или енум: AMD, AZN, BGN, BYN, CAD, CHF, CNY, EUR, GBR, INR, KGS, KRW, KZT, MDL, NOK, PLN, RUB, TJS, UAN, USD, UZS.
+        //todo тут скорее всего модель или енум: AMD, AZN, BGN, BYN, CAD, CHF, CNY, EUR, GBR, INR, KGS, KRW, KZT, MDL, NOK, PLN, RUB, TJS, UAN, USD, UZS.
         public readonly ?string         $currencyCode,
         public readonly ?bool           $closed,
         /** @var Price[]|null $prices */

@@ -78,7 +78,7 @@ class QuotaAndPriceUpdater
         }
     }
 
-    private function updatePrices(Update $updateRequest): mixed
+    private function updatePrices(Update $updateRequest): void
     {
         foreach ($updateRequest->prices as $price) {
             $this->adapter->updateRoomPrice(
@@ -91,8 +91,6 @@ class QuotaAndPriceUpdater
                 $price->price,
             );
         }
-        //@todo для тревелайна апдейт цен по нескольким дням - это один запрос, для нас несколько. Подумать как возвращать массив ответов на один запрос. (скорее всего не пригодтися)
-        return null;
     }
 
 }
