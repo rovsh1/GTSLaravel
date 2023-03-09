@@ -82,7 +82,7 @@ class ReservationAdapter extends AbstractPortAdapter implements ReservationAdapt
      */
     private function buildRoomPerDayPrices(CarbonPeriod $period, float $allDaysPrice): array
     {
-        //@todo вынести в бронирование цену за один день (средняя стоимость дня) в домене
+        //todo вынести в бронирование цену за один день (средняя стоимость дня) в домене
         $countDays = $period->count();
         $dailyPrice = $allDaysPrice / $countDays;
         $prices = [];

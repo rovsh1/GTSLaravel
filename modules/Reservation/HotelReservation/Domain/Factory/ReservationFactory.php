@@ -21,7 +21,7 @@ class ReservationFactory extends AbstractEntityFactory
     protected function fromArray(array $data): mixed
     {
         return new $this->entity(
-        //@todo сейчас number = null во всей таблице
+        //todo сейчас number = null во всей таблице
             new ReservationIdentifier($data['id'], $data['number'] ?? ''),
             new ReservationStatus(
                 ReservationStatusEnum::from($data['status']),

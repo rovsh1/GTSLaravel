@@ -4,7 +4,7 @@ namespace Module\Integration\Traveline\Domain\Api\Response;
 
 use Module\Integration\Traveline\Domain\Api\Response\Error\AbstractTravelineError;
 
-abstract class AbstractErrorResponse extends AbstractTravelineResponse
+class ErrorResponse extends AbstractTravelineResponse
 {
     public function __construct(
         /** @var AbstractTravelineError[] $errors */

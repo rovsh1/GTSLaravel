@@ -34,6 +34,7 @@ class BootServiceProvider extends ServiceProvider
             return new Application\Service\QuotaAndPriceUpdater(
                 app(Infrastructure\Adapter\HotelAdapter::class),
                 app(Infrastructure\Repository\HotelRepository::class),
+                app(Domain\Service\HotelRoomCodeGenerator::class),
                 $app->config('is_prices_for_residents')
             );
         });

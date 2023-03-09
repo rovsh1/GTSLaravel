@@ -13,11 +13,10 @@ class Price
         public readonly float $price,
     ) {}
 
-    public static function fromArray(array $data): self
+    public static function fromArray(array $data, HotelRoomCodeGeneratorInterface $codeGenerator): self
     {
-        //@todo тут работать не будет
         /** @var HotelRoomCode $roomCode */
-        $roomCode = app(HotelRoomCodeGeneratorInterface::class)->parseRoomCode($data['code']);
+        $roomCode = $codeGenerator->parseRoomCode($data['code']);
         return new self(
             $roomCode->roomId,
             $roomCode->personQuantity,
@@ -29,8 +28,8 @@ class Price
      * @param array $items
      * @return self[]
      */
-    public static function collectionFromArray(array $items): array
+    public static function collectionFromArray(array $items, HotelRoomCodeGeneratorInterface $codeGenerator): array
     {
-        return array_map(fn(array $data) => static::fromArray($data), $items);
+        return array_map(fn(array $data) => static::fromArray($data, $codeGenerator), $items);
     }
 }

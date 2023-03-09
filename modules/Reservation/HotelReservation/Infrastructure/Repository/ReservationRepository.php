@@ -31,7 +31,7 @@ class ReservationRepository implements ReservationRepositoryInterface
     {
         $modelsQuery = Model::query()
             ->withClient()
-            //@todo сейчас нет даты обновления в базе
+            //todo сейчас нет даты обновления в базе
             ->where('', '>=', $dateUpdate);
 
         if ($hotelId !== null) {
@@ -47,7 +47,7 @@ class ReservationRepository implements ReservationRepositoryInterface
     {
         $modelsQuery = Model::query()
             ->withClient()
-            //@todo уточнить по поводу статуса у Анвара
+            //todo уточнить по поводу статуса у Анвара
             ->where('reservation.status', ReservationStatusEnum::WaitingConfirmation);
 
         if ($hotelId !== null) {
