@@ -49,7 +49,7 @@ class Name extends Model
     {
         static::addGlobalTranslationScope();
         static::addGlobalScope('roomName', function (Builder $builder) {
-            //@todo 2 - это айди енума, нужно как то их получать
+            //todo 2 - это айди енума, нужно как то их получать
             $builder->where('group_id', 2);
         });
     }
