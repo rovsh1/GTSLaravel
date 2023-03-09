@@ -1,4 +1,4 @@
-const { EnvironmentPlugin } = require('webpack');
+const {EnvironmentPlugin} = require('webpack');
 const mix = require('laravel-mix');
 const fs = require('fs');
 const glob = require('glob');
@@ -23,6 +23,12 @@ mix.options({
     terser: {
         extractComments: false,
     }
+});
+
+mix.alias({
+    //'@core': resourcesPath + '/core/js',
+
+    '~fonts': resourcesPath + '/sass/common/fonts',
 });
 
 /*
@@ -53,7 +59,7 @@ mix.webpackConfig({
                 ],
                 loader: 'babel-loader',
                 options: {
-                    presets: [['@babel/preset-env', { targets: 'last 2 versions, ie >= 10' }]],
+                    presets: [['@babel/preset-env', {targets: 'last 2 versions, ie >= 10'}]],
                     plugins: [
                         '@babel/plugin-transform-destructuring',
                         '@babel/plugin-proposal-object-rest-spread',
@@ -82,8 +88,7 @@ mix.webpackConfig({
     }
 });
 
-mix.alias({
-});
+mix.alias({});
 
 /*
  |--------------------------------------------------------------------------

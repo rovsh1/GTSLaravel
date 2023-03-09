@@ -1,0 +1,9 @@
+@use "../common/fonts/open-sans";
+@use "../common/fonts/fontawesome/fontawesome";
+@use "../common/fonts/icons";
+
+@import "variables";
+
+@import "~bootstrap/scss/bootstrap";
+
+body {min-width: 320px;}
