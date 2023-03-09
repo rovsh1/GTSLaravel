@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Integration\Traveline\Infrastructure\Models\Room;
+namespace Module\Integration\Traveline\Infrastructure\Models\Legacy\Room;
 
 use Custom\Framework\Database\Eloquent\Model;
 

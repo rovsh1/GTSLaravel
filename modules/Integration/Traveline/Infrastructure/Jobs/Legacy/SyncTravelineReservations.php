@@ -2,6 +2,7 @@
 
 namespace Module\Integration\Traveline\Infrastructure\Jobs\Legacy;
 
+use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -15,6 +16,7 @@ use Module\Integration\Traveline\Application\Dto\Reservation\CustomerDto;
 use Module\Integration\Traveline\Application\Dto\Reservation\RoomDto;
 use Module\Integration\Traveline\Application\Dto\ReservationDto;
 use Module\Integration\Traveline\Infrastructure\Models\Legacy\Guest;
+use Module\Integration\Traveline\Infrastructure\Models\Legacy\Hotel\Option;
 use Module\Integration\Traveline\Infrastructure\Models\Legacy\Reservation;
 use Module\Integration\Traveline\Infrastructure\Models\Legacy\ReservationStatusEnum;
 use Module\Integration\Traveline\Infrastructure\Models\Legacy\Room;
@@ -105,15 +107,15 @@ class SyncTravelineReservations implements ShouldQueue
 
     private function mapReservationsToTravelineUpdateData(Reservation $reservation): ?array
     {
+        $isCancelled = $reservation->status === $this->getCancelHotelReservationStatus();
+        $travelineReservationStatus = $isCancelled ? TravelineReservationStatusEnum::Cancelled : TravelineReservationStatusEnum::Modified;
+
         $oldHash = md5($reservation->data);
-        $newDto = $this->convertHotelReservationToDto($reservation);
+        $newDto = $this->convertHotelReservationToDto($reservation, $travelineReservationStatus->value);
         $newHash = md5(json_encode($newDto));
         if ($oldHash === $newHash) {
             return null;
         }
-
-        $isCancelled = $reservation->status === $this->getCancelHotelReservationStatus();
-        $travelineReservationStatus = $isCancelled ? TravelineReservationStatusEnum::Cancelled : TravelineReservationStatusEnum::Modified;
 
         return [
             'reservation_id' => $reservation->id,
@@ -134,7 +136,7 @@ class SyncTravelineReservations implements ShouldQueue
     {
         $preparedReservations = $hotelReservations->map(fn(Reservation $reservation) => [
             'reservation_id' => $reservation->id,
-            'data' => json_encode($this->convertHotelReservationToDto($reservation)),
+            'data' => json_encode($this->convertHotelReservationToDto($reservation, TravelineReservationStatusEnum::New->value)),
             'status' => TravelineReservationStatusEnum::New,
             'created_at' => $reservation->created,
             'updated_at' => $reservation->created,
@@ -143,7 +145,7 @@ class SyncTravelineReservations implements ShouldQueue
         TravelineReservation::insert($preparedReservations);
     }
 
-    private function convertHotelReservationToDto(Reservation $reservation): ReservationDto
+    private function convertHotelReservationToDto(Reservation $reservation, string $status): ReservationDto
     {
         return ReservationDto::from([
                 'number' => $reservation->id,
@@ -154,9 +156,11 @@ class SyncTravelineReservations implements ShouldQueue
                 'rooms' => $this->convertHotelReservationsRoomsToDto(
                     $reservation->rooms,
                     $reservation->client_name,
-                    new CarbonPeriod($reservation->date_checkin, $reservation->date_checkout)
+                    new CarbonPeriod($reservation->date_checkin, $reservation->date_checkout),
+                    $reservation->hotelDefaultCheckInStart,
+                    $reservation->hotelDefaultCheckOutEnd,
                 ),
-                'status' => Dto\Reservation\StatusEnum::from($this->convertHotelReservationStatusToTravelineStatus($reservation->status)->value),
+                'status' => Dto\Reservation\StatusEnum::from($status),
                 'currencyCode' => env('DEFAULT_CURRENCY_CODE'),
             ]
         );
@@ -164,24 +168,39 @@ class SyncTravelineReservations implements ShouldQueue
 
     /**
      * @param Collection $rooms
+     * @param string $clientName
+     * @param CarbonPeriod $period
+     * @param Option|null $hotelDefaultCheckInStart
+     * @param Option|null $hotelDefaultCheckOutEnd
      * @return RoomDto[]
      */
-    private function convertHotelReservationsRoomsToDto(Collection $rooms, string $clientName, CarbonPeriod $period): array
+    private function convertHotelReservationsRoomsToDto(Collection $rooms, string $clientName, CarbonPeriod $period, ?Option $hotelDefaultCheckInStart, ?Option $hotelDefaultCheckOutEnd): array
     {
-        return $rooms->map(function (Room $room) use ($clientName, $period) {
+        return $rooms->map(function (Room $room) use ($clientName, $period, $hotelDefaultCheckInStart, $hotelDefaultCheckOutEnd) {
             return new RoomDto(
                 $room->room_id,
                 $room->rate_id,
                 $this->covertRoomGuestsToDto($room->guests),
                 $room->guests->count(),
                 CustomerDto::from(['fullName' => $clientName]),
-                $this->buildRoomPerDayPrices($period, $room->price_net),
+                $this->buildRoomPerDayPrices(
+                    $period,
+                    $room->price_net,
+                    $room->checkInCondition,
+                    $room->checkOutCondition,
+                    $hotelDefaultCheckInStart,
+                    $hotelDefaultCheckOutEnd
+                ),
                 Dto\Reservation\Room\TotalDto::from(['amountAfterTaxes' => $room->price_net]),
                 $room->note
             );
         })->all();
     }
 
+    /**
+     * @param Collection $guests
+     * @return \Spatie\LaravelData\CursorPaginatedDataCollection|\Spatie\LaravelData\DataCollection|\Spatie\LaravelData\PaginatedDataCollection
+     */
     private function covertRoomGuestsToDto(Collection $guests)
     {
         $preparedGuests = $guests->map(fn(Guest $guest) => ['fullName' => $guest->fullname])->all();
@@ -190,31 +209,80 @@ class SyncTravelineReservations implements ShouldQueue
 
     /**
      * @param CarbonPeriod $period
+     * @param float $allDaysPrice
+     * @param Room\CheckInOutConditions|null $roomCheckInCondition
+     * @param Room\CheckInOutConditions|null $roomCheckOutCondition
+     * @param Option|null $hotelDefaultCheckInStart
+     * @param Option|null $hotelDefaultCheckOutEnd
      * @return Dto\Reservation\Room\DayPriceDto[]
      */
-    private function buildRoomPerDayPrices(CarbonPeriod $period, float $allDaysPrice): array
+    private function buildRoomPerDayPrices(
+        CarbonPeriod               $period,
+        float                      $allDaysPrice,
+        ?Room\CheckInOutConditions $roomCheckInCondition,
+        ?Room\CheckInOutConditions $roomCheckOutCondition,
+        ?Option                    $hotelDefaultCheckInStart,
+        ?Option                    $hotelDefaultCheckOutEnd
+    ): array
     {
-        $countDays = $period->count();
+        /**
+         * @todo возможно тут временно будет логика квотирования раннего/позднего заезда/выезда:
+         *  - если ранний заезд - включаем день перед началом периода
+         *  - если поздний заезд - включаем последний день периода
+         */
+        $preparedPeriod = $this->getPeriodByCheckInCondition($period, $hotelDefaultCheckInStart, $roomCheckInCondition);
+        $preparedPeriod = $this->getPeriodByCheckOutCondition($preparedPeriod, $hotelDefaultCheckOutEnd, $roomCheckOutCondition);
+
+        $countDays = $preparedPeriod->count();
         $dailyPrice = $allDaysPrice / $countDays;
         $prices = [];
-        foreach ($period as $date) {
+        foreach ($preparedPeriod as $date) {
             $prices[] = new Dto\Reservation\Room\DayPriceDto($date->format('Y-m-d'), $dailyPrice);
         }
         return $prices;
     }
 
-    private function convertHotelReservationStatusToTravelineStatus(ReservationStatusEnum $status): TravelineReservationStatusEnum
+    private function getPeriodByCheckInCondition(CarbonPeriod $period, ?Option $hotelDefaultCheckInStart, ?Room\CheckInOutConditions $roomCheckInCondition): CarbonPeriod
     {
-        return match ($status) {
-            //@todo уточнить по поводу статусов
-            $this->getCancelHotelReservationStatus() => TravelineReservationStatusEnum::Cancelled,
-            ReservationStatusEnum::Created => TravelineReservationStatusEnum::New,
-            default => TravelineReservationStatusEnum::Modified,
-        };
+        if ($hotelDefaultCheckInStart === null) {
+            //@todo что тут делать?
+            \Log::warning('У отеля отсутствует дефолтное время заезда');
+            return $period;
+        }
+        if ($roomCheckInCondition === null) {
+            return $period;
+        }
+        $startDate = $period->getStartDate();
+        $defaultCheckInTime = new Carbon($hotelDefaultCheckInStart->value);
+        $expectedCheckInTime = new Carbon($roomCheckInCondition->start);
+        if ($expectedCheckInTime < $defaultCheckInTime) {
+            $startDate->subDay();
+        }
+        return new CarbonPeriod($startDate, $period->getEndDate());
+    }
+
+    private function getPeriodByCheckOutCondition(CarbonPeriod $period, ?Option $hotelDefaultCheckOutEnd, ?Room\CheckInOutConditions $roomCheckOutCondition): CarbonPeriod
+    {
+        if ($hotelDefaultCheckOutEnd === null) {
+            //@todo что тут делать?
+            \Log::warning('У отеля отсутствует дефолтное время выезда');
+            return $period;
+        }
+        if ($roomCheckOutCondition === null) {
+            return new CarbonPeriod($period->getStartDate(), $period->getEndDate()->subDay());
+        }
+        $endDate = $period->getEndDate();
+        $defaultCheckInTime = new Carbon($hotelDefaultCheckOutEnd->value);
+        $expectedCheckInTime = new Carbon($roomCheckOutCondition->end);
+        if ($expectedCheckInTime > $defaultCheckInTime) {
+            $endDate->addDay();
+        }
+        return new CarbonPeriod($period->getStartDate(), $endDate);
     }
 
     private function getCancelHotelReservationStatus(): ReservationStatusEnum
     {
+        //@todo уточнить по поводу статусов, скорее всего будет массив
         return ReservationStatusEnum::WaitingCancellation;
     }
 }

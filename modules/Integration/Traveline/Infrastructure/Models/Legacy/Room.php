@@ -47,8 +47,8 @@ use Custom\Framework\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Room whereRoomId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Room whereRoomsNumber($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Room whereStatusId($value)
- * @property-read \Module\Integration\Traveline\Infrastructure\Models\Room\CheckInOutConditions|null $checkInCondition
- * @property-read \Module\Integration\Traveline\Infrastructure\Models\Room\CheckInOutConditions|null $checkOutCondition
+ * @property-read \Module\Integration\Traveline\Infrastructure\Models\Legacy\Room\CheckInOutConditions|null $checkInCondition
+ * @property-read \Module\Integration\Traveline\Infrastructure\Models\Legacy\Room\CheckInOutConditions|null $checkOutCondition
  * @mixin \Eloquent
  */
 class Room extends Model
