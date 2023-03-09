@@ -6,18 +6,15 @@ use App\Admin\Support\View\Form\Form;
 
 class Quicksearch extends Form
 {
-    protected function boot()
+    protected function build()
     {
-        $this->method('get');
+        $this->method('get')
+            ->search('quicksearch', ['placeholder' => 'Быстрый поиск', 'autocomplete' => 'off']);
     }
 
     public function __toString(): string
     {
-        $html = '<form method="get" class="quicksearch">';
-        $html .= '<button type="submit" title="Найти"></button>';
-        $html .= $this->render();
-        $html .= '</form>';
-        return $html;
+        return $this->getElement('quicksearch')->render();
     }
 
     public function getTerm(): ?string

@@ -4,6 +4,10 @@ $font-family-sans-serif: "Open Sans", sans-serif;
 $body-bg: #fff;
 //$body-color: #000;
 
+//$input-btn-font-size: .8rem;
+$input-btn-padding-y: 0;
+$input-btn-line-height: 2.5;
+
 $enable-caret: false;
 $enable-shadows: true;
 
@@ -24,7 +28,7 @@ $font-size-base: .8rem;
 
 // scss-docs-start card-variables
 $card-border-width: 0;
-$card-cap-bg: #fff;
+$card-cap-bg: transparent;
 $card-bg: #fff;
 $card-box-shadow: 0 2px 6px 0 rgb(67 89 113 / 12%);
 
@@ -56,14 +60,14 @@ $table-striped-bg: #f9fafb;
 //$input-btn-padding-x-sm: .5rem !default;
 
 // scss-docs-start pagination-variables
-$pagination-padding-y: .375rem !default;
-$pagination-padding-x: .75rem !default;
-$pagination-padding-y-sm: .25rem !default;
-$pagination-padding-x-sm: .5rem !default;
-$pagination-padding-y-lg: .75rem !default;
-$pagination-padding-x-lg: 1.5rem !default;
+$pagination-padding-y: 0;
+//$pagination-padding-x: .75rem !default;
+//$pagination-padding-y-sm: .25rem !default;
+//$pagination-padding-x-sm: .5rem !default;
+//$pagination-padding-y-lg: .75rem !default;
+//$pagination-padding-x-lg: 1.5rem !default;
 
-$pagination-bg: #fff;
+//$pagination-bg: #fff;
 //$pagination-border-width: $border-width !default;
 //$pagination-border-radius: $border-radius !default;
 //$pagination-margin-start: -$pagination-border-width !default;

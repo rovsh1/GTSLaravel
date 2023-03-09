@@ -2,7 +2,11 @@
     <ol class="breadcrumb">
         @foreach($items as $item)
             <li class="breadcrumb-item">
-                <a href="{{$item->href}}">{{$item->text}}</a>
+                @if ($item->href)
+                    <a href="{{$item->href}}">{{$item->text}}</a>
+                @else
+                    <span>{{$item->text}}</span>
+                @endif
             </li>
         @endforeach
         <!--<li class="breadcrumb-item active">Страны</li>-->
