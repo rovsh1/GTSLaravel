@@ -3,6 +3,7 @@
 namespace App\Admin\Http\Controllers\Reference;
 
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
+use App\Admin\Support\View\Form\Form;
 use App\Admin\Support\View\Form\SearchForm;
 use App\Admin\Support\View\Grid\Grid;
 
@@ -28,7 +29,7 @@ class CityController extends AbstractPrototypeController
             ->enableQuicksearch()
             ->paginator(self::GRID_LIMIT)
             ->setSearchForm($form)
-            ->text('id', ['text' => 'ID', 'order' => true])
+            ->id('id', ['text' => 'ID', 'order' => true])
             ->text('name', ['text' => 'Наименование', 'order' => true])
             ->text('country_name', ['text' => 'Страна'])
             ->actions('actions', ['route' => $this->prototype->route('index')])

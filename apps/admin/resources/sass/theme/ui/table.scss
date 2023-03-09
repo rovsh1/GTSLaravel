@@ -5,6 +5,47 @@
     td:last-child, th:last-child {padding-right: 1.5rem;}
 }
 
-column-sorted {
+.column-sorted {
     //@include icons.icon();
+}
+
+.column-actions {
+    width: 3rem;
+    button {width: 1.5rem;height: 1.5rem;padding: 0;}
+}
+
+.grid-filters {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    gap: .5rem;
+    position: relative;
+    & > .btn {padding: 5px 0 0 0;width: 32px; line-height: 2;}
+}
+.search-popup-wrapper {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    padding-top: 8px;
+    z-index: 100;
+    .search-popup {
+        background: #fff;
+        padding: 1rem 1.5rem;
+        width: 320px;
+    }
+}
+.grid-filters:not(.expanded) .search-popup-wrapper {display: none;}
+.quicksearch-wrapper {
+    position: relative;
+    input {padding-right: 32px;width: 272px;}
+    button {
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 100%;
+        border: none;
+        background: none;
+        width: 32px;
+        font-size: 16px;
+    }
 }

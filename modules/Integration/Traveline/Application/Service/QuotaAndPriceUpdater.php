@@ -12,8 +12,8 @@ use Module\Integration\Traveline\Domain\Service\HotelRoomCodeGeneratorInterface;
 
 class QuotaAndPriceUpdater
 {
-    /** @var array<AbstractTravelineError|null> $responses */
-    private array $responses = [];
+    /** @var array<AbstractTravelineError|null> $errors */
+    private array $errors = [];
 
     public function __construct(
         private readonly HotelAdapterInterface           $adapter,
@@ -38,13 +38,13 @@ class QuotaAndPriceUpdater
         foreach ($updateRequests as $updateRequest) {
             $this->handleRequest($updateRequest);
         }
-        return $this->responses;
+        return $this->errors;
     }
 
     private function handleRequest(Update $updateRequest): void
     {
         if ($updateRequest->hasQuota()) {
-            $this->responses[] = $this->adapter->updateRoomQuota(
+            $this->adapter->updateRoomQuota(
                 $updateRequest->getDatePeriod(),
                 $updateRequest->roomTypeId,
                 $updateRequest->quota
@@ -54,15 +54,14 @@ class QuotaAndPriceUpdater
         if ($updateRequest->hasPrices()) {
             $isSupportedCurrency = $updateRequest->currencyCode !== env('DEFAULT_CURRENCY_CODE');
             if ($isSupportedCurrency) {
-                $updateResponse = $this->updatePrices($updateRequest);
+                $this->updatePrices($updateRequest);
             } else {
-                $updateResponse = new InvalidCurrencyCode();
+                $this->errors[] = new InvalidCurrencyCode();
             }
-            $this->responses[] = $updateResponse;
         }
 
         if ($updateRequest->isClosed()) {
-            $this->responses[] = $this->adapter->closeRoomRate(
+            $this->adapter->closeRoomRate(
                 $updateRequest->getDatePeriod(),
                 $updateRequest->roomTypeId,
                 $updateRequest->ratePlanId
@@ -70,7 +69,7 @@ class QuotaAndPriceUpdater
         }
 
         if ($updateRequest->isOpened()) {
-            $this->responses[] = $this->adapter->openRoomRate(
+            $this->adapter->openRoomRate(
                 $updateRequest->getDatePeriod(),
                 $updateRequest->roomTypeId,
                 $updateRequest->ratePlanId

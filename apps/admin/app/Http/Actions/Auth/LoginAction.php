@@ -15,6 +15,8 @@ class LoginAction
     {
         $form = new LoginForm();
         if ($form->submit() && $this->login($form->getData())) {
+            $request->session()->regenerate();
+
             return redirect(route('home'));
         }
 
@@ -30,8 +32,6 @@ class LoginAction
                 true
             )
         ) {
-            request()->session()->regenerate();
-
             return true;//Auth::guard('admin')->user();
         }
 

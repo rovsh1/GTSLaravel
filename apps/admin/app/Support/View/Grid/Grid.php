@@ -19,7 +19,7 @@ class Grid extends Base
             $criteria = array_filter($this->searchForm->getData());
         }
 
-        if ($this->quicksearch && ($term = $this->quicksearch->getElement('quicksearch')->getValue())) {
+        if ($this->quicksearch && ($term = $this->quicksearch->getTerm())) {
             $criteria['quicksearch'] = $term;
         }
 
@@ -28,8 +28,7 @@ class Grid extends Base
 
     public function enableQuicksearch(): static
     {
-        $this->quicksearch = new Quicksearch(['method' => 'GET']);
-        $this->quicksearch->text('quicksearch', ['placeholder' => 'Быстрый поиск', 'autocomplete' => false]);
+        $this->quicksearch = new Quicksearch();
         $this->quicksearch->submit();
         return $this;
     }

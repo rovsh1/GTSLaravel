@@ -31,8 +31,7 @@ class HotelController
         } catch (HotelNotConnectedException $exception) {
             return new HotelNotConnectedToChannelManagerResponse();
         }
-        $filteredErrors = array_filter($errors);
-        if (empty($filteredErrors)) {
+        if (empty($errors)) {
             return new EmptySuccessResponse();
         }
         return new ErrorResponse($errors);
