@@ -11,7 +11,7 @@ class EventServiceProvider extends ServiceProvider
         'HotelReservation\ReservationCancelled' => [
             SendReservationNotificationListener::class
         ],
-        //@todo добавить события новой брои и измененной
+        //todo добавить события новой брои и измененной
     ];
 
     public function registerListeners($eventDispatcher)

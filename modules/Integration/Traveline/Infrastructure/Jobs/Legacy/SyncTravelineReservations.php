@@ -107,7 +107,7 @@ class SyncTravelineReservations implements ShouldQueue
 
     private function mapReservationsToTravelineUpdateData(Reservation $reservation): ?array
     {
-        $isCancelled = $reservation->status === $this->getCancelHotelReservationStatus();
+        $isCancelled = $this->isCancelledHotelReservationStatus($reservation->status);
         $travelineReservationStatus = $isCancelled ? TravelineReservationStatusEnum::Cancelled : TravelineReservationStatusEnum::Modified;
 
         $oldHash = md5($reservation->data);
@@ -226,7 +226,7 @@ class SyncTravelineReservations implements ShouldQueue
     ): array
     {
         /**
-         * @todo возможно тут временно будет логика квотирования раннего/позднего заезда/выезда:
+         * @todo тут временно будет логика квотирования раннего/позднего заезда/выезда:
          *  - если ранний заезд - включаем день перед началом периода
          *  - если поздний заезд - включаем последний день периода
          */
@@ -280,9 +280,15 @@ class SyncTravelineReservations implements ShouldQueue
         return new CarbonPeriod($period->getStartDate(), $endDate);
     }
 
-    private function getCancelHotelReservationStatus(): ReservationStatusEnum
+    private function isCancelledHotelReservationStatus(ReservationStatusEnum $status): bool
     {
-        //@todo уточнить по поводу статусов, скорее всего будет массив
-        return ReservationStatusEnum::WaitingCancellation;
+        return in_array($status, [
+            ReservationStatusEnum::WaitingCancellation,
+            ReservationStatusEnum::Cancelled,
+            ReservationStatusEnum::CancelledFee,
+            ReservationStatusEnum::CancelledNoFee,
+            ReservationStatusEnum::RefundFee,
+            ReservationStatusEnum::RefundNoFee,
+        ]);
     }
 }
