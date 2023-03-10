@@ -1,0 +1,5 @@
+@mixin scrollable {
+    &::-webkit-scrollbar {width: 4px;}
+    &::-webkit-scrollbar-track {background: #EDEDED;border-radius: 2px;}
+    &::-webkit-scrollbar-thumb {background-color: #A6A6A6;border-radius: 2px;}
+}

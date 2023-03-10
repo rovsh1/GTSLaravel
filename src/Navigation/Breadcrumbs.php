@@ -86,7 +86,9 @@ class Breadcrumbs
 
         if ($this->view) {
             $items = [];
-            $items[] = $this->homeItem;
+            if ($this->homeItem) {
+                $items[] = $this->homeItem;
+            }
             $items = array_merge($items, $this->items);
             return (string)view($this->view, [
                 'breadcrumbs' => $this,

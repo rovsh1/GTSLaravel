@@ -13,7 +13,7 @@ class BootServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->register(AclServiceProvider::class);
-        $this->app->register(PrototypeServiceProvider::class);
+        $this->app->register(FactoryServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
         $this->app->register(FormatServiceProvider::class);
         $this->app->register(ViewServiceProvider::class);

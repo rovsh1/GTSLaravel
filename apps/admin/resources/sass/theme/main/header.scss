@@ -1,11 +1,5 @@
 header {
-    height: 56px;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-align: center;
-    align-items: center;
-    -ms-flex-line-pack: center;
-    align-content: center;
+    height: 48px;
     z-index: 10;
     transition: all .2s;
     position: fixed;
@@ -14,11 +8,9 @@ header {
 }
 
 .header-content-wrapper {
-    flex-grow: 1;
-    display: flex;
-    gap: 1rem;
-    padding: 12px 2rem;
-    background: #fff;
-
-    form {flex-grow: 1;}
+    padding: 8px 2rem;
+    .header-content { display: flex; gap: 1rem; align-items: center;}
+    .spacer {flex-grow: 1;}
+    form {flex-grow: 1;
+    }
 }

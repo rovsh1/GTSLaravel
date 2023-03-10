@@ -1,0 +1,12 @@
+{
+    "key": "hotel.service",
+    "category": "hotel",
+    "group": "reference",
+    "model": "App\\Admin\\Models\\Hotel\\Service",
+    "titles": {
+        "index": "Услуги",
+        "create": "Новая услуга"
+    },
+    "views": {},
+    "permissions": "crud"
+}

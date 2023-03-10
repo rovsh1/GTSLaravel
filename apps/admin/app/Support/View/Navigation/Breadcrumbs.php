@@ -8,6 +8,7 @@ class Breadcrumbs extends \Gsdk\Navigation\Breadcrumbs
     {
         $this
             ->view('layouts.ui.breadcrumbs')
-            ->addHome(route('home'), 'Dashboard');
+            //->addHome(route('home'), '<i class="icon">home</i>')
+        ;
     }
 }

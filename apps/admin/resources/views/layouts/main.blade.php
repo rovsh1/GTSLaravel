@@ -8,8 +8,6 @@
 
         <main class="main-wrapper">
             <div class="content-wrapper">
-                {!! Layout::breadcrumbs() !!}
-
                 <section class="content">@yield('content')</section>
             </div>
         </main>

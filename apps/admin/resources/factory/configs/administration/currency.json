@@ -1,0 +1,13 @@
+{
+    "name": "Currency",
+    "key": "reference.currency",
+    "category": "administration",
+    "group": "reference",
+    "model": "App\\Admin\\Models\\Reference\\Currency",
+    "titles": {
+        "index": "Валюты",
+        "create": "Новая валюта"
+    },
+    "views": {},
+    "permissions": "crud"
+}

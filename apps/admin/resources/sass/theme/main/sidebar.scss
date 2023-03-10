@@ -1,3 +1,6 @@
+@use "../mixins/scrollbar";
+@use "../variables";
+
 aside.sidebar {
     display: flex;
     z-index: 20;
@@ -11,9 +14,57 @@ aside.sidebar {
     transition: all .3s ease;
     background: #fff;
 
-    div.logo {
-        height: 56px;
-        background: url("/images/logo.svg") 16px 50% no-repeat;
-        background-size: 146px 30px;
+    .logo-wrapper {
+        display: flex;
+        height: 48px;
+        button {width: 48px;height: 47px;border: none;background: none;}
+        button > svg {width: 24px;height: 24px;color: rgba(0, 0, 0, .66);}
+        border-bottom: 1px solid #E0E0E0;
     }
+    div.logo {
+        background: url("/images/logo.svg") 8px 50% no-repeat;
+        background-size: 146px 30px;
+        flex-grow: 1;
+    }
+}
+
+.sidebar-header {
+    line-height: 3rem;
+    color: rgba(0, 0, 0, .66);
+    border-bottom: 1px solid #E0E0E0;
+    display: flex;
+    .title {font-size: 1rem;font-weight: 600;padding-left: .5rem;}
+    .icon {width: 48px;height: 48px;line-height: 48px;text-align: center;}
+}
+
+.main-menu-wrapper {
+    flex-grow: 1;
+    height: calc(100% - 48px);
+    .main-menu {display: flex;height: 100%; }
+    .categories {
+        width: 48px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        .item {padding: 4px 0;}
+        a {display: block;width: 48px;height: 40px;text-align: center;line-height: 48px;border-left: 3px solid transparent;}
+        a:not(:hover) {color: rgba(0, 0, 0, .66);}
+        .item.current > a {border-left-color: variables.$primary;}
+        i {font-size: 18px;}
+    }
+
+    .main-wrapper {height: 100%;padding: .5rem .5rem .5rem .5rem;flex-grow: 1;}
+    .main {overflow: auto;height: 100%;@include scrollbar.scrollable;}
+
+    nav {display: flex;flex-direction: column;}
+    nav > a {line-height: 2rem;color: #000;padding: 0 1rem;}
+    nav > a:hover {background: #EBEBEB;}
+    nav > a:not(:hover) {color: rgba(0, 0, 0, 1);}
+    nav > a.current {background: #F0F5FE;}
+    nav > a.current:not(:hover) {color: variables.$primary;}
+
+    .menu-wrapper {display: flex;flex-direction: column;}
+    .menu-wrapper .group-title {line-height: 2rem;color: rgba(0, 0, 0, .66);}
+
+    .group-items a {}
 }

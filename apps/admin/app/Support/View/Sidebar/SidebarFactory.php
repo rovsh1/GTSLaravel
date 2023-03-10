@@ -2,6 +2,8 @@
 
 namespace App\Admin\Support\View\Sidebar;
 
+use App\Admin\Components\Sidebar\Sidebar;
+
 class SidebarFactory
 {
     private Sidebar $sidebar;

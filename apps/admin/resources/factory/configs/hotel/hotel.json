@@ -1,0 +1,14 @@
+{
+    "key": "hotel",
+    "category": "hotel",
+    "model": "App\\Admin\\Models\\Hotel\\Hotel",
+    "titles": {
+        "index": "Отели",
+        "create": "Новый отель"
+    },
+    "views": {
+        "form": "hotel.form",
+        "show": "hotel.show"
+    },
+    "permissions": "crud"
+}

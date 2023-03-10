@@ -1,1 +1,4 @@
 //breadcrumb-item > span {color:}
+
+.breadcrumb {align-items: flex-end;margin-bottom: 0;}
+.breadcrumb a:not(:hover) {color: rgba(0, 0, 0, .66);}

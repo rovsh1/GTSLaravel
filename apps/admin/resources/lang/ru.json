@@ -1,4 +1,9 @@
 {
     "select-all": "---Все--",
-    "labels.country": "Страна"
+    "labels.country": "Страна",
+    "group.hotel": "Отели",
+    "group.reference": "Справочники",
+    "group.client": "Клиенты",
+    "group.reservation": "Бронирование",
+    "group.administration": "Администрирование"
 }

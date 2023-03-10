@@ -2,6 +2,7 @@
 
 namespace App\Admin\Providers;
 
+use App\Admin\Components\Sidebar\Sidebar;
 use App\Admin\Helpers;
 use App\Admin\Support\View as ViewNamespace;
 use App\Admin\Support\View\Grid as GridNamespace;
@@ -65,7 +66,7 @@ class ViewServiceProvider extends ServiceProvider
         $this->app->singleton('layout', ViewNamespace\Layout::class);
         class_alias(Helpers\Layout::class, 'Layout');
 
-        $this->app->singleton('sidebar', ViewNamespace\Sidebar\Sidebar::class);
+        $this->app->singleton('sidebar', Sidebar::class);
 
         $this->app->singleton('breadcrumbs', ViewNamespace\Navigation\Breadcrumbs::class);
     }

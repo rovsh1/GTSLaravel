@@ -19,7 +19,7 @@ abstract class AbstractPrototypeController extends Controller
 
     public function __construct()
     {
-        $this->prototype = app('prototypes')->get($this->prototype);
+        $this->prototype = app('factory.prototypes')->get($this->prototype);
         $this->repository = $this->prototype->makeRepository();
     }
 

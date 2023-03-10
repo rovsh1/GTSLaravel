@@ -11,6 +11,4 @@ enum SidebarGroups: string
     case REPORTS = 'reports';
     case FINANCES = 'finances';
     case ADMINISTRATION = 'administration';
-
-
 }

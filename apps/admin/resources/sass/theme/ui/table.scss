@@ -1,8 +1,8 @@
-@use "~fonts/icons";
+@use "../icons";
 
 .card > .table-responsive > table {
-    td:first-child, th:first-child {padding-left: 1.5rem;}
-    td:last-child, th:last-child {padding-right: 1.5rem;}
+    td:first-child, th:first-child {padding-left: 1rem;}
+    td:last-child, th:last-child {padding-right: 1rem;}
 }
 
 .table th {font-weight: 600;color: var(--bs-table-striped-color);}
@@ -12,9 +12,10 @@
     //@include icons.icon();
 }
 
-.column-edit {width: 1rem;text-align: center;padding-left: 1rem !important;}
+.column-edit {width: 1rem;text-align: center;}
 .column-edit > a {display: block;width: 1rem;}
-.column-edit i {font-size: 13px;}
+.column-edit > a:not(:hover) {color: rgba(0, 0, 0, .66);}
+.column-edit i {font-size: 18px;vertical-align: top;}
 
 .column-number {text-align: right;}
 
@@ -32,6 +33,7 @@ tr:not(:hover) > .column-edit > a {visibility: hidden;}
     gap: .5rem;
     position: relative;
     & > .btn {padding: 5px 0 0 0;width: 32px; line-height: 2;}
+    & > .btn > i {vertical-align: top;opacity: .6;}
 }
 .search-popup-wrapper {
     position: absolute;
@@ -57,6 +59,6 @@ tr:not(:hover) > .column-edit > a {visibility: hidden;}
         border: none;
         background: none;
         width: 32px;
-        font-size: 16px;
+        opacity: .6;
     }
 }
