@@ -30,4 +30,9 @@ class Currency extends Model
     {
         static::addGlobalTranslationScope();
     }
+
+    public function __toString()
+    {
+        return (string)($this->name ?: $this->code_char);
+    }
 }

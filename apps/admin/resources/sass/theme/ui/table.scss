@@ -5,9 +5,20 @@
     td:last-child, th:last-child {padding-right: 1.5rem;}
 }
 
+.table th {font-weight: 600;color: var(--bs-table-striped-color);}
+.table tbody > tr:hover > td {box-shadow: inset 0 0 0 9999px rgba(26, 115, 232, .1);}
+
 .column-sorted {
     //@include icons.icon();
 }
+
+.column-edit {width: 1rem;text-align: center;padding-left: 1rem !important;}
+.column-edit > a {display: block;width: 1rem;}
+.column-edit i {font-size: 13px;}
+
+.column-number {text-align: right;}
+
+tr:not(:hover) > .column-edit > a {visibility: hidden;}
 
 .column-actions {
     width: 3rem;

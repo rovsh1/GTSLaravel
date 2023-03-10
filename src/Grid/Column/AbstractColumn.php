@@ -75,25 +75,5 @@ abstract class AbstractColumn implements ColumnInterface
         return $value;
     }
 
-    public function render($value, $row)
-    {
-        $value = $this->formatValue($value, $row);
-        if ($this->renderer) {
-            $value = call_user_func_array($this->renderer, [$row, $value, $this->params]);
-        }
-
-        if (null === $value || '' === $value) {
-            return $this->emptyText;
-        }
-
-        //$row['value'] = $value;
-        if ($this->href) {
-            return '<a href="' . \CountryFormat::formatTemplate($this->href, $row) . '"'
-                . ($this->hrefTarget ? ' target="' . $this->hrefTarget . '"' : '') . '>' . $value . '</a>';
-        }
-
-        return $value;
-    }
-
     protected function init() {}
 }

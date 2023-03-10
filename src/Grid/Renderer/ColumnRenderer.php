@@ -51,7 +51,9 @@ class ColumnRenderer
         $column = $this->column;
         $dataValue = $row->{$column->name} ?? null;
 
-        if ($column->renderer) {
+        if (method_exists($column, 'renderer')) {
+            $columnValue = $column->renderer($row, $dataValue);
+        } elseif ($column->renderer) {
             $columnValue = call_user_func_array($column->renderer, [$row, $column->formatValue($dataValue, $row), $column->params]);
         } elseif (method_exists($column, 'renderer')) {
             $columnValue = call_user_func_array([$column, 'renderer'], [$row, $dataValue, $column->params]);

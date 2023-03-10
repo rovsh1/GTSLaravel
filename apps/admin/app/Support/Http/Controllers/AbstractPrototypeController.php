@@ -106,8 +106,6 @@ abstract class AbstractPrototypeController extends Controller
         }
         $breadcrumbs->add($this->prototype->title('edit') ?? 'Редактирование');
 
-        $this->buildEditActions(app('menu.actions'), $model);
-
         $form = $this->formFactory()
             ->method('put')
             ->action($this->prototype->route('update', $id))
@@ -116,7 +114,9 @@ abstract class AbstractPrototypeController extends Controller
         return app('layout')
             ->title($title)
             ->view($this->prototype->view('edit') ?? $this->prototype->view('form') ?? 'default.form', [
-                'form' => $form
+                'form' => $form,
+                'cancelUrl' => $this->prototype->route('index'),
+                'deleteUrl' => $this->prototype->hasPermission('delete') ? $this->prototype->route('destroy', $model->id) : null
             ]);
     }
 
@@ -167,13 +167,6 @@ abstract class AbstractPrototypeController extends Controller
                 $this->prototype->route('create'),
                 $this->prototype->title('delete') ?? 'Удалить'
             );
-        }
-    }
-
-    protected function buildEditActions($menu, $model)
-    {
-        if (!$this->hasShowAction()) {
-            $this->buildShowActions($menu, $model);
         }
     }
 

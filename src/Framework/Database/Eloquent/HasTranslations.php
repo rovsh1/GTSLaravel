@@ -2,7 +2,6 @@
 
 namespace Custom\Framework\Database\Eloquent;
 
-use Custom\Framework\Database\Query\TranslationQueryBuilder;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
@@ -27,16 +26,14 @@ trait HasTranslations
             $modelTable = with(new static)->getTable();
             $columns = with(new static)->translatable;
             $builder->addSelect($modelTable . '.*');
-
             $builder->joinTranslations($columns);
         });
     }
 
-    public function scopeJoinTranslations($query, $columns = null, $locale = null): void
+    public function scopeJoinTranslations($builder, $columns = null): void
     {
-        (new TranslationQueryBuilder($query))
-            ->locale($locale)
-            ->leftJoin(static::class, $columns);
+        $modelTable = with(new static)->getTable();
+        $builder->joinTranslatable($modelTable, $columns, 'left');
     }
 
     public function getTranslationTable(): string
@@ -66,16 +63,18 @@ trait HasTranslations
         $query = DB::table($this->getTranslationTable())
             ->where('translatable_id', $this->id)
             ->where('language', $language);
-        if ($column)
+        if ($column) {
             $query->whereNotNull($column);
+        }
 
         return (bool)$query->exists();
     }
 
     public function getTranslationData(): array
     {
-        if (null !== $this->translationData)
+        if (null !== $this->translationData) {
             return $this->translationData;
+        }
 
         $this->translationData = [];
 
@@ -93,13 +92,15 @@ trait HasTranslations
 
     public function getTranslation($key, $locale = null)
     {
-        if (null === $locale)
+        if (null === $locale) {
             $locale = $this->getLocale();
+        }
 
-        if (isset($this->translationAttributes[$key][$locale]))
+        if (isset($this->translationAttributes[$key][$locale])) {
             return $this->translationAttributes[$key][$locale];
-        elseif (null !== $this->translationData)
+        } elseif (null !== $this->translationData) {
             return $this->translationData[$locale]->$key ?? null;
+        }
 
         $this->getTranslationData();
 
@@ -108,8 +109,9 @@ trait HasTranslations
 
     public function setTranslation($key, $value, $locale = null): static
     {
-        if (!isset($this->translationAttributes[$key]))
+        if (!isset($this->translationAttributes[$key])) {
             $this->translationAttributes[$key] = [];
+        }
 
         $this->translationAttributes[$key][$locale ?? $this->getLocale()] = $value;
 
@@ -118,8 +120,9 @@ trait HasTranslations
 
     public function getTranslations($key)
     {
-        if (isset($this->translationAttributes[$key]))
+        if (isset($this->translationAttributes[$key])) {
             return $this->translationAttributes[$key];
+        }
 
         $values = [];
         foreach ($this->getTranslationData() as $language => $r) {
@@ -150,36 +153,39 @@ trait HasTranslations
 
     public function setTranslatableAttribute($key, $value): void
     {
-        if (is_array($value))
+        if (is_array($value)) {
             $this->translationAttributes[$key] = $value;
-        else {
-            if (!isset($this->translationAttributes[$key]))
+        } else {
+            if (!isset($this->translationAttributes[$key])) {
                 $this->translationAttributes[$key] = [];
+            }
             $this->translationAttributes[$key][$this->getLocale()] = $value;
         }
     }
 
     public function saveTranslations(array $options = []): void
     {
-        if (empty($this->translationAttributes))
+        if (empty($this->translationAttributes)) {
             return;
+        }
 
         $langData = [];
         foreach ($this->translationAttributes as $key => $data) {
             foreach ($data as $lang => $v) {
-                if (!isset($langData[$lang]))
+                if (!isset($langData[$lang])) {
                     $langData[$lang] = [];
+                }
                 $langData[$lang][$key] = $v;
             }
         }
 
         foreach ($langData as $language => $data) {
-            if ($this->hasTranslation($language))
+            if ($this->hasTranslation($language)) {
                 DB::table($this->getTranslationTable())
                     ->where('translatable_id', $this->id)
                     ->where('language', $language)
                     ->update($data);
-            else {
+            } else {
                 Db::table($this->getTranslationTable())
                     ->insert(
                         array_merge($data, [

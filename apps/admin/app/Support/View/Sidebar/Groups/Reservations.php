@@ -13,5 +13,6 @@ class Reservations extends AbstractGroup
     {
         $this->add('reference.country');
         $this->add('reference.city');
+        $this->add('reference.currency');
     }
 }
