@@ -1,11 +1,13 @@
 {
-    "key": "reservation",
+    "key": "additional-reservation",
     "category": "reservation",
+    "group": "reservations",
     "model": "App\\Admin\\Models\\Reference\\Airport",
     "titles": {
-        "index": "Брони",
+        "index": "Брони доп. услуг",
         "create": "Новая бронь"
     },
     "views": {},
-    "permissions": "crud"
+    "permissions": "crud",
+    "priority": 206
 }

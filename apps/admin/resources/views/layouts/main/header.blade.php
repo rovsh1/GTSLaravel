@@ -10,7 +10,6 @@
 
     <div class="header-content-wrapper">
         <div class="header-content">
-            {!! Layout::breadcrumbs() !!}
             <div class="spacer"></div>
             <div class="dropdown text-end">
                 <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">

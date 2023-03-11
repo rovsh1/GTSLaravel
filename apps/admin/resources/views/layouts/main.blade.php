@@ -6,12 +6,18 @@
 
         {!! Layout::sitemap() !!}
 
-        <main class="main-wrapper">
-            {!! Layout::sidebar() !!}
+        {!! Layout::sidebar() !!}
 
+        <main class="main-wrapper">
             <div class="content-wrapper">
-                <section class="content">@yield('content')</section>
+                <section class="content">
+                    {!! Layout::breadcrumbs() !!}
+
+                    @yield('content')
+                </section>
             </div>
         </main>
+
+        @include('layouts/main/footer')
     </div>
 @endsection

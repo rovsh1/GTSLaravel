@@ -1,13 +1,15 @@
-@use "../common/fonts/open-sans";
+@use "../common/fonts/google-sans";
 @use "../common/reset";
-@use "../env";
 
+$color-link: #1a73e8;
+$color-text: #393D3F;
+$color-border: #c0c0c0;
 $background-hover: rgba(128, 128, 128, .1);
 $background-selected: rgba(128, 128, 128, .2);
 
-body {font-size: 13px;color: env.$color-text;background: #fff;}
-body, input, textarea, select, button {font-family: "Open Sans", sans-serif;font-weight: 300;}
-a {color: env.$color-link;}
+body {font-size: 13px;color: $color-text;background: #fff;}
+body, input, textarea, select, button {font-family: "Google Sans", sans-serif;font-weight: 300;}
+a {color: $color-link;}
 
 ::-webkit-input-placeholder {color: #b3b3b3;}
 :-moz-placeholder {color: #b3b3b3;}
@@ -20,7 +22,7 @@ button:disabled {opacity: .3;}
 
 div.filemanager {display: flex;flex-direction: column;flex: 1;height: 100%;}
 
-.fm-toolbar {padding: 8px;display: flex;line-height: 32px;margin-bottom: 16px;border-bottom: 1px solid env.$color-border;}
+.fm-toolbar {padding: 8px;display: flex;line-height: 32px;margin-bottom: 16px;border-bottom: 1px solid $color-border;}
 .fm-toolbar label.file-upload,
 .fm-toolbar button {height: 32px;border-radius: 3px;background-position: 8px 50%;background-repeat: no-repeat;margin-right: 8px;padding-left: 32px;padding-right: 8px;}
 .fm-toolbar label.file-upload:hover,
@@ -43,7 +45,7 @@ div.filemanager {display: flex;flex-direction: column;flex: 1;height: 100%;}
 .fm-address-bar button.btn-archive {background-image: url("/images/filemanager/ui/archive.png");}
 .fm-address-bar .filter {display: flex;margin-left: 16px;}
 .fm-address-bar .spacer {}
-.fm-address-bar .path {flex-grow: 1;display: flex;border: 1px solid env.$color-border;border-radius: 3px;padding: 0 8px;line-height: 26px;}
+.fm-address-bar .path {flex-grow: 1;display: flex;border: 1px solid $color-border;border-radius: 3px;padding: 0 8px;line-height: 26px;}
 .fm-address-bar .path .item {padding: 0 6px;border: 2px solid transparent;}
 .fm-address-bar .path .item.home {background: url("/images/filemanager/ui/home.png") 50% 50% no-repeat;width: 30px;}
 .fm-address-bar .path .item:not(:last-child) {cursor: pointer;}
@@ -51,10 +53,10 @@ div.filemanager {display: flex;flex-direction: column;flex: 1;height: 100%;}
 .fm-address-bar .path .item.ui-droppable-hover {border: 2px dashed #008bfd;}
 .fm-address-bar .path .separator {padding: 0 4px;background: url("/images/filemanager/ui/arrow-back.svg") 50% 50% no-repeat;background-size: 8px 8px;width: 8px;transform: rotate(180deg);}
 .fm-address-bar .search {margin-left: 16px;flex-basis: 240px;}
-.fm-address-bar .search input {border: 1px solid env.$color-border;border-radius: 3px;width: 100%;height: 100%;padding: 0 8px;vertical-align: top;}
+.fm-address-bar .search input {border: 1px solid $color-border;border-radius: 3px;width: 100%;height: 100%;padding: 0 8px;vertical-align: top;}
 
-.fm-status-bar {display: flex;line-height: 32px;font-size: 12px;padding: 4px 16px;border-top: 1px solid env.$color-border;}
-.fm-status-bar .pagination {display: flex;padding-left: 16px;border-left: 1px solid env.$color-border;align-items: center;}
+.fm-status-bar {display: flex;line-height: 32px;font-size: 12px;padding: 4px 16px;border-top: 1px solid $color-border;}
+.fm-status-bar .pagination {display: flex;padding-left: 16px;border-left: 1px solid $color-border;align-items: center;}
 .fm-status-bar .pagination .label:first-child {margin-right: 8px;}
 .fm-status-bar .pagination .label:last-child {margin-left: 8px;}
 .fm-status-bar .pagination .pages {display: flex;}
@@ -114,7 +116,7 @@ body.dragging .fm-container .files-wrap {overflow: unset;}
 
 div.shadow {}
 div.input-box {position: fixed;top: 50%;left: 50%;transform: translateX(-50%) translateY(-50%);padding: 16px;background: #fff;border-radius: 4px;}
-div.input-box input {border: 1px solid env.$color-border;border-radius: 4px;height: 32px;padding: 0 8px;width: 240px;}
+div.input-box input {border: 1px solid $color-border;border-radius: 4px;height: 32px;padding: 0 8px;width: 240px;}
 
 /*@media (prefers-color-scheme: dark) {
 	body { background: #292A2D;}

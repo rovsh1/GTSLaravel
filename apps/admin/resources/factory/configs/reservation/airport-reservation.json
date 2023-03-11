@@ -1,13 +1,13 @@
 {
-    "key": "hotel-reservation",
+    "key": "airport-reservation",
     "category": "reservation",
     "group": "reservations",
     "model": "App\\Admin\\Models\\Reference\\Airport",
     "titles": {
-        "index": "Брони отелей",
+        "index": "Брони услуг аэропорта",
         "create": "Новая бронь"
     },
     "views": {},
     "permissions": "crud",
-    "priority": 150
+    "priority": 208
 }

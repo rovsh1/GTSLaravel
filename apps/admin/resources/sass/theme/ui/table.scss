@@ -1,10 +1,5 @@
 @use "../icons";
 
-.card > .table-responsive > table {
-    td:first-child, th:first-child {padding-left: 1rem;}
-    td:last-child, th:last-child {padding-right: 1rem;}
-}
-
 .table th {font-weight: 600;color: var(--bs-table-striped-color);}
 .table tbody > tr:hover > td {box-shadow: inset 0 0 0 9999px rgba(26, 115, 232, .1);}
 

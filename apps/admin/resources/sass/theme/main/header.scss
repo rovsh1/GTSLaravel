@@ -11,14 +11,17 @@ header {
     .logo-wrapper {
         width: 280px;
         display: flex;
+        align-items: center;
         height: 48px;
-        button {width: 48px;height: 47px;border: none;background: none;}
+        button {width: 40px;height: 40px;border: none;background: none;border-radius: 50%;margin: 0 4px;}
+        button:hover {background-color: #E3E3E3;}
         button > svg {width: 24px;height: 24px;color: rgba(0, 0, 0, .66);}
     }
     div.logo {
         background: url("/images/logo.svg") 8px 50% no-repeat;
         background-size: 146px 30px;
         flex-grow: 1;
+        height: 100%;
     }
 }
 

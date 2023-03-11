@@ -1,4 +1,14 @@
 //breadcrumb-item > span {color:}
 
-.breadcrumb {align-items: flex-end;margin-bottom: 0;}
-.breadcrumb a:not(:hover) {color: rgba(0, 0, 0, .66);}
+.breadcrumb {
+    align-items: flex-end;
+    margin-bottom: 0;
+    font-size: 12px;
+    line-height: 16px;
+    height: 20px;
+    color: rgba(0, 0, 0, .44);
+}
+.breadcrumb li:nth-child(2) {padding-left: 0;}
+.breadcrumb i {font-size: 20px;vertical-align: top;color: rgba(0, 0, 0, .44);}
+.breadcrumb a:not(:hover) {color: rgba(0, 0, 0, .8);}
+.breadcrumb span {}

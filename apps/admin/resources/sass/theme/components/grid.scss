@@ -1,7 +1,10 @@
 @use "../variables";
 
-.grid-card {
-    .btn-add {margin-left: 1rem;}
+.card-grid {white-space: nowrap;}
+.card-grid > table {
+    margin-top: .5rem;
+    td:first-child, th:first-child {padding-left: 1rem;}
+    td:last-child, th:last-child {padding-right: 1rem;}
 }
 
 .grid-filters {

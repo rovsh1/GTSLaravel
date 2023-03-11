@@ -1,6 +1,7 @@
 @use "header";
 @use "sitemap";
 @use "sidebar";
+@use "footer";
 
 html, body {height: 100%;}
 
@@ -8,7 +9,21 @@ body {min-width: 320px;font-size: 13px;letter-spacing: .4px;}
 
 input {font-size: 13px;}
 
-div.dashboard-wrapper {min-height: 100%;background: #f5f5f9;}
+div.dashboard-wrapper {min-height: 100%;background: #fff;}
 
 main {padding: 48px 0 0 280px;height: 100%;}
-div.content-wrapper {padding: 2rem;}
+div.content-wrapper {}
+
+.content {
+    .breadcrumb-wrapper {padding: 1rem 2rem 0 2rem;}
+}
+
+.content-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 1rem 2rem 0 2rem;
+    .title {font-size: 16px;}
+    .btn {margin-left: 1rem;}
+}
+.content-body {padding: 0 2rem 1rem 2rem;}

@@ -190,6 +190,7 @@ abstract class AbstractPrototypeController extends Controller
     protected function breadcrumbs()
     {
         return app('breadcrumbs')
+            ->add(__('category.' . $this->prototype->config('category')))
             ->addUrl($this->prototype->route('index'), $this->prototype->title('index') ?? 'Default index');
     }
 

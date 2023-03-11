@@ -10,7 +10,7 @@ aside.sidebar {
     position: fixed;
     top: 48px;
     left: 0;
-    height: calc(100vh - 48px);
+    height: calc(100vh - 48px - 25px);
     -ms-flex-direction: column;
     transition: all .3s ease;
     background: #fff;

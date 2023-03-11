@@ -1,7 +1,7 @@
 $primary: #007bff;
 $secondary: rgba(0, 0, 0, .66);
 
-$font-family-sans-serif: "Open Sans", sans-serif;
+$font-family-sans-serif: "Google Sans", sans-serif;
 $body-bg: #fff;
 //$body-color: #000;
 
@@ -36,11 +36,15 @@ $font-size-base: .8rem;
 
 //$line-height-base: 1.5;
 
+$breadcrumb-divider-color: rgba(0, 0, 0, .44);
+//$breadcrumb-active-color:           $gray-600 !default;
+//$breadcrumb-divider:                quote("/") !default;
+
 // scss-docs-start card-variables
-$card-border-width: 0;
+$card-border-width: 1px;
 $card-cap-bg: transparent;
 $card-bg: #fff;
-$card-box-shadow: 0 2px 6px 0 rgb(67 89 113 / 12%);
+$card-box-shadow: none;
 
 // scss-docs-start table-variables
 //$table-cell-padding-y: 4px;

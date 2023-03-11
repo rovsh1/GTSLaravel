@@ -8,9 +8,11 @@ abstract class AbstractConstant implements ConstantInterface
 
     protected mixed $value;
 
-    public function __construct(?string $value)
+    protected mixed $default = null;
+
+    public function __construct(?string $value = null)
     {
-        $this->value = $this->castValue($value);
+        $this->value = $this->castValue($value ?? $this->default);
     }
 
     public function key(): string
@@ -21,6 +23,11 @@ abstract class AbstractConstant implements ConstantInterface
     public function value(): mixed
     {
         return $this->value;
+    }
+
+    public function cast(): string
+    {
+        return $this->cast;
     }
 
     protected function castValue(?string $value): mixed
