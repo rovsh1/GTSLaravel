@@ -1,0 +1,12 @@
+{
+    "key": "hotel-bed-type",
+    "category": "hotel",
+    "group": "service",
+    "model": "App\\Admin\\Models\\Hotel\\BedType",
+    "titles": {
+        "index": "Типы кровати",
+        "create": "Новый тип"
+    },
+    "views": {},
+    "permissions": "crud"
+}

@@ -12,7 +12,7 @@
 
         <form method="get" class="grid-filters">
             @if ($searchForm)
-                <button type="button" class="btn btn-white" id="btn-">
+                <button type="button" class="btn btn-white" id="btn-grid-filters">
                     <x-icon key="filter"/>
                 </button>
             @endif
@@ -22,10 +22,13 @@
                 <button class="icon" type="submit" title="Найти">search</button>
             </div>
 
-            <div class="search-popup-wrapper">
+            <div class="search-popup-wrapper" id="grid-filters-popup">
                 <div class="search-popup shadow rounded">
                     {!! $searchForm !!}
-                    <button class="btn btn-primary" type="submit">Найти</button>
+                    <div class="buttons">
+                        <button class="btn btn-primary" type="submit">Найти</button>
+                        <button class="btn btn-cancel ms-2" type="reset">Сбросить</button>
+                    </div>
                 </div>
             </div>
         </form>

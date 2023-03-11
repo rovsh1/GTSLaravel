@@ -23,7 +23,7 @@ class CityController extends AbstractPrototypeController
     protected function gridFactory()
     {
         $form = (new SearchForm())
-            ->country('country_id', ['label' => __('labels.country'), 'emptyItem' => __('select-all')]);
+            ->country('country_id', ['label' => __('label.country'), 'emptyItem' => __('select-all')]);
 
         return (new Grid())
             ->enableQuicksearch()

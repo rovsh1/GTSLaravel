@@ -2,21 +2,23 @@
 
 namespace App\Admin\Support\View\Navigation;
 
+use App\Admin\Support\Facades\Sitemap;
+
 class Sidebar
 {
     public function currentRoute(string $key): void
     {
-        app('sitemap')->currentRoute($key);
+        Sitemap::currentRoute($key);
     }
 
     public function currentCategory(string $key): void
     {
-        app('sitemap')->currentCategory($key);
+        Sitemap::currentCategory($key);
     }
 
     public function render()
     {
-        $category = app('sitemap')->getCurrentCategory();
+        $category = Sitemap::getCurrentCategory();
         if (!$category) {
             return '';
         }
@@ -24,7 +26,7 @@ class Sidebar
         $menu = null;
 
         return view('layouts/main/sidebar', [
-            'sitemap' => app('sitemap'),
+            'sitemap' => Sitemap::getFacadeRoot(),
             'sidebar' => $this,
             'category' => $category,
             'menu' => $menu

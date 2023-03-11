@@ -1,0 +1,12 @@
+{
+    "key": "hotel-usability-group",
+    "category": "hotel",
+    "group": "service",
+    "model": "App\\Admin\\Models\\Hotel\\UsabilityGroup",
+    "titles": {
+        "index": "Категории удобств",
+        "create": "Новая категория"
+    },
+    "views": {},
+    "permissions": "crud"
+}

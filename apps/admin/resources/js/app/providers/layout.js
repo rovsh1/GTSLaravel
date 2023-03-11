@@ -32,11 +32,28 @@ function bootSitemap() {
 
         const menus = $('#sitemap-categories-menus > div');
         menus.each((i, m) => {
-            if ($(m).data('category') === category)
-                $(m).show();
-            else
-                $(m).hide();
+            if ($(m).data('category') === category) $(m).show(); else $(m).hide();
         });
+    });
+}
+
+function bootGrid() {
+    const btn = $('#btn-grid-filters');
+    const popup = $('#grid-filters-popup');
+    const close = (e) => {
+        if (!popup.is(e.target) && popup.find(e.target).length === 0) {
+            popup.hide();
+            $(document).unbind('click', close);
+        }
+    };
+
+    btn.click(e => {
+        e.preventDefault();
+        if (!popup.is(':hidden')) return;
+
+        popup.fadeIn(200);
+        $(document).click(close);
+        e.stopPropagation();
     });
 }
 
@@ -48,5 +65,6 @@ export default class LayoutProvider {
     boot() {
         bootApp();
         bootSitemap();
+        bootGrid();
     }
 }

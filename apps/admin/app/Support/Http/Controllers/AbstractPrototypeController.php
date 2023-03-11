@@ -3,6 +3,9 @@
 namespace App\Admin\Support\Http\Controllers;
 
 use App\Admin\Http\Controllers\Controller;
+use App\Admin\Support\Facades\Breadcrumb;
+use App\Admin\Support\Facades\Layout;
+use App\Admin\Support\Facades\Prototypes;
 use Illuminate\Support\Facades\Route;
 
 abstract class AbstractPrototypeController extends Controller
@@ -19,7 +22,7 @@ abstract class AbstractPrototypeController extends Controller
 
     public function __construct()
     {
-        $this->prototype = app('factory.prototypes')->get($this->prototype);
+        $this->prototype = Prototypes::get($this->prototype);
         $this->repository = $this->prototype->makeRepository();
     }
 
@@ -33,8 +36,7 @@ abstract class AbstractPrototypeController extends Controller
 
         $this->buildGridActions(app('menu.actions'));
 
-        return app('layout')
-            ->title($this->prototype->title('index'))
+        return Layout::title($this->prototype->title('index'))
             ->view($this->prototype->view('index') ?? $this->prototype->view('grid') ?? 'default.grid', [
                 'quicksearch' => $grid->getQuicksearch(),
                 'searchForm' => $grid->getSearchForm(),
@@ -54,8 +56,7 @@ abstract class AbstractPrototypeController extends Controller
 
         $this->buildShowActions(app('menu.actions'), $model);
 
-        return app('layout')
-            ->title($title)
+        return Layout::title($title)
             ->view($this->prototype->view('show'), $this->getShowViewData($model));
     }
 
@@ -70,10 +71,7 @@ abstract class AbstractPrototypeController extends Controller
 
         //TODO back button
 
-        app('sitemap')->currentRoute($this->prototype->routeName('index'));
-
-        return app('layout')
-            ->title($this->prototype->title('create'))
+        return Layout::title($this->prototype->title('create'))
             ->view($this->prototype->view('create') ?? $this->prototype->view('form') ?? 'default.form', [
                 'form' => $form,
                 'cancelUrl' => $this->prototype->route('index')
@@ -114,10 +112,7 @@ abstract class AbstractPrototypeController extends Controller
             ->action($this->prototype->route('update', $id))
             ->data($model);
 
-        app('sitemap')->currentRoute($this->prototype->routeName('index'));
-
-        return app('layout')
-            ->title($title)
+        return Layout::title($title)
             ->view($this->prototype->view('edit') ?? $this->prototype->view('form') ?? 'default.form', [
                 'form' => $form,
                 'cancelUrl' => $this->prototype->route('index'),
@@ -189,8 +184,7 @@ abstract class AbstractPrototypeController extends Controller
 
     protected function breadcrumbs()
     {
-        return app('breadcrumbs')
-            ->add(__('category.' . $this->prototype->config('category')))
+        return Breadcrumb::add(__('category.' . $this->prototype->config('category')))
             ->addUrl($this->prototype->route('index'), $this->prototype->title('index') ?? 'Default index');
     }
 

@@ -3,6 +3,7 @@
 .card-grid {white-space: nowrap;}
 .card-grid > table {
     margin-top: .5rem;
+    line-height: 20px;
     td:first-child, th:first-child {padding-left: 1rem;}
     td:last-child, th:last-child {padding-right: 1rem;}
 }
@@ -26,6 +27,7 @@
         background: #fff;
         padding: 1rem 1.5rem;
         width: 320px;
+        border: 1px solid rgba(0, 0, 0, .12);
     }
 }
 .grid-filters:not(.expanded) .search-popup-wrapper {display: none;}

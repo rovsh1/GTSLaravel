@@ -2,6 +2,7 @@
 
 namespace App\Admin\Http\Controllers\Administration;
 
+use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form;
 use App\Admin\Support\View\Grid\Grid;
@@ -34,7 +35,7 @@ class AdministratorController extends AbstractPrototypeController
 //            ]);
 //        }
 
-        if (app('acl')->isSuperuser()) {
+        if (Acl::isSuperuser()) {
             $form
 //                ->addElement('subscriptions', 'select', [
 //                    'label' => 'Уведомления',

@@ -2,6 +2,7 @@
 
 namespace App\Admin\Http\Middleware;
 
+use App\Admin\Support\Facades\Acl;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -11,7 +12,7 @@ class AclPermissions
 
     public function handle(Request $request, \Closure $next)
     {
-        $acl = app('acl');
+        $acl = Acl::getFacadeRoot();
 
         $this->registerAdministrator($acl);
 

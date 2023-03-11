@@ -104,9 +104,7 @@ class RouteRegistrar
         }
 
         $base = str_replace('-', '_', $this->resource->key);
-        if (str_contains($base, '.')) {
-            $base = substr($base, strrpos($base, '.') + 1);
-        }
+        //$base = 'id';
 
         foreach ($methods as $method) {
             $this->{'addResource' . ucfirst($method)}($base);

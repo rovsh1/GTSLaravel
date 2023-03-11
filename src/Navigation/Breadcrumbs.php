@@ -29,7 +29,7 @@ class Breadcrumbs
         return empty($this->items);
     }
 
-    public function add($params): static
+    public function add(array|string $params): static
     {
         if (is_string($params)) {
             $params = ['text' => $params];
@@ -39,7 +39,7 @@ class Breadcrumbs
         return $this;
     }
 
-    public function addUrl($url, $params): static
+    public function addUrl(string $url, array|string $params): static
     {
         if (is_string($params)) {
             $params = ['text' => $params];
@@ -48,7 +48,7 @@ class Breadcrumbs
         return $this->add(array_merge($params, ['url' => $url]));
     }
 
-    public function addRoute($route, $params): static
+    public function addRoute(string $route, array|string $params): static
     {
         if (is_string($params)) {
             $params = ['text' => $params];
@@ -62,7 +62,7 @@ class Breadcrumbs
         );
     }
 
-    public function addHome(string $url, $params): static
+    public function addHome(string $url, array|string $params): static
     {
         if (is_string($params)) {
             $params = ['text' => $params];

@@ -79,6 +79,13 @@ class Sitemap
 
     private function detectCurrent(): void
     {
-        $this->currentRoute(request()->route()->getName());
+        $route = request()->route()->getName();
+        $this->currentRoute($route);
+        if (null !== $this->current || str_ends_with($route, '.index')) {
+            return;
+        }
+
+        $route = substr($route, 0, strrpos($route, '.')) . '.index';
+        $this->currentRoute($route);
     }
 }
