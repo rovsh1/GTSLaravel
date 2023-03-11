@@ -1,0 +1,13 @@
+{
+    "key": "transport-type",
+    "category": "reservation",
+    "group": "reference",
+    "model": "App\\Admin\\Models\\Reference\\Airport",
+    "titles": {
+        "index": "Типы транспорта",
+        "create": "Новый тип"
+    },
+    "views": {},
+    "permissions": "crud",
+    "priority": 20
+}

@@ -1,20 +1,19 @@
 <?php
 
-namespace App\Admin\Models;
+namespace App\Admin\Models\Administrator;
 
 use Custom\Framework\Database\Eloquent\HasQuicksearch;
-use Module\Shared\Custom\TabularSection;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Module\Shared\Custom\TabularSection;
 
 class Administrator extends Authenticatable
 {
-
-    use HasFactory, Notifiable, HasQuicksearch;
+    use HasFactory;
+    use HasQuicksearch;
+    use Notifiable;
 
     protected $subscriptions;
 
@@ -97,8 +96,9 @@ class Administrator extends Authenticatable
 
     public function setAttribute($key, $value)
     {
-        if ($key === 'password')
+        if ($key === 'password') {
             $value = Hash::make($value);
+        }
 
         return parent::setAttribute($key, $value);
     }

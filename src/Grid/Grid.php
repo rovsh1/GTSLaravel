@@ -19,9 +19,16 @@ class Grid
 
     protected ?Paginator $paginator = null;
 
+    protected static array $defaultOptions = [];
+
+    public static function setDefaults(array $options): void
+    {
+        static::$defaultOptions = $options;
+    }
+
     public function __construct($options = [])
     {
-        $this->options = new Support\Options($options);
+        $this->options = new Support\Options(array_merge(static::$defaultOptions, $options));
         $this->sorting = new Support\Sorting($options);
         $this->renderer = new Renderer\Renderer($options);
         $this->data = new Data\EmptyData();

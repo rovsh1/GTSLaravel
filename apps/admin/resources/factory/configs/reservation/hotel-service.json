@@ -1,0 +1,12 @@
+{
+    "key": "hotel-service",
+    "category": "reservation",
+    "group": "additional-services",
+    "model": "App\\Admin\\Models\\Reference\\Airport",
+    "titles": {
+        "index": "Услуги в отеле",
+        "create": "Новая услуга"
+    },
+    "views": {},
+    "permissions": "crud"
+}

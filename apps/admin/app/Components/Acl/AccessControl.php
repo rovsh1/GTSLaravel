@@ -32,9 +32,14 @@ class AccessControl
         return $this->router;
     }
 
-    public function isAllowed(string $permission = null): bool
+    public function isSuperuser(): bool
     {
-        return $this->permissions->isAllowed($permission);
+        return $this->permissions->isSuperuser();
+    }
+
+    public function isAllowed(string $resource, string $permission = null): bool
+    {
+        return $this->permissions->isAllowed($resource, $permission);
     }
 
     public function isRouteAssigned(string $route): bool

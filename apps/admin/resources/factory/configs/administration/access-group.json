@@ -1,0 +1,13 @@
+{
+    "key": "access-group",
+    "category": "administration",
+    "group": "system",
+    "model": "App\\Admin\\Models\\Administrator\\AccessGroup",
+    "titles": {
+        "index": "Группы доступа",
+        "create": "Новая группа"
+    },
+    "views": {},
+    "permissions": "crud",
+    "priority": 190
+}

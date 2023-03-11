@@ -1,5 +1,4 @@
 <form action="{{ $form->action }}" method="{{ strtoupper($form->method) === 'GET' ? 'GET' : 'POST' }}" enctype="multipart/form-data">
-    {!! $csrf !!}
     {!! $errors !!}
     @method(strtoupper($form->method))
     <div class="form-fields">{!! $elements !!}</div>

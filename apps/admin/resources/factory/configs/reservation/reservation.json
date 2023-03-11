@@ -1,0 +1,11 @@
+{
+    "key": "reservation",
+    "category": "reservation",
+    "model": "App\\Admin\\Models\\Reference\\Airport",
+    "titles": {
+        "index": "Брони",
+        "create": "Новая бронь"
+    },
+    "views": {},
+    "permissions": "crud"
+}

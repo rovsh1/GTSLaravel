@@ -32,7 +32,7 @@
     }
     .main-wrapper {
         flex-grow: 1;
-        .title {line-height: 2rem;font-size: 16px;padding: 0 1rem;margin-bottom: 1rem;color:rgba(0, 0, 0, .66);}
+        .title {line-height: 2rem;font-size: 16px;padding: 0 1rem;margin-bottom: 1rem;color: rgba(0, 0, 0, .66);}
     }
 }
 body.sitemap-expanded {overflow: hidden;}
@@ -51,7 +51,8 @@ body:not(.sitemap-expanded) .sitemap-wrapper {display: none;}
     nav > a.current {background: #F0F5FE;}
     nav > a.current:not(:hover) {color: variables.$primary;}
 
-    .group {display: flex;flex-direction: column;margin-top: 1rem;}
+    .group {display: flex;flex-direction: column;}
+    .group:not(:first-child) {margin-top: 1rem;}
     .group .group-title {line-height: 2rem;color: rgba(0, 0, 0, .54); padding: 0 0.5rem 0 1rem;position: relative;}
     .group .group-title i {
 

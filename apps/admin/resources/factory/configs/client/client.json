@@ -1,0 +1,12 @@
+{
+    "key": "client",
+    "category": "client",
+    "model": "App\\Admin\\Models\\Hotel\\Hotel",
+    "titles": {
+        "index": "Клиенты",
+        "create": "Новый клиент"
+    },
+    "views": {},
+    "permissions": "crud",
+    "priority": 100
+}

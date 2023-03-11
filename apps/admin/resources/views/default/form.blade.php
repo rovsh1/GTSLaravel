@@ -14,11 +14,13 @@
                 <div class="form-buttons">
                     <button type="submit" class="btn btn-primary">{{ $submitText ?? 'Сохранить' }}</button>
                     @if(isset($cancelUrl))
-                        <a href="{{ $cancelUrl }}" class="btn btn-light">Отмена</a>
+                        <a href="{{ $cancelUrl }}" class="btn btn-cancel">Отмена</a>
                     @endif
                     <div class="spacer"></div>
                     @if(isset($deleteUrl) && $deleteUrl)
-                        <a href="#" data-url="{{ $deleteUrl }}" class="btn btn-delete btn-light">Удалить</a>
+                        <a href="#" data-url="{{ $deleteUrl }}" class="btn btn-delete">
+                            <x-icon key="delete"/>
+                            Удалить</a>
                     @endif
                 </div>
             </form>

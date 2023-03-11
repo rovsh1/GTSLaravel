@@ -27,6 +27,11 @@ class Permissions
         $this->setPermission($resource, $permission, false);
     }
 
+    public function isSuperuser(): bool
+    {
+        return $this->superuser;
+    }
+
     public function isAllowed(string $resource, string $permission = null): bool
     {
         if ($this->superuser) {

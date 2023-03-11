@@ -1,6 +1,6 @@
 <aside class="sidebar">
     <div class="sidebar-header">
-        {!! Icon::category($category->key) !!}
+        <x-category-icon :key="$category->key"/>
         <div class="title">{{ $category->title }}</div>
     </div>
 

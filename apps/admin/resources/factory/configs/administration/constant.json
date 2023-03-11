@@ -1,0 +1,12 @@
+{
+    "key": "constant",
+    "category": "administration",
+    "group": "settings",
+    "model": "App\\Admin\\Models\\Administrator\\Administrator",
+    "titles": {
+        "index": "Константы",
+        "create": "Новая константа"
+    },
+    "views": {},
+    "permissions": "crud"
+}

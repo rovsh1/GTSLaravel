@@ -7,6 +7,7 @@ use App\Admin\Support\View as ViewNamespace;
 use App\Admin\Support\View\Grid as GridNamespace;
 use Gsdk\Form as FormNamespace;
 use Gsdk\Meta\MetaServiceProvider;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
 class ViewServiceProvider extends ServiceProvider
@@ -26,6 +27,9 @@ class ViewServiceProvider extends ServiceProvider
     private function registerGrid()
     {
         GridNamespace\Grid::registerNamespace(GridNamespace::class . '\\Column');
+        GridNamespace\Grid::setDefaults([
+            'emptyText' => 'Записи отсутствуют'
+        ]);
     }
 
     private function registerForm()
@@ -84,13 +88,13 @@ class ViewServiceProvider extends ServiceProvider
         $this->app->singleton('menu.actions', ViewNamespace\Navigation\ActionsMenu::class);
     }
 
-    private function registerHelpers()
-    {
-        class_alias(Helpers\Icon::class, 'Icon');
-    }
+    private function registerHelpers() {}
 
     private function registerComponents()
     {
+        Blade::component('icon', ViewNamespace\Components\Icon::class);
+        Blade::component('category-icon', ViewNamespace\Components\CategoryIcon::class);
+        Blade::component('button', ViewNamespace\Components\Button::class);
         //Blade::componentNamespace('App\\Admin\\Views\\Components', 'admin');
     }
 }

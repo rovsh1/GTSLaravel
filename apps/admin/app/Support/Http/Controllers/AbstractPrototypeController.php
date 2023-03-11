@@ -39,7 +39,8 @@ abstract class AbstractPrototypeController extends Controller
                 'quicksearch' => $grid->getQuicksearch(),
                 'searchForm' => $grid->getSearchForm(),
                 'grid' => $grid,
-                'paginator' => $grid->getPaginator()
+                'paginator' => $grid->getPaginator(),
+                'createUrl' => $this->prototype->hasPermission('create') ? $this->prototype->route('create') : null
             ]);
     }
 
@@ -68,6 +69,8 @@ abstract class AbstractPrototypeController extends Controller
             ->action($this->prototype->route('store'));
 
         //TODO back button
+
+        app('sitemap')->currentRoute($this->prototype->routeName('index'));
 
         return app('layout')
             ->title($this->prototype->title('create'))
@@ -111,6 +114,8 @@ abstract class AbstractPrototypeController extends Controller
             ->action($this->prototype->route('update', $id))
             ->data($model);
 
+        app('sitemap')->currentRoute($this->prototype->routeName('index'));
+
         return app('layout')
             ->title($title)
             ->view($this->prototype->view('edit') ?? $this->prototype->view('form') ?? 'default.form', [
@@ -133,7 +138,7 @@ abstract class AbstractPrototypeController extends Controller
                 ->withInput();
         }
 
-        $this->repository->update($model, $form->getData());
+        $this->repository->update($model->id, $form->getData());
 
         return redirect($this->prototype->route('index'));
     }

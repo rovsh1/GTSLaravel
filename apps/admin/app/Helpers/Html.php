@@ -2,11 +2,16 @@
 
 namespace App\Admin\Helpers;
 
-class HTML
+class Html
 {
     public static function img(string $src, array $attributes = []): string
     {
         return self::closedTag('img', array_merge($attributes, ['src' => $src]));
+    }
+
+    public static function a(string $href, string $text, array $attributes = []): string
+    {
+        return self::openedTag('a', $text, array_merge($attributes, ['href' => $href]));
     }
 
     public static function attributesToString(array $attributes): string

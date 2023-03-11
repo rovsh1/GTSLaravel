@@ -1,0 +1,12 @@
+{
+    "key": "transfer-service",
+    "category": "reservation",
+    "group": "additional-services",
+    "model": "App\\Admin\\Models\\Reference\\Airport",
+    "titles": {
+        "index": "Транспортные услуги",
+        "create": "Новая услуга"
+    },
+    "views": {},
+    "permissions": "crud"
+}

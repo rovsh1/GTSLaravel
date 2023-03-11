@@ -8,7 +8,7 @@ use App\Admin\Support\View\Grid\Grid;
 
 class CurrencyController extends AbstractPrototypeController
 {
-    protected $prototype = 'reference.currency';
+    protected $prototype = 'currency';
 
     protected function formFactory()
     {

@@ -4,3 +4,6 @@
 
     .spacer {flex-grow: 1;}
 }
+
+div.field-required > label:after {content: " *"; color: #DC493A;}
+div.form-field div.error {color: #DC493A;}

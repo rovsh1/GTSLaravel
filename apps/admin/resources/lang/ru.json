@@ -5,5 +5,15 @@
     "category.client": "Клиенты",
     "category.reservation": "Бронирование",
     "category.administration": "Администрирование",
-    "group.reference": "Справочники"
+    "category.site": "Сайт",
+    "category.finance": "Финансы",
+    "category.reports": "Отчеты",
+    "group.content": "Содержание",
+    "group.seo": "SEO",
+    "group.log": "Журнал",
+    "group.settings": "Настройки",
+    "group.system": "Система",
+    "group.reference": "Справочники",
+    "group.additional-services": "Доп. услуги",
+    "group.reservations": "По типам"
 }
