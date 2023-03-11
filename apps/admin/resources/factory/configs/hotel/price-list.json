@@ -1,5 +1,5 @@
 {
-    "key": "hotel.price-list",
+    "key": "hotel-price-list",
     "category": "hotel",
     "model": "App\\Admin\\Models\\Hotel\\PriceList",
     "titles": {

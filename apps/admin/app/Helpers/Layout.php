@@ -16,6 +16,11 @@ class Layout
         return app('breadcrumbs')->render();
     }
 
+    public static function sitemap()
+    {
+        return app('sitemap')->render();
+    }
+
     public static function sidebar()
     {
         return app('sidebar')->render();

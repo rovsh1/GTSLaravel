@@ -16,6 +16,30 @@ function bootApp() {
     }*/
 }
 
+function bootSitemap() {
+    $('#btn-sitemap').click(() => {
+        $(document.body).toggleClass('sitemap-expanded');
+    });
+
+    $('#sitemap-categories a').click(function (e) {
+        e.preventDefault();
+
+        const item = $(this).parent();
+        const category = item.data('category');
+
+        $('#sitemap-categories .current').removeClass('current');
+        item.addClass('current');
+
+        const menus = $('#sitemap-categories-menus > div');
+        menus.each((i, m) => {
+            if ($(m).data('category') === category)
+                $(m).show();
+            else
+                $(m).hide();
+        });
+    });
+}
+
 export default class LayoutProvider {
     register() {
         app().instance('layout', new Layout());
@@ -23,5 +47,6 @@ export default class LayoutProvider {
 
     boot() {
         bootApp();
+        bootSitemap();
     }
 }

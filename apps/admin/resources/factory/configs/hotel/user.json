@@ -1,0 +1,11 @@
+{
+    "key": "hotel-user",
+    "category": "hotel",
+    "model": "App\\Admin\\Models\\Hotel\\User",
+    "titles": {
+        "index": "Пользователи",
+        "create": "Новый пользователь"
+    },
+    "views": {},
+    "permissions": "crud"
+}

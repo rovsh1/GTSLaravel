@@ -4,9 +4,11 @@
     <div class="dashboard-wrapper">
         @include('layouts/main/header')
 
-        {!! Layout::sidebar() !!}
+        {!! Layout::sitemap() !!}
 
         <main class="main-wrapper">
+            {!! Layout::sidebar() !!}
+
             <div class="content-wrapper">
                 <section class="content">@yield('content')</section>
             </div>

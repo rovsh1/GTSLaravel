@@ -24,8 +24,8 @@ class Prototype
         //$this->type = PrototypeTypes::from($config['type'] ?? 'main');
         $this->permissions = $this->parsePermissions($config['permissions']);
 
-        $config['routeUriPrefix'] = '/' . str_replace('.', '/', $config['key']);
         $config['routeNamePrefix'] = $config['key'] . '.';
+        $config['routeUriPrefix'] = '/' . str_replace('.', '/', $config['key']);
 
         $this->config = $config;
     }

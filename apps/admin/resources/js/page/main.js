@@ -1,16 +1,18 @@
 import '../bootstrap';
 
+import "../vendor/jquery.cookie";
+
+require("gsv-pkg/framework/bootstrap");
 /*
-import "../vendor/jquery.cookie"
 import "../vendor/jquery.mask"
 
 require("gsv-pkg/support/http");
 require("gsv-pkg/ui/window");
-require("gsv-pkg/framework/bootstrap");
 
 Object.assign($.fn, {});
 
 Object.assign(window, {});
+*/
 
 import LayoutProvider from "../app/providers/layout";
 import CookiesProvider from "../app/providers/cookies";
@@ -25,4 +27,3 @@ $(document).ready(function () {
         .register(CookiesProvider)
         .boot();
 });
-*/

@@ -1,16 +1,32 @@
 header {
     height: 48px;
-    z-index: 10;
+    z-index: 300;
     transition: all .2s;
     position: fixed;
     width: 100%;
-    padding-left: 280px;
+    display: flex;
+    background: #fff;
+    border-bottom: 1px solid #E0E0E0;
+
+    .logo-wrapper {
+        width: 280px;
+        display: flex;
+        height: 48px;
+        button {width: 48px;height: 47px;border: none;background: none;}
+        button > svg {width: 24px;height: 24px;color: rgba(0, 0, 0, .66);}
+    }
+    div.logo {
+        background: url("/images/logo.svg") 8px 50% no-repeat;
+        background-size: 146px 30px;
+        flex-grow: 1;
+    }
 }
 
 .header-content-wrapper {
     padding: 8px 2rem;
+    flex-grow: 1;
     .header-content { display: flex; gap: 1rem; align-items: center;}
     .spacer {flex-grow: 1;}
-    form {flex-grow: 1;
-    }
+    form {flex-grow: 1; }
 }
+

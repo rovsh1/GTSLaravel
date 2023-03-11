@@ -1,6 +1,5 @@
 {
-    "name": "Country",
-    "key": "reference.country",
+    "key": "country",
     "alias": "reference.country",
     "category": "administration",
     "group": "reference",
@@ -10,5 +9,6 @@
         "create": "Новая страна"
     },
     "views": {},
-    "permissions": "crud"
+    "permissions": "crud",
+    "priority": 60
 }

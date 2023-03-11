@@ -1,5 +1,5 @@
 {
-    "key": "hotel.service",
+    "key": "hotel-service",
     "category": "hotel",
     "group": "reference",
     "model": "App\\Admin\\Models\\Hotel\\Service",

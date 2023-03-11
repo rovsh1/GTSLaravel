@@ -1,0 +1,12 @@
+{
+    "key": "airport",
+    "category": "administration",
+    "group": "reference",
+    "model": "App\\Admin\\Models\\Reference\\Airport",
+    "titles": {
+        "index": "Аэропорты",
+        "create": "Новый аэропорт"
+    },
+    "views": {},
+    "permissions": "crud"
+}

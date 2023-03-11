@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 
 abstract class AbstractPrototypeController extends Controller
 {
-    public const GRID_LIMIT = 20;
+    public const GRID_LIMIT = 16;
 
     protected $prototype;
 

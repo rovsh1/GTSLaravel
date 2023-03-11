@@ -1,6 +1,5 @@
 {
-    "name": "City",
-    "key": "reference.city",
+    "key": "city",
     "category": "administration",
     "group": "reference",
     "model": "App\\Admin\\Models\\Reference\\City",
@@ -9,5 +8,6 @@
         "create": "Новый город"
     },
     "views": {},
-    "permissions": "crud"
+    "permissions": "crud",
+    "priority": 50
 }

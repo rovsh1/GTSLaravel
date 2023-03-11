@@ -1,6 +1,5 @@
 {
-    "name": "Currency",
-    "key": "reference.currency",
+    "key": "currency",
     "category": "administration",
     "group": "reference",
     "model": "App\\Admin\\Models\\Reference\\Currency",

@@ -10,5 +10,6 @@
         "form": "hotel.form",
         "show": "hotel.show"
     },
-    "permissions": "crud"
+    "permissions": "crud",
+    "priority": 100
 }
