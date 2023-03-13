@@ -123,9 +123,9 @@ class RouteRegistrar
         return $this;
     }
 
-    private function addResourceIndex($prefix, $name, $base, $controller): void
+    private function addResourceIndex($path, $name, $base, $controller): void
     {
-        $this->get($prefix . '/', $controller . '@index', 'read', $name . 'index');
+        $this->get($path, $controller . '@index', 'read', $name . 'index');
     }
 
     private function addResourceShow($path, $name, $base, $controller): void
@@ -140,7 +140,7 @@ class RouteRegistrar
 
     private function addResourceStore($path, $name, $base, $controller): void
     {
-        $this->post($path . '/store', $controller . '@create', 'create', $name . 'store');
+        $this->post($path, $controller . '@store', 'create', $name . 'store');
     }
 
     private function addResourceEdit($path, $name, $base, $controller): void
