@@ -86,11 +86,19 @@ aside.sidebar {
     @include scrollbar.scrollable;
 
     nav {display: flex;flex-direction: column;}
-    nav > a {line-height: 2rem;color: #000;padding: 0 1rem 0 1rem;}
+    nav > a {
+        line-height: 2rem;
+        color: #000;
+        padding: 0 1rem 0 1rem;
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+    }
     nav > a:hover {background: #EBEBEB;}
     nav > a:not(:hover) {color: rgba(0, 0, 0, 1);}
     nav > a.current {background: #F0F5FE;}
     nav > a.current:not(:hover) {color: variables.$primary;}
+    nav i {font-size: 16px;color: rgba(0, 0, 0, .56);}
 
     .group {display: flex;flex-direction: column;}
     .group:not(:first-child) {margin-top: 1rem;}

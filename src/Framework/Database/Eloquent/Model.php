@@ -18,6 +18,11 @@ class Model extends \Illuminate\Database\Eloquent\Model
         return $this;
     }
 
+    public function resolveRouteBindingQuery($query, $value, $field = null)
+    {
+        return $query->where($this->getTable() . '.' . ($field ?? $this->getRouteKeyName()), $value);
+    }
+
 //    public function getCasts() {
 //        //dd(array_merge($this->getValidationCastTypes(), parent::getCasts()));
 //        return array_merge($this->getValidationCastTypes(), parent::getCasts());

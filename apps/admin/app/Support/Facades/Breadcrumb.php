@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static Breadcrumbs add(array|string $params)
  * @method static Breadcrumbs addUrl(string $url, array|string $params)
  * @method static Breadcrumbs addRoute(string $route, array|string $params)
- * @method static Breadcrumbs prototype(Prototype $prototype)
+ * @method static Breadcrumbs prototype(string|Prototype $prototype)
  * @method static string render()
  *
  * @see Breadcrumbs

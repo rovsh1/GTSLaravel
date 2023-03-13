@@ -12,14 +12,16 @@ class ItemCollection
         return $this;
     }
 
-    public function addUrl(string $key, string $url, string $text): static
+    public function addUrl(string $key, string $url, string $text, array $options = []): static
     {
         return $this->addItem(
-            new Item([
-                'key' => $key,
-                'url' => $url,
-                'text' => $text
-            ])
+            new Item(
+                array_merge($options, [
+                    'key' => $key,
+                    'url' => $url,
+                    'text' => $text
+                ])
+            )
         );
     }
 

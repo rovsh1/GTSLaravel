@@ -10,15 +10,15 @@ class Icon extends Component
         'filter' => 'filter_alt'
     ];
 
-    protected readonly string $key;
+    protected readonly ?string $key;
 
-    public function __construct(string $key)
+    public function __construct(string|null $key)
     {
         $this->key = static::$aliases[$key] ?? $key;
     }
 
     public function render(): string
     {
-        return '<i class="icon">' . $this->key . '</i>';
+        return $this->key ? '<i class="icon">' . $this->key . '</i>' : '';
     }
 }

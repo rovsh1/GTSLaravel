@@ -82,6 +82,7 @@ class SitemapBuilder
             'key' => $prototype->routeName('index'),
             'url' => $prototype->route(),
             'text' => $prototype->title(),
+            'icon' => $prototype->config('icon')
         ]);
     }
 
