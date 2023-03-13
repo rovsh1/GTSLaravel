@@ -9,7 +9,10 @@ use App\Admin\Support\View\Grid\Grid;
 
 class AccessGroupController extends AbstractPrototypeController
 {
-    protected $prototype = 'access-group';
+    protected function getPrototypeKey(): string
+    {
+        return 'access-group';
+    }
 
     protected function formFactory()
     {

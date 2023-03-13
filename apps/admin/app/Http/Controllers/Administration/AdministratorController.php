@@ -6,13 +6,13 @@ use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form;
 use App\Admin\Support\View\Grid\Grid;
-use Ustabor\Infrastructure\Enums\User\UserStatus;
-use Ustabor\Infrastructure\Models\Administrator\Access\Group as AccessGroup;
-use Ustabor\Services\System\NotificationList;
 
 class AdministratorController extends AbstractPrototypeController
 {
-    protected $prototype = 'administrator';
+    protected function getPrototypeKey(): string
+    {
+        return 'administrator';
+    }
 
     protected function formFactory()
     {

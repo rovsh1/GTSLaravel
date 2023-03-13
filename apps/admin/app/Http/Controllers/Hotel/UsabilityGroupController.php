@@ -6,5 +6,8 @@ use App\Admin\Support\Http\Controllers\AbstractEnumController;
 
 class UsabilityGroupController extends AbstractEnumController
 {
-    protected $prototype = 'hotel-usability-group';
+    protected function getPrototypeKey(): string
+    {
+        return 'hotel-usability-group';
+    }
 }

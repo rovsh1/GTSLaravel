@@ -2,6 +2,8 @@
 
 namespace App\Admin\Support\Http\Controllers;
 
+use App\Admin\Components\Factory\FactoryRepositoryInterface;
+use App\Admin\Components\Factory\Prototype;
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Layout;
@@ -12,9 +14,9 @@ abstract class AbstractPrototypeController extends Controller
 {
     public const GRID_LIMIT = 16;
 
-    protected $prototype;
+    protected Prototype $prototype;
 
-    protected $repository;
+    protected FactoryRepositoryInterface $repository;
 
     protected $form;
 
@@ -22,7 +24,7 @@ abstract class AbstractPrototypeController extends Controller
 
     public function __construct()
     {
-        $this->prototype = Prototypes::get($this->prototype);
+        $this->prototype = Prototypes::get($this->getPrototypeKey());
         $this->repository = $this->prototype->makeRepository();
     }
 
@@ -170,4 +172,6 @@ abstract class AbstractPrototypeController extends Controller
     {
         return Route::has($this->prototype->routeName('show'));
     }
+
+    abstract protected function getPrototypeKey(): string;
 }

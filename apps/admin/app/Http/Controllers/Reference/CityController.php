@@ -9,7 +9,10 @@ use App\Admin\Support\View\Grid\Grid;
 
 class CityController extends AbstractPrototypeController
 {
-    protected $prototype = 'city';
+    protected function getPrototypeKey(): string
+    {
+        return 'city';
+    }
 
     protected function formFactory()
     {

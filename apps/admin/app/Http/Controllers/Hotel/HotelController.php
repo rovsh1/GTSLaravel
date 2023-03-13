@@ -15,7 +15,10 @@ use Gsdk\Format\View\ParamsTable;
 
 class HotelController extends AbstractPrototypeController
 {
-    protected $prototype = 'hotel';
+    protected function getPrototypeKey(): string
+    {
+        return 'hotel';
+    }
 
     protected function formFactory()
     {

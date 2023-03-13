@@ -6,5 +6,8 @@ use App\Admin\Support\Http\Controllers\AbstractEnumController;
 
 class BedTypeController extends AbstractEnumController
 {
-    protected $prototype = 'hotel-bed-type';
+    protected function getPrototypeKey(): string
+    {
+        return 'hotel-bed-type';
+    }
 }

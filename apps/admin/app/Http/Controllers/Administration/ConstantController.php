@@ -8,7 +8,10 @@ use App\Admin\Support\View\Grid\Grid;
 
 class ConstantController extends AbstractPrototypeController
 {
-    protected $prototype = 'constant';
+    protected function getPrototypeKey(): string
+    {
+        return 'constant';
+    }
 
     protected function formFactory()
     {

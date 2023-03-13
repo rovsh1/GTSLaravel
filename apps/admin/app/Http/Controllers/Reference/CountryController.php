@@ -8,7 +8,10 @@ use App\Admin\Support\View\Grid\Grid;
 
 class CountryController extends AbstractPrototypeController
 {
-    protected $prototype = 'country';
+    protected function getPrototypeKey(): string
+    {
+        return 'country';
+    }
 
     protected function formFactory()
     {
