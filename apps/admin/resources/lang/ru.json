@@ -16,6 +16,7 @@
     "group.system": "Система",
     "group.service": "Служебные",
     "group.reference": "Справочники",
+    "group.additional": "Дополнительно",
     "group.additional-services": "Доп. услуги",
     "group.reservations": "По типам"
 }

@@ -3,6 +3,7 @@
 namespace App\Admin\View\Menus;
 
 use App\Admin\Support\View\Sidebar\AbstractSubmenu;
+use App\Admin\Support\View\Sidebar\Menu\Group;
 
 class HotelMenu extends AbstractSubmenu
 {
@@ -22,15 +23,20 @@ class HotelMenu extends AbstractSubmenu
     private function build()
     {
         $this
-//            ->add('Цены')
-//            ->add('Брони')
-//            ->add('Квоты')
-//            ->add('Журнал')
-            ->addUrl('info', route('hotels.show', $this->model->id), 'Описание')
+            ->addUrl('prices', route('hotels.rooms.index', $this->model->id), 'Цены')
+            ->addUrl('reservations', route('hotels.rooms.index', $this->model->id), 'Брони')
+            ->addUrl('info', route('hotels.show', $this->model->id), 'Описание');
+
+        $group = (new Group('settings'))
+            ->addUrl('quota', route('hotels.rooms.index', $this->model->id), 'Квоты')
+            ->addUrl('images', route('hotels.rooms.index', $this->model->id), 'Фотографии')
             ->addUrl('rooms', route('hotels.rooms.index', $this->model->id), 'Номера')
-//            ->addRoute('hotel.images', 'Фотографии')
-//            ->add('Условия размещения')
-//            ->add('Отзывы')
-        ;
+            ->addUrl('settings', route('hotels.rooms.index', $this->model->id), 'Условия размещения');
+        $this->addGroup($group);
+
+        $group = (new Group('additional'))
+            ->addUrl('reviews', route('hotels.rooms.index', $this->model->id), 'Отзывы')
+            ->addUrl('journal', route('hotels.rooms.index', $this->model->id), 'Журнал');
+        $this->addGroup($group);
     }
 }

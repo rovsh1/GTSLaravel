@@ -53,6 +53,7 @@ aside.sidebar {
             text-overflow: ellipsis;
         }
         .title-wrapper .hint {font-size: 11px;color: variables.$secondary;}
+        .sidebar-menu {padding: .5rem 0;}
     }
     .submenu-wrapper + .main-menu-wrapper { left: -100%; transition: left .3s ease; }
 
