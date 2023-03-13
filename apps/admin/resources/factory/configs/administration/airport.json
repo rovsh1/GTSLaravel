@@ -1,5 +1,6 @@
 {
     "key": "airport",
+    "route": "airports",
     "category": "administration",
     "group": "reference",
     "model": "App\\Admin\\Models\\Reference\\Airport",

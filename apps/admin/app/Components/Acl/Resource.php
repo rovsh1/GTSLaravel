@@ -6,6 +6,8 @@ class Resource
 {
     public readonly string $key;
 
+    public readonly string $route;
+
     protected array $permissions;
 
     protected array $config = [];
@@ -14,31 +16,13 @@ class Resource
     {
         $this->key = $config['key'];
         $this->permissions = $this->parsePermissions($config['permissions']);
-
-        $config['routeUriPrefix'] = '/' . str_replace('.', '/', $config['key']);
-        $config['routeNamePrefix'] = $config['key'] . '.';
-
         $this->config = $config;
+        $this->route = $config['route'] ?? $config['key'];
     }
 
     public function config(string $key)
     {
         return $this->config[$key] ?? null;
-    }
-
-    public function routeName(string $method = null): string
-    {
-        return $this->config['routeNamePrefix'] . $method;
-    }
-
-    public function routePrefix(string $uri = null): string
-    {
-        return $this->config['routeUriPrefix'] . $uri;
-    }
-
-    public function route(string $method, $params = []): string
-    {
-        return route($this->routeName($method), $params);
     }
 
     public function permissions(): array
@@ -53,7 +37,7 @@ class Resource
 
     public function permissionSlug(string $permission): string
     {
-        return $this->routeName($permission);
+        return $permission . ' ' . $this->key;
     }
 
     private function parsePermissions($value): array

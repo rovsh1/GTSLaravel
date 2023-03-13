@@ -1,6 +1,7 @@
 {
     "key": "hotel",
     "category": "hotel",
+    "route": "hotels",
     "model": "App\\Admin\\Models\\Hotel\\Hotel",
     "titles": {
         "index": "Отели",

@@ -66,5 +66,11 @@ export default class LayoutProvider {
         bootApp();
         bootSitemap();
         bootGrid();
+
+        $('#btn-sidebar-toggle').click(e => {
+            $('#sidebar').toggleClass('submenu-collapsed');
+
+            $(this).find('i');
+        });
     }
 }

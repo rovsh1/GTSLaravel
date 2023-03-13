@@ -70,7 +70,7 @@ class ViewServiceProvider extends ServiceProvider
 
         $this->app->singleton('sitemap', ViewNamespace\Sitemap\Sitemap::class);
 
-        $this->app->singleton('sidebar', ViewNamespace\Navigation\Sidebar::class);
+        $this->app->singleton('sidebar', ViewNamespace\Sidebar\Sidebar::class);
 
         $this->app->singleton('breadcrumbs', ViewNamespace\Navigation\Breadcrumbs::class);
     }
@@ -92,9 +92,8 @@ class ViewServiceProvider extends ServiceProvider
 
     private function registerComponents()
     {
-        Blade::component('icon', ViewNamespace\Components\Icon::class);
-        Blade::component('category-icon', ViewNamespace\Components\CategoryIcon::class);
-        Blade::component('button', ViewNamespace\Components\Button::class);
+        Blade::component('icon', \App\Admin\View\Components\Icon::class);
+        Blade::component('category-icon', \App\Admin\View\Components\CategoryIcon::class);
         //Blade::componentNamespace('App\\Admin\\Views\\Components', 'admin');
     }
 }

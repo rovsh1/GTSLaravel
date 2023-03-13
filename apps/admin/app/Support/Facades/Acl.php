@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static \App\Admin\Components\Acl\Permissions permissions()
+ * @method static \App\Admin\Components\Acl\ResourcesCollection resources()
+ * @method static \App\Admin\Components\Acl\Resource|null resource(string $name)
  * @method static bool isSuperuser()
  * @method static bool isAllowed(string $resource, string $permission = null)
  * @method static bool isRouteAssigned(string $route)

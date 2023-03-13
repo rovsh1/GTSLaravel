@@ -1,11 +1,15 @@
 <?php
 
-namespace App\Admin\Support\View\Navigation;
+namespace App\Admin\Support\View\Sidebar;
 
 use App\Admin\Support\Facades\Sitemap;
 
 class Sidebar
 {
+    private ?AbstractSubmenu $submenu = null;
+
+    public function __construct() {}
+
     public function currentRoute(string $key): void
     {
         Sitemap::currentRoute($key);
@@ -16,6 +20,11 @@ class Sidebar
         Sitemap::currentCategory($key);
     }
 
+    public function submenu(AbstractSubmenu $menu): void
+    {
+        $this->submenu = $menu;
+    }
+
     public function render()
     {
         $category = Sitemap::getCurrentCategory();
@@ -23,13 +32,11 @@ class Sidebar
             return '';
         }
 
-        $menu = null;
-
         return view('layouts/main/sidebar', [
             'sitemap' => Sitemap::getFacadeRoot(),
             'sidebar' => $this,
-            'category' => $category,
-            'menu' => $menu
+            'submenu' => $this->submenu,
+            'category' => $category
         ]);
     }
 }

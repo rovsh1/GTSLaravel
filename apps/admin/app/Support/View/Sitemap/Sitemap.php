@@ -2,8 +2,7 @@
 
 namespace App\Admin\Support\View\Sitemap;
 
-use App\Admin\Support\View\Sitemap\Menu\CategoryMenu;
-use App\Admin\Support\View\Sitemap\Menu\ItemInterface;
+use App\Admin\Support\View\Sidebar\Menu\ItemInterface;
 use App\Admin\Support\View\Sitemap\Support\SitemapBuilder;
 
 class Sitemap
@@ -44,14 +43,18 @@ class Sitemap
         }
     }
 
-    public function isCurrent(ItemInterface|CategoryMenu $item): bool
+    public function isCurrent(string|ItemInterface|CategoryMenu $item): bool
     {
         if (!$this->category) {
             return false;
-        } elseif ($item instanceof CategoryMenu) {
+        }
+
+        if ($item instanceof CategoryMenu) {
             return $this->category->key === $item->key;
-        } else {
+        } elseif ($item instanceof ItemInterface) {
             return $this->current === $item->key;
+        } else {
+            return $this->current === $item;
         }
     }
 
@@ -71,7 +74,7 @@ class Sitemap
             $this->detectCurrent();
         }
 
-        return view('layouts/sitemap/sitemap', [
+        return view('layouts/main/sitemap', [
             'sitemap' => $this,
             'categories' => $this->categoriesMenu
         ]);
@@ -81,11 +84,11 @@ class Sitemap
     {
         $route = request()->route()->getName();
         $this->currentRoute($route);
-        if (null !== $this->current || str_ends_with($route, '.index')) {
+        if (null !== $this->current) {
             return;
         }
 
-        $route = substr($route, 0, strrpos($route, '.')) . '.index';
+        $route = substr($route, 0, strpos($route, '.')) . '.index';
         $this->currentRoute($route);
     }
 }

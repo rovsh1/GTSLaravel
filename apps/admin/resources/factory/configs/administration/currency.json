@@ -1,5 +1,6 @@
 {
     "key": "currency",
+    "route": "currencies",
     "category": "administration",
     "group": "reference",
     "model": "App\\Admin\\Models\\Reference\\Currency",

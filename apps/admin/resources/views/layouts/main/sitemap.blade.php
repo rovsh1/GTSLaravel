@@ -15,7 +15,7 @@
                 @foreach($categories as $category)
                     <div class="category-menu-wrapper" style="{{ $sitemap->isCurrent($category) ? '' : 'display:none' }}" data-category="{{ $category->key }}">
                         <div class="title">{{ $category->title }}</div>
-                        @include("/layouts/sitemap/category-menu")
+                        {!! $category->render() !!}
                     </div>
                 @endforeach
             </div>

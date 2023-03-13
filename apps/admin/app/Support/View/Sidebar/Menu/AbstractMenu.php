@@ -1,17 +1,10 @@
 <?php
 
-namespace App\Admin\Support\View\Sitemap\Menu;
+namespace App\Admin\Support\View\Sidebar\Menu;
 
-class CategoryMenu extends ItemCollection implements MenuInterface
+abstract class AbstractMenu extends ItemCollection implements MenuInterface
 {
-    public readonly string $title;
-
-    private array $groups = [];
-
-    public function __construct(public readonly string $key)
-    {
-        $this->title = __('category.' . $this->key);
-    }
+    protected array $groups = [];
 
     public function groups(): array
     {
@@ -43,5 +36,12 @@ class CategoryMenu extends ItemCollection implements MenuInterface
     public function isEmpty(): bool
     {
         return parent::isEmpty() && empty($this->groups);
+    }
+
+    public function render()
+    {
+        return view('layouts/main/sidebar-menu', [
+            'menu' => $this
+        ]);
     }
 }

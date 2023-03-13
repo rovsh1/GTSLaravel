@@ -21,7 +21,7 @@ class Router
 
     public function resource(string $key, string $controller, array $options = []): RouteRegistrar
     {
-        return $this->for($key)->resource($controller, $options);
+        return $this->for($key)->resource('', $controller, $options);
     }
 
     public function assignRoute(string $routeName, string $permissionSlug): void

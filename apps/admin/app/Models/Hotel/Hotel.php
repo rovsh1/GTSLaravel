@@ -61,6 +61,11 @@ class Hotel extends Model
         });
     }
 
+    public function scopeWhereId($query, $id)
+    {
+        $query->where('hotels.id', $id);
+    }
+
     public function __toString()
     {
         return (string)$this->name;

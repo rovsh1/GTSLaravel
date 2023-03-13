@@ -1,5 +1,6 @@
 {
     "key": "constant",
+    "route": "constants",
     "category": "administration",
     "group": "settings",
     "model": "App\\Admin\\Models\\System\\Constant",

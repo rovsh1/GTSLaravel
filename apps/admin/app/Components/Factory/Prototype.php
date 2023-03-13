@@ -2,6 +2,8 @@
 
 namespace App\Admin\Components\Factory;
 
+use App\Admin\Support\Facades\Acl;
+
 class Prototype
 {
     public readonly string $key;
@@ -12,8 +14,6 @@ class Prototype
 
     //public readonly PrototypeTypes $type;
 
-    protected array $permissions;
-
     protected array $config = [];
 
     public function __construct(array $config)
@@ -22,10 +22,8 @@ class Prototype
         $this->category = $config['category'];
         $this->group = $config['group'] ?? 'main';
         //$this->type = PrototypeTypes::from($config['type'] ?? 'main');
-        $this->permissions = $this->parsePermissions($config['permissions']);
 
-        $config['routeNamePrefix'] = $config['key'] . '.';
-        $config['routeUriPrefix'] = '/' . str_replace('.', '/', $config['key']);
+        $config['route'] = $config['route'] ?? $config['key'];
 
         $this->config = $config;
     }
@@ -61,12 +59,7 @@ class Prototype
 
     public function routeName(string $method = null): string
     {
-        return $this->config['routeNamePrefix'] . $method;
-    }
-
-    public function routePrefix(string $uri = null): string
-    {
-        return $this->config['routeUriPrefix'] . $uri;
+        return $this->config['route'] . '.' . $method;
     }
 
     public function route(string $method = 'index', $params = []): string
@@ -76,29 +69,16 @@ class Prototype
 
     public function permissions(): array
     {
-        return $this->permissions;
+        return Acl::resource($this->key)->permissions();
     }
 
     public function hasPermission(string $name): bool
     {
-        return in_array($name, $this->permissions);
+        return in_array($name, $this->permissions());
     }
 
     public function permissionSlug(string $permission): string
     {
-        return $this->routeName($permission);
-    }
-
-    private function parsePermissions($value): array
-    {
-        if ($value === 'crud') {
-            return ['create', 'read', 'update', 'delete'];
-        } elseif (is_string($value)) {
-            return [$value => null];
-        } elseif (is_array($value)) {
-            return $value;
-        } else {
-            return [];
-        }
+        return Acl::resource($this->key)->permissionSlug($permission);
     }
 }

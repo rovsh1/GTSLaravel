@@ -3,20 +3,29 @@
 namespace App\Admin\Support\View\Sitemap\Support;
 
 use App\Admin\Components\Factory\PrototypesCollection;
-use App\Admin\Support\View\Sitemap\Categories;
-use App\Admin\Support\View\Sitemap\Menu\CategoryMenu;
-use App\Admin\Support\View\Sitemap\Menu\Group;
-use App\Admin\Support\View\Sitemap\Menu\Item;
+use App\Admin\Support\View\Sidebar\Menu\Group;
+use App\Admin\Support\View\Sidebar\Menu\Item;
+use App\Admin\Support\View\Sitemap\CategoryMenu;
 
 class SitemapBuilder
 {
+    private static array $buildCategories = [
+        'reservation',
+        'hotel',
+        'finance',
+        'client',
+        'site',
+        'reports',
+        'administration'
+    ];
+
     public function __construct(private readonly PrototypesCollection $prototypes) {}
 
     public function build(): array
     {
         $menus = [];
-        foreach (Categories::cases() as $case) {
-            $menu = $this->makeCategory($case->value);
+        foreach (self::$buildCategories as $case) {
+            $menu = $this->makeCategory($case);
             if (!$menu->isEmpty()) {
                 $menus[] = $menu;
             }
@@ -26,7 +35,7 @@ class SitemapBuilder
 
     public function makeCategory(string $category): CategoryMenu
     {
-        $menu = new CategoryMenu($category);
+        $menu = new CategoryMenu($category, __('category.' . $category));
 
         $prototypes = array_filter($this->prototypes->all(), fn($p) => $p->category === $category);
         $this->sortPrototypes($prototypes);

@@ -2,26 +2,72 @@
 @use "../variables";
 
 aside.sidebar {
-    display: flex;
-    flex-direction: column;
     z-index: 20;
     overflow: hidden;
     width: 280px;
     position: fixed;
     top: 48px;
     left: 0;
-    height: calc(100vh - 48px - 25px);
+    height: calc(100vh - 48px);
     -ms-flex-direction: column;
     transition: all .3s ease;
     background: #fff;
     border-right: 1px solid #E0E0E0;
 
+    #btn-sidebar-toggle {
+        position: absolute;
+        left: 8px;
+        top: 8px;
+        z-index: 3;
+        border: none;
+        width: 32px;
+        height: 32px;
+        transition: left .3s ease;
+        background: none;
+        color: variables.$secondary;
+        border-radius: 50%;
+        padding: 6px;
+        i {font-size: 20px;}
+        &:hover {background: rgba(0, 0, 0, .08);}
+        &:active {background: rgba(0, 0, 0, .12);}
+    }
+
+    > div {
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        position: absolute;
+        background: #fff;
+    }
+
+    .submenu-wrapper {
+        .sidebar-header {padding-left: 48px;}
+        .title-wrapper {padding-left: .5rem;display: flex;flex-wrap: wrap;align-items: baseline;width: 100%;}
+        .title-wrapper .name {
+            font-size: 16px;
+            white-space: nowrap;
+            max-width: 100%;
+            margin-right: 8px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .title-wrapper .hint {font-size: 11px;color: variables.$secondary;}
+    }
+    .submenu-wrapper + .main-menu-wrapper { left: -100%; transition: left .3s ease; }
+
+    &.submenu-collapsed {
+        #btn-sidebar-toggle {left: 240px;transform: rotate(180deg);}
+        & > .main-menu-wrapper { z-index: 2;left: 0; }
+    }
+
     .sidebar-header {
-        line-height: 3rem;
+        height: 49px;
         color: rgba(0, 0, 0, .66);
         border-bottom: 1px solid #E0E0E0;
         display: flex;
-        .title {font-size: 1rem;padding-left: 1rem;}
+        align-items: center;
+        .title {font-size: 1rem;padding-left: .5rem;}
         .icon {width: 48px;height: 48px;line-height: 48px;text-align: center;}
     }
 
@@ -31,4 +77,25 @@ aside.sidebar {
 
         .group-items a {}
     }
+}
+
+.sidebar-menu {
+    overflow: auto;
+    height: 100%;
+    @include scrollbar.scrollable;
+
+    nav {display: flex;flex-direction: column;}
+    nav > a {line-height: 2rem;color: #000;padding: 0 1rem 0 1rem;}
+    nav > a:hover {background: #EBEBEB;}
+    nav > a:not(:hover) {color: rgba(0, 0, 0, 1);}
+    nav > a.current {background: #F0F5FE;}
+    nav > a.current:not(:hover) {color: variables.$primary;}
+
+    .group {display: flex;flex-direction: column;}
+    .group:not(:first-child) {margin-top: 1rem;}
+    .group .group-title {line-height: 2rem;color: rgba(0, 0, 0, .54); padding: 0 0.5rem 0 1rem;position: relative;}
+    .group .group-title i {
+
+    }
+    .group .group-items {}
 }

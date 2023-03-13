@@ -38,26 +38,3 @@
 body.sitemap-expanded {overflow: hidden;}
 body.sitemap-expanded .sitemap {margin-left: 0;}
 body:not(.sitemap-expanded) .sitemap-wrapper {display: none;}
-
-.sitemap-category-menu {
-    overflow: auto;
-    height: 100%;
-    @include scrollbar.scrollable;
-
-    nav {display: flex;flex-direction: column;}
-    nav > a {line-height: 2rem;color: #000;padding: 0 1rem 0 1rem;}
-    nav > a:hover {background: #EBEBEB;}
-    nav > a:not(:hover) {color: rgba(0, 0, 0, 1);}
-    nav > a.current {background: #F0F5FE;}
-    nav > a.current:not(:hover) {color: variables.$primary;}
-
-    .group {display: flex;flex-direction: column;}
-    .group:not(:first-child) {margin-top: 1rem;}
-    .group .group-title {line-height: 2rem;color: rgba(0, 0, 0, .54); padding: 0 0.5rem 0 1rem;position: relative;}
-    .group .group-title i {
-
-    }
-    .group .group-items {}
-}
-
-

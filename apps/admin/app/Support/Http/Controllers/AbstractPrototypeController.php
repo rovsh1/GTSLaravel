@@ -28,13 +28,13 @@ abstract class AbstractPrototypeController extends Controller
 
     public function index()
     {
-        $this->breadcrumbs();
+        Breadcrumb::prototype($this->prototype);
 
         $grid = $this->gridFactory();
 
         $grid->data($this->repository->queryWithCriteria($grid->getSearchCriteria()));
 
-        $this->buildGridActions(app('menu.actions'));
+        $this->prepareIndex($grid);
 
         return Layout::title($this->prototype->title('index'))
             ->view($this->prototype->view('index') ?? $this->prototype->view('grid') ?? 'default.grid', [
@@ -51,10 +51,10 @@ abstract class AbstractPrototypeController extends Controller
         $model = $this->repository->findOrFail($id);
         $title = (string)$model;//$this->prototype->title('show')
 
-        $this->breadcrumbs()
+        Breadcrumb::prototype($this->prototype)
             ->add($title);
 
-        $this->buildShowActions(app('menu.actions'), $model);
+        $this->prepareShow($model);
 
         return Layout::title($title)
             ->view($this->prototype->view('show'), $this->getShowViewData($model));
@@ -62,7 +62,7 @@ abstract class AbstractPrototypeController extends Controller
 
     public function create()
     {
-        $this->breadcrumbs()
+        Breadcrumb::prototype($this->prototype)
             ->add($this->prototype->title('create') ?? 'Новая запись');
 
         $form = $this->formFactory()
@@ -99,7 +99,7 @@ abstract class AbstractPrototypeController extends Controller
         $model = $this->repository->findOrFail($id);
 
         $title = (string)$model;
-        $breadcrumbs = $this->breadcrumbs();
+        $breadcrumbs = Breadcrumb::prototype($this->prototype);
         if ($this->hasShowAction()) {
             $breadcrumbs->addUrl($this->prototype->route('show'), $title);
         } else {
@@ -150,25 +150,9 @@ abstract class AbstractPrototypeController extends Controller
         return new $this->grid();
     }
 
-    protected function buildGridActions($menu)
-    {
-        if ($this->prototype->hasPermission('create')) {
-            $menu->addUrl(
-                $this->prototype->route('create'),
-                $this->prototype->title('add') ?? $this->prototype->title('create') ?? 'Добавить'
-            );
-        }
-    }
+    protected function prepareIndex($grid) {}
 
-    protected function buildShowActions($menu, $model)
-    {
-        if ($this->prototype->hasPermission('delete')) {
-            $menu->addUrl(
-                $this->prototype->route('create'),
-                $this->prototype->title('delete') ?? 'Удалить'
-            );
-        }
-    }
+    protected function prepareShow($model) {}
 
     protected function formFactory()
     {
@@ -180,12 +164,6 @@ abstract class AbstractPrototypeController extends Controller
         return [
             'model' => $model
         ];
-    }
-
-    protected function breadcrumbs()
-    {
-        return Breadcrumb::add(__('category.' . $this->prototype->config('category')))
-            ->addUrl($this->prototype->route('index'), $this->prototype->title('index') ?? 'Default index');
     }
 
     protected function hasShowAction(): bool

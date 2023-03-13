@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Support\View\Components;
+namespace App\Admin\View\Components;
 
 class CategoryIcon extends Icon
 {

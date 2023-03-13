@@ -2,8 +2,8 @@
 
 namespace App\Admin\Support\Facades;
 
-use App\Admin\Support\View\Sitemap\Menu\CategoryMenu;
-use App\Admin\Support\View\Sitemap\Menu\ItemInterface;
+use App\Admin\Support\View\Sidebar\Menu\ItemInterface;
+use App\Admin\Support\View\Sitemap\CategoryMenu;
 use Illuminate\Support\Facades\Facade;
 
 /**

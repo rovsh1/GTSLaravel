@@ -27,6 +27,11 @@ class AccessControl
         return $this->resources;
     }
 
+    public function resource(string $name): ?Resource
+    {
+        return $this->resources->get($name);
+    }
+
     public function router(): Router
     {
         return $this->router;

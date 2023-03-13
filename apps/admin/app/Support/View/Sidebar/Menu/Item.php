@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Support\View\Sitemap\Menu;
+namespace App\Admin\Support\View\Sidebar\Menu;
 
 class Item implements ItemInterface
 {

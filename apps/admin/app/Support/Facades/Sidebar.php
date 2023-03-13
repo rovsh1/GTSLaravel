@@ -5,11 +5,12 @@ namespace App\Admin\Support\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static \App\Admin\Support\View\Navigation\Sidebar currentRoute(string $key)
- * @method static \App\Admin\Support\View\Navigation\Sidebar currentCategory(string $category)
+ * @method static \App\Admin\Support\View\Sidebar\Sidebar currentRoute(string $key)
+ * @method static \App\Admin\Support\View\Sidebar\Sidebar currentCategory(string $category)
+ * @method static void submenu(\App\Admin\Support\View\Sidebar\AbstractSubmenu $menu)
  * @method static string render()
  *
- * @see \App\Admin\Support\View\Navigation\Sidebar
+ * @see \App\Admin\Support\View\Sidebar\Sidebar
  */
 class Sidebar extends Facade
 {

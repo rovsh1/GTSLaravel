@@ -1,14 +1,26 @@
 <?php
 
-namespace App\Admin\Support\View\Sitemap\Menu;
+namespace App\Admin\Support\View\Sidebar\Menu;
 
 class ItemCollection
 {
     protected array $items = [];
 
-    public function addItem(ItemInterface $item): void
+    public function addItem(ItemInterface $item): static
     {
         $this->items[] = $item;
+        return $this;
+    }
+
+    public function addUrl(string $key, string $url, string $text): static
+    {
+        return $this->addItem(
+            new Item([
+                'key' => $key,
+                'url' => $url,
+                'text' => $text
+            ])
+        );
     }
 
     public function isEmpty(): bool

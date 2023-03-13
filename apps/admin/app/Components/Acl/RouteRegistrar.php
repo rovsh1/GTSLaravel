@@ -26,58 +26,59 @@ class RouteRegistrar
         return $this;
     }
 
-    public function get(string $uri, string $action, string $permission): static
+    public function get(string $uri, string $action, string $permission, string $name): static
     {
-        return $this->addAction(['GET'], $uri, $action, $permission);
+        return $this->addAction(['GET'], $uri, $action, $permission, $name);
     }
 
-    public function post(string $uri, string $action, string $permission): static
+    public function post(string $uri, string $action, string $permission, string $name): static
     {
-        return $this->addAction(['POST'], $uri, $action, $permission);
+        return $this->addAction(['POST'], $uri, $action, $permission, $name);
     }
 
-    public function put(string $uri, string $action, string $permission): static
+    public function put(string $uri, string $action, string $permission, string $name): static
     {
-        return $this->addAction(['PUT'], $uri, $action, $permission);
+        return $this->addAction(['PUT'], $uri, $action, $permission, $name);
     }
 
-    public function patch(string $uri, string $action, string $permission): static
+    public function patch(string $uri, string $action, string $permission, string $name): static
     {
-        return $this->addAction(['PATCH'], $uri, $action, $permission);
+        return $this->addAction(['PATCH'], $uri, $action, $permission, $name);
     }
 
-    public function delete(string $uri, string $action, string $permission): static
+    public function delete(string $uri, string $action, string $permission, string $name): static
     {
-        return $this->addAction(['DELETE'], $uri, $action, $permission);
+        return $this->addAction(['DELETE'], $uri, $action, $permission, $name);
     }
 
-    public function options(string $uri, string $action, string $permission): static
+    public function options(string $uri, string $action, string $permission, string $name): static
     {
-        return $this->addAction(['OPTIONS'], $uri, $action, $permission);
+        return $this->addAction(['OPTIONS'], $uri, $action, $permission, $name);
     }
 
-    public function any(string $uri, string $action, string $permission): static
+    public function any(string $uri, string $action, string $permission, string $name): static
     {
-        return $this->addAction(\Illuminate\Routing\Router::$verbs, $uri, $action, $permission);
+        return $this->addAction(\Illuminate\Routing\Router::$verbs, $uri, $action, $permission, $name);
     }
 
-    public function match(array $methods, string $uri, string $action, string $permission): static
+    public function match(array $methods, string $uri, string $action, string $permission, string $name): static
     {
-        return $this->addAction($methods, $uri, $action, $permission);
+        return $this->addAction($methods, $uri, $action, $permission, $name);
     }
 
-    public function addAction(array $methods, string $uri, string $action, string $permission): static
+    public function addAction(array $methods, string $uri, string $action, string $permission, string $name): static
     {
         $actionData = new \stdClass();
         $actionData->methods = $methods;
         $actionData->uri = $uri;
         $actionData->action = $action;
+        $actionData->name = $name;
         $actionData->permission = $permission;
         $this->actions[] = $actionData;
         return $this;
     }
 
-    public function resource(string $controller, array $options = []): static
+    public function resource(string $name, string $controller, array $options = []): static
     {
         $methods = ['index'];
 
@@ -103,49 +104,58 @@ class RouteRegistrar
             $methods = array_diff($methods, (array)$options['except']);
         }
 
-        $base = str_replace('-', '_', $this->resource->key);
-        //$base = 'id';
+        $resourceSlug = self::formatSlug($this->resource->key);
+        $prefix = '/' . $this->resource->route;
+        $namePrefix = $this->resource->route . '.';
+
+        if ($name) {
+            $base = self::formatSlug($name);
+            $prefix .= '/{' . $resourceSlug . '}/' . $name;
+            $namePrefix .= $name . '.';
+        } else {
+            $base = $resourceSlug;
+        }
 
         foreach ($methods as $method) {
-            $this->{'addResource' . ucfirst($method)}($base);
+            $this->{'addResource' . ucfirst($method)}($prefix, $namePrefix, $base);
         }
 
         return $this->controller($controller);
     }
 
-    private function addResourceIndex($base): void
+    private function addResourceIndex($prefix, $name, $base): void
     {
-        $this->get('/', 'index', 'read');
+        $this->get($prefix . '/', 'index', 'read', $name . 'index');
     }
 
-    private function addResourceShow($base): void
+    private function addResourceShow($path, $name, $base): void
     {
-        $this->get('/{' . $base . '}', 'show', 'read');
+        $this->get($path . '/{' . $base . '}', 'show', 'read', $name . 'show');
     }
 
-    private function addResourceCreate($base): void
+    private function addResourceCreate($path, $name, $base): void
     {
-        $this->get('/create', 'create', 'create');
+        $this->get($path . '/create', 'create', 'create', $name . 'create');
     }
 
-    private function addResourceStore($base): void
+    private function addResourceStore($path, $name, $base): void
     {
-        $this->post('/', 'store', 'create');
+        $this->post($path, '/store', 'create', $name . 'store');
     }
 
-    private function addResourceEdit($base): void
+    private function addResourceEdit($path, $name, $base): void
     {
-        $this->get('/{' . $base . '}/edit', 'edit', 'update');
+        $this->get($path . '/{' . $base . '}/edit', 'edit', 'update', $name . 'edit');
     }
 
-    private function addResourceUpdate($base): void
+    private function addResourceUpdate($path, $name, $base): void
     {
-        $this->match(['PUT', 'PATCH'], '/{' . $base . '}', 'update', 'update');
+        $this->match(['PUT', 'PATCH'], $path . '/{' . $base . '}', 'update', 'update', $name . 'update');
     }
 
-    private function addResourceDestroy($base): void
+    private function addResourceDestroy($path, $name, $base): void
     {
-        $this->delete('/{' . $base . '}', 'destroy', 'delete');
+        $this->delete($path . '/{' . $base . '}', 'destroy', 'delete', $name . 'destroy');
     }
 
     public function register(): void
@@ -153,11 +163,9 @@ class RouteRegistrar
         $this->registered = true;
 
         $this->routeRegistrar
-            ->prefix($this->resource->routePrefix())
-            ->name($this->resource->routeName())
             ->group(function () {
                 foreach ($this->actions as $action) {
-                    $route = Route::match($action->methods, $action->uri, $action->action)->name($action->action);
+                    $route = Route::match($action->methods, $action->uri, $action->action)->name($action->name);
 
                     $this->router->assignRoute($route->getName(), $this->resource->permissionSlug($action->permission));
                 }
@@ -171,5 +179,10 @@ class RouteRegistrar
         if (!$this->registered) {
             $this->register();
         }
+    }
+
+    private static function formatSlug(string $slug): string
+    {
+        return str_replace('-', '_', $slug);
     }
 }

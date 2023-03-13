@@ -3,11 +3,13 @@
 namespace App\Admin\Http\Controllers\Hotel;
 
 use App\Admin\Models\Hotel\Type;
+use App\Admin\Support\Facades\Sidebar;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
-use App\Admin\Support\View\Components\HotelRating;
 use App\Admin\Support\View\Form\Form;
 use App\Admin\Support\View\Grid\Grid;
 use App\Admin\Support\View\Grid\Search;
+use App\Admin\View\Components\HotelRating;
+use App\Admin\View\Menus\HotelMenu;
 use Gsdk\Format\View\ParamsTable;
 
 class HotelController extends AbstractPrototypeController
@@ -60,6 +62,19 @@ class HotelController extends AbstractPrototypeController
             ->orderBy('name', 'asc');
     }
 
+    protected function getShowViewData($model)
+    {
+        return [
+            'params' => $this->hotelParams($model),
+            'model' => $model
+        ];
+    }
+
+    protected function prepareShow($model)
+    {
+        Sidebar::submenu(new HotelMenu($model, 'info'));
+    }
+
     private function searchForm()
     {
         return (new Search())
@@ -88,14 +103,6 @@ class HotelController extends AbstractPrototypeController
 //                'items' => HotelFormService::getRatingItems()
 //            ])
             ;
-    }
-
-    protected function getShowViewData($model)
-    {
-        return [
-            'params' => $this->hotelParams($model),
-            'model' => $model
-        ];
     }
 
     private function hotelParams($model)
