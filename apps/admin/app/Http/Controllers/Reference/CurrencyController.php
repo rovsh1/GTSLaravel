@@ -13,7 +13,7 @@ class CurrencyController extends AbstractPrototypeController
         return 'currency';
     }
 
-    protected function formFactory()
+    protected function formFactory(): Form
     {
         return (new Form('data'))
             ->text('name', ['label' => 'Наименование', 'required' => true])
@@ -22,7 +22,7 @@ class CurrencyController extends AbstractPrototypeController
             ->text('sign', ['label' => 'Символ', 'required' => true]);
     }
 
-    protected function gridFactory()
+    protected function gridFactory(): Grid
     {
         return (new Grid())
             ->enableQuicksearch()

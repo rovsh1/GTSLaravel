@@ -14,7 +14,7 @@ class AdministratorController extends AbstractPrototypeController
         return 'administrator';
     }
 
-    protected function formFactory()
+    protected function formFactory(): Form
     {
         $form = (new Form('data'))
             ->text('presentation', ['label' => 'Имя в системе', 'required' => true])
@@ -48,7 +48,7 @@ class AdministratorController extends AbstractPrototypeController
         return $form;
     }
 
-    protected function gridFactory()
+    protected function gridFactory(): Grid
     {
         return (new Grid())
             ->enableQuicksearch()

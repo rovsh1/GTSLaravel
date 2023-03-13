@@ -8,6 +8,8 @@ use App\Admin\Http\Controllers\Controller;
 use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Layout;
 use App\Admin\Support\Facades\Prototypes;
+use App\Admin\Support\View\Form\Form;
+use App\Admin\Support\View\Grid\Grid;
 use Illuminate\Support\Facades\Route;
 
 abstract class AbstractPrototypeController extends Controller
@@ -147,7 +149,7 @@ abstract class AbstractPrototypeController extends Controller
         return redirect($this->prototype->route('index'));
     }
 
-    protected function gridFactory()
+    protected function gridFactory(): Grid
     {
         return new $this->grid();
     }
@@ -156,7 +158,7 @@ abstract class AbstractPrototypeController extends Controller
 
     protected function prepareShow($model) {}
 
-    protected function formFactory()
+    protected function formFactory(): Form
     {
         return new $this->form('data');
     }

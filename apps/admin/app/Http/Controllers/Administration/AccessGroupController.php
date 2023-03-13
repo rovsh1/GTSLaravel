@@ -14,7 +14,7 @@ class AccessGroupController extends AbstractPrototypeController
         return 'access-group';
     }
 
-    protected function formFactory()
+    protected function formFactory(): Form
     {
         return (new Form('data'))
             ->addElement('name', 'text', ['label' => 'Наименование', 'required' => true])
@@ -29,7 +29,7 @@ class AccessGroupController extends AbstractPrototypeController
             ->addElement('rules', 'hidden', ['render' => false]);
     }
 
-    protected function gridFactory()
+    protected function gridFactory(): Grid
     {
         return (new Grid())
             ->enableQuicksearch()

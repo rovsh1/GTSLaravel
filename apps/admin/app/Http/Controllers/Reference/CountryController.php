@@ -13,7 +13,7 @@ class CountryController extends AbstractPrototypeController
         return 'country';
     }
 
-    protected function formFactory()
+    protected function formFactory(): Form
     {
         return (new Form('data'))
             //->view('default.form')
@@ -25,7 +25,7 @@ class CountryController extends AbstractPrototypeController
             ->checkbox('default', ['label' => 'По умолчанию']);
     }
 
-    protected function gridFactory()
+    protected function gridFactory(): Grid
     {
         return (new Grid())
             ->enableQuicksearch()

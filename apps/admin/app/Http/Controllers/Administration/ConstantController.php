@@ -13,14 +13,14 @@ class ConstantController extends AbstractPrototypeController
         return 'constant';
     }
 
-    protected function formFactory()
+    protected function formFactory(): Form
     {
         return (new Form('data'))
             ->addElement('value', 'text', ['label' => 'Значение'])
             ->addElement('enabled', 'checkbox', ['label' => 'Enabled']);
     }
 
-    protected function gridFactory()
+    protected function gridFactory(): Grid
     {
         return (new Grid())
             ->enableQuicksearch()

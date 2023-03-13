@@ -14,7 +14,7 @@ class CityController extends AbstractPrototypeController
         return 'city';
     }
 
-    protected function formFactory()
+    protected function formFactory(): Form
     {
         return (new Form('data'))
             ->country('country_id', ['label' => 'Страна', 'required' => true])
@@ -22,7 +22,7 @@ class CityController extends AbstractPrototypeController
             ->textarea('text', ['label' => 'Описание']);
     }
 
-    protected function gridFactory()
+    protected function gridFactory(): Grid
     {
         $form = (new SearchForm())
             ->country('country_id', ['label' => __('label.country'), 'emptyItem' => __('select-all')]);
