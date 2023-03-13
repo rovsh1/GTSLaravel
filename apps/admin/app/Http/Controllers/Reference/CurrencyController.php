@@ -13,7 +13,6 @@ class CurrencyController extends AbstractPrototypeController
     protected function formFactory()
     {
         return (new Form('data'))
-            ->csrf()
             ->text('name', ['label' => 'Наименование', 'required' => true])
             ->number('code_num', ['label' => 'Код (цифровой)', 'required' => true])
             ->text('code_char', ['label' => 'Код (символьный)', 'required' => true])

@@ -14,7 +14,6 @@ class CityController extends AbstractPrototypeController
     protected function formFactory()
     {
         return (new Form('data'))
-            ->csrf()
             ->country('country_id', ['label' => 'Страна', 'required' => true])
             ->text('name', ['label' => 'Наименование', 'required' => true])
             ->textarea('text', ['label' => 'Описание']);

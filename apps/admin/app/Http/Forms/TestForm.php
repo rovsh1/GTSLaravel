@@ -23,7 +23,6 @@ class TestForm extends Form
                 'pass.regex' => 'Password need to match regex',
                 'number.in' => 'Number out of range'
             ])
-            ->csrf()
             ->language('language', ['label' => 'Lang'])
             ->localeText('locale_name', ['label' => 'Name'])
             ->country('country_id', ['label' => 'Country'])

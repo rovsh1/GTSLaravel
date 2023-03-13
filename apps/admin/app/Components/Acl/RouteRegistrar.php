@@ -117,45 +117,45 @@ class RouteRegistrar
         }
 
         foreach ($methods as $method) {
-            $this->{'addResource' . ucfirst($method)}($prefix, $namePrefix, $base);
+            $this->{'addResource' . ucfirst($method)}($prefix, $namePrefix, $base, $controller);
         }
 
-        return $this->controller($controller);
+        return $this;
     }
 
-    private function addResourceIndex($prefix, $name, $base): void
+    private function addResourceIndex($prefix, $name, $base, $controller): void
     {
-        $this->get($prefix . '/', 'index', 'read', $name . 'index');
+        $this->get($prefix . '/', $controller . '@index', 'read', $name . 'index');
     }
 
-    private function addResourceShow($path, $name, $base): void
+    private function addResourceShow($path, $name, $base, $controller): void
     {
-        $this->get($path . '/{' . $base . '}', 'show', 'read', $name . 'show');
+        $this->get($path . '/{' . $base . '}', $controller . '@show', 'read', $name . 'show');
     }
 
-    private function addResourceCreate($path, $name, $base): void
+    private function addResourceCreate($path, $name, $base, $controller): void
     {
-        $this->get($path . '/create', 'create', 'create', $name . 'create');
+        $this->get($path . '/create', $controller . '@create', 'create', $name . 'create');
     }
 
-    private function addResourceStore($path, $name, $base): void
+    private function addResourceStore($path, $name, $base, $controller): void
     {
-        $this->post($path, '/store', 'create', $name . 'store');
+        $this->post($path . '/store', $controller . '@create', 'create', $name . 'store');
     }
 
-    private function addResourceEdit($path, $name, $base): void
+    private function addResourceEdit($path, $name, $base, $controller): void
     {
-        $this->get($path . '/{' . $base . '}/edit', 'edit', 'update', $name . 'edit');
+        $this->get($path . '/{' . $base . '}/edit', $controller . '@edit', 'update', $name . 'edit');
     }
 
-    private function addResourceUpdate($path, $name, $base): void
+    private function addResourceUpdate($path, $name, $base, $controller): void
     {
-        $this->match(['PUT', 'PATCH'], $path . '/{' . $base . '}', 'update', 'update', $name . 'update');
+        $this->match(['PUT', 'PATCH'], $path . '/{' . $base . '}', $controller . '@update', 'update', $name . 'update');
     }
 
-    private function addResourceDestroy($path, $name, $base): void
+    private function addResourceDestroy($path, $name, $base, $controller): void
     {
-        $this->delete($path . '/{' . $base . '}', 'destroy', 'delete', $name . 'destroy');
+        $this->delete($path . '/{' . $base . '}', $controller . '@destroy', 'delete', $name . 'destroy');
     }
 
     public function register(): void

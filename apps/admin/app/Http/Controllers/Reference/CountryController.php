@@ -14,8 +14,7 @@ class CountryController extends AbstractPrototypeController
     {
         return (new Form('data'))
             //->view('default.form')
-            ->csrf()
-            ->text('name', ['label' => 'Наименование', 'required' => true])
+            ->localeText('name', ['label' => 'Наименование', 'required' => true])
             ->language('language', ['label' => 'Язык', 'emptyItem' => '-Не выбрано-'])
             ->text('flag', ['label' => 'Код флага', 'required' => true])
             ->text('phone_code', ['label' => 'Код телефона', 'required' => true])

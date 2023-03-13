@@ -12,6 +12,8 @@ class RoomController extends Controller
 {
     public function index(Request $request, Hotel $hotel)
     {
+        $hotel = Hotel::find($hotel);
+
         dd($hotel);
     }
 

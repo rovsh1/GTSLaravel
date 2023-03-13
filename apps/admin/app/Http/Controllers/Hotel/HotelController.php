@@ -3,6 +3,7 @@
 namespace App\Admin\Http\Controllers\Hotel;
 
 use App\Admin\Models\Hotel\Type;
+use App\Admin\Support\Facades\Layout;
 use App\Admin\Support\Facades\Sidebar;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form;
