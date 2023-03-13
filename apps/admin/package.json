@@ -14,6 +14,7 @@
         "js-cookie": "^3.0.1"
     },
     "devDependencies": {
+        "source-map-loader": "^1.0.0",
         "laravel-mix": "^6.0.6",
         "resolve-url-loader": "^4.0.0",
         "sass": "^1.38.2",

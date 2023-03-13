@@ -2,6 +2,7 @@
     "select-all": "---Все--",
     "label.country": "Страна",
     "label.city": "Город",
+    "label.client": "Клиент",
     "category.hotel": "Отели",
     "category.client": "Клиенты",
     "category.reservation": "Бронирование",

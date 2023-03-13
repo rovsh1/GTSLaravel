@@ -4,7 +4,7 @@ use App\Admin\Http\Controllers;
 use App\Admin\Support\Facades\AclRoute;
 
 AclRoute::resource('compound-reservation', Controllers\Reference\CountryController::class);
-AclRoute::resource('hotel-reservation', Controllers\Reference\CountryController::class);
+AclRoute::resource('hotel-reservation', Controllers\Reservation\HotelReservationController::class);
 AclRoute::resource('airport-reservation', Controllers\Reference\CountryController::class);
 AclRoute::resource('transfer-reservation', Controllers\Reference\CountryController::class);
 AclRoute::resource('additional-reservation', Controllers\Reference\CountryController::class);

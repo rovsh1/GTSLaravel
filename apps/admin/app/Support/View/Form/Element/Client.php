@@ -2,15 +2,15 @@
 
 namespace App\Admin\Support\View\Form\Element;
 
-use App\Admin\Models\Reference\Country as Model;
+use App\Admin\Models\Client\Client as Model;
 use Gsdk\Form\Element\Select;
 
-class Country extends Select
+class Client extends Select
 {
     public function __construct(string $name, array $options = [])
     {
         parent::__construct($name, $options);
 
-        $this->setItems(Model::get());
+        $this->setItems(Model::orderBy('name')->get());
     }
 }

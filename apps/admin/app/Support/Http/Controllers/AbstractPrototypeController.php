@@ -2,12 +2,12 @@
 
 namespace App\Admin\Support\Http\Controllers;
 
-use App\Admin\Components\Factory\FactoryRepositoryInterface;
 use App\Admin\Components\Factory\Prototype;
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Layout;
 use App\Admin\Support\Facades\Prototypes;
+use App\Admin\Support\Repository\RepositoryInterface;
 use App\Admin\Support\View\Form\Form;
 use App\Admin\Support\View\Grid\Grid;
 use Illuminate\Support\Facades\Route;
@@ -18,11 +18,7 @@ abstract class AbstractPrototypeController extends Controller
 
     protected Prototype $prototype;
 
-    protected FactoryRepositoryInterface $repository;
-
-    protected $form;
-
-    protected $grid;
+    protected RepositoryInterface $repository;
 
     public function __construct()
     {
@@ -151,7 +147,7 @@ abstract class AbstractPrototypeController extends Controller
 
     protected function gridFactory(): Grid
     {
-        return new $this->grid();
+        throw new \LogicException('Please implement the gridFactory method on your controller.');
     }
 
     protected function prepareIndex($grid) {}
@@ -160,7 +156,7 @@ abstract class AbstractPrototypeController extends Controller
 
     protected function formFactory(): Form
     {
-        return new $this->form('data');
+        throw new \LogicException('Please implement the formFactory method on your controller.');
     }
 
     protected function getShowViewData($model)

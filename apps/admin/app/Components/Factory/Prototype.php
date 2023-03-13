@@ -3,6 +3,7 @@
 namespace App\Admin\Components\Factory;
 
 use App\Admin\Support\Facades\Acl;
+use App\Admin\Support\Repository\RepositoryInterface;
 
 class Prototype
 {
@@ -40,11 +41,15 @@ class Prototype
             || $resource === $this->config('alias');
     }
 
-    public function makeRepository(): FactoryRepositoryInterface
+    public function makeRepository(): RepositoryInterface
     {
-        return isset($this->config['repository'])
-            ? app()->make($this->config['repository'])
-            : new DefaultRepository($this->config['model']);
+        if (isset($this->config['repository'])) {
+            return app()->make($this->config['repository']);
+        } elseif (isset($this->config['model'])) {
+            return new DefaultRepository($this->config['model']);
+        } else {
+            throw new \LogicException('Prototype [' . $this->key . '] repository undefined');
+        }
     }
 
     public function title(string $key = 'index'): ?string

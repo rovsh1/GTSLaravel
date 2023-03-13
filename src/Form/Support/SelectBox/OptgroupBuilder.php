@@ -8,7 +8,7 @@ class OptgroupBuilder
 
     private static array $idKeys = ['key', 'value'];
 
-    private \stdClass $data;
+    protected mixed $data;
 
     private \stdClass $group;
 

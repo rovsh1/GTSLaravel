@@ -10,7 +10,7 @@ class OptionBuilder extends ItemBuilder
 
     public function setGroup($key): static
     {
-        $this->option->groupId = $this->find('groupId', $key, self::$groupKeys);
+        $this->option->groupId = $this->find($key, 'groupId', self::$groupKeys);
 
         return $this;
     }

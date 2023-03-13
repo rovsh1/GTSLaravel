@@ -5,6 +5,8 @@ namespace App\Admin\Models\Reference;
 use Custom\Framework\Database\Eloquent\HasQuicksearch;
 use Custom\Framework\Database\Eloquent\HasTranslations;
 use Custom\Framework\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 class Country extends Model
 {
@@ -32,7 +34,23 @@ class Country extends Model
 
     public static function booted()
     {
-        static::addGlobalTranslationScope();
+        static::addGlobalScope('default', function (Builder $builder) {
+            $builder
+                ->addSelect('r_countries.*')
+                ->joinTranslations($builder->getModel()->translatable)
+                //TODO add priority column
+                //->orderBy('priority', 'desc')
+                ->orderBy('name', 'asc');
+        });
+    }
+
+    public function scopeWhereHasCity($query)
+    {
+        $query->whereExists(function ($query) {
+            $query->select(DB::raw(1))
+                ->from('r_cities as t')
+                ->whereColumn('t.country_id', 'r_countries.id');
+        });
     }
 
     public function __toString()

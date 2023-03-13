@@ -1,7 +1,7 @@
 {
     "key": "service-provider",
     "category": "reservation",
-    "group": "additional-services",
+    "group": "settings",
     "model": "App\\Admin\\Models\\Reference\\Airport",
     "titles": {
         "index": "Поставщики услуг",

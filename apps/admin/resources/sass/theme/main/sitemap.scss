@@ -9,6 +9,9 @@
     height: calc(100vh - 47px);
     background: rgba(0, 0, 0, .29);
     z-index: 290;
+    visibility: hidden;
+    opacity: 0;
+    transition: all .2s ease;
 
     .sitemap {
         display: flex;
@@ -37,4 +40,4 @@
 }
 body.sitemap-expanded {overflow: hidden;}
 body.sitemap-expanded .sitemap {margin-left: 0;}
-body:not(.sitemap-expanded) .sitemap-wrapper {display: none;}
+body.sitemap-expanded .sitemap-wrapper {visibility: visible;opacity: 1;}

@@ -52,7 +52,9 @@ class Permissions
     private function parseSlug(string $slug): array
     {
         if (str_contains($slug, ' ')) {
-            return array_reverse(explode(' ', $slug, 2));
+            $a = explode(' ', $slug);
+            $resource = array_pop($a);
+            return [$resource, implode(' ', $a)];
         } elseif (str_contains($slug, '.')) {
             $segments = explode('.', $slug);
             $permission = array_pop($segments);

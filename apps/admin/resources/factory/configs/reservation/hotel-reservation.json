@@ -2,7 +2,7 @@
     "key": "hotel-reservation",
     "category": "reservation",
     "group": "reservations",
-    "model": "App\\Admin\\Models\\Reference\\Airport",
+    "repository": "App\\Admin\\Repositories\\HotelReservationRepository",
     "titles": {
         "index": "Брони отелей",
         "create": "Новая бронь"

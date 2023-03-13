@@ -94,6 +94,7 @@ class ViewServiceProvider extends ServiceProvider
     {
         Blade::component('icon', \App\Admin\View\Components\Icon::class);
         Blade::component('category-icon', \App\Admin\View\Components\CategoryIcon::class);
+        Blade::component('tab', \App\Admin\View\Components\Tab::class);
         //Blade::componentNamespace('App\\Admin\\Views\\Components', 'admin');
     }
 }

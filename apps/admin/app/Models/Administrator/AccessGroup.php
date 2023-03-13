@@ -14,7 +14,7 @@ class AccessGroup extends Model
     protected $fillable = [
         'name',
         'role',
-        'members',
+//        'members',
         'description'
     ];
 

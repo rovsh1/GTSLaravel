@@ -7,7 +7,9 @@
         "index": "Группы доступа",
         "create": "Новая группа"
     },
-    "views": {},
+    "views": {
+        "form": "administration.access-group-form"
+    },
     "permissions": "crud",
     "priority": 190
 }
