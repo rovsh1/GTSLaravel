@@ -55,9 +55,8 @@ class HotelController extends AbstractPrototypeController
             //@todo из хардкодных енумов
 //            ->hotelStatus('status', ['label' => 'Статус', 'emptyItem' => ''])
             ->text('address', ['label' => 'Адрес', 'required' => true])
-            ->text('geolocation', ['label' => 'Геолокация', 'required' => true])
+            ->coordinates('coordinates', ['label' => 'Координаты', 'required' => true])
             ->text('zipcode', ['label' => 'Индекс'])
-            ->coordinates('coordinates')
             ->method('post')
             ->action($this->prototype->route('store'));
     }

@@ -94,7 +94,7 @@ $.fn.coordinatesInput = function (options) {
         });
     }
 
-    mapProvider.ready(function () {
+    mapProvider.ready(() => {
         const point = getInputCoordinates() || options.center;
 
         map = new google.maps.Map($map[0], {
@@ -109,7 +109,7 @@ $.fn.coordinatesInput = function (options) {
             position: point,
         });
 
-        marker.addEventListener('dragend', function () {
+        google.maps.event.addListener(marker, 'dragend', function () {
             const position = marker.getPosition();
             updateInputCoordinates({lat: position.lat(), lng: position.lng()});
         });

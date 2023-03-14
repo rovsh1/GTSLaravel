@@ -1,9 +1,8 @@
 import "../main";
-import "./coordinates";
-import {initGoogleMapsScript} from "../../plugins/map/google";
+import "../../plugins/jquery/coordinates-input";
 
-initGoogleMapsScript()
-
-$(document).ready(function (){
-    $('#form_data_address').coordinates();
+$(document).ready(function () {
+    $('#form_data_coordinates').coordinatesInput({
+        addressInput: '#form_data_address'
+    });
 });

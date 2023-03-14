@@ -10,8 +10,15 @@
     <div class="content-body">
         <div class="card card-form">
             <div class="card-body">
-                <form action="{{ $form->action }}" method="{{ strtoupper($form->method) === 'GET' ? 'GET' : 'POST' }}" enctype="multipart/form-data">
-                    <div class="form-group">{!! $form !!}</div>
+                <form action="{{ $form->action }}" method="{{ strtoupper($form->method) === 'GET' ? 'GET' : 'POST' }}"
+                      enctype="multipart/form-data">
+                    <div class="form-group d-flex">
+                        <div class="form-fields col-6">
+                            {!! $form !!}
+                        </div>
+                        <div id="map" class="col-6" style="margin-left: 1rem"></div>
+                    </div>
+
 
                     <div class="form-buttons">
                         <button type="submit" class="btn btn-primary">{{ $submitText ?? 'Сохранить' }}</button>
