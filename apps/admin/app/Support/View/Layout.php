@@ -30,6 +30,11 @@ class Layout
         return $this;
     }
 
+    public function __get(string $name)
+    {
+        return $this->data[$name] ?? null;
+    }
+
     public function data(array $data): static
     {
         $this->viewData = array_merge($this->viewData, $data);

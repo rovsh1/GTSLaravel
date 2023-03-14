@@ -10,6 +10,7 @@ use App\Admin\Support\Facades\Prototypes;
 use App\Admin\Support\Repository\RepositoryInterface;
 use App\Admin\Support\View\Form\Form;
 use App\Admin\Support\View\Grid\Grid;
+use App\Admin\Support\View\Layout as LayoutContract;
 use Illuminate\Support\Facades\Route;
 
 abstract class AbstractPrototypeController extends Controller
@@ -26,15 +27,13 @@ abstract class AbstractPrototypeController extends Controller
         $this->repository = $this->prototype->makeRepository();
     }
 
-    public function index()
+    public function index(): LayoutContract
     {
         Breadcrumb::prototype($this->prototype);
 
         $grid = $this->gridFactory();
 
         $grid->data($this->repository->queryWithCriteria($grid->getSearchCriteria()));
-
-        $this->prepareIndex($grid);
 
         return Layout::title($this->prototype->title('index'))
             ->view($this->prototype->view('index') ?? $this->prototype->view('grid') ?? 'default.grid', [
@@ -46,7 +45,7 @@ abstract class AbstractPrototypeController extends Controller
             ]);
     }
 
-    public function show(int $id)
+    public function show(int $id): LayoutContract
     {
         $model = $this->repository->findOrFail($id);
         $title = (string)$model;//$this->prototype->title('show')
@@ -54,13 +53,13 @@ abstract class AbstractPrototypeController extends Controller
         Breadcrumb::prototype($this->prototype)
             ->add($title);
 
-        $this->prepareShow($model);
-
         return Layout::title($title)
-            ->view($this->prototype->view('show'), $this->getShowViewData($model));
+            ->view($this->prototype->view('show'), [
+                'model' => $model
+            ]);
     }
 
-    public function create()
+    public function create(): LayoutContract
     {
         Breadcrumb::prototype($this->prototype)
             ->add($this->prototype->title('create') ?? 'Новая запись');
@@ -94,7 +93,7 @@ abstract class AbstractPrototypeController extends Controller
         return redirect($this->prototype->route('index'));
     }
 
-    public function edit(int $id)
+    public function edit(int $id): LayoutContract
     {
         $model = $this->repository->findOrFail($id);
 
@@ -109,11 +108,12 @@ abstract class AbstractPrototypeController extends Controller
 
         $form = $this->formFactory()
             ->method('put')
-            ->action($this->prototype->route('update', $id))
+            ->action($this->prototype->route('update', $model->id))
             ->data($model);
 
         return Layout::title($title)
             ->view($this->prototype->view('edit') ?? $this->prototype->view('form') ?? 'default.form', [
+                'model' => $model,
                 'form' => $form,
                 'cancelUrl' => $this->prototype->route('index'),
                 'deleteUrl' => $this->prototype->hasPermission('delete') ? $this->prototype->route('destroy', $model->id) : null
@@ -150,20 +150,9 @@ abstract class AbstractPrototypeController extends Controller
         throw new \LogicException('Please implement the gridFactory method on your controller.');
     }
 
-    protected function prepareIndex($grid) {}
-
-    protected function prepareShow($model) {}
-
     protected function formFactory(): Form
     {
         throw new \LogicException('Please implement the formFactory method on your controller.');
-    }
-
-    protected function getShowViewData($model)
-    {
-        return [
-            'model' => $model
-        ];
     }
 
     protected function hasShowAction(): bool
