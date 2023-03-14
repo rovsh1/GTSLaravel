@@ -1,3 +1,5 @@
+import mapProvider from "../map/google";
+
 const defaultCenterPosition = {
     lat: 41.3021517,
     lng: 60.0849903
@@ -92,7 +94,7 @@ $.fn.coordinatesInput = function (options) {
         });
     }
 
-    const initMap = function () {
+    mapProvider.ready(function () {
         const point = getInputCoordinates() || options.center;
 
         map = new google.maps.Map($map[0], {
@@ -111,9 +113,7 @@ $.fn.coordinatesInput = function (options) {
             const position = marker.getPosition();
             updateInputCoordinates({lat: position.lat(), lng: position.lng()});
         });
-    };
-
-    initMap();
+    });
 
     return $coordinatesInput;
 };

@@ -1,15 +1,25 @@
-export const initGoogleMapsScript = () => {
-    const googleMapsApiKey = get_meta_content('google-maps-key')
+let readyFlag = false;
+let readyHandlers = [];
 
-    if (googleMapsApiKey) {
-        var script = document.createElement('script');
-        script.src = `https://maps.googleapis.com/maps/api/js?key=${googleMapsApiKey}&callback=initMap`;
+window.initMap = () => {
+    readyFlag = true;
+    readyHandlers.forEach(fn => {
+        fn();
+    });
+    readyHandlers = undefined;
+};
+
+export default {
+    init: (key) => {
+        const script = document.createElement('script');
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${key}&callback=initMap`;
         script.async = true;
+    },
 
-        window.initMap = function () {
-
-        }
-
-        document.head.appendChild(script)
+    ready: (fn) => {
+        if (readyFlag)
+            fn();
+        else
+            readyHandlers.push(fn);
     }
-}
+};
