@@ -13,9 +13,6 @@ class Hotel extends Model
 
     //use SoftDeletes;
 
-    public const CREATED_AT = 'created';
-    public const UPDATED_AT = 'updated';
-
     public $timestamps = false;
 
     protected array $quicksearch = ['id', 'name%'];
@@ -31,7 +28,6 @@ class Hotel extends Model
         'rating',
         'address',
 //->addAttribute('citycenter_distance','number', ['default' => 0, 'nonnegative' => true, 'allowZero' => true]),
-        'geolocation',
         'latitude',
         'longitude',
         'zipcode',
