@@ -68,6 +68,8 @@ class ViewServiceProvider extends ServiceProvider
         $this->app->singleton('layout', ViewNamespace\Layout::class);
         class_alias(Helpers\Layout::class, 'Layout');
 
+        $this->app->singleton('form', fn($app) => new ViewNamespace\Form\Form('data'));
+
         $this->app->singleton('sitemap', ViewNamespace\Sitemap\Sitemap::class);
 
         $this->app->singleton('sidebar', ViewNamespace\Sidebar\Sidebar::class);

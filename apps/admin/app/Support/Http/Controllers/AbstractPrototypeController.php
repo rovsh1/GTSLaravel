@@ -11,6 +11,7 @@ use App\Admin\Support\Repository\RepositoryInterface;
 use App\Admin\Support\View\Form\Form;
 use App\Admin\Support\View\Grid\Grid;
 use App\Admin\Support\View\Layout as LayoutContract;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Route;
 
 abstract class AbstractPrototypeController extends Controller
@@ -77,7 +78,7 @@ abstract class AbstractPrototypeController extends Controller
             ]);
     }
 
-    public function store()
+    public function store(): RedirectResponse
     {
         $form = $this->formFactory()
             ->method('post');
@@ -120,7 +121,7 @@ abstract class AbstractPrototypeController extends Controller
             ]);
     }
 
-    public function update(int $id)
+    public function update(int $id): RedirectResponse
     {
         $model = $this->repository->findOrFail($id);
 
@@ -138,7 +139,7 @@ abstract class AbstractPrototypeController extends Controller
         return redirect($this->prototype->route('index'));
     }
 
-    public function destroy(int $id)
+    public function destroy(int $id): RedirectResponse
     {
         $this->repository->delete($id);
 
