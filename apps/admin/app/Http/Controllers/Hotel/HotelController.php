@@ -39,7 +39,7 @@ class HotelController extends AbstractPrototypeController
                 ->withErrors($form->errors())
                 ->withInput();
         }
-        dd($form->getData());
+        dd($form->getFormData());
 
         return redirect($this->prototype->route());
     }
