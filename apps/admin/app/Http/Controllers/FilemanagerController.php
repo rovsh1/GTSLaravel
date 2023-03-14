@@ -12,6 +12,7 @@ class FilemanagerController extends Controller
     {
         return Layout::title('FileManager')
             ->ss('filemanager')
-            ->view('filemanager');
+            ->view('filemanager')
+            ->render();
     }
 }
