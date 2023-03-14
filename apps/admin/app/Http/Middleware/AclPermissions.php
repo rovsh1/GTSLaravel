@@ -17,7 +17,7 @@ class AclPermissions
         $this->registerAdministrator($acl);
 
         $route = $request->route()->getName();
-        if ($acl->isRouteAssigned($route) && !$acl->isRouteAllowed($route)) {
+        if ($route && $acl->isRouteAssigned($route) && !$acl->isRouteAllowed($route)) {
             return abort(403);
         }
 

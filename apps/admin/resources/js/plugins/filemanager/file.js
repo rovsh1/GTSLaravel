@@ -1,4 +1,4 @@
-import EventsTrait from "gsv-pkg/support/events-trait"
+import EventsTrait from "./support/events-trait"
 import {MimeToExtension} from "../uploader/functions";
 
 class File {
