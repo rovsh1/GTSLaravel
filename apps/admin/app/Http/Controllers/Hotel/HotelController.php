@@ -3,15 +3,18 @@
 namespace App\Admin\Http\Controllers\Hotel;
 
 use App\Admin\Models\Hotel\Type;
+use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Layout;
 use App\Admin\Support\Facades\Sidebar;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
-use App\Admin\Support\View\Form\Form;
+use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid;
 use App\Admin\Support\View\Grid\Search;
+use App\Admin\Support\View\Layout as LayoutContract;
 use App\Admin\View\Components\HotelRating;
 use App\Admin\View\Menus\HotelMenu;
 use Gsdk\Format\View\ParamsTable;
+use Illuminate\Http\RedirectResponse;
 
 class HotelController extends AbstractPrototypeController
 {
@@ -20,19 +23,44 @@ class HotelController extends AbstractPrototypeController
         return 'hotel';
     }
 
-    protected function formFactory()
+    public function create(): LayoutContract
     {
-        return (new Form('data'))
-            //->view('default.form')
-            ->text('name', ['label' => 'Наименование', 'required' => true])
-            ->language('language', ['label' => 'Язык', 'emptyItem' => '-Не выбрано-'])
-            ->text('flag', ['label' => 'Код флага', 'required' => true])
-            ->text('phone_code', ['label' => 'Код телефона', 'required' => true])
-            ->currency('currency_id', ['label' => 'Валюта'])
-            ->checkbox('default', ['label' => 'По умолчанию']);
+        Layout::addMetaName('google-maps-key', env('GOOGLE_MAPS_API_KEY'));
+        Layout::script('hotel/create');
+        Layout::style('hotel/create');
+        return parent::create();
     }
 
-    protected function gridFactory()
+    public function store(): RedirectResponse
+    {
+        $form = $this->formFactory()->method('post');
+        if (!$form->submit()) {
+            return redirect($this->prototype->route('create'))
+                ->withErrors($form->errors())
+                ->withInput();
+        }
+        dd($form->getData());
+
+        return redirect($this->prototype->route());
+    }
+
+    protected function formFactory(): FormContract
+    {
+        return Form::city('city_id', ['label' => 'Город', 'required' => true, 'emptyItem' => ''])
+            ->hotelType('type_id', ['label' => 'Тип отеля', 'required' => true, 'emptyItem' => ''])
+//            ->clientType('visible_for', ['label' => 'Для клиентов', 'default' => 'Для всех'])
+            ->text('name', ['label' => 'Наименование', 'required' => true])
+            ->hotelRating('rating', ['label' => 'Категория', 'emptyItem' => ''])
+            ->hotelStatus('status', ['label' => 'Статус', 'emptyItem' => ''])
+            ->text('address', ['label' => 'Адрес', 'required' => true])
+            ->text('geolocation', ['label' => 'Геолокация', 'required' => true])
+            ->text('zipcode', ['label' => 'Индекс'])
+            ->coordinates('coordinates')
+            ->method('post')
+            ->action($this->prototype->route('store'));
+    }
+
+    protected function gridFactory(): Grid
     {
         return (new Grid())
             ->enableQuicksearch()
