@@ -9,8 +9,6 @@ use Illuminate\Contracts\View\View;
 
 class Layout
 {
-    private string $version = 'v1.0';
-
     private MetaTags $meta;
 
     private string $view;
@@ -117,11 +115,15 @@ class Layout
     private function bootStyles(): void
     {
         $style = $this->options['style'] ?? 'main';
+        $script = $this->options['script'] ?? $style;
+
+        $stylePath = mix('css/' . $style . '.css');
+        $scriptPath = mix('js/' . $script . '.js');
 
         $this->meta
-            ->addScript(($this->options['script'] ?? $style ?? 'main') . '.js?' . $this->version, ['defer' => true])
-            ->addLinkRel('preload', '/css/' . $style . '.css?' . $this->version, ['as' => 'style'])
-            ->addStyle($style . '.css?' . $this->version);
+            ->addScript($scriptPath, ['defer' => true])
+            ->addLinkRel('preload', $stylePath, ['as' => 'style'])
+            ->addStyle($stylePath);
         //$this->head->addStyle('print.css?' . $this->version);
     }
 }
