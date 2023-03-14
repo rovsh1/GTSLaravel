@@ -48,10 +48,12 @@ class HotelController extends AbstractPrototypeController
     {
         return Form::city('city_id', ['label' => 'Город', 'required' => true, 'emptyItem' => ''])
             ->hotelType('type_id', ['label' => 'Тип отеля', 'required' => true, 'emptyItem' => ''])
+            //@todo из хардкодных енумов
 //            ->clientType('visible_for', ['label' => 'Для клиентов', 'default' => 'Для всех'])
             ->text('name', ['label' => 'Наименование', 'required' => true])
             ->hotelRating('rating', ['label' => 'Категория', 'emptyItem' => ''])
-            ->hotelStatus('status', ['label' => 'Статус', 'emptyItem' => ''])
+            //@todo из хардкодных енумов
+//            ->hotelStatus('status', ['label' => 'Статус', 'emptyItem' => ''])
             ->text('address', ['label' => 'Адрес', 'required' => true])
             ->text('geolocation', ['label' => 'Геолокация', 'required' => true])
             ->text('zipcode', ['label' => 'Индекс'])
