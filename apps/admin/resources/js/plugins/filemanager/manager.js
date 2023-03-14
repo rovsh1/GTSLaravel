@@ -1,4 +1,4 @@
-import EventsTrait from "gsv-pkg/support/events-trait"
+import EventsTrait from "./support/events-trait"
 import Toolbar from "./toolbar"
 import StatusBar from "./statusbar"
 import AddressBar from "./addressbar"
@@ -64,7 +64,7 @@ class Manager {
         const self = this;
         this.setLoading(true);
 
-        Http.post('/filemanager/folder', {
+        $.post('/filemanager/folder', {
             name: name,
             path: this.path
         }, function (r) {
@@ -80,7 +80,7 @@ class Manager {
         const self = this;
         this.setLoading(true);
 
-        Http.post('/filemanager/delete', {
+        $.post('/filemanager/delete', {
             files: this.getSelected().map(f => f.name),
             path: this.path
         }, function (r) {
@@ -115,7 +115,7 @@ class Manager {
     }
 
     rename(file, name) {
-        Http.post('/filemanager/rename', {
+        $.post('/filemanager/rename', {
             name: name,
             file: file.name,
             path: this.path
@@ -129,7 +129,7 @@ class Manager {
 
     moveSelectedTo(path) {
         this.setLoading(true);
-        Http.post('/filemanager/move', {
+        $.post('/filemanager/move', {
             files: this.getSelected().map(file => file.name),
             folder: path,
             path: this.path
@@ -140,7 +140,7 @@ class Manager {
         this.deselectAll();
         this.setLoading(true);
 
-        Http.getJSON('/filemanager/files', {
+        $.getJSON('/filemanager/files', {
             path: this.path,
             page: this.statusbar.page,
             step: this.statusbar.step,

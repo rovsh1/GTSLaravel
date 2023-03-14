@@ -1,19 +1,13 @@
-import timezone from "gsv-pkg/support/timezone"
+import timezone from "../support/timezone"
 
-export default class CookiesProvider {
-    register() {
+export default function () {
+    Object.assign($.cookie.defaults, {
+        path: '/',
+        domain: location.host.substr(location.host.indexOf('.')),
+        //secure: true
+    });
+    $.cookie('flag_ready', 1);
 
-    }
-
-    boot() {
-        Object.assign($.cookie.defaults, {
-            path: '/',
-            domain: location.host.substr(location.host.indexOf('.')),
-            //secure: true
-        });
-        $.cookie('flag_ready', 1);
-
-        timezone.domain = $.cookie.defaults.domain;
-        timezone.setTimezone();
-    }
+    timezone.domain = $.cookie.defaults.domain;
+    timezone.setTimezone();
 }

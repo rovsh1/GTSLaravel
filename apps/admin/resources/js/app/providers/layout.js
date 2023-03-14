@@ -1,5 +1,3 @@
-import Layout from "../layout/layout";
-
 function bootApp() {
     /*const layout = app('layout');
 
@@ -57,20 +55,14 @@ function bootGrid() {
     });
 }
 
-export default class LayoutProvider {
-    register() {
-        app().instance('layout', new Layout());
-    }
+export default function () {
+    bootApp();
+    bootSitemap();
+    bootGrid();
 
-    boot() {
-        bootApp();
-        bootSitemap();
-        bootGrid();
+    $('#btn-sidebar-toggle').click(e => {
+        $('#sidebar').toggleClass('submenu-collapsed');
 
-        $('#btn-sidebar-toggle').click(e => {
-            $('#sidebar').toggleClass('submenu-collapsed');
-
-            $(this).find('i');
-        });
-    }
+        $(this).find('i');
+    });
 }
