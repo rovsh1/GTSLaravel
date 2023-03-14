@@ -2,10 +2,10 @@
 
 namespace App\Admin\Support\View\Form\Element;
 
-use App\Admin\Models\Reference\City as Model;
+use App\Admin\Models\Hotel\Type as Model;
 use Gsdk\Form\Element\Select;
 
-class City extends Select
+class HotelType extends Select
 {
     public function __construct(string $name, array $options = [])
     {
