@@ -2,19 +2,26 @@
 
 namespace App\Admin\Support\View;
 
+use Gsdk\Meta\Meta;
+use Gsdk\Meta\MetaTags;
 use Illuminate\Support\Facades\App;
+use Illuminate\Contracts\View\View;
 
 class Layout
 {
     private string $version = 'v1.0';
 
-    private $meta;
+    private MetaTags $meta;
+
+    private string $view;
+
+    private array $viewData = [];
 
     private array $options = [];
 
     public function __construct()
     {
-        $this->meta = app('meta');
+        $this->meta = Meta::getFacadeRoot();
     }
 
     public function __call(string $name, array $arguments)
@@ -23,9 +30,15 @@ class Layout
         return $this;
     }
 
-    public function setOption(string $name, $value): static
+    public function data(array $data): static
     {
-        $this->options[$name] = $value;
+        $this->viewData = array_merge($this->viewData, $data);
+        return $this;
+    }
+
+    public function addMetaVariable(string $name, mixed $value): static
+    {
+        $this->meta->addMetaName($name, htmlspecialchars(json_encode($value)));
         return $this;
     }
 
@@ -49,16 +62,29 @@ class Layout
         return $this->setOption('style', $src)->setOption('script', $src);
     }
 
-    public function view(string $view, array $data = [])
+    public function view(string $view, array $data = []): static
+    {
+        $this->view = $view;
+
+        return $this->data($data);
+    }
+
+    public function render(): View
     {
         $this->configure();
 
-        return view($view, array_merge($data, $this->getViewData()));
+        return view($this->view, $this->getViewData());
+    }
+
+    private function setOption(string $name, $value): static
+    {
+        $this->options[$name] = $value;
+        return $this;
     }
 
     private function getViewData(): array
     {
-        $data = $this->options;
+        $data = array_merge($this->viewData, $this->options);
         $data['layout'] = $this;
         $data['title'] = $this->options['h1'] ?? $this->meta->getTitle();
 

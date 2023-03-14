@@ -22,7 +22,10 @@ use Illuminate\Support\Facades\Facade;
  * @method static \App\Admin\Support\View\Layout addMetaHttpEquiv(string $keyValue, string $content, array $attributes = [])
  * @method static \App\Admin\Support\View\Layout addStyle(string $href, array $attributes = [])
  * @method static \App\Admin\Support\View\Layout addScript(string $src, array $attributes = [])
- * @method static \Illuminate\View\View view(string $view, array $data = [])
+ * @method static \App\Admin\Support\View\Layout addMetaVariable(string $name, mixed $value)
+ * @method static \App\Admin\Support\View\Layout data(array $data)
+ * @method static \App\Admin\Support\View\Layout view(string $view, array $data = [])
+ * @method static \Illuminate\Contracts\View\View render()
  *
  * @see \App\Admin\Support\View\Layout
  */
