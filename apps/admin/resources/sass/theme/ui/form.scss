@@ -1,9 +1,11 @@
 .form-buttons {
     display: flex;
     gap: 1rem;
+    margin-top: 1.5rem;
 
     .spacer {flex-grow: 1;}
 }
 
 div.field-required > label:after {content: " *"; color: #DC493A;}
+div.form-field:not(:last-child) {margin-bottom: 1rem;}
 div.form-field div.error {color: #DC493A;}

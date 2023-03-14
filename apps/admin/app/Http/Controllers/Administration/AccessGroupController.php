@@ -33,7 +33,6 @@ class AccessGroupController extends AbstractPrototypeController
             ->data([
                 'categories' => $categories,
                 'default' => 'reservation',
-                //'prototypes' =>
             ])
             ->addMetaVariable(
                 'prototypes',
@@ -51,6 +50,7 @@ class AccessGroupController extends AbstractPrototypeController
     protected function formFactory(): Form
     {
         return (new Form('data'))
+            ->addElement('rules', 'hidden', ['render' => false])
             ->addElement('name', 'text', ['label' => 'Наименование', 'required' => true])
             //->addElement('role', 'enum', ['label' => 'Роль', 'emptyItem' => '', 'enum' => AccessRole::class])
             ->addElement('members', 'select', [
@@ -60,8 +60,8 @@ class AccessGroupController extends AbstractPrototypeController
                 'multiple' => true
             ])
             ->addElement('description', 'textarea', ['label' => 'Описание', 'required' => true])
-            ->hidden('name1', ['label1' => 'Наименование', 'required' => true])
-            ->addElement('rules', 'hidden', ['render' => false]);
+            //->hidden('name1', ['label1' => 'Наименование', 'required' => true])
+        ;
     }
 
     protected function gridFactory(): Grid

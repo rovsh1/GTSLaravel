@@ -1,4 +1,4 @@
-<div class="row mb-3 <?=$class?>">
+<div class="row <?=$class?>">
     <?=$label?>
 
     <div class="col-sm-8 d-flex align-items-center">

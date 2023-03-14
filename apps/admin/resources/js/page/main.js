@@ -2,7 +2,8 @@ import '../bootstrap';
 
 import "../vendor/jquery.cookie";
 
-import "../app/helpers"
+import "../app/support/functions";
+import "../app/helpers";
 
 require("gsv-pkg/framework/bootstrap");
 /*

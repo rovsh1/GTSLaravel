@@ -15,27 +15,27 @@
                     <x-tab target="rules">Правила</x-tab>
                 </ul>
             </div>
-            <div class="tab-content card-body">
-                <form action="{{ $form->action }}" method="{{ strtoupper($form->method) === 'GET' ? 'GET' : 'POST' }}" enctype="multipart/form-data">
+            <div class="card-body">
+                <form
+                    class="tab-content"
+                    action="{{ $form->action }}"
+                    method="{{ strtoupper($form->method) === 'GET' ? 'GET' : 'POST' }}"
+                    enctype="multipart/form-data">
                     <div id="main" role="tabpanel" class="tab-pane fade show active" aria-labelledby="main-tab">
                         <div class="form-group">{!! $form !!}</div>
                     </div>
                     <div id="rules" role="tabpanel" class="tab-pane fade" aria-labelledby="rules-tab">
-                        <div id="acl-rules">
-                            @foreach($categories as $a) @endforeach
-
-                            @foreach($prototypes as $prototype)
-                                <div class="item">
-                                    <div class="name">{{ $prototype->title() }}</div>
-                                    <div class="permissions">
-                                        @foreach($prototype->permissions() as $permission)
-                                            <div class="permission">
-                                                {{ $permission }}
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                </div>
-                            @endforeach
+                        <div class="d-flex align-items-start">
+                            <div class="nav flex-column nav-pills me-3" id="permissions-tabs" aria-orientation="vertical">
+                                @foreach($categories as $key)
+                                    <button class="nav-link{{ $key === $default ? ' active' : '' }}"
+                                            type="button"
+                                            role="tab"
+                                            data-category="{{ $key }}"
+                                            aria-selected="{{ $key === $default ? 'true' : 'false' }}">{{ __('category.' . $key) }}</button>
+                                @endforeach
+                            </div>
+                            <div class="permissions-control-wrapper" id="permissions"></div>
                         </div>
                     </div>
                     <div class="form-buttons">
