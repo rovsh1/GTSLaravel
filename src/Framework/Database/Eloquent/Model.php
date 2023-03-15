@@ -8,7 +8,6 @@ class Model extends \Illuminate\Database\Eloquent\Model
     {
         //dd($this->isClassCastable($key));
 //        $this->validateAttribute($key, $value);
-
         if (method_exists($this, 'setTranslatableAttribute') && $this->isTranslatable($key)) {
             $this->setTranslatableAttribute($key, $value);
         } else {

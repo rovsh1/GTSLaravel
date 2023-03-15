@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Admin\Models\Access;
+namespace App\Admin\Models\Administrator;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class Rule extends Model
+class AccessRule extends Model
 {
     protected $primaryKey = null;
 

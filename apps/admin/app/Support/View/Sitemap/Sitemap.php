@@ -3,7 +3,6 @@
 namespace App\Admin\Support\View\Sitemap;
 
 use App\Admin\Support\View\Sidebar\Menu\ItemInterface;
-use App\Admin\Support\View\Sitemap\Support\SitemapBuilder;
 
 class Sitemap
 {
@@ -66,6 +65,11 @@ class Sitemap
     public function getCurrentCategory(): ?CategoryMenu
     {
         return $this->category;
+    }
+
+    public function getCategories(): array
+    {
+        return $this->categoriesMenu;
     }
 
     public function render()

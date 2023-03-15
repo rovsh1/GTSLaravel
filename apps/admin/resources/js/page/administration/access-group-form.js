@@ -1,22 +1,26 @@
 import "../main";
-import PermissionsControl from "../../app/components/permissions-control/control";
+import Tab from "../../app/components/permissions-control/tab";
+
 
 $(document).ready(function () {
-    const prototypes = get_meta_content('prototypes', true);
-    const rules = get_meta_content('rules', true);
-    const control = new PermissionsControl(prototypes, rules);
-
     const $tabs = $('#permissions-tabs button');
-    const $permissions = $('#permissions').append(control.el);
+    const $menus = $('#permissions > div.permissions-category-menu');
 
-    $tabs.click(function () {
-        const category = $(this).data('category');
+    $tabs
+        .click(function () {
+            $tabs.filter('.active').removeClass('active');
+            $(this).addClass('active');
 
-        $tabs.filter('.active').removeClass('active');
-        $(this).addClass('active');
+            const category = $(this).data('category');
 
-        control.filter(p => p.category === category);
-    });
-
-    control.filter(p => p.category === 'reservation');
+            $menus.each((i, m) => {
+                if ($(m).data('category') === category)
+                    $(m).show();
+                else
+                    $(m).hide();
+            });
+        })
+        .each(function () {
+            new Tab($(this), $menus.filter('[data-category="' + $(this).data('category') + '"]'));
+        });
 });

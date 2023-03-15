@@ -2,24 +2,24 @@
 
 namespace Custom\Framework\Database\Eloquent;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 class TabularSection
 {
+    private Model $model;
 
-    protected $model;
+    private string $table;
 
-    protected $table;
+    private string $attribute;
 
-    protected $attribute;
+    private ?array $values = null;
 
-    protected $values;
+    private bool $changed = false;
 
-    protected $changed = false;
+    private ?array $changedValues = null;
 
-    protected $changedValues;
-
-    public function __construct($model, $table, $attribute)
+    public function __construct(Model $model, string $table, string $attribute)
     {
         $this->model = $model;
 
@@ -30,11 +30,12 @@ class TabularSection
         $model::saved([$this, 'save']);
     }
 
-    public function values($values = null)
+    public function values(array $values = null): array|static
     {
         if (null === $values) {
-            if (null !== $this->values)
+            if (null !== $this->values) {
                 return $this->values;
+            }
 
             return $this->values = DB::table($this->table)
                 ->where($this->model->getForeignKey(), $this->model->id)
@@ -53,10 +54,11 @@ class TabularSection
         return in_array($value, $this->values());
     }
 
-    public function save()
+    public function save(): void
     {
-        if (false === $this->changed)
+        if (false === $this->changed) {
             return;
+        }
 
         $this->changed = false;
 
@@ -79,5 +81,4 @@ class TabularSection
             $this->changedValues = null;
         }
     }
-
 }

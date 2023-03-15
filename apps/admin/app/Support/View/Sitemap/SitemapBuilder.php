@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Admin\Support\View\Sitemap\Support;
+namespace App\Admin\Support\View\Sitemap;
 
 use App\Admin\Components\Factory\PrototypesCollection;
 use App\Admin\Support\View\Sidebar\Menu\Group;
 use App\Admin\Support\View\Sidebar\Menu\Item;
-use App\Admin\Support\View\Sitemap\CategoryMenu;
 
 class SitemapBuilder
 {

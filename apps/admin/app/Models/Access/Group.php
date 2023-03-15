@@ -2,15 +2,13 @@
 
 namespace App\Admin\Models\Access;
 
-use Module\Shared\Custom\TabularSection;
-use Illuminate\Database\Eloquent\Model;
+use App\Admin\Models\Administrator\AccessRule;
+use Custom\Framework\Database\Eloquent\Model;
+use Custom\Framework\Database\Eloquent\TabularSection;
 use Illuminate\Support\Facades\DB;
 
 class Group extends Model
 {
-
-    private $members;
-
     public $timestamps = false;
 
     protected $table = 'administrator_access_groups';
@@ -24,22 +22,23 @@ class Group extends Model
 
     public function rules()
     {
-        return $this->hasMany(Rule::class);
+        return $this->hasMany(AccessRule::class);
     }
 
     public function members(): TabularSection
     {
-        return $this->members ?? $this->members = new TabularSection($this, 'administrator_access_members', 'administrator_id');
+        return new TabularSection($this, 'administrator_access_members', 'administrator_id');
     }
 
     public function getMembersAttribute()
     {
-        return $this->members()->values();
+        return $this->members->values();
     }
 
     public function setMembersAttribute($members)
     {
-        $this->members()->values($members);
+        dd($members);
+        $this->members->values($members);
     }
 
     public static function scopeWhereUser($query, $user)

@@ -4,6 +4,7 @@ namespace App\Admin\Http\Controllers\Administration;
 
 use App\Admin\Models\Administrator\Administrator;
 use App\Admin\Support\Facades\Prototypes;
+use App\Admin\Support\Facades\Sitemap;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form;
 use App\Admin\Support\View\Grid\Grid;
@@ -18,33 +19,31 @@ class AccessGroupController extends AbstractPrototypeController
 
     public function edit(int $id): LayoutContract
     {
-        $categories = [
-            'reservation',
-            'hotel',
-            'finance',
-            'client',
-            'site',
-            'reports',
-            'administration'
-        ];
+        $rules = $this->repository->getGroupPermissions($id);
+        $allowed = function ($resource) use ($rules) {
+            return $rules
+                ->filter(fn($r) => $r->resource === $resource)
+                ->filter(fn($r) => $r->flag === true)
+                ->map(fn($r) => $r->permission)
+                ->all();
+        };
+
+        $permissions = [];
+        foreach (Prototypes::all() as $prototype) {
+            $permissions[$prototype->routeName('index')] = (object)[
+                'id' => $prototype->key,
+                'allowed' => $allowed($prototype->key),
+                'available' => $prototype->permissions()
+            ];
+        }
 
         return parent::edit($id)
             ->ss('administration/access-group-form')
             ->data([
-                'categories' => $categories,
+                'categories' => Sitemap::getCategories(),
+                'permissions' => $permissions,
                 'default' => 'reservation',
-            ])
-            ->addMetaVariable(
-                'prototypes',
-                array_map(function ($prototype) {
-                    return [
-                        'key' => $prototype->key,
-                        'name' => $prototype->title(),
-                        'category' => $prototype->category,
-                        'permissions' => $prototype->permissions()
-                    ];
-                }, Prototypes::all())
-            );
+            ]);
     }
 
     protected function formFactory(): Form
@@ -59,9 +58,8 @@ class AccessGroupController extends AbstractPrototypeController
                 'items' => Administrator::get(),
                 'multiple' => true
             ])
-            ->addElement('description', 'textarea', ['label' => 'Описание', 'required' => true])
-            //->hidden('name1', ['label1' => 'Наименование', 'required' => true])
-        ;
+            ->addElement('description', 'textarea', ['label' => 'Описание', 'required' => true])//->hidden('name1', ['label1' => 'Наименование', 'required' => true])
+            ;
     }
 
     protected function gridFactory(): Grid

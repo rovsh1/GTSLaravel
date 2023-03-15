@@ -1,71 +1,51 @@
-const icons = {
-    read: 'visibility',
-    create: 'add',
-    update: 'edit',
-    delete: 'delete',
-    'auth as': 'person'
-};
-
-function icon(key) {
-    return '<i class="icon" data-permission="' + key + '">' + icons[key] + '</i>';
-}
-
 export default class Item {
+    #tab;
     #el;
-    #data;
-    #change;
-    #rules = {};
+    #input;
 
-    constructor(data) {
-        this.#data = data;
-    }
+    constructor(tab, el) {
+        this.#tab = tab;
+        this.#el = el;
+        this.#input = $('<input type="checkbox" class="form-check-input"/>').prependTo(el);
 
-    get key() { return this.#data.key; }
-
-    get name() { return this.#data.name; }
-
-    get category() { return this.#data.category; }
-
-    get el() {
-        if (this.#el)
-            return this.#el;
-
-        const permissions = this.#data.permissions
-            .map(p => icon(p))
-            .join('');
-
-        const el = $('<div class="prototype-item">'
-            + '<div class="permissions">' + permissions + '</div>'
-            + '<div class="title">' + this.name + '</div>'
-            + '</div>');
-
-        el.find('i').click((e, a) => {
-            console.log(e)
-            e.stopPropagation();
-            const i = $(e.target).data('permission');
-            this.#rules[i] = !this.#rules[i];
-            this.#change.call(this);
+        const self = this;
+        el.find('div.item').click(function (e) {
+            self.toggle($(this).data('permission'));
         });
 
-        el.click(e => {
-            //this.#change.call(this);
+        this.#input.change(() => {
+            const flag = this.#input.is(':checked');
+            if (flag) {
+                this.$items.addClass('allowed');
+                this.$items.find('input').val(1);
+                this.#el.addClass('active');
+            } else {
+                this.$items.removeClass('allowed');
+                this.$items.find('input').val(0);
+                this.#el.removeClass('active');
+            }
+            this.#tab.update();
         });
 
-        return this.#el = el;
+        this.update();
     }
 
-    hasAnyPermission() {
-        for (let i in this.#rules) {
-            if (this.#rules[i]) return true;
-        }
-        return false;
+    get $items() { return this.#el.find('div.permissions>div'); }
+
+    get hasUnchecked() { return this.$items.filter(':not(.allowed)').length > 0; }
+
+    get hasChecked() { return this.$items.filter('.allowed').length > 0; }
+
+    toggle(permission) {
+        const $item = this.$items.filter('[data-permission="' + permission + '"]');
+        $item.toggleClass('allowed');
+        $item.find('input').val($item.hasClass('allowed') ? 1 : 0);
+        this.update();
     }
 
-    show() {
-        this.el.show();
-    }
-
-    hide() {
-        this.el.hide();
+    update() {
+        this.#input.prop('checked', !this.hasUnchecked);
+        this.#el[this.hasChecked ? 'addClass' : 'removeClass']('active');
+        this.#tab.update();
     }
 }

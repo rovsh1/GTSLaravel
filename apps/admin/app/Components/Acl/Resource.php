@@ -43,7 +43,7 @@ class Resource
     private function parsePermissions($value): array
     {
         if ($value === 'crud') {
-            return ['create', 'read', 'update', 'delete'];
+            return ['read', 'update', 'create', 'delete'];
         } elseif (is_string($value)) {
             return [$value => null];
         } elseif (is_array($value)) {

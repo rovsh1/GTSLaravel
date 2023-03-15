@@ -2,11 +2,14 @@
 
 namespace App\Admin\Models\Administrator;
 
+use Custom\Framework\Database\Eloquent\TabularSection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
 class AccessGroup extends Model
 {
+    private ?TabularSection $members = null;
+
     public $timestamps = false;
 
     protected $table = 'administrator_access_groups';
@@ -14,26 +17,32 @@ class AccessGroup extends Model
     protected $fillable = [
         'name',
         'role',
-//        'members',
+        'members',
         'description'
     ];
 
 //    public function rules() {
 //        return $this->hasMany(Rule::class);
 //    }
-//
-//    public function members(): \Ustabor\Custom\TabularSection
-//    {
-//        return $this->members ?? $this->members = new TabularSection($this, 'administrator_access_members', 'administrator_id');
-//    }
+    public function getForeignKey()
+    {
+        return 'group_id';
+    }
 
-//    public function getMembersAttribute() {
-//        return $this->members()->values();
-//    }
-//
-//    public function setMembersAttribute($members) {
-//        $this->members()->values($members);
-//    }
+    public function members(): TabularSection
+    {
+        return $this->members ?? $this->members = new TabularSection($this, 'administrator_access_members', 'administrator_id');
+    }
+
+    public function getMembersAttribute()
+    {
+        return $this->members()->values();
+    }
+
+    public function setMembersAttribute($members)
+    {
+        $this->members()->values($members);
+    }
 
     public static function scopeWhereAdministrator($query, $user)
     {
