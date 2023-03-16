@@ -6,6 +6,7 @@ use Custom\Framework\Database\Eloquent\HasQuicksearch;
 use Custom\Framework\Database\Eloquent\HasTranslations;
 use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 class City extends Model
 {
@@ -36,6 +37,15 @@ class City extends Model
                 //TODO add priority column
                 //->orderBy('priority', 'desc')
                 ->orderBy('name', 'asc');
+        });
+    }
+
+    public function scopeWhereHasHotel($query)
+    {
+        $query->whereExists(function ($query) {
+            $query->select(DB::raw(1))
+                ->from('hotels as t')
+                ->whereColumn('t.city_id', 'r_cities.id');
         });
     }
 

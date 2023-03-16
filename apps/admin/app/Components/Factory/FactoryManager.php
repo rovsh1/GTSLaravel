@@ -2,6 +2,8 @@
 
 namespace App\Admin\Components\Factory;
 
+use App\Admin\Support\Repository\RepositoryInterface;
+
 class FactoryManager
 {
     private PrototypesCollection $prototypes;
@@ -11,7 +13,7 @@ class FactoryManager
         $this->prototypes = new PrototypesCollection();
     }
 
-    public function makeRepository(string|Prototype $prototype): FactoryRepositoryInterface
+    public function makeRepository(string|Prototype $prototype): RepositoryInterface
     {
         if (is_string($prototype)) {
             $prototype = $this->prototypes->get($prototype);

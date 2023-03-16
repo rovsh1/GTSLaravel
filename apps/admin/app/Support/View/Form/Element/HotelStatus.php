@@ -2,26 +2,12 @@
 
 namespace App\Admin\Support\View\Form\Element;
 
-use Gsdk\Form\Element\Select;
+use App\Admin\Enums\Hotel\StatusEnum;
 
-class HotelStatus extends Select
+class HotelStatus extends Enum
 {
     public function __construct(string $name, array $options = [])
     {
-        parent::__construct($name, $options);
-
-        $this->setItems(
-            items: $this->getItems()
-        );
-    }
-
-    private function getItems(): array
-    {
-        return [
-            ['id' => 1, 'name' => 'Черновик'],
-            ['id' => 2, 'name' => 'Опубликован'],
-            ['id' => 3, 'name' => 'Заблокирован'],
-            ['id' => 4, 'name' => 'Архив'],
-        ];
+        parent::__construct(StatusEnum::class, $name, $options);
     }
 }

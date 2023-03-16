@@ -3,6 +3,7 @@
     "label.country": "Страна",
     "label.city": "Город",
     "label.client": "Клиент",
+    "label.currency": "Валюта",
     "category.hotel": "Отели",
     "category.client": "Клиенты",
     "category.reservation": "Бронирование",
@@ -19,5 +20,14 @@
     "group.reference": "Справочники",
     "group.additional": "Дополнительно",
     "group.additional-services": "Доп. услуги",
-    "group.reservations": "По типам"
+    "group.reservations": "По типам",
+
+    "enum.hotel.status.Draft": "Черновик",
+    "enum.hotel.status.Published": "Опубликован",
+    "enum.hotel.status.Blocked": "Заблокирован",
+    "enum.hotel.status.Archive": "Архив",
+
+    "enum.hotel.price-list.status.NotProcessed": "Не обработан",
+    "enum.hotel.price-list.status.InProgress": "В обработке",
+    "enum.hotel.price-list.status.Processed": "Обработан"
 }
