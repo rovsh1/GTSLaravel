@@ -19,6 +19,7 @@ class File extends BaseModel
     public $incrementing = false;
 
     protected $fillable = [
+        'type_hash',
         'type',
         'entity_id',
         'name',
@@ -37,7 +38,8 @@ class File extends BaseModel
     public static function createFromParent(string $fileType, int $entityId, ?string $name = null)
     {
         return static::create([
-            'type' => static::hashType($fileType),
+            'type_hash' => static::hashType($fileType),
+            'type' => $fileType,
             'entity_id' => $entityId,
             'name' => $name
         ]);
@@ -55,7 +57,7 @@ class File extends BaseModel
 
     public static function scopeWhereType($query, string $fileType)
     {
-        $query->where('type', static::hashType($fileType));
+        $query->where('type_hash', static::hashType($fileType));
     }
 
     public static function scopeWhereEntity($query, $entity)
@@ -70,7 +72,7 @@ class File extends BaseModel
             DB::raw(
                 '(SELECT guid FROM files'
                 . ' WHERE parent_id=`' . $entity->getTable() . '`.id'
-                . ' AND type="' . static::hashType($fileType) . '"'
+                . ' AND type_hash="' . static::hashType($fileType) . '"'
                 . ' LIMIT 1) as `' . $columnName . '`'
             )
         );

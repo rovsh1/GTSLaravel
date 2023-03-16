@@ -14,11 +14,11 @@ class FindByEntityHandler implements QueryHandlerInterface
     public function __construct(
         public readonly DatabaseRepositoryInterface $databaseRepository,
         private readonly UrlGeneratorInterface $urlGenerator,
-    ) {}
+    ) { }
 
     public function handle(QueryInterface|FindByEntity $query): ?FileDto
     {
-        $file = $this->databaseRepository->findEntityImage($query->fileType, $query->entityId);
+        $file = $this->databaseRepository->getEntityFile($query->fileType, $query->entityId);
 
         return $file ? (new DataMapper($this->urlGenerator))->fileToDto($file) : null;
     }

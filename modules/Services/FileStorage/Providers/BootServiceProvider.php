@@ -30,9 +30,10 @@ class BootServiceProvider extends ServiceProvider
             );
         });
 
-        $this->app->singleton(UrlGeneratorInterface::class, function () use ($config) {
+        $this->app->singleton(UrlGeneratorInterface::class, function ($app) use ($config) {
             return new UrlGenerator(
-                $config['url']
+                $config['url'],
+                $app->get(PathGeneratorInterface::class)
             );
         });
 

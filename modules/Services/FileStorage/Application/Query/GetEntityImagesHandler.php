@@ -19,6 +19,6 @@ class GetEntityImagesHandler implements QueryHandlerInterface
     {
         $mapper = new DataMapper($this->urlGenerator);
 
-        return array_map(fn($r) => $mapper->fileToDto($r), $this->databaseRepository->getEntityImages($query->fileType, $query->entityId));
+        return array_map(fn($r) => $mapper->fileToDto($r), $this->databaseRepository->getEntityFiles($query->fileType, $query->entityId));
     }
 }
