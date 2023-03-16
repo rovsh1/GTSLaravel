@@ -1,12 +1,23 @@
 @extends('layouts/blank')
 
 @section('content')
-    <div class="container-xxl">
-        <form class="mb-3" action="{{route('auth.login')}}" method="POST">
-            {!! $form !!}
-            <div class="mb-3">
-                <button class="btn btn-primary d-grid w-100" type="submit">Войти</button>
+    <div class="form-signin w-100 m-auto">
+
+        <div class="content-body">
+            <div class="card card-form">
+                <div class="card-body">
+                    <form action="{{route('auth.login')}}" method="POST">
+                        <h1 class="h3 mb-3 fw-normal">{{ __('auth.login.form.header') }}</h1>
+
+                        {!! $form !!}
+                        <div class="mb-2">
+                            <button class="btn btn-primary d-grid w-100" type="submit">
+                                {{ __('auth.login.form.button') }}
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </form>
+        </div>
     </div>
 @endsection

@@ -1,4 +1,10 @@
 {
+    "auth.login.form.header": "Авторизация",
+    "auth.login.form.label.login": "Логин",
+    "auth.login.form.label.password": "Пароль",
+    "auth.login.form.button": "Войти",
+    "auth.logout.form.button": "Выйти",
+
     "select-all": "---Все--",
     "label.country": "Страна",
     "label.city": "Город",

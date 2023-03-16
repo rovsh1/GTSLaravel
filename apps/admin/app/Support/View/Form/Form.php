@@ -11,6 +11,7 @@ use Gsdk\Form\Form as Base;
  * @method self select(string $name, array $options = [])
  * @method self hidden(string $name, array $options = [])
  * @method self text(string $name, array $options = [])
+ * @method self password(string $name, array $options = [])
  * @method self number(string $name, array $options = [])
  * @method self dateRange(string $name, array $options = [])
  * @method self currency(string $name, array $options = [])
