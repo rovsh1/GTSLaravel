@@ -1,3 +1,4 @@
+import {Modal as BootstrapModal} from "bootstrap";
 import {buttonsRenderer} from "./buttons-builder";
 
 export const defaultOptions = {
@@ -15,10 +16,16 @@ export const defaultOptions = {
 	buttons: []
 };
 
-export function createBootstrapModal($el, options) {
-	return new bootstrap.Modal($el[0], {
+export function createBootstrapModal(modal, $el, options) {
+	const bsModal = new BootstrapModal($el[0], {
 		keyboard: false
 	});
+
+	// bsModal.addEventListener('hide.bs.modal', function (event) {
+	// 	modal.hide();
+	// });
+
+	return bsModal;
 }
 
 export function createElement(options) {
@@ -32,12 +39,12 @@ export function createElement(options) {
 
 	html += '<div class="modal-header">';
 	html += '<h5 class="modal-title">' + options.title + '</h5>';
-	html += '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>';
+	html += '<button type="button" class="btn-close" aria-label="Close"></button>';
 	html += '</div>';
 
 	html += '<div class="modal-body"></div>';
 
-	html += '<div class="modal-footer"></div>';
+	html += '<div class="modal-footer" style="display: none;"></div>';
 
 	html += '</div>';
 	html += '</div>';
@@ -57,12 +64,16 @@ export function bindEvents(modal, options) {
 }
 
 export function boot(modal, options) {
+	modal.header.find('button.btn-close').click(e => {
+		modal.close();
+	});
+
 	if (options.html) {
 		modal.setHtml(options.html);
 	}
 
-	if (options.buttons) {
-		buttonsRenderer(modal, options.buttons, modal.footer);
+	if (options.buttons && options.buttons.length > 0) {
+		buttonsRenderer(modal, options.buttons, modal.footer.show());
 	}
 
 	if (options.url) {

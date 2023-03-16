@@ -1,12 +1,12 @@
-<form method="post" data-title="{{$title}}" data-cls="window-form <?= isset($cls) ? $cls : '' ?>">
-	<?= isset($description) ? '<p>' . $description . '</p>' : '' ?>
-	<?= $form->report() ?>
-	<div class="fields-wrap">
-		<?= $form->render() ?>
-	</div>
+<form method="post" data-title="{{ $title }}" class="settings-form {{ $cls ?? '' }}">
+    {!! isset($description) ? '<p>' . $description . '</p>' : '' !!}
 
-	<div class="form-buttons">
-		<button type="button" class="btn btn-cancel" data-action="close">@lang('Отмена')</button>
-		<button type="submit" class="btn btn-submit">@lang('Сохранить')</button>
-	</div>
+    <div class="fields-wrap">
+        {!! $form !!}
+    </div>
+
+    <div class="form-buttons">
+        <button type="submit" class="btn btn-primary">@lang('Сохранить')</button>
+        <button type="button" class="btn btn-cancel" data-action="close">@lang('Отмена')</button>
+    </div>
 </form>

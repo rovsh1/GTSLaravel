@@ -5,6 +5,7 @@ namespace App\Admin\Support\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
+ * @method static \App\Admin\Support\View\Form\Form name(string $name)
  * @method static \App\Admin\Support\View\Form\Form method(string $method)
  * @method static \App\Admin\Support\View\Form\Form action(string $action)
  * @method static \App\Admin\Support\View\Form\Form select(string $name, array $options = [])

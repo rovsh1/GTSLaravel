@@ -19,7 +19,7 @@ export default class Modal {
 
 		const $el = this.#el = createElement(options);
 
-		this.#bootstrapModal = createBootstrapModal($el, options);
+		this.#bootstrapModal = createBootstrapModal(this, $el, options);
 
 		bindEvents(this, options);
 
@@ -38,7 +38,7 @@ export default class Modal {
 
 	get content() { return this.dialog.find('>div.modal-content'); }
 
-	get header() { return this.content.find('>div.modal-footer'); }
+	get header() { return this.content.find('>div.modal-header'); }
 
 	get body() { return this.content.find('>div.modal-body'); }
 
@@ -50,7 +50,9 @@ export default class Modal {
 
 	set(name, value) { this.#options[name] = value; }
 
-	setTitle(text) { this.header.find('>modal-title').html(text); };
+	setTitle(text) {
+		this.header.find('>.modal-title').html(text);
+	}
 
 	setHtml(html) {
 		this.body.html(html);
@@ -90,8 +92,17 @@ export default class Modal {
 	}
 
 	close() {
-		this.#bootstrapModal.dispose();
 		this.trigger('close');
+		this.destroy();
+	}
+
+	destroy() {
+		this.#el.remove();
+		this.#bootstrapModal.dispose();
+		this.#el = undefined;
+		this.#bootstrapModal = undefined;
+		this.#options = undefined;
+		this.#eventHandlers = undefined;
 	}
 
 	bind(event, callback, scope) {

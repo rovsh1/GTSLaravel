@@ -15,5 +15,5 @@ export default function load(modal, params) {
 		modal.setLoading(false);
 	};
 
-	$.ajax(modal);
+	$.ajax(params);
 }

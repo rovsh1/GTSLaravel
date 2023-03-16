@@ -26,7 +26,6 @@ class Administrator extends Authenticatable
         'presentation',
         'name',
         'surname',
-        'patronymic',
         'login',
         'password',
         'phone',

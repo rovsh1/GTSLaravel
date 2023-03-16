@@ -11,7 +11,7 @@ function processForm(modal, form) {
 		const data = new FormData(this);
 		const url = modal.get('url');
 
-		Http.ajax({
+		$.ajax({
 			url: form.attr('action') || (is_string(url) ? url : url.url),
 			method: 'post',
 			data: data,
@@ -50,7 +50,7 @@ export default function processHtml(modal, body) {
 		}
 	});
 
-	const firstEl = modal.body.firstChild;
+	const firstEl = $(body[0].firstChild);
 	if (firstEl.data('title')) {
 		modal.setTitle(firstEl.data('title'));
 	}
@@ -59,7 +59,7 @@ export default function processHtml(modal, body) {
 		modal.set('cls', firstEl.data('cls'));
 	}
 
-	const form = modal.form;
+	const form = body.find('form');
 	if (form.length && modal.get('processForm')) {
 		processForm(modal, form);
 	}

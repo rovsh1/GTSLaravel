@@ -18,6 +18,8 @@ return new class extends Migration {
         Schema::create('administrators', function (Blueprint $table) {
             $table->integer('id')->unsigned()->autoIncrement();
             $table->string('presentation', 100);
+            $table->string('name', 100)->nullable();
+            $table->string('surname', 100)->nullable();
             $table->tinyInteger('gender')->unsigned()->nullable();
             $table->string('login', 50)->nullable();
             $table->char('password', 60)->nullable();

@@ -8,7 +8,7 @@ use Ustabor\Infrastructure\Files\UserAvatar;
 use Ustabor\Infrastructure\Enums\User\UserGender;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Gsdk\DateTime;
+use DateTime;
 
 class AccountController extends Controller
 {
@@ -29,12 +29,13 @@ class AccountController extends Controller
 
     public function name(Request $request)
     {
-        $form = Form::text('presentation', ['label' => 'Имя в системе', 'required' => true])
+        $form = Form::name('data')
+            ->text('presentation', ['label' => 'Имя в системе', 'required' => true])
             ->text('name', ['label' => 'Имя'])
             ->text('surname', ['label' => 'Фамилия']);
 
         if ($request->isMethod('get')) {
-            $form->setData(Auth::user()->toArray());
+            $form->data(Auth::user());
         } elseif ($form->submit()) {
             $data = $form->getData();
             $user = Auth::user();
@@ -52,7 +53,7 @@ class AccountController extends Controller
 
     public function birthday(Request $request)
     {
-        $now = CurrentDate();
+        $now = now();
 
         $days = [];
         for ($i = 1; $i <= 31; $i++) {
@@ -80,19 +81,18 @@ class AccountController extends Controller
             $years[$y - $i] = $y - $i;
         }
 
-        $form = new Form('data');
-        $form
-            ->addElement('day', 'select', [
+        $form = Form::name('data')
+            ->select('day', [
                 'label' => 'День',
                 'emptyItem' => '',
                 'items' => $days
             ])
-            ->addElement('month', 'select', [
+            ->select('month', [
                 'label' => 'Месяц',
                 'emptyItem' => '',
                 'items' => $months
             ])
-            ->addElement('year', 'select', [
+            ->select('year', [
                 'label' => 'Год',
                 'emptyItem' => '',
                 'items' => $years
@@ -102,10 +102,10 @@ class AccountController extends Controller
             $bd = Auth::user()->birthday;
             if ($bd) {
                 $dt = new DateTime($bd);
-                $form->setData([
-                    'day' => $dt->getDay(),
-                    'month' => $dt->getMonth(),
-                    'year' => $dt->getYear()
+                $form->data([
+                    'day' => $dt->day,
+                    'month' => $dt->month,
+                    'year' => $dt->year
                 ]);
             }
         } elseif ($form->submit()) {
@@ -123,9 +123,9 @@ class AccountController extends Controller
 
             $user = Auth::user();
             if (!$hasEmpty) {
-                $now->setDay($data['day']);
-                $now->setMonth($data['month']);
-                $now->setYear($data['year']);
+                $now->day($data['day']);
+                $now->month($data['month']);
+                $now->year($data['year']);
                 $user->birthday = $now->format('Y-m-d');
             } elseif (!$hasValue) {
                 $user->birthday = null;
@@ -150,9 +150,8 @@ class AccountController extends Controller
 
     public function gender(Request $request)
     {
-        $form = new Form('data');
-        $form
-            ->addElement('gender', 'radio', [
+        $form = Form::name('data')
+            ->radio('gender', [
                 //'label' => 'Имя в системе',
                 'items' => [
                     0 => 'Не указано',
@@ -179,9 +178,8 @@ class AccountController extends Controller
 
     public function email(Request $request)
     {
-        $form = new Form('data');
-        $form
-            ->addElement('email', 'text', [
+        $form = Form::name('data')
+            ->text('email', [
                 'label' => 'Адрес электронной почты',
                 'inputType' => 'email',
                 'required' => true
@@ -222,9 +220,8 @@ class AccountController extends Controller
 
     public function phone(Request $request)
     {
-        $form = new Form('data');
-        $form
-            ->addElement('phone', 'text', [
+        $form = Form::name('data')
+            ->text('phone', [
                 'label' => 'Телефон',
                 'inputType' => 'tel',
                 'inputMode' => 'numeric',
@@ -266,10 +263,9 @@ class AccountController extends Controller
 
     public function password(Request $request)
     {
-        $form = new Form('data');
-        $form
-            ->addElement('password', 'password', ['label' => 'Новый пароль', 'required' => true])
-            ->addElement('confirm', 'password', ['label' => 'Подтвердите пароль', 'required' => true]);
+        $form = Form::name('data')
+            ->password('password', ['label' => 'Новый пароль', 'autocomplete' => 'new-password', 'required' => true])
+            ->password('confirm', ['label' => 'Подтвердите пароль', 'autocomplete' => 'new-password', 'required' => true]);
 
         if ($request->isMethod('get')) {
         } elseif ($form->submit()) {
@@ -295,9 +291,8 @@ class AccountController extends Controller
 
     public function photo(Request $request)
     {
-        $form = new Form('data');
-        $form
-            ->addElement('image', 'text', ['inputType' => 'file', 'accept' => 'image/*']);
+        $form = Form::name('data')
+            ->file('image', ['accept' => 'image/*']);
 
         $avatar = UserAvatar::findByEntity(Auth::user());
 
