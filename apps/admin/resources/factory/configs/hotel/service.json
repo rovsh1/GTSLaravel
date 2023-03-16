@@ -4,7 +4,7 @@
     "group": "reference",
     "model": "App\\Admin\\Models\\Hotel\\Service",
     "titles": {
-        "index": "Услуги",
+        "index": "Услуги в отеле",
         "create": "Новая услуга"
     },
     "views": {},

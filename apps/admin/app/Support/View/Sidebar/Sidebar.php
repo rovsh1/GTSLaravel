@@ -8,7 +8,7 @@ class Sidebar
 {
     private ?AbstractSubmenu $submenu = null;
 
-    public function __construct() {}
+    public function __construct() { }
 
     public function currentRoute(string $key): void
     {
@@ -23,6 +23,11 @@ class Sidebar
     public function submenu(AbstractSubmenu $menu): void
     {
         $this->submenu = $menu;
+    }
+
+    public function isExpanded(): bool
+    {
+        return (bool)Sitemap::getCurrentCategory();
     }
 
     public function render()

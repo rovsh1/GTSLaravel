@@ -24,6 +24,13 @@ class Layout
         return Sitemap::render();
     }
 
+    public static function bodyClass(): string
+    {
+        $cls = [];
+        $cls[] = Sidebar::isExpanded() ? 'sidebar-expanded' : '';
+        return implode(' ', $cls);
+    }
+
     public static function sidebar()
     {
         return Sidebar::render();

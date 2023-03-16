@@ -2,14 +2,13 @@
 
 namespace App\Admin\Models\Administrator;
 
-use Custom\Framework\Database\Eloquent\TabularSection;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
 class AccessGroup extends Model
 {
-    private ?TabularSection $members = null;
-
     public $timestamps = false;
 
     protected $table = 'administrator_access_groups';
@@ -21,27 +20,25 @@ class AccessGroup extends Model
         'description'
     ];
 
-//    public function rules() {
-//        return $this->hasMany(Rule::class);
-//    }
-    public function getForeignKey()
+    public function rules(): HasMany
     {
-        return 'group_id';
+        return $this->hasMany(AccessRule::class);
     }
 
-    public function members(): TabularSection
+    public function members(): BelongsToMany
     {
-        return $this->members ?? $this->members = new TabularSection($this, 'administrator_access_members', 'administrator_id');
+        return $this->belongsToMany(Administrator::class, 'administrator_access_members', 'group_id', 'administrator_id');
     }
 
     public function getMembersAttribute()
     {
-        return $this->members()->values();
+        return $this->members()->pluck('id')->toArray();
     }
 
-    public function setMembersAttribute($members)
+    public function setMembersAttribute(array $members)
     {
-        $this->members()->values($members);
+        $this->members()->sync($members);
+        //$this->rules()->upsert()
     }
 
     public static function scopeWhereAdministrator($query, $user)

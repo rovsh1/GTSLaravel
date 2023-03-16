@@ -11,25 +11,26 @@ input {font-size: 13px;}
 
 div.dashboard-wrapper {min-height: 100%;background: #fff;}
 
-main {padding: 48px 0 0 280px;height: 100%;}
+main {padding: 48px 0 0 0;height: 100%;}
+body.sidebar-expanded main {padding-left: 280px;}
 div.content-wrapper {}
 
 .content {
-    .breadcrumb-wrapper {padding: 1rem 2rem 0 2rem;}
+	.breadcrumb-wrapper {padding: 1rem 2rem 0 2rem;}
 }
 
 .content-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 1rem;
-    padding: 1rem 2rem 0 2rem;
-    .title {font-size: 16px;}
-    .btn-add {margin-left: 1rem;}
+	display: flex;
+	align-items: center;
+	margin-bottom: 1rem;
+	padding: 1rem 2rem 0 2rem;
+	.title {font-size: 16px;}
+	.btn-add {margin-left: 1rem;}
 }
 .content-body {padding: 0 2rem 1rem 2rem;}
 
 
 .rating {
-    display: inline-block;
-    i {font-size: 16px;vertical-align: top;color: #FEB65A;}
+	display: inline-block;
+	i {font-size: 16px;vertical-align: top;color: #FEB65A;}
 }

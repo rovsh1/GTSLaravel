@@ -8,7 +8,6 @@ AclRoute::resource('hotel-reservation', Controllers\Reservation\HotelReservation
 AclRoute::resource('airport-reservation', Controllers\Reference\CountryController::class);
 AclRoute::resource('transfer-reservation', Controllers\Reference\CountryController::class);
 AclRoute::resource('additional-reservation', Controllers\Reference\CountryController::class);
-AclRoute::resource('hotel-service', Controllers\Reference\CountryController::class, ['except' => ['show']]);
 AclRoute::resource('airport-service', Controllers\Reference\CountryController::class, ['except' => ['show']]);
 AclRoute::resource('transfer-service', Controllers\Reference\CountryController::class, ['except' => ['show']]);
 AclRoute::resource('service-provider', Controllers\Reference\CountryController::class, ['except' => ['show']]);

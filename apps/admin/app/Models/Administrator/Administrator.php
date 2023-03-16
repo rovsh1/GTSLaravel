@@ -2,12 +2,13 @@
 
 namespace App\Admin\Models\Administrator;
 
+use App\Admin\Support\View\Sidebar\Menu\Group;
 use Custom\Framework\Database\Eloquent\HasQuicksearch;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
-use Module\Shared\Custom\TabularSection;
 
 class Administrator extends Authenticatable
 {
@@ -60,19 +61,19 @@ class Administrator extends Authenticatable
         return \App\Admin\Models\Access\Group::whereUser($this);
     }
 
-    public function groups(): TabularSection
+    public function groups(): BelongsToMany
     {
-        return new TabularSection($this, 'administrator_access_members', 'group_id');
+        return $this->belongsToMany(Group::class, 'administrator_access_members', 'administrator_id', 'group_id');
     }
 
     public function getGroupsAttribute()
     {
-        return $this->groups->values();
+        return $this->groups()->pluck('id')->toArray();
     }
 
-    public function setGroupsAttribute($groups)
+    public function setGroupsAttribute(array $groups)
     {
-        $this->groups->values($groups);
+        $this->groups()->sync($groups);
     }
 
 //    public function hasRole($role): bool
