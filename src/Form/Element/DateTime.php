@@ -18,7 +18,7 @@ class DateTime extends Input
         'emptyValue' => false
     ];
 
-    protected $attributes = ['min', 'max', 'step'];
+    protected array $attributes = ['min', 'max', 'step'];
 
     protected function prepareValue($value)
     {

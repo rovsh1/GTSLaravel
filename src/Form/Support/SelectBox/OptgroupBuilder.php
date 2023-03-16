@@ -44,7 +44,7 @@ class OptgroupBuilder
             $this->group->$key = $this->data->$key;
         } else {
             foreach ($autoKeys as $k) {
-                if (isset($this->data->$k)) {
+                if (isset($this->data->$k) && !empty($this->data->$k)) {
                     $this->group->$key = $this->data->$k;
                     break;
                 }
