@@ -4,7 +4,7 @@
     "group": "reservations",
     "model": "App\\Admin\\Models\\Reference\\Airport",
     "titles": {
-        "index": "Брони транпортных услуг",
+        "index": "Брони транспортных услуг",
         "create": "Новая бронь"
     },
     "views": {},
