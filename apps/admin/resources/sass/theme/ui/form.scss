@@ -1,24 +1,28 @@
 .form-buttons {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1.5rem;
+	display: flex;
+	gap: 1rem;
+	margin-top: 1.5rem;
 
-    .spacer {flex-grow: 1;}
+	.spacer {flex-grow: 1;}
 }
 
 div.field-required > label:after {content: " *"; color: #DC493A;}
 div.form-field:not(:last-child) {margin-bottom: 1rem;}
 div.form-field div.error {color: #DC493A;}
 
+.field-locale-inputs-wrapper {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	flex-direction: column;
+	gap: 1rem;
+	flex-grow: 1;
+}
 .field-locale-input-wrapper {
-
-}
-
-.field-locale-flag-wrapper {
-
-}
-
-.field-locale-flag-wrapper img {
-    width: 20px;
-    height: 20px;
+	display: flex;
+	align-items: center;
+	gap: .5rem;
+	flex-grow: 1;
+	width: 100%;
+	img { width: 20px; height: 20px;object-fit: contain;}
 }
