@@ -30,8 +30,7 @@ class LocaleText extends AbstractElement
         return '<input type="text"'
             . ' id="' . $this->getInputId() . '_' . $lang . '"'
             . ' name="' . $this->getInputName() . '[' . $lang . ']"'
-            . ' class="field-locale"'
-            //. $this->attributes->withoutName()
+            . ' class="field-locale form-control"'
             . ' value="' . htmlspecialchars($value) . '" data-lang="' . $lang . '">';
     }
 
@@ -40,8 +39,16 @@ class LocaleText extends AbstractElement
         $html = '';
         $value = $this->getValue();
 
-        foreach (app('languages') as $l) {
-            $html .= $this->getLocaleInput($l->code, $value[$l->code] ?? null);
+        /** @var \App\Core\Components\Locale\Language $language */
+        foreach (app('languages') as $language) {
+            $html .= '<div class="field-locale-flag-wrapper m-auto">';
+            $iconUrl = asset("/images/flag/{$language->code}.svg");
+            $html .= "<img src='{$iconUrl}' alt='{$language->code}'/>";
+            $html .= '</div>';
+
+            $html .= '<div class="field-locale-input-wrapper">';
+            $html .= $this->getLocaleInput($language->code, $value[$language->code] ?? null);
+            $html .= '</div>';
         }
 
         return $html;

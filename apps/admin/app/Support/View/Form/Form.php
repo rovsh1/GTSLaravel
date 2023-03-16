@@ -25,5 +25,7 @@ use Gsdk\Form\Form as Base;
  * @method self coordinates(string $name, array $options = [])
  * @method self client(string $name, array $options = [])
  * @method self hotel(string $name, array $options = [])
+ * @method self localeText(string $name, array $options = [])
+ * @method self language(string $name, array $options = [])
  */
 class Form extends Base { }

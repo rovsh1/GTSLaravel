@@ -3,7 +3,8 @@
 namespace App\Admin\Http\Controllers\Reference;
 
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
-use App\Admin\Support\View\Form\Form;
+use App\Admin\Support\Facades\Form;
+use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid;
 
 class CountryController extends AbstractPrototypeController
@@ -13,12 +14,11 @@ class CountryController extends AbstractPrototypeController
         return 'country';
     }
 
-    protected function formFactory(): Form
+    protected function formFactory(): FormContract
     {
-        return (new Form('data'))
+        return Form::localeText('name', ['label' => 'Наименование', 'required' => true])
             //->view('default.form')
-            ->localeText('name', ['label' => 'Наименование', 'required' => true])
-            ->language('language', ['label' => 'Язык', 'emptyItem' => '-Не выбрано-'])
+            ->language('language', ['label' => 'Язык по-умолчанию', 'emptyItem' => '-Не выбрано-'])
             ->text('flag', ['label' => 'Код флага', 'required' => true])
             ->text('phone_code', ['label' => 'Код телефона', 'required' => true])
             ->currency('currency_id', ['label' => 'Валюта'])
