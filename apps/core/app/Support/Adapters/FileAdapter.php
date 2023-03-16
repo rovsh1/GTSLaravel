@@ -2,6 +2,7 @@
 
 namespace App\Core\Support\Adapters;
 
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use App\Core\Contracts\File\FileInterface;
 use Module\Services\FileStorage\Application\Dto\FileDto;
@@ -87,6 +88,17 @@ class FileAdapter extends AbstractPortAdapter
         return $this->request('delete', [
             'guid' => is_string($guid) ? $guid : $guid->guid(),
         ]);
+    }
+
+    public function uploadOrCreate(FileInterface|null $file, UploadedFile $uploadedFile, string $fileType, ?int $entityId): ?FileInterface
+    {
+        if (is_null($file)) {
+            return $this->create($fileType, $entityId, $uploadedFile->getClientOriginalName(), $uploadedFile->get());
+        } else {
+            $this->put($file, $uploadedFile->get());
+
+            return $file;
+        }
     }
 
     private function fileFactory(?FileDto $fileDto): ?FileInterface

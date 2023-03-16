@@ -9,40 +9,21 @@
             <div class="block-body">
                 <div class="block-row" data-action="photo">
                     <div class="label">Фотография</div>
-                    <div class="value"><?php
-                                       //user_avatar($user)?></div>
+                    <div class="value">
+                        <x-file-image :file="$avatar"/>
+                    </div>
                 </div>
-                <div class="block-row" data-action="name">
+                <div class="block-row" data-action="settings">
                     <div class="label">Имя</div>
                     <div class="value">{{ $user->presentation }}</div>
                 </div>
-                <div class="block-row" data-action="birthday">
-                    <div class="label">Дата рождения</div>
-                    <div class="value"><?php
-                                       //$user->birthday ? $user->birthday->format('date') : $valueEmpty ?></div>
-                </div>
-                <div class="block-row" data-action="gender">
-                    <div class="label">Пол</div>
-                    <div class="value"><?php
-                                       //$user->gender ? Ustabor\Infrastructure\Enums\User\UserGender::getLabel($user->gender) : $valueEmpty?></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="block">
-            <div class="block-title">Контактная информация</div>
-            <div class="block-body">
-                <div class="block-row">
+                <div class="block-row" data-action="settings">
                     <div class="label">Электронная почта</div>
-                    <div class="value">
-
-                    </div>
+                    <div class="value">{{ $user->email }}</div>
                 </div>
-                <div class="block-row">
+                <div class="block-row" data-action="settings">
                     <div class="label">Телефон</div>
-                    <div class="value">
-
-                    </div>
+                    <div class="value">{{ $user->phone }}</div>
                 </div>
             </div>
         </div>

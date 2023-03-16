@@ -5,6 +5,7 @@ namespace App\Admin\Providers;
 use App\Admin\Helpers;
 use App\Admin\Support\View as ViewNamespace;
 use App\Admin\Support\View\Grid as GridNamespace;
+use App\Admin\View\Components;
 use Gsdk\Form as FormNamespace;
 use Gsdk\Meta\MetaServiceProvider;
 use Illuminate\Support\Facades\Blade;
@@ -94,9 +95,10 @@ class ViewServiceProvider extends ServiceProvider
 
     private function registerComponents()
     {
-        Blade::component('icon', \App\Admin\View\Components\Icon::class);
-        Blade::component('category-icon', \App\Admin\View\Components\CategoryIcon::class);
-        Blade::component('tab', \App\Admin\View\Components\Tab::class);
+        Blade::component('icon', Components\Icon::class);
+        Blade::component('category-icon', Components\CategoryIcon::class);
+        Blade::component('tab', Components\Tab::class);
+        Blade::component('file-image', Components\FileImage::class);
         //Blade::componentNamespace('App\\Admin\\Views\\Components', 'admin');
     }
 }

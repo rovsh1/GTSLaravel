@@ -24,7 +24,7 @@ class HttpAction
 
         $form = $this->form;
         $form->setSubmitted(true);
-        $sentData = Request::input($form->getName());
+        $sentData = Request::input($form->getName()) ?? [];
         $validatedData = $form->getValidator()->validate($sentData);
 
         $this->setElementsData($sentData);

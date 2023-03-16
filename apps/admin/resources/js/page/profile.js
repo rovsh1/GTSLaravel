@@ -2,7 +2,7 @@ import './main';
 
 $(document).ready(function () {
 	const container = $('#profile-settings');
-	const settingsUrl = '/settings/';
+	const settingsUrl = '/profile/';
 
 	container.find('div.block-row').click(function () {
 		const action = $(this).data('action');

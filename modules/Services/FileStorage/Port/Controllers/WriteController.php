@@ -5,6 +5,8 @@ namespace Module\Services\FileStorage\Port\Controllers;
 use Custom\Framework\Contracts\Bus\CommandBusInterface;
 use Custom\Framework\Port\Request;
 use Module\Services\FileStorage\Application\Command\CreateFile;
+use Module\Services\FileStorage\Application\Command\DeleteFile;
+use Module\Services\FileStorage\Application\Command\PutFileContents;
 use Module\Services\FileStorage\Application\Dto\DataMapper;
 use Module\Services\FileStorage\Application\Dto\FileDto;
 use Module\Services\FileStorage\Domain\Service\UrlGeneratorInterface;
@@ -37,16 +39,23 @@ class WriteController
         return (new DataMapper($this->urlGenerator))->fileToDto($file);
     }
 
-    public function put(string $guid, string $contents): FileDto
+    public function put(Request $request): bool
     {
-        $file = $this->commandBus->execute(new CreateFile());
+        $validated = $request->validate([
+            'guid' => 'required|string',
+            'contents' => 'nullable|string',
+        ]);
 
-        return (new DataMapper($this->urlGenerator))->fileToDto($file);
+        return $this->commandBus->execute(new PutFileContents($request->guid, $request->contents));
     }
 
-    public function delete(string $guid): bool
+    public function delete(Request $request): bool
     {
-        $this->commandBus->execute(new DeleteFile());
+        $validated = $request->validate([
+            'guid' => 'required|string',
+        ]);
+
+        $this->commandBus->execute(new DeleteFile($request->guid));
 
         return true;
     }

@@ -8,11 +8,6 @@ use Illuminate\Support\Collection;
 
 abstract class AbstractFile implements FileInterface
 {
-    final public static function type(): string
-    {
-        return static::class;
-    }
-
     public static function find(string $guid): ?static
     {
         $file = FileAdapter::find($guid);
@@ -43,8 +38,7 @@ abstract class AbstractFile implements FileInterface
         private readonly ?int $entityId,
         private readonly ?string $name,
         private readonly string $url
-    ) {
-    }
+    ) {}
 
     public function guid(): string
     {

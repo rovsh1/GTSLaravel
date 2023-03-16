@@ -2,6 +2,7 @@
 
 namespace App\Admin\Models\Administrator;
 
+use App\Admin\Files\AdministratorAvatar;
 use App\Admin\Support\View\Sidebar\Menu\Group;
 use Custom\Framework\Database\Eloquent\HasQuicksearch;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -54,6 +55,11 @@ class Administrator extends Authenticatable
 //            UserAvatar::scopeEntityColumn($builder, 'avatar');
 //        });
 //    }
+
+    public function avatar(): ?AdministratorAvatar
+    {
+        return AdministratorAvatar::findByEntity($this->id);
+    }
 
     public function accessGroups()
     {
