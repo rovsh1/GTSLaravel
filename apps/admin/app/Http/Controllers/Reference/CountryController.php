@@ -3,27 +3,29 @@
 namespace App\Admin\Http\Controllers\Reference;
 
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
-use App\Admin\Support\View\Form\Form;
+use App\Admin\Support\Facades\Form;
+use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid;
 
 class CountryController extends AbstractPrototypeController
 {
-    protected $prototype = 'reference.country';
-
-    protected function formFactory()
+    protected function getPrototypeKey(): string
     {
-        return (new Form('data'))
+        return 'country';
+    }
+
+    protected function formFactory(): FormContract
+    {
+        return Form::localeText('name', ['label' => 'Наименование', 'required' => true])
             //->view('default.form')
-            ->csrf()
-            ->text('name', ['label' => 'Наименование', 'required' => true])
-            ->language('language', ['label' => 'Язык', 'emptyItem' => '-Не выбрано-'])
+            ->language('language', ['label' => 'Язык по-умолчанию', 'emptyItem' => '-Не выбрано-'])
             ->text('flag', ['label' => 'Код флага', 'required' => true])
             ->text('phone_code', ['label' => 'Код телефона', 'required' => true])
             ->currency('currency_id', ['label' => 'Валюта'])
             ->checkbox('default', ['label' => 'По умолчанию']);
     }
 
-    protected function gridFactory()
+    protected function gridFactory(): Grid
     {
         return (new Grid())
             ->enableQuicksearch()

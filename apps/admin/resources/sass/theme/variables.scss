@@ -1,19 +1,29 @@
 $primary: #007bff;
+$secondary: rgba(0, 0, 0, .66);
 
-$font-family-sans-serif: "Open Sans", sans-serif;
+$font-family-sans-serif: "Google Sans", sans-serif;
 $body-bg: #fff;
 //$body-color: #000;
 
 //$input-btn-font-size: .8rem;
 $input-btn-padding-y: 0;
-$input-btn-line-height: 2.5;
+$input-btn-line-height: 30px;
+
+$input-line-height: 30px;
+$input-height-inner: 30px;
+$input-height-inner-half: 15px;
+$input-height-inner-quarter: 7.5px;
+$input-height: 2rem;
+$input-height-sm: 1.5rem;
+$input-height-lg: 2.5rem;
 
 $enable-caret: false;
 $enable-shadows: true;
 
+//$link-hover-color: rgb(28, 58, 169);
 $link-decoration: none;
 
-$box-shadow: 0 2px 6px 0 rgb(67 89 113 / 12%);
+$box-shadow: 0 3px 5px -1px rgb(0 0 0 / 20%), 0 6px 10px 0 rgb(0 0 0 / 14%), 0 1px 18px 0 rgb(0 0 0 / 12%);
 $box-shadow-sm: 0 2px 6px 0 rgb(67 89 113 / 12%);
 $box-shadow-lg: 0 2px 6px 0 rgb(67 89 113 / 12%);
 
@@ -26,11 +36,15 @@ $font-size-base: .8rem;
 
 //$line-height-base: 1.5;
 
+$breadcrumb-divider-color: rgba(0, 0, 0, .44);
+//$breadcrumb-active-color:           $gray-600 !default;
+//$breadcrumb-divider:                quote("/") !default;
+
 // scss-docs-start card-variables
-$card-border-width: 0;
+$card-border-width: 1px;
 $card-cap-bg: transparent;
 $card-bg: #fff;
-$card-box-shadow: 0 2px 6px 0 rgb(67 89 113 / 12%);
+$card-box-shadow: none;
 
 // scss-docs-start table-variables
 //$table-cell-padding-y: 4px;
@@ -98,3 +112,7 @@ $pagination-padding-y: 0;
 $input-focus-width: 1px;
 $input-box-shadow: null;
 $input-focus-box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+
+$btn-padding-x: 1rem;
+$btn-line-height: 30px;
+$btn-box-shadow: none;

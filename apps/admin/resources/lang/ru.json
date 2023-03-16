@@ -1,4 +1,39 @@
 {
+    "auth.login.form.header": "Авторизация",
+    "auth.login.form.label.login": "Логин",
+    "auth.login.form.label.password": "Пароль",
+    "auth.login.form.button": "Войти",
+    "auth.logout.form.button": "Выйти",
+
     "select-all": "---Все--",
-    "labels.country": "Страна"
+    "label.country": "Страна",
+    "label.city": "Город",
+    "label.client": "Клиент",
+    "label.currency": "Валюта",
+    "category.hotel": "Отели",
+    "category.client": "Клиенты",
+    "category.reservation": "Бронирование",
+    "category.administration": "Администрирование",
+    "category.site": "Сайт",
+    "category.finance": "Финансы",
+    "category.reports": "Отчеты",
+    "group.content": "Содержание",
+    "group.seo": "SEO",
+    "group.log": "Журнал",
+    "group.settings": "Настройки",
+    "group.system": "Система",
+    "group.service": "Служебные",
+    "group.reference": "Справочники",
+    "group.additional": "Дополнительно",
+    "group.additional-services": "Доп. услуги",
+    "group.reservations": "По типам",
+
+    "enum.hotel.status.Draft": "Черновик",
+    "enum.hotel.status.Published": "Опубликован",
+    "enum.hotel.status.Blocked": "Заблокирован",
+    "enum.hotel.status.Archive": "Архив",
+
+    "enum.hotel.price-list.status.NotProcessed": "Не обработан",
+    "enum.hotel.price-list.status.InProgress": "В обработке",
+    "enum.hotel.price-list.status.Processed": "Обработан"
 }

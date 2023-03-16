@@ -4,10 +4,6 @@ require("jquery-ui/ui/widgets/autocomplete");
 require("jquery-ui/ui/widgets/draggable");
 require("jquery-ui/ui/widgets/droppable");
 
-require("gsv-pkg/support/functions");
-require("gsv-pkg/support/http");
-require("gsv-pkg/ui/window");
-
 import FileManager from "../plugins/filemanager/manager"
 
 $(document).ready(function () {

@@ -1,0 +1,12 @@
+{
+    "key": "hotel-landmark-type",
+    "category": "hotel",
+    "group": "service",
+    "model": "App\\Admin\\Models\\Hotel\\Landmark\\Type",
+    "titles": {
+        "index": "Типы достопримечательностей",
+        "create": "Новый тип"
+    },
+    "views": {},
+    "permissions": "crud"
+}

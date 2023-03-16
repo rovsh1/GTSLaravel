@@ -1,0 +1,16 @@
+{
+    "key": "constant",
+    "route": "constants",
+    "category": "administration",
+    "group": "settings",
+    "model": "App\\Admin\\Models\\System\\Constant",
+    "titles": {
+        "index": "Константы",
+        "create": "Новая константа"
+    },
+    "views": {},
+    "permissions": [
+        "read",
+        "update"
+    ]
+}

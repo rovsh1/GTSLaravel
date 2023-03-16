@@ -2,6 +2,9 @@
 
 namespace App\Admin\Helpers;
 
+use App\Admin\Support\Facades\Breadcrumb;
+use App\Admin\Support\Facades\Sidebar;
+use App\Admin\Support\Facades\Sitemap;
 use Gsdk\Meta\Meta;
 
 class Layout
@@ -13,12 +16,24 @@ class Layout
 
     public static function breadcrumbs()
     {
-        return app('breadcrumbs')->render();
+        return Breadcrumb::render();
+    }
+
+    public static function sitemap()
+    {
+        return Sitemap::render();
+    }
+
+    public static function bodyClass(): string
+    {
+        $cls = [];
+        $cls[] = Sidebar::isExpanded() ? 'sidebar-expanded' : '';
+        return implode(' ', $cls);
     }
 
     public static function sidebar()
     {
-        return app('sidebar')->render();
+        return Sidebar::render();
     }
 
     public static function actions()

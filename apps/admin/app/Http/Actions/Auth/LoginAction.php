@@ -3,7 +3,7 @@
 namespace App\Admin\Http\Actions\Auth;
 
 use App\Admin\Http\Forms\LoginForm;
-use App\Admin\Models\Administrator;
+use App\Admin\Models\Administrator\Administrator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 

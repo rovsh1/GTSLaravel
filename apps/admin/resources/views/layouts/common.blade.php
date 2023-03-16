@@ -2,7 +2,7 @@
 <head>
     {!! Layout::meta() !!}
 </head>
-<body>
+<body class="{{ Layout::bodyClass() }}">
 @yield('layout__content')
 </body>
 </html>

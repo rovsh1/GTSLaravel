@@ -1,0 +1,29 @@
+<?php
+
+namespace App\Admin\Models\Client;
+
+use Custom\Framework\Database\Eloquent\HasQuicksearch;
+use Custom\Framework\Database\Eloquent\Model;
+
+class Client extends Model
+{
+    use HasQuicksearch;
+
+    public const CREATED_AT = 'created';
+    public const UPDATED_AT = 'updated';
+
+    public $timestamps = false;
+
+    protected array $quicksearch = ['id', 'name%'];
+
+    protected $table = 'clients';
+
+    protected $fillable = [
+        'name',
+    ];
+
+    public function __toString()
+    {
+        return (string)$this->name;
+    }
+}

@@ -1,0 +1,32 @@
+//@use "../common/fonts/fontawesome/fontawesome";
+
+$thin-icons: (
+    home: "house",
+    filter: "filter",
+    edit: "pen",
+    delete: "trash",
+    prev: "angle-left",
+    next: "angle-right",
+    down: "angle-down",
+    search: "magnifying-glass",
+    dropdown-menu: "ellipsis-vertical",
+    reservations: "plane",
+    hotels: "hotel",
+    clients: "users",
+    site: "sitemap",
+    reports: "chart-pie",
+    finances: "coins",
+    administration: "gears",
+);
+
+//@mixin icon($icon) {
+//    @include fontawesome.fa-icon-thin($icon);
+//}
+//
+//@each $i, $icon in $thin-icons {
+//    .icon-#{$i} {@include fontawesome.fa-icon-thin($icon)}
+//}
+//
+//@each $i, $icon in $regular-icons {
+//    .icon-#{$i} {@include fontawesome.fa-icon-regular($icon)}
+//}

@@ -1,0 +1,12 @@
+{
+    "key": "mail-log",
+    "category": "administration",
+    "group": "log",
+    "titles": {
+        "index": "История писем"
+    },
+    "views": {},
+    "permissions": [
+        "read"
+    ]
+}

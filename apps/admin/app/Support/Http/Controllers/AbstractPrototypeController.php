@@ -2,65 +2,67 @@
 
 namespace App\Admin\Support\Http\Controllers;
 
+use App\Admin\Components\Factory\Prototype;
 use App\Admin\Http\Controllers\Controller;
+use App\Admin\Support\Facades\Breadcrumb;
+use App\Admin\Support\Facades\Layout;
+use App\Admin\Support\Facades\Prototypes;
+use App\Admin\Support\Repository\RepositoryInterface;
+use App\Admin\Support\View\Form\Form;
+use App\Admin\Support\View\Grid\Grid;
+use App\Admin\Support\View\Layout as LayoutContract;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Route;
 
 abstract class AbstractPrototypeController extends Controller
 {
-    public const GRID_LIMIT = 20;
+    public const GRID_LIMIT = 16;
 
-    protected $prototype;
+    protected Prototype $prototype;
 
-    protected $repository;
-
-    protected $form;
-
-    protected $grid;
+    protected RepositoryInterface $repository;
 
     public function __construct()
     {
-        $this->prototype = app('prototypes')->get($this->prototype);
+        $this->prototype = Prototypes::get($this->getPrototypeKey());
         $this->repository = $this->prototype->makeRepository();
     }
 
-    public function index()
+    public function index(): LayoutContract
     {
-        $this->breadcrumbs();
+        Breadcrumb::prototype($this->prototype);
 
         $grid = $this->gridFactory();
 
         $grid->data($this->repository->queryWithCriteria($grid->getSearchCriteria()));
 
-        $this->buildGridActions(app('menu.actions'));
-
-        return app('layout')
-            ->title($this->prototype->title('index'))
+        return Layout::title($this->prototype->title('index'))
             ->view($this->prototype->view('index') ?? $this->prototype->view('grid') ?? 'default.grid', [
                 'quicksearch' => $grid->getQuicksearch(),
                 'searchForm' => $grid->getSearchForm(),
                 'grid' => $grid,
-                'paginator' => $grid->getPaginator()
+                'paginator' => $grid->getPaginator(),
+                'createUrl' => $this->prototype->hasPermission('create') ? $this->prototype->route('create') : null
             ]);
     }
 
-    public function show(int $id)
+    public function show(int $id): LayoutContract
     {
         $model = $this->repository->findOrFail($id);
         $title = (string)$model;//$this->prototype->title('show')
 
-        $this->breadcrumbs()
+        Breadcrumb::prototype($this->prototype)
             ->add($title);
 
-        $this->buildShowActions(app('menu.actions'), $model);
-
-        return app('layout')
-            ->title($title)
-            ->view($this->prototype->view('show'), $this->getShowViewData($model));
+        return Layout::title($title)
+            ->view($this->prototype->view('show'), [
+                'model' => $model
+            ]);
     }
 
-    public function create()
+    public function create(): LayoutContract
     {
-        $this->breadcrumbs()
+        Breadcrumb::prototype($this->prototype)
             ->add($this->prototype->title('create') ?? 'Новая запись');
 
         $form = $this->formFactory()
@@ -69,15 +71,14 @@ abstract class AbstractPrototypeController extends Controller
 
         //TODO back button
 
-        return app('layout')
-            ->title($this->prototype->title('create'))
+        return Layout::title($this->prototype->title('create'))
             ->view($this->prototype->view('create') ?? $this->prototype->view('form') ?? 'default.form', [
                 'form' => $form,
                 'cancelUrl' => $this->prototype->route('index')
             ]);
     }
 
-    public function store()
+    public function store(): RedirectResponse
     {
         $form = $this->formFactory()
             ->method('post');
@@ -93,12 +94,12 @@ abstract class AbstractPrototypeController extends Controller
         return redirect($this->prototype->route('index'));
     }
 
-    public function edit(int $id)
+    public function edit(int $id): LayoutContract
     {
         $model = $this->repository->findOrFail($id);
 
         $title = (string)$model;
-        $breadcrumbs = $this->breadcrumbs();
+        $breadcrumbs = Breadcrumb::prototype($this->prototype);
         if ($this->hasShowAction()) {
             $breadcrumbs->addUrl($this->prototype->route('show'), $title);
         } else {
@@ -108,19 +109,19 @@ abstract class AbstractPrototypeController extends Controller
 
         $form = $this->formFactory()
             ->method('put')
-            ->action($this->prototype->route('update', $id))
+            ->action($this->prototype->route('update', $model->id))
             ->data($model);
 
-        return app('layout')
-            ->title($title)
+        return Layout::title($title)
             ->view($this->prototype->view('edit') ?? $this->prototype->view('form') ?? 'default.form', [
+                'model' => $model,
                 'form' => $form,
                 'cancelUrl' => $this->prototype->route('index'),
                 'deleteUrl' => $this->prototype->hasPermission('delete') ? $this->prototype->route('destroy', $model->id) : null
             ]);
     }
 
-    public function update(int $id)
+    public function update(int $id): RedirectResponse
     {
         $model = $this->repository->findOrFail($id);
 
@@ -133,63 +134,32 @@ abstract class AbstractPrototypeController extends Controller
                 ->withInput();
         }
 
-        $this->repository->update($model, $form->getData());
+        $this->repository->update($model->id, $form->getData());
 
         return redirect($this->prototype->route('index'));
     }
 
-    public function destroy(int $id)
+    public function destroy(int $id): RedirectResponse
     {
         $this->repository->delete($id);
 
         return redirect($this->prototype->route('index'));
     }
 
-    protected function gridFactory()
+    protected function gridFactory(): Grid
     {
-        return new $this->grid();
+        throw new \LogicException('Please implement the gridFactory method on your controller.');
     }
 
-    protected function buildGridActions($menu)
+    protected function formFactory(): Form
     {
-        if ($this->prototype->hasPermission('create')) {
-            $menu->addUrl(
-                $this->prototype->route('create'),
-                $this->prototype->title('add') ?? $this->prototype->title('create') ?? 'Добавить'
-            );
-        }
-    }
-
-    protected function buildShowActions($menu, $model)
-    {
-        if ($this->prototype->hasPermission('delete')) {
-            $menu->addUrl(
-                $this->prototype->route('create'),
-                $this->prototype->title('delete') ?? 'Удалить'
-            );
-        }
-    }
-
-    protected function formFactory()
-    {
-        return new $this->form('data');
-    }
-
-    protected function getShowViewData($model)
-    {
-        return [
-            'model' => $model
-        ];
-    }
-
-    protected function breadcrumbs()
-    {
-        return app('breadcrumbs')
-            ->addUrl($this->prototype->route('index'), $this->prototype->title('index') ?? 'Default index');
+        throw new \LogicException('Please implement the formFactory method on your controller.');
     }
 
     protected function hasShowAction(): bool
     {
         return Route::has($this->prototype->routeName('show'));
     }
+
+    abstract protected function getPrototypeKey(): string;
 }

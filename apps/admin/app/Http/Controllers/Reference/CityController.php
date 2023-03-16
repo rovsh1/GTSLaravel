@@ -9,21 +9,23 @@ use App\Admin\Support\View\Grid\Grid;
 
 class CityController extends AbstractPrototypeController
 {
-    protected $prototype = 'reference.city';
+    protected function getPrototypeKey(): string
+    {
+        return 'city';
+    }
 
-    protected function formFactory()
+    protected function formFactory(): Form
     {
         return (new Form('data'))
-            ->csrf()
             ->country('country_id', ['label' => 'Страна', 'required' => true])
             ->text('name', ['label' => 'Наименование', 'required' => true])
             ->textarea('text', ['label' => 'Описание']);
     }
 
-    protected function gridFactory()
+    protected function gridFactory(): Grid
     {
         $form = (new SearchForm())
-            ->country('country_id', ['label' => __('labels.country'), 'emptyItem' => __('select-all')]);
+            ->country('country_id', ['label' => __('label.country'), 'emptyItem' => __('select-all')]);
 
         return (new Grid())
             ->enableQuicksearch()

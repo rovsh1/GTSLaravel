@@ -1,0 +1,11 @@
+{
+    "key": "site-faq",
+    "category": "site",
+    "group": "content",
+    "model": "App\\Admin\\Models\\Reference\\Airport",
+    "titles": {
+        "index": "FAQ"
+    },
+    "views": {},
+    "permissions": "crud"
+}

@@ -65,7 +65,10 @@ class ColumnRenderer
             return $column->emptyText;
         }
 
-        if ($column->href) {
+        if ($column->route) {
+            $href = route($column->route, $row->id);
+            return '<a href="' . $href . '"' . ($column->hrefTarget ? ' target="' . $column->hrefTarget . '"' : '') . '>' . $columnValue . '</a>';
+        } elseif ($column->href) {
             $href = preg_replace_callback('/{(.+)}/', function ($m) use ($row) {
                 return $row->{$m[1]} ?? '';
             }, $column->href);

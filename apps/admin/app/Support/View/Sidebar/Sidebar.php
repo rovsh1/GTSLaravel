@@ -2,29 +2,46 @@
 
 namespace App\Admin\Support\View\Sidebar;
 
+use App\Admin\Support\Facades\Sitemap;
+
 class Sidebar
 {
-    public function render()
+    private ?AbstractSubmenu $submenu = null;
+
+    public function __construct() { }
+
+    public function currentRoute(string $key): void
     {
-        return view('layouts/main/sidebar', [
-            'sidebars' => $this->sidebars()
-        ]);
+        Sitemap::currentRoute($key);
     }
 
-    private function sidebars(): \Generator
+    public function currentCategory(string $key): void
     {
-        $sidebars = [
-            Groups\Reservations::class
-        ];
+        Sitemap::currentCategory($key);
+    }
 
-        foreach ($sidebars as $cls) {
-            $sidebar = new $cls();
+    public function submenu(AbstractSubmenu $menu): void
+    {
+        $this->submenu = $menu;
+    }
 
-            $dto = new \stdClass();
-            $dto->title = $sidebar->title();
-            $dto->groups = $sidebar->groups();
+    public function isExpanded(): bool
+    {
+        return (bool)Sitemap::getCurrentCategory();
+    }
 
-            yield $dto;
+    public function render()
+    {
+        $category = Sitemap::getCurrentCategory();
+        if (!$category) {
+            return '';
         }
+
+        return view('layouts/main/sidebar', [
+            'sitemap' => Sitemap::getFacadeRoot(),
+            'sidebar' => $this,
+            'submenu' => $this->submenu,
+            'category' => $category
+        ]);
     }
 }

@@ -6,6 +6,7 @@ use Custom\Framework\Database\Eloquent\HasQuicksearch;
 use Custom\Framework\Database\Eloquent\HasTranslations;
 use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 class City extends Model
 {
@@ -27,12 +28,24 @@ class City extends Model
 
     public static function booted()
     {
-        static::addGlobalTranslationScope();
-
-        static::addGlobalScope('country', function (Builder $builder) {
+        static::addGlobalScope('default', function (Builder $builder) {
             $builder
+                ->addSelect('r_cities.*')
                 ->join('r_countries', 'r_countries.id', '=', 'r_cities.country_id')
-                ->joinTranslatable('r_countries', 'name as country_name');
+                ->joinTranslatable('r_countries', 'name as country_name')
+                ->joinTranslations($builder->getModel()->translatable)
+                //TODO add priority column
+                //->orderBy('priority', 'desc')
+                ->orderBy('name', 'asc');
+        });
+    }
+
+    public function scopeWhereHasHotel($query)
+    {
+        $query->whereExists(function ($query) {
+            $query->select(DB::raw(1))
+                ->from('hotels as t')
+                ->whereColumn('t.city_id', 'r_cities.id');
         });
     }
 

@@ -1,0 +1,13 @@
+{
+    "key": "service-provider",
+    "category": "reservation",
+    "group": "settings",
+    "model": "App\\Admin\\Models\\Reference\\Airport",
+    "titles": {
+        "index": "Поставщики услуг",
+        "create": "Новый поставщик"
+    },
+    "views": {},
+    "permissions": "crud",
+    "priority": 50
+}

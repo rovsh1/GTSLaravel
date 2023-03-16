@@ -4,6 +4,7 @@ namespace App\Admin\Http\Controllers;
 
 use App\Admin\Http\Actions\Auth as Actions;
 use App\Admin\Http\Forms\LoginForm;
+use App\Admin\Support\Facades\Layout;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,8 +17,7 @@ class AuthController extends Controller
 
     public function index()
     {
-        return app('layout')
-            ->style('auth')
+        return Layout::style('auth')
             ->view('auth.login', ['form' => new LoginForm('data')]);
     }
 

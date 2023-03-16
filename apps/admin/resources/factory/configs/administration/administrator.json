@@ -1,0 +1,13 @@
+{
+    "key": "administrator",
+    "category": "administration",
+    "group": "system",
+    "model": "App\\Admin\\Models\\Administrator\\Administrator",
+    "titles": {
+        "index": "Администраторы",
+        "create": "Новый администратор"
+    },
+    "views": {},
+    "permissions": "crud",
+    "priority": 200
+}

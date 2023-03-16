@@ -2,9 +2,8 @@
 
 namespace App\Admin\Console\Commands\Admin;
 
+use App\Admin\Models\Administrator\Administrator;
 use Illuminate\Console\Command;
-
-use App\Admin\Models\Administrator;
 
 class ChangePassword extends Command
 {

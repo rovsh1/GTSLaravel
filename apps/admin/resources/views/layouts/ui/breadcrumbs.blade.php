@@ -1,5 +1,10 @@
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
+<div class="breadcrumb-wrapper">
+    <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item">
+            <!--<a href="/">
+                <x-icon key="home"/>
+            </a>-->
+        </li>
         @foreach($items as $item)
             <li class="breadcrumb-item">
                 @if ($item->href)
@@ -11,4 +16,4 @@
         @endforeach
         <!--<li class="breadcrumb-item active">Страны</li>-->
     </ol>
-</nav>
+</div>

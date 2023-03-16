@@ -1,0 +1,11 @@
+{
+    "key": "hotel-discount",
+    "category": "hotel",
+    "model": "App\\Admin\\Models\\Hotel\\Discount",
+    "titles": {
+        "index": "Скидки",
+        "create": "Новая скидка"
+    },
+    "views": {},
+    "permissions": "crud"
+}

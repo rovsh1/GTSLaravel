@@ -8,7 +8,6 @@ class Model extends \Illuminate\Database\Eloquent\Model
     {
         //dd($this->isClassCastable($key));
 //        $this->validateAttribute($key, $value);
-
         if (method_exists($this, 'setTranslatableAttribute') && $this->isTranslatable($key)) {
             $this->setTranslatableAttribute($key, $value);
         } else {
@@ -16,6 +15,11 @@ class Model extends \Illuminate\Database\Eloquent\Model
         }
 
         return $this;
+    }
+
+    public function resolveRouteBindingQuery($query, $value, $field = null)
+    {
+        return $query->where($this->getTable() . '.' . ($field ?? $this->getRouteKeyName()), $value);
     }
 
 //    public function getCasts() {

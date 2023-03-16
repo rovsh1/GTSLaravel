@@ -8,19 +8,21 @@ use App\Admin\Support\View\Grid\Grid;
 
 class CurrencyController extends AbstractPrototypeController
 {
-    protected $prototype = 'reference.currency';
+    protected function getPrototypeKey(): string
+    {
+        return 'currency';
+    }
 
-    protected function formFactory()
+    protected function formFactory(): Form
     {
         return (new Form('data'))
-            ->csrf()
             ->text('name', ['label' => 'Наименование', 'required' => true])
             ->number('code_num', ['label' => 'Код (цифровой)', 'required' => true])
             ->text('code_char', ['label' => 'Код (символьный)', 'required' => true])
             ->text('sign', ['label' => 'Символ', 'required' => true]);
     }
 
-    protected function gridFactory()
+    protected function gridFactory(): Grid
     {
         return (new Grid())
             ->enableQuicksearch()

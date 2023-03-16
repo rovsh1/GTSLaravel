@@ -1,0 +1,12 @@
+{
+    "key": "hotel-room-type",
+    "category": "hotel",
+    "group": "service",
+    "model": "App\\Admin\\Models\\Hotel\\RoomType",
+    "titles": {
+        "index": "Типы номеров отеля",
+        "create": "Новый тип"
+    },
+    "views": {},
+    "permissions": "crud"
+}

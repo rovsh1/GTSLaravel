@@ -18,7 +18,7 @@ class Options
         $this->setOptions($options);
     }
 
-    public function setOptions($options): static
+    public function setOptions(array $options): static
     {
         foreach ($options as $k => $v) {
             $this->setOption($k, $v);

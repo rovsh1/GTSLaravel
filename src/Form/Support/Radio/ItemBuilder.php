@@ -55,7 +55,7 @@ class ItemBuilder
 
     public function setValue($key): static
     {
-        $this->option->originalValue = $this->find('value', $key, self::$valueKeys);
+        $this->option->originalValue = $this->find($key, 'value', self::$valueKeys);
         $this->option->value = self::formatValue($this->option->originalValue);
 
         return $this;
@@ -63,7 +63,7 @@ class ItemBuilder
 
     public function setText($key): static
     {
-        $this->option->text = $this->find('text', $key, self::$textKeys)
+        $this->option->text = $this->find($key, 'text', self::$textKeys)
             ?? $this->option->value;
 
         return $this;

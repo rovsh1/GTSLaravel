@@ -15,7 +15,7 @@ class Img
 
     public static function blank(array $attributes = []): string
     {
-        return HTML::img(self::blankSrc(), $attributes);
+        return Html::img(self::blankSrc(), $attributes);
     }
 
     public static function noPhotoSrc(): string
@@ -25,7 +25,7 @@ class Img
 
     public static function noPhoto(array $attributes = []): string
     {
-        return HTML::img(self::noPhotoSrc(), $attributes);
+        return Html::img(self::noPhotoSrc(), $attributes);
     }
 
     public static function emptyAvatarSrc(): string
@@ -35,7 +35,7 @@ class Img
 
     public static function emptyAvatar(array $attributes = []): string
     {
-        return HTML::img(self::emptyAvatarSrc(), $attributes);
+        return Html::img(self::emptyAvatarSrc(), $attributes);
     }
 
     public static function image(?string $guid, int $part = null, array $attributes = []): string
@@ -43,7 +43,7 @@ class Img
         if (empty($guid)) {
             return self::noPhoto($attributes);
         } else {
-            return HTML::img($guid, $attributes);
+            return Html::img($guid, $attributes);
         }
     }
 
@@ -52,7 +52,7 @@ class Img
         if (empty($guid)) {
             return self::emptyAvatar($attributes);
         } else {
-            return HTML::img($guid, $attributes);
+            return Html::img($guid, $attributes);
         }
     }
 }

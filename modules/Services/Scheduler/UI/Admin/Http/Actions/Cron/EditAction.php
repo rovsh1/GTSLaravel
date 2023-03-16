@@ -2,6 +2,7 @@
 
 namespace Module\Services\Scheduler\UI\Admin\Http\Actions\Cron;
 
+use App\Admin\Support\Facades\Layout;
 use Module\Services\Scheduler\UI\Admin\Http\Actions\Cron\Form;
 use Module\Services\Scheduler\Infrastructure\Facade\Cron\CrudFacadeInterface;
 
@@ -23,9 +24,8 @@ class EditAction
         if ($this->submit($form))
             return redirect(route('cron.index'));
 
-        return app('layout')
+        return Layout::title('Крон задания')
             ->ss('cron/index')
-            ->title('Крон задания')
             ->view('cron.form', [
                 'form' => $form
             ]);

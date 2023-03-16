@@ -1,5 +1,3 @@
-import Layout from "../layout/layout";
-
 function bootApp() {
     /*const layout = app('layout');
 
@@ -16,12 +14,55 @@ function bootApp() {
     }*/
 }
 
-export default class LayoutProvider {
-    register() {
-        app().instance('layout', new Layout());
-    }
+function bootSitemap() {
+    $('#btn-sitemap').click(() => {
+        $(document.body).toggleClass('sitemap-expanded');
+    });
 
-    boot() {
-        bootApp();
-    }
+    $('#sitemap-categories a').click(function (e) {
+        e.preventDefault();
+
+        const item = $(this).parent();
+        const category = item.data('category');
+
+        $('#sitemap-categories .current').removeClass('current');
+        item.addClass('current');
+
+        const menus = $('#sitemap-categories-menus > div');
+        menus.each((i, m) => {
+            if ($(m).data('category') === category) $(m).show(); else $(m).hide();
+        });
+    });
+}
+
+function bootGrid() {
+    const btn = $('#btn-grid-filters');
+    const popup = $('#grid-filters-popup');
+    const close = (e) => {
+        if (!popup.is(e.target) && popup.find(e.target).length === 0) {
+            popup.hide();
+            $(document).unbind('click', close);
+        }
+    };
+
+    btn.click(e => {
+        e.preventDefault();
+        if (!popup.is(':hidden')) return;
+
+        popup.fadeIn(200);
+        $(document).click(close);
+        e.stopPropagation();
+    });
+}
+
+export default function () {
+    bootApp();
+    bootSitemap();
+    bootGrid();
+
+    $('#btn-sidebar-toggle').click(e => {
+        $('#sidebar').toggleClass('submenu-collapsed');
+
+        $(this).find('i');
+    });
 }

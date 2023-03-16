@@ -1,0 +1,14 @@
+{
+    "key": "city",
+    "route": "cities",
+    "category": "administration",
+    "group": "reference",
+    "model": "App\\Admin\\Models\\Reference\\City",
+    "titles": {
+        "index": "Города",
+        "create": "Новый город"
+    },
+    "views": {},
+    "permissions": "crud",
+    "priority": 50
+}

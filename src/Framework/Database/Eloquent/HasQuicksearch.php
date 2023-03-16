@@ -30,9 +30,6 @@ trait HasQuicksearch
 
         $model = $query->getModel();
 
-        if (method_exists($model, 'seo'))
-            $query->joinSeo();
-
         $query->where(function ($query) use ($term, $model) {
             foreach ($model->quicksearch as $arg) {
                 $a = explode('.', $arg);

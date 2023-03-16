@@ -12,6 +12,6 @@ class Edit extends AbstractColumn
 
     public function renderer($row, $value): string
     {
-        return '<a href="' . route($this->route, $row->id) . '"><i class="icon-edit"></i></a>';
+        return '<a href="' . route($this->route, $row->id) . '"><i class="icon">edit</i></a>';
     }
 }

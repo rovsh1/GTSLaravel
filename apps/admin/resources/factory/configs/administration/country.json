@@ -1,0 +1,15 @@
+{
+    "key": "country",
+    "alias": "reference.country",
+    "route": "countries",
+    "category": "administration",
+    "group": "reference",
+    "model": "App\\Admin\\Models\\Reference\\Country",
+    "titles": {
+        "index": "Страны",
+        "create": "Новая страна"
+    },
+    "views": {},
+    "permissions": "crud",
+    "priority": 60
+}

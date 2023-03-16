@@ -2,6 +2,7 @@
 
 namespace Module\Services\Scheduler\UI\Admin\Http\Actions\Cron;
 
+use App\Admin\Support\Facades\Layout;
 use App\Admin\Support\View\Grid\Grid;
 use Illuminate\Support\Facades\Artisan;
 
@@ -11,9 +12,8 @@ class IndexAction
     {
         //$commands = self::getCommands();
 
-        return app('layout')
+        return Layout::title('Крон задания')
             ->ss('cron/index')
-            ->title('Крон задания')
             ->view('cron.index', [
                 'grid' => $this->gridFactory()
             ]);

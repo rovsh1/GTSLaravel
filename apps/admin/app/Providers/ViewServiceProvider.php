@@ -7,7 +7,7 @@ use App\Admin\Support\View as ViewNamespace;
 use App\Admin\Support\View\Grid as GridNamespace;
 use Gsdk\Form as FormNamespace;
 use Gsdk\Meta\MetaServiceProvider;
-use Gsdk\Navigation\Paginator;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
 class ViewServiceProvider extends ServiceProvider
@@ -27,6 +27,9 @@ class ViewServiceProvider extends ServiceProvider
     private function registerGrid()
     {
         GridNamespace\Grid::registerNamespace(GridNamespace::class . '\\Column');
+        GridNamespace\Grid::setDefaults([
+            'emptyText' => 'Записи отсутствуют'
+        ]);
     }
 
     private function registerForm()
@@ -65,6 +68,10 @@ class ViewServiceProvider extends ServiceProvider
         $this->app->singleton('layout', ViewNamespace\Layout::class);
         class_alias(Helpers\Layout::class, 'Layout');
 
+        $this->app->bind('form', fn($app) => new ViewNamespace\Form\Form('data'));
+
+        $this->app->singleton('sitemap', ViewNamespace\Sitemap\Sitemap::class);
+
         $this->app->singleton('sidebar', ViewNamespace\Sidebar\Sidebar::class);
 
         $this->app->singleton('breadcrumbs', ViewNamespace\Navigation\Breadcrumbs::class);
@@ -72,7 +79,7 @@ class ViewServiceProvider extends ServiceProvider
 
     private function registerUi()
     {
-        Paginator::setDefaults([
+        ViewNamespace\Navigation\Paginator::setDefaults([
             'step' => 20,
             'pagesStep' => 4,
             'prevText' => 'Назад',
@@ -87,6 +94,9 @@ class ViewServiceProvider extends ServiceProvider
 
     private function registerComponents()
     {
+        Blade::component('icon', \App\Admin\View\Components\Icon::class);
+        Blade::component('category-icon', \App\Admin\View\Components\CategoryIcon::class);
+        Blade::component('tab', \App\Admin\View\Components\Tab::class);
         //Blade::componentNamespace('App\\Admin\\Views\\Components', 'admin');
     }
 }

@@ -3,6 +3,8 @@
 namespace App\Admin\Http\Actions\Test;
 
 use App\Admin\Http\Forms\TestForm;
+use App\Admin\Support\Facades\Breadcrumb;
+use App\Admin\Support\Facades\Layout;
 
 class FormAction
 {
@@ -21,11 +23,9 @@ class FormAction
 
         $form->setTestData();
 
-        app('breadcrumbs')
-            ->add('Test form');
+        Breadcrumb::add('Test form');
 
-        return app('layout')
-            ->title('adasd')
+        return Layout::title('adasd')
             //->style('login.js')
             //->script('login.css')
             ->view('test.form', [

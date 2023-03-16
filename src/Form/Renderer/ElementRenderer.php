@@ -13,6 +13,8 @@ class ElementRenderer
     {
         if (!$element->isRenderable() || $element->isRendered()) {
             return '';
+        } elseif ($element->isHidden() && !$element->label) {
+            return $element->render();
         } elseif (($view = $element->view)) {
             return view($view, $this->getViewData($element));
         }
@@ -22,10 +24,6 @@ class ElementRenderer
 
     private function renderField(ElementInterface $element): string
     {
-        if ($element->isHidden() && !$element->label) {
-            return $element->render();
-        }
-
         return Compiler::compile('field', $this->getViewData($element));
     }
 

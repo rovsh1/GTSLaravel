@@ -77,6 +77,11 @@ class Select extends AbstractElement
         }
     }
 
+    public function getInputName(): string
+    {
+        return parent::getInputName() . ($this->multiple ? '[]' : '');
+    }
+
     private function getItem($value): ?\stdClass
     {
         $optionValue = OptionBuilder::formatValue($value);

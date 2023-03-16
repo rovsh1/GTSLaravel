@@ -11,7 +11,7 @@ class LoginForm extends Form
         $this
             ->csrf()
             ->name('auth')
-            ->text('login', ['label' => 'Логин', 'required' => true, 'autocomplete' => 'username'])
-            ->password('password', ['label' => 'Пароль', 'required' => true, 'autocomplete' => 'current-password']);
+            ->text('login', ['label' => __('auth.login.form.label.login'), 'required' => true, 'autocomplete' => 'username'])
+            ->password('password', ['label' => __('auth.login.form.label.password'), 'required' => true, 'autocomplete' => 'current-password']);
     }
 }

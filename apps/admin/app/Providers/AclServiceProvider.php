@@ -28,7 +28,7 @@ class AclServiceProvider extends ServiceProvider
 
     private function registerResources($resources): void
     {
-        foreach (app('prototypes')->all() as $prototype) {
+        foreach (app('factory')->prototypes() as $prototype) {
             $resources->add(new Resource($prototype->config()));
         }
     }
