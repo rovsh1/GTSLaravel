@@ -1,0 +1,37 @@
+@use "./main";
+
+
+section.content {padding: 32px;max-width: 840px;margin: 0 auto;}
+
+h1 {margin-bottom: 1.5rem;}
+
+section.profile-content div.block {background-color: #fff;border-radius: 6px;border: 1px solid #dadce0;margin-top: 8px;overflow: hidden;line-height: 16px;}
+section.profile-content div.block:not(:last-child) {margin-bottom: 32px;}
+section.profile-content div.block > div.block-title {padding: 16px 32px;font-size: 16px;}
+section.profile-content div.block > div.block-body {}
+section.profile-content div.block .block-row {padding: 16px 32px;display: flex;cursor: pointer;}
+section.profile-content div.block .block-row:not(:last-child) {border-bottom: 1px solid #dadce0;}
+section.profile-content div.block .block-row:hover {background: rgba(0, 0, 0, .05);}
+section.profile-content div.block .block-row div.label {width: 160px;font-weight: 600;color: #5f6368;}
+section.profile-content div.block .block-row div.value {flex-grow: 1;}
+section.profile-content div.block .block-row div.value img {width: 64px;height: 64px;border-radius: 50%;vertical-align: top;}
+section.profile-content div.block ul {}
+section.profile-content div.block ul li:not(:last-child) {margin-bottom: 8px;}
+
+div.window-birthday div.fields-wrap {display: flex;}
+div.window-birthday div.fields-wrap div.form-field {flex-grow: 1;}
+div.window-birthday div.fields-wrap div.form-field:not(:last-child) {margin-right: 16px;}
+
+
+div.window-avatar div.fields-wrap {position: relative;}
+div.window-avatar div.fields-wrap div.avatar {margin-bottom: 16px;}
+div.window-avatar div.fields-wrap div.avatar img {width: 264px;height: 264px;border-radius: 50%;}
+div.window-avatar div.fields-wrap input {position: absolute;z-index: 1;top: 0;left: 0;width: 100%;height: 100%;opacity: 0;cursor: pointer;}
+div.window-avatar div.fields-wrap p {text-align: center;max-width: 320px;margin: 0 auto;}
+div.window-avatar div.form-buttons {margin-top: 32px;}
+div.window-avatar div.form-buttons button {flex-grow: 1;}
+
+@media (prefers-color-scheme: dark) {
+	//	section.profile-content div.block {background: #292A2D;border-color: #3F4042;}
+	//	section.profile-content div.block .block-row:not(:last-child) {border-color: #3F4042;}
+}
