@@ -10,7 +10,7 @@ abstract class AbstractEnumController extends AbstractPrototypeController
     protected function formFactory(): Form
     {
         return (new Form('data'))
-            ->text('name', ['label' => 'Наименование', 'required' => true]);
+            ->localeText('name', ['label' => 'Наименование', 'required' => true]);
     }
 
     protected function gridFactory(): Grid

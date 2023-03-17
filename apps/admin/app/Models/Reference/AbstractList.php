@@ -20,6 +20,7 @@ class AbstractList extends Model
         'room-type' => 1,
         'hotel-type' => 5,
         'usability-group' => 19,
+        'hotel-service-type' => 100
     ];
 
     public $timestamps = false;

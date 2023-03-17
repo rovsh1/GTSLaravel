@@ -2,7 +2,7 @@
     "key": "hotel-usability",
     "category": "hotel",
     "group": "reference",
-    "model": "App\\Admin\\Models\\Hotel\\Usability",
+    "model": "App\\Admin\\Models\\Hotel\\Reference\\Usability",
     "titles": {
         "index": "Удобства",
         "create": "Новая запись"

@@ -2,7 +2,7 @@
     "key": "hotel-room-name",
     "category": "hotel",
     "group": "service",
-    "model": "App\\Admin\\Models\\Hotel\\RoomName",
+    "model": "App\\Admin\\Models\\Hotel\\Reference\\RoomName",
     "titles": {
         "index": "Наименования номеров отеля",
         "create": "Новое наименование"

@@ -1,0 +1,12 @@
+{
+  "key": "hotel-service-type",
+  "category": "hotel",
+  "group": "service",
+  "model": "App\\Admin\\Models\\Hotel\\Reference\\ServiceType",
+  "titles": {
+	"index": "Категории услуг",
+	"create": "Новая категория"
+  },
+  "views": {},
+  "permissions": "crud"
+}

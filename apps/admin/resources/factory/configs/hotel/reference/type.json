@@ -1,10 +1,10 @@
 {
-    "key": "hotel-room-type",
+    "key": "hotel-type",
     "category": "hotel",
     "group": "service",
-    "model": "App\\Admin\\Models\\Hotel\\RoomType",
+    "model": "App\\Admin\\Models\\Hotel\\Reference\\Type",
     "titles": {
-        "index": "Типы номеров отеля",
+        "index": "Типы отелей",
         "create": "Новый тип"
     },
     "views": {},

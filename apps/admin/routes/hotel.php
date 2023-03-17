@@ -14,14 +14,15 @@ AclRoute::resource('hotel-discount', Controllers\Reference\CountryController::cl
 AclRoute::resource('hotel-price-list', Controllers\Hotel\PriceListController::class, ['except' => ['show']]);
 
 // reference
-AclRoute::resource('hotel-service', Controllers\Reference\CountryController::class, ['except' => ['show']]);
-AclRoute::resource('hotel-usability', Controllers\Hotel\UsabilityController::class, ['except' => ['show']]);
+AclRoute::resource('hotel-service', Controllers\Hotel\Reference\ServiceController::class, ['except' => ['show']]);
+AclRoute::resource('hotel-usability', Controllers\Hotel\Reference\UsabilityController::class, ['except' => ['show']]);
 AclRoute::resource('hotel-landmark', Controllers\Reference\CountryController::class, ['except' => ['show']]);
 
 // additional
+AclRoute::resource('hotel-service-type', Controllers\Hotel\Reference\ServiceTypeController::class, ['except' => ['show']]);
 AclRoute::resource('hotel-landmark-type', Controllers\Reference\CountryController::class, ['except' => ['show']]);
-AclRoute::resource('hotel-room-name', Controllers\Hotel\RoomNameController::class, ['except' => ['show']]);
-AclRoute::resource('hotel-room-type', Controllers\Hotel\RoomTypeController::class, ['except' => ['show']]);
-AclRoute::resource('hotel-bed-type', Controllers\Hotel\BedTypeController::class, ['except' => ['show']]);
-AclRoute::resource('hotel-type', Controllers\Hotel\TypeController::class, ['except' => ['show']]);
-AclRoute::resource('hotel-usability-group', Controllers\Hotel\UsabilityGroupController::class, ['except' => ['show']]);
+AclRoute::resource('hotel-room-name', Controllers\Hotel\Reference\RoomNameController::class, ['except' => ['show']]);
+AclRoute::resource('hotel-room-type', Controllers\Hotel\Reference\RoomTypeController::class, ['except' => ['show']]);
+AclRoute::resource('hotel-bed-type', Controllers\Hotel\Reference\BedTypeController::class, ['except' => ['show']]);
+AclRoute::resource('hotel-type', Controllers\Hotel\Reference\TypeController::class, ['except' => ['show']]);
+AclRoute::resource('hotel-usability-group', Controllers\Hotel\Reference\UsabilityGroupController::class, ['except' => ['show']]);

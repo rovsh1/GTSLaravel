@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Models\Hotel;
+namespace App\Admin\Models\Hotel\Reference;
 
 use App\Admin\Models\Reference\AbstractList;
 

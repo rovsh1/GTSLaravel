@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Http\Controllers\Hotel;
+namespace App\Admin\Http\Controllers\Hotel\Reference;
 
 use App\Admin\Support\Http\Controllers\AbstractEnumController;
 

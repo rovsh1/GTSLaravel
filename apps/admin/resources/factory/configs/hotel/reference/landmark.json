@@ -2,7 +2,7 @@
     "key": "hotel-landmark",
     "category": "hotel",
     "group": "reference",
-    "model": "App\\Admin\\Models\\Hotel\\Landmark",
+    "model": "App\\Admin\\Models\\Hotel\\Reference\\Landmark",
     "titles": {
         "index": "Достопримечательности",
         "create": "Новая достопримечательность"
