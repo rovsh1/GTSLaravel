@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Admin\Http\Controllers\Reference;
+namespace App\Admin\Http\Controllers\Data;
 
-use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\Facades\Form;
+use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid;
 

@@ -8,19 +8,17 @@ AclRoute::resource('hotel', Controllers\Hotel\HotelController::class)
     ->resource('rooms', Controllers\Hotel\RoomController::class, ['except' => ['show']]);
 
 //main
-AclRoute::resource('hotel-quota', Controllers\Reference\CountryController::class, ['except' => ['show']]);
-AclRoute::resource('hotel-user', Controllers\Reference\CountryController::class, ['except' => ['show']]);
-AclRoute::resource('hotel-discount', Controllers\Reference\CountryController::class, ['except' => ['show']]);
+AclRoute::resource('hotel-quota', Controllers\Data\CountryController::class, ['except' => ['show']]);
+AclRoute::resource('hotel-user', Controllers\Data\CountryController::class, ['except' => ['show']]);
+AclRoute::resource('hotel-discount', Controllers\Data\CountryController::class, ['except' => ['show']]);
 AclRoute::resource('hotel-price-list', Controllers\Hotel\PriceListController::class, ['except' => ['show']]);
 
 // reference
 AclRoute::resource('hotel-service', Controllers\Hotel\Reference\ServiceController::class, ['except' => ['show']]);
 AclRoute::resource('hotel-usability', Controllers\Hotel\Reference\UsabilityController::class, ['except' => ['show']]);
-AclRoute::resource('hotel-landmark', Controllers\Reference\CountryController::class, ['except' => ['show']]);
 
 // additional
 AclRoute::resource('hotel-service-type', Controllers\Hotel\Reference\ServiceTypeController::class, ['except' => ['show']]);
-AclRoute::resource('hotel-landmark-type', Controllers\Reference\CountryController::class, ['except' => ['show']]);
 AclRoute::resource('hotel-room-name', Controllers\Hotel\Reference\RoomNameController::class, ['except' => ['show']]);
 AclRoute::resource('hotel-room-type', Controllers\Hotel\Reference\RoomTypeController::class, ['except' => ['show']]);
 AclRoute::resource('hotel-bed-type', Controllers\Hotel\Reference\BedTypeController::class, ['except' => ['show']]);

@@ -2,7 +2,7 @@
     "key": "country",
     "alias": "reference.country",
     "route": "countries",
-    "category": "administration",
+    "category": "data",
     "group": "reference",
     "model": "App\\Admin\\Models\\Reference\\Country",
     "titles": {

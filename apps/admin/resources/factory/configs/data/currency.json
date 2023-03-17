@@ -1,7 +1,7 @@
 {
     "key": "currency",
     "route": "currencies",
-    "category": "administration",
+    "category": "data",
     "group": "reference",
     "model": "App\\Admin\\Models\\Reference\\Currency",
     "titles": {

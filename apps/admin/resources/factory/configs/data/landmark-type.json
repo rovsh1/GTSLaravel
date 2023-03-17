@@ -1,8 +1,8 @@
 {
-    "key": "hotel-landmark-type",
-    "category": "hotel",
+    "key": "landmark-type",
+    "category": "data",
     "group": "service",
-    "model": "App\\Admin\\Models\\Hotel\\Reference\\LandmarkType",
+    "model": "App\\Admin\\Models\\Reference\\LandmarkType",
     "titles": {
         "index": "Типы достопримечательностей",
         "create": "Новый тип"

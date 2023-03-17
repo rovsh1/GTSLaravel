@@ -1,7 +1,7 @@
 {
     "key": "airport",
     "route": "airports",
-    "category": "administration",
+    "category": "data",
     "group": "reference",
     "model": "App\\Admin\\Models\\Reference\\Airport",
     "titles": {

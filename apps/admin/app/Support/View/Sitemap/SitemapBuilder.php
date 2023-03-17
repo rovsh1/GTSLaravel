@@ -13,6 +13,7 @@ class SitemapBuilder
         'hotel',
         'finance',
         'client',
+        'data',
         'site',
         'reports',
         'administration'
