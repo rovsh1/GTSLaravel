@@ -25,7 +25,7 @@ class ConstantController extends AbstractPrototypeController
         return (new Grid())
             ->enableQuicksearch()
             ->paginator(self::GRID_LIMIT)
-            ->edit(['route' => $this->prototype->routeName('edit')])
+            ->edit($this->prototype)
             ->text('name', ['text' => 'Расшифровка', 'order' => true])
             ->text('key', ['text' => 'Ключ', 'order' => true])
             ->text('value', ['text' => 'Значение'])

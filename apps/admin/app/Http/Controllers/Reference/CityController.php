@@ -31,7 +31,7 @@ class CityController extends AbstractPrototypeController
             ->enableQuicksearch()
             ->paginator(self::GRID_LIMIT)
             ->setSearchForm($form)
-            ->edit(['route' => $this->prototype->routeName('edit')])
+            ->edit($this->prototype)
             //->id('id', ['text' => 'ID', 'order' =
             ->text('name', ['text' => 'Наименование', 'order' => true])
             ->text('country_name', ['text' => 'Страна'])

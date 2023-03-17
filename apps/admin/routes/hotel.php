@@ -15,7 +15,7 @@ AclRoute::resource('hotel-price-list', Controllers\Hotel\PriceListController::cl
 
 // reference
 AclRoute::resource('hotel-service', Controllers\Reference\CountryController::class, ['except' => ['show']]);
-AclRoute::resource('hotel-usability', Controllers\Reference\CountryController::class, ['except' => ['show']]);
+AclRoute::resource('hotel-usability', Controllers\Hotel\UsabilityController::class, ['except' => ['show']]);
 AclRoute::resource('hotel-landmark', Controllers\Reference\CountryController::class, ['except' => ['show']]);
 
 // additional

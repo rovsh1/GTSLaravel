@@ -30,7 +30,7 @@ class CountryController extends AbstractPrototypeController
         return (new Grid())
             ->enableQuicksearch()
             ->paginator(self::GRID_LIMIT)
-            ->edit(['route' => $this->prototype->routeName('edit')])
+            ->edit($this->prototype)
             //->id('id', ['text' => 'ID', 'order' => true])
             ->text('name', ['text' => 'Наименование', 'order' => true])
             ->text('phone_code', ['text' => 'Код телефона'])

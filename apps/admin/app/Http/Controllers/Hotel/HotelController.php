@@ -54,9 +54,7 @@ class HotelController extends AbstractPrototypeController
             ->hotelStatus('status', ['label' => 'Статус', 'emptyItem' => ''])
             ->text('address', ['label' => 'Адрес', 'required' => true])
             ->coordinates('coordinates', ['label' => 'Координаты', 'required' => true])
-            ->text('zipcode', ['label' => 'Индекс'])
-            ->method('post')
-            ->action($this->prototype->route('store'));
+            ->text('zipcode', ['label' => 'Индекс']);
     }
 
     protected function gridFactory(): Grid

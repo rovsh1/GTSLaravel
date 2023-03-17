@@ -69,7 +69,7 @@ class AccessGroupController extends AbstractPrototypeController
         return (new Grid())
             ->enableQuicksearch()
             ->paginator(self::GRID_LIMIT)
-            ->edit(['route' => $this->prototype->routeName('edit')])
+            ->edit($this->prototype)
             ->addColumn('name', 'text', ['text' => 'Наименование'])
             //->addColumn('role', 'enum', ['text' => 'Роль', 'enum' => AccessRole::class])
             ->addColumn('description', 'text', ['text' => 'Расшифровка']);

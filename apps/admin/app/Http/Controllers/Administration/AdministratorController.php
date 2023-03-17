@@ -53,7 +53,7 @@ class AdministratorController extends AbstractPrototypeController
         return (new Grid())
             ->enableQuicksearch()
             ->paginator(self::GRID_LIMIT)
-            ->edit(['route' => $this->prototype->routeName('edit')])
+            ->edit($this->prototype)
             ->text('presentation', ['text' => 'Имя', 'order' => true])
             ->text('login', ['text' => 'Логин', 'order' => true])
             //->addColumn('role', 'enum', ['text' => 'Роль', 'enum' => AccessRole::class, 'order' => true])

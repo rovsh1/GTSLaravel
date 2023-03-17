@@ -18,7 +18,7 @@ abstract class AbstractEnumController extends AbstractPrototypeController
         return (new Grid())
             ->enableQuicksearch()
             ->paginator(self::GRID_LIMIT)
-            ->edit(['route' => $this->prototype->routeName('edit')])
+            ->edit($this->prototype)
             ->text('name', ['text' => 'Наименование', 'order' => true])
             ->orderBy('name', 'asc');
     }

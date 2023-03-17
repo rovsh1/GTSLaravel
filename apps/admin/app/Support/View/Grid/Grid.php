@@ -2,6 +2,7 @@
 
 namespace App\Admin\Support\View\Grid;
 
+use App\Admin\Components\Factory\Prototype;
 use App\Admin\Support\View\Form\Form;
 use Gsdk\Grid\Grid as Base;
 
@@ -11,8 +12,13 @@ class Grid extends Base
 
     protected ?Quicksearch $quicksearch = null;
 
-    public function edit(array $options = []): static
+    public function edit(Prototype|string|array $options): static
     {
+        if (is_string($options)) {
+            $options = ['route' => $options];
+        } elseif ($options instanceof Prototype) {
+            $options = ['route' => $options->routeName('edit')];
+        }
         return $this->addColumn(new Column\Edit('edit', $options));
     }
 
