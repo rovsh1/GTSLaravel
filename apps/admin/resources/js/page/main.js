@@ -20,6 +20,7 @@ Object.assign(window, {});
 
 import bootLayout from "../app/providers/layout";
 import bootCookies from "../app/providers/cookies";
+import bootForms from "../app/providers/forms";
 
 $(document).ready(function () {
 	$.ajaxSetup({
@@ -28,4 +29,5 @@ $(document).ready(function () {
 
 	bootLayout();
 	bootCookies();
+	bootForms();
 });

@@ -100,6 +100,7 @@ class ViewServiceProvider extends ServiceProvider
         Blade::component('tab', Components\Tab::class);
         Blade::component('file-image', Components\FileImage::class);
         Blade::component('user-avatar', Components\UserAvatar::class);
-        //Blade::componentNamespace('App\\Admin\\Views\\Components', 'admin');
+        Blade::component('form.delete-button', Components\Form\DeleteButton::class);
+        //Blade::componentNamespace('App\\Admin\\Views\\Components\\Form', 'form');
     }
 }
