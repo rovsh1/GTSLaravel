@@ -3,6 +3,7 @@
 namespace App\Admin\Support\View\Form;
 
 use Gsdk\Form\Form as Base;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * @method self method(string $method)
@@ -28,4 +29,20 @@ use Gsdk\Form\Form as Base;
  * @method self localeText(string $name, array $options = [])
  * @method self language(string $name, array $options = [])
  */
-class Form extends Base { }
+class Form extends Base
+{
+    public function data($data): static
+    {
+        if ($data instanceof Model && method_exists($data, 'isTranslatable')) {
+            $model = $data;
+            $data = $model->toArray();
+            foreach ($this->elements as $element) {
+                if ($model->isTranslatable($element->name)) {
+                    $data[$element->name] = $model->getTranslations($element->name);
+                }
+            }
+        }
+
+        return parent::data($data);
+    }
+}
