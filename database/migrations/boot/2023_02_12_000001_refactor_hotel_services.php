@@ -68,10 +68,10 @@ return new class extends Migration {
 
     private function updateServicesTable()
     {
-        Schema::create('r_services', function (Blueprint $table) {
+        Schema::table('r_services', function (Blueprint $table) {
             $table->integer('type_id')->unsigned()->nullable()->change();
         });
-        Schema::create('r_services_translation', function (Blueprint $table) {
+        Schema::table('r_services_translation', function (Blueprint $table) {
             $table->char('language', 2)->change();
         });
     }
