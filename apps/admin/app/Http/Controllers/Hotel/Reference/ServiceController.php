@@ -24,7 +24,7 @@ class ServiceController extends AbstractPrototypeController
                 'emptyItem' => '',
                 'items' => ServiceType::get()
             ])
-            ->text('name', ['label' => 'Наименование', 'required' => true]);
+            ->localeText('name', ['label' => 'Наименование', 'required' => true]);
     }
 
     protected function gridFactory(): Grid

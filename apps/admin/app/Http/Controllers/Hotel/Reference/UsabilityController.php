@@ -24,7 +24,7 @@ class UsabilityController extends AbstractPrototypeController
                 'emptyItem' => '',
                 'items' => UsabilityGroup::get()
             ])
-            ->text('name', ['label' => 'Наименование', 'required' => true])
+            ->localeText('name', ['label' => 'Наименование', 'required' => true])
             ->checkbox('popular', ['label' => 'Популярное']);
     }
 

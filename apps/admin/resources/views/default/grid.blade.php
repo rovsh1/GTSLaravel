@@ -17,10 +17,12 @@
                 </button>
             @endif
 
-            <div class="quicksearch-wrapper">
-                {!! $quicksearch !!}
-                <button class="icon" type="submit" title="Найти">search</button>
-            </div>
+            @if($quicksearch)
+                <div class="quicksearch-wrapper">
+                    {!! $quicksearch !!}
+                    <button class="icon" type="submit" title="Найти">search</button>
+                </div>
+            @endif
 
             <div class="search-popup-wrapper" id="grid-filters-popup">
                 <div class="search-popup shadow rounded">

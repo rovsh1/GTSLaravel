@@ -26,6 +26,7 @@ class AirportController extends AbstractPrototypeController
     {
         return (new Grid())
             ->paginator(self::GRID_LIMIT)
+            ->enableQuicksearch()
             ->edit($this->prototype)
             ->text('name', ['text' => 'Наименование', 'order' => true])
             ->text('city_name', ['text' => 'Город', 'order' => true])

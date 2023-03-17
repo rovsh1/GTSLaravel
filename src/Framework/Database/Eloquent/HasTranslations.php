@@ -185,7 +185,7 @@ trait HasTranslations
                     ->where('translatable_id', $this->id)
                     ->where('language', $language)
                     ->update($data);
-            } else {
+            } elseif (array_filter($data)) {
                 Db::table($this->getTranslationTable())
                     ->insert(
                         array_merge($data, [
