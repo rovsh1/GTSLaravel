@@ -16,6 +16,7 @@ class AdministratorController extends AbstractPrototypeController
 
     protected function formFactory(): Form
     {
+        $method = request()->route()->getActionMethod();
         $form = (new Form('data'))
             ->text('presentation', ['label' => 'Имя в системе', 'required' => true])
             ->text('login', ['label' => 'Логин', 'autocomplete' => 'username', 'required' => true])
@@ -23,8 +24,11 @@ class AdministratorController extends AbstractPrototypeController
             ->phone('phone', ['label' => 'Телефон'])
             //->addElement('status', 'enum', ['label' => 'Статус', 'enum' => UserStatus::class])
             //->addElement('image', 'image', ['label' => 'Аватар'])
-            ->password('password', ['label' => 'Пароль', 'autocomplete' => 'new-password', 'required' => false]);
-
+            ->password('password', [
+                'label' => 'Пароль',
+                'autocomplete' => 'new-password',
+                'required' => in_array($method, ['create', 'store'])
+            ]);
 
 //        if (app('acl')->isAllowed('update access-group')) {
 //            $form->select('groups', [
