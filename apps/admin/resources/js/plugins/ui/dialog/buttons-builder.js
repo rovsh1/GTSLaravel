@@ -23,15 +23,15 @@ const defaultButtons = {
 	submit: () => {
 		return {
 			text: WindowDefaults.buttonSubmit || 'Сохранить',
-			cls: 'btn btn-submit',
+			cls: 'btn btn-primary',
 			handler: 'submit'
 		}
 	},
 	ok: () => {
 		return {
 			text: 'ОК',
-			cls: 'btn btn-submit',
-			handler: 'close'
+			cls: 'btn btn-primary',
+			handler: 'ok'
 		};
 	}
 };

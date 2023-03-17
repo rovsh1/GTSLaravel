@@ -6,6 +6,7 @@ import "../app/support/functions";
 import "../app/helpers";
 
 import "../plugins/ui/dialog/helpers"
+import "../plugins/ui/multiselect"
 
 /*
 import "../vendor/jquery.mask"

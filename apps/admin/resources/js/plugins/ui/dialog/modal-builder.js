@@ -79,4 +79,8 @@ export function boot(modal, options) {
 	if (options.url) {
 		modal.load(options.url);
 	}
+
+	if (!options.hidden) {
+		modal.show();
+	}
 }

@@ -1,3 +1,5 @@
+import {MessageConfirm} from "../../plugins/ui/dialog/helpers";
+
 function bootDeleteButtons() {
 	$('button.btn-delete')
 		.filter('[data-form-action="delete"]')
@@ -9,17 +11,26 @@ function bootDeleteButtons() {
 
 			e.preventDefault();
 
-			$(this).attr('disabled', true);
+			MessageConfirm('Удалить запись?', 'Подтверждение', () => {
+				$(this).attr('disabled', true);
 
-			const $form = $('<form method="post" style="display: none;" action="' + url + '">'
-				+ '<input type="hidden" name="_method" value="delete"/>'
-				+ '</form>')
-				.appendTo(document.body);
+				const $form = $('<form method="post" style="display: none;" action="' + url + '">'
+					+ '<input type="hidden" name="_method" value="delete"/>'
+					+ '</form>')
+					.appendTo(document.body);
 
-			$form.submit();
+				$form.submit();
+			});
 		});
+}
+
+function bootMultiselect() {
+	$('select[multiple]').multiselect({
+		popupCls: 'dropdown-menu'
+	});
 }
 
 export default function bootForms() {
 	bootDeleteButtons();
+	bootMultiselect();
 }

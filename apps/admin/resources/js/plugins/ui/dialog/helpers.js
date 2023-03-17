@@ -18,7 +18,11 @@ export function MessageConfirm(message, title, fn) {
 	return new Modal(Object.assign({
 		title: '@lang(Message)',
 		cls: 'window-message',
-		buttons: ['ok', 'cancel']
+		buttons: [{
+			text: 'ОК',
+			cls: 'btn btn-primary',
+			handler: fn
+		}, 'cancel']
 	}, message));
 }
 
