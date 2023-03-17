@@ -14,9 +14,24 @@ function bootApp() {
 	}*/
 }
 
+function sitemapBtnHandler(e) {
+	const $sitemap = $('div.sitemap');
+	if (!$sitemap.is(e.target) && $sitemap.find(e.target).length === 0) {
+		$('#btn-sitemap').click();
+	}
+}
+
 function bootSitemap() {
-	$('#btn-sitemap').click(() => {
-		$(document.body).toggleClass('sitemap-expanded');
+	$('#btn-sitemap').click((e) => {
+		e.stopPropagation();
+
+		if (document.body.classList.contains('sitemap-expanded')) {
+			document.body.classList.remove('sitemap-expanded');
+			document.body.removeEventListener('click', sitemapBtnHandler);
+		} else {
+			document.body.classList.add('sitemap-expanded');
+			document.body.addEventListener('click', sitemapBtnHandler);
+		}
 	});
 
 	$('#sitemap-categories a').click(function (e) {
@@ -75,4 +90,6 @@ export default function () {
 
 		$(this).find('i');
 	});
+
+	document.body.classList.add('loaded');
 }
