@@ -17,9 +17,6 @@ return new class extends Migration {
 
         $this->updateTable($assoc);
 
-//        Schema::rename('r_usabilities', 'hotel_ref_usabilities');
-//        Schema::rename('r_usabilities_translation', 'hotel_ref_usabilities_translation');
-
         //Schema::dropIfExists('r_service_types_translation');
         // Schema::dropIfExists('r_service_types');
     }
