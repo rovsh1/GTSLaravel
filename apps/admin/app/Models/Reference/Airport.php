@@ -5,28 +5,30 @@ namespace App\Admin\Models\Reference;
 use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
-class LandmarkType extends Model
+class Airport extends Model
 {
     public $timestamps = false;
 
-    protected $table = 'ref_landmark_types';
+    protected $table = 'r_airports';
 
     protected $fillable = [
-        'alias',
+        'city_id',
         'name',
-        'in_city',
-        //'system_status',
+        'code',
     ];
 
     protected $casts = [
-        'in_city' => 'bool',
+        'city_id' => 'int',
     ];
 
     public static function booted()
     {
         static::addGlobalScope('default', function (Builder $builder) {
             $builder
-                ->orderBy('ref_landmark_types.name', 'asc');
+                ->addSelect('r_airports.*')
+                ->join('r_cities', 'r_cities.id', '=', 'r_airports.city_id')
+                //->joinTranslations($builder->getModel()->translatable)
+                ->joinTranslatable('r_cities', 'name as city_name');
         });
     }
 

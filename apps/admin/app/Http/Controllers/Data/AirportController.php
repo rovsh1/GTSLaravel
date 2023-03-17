@@ -2,30 +2,24 @@
 
 namespace App\Admin\Http\Controllers\Data;
 
-use App\Admin\Models\Reference\LandmarkType;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid;
 
-class LandmarkController extends AbstractPrototypeController
+class AirportController extends AbstractPrototypeController
 {
     protected function getPrototypeKey(): string
     {
-        return 'landmark';
+        return 'airport';
     }
 
     protected function formFactory(): FormContract
     {
         return Form::name('data')
             ->city('city_id', ['label' => 'Город', 'emptyItem' => '', 'required' => true])
-            ->select('type_id', [
-                'label' => 'Тип',
-                'emptyItem' => '',
-                'items' => LandmarkType::get()
-            ])
             ->text('name', ['label' => 'Наименование', 'required' => true])
-            ->text('address', ['label' => 'Адрес', 'required' => true]);
+            ->text('code', ['label' => 'Код', 'required' => true]);
     }
 
     protected function gridFactory(): Grid
@@ -35,9 +29,6 @@ class LandmarkController extends AbstractPrototypeController
             ->edit($this->prototype)
             ->text('name', ['text' => 'Наименование', 'order' => true])
             ->text('city_name', ['text' => 'Город', 'order' => true])
-            ->text('type_name', ['text' => 'Тип', 'order' => true])
-            ->text('address', ['text' => 'Адрес'])
-            ->number('center_distance', ['text' => 'Расстояние до центра', 'order' => true])
             ->orderBy('name', 'asc');
     }
 }
