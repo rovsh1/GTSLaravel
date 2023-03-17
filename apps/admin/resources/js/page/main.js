@@ -18,16 +18,20 @@ Object.assign($.fn, {});
 Object.assign(window, {});
 */
 
-import bootLayout from "../app/providers/layout";
+import bootSitemap from "../app/providers/sitemap";
 import bootCookies from "../app/providers/cookies";
 import bootForms from "../app/providers/forms";
+import bootGrid from "../app/providers/grids";
 
 $(document).ready(function () {
 	$.ajaxSetup({
 		headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
 	});
 
-	bootLayout();
+	bootSitemap();
 	bootCookies();
 	bootForms();
+	bootGrid();
+
+	document.body.classList.add('loaded');
 });
