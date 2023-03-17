@@ -20,6 +20,11 @@ class AccessGroup extends Model
         'description'
     ];
 
+    public function getForeignKey()
+    {
+        return 'group_id';
+    }
+
     public function rules(): HasMany
     {
         return $this->hasMany(AccessRule::class);

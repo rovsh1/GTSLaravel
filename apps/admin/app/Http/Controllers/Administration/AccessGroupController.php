@@ -17,6 +17,17 @@ class AccessGroupController extends AbstractPrototypeController
         return 'access-group';
     }
 
+    public function create(): LayoutContract
+    {
+        return parent::create()
+            ->ss('administration/access-group-form')
+            ->data([
+                'permissions' => $this->getPermissionsArray(fn() => []),
+                'categories' => Sitemap::getCategories(),
+                'default' => 'reservation',
+            ]);
+    }
+
     public function edit(int $id): LayoutContract
     {
         $rules = $this->repository->getGroupPermissions($id);
@@ -28,20 +39,11 @@ class AccessGroupController extends AbstractPrototypeController
                 ->all();
         };
 
-        $permissions = [];
-        foreach (Prototypes::all() as $prototype) {
-            $permissions[$prototype->routeName('index')] = (object)[
-                'id' => $prototype->key,
-                'allowed' => $allowed($prototype->key),
-                'available' => $prototype->permissions()
-            ];
-        }
-
         return parent::edit($id)
             ->ss('administration/access-group-form')
             ->data([
                 'categories' => Sitemap::getCategories(),
-                'permissions' => $permissions,
+                'permissions' => $this->getPermissionsArray($allowed),
                 'default' => 'reservation',
             ]);
     }
@@ -71,5 +73,18 @@ class AccessGroupController extends AbstractPrototypeController
             ->addColumn('name', 'text', ['text' => 'Наименование'])
             //->addColumn('role', 'enum', ['text' => 'Роль', 'enum' => AccessRole::class])
             ->addColumn('description', 'text', ['text' => 'Расшифровка']);
+    }
+
+    private function getPermissionsArray(\Closure $allowed): array
+    {
+        $permissions = [];
+        foreach (Prototypes::all() as $prototype) {
+            $permissions[$prototype->routeName('index')] = (object)[
+                'id' => $prototype->key,
+                'allowed' => $allowed($prototype->key),
+                'available' => $prototype->permissions()
+            ];
+        }
+        return $permissions;
     }
 }
