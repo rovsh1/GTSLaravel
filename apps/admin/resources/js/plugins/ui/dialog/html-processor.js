@@ -12,7 +12,7 @@ function processForm(modal, form) {
 		const data = new FormData(this);
 		const url = modal.get('url');
 
-		ajax({
+		ajax(modal, {
 			url: form.attr('action') || (is_string(url) ? url : url.url),
 			method: 'post',
 			data: data,

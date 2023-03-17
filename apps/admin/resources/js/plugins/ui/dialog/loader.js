@@ -12,19 +12,20 @@ function processResponse(response) {
 }
 
 export function ajax(modal, params, callback) {
-	params.error = function (r) {
-		modal.setHtml('Loading failed');
+	params.error = function (xhr) {
+		modal.setHtml(xhr.responseText);
 		modal.setLoading(false);
 	};
 
-	params.success = function (r) {
-		if (typeof (r) === 'string') {
+	params.success = function (r, code, xhr) {
+		if (xhr.responseJSON) {
+			processResponse(r);
+			callback(xhr.responseJSON);
+		} else {
 			modal.setHtml(r);
 			modal.setLoading(false);
-		} else {
-			processResponse(r);
+			callback(r);
 		}
-		callback(r);
 	};
 
 	$.ajax(params);
