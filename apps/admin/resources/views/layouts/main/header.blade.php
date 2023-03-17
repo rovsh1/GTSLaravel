@@ -13,7 +13,7 @@
             <div class="spacer"></div>
             <div class="dropdown text-end">
                 <a href="#" class="btn-avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                    <x-file-image :file="Auth::user()->avatar()"/>
+                    <x-user-avatar :file="Auth::user()->avatar()"/>
                 </a>
                 <ul class="dropdown-menu text-small">
                     <li><a class="dropdown-item" href="{{ route('profile') }}">Профиль</a></li>

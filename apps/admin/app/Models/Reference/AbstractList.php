@@ -33,6 +33,15 @@ class AbstractList extends Model
         'group_id'
     ];
 
+    public static function boot()
+    {
+        parent::boot();
+
+        self::creating(function ($model) {
+            $model->group_id = self::$migrationAssoc[$model->group];
+        });
+    }
+
     public static function booted()
     {
         static::addGlobalScope('group', function (Builder $builder) {

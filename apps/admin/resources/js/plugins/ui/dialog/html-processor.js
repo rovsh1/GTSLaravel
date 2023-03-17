@@ -1,4 +1,5 @@
 import {defaultHandlers} from "./buttons-builder";
+import {ajax} from "./loader";
 
 function processForm(modal, form) {
 	form.submit(function (e) {
@@ -11,20 +12,15 @@ function processForm(modal, form) {
 		const data = new FormData(this);
 		const url = modal.get('url');
 
-		$.ajax({
+		ajax({
 			url: form.attr('action') || (is_string(url) ? url : url.url),
 			method: 'post',
 			data: data,
 			cache: false, //dataType: 'json',
 			contentType: false,
-			processData: false,
-			success: function (r) {
-				if (typeof (r) === 'string') {
-					modal.setHtml(r);
-				}
-				modal.setLoading(false);
-				modal.trigger('submit', r);
-			}
+			processData: false
+		}, r => {
+			modal.trigger('submit', r);
 		});
 	});
 

@@ -9,6 +9,6 @@
     </div>
 
     <div class="form-buttons">
-        <button type="submit" class="btn btn-primary">Добавить фото профиля</button>
+        <button type="button" class="btn btn-primary">Добавить фото профиля</button>
     </div>
 </form>

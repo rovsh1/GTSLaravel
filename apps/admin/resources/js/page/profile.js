@@ -14,9 +14,9 @@ $(document).ready(function () {
 			case 'photo':
 				WindowDialog({
 					url: settingsUrl + action,
-					content: function () {
+					update: function () {
 						const fileInput = this.el.find('input[type="file"]');
-						this.el.find('button').click(function () { fileInput.click(); });
+						this.el.find('button.btn-primary').click(function () { fileInput.click(); });
 						fileInput.change(function () { $(this.form).submit(); });
 						//const img = $('<div class="">' + user_avatar(app.user) + '</div>');
 					}

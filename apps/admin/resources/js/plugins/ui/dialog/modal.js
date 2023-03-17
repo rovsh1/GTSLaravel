@@ -66,7 +66,7 @@ export default class Modal {
 
 	setLoading(flag) {
 		if (this.#el) {
-			this.dialog[flag ? 'addClass' : 'removeClass']('loading');
+			this.content[flag ? 'addClass' : 'removeClass']('loading');
 		}
 	}
 

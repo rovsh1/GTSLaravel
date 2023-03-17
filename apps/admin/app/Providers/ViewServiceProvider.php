@@ -99,6 +99,7 @@ class ViewServiceProvider extends ServiceProvider
         Blade::component('category-icon', Components\CategoryIcon::class);
         Blade::component('tab', Components\Tab::class);
         Blade::component('file-image', Components\FileImage::class);
+        Blade::component('user-avatar', Components\UserAvatar::class);
         //Blade::componentNamespace('App\\Admin\\Views\\Components', 'admin');
     }
 }
