@@ -3,11 +3,13 @@
 namespace App\Admin\Http\Controllers\Administration;
 
 use App\Admin\Models\Administrator\Administrator;
+use App\Admin\Support\Facades\Form;
+use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Facades\Prototypes;
 use App\Admin\Support\Facades\Sitemap;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
-use App\Admin\Support\View\Form\Form;
-use App\Admin\Support\View\Grid\Grid;
+use App\Admin\Support\View\Form\Form as FormContract;
+use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Layout as LayoutContract;
 
 class AccessGroupController extends AbstractPrototypeController
@@ -48,9 +50,9 @@ class AccessGroupController extends AbstractPrototypeController
             ]);
     }
 
-    protected function formFactory(): Form
+    protected function formFactory(): FormContract
     {
-        return (new Form('data'))
+        return Form::name('data')
             ->addElement('rules', 'hidden', ['render' => false])
             ->addElement('name', 'text', ['label' => 'Наименование', 'required' => true])
             //->addElement('role', 'enum', ['label' => 'Роль', 'emptyItem' => '', 'enum' => AccessRole::class])
@@ -64,10 +66,9 @@ class AccessGroupController extends AbstractPrototypeController
             ;
     }
 
-    protected function gridFactory(): Grid
+    protected function gridFactory(): GridContract
     {
-        return (new Grid())
-            ->enableQuicksearch()
+        return Grid::enableQuicksearch()
             ->paginator(self::GRID_LIMIT)
             ->edit($this->prototype)
             ->addColumn('name', 'text', ['text' => 'Наименование'])

@@ -9,7 +9,7 @@ AclRoute::resource('hotel', Controllers\Hotel\HotelController::class)
 
 //main
 AclRoute::resource('hotel-quota', Controllers\Data\CountryController::class, ['except' => ['show']]);
-AclRoute::resource('hotel-user', Controllers\Data\CountryController::class, ['except' => ['show']]);
+AclRoute::resource('hotel-user', Controllers\Hotel\UserController::class, ['except' => ['show']]);
 AclRoute::resource('hotel-discount', Controllers\Data\CountryController::class, ['except' => ['show']]);
 AclRoute::resource('hotel-price-list', Controllers\Hotel\PriceListController::class, ['except' => ['show']]);
 

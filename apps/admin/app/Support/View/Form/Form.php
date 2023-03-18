@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method self select(string $name, array $options = [])
  * @method self hidden(string $name, array $options = [])
  * @method self text(string $name, array $options = [])
+ * @method self email(string $name, array $options = [])
+ * @method self phone(string $name, array $options = [])
  * @method self password(string $name, array $options = [])
  * @method self number(string $name, array $options = [])
  * @method self dateRange(string $name, array $options = [])

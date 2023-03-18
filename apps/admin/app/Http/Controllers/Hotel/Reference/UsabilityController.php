@@ -4,9 +4,10 @@ namespace App\Admin\Http\Controllers\Hotel\Reference;
 
 use App\Admin\Models\Hotel\Reference\UsabilityGroup;
 use App\Admin\Support\Facades\Form;
+use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
-use App\Admin\Support\View\Grid\Grid;
+use App\Admin\Support\View\Grid\Grid as GridContract;
 
 class UsabilityController extends AbstractPrototypeController
 {
@@ -28,10 +29,9 @@ class UsabilityController extends AbstractPrototypeController
             ->checkbox('popular', ['label' => 'Популярное']);
     }
 
-    protected function gridFactory(): Grid
+    protected function gridFactory(): GridContract
     {
-        return (new Grid())
-            ->enableQuicksearch()
+        return Grid::enableQuicksearch()
             ->paginator(self::GRID_LIMIT)
             ->edit($this->prototype)
             ->boolean('popular', ['text' => 'Популярное'])

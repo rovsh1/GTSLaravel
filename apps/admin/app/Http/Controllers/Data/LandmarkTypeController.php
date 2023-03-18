@@ -3,9 +3,10 @@
 namespace App\Admin\Http\Controllers\Data;
 
 use App\Admin\Support\Facades\Form;
+use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
-use App\Admin\Support\View\Grid\Grid;
+use App\Admin\Support\View\Grid\Grid as GridContract;
 
 class LandmarkTypeController extends AbstractPrototypeController
 {
@@ -22,11 +23,10 @@ class LandmarkTypeController extends AbstractPrototypeController
             ->checkbox('in_city', ['label' => 'В пределах города']);
     }
 
-    protected function gridFactory(): Grid
+    protected function gridFactory(): GridContract
     {
-        return (new Grid())
+        return Grid::enableQuicksearch()
             ->paginator(self::GRID_LIMIT)
-            ->enableQuicksearch()
             ->edit($this->prototype)
             ->text('name', ['text' => 'Наименование'])
             ->boolean('in_city', ['text' => 'В пределах города'])

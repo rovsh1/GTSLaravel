@@ -93,7 +93,7 @@ class Grid
         return $this;
     }
 
-    public function orderBy($name, $order = 'asc'): static
+    public function orderBy(string $name, string $order = 'asc'): static
     {
         $this->sorting->orderBy($name, $order);
 

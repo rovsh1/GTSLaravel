@@ -2,9 +2,11 @@
 
 namespace App\Admin\Http\Controllers\Data;
 
+use App\Admin\Support\Facades\Form;
+use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
-use App\Admin\Support\View\Form\Form;
-use App\Admin\Support\View\Grid\Grid;
+use App\Admin\Support\View\Form\Form as FormContract;
+use App\Admin\Support\View\Grid\Grid as GridContract;
 
 class CurrencyController extends AbstractPrototypeController
 {
@@ -13,19 +15,18 @@ class CurrencyController extends AbstractPrototypeController
         return 'currency';
     }
 
-    protected function formFactory(): Form
+    protected function formFactory(): FormContract
     {
-        return (new Form('data'))
+        return Form::name('data')
             ->text('name', ['label' => 'Наименование', 'required' => true])
             ->number('code_num', ['label' => 'Код (цифровой)', 'required' => true])
             ->text('code_char', ['label' => 'Код (символьный)', 'required' => true])
             ->text('sign', ['label' => 'Символ', 'required' => true]);
     }
 
-    protected function gridFactory(): Grid
+    protected function gridFactory(): GridContract
     {
-        return (new Grid())
-            ->enableQuicksearch()
+        return Grid::enableQuicksearch()
             ->paginator(self::GRID_LIMIT)
             ->edit($this->prototype)
             //->id('id', ['text' => 'ID', 'order' => true])

@@ -4,11 +4,12 @@ namespace App\Admin\Http\Controllers\Hotel;
 
 use App\Admin\Models\Hotel\Reference\Type;
 use App\Admin\Support\Facades\Form;
+use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Facades\Layout;
 use App\Admin\Support\Facades\Sidebar;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
-use App\Admin\Support\View\Grid\Grid;
+use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Grid\Search;
 use App\Admin\Support\View\Layout as LayoutContract;
 use App\Admin\View\Components\HotelRating;
@@ -57,10 +58,9 @@ class HotelController extends AbstractPrototypeController
             ->text('zipcode', ['label' => 'Индекс']);
     }
 
-    protected function gridFactory(): Grid
+    protected function gridFactory(): GridContract
     {
-        return (new Grid())
-            ->enableQuicksearch()
+        return Grid::enableQuicksearch()
             ->setSearchForm($this->searchForm())
             ->paginator(self::GRID_LIMIT)
             ->text('name', [

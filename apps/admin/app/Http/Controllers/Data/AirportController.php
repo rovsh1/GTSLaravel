@@ -3,9 +3,10 @@
 namespace App\Admin\Http\Controllers\Data;
 
 use App\Admin\Support\Facades\Form;
+use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
-use App\Admin\Support\View\Grid\Grid;
+use App\Admin\Support\View\Grid\Grid as GridContract;
 
 class AirportController extends AbstractPrototypeController
 {
@@ -22,11 +23,10 @@ class AirportController extends AbstractPrototypeController
             ->text('code', ['label' => 'Код', 'required' => true]);
     }
 
-    protected function gridFactory(): Grid
+    protected function gridFactory(): GridContract
     {
-        return (new Grid())
+        return Grid::enableQuicksearch()
             ->paginator(self::GRID_LIMIT)
-            ->enableQuicksearch()
             ->edit($this->prototype)
             ->text('name', ['text' => 'Наименование', 'order' => true])
             ->text('city_name', ['text' => 'Город', 'order' => true])

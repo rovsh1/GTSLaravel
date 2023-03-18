@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Facade;
  * @method static \App\Admin\Support\View\Form\Form hidden(string $name, array $options = [])
  * @method static \App\Admin\Support\View\Form\Form number(string $name, array $options = [])
  * @method static \App\Admin\Support\View\Form\Form text(string $name, array $options = [])
+ * @method static \App\Admin\Support\View\Form\Form email(string $name, array $options = [])
+ * @method static \App\Admin\Support\View\Form\Form phone(string $name, array $options = [])
  * @method static \App\Admin\Support\View\Form\Form password(string $name, array $options = [])
  * @method static \App\Admin\Support\View\Form\Form dateRange(string $name, array $options = [])
  * @method static \App\Admin\Support\View\Form\Form currency(string $name, array $options = [])

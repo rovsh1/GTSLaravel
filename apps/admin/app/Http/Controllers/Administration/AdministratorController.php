@@ -3,9 +3,11 @@
 namespace App\Admin\Http\Controllers\Administration;
 
 use App\Admin\Support\Facades\Acl;
+use App\Admin\Support\Facades\Form;
+use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
-use App\Admin\Support\View\Form\Form;
-use App\Admin\Support\View\Grid\Grid;
+use App\Admin\Support\View\Form\Form as FormContract;
+use App\Admin\Support\View\Grid\Grid as GridContract;
 
 class AdministratorController extends AbstractPrototypeController
 {
@@ -14,10 +16,10 @@ class AdministratorController extends AbstractPrototypeController
         return 'administrator';
     }
 
-    protected function formFactory(): Form
+    protected function formFactory(): FormContract
     {
         $method = request()->route()->getActionMethod();
-        $form = (new Form('data'))
+        $form = Form::name('data')
             ->text('presentation', ['label' => 'Имя в системе', 'required' => true])
             ->text('login', ['label' => 'Логин', 'autocomplete' => 'username', 'required' => true])
             ->email('email', ['label' => 'Email', 'autocomplete' => 'email'])
@@ -52,10 +54,9 @@ class AdministratorController extends AbstractPrototypeController
         return $form;
     }
 
-    protected function gridFactory(): Grid
+    protected function gridFactory(): GridContract
     {
-        return (new Grid())
-            ->enableQuicksearch()
+        return Grid::enableQuicksearch()
             ->paginator(self::GRID_LIMIT)
             ->edit($this->prototype)
             ->text('presentation', ['text' => 'Имя', 'order' => true])
