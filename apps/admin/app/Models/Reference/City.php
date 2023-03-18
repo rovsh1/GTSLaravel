@@ -33,7 +33,7 @@ class City extends Model
                 ->addSelect('r_cities.*')
                 ->join('r_countries', 'r_countries.id', '=', 'r_cities.country_id')
                 ->joinTranslatable('r_countries', 'name as country_name')
-                ->joinTranslations($builder->getModel()->translatable)
+                ->joinTranslations()
                 //TODO add priority column
                 //->orderBy('priority', 'desc')
                 ->orderBy('name', 'asc');

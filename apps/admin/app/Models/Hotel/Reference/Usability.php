@@ -37,7 +37,7 @@ class Usability extends Model
             $builder
                 ->addSelect('r_hotel_usabilities.*')
                 ->join('r_enums', 'r_enums.id', '=', 'r_hotel_usabilities.group_id')
-                ->joinTranslations($builder->getModel()->translatable)
+                ->joinTranslations()
                 ->joinTranslatable('r_enums', 'name as group_name');
         });
     }

@@ -37,7 +37,7 @@ class Country extends Model
         static::addGlobalScope('default', function (Builder $builder) {
             $builder
                 ->addSelect('r_countries.*')
-                ->joinTranslations($builder->getModel()->translatable)
+                ->joinTranslations()
                 //TODO add priority column
                 //->orderBy('priority', 'desc')
                 ->orderBy('name', 'asc');

@@ -33,6 +33,9 @@ trait HasTranslations
     public function scopeJoinTranslations($builder, $columns = null): void
     {
         $modelTable = with(new static)->getTable();
+        if (null === $columns) {
+            $columns = $builder->getModel()->translatable;
+        }
         $builder->joinTranslatable($modelTable, $columns, 'left');
     }
 
