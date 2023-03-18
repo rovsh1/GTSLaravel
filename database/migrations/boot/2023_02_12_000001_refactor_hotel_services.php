@@ -84,13 +84,13 @@ return new class extends Migration {
                 ]);
         }
 
-        Schema::rename('r_services', 'hotel_ref_services');
-        Schema::rename('r_services_translation', 'hotel_ref_services_translation');
+        Schema::rename('r_services', 'r_hotel_services');
+        Schema::rename('r_services_translation', 'r_hotel_services_translation');
     }
 
     private function createServicesTable()
     {
-        Schema::create('hotel_ref_services', function (Blueprint $table) {
+        Schema::create('r_hotel_services', function (Blueprint $table) {
             $table->integer('id')->unsigned()->autoIncrement();
             $table->integer('type_id')->unsigned()->default(0);
 
@@ -100,7 +100,7 @@ return new class extends Migration {
                 ->restrictOnDelete()
                 ->cascadeOnUpdate();
         });
-        Schema::create('hotel_ref_services_translation', function (Blueprint $table) {
+        Schema::create('r_hotel_services_translation', function (Blueprint $table) {
             $table->integer('translatable_id')->unsigned()->autoIncrement();
             $table->char('language', 2);
             $table->string('name', 100)->nullable();
@@ -109,7 +109,7 @@ return new class extends Migration {
 
             $table->foreign('translatable_id', 'fkey_translatable_id')
                 ->references('id')
-                ->on('hotel_ref_services')
+                ->on('r_hotel_services')
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
         });
@@ -123,12 +123,12 @@ return new class extends Migration {
             ->addSelect(DB::raw('(SELECT name FROM r_service_translation WHERE translatable_id=r_services.id AND language="ru") as name'))
             ->get();
         foreach ($services as $r) {
-            $id = DB::table('hotel_ref_services')
+            $id = DB::table('r_hotel_services')
                 ->insertGetId([
                     'type_id' => $assoc[$r->type_id] ?? null,
                 ]);
 
-            DB::table('hotel_ref_services_translation')
+            DB::table('r_hotel_services_translation')
                 ->insert([
                     'translatable_id' => $id,
                     'language' => 'ru',

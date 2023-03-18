@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up()
     {
-        Schema::rename('r_showplace_types', 'ref_landmark_types');
-        Schema::rename('r_showplaces', 'ref_landmarks');
+        Schema::rename('r_showplace_types', 'r_landmark_types');
+        Schema::rename('r_showplaces', 'r_landmarks');
     }
 
     public function down() {}

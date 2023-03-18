@@ -9,7 +9,7 @@ class LandmarkType extends Model
 {
     public $timestamps = false;
 
-    protected $table = 'ref_landmark_types';
+    protected $table = 'r_landmark_types';
 
     protected $fillable = [
         'alias',
@@ -26,7 +26,7 @@ class LandmarkType extends Model
     {
         static::addGlobalScope('default', function (Builder $builder) {
             $builder
-                ->orderBy('ref_landmark_types.name', 'asc');
+                ->orderBy('r_landmark_types.name', 'asc');
         });
     }
 

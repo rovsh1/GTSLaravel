@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up()
     {
-        Schema::rename('r_usabilities', 'hotel_ref_usabilities');
-        Schema::rename('r_usabilities_translation', 'hotel_ref_usabilities_translation');
+        Schema::rename('r_usabilities', 'r_hotel_usabilities');
+        Schema::rename('r_usabilities_translation', 'r_hotel_usabilities_translation');
     }
 
     public function down() {}

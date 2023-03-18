@@ -18,7 +18,7 @@ class Service extends Model
 
     protected array $translatable = ['name'];
 
-    protected $table = 'hotel_ref_services';
+    protected $table = 'r_hotel_services';
 
     protected $fillable = [
         'type_id',
@@ -33,8 +33,8 @@ class Service extends Model
     {
         static::addGlobalScope('default', function (Builder $builder) {
             $builder
-                ->addSelect('hotel_ref_services.*')
-                ->leftJoin('r_enums', 'r_enums.id', '=', 'hotel_ref_services.type_id')
+                ->addSelect('r_hotel_services.*')
+                ->leftJoin('r_enums', 'r_enums.id', '=', 'r_hotel_services.type_id')
                 ->joinTranslations($builder->getModel()->translatable)
                 ->joinTranslatable('r_enums', 'name as type_name');
         });

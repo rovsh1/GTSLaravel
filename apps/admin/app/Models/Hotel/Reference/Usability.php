@@ -18,7 +18,7 @@ class Usability extends Model
 
     protected array $translatable = ['name'];
 
-    protected $table = 'hotel_ref_usabilities';
+    protected $table = 'r_hotel_usabilities';
 
     protected $fillable = [
         'group_id',
@@ -35,8 +35,8 @@ class Usability extends Model
     {
         static::addGlobalScope('default', function (Builder $builder) {
             $builder
-                ->addSelect('hotel_ref_usabilities.*')
-                ->join('r_enums', 'r_enums.id', '=', 'hotel_ref_usabilities.group_id')
+                ->addSelect('r_hotel_usabilities.*')
+                ->join('r_enums', 'r_enums.id', '=', 'r_hotel_usabilities.group_id')
                 ->joinTranslations($builder->getModel()->translatable)
                 ->joinTranslatable('r_enums', 'name as group_name');
         });

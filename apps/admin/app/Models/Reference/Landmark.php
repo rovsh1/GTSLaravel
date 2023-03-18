@@ -9,7 +9,7 @@ class Landmark extends Model
 {
     public $timestamps = false;
 
-    protected $table = 'ref_landmarks';
+    protected $table = 'r_landmarks';
 
     protected $fillable = [
         'city_id',
@@ -31,10 +31,10 @@ class Landmark extends Model
     {
         static::addGlobalScope('default', function (Builder $builder) {
             $builder
-                ->addSelect('ref_landmarks.*')
-                ->addSelect('ref_landmark_types.name as type_name')
-                ->join('r_cities', 'r_cities.id', '=', 'ref_landmarks.city_id')
-                ->leftJoin('ref_landmark_types', 'ref_landmark_types.id', '=', 'ref_landmarks.type_id')
+                ->addSelect('r_landmarks.*')
+                ->addSelect('r_landmark_types.name as type_name')
+                ->join('r_cities', 'r_cities.id', '=', 'r_landmarks.city_id')
+                ->leftJoin('r_landmark_types', 'r_landmark_types.id', '=', 'r_landmarks.type_id')
                 //->joinTranslations($builder->getModel()->translatable)
                 ->joinTranslatable('r_cities', 'name as city_name');
         });
