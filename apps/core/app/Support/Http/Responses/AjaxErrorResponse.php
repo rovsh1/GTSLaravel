@@ -2,10 +2,9 @@
 
 namespace App\Core\Support\Http\Responses;
 
-use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\JsonResponse;
 
-class AjaxErrorResponse implements Responsable
+class AjaxErrorResponse implements AjaxResponseInterface
 {
     public function __construct(private readonly string $message) {}
 
@@ -14,6 +13,6 @@ class AjaxErrorResponse implements Responsable
         return response()->json([
             'success' => false,
             'error' => $this->message
-        ]);
+        ], 500);
     }
 }

@@ -2,10 +2,9 @@
 
 namespace App\Core\Support\Http\Responses;
 
-use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\JsonResponse;
 
-class AjaxRedirectResponse implements Responsable
+class AjaxRedirectResponse implements AjaxResponseInterface
 {
     public function __construct(private readonly string $url) {}
 

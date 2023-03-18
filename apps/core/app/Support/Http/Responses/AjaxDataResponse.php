@@ -2,10 +2,9 @@
 
 namespace App\Core\Support\Http\Responses;
 
-use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\JsonResponse;
 
-class AjaxDataResponse implements Responsable
+class AjaxDataResponse implements AjaxResponseInterface
 {
     public function __construct(private readonly mixed $data) {}
 

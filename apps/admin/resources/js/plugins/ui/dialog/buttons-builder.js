@@ -4,7 +4,7 @@ export const defaultHandlers = {
 	ok: function () { this.close(); },
 	close: function () { this.close(); },
 	cancel: function () { this.close(); },
-	submit: function () { this.el.find('form').submit(); }
+	submit: function () { this.form.submit(); }
 };
 
 const defaultButtons = {

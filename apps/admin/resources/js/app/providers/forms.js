@@ -11,15 +11,21 @@ function bootDeleteButtons() {
 
 			e.preventDefault();
 
-			MessageConfirm('Удалить запись?', 'Подтверждение', () => {
-				$(this).attr('disabled', true);
+			const $btn = $(this);
+			const $form = $('<form method="post" action="' + url + '">'
+				+ '<p>Удалить запись?</p>'
+				+ '<input type="hidden" name="_method" value="delete"/>'
+				+ '</form>');
 
-				const $form = $('<form method="post" style="display: none;" action="' + url + '">'
-					+ '<input type="hidden" name="_method" value="delete"/>'
-					+ '</form>')
-					.appendTo(document.body);
-
-				$form.submit();
+			WindowDialog({
+				title: 'Подтверждение',
+				html: $form,
+				buttons: [{
+					text: 'Подтвердить',
+					cls: 'btn btn-primary',
+					handler: 'submit'
+				}, 'cancel'],
+				submit: () => { $btn.attr('disabled', true); }
 			});
 		});
 }

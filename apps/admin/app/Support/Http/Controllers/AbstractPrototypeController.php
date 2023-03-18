@@ -11,6 +11,9 @@ use App\Admin\Support\Repository\RepositoryInterface;
 use App\Admin\Support\View\Form\Form;
 use App\Admin\Support\View\Grid\Grid;
 use App\Admin\Support\View\Layout as LayoutContract;
+use App\Core\Support\Http\Responses\AjaxErrorResponse;
+use App\Core\Support\Http\Responses\AjaxRedirectResponse;
+use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Route;
 
@@ -139,11 +142,15 @@ abstract class AbstractPrototypeController extends Controller
         return redirect($this->prototype->route('index'));
     }
 
-    public function destroy(int $id): RedirectResponse
+    public function destroy(int $id): AjaxResponseInterface
     {
-        $this->repository->delete($id);
+        try {
+            $this->repository->delete($id);
+        } catch (\Throwable $e) {
+            return new AjaxErrorResponse($e->getMessage());
+        }
 
-        return redirect($this->prototype->route('index'));
+        return new AjaxRedirectResponse($this->prototype->route('index'));
     }
 
     protected function gridFactory(): Grid

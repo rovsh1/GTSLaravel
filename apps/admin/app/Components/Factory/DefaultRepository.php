@@ -8,7 +8,7 @@ class DefaultRepository implements FactoryRepositoryInterface
 {
     public function __construct(protected readonly string $model) {}
 
-    public function find(int $id): Model
+    public function find(int $id): ?Model
     {
         return $this->model::find($id);
     }
@@ -18,7 +18,7 @@ class DefaultRepository implements FactoryRepositoryInterface
         return $this->find($id) ?? throw new \Exception('');
     }
 
-    public function create(array $data): Model
+    public function create(array $data): ?Model
     {
         return $this->model::create($data);
     }

@@ -5,7 +5,7 @@ function processResponse(response) {
 
 	switch (response.action) {
 		case 'redirect':
-			return location.redirect(response.url);
+			return location.replace(response.url);
 		case 'reload':
 			return location.reload();
 	}
@@ -13,8 +13,13 @@ function processResponse(response) {
 
 export function ajax(modal, params, callback) {
 	params.error = function (xhr) {
-		modal.setHtml(xhr.responseText);
+		if (xhr.responseJSON) {
+			modal.setHtml(xhr.responseJSON.error);
+		} else {
+			modal.setHtml(xhr.responseText);
+		}
 		modal.setLoading(false);
+		modal.trigger('error');
 	};
 
 	params.success = function (r, code, xhr) {

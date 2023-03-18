@@ -2,10 +2,9 @@
 
 namespace App\Core\Support\Http\Responses;
 
-use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\JsonResponse;
 
-class AjaxReloadResponse implements Responsable
+class AjaxReloadResponse implements AjaxResponseInterface
 {
     public function toResponse($request): JsonResponse
     {
