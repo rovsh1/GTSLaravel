@@ -2,25 +2,25 @@
 
 namespace App\Admin\Providers;
 
-use App\Admin\Components\Factory\Prototype;
-use App\Admin\Components\Factory\ConfigLoader;
-use App\Admin\Components\Factory\FactoryManager;
+use App\Admin\Components\Factory\PrototypeBuilder;
+use App\Admin\Components\Factory\PrototypeLoader;
+use App\Admin\Components\Factory\PrototypesCollection;
 use Illuminate\Support\ServiceProvider;
 
 class FactoryServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->app->singleton('factory', function () {
-            $factory = new FactoryManager();
-            $prototypes = $factory->prototypes();
-            $factoryLoader = new ConfigLoader(resource_path('factory/configs'));
-            foreach ($factoryLoader->load() as $config) {
-                $prototypes->add(new Prototype($config));
-            }
-            return $factory;
+        $this->app->singleton('factory.prototypes', function () {
+            $prototypes = new PrototypesCollection();
+
+            (new PrototypeLoader(base_path('factories'), $prototypes))->load();
+
+            return $prototypes;
         });
 
-        $this->app->bind('factory.prototypes', fn() => app('factory')->prototypes());
+        $this->app->bind('factory.builder', fn() => new PrototypeBuilder());
     }
+
+    public function boot() {}
 }

@@ -26,6 +26,8 @@ use Illuminate\Support\Facades\Facade;
  */
 class Grid extends Facade
 {
+    protected static $cached = false;
+
     protected static function getFacadeAccessor()
     {
         return 'grid';

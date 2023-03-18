@@ -2,6 +2,7 @@
 
 namespace App\Admin\Components\Factory;
 
+use App\Admin\Components\Factory\Support\DefaultRepository;
 use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Repository\RepositoryInterface;
 
@@ -12,8 +13,6 @@ class Prototype
     public readonly string $category;
 
     public readonly string $group;
-
-    //public readonly PrototypeTypes $type;
 
     protected array $config = [];
 

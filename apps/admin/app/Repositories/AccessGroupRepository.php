@@ -2,7 +2,7 @@
 
 namespace App\Admin\Repositories;
 
-use App\Admin\Components\Factory\DefaultRepository;
+use App\Admin\Components\Factory\Support\DefaultRepository;
 use App\Admin\Models\Administrator\AccessGroup;
 use App\Admin\Models\Administrator\AccessRule;
 use Illuminate\Database\Eloquent\Model;

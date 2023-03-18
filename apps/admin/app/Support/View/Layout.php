@@ -109,7 +109,8 @@ class Layout
             ->addMetaHttpEquiv('X-UA-Compatible', 'IE=edge,chrome=1')
             ->addMetaHttpEquiv('Content-language', App::currentLocale())
             ->addMetaName('viewport', 'width=device-width, initial-scale=1')
-            ->addMetaName('csrf-token', csrf_token());
+            //->addMetaName('csrf-token', csrf_token())
+        ;
     }
 
     private function bootStyles(): void

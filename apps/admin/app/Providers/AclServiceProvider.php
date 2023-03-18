@@ -4,6 +4,7 @@ namespace App\Admin\Providers;
 
 use App\Admin\Components\Acl\AccessControl;
 use App\Admin\Components\Acl\Resource;
+use App\Admin\Support\Facades\Prototypes;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
@@ -28,7 +29,7 @@ class AclServiceProvider extends ServiceProvider
 
     private function registerResources($resources): void
     {
-        foreach (app('factory')->prototypes() as $prototype) {
+        foreach (Prototypes::all() as $prototype) {
             $resources->add(new Resource($prototype->config()));
         }
     }

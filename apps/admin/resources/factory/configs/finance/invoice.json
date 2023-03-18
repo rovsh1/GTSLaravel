@@ -1,9 +1,0 @@
-{
-    "key": "invoice",
-    "category": "finance",
-    "titles": {
-        "index": "Инвойсы"
-    },
-    "views": {},
-    "permissions": "crud"
-}
