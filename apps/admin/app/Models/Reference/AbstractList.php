@@ -19,6 +19,7 @@ class AbstractList extends Model
         'room-name' => 2,
         'room-type' => 1,
         'hotel-type' => 5,
+        'administrator-post' => 11,
         'usability-group' => 19,
         'hotel-service-type' => 100
     ];
