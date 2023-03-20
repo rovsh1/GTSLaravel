@@ -34,8 +34,8 @@ class UsabilityController extends AbstractPrototypeController
         return Grid::enableQuicksearch()
             ->paginator(self::GRID_LIMIT)
             ->edit($this->prototype)
-            ->boolean('popular', ['text' => 'Популярное'])
-            ->text('name', ['text' => 'Наименование'])
+            ->boolean('popular', ['text' => 'Популярное', 'order' => true])
+            ->text('name', ['text' => 'Наименование', 'order' => true])
             ->text('group_name', ['text' => 'Группа', 'order' => true])
             ->orderBy('name', 'asc');
     }
