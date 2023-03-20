@@ -2,15 +2,19 @@
 
 namespace App\Admin\Models\Reservation;
 
+use Custom\Framework\Database\Eloquent\HasQuicksearch;
 use Custom\Framework\Database\Eloquent\HasTranslations;
 use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
 class TransportType extends Model
 {
+    use HasQuicksearch;
     use HasTranslations;
 
     public $timestamps = false;
+
+    protected array $quicksearch = ['id', 'name%'];
 
     protected array $translatable = ['name'];
 

@@ -23,7 +23,7 @@ class AccessGroupController extends AbstractPrototypeController
     {
         return parent::create()
             ->ss('administration/access-group-form')
-            ->data([
+            ->view('administration.access-group-form', [
                 'permissions' => $this->getPermissionsArray(fn() => []),
                 'categories' => Sitemap::getCategories(),
                 'default' => 'reservation',
@@ -43,7 +43,7 @@ class AccessGroupController extends AbstractPrototypeController
 
         return parent::edit($id)
             ->ss('administration/access-group-form')
-            ->data([
+            ->view('administration.access-group-form', [
                 'categories' => Sitemap::getCategories(),
                 'permissions' => $this->getPermissionsArray($allowed),
                 'default' => 'reservation',

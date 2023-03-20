@@ -20,8 +20,7 @@ class CityController extends AbstractPrototypeController
     {
         return Form::name('data')
             ->country('country_id', ['label' => 'Страна', 'required' => true])
-            ->localeText('name', ['label' => 'Наименование', 'required' => true])
-            ->textarea('text', ['label' => 'Описание']);
+            ->localeText('name', ['label' => 'Наименование', 'required' => true]);
     }
 
     protected function gridFactory(): GridContract
