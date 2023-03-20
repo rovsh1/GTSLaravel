@@ -8,8 +8,16 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up()
     {
-        Schema::rename('r_showplace_types', 'r_landmark_types');
-        Schema::rename('r_showplaces', 'r_landmarks');
+        if (Schema::hasTable('r_showplaces')) {
+            Schema::rename('r_showplace_types', 'r_landmark_types');
+            Schema::rename('r_showplaces', 'r_landmarks');
+        }
+
+        Schema::table('r_countries', function (Blueprint $table) {
+            $table->string('datetime_format', 20)->nullable()->default(null)->change();
+            $table->string('date_format', 20)->nullable()->default(null)->change();
+            $table->string('time_format', 20)->nullable()->default(null)->change();
+        });
     }
 
     public function down() {}
