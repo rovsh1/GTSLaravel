@@ -24,14 +24,14 @@ class City extends Model
     protected $fillable = [
         'name',
         'country_id',
-        'text'
+        //'text'
     ];
 
     public static function booted()
     {
         static::addGlobalScope('default', function (Builder $builder) {
             $builder
-                ->addSelect('r_cities.*')
+                ->addSelect(['r_cities.id', 'r_cities.country_id'])
                 ->join('r_countries', 'r_countries.id', '=', 'r_cities.country_id')
                 ->joinTranslatable('r_countries', 'name as country_name')
                 ->joinTranslations()
