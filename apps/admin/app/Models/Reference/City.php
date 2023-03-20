@@ -16,6 +16,7 @@ class City extends Model
     public $timestamps = false;
 
     protected array $quicksearch = ['id', 'name%'];
+
     protected array $translatable = ['name', 'text'];
 
     protected $table = 'r_cities';

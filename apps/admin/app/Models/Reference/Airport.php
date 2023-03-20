@@ -2,11 +2,16 @@
 
 namespace App\Admin\Models\Reference;
 
+use Custom\Framework\Database\Eloquent\HasQuicksearch;
 use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
 class Airport extends Model
 {
+    use HasQuicksearch;
+
+    protected array $quicksearch = ['id', 'name%'];
+
     public $timestamps = false;
 
     protected $table = 'r_airports';

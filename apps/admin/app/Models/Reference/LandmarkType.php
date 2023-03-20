@@ -2,12 +2,17 @@
 
 namespace App\Admin\Models\Reference;
 
+use Custom\Framework\Database\Eloquent\HasQuicksearch;
 use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
 class LandmarkType extends Model
 {
+    use HasQuicksearch;
+
     public $timestamps = false;
+
+    protected array $quicksearch = ['id', 'name%'];
 
     protected $table = 'r_landmark_types';
 
