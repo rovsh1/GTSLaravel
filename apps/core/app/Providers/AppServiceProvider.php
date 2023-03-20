@@ -12,6 +12,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->registerServices();
 
+        $this->app->register(DatabaseServiceProvider::class);
         $this->app->register(EventServiceProvider::class);
         $this->app->register(ModulesServiceProvider::class);
         $this->app->register(DateServiceProvider::class);

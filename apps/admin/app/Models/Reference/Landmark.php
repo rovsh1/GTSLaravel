@@ -3,14 +3,18 @@
 namespace App\Admin\Models\Reference;
 
 use Custom\Framework\Database\Eloquent\HasQuicksearch;
+use Custom\Framework\Database\Eloquent\HasTranslations;
 use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
 class Landmark extends Model
 {
     use HasQuicksearch;
+    use HasTranslations;
 
     protected array $quicksearch = ['id', 'name%'];
+
+    protected array $translatable = ['name'];
 
     public $timestamps = false;
 
@@ -40,7 +44,7 @@ class Landmark extends Model
                 ->addSelect('r_landmark_types.name as type_name')
                 ->join('r_cities', 'r_cities.id', '=', 'r_landmarks.city_id')
                 ->leftJoin('r_landmark_types', 'r_landmark_types.id', '=', 'r_landmarks.type_id')
-                //->joinTranslations($builder->getModel()->translatable)
+                ->joinTranslations()
                 ->joinTranslatable('r_cities', 'name as city_name');
         });
     }

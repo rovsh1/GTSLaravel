@@ -14,16 +14,6 @@ class AbstractList extends Model
 
     protected $quicksearch = ['%name%'];
 
-    private static array $migrationAssoc = [
-        'bed-type' => 3,
-        'room-name' => 2,
-        'room-type' => 1,
-        'hotel-type' => 5,
-        'administrator-post' => 11,
-        'usability-group' => 19,
-        'hotel-service-type' => 100
-    ];
-
     public $timestamps = false;
 
     protected array $translatable = ['name'];
@@ -32,7 +22,7 @@ class AbstractList extends Model
 
     protected $fillable = [
         'name',
-        'group_id'
+        'group'
     ];
 
     public static function boot()
@@ -40,7 +30,7 @@ class AbstractList extends Model
         parent::boot();
 
         self::creating(function ($model) {
-            $model->group_id = self::$migrationAssoc[$model->group];
+            $model->group = $model->group;
         });
     }
 
@@ -49,7 +39,7 @@ class AbstractList extends Model
         static::addGlobalScope('group', function (Builder $builder) {
             $builder
                 ->addSelect('r_enums.*')
-                ->where('r_enums.group_id', self::$migrationAssoc[$builder->getModel()->group])
+                ->where('r_enums.group', $builder->getModel()->group)
                 ->joinTranslations()
                 ->orderBy('name', 'asc');
         });

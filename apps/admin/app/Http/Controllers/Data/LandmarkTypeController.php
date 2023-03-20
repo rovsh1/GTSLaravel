@@ -28,7 +28,7 @@ class LandmarkTypeController extends AbstractPrototypeController
         return Grid::enableQuicksearch()
             ->paginator(self::GRID_LIMIT)
             ->edit($this->prototype)
-            ->text('name', ['text' => 'Наименование'])
+            ->text('name', ['text' => 'Наименование', 'order' => true])
             ->boolean('in_city', ['text' => 'В пределах города'])
             ->orderBy('name', 'asc');
     }

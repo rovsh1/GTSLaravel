@@ -6,5 +6,5 @@ use App\Admin\Models\Reference\AbstractList;
 
 class UsabilityGroup extends AbstractList
 {
-    protected string $group = 'usability-group';
+    protected string $group = 'hotel-usability-group';
 }

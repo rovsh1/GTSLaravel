@@ -33,7 +33,7 @@ class ServiceController extends AbstractPrototypeController
         return Grid::enableQuicksearch()
             ->paginator(self::GRID_LIMIT)
             ->edit($this->prototype)
-            ->text('name', ['text' => 'Наименование'])
+            ->text('name', ['text' => 'Наименование', 'order' => true])
             ->text('type_name', ['text' => 'Категория', 'order' => true])
             ->orderBy('name', 'asc');
     }

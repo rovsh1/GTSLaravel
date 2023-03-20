@@ -7,9 +7,6 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up()
     {
-        Schema::dropIfExists('file_parts');
-        Schema::rename('files', 'files_old');
-
         Schema::create('files', function (Blueprint $table) {
             $table->char('guid', 32);
             $table->char('type_hash', 32);
@@ -20,7 +17,7 @@ return new class extends Migration {
             $table->timestamps();
 
             $table->primary('guid');
-            $table->index(['entity_id', 'type_hash'], 'files_idx_type');
+            $table->index(['entity_id', 'type_hash']);
         });
     }
 

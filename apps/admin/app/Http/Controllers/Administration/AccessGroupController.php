@@ -55,16 +55,16 @@ class AccessGroupController extends AbstractPrototypeController
     protected function formFactory(): FormContract
     {
         return Form::name('data')
-            ->addElement('rules', 'hidden', ['render' => false])
-            ->addElement('name', 'text', ['label' => 'Наименование', 'required' => true])
+            ->hidden('rules', ['render' => false])
+            ->text('name', ['label' => 'Наименование', 'required' => true])
             //->addElement('role', 'enum', ['label' => 'Роль', 'emptyItem' => '', 'enum' => AccessRole::class])
-            ->addElement('members', 'select', [
+            ->select('members', [
                 'label' => 'Администраторы',
                 'textIndex' => 'presentation',
                 'items' => Administrator::get(),
                 'multiple' => true
             ])
-            ->addElement('description', 'textarea', ['label' => 'Описание', 'required' => true])//->hidden('name1', ['label1' => 'Наименование', 'required' => true])
+            ->textarea('description', ['label' => 'Описание', 'required' => true])//->hidden('name1', ['label1' => 'Наименование', 'required' => true])
             ;
     }
 
@@ -73,10 +73,10 @@ class AccessGroupController extends AbstractPrototypeController
         return Grid::enableQuicksearch()
             ->paginator(self::GRID_LIMIT)
             ->edit($this->prototype)
-            ->addColumn('name', 'text', ['text' => 'Наименование'])
+            ->text('name', ['text' => 'Наименование', 'order' => true])
             //->addColumn('role', 'enum', ['text' => 'Роль', 'enum' => AccessRole::class])
-            ->addColumn('description', 'text', ['text' => 'Расшифровка'])
-            ->addColumn('administrators_count', 'number', ['text' => 'Администраторы', 'format' => 'NFD=0']);
+            ->text('description', ['text' => 'Расшифровка'])
+            ->number('administrators_count', ['text' => 'Администраторы', 'format' => 'NFD=0']);
     }
 
     protected function prepareGridQuery($query)
