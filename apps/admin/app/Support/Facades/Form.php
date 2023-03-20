@@ -26,9 +26,11 @@ use Illuminate\Support\Facades\Facade;
  * @method static \App\Admin\Support\View\Form\Form enum(string $enumClass, string $name, array $options = [])
  * @method static \App\Admin\Support\View\Form\Form coordinates(string $name, array $options = [])
  * @method static \App\Admin\Support\View\Form\Form client(string $name, array $options = [])
+ * @method static \App\Admin\Support\View\Form\Form manager(string $name, array $options = [])
  * @method static \App\Admin\Support\View\Form\Form hotel(string $name, array $options = [])
  * @method static \App\Admin\Support\View\Form\Form localeText(string $name, array $options = [])
  * @method static \App\Admin\Support\View\Form\Form language(string $name, array $options = [])
+ * @method static \App\Admin\Support\View\Form\Form numRange(string $name, array $options = [])
  *
  * @see \App\Admin\Support\View\Form\Form
  *

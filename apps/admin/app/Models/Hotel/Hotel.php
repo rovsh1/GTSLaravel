@@ -17,8 +17,6 @@ class Hotel extends Model
 
     protected array $quicksearch = ['id', 'name%'];
 
-    protected array $translatable = ['name'];
-
     protected $table = 'hotels';
 
     protected $fillable = [

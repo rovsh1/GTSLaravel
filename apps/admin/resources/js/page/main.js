@@ -7,6 +7,10 @@ import "../app/helpers";
 
 import "../plugins/ui/dialog/helpers"
 import "../plugins/ui/multiselect"
+import "../plugins/moment"
+import "../plugins/ui/daterangepicker"
+import "../plugins/ui/childCombo"
+import "../plugins/ui/form/element"
 
 /*
 import "../vendor/jquery.mask"

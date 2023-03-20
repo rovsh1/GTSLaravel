@@ -2,7 +2,8 @@ export default function bootGrid() {
 	const $btn = $('#btn-grid-filters');
 	const $popup = $('#grid-filters-popup');
 	const close = (e) => {
-		if (!$popup.is(e.target) && $popup.find(e.target).length === 0) {
+        const isClickByDateRangeCalendar = $('.daterangepicker').find(e.target).length > 0;
+		if (!$popup.is(e.target) && $popup.find(e.target).length === 0 && !isClickByDateRangeCalendar) {
 			$popup.hide();
 			$(document).unbind('click', close);
 		}

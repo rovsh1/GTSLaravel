@@ -21,15 +21,16 @@ use Illuminate\Database\Eloquent\Model;
  * @method self country(string $name, array $options = [])
  * @method self city(string $name, array $options = [])
  * @method self hotelType(string $name, array $options = [])
- * @method self clientType(string $name, array $options = [])
  * @method self hotelRating(string $name, array $options = [])
  * @method self enum(string $enumClass, string $name, array $options = [])
  * @method self hotelStatus(string $name, array $options = [])
  * @method self coordinates(string $name, array $options = [])
  * @method self client(string $name, array $options = [])
+ * @method self manager(string $name, array $options = [])
  * @method self hotel(string $name, array $options = [])
  * @method self localeText(string $name, array $options = [])
  * @method self language(string $name, array $options = [])
+ * @method self numRange(string $name, array $options = [])
  */
 class Form extends Base
 {
