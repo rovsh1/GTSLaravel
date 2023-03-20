@@ -17,6 +17,7 @@ return new class extends Migration {
     {
         Schema::create('administrators', function (Blueprint $table) {
             $table->integer('id')->unsigned()->autoIncrement();
+            $table->smallInteger('post_id')->unsigned()->nullable();
             $table->string('presentation', 100);
             $table->string('name', 100)->nullable();
             $table->string('surname', 100)->nullable();
@@ -29,6 +30,12 @@ return new class extends Migration {
             $table->tinyInteger('status')->unsigned()->default(0);
             $table->tinyInteger('superuser')->unsigned()->default(0);
             $table->timestamps();
+
+            $table->foreign('post_id', 'fkey_post_id')
+                ->references('id')
+                ->on('r_enums')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
         });
     }
 

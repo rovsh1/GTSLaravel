@@ -24,6 +24,7 @@ class Administrator extends Authenticatable
     protected $table = 'administrators';
 
     protected $fillable = [
+        'post_id',
         'presentation',
         'name',
         'surname',
@@ -42,6 +43,10 @@ class Administrator extends Authenticatable
     protected $hidden = [
         'password',
         //'remember_token',
+    ];
+
+    protected $casts = [
+        'post_id' => 'int'
     ];
 
     public $timestamps = true;
@@ -129,6 +134,13 @@ class Administrator extends Authenticatable
 //                ->where('g.role', $role);
 //        });
 //    }
+
+    public static function scopeJoinPost($query)
+    {
+        $query
+            ->leftJoin('r_enums', 'r_enums.id', '=', 'administrators.post_id')
+            ->joinTranslatable('r_enums', 'name as post_name');
+    }
 
     public static function scopeWhereLogin($query, $login)
     {

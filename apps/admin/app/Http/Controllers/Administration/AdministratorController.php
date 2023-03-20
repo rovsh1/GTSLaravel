@@ -2,12 +2,14 @@
 
 namespace App\Admin\Http\Controllers\Administration;
 
+use App\Admin\Models\Administrator\Post;
 use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
+use Illuminate\Database\Eloquent\Builder;
 
 class AdministratorController extends AbstractPrototypeController
 {
@@ -20,6 +22,11 @@ class AdministratorController extends AbstractPrototypeController
     {
         $method = request()->route()->getActionMethod();
         $form = Form::name('data')
+            ->select('post_id', [
+                'label' => 'Должность',
+                'emptyItem' => '',
+                'items' => Post::get()
+            ])
             ->text('presentation', ['label' => 'Имя в системе', 'required' => true])
             ->text('login', ['label' => 'Логин', 'autocomplete' => 'username', 'required' => true])
             ->email('email', ['label' => 'Email', 'autocomplete' => 'email'])
@@ -61,8 +68,16 @@ class AdministratorController extends AbstractPrototypeController
             ->edit($this->prototype)
             ->text('presentation', ['text' => 'Имя', 'order' => true])
             ->text('login', ['text' => 'Логин', 'order' => true])
+            ->text('post_name', ['text' => 'Должность', 'order' => true])
             //->addColumn('role', 'enum', ['text' => 'Роль', 'enum' => AccessRole::class, 'order' => true])
             ->email('email', ['text' => 'Email', 'order' => true])
             ->phone('phone', ['text' => 'Телефон']);
+    }
+
+    protected function prepareGridQuery(Builder $query)
+    {
+        $query
+            ->addSelect('administrators.*')
+            ->joinPost();
     }
 }
