@@ -47,6 +47,7 @@ class AbstractList extends Model
     {
         static::addGlobalScope('group', function (Builder $builder) {
             $builder
+                ->addSelect('r_enums.*')
                 ->where('r_enums.group_id', self::$migrationAssoc[$builder->getModel()->group])
                 ->joinTranslations()
                 ->orderBy('name', 'asc');
