@@ -20,7 +20,7 @@ class CityController extends AbstractPrototypeController
     {
         return Form::name('data')
             ->country('country_id', ['label' => 'Страна', 'required' => true])
-            ->text('name', ['label' => 'Наименование', 'required' => true])
+            ->localeText('name', ['label' => 'Наименование', 'required' => true])
             ->textarea('text', ['label' => 'Описание']);
     }
 

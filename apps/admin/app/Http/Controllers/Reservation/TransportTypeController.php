@@ -18,7 +18,7 @@ class TransportTypeController extends AbstractPrototypeController
     protected function formFactory(): FormContract
     {
         return Form::name('data')
-            ->text('name', ['label' => 'Наименование', 'required' => true])
+            ->localeText('name', ['label' => 'Наименование', 'required' => true])
             ->color('color', ['label' => 'Цвет бейджа на сайте']);
     }
 

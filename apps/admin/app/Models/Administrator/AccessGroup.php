@@ -2,6 +2,7 @@
 
 namespace App\Admin\Models\Administrator;
 
+use Custom\Framework\Database\Eloquent\HasQuicksearch;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
@@ -9,6 +10,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class AccessGroup extends Model
 {
+    use HasQuicksearch;
+
+    protected array $quicksearch = ['id', 'name%'];
+
     public $timestamps = false;
 
     protected $table = 'administrator_access_groups';
