@@ -14,6 +14,7 @@ use App\Admin\Support\View\Layout as LayoutContract;
 use App\Core\Support\Http\Responses\AjaxErrorResponse;
 use App\Core\Support\Http\Responses\AjaxRedirectResponse;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Route;
 
@@ -36,8 +37,9 @@ abstract class AbstractPrototypeController extends Controller
         Breadcrumb::prototype($this->prototype);
 
         $grid = $this->gridFactory();
-
-        $grid->data($this->repository->queryWithCriteria($grid->getSearchCriteria()));
+        $query = $this->repository->queryWithCriteria($grid->getSearchCriteria());
+        $this->prepareGridQuery($query);
+        $grid->data($query);
 
         return Layout::title($this->prototype->title('index'))
             ->view($this->prototype->view('index') ?? $this->prototype->view('grid') ?? 'default.grid', [
@@ -168,6 +170,8 @@ abstract class AbstractPrototypeController extends Controller
     {
         return Route::has($this->prototype->routeName('show'));
     }
+
+    protected function prepareGridQuery(Builder $query) {}
 
     abstract protected function getPrototypeKey(): string;
 }

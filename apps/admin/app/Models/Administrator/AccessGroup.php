@@ -61,6 +61,16 @@ class AccessGroup extends Model
         });
     }
 
+    public static function scopeWithAdministratorsCount($query)
+    {
+        $query->addSelect(
+            DB::raw(
+                '(SELECT count(*) FROM administrator_access_members as t'
+                . ' WHERE t.group_id=administrator_access_groups.id) as administrators_count'
+            )
+        );
+    }
+
     public function __toString(): string
     {
         return (string)$this->name;

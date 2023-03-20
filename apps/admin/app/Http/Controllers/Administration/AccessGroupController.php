@@ -3,8 +3,10 @@
 namespace App\Admin\Http\Controllers\Administration;
 
 use App\Admin\Models\Administrator\Administrator;
+use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Grid;
+use App\Admin\Support\Facades\Layout;
 use App\Admin\Support\Facades\Prototypes;
 use App\Admin\Support\Facades\Sitemap;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
@@ -73,7 +75,14 @@ class AccessGroupController extends AbstractPrototypeController
             ->edit($this->prototype)
             ->addColumn('name', 'text', ['text' => 'Наименование'])
             //->addColumn('role', 'enum', ['text' => 'Роль', 'enum' => AccessRole::class])
-            ->addColumn('description', 'text', ['text' => 'Расшифровка']);
+            ->addColumn('description', 'text', ['text' => 'Расшифровка'])
+            ->addColumn('administrators_count', 'number', ['text' => 'Администраторы', 'format' => 'NFD=0']);
+    }
+
+    protected function prepareGridQuery($query)
+    {
+        $query->addSelect('administrator_access_groups.*')
+            ->withAdministratorsCount();
     }
 
     private function getPermissionsArray(\Closure $allowed): array
