@@ -1,3 +1,5 @@
+@use "../variables";
+
 .form-buttons {
 	display: flex;
 	gap: 1rem;
@@ -28,3 +30,7 @@ div.form-field div.error {color: #DC493A;}
 }
 
 div.form-field .ui-multiselect {flex-grow: 1;}
+
+.form-errors {
+	color: variables.$error
+}

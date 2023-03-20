@@ -2,6 +2,7 @@
 
 namespace App\Admin\Support\View\Form\Element;
 
+use App\Admin\Support\Facades\Languages;
 use Gsdk\Form\Element\Select;
 
 class Language extends Select
@@ -10,6 +11,6 @@ class Language extends Select
     {
         parent::__construct($name, $options);
 
-        $this->setItems(app('languages'));
+        $this->setItems(Languages::all());
     }
 }

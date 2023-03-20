@@ -45,6 +45,11 @@ class Languages implements \Countable, \Iterator
         return count($this->languages);
     }
 
+    public function all(): array
+    {
+        return $this->languages;
+    }
+
     public function has(string $code): bool
     {
         foreach ($this->languages as $language) {
@@ -56,7 +61,7 @@ class Languages implements \Countable, \Iterator
         return false;
     }
 
-    public function get(string $code)
+    public function get(string $code): Language
     {
         foreach ($this->languages as $language) {
             if ($language->code === $code) {
@@ -67,12 +72,12 @@ class Languages implements \Countable, \Iterator
         throw new \OutOfRangeException('Language "' . $code . '" undefined');
     }
 
-    public function map(callable $fn)
+    public function map(callable $fn): array
     {
         return array_map($fn, $this->languages);
     }
 
-    public function default()
+    public function default(): ?Language
     {
         foreach ($this->languages as $language) {
             if ($language->isDefault()) {
