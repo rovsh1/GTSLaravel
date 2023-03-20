@@ -2,6 +2,8 @@
 
 namespace App\Admin\Support\View\Sitemap;
 
+use App\Admin\Support\Facades\Acl;
+use App\Admin\Support\Facades\Prototypes;
 use App\Admin\Support\View\Sidebar\Menu\ItemInterface;
 
 class Sitemap
@@ -14,7 +16,7 @@ class Sitemap
 
     public function __construct()
     {
-        $this->categoriesMenu = (new SitemapBuilder(app('factory.prototypes')))->build();
+        $this->categoriesMenu = (new SitemapBuilder(Prototypes::getFacadeRoot(), Acl::getFacadeRoot()))->build();
     }
 
     public function currentRoute(string $key): void
@@ -86,13 +88,17 @@ class Sitemap
 
     private function detectCurrent(): void
     {
-        $route = request()->route()->getName();
-        $this->currentRoute($route);
+        $route = request()->route();
+        if (!$route) {
+            return;
+        }
+        $routeName = request()->route()->getName();
+        $this->currentRoute($routeName);
         if (null !== $this->current) {
             return;
         }
 
-        $route = substr($route, 0, strpos($route, '.')) . '.index';
-        $this->currentRoute($route);
+        $routeName = substr($routeName, 0, strpos($routeName, '.')) . '.index';
+        $this->currentRoute($routeName);
     }
 }

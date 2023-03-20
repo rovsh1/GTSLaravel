@@ -10,6 +10,6 @@ class NotImplementedController extends Controller
     public function index()
     {
         return Layout::title('Not implemented')
-            ->view('error.not-implemented');
+            ->view('errors.not-implemented');
     }
 }

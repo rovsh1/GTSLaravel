@@ -2,7 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', fn() => redirect(route('countries.index')))->name('home');
+Route::controller(\App\Admin\Http\Controllers\DashboardController::class)
+    ->group(function () {
+        Route::get('/', 'index')->name('home');
+    });
 
 Route::group([], __DIR__ . '/auth.php');
 Route::group([], __DIR__ . '/hotel.php');

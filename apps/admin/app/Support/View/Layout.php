@@ -17,6 +17,8 @@ class Layout
 
     private array $options = [];
 
+    private bool $configured = false;
+
     public function __construct()
     {
         $this->meta = Meta::getFacadeRoot();
@@ -79,6 +81,19 @@ class Layout
         return view($this->view, $this->getViewData());
     }
 
+    public function configure(): void
+    {
+        if ($this->configured) {
+            return;
+        }
+
+        $this->configured = true;
+
+        $this->addDefaultMeta();
+
+        $this->bootStyles();
+    }
+
     private function setOption(string $name, $value): static
     {
         $this->options[$name] = $value;
@@ -94,13 +109,6 @@ class Layout
         return $data;
     }
 
-    private function configure(): void
-    {
-        $this->addDefaultMeta();
-
-        $this->bootStyles();
-    }
-
     private function addDefaultMeta(): void
     {
         $this->meta
@@ -108,8 +116,7 @@ class Layout
             ->addMetaHttpEquiv('Content-Type', 'text/html; charset=utf-8')
             ->addMetaHttpEquiv('X-UA-Compatible', 'IE=edge,chrome=1')
             ->addMetaHttpEquiv('Content-language', App::currentLocale())
-            ->addMetaName('viewport', 'width=device-width, initial-scale=1')
-            //->addMetaName('csrf-token', csrf_token())
+            ->addMetaName('viewport', 'width=device-width, initial-scale=1')//->addMetaName('csrf-token', csrf_token())
         ;
     }
 

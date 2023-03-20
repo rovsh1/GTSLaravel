@@ -2,6 +2,7 @@
 
 namespace App\Admin\Support\View\Sitemap;
 
+use App\Admin\Components\Acl\AccessControl;
 use App\Admin\Components\Factory\PrototypesCollection;
 use App\Admin\Support\View\Sidebar\Menu\Group;
 use App\Admin\Support\View\Sidebar\Menu\Item;
@@ -19,7 +20,10 @@ class SitemapBuilder
         'administration'
     ];
 
-    public function __construct(private readonly PrototypesCollection $prototypes) {}
+    public function __construct(
+        private readonly PrototypesCollection $prototypes,
+        private readonly AccessControl $acl,
+    ) {}
 
     public function build(): array
     {
@@ -78,6 +82,10 @@ class SitemapBuilder
 
     private function makeItem($prototype): ?Item
     {
+        if (!$this->acl->isRouteAllowed($prototype->routeName('index'))) {
+            return null;
+        }
+
         return new Item([
             'key' => $prototype->routeName('index'),
             'url' => $prototype->route(),

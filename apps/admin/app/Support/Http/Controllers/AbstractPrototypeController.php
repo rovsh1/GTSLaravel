@@ -99,10 +99,11 @@ abstract class AbstractPrototypeController extends Controller
 
     public function edit(int $id): LayoutContract
     {
+        $breadcrumbs = Breadcrumb::prototype($this->prototype);
+
         $model = $this->repository->findOrFail($id);
 
         $title = (string)$model;
-        $breadcrumbs = Breadcrumb::prototype($this->prototype);
         if ($this->hasShowAction()) {
             $breadcrumbs->addUrl($this->prototype->route('show'), $title);
         } else {

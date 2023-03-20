@@ -4,6 +4,7 @@ namespace App\Admin\Components\Factory\Support;
 
 use App\Admin\Components\Factory\FactoryRepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class DefaultRepository implements FactoryRepositoryInterface
 {
@@ -16,7 +17,7 @@ class DefaultRepository implements FactoryRepositoryInterface
 
     public function findOrFail(int $id): Model
     {
-        return $this->find($id) ?? throw new \Exception('');
+        return $this->find($id) ?? throw new ModelNotFoundException($this->model . ' [' . $id . '] not found');
     }
 
     public function create(array $data): ?Model
