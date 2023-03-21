@@ -8,8 +8,10 @@ use Custom\Framework\Contracts\Bus\QueryBusInterface;
 use Module\Hotel\Application\Dto\Info\RoomDto;
 use Module\Hotel\Application\Query\GetRoomById;
 use Module\Hotel\Domain\Entity\Season;
+use Module\Hotel\Domain\Exception\Room\PriceRateNotFound;
 use Module\Hotel\Domain\Exception\Room\RoomNotFound;
 use Module\Hotel\Domain\Exception\Room\UnsupportedRoomGuestsNumber;
+use Module\Hotel\Domain\Repository\PriceRateRepositoryInterface;
 use Module\Hotel\Domain\Repository\RoomPriceRepositoryInterface;
 use Module\Hotel\Domain\Repository\SeasonRepositoryInterface;
 
@@ -18,6 +20,7 @@ class RoomPriceUpdater
     public function __construct(
         private readonly RoomPriceRepositoryInterface $roomPriceRepository,
         private readonly SeasonRepositoryInterface    $seasonRepository,
+        private readonly PriceRateRepositoryInterface $priceRateRepository,
         private readonly QueryBusInterface            $queryBus,
         private array                                 $hotelSeasons = [],
     ) {}
@@ -44,6 +47,10 @@ class RoomPriceUpdater
         if ($guestsNumber <= 0 || $guestsNumber > $room->guestsNumber) {
             throw new UnsupportedRoomGuestsNumber("Unsupported guests number {$guestsNumber} for room with id {$roomId}");
         }
+        if (!$this->priceRateRepository->existsByRoomAndRate($roomId, $rateId)) {
+            throw new PriceRateNotFound("Price rate with id {$rateId}, not found for room with id {$roomId}");
+        }
+
         foreach ($period as $date) {
             $seasonId = $this->getSeasonIdByDate($date);
             if ($seasonId === null) {

@@ -7,6 +7,7 @@ use Module\Integration\Traveline\Domain\Api\Request\Update;
 use Module\Integration\Traveline\Domain\Api\Response\Error\AbstractTravelineError;
 use Module\Integration\Traveline\Domain\Api\Response\Error\InvalidCurrencyCode;
 use Module\Integration\Traveline\Domain\Api\Response\Error\InvalidRateAccomodation;
+use Module\Integration\Traveline\Domain\Api\Response\Error\InvalidRatePlan;
 use Module\Integration\Traveline\Domain\Api\Response\Error\InvalidRoomType;
 use Module\Integration\Traveline\Domain\Api\Response\Error\TravelineResponseErrorInterface;
 use Module\Integration\Traveline\Domain\Exception\HotelNotConnectedException;
@@ -120,6 +121,7 @@ class QuotaAndPriceUpdater
     {
         return match ($domainCode) {
             ErrorCodeEnum::RoomNotFound => new InvalidRoomType(),
+            ErrorCodeEnum::PriceRateNotFound => new InvalidRatePlan(),
             ErrorCodeEnum::UnsupportedRoomGuestsNumber => new InvalidRateAccomodation(),
         };
     }
