@@ -2,7 +2,6 @@
 
 namespace Module\Hotel\Infrastructure\Models;
 
-use Custom\Framework\Database\Eloquent\HasTranslations;
 use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -24,7 +23,7 @@ use Module\Hotel\Infrastructure\Models\Room\Bed;
  * @property int $data_flags
  * @property int $index
  * @property-read string $display_name
- * @property-read string|null $name
+ * @property-read \Module\Hotel\Infrastructure\Models\Room\Name|null $name
  * @property-read Collection|\Module\Hotel\Infrastructure\Models\PriceRate[] $priceRates
  * @property-read Collection|\Module\Hotel\Infrastructure\Models\Room\Bed[] $beds
  * @method static Builder|Room newModelQuery()
@@ -43,17 +42,15 @@ use Module\Hotel\Infrastructure\Models\Room\Bed;
  * @method static Builder|Room whereTypeId($value)
  * @method static Builder|Room withPriceRates()
  * @method static Builder|Room withBeds()
+ * @method static Builder|Room withName()
  * @mixin \Eloquent
  */
 class Room extends Model
 {
-    use HasTranslations;
+    public const CREATED_AT = null;
+    public const UPDATED_AT = null;
 
     protected $table = 'hotel_rooms';
-
-    protected array $translatable = ['name', 'text'];
-
-    protected $appends = ['display_name'];
 
     protected $fillable = [
         'hotel_id',
@@ -70,7 +67,7 @@ class Room extends Model
 
     public function displayName(): Attribute
     {
-        return Attribute::get(fn() => "{$this->name} ($this->custom_name)");
+        return Attribute::get(fn() => "{$this->name?->name} ($this->custom_name)");
     }
 
     public function scopeWithPriceRates(Builder $builder)
@@ -81,6 +78,11 @@ class Room extends Model
     public function scopeWithBeds(Builder $builder)
     {
         $builder->with('beds');
+    }
+
+    public function scopeWithName(Builder $builder)
+    {
+        $builder->with('name');
     }
 
     public function priceRates()
@@ -98,5 +100,10 @@ class Room extends Model
     public function beds()
     {
         return $this->hasMany(Bed::class, 'room_id', 'id');
+    }
+
+    public function name()
+    {
+        return $this->hasOne(\Module\Hotel\Infrastructure\Models\Room\Name::class, 'id', 'name_id');
     }
 }
