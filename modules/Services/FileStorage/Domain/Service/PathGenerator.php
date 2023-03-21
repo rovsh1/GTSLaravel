@@ -4,12 +4,16 @@ namespace Module\Services\FileStorage\Domain\Service;
 
 class PathGenerator implements PathGeneratorInterface
 {
+    private readonly string $rootPath;
+
     public function __construct(
-        private readonly string $rootPath,
+        string $rootPath,
         private readonly string $pathSeparator,
         private readonly int $nestingLevel,
         private readonly int $pathNameLength,
-    ) {}
+    ) {
+        $this->rootPath = rtrim($rootPath, '/');
+    }
 
     public function relativePath(string $guid, int $part = null): string
     {

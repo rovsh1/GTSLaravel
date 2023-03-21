@@ -21,10 +21,9 @@ class TranslationTable
         return $this->addColumn('string', $column, $preparedParameters);
     }
 
-    public function text($column, $length = null, array $parameters = []): self
+    public function text($column, array $parameters = []): self
     {
-        $preparedParameters = array_merge($parameters, compact('length'));
-        return $this->addColumn('text', $column, $preparedParameters);
+        return $this->addColumn('text', $column, $parameters);
     }
 
     private function addColumn($type, $name, array $parameters = []): self

@@ -144,6 +144,11 @@ abstract class AbstractElement implements ElementInterface
         $this->value = $this->validateValue($value);
     }
 
+    public function submitValue($value)
+    {
+        $this->setValue($value);
+    }
+
     public function getErrors(): array
     {
         return $this->errors;
