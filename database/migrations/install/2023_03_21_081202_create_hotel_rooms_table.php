@@ -18,8 +18,8 @@ return new class extends Migration {
             $table->string('custom_name')->nullable();
             $table->unsignedTinyInteger('rooms_number');
             $table->unsignedTinyInteger('guests_number');
-            $table->unsignedSmallInteger('size');
-            $table->unsignedTinyInteger('price_discount');
+            $table->unsignedSmallInteger('size')->nullable();
+            $table->unsignedTinyInteger('price_discount')->nullable();
             $table->tinyInteger('data_flags');
             $table->smallInteger('index');
             $table->timestamps();
@@ -39,6 +39,7 @@ return new class extends Migration {
 
         (new TranslationTable('hotel_rooms'))
             ->string('name')
+            ->text('text')
             ->create();
     }
 

@@ -14,14 +14,17 @@ class TranslationTable
         private readonly string $table
     ) {}
 
-    public function string($column, $length = null)
+    public function string($column, $length = null): self
     {
-        $length = $length ?: Builder::$defaultStringLength;
-
-        return $this->addColumn('string', $column, compact('length'));
+        return $this->addStringColumn($column, $length);
     }
 
-    public function addColumn($type, $name, array $parameters = []): static
+    public function text($column, $length = null): self
+    {
+        return $this->addColumn('text', $column, compact('length'));
+    }
+
+    public function addColumn($type, $name, array $parameters = []): self
     {
         $column = new \stdClass();
         $column->type = $type;
@@ -49,6 +52,14 @@ class TranslationTable
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
         });
+    }
+
+    private function addStringColumn($column, $length = null, array $parameters = []): self
+    {
+        $length = $length ?: Builder::$defaultStringLength;
+        $preparedParameters = array_merge($parameters, compact('length'));
+
+        return $this->addColumn('string', $column, $preparedParameters);
     }
 
     private function addTranslatableId(Blueprint $table): void
