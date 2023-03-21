@@ -32,7 +32,7 @@ class Layout
 
     public function __get(string $name)
     {
-        return $this->data[$name] ?? null;
+        return $this->viewData[$name] ?? null;
     }
 
     public function data(array $data): static

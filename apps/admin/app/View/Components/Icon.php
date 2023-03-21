@@ -7,7 +7,9 @@ use Illuminate\View\Component;
 class Icon extends Component
 {
     protected static array $aliases = [
-        'filter' => 'filter_alt'
+        'filter' => 'filter_alt',
+        'address' => 'map',
+        'site' => 'public',
     ];
 
     protected readonly ?string $key;

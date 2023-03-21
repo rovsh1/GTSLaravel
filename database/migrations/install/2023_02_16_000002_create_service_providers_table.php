@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up()
     {
-        Schema::create('providers', function (Blueprint $table) {
+        Schema::create('service_providers', function (Blueprint $table) {
             $table->integer('id')->unsigned()->autoIncrement();
             $table->string('name', 50);
             $table->timestamps();
@@ -19,7 +19,7 @@ return new class extends Migration {
 
     private function createContactsTable()
     {
-        Schema::create('provider_contacts', function (Blueprint $table) {
+        Schema::create('service_provider_contacts', function (Blueprint $table) {
             $table->integer('id')->unsigned()->autoIncrement();
             $table->integer('provider_id')->unsigned();
             $table->tinyInteger('type')->unsigned();
@@ -30,7 +30,7 @@ return new class extends Migration {
 
             $table->foreign('provider_id')
                 ->references('id')
-                ->on('providers')
+                ->on('service_providers')
                 ->restrictOnDelete()
                 ->cascadeOnUpdate();
         });
@@ -38,7 +38,7 @@ return new class extends Migration {
 
     public function down()
     {
-        Schema::dropIfExists('provider_contacts');
-        Schema::dropIfExists('providers');
+        Schema::dropIfExists('service_provider_contacts');
+        Schema::dropIfExists('service_providers');
     }
 };

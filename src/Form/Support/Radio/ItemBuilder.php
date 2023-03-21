@@ -22,8 +22,8 @@ class ItemBuilder
         foreach ($enum::cases() as $r) {
             $item = new \stdClass();
             $item->originalValue = $r;
-            $item->value = $r->value ?? $r->name;
-            $item->text = $r->name;
+            $item->value = (string)($r->value ?? $r->name);
+            $item->text = __('enum.' . strtolower($r->name));
             $items[] = $item;
         }
         return $items;

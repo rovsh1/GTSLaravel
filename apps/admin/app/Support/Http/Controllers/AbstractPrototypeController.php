@@ -15,6 +15,7 @@ use App\Core\Support\Http\Responses\AjaxErrorResponse;
 use App\Core\Support\Http\Responses\AjaxRedirectResponse;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +26,8 @@ abstract class AbstractPrototypeController extends Controller
     protected Prototype $prototype;
 
     protected RepositoryInterface $repository;
+
+    protected Model $model;
 
     public function __construct()
     {
@@ -53,15 +56,15 @@ abstract class AbstractPrototypeController extends Controller
 
     public function show(int $id): LayoutContract
     {
-        $model = $this->repository->findOrFail($id);
-        $title = (string)$model;//$this->prototype->title('show')
+        $this->model = $this->repository->findOrFail($id);
+        $title = (string)$this->model;//$this->prototype->title('show')
 
         Breadcrumb::prototype($this->prototype)
             ->add($title);
 
         return Layout::title($title)
-            ->view($this->prototype->view('show'), [
-                'model' => $model
+            ->view($this->prototype->view('show') ?? ($this->getPrototypeKey() . '.show'), [
+                'model' => $this->model
             ]);
     }
 
@@ -96,7 +99,11 @@ abstract class AbstractPrototypeController extends Controller
 
         $model = $this->repository->create($form->getData());
 
-        return redirect($this->prototype->route('index'));
+        if ($this->hasShowAction()) {
+            return redirect($this->prototype->route('show', $model));
+        } else {
+            return redirect($this->prototype->route('index'));
+        }
     }
 
     public function edit(int $id): LayoutContract
