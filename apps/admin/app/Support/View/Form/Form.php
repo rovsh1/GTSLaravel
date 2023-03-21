@@ -2,6 +2,8 @@
 
 namespace App\Admin\Support\View\Form;
 
+use App\Admin\Support\View\Form\Element\Image;
+use Gsdk\Form\ElementInterface;
 use Gsdk\Form\Form as Base;
 use Illuminate\Database\Eloquent\Model;
 
@@ -37,11 +39,15 @@ class Form extends Base
 {
     public function data($data): static
     {
-        if ($data instanceof Model && method_exists($data, 'isTranslatable')) {
+        if ($data instanceof Model) {
+            $isTranslatable = method_exists($data, 'isTranslatable');
             $model = $data;
             $data = $model->toArray();
+            /** @var ElementInterface $element */
             foreach ($this->elements as $element) {
-                if ($model->isTranslatable($element->name)) {
+                if ($element instanceof Image) {
+                    $data[$element->name] = ($element->fileType)::findByEntity($model->id);
+                } elseif ($isTranslatable && $model->isTranslatable($element->name)) {
                     $data[$element->name] = $model->getTranslations($element->name);
                 }
             }

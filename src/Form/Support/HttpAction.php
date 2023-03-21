@@ -32,7 +32,7 @@ class HttpAction
         return $form->isValid();
     }
 
-    private function setElementsData($validatedData): void
+    private function setElementsData($sentData): void
     {
         foreach ($this->form->getElements() as $element) {
             if ($element->disabled || !$element->isSubmittable()) {
@@ -40,24 +40,22 @@ class HttpAction
             }
 
             if ($element->isFileUpload()) {
-                $this->setElementUpload($element);
-            } elseif (array_key_exists($element->name, $validatedData)) {
-                $element->setValue($validatedData[$element->name]);
+                $this->setElementUpload($sentData, $element);
+            } elseif (array_key_exists($element->name, $sentData)) {
+                $element->submitValue($sentData[$element->name]);
             } else {
-                $element->setValue(null);
+                $element->submitValue(null);
             }
         }
     }
 
-    private function setElementUpload($element): void
+    private function setElementUpload($sentData, $element): void
     {
-        //Request::file();
-        if (isset($uploadData[$element->name])) {
-            $element->setValue($uploadData[$element->name]);
-        }
-
-        if (isset($sentData[$element->name])) {
-            $element->setData($sentData[$element->name]);
+        $uploadedFile = Request::file($this->form->name . '.' . $element->name);
+        if ($uploadedFile) {
+            $element->submitValue($uploadedFile);
+        } elseif (isset($sentData[$element->name])) {
+            $element->submitValue($sentData[$element->name]);
         }
     }
 }

@@ -22,6 +22,8 @@ interface ElementInterface
 
     public function setValue($value);
 
+    public function submitValue($value);
+
     public function getErrors(): array;
 
     public function setErrors(string|array|null $error): static;

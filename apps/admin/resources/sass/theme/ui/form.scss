@@ -34,3 +34,11 @@ div.form-field .ui-multiselect {flex-grow: 1;}
 .form-errors {
 	color: variables.$error
 }
+
+.field-file {
+	> .d-flex {flex-wrap: wrap;}
+	.thumbs {display: flex;gap: 8px;margin-top: 8px;}
+	.thumb {width: 64px;height: 64px;}
+	.thumb a {display: block;}
+	.thumb img {width: 100%;height: 100%;object-fit: cover;border-radius: 4px;}
+}

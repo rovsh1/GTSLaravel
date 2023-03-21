@@ -2,6 +2,7 @@
 
 namespace App\Admin\Http\Controllers\Data;
 
+use App\Admin\Files\TransportImage;
 use App\Admin\Models\Reference\TransportType;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Grid;
@@ -29,9 +30,10 @@ class TransportCarController extends AbstractPrototypeController
             ->text('model', ['label' => 'Модель', 'required' => true])
             ->number('passengers_number', ['label' => 'Максимальное количество мест', 'required' => true])
             ->number('bags_number', ['label' => 'Максимальное количество чемоданов', 'required' => true])
-            //TODO implement image
-            //->file
-            ;
+            ->image('image', [
+                'label' => 'Фото',
+                'fileType' => TransportImage::class
+            ]);
     }
 
     protected function gridFactory(): GridContract
