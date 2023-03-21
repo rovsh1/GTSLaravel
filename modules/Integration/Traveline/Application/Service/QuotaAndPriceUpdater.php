@@ -10,6 +10,7 @@ use Module\Integration\Traveline\Domain\Api\Response\Error\InvalidRateAccomodati
 use Module\Integration\Traveline\Domain\Api\Response\Error\InvalidRoomType;
 use Module\Integration\Traveline\Domain\Api\Response\Error\TravelineResponseErrorInterface;
 use Module\Integration\Traveline\Domain\Exception\HotelNotConnectedException;
+use Module\Integration\Traveline\Domain\Exception\InvalidHotelRoomCode;
 use Module\Integration\Traveline\Domain\Repository\HotelRepositoryInterface;
 use Module\Integration\Traveline\Domain\Service\HotelRoomCodeGeneratorInterface;
 use Module\Shared\Domain\Exception\DomainEntityExceptionInterface;
@@ -39,7 +40,14 @@ class QuotaAndPriceUpdater
         if (!$isHotelIntegrationEnabled) {
             throw new HotelNotConnectedException();
         }
-        $updateRequests = Update::collectionFromArray($updates, $this->codeGenerator);
+
+        try {
+            $updateRequests = Update::collectionFromArray($updates, $this->codeGenerator);
+        } catch (InvalidHotelRoomCode $e) {
+            $this->errors[] = new InvalidRateAccomodation();
+            return $this->errors;
+        }
+
         foreach ($updateRequests as $updateRequest) {
             try {
                 $this->handleRequest($updateRequest);
@@ -50,6 +58,7 @@ class QuotaAndPriceUpdater
                 $this->errors[] = $this->convertExternalDomainCodeToApiError($e->getPrevious()->domainCode());
             }
         }
+
         return $this->errors;
     }
 
