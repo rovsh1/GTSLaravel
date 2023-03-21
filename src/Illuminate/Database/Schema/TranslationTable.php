@@ -14,17 +14,20 @@ class TranslationTable
         private readonly string $table
     ) {}
 
-    public function string($column, $length = null): self
+    public function string($column, $length = null, array $parameters = []): self
     {
-        return $this->addStringColumn($column, $length);
+        $length = $length ?: Builder::$defaultStringLength;
+        $preparedParameters = array_merge($parameters, compact('length'));
+        return $this->addColumn('string', $column, $preparedParameters);
     }
 
-    public function text($column, $length = null): self
+    public function text($column, $length = null, array $parameters = []): self
     {
-        return $this->addColumn('text', $column, compact('length'));
+        $preparedParameters = array_merge($parameters, compact('length'));
+        return $this->addColumn('text', $column, $preparedParameters);
     }
 
-    public function addColumn($type, $name, array $parameters = []): self
+    private function addColumn($type, $name, array $parameters = []): self
     {
         $column = new \stdClass();
         $column->type = $type;
@@ -52,14 +55,6 @@ class TranslationTable
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
         });
-    }
-
-    private function addStringColumn($column, $length = null, array $parameters = []): self
-    {
-        $length = $length ?: Builder::$defaultStringLength;
-        $preparedParameters = array_merge($parameters, compact('length'));
-
-        return $this->addColumn('string', $column, $preparedParameters);
     }
 
     private function addTranslatableId(Blueprint $table): void

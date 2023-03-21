@@ -39,7 +39,7 @@ return new class extends Migration {
 
         (new TranslationTable('hotel_rooms'))
             ->string('name')
-            ->text('text')
+            ->text('text', null, ['nullable' => true])
             ->create();
     }
 

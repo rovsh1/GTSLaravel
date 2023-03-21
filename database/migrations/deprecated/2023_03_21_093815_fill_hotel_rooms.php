@@ -27,7 +27,7 @@ return new class extends Migration
                     'translatable_id' => $r->id,
                     'language' => 'ru',
                     'name' => $r->name,
-                    'text' => $r->text ?? '',
+                    'text' => $r->text,
                 ]);
         }
     }

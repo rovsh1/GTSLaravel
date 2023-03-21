@@ -3,16 +3,13 @@
 namespace Module\Hotel\Port\Controllers;
 
 use Carbon\CarbonPeriod;
-use Custom\Framework\Contracts\Bus\CommandBusInterface;
 use Custom\Framework\Port\Request;
-use Module\Hotel\Application\Command\CloseRoomQuota;
-use Module\Hotel\Application\Command\OpenRoomQuota;
-use Module\Hotel\Application\Command\UpdateRoomQuota;
+use Module\Hotel\Application\Service\RoomQuotaUpdater;
 
 class RoomQuotaController
 {
     public function __construct(
-        private readonly CommandBusInterface $commandBus,
+        private readonly RoomQuotaUpdater $quotaUpdater,
     ) {}
 
     public function updateRoomQuota(Request $request)
@@ -24,11 +21,10 @@ class RoomQuotaController
             'quota' => 'required|int',
         ]);
 
-        return $this->commandBus->execute(new UpdateRoomQuota(
-                $request->room_id,
-                new CarbonPeriod($request->date_from, $request->date_to),
-                $request->quota
-            )
+        $this->quotaUpdater->updateRoomQuota(
+            $request->room_id,
+            new CarbonPeriod($request->date_from, $request->date_to),
+            $request->quota
         );
     }
 
@@ -41,11 +37,10 @@ class RoomQuotaController
             'date_to' => 'required|date',
         ]);
 
-        return $this->commandBus->execute(new OpenRoomQuota(
-                $request->room_id,
-                new CarbonPeriod($request->date_from, $request->date_to),
-                $request->rate_id,
-            )
+        $this->quotaUpdater->openRoomQuota(
+            $request->room_id,
+            new CarbonPeriod($request->date_from, $request->date_to),
+            $request->rate_id,
         );
     }
 
@@ -58,11 +53,10 @@ class RoomQuotaController
             'date_to' => 'required|date',
         ]);
 
-        return $this->commandBus->execute(new CloseRoomQuota(
-                $request->room_id,
-                new CarbonPeriod($request->date_from, $request->date_to),
-                $request->rate_id,
-            )
+        $this->quotaUpdater->closeRoomQuota(
+            $request->room_id,
+            new CarbonPeriod($request->date_from, $request->date_to),
+            $request->rate_id,
         );
     }
 }

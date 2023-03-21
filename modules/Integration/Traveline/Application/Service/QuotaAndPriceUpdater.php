@@ -6,10 +6,14 @@ use Module\Integration\Traveline\Domain\Adapter\HotelAdapterInterface;
 use Module\Integration\Traveline\Domain\Api\Request\Update;
 use Module\Integration\Traveline\Domain\Api\Response\Error\AbstractTravelineError;
 use Module\Integration\Traveline\Domain\Api\Response\Error\InvalidCurrencyCode;
+use Module\Integration\Traveline\Domain\Api\Response\Error\InvalidRateAccomodation;
+use Module\Integration\Traveline\Domain\Api\Response\Error\InvalidRoomType;
 use Module\Integration\Traveline\Domain\Api\Response\Error\TravelineResponseErrorInterface;
 use Module\Integration\Traveline\Domain\Exception\HotelNotConnectedException;
 use Module\Integration\Traveline\Domain\Repository\HotelRepositoryInterface;
 use Module\Integration\Traveline\Domain\Service\HotelRoomCodeGeneratorInterface;
+use Module\Shared\Domain\Exception\DomainEntityExceptionInterface;
+use Module\Shared\Domain\Exception\ErrorCodeEnum;
 
 class QuotaAndPriceUpdater
 {
@@ -37,7 +41,14 @@ class QuotaAndPriceUpdater
         }
         $updateRequests = Update::collectionFromArray($updates, $this->codeGenerator);
         foreach ($updateRequests as $updateRequest) {
-            $this->handleRequest($updateRequest);
+            try {
+                $this->handleRequest($updateRequest);
+            } catch (\Throwable $e) {
+                if (!$e->getPrevious() instanceof DomainEntityExceptionInterface) {
+                    throw $e;
+                }
+                $this->errors[] = $this->convertExternalDomainCodeToApiError($e->getPrevious()->domainCode());
+            }
         }
         return $this->errors;
     }
@@ -53,7 +64,7 @@ class QuotaAndPriceUpdater
         }
 
         if ($updateRequest->hasPrices()) {
-            $isSupportedCurrency = $updateRequest->currencyCode !== env('DEFAULT_CURRENCY_CODE');
+            $isSupportedCurrency = $updateRequest->currencyCode === env('DEFAULT_CURRENCY_CODE');
             if ($isSupportedCurrency) {
                 $this->updatePrices($updateRequest);
             } else {
@@ -81,6 +92,9 @@ class QuotaAndPriceUpdater
     private function updatePrices(Update $updateRequest): void
     {
         foreach ($updateRequest->prices as $price) {
+            if ($price->price <= 0) {
+                continue;
+            }
             $this->adapter->updateRoomPrice(
                 $updateRequest->getDatePeriod(),
                 $price->roomId,
@@ -91,6 +105,14 @@ class QuotaAndPriceUpdater
                 $price->price,
             );
         }
+    }
+
+    private function convertExternalDomainCodeToApiError(ErrorCodeEnum $domainCode): AbstractTravelineError
+    {
+        return match ($domainCode) {
+            ErrorCodeEnum::RoomNotFound => new InvalidRoomType(),
+            ErrorCodeEnum::UnsupportedRoomGuestsNumber => new InvalidRateAccomodation(),
+        };
     }
 
 }
