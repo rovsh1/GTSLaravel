@@ -57,6 +57,7 @@ class TranslationTable
         $column = match ($type) {
             'integer' => $table->integer('translatable_id'),
             'smallint' => $table->smallInteger('translatable_id'),
+            'bigint' => $table->bigInteger('translatable_id'),
         };
         $column->unsigned();
     }
