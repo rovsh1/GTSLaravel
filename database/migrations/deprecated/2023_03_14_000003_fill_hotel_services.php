@@ -23,6 +23,8 @@ return new class extends Migration {
             ->addSelect('r_service_types.id')
             ->addSelect(DB::raw('(SELECT name FROM r_service_types_translation WHERE translatable_id=r_service_types.id AND language="ru") as name'))
             ->get();
+
+        $assoc = [];
         foreach ($q as $r) {
             $id = DB::table('r_enums')
                 ->insertGetId([
