@@ -31,7 +31,7 @@ class QuotaAndPriceUpdater
     /**
      * @param int $hotelId
      * @param array $updates
-     * @return AbstractTravelineError[]|null[]
+     * @return TravelineResponseErrorInterface[]
      * @throws HotelNotConnectedException
      */
     public function updateQuotasAndPlans(int $hotelId, array $updates): array
@@ -116,7 +116,7 @@ class QuotaAndPriceUpdater
         }
     }
 
-    private function convertExternalDomainCodeToApiError(ErrorCodeEnum $domainCode): AbstractTravelineError
+    private function convertExternalDomainCodeToApiError(ErrorCodeEnum $domainCode): TravelineResponseErrorInterface
     {
         return match ($domainCode) {
             ErrorCodeEnum::RoomNotFound => new InvalidRoomType(),

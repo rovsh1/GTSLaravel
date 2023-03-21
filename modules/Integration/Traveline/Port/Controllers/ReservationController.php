@@ -2,11 +2,11 @@
 
 namespace Module\Integration\Traveline\Port\Controllers;
 
-use Custom\Framework\Contracts\Bus\CommandBusInterface;
 use Custom\Framework\Port\Request;
-use Module\Integration\Traveline\Application\Command\ConfirmReservations;
+use Module\Integration\Traveline\Application\Service\Booking;
 use Module\Integration\Traveline\Application\Service\ReservationFinder;
 use Module\Integration\Traveline\Domain\Api\Response\EmptySuccessResponse;
+use Module\Integration\Traveline\Domain\Api\Response\ErrorResponse;
 use Module\Integration\Traveline\Domain\Api\Response\GetReservationsActionResponse;
 use Module\Integration\Traveline\Domain\Api\Response\HotelNotConnectedToChannelManagerResponse;
 use Module\Integration\Traveline\Domain\Exception\HotelNotConnectedException;
@@ -14,7 +14,7 @@ use Module\Integration\Traveline\Domain\Exception\HotelNotConnectedException;
 class ReservationController
 {
     public function __construct(
-        private CommandBusInterface $commandBus,
+        private Booking $bookingService,
         private ReservationFinder   $reservationFinder
     ) {}
 
@@ -47,9 +47,11 @@ class ReservationController
             'reservations.*.status' => 'required|string',
         ]);
 
-        $this->commandBus->execute(new ConfirmReservations($request->reservations));
-
-        return new EmptySuccessResponse();
+        $errors = $this->bookingService->confirmReservations($request->reservations);
+        if (empty($errors)) {
+            return new EmptySuccessResponse();
+        }
+        return new ErrorResponse($errors);
     }
 
 }

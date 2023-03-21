@@ -22,6 +22,7 @@ class ReservationAdapter extends AbstractPortAdapter implements ReservationAdapt
     {
         // TODO: Implement confirmReservation() method.
         //todo логика: помечаем флагом последнюю бронь по номеру и статусу
+        //todo логика проверки на наличие брони с таким кодом
     }
 
     public function getActiveReservations(): array
