@@ -2,6 +2,13 @@
 
 namespace App\Core\Components\Locale;
 
+/**
+ * @property string $code
+ * @property string $name
+ * @property bool $default
+ * @property string $hreflang
+ * @property string $locale
+ */
 class Language
 {
     protected array $data;

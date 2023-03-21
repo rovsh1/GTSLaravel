@@ -2,7 +2,9 @@
 
 namespace App\Admin\Support\View\Form\Element;
 
+use App\Admin\Support\Facades\Languages;
 use Gsdk\Form\Element\AbstractElement;
+use Gsdk\Form\Support\Element\InputAttributes;
 
 class LocaleText extends AbstractElement
 {
@@ -17,12 +19,13 @@ class LocaleText extends AbstractElement
             return null;
         }
 
-        $valueArr = [];
-        foreach (app('languages') as $l) {
-            $valueArr[$l->code] = $value[$l->code] ?? null;
+        $valueArray = [];
+        /** @var \App\Core\Components\Locale\Language $language */
+        foreach (Languages::all() as $language) {
+            $valueArray[$language->code] = $value[$language->code] ?? null;
         }
 
-        return $valueArr;
+        return $valueArray;
     }
 
     public function getLocaleInput($lang, $value): string
@@ -30,6 +33,7 @@ class LocaleText extends AbstractElement
         return '<input type="text"'
             . ' id="' . $this->getInputId() . '_' . $lang . '"'
             . ' name="' . $this->getInputName() . '[' . $lang . ']"'
+            . (new InputAttributes($this))->renderWithoutName($this->attributes)
             . ' class="field-locale form-control"'
             . ' value="' . htmlspecialchars($value) . '" data-lang="' . $lang . '">';
     }
@@ -41,7 +45,7 @@ class LocaleText extends AbstractElement
 
         /** @var \App\Core\Components\Locale\Language $language */
         $html .= '<div class="field-locale-inputs-wrapper">';
-        foreach (app('languages') as $language) {
+        foreach (Languages::all() as $language) {
             $html .= '<div class="field-locale-input-wrapper">';
             $iconUrl = asset("/images/flag/{$language->code}.svg");
             $html .= "<img src='{$iconUrl}' alt='{$language->code}'/>";
@@ -66,5 +70,16 @@ class LocaleText extends AbstractElement
         }
 
         return true;
+    }
+
+    public function rules(): array|string
+    {
+        $valueRules = parent::rules();
+        $rules = [];
+        /** @var \App\Core\Components\Locale\Language $language */
+        foreach (Languages::all() as $language) {
+            $rules[$this->name . '.' . $language->code] = $valueRules;
+        }
+        return $rules;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Admin\Models\Administrator;
 
+use Custom\Framework\Database\Eloquent\HasQuicksearch;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
@@ -9,6 +10,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class AccessGroup extends Model
 {
+    use HasQuicksearch;
+
+    protected array $quicksearch = ['id', 'name%'];
+
     public $timestamps = false;
 
     protected $table = 'administrator_access_groups';
@@ -19,6 +24,11 @@ class AccessGroup extends Model
         'members',
         'description'
     ];
+
+    public function getForeignKey()
+    {
+        return 'group_id';
+    }
 
     public function rules(): HasMany
     {
@@ -49,6 +59,16 @@ class AccessGroup extends Model
                 ->whereColumn('t.group_id', 'administrator_access_groups.id')
                 ->where('t.administrator_id', $user->id);
         });
+    }
+
+    public static function scopeWithAdministratorsCount($query)
+    {
+        $query->addSelect(
+            DB::raw(
+                '(SELECT count(*) FROM administrator_access_members as t'
+                . ' WHERE t.group_id=administrator_access_groups.id) as administrators_count'
+            )
+        );
     }
 
     public function __toString(): string

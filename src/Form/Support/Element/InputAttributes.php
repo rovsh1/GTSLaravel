@@ -32,6 +32,12 @@ class InputAttributes
     {
         $s = 'name="' . $this->element->getInputName() . '" id="' . $this->element->getInputId() . '"';
 
+        return $s .= $this->renderWithoutName($allowed);
+    }
+
+    public function renderWithoutName(array $allowed = null): string
+    {
+        $s = '';
         foreach (self::$attributesCasts as $k => $cast) {
             if (null === $allowed || in_array($k, $allowed)) {
                 $s .= $this->cast($this->element->$k, $cast, $k);

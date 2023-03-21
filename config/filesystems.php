@@ -83,11 +83,9 @@ return [
     */
 
     'links' => [
-        //base_path('apps/admin/public/storage') => storage_path('app/public'),
         root_path('apps/admin/public/upload') => storage_path('app/upload'),
-        root_path('apps/admin/public/file') => storage_path('app/files'),
-        //root_path('apps/site/public/upload') => storage_path('app/upload'),
-        //root_path('apps/site/public/file') => storage_path('app/files'),
+        root_path('apps/site/public/upload') => storage_path('app/upload'),
+        root_path('apps/site/public/file') => storage_path('app/files'),
     ],
 
 ];

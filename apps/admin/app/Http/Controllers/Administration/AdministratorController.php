@@ -2,10 +2,14 @@
 
 namespace App\Admin\Http\Controllers\Administration;
 
+use App\Admin\Models\Administrator\Post;
 use App\Admin\Support\Facades\Acl;
+use App\Admin\Support\Facades\Form;
+use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
-use App\Admin\Support\View\Form\Form;
-use App\Admin\Support\View\Grid\Grid;
+use App\Admin\Support\View\Form\Form as FormContract;
+use App\Admin\Support\View\Grid\Grid as GridContract;
+use Illuminate\Database\Eloquent\Builder;
 
 class AdministratorController extends AbstractPrototypeController
 {
@@ -14,17 +18,26 @@ class AdministratorController extends AbstractPrototypeController
         return 'administrator';
     }
 
-    protected function formFactory(): Form
+    protected function formFactory(): FormContract
     {
-        $form = (new Form('data'))
+        $method = request()->route()->getActionMethod();
+        $form = Form::name('data')
+            ->select('post_id', [
+                'label' => 'Должность',
+                'emptyItem' => '',
+                'items' => Post::get()
+            ])
             ->text('presentation', ['label' => 'Имя в системе', 'required' => true])
             ->text('login', ['label' => 'Логин', 'autocomplete' => 'username', 'required' => true])
             ->email('email', ['label' => 'Email', 'autocomplete' => 'email'])
             ->phone('phone', ['label' => 'Телефон'])
             //->addElement('status', 'enum', ['label' => 'Статус', 'enum' => UserStatus::class])
             //->addElement('image', 'image', ['label' => 'Аватар'])
-            ->password('password', ['label' => 'Пароль', 'autocomplete' => 'new-password', 'required' => false]);
-
+            ->password('password', [
+                'label' => 'Пароль',
+                'autocomplete' => 'new-password',
+                'required' => in_array($method, ['create', 'store'])
+            ]);
 
 //        if (app('acl')->isAllowed('update access-group')) {
 //            $form->select('groups', [
@@ -48,16 +61,23 @@ class AdministratorController extends AbstractPrototypeController
         return $form;
     }
 
-    protected function gridFactory(): Grid
+    protected function gridFactory(): GridContract
     {
-        return (new Grid())
-            ->enableQuicksearch()
+        return Grid::enableQuicksearch()
             ->paginator(self::GRID_LIMIT)
-            ->edit(['route' => $this->prototype->routeName('edit')])
+            ->edit($this->prototype)
             ->text('presentation', ['text' => 'Имя', 'order' => true])
             ->text('login', ['text' => 'Логин', 'order' => true])
+            ->text('post_name', ['text' => 'Должность', 'order' => true])
             //->addColumn('role', 'enum', ['text' => 'Роль', 'enum' => AccessRole::class, 'order' => true])
             ->email('email', ['text' => 'Email', 'order' => true])
             ->phone('phone', ['text' => 'Телефон']);
+    }
+
+    protected function prepareGridQuery(Builder $query)
+    {
+        $query
+            ->addSelect('administrators.*')
+            ->joinPost();
     }
 }

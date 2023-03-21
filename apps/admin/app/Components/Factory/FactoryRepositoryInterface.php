@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 interface FactoryRepositoryInterface extends RepositoryInterface
 {
-    public function find(int $id): Model;
+    public function find(int $id): ?Model;
 
     public function findOrFail(int $id): Model;
 
-    public function create(array $data): Model;
+    public function create(array $data): ?Model;
 
     public function update(int $id, array $data): bool;
 

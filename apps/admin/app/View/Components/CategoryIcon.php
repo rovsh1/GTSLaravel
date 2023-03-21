@@ -9,6 +9,7 @@ class CategoryIcon extends Icon
         'client' => 'person',
         'finance' => 'payments',
         'hotel' => 'hotel',
+        'data' => 'database',
         'reports' => 'bar_chart',
         'reservation' => 'airplane_ticket',
         'site' => 'language',

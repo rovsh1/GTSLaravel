@@ -8,6 +8,9 @@ use Gsdk\Form\Form;
 use Gsdk\Form\Label;
 use Gsdk\Form\Support\Element\RulesBuilder;
 
+/**
+ * @property string $name
+ */
 abstract class AbstractElement implements ElementInterface
 {
     protected array $options = [];

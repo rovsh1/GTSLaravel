@@ -2,13 +2,13 @@
 
 namespace App\Admin\Http\Controllers\Hotel;
 
-use App\Admin\Models\Hotel\Type;
 use App\Admin\Support\Facades\Form;
+use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Facades\Layout;
 use App\Admin\Support\Facades\Sidebar;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
-use App\Admin\Support\View\Grid\Grid;
+use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Grid\Search;
 use App\Admin\Support\View\Layout as LayoutContract;
 use App\Admin\View\Components\HotelRating;
@@ -21,6 +21,12 @@ class HotelController extends AbstractPrototypeController
     protected function getPrototypeKey(): string
     {
         return 'hotel';
+    }
+
+    public function index(): LayoutContract
+    {
+        Layout::script('hotel/main');
+        return parent::index();
     }
 
     public function create(): LayoutContract
@@ -48,21 +54,18 @@ class HotelController extends AbstractPrototypeController
     {
         return Form::city('city_id', ['label' => 'Город', 'required' => true, 'emptyItem' => ''])
             ->hotelType('type_id', ['label' => 'Тип отеля', 'required' => true, 'emptyItem' => ''])
-            ->checkbox('visible_for', ['label' => 'Виден только для B2B'])
+            ->checkbox('visible_for', ['label' => __('label.visible-for')])
             ->text('name', ['label' => 'Наименование', 'required' => true])
             ->hotelRating('rating', ['label' => 'Категория', 'emptyItem' => ''])
             ->hotelStatus('status', ['label' => 'Статус', 'emptyItem' => ''])
             ->text('address', ['label' => 'Адрес', 'required' => true])
             ->coordinates('coordinates', ['label' => 'Координаты', 'required' => true])
-            ->text('zipcode', ['label' => 'Индекс'])
-            ->method('post')
-            ->action($this->prototype->route('store'));
+            ->text('zipcode', ['label' => 'Индекс']);
     }
 
-    protected function gridFactory(): Grid
+    protected function gridFactory(): GridContract
     {
-        return (new Grid())
-            ->enableQuicksearch()
+        return Grid::enableQuicksearch()
             ->setSearchForm($this->searchForm())
             ->paginator(self::GRID_LIMIT)
             ->text('name', [
@@ -109,14 +112,16 @@ class HotelController extends AbstractPrototypeController
     private function searchForm()
     {
         return (new Search())
+            //@todo
             //->addElement('period', 'daterange', ['label' => 'Период договора'])
+            ->dateRange('period', ['label' => __('label.contract-period')])
             ->country('country_id', ['label' => __('label.country'), 'emptyItem' => ''])
-            ->hidden('city_id', ['label' => __('label.city')])
-            ->select('type_id', [
-                'label' => 'Тип',
-                'emptyItem' => '',
-                'items' => Type::get()
-            ])
+            ->hidden('city_id', ['label' => __('label.city'), 'emptyItem' => ''])
+            ->hotelType('type_id', ['label' => __('label.type'), 'emptyItem' => ''])
+            ->numRange('reservation_count', ['label' => 'Кол-во броней', 'placeholder' => [__('label.from'), __('label.to')]])
+            ->hotelStatus('status_id', ['label' => __('label.status'), 'emptyItem' => ''])
+            ->checkbox('visible_for', ['label' => __('label.visible-for')])
+            ->hotelRating('rating', ['label' => __('label.rating'), 'emptyItem' => ''])
 //            ->addElement('reservation_count', 'numrange', ['label' => 'Кол-во броней', 'placeholder' => ['от', 'до']])
 //            ->addElement('status', 'enum', [
 //                'label' => 'Статус',

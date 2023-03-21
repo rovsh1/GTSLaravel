@@ -33,6 +33,9 @@ trait HasTranslations
     public function scopeJoinTranslations($builder, $columns = null): void
     {
         $modelTable = with(new static)->getTable();
+        if (null === $columns) {
+            $columns = $builder->getModel()->translatable;
+        }
         $builder->joinTranslatable($modelTable, $columns, 'left');
     }
 
@@ -185,7 +188,7 @@ trait HasTranslations
                     ->where('translatable_id', $this->id)
                     ->where('language', $language)
                     ->update($data);
-            } else {
+            } elseif (array_filter($data)) {
                 Db::table($this->getTranslationTable())
                     ->insert(
                         array_merge($data, [

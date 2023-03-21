@@ -9,7 +9,7 @@ class UrlGenerator implements UrlGeneratorInterface
         private readonly PathGeneratorInterface $pathGenerator
     ) {}
 
-    public function url(string $guid, int $part = null): string
+    public function url(string $guid, int $part = null): ?string
     {
         return $this->baseUrl . '/file/' . $this->pathGenerator->relativePath($guid, $part);
     }

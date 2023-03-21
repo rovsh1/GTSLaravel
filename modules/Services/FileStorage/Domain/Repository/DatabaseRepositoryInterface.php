@@ -8,9 +8,9 @@ interface DatabaseRepositoryInterface
 {
     public function find(string $guid): ?File;
 
-    public function findEntityImage(string $fileType, ?int $entityId): ?File;
+    public function getEntityFile(string $fileType, ?int $entityId): ?File;
 
-    public function getEntityImages(string $fileType, ?int $entityId);
+    public function getEntityFiles(string $fileType, ?int $entityId);
 
     public function create(string $fileType, ?int $entityId, string $name = null): File;
 

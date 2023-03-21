@@ -19,11 +19,7 @@
                             <a href="{{ $cancelUrl }}" class="btn btn-cancel">Отмена</a>
                         @endif
                         <div class="spacer"></div>
-                        @if(isset($deleteUrl) && $deleteUrl)
-                            <a href="#" data-url="{{ $deleteUrl }}" class="btn btn-delete">
-                                <x-icon key="delete"/>
-                                Удалить</a>
-                        @endif
+                        <x-form.delete-button :url="$deleteUrl ?? null"/>
                     </div>
                 </form>
             </div>

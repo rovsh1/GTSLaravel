@@ -4,9 +4,10 @@ namespace App\Admin\Http\Controllers\Hotel;
 
 use App\Admin\Enums\Hotel\PriceList\StatusEnum;
 use App\Admin\Support\Facades\Form;
+use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
-use App\Admin\Support\View\Grid\Grid;
+use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Grid\Search;
 
 class PriceListController extends AbstractPrototypeController
@@ -16,10 +17,9 @@ class PriceListController extends AbstractPrototypeController
         return 'hotel-price-list';
     }
 
-    protected function gridFactory(): Grid
+    protected function gridFactory(): GridContract
     {
-        return (new Grid())
-            ->enableQuicksearch()
+        return Grid::enableQuicksearch()
             ->setSearchForm($this->searchForm())
             ->paginator(self::GRID_LIMIT)
             ->text('client_id', ['text' => 'Клиент', 'renderer' => fn($r, $v) => $r['client_name']])
@@ -37,9 +37,7 @@ class PriceListController extends AbstractPrototypeController
             ->currency('currency_id', ['label' => 'Валюта', 'required' => true])
             ->number('rate', ['label' => 'Курс', 'required' => true])
             //@todo добавить реализацию поля dateRange
-            ->dateRange('period', ['label' => 'Период действия', 'required' => true])
-            ->method('post')
-            ->action($this->prototype->route('store'));
+            ->dateRange('period', ['label' => 'Период действия', 'required' => true]);
     }
 
     private function searchForm()

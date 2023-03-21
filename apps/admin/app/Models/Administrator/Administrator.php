@@ -2,6 +2,7 @@
 
 namespace App\Admin\Models\Administrator;
 
+use App\Admin\Files\AdministratorAvatar;
 use App\Admin\Support\View\Sidebar\Menu\Group;
 use Custom\Framework\Database\Eloquent\HasQuicksearch;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -23,10 +24,10 @@ class Administrator extends Authenticatable
     protected $table = 'administrators';
 
     protected $fillable = [
+        'post_id',
         'presentation',
         'name',
         'surname',
-        'patronymic',
         'login',
         'password',
         'phone',
@@ -44,6 +45,10 @@ class Administrator extends Authenticatable
         //'remember_token',
     ];
 
+    protected $casts = [
+        'post_id' => 'int'
+    ];
+
     public $timestamps = true;
 
 //    protected static function boot()
@@ -55,6 +60,11 @@ class Administrator extends Authenticatable
 //            UserAvatar::scopeEntityColumn($builder, 'avatar');
 //        });
 //    }
+
+    public function avatar(): ?AdministratorAvatar
+    {
+        return AdministratorAvatar::findByEntity($this->id);
+    }
 
     public function accessGroups()
     {
@@ -124,6 +134,13 @@ class Administrator extends Authenticatable
 //                ->where('g.role', $role);
 //        });
 //    }
+
+    public static function scopeJoinPost($query)
+    {
+        $query
+            ->leftJoin('r_enums', 'r_enums.id', '=', 'administrators.post_id')
+            ->joinTranslatable('r_enums', 'name as post_name');
+    }
 
     public static function scopeWhereLogin($query, $login)
     {

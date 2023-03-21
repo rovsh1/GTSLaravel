@@ -2,23 +2,24 @@
 
 namespace App\Admin\Support\Http\Controllers;
 
-use App\Admin\Support\View\Form\Form;
-use App\Admin\Support\View\Grid\Grid;
+use App\Admin\Support\Facades\Form;
+use App\Admin\Support\Facades\Grid;
+use App\Admin\Support\View\Form\Form as FormContract;
+use App\Admin\Support\View\Grid\Grid as GridContract;
 
 abstract class AbstractEnumController extends AbstractPrototypeController
 {
-    protected function formFactory(): Form
+    protected function formFactory(): FormContract
     {
-        return (new Form('data'))
-            ->text('name', ['label' => 'Наименование', 'required' => true]);
+        return Form::name('data')
+            ->localeText('name', ['label' => 'Наименование', 'required' => true]);
     }
 
-    protected function gridFactory(): Grid
+    protected function gridFactory(): GridContract
     {
-        return (new Grid())
-            ->enableQuicksearch()
+        return Grid::enableQuicksearch()
             ->paginator(self::GRID_LIMIT)
-            ->edit(['route' => $this->prototype->routeName('edit')])
+            ->edit($this->prototype)
             ->text('name', ['text' => 'Наименование', 'order' => true])
             ->orderBy('name', 'asc');
     }

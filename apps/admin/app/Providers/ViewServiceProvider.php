@@ -5,6 +5,7 @@ namespace App\Admin\Providers;
 use App\Admin\Helpers;
 use App\Admin\Support\View as ViewNamespace;
 use App\Admin\Support\View\Grid as GridNamespace;
+use App\Admin\View\Components;
 use Gsdk\Form as FormNamespace;
 use Gsdk\Meta\MetaServiceProvider;
 use Illuminate\Support\Facades\Blade;
@@ -26,6 +27,8 @@ class ViewServiceProvider extends ServiceProvider
 
     private function registerGrid()
     {
+        $this->app->bind('grid', fn($app) => new GridNamespace\Grid());
+
         GridNamespace\Grid::registerNamespace(GridNamespace::class . '\\Column');
         GridNamespace\Grid::setDefaults([
             'emptyText' => 'Записи отсутствуют'
@@ -34,6 +37,8 @@ class ViewServiceProvider extends ServiceProvider
 
     private function registerForm()
     {
+        $this->app->bind('form', fn($app) => new ViewNamespace\Form\Form('data'));
+
         FormNamespace\Form::registerNamespace('App\Admin\Support\View\Form\Element');
         FormNamespace\Form::setElementDefaults([
             //'view' => 'layouts.ui.form.field'
@@ -68,8 +73,6 @@ class ViewServiceProvider extends ServiceProvider
         $this->app->singleton('layout', ViewNamespace\Layout::class);
         class_alias(Helpers\Layout::class, 'Layout');
 
-        $this->app->bind('form', fn($app) => new ViewNamespace\Form\Form('data'));
-
         $this->app->singleton('sitemap', ViewNamespace\Sitemap\Sitemap::class);
 
         $this->app->singleton('sidebar', ViewNamespace\Sidebar\Sidebar::class);
@@ -94,9 +97,12 @@ class ViewServiceProvider extends ServiceProvider
 
     private function registerComponents()
     {
-        Blade::component('icon', \App\Admin\View\Components\Icon::class);
-        Blade::component('category-icon', \App\Admin\View\Components\CategoryIcon::class);
-        Blade::component('tab', \App\Admin\View\Components\Tab::class);
-        //Blade::componentNamespace('App\\Admin\\Views\\Components', 'admin');
+        Blade::component('icon', Components\Icon::class);
+        Blade::component('category-icon', Components\CategoryIcon::class);
+        Blade::component('tab', Components\Tab::class);
+        Blade::component('file-image', Components\FileImage::class);
+        Blade::component('user-avatar', Components\UserAvatar::class);
+        Blade::component('form.delete-button', Components\Form\DeleteButton::class);
+        //Blade::componentNamespace('App\\Admin\\Views\\Components\\Form', 'form');
     }
 }

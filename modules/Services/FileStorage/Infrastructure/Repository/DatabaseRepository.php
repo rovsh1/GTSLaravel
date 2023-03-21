@@ -10,7 +10,7 @@ use Module\Services\FileStorage\Infrastructure\Model\File as Model;
 
 class DatabaseRepository implements DatabaseRepositoryInterface
 {
-    public function __construct(private readonly StorageRepositoryInterface $storageRepository) {}
+    public function __construct(private readonly StorageRepositoryInterface $storageRepository) { }
 
     public function find(string $guid): ?File
     {
@@ -19,7 +19,7 @@ class DatabaseRepository implements DatabaseRepositoryInterface
         return $model ? DataMapper::modelToFile($model) : null;
     }
 
-    public function findEntityImage(string $fileType, ?int $entityId): ?File
+    public function getEntityFile(string $fileType, ?int $entityId): ?File
     {
         $model = Model::whereType($fileType)
             ->whereEntity($entityId)
@@ -28,7 +28,7 @@ class DatabaseRepository implements DatabaseRepositoryInterface
         return $model ? DataMapper::modelToFile($model) : null;
     }
 
-    public function getEntityImages(string $fileType, ?int $entityId)
+    public function getEntityFiles(string $fileType, ?int $entityId)
     {
         return Model::whereType($fileType)
             ->whereEntity($entityId)
@@ -77,8 +77,9 @@ class DatabaseRepository implements DatabaseRepositoryInterface
     private function tryFindModel(string $guid): Model
     {
         $model = Model::findByGuid($guid);
-        if (!$model)
+        if (!$model) {
             throw new EntityNotFoundException('File [' . $guid . '] not found');
+        }
 
         return $model;
     }

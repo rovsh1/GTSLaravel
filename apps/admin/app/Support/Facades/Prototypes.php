@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static array all()
+ * @method static void  add(\App\Admin\Components\Factory\Prototype $prototype)
  * @method static \App\Admin\Components\Factory\Prototype get(string $key)
  * @method static bool has(string $key)
  *

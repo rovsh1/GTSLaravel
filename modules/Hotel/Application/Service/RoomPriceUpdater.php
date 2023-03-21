@@ -4,7 +4,12 @@ namespace Module\Hotel\Application\Service;
 
 use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
+use Custom\Framework\Contracts\Bus\QueryBusInterface;
+use Module\Hotel\Application\Dto\Info\RoomDto;
+use Module\Hotel\Application\Query\GetRoomById;
 use Module\Hotel\Domain\Entity\Season;
+use Module\Hotel\Domain\Exception\Room\RoomNotFound;
+use Module\Hotel\Domain\Exception\Room\UnsupportedRoomGuestsNumber;
 use Module\Hotel\Domain\Repository\RoomPriceRepositoryInterface;
 use Module\Hotel\Domain\Repository\SeasonRepositoryInterface;
 
@@ -13,6 +18,7 @@ class RoomPriceUpdater
     public function __construct(
         private readonly RoomPriceRepositoryInterface $roomPriceRepository,
         private readonly SeasonRepositoryInterface    $seasonRepository,
+        private readonly QueryBusInterface            $queryBus,
         private array                                 $hotelSeasons = [],
     ) {}
 
@@ -30,6 +36,14 @@ class RoomPriceUpdater
             return;
         }
 
+        /** @var RoomDto $room */
+        $room = $this->queryBus->execute(new GetRoomById($roomId));
+        if ($room === null) {
+            throw new RoomNotFound("Room with id {$roomId} not found");
+        }
+        if ($guestsNumber <= 0 || $guestsNumber > $room->guestsNumber) {
+            throw new UnsupportedRoomGuestsNumber("Unsupported guests number {$guestsNumber} for room with id {$roomId}");
+        }
         foreach ($period as $date) {
             $seasonId = $this->getSeasonIdByDate($date);
             if ($seasonId === null) {

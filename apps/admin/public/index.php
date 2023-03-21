@@ -47,6 +47,11 @@ require APP_ROOT . '/vendor/autoload.php';
 
 $app = require_once APP_ROOT . '/bootstrap/app.php';
 
+$app->singleton(
+    Illuminate\Contracts\Debug\ExceptionHandler::class,
+    App\Admin\Exceptions\Handler::class
+);
+
 $app->setBasePath(dirname(__DIR__));
 $app->setNamespace('App\\Admin\\');
 

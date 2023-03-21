@@ -3,11 +3,15 @@
 namespace App\Admin\Http\Controllers\Administration;
 
 use App\Admin\Models\Administrator\Administrator;
+use App\Admin\Support\Facades\Breadcrumb;
+use App\Admin\Support\Facades\Form;
+use App\Admin\Support\Facades\Grid;
+use App\Admin\Support\Facades\Layout;
 use App\Admin\Support\Facades\Prototypes;
 use App\Admin\Support\Facades\Sitemap;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
-use App\Admin\Support\View\Form\Form;
-use App\Admin\Support\View\Grid\Grid;
+use App\Admin\Support\View\Form\Form as FormContract;
+use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Layout as LayoutContract;
 
 class AccessGroupController extends AbstractPrototypeController
@@ -15,6 +19,17 @@ class AccessGroupController extends AbstractPrototypeController
     protected function getPrototypeKey(): string
     {
         return 'access-group';
+    }
+
+    public function create(): LayoutContract
+    {
+        return parent::create()
+            ->ss('administration/access-group-form')
+            ->view('administration.access-group-form', [
+                'permissions' => $this->getPermissionsArray(fn() => []),
+                'categories' => Sitemap::getCategories(),
+                'default' => 'reservation',
+            ]);
     }
 
     public function edit(int $id): LayoutContract
@@ -28,6 +43,50 @@ class AccessGroupController extends AbstractPrototypeController
                 ->all();
         };
 
+        return parent::edit($id)
+            ->ss('administration/access-group-form')
+            ->view('administration.access-group-form', [
+                'categories' => Sitemap::getCategories(),
+                'permissions' => $this->getPermissionsArray($allowed),
+                'default' => 'reservation',
+            ]);
+    }
+
+    protected function formFactory(): FormContract
+    {
+        return Form::name('data')
+            ->hidden('rules', ['render' => false])
+            ->text('name', ['label' => 'Наименование', 'required' => true])
+            //->addElement('role', 'enum', ['label' => 'Роль', 'emptyItem' => '', 'enum' => AccessRole::class])
+            ->select('members', [
+                'label' => 'Администраторы',
+                'textIndex' => 'presentation',
+                'items' => Administrator::get(),
+                'multiple' => true
+            ])
+            ->textarea('description', ['label' => 'Описание', 'required' => true])//->hidden('name1', ['label1' => 'Наименование', 'required' => true])
+            ;
+    }
+
+    protected function gridFactory(): GridContract
+    {
+        return Grid::enableQuicksearch()
+            ->paginator(self::GRID_LIMIT)
+            ->edit($this->prototype)
+            ->text('name', ['text' => 'Наименование', 'order' => true])
+            //->addColumn('role', 'enum', ['text' => 'Роль', 'enum' => AccessRole::class])
+            ->text('description', ['text' => 'Расшифровка'])
+            ->number('administrators_count', ['text' => 'Администраторы', 'format' => 'NFD=0']);
+    }
+
+    protected function prepareGridQuery($query)
+    {
+        $query->addSelect('administrator_access_groups.*')
+            ->withAdministratorsCount();
+    }
+
+    private function getPermissionsArray(\Closure $allowed): array
+    {
         $permissions = [];
         foreach (Prototypes::all() as $prototype) {
             $permissions[$prototype->routeName('index')] = (object)[
@@ -36,40 +95,6 @@ class AccessGroupController extends AbstractPrototypeController
                 'available' => $prototype->permissions()
             ];
         }
-
-        return parent::edit($id)
-            ->ss('administration/access-group-form')
-            ->data([
-                'categories' => Sitemap::getCategories(),
-                'permissions' => $permissions,
-                'default' => 'reservation',
-            ]);
-    }
-
-    protected function formFactory(): Form
-    {
-        return (new Form('data'))
-            ->addElement('rules', 'hidden', ['render' => false])
-            ->addElement('name', 'text', ['label' => 'Наименование', 'required' => true])
-            //->addElement('role', 'enum', ['label' => 'Роль', 'emptyItem' => '', 'enum' => AccessRole::class])
-            ->addElement('members', 'select', [
-                'label' => 'Администраторы',
-                'textIndex' => 'presentation',
-                'items' => Administrator::get(),
-                'multiple' => true
-            ])
-            ->addElement('description', 'textarea', ['label' => 'Описание', 'required' => true])//->hidden('name1', ['label1' => 'Наименование', 'required' => true])
-            ;
-    }
-
-    protected function gridFactory(): Grid
-    {
-        return (new Grid())
-            ->enableQuicksearch()
-            ->paginator(self::GRID_LIMIT)
-            ->edit(['route' => $this->prototype->routeName('edit')])
-            ->addColumn('name', 'text', ['text' => 'Наименование'])
-            //->addColumn('role', 'enum', ['text' => 'Роль', 'enum' => AccessRole::class])
-            ->addColumn('description', 'text', ['text' => 'Расшифровка']);
+        return $permissions;
     }
 }

@@ -30,7 +30,7 @@ class AccessRule extends Model
     public static function scopeWhereAdministrator($query, int $id)
     {
         $query
-            ->join('administrator_access_groups', 'administrator_access_groups.id', '=', 'administrator_access_rules')
+            ->join('administrator_access_groups', 'administrator_access_groups.id', '=', 'administrator_access_rules.group_id')
             ->whereExists(function ($query) use ($id) {
                 $query->select(DB::raw(1))
                     ->from('administrator_access_members as t')

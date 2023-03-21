@@ -2,6 +2,7 @@
 
 namespace Module\Integration\Traveline\Domain\Service;
 
+use Module\Integration\Traveline\Domain\Exception\InvalidHotelRoomCode;
 use Module\Integration\Traveline\Domain\ValueObject\HotelRoomCode;
 
 class HotelRoomCodeGenerator implements HotelRoomCodeGeneratorInterface
@@ -15,7 +16,14 @@ class HotelRoomCodeGenerator implements HotelRoomCodeGeneratorInterface
 
     public function parseRoomCode(string $code): HotelRoomCode
     {
-        [$roomId, $guestsNumber] = explode(self::ROOM_CODE_SEPARATOR, $code);
+        try {
+            [$roomId, $guestsNumber] = explode(self::ROOM_CODE_SEPARATOR, $code);
+        } catch (\Throwable $e) {
+            throw new InvalidHotelRoomCode();
+        }
+        if (!is_numeric($roomId) || !is_numeric($guestsNumber)) {
+            throw new InvalidHotelRoomCode();
+        }
         return new HotelRoomCode($roomId, $guestsNumber);
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Admin\Providers;
 
+use App\Admin\Support\Facades\AclRoute;
+use App\Admin\Support\Facades\Prototypes;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
 
@@ -24,8 +26,23 @@ class RouteServiceProvider extends ServiceProvider
         Route::pattern('id', '[0-9]+');
 
         $this->routes(function () {
-            Route::middleware(['web', 'admin'])
+            Route::prefix('api')
+                ->middleware('api')
+                ->group(base_path('routes/api.php'));
+
+            $routeRegistrar = Route::middleware(['web', 'admin'])
                 ->group(base_path('routes/boot.php'));
+
+            $this->registerPrototypesRoutes();
+
+            app('acl.router')->registerRoutes($routeRegistrar);
         });
+    }
+
+    private function registerPrototypesRoutes()
+    {
+        foreach (Prototypes::all() as $prototype) {
+            AclRoute::resource($prototype->key, $prototype->config('controller'), $prototype->config('routeOptions') ?? []);
+        }
     }
 }

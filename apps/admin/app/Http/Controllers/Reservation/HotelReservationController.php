@@ -2,22 +2,23 @@
 
 namespace App\Admin\Http\Controllers\Reservation;
 
+use App\Admin\Support\Facades\Form;
+use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
-use App\Admin\Support\View\Form\Form;
-use App\Admin\Support\View\Grid\Grid;
+use App\Admin\Support\View\Form\Form as FormContract;
+use App\Admin\Support\View\Grid\Grid as GridContract;
 
 class HotelReservationController extends AbstractPrototypeController
 {
-    protected function gridFactory(): Grid
+    protected function gridFactory(): GridContract
     {
-        return (new Grid())
-            ->enableQuicksearch()
+        return Grid::enableQuicksearch()
             ->paginator(20);
     }
 
-    protected function formFactory(): Form
+    protected function formFactory(): FormContract
     {
-        return (new Form('data'))
+        return Form::name('data')
             ->city('city_id', [
                 'label' => __('label.city'),
                 'emptyItem' => '',

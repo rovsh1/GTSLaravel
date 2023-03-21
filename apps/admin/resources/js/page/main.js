@@ -5,6 +5,13 @@ import "../vendor/jquery.cookie";
 import "../app/support/functions";
 import "../app/helpers";
 
+import "../plugins/ui/dialog/helpers"
+import "../plugins/ui/multiselect"
+import "../plugins/moment"
+import "../plugins/ui/daterangepicker"
+import "../plugins/ui/childCombo"
+import "../plugins/ui/form/element"
+
 /*
 import "../vendor/jquery.mask"
 
@@ -16,14 +23,20 @@ Object.assign($.fn, {});
 Object.assign(window, {});
 */
 
-import bootLayout from "../app/providers/layout";
+import bootSitemap from "../app/providers/sitemap";
 import bootCookies from "../app/providers/cookies";
+import bootForms from "../app/providers/forms";
+import bootGrid from "../app/providers/grids";
 
 $(document).ready(function () {
-    $.ajaxSetup({
-        headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
-    });
+	$.ajaxSetup({
+		headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
+	});
 
-    bootLayout();
-    bootCookies();
+	bootSitemap();
+	bootCookies();
+	bootForms();
+	bootGrid();
+
+	document.body.classList.add('loaded');
 });

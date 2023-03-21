@@ -16,24 +16,25 @@ class City extends Model
     public $timestamps = false;
 
     protected array $quicksearch = ['id', 'name%'];
-    protected array $translatable = ['name', 'text'];
+
+    protected array $translatable = ['name'];
 
     protected $table = 'r_cities';
 
     protected $fillable = [
         'name',
         'country_id',
-        'text'
+        //'text'
     ];
 
     public static function booted()
     {
         static::addGlobalScope('default', function (Builder $builder) {
             $builder
-                ->addSelect('r_cities.*')
+                ->addSelect(['r_cities.id', 'r_cities.country_id'])
                 ->join('r_countries', 'r_countries.id', '=', 'r_cities.country_id')
                 ->joinTranslatable('r_countries', 'name as country_name')
-                ->joinTranslations($builder->getModel()->translatable)
+                ->joinTranslations()
                 //TODO add priority column
                 //->orderBy('priority', 'desc')
                 ->orderBy('name', 'asc');

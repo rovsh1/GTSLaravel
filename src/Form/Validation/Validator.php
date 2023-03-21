@@ -109,7 +109,12 @@ class Validator
 
         foreach ($this->form->getElements() as $element) {
             if (!isset($rules[$element->name])) {
-                $rules[$element->name] = $element->rules($element);
+                $elementRules = $element->rules($element);
+                if (is_array($elementRules) && !isset($elementRules[0])) {
+                    $rules = array_merge($rules, $elementRules);
+                } else {
+                    $rules[$element->name] = $elementRules;
+                }
             }
         }
 

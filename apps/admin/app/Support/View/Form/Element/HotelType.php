@@ -2,7 +2,7 @@
 
 namespace App\Admin\Support\View\Form\Element;
 
-use App\Admin\Models\Hotel\Type as Model;
+use App\Admin\Models\Hotel\Reference\Type as Model;
 use Gsdk\Form\Element\Select;
 
 class HotelType extends Select
