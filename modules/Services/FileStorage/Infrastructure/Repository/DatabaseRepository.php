@@ -10,8 +10,6 @@ use Module\Services\FileStorage\Infrastructure\Model\File as Model;
 
 class DatabaseRepository implements DatabaseRepositoryInterface
 {
-    public function __construct(private readonly StorageRepositoryInterface $storageRepository) { }
-
     public function find(string $guid): ?File
     {
         $model = Model::findByGuid($guid);
@@ -56,22 +54,16 @@ class DatabaseRepository implements DatabaseRepositoryInterface
     {
         $model = $this->tryFindModel($guid);
 
-        $this->storageRepository->delete($guid);
-
         $model->delete();
 
         return true;
     }
 
-    public function put(string $guid, string $contents): bool
+    public function touch(string $guid): void
     {
         $model = $this->tryFindModel($guid);
 
-        $this->storageRepository->put($guid, $contents);
-
         $model->touch();
-
-        return true;
     }
 
     private function tryFindModel(string $guid): Model

@@ -92,15 +92,24 @@ function bootDateRangePicker() {
 }
 
 function bootFileFields() {
-	$('div.field-file div.thumb a.btn-remove').click(function (e) {
+	$('div.field-file div.thumb div.btn-remove').click(function (e) {
 		e.preventDefault();
 		const thumb = $(this).parent();
 
-		thumb.addClass('loading');
+		MessageConfirm('Подверждение удаления', 'Файл будет удален без возможности восстановления, продолжить?', () => {
+			thumb.addClass('loading');
 
-		$.ajax({
-			url: $(this).data('url'),
-			method: 'delete'
+			$.ajax({
+				url: $(this).data('url'),
+				method: 'delete',
+				success: (r) => {
+					const wrap = thumb.parent();
+					thumb.remove();
+					if (wrap.find('>div').length === 0) {
+						wrap.remove();
+					}
+				}
+			});
 		});
 	});
 }

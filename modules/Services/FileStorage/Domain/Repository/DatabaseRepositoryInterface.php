@@ -18,5 +18,5 @@ interface DatabaseRepositoryInterface
 
     public function delete(string $guid): bool;
 
-    public function put(string $guid, string $contents): bool;
+    public function touch(string $guid): void;
 }

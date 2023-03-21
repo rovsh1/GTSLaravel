@@ -48,7 +48,7 @@ class Image extends File
         if ($this->file) {
             $html .= '<div class="thumbs">'
                 . '<div class="thumb">'
-                . ($this->deleteRoute ? '<a href="#" data-url="' . route($this->deleteRoute, ['guid' => $this->file->guid()]) . '" class="btn-remove"></a>' : '')
+                . ($this->deleteRoute ? '<div data-url="' . route($this->deleteRoute, ['guid' => $this->file->guid()]) . '" title="Удалить файл" class="btn-remove"></div>' : '')
                 . '<a href="' . $this->file->url() . '" target="_blank">' . (new FileImage($this->file))->render() . '</a>'
                 . '</div>'
                 . '</div>';

@@ -16,9 +16,9 @@ class DeleteFileHandler implements CommandHandlerInterface
 
     public function handle(CommandInterface|DeleteFile $command): bool
     {
-        $this->databaseRepository->delete($command->guid);
-
         $this->storageRepository->delete($command->guid);
+
+        $this->databaseRepository->delete($command->guid);
 
         return true;
     }
