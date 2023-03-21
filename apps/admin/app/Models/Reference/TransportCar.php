@@ -1,42 +1,39 @@
 <?php
 
-namespace App\Admin\Models\Reservation;
+namespace App\Admin\Models\Reference;
 
 use Custom\Framework\Database\Eloquent\HasQuicksearch;
 use Custom\Framework\Database\Eloquent\HasTranslations;
 use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
-class TransportType extends Model
+class TransportCar extends Model
 {
     use HasQuicksearch;
-    use HasTranslations;
 
     public $timestamps = false;
 
-    protected array $quicksearch = ['id', 'name%'];
+    protected array $quicksearch = ['id', 'mark%', 'model%'];
 
-    protected array $translatable = ['name'];
-
-    protected $table = 'r_transport_types';
+    protected $table = 'r_transport_cars';
 
     protected $fillable = [
-        'name',
-        'color',
+        'mark',
+        'model',
     ];
 
     public static function booted()
     {
         static::addGlobalScope('default', function (Builder $builder) {
             $builder
-                ->addSelect('r_transport_types.*')
-                ->joinTranslations()
-                ->orderBy('name', 'asc');
+                ->addSelect('r_transport_cars.*')
+                ->join('r_transport_types', 'r_transport_types.id', '=', 'r_transport_cars.type_id')
+                ->joinTranslatable('r_transport_types', 'name as type_name');
         });
     }
 
     public function __toString()
     {
-        return (string)$this->name;
+        return $this->mark . ' ' . $this->model;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Http\Controllers\Reservation;
+namespace App\Admin\Http\Controllers\Data;
 
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Grid;
