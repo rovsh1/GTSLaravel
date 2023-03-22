@@ -8,15 +8,21 @@ use Illuminate\Database\Eloquent\Collection;
 use Module\Integration\Traveline\Application\Dto\ReservationDto;
 use Module\Integration\Traveline\Domain\Adapter\ReservationAdapterInterface;
 use Module\Integration\Traveline\Infrastructure\Models\Legacy\TravelineReservation;
+use Module\Reservation\Common\Domain\Exception\ReservationNotFound;
 
 class ReservationAdapter implements ReservationAdapterInterface
 {
     /**
      * @param int $id
      * @return void
+     * @throws \Throwable
      */
     public function confirmReservation(int $id, string $status): void
     {
+        $existReservation = TravelineReservation::whereReservationId($id)->exists();
+        if (!$existReservation) {
+            throw new \Exception('Traveline reservation not found', 0, new ReservationNotFound());
+        }
         TravelineReservation::whereReservationId($id)
             ->whereStatus($status)
             ->update(['accepted_at' => now()]);
