@@ -1,0 +1,54 @@
+@use "../../abstracts/mixins/scrollbar";
+@use "../../variables";
+
+.ui-multiselect {
+	display: inline-block;
+	vertical-align: top;
+	width: 300px;
+	font-size: 12px;
+	position: relative;
+	user-select: none;
+	&.disabled {opacity: .6;}
+	div.value {
+		width: 100%;
+		cursor: default;
+		position: relative;
+		&:after {
+			//content: "";
+			//position: absolute;
+			//top: 50%;
+			//right: 9px;
+			//display: block;
+			//width: 9px;
+			//height: 9px;
+			//background: url("/images/ui/down-arrow.svg") 98% 50% no-repeat;
+			//background-size: 9px 9px;
+			//transition: transform ease 0.2s;
+			//margin-top: -5px;
+		}
+		.select {display: none;font-size: 11px;color: variables.$primary;text-decoration: underline;position: absolute;top: 50%;height: 12px;line-height: 12px;margin-top: -6px;right: 24px;cursor: pointer;}
+		.select:hover {text-decoration: none;}
+
+	}
+	//&.expanded div.value:after {transform: rotate(180deg);}
+	&.expanded div.value .select {display: block;}
+
+	.dropdown-menu {
+		width: 100%;
+		overflow: auto;
+		max-height: 300px;
+		.dropdown-item {padding: 4px 16px;cursor: pointer;line-height: 24px;}
+		//.dropdown-item.active:after {content: "";display: block;width: 10px;height: 10px;background: url("/images/ui/checkmark.svg") 50% 50% no-repeat;background-size: contain;top: 50%;right: 16px;margin-top: -5px;position: absolute;}
+		div.group div.label {padding: 5px 16px;font-weight: 600;}
+		div.group .dropdown-item {padding-left: 32px;}
+	}
+	&.expanded .dropdown-menu {display: block;}
+}
+
+
+@media (prefers-color-scheme: dark) {
+	//div.multiselect div.item.selected,
+	//div.multiselect div.item:hover {background: #3F4042;}
+	//
+	//div.multiselect div.value:after {background-image: url("data:image/svg+xml,%0A%3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' viewBox='0 0 490.656 490.656' style='enable-background:new 0 0 490.656 490.656;' fill='white' xml:space='preserve'%3E%3Cg%3E%3Cpath d='M487.536,120.445c-4.16-4.16-10.923-4.16-15.083,0L245.339,347.581L18.203,120.467c-4.16-4.16-10.923-4.16-15.083,0 c-4.16,4.16-4.16,10.923,0,15.083l234.667,234.667c2.091,2.069,4.821,3.115,7.552,3.115s5.461-1.045,7.531-3.136l234.667-234.667 C491.696,131.368,491.696,124.605,487.536,120.445z'/%3E%3C/g%3E%3C/svg%3E%0A");}
+}

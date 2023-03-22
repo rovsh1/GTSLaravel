@@ -4,7 +4,7 @@
             @foreach($categories as $category)
                 <div data-category="{{ $category->key }}" class="item{{ $sitemap->isCurrent($category) ? ' current' : '' }}">
                     <a href="#" title="{{ $category->title }}">
-                        <x-category-icon :key="$category->key"/>
+                        <x-icon :key="$category->key"/>
                     </a>
                 </div>
             @endforeach

@@ -8,10 +8,9 @@ return new class extends Migration {
     public function up()
     {
         Schema::create('r_landmark_types', function (Blueprint $table) {
-            $table->smallInteger('id')->unsigned()->autoIncrement();
+            $table->smallIncrements('id');
             $table->string('alias', 50);
             $table->string('name', 50);
-//            $table->boolean('city_status')->default(false);
         });
     }
 

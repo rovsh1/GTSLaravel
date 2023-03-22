@@ -1,0 +1,18 @@
+@use "../../variables";
+
+.card-grid {
+	white-space: nowrap;
+	.card-header {line-height: 32px;}
+	.card-body {
+		padding: .5rem 0 1rem 0;
+		& > table {
+			margin: 0;
+			line-height: 20px;
+			td:first-child, th:first-child {padding-left: 1rem;}
+			td:last-child, th:last-child {padding-right: 1rem;}
+		}
+	}
+	.card-header + .card-body {padding-top: 0;}
+}
+
+.grid-empty-text {text-align: center;font-size: 14px;color: variables.$secondary;padding: 1rem;}

@@ -2,6 +2,7 @@
 
 namespace App\Admin\Providers;
 
+use App\Admin\Support\Format\ContactRule;
 use Gsdk\Format\FormatServiceProvider as ServiceProvider;
 
 class FormatServiceProvider extends ServiceProvider
@@ -16,6 +17,14 @@ class FormatServiceProvider extends ServiceProvider
     ];
 
     protected $rules = [
+        'contact' => ContactRule::class
         //'price' => \Gsdk\Format\Rules\Number::class
     ];
+
+    public function register()
+    {
+        parent::register();
+
+        class_alias(\Gsdk\Format\Format::class, 'Format');
+    }
 }

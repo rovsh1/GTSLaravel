@@ -98,8 +98,8 @@ class ViewServiceProvider extends ServiceProvider
     private function registerComponents()
     {
         Blade::component('icon', Components\Icon::class);
-        Blade::component('category-icon', Components\CategoryIcon::class);
-        Blade::component('tab', Components\Tab::class);
+        Blade::component('ui.tab', Components\UI\Tab::class);
+        Blade::component('ui.add-button', Components\UI\AddButton::class);
         Blade::component('file-image', Components\FileImage::class);
         Blade::component('user-avatar', Components\UserAvatar::class);
         Blade::component('form.delete-button', Components\Form\DeleteButton::class);

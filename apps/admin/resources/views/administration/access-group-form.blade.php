@@ -11,8 +11,8 @@
         <div class="card card-form">
             <div class="card-header">
                 <ul class="nav nav-tabs card-header-tabs" role="tablist">
-                    <x-tab target="main" active="true">Основные</x-tab>
-                    <x-tab target="rules">Правила</x-tab>
+                    <x-ui.tab target="main" active="true">Основные</x-ui.tab>
+                    <x-ui.tab target="rules">Правила</x-ui.tab>
                 </ul>
             </div>
             <div class="card-body">

@@ -14,7 +14,7 @@
 
     <div class="main-menu-wrapper">
         <div class="sidebar-header">
-            <x-category-icon :key="$category->key"/>
+            <x-icon :key="$category->key"/>
             <div class="title">{{ $category->title }}</div>
         </div>
 
