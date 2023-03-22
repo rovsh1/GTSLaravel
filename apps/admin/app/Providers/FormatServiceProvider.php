@@ -2,7 +2,9 @@
 
 namespace App\Admin\Providers;
 
+use App\Admin\Support\Facades\Format;
 use App\Admin\Support\Format\ContactRule;
+use App\Admin\Support\Format\PriceRule;
 use Gsdk\Format\FormatServiceProvider as ServiceProvider;
 
 class FormatServiceProvider extends ServiceProvider
@@ -12,19 +14,18 @@ class FormatServiceProvider extends ServiceProvider
         'price' => 'NFD=2;NDS=,;NGS= ;',
         'number' => 'ND=7;NFD=;NGS= ;',
         'boolean' => 'BT=Да;BF=Нет',
-        //'date' => 'd.m.Y H:i',
         //'filesize' => 'FU=байт,Кб,Мб,Гб;FFD=1;FDS=,;FGS= ;'
     ];
 
     protected $rules = [
-        'contact' => ContactRule::class
-        //'price' => \Gsdk\Format\Rules\Number::class
+        'contact' => ContactRule::class,
+        'price' => PriceRule::class
     ];
 
     public function register()
     {
         parent::register();
 
-        class_alias(\Gsdk\Format\Format::class, 'Format');
+        class_alias(Format::class, 'Format');
     }
 }

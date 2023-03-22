@@ -1,12 +1,12 @@
 function editableContactRow(route, $tr) {
 	const id = $tr.data('id');
 	const html = '<td class="column-actions">'
-		+ '<div class="grid-actions">'
+		+ '<div class="actions-menu-wrapper">'
 		+ '<div class="icon">more_vert</div>'
-		+ '<div class="dropdown">'
-		+ '<button class="btn-delete" data-url="' + route + '/' + id + '">Удалить</button>'
+		+ '<div class="actions-menu">'
+		+ '<button class="btn-edit" data-url="' + route + '/' + id + '/edit"><div class="icon">edit</div>Изменить</button>'
 		+ '<hr>'
-		+ '<button class="btn-edit" data-url="' + route + '/' + id + '/edit">Изменить</button>'
+		+ '<button class="btn-delete" data-url="' + route + '/' + id + '"><div class="icon">delete</div>Удалить</button>'
 		+ '</div>'
 		+ '</div>'
 		+ '</td>';

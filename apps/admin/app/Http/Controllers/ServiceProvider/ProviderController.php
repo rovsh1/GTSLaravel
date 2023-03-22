@@ -19,6 +19,7 @@ class ProviderController extends AbstractPrototypeController
 
     public function show(int $id): LayoutContract
     {
+        dd(\Format::price(1233));
 //        parent::show($id);
 //
 //        $contacts = $this->model->contacts;
