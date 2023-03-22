@@ -6,6 +6,6 @@
     </div>
 
     <div class="content-body">
-        @include('components/contacts-card')
+        @include('_partials/components/contacts-card')
     </div>
 @endsection

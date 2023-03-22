@@ -4,7 +4,7 @@ require("jquery-ui/ui/widgets/autocomplete");
 require("jquery-ui/ui/widgets/draggable");
 require("jquery-ui/ui/widgets/droppable");
 
-import FileManager from "../plugins/filemanager/manager"
+import FileManager from "../libs/filemanager/manager"
 
 $(document).ready(function () {
     const fileManager = new FileManager(document.body, {});

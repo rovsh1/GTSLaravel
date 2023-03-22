@@ -1,16 +1,17 @@
-import '../bootstrap';
+import '../bootstrap'
 
-import "../vendor/jquery.cookie";
+import "../vendor/jquery.cookie"
+import "../vendor/moment"
+import "../vendor/daterangepicker"
 
-import "../app/support/functions";
-import "../app/helpers";
+import "../libs/dialog/helpers"
 
-import "../plugins/ui/dialog/helpers"
-import "../plugins/ui/multiselect"
-import "../plugins/moment"
-import "../plugins/ui/daterangepicker"
-import "../plugins/ui/childCombo"
-import "../plugins/ui/form/element"
+import "../plugins/multiselect"
+import "../plugins/child-combo"
+
+import "../app/support/functions"
+import "../app/helpers"
+import "../app/plugins/buttons/delete-button"
 
 /*
 import "../vendor/jquery.mask"

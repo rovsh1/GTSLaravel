@@ -1,8 +1,7 @@
-import axios from '../../../app/api'
+import axios from '../app/api'
 
 $.fn.childCombo = function (options) {
-
-    options = $.extend({
+    options = Object.assign({
         dataIndex: 'parent_id',
         resultIndex: 'data',
         hideEmpty: false,

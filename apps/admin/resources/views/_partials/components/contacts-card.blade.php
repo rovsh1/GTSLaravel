@@ -1,11 +1,12 @@
-<div class="card card-grid card-contacts" id="card-contacts">
+<div class="card card-grid card-contacts" id="card-contacts" data-route="{{ $contactsEditable ? $contactsUrl : '' }}">
     <div class="card-header">
         <h5 class="mb-0">Контакты</h5>
         @if ($contactsEditable)
             <div class="spacer"></div>
-            <a href="#" id="btn-add-contact" class="btn btn-add">
+            <button class="btn btn-add">
                 <x-icon key="add"/>
-                Добавить контакт</a>
+                Добавить контакт
+            </button>
         @endif
     </div>
     <div class="card-body">
@@ -24,18 +25,6 @@
                             {!! Format::contact($contact) !!}
                         </td>
                         <td class="column-status">{{ $contact->main ? 'Основной' : '' }}</td>
-                        @if ($contactsEditable)
-                            <td class="column-actions">
-                                <div class="grid-actions">
-                                    <div class="icon">more_vert</div>
-                                    <div class="dropdown">
-                                        <button class="btn-delete" data-form-action="delete" data-url="{{ $contactsUrl . '/' . $contact->id }}">Удалить</button>
-                                        <hr>
-                                        <button class="btn-edit" data-url="{{ $contactsUrl . '/' . $contact->id . '/edit' }}">Изменить</button>
-                                    </div>
-                                </div>
-                            </td>
-                        @endif
                     </tr>
                 @endforeach
                 </tbody>

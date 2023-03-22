@@ -1,5 +1,5 @@
 $.fn.elementCity = function (options) {
-    return $(this).childCombo($.extend({
+    return $(this).childCombo(Object.assign({
         url: 'reference/city/search',
         value: +get_url_parameter('city_id'),
         disabledText: 'Выберите страну',
