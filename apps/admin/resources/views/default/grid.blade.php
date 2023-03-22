@@ -3,11 +3,7 @@
 @section('content')
     <div class="content-header">
         <div class="title">{{ $title }}</div>
-        @if (isset($createUrl) && $createUrl)
-            <a href="{{ $createUrl }}" class="btn btn-add">
-                <x-icon key="add"/>
-                Создать</a>
-        @endif
+        <x-ui.add-button :url="$createUrl ?? null"/>
         <div class="flex-grow-1"></div>
 
         <form method="get" class="grid-filters">
@@ -37,6 +33,8 @@
     </div>
 
     <div class="content-body">
-        <div class="card card-grid">{!! $grid  !!}</div>
+        <div class="card card-grid">
+            <div class="card-body">{!! $grid  !!}</div>
+        </div>
     </div>
 @endsection

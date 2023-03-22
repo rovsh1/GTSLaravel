@@ -19,12 +19,6 @@ class LandmarkType extends Model
     protected $fillable = [
         'alias',
         'name',
-        'in_city',
-        //'system_status',
-    ];
-
-    protected $casts = [
-        'in_city' => 'bool',
     ];
 
     public static function booted()

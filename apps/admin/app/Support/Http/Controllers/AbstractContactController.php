@@ -2,9 +2,12 @@
 
 namespace App\Admin\Support\Http\Controllers;
 
+use App\Admin\Components\Factory\Prototype;
 use App\Admin\Enums\ContactTypeEnum;
 use App\Admin\Http\Controllers\Controller;
+use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\Form;
+use App\Admin\Support\Facades\Prototypes;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Core\Support\Http\Responses\AjaxErrorResponse;
 use App\Core\Support\Http\Responses\AjaxReloadResponse;
@@ -12,15 +15,27 @@ use Illuminate\Contracts\View\View;
 
 abstract class AbstractContactController extends Controller
 {
-    protected string $contactModel;
+    protected Prototype $prototype;
 
-    protected string $routePath;
+    public function __construct()
+    {
+        $this->prototype = Prototypes::get($this->getPrototypeKey());
+    }
+
+    public function callAction($method, $parameters)
+    {
+        if (!Acl::isAllowed($this->getPrototypeKey(), 'update')) {
+            abort(403);
+        }
+
+        return parent::callAction($method, $parameters);
+    }
 
     public function create(int $providerId): View
     {
         return view('default.dialog-form', [
             'form' => $this->formFactory()
-                ->action(route($this->routePath . '.contacts.store', $providerId))
+                ->action($this->route('store', $providerId))
         ]);
     }
 
@@ -38,18 +53,19 @@ abstract class AbstractContactController extends Controller
 
         $data = $form->getData();
         $data['provider_id'] = $providerId;
-        $contact = ($this->contactModel)::create($data);
+        $contact = ($this->getContactModel())::create($data);
 
         return new AjaxReloadResponse();
     }
 
-    public function edit(int $id): View
+    public function edit(int $providerId, int $id): View
     {
         $contact = $this->findContact($id);
 
         return view('default.dialog-form', [
             'form' => $this->formFactory()
                 ->method('put')
+                ->action($this->route('update', [$providerId, $id]))
                 ->data($contact)
         ]);
     }
@@ -91,10 +107,19 @@ abstract class AbstractContactController extends Controller
 
     protected function findContact(int $id)
     {
-        $contact = ($this->contactModel)::find($id);
+        $contact = ($this->getContactModel())::find($id);
         if (!$contact) {
             return abort(404);
         }
         return $contact;
     }
+
+    protected function route(string $name, int|array $params): string
+    {
+        return route($this->getPrototypeKey() . '.contacts.' . $name, $params);
+    }
+
+    abstract protected function getContactModel(): string;
+
+    abstract protected function getPrototypeKey(): string;
 }

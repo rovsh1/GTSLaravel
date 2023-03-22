@@ -6,10 +6,6 @@
     </div>
 
     <div class="content-body">
-        <div class="card">
-
-        </div>
-        <div class="br-2"></div>
-        @include('components/contacts-card', ['contacts' => $contacts])
+        @include('components/contacts-card')
     </div>
 @endsection

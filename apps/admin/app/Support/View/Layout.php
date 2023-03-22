@@ -123,7 +123,7 @@ class Layout
     private function bootStyles(): void
     {
         $style = $this->options['style'] ?? 'main';
-        $script = $this->options['script'] ?? $style;
+        $script = $this->options['script'] ?? 'main';
 
         $stylePath = mix('css/' . $style . '.css');
         $scriptPath = mix('js/' . $script . '.js');

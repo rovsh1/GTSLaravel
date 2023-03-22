@@ -1,0 +1,39 @@
+@use "../../variables";
+
+.grid-filters {
+	display: flex;
+	justify-content: flex-end;
+	align-items: flex-start;
+	gap: .5rem;
+	position: relative;
+	.btn {color: variables.$secondary}
+	& > .btn {padding: 0;width: 32px;}
+}
+.search-popup-wrapper {
+	position: absolute;
+	top: 100%;
+	right: 0;
+	padding-top: 8px;
+	z-index: 100;
+	.search-popup {
+		background: #fff;
+		padding: 1rem 1.5rem;
+		width: 320px;
+		border: 1px solid rgba(0, 0, 0, .12);
+	}
+}
+.grid-filters:not(.expanded) .search-popup-wrapper {display: none;}
+.quicksearch-wrapper {
+	position: relative;
+	input {padding-right: 32px;width: 200px;line-height: 2rem;}
+	button {
+		position: absolute;
+		top: 0;
+		right: 0;
+		height: 100%;
+		border: none;
+		background: none;
+		width: 32px;
+		color: variables.$secondary
+	}
+}

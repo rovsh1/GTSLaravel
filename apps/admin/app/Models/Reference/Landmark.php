@@ -24,16 +24,21 @@ class Landmark extends Model
         'city_id',
         'type_id',
         'name',
+//        'location_type',
         'address',
-//        'address_lat',
-//        'address_lon',
-        //'center_distance',
+        'address_lat',
+        'address_lon',
+        'city_distance',
         //'system_status',
     ];
 
     protected $casts = [
         'city_id' => 'int',
         'type_id' => 'int',
+//        'location_type' => 'int',
+        'address_lat' => 'float',
+        'address_lon' => 'float',
+        'center_distance' => 'int',
     ];
 
     public static function booted()

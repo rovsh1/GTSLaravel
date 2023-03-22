@@ -7,7 +7,13 @@ use App\Admin\Support\Http\Controllers\AbstractContactController;
 
 class ContactController extends AbstractContactController
 {
-    protected string $contactModel = Contact::class;
+    protected function getPrototypeKey(): string
+    {
+        return 'service-provider';
+    }
 
-    protected string $routePath = 'service-provider';
+    protected function getContactModel(): string
+    {
+        return Contact::class;
+    }
 }

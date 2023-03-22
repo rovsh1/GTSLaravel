@@ -2,6 +2,7 @@
 
 namespace App\Admin\Http\Controllers\ServiceProvider;
 
+use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
@@ -27,6 +28,7 @@ class ProviderController extends AbstractPrototypeController
             ->ss('service-provider/show')
             ->data([
                 'contactsUrl' => $this->prototype->route('show', $id) . '/contacts',
+                'contactsEditable' => Acl::isAllowed($this->getPrototypeKey(), 'update'),
                 'contacts' => $this->model->contacts
             ]);
     }
