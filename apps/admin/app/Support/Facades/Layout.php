@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static \App\Admin\Support\View\Layout addMetaVariable(string $name, mixed $value)
  * @method static \App\Admin\Support\View\Layout data(array $data)
  * @method static \App\Admin\Support\View\Layout view(string $view, array $data = [])
+ * @method static mixed get(string $name)
  * @method static void configure()
  * @method static \Illuminate\Contracts\View\View render()
  *

@@ -4,12 +4,11 @@ namespace Gsdk\Navigation;
 
 class Menu
 {
-
     protected static array $itemAttributes = ['id', 'title', 'target'];
 
     protected array $items = [];
 
-    protected $current;
+    protected string $current;
 
     protected array $options = [];
 
@@ -35,20 +34,20 @@ class Menu
         return $this->options[$key] ?? $default;
     }
 
-    public function current($current = null): static
+    public function current(string $current = null): static
     {
         $this->current = $current ?? request()->route()->getName();
 
         return $this;
     }
 
-    public function add($params): static
+    public function add(array $params): static
     {
         $this->items[] = $this->itemFactory($params);
         return $this;
     }
 
-    public function addUrl($url, $params): static
+    public function addUrl(string $url, array|string $params): static
     {
         if (is_string($params)) {
             $params = ['text' => $params];
@@ -57,7 +56,7 @@ class Menu
         return $this->add(array_merge($params, ['url' => $url]));
     }
 
-    public function addRoute($route, $params): static
+    public function addRoute(string $route, array|string $params): static
     {
         if (is_string($params)) {
             $params = ['text' => $params];
@@ -120,7 +119,7 @@ class Menu
         ];
     }
 
-    protected function itemFactory($params): \stdClass
+    protected function itemFactory(array $params): \stdClass
     {
         $item = new \stdClass();
         foreach (static::$itemAttributes as $k) {
@@ -183,5 +182,4 @@ class Menu
 
         return $html;
     }
-
 }

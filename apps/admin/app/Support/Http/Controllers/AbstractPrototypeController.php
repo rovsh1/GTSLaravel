@@ -63,6 +63,8 @@ abstract class AbstractPrototypeController extends Controller
         Breadcrumb::prototype($this->prototype)
             ->add($title);
 
+        $this->prepareShowMenu($this->model);
+
         return Layout::title($title)
             ->view($this->prototype->view('show') ?? ($this->getPrototypeKey() . '.show'), [
                 'model' => $this->model
@@ -116,7 +118,7 @@ abstract class AbstractPrototypeController extends Controller
 
         $title = (string)$model;
         if ($this->hasShowAction()) {
-            $breadcrumbs->addUrl($this->prototype->route('show'), $title);
+            $breadcrumbs->addUrl($this->prototype->route('show', $model), $title);
         } else {
             $breadcrumbs->add($title);
         }
@@ -182,6 +184,8 @@ abstract class AbstractPrototypeController extends Controller
     }
 
     protected function prepareGridQuery(Builder $query) {}
+
+    protected function prepareShowMenu(Model $model) {}
 
     abstract protected function getPrototypeKey(): string;
 }

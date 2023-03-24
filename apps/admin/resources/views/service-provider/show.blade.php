@@ -1,9 +1,7 @@
 @extends('layouts/main')
 
 @section('content')
-    <div class="content-header">
-        <div class="title">{{ $title }}</div>
-    </div>
+    {!! ContentTitle::default() !!}
 
     <div class="content-body">
         @include('_partials/components/contacts-card')

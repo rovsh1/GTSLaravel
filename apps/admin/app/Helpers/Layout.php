@@ -14,12 +14,12 @@ class Layout
         return Meta::render();
     }
 
-    public static function breadcrumbs()
+    public static function breadcrumbs(): string
     {
         return Breadcrumb::render();
     }
 
-    public static function sitemap()
+    public static function sitemap(): string
     {
         return Sitemap::render();
     }
@@ -31,7 +31,7 @@ class Layout
         return implode(' ', $cls);
     }
 
-    public static function sidebar()
+    public static function sidebar(): string
     {
         return Sidebar::render();
     }
@@ -43,6 +43,15 @@ class Layout
         } else {
             return '';
         }
+    }
+
+    public static function title(): string
+    {
+        $html = '<div class="title-wrapper">';
+        $html .= '<div class="title">' . Meta::getTitle() . '</div>';
+        $html .= self::actions();
+        $html .= '</div>';
+        return $html;
     }
 
     public static function buttonBack()

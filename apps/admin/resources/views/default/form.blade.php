@@ -1,11 +1,7 @@
 @extends('layouts/main')
 
 @section('content')
-    <div class="content-header">
-        <div class="title">{{ $title }}</div>
-
-        {!! Layout::actions() !!}
-    </div>
+    {!! ContentTitle::default() !!}
 
     <div class="content-body">
         <div class="card card-form">

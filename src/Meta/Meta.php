@@ -19,7 +19,10 @@ use Illuminate\Support\Facades\Facade;
  * @method static \Gsdk\Meta\MetaTags addMetaHttpEquiv(string $keyValue, string $content, array $attributes = [])
  * @method static \Gsdk\Meta\MetaTags addStyle(string $href, array $attributes = [])
  * @method static \Gsdk\Meta\MetaTags addScript(string $src, array $attributes = [])
+ * @method static string getTitle()
  * @method static string render()
+ *
+ * @see \Gsdk\Meta\MetaTags
  */
 class Meta extends Facade
 {

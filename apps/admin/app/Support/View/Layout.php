@@ -32,6 +32,11 @@ class Layout
 
     public function __get(string $name)
     {
+        return $this->get($name);
+    }
+
+    public function get(string $name)
+    {
         return $this->viewData[$name] ?? null;
     }
 

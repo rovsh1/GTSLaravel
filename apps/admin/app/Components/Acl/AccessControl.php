@@ -47,6 +47,26 @@ class AccessControl
         return $this->permissions->isAllowed($resource, $permission);
     }
 
+    public function isReadAllowed(string $resource): bool
+    {
+        return $this->isAllowed($resource, 'read');
+    }
+
+    public function isCreateAllowed(string $resource): bool
+    {
+        return $this->isAllowed($resource, 'create');
+    }
+
+    public function isUpdateAllowed(string $resource): bool
+    {
+        return $this->isAllowed($resource, 'update');
+    }
+
+    public function isDeleteAllowed(string $resource): bool
+    {
+        return $this->isAllowed($resource, 'delete');
+    }
+
     public function isRouteAssigned(string $route): bool
     {
         return $this->router->isRouteAssigned($route);

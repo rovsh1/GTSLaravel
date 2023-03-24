@@ -93,7 +93,10 @@ class ViewServiceProvider extends ServiceProvider
         $this->app->singleton('menu.actions', ViewNamespace\Navigation\ActionsMenu::class);
     }
 
-    private function registerHelpers() {}
+    private function registerHelpers()
+    {
+        class_alias(Helpers\ContentTitle::class, 'ContentTitle');
+    }
 
     private function registerComponents()
     {

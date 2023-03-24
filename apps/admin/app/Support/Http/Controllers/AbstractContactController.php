@@ -24,7 +24,7 @@ abstract class AbstractContactController extends Controller
 
     public function callAction($method, $parameters)
     {
-        if (!Acl::isAllowed($this->getPrototypeKey(), 'update')) {
+        if (!Acl::isUpdateAllowed($this->getPrototypeKey())) {
             abort(403);
         }
 
