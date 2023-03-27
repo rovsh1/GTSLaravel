@@ -1,199 +1,207 @@
 (() => {
-	function buildItemsHtml($el) {
-		return $el.find('option')
-			.filter((i, o) => o.value !== '')
-			.map((i, o) => {
-				return '<div class="dropdown-item' + (o.selected ? ' active' : '') + '" data-value="' + o.value + '">' + (o.text || '&nbsp;') + '</div>';
-			})
-			.get()
-			.join('');
-	}
+  function buildItemsHtml($el) {
+    return $el.find('option')
+      .filter((i, o) => o.value !== '')
+      .map((i, o) => `<div class="dropdown-item${o.selected ? ' active' : ''}" data-value="${o.value}">${o.text || '&nbsp;'}</div>`)
+      .get()
+      .join('')
+  }
 
-	function buildPopup($select) {
-		html = '<div class="dropdown-menu">';
+  function buildPopup($select) {
+    let html = '<div class="dropdown-menu">'
 
-		const $groups = $select.find('optgroup');
-		if ($groups.length === 0) {
-			html += buildItemsHtml($select);
-		} else {
-			$groups.each((i, group) => {
-				html += '<div class="group">';
-				html += '<div class="label">' + group.getAttribute('label') + '</div>';
-				html += '<div class="items">';
-				html += buildItemsHtml($(group));
-				html += '</div>';
-				html += '</div>';
-			});
-		}
-		html += '</div>';
-		return html;
-	}
+    const $groups = $select.find('optgroup')
+    if ($groups.length === 0) {
+      html += buildItemsHtml($select)
+    } else {
+      $groups.each((i, group) => {
+        html += '<div class="group">'
+        html += `<div class="label">${group.getAttribute('label')}</div>`
+        html += '<div class="items">'
+        html += buildItemsHtml($(group))
+        html += '</div>'
+        html += '</div>'
+      })
+    }
+    html += '</div>'
+    return html
+  }
 
-	function buildHtml() {
-		let html = '<div class="ui-multiselect">';
-		html += '<div class="value form-control">' + '<div class="label">&nbsp;</div>' + '<div class="select"></div>' + '</div>';
-		html += '</div>';
-		return html;
-	}
+  function buildHtml() {
+    let html = '<div class="ui-multiselect">'
+    // eslint-disable-next-line no-useless-concat
+    html += '<div class="value form-control">' + '<div class="label">&nbsp;</div>' + '<div class="select"></div>' + '</div>'
+    html += '</div>'
+    return html
+  }
 
-	class Plugin {
-		#el;
-		#popup;
-		#select;
-		#options;
-		#ondocumentclick;
+  class Plugin {
+    #el
 
-		constructor($select, options) {
-			this.#select = $select;
-			this.#options = options;
-			this.#el = $(buildHtml($select));
+    #popup
 
-			this.#el.find('div.value').click((e) => {
-				if (this.#el.hasClass('expanded')) {
-					this.collapse();
-				} else {
-					this.expand();
-				}
-			});
+    #select
 
-			this.#el.find('div.select').click((e) => {
-				const optionsCount = this.options.length;
-				const selectedCount = this.selectedOptions.length;
-				if (optionsCount === selectedCount) {
-					this.select([]);
-				} else {
-					this.select(this.options.map((i, o) => o.value.toString()).get());
-				}
-			});
+    #options
 
-			this.update();
-		}
+    #ondocumentclick
 
-		get el() { return this.#el; }
+    constructor($select, options) {
+      this.#select = $select
+      this.#options = options
+      this.#el = $(buildHtml($select))
 
-		get popup() {
-			if (this.#popup) {
-				return this.#popup;
-			}
+      this.#el.find('div.value').click(() => {
+        if (this.#el.hasClass('expanded')) {
+          this.collapse()
+        } else {
+          this.expand()
+        }
+      })
 
-			const self = this;
-			const $popup = this.#popup = $(buildPopup(this.#select))
-				.appendTo(this.#el);
+      this.#el.find('div.select').click(() => {
+        const optionsCount = this.options.length
+        const selectedCount = this.selectedOptions.length
+        if (optionsCount === selectedCount) {
+          this.select([])
+        } else {
+          this.select(this.options.map((i, o) => o.value.toString()).get())
+        }
+      })
 
-			$popup.find('div.dropdown-item').click(function () {
-				const value = $(this).data('value').toString();
-				const values = self.value;
-				const i = values.findIndex(v => v === value);
-				if (i === -1) {
-					values.push(value);
-				} else {
-					values.splice(i, 1);
-				}
-				self.select(values);
-			});
+      this.update()
+    }
 
-			return $popup;
-		}
+    get el() { return this.#el }
 
-		get options() { return this.#select.find('option'); }
+    get popup() {
+      if (this.#popup) {
+        return this.#popup
+      }
 
-		get selectedOptions() { return this.options.filter(':selected') }
+      // eslint-disable-next-line @typescript-eslint/no-this-alias
+      const self = this
+      // eslint-disable-next-line no-multi-assign
+      const $popup = this.#popup = $(buildPopup(this.#select))
+        .appendTo(this.#el)
 
-		get value() { return this.selectedOptions.map((i, o) => o.value.toString()).get(); }
+      $popup.find('div.dropdown-item').click(function () {
+        const value = $(this).data('value').toString()
+        const values = self.value
+        const i = values.findIndex((v) => v === value)
+        if (i === -1) {
+          values.push(value)
+        } else {
+          values.splice(i, 1)
+        }
+        self.select(values)
+      })
 
-		get disabled() { return this.#select.is(':disabled'); }
+      return $popup
+    }
 
-		update() {
-			if (this.disabled) {
-				this.#el.find('div.value .label').html(this.#options.disabledText);
-				this.collapse();
-			} else {
-				const optionsCount = this.options.length;
-				const selectedCount = this.selectedOptions.length;
-				const values = this.value;
-				const labelText = selectedCount === 0 ? 'Не выбрано' : 'Выбрано ' + selectedCount + ' из ' + optionsCount;
-				const btnText = selectedCount === optionsCount ? 'Снять выделение' : 'Выбрать все';
+    get options() { return this.#select.find('option') }
 
-				this.#el.find('div.value .select').html(btnText);
-				this.#el.find('div.value .label').html(labelText);
+    get selectedOptions() { return this.options.filter(':selected') }
 
-				if (this.#popup) {
-					this.popup.find('div.dropdown-item').each((i, item) => {
-						item.classList[values.includes(item.getAttribute('data-value').toString()) ? 'add' : 'remove']('active');
-					});
-				}
-			}
-		}
+    get value() { return this.selectedOptions.map((i, o) => o.value.toString()).get() }
 
-		select(value) {
-			if (!Array.isArray(value)) { value = [value]; }
+    get disabled() { return this.#select.is(':disabled') }
 
-			this.options.each((i, o) => {
-				o.selected = value.includes(o.value.toString());
-			});
+    update() {
+      if (this.disabled) {
+        this.#el.find('div.value .label').html(this.#options.disabledText)
+        this.collapse()
+      } else {
+        const optionsCount = this.options.length
+        const selectedCount = this.selectedOptions.length
+        const values = this.value
+        const labelText = selectedCount === 0 ? 'Не выбрано' : `Выбрано ${selectedCount} из ${optionsCount}`
+        const btnText = selectedCount === optionsCount ? 'Снять выделение' : 'Выбрать все'
 
-			this.#select.change();
-		}
+        this.#el.find('div.value .select').html(btnText)
+        this.#el.find('div.value .label').html(labelText)
 
-		enable() {
-			this.#el.removeClass('disabled');
-			this.#select.attr('disabled', false);
-			this.update();
-		}
+        if (this.#popup) {
+          this.popup.find('div.dropdown-item').each((i, item) => {
+            item.classList[values.includes(item.getAttribute('data-value').toString()) ? 'add' : 'remove']('active')
+          })
+        }
+      }
+    }
 
-		disable() {
-			this.#select.attr('disabled', true);
-			this.#el.addClass('disabled');
-			this.update();
-		}
+    select(value) {
+      // eslint-disable-next-line no-param-reassign
+      if (!Array.isArray(value)) { value = [value] }
 
-		collapse() {
-			this.#el.removeClass('expanded');
-			this.popup.hide();
-			$(document).unbind('click', this.#ondocumentclick);
-			this.#ondocumentclick = undefined;
-		}
+      this.options.each((i, o) => {
+        // eslint-disable-next-line no-param-reassign
+        o.selected = value.includes(o.value.toString())
+      })
 
-		expand() {
-			this.#el.addClass('expanded');
-			this.popup.show();
-			this.#ondocumentclick = (e) => {
-				if (!this.#el.is(e.target) && this.#el.find(e.target).length === 0) {
-					this.collapse();
-				}
-			};
-			$(document).click(this.#ondocumentclick);
-		}
-	}
+      this.#select.change()
+    }
 
-	$.fn.multiselect = function (options, param) {
-		return $(this).each(function () {
-			if (!this.multiple) {
-				return;
-			}
+    enable() {
+      this.#el.removeClass('disabled')
+      this.#select.attr('disabled', false)
+      this.update()
+    }
 
-			if (this._multiselect) {
-				const plugin = this._multiselect;
-				switch (options) {
-					case 'enable':
-						plugin.enable();
-						break;
-					case 'disable':
-						plugin.disable();
-						break;
-					case 'update':
-						plugin.update();
-						break;
-				}
-			} else {
-				this._multiselect = new Plugin($(this), options);
+    disable() {
+      this.#select.attr('disabled', true)
+      this.#el.addClass('disabled')
+      this.update()
+    }
 
-				$(this)
-					.change(() => { this._multiselect.update(); })
-					.hide()
-					.attr('required', false)
-					.after(this._multiselect.el);
-			}
-		});
-	};
-})();
+    collapse() {
+      this.#el.removeClass('expanded')
+      this.popup.hide()
+      $(document).unbind('click', this.#ondocumentclick)
+      this.#ondocumentclick = undefined
+    }
+
+    expand() {
+      this.#el.addClass('expanded')
+      this.popup.show()
+      this.#ondocumentclick = (e) => {
+        if (!this.#el.is(e.target) && this.#el.find(e.target).length === 0) {
+          this.collapse()
+        }
+      }
+      $(document).click(this.#ondocumentclick)
+    }
+  }
+
+  $.fn.multiselect = function (options) {
+    return $(this).each(function () {
+      if (!this.multiple) {
+        return
+      }
+
+      if (this._multiselect) {
+        const plugin = this._multiselect
+        // eslint-disable-next-line default-case
+        switch (options) {
+          case 'enable':
+            plugin.enable()
+            break
+          case 'disable':
+            plugin.disable()
+            break
+          case 'update':
+            plugin.update()
+            break
+        }
+      } else {
+        this._multiselect = new Plugin($(this), options)
+
+        $(this)
+          .change(() => { this._multiselect.update() })
+          .hide()
+          .attr('required', false)
+          .after(this._multiselect.el)
+      }
+    })
+  }
+})()

@@ -1,1 +1,1 @@
-require('daterangepicker');
+require('daterangepicker')

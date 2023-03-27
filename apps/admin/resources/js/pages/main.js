@@ -1,18 +1,18 @@
 import '../bootstrap'
 
-import "../vendor/jquery.cookie"
-import "../vendor/moment"
-import "../vendor/daterangepicker"
+import '../vendor/jquery.cookie'
+import '../vendor/moment'
+import '../vendor/daterangepicker'
 
-import "../libs/dialog/helpers"
+import '../libs/dialog/helpers'
 
-import "../plugins/multiselect"
-import "../plugins/child-combo"
+import '../plugins/multiselect'
+import '../plugins/child-combo'
 
-import "../app/support/functions"
-import "../app/helpers"
-import "../app/plugins/buttons/delete-button"
-import "../app/plugins/controls/city"
+import '../app/support/functions'
+import '../app/helpers'
+import '../app/plugins/buttons/delete-button'
+import '../app/plugins/controls/city'
 
 /*
 import "../vendor/jquery.mask"
@@ -25,20 +25,20 @@ Object.assign($.fn, {});
 Object.assign(window, {});
 */
 
-import bootSitemap from "../app/providers/sitemap";
-import bootCookies from "../app/providers/cookies";
-import bootForms from "../app/providers/forms";
-import bootGrid from "../app/providers/grids";
+import bootCookies from '../app/providers/cookies'
+import bootForms from '../app/providers/forms'
+import bootGrid from '../app/providers/grids'
+import bootSitemap from '../app/providers/sitemap'
 
-$(document).ready(function () {
-	$.ajaxSetup({
-		headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')}
-	});
+$(document).ready(() => {
+  $.ajaxSetup({
+    headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },
+  })
 
-	bootSitemap();
-	bootCookies();
-	bootForms();
-	bootGrid();
+  bootSitemap()
+  bootCookies()
+  bootForms()
+  bootGrid()
 
-	document.body.classList.add('loaded');
-});
+  document.body.classList.add('loaded')
+})

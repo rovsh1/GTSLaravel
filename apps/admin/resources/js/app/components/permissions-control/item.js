@@ -1,51 +1,53 @@
 export default class Item {
-    #tab;
-    #el;
-    #input;
+  #tab
 
-    constructor(tab, el) {
-        this.#tab = tab;
-        this.#el = el;
-        this.#input = $('<input type="checkbox" class="form-check-input"/>').prependTo(el);
+  #el
 
-        const self = this;
-        el.find('div.item').click(function (e) {
-            self.toggle($(this).data('permission'));
-        });
+  #input
 
-        this.#input.change(() => {
-            const flag = this.#input.is(':checked');
-            if (flag) {
-                this.$items.addClass('allowed');
-                this.$items.find('input').val(1);
-                this.#el.addClass('active');
-            } else {
-                this.$items.removeClass('allowed');
-                this.$items.find('input').val(0);
-                this.#el.removeClass('active');
-            }
-            this.#tab.update();
-        });
+  constructor(tab, el) {
+    this.#tab = tab
+    this.#el = el
+    this.#input = $('<input type="checkbox" class="form-check-input"/>').prependTo(el)
 
-        this.update();
-    }
+    const self = this
+    el.find('div.item').click(function () {
+      self.toggle($(this).data('permission'))
+    })
 
-    get $items() { return this.#el.find('div.permissions>div'); }
+    this.#input.change(() => {
+      const flag = this.#input.is(':checked')
+      if (flag) {
+        this.$items.addClass('allowed')
+        this.$items.find('input').val(1)
+        this.#el.addClass('active')
+      } else {
+        this.$items.removeClass('allowed')
+        this.$items.find('input').val(0)
+        this.#el.removeClass('active')
+      }
+      this.#tab.update()
+    })
 
-    get hasUnchecked() { return this.$items.filter(':not(.allowed)').length > 0; }
+    this.update()
+  }
 
-    get hasChecked() { return this.$items.filter('.allowed').length > 0; }
+  get $items() { return this.#el.find('div.permissions>div') }
 
-    toggle(permission) {
-        const $item = this.$items.filter('[data-permission="' + permission + '"]');
-        $item.toggleClass('allowed');
-        $item.find('input').val($item.hasClass('allowed') ? 1 : 0);
-        this.update();
-    }
+  get hasUnchecked() { return this.$items.filter(':not(.allowed)').length > 0 }
 
-    update() {
-        this.#input.prop('checked', !this.hasUnchecked);
-        this.#el[this.hasChecked ? 'addClass' : 'removeClass']('active');
-        this.#tab.update();
-    }
+  get hasChecked() { return this.$items.filter('.allowed').length > 0 }
+
+  toggle(permission) {
+    const $item = this.$items.filter(`[data-permission="${permission}"]`)
+    $item.toggleClass('allowed')
+    $item.find('input').val($item.hasClass('allowed') ? 1 : 0)
+    this.update()
+  }
+
+  update() {
+    this.#input.prop('checked', !this.hasUnchecked)
+    this.#el[this.hasChecked ? 'addClass' : 'removeClass']('active')
+    this.#tab.update()
+  }
 }

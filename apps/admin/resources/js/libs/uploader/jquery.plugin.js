@@ -1,22 +1,22 @@
-import FilePlugin from "./plugin"
+import FilePlugin from './plugin'
 
 $.fn.fileupload = function (options) {
-	return $(this).each(function () {
-		const input = $(this);
-		const o = Object.assign({
-			multiple: input.attr('multiple'),
-			input: input
-		}, options);
+  return $(this).each(function () {
+    const input = $(this)
+    const o = {
+      multiple: input.attr('multiple'),
+      input,
+      ...options,
+    }
 
-		const plugin = new FilePlugin(o);
+    const plugin = new FilePlugin(o)
 
-		input.parent()
-			.append(plugin.el)
-			.find('input[type="hidden"]')
-			.each(function () { plugin.appendFile(JSON.parse(this.value)); })
-		//.remove()
-		;
+    input.parent()
+      .append(plugin.el)
+      .find('input[type="hidden"]')
+      .each(function () { plugin.appendFile(JSON.parse(this.value)) })
+    // .remove()
 
-		input.data('plugin', plugin);
-	});
-};
+    input.data('plugin', plugin)
+  })
+}

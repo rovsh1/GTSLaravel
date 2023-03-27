@@ -1,1 +1,1 @@
-window.moment = require('moment/moment');
+window.moment = require('moment/moment')

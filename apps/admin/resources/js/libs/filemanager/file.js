@@ -1,90 +1,86 @@
-import EventsTrait from "./support/events-trait"
-import {MimeToExtension} from "../uploader/functions";
+import EventsTrait from './support/events-trait'
+import { MimeToExtension } from '../uploader/functions'
 
 class File {
-    #el;
-    #data;
+  #el
 
-    constructor(data) {
-        this.#data = data;
-    }
+  #data
 
-    get path() { return this.#data.path; }
+  constructor(data) {
+    this.#data = data
+  }
 
-    get type() { return this.#data.type; }
+  get path() { return this.#data.path }
 
-    get src() { return this.#data.src; }
+  get type() { return this.#data.type }
 
-    get name() { return this.#data.name; }
+  get src() { return this.#data.src }
 
-    get mimeType() { return this.#data.mime_type; }
+  get name() { return this.#data.name }
 
-    isFolder() { return this.#data.type === 'folder'; }
+  get mimeType() { return this.#data.mime_type }
 
-    isImage() { return this.#data.type === 'file' && this.#data.mime_type && 0 === this.#data.mime_type.indexOf('image/'); }
+  isFolder() { return this.#data.type === 'folder' }
 
-    isFile() { return this.#data.type === 'file'; }
+  isImage() { return this.#data.type === 'file' && this.#data.mime_type && this.#data.mime_type.indexOf('image/') === 0 }
 
-    get el() {
-        if (this.#el)
-            return this.#el;
+  isFile() { return this.#data.type === 'file' }
 
-        let html = '<div class="fm-item ' + this.type + '" title="' + this.name + '">';
-        html += '<div class="image-wrap ' + (this.isFolder() ? 'folder' : MimeToExtension(this.#data.mime_type)) + '">';
-        if (this.isImage())
-            html += '<img class="image" src="' + this.src + '" />';
-        html += '</div>';
-        html += '<div class="name">' + this.#data.name + '</div>';
-        html += '</div>';
+  get el() {
+    if (this.#el) return this.#el
 
-        const el = $(html);
-        const self = this;
+    let html = `<div class="fm-item ${this.type}" title="${this.name}">`
+    html += `<div class="image-wrap ${this.isFolder() ? 'folder' : MimeToExtension(this.#data.mime_type)}">`
+    if (this.isImage()) html += `<img class="image" src="${this.src}" />`
+    html += '</div>'
+    html += `<div class="name">${this.#data.name}</div>`
+    html += '</div>'
 
-        el
-            .click(e => { e.stopPropagation(); })
-            .mousedown(function (e) {
-                if (!self.isSelected())
-                    self.select(true);
-            })
-            .dblclick(function (e) {
-                self.trigger('choose');
-                self.select();
-                e.stopPropagation();
-            });
+    const el = $(html)
+    const self = this
 
-        return this.#el = el;
-    }
+    el
+      .click((e) => { e.stopPropagation() })
+      .mousedown((e) => {
+        if (!self.isSelected()) self.select(true)
+      })
+      .dblclick((e) => {
+        self.trigger('choose')
+        self.select()
+        e.stopPropagation()
+      })
 
-    isSelected() { return this.el.hasClass('selected'); }
+    return this.#el = el
+  }
 
-    isHidden() { return this.el.is(':hidden'); }
+  isSelected() { return this.el.hasClass('selected') }
 
-    rename(name) {
-        this.#data.name = name;
-        this.el.find('div.name').html(name);
-    }
+  isHidden() { return this.el.is(':hidden') }
 
-    select(fireEvent) {
-        this.el.addClass('selected');
-        if (fireEvent)
-            this.trigger('select');
-    }
+  rename(name) {
+    this.#data.name = name
+    this.el.find('div.name').html(name)
+  }
 
-    deselect(fireEvent) {
-        this.el.removeClass('selected');
-        if (fireEvent)
-            this.trigger('deselect');
-    }
+  select(fireEvent) {
+    this.el.addClass('selected')
+    if (fireEvent) this.trigger('select')
+  }
 
-    show() { this.el.show(); }
+  deselect(fireEvent) {
+    this.el.removeClass('selected')
+    if (fireEvent) this.trigger('deselect')
+  }
 
-    hide() { this.el.hide(); }
+  show() { this.el.show() }
 
-    destroy() {
-        this.el.remove();
-    }
+  hide() { this.el.hide() }
+
+  destroy() {
+    this.el.remove()
+  }
 }
 
-Object.assign(File.prototype, EventsTrait);
+Object.assign(File.prototype, EventsTrait)
 
-export default File;
+export default File

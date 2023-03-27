@@ -1,140 +1,143 @@
+import processHtml from './html-processor'
+import load from './loader'
 import {
-	defaultOptions,
-	createElement,
-	createBootstrapModal,
-	boot,
-	bindEvents
-} from "./modal-builder";
-import processHtml from "./html-processor";
-import load from "./loader";
+  defaultOptions,
+  createElement,
+  createBootstrapModal,
+  boot,
+  bindEvents,
+} from './modal-builder'
 
 export default class Modal {
-	#options;
-	#el;
-	#bootstrapModal;
-	#eventHandlers = [];
+  #options
 
-	constructor(options) {
-		options = Object.assign({}, defaultOptions, options);
+  #el
 
-		const $el = this.#el = createElement(options);
+  #bootstrapModal
 
-		this.#bootstrapModal = createBootstrapModal(this, $el, options);
+  #eventHandlers = []
 
-		bindEvents(this, options);
+  constructor(options) {
+    options = { ...defaultOptions, ...options }
 
-		this.#options = options;
+    const $el = this.#el = createElement(options)
 
-		boot(this, options);
+    this.#bootstrapModal = createBootstrapModal(this, $el, options)
 
-		this.trigger('booted');
-	}
+    bindEvents(this, options)
 
-	get bootstrapModal() { return this.#bootstrapModal; }
+    this.#options = options
 
-	get el() { return this.#el; }
+    boot(this, options)
 
-	get dialog() { return this.#el.find('>div.modal-dialog'); }
+    this.trigger('booted')
+  }
 
-	get content() { return this.dialog.find('>div.modal-content'); }
+  get bootstrapModal() { return this.#bootstrapModal }
 
-	get header() { return this.content.find('>div.modal-header'); }
+  get el() { return this.#el }
 
-	get body() { return this.content.find('>div.modal-body'); }
+  get dialog() { return this.#el.find('>div.modal-dialog') }
 
-	get footer() { return this.content.find('>div.modal-footer'); }
+  get content() { return this.dialog.find('>div.modal-content') }
 
-	get form() { return this.content.find('form'); }
+  get header() { return this.content.find('>div.modal-header') }
 
-	get(name) { return this.#options[name]; }
+  get body() { return this.content.find('>div.modal-body') }
 
-	set(name, value) { this.#options[name] = value; }
+  get footer() { return this.content.find('>div.modal-footer') }
 
-	setTitle(text) {
-		this.header.find('>.modal-title').html(text);
-	}
+  get form() { return this.content.find('form') }
 
-	setHtml(html) {
-		this.body.html(html);
+  get(name) { return this.#options[name] }
 
-		if (this.get('processHtml')) {
-			processHtml(this, this.body);
-		}
+  set(name, value) { this.#options[name] = value }
 
-		this.trigger('update');
-	}
+  setTitle(text) {
+    this.header.find('>.modal-title').html(text)
+  }
 
-	setLoading(flag) {
-		if (this.#el) {
-			this.content[flag ? 'addClass' : 'removeClass']('loading');
-		}
-	}
+  setHtml(html) {
+    this.body.html(html)
 
-	load(params) {
-		load(this, params);
-	}
+    if (this.get('processHtml')) {
+      processHtml(this, this.body)
+    }
 
-	submit() { this.form.submit(); }
+    this.trigger('update')
+  }
 
-	toggle() {
-		this.#bootstrapModal.toggle();
-		this.trigger('toggle');
-	}
+  setLoading(flag) {
+    if (this.#el) {
+      this.content[flag ? 'addClass' : 'removeClass']('loading')
+    }
+  }
 
-	show() {
-		this.#bootstrapModal.show();
-		this.trigger('show');
-	}
+  load(params) {
+    load(this, params)
+  }
 
-	hide() {
-		this.#bootstrapModal.hide();
-		this.trigger('hide');
-	}
+  submit() { this.form.submit() }
 
-	close() {
-		this.trigger('close');
-		this.destroy();
-	}
+  toggle() {
+    this.#bootstrapModal.toggle()
+    this.trigger('toggle')
+  }
 
-	destroy() {
-		this.#el.remove();
-		this.#bootstrapModal.dispose();
-		this.#el = undefined;
-		this.#bootstrapModal = undefined;
-		this.#options = undefined;
-		this.#eventHandlers = undefined;
-	}
+  show() {
+    this.#bootstrapModal.show()
+    this.trigger('show')
+  }
 
-	bind(event, callback, scope) {
-		this.#eventHandlers.push([event, callback, scope]);
-		return this;
-	}
+  hide() {
+    this.#bootstrapModal.hide()
+    this.trigger('hide')
+  }
 
-	unbind(event, callback) {
-		event.split(' ')
-			.forEach((event) => {
-				const findFn = undefined === callback
-					? h => h[0] === event
-					: h => h[0] === event && h[1] === callback;
-				let i = this.#eventHandlers.findIndex(findFn);
-				while (i > -1) {
-					this.#eventHandlers.splice(i, 1);
-					i = this.#eventHandlers.findIndex(findFn);
-				}
-			});
+  close() {
+    this.trigger('close')
+    this.destroy()
+  }
 
-		return this;
-	}
+  destroy() {
+    this.#el.remove()
+    this.#bootstrapModal.dispose()
+    this.#el = undefined
+    this.#bootstrapModal = undefined
+    this.#options = undefined
+    this.#eventHandlers = undefined
+  }
 
-	trigger(event, ...args) {
-		const eventHandlers = this.#eventHandlers
-			.filter(h => h[0] === event);
+  bind(event, callback, scope) {
+    this.#eventHandlers.push([event, callback, scope])
+    return this
+  }
 
-		const l = eventHandlers.length;
-		for (let i = 0; i < l; i++) {
-			if (false === eventHandlers[i][1].apply(eventHandlers[i][2] || this, args)) {
-				return;
-			}
-		}
-	}
+  unbind(event, callback) {
+    event.split(' ')
+      .forEach((event) => {
+        const findFn = undefined === callback
+          ? (h) => h[0] === event
+          : (h) => h[0] === event && h[1] === callback
+        let i = this.#eventHandlers.findIndex(findFn)
+        while (i > -1) {
+          this.#eventHandlers.splice(i, 1)
+          i = this.#eventHandlers.findIndex(findFn)
+        }
+      })
+
+    return this
+  }
+
+  trigger(event, ...args) {
+    const eventHandlers = this.#eventHandlers
+      .filter((h) => h[0] === event)
+
+    const l = eventHandlers.length
+    for (let i = 0; i < l; i++) {
+      if (eventHandlers[i][1].apply(eventHandlers[i][2] || this, args) === false) {
+        return
+      }
+    }
+  }
 }

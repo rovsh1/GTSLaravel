@@ -1,28 +1,28 @@
 export default function bootGrid() {
-	const $btn = $('#btn-grid-filters');
-	const $popup = $('#grid-filters-popup');
-	const close = (e) => {
-        const isClickByDateRangeCalendar = $('.daterangepicker').find(e.target).length > 0;
-		if (!$popup.is(e.target) && $popup.find(e.target).length === 0 && !isClickByDateRangeCalendar) {
-			$popup.hide();
-			$(document).unbind('click', close);
-		}
-	};
+  const $btn = $('#btn-grid-filters')
+  const $popup = $('#grid-filters-popup')
+  const close = (e) => {
+    const isClickByDateRangeCalendar = $('.daterangepicker').find(e.target).length > 0
+    if (!$popup.is(e.target) && $popup.find(e.target).length === 0 && !isClickByDateRangeCalendar) {
+      $popup.hide()
+      $(document).unbind('click', close)
+    }
+  }
 
-	$btn.click(e => {
-		e.preventDefault();
-		if (!$popup.is(':hidden')) {
-			return;
-		}
+  $btn.click((e) => {
+    e.preventDefault()
+    if (!$popup.is(':hidden')) {
+      return
+    }
 
-		$popup.fadeIn(200);
-		$(document).click(close);
-		e.stopPropagation();
-	});
+    $popup.fadeIn(200)
+    $(document).click(close)
+    e.stopPropagation()
+  })
 
-	$popup.find('button[type="reset"]').click(e => {
-		e.preventDefault();
+  $popup.find('button[type="reset"]').click((e) => {
+    e.preventDefault()
 
-		$popup.find('input,select').val('');
-	});
+    $popup.find('input,select').val('')
+  })
 }
