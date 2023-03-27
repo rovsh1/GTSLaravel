@@ -30,20 +30,20 @@ $.fn.childCombo = function (options) {
   }
 
   const trigger = function (fn, arg) {
-    if (!options[fn]) return
-    options[fn].call(child, arg)
+    if (!preparedOptions[fn]) return
+    preparedOptions[fn].call(child, arg)
   }
 
   const onchange = function () {
-    if (options.dateRange && parent.val().length < 14) return
+    if (preparedOptions.dateRange && parent.val().length < 14) return
 
     trigger('change')
 
     child.prop('disabled', true)
     const isEmpty = parent.val() === null || parent.val() === ''
-    if (!options.allowEmpty && isEmpty) {
-      child.html(`<option value="">${options.disabledText}</option>`)
-      if (options.hideEmpty) {
+    if (!preparedOptions.allowEmpty && isEmpty) {
+      child.html(`<option value="">${preparedOptions.disabledText}</option>`)
+      if (preparedOptions.hideEmpty) {
         child.parent().hide()
       }
       trigger('load', [])
@@ -52,33 +52,33 @@ $.fn.childCombo = function (options) {
 
     child.parent().show()
 
-    const value = options.value || child.val()
+    const value = preparedOptions.value || child.val()
     let valTemp = []
-    const data = $.extend({}, options.data)
+    const data = $.extend({}, preparedOptions.data)
     if (!isEmpty) {
-      data[options.dataIndex] = parent.val()
+      data[preparedOptions.dataIndex] = parent.val()
     }
     if (value) {
       valTemp = isMultiple ? value : [value]
     }
-    // delete options.value;
+    // delete preparedOptions.value;
 
     child.html("<option value=''>Загрузка</option>")
 
-    axios.get(options.url, { params: data }).then((result) => {
+    axios.get(preparedOptions.url, { params: data }).then((result) => {
       child.html('')
-      const items = result[options.resultIndex]
+      const items = result[preparedOptions.resultIndex]
       const val = []; let i; const
         l = items.length
       if (l === 0) {
-        if (options.emptyText !== false) child.append(`<option value="">${options.emptyText}</option>`)
-        if (options.hideEmpty) child.parent().hide()
+        if (preparedOptions.emptyText !== false) child.append(`<option value="">${preparedOptions.emptyText}</option>`)
+        if (preparedOptions.hideEmpty) child.parent().hide()
         trigger('load', items)
         return
       }
 
-      if (options.emptyItem !== false) {
-        child.append(`<option value="">${options.emptyItem}</option>`)
+      if (preparedOptions.emptyItem !== false) {
+        child.append(`<option value="">${preparedOptions.emptyItem}</option>`)
       }
 
       for (i = 0; i < l; i++) {
