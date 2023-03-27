@@ -1,12 +1,12 @@
 <?php
 
-use App\Admin\Http\Controllers\Api\V1;
+use App\Api\Http\Admin\Controllers\V1\Reference\CityController;
 
-Route::prefix('v1')->group(callback: function () {
+Route::middleware('api')->prefix('v1')->group(callback: function () {
 
     Route::prefix('reference')->group(callback: function () {
 
-        Route::controller(V1\Reference\CityController::class)
+        Route::controller(CityController::class)
             ->prefix('city')
             ->group(callback: function () {
                 Route::get('/search', 'search');

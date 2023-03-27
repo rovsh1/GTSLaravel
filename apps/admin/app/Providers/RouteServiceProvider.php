@@ -26,10 +26,6 @@ class RouteServiceProvider extends ServiceProvider
         Route::pattern('id', '[0-9]+');
 
         $this->routes(function () {
-            Route::prefix('api')
-                ->middleware('api')
-                ->group(base_path('routes/api.php'));
-
             $routeRegistrar = Route::middleware(['web', 'admin'])
                 ->group(base_path('routes/boot.php'));
 

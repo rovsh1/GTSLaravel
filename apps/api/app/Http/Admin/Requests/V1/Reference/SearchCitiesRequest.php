@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Http\Requests\Api\V1\Reference;
+namespace App\Api\Http\Admin\Requests\V1\Reference;
 
 use Illuminate\Foundation\Http\FormRequest;
 

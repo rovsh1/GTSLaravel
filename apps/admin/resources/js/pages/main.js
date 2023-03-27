@@ -12,6 +12,7 @@ import "../plugins/child-combo"
 import "../app/support/functions"
 import "../app/helpers"
 import "../app/plugins/buttons/delete-button"
+import "../app/plugins/controls/city"
 
 /*
 import "../vendor/jquery.mask"

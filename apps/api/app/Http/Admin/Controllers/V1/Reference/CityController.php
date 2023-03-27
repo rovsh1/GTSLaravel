@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Admin\Http\Controllers\Api\V1\Reference;
+namespace App\Api\Http\Admin\Controllers\V1\Reference;
 
 use App\Admin\Http\Controllers\Controller;
-use App\Admin\Http\Requests\Api\V1\Reference\SearchCitiesRequest;
 use App\Admin\Models\Reference\City;
+use App\Api\Http\Admin\Requests\V1\Reference\SearchCitiesRequest;
 
 class CityController extends Controller
 {
