@@ -16,9 +16,9 @@ module.exports = {
     in_array: 'readonly',
   },
   extends: [
+    'airbnb-base',
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
-    'airbnb-base',
   ],
   overrides: [
   ],
@@ -44,6 +44,7 @@ module.exports = {
     '**/libs/**/*.js',
   ],
   rules: {
+    '@typescript-eslint/no-namespace': ['error', { allowDeclarations: true }],
     'import/extensions': ['error', 'never'],
     'import/order': ['error', {
       'newlines-between': 'always',
@@ -104,5 +105,6 @@ module.exports = {
     'no-plusplus': 'off',
     '@typescript-eslint/no-this-alias': 'off',
     'no-tabs': 'off',
+    'no-new': 'off',
   },
 }

@@ -161,7 +161,12 @@ module.exports = {
 
 		readdir(resourcesPath + '/pages').forEach(function (entry) {
 			const filename = publicPath + entry;
-			mix.js(resourcesPath + '/pages' + entry, filename);
+
+            if (entry.indexOf('.ts') !== -1) {
+			    mix.ts(resourcesPath + '/pages' + entry, filename.replace('.ts','.js'));
+            } else {
+			    mix.js(resourcesPath + '/pages' + entry, filename);
+            }
 		});
 
 		return mix;

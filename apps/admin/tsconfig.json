@@ -5,6 +5,7 @@
         "module": "ESNext",
         "moduleResolution": "Node",
         "strict": true,
+        "allowJs": true,
         "jsx": "preserve",
         "resolveJsonModule": true,
         "isolatedModules": true,
@@ -23,14 +24,15 @@
         },
         "noUnusedLocals": true,
         "noUnusedParameters": true,
-        "noImplicitReturns": true,
+        "noImplicitReturns": true
     },
     "include": [
         "resources/js/**/*.ts",
         "resources/js/**/*.d.ts",
+        "node_modules/@types/jquery/JQuery.d.ts"
     ],
     "exclude": [
         "node_modules",
         "public"
-    ],
+    ]
 }

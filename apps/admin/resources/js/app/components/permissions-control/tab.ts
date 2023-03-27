@@ -1,19 +1,21 @@
 import Item from './item'
 
 export default class Tab {
-  #tab
+  #tab: JQuery<HTMLElement>
 
-  #items = []
+  #items: Item[] = []
 
-  constructor($tab, $menu) {
+  constructor($tab: JQuery<HTMLElement>, $menu: JQuery<HTMLElement>) {
     this.#tab = $tab
     // $tab.append('<i>0</i>');
 
     const self = this
-    const items = []
-    $menu.find('div.menu-item').each(function () {
-      items.push(new Item(self, $(this)))
-    })
+    const items: Item[] = []
+    $menu.find('div.menu-item')
+      .each(function () {
+        // @ts-expect-error
+        items.push(new Item(self, $(this)))
+      })
     this.#items = items
 
     this.update()

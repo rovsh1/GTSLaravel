@@ -1,9 +1,9 @@
 export {}
 
 declare global {
-    interface Window {
+     interface Window {
         get_meta_content: (name: string, parse: boolean = false) => string | null
-        get_url_parameter: (name: string, url: string) => string | null
+        get_url_parameter: (name: string, url: ?string = undefined) => string | null
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         WindowDialog: (options: any) => void
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -15,5 +15,15 @@ declare global {
         is_function: (value: any) => boolean
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         in_array: (value: any, array: any) => boolean
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        $: any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        jQuery: any
+    }
+
+     interface JQuery {
+        elementCity: (options: any) => JQuery<HTMLElement>
+        coordinatesInput: (options: any) => JQuery<HTMLElement>
+        update: () => void
     }
 }

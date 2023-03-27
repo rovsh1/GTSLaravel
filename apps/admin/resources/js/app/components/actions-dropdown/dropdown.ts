@@ -1,17 +1,20 @@
 export default class Dropdown {
-  #el
+  #el: JQuery<HTMLElement>
 
-  #options
+  // @ts-expect-error
+  #options: any
 
-  constructor(options) {
+  constructor(options: any) {
     this.#options = options
     this.#el = $('<div class="dropdown actions-dropdown">'
-			+ '<a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="true"></a>'
-			+ '<ul class="dropdown-menu" data-popper-placement="bottom-end"></ul>'
-			+ '</div>')
+            + '<a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="true"></a>'
+            + '<ul class="dropdown-menu" data-popper-placement="bottom-end"></ul>'
+            + '</div>')
   }
 
-  get ul() { return this.#el.find('ul') }
+  get ul() {
+    return this.#el.find('ul')
+  }
 
   hr() {
     this.ul.append('<li><hr class="dropdown-divider"></li>')
