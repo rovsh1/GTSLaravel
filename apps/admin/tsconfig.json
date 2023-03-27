@@ -20,7 +20,10 @@
             "@/*": [
                 "resources/js/*"
             ]
-        }
+        },
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": true,
     },
     "include": [
         "resources/js/**/*.ts",
