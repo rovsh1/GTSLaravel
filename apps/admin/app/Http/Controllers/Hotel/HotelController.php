@@ -2,6 +2,8 @@
 
 namespace App\Admin\Http\Controllers\Hotel;
 
+use App\Admin\Enums\Hotel\StatusEnum;
+use App\Admin\Enums\Hotel\VisibilityEnum;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Facades\Layout;
@@ -95,24 +97,21 @@ class HotelController extends AbstractPrototypeController
             ->orderBy('name', 'asc');
     }
 
-    protected function getShowViewData($model)
+    protected function getShowViewData(): array
     {
         return [
-            'params' => $this->hotelParams($model),
-            'model' => $model
+            'params' => $this->hotelParams($this->model),
         ];
     }
 
-    protected function prepareShow($model)
+    protected function prepareShowMenu($model)
     {
         Sidebar::submenu(new HotelMenu($model, 'info'));
     }
 
-    private function searchForm()
+    private function searchForm(): SearchForm
     {
         return (new SearchForm())
-            //@todo
-            //->addElement('period', 'daterange', ['label' => 'Период договора'])
             ->dateRange('period', ['label' => __('label.contract-period')])
             ->country('country_id', ['label' => __('label.country'), 'emptyItem' => ''])
             ->hidden('city_id', ['label' => __('label.city'), 'emptyItem' => ''])
@@ -120,37 +119,22 @@ class HotelController extends AbstractPrototypeController
             ->numRange('reservation_count', ['label' => 'Кол-во броней', 'placeholder' => [__('label.from'), __('label.to')]])
             ->hotelStatus('status_id', ['label' => __('label.status'), 'emptyItem' => ''])
             ->checkbox('visible_for', ['label' => __('label.visible-for')])
-            ->hotelRating('rating', ['label' => __('label.rating'), 'emptyItem' => ''])
-//            ->addElement('reservation_count', 'numrange', ['label' => 'Кол-во броней', 'placeholder' => ['от', 'до']])
-//            ->addElement('status', 'enum', [
-//                'label' => 'Статус',
-//                'emptyItem' => '',
-//                'enum' => 'HOTEL_STATUS'
-//            ])
-//            ->addElement('visible_for', 'enum', [
-//                'label' => 'Для клиентов',
-//                'emptyItem' => 'Для всех',
-//                'enum' => 'HOTEL_VISIBLE_FOR'
-//            ])
-//            ->addElement('rating', 'select', [
-//                'label' => 'Категория',
-//                'emptyItem' => '',
-//                'items' => HotelFormService::getRatingItems()
-//            ])
-            ;
+            ->hotelRating('rating', ['label' => __('label.rating'), 'emptyItem' => '']);
     }
 
-    private function hotelParams($model)
+    private function hotelParams($model): ParamsTable
     {
         return (new ParamsTable())
             ->id('id', 'ID')
             ->text('name', 'Наименование')
             ->text('type_name', 'Категория')
+            ->custom('visibility', 'Видимость', fn($v) => VisibilityEnum::from($v)->getLabel())
+            ->custom('status', 'Статус', fn($v) => StatusEnum::from($v)->getLabel())
             ->custom('rating', 'Рейтинг', fn($v) => (new HotelRating($v))->render())
-            //->custom('country', 'Страна', fn($v) => (new HotelRating($v))->render())
+            ->custom('country_name', 'Страна', fn($v, $o) => "{$o['country_name']} / {$o['city_name']}")
             ->text('address', 'Адрес')
             ->text('zipcode', 'Индекс')
-            ->date('created', 'Создан', ['format' => 'datetime'])
+            ->date('created_at', 'Создан', ['format' => 'datetime'])
             ->data($model);
     }
 }

@@ -1,9 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
     public function up()
@@ -23,11 +21,20 @@ return new class extends Migration {
                     'city_distance' => $r->citycenter_distance,
                     'zipcode' => $r->zipcode,
                     'status' => $r->status,
-                    'visibility' => $r->visible_for ?? 0,
+                    'visibility' => $this->getVisibilityValue($r->visible_for),
                     'created_at' => $r->created,
                     'updated_at' => $r->updated,
                 ]);
         }
+    }
+
+    private function getVisibilityValue(?int $visibleFor): \App\Admin\Enums\Hotel\VisibilityEnum
+    {
+        $visibility = \App\Admin\Enums\Hotel\VisibilityEnum::Public;
+        if ($visibleFor === 3) {
+            $visibility = \App\Admin\Enums\Hotel\VisibilityEnum::B2B;
+        }
+        return $visibility;
     }
 
     public function down()

@@ -63,6 +63,10 @@
     "enum.hotel.price-list.status.InProgress": "В обработке",
     "enum.hotel.price-list.status.Processed": "Обработан",
 
+    "enum.hotel.visibility.Hidden": "Скрыт",
+    "enum.hotel.visibility.Public": "Для всех",
+    "enum.hotel.visibility.B2B": "B2B",
+
     "enum.phone": "Телефон",
     "enum.email": "Email",
     "enum.site": "Сайт",

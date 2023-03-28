@@ -67,7 +67,8 @@ abstract class AbstractPrototypeController extends Controller
 
         return Layout::title($title)
             ->view($this->prototype->view('show') ?? ($this->getPrototypeKey() . '.show'), [
-                'model' => $this->model
+                'model' => $this->model,
+                ...$this->getShowViewData()
             ]);
     }
 
@@ -181,6 +182,11 @@ abstract class AbstractPrototypeController extends Controller
     protected function hasShowAction(): bool
     {
         return Route::has($this->prototype->routeName('show'));
+    }
+
+    protected function getShowViewData(): array
+    {
+        throw new \LogicException('Please implement the getShowViewData method on your controller.');
     }
 
     protected function prepareGridQuery(Builder $query) {}
