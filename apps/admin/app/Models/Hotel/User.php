@@ -5,6 +5,7 @@ namespace App\Admin\Models\Hotel;
 use Custom\Framework\Database\Eloquent\HasQuicksearch;
 use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Hash;
 
 class User extends Model
 {
@@ -44,6 +45,15 @@ class User extends Model
                 ->join('r_cities', 'r_cities.id', '=', 'hotels.city_id')
                 ->joinTranslatable('r_cities', 'name as city_name');
         });
+    }
+
+    public function setAttribute($key, $value)
+    {
+        if ($key === 'password') {
+            $value = $value ? Hash::make($value) : null;
+        }
+
+        return parent::setAttribute($key, $value);
     }
 
     public function __toString()

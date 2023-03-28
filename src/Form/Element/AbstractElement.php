@@ -211,6 +211,11 @@ abstract class AbstractElement implements ElementInterface
         return false;
     }
 
+    public function hasDataValue(): bool
+    {
+        return true;
+    }
+
     public function reset(): static
     {
         $this->value = null;

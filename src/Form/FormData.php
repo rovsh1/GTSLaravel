@@ -70,7 +70,7 @@ class FormData
         foreach ($this->form->getElements() as $element) {
             if ($element->disabled
                 || !$element->readable
-//                || ($element->isEmpty() && !$element->isEmptyAllowed())
+                || !$element->hasDataValue()
             ) {
                 continue;
             }

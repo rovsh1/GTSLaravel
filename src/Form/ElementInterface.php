@@ -46,6 +46,8 @@ interface ElementInterface
 
     public function isFileUpload(): bool;
 
+    public function hasDataValue(): bool;
+
     public function reset(): static;
 
     public function render(): string;

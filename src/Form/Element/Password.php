@@ -20,4 +20,9 @@ class Password extends Input
             . (new InputAttributes($this))->render($this->attributes)
             . ' value="">';
     }
+
+    public function hasDataValue(): bool
+    {
+        return !$this->isEmpty();
+    }
 }

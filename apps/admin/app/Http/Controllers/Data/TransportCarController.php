@@ -43,7 +43,7 @@ class TransportCarController extends AbstractPrototypeController
             ->edit($this->prototype)
             ->text('type_name', ['text' => 'Тип', 'order' => true])
             ->text('mark', ['text' => 'Марка', 'order' => true])
-            ->text('model', ['text' => 'Марка', 'order' => true])
+            ->text('model', ['text' => 'Модель', 'order' => true])
             ->number('passengers_number', ['text' => 'Кол-во пасажиров', 'format' => 'int', 'order' => true])
             ->number('bags_number', ['text' => 'Мест багажа', 'format' => 'int', 'order' => true])
             ->orderBy('mark', 'asc');

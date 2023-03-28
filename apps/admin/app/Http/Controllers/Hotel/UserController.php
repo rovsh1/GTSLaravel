@@ -24,7 +24,7 @@ class UserController extends AbstractPrototypeController
             ->text('name', ['label' => 'Имя', 'required' => true])
             ->text('patronymic', ['label' => 'Отчество', 'required' => true])
             ->text('login', ['label' => 'Логин', 'required' => true])
-            ->password('password', ['label' => 'Пароль', 'required' => true])
+            ->password('password', ['label' => 'Пароль', 'required' => empty($this->model)])
             ->email('email', ['label' => 'Email', 'required' => true])
             ->phone('phone', ['label' => 'Телефон']);
     }

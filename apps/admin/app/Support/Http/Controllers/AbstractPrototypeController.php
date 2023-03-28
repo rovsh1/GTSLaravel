@@ -102,10 +102,10 @@ abstract class AbstractPrototypeController extends Controller
                 ->withInput();
         }
 
-        $model = $this->repository->create($form->getData());
+        $this->model = $this->repository->create($form->getData());
 
         if ($this->hasShowAction()) {
-            return redirect($this->prototype->route('show', $model));
+            return redirect($this->prototype->route('show', $this->model));
         } else {
             return redirect($this->prototype->route('index'));
         }
@@ -115,7 +115,7 @@ abstract class AbstractPrototypeController extends Controller
     {
         $breadcrumbs = Breadcrumb::prototype($this->prototype);
 
-        $model = $this->repository->findOrFail($id);
+        $this->model = $model = $this->repository->findOrFail($id);
 
         $title = (string)$model;
         if ($this->hasShowAction()) {
@@ -142,18 +142,18 @@ abstract class AbstractPrototypeController extends Controller
 
     public function update(int $id): RedirectResponse
     {
-        $model = $this->repository->findOrFail($id);
+        $this->model = $this->repository->findOrFail($id);
 
         $form = $this->formFactory()
             ->method('put');
 
         if (!$form->submit()) {
-            return redirect($this->prototype->route('edit', $model))
+            return redirect($this->prototype->route('edit', $this->model))
                 ->withErrors($form->errors())
                 ->withInput();
         }
 
-        $this->repository->update($model->id, $form->getData());
+        $this->repository->update($this->model->id, $form->getData());
 
         return redirect($this->prototype->route('index'));
     }
