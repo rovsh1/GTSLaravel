@@ -19,8 +19,7 @@ class LandmarkTypeController extends AbstractPrototypeController
     {
         return Form::name('data')
             ->text('alias', ['label' => 'Ключ', 'required' => true])
-            ->text('name', ['label' => 'Наименование', 'required' => true])
-            ->checkbox('in_city', ['label' => 'В пределах города']);
+            ->text('name', ['label' => 'Наименование', 'required' => true]);
     }
 
     protected function gridFactory(): GridContract
@@ -29,7 +28,6 @@ class LandmarkTypeController extends AbstractPrototypeController
             ->paginator(self::GRID_LIMIT)
             ->edit($this->prototype)
             ->text('name', ['text' => 'Наименование', 'order' => true])
-            ->boolean('in_city', ['text' => 'В пределах города'])
             ->orderBy('name', 'asc');
     }
 }

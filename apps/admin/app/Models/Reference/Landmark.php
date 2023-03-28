@@ -24,7 +24,7 @@ class Landmark extends Model
         'city_id',
         'type_id',
         'name',
-//        'location_type',
+        'in_city',
         'address',
         'address_lat',
         'address_lon',
@@ -35,7 +35,7 @@ class Landmark extends Model
     protected $casts = [
         'city_id' => 'int',
         'type_id' => 'int',
-//        'location_type' => 'int',
+        'in_city' => 'bool',
         'address_lat' => 'float',
         'address_lon' => 'float',
         'center_distance' => 'int',

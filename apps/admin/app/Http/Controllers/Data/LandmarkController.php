@@ -25,8 +25,10 @@ class LandmarkController extends AbstractPrototypeController
                 'emptyItem' => '',
                 'items' => LandmarkType::get()
             ])
-            ->text('name', ['label' => 'Наименование', 'required' => true])
-            ->text('address', ['label' => 'Адрес', 'required' => true]);
+            ->localeText('name', ['label' => 'Наименование', 'required' => true])
+            ->text('address', ['label' => 'Адрес', 'required' => true])
+            //->text('address_lat', ['label' => 'Адрес', 'required' => true])
+            ->checkbox('in_city', ['label' => 'В пределах города']);
     }
 
     protected function gridFactory(): GridContract
@@ -38,6 +40,7 @@ class LandmarkController extends AbstractPrototypeController
             ->text('city_name', ['text' => 'Город', 'order' => true])
             ->text('type_name', ['text' => 'Тип', 'order' => true])
             ->text('address', ['text' => 'Адрес'])
+            ->boolean('in_city', ['text' => 'В пределах города'])
             ->number('center_distance', ['text' => 'Расстояние до центра', 'order' => true])
             ->orderBy('name', 'asc');
     }
