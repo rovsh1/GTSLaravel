@@ -9,7 +9,7 @@ use App\Admin\Support\Facades\Sidebar;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
-use App\Admin\Support\View\Grid\Search;
+use App\Admin\Support\View\Grid\SearchForm;
 use App\Admin\Support\View\Layout as LayoutContract;
 use App\Admin\View\Components\Helpers\HotelRating;
 use App\Admin\View\Menus\HotelMenu;
@@ -45,7 +45,6 @@ class HotelController extends AbstractPrototypeController
                 ->withErrors($form->errors())
                 ->withInput();
         }
-        dd($form->getFormData());
 
         return redirect($this->prototype->route());
     }
@@ -111,7 +110,7 @@ class HotelController extends AbstractPrototypeController
 
     private function searchForm()
     {
-        return (new Search())
+        return (new SearchForm())
             //@todo
             //->addElement('period', 'daterange', ['label' => 'Период договора'])
             ->dateRange('period', ['label' => __('label.contract-period')])

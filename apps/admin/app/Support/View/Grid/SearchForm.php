@@ -4,9 +4,9 @@ namespace App\Admin\Support\View\Grid;
 
 use App\Admin\Support\View\Form\Form;
 
-class Search extends Form
+class SearchForm extends Form
 {
-    protected function boot()
+    protected function build()
     {
         $this->method('get');
     }

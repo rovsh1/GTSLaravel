@@ -7,7 +7,7 @@ use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
-use App\Admin\Support\View\Form\SearchForm;
+use App\Admin\Support\View\Grid\SearchForm;
 
 class CityController extends AbstractPrototypeController
 {

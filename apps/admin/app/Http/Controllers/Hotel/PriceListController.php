@@ -8,7 +8,7 @@ use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
-use App\Admin\Support\View\Grid\Search;
+use App\Admin\Support\View\Grid\SearchForm;
 
 class PriceListController extends AbstractPrototypeController
 {
@@ -42,7 +42,7 @@ class PriceListController extends AbstractPrototypeController
 
     private function searchForm()
     {
-        return (new Search())
+        return (new SearchForm())
             ->currency('country_id', ['label' => __('label.currency'), 'emptyItem' => ''])
             ->dateRange('date_form', ['label' => 'Дата начала'])
             ->dateRange('date_to', ['label' => 'Дата завершения']);

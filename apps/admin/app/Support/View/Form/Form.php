@@ -42,13 +42,15 @@ class Form extends Base
         if ($data instanceof Model) {
             $isTranslatable = method_exists($data, 'isTranslatable');
             $model = $data;
-            $data = $model->toArray();
+            $data = [];
             /** @var ElementInterface $element */
             foreach ($this->elements as $element) {
                 if ($element instanceof Image) {
                     $data[$element->name] = ($element->fileType)::findByEntity($model->id);
                 } elseif ($isTranslatable && $model->isTranslatable($element->name)) {
                     $data[$element->name] = $model->getTranslations($element->name);
+                } else {
+                    $data[$element->name] = $model->{$element->name};
                 }
             }
         }

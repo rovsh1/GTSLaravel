@@ -96,7 +96,7 @@ class Select extends AbstractElement
     protected function prepareValue($value)
     {
         if (null === $value) {
-            return null;
+            return $this->multiple ? [] : null;
         } elseif ($value === $this->emptyItemValue) {
             return $this->emptyValue;
         }
