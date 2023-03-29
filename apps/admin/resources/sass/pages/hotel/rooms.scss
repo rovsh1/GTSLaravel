@@ -1,0 +1,9 @@
+@use "../main";
+
+.rooms-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    .card {flex-basis: 30%;flex-grow: 1;}
+    .card.new {display: flex;align-items: center;justify-content: center;}
+}

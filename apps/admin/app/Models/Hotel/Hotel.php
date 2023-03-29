@@ -5,8 +5,17 @@ namespace App\Admin\Models\Hotel;
 use Custom\Framework\Database\Eloquent\HasQuicksearch;
 use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @property int city_id
+ * @property int type_id
+ * @property string name
+ * @property int rating
+ * @property string address
+ * @property HasMany rooms
+ */
 class Hotel extends Model
 {
     use HasQuicksearch;
@@ -53,6 +62,11 @@ class Hotel extends Model
                 ->joinTranslatable('r_countries', 'name as country_name')
                 ->joinTranslatable('r_enums', 'name as type_name');
         });
+    }
+
+    public function rooms(): HasMany
+    {
+        return $this->hasMany(Room::class);
     }
 
     public function __toString()

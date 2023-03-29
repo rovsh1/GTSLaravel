@@ -32,6 +32,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static \App\Admin\Support\View\Form\Form localeText(string $name, array $options = [])
  * @method static \App\Admin\Support\View\Form\Form language(string $name, array $options = [])
  * @method static \App\Admin\Support\View\Form\Form numRange(string $name, array $options = [])
+ * @method static void trySubmit(string $redirectUrl)
  *
  * @see \App\Admin\Support\View\Form\Form
  *

@@ -52,6 +52,7 @@ class Handler extends ExceptionHandler
         if ($this->isNotFoundException($e)) {
             return $this->_renderNotFound($e);
         } else {
+            //TODO edit it
             Layout::configure();
 
             return parent::render($request, $e);

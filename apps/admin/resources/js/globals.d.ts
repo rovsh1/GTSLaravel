@@ -10,7 +10,7 @@ declare global {
     }
 
     interface Window {
-        get_meta_content(name: string, parse: boolean | undefined): string | null
+        get_meta_content(name: string, parse: boolean | undefined): string | any
 
         get_url_parameter(name: string, url: string | undefined): string | null
 

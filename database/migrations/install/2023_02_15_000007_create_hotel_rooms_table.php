@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->unsignedTinyInteger('rooms_number');
             $table->unsignedTinyInteger('guests_number');
             $table->unsignedTinyInteger('square')->nullable();
-            $table->timestamps();
+            $table->unsignedTinyInteger('position')->default(0);
 
             $table->foreign('hotel_id')
                 ->references('id')
@@ -52,6 +52,8 @@ return new class extends Migration {
             $table->unsignedSmallInteger('type_id');
             $table->unsignedTinyInteger('beds_number');
             $table->string('beds_size')->nullable();
+
+            $table->primary(['room_id', 'type_id', 'beds_number']);
 
             $table->foreign('room_id')
                 ->references('id')

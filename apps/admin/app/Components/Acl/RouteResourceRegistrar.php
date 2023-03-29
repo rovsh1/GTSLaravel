@@ -51,7 +51,13 @@ class RouteResourceRegistrar
 
     public function addAction(array $methods, string $uri, string $action, string $permission, string $name): static
     {
-        $this->routes->addAction($methods, $uri, $action, $this->resource->permissionSlug($permission), $name);
+        $this->routes->addAction(
+            $methods,
+            '/' . $this->resource->route . $uri,
+            $action,
+            $this->resource->permissionSlug($permission),
+            $this->resource->route . '.' . $name
+        );
         return $this;
     }
 
@@ -82,11 +88,11 @@ class RouteResourceRegistrar
         }
 
         $resourceSlug = self::formatSlug($this->resource->key);
-        $prefix = '/' . $this->resource->route;
-        $namePrefix = $this->resource->route . '.';
+        $prefix = '';
+        $namePrefix = '';
 
         if ($name) {
-            $base = self::formatSlug($name);
+            $base = self::formatSlug($options['parameters'][$name] ?? $name);
             $prefix .= '/{' . $resourceSlug . '}/' . $name;
             $namePrefix .= $name . '.';
         } else {

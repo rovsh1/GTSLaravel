@@ -2,6 +2,7 @@
 
 namespace App\Admin\Support\View\Form;
 
+use App\Admin\Exceptions\FormSubmitFailedException;
 use App\Admin\Support\View\Form\Element\Image;
 use Gsdk\Form\ElementInterface;
 use Gsdk\Form\Form as Base;
@@ -56,5 +57,21 @@ class Form extends Base
         }
 
         return parent::data($data);
+    }
+
+    /**
+     * @throws FormSubmitFailedException
+     */
+    public function trySubmit(string $redirectUrl): void
+    {
+        if ($this->submit()) {
+            return;
+        }
+
+        $exception = new FormSubmitFailedException();
+        $exception->setErrors($this->errors());
+        $exception->setRedirectUrl($redirectUrl);
+
+        throw $exception;
     }
 }

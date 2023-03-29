@@ -7,6 +7,9 @@ use Gsdk\Meta\MetaTags;
 use Illuminate\Support\Facades\App;
 use Illuminate\Contracts\View\View;
 
+/**
+ * @method self title(string $title)
+ */
 class Layout
 {
     private MetaTags $meta;

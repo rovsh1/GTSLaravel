@@ -96,11 +96,7 @@ abstract class AbstractPrototypeController extends Controller
         $form = $this->formFactory()
             ->method('post');
 
-        if (!$form->submit()) {
-            return redirect($this->prototype->route('create'))
-                ->withErrors($form->errors())
-                ->withInput();
-        }
+        $form->trySubmit($this->prototype->route('create'));
 
         $this->model = $this->repository->create($form->getData());
 
@@ -147,11 +143,7 @@ abstract class AbstractPrototypeController extends Controller
         $form = $this->formFactory()
             ->method('put');
 
-        if (!$form->submit()) {
-            return redirect($this->prototype->route('edit', $this->model))
-                ->withErrors($form->errors())
-                ->withInput();
-        }
+        $form->trySubmit($this->prototype->route('edit', $this->model));
 
         $this->repository->update($this->model->id, $form->getData());
 

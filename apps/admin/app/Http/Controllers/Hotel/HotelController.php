@@ -42,11 +42,8 @@ class HotelController extends AbstractPrototypeController
     public function store(): RedirectResponse
     {
         $form = $this->formFactory()->method('post');
-        if (!$form->submit()) {
-            return redirect($this->prototype->route('create'))
-                ->withErrors($form->errors())
-                ->withInput();
-        }
+
+        $form->trySubmit($this->prototype->route('create'));
 
         return redirect($this->prototype->route());
     }
@@ -128,7 +125,7 @@ class HotelController extends AbstractPrototypeController
             ->id('id', 'ID')
             ->text('name', 'Наименование')
             ->text('type_name', 'Категория')
-            ->custom('visibility', 'Видимость', fn($v) => VisibilityEnum::from($v)->getLabel())
+            ->custom('visibility', 'Видимость', fn($v) => VisibilityEnum::tryFrom($v)?->getLabel())
             ->custom('status', 'Статус', fn($v) => StatusEnum::from($v)->getLabel())
             ->custom('rating', 'Рейтинг', fn($v) => (new HotelRating($v))->render())
             ->custom('country_name', 'Страна', fn($v, $o) => "{$o['country_name']} / {$o['city_name']}")

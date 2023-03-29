@@ -7,17 +7,25 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 
 Builder::macro('joinTranslatable', function ($table, string|array $columns = null, $joinType = 'left') {
+    $alias = $table;
+    foreach (($this->getQuery()->joins ?? []) as $join) {
+        if (is_string($join->table) && str_contains($join->table, ' as ') && str_ends_with($join->table, $table)) {
+            [$table, $alias] = explode(' as ', $join->table);
+            break;
+        }
+    }
     $language = App::currentLocale();
     $translatableTable = $table . '_translation';
+    $translatableAlias = $alias . '_translation';
     $joinMethod = match ($joinType) {
         'left' => 'leftJoin',
         default => 'join'
     };
 
     $this->$joinMethod(
-        DB::raw('(SELECT t.* FROM ' . $translatableTable . ' as t WHERE t.language="' . $language . '") as ' . $translatableTable),
-        function ($join) use ($table, $translatableTable) {
-            $join->on($translatableTable . '.translatable_id', '=', $table . '.id');
+        DB::raw('(SELECT t.* FROM ' . $translatableTable . ' as t WHERE t.language="' . $language . '") as ' . $translatableAlias),
+        function ($join) use ($alias, $translatableAlias) {
+            $join->on($translatableAlias . '.translatable_id', '=', $alias . '.id');
         }
     );
 
@@ -26,7 +34,7 @@ Builder::macro('joinTranslatable', function ($table, string|array $columns = nul
             $columns = [$columns];
         }
 
-        $this->addSelect(array_map(fn($c) => $translatableTable . '.' . $c . '', $columns));
+        $this->addSelect(array_map(fn($c) => $translatableAlias . '.' . $c . '', $columns));
     }
 
     return $this;

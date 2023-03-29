@@ -1,0 +1,14 @@
+@use "../main";
+
+
+.room-beds {
+    display: flex;
+    flex-direction: column;
+
+    .item {
+        display: flex;
+        gap: 8px;
+        padding: 8px 0;
+        align-items: center;
+    }
+}
