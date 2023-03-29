@@ -4,6 +4,16 @@ return [
     'Hotel' => [
         'path' => modules_path('Hotel')
     ],
+    /**
+     * @deprecated start
+     * @todo удалить после переноса модуля Traveline на новую логику
+     */
+    'HotelOld' => [
+        'path' => modules_path('HotelOld')
+    ],
+    /**
+     * @deprecated end
+     */
     'HotelReservation' => [
         'path' => modules_path('Reservation/HotelReservation')
     ],

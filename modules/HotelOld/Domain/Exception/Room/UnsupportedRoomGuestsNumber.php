@@ -1,0 +1,14 @@
+<?php
+
+namespace Module\HotelOld\Domain\Exception\Room;
+
+use Module\Shared\Domain\Exception\DomainEntityExceptionInterface;
+use Module\Shared\Domain\Exception\ErrorCodeEnum;
+
+class UnsupportedRoomGuestsNumber extends \RuntimeException implements DomainEntityExceptionInterface
+{
+    public function domainCode(): ErrorCodeEnum
+    {
+        return ErrorCodeEnum::UnsupportedRoomGuestsNumber;
+    }
+}

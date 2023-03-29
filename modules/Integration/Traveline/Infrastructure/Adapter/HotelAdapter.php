@@ -10,17 +10,17 @@ class HotelAdapter extends AbstractPortAdapter implements HotelAdapterInterface
 {
     public function getHotelById(int $hotelId)
     {
-        return $this->request('hotel/findById', ['id' => $hotelId]);
+        return $this->request('hotelOld/findById', ['id' => $hotelId]);
     }
 
     public function getRoomsAndRatePlans(int $hotelId)
     {
-        return $this->request('hotel/getRoomsWithPriceRatesByHotelId', ['id' => $hotelId]);
+        return $this->request('hotelOld/getRoomsWithPriceRatesByHotelId', ['id' => $hotelId]);
     }
 
     public function updateRoomQuota(CarbonPeriod $period, int $roomId, int $quota)
     {
-        return $this->request('hotel/updateRoomQuota', [
+        return $this->request('hotelOld/updateRoomQuota', [
             'room_id' => $roomId,
             'date_from' => $period->getStartDate(),
             'date_to' => $period->getEndDate(),
@@ -30,7 +30,7 @@ class HotelAdapter extends AbstractPortAdapter implements HotelAdapterInterface
 
     public function updateRoomPrice(CarbonPeriod $period, int $roomId, int $rateId, int $guestsNumber, bool $isResident, string $currencyCode, float $price)
     {
-        return $this->request('hotel/updateRoomPrice', [
+        return $this->request('hotelOld/updateRoomPrice', [
             'room_id' => $roomId,
             'rate_id' => $rateId,
             'guests_number' => $guestsNumber,
@@ -44,7 +44,7 @@ class HotelAdapter extends AbstractPortAdapter implements HotelAdapterInterface
 
     public function openRoomRate(CarbonPeriod $period, int $roomId, int $rateId)
     {
-        return $this->request('hotel/openRoomQuota', [
+        return $this->request('hotelOld/openRoomQuota', [
             'room_id' => $roomId,
             'rate_id' => $rateId,
             'date_from' => $period->getStartDate(),
@@ -54,7 +54,7 @@ class HotelAdapter extends AbstractPortAdapter implements HotelAdapterInterface
 
     public function closeRoomRate(CarbonPeriod $period, int $roomId, int $rateId)
     {
-        return $this->request('hotel/closeRoomQuota', [
+        return $this->request('hotelOld/closeRoomQuota', [
             'room_id' => $roomId,
             'rate_id' => $rateId,
             'date_from' => $period->getStartDate(),
