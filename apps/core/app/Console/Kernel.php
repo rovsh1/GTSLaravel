@@ -28,9 +28,6 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $loadPaths = [];
-
-        //$loadPaths[] = __DIR__ . '/Commands';
         //$loadPaths[] = admin_path('app/Console/Commands');
         $this->loadNamespacePath('App\\Admin\\Console\\Commands', admin_path('app/Console/Commands'));
 //        $this->loadNamespacePath('App\\Site\\Console\\Commands', site_path('app/Console/Commands'));
@@ -44,7 +41,7 @@ class Kernel extends ConsoleKernel
             }
         }
 
-        //$this->load($loadPaths);
+        //$this->load(__DIR__ . '/Commands');
 
         require __DIR__ . '/routes.php';
     }

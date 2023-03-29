@@ -9,7 +9,6 @@ return new class extends Migration {
     public function up()
     {
         $this->createRates();
-        $this->createSeasonPrices();
         $this->createPriceGroups();
         $this->createPrices();
     }
@@ -52,45 +51,6 @@ return new class extends Migration {
         });
     }
 
-    private function createSeasonPrices()
-    {
-        Schema::create('hotel_season_prices', function (Blueprint $table) {
-            //$table->increments('id');
-            $table->unsignedInteger('season_id');
-            $table->unsignedInteger('group_id');
-            $table->unsignedInteger('room_id');
-            $table->unsignedDecimal('price', 11, 2);
-            $table->unsignedSmallInteger('currency_id');
-            $table->comment('Таблица цен по сезонам по умолчанию, для заполнения календаря цен');
-
-            $table->primary(['group_id', 'season_id', 'room_id']);
-
-            $table->foreign('season_id')
-                ->references('id')
-                ->on('hotel_seasons')
-                ->nullOnDelete()
-                ->cascadeOnUpdate();
-
-            $table->foreign('group_id')
-                ->references('id')
-                ->on('hotel_price_groups')
-                ->cascadeOnDelete()
-                ->cascadeOnUpdate();
-
-            $table->foreign('room_id')
-                ->references('id')
-                ->on('hotel_rooms')
-                ->cascadeOnDelete()
-                ->cascadeOnUpdate();
-
-            $table->foreign('currency_id')
-                ->references('id')
-                ->on('r_currencies')
-                ->cascadeOnDelete()
-                ->cascadeOnUpdate();
-        });
-    }
-
     private function createPrices()
     {
         Schema::create('hotel_price_calendar', function (Blueprint $table) {
@@ -125,7 +85,6 @@ return new class extends Migration {
 
     public function down()
     {
-        Schema::dropIfExists('hotel_season_prices');
         Schema::dropIfExists('hotel_price_calendar');
         Schema::dropIfExists('hotel_price_groups');
         Schema::dropIfExists('hotel_price_rates');

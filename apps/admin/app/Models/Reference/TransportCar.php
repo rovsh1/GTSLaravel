@@ -18,8 +18,11 @@ class TransportCar extends Model
     protected $table = 'r_transport_cars';
 
     protected $fillable = [
+        'type_id',
         'mark',
         'model',
+        'passengers_number',
+        'bags_number',
     ];
 
     public static function booted()
