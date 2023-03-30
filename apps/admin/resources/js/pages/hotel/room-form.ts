@@ -7,9 +7,12 @@ interface IBedData {
     beds_size: string
 }
 
-interface IBedType {
+interface ISelectList {
     id: number,
     name: string
+}
+
+interface IBedType extends ISelectList {
 }
 
 function bootBeds() {
@@ -36,7 +39,7 @@ function bootBeds() {
         return html;
     };
 
-    const nums = [];//
+    const nums: ISelectList[] = [];//
     for (let i = 1; i <= 12; i++) {
         nums[nums.length] = {id: i, name: i.toString()};
     }
@@ -81,7 +84,7 @@ function bootBeds() {
 
     const $dataInput = $('#form_data_beds');
     const data = JSON.parse(<string>$dataInput.val() || '[]');
-    data.forEach(r => {
+    data.forEach((r: any) => {
         addBed(r);
     });
     $dataInput.remove();

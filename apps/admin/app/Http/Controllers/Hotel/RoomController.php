@@ -113,12 +113,13 @@ class RoomController extends Controller
 
     private function formFactory(): FormContract
     {
-        return Form::select('type_id', [
-            'label' => 'Тип номера',
-            'required' => true,
-            'items' => RoomType::get(),
-            'emptyItem' => ''
-        ])
+        return Form::hidden('beds')
+            ->select('type_id', [
+                'label' => 'Тип номера',
+                'required' => true,
+                'items' => RoomType::get(),
+                'emptyItem' => ''
+            ])
             ->select('name_id', [
                 'label' => 'Наименование',
                 'required' => true,
@@ -128,8 +129,7 @@ class RoomController extends Controller
             ->text('custom_name', ['label' => 'Наименование (уникальное)', 'hint' => 'Внутреннее наименования для отеля'])
             ->number('rooms_number', ['label' => 'Кол-во номеров', 'required' => true])
             ->number('guests_number', ['label' => 'Вместимость номера', 'required' => true])
-            ->number('square', ['label' => 'Площадь'])
-            ->hidden('beds');
+            ->number('square', ['label' => 'Площадь']);
     }
 
     private function formLayout($form): LayoutContract
