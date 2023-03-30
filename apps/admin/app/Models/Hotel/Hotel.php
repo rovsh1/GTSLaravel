@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int rating
  * @property string address
  * @property HasMany rooms
+ * @property HasMany seasons
  */
 class Hotel extends Model
 {
@@ -46,8 +47,8 @@ class Hotel extends Model
     protected $casts = [
         'city_id' => 'int',
         'type_id' => 'int',
-        'rating' => 'int',
-        'status' => 'int',
+        'rating'  => 'int',
+        'status'  => 'int',
     ];
 
     public static function booted()
@@ -67,6 +68,11 @@ class Hotel extends Model
     public function rooms(): HasMany
     {
         return $this->hasMany(Room::class);
+    }
+
+    public function seasons(): HasMany
+    {
+        return $this->hasMany(Season::class);
     }
 
     public function updateRoomsPositions($ids): bool

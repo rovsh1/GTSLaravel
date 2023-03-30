@@ -18,11 +18,10 @@ class PriceController extends Controller
         $this->bootHotel($hotel);
 
         return Layout::title('Rooms')
-            ->view('hotel.rooms', [
-                'editAllowed' => true,
-                'deleteAllowed' => true,
-                'createUrl' => Acl::isCreateAllowed('hotel') ? route('hotels.rooms.create', $hotel) : null,
-                'rooms' => $hotel->rooms
+            ->ss('hotel/prices')
+            ->view('hotel.prices', [
+                'rooms' => $hotel->rooms,
+                'seasons' => $hotel->seasons,
             ]);
     }
 

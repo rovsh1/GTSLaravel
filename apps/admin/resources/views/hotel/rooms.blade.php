@@ -3,8 +3,6 @@
 @section('content')
     <div class="content-header">
         <div class="title">{{ $title }}</div>
-
-        {!! Layout::actions() !!}
     </div>
 
     <div class="content-body rooms-cards" id="hotel-rooms">
@@ -31,7 +29,6 @@
                         @if($editAllowed)
                             <a href="{{ route('hotels.rooms.edit', [$hotel, $room]) }}" class="btn btn-light">Редакировать</a>
                         @endif
-                        <a href="#" class="btn btn-light">Описание</a>
                         <a href="#" class="btn btn-light">Фотографии</a>
                     </div>
                 </div>
