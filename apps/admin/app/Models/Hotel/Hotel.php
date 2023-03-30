@@ -69,6 +69,20 @@ class Hotel extends Model
         return $this->hasMany(Room::class);
     }
 
+    public function updateRoomsPositions($ids): bool
+    {
+        $i = 1;
+        foreach ($ids as $id) {
+            $room = Room::find($id);
+            if (!$room) {
+                throw new \Exception('Room not found', 404);
+            }
+
+            $room->update(['position' => $i++]);
+        }
+        return true;
+    }
+
     public function __toString()
     {
         return (string)$this->name;

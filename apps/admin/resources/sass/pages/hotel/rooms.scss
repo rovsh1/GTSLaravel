@@ -4,6 +4,40 @@
     display: flex;
     flex-wrap: wrap;
     gap: 32px;
-    .card {flex-basis: 30%;flex-grow: 1;}
+    .card {flex-basis: 30%;flex-grow: 1;overflow: hidden;}
     .card.new {display: flex;align-items: center;justify-content: center;}
+    .image {
+        height: 200px;
+        position: relative;
+        background: #F3F3F3 url("/images/nophoto.webp") 50% 50% no-repeat;
+        .name {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            padding: .5rem 1rem;
+            background: rgba(0, 0, 0, .46);
+            color: #fff;
+        }
+    }
+    .body {
+        padding: .5rem 1rem;
+        .buttons {margin-top: .5rem;display: flex;gap: 1rem;}
+    }
+    .sort-handle {
+        cursor: move;
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        width: 32px;
+        height: 32px;
+        padding: 4px;
+        background: rgba(0, 0, 0, .4);
+        background-size: 16px 16px;
+        border-radius: 4px;
+        color: #fff;
+        i {vertical-align: top;}
+    }
+    .card:not(:hover) .sort-handle {display: none;}
+    .ui-sortable-placeholder {border-style: dashed;}
 }

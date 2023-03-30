@@ -5,13 +5,13 @@ use App\Admin\Support\Facades\AclRoute;
 
 // hotel
 AclRoute::for('hotel')
+    ->put('/{hotel}/rooms/position', Controllers\Hotel\RoomController::class . '@position', 'update', 'rooms.position')
     ->resource('rooms', Controllers\Hotel\RoomController::class, [
         'parameters' => [
             'rooms' => 'room',
         ],
         'except' => ['show']
     ])
-    //->get('/{hotel}/rooms/{room}/text', 'rooms.description', 'update')
     ->resource('prices', Controllers\Hotel\PriceController::class, ['except' => ['show']]);
 
 AclRoute::for('service-provider')

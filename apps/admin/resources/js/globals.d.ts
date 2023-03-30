@@ -6,6 +6,8 @@ declare global {
 
         coordinatesInput(options: any): JQuery<HTMLElement>
 
+        sortable(options: any): JQuery<HTMLElement>
+
         update(): void
     }
 

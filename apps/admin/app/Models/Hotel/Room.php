@@ -4,7 +4,6 @@ namespace App\Admin\Models\Hotel;
 
 use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
@@ -47,25 +46,14 @@ class Room extends Model
                 ->join('r_enums as r_names', 'r_names.id', '=', 'hotel_rooms.name_id')
                 ->join('r_enums as r_types', 'r_types.id', '=', 'hotel_rooms.type_id')
                 ->joinTranslatable('r_names', 'name')
-                ->joinTranslatable('r_types', 'name as type_name');
+                ->joinTranslatable('r_types', 'name as type_name')
+                ->orderBy('position', 'asc');
         });
     }
 
     public function beds(): HasMany
     {
         return $this->hasMany(RoomBed::class);
-    }
-
-    public function hotels(): BelongsToMany
-    {
-        return $this->belongsToMany(
-            Hotel::class,
-            'price_lists_options',
-            'price_list_id',
-            'entity_id',
-            'id',
-            'id',
-        )->wherePivot('entity', 'hotel');
     }
 
     public function updateBeds(array $beds)

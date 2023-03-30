@@ -22,6 +22,8 @@ use Illuminate\Http\Request;
 
 class RoomController extends Controller
 {
+    public function __construct() {}
+
     public function index(Request $request, Hotel $hotel): LayoutContract
     {
         $this->hotel($hotel);
@@ -109,6 +111,13 @@ class RoomController extends Controller
         $room->delete();
 
         return redirect(route('hotels.rooms.index', $hotel));
+    }
+
+    public function position(Request $request, Hotel $hotel): array
+    {
+        $hotel->updateRoomsPositions($request->input('indexes'));
+
+        return [];
     }
 
     private function formFactory(): FormContract
