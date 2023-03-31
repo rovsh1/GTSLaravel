@@ -68,6 +68,8 @@ abstract class AbstractPrototypeController extends Controller
         return Layout::title($title)
             ->view($this->prototype->view('show') ?? ($this->getPrototypeKey() . '.show'), [
                 'model' => $this->model,
+                'editUrl' => $this->prototype->hasPermission('update') ? $this->prototype->route('edit', $this->model->id) : null,
+                'deleteUrl' => $this->prototype->hasPermission('delete') ? $this->prototype->route('destroy', $this->model->id) : null,
                 ...$this->getShowViewData()
             ]);
     }

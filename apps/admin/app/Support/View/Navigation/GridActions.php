@@ -10,7 +10,7 @@ class GridActions
         public readonly string $url,
     ) {}
 
-    public function edit(string $text = 'Добавить'): static
+    public function edit(string $text = 'Редактировать'): static
     {
         return $this->addItem('edit', 'edit', $text);
     }
