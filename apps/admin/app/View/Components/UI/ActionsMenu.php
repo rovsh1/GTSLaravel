@@ -30,7 +30,7 @@ class ActionsMenu extends Component
         if ($this->deleteUrl) {
             $buttons .= <<<HTML
                 <li>
-                    <a class="dropdown-item" href="{$this->deleteUrl}">
+                    <a class="dropdown-item" data-url="{$this->deleteUrl}" data-form-action="delete">
                         <i class="icon">delete</i>
                         Удалить
                     </a>

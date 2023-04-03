@@ -2,6 +2,9 @@ function bootDeleteButtons() {
   $('button.btn-delete')
     .filter('[data-form-action="delete"]')
     .deleteButton()
+
+  $('a[data-form-action="delete"]')
+    .deleteButton()
 }
 
 function bootMultiselect() {
