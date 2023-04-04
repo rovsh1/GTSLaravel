@@ -1,4 +1,4 @@
-<nav class="paginator px-4 pb-3 d-flex">
+<nav class="paginator d-flex">
     <ul class="pagination mb-0">
         @if ($pages->previous)
             <li class="page-item prev">

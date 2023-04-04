@@ -11,6 +11,7 @@
 			td:first-child, th:first-child {padding-left: 1rem;}
 			td:last-child, th:last-child {padding-right: 1rem;}
 		}
+		& > table + .paginator {padding: 1rem 1rem 0 1rem;}
 	}
 	.card-header + .card-body {padding-top: 0;}
 }
