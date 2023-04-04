@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->double('address_lat', 11, 8)->nullable();
             $table->double('address_lon', 11, 8)->nullable();
             $table->integer('city_distance')->nullable();
-            $table->boolean('in_city');
+            $table->boolean('in_city')->default(0);
 
             $table->foreign('type_id')
                 ->references('id')

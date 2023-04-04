@@ -15,7 +15,6 @@ return new class extends Migration {
                     'id' => $r->id,
                     'alias' => $r->alias,
                     'name' => $r->name,
-                    //'city' => $r->roundcity,
                 ]);
         }
 
@@ -30,7 +29,6 @@ return new class extends Migration {
                     'address_lat' => $r->latitude,
                     'address_lon' => $r->longitude,
                     'city_distance' => $r->distance,
-                    //'city' => $r->roundcity,
                 ]);
 
             Db::table('r_landmarks_translation')
