@@ -3,7 +3,6 @@
 namespace App\Admin\Models\Administrator;
 
 use App\Admin\Files\AdministratorAvatar;
-use App\Admin\Support\View\Sidebar\Menu\Group;
 use Custom\Framework\Database\Eloquent\HasQuicksearch;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -73,7 +72,7 @@ class Administrator extends Authenticatable
 
     public function groups(): BelongsToMany
     {
-        return $this->belongsToMany(Group::class, 'administrator_access_members', 'administrator_id', 'group_id');
+        return $this->belongsToMany(AccessGroup::class, 'administrator_access_members', 'administrator_id', 'group_id');
     }
 
     public function getGroupsAttribute()

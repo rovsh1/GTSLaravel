@@ -2,6 +2,7 @@
 
 namespace App\Admin\Http\Controllers\Administration;
 
+use App\Admin\Models\Administrator\AccessGroup;
 use App\Admin\Models\Administrator\Post;
 use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\Form;
@@ -20,7 +21,7 @@ class AdministratorController extends AbstractPrototypeController
 
     protected function formFactory(): FormContract
     {
-        $method = request()->route()->getActionMethod();
+        $isNew = !isset($this->model);
         $form = Form::name('data')
             ->select('post_id', [
                 'label' => 'Должность',
@@ -31,22 +32,21 @@ class AdministratorController extends AbstractPrototypeController
             ->text('login', ['label' => 'Логин', 'autocomplete' => 'username', 'required' => true])
             ->email('email', ['label' => 'Email', 'autocomplete' => 'email'])
             ->phone('phone', ['label' => 'Телефон'])
-            //->addElement('status', 'enum', ['label' => 'Статус', 'enum' => UserStatus::class])
+            ->select('status', ['label' => 'Статус', 'items' => ['Заблокирован', 'Активный']])
             //->addElement('image', 'image', ['label' => 'Аватар'])
             ->password('password', [
-                'label' => 'Пароль',
+                'label' => $isNew ? 'Пароль' : 'Изменить пароль',
                 'autocomplete' => 'new-password',
-                'required' => in_array($method, ['create', 'store'])
+                'required' => $isNew
             ]);
 
-//        if (app('acl')->isAllowed('update access-group')) {
-//            $form->select('groups', [
-//                'label' => 'Группы доступа',
-//                'items' => AccessGroup::get(),
-//                'value' => [],
-//                'multiple' => true
-//            ]);
-//        }
+        if (Acl::isUpdateAllowed('access-group')) {
+            $form->select('groups', [
+                'label' => 'Группы доступа',
+                'items' => AccessGroup::get(),
+                'multiple' => true
+            ]);
+        }
 
         if (Acl::isSuperuser()) {
             $form
