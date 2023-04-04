@@ -3,7 +3,7 @@
 namespace Module\HotelOld\Port\Controllers;
 
 use Custom\Framework\Contracts\Bus\QueryBusInterface;
-use Custom\Framework\Port\Request;
+use Custom\Framework\PortGateway\Request;
 use Module\HotelOld\Application\Dto\Info\HotelDto;
 use Module\HotelOld\Application\Dto\Info\RoomDto;
 use Module\HotelOld\Application\Query\GetHotelById;

@@ -3,12 +3,20 @@
 namespace App\Core\Providers;
 
 use Custom\Framework\Contracts\Event\IntegrationEventHandlerInterface;
+use Custom\Framework\Contracts\Notification\NotificationGatewayInterface;
+use Custom\Framework\Contracts\PortGateway\PortGatewayInterface;
 use Custom\Framework\Foundation\Module;
 use Custom\Framework\Foundation\Support\Providers\ServiceProvider;
 use Module\Shared\Providers\BootServiceProvider;
 
 class ModulesServiceProvider extends ServiceProvider
 {
+    private array $globalBindings = [
+        PortGatewayInterface::class,
+        IntegrationEventHandlerInterface::class,
+        NotificationGatewayInterface::class,
+    ];
+
     public function register()
     {
         $this->app->register(BootServiceProvider::class);
@@ -40,7 +48,11 @@ class ModulesServiceProvider extends ServiceProvider
         }
 
         $module = new Module($name, $config);
-        $module->instance(IntegrationEventHandlerInterface::class, $this->app->get(IntegrationEventHandlerInterface::class));
+        foreach ($this->globalBindings as $abstract) {
+            $module->singleton($abstract, function() use ($abstract) {
+                return $this->app->get($abstract);
+            });
+        }
 
         $this->app->registerModule($module);
     }

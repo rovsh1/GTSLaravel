@@ -2,7 +2,7 @@
 
 namespace Module\Integration\Traveline\Port\Controllers;
 
-use Custom\Framework\Port\Request;
+use Custom\Framework\PortGateway\Request;
 use Module\Integration\Traveline\Application\Service\Booking;
 use Module\Integration\Traveline\Application\Service\ReservationFinder;
 use Module\Integration\Traveline\Domain\Api\Response\EmptySuccessResponse;

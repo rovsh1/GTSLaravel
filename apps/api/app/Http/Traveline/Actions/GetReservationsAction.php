@@ -3,7 +3,7 @@
 namespace App\Api\Http\Traveline\Actions;
 
 use App\Api\Http\Traveline\Requests\GetReservationsActionRequest;
-use Module\Shared\Infrastructure\Adapter\PortGatewayInterface;
+use Custom\Framework\Contracts\PortGateway\PortGatewayInterface;
 
 class GetReservationsAction
 {

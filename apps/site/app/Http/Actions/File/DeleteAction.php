@@ -2,7 +2,7 @@
 
 namespace App\Site\Http\Actions\File;
 
-use Module\Shared\Infrastructure\Adapter\PortGatewayInterface;
+use Custom\Framework\Contracts\PortGateway\PortGatewayInterface;
 
 class DeleteAction
 {

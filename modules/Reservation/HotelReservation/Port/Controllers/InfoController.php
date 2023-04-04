@@ -2,7 +2,7 @@
 
 namespace Module\Reservation\HotelReservation\Port\Controllers;
 
-use Custom\Framework\Port\Request;
+use Custom\Framework\PortGateway\Request;
 use Module\Reservation\HotelReservation\Application\Dto\ExtendedReservationDto;
 use Module\Reservation\HotelReservation\Application\Service\InfoService;
 

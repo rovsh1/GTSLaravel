@@ -3,7 +3,7 @@
 namespace Module\Services\FileStorage\Port\Controllers;
 
 use Custom\Framework\Contracts\Bus\QueryBusInterface;
-use Custom\Framework\Port\Request;
+use Custom\Framework\PortGateway\Request;
 use Module\Services\FileStorage\Application\Dto\FileDto;
 use Module\Services\FileStorage\Application\Dto\FileInfoDto;
 use Module\Services\FileStorage\Application\Query\FindByEntity;

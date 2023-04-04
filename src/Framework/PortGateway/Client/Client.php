@@ -1,10 +1,10 @@
 <?php
 
-namespace Module\Services\PortGateway;
+namespace Custom\Framework\PortGateway\Client;
 
-use Module\Services\PortGateway\Exception\BasePortGatewayException;
-use Module\Services\PortGateway\Exception\ModuleNotFoundException;
-use Module\Shared\Infrastructure\Adapter\PortGatewayInterface;
+use Custom\Framework\Contracts\PortGateway\PortGatewayInterface;
+use Custom\Framework\PortGateway\Exception\BasePortGatewayException;
+use Custom\Framework\PortGateway\Exception\ModuleNotFoundException;
 
 class Client implements PortGatewayInterface
 {

@@ -2,11 +2,12 @@
 
 use App\Admin\Http\Controllers\AuthController;
 use App\Admin\Http\Controllers\Profile\ProfileController;
+use App\Admin\Http\Middleware\Authenticate;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(AuthController::class)->group(function () {
-    Route::withoutMiddleware('auth:admin')->get('/login', 'index')->name('auth.login');
-    Route::withoutMiddleware('auth:admin')->post('/login', 'login')->name('auth.submit');
+    Route::withoutMiddleware(Authenticate::class)->get('/login', 'index')->name('auth.login');
+    Route::withoutMiddleware(Authenticate::class)->post('/login', 'login')->name('auth.submit');
 
     Route::get('/logout', 'logout')->name('auth.logout');
 });

@@ -1,6 +1,6 @@
 <?php
 
-namespace Custom\Framework\Port;
+namespace Custom\Framework\PortGateway;
 
 use Custom\Framework\Foundation\Exception\ValidationException;
 use Illuminate\Support\Facades\Validator;

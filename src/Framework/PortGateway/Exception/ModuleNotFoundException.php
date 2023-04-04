@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Services\PortGateway\Exception;
+namespace Custom\Framework\PortGateway\Exception;
 
 class ModuleNotFoundException extends \RuntimeException
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Services\PortGateway;
+namespace Custom\Framework\PortGateway\Client;
 
 class Request
 {

@@ -25,6 +25,10 @@ return [
         'nesting_level' => 2,
         'path_name_length' => 2
     ],
+    'MailManager' => [
+        'path' => modules_path('Services/MailManager'),
+        'alias' => 'mail',
+    ],
     'Scheduler' => [
         'path' => modules_path('Services/Scheduler')
     ],

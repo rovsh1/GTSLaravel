@@ -2,14 +2,12 @@
 
 namespace App\Site\Http\Actions\File;
 
+use Custom\Framework\Contracts\PortGateway\PortGatewayInterface;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
 use Module\Services\FileStorage\Infrastructure\Facade\ReaderFacadeInterface;
-use Module\Shared\Infrastructure\Adapter\PortGatewayInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class GetAction
 {

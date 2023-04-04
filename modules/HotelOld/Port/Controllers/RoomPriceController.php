@@ -3,7 +3,7 @@
 namespace Module\HotelOld\Port\Controllers;
 
 use Carbon\CarbonPeriod;
-use Custom\Framework\Port\Request;
+use Custom\Framework\PortGateway\Request;
 use Module\HotelOld\Application\Service\RoomPriceUpdater;
 
 class RoomPriceController

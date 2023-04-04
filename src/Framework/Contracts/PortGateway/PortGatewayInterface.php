@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Shared\Infrastructure\Adapter;
+namespace Custom\Framework\Contracts\PortGateway;
 
 interface PortGatewayInterface
 {

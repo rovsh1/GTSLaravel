@@ -3,9 +3,9 @@
 namespace App\Core\Providers;
 
 use App\Core\Support\Adapters\FileAdapter;
+use Custom\Framework\Contracts\PortGateway\PortGatewayInterface;
 use Custom\Framework\Foundation\Support\Providers\ServiceProvider;
-use Module\Services\PortGateway\Client as PortGateway;
-use Module\Shared\Infrastructure\Adapter\PortGatewayInterface;
+use Custom\Framework\PortGateway\Client\Client as PortGateway;
 
 class PortGatewayServiceProvider extends ServiceProvider
 {

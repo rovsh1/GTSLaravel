@@ -3,7 +3,7 @@
 namespace Custom\Framework\Routing;
 
 use Custom\Framework\Foundation\Module;
-use Custom\Framework\Port\Request;
+use Custom\Framework\PortGateway\Request;
 
 class RouteHandler
 {

@@ -2,11 +2,11 @@
 
 namespace Custom\Framework\Event;
 
-use Custom\Framework\Contracts\Event\DomainEventDispatcherInterface;
+use Custom\Framework\Contracts\Event\IntegrationEventDispatcherInterface;
 use Custom\Framework\Contracts\Event\IntegrationEventInterface;
 use Custom\Framework\Foundation\Module;
 
-class IntegrationEventDispatcher implements DomainEventDispatcherInterface
+class IntegrationEventDispatcher implements IntegrationEventDispatcherInterface
 {
     private array $listeners = [];
 

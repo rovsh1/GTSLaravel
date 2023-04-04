@@ -3,7 +3,7 @@
 namespace Module\Hotel\Port\Controllers;
 
 use Custom\Framework\Contracts\Bus\CommandBusInterface;
-use Custom\Framework\Port\Request;
+use Custom\Framework\PortGateway\Request;
 use Module\Hotel\Application\Command\SetSeasonPrice;
 
 class PriceController

@@ -3,7 +3,7 @@
 namespace Module\Services\FileStorage\Port\Controllers;
 
 use Custom\Framework\Contracts\Bus\CommandBusInterface;
-use Custom\Framework\Port\Request;
+use Custom\Framework\PortGateway\Request;
 use Module\Services\FileStorage\Application\Command\CreateFile;
 use Module\Services\FileStorage\Application\Command\DeleteFile;
 use Module\Services\FileStorage\Application\Command\PutFileContents;

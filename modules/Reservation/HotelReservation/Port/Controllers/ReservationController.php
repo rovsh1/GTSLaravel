@@ -3,7 +3,7 @@
 namespace Module\Reservation\HotelReservation\Port\Controllers;
 
 use Custom\Framework\Contracts\Event\DomainEventDispatcherInterface;
-use Custom\Framework\Port\Request;
+use Custom\Framework\PortGateway\Request;
 use Module\Reservation\HotelReservation\Domain\Event\ReservationCancelled;
 
 class ReservationController
