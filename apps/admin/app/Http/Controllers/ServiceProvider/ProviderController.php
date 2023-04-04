@@ -22,26 +22,21 @@ class ProviderController extends AbstractPrototypeController
     public function show(int $id): LayoutContract
     {
         return parent::show($id)
-            ->ss('service-provider/show')
-            ->data([
-                'contactsUrl' => $this->prototype->route('show', $id) . '/contacts',
-                'contactsEditable' => Acl::isUpdateAllowed($this->getPrototypeKey()),
-                'contacts' => $this->model->contacts
-            ]);
+                     ->ss('service-provider/show');
     }
 
     protected function formFactory(): FormContract
     {
         return Form::name('data')
-            ->text('name', ['label' => 'Наименование', 'required' => true]);
+                   ->text('name', ['label' => 'Наименование', 'required' => true]);
     }
 
     protected function gridFactory(): GridContract
     {
         return Grid::enableQuicksearch()
-            ->paginator(self::GRID_LIMIT)
-            ->text('name', ['text' => 'Наименование', 'route' => $this->prototype->routeName('show'), 'order' => true])
-            ->orderBy('name', 'asc');
+                   ->paginator(self::GRID_LIMIT)
+                   ->text('name', ['text' => 'Наименование', 'route' => $this->prototype->routeName('show'), 'order' => true])
+                   ->orderBy('name', 'asc');
     }
 
     protected function prepareShowMenu(Model $model)
@@ -50,7 +45,7 @@ class ProviderController extends AbstractPrototypeController
         if (Acl::isUpdateAllowed($this->getPrototypeKey())) {
             $menu->addUrl($this->prototype->route('edit', $model), [
                 'icon' => 'edit',
-                'cls' => 'btn-edit',
+                'cls'  => 'btn-edit',
                 'text' => 'Редактировать'
             ]);
         }
@@ -58,9 +53,18 @@ class ProviderController extends AbstractPrototypeController
         if (Acl::isUpdateAllowed($this->getPrototypeKey())) {
             $menu->addUrl($this->prototype->route('destroy', $model), [
                 'icon' => 'delete',
-                'cls' => 'btn-delete',
+                'cls'  => 'btn-delete',
                 'text' => 'Удалить'
             ]);
         }
+    }
+
+    protected function getShowViewData(): array
+    {
+        return [
+            'contactsUrl'      => $this->prototype->route('show', $this->model->id) . '/contacts',
+            'contactsEditable' => Acl::isUpdateAllowed($this->getPrototypeKey()),
+            'contacts'         => $this->model->contacts
+        ];
     }
 }
