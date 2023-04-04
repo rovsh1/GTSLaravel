@@ -10,6 +10,19 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 
+/**
+ * @property int id
+ * @property int post_id
+ * @property string presentation
+ * @property string name
+ * @property string surname
+ * @property string login
+ * @property string email
+ * @property string phone
+ * @property bool superuser
+ * @property bool status
+ * @property string remember_token
+ */
 class Administrator extends Authenticatable
 {
     use HasFactory;
@@ -33,7 +46,6 @@ class Administrator extends Authenticatable
         'email',
         'gender',
         'status',
-        'image',
         'superuser',
 
         'groups',
@@ -45,20 +57,31 @@ class Administrator extends Authenticatable
     ];
 
     protected $casts = [
-        'post_id' => 'int'
+        'post_id' => 'int',
+        'superuser' => 'bool',
+        'status' => 'bool'
     ];
 
     public $timestamps = true;
 
-//    protected static function boot()
+//    protected static function booted()
 //    {
-//        parent::boot();
-//
-//        static::addGlobalScope('administrator', function (Builder $builder) {
-//            $builder->addSelect('administrators.*');
-//            UserAvatar::scopeEntityColumn($builder, 'avatar');
+//        parent::saving(function (Administrator $model) {
+//            if ($model->isDirty('status') && $model->status == 0) {
+//                $model->remember_token = null;
+//            }
 //        });
 //    }
+
+    public function isSuperuser(): bool
+    {
+        return (bool)$this->superuser;
+    }
+
+    public function isActive(): bool
+    {
+        return (bool)$this->status;
+    }
 
     public function avatar(): ?AdministratorAvatar
     {
@@ -75,7 +98,7 @@ class Administrator extends Authenticatable
         return $this->belongsToMany(AccessGroup::class, 'administrator_access_members', 'administrator_id', 'group_id');
     }
 
-    public function getGroupsAttribute()
+    public function getGroupsAttribute(): array
     {
         return $this->groups()->pluck('id')->toArray();
     }
@@ -113,11 +136,6 @@ class Administrator extends Authenticatable
         return parent::setAttribute($key, $value);
     }
 
-//    public function avatar()
-//    {
-//        return UserAvatar::findByEntity($this);
-//    }
-
     public function __toString(): string
     {
         return (string)$this->presentation;
@@ -139,6 +157,11 @@ class Administrator extends Authenticatable
         $query
             ->leftJoin('r_enums', 'r_enums.id', '=', 'administrators.post_id')
             ->joinTranslatable('r_enums', 'name as post_name');
+    }
+
+    public static function scopeWhereActive($query)
+    {
+        $query->where('administrators.status', 1);
     }
 
     public static function scopeWhereLogin($query, $login)

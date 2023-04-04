@@ -32,8 +32,8 @@ class Radio extends AbstractElement
 
     public function setItems(iterable $items): void
     {
-        foreach ($items as $data) {
-            $this->items[] = (new ItemBuilder($data))
+        foreach ($items as $k => $data) {
+            $this->items[] = (new ItemBuilder($k, $data))
                 ->setValue($this->valueIndex)
                 ->setText($this->textIndex)
                 ->get();

@@ -51,8 +51,8 @@ class Select extends AbstractElement
 
     public function setItems(iterable $items): void
     {
-        foreach ($items as $data) {
-            $this->items[] = (new OptionBuilder($data))
+        foreach ($items as $k => $data) {
+            $this->items[] = (new OptionBuilder($k, $data))
                 ->setValue($this->valueIndex)
                 ->setText($this->textIndex)
                 ->setGroup($this->groupIndex)

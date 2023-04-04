@@ -43,7 +43,7 @@ class Kernel extends HttpKernel
 
         'admin' => [
             \App\Admin\Http\Middleware\AclPermissions::class,
-            'auth:admin'
+            \App\Admin\Http\Middleware\Authenticate::class,
         ],
 
         'api' => [

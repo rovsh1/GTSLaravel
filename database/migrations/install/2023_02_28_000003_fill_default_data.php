@@ -13,6 +13,7 @@ return new class extends Migration {
             'login' => 'developer',
             'presentation' => 'developer',
             'password' => '123456',
+            'status' => 1,
             'superuser' => 1
         ]);
 

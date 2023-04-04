@@ -32,7 +32,9 @@ class LoginAction
                 true
             )
         ) {
-            return true;//Auth::guard('admin')->user();
+            /** @var Administrator $administrator */
+            $administrator = Auth::guard('admin')->user();
+            return $administrator->isSuperuser() || $administrator->isActive();
         }
 
         if (

@@ -38,12 +38,12 @@ class ItemBuilder
         }
     }
 
-    public function __construct(mixed $data)
+    public function __construct(int|string $key, mixed $data)
     {
         if (is_array($data)) {
             $this->data = (object)$data;
         } elseif (is_scalar($data)) {
-            $this->data = (object)['value' => $data, 'text' => $data];
+            $this->data = (object)['value' => $key, 'text' => $data];
         } elseif (!is_object($data)) {
             throw new \Exception('Item format invalid');
         } else {

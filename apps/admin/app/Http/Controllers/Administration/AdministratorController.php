@@ -32,7 +32,7 @@ class AdministratorController extends AbstractPrototypeController
             ->text('login', ['label' => 'Логин', 'autocomplete' => 'username', 'required' => true])
             ->email('email', ['label' => 'Email', 'autocomplete' => 'email'])
             ->phone('phone', ['label' => 'Телефон'])
-            ->select('status', ['label' => 'Статус', 'items' => ['Заблокирован', 'Активный']])
+            ->select('status', ['label' => 'Статус', 'items' => [0 => 'Заблокирован', 1 => 'Активный']])
             //->addElement('image', 'image', ['label' => 'Аватар'])
             ->password('password', [
                 'label' => $isNew ? 'Пароль' : 'Изменить пароль',
