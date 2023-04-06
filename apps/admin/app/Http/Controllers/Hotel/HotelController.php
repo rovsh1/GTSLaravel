@@ -37,12 +37,18 @@ class HotelController extends AbstractPrototypeController
             ->ss('hotel/show');
     }
 
+    public function edit(int $id): LayoutContract
+    {
+        return parent::edit($id)
+            ->addMetaName('google-maps-key', env('GOOGLE_MAPS_API_KEY'))
+            ->script('hotel/edit');
+    }
+
     public function create(): LayoutContract
     {
-        Layout::addMetaName('google-maps-key', env('GOOGLE_MAPS_API_KEY'));
-        Layout::script('hotel/create');
-        Layout::style('hotel/create');
-        return parent::create();
+        return parent::create()
+            ->addMetaName('google-maps-key', env('GOOGLE_MAPS_API_KEY'))
+            ->ss('hotel/create');
     }
 
     protected function formFactory(): FormContract

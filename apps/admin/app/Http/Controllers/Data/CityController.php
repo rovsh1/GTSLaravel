@@ -39,7 +39,7 @@ class CityController extends AbstractPrototypeController
         return Form::name('data')
             ->country('country_id', ['label' => 'Страна', 'required' => true])
             ->localeText('name', ['label' => 'Наименование', 'required' => true])
-            ->coordinates('coordinates', ['label' => 'Координаты', 'required' => true, 'value' => $coordinates, 'latitudeField' => 'center_lat', 'longitudeField' => 'center_lot']);
+            ->coordinates('coordinates', ['label' => 'Координаты', 'required' => true, 'value' => $coordinates]);
     }
 
     protected function gridFactory(): GridContract

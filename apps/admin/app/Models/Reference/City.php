@@ -2,17 +2,18 @@
 
 namespace App\Admin\Models\Reference;
 
+use App\Admin\Models\HasCoordinates;
 use Custom\Framework\Database\Eloquent\HasQuicksearch;
 use Custom\Framework\Database\Eloquent\HasTranslations;
 use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Facades\DB;
 
 class City extends Model
 {
     use HasQuicksearch;
     use HasTranslations;
+    use HasCoordinates;
 
     public $timestamps = false;
 
@@ -54,23 +55,18 @@ class City extends Model
         });
     }
 
-    public function coordinates(): Attribute
-    {
-        return Attribute::make(
-            get: function (mixed $value, array $attributes) {
-                $coordinatesSeparator = env('COORDINATES_SEPARATOR');
-                $latitude = $attributes['center_lat'] ?? null;
-                $longitude = $attributes['center_lon'] ?? null;
-                if (empty($latitude) || empty($longitude)) {
-                    return null;
-                }
-                return "{$latitude}{$coordinatesSeparator}{$longitude}";
-            }
-        );
-    }
-
     public function __toString()
     {
         return (string)$this->name;
+    }
+
+    protected function getLatitudeField(): string
+    {
+        return 'center_lat';
+    }
+
+    protected function getLongitudeField(): string
+    {
+        return 'center_lon';
     }
 }

@@ -2,10 +2,10 @@
 
 namespace App\Admin\Models\Hotel;
 
+use App\Admin\Models\HasCoordinates;
 use Custom\Framework\Database\Eloquent\HasQuicksearch;
 use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Hotel extends Model
 {
     use HasQuicksearch;
+    use HasCoordinates;
 
     //use SoftDeletes;
 
@@ -36,8 +37,8 @@ class Hotel extends Model
         'rating',
         'address',
 //->addAttribute('citycenter_distance','number', ['default' => 0, 'nonnegative' => true, 'allowZero' => true]),
-        'latitude',
-        'longitude',
+        'address_lat',
+        'address_lon',
         'zipcode',
 //    'text',
         'status',
@@ -80,20 +81,6 @@ class Hotel extends Model
         return $this->hasMany(Contact::class, 'hotel_id', 'id');
     }
 
-    public function coordinates(): Attribute
-    {
-        return Attribute::make(
-            get: function (mixed $value, array $attributes) {
-                $coordinatesSeparator = env('COORDINATES_SEPARATOR');
-                $latitude = $attributes['address_lat'] ?? null;
-                $longitude = $attributes['address_lon'] ?? null;
-                if (empty($latitude) || empty($longitude)) {
-                    return null;
-                }
-                return "{$latitude}{$coordinatesSeparator}{$longitude}";
-            });
-    }
-
     public function updateRoomsPositions($ids): bool
     {
         $i = 1;
@@ -111,5 +98,15 @@ class Hotel extends Model
     public function __toString()
     {
         return (string)$this->name;
+    }
+
+    protected function getLatitudeField(): string
+    {
+        return 'address_lat';
+    }
+
+    protected function getLongitudeField(): string
+    {
+        return 'address_lon';
     }
 }
