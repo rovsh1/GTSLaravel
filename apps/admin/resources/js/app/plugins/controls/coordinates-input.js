@@ -21,7 +21,10 @@ function pointFromString(text) {
     return null
   }
 
-  return { lat, lng }
+  return {
+    lat,
+    lng,
+  }
 }
 
 const mapServices = {
@@ -31,7 +34,10 @@ const mapServices = {
       if (status === google.maps.GeocoderStatus.OK) {
         const { location } = results[0].geometry
         map.setCenter(location)
-        resolve({ lat: location.lat(), lng: location.lng() })
+        resolve({
+          lat: location.lat(),
+          lng: location.lng(),
+        })
       } else {
         console.log('Not valid address')
       }
@@ -115,7 +121,10 @@ $.fn.coordinatesInput = function (options) {
 
     google.maps.event.addListener(marker, 'dragend', () => {
       const position = marker.getPosition()
-      updateInputCoordinates({ lat: position.lat(), lng: position.lng() })
+      updateInputCoordinates({
+        lat: position.lat(),
+        lng: position.lng(),
+      })
     })
   })
 

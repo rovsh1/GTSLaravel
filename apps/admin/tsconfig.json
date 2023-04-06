@@ -20,6 +20,9 @@
         "paths": {
             "@/*": [
                 "resources/js/*"
+            ],
+            "@styles/*": [
+                "resources/sass/*"
             ]
         },
         "noUnusedLocals": true,

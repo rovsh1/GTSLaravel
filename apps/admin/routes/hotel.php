@@ -12,7 +12,9 @@ AclRoute::for('hotel')
         ],
         'except' => ['show']
     ])
-    ->resource('prices', Controllers\Hotel\PriceController::class, ['except' => ['show']]);
+    ->resource('prices', Controllers\Hotel\PriceController::class, ['except' => ['show']])
+    ->resource('contacts', Controllers\Hotel\ContactController::class, ['except' => ['show', 'index']]);
+
 
 AclRoute::for('service-provider')
     ->resource('contacts', Controllers\ServiceProvider\ContactController::class, ['except' => ['show', 'index']]);

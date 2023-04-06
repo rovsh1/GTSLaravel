@@ -28,6 +28,8 @@ mix.options({
 mix.alias({
 	//'@core': resourcesPath + '/core/js',
 
+    '@styles': `${resourcesPath}/resources/sass`,
+
 	'~fonts': resourcesPath + '/sass/common/fonts',
 	'~variables': resourcesPath + '/sass/variables',
 	'~mixins': resourcesPath + '/sass/abstracts/mixins',
@@ -98,7 +100,7 @@ mix.webpackConfig({
 	}
 });
 
-mix.alias({});
+// mix.alias({});
 
 /*
  |--------------------------------------------------------------------------

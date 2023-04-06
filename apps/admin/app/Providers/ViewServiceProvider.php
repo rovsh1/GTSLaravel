@@ -104,7 +104,7 @@ class ViewServiceProvider extends ServiceProvider
         Blade::component('ui.tab', Components\UI\Tab::class);
         Blade::component('ui.add-button', Components\UI\AddButton::class);
         Blade::component('ui.actions-menu', Components\UI\ActionsMenu::class);
-        Blade::component('ui.collapsable-block', Components\UI\CollapsableBlock::class);
+        Blade::component('ui.card', Components\UI\Card::class);
         Blade::component('file-image', Components\FileImage::class);
         Blade::component('user-avatar', Components\UserAvatar::class);
         Blade::component('form.delete-button', Components\Form\DeleteButton::class);

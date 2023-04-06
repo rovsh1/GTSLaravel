@@ -4,6 +4,7 @@ namespace App\Admin\Http\Controllers\Hotel;
 
 use App\Admin\Enums\Hotel\StatusEnum;
 use App\Admin\Enums\Hotel\VisibilityEnum;
+use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Facades\Layout;
@@ -16,7 +17,6 @@ use App\Admin\Support\View\Layout as LayoutContract;
 use App\Admin\View\Components\Helpers\HotelRating;
 use App\Admin\View\Menus\HotelMenu;
 use Gsdk\Format\View\ParamsTable;
-use Illuminate\Http\RedirectResponse;
 
 class HotelController extends AbstractPrototypeController
 {
@@ -31,6 +31,12 @@ class HotelController extends AbstractPrototypeController
         return parent::index();
     }
 
+    public function show(int $id): LayoutContract
+    {
+        return parent::show($id)
+            ->ss('hotel/show');
+    }
+
     public function create(): LayoutContract
     {
         Layout::addMetaName('google-maps-key', env('GOOGLE_MAPS_API_KEY'));
@@ -39,17 +45,9 @@ class HotelController extends AbstractPrototypeController
         return parent::create();
     }
 
-    public function store(): RedirectResponse
-    {
-        $form = $this->formFactory()->method('post');
-
-        $form->trySubmit($this->prototype->route('create'));
-
-        return redirect($this->prototype->route());
-    }
-
     protected function formFactory(): FormContract
     {
+        $coordinates = isset($this->model) ? $this->model->coordinates : null;
         return Form::city('city_id', ['label' => 'Город', 'required' => true, 'emptyItem' => ''])
             ->hotelType('type_id', ['label' => 'Тип отеля', 'required' => true, 'emptyItem' => ''])
             ->checkbox('visible_for', ['label' => __('label.visible-for')])
@@ -57,7 +55,7 @@ class HotelController extends AbstractPrototypeController
             ->hotelRating('rating', ['label' => 'Категория', 'emptyItem' => ''])
             ->hotelStatus('status', ['label' => 'Статус', 'emptyItem' => ''])
             ->text('address', ['label' => 'Адрес', 'required' => true])
-            ->coordinates('coordinates', ['label' => 'Координаты', 'required' => true])
+            ->coordinates('coordinates', ['label' => 'Координаты', 'required' => true, 'value' => $coordinates])
             ->text('zipcode', ['label' => 'Индекс']);
     }
 
@@ -98,6 +96,9 @@ class HotelController extends AbstractPrototypeController
     {
         return [
             'params' => $this->hotelParams($this->model),
+            'contactsUrl' => $this->prototype->route('show', $this->model->id) . '/contacts',
+            'contactsEditable' => Acl::isUpdateAllowed($this->getPrototypeKey()),
+            'contacts' => $this->model->contacts
         ];
     }
 

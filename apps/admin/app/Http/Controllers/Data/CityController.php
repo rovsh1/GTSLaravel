@@ -8,6 +8,7 @@ use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Grid\SearchForm;
+use App\Admin\Support\View\Layout as LayoutContract;
 
 class CityController extends AbstractPrototypeController
 {
@@ -16,11 +17,29 @@ class CityController extends AbstractPrototypeController
         return 'city';
     }
 
+    public function create(): LayoutContract
+    {
+        return parent::create()
+            ->addMetaName('google-maps-key', env('GOOGLE_MAPS_API_KEY'))
+            ->script('administration/city-form')
+            ->view('administration.city-form');
+    }
+
+    public function edit(int $id): LayoutContract
+    {
+        return parent::edit($id)
+            ->addMetaName('google-maps-key', env('GOOGLE_MAPS_API_KEY'))
+            ->script('administration/city-form')
+            ->view('administration.city-form');
+    }
+
     protected function formFactory(): FormContract
     {
+        $coordinates = isset($this->model) ? $this->model->coordinates : null;
         return Form::name('data')
             ->country('country_id', ['label' => 'Страна', 'required' => true])
-            ->localeText('name', ['label' => 'Наименование', 'required' => true]);
+            ->localeText('name', ['label' => 'Наименование', 'required' => true])
+            ->coordinates('coordinates', ['label' => 'Координаты', 'required' => true, 'value' => $coordinates, 'latitudeField' => 'center_lat', 'longitudeField' => 'center_lot']);
     }
 
     protected function gridFactory(): GridContract

@@ -17,72 +17,37 @@
         </div>
 
         <div class="mt-3">
-            <x-ui.collapsable-block header="Контакты (contacts_count)">
-                <table class="table">
-                    <tbody>
-                    <tr>
-                        <td>Телефон</td>
-                        <td>55555</td>
-                        <td>основной</td>
-                        <td>кнопки</td>
-                    </tr>
-                    <tr>
-                        <td>Телефон</td>
-                        <td>55555</td>
-                        <td>основной</td>
-                        <td>кнопки</td>
-                    </tr>
-                    <tr>
-                        <td>Телефон</td>
-                        <td>55555</td>
-                        <td>основной</td>
-                        <td>кнопки</td>
-                    </tr>
-                    <tr>
-                        <td>Телефон</td>
-                        <td>55555</td>
-                        <td>основной</td>
-                        <td>кнопки</td>
-                    </tr>
-                    <tr>
-                        <td>Телефон</td>
-                        <td>55555</td>
-                        <td>основной</td>
-                        <td>кнопки</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </x-ui.collapsable-block>
+            @include('_partials/components/contacts-card', ['collapsable' => true])
         </div>
 
         <div class="mt-3">
-            <x-ui.collapsable-block header="Дополнительные параметры">
+            <x-ui.card :collapsable="true" header="Дополнительные параметры">
                 Дополнительные параметры
-            </x-ui.collapsable-block>
+            </x-ui.card>
         </div>
 
         <div class="mt-3">
-            <x-ui.collapsable-block header="Сотрудники (count)">
+            <x-ui.card :collapsable="true" header="Сотрудники (count)">
                 Дополнительные параметры
-            </x-ui.collapsable-block>
+            </x-ui.card>
         </div>
 
         <div class="mt-3">
-            <x-ui.collapsable-block header="Примечание">
+            <x-ui.card :collapsable="true" header="Примечание">
                 Дополнительные параметры
-            </x-ui.collapsable-block>
+            </x-ui.card>
         </div>
 
         <div class="mt-3">
-            <x-ui.collapsable-block header="Администраторы (count)">
+            <x-ui.card :collapsable="true" header="Администраторы (count)">
                 Дополнительные параметры
-            </x-ui.collapsable-block>
+            </x-ui.card>
         </div>
 
         <div class="mt-3">
-            <x-ui.collapsable-block header="Объекты и достопримечательности (count)">
+            <x-ui.card :collapsable="true" header="Объекты и достопримечательности (count)">
                 Дополнительные параметры
-            </x-ui.collapsable-block>
+            </x-ui.card>
         </div>
     </div>
 @endsection

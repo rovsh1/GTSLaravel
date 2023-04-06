@@ -1,3 +1,5 @@
+import '../../../sass/partials/components/_card-contacts.scss'
+
 function editableContactRow(route, $tr) {
   const id = $tr.data('id')
   const html = '<td class="column-actions">'

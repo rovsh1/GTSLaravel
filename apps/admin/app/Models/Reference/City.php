@@ -6,6 +6,7 @@ use Custom\Framework\Database\Eloquent\HasQuicksearch;
 use Custom\Framework\Database\Eloquent\HasTranslations;
 use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Facades\DB;
 
 class City extends Model
@@ -25,12 +26,15 @@ class City extends Model
         'name',
         'country_id',
         //'text'
+        'center_lat',
+        'center_lon',
     ];
 
     public static function booted()
     {
         static::addGlobalScope('default', function (Builder $builder) {
             $builder
+                ->addSelect('r_cities.*')
                 ->addSelect(['r_cities.id', 'r_cities.country_id'])
                 ->join('r_countries', 'r_countries.id', '=', 'r_cities.country_id')
                 ->joinTranslatable('r_countries', 'name as country_name')
@@ -48,6 +52,21 @@ class City extends Model
                 ->from('hotels as t')
                 ->whereColumn('t.city_id', 'r_cities.id');
         });
+    }
+
+    public function coordinates(): Attribute
+    {
+        return Attribute::make(
+            get: function (mixed $value, array $attributes) {
+                $coordinatesSeparator = env('COORDINATES_SEPARATOR');
+                $latitude = $attributes['center_lat'] ?? null;
+                $longitude = $attributes['center_lon'] ?? null;
+                if (empty($latitude) || empty($longitude)) {
+                    return null;
+                }
+                return "{$latitude}{$coordinatesSeparator}{$longitude}";
+            }
+        );
     }
 
     public function __toString()

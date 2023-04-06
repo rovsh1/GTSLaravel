@@ -6,10 +6,11 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Str;
 use Illuminate\View\Component;
 
-class CollapsableBlock extends Component
+class Card extends Component
 {
     public function __construct(
         public string  $header,
+        public bool    $collapsable = false,
         public ?string $id = null,
     )
     {
@@ -20,6 +21,6 @@ class CollapsableBlock extends Component
 
     public function render(): View
     {
-        return view('_partials.components.collapsable-block');
+        return view('_partials.components.card');
     }
 }

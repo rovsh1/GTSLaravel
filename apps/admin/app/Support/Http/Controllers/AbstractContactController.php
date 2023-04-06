@@ -116,7 +116,7 @@ abstract class AbstractContactController extends Controller
 
     protected function route(string $name, int|array $params): string
     {
-        return route($this->getPrototypeKey() . '.contacts.' . $name, $params);
+        return route($this->prototype->routeName('contacts.' . $name), $params);
     }
 
     abstract protected function getContactModel(): string;

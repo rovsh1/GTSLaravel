@@ -5,8 +5,8 @@ namespace App\Admin\Models\Hotel;
 use Custom\Framework\Database\Eloquent\HasQuicksearch;
 use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property int city_id
@@ -47,8 +47,8 @@ class Hotel extends Model
     protected $casts = [
         'city_id' => 'int',
         'type_id' => 'int',
-        'rating'  => 'int',
-        'status'  => 'int',
+        'rating' => 'int',
+        'status' => 'int',
     ];
 
     public static function booted()
@@ -73,6 +73,25 @@ class Hotel extends Model
     public function seasons(): HasMany
     {
         return $this->hasMany(Season::class);
+    }
+
+    public function contacts(): HasMany
+    {
+        return $this->hasMany(Contact::class, 'hotel_id', 'id');
+    }
+
+    public function coordinates(): Attribute
+    {
+        return Attribute::make(
+            get: function (mixed $value, array $attributes) {
+                $coordinatesSeparator = env('COORDINATES_SEPARATOR');
+                $latitude = $attributes['address_lat'] ?? null;
+                $longitude = $attributes['address_lon'] ?? null;
+                if (empty($latitude) || empty($longitude)) {
+                    return null;
+                }
+                return "{$latitude}{$coordinatesSeparator}{$longitude}";
+            });
     }
 
     public function updateRoomsPositions($ids): bool

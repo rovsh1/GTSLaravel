@@ -1,0 +1,42 @@
+@use '../../variables';
+
+.card-header.collapsable {
+    border-bottom: none;
+
+    &:not(.collapsed) {
+        border-bottom: var(--bs-card-border-width) solid var(--bs-card-border-color);
+    }
+
+    h5 {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding: var(--bs-accordion-btn-padding-y) var(--bs-accordion-btn-padding-x);
+        font-size: 1rem;
+        color: var(--bs-accordion-btn-color);
+        text-align: left;
+        background-color: var(--bs-accordion-btn-bg);
+        border: 0;
+        border-radius: 0;
+        overflow-anchor: none;
+        transition: var(--bs-accordion-transition);
+
+        &:after {
+            flex-shrink: 0;
+            width: var(--bs-accordion-btn-icon-width);
+            height: var(--bs-accordion-btn-icon-width);
+            margin-left: auto;
+            content: "";
+            background-image: var(--bs-accordion-btn-icon);
+            background-repeat: no-repeat;
+            background-size: var(--bs-accordion-btn-icon-width);
+            transition: var(--bs-accordion-btn-icon-transition);
+
+            &:not(.collapsed) {
+                background-image: var(--bs-accordion-btn-active-icon);
+                transform: var(--bs-accordion-btn-icon-transform);
+            }
+        }
+    }
+}
