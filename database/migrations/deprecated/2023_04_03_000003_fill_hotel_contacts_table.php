@@ -11,25 +11,11 @@ return new class extends Migration {
         $q = DB::connection('mysql_old')->table('hotel_contacts');
 
         foreach ($q->cursor() as $r) {
-            $employeeId = null;
-            if ($r->employee_id !== null) {
-                $oldEmployee = DB::connection('mysql_old')->table('hotel_employees')->where('id', $r->employee_id)->first();
-                if ($oldEmployee !== null) {
-                    $employeeId = DB::table('hotel_employees')->insertGetId([
-                        'hotel_id' => $oldEmployee->hotel_id,
-                        'fullname' => $oldEmployee->fullname,
-                        'department' => $oldEmployee->department,
-                        'post' => $oldEmployee->post,
-                        'created_at' => $oldEmployee->created,
-                        'updated_at' => now(),
-                    ]);
-                }
-            }
-
             DB::table('hotel_contacts')
                 ->insert([
+                    'id' => $r->id,
                     'hotel_id' => $r->hotel_id,
-                    'employee_id' => $employeeId,
+                    'employee_id' => $r->employee_id,
                     'type' => $r->type,
                     'value' => $r->value,
                     'description' => $r->description,
