@@ -27,7 +27,7 @@ trait HasCoordinates
                 if (empty($latitude) || empty($longitude)) {
                     return null;
                 }
-                return "{$latitude}{$this->coordinatesSeparator}{$longitude}";
+                return "{$latitude}{$this->coordinatesSeparator} {$longitude}";
             },
             set: function (string $value) {
                 [$latitude, $longitude] = explode($this->coordinatesSeparator, $value);
