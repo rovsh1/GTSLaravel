@@ -68,8 +68,14 @@ abstract class AbstractPrototypeController extends Controller
         return Layout::title($title)
             ->view($this->prototype->view('show') ?? ($this->getPrototypeKey() . '.show'), [
                 'model' => $this->model,
-                'editUrl' => $this->prototype->hasPermission('update') ? $this->prototype->route('edit', $this->model->id) : null,
-                'deleteUrl' => $this->prototype->hasPermission('delete') ? $this->prototype->route('destroy', $this->model->id) : null,
+                'editUrl' => $this->prototype->hasPermission('update') ? $this->prototype->route(
+                    'edit',
+                    $this->model->id
+                ) : null,
+                'deleteUrl' => $this->prototype->hasPermission('delete') ? $this->prototype->route(
+                    'destroy',
+                    $this->model->id
+                ) : null,
                 ...$this->getShowViewData()
             ]);
     }
@@ -100,7 +106,8 @@ abstract class AbstractPrototypeController extends Controller
 
         $form->trySubmit($this->prototype->route('create'));
 
-        $this->model = $this->repository->create($form->getData());
+        $preparedData = $this->saving($form->getData());
+        $this->model = $this->repository->create($preparedData);
 
         if ($this->hasShowAction()) {
             return redirect($this->prototype->route('show', $this->model));
@@ -134,7 +141,10 @@ abstract class AbstractPrototypeController extends Controller
                 'model' => $model,
                 'form' => $form,
                 'cancelUrl' => $this->prototype->route('index'),
-                'deleteUrl' => $this->prototype->hasPermission('delete') ? $this->prototype->route('destroy', $model->id) : null
+                'deleteUrl' => $this->prototype->hasPermission('delete') ? $this->prototype->route(
+                    'destroy',
+                    $model->id
+                ) : null
             ]);
     }
 
@@ -147,7 +157,8 @@ abstract class AbstractPrototypeController extends Controller
 
         $form->trySubmit($this->prototype->route('edit', $this->model));
 
-        $this->repository->update($this->model->id, $form->getData());
+        $preparedData = $this->saving($form->getData());
+        $this->repository->update($this->model->id, $preparedData);
 
         return redirect($this->prototype->route('index'));
     }
@@ -186,6 +197,11 @@ abstract class AbstractPrototypeController extends Controller
     protected function prepareGridQuery(Builder $query) {}
 
     protected function prepareShowMenu(Model $model) {}
+
+    protected function saving(array $data): array
+    {
+        return $data;
+    }
 
     abstract protected function getPrototypeKey(): string;
 }

@@ -4,6 +4,9 @@ namespace App\Admin\Http\Controllers\Hotel;
 
 use App\Admin\Enums\Hotel\StatusEnum;
 use App\Admin\Enums\Hotel\VisibilityEnum;
+use App\Admin\Models\Reference\City;
+use App\Admin\Support\Distance\Calculator;
+use App\Admin\Support\Distance\Point;
 use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Grid;
@@ -20,6 +23,12 @@ use Gsdk\Format\View\ParamsTable;
 
 class HotelController extends AbstractPrototypeController
 {
+    public function __construct(
+        private readonly Calculator $distanceCalculator
+    ) {
+        parent::__construct();
+    }
+
     protected function getPrototypeKey(): string
     {
         return 'hotel';
@@ -27,8 +36,8 @@ class HotelController extends AbstractPrototypeController
 
     public function index(): LayoutContract
     {
-        Layout::script('hotel/main');
-        return parent::index();
+        return parent::index()
+            ->script('hotel/main');
     }
 
     public function show(int $id): LayoutContract
@@ -111,6 +120,17 @@ class HotelController extends AbstractPrototypeController
     protected function prepareShowMenu($model)
     {
         Sidebar::submenu(new HotelMenu($model, 'info'));
+    }
+
+    protected function saving(array $data): array
+    {
+        $preparedData = $data;
+        $cityId = $data['city_id'];
+        $city = City::find($cityId);
+        $from = new Point($city->center_lat, $city->center_lon);
+        $to = Point::buildFromCoordinates($data['coordinates']);
+        $preparedData['city_distance'] = $this->distanceCalculator->getDistance($from, $to);
+        return $preparedData;
     }
 
     private function searchForm(): SearchForm

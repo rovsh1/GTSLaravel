@@ -24,8 +24,6 @@ class Hotel extends Model
 
     //use SoftDeletes;
 
-    public $timestamps = false;
-
     protected array $quicksearch = ['id', 'name%'];
 
     protected $table = 'hotels';
@@ -42,6 +40,7 @@ class Hotel extends Model
         'zipcode',
 //    'text',
         'status',
+        'city_distance',
 //    'visible_for',
     ];
 
@@ -51,6 +50,8 @@ class Hotel extends Model
         'rating' => 'int',
         'status' => 'int',
     ];
+
+    public static function saving($callback) {}
 
     public static function booted()
     {

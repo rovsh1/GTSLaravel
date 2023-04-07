@@ -2,6 +2,7 @@
 
 namespace App\Admin\Models\Reference;
 
+use App\Admin\Models\HasCoordinates;
 use Custom\Framework\Database\Eloquent\HasQuicksearch;
 use Custom\Framework\Database\Eloquent\HasTranslations;
 use Custom\Framework\Database\Eloquent\Model;
@@ -11,6 +12,7 @@ class Landmark extends Model
 {
     use HasQuicksearch;
     use HasTranslations;
+    use HasCoordinates;
 
     protected array $quicksearch = ['id', 'name%'];
 
@@ -57,5 +59,15 @@ class Landmark extends Model
     public function __toString()
     {
         return (string)$this->name;
+    }
+
+    protected function getLatitudeField(): string
+    {
+        return 'address_lat';
+    }
+
+    protected function getLongitudeField(): string
+    {
+        return 'address_lon';
     }
 }
