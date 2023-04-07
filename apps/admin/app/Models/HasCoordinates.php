@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 
 trait HasCoordinates
 {
+    private string $coordinatesSeparator = ',';
+
     abstract protected function getLatitudeField(): string;
 
     abstract protected function getLongitudeField(): string;
@@ -18,18 +20,17 @@ trait HasCoordinates
 
     public function coordinates(): Attribute
     {
-        $coordinatesSeparator = env('COORDINATES_SEPARATOR');
         return Attribute::make(
-            get: function (mixed $value, array $attributes) use ($coordinatesSeparator) {
+            get: function (mixed $value, array $attributes) {
                 $latitude = $attributes[$this->getLatitudeField()] ?? null;
                 $longitude = $attributes[$this->getLongitudeField()] ?? null;
                 if (empty($latitude) || empty($longitude)) {
                     return null;
                 }
-                return "{$latitude}{$coordinatesSeparator}{$longitude}";
+                return "{$latitude}{$this->coordinatesSeparator}{$longitude}";
             },
-            set: function (string $value) use ($coordinatesSeparator) {
-                [$latitude, $longitude] = explode($coordinatesSeparator, $value);
+            set: function (string $value) {
+                [$latitude, $longitude] = explode($this->coordinatesSeparator, $value);
 
                 return [
                     $this->getLatitudeField() => trim($latitude),
