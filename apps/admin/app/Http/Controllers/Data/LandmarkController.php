@@ -54,8 +54,8 @@ class LandmarkController extends AbstractPrototypeController
             ])
             ->localeText('name', ['label' => 'Наименование', 'required' => true])
             ->text('address', ['label' => 'Адрес', 'required' => true])
-            ->coordinates('coordinates', ['label' => 'Координаты', 'required' => true, 'value' => $coordinates])
-            ->checkbox('in_city', ['label' => 'В пределах города']);
+            ->coordinates('coordinates', ['label' => 'Координаты', 'required' => true, 'value' => $coordinates]);
+//            ->checkbox('in_city', ['label' => 'В пределах города']);
     }
 
     protected function gridFactory(): GridContract
