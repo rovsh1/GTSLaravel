@@ -1,1 +1,39 @@
 @use "../main";
+
+.card h5 > a {
+    font-size: 11px;
+    color: var(--text);
+    text-decoration: underline;
+    font-weight: normal;
+    display: inline-block;
+    margin-left: 16px;
+}
+
+.flex-basis-200 {
+    flex-basis: 200px;
+}
+
+ul.hotel-services {
+    color: #0ab21b;
+    line-height: 20px;
+    font-size: 11px;
+    padding-left: 0 !important;
+}
+
+ul.hotel-services li {
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 16px;
+}
+
+ul.hotel-services li:before {
+    content: '';
+    display: inline-block;
+    border-radius: 50%;
+    width: 4px;
+    height: 4px;
+    background: #0ab21b;
+    margin-right: 5px;
+    float: left;
+    margin-top: 8px;
+}

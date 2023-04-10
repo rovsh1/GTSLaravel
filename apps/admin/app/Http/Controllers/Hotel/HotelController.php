@@ -113,7 +113,9 @@ class HotelController extends AbstractPrototypeController
             'params' => $this->hotelParams($this->model),
             'contactsUrl' => $this->prototype->route('show', $this->model->id) . '/contacts',
             'contactsEditable' => Acl::isUpdateAllowed($this->getPrototypeKey()),
-            'contacts' => $this->model->contacts
+            'contacts' => $this->model->contacts,
+            'services' => $this->model->services,
+            'usabilities' => $this->model->usabilities,
         ];
     }
 

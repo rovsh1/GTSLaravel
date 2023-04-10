@@ -21,9 +21,7 @@
         </div>
 
         <div class="mt-3">
-            <x-ui.card :collapsable="true" header="Дополнительные параметры">
-                Дополнительные параметры
-            </x-ui.card>
+            @include('_partials/components/services-card', ['collapsable' => true])
         </div>
 
         <div class="mt-3">
@@ -34,7 +32,11 @@
 
         <div class="mt-3">
             <x-ui.card :collapsable="true" header="Примечание">
-                Дополнительные параметры
+                @if($model->text)
+                    {{ $model->text }}
+                @else
+                    <i class="empty">Отсутствует</i>
+                @endif
             </x-ui.card>
         </div>
 

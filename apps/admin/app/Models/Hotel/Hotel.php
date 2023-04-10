@@ -3,9 +3,13 @@
 namespace App\Admin\Models\Hotel;
 
 use App\Admin\Models\HasCoordinates;
+use App\Admin\Models\Hotel\Reference\Service;
+use App\Admin\Models\Hotel\Reference\Usability;
 use Custom\Framework\Database\Eloquent\HasQuicksearch;
 use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
@@ -14,8 +18,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string name
  * @property int rating
  * @property string address
- * @property HasMany rooms
- * @property HasMany seasons
+ * @property-read Collection<Room>|Room[] $rooms
+ * @property-read Collection<Season>|Season[] $seasons
+ * @property-read Collection<Contact>|Contact[] $contacts
+ * @property-read Collection<Service>|Service[] $services
+ * @property-read Collection<Usability>|Usability[] $usabilities
  */
 class Hotel extends Model
 {
@@ -80,6 +87,30 @@ class Hotel extends Model
     public function contacts(): HasMany
     {
         return $this->hasMany(Contact::class, 'hotel_id', 'id');
+    }
+
+    public function services(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Service::class,
+            'hotel_services',
+            'hotel_id',
+            'service_id',
+            'id',
+            'id',
+        )->addSelect('hotel_services.is_paid');
+    }
+
+    public function usabilities(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Usability::class,
+            'hotel_usabilities',
+            'hotel_id',
+            'usability_id',
+            'id',
+            'id',
+        );
     }
 
     public function updateRoomsPositions($ids): bool
