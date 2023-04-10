@@ -40,7 +40,7 @@ class Landmark extends Model
         'in_city' => 'bool',
         'address_lat' => 'float',
         'address_lon' => 'float',
-        'center_distance' => 'int',
+        'city_distance' => 'int',
     ];
 
     public static function booted()
