@@ -8,6 +8,7 @@ use App\Admin\Models\Hotel\Hotel;
 use App\Admin\Models\Hotel\Reference\Usability;
 use App\Admin\Support\Facades\Prototypes;
 use App\Core\Support\Http\Responses\AjaxReloadResponse;
+use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -30,15 +31,18 @@ class UsabilityController extends Controller
         ]);
     }
 
-    public function update(Request $request, Hotel $hotel): AjaxReloadResponse
+    public function update(Request $request, Hotel $hotel): AjaxResponseInterface
     {
         $usabilitiesData = \Arr::get($request->toArray(), 'data.usabilities');
-        $enabledUsabilityIds = array_keys($usabilitiesData);
 
         $usabilityUpdateData = [];
         foreach ($usabilitiesData as $usabilityId => $roomsData) {
             foreach ($roomsData as $roomId => $value) {
                 $isForAllRooms = $roomId === 'all' && (bool)$value === true;
+                $hasAnotherRooms = count($roomsData) > 1;
+                if ($isForAllRooms && $hasAnotherRooms) {
+                    continue;
+                }
                 $usabilityUpdateData[] = [
                     'usability_id' => $usabilityId,
                     'hotel_id' => $hotel->id,
@@ -47,18 +51,14 @@ class UsabilityController extends Controller
             }
         }
 
-        \DB::transaction(function () use ($enabledUsabilityIds, $hotel, $usabilityUpdateData) {
+        \DB::transaction(function () use ($hotel, $usabilityUpdateData) {
             \DB::table('hotel_usabilities')
-                ->whereNotIn('usability_id', $enabledUsabilityIds)
                 ->where('hotel_id', $hotel->id)
                 ->delete();
 
-            \DB::table('hotel_usabilities')->upsert(
-                $usabilityUpdateData,
-                ['hotel_id', 'room_id', 'usability_id'],
-                ['hotel_id', 'room_id', 'usability_id']
-            );
+            \DB::table('hotel_usabilities')->insert($usabilityUpdateData);
         });
+
         return new AjaxReloadResponse();
     }
 

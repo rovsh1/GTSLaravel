@@ -8,6 +8,7 @@ use App\Admin\Models\Hotel\Hotel;
 use App\Admin\Models\Hotel\Reference\Service;
 use App\Admin\Support\Facades\Prototypes;
 use App\Core\Support\Http\Responses\AjaxReloadResponse;
+use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -29,7 +30,7 @@ class ServiceController extends Controller
         ]);
     }
 
-    public function update(Request $request, Hotel $hotel): AjaxReloadResponse
+    public function update(Request $request, Hotel $hotel): AjaxResponseInterface
     {
         return new AjaxReloadResponse();
     }

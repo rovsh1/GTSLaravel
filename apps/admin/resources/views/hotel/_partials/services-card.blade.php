@@ -52,7 +52,7 @@
                     <i class="empty">Отсутствуют</i>
                 @else
                     <ul class="hotel-services">
-                        @foreach($hotelUsabilities as $usability)
+                        @foreach($hotelUsabilities->unique('usability_id') as $usability)
                             <li>{{ $usability->name }}</li>
                         @endforeach
                     </ul>

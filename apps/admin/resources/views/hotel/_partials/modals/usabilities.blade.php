@@ -18,16 +18,16 @@
                         <div class="hotel-usabilities accordion-list unselectable">
                             <section class="expanded">
                                 <ul class="section-body">
-                                    @foreach($groupUsabilities as $index => $usability)
+                                    @foreach($groupUsabilities as $usability)
                                         <li data-id="{{$usability->id}}">
                                             <input
                                                 type="checkbox"
                                                 @checked($hotelUsabilities->where('usability_id', $usability->id)->first())
-                                                name="data[usabilities][{{$index}}][all]"
-                                                id="f_hu_{{$index}}_a"
+                                                name="data[usabilities][{{$usability->id}}][all]"
+                                                id="f_hu_{{$usability->id}}_a"
                                                 value="1"
                                             >
-                                            <label for="f_hu_{{$index}}_a">{{$usability->name}}</label>
+                                            <label for="f_hu_{{$usability->id}}_a">{{$usability->name}}</label>
                                         </li>
                                     @endforeach
                                 </ul>
