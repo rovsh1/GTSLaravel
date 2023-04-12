@@ -49,7 +49,7 @@
 
         <div class="mt-3">
             <x-ui.card :collapsable="true" header="Объекты и достопримечательности (count)">
-                Дополнительные параметры
+                Объекты и достопримечательности
             </x-ui.card>
         </div>
     </div>
