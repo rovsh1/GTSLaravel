@@ -32,6 +32,33 @@ class UsabilityController extends Controller
 
     public function update(Request $request, Hotel $hotel): AjaxReloadResponse
     {
+        $usabilitiesData = \Arr::get($request->toArray(), 'data.usabilities');
+        $enabledUsabilityIds = array_keys($usabilitiesData);
+
+        $usabilityUpdateData = [];
+        foreach ($usabilitiesData as $usabilityId => $roomsData) {
+            foreach ($roomsData as $roomId => $value) {
+                $isForAllRooms = $roomId === 'all' && (bool)$value === true;
+                $usabilityUpdateData[] = [
+                    'usability_id' => $usabilityId,
+                    'hotel_id' => $hotel->id,
+                    'room_id' => $isForAllRooms ? null : $roomId
+                ];
+            }
+        }
+
+        \DB::transaction(function () use ($enabledUsabilityIds, $hotel, $usabilityUpdateData) {
+            \DB::table('hotel_usabilities')
+                ->whereNotIn('usability_id', $enabledUsabilityIds)
+                ->where('hotel_id', $hotel->id)
+                ->delete();
+
+            \DB::table('hotel_usabilities')->upsert(
+                $usabilityUpdateData,
+                ['hotel_id', 'room_id', 'usability_id'],
+                ['hotel_id', 'room_id', 'usability_id']
+            );
+        });
         return new AjaxReloadResponse();
     }
 
