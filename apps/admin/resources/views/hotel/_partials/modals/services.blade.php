@@ -17,7 +17,7 @@
                     <input
                         type="checkbox"
                         @checked($hotelServices->where('service_id', $service->id)->first()?->is_paid)
-                        name="data[services][{{$index}}][id_paid]"
+                        name="data[services][{{$index}}][is_paid]"
                         id="hsf_{{$index}}_paid_cb"
                         value="{{$service->id}}"
                     >

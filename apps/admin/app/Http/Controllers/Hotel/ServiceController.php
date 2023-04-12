@@ -32,6 +32,21 @@ class ServiceController extends Controller
 
     public function update(Request $request, Hotel $hotel): AjaxResponseInterface
     {
+        $servicesData = \Arr::get($request->toArray(), 'data.services');
+        $servicesData = array_map(fn(array $service) => [
+            'is_paid' => \Arr::has($service, 'is_paid'),
+            'service_id' => (int)$service['service_id'],
+            'hotel_id' => $hotel->id,
+        ], $servicesData);
+
+        \DB::transaction(function () use ($servicesData, $hotel) {
+            \DB::table('hotel_services')
+                ->where('hotel_id', $hotel->id)
+                ->delete();
+
+            \DB::table('hotel_services')->insert($servicesData);
+        });
+
         return new AjaxReloadResponse();
     }
 
