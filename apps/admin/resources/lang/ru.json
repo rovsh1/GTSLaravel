@@ -70,5 +70,5 @@
     "enum.phone": "Телефон",
     "enum.email": "Email",
     "enum.site": "Сайт",
-    "enum.address": "Ардес"
+    "enum.address": "Адрес"
 }

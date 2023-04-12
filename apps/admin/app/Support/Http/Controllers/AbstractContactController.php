@@ -52,7 +52,7 @@ abstract class AbstractContactController extends Controller
         }
 
         $data = $form->getData();
-        $data['provider_id'] = $providerId;
+        $data[$this->getParentIdFieldName()] = $providerId;
         $contact = ($this->getContactModel())::create($data);
 
         return new AjaxReloadResponse();
@@ -117,6 +117,11 @@ abstract class AbstractContactController extends Controller
     protected function route(string $name, int|array $params): string
     {
         return route($this->prototype->routeName('contacts.' . $name), $params);
+    }
+
+    protected function getParentIdFieldName(): string
+    {
+        return 'provider_id';
     }
 
     abstract protected function getContactModel(): string;

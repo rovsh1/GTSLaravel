@@ -4,6 +4,7 @@ namespace App\Admin\Providers;
 
 use App\Admin\Support\Facades\Format;
 use App\Admin\Support\Format\ContactRule;
+use App\Admin\Support\Format\DistanceRule;
 use App\Admin\Support\Format\PriceRule;
 use Gsdk\Format\FormatServiceProvider as ServiceProvider;
 
@@ -19,7 +20,8 @@ class FormatServiceProvider extends ServiceProvider
 
     protected $rules = [
         'contact' => ContactRule::class,
-        'price' => PriceRule::class
+        'price' => PriceRule::class,
+        'distance' => DistanceRule::class,
     ];
 
     public function register()

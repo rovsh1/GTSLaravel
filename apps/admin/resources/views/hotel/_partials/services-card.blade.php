@@ -6,13 +6,15 @@
             <div class="card-body">
                 <h5 class="card-title">
                     Бесплатные услуги
-                    <a class="btn-edit btn-services" href="#">Изменить</a>
+                    @if($servicesEditable)
+                        <a class="btn-edit btn-services" href="#" data-url="{{$servicesUrl}}">Изменить</a>
+                    @endif
                 </h5>
-                @if($services->where('is_paid', false)->isEmpty())
+                @if($hotelServices->where('is_paid', false)->isEmpty())
                     <i class="empty">Отсутствуют</i>
                 @else
                     <ul class="hotel-services">
-                        @foreach($services->where('is_paid', false) as $service)
+                        @foreach($hotelServices->where('is_paid', false) as $service)
                             <li>{{ $service->name }}</li>
                         @endforeach
                     </ul>
@@ -23,13 +25,15 @@
             <div class="card-body">
                 <h5 class="card-title">
                     Платные услуги
-                    <a class="btn-edit btn-services" href="#">Изменить</a>
+                    @if($servicesEditable)
+                        <a class="btn-edit btn-services" href="#" data-url="{{$servicesUrl}}">Изменить</a>
+                    @endif
                 </h5>
-                @if($services->where('is_paid', true)->isEmpty())
+                @if($hotelServices->where('is_paid', true)->isEmpty())
                     <i class="empty">Отсутствуют</i>
                 @else
                     <ul class="hotel-services">
-                        @foreach($services->where('is_paid', true) as $service)
+                        @foreach($hotelServices->where('is_paid', true) as $service)
                             <li>{{ $service->name }}</li>
                         @endforeach
                     </ul>
@@ -40,13 +44,15 @@
             <div class="card-body">
                 <h5 class="card-title">
                     Удобства
-                    <a class="btn-edit btn-services" href="#">Изменить</a>
+                    @if($usabilitiesEditable)
+                        <a class="btn-edit btn-usabilities" href="#" data-url="{{$usabilitiesUrl}}">Изменить</a>
+                    @endif
                 </h5>
-                @if($usabilities->isEmpty())
+                @if($hotelUsabilities->isEmpty())
                     <i class="empty">Отсутствуют</i>
                 @else
                     <ul class="hotel-services">
-                        @foreach($usabilities as $usability)
+                        @foreach($hotelUsabilities as $usability)
                             <li>{{ $usability->name }}</li>
                         @endforeach
                     </ul>

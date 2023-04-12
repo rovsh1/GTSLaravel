@@ -98,7 +98,9 @@ class Hotel extends Model
             'service_id',
             'id',
             'id',
-        )->addSelect('hotel_services.is_paid');
+        )
+            ->addSelect('hotel_services.is_paid')
+            ->addSelect('hotel_services.service_id');
     }
 
     public function usabilities(): BelongsToMany
@@ -110,7 +112,9 @@ class Hotel extends Model
             'usability_id',
             'id',
             'id',
-        );
+        )
+            ->addSelect('hotel_usabilities.usability_id')
+            ->addSelect('hotel_usabilities.room_id');
     }
 
     public function updateRoomsPositions($ids): bool

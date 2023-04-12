@@ -21,7 +21,7 @@
         </div>
 
         <div class="mt-3">
-            @include('_partials/components/services-card', ['collapsable' => true])
+            @include('hotel/_partials/services-card', ['collapsable' => true])
         </div>
 
         <div class="mt-3">

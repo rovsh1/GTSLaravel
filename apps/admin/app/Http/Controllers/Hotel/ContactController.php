@@ -16,4 +16,9 @@ class ContactController extends AbstractContactController
     {
         return Contact::class;
     }
+
+    protected function getParentIdFieldName(): string
+    {
+        return 'hotel_id';
+    }
 }

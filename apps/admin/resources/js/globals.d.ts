@@ -14,9 +14,9 @@ declare global {
     }
 
     interface Window {
-        get_meta_content(name: string, parse: boolean | undefined): string | any
+        get_meta_content(name: string, parse?: boolean): string | any
 
-        get_url_parameter(name: string, url: string | undefined): string | null
+        get_url_parameter(name: string, url?: string): string | null
 
         WindowDialog(options: any): void
 

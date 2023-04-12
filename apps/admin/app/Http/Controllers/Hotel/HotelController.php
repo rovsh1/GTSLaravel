@@ -10,7 +10,6 @@ use App\Admin\Support\Distance\Point;
 use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Grid;
-use App\Admin\Support\Facades\Layout;
 use App\Admin\Support\Facades\Sidebar;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
@@ -114,8 +113,14 @@ class HotelController extends AbstractPrototypeController
             'contactsUrl' => $this->prototype->route('show', $this->model->id) . '/contacts',
             'contactsEditable' => Acl::isUpdateAllowed($this->getPrototypeKey()),
             'contacts' => $this->model->contacts,
-            'services' => $this->model->services,
-            'usabilities' => $this->model->usabilities,
+
+            'hotelServices' => $this->model->services,
+            'servicesEditable' => Acl::isUpdateAllowed($this->getPrototypeKey()),
+            'servicesUrl' => $this->prototype->route('show', $this->model->id) . '/services',
+
+            'hotelUsabilities' => $this->model->usabilities,
+            'usabilitiesUrl' => $this->prototype->route('show', $this->model->id) . '/usabilities',
+            'usabilitiesEditable' => Acl::isUpdateAllowed($this->getPrototypeKey()),
         ];
     }
 
@@ -142,7 +147,10 @@ class HotelController extends AbstractPrototypeController
             ->country('country_id', ['label' => __('label.country'), 'emptyItem' => ''])
             ->hidden('city_id', ['label' => __('label.city'), 'emptyItem' => ''])
             ->hotelType('type_id', ['label' => __('label.type'), 'emptyItem' => ''])
-            ->numRange('reservation_count', ['label' => 'Кол-во броней', 'placeholder' => [__('label.from'), __('label.to')]])
+            ->numRange(
+                'reservation_count',
+                ['label' => 'Кол-во броней', 'placeholder' => [__('label.from'), __('label.to')]]
+            )
             ->hotelStatus('status_id', ['label' => __('label.status'), 'emptyItem' => ''])
             ->checkbox('visible_for', ['label' => __('label.visible-for')])
             ->hotelRating('rating', ['label' => __('label.rating'), 'emptyItem' => '']);

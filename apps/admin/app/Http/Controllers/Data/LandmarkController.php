@@ -7,6 +7,7 @@ use App\Admin\Models\Reference\LandmarkType;
 use App\Admin\Support\Distance\Calculator;
 use App\Admin\Support\Distance\Point;
 use App\Admin\Support\Facades\Form;
+use App\Admin\Support\Facades\Format;
 use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
@@ -68,7 +69,11 @@ class LandmarkController extends AbstractPrototypeController
             ->text('type_name', ['text' => 'Тип', 'order' => true])
             ->text('address', ['text' => 'Адрес'])
             ->boolean('in_city', ['text' => 'В пределах города'])
-            ->number('center_distance', ['text' => 'Расстояние до центра', 'order' => true])
+            ->number('city_distance', [
+                'text' => 'Расстояние до центра',
+                'order' => true,
+                'renderer' => fn($r) => Format::distance($r->city_distance),
+            ])
             ->orderBy('name', 'asc');
     }
 
