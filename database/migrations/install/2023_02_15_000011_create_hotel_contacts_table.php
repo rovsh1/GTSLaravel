@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->unsignedInteger('employee_id')->nullable();
             $table->unsignedTinyInteger('type');
             $table->string('value');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->unsignedTinyInteger('is_main')->default(false);
             $table->timestamps();
         });

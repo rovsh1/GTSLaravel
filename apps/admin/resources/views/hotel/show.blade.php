@@ -26,7 +26,7 @@
 
         <div class="mt-3">
             <x-ui.card :collapsable="true" header="Сотрудники (count)">
-                Дополнительные параметры
+                Сотрудники
             </x-ui.card>
         </div>
 
@@ -43,6 +43,7 @@
         <div class="mt-3">
             <x-ui.card :collapsable="true" header="Администраторы (count)">
                 Дополнительные параметры
+                //todo пользователи из таблицы пользователей
             </x-ui.card>
         </div>
 

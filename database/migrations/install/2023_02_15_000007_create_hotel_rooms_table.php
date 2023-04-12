@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->string('custom_name')->nullable()->comment('Внутреннее наименование для отеля');
             $table->unsignedTinyInteger('rooms_number');
             $table->unsignedTinyInteger('guests_number');
-            $table->unsignedTinyInteger('square')->nullable();
+            $table->unsignedSmallInteger('square')->nullable();
             $table->unsignedTinyInteger('position')->default(0);
 
             $table->foreign('hotel_id')
