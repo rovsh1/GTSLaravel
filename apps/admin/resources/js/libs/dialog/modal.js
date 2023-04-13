@@ -90,13 +90,13 @@ export default class Modal {
   }
 
   hide() {
+    this._preventDestroy = true;
     this.#bootstrapModal.hide()
-    this.trigger('hide')
   }
 
   close() {
     this.trigger('close')
-    this.destroy()
+    this.#bootstrapModal.hide()
   }
 
   destroy() {
