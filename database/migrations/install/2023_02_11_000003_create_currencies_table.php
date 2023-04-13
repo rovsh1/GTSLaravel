@@ -13,7 +13,6 @@ return new class extends Migration {
             $table->smallInteger('code_num')->unsigned();
             $table->char('code_char', 3);
             $table->string('sign', 8);
-            $table->decimal('rate', 8, 2)->unsigned();
         });
 
         (new TranslationTable('r_currencies'))
@@ -26,9 +25,16 @@ return new class extends Migration {
     private function createRatesTable()
     {
         Schema::create('r_currency_rates', function (Blueprint $table) {
-            $table->smallInteger('currency_id')->unsigned()->autoIncrement();
+            $table->unsignedInteger('country_id');
+            $table->unsignedSmallInteger('currency_id');
             $table->date('date');
             $table->decimal('rate', 8, 2)->unsigned();
+
+            $table->foreign('country_id')
+                ->references('id')
+                ->on('r_countries')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
 
             $table->foreign('currency_id')
                 ->references('id')

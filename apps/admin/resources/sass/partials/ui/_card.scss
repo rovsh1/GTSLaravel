@@ -1,7 +1,14 @@
 @use '../../variables';
 
+.card-header {
+    &, h5 {line-height: 32px;}
+}
+
 .card-header.collapsable {
     border-bottom: none;
+    cursor: pointer;
+
+    &:hover {background: #F0F5FE;}
 
     &:not(.collapsed) {
         color: #007bff;
@@ -15,7 +22,7 @@
         align-items: center;
         width: 100%;
         padding: var(--bs-accordion-btn-padding-y) var(--bs-accordion-btn-padding-x);
-        font-size: 1rem;
+        font-size: .9rem;
         color: var(--bs-accordion-btn-color);
         text-align: left;
         background-color: var(--bs-accordion-btn-bg);

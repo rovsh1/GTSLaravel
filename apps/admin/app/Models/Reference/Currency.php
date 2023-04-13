@@ -22,8 +22,7 @@ class Currency extends Model
         'name',
         'code_num',
         'code_char',
-        'sign',
-        'rate'
+        'sign'
     ];
 
     public static function booted()

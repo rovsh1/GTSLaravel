@@ -6,6 +6,11 @@ use Gsdk\Form\Validation\Validator;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
 
+/**
+ * @property string name
+ * @property string method
+ * @property string action
+ */
 class Form implements ElementsParentInterface
 {
     use Concerns\HasOptions;

@@ -2,4 +2,6 @@
 
 namespace Gsdk\Form;
 
-interface ElementsParentInterface { }
+interface ElementsParentInterface
+{
+}
