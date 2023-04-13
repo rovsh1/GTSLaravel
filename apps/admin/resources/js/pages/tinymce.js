@@ -6,9 +6,9 @@ import 'tinymce/icons/default/icons'
 import 'tinymce/themes/silver/theme'
 
 // Styles
-import "tinymce/skins/ui/oxide/skin.min.css";
-import 'tinymce/skins/ui/oxide/content.min.css';
-import 'tinymce/skins/content/default/content.css';
+// import "tinymce/skins/ui/oxide/skin.min.css";
+// import 'tinymce/skins/ui/oxide/content.min.css';
+// import 'tinymce/skins/content/default/content.css';
 
 // Plugins
 import 'tinymce/plugins/advlist/plugin'

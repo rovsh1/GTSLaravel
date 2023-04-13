@@ -1,6 +1,6 @@
 export default {
-    skin: false,
-    //skin_url: '/css/htmleditor/skin.css',
+    //skin: 'oxide',
+    skin_url: '/css/htmleditor',
     language: 'ru',
     promotion: false,
     branding: false,

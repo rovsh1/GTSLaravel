@@ -108,19 +108,23 @@ class HotelController extends AbstractPrototypeController
 
     protected function getShowViewData(): array
     {
+        $showUrl = $this->prototype->route('show', $this->model->id);
+        $isUpdateAllowed = Acl::isUpdateAllowed($this->getPrototypeKey());
         return [
             'params' => $this->hotelParams($this->model),
-            'contactsUrl' => $this->prototype->route('show', $this->model->id) . '/contacts',
-            'contactsEditable' => Acl::isUpdateAllowed($this->getPrototypeKey()),
+            'contactsUrl' => $showUrl . '/contacts',
+            'contactsEditable' => $isUpdateAllowed,
             'contacts' => $this->model->contacts,
 
+            'notesUrl' => $isUpdateAllowed ? $showUrl . '/notes' : null,
+
             'hotelServices' => $this->model->services,
-            'servicesEditable' => Acl::isUpdateAllowed($this->getPrototypeKey()),
-            'servicesUrl' => $this->prototype->route('show', $this->model->id) . '/services',
+            'servicesEditable' => $isUpdateAllowed,
+            'servicesUrl' => $showUrl . '/services',
 
             'hotelUsabilities' => $this->model->usabilities,
-            'usabilitiesUrl' => $this->prototype->route('show', $this->model->id) . '/usabilities',
-            'usabilitiesEditable' => Acl::isUpdateAllowed($this->getPrototypeKey()),
+            'usabilitiesUrl' => $showUrl . '/usabilities',
+            'usabilitiesEditable' => $isUpdateAllowed,
         ];
     }
 

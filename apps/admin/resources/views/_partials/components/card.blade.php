@@ -8,6 +8,7 @@
                 {{$header}}
             </h5>
             @if (isset($headerControls))
+                <div class="spacer"></div>
                 {{$headerControls}}
             @endif
         </div>

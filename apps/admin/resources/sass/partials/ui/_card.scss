@@ -1,6 +1,7 @@
 @use '../../variables';
 
 .card-header {
+    display: flex;
     &, h5 {line-height: 32px;}
 }
 
