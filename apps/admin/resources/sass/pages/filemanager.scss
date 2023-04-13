@@ -73,7 +73,7 @@ div.filemanager {display: flex;flex-direction: column;flex: 1;height: 100%;}
 .fm-status-bar button.btn-list {background-image: url("/images/filemanager/ui/list-view.png");}
 .fm-status-bar button.btn-grid {background-image: url("/images/filemanager/ui/grid-view.png");}
 
-.fm-container {padding: 8px 2px;flex: 1;display: flex;min-height: 0px;flex-direction: column;}
+.fm-container {padding: 8px 2px;flex: 1;display: flex;min-height: 0;flex-direction: column;}
 .fm-container .files-wrap {border: 2px dashed transparent;display: flex;overflow: auto;min-height: min-content;flex-grow: 1;}
 .fm-container.drag .files-wrap {border-color: $background-selected;}
 .fm-container .fm-item {display: flex;;padding: 6px;cursor: default;border-radius: 2px;border: 2px solid transparent;}
@@ -88,7 +88,15 @@ body.dragging .fm-container .files-wrap {overflow: unset;}
 .fm-container.view-grid {}
 .fm-container.view-grid .files-wrap {flex-wrap: wrap;align-content: flex-start;}
 .fm-container.view-grid .fm-item {width: 96px;height: 96px;flex-direction: column;margin: 4px;}
-.fm-container.view-grid .image-wrap {display: flex;align-items: center;justify-content: center;flex-grow: 1;background-image: url("/images/filemanager/type/30/file.png");}
+.fm-container.view-grid .image-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    width: 100%;
+    height: 100%;
+    background-image: url("/images/filemanager/type/30/file.png");
+}
 .fm-container.view-grid .name {text-align: center;padding-top: 4px;}
 
 .fm-container.view-list .files-wrap {flex-direction: column;}
@@ -115,8 +123,17 @@ body.dragging .fm-container .files-wrap {overflow: unset;}
 }
 
 div.shadow {}
-div.input-box {position: fixed;top: 50%;left: 50%;transform: translateX(-50%) translateY(-50%);padding: 16px;background: #fff;border-radius: 4px;}
-div.input-box input {border: 1px solid $color-border;border-radius: 4px;height: 32px;padding: 0 8px;width: 240px;}
+div.input-box {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    padding: 16px;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 3px 5px -1px rgb(0 0 0 / 20%), 0 6px 10px 0 rgb(0 0 0 / 14%), 0 1px 18px 0 rgb(0 0 0 / 12%);
+    input {border: 1px solid $color-border;border-radius: 4px;height: 32px;padding: 0 8px;width: 240px;}
+}
 
 /*@media (prefers-color-scheme: dark) {
 	body { background: #292A2D;}
