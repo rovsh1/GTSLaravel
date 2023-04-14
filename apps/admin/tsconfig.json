@@ -1,22 +1,26 @@
 {
     "compilerOptions": {
         "target": "ESNext",
-        "useDefineForClassFields": true,
-        "module": "ESNext",
-        "moduleResolution": "Node",
         "strict": true,
-        "allowJs": true,
-        "jsx": "preserve",
-        "resolveJsonModule": true,
-        "isolatedModules": true,
+        "module": "ESNext",
+        "lib": ["ESNext", "DOM"],
+        "moduleResolution": "Node",
+        "sourceMap": true,
+        "allowSyntheticDefaultImports": true,
         "esModuleInterop": true,
-        "lib": [
-            "ESNext",
-            "DOM"
-        ],
+        "useDefineForClassFields": false,
+        "resolveJsonModule": true,
         "skipLibCheck": true,
-        "noEmit": false,
-        "baseUrl": ".",
+        "isolatedModules": true,
+        "allowJs": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": true,
+        "types": [
+            "jquery",
+            "./resources/js/globals",
+        ],
+        "baseUrl": "./",
         "paths": {
             "@/*": [
                 "resources/js/*"
@@ -25,14 +29,10 @@
                 "resources/sass/*"
             ]
         },
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
-        "noImplicitReturns": true
     },
     "include": [
         "resources/js/**/*.ts",
         "resources/js/**/*.d.ts",
-        "node_modules/@types/jquery/JQuery.d.ts"
     ],
     "exclude": [
         "node_modules",

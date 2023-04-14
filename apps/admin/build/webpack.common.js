@@ -28,7 +28,8 @@ mix.options({
 mix.alias({
 	//'@core': resourcesPath + '/core/js',
 
-    '@styles': `${resourcesPath}/resources/sass`,
+    '@app':  path.resolve(__dirname, '../resources/js'),
+    '@styles': path.resolve(__dirname, '../resources/sass'),
 
 	'~fonts': resourcesPath + '/sass/common/fonts',
 	'~variables': resourcesPath + '/sass/variables',
