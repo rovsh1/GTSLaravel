@@ -6,7 +6,7 @@ import initUsabilitiesModal from './modals/usabilities-modal'
 $(document).ready((): void => {
   $('#card-contacts').cardContacts()
 
-  $('.btn-services').click(function (e: any): void {
+  $('#btn-free-services').click(function (e: any) {
     e.preventDefault()
     window.WindowDialog({
       url: $(this).data('url'),
@@ -18,7 +18,19 @@ $(document).ready((): void => {
     })
   })
 
-  $('.btn-usabilities').click(function (e: any): void {
+  $('#btn-paid-services').click(function (e: any) {
+    e.preventDefault()
+    window.WindowDialog({
+      url: $(this).data('url'),
+      title: 'Изменить услуги отеля',
+      buttons: ['submit', 'cancel'],
+      update: (): void => {
+        initServicesModal()
+      },
+    })
+  })
+
+  $('#btn-usabilities').click(function (e: any): void {
     e.preventDefault()
     window.WindowDialog({
       url: $(this).data('url'),

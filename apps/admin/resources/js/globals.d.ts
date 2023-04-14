@@ -11,6 +11,8 @@ declare global {
         sortable(options: any): JQuery<HTMLElement>
 
         update(): void
+
+        deleteButton(): void
     }
 
     interface Window {

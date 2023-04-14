@@ -9,7 +9,7 @@ class Table extends AbstractTable
 {
     protected function renderTable(Grid $grid): string
     {
-        $html = '<table class="' . $grid->getOption('class') . '">';
+        $html = '<table ' . $grid->getOption('id') . ' class="' . $grid->getOption('class') . '">';
 
         if (false !== $grid->getOption('header')) {
             $html .= $this->renderTHead($grid);
@@ -43,7 +43,11 @@ class Table extends AbstractTable
     {
         $html = '<tbody>';
         foreach ($grid->getData()->get() as $row) {
-            $html .= '<tr>';
+            if ($row?->id !== null) {
+                $html .= "<tr data-id=\"{$row->id}\">";
+            } else {
+                $html .= '<tr>';
+            }
             foreach ($grid->getColumns() as $column) {
                 $html .= (new ColumnRenderer($grid, $column))->td($row);
             }

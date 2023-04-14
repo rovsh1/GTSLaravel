@@ -25,12 +25,6 @@
         </div>
 
         <div class="mt-3">
-            <x-ui.card :collapsable="true" header="Сотрудники (count)">
-                Сотрудники
-            </x-ui.card>
-        </div>
-
-        <div class="mt-3">
             <x-ui.card :collapsable="true" header="Примечание">
                 @if($notesUrl)
                     <x-slot:header-controls>
@@ -50,9 +44,8 @@
         </div>
 
         <div class="mt-3">
-            <x-ui.card :collapsable="true" header="Администраторы (count)">
-                Дополнительные параметры
-                //todo пользователи из таблицы пользователей
+            <x-ui.card :collapsable="true" header="Администраторы ({{$model->users->count()}})">
+                {!! $usersGrid !!}
             </x-ui.card>
         </div>
 

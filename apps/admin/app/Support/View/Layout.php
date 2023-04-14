@@ -4,8 +4,8 @@ namespace App\Admin\Support\View;
 
 use Gsdk\Meta\Meta;
 use Gsdk\Meta\MetaTags;
-use Illuminate\Support\Facades\App;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\App;
 
 /**
  * @method self title(string $title)
@@ -80,6 +80,11 @@ class Layout
         $this->view = $view;
 
         return $this->data($data);
+    }
+
+    public function addGoogleMapsKeyMeta(): static
+    {
+        return $this->addMetaName('google-maps-key', env('GOOGLE_MAPS_API_KEY'));
     }
 
     public function render(): View

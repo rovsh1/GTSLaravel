@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static \App\Admin\Support\View\Layout addStyle(string $href, array $attributes = [])
  * @method static \App\Admin\Support\View\Layout addScript(string $src, array $attributes = [])
  * @method static \App\Admin\Support\View\Layout addMetaVariable(string $name, mixed $value)
+ * @method static \App\Admin\Support\View\Layout addGoogleMapsKeyMeta()
  * @method static \App\Admin\Support\View\Layout data(array $data)
  * @method static \App\Admin\Support\View\Layout view(string $view, array $data = [])
  * @method static mixed get(string $name)

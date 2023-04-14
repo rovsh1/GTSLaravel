@@ -43,7 +43,7 @@ class Grid
         }
 
         if ($this->options->hasOption($name)) {
-            $this->options->set($name, $arguments[0] ?? null);
+            $this->options->setOption($name, $arguments[0] ?? null);
         } else {
             $id = $arguments[0];
             unset($arguments[0]);

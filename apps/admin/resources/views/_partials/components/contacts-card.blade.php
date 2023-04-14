@@ -1,4 +1,4 @@
-@props(['collapsable' => false])
+@props(['collapsable' => false, 'contactsEditable' => false])
 
 <x-ui.card id="card-contacts" data-route="{{ $contactsEditable ? $contactsUrl : '' }}" header="Контакты ({{$contacts->count()}})" collapsable="{{$collapsable}}" class="card-grid card-contacts">
     @if ($contactsEditable)

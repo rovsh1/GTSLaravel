@@ -4,6 +4,7 @@ namespace App\Admin\Http\Controllers\Hotel;
 
 use App\Admin\Enums\Hotel\StatusEnum;
 use App\Admin\Enums\Hotel\VisibilityEnum;
+use App\Admin\Models\Hotel\User;
 use App\Admin\Models\Reference\City;
 use App\Admin\Support\Distance\Calculator;
 use App\Admin\Support\Distance\Point;
@@ -48,14 +49,14 @@ class HotelController extends AbstractPrototypeController
     public function edit(int $id): LayoutContract
     {
         return parent::edit($id)
-            ->addMetaName('google-maps-key', env('GOOGLE_MAPS_API_KEY'))
+            ->addGoogleMapsKeyMeta()
             ->script('hotel/edit');
     }
 
     public function create(): LayoutContract
     {
         return parent::create()
-            ->addMetaName('google-maps-key', env('GOOGLE_MAPS_API_KEY'))
+            ->addGoogleMapsKeyMeta()
             ->script('hotel/edit');
     }
 
@@ -125,6 +126,8 @@ class HotelController extends AbstractPrototypeController
             'hotelUsabilities' => $this->model->usabilities,
             'usabilitiesUrl' => $showUrl . '/usabilities',
             'usabilitiesEditable' => $isUpdateAllowed,
+
+            'usersGrid' => $this->getUsersGrid()
         ];
     }
 
@@ -174,5 +177,19 @@ class HotelController extends AbstractPrototypeController
             ->text('zipcode', 'Индекс')
             ->date('created_at', 'Создан', ['format' => 'datetime'])
             ->data($model);
+    }
+
+    private function getUsersGrid(): GridContract
+    {
+        return Grid::paginator(self::GRID_LIMIT)
+            ->text('presentation', ['text' => 'Имя в системе', 'order' => true])
+            ->text('login', ['text' => 'Логин'])
+            ->email('email', ['text' => 'Email'])
+            ->phone('phone', ['text' => 'Телефон'])
+            ->orderBy('presentation', 'asc')
+            ->header(false)
+            ->data(
+                User::where('hotel_id', $this->model->id)
+            );
     }
 }

@@ -117,6 +117,11 @@ class Hotel extends Model
             ->addSelect('hotel_usabilities.room_id');
     }
 
+    public function users(): HasMany
+    {
+        return $this->hasMany(User::class);
+    }
+
     public function updateRoomsPositions($ids): bool
     {
         $i = 1;

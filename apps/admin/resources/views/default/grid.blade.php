@@ -20,15 +20,17 @@
                 </div>
             @endif
 
-            <div class="search-popup-wrapper" id="grid-filters-popup">
-                <div class="search-popup shadow rounded">
-                    {!! $searchForm !!}
-                    <div class="buttons">
-                        <button class="btn btn-primary" type="submit">Найти</button>
-                        <button class="btn btn-cancel ms-2" type="reset">Сбросить</button>
+            @if($searchForm)
+                <div class="search-popup-wrapper" id="grid-filters-popup">
+                    <div class="search-popup shadow rounded">
+                        {!! $searchForm !!}
+                        <div class="buttons">
+                            <button class="btn btn-primary" type="submit">Найти</button>
+                            <button class="btn btn-cancel ms-2" type="reset">Сбросить</button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            @endif
         </form>
     </div>
 

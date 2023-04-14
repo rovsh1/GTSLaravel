@@ -20,7 +20,7 @@ class CityController extends AbstractPrototypeController
     public function create(): LayoutContract
     {
         return parent::create()
-            ->addMetaName('google-maps-key', env('GOOGLE_MAPS_API_KEY'))
+            ->addGoogleMapsKeyMeta()
             ->script('administration/city-form')
             ->view('administration.city-form');
     }
@@ -28,7 +28,7 @@ class CityController extends AbstractPrototypeController
     public function edit(int $id): LayoutContract
     {
         return parent::edit($id)
-            ->addMetaName('google-maps-key', env('GOOGLE_MAPS_API_KEY'))
+            ->addGoogleMapsKeyMeta()
             ->script('administration/city-form')
             ->view('administration.city-form');
     }

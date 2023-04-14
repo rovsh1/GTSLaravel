@@ -7,7 +7,7 @@
                 <h5 class="card-title">
                     Бесплатные услуги
                     @if($servicesEditable)
-                        <a class="btn-edit btn-services" href="#" data-url="{{$servicesUrl}}">Изменить</a>
+                        <a id="btn-free-services" class="btn-edit" href="#" data-url="{{$servicesUrl}}">Изменить</a>
                     @endif
                 </h5>
                 @if($hotelServices->where('is_paid', false)->isEmpty())
@@ -26,7 +26,7 @@
                 <h5 class="card-title">
                     Платные услуги
                     @if($servicesEditable)
-                        <a class="btn-edit btn-services" href="#" data-url="{{$servicesUrl}}">Изменить</a>
+                        <a id="btn-paid-services" class="btn-edit" href="#" data-url="{{$servicesUrl}}">Изменить</a>
                     @endif
                 </h5>
                 @if($hotelServices->where('is_paid', true)->isEmpty())
@@ -45,7 +45,7 @@
                 <h5 class="card-title">
                     Удобства
                     @if($usabilitiesEditable)
-                        <a class="btn-edit btn-usabilities" href="#" data-url="{{$usabilitiesUrl}}">Изменить</a>
+                        <a id="btn-usabilities" class="btn-edit" href="#" data-url="{{$usabilitiesUrl}}">Изменить</a>
                     @endif
                 </h5>
                 @if($hotelUsabilities->isEmpty())

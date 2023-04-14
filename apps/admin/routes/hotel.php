@@ -16,6 +16,8 @@ AclRoute::for('hotel')
     ->resource('contacts', Controllers\Hotel\ContactController::class, ['except' => ['show', 'index']])
     ->get('/{hotel}/notes', Controllers\Hotel\NotesController::class . '@edit', 'update', 'notes.edit')
     ->put('/{hotel}/notes', Controllers\Hotel\NotesController::class . '@update', 'update', 'notes.update')
+    ->resource('employee', Controllers\Hotel\EmployeeController::class, ['except' => ['show']])
+    ->resource('employee.contacts', Controllers\Hotel\EmployeeContactController::class, ['except' => ['show']])
     ->get('/{hotel}/services', Controllers\Hotel\ServiceController::class . '@index', 'read', 'services.index')
     ->put(
         '/{hotel}/services',

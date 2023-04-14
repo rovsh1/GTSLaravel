@@ -17,7 +17,8 @@ function editableContactRow(route, $tr) {
   $actionsTd.find('button.btn-delete').deleteButton()
 
   $actionsTd.find('button.btn-edit')
-    .click(function () {
+    .click(function (e) {
+      e.preventDefault()
       WindowDialog({
         url: $(this).data('url'),
         title: 'Изменить контакт',
