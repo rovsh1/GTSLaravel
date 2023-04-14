@@ -9,7 +9,7 @@ class Table extends AbstractTable
 {
     protected function renderTable(Grid $grid): string
     {
-        $html = '<table class="' . $grid->getOption('class') . '">';
+        $html = '<table' . $this->tableAttributes($grid) . '>';
 
         if (false !== $grid->getOption('header')) {
             $html .= $this->renderTHead($grid);
