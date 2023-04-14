@@ -21,7 +21,9 @@ function processForm(modal, form) {
       processData: false,
     }, (r) => {
       modal.trigger('submit', r)
-      modal.destroy()
+      if(modal.get('closeOnSubmit')) {
+          modal.close()
+      }
     })
   })
 

@@ -13,6 +13,7 @@ export const defaultOptions = {
   closable: true,
   draggable: false,
   buttons: [],
+  closeOnSubmit: true,
 }
 
 export function createBootstrapModal(modal, $el) {
