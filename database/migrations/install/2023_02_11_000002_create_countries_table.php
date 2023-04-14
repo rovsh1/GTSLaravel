@@ -11,9 +11,9 @@ return new class extends Migration {
         Schema::create('r_countries', function (Blueprint $table) {
             $table->smallInteger('id')->unsigned()->autoIncrement();
             $table->smallInteger('currency_id')->unsigned()->nullable();
+            $table->char('code', 2);
             $table->boolean('default')->default(false);
             $table->char('language', 2);
-            $table->char('flag', 2);
             $table->string('phone_code', 8)->nullable();
             $table->string('datetime_format', 20)->nullable();
             $table->string('date_format', 20)->nullable();

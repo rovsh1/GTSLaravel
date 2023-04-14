@@ -15,32 +15,32 @@ class Languages implements \Countable, \Iterator
         }
     }
 
-    public function current()
+    public function current(): Language
     {
         return $this->languages[$this->position];
     }
 
-    public function next()
+    public function next(): void
     {
         $this->position++;
     }
 
-    public function key()
+    public function key(): int
     {
         return $this->position;
     }
 
-    public function valid()
+    public function valid(): bool
     {
         return isset($this->languages[$this->position]);
     }
 
-    public function rewind()
+    public function rewind(): void
     {
         $this->position = 0;
     }
 
-    public function count()
+    public function count(): int
     {
         return count($this->languages);
     }

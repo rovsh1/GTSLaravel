@@ -21,8 +21,8 @@ class Country extends Model
     protected $table = 'r_countries';
 
     protected $fillable = [
+        'code',
         'name',
-        'flag',
         'default',
         'phone_code',
         'language'

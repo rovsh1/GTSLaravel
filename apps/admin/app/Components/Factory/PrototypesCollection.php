@@ -43,7 +43,7 @@ class PrototypesCollection implements \Iterator
         return null;
     }
 
-    public function current(): mixed
+    public function current(): Prototype
     {
         return $this->prototypes[$this->position];
     }
@@ -53,7 +53,7 @@ class PrototypesCollection implements \Iterator
         ++$this->position;
     }
 
-    public function key(): mixed
+    public function key(): int
     {
         return $this->position;
     }
