@@ -64,7 +64,7 @@ class Table extends AbstractTable
     private function tableAttributes(Grid $grid): string
     {
         $attributes = '';
-        foreach ([] as $k) {
+        foreach (['id', 'class'] as $k) {
             if ($grid->getOption($k)) {
                 $attributes .= ' ' . $k . '="' . $grid->getOption($k) . '"';
             }
