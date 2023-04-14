@@ -92,8 +92,8 @@ class RouteResourceRegistrar
         $namePrefix = '';
 
         if ($name) {
-            $base = self::formatSlug($options['parameters'][$name] ?? $name);
-            $prefix .= '/{' . $resourceSlug . '}/' . $name;
+            [$prefix, $base] = $this->getResourcePrefixAndBase($name);
+            $prefix = '/{' . $resourceSlug . '}/' . $prefix;
             $namePrefix .= $name . '.';
         } else {
             $base = $resourceSlug;
@@ -104,6 +104,29 @@ class RouteResourceRegistrar
         }
 
         return $this;
+    }
+
+    private function getResourcePrefixAndBase(string $name): array
+    {
+        $prefix = '';
+        $preparedName = $name;
+        $base = self::formatSlug($options['parameters'][$name] ?? $name);
+
+        $nameParts = explode('.', $preparedName);
+        if (count($nameParts) > 1) {
+            $children = \Str::of($preparedName)->after('.')->toString();
+            $preparedName = \Str::of($preparedName)->before('.')->toString();
+            [$prefix, $base] = $this->getResourcePrefixAndBase($children);
+        }
+        $resourceSlug = \Str::singular(self::formatSlug($preparedName));
+        $singularBase = \Str::singular($base);
+
+        $path = "{$preparedName}";
+        if (strlen($prefix) > 0) {
+            $path = "{$preparedName}/{{$resourceSlug}}/{$prefix}";
+        }
+
+        return [$path, $singularBase];
     }
 
     private function addResourceIndex($path, $name, $base, $controller): void
