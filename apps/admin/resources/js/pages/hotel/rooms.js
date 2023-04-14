@@ -1,7 +1,7 @@
 import '../main'
 import 'jquery-ui/ui/widgets/sortable'
 
-$(document).ready(() => {
+$(() => {
   const $el = $('#hotel-rooms')
 
   $el.find('div.room').each(function () {
@@ -15,7 +15,7 @@ $(document).ready(() => {
     placeholder: 'card',
     // containment: el,
     update() {
-      const indexes: number[] = []
+      const indexes = []
       $el.find('div.room').each(function () {
         indexes[indexes.length] = +$(this).data('id')
       })

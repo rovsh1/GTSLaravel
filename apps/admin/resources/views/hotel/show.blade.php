@@ -32,6 +32,15 @@
 
         <div class="mt-3">
             <x-ui.card :collapsable="true" header="Примечание">
+                @if($notesUrl)
+                    <x-slot:header-controls>
+                        <a href="{{ $notesUrl }}" class="btn btn-add" id="btn-notes-edit">
+                            <x-icon key="edit"/>
+                            Редактировать
+                        </a>
+                    </x-slot:header-controls>
+                @endif
+
                 @if($model->text)
                     {{ $model->text }}
                 @else

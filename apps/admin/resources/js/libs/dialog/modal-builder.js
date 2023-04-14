@@ -1,30 +1,35 @@
-import { Modal as BootstrapModal } from 'bootstrap'
+import {Modal as BootstrapModal} from 'bootstrap'
 
-import { buttonsRenderer } from './buttons-builder'
+import {buttonsRenderer} from './buttons-builder'
 
 export const defaultOptions = {
   title: '',
   html: '',
   cls: '',
   autoLayout: false,
-  closeAction: 'remove',
+  destroyOnClose: true,
   processHtml: true,
   processForm: true,
-  modal: true,
-  autoclose: true,
   closable: true,
   draggable: false,
   buttons: [],
 }
 
-export function createBootstrapModal(modal, $el, options) {
+export function createBootstrapModal(modal, $el) {
   const bsModal = new BootstrapModal($el[0], {
     keyboard: false,
   })
 
-  // bsModal.addEventListener('hide.bs.modal', function (event) {
-  // 	modal.hide();
-  // });
+  $el[0].addEventListener('hidden.bs.modal', function () {
+    if (modal._preventDestroy) {
+      modal._preventDestroy = undefined;
+      modal.trigger('hide')
+    } else if (modal.get('destroyOnClose')) {
+      modal.destroy();
+    } else {
+      modal.trigger('hide')
+    }
+  });
 
   return bsModal
 }
@@ -65,7 +70,7 @@ export function bindEvents(modal, options) {
 }
 
 export function boot(modal, options) {
-  modal.header.find('button.btn-close').click((e) => {
+  modal.header.find('button.btn-close').click(() => {
     modal.close()
   })
 

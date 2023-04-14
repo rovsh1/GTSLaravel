@@ -3,7 +3,6 @@
 <x-ui.card id="card-contacts" data-route="{{ $contactsEditable ? $contactsUrl : '' }}" header="Контакты ({{$contacts->count()}})" collapsable="{{$collapsable}}" class="card-grid card-contacts">
     @if ($contactsEditable)
         <x-slot:header-controls>
-            <div class="spacer"></div>
             <button class="btn btn-add">
                 <x-icon key="add"/>
                 Добавить контакт

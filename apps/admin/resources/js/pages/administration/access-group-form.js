@@ -12,24 +12,20 @@ $(document).ready(() => {
       $(this)
         .addClass('active')
 
-      const category = $(this)
-        .data('category')
+      const category = $(this).data('category')
 
-      $menus.each((_, m: HTMLElement) => {
-        if ($(m)
-          .data('category') === category) {
-          $(m)
-            .show()
+      $menus.each((_, m) => {
+        if ($(m).data('category') === category) {
+          $(m).show()
         } else {
-          $(m)
-            .hide()
+          $(m).hide()
         }
       })
     })
     .each(function () {
       new Tab(
         $(this),
-        $menus.filter(`[data-category="${$(this).data('category')}"]` as JQuery.Selector),
+        $menus.filter(`[data-category="${$(this).data('category')}"]`),
       )
     })
 })

@@ -1,82 +1,85 @@
 @use "../../variables";
 
 .btn-primary, .btn-primary:hover, .btn-primary:active {
-	color: #fff !important;
+    color: #fff !important;
 }
 
-.btn > i {
-	line-height: variables.$btn-line-height;
-	vertical-align: top;
+.btn {
+    white-space: nowrap;
+    & > i {
+        line-height: variables.$btn-line-height;
+        vertical-align: top;
+    }
 }
 
 button.btn {
-	height: 32px;
+    height: 32px;
 }
 
 a.btn {
-	line-height: variables.$btn-line-height;
+    line-height: variables.$btn-line-height;
 }
 
 @mixin button_with_icon {
-	padding: 0 1rem 0 .5rem;
-	& > i {
-		font-size: 20px;
-		margin-right: 4px;
-	}
+    padding: 0 1rem 0 .5rem;
+    & > i {
+        font-size: 20px;
+        margin-right: 4px;
+    }
 }
 
 .btn-cancel,
 .btn-delete,
 .btn-white {
-	color: #000;
+    color: #000;
 
-	&:hover {
-		background-color: rgba(0, 0, 0, .08);
-	}
+    &:hover {
+        background-color: rgba(0, 0, 0, .08);
+    }
 
-	&:active {
-		background-color: rgba(0, 0, 0, .12);
-	}
+    &:active {
+        background-color: rgba(0, 0, 0, .12);
+    }
 }
 
 .btn-delete {
-	@include button_with_icon;
+    @include button_with_icon;
 }
 
 .btn-add {
-	@include button_with_icon;
-	color: variables.$primary;
+    @include button_with_icon;
+    color: variables.$primary;
 
-	&:hover {
-		background-color: rgba(0, 0, 0, .08);
-	}
+    &:hover {
+        background-color: rgba(0, 0, 0, .08);
+    }
 
-	&:active {
-		background-color: rgba(0, 0, 0, .12);
-	}
+    &:active {
+        background-color: rgba(0, 0, 0, .12);
+    }
 }
 
 .btn-menu {
-	padding: 0 .25rem;
-	color: variables.$primary;
-	font-size: 20px;
-	font-weight: 900;
+    padding: 0 .25rem;
+    color: variables.$primary;
+    font-size: 20px;
+    font-weight: 900;
 
-	&:hover {
-		background-color: rgba(0, 0, 0, .08);
-	}
+    &:hover {
+        background-color: rgba(0, 0, 0, .08);
+    }
 
-	&:active {
-		background-color: rgba(0, 0, 0, .12);
-		border-color: transparent;
-	}
+    &:active {
+        background-color: rgba(0, 0, 0, .12);
+        border-color: transparent;
+    }
 
-	&.show {
-		border-color: transparent;
-	}
+    &.show {
+        border-color: transparent;
+    }
 
-	& > i {
-		font-size: 20px;
-		font-weight: bold;
-	}
+    & > i {
+        font-size: 20px;
+        font-weight: bold;
+    }
 }

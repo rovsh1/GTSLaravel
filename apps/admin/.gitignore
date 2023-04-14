@@ -4,7 +4,6 @@ yarn-error.log
 
 /public/css
 /public/js
-!/public/js/tinymce
 /public/assets
 /public/mix-manifest.json
 /public/upload
