@@ -40,8 +40,11 @@ module.exports = {
   },
   ignorePatterns: [
     '**/vendor/*.js',
+    '**/vendor/**/*.js',
     '**/libs/*.js',
     '**/libs/**/*.js',
+    '**/plugins/*.js',
+    '**/plugins/**/*.js',
   ],
   rules: {
     '@typescript-eslint/no-namespace': ['error', { allowDeclarations: true }],
