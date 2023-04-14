@@ -1,5 +1,3 @@
-import '../main'
-
 interface IBedData {
     id: number
     type_id: number
@@ -15,9 +13,8 @@ interface ISelectList {
 interface IBedType extends ISelectList {
 }
 
-function bootBeds() {
+export default function bootBeds($container: JQuery) {
   let I = 0
-  const $container = $('#room-beds')
   const $itemsInner = $('<div class="items"></div>').appendTo($container)
 
   const getSelect = function (items: IBedType[], name: string, cls: string, emptyItem: string) {
@@ -88,7 +85,3 @@ function bootBeds() {
   })
   $dataInput.remove()
 }
-
-$(document).ready(() => {
-  bootBeds()
-})

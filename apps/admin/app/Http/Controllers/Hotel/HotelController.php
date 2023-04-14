@@ -56,7 +56,7 @@ class HotelController extends AbstractPrototypeController
     {
         return parent::create()
             ->addMetaName('google-maps-key', env('GOOGLE_MAPS_API_KEY'))
-            ->ss('hotel/create');
+            ->script('hotel/edit');
     }
 
     protected function formFactory(): FormContract
