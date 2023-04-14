@@ -9,7 +9,7 @@ class Table extends AbstractTable
 {
     protected function renderTable(Grid $grid): string
     {
-        $html = '<table ' . $grid->getOption('id') . ' class="' . $grid->getOption('class') . '">';
+        $html = '<table class="' . $grid->getOption('class') . '">';
 
         if (false !== $grid->getOption('header')) {
             $html .= $this->renderTHead($grid);
@@ -63,5 +63,16 @@ class Table extends AbstractTable
         $html = '';
 
         return ($html ? '<tfoot>' . $html . '</tfoot>' : '');
+    }
+
+    private function tableAttributes(Grid $grid): string
+    {
+        $attributes = '';
+        foreach ([] as $k) {
+            if ($grid->getOption($k)) {
+                $attributes .= ' ' . $k . '="' . $grid->getOption($k) . '"';
+            }
+        }
+        return $attributes;
     }
 }
