@@ -2,5 +2,9 @@
 
 use Custom\Framework\Support\Facades\Route;
 use Module\Services\MailManager\Port\Controllers\AdminController;
+use Module\Services\MailManager\Port\Controllers\SendController;
 
-Route::register('list', AdminController::class);
+Route::register('templates-list', AdminController::class);
+
+Route::register('send', SendController::class);
+Route::register('send-template', SendController::class);

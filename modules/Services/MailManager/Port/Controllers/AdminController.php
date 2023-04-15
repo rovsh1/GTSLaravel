@@ -8,7 +8,7 @@ class AdminController
 {
     public function __construct() {}
 
-    public function list(Request $request)
+    public function templatesList(Request $request)
     {
 
     }

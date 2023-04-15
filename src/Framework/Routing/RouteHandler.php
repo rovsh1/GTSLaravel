@@ -4,10 +4,13 @@ namespace Custom\Framework\Routing;
 
 use Custom\Framework\Foundation\Module;
 use Custom\Framework\PortGateway\Request;
+use Illuminate\Support\Str;
 
 class RouteHandler
 {
-    public function __construct(private readonly Module $module) {}
+    public function __construct(private readonly Module $module)
+    {
+    }
 
     public function handle(Route $route, array $attributes): mixed
     {
@@ -36,6 +39,6 @@ class RouteHandler
     {
         $controller = $this->module->make($action[0]);
 
-        return $controller->{$action[1]}($request);
+        return $controller->{Str::camel($action[1])}($request);
     }
 }
