@@ -2,6 +2,7 @@
 
 namespace App\Core\Console;
 
+use Custom\Framework\Foundation\Console\Commands\MakeModule;
 use Custom\Framework\Services\NamespaceReader;
 use Illuminate\Console\Application as Artisan;
 use Illuminate\Console\Command;
@@ -10,6 +11,10 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
+    protected $commands = [
+        MakeModule::class,
+    ];
+
     /**
      * Define the application's command schedule.
      *
