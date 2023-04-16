@@ -25,22 +25,12 @@ return new class extends Migration {
     private function createRatesTable()
     {
         Schema::create('r_currency_rates', function (Blueprint $table) {
-            $table->unsignedInteger('country_id');
-            $table->unsignedSmallInteger('currency_id');
             $table->date('date');
-            $table->decimal('rate', 8, 2)->unsigned();
+            $table->char('country', 2);
+            $table->char('currency', 3);
+            $table->decimal('value', 8, 2)->unsigned();
 
-            $table->foreign('country_id')
-                ->references('id')
-                ->on('r_countries')
-                ->cascadeOnDelete()
-                ->cascadeOnUpdate();
-
-            $table->foreign('currency_id')
-                ->references('id')
-                ->on('r_currencies')
-                ->cascadeOnDelete()
-                ->cascadeOnUpdate();
+            $table->unique(['date', 'currency', 'country']);
         });
     }
 

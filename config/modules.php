@@ -17,6 +17,9 @@ return [
     'HotelReservation' => [
         'path' => modules_path('Reservation/HotelReservation')
     ],
+    'CurrencyRate' => [
+        'path' => modules_path('Pricing/CurrencyRate'),
+    ],
     'FileStorage' => [
         'path' => modules_path('Services/FileStorage'),
         'alias' => 'files',
