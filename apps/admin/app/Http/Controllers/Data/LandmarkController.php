@@ -30,7 +30,6 @@ class LandmarkController extends AbstractPrototypeController
     public function edit(int $id): LayoutContract
     {
         return parent::edit($id)
-            ->addGoogleMapsKeyMeta()
             ->script('administration/landmark-form')
             ->view('administration/landmark-form');
     }
@@ -38,7 +37,6 @@ class LandmarkController extends AbstractPrototypeController
     public function create(): LayoutContract
     {
         return parent::create()
-            ->addGoogleMapsKeyMeta()
             ->script('administration/landmark-form')
             ->view('administration/landmark-form');
     }

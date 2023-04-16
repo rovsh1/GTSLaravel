@@ -82,11 +82,6 @@ class Layout
         return $this->data($data);
     }
 
-    public function addGoogleMapsKeyMeta(): static
-    {
-        return $this->addMetaName('google-maps-key', env('GOOGLE_MAPS_API_KEY'));
-    }
-
     public function render(): View
     {
         $this->configure();
@@ -130,6 +125,7 @@ class Layout
             ->addMetaHttpEquiv('X-UA-Compatible', 'IE=edge,chrome=1')
             ->addMetaHttpEquiv('Content-language', App::currentLocale())
             ->addMetaName('viewport', 'width=device-width, initial-scale=1')//->addMetaName('csrf-token', csrf_token())
+            ->addMetaName('google-maps-key', env('GOOGLE_MAPS_API_KEY'))
         ;
     }
 

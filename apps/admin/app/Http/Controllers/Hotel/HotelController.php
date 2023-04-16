@@ -49,14 +49,12 @@ class HotelController extends AbstractPrototypeController
     public function edit(int $id): LayoutContract
     {
         return parent::edit($id)
-            ->addGoogleMapsKeyMeta()
             ->script('hotel/edit');
     }
 
     public function create(): LayoutContract
     {
         return parent::create()
-            ->addGoogleMapsKeyMeta()
             ->script('hotel/edit');
     }
 
