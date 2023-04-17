@@ -44,7 +44,7 @@ class ViewServiceProvider extends ServiceProvider
             //'view' => 'layouts.ui.form.field'
         ]);
         FormNamespace\Label::setDefaults([
-            'class' => 'col-sm-4 col-form-label'
+            'class' => 'col-sm-5 col-form-label'
         ]);
         FormNamespace\Form::setElementDefaults([
             'view' => 'layouts.ui.form.field',

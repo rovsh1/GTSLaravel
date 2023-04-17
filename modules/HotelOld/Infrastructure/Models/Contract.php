@@ -28,21 +28,18 @@ use Custom\Framework\Database\Eloquent\Model;
  */
 class Contract extends Model
 {
-    public const CREATED_AT = 'created';
-    public const UPDATED_AT = null;
-
     protected $table = 'hotel_contracts';
 
     protected $fillable = [
         'hotel_id',
         'number',
         'status',
-        'date_from',
-        'date_to',
+        'date_start',
+        'date_end',
     ];
 
     protected $casts = [
-        'date_from' => 'date',
-        'date_to' => 'date',
+        'date_start' => 'date',
+        'date_end' => 'date',
     ];
 }

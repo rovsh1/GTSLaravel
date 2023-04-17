@@ -3,14 +3,18 @@
 namespace App\Admin\Models\Hotel;
 
 use App\Admin\Models\HasCoordinates;
+use App\Admin\Models\Hotel\Contract\StatusEnum;
 use App\Admin\Models\Hotel\Reference\Service;
 use App\Admin\Models\Hotel\Reference\Usability;
+use Carbon\CarbonPeriod;
 use Custom\Framework\Database\Eloquent\HasQuicksearch;
 use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Query\JoinClause;
+use Module\HotelOld\Infrastructure\Models\Room;
 
 /**
  * @property int city_id
@@ -23,6 +27,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read Collection<Contact>|Contact[] $contacts
  * @property-read Collection<Service>|Service[] $services
  * @property-read Collection<Usability>|Usability[] $usabilities
+ * @method static Builder|Hotel withActiveContract()
+ * @method static Builder|Hotel wherePeriod(CarbonPeriod $period)
  */
 class Hotel extends Model
 {
@@ -87,6 +93,32 @@ class Hotel extends Model
     public function contacts(): HasMany
     {
         return $this->hasMany(Contact::class, 'hotel_id', 'id');
+    }
+
+    public function scopeWithActiveContract(Builder $builder)
+    {
+        $builder->addSelect("{$this->getTable()}.*");
+
+        $joinableTable = with(new Contract)->getTable();
+        $builder->leftJoin(
+            $joinableTable,
+            function (JoinClause $join) use ($joinableTable) {
+                $join->on("{$joinableTable}.hotel_id", '=', "{$this->getTable()}.id")
+                    ->where("{$joinableTable}.status", StatusEnum::ACTIVE);
+            }
+        )->addSelect("{$joinableTable}.date_start as contract_date_start")
+            ->addSelect("{$joinableTable}.date_end as contract_date_end");
+    }
+
+    public function scopeWherePeriod(Builder $builder, CarbonPeriod $period): void
+    {
+        $builder->where("hotel_contracts.date_start", '<=', $period->getStartDate())
+            ->where('hotel_contracts.date_end', '>=', $period->getEndDate());
+    }
+
+    public function contracts(): HasMany
+    {
+        return $this->hasMany(Contract::class, 'hotel_id', 'id');
     }
 
     public function services(): BelongsToMany

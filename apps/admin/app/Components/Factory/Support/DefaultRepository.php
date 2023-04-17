@@ -60,7 +60,15 @@ class DefaultRepository implements FactoryRepositoryInterface
             unset($criteria['quicksearch']);
         }
 
+        $model = (new $this->model);
         foreach ($criteria as $k => $v) {
+            $scopeName = \Str::camel($k);
+            $scopeMethod = 'where' . ucfirst($scopeName);
+            $hasScope = $model->hasNamedScope($scopeMethod);
+            if ($hasScope) {
+                $query->$scopeMethod($v);
+                continue;
+            }
             $query->where($k, $v);
         }
     }

@@ -26,7 +26,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method self city(string $name, array $options = [])
  * @method self hotelType(string $name, array $options = [])
  * @method self hotelRating(string $name, array $options = [])
- * @method self enum(string $enumClass, string $name, array $options = [])
+ * @method self enum(string $name, array $options = [])
  * @method self hotelStatus(string $name, array $options = [])
  * @method self coordinates(string $name, array $options = [])
  * @method self client(string $name, array $options = [])

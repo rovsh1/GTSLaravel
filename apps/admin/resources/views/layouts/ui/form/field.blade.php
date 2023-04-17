@@ -1,7 +1,7 @@
 <div class="row <?=$class?>">
     <?=$label?>
 
-    <div class="col-sm-8 d-flex align-items-center">
+    <div class="col-sm-7 d-flex align-items-center">
         <?=$element?>
     </div>
 

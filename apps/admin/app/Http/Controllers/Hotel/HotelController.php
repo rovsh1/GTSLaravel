@@ -20,6 +20,7 @@ use App\Admin\Support\View\Layout as LayoutContract;
 use App\Admin\View\Components\Helpers\HotelRating;
 use App\Admin\View\Menus\HotelMenu;
 use Gsdk\Format\View\ParamsTable;
+use Illuminate\Database\Eloquent\Builder;
 
 class HotelController extends AbstractPrototypeController
 {
@@ -92,11 +93,11 @@ class HotelController extends AbstractPrototypeController
             ->text('contract', [
                 'text' => 'Договор',
 //                'renderer' => function ($row) {
-//                    $contract = $row->getContract();
-//                    if (!$contract->findActive()) {
+//                    $contract = $row->activeContracts->first();
+//                    if (!$contract) {
 //                        return '-';
 //                    }
-//                    return (string)$contract . '<br />' . \format\period($contract->date_from, $contract->date_to) . '';
+//                    return (string)$contract . '<br />' . Format::period($contract->getPeriod()) . '';
 //                }
             ])
             ->number('rooms_number', ['text' => 'Номеров', 'order' => true])
@@ -134,6 +135,11 @@ class HotelController extends AbstractPrototypeController
         Sidebar::submenu(new HotelMenu($model, 'info'));
     }
 
+    protected function prepareGridQuery(Builder $query)
+    {
+        $query->withActiveContract();
+    }
+
     protected function saving(array $data): array
     {
         $preparedData = $data;
@@ -152,12 +158,12 @@ class HotelController extends AbstractPrototypeController
             ->country('country_id', ['label' => __('label.country'), 'emptyItem' => ''])
             ->hidden('city_id', ['label' => __('label.city'), 'emptyItem' => ''])
             ->hotelType('type_id', ['label' => __('label.type'), 'emptyItem' => ''])
-            ->numRange(
-                'reservation_count',
-                ['label' => 'Кол-во броней', 'placeholder' => [__('label.from'), __('label.to')]]
-            )
-            ->hotelStatus('status_id', ['label' => __('label.status'), 'emptyItem' => ''])
-            ->checkbox('visible_for', ['label' => __('label.visible-for')])
+//            ->numRange(
+//                'reservation_count',
+//                ['label' => 'Кол-во броней', 'placeholder' => [__('label.from'), __('label.to')]]
+//            )
+            ->hotelStatus('status', ['label' => __('label.status'), 'emptyItem' => ''])
+            ->enum('visibility', ['label' => __('label.visibility'), 'emptyItem' => '', 'enumClass' => VisibilityEnum::class])
             ->hotelRating('rating', ['label' => __('label.rating'), 'emptyItem' => '']);
     }
 

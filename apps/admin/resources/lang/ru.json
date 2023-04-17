@@ -15,7 +15,7 @@
     "label.rating": "Категория",
     "label.status": "Статус",
     "label.type": "Тип",
-    "label.visible-for": "Только для B2B",
+    "label.visibility": "Видимость",
     "label.from": "От",
     "label.to": "До",
     "label.contract-period": "Период договора",

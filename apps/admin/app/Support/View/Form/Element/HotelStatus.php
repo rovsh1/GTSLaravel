@@ -8,6 +8,7 @@ class HotelStatus extends Enum
 {
     public function __construct(string $name, array $options = [])
     {
-        parent::__construct(StatusEnum::class, $name, $options);
+        $options['enumClass'] = StatusEnum::class;
+        parent::__construct($name, $options);
     }
 }
