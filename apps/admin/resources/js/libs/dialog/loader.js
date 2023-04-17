@@ -5,12 +5,12 @@ function processResponse(response) {
 
   switch (response.action) {
     case 'redirect':
-      const url = new URL(response.url)
-      if(url.hash) {
-          location.replace(response.url)
+      const url = response.url
+      if(url.includes('#')) {
+          location.replace(url)
           return location.reload()
       }
-      return location.replace(response.url)
+      return location.replace(url)
     case 'reload':
       return location.reload()
   }
