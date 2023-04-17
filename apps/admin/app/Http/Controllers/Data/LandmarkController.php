@@ -82,7 +82,7 @@ class LandmarkController extends AbstractPrototypeController
         $city = City::find($cityId);
         $from = new Point($city->center_lat, $city->center_lon);
         $to = Point::buildFromCoordinates($data['coordinates']);
-        $preparedData['center_distance'] = $this->distanceCalculator->getDistance($from, $to);
+        $preparedData['city_distance'] = $this->distanceCalculator->getDistance($from, $to);
         return $preparedData;
     }
 }
