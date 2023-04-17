@@ -7,4 +7,6 @@ use Module\Services\MailManager\Port\Controllers\SendController;
 Route::register('templates-list', AdminController::class);
 
 Route::register('send', SendController::class);
+Route::register('send-sync', SendController::class);
 Route::register('send-template', SendController::class);
+Route::register('send-template-sync', SendController::class);

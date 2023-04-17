@@ -3,9 +3,18 @@
 namespace Module\Services\MailManager\Infrastructure\Model;
 
 use Illuminate\Database\Eloquent\Model as BaseModel;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 class QueueMessage extends BaseModel
 {
+    use HasUuids;
+
+    protected $keyType = 'string';
+
+    protected $primaryKey = 'uuid';
+
+    public $incrementing = false;
+
     protected $table = 's_mail_queue';
 
     protected $fillable = [

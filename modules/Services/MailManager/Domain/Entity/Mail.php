@@ -3,19 +3,20 @@
 namespace Module\Services\MailManager\Domain\Entity;
 
 use Module\Services\MailManager\Domain\ValueObject\AddressList;
+use Module\Services\MailManager\Domain\ValueObject\Attachments;
 use Module\Services\MailManager\Domain\ValueObject\MailBody;
 
 class Mail
 {
-    private array $from = [];
+    private readonly AddressList $from;
 
-    private array $replyTo = [];
+    private readonly AddressList $replyTo;
 
-    private array $cc = [];
+    private readonly AddressList $cc;
 
-    private array $bcc = [];
+    private readonly AddressList $bcc;
 
-    private array $attachments = [];
+    private readonly Attachments $attachments;
 
     private array $tags = [];
 
@@ -24,10 +25,15 @@ class Mail
     private int $priority = 0;
 
     public function __construct(
-        private AddressList $to,
+        private readonly AddressList $to,
         private string $subject,
-        private MailBody $body,
+        private readonly MailBody $body,
     ) {
+        $this->from = new AddressList();
+        $this->replyTo = new AddressList();
+        $this->cc = new AddressList();
+        $this->bcc = new AddressList();
+        $this->attachments = new Attachments();
     }
 
     public function to(): AddressList
@@ -40,13 +46,63 @@ class Mail
         return $this->subject;
     }
 
+    public function setSubject(string $subject): void
+    {
+        $this->subject = $subject;
+    }
+
     public function body(): MailBody
     {
         return $this->body;
     }
 
+    public function attachments(): Attachments
+    {
+        return $this->attachments;
+    }
+
+    public function from(): AddressList
+    {
+        return $this->from;
+    }
+
+    public function replyTo(): AddressList
+    {
+        return $this->replyTo;
+    }
+
+    public function cc(): AddressList
+    {
+        return $this->cc;
+    }
+
+    public function bcc(): AddressList
+    {
+        return $this->bcc;
+    }
+
+    public function priority(): int
+    {
+        return $this->priority;
+    }
+
+    public function setPriority(int $priority): void
+    {
+        $this->priority = $priority;
+    }
+
     public function serialize(): string
     {
-        return '';
+        return json_encode([
+            'to' => $this->to->toArray(),
+            'subject' => $this->subject,
+            'body' => $this->body->value(),
+            'from' => $this->from->toArray(),
+            'replyTo' => $this->replyTo->toArray(),
+            'cc' => $this->cc->toArray(),
+            'bcc' => $this->bcc->toArray(),
+            //'attachments' => $this->attachments,
+            'priority' => $this->priority,
+        ]);
     }
 }

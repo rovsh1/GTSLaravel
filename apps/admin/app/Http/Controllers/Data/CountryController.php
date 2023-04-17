@@ -7,17 +7,9 @@ use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
-use App\Admin\Support\View\Layout as LayoutContract;
-use Custom\Framework\Contracts\PortGateway\PortGatewayInterface;
 
 class CountryController extends AbstractPrototypeController
 {
-    public function index(): LayoutContract
-    {
-        app(PortGatewayInterface::class)->request('mail/send-template');
-        dd(1);
-    }
-
     protected function getPrototypeKey(): string
     {
         return 'country';

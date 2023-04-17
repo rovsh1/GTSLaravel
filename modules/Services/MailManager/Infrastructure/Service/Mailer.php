@@ -23,7 +23,6 @@ class Mailer implements MailerInterface
         $mailerMessage->html($message->body()->value());
 
         $sentMessage = LaravelMail::send($mailerMessage);
-        dd($sentMessage);
         //dd($sentMessage);
 //        $this->logger->log($mail);
     }
