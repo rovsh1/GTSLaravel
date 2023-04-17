@@ -9,10 +9,12 @@ return new class extends Migration {
     {
         Schema::create('s_mail_queue', function (Blueprint $table) {
             $table->uuid();
+            $table->string('subject');
             $table->unsignedTinyInteger('priority')->default(0);
             $table->unsignedTinyInteger('status');
             $table->unsignedTinyInteger('attempts')->default(0);
             $table->mediumText('payload');
+            $table->text('context')->nullable();
             $table->timestamp('failed_at')->nullable();
             $table->timestamp('sent_at')->nullable();
             $table->timestamps();

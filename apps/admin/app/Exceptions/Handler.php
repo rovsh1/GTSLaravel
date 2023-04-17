@@ -3,6 +3,7 @@
 namespace App\Admin\Exceptions;
 
 use App\Admin\Support\Facades\Layout;
+use App\Core\Support\Facades\AppContext;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
@@ -64,7 +65,8 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        $this->reportable(function (Throwable $e) {});
+        $this->reportable(function (Throwable $e) {
+        });
     }
 
     private function _renderNotFound($e): Response
@@ -98,5 +100,10 @@ class Handler extends ExceptionHandler
         return $e instanceof NotFoundHttpException
             || $e instanceof ModelNotFoundException
             || $e instanceof MethodNotAllowedHttpException;
+    }
+
+    protected function context()
+    {
+        return AppContext::get();
     }
 }

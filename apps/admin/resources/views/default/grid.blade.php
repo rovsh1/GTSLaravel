@@ -7,20 +7,20 @@
         <div class="flex-grow-1"></div>
 
         <form method="get" class="grid-filters">
-            @if ($searchForm)
+            @if (!empty($searchForm))
                 <button type="button" class="btn btn-white" id="btn-grid-filters">
                     <x-icon key="filter"/>
                 </button>
             @endif
 
-            @if($quicksearch)
+            @if(!empty($quicksearch))
                 <div class="quicksearch-wrapper">
                     {!! $quicksearch !!}
                     <button class="icon" type="submit" title="Найти">search</button>
                 </div>
             @endif
 
-            @if($searchForm)
+            @if(!empty($searchForm))
                 <div class="search-popup-wrapper" id="grid-filters-popup">
                     <div class="search-popup shadow rounded">
                         {!! $searchForm !!}

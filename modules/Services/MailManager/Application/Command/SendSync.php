@@ -8,7 +8,8 @@ use Module\Services\MailManager\Application\Dto\MailMessageDto;
 class SendSync implements CommandInterface
 {
     public function __construct(
-        public readonly MailMessageDto $mailMessage
+        public readonly MailMessageDto $mailMessage,
+        public readonly ?array $context = null,
     ) {
     }
 }

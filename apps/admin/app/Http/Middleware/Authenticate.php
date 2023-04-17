@@ -3,6 +3,7 @@
 namespace App\Admin\Http\Middleware;
 
 use App\Admin\Models\Administrator\Administrator;
+use App\Core\Support\Facades\AppContext;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 
 class Authenticate extends Middleware
@@ -17,6 +18,8 @@ class Authenticate extends Middleware
             $administrator->setRememberToken(null);
             $this->unauthenticated($request, ['admin']);
         }
+
+        AppContext::setAdministrator($administrator->id, $administrator->presentation);
     }
 
     /**

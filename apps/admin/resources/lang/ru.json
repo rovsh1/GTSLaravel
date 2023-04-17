@@ -53,6 +53,7 @@
     "group.additional": "Дополнительно",
     "group.additional-services": "Доп. услуги",
     "group.reservations": "По типам",
+    "group.notification": "Уведомления",
 
     "enum.hotel.status.Draft": "Черновик",
     "enum.hotel.status.Published": "Опубликован",

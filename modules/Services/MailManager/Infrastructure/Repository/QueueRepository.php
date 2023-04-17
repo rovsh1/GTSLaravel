@@ -19,14 +19,18 @@ class QueueRepository implements QueueRepositoryInterface
     }
 
     public function push(
+        string $subject,
         string $payload,
         int $priority = 0,
-        QueueMailStatusEnum $status = QueueMailStatusEnum::WAITING
+        QueueMailStatusEnum $status = QueueMailStatusEnum::WAITING,
+        array $context = null
     ): QueueMessage {
         $model = Model::create([
+            'subject' => $subject,
             'payload' => $payload,
             'priority' => $priority,
-            'status' => $status->value
+            'status' => $status->value,
+            'context' => $context
         ]);
 
         return $this->entityFromModel($model);

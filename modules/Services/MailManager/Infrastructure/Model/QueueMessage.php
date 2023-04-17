@@ -19,7 +19,9 @@ class QueueMessage extends BaseModel
 
     protected $fillable = [
         'uuid',
+        'subject',
         'payload',
+        'context',
         'priority',
         'status',
         'attempts',
@@ -33,5 +35,6 @@ class QueueMessage extends BaseModel
         'status' => 'int',
         'failed_at' => 'datetime:Y-m-d H:i:s',
         'sent_at' => 'datetime:Y-m-d H:i:s',
+        'context' => 'array',
     ];
 }

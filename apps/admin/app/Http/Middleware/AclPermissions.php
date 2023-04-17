@@ -4,12 +4,15 @@ namespace App\Admin\Http\Middleware;
 
 use App\Admin\Models\Administrator\AccessRule;
 use App\Admin\Support\Facades\Acl;
+use App\Core\Support\Facades\AppContext;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AclPermissions
 {
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 
     public function handle(Request $request, \Closure $next)
     {
@@ -35,13 +38,16 @@ class AclPermissions
         $administrator = Auth::user();
         if ($administrator->superuser) {
             $permissions->superuser(true);
+            AppContext::set('superuser', true);
         } else {
-            //->superuser(true);
+            $context = [];
             $rules = AccessRule::whereAdministrator($administrator->id)
                 ->where('flag', 1);
             foreach ($rules->cursor() as $r) {
                 $permissions->allow($r->resource, $r->permission);
+                $context[$r->resource] = $r->permission;
             }
+            AppContext::set('permissions', $context);
         }
     }
 }

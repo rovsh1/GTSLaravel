@@ -9,7 +9,13 @@ interface QueueRepositoryInterface
 {
     public function find(string $uuid): ?QueueMessage;
 
-    public function push(string $payload, int $priority = 0): QueueMessage;
+    public function push(
+        string $subject,
+        string $payload,
+        int $priority = 0,
+        QueueMailStatusEnum $status = QueueMailStatusEnum::WAITING,
+        array $context = null
+    ): QueueMessage;
 
     public function retry(string $uuid): void;
 

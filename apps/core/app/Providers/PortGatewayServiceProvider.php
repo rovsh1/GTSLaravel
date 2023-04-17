@@ -20,7 +20,6 @@ class PortGatewayServiceProvider extends ServiceProvider
     private function registerAdapters(): void
     {
         $this->app->singleton('file-adapter', Adapters\FileAdapter::class);
-        $this->app->singleton('mail-adapter', Adapters\MailAdapter::class);
         $this->app->singleton('notification-adapter', Adapters\NotificationAdapter::class);
         $this->app->singleton('currency-adapter', Adapters\CurrencyAdapter::class);
     }

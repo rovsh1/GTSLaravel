@@ -16,7 +16,10 @@ class SendSyncHandler implements CommandHandlerInterface
 
     public function handle(CommandInterface|SendSync $command): string
     {
-        $queueMessage = $this->mailManager->sendSync(MailMessageFactory::fromDto($command->mailMessage));
+        $queueMessage = $this->mailManager->sendSync(
+            MailMessageFactory::fromDto($command->mailMessage),
+            $command->context
+        );
 
         return $queueMessage->uuid;
     }

@@ -7,7 +7,7 @@ return Factory::key('mail-log')
     ->group(Factory::GROUP_LOG)
     ->route('mail-log')
 //    ->model(\App\Admin\Models\System\Constant::class)
-//    ->controller(\App\Admin\Http\Controllers\Administration\ConstantController::class, ['except' => ['show']])
+    ->controller(\App\Admin\Http\Controllers\Administration\MailQueueController::class, ['only' => ['index']])
     ->titles([
         "index" => "История писем"
     ])

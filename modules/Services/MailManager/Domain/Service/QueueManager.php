@@ -17,23 +17,27 @@ class QueueManager implements QueueManagerInterface
     ) {
     }
 
-    public function sendSync(Mail $mailMessage): QueueMessage
+    public function sendSync(Mail $mailMessage, array $context = null): QueueMessage
     {
         return $this->_send(
             $this->queueRepository->push(
+                $mailMessage->subject(),
                 $mailMessage->serialize(),
                 0,
-                QueueMailStatusEnum::PROCESSING
+                QueueMailStatusEnum::PROCESSING,
+                $context
             )
         );
     }
 
-    public function push(Mail $mailMessage, int $priority = 0): QueueMessage
+    public function push(Mail $mailMessage, int $priority = 0, array $context = null): QueueMessage
     {
         return $this->queueRepository->push(
+            $mailMessage->subject(),
             $mailMessage->serialize(),
             $priority,
-            QueueMailStatusEnum::WAITING
+            QueueMailStatusEnum::WAITING,
+            $context
         );
     }
 

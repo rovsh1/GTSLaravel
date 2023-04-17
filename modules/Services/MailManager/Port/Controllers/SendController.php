@@ -21,7 +21,11 @@ class SendController
         $this->validateSendRequest($request);
 
         return $this->commandBus->execute(
-            new SendQueued($this->sendRequestToDto($request))
+            new SendQueued(
+                $this->sendRequestToDto($request),
+                (int)$request->priority,
+                $request->context
+            )
         );
     }
 
@@ -30,7 +34,7 @@ class SendController
         $this->validateSendRequest($request);
 
         return $this->commandBus->execute(
-            new SendSync($this->sendRequestToDto($request))
+            new SendSync($this->sendRequestToDto($request), $request->context)
         );
     }
 
@@ -64,6 +68,7 @@ class SendController
             'to' => 'required|string',
             'subject' => 'required|string',
             'body' => 'required|string',
+            'context' => 'nullable|array',
         ]);
     }
 }

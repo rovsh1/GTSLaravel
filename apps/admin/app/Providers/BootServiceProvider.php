@@ -2,6 +2,8 @@
 
 namespace App\Admin\Providers;
 
+use App\Core\Components\Context\SourceEnum;
+use App\Core\Support\Facades\AppContext;
 use Gsdk\Filemanager\FilemanagerServiceProvider;
 use Illuminate\Support\ServiceProvider;
 
@@ -18,6 +20,7 @@ class BootServiceProvider extends ServiceProvider
         $this->app->register(FormatServiceProvider::class);
         $this->app->register(ViewServiceProvider::class);
         $this->app->register(FilemanagerServiceProvider::class);
+        $this->app->register(AdapterServiceProvider::class);
     }
 
     /**
@@ -25,6 +28,7 @@ class BootServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        AppContext::setSource(SourceEnum::ADMIN);
+        AppContext::setRequest(request());
     }
 }

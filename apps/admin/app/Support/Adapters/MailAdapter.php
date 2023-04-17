@@ -1,6 +1,9 @@
 <?php
 
-namespace App\Core\Support\Adapters;
+namespace App\Admin\Support\Adapters;
+
+use App\Core\Support\Adapters\AbstractPortAdapter;
+use App\Core\Support\Facades\AppContext;
 
 class MailAdapter extends AbstractPortAdapter
 {
@@ -11,8 +14,15 @@ class MailAdapter extends AbstractPortAdapter
         $uuid = $this->request('send', [
             'to' => $to,
             'subject' => $subject,
-            'body' => $body
+            'body' => $body,
+            'context' => AppContext::get()
         ]);
+//        dd($uuid);
 //        return $this->fileFactory($fileDto);
+    }
+
+    public function getQueue(array $criteria = [])
+    {
+        return $this->request('get-queue', $criteria);
     }
 }

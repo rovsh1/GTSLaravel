@@ -18,7 +18,8 @@ class SendQueuedHandler implements CommandHandlerInterface
     {
         $queueMessage = $this->queueManager->push(
             MailMessageFactory::fromDto($command->mailMessage),
-            $command->priority
+            $command->priority,
+            $command->context
         );
 
         $this->queueManager->sendWaitingMessages();
