@@ -1,4 +1,4 @@
-INSERT INTO `r_countries` (`id`, `currency_id`, `default`, `language`, `flag`, `phone_code`)
+INSERT INTO `r_countries` (`id`, `currency_id`, `default`, `language`, `code`, `phone_code`)
 VALUES (1, 1, 0, 'ru', 'uz', '998'),
        (2, 3, 0, 'en', 'us', '+1'),
        (3, NULL, 0, 'ru', 'kz', '7'),
