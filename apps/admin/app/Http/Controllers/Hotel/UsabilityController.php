@@ -6,7 +6,9 @@ use App\Admin\Components\Factory\Prototype;
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Models\Hotel\Hotel;
 use App\Admin\Models\Hotel\Reference\Usability;
+use App\Admin\Repositories\Hotel\UsabilitiesRepository;
 use App\Admin\Support\Facades\Prototypes;
+use App\Admin\Support\Repository\RepositoryInterface;
 use App\Core\Support\Http\Responses\AjaxReloadResponse;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use Illuminate\Http\Request;
@@ -16,9 +18,12 @@ class UsabilityController extends Controller
 {
     protected Prototype $prototype;
 
-    public function __construct()
+    private RepositoryInterface $repository;
+
+    public function __construct(UsabilitiesRepository $repository)
     {
         $this->prototype = Prototypes::get($this->getPrototypeKey());
+        $this->repository = $repository;
     }
 
     public function index(Hotel $hotel): View
@@ -51,13 +56,7 @@ class UsabilityController extends Controller
             }
         }
 
-        \DB::transaction(function () use ($hotel, $usabilityUpdateData) {
-            \DB::table('hotel_usabilities')
-                ->where('hotel_id', $hotel->id)
-                ->delete();
-
-            \DB::table('hotel_usabilities')->insert($usabilityUpdateData);
-        });
+        $this->repository->update($hotel->id, $usabilityUpdateData);
 
         return new AjaxReloadResponse();
     }

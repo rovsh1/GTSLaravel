@@ -33,8 +33,9 @@ class EmployeeContactController
         $data = $form->getData();
         Contact::create($data);
 
-        //@todo подумать как сделать редирект и как обновлять данные
-        return new AjaxRedirectResponse('#contacts');
+        return new AjaxRedirectResponse(
+            route('hotels.employee.edit', ['hotel' => $hotelId, 'employee' => $employeeId]) . '#contacts'
+        );
     }
 
     public function edit(int $hotelId, int $employeeId, int $contactId): View
@@ -68,7 +69,9 @@ class EmployeeContactController
             ->whereId($contactId)
             ->update($form->getData());
 
-        return new AjaxRedirectResponse('#contacts');
+        return new AjaxRedirectResponse(
+            route('hotels.employee.edit', ['hotel' => $hotelId, 'employee' => $employeeId]) . '#contacts'
+        );
     }
 
     public function destroy(int $hotelId, int $employeeId, int $contactId): AjaxResponseInterface

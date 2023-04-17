@@ -9,5 +9,7 @@ $((): void => {
     isEditInModal: false,
   })
 
-  $('#contacts').cardContacts()
+  $('#contacts').cardContacts({
+    isAddButtonOutsideTable: true,
+  })
 })

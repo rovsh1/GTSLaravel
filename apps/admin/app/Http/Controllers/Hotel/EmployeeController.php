@@ -105,7 +105,7 @@ class EmployeeController extends Controller
                         ['hotel' => $hotel, 'employee' => $employee]
                     )
                     : null,
-                'createContactUrl' => $this->isUpdateAllowed()
+                'createUrl' => $this->isUpdateAllowed()
                     ? route(
                         'hotels.employee.contacts.create',
                         ['hotel' => $hotel, 'employee' => $employee]

@@ -20,6 +20,7 @@
                     <td class="column-icon" title="{{ $contact->type->title() }}">
                         <x-icon :key="$contact->type->key()"/>
                     </td>
+                    <td class="column-description" data-name="description">{{ $contact->employee?->fullname ?? 'Контакт отеля' }}</td>
                     <td class="column-description" data-name="description">{{ $contact->description }}</td>
                     <td class="column-value" data-name="value" data-value="{{ $contact->value }}">
                         {!! Format::contact($contact) !!}

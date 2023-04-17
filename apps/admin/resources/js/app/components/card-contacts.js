@@ -27,12 +27,17 @@ function editableContactRow(route, $tr) {
     })
 }
 
-$.fn.cardContacts = function () {
+$.fn.cardContacts = function (options = {}) {
   const $el = $(this)
   const route = $el.data('route')
   const isEditable = !!route
 
-  $el.find('button.btn-add').click(function (e) {
+  let $addButton = $el.find('button.btn-add')
+  if (options.isAddButtonOutsideTable) {
+    $addButton = $('button.btn-add')
+  }
+
+  $addButton.click(function (e) {
     e.preventDefault()
     WindowDialog({
       url: $(this).data('url') || (`${location.pathname}/contacts/create`),

@@ -1,3 +1,5 @@
+import { Tab } from 'bootstrap'
+
 function bootDeleteButtons() {
   $('button.btn-delete')
     .filter('[data-form-action="delete"]')
@@ -92,9 +94,22 @@ function bootFileFields() {
   })
 }
 
+function bootTabsAnchor() {
+  const anchor = window.location.hash
+  if (!anchor) {
+    return
+  }
+  const triggerEl = document.querySelector(`button[data-bs-target="${anchor}"]`)
+  if (!triggerEl) {
+    return
+  }
+  Tab.getOrCreateInstance(triggerEl).show()
+}
+
 export default function bootForms() {
   bootDeleteButtons()
   bootMultiselect()
   bootDateRangePicker()
   bootFileFields()
+  bootTabsAnchor()
 }

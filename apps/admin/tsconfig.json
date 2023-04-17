@@ -19,6 +19,7 @@
         "types": [
             "jquery",
             "./resources/js/globals",
+            "./node_modules/@types/bootstrap/index",
         ],
         "baseUrl": "./",
         "paths": {

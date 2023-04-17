@@ -6,12 +6,12 @@ use Gsdk\Meta\Meta;
 
 class ContentTitle
 {
-    public static function withAddButton(?string $addUrl, string $addText = 'Добавить'): string
+    public static function withAddButton(?string $addUrl, string $addText = 'Добавить', ?string $id = null): string
     {
         $html = '<div class="content-header">';
         $html .= '<div class="title">' . self::title() . '</div>';
         if ($addUrl) {
-            $html .= '<a href="' . $addUrl . '">' . $addText . '</a>';
+            $html .= '<button type="button" class="btn btn-add" data-url="' . $addUrl . '">' . $addText . '</button>';
         }
         $html .= '</div>';
         return $html;

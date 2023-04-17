@@ -1,7 +1,7 @@
 import '../main'
 import '../../app/components/card-contacts'
-import initServicesModal from './modals/services-modal'
-import initUsabilitiesModal from './modals/usabilities-modal'
+import initServicesModal from './_modals/services-modal'
+import initUsabilitiesModal from './_modals/usabilities-modal'
 
 $(document).ready((): void => {
   $('#card-contacts').cardContacts()

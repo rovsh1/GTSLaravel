@@ -1,7 +1,7 @@
 @extends('layouts/main')
 
 @section('content')
-    {!! ContentTitle::default() !!}
+    {!! ContentTitle::withAddButton($createUrl, 'Добавить контакт') !!}
 
     <div class="content-body">
         <div class="card card-form">
@@ -23,9 +23,6 @@
                     </div>
 
                     <div id="contacts" role="tabpanel" class="tab-pane fade" aria-labelledby="rules-tab" data-route="{{$contactsUrl}}">
-                        <div class="mb-2">
-                            <button id="btn-contact-add" type="button" class="btn btn-add" data-url="{{$createContactUrl}}">Добавить контакт</button>
-                        </div>
                         @include('_partials/components/contacts-table')
                     </div>
 

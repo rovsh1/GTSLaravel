@@ -6,7 +6,9 @@ use App\Admin\Components\Factory\Prototype;
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Models\Hotel\Hotel;
 use App\Admin\Models\Hotel\Reference\Service;
+use App\Admin\Repositories\Hotel\ServicesRepository;
 use App\Admin\Support\Facades\Prototypes;
+use App\Admin\Support\Repository\RepositoryInterface;
 use App\Core\Support\Http\Responses\AjaxReloadResponse;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use Illuminate\Http\Request;
@@ -16,9 +18,12 @@ class ServiceController extends Controller
 {
     protected Prototype $prototype;
 
-    public function __construct()
+    private RepositoryInterface $repository;
+
+    public function __construct(ServicesRepository $repository)
     {
         $this->prototype = Prototypes::get($this->getPrototypeKey());
+        $this->repository = $repository;
     }
 
     public function index(Hotel $hotel): View
@@ -39,13 +44,7 @@ class ServiceController extends Controller
             'hotel_id' => $hotel->id,
         ], $servicesData);
 
-        \DB::transaction(function () use ($servicesData, $hotel) {
-            \DB::table('hotel_services')
-                ->where('hotel_id', $hotel->id)
-                ->delete();
-
-            \DB::table('hotel_services')->insert($servicesData);
-        });
+        $this->repository->update($hotel->id, $servicesData);
 
         return new AjaxReloadResponse();
     }
