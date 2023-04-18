@@ -4,6 +4,9 @@ import { ajax } from './loader'
 function processForm(modal, form) {
   form.submit(function (e) {
     e.preventDefault()
+    if(!form[0].reportValidity()) {
+        return
+    }
     if (modal.trigger('beforeSubmit', form) === false) {
       return
     }

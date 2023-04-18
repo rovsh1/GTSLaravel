@@ -87,8 +87,8 @@ class EmployeeContactController
     protected function formFactory(int $hotelId, int $employeeId): FormContract
     {
         return Form::name('data')
-            ->hidden('hotel_id', ['value' => $hotelId])
-            ->hidden('employee_id', ['value' => $employeeId])
+            ->hidden('hotel_id', ['value' => $hotelId, 'required' => true])
+            ->hidden('employee_id', ['value' => $employeeId, 'required' => true])
             ->select('type', ['label' => 'Тип', 'enum' => ContactTypeEnum::class, 'required' => true])
             ->text('value', ['label' => 'Значение', 'required' => true])
             ->textarea('description', ['label' => 'Описание'])
