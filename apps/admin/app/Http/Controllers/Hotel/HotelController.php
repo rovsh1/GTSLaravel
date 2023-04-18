@@ -54,7 +54,7 @@ class HotelController extends AbstractPrototypeController
         return parent::edit($id)
             ->script('hotel/edit')
             ->data([
-                'cancelUrl' => $this->prototype->route('show', $this->model),
+                'cancelUrl' => $this->prototype->route('show', $id),
             ]);
     }
 
