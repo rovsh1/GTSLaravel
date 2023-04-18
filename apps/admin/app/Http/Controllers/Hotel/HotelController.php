@@ -52,7 +52,10 @@ class HotelController extends AbstractPrototypeController
     public function edit(int $id): LayoutContract
     {
         return parent::edit($id)
-            ->script('hotel/edit');
+            ->script('hotel/edit')
+            ->data([
+                'cancelUrl' => $this->prototype->route('show', $this->model),
+            ]);
     }
 
     public function create(): LayoutContract
