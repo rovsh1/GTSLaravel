@@ -12,6 +12,8 @@ class AccessGroup extends Model
 {
     use HasQuicksearch;
 
+    private array $savingMembers;
+
     protected array $quicksearch = ['id', 'name%'];
 
     public $timestamps = false;
@@ -25,6 +27,16 @@ class AccessGroup extends Model
         'description'
     ];
 
+    public static function booted()
+    {
+        static::saved(function ($model) {
+            if (isset($model->savingMembers)) {
+                $model->members()->sync($model->savingMembers);
+                unset($model->savingMembers);
+            }
+        });
+    }
+
     public function getForeignKey()
     {
         return 'group_id';
@@ -37,7 +49,12 @@ class AccessGroup extends Model
 
     public function members(): BelongsToMany
     {
-        return $this->belongsToMany(Administrator::class, 'administrator_access_members', 'group_id', 'administrator_id');
+        return $this->belongsToMany(
+            Administrator::class,
+            'administrator_access_members',
+            'group_id',
+            'administrator_id'
+        );
     }
 
     public function getMembersAttribute()
@@ -47,8 +64,7 @@ class AccessGroup extends Model
 
     public function setMembersAttribute(array $members)
     {
-        $this->members()->sync($members);
-        //$this->rules()->upsert()
+        $this->savingMembers = $members;
     }
 
     public static function scopeWhereAdministrator($query, $user)

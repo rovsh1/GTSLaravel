@@ -73,6 +73,18 @@ class Administrator extends Authenticatable
 //        });
 //    }
 
+    private array $savingGroups;
+
+    public static function booted()
+    {
+        static::saved(function ($model) {
+            if (isset($model->savingGroups)) {
+                $model->groups()->sync($model->savingGroups);
+                unset($model->savingGroups);
+            }
+        });
+    }
+
     public function isSuperuser(): bool
     {
         return (bool)$this->superuser;
@@ -88,11 +100,6 @@ class Administrator extends Authenticatable
         return AdministratorAvatar::findByEntity($this->id);
     }
 
-    public function accessGroups()
-    {
-        return \App\Admin\Models\Access\Group::whereUser($this);
-    }
-
     public function groups(): BelongsToMany
     {
         return $this->belongsToMany(AccessGroup::class, 'administrator_access_members', 'administrator_id', 'group_id');
@@ -105,7 +112,7 @@ class Administrator extends Authenticatable
 
     public function setGroupsAttribute(array $groups)
     {
-        $this->groups()->sync($groups);
+        $this->savingGroups = $groups;
     }
 
 //    public function hasRole($role): bool

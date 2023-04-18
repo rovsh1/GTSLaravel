@@ -11,4 +11,4 @@ return Factory::key('mail-log')
     ->titles([
         "index" => "История писем"
     ])
-    ->permissions(['read']);
+    ->readOnly();
