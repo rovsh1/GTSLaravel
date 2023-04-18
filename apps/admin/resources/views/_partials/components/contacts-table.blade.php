@@ -1,5 +1,5 @@
 @if ($contacts->isEmpty())
-    <i class="empty">Отсутствуют</i>
+    <div class="grid-empty-text">Отсутствуют</div>
 @else
     <table class="table table-striped table-contacts">
         <tbody>
