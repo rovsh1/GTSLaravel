@@ -11,7 +11,7 @@ return new class extends Migration {
             $table->increments('id');
             $table->string('key');
             $table->char('language', 2);
-            $table->unsignedInteger('country_id')->nullable();
+            $table->unsignedSmallInteger('country_id')->nullable();
             $table->string('subject');
             $table->text('body');
             $table->timestamps();
