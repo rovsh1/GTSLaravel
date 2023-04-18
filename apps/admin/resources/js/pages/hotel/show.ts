@@ -2,7 +2,7 @@ import '../main'
 import '../../app/components/card-contacts'
 import initServicesModal from './_modals/services-modal'
 import initUsabilitiesModal from './_modals/usabilities-modal'
-// import { editableTable } from '../../app/support/editable-table'
+import { editableTable } from '../../app/support/editable-table'
 
 $(document).ready((): void => {
   $('#card-contacts').cardContacts()
@@ -52,10 +52,9 @@ $(document).ready((): void => {
     })
   })
 
-  // @todo получить таблицу по ID
-  // editableTable({
-  //   $table: $('.card-grid table'),
-  //   route: window.get_meta_content('hotel-landmark-base-route'),
-  //   canEdit: false,
-  // })
+  editableTable({
+    $table: $('#hotel-landmark-grid'),
+    route: window.get_meta_content('hotel-landmark-base-route'),
+    canEdit: false,
+  })
 })

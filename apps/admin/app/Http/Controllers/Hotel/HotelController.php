@@ -170,10 +170,7 @@ class HotelController extends AbstractPrototypeController
 //                ['label' => 'Кол-во броней', 'placeholder' => [__('label.from'), __('label.to')]]
 //            )
             ->hotelStatus('status', ['label' => __('label.status'), 'emptyItem' => ''])
-            ->enum(
-                'visibility',
-                ['label' => __('label.visibility'), 'emptyItem' => '', 'enumClass' => VisibilityEnum::class]
-            )
+            ->enum('visibility', ['label' => __('label.visibility'), 'emptyItem' => '', 'enumClass' => VisibilityEnum::class])
             ->hotelRating('rating', ['label' => __('label.rating'), 'emptyItem' => '']);
     }
 
@@ -210,6 +207,7 @@ class HotelController extends AbstractPrototypeController
     public function getLandmarkGrid(): GridContract
     {
         return Grid::paginator(self::GRID_LIMIT)
+            ->setOption('id', 'hotel-landmark-grid')
             ->text('name', ['text' => 'Наименование'])
             ->text('type_name', ['text' => 'Тип'])
             ->text('address', ['text' => 'Адрес'])

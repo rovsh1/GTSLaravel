@@ -4,7 +4,7 @@ import { editableTable } from '../../../app/support/editable-table'
 
 $((): void => {
   editableTable({
-    $table: $('.card-grid table'),
+    $table: $('#hotel-employee-grid'),
     route: window.get_meta_content('hotel-employee-base-route'),
     isEditInModal: false,
   })

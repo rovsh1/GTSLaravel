@@ -143,6 +143,7 @@ class EmployeeController extends Controller
     protected function gridFactory(): GridContract
     {
         return Grid::paginator(16)
+            ->setOption('id','hotel-employee-grid')
             ->text('fullname', ['text' => 'ФИО', 'order' => true])
             ->text('department', ['text' => 'Отдел'])
             ->text('post', ['text' => 'Должность']);
