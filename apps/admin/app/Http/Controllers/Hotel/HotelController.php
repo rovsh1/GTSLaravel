@@ -10,6 +10,7 @@ use App\Admin\Support\Distance\Calculator;
 use App\Admin\Support\Distance\Point;
 use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\Form;
+use App\Admin\Support\Facades\Format;
 use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Facades\Sidebar;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
@@ -44,6 +45,7 @@ class HotelController extends AbstractPrototypeController
     public function show(int $id): LayoutContract
     {
         return parent::show($id)
+            ->addMetaName('hotel-landmark-base-route', route('hotels.landmark.store', $this->model))
             ->ss('hotel/show');
     }
 
@@ -126,7 +128,9 @@ class HotelController extends AbstractPrototypeController
             'usabilitiesUrl' => $showUrl . '/usabilities',
             'usabilitiesEditable' => $isUpdateAllowed,
 
-            'usersGrid' => $this->getUsersGrid()
+            'usersGrid' => $this->getUsersGrid(),
+            'landmarkGrid' => $this->getLandmarkGrid(),
+            'landmarkUrl' => $isUpdateAllowed ? route('hotels.landmark.create', ['hotel' => $this->model]) : null,
         ];
     }
 
@@ -163,7 +167,10 @@ class HotelController extends AbstractPrototypeController
 //                ['label' => 'Кол-во броней', 'placeholder' => [__('label.from'), __('label.to')]]
 //            )
             ->hotelStatus('status', ['label' => __('label.status'), 'emptyItem' => ''])
-            ->enum('visibility', ['label' => __('label.visibility'), 'emptyItem' => '', 'enumClass' => VisibilityEnum::class])
+            ->enum(
+                'visibility',
+                ['label' => __('label.visibility'), 'emptyItem' => '', 'enumClass' => VisibilityEnum::class]
+            )
             ->hotelRating('rating', ['label' => __('label.rating'), 'emptyItem' => '']);
     }
 
@@ -195,5 +202,20 @@ class HotelController extends AbstractPrototypeController
             ->data(
                 User::where('hotel_id', $this->model->id)
             );
+    }
+
+    public function getLandmarkGrid(): GridContract
+    {
+        return Grid::paginator(self::GRID_LIMIT)
+            ->text('name', ['text' => 'Наименование'])
+            ->text('type_name', ['text' => 'Тип'])
+            ->text('address', ['text' => 'Адрес'])
+            ->number('distance', [
+                'text' => 'Расстояние до отеля',
+                'renderer' => fn($r) => Format::distance($r->distance),
+            ])
+            ->orderBy('name', 'asc')
+            ->header(false)
+            ->data($this->model->landmarks);
     }
 }

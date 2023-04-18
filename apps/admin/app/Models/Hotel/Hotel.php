@@ -6,6 +6,7 @@ use App\Admin\Models\HasCoordinates;
 use App\Admin\Models\Hotel\Contract\StatusEnum;
 use App\Admin\Models\Hotel\Reference\Service;
 use App\Admin\Models\Hotel\Reference\Usability;
+use App\Admin\Models\Reference\Landmark;
 use Carbon\CarbonPeriod;
 use Custom\Framework\Database\Eloquent\HasQuicksearch;
 use Custom\Framework\Database\Eloquent\Model;
@@ -27,6 +28,7 @@ use Module\HotelOld\Infrastructure\Models\Room;
  * @property-read Collection<Contact>|Contact[] $contacts
  * @property-read Collection<Service>|Service[] $services
  * @property-read Collection<Usability>|Usability[] $usabilities
+ * @property-read Collection<Landmark>|Landmark[] $landmarks
  * @method static Builder|Hotel withActiveContract()
  * @method static Builder|Hotel wherePeriod(CarbonPeriod $period)
  */
@@ -93,6 +95,19 @@ class Hotel extends Model
     public function contacts(): HasMany
     {
         return $this->hasMany(Contact::class, 'hotel_id', 'id');
+    }
+
+    public function landmarks(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Landmark::class,
+            'hotel_landmark',
+            'hotel_id',
+            'landmark_id',
+            'id',
+            'id',
+        )
+            ->addSelect('hotel_landmark.distance');
     }
 
     public function scopeWithActiveContract(Builder $builder)

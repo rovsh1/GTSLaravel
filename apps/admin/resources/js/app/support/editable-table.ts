@@ -1,25 +1,27 @@
-const editableRow = ($tr: JQuery<HTMLTableRowElement>, route: string, isEditInModal: boolean): void => {
+const editableRow = ($tr: JQuery<HTMLTableRowElement>, route: string, isEditInModal: boolean, canEdit: boolean, canDelete: boolean): void => {
   const id = $tr.data('id')
   if (!id) {
     return
   }
 
-  const html: string = '<td class="column-actions">'
+  let html: string = '<td class="column-actions">'
         + '<div class="actions-menu-wrapper">'
         + '<div class="icon">more_vert</div>'
         + '<div class="actions-menu">'
-        + `<button class="btn-edit" data-url="${route}/${id}/edit"><div class="icon">edit</div>Изменить</button>`
-        + '<hr>'
+  if (canEdit) {
+    html += `<button class="btn-edit" data-url="${route}/${id}/edit"><div class="icon">edit</div>Изменить</button>`
+  }
+  if (canDelete) {
+    html += '<hr>'
         + `<button class="btn-delete" data-url="${route}/${id}"><div class="icon">delete</div>Удалить</button>`
-        + '</div>'
+  }
+  html += '</div>'
         + '</div>'
         + '</td>'
 
-  const $actionsTd = $(html)
-    .appendTo($tr)
+  const $actionsTd = $(html).appendTo($tr)
 
-  $actionsTd.find('button.btn-delete')
-    .deleteButton()
+  $actionsTd.find('button.btn-delete').deleteButton()
 
   $actionsTd.find('button.btn-edit')
     .click(function (): void {
@@ -28,8 +30,7 @@ const editableRow = ($tr: JQuery<HTMLTableRowElement>, route: string, isEditInMo
         return
       }
       window.WindowDialog({
-        url: $(this)
-          .data('url'),
+        url: $(this).data('url'),
         title: 'Изменить контакт',
         buttons: ['submit', 'cancel'],
       })
@@ -40,22 +41,38 @@ export interface EditableTableProps {
     $table: JQuery<HTMLElement>
     route?: string
     isEditInModal?: boolean
+    canEdit?: boolean
+    canDelete?: boolean
 }
 
 export const editableTable = (props: EditableTableProps): void => {
-  if (props.isEditInModal === undefined) {
-    // eslint-disable-next-line no-param-reassign
-    props.isEditInModal = true
+  let isEditInModal = true
+  if (props.isEditInModal !== undefined) {
+    isEditInModal = props.isEditInModal
+  }
+  let canEdit = true
+  if (props.canEdit !== undefined) {
+    canEdit = props.canEdit
+  }
+  let canDelete = true
+  if (props.canDelete !== undefined) {
+    canDelete = props.canDelete
   }
   let preparedRoute = props.route
   if (!preparedRoute) {
     preparedRoute = props.$table.data('route')
   }
 
-  const isEditable = !!preparedRoute
+  const isEditable = !!preparedRoute && (canEdit || canDelete)
   if (isEditable) {
     props.$table.find('tr')
-      .each((_: number, tr: HTMLTableRowElement) => editableRow($(tr), preparedRoute as string, props.isEditInModal as boolean))
+      .each((_: number, tr: HTMLTableRowElement) => editableRow(
+        $(tr),
+        preparedRoute as string,
+        isEditInModal,
+        canEdit,
+        canDelete,
+      ))
 
     props.$table.find('thead tr').append('<th></th>')
   }

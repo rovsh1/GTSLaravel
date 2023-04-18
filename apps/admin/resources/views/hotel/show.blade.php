@@ -50,8 +50,17 @@
         </div>
 
         <div class="mt-3">
-            <x-ui.card :collapsable="true" header="Объекты и достопримечательности (count)">
-                Объекты и достопримечательности
+            <x-ui.card :collapsable="true" header="Объекты и достопримечательности ({{$model->landmarks->count()}})">
+                @if($notesUrl)
+                    <x-slot:header-controls>
+                        <button id="btn-hotel-landmarks" class="btn btn-add" data-url="{{$landmarkUrl}}">
+                            <x-icon key="add"/>
+                            Добавить объект
+                        </button>
+                    </x-slot:header-controls>
+                @endif
+
+                {!! $landmarkGrid !!}
             </x-ui.card>
         </div>
     </div>
