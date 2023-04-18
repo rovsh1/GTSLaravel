@@ -2,16 +2,17 @@
 
 namespace App\Admin\Support\View\Form\Element;
 
+use App\Admin\Support\Facades\Format;
 use Gsdk\Form\Element\Select;
 
 class Enum extends Select
 {
     protected array $options = [
-        'enumClass'
+        'enum'
     ];
 
     /**
-     * @param class-string $enumClass
+     * @param class-string $enum
      * @param string $name
      * @param array $options
      */
@@ -28,9 +29,9 @@ class Enum extends Select
     {
         return array_map(function ($case): array {
             return [
-                'id' => $case->value,
-                'name' => $case->getLabel()
+                'value' => $case->value ?? $case->name,
+                'text' => Format::enum($case)
             ];
-        }, $this->enumClass::cases());
+        }, $this->enum::cases());
     }
 }

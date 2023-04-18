@@ -12,7 +12,8 @@ class TranslationTable
 
     public function __construct(
         private readonly string $table
-    ) {}
+    ) {
+    }
 
     public function string($column, $length = null, array $parameters = []): self
     {
@@ -48,7 +49,7 @@ class TranslationTable
 
             $table->primary(['translatable_id', 'language']);
 
-            $table->foreign('translatable_id')
+            $table->foreign('translatable_id', 'fk_' . $this->table . '_translation_translatable_id')
                 ->references('id')
                 ->on($this->table)
                 ->cascadeOnDelete()

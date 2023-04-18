@@ -10,7 +10,7 @@ use App\Admin\Support\View\Sidebar\Menu\Item;
 class SitemapBuilder
 {
     private static array $buildCategories = [
-        'reservation',
+        'booking',
         'hotel',
         'finance',
         'client',

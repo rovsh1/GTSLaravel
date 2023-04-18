@@ -30,7 +30,6 @@ class ModulesServiceProvider extends ServiceProvider
             if (isset($config['enabled']) && $config['enabled'] === false) {
                 continue;
             }
-
             $this->registerModule($name, $config);
         }
     }
@@ -49,7 +48,7 @@ class ModulesServiceProvider extends ServiceProvider
 
         $module = new Module($name, $config);
         foreach ($this->globalBindings as $abstract) {
-            $module->singleton($abstract, function() use ($abstract) {
+            $module->singleton($abstract, function () use ($abstract) {
                 return $this->app->get($abstract);
             });
         }

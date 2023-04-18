@@ -2,7 +2,7 @@
 
 namespace App\Admin\Http\Controllers\Hotel;
 
-use App\Admin\Enums\Hotel\PriceList\StatusEnum;
+use App\Admin\Enums\Hotel\PriceListStatusEnum;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
@@ -26,7 +26,7 @@ class PriceListController extends AbstractPrototypeController
             ->text('currency_id', ['text' => 'Валюта', 'renderer' => fn($r, $v) => $r['currency_name']])
             ->text('rate', ['text' => 'Курс', 'renderer' => fn($r, $v) => round($v) . ' ' . $r['currency_code_char']])
             ->text('period', ['text' => 'Период действия'])
-            ->enum('status', ['text' => 'Статус', 'enumClass' => StatusEnum::class]);
+            ->enum('status', ['text' => 'Статус', 'enum' => PriceListStatusEnum::class]);
     }
 
     protected function formFactory(): FormContract

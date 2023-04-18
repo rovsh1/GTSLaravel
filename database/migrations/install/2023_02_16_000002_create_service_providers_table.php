@@ -28,7 +28,7 @@ return new class extends Migration {
             $table->boolean('main')->default(false);
             $table->timestamps();
 
-            $table->foreign('provider_id')
+            $table->foreign('provider_id', 'fk_service_provider_contacts_provider_id')
                 ->references('id')
                 ->on('service_providers')
                 ->restrictOnDelete()

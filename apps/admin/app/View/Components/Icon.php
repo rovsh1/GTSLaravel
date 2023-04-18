@@ -15,7 +15,7 @@ class Icon extends Component
         'hotel' => 'hotel',
         'data' => 'database',
         'reports' => 'bar_chart',
-        'reservation' => 'airplane_ticket',
+        'booking' => 'airplane_ticket',
         'site' => 'language',
     ];
 

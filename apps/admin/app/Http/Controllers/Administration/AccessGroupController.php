@@ -28,7 +28,7 @@ class AccessGroupController extends AbstractPrototypeController
             ->view('administration.access-group-form', [
                 'permissions' => $this->getPermissionsArray(fn() => []),
                 'categories' => Sitemap::getCategories(),
-                'default' => 'reservation',
+                'default' => 'booking',
             ]);
     }
 
@@ -48,7 +48,7 @@ class AccessGroupController extends AbstractPrototypeController
             ->view('administration.access-group-form', [
                 'categories' => Sitemap::getCategories(),
                 'permissions' => $this->getPermissionsArray($allowed),
-                'default' => 'reservation',
+                'default' => 'booking',
             ]);
     }
 

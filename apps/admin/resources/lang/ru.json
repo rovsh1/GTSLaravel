@@ -37,7 +37,7 @@
 
     "category.hotel": "Отели",
     "category.client": "Клиенты",
-    "category.reservation": "Бронирование",
+    "category.booking": "Бронирование",
     "category.administration": "Администрирование",
     "category.site": "Сайт",
     "category.finance": "Финансы",
@@ -52,24 +52,32 @@
     "group.reference": "Справочники",
     "group.additional": "Дополнительно",
     "group.additional-services": "Доп. услуги",
-    "group.reservations": "По типам",
+    "group.bookings": "По типам",
     "group.notification": "Уведомления",
 
-    "enum.hotel.status.Draft": "Черновик",
-    "enum.hotel.status.Published": "Опубликован",
-    "enum.hotel.status.Blocked": "Заблокирован",
-    "enum.hotel.status.Archive": "Архив",
+    "ServiceProvider\\ServiceTypeEnum::CAR_RENT": "Аренда авто",
+    "ServiceProvider\\ServiceTypeEnum::TRANSFER_TO_RAILWAY": "Трансфер до ж/д вокзала",
+    "ServiceProvider\\ServiceTypeEnum::TRANSFER_FROM_RAILWAY": "Трансфер от ж/д вокзала",
+    "ServiceProvider\\ServiceTypeEnum::TRANSFER_TO_AIRPORT": "Трансфер до аэропорта",
+    "ServiceProvider\\ServiceTypeEnum::TRANSFER_FROM_AIRPORT": "Трансфер от аэропорта",
+    "ServiceProvider\\ServiceTypeEnum::MEETING_IN_AIRPORT": "Встреча аэропорту",
+    "ServiceProvider\\ServiceTypeEnum::SEEING_IN_AIRPORT": "Проводы в аэропорт",
 
-    "enum.hotel.price-list.status.NotProcessed": "Не обработан",
-    "enum.hotel.price-list.status.InProgress": "В обработке",
-    "enum.hotel.price-list.status.Processed": "Обработан",
+    "Hotel\\StatusEnum::DRAFT": "Черновик",
+    "Hotel\\StatusEnum::PUBLISHED": "Опубликован",
+    "Hotel\\StatusEnum::BLOCKED": "Заблокирован",
+    "Hotel\\StatusEnum::ARCHIVE": "Архив",
 
-    "enum.hotel.visibility.Hidden": "Скрыт",
-    "enum.hotel.visibility.Public": "Для всех",
-    "enum.hotel.visibility.B2B": "B2B",
+    "Hotel\\PriceListStatusEnum::NOT_PROCESSED": "Не обработан",
+    "Hotel\\PriceListStatusEnum::IN_PROGRESS": "В обработке",
+    "Hotel\\PriceListStatusEnum::PROCESSED": "Обработан",
 
-    "enum.phone": "Телефон",
-    "enum.email": "Email",
-    "enum.site": "Сайт",
-    "enum.address": "Адрес"
+    "Hotel\\VisibilityEnum::HIDDEN": "Скрыт",
+    "Hotel\\VisibilityEnum::PUBLIC": "Для всех",
+    "Hotel\\VisibilityEnum::B2B": "B2B",
+
+    "ContactTypeEnum::PHONE": "Телефон",
+    "ContactTypeEnum::EMAIL": "Email",
+    "ContactTypeEnum::SITE": "Сайт",
+    "ContactTypeEnum::ADDRESS": "Адрес"
 }

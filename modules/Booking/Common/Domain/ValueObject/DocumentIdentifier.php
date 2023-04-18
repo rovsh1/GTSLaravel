@@ -1,0 +1,13 @@
+<?php
+
+namespace Module\Booking\Common\Domain\ValueObject;
+
+class DocumentIdentifier
+{
+    public function __construct(
+        private readonly int $id,
+        private readonly DocumentTypeEnum $type,
+        private readonly int $version = 0,
+        //private readonly int $bookingId,
+    ) {}
+}

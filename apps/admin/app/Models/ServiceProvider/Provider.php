@@ -21,7 +21,9 @@ class Provider extends Model
 
     public static function booted()
     {
-        static::addGlobalScope('default', function (Builder $builder) {});
+        static::addGlobalScope('default', function (Builder $builder) {
+            $builder->orderBy('name');
+        });
     }
 
     public function getForeignKey()

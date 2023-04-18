@@ -33,8 +33,6 @@ class Select extends AbstractElement
         if (isset($options['items'])) {
             $this->setItems($options['items']);
             unset($options['items']);
-        } elseif (isset($options['enum'])) {
-            $this->items = OptionBuilder::fromEnum($options['enum']);
         }
 
         parent::__construct($name, $options);

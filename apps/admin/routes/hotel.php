@@ -3,7 +3,6 @@
 use App\Admin\Http\Controllers;
 use App\Admin\Support\Facades\AclRoute;
 
-// hotel
 AclRoute::for('hotel')
     ->put('/{hotel}/rooms/position', Controllers\Hotel\RoomController::class . '@position', 'update', 'rooms.position')
     ->resource('rooms', Controllers\Hotel\RoomController::class, [
@@ -33,9 +32,3 @@ AclRoute::for('hotel')
         'usabilities.update'
     )
     ->resource('landmark', Controllers\Hotel\LandmarkController::class, ['only' => ['create', 'store', 'destroy']]);
-
-
-AclRoute::for('service-provider')
-    ->resource('contacts', Controllers\ServiceProvider\ContactController::class, ['except' => ['show', 'index']]);
-
-

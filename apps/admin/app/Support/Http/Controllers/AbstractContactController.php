@@ -99,7 +99,7 @@ abstract class AbstractContactController extends Controller
     protected function formFactory(): FormContract
     {
         return Form::name('data')
-            ->select('type', ['label' => 'Тип', 'enum' => ContactTypeEnum::class, 'required' => true])
+            ->enum('type', ['label' => 'Тип', 'enum' => ContactTypeEnum::class, 'required' => true])
             ->text('value', ['label' => 'Значение', 'required' => true])
             ->textarea('description', ['label' => 'Описание'])
             ->checkbox('main', ['label' => 'Основной']);

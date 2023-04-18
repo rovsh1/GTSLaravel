@@ -24,8 +24,8 @@ use Illuminate\Support\Facades\Facade;
  */
 class Factory extends Facade
 {
-    public const CATEGORY_RESERVATION = 'reservation';
-    public const CATEGORY_HOTEL = 'hotel';
+    public const CATEGORY_BOOKING = 'booking';
+    public const CATEGORY_HOTEL   = 'hotel';
     public const CATEGORY_FINANCE = 'finance';
     public const CATEGORY_CLIENT = 'client';
     public const CATEGORY_DATA = 'data';

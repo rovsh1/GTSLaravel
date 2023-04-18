@@ -14,9 +14,9 @@ return [
     /**
      * @deprecated end
      */
-    'HotelReservation' => [
-        'path' => modules_path('Reservation/HotelReservation')
-    ],
+//    'HotelBooking' => [
+//        'path' => modules_path('Booking/Hotel')
+//    ],
     'CurrencyRate' => [
         'path' => modules_path('Pricing/CurrencyRate'),
     ],

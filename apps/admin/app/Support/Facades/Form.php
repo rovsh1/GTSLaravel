@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static \App\Admin\Support\View\Form\Form checkbox(string $name, array $options = [])
  * @method static \App\Admin\Support\View\Form\Form hotelRating(string $name, array $options = [])
  * @method static \App\Admin\Support\View\Form\Form hotelStatus(string $name, array $options = [])
- * @method static \App\Admin\Support\View\Form\Form enum(string $enumClass, string $name, array $options = [])
+ * @method static \App\Admin\Support\View\Form\Form enum(string $name, array $options = [])
  * @method static \App\Admin\Support\View\Form\Form coordinates(string $name, array $options = [])
  * @method static \App\Admin\Support\View\Form\Form client(string $name, array $options = [])
  * @method static \App\Admin\Support\View\Form\Form manager(string $name, array $options = [])

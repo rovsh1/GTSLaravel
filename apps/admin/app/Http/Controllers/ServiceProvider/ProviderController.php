@@ -6,10 +6,12 @@ use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\ActionsMenu;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Grid;
+use App\Admin\Support\Facades\Sidebar;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Layout as LayoutContract;
+use App\Admin\View\Menus\ServiceProviderMenu;
 use Illuminate\Database\Eloquent\Model;
 
 class ProviderController extends AbstractPrototypeController
@@ -57,6 +59,8 @@ class ProviderController extends AbstractPrototypeController
                 'text' => 'Удалить'
             ]);
         }
+
+        Sidebar::submenu(new ServiceProviderMenu($model, 'info'));
     }
 
     protected function getShowViewData(): array

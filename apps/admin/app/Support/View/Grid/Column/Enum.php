@@ -2,6 +2,7 @@
 
 namespace App\Admin\Support\View\Grid\Column;
 
+use App\Admin\Support\Facades\Format;
 use Gsdk\Grid\Column\AbstractColumn;
 
 class Enum extends AbstractColumn
@@ -29,8 +30,6 @@ class Enum extends AbstractColumn
 
     public function renderer($row, $value): string
     {
-        $prefix = $this->enumClass::LANG_PREFIX;
-        $key = $this->enumClass::from($value)->name;
-        return __("{$prefix}.{$key}");
+        return Format::enum($this->enumClass::tryFrom($value));
     }
 }

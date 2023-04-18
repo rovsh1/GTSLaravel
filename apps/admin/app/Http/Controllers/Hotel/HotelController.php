@@ -106,7 +106,7 @@ class HotelController extends AbstractPrototypeController
 //                }
             ])
             ->number('rooms_number', ['text' => 'Номеров', 'order' => true])
-            ->number('reservation_count', ['text' => 'Количество броней', 'order' => true])
+            ->number('booking_count', ['text' => 'Количество броней', 'order' => true])
             //->addColumn('status', 'enum', ['text' => 'Статус', 'enum' => 'HOTEL_STATUS', 'order' => true])
             ->orderBy('name', 'asc');
     }
@@ -166,11 +166,11 @@ class HotelController extends AbstractPrototypeController
             ->hidden('city_id', ['label' => __('label.city'), 'emptyItem' => ''])
             ->hotelType('type_id', ['label' => __('label.type'), 'emptyItem' => ''])
 //            ->numRange(
-//                'reservation_count',
+//                'booking_count',
 //                ['label' => 'Кол-во броней', 'placeholder' => [__('label.from'), __('label.to')]]
 //            )
             ->hotelStatus('status', ['label' => __('label.status'), 'emptyItem' => ''])
-            ->enum('visibility', ['label' => __('label.visibility'), 'emptyItem' => '', 'enumClass' => VisibilityEnum::class])
+            ->enum('visibility', ['label' => __('label.visibility'), 'emptyItem' => '', 'enum' => VisibilityEnum::class])
             ->hotelRating('rating', ['label' => __('label.rating'), 'emptyItem' => '']);
     }
 
