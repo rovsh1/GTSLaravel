@@ -21,7 +21,6 @@ class Prototype
         $this->key = $config['key'];
         $this->category = $config['category'];
         $this->group = $config['group'] ?? 'main';
-        //$this->type = PrototypeTypes::from($config['type'] ?? 'main');
 
         $config['route'] = $config['route'] ?? $config['key'];
 

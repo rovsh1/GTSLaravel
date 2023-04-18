@@ -58,6 +58,12 @@ class Grid
         return $this->options->$name;
     }
 
+    public function setOption(string $name, mixed $value): static
+    {
+        $this->options->setOption($name, $value);
+        return $this;
+    }
+
     public function getSorting(): Support\Sorting
     {
         return $this->sorting;
@@ -123,5 +129,7 @@ class Grid
         $this->data->sorting($this->sorting);
     }
 
-    protected function build(): void {}
+    protected function build(): void
+    {
+    }
 }
