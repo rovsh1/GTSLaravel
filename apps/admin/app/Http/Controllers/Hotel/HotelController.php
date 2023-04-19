@@ -2,6 +2,7 @@
 
 namespace App\Admin\Http\Controllers\Hotel;
 
+use App\Admin\Enums\Hotel\RatingEnum;
 use App\Admin\Enums\Hotel\StatusEnum;
 use App\Admin\Enums\Hotel\VisibilityEnum;
 use App\Admin\Models\Hotel\Reference\Type;
@@ -172,7 +173,7 @@ class HotelController extends AbstractPrototypeController
 //            )
             ->enum('status', ['label' => __('label.status'), 'emptyItem' => '', 'enum' => StatusEnum::class])
             ->enum('visibility', ['label' => __('label.visibility'), 'emptyItem' => '', 'enum' => VisibilityEnum::class])
-            ->hotelRating('rating', ['label' => __('label.rating'), 'emptyItem' => '']);
+            ->enum('rating', ['label' => __('label.rating'), 'emptyItem' => '', 'enum' => RatingEnum::class]);
     }
 
     private function hotelParams($model): ParamsTable

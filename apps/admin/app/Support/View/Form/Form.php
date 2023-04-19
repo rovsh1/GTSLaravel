@@ -24,7 +24,6 @@ use Illuminate\Database\Eloquent\Model;
  * @method self currency(string $name, array $options = [])
  * @method self country(string $name, array $options = [])
  * @method self city(string $name, array $options = [])
- * @method self hotelRating(string $name, array $options = [])
  * @method self enum(string $name, array $options = [])
  * @method self coordinates(string $name, array $options = [])
  * @method self client(string $name, array $options = [])

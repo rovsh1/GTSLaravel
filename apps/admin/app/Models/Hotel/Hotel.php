@@ -2,6 +2,7 @@
 
 namespace App\Admin\Models\Hotel;
 
+use App\Admin\Enums\Hotel\RatingEnum;
 use App\Admin\Enums\Hotel\VisibilityEnum;
 use App\Admin\Enums\Hotel\StatusEnum;
 use App\Admin\Models\Hotel\Reference\Service;
@@ -63,7 +64,7 @@ class Hotel extends Model
     protected $casts = [
         'city_id' => 'int',
         'type_id' => 'int',
-        'rating' => 'int',
+        'rating' => RatingEnum::class,
         'status' => StatusEnum::class,
         'visibility' => VisibilityEnum::class
     ];
