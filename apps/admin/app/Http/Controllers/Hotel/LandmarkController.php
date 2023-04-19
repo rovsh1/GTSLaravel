@@ -27,7 +27,7 @@ class LandmarkController extends Controller
 
     public function create(Request $request, Hotel $hotel): LayoutContract
     {
-        $form = $this->formFactory($hotel->id)
+        $form = $this->formFactory($hotel->id, $hotel->city_id)
             ->method('post')
             ->action(route('hotels.landmark.store', $hotel));
 
@@ -43,7 +43,7 @@ class LandmarkController extends Controller
      */
     public function store(Request $request, Hotel $hotel): AjaxResponseInterface
     {
-        $form = $this->formFactory($hotel->id)
+        $form = $this->formFactory($hotel->id, $hotel->city_id)
             ->method('post');
 
         $form->trySubmit(route('hotels.landmark.create', $hotel));
@@ -70,14 +70,14 @@ class LandmarkController extends Controller
         return new AjaxReloadResponse();
     }
 
-    protected function formFactory(int $hotelId): FormContract
+    protected function formFactory(int $hotelId, int $cityId): FormContract
     {
         return Form::name('data')
             ->hidden('hotel_id', ['value' => $hotelId])
             ->select('landmark_id', [
                 'label' => 'Объект',
                 'required' => true,
-                'items' => Landmark::get(),
+                'items' => Landmark::whereCityId($cityId)->get(),
                 'emptyItem' => '',
             ]);
     }

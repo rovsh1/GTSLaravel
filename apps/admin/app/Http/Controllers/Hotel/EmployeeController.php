@@ -12,12 +12,15 @@ use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Facades\Layout;
 use App\Admin\Support\Facades\Sidebar;
+use App\Admin\Support\Http\Actions\DefaultDestroyAction;
+use App\Admin\Support\Http\Actions\DefaultFormCreateAction;
+use App\Admin\Support\Http\Actions\DefaultFormEditAction;
+use App\Admin\Support\Http\Actions\DefaultFormStoreAction;
+use App\Admin\Support\Http\Actions\DefaultFormUpdateAction;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Layout as LayoutContract;
 use App\Admin\View\Menus\HotelMenu;
-use App\Core\Support\Http\Responses\AjaxErrorResponse;
-use App\Core\Support\Http\Responses\AjaxRedirectResponse;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -28,17 +31,11 @@ class EmployeeController extends Controller
     {
         $this->hotel($hotel);
 
-        $query = Employee::query()->where('hotel_id', $hotel->id);
-        $grid = $this->gridFactory()->data($query);
+        $query = Employee::whereHotelId($hotel->id);
+        $grid = $this->gridFactory($hotel->id)->data($query);
 
         return Layout::title('Сотрудники отеля')
-            ->addMetaName('hotel-employee-base-route', route('hotels.employee.index', $hotel))
-            ->style('default/grid')
-            ->script('hotel/employee/main')
             ->view('default.grid', [
-                'quicksearch' => $grid->getQuicksearch(),
-                'searchForm' => $grid->getSearchForm(),
-                'paginator' => $grid->getPaginator(),
                 'grid' => $grid,
                 'hotel' => $hotel,
                 'editAllowed' => $this->isUpdateAllowed(),
@@ -51,18 +48,8 @@ class EmployeeController extends Controller
     {
         $this->hotel($hotel);
 
-        Breadcrumb::add('Новый сотрудник');
-
-        $form = $this->formFactory($hotel->id)
-            ->method('post')
-            ->action(route('hotels.employee.store', $hotel));
-
-        return Layout::title('Новый сотрудник')
-            ->style('default/form')
-            ->view('default.form', [
-                'form' => $form,
-                'cancelUrl' => route('hotels.employee.index', $hotel)
-            ]);
+        return (new DefaultFormCreateAction($this->formFactory($hotel->id)))
+            ->handle('Новый сотрудник');
     }
 
     /**
@@ -70,65 +57,36 @@ class EmployeeController extends Controller
      */
     public function store(Request $request, Hotel $hotel): RedirectResponse
     {
-        $form = $this->formFactory($hotel->id)
-            ->method('post');
-
-        $form->trySubmit(route('hotels.employee.create', $hotel));
-
-        $data = $form->getData();
-        Employee::create($data);
-
-        return redirect(route('hotels.employee.index', $hotel));
+        return (new DefaultFormStoreAction($this->formFactory($hotel->id)))
+            ->handle(Employee::class);
     }
 
     public function edit(Request $request, Hotel $hotel, Employee $employee)
     {
         $this->hotel($hotel);
 
-        Breadcrumb::add($employee->fullname);
-
-        $form = $this->formFactory($hotel->id)
-            ->method('post')
-            ->action(route('hotels.employee.update', ['hotel' => $hotel, 'employee' => $employee]))
-            ->data($employee);
-
-        return Layout::title($employee->fullname)
-            ->style('default/form')
+        return (new DefaultFormEditAction( $this->formFactory($hotel->id)))
+            ->deletable()
+            ->handle($employee)
             ->script('hotel/employee/main')
             ->view('hotel.employee.edit', [
-                'form' => $form,
-                'cancelUrl' => route('hotels.employee.index', $hotel),
                 'contacts' => $employee->contacts,
-                'contactsUrl' => $this->isUpdateAllowed()
-                    ? route(
-                        'hotels.employee.contacts.index',
-                        ['hotel' => $hotel, 'employee' => $employee]
-                    )
-                    : null,
-                'createUrl' => $this->isUpdateAllowed()
-                    ? route(
-                        'hotels.employee.contacts.create',
-                        ['hotel' => $hotel, 'employee' => $employee]
-                    )
-                    : null,
-                'deleteUrl' => $this->isUpdateAllowed()
-                    ? route(
-                        'hotels.employee.destroy',
-                        ['hotel' => $hotel, 'employee' => $employee]
-                    )
-                    : null,
+                'cancelUrl' => route('hotels.employee.index', $hotel),
+                'contactsUrl' => route('hotels.employee.contacts.index', ['hotel' => $hotel, 'employee' => $employee]),
+                'createUrl' => route('hotels.employee.contacts.create', ['hotel' => $hotel, 'employee' => $employee]),
+                'deleteUrl' => route('hotels.employee.destroy', ['hotel' => $hotel, 'employee' => $employee])
             ]);
+    }
+
+    public function update(Hotel $hotel, Employee $employee): RedirectResponse
+    {
+        return (new DefaultFormUpdateAction($this->formFactory($hotel->id)))
+            ->handle($employee);
     }
 
     public function destroy(Hotel $hotel, Employee $employee): AjaxResponseInterface
     {
-        try {
-            $employee->delete();
-        } catch (\Throwable $e) {
-            return new AjaxErrorResponse($e->getMessage());
-        }
-
-        return new AjaxRedirectResponse(route('hotels.employee.index', $hotel));
+        return (new DefaultDestroyAction())->handle($employee);
     }
 
     protected function formFactory(int $hotelId): FormContract
@@ -140,10 +98,15 @@ class EmployeeController extends Controller
             ->text('post', ['label' => 'Должность', 'required' => true]);
     }
 
-    protected function gridFactory(): GridContract
+    protected function gridFactory(int $hotelId): GridContract
     {
         return Grid::paginator(16)
-            ->setOption('id','hotel-employee-grid')
+            ->edit(
+                fn(Employee $employee) => route(
+                    'hotels.employee.edit',
+                    ['hotel' => $hotelId, 'employee' => $employee->id]
+                )
+            )
             ->text('fullname', ['text' => 'ФИО', 'order' => true])
             ->text('department', ['text' => 'Отдел'])
             ->text('post', ['text' => 'Должность']);

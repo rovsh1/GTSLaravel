@@ -11,7 +11,7 @@ class ContentTitle
         $html = '<div class="content-header">';
         $html .= '<div class="title">' . self::title() . '</div>';
         if ($addUrl) {
-            $html .= '<button type="button" class="btn btn-add" data-url="' . $addUrl . '">' . $addText . '</button>';
+            $html .= '<button type="button" class="btn btn-add" data-url="' . $addUrl . '"><i class="icon">add</i>' . $addText . '</button>';
         }
         $html .= '</div>';
         return $html;
