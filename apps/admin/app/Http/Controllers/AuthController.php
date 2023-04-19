@@ -17,7 +17,7 @@ class AuthController extends Controller
 
     public function index()
     {
-        return Layout::style('auth')
+        return Layout::title('Login')
             ->view('auth.login', ['form' => new LoginForm('data')]);
     }
 

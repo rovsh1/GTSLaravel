@@ -26,8 +26,6 @@ class FormAction
         Breadcrumb::add('Test form');
 
         return Layout::title('adasd')
-            //->style('login.js')
-            //->script('login.css')
             ->view('test.form', [
                 'form' => $form
             ]);

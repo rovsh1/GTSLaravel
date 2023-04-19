@@ -1,3 +1,5 @@
+import jquery from 'jquery'
+
 /*!
  * jQuery Cookie Plugin v1.4.1
  * https://github.com/carhartl/jquery-cookie
@@ -11,7 +13,7 @@
     define(['jquery'], factory)
   } else if (typeof exports === 'object') {
     // Node/CommonJS
-    module.exports = factory(require('jquery'))
+    module.exports = factory(jquery)
   } else {
     // Browser globals
     factory(jQuery)

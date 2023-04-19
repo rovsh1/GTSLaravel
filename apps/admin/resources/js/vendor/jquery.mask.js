@@ -1,3 +1,5 @@
+import jquery from 'jquery'
+
 /**
  * jquery.mask.js
  * @version: v1.14.16
@@ -41,7 +43,7 @@
   if (typeof define === 'function' && define.amd) {
     define(['jquery'], factory)
   } else if (typeof exports === 'object' && typeof Meteor === 'undefined') {
-    module.exports = factory(require('jquery'))
+    module.exports = factory(jquery)
   } else {
     factory(jQuery || Zepto)
   }

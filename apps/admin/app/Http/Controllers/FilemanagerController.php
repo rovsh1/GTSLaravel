@@ -11,7 +11,6 @@ class FilemanagerController extends Controller
     public function index(Request $request)
     {
         return Layout::title('FileManager')
-            ->ss('filemanager')
             ->view('filemanager')
             ->render();
     }

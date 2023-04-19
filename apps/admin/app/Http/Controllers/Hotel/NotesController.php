@@ -32,7 +32,6 @@ class NotesController extends Controller
         Sidebar::submenu(new HotelMenu($hotel, 'info'));
 
         return Layout::title('Изменить примечание отеля')
-            ->script('hotel/notes')
             ->view('hotel.notes', [
                 'value' => ''
             ]);

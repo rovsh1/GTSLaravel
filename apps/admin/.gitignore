@@ -1,10 +1,6 @@
 /node_modules
 npm-debug.log
-yarn-error.log
-
-/public/css
-/public/js
-/public/assets
-/public/mix-manifest.json
+/public/hot
+/public/build
 /public/upload
 /public/file

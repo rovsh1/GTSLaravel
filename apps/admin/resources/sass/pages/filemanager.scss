@@ -1,4 +1,4 @@
-@use "../common/fonts/google-sans";
+@use "~resources/fonts/GoogleSans/style.css" as GoogleSans;
 @use "../common/reset";
 
 $color-link: #1a73e8;

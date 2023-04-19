@@ -24,7 +24,6 @@ class AccessGroupController extends AbstractPrototypeController
     public function create(): LayoutContract
     {
         return parent::create()
-            ->ss('administration/access-group-form')
             ->view('administration.access-group-form', [
                 'permissions' => $this->getPermissionsArray(fn() => []),
                 'categories' => Sitemap::getCategories(),
@@ -44,7 +43,6 @@ class AccessGroupController extends AbstractPrototypeController
         };
 
         return parent::edit($id)
-            ->ss('administration/access-group-form')
             ->view('administration.access-group-form', [
                 'categories' => Sitemap::getCategories(),
                 'permissions' => $this->getPermissionsArray($allowed),

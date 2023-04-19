@@ -68,7 +68,6 @@ class EmployeeController extends Controller
         return (new DefaultFormEditAction( $this->formFactory($hotel->id)))
             ->deletable()
             ->handle($employee)
-            ->script('hotel/employee/main')
             ->view('hotel.employee.edit', [
                 'contacts' => $employee->contacts,
                 'cancelUrl' => route('hotels.employee.index', $hotel),
