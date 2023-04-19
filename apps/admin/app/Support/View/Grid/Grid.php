@@ -24,9 +24,9 @@ class Grid extends Base
 
     protected ?Quicksearch $quicksearch = null;
 
-    public function edit(Prototype|string|array $options): static
+    public function edit(Prototype|string|array|callable $options): static
     {
-        if (is_string($options)) {
+        if (is_string($options) || is_callable($options)) {
             $options = ['route' => $options];
         } elseif ($options instanceof Prototype) {
             $options = ['route' => $options->routeName('edit')];

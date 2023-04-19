@@ -2,8 +2,8 @@
 
 namespace App\Admin\Http\Controllers\ServiceProvider;
 
+use App\Admin\Components\Factory\Prototype;
 use App\Admin\Enums\ServiceProvider\ServiceTypeEnum;
-use App\Admin\Exceptions\FormSubmitFailedException;
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Models\ServiceProvider\Provider;
 use App\Admin\Models\ServiceProvider\Service;
@@ -12,19 +12,30 @@ use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Facades\Layout;
+use App\Admin\Support\Facades\Prototypes;
 use App\Admin\Support\Facades\Sidebar;
+use App\Admin\Support\Http\Actions\DefaultFormCreateAction;
+use App\Admin\Support\Http\Actions\DefaultFormEditAction;
+use App\Admin\Support\Http\Actions\DefaultFormStoreAction;
+use App\Admin\Support\Http\Actions\DefaultFormUpdateAction;
+use App\Admin\Support\Http\Actions\DefaultDestroyAction;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Layout as LayoutContract;
 use App\Admin\View\Menus\ServiceProviderMenu;
-use App\Core\Support\Http\Responses\AjaxErrorResponse;
-use App\Core\Support\Http\Responses\AjaxRedirectResponse;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class ServicesController extends Controller
 {
+    private Prototype $prototype;
+
+    public function __construct()
+    {
+        $this->prototype = Prototypes::get('service-provider');
+    }
+
     public function index(Request $request, Provider $provider): LayoutContract
     {
         $this->provider($provider);
@@ -36,9 +47,10 @@ class ServicesController extends Controller
             ->style('default/grid')
             ->view('default.grid', [
                 'quicksearch' => $grid->getQuicksearch(),
-                'paginator' => $grid->getPaginator(),
                 'grid' => $grid,
-                'createUrl' => $this->isUpdateAllowed() ? route('service-provider.services.create', $provider) : null,
+                'createUrl' => Acl::isUpdateAllowed($this->prototype->key)
+                    ? $this->prototype->route('services.create', $provider)
+                    : null,
             ]);
     }
 
@@ -46,73 +58,34 @@ class ServicesController extends Controller
     {
         $this->provider($provider);
 
-        Breadcrumb::add('Новая услуга');
-
-        $form = $this->formFactory($provider->id)
-            ->method('post')
-            ->action(route('service-provider.services.store', $provider));
-
-        return Layout::title('Новая услуга')
-            ->view('default.form', [
-                'form' => $form,
-                'cancelUrl' => route('service-provider.services.index', $provider)
-            ]);
+        return (new DefaultFormCreateAction($this->formFactory($provider->id)))
+            ->handle('Новая услуга');
     }
 
-    /**
-     * @throws FormSubmitFailedException
-     */
     public function store(Request $request, Provider $provider): RedirectResponse
     {
-        $form = $this->formFactory($provider->id)
-            ->method('post');
-
-        $form->trySubmit(route('service-provider.services.create', $provider));
-
-        Service::create($form->getData());
-
-        return redirect(route('service-provider.services.index', $provider));
+        return (new DefaultFormStoreAction($this->formFactory($provider->id)))
+            ->handle(Service::class);
     }
 
-    public function edit(Request $request, Provider $provider, Service $service)
+    public function edit(Request $request, Provider $provider, Service $service): LayoutContract
     {
         $this->provider($provider);
 
-        Breadcrumb::add((string)$service);
-
-        $form = $this->formFactory($provider->id)
-            ->method('put')
-            ->action(route('service-provider.services.update', [$provider, $service]))
-            ->data($service);
-
-        return Layout::title((string)$service)
-            ->view('default.form', [
-                'form' => $form,
-                'cancelUrl' => route('service-provider.services.index', $provider),
-            ]);
+        return (new DefaultFormEditAction($this->formFactory($provider->id)))
+            ->deletable()
+            ->handle($service);
     }
 
     public function update(Provider $provider, Service $service): RedirectResponse
     {
-        $form = $this->formFactory($provider->id)
-            ->method('put');
-
-        $form->trySubmit(route('service-provider.services.edit', [$provider, $service]));
-
-        $service->update($form->getData());
-
-        return redirect(route('service-provider.services.index', $provider));
+        return (new DefaultFormUpdateAction($this->formFactory($provider->id)))
+            ->handle($service);
     }
 
     public function destroy(Provider $provider, Service $service): AjaxResponseInterface
     {
-        try {
-            $service->delete();
-        } catch (\Throwable $e) {
-            return new AjaxErrorResponse($e->getMessage());
-        }
-
-        return new AjaxRedirectResponse(route('service-provider.services.index', $provider));
+        return (new DefaultDestroyAction())->handle($service);
     }
 
     protected function formFactory(int $providerId): FormContract
@@ -132,27 +105,20 @@ class ServicesController extends Controller
     {
         return Grid::paginator(16)
             ->enableQuicksearch()
-            ->edit([
-                'route' => fn($r) => route('service-provider.services.edit', [$provider, $r->id])
-            ])
-            ->enum('type', ['text' => 'Тип', 'enum' => ServiceTypeEnum::class])
-            ->text('name', ['text' => 'Название', 'order' => true]);
+            ->edit(fn($r) => $this->prototype->route('services.edit', [$provider, $r->id]))
+            ->text('name', ['text' => 'Название', 'order' => true])
+            ->enum('type', ['text' => 'Тип', 'enum' => ServiceTypeEnum::class]);
     }
 
     private function provider(Provider $provider): void
     {
-        Breadcrumb::prototype('service-provider')
+        Breadcrumb::prototype($this->prototype)
             ->addUrl(
-                route('service-provider.show', $provider),
+                $this->prototype->route('show', $provider),
                 (string)$provider
             )
-            ->addUrl(route('service-provider.services.index', $provider), 'Услуги');
+            ->addUrl($this->prototype->route('services.index', $provider), 'Услуги');
 
         Sidebar::submenu(new ServiceProviderMenu($provider, 'services'));
-    }
-
-    private function isUpdateAllowed(): bool
-    {
-        return Acl::isUpdateAllowed('service-provider');
     }
 }
