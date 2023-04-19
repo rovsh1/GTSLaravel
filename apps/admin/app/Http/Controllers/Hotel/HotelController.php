@@ -4,6 +4,7 @@ namespace App\Admin\Http\Controllers\Hotel;
 
 use App\Admin\Enums\Hotel\StatusEnum;
 use App\Admin\Enums\Hotel\VisibilityEnum;
+use App\Admin\Models\Hotel\Reference\Type;
 use App\Admin\Models\Hotel\User;
 use App\Admin\Models\Reference\City;
 use App\Admin\Support\Distance\Calculator;
@@ -158,18 +159,18 @@ class HotelController extends AbstractPrototypeController
         return $preparedData;
     }
 
-    private function searchForm(): SearchForm
+    private function searchForm(): FormContract
     {
         return (new SearchForm())
             ->dateRange('period', ['label' => __('label.contract-period')])
             ->country('country_id', ['label' => __('label.country'), 'emptyItem' => ''])
             ->hidden('city_id', ['label' => __('label.city'), 'emptyItem' => ''])
-            ->hotelType('type_id', ['label' => __('label.type'), 'emptyItem' => ''])
+            ->select('type_id', ['label' => __('label.type'), 'emptyItem' => '', 'items' => Type::get()])
 //            ->numRange(
 //                'booking_count',
 //                ['label' => 'Кол-во броней', 'placeholder' => [__('label.from'), __('label.to')]]
 //            )
-            ->hotelStatus('status', ['label' => __('label.status'), 'emptyItem' => ''])
+            ->enum('status', ['label' => __('label.status'), 'emptyItem' => '', 'enum' => StatusEnum::class])
             ->enum('visibility', ['label' => __('label.visibility'), 'emptyItem' => '', 'enum' => VisibilityEnum::class])
             ->hotelRating('rating', ['label' => __('label.rating'), 'emptyItem' => '']);
     }
