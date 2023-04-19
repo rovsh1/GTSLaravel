@@ -2,11 +2,11 @@
 
 namespace App\Admin\Models\Hotel;
 
-use App\Admin\Models\HasCoordinates;
 use App\Admin\Models\Hotel\Contract\StatusEnum;
 use App\Admin\Models\Hotel\Reference\Service;
 use App\Admin\Models\Hotel\Reference\Usability;
 use App\Admin\Models\Reference\Landmark;
+use App\Admin\Support\Models\HasCoordinates;
 use Carbon\CarbonPeriod;
 use Custom\Framework\Database\Eloquent\HasQuicksearch;
 use Custom\Framework\Database\Eloquent\Model;

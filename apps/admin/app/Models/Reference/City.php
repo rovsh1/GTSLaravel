@@ -2,7 +2,7 @@
 
 namespace App\Admin\Models\Reference;
 
-use App\Admin\Models\HasCoordinates;
+use App\Admin\Support\Models\HasCoordinates;
 use Custom\Framework\Database\Eloquent\HasQuicksearch;
 use Custom\Framework\Database\Eloquent\HasTranslations;
 use Custom\Framework\Database\Eloquent\Model;

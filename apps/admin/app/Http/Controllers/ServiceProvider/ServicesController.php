@@ -25,15 +25,11 @@ use Illuminate\Http\Request;
 
 class ServicesController extends Controller
 {
-    public function __construct()
-    {
-    }
-
     public function index(Request $request, Provider $provider): LayoutContract
     {
         $this->provider($provider);
 
-        $query = Service::query()->where('provider_id', $provider->id);
+        $query = Service::where('provider_id', $provider->id);
         $grid = $this->gridFactory($provider)->data($query);
 
         return Layout::title('Услуги поставщика')
@@ -42,8 +38,6 @@ class ServicesController extends Controller
                 'quicksearch' => $grid->getQuicksearch(),
                 'paginator' => $grid->getPaginator(),
                 'grid' => $grid,
-                'editAllowed' => $this->isUpdateAllowed(),
-                'deleteAllowed' => $this->isUpdateAllowed(),
                 'createUrl' => $this->isUpdateAllowed() ? route('service-provider.services.create', $provider) : null,
             ]);
     }
@@ -59,7 +53,6 @@ class ServicesController extends Controller
             ->action(route('service-provider.services.store', $provider));
 
         return Layout::title('Новая услуга')
-            ->style('default/form')
             ->view('default.form', [
                 'form' => $form,
                 'cancelUrl' => route('service-provider.services.index', $provider)
@@ -76,8 +69,7 @@ class ServicesController extends Controller
 
         $form->trySubmit(route('service-provider.services.create', $provider));
 
-        $data = $form->getData();
-        Service::create($data);
+        Service::create($form->getData());
 
         return redirect(route('service-provider.services.index', $provider));
     }
@@ -94,7 +86,6 @@ class ServicesController extends Controller
             ->data($service);
 
         return Layout::title((string)$service)
-            ->style('default/form')
             ->view('default.form', [
                 'form' => $form,
                 'cancelUrl' => route('service-provider.services.index', $provider),
