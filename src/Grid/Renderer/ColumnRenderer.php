@@ -10,7 +10,8 @@ class ColumnRenderer
     public function __construct(
         private readonly Grid $grid,
         private readonly ColumnInterface $column
-    ) {}
+    ) {
+    }
 
     public function th(): string
     {
@@ -54,7 +55,10 @@ class ColumnRenderer
         if (method_exists($column, 'renderer')) {
             $columnValue = $column->renderer($row, $dataValue);
         } elseif ($column->renderer) {
-            $columnValue = call_user_func_array($column->renderer, [$row, $column->formatValue($dataValue, $row), $column->params]);
+            $columnValue = call_user_func_array(
+                $column->renderer,
+                [$row, $column->formatValue($dataValue, $row), $column->params]
+            );
         } elseif (method_exists($column, 'renderer')) {
             $columnValue = call_user_func_array([$column, 'renderer'], [$row, $dataValue, $column->params]);
         } else {
@@ -65,7 +69,14 @@ class ColumnRenderer
             return $column->emptyText;
         }
 
-        if ($column->href) {
+        if ($column->route) {
+            if (is_callable($column->route)) {
+                $href = call_user_func($column->route, $row);
+            } else {
+                $href = route($column->route, $row->id);
+            }
+            return '<a href="' . $href . '"' . ($column->hrefTarget ? ' target="' . $column->hrefTarget . '"' : '') . '>' . $columnValue . '</a>';
+        } elseif ($column->href) {
             $href = preg_replace_callback('/{(.+)}/', function ($m) use ($row) {
                 return $row->{$m[1]} ?? '';
             }, $column->href);

@@ -9,10 +9,6 @@ class RouteResourceRegistrar
         private readonly Resource $resource
     ) {}
 
-    public function slug() {
-
-    }
-
     public function get(string $uri, string $action, string $permission, string $name): static
     {
         return $this->addAction(['GET'], $uri, $action, $permission, $name);
@@ -118,8 +114,8 @@ class RouteResourceRegistrar
 
         $nameParts = explode('.', $preparedName);
         if (count($nameParts) > 1) {
-            $children = \Str::of($preparedName)->after('.')->toString();
-            $preparedName = \Str::of($preparedName)->before('.')->toString();
+            $preparedName = array_shift($nameParts);
+            $children = implode('.', $nameParts);
             [$prefix, $base] = $this->getResourcePrefixAndBase($children);
         }
         $resourceSlug = \Str::singular(self::formatSlug($preparedName));
