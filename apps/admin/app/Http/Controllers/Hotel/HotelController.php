@@ -71,7 +71,7 @@ class HotelController extends AbstractPrototypeController
         $coordinates = isset($this->model) ? $this->model->coordinates : null;
         return Form::city('city_id', ['label' => 'Город', 'required' => true, 'emptyItem' => ''])
             ->select('type_id', ['label' => 'Тип отеля', 'required' => true, 'emptyItem' => '', 'items' => Type::get()])
-            ->enum('visibility', ['label' => __('label.visibility'), 'enum' => VisibilityEnum::class])
+            ->enum('visibility', ['label' => __('label.visibility'), 'emptyItem' => '', 'enum' => VisibilityEnum::class])
             ->text('name', ['label' => 'Наименование', 'required' => true])
             ->enum('rating', ['label' => 'Категория', 'emptyItem' => '', 'enum' => RatingEnum::class])
             ->enum('status', ['label' => 'Статус', 'emptyItem' => '', 'enum' => StatusEnum::class])
