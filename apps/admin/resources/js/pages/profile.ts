@@ -1,4 +1,5 @@
 import './main'
+import { WindowDialog } from '~resources/js/libs/dialog/helpers';
 
 $(document).ready(() => {
   const container = $('#profile-settings')
@@ -17,7 +18,8 @@ $(document).ready(() => {
           update() {
             const fileInput = this.el.find('input[type="file"]')
             this.el.find('button.btn-primary').click(() => { fileInput.click() })
-            fileInput.change(function () { $(this.form).submit() })
+            fileInput.change(function () { // @ts-ignore
+              $(this.form).submit() })
             // const img = $('<div class="">' + user_avatar(app.user) + '</div>');
           },
         })

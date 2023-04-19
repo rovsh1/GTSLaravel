@@ -1,6 +1,10 @@
 import '../main'
+import 'jquery-ui/ui/data'
+import 'jquery-ui/ui/widget'
+import 'jquery-ui/ui/widgets/mouse'
 import 'jquery-ui/ui/widgets/sortable'
 
+// TODO fix glitches at drag
 $(() => {
   const $el = $('#hotel-rooms')
 
@@ -15,7 +19,7 @@ $(() => {
     placeholder: 'card',
     // containment: el,
     update() {
-      const indexes = []
+      const indexes: number[] = []
       $el.find('div.room').each(function () {
         indexes[indexes.length] = +$(this).data('id')
       })

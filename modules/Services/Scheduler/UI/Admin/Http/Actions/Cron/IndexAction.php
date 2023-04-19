@@ -13,7 +13,6 @@ class IndexAction
         //$commands = self::getCommands();
 
         return Layout::title('Крон задания')
-            ->ss('cron/index')
             ->view('cron.index', [
                 'grid' => $this->gridFactory()
             ]);

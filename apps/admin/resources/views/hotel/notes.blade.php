@@ -1,5 +1,9 @@
 @extends('layouts/main')
 
+@section('head')
+    @vite('resources/js/pages/hotel/notes.ts')
+@endsection
+
 @section('content')
     <div class="content-header">
         <div class="title">{{ $title }}</div>

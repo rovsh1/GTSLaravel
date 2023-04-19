@@ -20,14 +20,12 @@ class CityController extends AbstractPrototypeController
     public function create(): LayoutContract
     {
         return parent::create()
-            ->script('administration/city-form')
             ->view('administration.city-form');
     }
 
     public function edit(int $id): LayoutContract
     {
         return parent::edit($id)
-            ->script('administration/city-form')
             ->view('administration.city-form');
     }
 

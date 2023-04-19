@@ -1,11 +1,13 @@
 import FileManager from '../libs/filemanager/manager'
 
-// eslint-disable-next-line no-multi-assign
-window.$ = window.jQuery = require('jquery/dist/jquery')
+import jquery from 'jquery'
 
-require('jquery-ui/ui/widgets/autocomplete')
-require('jquery-ui/ui/widgets/draggable')
-require('jquery-ui/ui/widgets/droppable')
+// eslint-disable-next-line no-multi-assign
+window.$ = window.jQuery = jquery
+
+import 'jquery-ui/ui/widgets/autocomplete'
+import 'jquery-ui/ui/widgets/draggable'
+import 'jquery-ui/ui/widgets/droppable'
 
 $(document).ready(() => {
   const fileManager = new FileManager(document.body, {})
@@ -26,5 +28,3 @@ $(document).ready(() => {
     })
   }
 })
-
-// import("./page/auth.js");

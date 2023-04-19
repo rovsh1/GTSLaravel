@@ -1,5 +1,9 @@
 @extends('layouts/main')
 
+@section('head')
+    @vite('resources/sass/pages/default/grid.scss')
+@endsection
+
 @section('content')
     <div class="content-header">
         <div class="title">{{ $title }}</div>

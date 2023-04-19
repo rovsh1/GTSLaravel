@@ -1,5 +1,10 @@
 @extends('layouts/main')
 
+@section('head')
+    @vite('resources/js/pages/profile.ts')
+    @vite('resources/sass/pages/profile.scss')
+@endsection
+
 @section('content')
     <section class="profile-content" id="profile-settings">
         <h1>{{ $title }}</h1>

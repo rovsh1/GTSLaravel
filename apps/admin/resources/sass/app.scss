@@ -1,5 +1,5 @@
-@use "common/fonts/google-sans";
-@use "common/fonts/material-symbols-outlined";
+@use "~resources/fonts/GoogleSans/style.css" as GoogleSans;
+@use "~resources/fonts/MaterialSymbolsOutlined/style.css" as MaterialSymbolsOutlined;
 
 @use "vendor/bootstrap/common" as bs;
 @use "vendor/daterangepicker";

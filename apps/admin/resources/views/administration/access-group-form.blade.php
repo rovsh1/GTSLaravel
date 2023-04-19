@@ -1,5 +1,10 @@
 @extends('layouts/main')
 
+@section('head')
+    @vite('resources/js/pages/administration/access-group-form.ts')
+    @vite('resources/sass/pages/administration/access-group-form.scss')
+@endsection
+
 @section('content')
     <div class="content-header">
         <div class="title">{{ $title }}</div>

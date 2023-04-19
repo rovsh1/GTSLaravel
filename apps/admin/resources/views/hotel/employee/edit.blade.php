@@ -1,5 +1,9 @@
 @extends('layouts/main')
 
+@section('head')
+    @vite('resources/js/pages/hotel/employee/main.ts')
+@endsection
+
 @section('content')
     {!! ContentTitle::withAddButton($createUrl, 'Добавить контакт') !!}
 

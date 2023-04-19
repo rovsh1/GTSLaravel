@@ -44,7 +44,6 @@ class ServicesController extends Controller
         $grid = $this->gridFactory($provider)->data($query);
 
         return Layout::title('Услуги поставщика')
-            ->style('default/grid')
             ->view('default.grid', [
                 'quicksearch' => $grid->getQuicksearch(),
                 'grid' => $grid,

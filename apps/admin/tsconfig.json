@@ -23,12 +23,7 @@
         ],
         "baseUrl": "./",
         "paths": {
-            "@/*": [
-                "resources/js/*"
-            ],
-            "@styles/*": [
-                "resources/sass/*"
-            ]
+            "~resources/*": ["resources/*"],
         },
     },
     "include": [

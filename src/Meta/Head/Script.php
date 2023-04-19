@@ -18,6 +18,7 @@ class Script extends AbstractMetaTag
 
     public function getHtml(): string
     {
+        // ?
         return $this->getHtmlTag('script', true);
     }
 }

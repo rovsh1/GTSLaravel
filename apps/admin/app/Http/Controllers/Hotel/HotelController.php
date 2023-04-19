@@ -40,21 +40,19 @@ class HotelController extends AbstractPrototypeController
 
     public function index(): LayoutContract
     {
-        return parent::index()
-            ->script('hotel/main');
+        return parent::index()->view('hotel.main');
     }
 
     public function show(int $id): LayoutContract
     {
         return parent::show($id)
-            ->addMetaName('hotel-landmark-base-route', route('hotels.landmark.store', $this->model))
-            ->ss('hotel/show');
+            ->addMetaName('hotel-landmark-base-route', route('hotels.landmark.store', $this->model));
     }
 
     public function edit(int $id): LayoutContract
     {
         return parent::edit($id)
-            ->script('hotel/edit')
+            ->view('hotel.edit')
             ->data([
                 'cancelUrl' => $this->prototype->route('show', $id),
             ]);
@@ -62,8 +60,7 @@ class HotelController extends AbstractPrototypeController
 
     public function create(): LayoutContract
     {
-        return parent::create()
-            ->script('hotel/edit');
+        return parent::create()->view('hotel.edit');
     }
 
     protected function formFactory(): FormContract

@@ -45,7 +45,6 @@ abstract class AbstractPrototypeController extends Controller
         $grid->data($query);
 
         return Layout::title($this->prototype->title('index'))
-            ->style('default/grid')
             ->view($this->prototype->view('index') ?? $this->prototype->view('grid') ?? 'default.grid', [
                 'quicksearch' => $grid->getQuicksearch(),
                 'searchForm' => $grid->getSearchForm(),
@@ -92,7 +91,6 @@ abstract class AbstractPrototypeController extends Controller
         //TODO back button
 
         return Layout::title($this->prototype->title('create'))
-            ->style('default/form')
             ->view($this->prototype->view('create') ?? $this->prototype->view('form') ?? 'default.form', [
                 'form' => $form,
                 'cancelUrl' => $this->prototype->route('index')
@@ -136,7 +134,6 @@ abstract class AbstractPrototypeController extends Controller
             ->data($model);
 
         return Layout::title($title)
-            ->style('default/form')
             ->view($this->prototype->view('edit') ?? $this->prototype->view('form') ?? 'default.form', [
                 'model' => $model,
                 'form' => $form,

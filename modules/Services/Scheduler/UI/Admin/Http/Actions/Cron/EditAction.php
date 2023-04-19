@@ -25,7 +25,6 @@ class EditAction
             return redirect(route('cron.index'));
 
         return Layout::title('Крон задания')
-            ->ss('cron/index')
             ->view('cron.form', [
                 'form' => $form
             ]);

@@ -1,5 +1,9 @@
 @extends('layouts/blank')
 
+@section('head')
+    @vite('resources/sass/pages/auth.scss')
+@endsection
+
 @section('content')
     <div class="form-signin w-100 m-auto">
 

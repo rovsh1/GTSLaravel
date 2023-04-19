@@ -1,1 +1,3 @@
-window.moment = require('moment/moment')
+import moment from 'moment/moment'
+
+window.moment = moment

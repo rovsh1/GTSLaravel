@@ -1,5 +1,9 @@
 @extends('layouts/main')
 
+@section('head')
+    @vite('resources/sass/pages/default/form.scss')
+@endsection
+
 @section('content')
     {!! ContentTitle::default() !!}
 

@@ -1,5 +1,10 @@
 @extends('layouts/main')
 
+@section('head')
+    @vite('resources/js/pages/hotel/prices.ts')
+    @vite('resources/sass/pages/hotel/prices.scss')
+@endsection
+
 @section('content')
     <div class="content-header">
         <div class="title">{{ $title }}</div>

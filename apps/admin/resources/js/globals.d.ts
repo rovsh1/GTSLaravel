@@ -34,7 +34,7 @@ declare global {
         }
 
         google: any
-        $: JQuery
-        jQuery: JQuery
+        $: JQueryStatic
+        jQuery: JQueryStatic
     }
 }

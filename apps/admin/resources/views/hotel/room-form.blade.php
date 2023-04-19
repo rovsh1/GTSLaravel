@@ -1,5 +1,10 @@
 @extends('layouts/main')
 
+@section('head')
+    @vite('resources/js/pages/hotel/room-form.ts')
+    @vite('resources/sass/pages/hotel/room-form.scss')
+@endsection
+
 @section('content')
     <div class="content-header">
         <div class="title">{{ $title }}</div>

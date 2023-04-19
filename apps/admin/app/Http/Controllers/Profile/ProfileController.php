@@ -20,7 +20,6 @@ class ProfileController extends Controller
         $valueEmpty = '<i class="value-empty">Не указано</i>';
 
         return Layout::title($user->presentation)
-            ->ss('profile')
             ->view('profile.index', [
                 'title' => $user->presentation,
                 'style' => 'account',
