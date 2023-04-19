@@ -8,6 +8,7 @@ AclRoute::for('service-provider')
         'except' => ['show', 'index']
     ])
     ->resource('services', Controllers\ServiceProvider\ServicesController::class, [
+        'slug' => 'provider',
         'except' => ['show']
     ]);
 

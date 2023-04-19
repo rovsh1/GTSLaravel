@@ -25,14 +25,16 @@ use Illuminate\Http\Request;
 
 class ServicesController extends Controller
 {
-    private Provider $provider;
-
-    public function index(Request $request, int $providerId): LayoutContract
+    public function __construct()
     {
-        $this->provider($providerId);
+    }
 
-        $query = Service::query()->where('provider_id', $providerId);
-        $grid = $this->gridFactory()->data($query);
+    public function index(Request $request, Provider $provider): LayoutContract
+    {
+        $this->provider($provider);
+
+        $query = Service::query()->where('provider_id', $provider->id);
+        $grid = $this->gridFactory($provider)->data($query);
 
         return Layout::title('Услуги поставщика')
             ->style('default/grid')
@@ -42,84 +44,76 @@ class ServicesController extends Controller
                 'grid' => $grid,
                 'editAllowed' => $this->isUpdateAllowed(),
                 'deleteAllowed' => $this->isUpdateAllowed(),
-                'createUrl' => $this->isUpdateAllowed() ? route('service-provider.services.create', $providerId) : null,
+                'createUrl' => $this->isUpdateAllowed() ? route('service-provider.services.create', $provider) : null,
             ]);
     }
 
-    public function create(Request $request, int $providerId): LayoutContract
+    public function create(Request $request, Provider $provider): LayoutContract
     {
-        $this->provider($providerId);
+        $this->provider($provider);
 
-        Breadcrumb::add('Новый сотрудник');
+        Breadcrumb::add('Новая услуга');
 
-        $form = $this->formFactory($providerId)
+        $form = $this->formFactory($provider->id)
             ->method('post')
-            ->action(route('service-provider.services.store', $providerId));
+            ->action(route('service-provider.services.store', $provider));
 
         return Layout::title('Новая услуга')
             ->style('default/form')
             ->view('default.form', [
                 'form' => $form,
-                'cancelUrl' => route('service-provider.services.index', $providerId)
+                'cancelUrl' => route('service-provider.services.index', $provider)
             ]);
     }
 
     /**
      * @throws FormSubmitFailedException
      */
-    public function store(Request $request, int $providerId): RedirectResponse
+    public function store(Request $request, Provider $provider): RedirectResponse
     {
-        $form = $this->formFactory($providerId)
+        $form = $this->formFactory($provider->id)
             ->method('post');
 
-        $form->trySubmit(route('service-provider.services.create', $providerId));
+        $form->trySubmit(route('service-provider.services.create', $provider));
 
         $data = $form->getData();
         Service::create($data);
 
-        return redirect(route('service-provider.services.index', $providerId));
+        return redirect(route('service-provider.services.index', $provider));
     }
 
-    public function edit(Request $request, Provider $hotel, Service $service)
+    public function edit(Request $request, Provider $provider, Service $service)
     {
-        $this->provider($hotel);
+        $this->provider($provider);
 
-        Breadcrumb::add($service->fullname);
+        Breadcrumb::add((string)$service);
 
-        $form = $this->formFactory($hotel->id)
-            ->method('post')
-            ->action(route('service-provider.services.update', ['hotel' => $hotel, 'services' => $service]))
+        $form = $this->formFactory($provider->id)
+            ->method('put')
+            ->action(route('service-provider.services.update', [$provider, $service]))
             ->data($service);
 
-        return Layout::title($service->fullname)
+        return Layout::title((string)$service)
             ->style('default/form')
-            ->script('hotel/services/main')
-            ->view('hotel.services.edit', [
+            ->view('default.form', [
                 'form' => $form,
-                'cancelUrl' => route('service-provider.services.index', $hotel),
-                'contacts' => $service->contacts,
-                'contactsUrl' => $this->isUpdateAllowed()
-                    ? route(
-                        'service-provider.services.contacts.index',
-                        ['hotel' => $hotel, 'services' => $service]
-                    )
-                    : null,
-                'createUrl' => $this->isUpdateAllowed()
-                    ? route(
-                        'service-provider.services.contacts.create',
-                        ['hotel' => $hotel, 'services' => $service]
-                    )
-                    : null,
-                'deleteUrl' => $this->isUpdateAllowed()
-                    ? route(
-                        'service-provider.services.destroy',
-                        ['hotel' => $hotel, 'services' => $service]
-                    )
-                    : null,
+                'cancelUrl' => route('service-provider.services.index', $provider),
             ]);
     }
 
-    public function destroy(Provider $hotel, Service $service): AjaxResponseInterface
+    public function update(Provider $provider, Service $service): RedirectResponse
+    {
+        $form = $this->formFactory($provider->id)
+            ->method('put');
+
+        $form->trySubmit(route('service-provider.services.edit', [$provider, $service]));
+
+        $service->update($form->getData());
+
+        return redirect(route('service-provider.services.index', $provider));
+    }
+
+    public function destroy(Provider $provider, Service $service): AjaxResponseInterface
     {
         try {
             $service->delete();
@@ -127,7 +121,7 @@ class ServicesController extends Controller
             return new AjaxErrorResponse($e->getMessage());
         }
 
-        return new AjaxRedirectResponse(route('service-provider.services.index', $hotel));
+        return new AjaxRedirectResponse(route('service-provider.services.index', $provider));
     }
 
     protected function formFactory(int $providerId): FormContract
@@ -143,28 +137,27 @@ class ServicesController extends Controller
             ]);
     }
 
-    protected function gridFactory(): GridContract
+    protected function gridFactory(Provider $provider): GridContract
     {
         return Grid::paginator(16)
             ->enableQuicksearch()
+            ->edit([
+                'route' => fn($r) => route('service-provider.services.edit', [$provider, $r->id])
+            ])
+            ->enum('type', ['text' => 'Тип', 'enum' => ServiceTypeEnum::class])
             ->text('name', ['text' => 'Название', 'order' => true]);
     }
 
-    private function provider(int $providerId): void
+    private function provider(Provider $provider): void
     {
-        $this->provider = Provider::find($providerId);
-        if (!$this->provider) {
-            abort(404);
-        }
-
         Breadcrumb::prototype('service-provider')
             ->addUrl(
-                route('service-provider.show', $this->provider),
-                (string)$this->provider
-            )//->addUrl(route('service-provider.services.index', $provider), 'Сотрудники')
-        ;
+                route('service-provider.show', $provider),
+                (string)$provider
+            )
+            ->addUrl(route('service-provider.services.index', $provider), 'Услуги');
 
-        Sidebar::submenu(new ServiceProviderMenu($this->provider, 'services'));
+        Sidebar::submenu(new ServiceProviderMenu($provider, 'services'));
     }
 
     private function isUpdateAllowed(): bool

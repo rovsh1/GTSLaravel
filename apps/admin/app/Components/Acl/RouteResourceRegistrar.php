@@ -9,6 +9,10 @@ class RouteResourceRegistrar
         private readonly Resource $resource
     ) {}
 
+    public function slug() {
+
+    }
+
     public function get(string $uri, string $action, string $permission, string $name): static
     {
         return $this->addAction(['GET'], $uri, $action, $permission, $name);
@@ -87,7 +91,7 @@ class RouteResourceRegistrar
             $methods = array_diff($methods, (array)$options['except']);
         }
 
-        $resourceSlug = self::formatSlug($this->resource->key);
+        $resourceSlug = self::formatSlug($options['slug'] ?? $this->resource->key);
         $prefix = '';
         $namePrefix = '';
 
