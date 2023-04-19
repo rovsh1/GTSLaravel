@@ -30,7 +30,7 @@ return new class extends Migration {
 
     private function getVisibilityValue(?int $visibleFor): \App\Admin\Enums\Hotel\VisibilityEnum
     {
-        $visibility = \App\Admin\Enums\Hotel\VisibilityEnum::Public;
+        $visibility = \App\Admin\Enums\Hotel\VisibilityEnum::PUBLIC;
         if ($visibleFor === 3) {
             $visibility = \App\Admin\Enums\Hotel\VisibilityEnum::B2B;
         }
