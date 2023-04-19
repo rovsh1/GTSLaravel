@@ -25,6 +25,15 @@ class Enum extends Select
         );
     }
 
+    protected function prepareValue($value)
+    {
+        if (is_object($value)) {
+            $value = $value->value ?? $value->name;
+        }
+
+        return parent::prepareValue($value);
+    }
+
     private function getItems(): array
     {
         return array_map(function ($case): array {
