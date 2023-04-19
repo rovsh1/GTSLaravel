@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "92f86e480cdbe8633acf1f484407de0a",
+    "content-hash": "82572f616fc1127a6dbef0c47f5d274e",
     "packages": [
         {
             "name": "brick/math",
@@ -610,16 +610,16 @@
         },
         {
             "name": "gsdk/format",
-            "version": "1.0.2",
+            "version": "1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/s16121986/gsdk-format.git",
-                "reference": "ebaef7b166fa2dfb039fcd0b88ff39de1beaad77"
+                "reference": "d1c4d8dd2cd0a4c7b4af32256db3a8b5c3ecf941"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/s16121986/gsdk-format/zipball/ebaef7b166fa2dfb039fcd0b88ff39de1beaad77",
-                "reference": "ebaef7b166fa2dfb039fcd0b88ff39de1beaad77",
+                "url": "https://api.github.com/repos/s16121986/gsdk-format/zipball/d1c4d8dd2cd0a4c7b4af32256db3a8b5c3ecf941",
+                "reference": "d1c4d8dd2cd0a4c7b4af32256db3a8b5c3ecf941",
                 "shasum": ""
             },
             "require": {
@@ -648,9 +648,9 @@
             ],
             "support": {
                 "issues": "https://github.com/s16121986/gsdk-format/issues",
-                "source": "https://github.com/s16121986/gsdk-format/tree/v1.0.2"
+                "source": "https://github.com/s16121986/gsdk-format/tree/v1.0.4"
             },
-            "time": "2023-03-29T15:09:17+00:00"
+            "time": "2023-04-19T05:35:47+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
