@@ -2,7 +2,8 @@
 
 namespace App\Admin\Models\Hotel;
 
-use App\Admin\Models\Hotel\Contract\StatusEnum;
+use App\Admin\Enums\Hotel\VisibilityEnum;
+use App\Admin\Enums\Hotel\StatusEnum;
 use App\Admin\Models\Hotel\Reference\Service;
 use App\Admin\Models\Hotel\Reference\Usability;
 use App\Admin\Models\Reference\Landmark;
@@ -56,14 +57,15 @@ class Hotel extends Model
 //    'text',
         'status',
         'city_distance',
-//    'visible_for',
+        'visibility',
     ];
 
     protected $casts = [
         'city_id' => 'int',
         'type_id' => 'int',
         'rating' => 'int',
-        'status' => 'int',
+        'status' => StatusEnum::class,
+        'visibility' => VisibilityEnum::class
     ];
 
     public static function saving($callback) {}
@@ -119,7 +121,7 @@ class Hotel extends Model
             $joinableTable,
             function (JoinClause $join) use ($joinableTable) {
                 $join->on("{$joinableTable}.hotel_id", '=', "{$this->getTable()}.id")
-                    ->where("{$joinableTable}.status", StatusEnum::ACTIVE);
+                    ->where("{$joinableTable}.status", Contract\StatusEnum::ACTIVE);
             }
         )->addSelect("{$joinableTable}.date_start as contract_date_start")
             ->addSelect("{$joinableTable}.date_end as contract_date_end");
