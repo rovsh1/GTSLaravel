@@ -2,7 +2,9 @@
     "private": true,
     "scripts": {
         "dev": "npm run development",
+        "prod": "npm run build",
         "development": "mix --mix-config=build/webpack.dev.js",
+        "build": "mix --mix-config=build/webpack.dev.js",
         "watch": "mix watch --mix-config=build/webpack.dev.js",
         "eslint": "eslint --ext .js,.ts ./resources/js",
         "eslint:fix": "npm run eslint -- --fix"

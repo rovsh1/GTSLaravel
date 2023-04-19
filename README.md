@@ -16,5 +16,3 @@
     - [Git](docs/conventions/git.md)
     - [MySQL](docs/conventions/mysql.md)
     - [JavaScript](docs/conventions/js.md)
-
-
