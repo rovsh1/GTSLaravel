@@ -2,21 +2,23 @@
 
 namespace App\Admin\View\Components\Helpers;
 
+use App\Admin\Enums\Hotel\RatingEnum;
 use Illuminate\View\Component;
 
 class HotelRating extends Component
 {
-    public function __construct(public readonly ?int $value) {}
+    public function __construct(public readonly int|RatingEnum|null $value) {}
 
     public function render(): string
     {
-        if (!$this->value) {
+        $value = $this->value?->value ?? $this->value;
+        if (!$value) {
             return '';
         }
 
-        return '<span class="rating rating-' . $this->value . '">'
-            . $this->value . ' '
-            . self::stars($this->value)
+        return '<span class="rating rating-' . $value . '">'
+            . $value . ' '
+            . self::stars($value)
             . '</span>';
     }
 
