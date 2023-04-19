@@ -13,7 +13,7 @@ return new class extends Migration {
             $table->unsignedInteger('service_id');
             $table->unsignedInteger('season_id');
             $table->unsignedInteger('city_id');
-            $table->unsignedSmallInteger('car_id');
+            $table->unsignedInteger('car_id');
             $table->unsignedSmallInteger('currency_id');
             $table->unsignedDecimal('price_net');
             $table->unsignedDecimal('price_gross');

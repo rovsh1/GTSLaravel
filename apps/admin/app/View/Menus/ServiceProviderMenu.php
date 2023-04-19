@@ -24,7 +24,7 @@ class ServiceProviderMenu extends AbstractSubmenu
     {
         $this
             ->addUrl('info', route('service-provider.show', $this->model), 'Описание', ['icon' => 'description'])
-            ->addUrl('seasons', route('service-provider.show', $this->model), 'Сезоны', ['icon' => 'assignment'])
+            ->addUrl('seasons', route('service-provider.seasons.index', $this->model), 'Сезоны', ['icon' => 'assignment'])
             ->addUrl('services', route('service-provider.services.index', $this->model), 'Услуги', ['icon' => 'lan'])
             ->addUrl('prices', route('service-provider.show', $this->model), 'Цены', ['icon' => 'currency_ruble']);
     }

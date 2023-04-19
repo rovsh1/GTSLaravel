@@ -2,6 +2,8 @@
 
 namespace App\Admin\Http\Controllers\ServiceProvider;
 
+use App\Admin\Models\Reference\City;
+use App\Admin\Models\Reference\TransportCar;
 use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\ActionsMenu;
 use App\Admin\Support\Facades\Form;
@@ -24,21 +26,34 @@ class ProviderController extends AbstractPrototypeController
     public function show(int $id): LayoutContract
     {
         return parent::show($id)
-                     ->ss('service-provider/show');
+            ->ss('service-provider/show');
     }
 
     protected function formFactory(): FormContract
     {
         return Form::name('data')
-                   ->text('name', ['label' => 'Наименование', 'required' => true]);
+            ->text('name', ['label' => 'Наименование', 'required' => true])
+            ->select('cities', [
+                'label' => 'Города',
+                'multiple' => true,
+                'items' => City::get()
+            ])
+            ->select('cars', [
+                'label' => 'Авто',
+                'multiple' => true,
+                'items' => TransportCar::get()->map(fn($r) => [
+                    'value' => $r->id,
+                    'text' => (string)$r
+                ])
+            ]);
     }
 
     protected function gridFactory(): GridContract
     {
         return Grid::enableQuicksearch()
-                   ->paginator(self::GRID_LIMIT)
-                   ->text('name', ['text' => 'Наименование', 'route' => $this->prototype->routeName('show'), 'order' => true])
-                   ->orderBy('name', 'asc');
+            ->paginator(self::GRID_LIMIT)
+            ->text('name', ['text' => 'Наименование', 'route' => $this->prototype->routeName('show'), 'order' => true])
+            ->orderBy('name', 'asc');
     }
 
     protected function prepareShowMenu(Model $model)
@@ -47,7 +62,7 @@ class ProviderController extends AbstractPrototypeController
         if (Acl::isUpdateAllowed($this->getPrototypeKey())) {
             $menu->addUrl($this->prototype->route('edit', $model), [
                 'icon' => 'edit',
-                'cls'  => 'btn-edit',
+                'cls' => 'btn-edit',
                 'text' => 'Редактировать'
             ]);
         }
@@ -55,7 +70,7 @@ class ProviderController extends AbstractPrototypeController
         if (Acl::isUpdateAllowed($this->getPrototypeKey())) {
             $menu->addUrl($this->prototype->route('destroy', $model), [
                 'icon' => 'delete',
-                'cls'  => 'btn-delete',
+                'cls' => 'btn-delete',
                 'text' => 'Удалить'
             ]);
         }
@@ -66,9 +81,9 @@ class ProviderController extends AbstractPrototypeController
     protected function getShowViewData(): array
     {
         return [
-            'contactsUrl'      => $this->prototype->route('show', $this->model->id) . '/contacts',
+            'contactsUrl' => $this->prototype->route('show', $this->model->id) . '/contacts',
             'contactsEditable' => Acl::isUpdateAllowed($this->getPrototypeKey()),
-            'contacts'         => $this->model->contacts
+            'contacts' => $this->model->contacts
         ];
     }
 }

@@ -8,7 +8,7 @@ return new class extends Migration {
     public function up()
     {
         Schema::create('r_transport_cars', function (Blueprint $table) {
-            $table->smallInteger('id')->unsigned()->autoIncrement();
+            $table->increments('id');
             $table->smallInteger('type_id')->unsigned();
             $table->string('mark', 25);
             $table->string('model', 25);
