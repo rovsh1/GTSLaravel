@@ -70,7 +70,7 @@ class HotelController extends AbstractPrototypeController
     {
         $coordinates = isset($this->model) ? $this->model->coordinates : null;
         return Form::city('city_id', ['label' => 'Город', 'required' => true, 'emptyItem' => ''])
-            ->hotelType('type_id', ['label' => 'Тип отеля', 'required' => true, 'emptyItem' => ''])
+            ->select('type_id', ['label' => 'Тип отеля', 'required' => true, 'emptyItem' => '', 'items' => Type::get()])
             ->checkbox('visible_for', ['label' => __('label.visible-for')])
             ->text('name', ['label' => 'Наименование', 'required' => true])
             ->hotelRating('rating', ['label' => 'Категория', 'emptyItem' => ''])
