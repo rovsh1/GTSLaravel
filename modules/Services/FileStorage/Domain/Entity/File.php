@@ -7,6 +7,7 @@ class File
     public function __construct(
         private readonly string $guid,
         private readonly string $type,
+        private readonly ?string $extension,
         private readonly ?int $entityId,
         private ?string $name,
     ) {}
@@ -19,6 +20,11 @@ class File
     public function type(): string
     {
         return $this->type;
+    }
+
+    public function extension(): ?string
+    {
+        return $this->extension;
     }
 
     public function entityId(): ?int

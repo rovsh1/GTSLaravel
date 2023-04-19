@@ -11,6 +11,7 @@ class DataMapper
         return new File(
             $model->guid,
             $model->type,
+            $model->extension,
             $model->entity_id,
             $model->name,
         );

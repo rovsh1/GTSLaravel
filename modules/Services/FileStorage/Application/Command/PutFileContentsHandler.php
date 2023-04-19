@@ -16,9 +16,15 @@ class PutFileContentsHandler implements CommandHandlerInterface
 
     public function handle(CommandInterface|PutFileContents $command): bool
     {
-        $this->databaseRepository->touch($command->guid);
+        $file = $this->databaseRepository->find($command->guid);
 
-        $this->storageRepository->put($command->guid, $command->contents);
+        if (!$file) {
+            return false;
+        }
+
+        $this->databaseRepository->touch($file);
+
+        $this->storageRepository->put($file, $command->contents);
 
         return true;
     }

@@ -2,6 +2,8 @@
 
 namespace Module\Services\FileStorage\Domain\Service;
 
+use Module\Services\FileStorage\Domain\Entity\File;
+
 class UrlGenerator implements UrlGeneratorInterface
 {
     public function __construct(
@@ -9,8 +11,8 @@ class UrlGenerator implements UrlGeneratorInterface
         private readonly PathGeneratorInterface $pathGenerator
     ) {}
 
-    public function url(string $guid, int $part = null): ?string
+    public function url(File $file, int $part = null): ?string
     {
-        return $this->baseUrl . '/file/' . $this->pathGenerator->relativePath($guid, $part);
+        return $this->baseUrl . '/file/' . $this->pathGenerator->relativePath($file, $part);
     }
 }

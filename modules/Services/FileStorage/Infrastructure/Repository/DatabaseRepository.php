@@ -26,7 +26,7 @@ class DatabaseRepository implements DatabaseRepositoryInterface
         return $model ? DataMapper::modelToFile($model) : null;
     }
 
-    public function getEntityFiles(string $fileType, ?int $entityId)
+    public function getEntityFiles(string $fileType, ?int $entityId): array
     {
         return Model::whereType($fileType)
             ->whereEntity($entityId)
@@ -41,27 +41,27 @@ class DatabaseRepository implements DatabaseRepositoryInterface
         return DataMapper::modelToFile($model);
     }
 
-    public function update(string $guid, array $attributes): bool
+    public function update(File $file, array $attributes): bool
     {
-        $model = $this->tryFindModel($guid);
+        $model = $this->tryFindModel($file->guid());
 
         $model->update($attributes);
 
         return true;
     }
 
-    public function delete(string $guid): bool
+    public function delete(File $file): bool
     {
-        $model = $this->tryFindModel($guid);
+        $model = $this->tryFindModel($file->guid());
 
         $model->delete();
 
         return true;
     }
 
-    public function touch(string $guid): void
+    public function touch(File $file): void
     {
-        $model = $this->tryFindModel($guid);
+        $model = $this->tryFindModel($file->guid());
 
         $model->touch();
     }

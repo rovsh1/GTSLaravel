@@ -10,13 +10,13 @@ interface DatabaseRepositoryInterface
 
     public function getEntityFile(string $fileType, ?int $entityId): ?File;
 
-    public function getEntityFiles(string $fileType, ?int $entityId);
+    public function getEntityFiles(string $fileType, ?int $entityId): array;
 
     public function create(string $fileType, ?int $entityId, string $name = null): File;
 
-    public function update(string $guid, array $attributes): bool;
+    public function update(File $file, array $attributes): bool;
 
-    public function delete(string $guid): bool;
+    public function delete(File $file): bool;
 
-    public function touch(string $guid): void;
+    public function touch(File $file): void;
 }

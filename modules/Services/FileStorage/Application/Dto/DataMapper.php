@@ -18,7 +18,7 @@ class DataMapper
             $file->type(),
             $file->entityId(),
             $file->name(),
-            $this->urlGenerator->url($file->guid())
+            $this->urlGenerator->url($file)
         );
     }
 }

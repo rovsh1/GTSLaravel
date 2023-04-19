@@ -21,6 +21,7 @@ class File extends BaseModel
     protected $fillable = [
         'type_hash',
         'type',
+        'extension',
         'entity_id',
         'name',
         'index'
@@ -40,6 +41,7 @@ class File extends BaseModel
         return static::create([
             'type_hash' => static::hashType($fileType),
             'type' => $fileType,
+            'extension' => self::findExtension($name),
             'entity_id' => $entityId,
             'name' => $name
         ]);
@@ -90,5 +92,14 @@ class File extends BaseModel
         } while (static::whereGuid($guid)->exists());
 
         return $guid;
+    }
+
+    private static function findExtension(?string $name): ?string
+    {
+        if (empty($name) || false === ($pos = strrpos($name, '.'))) {
+            return null;
+        }
+
+        return substr($name, $pos);
     }
 }

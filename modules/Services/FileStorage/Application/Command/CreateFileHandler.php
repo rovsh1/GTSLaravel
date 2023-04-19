@@ -20,7 +20,7 @@ class CreateFileHandler implements CommandHandlerInterface
         $file = $this->databaseRepository->create($command->fileType, $command->entityId, $command->name);
 
         if (null !== $command->contents) {
-            $this->storageRepository->put($file->guid(), $command->contents);
+            $this->storageRepository->put($file, $command->contents);
         }
 
         return $file;

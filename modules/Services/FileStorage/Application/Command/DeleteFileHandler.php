@@ -12,13 +12,20 @@ class DeleteFileHandler implements CommandHandlerInterface
     public function __construct(
         private readonly DatabaseRepositoryInterface $databaseRepository,
         private readonly StorageRepositoryInterface $storageRepository,
-    ) {}
+    ) {
+    }
 
     public function handle(CommandInterface|DeleteFile $command): bool
     {
-        $this->storageRepository->delete($command->guid);
+        $file = $this->databaseRepository->find($command->guid);
 
-        $this->databaseRepository->delete($command->guid);
+        if (!$file) {
+            return false;
+        }
+
+        $this->storageRepository->delete($file);
+
+        $this->databaseRepository->delete($file);
 
         return true;
     }

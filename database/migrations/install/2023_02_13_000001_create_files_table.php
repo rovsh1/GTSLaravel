@@ -10,9 +10,10 @@ return new class extends Migration {
         Schema::create('files', function (Blueprint $table) {
             $table->char('guid', 32);
             $table->char('type_hash', 32);
-            $table->string('type', 100);
+            $table->string('type');
             $table->integer('entity_id')->nullable()->unsigned();
-            $table->string('name', 100)->nullable();
+            $table->string('name')->nullable();
+            $table->string('extension')->nullable();
             $table->smallInteger('index')->unsigned()->default(0);
             $table->timestamps();
 

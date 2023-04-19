@@ -3,6 +3,7 @@
 namespace Module\Services\FileStorage\Infrastructure\Repository;
 
 use Module\Services\FileStorage\Application\Dto\FileInfoDto;
+use Module\Services\FileStorage\Domain\Entity\File;
 use Module\Services\FileStorage\Domain\Repository\StorageRepositoryInterface;
 use Module\Services\FileStorage\Domain\Service\PathGeneratorInterface;
 
@@ -22,9 +23,9 @@ class StorageRepository implements StorageRepositoryInterface
         ];
     }
 
-    public function get(string $guid, int $part = null): ?string
+    public function get(File $file, int $part = null): ?string
     {
-        $filename = $this->pathGenerator->path($guid, $part);
+        $filename = $this->pathGenerator->path($file, $part);
         if (!file_exists($filename)) {
             return null;
         }
@@ -32,9 +33,9 @@ class StorageRepository implements StorageRepositoryInterface
         return (string)file_get_contents($filename);
     }
 
-    public function put(string $guid, string $contents): bool
+    public function put(File $file, string $contents): bool
     {
-        $filename = $this->pathGenerator->path($guid);
+        $filename = $this->pathGenerator->path($file);
         $createdFlag = !file_exists($filename);
 
         if ($createdFlag) {
@@ -54,14 +55,14 @@ class StorageRepository implements StorageRepositoryInterface
         return true;
     }
 
-    public function delete(string $guid): bool
+    public function delete(File $file): bool
     {
-        return unlink($this->pathGenerator->path($guid));
+        return unlink($this->pathGenerator->path($file));
     }
 
-    public function fileInfo(string $guid, int $part = null): FileInfoDto
+    public function fileInfo(File $file, int $part = null): FileInfoDto
     {
-        $filename = $this->pathGenerator->path($guid, $part);
+        $filename = $this->pathGenerator->path($file, $part);
         //$info->path = $filename;
         $exists = file_exists($filename);
         if ($exists) {

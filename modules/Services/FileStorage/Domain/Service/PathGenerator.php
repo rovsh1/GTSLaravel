@@ -2,6 +2,8 @@
 
 namespace Module\Services\FileStorage\Domain\Service;
 
+use Module\Services\FileStorage\Domain\Entity\File;
+
 class PathGenerator implements PathGeneratorInterface
 {
     private readonly string $rootPath;
@@ -15,17 +17,18 @@ class PathGenerator implements PathGeneratorInterface
         $this->rootPath = rtrim($rootPath, '/');
     }
 
-    public function relativePath(string $guid, int $part = null): string
+    public function relativePath(File $file, int $part = null): string
     {
-        return implode($this->pathSeparator, $this->guidPaths($guid))
-            . $this->pathSeparator . $guid
-            . ($part ? '_' . $part : '');
+        return implode($this->pathSeparator, $this->guidPaths($file->guid()))
+            . $this->pathSeparator . $file->guid()
+            . ($part ? '_' . $part : '')
+            . $file->extension();
     }
 
-    public function path(string $guid, int $part = null): string
+    public function path(File $file, int $part = null): string
     {
         return $this->rootPath . $this->pathSeparator
-            . $this->relativePath($guid, $part);
+            . $this->relativePath($file, $part);
     }
 
     private function guidPaths(string $guid): array

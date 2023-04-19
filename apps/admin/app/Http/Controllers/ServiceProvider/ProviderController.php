@@ -12,7 +12,6 @@ use App\Admin\Support\Facades\Sidebar;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
-use App\Admin\Support\View\Layout as LayoutContract;
 use App\Admin\View\Menus\ServiceProviderMenu;
 use Illuminate\Database\Eloquent\Model;
 
@@ -21,12 +20,6 @@ class ProviderController extends AbstractPrototypeController
     protected function getPrototypeKey(): string
     {
         return 'service-provider';
-    }
-
-    public function show(int $id): LayoutContract
-    {
-        return parent::show($id)
-            ->ss('service-provider/show');
     }
 
     protected function formFactory(): FormContract
