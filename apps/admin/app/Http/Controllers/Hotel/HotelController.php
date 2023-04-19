@@ -164,7 +164,7 @@ class HotelController extends AbstractPrototypeController
         return (new SearchForm())
             ->dateRange('period', ['label' => __('label.contract-period')])
             ->country('country_id', ['label' => __('label.country'), 'emptyItem' => ''])
-            ->hidden('city_id', ['label' => __('label.city'), 'emptyItem' => ''])
+            ->hidden('city_id', ['label' => __('label.city')])
             ->select('type_id', ['label' => __('label.type'), 'emptyItem' => '', 'items' => Type::get()])
 //            ->numRange(
 //                'booking_count',
