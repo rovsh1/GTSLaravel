@@ -1,4 +1,4 @@
-import '../../../sass/partials/components/_card-contacts.scss'
+import '~resources/sass/partials/components/card-contacts.scss'
 
 function editableContactRow(route, $tr) {
   const id = $tr.data('id')

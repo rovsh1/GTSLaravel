@@ -18,7 +18,7 @@ class CountryController extends AbstractPrototypeController
     protected function formFactory(): FormContract
     {
         return Form::localeText('name', ['label' => 'Наименование', 'required' => true])
-            //->view('default.form')
+            //->view('default.form.form')
             ->text('flag', ['label' => 'Код страны', 'maxlength' => 2, 'required' => true])
             ->language('language', ['label' => 'Язык по-умолчанию', 'emptyItem' => '-Не выбрано-'])
             ->text('phone_code', ['label' => 'Код телефона', 'maxlength' => 8, 'required' => true])

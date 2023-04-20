@@ -1,4 +1,4 @@
-import axios from '../app/api'
+import axios from '~resources/js/app/api'
 
 $.fn.childCombo = function (options) {
   const preparedOptions = {

@@ -25,7 +25,7 @@ class DefaultFormCreateAction
         $this->form->action($this->getDefaultStoreUrl());
 
         return Layout::title($title)
-            ->view('default.form', [
+            ->view('default.form.form', [
                 'form' => $this->form,
                 'cancelUrl' => $this->getDefaultCancelUrl()
             ]);

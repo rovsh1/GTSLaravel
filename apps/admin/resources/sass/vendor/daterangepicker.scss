@@ -1,0 +1,16 @@
+@use "~resources/sass/variables" as variables;
+@use 'daterangepicker/daterangepicker.css';
+
+.daterangepicker {
+    td.in-range {
+        background-color: variables.$primary-bg !important;
+    }
+
+    td.active, td.active:hover {
+        background-color: variables.$primary !important;
+    }
+
+    .ranges li.active {
+        background-color: variables.$primary !important;
+    }
+}

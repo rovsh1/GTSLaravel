@@ -37,7 +37,7 @@ class MailQueueController extends Controller
         $grid->data($data);
 
         return Layout::title($this->prototype->title('index'))
-            ->view('default.grid', [
+            ->view('default.grid.grid', [
                 'quicksearch' => $grid->getQuicksearch(),
                 //'searchForm' => $grid->getSearchForm(),
                 'grid' => $grid,

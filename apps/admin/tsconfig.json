@@ -18,7 +18,7 @@
         "noImplicitReturns": true,
         "types": [
             "jquery",
-            "./resources/js/globals",
+            "./resources/globals",
             "./node_modules/@types/bootstrap/index",
         ],
         "baseUrl": "./",
@@ -27,8 +27,8 @@
         },
     },
     "include": [
-        "resources/js/**/*.ts",
-        "resources/js/**/*.d.ts",
+        "resources/**/*.ts",
+        "resources/**/*.d.ts",
     ],
     "exclude": [
         "node_modules",

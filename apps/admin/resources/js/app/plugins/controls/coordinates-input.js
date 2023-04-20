@@ -1,4 +1,4 @@
-import mapProvider from '../../services/map/google'
+import mapProvider from '~resources/js/app/services/map/google'
 
 const defaultCenterPosition = {
   lat: 41.3021517,

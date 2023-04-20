@@ -48,7 +48,11 @@ module.exports = {
   ],
   rules: {
     '@typescript-eslint/no-namespace': ['error', { allowDeclarations: true }],
-    'import/extensions': ['error', 'never'],
+    'import/extensions': ['error', {
+      js: 'never',
+      ts: 'never',
+      json: 'always',
+    }],
     'import/order': ['error', {
       'newlines-between': 'always',
       alphabetize: {
@@ -109,5 +113,7 @@ module.exports = {
     '@typescript-eslint/no-this-alias': 'off',
     'no-tabs': 'off',
     'no-new': 'off',
+    'implicit-arrow-linebreak': 'off',
+    'import/prefer-default-export': 'off',
   },
 }

@@ -1,4 +1,12 @@
-@extends('layouts/main')
+@extends('layouts.main')
+
+@section('styles')
+    @vite('resources/views/service-provider/show.scss')
+@endsection
+
+@section('scripts')
+    @vite('resources/views/service-provider/show.js')
+@endsection
 
 @section('content')
     <div class="content-header">
@@ -9,7 +17,7 @@
     </div>
 
     <div class="content-body">
-        @include('_partials/components/contacts-card')
+        @include('_partials.components.contacts-card')
 
         <div class="mt-3">
             <x-ui.card :collapsable="true" header="Основные данные">

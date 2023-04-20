@@ -29,7 +29,7 @@ class RoomController extends Controller
         $this->hotel($hotel);
 
         return Layout::title('Номера отеля')
-            ->view('hotel.rooms', [
+            ->view('hotel.rooms.rooms', [
                 'hotel' => $hotel,
                 'editAllowed' => true,
                 'deleteAllowed' => true,
@@ -143,7 +143,7 @@ class RoomController extends Controller
     private function formLayout($form): LayoutContract
     {
         return Layout::addMetaVariable('bed_types', BedType::get()->map(fn($r) => ['id' => $r->id, 'name' => $r->name]))
-            ->view('hotel.room-form', [
+            ->view('hotel.room-form.room-form', [
                 'form' => $form
             ]);
     }

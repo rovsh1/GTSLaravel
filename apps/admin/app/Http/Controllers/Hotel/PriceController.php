@@ -18,7 +18,7 @@ class PriceController extends Controller
         $this->bootHotel($hotel);
 
         return Layout::title('Rooms')
-            ->view('hotel.prices', [
+            ->view('hotel.prices.prices', [
                 'rooms' => $hotel->rooms,
                 'seasons' => $hotel->seasons,
             ]);

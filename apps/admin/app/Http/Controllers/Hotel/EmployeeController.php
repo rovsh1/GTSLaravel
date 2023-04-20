@@ -35,7 +35,7 @@ class EmployeeController extends Controller
         $grid = $this->gridFactory($hotel->id)->data($query);
 
         return Layout::title('Сотрудники отеля')
-            ->view('default.grid', [
+            ->view('default.grid.grid', [
                 'grid' => $grid,
                 'hotel' => $hotel,
                 'editAllowed' => $this->isUpdateAllowed(),
@@ -68,7 +68,7 @@ class EmployeeController extends Controller
         return (new DefaultFormEditAction( $this->formFactory($hotel->id)))
             ->deletable()
             ->handle($employee)
-            ->view('hotel.employee.edit', [
+            ->view('hotel.employee.edit.edit', [
                 'contacts' => $employee->contacts,
                 'cancelUrl' => route('hotels.employee.index', $hotel),
                 'contactsUrl' => route('hotels.employee.contacts.index', ['hotel' => $hotel, 'employee' => $employee]),

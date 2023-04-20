@@ -1,4 +1,4 @@
-@extends('layouts/common' )
+@extends('layouts.common')
 
 @section('layout__content')
     @yield('content')

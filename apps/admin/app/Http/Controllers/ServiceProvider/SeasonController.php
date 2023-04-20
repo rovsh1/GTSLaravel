@@ -43,8 +43,7 @@ class SeasonController extends Controller
         $grid = $this->gridFactory($provider)->data($query);
 
         return Layout::title('Сезоны')
-            ->style('default/grid')
-            ->view('default.grid', [
+            ->view('default.grid.grid', [
                 'quicksearch' => $grid->getQuicksearch(),
                 'grid' => $grid,
                 'createUrl' => Acl::isUpdateAllowed($this->prototype->key)

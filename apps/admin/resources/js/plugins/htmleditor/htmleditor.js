@@ -1,6 +1,7 @@
-import EventsTrait from "../../app/support/events-trait";
+import EventsTrait from "~resources/js/app/support/events-trait";
 import loadEditor from "./loader"
-import defaultOptions from "./default"
+import { getDefaultOptions } from "./default"
+import { getFileFromManifest } from '~resources/js/app/build-manifest'
 
 export default class HtmlEditor {
     #ready = false;
@@ -80,6 +81,10 @@ export default class HtmlEditor {
 
         if (this.#extraPlugins)
             this.#params.plugins[2] += this.#extraPlugins;
+
+        const defaultOptions = getDefaultOptions({
+          contentCSSPath: await getFileFromManifest('resources/assets/tinymce-content.scss')
+        })
 
         tinymce.init(Object.assign(defaultOptions, this.#params, {
             setup: function (editor) {

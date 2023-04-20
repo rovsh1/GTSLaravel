@@ -39,7 +39,7 @@ class DefaultFormEditAction
 
 
         return Layout::title((string)$model)
-            ->view('default.form', [
+            ->view('default.form.form', [
                 'form' => $this->form,
                 'cancelUrl' => $this->getDefaultCancelUrl(),
                 'deleteUrl' => $this->options['deleteUrl'],
