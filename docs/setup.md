@@ -20,19 +20,19 @@ If you have something launched on ports `80`, `9000` or `3306`, change `HOST_APP
 ## 2. Build and run containers
 
 ```sh
-$ docker compose up -d --build
+$ make up
 ```
 
 ## 3. Install PHP dependencies
 
 ```sh
-$ docker compose exec php composer install
+$ make composer-install
 ```
 
 ## 4. Generate application encryption key
 
 ```sh
-$ docker compose exec php php artisan key:generate
+$ make key-generate
 ```
 
 After this command, `APP_KEY` in `.env` should be changed to unique string
@@ -40,7 +40,7 @@ After this command, `APP_KEY` in `.env` should be changed to unique string
 ## 5. Initialize database
 
 ```sh
-$ docker compose exec php php artisan migrate
+$ make migrate
 ```
 
 ## 6. Add hosts to your OS
@@ -57,7 +57,7 @@ Add these lines to your `hosts` configuration:
 ### macOS
 
 ```sh
-sudo vim /private/etc/hosts`
+sudo vim /private/etc/hosts
 ```
 
 ### Linux
@@ -77,9 +77,7 @@ Simplest way is to copy this file to desktop, then edit, and copy back to `windo
 Install frontend dependencies:
 
 ```sh
-$ cd apps/admin
-$ npm install
-$ npm run build
+$ make frontend-admin
 ```
 
 ## 8. Open project in browser
