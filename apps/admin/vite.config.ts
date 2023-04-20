@@ -15,10 +15,13 @@ config({
 // https://github.com/laravel/vite-plugin/pull/57
 console.log(`The Vite server should not be accessed directly. Please visit ${process.env.APP_URL} instead.`)
 export default defineConfig({
+  build: {
+    target: 'esnext',
+  },
   plugins: [
     laravel({
       input: [
-        'resources/assets/jquery',
+        'resources/assets/jquery.ts',
         'resources/assets/tinymce.js',
         'resources/assets/tinymce-content.scss',
         'resources/views/administration/city-form/city-form.ts',
