@@ -2,7 +2,7 @@
 defineProps({
   text: {
     type: String,
-    required: true,
+    default: 'Удалить',
   },
   disabled: {
     type: Boolean,
@@ -14,8 +14,8 @@ defineEmits(['click'])
 </script>
 
 <template>
-  <button type="button" :disabled="disabled" class="btn btn-add" @click="$emit('click')">
-    <i class="icon">add</i>
+  <button type="button" class="btn btn-delete" :disabled="disabled" @click="$emit('click')">
+    <i class="icon">delete</i>
     {{ text }}
   </button>
 </template>

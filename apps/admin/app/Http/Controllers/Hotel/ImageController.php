@@ -23,35 +23,8 @@ class ImageController extends Controller
     {
         $this->hotel($hotel);
 
-        //        $query = Employee::whereHotelId($hotel->id);
-        //        $grid = $this->gridFactory($hotel->id)->data($query);
-
         return Layout::title((string)$hotel)
-            ->view('hotel.images.images', [
-                'hotel' => $hotel,
-                'editAllowed' => $this->isUpdateAllowed(),
-                'deleteAllowed' => $this->isUpdateAllowed(),
-                'createUrl' => $this->isUpdateAllowed() ? route('hotels.images.store', $hotel) : null,
-            ]);
-    }
-
-    public function store(Request $request, Hotel $hotel): RedirectResponse
-    {
-        $files = $request->allFiles();
-
-        return new AjaxRedirectResponse();
-    }
-
-    protected function formFactory(int $hotelId, int $cityId): FormContract
-    {
-        return Form::name('data')
-            ->hidden('hotel_id', ['value' => $hotelId])
-            ->select('landmark_id', [
-                'label' => 'Объект',
-                'required' => true,
-                'items' => Landmark::whereCityId($cityId)->get(),
-                'emptyItem' => '',
-            ]);
+            ->view('hotel.images.images');
     }
 
     private function hotel(Hotel $hotel): void
@@ -61,10 +34,5 @@ class ImageController extends Controller
             ->addUrl(route('hotels.images.index', $hotel), 'Фотографии');
 
         Sidebar::submenu(new HotelMenu($hotel, 'images'));
-    }
-
-    private function isUpdateAllowed(): bool
-    {
-        return Acl::isUpdateAllowed('hotel');
     }
 }

@@ -32,4 +32,9 @@ AclRoute::for('hotel')
         'usabilities.update'
     )
     ->resource('landmark', Controllers\Hotel\LandmarkController::class, ['only' => ['create', 'store', 'destroy']])
-    ->resource('images', Controllers\Hotel\ImageController::class, []);
+    ->get(
+        '/{hotel}/images',
+        Controllers\Hotel\ImageController::class . '@index',
+        'update',
+        'images.index'
+    );

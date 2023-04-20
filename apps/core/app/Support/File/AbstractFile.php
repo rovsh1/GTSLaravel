@@ -6,7 +6,7 @@ use App\Core\Contracts\File\FileInterface;
 use App\Core\Support\Facades\FileAdapter;
 use Illuminate\Support\Collection;
 
-abstract class AbstractFile implements FileInterface
+abstract class AbstractFile implements FileInterface, \JsonSerializable
 {
     public static function find(string $guid): ?static
     {
@@ -58,5 +58,15 @@ abstract class AbstractFile implements FileInterface
     public function url(): string
     {
         return $this->url;
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'id' => $this->guid(),
+            'entity_id' => $this->entityId(),
+            'name' => $this->name(),
+            'url' => $this->url(),
+        ];
     }
 }
