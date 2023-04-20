@@ -1,5 +1,6 @@
-import '~resources/views/main'
 import Tab from '~resources/js/app/components/permissions-control/tab'
+
+import '~resources/views/main'
 
 $(document).ready(() => {
   const $tabs = $('#permissions-tabs button')

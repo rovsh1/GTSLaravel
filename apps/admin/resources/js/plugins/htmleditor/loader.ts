@@ -24,7 +24,7 @@ export default async function loadEditor(): Promise<TinyMCE> {
     })
   }
   return new Promise((resolve) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // eslint-disable-next-line unused-imports/no-unused-vars
     const timer = () => {
       setTimeout(() => {
         if (window.tinymce) {
