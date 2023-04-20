@@ -67,8 +67,9 @@ module.exports = defineConfig({
     'no-underscore-dangle': ['error', {
       allowAfterThis: true,
     }],
-    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'no-console': 'off',
+    'no-debugger': 'off',
+    'max-lines': ['error', 300],
 
     semi: ['error', 'never'],
     'max-len': 'off',
@@ -113,5 +114,6 @@ module.exports = defineConfig({
     'no-new': 'off',
     'implicit-arrow-linebreak': 'off',
     'import/prefer-default-export': 'off',
+    'vue/max-len': 'off',
   },
 })

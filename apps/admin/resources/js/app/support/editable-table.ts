@@ -38,11 +38,11 @@ const editableRow = ($tr: JQuery<HTMLTableRowElement>, route: string, isEditInMo
 }
 
 export interface EditableTableProps {
-    $table: JQuery<HTMLElement>
-    route?: string
-    isEditInModal?: boolean
-    canEdit?: boolean
-    canDelete?: boolean
+  $table: JQuery<HTMLElement>
+  route?: string
+  isEditInModal?: boolean
+  canEdit?: boolean
+  canDelete?: boolean
 }
 
 export const editableTable = (props: EditableTableProps): void => {

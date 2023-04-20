@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+        "noEmit": true,
         "target": "ESNext",
         "strict": true,
         "module": "ESNext",
@@ -11,14 +12,13 @@
         "useDefineForClassFields": false,
         "resolveJsonModule": true,
         "skipLibCheck": true,
-        "isolatedModules": true,
+        "isolatedModules": false,
         "allowJs": true,
         "noUnusedLocals": true,
-        "noUnusedParameters": true,
+        "noUnusedParameters": false,
         "noImplicitReturns": true,
         "types": [
             "vite/client",
-            "vue/types",
             "jquery",
             "./resources/globals",
             "./node_modules/@types/bootstrap/index"
@@ -29,6 +29,7 @@
         }
     },
     "include": [
+        "resources/**/*.js",
         "resources/**/*.ts",
         "resources/**/*.d.ts",
         "resources/**/*.vue",

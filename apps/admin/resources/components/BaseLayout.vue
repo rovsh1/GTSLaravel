@@ -11,7 +11,7 @@ defineProps({
 
 <template>
   <div class="content-header">
-    <div class="title" v-if="title">
+    <div v-if="title" class="title">
       {{ title }}
     </div>
     <slot name="header-controls" />

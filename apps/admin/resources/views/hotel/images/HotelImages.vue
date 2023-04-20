@@ -53,6 +53,7 @@ const showUploadModal = async () => {
 const removeFile = async (id: string): Promise<void> => {
   await axios.delete(`/admin/v1/hotel/${params.hotel}/images/${id}`)
   // @todo заменить на какой-нибудь нотифай
+  // eslint-disable-next-line no-alert
   alert('Файл удален')
   fetchImages()
 }
@@ -85,7 +86,7 @@ fetchHotel()
             <input
               required
               type="file"
-              multiple="multiple"
+              multiple
               name="files[]"
             >
           </label>
@@ -115,29 +116,29 @@ fetchHotel()
 
 <style scoped>
 .cards {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 32px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
 }
 
 .cards .card {
-    flex-basis: 30%;
-    flex-grow: 1;
-    overflow: hidden;
+  flex-grow: 1;
+  flex-basis: 30%;
+  overflow: hidden;
 }
 
 .card .image {
-    height: 200px;
-    position: relative;
+  position: relative;
+  height: 200px;
 }
 
 .card .body {
-    padding: 0.5rem 1rem;
+  padding: 0.5rem 1rem;
 }
 
 .card .body .buttons {
-    margin-top: 0.5rem;
-    display: flex;
-    gap: 1rem;
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
 }
 </style>

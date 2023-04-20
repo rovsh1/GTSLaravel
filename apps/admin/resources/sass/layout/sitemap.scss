@@ -2,47 +2,84 @@
 @use "~resources/sass/variables" as variables;
 
 .sitemap-wrapper {
-	visibility: hidden;
-	position: fixed;
-	top: 47px;
-	left: 0;
-	width: 0;
-	height: calc(100vh - 47px);
-	background: rgba(0, 0, 0, .29);
-	z-index: 290;
-	opacity: 0;
-	transition: all .2s ease;
+  position: fixed;
+  top: 47px;
+  left: 0;
+  z-index: 290;
+  width: 0;
+  height: calc(100vh - 47px);
+  background: rgb(0 0 0 / 29%);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
 
-	.sitemap {
-		display: flex;
-		height: 100%;
-		width: 328px;
-		visibility: hidden;
-		margin-left: -328px;
-		transition: margin-left .2s ease;
-		background: #fff;
-		box-shadow: 0 8px 10px -5px rgb(0 0 0 / 20%), 0 16px 24px 2px rgb(0 0 0 / 14%), 0 6px 30px 5px rgb(0 0 0 / 12%);
-		border-top: 1px solid #E0E0E0;
-		padding-top: .5rem;
-	}
-	.categories {
-		padding-top: 3rem;
-		width: 48px;
-		display: flex;
-		flex-direction: column;
-		a {display: block;width: 48px;height: 40px;text-align: center;line-height: 48px;border-left: 3px solid transparent;}
-		a:not(:hover) {color: rgba(0, 0, 0, .66);}
-		.item.current > a {border-left-color: variables.$primary;}
-	}
-	.main-wrapper {
-		flex-grow: 1;
-		.title {line-height: 2rem;font-size: 16px;padding: 0 1rem;margin-bottom: 1rem;color: rgba(0, 0, 0, .66);}
-	}
+  .sitemap {
+    display: flex;
+    width: 328px;
+    height: 100%;
+    margin-left: -328px;
+    padding-top: 0.5rem;
+    border-top: 1px solid #E0E0E0;
+    background: #fff;
+    box-shadow: 0 8px 10px -5px rgb(0 0 0 / 20%), 0 16px 24px 2px rgb(0 0 0 / 14%), 0 6px 30px 5px rgb(0 0 0 / 12%);
+    visibility: hidden;
+    transition: margin-left 0.2s ease;
+  }
+
+  .categories {
+    display: flex;
+    flex-direction: column;
+    width: 48px;
+    padding-top: 3rem;
+
+    a {
+      display: block;
+      width: 48px;
+      height: 40px;
+      border-left: 3px solid transparent;
+      line-height: 48px;
+      text-align: center;
+    }
+
+    a:not(:hover) {
+      color: rgb(0 0 0 / 66%);
+    }
+
+    .item.current > a {
+      border-left-color: variables.$primary;
+    }
+  }
+
+  .main-wrapper {
+    flex-grow: 1;
+
+    .title {
+      margin-bottom: 1rem;
+      padding: 0 1rem;
+      color: rgb(0 0 0 / 66%);
+      font-size: 16px;
+      line-height: 2rem;
+    }
+  }
 }
 
-body.loaded .sitemap-wrapper {width: 100%;}
-body.loaded .sitemap {visibility: visible;}
+body.loaded .sitemap-wrapper {
+  width: 100%;
+}
 
-body.sitemap-expanded {overflow: hidden;}
-body.sitemap-expanded .sitemap {margin-left: 0;}
-body.sitemap-expanded .sitemap-wrapper {visibility: visible;opacity: 1;}
+body.loaded .sitemap {
+  visibility: visible;
+}
+
+body.sitemap-expanded {
+  overflow: hidden;
+}
+
+body.sitemap-expanded .sitemap {
+  margin-left: 0;
+}
+
+body.sitemap-expanded .sitemap-wrapper {
+  opacity: 1;
+  visibility: visible;
+}

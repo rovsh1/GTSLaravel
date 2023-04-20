@@ -1,19 +1,43 @@
-.table th {font-weight: 600;color: var(--bs-table-striped-color);}
-.table tbody > tr:hover > td {box-shadow: inset 0 0 0 9999px rgba(26, 115, 232, .1);}
-
-.column-sorted {
-	//@include icons.icon();
+.table th {
+  color: var(--bs-table-striped-color);
+  font-weight: 600;
 }
 
-.column-edit {width: 1rem;text-align: center;}
-.column-edit > a {display: block;width: 1rem;}
-.column-edit > a:not(:hover) {color: rgba(0, 0, 0, .66);}
-.column-edit i {font-size: 18px;vertical-align: top;}
+.table tbody > tr:hover > td {
+  box-shadow: inset 0 0 0 9999px rgb(26 115 232 / 10%);
+}
 
-.column-number {text-align: right;}
+.column-sorted {
+  //@include icons.icon();
+}
 
-tr:not(:hover) > .column-edit > a {visibility: hidden;}
+.column-edit {
+  width: 1rem;
+  text-align: center;
+}
+
+.column-edit > a {
+  display: block;
+  width: 1rem;
+}
+
+.column-edit > a:not(:hover) {
+  color: rgb(0 0 0 / 66%);
+}
+
+.column-edit i {
+  vertical-align: top;
+  font-size: 18px;
+}
+
+.column-number {
+  text-align: right;
+}
+
+tr:not(:hover) > .column-edit > a {
+  visibility: hidden;
+}
 
 .grid-actions {
-	position: relative;
+  position: relative;
 }

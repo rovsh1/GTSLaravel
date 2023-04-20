@@ -7,9 +7,11 @@
             "DOM"
         ],
         "moduleResolution": "Node",
-        "allowSyntheticDefaultImports": true
+        "allowSyntheticDefaultImports": true,
+        "resolveJsonModule": true
     },
     "include": [
-        "vite.config.ts"
+        "vite.config.ts",
+        "package.json"
     ]
 }

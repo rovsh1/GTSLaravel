@@ -80,6 +80,7 @@ const coreFn = {
     number = Math.abs(number)
     let i
     switch (true) {
+      /* eslint-disable no-mixed-operators */
       case (number % 100 === 1 || (number % 100 > 20) && (number % 10 === 1)):
         i = 0
         break

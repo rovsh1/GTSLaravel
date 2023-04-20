@@ -3,7 +3,10 @@ import { config } from 'dotenv-safe'
 import laravel from 'laravel-vite-plugin'
 import path from 'node:path'
 import { defineConfig } from 'vite'
+import checker from 'vite-plugin-checker'
 import tsconfigPaths from 'vite-tsconfig-paths'
+
+import { scripts } from './package.json'
 
 config({
   allowEmptyValues: true,
@@ -15,6 +18,9 @@ console.log(`The Vite server should not be accessed directly. Please visit ${pro
 export default defineConfig(({ command }) => ({
   build: {
     target: 'esnext',
+  },
+  esbuild: {
+    drop: ['console', 'debugger'],
   },
   plugins: [
     laravel({
@@ -51,7 +57,12 @@ export default defineConfig(({ command }) => ({
         'resources/views/main.scss',
         'resources/views/main.ts',
       ],
-      refresh: true,
+      refresh: [
+        'app/**/*.php',
+        'factories/**/*.php',
+        'resources/**/*.php',
+        'routes/**/*.php',
+      ],
       transformOnServe: (code, devServerUrl) =>
         code.replaceAll(`${devServerUrl}/@fs`, devServerUrl),
     }),
@@ -63,6 +74,17 @@ export default defineConfig(({ command }) => ({
           base: null,
           includeAbsolute: false,
         },
+      },
+    }),
+    checker({
+      enableBuild: false,
+      vueTsc: true,
+      typescript: true,
+      eslint: {
+        lintCommand: scripts['lint:scripts'],
+      },
+      stylelint: {
+        lintCommand: scripts['lint:styles'].replace(/"/, ''),
       },
     }),
   ],

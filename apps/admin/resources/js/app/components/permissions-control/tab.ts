@@ -13,6 +13,7 @@ export default class Tab {
     const items: Item[] = []
     $menu.find('div.menu-item')
       .each(function () {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-expect-error
         items.push(new Item(self, $(this)))
       })

@@ -3,40 +3,38 @@ const initUsabilitiesModal = () => {
     const rooms: any[] = JSON.parse($('input[name="_hotel-rooms"]').val() as string)
     const getRadioHtml = function (id: number) {
       // eslint-disable-next-line no-underscore-dangle
-      const _r = function (label: string, value: string) {
+      const radioHTML = function (label: string, value: string) {
         const name = `f_hu_r_${id}`
         // eslint-disable-next-line no-underscore-dangle
-        const _id = `${name}_${value}`
+        const htmlID = `${name}_${value}`
         let html = '<div class="radio">'
-        html += `<input type="radio" id="${_id}" name="${name}" value="${value}" />`
-        html += `<label for="${_id}">${label}</label>`
+        html += `<input type="radio" id="${htmlID}" name="${name}" value="${value}" />`
+        html += `<label for="${htmlID}">${label}</label>`
         html += '</div>'
         return html
       }
 
       let html = '<div class="radio-wrapper">'
-      html += _r('Все номера', 'all')
-      html += _r('Выбранные номера', 'selected')
+      html += radioHTML('Все номера', 'all')
+      html += radioHTML('Выбранные номера', 'selected')
       html += '</div>'
 
       return html
     }
     const getRoomsHtml = function (id: number) {
-      // eslint-disable-next-line no-underscore-dangle
-      const _r = function (roomId: number, label: string) {
+      const roomHTML = function (roomId: number, label: string) {
         const name = `data[usabilities][${id}][${roomId}]`
-        // eslint-disable-next-line no-underscore-dangle
-        const _id = `f_hu_${id}_${roomId}`
+        const htmlID = `f_hu_${id}_${roomId}`
         let html = '<div class="radio">'
-        html += `<label for="${_id}">${label}</label>`
-        html += `<input data-id="${roomId}" type="checkbox" id="${_id}" name="${name}" value="1" />`
+        html += `<label for="${htmlID}">${label}</label>`
+        html += `<input data-id="${roomId}" type="checkbox" id="${htmlID}" name="${name}" value="1" />`
         html += '</div>'
         return html
       }
 
       let html = '<div class="rooms-wrapper">'
       for (let i = 0; i < rooms.length; i++) {
-        html += _r(rooms[i].id, `${rooms[i].name} (${rooms[i].custom_name || ''})`)
+        html += roomHTML(rooms[i].id, `${rooms[i].name} (${rooms[i].custom_name || ''})`)
       }
       html += '</div>'
 

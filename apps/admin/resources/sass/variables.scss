@@ -1,5 +1,5 @@
 $primary: #007bff;
-$secondary: rgba(0, 0, 0, .66);
+$secondary: rgb(0 0 0 / 66%);
 $error: #DC493A;
 
 $font-family-sans-serif: "Google Sans", sans-serif;
@@ -32,7 +32,7 @@ $box-shadow-sm: 0 2px 6px 0 rgb(67 89 113 / 12%);
 $box-shadow-lg: 0 2px 6px 0 rgb(67 89 113 / 12%);
 
 $font-size-root: 16px;
-$font-size-base: .8rem;
+$font-size-base: 0.8rem;
 //$font-size-xl: 1.25rem !default; // (C)
 //$font-size-lg: 1rem !default;
 //$font-size-sm: 0.75rem !default;
@@ -40,7 +40,7 @@ $font-size-base: .8rem;
 
 //$line-height-base: 1.5;
 
-$breadcrumb-divider-color: rgba(0, 0, 0, .44);
+$breadcrumb-divider-color: rgb(0 0 0 / 44%);
 //$breadcrumb-active-color:           $gray-600 !default;
 //$breadcrumb-divider:                quote("/") !default;
 
@@ -115,8 +115,7 @@ $pagination-padding-y: 0;
 
 $input-focus-width: 1px;
 $input-box-shadow: null;
-$input-focus-box-shadow: 0 0 0 rgba(0, 0, 0, 0);
-
+$input-focus-box-shadow: 0 0 0 rgb(0 0 0 / 0%);
 $btn-padding-x: 1rem;
 $btn-line-height: 30px;
 $btn-box-shadow: none;

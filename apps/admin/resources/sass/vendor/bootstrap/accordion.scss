@@ -1,11 +1,11 @@
 .accordion-button {
-    &:not(.collapsed) {
-        background: #F0F5FE;
-        color: #007bff;
+  &:not(.collapsed) {
+    background: #F0F5FE;
+    color: #007bff;
 
-        &:hover {
-            background: #F0F5FE;
-            color: black;
-        }
+    &:hover {
+      background: #F0F5FE;
+      color: black;
     }
+  }
 }

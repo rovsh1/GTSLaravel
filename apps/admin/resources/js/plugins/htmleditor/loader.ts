@@ -1,4 +1,5 @@
 import { TinyMCE } from 'tinymce'
+
 import { getFileFromManifest } from '~resources/js/app/build-manifest'
 
 let loadedFlag = false
@@ -23,7 +24,8 @@ export default async function loadEditor(): Promise<TinyMCE> {
     })
   }
   return new Promise((resolve) => {
-    const timer = function () {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const timer = () => {
       setTimeout(() => {
         if (window.tinymce) {
           resolve(window.tinymce)

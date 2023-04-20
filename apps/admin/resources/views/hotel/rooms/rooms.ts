@@ -1,6 +1,10 @@
 import '~resources/views/main'
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
 await import('jquery-ui/dist/jquery-ui')
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
 await import('jquery-ui/ui/widgets/sortable')
 
 $(() => {

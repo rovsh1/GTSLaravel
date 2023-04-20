@@ -1,13 +1,13 @@
 interface IBedData {
-    id: number
-    type_id: number
-    beds_number: number
-    beds_size: string
+  id: number
+  type_id: number
+  beds_number: number
+  beds_size: string
 }
 
 interface ISelectList {
-    id: number
-    name: string
+  id: number
+  name: string
 }
 
 interface IBedType extends ISelectList {
