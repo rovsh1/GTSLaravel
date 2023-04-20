@@ -6,6 +6,7 @@ use Module\Services\FileStorage\Application\Dto\FileInfoDto;
 use Module\Services\FileStorage\Domain\Entity\File;
 use Module\Services\FileStorage\Domain\Repository\StorageRepositoryInterface;
 use Module\Services\FileStorage\Domain\Service\PathGeneratorInterface;
+use Exception;
 
 class StorageRepository implements StorageRepositoryInterface
 {
@@ -33,6 +34,9 @@ class StorageRepository implements StorageRepositoryInterface
         return (string)file_get_contents($filename);
     }
 
+    /**
+     * @throws Exception
+     */
     public function put(File $file, string $contents): bool
     {
         $filename = $this->pathGenerator->path($file);
@@ -97,10 +101,8 @@ class StorageRepository implements StorageRepositoryInterface
             return;
         }
 
-        try {
-            mkdir($path, $mode, true);
-        } catch (\Exception $e) {
-            throw new \Exception('Cant create folder "' . $path . '"', 0, $e);
+        if (!mkdir($path, $mode, true)) {
+            throw new Exception('Cant create folder "' . $path . '"');
         }
     }
 }
