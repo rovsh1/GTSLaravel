@@ -2,9 +2,9 @@
 
 namespace App\Api\Http\Admin\Controllers\V1\Reference;
 
-use App\Admin\Http\Controllers\Controller;
 use App\Admin\Models\Reference\City;
 use App\Api\Http\Admin\Requests\V1\Reference\SearchCitiesRequest;
+use App\Core\Http\Controllers\Controller;
 
 class CityController extends Controller
 {

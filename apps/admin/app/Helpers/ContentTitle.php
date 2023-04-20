@@ -17,6 +17,17 @@ class ContentTitle
         return $html;
     }
 
+    public static function withAddLink(?string $addUrl, string $addText = 'Добавить', ?string $id = null): string
+    {
+        $html = '<div class="content-header">';
+        $html .= '<div class="title">' . self::title() . '</div>';
+        if ($addUrl) {
+            $html .= '<a class="btn btn-add" href="' . $addUrl . '"><i class="icon">add</i>' . $addText . '</a>';
+        }
+        $html .= '</div>';
+        return $html;
+    }
+
     public static function default(): string
     {
         $html = '<div class="content-header">';

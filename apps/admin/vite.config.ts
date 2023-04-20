@@ -1,4 +1,5 @@
 /* eslint import/no-extraneous-dependencies: ["error", {"devDependencies": true}] */
+import vue from '@vitejs/plugin-vue'
 import { config } from 'dotenv-safe'
 import laravel from 'laravel-vite-plugin'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -46,6 +47,7 @@ export default defineConfig({
         'resources/views/hotel/rooms/rooms.scss',
         'resources/views/hotel/show/show.ts',
         'resources/views/hotel/show/show.scss',
+        'resources/views/hotel/images/images.ts',
         'resources/views/profile/profile/profile.ts',
         'resources/views/profile/profile/profile.scss',
         'resources/views/service-provider/show.js',
@@ -59,6 +61,14 @@ export default defineConfig({
         code.replaceAll(`${devServerUrl}/@fs`, devServerUrl),
     }),
     tsconfigPaths(),
+    vue({
+      template: {
+        transformAssetUrls: {
+          base: null,
+          includeAbsolute: false,
+        },
+      },
+    }),
   ],
   resolve: {
     alias: {

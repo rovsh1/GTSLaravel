@@ -16,19 +16,14 @@ module.exports = {
     in_array: 'readonly',
   },
   extends: [
-    'airbnb-base',
-    'plugin:@typescript-eslint/eslint-recommended',
-    'plugin:@typescript-eslint/recommended',
+    'plugin:vue/vue3-strongly-recommended',
+    '@vue/eslint-config-airbnb-with-typescript',
+    '@vue/eslint-config-airbnb-with-typescript/allow-js-in-vue',
   ],
-  overrides: [
-  ],
-  parserOptions: {
-    parser: '@typescript-eslint/parser',
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-  },
   plugins: [
-    '@typescript-eslint',
+    '@typescript-eslint/eslint-plugin',
+    'import',
+    'vue',
   ],
   settings: {
     'import/parsers': {
@@ -52,6 +47,10 @@ module.exports = {
       js: 'never',
       ts: 'never',
       json: 'always',
+      vue: 'always',
+    }],
+    'vue/multi-word-component-names': ['error', {
+      ignores: ['index'],
     }],
     'import/order': ['error', {
       'newlines-between': 'always',

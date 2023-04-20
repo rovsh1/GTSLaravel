@@ -17,6 +17,8 @@
         "noUnusedParameters": true,
         "noImplicitReturns": true,
         "types": [
+            "vite/client",
+            "vue/types",
             "jquery",
             "./resources/globals",
             "./node_modules/@types/bootstrap/index",
@@ -24,14 +26,21 @@
         "baseUrl": "./",
         "paths": {
             "~resources/*": ["resources/*"],
+            "@/*": ["resources/js/*"]
         },
     },
     "include": [
         "resources/**/*.ts",
         "resources/**/*.d.ts",
+        "resources/**/*.vue",
     ],
     "exclude": [
         "node_modules",
         "public"
+    ],
+    "references": [
+        {
+            "path": "./tsconfig.node.json"
+        }
     ]
 }

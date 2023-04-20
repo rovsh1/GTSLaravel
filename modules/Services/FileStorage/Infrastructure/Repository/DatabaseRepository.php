@@ -31,7 +31,8 @@ class DatabaseRepository implements DatabaseRepositoryInterface
         return Model::whereType($fileType)
             ->whereEntity($entityId)
             ->get()
-            ->map(fn($r) => DataMapper::modelToFile($r));
+            ->map(fn($r) => DataMapper::modelToFile($r))
+            ->all();
     }
 
     public function create(string $fileType, ?int $entityId, string $name = null): File
