@@ -3,8 +3,8 @@
 namespace App\Admin\Models\Hotel;
 
 use App\Admin\Enums\Hotel\RatingEnum;
-use App\Admin\Enums\Hotel\VisibilityEnum;
 use App\Admin\Enums\Hotel\StatusEnum;
+use App\Admin\Enums\Hotel\VisibilityEnum;
 use App\Admin\Models\Hotel\Reference\Service;
 use App\Admin\Models\Hotel\Reference\Usability;
 use App\Admin\Models\Reference\Landmark;
@@ -31,6 +31,7 @@ use Module\HotelOld\Infrastructure\Models\Room;
  * @property-read Collection<Service>|Service[] $services
  * @property-read Collection<Usability>|Usability[] $usabilities
  * @property-read Collection<Landmark>|Landmark[] $landmarks
+ * @property-read Collection<Image>|Image[] $images
  * @method static Builder|Hotel withActiveContract()
  * @method static Builder|Hotel wherePeriod(CarbonPeriod $period)
  */
@@ -170,6 +171,11 @@ class Hotel extends Model
     public function users(): HasMany
     {
         return $this->hasMany(User::class);
+    }
+
+    protected function images(): HasMany
+    {
+        return $this->hasMany(Image::class);
     }
 
     public function updateRoomsPositions($ids): bool

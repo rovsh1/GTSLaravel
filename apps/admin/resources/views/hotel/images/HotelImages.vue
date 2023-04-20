@@ -50,12 +50,18 @@ const showUploadModal = async () => {
   // @todo показать модалку с аплоадером файлов
 }
 
-const removeFile = async (id: string): Promise<void> => {
+const removeImage = async (id: number): Promise<void> => {
   await axios.delete(`/admin/v1/hotel/${params.hotel}/images/${id}`)
   // @todo заменить на какой-нибудь нотифай
   // eslint-disable-next-line no-alert
   alert('Файл удален')
   fetchImages()
+}
+
+// @todo добавить drag n drop сортировку
+const reorderImages = async (files: HotelImage[]): Promise<void> => {
+  // @todo отправить запрос на пересортировку
+  await axios.post(`/admin/v1/hotel/${params.hotel}/images/reorder`, files)
 }
 
 fetchImages()
@@ -101,11 +107,11 @@ fetchHotel()
         <div v-for="image in images" :key="image.id" class="card">
           <div class="edit-info" />
           <div class="image">
-            <img :src="image.url" :alt="image.name" class="w-100 h-100">
+            <img :src="image.file.url" :alt="image.file.name" class="w-100 h-100">
           </div>
           <div class="body">
             <div class="buttons">
-              <DeleteButton @click="removeFile(image.id)" />
+              <DeleteButton @click="removeImage(image.id)" />
             </div>
           </div>
         </div>

@@ -4,7 +4,7 @@ export interface Hotel {
 }
 
 export interface File {
-  id: string
+  guid: string
   name: string
   url: string
   entity_id: number

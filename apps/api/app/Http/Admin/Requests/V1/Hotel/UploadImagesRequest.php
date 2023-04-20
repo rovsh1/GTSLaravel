@@ -3,6 +3,7 @@
 namespace App\Api\Http\Admin\Requests\V1\Hotel;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\UploadedFile;
 
 class UploadImagesRequest extends FormRequest
 {
@@ -20,6 +21,9 @@ class UploadImagesRequest extends FormRequest
         ];
     }
 
+    /**
+     * @return UploadedFile[]
+     */
     public function getFiles(): array
     {
         return $this->file('files');

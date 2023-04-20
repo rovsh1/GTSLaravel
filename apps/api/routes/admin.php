@@ -24,7 +24,8 @@ Route::middleware('api')->prefix('v1')->group(callback: function () {
             ->group(callback: function () {
                 Route::get('/', 'get');
                 Route::post('/upload', 'upload');
-                Route::delete('/{guid}', 'destroy');
+                Route::delete('/{image}', 'destroy');
+                Route::post('/reorder', 'reorder');
             });
     });
 });

@@ -11,11 +11,10 @@ abstract class AbstractFile implements FileInterface, \JsonSerializable
     public static function find(string $guid): ?static
     {
         $file = FileAdapter::find($guid);
-        if (is_subclass_of($file, static::class)) {
+        if ($file::class === static::class || is_subclass_of($file, static::class)) {
             return $file;
-        } else {
-            return null;
         }
+        return null;
     }
 
     public static function findByEntity(int $entityId): ?static
@@ -63,7 +62,7 @@ abstract class AbstractFile implements FileInterface, \JsonSerializable
     public function jsonSerialize(): mixed
     {
         return [
-            'id' => $this->guid(),
+            'guid' => $this->guid(),
             'entity_id' => $this->entityId(),
             'name' => $this->name(),
             'url' => $this->url(),
