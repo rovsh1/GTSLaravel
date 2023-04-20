@@ -4,12 +4,10 @@ import '~resources/js/vendor/tinymce/langs/ru'
 import 'tinymce/models/dom/model'
 import 'tinymce/icons/default/icons'
 import 'tinymce/themes/silver/theme'
-
 // Styles
 // import "tinymce/skins/ui/oxide/skin.min.css";
 // import 'tinymce/skins/ui/oxide/content.min.css';
 // import 'tinymce/skins/content/default/content.css';
-
 // Plugins
 import 'tinymce/plugins/advlist/plugin'
 import 'tinymce/plugins/autolink/plugin'
@@ -26,6 +24,5 @@ import 'tinymce/plugins/fullscreen/plugin'
 import 'tinymce/plugins/insertdatetime/plugin'
 import 'tinymce/plugins/media/plugin'
 import 'tinymce/plugins/table/plugin'
-
 // Custom plugins
 import '~resources/js/vendor/tinymce/plugins/filemanager/plugin.min'

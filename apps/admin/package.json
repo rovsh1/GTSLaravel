@@ -39,6 +39,8 @@
         "eslint-define-config": "^1.18.0",
         "eslint-import-resolver-typescript": "^3.5.3",
         "eslint-plugin-import": "^2.27.5",
+        "eslint-plugin-simple-import-sort": "^10.0.0",
+        "eslint-plugin-unused-imports": "^2.0.0",
         "eslint-plugin-vue": "^9.11.0",
         "laravel-vite-plugin": "^0.7.4",
         "postcss-html": "^1.5.0",

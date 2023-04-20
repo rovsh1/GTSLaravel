@@ -26,6 +26,8 @@ module.exports = defineConfig({
     '@typescript-eslint/eslint-plugin',
     'import',
     'vue',
+    'unused-imports',
+    'simple-import-sort',
   ],
   settings: {
     'import/parsers': {
@@ -44,6 +46,22 @@ module.exports = defineConfig({
     '**/plugins/**/*.js',
   ],
   rules: {
+    'simple-import-sort/imports': ['warn', {
+      groups: [
+        // general dependencies
+        ['^vue$', '^vue'],
+        // node_modules
+        ['^@?\\w'],
+        // Root
+        ['^~resources'],
+        // `./*.vue` or `../*.vue`
+        ['^\\.\\.?\\/.*.vue'],
+        // `./*` or `../*`
+        ['^\\.\\.?\\/.*\\.(\\w+)'],
+        // Side effects like `import 'foo'`
+        ['^\\u0000'],
+      ],
+    }],
     '@typescript-eslint/no-namespace': ['error', { allowDeclarations: true }],
     'import/extensions': ['error', {
       js: 'never',
@@ -97,7 +115,6 @@ module.exports = defineConfig({
       },
     }],
     '@typescript-eslint/no-empty-function': 'off',
-    '@typescript-eslint/no-unused-vars': 'warn',
     'no-return-await': 'off',
     '@typescript-eslint/no-empty-interface': 'off',
     'max-classes-per-file': 'off',
@@ -115,5 +132,17 @@ module.exports = defineConfig({
     'implicit-arrow-linebreak': 'off',
     'import/prefer-default-export': 'off',
     'vue/max-len': 'off',
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': 'off',
+    'unused-imports/no-unused-imports': 'error',
+    'unused-imports/no-unused-vars': [
+      'warn',
+      {
+        vars: 'all',
+        varsIgnorePattern: '^_',
+        args: 'after-used',
+        argsIgnorePattern: '^_',
+      },
+    ],
   },
 })
