@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import axios from '@/app/api'
 import AddButton from '~resources/components/AddButton.vue'
 import BaseLayout from '~resources/components/BaseLayout.vue'
+import axios from '~resources/js/app/api'
 
 const value = ref<string>('Hello world! Images page.')
 
@@ -53,7 +53,7 @@ const images = ref([
 
     <template #body>
       <div class="cards">
-        <div class="card" v-for="image in images" :key="image.id">
+        <div v-for="image in images" :key="image.id" class="card">
           <div class="edit-info" />
           <div class="image">
             <img :src="image.url" :alt="image.name" class="w-100 h-100">

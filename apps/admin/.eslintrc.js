@@ -1,4 +1,6 @@
-module.exports = {
+const { defineConfig } = require('eslint-define-config')
+
+module.exports = defineConfig({
   env: {
     browser: true,
     es2021: true,
@@ -16,7 +18,7 @@ module.exports = {
     in_array: 'readonly',
   },
   extends: [
-    'plugin:vue/vue3-strongly-recommended',
+    'plugin:vue/vue3-recommended',
     '@vue/eslint-config-airbnb-with-typescript',
     '@vue/eslint-config-airbnb-with-typescript/allow-js-in-vue',
   ],
@@ -48,9 +50,6 @@ module.exports = {
       ts: 'never',
       json: 'always',
       vue: 'always',
-    }],
-    'vue/multi-word-component-names': ['error', {
-      ignores: ['index'],
     }],
     'import/order': ['error', {
       'newlines-between': 'always',
@@ -115,4 +114,4 @@ module.exports = {
     'implicit-arrow-linebreak': 'off',
     'import/prefer-default-export': 'off',
   },
-}
+})

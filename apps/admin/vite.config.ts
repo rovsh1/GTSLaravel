@@ -1,9 +1,6 @@
-/* eslint import/no-extraneous-dependencies: ["error", {"devDependencies": true}] */
 import vue from '@vitejs/plugin-vue'
 import { config } from 'dotenv-safe'
 import laravel from 'laravel-vite-plugin'
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
 import path from 'node:path'
 import { defineConfig } from 'vite'
 import tsconfigPaths from 'vite-tsconfig-paths'
@@ -15,7 +12,7 @@ config({
 })
 // https://github.com/laravel/vite-plugin/pull/57
 console.log(`The Vite server should not be accessed directly. Please visit ${process.env.APP_URL} instead.`)
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   build: {
     target: 'esnext',
   },
@@ -56,12 +53,11 @@ export default defineConfig({
       ],
       refresh: true,
       transformOnServe: (code, devServerUrl) =>
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-expect-error
         code.replaceAll(`${devServerUrl}/@fs`, devServerUrl),
     }),
     tsconfigPaths(),
     vue({
+      isProduction: command === 'build',
       template: {
         transformAssetUrls: {
           base: null,
@@ -75,4 +71,4 @@ export default defineConfig({
       '~resources': path.resolve(__dirname, 'resources'),
     },
   },
-})
+}))

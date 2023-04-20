@@ -1,7 +1,7 @@
 import { createApp, h } from 'vue'
 
-import ImagesPage from './index.vue'
+import HotelImages from './HotelImages.vue'
 
 createApp({
-  render: () => h(ImagesPage),
+  render: () => h(HotelImages),
 }).mount('#hotel-images')

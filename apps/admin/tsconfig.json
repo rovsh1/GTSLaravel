@@ -21,13 +21,12 @@
             "vue/types",
             "jquery",
             "./resources/globals",
-            "./node_modules/@types/bootstrap/index",
+            "./node_modules/@types/bootstrap/index"
         ],
         "baseUrl": "./",
         "paths": {
-            "~resources/*": ["resources/*"],
-            "@/*": ["resources/js/*"]
-        },
+            "~resources/*": ["resources/*"]
+        }
     },
     "include": [
         "resources/**/*.ts",
