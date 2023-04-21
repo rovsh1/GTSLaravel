@@ -1,12 +1,11 @@
 @extends('layouts.common')
 
-@section('scripts')
-    @vite('resources/assets/jquery.ts')
-    @hasSection('scripts')
-    @else
+@hasSection('scripts')
+@else
+    @section('scripts')
         @vite('resources/views/main.ts')
-    @endif
-@endsection
+    @endsection
+@endif
 
 @hasSection('styles')
 @else

@@ -3,6 +3,7 @@
     <head>
         {!! Layout::meta() !!}
 
+        @vite('resources/assets/jquery.ts')
         @yield('scripts')
         @yield('styles')
     </head>
