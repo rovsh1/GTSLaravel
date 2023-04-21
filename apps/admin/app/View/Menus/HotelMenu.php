@@ -29,7 +29,7 @@ class HotelMenu extends AbstractSubmenu
             ->addUrl('employees', route('hotels.employee.index', $this->model->id), 'Сотрудники', ['icon' => 'person']);
 
         $group = (new Group('settings'))
-            ->addUrl('quota', route('hotels.rooms.index', $this->model->id), 'Квоты', ['icon' => 'edit_calendar'])
+            ->addUrl('quotas', route('hotels.quotas.index', $this->model->id), 'Квоты', ['icon' => 'edit_calendar'])
             ->addUrl('images', route('hotels.images.index', $this->model->id), 'Фотографии', ['icon' => 'image'])
             ->addUrl('rooms', route('hotels.rooms.index', $this->model->id), 'Номера', ['icon' => 'single_bed'])
             ->addUrl('settings', route('hotels.rooms.index', $this->model->id), 'Условия размещения', ['icon' => 'tune']);
