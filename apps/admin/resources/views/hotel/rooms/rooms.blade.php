@@ -9,9 +9,7 @@
 @endsection
 
 @section('content')
-    <div class="content-header">
-        <div class="title">{{ $title }}</div>
-    </div>
+    {!! ContentTitle::withAddLink($createUrl, 'Добавить номер') !!}
 
     <div class="content-body rooms-cards" id="hotel-rooms">
         @foreach($rooms as $room)
@@ -44,14 +42,5 @@
                 </div>
             </div>
         @endforeach
-
-        @if($createUrl)
-            <a class="card new" href="{{ $createUrl }}">
-                <div class="btn">
-                    <i class="icon">add</i>
-                    Добавить номер
-                </div>
-            </a>
-        @endif
     </div>
 @endsection
