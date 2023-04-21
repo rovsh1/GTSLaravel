@@ -6,5 +6,7 @@ key-generate:
 	docker compose exec php php artisan key:generate
 migrate:
 	docker compose exec php php artisan migrate
+migrate-fresh:
+	docker compose exec php php artisan migrate:fresh
 make frontend-admin:
 	cd apps/admin; npm install; npm run build
