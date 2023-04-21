@@ -24,7 +24,7 @@
                 </div>
                 <div class="image">
                     <x-file-image :file="null"/>
-                    <div class="name">{{ $room }}</div>
+                    <div class="name">{{ $room->display_name }}</div>
                 </div>
                 <div class="body">
                     <div class="type">
