@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { useUrlSearchParams } from '@vueuse/core'
 import { ref } from 'vue'
+
 
 import AddButton from '~resources/components/AddButton.vue'
 import BaseLayout from '~resources/components/BaseLayout.vue'
@@ -11,10 +13,13 @@ import { useUrlParams } from '~resources/lib/url-params'
 import { HotelImage } from '~resources/views/hotel/images/models'
 
 const params = useUrlParams()
+const { room_id: roomId } = useUrlSearchParams()
 const isLoaded = ref<boolean>(false)
 const images = ref<HotelImage[]>([])
 const hotel = ref<Hotel | undefined>()
 const filesForm = ref<HTMLFormElement>()
+
+console.log(roomId)
 
 interface FetchImagesResponse {
   images: HotelImage[]

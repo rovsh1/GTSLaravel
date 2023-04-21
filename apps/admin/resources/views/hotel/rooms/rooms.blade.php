@@ -30,14 +30,16 @@
                 </div>
                 <div class="body">
                     <div class="type">
-                        {{ $room->type_name }} на <b>{{ $room->guests_number }}</b> {{ trans_choice('человека|человека|человек', $room->guests_number) }}
+                        {{ $room->type_name }} на
+                        <b>{{ $room->guests_number }}</b> {{ trans_choice('человека|человека|человек', $room->guests_number) }}
                         (<b>x{{ $room->rooms_number }}</b>)
                     </div>
                     <div class="buttons">
                         @if($editAllowed)
                             <a href="{{ route('hotels.rooms.edit', [$hotel, $room]) }}" class="btn btn-light">Редакировать</a>
+                            <a href="{{ route('hotels.images.index', [$hotel, 'room_id' => $room->id]) }}"
+                               class="btn btn-light">Фотографии</a>
                         @endif
-                        <a href="#" class="btn btn-light">Фотографии</a>
                     </div>
                 </div>
             </div>
