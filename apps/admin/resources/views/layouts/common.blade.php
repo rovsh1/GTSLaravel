@@ -3,19 +3,8 @@
     <head>
         {!! Layout::meta() !!}
 
-        @vite('resources/assets/jquery.ts')
-
-        @hasSection('scripts')
-            @yield('scripts')
-        @else
-            @vite('resources/views/main.ts')
-        @endif
-
-        @hasSection('styles')
-            @yield('styles')
-        @else
-            @vite('resources/views/main.scss')
-        @endif
+        @yield('scripts')
+        @yield('styles')
     </head>
     <body class="{{ Layout::bodyClass() }}">
         @yield('layout__content')
