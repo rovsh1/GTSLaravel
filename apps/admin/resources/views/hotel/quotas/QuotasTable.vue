@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-import { computed, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 
 import { getEachDayInMonth } from '~resources/lib/date'
+import EditableCell from '~resources/views/hotel/quotas/components/EditableCell.vue'
 
 const month = new Date()
 
@@ -12,6 +13,8 @@ type Day = {
   dayOfMonth: string
   quota: number
   sold: number
+  reserve: number
+  releaseDays: number
 }
 
 const days = computed<Day[]>(() => getEachDayInMonth(month)
@@ -22,6 +25,8 @@ const days = computed<Day[]>(() => getEachDayInMonth(month)
     dayOfMonth: date.toFormat('d'),
     quota: 1,
     sold: 0,
+    reserve: 0,
+    releaseDays: 0,
   })))
 
 interface RoomType {
@@ -54,14 +59,12 @@ const firstColumnWidth = computed<number | null>(() => {
   return element.clientWidth
 })
 
-const activeQuotaKey = ref<string | null>(null)
+type ActiveKey = string | null
+const activeQuotaKey = ref<ActiveKey>(null)
+const activeReleaseDaysKey = ref<ActiveKey>(null)
 
-const getActiveQuotaKey = (dayKey: string, roomTypeID: number) =>
+const getActiveCellKey = (dayKey: string, roomTypeID: number) =>
   `${dayKey}-${roomTypeID}`
-
-const quotaInputRef = ref<HTMLInputElement>()
-
-watch(quotaInputRef, (element) => element?.focus())
 </script>
 <template>
   <div class="root">
@@ -118,37 +121,44 @@ watch(quotaInputRef, (element) => element?.focus())
               Квоты / Продано
             </th>
             <td v-for="{ key, quota, sold } in days" :key="key">
-              <input
-                v-if="activeQuotaKey === getActiveQuotaKey(key, id)"
-                :ref="(element) => quotaInputRef = element as HTMLInputElement"
-                :value="quota"
-                class="editableCellInput"
-                @blur="() => activeQuotaKey = null"
-              >
-              <button
-                v-else
-                type="button"
-                class="editableDataCell"
-                @click="() => activeQuotaKey = getActiveQuotaKey(key, id)"
+              <editable-cell
+                :active-key="activeQuotaKey"
+                :cell-key="getActiveCellKey(key, id)"
+                :value="quota.toString()"
+                @active-key="(value) => activeQuotaKey = value"
               >
                 {{ quota }} / {{ sold }}
-              </button>
+              </editable-cell>
             </td>
           </tr>
           <tr>
-            <th class="headingCell">
+            <th class="reserveHeadingCell">
               (резерв)
             </th>
-            <td v-for="{ key } in days" :key="key" class="dataCell">
-              (0)
+            <td
+              v-for="{ key, reserve } in days"
+              :key="key"
+              class="reserveDataCell"
+            >
+              ({{ reserve }})
             </td>
           </tr>
           <tr>
             <th class="headingCell">
               релиз-дни
             </th>
-            <td v-for="{ key } in days" :key="key" class="dataCell">
-              0
+            <td
+              v-for="{ key, releaseDays } in days"
+              :key="key"
+            >
+              <editable-cell
+                :active-key="activeReleaseDaysKey"
+                :cell-key="getActiveCellKey(key, id)"
+                :value="releaseDays.toString()"
+                @active-key="(value) => activeReleaseDaysKey = value"
+              >
+                {{ releaseDays }}
+              </editable-cell>
             </td>
           </tr>
         </template>
@@ -157,6 +167,9 @@ watch(quotaInputRef, (element) => element?.focus())
   </div>
 </template>
 <style lang="scss" scoped>
+@use '~resources/sass/variables' as vars;
+@use './components/shared' as shared;
+
 .root {
   overflow: auto;
   font-size: 0.8em;
@@ -171,7 +184,7 @@ th {
 }
 
 %cell {
-  padding: 0.5em;
+  @include shared.cell;
 }
 
 .dayCell {
@@ -182,41 +195,37 @@ th {
 }
 
 %data-cell {
-  @extend %cell;
-
-  text-align: center;
-  white-space: nowrap;
-}
-
-.editableDataCell {
-  @extend %data-cell;
-
-  width: 100%;
-  border: 2px solid transparent;
-  background-color: unset;
-
-  &:hover {
-    background-color: rgba(black, 0.1);
-  }
-}
-
-.editableCellInput {
-  @extend %data-cell;
-
-  width: 100%;
-  font-size: inherit;
+  @include shared.data-cell;
 }
 
 .dataCell {
   @extend %data-cell;
 }
 
-.headingCell {
+%reserve-cell {
+  padding-block: 0.25em;
+}
+
+.reserveDataCell {
+  @extend %data-cell;
+  @extend %reserve-cell;
+}
+
+%heading-cell {
   @extend %cell;
 
   left: calc(v-bind(firstColumnWidth) * 1px);
   text-align: right;
   white-space: nowrap;
+}
+
+.headingCell {
+  @extend %heading-cell;
+}
+
+.reserveHeadingCell {
+  @extend %heading-cell;
+  @extend %reserve-cell;
 }
 
 %cell-title-line {
@@ -259,7 +268,7 @@ th {
 
 .roomTypeStatValue {
   margin: unset;
-  color: red;
+  color: vars.$error;
   font-weight: bold;
 }
 </style>

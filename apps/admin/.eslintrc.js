@@ -148,7 +148,7 @@ module.exports = defineConfig({
           ignoreComments: false,
           ignoreTrailingComments: false,
           ignoreUrls: false,
-          ignoreStrings: false,
+          ignoreStrings: true,
           ignoreTemplateLiterals: false,
           ignoreRegExpLiterals: false,
           ignoreHTMLAttributeValues: false,
