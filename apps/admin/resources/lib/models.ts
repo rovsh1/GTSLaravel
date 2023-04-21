@@ -3,6 +3,12 @@ export interface Hotel {
   name: string
 }
 
+export interface Room {
+  id: number
+  name: string
+  display_name: string
+}
+
 export interface File {
   guid: string
   name: string

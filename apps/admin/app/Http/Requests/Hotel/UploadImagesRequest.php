@@ -17,7 +17,8 @@ class UploadImagesRequest extends FormRequest
     {
         return [
             'files' => ['required', 'array'],
-            'files.*' => 'mimetypes:image/*'
+            'files.*' => 'mimetypes:image/*',
+            'room_id' => ['nullable', 'numeric']
         ];
     }
 
@@ -27,5 +28,10 @@ class UploadImagesRequest extends FormRequest
     public function getFiles(): array
     {
         return $this->file('files');
+    }
+
+    public function getRoomId(): ?int
+    {
+        return $this->post('room_id');
     }
 }

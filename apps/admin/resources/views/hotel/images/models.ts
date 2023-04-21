@@ -7,3 +7,8 @@ export interface HotelImage {
   hotel_id: number
   file: File
 }
+
+export interface RoomImage extends HotelImage {
+  room_id: number
+  image_id: number
+}

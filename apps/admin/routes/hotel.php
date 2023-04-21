@@ -32,4 +32,9 @@ AclRoute::for('hotel')
     ->post('/{hotel}/images/upload', Controllers\Hotel\ImageController::class . '@upload', 'update', 'images.upload')
     ->delete('/{hotel}/images/{image}', Controllers\Hotel\ImageController::class . '@destroy', 'update', 'images.destroy')
     ->post('/{hotel}/images/reorder', Controllers\Hotel\ImageController::class . '@reorder', 'update', 'images.reorder')
+
+    ->get('/{hotel}/images/{room}/list', Controllers\Hotel\ImageController::class . '@getRoomImages', 'update', 'images.room.get')
+    ->post('/{hotel}/rooms/{room}/images/{image}/create', Controllers\Hotel\ImageController::class . '@createRoomImage', 'update', 'images.room.set')
+    ->post('/{hotel}/rooms/{room}/images/{image}/delete', Controllers\Hotel\ImageController::class . '@deleteRoomImage', 'update', 'images.room.delete')
+
     ->get('/{hotel}/quotas', Controllers\Hotel\QuotaController::class . '@index', 'update', 'quotas.index');

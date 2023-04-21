@@ -4,12 +4,13 @@ namespace App\Api\Repositories\Hotel;
 
 use App\Admin\Files\HotelImage;
 use App\Admin\Models\Hotel\Image;
+use App\Admin\Models\Hotel\RoomImage;
 use App\Core\Support\Facades\FileAdapter;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
-class HotelImageRepository
+class ImageRepository
 {
     /**
      * @param int $hotelId
@@ -41,7 +42,7 @@ class HotelImageRepository
             ]);
 
             if ($roomId !== null) {
-                DB::table('hotel_room_images')->insertGetId([
+                RoomImage::create([
                     'room_id' => $roomId,
                     'image_id' => $hotelImage->id,
                 ]);
