@@ -14,7 +14,12 @@ defineEmits(['click'])
 </script>
 
 <template>
-  <button type="button" class="btn btn-delete" :disabled="disabled" @click="$emit('click')">
+  <button
+    type="button"
+    class="btn btn-delete"
+    :disabled="disabled"
+    @click="$emit('click')"
+  >
     <i class="icon">delete</i>
     {{ text }}
   </button>

@@ -22,13 +22,15 @@ interface FetchImagesResponse {
 
 const fetchImages = async () => {
   isLoaded.value = false
-  const { data: response } = await adminApi.get<FetchImagesResponse>(`/hotels/${params.hotel}/images/list`)
+  const { data: response } = await adminApi
+    .get<FetchImagesResponse>(`/hotels/${params.hotel}/images/list`)
   images.value = response.images
   isLoaded.value = true
 }
 
 const fetchHotel = async () => {
-  const { data: response } = await api.get<Hotel>(`/admin/v1/hotel/${params.hotel}`)
+  const { data: response } = await api
+    .get<Hotel>(`/admin/v1/hotel/${params.hotel}`)
   hotel.value = response as Hotel
 }
 
@@ -109,7 +111,11 @@ fetchHotel()
         <div v-for="image in images" :key="image.id" class="card">
           <div class="edit-info" />
           <div class="image">
-            <img :src="image.file.url" :alt="image.file.name" class="w-100 h-100">
+            <img
+              :src="image.file.url"
+              :alt="image.file.name"
+              class="w-100 h-100"
+            >
           </div>
           <div class="body">
             <div class="buttons">

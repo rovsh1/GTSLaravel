@@ -69,19 +69,6 @@ module.exports = defineConfig({
       json: 'always',
       vue: 'always',
     }],
-    'import/order': ['error', {
-      'newlines-between': 'always',
-      alphabetize: {
-        order: 'asc',
-        caseInsensitive: true,
-      },
-      groups: [
-        ['builtin', 'external'],
-        'internal',
-        ['parent', 'sibling'],
-      ],
-    }],
-
     'no-underscore-dangle': ['error', {
       allowAfterThis: true,
     }],
@@ -131,6 +118,9 @@ module.exports = defineConfig({
     'no-new': 'off',
     'implicit-arrow-linebreak': 'off',
     'import/prefer-default-export': 'off',
+    'import/no-extraneous-dependencies': ['error', {
+      devDependencies: ['**/*.d.ts'],
+    }],
     'vue/max-len': 'off',
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': 'off',
@@ -145,4 +135,26 @@ module.exports = defineConfig({
       },
     ],
   },
+  overrides: [
+    {
+      files: ['*.vue'],
+      rules: {
+        'vue/max-len': ['error', {
+          code: 80,
+          template: 80,
+          tabWidth: 2,
+          comments: 80,
+          ignorePattern: '',
+          ignoreComments: false,
+          ignoreTrailingComments: false,
+          ignoreUrls: false,
+          ignoreStrings: false,
+          ignoreTemplateLiterals: false,
+          ignoreRegExpLiterals: false,
+          ignoreHTMLAttributeValues: false,
+          ignoreHTMLTextContents: false,
+        }],
+      },
+    },
+  ],
 })
