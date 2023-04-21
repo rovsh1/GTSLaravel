@@ -25,8 +25,6 @@ class Image extends File
         if ($value instanceof UploadedFile) {
             parent::setValue($value);
         } elseif (is_array($value)) {
-            //TODO convert to UploadedFile
-            //is_uploaded_file?
             parent::setValue(new UploadedFile($value['tmpname'], $value['name']));
         } else {
             parent::setValue(null);

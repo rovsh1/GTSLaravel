@@ -5,6 +5,7 @@ namespace Module\Services\FileStorage\Infrastructure\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model as BaseModel;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class File extends BaseModel
 {
@@ -88,7 +89,7 @@ class File extends BaseModel
     private static function generateGuid(): string
     {
         do {
-            $guid = md5(uniqid());
+            $guid = Str::random(32);
         } while (static::whereGuid($guid)->exists());
 
         return $guid;

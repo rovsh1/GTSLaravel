@@ -32,6 +32,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method self localeText(string $name, array $options = [])
  * @method self language(string $name, array $options = [])
  * @method self numRange(string $name, array $options = [])
+ * @method self image(string $name, array $options = [])
  */
 class Form extends Base
 {
