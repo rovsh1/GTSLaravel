@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useUrlSearchParams } from '@vueuse/core'
 import { ref } from 'vue'
 
+import { useUrlSearchParams } from '@vueuse/core'
 
 import AddButton from '~resources/components/AddButton.vue'
 import BaseLayout from '~resources/components/BaseLayout.vue'
