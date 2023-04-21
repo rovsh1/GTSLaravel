@@ -44,6 +44,7 @@ export default defineConfig(({ command }) => ({
         'resources/views/hotel/notes/notes.scss',
         'resources/views/hotel/prices/prices.ts',
         'resources/views/hotel/prices/prices.scss',
+        'resources/views/hotel/quotas/quotas.ts',
         'resources/views/hotel/room-form/room-form.ts',
         'resources/views/hotel/room-form/room-form.scss',
         'resources/views/hotel/rooms/rooms.ts',

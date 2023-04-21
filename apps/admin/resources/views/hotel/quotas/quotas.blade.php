@@ -14,7 +14,7 @@
         <div class="card card-form">
             <div class="card-body">
                 <div id="hotel-show">
-                    <div id="quotes-table"></div>
+                    <div id="quotas-table"></div>
                 </div>
             </div>
         </div>

@@ -1,17 +1,9 @@
-import { createApp, h } from 'vue'
-
 import { editableTable } from '~resources/js/app/support/editable-table'
 import initServicesModal from '~resources/views/hotel/_modals/services-modal'
 import initUsabilitiesModal from '~resources/views/hotel/_modals/usabilities-modal'
 
-import QuotasTable from './QuotasTable.vue'
-
 import '~resources/views/main'
 import '~resources/js/app/components/card-contacts'
-
-createApp({
-  render: () => h(QuotasTable),
-}).mount('#quotas-table')
 
 $(document)
   .ready((): void => {

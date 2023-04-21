@@ -18,14 +18,6 @@
     </div>
 
     <div class="content-body">
-        <div class="card card-form">
-            <div class="card-body">
-                <div id="hotel-show">
-                    <div id="quotas-table"></div>
-                </div>
-            </div>
-        </div>
-
         <div class="card card-form mt-3">
             <div class="card-body">
                 {!! $params !!}
