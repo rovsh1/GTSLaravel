@@ -1,6 +1,3 @@
-// TODO figure out how to do the same in `vite dev`
-import buildManifest from '../../../public/build/manifest.json'
-
 type BuildManifest = Record<string, {
   src: string
   file: string
@@ -17,7 +14,7 @@ const fetchManifest = () => new Promise<BuildManifest>((resolve) => {
     .then((manifest) => resolve(manifest))
 })
 
-export const getFileFromManifest = async (src: keyof typeof buildManifest) => {
+export const getFileFromManifest = async (src: string) => {
   const manifest = await fetchManifest()
   const item = manifest[src]
   if (item === undefined) {
