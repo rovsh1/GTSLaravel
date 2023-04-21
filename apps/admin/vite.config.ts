@@ -59,10 +59,7 @@ export default defineConfig(({ command }) => ({
         'resources/views/main.ts',
       ],
       refresh: [
-        'app/**/*.php',
-        'factories/**/*.php',
         'resources/**/*.php',
-        'routes/**/*.php',
       ],
       transformOnServe: (code, devServerUrl) =>
         code.replaceAll(`${devServerUrl}/@fs`, devServerUrl),
