@@ -62,7 +62,7 @@ class Select extends AbstractElement
     {
         $selected = $this->getValue();
         $item = $this->getItem($value);
-        if (!$selected || !$item) {
+        if ($selected === null || !$item) {
             return false;
         }
 
@@ -122,7 +122,9 @@ class Select extends AbstractElement
 
     public function getHtml(): string
     {
-        $html = '<select class="form-select ' . ($this->class ?? '') . '" ' . (new InputAttributes($this))->render($this->attributes) . '>';
+        $html = '<select class="form-select ' . ($this->class ?? '') . '" ' . (new InputAttributes($this))->render(
+                $this->attributes
+            ) . '>';
 
         if (null !== $this->emptyItem) {
             $html .= '<option value="' . $this->emptyItemValue . '">' . $this->emptyItem . '</option>';
