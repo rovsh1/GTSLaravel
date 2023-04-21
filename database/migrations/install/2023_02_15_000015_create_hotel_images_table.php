@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('hotel_images', function (Blueprint $table) {
             $table->unsignedInteger('id')->autoIncrement();
             $table->unsignedInteger('hotel_id');
-            $table->char('image_id', 32);
+            $table->char('file_guid', 32);
             $table->unsignedSmallInteger('index')->default(0);
             $table->string('title')->nullable();
             $table->timestamps();
@@ -24,7 +24,7 @@ return new class extends Migration {
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
 
-            $table->foreign('image_id')
+            $table->foreign('file_guid')
                 ->references('guid')
                 ->on('files')
                 ->restrictOnDelete()

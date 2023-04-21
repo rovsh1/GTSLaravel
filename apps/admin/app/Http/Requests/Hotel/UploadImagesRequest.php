@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Api\Http\Admin\Requests\V1\Hotel;
+namespace App\Admin\Http\Requests\Hotel;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\UploadedFile;

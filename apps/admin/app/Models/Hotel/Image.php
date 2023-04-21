@@ -6,13 +6,14 @@ use App\Admin\Files\HotelImage;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 /**
  * App\Admin\Models\Hotel\Image
  *
  * @property int $id
  * @property int $hotel_id
- * @property string $image_id
+ * @property string $file_guid
  * @property int $index
  * @property string|null $title
  * @property \Custom\Framework\Support\DateTime|null $created_at
@@ -37,13 +38,23 @@ class Image extends Model
 
     protected $fillable = [
         'hotel_id',
-        'image_id',
+        'file_guid',
         'index',
         'title',
     ];
 
     public function file(): Attribute
     {
-        return Attribute::get(fn() => HotelImage::find($this->image_id));
+        return Attribute::get(fn() => HotelImage::find($this->file_guid));
+    }
+
+    public static function getNextIndexByHotelId(int $hotelId): int
+    {
+        $index = DB::select(
+            'SELECT MAX(`index`) as `index` FROM `hotel_images` WHERE `hotel_id`= :hotel_id',
+            ['hotel_id' => $hotelId]
+        );
+        $index = $index[0];
+        return $index->index !== null ? $index->index + 1 : 0;
     }
 }

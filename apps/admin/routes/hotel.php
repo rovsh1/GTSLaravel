@@ -37,4 +37,8 @@ AclRoute::for('hotel')
         Controllers\Hotel\ImageController::class . '@index',
         'update',
         'images.index'
-    );
+    )
+    ->get('/{hotel}/images/list', Controllers\Hotel\ImageController::class . '@get', 'update', 'images.get')
+    ->post('/{hotel}/images/upload', Controllers\Hotel\ImageController::class . '@upload', 'update', 'images.upload')
+    ->delete('/{hotel}/images/{image}', Controllers\Hotel\ImageController::class . '@destroy', 'update', 'images.destroy')
+    ->post('/{hotel}/images/reorder', Controllers\Hotel\ImageController::class . '@reorder', 'update', 'images.reorder');

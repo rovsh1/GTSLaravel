@@ -31,17 +31,13 @@ class HotelImageRepository
                 $file->getContent()
             );
 
-            $lastImage = Image::query()
-                ->where('hotel_id', $hotelId)
-                ->orderByDesc('id')
-                ->first();
-            $index = $lastImage !== null ? $lastImage->index + 1 : 0;
+            $index = Image::getNextIndexByHotelId($hotelId);
 
             $hotelImage = Image::create([
                 'hotel_id' => $hotelId,
                 'title' => $title,
                 'index' => $index,
-                'image_id' => $image->guid(),
+                'file_guid' => $image->guid(),
             ]);
 
             if ($roomId !== null) {
@@ -58,7 +54,7 @@ class HotelImageRepository
     public function delete(Image $image): void
     {
         DB::transaction(function () use ($image) {
-            $guid = $image->image_id;
+            $guid = $image->file_guid;
             $image->delete();
             FileAdapter::delete($guid);
         });

@@ -4,7 +4,8 @@ import { ref } from 'vue'
 import AddButton from '~resources/components/AddButton.vue'
 import BaseLayout from '~resources/components/BaseLayout.vue'
 import DeleteButton from '~resources/components/DeleteButton.vue'
-import axios from '~resources/js/app/api'
+import api from '~resources/js/app/api'
+import adminApi from '~resources/js/app/api/admin'
 import { Hotel } from '~resources/lib/models'
 import { useUrlParams } from '~resources/lib/url-params'
 import { HotelImage } from '~resources/views/hotel/images/models'
@@ -21,13 +22,13 @@ interface FetchImagesResponse {
 
 const fetchImages = async () => {
   isLoaded.value = false
-  const { data: response } = await axios.get<FetchImagesResponse>(`/admin/v1/hotel/${params.hotel}/images`)
+  const { data: response } = await adminApi.get<FetchImagesResponse>(`/hotels/${params.hotel}/images/list`)
   images.value = response.images
   isLoaded.value = true
 }
 
 const fetchHotel = async () => {
-  const { data: response } = await axios.get<Hotel>(`/admin/v1/hotel/${params.hotel}`)
+  const { data: response } = await api.get<Hotel>(`/admin/v1/hotel/${params.hotel}`)
   hotel.value = response as Hotel
 }
 
@@ -36,7 +37,7 @@ const uploadImages = async () => {
     return
   }
   const formData = new FormData(filesForm.value as HTMLFormElement)
-  await axios.post(`/admin/v1/hotel/${params.hotel}/images/upload`, formData, {
+  await adminApi.post(`/hotels/${params.hotel}/images/upload`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -51,7 +52,7 @@ const showUploadModal = async () => {
 }
 
 const removeImage = async (id: number): Promise<void> => {
-  await axios.delete(`/admin/v1/hotel/${params.hotel}/images/${id}`)
+  await adminApi.delete(`/hotels/${params.hotel}/images/${id}`)
   // @todo заменить на какой-нибудь нотифай
   // eslint-disable-next-line no-alert
   alert('Файл удален')
@@ -62,7 +63,7 @@ const removeImage = async (id: number): Promise<void> => {
 // eslint-disable-next-line unused-imports/no-unused-vars
 const reorderImages = async (files: HotelImage[]): Promise<void> => {
   // @todo отправить запрос на пересортировку
-  await axios.post(`/admin/v1/hotel/${params.hotel}/images/reorder`, files)
+  await adminApi.post(`/hotels/${params.hotel}/images/reorder`, files)
 }
 
 fetchImages()
