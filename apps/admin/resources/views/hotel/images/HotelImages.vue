@@ -59,10 +59,11 @@ const removeImage = async (id: number): Promise<void> => {
 }
 
 // @todo добавить drag n drop сортировку
-// const reorderImages = async (files: HotelImage[]): Promise<void> => {
-//   // @todo отправить запрос на пересортировку
-//   await axios.post(`/admin/v1/hotel/${params.hotel}/images/reorder`, files)
-// }
+// eslint-disable-next-line unused-imports/no-unused-vars
+const reorderImages = async (files: HotelImage[]): Promise<void> => {
+  // @todo отправить запрос на пересортировку
+  await axios.post(`/admin/v1/hotel/${params.hotel}/images/reorder`, files)
+}
 
 fetchImages()
 fetchHotel()

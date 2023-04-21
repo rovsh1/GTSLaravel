@@ -1,8 +1,6 @@
 export default class Dropdown {
   #el: JQuery<HTMLElement>
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
   #options: any
 
   constructor(options: any) {
