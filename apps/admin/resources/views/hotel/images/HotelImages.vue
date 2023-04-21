@@ -251,12 +251,11 @@ fetchImages()
 }
 
 .card .body {
-  padding: 0.5rem 1rem;
+  padding: 0.5rem;
 }
 
 .card .body .buttons {
   display: flex;
   gap: 1rem;
-  margin-top: 0.5rem;
 }
 </style>
