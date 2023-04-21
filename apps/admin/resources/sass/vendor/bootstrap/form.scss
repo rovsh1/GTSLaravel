@@ -14,6 +14,23 @@
   padding: 0 1rem;
 }
 
+.card {
+  &-header {
+    position: relative;
+
+    &-toggle {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+    }
+
+    &-controls {
+      position: relative;
+      z-index: 2;
+    }
+  }
+}
+
 div.field-required > label::after {
   content: " *";
   color: #DC493A;

@@ -106,24 +106,10 @@ function bootTabsAnchor() {
   Tab.getOrCreateInstance(triggerEl).show()
 }
 
-function bootCollapsables() {
-  const collapsableButtons = document.querySelectorAll('div[data-bs-toggle="collapse"]')
-
-  collapsableButtons.forEach((element) => {
-    $(element).find('a,button').on('click', () => {
-      console.log('need stop')
-      // @todo разобраться почему bootstrap все равно делает toggle на collapsable
-      // event.stopPropagation()
-      // event.stopImmediatePropagation()
-    })
-  })
-}
-
 export default function bootForms() {
   bootDeleteButtons()
   bootMultiselect()
   bootDateRangePicker()
   bootFileFields()
   bootTabsAnchor()
-  bootCollapsables()
 }

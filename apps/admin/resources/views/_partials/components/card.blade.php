@@ -1,16 +1,19 @@
 @props(['id', 'header', 'collapsable' => false])
 @php
     $headerAttributes = $collapsable
-    ? ('class="card-header collapsable collapsed"'
-        . ' data-bs-toggle="collapse"'
-        . ' data-bs-target="#collapse-' . $id . '"'
-        . ' aria-expanded="false"'
-        . ' aria-controls="collapse-' . $id . '"')
-    : 'class="card-header"';
+        ? 'class="card-header collapsable collapsed"'
+        : 'class="card-header"';
+    $toggleAttributes = $collapsable
+        ? ('data-bs-toggle="collapse"'
+            . ' data-bs-target="#collapse-' . $id . '"'
+            . ' aria-expanded="false"'
+            . ' aria-controls="collapse-' . $id . '"')
+        : 'class="card-header"';
 @endphp
 
 <div {{ $attributes->merge(['class' => 'card', 'id' => $id]) }}>
     <div {!! $headerAttributes !!}>
+        <div class="card-header-toggle" {!! $toggleAttributes !!}></div>
         <h5 class="mb-0">
             {{$header}}
         </h5>
