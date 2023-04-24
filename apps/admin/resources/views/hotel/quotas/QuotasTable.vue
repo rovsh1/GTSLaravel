@@ -11,7 +11,7 @@ import EditableCell from './components/EditableCell.vue'
 import HeadingCell from './components/HeadingCell.vue'
 import MenuButton from './components/MenuButton.vue'
 
-import { Day, getRoomsQuotasFromQuotas, RoomQuota, RoomQuotas, RoomQuotaStatus } from './lib'
+import { Day, getRoomsQuotasFromQuotas, RoomID, RoomQuota, RoomQuotas, RoomQuotaStatus } from './lib'
 import { Quota } from './lib/mock'
 
 const props = defineProps<{
@@ -46,8 +46,6 @@ const dayQuotaCellClassName = (status: RoomQuota['status']) =>
 
 type ActiveKey = string | null
 const activeQuotaKey = ref<ActiveKey>(null)
-const activeQuotaRangeKey = ref<ActiveKey>(null)
-const activeReleaseDaysRangeKey = ref<ActiveKey>(null)
 const activeReleaseDaysKey = ref<ActiveKey>(null)
 
 const getActiveCellKey = (dayKey: string, roomTypeID: number) =>
@@ -90,14 +88,6 @@ onUnmounted(() => {
   window.removeEventListener('scroll', closeDayMenu)
 })
 
-const handleQuotaValue = (value: number) => {
-  console.log({ value })
-}
-
-const handleReleaseDaysValue = (value: number) => {
-  console.log({ value })
-}
-
 const setHoveredRoomTypeID = (params: MenuPosition) => {
   const {
     dayKey,
@@ -112,27 +102,101 @@ const resetHoveredRoomTypeID = () => {
   hoveredRoomTypeID.value = null
 }
 
-type IsQuotaCellInRangeParams = {
+type Range = {
+  roomID: RoomID
+  quotas: RoomQuota[]
+} | null
+
+const quotaRange = ref<Range>(null)
+const releaseDaysRange = ref<Range>(null)
+
+type SetRangeParams = {
   dailyQuota: RoomQuota[]
   roomTypeID: RoomQuotas['id']
   activeKey: ActiveKey
   rangeKey: ActiveKey
-  cellKey: ActiveKey
 }
-const isQuotaCellInRange = (params: IsQuotaCellInRangeParams): boolean => {
-  const { dailyQuota, roomTypeID, activeKey, rangeKey, cellKey } = params
-  let firstIndex: number = -1
-  let lastIndex: number = -1
-  dailyQuota.forEach(({ key }, index) => {
-    if (getActiveCellKey(key, roomTypeID) === activeKey) firstIndex = index
-    if (getActiveCellKey(key, roomTypeID) === rangeKey) lastIndex = index
-  })
-  if (firstIndex === -1 || lastIndex === -1) return false
-  const part = dailyQuota.slice(firstIndex, lastIndex + 1)
-  // console.log({ part }) // <- data to edit
-  const found = part.find(({ key }) =>
-    getActiveCellKey(key, roomTypeID) === cellKey)
-  return found !== undefined
+const setRange = (params: SetRangeParams) =>
+  (done: (range: Range) => void) => {
+    const { dailyQuota, roomTypeID, activeKey, rangeKey } = params
+    let firstIndex: number = -1
+    let lastIndex: number = -1
+    dailyQuota.forEach(({ key }, index) => {
+      if (getActiveCellKey(key, roomTypeID) === activeKey) firstIndex = index
+      if (getActiveCellKey(key, roomTypeID) === rangeKey) lastIndex = index
+    })
+    if (firstIndex === -1 || lastIndex === -1) {
+      return done(null)
+    }
+    const range = dailyQuota
+      .slice(firstIndex, lastIndex + 1)
+      .map(({ key, ...rest }) => ({ key: getActiveCellKey(key, roomTypeID), ...rest }))
+    return done({
+      roomID: roomTypeID,
+      quotas: range,
+    })
+  }
+
+const setQuotaRange = (params: SetRangeParams) =>
+  setRange(params)(((value) => { quotaRange.value = value }))
+
+const setReleaseDaysRange = (params: SetRangeParams) =>
+  setRange(params)(((value) => { releaseDaysRange.value = value }))
+
+const isCellInRange = (cellKey: ActiveKey) =>
+  (range: Range): boolean => {
+    if (range === null) return false
+    const found = range.quotas.find(({ key }) => key === cellKey)
+    return found !== undefined
+  }
+
+const isQuotaCellInRange = (cellKey: ActiveKey) =>
+  isCellInRange(cellKey)(quotaRange.value)
+
+const isReleaseDaysCellInRange = (cellKey: ActiveKey) =>
+  isCellInRange(cellKey)(releaseDaysRange.value)
+
+const formatDateToAPIDate = (date: Date): string => DateTime
+  .fromJSDate(date).toFormat('yyyy-LL-dd')
+
+const handleQuotaValue = (value: number) => {
+  const range = quotaRange.value
+  if (range === null) {
+    console.log('quota: single value', { value })
+  } else {
+    type UpdateQuotasRequest = {
+      room_id: RoomID
+      dates: string[]
+      count: number
+    }
+    const { roomID, quotas } = range
+    const request: UpdateQuotasRequest = {
+      room_id: roomID,
+      dates: quotas.map(({ date }) => formatDateToAPIDate(date)),
+      count: value,
+    }
+    console.log('quota: multiple value', { request })
+  }
+}
+
+const handleReleaseDaysValue = (value: number) => {
+  const range = releaseDaysRange.value
+  if (range === null) {
+    console.log('release days: single value', { value })
+  } else {
+    type UpdateReleaseDaysRequest = {
+      room_id: RoomID
+      dates: string[]
+      release_days: number
+    }
+    const { roomID, quotas } = range
+    const request: UpdateReleaseDaysRequest = {
+      room_id: roomID,
+      dates: quotas.map(({ date }) => formatDateToAPIDate(date)),
+      release_days: value,
+    }
+    console.log('release days: multiple value', { request })
+  }
 }
 
 const massEditTooltip = 'Зажмите Shift и кликните, чтобы задать значения для всех дней от выбранного до этого'
@@ -202,15 +266,14 @@ const massEditTooltip = 'Зажмите Shift и кликните, чтобы з
                     :cell-key="getActiveCellKey(key, id)"
                     :value="quota.toString()"
                     :max="count"
-                    :in-range="isQuotaCellInRange({
+                    :in-range="isQuotaCellInRange(getActiveCellKey(key, id))"
+                    @active-key="(value) => activeQuotaKey = value"
+                    @range-key="(value) => setQuotaRange({
                       dailyQuota,
                       roomTypeID: id,
                       activeKey: activeQuotaKey,
-                      rangeKey: activeQuotaRangeKey,
-                      cellKey: getActiveCellKey(key, id),
+                      rangeKey: value,
                     })"
-                    @active-key="(value) => activeQuotaKey = value"
-                    @range-key="(value) => activeQuotaRangeKey = value"
                     @value="value => handleQuotaValue(value)"
                   >
                     {{ quota }} / {{ sold }}
@@ -259,15 +322,14 @@ const massEditTooltip = 'Зажмите Shift и кликните, чтобы з
                     :cell-key="getActiveCellKey(key, id)"
                     :value="releaseDays.toString()"
                     :max="30"
-                    :in-range="isQuotaCellInRange({
+                    :in-range="isReleaseDaysCellInRange(getActiveCellKey(key, id))"
+                    @active-key="(value) => activeReleaseDaysKey = value"
+                    @range-key="(value) => setReleaseDaysRange({
                       dailyQuota,
                       roomTypeID: id,
                       activeKey: activeReleaseDaysKey,
-                      rangeKey: activeReleaseDaysRangeKey,
-                      cellKey: getActiveCellKey(key, id),
+                      rangeKey: value,
                     })"
-                    @active-key="(value) => activeReleaseDaysKey = value"
-                    @range-key="(value) => activeReleaseDaysRangeKey = value"
                     @value="value => handleReleaseDaysValue(value)"
                   >
                     {{ releaseDays }}

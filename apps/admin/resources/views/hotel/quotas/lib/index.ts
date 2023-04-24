@@ -12,9 +12,13 @@ export type Day = {
 
 export type RoomQuotaStatus = 'opened' | 'closed'
 
+export type RoomID = number
+
 export type RoomQuota = {
   key: string
   id: Quota['id'] | null
+  roomID: RoomID
+  date: Date
   status?: RoomQuotaStatus
   quota: number
   sold: number
@@ -23,7 +27,7 @@ export type RoomQuota = {
 }
 
 export type RoomQuotas = {
-  id: number
+  id: RoomID
   label: string
   customName: string
   guests: number
@@ -55,14 +59,19 @@ export const getRoomsQuotasFromQuotas = (quotas: Quota[], days: Day[]) => uniqBy
         customName,
         guests,
         count,
-        dailyQuota: days.map((day): RoomQuota => {
-          const quota = roomQuotas.find(({ date }) => DateTime
-            .fromFormat(date, 'yyyy-MM-dd')
-            .equals(DateTime.fromJSDate(day.date)))
-          const key = day.date.getTime().toString()
-          if (quota === undefined) {
+        dailyQuota: days.map(({ date }): RoomQuota => {
+          const foundQuota = roomQuotas.find((quota) => DateTime
+            .fromFormat(quota.date, 'yyyy-MM-dd')
+            .equals(DateTime.fromJSDate(date)))
+          const key = date.getTime().toString()
+          const common = {
+            key,
+            date,
+            roomID: id,
+          }
+          if (foundQuota === undefined) {
             return {
-              key,
+              ...common,
               id: null,
               quota: 0,
               sold: 0,
@@ -77,10 +86,10 @@ export const getRoomsQuotasFromQuotas = (quotas: Quota[], days: Day[]) => uniqBy
             count_available: countAvailable,
             count_booked: countBooked,
             count_reserved: countReserved,
-          } = quota
+          } = foundQuota
           return {
+            ...common,
             id: quotaID,
-            key,
             status: status === undefined ? undefined : quotaStatusMap[status],
             quota: countBooked,
             sold: countAvailable,

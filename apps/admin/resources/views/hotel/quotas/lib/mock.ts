@@ -20,7 +20,7 @@ type Room = {
 }
 
 const roomMock1: Room = {
-  id: 1,
+  id: 1183,
   hotel_id: hotelMock1.id,
   name: 'Стандартный двухместный',
   custom_name: '183',
@@ -29,7 +29,7 @@ const roomMock1: Room = {
 }
 
 const roomMock2: Room = {
-  id: 2,
+  id: 1184,
   hotel_id: hotelMock1.id,
   name: 'Стандартный одноместный',
   custom_name: '184',
