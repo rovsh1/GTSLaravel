@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { pluralForm } from '~resources/lib/plural'
+
 defineProps<{
   label: string
   customName: string
@@ -7,20 +9,23 @@ defineProps<{
 }>()
 </script>
 <template>
-  <div><strong>{{ label }}</strong> ({{ customName }})</div>
-  <dl class="roomTypeStats">
-    <dt class="roomTypeStatLabel">Количество гостей:</dt>
-    <dd class="roomTypeStatValue">{{ guests }}</dd>
-    <dt class="roomTypeStatLabel">Количество номеров:</dt>
-    <dd class="roomTypeStatValue">{{ count }}</dd>
-  </dl>
+  <div>
+    <strong>{{ label }}</strong>
+    ({{ customName }})
+  </div>
+  <p>
+    <span class="roomTypeStatValue">{{ guests }}</span>
+    <span class="roomTypeStatLabel">{{ pluralForm(guests, ['гость', 'гостя', 'гостей']) }}</span>,
+    <span class="roomTypeStatValue">{{ count }}</span>
+    <span class="roomTypeStatLabel">{{ pluralForm(count, ['номер', 'номера', 'номеров']) }}</span>
+  </p>
 </template>
 <style lang="scss" scoped>
 @use '~resources/sass/variables' as vars;
 
 .roomTypeStats {
   display: grid;
-  grid-template-columns: repeat(2, min-content);
+  grid-template-columns: repeat(2, max-content);
   gap: 0 0.25em;
   margin: unset;
 }
@@ -31,6 +36,7 @@ defineProps<{
 
 .roomTypeStatValue {
   margin: unset;
+  margin-right: 0.25em;
   color: vars.$error;
   font-weight: bold;
 }

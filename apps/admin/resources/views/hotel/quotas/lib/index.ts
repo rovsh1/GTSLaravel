@@ -7,7 +7,6 @@ export type Day = {
   key: string
   date: Date
   dayOfWeek: string
-  monthName: string
   dayOfMonth: string
 }
 

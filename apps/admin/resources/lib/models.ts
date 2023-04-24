@@ -1,15 +1,38 @@
-export interface Hotel {
-  id: number
+// "2021-10-05T14:55:20.000000Z"
+type RDate = string
+
+type CityID = number
+
+type HotelID = number
+
+export type Hotel = {
+  id: HotelID
   name: string
+  city_id: CityID
+  city_distance: number
+  city_name: string
+  address: string
+  address_lat: number
+  address_lon: number
+  country_name: string
+  zipcode: string
+  rating: number | null
+  status: number
+  type_id: number
+  type_name: string
+  visibility: 0 | 1
+  created_at: RDate
+  updated_at: RDate
+  deleted_at: RDate | null
 }
 
-export interface Room {
+export type Room = {
   id: number
   name: string
   display_name: string
 }
 
-export interface File {
+export type File = {
   guid: string
   name: string
   url: string

@@ -1,75 +1,75 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { computed, ref } from 'vue'
 
 import { useArrayFind, useUrlSearchParams } from '@vueuse/core'
 
 import AddButton from '~resources/components/AddButton.vue'
 import BaseLayout from '~resources/components/BaseLayout.vue'
 import DeleteButton from '~resources/components/DeleteButton.vue'
-import api from '~resources/js/app/api'
-import adminApi from '~resources/js/app/api/admin'
-import { Hotel as IHotel, Room as IRoom } from '~resources/lib/models'
+import {
+  useHotelAPI, useHotelImageRemoveAPI,
+  useHotelImagesListAPI, useHotelImagesUploadAPI,
+  useHotelRoomAPI,
+  useHotelRoomImageCreateAPI, useHotelRoomImageDeleteAPI, useHotelRoomImagesAPI,
+} from '~resources/lib/api/hotel'
+import { Hotel, Room } from '~resources/lib/models'
 import { useUrlParams } from '~resources/lib/url-params'
 import { HotelImage, RoomImage } from '~resources/views/hotel/images/models'
 
-const { hotel: hotelId } = useUrlParams()
-const { room_id: roomId } = useUrlSearchParams()
-const isLoaded = ref<boolean>(false)
-const isRoomImagesLoaded = ref<boolean>(false)
-let images = reactive<HotelImage[]>([])
-let roomImages = reactive<RoomImage[]>([])
-const hotel = ref<IHotel>()
-const room = ref<IRoom | undefined>()
+const { hotel: hotelID } = useUrlParams()
+const { room_id: roomID } = useUrlSearchParams<{ room_id?: number }>()
+
+const {
+  execute: fetchImages,
+  data: imagesData,
+  isFetching: isImagesFetching,
+} = useHotelImagesListAPI({ hotelID })
+
+const images = computed<HotelImage[]>(() => {
+  if (imagesData.value === null) return []
+  return imagesData.value
+})
+
+const {
+  execute: fetchRoomImages,
+  data: roomImagesData,
+  isFetching: isRoomImagesFetching,
+} = useHotelRoomImagesAPI({ hotelID, roomID })
+
+const roomImages = computed<RoomImage[]>(() => {
+  if (roomImagesData.value === null) return []
+  return roomImagesData.value
+})
+
+const isRoomImagesLoaded = computed(() => !isRoomImagesFetching)
+
+const {
+  execute: fetchHotel,
+  data: hotelData,
+  isFetching: isHotelFetching,
+} = useHotelAPI({ hotelID })
+
+const hotel = computed<Hotel | null>(() => hotelData.value)
+
+const {
+  execute: fetchRoom,
+  data: roomData,
+  isFetching: isRoomFetching,
+} = useHotelRoomAPI({ hotelID, roomID })
+
+const room = computed<Room | null>(() => roomData.value)
+
 const filesForm = ref<HTMLFormElement>()
-
-const fetchImages = async () => {
-  isLoaded.value = false
-  const { data: response } = await adminApi
-    .get<HotelImage[]>(`/hotels/${hotelId}/images/list`)
-  images = response
-  isLoaded.value = true
-}
-
-const fetchRoomImages = async () => {
-  if (!roomId) {
-    isRoomImagesLoaded.value = true
-    return
-  }
-  isRoomImagesLoaded.value = false
-  const { data: response } = await adminApi
-    .get<RoomImage[]>(`/hotels/${hotelId}/images/${roomId}/list`)
-  roomImages = response
-  isRoomImagesLoaded.value = true
-}
-
-const fetchHotel = async () => {
-  const { data: response } = await api
-    .get<IHotel>(`/admin/v1/hotel/${hotelId}`)
-  hotel.value = response
-}
-
-const fetchRoom = async () => {
-  if (!roomId) {
-    return
-  }
-  const { data: response } = await api
-    .get<IRoom>(`/admin/v1/hotel/${hotelId}/room/${roomId}`)
-  room.value = response
-}
 
 const uploadImages = async () => {
   if (!filesForm.value) {
     return
   }
-  const formData = new FormData(filesForm.value as HTMLFormElement)
-  if (roomId) {
-    formData.append('room_id', String(roomId))
-  }
-  await adminApi.post(`/hotels/${hotelId}/images/upload`, formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  })
+  await useHotelImagesUploadAPI({
+    hotelID,
+    roomID,
+    filesForm: filesForm.value,
+  }).execute()
   filesForm.value?.reset()
   await fetchImages()
   await fetchRoomImages()
@@ -80,43 +80,46 @@ const showUploadModal = async () => {
   // @todo показать модалку с аплоадером файлов
 }
 
-const removeImage = async (id: number): Promise<void> => {
-  await adminApi.delete(`/hotels/${hotelId}/images/${id}`)
-  // @todo заменить на какой-нибудь нотифай
-  // eslint-disable-next-line no-alert
-  alert('Файл удален')
-  fetchImages()
+const removeImage = (imageID: number) => {
+  const api = useHotelImageRemoveAPI({ hotelID, imageID })
+  api.execute()
+  api.onFetchResponse(() => {
+    // eslint-disable-next-line no-alert
+    alert('Файл удален')
+    fetchImages()
+  })
 }
 
 // @todo добавить drag n drop сортировку
-// eslint-disable-next-line unused-imports/no-unused-vars
-const reorderImages = async (files: HotelImage[]): Promise<void> => {
-  // @todo отправить запрос на пересортировку
-  await adminApi.post(`/hotels/${hotelId}/images/reorder`, files)
-}
+// @todo отправить запрос на пересортировку
+// const {} = useHotelImagesReorderAPI({ hotelID, images })
 
-const setImageToRoom = async (imageId: number) => {
-  if (!roomId) {
+const setImageToRoom = async (imageID: number) => {
+  if (!roomID) {
     return
   }
-  // eslint-disable-next-line vue/max-len
-  await adminApi.post(`/hotels/${hotelId}/rooms/${roomId}/images/${imageId}/create`)
+  await useHotelRoomImageCreateAPI({ hotelID, roomID, imageID })
+    .execute()
   await fetchRoomImages()
   await fetchImages()
 }
 
-const deleteRoomImage = async (imageId: number) => {
-  if (!roomId) {
+const deleteRoomImage = async (imageID: number) => {
+  if (!roomID) {
     return
   }
-  // eslint-disable-next-line vue/max-len
-  await adminApi.post(`/hotels/${hotelId}/rooms/${roomId}/images/${imageId}/delete`)
+  await useHotelRoomImageDeleteAPI({ hotelID, roomID, imageID })
+    .execute()
   await fetchRoomImages()
   await fetchImages()
 }
+
+const isLoaded = computed(() => (
+  !isImagesFetching && !isHotelFetching && !isRoomImagesFetching && !isRoomFetching
+))
 
 const getRoomImage = (id: number): RoomImage | undefined => {
-  if (roomImages.length === 0) {
+  if (roomImages.value.length === 0) {
     return undefined
   }
   const existRoomImage = useArrayFind(
@@ -127,7 +130,7 @@ const getRoomImage = (id: number): RoomImage | undefined => {
 }
 
 const isNeedHideImage = (id: number): boolean => {
-  if (!roomId) {
+  if (!roomID) {
     return false
   }
 
@@ -144,7 +147,7 @@ fetchImages()
 <template>
   <BaseLayout
     v-if="hotel"
-    :title="roomId && room?.display_name ? room.display_name : hotel.name"
+    :title="roomID && room?.display_name ? room.display_name : hotel.name"
   >
     <template #header-controls>
       <AddButton
@@ -198,7 +201,7 @@ fetchImages()
                 v-if="!getRoomImage(image.id)"
                 @click="removeImage(image.id)"
               />
-              <div v-if="roomId">
+              <div v-if="roomID">
                 <button
                   v-if="!getRoomImage(image.id)"
                   type="button"

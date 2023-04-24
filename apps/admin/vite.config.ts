@@ -1,4 +1,5 @@
 import vue from '@vitejs/plugin-vue'
+import { expand } from 'dotenv-expand'
 import { config } from 'dotenv-safe'
 import laravel from 'laravel-vite-plugin'
 import path from 'node:path'
@@ -8,11 +9,11 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 
 import { scripts } from './package.json'
 
-config({
+expand(config({
   allowEmptyValues: true,
   path: '../../.env',
   example: '../../.env.example',
-})
+}))
 // https://github.com/laravel/vite-plugin/pull/57
 console.log(`The Vite server should not be accessed directly. Please visit ${process.env.APP_URL} instead.`)
 export default defineConfig(({ command }) => ({
