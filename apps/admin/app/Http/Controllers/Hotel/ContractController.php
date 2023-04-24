@@ -107,7 +107,7 @@ class ContractController extends Controller
             ->text('contract_number', ['text' => 'Номер', 'order' => true, 'renderer' => fn($r, $t) => Format::contractNumber($r->number)])
             ->text('period', ['text' => 'Период', 'renderer' => fn($r, $t) => Format::period($t)])
             ->enum('status', ['text' => 'Статус', 'enum' => StatusEnum::class, 'order' => true])
-            ->text('file', ['text' => 'Договор', 'renderer' => fn($r, $t) => '@todo ссылка на договор']);
+            ->file('documents', ['text' => 'Договор']);
     }
 
     private function hotel(Hotel $hotel): void
