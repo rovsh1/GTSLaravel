@@ -79,6 +79,7 @@ const resetDay = () => {
   padding: 0.25em 0.5em;
   border: unset;
   background: unset;
+  text-align: unset;
 
   &:hover {
     background-color: rgba(black, 0.1);

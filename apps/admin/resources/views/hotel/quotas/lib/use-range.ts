@@ -18,6 +18,7 @@ const setRange = (params: SetRangeParams) =>
     const { dailyQuota, roomTypeID, activeKey, rangeKey } = params
     let firstIndex: number = -1
     let lastIndex: number = -1
+    // TODO back range
     dailyQuota.forEach(({ key }, index) => {
       if (getActiveCellKey(key, roomTypeID) === activeKey) firstIndex = index
       if (getActiveCellKey(key, roomTypeID) === rangeKey) lastIndex = index

@@ -281,7 +281,14 @@ const massEditTooltip = 'Зажмите Shift и кликните, чтобы з
                 <th class="headingCell" />
                 <td v-for="{ key } in dailyQuota" :key="key">
                   <menu-button
-                    :visible="hoveredDay === key && hoveredRoomTypeID === id"
+                    :visible="
+                      (hoveredDay === key && hoveredRoomTypeID === id)
+                        || (
+                          menuPosition !== null
+                          && getActiveCellKey(menuPosition.dayKey, menuPosition.roomTypeID)
+                            === getActiveCellKey(key, id)
+                        )
+                    "
                     @click="(element) => {
                       openDayMenu({ trigger: element, dayKey: key, roomTypeID: id })
                     }"
@@ -293,20 +300,19 @@ const massEditTooltip = 'Зажмите Shift и кликните, чтобы з
         </div>
       </div>
     </div>
-    <OnClickOutside
-      v-if="menuRef !== null && menuPosition !== null"
-      @trigger="closeDayMenu"
-    >
-      <day-menu
-        :menu-ref="menuRef"
-        :menu-day-key="(menuPosition as MenuPosition).dayKey"
-        @close="closeDayMenu"
-        @focusin="() => setHoveredRoomTypeID(menuPosition as MenuPosition)"
-        @mouseenter="() => setHoveredRoomTypeID(menuPosition as MenuPosition)"
-        @focusout="resetHoveredRoomTypeID"
-        @mouseleave="resetHoveredRoomTypeID"
-      />
-    </OnClickOutside>
+    <Teleport v-if="menuRef !== null && menuPosition !== null" to="body">
+      <OnClickOutside @trigger="closeDayMenu">
+        <day-menu
+          :menu-ref="menuRef"
+          :menu-day-key="(menuPosition as MenuPosition).dayKey"
+          @close="closeDayMenu"
+          @focusin="() => setHoveredRoomTypeID(menuPosition as MenuPosition)"
+          @mouseenter="() => setHoveredRoomTypeID(menuPosition as MenuPosition)"
+          @focusout="resetHoveredRoomTypeID"
+          @mouseleave="resetHoveredRoomTypeID"
+        />
+      </OnClickOutside>
+    </Teleport>
   </div>
 </template>
 <style lang="scss" scoped>
