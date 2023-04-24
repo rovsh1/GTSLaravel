@@ -24,7 +24,7 @@ return new class extends Migration
             $table->foreign('image_id')
                 ->references('id')
                 ->on('hotel_images')
-                ->restrictOnDelete()
+                ->cascadeOnDelete()
                 ->cascadeOnUpdate();
         });
     }

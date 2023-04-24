@@ -23,7 +23,7 @@
                         ?>
                 </div>
                 <div class="image">
-                    <x-file-image :file="null"/>
+                    <x-file-image :file="$room->main_image"/>
                     <div class="name">{{ $room->display_name }}</div>
                 </div>
                 <div class="body">

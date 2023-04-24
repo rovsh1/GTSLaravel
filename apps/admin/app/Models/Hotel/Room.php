@@ -2,15 +2,19 @@
 
 namespace App\Admin\Models\Hotel;
 
+use App\Admin\Files\HotelImage;
 use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property int id
  * @property HasMany beds
  * @property-read string $display_name
+ * @property-read Image $images
+ * @property-read HotelImage|null $main_image
  */
 class Room extends Model
 {
@@ -40,7 +44,7 @@ class Room extends Model
     ];
 
     protected $appends = [
-        'display_name'
+        'display_name',
     ];
 
     public static function booted()
@@ -73,6 +77,23 @@ class Room extends Model
     public function displayName(): Attribute
     {
         return Attribute::get(fn() => $this->name . ($this->custom_name ? ' (' . $this->custom_name . ')' : ''));
+    }
+
+    public function mainImage(): Attribute
+    {
+        return Attribute::get(fn() => $this->images()->first() !== null ? HotelImage::find($this->images()->first()->file_guid) : null);
+    }
+
+    public function images(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Image::class,
+            'hotel_room_images',
+            'room_id',
+            'image_id',
+            'id',
+            'id'
+        )->orderBy('index');
     }
 
     public function __toString()
