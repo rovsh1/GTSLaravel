@@ -102,7 +102,7 @@ abstract class AbstractContactController extends Controller
             ->enum('type', ['label' => 'Тип', 'enum' => ContactTypeEnum::class, 'required' => true])
             ->text('value', ['label' => 'Значение', 'required' => true])
             ->textarea('description', ['label' => 'Описание'])
-            ->checkbox('main', ['label' => 'Основной']);
+            ->checkbox('is_main', ['label' => 'Основной']);
     }
 
     protected function findContact(int $id)
