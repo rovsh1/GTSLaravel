@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 defineProps<{
-  id: number
   label: string
+  customName: string
   guests: number
   count: number
 }>()
 </script>
 <template>
-  <div><strong>{{ label }}</strong> ({{ id }})</div>
+  <div><strong>{{ label }}</strong> ({{ customName }})</div>
   <dl class="roomTypeStats">
     <dt class="roomTypeStatLabel">Количество гостей:</dt>
     <dd class="roomTypeStatValue">{{ guests }}</dd>

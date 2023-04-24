@@ -24,6 +24,7 @@ export type RoomQuota = {
 export type RoomQuotas = {
   id: number
   label: string
+  customName: string
   guests: number
   count: number
   dailyQuota: RoomQuota[]
@@ -36,18 +37,20 @@ export const quotaStatusMap: Record<QuotaStatus, RoomQuota['status']> = {
 
 export const getRoomsQuotasFromQuotas = (quotas: Quota[], days: Day[]) => quotas
   .map(({ room_id: roomID }): RoomQuotas | null => {
-    const found = roomsMock.find((room) => roomID === room.id)
-    if (found === undefined) return null
+    const room = roomsMock.find(({ id }) => roomID === id)
+    if (room === undefined) return null
     const roomQuotas = quotas.filter((quota) => quota.room_id === roomID)
     const {
       id,
       name,
+      custom_name: customName,
       guests_number: guests,
       rooms_number: count,
-    } = found
+    } = room
     return {
       id,
       label: name,
+      customName,
       guests,
       count,
       dailyQuota: days.map((day): RoomQuota => {

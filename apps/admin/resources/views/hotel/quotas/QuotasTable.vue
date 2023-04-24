@@ -148,14 +148,16 @@ const resetHoveredRoomTypeID = () => {
       </thead>
       <tbody>
         <template
-          v-for="{ id, label, guests, count, dailyQuota } in roomsQuotas"
+          v-for="{
+            id, label, customName, guests, count, dailyQuota,
+          } in roomsQuotas"
           :key="id"
         >
           <tr class="roomTypeHeadingRow">
             <th class="roomTypeHeadingCell" rowspan="3">
               <heading-cell
-                :id="id"
                 :label="label"
+                :custom-name="customName"
                 :guests="guests"
                 :count="count"
               />
