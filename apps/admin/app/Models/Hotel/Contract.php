@@ -24,7 +24,7 @@ use Illuminate\Support\Collection;
  * @property \Custom\Framework\Support\DateTime $created_at
  * @property \Custom\Framework\Support\DateTime $updated_at
  * @property CarbonPeriod $period
- * @property Collection<ContractDocument>|ContractDocument[]|null $documents
+ * @property Collection<ContractDocument>|ContractDocument[] $documents
  * @method static \Illuminate\Database\Eloquent\Builder|Contract newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Contract newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Contract query()
@@ -87,27 +87,23 @@ class Contract extends Model
 
     public function documents(): Attribute
     {
-        return Attribute::make(
-            get: fn() => ContractDocument::getEntityFiles($this->id),
-            set: function (array|Collection|UploadedFile|null $files) {
-                //@todo тут всегда должен быть массив
-                if ($files === null) {
-                    return [];
-                }
-                if ($files instanceof UploadedFile) {
-                    $files = [$files];
-                }
-                /** @var UploadedFile[] $files */
-                foreach ($files as $file) {
-                    ContractDocument::create(
-                        $this->id,
-                        $file->getClientOriginalName(),
-                        $file->get()
-                    );
-                }
-                return [];
-            }
-        );
+        return Attribute::get(fn() => ContractDocument::getEntityFiles($this->id));
+    }
+
+    public function setDocumentsAttribute(array|Collection|null $files): array
+    {
+        if ($files === null) {
+            return [];
+        }
+        /** @var UploadedFile[] $files */
+        foreach ($files as $file) {
+            ContractDocument::create(
+                $this->id,
+                $file->getClientOriginalName(),
+                $file->get()
+            );
+        }
+        return [];
     }
 
     public function __toString()
