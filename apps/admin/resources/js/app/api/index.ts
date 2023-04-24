@@ -1,10 +1,12 @@
 import axios from 'axios'
 
+import { API_DOMAIN } from '~resources/js/app/constants'
+
 // @todo сейчас вообще не используется авторизация (в т.ч. непонятно какой юзер делает запрос)
 // axios.defaults.withCredentials = true
 
 const axiosIns = axios.create({
-  baseURL: `${location.protocol}//api.gts.local/`,
+  baseURL: `${location.protocol}//${API_DOMAIN}/`,
   // You can add your headers here
   // ================================
   // timeout: 1000,
