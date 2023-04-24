@@ -123,44 +123,60 @@ const resetHoveredRoomTypeID = () => {
 const formatDateToAPIDate = (date: Date): string => DateTime
   .fromJSDate(date).toFormat('yyyy-LL-dd')
 
-const handleQuotaValue = (value: number) => {
-  const range = quotaRange.value
-  if (range === null) {
-    console.log('quota: single value', { value })
-  } else {
-    type UpdateQuotasRequest = {
-      room_id: RoomID
-      dates: string[]
-      count: number
-    }
-    const { roomID, quotas } = range
-    const request: UpdateQuotasRequest = {
-      room_id: roomID,
-      dates: quotas.map(({ date }) => formatDateToAPIDate(date)),
-      count: value,
-    }
-    console.log('quota: multiple value', { request })
-  }
+type UpdateQuotasRequest = {
+  room_id: RoomID
+  dates: string[]
+  count: number
 }
 
-const handleReleaseDaysValue = (value: number) => {
+type UpdateReleaseDaysRequest = {
+  room_id: RoomID
+  dates: string[]
+  release_days: number
+}
+
+type HandleValue<R> = (roomID: RoomID, date: Date, value: number) => R
+
+const handleQuotaValue: HandleValue<UpdateQuotasRequest> = (roomID, date, value) => {
+  const range = quotaRange.value
+  if (range === null) {
+    const request: UpdateQuotasRequest = {
+      room_id: roomID,
+      dates: [formatDateToAPIDate(date)],
+      count: value,
+    }
+    console.log('quota: single value', { request })
+    return request
+  }
+  const { quotas } = range
+  const request: UpdateQuotasRequest = {
+    room_id: roomID,
+    dates: quotas.map((quota) => formatDateToAPIDate(quota.date)),
+    count: value,
+  }
+  console.log('quota: multiple value', { request })
+  return request
+}
+
+const handleReleaseDaysValue: HandleValue<UpdateReleaseDaysRequest> = (roomID, date, value) => {
   const range = releaseDaysRange.value
   if (range === null) {
-    console.log('release days: single value', { value })
-  } else {
-    type UpdateReleaseDaysRequest = {
-      room_id: RoomID
-      dates: string[]
-      release_days: number
-    }
-    const { roomID, quotas } = range
     const request: UpdateReleaseDaysRequest = {
       room_id: roomID,
-      dates: quotas.map(({ date }) => formatDateToAPIDate(date)),
+      dates: [formatDateToAPIDate(date)],
       release_days: value,
     }
-    console.log('release days: multiple value', { request })
+    console.log('release days: single value', { request })
+    return request
   }
+  const { quotas } = range
+  const request: UpdateReleaseDaysRequest = {
+    room_id: roomID,
+    dates: quotas.map((quota) => formatDateToAPIDate(quota.date)),
+    release_days: value,
+  }
+  console.log('release days: multiple value', { request })
+  return request
 }
 
 const massEditTooltip = 'Зажмите Shift и кликните, чтобы задать значения для всех дней от выбранного до этого'
@@ -211,7 +227,7 @@ const massEditTooltip = 'Зажмите Shift и кликните, чтобы з
               <tr class="roomTypeHeadingRow">
                 <th class="headingCell">Квоты / Продано</th>
                 <td
-                  v-for="{ key, quota, sold, status } in dailyQuota"
+                  v-for="{ key, quota, sold, status, date } in dailyQuota"
                   :key="key"
                   :class="dayQuotaCellClassName(status)"
                   :title="activeQuotaKey ? massEditTooltip : undefined"
@@ -238,7 +254,7 @@ const massEditTooltip = 'Зажмите Shift и кликните, чтобы з
                       activeKey: activeQuotaKey,
                       rangeKey: value,
                     })"
-                    @value="value => handleQuotaValue(value)"
+                    @value="value => handleQuotaValue(id, date, value)"
                   >
                     {{ quota }} / {{ sold }}
                   </editable-cell>
@@ -267,7 +283,7 @@ const massEditTooltip = 'Зажмите Shift и кликните, чтобы з
               <tr>
                 <th class="headingCell">релиз-дни</th>
                 <td
-                  v-for="{ key, releaseDays, status } in dailyQuota"
+                  v-for="{ key, releaseDays, status, date } in dailyQuota"
                   :key="key"
                   :class="dayQuotaCellClassName(status)"
                   :title="activeReleaseDaysKey ? massEditTooltip : undefined"
@@ -294,7 +310,7 @@ const massEditTooltip = 'Зажмите Shift и кликните, чтобы з
                       activeKey: activeReleaseDaysKey,
                       rangeKey: value,
                     })"
-                    @value="value => handleReleaseDaysValue(value)"
+                    @value="value => handleReleaseDaysValue(id, date, value)"
                   >
                     {{ releaseDays }}
                   </editable-cell>
