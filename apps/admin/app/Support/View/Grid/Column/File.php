@@ -17,12 +17,11 @@ class File extends Url
      */
     public function formatValue($value, $row = null)
     {
+        if (is_array($value) || $value instanceof Arrayable) {
+            $value = \Arr::first($value);
+        }
         if (empty($value)) {
             return '';
-        }
-        if (is_array($value) || $value instanceof Arrayable) {
-            dd($value);
-            $value = $value[0];
         }
 
         $this->options['route'] = fn() => $value->url();
