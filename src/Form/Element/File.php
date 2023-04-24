@@ -1,14 +1,14 @@
 <?php
 
-namespace Custom\Form\Element;
-
-use Gsdk\Form\Element\Input;
+namespace Gsdk\Form\Element;
 
 class File extends Input
 {
     protected array $options = [
         'inputType' => 'file'
     ];
+
+    protected array $attributes = ['readonly', 'required', 'disabled', 'pattern', 'multiple'];
 
     public function isFileUpload(): bool
     {

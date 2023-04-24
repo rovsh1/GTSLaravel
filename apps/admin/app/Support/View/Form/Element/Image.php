@@ -4,7 +4,7 @@ namespace App\Admin\Support\View\Form\Element;
 
 use App\Admin\View\Components\FileImage;
 use App\Core\Contracts\File\FileInterface;
-use Custom\Form\Element\File;
+use Gsdk\Form\Element\File;
 use Illuminate\Http\UploadedFile;
 
 /**
