@@ -7,7 +7,3 @@
     Настройки
   </div>
 </template>
-
-<style scoped>
-
-</style>

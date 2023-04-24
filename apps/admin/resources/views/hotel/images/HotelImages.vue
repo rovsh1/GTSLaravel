@@ -142,7 +142,10 @@ fetchImages()
 </script>
 
 <template>
-  <BaseLayout v-if="hotel" :title="roomId && room?.display_name ? room.display_name : hotel.name">
+  <BaseLayout
+    v-if="hotel"
+    :title="roomId && room?.display_name ? room.display_name : hotel.name"
+  >
     <template #header-controls>
       <AddButton
         text="Добавить фотографии"
@@ -247,7 +250,7 @@ fetchImages()
 }
 
 .card.hidden .image {
-  opacity: .3;
+  opacity: 0.3;
 }
 
 .card .body {
