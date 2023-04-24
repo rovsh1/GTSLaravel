@@ -51,6 +51,8 @@ const dayQuotaCellClassName = (status: RoomQuota['status']) =>
 
 type ActiveKey = string | null
 const activeQuotaKey = ref<ActiveKey>(null)
+const activeQuotaRangeKey = ref<ActiveKey>(null)
+const activeReleaseDaysRangeKey = ref<ActiveKey>(null)
 const activeReleaseDaysKey = ref<ActiveKey>(null)
 
 const getActiveCellKey = (dayKey: string, roomTypeID: number) =>
@@ -93,11 +95,11 @@ onUnmounted(() => {
   window.removeEventListener('scroll', closeDayMenu)
 })
 
-const handleReleaseDaysValue = (value: number) => {
+const handleQuotaValue = (value: number) => {
   console.log({ value })
 }
 
-const handleQuotaValue = (value: number) => {
+const handleReleaseDaysValue = (value: number) => {
   console.log({ value })
 }
 
@@ -122,6 +124,30 @@ const resetHoveredRoomTypeID = () => {
   hoveredDay.value = null
   hoveredRoomTypeID.value = null
 }
+
+type IsQuotaCellInRangeParams = {
+  dailyQuota: RoomQuota[]
+  roomTypeID: RoomQuotas['id']
+  activeKey: ActiveKey
+  rangeKey: ActiveKey
+  cellKey: ActiveKey
+}
+const isQuotaCellInRange = (params: IsQuotaCellInRangeParams): boolean => {
+  const { dailyQuota, roomTypeID, activeKey, rangeKey, cellKey } = params
+  let firstIndex: number = -1
+  let lastIndex: number = -1
+  dailyQuota.forEach(({ key }, index) => {
+    if (getActiveCellKey(key, roomTypeID) === activeKey) firstIndex = index
+    if (getActiveCellKey(key, roomTypeID) === rangeKey) lastIndex = index
+  })
+  if (firstIndex === -1 || lastIndex === -1) return false
+  const part = dailyQuota.slice(firstIndex, lastIndex + 1)
+  // console.log({ part }) // <- data to edit
+  const found = part.find(({ key }) => getActiveCellKey(key, roomTypeID) === cellKey)
+  return found !== undefined
+}
+
+const massEditTooltip = 'Зажмите Shift и кликните, чтобы задать значения для всех дней от выбранного до этого'
 </script>
 <template>
   <div class="quotasTable" @scroll="closeDayMenu">
@@ -167,6 +193,7 @@ const resetHoveredRoomTypeID = () => {
               v-for="{ key, quota, sold, status } in dailyQuota"
               :key="key"
               :class="dayQuotaCellClassName(status)"
+              :title="activeQuotaKey ? massEditTooltip : undefined"
               tabindex="0"
               @focusin="() => {
                 setHoveredRoomTypeID({ dayKey: key, roomTypeID: id })
@@ -182,7 +209,15 @@ const resetHoveredRoomTypeID = () => {
                 :cell-key="getActiveCellKey(key, id)"
                 :value="quota.toString()"
                 :max="count"
+                :in-range="isQuotaCellInRange({
+                  dailyQuota,
+                  roomTypeID: id,
+                  activeKey: activeQuotaKey,
+                  rangeKey: activeQuotaRangeKey,
+                  cellKey: getActiveCellKey(key, id),
+                })"
                 @active-key="(value) => activeQuotaKey = value"
+                @range-key="(value) => activeQuotaRangeKey = value"
                 @value="value => handleQuotaValue(value)"
               >
                 {{ quota }} / {{ sold }}
@@ -215,6 +250,7 @@ const resetHoveredRoomTypeID = () => {
               v-for="{ key, releaseDays, status } in dailyQuota"
               :key="key"
               :class="dayQuotaCellClassName(status)"
+              :title="activeReleaseDaysKey ? massEditTooltip : undefined"
               tabindex="0"
               @focusin="() => {
                 setHoveredRoomTypeID({ dayKey: key, roomTypeID: id })
@@ -230,7 +266,15 @@ const resetHoveredRoomTypeID = () => {
                 :cell-key="getActiveCellKey(key, id)"
                 :value="releaseDays.toString()"
                 :max="30"
+                :in-range="isQuotaCellInRange({
+                  dailyQuota,
+                  roomTypeID: id,
+                  activeKey: activeReleaseDaysKey,
+                  rangeKey: activeReleaseDaysRangeKey,
+                  cellKey: getActiveCellKey(key, id),
+                })"
                 @active-key="(value) => activeReleaseDaysKey = value"
+                @range-key="(value) => activeReleaseDaysRangeKey = value"
                 @value="value => handleReleaseDaysValue(value)"
               >
                 {{ releaseDays }}

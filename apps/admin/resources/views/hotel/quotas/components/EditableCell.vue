@@ -1,21 +1,25 @@
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
 
 type CellKey = string | null
 
-defineProps<{
+const props = defineProps<{
   cellKey: string
   activeKey: CellKey
   value: string
   max: number
+  inRange: boolean
 }>()
 
 const emit = defineEmits<{
   (event: 'active-key', value: CellKey): void
+  (event: 'range-key', value: CellKey): void
   (event: 'value', value: number): void
 }>()
 
 const inputRef = ref<HTMLInputElement | null>(null)
+
+const shift = ref(false)
 
 const handleInput = (input: HTMLInputElement) => {
   input.focus()
@@ -35,6 +39,33 @@ const handleChange = (target: EventTarget | null) => {
   if (isNaN(number)) return
   emit('value', number)
 }
+
+const handleButtonClick = (event: MouseEvent) => {
+  if (shift.value) {
+    event.preventDefault()
+    emit('range-key', props.cellKey)
+  } else {
+    emit('active-key', props.cellKey)
+  }
+}
+
+const enableShiftMode = () => {
+  shift.value = true
+}
+
+const disableShiftMode = () => {
+  shift.value = false
+}
+
+onMounted(() => {
+  window.addEventListener('keydown', enableShiftMode)
+  window.addEventListener('keyup', disableShiftMode)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', enableShiftMode)
+  window.removeEventListener('keyup', disableShiftMode)
+})
 </script>
 <template>
   <label v-if="activeKey === cellKey">
@@ -45,14 +76,25 @@ const handleChange = (target: EventTarget | null) => {
       type="number"
       :max="max"
       @change="(event) => handleChange(event.target)"
-      @blur="() => emit('active-key', null)"
+      @blur="(event) => {
+        if (shift) {
+          event.preventDefault()
+          inputRef?.focus()
+          return
+        }
+        emit('active-key', null)
+        emit('range-key', null)
+      }"
+      @keydown.esc="inputRef?.blur()"
+      @keydown.enter="inputRef?.blur()"
     />
   </label>
   <button
     v-else
     type="button"
     class="editableDataCell"
-    @click="() => emit('active-key', cellKey)"
+    :class="{ inRange }"
+    @click="handleButtonClick"
   >
     <slot />
   </button>
@@ -87,10 +129,15 @@ const handleChange = (target: EventTarget | null) => {
 
   width: 100%;
   border: 2px solid transparent;
+  border-radius: 2px;
   background: unset;
 
   &:hover {
     background-color: rgba(black, 0.1);
+  }
+
+  &.inRange {
+    border-color: rgba(blue, 0.3);
   }
 }
 </style>

@@ -95,4 +95,14 @@ export const quotasMock: Quota[] = [
     count_booked: 6,
     count_reserved: 9,
   },
+  {
+    id: 5,
+    date: '2023-04-06',
+    room_id: roomMock2.id,
+    status: 0,
+    release_days: 7,
+    count_available: 1,
+    count_booked: 6,
+    count_reserved: 9,
+  },
 ]
