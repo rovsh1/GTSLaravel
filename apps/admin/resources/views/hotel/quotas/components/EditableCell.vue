@@ -7,10 +7,12 @@ defineProps<{
   cellKey: string
   activeKey: CellKey
   value: string
+  max: number
 }>()
 
 const emit = defineEmits<{
   (event: 'active-key', value: CellKey): void
+  (event: 'value', value: number): void
 }>()
 
 const inputRef = ref<HTMLInputElement | null>(null)
@@ -24,15 +26,28 @@ watch(inputRef, (element) => {
   if (element === null) return
   handleInput(element)
 })
+
+const handleChange = (target: EventTarget | null) => {
+  if (target === null) return
+  const { value } = target as HTMLInputElement
+  if (value === '') return
+  const number = Number(value)
+  if (isNaN(number)) return
+  emit('value', number)
+}
 </script>
 <template>
-  <input
-    v-if="activeKey === cellKey"
-    :ref="(element) => inputRef = element as HTMLInputElement"
-    :value="value"
-    class="editableCellInput"
-    @blur="() => emit('active-key', null)"
-  >
+  <label v-if="activeKey === cellKey">
+    <input
+      :ref="(element) => inputRef = element as HTMLInputElement"
+      :value="value"
+      class="editableCellInput"
+      type="number"
+      :max="max"
+      @change="(event) => handleChange(event.target)"
+      @blur="() => emit('active-key', null)"
+    />
+  </label>
   <button
     v-else
     type="button"
@@ -58,6 +73,13 @@ watch(inputRef, (element) => {
 
   width: 100%;
   font-size: inherit;
+  appearance: textfield;
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    margin: 0;
+    appearance: none;
+  }
 }
 
 .editableDataCell {
@@ -65,7 +87,7 @@ watch(inputRef, (element) => {
 
   width: 100%;
   border: 2px solid transparent;
-  background-color: unset;
+  background: unset;
 
   &:hover {
     background-color: rgba(black, 0.1);

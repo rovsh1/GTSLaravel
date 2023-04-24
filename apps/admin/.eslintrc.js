@@ -139,6 +139,7 @@ module.exports = defineConfig({
     {
       files: ['*.vue'],
       rules: {
+        'max-lines': ['error', 500],
         'vue/max-len': ['error', {
           code: 80,
           template: 80,
@@ -154,6 +155,8 @@ module.exports = defineConfig({
           ignoreHTMLAttributeValues: false,
           ignoreHTMLTextContents: false,
         }],
+        'vue/singleline-html-element-content-newline': 'off',
+        'vue/object-curly-newline': 'off',
       },
     },
     {

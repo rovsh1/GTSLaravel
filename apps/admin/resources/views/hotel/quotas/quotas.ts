@@ -1,7 +1,9 @@
 import { createApp, h } from 'vue'
 
-import QuotasTable from '~resources/views/hotel/quotas/QuotasTable.vue'
+import QuotasTables from './QuotasTables.vue'
+
+import '~resources/views/main'
 
 createApp({
-  render: () => h(QuotasTable),
-}).mount('#quotas-table')
+  render: () => h(QuotasTables),
+}).mount('#quotas-tables')

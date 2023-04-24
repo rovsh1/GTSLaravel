@@ -12,9 +12,9 @@
 
     <div class="content-body">
         <div class="card card-form">
-            <div class="card-body">
+            <div class="card-body pb-0">
                 <div id="hotel-show">
-                    <div id="quotas-table"></div>
+                    <div id="quotas-tables"></div>
                 </div>
             </div>
         </div>
