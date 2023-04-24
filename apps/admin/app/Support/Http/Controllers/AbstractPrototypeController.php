@@ -107,11 +107,11 @@ abstract class AbstractPrototypeController extends Controller
         $preparedData = $this->saving($form->getData());
         $this->model = $this->repository->create($preparedData);
 
+        $redirectUrl = $this->prototype->route('index');
         if ($this->hasShowAction()) {
-            return redirect($this->prototype->route('show', $this->model));
-        } else {
-            return redirect($this->prototype->route('index'));
+            $redirectUrl = $this->prototype->route('show', $this->model);
         }
+        return redirect($redirectUrl);
     }
 
     public function edit(int $id): LayoutContract
@@ -157,7 +157,11 @@ abstract class AbstractPrototypeController extends Controller
         $preparedData = $this->saving($form->getData());
         $this->repository->update($this->model->id, $preparedData);
 
-        return redirect($this->prototype->route('index'));
+        $redirectUrl = $this->prototype->route('index');
+        if ($this->hasShowAction()) {
+            $redirectUrl = $this->prototype->route('show', $this->model);
+        }
+        return redirect($redirectUrl);
     }
 
     public function destroy(int $id): AjaxResponseInterface
@@ -191,9 +195,13 @@ abstract class AbstractPrototypeController extends Controller
         throw new \LogicException('Please implement the getShowViewData method on your controller.');
     }
 
-    protected function prepareGridQuery(Builder $query) {}
+    protected function prepareGridQuery(Builder $query)
+    {
+    }
 
-    protected function prepareShowMenu(Model $model) {}
+    protected function prepareShowMenu(Model $model)
+    {
+    }
 
     protected function saving(array $data): array
     {
