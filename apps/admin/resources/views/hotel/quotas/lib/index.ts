@@ -102,3 +102,8 @@ export const getRoomsQuotasFromQuotas = (quotas: Quota[], days: Day[]) => uniqBy
     .filter((roomType): roomType is RoomQuotas => roomType !== null),
   ((room) => room.id),
 )
+
+export type ActiveKey = string | null
+
+export const getActiveCellKey = (dayKey: string, roomTypeID: number): string =>
+  `${dayKey}-${roomTypeID}`

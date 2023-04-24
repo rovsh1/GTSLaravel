@@ -5,13 +5,23 @@ import { OnClickOutside } from '@vueuse/components'
 import { DateTime } from 'luxon'
 
 import { getEachDayInMonth } from '~resources/lib/date'
+import { QuotaRange, useQuotasTableRange } from '~resources/views/hotel/quotas/lib/use-range'
 
 import DayMenu from './components/DayMenu.vue'
 import EditableCell from './components/EditableCell.vue'
 import HeadingCell from './components/HeadingCell.vue'
 import MenuButton from './components/MenuButton.vue'
 
-import { Day, getRoomsQuotasFromQuotas, RoomID, RoomQuota, RoomQuotas, RoomQuotaStatus } from './lib'
+import {
+  ActiveKey,
+  Day,
+  getActiveCellKey,
+  getRoomsQuotasFromQuotas,
+  RoomID,
+  RoomQuota,
+  RoomQuotas,
+  RoomQuotaStatus,
+} from './lib'
 import { Quota } from './lib/mock'
 
 const props = defineProps<{
@@ -44,12 +54,20 @@ const dayCellClassNameByRoomQuotaStatus: Record<RoomQuotaStatus, string> = {
 const dayQuotaCellClassName = (status: RoomQuota['status']) =>
   ['dayQuotaCell', status !== undefined && dayCellClassNameByRoomQuotaStatus[status]]
 
-type ActiveKey = string | null
+const quotaRange = ref<QuotaRange>(null)
+const {
+  setRange: setQuotaRange,
+  isCellInRange: isQuotaCellInRange,
+} = useQuotasTableRange({ rangeRef: quotaRange })
+
+const releaseDaysRange = ref<QuotaRange>(null)
+const {
+  setRange: setReleaseDaysRange,
+  isCellInRange: isReleaseDaysCellInRange,
+} = useQuotasTableRange({ rangeRef: releaseDaysRange })
+
 const activeQuotaKey = ref<ActiveKey>(null)
 const activeReleaseDaysKey = ref<ActiveKey>(null)
-
-const getActiveCellKey = (dayKey: string, roomTypeID: number) =>
-  `${dayKey}-${roomTypeID}`
 
 const hoveredDay = ref<string | null>(null)
 
@@ -101,60 +119,6 @@ const resetHoveredRoomTypeID = () => {
   hoveredDay.value = null
   hoveredRoomTypeID.value = null
 }
-
-type Range = {
-  roomID: RoomID
-  quotas: RoomQuota[]
-} | null
-
-const quotaRange = ref<Range>(null)
-const releaseDaysRange = ref<Range>(null)
-
-type SetRangeParams = {
-  dailyQuota: RoomQuota[]
-  roomTypeID: RoomQuotas['id']
-  activeKey: ActiveKey
-  rangeKey: ActiveKey
-}
-const setRange = (params: SetRangeParams) =>
-  (done: (range: Range) => void) => {
-    const { dailyQuota, roomTypeID, activeKey, rangeKey } = params
-    let firstIndex: number = -1
-    let lastIndex: number = -1
-    dailyQuota.forEach(({ key }, index) => {
-      if (getActiveCellKey(key, roomTypeID) === activeKey) firstIndex = index
-      if (getActiveCellKey(key, roomTypeID) === rangeKey) lastIndex = index
-    })
-    if (firstIndex === -1 || lastIndex === -1) {
-      return done(null)
-    }
-    const range = dailyQuota
-      .slice(firstIndex, lastIndex + 1)
-      .map(({ key, ...rest }) => ({ key: getActiveCellKey(key, roomTypeID), ...rest }))
-    return done({
-      roomID: roomTypeID,
-      quotas: range,
-    })
-  }
-
-const setQuotaRange = (params: SetRangeParams) =>
-  setRange(params)(((value) => { quotaRange.value = value }))
-
-const setReleaseDaysRange = (params: SetRangeParams) =>
-  setRange(params)(((value) => { releaseDaysRange.value = value }))
-
-const isCellInRange = (cellKey: ActiveKey) =>
-  (range: Range): boolean => {
-    if (range === null) return false
-    const found = range.quotas.find(({ key }) => key === cellKey)
-    return found !== undefined
-  }
-
-const isQuotaCellInRange = (cellKey: ActiveKey) =>
-  isCellInRange(cellKey)(quotaRange.value)
-
-const isReleaseDaysCellInRange = (cellKey: ActiveKey) =>
-  isCellInRange(cellKey)(releaseDaysRange.value)
 
 const formatDateToAPIDate = (date: Date): string => DateTime
   .fromJSDate(date).toFormat('yyyy-LL-dd')
