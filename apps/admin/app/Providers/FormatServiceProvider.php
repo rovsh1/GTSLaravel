@@ -4,6 +4,7 @@ namespace App\Admin\Providers;
 
 use App\Admin\Support\Facades\Format;
 use App\Admin\Support\Format\ContactRule;
+use App\Admin\Support\Format\ContractNumberRule;
 use App\Admin\Support\Format\DistanceRule;
 use App\Admin\Support\Format\EnumRule;
 use App\Admin\Support\Format\PeriodRule;
@@ -22,6 +23,7 @@ class FormatServiceProvider extends ServiceProvider
 
     protected $rules = [
         'contact' => ContactRule::class,
+        'contractNumber' => ContractNumberRule::class,
         'price' => PriceRule::class,
         'distance' => DistanceRule::class,
         'period' => PeriodRule::class,

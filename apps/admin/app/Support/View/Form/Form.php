@@ -30,6 +30,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method self manager(string $name, array $options = [])
  * @method self hotel(string $name, array $options = [])
  * @method self localeText(string $name, array $options = [])
+ * @method self localeTextarea(string $name, array $options = [])
  * @method self language(string $name, array $options = [])
  * @method self numRange(string $name, array $options = [])
  * @method self image(string $name, array $options = [])

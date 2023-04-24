@@ -2,11 +2,15 @@
 
 namespace App\Admin\Models\Hotel;
 
-use App\Admin\Models\Hotel\Contract\StatusEnum;
+use App\Admin\Enums\Hotel\Contract\StatusEnum;
+use App\Admin\Files\ContractDocument;
 use App\Admin\Support\Facades\Format;
 use Carbon\CarbonPeriod;
 use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Collection;
 
 /**
  * App\Admin\Models\Hotel\Contract
@@ -19,6 +23,8 @@ use Illuminate\Database\Eloquent\Builder;
  * @property \Custom\Framework\Support\DateTime $date_end
  * @property \Custom\Framework\Support\DateTime $created_at
  * @property \Custom\Framework\Support\DateTime $updated_at
+ * @property CarbonPeriod $period
+ * @property Collection<ContractDocument>|ContractDocument[]|null $documents
  * @method static \Illuminate\Database\Eloquent\Builder|Contract newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Contract newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Contract query()
@@ -43,6 +49,8 @@ class Contract extends Model
         'status',
         'date_start',
         'date_end',
+        'period',
+        'documents'
     ];
 
     protected $casts = [
@@ -51,18 +59,59 @@ class Contract extends Model
         'status' => StatusEnum::class
     ];
 
+    public static function booted()
+    {
+        static::saving(function (self $model) {
+            if (!\Arr::has($model, 'number')) {
+                //@todo генерация номера договора
+                $model['number'] = random_int(123, 9999);
+            }
+        });
+    }
+
     public function scopeActive(Builder $builder)
     {
         $builder->whereStatus(StatusEnum::ACTIVE);
     }
 
-    public function getPeriod(): CarbonPeriod
+    public function period(): Attribute
     {
-        return new CarbonPeriod($this->date_start, $this->date_end);
+        return Attribute::make(
+            get: fn() => new CarbonPeriod($this->date_start, $this->date_end),
+            set: fn(CarbonPeriod $period) => [
+                'date_start' => $period->getStartDate(),
+                'date_end' => $period->getEndDate()
+            ]
+        );
+    }
+
+    public function documents(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => ContractDocument::getEntityFiles($this->id),
+            set: function (array|Collection|UploadedFile|null $files) {
+                //@todo тут всегда должен быть массив
+                if ($files === null) {
+                    return [];
+                }
+                if ($files instanceof UploadedFile) {
+                    $files = [$files];
+                }
+                /** @var UploadedFile[] $files */
+                foreach ($files as $file) {
+                    ContractDocument::create(
+                        $this->id,
+                        $file->getClientOriginalName(),
+                        $file->get()
+                    );
+                }
+                return [];
+            }
+        );
     }
 
     public function __toString()
     {
-        return 'Договор №' . Format::number($this->number);
+        return Format::contractNumber($this->number);
     }
 }

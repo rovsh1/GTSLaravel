@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Models\Hotel\Contract;
+namespace App\Admin\Enums\Hotel\Contract;
 
 enum StatusEnum: int
 {

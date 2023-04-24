@@ -85,5 +85,9 @@
     "ContactTypeEnum::PHONE": "Телефон",
     "ContactTypeEnum::EMAIL": "Email",
     "ContactTypeEnum::SITE": "Сайт",
-    "ContactTypeEnum::ADDRESS": "Адрес"
+    "ContactTypeEnum::ADDRESS": "Адрес",
+
+    "Hotel\\Contract\\StatusEnum::ACTIVE": "Активный",
+    "Hotel\\Contract\\StatusEnum::INACTIVE": "Неактивный",
+    "Hotel\\Contract\\StatusEnum::ARCHIVE": "Архив"
 }

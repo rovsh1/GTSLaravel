@@ -69,7 +69,9 @@ class Hotel extends Model
         'visibility' => VisibilityEnum::class
     ];
 
-    public static function saving($callback) {}
+    public static function saving($callback)
+    {
+    }
 
     public static function booted()
     {
@@ -122,7 +124,7 @@ class Hotel extends Model
             $joinableTable,
             function (JoinClause $join) use ($joinableTable) {
                 $join->on("{$joinableTable}.hotel_id", '=', "{$this->getTable()}.id")
-                    ->where("{$joinableTable}.status", Contract\StatusEnum::ACTIVE);
+                    ->where("{$joinableTable}.status", \App\Admin\Enums\Hotel\Contract\StatusEnum::ACTIVE);
             }
         )->addSelect("{$joinableTable}.date_start as contract_date_start")
             ->addSelect("{$joinableTable}.date_end as contract_date_end");
@@ -177,18 +179,24 @@ class Hotel extends Model
         return $this->hasMany(Image::class);
     }
 
-    public function updateRoomsPositions($ids): bool
+    /**
+     * @param int[] $ids
+     * @return bool
+     * @throws \Throwable
+     */
+    public function updateRoomsPositions(array $ids): bool
     {
-        $i = 1;
-        foreach ($ids as $id) {
-            $room = Room::find($id);
-            if (!$room) {
-                throw new \Exception('Room not found', 404);
-            }
+        return $this->updateChildIndexes($ids, Room::class, 'position');
+    }
 
-            $room->update(['position' => $i++]);
-        }
-        return true;
+    /**
+     * @param int[] $ids
+     * @return bool
+     * @throws \Throwable
+     */
+    public function updateImageIndexes(array $ids): bool
+    {
+        return $this->updateChildIndexes($ids, Image::class);
     }
 
     public function __toString()
@@ -204,5 +212,26 @@ class Hotel extends Model
     protected function getLongitudeField(): string
     {
         return 'address_lon';
+    }
+
+    /**
+     * @param array $ids
+     * @param class-string $model
+     * @param string $indexField
+     * @return bool
+     * @throws \Throwable
+     */
+    private function updateChildIndexes(array $ids, string $model, string $indexField = 'index'): bool
+    {
+        $i = 1;
+        foreach ($ids as $id) {
+            $image = $model::find($id);
+            if (!$image) {
+                throw new \Exception('Model not found', 404);
+            }
+
+            $image->update([$indexField => $i++]);
+        }
+        return true;
     }
 }

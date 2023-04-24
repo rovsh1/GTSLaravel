@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @method static string contact(Model $contact, string $format = null)
+ * @method static string contractNumber(int $number, string $format = null)
  * @method static string price(mixed $price, string $format = null)
  * @method static string number(mixed $value, string $format = null)
  * @method static string date(mixed $value, string $format = null)
@@ -20,6 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  * @see \Gsdk\Format\FormatFactory;
  * @see \App\Admin\Providers\FormatServiceProvider;
  * @see \App\Admin\Support\Format\ContactRule;
+ * @see \App\Admin\Support\Format\ContractNumberRule;
  * @see \App\Admin\Support\Format\PriceRule;
  * @see \App\Admin\Support\Format\EnumRule;
  */

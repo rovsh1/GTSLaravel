@@ -59,8 +59,8 @@ class ImageController extends Controller
 
     public function reorder(Request $request, Hotel $hotel): AjaxResponseInterface
     {
-//        $files = $request->post('files');
-        //@todo сохранить сортировку
+        $hotel->updateImageIndexes($request->input('indexes'));
+
         return new AjaxSuccessResponse();
     }
 

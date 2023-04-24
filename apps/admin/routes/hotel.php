@@ -39,4 +39,8 @@ AclRoute::for('hotel')
 
     ->get('/{hotel}/quotas', Controllers\Hotel\QuotaController::class . '@index', 'update', 'quotas.index')
 
-    ->get('/{hotel}/settings', Controllers\Hotel\SettingsController::class . '@index', 'update', 'settings.index');
+    ->get('/{hotel}/settings', Controllers\Hotel\SettingsController::class . '@index', 'update', 'settings.index')
+
+    ->resource('contracts', Controllers\Hotel\ContractController::class)
+    ->resource('seasons', Controllers\Hotel\SeasonController::class)
+    ->resource('rates', Controllers\Hotel\RateController::class);

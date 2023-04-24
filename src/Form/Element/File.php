@@ -10,6 +10,8 @@ class File extends Input
 
     protected array $attributes = ['readonly', 'required', 'disabled', 'pattern', 'multiple'];
 
+    protected array $attributes = ['readonly', 'required', 'disabled', 'placeholder', 'multiple'];
+
     public function isFileUpload(): bool
     {
         return true;
