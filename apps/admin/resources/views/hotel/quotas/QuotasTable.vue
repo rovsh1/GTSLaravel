@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { computed, ref } from 'vue'
 
 import { OnClickOutside } from '@vueuse/components'
 import { DateTime } from 'luxon'
@@ -7,11 +7,12 @@ import { DateTime } from 'luxon'
 import { getEachDayInMonth } from '~resources/lib/date'
 import { QuotaRange, useQuotasTableRange } from '~resources/views/hotel/quotas/lib/use-range'
 
-import DayMenu from './components/DayMenu.vue'
+import DayMenu from './components/DayMenu/DayMenu.vue'
 import EditableCell from './components/EditableCell.vue'
 import HeadingCell from './components/HeadingCell.vue'
 import MenuButton from './components/MenuButton.vue'
 
+import { MenuPosition, useDayMenu } from './components/DayMenu/use-day-menu'
 import {
   ActiveKey,
   Day,
@@ -69,56 +70,16 @@ const {
 const activeQuotaKey = ref<ActiveKey>(null)
 const activeReleaseDaysKey = ref<ActiveKey>(null)
 
-const hoveredDay = ref<string | null>(null)
-
-const hoveredRoomTypeID = ref<number | null>(null)
-
-const menuRef = ref<HTMLElement | null>(null)
-type MenuPosition = {
-  dayKey: string
-  roomTypeID: number
-}
-const menuPosition = ref<MenuPosition | null>(null)
-
-const openDayMenu = (params: { trigger: HTMLElement } & MenuPosition) => {
-  const {
-    trigger,
-    dayKey,
-    roomTypeID,
-  } = params
-  menuRef.value = trigger
-  menuPosition.value = {
-    dayKey,
-    roomTypeID,
-  }
-}
-
-const closeDayMenu = () => {
-  menuRef.value = null
-  menuPosition.value = null
-}
-
-onMounted(() => {
-  window.addEventListener('scroll', closeDayMenu)
-})
-
-onUnmounted(() => {
-  window.removeEventListener('scroll', closeDayMenu)
-})
-
-const setHoveredRoomTypeID = (params: MenuPosition) => {
-  const {
-    dayKey,
-    roomTypeID,
-  } = params
-  hoveredDay.value = dayKey
-  hoveredRoomTypeID.value = roomTypeID
-}
-
-const resetHoveredRoomTypeID = () => {
-  hoveredDay.value = null
-  hoveredRoomTypeID.value = null
-}
+const {
+  hoveredDay,
+  hoveredRoomTypeID,
+  menuRef,
+  menuPosition,
+  openDayMenu,
+  closeDayMenu,
+  setHoveredRoomTypeID,
+  resetHoveredRoomTypeID,
+} = useDayMenu()
 
 const formatDateToAPIDate = (date: Date): string => DateTime
   .fromJSDate(date).toFormat('yyyy-LL-dd')
@@ -338,7 +299,7 @@ const massEditTooltip = 'Зажмите Shift и кликните, чтобы з
     >
       <day-menu
         :menu-ref="menuRef"
-        :menu-day-key="menuPosition.dayKey"
+        :menu-day-key="(menuPosition as MenuPosition).dayKey"
         @close="closeDayMenu"
         @focusin="() => setHoveredRoomTypeID(menuPosition as MenuPosition)"
         @mouseenter="() => setHoveredRoomTypeID(menuPosition as MenuPosition)"
