@@ -13,7 +13,7 @@
                 <td class="column-value" data-name="value" data-value="{{ $contact->value }}">
                     {!! Format::contact($contact) !!}
                 </td>
-                <td class="column-status">{{ $contact->main ? 'Основной' : '' }}</td>
+                <td class="column-status">{{ $contact->is_main ? 'Основной' : '' }}</td>
             </tr>
         @endforeach
         </tbody>
