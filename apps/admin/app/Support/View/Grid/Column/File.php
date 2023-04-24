@@ -21,6 +21,7 @@ class File extends Url
             return '';
         }
         if (is_array($value) || $value instanceof Arrayable) {
+            dd($value);
             $value = $value[0];
         }
 
