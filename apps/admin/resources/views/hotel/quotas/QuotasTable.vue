@@ -150,183 +150,180 @@ const massEditTooltip = 'Зажмите Shift и кликните, чтобы з
         id, label, customName, guests, count, dailyQuota,
       } in roomsQuotas"
       :key="id"
-      class="card card-form"
     >
-      <div class="card-body pb-0">
-        <heading-cell
-          :label="label"
-          :custom-name="customName"
-          :guests="guests"
-          :count="count"
-        />
-        <div class="quotasTable" @scroll="closeDayMenu">
-          <table>
-            <thead>
-              <tr>
-                <th class="headingCell">
-                  <div class="monthName">{{ monthName }}</div>
-                </th>
-                <td
-                  v-for="{ key, dayOfWeek, dayOfMonth } in days"
-                  :key="key"
-                  class="dayCell"
-                  tabindex="0"
-                  @focusin="() => {
-                    setHoveredRoomTypeID({ dayKey: key, roomTypeID: id })
-                  }"
-                  @mouseenter="() => {
-                    setHoveredRoomTypeID({ dayKey: key, roomTypeID: id })
-                  }"
-                  @focusout="resetHoveredRoomTypeID"
-                  @mouseleave="resetHoveredRoomTypeID"
+      <heading-cell
+        :label="label"
+        :custom-name="customName"
+        :guests="guests"
+        :count="count"
+      />
+      <div class="quotasTable" @scroll="closeDayMenu">
+        <table>
+          <thead>
+            <tr>
+              <th class="headingCell">
+                <div class="monthName">{{ monthName }}</div>
+              </th>
+              <td
+                v-for="{ key, dayOfWeek, dayOfMonth } in days"
+                :key="key"
+                class="dayCell"
+                tabindex="0"
+                @focusin="() => {
+                  setHoveredRoomTypeID({ dayKey: key, roomTypeID: id })
+                }"
+                @mouseenter="() => {
+                  setHoveredRoomTypeID({ dayKey: key, roomTypeID: id })
+                }"
+                @focusout="resetHoveredRoomTypeID"
+                @mouseleave="resetHoveredRoomTypeID"
+              >
+                <div class="dayOfWeek">{{ dayOfWeek }}</div>
+                <div class="dayOfMonth"><strong>{{ dayOfMonth }}</strong></div>
+              </td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="roomTypeHeadingRow">
+              <th class="headingCell">Квоты / Продано</th>
+              <td
+                v-for="{ key, quota, sold, status, date } in dailyQuota"
+                :key="key"
+                :class="dayQuotaCellClassName(status)"
+                :title="activeQuotaKey ? massEditTooltip : undefined"
+                tabindex="0"
+                @focusin="() => {
+                  setHoveredRoomTypeID({ dayKey: key, roomTypeID: id })
+                }"
+                @mouseenter="() => {
+                  setHoveredRoomTypeID({ dayKey: key, roomTypeID: id })
+                }"
+                @focusout="resetHoveredRoomTypeID"
+                @mouseleave="resetHoveredRoomTypeID"
+              >
+                <editable-cell
+                  :active-key="activeQuotaKey"
+                  :cell-key="getActiveCellKey(key, id)"
+                  :value="quota === null ? '' : quota.toString()"
+                  :max="count"
+                  :disabled="!editable"
+                  :in-range="isQuotaCellInRange(getActiveCellKey(key, id))"
+                  @active-key="(value) => activeQuotaKey = value"
+                  @range-key="(value) => setQuotaRange({
+                    dailyQuota,
+                    roomTypeID: id,
+                    activeKey: activeQuotaKey,
+                    rangeKey: value,
+                  })"
+                  @value="value => handleQuotaValue(id, date, value)"
                 >
-                  <div class="dayOfWeek">{{ dayOfWeek }}</div>
-                  <div class="dayOfMonth"><strong>{{ dayOfMonth }}</strong></div>
-                </td>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="roomTypeHeadingRow">
-                <th class="headingCell">Квоты / Продано</th>
-                <td
-                  v-for="{ key, quota, sold, status, date } in dailyQuota"
-                  :key="key"
-                  :class="dayQuotaCellClassName(status)"
-                  :title="activeQuotaKey ? massEditTooltip : undefined"
-                  tabindex="0"
-                  @focusin="() => {
-                    setHoveredRoomTypeID({ dayKey: key, roomTypeID: id })
-                  }"
-                  @mouseenter="() => {
-                    setHoveredRoomTypeID({ dayKey: key, roomTypeID: id })
-                  }"
-                  @focusout="resetHoveredRoomTypeID"
-                  @mouseleave="resetHoveredRoomTypeID"
+                  <template v-if="quota === null && sold === null">
+                    &nbsp;
+                  </template>
+                  <template v-else-if="sold === null">
+                    {{ quota }} / 0
+                  </template>
+                  <template v-else-if="quota === null">
+                    0 / {{ sold }}
+                  </template>
+                  <template v-else>
+                    {{ quota }} / {{ sold }}
+                  </template>
+                </editable-cell>
+              </td>
+            </tr>
+            <tr>
+              <th class="reserveHeadingCell">(резерв)</th>
+              <td
+                v-for="{ key, reserve, status } in dailyQuota"
+                :key="key"
+                class="reserveDataCell"
+                :class="dayQuotaCellClassName(status)"
+                tabindex="0"
+                @focusin="() => {
+                  setHoveredRoomTypeID({ dayKey: key, roomTypeID: id })
+                }"
+                @mouseenter="() => {
+                  setHoveredRoomTypeID({ dayKey: key, roomTypeID: id })
+                }"
+                @focusout="resetHoveredRoomTypeID"
+                @mouseleave="resetHoveredRoomTypeID"
+              >
+                <template v-if="reserve === null">
+                  &nbsp;
+                </template>
+                <template v-else>
+                  ({{ reserve }})
+                </template>
+              </td>
+            </tr>
+            <tr>
+              <th class="headingCell">релиз-дни</th>
+              <td
+                v-for="{ key, releaseDays, status, date } in dailyQuota"
+                :key="key"
+                :class="dayQuotaCellClassName(status)"
+                :title="activeReleaseDaysKey ? massEditTooltip : undefined"
+                tabindex="0"
+                @focusin="() => {
+                  setHoveredRoomTypeID({ dayKey: key, roomTypeID: id })
+                }"
+                @mouseenter="() => {
+                  setHoveredRoomTypeID({ dayKey: key, roomTypeID: id })
+                }"
+                @focusout="resetHoveredRoomTypeID"
+                @mouseleave="resetHoveredRoomTypeID"
+              >
+                <editable-cell
+                  :active-key="activeReleaseDaysKey"
+                  :cell-key="getActiveCellKey(key, id)"
+                  :value="releaseDays === null ? '' : releaseDays.toString()"
+                  :max="30"
+                  :disabled="!editable"
+                  :in-range="isReleaseDaysCellInRange(getActiveCellKey(key, id))"
+                  @active-key="(value) => activeReleaseDaysKey = value"
+                  @range-key="(value) => setReleaseDaysRange({
+                    dailyQuota,
+                    roomTypeID: id,
+                    activeKey: activeReleaseDaysKey,
+                    rangeKey: value,
+                  })"
+                  @value="value => handleReleaseDaysValue(id, date, value)"
                 >
-                  <editable-cell
-                    :active-key="activeQuotaKey"
-                    :cell-key="getActiveCellKey(key, id)"
-                    :value="quota === null ? '' : quota.toString()"
-                    :max="count"
-                    :disabled="!editable"
-                    :in-range="isQuotaCellInRange(getActiveCellKey(key, id))"
-                    @active-key="(value) => activeQuotaKey = value"
-                    @range-key="(value) => setQuotaRange({
-                      dailyQuota,
-                      roomTypeID: id,
-                      activeKey: activeQuotaKey,
-                      rangeKey: value,
-                    })"
-                    @value="value => handleQuotaValue(id, date, value)"
-                  >
-                    <template v-if="quota === null && sold === null">
-                      &nbsp;
-                    </template>
-                    <template v-else-if="sold === null">
-                      {{ quota }} / 0
-                    </template>
-                    <template v-else-if="quota === null">
-                      0 / {{ sold }}
-                    </template>
-                    <template v-else>
-                      {{ quota }} / {{ sold }}
-                    </template>
-                  </editable-cell>
-                </td>
-              </tr>
-              <tr>
-                <th class="reserveHeadingCell">(резерв)</th>
-                <td
-                  v-for="{ key, reserve, status } in dailyQuota"
-                  :key="key"
-                  class="reserveDataCell"
-                  :class="dayQuotaCellClassName(status)"
-                  tabindex="0"
-                  @focusin="() => {
-                    setHoveredRoomTypeID({ dayKey: key, roomTypeID: id })
-                  }"
-                  @mouseenter="() => {
-                    setHoveredRoomTypeID({ dayKey: key, roomTypeID: id })
-                  }"
-                  @focusout="resetHoveredRoomTypeID"
-                  @mouseleave="resetHoveredRoomTypeID"
-                >
-                  <template v-if="reserve === null">
+                  <template v-if="releaseDays === null">
                     &nbsp;
                   </template>
                   <template v-else>
-                    ({{ reserve }})
+                    {{ releaseDays }}
                   </template>
-                </td>
-              </tr>
-              <tr>
-                <th class="headingCell">релиз-дни</th>
-                <td
-                  v-for="{ key, releaseDays, status, date } in dailyQuota"
-                  :key="key"
-                  :class="dayQuotaCellClassName(status)"
-                  :title="activeReleaseDaysKey ? massEditTooltip : undefined"
-                  tabindex="0"
-                  @focusin="() => {
-                    setHoveredRoomTypeID({ dayKey: key, roomTypeID: id })
+                </editable-cell>
+              </td>
+            </tr>
+            <tr>
+              <th class="headingCell" />
+              <td
+                v-for="{ key } in dailyQuota"
+                :key="key"
+                class="menuButtonCell"
+                :class="{ isInvisible: !editable }"
+              >
+                <menu-button
+                  :visible="
+                    (hoveredDay === key && hoveredRoomTypeID === id)
+                      || (
+                        menuPosition !== null
+                        && getActiveCellKey(menuPosition.dayKey, menuPosition.roomTypeID)
+                          === getActiveCellKey(key, id)
+                      )
+                  "
+                  @click="(element) => {
+                    openDayMenu({ trigger: element, dayKey: key, roomTypeID: id })
                   }"
-                  @mouseenter="() => {
-                    setHoveredRoomTypeID({ dayKey: key, roomTypeID: id })
-                  }"
-                  @focusout="resetHoveredRoomTypeID"
-                  @mouseleave="resetHoveredRoomTypeID"
-                >
-                  <editable-cell
-                    :active-key="activeReleaseDaysKey"
-                    :cell-key="getActiveCellKey(key, id)"
-                    :value="releaseDays === null ? '' : releaseDays.toString()"
-                    :max="30"
-                    :disabled="!editable"
-                    :in-range="isReleaseDaysCellInRange(getActiveCellKey(key, id))"
-                    @active-key="(value) => activeReleaseDaysKey = value"
-                    @range-key="(value) => setReleaseDaysRange({
-                      dailyQuota,
-                      roomTypeID: id,
-                      activeKey: activeReleaseDaysKey,
-                      rangeKey: value,
-                    })"
-                    @value="value => handleReleaseDaysValue(id, date, value)"
-                  >
-                    <template v-if="releaseDays === null">
-                      &nbsp;
-                    </template>
-                    <template v-else>
-                      {{ releaseDays }}
-                    </template>
-                  </editable-cell>
-                </td>
-              </tr>
-              <tr>
-                <th class="headingCell" />
-                <td
-                  v-for="{ key } in dailyQuota"
-                  :key="key"
-                  class="menuButtonCell"
-                  :class="{ isInvisible: !editable }"
-                >
-                  <menu-button
-                    :visible="
-                      (hoveredDay === key && hoveredRoomTypeID === id)
-                        || (
-                          menuPosition !== null
-                          && getActiveCellKey(menuPosition.dayKey, menuPosition.roomTypeID)
-                            === getActiveCellKey(key, id)
-                        )
-                    "
-                    @click="(element) => {
-                      openDayMenu({ trigger: element, dayKey: key, roomTypeID: id })
-                    }"
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
     <Teleport v-if="menuRef !== null && menuPosition !== null" to="body">
@@ -356,6 +353,8 @@ const massEditTooltip = 'Зажмите Shift и кликните, чтобы з
 
 .quotasTable {
   overflow: auto;
+  border: 1px solid lightgray;
+  border-radius: 0.6em;
   font-size: 0.8em;
 }
 
@@ -398,19 +397,9 @@ th {
 %heading-cell {
   @extend %cell;
 
+  padding-left: 1.5em;
   text-align: right;
   white-space: nowrap;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 1px;
-    right: 100%;
-    bottom: 1px;
-    display: block;
-    width: 1px;
-    background-color: vars.$body-bg;
-  }
 }
 
 .headingCell {
