@@ -62,11 +62,12 @@ class DatabaseRepository implements DatabaseRepositoryInterface
     public function setRate(CountryEnum $country, CurrencyRate $rate, DateTime $date = null): void
     {
         Model::updateOrCreate([
-            'date' => $date ?? now(),
+            'date' => ($date ?? now())->format('Y-m-d'),
             'country' => $country,
             'currency' => $rate->currency()
         ], [
-            'value' => $rate->value()
+            'value' => $rate->value(),
+            'nominal' => $rate->nominal()
         ]);
     }
 
@@ -74,7 +75,7 @@ class DatabaseRepository implements DatabaseRepositoryInterface
     {
         $rates = $query->whereCountry($country)
             ->get()
-            ->map(fn($r) => new CurrencyRate($r->currency, $r->value))
+            ->map(fn($r) => new CurrencyRate($r->currency, $r->value, $r->nominal))
             ->all();
         return new CurrencyRatesCollection($rates);
     }
@@ -84,10 +85,10 @@ class DatabaseRepository implements DatabaseRepositoryInterface
         $rate = $query
             ->whereCountry($country)
             ->whereCurrency($currency)
-            ->value('value');
+            ->first();
         if (null === $rate) {
             return null;
         }
-        return new CurrencyRate($currency, $rate);
+        return new CurrencyRate($currency, $rate->value, $rate->nominal);
     }
 }

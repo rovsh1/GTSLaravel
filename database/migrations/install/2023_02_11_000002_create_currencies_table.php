@@ -28,7 +28,8 @@ return new class extends Migration {
             $table->date('date');
             $table->char('country', 2);
             $table->char('currency', 3);
-            $table->decimal('value', 8, 2)->unsigned();
+            $table->unsignedDecimal('value', 10, 4);
+            $table->unsignedInteger('nominal');
 
             $table->unique(['date', 'currency', 'country']);
         });

@@ -31,9 +31,9 @@ class CacheRepository implements CacheRepositoryInterface
      */
     public function getRate(CountryEnum $country, CurrencyEnum $currency, DateTime $date = null): ?CurrencyRate
     {
-        $data = Cache::get(self::cacheId($country, $currency, $date));
+        $data = Cache::get(self::cacheId($country, $currency, $date ?? new DateTime()));
 
-        return empty($data) ? null : new CurrencyRate($currency, (float)$data);
+        return empty($data) ? null : new CurrencyRate($currency, $data['value'], $data['nominal']);
     }
 
     public function setRates(CountryEnum $country, CurrencyRatesCollection $rates, DateTime $date = null): void
@@ -45,12 +45,19 @@ class CacheRepository implements CacheRepositoryInterface
 
     public function setRate(CountryEnum $country, CurrencyRate $rate, DateTime $date = null, int $ttl = null): void
     {
-        Cache::add(self::cacheId($country, $rate->currency(), $date), self::packRate($rate), $ttl ?? self::CACHE_TTL);
+        Cache::set(
+            self::cacheId($country, $rate->currency(), $date ?? new DateTime()),
+            self::packRate($rate),
+            $ttl ?? self::CACHE_TTL
+        );
     }
 
-    private static function packRate(CurrencyRate $rate): string
+    private static function packRate(CurrencyRate $rate): array
     {
-        return (string)$rate->value();
+        return [
+            'value' => $rate->value(),
+            'nominal' => $rate->nominal(),
+        ];
     }
 
     private static function cacheId(CountryEnum $country, CurrencyEnum $currency, DateTime $date): string

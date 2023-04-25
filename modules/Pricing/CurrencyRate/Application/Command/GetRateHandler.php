@@ -29,7 +29,7 @@ class GetRateHandler implements CommandHandlerInterface
     public function handle(CommandInterface|GetRate $command): ?CurrencyRate
     {
         if ($command->country->currency() === $command->currency) {
-            return new CurrencyRate($command->currency, 1.0);
+            return new CurrencyRate($command->currency, 1.0, 1);
         }
 
         $rate = $this->cache->getRate($command->country, $command->currency, $command->date);
@@ -46,13 +46,16 @@ class GetRateHandler implements CommandHandlerInterface
         try {
             $api = ApiFactory::fromCountry($command->country);
             $rates = $api->getRates();
-            if ($rates->has($command->currency)) {
-                $rate = $rates->get($command->currency);
+            foreach ($rates as $rate) {
                 $this->cache->setRate($command->country, $rate, $command->date);
                 $this->repository->setRate($command->country, $rate, $command->date);
-                return $rate;
+            }
+
+            if ($rates->has($command->currency)) {
+                return $rates->get($command->currency);
             }
         } catch (Throwable $e) {
+            //dd($e);
         }
 
         //TODO report warning notification (logManager)

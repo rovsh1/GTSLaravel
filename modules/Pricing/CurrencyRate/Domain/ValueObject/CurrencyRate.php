@@ -6,16 +6,17 @@ use Exception;
 
 class CurrencyRate
 {
-    private float $value;
+    private readonly float $value;
 
     /**
      * @throws Exception
      */
     public function __construct(
         private readonly CurrencyEnum $currency,
-        float $value
+        float $value,
+        private readonly int $nominal
     ) {
-        $this->setValue($value);
+        $this->value = $this->validateValue($value);
     }
 
     public function currency(): CurrencyEnum
@@ -23,17 +24,19 @@ class CurrencyRate
         return $this->currency;
     }
 
+    public function rate(): float
+    {
+        return $this->value / $this->nominal;
+    }
+
     public function value(): float
     {
         return $this->value;
     }
 
-    /**
-     * @throws Exception
-     */
-    public function setValue(float $value): void
+    public function nominal(): int
     {
-        $this->value = $this->validateValue($value);
+        return $this->nominal;
     }
 
     /**

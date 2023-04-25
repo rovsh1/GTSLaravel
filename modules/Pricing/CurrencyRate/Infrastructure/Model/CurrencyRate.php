@@ -16,13 +16,15 @@ class CurrencyRate extends Model
         'country',
         'currency',
         'date',
-        'value'
+        'value',
+        'nominal'
     ];
 
     protected $casts = [
         'country' => CountryEnum::class,
         'currency' => CurrencyEnum::class,
         'date' => 'date',
-        'value' => 'float'
+        'value' => 'float',
+        'nominal' => 'int'
     ];
 }

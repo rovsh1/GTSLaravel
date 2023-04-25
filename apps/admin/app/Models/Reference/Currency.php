@@ -14,6 +14,7 @@ class Currency extends Model
     public $timestamps = false;
 
     protected array $quicksearch = ['id', 'name%'];
+
     protected array $translatable = ['name'];
 
     protected $table = 'r_currencies';

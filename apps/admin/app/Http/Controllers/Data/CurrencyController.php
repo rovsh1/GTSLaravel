@@ -3,10 +3,12 @@
 namespace App\Admin\Http\Controllers\Data;
 
 use App\Admin\Support\Facades\Form;
+use App\Admin\Support\Facades\Format;
 use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
+use App\Core\Support\Facades\CurrencyAdapter;
 
 class CurrencyController extends AbstractPrototypeController
 {
@@ -34,7 +36,10 @@ class CurrencyController extends AbstractPrototypeController
             ->text('code_num', ['text' => 'Код (цифровой)'])
             ->text('code_char', ['text' => 'Код (символьный)'])
             ->text('sign', ['text' => 'Символ'])
-            ->number('rate', ['text' => 'Курс', 'order' => true])
+            ->number('rate', [
+                'text' => 'Курс',
+                'renderer' => fn($r) => Format::number(CurrencyAdapter::getRate($r->code_char), 'NFD=2')
+            ])
             ->orderBy('id', 'asc');
     }
 }

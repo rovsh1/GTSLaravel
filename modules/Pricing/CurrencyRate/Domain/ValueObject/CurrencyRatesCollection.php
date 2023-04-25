@@ -2,13 +2,15 @@
 
 namespace Module\Pricing\CurrencyRate\Domain\ValueObject;
 
+use Exception;
+
 class CurrencyRatesCollection implements \Iterator
 {
     private int $position;
     private array $rates = [];
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function __construct(array $rates = [])
     {
@@ -33,7 +35,7 @@ class CurrencyRatesCollection implements \Iterator
                 return $rate;
             }
         }
-        throw new \Exception('Currency [' . $currency->value . '] not found in collection');
+        throw new Exception('Currency [' . $currency->value . '] not found in collection');
     }
 
     public function isEmpty(): bool
@@ -42,7 +44,7 @@ class CurrencyRatesCollection implements \Iterator
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function setRates(array $rates): void
     {
@@ -50,13 +52,13 @@ class CurrencyRatesCollection implements \Iterator
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     private function validateRates(array $rates): array
     {
         foreach ($rates as $rate) {
-            if ($rate instanceof CurrencyRate) {
-                throw new \Exception('Currency rate need to be CurrencyRate instance');
+            if (!$rate instanceof CurrencyRate) {
+                throw new Exception('Currency rate need to be CurrencyRate instance');
             }
         }
         return $rates;

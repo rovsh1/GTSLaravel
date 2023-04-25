@@ -12,6 +12,9 @@ abstract class AbstractApi implements ApiInterface
 {
     private const TIMEOUT = 5;
 
+    /**
+     * @throws Exception
+     */
     protected function xmlRequest(string $url, array $params = []): SimpleXMLElement
     {
         $response = $this->request($url, $params);
@@ -29,24 +32,21 @@ abstract class AbstractApi implements ApiInterface
     }
 
     protected function makeCollectionFromXmlPath(
-        mixed $path,
+        array $path,
         string $currencyCode,
         string $rateKey,
         string $nominalKey
     ): CurrencyRatesCollection {
-        if (!$path instanceof SimpleXMLElement) {
-            return new CurrencyRatesCollection();
-        }
-
         $rates = [];
         foreach ($path as $r) {
-            $currency = CurrencyEnum::tryFrom(strtoupper((string)$r->Ccy));
+            $currency = CurrencyEnum::tryFrom(strtoupper((string)$r->$currencyCode));
             if (null === $currency) {
                 continue;
             }
             $rates[] = new CurrencyRate(
                 $currency,
-                self::rateFromString((string)$r->Rate) * (int)(string)$r->Nominal,
+                self::rateFromString((string)$r->$rateKey),
+                (int)(string)$r->$nominalKey
             );
         }
 
@@ -80,7 +80,7 @@ abstract class AbstractApi implements ApiInterface
             $error = curl_error($ch);
             curl_close($ch);
 
-            throw new Exception($httpCode . ': ' . ($errorNo ? $error : __CLASS__ . ' unavailable'));
+            throw new Exception($httpCode . ': ' . ($errorNo ? $error : static::class . ' unavailable'));
         }
     }
 
