@@ -53,7 +53,7 @@ const dayCellClassNameByRoomQuotaStatus: Record<RoomQuotaStatus, string> = {
 }
 
 const dayQuotaCellClassName = (status: RoomQuota['status']) =>
-  ['dayQuotaCell', status !== undefined && dayCellClassNameByRoomQuotaStatus[status]]
+  ['dayQuotaCell', status !== null && dayCellClassNameByRoomQuotaStatus[status]]
 
 const quotaRange = ref<QuotaRange>(null)
 const {
@@ -205,7 +205,7 @@ const massEditTooltip = 'Зажмите Shift и кликните, чтобы з
                   <editable-cell
                     :active-key="activeQuotaKey"
                     :cell-key="getActiveCellKey(key, id)"
-                    :value="quota.toString()"
+                    :value="quota === null ? '' : quota.toString()"
                     :max="count"
                     :in-range="isQuotaCellInRange(getActiveCellKey(key, id))"
                     @active-key="(value) => activeQuotaKey = value"
@@ -217,7 +217,18 @@ const massEditTooltip = 'Зажмите Shift и кликните, чтобы з
                     })"
                     @value="value => handleQuotaValue(id, date, value)"
                   >
-                    {{ quota }} / {{ sold }}
+                    <template v-if="quota === null && sold === null">
+                      &nbsp;
+                    </template>
+                    <template v-else-if="sold === null">
+                      {{ quota }} / 0
+                    </template>
+                    <template v-else-if="quota === null">
+                      0 / {{ sold }}
+                    </template>
+                    <template v-else>
+                      {{ quota }} / {{ sold }}
+                    </template>
                   </editable-cell>
                 </td>
               </tr>
@@ -238,7 +249,12 @@ const massEditTooltip = 'Зажмите Shift и кликните, чтобы з
                   @focusout="resetHoveredRoomTypeID"
                   @mouseleave="resetHoveredRoomTypeID"
                 >
-                  ({{ reserve }})
+                  <template v-if="reserve === null">
+                    &nbsp;
+                  </template>
+                  <template v-else>
+                    ({{ reserve }})
+                  </template>
                 </td>
               </tr>
               <tr>
@@ -261,7 +277,7 @@ const massEditTooltip = 'Зажмите Shift и кликните, чтобы з
                   <editable-cell
                     :active-key="activeReleaseDaysKey"
                     :cell-key="getActiveCellKey(key, id)"
-                    :value="releaseDays.toString()"
+                    :value="releaseDays === null ? '' : releaseDays.toString()"
                     :max="30"
                     :in-range="isReleaseDaysCellInRange(getActiveCellKey(key, id))"
                     @active-key="(value) => activeReleaseDaysKey = value"
@@ -273,7 +289,12 @@ const massEditTooltip = 'Зажмите Shift и кликните, чтобы з
                     })"
                     @value="value => handleReleaseDaysValue(id, date, value)"
                   >
-                    {{ releaseDays }}
+                    <template v-if="releaseDays === null">
+                      &nbsp;
+                    </template>
+                    <template v-else>
+                      {{ releaseDays }}
+                    </template>
                   </editable-cell>
                 </td>
               </tr>

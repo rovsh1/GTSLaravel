@@ -47,7 +47,7 @@ export type Quota = {
   date: string
   room_id: RoomID
   // 0 = closed, 1 = opened
-  status?: QuotaStatus
+  status: QuotaStatus
   release_days: number
   count_available: number
   count_booked: number

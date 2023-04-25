@@ -19,11 +19,11 @@ export type RoomQuota = {
   id: Quota['id'] | null
   roomID: RoomID
   date: Date
-  status?: RoomQuotaStatus
-  quota: number
-  sold: number
-  reserve: number
-  releaseDays: number
+  status: RoomQuotaStatus | null
+  quota: number | null
+  sold: number | null
+  reserve: number | null
+  releaseDays: number | null
 }
 
 export type RoomQuotas = {
@@ -73,10 +73,11 @@ export const getRoomsQuotasFromQuotas = (quotas: Quota[], days: Day[]) => uniqBy
             return {
               ...common,
               id: null,
-              quota: 0,
-              sold: 0,
-              reserve: 0,
-              releaseDays: 0,
+              status: null,
+              quota: null,
+              sold: null,
+              reserve: null,
+              releaseDays: null,
             }
           }
           const {
@@ -90,7 +91,7 @@ export const getRoomsQuotasFromQuotas = (quotas: Quota[], days: Day[]) => uniqBy
           return {
             ...common,
             id: quotaID,
-            status: status === undefined ? undefined : quotaStatusMap[status],
+            status: quotaStatusMap[status],
             quota: countBooked,
             sold: countAvailable,
             reserve: countReserved,
