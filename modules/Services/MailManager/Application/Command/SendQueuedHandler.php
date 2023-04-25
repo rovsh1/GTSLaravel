@@ -22,8 +22,6 @@ class SendQueuedHandler implements CommandHandlerInterface
             $command->context
         );
 
-        $this->queueManager->sendWaitingMessages();
-
         return $queueMessage->uuid;
     }
 }

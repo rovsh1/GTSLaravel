@@ -17,17 +17,29 @@ class QueueManager implements QueueManagerInterface
     ) {
     }
 
+    public function size(): int
+    {
+        return $this->queueRepository->waitingCount();
+    }
+
+    public function pop(): ?QueueMessage
+    {
+        return $this->queueRepository->findWaiting();
+    }
+
     public function sendSync(Mail $mailMessage, array $context = null): QueueMessage
     {
-        return $this->_send(
-            $this->queueRepository->push(
-                $mailMessage->subject(),
-                $mailMessage->serialize(),
-                0,
-                QueueMailStatusEnum::PROCESSING,
-                $context
-            )
+        $queueMessage = $this->queueRepository->push(
+            $mailMessage->subject(),
+            $mailMessage->serialize(),
+            0,
+            QueueMailStatusEnum::PROCESSING,
+            $context
         );
+
+        $this->sendWaitingMessage($queueMessage);
+
+        return $queueMessage;
     }
 
     public function push(Mail $mailMessage, int $priority = 0, array $context = null): QueueMessage
@@ -49,27 +61,17 @@ class QueueManager implements QueueManagerInterface
 //
 //        $this->queueRepository->updateStatus($queueMessage->uuid, QueueMailStatusEnum::PROCESSING);
 //
-//        $this->_send($queueMessage);
+//        $this->sendWaitingMessage($queueMessage);
 //    }
 
     public function sendWaitingMessages(): void
     {
         while ($message = $this->queueRepository->findWaiting()) {
-            $this->_send($message);
+            $this->sendWaitingMessage($message);
         }
     }
 
-    public function retry(QueueMessage $message): void
-    {
-        $this->queueRepository->retry($message->uuid);
-    }
-
-    public function retryAll(): void
-    {
-        $this->queueRepository->retryAll();
-    }
-
-    private function _send(QueueMessage $queueMessage): QueueMessage
+    public function sendWaitingMessage(QueueMessage $queueMessage): void
     {
         $this->queueRepository->updateStatus($queueMessage->uuid, QueueMailStatusEnum::PROCESSING);
 
@@ -80,7 +82,7 @@ class QueueManager implements QueueManagerInterface
         } catch (Throwable $exception) {
             $this->queueRepository->updateStatus($queueMessage->uuid, QueueMailStatusEnum::FAILED);
 
-            return $queueMessage;
+            return;
 //            throw $exception;
         }
 
@@ -93,7 +95,15 @@ class QueueManager implements QueueManagerInterface
 //        }
 
         $this->queueRepository->updateStatus($queueMessage->uuid, QueueMailStatusEnum::SENT);
+    }
 
-        return $queueMessage;
+    public function retry(QueueMessage $message): void
+    {
+        $this->queueRepository->retry($message->uuid);
+    }
+
+    public function retryAll(): void
+    {
+        $this->queueRepository->retryAll();
     }
 }

@@ -34,6 +34,14 @@ return [
             'driver' => 'sync',
         ],
 
+        'mail' => [
+            'driver' => 'mail',
+            //'table' => 'jobs',
+            'queue' => 'default',
+            'retry_after' => 90,
+            'after_commit' => false,
+        ],
+
         'database' => [
             'driver' => 'database',
             'table' => 'jobs',

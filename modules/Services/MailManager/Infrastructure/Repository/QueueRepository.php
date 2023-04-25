@@ -117,4 +117,9 @@ class QueueRepository implements QueueRepositoryInterface
             QueueMailStatusEnum::from($model->status)
         );
     }
+
+    public function waitingCount(): int
+    {
+        return Model::where('status', QueueMailStatusEnum::WAITING->value)->count();
+    }
 }

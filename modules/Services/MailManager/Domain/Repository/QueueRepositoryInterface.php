@@ -26,4 +26,6 @@ interface QueueRepositoryInterface
     public function findWaiting(): ?QueueMessage;
 
     public function clearExpired(\DateTime $date): void;
+
+    public function waitingCount(): int;
 }

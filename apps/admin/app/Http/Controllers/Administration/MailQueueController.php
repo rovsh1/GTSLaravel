@@ -27,7 +27,7 @@ class MailQueueController extends Controller
 
         $grid = $this->gridFactory();
 //throw new \Exception('asd');
-//        MailAdapter::sendTo('ds@mail.ru', 'dd', 'eerr');
+        //MailAdapter::sendTo('ds@mail.ru', 'dd', 'eerr');
         $data = MailAdapter::getQueue([
             //'limit' => 10
         ])
@@ -47,13 +47,23 @@ class MailQueueController extends Controller
 
     protected function gridFactory(): GridContract
     {
+        $statuses = [
+            1 => 'Waiting',
+            2 => 'Processing',
+            3 => 'Sent',
+            4 => 'Failed'
+        ];
         return Grid::enableQuicksearch()
             ->paginator(10)
 //            ->text('uuid', ['text' => 'UUID'])
             ->text('subject', ['text' => 'Тема письма'])
             ->text('priority', ['text' => 'Приоритет', 'order' => true])
             //->text('attempts', ['text' => 'Попыток', 'order' => true])
-            ->text('status', ['text' => 'Статус', 'order' => true])
+            ->text('status', [
+                'text' => 'Статус',
+                'renderer' => fn($r) => $statuses[$r->status],
+                'order' => true
+            ])
             ->text('payload', [
                 'text' => 'Данные',
                 'renderer' => fn($r, $t) => '<div class="icon" title="' . htmlspecialchars(
