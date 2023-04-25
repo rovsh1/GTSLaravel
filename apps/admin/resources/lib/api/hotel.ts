@@ -2,7 +2,7 @@ import { unref } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
 
-import { Hotel, Room } from '~resources/lib/models'
+import { Contract, Hotel, Room } from '~resources/lib/models'
 import { HotelImage, RoomImage } from '~resources/views/hotel/images/models'
 
 import { useAdminAPI, useAPI } from '.'
@@ -83,4 +83,11 @@ export const useHotelRoomImageDeleteAPI = (props: MaybeRef<HotelRoomImageProps>)
   const { hotelID, roomID, imageID } = unref(props)
   return useAdminAPI(`/hotels/${hotelID}/rooms/${roomID}/images/${imageID}/delete`)
     .post()
+}
+
+export const useHotelContractAPI = (props: MaybeRef<{ hotelID: number; contractID: number }>) => {
+  const { hotelID, contractID } = unref(props)
+  return useAdminAPI(`/hotels/${hotelID}/contracts/${contractID}/get`)
+    .get()
+    .json<Contract>()
 }

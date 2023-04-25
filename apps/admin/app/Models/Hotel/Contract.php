@@ -9,6 +9,7 @@ use Carbon\CarbonPeriod;
 use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 
@@ -24,6 +25,7 @@ use Illuminate\Support\Collection;
  * @property \Custom\Framework\Support\DateTime $updated_at
  * @property CarbonPeriod $period
  * @property Collection<ContractDocument>|ContractDocument[] $documents
+ * @property-read Collection<Season>|Season[] $seasons
  * @method static \Illuminate\Database\Eloquent\Builder|Contract newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Contract newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Contract query()
@@ -104,6 +106,11 @@ class Contract extends Model
                 return [];
             }
         );
+    }
+
+    public function seasons(): HasMany
+    {
+        return $this->hasMany(Season::class);
     }
 
     public function __toString()

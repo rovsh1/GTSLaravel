@@ -5,6 +5,10 @@ type CityID = number
 
 type HotelID = number
 
+type ContractID = number
+
+type SeasonID = number
+
 export type Hotel = {
   id: HotelID
   name: string
@@ -37,4 +41,19 @@ export type File = {
   name: string
   url: string
   entity_id: number
+}
+
+export type Season = {
+  id: SeasonID
+  contract_id: ContractID
+  name: string
+  date_start: RDate
+  date_end: RDate
+}
+
+export type Contract = {
+  id: ContractID
+  date_start: RDate
+  date_end: RDate
+  seasons?:Season[]
 }

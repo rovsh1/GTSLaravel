@@ -24,6 +24,7 @@ use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Layout as LayoutContract;
 use App\Admin\View\Menus\HotelMenu;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -85,10 +86,15 @@ class ContractController extends Controller
         return (new DefaultDestroyAction())->handle($contract);
     }
 
+    public function get(Hotel $hotel, Contract $contract): JsonResponse
+    {
+        return response()->json($contract->load(['seasons']));
+    }
+
     protected function formFactory(int $hotelId): FormContract
     {
         return Form::name('data')
-            ->setOption('enctype','multipart/form-data')
+            ->setOption('enctype', 'multipart/form-data')
             ->hidden('hotel_id', ['value' => $hotelId])
             ->dateRange('period', ['label' => 'Период', 'required' => true])
             ->enum('status', ['label' => 'Статус', 'emptyItem' => '', 'enum' => StatusEnum::class, 'required' => true])
@@ -104,7 +110,10 @@ class ContractController extends Controller
                     ['hotel' => $hotelId, 'contract' => $contract->id]
                 )
             )
-            ->text('contract_number', ['text' => 'Номер', 'order' => true, 'renderer' => fn($r, $t) => Format::contractNumber($r->id)])
+            ->text(
+                'contract_number',
+                ['text' => 'Номер', 'order' => true, 'renderer' => fn($r, $t) => Format::contractNumber($r->id)]
+            )
             ->text('period', ['text' => 'Период', 'renderer' => fn($r, $t) => Format::period($t)])
             ->enum('status', ['text' => 'Статус', 'enum' => StatusEnum::class, 'order' => true])
             ->file('documents', ['text' => 'Документы']);

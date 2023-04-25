@@ -53,7 +53,8 @@ class SeasonController extends Controller
         $this->hotel($hotel);
 
         return (new DefaultFormCreateAction($this->formFactory($hotel->id)))
-            ->handle('Новый сезон');
+            ->handle('Новый сезон')
+            ->view('hotel.season.form.form');
     }
 
     /**
@@ -71,7 +72,8 @@ class SeasonController extends Controller
 
         return (new DefaultFormEditAction($this->formFactory($hotel->id)))
             ->deletable()
-            ->handle($season);
+            ->handle($season)
+            ->view('hotel.season.form.form');
     }
 
     public function update(Hotel $hotel, Season $season): RedirectResponse

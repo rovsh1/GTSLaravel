@@ -43,4 +43,5 @@ AclRoute::for('hotel')
 
     ->resource('contracts', Controllers\Hotel\ContractController::class)
     ->resource('seasons', Controllers\Hotel\SeasonController::class)
-    ->resource('rates', Controllers\Hotel\RateController::class);
+    ->resource('rates', Controllers\Hotel\RateController::class)
+    ->get('/{hotel}/contracts/{contract}/get', Controllers\Hotel\ContractController::class . '@get','update', 'contracts.get');

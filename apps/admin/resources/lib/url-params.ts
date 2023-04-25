@@ -26,7 +26,7 @@ export const useUrlParams = (): Record<string, number> => {
     }
 
     const paramName = singularize(match[1])
-    params[paramName] = parseInt(match[2], 10)
+    params[paramName] = Number(match[2])
   }
 
   return params
