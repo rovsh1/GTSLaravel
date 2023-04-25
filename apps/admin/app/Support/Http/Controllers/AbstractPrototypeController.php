@@ -211,7 +211,7 @@ abstract class AbstractPrototypeController extends Controller
 
     protected function isAllowed(string $permission): bool
     {
-        return Acl::isAllowed($this->prototype->key, $permission);
+        return $this->prototype->hasPermission($permission) && Acl::isAllowed($this->prototype->key, $permission);
     }
 
     abstract protected function getPrototypeKey(): string;
