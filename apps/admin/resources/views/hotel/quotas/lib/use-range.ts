@@ -16,18 +16,19 @@ type SetRangeParams = {
 const setRange = (params: SetRangeParams) =>
   (done: (range: QuotaRange) => void) => {
     const { dailyQuota, roomTypeID, activeKey, rangeKey } = params
-    let firstIndex: number = -1
-    let lastIndex: number = -1
-    // TODO back range
+    const indexes: [number, number] = [-1, -1]
     dailyQuota.forEach(({ key }, index) => {
-      if (getActiveCellKey(key, roomTypeID) === activeKey) firstIndex = index
-      if (getActiveCellKey(key, roomTypeID) === rangeKey) lastIndex = index
+      if (getActiveCellKey(key, roomTypeID) === activeKey) indexes[0] = index
+      if (getActiveCellKey(key, roomTypeID) === rangeKey) indexes[1] = index
     })
+    const [firstIndex, lastIndex] = indexes
     if (firstIndex === -1 || lastIndex === -1) {
       return done(null)
     }
+    if (firstIndex > lastIndex) indexes.reverse()
+    const [from, to] = indexes
     const range = dailyQuota
-      .slice(firstIndex, lastIndex + 1)
+      .slice(from, to + 1)
       .map(({ key, ...rest }) => ({ key: getActiveCellKey(key, roomTypeID), ...rest }))
     return done({
       roomID: roomTypeID,
