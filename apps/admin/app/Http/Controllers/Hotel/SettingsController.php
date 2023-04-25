@@ -30,7 +30,8 @@ class SettingsController extends Controller
 
     private function rulesGridFactory(int $hotelId): GridContract
     {
-        return Grid::edit(fn($r) => route('hotels.rules.edit', [$hotelId, $r->id]))
+        return Grid::header(false)
+            ->edit(fn($r) => route('hotels.rules.edit', [$hotelId, $r->id]))
             ->text('name')
             ->data(
                 Rule::whereHotelId($hotelId)
