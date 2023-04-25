@@ -139,7 +139,7 @@ abstract class AbstractPrototypeController extends Controller
                 'model' => $model,
                 'form' => $form,
                 'cancelUrl' => $this->prototype->route('index'),
-                'deleteUrl' => $this->isAllowed('read') ? $this->prototype->route(
+                'deleteUrl' => $this->isAllowed('delete') ? $this->prototype->route(
                     'destroy',
                     $model->id
                 ) : null

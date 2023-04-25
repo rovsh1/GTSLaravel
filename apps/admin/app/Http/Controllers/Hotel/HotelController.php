@@ -203,7 +203,7 @@ class HotelController extends AbstractPrototypeController
             );
     }
 
-    public function getLandmarkGrid(): GridContract
+    private function getLandmarkGrid(): GridContract
     {
         return Grid::paginator(self::GRID_LIMIT)
             ->setOption('id', 'hotel-landmark-grid')
