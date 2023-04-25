@@ -218,7 +218,8 @@ const massEditTooltip = 'Зажмите Shift и кликните, чтобы з
                   @value="value => handleQuotaValue(id, date, value)"
                 >
                   <template v-if="quota === null && sold === null">
-                    &nbsp;
+                    <template v-if="editable">—</template>
+                    <template v-else>&nbsp;</template>
                   </template>
                   <template v-else-if="sold === null">
                     {{ quota }} / 0
@@ -291,7 +292,8 @@ const massEditTooltip = 'Зажмите Shift и кликните, чтобы з
                   @value="value => handleReleaseDaysValue(id, date, value)"
                 >
                   <template v-if="releaseDays === null">
-                    &nbsp;
+                    <template v-if="editable">—</template>
+                    <template v-else>&nbsp;</template>
                   </template>
                   <template v-else>
                     {{ releaseDays }}
