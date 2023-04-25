@@ -1,9 +1,10 @@
-import { createApp, h } from 'vue'
+import { createVueInstance } from '~resources/lib/vue'
 
-import HotelSettings from '~resources/views/hotel/settings/HotelSettings.vue'
+import HotelSettings from './HotelSettings.vue'
 
 import '~resources/views/main'
 
-createApp({
-  render: () => h(HotelSettings),
-}).mount('#hotel-settings')
+createVueInstance({
+  rootComponent: HotelSettings,
+  rootContainer: '#hotel-settings',
+})

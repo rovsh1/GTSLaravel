@@ -8,6 +8,7 @@ const props = defineProps<{
   activeKey: CellKey
   value: string
   max: number
+  disabled: boolean
   inRange: boolean
 }>()
 
@@ -94,6 +95,7 @@ onUnmounted(() => {
     type="button"
     class="editableDataCell"
     :class="{ inRange }"
+    :disabled="disabled"
     @click="handleButtonClick"
   >
     <slot />
@@ -132,8 +134,15 @@ onUnmounted(() => {
   border-radius: 2px;
   background: unset;
 
-  &:hover {
-    background-color: rgba(black, 0.1);
+  &:not(:disabled) {
+    &:hover {
+      background-color: rgba(black, 0.1);
+    }
+  }
+
+  &,
+  &:disabled {
+    color: inherit;
   }
 
   &.inRange {

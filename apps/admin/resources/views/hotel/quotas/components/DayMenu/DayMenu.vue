@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 
+import BaseButton from '~resources/components/BaseButton.vue'
+
 const props = defineProps<{
   menuRef: HTMLElement | null
   menuDayKey: string | null
@@ -44,19 +46,29 @@ const resetDay = () => {
 <template>
   <ul class="menu">
     <li>
-      <button type="button" class="button" @click="openDay">
-        Открыть
-      </button>
+      <BaseButton
+        size="small"
+        class="button"
+        label="Открыть"
+        @click="openDay"
+      />
     </li>
     <li>
-      <button type="button" class="button" @click="closeDay">
-        Закрыть
-      </button>
+      <BaseButton
+        size="small"
+        class="button"
+        label="Закрыть"
+        @click="closeDay"
+      />
     </li>
     <li>
-      <button type="button" class="button" @click="resetDay">
-        Сбросить
-      </button>
+      <BaseButton
+        size="small"
+        variant="danger"
+        class="button"
+        label="Сбросить"
+        @click="resetDay"
+      />
     </li>
   </ul>
 </template>
@@ -69,20 +81,44 @@ const resetDay = () => {
   left: calc(v-bind(menuLeft) * 1px);
   margin: unset;
   padding: unset;
+  border-radius: 0.375em;
   background-color: vars.$body-bg;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 20%);
   list-style: none;
+
+  li {
+    &:first-child {
+      .button {
+        border-bottom-right-radius: unset;
+        border-bottom-left-radius: unset;
+      }
+    }
+
+    &:last-child {
+      .button {
+        border-top-left-radius: unset;
+        border-top-right-radius: unset;
+      }
+    }
+
+    &:not(:first-child) {
+      .button {
+        border-top-left-radius: unset;
+        border-top-right-radius: unset;
+      }
+    }
+
+    &:not(:last-child) {
+      .button {
+        border-bottom-right-radius: unset;
+        border-bottom-left-radius: unset;
+      }
+    }
+  }
+
 }
 
 .button {
   width: 100%;
-  padding: 0.25em 0.5em;
-  border: unset;
-  background: unset;
-  text-align: unset;
-
-  &:hover {
-    background-color: rgba(black, 0.1);
-  }
 }
 </style>

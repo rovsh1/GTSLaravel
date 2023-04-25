@@ -1,9 +1,13 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
+import checkIcon from '@mdi/svg/svg/check.svg'
+import pencilIcon from '@mdi/svg/svg/pencil.svg'
 import groupBy from 'lodash/groupBy'
 import { DateTime } from 'luxon'
 
+import BaseButton from '~resources/components/BaseButton.vue'
+import BaseLayout from '~resources/components/BaseLayout.vue'
 import { useHotelAPI } from '~resources/lib/api/hotel'
 import { Hotel } from '~resources/lib/models'
 import { useUrlParams } from '~resources/lib/url-params'
@@ -24,6 +28,8 @@ fetchHotel()
 
 const hotel = computed<Hotel | null>(() => hotelData.value)
 
+const editable = ref(false)
+
 const months = computed(() => {
   const groupedByMonth = groupBy(quotasMock, ({ date }) => {
     const [year, month] = date.split('-')
@@ -38,25 +44,25 @@ const months = computed(() => {
 })
 </script>
 <template>
-  <div v-if="isHotelFetching">
-    <div class="content-header">
-      <div class="title">Загрузка…</div>
-    </div>
-  </div>
-  <div v-else-if="hotel !== null">
-    <div class="content-header">
-      <div class="title">{{ hotel.name }}</div>
-      <!-- TODO readonly toggle -->
-    </div>
-    <div class="content-body quotasTables">
+  <BaseLayout v-if="isHotelFetching" title="Загрузка…" />
+  <BaseLayout v-else-if="hotel !== null" :title="hotel.name">
+    <template #header-controls>
+      <BaseButton
+        :label="editable ? 'Готово' : 'Редактировать'"
+        :start-icon="editable ? checkIcon : pencilIcon"
+        @click="editable = !editable"
+      />
+    </template>
+    <div class="quotasTables">
       <quotas-table
         v-for="{ id, monthDate, quotas } in months"
         :key="id"
         :month="monthDate"
         :quotas="quotas"
+        :editable="editable"
       />
     </div>
-  </div>
+  </BaseLayout>
 </template>
 <style lang="scss" scoped>
 .quotasTables {

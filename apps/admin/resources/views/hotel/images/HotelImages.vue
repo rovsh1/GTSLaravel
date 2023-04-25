@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 
+import plusIcon from '@mdi/svg/svg/plus.svg'
+import trashIcon from '@mdi/svg/svg/trash-can-outline.svg'
 import { useArrayFind, useUrlSearchParams } from '@vueuse/core'
 
-import AddButton from '~resources/components/AddButton.vue'
+import BaseButton from '~resources/components/BaseButton.vue'
 import BaseLayout from '~resources/components/BaseLayout.vue'
-import DeleteButton from '~resources/components/DeleteButton.vue'
 import {
   useHotelAPI, useHotelImageRemoveAPI,
   useHotelImagesListAPI, useHotelImagesUploadAPI,
@@ -150,82 +151,83 @@ fetchImages()
     :title="roomID && room?.display_name ? room.display_name : hotel.name"
   >
     <template #header-controls>
-      <AddButton
-        text="Добавить фотографии"
+      <BaseButton
+        label="Добавить фотографии"
+        :start-icon="plusIcon"
         @click="showUploadModal"
       />
     </template>
 
-    <template #body>
-      <div class="bg-info mb-2">
-        <h5>Временная форма - todo заменить на file uploader</h5>
-        <form
-          ref="filesForm"
-          method="post"
-          enctype="multipart/form-data"
-          @submit.prevent="uploadImages"
-        >
-          <label>
-            Файлы
-            <input
-              required
-              type="file"
-              multiple
-              name="files[]"
-            >
-          </label>
+    <div class="bg-info mb-2">
+      <h5>Временная форма - todo заменить на file uploader</h5>
+      <form
+        ref="filesForm"
+        method="post"
+        enctype="multipart/form-data"
+        @submit.prevent="uploadImages"
+      >
+        <label>
+          Файлы
+          <input
+            required
+            type="file"
+            multiple
+            name="files[]"
+          >
+        </label>
 
-          <button type="submit">
-            Отправить
-          </button>
-        </form>
-      </div>
+        <button type="submit">
+          Отправить
+        </button>
+      </form>
+    </div>
 
-      <div v-if="isLoaded && isRoomImagesLoaded" class="cards">
-        <div
-          v-for="image in images"
-          :key="image.id"
-          :class="{ card: true, hidden: isNeedHideImage(image.id) }"
-        >
-          <div class="edit-info" />
-          <div class="image">
-            <img
-              :src="image.file.url"
-              :alt="image.file.name"
-              class="w-100 h-100"
-            >
-          </div>
-          <div class="body">
-            <div class="buttons">
-              <DeleteButton
+    <div v-if="isLoaded && isRoomImagesLoaded" class="cards">
+      <div
+        v-for="image in images"
+        :key="image.id"
+        :class="{ card: true, hidden: isNeedHideImage(image.id) }"
+      >
+        <div class="edit-info" />
+        <div class="image">
+          <img
+            :src="image.file.url"
+            :alt="image.file.name"
+            class="w-100 h-100"
+          >
+        </div>
+        <div class="body">
+          <div class="buttons">
+            <BaseButton
+              v-if="!getRoomImage(image.id)"
+              label="Удалить"
+              :start-icon="trashIcon"
+              @click="removeImage(image.id)"
+            />
+            <div v-if="roomID">
+              <button
                 v-if="!getRoomImage(image.id)"
-                @click="removeImage(image.id)"
-              />
-              <div v-if="roomID">
-                <button
-                  v-if="!getRoomImage(image.id)"
-                  type="button"
-                  class="btn btn-primary"
-                  @click="setImageToRoom(image.id)"
-                >
-                  <i class="icon">link</i>
-                  Привязать к номеру
-                </button>
-                <button
-                  v-else
-                  type="button"
-                  class="btn btn-light"
-                  @click="deleteRoomImage(image.id)"
-                >
-                  <i class="icon">link_off</i>
-                  Отвязать от номера
-                </button>
-              </div>
+                type="button"
+                class="btn btn-primary"
+                @click="setImageToRoom(image.id)"
+              >
+                <i class="icon">link</i>
+                Привязать к номеру
+              </button>
+              <button
+                v-else
+                type="button"
+                class="btn btn-light"
+                @click="deleteRoomImage(image.id)"
+              >
+                <i class="icon">link_off</i>
+                Отвязать от номера
+              </button>
             </div>
           </div>
         </div>
       </div>
-    </template>
+    </div>
   </BaseLayout>
 </template>
 

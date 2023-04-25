@@ -153,7 +153,7 @@ module.exports = defineConfig({
           ignoreTemplateLiterals: false,
           ignoreRegExpLiterals: false,
           ignoreHTMLAttributeValues: false,
-          ignoreHTMLTextContents: false,
+          ignoreHTMLTextContents: true,
         }],
         'vue/singleline-html-element-content-newline': 'off',
         'vue/object-curly-newline': 'off',

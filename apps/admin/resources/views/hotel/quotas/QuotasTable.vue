@@ -28,6 +28,7 @@ import { Quota } from './lib/mock'
 const props = defineProps<{
   month: Date
   quotas: Quota[]
+  editable: boolean
 }>()
 
 const monthName = computed<string>(
@@ -207,6 +208,7 @@ const massEditTooltip = 'Зажмите Shift и кликните, чтобы з
                     :cell-key="getActiveCellKey(key, id)"
                     :value="quota === null ? '' : quota.toString()"
                     :max="count"
+                    :disabled="!editable"
                     :in-range="isQuotaCellInRange(getActiveCellKey(key, id))"
                     @active-key="(value) => activeQuotaKey = value"
                     @range-key="(value) => setQuotaRange({
@@ -279,6 +281,7 @@ const massEditTooltip = 'Зажмите Shift и кликните, чтобы з
                     :cell-key="getActiveCellKey(key, id)"
                     :value="releaseDays === null ? '' : releaseDays.toString()"
                     :max="30"
+                    :disabled="!editable"
                     :in-range="isReleaseDaysCellInRange(getActiveCellKey(key, id))"
                     @active-key="(value) => activeReleaseDaysKey = value"
                     @range-key="(value) => setReleaseDaysRange({
@@ -300,7 +303,12 @@ const massEditTooltip = 'Зажмите Shift и кликните, чтобы з
               </tr>
               <tr>
                 <th class="headingCell" />
-                <td v-for="{ key } in dailyQuota" :key="key">
+                <td
+                  v-for="{ key } in dailyQuota"
+                  :key="key"
+                  class="menuButtonCell"
+                  :class="{ isInvisible: !editable }"
+                >
                   <menu-button
                     :visible="
                       (hoveredDay === key && hoveredRoomTypeID === id)
@@ -448,6 +456,13 @@ th {
 
   &.isClosed {
     background-color: hsl(0deg, 100%, 93%);
+  }
+}
+
+.menuButtonCell {
+  &.isInvisible {
+    opacity: 0;
+    pointer-events: none;
   }
 }
 </style>

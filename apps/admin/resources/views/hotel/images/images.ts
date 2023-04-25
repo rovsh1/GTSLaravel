@@ -1,7 +1,10 @@
-import { createApp, h } from 'vue'
+import { createVueInstance } from '~resources/lib/vue'
 
 import HotelImages from './HotelImages.vue'
 
-createApp({
-  render: () => h(HotelImages),
-}).mount('#hotel-images')
+import '~resources/views/main'
+
+createVueInstance({
+  rootComponent: HotelImages,
+  rootContainer: '#hotel-images',
+})
