@@ -122,7 +122,7 @@ class SeasonController extends Controller
         return Contract::whereHotelId($hotelId)
             ->get()
             ->map(function (Contract $contract) {
-                $contract->name = Format::contractNumber($contract->number);
+                $contract->name = Format::contractNumber($contract->id);
                 return $contract;
             });
     }

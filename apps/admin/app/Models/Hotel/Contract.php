@@ -17,7 +17,6 @@ use Illuminate\Support\Collection;
  *
  * @property int $id
  * @property int $hotel_id
- * @property int $number
  * @property int $status
  * @property \Custom\Framework\Support\DateTime $date_start
  * @property \Custom\Framework\Support\DateTime $date_end
@@ -34,7 +33,6 @@ use Illuminate\Support\Collection;
  * @method static \Illuminate\Database\Eloquent\Builder|Contract whereDateEnd($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Contract whereHotelId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Contract whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Contract whereNumber($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Contract whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Contract active()
  * @mixin \Eloquent
@@ -45,7 +43,6 @@ class Contract extends Model
 
     protected $fillable = [
         'hotel_id',
-        'number',
         'status',
         'date_start',
         'date_end',
@@ -59,13 +56,23 @@ class Contract extends Model
         'status' => StatusEnum::class
     ];
 
+    /** @var UploadedFile[]|Collection<UploadedFile> $savingFiles */
+    private array|Collection $savingFiles = [];
+
     public static function booted()
     {
-        static::saving(function (self $model) {
-            if (!\Arr::has($model, 'number')) {
-                //@todo генерация номера договора
-                $model['number'] = random_int(123, 9999);
+        static::saved(function (self $model): void {
+            if (count($model->savingFiles) === 0) {
+                return;
             }
+            foreach ($model->savingFiles as $file) {
+                ContractDocument::create(
+                    $model->id,
+                    $file->getClientOriginalName(),
+                    $file->get()
+                );
+            }
+            $model->savingFiles = [];
         });
     }
 
@@ -87,27 +94,20 @@ class Contract extends Model
 
     public function documents(): Attribute
     {
-        return Attribute::get(fn() => ContractDocument::getEntityFiles($this->id));
-    }
-
-    public function setDocumentsAttribute(array|Collection|null $files): array
-    {
-        if ($files === null) {
-            return [];
-        }
-        /** @var UploadedFile[] $files */
-        foreach ($files as $file) {
-            ContractDocument::create(
-                $this->id,
-                $file->getClientOriginalName(),
-                $file->get()
-            );
-        }
-        return [];
+        return Attribute::make(
+            get: fn() => ContractDocument::getEntityFiles($this->id),
+            set: function (array|Collection|null $files) {
+                if ($files === null) {
+                    return [];
+                }
+                $this->savingFiles = $files;
+                return [];
+            }
+        );
     }
 
     public function __toString()
     {
-        return Format::contractNumber($this->number);
+        return Format::contractNumber($this->id);
     }
 }

@@ -17,7 +17,6 @@ return new class extends Migration {
         Schema::create('hotel_contracts', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('hotel_id');
-            $table->unsignedSmallInteger('number');
             $table->unsignedTinyInteger('status');
             $table->date('date_start');
             $table->date('date_end');

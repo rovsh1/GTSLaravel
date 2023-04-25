@@ -45,7 +45,7 @@ class Season extends Model
                 ->addSelect('hotel_seasons.*')
                 ->join('hotel_contracts', 'hotel_contracts.id', '=', 'hotel_seasons.contract_id')
                 ->addSelect('hotel_contracts.status as contract_status')
-                ->addSelect('hotel_contracts.number as contract_number');
+                ->addSelect('hotel_contracts.id as contract_number');
         });
     }
 

@@ -43,7 +43,7 @@ class PriceRate extends Model
                 ->joinTranslations();
         });
 
-        static::saved(function (self $model) {
+        static::saved(function (self $model): void {
             if (isset($model->savingRoomIds)) {
                 $model->rooms()->sync($model->savingRoomIds);
                 unset($model->savingRoomIds);

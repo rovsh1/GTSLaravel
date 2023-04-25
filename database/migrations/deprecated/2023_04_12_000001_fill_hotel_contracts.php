@@ -14,7 +14,6 @@ return new class extends Migration {
                 ->insert([
                     'id' => $r->id,
                     'hotel_id' => $r->hotel_id,
-                    'number' => $r->number,
                     'status' => $r->status,
                     'date_start' => $r->date_from,
                     'date_end' => $r->date_to,
