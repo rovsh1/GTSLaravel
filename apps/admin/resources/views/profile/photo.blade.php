@@ -1,4 +1,4 @@
-<form method="post" data-title="{{ $title }}" class="settings-form form-avatar">
+<form method="post" data-title="{{ $title }}" enctype="multipart/form-data" class="settings-form form-avatar">
 
     <div class="fields-wrap">
         <div class="avatar">

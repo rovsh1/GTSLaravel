@@ -1,14 +1,18 @@
+const errorMessages = {
+  403: 'Доступ запрещен',
+  404: 'Не найдено'
+};
+
 function processResponse(response) {
   if (!response.action) {
     return
   }
-
   switch (response.action) {
     case 'redirect':
       const url = response.url
-      if(url.includes('#')) {
-          location.replace(url)
-          return location.reload()
+      if (url.includes('#')) {
+        location.replace(url)
+        return location.reload()
       }
       return location.replace(url)
     case 'reload':
@@ -18,8 +22,10 @@ function processResponse(response) {
 
 export function ajax(modal, params, callback) {
   params.error = function (xhr) {
-    if (xhr.responseJSON) {
+    if (xhr.responseJSON && xhr.responseJSON.error) {
       modal.setHtml(xhr.responseJSON.error)
+    } else if (errorMessages[xhr.status]) {
+      modal.setHtml(errorMessages[xhr.status])
     } else {
       modal.setHtml(xhr.responseText)
     }
@@ -48,7 +54,7 @@ export default function load(modal, params) {
     params = { url: params }
   }
 
-  ajax(modal, params, (r) => {
+  ajax(modal, params, () => {
     modal.trigger('load')
   })
 }

@@ -4,6 +4,7 @@ namespace App\Admin\Support\Http\Controllers;
 
 use App\Admin\Components\Factory\Prototype;
 use App\Admin\Http\Controllers\Controller;
+use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Layout;
 use App\Admin\Support\Facades\Prototypes;
@@ -50,7 +51,7 @@ abstract class AbstractPrototypeController extends Controller
                 'searchForm' => $grid->getSearchForm(),
                 'grid' => $grid,
                 'paginator' => $grid->getPaginator(),
-                'createUrl' => $this->prototype->hasPermission('create') ? $this->prototype->route('create') : null
+                'createUrl' => $this->isAllowed('create') ? $this->prototype->route('create') : null
             ]);
     }
 
@@ -67,11 +68,11 @@ abstract class AbstractPrototypeController extends Controller
         return Layout::title($title)
             ->view($this->prototype->view('show') ?? ($this->getPrototypeKey() . '.show'), [
                 'model' => $this->model,
-                'editUrl' => $this->prototype->hasPermission('update') ? $this->prototype->route(
+                'editUrl' => $this->isAllowed('update') ? $this->prototype->route(
                     'edit',
                     $this->model->id
                 ) : null,
-                'deleteUrl' => $this->prototype->hasPermission('delete') ? $this->prototype->route(
+                'deleteUrl' => $this->isAllowed('delete') ? $this->prototype->route(
                     'destroy',
                     $this->model->id
                 ) : null,
@@ -138,7 +139,7 @@ abstract class AbstractPrototypeController extends Controller
                 'model' => $model,
                 'form' => $form,
                 'cancelUrl' => $this->prototype->route('index'),
-                'deleteUrl' => $this->prototype->hasPermission('delete') ? $this->prototype->route(
+                'deleteUrl' => $this->isAllowed('read') ? $this->prototype->route(
                     'destroy',
                     $model->id
                 ) : null
@@ -206,6 +207,11 @@ abstract class AbstractPrototypeController extends Controller
     protected function saving(array $data): array
     {
         return $data;
+    }
+
+    protected function isAllowed(string $permission): bool
+    {
+        return Acl::isAllowed($this->prototype->key, $permission);
     }
 
     abstract protected function getPrototypeKey(): string;
