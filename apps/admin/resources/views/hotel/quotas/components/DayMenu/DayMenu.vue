@@ -64,7 +64,7 @@ const resetDay = () => {
     <li>
       <BaseButton
         size="small"
-        variant="danger"
+        severity="danger"
         class="button"
         label="Сбросить"
         @click="resetDay"

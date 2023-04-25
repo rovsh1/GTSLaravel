@@ -2,7 +2,9 @@
 import { computed } from 'vue'
 import InlineSVG from 'vue-inline-svg'
 
-type ButtonVariant = 'default' | 'danger'
+type ButtonVariant = 'text' | 'filled' | 'outlined'
+
+type ButtonSeverity = 'default' | 'danger'
 
 type ButtonSize = 'default' | 'small'
 
@@ -11,13 +13,15 @@ const props = withDefaults(defineProps<{
   startIcon?: string
   endIcon?: string
   variant?: ButtonVariant
+  severity?: ButtonSeverity
   size?: ButtonSize
   href?: string
   disabled?: boolean
 }>(), {
   startIcon: undefined,
   endIcon: undefined,
-  variant: 'default',
+  variant: 'text',
+  severity: 'default',
   size: 'default',
   href: undefined,
   disabled: false,
@@ -28,8 +32,14 @@ const emit = defineEmits<{
 }>()
 
 const variantClassByVariant: Record<ButtonVariant, string> = {
-  default: 'variantDefault',
-  danger: 'variantDanger',
+  text: 'variantText',
+  filled: 'variantFilled',
+  outlined: 'variantOutlined',
+}
+
+const severityClassBySeverity: Record<ButtonSeverity, string> = {
+  default: 'severityDefault',
+  danger: 'severityDanger',
 }
 
 const sizeClassBySize: Record<ButtonSize, string> = {
@@ -54,7 +64,11 @@ const isDisabled = computed<boolean | undefined>(() => {
     :is="is"
     :type="href === undefined ? 'button' : undefined"
     class="button"
-    :class="[variantClassByVariant[variant], sizeClassBySize[size]]"
+    :class="[
+      variantClassByVariant[variant],
+      severityClassBySeverity[severity],
+      sizeClassBySize[size],
+    ]"
     :href="disabled ? undefined : href"
     :disabled="isDisabled"
     @click="emit('click')"
@@ -74,15 +88,37 @@ const isDisabled = computed<boolean | undefined>(() => {
 @use 'sass:color' as color;
 @use '~resources/sass/variables' as vars;
 
-@mixin variant($color) {
-  color: $color;
-
+@mixin active-state($color, $hover-bg, $active-bg) {
   &:not(:disabled) {
+    &:hover {
+      background-color: $hover-bg;
+    }
+
     &:active {
       border-color: $color;
-      background-color: rgba($color, 0.1);
+      background-color: $active-bg;
     }
   }
+}
+
+@mixin text-severity($color) {
+  @include active-state($color, rgba($color, 0.1), rgba($color, 0.2));
+
+  color: $color;
+}
+
+@mixin filled-severity($color, $bg) {
+  @include active-state($bg, rgba($bg, 0.8), rgba($bg, 0.6));
+
+  background-color: $bg;
+  color: $color;
+}
+
+@mixin outlined-severity($color) {
+  @include active-state($color, rgba($color, 0.1), rgba($color, 0.2));
+
+  border-color: $color;
+  color: $color;
 }
 
 .button {
@@ -97,28 +133,47 @@ const isDisabled = computed<boolean | undefined>(() => {
   transition-duration: 0.3s;
   transition-property: background-color, color, border-color;
 
-  &:not(:disabled) {
-    &:hover {
-      background-color: rgba(black, 0.08);
-    }
-  }
-
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
   }
 
-  &.variantDefault {
-    @include variant(vars.$primary);
+  &.variantText {
+    &.severityDefault {
+      @include text-severity(vars.$primary);
+    }
+
+    &.severityDanger {
+      @include text-severity(vars.$error);
+    }
   }
 
-  &.variantDanger {
-    @include variant(vars.$error);
+  &.variantFilled {
+    &.severityDefault {
+      @include filled-severity(white, vars.$primary);
+    }
+
+    &.severityDanger {
+      @include filled-severity(white, vars.$error);
+    }
   }
 
-  //&.sizeDefault {}
+  &.variantOutlined {
+    &.severityDefault {
+      @include outlined-severity(vars.$primary);
+    }
+
+    &.severityDanger {
+      @include outlined-severity(vars.$error);
+    }
+  }
+
+  &.sizeDefault {
+    padding: 0.5em 1em;
+  }
 
   &.sizeSmall {
+    padding: 0.3em 0.8em;
     font-size: 0.9em;
   }
 }

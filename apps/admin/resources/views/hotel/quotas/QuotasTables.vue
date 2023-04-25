@@ -12,6 +12,7 @@ import { useHotelAPI } from '~resources/lib/api/hotel'
 import { Hotel } from '~resources/lib/models'
 import { useUrlParams } from '~resources/lib/url-params'
 
+import QuotasFilters from './components/QuotasFilters.vue'
 import QuotasTable from './QuotasTable.vue'
 
 import { quotasMock } from './lib/mock'
@@ -53,18 +54,27 @@ const months = computed(() => {
         @click="editable = !editable"
       />
     </template>
-    <div class="quotasTables">
-      <quotas-table
-        v-for="{ id, monthDate, quotas } in months"
-        :key="id"
-        :month="monthDate"
-        :quotas="quotas"
-        :editable="editable"
-      />
+    <div class="quotasBody">
+      <QuotasFilters />
+      <div class="quotasTables">
+        <quotas-table
+          v-for="{ id, monthDate, quotas } in months"
+          :key="id"
+          :month="monthDate"
+          :quotas="quotas"
+          :editable="editable"
+        />
+      </div>
     </div>
   </BaseLayout>
 </template>
 <style lang="scss" scoped>
+.quotasBody {
+  display: flex;
+  flex-flow: column;
+  gap: 2em;
+}
+
 .quotasTables {
   display: flex;
   flex-flow: column;

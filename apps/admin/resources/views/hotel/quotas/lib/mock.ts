@@ -10,7 +10,7 @@ const hotelMock1: Hotel = {
   id: 1,
 }
 
-type Room = {
+export type Room = {
   id: RoomID
   hotel_id: HotelID
   name: string
