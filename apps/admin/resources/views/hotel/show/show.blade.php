@@ -25,7 +25,7 @@
         </div>
 
         <div class="mt-3">
-            @include('_partials.components.contacts-card', ['collapsable' => true])
+            @include('hotel._partials.contacts-card-with-employee', ['collapsable' => true])
         </div>
 
         <div class="mt-3">
