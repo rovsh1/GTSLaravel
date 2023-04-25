@@ -9,7 +9,7 @@ import '~resources/views/main'
 
 const { hotel: hotelID, season: seasonID } = useUrlParams()
 
-const handleChangeContract = async (contractId: number, $periodInput: JQuery<HTMLElement>): Promise<void> => {
+const handleChangeContract = async ($periodInput: JQuery<HTMLElement>, contractId: number): Promise<void> => {
   const { data: contract, execute: fetchContract } = useHotelContractAPI({ hotelID, contractID: contractId })
   await fetchContract()
 
@@ -39,14 +39,14 @@ $(async () => {
 
   $periodInput.prop('disabled', true)
   if ($contractSelect.val()) {
-    await handleChangeContract(Number($contractSelect.val()), $periodInput)
+    await handleChangeContract($periodInput, Number($contractSelect.val()))
     $periodInput.prop('disabled', false)
   }
 
   $contractSelect.on('change', async () => {
     $periodInput.prop('disabled', true)
     $periodInput.val('')
-    await handleChangeContract(Number($contractSelect.val()), $periodInput)
+    await handleChangeContract($periodInput, Number($contractSelect.val()))
     $periodInput.prop('disabled', false)
   })
 })
