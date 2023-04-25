@@ -11,26 +11,26 @@ return new class extends Migration
      */
     public function up(): void
     {
-        $q = DB::connection('mysql_old')->table('hotel_price_rates')
-            ->addSelect('hotel_price_rates.*')
-            ->join('hotel_price_rates_translation','hotel_price_rates_translation.translatable_id','=','hotel_price_rates.id')
-            ->addSelect('hotel_price_rates_translation.name as name')
-            ->addSelect('hotel_price_rates_translation.text as description')
+        $q = DB::connection('mysql_old')->table('hotel_rules')
+            ->addSelect('hotel_rules.*')
+            ->join('hotel_rules_translation','hotel_rules_translation.translatable_id','=','hotel_rules.id')
+            ->addSelect('hotel_rules_translation.name as name')
+            ->addSelect('hotel_rules_translation.text as text')
             ->get();
 
         foreach ($q as $r) {
-            DB::table('hotel_price_rates')
+            DB::table('hotel_rules')
                 ->insert([
                     'id' => $r->id,
                     'hotel_id' => $r->hotel_id,
                 ]);
 
-            DB::table('hotel_price_rates_translation')
+            DB::table('hotel_rules_translation')
                 ->insert([
                     'translatable_id' => $r->id,
                     'language' => 'ru',
                     'name' => $r->name,
-                    'description' => $r->description
+                    'text' => $r->text
                 ]);
         }
     }
@@ -40,7 +40,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        DB::table('hotel_price_rates_translation')->truncate();
-        DB::table('hotel_price_rates')->truncate();
+        DB::table('hotel_rules_translation')->truncate();
+        DB::table('hotel_rules')->truncate();
     }
 };

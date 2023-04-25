@@ -12,7 +12,8 @@ use Illuminate\Database\Eloquent\Model;
 class DefaultFormEditAction
 {
     private array $options = [
-        'deleteUrl' => null
+        'deleteUrl' => null,
+        'cancelUrl' => null,
     ];
 
     public function __construct(private readonly Form $form)
@@ -20,9 +21,15 @@ class DefaultFormEditAction
         $this->form->method('put');
     }
 
-    public function deletable(string $url = null): static
+    public function deletable(string $url = null): self
     {
         $this->options['deleteUrl'] = $url ?? $this->getDefaultDeleteUrl();
+        return $this;
+    }
+
+    public function cancelUrl(string $url): self
+    {
+        $this->options['cancelUrl'] = $url;
         return $this;
     }
 
@@ -41,7 +48,7 @@ class DefaultFormEditAction
         return Layout::title((string)$model)
             ->view('default.form.form', [
                 'form' => $this->form,
-                'cancelUrl' => $this->getDefaultCancelUrl(),
+                'cancelUrl' => $this->options['cancelUrl'] ?? $this->getDefaultCancelUrl(),
                 'deleteUrl' => $this->options['deleteUrl'],
             ]);
     }

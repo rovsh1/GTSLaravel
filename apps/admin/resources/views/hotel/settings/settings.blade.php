@@ -15,18 +15,22 @@
     </div>
 
     <div class="content-body">
-        <div id="hotel-settings"></div>
+        <div id="living-conditions"></div>
+
+        <div class="mt-3" id="cancellation-conditions"></div>
+
+        <div class="mt-3" id="price-conditions"></div>
 
         <div class="mt-3">
             <x-ui.card :collapsable="true" header="Правила отеля">
                 <x-slot:header-controls>
-                    <a href="#" class="btn btn-add" id="btn-rules-edit">
-                        <x-icon key="edit"/>
-                        Редактировать
+                    <a href="#" class="btn btn-add" id="btn-rules-add" data-url="{{ $createRuleUrl }}">
+                        <x-icon key="add"/>
+                        Добавить правило
                     </a>
                 </x-slot:header-controls>
 
-                123
+                {!! $rulesGrid !!}
             </x-ui.card>
         </div>
 

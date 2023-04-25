@@ -3,9 +3,8 @@
 namespace App\Admin\Http\Controllers\Hotel;
 
 use App\Admin\Http\Controllers\Controller;
-use App\Admin\Models\Hotel\Contract;
 use App\Admin\Models\Hotel\Hotel;
-use App\Admin\Models\Hotel\Season;
+use App\Admin\Models\Hotel\Rule;
 use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Facades\Layout;
@@ -24,7 +23,18 @@ class SettingsController extends Controller
         return Layout::title((string)$hotel)
             ->view('hotel.settings.settings', [
                 'model' => $hotel,
+                'createRuleUrl' => route('hotels.rules.create', $hotel),
+                'rulesGrid' => $this->rulesGridFactory($hotel->id)
             ]);
+    }
+
+    private function rulesGridFactory(int $hotelId): GridContract
+    {
+        return Grid::edit(fn($r) => route('hotels.rules.edit', [$hotelId, $r->id]))
+            ->text('name')
+            ->data(
+                Rule::whereHotelId($hotelId)
+            );
     }
 
     private function hotel(Hotel $hotel): void

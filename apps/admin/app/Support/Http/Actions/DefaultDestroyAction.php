@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class DefaultDestroyAction
 {
+    private ?string $redirectUrl = null;
+
     public function __construct()
     {
     }
@@ -21,7 +23,13 @@ class DefaultDestroyAction
             return new AjaxErrorResponse($e->getMessage());
         }
 
-        return new AjaxRedirectResponse($this->getDefaultRedirectUrl());
+        return new AjaxRedirectResponse($this->redirectUrl ?? $this->getDefaultRedirectUrl());
+    }
+
+    public function redirectUrl(string $url): self
+    {
+        $this->redirectUrl = $url;
+        return $this;
     }
 
     private function getDefaultRedirectUrl(): string
