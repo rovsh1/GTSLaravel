@@ -1,7 +1,7 @@
 import moment, { Moment } from 'moment/moment'
 
 import { useDateRangePicker } from '~resources/js/vendor/daterangepicker'
-import { useHotelContractAPI } from '~resources/lib/api/hotel'
+import { useHotelContractGetAPI } from '~resources/lib/api/hotel'
 import { Season } from '~resources/lib/models'
 import { useUrlParams } from '~resources/lib/url-params'
 
@@ -10,7 +10,7 @@ import '~resources/views/main'
 const { hotel: hotelID, season: seasonID } = useUrlParams()
 
 const handleChangeContract = async ($periodInput: JQuery<HTMLElement>, contractId: number): Promise<void> => {
-  const { data: contract, execute: fetchContract } = useHotelContractAPI({ hotelID, contractID: contractId })
+  const { data: contract, execute: fetchContract } = useHotelContractGetAPI({ hotelID, contractID: contractId })
   await fetchContract()
 
   useDateRangePicker($periodInput, {

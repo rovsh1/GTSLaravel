@@ -85,7 +85,7 @@ export const useHotelRoomImageDeleteAPI = (props: MaybeRef<HotelRoomImageProps>)
     .post()
 }
 
-export const useHotelContractAPI = (props: MaybeRef<{ hotelID: number; contractID: number }>) => {
+export const useHotelContractGetAPI = (props: MaybeRef<{ hotelID: number; contractID: number }>) => {
   const { hotelID, contractID } = unref(props)
   return useAdminAPI(`/hotels/${hotelID}/contracts/${contractID}/get`)
     .get()

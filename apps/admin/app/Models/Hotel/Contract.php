@@ -64,6 +64,12 @@ class Contract extends Model
     public static function booted()
     {
         static::saved(function (self $model): void {
+            if ($model->isActive()) {
+                static::where('id', '!=', $model->id)
+                    ->whereStatus(StatusEnum::ACTIVE)
+                    ->update(['status' => StatusEnum::INACTIVE]);
+            }
+
             if (count($model->savingFiles) === 0) {
                 return;
             }
@@ -111,6 +117,11 @@ class Contract extends Model
     public function seasons(): HasMany
     {
         return $this->hasMany(Season::class);
+    }
+
+    public function isActive(): bool
+    {
+        return $this->status === StatusEnum::ACTIVE;
     }
 
     public function __toString()
