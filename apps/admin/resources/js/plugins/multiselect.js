@@ -59,7 +59,8 @@
         }
       })
 
-      this.#el.find('div.select').click(() => {
+      this.#el.find('div.select').click((e) => {
+        e.stopPropagation()
         const optionsCount = this.options.length
         const selectedCount = this.selectedOptions.length
         if (optionsCount === selectedCount) {
