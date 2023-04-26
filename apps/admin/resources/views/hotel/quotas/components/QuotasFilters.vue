@@ -2,24 +2,19 @@
 import { computed, ref } from 'vue'
 
 import { DateTime } from 'luxon'
-import { RoomID } from 'resources/views/hotel/quotas/components/lib'
 
 import BaseButton from '~resources/components/BaseButton.vue'
 import { getEachMonthInYear } from '~resources/lib/date'
-import FiltersSelect from '~resources/views/hotel/quotas/components/FiltersSelect.vue'
-import { roomsMock } from '~resources/views/hotel/quotas/components/lib/mock'
 
-type OutputRangeValue = 1 | 3 | 6 | 12
+import FiltersSelect from './FiltersSelect.vue'
 
-type AvailabilityValue = 'sold' | 'stopped' | 'available'
-
-export type FiltersPayload = {
-  year: number
-  month: number
-  count: OutputRangeValue
-  availability?: AvailabilityValue
-  room?: RoomID
-}
+import {
+  AvailabilityValue,
+  FiltersPayload,
+  OutputRangeValue,
+  RoomID,
+} from './lib'
+import { roomsMock } from './lib/mock'
 
 const emit = defineEmits<{
   (event: 'submit', value: FiltersPayload): void

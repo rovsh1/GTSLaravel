@@ -108,3 +108,15 @@ export type ActiveKey = string | null
 
 export const getActiveCellKey = (dayKey: string, roomTypeID: number): string =>
   `${dayKey}-${roomTypeID}`
+
+export type OutputRangeValue = 1 | 3 | 6 | 12
+
+export type AvailabilityValue = 'sold' | 'stopped' | 'available'
+
+export type FiltersPayload = {
+  year: number
+  month: number
+  count: OutputRangeValue
+  availability?: AvailabilityValue
+  room?: RoomID
+}
