@@ -11,9 +11,9 @@ class DefaultFormUpdateAction
 {
     private Model $model;
 
-    private string $failUrl;
+    private ?string $failUrl = null;
 
-    private string $successUrl;
+    private ?string $successUrl = null;
 
     public function __construct(private readonly Form $form)
     {
@@ -32,6 +32,20 @@ class DefaultFormUpdateAction
 //        return $this;
 //    }
 
+    public function successUrl(string $url): self
+    {
+        $this->successUrl = $url;
+
+        return $this;
+    }
+
+    public function failUrl(string $url): self
+    {
+        $this->failUrl = $url;
+
+        return $this;
+    }
+
     /**
      * @throws FormSubmitFailedException
      */
@@ -48,12 +62,15 @@ class DefaultFormUpdateAction
 
     private function bootDefaultUrls(): array
     {
-        $failUrl = request()->url() . '/edit';
+        $failUrl = $this->failUrl ?? request()->url() . '/edit';
 
-        $route = request()->route();
-        $params = $route->parameters();
-        array_pop($params);
-        $successUrl = route(str_replace('.update', '.index', $route->getName()), $params);
+        $successUrl = $this->successUrl;
+        if ($successUrl === null) {
+            $route = request()->route();
+            $params = $route->parameters();
+            array_pop($params);
+            $successUrl = route(str_replace('.update', '.index', $route->getName()), $params);
+        }
 
         return [$failUrl, $successUrl];
     }

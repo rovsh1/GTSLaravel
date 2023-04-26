@@ -60,6 +60,7 @@ class RuleController extends Controller
     public function update(Hotel $hotel, Rule $rule): RedirectResponse
     {
         return (new DefaultFormUpdateAction($this->formFactory($hotel->id)))
+            ->successUrl(route('hotels.settings.index', $hotel))
             ->handle($rule);
     }
 
