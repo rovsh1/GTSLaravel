@@ -15,6 +15,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   (event: 'active-key', value: CellKey): void
   (event: 'range-key', value: CellKey): void
+  (event: 'input', value: number): void
   (event: 'value', value: number): void
 }>()
 
@@ -22,24 +23,36 @@ const inputRef = ref<HTMLInputElement | null>(null)
 
 const shift = ref(false)
 
-const handleInput = (input: HTMLInputElement) => {
+const handleInputMount = (input: HTMLInputElement) => {
   input.focus()
   input.select()
 }
 
 watch(inputRef, (element) => {
   if (element === null) return
-  handleInput(element)
+  handleInputMount(element)
 })
 
-const handleChange = (target: EventTarget | null) => {
+const validateInput = (value: string): number | null => {
+  if (value === '') return null
+  const number = Number(value)
+  if (isNaN(number)) return null
+  return number
+}
+
+const handleValue = (target: EventTarget | null, done: (value: number) => void) => {
   if (target === null) return
   const { value } = target as HTMLInputElement
-  if (value === '') return
-  const number = Number(value)
-  if (isNaN(number)) return
-  emit('value', number)
+  const number = validateInput(value)
+  if (number === null) return
+  done(number)
 }
+
+const handleChange = (target: EventTarget | null) =>
+  handleValue(target, (number) => emit('value', number))
+
+const handleInput = (target: EventTarget | null) =>
+  handleValue(target, (number) => emit('input', number))
 
 const handleButtonClick = (event: MouseEvent) => {
   if (shift.value) {
@@ -76,6 +89,7 @@ onUnmounted(() => {
       class="editableCellInput"
       type="number"
       :max="max"
+      @input="(event) => handleInput(event.target)"
       @change="(event) => handleChange(event.target)"
       @blur="(event) => {
         if (shift) {

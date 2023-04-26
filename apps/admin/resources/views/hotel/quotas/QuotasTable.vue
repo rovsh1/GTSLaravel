@@ -5,7 +5,7 @@ import { OnClickOutside } from '@vueuse/components'
 import { DateTime } from 'luxon'
 
 import { getEachDayInMonth } from '~resources/lib/date'
-import { QuotaRange, useQuotasTableRange } from '~resources/views/hotel/quotas/lib/use-range'
+import { EditedQuota, QuotaRange, useQuotasTableRange } from '~resources/views/hotel/quotas/lib/use-range'
 
 import DayMenu from './components/DayMenu/DayMenu.vue'
 import EditableCell from './components/EditableCell.vue'
@@ -57,19 +57,32 @@ const dayQuotaCellClassName = (status: RoomQuota['status']) =>
   ['dayQuotaCell', status !== null && dayCellClassNameByRoomQuotaStatus[status]]
 
 const quotaRange = ref<QuotaRange>(null)
+const activeQuotaKey = ref<ActiveKey>(null)
+const editedQuotaInRange = ref<EditedQuota | null>(null)
 const {
   setRange: setQuotaRange,
   isCellInRange: isQuotaCellInRange,
-} = useQuotasTableRange({ rangeRef: quotaRange })
+  handleInput: handleQuotaInput,
+  showEdited: showEditedQuota,
+} = useQuotasTableRange({
+  rangeRef: quotaRange,
+  activeKey: activeQuotaKey,
+  editedInRange: editedQuotaInRange,
+})
 
 const releaseDaysRange = ref<QuotaRange>(null)
+const activeReleaseDaysKey = ref<ActiveKey>(null)
+const editedReleaseDaysInRange = ref<EditedQuota | null>(null)
 const {
   setRange: setReleaseDaysRange,
   isCellInRange: isReleaseDaysCellInRange,
-} = useQuotasTableRange({ rangeRef: releaseDaysRange })
-
-const activeQuotaKey = ref<ActiveKey>(null)
-const activeReleaseDaysKey = ref<ActiveKey>(null)
+  handleInput: handleReleaseDaysInput,
+  showEdited: showEditedReleaseDays,
+} = useQuotasTableRange({
+  rangeRef: releaseDaysRange,
+  activeKey: activeReleaseDaysKey,
+  editedInRange: editedReleaseDaysInRange,
+})
 
 const {
   hoveredDay,
@@ -216,8 +229,16 @@ const massEditTooltip = 'Зажмите Shift и кликните, чтобы з
                     rangeKey: value,
                   })"
                   @value="value => handleQuotaValue(id, date, value)"
+                  @input="value => {
+                    handleQuotaInput(getActiveCellKey(key, id), value, quotaRange)
+                  }"
                 >
-                  <template v-if="quota === null && sold === null">
+                  <template
+                    v-if="showEditedQuota(getActiveCellKey(key, id), quotaRange)"
+                  >
+                    {{ editedQuotaInRange?.value }}
+                  </template>
+                  <template v-else-if="quota === null && sold === null">
                     <template v-if="editable">—</template>
                     <template v-else>&nbsp;</template>
                   </template>
@@ -290,8 +311,16 @@ const massEditTooltip = 'Зажмите Shift и кликните, чтобы з
                     rangeKey: value,
                   })"
                   @value="value => handleReleaseDaysValue(id, date, value)"
+                  @input="value => {
+                    handleReleaseDaysInput(getActiveCellKey(key, id), value, releaseDaysRange)
+                  }"
                 >
-                  <template v-if="releaseDays === null">
+                  <template
+                    v-if="showEditedReleaseDays(getActiveCellKey(key, id), releaseDaysRange)"
+                  >
+                    {{ editedReleaseDaysInRange?.value }}
+                  </template>
+                  <template v-else-if="releaseDays === null">
                     <template v-if="editable">—</template>
                     <template v-else>&nbsp;</template>
                   </template>
