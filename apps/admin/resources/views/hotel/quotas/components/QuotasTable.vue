@@ -6,12 +6,12 @@ import { DateTime } from 'luxon'
 
 import { getEachDayInMonth } from '~resources/lib/date'
 
-import DayMenu from './components/DayMenu/DayMenu.vue'
-import EditableCell from './components/EditableCell.vue'
-import HeadingCell from './components/HeadingCell.vue'
-import MenuButton from './components/MenuButton.vue'
+import DayMenu from './DayMenu/DayMenu.vue'
+import EditableCell from './EditableCell.vue'
+import HeadingCell from './HeadingCell.vue'
+import MenuButton from './MenuButton.vue'
 
-import { MenuPosition, useDayMenu } from './components/DayMenu/use-day-menu'
+import { MenuPosition, useDayMenu } from './DayMenu/use-day-menu'
 import {
   ActiveKey,
   Day,
@@ -386,7 +386,7 @@ const massEditTooltip = 'Зажмите Shift и кликните, чтобы з
 </template>
 <style lang="scss" scoped>
 @use '~resources/sass/variables' as vars;
-@use './components/shared' as shared;
+@use 'shared' as shared;
 
 .quotasRooms {
   display: flex;

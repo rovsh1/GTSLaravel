@@ -13,9 +13,9 @@ import { Hotel } from '~resources/lib/models'
 import { useUrlParams } from '~resources/lib/url-params'
 
 import QuotasFilters, { FiltersPayload } from './components/QuotasFilters.vue'
-import QuotasTable from './QuotasTable.vue'
+import QuotasTable from './components/QuotasTable.vue'
 
-import { quotasMock } from './lib/mock'
+import { quotasMock } from './components/lib/mock'
 
 const { hotel: hotelID } = useUrlParams()
 

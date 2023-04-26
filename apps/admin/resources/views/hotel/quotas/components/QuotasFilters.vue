@@ -2,12 +2,12 @@
 import { computed, ref } from 'vue'
 
 import { DateTime } from 'luxon'
+import { RoomID } from 'resources/views/hotel/quotas/components/lib'
 
 import BaseButton from '~resources/components/BaseButton.vue'
 import { getEachMonthInYear } from '~resources/lib/date'
 import FiltersSelect from '~resources/views/hotel/quotas/components/FiltersSelect.vue'
-import { RoomID } from '~resources/views/hotel/quotas/lib'
-import { roomsMock } from '~resources/views/hotel/quotas/lib/mock'
+import { roomsMock } from '~resources/views/hotel/quotas/components/lib/mock'
 
 type OutputRangeValue = 1 | 3 | 6 | 12
 
