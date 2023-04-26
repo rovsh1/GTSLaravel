@@ -164,7 +164,7 @@ const handleReleaseDaysValue: HandleValue<UpdateReleaseDaysRequest> = (roomID, d
 const isMac = isMacOS()
 
 const massEditTooltip = computed(() => {
-  const pickModifier = isMac ? 'CMD' : 'Ctrl'
+  const pickModifier = isMac ? '⌘' : 'Ctrl'
   return [
     'Зажмите Shift и кликните, чтобы задать значения для всех дней от выбранного до этого.',
     `Зажмите ${pickModifier} и кликните, чтобы добавить день в выборку или удалить из неё.`,
