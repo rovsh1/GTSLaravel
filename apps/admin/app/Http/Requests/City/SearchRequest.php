@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Api\Http\Admin\Requests\V1\Reference;
+namespace App\Admin\Http\Requests\City;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SearchCitiesRequest extends FormRequest
+class SearchRequest extends FormRequest
 {
 
     /**

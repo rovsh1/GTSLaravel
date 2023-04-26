@@ -3,6 +3,8 @@ type RDate = string
 
 type CityID = number
 
+type CountryID = number
+
 type HotelID = number
 
 type ContractID = number
@@ -56,4 +58,13 @@ export type Contract = {
   date_start: RDate
   date_end: RDate
   seasons?:Season[]
+}
+
+export type City = {
+  id: CityID
+  name: string
+  country_id: CountryID
+  country_name?: string
+  center_lat: number
+  center_lon: number
 }

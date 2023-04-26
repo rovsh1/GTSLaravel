@@ -126,6 +126,6 @@ class Contract extends Model
 
     public function __toString()
     {
-        return Format::contractNumber($this->id);
+        return 'Договор №' . str_pad($this->id, 6, '0', STR_PAD_LEFT);
     }
 }

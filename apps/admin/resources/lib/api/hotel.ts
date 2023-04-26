@@ -5,18 +5,18 @@ import { MaybeRef } from '@vueuse/core'
 import { Contract, Hotel, Room } from '~resources/lib/models'
 import { HotelImage, RoomImage } from '~resources/views/hotel/images/models'
 
-import { useAdminAPI, useAPI } from '.'
+import { useAdminAPI } from '.'
 
 export const useHotelAPI = (props: MaybeRef<{ hotelID: number }>) => {
   const { hotelID } = unref(props)
-  return useAPI(`/admin/v1/hotel/${hotelID}`)
+  return useAdminAPI(`/hotels/${hotelID}/get`)
     .get()
     .json<Hotel>()
 }
 
 export const useHotelImagesListAPI = (props: MaybeRef<{ hotelID: number }>) => {
   const { hotelID } = unref(props)
-  return useAdminAPI(`/hotels/${hotelID}/images/list`)
+  return useAdminAPI(`/hotels/${hotelID}/images/get`)
     .get()
     .json<HotelImage[]>()
 }
@@ -34,7 +34,7 @@ export const useHotelRoomImagesAPI = (props: MaybeRef<{ hotelID: number; roomID?
 
 export const useHotelRoomAPI = (props: MaybeRef<{ hotelID: number; roomID?: number }>) => {
   const { hotelID, roomID } = unref(props)
-  return useAPI(`/admin/v1/hotel/${hotelID}/room/${roomID}`, {
+  return useAdminAPI(`/hotels/${hotelID}/rooms/${roomID}/get`, {
     beforeFetch(ctx) {
       if (roomID === undefined) ctx.cancel()
     },

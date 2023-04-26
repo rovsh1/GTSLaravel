@@ -5,6 +5,7 @@ namespace App\Admin\Http\Controllers\Hotel;
 use App\Admin\Enums\Hotel\RatingEnum;
 use App\Admin\Enums\Hotel\StatusEnum;
 use App\Admin\Enums\Hotel\VisibilityEnum;
+use App\Admin\Models\Hotel\Hotel;
 use App\Admin\Models\Hotel\Reference\Type;
 use App\Admin\Models\Hotel\User;
 use App\Admin\Models\Reference\City;
@@ -24,6 +25,8 @@ use App\Admin\View\Components\Helpers\HotelRating;
 use App\Admin\View\Menus\HotelMenu;
 use Gsdk\Format\View\ParamsTable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class HotelController extends AbstractPrototypeController
 {
@@ -63,12 +66,18 @@ class HotelController extends AbstractPrototypeController
         return parent::create()->view('hotel.edit.edit');
     }
 
+    public function get(Request $request, Hotel $hotel): JsonResponse
+    {
+        return response()->json($hotel);
+    }
+
     protected function formFactory(): FormContract
     {
         $coordinates = isset($this->model) ? $this->model->coordinates : null;
         return Form::city('city_id', ['label' => 'Город', 'required' => true, 'emptyItem' => ''])
             ->select('type_id', ['label' => 'Тип отеля', 'required' => true, 'emptyItem' => '', 'items' => Type::get()])
-            ->enum('visibility', ['label' => __('label.visibility'), 'emptyItem' => '', 'enum' => VisibilityEnum::class])
+            ->enum('visibility', ['label' => __('label.visibility'), 'emptyItem' => '', 'enum' => VisibilityEnum::class]
+            )
             ->text('name', ['label' => 'Наименование', 'required' => true])
             ->enum('rating', ['label' => 'Категория', 'emptyItem' => '', 'enum' => RatingEnum::class])
             ->enum('status', ['label' => 'Статус', 'emptyItem' => '', 'enum' => StatusEnum::class])
@@ -169,7 +178,8 @@ class HotelController extends AbstractPrototypeController
 //                ['label' => 'Кол-во броней', 'placeholder' => [__('label.from'), __('label.to')]]
 //            )
             ->enum('status', ['label' => __('label.status'), 'emptyItem' => '', 'enum' => StatusEnum::class])
-            ->enum('visibility', ['label' => __('label.visibility'), 'emptyItem' => '', 'enum' => VisibilityEnum::class])
+            ->enum('visibility', ['label' => __('label.visibility'), 'emptyItem' => '', 'enum' => VisibilityEnum::class]
+            )
             ->enum('rating', ['label' => __('label.rating'), 'emptyItem' => '', 'enum' => RatingEnum::class]);
     }
 

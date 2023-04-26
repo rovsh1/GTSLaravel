@@ -17,12 +17,15 @@ use App\Admin\Support\Facades\Sidebar;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Layout as LayoutContract;
 use App\Admin\View\Menus\HotelMenu;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class RoomController extends Controller
 {
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 
     public function index(Request $request, Hotel $hotel): LayoutContract
     {
@@ -119,6 +122,11 @@ class RoomController extends Controller
         return [];
     }
 
+    public function get(Request $request, Hotel $hotel, Room $room): JsonResponse
+    {
+        return response()->json($room);
+    }
+
     private function formFactory(): FormContract
     {
         return Form::hidden('beds')
@@ -134,7 +142,10 @@ class RoomController extends Controller
                 'items' => RoomName::get(),
                 'emptyItem' => ''
             ])
-            ->text('custom_name', ['label' => 'Наименование (уникальное)', 'hint' => 'Внутреннее наименования для отеля'])
+            ->text(
+                'custom_name',
+                ['label' => 'Наименование (уникальное)', 'hint' => 'Внутреннее наименования для отеля']
+            )
             ->number('rooms_number', ['label' => 'Кол-во номеров', 'required' => true])
             ->number('guests_number', ['label' => 'Вместимость номера', 'required' => true])
             ->number('square', ['label' => 'Площадь']);

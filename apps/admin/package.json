@@ -26,6 +26,7 @@
         "luxon": "^3.3.0",
         "moment": "^2.29.4",
         "nanoid": "^4.0.2",
+        "qs": "^6.11.1",
         "tinymce": "^6.4.1",
         "vue": "^3.2.47",
         "vue-inline-svg": "^3.1.2"
@@ -36,6 +37,7 @@
         "@types/jquery": "^3.5.16",
         "@types/lodash": "^4.14.194",
         "@types/luxon": "^3.3.0",
+        "@types/qs": "^6.9.7",
         "@typescript-eslint/eslint-plugin": "^5.56.0",
         "@typescript-eslint/parser": "^5.57.0",
         "@vitejs/plugin-vue": "^4.1.0",

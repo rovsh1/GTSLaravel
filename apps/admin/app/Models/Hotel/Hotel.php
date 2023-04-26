@@ -33,6 +33,7 @@ use Illuminate\Database\Query\JoinClause;
  * @property-read Collection<Image>|Image[] $images
  * @method static Builder|Hotel withActiveContract()
  * @method static Builder|Hotel wherePeriod(CarbonPeriod $period)
+ * @mixin \Eloquent
  */
 class Hotel extends Model
 {

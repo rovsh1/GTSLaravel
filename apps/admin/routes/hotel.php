@@ -4,6 +4,9 @@ use App\Admin\Http\Controllers;
 use App\Admin\Support\Facades\AclRoute;
 
 AclRoute::for('hotel')
+    ->get('/{hotel}/get', Controllers\Hotel\HotelController::class . '@get', 'read', 'get')
+
+    ->get('/{hotel}/rooms/{room}/get', Controllers\Hotel\RoomController::class . '@get', 'read', 'get')
     ->put('/{hotel}/rooms/position', Controllers\Hotel\RoomController::class . '@position', 'update', 'rooms.position')
     ->resource('rooms', Controllers\Hotel\RoomController::class, [
         'parameters' => [
@@ -28,7 +31,7 @@ AclRoute::for('hotel')
     ->resource('landmark', Controllers\Hotel\LandmarkController::class, ['only' => ['create', 'store', 'destroy']])
 
     ->get('/{hotel}/images', Controllers\Hotel\ImageController::class . '@index', 'update', 'images.index')
-    ->get('/{hotel}/images/list', Controllers\Hotel\ImageController::class . '@get', 'update', 'images.get')
+    ->get('/{hotel}/images/get', Controllers\Hotel\ImageController::class . '@get', 'update', 'images.get')
     ->post('/{hotel}/images/upload', Controllers\Hotel\ImageController::class . '@upload', 'update', 'images.upload')
     ->delete('/{hotel}/images/{image}', Controllers\Hotel\ImageController::class . '@destroy', 'update', 'images.destroy')
     ->post('/{hotel}/images/reorder', Controllers\Hotel\ImageController::class . '@reorder', 'update', 'images.reorder')

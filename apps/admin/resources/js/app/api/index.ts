@@ -1,12 +1,12 @@
 import axios from 'axios'
 
-import { API_URL } from '~resources/lib/env'
+import { ADMIN_API_URL } from '~resources/lib/env'
 
 // @todo сейчас вообще не используется авторизация (в т.ч. непонятно какой юзер делает запрос)
 // axios.defaults.withCredentials = true
 
 const axiosIns = axios.create({
-  baseURL: API_URL,
+  baseURL: ADMIN_API_URL,
   // You can add your headers here
   // ================================
   // timeout: 1000,

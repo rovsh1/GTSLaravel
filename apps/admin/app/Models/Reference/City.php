@@ -9,6 +9,26 @@ use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * App\Admin\Models\Reference\City
+ *
+ * @property int $id
+ * @property int $country_id
+ * @property float|null $center_lat
+ * @property float|null $center_lon
+ * @property-write mixed $translatable
+ * @method static Builder|City joinTranslations($columns = null)
+ * @method static Builder|City newModelQuery()
+ * @method static Builder|City newQuery()
+ * @method static Builder|City query()
+ * @method static Builder|City quicksearch($term)
+ * @method static Builder|City whereCenterLat($value)
+ * @method static Builder|City whereCenterLon($value)
+ * @method static Builder|City whereCountryId($value)
+ * @method static Builder|City whereHasHotel()
+ * @method static Builder|City whereId($value)
+ * @mixin \Eloquent
+ */
 class City extends Model
 {
     use HasQuicksearch;

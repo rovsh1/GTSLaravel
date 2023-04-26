@@ -27,7 +27,9 @@ const {
 } = useHotelImagesListAPI({ hotelID })
 
 const images = computed<HotelImage[]>(() => {
-  if (imagesData.value === null) return []
+  if (!imagesData.value) {
+    return []
+  }
   return imagesData.value
 })
 
@@ -42,7 +44,7 @@ const roomImages = computed<RoomImage[]>(() => {
   return roomImagesData.value
 })
 
-const isRoomImagesLoaded = computed(() => !isRoomImagesFetching)
+const isRoomImagesLoaded = computed(() => !isRoomImagesFetching.value)
 
 const {
   execute: fetchHotel,
@@ -115,8 +117,11 @@ const deleteRoomImage = async (imageID: number) => {
   await fetchImages()
 }
 
-const isLoaded = computed(() => (
-  !isImagesFetching && !isHotelFetching && !isRoomImagesFetching && !isRoomFetching
+const isLoaded = computed<boolean>(() => (
+  !isImagesFetching.value
+  && !isHotelFetching.value
+  && !isRoomImagesFetching.value
+  && !isRoomFetching.value
 ))
 
 const getRoomImage = (id: number): RoomImage | undefined => {

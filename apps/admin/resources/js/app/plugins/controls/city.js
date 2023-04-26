@@ -1,6 +1,6 @@
 $.fn.elementCity = function (options) {
   return $(this).childCombo({
-    url: '/admin/v1/reference/city/search',
+    url: '/cities/search',
     value: +get_url_parameter('city_id'),
     disabledText: 'Выберите страну',
     parent: options.countrySelector,
