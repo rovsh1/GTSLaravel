@@ -4,7 +4,6 @@ namespace App\Admin\Models\Hotel;
 
 use App\Admin\Enums\Hotel\Contract\StatusEnum;
 use App\Admin\Files\ContractDocument;
-use App\Admin\Support\Facades\Format;
 use Carbon\CarbonPeriod;
 use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;

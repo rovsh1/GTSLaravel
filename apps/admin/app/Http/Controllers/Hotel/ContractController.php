@@ -112,7 +112,7 @@ class ContractController extends Controller
             )
             ->text(
                 'contract_number',
-                ['text' => 'Номер', 'order' => true, 'renderer' => fn($r, $t) => Format::contractNumber($r->id)]
+                ['text' => 'Номер', 'order' => true, 'renderer' => fn($r, $t) => (string)$r]
             )
             ->text('period', ['text' => 'Период', 'renderer' => fn($r, $t) => Format::period($t)])
             ->enum('status', ['text' => 'Статус', 'enum' => StatusEnum::class, 'order' => true])

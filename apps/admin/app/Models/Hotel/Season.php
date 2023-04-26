@@ -7,6 +7,7 @@ use Carbon\CarbonPeriod;
 use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property int $id
@@ -15,6 +16,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  * @property CarbonPeriod $period
  * @property CarbonInterface $date_start
  * @property CarbonInterface $date_end
+ * @property-read Contract $contract
  * @method static Builder|Season newModelQuery()
  * @method static Builder|Season newQuery()
  * @method static Builder|Season query()
@@ -47,6 +49,11 @@ class Season extends Model
                 ->addSelect('hotel_contracts.status as contract_status')
                 ->addSelect('hotel_contracts.id as contract_number');
         });
+    }
+
+    public function contract(): BelongsTo
+    {
+        return $this->belongsTo(Contract::class, 'contract_id', 'id');
     }
 
     public function period(): Attribute

@@ -106,7 +106,7 @@ class SeasonController extends Controller
             )
             ->text('name', ['text' => 'Наименование', 'order' => true])
             ->text('period', ['text' => 'Период', 'renderer' => fn($r, $t) => Format::period($t)])
-            ->text('contract_number', ['text' => 'Договор', 'renderer' => fn($r, $t) => Format::contractNumber($t)])
+            ->text('contract_number', ['text' => 'Договор', 'renderer' => fn($r, $t) => (string)$r->contract])
             ->enum('contract_status', ['text' => 'Статус', 'enum' => StatusEnum::class, 'order' => true]);
     }
 
@@ -124,7 +124,8 @@ class SeasonController extends Controller
         return Contract::whereHotelId($hotelId)
             ->get()
             ->map(function (Contract $contract) {
-                $contract->name = Format::contractNumber($contract->id);
+                $postfix = $contract->isActive() ? '' : ' (неактивный)';
+                $contract->name = $contract . $postfix;
                 return $contract;
             });
     }
