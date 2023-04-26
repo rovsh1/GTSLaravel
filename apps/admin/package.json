@@ -55,6 +55,7 @@
         "eslint-plugin-unused-imports": "^2.0.0",
         "eslint-plugin-vue": "^9.11.0",
         "laravel-vite-plugin": "^0.7.4",
+        "lefthook": "^1.3.10",
         "postcss-html": "^1.5.0",
         "stylelint": "^15.5.0",
         "stylelint-config-html": "^1.1.0",
