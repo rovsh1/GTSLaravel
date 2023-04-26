@@ -54,7 +54,7 @@ class AccessGroupRepository extends DefaultRepository
                         'group_id' => $groupId,
                         'resource' => $resource,
                         'permission' => $permission,
-                        'flag' => 1,
+                        'flag' => true,
                     ];
                 }
             }

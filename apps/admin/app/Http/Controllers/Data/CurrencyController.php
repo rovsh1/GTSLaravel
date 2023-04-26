@@ -30,7 +30,7 @@ class CurrencyController extends AbstractPrototypeController
     {
         return Grid::enableQuicksearch()
             ->paginator(self::GRID_LIMIT)
-            ->edit($this->prototype)
+            //->edit($this->prototype)
             //->id('id', ['text' => 'ID', 'order' => true])
             ->text('name', ['text' => 'Наименование', 'order' => true])
             ->text('code_num', ['text' => 'Код (цифровой)'])

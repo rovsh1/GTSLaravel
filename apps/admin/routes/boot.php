@@ -15,7 +15,6 @@ Route::controller(\App\Admin\Http\Controllers\FileController::class)
     });
 
 Route::group([], __DIR__ . '/auth.php');
-Route::group([], __DIR__ . '/currency.php');
 Route::group([], __DIR__ . '/hotel.php');
 Route::group([], __DIR__ . '/service-provider.php');
 Route::group([], __DIR__ . '/file-manager.php');

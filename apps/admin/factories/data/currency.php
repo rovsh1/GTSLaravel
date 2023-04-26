@@ -8,6 +8,7 @@ return Factory::key('currency')
     ->route('currencies')
     ->model(\App\Admin\Models\Reference\Currency::class)
     ->controller(\App\Admin\Http\Controllers\Data\CurrencyController::class, ['except' => ['show']])
+    ->readOnly()
     ->titles([
         "index" => "Валюты",
         "create" => "Новая валюта"

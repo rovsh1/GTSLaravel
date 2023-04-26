@@ -49,7 +49,7 @@ return new class extends Migration {
             $table->smallInteger('group_id')->unsigned();
             $table->string('resource', 100);
             $table->string('permission', 25);
-            $table->tinyInteger('flag')->unsigned();
+            $table->boolean('flag');
 
             $table->primary(['group_id', 'resource', 'permission']);
 

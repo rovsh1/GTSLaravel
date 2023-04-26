@@ -42,7 +42,7 @@ class AclPermissions
         } else {
             $context = [];
             $rules = AccessRule::whereAdministrator($administrator->id)
-                ->where('flag', 1);
+                ->where('flag', true);
             foreach ($rules->cursor() as $r) {
                 $permissions->allow($r->resource, $r->permission);
                 $context[$r->resource] = $r->permission;

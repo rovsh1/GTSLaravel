@@ -62,7 +62,8 @@ class AccessGroupController extends AbstractPrototypeController
                 'items' => Administrator::get(),
                 'multiple' => true
             ])
-            ->textarea('description', ['label' => 'Описание', 'required' => true])//->hidden('name1', ['label1' => 'Наименование', 'required' => true])
+            ->textarea('description', ['label' => 'Описание', 'required' => true])
+            //->checkbox('enabled', ['label' => 'Включена'])
             ;
     }
 
