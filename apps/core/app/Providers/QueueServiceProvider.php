@@ -2,19 +2,15 @@
 
 namespace App\Core\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use Module\Services\MailManager\Infrastructure\Queue\MailConnector;
+use Illuminate\Queue\QueueServiceProvider as ServiceProvider;
 
 class QueueServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function registerConnectors($manager)
     {
-    }
+        parent::registerConnectors($manager);
 
-    public function boot()
-    {
-        //TODO
-        $manager = $this->app['queue'];
         $manager->addConnector('mail', function () {
             $module = module('mail');
             $module->boot();

@@ -53,8 +53,10 @@ class Handler extends ExceptionHandler
         if ($this->isNotFoundException($e)) {
             return $this->_renderNotFound($e);
         } else {
-            //TODO edit it
-            Layout::configure();
+            if (app()->has('layout')) {
+                //TODO edit it
+                Layout::configure();
+            }
 
             return parent::render($request, $e);
         }
@@ -102,8 +104,12 @@ class Handler extends ExceptionHandler
             || $e instanceof MethodNotAllowedHttpException;
     }
 
-    protected function context()
+    protected function context(): array
     {
-        return AppContext::get();
+        if (app()->has('app-context')) {
+            return AppContext::get();
+        } else {
+            return [];
+        }
     }
 }
