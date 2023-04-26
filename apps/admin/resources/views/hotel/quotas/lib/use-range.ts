@@ -20,7 +20,12 @@ type SetRangeParams = {
 }
 const setQuotaRange = (params: SetRangeParams) =>
   (done: (range: QuotaRange) => void) => {
-    const { dailyQuota, roomTypeID, activeKey, rangeKey } = params
+    const {
+      dailyQuota,
+      roomTypeID,
+      activeKey,
+      rangeKey,
+    } = params
     const indexes: [number, number] = [-1, -1]
     dailyQuota.forEach(({ key }, index) => {
       if (getActiveCellKey(key, roomTypeID) === activeKey) indexes[0] = index
@@ -34,7 +39,10 @@ const setQuotaRange = (params: SetRangeParams) =>
     const [from, to] = indexes
     const range = dailyQuota
       .slice(from, to + 1)
-      .map(({ key, ...rest }) => ({ key: getActiveCellKey(key, roomTypeID), ...rest }))
+      .map(({
+        key,
+        ...rest
+      }) => ({ key: getActiveCellKey(key, roomTypeID), ...rest }))
     return done({
       roomID: roomTypeID,
       quotas: range,
@@ -42,12 +50,18 @@ const setQuotaRange = (params: SetRangeParams) =>
   }
 
 type UseQuotasTableRangeParams = {
+  editedRef: Ref<number | null>
   rangeRef: Ref<QuotaRange>
   activeKey: Ref<ActiveKey>
   editedInRange: Ref<EditedQuota | null>
 }
 export const useQuotasTableRange = (params: UseQuotasTableRangeParams) => {
-  const { rangeRef, activeKey, editedInRange } = params
+  const {
+    editedRef,
+    rangeRef,
+    activeKey,
+    editedInRange,
+  } = params
 
   const isCellInRange = (cellKey: ActiveKey) =>
     (range: QuotaRange): boolean => {
@@ -58,6 +72,7 @@ export const useQuotasTableRange = (params: UseQuotasTableRangeParams) => {
 
   watch(activeKey, (value) => {
     if (value !== null) return
+    editedRef.value = null
     editedInRange.value = null
   })
 
@@ -68,6 +83,7 @@ export const useQuotasTableRange = (params: UseQuotasTableRangeParams) => {
       })),
     isCellInRange: (cellKey: ActiveKey) => isCellInRange(cellKey)(rangeRef.value),
     handleInput: (key: ActiveKey, value: number, range: QuotaRange) => {
+      editedRef.value = value
       if (range === null) return
       editedInRange.value = { key, value }
     },

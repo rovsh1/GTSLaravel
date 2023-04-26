@@ -5,7 +5,6 @@ import { OnClickOutside } from '@vueuse/components'
 import { DateTime } from 'luxon'
 
 import { getEachDayInMonth } from '~resources/lib/date'
-import { EditedQuota, QuotaRange, useQuotasTableRange } from '~resources/views/hotel/quotas/lib/use-range'
 
 import DayMenu from './components/DayMenu/DayMenu.vue'
 import EditableCell from './components/EditableCell.vue'
@@ -24,6 +23,7 @@ import {
   RoomQuotaStatus,
 } from './lib'
 import { Quota } from './lib/mock'
+import { EditedQuota, QuotaRange, useQuotasTableRange } from './lib/use-range'
 
 const props = defineProps<{
   month: Date
@@ -56,6 +56,7 @@ const dayCellClassNameByRoomQuotaStatus: Record<RoomQuotaStatus, string> = {
 const dayQuotaCellClassName = (status: RoomQuota['status']) =>
   ['dayQuotaCell', status !== null && dayCellClassNameByRoomQuotaStatus[status]]
 
+const editedQuota = ref<number | null>(null)
 const quotaRange = ref<QuotaRange>(null)
 const activeQuotaKey = ref<ActiveKey>(null)
 const editedQuotaInRange = ref<EditedQuota | null>(null)
@@ -65,11 +66,13 @@ const {
   handleInput: handleQuotaInput,
   showEdited: showEditedQuota,
 } = useQuotasTableRange({
+  editedRef: editedQuota,
   rangeRef: quotaRange,
   activeKey: activeQuotaKey,
   editedInRange: editedQuotaInRange,
 })
 
+const editedReleaseDays = ref<number | null>(null)
 const releaseDaysRange = ref<QuotaRange>(null)
 const activeReleaseDaysKey = ref<ActiveKey>(null)
 const editedReleaseDaysInRange = ref<EditedQuota | null>(null)
@@ -79,6 +82,7 @@ const {
   handleInput: handleReleaseDaysInput,
   showEdited: showEditedReleaseDays,
 } = useQuotasTableRange({
+  editedRef: editedReleaseDays,
   rangeRef: releaseDaysRange,
   activeKey: activeReleaseDaysKey,
   editedInRange: editedReleaseDaysInRange,
@@ -217,7 +221,11 @@ const massEditTooltip = 'Зажмите Shift и кликните, чтобы з
                 <editable-cell
                   :active-key="activeQuotaKey"
                   :cell-key="getActiveCellKey(key, id)"
-                  :value="quota === null ? '' : quota.toString()"
+                  :value="
+                    editedQuota === null
+                      ? quota === null ? '' : quota.toString()
+                      : editedQuota.toString()
+                  "
                   :max="count"
                   :disabled="!editable"
                   :in-range="isQuotaCellInRange(getActiveCellKey(key, id))"
@@ -299,7 +307,11 @@ const massEditTooltip = 'Зажмите Shift и кликните, чтобы з
                 <editable-cell
                   :active-key="activeReleaseDaysKey"
                   :cell-key="getActiveCellKey(key, id)"
-                  :value="releaseDays === null ? '' : releaseDays.toString()"
+                  :value="
+                    editedReleaseDays === null
+                      ? releaseDays === null ? '' : releaseDays.toString()
+                      : editedReleaseDays.toString()
+                  "
                   :max="30"
                   :disabled="!editable"
                   :in-range="isReleaseDaysCellInRange(getActiveCellKey(key, id))"
