@@ -25,17 +25,16 @@ class Select extends AbstractElement
 
     public function __construct(string $name, array $options = [])
     {
-        if (isset($options['groups'])) {
-            $this->setGroups($options['groups']);
-            unset($options['groups']);
-        }
+        $groups = $options['groups'] ?? [];
+        unset($options['groups']);
 
-        if (isset($options['items'])) {
-            $this->setItems($options['items']);
-            unset($options['items']);
-        }
+        $items = $options['items'] ?? [];
+        unset($options['items']);
 
         parent::__construct($name, $options);
+
+        $this->setGroups($groups);
+        $this->setItems($items);
     }
 
     public function setGroups(iterable $groups): void

@@ -89,5 +89,8 @@
 
     "Hotel\\Contract\\StatusEnum::ACTIVE": "Активный",
     "Hotel\\Contract\\StatusEnum::INACTIVE": "Неактивный",
-    "Hotel\\Contract\\StatusEnum::ARCHIVE": "Архив"
+    "Hotel\\Contract\\StatusEnum::ARCHIVE": "Архив",
+
+    "mail.SITE_CUSTOMER_REGISTRATION": "Регистрация пользователя",
+    "mail.SITE_PASSWORD_RECOVERY": "Восстановление пароля"
 }

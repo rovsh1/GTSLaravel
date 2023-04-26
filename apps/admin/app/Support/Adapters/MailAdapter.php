@@ -25,4 +25,9 @@ class MailAdapter extends AbstractPortAdapter
     {
         return $this->request('get-queue', $criteria);
     }
+
+    public function getTemplatesList(): array
+    {
+        return $this->request('templates-list');
+    }
 }
