@@ -4,8 +4,7 @@ type Params = {
   contentCSSPath: string
 }
 export const getDefaultOptions = ({ contentCSSPath }: Params): RawEditorOptions => ({
-  // skin: 'oxide',
-  skin_url: '/css/htmleditor',
+  skin: false,
   language: 'ru',
   promotion: false,
   branding: false,
@@ -61,5 +60,5 @@ export const getDefaultOptions = ({ contentCSSPath }: Params): RawEditorOptions 
     'styleselect fontsizeselect | bold italic removeformat | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | insertfile image link | appvariables mastergallery',
   ],
   body_class: 'page-content',
-  content_css: [contentCSSPath],
+  content_css: contentCSSPath,
 })

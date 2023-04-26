@@ -2,9 +2,11 @@ import { TinyMCE } from 'tinymce'
 
 import { getFileFromManifest } from '~resources/js/app/build-manifest'
 
+import 'tinymce/skins/ui/oxide/skin.min.css'
+
 let loadedFlag = false
 
-export default async function loadEditor(): Promise<TinyMCE> {
+export const loadEditor = async (): Promise<TinyMCE> => {
   if (window.tinymce) {
     return window.tinymce
   }
