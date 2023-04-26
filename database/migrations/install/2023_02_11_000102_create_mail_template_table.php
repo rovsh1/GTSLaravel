@@ -11,16 +11,17 @@ return new class extends Migration {
             $table->increments('id');
             $table->string('key');
             $table->char('language', 2);
-            $table->unsignedSmallInteger('country_id')->nullable();
+//            $table->unsignedSmallInteger('country_id')->nullable();
             $table->string('subject');
             $table->text('body');
             $table->timestamps();
 
-            $table->foreign('country_id')
-                ->references('id')
-                ->on('r_countries')
-                ->cascadeOnDelete()
-                ->cascadeOnUpdate();
+            $table->unique(['key', 'language'], 's_mail_templates_uid');
+//            $table->foreign('country_id')
+//                ->references('id')
+//                ->on('r_countries')
+//                ->cascadeOnDelete()
+//                ->cascadeOnUpdate();
         });
     }
 

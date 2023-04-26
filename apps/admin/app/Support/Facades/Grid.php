@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static \App\Admin\Support\View\Grid\Grid date(string $name, array $options = [])
  * @method static \App\Admin\Support\View\Grid\Grid url(string $name, array $options = [])
  * @method static \App\Admin\Support\View\Grid\Grid file(string $name, array $options = [])
+ * @method static \App\Admin\Support\View\Grid\Grid language(string $name, array $options = [])
  *
  * @see \App\Admin\Support\View\Grid\Grid
  *

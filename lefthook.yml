@@ -1,0 +1,15 @@
+pre-commit:
+  parallel: true
+  commands:
+    admin-eslint:
+      root: "apps/admin"
+      glob: "*.{js,ts,vue}"
+      run: npx eslint {staged_files}
+    admin-stylelint:
+      root: "apps/admin"
+      glob: "*.{vue,scss}"
+      run: npx stylelint {staged_files}
+    admin-vue:
+      root: "apps/admin"
+      glob: "*.vue"
+      run: npx vue-tsc --noEmit

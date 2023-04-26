@@ -34,6 +34,18 @@
   text-align: right;
 }
 
+.column-language {
+  width: 1rem;
+  text-align: center;
+
+  & > img {
+    vertical-align: top;
+    object-fit: contain;
+    width: 20px;
+    height: 20px;
+  }
+}
+
 tr:not(:hover) > .column-edit > a {
   visibility: hidden;
 }

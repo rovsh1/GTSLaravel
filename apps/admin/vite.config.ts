@@ -54,6 +54,8 @@ export default defineConfig(({ command }) => ({
         'resources/views/hotel/settings/settings.ts',
         'resources/views/hotel/settings/settings.scss',
         'resources/views/hotel/season/season.ts',
+        'resources/views/mail/template/form.ts',
+        'resources/views/mail/template/form.scss',
         'resources/views/profile/profile/profile.ts',
         'resources/views/profile/profile/profile.scss',
         'resources/views/service-provider/show.js',
