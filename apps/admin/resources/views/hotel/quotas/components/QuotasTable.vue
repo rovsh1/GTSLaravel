@@ -5,6 +5,7 @@ import { OnClickOutside } from '@vueuse/components'
 import { DateTime } from 'luxon'
 
 import { getEachDayInMonth } from '~resources/lib/date'
+import { isMacOS } from '~resources/lib/platform'
 
 import DayMenu from './DayMenu/DayMenu.vue'
 import EditableCell from './EditableCell.vue'
@@ -62,6 +63,7 @@ const activeQuotaKey = ref<ActiveKey>(null)
 const editedQuotaInRange = ref<EditedQuota | null>(null)
 const {
   setRange: setQuotaRange,
+  setPick: setQuotaPick,
   isCellInRange: isQuotaCellInRange,
   handleInput: handleQuotaInput,
   showEdited: showEditedQuota,
@@ -78,6 +80,7 @@ const activeReleaseDaysKey = ref<ActiveKey>(null)
 const editedReleaseDaysInRange = ref<EditedQuota | null>(null)
 const {
   setRange: setReleaseDaysRange,
+  setPick: setReleaseDaysPick,
   isCellInRange: isReleaseDaysCellInRange,
   handleInput: handleReleaseDaysInput,
   showEdited: showEditedReleaseDays,
@@ -158,7 +161,15 @@ const handleReleaseDaysValue: HandleValue<UpdateReleaseDaysRequest> = (roomID, d
   return request
 }
 
-const massEditTooltip = 'Зажмите Shift и кликните, чтобы задать значения для всех дней от выбранного до этого'
+const isMac = isMacOS()
+
+const massEditTooltip = computed(() => {
+  const pickModifier = isMac ? 'CMD' : 'Ctrl'
+  return [
+    'Зажмите Shift и кликните, чтобы задать значения для всех дней от выбранного до этого.',
+    `Зажмите ${pickModifier} и кликните, чтобы добавить день в выборку или удалить из неё.`,
+  ].join('\n')
+})
 </script>
 <template>
   <div class="quotasRooms">
@@ -236,13 +247,20 @@ const massEditTooltip = 'Зажмите Shift и кликните, чтобы з
                     activeKey: activeQuotaKey,
                     rangeKey: value,
                   })"
+                  @pick-key="(value) => setQuotaPick({
+                    oldRange: quotaRange as QuotaRange,
+                    dailyQuota,
+                    roomTypeID: id,
+                    activeKey: activeQuotaKey,
+                    pickKey: value,
+                  })"
                   @value="value => handleQuotaValue(id, date, value)"
                   @input="value => {
-                    handleQuotaInput(getActiveCellKey(key, id), value, quotaRange)
+                    handleQuotaInput(getActiveCellKey(key, id), value, quotaRange as QuotaRange)
                   }"
                 >
                   <template
-                    v-if="showEditedQuota(getActiveCellKey(key, id), quotaRange)"
+                    v-if="showEditedQuota(getActiveCellKey(key, id), quotaRange as QuotaRange)"
                   >
                     {{ editedQuotaInRange?.value }}
                   </template>
@@ -321,6 +339,13 @@ const massEditTooltip = 'Зажмите Shift и кликните, чтобы з
                     roomTypeID: id,
                     activeKey: activeReleaseDaysKey,
                     rangeKey: value,
+                  })"
+                  @pick-key="(value) => setReleaseDaysPick({
+                    oldRange: releaseDaysRange,
+                    dailyQuota,
+                    roomTypeID: id,
+                    activeKey: activeReleaseDaysKey,
+                    pickKey: value,
                   })"
                   @value="value => handleReleaseDaysValue(id, date, value)"
                   @input="value => {

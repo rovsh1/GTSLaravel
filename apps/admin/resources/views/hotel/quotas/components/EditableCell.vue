@@ -15,13 +15,15 @@ const props = defineProps<{
 const emit = defineEmits<{
   (event: 'active-key', value: CellKey): void
   (event: 'range-key', value: CellKey): void
+  (event: 'pick-key', value: CellKey): void
   (event: 'input', value: number): void
   (event: 'value', value: number): void
 }>()
 
 const inputRef = ref<HTMLInputElement | null>(null)
 
-const shift = ref(false)
+const rangeMode = ref(false)
+const pickMode = ref(false)
 
 const handleInputMount = (input: HTMLInputElement) => {
   input.focus()
@@ -55,30 +57,37 @@ const handleInput = (target: EventTarget | null) =>
   handleValue(target, (number) => emit('input', number))
 
 const handleButtonClick = (event: MouseEvent) => {
-  if (shift.value) {
+  if (rangeMode.value) {
     event.preventDefault()
     emit('range-key', props.cellKey)
-  } else {
-    emit('active-key', props.cellKey)
+    return
   }
+  if (pickMode.value) {
+    event.preventDefault()
+    emit('pick-key', props.cellKey)
+    return
+  }
+  emit('active-key', props.cellKey)
 }
 
-const enableShiftMode = () => {
-  shift.value = true
+const keydown = (event: KeyboardEvent) => {
+  if (event.shiftKey) rangeMode.value = true
+  if (event.ctrlKey || event.metaKey) pickMode.value = true
 }
 
-const disableShiftMode = () => {
-  shift.value = false
+const keyup = () => {
+  rangeMode.value = false
+  pickMode.value = false
 }
 
 onMounted(() => {
-  window.addEventListener('keydown', enableShiftMode)
-  window.addEventListener('keyup', disableShiftMode)
+  window.addEventListener('keydown', keydown)
+  window.addEventListener('keyup', keyup)
 })
 
 onUnmounted(() => {
-  window.removeEventListener('keydown', enableShiftMode)
-  window.removeEventListener('keyup', disableShiftMode)
+  window.removeEventListener('keydown', keydown)
+  window.removeEventListener('keyup', keyup)
 })
 </script>
 <template>
@@ -92,13 +101,14 @@ onUnmounted(() => {
       @input="(event) => handleInput(event.target)"
       @change="(event) => handleChange(event.target)"
       @blur="(event) => {
-        if (shift) {
+        if (rangeMode || pickMode) {
           event.preventDefault()
           inputRef?.focus()
           return
         }
         emit('active-key', null)
         emit('range-key', null)
+        emit('pick-key', null)
       }"
       @keydown.esc="inputRef?.blur()"
       @keydown.enter="inputRef?.blur()"

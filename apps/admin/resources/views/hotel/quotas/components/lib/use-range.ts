@@ -12,6 +12,11 @@ export type EditedQuota = {
   value: number
 }
 
+const addRoomIDToRoomQuotaKey = (roomTypeID: RoomID) => (roomQuota: RoomQuota): RoomQuota => ({
+  ...roomQuota,
+  key: getActiveCellKey(roomQuota.key, roomTypeID),
+})
+
 type SetRangeParams = {
   dailyQuota: RoomQuota[]
   roomTypeID: RoomQuotas['id']
@@ -19,7 +24,7 @@ type SetRangeParams = {
   rangeKey: ActiveKey
 }
 const setQuotaRange = (params: SetRangeParams) =>
-  (done: (range: QuotaRange) => void) => {
+  (done: (newRange: QuotaRange) => void) => {
     const {
       dailyQuota,
       roomTypeID,
@@ -39,13 +44,55 @@ const setQuotaRange = (params: SetRangeParams) =>
     const [from, to] = indexes
     const range = dailyQuota
       .slice(from, to + 1)
-      .map(({
-        key,
-        ...rest
-      }) => ({ key: getActiveCellKey(key, roomTypeID), ...rest }))
+      .map(addRoomIDToRoomQuotaKey(roomTypeID))
     return done({
       roomID: roomTypeID,
       quotas: range,
+    })
+  }
+
+type SetPickParams = {
+  oldRange: QuotaRange
+  dailyQuota: RoomQuota[]
+  roomTypeID: RoomQuotas['id']
+  activeKey: ActiveKey
+  pickKey: ActiveKey
+}
+const setQuotaPick = (params: SetPickParams) =>
+  (done: (newRange: QuotaRange) => void) => {
+    const {
+      oldRange,
+      dailyQuota,
+      roomTypeID: roomID,
+      activeKey,
+      pickKey,
+    } = params
+    const find = (keyToFind: ActiveKey) => {
+      const found = dailyQuota
+        .find(({ key }) => getActiveCellKey(key, roomID) === keyToFind)
+      if (found === undefined) return undefined
+      return addRoomIDToRoomQuotaKey(roomID)(found)
+    }
+
+    const picked = find(pickKey)
+    if (picked === undefined) return done(null)
+    if (oldRange === null) {
+      const active = find(activeKey)
+      if (active === undefined) return done(null)
+      // Create new range from active and picked
+      return done({ roomID, quotas: [active, picked] })
+    }
+    const { quotas } = oldRange
+    const pickedQuotaInRange = quotas
+      .find(({ key }) => key === picked.key)
+    if (pickedQuotaInRange === undefined) {
+      // Add picked quota to range
+      return done({ roomID, quotas: [...quotas, picked] })
+    }
+    // Remove picked quota from range
+    return done({
+      roomID,
+      quotas: quotas.filter(({ key }) => key !== pickedQuotaInRange.key),
     })
   }
 
@@ -77,9 +124,13 @@ export const useQuotasTableRange = (params: UseQuotasTableRangeParams) => {
   })
 
   return {
+    setPick: (setPickParams: SetPickParams) =>
+      setQuotaPick(setPickParams)(((newRange) => {
+        rangeRef.value = newRange
+      })),
     setRange: (setRangeParams: SetRangeParams) =>
-      setQuotaRange(setRangeParams)(((value) => {
-        rangeRef.value = value
+      setQuotaRange(setRangeParams)(((newRange) => {
+        rangeRef.value = newRange
       })),
     isCellInRange: (cellKey: ActiveKey) => isCellInRange(cellKey)(rangeRef.value),
     handleInput: (key: ActiveKey, value: number, range: QuotaRange) => {

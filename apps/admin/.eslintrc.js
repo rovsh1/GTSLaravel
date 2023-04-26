@@ -139,7 +139,7 @@ module.exports = defineConfig({
     {
       files: ['*.vue'],
       rules: {
-        'max-lines': ['error', 500],
+        'max-lines': ['error', 600],
         'vue/max-len': ['error', {
           code: 100,
           template: 100,
