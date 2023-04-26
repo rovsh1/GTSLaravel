@@ -9,6 +9,22 @@ import FiltersSelect from '~resources/views/hotel/quotas/components/FiltersSelec
 import { RoomID } from '~resources/views/hotel/quotas/lib'
 import { roomsMock } from '~resources/views/hotel/quotas/lib/mock'
 
+type OutputRangeValue = 1 | 3 | 6 | 12
+
+type AvailabilityValue = 'sold' | 'stopped' | 'available'
+
+export type FiltersPayload = {
+  year: number
+  month: number
+  count: OutputRangeValue
+  availability?: AvailabilityValue
+  room?: RoomID
+}
+
+const emit = defineEmits<{
+  (event: 'submit', value: FiltersPayload): void
+}>()
+
 type Year = {
   label: string
   value: number
@@ -43,8 +59,6 @@ const months = computed<Month[]>(() => {
 
 const selectedMonth = ref<Month['value']>(months.value[0].value)
 
-type OutputRangeValue = 1 | 3 | 6 | 12
-
 type OutputRange = {
   label: string
   value: OutputRangeValue
@@ -58,8 +72,6 @@ const ranges: OutputRange[] = [
 ]
 
 const selectedRange = ref<OutputRange['value']>(ranges[0].value)
-
-type AvailabilityValue = 'sold' | 'stopped' | 'available'
 
 type AvailabilityOption = {
   value: AvailabilityValue
@@ -81,24 +93,14 @@ const rooms = computed(() => roomsMock.map(({ id, name, custom_name: customName 
 
 const selectedRoom = ref<RoomID | null>(null)
 
-type Payload = {
-  year: number
-  month: number
-  count: OutputRangeValue
-  availability?: AvailabilityValue
-  room?: RoomID
-}
-
-const submit = (): Payload => {
-  const payload: Payload = {
+const submit = () => {
+  emit('submit', {
     year: selectedYear.value,
     month: selectedMonth.value,
     count: selectedRange.value,
     availability: selectedAvailabilityOption.value ?? undefined,
     room: selectedRoom.value ?? undefined,
-  }
-  console.log(payload)
-  return payload
+  })
 }
 </script>
 <template>

@@ -12,7 +12,7 @@ import { useHotelAPI } from '~resources/lib/api/hotel'
 import { Hotel } from '~resources/lib/models'
 import { useUrlParams } from '~resources/lib/url-params'
 
-import QuotasFilters from './components/QuotasFilters.vue'
+import QuotasFilters, { FiltersPayload } from './components/QuotasFilters.vue'
 import QuotasTable from './QuotasTable.vue'
 
 import { quotasMock } from './lib/mock'
@@ -43,6 +43,10 @@ const months = computed(() => {
     quotas: groupedByMonth[key],
   }))
 })
+
+const handleFilters = (value: FiltersPayload) => {
+  console.log(value)
+}
 </script>
 <template>
   <BaseLayout v-if="isHotelFetching" title="Загрузка…" />
@@ -55,7 +59,7 @@ const months = computed(() => {
       />
     </template>
     <div class="quotasBody">
-      <QuotasFilters />
+      <QuotasFilters @submit="value => handleFilters(value)" />
       <div class="quotasTables">
         <quotas-table
           v-for="{ id, monthDate, quotas } in months"
