@@ -1,8 +1,10 @@
 <?php
 
-namespace Module\Services\NotificationManager\Domain\Entity\Recipient;
+namespace Module\Services\NotificationManager\Domain\Notifiable;
 
-class Administrator implements RecipientInterface
+use Module\Services\NotificationManager\Domain\Entity\NotifiableInterface;
+
+class Administrator implements NotifiableInterface
 {
     private string $administratorId;
 

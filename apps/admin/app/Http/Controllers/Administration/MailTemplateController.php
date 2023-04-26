@@ -2,6 +2,7 @@
 
 namespace App\Admin\Http\Controllers\Administration;
 
+use App\Admin\Models\System\MailTemplate;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Facades\MailAdapter;
@@ -11,6 +12,12 @@ use App\Admin\Support\View\Grid\Grid as GridContract;
 
 class MailTemplateController extends AbstractPrototypeController
 {
+    public function sendTest(MailTemplate $template)
+    {
+        $x = MailAdapter::sendTo('s16121986@yandex.ru', 'Test message', $template->body);
+        dd($x);
+    }
+
     protected function getPrototypeKey(): string
     {
         return 'mail-template';
@@ -23,8 +30,8 @@ class MailTemplateController extends AbstractPrototypeController
                 'label' => 'Шаблон',
                 'emptyItem' => '',
                 'required' => true,
-                'groupIndex' => 'group',
-                'groups' => self::getTemplateGroups(),
+                //'groupIndex' => 'group',
+                //'groups' => self::getTemplateGroups(),
                 'items' => array_map(function ($k) {
                     return (object)[
                         'value' => $k,

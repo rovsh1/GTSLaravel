@@ -18,7 +18,7 @@ class MailQueueController extends Controller
 
     public function __construct()
     {
-        $this->prototype = Prototypes::get('mail-log');
+        $this->prototype = Prototypes::get('mail-queue');
     }
 
     public function index(): LayoutContract
@@ -77,6 +77,10 @@ class MailQueueController extends Controller
                     ) . '">description</div>'
             ])
             ->date('created_at', ['text' => 'Создан', 'format' => 'datetime', 'order' => true])
+            ->actions([
+                //TODO retry, resend actions
+                'actions' => []
+            ])
             ->orderBy('created_at', 'desc');
     }
 }

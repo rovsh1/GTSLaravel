@@ -1,10 +1,11 @@
 <?php
 
-namespace Module\Services\NotificationManager\Domain\Entity\Recipient;
+namespace Module\Services\NotificationManager\Domain\Notifiable;
 
 use Custom\Framework\Foundation\Exception\ValidationException;
+use Module\Services\NotificationManager\Domain\Entity\NotifiableInterface;
 
-class EmailAddress implements RecipientInterface
+class EmailAddress implements NotifiableInterface
 {
     private string $email;
 
