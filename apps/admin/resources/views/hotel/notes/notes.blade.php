@@ -1,7 +1,6 @@
 @extends('layouts.main')
 
 @section('scripts')
-    @vite('resources/views/hotel/notes/notes.scss')
     @vite('resources/views/hotel/notes/notes.ts')
 @endsection
 

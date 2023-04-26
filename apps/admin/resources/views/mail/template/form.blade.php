@@ -1,7 +1,6 @@
 @extends('layouts.main')
 
 @section('scripts')
-    @vite('resources/views/mail/template/form.scss')
     @vite('resources/views/mail/template/form.ts')
 @endsection
 

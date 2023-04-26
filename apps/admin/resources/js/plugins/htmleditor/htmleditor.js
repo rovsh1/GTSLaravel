@@ -1,5 +1,5 @@
 import EventsTrait from "~resources/js/app/support/events-trait";
-import loadEditor from "./loader"
+import { loadEditor } from "./loader"
 import { getDefaultOptions } from "./default"
 import { getFileFromManifest } from '~resources/js/app/build-manifest'
 
