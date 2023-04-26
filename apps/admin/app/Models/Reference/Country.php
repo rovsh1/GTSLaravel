@@ -25,7 +25,8 @@ class Country extends Model
         'name',
         'default',
         'phone_code',
-        'language'
+        'language',
+        'currency_id'
     ];
 
     protected $casts = [

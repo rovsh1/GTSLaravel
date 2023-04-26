@@ -20,9 +20,9 @@ class CountryController extends AbstractPrototypeController
         return Form::localeText('name', ['label' => 'Наименование', 'required' => true])
             //->view('default.form.form')
             ->text('code', ['label' => 'Код страны', 'maxlength' => 2, 'required' => true])
-            ->language('language', ['label' => 'Язык по-умолчанию', 'emptyItem' => '-Не выбрано-'])
+            ->language('language', ['label' => 'Язык по-умолчанию', 'required' => true, 'emptyItem' => ''])
             ->text('phone_code', ['label' => 'Код телефона', 'maxlength' => 8, 'required' => true])
-            ->currency('currency_id', ['label' => 'Валюта'])
+            ->currency('currency_id', ['label' => 'Валюта', 'required' => true, 'emptyItem' => ''])
             ->checkbox('default', ['label' => 'По умолчанию']);
     }
 
