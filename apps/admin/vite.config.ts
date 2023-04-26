@@ -11,8 +11,6 @@ import { scripts } from './package.json'
 
 expand(config({
   allowEmptyValues: true,
-  path: '../../.env',
-  example: '../../.env.example',
 }))
 // https://github.com/laravel/vite-plugin/pull/57
 console.log(`The Vite server should not be accessed directly. Please visit ${process.env.APP_URL} instead.`)

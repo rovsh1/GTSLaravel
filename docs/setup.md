@@ -74,7 +74,14 @@ Simplest way is to copy this file to desktop, then edit, and copy back to `windo
 
 ## 7. Build frontend assets
 
-Install frontend dependencies:
+Prepare frontend environment:
+
+```sh
+$ cd apps/admin
+$ cp .env.example .env
+```
+
+Build frontend assets:
 
 ```sh
 $ make frontend-admin
