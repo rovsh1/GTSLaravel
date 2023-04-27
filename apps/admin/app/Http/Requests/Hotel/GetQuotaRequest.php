@@ -19,17 +19,11 @@ class GetQuotaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'room_id' => ['required', 'numeric'],
             'month' => ['required', 'numeric', 'between:1,12'],
             'year' => ['required', 'date_format:Y'],
             'interval' => ['required', new DateIntervalRule],
             'availability' => ['nullable', 'numeric']
         ];
-    }
-
-    public function getRoomId(): int
-    {
-        return $this->get('room_id');
     }
 
     public function getAvailability(): int

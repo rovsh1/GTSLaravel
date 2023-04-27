@@ -17,16 +17,10 @@ class UpdateQuotaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'room_id' => ['required', 'numeric'],
             'dates' => ['required', 'array'],
             'dates.*' => ['required', 'date'],
             'count' => ['required', 'numeric'],
         ];
-    }
-
-    public function getRoomId(): int
-    {
-        return $this->post('room_id');
     }
 
     /**

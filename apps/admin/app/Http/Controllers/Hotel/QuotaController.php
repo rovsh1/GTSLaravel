@@ -7,6 +7,7 @@ use App\Admin\Http\Requests\Hotel\GetQuotaRequest;
 use App\Admin\Http\Requests\Hotel\UpdateQuotaRequest;
 use App\Admin\Http\Resources\RoomQuota;
 use App\Admin\Models\Hotel\Hotel;
+use App\Admin\Models\Hotel\Room;
 use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Hotel\QuotaAdapter;
 use App\Admin\Support\Facades\Layout;
@@ -28,17 +29,17 @@ class QuotaController extends Controller
             ->view('hotel.quotas.quotas');
     }
 
-    public function get(GetQuotaRequest $request, Hotel $hotel): JsonResponse
+    public function get(GetQuotaRequest $request, Hotel $hotel, Room $room): JsonResponse
     {
         //@todo $request->getAvailability(), логика доступности
-        $quotas = QuotaAdapter::getRoomQuota($request->getRoomId(), $request->getPeriod());
+        $quotas = QuotaAdapter::getRoomQuota($room->id, $request->getPeriod());
         return response()->json(RoomQuota::collection($quotas));
     }
 
-    public function update(UpdateQuotaRequest $request, Hotel $hotel): AjaxResponseInterface
+    public function update(UpdateQuotaRequest $request, Hotel $hotel, Room $room): AjaxResponseInterface
     {
         foreach ($request->getDates() as $date) {
-            QuotaAdapter::updateRoomQuota($request->getRoomId(), $date, $request->getCount());
+            QuotaAdapter::updateRoomQuota($room->id, $date, $request->getCount());
         }
         return new AjaxSuccessResponse();
     }
