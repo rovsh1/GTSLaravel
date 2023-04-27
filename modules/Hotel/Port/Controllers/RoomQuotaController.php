@@ -51,7 +51,6 @@ class RoomQuotaController
     {
         $request->validate([
             'room_id' => 'required|numeric',
-            'rate_id' => 'required|numeric',
             'date_from' => 'required|date',
             'date_to' => 'required|date',
         ]);
@@ -59,7 +58,6 @@ class RoomQuotaController
         $this->quotaUpdater->openRoomQuota(
             $request->room_id,
             new CarbonPeriod($request->date_from, $request->date_to),
-            $request->rate_id,
         );
     }
 
@@ -67,7 +65,6 @@ class RoomQuotaController
     {
         $request->validate([
             'room_id' => 'required|numeric',
-            'rate_id' => 'required|numeric',
             'date_from' => 'required|date',
             'date_to' => 'required|date',
         ]);
@@ -75,7 +72,6 @@ class RoomQuotaController
         $this->quotaUpdater->closeRoomQuota(
             $request->room_id,
             new CarbonPeriod($request->date_from, $request->date_to),
-            $request->rate_id,
         );
     }
 }

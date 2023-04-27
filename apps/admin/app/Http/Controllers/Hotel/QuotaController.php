@@ -39,7 +39,13 @@ class QuotaController extends Controller
     public function update(UpdateQuotaRequest $request, Hotel $hotel, Room $room): AjaxResponseInterface
     {
         foreach ($request->getDates() as $date) {
-            QuotaAdapter::updateRoomQuota($room->id, $date, $request->getCount());
+            if ($request->getCount() !== null) {
+                QuotaAdapter::updateRoomQuota($room->id, $date, $request->getCount());
+            } elseif ($request->isOpen() !== null) {
+                QuotaAdapter::openRoomQuota($room->id, $date);
+            } elseif ($request->isClose() !== null) {
+                QuotaAdapter::closeRoomQuota($room->id, $date);
+            }
         }
         return new AjaxSuccessResponse();
     }

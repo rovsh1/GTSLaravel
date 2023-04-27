@@ -2,7 +2,6 @@
 
 namespace Module\Hotel\Application\Service;
 
-use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
 use Custom\Framework\Contracts\Bus\CommandBusInterface;
 use Custom\Framework\Contracts\Bus\QueryBusInterface;
@@ -17,7 +16,8 @@ class RoomQuotaUpdater
     public function __construct(
         private readonly QueryBusInterface $queryBus,
         private readonly CommandBusInterface $commandBus,
-    ) {}
+    ) {
+    }
 
     public function updateRoomQuota(int $roomId, CarbonPeriod $period, int $quota): void
     {
@@ -27,19 +27,19 @@ class RoomQuotaUpdater
         );
     }
 
-    public function openRoomQuota(int $roomId, CarbonPeriod $period, int $priceRateId): void
+    public function openRoomQuota(int $roomId, CarbonPeriod $period): void
     {
         $this->checkRoomExistCallback(
             roomId: $roomId,
-            callback: $this->commandBus->execute(new OpenRoomQuota($roomId, $period, $priceRateId))
+            callback: fn() => $this->commandBus->execute(new OpenRoomQuota($roomId, $period))
         );
     }
 
-    public function closeRoomQuota(int $roomId, CarbonPeriod $period, int $priceRateId): void
+    public function closeRoomQuota(int $roomId, CarbonPeriod $period): void
     {
         $this->checkRoomExistCallback(
             roomId: $roomId,
-            callback: $this->commandBus->execute(new CloseRoomQuota($roomId, $period, $priceRateId))
+            callback: fn() => $this->commandBus->execute(new CloseRoomQuota($roomId, $period))
         );
     }
 

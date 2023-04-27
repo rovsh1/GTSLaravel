@@ -19,7 +19,9 @@ class UpdateQuotaRequest extends FormRequest
         return [
             'dates' => ['required', 'array'],
             'dates.*' => ['required', 'date'],
-            'count' => ['required', 'numeric'],
+            'count' => ['required_without_all:close,open', 'missing_with:close,open', 'numeric'],
+            'open' => ['required_without_all:count,close', 'missing_with:close,count', 'boolean'],
+            'close' => ['required_without_all:count,open', 'missing_with:open,count', 'boolean'],
         ];
     }
 
@@ -31,8 +33,18 @@ class UpdateQuotaRequest extends FormRequest
         return array_map(fn(string $date) => new Carbon($date), $this->post('dates'));
     }
 
-    public function getCount(): int
+    public function getCount(): ?int
     {
         return $this->post('count');
+    }
+
+    public function isClose(): ?bool
+    {
+        return $this->post('close');
+    }
+
+    public function isOpen(): ?bool
+    {
+        return $this->post('open');
     }
 }

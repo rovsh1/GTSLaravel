@@ -28,4 +28,22 @@ class QuotaAdapter extends AbstractPortAdapter
             'quota' => $count,
         ]);
     }
+
+    public function openRoomQuota(int $roomId, CarbonInterface $date): void
+    {
+        $this->request('openRoomQuota', [
+            'room_id' => $roomId,
+            'date_from' => $date,
+            'date_to' => $date->clone()->endOfDay(),
+        ]);
+    }
+
+    public function closeRoomQuota(int $roomId, CarbonInterface $date): void
+    {
+        $this->request('closeRoomQuota', [
+            'room_id' => $roomId,
+            'date_from' => $date,
+            'date_to' => $date->clone()->endOfDay(),
+        ]);
+    }
 }
