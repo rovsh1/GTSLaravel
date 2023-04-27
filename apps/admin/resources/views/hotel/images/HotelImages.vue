@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 import linkIcon from '@mdi/svg/svg/link.svg'
 import linkOffIcon from '@mdi/svg/svg/link-off.svg'
@@ -19,6 +19,7 @@ import {
   useHotelRoomImageCreateAPI, useHotelRoomImageDeleteAPI, useHotelRoomImagesAPI,
 } from '~resources/lib/api/hotel'
 import { Hotel, Room } from '~resources/lib/models'
+import { showToast } from '~resources/lib/toast'
 import { useUrlParams } from '~resources/lib/url-params'
 import { HotelImage, RoomImage } from '~resources/views/hotel/images/models'
 
@@ -82,13 +83,22 @@ const imageIDToRemove = ref<number | null>(null)
 
 const imageRemovePayload = computed(() => ({ hotelID, imageID: imageIDToRemove.value }))
 
+const isRemoveImagePromptOpened = ref(false)
+
+const imageToRemove = computed<HotelImage | null>(() => {
+  if (images.value === null) return null
+  if (imageIDToRemove.value === null) return null
+  const found = images.value.find(({ id }) => id === imageIDToRemove.value)
+  if (found === undefined) return null
+  return found
+})
+
 const {
   isFetching: isImageRemoveFetching,
   execute: executeRemoveImage,
-  onFetchResponse: onRemoveImageResponse,
+  onFetchFinally: onRemoveImageFinally,
+  data: removeImageData,
 } = useHotelImageRemoveAPI(imageRemovePayload)
-
-const isRemoveImagePromptOpened = ref(false)
 
 const removeImage = (imageID: number) => {
   imageIDToRemove.value = imageID
@@ -100,19 +110,21 @@ const cancelRemoveImage = () => {
   isRemoveImagePromptOpened.value = false
 }
 
-onRemoveImageResponse(() => {
-  // TODO display notification
-  console.log(`file deleted: ${imageIDToRemove.value}`)
-  isRemoveImagePromptOpened.value = false
-  fetchImages()
+watch(removeImageData, (value) => {
+  if (value && value.success && imageToRemove.value !== null) {
+    showToast({
+      title: 'Фото удалено',
+      description: imageToRemove.value.file.name,
+    })
+    fetchImages()
+  } else {
+    showToast('Не удалось удалить фото')
+  }
 })
 
-const imageToRemove = computed<HotelImage | null>(() => {
-  if (images.value === null) return null
-  if (imageIDToRemove.value === null) return null
-  const found = images.value.find(({ id }) => id === imageIDToRemove.value)
-  if (found === undefined) return null
-  return found
+onRemoveImageFinally(() => {
+  isRemoveImagePromptOpened.value = false
+  imageIDToRemove.value = null
 })
 
 // @todo отправить запрос на пересортировку

@@ -69,6 +69,7 @@ export const useHotelImageRemoveAPI = (props: MaybeRef<{ hotelID: number; imageI
       if (imageID === null) ctx.cancel()
     },
   }).delete()
+    .json<{ success: boolean }>()
 }
 
 type HotelImagesReorderProps = { hotelID: number; images: HotelImage[] }
