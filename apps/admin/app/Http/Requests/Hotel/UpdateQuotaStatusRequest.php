@@ -19,8 +19,6 @@ class UpdateQuotaStatusRequest extends FormRequest
         return [
             'dates' => ['required', 'array'],
             'dates.*' => ['required', 'date'],
-            'open' => ['required_without:close', 'missing_with:close', 'boolean'],
-            'close' => ['required_without:open', 'missing_with:open', 'boolean'],
         ];
     }
 
@@ -30,15 +28,5 @@ class UpdateQuotaStatusRequest extends FormRequest
     public function getDates(): array
     {
         return array_map(fn(string $date) => new Carbon($date), $this->post('dates'));
-    }
-
-    public function isClose(): ?bool
-    {
-        return $this->post('close');
-    }
-
-    public function isOpen(): ?bool
-    {
-        return $this->post('open');
     }
 }

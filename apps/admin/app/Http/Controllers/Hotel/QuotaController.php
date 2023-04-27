@@ -45,14 +45,18 @@ class QuotaController extends Controller
         return new AjaxSuccessResponse();
     }
 
-    public function updateStatus(UpdateQuotaStatusRequest $request, Hotel $hotel, Room $room): AjaxResponseInterface
+    public function openQuota(UpdateQuotaStatusRequest $request, Hotel $hotel, Room $room): AjaxResponseInterface
     {
         foreach ($request->getDates() as $date) {
-            if ($request->isOpen() !== null) {
-                QuotaAdapter::openRoomQuota($room->id, $date);
-            } elseif ($request->isClose() !== null) {
-                QuotaAdapter::closeRoomQuota($room->id, $date);
-            }
+            QuotaAdapter::openRoomQuota($room->id, $date);
+        }
+        return new AjaxSuccessResponse();
+    }
+
+    public function closeQuota(UpdateQuotaStatusRequest $request, Hotel $hotel, Room $room): AjaxResponseInterface
+    {
+        foreach ($request->getDates() as $date) {
+            QuotaAdapter::closeRoomQuota($room->id, $date);
         }
         return new AjaxSuccessResponse();
     }
