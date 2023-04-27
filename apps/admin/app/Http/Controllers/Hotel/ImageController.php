@@ -71,14 +71,14 @@ class ImageController extends Controller
         return response()->json($files);
     }
 
-    public function createRoomImage(Request $request, Hotel $hotel, Room $room, Image $image): AjaxResponseInterface
+    public function setRoomImage(Request $request, Hotel $hotel, Room $room, Image $image): AjaxResponseInterface
     {
         $this->roomImageRepository->create($image->id, $room->id);
 
         return new AjaxSuccessResponse();
     }
 
-    public function deleteRoomImage(Request $request, Hotel $hotel, Room $room, Image $image): AjaxResponseInterface
+    public function unsetRoomImage(Request $request, Hotel $hotel, Room $room, Image $image): AjaxResponseInterface
     {
         $this->roomImageRepository->delete($image->id, $room->id);
 

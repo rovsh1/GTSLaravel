@@ -16,7 +16,7 @@ class RoomFactory extends AbstractEntityFactory
             $data['room_id'],
             app(GuestFactory::class)->createCollectionFrom($data['guests']),
             $data['rate_id'],
-            new Price($data['price_net'], env('DEFAULT_CURRENCY_CODE')),
+            new Price($data['price_net'], env('TRAVELINE_DEFAULT_CURRENCY_CODE')),
             $data['check_in_condition']['start'] ?? null,
             $data['check_out_condition']['end'] ?? null,
             $data['note'],

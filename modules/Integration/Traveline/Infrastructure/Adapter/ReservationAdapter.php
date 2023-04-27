@@ -72,7 +72,7 @@ class ReservationAdapter extends AbstractPortAdapter implements ReservationAdapt
 
             return ReservationDto::from($reservation->reservation)->additional([
                 'roomStays' => $rooms,
-                'currencyCode' => env('DEFAULT_CURRENCY_CODE')
+                'currencyCode' => env('TRAVELINE_DEFAULT_CURRENCY_CODE')
             ]);
         }, $reservations);
     }

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Admin\Support\Adapters;
+namespace App\Admin\Support\Adapters\Hotel;
 
 use App\Core\Support\Adapters\AbstractPortAdapter;
 
-class HotelPricesAdapter extends AbstractPortAdapter
+class PricesAdapter extends AbstractPortAdapter
 {
     protected string $module = 'hotel';
 

@@ -5,6 +5,7 @@ namespace App\Admin\Http\Controllers\Hotel;
 use App\Admin\Enums\Hotel\RatingEnum;
 use App\Admin\Enums\Hotel\StatusEnum;
 use App\Admin\Enums\Hotel\VisibilityEnum;
+use App\Admin\Http\Resources\Room;
 use App\Admin\Models\Hotel\Hotel;
 use App\Admin\Models\Hotel\Reference\Type;
 use App\Admin\Models\Hotel\User;
@@ -69,6 +70,13 @@ class HotelController extends AbstractPrototypeController
     public function get(Request $request, Hotel $hotel): JsonResponse
     {
         return response()->json($hotel);
+    }
+
+    public function getRooms(Request $request, Hotel $hotel): JsonResponse
+    {
+        return response()->json(
+            Room::collection($hotel->rooms)
+        );
     }
 
     protected function formFactory(): FormContract

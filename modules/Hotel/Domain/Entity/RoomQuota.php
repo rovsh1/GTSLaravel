@@ -11,7 +11,10 @@ class RoomQuota
         private readonly int $roomId,
         private DateTimeInterface $date,
         private bool $status,
-        private int $releaseDays
+        private int $releaseDays,
+        private int $countAvailable,
+        private int $countBooked,
+        private int $countReserved
     ) {}
 
     public function id(): int
@@ -52,5 +55,20 @@ class RoomQuota
     public function setReleaseDays(int $days): void
     {
         $this->releaseDays = $days;
+    }
+
+    public function countAvailable(): int
+    {
+        return $this->countAvailable;
+    }
+
+    public function countBooked(): int
+    {
+        return $this->countBooked;
+    }
+
+    public function countReserved(): int
+    {
+        return $this->countReserved;
     }
 }

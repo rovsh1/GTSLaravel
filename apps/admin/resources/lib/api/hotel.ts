@@ -75,13 +75,13 @@ type HotelRoomImageProps = { hotelID: number; roomID: number; imageID: number }
 
 export const useHotelRoomImageCreateAPI = (props: MaybeRef<HotelRoomImageProps>) => {
   const { hotelID, roomID, imageID } = unref(props)
-  return useAdminAPI(`/hotels/${hotelID}/rooms/${roomID}/images/${imageID}/create`)
+  return useAdminAPI(`/hotels/${hotelID}/rooms/${roomID}/images/${imageID}/set`)
     .post()
 }
 
 export const useHotelRoomImageDeleteAPI = (props: MaybeRef<HotelRoomImageProps>) => {
   const { hotelID, roomID, imageID } = unref(props)
-  return useAdminAPI(`/hotels/${hotelID}/rooms/${roomID}/images/${imageID}/delete`)
+  return useAdminAPI(`/hotels/${hotelID}/rooms/${roomID}/images/${imageID}/unset`)
     .post()
 }
 

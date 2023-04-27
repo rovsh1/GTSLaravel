@@ -74,7 +74,7 @@ class QuotaAndPriceUpdater
         }
 
         if ($updateRequest->hasPrices()) {
-            $isSupportedCurrency = $updateRequest->currencyCode === env('DEFAULT_CURRENCY_CODE');
+            $isSupportedCurrency = $updateRequest->currencyCode === env('TRAVELINE_DEFAULT_CURRENCY_CODE');
             if ($isSupportedCurrency) {
                 $this->updatePrices($updateRequest);
             } else {

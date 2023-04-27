@@ -27,7 +27,7 @@ class RoomPriceUpdater
 
     public function updateRoomPriceByPeriod(int $roomId, CarbonPeriod $period, int $rateId, int $guestsNumber, bool $isResident, float $price, string $currencyCode)
     {
-        if ($currencyCode !== env('DEFAULT_CURRENCY_CODE')) {
+        if ($currencyCode !== env('TRAVELINE_DEFAULT_CURRENCY_CODE')) {
             //Конвертация валюты не требуется, уточнял у Анвара. По договору, отель должен заносить цены в сумах в тревелайн.
             \Log::warning('Currency not supported', ['currencyCode' => $currencyCode, 'room_id' => $roomId, 'rate_id' => $rateId, 'guests_number' => $guestsNumber]);
             return;

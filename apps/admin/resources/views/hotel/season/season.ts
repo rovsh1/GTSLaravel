@@ -14,6 +14,7 @@ const handleChangeContract = async ($periodInput: JQuery<HTMLElement>, contractI
   await fetchContract()
 
   useDateRangePicker($periodInput, {
+    // @todo ренджи должны быть в будущем
     ranges: undefined,
     isInvalidDate(date: Moment) {
       return contract.value?.seasons?.find((season: Season): boolean => {

@@ -36,7 +36,6 @@ class PriceListController extends AbstractPrototypeController
             //@todo добавить реализацию получения валют клиента через API
             ->currency('currency_id', ['label' => 'Валюта', 'required' => true])
             ->number('rate', ['label' => 'Курс', 'required' => true])
-            //@todo добавить реализацию поля dateRange
             ->dateRange('period', ['label' => 'Период действия', 'required' => true]);
     }
 
