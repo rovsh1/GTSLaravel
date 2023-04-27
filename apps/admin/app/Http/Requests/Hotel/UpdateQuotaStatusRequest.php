@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateQuotaRequest extends FormRequest
+class UpdateQuotaStatusRequest extends FormRequest
 {
 
     /**
@@ -19,7 +19,8 @@ class UpdateQuotaRequest extends FormRequest
         return [
             'dates' => ['required', 'array'],
             'dates.*' => ['required', 'date'],
-            'count' => ['required', 'numeric'],
+            'open' => ['required_without:close', 'missing_with:close', 'boolean'],
+            'close' => ['required_without:open', 'missing_with:open', 'boolean'],
         ];
     }
 
@@ -31,8 +32,13 @@ class UpdateQuotaRequest extends FormRequest
         return array_map(fn(string $date) => new Carbon($date), $this->post('dates'));
     }
 
-    public function getCount(): int
+    public function isClose(): ?bool
     {
-        return $this->post('count');
+        return $this->post('close');
+    }
+
+    public function isOpen(): ?bool
+    {
+        return $this->post('open');
     }
 }

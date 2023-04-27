@@ -45,6 +45,7 @@ AclRoute::for('hotel')
     ->get('/{hotel}/quotas', Controllers\Hotel\QuotaController::class . '@index', 'read', 'quotas.index')
     ->match(['GET', 'POST'],'/{hotel}/rooms/{room}/quota', Controllers\Hotel\QuotaController::class . '@get', 'read', 'quotas.get')
     ->put('/{hotel}/rooms/{room}/quota', Controllers\Hotel\QuotaController::class . '@update', 'update', 'quotas.update')
+    ->put('/{hotel}/rooms/{room}/quota/status', Controllers\Hotel\QuotaController::class . '@updateStatus', 'update', 'quotas.status.update')
 
     ->get('/{hotel}/settings', Controllers\Hotel\SettingsController::class . '@index', 'update', 'settings.index')
     ->resource('rules', Controllers\Hotel\RuleController::class, ['except' => ['index', 'show']])

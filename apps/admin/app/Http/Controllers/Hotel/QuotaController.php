@@ -5,6 +5,7 @@ namespace App\Admin\Http\Controllers\Hotel;
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Http\Requests\Hotel\GetQuotaRequest;
 use App\Admin\Http\Requests\Hotel\UpdateQuotaRequest;
+use App\Admin\Http\Requests\Hotel\UpdateQuotaStatusRequest;
 use App\Admin\Http\Resources\RoomQuota;
 use App\Admin\Models\Hotel\Hotel;
 use App\Admin\Models\Hotel\Room;
@@ -39,9 +40,15 @@ class QuotaController extends Controller
     public function update(UpdateQuotaRequest $request, Hotel $hotel, Room $room): AjaxResponseInterface
     {
         foreach ($request->getDates() as $date) {
-            if ($request->getCount() !== null) {
-                QuotaAdapter::updateRoomQuota($room->id, $date, $request->getCount());
-            } elseif ($request->isOpen() !== null) {
+            QuotaAdapter::updateRoomQuota($room->id, $date, $request->getCount());
+        }
+        return new AjaxSuccessResponse();
+    }
+
+    public function updateStatus(UpdateQuotaStatusRequest $request, Hotel $hotel, Room $room): AjaxResponseInterface
+    {
+        foreach ($request->getDates() as $date) {
+            if ($request->isOpen() !== null) {
                 QuotaAdapter::openRoomQuota($room->id, $date);
             } elseif ($request->isClose() !== null) {
                 QuotaAdapter::closeRoomQuota($room->id, $date);
