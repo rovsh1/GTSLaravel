@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 
+import linkIcon from '@mdi/svg/svg/link.svg'
+import linkOffIcon from '@mdi/svg/svg/link-off.svg'
 import plusIcon from '@mdi/svg/svg/plus.svg'
 import trashIcon from '@mdi/svg/svg/trash-can-outline.svg'
 import { useArrayFind, useUrlSearchParams } from '@vueuse/core'
@@ -8,6 +10,7 @@ import { useArrayFind, useUrlSearchParams } from '@vueuse/core'
 import BaseButton from '~resources/components/BaseButton.vue'
 import BaseDialog from '~resources/components/BaseDialog.vue'
 import BaseLayout from '~resources/components/BaseLayout.vue'
+import ImageZoom from '~resources/components/ImageZoom.vue'
 import {
   useHotelAPI, useHotelImageRemoveAPI,
   useHotelImagesListAPI, useHotelImagesUploadAPI,
@@ -27,12 +30,7 @@ const {
   isFetching: isImagesFetching,
 } = useHotelImagesListAPI({ hotelID })
 
-const images = computed<HotelImage[]>(() => {
-  if (!imagesData.value) {
-    return []
-  }
-  return imagesData.value
-})
+const images = computed<HotelImage[] | null>(() => imagesData.value)
 
 const {
   execute: fetchRoomImages,
@@ -44,8 +42,6 @@ const roomImages = computed<RoomImage[]>(() => {
   if (roomImagesData.value === null) return []
   return roomImagesData.value
 })
-
-const isRoomImagesLoaded = computed(() => !isRoomImagesFetching.value)
 
 const {
   execute: fetchHotel,
@@ -91,7 +87,6 @@ const removeImage = (imageID: number) => {
   })
 }
 
-// @todo добавить drag n drop сортировку
 // @todo отправить запрос на пересортировку
 // const {} = useHotelImagesReorderAPI({ hotelID, images })
 
@@ -114,13 +109,6 @@ const deleteRoomImage = async (imageID: number) => {
   await fetchRoomImages()
   await fetchImages()
 }
-
-const isLoaded = computed<boolean>(() => (
-  !isImagesFetching.value
-  && !isHotelFetching.value
-  && !isRoomImagesFetching.value
-  && !isRoomFetching.value
-))
 
 const getRoomImage = (id: number): RoomImage | undefined => {
   if (roomImages.value.length === 0) {
@@ -145,12 +133,16 @@ fetchRoom()
 fetchRoomImages()
 fetchHotel()
 fetchImages()
+
+const title = computed<string>(() => {
+  if (roomID && room.value) return room.value.display_name
+  if (hotel.value) return hotel.value.name
+  return ''
+})
 </script>
 <template>
-  <BaseLayout
-    v-if="hotel"
-    :title="roomID && room?.display_name ? room.display_name : hotel.name"
-  >
+  <BaseLayout v-if="isHotelFetching" title="Loading" />
+  <BaseLayout v-else :title="title">
     <template #header-controls>
       <BaseButton
         label="Добавить фотографии"
@@ -174,12 +166,7 @@ fetchImages()
         >
           <label>
             Файлы
-            <input
-              required
-              type="file"
-              multiple
-              name="files[]"
-            >
+            <input required type="file" multiple name="files[]">
           </label>
         </form>
         <template #actions>
@@ -194,89 +181,89 @@ fetchImages()
       </BaseDialog>
     </template>
 
-    <div v-if="isLoaded && isRoomImagesLoaded" class="cards">
+    <div v-if="isRoomFetching || isImagesFetching || isRoomImagesFetching">
+      Loading
+    </div>
+    <div v-else-if="images === null">
+      No images
+    </div>
+    <div v-else class="images">
       <div
         v-for="image in images"
         :key="image.id"
-        :class="{ card: true, hidden: isNeedHideImage(image.id) }"
+        class="image"
+        :class="{ hidden: isNeedHideImage(image.id) }"
       >
-        <div class="edit-info" />
-        <div class="image">
-          <img
-            :src="image.file.url"
-            :alt="image.file.name"
-            class="w-100 h-100"
-          >
-        </div>
-        <div class="body">
-          <div class="buttons">
+        <ImageZoom
+          class="picture"
+          :src="image.file.url"
+          :alt="image.file.name"
+        />
+        <div class="actions">
+          <div class="actionsStart">
+            <template v-if="roomID">
+              <BaseButton
+                v-if="!getRoomImage(image.id)"
+                severity="primary"
+                label="Привязать к номеру"
+                :start-icon="linkIcon"
+                @click="setImageToRoom(image.id)"
+              />
+              <BaseButton
+                v-else
+                label="Отвязать от номера"
+                :start-icon="linkOffIcon"
+                @click="deleteRoomImage(image.id)"
+              />
+            </template>
+          </div>
+          <div class="actionsEnd">
             <BaseButton
               v-if="!getRoomImage(image.id)"
               label="Удалить"
               severity="danger"
-              :start-icon="trashIcon"
+              :only-icon="trashIcon"
               @click="removeImage(image.id)"
             />
-            <div v-if="roomID">
-              <button
-                v-if="!getRoomImage(image.id)"
-                type="button"
-                class="btn btn-primary"
-                @click="setImageToRoom(image.id)"
-              >
-                <i class="icon">link</i>
-                Привязать к номеру
-              </button>
-              <button
-                v-else
-                type="button"
-                class="btn btn-light"
-                @click="deleteRoomImage(image.id)"
-              >
-                <i class="icon">link_off</i>
-                Отвязать от номера
-              </button>
-            </div>
           </div>
         </div>
       </div>
     </div>
   </BaseLayout>
 </template>
-
-<style scoped>
-.btn > i {
-  margin-right: 4px;
-  font-size: 20px
+<style lang="scss" scoped>
+.images {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1em;
 }
 
-.cards {
+.image {
   display: flex;
-  flex-wrap: wrap;
-  gap: 32px;
+  flex-flow: column;
+  border: 1px solid lightgray;
+  border-radius: 0.375em;
 }
 
-.cards .card {
+.picture {
+  object-fit: cover;
+  object-position: center;
+  max-width: 100%;
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+  aspect-ratio: 4/3;
+}
+
+.actions {
+  display: flex;
+  padding: 0.5em;
+}
+
+.actionsStart {
   flex-grow: 1;
-  flex-basis: 30%;
-  overflow: hidden;
 }
 
-.card .image {
-  position: relative;
-  height: 200px;
-}
-
-.card.hidden .image {
-  opacity: 0.3;
-}
-
-.card .body {
-  padding: 0.5rem;
-}
-
-.card .body .buttons {
-  display: flex;
-  gap: 1rem;
+.actionsEnd {
+  flex-shrink: 0;
 }
 </style>
