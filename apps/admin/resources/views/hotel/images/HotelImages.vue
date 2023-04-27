@@ -21,6 +21,7 @@ import {
 import { Hotel, Room } from '~resources/lib/models'
 import { showToast } from '~resources/lib/toast'
 import { useUrlParams } from '~resources/lib/url-params'
+import DropZone from '~resources/views/hotel/images/components/DropZone.vue'
 import { HotelImage, RoomImage } from '~resources/views/hotel/images/models'
 
 const { hotel: hotelID } = useUrlParams()
@@ -61,23 +62,33 @@ const {
 
 const room = computed<Room | null>(() => roomData.value)
 
-const filesForm = ref<HTMLFormElement>()
+const isUploadDialogOpened = ref(false)
 
-const uploadImages = async () => {
-  if (!filesForm.value) {
-    return
-  }
-  await useHotelImagesUploadAPI({
-    hotelID,
-    roomID,
-    filesForm: filesForm.value,
-  }).execute()
-  filesForm.value?.reset()
-  await fetchImages()
-  await fetchRoomImages()
+const imagesToUpload = ref<File[] | null>(null)
+
+const imagesUploadPayload = computed(() => ({
+  hotelID,
+  roomID,
+  images: imagesToUpload.value,
+}))
+
+const {
+  execute: executeImagesUpload,
+  isFetching: isImagesUploadFetching,
+  onFetchResponse: onImagesUploadResponse,
+} = useHotelImagesUploadAPI(imagesUploadPayload)
+
+const uploadImages = () => {
+  if (imagesToUpload.value === null) return
+  executeImagesUpload()
 }
 
-const isUploadDialogOpened = ref(false)
+onImagesUploadResponse(() => {
+  fetchImages()
+  fetchRoomImages()
+  imagesToUpload.value = null
+  isUploadDialogOpened.value = false
+})
 
 const imageIDToRemove = ref<number | null>(null)
 
@@ -190,12 +201,11 @@ const title = computed<string>(() => {
         @click="isUploadDialogOpened = true"
       />
     </template>
-
     <div v-if="isRoomFetching || isImagesFetching || isRoomImagesFetching">
       <LoadingSpinner class="loadingSpinner" />
     </div>
-    <div v-else-if="images === null">
-      No images
+    <div v-else-if="images === null || images.length === 0">
+      У этого отеля ещё нет фото. Загрузите их, нажав на кнопку выше.
     </div>
     <div v-else class="images">
       <div
@@ -241,33 +251,28 @@ const title = computed<string>(() => {
       </div>
     </div>
   </BaseLayout>
-
   <BaseDialog
     :opened="isUploadDialogOpened"
+    :disabled="isImagesUploadFetching as boolean"
     @close="isUploadDialogOpened = false"
   >
     <template #title>
       <div>Добавить фотографии</div>
     </template>
-    <form
-      id="form"
-      ref="filesForm"
-      method="post"
-      enctype="multipart/form-data"
-      @submit.prevent="uploadImages"
-    >
-      <label>
-        Файлы
-        <input required type="file" multiple name="files[]">
-      </label>
-    </form>
+    <div class="upload">
+      <DropZone
+        :value="imagesToUpload"
+        :disabled="isImagesUploadFetching as boolean"
+        @input="files => imagesToUpload = files"
+      />
+    </div>
     <template #actions>
       <BaseButton
         severity="primary"
         variant="filled"
-        label="Отправить"
-        type="submit"
-        form="form"
+        label="Загрузить"
+        :loading="isImagesUploadFetching as boolean"
+        @click="uploadImages"
       />
     </template>
   </BaseDialog>
@@ -335,5 +340,11 @@ const title = computed<string>(() => {
 
 .actionsEnd {
   flex-shrink: 0;
+}
+
+.upload {
+  display: flex;
+  flex-flow: column;
+  gap: 1em;
 }
 </style>

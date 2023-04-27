@@ -8,7 +8,7 @@ type ButtonVariant = 'text' | 'filled' | 'outlined'
 
 type ButtonSeverity = 'default' | 'primary' | 'danger'
 
-type ButtonSize = 'default' | 'small'
+type ButtonSize = 'default' | 'small' | 'tiny'
 
 const props = withDefaults(defineProps<{
   label: string
@@ -52,6 +52,7 @@ const severityClassBySeverity: Record<ButtonSeverity, string> = {
 const sizeClassBySize: Record<ButtonSize, string> = {
   default: 'sizeDefault',
   small: 'sizeSmall',
+  tiny: 'sizeTiny',
 }
 
 const isDisabled = computed<boolean | undefined>(() => {
@@ -208,9 +209,18 @@ const is = computed<'a' | 'button'>(() => {
     font-size: 0.9em;
   }
 
+  &.sizeTiny {
+    padding: 0.2em;
+    font-size: 0.8em;
+  }
+
   &.onlyIcon {
     padding: 0.5em;
     border-radius: 20em;
+
+    &.sizeTiny {
+      padding: 0;
+    }
   }
 
   &.isLoading {

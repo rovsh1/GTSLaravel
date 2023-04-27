@@ -35,7 +35,7 @@ const close = () => {
                 label="Закрыть"
                 :only-icon="closeIcon"
                 size="small"
-                @click="emit('close')"
+                @click="close"
               />
             </div>
           </template>
