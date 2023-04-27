@@ -131,7 +131,13 @@ const submit = () => {
       :value="selectedRoom"
       @input="(value) => selectedRoom = Number(value) as unknown as RoomID"
     />
-    <BaseButton label="Обновить" size="small" variant="outlined" @click="submit" />
+    <BaseButton
+      label="Обновить"
+      size="small"
+      variant="outlined"
+      severity="primary"
+      @click="submit"
+    />
   </div>
 </template>
 <style lang="scss" scoped>

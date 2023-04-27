@@ -4,12 +4,13 @@ import InlineSVG from 'vue-inline-svg'
 
 type ButtonVariant = 'text' | 'filled' | 'outlined'
 
-type ButtonSeverity = 'default' | 'danger'
+type ButtonSeverity = 'default' | 'primary' | 'danger'
 
 type ButtonSize = 'default' | 'small'
 
 const props = withDefaults(defineProps<{
   label: string
+  onlyIcon?: string
   startIcon?: string
   endIcon?: string
   variant?: ButtonVariant
@@ -18,6 +19,7 @@ const props = withDefaults(defineProps<{
   href?: string
   disabled?: boolean
 }>(), {
+  onlyIcon: undefined,
   startIcon: undefined,
   endIcon: undefined,
   variant: 'text',
@@ -39,6 +41,7 @@ const variantClassByVariant: Record<ButtonVariant, string> = {
 
 const severityClassBySeverity: Record<ButtonSeverity, string> = {
   default: 'severityDefault',
+  primary: 'severityPrimary',
   danger: 'severityDanger',
 }
 
@@ -68,8 +71,10 @@ const isDisabled = computed<boolean | undefined>(() => {
       variantClassByVariant[variant],
       severityClassBySeverity[severity],
       sizeClassBySize[size],
+      { onlyIcon },
     ]"
     :href="disabled ? undefined : href"
+    :title="onlyIcon ? label : undefined"
     :disabled="isDisabled"
     @click="emit('click')"
   >
@@ -77,7 +82,12 @@ const isDisabled = computed<boolean | undefined>(() => {
     <template v-if="startIcon">
       <InlineSVG :src="startIcon" class="buttonIcon" />
     </template>
-    {{ label }}
+    <template v-if="onlyIcon">
+      <InlineSVG :src="onlyIcon" class="buttonIcon" />
+    </template>
+    <template v-else>
+      {{ label }}
+    </template>
     <template v-if="endIcon">
       <InlineSVG :src="endIcon" class="buttonIcon" />
     </template>
@@ -140,6 +150,10 @@ const isDisabled = computed<boolean | undefined>(() => {
 
   &.variantText {
     &.severityDefault {
+      @include text-severity(black);
+    }
+
+    &.severityPrimary {
       @include text-severity(vars.$primary);
     }
 
@@ -150,6 +164,10 @@ const isDisabled = computed<boolean | undefined>(() => {
 
   &.variantFilled {
     &.severityDefault {
+      @include filled-severity(white, black);
+    }
+
+    &.severityPrimary {
       @include filled-severity(white, vars.$primary);
     }
 
@@ -160,6 +178,10 @@ const isDisabled = computed<boolean | undefined>(() => {
 
   &.variantOutlined {
     &.severityDefault {
+      @include outlined-severity(black);
+    }
+
+    &.severityPrimary {
       @include outlined-severity(vars.$primary);
     }
 
@@ -175,6 +197,11 @@ const isDisabled = computed<boolean | undefined>(() => {
   &.sizeSmall {
     padding: 0.3em 0.8em;
     font-size: 0.9em;
+  }
+
+  &.onlyIcon {
+    padding: 0.5em;
+    border-radius: 20em;
   }
 }
 
