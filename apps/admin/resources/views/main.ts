@@ -15,7 +15,7 @@ import '~resources/js/app/helpers'
 import '~resources/js/app/plugins/buttons/delete-button'
 import '~resources/js/app/plugins/controls/city'
 
-$(document).ready(() => {
+$(() => {
   $.ajaxSetup({
     headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },
   })

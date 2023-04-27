@@ -1,6 +1,6 @@
 <aside class="sidebar" id="sidebar">
     @if ($submenu)
-        <button id="btn-sidebar-toggle">
+        <button id="btn-sidebar-toggle" aria-label="Toggle sidebar menu">
             <x-icon key="arrow_back"/>
         </button>
 

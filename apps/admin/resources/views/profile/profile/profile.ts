@@ -2,7 +2,7 @@ import { WindowDialog } from '~resources/js/libs/dialog/helpers'
 
 import '~resources/views/main'
 
-$(document).ready(() => {
+$(() => {
   const container = $('#profile-settings')
   const settingsUrl = '/profile/'
 

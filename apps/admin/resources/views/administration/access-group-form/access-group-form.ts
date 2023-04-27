@@ -2,7 +2,7 @@ import Tab from '~resources/js/app/components/permissions-control/tab'
 
 import '~resources/views/main'
 
-$(document).ready(() => {
+$(() => {
   const $tabs = $('#permissions-tabs button')
   const $menus = $('#permissions > div.permissions-category-menu')
 

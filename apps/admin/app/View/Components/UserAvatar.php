@@ -9,10 +9,15 @@ class UserAvatar extends Component
 {
     private string $defaultSrc = '/images/default-avatar.png';
 
-    public function __construct(private readonly ?FileInterface $file) {}
-
-    public function render(): string
+    public function __construct(private readonly ?FileInterface $file)
     {
-        return '<img src="' . ($this->file ? $this->file->url() : $this->defaultSrc) . '"/>';
+    }
+
+    public function render(): \Closure
+    {
+        return function ($data) {
+            return '<img src="' . ($this->file ? $this->file->url() : $this->defaultSrc) . '" '
+                . $data['attributes'] . '/>';
+        };
     }
 }
