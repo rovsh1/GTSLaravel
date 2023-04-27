@@ -4,12 +4,12 @@ namespace Module\Integration\Traveline\Application\Service;
 
 use Module\Integration\Traveline\Domain\Adapter\HotelAdapterInterface;
 use Module\Integration\Traveline\Domain\Api\Request\Update;
-use Module\Integration\Traveline\Domain\Api\Response\Error\AbstractTravelineError;
 use Module\Integration\Traveline\Domain\Api\Response\Error\InvalidCurrencyCode;
 use Module\Integration\Traveline\Domain\Api\Response\Error\InvalidRateAccomodation;
 use Module\Integration\Traveline\Domain\Api\Response\Error\InvalidRatePlan;
 use Module\Integration\Traveline\Domain\Api\Response\Error\InvalidRoomType;
 use Module\Integration\Traveline\Domain\Api\Response\Error\TravelineResponseErrorInterface;
+use Module\Integration\Traveline\Domain\Entity\ConfigInterface;
 use Module\Integration\Traveline\Domain\Exception\HotelNotConnectedException;
 use Module\Integration\Traveline\Domain\Exception\InvalidHotelRoomCode;
 use Module\Integration\Traveline\Domain\Repository\HotelRepositoryInterface;
@@ -23,10 +23,11 @@ class QuotaAndPriceUpdater
     private array $errors = [];
 
     public function __construct(
-        private readonly HotelAdapterInterface           $adapter,
-        private readonly HotelRepositoryInterface        $hotelRepository,
+        private readonly HotelAdapterInterface $adapter,
+        private readonly HotelRepositoryInterface $hotelRepository,
         private readonly HotelRoomCodeGeneratorInterface $codeGenerator,
-        private readonly bool                            $isPricesForResidents = false
+        private readonly ConfigInterface $config,
+        private readonly bool $isPricesForResidents = false,
     ) {}
 
     /**
@@ -74,8 +75,7 @@ class QuotaAndPriceUpdater
         }
 
         if ($updateRequest->hasPrices()) {
-            $isSupportedCurrency = $updateRequest->currencyCode === env('TRAVELINE_DEFAULT_CURRENCY_CODE');
-            if ($isSupportedCurrency) {
+            if ($this->config->isCurrencyAllowed($updateRequest->currencyCode)) {
                 $this->updatePrices($updateRequest);
             } else {
                 $this->errors[] = new InvalidCurrencyCode();

@@ -7,10 +7,13 @@ use Carbon\CarbonPeriod;
 use Module\Integration\Traveline\Application\Dto\Reservation;
 use Module\Integration\Traveline\Application\Dto\ReservationDto;
 use Module\Integration\Traveline\Domain\Adapter\ReservationAdapterInterface;
+use Module\Integration\Traveline\Domain\Entity\ConfigInterface;
 use Module\Shared\Infrastructure\Adapter\AbstractPortAdapter;
 
 class ReservationAdapter extends AbstractPortAdapter implements ReservationAdapterInterface
 {
+    public function __construct(private readonly ConfigInterface $config) {}
+
     /**
      * Бронирования делаются в вашей системы из свободной квоты, передаются в средство размещения автоматически и не нуждаются в дополнительном подтверждении со стороны отеля. Задача данной функции обеспечить подтверждение факта успешности технической доставки бронирования из вашей системы в менеджер каналов.
      * Если менеджер каналов НЕ подтверждает получение брони ответом, содержащим «success»: true, то каналу необходимо хранить и отдавать в последующих запросах данное бронирование на своей стороне до момента подтверждения менеджером каналов его получения.
@@ -62,7 +65,10 @@ class ReservationAdapter extends AbstractPortAdapter implements ReservationAdapt
         return array_map(function ($reservation) {
             $customerDto = Reservation\CustomerDto::from($reservation->reservation->client);
             $rooms = array_map(function ($room) use ($customerDto, $reservation) {
-                $bookingPerDayPrices = $this->buildRoomPerDayPrices($reservation->reservation->reservationPeriod, $room->priceNetto);
+                $bookingPerDayPrices = $this->buildRoomPerDayPrices(
+                    $reservation->reservation->reservationPeriod,
+                    $room->priceNetto
+                );
 
                 return Reservation\RoomDto::from($room)->additional([
                     'customer' => $customerDto,
@@ -72,7 +78,7 @@ class ReservationAdapter extends AbstractPortAdapter implements ReservationAdapt
 
             return ReservationDto::from($reservation->reservation)->additional([
                 'roomStays' => $rooms,
-                'currencyCode' => env('TRAVELINE_DEFAULT_CURRENCY_CODE')
+                'currencyCode' => $this->config->getDefaultCurrency()
             ]);
         }, $reservations);
     }

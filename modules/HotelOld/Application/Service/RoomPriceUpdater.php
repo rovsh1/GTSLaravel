@@ -14,22 +14,40 @@ use Module\HotelOld\Domain\Exception\Room\UnsupportedRoomGuestsNumber;
 use Module\HotelOld\Domain\Repository\PriceRateRepositoryInterface;
 use Module\HotelOld\Domain\Repository\RoomPriceRepositoryInterface;
 use Module\HotelOld\Domain\Repository\SeasonRepositoryInterface;
+use Module\Integration\Traveline\Domain\Entity\ConfigInterface;
 
 class RoomPriceUpdater
 {
+    private array $hotelSeasons = [];
+
     public function __construct(
         private readonly RoomPriceRepositoryInterface $roomPriceRepository,
-        private readonly SeasonRepositoryInterface    $seasonRepository,
+        private readonly SeasonRepositoryInterface $seasonRepository,
         private readonly PriceRateRepositoryInterface $priceRateRepository,
-        private readonly QueryBusInterface            $queryBus,
-        private array                                 $hotelSeasons = [],
+        private readonly QueryBusInterface $queryBus,
+        private readonly ConfigInterface $config,
     ) {}
 
-    public function updateRoomPriceByPeriod(int $roomId, CarbonPeriod $period, int $rateId, int $guestsNumber, bool $isResident, float $price, string $currencyCode)
-    {
-        if ($currencyCode !== env('TRAVELINE_DEFAULT_CURRENCY_CODE')) {
+    public function updateRoomPriceByPeriod(
+        int $roomId,
+        CarbonPeriod $period,
+        int $rateId,
+        int $guestsNumber,
+        bool $isResident,
+        float $price,
+        string $currencyCode
+    ) {
+        if (!$this->config->isCurrencyAllowed($currencyCode)) {
             //Конвертация валюты не требуется, уточнял у Анвара. По договору, отель должен заносить цены в сумах в тревелайн.
-            \Log::warning('Currency not supported', ['currencyCode' => $currencyCode, 'room_id' => $roomId, 'rate_id' => $rateId, 'guests_number' => $guestsNumber]);
+            \Log::warning(
+                'Currency not supported',
+                [
+                    'currencyCode' => $currencyCode,
+                    'room_id' => $roomId,
+                    'rate_id' => $rateId,
+                    'guests_number' => $guestsNumber
+                ]
+            );
             return;
         }
 
@@ -45,7 +63,9 @@ class RoomPriceUpdater
             throw new RoomNotFound("Room with id {$roomId} not found");
         }
         if ($guestsNumber <= 0 || $guestsNumber > $room->guestsNumber) {
-            throw new UnsupportedRoomGuestsNumber("Unsupported guests number {$guestsNumber} for room with id {$roomId}");
+            throw new UnsupportedRoomGuestsNumber(
+                "Unsupported guests number {$guestsNumber} for room with id {$roomId}"
+            );
         }
         if (!$this->priceRateRepository->existsByRoomAndRate($roomId, $rateId)) {
             throw new PriceRateNotFound("Price rate with id {$rateId}, not found for room with id {$roomId}");
