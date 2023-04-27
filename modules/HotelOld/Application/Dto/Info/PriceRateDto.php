@@ -9,6 +9,6 @@ class PriceRateDto extends Dto
     public function __construct(
         public readonly int    $id,
         public readonly string $name,
-        public readonly string $text
+        public readonly string $description
     ) {}
 }

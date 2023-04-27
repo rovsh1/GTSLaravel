@@ -2,19 +2,20 @@
 
 namespace Module\Hotel\Application\Service;
 
+use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
 use Custom\Framework\Contracts\Bus\CommandBusInterface;
 use Custom\Framework\Contracts\Bus\QueryBusInterface;
-use Module\HotelOld\Application\Command\CloseRoomQuota;
-use Module\HotelOld\Application\Command\OpenRoomQuota;
-use Module\HotelOld\Application\Command\UpdateRoomQuota;
-use Module\HotelOld\Application\Query\GetRoomById;
-use Module\HotelOld\Domain\Exception\Room\RoomNotFound;
+use Module\Hotel\Application\Command\CloseRoomQuota;
+use Module\Hotel\Application\Command\OpenRoomQuota;
+use Module\Hotel\Application\Command\UpdateRoomQuota;
+use Module\Hotel\Application\Query\GetRoomById;
+use Module\Hotel\Domain\Exception\Room\RoomNotFound;
 
 class RoomQuotaUpdater
 {
     public function __construct(
-        private readonly QueryBusInterface   $queryBus,
+        private readonly QueryBusInterface $queryBus,
         private readonly CommandBusInterface $commandBus,
     ) {}
 

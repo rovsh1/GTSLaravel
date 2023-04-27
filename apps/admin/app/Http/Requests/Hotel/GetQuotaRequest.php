@@ -21,7 +21,7 @@ class GetQuotaRequest extends FormRequest
         return [
             'room_id' => ['required', 'numeric'],
             'month' => ['required', 'numeric', 'between:1,12'],
-            'year' => ['required', 'numeric'],
+            'year' => ['required', 'date_format:Y'],
             'interval' => ['required', new DateIntervalRule],
             'availability' => ['nullable', 'numeric']
         ];

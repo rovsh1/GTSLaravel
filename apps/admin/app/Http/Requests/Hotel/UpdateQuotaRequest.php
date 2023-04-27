@@ -2,6 +2,8 @@
 
 namespace App\Admin\Http\Requests\Hotel;
 
+use Carbon\Carbon;
+use Carbon\CarbonInterface;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateQuotaRequest extends FormRequest
@@ -17,7 +19,7 @@ class UpdateQuotaRequest extends FormRequest
         return [
             'room_id' => ['required', 'numeric'],
             'dates' => ['required', 'array'],
-            'dates.*' => ['required', 'string'],
+            'dates.*' => ['required', 'date'],
             'count' => ['required', 'numeric'],
         ];
     }
@@ -27,9 +29,12 @@ class UpdateQuotaRequest extends FormRequest
         return $this->post('room_id');
     }
 
+    /**
+     * @return CarbonInterface[]
+     */
     public function getDates(): array
     {
-        return $this->post('dates');
+        return array_map(fn(string $date) => new Carbon($date), $this->post('dates'));
     }
 
     public function getCount(): int

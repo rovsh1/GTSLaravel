@@ -31,7 +31,7 @@ class RoomQuotaController
         );
     }
 
-    public function updateRoomQuota(Request $request)
+    public function updateRoomQuota(Request $request): void
     {
         $request->validate([
             'room_id' => 'required|numeric',
@@ -47,7 +47,7 @@ class RoomQuotaController
         );
     }
 
-    public function openRoomQuota(Request $request)
+    public function openRoomQuota(Request $request): void
     {
         $request->validate([
             'room_id' => 'required|numeric',
@@ -63,7 +63,7 @@ class RoomQuotaController
         );
     }
 
-    public function closeRoomQuota(Request $request)
+    public function closeRoomQuota(Request $request): void
     {
         $request->validate([
             'room_id' => 'required|numeric',

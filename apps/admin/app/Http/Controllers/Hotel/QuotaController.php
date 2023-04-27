@@ -13,6 +13,8 @@ use App\Admin\Support\Facades\Layout;
 use App\Admin\Support\Facades\Sidebar;
 use App\Admin\Support\View\Layout as LayoutContract;
 use App\Admin\View\Menus\HotelMenu;
+use App\Core\Support\Http\Responses\AjaxResponseInterface;
+use App\Core\Support\Http\Responses\AjaxSuccessResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -28,14 +30,17 @@ class QuotaController extends Controller
 
     public function get(GetQuotaRequest $request, Hotel $hotel): JsonResponse
     {
+        //@todo $request->getAvailability(), логика доступности
         $quotas = QuotaAdapter::getRoomQuota($request->getRoomId(), $request->getPeriod());
         return response()->json(RoomQuota::collection($quotas));
     }
 
-    public function update(UpdateQuotaRequest $request, Hotel $hotel): JsonResponse
+    public function update(UpdateQuotaRequest $request, Hotel $hotel): AjaxResponseInterface
     {
-        //@todo
-        return response()->json();
+        foreach ($request->getDates() as $date) {
+            QuotaAdapter::updateRoomQuota($request->getRoomId(), $date, $request->getCount());
+        }
+        return new AjaxSuccessResponse();
     }
 
     private function hotel(Hotel $hotel): void

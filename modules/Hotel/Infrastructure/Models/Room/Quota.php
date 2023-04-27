@@ -30,6 +30,8 @@ class Quota extends Model
 {
     protected $table = 'hotel_room_quota';
 
+    public $timestamps = false;
+
     protected $fillable = [
         'room_id',
         'date',
