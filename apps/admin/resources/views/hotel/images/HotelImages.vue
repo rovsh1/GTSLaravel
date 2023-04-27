@@ -11,6 +11,7 @@ import BaseButton from '~resources/components/BaseButton.vue'
 import BaseDialog from '~resources/components/BaseDialog.vue'
 import BaseLayout from '~resources/components/BaseLayout.vue'
 import ImageZoom from '~resources/components/ImageZoom.vue'
+import LoadingSpinner from '~resources/components/LoadingSpinner.vue'
 import {
   useHotelAPI, useHotelImageRemoveAPI,
   useHotelImagesListAPI, useHotelImagesUploadAPI,
@@ -141,8 +142,7 @@ const title = computed<string>(() => {
 })
 </script>
 <template>
-  <BaseLayout v-if="isHotelFetching" title="Loading" />
-  <BaseLayout v-else :title="title">
+  <BaseLayout :title="title" :loading="isHotelFetching as boolean">
     <template #header-controls>
       <BaseButton
         label="Добавить фотографии"
@@ -182,7 +182,7 @@ const title = computed<string>(() => {
     </template>
 
     <div v-if="isRoomFetching || isImagesFetching || isRoomImagesFetching">
-      Loading
+      <LoadingSpinner class="loadingSpinner" />
     </div>
     <div v-else-if="images === null">
       No images
@@ -232,6 +232,10 @@ const title = computed<string>(() => {
   </BaseLayout>
 </template>
 <style lang="scss" scoped>
+.loadingSpinner {
+  font-size: 1.5em;
+}
+
 .images {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
