@@ -1,4 +1,4 @@
-import { unref } from 'vue'
+import { computed, unref } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
 
@@ -58,9 +58,17 @@ export const useHotelImagesUploadAPI = (props: MaybeRef<HotelImagesUploadProps>)
     .post(formData)
 }
 
-export const useHotelImageRemoveAPI = (props: MaybeRef<{ hotelID: number; imageID: number }>) => {
-  const { hotelID, imageID } = unref(props)
-  return useAdminAPI(`/hotels/${hotelID}/images/${imageID}`).delete()
+export const useHotelImageRemoveAPI = (props: MaybeRef<{ hotelID: number; imageID: number | null }>) => {
+  const getProps = () => unref(props)
+  return useAdminAPI(computed(() => {
+    const { hotelID, imageID } = getProps()
+    return `/hotels/${hotelID}/images/${imageID}`
+  }), {
+    beforeFetch(ctx) {
+      const { imageID } = getProps()
+      if (imageID === null) ctx.cancel()
+    },
+  }).delete()
 }
 
 type HotelImagesReorderProps = { hotelID: number; images: HotelImage[] }

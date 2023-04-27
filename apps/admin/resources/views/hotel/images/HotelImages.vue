@@ -78,15 +78,42 @@ const uploadImages = async () => {
 
 const isUploadDialogOpened = ref(false)
 
+const imageIDToRemove = ref<number | null>(null)
+
+const imageRemovePayload = computed(() => ({ hotelID, imageID: imageIDToRemove.value }))
+
+const {
+  isFetching: isImageRemoveFetching,
+  execute: executeRemoveImage,
+  onFetchResponse: onRemoveImageResponse,
+} = useHotelImageRemoveAPI(imageRemovePayload)
+
+const isRemoveImagePromptOpened = ref(false)
+
 const removeImage = (imageID: number) => {
-  const api = useHotelImageRemoveAPI({ hotelID, imageID })
-  api.execute()
-  api.onFetchResponse(() => {
-    // eslint-disable-next-line no-alert
-    alert('Файл удален')
-    fetchImages()
-  })
+  imageIDToRemove.value = imageID
+  isRemoveImagePromptOpened.value = true
 }
+
+const cancelRemoveImage = () => {
+  imageIDToRemove.value = null
+  isRemoveImagePromptOpened.value = false
+}
+
+onRemoveImageResponse(() => {
+  // TODO display notification
+  console.log(`file deleted: ${imageIDToRemove.value}`)
+  isRemoveImagePromptOpened.value = false
+  fetchImages()
+})
+
+const imageToRemove = computed<HotelImage | null>(() => {
+  if (images.value === null) return null
+  if (imageIDToRemove.value === null) return null
+  const found = images.value.find(({ id }) => id === imageIDToRemove.value)
+  if (found === undefined) return null
+  return found
+})
 
 // @todo отправить запрос на пересортировку
 // const {} = useHotelImagesReorderAPI({ hotelID, images })
@@ -150,35 +177,6 @@ const title = computed<string>(() => {
         severity="primary"
         @click="isUploadDialogOpened = true"
       />
-      <BaseDialog
-        :opened="isUploadDialogOpened"
-        @close="isUploadDialogOpened = false"
-      >
-        <template #title>
-          <div>Добавить фотографии</div>
-        </template>
-        <form
-          id="form"
-          ref="filesForm"
-          method="post"
-          enctype="multipart/form-data"
-          @submit.prevent="uploadImages"
-        >
-          <label>
-            Файлы
-            <input required type="file" multiple name="files[]">
-          </label>
-        </form>
-        <template #actions>
-          <BaseButton
-            severity="primary"
-            variant="filled"
-            label="Отправить"
-            type="submit"
-            form="form"
-          />
-        </template>
-      </BaseDialog>
     </template>
 
     <div v-if="isRoomFetching || isImagesFetching || isRoomImagesFetching">
@@ -189,47 +187,103 @@ const title = computed<string>(() => {
     </div>
     <div v-else class="images">
       <div
-        v-for="image in images"
-        :key="image.id"
+        v-for="{ id, file: { url, name } } in images"
+        :key="id"
         class="image"
-        :class="{ hidden: isNeedHideImage(image.id) }"
+        :class="{ hidden: isNeedHideImage(id) }"
       >
         <ImageZoom
           class="picture"
-          :src="image.file.url"
-          :alt="image.file.name"
+          :src="url"
+          :alt="name"
         />
         <div class="actions">
           <div class="actionsStart">
             <template v-if="roomID">
               <BaseButton
-                v-if="!getRoomImage(image.id)"
+                v-if="!getRoomImage(id)"
                 severity="primary"
                 label="Привязать к номеру"
                 :start-icon="linkIcon"
-                @click="setImageToRoom(image.id)"
+                @click="setImageToRoom(id)"
               />
               <BaseButton
                 v-else
                 label="Отвязать от номера"
                 :start-icon="linkOffIcon"
-                @click="deleteRoomImage(image.id)"
+                @click="deleteRoomImage(id)"
               />
             </template>
           </div>
           <div class="actionsEnd">
             <BaseButton
-              v-if="!getRoomImage(image.id)"
+              v-if="!getRoomImage(id)"
               label="Удалить"
               severity="danger"
               :only-icon="trashIcon"
-              @click="removeImage(image.id)"
+              :loading="isImageRemoveFetching && imageIDToRemove === id"
+              @click="removeImage(id)"
             />
           </div>
         </div>
       </div>
     </div>
   </BaseLayout>
+
+  <BaseDialog
+    :opened="isUploadDialogOpened"
+    @close="isUploadDialogOpened = false"
+  >
+    <template #title>
+      <div>Добавить фотографии</div>
+    </template>
+    <form
+      id="form"
+      ref="filesForm"
+      method="post"
+      enctype="multipart/form-data"
+      @submit.prevent="uploadImages"
+    >
+      <label>
+        Файлы
+        <input required type="file" multiple name="files[]">
+      </label>
+    </form>
+    <template #actions>
+      <BaseButton
+        severity="primary"
+        variant="filled"
+        label="Отправить"
+        type="submit"
+        form="form"
+      />
+    </template>
+  </BaseDialog>
+  <BaseDialog
+    :opened="isRemoveImagePromptOpened"
+    :disabled="isImageRemoveFetching as boolean"
+  >
+    <template #title>Действительно удалить это фото?</template>
+    <ImageZoom
+      v-if="imageToRemove !== null"
+      class="picture"
+      :src="imageToRemove.file.url"
+      :alt="imageToRemove.file.name"
+    />
+    <template #actions>
+      <BaseButton
+        label="Удалить"
+        severity="danger"
+        :loading="isImageRemoveFetching as boolean"
+        @click="executeRemoveImage"
+      />
+      <BaseButton
+        label="Отмена"
+        :disabled="isImageRemoveFetching as boolean"
+        @click="cancelRemoveImage"
+      />
+    </template>
+  </BaseDialog>
 </template>
 <style lang="scss" scoped>
 .loadingSpinner {

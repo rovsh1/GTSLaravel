@@ -1,6 +1,6 @@
 import { File } from '~resources/lib/models'
 
-export interface HotelImage {
+export type HotelImage = {
   id: number
   title: string | null
   order: number

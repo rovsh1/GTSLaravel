@@ -9,15 +9,23 @@ const emit = defineEmits<{
   (event: 'close'): void
 }>()
 
-defineProps<{
+const props = withDefaults(defineProps<{
   opened: boolean
-}>()
+  disabled?: boolean
+}>(), {
+  disabled: false,
+})
+
+const close = () => {
+  if (props.disabled) return
+  emit('close')
+}
 </script>
 <template>
   <Teleport to="body">
     <BodyScrollLock :value="opened" class="dialog" :class="{ opened }">
       <div class="inner">
-        <OnClickOutside class="body" @trigger="emit('close')">
+        <OnClickOutside class="body" @trigger="close">
           <template v-if="$slots['title']">
             <div class="title">
               <div class="titleLabel">

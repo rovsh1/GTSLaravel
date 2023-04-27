@@ -2,6 +2,8 @@
 import { computed } from 'vue'
 import InlineSVG from 'vue-inline-svg'
 
+import LoadingSpinner from '~resources/components/LoadingSpinner.vue'
+
 type ButtonVariant = 'text' | 'filled' | 'outlined'
 
 type ButtonSeverity = 'default' | 'primary' | 'danger'
@@ -18,6 +20,7 @@ const props = withDefaults(defineProps<{
   size?: ButtonSize
   href?: string
   disabled?: boolean
+  loading?: boolean
 }>(), {
   onlyIcon: undefined,
   startIcon: undefined,
@@ -27,6 +30,7 @@ const props = withDefaults(defineProps<{
   size: 'default',
   href: undefined,
   disabled: false,
+  loading: false,
 })
 
 const emit = defineEmits<{
@@ -50,16 +54,17 @@ const sizeClassBySize: Record<ButtonSize, string> = {
   small: 'sizeSmall',
 }
 
-const is = computed<'a' | 'button'>(() => {
-  if (props.disabled) return 'button'
-  if (props.href === undefined) return 'button'
-  return 'a'
-})
-
 const isDisabled = computed<boolean | undefined>(() => {
+  if (props.loading) return true
   if (props.href !== undefined && props.disabled) return true
   if (props.href === undefined) return props.disabled
   return undefined
+})
+
+const is = computed<'a' | 'button'>(() => {
+  if (props.disabled || isDisabled.value) return 'button'
+  if (props.href === undefined) return 'button'
+  return 'a'
 })
 </script>
 <template>
@@ -71,23 +76,26 @@ const isDisabled = computed<boolean | undefined>(() => {
       variantClassByVariant[variant],
       severityClassBySeverity[severity],
       sizeClassBySize[size],
-      { onlyIcon },
+      { onlyIcon, isLoading: loading },
     ]"
     :href="disabled ? undefined : href"
     :title="onlyIcon ? label : undefined"
     :disabled="isDisabled"
     @click="emit('click')"
   >
+    <div v-if="loading" class="loadingOverlay">
+      <LoadingSpinner />
+    </div>
     <slot name="start" />
     <template v-if="startIcon">
       <InlineSVG :src="startIcon" class="buttonIcon" />
     </template>
     <template v-if="onlyIcon">
-      <InlineSVG :src="onlyIcon" class="buttonIcon" />
+      <InlineSVG :src="onlyIcon" class="buttonOnlyIcon" />
     </template>
-    <template v-else>
+    <span v-else class="buttonLabel">
       {{ label }}
-    </template>
+    </span>
     <template v-if="endIcon">
       <InlineSVG :src="endIcon" class="buttonIcon" />
     </template>
@@ -134,6 +142,7 @@ const isDisabled = computed<boolean | undefined>(() => {
 .button {
   --button-icon-size: 1.5em;
 
+  position: relative;
   display: inline-flex;
   gap: 0.5em;
   padding: 0.5em 1em;
@@ -203,11 +212,46 @@ const isDisabled = computed<boolean | undefined>(() => {
     padding: 0.5em;
     border-radius: 20em;
   }
+
+  &.isLoading {
+    opacity: 1;
+
+    %loading-button-label {
+      opacity: 0.5;
+    }
+
+    %loading-button-only-icon {
+      opacity: 0;
+    }
+  }
 }
 
-.buttonIcon {
+.loadingOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(white, 0.5);
+}
+
+%button-icon {
   width: var(--button-icon-size);
   fill: currentcolor;
   aspect-ratio: 1/1;
+}
+
+.buttonIcon {
+  @extend %button-icon;
+}
+
+.buttonOnlyIcon {
+  @extend %button-icon;
+  @extend %loading-button-only-icon;
+}
+
+.buttonLabel {
+  @extend %loading-button-label;
 }
 </style>
