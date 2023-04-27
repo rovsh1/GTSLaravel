@@ -6,6 +6,7 @@ import trashIcon from '@mdi/svg/svg/trash-can-outline.svg'
 import { useArrayFind, useUrlSearchParams } from '@vueuse/core'
 
 import BaseButton from '~resources/components/BaseButton.vue'
+import BaseDialog from '~resources/components/BaseDialog.vue'
 import BaseLayout from '~resources/components/BaseLayout.vue'
 import {
   useHotelAPI, useHotelImageRemoveAPI,
@@ -78,10 +79,7 @@ const uploadImages = async () => {
   await fetchRoomImages()
 }
 
-const showUploadModal = async () => {
-  console.log('clicked')
-  // @todo показать модалку с аплоадером файлов
-}
+const isUploadDialogOpened = ref(false)
 
 const removeImage = (imageID: number) => {
   const api = useHotelImageRemoveAPI({ hotelID, imageID })
@@ -147,9 +145,7 @@ fetchRoom()
 fetchRoomImages()
 fetchHotel()
 fetchImages()
-
 </script>
-
 <template>
   <BaseLayout
     v-if="hotel"
@@ -159,33 +155,44 @@ fetchImages()
       <BaseButton
         label="Добавить фотографии"
         :start-icon="plusIcon"
-        @click="showUploadModal"
+        severity="primary"
+        @click="isUploadDialogOpened = true"
       />
-    </template>
-
-    <div class="bg-info mb-2">
-      <h5>Временная форма - todo заменить на file uploader</h5>
-      <form
-        ref="filesForm"
-        method="post"
-        enctype="multipart/form-data"
-        @submit.prevent="uploadImages"
+      <BaseDialog
+        :opened="isUploadDialogOpened"
+        @close="isUploadDialogOpened = false"
       >
-        <label>
-          Файлы
-          <input
-            required
-            type="file"
-            multiple
-            name="files[]"
-          >
-        </label>
-
-        <button type="submit">
-          Отправить
-        </button>
-      </form>
-    </div>
+        <template #title>
+          <div>Добавить фотографии</div>
+        </template>
+        <form
+          id="form"
+          ref="filesForm"
+          method="post"
+          enctype="multipart/form-data"
+          @submit.prevent="uploadImages"
+        >
+          <label>
+            Файлы
+            <input
+              required
+              type="file"
+              multiple
+              name="files[]"
+            >
+          </label>
+        </form>
+        <template #actions>
+          <BaseButton
+            severity="primary"
+            variant="filled"
+            label="Отправить"
+            type="submit"
+            form="form"
+          />
+        </template>
+      </BaseDialog>
+    </template>
 
     <div v-if="isLoaded && isRoomImagesLoaded" class="cards">
       <div
@@ -206,6 +213,7 @@ fetchImages()
             <BaseButton
               v-if="!getRoomImage(image.id)"
               label="Удалить"
+              severity="danger"
               :start-icon="trashIcon"
               @click="removeImage(image.id)"
             />
