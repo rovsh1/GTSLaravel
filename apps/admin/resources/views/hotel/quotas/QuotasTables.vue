@@ -56,6 +56,7 @@ const handleFilters = (value: FiltersPayload) => {
       <BaseButton
         :label="editable ? 'Готово' : 'Редактировать'"
         :start-icon="editable ? checkIcon : pencilIcon"
+        severity="primary"
         @click="editable = !editable"
       />
     </template>

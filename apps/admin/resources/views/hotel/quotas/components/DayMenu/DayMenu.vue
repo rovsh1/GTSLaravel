@@ -48,6 +48,7 @@ const resetDay = () => {
     <li>
       <BaseButton
         size="small"
+        severity="primary"
         class="button"
         label="Открыть"
         @click="openDay"
@@ -56,6 +57,7 @@ const resetDay = () => {
     <li>
       <BaseButton
         size="small"
+        severity="primary"
         class="button"
         label="Закрыть"
         @click="closeDay"
