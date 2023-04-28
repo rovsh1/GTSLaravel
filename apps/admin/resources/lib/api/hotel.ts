@@ -50,20 +50,29 @@ type HotelImagesUploadProps = {
 }
 export const useHotelImagesUploadAPI = (props: MaybeRef<HotelImagesUploadProps>) => {
   const getProps = () => unref(props)
-  const { hotelID, roomID, images } = getProps()
-  const formData = new FormData()
-  images?.forEach((image) => {
-    formData.append('files[]', image)
+  const url = computed(() => {
+    const { hotelID } = getProps()
+    return `/hotels/${hotelID}/images/upload`
   })
-  if (roomID !== undefined) {
-    formData.append('room_id', String(roomID))
-  }
-  return useAdminAPI(`/hotels/${hotelID}/images/upload`, {
+  const payload = computed(() => {
+    const { roomID, images } = getProps()
+    const formData = new FormData()
+    images?.forEach((image) => {
+      formData.append('files[]', image)
+    })
+    if (roomID !== undefined) {
+      formData.append('room_id', String(roomID))
+    }
+    return formData
+  })
+  return useAdminAPI(url.value, {
     beforeFetch(ctx) {
-      if (unref(props).images === null) ctx.cancel()
+      const { images } = unref(props)
+      console.log({ images })
+      if (images === null) ctx.cancel()
     },
   })
-    .post(computed(() => formData))
+    .post(payload)
 }
 
 export const useHotelImageRemoveAPI = (props: MaybeRef<{ hotelID: number; imageID: number | null }>) => {
