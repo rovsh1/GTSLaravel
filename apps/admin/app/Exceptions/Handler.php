@@ -87,7 +87,7 @@ class Handler extends ExceptionHandler
         $httpCode = match (true) {
             $e instanceof NotFoundHttpException => 404,
             $e instanceof HttpException => $e->getStatusCode(),
-            default => 500
+            default => $e->status ?? 500
         };
 
         return new JsonResponse([
