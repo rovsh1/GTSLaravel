@@ -3,7 +3,7 @@ import LoadingSpinner from '~resources/components/LoadingSpinner.vue'
 
 withDefaults(defineProps<{
   title: string
-  loading: boolean
+  loading?: boolean
 }>(), {
   loading: false,
 })

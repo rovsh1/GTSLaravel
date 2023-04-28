@@ -3,7 +3,7 @@ import { computed, ref } from 'vue'
 
 import { DateTime } from 'luxon'
 
-import BaseButton from '~resources/components/BaseButton.vue'
+import BootstrapButton from '~resources/components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 import { getEachMonthInYear } from '~resources/lib/date'
 
 import FiltersSelect from './FiltersSelect.vue'
@@ -131,10 +131,10 @@ const submit = () => {
       :value="selectedRoom"
       @input="(value) => selectedRoom = Number(value) as unknown as RoomID"
     />
-    <BaseButton
+    <BootstrapButton
       label="Обновить"
       size="small"
-      variant="outlined"
+      variant="outline"
       severity="primary"
       @click="submit"
     />

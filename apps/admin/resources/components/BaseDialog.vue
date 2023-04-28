@@ -2,8 +2,8 @@
 import closeIcon from '@mdi/svg/svg/close.svg'
 import { OnClickOutside } from '@vueuse/components'
 
-import BaseButton from '~resources/components/BaseButton.vue'
 import BodyScrollLock from '~resources/components/BodyScrollLock.vue'
+import BootstrapButton from '~resources/components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 
 const emit = defineEmits<{
   (event: 'close'): void
@@ -31,10 +31,12 @@ const close = () => {
               <div class="titleLabel">
                 <slot name="title" />
               </div>
-              <BaseButton
+              <BootstrapButton
                 label="Закрыть"
                 :only-icon="closeIcon"
                 size="small"
+                severity="link"
+                variant="outline"
                 @click="close"
               />
             </div>

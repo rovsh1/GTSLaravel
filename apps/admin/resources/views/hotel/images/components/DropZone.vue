@@ -6,7 +6,7 @@ import { useDropZone } from '@vueuse/core'
 import { nanoid } from 'nanoid'
 import prettyBytes from 'pretty-bytes'
 
-import BaseButton from '~resources/components/BaseButton.vue'
+import BootstrapButton from '~resources/components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 
 type DroppedFile = {
   id: string
@@ -114,12 +114,12 @@ const remove = (idToRemove: string) => {
           class="item"
         >
           <div class="image">
-            <BaseButton
+            <BootstrapButton
               label="Убрать"
               :only-icon="crossIcon"
               severity="danger"
               variant="filled"
-              size="tiny"
+              size="small"
               class="removeButton"
               @click="remove(id)"
             />

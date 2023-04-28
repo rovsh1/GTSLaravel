@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 
-import BaseButton from '~resources/components/BaseButton.vue'
+import BootstrapButton from '~resources/components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 
 const props = defineProps<{
   menuRef: HTMLElement | null
@@ -46,25 +46,25 @@ const resetDay = () => {
 <template>
   <ul class="menu">
     <li>
-      <BaseButton
+      <BootstrapButton
         size="small"
-        severity="primary"
+        severity="light"
         class="button"
         label="Открыть"
         @click="openDay"
       />
     </li>
     <li>
-      <BaseButton
+      <BootstrapButton
         size="small"
-        severity="primary"
+        severity="light"
         class="button"
         label="Закрыть"
         @click="closeDay"
       />
     </li>
     <li>
-      <BaseButton
+      <BootstrapButton
         size="small"
         severity="danger"
         class="button"
