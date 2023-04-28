@@ -6,20 +6,13 @@ use Module\Integration\Traveline\Domain\Exception\UnsupportedCurrency;
 
 class Config implements ConfigInterface
 {
-    public const allowedCurrencies = ['UZS'];
-
     public function __construct(
-        private readonly string $defaultCurrency,
+        private readonly array $supportedCurrencies,
     ) {}
 
-    public function getDefaultCurrency(): string
+    public function isCurrencySupported(string $currency): bool
     {
-        return $this->defaultCurrency;
-    }
-
-    public function isCurrencyAllowed(string $currency): bool
-    {
-        return in_array($currency, self::allowedCurrencies);
+        return in_array($currency, $this->supportedCurrencies);
     }
 
     /**
@@ -27,9 +20,9 @@ class Config implements ConfigInterface
      * @return void
      * @throws UnsupportedCurrency
      */
-    public function ensureCurrencyAllowed(string $currency): void
+    public function ensureCurrencySupported(string $currency): void
     {
-        if (!$this->isCurrencyAllowed($currency)) {
+        if (!$this->isCurrencySupported($currency)) {
             throw new UnsupportedCurrency("Currency {$currency} is unsupported");
         }
     }

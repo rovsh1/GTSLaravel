@@ -75,7 +75,7 @@ class QuotaAndPriceUpdater
         }
 
         if ($updateRequest->hasPrices()) {
-            if ($this->config->isCurrencyAllowed($updateRequest->currencyCode)) {
+            if ($this->config->isCurrencySupported($updateRequest->currencyCode)) {
                 $this->updatePrices($updateRequest);
             } else {
                 $this->errors[] = new InvalidCurrencyCode();

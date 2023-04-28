@@ -24,7 +24,7 @@ class BootServiceProvider extends ServiceProvider
 
         $this->app->singleton(Domain\Entity\ConfigInterface::class, function ($app) {
             return new Domain\Entity\Config(
-                defaultCurrency: $app->config('default_currency')
+                supportedCurrencies: $app->config('supported_currencies')
             );
         });
 

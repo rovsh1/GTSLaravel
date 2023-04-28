@@ -37,7 +37,7 @@ class RoomPriceUpdater
         float $price,
         string $currencyCode
     ) {
-        if (!$this->config->isCurrencyAllowed($currencyCode)) {
+        if (!$this->config->isCurrencySupported($currencyCode)) {
             //Конвертация валюты не требуется, уточнял у Анвара. По договору, отель должен заносить цены в сумах в тревелайн.
             \Log::warning(
                 'Currency not supported',

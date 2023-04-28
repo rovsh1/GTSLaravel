@@ -78,7 +78,8 @@ class ReservationAdapter extends AbstractPortAdapter implements ReservationAdapt
 
             return ReservationDto::from($reservation->reservation)->additional([
                 'roomStays' => $rooms,
-                'currencyCode' => $this->config->getDefaultCurrency()
+                //@hack @todo заменить на получение валюты брони
+                'currencyCode' => 'UZS'
             ]);
         }, $reservations);
     }
