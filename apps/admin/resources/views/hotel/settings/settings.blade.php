@@ -15,7 +15,7 @@
     </div>
 
     <div class="content-body">
-        <div id="living-conditions"></div>
+        <div id="residence-conditions"></div>
 
         <div class="mt-3" id="cancellation-conditions"></div>
 

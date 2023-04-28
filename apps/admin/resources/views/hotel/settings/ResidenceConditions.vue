@@ -5,7 +5,7 @@ import CollapsableBlock from '~resources/views/hotel/settings/components/Collaps
 </script>
 
 <template>
-  <CollapsableBlock id="living-conditions" title="Порядок проживания">
+  <CollapsableBlock id="residence-conditions" title="Порядок проживания">
     Порядок проживания 123
   </CollapsableBlock>
 </template>

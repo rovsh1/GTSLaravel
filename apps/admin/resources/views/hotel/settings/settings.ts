@@ -1,12 +1,12 @@
 import { createVueInstance } from '~resources/lib/vue'
 import CancellationConditions from '~resources/views/hotel/settings/CancellationConditions.vue'
-import LivingConditions from '~resources/views/hotel/settings/LivingConditions.vue'
 import PriceConditions from '~resources/views/hotel/settings/PriceConditions.vue'
+import ResidenceConditions from '~resources/views/hotel/settings/ResidenceConditions.vue'
 
 import '~resources/views/main'
 
 createVueInstance({
-  rootComponent: LivingConditions,
+  rootComponent: ResidenceConditions,
   rootContainer: '#living-conditions',
 })
 
