@@ -7,9 +7,9 @@ import plusIcon from '@mdi/svg/svg/plus.svg'
 import trashIcon from '@mdi/svg/svg/trash-can-outline.svg'
 import { useArrayFind, useUrlSearchParams } from '@vueuse/core'
 
-import BaseButton from '~resources/components/BaseButton.vue'
 import BaseDialog from '~resources/components/BaseDialog.vue'
 import BaseLayout from '~resources/components/BaseLayout.vue'
+import BootstrapButton from '~resources/components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 import ImageZoom from '~resources/components/ImageZoom.vue'
 import LoadingSpinner from '~resources/components/LoadingSpinner.vue'
 import {
@@ -194,7 +194,7 @@ const title = computed<string>(() => {
 <template>
   <BaseLayout :title="title" :loading="isHotelFetching as boolean">
     <template #header-controls>
-      <BaseButton
+      <BootstrapButton
         label="Добавить фотографии"
         :start-icon="plusIcon"
         severity="primary"
@@ -222,14 +222,14 @@ const title = computed<string>(() => {
         <div class="actions">
           <div class="actionsStart">
             <template v-if="roomID">
-              <BaseButton
+              <BootstrapButton
                 v-if="!getRoomImage(id)"
                 severity="primary"
                 label="Привязать к номеру"
                 :start-icon="linkIcon"
                 @click="setImageToRoom(id)"
               />
-              <BaseButton
+              <BootstrapButton
                 v-else
                 label="Отвязать от номера"
                 :start-icon="linkOffIcon"
@@ -238,7 +238,7 @@ const title = computed<string>(() => {
             </template>
           </div>
           <div class="actionsEnd">
-            <BaseButton
+            <BootstrapButton
               v-if="!getRoomImage(id)"
               label="Удалить"
               severity="danger"
@@ -267,7 +267,7 @@ const title = computed<string>(() => {
       />
     </div>
     <template #actions>
-      <BaseButton
+      <BootstrapButton
         severity="primary"
         variant="filled"
         label="Загрузить"
@@ -288,13 +288,13 @@ const title = computed<string>(() => {
       :alt="imageToRemove.file.name"
     />
     <template #actions>
-      <BaseButton
+      <BootstrapButton
         label="Удалить"
         severity="danger"
         :loading="isImageRemoveFetching as boolean"
         @click="executeRemoveImage"
       />
-      <BaseButton
+      <BootstrapButton
         label="Отмена"
         :disabled="isImageRemoveFetching as boolean"
         @click="cancelRemoveImage"

@@ -6,8 +6,8 @@ import pencilIcon from '@mdi/svg/svg/pencil.svg'
 import groupBy from 'lodash/groupBy'
 import { DateTime } from 'luxon'
 
-import BaseButton from '~resources/components/BaseButton.vue'
 import BaseLayout from '~resources/components/BaseLayout.vue'
+import BootstrapButton from '~resources/components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 import { useHotelAPI } from '~resources/lib/api/hotel'
 import { Hotel } from '~resources/lib/models'
 import { useUrlParams } from '~resources/lib/url-params'
@@ -53,7 +53,7 @@ const handleFilters = (value: FiltersPayload) => {
   <BaseLayout v-if="isHotelFetching" title="Загрузка…" />
   <BaseLayout v-else-if="hotel !== null" :title="hotel.name">
     <template #header-controls>
-      <BaseButton
+      <BootstrapButton
         :label="editable ? 'Готово' : 'Редактировать'"
         :start-icon="editable ? checkIcon : pencilIcon"
         severity="primary"
