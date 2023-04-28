@@ -8,6 +8,21 @@ return new class extends Migration {
     {
         $q = DB::connection('mysql_old')->table('hotels');
         foreach ($q->cursor() as $r) {
+            $conditions = DB::connection('mysql_old')
+                ->table('hotel_residence_conditions')
+                ->where('hotel_id', $r->id)
+                ->get();
+
+            $conditionsJson = null;
+            if ($conditions->count() > 0) {
+                $conditionsJson = $conditions->map(fn(\stdClass $condition) => [
+                    'type' => $condition->type,
+                    'price_markup' => $condition->price_markup,
+                    'start_time' => $condition->start,
+                    'end_time' => $condition->end,
+                ])->toJson();
+            }
+
             DB::table('hotels')
                 ->insert([
                     'id' => $r->id,
@@ -22,6 +37,7 @@ return new class extends Migration {
                     'zipcode' => $r->zipcode,
                     'status' => $r->status,
                     'visibility' => $this->getVisibilityValue($r->visible_for),
+                    'additional_conditions' => $conditionsJson,
                     'created_at' => $r->created,
                     'updated_at' => $r->updated,
                 ]);
@@ -39,6 +55,6 @@ return new class extends Migration {
 
     public function down()
     {
-        DB::statement('TRUNCATE TABLE hotels');
+        DB::table('hotels')->truncate();
     }
 };

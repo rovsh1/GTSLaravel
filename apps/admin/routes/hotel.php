@@ -52,6 +52,14 @@ AclRoute::for('hotel')
     ->resource('rules', Controllers\Hotel\RuleController::class, ['except' => ['index', 'show']])
 
     ->resource('contracts', Controllers\Hotel\ContractController::class)
+    ->get('/{hotel}/contracts/{contract}/get', Controllers\Hotel\ContractController::class . '@get','update', 'contracts.get')
+
     ->resource('seasons', Controllers\Hotel\SeasonController::class)
     ->resource('rates', Controllers\Hotel\RateController::class)
-    ->get('/{hotel}/contracts/{contract}/get', Controllers\Hotel\ContractController::class . '@get','update', 'contracts.get');
+
+    ->get('/{hotel}/conditions/residence', Controllers\Hotel\ResidenceConditionController::class . '@get','read', 'conditions.residence.get')
+    ->post('/{hotel}/conditions/residence', Controllers\Hotel\ResidenceConditionController::class . '@store','update', 'conditions.residence.store')
+    ->put('/{hotel}/conditions/residence/{condition}', Controllers\Hotel\ResidenceConditionController::class . '@update','update', 'conditions.residence.update')
+    ->delete('/{hotel}/conditions/residence/{condition}', Controllers\Hotel\ResidenceConditionController::class . '@destroy','update', 'conditions.residence.destroy')
+
+    ->get('/{hotel}/conditions/cancel', Controllers\Hotel\CancelConditionController::class . '@get','read', 'conditions.cancel.get');

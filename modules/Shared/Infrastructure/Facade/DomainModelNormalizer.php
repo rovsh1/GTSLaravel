@@ -20,7 +20,11 @@ class DomainModelNormalizer implements Normalizer
         foreach ($props as $property) {
             $propertyName = $property->getName();
             if (method_exists($value, $propertyName)) {
-                $data[$propertyName] = $value->$propertyName();
+                $propertyValue = $value->$propertyName();
+                $data[$propertyName] = $propertyValue;
+                if ($propertyValue instanceof \BackedEnum) {
+                    $data[$propertyName] = $propertyValue->value;
+                }
             }
         }
         return $data;

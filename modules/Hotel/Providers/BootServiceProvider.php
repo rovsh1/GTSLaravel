@@ -26,5 +26,6 @@ class BootServiceProvider extends ServiceProvider
 //        $this->app->singleton(Domain\Repository\RoomQuotaRepositoryInterface::class, Infrastructure\Repository\RoomQuotaRepository::class);
         $this->app->singleton(Domain\Repository\RoomRepositoryInterface::class, Infrastructure\Repository\RoomRepository::class);
         $this->app->singleton(Domain\Repository\RoomQuotaRepositoryInterface::class, Infrastructure\Repository\RoomQuotaRepository::class);
+        $this->app->singleton(Domain\Repository\AdditionalConditionsRepositoryInterface::class, Infrastructure\Repository\AdditionalConditionsRepository::class);
     }
 }
