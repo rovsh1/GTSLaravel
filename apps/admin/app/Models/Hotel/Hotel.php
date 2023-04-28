@@ -16,7 +16,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Query\JoinClause;
 
 /**
  * @property int city_id
@@ -31,8 +30,8 @@ use Illuminate\Database\Query\JoinClause;
  * @property-read Collection<Usability>|Usability[] $usabilities
  * @property-read Collection<Landmark>|Landmark[] $landmarks
  * @property-read Collection<Image>|Image[] $images
- * @method static Builder|Hotel withActiveContract()
  * @method static Builder|Hotel wherePeriod(CarbonPeriod $period)
+ * @method static Builder|Hotel withRoomsCount()
  * @mixin \Eloquent
  */
 class Hotel extends Model
@@ -116,25 +115,20 @@ class Hotel extends Model
             ->addSelect('hotel_landmark.distance');
     }
 
-    public function scopeWithActiveContract(Builder $builder)
-    {
-        $builder->addSelect("{$this->getTable()}.*");
-
-        $joinableTable = with(new Contract)->getTable();
-        $builder->leftJoin(
-            $joinableTable,
-            function (JoinClause $join) use ($joinableTable) {
-                $join->on("{$joinableTable}.hotel_id", '=', "{$this->getTable()}.id")
-                    ->where("{$joinableTable}.status", \App\Admin\Enums\Hotel\Contract\StatusEnum::ACTIVE);
-            }
-        )->addSelect("{$joinableTable}.date_start as contract_date_start")
-            ->addSelect("{$joinableTable}.date_end as contract_date_end");
-    }
-
     public function scopeWherePeriod(Builder $builder, CarbonPeriod $period): void
     {
-        $builder->where("hotel_contracts.date_start", '<=', $period->getStartDate())
-            ->where('hotel_contracts.date_end', '>=', $period->getEndDate());
+        $builder->whereHas('contracts', function (Builder $query) use ($period) {
+            $query
+                ->where('date_start', '=', $period->getStartDate())
+                ->where('date_end', '=', $period->getEndDate());
+        });
+    }
+
+    public function scopeWithRoomsCount(Builder $builder): void
+    {
+        $builder->addSelect(
+            \DB::raw("(SELECT COUNT(`id`) FROM `hotel_rooms` WHERE `hotel_id`=`hotels`.`id`) as rooms_count")
+        );
     }
 
     public function contracts(): HasMany

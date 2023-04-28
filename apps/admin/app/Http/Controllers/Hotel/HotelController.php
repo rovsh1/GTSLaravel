@@ -6,6 +6,7 @@ use App\Admin\Enums\Hotel\RatingEnum;
 use App\Admin\Enums\Hotel\StatusEnum;
 use App\Admin\Enums\Hotel\VisibilityEnum;
 use App\Admin\Http\Resources\Room;
+use App\Admin\Models\Hotel\Contract;
 use App\Admin\Models\Hotel\Hotel;
 use App\Admin\Models\Hotel\Reference\Type;
 use App\Admin\Models\Hotel\User;
@@ -113,17 +114,18 @@ class HotelController extends AbstractPrototypeController
             //->addColumn('address', 'text', ['text' => lang('Address')])
             ->text('contract', [
                 'text' => 'Договор',
-//                'renderer' => function ($row) {
-//                    $contract = $row->activeContracts->first();
-//                    if (!$contract) {
-//                        return '-';
-//                    }
-//                    return (string)$contract . '<br />' . Format::period($contract->getPeriod()) . '';
-//                }
+                'renderer' => function ($row) {
+                    /** @var Contract|null $contract */
+                    $contract = $row->contracts->first();
+                    if (!$contract) {
+                        return '-';
+                    }
+                    return $contract . '<br>' . Format::period($contract->period);
+                }
             ])
-            ->number('rooms_number', ['text' => 'Номеров', 'order' => true])
-            ->number('booking_count', ['text' => 'Количество броней', 'order' => true])
-            //->addColumn('status', 'enum', ['text' => 'Статус', 'enum' => 'HOTEL_STATUS', 'order' => true])
+            ->text('rooms_count', ['text' => 'Номеров', 'order' => true])
+            ->number('booking_count', ['text' => 'Количество броней'])
+            ->enum('status', ['text' => 'Статус', 'order' => true, 'enum' => StatusEnum::class])
             ->orderBy('name', 'asc');
     }
 
@@ -160,7 +162,7 @@ class HotelController extends AbstractPrototypeController
 
     protected function prepareGridQuery(Builder $query)
     {
-        $query->withActiveContract();
+        $query->with(['contracts'])->withRoomsCount();
     }
 
     protected function saving(array $data): array
