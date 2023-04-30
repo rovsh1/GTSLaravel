@@ -1,0 +1,23 @@
+HotelMarkupOptions
+    --vat (Percent)
+    --tourCharge (Percent)
+    --clientMarkups
+        --individual (Percent)
+        --TA (Percent)
+        --OTA (Percent)
+        --OT (Percent)
+    --earlyCheckIn (EarlyCheckInCollection)
+        --Condition
+            --time (TimePeriod)
+            --markup (Percent)
+    --lateCheckOut (LateCheckOutCollection)
+        --//--
+    --cancelPeriods (CancelPeriodsCollection)
+        --CancelPeriod
+            --period (Period)
+            --noCheckInMarkup (CancelMarkupPercent)
+                --value (Pervent)
+                --periodTime (BookingPeriodEnum)
+            --dailyMarkups (collection)
+                --daysCount (int)
+                --markup (CancelMarkupPercent)
