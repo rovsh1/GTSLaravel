@@ -367,6 +367,7 @@ const draggableDrop = () => {
   position: absolute;
   top: var(--position);
   left: var(--position);
+  z-index: 1;
   cursor: grab;
 }
 

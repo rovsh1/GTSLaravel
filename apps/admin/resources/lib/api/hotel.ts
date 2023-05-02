@@ -99,11 +99,8 @@ export const useHotelImagesReorderAPI = (props: MaybeRef<HotelImagesReorderProps
       if (unref(props).imagesIDs === null) ctx.cancel()
     },
   })
-    .post(computed(() => {
-      const { imagesIDs } = unref(props)
-      console.log({ imagesIDs })
-      return imagesIDs
-    }))
+    .post(computed(() => ({ indexes: unref(props).imagesIDs ?? [] })))
+    .json<{ success: boolean }>()
 
 type HotelRoomImageProps = { hotelID: number; roomID: number; imageID: number }
 
