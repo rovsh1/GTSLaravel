@@ -185,8 +185,8 @@ const massEditTooltip = computed(() => {
         :guests="guests"
         :count="count"
       />
-      <div class="quotasTable" @scroll="closeDayMenu">
-        <table>
+      <div class="quotasTable card" @scroll="closeDayMenu">
+        <table class="card-body">
           <thead>
             <tr>
               <th class="headingCell">
@@ -402,9 +402,6 @@ const massEditTooltip = computed(() => {
 
 .quotasTable {
   overflow: auto;
-  border: 1px solid lightgray;
-  border-radius: 0.6em;
-  font-size: 0.8em;
 }
 
 th {

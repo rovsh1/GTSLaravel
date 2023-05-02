@@ -133,7 +133,6 @@ const submit = () => {
     />
     <BootstrapButton
       label="Обновить"
-      size="small"
       variant="outline"
       severity="primary"
       @click="submit"
