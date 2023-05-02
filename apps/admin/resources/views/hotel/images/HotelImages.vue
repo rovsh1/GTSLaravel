@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
+import { VueDraggable } from 'vue-draggable-plus'
 
+import dragIcon from '@mdi/svg/svg/drag.svg'
 import linkIcon from '@mdi/svg/svg/link.svg'
 import linkOffIcon from '@mdi/svg/svg/link-off.svg'
 import plusIcon from '@mdi/svg/svg/plus.svg'
@@ -33,7 +35,12 @@ const {
   isFetching: isImagesFetching,
 } = useHotelImagesListAPI({ hotelID })
 
-const images = computed<HotelImage[] | null>(() => imagesData.value)
+const images = ref<HotelImage[] | null>(null)
+
+watch(imagesData, (value) => {
+  if (value === null) return
+  images.value = value
+})
 
 const {
   execute: fetchRoomImages,
@@ -207,49 +214,66 @@ const title = computed<string>(() => {
     <div v-else-if="images === null || images.length === 0">
       У этого отеля ещё нет фото. Загрузите их, нажав на кнопку выше.
     </div>
-    <div v-else class="images">
+    <VueDraggable
+      v-else
+      v-model="images"
+      class="images"
+      handle="[data-draggable-handle]"
+      animation="300"
+    >
       <div
         v-for="{ id, file: { url, name } } in images"
         :key="id"
-        class="image"
+        class="card"
         :class="{ hidden: isNeedHideImage(id) }"
       >
-        <ImageZoom
-          class="picture"
-          :src="url"
-          :alt="name"
-        />
-        <div class="actions">
-          <div class="actionsStart">
-            <template v-if="roomID">
+        <div class="pictureContainer">
+          <BootstrapButton
+            data-draggable-handle
+            class="imageDragHandle"
+            label="Потяните, чтобы изменить порядок фотографий"
+            severity="dark"
+            :only-icon="dragIcon"
+          />
+          <ImageZoom
+            class="card-img-top picture"
+            :src="url"
+            :alt="name"
+          />
+        </div>
+        <div class="card-body">
+          <div class="actions">
+            <div class="actionsStart">
+              <template v-if="roomID">
+                <BootstrapButton
+                  v-if="!getRoomImage(id)"
+                  severity="primary"
+                  label="Привязать к номеру"
+                  :start-icon="linkIcon"
+                  @click="setImageToRoom(id)"
+                />
+                <BootstrapButton
+                  v-else
+                  label="Отвязать от номера"
+                  :start-icon="linkOffIcon"
+                  @click="deleteRoomImage(id)"
+                />
+              </template>
+            </div>
+            <div class="actionsEnd">
               <BootstrapButton
                 v-if="!getRoomImage(id)"
-                severity="primary"
-                label="Привязать к номеру"
-                :start-icon="linkIcon"
-                @click="setImageToRoom(id)"
+                label="Удалить"
+                severity="danger"
+                :only-icon="trashIcon"
+                :loading="isImageRemoveFetching && imageIDToRemove === id"
+                @click="removeImage(id)"
               />
-              <BootstrapButton
-                v-else
-                label="Отвязать от номера"
-                :start-icon="linkOffIcon"
-                @click="deleteRoomImage(id)"
-              />
-            </template>
-          </div>
-          <div class="actionsEnd">
-            <BootstrapButton
-              v-if="!getRoomImage(id)"
-              label="Удалить"
-              severity="danger"
-              :only-icon="trashIcon"
-              :loading="isImageRemoveFetching && imageIDToRemove === id"
-              @click="removeImage(id)"
-            />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </vuedraggable>
   </BaseLayout>
   <BaseDialog
     :opened="isUploadDialogOpened"
@@ -313,25 +337,30 @@ const title = computed<string>(() => {
   gap: 1em;
 }
 
-.image {
-  display: flex;
-  flex-flow: column;
-  border: 1px solid lightgray;
-  border-radius: 0.375em;
+.pictureContainer {
+  position: relative;
+  flex-grow: 1;
 }
 
 .picture {
+  display: block;
   object-fit: cover;
   object-position: center;
-  max-width: 100%;
-  border-top-left-radius: inherit;
-  border-top-right-radius: inherit;
+  width: 100%;
   aspect-ratio: 4/3;
+}
+
+.imageDragHandle {
+  --position: 0.5em;
+
+  position: absolute;
+  top: var(--position);
+  left: var(--position);
+  cursor: grab;
 }
 
 .actions {
   display: flex;
-  padding: 0.5em;
 }
 
 .actionsStart {
@@ -346,5 +375,9 @@ const title = computed<string>(() => {
   display: flex;
   flex-flow: column;
   gap: 1em;
+}
+
+.sortable-chosen {
+  opacity: 0.3;
 }
 </style>
