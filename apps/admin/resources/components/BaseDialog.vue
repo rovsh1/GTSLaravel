@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import closeIcon from '@mdi/svg/svg/close.svg'
 import { OnClickOutside } from '@vueuse/components'
+import { MaybeRef } from '@vueuse/core'
 
 import BodyScrollLock from '~resources/components/BodyScrollLock.vue'
 import BootstrapButton from '~resources/components/Bootstrap/BootstrapButton/BootstrapButton.vue'
@@ -11,7 +12,7 @@ const emit = defineEmits<{
 
 const props = withDefaults(defineProps<{
   opened: boolean
-  disabled?: boolean
+  disabled?: MaybeRef<boolean>
 }>(), {
   disabled: false,
 })

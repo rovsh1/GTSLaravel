@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import { MaybeRef } from '@vueuse/core'
+
 import LoadingSpinner from '~resources/components/LoadingSpinner.vue'
 
 withDefaults(defineProps<{
   title: string
-  loading?: boolean
+  loading?: MaybeRef<boolean>
 }>(), {
   loading: false,
 })

@@ -2,7 +2,7 @@
 import { ref, watch } from 'vue'
 
 import crossIcon from '@mdi/svg/svg/close.svg'
-import { useDropZone } from '@vueuse/core'
+import { MaybeRef, useDropZone } from '@vueuse/core'
 import { nanoid } from 'nanoid'
 import prettyBytes from 'pretty-bytes'
 
@@ -19,7 +19,7 @@ type DroppedFile = {
 
 const props = withDefaults(defineProps<{
   value: File[] | null
-  disabled?: boolean
+  disabled?: MaybeRef<boolean>
 }>(), {
   disabled: false,
 })
@@ -140,7 +140,7 @@ const remove = (idToRemove: string) => {
         type="file"
         accept="image/jpeg,image/png,image/webp"
         multiple
-        :disabled="disabled"
+        :disabled="disabled as boolean"
         @input="onInput"
       >
     </div>

@@ -1,6 +1,8 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed, unref } from 'vue'
 import InlineSVG from 'vue-inline-svg'
+
+import { MaybeRef } from '@vueuse/core'
 
 import { BootstrapSeverity } from '~resources/components/Bootstrap/lib'
 import LoadingSpinner from '~resources/components/LoadingSpinner.vue'
@@ -17,8 +19,8 @@ const props = withDefaults(defineProps<{
   severity?: ButtonSeverity
   size?: ButtonSize
   href?: string
-  disabled?: boolean
-  loading?: boolean
+  disabled?: MaybeRef<boolean>
+  loading?: MaybeRef<boolean>
 }>(), {
   type: 'auto',
   onlyIcon: undefined,
@@ -78,9 +80,9 @@ const severityClass = computed(() => {
 })
 
 const isDisabled = computed<boolean | undefined>(() => {
-  if (props.loading) return true
+  if (unref(props.loading)) return true
   if (props.href !== undefined && props.disabled) return true
-  if (props.href === undefined) return props.disabled
+  if (props.href === undefined) return unref(props.disabled)
   return undefined
 })
 

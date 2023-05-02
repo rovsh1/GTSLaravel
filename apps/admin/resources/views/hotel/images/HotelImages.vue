@@ -199,7 +199,7 @@ const title = computed<string>(() => {
 })
 </script>
 <template>
-  <BaseLayout :title="title" :loading="isHotelFetching as boolean">
+  <BaseLayout :title="title" :loading="isHotelFetching">
     <template #header-controls>
       <BootstrapButton
         label="Добавить фотографии"
@@ -277,7 +277,7 @@ const title = computed<string>(() => {
   </BaseLayout>
   <BaseDialog
     :opened="isUploadDialogOpened"
-    :disabled="isImagesUploadFetching as boolean"
+    :disabled="isImagesUploadFetching"
     @close="isUploadDialogOpened = false"
   >
     <template #title>
@@ -286,7 +286,7 @@ const title = computed<string>(() => {
     <div class="upload">
       <DropZone
         :value="imagesToUpload"
-        :disabled="isImagesUploadFetching as boolean"
+        :disabled="isImagesUploadFetching"
         @input="files => imagesToUpload = files"
       />
     </div>
@@ -295,14 +295,14 @@ const title = computed<string>(() => {
         severity="primary"
         variant="filled"
         label="Загрузить"
-        :loading="isImagesUploadFetching as boolean"
+        :loading="isImagesUploadFetching"
         @click="uploadImages"
       />
     </template>
   </BaseDialog>
   <BaseDialog
     :opened="isRemoveImagePromptOpened"
-    :disabled="isImageRemoveFetching as boolean"
+    :disabled="isImageRemoveFetching"
   >
     <template #title>Действительно удалить это фото?</template>
     <ImageZoom
@@ -315,12 +315,12 @@ const title = computed<string>(() => {
       <BootstrapButton
         label="Удалить"
         severity="danger"
-        :loading="isImageRemoveFetching as boolean"
+        :loading="isImageRemoveFetching"
         @click="executeRemoveImage"
       />
       <BootstrapButton
         label="Отмена"
-        :disabled="isImageRemoveFetching as boolean"
+        :disabled="isImageRemoveFetching"
         @click="cancelRemoveImage"
       />
     </template>
