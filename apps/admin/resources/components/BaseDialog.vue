@@ -116,7 +116,7 @@ const close = () => {
   top: 0;
   display: flex;
   gap: 1em;
-  align-items: start;
+  align-items: flex-start;
   border-bottom: 1px solid hsl(210deg, 14%, 89%);
   border-top-left-radius: inherit;
   border-top-right-radius: inherit;
@@ -141,7 +141,7 @@ const close = () => {
   bottom: 0;
   display: flex;
   gap: 0.6em;
-  justify-content: end;
+  justify-content: flex-end;
   border-top: 1px solid hsl(210deg, 14%, 89%);
   border-bottom-right-radius: inherit;
   border-bottom-left-radius: inherit;

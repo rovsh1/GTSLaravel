@@ -3,6 +3,7 @@ import { expand } from 'dotenv-expand'
 import { config } from 'dotenv-safe'
 import laravel from 'laravel-vite-plugin'
 import path from 'node:path'
+import postcssPresetEnv from 'postcss-preset-env'
 import { defineConfig } from 'vite'
 import checker from 'vite-plugin-checker'
 import tsconfigPaths from 'vite-tsconfig-paths'
@@ -91,6 +92,13 @@ export default defineConfig(({ command }) => ({
   resolve: {
     alias: {
       '~resources': path.resolve(__dirname, 'resources'),
+    },
+  },
+  css: {
+    postcss: {
+      plugins: [
+        postcssPresetEnv,
+      ],
     },
   },
 }))
