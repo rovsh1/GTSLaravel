@@ -89,13 +89,21 @@ export const useHotelImageRemoveAPI = (props: MaybeRef<{ hotelID: number; imageI
     .json<{ success: boolean }>()
 }
 
-type HotelImagesReorderProps = { hotelID: number; images: HotelImage[] }
-export const useHotelImagesReorderAPI = (props: MaybeRef<HotelImagesReorderProps>) => {
-  const { hotelID, images } = unref(props)
-  // @todo отправить запрос на пересортировку
-  return useAdminAPI(`/hotels/${hotelID}/images/reorder`)
-    .post(images)
-}
+type HotelImagesReorderProps = { hotelID: number; imagesIDs: HotelImage['id'][] | null }
+export const useHotelImagesReorderAPI = (props: MaybeRef<HotelImagesReorderProps>) =>
+  useAdminAPI(computed(() => {
+    const { hotelID } = unref(props)
+    return `/hotels/${hotelID}/images/reorder`
+  }), {
+    beforeFetch(ctx) {
+      if (unref(props).imagesIDs === null) ctx.cancel()
+    },
+  })
+    .post(computed(() => {
+      const { imagesIDs } = unref(props)
+      console.log({ imagesIDs })
+      return imagesIDs
+    }))
 
 type HotelRoomImageProps = { hotelID: number; roomID: number; imageID: number }
 

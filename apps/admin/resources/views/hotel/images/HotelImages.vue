@@ -16,7 +16,7 @@ import ImageZoom from '~resources/components/ImageZoom.vue'
 import LoadingSpinner from '~resources/components/LoadingSpinner.vue'
 import {
   useHotelAPI, useHotelImageRemoveAPI,
-  useHotelImagesListAPI, useHotelImagesUploadAPI,
+  useHotelImagesListAPI, useHotelImagesReorderAPI, useHotelImagesUploadAPI,
   useHotelRoomAPI,
   useHotelRoomImageCreateAPI, useHotelRoomImageDeleteAPI, useHotelRoomImagesAPI,
 } from '~resources/lib/api/hotel'
@@ -145,8 +145,13 @@ onRemoveImageFinally(() => {
   imageIDToRemove.value = null
 })
 
-// @todo отправить запрос на пересортировку
-// const {} = useHotelImagesReorderAPI({ hotelID, images })
+const {
+  execute: executeHotelImagesReorder,
+  isFetching: isHotelImagesReorderFetching,
+} = useHotelImagesReorderAPI(computed(() => ({
+  hotelID,
+  imagesIDs: images.value?.map(({ id }) => id) ?? null,
+})))
 
 const setImageToRoom = async (imageID: number) => {
   if (!roomID) {
@@ -197,6 +202,10 @@ const title = computed<string>(() => {
   if (hotel.value) return hotel.value.name
   return ''
 })
+
+const draggableDrop = () => {
+  executeHotelImagesReorder()
+}
 </script>
 <template>
   <BaseLayout :title="title" :loading="isHotelFetching">
@@ -220,6 +229,7 @@ const title = computed<string>(() => {
       class="images"
       handle="[data-draggable-handle]"
       animation="300"
+      @drop="draggableDrop"
     >
       <div
         v-for="{ id, file: { url, name } } in images"
@@ -234,6 +244,7 @@ const title = computed<string>(() => {
             label="Потяните, чтобы изменить порядок фотографий"
             severity="dark"
             :only-icon="dragIcon"
+            :loading="isHotelImagesReorderFetching"
           />
           <ImageZoom
             class="card-img-top picture"
