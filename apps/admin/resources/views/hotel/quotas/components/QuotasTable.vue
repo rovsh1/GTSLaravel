@@ -281,34 +281,9 @@ const massEditTooltip = computed(() => {
               </td>
             </tr>
             <tr>
-              <th class="reserveHeadingCell">(резерв)</th>
+              <th class="headingCell">Релиз-дни / Резерв</th>
               <td
-                v-for="{ key, reserve, status } in dailyQuota"
-                :key="key"
-                class="reserveDataCell"
-                :class="dayQuotaCellClassName(status)"
-                tabindex="0"
-                @focusin="() => {
-                  setHoveredRoomTypeID({ dayKey: key, roomTypeID: id })
-                }"
-                @mouseenter="() => {
-                  setHoveredRoomTypeID({ dayKey: key, roomTypeID: id })
-                }"
-                @focusout="resetHoveredRoomTypeID"
-                @mouseleave="resetHoveredRoomTypeID"
-              >
-                <template v-if="reserve === null">
-                  &nbsp;
-                </template>
-                <template v-else>
-                  ({{ reserve }})
-                </template>
-              </td>
-            </tr>
-            <tr>
-              <th class="headingCell">релиз-дни</th>
-              <td
-                v-for="{ key, releaseDays, status, date } in dailyQuota"
+                v-for="{ key, releaseDays, reserve, status, date } in dailyQuota"
                 :key="key"
                 :class="dayQuotaCellClassName(status)"
                 :title="activeReleaseDaysKey ? massEditTooltip : undefined"
@@ -357,12 +332,18 @@ const massEditTooltip = computed(() => {
                   >
                     {{ editedReleaseDaysInRange?.value }}
                   </template>
-                  <template v-else-if="releaseDays === null">
+                  <template v-else-if="releaseDays === null && reserve === null">
                     <template v-if="editable">—</template>
                     <template v-else>&nbsp;</template>
                   </template>
+                  <template v-else-if="reserve === null">
+                    {{ releaseDays }} / 0
+                  </template>
+                  <template v-else-if="releaseDays === null">
+                    0 / {{ reserve }}
+                  </template>
                   <template v-else>
-                    {{ releaseDays }}
+                    {{ releaseDays }} / {{ reserve }}
                   </template>
                 </editable-cell>
               </td>
@@ -457,11 +438,6 @@ th {
   padding-block: 0.25em;
 }
 
-.reserveDataCell {
-  @extend %data-cell;
-  @extend %reserve-cell;
-}
-
 %heading-cell {
   @extend %cell;
 
@@ -472,11 +448,6 @@ th {
 
 .headingCell {
   @extend %heading-cell;
-}
-
-.reserveHeadingCell {
-  @extend %heading-cell;
-  @extend %reserve-cell;
 }
 
 %cell-title-line {
