@@ -145,7 +145,7 @@ const submit = () => {
   display: flex;
   flex-wrap: wrap;
   gap: 1em;
-  align-items: end;
+  align-items: flex-end;
 }
 
 .month {
