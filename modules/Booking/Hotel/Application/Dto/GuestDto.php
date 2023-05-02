@@ -14,9 +14,9 @@ class GuestDto extends AbstractDomainBasedDto
         public readonly string $fullName,
     ) {}
 
-    public static function fromDomain(EntityInterface|ValueObjectInterface|Room\Guest $guest): static
+    public static function fromDomain(EntityInterface|ValueObjectInterface|Room\Guest $guest): self
     {
-        return new static(
+        return new self(
             $guest->id(),
             $guest->fullName(),
         );

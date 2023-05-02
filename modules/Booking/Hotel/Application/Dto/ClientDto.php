@@ -13,7 +13,7 @@ class ClientDto extends AbstractDomainBasedDto
         public readonly string $fullName,
     ) {}
 
-    public static function fromDomain(EntityInterface|ValueObjectInterface|Client $entity): static
+    public static function fromDomain(EntityInterface|ValueObjectInterface|Client $entity): self
     {
         return new self(
             $entity->fullName()

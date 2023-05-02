@@ -15,7 +15,7 @@ class HotelDto extends AbstractDomainBasedDto
         public readonly ?string $checkOutTime,
     ) {}
 
-    public static function fromDomain(EntityInterface|ValueObjectInterface|Hotel $hotel): static
+    public static function fromDomain(EntityInterface|ValueObjectInterface|Hotel $hotel): self
     {
         return new self(
             $hotel->id(),
