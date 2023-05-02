@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|RoomImage whereHotelId(int $id)
  * @method static Builder|RoomImage whereImageId($value)
  * @method static Builder|RoomImage whereRoomId(int $value)
+ * @method static Builder|RoomImage orderByIndex()
  * @mixin \Eloquent
  */
 class RoomImage extends Model
@@ -51,9 +52,14 @@ class RoomImage extends Model
         });
     }
 
-    public function scopeWhereHotelId(Builder $builder, int $id)
+    public function scopeWhereHotelId(Builder $builder, int $id): void
     {
         $builder->where('hotel_images.hotel_id', $id);
+    }
+
+    public function scopeOrderByIndex(Builder $builder): void
+    {
+        $builder->orderBy('hotel_images.index');
     }
 
     public function file(): Attribute

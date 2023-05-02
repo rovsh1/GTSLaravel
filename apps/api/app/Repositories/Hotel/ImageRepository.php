@@ -19,6 +19,7 @@ class ImageRepository
     public function get(int $hotelId): Collection
     {
         return Image::whereHotelId($hotelId)
+            ->orderBy('index')
             ->get()
             ->append(['file']);
     }

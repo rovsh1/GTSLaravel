@@ -16,6 +16,7 @@ class RoomImageRepository
     {
         return RoomImage::whereHotelId($hotelId)
             ->whereRoomId($roomId)
+            ->orderByIndex()
             ->get()
             ->append(['file']);
     }
