@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import { VueDraggable } from 'vue-draggable-plus'
 
 import dragIcon from '@mdi/svg/svg/drag.svg'
@@ -38,7 +38,6 @@ const {
 const images = ref<HotelImage[] | null>(null)
 
 watch(imagesData, (value) => {
-  if (value === null) return
   images.value = value
 })
 
@@ -152,6 +151,12 @@ const {
   imagesIDs: images.value?.map(({ id }) => id) ?? null,
 })))
 
+const onDraggableUpdate = () => {
+  nextTick(() => {
+    executeHotelImagesReorder()
+  })
+}
+
 const setImageToRoom = async (imageID: number) => {
   if (!roomID) {
     return
@@ -201,10 +206,6 @@ const title = computed<string>(() => {
   if (hotel.value) return hotel.value.name
   return ''
 })
-
-const draggableDrop = () => {
-  executeHotelImagesReorder()
-}
 </script>
 <template>
   <BaseLayout :title="title" :loading="isHotelFetching">
@@ -228,7 +229,7 @@ const draggableDrop = () => {
       class="images"
       handle="[data-draggable-handle]"
       animation="300"
-      @drop="draggableDrop"
+      @update="onDraggableUpdate"
     >
       <div
         v-for="{ id, file: { url, name } } in images"
