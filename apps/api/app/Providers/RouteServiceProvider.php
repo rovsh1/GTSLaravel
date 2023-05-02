@@ -13,11 +13,6 @@ class RouteServiceProvider extends ServiceProvider
         Route::pattern('id', '[0-9]+');
 
         $this->routes(function () {
-            Route::prefix('admin')
-                ->middleware(HandleCors::class)
-                ->as('admin.')
-                ->group(base_path('routes/admin.php'));
-
             Route::prefix('traveline')
                 ->as('traveline.')
                 ->group(base_path('routes/traveline.php'));
