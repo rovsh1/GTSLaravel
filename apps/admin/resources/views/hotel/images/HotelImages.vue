@@ -73,17 +73,15 @@ const isUploadDialogOpened = ref(false)
 
 const imagesToUpload = ref<File[] | null>(null)
 
-const imagesUploadPayload = computed(() => ({
-  hotelID,
-  roomID,
-  images: imagesToUpload.value,
-}))
-
 const {
   execute: executeImagesUpload,
   isFetching: isImagesUploadFetching,
   onFetchResponse: onImagesUploadResponse,
-} = useHotelImagesUploadAPI(imagesUploadPayload)
+} = useHotelImagesUploadAPI(computed(() => ({
+  hotelID,
+  roomID,
+  images: imagesToUpload.value,
+})))
 
 const uploadImages = () => {
   if (imagesToUpload.value === null) return
@@ -98,8 +96,6 @@ onImagesUploadResponse(() => {
 })
 
 const imageIDToRemove = ref<number | null>(null)
-
-const imageRemovePayload = computed(() => ({ hotelID, imageID: imageIDToRemove.value }))
 
 const isRemoveImagePromptOpened = ref(false)
 
@@ -116,7 +112,10 @@ const {
   execute: executeRemoveImage,
   onFetchFinally: onRemoveImageFinally,
   data: removeImageData,
-} = useHotelImageRemoveAPI(imageRemovePayload)
+} = useHotelImageRemoveAPI(computed(() => ({
+  hotelID,
+  imageID: imageIDToRemove.value,
+})))
 
 const removeImage = (imageID: number) => {
   imageIDToRemove.value = imageID
@@ -359,6 +358,7 @@ const draggableDrop = () => {
   object-position: center;
   width: 100%;
   aspect-ratio: 4/3;
+  backdrop-filter: blur(10px);
 }
 
 .imageDragHandle {
