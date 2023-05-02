@@ -5,7 +5,7 @@ namespace Module\Hotel\Port\Controllers;
 use Carbon\CarbonPeriod;
 use Custom\Framework\Contracts\Bus\QueryBusInterface;
 use Custom\Framework\PortGateway\Request;
-use Module\Hotel\Application\Query\GetRoomQuota;
+use Module\Hotel\Application\Query\GetQuotas;
 use Module\Hotel\Application\Service\RoomQuotaUpdater;
 
 class RoomQuotaController
@@ -15,18 +15,20 @@ class RoomQuotaController
         private readonly QueryBusInterface $queryBus
     ) {}
 
-    public function getRoomQuota(Request $request)
+    public function getHotelQuotas(Request $request)
     {
         $request->validate([
-            'room_id' => 'required|numeric',
+            'hotel_id' => 'required|numeric',
+            'room_id' => 'nullable|numeric',
             'date_from' => 'required|date',
             'date_to' => 'required|date',
         ]);
 
         return $this->queryBus->execute(
-            new GetRoomQuota(
+            new GetQuotas(
+                $request->hotel_id,
+                new CarbonPeriod($request->date_from, $request->date_to),
                 $request->room_id,
-                new CarbonPeriod($request->date_from, $request->date_to)
             )
         );
     }

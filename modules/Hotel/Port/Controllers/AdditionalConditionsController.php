@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Module\Hotel\Port\Controllers;
 
 use Custom\Framework\PortGateway\Request;
-use Module\Hotel\Application\Service\AdditionalConditionsManager;
+use Module\Hotel\Application\Service\MarkupManager;
 
 class AdditionalConditionsController
 {
     public function __construct(
-        private readonly AdditionalConditionsManager $conditionsManager
+        private readonly MarkupManager $conditionsManager
     ) {}
 
     public function getAdditionalConditions(Request $request): array

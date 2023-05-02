@@ -30,10 +30,10 @@ class QuotaController extends Controller
             ->view('hotel.quotas.quotas');
     }
 
-    public function get(GetQuotaRequest $request, Hotel $hotel, Room $room): JsonResponse
+    public function get(GetQuotaRequest $request, Hotel $hotel): JsonResponse
     {
         //@todo $request->getAvailability(), логика доступности
-        $quotas = QuotaAdapter::getRoomQuota($room->id, $request->getPeriod());
+        $quotas = QuotaAdapter::getHotelQuotas($hotel->id, $request->getPeriod(), $request->getRoomId());
         return response()->json(RoomQuota::collection($quotas));
     }
 

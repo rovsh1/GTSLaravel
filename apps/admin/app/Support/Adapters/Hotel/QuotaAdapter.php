@@ -10,9 +10,10 @@ class QuotaAdapter extends AbstractPortAdapter
 {
     protected string $module = 'hotel';
 
-    public function getRoomQuota(int $roomId, CarbonPeriod $period): array
+    public function getHotelQuotas(int $hotelId, CarbonPeriod $period, ?int $roomId = null): array
     {
-        return $this->request('getRoomQuota', [
+        return $this->request('getHotelQuotas', [
+            'hotel_id' => $hotelId,
             'room_id' => $roomId,
             'date_from' => $period->getStartDate(),
             'date_to' => $period->getEndDate(),

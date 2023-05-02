@@ -7,19 +7,19 @@ use Custom\Framework\Contracts\Bus\QueryInterface;
 use Module\Hotel\Application\Dto\QuotaDto;
 use Module\Hotel\Domain\Repository\RoomQuotaRepositoryInterface;
 
-class GetRoomQuotaHandler implements QueryHandlerInterface
+class GetQuotasHandler implements QueryHandlerInterface
 {
     public function __construct(
         private readonly RoomQuotaRepositoryInterface $repository
     ) {}
 
     /**
-     * @param GetRoomQuota $query
+     * @param GetQuotas $query
      * @return QuotaDto[]
      */
-    public function handle(QueryInterface|GetRoomQuota $query): array
+    public function handle(QueryInterface|GetQuotas $query): array
     {
-        $quotas = $this->repository->get($query->roomId, $query->period);
+        $quotas = $this->repository->get($query->hotelId, $query->period, $query->roomId);
         return QuotaDto::collection($quotas)->all();
     }
 }

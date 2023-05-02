@@ -19,6 +19,7 @@ class GetQuotaRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'room_id' => ['nullable', 'numeric'],
             'month' => ['required', 'numeric', 'between:1,12'],
             'year' => ['required', 'date_format:Y'],
             'interval' => ['required', new DateIntervalRule],
@@ -29,6 +30,11 @@ class GetQuotaRequest extends FormRequest
     public function getAvailability(): int
     {
         return $this->get('availability');
+    }
+
+    public function getRoomId(): ?int
+    {
+        return $this->get('room_id');
     }
 
     public function getPeriod(): CarbonPeriod

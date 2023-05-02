@@ -21,11 +21,11 @@ class Hotel extends Model
         'address_lat',
         'address_lon',
         'city_distance',
-        'additional_conditions',
+        'markup_settings',
     ];
 
     protected $casts = [
-        'additional_conditions' => 'array'
+        'markup_settings' => 'array'
     ];
 
     public function rooms()

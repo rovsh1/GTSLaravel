@@ -3,6 +3,7 @@
 namespace Module\Hotel\Infrastructure\Repository;
 
 use Carbon\CarbonPeriod;
+use Illuminate\Database\Eloquent\Builder;
 use Module\Hotel\Domain\Factory\RoomQuotaFactory;
 use Module\Hotel\Domain\Repository\RoomQuotaRepositoryInterface;
 use Module\Hotel\Infrastructure\Models\Room\Quota as EloquentQuota;
@@ -10,9 +11,18 @@ use Module\Hotel\Infrastructure\Models\Room\QuotaStatusEnum;
 
 class RoomQuotaRepository implements RoomQuotaRepositoryInterface
 {
-    public function get(int $roomId, CarbonPeriod $period): array
+    public function get(int $hotelId, CarbonPeriod $period, ?int $roomId = null): array
     {
-        $models = EloquentQuota::whereRoomId($roomId)
+        $models = EloquentQuota::query()
+            ->where(function (Builder $builder) use ($roomId, $hotelId) {
+                if ($roomId !== null) {
+                    $builder->whereRoomId($roomId);
+                } else {
+                    $builder->whereHas('room', function (Builder $query) use ($hotelId) {
+                        $query->whereHotelId($hotelId);
+                    });
+                }
+            })
             ->where('date', '>=', $period->getStartDate())
             ->where('date', '<', $period->getEndDate())
             ->get();

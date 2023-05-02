@@ -9,7 +9,7 @@ use Module\Hotel\Port\Controllers\AdditionalConditionsController;
 
 Route::register('getAdditionalConditions', [AdditionalConditionsController::class, 'getAdditionalConditions']);
 
-Route::register('getRoomQuota', [RoomQuotaController::class, 'getRoomQuota']);
+Route::register('getHotelQuotas', [RoomQuotaController::class, 'getHotelQuotas']);
 Route::register('updateRoomQuota', [RoomQuotaController::class, 'updateRoomQuota']);
 Route::register('openRoomQuota', [RoomQuotaController::class, 'openRoomQuota']);
 Route::register('closeRoomQuota', [RoomQuotaController::class, 'closeRoomQuota']);

@@ -6,6 +6,6 @@ namespace Module\Hotel\Domain\ValueObject;
 
 enum ConditionTypeEnum: int
 {
-    case CheckIn = 1;
-    case CheckOut = 2;
+    case CHECK_IN = 1;
+    case CHECK_OUT = 2;
 }

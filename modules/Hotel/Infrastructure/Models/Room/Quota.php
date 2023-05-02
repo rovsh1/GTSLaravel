@@ -3,6 +3,8 @@
 namespace Module\Hotel\Infrastructure\Models\Room;
 
 use Custom\Framework\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Module\Hotel\Infrastructure\Models\Room;
 
 /**
  * Module\Hotel\Infrastructure\Models\Room\Quota
@@ -15,6 +17,7 @@ use Custom\Framework\Database\Eloquent\Model;
  * @property int $count_available
  * @property int $count_booked
  * @property int $count_reserved
+ * @property-read Room|null $room
  * @method static \Illuminate\Database\Eloquent\Builder|Quota newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Quota newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Quota query()
@@ -46,4 +49,9 @@ class Quota extends Model
         'date' => 'date',
         'status' => QuotaStatusEnum::class
     ];
+
+    public function room(): BelongsTo
+    {
+        return $this->belongsTo(Room::class);
+    }
 }
