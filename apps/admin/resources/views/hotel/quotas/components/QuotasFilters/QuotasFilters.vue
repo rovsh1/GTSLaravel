@@ -40,7 +40,7 @@ const yearsAddToCurrent = 5
 
 const years = computed<Year[]>(() => Array
   .from({ length: yearsAddToCurrent })
-  .map((item, index) => createYear(currentYear + index)))
+  .map((item, index) => createYear(currentYear - index)))
 
 const months = computed<Month[]>(() => {
   const year = DateTime.fromFormat(selectedYear.value.toString(), 'yyyy').toJSDate()
