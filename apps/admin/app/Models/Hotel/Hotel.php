@@ -118,7 +118,7 @@ class Hotel extends Model
     public function scopeWherePeriod(Builder $builder, CarbonPeriod $period): void
     {
         $builder->whereHas('contracts', function (Builder $query) use ($period) {
-            $query->whereBetween('date_start', [$period->getStartDate(), $period->getStartDate()]);
+            $query->whereBetween('date_start', [$period->getStartDate(), $period->getEndDate()]);
         });
     }
 
