@@ -40,7 +40,7 @@ class TimePeriod implements ValueObjectInterface, SerializableDataInterface
 
     private function validateTime(string $value): string
     {
-        if (!preg_match('/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/m', $value)) {
+        if (!preg_match('/^([0-1]?[0-9]|2[0-4]):[0-5][0-9]$/m', $value)) {
             throw new \InvalidArgumentException("Invalid value for period [{$value}]");
         }
         return $value;
