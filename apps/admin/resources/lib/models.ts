@@ -80,3 +80,5 @@ export type QueryInterval =
   | 'P3M' // 3 months
   | 'P6M' // 6 months
   | 'P1Y' // 1 year
+  | 'P2Y' // 2 years
+  | 'P3Y' // 3 years
