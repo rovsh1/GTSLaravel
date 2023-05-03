@@ -29,7 +29,8 @@ import {
 import { HotelRoomResponse, useHotelRoomAPI } from '~resources/lib/api/hotel/room'
 import { showToast } from '~resources/lib/toast'
 import { useUrlParams } from '~resources/lib/url-params'
-import DropZone from '~resources/views/hotel/images/components/DropZone.vue'
+
+import UploadDialog from './components/UploadDialog.vue'
 
 const { hotel: hotelID } = useUrlParams()
 const { room_id: roomID } = useUrlSearchParams<{ room_id?: number }>()
@@ -88,6 +89,7 @@ const {
 })))
 
 const uploadImages = () => {
+  console.log('upload', imagesToUpload.value)
   if (imagesToUpload.value === null) return
   executeImagesUpload()
 }
@@ -291,31 +293,14 @@ const title = computed<string>(() => {
       </div>
     </vuedraggable>
   </BaseLayout>
-  <BaseDialog
+  <UploadDialog
     :opened="isUploadDialogOpened"
-    :disabled="isImagesUploadFetching"
-    @close="isUploadDialogOpened = false"
-  >
-    <template #title>
-      <div>Добавить фотографии</div>
-    </template>
-    <div class="upload">
-      <DropZone
-        :value="imagesToUpload"
-        :disabled="isImagesUploadFetching"
-        @input="files => imagesToUpload = files"
-      />
-    </div>
-    <template #actions>
-      <BootstrapButton
-        severity="primary"
-        variant="filled"
-        label="Загрузить"
-        :loading="isImagesUploadFetching"
-        @click="uploadImages"
-      />
-    </template>
-  </BaseDialog>
+    :loading="isImagesUploadFetching"
+    :files="imagesToUpload"
+    @files="(files) => imagesToUpload = files"
+    @upload="() => uploadImages()"
+    @close="() => isUploadDialogOpened = false"
+  />
   <BaseDialog
     :opened="isRemoveImagePromptOpened"
     :disabled="isImageRemoveFetching"
@@ -326,16 +311,20 @@ const title = computed<string>(() => {
       class="picture"
       :src="imageToRemove.file.url"
       :alt="imageToRemove.file.name"
+      :disabled="isImageRemoveFetching"
     />
-    <template #actions>
+    <template #actions-end>
       <BootstrapButton
         label="Удалить"
+        variant="outline"
         severity="danger"
         :loading="isImageRemoveFetching"
+        :start-icon="trashIcon"
         @click="executeRemoveImage"
       />
       <BootstrapButton
         label="Отмена"
+        severity="light"
         :disabled="isImageRemoveFetching"
         @click="cancelRemoveImage"
       />

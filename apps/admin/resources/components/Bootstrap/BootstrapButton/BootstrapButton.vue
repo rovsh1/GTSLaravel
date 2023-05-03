@@ -103,6 +103,7 @@ const buttonType = computed(() => {
 <template>
   <component
     :is="is"
+    v-tooltip="onlyIcon ? label : undefined"
     :type="buttonType"
     class="btn button"
     :class="[
@@ -158,6 +159,15 @@ const buttonType = computed(() => {
 
 .btn-outline-light {
   --bs-btn-color: hsl(0deg, 0%, 40%);
+  --bs-btn-border-color: hsl(0deg, 0%, 80%);
+
+  &:disabled {
+    --bs-btn-disabled-color: var(--bs-btn-color);
+  }
+}
+
+.btn-outline-link {
+  border-color: transparent;
 }
 
 button.btn {

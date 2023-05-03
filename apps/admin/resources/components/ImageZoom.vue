@@ -1,13 +1,18 @@
 <script setup lang="ts">
 import { type ComponentPublicInstance, type ImgHTMLAttributes, watch } from 'vue'
 
+import { MaybeRef } from '@vueuse/core'
 import mediumZoom, { type Zoom, type ZoomOptions } from 'medium-zoom'
 
 interface Props extends ImgHTMLAttributes {
   options?: ZoomOptions
+  disabled?: MaybeRef<boolean>
 }
 
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  options: undefined,
+  disabled: false,
+})
 
 let zoom: Zoom | null = null
 
@@ -35,8 +40,21 @@ watch(() => props.options, (options) => {
 })
 </script>
 <template>
-  <img :ref="attachZoom" :alt="props.alt" :src="props.src" />
+  <img
+    :ref="attachZoom"
+    :alt="props.alt"
+    :src="props.src"
+    class="zoomableImage"
+    :class="{ disabled }"
+  />
 </template>
+<style lang="scss" scoped>
+.zoomableImage {
+  &.disabled {
+    pointer-events: none;
+  }
+}
+</style>
 <style>
 .medium-zoom-overlay {
   z-index: 10000;

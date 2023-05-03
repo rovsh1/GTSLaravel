@@ -1,0 +1,16 @@
+@import 'floating-vue/dist/style.css';
+
+.v-popper {
+  &--theme {
+    &-tooltip {
+      %theme-tooltip-popper-inner {
+        background-color: black;
+        font-size: 0.85em;
+      }
+    }
+  }
+
+  &__inner {
+    @extend %theme-tooltip-popper-inner;
+  }
+}

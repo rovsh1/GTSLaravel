@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
 
+import backspaceIcon from '@mdi/svg/svg/backspace.svg'
 import { MaybeRef } from '@vueuse/core'
+import { isEqual } from 'lodash'
 import { DateTime } from 'luxon'
 
 import BootstrapButton from '~resources/components/Bootstrap/BootstrapButton/BootstrapButton.vue'
@@ -34,15 +36,23 @@ const emit = defineEmits<{
   (event: 'submit', value: FiltersPayload): void
 }>()
 
-const selectedYear = ref<Year['value']>(defaultFiltersPayload.year)
+const defaultState = {
+  year: defaultFiltersPayload.year,
+  month: defaultFiltersPayload.month,
+  monthsCount: defaultFiltersPayload.monthsCount,
+  availability: '' as const,
+  roomID: '' as const,
+}
+
+const selectedYear = ref<Year['value']>(defaultState.year)
 
 const yearsAddToCurrent = 5
 
 const years = computed<Year[]>(() => [
   ...Array.from({ length: yearsAddToCurrent })
-    .map((item, index) => createYear(defaultFiltersPayload.year - index)).reverse(),
+    .map((item, index) => createYear(defaultState.year - index)).reverse(),
   ...Array.from({ length: yearsAddToCurrent - 1 })
-    .map((item, index) => createYear(defaultFiltersPayload.year + 1 + index)),
+    .map((item, index) => createYear(defaultState.year + 1 + index)),
 ])
 
 const months = computed<Month[]>(() => {
@@ -69,7 +79,7 @@ const monthsCountOptions: MonthsCountOption[] = [
   { value: 36, label: '3 года' },
 ]
 
-const selectedMonthsCount = ref<MonthsCountOption['value']>(defaultFiltersPayload.monthsCount)
+const selectedMonthsCount = ref<MonthsCountOption['value']>(defaultState.monthsCount)
 
 type AvailabilityOption = {
   value: AvailabilityValue
@@ -82,34 +92,46 @@ const availabilityOptions: AvailabilityOption[] = [
   { value: 'available', label: 'Доступные' },
 ]
 
-const selectedAvailabilityOption = ref<AvailabilityOption['value'] | ''>('')
+const selectedAvailabilityOption = ref<AvailabilityOption['value'] | ''>(defaultState.availability)
 
 const rooms = computed(() => props.rooms.map(({ id, name, custom_name: customName }) => ({
   value: id,
   label: `${name} (${customName})`,
 })))
 
-const selectedRoom = ref<RoomID | ''>('')
+const selectedRoomID = ref<RoomID | ''>('')
 
 const handleRoomInput = (value: string | number) => {
   const numericValue = Number(value)
   if (value === '' || Number.isNaN(numericValue)) {
-    selectedRoom.value = ''
+    selectedRoomID.value = ''
   } else {
-    selectedRoom.value = numericValue
+    selectedRoomID.value = numericValue
   }
 }
 
+const payload = computed<FiltersPayload>(() => ({
+  year: selectedYear.value,
+  month: selectedMonth.value,
+  monthsCount: selectedMonthsCount.value,
+  availability: selectedAvailabilityOption.value === ''
+    ? null : selectedAvailabilityOption.value,
+  roomID: selectedRoomID.value === '' ? null : selectedRoomID.value,
+}))
+
 const submit = () => {
-  emit('submit', {
-    year: selectedYear.value,
-    month: selectedMonth.value,
-    monthsCount: selectedMonthsCount.value,
-    availability: selectedAvailabilityOption.value === ''
-      ? undefined : selectedAvailabilityOption.value,
-    room: selectedRoom.value === '' ? undefined : selectedRoom.value,
-  })
+  emit('submit', payload.value)
 }
+
+const reset = () => {
+  selectedYear.value = defaultState.year
+  selectedMonth.value = defaultState.month
+  selectedMonthsCount.value = defaultState.monthsCount
+  selectedAvailabilityOption.value = defaultState.availability
+  selectedRoomID.value = defaultState.roomID
+}
+
+const isStateChanged = computed<boolean>(() => !isEqual(payload.value, defaultFiltersPayload))
 </script>
 <template>
   <div class="quotasFilters">
@@ -146,7 +168,7 @@ const submit = () => {
     <FiltersSelect
       :options="rooms"
       label="Номер"
-      :value="selectedRoom"
+      :value="selectedRoomID"
       allow-deselect
       :disabled="loading"
       @input="handleRoomInput"
@@ -156,7 +178,16 @@ const submit = () => {
       variant="outline"
       severity="primary"
       :loading="loading"
+      :disabled="!isStateChanged"
       @click="submit"
+    />
+    <BootstrapButton
+      label="Сбросить"
+      :only-icon="backspaceIcon"
+      variant="outline"
+      severity="link"
+      :disabled="loading || !isStateChanged"
+      @click="reset"
     />
   </div>
 </template>

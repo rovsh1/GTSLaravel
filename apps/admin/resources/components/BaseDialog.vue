@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { watch } from 'vue'
+
 import closeIcon from '@mdi/svg/svg/close.svg'
 import { OnClickOutside } from '@vueuse/components'
 import { MaybeRef } from '@vueuse/core'
@@ -21,6 +23,18 @@ const close = () => {
   if (props.disabled) return
   emit('close')
 }
+
+const keydown = (event: KeyboardEvent) => {
+  if (event.key === 'Escape') close()
+}
+
+watch(() => props.opened, (value) => {
+  if (value) {
+    window.addEventListener('keydown', keydown)
+  } else {
+    window.removeEventListener('keydown', keydown)
+  }
+})
 </script>
 <template>
   <Teleport to="body">
@@ -33,11 +47,12 @@ const close = () => {
                 <slot name="title" />
               </div>
               <BootstrapButton
-                label="Закрыть"
+                label="Закрыть (Esc)"
                 :only-icon="closeIcon"
                 size="small"
                 severity="link"
                 variant="outline"
+                :disabled="disabled"
                 @click="close"
               />
             </div>
@@ -47,9 +62,14 @@ const close = () => {
               <slot />
             </div>
           </template>
-          <template v-if="$slots['actions']">
+          <template v-if="$slots['actions-start'] || $slots['actions-end']">
             <div class="actions">
-              <slot name="actions" />
+              <div class="actions-start">
+                <slot name="actions-start" />
+              </div>
+              <div class="actions-end">
+                <slot name="actions-end" />
+              </div>
             </div>
           </template>
         </OnClickOutside>
@@ -114,6 +134,7 @@ const close = () => {
 
   position: sticky;
   top: 0;
+  z-index: 1;
   display: flex;
   gap: 1em;
   align-items: flex-start;
@@ -134,17 +155,33 @@ const close = () => {
   @extend %part;
 }
 
+%actions-part {
+  display: flex;
+  gap: 0.6em;
+}
+
 .actions {
   @extend %part;
+  @extend %actions-part;
 
   position: sticky;
   bottom: 0;
-  display: flex;
-  gap: 0.6em;
-  justify-content: flex-end;
+  align-items: flex-end;
   border-top: 1px solid hsl(210deg, 14%, 89%);
   border-bottom-right-radius: inherit;
   border-bottom-left-radius: inherit;
   background-color: inherit;
+}
+
+.actions-start {
+  @extend %actions-part;
+
+  flex-grow: 1;
+}
+
+.actions-end {
+  @extend %actions-part;
+
+  flex-shrink: 0;
 }
 </style>

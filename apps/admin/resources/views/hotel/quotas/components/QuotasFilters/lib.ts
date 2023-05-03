@@ -37,12 +37,14 @@ export type FiltersPayload = {
   year: number
   month: MonthNumber
   monthsCount: MonthsCount
-  availability?: AvailabilityValue
-  room?: RoomID
+  availability: AvailabilityValue | null
+  roomID: RoomID | null
 }
 
 export const defaultFiltersPayload: FiltersPayload = {
   year: new Date().getFullYear(),
   month: currentMonth,
   monthsCount: 1,
+  availability: null,
+  roomID: null,
 }

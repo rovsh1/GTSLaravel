@@ -1,5 +1,9 @@
 import { ComponentOptions, createApp, h, Ref, unref } from 'vue'
 
+import { VTooltip } from 'floating-vue'
+
+import '~resources/sass/vendor/floating-vue.scss'
+
 type CreateVueInstanceParams = {
   rootComponent: ComponentOptions
   rootContainer: string
@@ -10,6 +14,8 @@ export const createVueInstance = (params: CreateVueInstanceParams) => {
   const app = createApp({
     render: () => h(rootComponent),
   })
+
+  app.directive('tooltip', VTooltip)
 
   app.mount(rootContainer)
 

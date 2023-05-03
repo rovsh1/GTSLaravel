@@ -48,14 +48,14 @@ const {
   execute: fetchHotelQuotas,
   data: hotelQuotas,
 } = useHotelQuotasAPI(computed(() => {
-  const { month, year, monthsCount, availability, room } = filtersPayload.value
+  const { month, year, monthsCount, availability, roomID } = filtersPayload.value
   return {
     hotelID,
     month,
     year,
     interval: intervalByMonthsCount[monthsCount],
-    roomID: room,
-    availability,
+    roomID: roomID ?? undefined,
+    availability: availability ?? undefined,
   }
 }))
 
@@ -117,6 +117,7 @@ const handleFilters = (value: FiltersPayload) => {
         Не удалось найти комнаты для этого отеля.
       </div>
       <div v-else-if="months === null">
+        <!-- TODO fill empty month for each selected room -->
         Квоты не найдены. Попробуйте изменить фильтры.
       </div>
       <div v-else class="quotasTables">
