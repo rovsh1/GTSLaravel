@@ -3,14 +3,14 @@
 use App\Admin\Enums\Hotel\VisibilityEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
-use Module\Hotel\Domain\ValueObject\Options\CancelMarkupPercent;
+use Module\Hotel\Domain\ValueObject\Options\CancelMarkupOption;
 use Module\Hotel\Domain\ValueObject\Options\CancelPeriod;
 use Module\Hotel\Domain\ValueObject\Options\CancelPeriodCollection;
 use Module\Hotel\Domain\ValueObject\Options\CancelPeriodTypeEnum;
 use Module\Hotel\Domain\ValueObject\Options\ClientMarkups;
 use Module\Hotel\Domain\ValueObject\Options\Condition;
 use Module\Hotel\Domain\ValueObject\Options\DailyMarkupCollection;
-use Module\Hotel\Domain\ValueObject\Options\DailyMarkupPercent;
+use Module\Hotel\Domain\ValueObject\Options\DailyMarkupOption;
 use Module\Hotel\Domain\ValueObject\Options\EarlyCheckInCollection;
 use Module\Hotel\Domain\ValueObject\Options\LateCheckOutCollection;
 use Module\Hotel\Domain\ValueObject\Options\MarkupSettings;
@@ -127,8 +127,8 @@ return new class extends Migration {
                     ->get();
 
                 $dailyMarkups = $cancelConditions->map(
-                    fn(\stdClass $dailyMarkup) => new DailyMarkupPercent(
-                        $dailyMarkup->price_markup,
+                    fn(\stdClass $dailyMarkup) => new DailyMarkupOption(
+                        new Percent($dailyMarkup->price_markup),
                         CancelPeriodTypeEnum::from($dailyMarkup->period_type),
                         $dailyMarkup->days
                     )
@@ -139,8 +139,8 @@ return new class extends Migration {
 
                 return new CancelPeriod(
                     new \Carbon\CarbonPeriod($cancelPeriod->date_from, $cancelPeriod->date_to),
-                    new CancelMarkupPercent(
-                        $cancelPeriod->price_markup,
+                    new CancelMarkupOption(
+                        new Percent($cancelPeriod->price_markup),
                         CancelPeriodTypeEnum::from($cancelPeriod->period_type)
                     ),
                     $dailyMarkupCollection

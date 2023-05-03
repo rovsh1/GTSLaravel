@@ -12,7 +12,7 @@ class CancelPeriod implements ValueObjectInterface, SerializableDataInterface
 {
     public function __construct(
         private CarbonPeriod $period,
-        private CancelMarkupPercent $noCheckInMarkup,
+        private CancelMarkupOption $noCheckInMarkup,
         private DailyMarkupCollection $dailyMarkups
     ) {}
 
@@ -21,7 +21,7 @@ class CancelPeriod implements ValueObjectInterface, SerializableDataInterface
         return $this->period;
     }
 
-    public function noCheckInMarkup(): CancelMarkupPercent
+    public function noCheckInMarkup(): CancelMarkupOption
     {
         return $this->noCheckInMarkup;
     }
@@ -44,7 +44,7 @@ class CancelPeriod implements ValueObjectInterface, SerializableDataInterface
     {
         return new static(
             new CarbonPeriod($data['period']),
-            CancelMarkupPercent::fromData($data['noCheckInMarkup']),
+            CancelMarkupOption::fromData($data['noCheckInMarkup']),
             DailyMarkupCollection::fromData($data['dailyMarkups']),
         );
     }

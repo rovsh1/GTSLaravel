@@ -8,17 +8,17 @@ use Illuminate\Support\Collection;
 use Module\Shared\Domain\ValueObject\SerializableDataInterface;
 
 /**
- * @extends Collection<int, DailyMarkupPercent>
+ * @extends Collection<int, DailyMarkupOption>
  */
 class DailyMarkupCollection extends Collection implements SerializableDataInterface
 {
     public function toData(): array
     {
-        return $this->map(fn(DailyMarkupPercent $dailyMarkupPercent) => $dailyMarkupPercent->toData())->all();
+        return $this->map(fn(DailyMarkupOption $dailyMarkupPercent) => $dailyMarkupPercent->toData())->all();
     }
 
     public static function fromData(array $data): static
     {
-        return (new static($data))->map(fn(array $item) => DailyMarkupPercent::fromData($item));
+        return (new static($data))->map(fn(array $item) => DailyMarkupOption::fromData($item));
     }
 }

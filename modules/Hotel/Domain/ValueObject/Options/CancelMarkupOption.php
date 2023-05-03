@@ -7,13 +7,16 @@ namespace Module\Hotel\Domain\ValueObject\Options;
 use Module\Shared\Domain\ValueObject\Percent;
 use Module\Shared\Domain\ValueObject\SerializableDataInterface;
 
-class CancelMarkupPercent extends Percent implements SerializableDataInterface
+class CancelMarkupOption implements SerializableDataInterface
 {
     public function __construct(
-        int $value,
+        private Percent $percent,
         private CancelPeriodTypeEnum $cancelPeriodType
-    ) {
-        parent::__construct($value);
+    ) {}
+
+    public function percent(): Percent
+    {
+        return $this->percent;
     }
 
     public function cancelPeriodType(): CancelPeriodTypeEnum
@@ -24,7 +27,7 @@ class CancelMarkupPercent extends Percent implements SerializableDataInterface
     public function toData(): array
     {
         return [
-            'value' => $this->value,
+            'value' => $this->percent->value(),
             'cancelPeriodType' => $this->cancelPeriodType->value
         ];
     }
@@ -32,7 +35,7 @@ class CancelMarkupPercent extends Percent implements SerializableDataInterface
     public static function fromData(array $data): static
     {
         return new static(
-            $data['value'],
+            new Percent($data['value']),
             CancelPeriodTypeEnum::from($data['cancelPeriodType'])
         );
     }
