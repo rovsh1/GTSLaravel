@@ -5,9 +5,9 @@ import { MaybeRef } from '@vueuse/core'
 import { DateTime } from 'luxon'
 
 import BootstrapButton from '~resources/components/Bootstrap/BootstrapButton/BootstrapButton.vue'
-import { HotelRoom } from '~resources/lib/api/hotel'
+import { MonthNumber } from '~resources/lib/api/hotel/quotas'
+import { HotelRoom } from '~resources/lib/api/hotel/rooms'
 import { getEachMonthInYear } from '~resources/lib/date'
-import { MonthNumber } from '~resources/lib/models'
 
 import FiltersSelect from '../FiltersSelect.vue'
 
@@ -16,7 +16,6 @@ import {
   AvailabilityValue,
   createYear,
   currentMonth,
-  currentYear,
   defaultFiltersPayload,
   FiltersPayload,
   Month,
@@ -41,9 +40,9 @@ const yearsAddToCurrent = 5
 
 const years = computed<Year[]>(() => [
   ...Array.from({ length: yearsAddToCurrent })
-    .map((item, index) => createYear(currentYear - index)).reverse(),
+    .map((item, index) => createYear(defaultFiltersPayload.year - index)).reverse(),
   ...Array.from({ length: yearsAddToCurrent - 1 })
-    .map((item, index) => createYear(currentYear + 1 + index)),
+    .map((item, index) => createYear(defaultFiltersPayload.year + 1 + index)),
 ])
 
 const months = computed<Month[]>(() => {

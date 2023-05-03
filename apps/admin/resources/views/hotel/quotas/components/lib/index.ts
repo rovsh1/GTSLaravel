@@ -1,7 +1,8 @@
 import { uniqBy } from 'lodash'
 import { DateTime } from 'luxon'
 
-import { HotelQuota, HotelQuotaID, HotelRoom, QuotaStatus } from '~resources/lib/api/hotel'
+import { HotelQuota, HotelQuotaID, QuotaStatus } from '~resources/lib/api/hotel/quotas'
+import { HotelRoom } from '~resources/lib/api/hotel/rooms'
 
 export type Day = {
   key: string
@@ -51,7 +52,6 @@ export const getRoomsQuotasFromQuotas = ({
   quotas
     .map(({ roomID }): RoomQuotas | null => {
       const room = rooms.find(({ id }) => roomID === id)
-      console.log({ room, rooms, roomID })
       if (room === undefined) return null
       const roomQuotas = quotas
         .filter((quota) => quota.roomID === roomID)

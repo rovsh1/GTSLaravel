@@ -14,17 +14,22 @@ import BaseLayout from '~resources/components/BaseLayout.vue'
 import BootstrapButton from '~resources/components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 import ImageZoom from '~resources/components/ImageZoom.vue'
 import LoadingSpinner from '~resources/components/LoadingSpinner.vue'
+import { HotelResponse, useHotelAPI } from '~resources/lib/api/hotel/hotel'
 import {
-  useHotelAPI, useHotelImageRemoveAPI,
-  useHotelImagesListAPI, useHotelImagesReorderAPI, useHotelImagesUploadAPI,
-  useHotelRoomAPI,
-  useHotelRoomImageCreateAPI, useHotelRoomImageDeleteAPI, useHotelRoomImagesAPI,
-} from '~resources/lib/api/hotel'
-import { Hotel, HotelRoomResponse } from '~resources/lib/models'
+  HotelImageResponse,
+  RoomImageResponse,
+  useHotelImageRemoveAPI,
+  useHotelImagesListAPI,
+  useHotelImagesReorderAPI,
+  useHotelImagesUploadAPI,
+  useHotelRoomImageCreateAPI,
+  useHotelRoomImageDeleteAPI,
+  useHotelRoomImagesAPI,
+} from '~resources/lib/api/hotel/images'
+import { HotelRoomResponse, useHotelRoomAPI } from '~resources/lib/api/hotel/room'
 import { showToast } from '~resources/lib/toast'
 import { useUrlParams } from '~resources/lib/url-params'
 import DropZone from '~resources/views/hotel/images/components/DropZone.vue'
-import { HotelImage, RoomImage } from '~resources/views/hotel/images/models'
 
 const { hotel: hotelID } = useUrlParams()
 const { room_id: roomID } = useUrlSearchParams<{ room_id?: number }>()
@@ -35,7 +40,7 @@ const {
   isFetching: isImagesFetching,
 } = useHotelImagesListAPI({ hotelID })
 
-const images = ref<HotelImage[] | null>(null)
+const images = ref<HotelImageResponse[] | null>(null)
 
 watch(imagesData, (value) => {
   images.value = value
@@ -47,7 +52,7 @@ const {
   isFetching: isRoomImagesFetching,
 } = useHotelRoomImagesAPI({ hotelID, roomID })
 
-const roomImages = computed<RoomImage[]>(() => {
+const roomImages = computed<RoomImageResponse[]>(() => {
   if (roomImagesData.value === null) return []
   return roomImagesData.value
 })
@@ -58,7 +63,7 @@ const {
   isFetching: isHotelFetching,
 } = useHotelAPI({ hotelID })
 
-const hotel = computed<Hotel | null>(() => hotelData.value)
+const hotel = computed<HotelResponse | null>(() => hotelData.value)
 
 const {
   execute: fetchRoom,
@@ -98,7 +103,7 @@ const imageIDToRemove = ref<number | null>(null)
 
 const isRemoveImagePromptOpened = ref(false)
 
-const imageToRemove = computed<HotelImage | null>(() => {
+const imageToRemove = computed<HotelImageResponse | null>(() => {
   if (images.value === null) return null
   if (imageIDToRemove.value === null) return null
   const found = images.value.find(({ id }) => id === imageIDToRemove.value)
@@ -177,7 +182,7 @@ const deleteRoomImage = async (imageID: number) => {
   await fetchImages()
 }
 
-const getRoomImage = (id: number): RoomImage | undefined => {
+const getRoomImage = (id: number): RoomImageResponse | undefined => {
   if (roomImages.value.length === 0) {
     return undefined
   }

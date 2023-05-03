@@ -1,8 +1,7 @@
 import moment, { Moment } from 'moment/moment'
 
 import { useDateRangePicker } from '~resources/js/vendor/daterangepicker'
-import { useHotelContractGetAPI } from '~resources/lib/api/hotel'
-import { Season } from '~resources/lib/models'
+import { SeasonResponse, useHotelContractGetAPI } from '~resources/lib/api/hotel/contract'
 import { useUrlParams } from '~resources/lib/url-params'
 
 import '~resources/views/main'
@@ -17,7 +16,7 @@ const handleChangeContract = async ($periodInput: JQuery<HTMLElement>, contractI
     // @todo ренджи должны быть в будущем
     ranges: undefined,
     isInvalidDate(date: Moment) {
-      return contract.value?.seasons?.find((season: Season): boolean => {
+      return contract.value?.seasons?.find((season: SeasonResponse): boolean => {
         const isSameContract = season.contract_id === contractId
         const isSameSeason = season.id === seasonID
 
