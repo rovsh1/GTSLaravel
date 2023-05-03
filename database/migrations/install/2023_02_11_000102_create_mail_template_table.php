@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->text('body');
             $table->timestamps();
 
-            $table->unique(['key', 'language'], 's_mail_templates_uid');
+//            $table->unique(['key', 'language'], 's_mail_templates_uid');
 //            $table->foreign('country_id')
 //                ->references('id')
 //                ->on('r_countries')
