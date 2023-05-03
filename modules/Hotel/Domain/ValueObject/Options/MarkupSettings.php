@@ -14,8 +14,8 @@ class MarkupSettings implements ValueObjectInterface, SerializableDataInterface
         private readonly Percent $vat,
         private readonly Percent $touristTax,
         private readonly ClientMarkups $clientMarkups,
-        private readonly ?EarlyCheckInCollection $earlyCheckIn,
-        private readonly ?LateCheckOutCollection $lateCheckOut,
+        private readonly EarlyCheckInCollection $earlyCheckIn,
+        private readonly LateCheckOutCollection $lateCheckOut,
         private readonly CancelPeriodCollection $cancelPeriods,
     ) {}
 
@@ -34,12 +34,12 @@ class MarkupSettings implements ValueObjectInterface, SerializableDataInterface
         return $this->clientMarkups;
     }
 
-    public function earlyCheckIn(): ?EarlyCheckInCollection
+    public function earlyCheckIn(): EarlyCheckInCollection
     {
         return $this->earlyCheckIn;
     }
 
-    public function lateCheckOut(): ?LateCheckOutCollection
+    public function lateCheckOut(): LateCheckOutCollection
     {
         return $this->lateCheckOut;
     }
@@ -55,22 +55,20 @@ class MarkupSettings implements ValueObjectInterface, SerializableDataInterface
             'vat' => $this->vat->value(),
             'touristTax' => $this->touristTax->value(),
             'clientMarkups' => $this->clientMarkups->toData(),
-            'earlyCheckIn' => $this->earlyCheckIn?->toData(),
-            'lateCheckOut' => $this->lateCheckOut?->toData(),
+            'earlyCheckIn' => $this->earlyCheckIn->toData(),
+            'lateCheckOut' => $this->lateCheckOut->toData(),
             'cancelPeriods' => $this->cancelPeriods->toData(),
         ];
     }
 
     public static function fromData(array $data): static
     {
-        $earlyCheckIn = $data['earlyCheckIn'] ?? null;
-        $lateCheckOut = $data['lateCheckOut'] ?? null;
         return new static(
             vat: new Percent($data['vat']),
             touristTax: new Percent($data['touristTax']),
             clientMarkups: ClientMarkups::fromData($data['clientMarkups']),
-            earlyCheckIn: $earlyCheckIn !== null ? EarlyCheckInCollection::fromData($earlyCheckIn) : null,
-            lateCheckOut: $lateCheckOut !== null ? LateCheckOutCollection::fromData($lateCheckOut) : null,
+            earlyCheckIn: EarlyCheckInCollection::fromData($data['earlyCheckIn']),
+            lateCheckOut: LateCheckOutCollection::fromData($data['lateCheckOut']),
             cancelPeriods: CancelPeriodCollection::fromData($data['cancelPeriods'])
         );
     }

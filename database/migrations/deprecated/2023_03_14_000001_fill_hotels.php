@@ -52,9 +52,9 @@ return new class extends Migration {
                     ),
                     new Percent($condition->price_markup)
                 ));
-            if ($earlyCheckInConditions !== null) {
-                $earlyCheckIn = new EarlyCheckInCollection($earlyCheckInConditions->all());
-            }
+            $earlyCheckIn = new EarlyCheckInCollection(
+                $earlyCheckInConditions !== null ? $earlyCheckInConditions->all() : []
+            );
 
             $lateCheckOut = null;
             $lateCheckOutConditions = $conditionsIndexedByType
@@ -66,9 +66,9 @@ return new class extends Migration {
                     ),
                     new Percent($condition->price_markup)
                 ));
-            if ($lateCheckOutConditions !== null) {
-                $lateCheckOut = new LateCheckOutCollection($lateCheckOutConditions->all());
-            }
+            $lateCheckOut = new LateCheckOutCollection(
+                $lateCheckOutConditions !== null ? $lateCheckOutConditions->all() : []
+            );
 
             $margins = DB::connection('mysql_old')
                 ->table('hotel_margins')
