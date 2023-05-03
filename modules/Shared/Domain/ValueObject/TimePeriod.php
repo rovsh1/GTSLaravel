@@ -9,7 +9,11 @@ class TimePeriod implements ValueObjectInterface, SerializableDataInterface
     public function __construct(
         private string $from,
         private string $to
-    ) {}
+    ) {
+        $this->from = $this->validateTime($this->from);
+        $this->to = $this->validateTime($this->to);
+        $this->validateFromLessTo();
+    }
 
     public function from(): string
     {
@@ -32,5 +36,20 @@ class TimePeriod implements ValueObjectInterface, SerializableDataInterface
     public static function fromData(array $data): static
     {
         return new static($data['from'], $data['to']);
+    }
+
+    private function validateTime(string $value): string
+    {
+        if (!preg_match('/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/m', $value)) {
+            throw new \InvalidArgumentException("Invalid value for period [{$value}]");
+        }
+        return $value;
+    }
+
+    private function validateFromLessTo(): void
+    {
+        if ($this->from > $this->to) {
+            throw new \InvalidArgumentException("Invalid period values, from [{$this->from}] to [{$this->to}]");
+        }
     }
 }
