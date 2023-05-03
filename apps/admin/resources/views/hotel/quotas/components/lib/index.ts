@@ -52,7 +52,6 @@ export const getRoomsQuotasFromQuotas = ({
   quotas
     .map(({ roomID }): RoomQuotas | null => {
       const room = rooms.find(({ id }) => roomID === id)
-      console.log({ room, rooms, roomID })
       if (room === undefined) return null
       const roomQuotas = quotas
         .filter((quota) => quota.roomID === roomID)
