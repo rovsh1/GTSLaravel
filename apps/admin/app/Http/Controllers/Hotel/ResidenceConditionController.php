@@ -14,8 +14,8 @@ class ResidenceConditionController extends Controller
 {
     public function get(Request $request, Hotel $hotel): JsonResponse
     {
-        $conditions = ResidenceConditionAdapter::getResidenceConditions($hotel->id);
-        return response()->json($conditions);
+        $markupSettings = ResidenceConditionAdapter::getHotelMarkupSettings($hotel->id);
+        return response()->json($markupSettings);
     }
 
     public function store(Request $request, Hotel $hotel): AjaxResponseInterface

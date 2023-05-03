@@ -6,7 +6,7 @@ namespace Module\Hotel\Domain\Repository;
 
 use Module\Hotel\Domain\ValueObject\Options\Markup;
 
-interface OptionsMarkupRepositoryInterface
+interface MarkupRepositoryInterface
 {
     /**
      * @param int $hotelId
@@ -14,5 +14,5 @@ interface OptionsMarkupRepositoryInterface
      */
     public function get(int $hotelId): Markup;
 
-    public function update(Markup $markup): void;
+    public function update(int $hotelId, Markup $markup): void;
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Module\Hotel\Application\Dto;
 
 use Module\Hotel\Domain\ValueObject\Options\Condition;
+use Module\Hotel\Domain\ValueObject\Options\Markup;
 use Module\Shared\Application\Dto\AbstractDomainBasedDto;
 use Module\Shared\Domain\Entity\EntityInterface;
 use Module\Shared\Domain\ValueObject\ValueObjectInterface;
@@ -12,19 +13,24 @@ use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 class MarkupDto extends AbstractDomainBasedDto
 {
     public function __construct(
-        public readonly string $startTime,
-        public readonly string $endTime,
-        public readonly int $type,
-        public readonly int $priceMarkup
+        public readonly int $vat,
+        public readonly int $touristTax,
+        public readonly array $clientMarkups,
+        public readonly ?array $earlyCheckIn,
+        public readonly ?array $lateCheckOut,
+        public readonly array $cancelPeriods,
     ) {}
 
-    public static function fromDomain(EntityInterface|ValueObjectInterface|Condition $entity): self
+    public static function fromDomain(EntityInterface|ValueObjectInterface|Markup $entity): self
     {
+        //@todo конвертация VO в DTO для ClientMarkups, EarlyCheckInCollection, LateCheckOutCollection, CancelPeriodCollection
         return new self(
-            $entity->timePeriod()->from(),
-            $entity->timePeriod()->to(),
-            $entity->type()->value,
-            $entity->priceMarkup()->value()
+            $entity->vat()->value(),
+            $entity->touristTax()->value(),
+            $entity->clientMarkups()->toData(),
+            $entity->earlyCheckIn()->toData(),
+            $entity->lateCheckOut()->toData(),
+            $entity->cancelPeriods()->toData(),
         );
     }
 }

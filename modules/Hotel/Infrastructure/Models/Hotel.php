@@ -24,10 +24,6 @@ class Hotel extends Model
         'markup_settings',
     ];
 
-    protected $casts = [
-        'markup_settings' => 'array'
-    ];
-
     public function rooms()
     {
         return $this->hasMany(Room::class, 'hotel_id', 'id');

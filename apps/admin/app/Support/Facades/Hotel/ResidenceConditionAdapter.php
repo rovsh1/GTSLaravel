@@ -7,7 +7,7 @@ namespace App\Admin\Support\Facades\Hotel;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static array getResidenceConditions(int $hotelId)
+ * @method static array getHotelMarkupSettings(int $hotelId)
  */
 class ResidenceConditionAdapter extends Facade
 {

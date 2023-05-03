@@ -10,8 +10,8 @@ class ResidenceConditionAdapter extends AbstractPortAdapter
 {
     protected string $module = 'hotel';
 
-    public function getResidenceConditions(int $hotelId): array
+    public function getHotelMarkupSettings(int $hotelId): mixed
     {
-        return $this->request('getAdditionalConditions', ['hotel_id' => $hotelId]);
+        return $this->request('getHotelMarkupSettings', ['hotel_id' => $hotelId]);
     }
 }

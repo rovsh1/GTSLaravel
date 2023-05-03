@@ -5,11 +5,20 @@ declare(strict_types=1);
 namespace Module\Hotel\Domain\ValueObject\Options;
 
 use Illuminate\Support\Collection;
+use Module\Shared\Domain\ValueObject\SerializableDataInterface;
 
 /**
  * @extends Collection<int, DailyMarkupPercent>
  */
-class DailyMarkupCollection extends Collection
+class DailyMarkupCollection extends Collection implements SerializableDataInterface
 {
+    public function toData(): array
+    {
+        return $this->map(fn(DailyMarkupPercent $dailyMarkupPercent) => $dailyMarkupPercent->toData())->all();
+    }
 
+    public static function fromData(array $data): static
+    {
+        return (new static($data))->map(fn(array $item) => DailyMarkupPercent::fromData($item));
+    }
 }
