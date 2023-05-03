@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->boolean('mail');
             $table->boolean('sms');
 
-            $table->unique(['notification', 'notifiable_type', 'notifiable_id'], 's_notification_recipients');
+//            $table->unique(['notification', 'notifiable_type', 'notifiable_id'], 's_notification_recipients');
         });
     }
 
