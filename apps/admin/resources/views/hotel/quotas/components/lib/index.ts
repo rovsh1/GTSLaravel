@@ -9,6 +9,7 @@ export type Day = {
   date: Date
   dayOfWeek: string
   dayOfMonth: string
+  isHoliday: boolean
 }
 
 export type RoomQuotaStatus = 'opened' | 'closed'

@@ -6,7 +6,7 @@ import { DateTime } from 'luxon'
 
 import { HotelQuota } from '~resources/lib/api/hotel/quotas'
 import { HotelRoom } from '~resources/lib/api/hotel/rooms'
-import { getEachDayInMonth } from '~resources/lib/date'
+import { getEachDayInMonth, isBusinessDay } from '~resources/lib/date'
 import { isMacOS } from '~resources/lib/platform'
 
 import DayMenu from './DayMenu/DayMenu.vue'
@@ -39,14 +39,16 @@ const monthName = computed<string>(
 )
 
 const days = computed<Day[]>(() => getEachDayInMonth(props.month)
-  .map((date): Day => ({
-    key: date.toJSDate()
-      .getTime()
-      .toString(),
-    date: date.toJSDate(),
-    dayOfWeek: date.toFormat('EEE'),
-    dayOfMonth: date.toFormat('d'),
-  })))
+  .map((date): Day => {
+    const dateTime = DateTime.fromJSDate(date)
+    return ({
+      key: date.getTime().toString(),
+      date,
+      dayOfWeek: dateTime.toFormat('EEE'),
+      dayOfMonth: dateTime.toFormat('d'),
+      isHoliday: !isBusinessDay(date),
+    })
+  }))
 
 const roomsQuotas = computed<RoomQuotas[]>(() =>
   getRoomsQuotasFromQuotas({
@@ -199,9 +201,10 @@ const massEditTooltip = computed(() => {
                 <div class="monthName">{{ monthName }}</div>
               </th>
               <td
-                v-for="{ key, dayOfWeek, dayOfMonth } in days"
+                v-for="{ key, dayOfWeek, dayOfMonth, isHoliday } in days"
                 :key="key"
                 class="dayCell"
+                :class="{ isHoliday }"
                 tabindex="0"
                 @focusin="() => {
                   setHoveredRoomTypeID({ dayKey: key, roomTypeID: id })
@@ -427,6 +430,10 @@ th {
 
   min-width: 4em;
   text-align: center;
+
+  &.isHoliday {
+    color: red;
+  }
 }
 
 %data-cell {
