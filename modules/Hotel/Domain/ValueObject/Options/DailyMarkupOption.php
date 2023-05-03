@@ -33,7 +33,7 @@ class DailyMarkupOption implements SerializableDataInterface
     public function toData(): array
     {
         return [
-            'value' => $this->percent->value(),
+            'percent' => $this->percent->value(),
             'cancelPeriodType' => $this->cancelPeriodType->value,
             'daysCount' => $this->daysCount,
         ];
@@ -42,7 +42,7 @@ class DailyMarkupOption implements SerializableDataInterface
     public static function fromData(array $data): static
     {
         return new static(
-            new Percent($data['value']),
+            new Percent($data['percent']),
             CancelPeriodTypeEnum::from($data['cancelPeriodType']),
             $data['daysCount'],
         );
