@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon'
 
-import { RoomID } from '~resources/views/hotel/quotas/components/lib'
 import { MonthNumber, QueryInterval } from '~resources/lib/api/hotel/quotas'
+import { RoomID } from '~resources/views/hotel/quotas/components/lib'
 
 export type Year = {
   label: string
@@ -12,8 +12,6 @@ export const createYear = (value: number): Year => ({
   label: value.toString(),
   value,
 })
-
-export const currentYear = new Date().getFullYear()
 
 export type Month = {
   label: string
@@ -44,7 +42,8 @@ export type FiltersPayload = {
 }
 
 export const defaultFiltersPayload: FiltersPayload = {
-  year: currentYear,
+  // year: new Date().getFullYear(),
+  year: 2022,
   month: currentMonth,
   // count: 1,
   monthsCount: 12,

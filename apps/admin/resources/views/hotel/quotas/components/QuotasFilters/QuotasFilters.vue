@@ -16,7 +16,6 @@ import {
   AvailabilityValue,
   createYear,
   currentMonth,
-  currentYear,
   defaultFiltersPayload,
   FiltersPayload,
   Month,
@@ -41,9 +40,9 @@ const yearsAddToCurrent = 5
 
 const years = computed<Year[]>(() => [
   ...Array.from({ length: yearsAddToCurrent })
-    .map((item, index) => createYear(currentYear - index)).reverse(),
+    .map((item, index) => createYear(defaultFiltersPayload.year - index)).reverse(),
   ...Array.from({ length: yearsAddToCurrent - 1 })
-    .map((item, index) => createYear(currentYear + 1 + index)),
+    .map((item, index) => createYear(defaultFiltersPayload.year + 1 + index)),
 ])
 
 const months = computed<Month[]>(() => {
