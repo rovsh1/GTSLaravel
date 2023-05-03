@@ -1,7 +1,8 @@
 import { uniqBy } from 'lodash'
 import { DateTime } from 'luxon'
 
-import { HotelQuota, HotelQuotaID, HotelRoom, QuotaStatus } from '~resources/lib/api/hotel'
+import { HotelQuota, HotelQuotaID, QuotaStatus } from '~resources/lib/api/hotel/quotas'
+import { HotelRoom } from '~resources/lib/api/hotel/rooms'
 
 export type Day = {
   key: string

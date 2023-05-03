@@ -9,14 +9,9 @@ import { DateTime } from 'luxon'
 import BaseLayout from '~resources/components/BaseLayout.vue'
 import BootstrapButton from '~resources/components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 import LoadingSpinner from '~resources/components/LoadingSpinner.vue'
-import {
-  HotelQuota,
-  useHotelAPI,
-  useHotelQuotasAPI,
-  UseHotelRooms,
-  useHotelRoomsListAPI,
-} from '~resources/lib/api/hotel'
-import { Hotel } from '~resources/lib/models'
+import { HotelResponse, useHotelAPI } from '~resources/lib/api/hotel/hotel'
+import { HotelQuota, useHotelQuotasAPI } from '~resources/lib/api/hotel/quotas'
+import { UseHotelRooms, useHotelRoomsListAPI } from '~resources/lib/api/hotel/rooms'
 import { useUrlParams } from '~resources/lib/url-params'
 
 import QuotasFilters from './components/QuotasFilters/QuotasFilters.vue'
@@ -34,7 +29,7 @@ const {
 
 fetchHotel()
 
-const hotel = computed<Hotel | null>(() => hotelData.value)
+const hotel = computed<HotelResponse | null>(() => hotelData.value)
 
 const {
   data: roomsData,

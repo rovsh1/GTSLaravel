@@ -4,7 +4,8 @@ import { computed, ref } from 'vue'
 import { OnClickOutside } from '@vueuse/components'
 import { DateTime } from 'luxon'
 
-import { HotelQuota, HotelRoom } from '~resources/lib/api/hotel'
+import { HotelQuota } from '~resources/lib/api/hotel/quotas'
+import { HotelRoom } from '~resources/lib/api/hotel/rooms'
 import { getEachDayInMonth } from '~resources/lib/date'
 import { isMacOS } from '~resources/lib/platform'
 

@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon'
 
-import { MonthNumber, QueryInterval } from '~resources/lib/models'
 import { RoomID } from '~resources/views/hotel/quotas/components/lib'
+import { MonthNumber, QueryInterval } from '~resources/lib/api/hotel/quotas'
 
 export type Year = {
   label: string

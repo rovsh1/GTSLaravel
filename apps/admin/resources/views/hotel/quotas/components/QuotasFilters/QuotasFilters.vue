@@ -5,9 +5,9 @@ import { MaybeRef } from '@vueuse/core'
 import { DateTime } from 'luxon'
 
 import BootstrapButton from '~resources/components/Bootstrap/BootstrapButton/BootstrapButton.vue'
-import { HotelRoom } from '~resources/lib/api/hotel'
+import { MonthNumber } from '~resources/lib/api/hotel/quotas'
+import { HotelRoom } from '~resources/lib/api/hotel/rooms'
 import { getEachMonthInYear } from '~resources/lib/date'
-import { MonthNumber } from '~resources/lib/models'
 
 import FiltersSelect from '../FiltersSelect.vue'
 

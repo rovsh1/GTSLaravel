@@ -14,6 +14,7 @@ function singularize(word: string): string {
   )
 }
 
+// TODO replace with more safe solution
 export const useUrlParams = (): Record<string, number> => {
   const regex = /\/([a-z]+)\/(\d+)/g
 
