@@ -1,72 +1,70 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
 
+import { MaybeRef } from '@vueuse/core'
 import { DateTime } from 'luxon'
 
 import BootstrapButton from '~resources/components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 import { getEachMonthInYear } from '~resources/lib/date'
+import { MonthNumber, Room } from '~resources/lib/models'
 
-import FiltersSelect from './FiltersSelect.vue'
+import FiltersSelect from '../FiltersSelect.vue'
 
+import { RoomID } from '../lib'
 import {
   AvailabilityValue,
+  createYear,
+  currentMonth,
+  currentYear,
+  defaultFiltersPayload,
   FiltersPayload,
-  OutputRangeValue,
-  RoomID,
+  Month,
+  MonthsCount,
+  Year,
 } from './lib'
-import { roomsMock } from './lib/mock'
+
+const props = withDefaults(defineProps<{
+  rooms: Room[]
+  loading?: MaybeRef<boolean>
+}>(), {
+  loading: false,
+})
 
 const emit = defineEmits<{
   (event: 'submit', value: FiltersPayload): void
 }>()
 
-type Year = {
-  label: string
-  value: number
-}
+const selectedYear = ref<Year['value']>(defaultFiltersPayload.year)
 
-const createYear = (value: number): Year => ({
-  label: value.toString(),
-  value,
-})
-
-const currentYear = new Date().getFullYear()
 const yearsAddToCurrent = 5
 
 const years = computed<Year[]>(() => Array
   .from({ length: yearsAddToCurrent })
   .map((item, index) => createYear(currentYear + index)))
 
-const selectedYear = ref<Year['value']>(years.value[0].value)
-
-type Month = {
-  label: string
-  value: number
-}
-
 const months = computed<Month[]>(() => {
   const year = DateTime.fromFormat(selectedYear.value.toString(), 'yyyy').toJSDate()
   return getEachMonthInYear(year).map((month) => ({
     label: month.toFormat('LLLL'),
-    value: Number(month.toFormat('L')),
+    value: Number(month.toFormat('L')) as MonthNumber,
   }))
 })
 
-const selectedMonth = ref<Month['value']>(months.value[0].value)
+const selectedMonth = ref<Month['value']>(currentMonth)
 
-type OutputRange = {
+type MonthsCountOption = {
   label: string
-  value: OutputRangeValue
+  value: MonthsCount
 }
 
-const ranges: OutputRange[] = [
+const monthsCountOptions: MonthsCountOption[] = [
   { value: 1, label: '1 месяцу' },
   { value: 3, label: 'Кварталу' },
   { value: 6, label: '6 месяцев' },
   { value: 12, label: 'Году' },
 ]
 
-const selectedRange = ref<OutputRange['value']>(ranges[0].value)
+const selectedMonthsCount = ref<MonthsCountOption['value']>(defaultFiltersPayload.monthsCount)
 
 type AvailabilityOption = {
   value: AvailabilityValue
@@ -79,22 +77,32 @@ const availabilityOptions: AvailabilityOption[] = [
   { value: 'available', label: 'Доступные' },
 ]
 
-const selectedAvailabilityOption = ref<AvailabilityOption['value'] | null>(null)
+const selectedAvailabilityOption = ref<AvailabilityOption['value'] | ''>('')
 
-const rooms = computed(() => roomsMock.map(({ id, name, custom_name: customName }) => ({
+const rooms = computed(() => props.rooms.map(({ id, name, custom_name: customName }) => ({
   value: id,
   label: `${name} (${customName})`,
 })))
 
-const selectedRoom = ref<RoomID | null>(null)
+const selectedRoom = ref<RoomID | ''>('')
+
+const handleRoomInput = (value: string | number) => {
+  const numericValue = Number(value)
+  if (value === '' || Number.isNaN(numericValue)) {
+    selectedRoom.value = ''
+  } else {
+    selectedRoom.value = numericValue
+  }
+}
 
 const submit = () => {
   emit('submit', {
     year: selectedYear.value,
     month: selectedMonth.value,
-    count: selectedRange.value,
-    availability: selectedAvailabilityOption.value ?? undefined,
-    room: selectedRoom.value ?? undefined,
+    monthsCount: selectedMonthsCount.value,
+    availability: selectedAvailabilityOption.value === ''
+      ? undefined : selectedAvailabilityOption.value,
+    room: selectedRoom.value === '' ? undefined : selectedRoom.value,
   })
 }
 </script>
@@ -104,6 +112,7 @@ const submit = () => {
       :value="selectedYear"
       :options="years"
       label="Год"
+      :disabled="loading"
       @input="(value) => selectedYear = value as unknown as number"
     />
     <FiltersSelect
@@ -111,30 +120,37 @@ const submit = () => {
       label="Месяц"
       :value="selectedMonth"
       class="month"
-      @input="(value) => selectedMonth = value as unknown as number"
+      :disabled="loading"
+      @input="(value) => selectedMonth = value as unknown as MonthNumber"
     />
     <FiltersSelect
-      :options="ranges"
+      :options="monthsCountOptions"
       label="Выводить по"
-      :value="selectedRange"
-      @input="(value) => selectedRange = value as unknown as OutputRangeValue"
+      :value="selectedMonthsCount"
+      :disabled="loading"
+      @input="(value) => selectedMonthsCount = value as unknown as MonthsCount"
     />
     <FiltersSelect
       :options="availabilityOptions"
       label="Доступность"
       :value="selectedAvailabilityOption"
+      allow-deselect
+      :disabled="loading"
       @input="(value) => selectedAvailabilityOption = value as unknown as AvailabilityValue"
     />
     <FiltersSelect
       :options="rooms"
       label="Номер"
       :value="selectedRoom"
-      @input="(value) => selectedRoom = Number(value) as unknown as RoomID"
+      allow-deselect
+      :disabled="loading"
+      @input="handleRoomInput"
     />
     <BootstrapButton
       label="Обновить"
       variant="outline"
       severity="primary"
+      :loading="loading"
       @click="submit"
     />
   </div>

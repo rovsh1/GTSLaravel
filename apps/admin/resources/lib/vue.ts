@@ -1,4 +1,4 @@
-import { ComponentOptions, createApp, h } from 'vue'
+import { ComponentOptions, createApp, h, Ref, unref } from 'vue'
 
 type CreateVueInstanceParams = {
   rootComponent: ComponentOptions
@@ -15,3 +15,5 @@ export const createVueInstance = (params: CreateVueInstanceParams) => {
 
   return app
 }
+
+export const getRef = <T, R>(ref: T | Ref<T>, getter: (data: T) => R) => getter(unref(ref))

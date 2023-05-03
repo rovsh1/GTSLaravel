@@ -160,7 +160,7 @@ module.exports = defineConfig({
       },
     },
     {
-      files: 'vite.config.ts',
+      files: ['vite.config.ts', '.eslintrc.js'],
       rules: {
         'import/no-extraneous-dependencies': 'off',
       },

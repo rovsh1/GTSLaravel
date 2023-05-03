@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 import checkIcon from '@mdi/svg/svg/check.svg'
 import pencilIcon from '@mdi/svg/svg/pencil.svg'
@@ -8,15 +8,16 @@ import { DateTime } from 'luxon'
 
 import BaseLayout from '~resources/components/BaseLayout.vue'
 import BootstrapButton from '~resources/components/Bootstrap/BootstrapButton/BootstrapButton.vue'
-import { useHotelAPI } from '~resources/lib/api/hotel'
-import { Hotel } from '~resources/lib/models'
+import LoadingSpinner from '~resources/components/LoadingSpinner.vue'
+import { useHotelAPI, useHotelQuotasAPI, useHotelRoomsListAPI } from '~resources/lib/api/hotel'
+import { Hotel, Room } from '~resources/lib/models'
 import { useUrlParams } from '~resources/lib/url-params'
 
-import QuotasFilters from './components/QuotasFilters.vue'
+import QuotasFilters from './components/QuotasFilters/QuotasFilters.vue'
 import QuotasTable from './components/QuotasTable.vue'
 
-import { FiltersPayload } from './components/lib'
 import { quotasMock } from './components/lib/mock'
+import { defaultFiltersPayload, FiltersPayload, intervalByMonthsCount } from './components/QuotasFilters/lib'
 
 const { hotel: hotelID } = useUrlParams()
 
@@ -29,6 +30,37 @@ const {
 fetchHotel()
 
 const hotel = computed<Hotel | null>(() => hotelData.value)
+
+const {
+  data: roomsData,
+  execute: fetchHotelRoomsAPI,
+  isFetching: isHotelRoomsFetching,
+} = useHotelRoomsListAPI(computed(() => ({ hotelID })))
+
+const rooms = computed<Room[] | null>(() => roomsData.value)
+
+fetchHotelRoomsAPI()
+
+const filtersPayload = ref<FiltersPayload>(defaultFiltersPayload)
+
+const {
+  isFetching: isHotelQuotasFetching,
+  execute: fetchHotelQuotas,
+} = useHotelQuotasAPI(computed(() => {
+  const { month, year, monthsCount, availability, room } = filtersPayload.value
+  return {
+    hotelID,
+    month,
+    year,
+    interval: intervalByMonthsCount[monthsCount],
+    roomID: room,
+    availability,
+  }
+}))
+
+fetchHotelQuotas()
+
+watch(filtersPayload, () => fetchHotelQuotas())
 
 const editable = ref(false)
 
@@ -46,12 +78,14 @@ const months = computed(() => {
 })
 
 const handleFilters = (value: FiltersPayload) => {
-  console.log(value)
+  filtersPayload.value = value
 }
 </script>
 <template>
-  <BaseLayout v-if="isHotelFetching" title="Загрузка…" />
-  <BaseLayout v-else-if="hotel !== null" :title="hotel.name">
+  <BaseLayout
+    :title="hotel?.name ?? ''"
+    :loading="isHotelFetching || isHotelRoomsFetching"
+  >
     <template #header-controls>
       <BootstrapButton
         :label="editable ? 'Готово' : 'Редактировать'"
@@ -61,8 +95,14 @@ const handleFilters = (value: FiltersPayload) => {
       />
     </template>
     <div class="quotasBody">
-      <QuotasFilters @submit="value => handleFilters(value)" />
-      <div class="quotasTables">
+      <QuotasFilters
+        v-if="rooms"
+        :rooms="rooms"
+        :loading="isHotelQuotasFetching"
+        @submit="value => handleFilters(value)"
+      />
+      <LoadingSpinner v-if="isHotelQuotasFetching" />
+      <div v-else class="quotasTables">
         <quotas-table
           v-for="{ id, monthDate, quotas } in months"
           :key="id"

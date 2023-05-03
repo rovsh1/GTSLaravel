@@ -10,9 +10,5 @@ export const useAdminAPI = createFetch({
   },
 })
 
-export const getURL = (url: string, query?: Record<string, string | number>): string => {
-  if (query === undefined) {
-    return url
-  }
-  return `${url}?${qs.stringify(query)}`
-}
+export const getURL = (url: string, query?: Record<string, string | number>): string =>
+  (query === undefined ? url : `${url}?${qs.stringify(query)}`)

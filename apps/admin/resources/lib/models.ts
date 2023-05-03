@@ -34,8 +34,11 @@ export type Hotel = {
 
 export type Room = {
   id: number
+  hotel_id: number
   name: string
-  display_name: string
+  custom_name: string
+  rooms_number: number
+  guests_number: number
 }
 
 export type File = {
@@ -68,3 +71,12 @@ export type City = {
   center_lat: number
   center_lon: number
 }
+
+export type MonthNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
+
+// https://www.php.net/manual/en/dateinterval.format.php
+export type QueryInterval =
+  | 'P1M' // 1 month
+  | 'P3M' // 3 months
+  | 'P6M' // 6 months
+  | 'P1Y' // 1 year

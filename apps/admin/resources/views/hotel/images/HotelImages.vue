@@ -202,7 +202,7 @@ fetchHotel()
 fetchImages()
 
 const title = computed<string>(() => {
-  if (roomID && room.value) return room.value.display_name
+  if (roomID && room.value) return room.value.custom_name
   if (hotel.value) return hotel.value.name
   return ''
 })
