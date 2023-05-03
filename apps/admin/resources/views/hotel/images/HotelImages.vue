@@ -20,7 +20,7 @@ import {
   useHotelRoomAPI,
   useHotelRoomImageCreateAPI, useHotelRoomImageDeleteAPI, useHotelRoomImagesAPI,
 } from '~resources/lib/api/hotel'
-import { Hotel, Room } from '~resources/lib/models'
+import { Hotel, HotelRoomResponse } from '~resources/lib/models'
 import { showToast } from '~resources/lib/toast'
 import { useUrlParams } from '~resources/lib/url-params'
 import DropZone from '~resources/views/hotel/images/components/DropZone.vue'
@@ -66,7 +66,7 @@ const {
   isFetching: isRoomFetching,
 } = useHotelRoomAPI({ hotelID, roomID })
 
-const room = computed<Room | null>(() => roomData.value)
+const room = computed<HotelRoomResponse | null>(() => roomData.value)
 
 const isUploadDialogOpened = ref(false)
 

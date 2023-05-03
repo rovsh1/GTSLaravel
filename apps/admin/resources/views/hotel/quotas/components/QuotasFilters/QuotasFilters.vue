@@ -5,8 +5,9 @@ import { MaybeRef } from '@vueuse/core'
 import { DateTime } from 'luxon'
 
 import BootstrapButton from '~resources/components/Bootstrap/BootstrapButton/BootstrapButton.vue'
+import { HotelRoom } from '~resources/lib/api/hotel'
 import { getEachMonthInYear } from '~resources/lib/date'
-import { MonthNumber, Room } from '~resources/lib/models'
+import { MonthNumber } from '~resources/lib/models'
 
 import FiltersSelect from '../FiltersSelect.vue'
 
@@ -24,7 +25,7 @@ import {
 } from './lib'
 
 const props = withDefaults(defineProps<{
-  rooms: Room[]
+  rooms: HotelRoom[]
   loading?: MaybeRef<boolean>
 }>(), {
   loading: false,

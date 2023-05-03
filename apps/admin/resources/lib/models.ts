@@ -5,7 +5,7 @@ type CityID = number
 
 type CountryID = number
 
-type HotelID = number
+type HotelID = string
 
 type ContractID = number
 
@@ -26,15 +26,16 @@ export type Hotel = {
   status: number
   type_id: number
   type_name: string
-  visibility: 0 | 1
+  // TODO describe
+  visibility: 0 | 1 | 2
   created_at: RDate
   updated_at: RDate
   deleted_at: RDate | null
 }
 
-export type Room = {
-  id: number
-  hotel_id: number
+export type HotelRoomResponse = {
+  id: string
+  hotel_id: HotelID
   name: string
   custom_name: string
   rooms_number: number

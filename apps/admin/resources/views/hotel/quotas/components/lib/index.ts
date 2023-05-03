@@ -1,7 +1,7 @@
 import { uniqBy } from 'lodash'
 import { DateTime } from 'luxon'
 
-import { Quota, QuotaStatus, roomsMock } from './mock'
+import { HotelQuota, HotelQuotaID, HotelRoom, QuotaStatus } from '~resources/lib/api/hotel'
 
 export type Day = {
   key: string
@@ -16,7 +16,7 @@ export type RoomID = number
 
 export type RoomQuota = {
   key: string
-  id: Quota['id'] | null
+  id: HotelQuotaID | null
   roomID: RoomID
   date: Date
   status: RoomQuotaStatus | null
@@ -40,12 +40,21 @@ export const quotaStatusMap: Record<QuotaStatus, RoomQuota['status']> = {
   1: 'opened',
 }
 
-export const getRoomsQuotasFromQuotas = (quotas: Quota[], days: Day[]) => uniqBy(
+type RoomsQuotasFromQuotasParams = {
+  rooms: HotelRoom[]
+  quotas: HotelQuota[]
+  days: Day[]
+}
+export const getRoomsQuotasFromQuotas = ({
+  rooms, quotas, days,
+}: RoomsQuotasFromQuotasParams) => uniqBy(
   quotas
-    .map(({ room_id: roomID }): RoomQuotas | null => {
-      const room = roomsMock.find(({ id }) => roomID === id)
+    .map(({ roomID }): RoomQuotas | null => {
+      const room = rooms.find(({ id }) => roomID === id)
+      console.log({ room, rooms, roomID })
       if (room === undefined) return null
-      const roomQuotas = quotas.filter((quota) => quota.room_id === roomID)
+      const roomQuotas = quotas
+        .filter((quota) => quota.roomID === roomID)
       const {
         id,
         name,

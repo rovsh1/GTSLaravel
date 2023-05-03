@@ -1,4 +1,4 @@
-import { createFetch } from '@vueuse/core'
+import { AfterFetchContext, createFetch } from '@vueuse/core'
 import qs from 'qs'
 
 import { ADMIN_API_URL } from '~resources/lib/env'
@@ -12,3 +12,18 @@ export const useAdminAPI = createFetch({
 
 export const getURL = (url: string, query?: Record<string, string | number>): string =>
   (query === undefined ? url : `${url}?${qs.stringify(query)}`)
+
+const useAlternateFetchData = <Response, Data>(ctx: AfterFetchContext<Response>) =>
+  (data: Data): AfterFetchContext<Data> => ({
+    response: ctx.response,
+    data,
+  })
+
+export const alternateDataAfterFetch = <Response, Altered>(
+  ctx: AfterFetchContext<Response>,
+  transform: (data: Response) => Altered,
+): AfterFetchContext | AfterFetchContext<Altered> => {
+  if (ctx.data === null) return ctx
+  const alter = useAlternateFetchData<Response, Altered>(ctx)
+  return alter(transform(ctx.data))
+}

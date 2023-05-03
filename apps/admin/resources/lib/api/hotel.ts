@@ -1,12 +1,13 @@
 import { computed, unref } from 'vue'
 
+import type { AfterFetchContext } from '@vueuse/core'
 import { MaybeRef } from '@vueuse/core'
 
-import { Contract, Hotel, MonthNumber, QueryInterval, Room } from '~resources/lib/models'
+import { Contract, Hotel, HotelRoomResponse, MonthNumber, QueryInterval } from '~resources/lib/models'
 import { getRef } from '~resources/lib/vue'
 import { HotelImage, RoomImage } from '~resources/views/hotel/images/models'
 
-import { useAdminAPI } from '.'
+import { alternateDataAfterFetch, useAdminAPI } from '.'
 
 export const useHotelAPI = (props: MaybeRef<{ hotelID: number }>) =>
   useAdminAPI(computed(() => getRef(props, ({ hotelID }) =>
@@ -39,7 +40,7 @@ export const useHotelRoomAPI = (props: MaybeRef<{ hotelID: number; roomID?: numb
     },
   })
     .get()
-    .json<Room>()
+    .json<HotelRoomResponse>()
 
 type HotelImagesUploadProps = {
   hotelID: number
@@ -105,11 +106,26 @@ export const useHotelContractGetAPI = (props: MaybeRef<{ hotelID: number; contra
     .get()
     .json<Contract>()
 
+type HotelRoomsResponse = HotelRoomResponse[]
+
+export type HotelRoom = Omit<HotelRoomResponse, 'id'> & {
+  id: number
+}
+
+export type UseHotelRooms = HotelRoom[] | null
+
 export const useHotelRoomsListAPI = (props: MaybeRef<{ hotelID: number }>) =>
   useAdminAPI(computed(() => getRef(props, ({ hotelID }) =>
-    `/hotels/${hotelID}/rooms/list`)))
+    `/hotels/${hotelID}/rooms/list`)), {
+    afterFetch: (ctx: AfterFetchContext<HotelRoomsResponse>) =>
+      alternateDataAfterFetch<HotelRoomsResponse, UseHotelRooms>(ctx, (data) =>
+        (data.length > 0 ? data.map(({ id, ...rest }) => ({
+          id: Number(id),
+          ...rest,
+        })) : null)),
+  })
     .get()
-    .json<Room[]>()
+    .json<UseHotelRooms>()
 
 type HotelRoomQuotaProps = {
   hotelID: number
@@ -119,10 +135,45 @@ type HotelRoomQuotaProps = {
   roomID?: number
   availability?: 'sold' | 'stopped' | 'available'
 }
+
 type HotelRoomQuotaPayload = Omit<HotelRoomQuotaProps, 'hotelID'>
+
+export type HotelQuotaID = number
+
+export type QuotaStatus = 0 | 1
+
+export type HotelQuotaResponse = {
+  id: HotelQuotaID
+  // Y-m-d
+  date: string
+  room_id: HotelRoomResponse['id']
+  // 0 = closed, 1 = opened
+  status: QuotaStatus
+  release_days: number
+  count_available: number
+  count_booked: number
+  count_reserved: number
+}
+
+export type HotelQuota = Omit<HotelQuotaResponse, 'room_id'> & {
+  roomID: number
+}
+
+type HotelQuotasResponse = HotelQuotaResponse[]
+type UseHotelQuota = HotelQuota[] | null
+
 export const useHotelQuotasAPI = (props: MaybeRef<HotelRoomQuotaProps>) =>
   useAdminAPI(computed(() => getRef(props, ({ hotelID }) =>
-    `/hotels/${hotelID}/quotas`)))
+    `/hotels/${hotelID}/quotas`)), {
+    afterFetch: (ctx: AfterFetchContext<HotelQuotasResponse>) =>
+      alternateDataAfterFetch<HotelQuotasResponse, UseHotelQuota>(ctx, (data) =>
+        (data.length === 0
+          ? null
+          : data.map(({ room_id: roomID, ...rest }) => ({
+            roomID: Number(roomID),
+            ...rest,
+          })))),
+  })
     .post(computed<HotelRoomQuotaPayload>(() => getRef(props, ({
       roomID,
       month,
@@ -136,4 +187,4 @@ export const useHotelQuotasAPI = (props: MaybeRef<HotelRoomQuotaProps>) =>
       interval,
       availability,
     }))))
-    .json()
+    .json<UseHotelQuota>()

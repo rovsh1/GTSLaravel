@@ -4,6 +4,7 @@ import { computed, ref } from 'vue'
 import { OnClickOutside } from '@vueuse/components'
 import { DateTime } from 'luxon'
 
+import { HotelQuota, HotelRoom } from '~resources/lib/api/hotel'
 import { getEachDayInMonth } from '~resources/lib/date'
 import { isMacOS } from '~resources/lib/platform'
 
@@ -23,12 +24,12 @@ import {
   RoomQuotas,
   RoomQuotaStatus,
 } from './lib'
-import { Quota } from './lib/mock'
 import { EditedQuota, QuotaRange, useQuotasTableRange } from './lib/use-range'
 
 const props = defineProps<{
   month: Date
-  quotas: Quota[]
+  rooms: HotelRoom[]
+  quotas: HotelQuota[]
   editable: boolean
 }>()
 
@@ -47,7 +48,11 @@ const days = computed<Day[]>(() => getEachDayInMonth(props.month)
   })))
 
 const roomsQuotas = computed<RoomQuotas[]>(() =>
-  getRoomsQuotasFromQuotas(props.quotas, days.value))
+  getRoomsQuotasFromQuotas({
+    rooms: props.rooms,
+    quotas: props.quotas,
+    days: days.value,
+  }))
 
 const dayCellClassNameByRoomQuotaStatus: Record<RoomQuotaStatus, string> = {
   opened: 'isOpened',

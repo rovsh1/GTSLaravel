@@ -9,14 +9,19 @@ import { DateTime } from 'luxon'
 import BaseLayout from '~resources/components/BaseLayout.vue'
 import BootstrapButton from '~resources/components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 import LoadingSpinner from '~resources/components/LoadingSpinner.vue'
-import { useHotelAPI, useHotelQuotasAPI, useHotelRoomsListAPI } from '~resources/lib/api/hotel'
-import { Hotel, Room } from '~resources/lib/models'
+import {
+  HotelQuota,
+  useHotelAPI,
+  useHotelQuotasAPI,
+  UseHotelRooms,
+  useHotelRoomsListAPI,
+} from '~resources/lib/api/hotel'
+import { Hotel } from '~resources/lib/models'
 import { useUrlParams } from '~resources/lib/url-params'
 
 import QuotasFilters from './components/QuotasFilters/QuotasFilters.vue'
 import QuotasTable from './components/QuotasTable.vue'
 
-import { quotasMock } from './components/lib/mock'
 import { defaultFiltersPayload, FiltersPayload, intervalByMonthsCount } from './components/QuotasFilters/lib'
 
 const { hotel: hotelID } = useUrlParams()
@@ -37,7 +42,7 @@ const {
   isFetching: isHotelRoomsFetching,
 } = useHotelRoomsListAPI(computed(() => ({ hotelID })))
 
-const rooms = computed<Room[] | null>(() => roomsData.value)
+const rooms = computed<UseHotelRooms>(() => roomsData.value)
 
 fetchHotelRoomsAPI()
 
@@ -46,6 +51,7 @@ const filtersPayload = ref<FiltersPayload>(defaultFiltersPayload)
 const {
   isFetching: isHotelQuotasFetching,
   execute: fetchHotelQuotas,
+  data: hotelQuotas,
 } = useHotelQuotasAPI(computed(() => {
   const { month, year, monthsCount, availability, room } = filtersPayload.value
   return {
@@ -64,14 +70,23 @@ watch(filtersPayload, () => fetchHotelQuotas())
 
 const editable = ref(false)
 
-const months = computed(() => {
-  const groupedByMonth = groupBy(quotasMock, ({ date }) => {
+type QuotaByMonth = {
+  key: string
+  monthDate: Date
+  quotas: HotelQuota[]
+}
+
+const months = computed<QuotaByMonth[] | null>(() => {
+  const quotas = hotelQuotas.value
+  if (quotas === null) return null
+
+  const groupedByMonth = groupBy(quotas, ({ date }) => {
     const [year, month] = date.split('-')
     return `${year}-${month}`
   })
 
   return Object.keys(groupedByMonth).map((key) => ({
-    id: key,
+    key,
     monthDate: DateTime.fromFormat(key, 'yyyy-MM').toJSDate(),
     quotas: groupedByMonth[key],
   }))
@@ -91,6 +106,7 @@ const handleFilters = (value: FiltersPayload) => {
         :label="editable ? 'Готово' : 'Редактировать'"
         :start-icon="editable ? checkIcon : pencilIcon"
         severity="primary"
+        :disabled="months === null"
         @click="editable = !editable"
       />
     </template>
@@ -102,11 +118,18 @@ const handleFilters = (value: FiltersPayload) => {
         @submit="value => handleFilters(value)"
       />
       <LoadingSpinner v-if="isHotelQuotasFetching" />
+      <div v-else-if="rooms === null">
+        Не удалось найти комнаты для этого отеля.
+      </div>
+      <div v-else-if="months === null">
+        Квоты не найдены. Попробуйте изменить фильтры.
+      </div>
       <div v-else class="quotasTables">
         <quotas-table
-          v-for="{ id, monthDate, quotas } in months"
-          :key="id"
+          v-for="{ key, monthDate, quotas } in months"
+          :key="key"
           :month="monthDate"
+          :rooms="rooms"
           :quotas="quotas"
           :editable="editable"
         />
