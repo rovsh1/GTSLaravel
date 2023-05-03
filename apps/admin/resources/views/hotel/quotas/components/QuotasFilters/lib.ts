@@ -42,9 +42,7 @@ export type FiltersPayload = {
 }
 
 export const defaultFiltersPayload: FiltersPayload = {
-  // year: new Date().getFullYear(),
-  year: 2022,
+  year: new Date().getFullYear(),
   month: currentMonth,
-  // count: 1,
-  monthsCount: 12,
+  monthsCount: 1,
 }
