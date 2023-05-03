@@ -38,9 +38,12 @@ const selectedYear = ref<Year['value']>(defaultFiltersPayload.year)
 
 const yearsAddToCurrent = 5
 
-const years = computed<Year[]>(() => Array
-  .from({ length: yearsAddToCurrent })
-  .map((item, index) => createYear(currentYear - index)))
+const years = computed<Year[]>(() => [
+  ...Array.from({ length: yearsAddToCurrent })
+    .map((item, index) => createYear(currentYear - index)).reverse(),
+  ...Array.from({ length: yearsAddToCurrent - 1 })
+    .map((item, index) => createYear(currentYear + 1 + index)),
+])
 
 const months = computed<Month[]>(() => {
   const year = DateTime.fromFormat(selectedYear.value.toString(), 'yyyy').toJSDate()
