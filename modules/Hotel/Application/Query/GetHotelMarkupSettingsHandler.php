@@ -5,12 +5,12 @@ namespace Module\Hotel\Application\Query;
 use Custom\Framework\Contracts\Bus\QueryHandlerInterface;
 use Custom\Framework\Contracts\Bus\QueryInterface;
 use Module\Hotel\Application\Dto\MarkupSettingsDto;
-use Module\Hotel\Infrastructure\Repository\MarkupRepository;
+use Module\Hotel\Infrastructure\Repository\MarkupSettingsRepository;
 
 class GetHotelMarkupSettingsHandler implements QueryHandlerInterface
 {
     public function __construct(
-        private readonly MarkupRepository $repository
+        private readonly MarkupSettingsRepository $repository
     ) {}
 
     public function handle(QueryInterface|GetHotelMarkupSettings $query): MarkupSettingsDto

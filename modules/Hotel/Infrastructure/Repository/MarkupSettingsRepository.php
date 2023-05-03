@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Module\Hotel\Infrastructure\Repository;
 
-use Module\Hotel\Domain\Repository\MarkupRepositoryInterface;
+use Module\Hotel\Domain\Repository\MarkupSettingsRepositoryInterface;
 use Module\Hotel\Domain\ValueObject\Options\MarkupSettings;
 use Module\Hotel\Infrastructure\Models\Hotel;
 use Module\Shared\Domain\Service\JsonSerializer;
 
-class MarkupRepository implements MarkupRepositoryInterface
+class MarkupSettingsRepository implements MarkupSettingsRepositoryInterface
 {
     public function __construct(private readonly JsonSerializer $serializer) {}
 

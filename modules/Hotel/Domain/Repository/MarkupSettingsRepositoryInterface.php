@@ -6,7 +6,7 @@ namespace Module\Hotel\Domain\Repository;
 
 use Module\Hotel\Domain\ValueObject\Options\MarkupSettings;
 
-interface MarkupRepositoryInterface
+interface MarkupSettingsRepositoryInterface
 {
     /**
      * @param int $hotelId
