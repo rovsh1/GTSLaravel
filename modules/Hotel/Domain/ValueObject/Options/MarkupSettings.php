@@ -11,12 +11,12 @@ use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 class MarkupSettings implements ValueObjectInterface, SerializableDataInterface
 {
     public function __construct(
-        private Percent $vat,
-        private Percent $touristTax,
-        private ClientMarkups $clientMarkups,
-        private ?EarlyCheckInCollection $earlyCheckIn,
-        private ?LateCheckOutCollection $lateCheckOut,
-        private CancelPeriodCollection $cancelPeriods,
+        private readonly Percent $vat,
+        private readonly Percent $touristTax,
+        private readonly ClientMarkups $clientMarkups,
+        private readonly ?EarlyCheckInCollection $earlyCheckIn,
+        private readonly ?LateCheckOutCollection $lateCheckOut,
+        private readonly CancelPeriodCollection $cancelPeriods,
     ) {}
 
     public function vat(): Percent
