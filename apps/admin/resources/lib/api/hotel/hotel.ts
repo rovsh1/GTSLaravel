@@ -23,7 +23,7 @@ export type HotelResponse = {
   status: number
   type_id: number
   type_name: string
-  // TODO describe
+  // 0 = Hidden, 1 = Public, 2 = B2B
   visibility: 0 | 1 | 2
   created_at: DateResponse
   updated_at: DateResponse
