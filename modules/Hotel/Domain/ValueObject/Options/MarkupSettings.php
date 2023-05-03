@@ -8,7 +8,7 @@ use Module\Shared\Domain\ValueObject\Percent;
 use Module\Shared\Domain\ValueObject\SerializableDataInterface;
 use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 
-class Markup implements ValueObjectInterface, SerializableDataInterface
+class MarkupSettings implements ValueObjectInterface, SerializableDataInterface
 {
     public function __construct(
         private Percent $vat,

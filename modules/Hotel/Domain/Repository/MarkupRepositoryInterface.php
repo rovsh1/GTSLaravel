@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Module\Hotel\Domain\Repository;
 
-use Module\Hotel\Domain\ValueObject\Options\Markup;
+use Module\Hotel\Domain\ValueObject\Options\MarkupSettings;
 
 interface MarkupRepositoryInterface
 {
     /**
      * @param int $hotelId
-     * @return Markup
+     * @return MarkupSettings
      */
-    public function get(int $hotelId): Markup;
+    public function get(int $hotelId): MarkupSettings;
 
-    public function update(int $hotelId, Markup $markup): void;
+    public function update(int $hotelId, MarkupSettings $markup): void;
 }

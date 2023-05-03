@@ -13,7 +13,7 @@ use Module\Hotel\Domain\ValueObject\Options\DailyMarkupCollection;
 use Module\Hotel\Domain\ValueObject\Options\DailyMarkupPercent;
 use Module\Hotel\Domain\ValueObject\Options\EarlyCheckInCollection;
 use Module\Hotel\Domain\ValueObject\Options\LateCheckOutCollection;
-use Module\Hotel\Domain\ValueObject\Options\Markup;
+use Module\Hotel\Domain\ValueObject\Options\MarkupSettings;
 use Module\Shared\Domain\ValueObject\Percent;
 use Module\Shared\Domain\ValueObject\TimePeriod;
 
@@ -150,7 +150,7 @@ return new class extends Migration {
                 $cancelPeriods->all()
             );
 
-            $markupSettings = new Markup(
+            $markupSettings = new MarkupSettings(
                 $vatPercent,
                 $touristTaxPercent,
                 $clientMarkups,
