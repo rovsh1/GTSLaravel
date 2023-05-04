@@ -5,22 +5,21 @@ namespace Module\Services\NotificationManager\Domain\Listener;
 use Custom\Framework\Contracts\Event\IntegrationEventInterface;
 use Custom\Framework\Contracts\Event\IntegrationEventListenerInterface;
 use Module\Services\NotificationManager\Domain\Notification\CustomerRegistered;
+use Module\Services\NotificationManager\Domain\Support\Listener\AdministratorsNotificationTrait;
+use Module\Services\NotificationManager\Domain\Support\Listener\CustomerNotificationTrait;
 
 class CustomerRegisteredListener implements IntegrationEventListenerInterface
 {
+    use CustomerNotificationTrait;
+    use AdministratorsNotificationTrait;
+
     public function handle(IntegrationEventInterface $event): void
     {
-        $event->payload();
-        //dd($event);
-        $customer = 1;
-        $registrationData = [];
-        $notification = new CustomerRegistered($registrationData);
+        $eventPayload = $event->payload();
+        $notification = new CustomerRegistered($eventPayload['user_id'], $eventPayload['registrationData']);
 
-        $customer->notify($notification);
+        $this->notifyCustomerById($notification->customerId, $notification);
 
-        $notifiableList = $notificationManager->getNotificationRecipients($notification);
-        foreach ($notifiableList as $notifiable) {
-            $notifiable->notify($notification);
-        }
+        $this->notifyAdministrators($notification);
     }
 }
