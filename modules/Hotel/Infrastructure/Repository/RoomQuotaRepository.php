@@ -34,7 +34,7 @@ class RoomQuotaRepository implements RoomQuotaRepositoryInterface
     {
         $updateData = ['date' => $period->getStartDate(), 'room_id' => $roomId, 'status' => QuotaStatusEnum::Close];
         if ($quota !== null) {
-            $updateData['total_count'] = $quota;
+            $updateData['count_total'] = $quota;
         }
         if ($releaseDays !== null) {
             $updateData['release_days'] = $releaseDays;
