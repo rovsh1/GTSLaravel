@@ -7,7 +7,6 @@ use Custom\Framework\Contracts\Notification\NotificationGatewayInterface;
 use Custom\Framework\Contracts\PortGateway\PortGatewayInterface;
 use Custom\Framework\Foundation\Module;
 use Custom\Framework\Foundation\Support\Providers\ServiceProvider;
-use Module\Shared\Providers\BootServiceProvider;
 
 class ModulesServiceProvider extends ServiceProvider
 {
@@ -19,8 +18,6 @@ class ModulesServiceProvider extends ServiceProvider
 
     public function register()
     {
-        $this->app->register(BootServiceProvider::class);
-
         $this->load(config('modules'));
     }
 

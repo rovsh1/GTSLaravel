@@ -40,5 +40,6 @@ function modules_path($path = '')
 
 function app_constant(string $keyOrClass)
 {
+    //TODO ConstantFacade
     return app(ConstantRepositoryInterface::class)->getConstantValue($keyOrClass);
 }

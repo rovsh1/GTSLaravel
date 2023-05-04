@@ -10,9 +10,9 @@ class Module extends Container
 {
     private bool $booted = false;
 
-    protected $serviceProviders = [];
+    protected array $serviceProviders = [];
 
-    protected $loadedProviders = [];
+    protected array $loadedProviders = [];
 
     public function __construct(
         private readonly string $name,
@@ -156,14 +156,15 @@ class Module extends Container
 //        $this->fireAppCallbacks($this->bootedCallbacks);
     }
 
-    protected function registerBaseBindings() {}
+    protected function registerBaseBindings()
+    {
+    }
 
     protected function registerBaseServiceProviders()
     {
         $this->register(Providers\EventServiceProvider::class);
         $this->register(Providers\BusServiceProvider::class);
         $this->register(Providers\RouteServiceProvider::class);
-        //$this->register(SharedProviders\LogServiceProvider::class);
     }
 
     protected function bootProvider(ServiceProvider $provider)

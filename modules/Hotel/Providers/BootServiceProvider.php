@@ -14,12 +14,11 @@ class BootServiceProvider extends ServiceProvider
     {
         $this->app->register(EventServiceProvider::class);
         //$this->app->addDeferredServices([EventServiceProvider::class]);
-
-        $this->registerInterfaces();
     }
 
     public function boot()
     {
+        $this->registerInterfaces();
         //$this->loadMigrationsFrom(__DIR__ . '/../Infrastructure/Database/Migrations');
     }
 
