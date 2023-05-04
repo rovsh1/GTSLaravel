@@ -18,15 +18,14 @@ class MarkupSettingsRepository implements MarkupSettingsRepositoryInterface
     {
         $hotel = Hotel::find($hotelId);
 
-        return $this->serializer->deserialize(MarkupSettings::class, $hotel->markup_settings);
+        return $this->deserializeSettings($hotel);
     }
 
     public function updateClientMarkups(int $hotelId, ?int $individual, ?int $OTA, ?int $TA, ?int $TO): void
     {
         $hotel = Hotel::find($hotelId);
 
-        /** @var MarkupSettings $markup */
-        $markup = $this->serializer->deserialize(MarkupSettings::class, $hotel->markup_settings);
+        $markup = $this->deserializeSettings($hotel);
 
         if ($individual !== null) {
             $markup->clientMarkups()->setIndividual(new Percent($individual));
@@ -43,5 +42,10 @@ class MarkupSettingsRepository implements MarkupSettingsRepositoryInterface
         $markupSettings = $this->serializer->serialize($markup);
 
         $hotel->update(['markup_settings' => $markupSettings]);
+    }
+
+    private function deserializeSettings(Hotel $hotel): MarkupSettings
+    {
+        return $this->serializer->deserialize(MarkupSettings::class, $hotel->markup_settings);
     }
 }
