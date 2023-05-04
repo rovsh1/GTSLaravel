@@ -2,7 +2,10 @@
 
 namespace App\Core\Support\Adapters;
 
-class NotificationAdapter extends AbstractPortAdapter
+class NotificationAdapter extends AbstractModuleAdapter
 {
-    protected string $module = 'notification';
+    protected function getModuleKey(): string
+    {
+        return 'notification';
+    }
 }

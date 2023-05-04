@@ -2,13 +2,11 @@
 
 namespace App\Admin\Support\Adapters;
 
-use App\Core\Support\Adapters\AbstractPortAdapter;
+use App\Core\Support\Adapters\AbstractMailAdapter;
 use App\Core\Support\Facades\AppContext;
 
-class MailAdapter extends AbstractPortAdapter
+class MailAdapter extends AbstractMailAdapter
 {
-    protected string $module = 'mail';
-
     public function sendTo(string $to, string $subject, string $body): void
     {
         $uuid = $this->request('send', [

@@ -8,10 +8,8 @@ use App\Core\Contracts\File\FileInterface;
 use Module\Services\FileStorage\Application\Dto\FileDto;
 use Module\Services\FileStorage\Application\Dto\FileInfoDto;
 
-class FileAdapter extends AbstractPortAdapter
+class FileAdapter extends AbstractModuleAdapter
 {
-    protected string $module = 'files';
-
     public function find(string $guid): ?FileInterface
     {
         $fileDto = $this->request('find', ['guid' => $guid]);
@@ -63,8 +61,12 @@ class FileAdapter extends AbstractPortAdapter
         ]);
     }
 
-    public function create(string $fileType, ?int $entityId, string $name = null, string $contents = null): ?FileInterface
-    {
+    public function create(
+        string $fileType,
+        ?int $entityId,
+        string $name = null,
+        string $contents = null
+    ): ?FileInterface {
         $fileDto = $this->request('create', [
             'fileType' => $fileType,
             'entityId' => $entityId,
@@ -90,8 +92,12 @@ class FileAdapter extends AbstractPortAdapter
         ]);
     }
 
-    public function uploadOrCreate(FileInterface|null $file, UploadedFile $uploadedFile, string $fileType, ?int $entityId): ?FileInterface
-    {
+    public function uploadOrCreate(
+        FileInterface|null $file,
+        UploadedFile $uploadedFile,
+        string $fileType,
+        ?int $entityId
+    ): ?FileInterface {
         if (is_null($file)) {
             return $this->create($fileType, $entityId, $uploadedFile->getClientOriginalName(), $uploadedFile->get());
         } else {
@@ -111,5 +117,10 @@ class FileAdapter extends AbstractPortAdapter
                 $fileDto->url,
             )
             : null;
+    }
+
+    protected function getModuleKey(): string
+    {
+        return 'files';
     }
 }

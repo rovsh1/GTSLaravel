@@ -2,14 +2,14 @@
 
 namespace Module\Booking\Hotel\Infrastructure\Adapter;
 
-use Module\Shared\Infrastructure\Adapter\AbstractPortAdapter;
+use Module\Shared\Infrastructure\Adapter\AbstractModuleAdapter;
 use Module\Booking\Hotel\Domain\Adapter\FileStorageAdapterInterface;
 
-class FileStorageAdapter extends AbstractPortAdapter implements FileStorageAdapterInterface
+class FileStorageAdapter extends AbstractModuleAdapter implements FileStorageAdapterInterface
 {
     public function create(string $fileType, int $entityId, string $name = null, string $contents = null)
     {
-        return $this->request('files/create', [
+        return $this->request('create', [
             'fileType' => $fileType,
             'entityId' => $entityId,
             'name' => $name,
@@ -17,5 +17,10 @@ class FileStorageAdapter extends AbstractPortAdapter implements FileStorageAdapt
         ]);
         //$request = new \PortGateway\FileStorage\CreateRequest();
         //return $this->portGateway->call($request);
+    }
+
+    protected function getModuleKey(): string
+    {
+        return 'files';
     }
 }

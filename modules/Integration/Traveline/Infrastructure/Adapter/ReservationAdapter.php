@@ -7,12 +7,11 @@ use Carbon\CarbonPeriod;
 use Module\Integration\Traveline\Application\Dto\Reservation;
 use Module\Integration\Traveline\Application\Dto\ReservationDto;
 use Module\Integration\Traveline\Domain\Adapter\ReservationAdapterInterface;
-use Module\Integration\Traveline\Domain\Entity\ConfigInterface;
-use Module\Shared\Infrastructure\Adapter\AbstractPortAdapter;
+use Module\Shared\Infrastructure\Adapter\AbstractModuleAdapter;
 
-class ReservationAdapter extends AbstractPortAdapter implements ReservationAdapterInterface
+class ReservationAdapter extends AbstractModuleAdapter implements ReservationAdapterInterface
 {
-    public function __construct(private readonly ConfigInterface $config) {}
+    //public function __construct(private readonly ConfigInterface $config) {}
 
     /**
      * Бронирования делаются в вашей системы из свободной квоты, передаются в средство размещения автоматически и не нуждаются в дополнительном подтверждении со стороны отеля. Задача данной функции обеспечить подтверждение факта успешности технической доставки бронирования из вашей системы в менеджер каналов.
@@ -30,26 +29,26 @@ class ReservationAdapter extends AbstractPortAdapter implements ReservationAdapt
 
     public function getActiveReservations(): array
     {
-        $reservationsDto = $this->request('hotelReservation/searchActiveReservations');
+        $reservationsDto = $this->request('searchActiveReservations');
         return $this->buildReservationDtos($reservationsDto);
     }
 
     public function getActiveReservationsByHotelId(int $hotelId): array
     {
-        $reservationsDto = $this->request('hotelReservation/searchActiveReservations', ['hotel_id' => $hotelId]);
+        $reservationsDto = $this->request('searchActiveReservations', ['hotel_id' => $hotelId]);
         return $this->buildReservationDtos($reservationsDto);
     }
 
     public function getActiveReservationById(int $id): ?ReservationDto
     {
-        $reservationDto = $this->request('hotelReservation/findById', ['id' => $id]);
+        $reservationDto = $this->request('findById', ['id' => $id]);
         $reservations = $this->buildReservationDtos([$reservationDto]);
-        return \Arr::first($reservations);
+        return $reservations[0] ?? null;
     }
 
     public function getUpdatedReservations(CarbonInterface $startDate, ?int $hotelId = null): array
     {
-        $reservationsDto = $this->request('hotelReservation/searchUpdatedReservations', [
+        $reservationsDto = $this->request('searchUpdatedReservations', [
             'date_update' => $startDate,
             'hotel_id' => $hotelId
         ]);
@@ -98,5 +97,10 @@ class ReservationAdapter extends AbstractPortAdapter implements ReservationAdapt
             $prices[] = new Reservation\Room\DayPriceDto($date->format('Y-m-d'), $dailyPrice);
         }
         return $prices;
+    }
+
+    protected function getModuleKey(): string
+    {
+        return 'hotelReservation';
     }
 }

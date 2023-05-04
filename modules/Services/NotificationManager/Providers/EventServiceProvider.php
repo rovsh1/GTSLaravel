@@ -9,10 +9,10 @@ use Module\Services\NotificationManager\Domain\Notification;
 class EventServiceProvider extends ServiceProvider
 {
     protected $listen = [
-        'Customer\Registered' => Listener\CustomerRegisteredListener::class
+        'Customer\Registered' => Listener\Customer\CustomerRegisteredListener::class
     ];
 
     protected array $eventNotifications = [
-        'Customer\Registered' => Notification\CustomerRegistered::class
+        'Customer\Registered' => Notification\Customer\CustomerRegistered::class
     ];
 }

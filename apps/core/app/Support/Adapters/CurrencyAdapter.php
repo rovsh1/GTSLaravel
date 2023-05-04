@@ -2,10 +2,8 @@
 
 namespace App\Core\Support\Adapters;
 
-class CurrencyAdapter extends AbstractPortAdapter
+class CurrencyAdapter extends AbstractModuleAdapter
 {
-    protected string $module = 'CurrencyRate';
-
     public function getRate(string $currency, string $country = null): float
     {
         return $this->request('rate', [
@@ -28,5 +26,10 @@ class CurrencyAdapter extends AbstractPortAdapter
             'country' => $country,
             'date' => $date
         ]);
+    }
+
+    protected function getModuleKey(): string
+    {
+        return 'CurrencyRate';
     }
 }
