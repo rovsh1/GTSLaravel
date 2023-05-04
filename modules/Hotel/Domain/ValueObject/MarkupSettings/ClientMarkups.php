@@ -37,6 +37,26 @@ class ClientMarkups implements ValueObjectInterface, SerializableDataInterface
         return $this->TO;
     }
 
+    public function setIndividual(Percent $individual): void
+    {
+        $this->individual = $individual;
+    }
+
+    public function setTA(Percent $TA): void
+    {
+        $this->TA = $TA;
+    }
+
+    public function setOTA(Percent $OTA): void
+    {
+        $this->OTA = $OTA;
+    }
+
+    public function setTO(Percent $TO): void
+    {
+        $this->TO = $TO;
+    }
+
     public function toData(): array
     {
         return [

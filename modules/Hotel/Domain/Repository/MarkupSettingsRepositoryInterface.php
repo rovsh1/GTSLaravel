@@ -14,5 +14,5 @@ interface MarkupSettingsRepositoryInterface
      */
     public function get(int $hotelId): MarkupSettings;
 
-    public function update(int $hotelId, MarkupSettings $markup): void;
+    public function updateClientMarkups(int $hotelId, ?int $individual, ?int $OTA, ?int $TA, ?int $TO): void;
 }

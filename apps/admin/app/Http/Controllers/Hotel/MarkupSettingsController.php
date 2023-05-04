@@ -22,11 +22,11 @@ class MarkupSettingsController extends Controller
     public function updateClientMarkups(UpdateClientMarkupsRequest $request, Hotel $hotel): AjaxResponseInterface
     {
         MarkupSettingsAdapter::updateClientMarkups(
-            $hotel->id,
-            $request->getIndividual(),
-            $request->getOTA(),
-            $request->getTA(),
-            $request->getTO()
+            hotelId: $hotel->id,
+            individual: $request->getIndividual(),
+            OTA: $request->getOTA(),
+            TA: $request->getTA(),
+            TO: $request->getTO()
         );
         return new AjaxSuccessResponse();
     }
