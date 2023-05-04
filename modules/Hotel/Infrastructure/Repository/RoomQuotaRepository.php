@@ -35,7 +35,10 @@ class RoomQuotaRepository implements RoomQuotaRepositoryInterface
         EloquentQuota::whereRoomId($roomId)
             ->where('date', '>=', $period->getStartDate())
             ->where('date', '<', $period->getEndDate())
-            ->update(['count_available' => $quota]);
+            ->updateOrCreate(
+                ['date' => $period->getStartDate(), 'room_id' => $roomId],
+                ['date' => $period->getStartDate(), 'room_id' => $roomId, 'count_total' => $quota, 'status' => QuotaStatusEnum::Close]
+            );
     }
 
     public function closeRoomQuota(int $roomId, CarbonPeriod $period)

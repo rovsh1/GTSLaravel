@@ -15,7 +15,8 @@ return new class extends Migration {
                     'room_id' => $r->room_id,
                     'date' => $r->date,
                     'release_days' => $r->period,
-                    'count_available' => $r->count_available,
+                    'count_total' => $r->count_available,
+                    'count_available' => $r->count_available - $r->count_booked,
                     'count_booked' => $r->count_booked,
                     //@todo count_reserved нужно смотреть как считается
                     'count_reserved' => 0,

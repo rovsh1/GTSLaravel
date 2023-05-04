@@ -18,6 +18,7 @@ class RoomQuotaFactory extends AbstractEntityFactory
             new DateTime($data['date']),
             (bool)$data['status'],
             $data['release_days'],
+            $data['count_total'],
             $data['count_available'],
             $data['count_booked'],
             $data['count_reserved'],

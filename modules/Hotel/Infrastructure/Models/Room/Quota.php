@@ -15,12 +15,14 @@ use Module\Hotel\Infrastructure\Models\Room;
  * @property int $release_days
  * @property QuotaStatusEnum $status
  * @property int $count_available
+ * @property int $count_total
  * @property int $count_booked
  * @property int $count_reserved
  * @property-read Room|null $room
  * @method static \Illuminate\Database\Eloquent\Builder|Quota newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Quota newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Quota query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Quota whereCountTotal($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Quota whereCountReserved($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Quota whereCountAvailable($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Quota whereCountBooked($value)
@@ -40,8 +42,8 @@ class Quota extends Model
         'date',
         'release_days',
         'status',
-        //@todo count_allocated/total - кол-во которое вводит менеджер
-        'count_available',//остаток после = count_allocated - count_booked - count_reserved
+        'count_total',//Общее кол-во квот которое вводит менеджер
+        'count_available',//остаток после = count_total - count_booked - count_reserved
         'count_booked',
         'count_reserved',
     ];

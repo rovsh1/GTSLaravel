@@ -13,6 +13,7 @@ return new class extends Migration {
             $table->date('date');
             $table->unsignedTinyInteger('release_days')->default(0);
             $table->unsignedTinyInteger('status')->default(0);
+            $table->unsignedTinyInteger('count_total')->default(0);
             $table->unsignedTinyInteger('count_available')->default(0);
             $table->unsignedTinyInteger('count_booked')->default(0);
             $table->unsignedTinyInteger('count_reserved')->default(0);

@@ -13,6 +13,7 @@ class QuotaDto extends Dto
         public readonly CarbonInterface $date,
         public readonly bool $status,
         public readonly int $releaseDays,
+        public readonly int $countTotal,
         public readonly int $countAvailable,
         public readonly int $countBooked,
         public readonly int $countReserved,

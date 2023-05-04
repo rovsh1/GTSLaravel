@@ -20,6 +20,7 @@ class RoomQuota extends JsonResource
             'room_id' => $this->roomId,
             'status' => (int)$this->status,
             'release_days' => $this->releaseDays,
+            'count_total' => $this->countTotal,
             'count_available' => $this->countAvailable,
             'count_booked' => $this->countBooked,
             'count_reserved' => $this->countReserved,

@@ -12,6 +12,7 @@ class RoomQuota
         private DateTimeInterface $date,
         private bool $status,
         private int $releaseDays,
+        private int $countTotal,
         private int $countAvailable,
         private int $countBooked,
         private int $countReserved
@@ -55,6 +56,11 @@ class RoomQuota
     public function setReleaseDays(int $days): void
     {
         $this->releaseDays = $days;
+    }
+
+    public function countTotal(): int
+    {
+        return $this->countTotal;
     }
 
     public function countAvailable(): int
