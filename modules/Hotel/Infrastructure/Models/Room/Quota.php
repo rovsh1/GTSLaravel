@@ -40,7 +40,8 @@ class Quota extends Model
         'date',
         'release_days',
         'status',
-        'count_available',
+        //@todo count_allocated/total - кол-во которое вводит менеджер
+        'count_available',//остаток после = count_allocated - count_booked - count_reserved
         'count_booked',
         'count_reserved',
     ];

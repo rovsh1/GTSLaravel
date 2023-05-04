@@ -4,7 +4,7 @@ namespace Module\Hotel\Application\Query;
 
 use Custom\Framework\Contracts\Bus\QueryHandlerInterface;
 use Custom\Framework\Contracts\Bus\QueryInterface;
-use Module\Hotel\Application\Dto\Options\MarkupSettingsDto;
+use Module\Hotel\Application\Dto\MarkupSettings\MarkupSettingsDto;
 use Module\Hotel\Infrastructure\Repository\MarkupSettingsRepository;
 
 class GetHotelMarkupSettingsHandler implements QueryHandlerInterface

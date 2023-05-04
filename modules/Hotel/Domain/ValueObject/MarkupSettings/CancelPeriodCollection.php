@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Hotel\Domain\ValueObject\Options;
+namespace Module\Hotel\Domain\ValueObject\MarkupSettings;
 
 use Illuminate\Support\Collection;
 use Module\Shared\Domain\ValueObject\SerializableDataInterface;

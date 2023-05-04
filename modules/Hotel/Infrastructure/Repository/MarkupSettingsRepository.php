@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Hotel\Infrastructure\Repository;
 
 use Module\Hotel\Domain\Repository\MarkupSettingsRepositoryInterface;
-use Module\Hotel\Domain\ValueObject\Options\MarkupSettings;
+use Module\Hotel\Domain\ValueObject\MarkupSettings\MarkupSettings;
 use Module\Hotel\Infrastructure\Models\Hotel;
 use Module\Shared\Domain\Service\JsonSerializer;
 

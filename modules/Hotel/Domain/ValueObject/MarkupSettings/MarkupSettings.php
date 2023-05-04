@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Hotel\Domain\ValueObject\Options;
+namespace Module\Hotel\Domain\ValueObject\MarkupSettings;
 
 use Module\Shared\Domain\ValueObject\Percent;
 use Module\Shared\Domain\ValueObject\SerializableDataInterface;

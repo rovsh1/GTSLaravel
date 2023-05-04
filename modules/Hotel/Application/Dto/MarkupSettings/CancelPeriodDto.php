@@ -2,18 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Module\Hotel\Application\Dto\Options;
+namespace Module\Hotel\Application\Dto\MarkupSettings;
 
-use Module\Hotel\Domain\ValueObject\Options\CancelPeriod;
+use Carbon\CarbonInterface;
+use Module\Hotel\Domain\ValueObject\MarkupSettings\CancelPeriod;
 use Module\Shared\Application\Dto\AbstractDomainBasedDto;
-use Module\Shared\Application\Dto\PeriodDto;
 use Module\Shared\Domain\Entity\EntityInterface;
 use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 
 class CancelPeriodDto extends AbstractDomainBasedDto
 {
     public function __construct(
-        public readonly PeriodDto $period,
+        public readonly CarbonInterface $from,
+        public readonly CarbonInterface $to,
         public readonly CancelMarkupOptionDto $noCheckInMarkup,
         public readonly array $dailyMarkups
     ) {}
@@ -21,7 +22,8 @@ class CancelPeriodDto extends AbstractDomainBasedDto
     public static function fromDomain(EntityInterface|ValueObjectInterface|CancelPeriod $entity): static
     {
         return new static(
-            PeriodDto::fromCarbonPeriod($entity->period()),
+            $entity->period()->getStartDate(),
+            $entity->period()->getEndDate(),
             CancelMarkupOptionDto::fromDomain($entity->noCheckInMarkup()),
             DailyMarkupDto::collectionFromDomain($entity->dailyMarkups()->all())
         );
