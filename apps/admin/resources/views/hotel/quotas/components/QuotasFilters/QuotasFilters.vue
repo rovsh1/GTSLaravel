@@ -129,6 +129,7 @@ const reset = () => {
   selectedMonthsCount.value = defaultState.monthsCount
   selectedAvailabilityOption.value = defaultState.availability
   selectedRoomID.value = defaultState.roomID
+  submit()
 }
 
 const isStateChanged = computed<boolean>(() => !isEqual(payload.value, defaultFiltersPayload))
