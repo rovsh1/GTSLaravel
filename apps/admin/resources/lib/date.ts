@@ -9,7 +9,7 @@ export const getEachDayInMonth = (date: Date): Date[] => {
     .splitBy({ days: 1 })
     .map((interval) => {
       if (interval.isValid) return interval.start
-      throw new Error()
+      throw new Error('Interval is invalid')
     })
     .filter((dateTime): dateTime is DateTime => dateTime !== null)
     .map((dateTime) => dateTime.toJSDate())
@@ -22,7 +22,7 @@ export const getEachMonthInYear = (date: Date): DateTime[] => {
     .splitBy({ months: 1 })
     .map((interval) => {
       if (interval.isValid) return interval.start
-      throw new Error()
+      throw new Error('Interval is invalid')
     })
     .filter((month): month is DateTime => month !== null)
 }

@@ -6,8 +6,10 @@ import { useAdminAPI } from '~resources/lib/api'
 import { HotelID } from '~resources/lib/api/hotel/hotel'
 import { getRef } from '~resources/lib/vue'
 
+export type HotelRoomID = number
+
 export type HotelRoomResponse = {
-  id: string
+  id: HotelRoomID
   hotel_id: HotelID
   name: string
   custom_name: string

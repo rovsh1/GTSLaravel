@@ -8,16 +8,15 @@ import { DateTime } from 'luxon'
 
 import BootstrapButton from '~resources/components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 import { MonthNumber } from '~resources/lib/api/hotel/quotas'
+import { HotelRoomID } from '~resources/lib/api/hotel/room'
 import { HotelRoom } from '~resources/lib/api/hotel/rooms'
 import { getEachMonthInYear } from '~resources/lib/date'
 
 import FiltersSelect from '../FiltersSelect.vue'
 
-import { RoomID } from '../lib'
 import {
   AvailabilityValue,
   createYear,
-  currentMonth,
   defaultFiltersPayload,
   FiltersPayload,
   Month,
@@ -63,7 +62,7 @@ const months = computed<Month[]>(() => {
   }))
 })
 
-const selectedMonth = ref<Month['value']>(currentMonth)
+const selectedMonth = ref<Month['value']>(defaultState.month)
 
 type MonthsCountOption = {
   label: string
@@ -99,7 +98,7 @@ const rooms = computed(() => props.rooms.map(({ id, name, custom_name: customNam
   label: `${name} (${customName})`,
 })))
 
-const selectedRoomID = ref<RoomID | ''>('')
+const selectedRoomID = ref<HotelRoomID | ''>(defaultState.roomID)
 
 const handleRoomInput = (value: string | number) => {
   const numericValue = Number(value)

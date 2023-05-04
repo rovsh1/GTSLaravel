@@ -50,7 +50,7 @@ export type HotelQuota = Omit<HotelQuotaResponse, 'room_id'> & {
 }
 
 type HotelQuotasResponse = HotelQuotaResponse[]
-type UseHotelQuota = HotelQuota[] | null
+export type UseHotelQuota = HotelQuota[] | null
 
 export const useHotelQuotasAPI = (props: MaybeRef<HotelRoomQuotaProps>) =>
   useAdminAPI(computed(() => getRef(props, ({ hotelID }) =>

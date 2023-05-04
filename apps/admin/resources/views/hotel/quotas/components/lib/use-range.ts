@@ -1,9 +1,11 @@
 import { Ref, watch } from 'vue'
 
-import { ActiveKey, getActiveCellKey, RoomID, RoomQuota, RoomQuotas } from './index'
+import { HotelRoomID } from '~resources/lib/api/hotel/room'
+
+import { ActiveKey, getActiveCellKey, RoomQuota } from './index'
 
 export type QuotaRange = {
-  roomID: RoomID
+  roomID: HotelRoomID
   quotas: RoomQuota[]
 } | null
 
@@ -12,14 +14,14 @@ export type EditedQuota = {
   value: number
 }
 
-const addRoomIDToRoomQuotaKey = (roomTypeID: RoomID) => (roomQuota: RoomQuota): RoomQuota => ({
+const addRoomIDToRoomQuotaKey = (roomTypeID: HotelRoomID) => (roomQuota: RoomQuota): RoomQuota => ({
   ...roomQuota,
   key: getActiveCellKey(roomQuota.key, roomTypeID),
 })
 
 type SetRangeParams = {
   dailyQuota: RoomQuota[]
-  roomTypeID: RoomQuotas['id']
+  roomTypeID: HotelRoomID
   activeKey: ActiveKey
   rangeKey: ActiveKey
 }
@@ -54,7 +56,7 @@ const setQuotaRange = (params: SetRangeParams) =>
 type SetPickParams = {
   oldRange: QuotaRange
   dailyQuota: RoomQuota[]
-  roomTypeID: RoomQuotas['id']
+  roomTypeID: HotelRoomID
   activeKey: ActiveKey
   pickKey: ActiveKey
 }

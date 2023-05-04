@@ -4,10 +4,9 @@ import { computed, ref } from 'vue'
 import { OnClickOutside } from '@vueuse/components'
 import { DateTime } from 'luxon'
 
-import { HotelQuota } from '~resources/lib/api/hotel/quotas'
-import { HotelRoom } from '~resources/lib/api/hotel/rooms'
-import { getEachDayInMonth, isBusinessDay } from '~resources/lib/date'
+import { HotelRoomID } from '~resources/lib/api/hotel/room'
 import { isMacOS } from '~resources/lib/platform'
+import { plural } from '~resources/lib/plural'
 
 import DayMenu from './DayMenu/DayMenu.vue'
 import EditableCell from './EditableCell.vue'
@@ -17,45 +16,19 @@ import MenuButton from './MenuButton.vue'
 import { MenuPosition, useDayMenu } from './DayMenu/use-day-menu'
 import {
   ActiveKey,
-  Day,
   getActiveCellKey,
-  getRoomsQuotasFromQuotas,
-  RoomID,
+  MonthlyQuota,
   RoomQuota,
-  RoomQuotas,
   RoomQuotaStatus,
+  RoomRender,
 } from './lib'
 import { EditedQuota, QuotaRange, useQuotasTableRange } from './lib/use-range'
 
-const props = defineProps<{
-  month: Date
-  rooms: HotelRoom[]
-  quotas: HotelQuota[]
+defineProps<{
+  room: RoomRender
+  monthlyQuotas: MonthlyQuota[]
   editable: boolean
 }>()
-
-const monthName = computed<string>(
-  () => DateTime.fromJSDate(props.month).toFormat('LLLL'),
-)
-
-const days = computed<Day[]>(() => getEachDayInMonth(props.month)
-  .map((date): Day => {
-    const dateTime = DateTime.fromJSDate(date)
-    return ({
-      key: date.getTime().toString(),
-      date,
-      dayOfWeek: dateTime.toFormat('EEE'),
-      dayOfMonth: dateTime.toFormat('d'),
-      isHoliday: !isBusinessDay(date),
-    })
-  }))
-
-const roomsQuotas = computed<RoomQuotas[]>(() =>
-  getRoomsQuotasFromQuotas({
-    rooms: props.rooms,
-    quotas: props.quotas,
-    days: days.value,
-  }))
 
 const dayCellClassNameByRoomQuotaStatus: Record<RoomQuotaStatus, string> = {
   opened: 'isOpened',
@@ -114,18 +87,18 @@ const formatDateToAPIDate = (date: Date): string => DateTime
   .fromJSDate(date).toFormat('yyyy-LL-dd')
 
 type UpdateQuotasRequest = {
-  room_id: RoomID
+  room_id: HotelRoomID
   dates: string[]
   count: number
 }
 
 type UpdateReleaseDaysRequest = {
-  room_id: RoomID
+  room_id: HotelRoomID
   dates: string[]
   release_days: number
 }
 
-type HandleValue<R> = (roomID: RoomID, date: Date, value: number) => R
+type HandleValue<R> = (roomID: HotelRoomID, date: Date, value: number) => R
 
 const handleQuotaValue: HandleValue<UpdateQuotasRequest> = (roomID, date, value) => {
   const range = quotaRange.value
@@ -181,24 +154,34 @@ const massEditTooltip = computed(() => {
 </script>
 <template>
   <div class="quotasRooms">
-    <div
-      v-for="{
-        id, label, customName, guests, count, dailyQuota,
-      } in roomsQuotas"
-      :key="id"
-    >
-      <heading-cell
-        :label="label"
-        :custom-name="customName"
-        :guests="guests"
-        :count="count"
-      />
-      <div class="quotasTable card" @scroll="closeDayMenu">
+    <heading-cell
+      :label="room.label"
+      :custom-name="room.customName"
+      :guests="room.guests"
+      :count="room.count"
+    />
+    <div class="quotasTables">
+      <div
+        v-for="{ dailyQuota, monthKey, monthName, days, quotasCount } in monthlyQuotas"
+        :key="monthKey"
+        class="quotasTable card"
+        @scroll="closeDayMenu"
+      >
         <table class="card-body">
           <thead>
             <tr>
               <th class="headingCell">
                 <div class="monthName">{{ monthName }}</div>
+                <div>
+                  <strong>
+                    <template v-if="quotasCount > 0">
+                      {{ plural(quotasCount, ['день', 'дня', 'дней']) }} из {{ days.length }}
+                    </template>
+                    <template v-else>
+                      Пусто
+                    </template>
+                  </strong>
+                </div>
               </th>
               <td
                 v-for="{ key, dayOfWeek, dayOfMonth, isHoliday } in days"
@@ -207,10 +190,10 @@ const massEditTooltip = computed(() => {
                 :class="{ isHoliday }"
                 tabindex="0"
                 @focusin="() => {
-                  setHoveredRoomTypeID({ dayKey: key, roomTypeID: id })
+                  setHoveredRoomTypeID({ dayKey: key, roomTypeID: room.id })
                 }"
                 @mouseenter="() => {
-                  setHoveredRoomTypeID({ dayKey: key, roomTypeID: id })
+                  setHoveredRoomTypeID({ dayKey: key, roomTypeID: room.id })
                 }"
                 @focusout="resetHoveredRoomTypeID"
                 @mouseleave="resetHoveredRoomTypeID"
@@ -230,46 +213,50 @@ const massEditTooltip = computed(() => {
                 :title="activeQuotaKey ? massEditTooltip : undefined"
                 tabindex="0"
                 @focusin="() => {
-                  setHoveredRoomTypeID({ dayKey: key, roomTypeID: id })
+                  setHoveredRoomTypeID({ dayKey: key, roomTypeID: room.id })
                 }"
                 @mouseenter="() => {
-                  setHoveredRoomTypeID({ dayKey: key, roomTypeID: id })
+                  setHoveredRoomTypeID({ dayKey: key, roomTypeID: room.id })
                 }"
                 @focusout="resetHoveredRoomTypeID"
                 @mouseleave="resetHoveredRoomTypeID"
               >
                 <editable-cell
                   :active-key="activeQuotaKey"
-                  :cell-key="getActiveCellKey(key, id)"
+                  :cell-key="getActiveCellKey(key, room.id)"
                   :value="
                     editedQuota === null
                       ? quota === null ? '' : quota.toString()
                       : editedQuota.toString()
                   "
-                  :max="count"
+                  :max="room.count"
                   :disabled="!editable"
-                  :in-range="isQuotaCellInRange(getActiveCellKey(key, id))"
+                  :in-range="isQuotaCellInRange(getActiveCellKey(key, room.id))"
                   @active-key="(value) => activeQuotaKey = value"
                   @range-key="(value) => setQuotaRange({
                     dailyQuota,
-                    roomTypeID: id,
+                    roomTypeID: room.id,
                     activeKey: activeQuotaKey,
                     rangeKey: value,
                   })"
                   @pick-key="(value) => setQuotaPick({
                     oldRange: quotaRange as QuotaRange,
                     dailyQuota,
-                    roomTypeID: id,
+                    roomTypeID: room.id,
                     activeKey: activeQuotaKey,
                     pickKey: value,
                   })"
-                  @value="value => handleQuotaValue(id, date, value)"
+                  @value="value => handleQuotaValue(room.id, date, value)"
                   @input="value => {
-                    handleQuotaInput(getActiveCellKey(key, id), value, quotaRange as QuotaRange)
+                    handleQuotaInput(
+                      getActiveCellKey(key, room.id), value, quotaRange as QuotaRange,
+                    )
                   }"
                 >
                   <template
-                    v-if="showEditedQuota(getActiveCellKey(key, id), quotaRange as QuotaRange)"
+                    v-if="showEditedQuota(
+                      getActiveCellKey(key, room.id), quotaRange as QuotaRange,
+                    )"
                   >
                     {{ editedQuotaInRange?.value }}
                   </template>
@@ -298,17 +285,17 @@ const massEditTooltip = computed(() => {
                 :title="activeReleaseDaysKey ? massEditTooltip : undefined"
                 tabindex="0"
                 @focusin="() => {
-                  setHoveredRoomTypeID({ dayKey: key, roomTypeID: id })
+                  setHoveredRoomTypeID({ dayKey: key, roomTypeID: room.id })
                 }"
                 @mouseenter="() => {
-                  setHoveredRoomTypeID({ dayKey: key, roomTypeID: id })
+                  setHoveredRoomTypeID({ dayKey: key, roomTypeID: room.id })
                 }"
                 @focusout="resetHoveredRoomTypeID"
                 @mouseleave="resetHoveredRoomTypeID"
               >
                 <editable-cell
                   :active-key="activeReleaseDaysKey"
-                  :cell-key="getActiveCellKey(key, id)"
+                  :cell-key="getActiveCellKey(key, room.id)"
                   :value="
                     editedReleaseDays === null
                       ? releaseDays === null ? '' : releaseDays.toString()
@@ -316,28 +303,32 @@ const massEditTooltip = computed(() => {
                   "
                   :max="30"
                   :disabled="!editable"
-                  :in-range="isReleaseDaysCellInRange(getActiveCellKey(key, id))"
+                  :in-range="isReleaseDaysCellInRange(getActiveCellKey(key, room.id))"
                   @active-key="(value) => activeReleaseDaysKey = value"
                   @range-key="(value) => setReleaseDaysRange({
                     dailyQuota,
-                    roomTypeID: id,
+                    roomTypeID: room.id,
                     activeKey: activeReleaseDaysKey,
                     rangeKey: value,
                   })"
                   @pick-key="(value) => setReleaseDaysPick({
                     oldRange: releaseDaysRange,
                     dailyQuota,
-                    roomTypeID: id,
+                    roomTypeID: room.id,
                     activeKey: activeReleaseDaysKey,
                     pickKey: value,
                   })"
-                  @value="value => handleReleaseDaysValue(id, date, value)"
+                  @value="value => handleReleaseDaysValue(room.id, date, value)"
                   @input="value => {
-                    handleReleaseDaysInput(getActiveCellKey(key, id), value, releaseDaysRange)
+                    handleReleaseDaysInput(
+                      getActiveCellKey(key, room.id), value, releaseDaysRange,
+                    )
                   }"
                 >
                   <template
-                    v-if="showEditedReleaseDays(getActiveCellKey(key, id), releaseDaysRange)"
+                    v-if="showEditedReleaseDays(
+                      getActiveCellKey(key, room.id), releaseDaysRange,
+                    )"
                   >
                     {{ editedReleaseDaysInRange?.value }}
                   </template>
@@ -367,15 +358,15 @@ const massEditTooltip = computed(() => {
               >
                 <menu-button
                   :visible="
-                    (hoveredDay === key && hoveredRoomTypeID === id)
+                    (hoveredDay === key && hoveredRoomTypeID === room.id)
                       || (
                         menuPosition !== null
                         && getActiveCellKey(menuPosition.dayKey, menuPosition.roomTypeID)
-                          === getActiveCellKey(key, id)
+                          === getActiveCellKey(key, room.id)
                       )
                   "
                   @click="(element) => {
-                    openDayMenu({ trigger: element, dayKey: key, roomTypeID: id })
+                    openDayMenu({ trigger: element, dayKey: key, roomTypeID: room.id })
                   }"
                 />
               </td>
@@ -403,10 +394,10 @@ const massEditTooltip = computed(() => {
 @use '~resources/sass/variables' as vars;
 @use 'shared' as shared;
 
-.quotasRooms {
+.quotasTables {
   display: flex;
   flex-flow: column;
-  gap: 2em;
+  gap: 1em;
 }
 
 .quotasTable {
@@ -432,7 +423,7 @@ th {
   text-align: center;
 
   &.isHoliday {
-    color: red;
+    color: vars.$error;
   }
 }
 
