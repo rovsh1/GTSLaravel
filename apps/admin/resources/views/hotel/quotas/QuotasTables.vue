@@ -95,7 +95,10 @@ const handleFilters = (value: FiltersPayload) => {
         :loading="isHotelQuotasFetching"
         @submit="value => handleFilters(value)"
       />
-      <LoadingSpinner v-if="isHotelQuotasFetching" />
+      <LoadingSpinner v-if="isHotelQuotasFetching && roomsQuotas === null" />
+      <div v-else-if="hotel === null">
+        Не удалось найти данные для отеля.
+      </div>
       <div v-else-if="roomsQuotas === null">
         Не удалось найти комнаты для этого отеля.
       </div>
@@ -103,9 +106,11 @@ const handleFilters = (value: FiltersPayload) => {
         <quotas-table
           v-for="{ room, monthlyQuotas } in roomsQuotas"
           :key="room.id"
+          :hotel="hotel"
           :room="room"
           :monthly-quotas="monthlyQuotas"
-          :editable="editable"
+          :editable="editable && !isHotelQuotasFetching"
+          @update="fetchHotelQuotas"
         />
       </div>
     </div>

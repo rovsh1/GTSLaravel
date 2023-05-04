@@ -2,9 +2,15 @@
 import { ref } from 'vue'
 
 import { OnClickOutside } from '@vueuse/components'
-import { DateTime } from 'luxon'
 
-import { HotelRoomID } from '~resources/lib/api/hotel/room'
+import { HotelResponse } from '~resources/lib/api/hotel/hotel'
+import {
+  HotelRoomQuotasUpdatePayload,
+  HotelRoomQuotasUpdateProps,
+  HotelRoomReleaseDaysUpdateProps,
+  useHotelRoomQuotasUpdate, useHotelRoomReleaseDaysUpdate,
+} from '~resources/lib/api/hotel/quotas'
+import { formatDateToAPIDate } from '~resources/lib/date'
 import { plural } from '~resources/lib/plural'
 
 import DayMenu from './DayMenu/DayMenu.vue'
@@ -23,10 +29,15 @@ import {
 } from './lib'
 import { EditedQuota, QuotaRange, useQuotasTableRange } from './lib/use-range'
 
-defineProps<{
+const props = defineProps<{
+  hotel: HotelResponse
   room: RoomRender
   monthlyQuotas: MonthlyQuota[]
   editable: boolean
+}>()
+
+const emit = defineEmits<{
+  (event: 'update'): void
 }>()
 
 const dayCellClassNameByRoomQuotaStatus: Record<RoomQuotaStatus, string> = {
@@ -82,64 +93,83 @@ const {
   resetHoveredRoomTypeID,
 } = useDayMenu()
 
-const formatDateToAPIDate = (date: Date): string => DateTime
-  .fromJSDate(date).toFormat('yyyy-LL-dd')
+type HandleValue<R> = (date: Date, value: number) => R
 
-type UpdateQuotasRequest = {
-  room_id: HotelRoomID
-  dates: string[]
-  count: number
-}
+const hotelRoomQuotasUpdateProps = ref<HotelRoomQuotasUpdateProps | null>(null)
 
-type UpdateReleaseDaysRequest = {
-  room_id: HotelRoomID
-  dates: string[]
-  release_days: number
-}
+const {
+  execute: executeHotelRoomQuotasUpdate,
+  onFetchFinally: onHotelRoomQuotasUpdateFinally,
+} = useHotelRoomQuotasUpdate(hotelRoomQuotasUpdateProps)
 
-type HandleValue<R> = (roomID: HotelRoomID, date: Date, value: number) => R
-
-const handleQuotaValue: HandleValue<UpdateQuotasRequest> = (roomID, date, value) => {
+const getQuotaPayload: HandleValue<HotelRoomQuotasUpdatePayload> = (date, value) => {
   const range = quotaRange.value
   if (range === null) {
-    const request: UpdateQuotasRequest = {
-      room_id: roomID,
+    return {
       dates: [formatDateToAPIDate(date)],
       count: value,
     }
-    console.log('quota: single value', { request })
-    return request
   }
   const { quotas } = range
-  const request: UpdateQuotasRequest = {
-    room_id: roomID,
+  return {
     dates: quotas.map((quota) => formatDateToAPIDate(quota.date)),
     count: value,
   }
-  console.log('quota: multiple value', { request })
-  return request
 }
 
-const handleReleaseDaysValue: HandleValue<UpdateReleaseDaysRequest> = (roomID, date, value) => {
+const handleQuotaValue: HandleValue<void> = (date, value) => {
+  const { dates, count } = getQuotaPayload(date, value)
+  hotelRoomQuotasUpdateProps.value = {
+    hotelID: props.hotel.id,
+    roomID: props.room.id,
+    dates,
+    count,
+  }
+  executeHotelRoomQuotasUpdate()
+}
+
+onHotelRoomQuotasUpdateFinally(() => {
+  hotelRoomQuotasUpdateProps.value = null
+  emit('update')
+})
+
+const hotelRoomReleaseDaysUpdateProps = ref<HotelRoomReleaseDaysUpdateProps | null>(null)
+
+const {
+  execute: executeHotelRoomReleaseDaysUpdate,
+  onFetchFinally: onHotelRoomReleaseDaysUpdateFinally,
+} = useHotelRoomReleaseDaysUpdate(hotelRoomReleaseDaysUpdateProps)
+
+const getReleaseDaysPayload: HandleValue<HotelRoomReleaseDaysUpdateProps> = (date, value) => {
+  const common = {
+    hotelID: props.hotel.id,
+    roomID: props.room.id,
+  }
   const range = releaseDaysRange.value
   if (range === null) {
-    const request: UpdateReleaseDaysRequest = {
-      room_id: roomID,
+    return {
+      ...common,
       dates: [formatDateToAPIDate(date)],
-      release_days: value,
+      releaseDays: value,
     }
-    console.log('release days: single value', { request })
-    return request
   }
   const { quotas } = range
-  const request: UpdateReleaseDaysRequest = {
-    room_id: roomID,
+  return {
+    ...common,
     dates: quotas.map((quota) => formatDateToAPIDate(quota.date)),
-    release_days: value,
+    releaseDays: value,
   }
-  console.log('release days: multiple value', { request })
-  return request
 }
+
+const handleReleaseDaysValue: HandleValue<void> = (date, value) => {
+  hotelRoomReleaseDaysUpdateProps.value = getReleaseDaysPayload(date, value)
+  executeHotelRoomReleaseDaysUpdate()
+}
+
+onHotelRoomReleaseDaysUpdateFinally(() => {
+  hotelRoomReleaseDaysUpdateProps.value = null
+  emit('update')
+})
 </script>
 <template>
   <div class="quotasRooms">
@@ -234,7 +264,7 @@ const handleReleaseDaysValue: HandleValue<UpdateReleaseDaysRequest> = (roomID, d
                     activeKey: activeQuotaKey,
                     pickKey: value,
                   })"
-                  @value="value => handleQuotaValue(room.id, date, value)"
+                  @value="value => handleQuotaValue(date, value)"
                   @input="value => {
                     handleQuotaInput(
                       getActiveCellKey(key, room.id), value, quotaRange as QuotaRange,
@@ -305,7 +335,7 @@ const handleReleaseDaysValue: HandleValue<UpdateReleaseDaysRequest> = (roomID, d
                     activeKey: activeReleaseDaysKey,
                     pickKey: value,
                   })"
-                  @value="value => handleReleaseDaysValue(room.id, date, value)"
+                  @value="value => handleReleaseDaysValue(date, value)"
                   @input="value => {
                     handleReleaseDaysInput(
                       getActiveCellKey(key, room.id), value, releaseDaysRange,

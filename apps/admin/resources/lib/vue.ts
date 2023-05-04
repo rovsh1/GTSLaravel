@@ -23,3 +23,13 @@ export const createVueInstance = (params: CreateVueInstanceParams) => {
 }
 
 export const getRef = <T, R>(ref: T | Ref<T>, getter: (data: T) => R) => getter(unref(ref))
+
+export const getNullableRef = <T, R, N>(
+  ref: T | null | Ref<T | null>,
+  onSome: (data: T) => R,
+  onNull: N | null = null,
+): R | N => {
+  const unwrapped = unref(ref)
+  if (unwrapped === null) return onNull as N
+  return onSome(unwrapped)
+}

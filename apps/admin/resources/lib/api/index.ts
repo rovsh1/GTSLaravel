@@ -3,8 +3,11 @@ import qs from 'qs'
 
 import { ADMIN_API_URL } from '~resources/lib/env'
 
-// "2021-10-05T14:55:20.000000Z"
+// @example "2021-10-05T14:55:20.000000Z"
 export type DateResponse = string
+
+// @example '2023-04-23'
+export type APIDate = string
 
 export const useAdminAPI = createFetch({
   baseUrl: ADMIN_API_URL,

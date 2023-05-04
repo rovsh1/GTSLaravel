@@ -1,10 +1,11 @@
-import { computed } from 'vue'
+import { computed, unref } from 'vue'
 
 import { AfterFetchContext, MaybeRef } from '@vueuse/core'
 
-import { alternateDataAfterFetch, useAdminAPI } from '~resources/lib/api'
-import { HotelRoomResponse } from '~resources/lib/api/hotel/room'
-import { getRef } from '~resources/lib/vue'
+import { alternateDataAfterFetch, APIDate, useAdminAPI } from '~resources/lib/api'
+import { HotelID } from '~resources/lib/api/hotel/hotel'
+import { HotelRoomID, HotelRoomResponse } from '~resources/lib/api/hotel/room'
+import { getNullableRef, getRef } from '~resources/lib/vue'
 
 export type MonthNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
 
@@ -78,3 +79,61 @@ export const useHotelQuotasAPI = (props: MaybeRef<HotelRoomQuotaProps>) =>
       availability,
     }))))
     .json<UseHotelQuota>()
+
+export type HotelRoomQuotasUpdatePayload = {
+  dates: APIDate[]
+  count: number
+}
+
+export type HotelRoomQuotasUpdateProps = {
+  hotelID: HotelID
+  roomID: HotelRoomID
+} & HotelRoomQuotasUpdatePayload
+
+export const useHotelRoomQuotasUpdate = (props: MaybeRef<HotelRoomQuotasUpdateProps | null>) => {
+  const url = computed(() => getNullableRef(props, ({ hotelID, roomID }) =>
+    `/hotels/${hotelID}/rooms/${roomID}/quota`, ''))
+  return useAdminAPI(url, {
+    beforeFetch: (ctx) => {
+      if (unref(props) === null) ctx.cancel()
+    },
+  })
+    .put(computed<string | null>(() => JSON.stringify(
+      getNullableRef<HotelRoomQuotasUpdateProps, HotelRoomQuotasUpdatePayload, null>(
+        props,
+        ({ dates, count }) =>
+          ({ dates, count }),
+      ),
+    )), 'application/json')
+    .json<{ success: true }>()
+}
+
+export type HotelRoomReleaseDaysUpdateProps = {
+  hotelID: HotelID
+  roomID: HotelRoomID
+  dates: APIDate[]
+  releaseDays: number
+}
+
+export type HotelRoomReleaseDaysUpdatePayload = {
+  dates: APIDate[]
+  release_days: number
+}
+
+export const useHotelRoomReleaseDaysUpdate = (props: MaybeRef<HotelRoomReleaseDaysUpdateProps | null>) => {
+  const url = computed(() => getNullableRef(props, ({ hotelID, roomID }) =>
+    `/hotels/${hotelID}/rooms/${roomID}/release_days`, ''))
+  return useAdminAPI(url, {
+    beforeFetch: (ctx) => {
+      if (unref(props) === null) ctx.cancel()
+    },
+  })
+    .put(computed<string | null>(() => JSON.stringify(
+      getNullableRef<HotelRoomReleaseDaysUpdateProps, HotelRoomReleaseDaysUpdatePayload, null>(
+        props,
+        ({ dates, releaseDays }) =>
+          ({ dates, release_days: releaseDays }),
+      ),
+    )), 'application/json')
+    .json<{ success: true }>()
+}

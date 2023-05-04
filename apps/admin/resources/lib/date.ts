@@ -1,6 +1,11 @@
 import { DateTime, Interval, Settings } from 'luxon'
 
+import { APIDate } from '~resources/lib/api'
+
 Settings.defaultLocale = 'ru'
+
+export const formatDateToAPIDate = (date: Date): APIDate => DateTime
+  .fromJSDate(date).toFormat('yyyy-LL-dd')
 
 export const getEachDayInMonth = (date: Date): Date[] => {
   const month = DateTime.fromJSDate(date)
