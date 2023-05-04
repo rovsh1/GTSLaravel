@@ -8,11 +8,12 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static array getHotelMarkupSettings(int $hotelId)
+ * @method static mixed updateClientMarkups(int $hotelId, int|null $individual, int|null $OTA, int|null $TA, int|null $TO)
  */
-class ResidenceConditionAdapter extends Facade
+class MarkupSettingsAdapter extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return \App\Admin\Support\Adapters\Hotel\ResidenceConditionAdapter::class;
+        return \App\Admin\Support\Adapters\Hotel\MarkupSettingsAdapter::class;
     }
 }

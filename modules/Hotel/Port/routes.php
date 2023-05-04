@@ -8,6 +8,7 @@ use Module\Hotel\Port\Controllers\MarkupController;
 //Route::register('updateRoomsPositions', [PriceController::class, 'updateRoomsPositions']);
 
 Route::register('getHotelMarkupSettings', [MarkupController::class, 'getHotelMarkupSettings']);
+Route::register('updateClientMarkups', [MarkupController::class, 'updateClientMarkups']);
 
 Route::register('getHotelQuotas', [RoomQuotaController::class, 'getHotelQuotas']);
 Route::register('updateRoomQuota', [RoomQuotaController::class, 'updateRoomQuota']);

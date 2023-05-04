@@ -3,23 +3,31 @@
 namespace App\Admin\Http\Controllers\Hotel;
 
 use App\Admin\Http\Controllers\Controller;
+use App\Admin\Http\Requests\Hotel\UpdateClientMarkupsRequest;
 use App\Admin\Models\Hotel\Hotel;
-use App\Admin\Support\Facades\Hotel\ResidenceConditionAdapter;
+use App\Admin\Support\Facades\Hotel\MarkupSettingsAdapter;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use App\Core\Support\Http\Responses\AjaxSuccessResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class ResidenceConditionController extends Controller
+class MarkupSettingsController extends Controller
 {
     public function get(Request $request, Hotel $hotel): JsonResponse
     {
-        $markupSettings = ResidenceConditionAdapter::getHotelMarkupSettings($hotel->id);
+        $markupSettings = MarkupSettingsAdapter::getHotelMarkupSettings($hotel->id);
         return response()->json($markupSettings);
     }
 
-    public function store(Request $request, Hotel $hotel): AjaxResponseInterface
+    public function updateClientMarkups(UpdateClientMarkupsRequest $request, Hotel $hotel): AjaxResponseInterface
     {
+        MarkupSettingsAdapter::updateClientMarkups(
+            $hotel->id,
+            $request->getIndividual(),
+            $request->getOTA(),
+            $request->getTA(),
+            $request->getTO()
+        );
         return new AjaxSuccessResponse();
     }
 

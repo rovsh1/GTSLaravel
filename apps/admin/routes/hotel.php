@@ -57,9 +57,8 @@ AclRoute::for('hotel')
     ->resource('seasons', Controllers\Hotel\SeasonController::class)
     ->resource('rates', Controllers\Hotel\RateController::class)
 
-    ->get('/{hotel}/settings/markup', Controllers\Hotel\ResidenceConditionController::class . '@get','read', 'conditions.residence.get')
-    ->post('/{hotel}/settings/markup', Controllers\Hotel\ResidenceConditionController::class . '@store','update', 'conditions.residence.store')
-    ->put('/{hotel}/conditions/residence/{condition}', Controllers\Hotel\ResidenceConditionController::class . '@update','update', 'conditions.residence.update')
-    ->delete('/{hotel}/conditions/residence/{condition}', Controllers\Hotel\ResidenceConditionController::class . '@destroy','update', 'conditions.residence.destroy')
-
-    ->get('/{hotel}/conditions/cancel', Controllers\Hotel\CancelConditionController::class . '@get','read', 'conditions.cancel.get');
+    ->get('/{hotel}/settings/markup', Controllers\Hotel\MarkupSettingsController::class . '@get','read', 'settings.markup.get')
+    ->put('/{hotel}/settings/client/markup', Controllers\Hotel\MarkupSettingsController::class . '@updateClientMarkups','update', 'settings.markup.client.update')
+    ;
+//    ->put('/{hotel}/conditions/residence/{condition}', Controllers\Hotel\MarkupSettingsController::class . '@update','update', 'conditions.residence.update')
+//    ->delete('/{hotel}/conditions/residence/{condition}', Controllers\Hotel\MarkupSettingsController::class . '@destroy','update', 'conditions.residence.destroy');

@@ -39,11 +39,8 @@ class RoomQuotaController
             'room_id' => 'required|numeric',
             'date_from' => 'required|date',
             'date_to' => 'required|date',
-            'quota' => 'required_without:release_days',
-            'release_days' => 'required_without:quota',
-//@todo hack почему то не пропускает null, ругается на integer
-//            'quota' => ['required_without:release_days', 'integer'],
-//            'release_days' => ['required_without:quota', 'integer'],
+            'quota' => ['required_without:release_days', 'nullable', 'integer'],
+            'release_days' => ['required_without:quota', 'nullable', 'integer'],
         ]);
 
         $this->quotaUpdater->updateRoomQuota(
