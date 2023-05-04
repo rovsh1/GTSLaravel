@@ -11,8 +11,8 @@ use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 class DailyMarkupOption implements ValueObjectInterface, SerializableDataInterface
 {
     public function __construct(
-        private Percent $percent,
-        private CancelPeriodTypeEnum $cancelPeriodType,
+        private readonly Percent $percent,
+        private readonly CancelPeriodTypeEnum $cancelPeriodType,
         private int $daysCount
     ) {}
 

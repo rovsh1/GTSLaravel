@@ -12,8 +12,8 @@ use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 class Condition implements ValueObjectInterface, SerializableDataInterface
 {
     public function __construct(
-        private TimePeriod $timePeriod,
-        private Percent $priceMarkup
+        private readonly TimePeriod $timePeriod,
+        private readonly Percent $priceMarkup
     ) {}
 
     public function timePeriod(): TimePeriod

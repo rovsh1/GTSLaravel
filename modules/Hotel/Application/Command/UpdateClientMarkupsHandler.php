@@ -6,17 +6,17 @@ namespace Module\Hotel\Application\Command;
 
 use Custom\Framework\Contracts\Bus\CommandHandlerInterface;
 use Custom\Framework\Contracts\Bus\CommandInterface;
-use Module\Hotel\Domain\Repository\MarkupSettingsRepositoryInterface;
+use Module\Hotel\Domain\Service\MarkupSettingsUpdater;
 
 class UpdateClientMarkupsHandler implements CommandHandlerInterface
 {
     public function __construct(
-        private readonly MarkupSettingsRepositoryInterface $repository
+        private readonly MarkupSettingsUpdater $service
     ) {}
 
-    public function handle(CommandInterface|UpdateClientMarkups $command)
+    public function handle(CommandInterface|UpdateClientMarkups $command): bool
     {
-        $this->repository->updateClientMarkups(
+        return $this->service->updateClientMarkups(
             hotelId: $command->hotelId,
             individual: $command->individual,
             OTA: $command->OTA,

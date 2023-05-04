@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Module\Shared\Domain\Service;
+namespace Module\Shared\Infrastructure\Service;
 
+use Module\Shared\Domain\Service\DomainSerializerInterface;
 use Module\Shared\Domain\ValueObject\SerializableDataInterface;
 
-class JsonSerializer
+class JsonSerializer implements DomainSerializerInterface
 {
     public function serialize(SerializableDataInterface $object): string
     {

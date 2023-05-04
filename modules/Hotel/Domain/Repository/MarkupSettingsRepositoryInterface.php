@@ -8,11 +8,7 @@ use Module\Hotel\Domain\ValueObject\MarkupSettings\MarkupSettings;
 
 interface MarkupSettingsRepositoryInterface
 {
-    /**
-     * @param int $hotelId
-     * @return MarkupSettings
-     */
     public function get(int $hotelId): MarkupSettings;
 
-    public function updateClientMarkups(int $hotelId, ?int $individual, ?int $OTA, ?int $TA, ?int $TO): void;
+    public function updateClientMarkups(int $hotelId, MarkupSettings $markupSettings): bool;
 }

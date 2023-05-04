@@ -10,8 +10,8 @@ use Module\Shared\Domain\ValueObject\SerializableDataInterface;
 class CancelMarkupOption implements SerializableDataInterface
 {
     public function __construct(
-        private Percent $percent,
-        private CancelPeriodTypeEnum $cancelPeriodType
+        private readonly Percent $percent,
+        private readonly CancelPeriodTypeEnum $cancelPeriodType
     ) {}
 
     public function percent(): Percent

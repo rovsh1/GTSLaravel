@@ -5,6 +5,8 @@ namespace Module\Hotel\Providers;
 use Custom\Framework\Foundation\Support\Providers\ServiceProvider;
 use Module\Hotel\Domain;
 use Module\Hotel\Infrastructure;
+use Module\Shared\Domain\Service\DomainSerializerInterface;
+use Module\Shared\Infrastructure\Service\JsonSerializer;
 
 class BootServiceProvider extends ServiceProvider
 {
@@ -24,8 +26,18 @@ class BootServiceProvider extends ServiceProvider
     private function registerInterfaces()
     {
 //        $this->app->singleton(Domain\Repository\RoomQuotaRepositoryInterface::class, Infrastructure\Repository\RoomQuotaRepository::class);
-        $this->app->singleton(Domain\Repository\RoomRepositoryInterface::class, Infrastructure\Repository\RoomRepository::class);
-        $this->app->singleton(Domain\Repository\RoomQuotaRepositoryInterface::class, Infrastructure\Repository\RoomQuotaRepository::class);
-        $this->app->singleton(Domain\Repository\MarkupSettingsRepositoryInterface::class, Infrastructure\Repository\MarkupSettingsRepository::class);
+        $this->app->singleton(
+            Domain\Repository\RoomRepositoryInterface::class,
+            Infrastructure\Repository\RoomRepository::class
+        );
+        $this->app->singleton(
+            Domain\Repository\RoomQuotaRepositoryInterface::class,
+            Infrastructure\Repository\RoomQuotaRepository::class
+        );
+        $this->app->singleton(
+            Domain\Repository\MarkupSettingsRepositoryInterface::class,
+            Infrastructure\Repository\MarkupSettingsRepository::class
+        );
+        $this->app->singleton(DomainSerializerInterface::class, JsonSerializer::class);
     }
 }

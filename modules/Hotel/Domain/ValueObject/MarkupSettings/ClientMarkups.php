@@ -11,10 +11,10 @@ use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 class ClientMarkups implements ValueObjectInterface, SerializableDataInterface
 {
     public function __construct(
-        private Percent $individual,
-        private Percent $TA,
-        private Percent $OTA,
-        private Percent $TO,
+        private readonly Percent $individual,
+        private readonly Percent $TA,
+        private readonly Percent $OTA,
+        private readonly Percent $TO,
     ) {}
 
     public function individual(): Percent
@@ -35,26 +35,6 @@ class ClientMarkups implements ValueObjectInterface, SerializableDataInterface
     public function TO(): Percent
     {
         return $this->TO;
-    }
-
-    public function setIndividual(Percent $individual): void
-    {
-        $this->individual = $individual;
-    }
-
-    public function setTA(Percent $TA): void
-    {
-        $this->TA = $TA;
-    }
-
-    public function setOTA(Percent $OTA): void
-    {
-        $this->OTA = $OTA;
-    }
-
-    public function setTO(Percent $TO): void
-    {
-        $this->TO = $TO;
     }
 
     public function toData(): array

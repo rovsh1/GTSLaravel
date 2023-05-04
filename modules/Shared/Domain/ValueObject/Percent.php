@@ -18,8 +18,7 @@ class Percent implements ValueObjectInterface
 
     public function setValue(int $value): void
     {
-        $this->validatePercent($value);
-        $this->value = $value;
+        $this->value = $this->validatePercent($value);
     }
 
     /**
