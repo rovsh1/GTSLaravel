@@ -1,7 +1,7 @@
 <?php
 
+use App\Core\Support\Facades\Constants;
 use Custom\Framework\Foundation\Module;
-use Module\Shared\Domain\Repository\ConstantRepositoryInterface;
 
 function module(string $name): ?Module
 {
@@ -40,6 +40,5 @@ function modules_path($path = '')
 
 function app_constant(string $keyOrClass)
 {
-    //TODO ConstantFacade
-    return app(ConstantRepositoryInterface::class)->getConstantValue($keyOrClass);
+    return Constants::value($keyOrClass);
 }

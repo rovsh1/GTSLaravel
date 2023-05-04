@@ -1,10 +1,10 @@
 <?php
 
-namespace Module\Services\NotificationManager\Domain\Listener;
+namespace Module\Services\NotificationManager\Domain\Listener\Customer;
 
 use Custom\Framework\Contracts\Event\IntegrationEventInterface;
 use Custom\Framework\Contracts\Event\IntegrationEventListenerInterface;
-use Module\Services\NotificationManager\Domain\Notification\CustomerRegistered;
+use Module\Services\NotificationManager\Domain\Notification\Customer\CustomerRegistered;
 use Module\Services\NotificationManager\Domain\Support\Listener\AdministratorsNotificationTrait;
 use Module\Services\NotificationManager\Domain\Support\Listener\CustomerNotificationTrait;
 

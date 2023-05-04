@@ -1,8 +1,9 @@
 <?php
 
-namespace Module\Services\NotificationManager\Domain\Notification;
+namespace Module\Services\NotificationManager\Domain\Notification\Customer;
 
 use Module\Services\NotificationManager\Domain\Entity\NotifiableInterface;
+use Module\Services\NotificationManager\Domain\Notification\NotificationInterface;
 
 class CustomerRegistered implements NotificationInterface
 {
