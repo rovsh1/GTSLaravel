@@ -8,7 +8,7 @@ use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 
 abstract class AbstractDomainBasedDto extends Dto
 {
-    abstract public static function fromDomain(EntityInterface|ValueObjectInterface $entity): self;
+    abstract public static function fromDomain(EntityInterface|ValueObjectInterface $entity): static;
 
     public static function collectionFromDomain(array $collection): array
     {

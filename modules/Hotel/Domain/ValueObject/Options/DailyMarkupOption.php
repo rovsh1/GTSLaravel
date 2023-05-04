@@ -6,8 +6,9 @@ namespace Module\Hotel\Domain\ValueObject\Options;
 
 use Module\Shared\Domain\ValueObject\Percent;
 use Module\Shared\Domain\ValueObject\SerializableDataInterface;
+use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 
-class DailyMarkupOption implements SerializableDataInterface
+class DailyMarkupOption implements ValueObjectInterface, SerializableDataInterface
 {
     public function __construct(
         private Percent $percent,

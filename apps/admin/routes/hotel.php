@@ -57,8 +57,8 @@ AclRoute::for('hotel')
     ->resource('seasons', Controllers\Hotel\SeasonController::class)
     ->resource('rates', Controllers\Hotel\RateController::class)
 
-    ->get('/{hotel}/conditions/residence', Controllers\Hotel\ResidenceConditionController::class . '@get','read', 'conditions.residence.get')
-    ->post('/{hotel}/conditions/residence', Controllers\Hotel\ResidenceConditionController::class . '@store','update', 'conditions.residence.store')
+    ->get('/{hotel}/settings/markup', Controllers\Hotel\ResidenceConditionController::class . '@get','read', 'conditions.residence.get')
+    ->post('/{hotel}/settings/markup', Controllers\Hotel\ResidenceConditionController::class . '@store','update', 'conditions.residence.store')
     ->put('/{hotel}/conditions/residence/{condition}', Controllers\Hotel\ResidenceConditionController::class . '@update','update', 'conditions.residence.update')
     ->delete('/{hotel}/conditions/residence/{condition}', Controllers\Hotel\ResidenceConditionController::class . '@destroy','update', 'conditions.residence.destroy')
 

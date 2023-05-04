@@ -20,9 +20,9 @@ class RoomDto extends AbstractDomainBasedDto
         public readonly ?string $guestNote,
     ) {}
 
-    public static function fromDomain(EntityInterface|ValueObjectInterface|Room $room): self
+    public static function fromDomain(EntityInterface|ValueObjectInterface|Room $room): static
     {
-        return new self(
+        return new static(
             $room->id(),
             GuestDto::collectionFromDomain($room->guests()),
             $room->rateId(),

@@ -22,9 +22,9 @@ class ReservationDto extends AbstractDomainBasedDto
         public readonly int             $statusId,
     ) {}
 
-    public static function fromDomain(EntityInterface|ValueObjectInterface|Reservation $reservation): self
+    public static function fromDomain(EntityInterface|ValueObjectInterface|Reservation $reservation): static
     {
-        return new self(
+        return new static(
             $reservation->id(),
             $reservation->hotel()->id(),
             new CarbonPeriod($reservation->period()->dateFrom(), $reservation->period()->dateTo()),
