@@ -122,7 +122,7 @@ export type HotelRoomReleaseDaysUpdatePayload = {
 
 export const useHotelRoomReleaseDaysUpdate = (props: MaybeRef<HotelRoomReleaseDaysUpdateProps | null>) => {
   const url = computed(() => getNullableRef(props, ({ hotelID, roomID }) =>
-    `/hotels/${hotelID}/rooms/${roomID}/release_days`, ''))
+    `/hotels/${hotelID}/rooms/${roomID}/quota`, ''))
   return useAdminAPI(url, {
     beforeFetch: (ctx) => {
       if (unref(props) === null) ctx.cancel()

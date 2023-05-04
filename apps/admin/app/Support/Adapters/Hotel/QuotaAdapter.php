@@ -20,13 +20,14 @@ class QuotaAdapter extends AbstractPortAdapter
         ]);
     }
 
-    public function updateRoomQuota(int $roomId, CarbonInterface $date, int $count): void
+    public function updateRoomQuota(int $roomId, CarbonInterface $date, ?int $count, ?int $releaseDays = null): void
     {
         $this->request('updateRoomQuota', [
             'room_id' => $roomId,
             'date_from' => $date,
             'date_to' => $date->clone()->endOfDay(),
             'quota' => $count,
+            'release_days' => $releaseDays
         ]);
     }
 

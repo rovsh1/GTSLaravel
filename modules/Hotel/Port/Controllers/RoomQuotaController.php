@@ -39,13 +39,18 @@ class RoomQuotaController
             'room_id' => 'required|numeric',
             'date_from' => 'required|date',
             'date_to' => 'required|date',
-            'quota' => 'required|int',
+            'quota' => 'required_without:release_days',
+            'release_days' => 'required_without:quota',
+//@todo hack почему то не пропускает null, ругается на integer
+//            'quota' => ['required_without:release_days', 'integer'],
+//            'release_days' => ['required_without:quota', 'integer'],
         ]);
 
         $this->quotaUpdater->updateRoomQuota(
             $request->room_id,
             new CarbonPeriod($request->date_from, $request->date_to),
-            $request->quota
+            $request->quota,
+            $request->release_days
         );
     }
 

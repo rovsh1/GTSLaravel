@@ -9,7 +9,7 @@ class QuotaDto extends Dto
 {
     public function __construct(
         public readonly int $id,
-        public readonly string $roomId,
+        public readonly int $roomId,
         public readonly CarbonInterface $date,
         public readonly bool $status,
         public readonly int $releaseDays,

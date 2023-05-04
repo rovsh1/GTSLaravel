@@ -19,7 +19,8 @@ class UpdateQuotaRequest extends FormRequest
         return [
             'dates' => ['required', 'array'],
             'dates.*' => ['required', 'date'],
-            'count' => ['required', 'numeric'],
+            'count' => ['required_without:release_days', 'numeric'],
+            'release_days' => ['required_without:count', 'numeric'],
         ];
     }
 
@@ -31,8 +32,13 @@ class UpdateQuotaRequest extends FormRequest
         return array_map(fn(string $date) => new Carbon($date), $this->post('dates'));
     }
 
-    public function getCount(): int
+    public function getCount(): ?int
     {
         return $this->post('count');
+    }
+
+    public function getReleaseDays(): ?int
+    {
+        return $this->post('release_days');
     }
 }

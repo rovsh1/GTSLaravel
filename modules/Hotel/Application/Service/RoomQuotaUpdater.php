@@ -19,11 +19,11 @@ class RoomQuotaUpdater
     ) {
     }
 
-    public function updateRoomQuota(int $roomId, CarbonPeriod $period, int $quota): void
+    public function updateRoomQuota(int $roomId, CarbonPeriod $period, ?int $quota, ?int $releaseDays = null): void
     {
         $this->checkRoomExistCallback(
             roomId: $roomId,
-            callback: fn() => $this->commandBus->execute(new UpdateRoomQuota($roomId, $period, $quota))
+            callback: fn() => $this->commandBus->execute(new UpdateRoomQuota($roomId, $period, $quota, $releaseDays))
         );
     }
 

@@ -42,9 +42,8 @@ class QuotaController extends Controller
 
     public function update(UpdateQuotaRequest $request, Hotel $hotel, Room $room): AjaxResponseInterface
     {
-        //@todo добавить обновление релиз дней
         foreach ($request->getDates() as $date) {
-            QuotaAdapter::updateRoomQuota($room->id, $date, $request->getCount());
+            QuotaAdapter::updateRoomQuota($room->id, $date, $request->getCount(), $request->getReleaseDays());
         }
         return new AjaxSuccessResponse();
     }

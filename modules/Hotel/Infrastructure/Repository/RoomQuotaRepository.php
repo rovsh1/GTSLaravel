@@ -30,15 +30,19 @@ class RoomQuotaRepository implements RoomQuotaRepositoryInterface
         return app(RoomQuotaFactory::class)->createCollectionFrom($models);
     }
 
-    public function updateRoomQuota(int $roomId, CarbonPeriod $period, int $quota): void
+    public function updateRoomQuota(int $roomId, CarbonPeriod $period, ?int $quota, ?int $releaseDays = null): void
     {
+        $updateData = ['date' => $period->getStartDate(), 'room_id' => $roomId, 'status' => QuotaStatusEnum::Close];
+        if ($quota !== null) {
+            $updateData['total_count'] = $quota;
+        }
+        if ($releaseDays !== null) {
+            $updateData['release_days'] = $releaseDays;
+        }
         EloquentQuota::whereRoomId($roomId)
             ->where('date', '>=', $period->getStartDate())
             ->where('date', '<', $period->getEndDate())
-            ->updateOrCreate(
-                ['date' => $period->getStartDate(), 'room_id' => $roomId],
-                ['date' => $period->getStartDate(), 'room_id' => $roomId, 'count_total' => $quota, 'status' => QuotaStatusEnum::Close]
-            );
+            ->updateOrCreate(['date' => $period->getStartDate(), 'room_id' => $roomId], $updateData);
     }
 
     public function closeRoomQuota(int $roomId, CarbonPeriod $period)
