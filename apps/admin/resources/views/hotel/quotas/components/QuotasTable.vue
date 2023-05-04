@@ -1,11 +1,10 @@
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 
 import { OnClickOutside } from '@vueuse/components'
 import { DateTime } from 'luxon'
 
 import { HotelRoomID } from '~resources/lib/api/hotel/room'
-import { isMacOS } from '~resources/lib/platform'
 import { plural } from '~resources/lib/plural'
 
 import DayMenu from './DayMenu/DayMenu.vue'
@@ -141,16 +140,6 @@ const handleReleaseDaysValue: HandleValue<UpdateReleaseDaysRequest> = (roomID, d
   console.log('release days: multiple value', { request })
   return request
 }
-
-const isMac = isMacOS()
-
-const massEditTooltip = computed(() => {
-  const pickModifier = isMac ? '⌘' : 'Ctrl'
-  return [
-    'Зажмите Shift и кликните, чтобы задать значения для всех дней от выбранного до этого.',
-    `Зажмите ${pickModifier} и кликните, чтобы добавить день в выборку или удалить из неё.`,
-  ].join('\n')
-})
 </script>
 <template>
   <div class="quotasRooms">
@@ -210,7 +199,6 @@ const massEditTooltip = computed(() => {
                 v-for="{ key, quota, sold, status, date } in dailyQuota"
                 :key="key"
                 :class="dayQuotaCellClassName(status)"
-                :title="activeQuotaKey ? massEditTooltip : undefined"
                 tabindex="0"
                 @focusin="() => {
                   setHoveredRoomTypeID({ dayKey: key, roomTypeID: room.id })
@@ -282,7 +270,6 @@ const massEditTooltip = computed(() => {
                 v-for="{ key, releaseDays, reserve, status, date } in dailyQuota"
                 :key="key"
                 :class="dayQuotaCellClassName(status)"
-                :title="activeReleaseDaysKey ? massEditTooltip : undefined"
                 tabindex="0"
                 @focusin="() => {
                   setHoveredRoomTypeID({ dayKey: key, roomTypeID: room.id })

@@ -1,5 +1,9 @@
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+
+import { Tooltip } from 'floating-vue'
+
+import { isMacOS } from '~resources/lib/platform'
 
 type CellKey = string | null
 
@@ -70,6 +74,8 @@ const handleButtonClick = (event: MouseEvent) => {
   emit('active-key', props.cellKey)
 }
 
+const pickModifier = computed(() => (isMacOS() ? '⌘' : 'Ctrl'))
+
 const keydown = (event: KeyboardEvent) => {
   if (event.shiftKey) rangeMode.value = true
   if (event.ctrlKey || event.metaKey) pickMode.value = true
@@ -114,16 +120,21 @@ onUnmounted(() => {
       @keydown.enter="inputRef?.blur()"
     />
   </label>
-  <button
-    v-else
-    type="button"
-    class="editableDataCell"
-    :class="{ inRange }"
-    :disabled="disabled"
-    @click="handleButtonClick"
-  >
-    <slot />
-  </button>
+  <Tooltip v-else :disabled="activeKey === null" :delay="{ show: 2000 }">
+    <button
+      type="button"
+      class="editableDataCell"
+      :class="{ inRange }"
+      :disabled="disabled"
+      @click="handleButtonClick"
+    >
+      <slot />
+    </button>
+    <template #popper>
+      <div>Зажмите Shift и кликните, чтобы задать значения для всех дней от выбранного до этого.</div>
+      <div>Зажмите {{ pickModifier }} и кликните, чтобы добавить день в выборку или удалить из неё.</div>
+    </template>
+  </Tooltip>
 </template>
 <style lang="scss" scoped>
 @use './shared' as shared;
