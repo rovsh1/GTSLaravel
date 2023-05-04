@@ -4,23 +4,23 @@ namespace Module\Integration\Traveline\Infrastructure\Adapter;
 
 use Carbon\CarbonPeriod;
 use Module\Integration\Traveline\Domain\Adapter\HotelAdapterInterface;
-use Module\Shared\Infrastructure\Adapter\AbstractPortAdapter;
+use Module\Shared\Infrastructure\Adapter\AbstractModuleAdapter;
 
-class HotelAdapter extends AbstractPortAdapter implements HotelAdapterInterface
+class HotelAdapter extends AbstractModuleAdapter implements HotelAdapterInterface
 {
     public function getHotelById(int $hotelId)
     {
-        return $this->request('hotelOld/findById', ['id' => $hotelId]);
+        return $this->request('findById', ['id' => $hotelId]);
     }
 
     public function getRoomsAndRatePlans(int $hotelId)
     {
-        return $this->request('hotelOld/getRoomsWithPriceRatesByHotelId', ['id' => $hotelId]);
+        return $this->request('getRoomsWithPriceRatesByHotelId', ['id' => $hotelId]);
     }
 
     public function updateRoomQuota(CarbonPeriod $period, int $roomId, int $quota)
     {
-        return $this->request('hotelOld/updateRoomQuota', [
+        return $this->request('updateRoomQuota', [
             'room_id' => $roomId,
             'date_from' => $period->getStartDate(),
             'date_to' => $period->getEndDate(),
@@ -28,9 +28,16 @@ class HotelAdapter extends AbstractPortAdapter implements HotelAdapterInterface
         ]);
     }
 
-    public function updateRoomPrice(CarbonPeriod $period, int $roomId, int $rateId, int $guestsNumber, bool $isResident, string $currencyCode, float $price)
-    {
-        return $this->request('hotelOld/updateRoomPrice', [
+    public function updateRoomPrice(
+        CarbonPeriod $period,
+        int $roomId,
+        int $rateId,
+        int $guestsNumber,
+        bool $isResident,
+        string $currencyCode,
+        float $price
+    ) {
+        return $this->request('updateRoomPrice', [
             'room_id' => $roomId,
             'rate_id' => $rateId,
             'guests_number' => $guestsNumber,
@@ -44,7 +51,7 @@ class HotelAdapter extends AbstractPortAdapter implements HotelAdapterInterface
 
     public function openRoomRate(CarbonPeriod $period, int $roomId, int $rateId)
     {
-        return $this->request('hotelOld/openRoomQuota', [
+        return $this->request('openRoomQuota', [
             'room_id' => $roomId,
             'rate_id' => $rateId,
             'date_from' => $period->getStartDate(),
@@ -54,11 +61,16 @@ class HotelAdapter extends AbstractPortAdapter implements HotelAdapterInterface
 
     public function closeRoomRate(CarbonPeriod $period, int $roomId, int $rateId)
     {
-        return $this->request('hotelOld/closeRoomQuota', [
+        return $this->request('closeRoomQuota', [
             'room_id' => $roomId,
             'rate_id' => $rateId,
             'date_from' => $period->getStartDate(),
             'date_to' => $period->getEndDate(),
         ]);
+    }
+
+    protected function getModuleKey(): string
+    {
+        return 'hotelOld';
     }
 }

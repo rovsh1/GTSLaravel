@@ -2,17 +2,22 @@
 
 namespace Module\Services\NotificationManager\Infrastructure\Adapter;
 
-use Module\Shared\Infrastructure\Adapter\AbstractPortAdapter;
+use Module\Shared\Infrastructure\Adapter\AbstractModuleAdapter;
 
-class MailAdapter extends AbstractPortAdapter
+class MailAdapter extends AbstractModuleAdapter
 {
     public function sendTo(string $to, string $subject, string $body): void
     {
-        $uuid = $this->request('mail/send', [
+        $uuid = $this->request('send', [
             'to' => $to,
             'subject' => $subject,
             'body' => $body
         ]);
 //        return $this->fileFactory($fileDto);
+    }
+
+    protected function getModuleKey(): string
+    {
+        return 'mail';
     }
 }

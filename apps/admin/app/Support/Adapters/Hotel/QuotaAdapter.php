@@ -2,14 +2,12 @@
 
 namespace App\Admin\Support\Adapters\Hotel;
 
-use App\Core\Support\Adapters\AbstractPortAdapter;
+use App\Core\Support\Adapters\AbstractHotelAdapter;
 use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
 
-class QuotaAdapter extends AbstractPortAdapter
+class QuotaAdapter extends AbstractHotelAdapter
 {
-    protected string $module = 'hotel';
-
     public function getHotelQuotas(int $hotelId, CarbonPeriod $period, ?int $roomId = null): array
     {
         return $this->request('getHotelQuotas', [

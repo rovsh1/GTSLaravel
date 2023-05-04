@@ -2,12 +2,10 @@
 
 namespace App\Admin\Support\Adapters\Hotel;
 
-use App\Core\Support\Adapters\AbstractPortAdapter;
+use App\Core\Support\Adapters\AbstractHotelAdapter;
 
-class PricesAdapter extends AbstractPortAdapter
+class PricesAdapter extends AbstractHotelAdapter
 {
-    protected string $module = 'hotel';
-
     public function setSeasonPrice(
         int $hotelId,
         int $roomId,

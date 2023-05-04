@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Adapters\Hotel;
 
-use App\Core\Support\Adapters\AbstractPortAdapter;
+use App\Core\Support\Adapters\AbstractHotelAdapter;
 
-class MarkupSettingsAdapter extends AbstractPortAdapter
+class MarkupSettingsAdapter extends AbstractHotelAdapter
 {
-    protected string $module = 'hotel';
-
     public function getHotelMarkupSettings(int $hotelId): mixed
     {
         return $this->request('getHotelMarkupSettings', ['hotel_id' => $hotelId]);

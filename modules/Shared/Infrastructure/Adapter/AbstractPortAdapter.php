@@ -2,10 +2,16 @@
 
 namespace Module\Shared\Infrastructure\Adapter;
 
+use Custom\Framework\Contracts\PortGateway\PortGatewayInterface;
+
 abstract class AbstractPortAdapter
 {
+    public function __construct(protected readonly PortGatewayInterface $portGateway)
+    {
+    }
+
     protected function request($route, array $attributes = []): mixed
     {
-        return app('portGateway')->request($route, $attributes);
+        return $this->portGateway->request($route, $attributes);
     }
 }
