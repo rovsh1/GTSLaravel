@@ -31,9 +31,8 @@ const reference = computed(() => props.menuRef)
 
 const floating = ref(null)
 
-const { floatingStyles } = useFloating(reference, floating, {
+const { floatingStyles, placement } = useFloating(reference, floating, {
   middleware: [flip()],
-  placement: 'bottom-start',
 })
 
 const selectedKind = ref<HotelRoomQuotasStatusUpdateKind | null>(null)
@@ -92,6 +91,12 @@ const {
 </script>
 <template>
   <div ref="floating" :style="floatingStyles">
+    <div
+      class="fakeTooltip tooltip bs-tooltip-auto"
+      :data-popper-placement="placement"
+    >
+      <div class="fakeTooltipArrow tooltip-arrow" />
+    </div>
     <div class="btn-group-vertical list-group menu">
       <BootstrapButton
         size="small"
@@ -118,9 +123,22 @@ const {
     </div>
   </div>
 </template>
-<style scoped>
+<style lang="scss" scoped>
 .menu {
   border: solid var(--bs-list-group-border-width) var(--bs-list-group-border-color);
   border-radius: var(--bs-list-group-border-radius);
+  box-shadow: 0 0 2em rgba(black, 0.3);
+}
+
+.fakeTooltip {
+  --bs-tooltip-bg: var(--bs-body-bg);
+
+  opacity: 1;
+}
+
+.fakeTooltipArrow {
+  position: absolute;
+  left: calc(50% - var(--bs-tooltip-arrow-width) / 2);
+  z-index: 1;
 }
 </style>
