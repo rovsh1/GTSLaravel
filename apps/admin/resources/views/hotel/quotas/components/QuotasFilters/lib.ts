@@ -1,5 +1,3 @@
-import { DateTime } from 'luxon'
-
 import { MonthNumber, QueryInterval } from '~resources/lib/api/hotel/quotas'
 import { HotelRoomID } from '~resources/lib/api/hotel/room'
 
@@ -41,7 +39,7 @@ export type FiltersPayload = {
 
 export const defaultFiltersPayload: FiltersPayload = {
   year: new Date().getFullYear(),
-  month: Number(DateTime.now().toFormat('L')) as MonthNumber,
+  month: new Date().getMonth() + 1 as MonthNumber,
   monthsCount: 1,
   availability: null,
   roomID: null,

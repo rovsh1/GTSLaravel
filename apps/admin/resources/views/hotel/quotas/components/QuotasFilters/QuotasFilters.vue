@@ -140,7 +140,7 @@ const isStateChanged = computed<boolean>(() => !isEqual(payload.value, defaultFi
       :options="years"
       label="Год"
       :disabled="loading"
-      @input="(value) => selectedYear = value as unknown as number"
+      @input="(value) => selectedYear = Number(value)"
     />
     <FiltersSelect
       :options="months"
@@ -148,14 +148,14 @@ const isStateChanged = computed<boolean>(() => !isEqual(payload.value, defaultFi
       :value="selectedMonth"
       class="month"
       :disabled="loading"
-      @input="(value) => selectedMonth = value as unknown as MonthNumber"
+      @input="(value) => selectedMonth = Number(value) as unknown as MonthNumber"
     />
     <FiltersSelect
       :options="monthsCountOptions"
       label="Выводить по"
       :value="selectedMonthsCount"
       :disabled="loading"
-      @input="(value) => selectedMonthsCount = value as unknown as MonthsCount"
+      @input="(value) => selectedMonthsCount = Number(value) as unknown as MonthsCount"
     />
     <FiltersSelect
       :options="availabilityOptions"
@@ -163,7 +163,9 @@ const isStateChanged = computed<boolean>(() => !isEqual(payload.value, defaultFi
       :value="selectedAvailabilityOption"
       allow-deselect
       :disabled="loading"
-      @input="(value) => selectedAvailabilityOption = value as unknown as AvailabilityValue"
+      @input="(value) => {
+        selectedAvailabilityOption = value.toString() as unknown as AvailabilityValue
+      }"
     />
     <FiltersSelect
       :options="rooms"
