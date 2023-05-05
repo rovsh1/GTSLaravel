@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Module\Hotel\Domain\Service;
 
+use Illuminate\Support\Collection;
 use Module\Hotel\Domain\Repository\MarkupSettingsRepositoryInterface;
+use Module\Shared\Domain\Entity\EntityInterface;
+use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 
 class MarkupSettingsUpdater
 {
@@ -36,6 +39,61 @@ class MarkupSettingsUpdater
         if ($TO !== null) {
             $markupSettings->clientMarkups()->TO()->setValue($TO);
         }
-        return $this->repository->updateClientMarkups($hotelId, $markupSettings);
+        return $this->repository->update($markupSettings);
+    }
+
+    public function updateByKey(int $id, string $key, mixed $value): void
+    {
+        $markupSettings = $this->repository->get($id);
+        $this->set($markupSettings, $key, $value);
+        $this->repository->update($markupSettings);
+    }
+
+    public function addCondition(int $id, string $key, mixed $value): void
+    {
+        $markupSettings = $this->repository->get($id);
+//        $this->set($markupSettings, $key, $value);
+        dd('add', $key, $value);
+        $this->repository->update($markupSettings);
+    }
+
+    public function deleteCondition(int $id, string $key, int $index): void
+    {
+        $markupSettings = $this->repository->get($id);
+//        $this->set($markupSettings, $key, $value);
+        dd('delete', $key, $index);
+        $this->repository->update($markupSettings);
+    }
+
+    private function set(ValueObjectInterface|EntityInterface $parent, string $key, mixed $value): void
+    {
+        $keyParts = explode('.', $key);
+        $childKey = array_shift($keyParts);
+
+        if (method_exists($parent, $childKey)) {
+            $childValue = $parent->$childKey();
+        } elseif (is_numeric($childKey) && $parent instanceof Collection) {
+            $childValue = $parent->get($childKey);
+        } else {
+            throw new \InvalidArgumentException("Unknown key [$childKey]");
+        }
+
+        if (count($keyParts) > 0) {
+            $this->set($childValue, implode('.', $keyParts), $value);
+            return;
+        }
+
+        if (!is_object($childValue)) {
+            $childValue = $parent;
+        }
+
+        $setterMethod = 'set' . \Str::ucfirst($childKey);
+        if (method_exists($childValue, $setterMethod)) {
+            $childValue->$setterMethod($value);
+        } elseif (method_exists($childValue, 'setValue')) {
+            $childValue->setValue($value);
+        } else {
+            throw new \InvalidArgumentException("Can not update value for key [$childKey]");
+        }
     }
 }

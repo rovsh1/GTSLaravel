@@ -13,19 +13,30 @@ class MarkupSettingsAdapter extends AbstractHotelAdapter
         return $this->request('getHotelMarkupSettings', ['hotel_id' => $hotelId]);
     }
 
-    public function updateClientMarkups(
-        int $hotelId,
-        int|null $individual,
-        int|null $OTA,
-        int|null $TA,
-        int|null $TO
-    ): mixed {
-        return $this->request('updateClientMarkups', [
+    public function updateMarkupSettings(int $hotelId, string $key, mixed $value): mixed
+    {
+        return $this->request('updateMarkupSettings', [
             'hotel_id' => $hotelId,
-            'individual' => $individual,
-            'OTA' => $OTA,
-            'TA' => $TA,
-            'TO' => $TO,
+            'key' => $key,
+            'value' => $value,
+        ]);
+    }
+
+    public function addMarkupSettingsCondition(int $hotelId, string $key, mixed $value): mixed
+    {
+        return $this->request('addMarkupSettingsCondition', [
+            'hotel_id' => $hotelId,
+            'key' => $key,
+            'value' => $value,
+        ]);
+    }
+
+    public function deleteMarkupSettingsCondition(int $hotelId, string $key, int $index): mixed
+    {
+        return $this->request('deleteMarkupSettingsCondition', [
+            'hotel_id' => $hotelId,
+            'key' => $key,
+            'index' => $index,
         ]);
     }
 }

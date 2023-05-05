@@ -3,12 +3,14 @@
 use Custom\Framework\Support\Facades\Route;
 use Module\Hotel\Port\Controllers\PriceController;
 use Module\Hotel\Port\Controllers\RoomQuotaController;
-use Module\Hotel\Port\Controllers\MarkupController;
+use Module\Hotel\Port\Controllers\MarkupSettingsController;
 
 //Route::register('updateRoomsPositions', [PriceController::class, 'updateRoomsPositions']);
 
-Route::register('getHotelMarkupSettings', [MarkupController::class, 'getHotelMarkupSettings']);
-Route::register('updateClientMarkups', [MarkupController::class, 'updateClientMarkups']);
+Route::register('getHotelMarkupSettings', [MarkupSettingsController::class, 'getHotelMarkupSettings']);
+Route::register('updateMarkupSettings', [MarkupSettingsController::class, 'updateMarkupSettings']);
+Route::register('addMarkupSettingsCondition', [MarkupSettingsController::class, 'addMarkupSettingsCondition']);
+Route::register('deleteMarkupSettingsCondition', [MarkupSettingsController::class, 'deleteMarkupSettingsCondition']);
 
 Route::register('getHotelQuotas', [RoomQuotaController::class, 'getHotelQuotas']);
 Route::register('updateRoomQuota', [RoomQuotaController::class, 'updateRoomQuota']);

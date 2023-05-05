@@ -3,6 +3,7 @@
 use App\Admin\Enums\Hotel\VisibilityEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
+use Module\Hotel\Domain\Entity\MarkupSettings;
 use Module\Hotel\Domain\ValueObject\MarkupSettings\CancelMarkupOption;
 use Module\Hotel\Domain\ValueObject\MarkupSettings\CancelPeriod;
 use Module\Hotel\Domain\ValueObject\MarkupSettings\CancelPeriodCollection;
@@ -13,7 +14,6 @@ use Module\Hotel\Domain\ValueObject\MarkupSettings\DailyMarkupCollection;
 use Module\Hotel\Domain\ValueObject\MarkupSettings\DailyMarkupOption;
 use Module\Hotel\Domain\ValueObject\MarkupSettings\EarlyCheckInCollection;
 use Module\Hotel\Domain\ValueObject\MarkupSettings\LateCheckOutCollection;
-use Module\Hotel\Domain\ValueObject\MarkupSettings\MarkupSettings;
 use Module\Shared\Domain\ValueObject\Percent;
 use Module\Shared\Domain\ValueObject\TimePeriod;
 
@@ -151,6 +151,7 @@ return new class extends Migration {
             );
 
             $markupSettings = new MarkupSettings(
+                $hotelId,
                 $vatPercent,
                 $touristTaxPercent,
                 $clientMarkups,

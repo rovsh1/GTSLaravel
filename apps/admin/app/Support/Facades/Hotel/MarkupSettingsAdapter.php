@@ -8,7 +8,9 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static array getHotelMarkupSettings(int $hotelId)
- * @method static mixed updateClientMarkups(int $hotelId, int|null $individual, int|null $OTA, int|null $TA, int|null $TO)
+ * @method static mixed updateMarkupSettings(int $hotelId, string $key, mixed $value)
+ * @method static mixed addMarkupSettingsCondition(int $hotelId, string $key, mixed $value)
+ * @method static mixed deleteMarkupSettingsCondition(int $hotelId, string $key, int $index)
  */
 class MarkupSettingsAdapter extends Facade
 {

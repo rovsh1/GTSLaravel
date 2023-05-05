@@ -5,8 +5,6 @@ namespace Module\Hotel\Providers;
 use Custom\Framework\Foundation\Support\Providers\ServiceProvider;
 use Module\Hotel\Domain;
 use Module\Hotel\Infrastructure;
-use Module\Shared\Domain\Service\DomainSerializerInterface;
-use Module\Shared\Infrastructure\Service\JsonSerializer;
 
 class BootServiceProvider extends ServiceProvider
 {
@@ -37,6 +35,5 @@ class BootServiceProvider extends ServiceProvider
             Domain\Repository\MarkupSettingsRepositoryInterface::class,
             Infrastructure\Repository\MarkupSettingsRepository::class
         );
-        $this->app->singleton(DomainSerializerInterface::class, JsonSerializer::class);
     }
 }

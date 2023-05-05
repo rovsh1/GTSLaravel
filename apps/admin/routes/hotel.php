@@ -58,7 +58,7 @@ AclRoute::for('hotel')
     ->resource('rates', Controllers\Hotel\RateController::class)
 
     ->get('/{hotel}/settings/markup', Controllers\Hotel\MarkupSettingsController::class . '@get','read', 'settings.markup.get')
-    ->put('/{hotel}/settings/client/markup', Controllers\Hotel\MarkupSettingsController::class . '@updateClientMarkups','update', 'settings.markup.client.update')
+    ->put('/{hotel}/settings/markup', Controllers\Hotel\MarkupSettingsController::class . '@update','update', 'settings.markup.update')
+    ->post('/{hotel}/settings/markup/condition', Controllers\Hotel\MarkupSettingsController::class . '@addCondition','update', 'settings.markup.condition.add')
+    ->delete('/{hotel}/settings/markup/condition', Controllers\Hotel\MarkupSettingsController::class . '@deleteCondition','update', 'settings.markup.condition.delete')
     ;
-//    ->put('/{hotel}/conditions/residence/{condition}', Controllers\Hotel\MarkupSettingsController::class . '@update','update', 'conditions.residence.update')
-//    ->delete('/{hotel}/conditions/residence/{condition}', Controllers\Hotel\MarkupSettingsController::class . '@destroy','update', 'conditions.residence.destroy');

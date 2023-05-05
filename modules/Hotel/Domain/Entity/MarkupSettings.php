@@ -2,15 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Module\Hotel\Domain\ValueObject\MarkupSettings;
+namespace Module\Hotel\Domain\Entity;
 
+use Module\Hotel\Domain\ValueObject\MarkupSettings\CancelPeriodCollection;
+use Module\Hotel\Domain\ValueObject\MarkupSettings\ClientMarkups;
+use Module\Hotel\Domain\ValueObject\MarkupSettings\EarlyCheckInCollection;
+use Module\Hotel\Domain\ValueObject\MarkupSettings\LateCheckOutCollection;
+use Module\Shared\Domain\Entity\EntityInterface;
 use Module\Shared\Domain\ValueObject\Percent;
 use Module\Shared\Domain\ValueObject\SerializableDataInterface;
-use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 
-class MarkupSettings implements ValueObjectInterface, SerializableDataInterface
+class MarkupSettings implements EntityInterface, SerializableDataInterface
 {
     public function __construct(
+        private readonly int $id,
         private readonly Percent $vat,
         private readonly Percent $touristTax,
         private readonly ClientMarkups $clientMarkups,
@@ -18,6 +23,11 @@ class MarkupSettings implements ValueObjectInterface, SerializableDataInterface
         private readonly LateCheckOutCollection $lateCheckOut,
         private readonly CancelPeriodCollection $cancelPeriods,
     ) {}
+
+    public function id(): int
+    {
+        return $this->id;
+    }
 
     public function vat(): Percent
     {
@@ -52,6 +62,7 @@ class MarkupSettings implements ValueObjectInterface, SerializableDataInterface
     public function toData(): array
     {
         return [
+            'id' => $this->id,
             'vat' => $this->vat->value(),
             'touristTax' => $this->touristTax->value(),
             'clientMarkups' => $this->clientMarkups->toData(),
@@ -64,6 +75,7 @@ class MarkupSettings implements ValueObjectInterface, SerializableDataInterface
     public static function fromData(array $data): static
     {
         return new static(
+            id: $data['id'],
             vat: new Percent($data['vat']),
             touristTax: new Percent($data['touristTax']),
             clientMarkups: ClientMarkups::fromData($data['clientMarkups']),

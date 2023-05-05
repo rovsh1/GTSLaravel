@@ -3,7 +3,9 @@
 namespace App\Admin\Http\Controllers\Hotel;
 
 use App\Admin\Http\Controllers\Controller;
-use App\Admin\Http\Requests\Hotel\UpdateClientMarkupsRequest;
+use App\Admin\Http\Requests\Hotel\AddMarkupSettingsConditionsRequest;
+use App\Admin\Http\Requests\Hotel\DeleteMarkupSettingsConditionsRequest;
+use App\Admin\Http\Requests\Hotel\UpdateMarkupSettingsRequest;
 use App\Admin\Models\Hotel\Hotel;
 use App\Admin\Support\Facades\Hotel\MarkupSettingsAdapter;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
@@ -19,25 +21,33 @@ class MarkupSettingsController extends Controller
         return response()->json($markupSettings);
     }
 
-    public function updateClientMarkups(UpdateClientMarkupsRequest $request, Hotel $hotel): AjaxResponseInterface
+    public function update(UpdateMarkupSettingsRequest $request, Hotel $hotel): AjaxResponseInterface
     {
-        MarkupSettingsAdapter::updateClientMarkups(
+        MarkupSettingsAdapter::updateMarkupSettings(
             hotelId: $hotel->id,
-            individual: $request->getIndividual(),
-            OTA: $request->getOTA(),
-            TA: $request->getTA(),
-            TO: $request->getTO()
+            key: $request->getKey(),
+            value: $request->getValue(),
         );
         return new AjaxSuccessResponse();
     }
 
-    public function update(Request $request, Hotel $hotel, $condition): AjaxResponseInterface
+    public function addCondition(AddMarkupSettingsConditionsRequest $request, Hotel $hotel): AjaxResponseInterface
     {
+        MarkupSettingsAdapter::addMarkupSettingsCondition(
+            hotelId: $hotel->id,
+            key: $request->getKey(),
+            value: $request->getValue(),
+        );
         return new AjaxSuccessResponse();
     }
 
-    public function destroy(Request $request, Hotel $hotel, $condition): AjaxResponseInterface
+    public function deleteCondition(DeleteMarkupSettingsConditionsRequest $request, Hotel $hotel): AjaxResponseInterface
     {
+        MarkupSettingsAdapter::deleteMarkupSettingsCondition(
+            hotelId: $hotel->id,
+            key: $request->getKey(),
+            index: $request->getIndex(),
+        );
         return new AjaxSuccessResponse();
     }
 }

@@ -6,11 +6,12 @@ namespace Module\Hotel\Domain\ValueObject\MarkupSettings;
 
 use Illuminate\Support\Collection;
 use Module\Shared\Domain\ValueObject\SerializableDataInterface;
+use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 
 /**
  * @extends Collection<int, Condition>
  */
-class EarlyCheckInCollection extends Collection implements SerializableDataInterface
+class EarlyCheckInCollection extends Collection implements ValueObjectInterface,SerializableDataInterface
 {
     public function toData(): array
     {

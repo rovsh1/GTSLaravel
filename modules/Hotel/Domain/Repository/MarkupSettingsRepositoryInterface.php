@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Module\Hotel\Domain\Repository;
 
-use Module\Hotel\Domain\ValueObject\MarkupSettings\MarkupSettings;
+use Module\Hotel\Domain\Entity\MarkupSettings;
 
 interface MarkupSettingsRepositoryInterface
 {
-    public function get(int $hotelId): MarkupSettings;
+    public function get(int $id): MarkupSettings;
 
-    public function updateClientMarkups(int $hotelId, MarkupSettings $markupSettings): bool;
+    public function update(MarkupSettings $markupSettings): bool;
 }

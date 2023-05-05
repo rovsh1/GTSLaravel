@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Hotel\Application\Dto\MarkupSettings;
 
-use Module\Hotel\Domain\ValueObject\MarkupSettings\MarkupSettings;
+use Module\Hotel\Domain\Entity\MarkupSettings;
 use Module\Shared\Application\Dto\AbstractDomainBasedDto;
 use Module\Shared\Domain\Entity\EntityInterface;
 use Module\Shared\Domain\ValueObject\ValueObjectInterface;

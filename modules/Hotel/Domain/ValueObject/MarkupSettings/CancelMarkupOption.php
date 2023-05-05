@@ -6,8 +6,9 @@ namespace Module\Hotel\Domain\ValueObject\MarkupSettings;
 
 use Module\Shared\Domain\ValueObject\Percent;
 use Module\Shared\Domain\ValueObject\SerializableDataInterface;
+use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 
-class CancelMarkupOption implements SerializableDataInterface
+class CancelMarkupOption implements ValueObjectInterface, SerializableDataInterface
 {
     public function __construct(
         private readonly Percent $percent,
