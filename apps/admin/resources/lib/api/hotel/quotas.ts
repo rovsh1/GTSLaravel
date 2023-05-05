@@ -81,15 +81,32 @@ export const useHotelQuotasAPI = (props: MaybeRef<HotelRoomQuotaProps>) =>
     }))))
     .json<UseHotelQuota>()
 
-export type HotelRoomQuotasUpdatePayload = {
-  dates: APIDate[]
+type HotelRoomQuotasCountUpdatePropsKind = {
+  kind: 'count'
   count: number
 }
 
-export type HotelRoomQuotasUpdateProps = {
+type HotelRoomReleaseDaysPropsKind = {
+  kind: 'releaseDays'
+  releaseDays: number
+}
+
+export type HotelRoomQuotasUpdateProps<
+  T = HotelRoomQuotasCountUpdatePropsKind | HotelRoomReleaseDaysPropsKind,
+> = T & {
   hotelID: HotelID
   roomID: HotelRoomID
-} & HotelRoomQuotasUpdatePayload
+  dates: APIDate[]
+}
+
+export type HotelRoomQuotasCountUpdateProps = HotelRoomQuotasUpdateProps<HotelRoomQuotasCountUpdatePropsKind>
+export type HotelRoomReleaseDaysUpdateProps = HotelRoomQuotasUpdateProps<HotelRoomReleaseDaysPropsKind>
+
+type HotelRoomQuotasUpdatePayload = {
+  dates: APIDate[]
+  count?: number
+  release_days?: number
+}
 
 export const useHotelRoomQuotasUpdate = (props: MaybeRef<HotelRoomQuotasUpdateProps | null>) => {
   const url = computed(() => getNullableRef(props, ({ hotelID, roomID }) =>
@@ -102,38 +119,21 @@ export const useHotelRoomQuotasUpdate = (props: MaybeRef<HotelRoomQuotasUpdatePr
     .put(computed<string | null>(() => JSON.stringify(
       getNullableRef<HotelRoomQuotasUpdateProps, HotelRoomQuotasUpdatePayload, null>(
         props,
-        ({ dates, count }) =>
-          ({ dates, count }),
-      ),
-    )), 'application/json')
-    .json<{ success: true }>()
-}
-
-export type HotelRoomReleaseDaysUpdateProps = {
-  hotelID: HotelID
-  roomID: HotelRoomID
-  dates: APIDate[]
-  releaseDays: number
-}
-
-export type HotelRoomReleaseDaysUpdatePayload = {
-  dates: APIDate[]
-  release_days: number
-}
-
-export const useHotelRoomReleaseDaysUpdate = (props: MaybeRef<HotelRoomReleaseDaysUpdateProps | null>) => {
-  const url = computed(() => getNullableRef(props, ({ hotelID, roomID }) =>
-    `/hotels/${hotelID}/rooms/${roomID}/quota`, ''))
-  return useAdminAPI(url, {
-    beforeFetch: (ctx) => {
-      if (unref(props) === null) ctx.cancel()
-    },
-  })
-    .put(computed<string | null>(() => JSON.stringify(
-      getNullableRef<HotelRoomReleaseDaysUpdateProps, HotelRoomReleaseDaysUpdatePayload, null>(
-        props,
-        ({ dates, releaseDays }) =>
-          ({ dates, release_days: releaseDays }),
+        (payload) => {
+          const { dates, kind } = payload
+          switch (kind) {
+            case 'count': {
+              const { count } = payload
+              return { dates, count }
+            }
+            case 'releaseDays': {
+              const { releaseDays } = payload
+              return { dates, release_days: releaseDays }
+            }
+            default:
+              return { dates }
+          }
+        },
       ),
     )), 'application/json')
     .json<{ success: true }>()
