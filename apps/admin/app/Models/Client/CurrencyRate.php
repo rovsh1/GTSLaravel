@@ -43,7 +43,7 @@ class CurrencyRate extends Model
 {
     use HasQuicksearch;
 
-    protected array $quicksearch = ['id', 'client_name%'];
+    protected array $quicksearch = ['client_name%'];
 
     protected $table = 'client_currency_rates';
 
@@ -53,7 +53,8 @@ class CurrencyRate extends Model
         'date_start',
         'date_end',
         'rate',
-        'period'
+        'period',
+        'hotel_ids',
     ];
 
     protected $casts = [
@@ -81,6 +82,21 @@ class CurrencyRate extends Model
                 unset($model->savingHotelIds);
             }
         });
+    }
+
+    public function scopeWhereStartPeriod(Builder $builder, CarbonPeriod $period): void
+    {
+        $builder->whereBetween('date_start', [$period->getStartDate(), $period->getEndDate()]);
+    }
+
+    public function scopeWhereEndPeriod(Builder $builder, CarbonPeriod $period): void
+    {
+        $builder->whereBetween('date_end', [$period->getStartDate(), $period->getEndDate()]);
+    }
+
+    public function scopeWhereCurrencyId(Builder $builder, int $id): void
+    {
+        $builder->where('client_currency_rates.currency_id', $id);
     }
 
     public function period(): Attribute

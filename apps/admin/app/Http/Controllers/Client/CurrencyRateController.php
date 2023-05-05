@@ -49,8 +49,8 @@ class CurrencyRateController extends AbstractPrototypeController
     private function searchForm()
     {
         return (new SearchForm())
-            ->currency('country_id', ['label' => __('label.currency'), 'emptyItem' => ''])
-            ->dateRange('date_form', ['label' => 'Дата начала'])
-            ->dateRange('date_to', ['label' => 'Дата завершения']);
+            ->currency('currency_id', ['label' => __('label.currency'), 'emptyItem' => ''])
+            ->dateRange('start_period', ['label' => 'Дата начала'])
+            ->dateRange('end_period', ['label' => 'Дата завершения']);
     }
 }
