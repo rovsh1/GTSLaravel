@@ -81,6 +81,12 @@ export const useHotelQuotasAPI = (props: MaybeRef<HotelRoomQuotaProps>) =>
     }))))
     .json<UseHotelQuota>()
 
+type HotelRoomQuotasUpdateBaseProps = {
+  hotelID: HotelID
+  roomID: HotelRoomID
+  dates: APIDate[]
+}
+
 type HotelRoomQuotasCountUpdatePropsKind = {
   kind: 'count'
   count: number
@@ -93,11 +99,7 @@ type HotelRoomReleaseDaysPropsKind = {
 
 export type HotelRoomQuotasUpdateProps<
   T = HotelRoomQuotasCountUpdatePropsKind | HotelRoomReleaseDaysPropsKind,
-> = T & {
-  hotelID: HotelID
-  roomID: HotelRoomID
-  dates: APIDate[]
-}
+> = T & HotelRoomQuotasUpdateBaseProps
 
 export type HotelRoomQuotasCountUpdateProps = HotelRoomQuotasUpdateProps<HotelRoomQuotasCountUpdatePropsKind>
 export type HotelRoomReleaseDaysUpdateProps = HotelRoomQuotasUpdateProps<HotelRoomReleaseDaysPropsKind>
@@ -136,5 +138,36 @@ export const useHotelRoomQuotasUpdate = (props: MaybeRef<HotelRoomQuotasUpdatePr
         },
       ),
     )), 'application/json')
-    .json<{ success: true }>()
+    .json<{ success: boolean }>()
+}
+
+export type HotelRoomQuotasStatusUpdateKind = 'open' | 'close'
+
+export type HotelRoomQuotasStatusUpdateProps = HotelRoomQuotasUpdateBaseProps & {
+  kind: HotelRoomQuotasStatusUpdateKind
+}
+
+type HotelRoomQuotasUpdateStatusPayload = {
+  dates: APIDate[]
+}
+
+export const useHotelRoomQuotasStatusUpdate = (props: MaybeRef<HotelRoomQuotasStatusUpdateProps | null>) => {
+  const url = computed(() => getNullableRef(
+    props,
+    ({ hotelID, roomID, kind }) =>
+      `/hotels/${hotelID}/rooms/${roomID}/quota/${kind}`,
+    '',
+  ))
+  return useAdminAPI(url, {
+    beforeFetch: (ctx) => {
+      if (unref(props) === null) ctx.cancel()
+    },
+  })
+    .put(computed<string | null>(() => JSON.stringify(
+      getNullableRef<HotelRoomQuotasStatusUpdateProps, HotelRoomQuotasUpdateStatusPayload, null>(
+        props,
+        ({ dates }) => ({ dates }),
+      ),
+    )), 'application/json')
+    .json<{ success: boolean }>()
 }
