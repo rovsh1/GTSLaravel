@@ -15,33 +15,6 @@ class MarkupSettingsUpdater
         private readonly MarkupSettingsRepositoryInterface $repository,
     ) {}
 
-    /**
-     * @param int $hotelId
-     * @param int|null $individual
-     * @param int|null $OTA
-     * @param int|null $TA
-     * @param int|null $TO
-     * @return bool
-     * @throws \InvalidArgumentException
-     */
-    public function updateClientMarkups(int $hotelId, ?int $individual, ?int $OTA, ?int $TA, ?int $TO): bool
-    {
-        $markupSettings = $this->repository->get($hotelId);
-        if ($individual !== null) {
-            $markupSettings->clientMarkups()->individual()->setValue($individual);
-        }
-        if ($OTA !== null) {
-            $markupSettings->clientMarkups()->OTA()->setValue($OTA);
-        }
-        if ($TA !== null) {
-            $markupSettings->clientMarkups()->TA()->setValue($TA);
-        }
-        if ($TO !== null) {
-            $markupSettings->clientMarkups()->TO()->setValue($TO);
-        }
-        return $this->repository->update($markupSettings);
-    }
-
     public function updateByKey(int $id, string $key, mixed $value): void
     {
         $markupSettings = $this->repository->get($id);
@@ -52,6 +25,8 @@ class MarkupSettingsUpdater
     public function addCondition(int $id, string $key, mixed $value): void
     {
         $markupSettings = $this->repository->get($id);
+        $collection = $this->getNestedCollection($markupSettings, $key);
+        dd($collection);
 //        $this->set($markupSettings, $key, $value);
         dd('add', $key, $value);
         $this->repository->update($markupSettings);
@@ -60,8 +35,10 @@ class MarkupSettingsUpdater
     public function deleteCondition(int $id, string $key, int $index): void
     {
         $markupSettings = $this->repository->get($id);
-//        $this->set($markupSettings, $key, $value);
-        dd('delete', $key, $index);
+        $collection = $this->getNestedCollection($markupSettings, $key);
+        $collection->offsetUnset($index);
+        //@todo как записать в Markup, как работать с сеттингами?
+        dd('delete', $key, $index, $collection);
         $this->repository->update($markupSettings);
     }
 
@@ -95,5 +72,33 @@ class MarkupSettingsUpdater
         } else {
             throw new \InvalidArgumentException("Can not update value for key [$childKey]");
         }
+    }
+
+    private function getNestedCollection(ValueObjectInterface|EntityInterface $parent, string $key): Collection
+    {
+        $keyParts = explode('.', $key);
+        $childKey = array_shift($keyParts);
+
+        if (method_exists($parent, $childKey)) {
+            $childValue = $parent->$childKey();
+        } elseif (is_numeric($childKey) && $parent instanceof Collection) {
+            $childValue = $parent->get($childKey);
+        } else {
+            throw new \InvalidArgumentException("Unknown key [$childKey]");
+        }
+
+        if (count($keyParts) > 0) {
+            return $this->getNestedCollection($childValue, implode('.', $keyParts));
+        }
+
+        if (!is_object($childValue)) {
+            $childValue = $parent;
+        }
+
+        if (!$childValue instanceof Collection) {
+            throw new \InvalidArgumentException("Value of key [$key] is not collection");
+        }
+
+        return $childValue;
     }
 }

@@ -6,6 +6,7 @@ namespace Module\Hotel\Port\Controllers;
 
 use Custom\Framework\Contracts\Bus\QueryBusInterface;
 use Custom\Framework\PortGateway\Request;
+use Module\Hotel\Application\Dto\MarkupSettings\ConditionDto;
 use Module\Hotel\Application\Query\GetHotelMarkupSettings;
 use Module\Hotel\Domain\Service\MarkupSettingsUpdater;
 
