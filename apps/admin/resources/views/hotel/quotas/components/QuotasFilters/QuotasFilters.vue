@@ -175,30 +175,41 @@ const isStateChanged = computed<boolean>(() => !isEqual(payload.value, defaultFi
       :disabled="loading"
       @input="handleRoomInput"
     />
-    <BootstrapButton
-      label="Обновить"
-      variant="outline"
-      severity="primary"
-      :loading="loading"
-      :disabled="!isStateChanged"
-      @click="submit"
-    />
-    <BootstrapButton
-      label="Сбросить"
-      :only-icon="backspaceIcon"
-      variant="outline"
-      severity="link"
-      :disabled="loading || !isStateChanged"
-      @click="reset"
-    />
+    <div class="actions">
+      <BootstrapButton
+        label="Обновить"
+        variant="outline"
+        severity="primary"
+        :loading="loading"
+        :disabled="!isStateChanged"
+        @click="submit"
+      />
+      <BootstrapButton
+        label="Сбросить"
+        :only-icon="backspaceIcon"
+        variant="outline"
+        severity="link"
+        :disabled="loading || !isStateChanged"
+        @click="reset"
+      />
+    </div>
   </div>
 </template>
 <style lang="scss" scoped>
-.quotasFilters {
+%flow {
   display: flex;
-  flex-wrap: wrap;
   gap: 1em;
+}
+
+.quotasFilters {
+  @extend %flow;
+
+  flex-wrap: wrap;
   align-items: flex-end;
+}
+
+.actions {
+  @extend %flow;
 }
 
 .month {
