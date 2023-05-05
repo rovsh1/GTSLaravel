@@ -75,7 +75,7 @@ const closeDay = () => {
 }
 
 const resetDay = () => {
-  // TODO backend
+  selectedKind.value = 'reset'
   done()
 }
 
@@ -88,6 +88,11 @@ const {
   isLoading: isCloseLoading,
   isDisabled: isCloseDisabled,
 } = useDayMenuButtonStatus({ kind: 'close', selectedKind, isFetching })
+
+const {
+  isLoading: isResetLoading,
+  isDisabled: isResetDisabled,
+} = useDayMenuButtonStatus({ kind: 'reset', selectedKind, isFetching })
 </script>
 <template>
   <div ref="floating" :style="floatingStyles">
@@ -118,6 +123,8 @@ const {
         size="small"
         severity="danger"
         label="Сбросить"
+        :loading="isResetLoading"
+        :disabled="isResetDisabled"
         @click="resetDay"
       />
     </div>

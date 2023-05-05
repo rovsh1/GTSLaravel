@@ -141,7 +141,7 @@ export const useHotelRoomQuotasUpdate = (props: MaybeRef<HotelRoomQuotasUpdatePr
     .json<{ success: boolean }>()
 }
 
-export type HotelRoomQuotasStatusUpdateKind = 'open' | 'close'
+export type HotelRoomQuotasStatusUpdateKind = 'open' | 'close' | 'reset'
 
 export type HotelRoomQuotasStatusUpdateProps = HotelRoomQuotasUpdateBaseProps & {
   kind: HotelRoomQuotasStatusUpdateKind
