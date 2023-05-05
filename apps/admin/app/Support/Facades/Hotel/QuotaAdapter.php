@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static void updateRoomQuota(int $roomId, CarbonInterface $date, int|null $count, int|null $releaseDays=null)
  * @method static void openRoomQuota(int $roomId, CarbonInterface $date)
  * @method static void closeRoomQuota(int $roomId, CarbonInterface $date)
+ * @method static void resetRoomQuota(int $roomId, CarbonInterface $date)
  */
 class QuotaAdapter extends Facade
 {

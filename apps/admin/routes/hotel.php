@@ -47,6 +47,7 @@ AclRoute::for('hotel')
     ->put('/{hotel}/rooms/{room}/quota', Controllers\Hotel\QuotaController::class . '@update', 'update', 'quotas.update')
     ->put('/{hotel}/rooms/{room}/quota/open', Controllers\Hotel\QuotaController::class . '@openQuota', 'update', 'quotas.open')
     ->put('/{hotel}/rooms/{room}/quota/close', Controllers\Hotel\QuotaController::class . '@closeQuota', 'update', 'quotas.close')
+    ->put('/{hotel}/rooms/{room}/quota/reset', Controllers\Hotel\QuotaController::class . '@resetQuota', 'update', 'quotas.reset')
 
     ->get('/{hotel}/settings', Controllers\Hotel\SettingsController::class . '@index', 'update', 'settings.index')
     ->resource('rules', Controllers\Hotel\RuleController::class, ['except' => ['index', 'show']])

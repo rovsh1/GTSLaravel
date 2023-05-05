@@ -78,4 +78,18 @@ class RoomQuotaController
             new CarbonPeriod($request->date_from, $request->date_to),
         );
     }
+
+    public function resetRoomQuota(Request $request): void
+    {
+        $request->validate([
+            'room_id' => 'required|numeric',
+            'date_from' => 'required|date',
+            'date_to' => 'required|date',
+        ]);
+
+        $this->quotaUpdater->resetRoomQuota(
+            $request->room_id,
+            new CarbonPeriod($request->date_from, $request->date_to),
+        );
+    }
 }

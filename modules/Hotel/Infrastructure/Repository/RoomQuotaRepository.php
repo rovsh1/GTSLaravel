@@ -45,7 +45,7 @@ class RoomQuotaRepository implements RoomQuotaRepositoryInterface
             ->updateOrCreate(['date' => $period->getStartDate(), 'room_id' => $roomId], $updateData);
     }
 
-    public function closeRoomQuota(int $roomId, CarbonPeriod $period)
+    public function closeRoomQuota(int $roomId, CarbonPeriod $period): void
     {
         EloquentQuota::whereRoomId($roomId)
             ->where('date', '>=', $period->getStartDate())
@@ -53,11 +53,19 @@ class RoomQuotaRepository implements RoomQuotaRepositoryInterface
             ->update(['status' => QuotaStatusEnum::Close]);
     }
 
-    public function openRoomQuota(int $roomId, CarbonPeriod $period)
+    public function openRoomQuota(int $roomId, CarbonPeriod $period): void
     {
         EloquentQuota::whereRoomId($roomId)
             ->where('date', '>=', $period->getStartDate())
             ->where('date', '<', $period->getEndDate())
             ->update(['status' => QuotaStatusEnum::Open]);
+    }
+
+    public function resetRoomQuota(int $roomId, CarbonPeriod $period): void
+    {
+        EloquentQuota::whereRoomId($roomId)
+            ->where('date', '>=', $period->getStartDate())
+            ->where('date', '<', $period->getEndDate())
+            ->delete();
     }
 }

@@ -64,6 +64,14 @@ class QuotaController extends Controller
         return new AjaxSuccessResponse();
     }
 
+    public function resetQuota(UpdateQuotaStatusRequest $request, Hotel $hotel, Room $room): AjaxResponseInterface
+    {
+        foreach ($request->getDates() as $date) {
+            QuotaAdapter::resetRoomQuota($room->id, $date);
+        }
+        return new AjaxSuccessResponse();
+    }
+
     private function hotel(Hotel $hotel): void
     {
         Breadcrumb::prototype('hotel')

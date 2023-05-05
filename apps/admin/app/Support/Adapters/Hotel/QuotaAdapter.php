@@ -46,4 +46,13 @@ class QuotaAdapter extends AbstractHotelAdapter
             'date_to' => $date->clone()->endOfDay(),
         ]);
     }
+
+    public function resetRoomQuota(int $roomId, CarbonInterface $date): void
+    {
+        $this->request('resetRoomQuota', [
+            'room_id' => $roomId,
+            'date_from' => $date,
+            'date_to' => $date->clone()->endOfDay(),
+        ]);
+    }
 }

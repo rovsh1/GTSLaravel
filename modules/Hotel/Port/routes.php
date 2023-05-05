@@ -16,3 +16,4 @@ Route::register('getHotelQuotas', [RoomQuotaController::class, 'getHotelQuotas']
 Route::register('updateRoomQuota', [RoomQuotaController::class, 'updateRoomQuota']);
 Route::register('openRoomQuota', [RoomQuotaController::class, 'openRoomQuota']);
 Route::register('closeRoomQuota', [RoomQuotaController::class, 'closeRoomQuota']);
+Route::register('resetRoomQuota', [RoomQuotaController::class, 'resetRoomQuota']);

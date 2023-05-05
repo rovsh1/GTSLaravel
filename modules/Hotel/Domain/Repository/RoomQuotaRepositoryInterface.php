@@ -15,9 +15,11 @@ interface RoomQuotaRepositoryInterface
      */
     public function get(int $hotelId, CarbonPeriod $period, ?int $roomId = null): array;
 
-    public function updateRoomQuota(int $roomId, CarbonPeriod $period, ?int $quota, ?int $releaseDays = null);
+    public function updateRoomQuota(int $roomId, CarbonPeriod $period, ?int $quota, ?int $releaseDays = null): void;
 
-    public function closeRoomQuota(int $roomId, CarbonPeriod $period);
+    public function closeRoomQuota(int $roomId, CarbonPeriod $period): void;
 
-    public function openRoomQuota(int $roomId, CarbonPeriod $period);
+    public function openRoomQuota(int $roomId, CarbonPeriod $period): void;
+
+    public function resetRoomQuota(int $roomId, CarbonPeriod $period): void;
 }

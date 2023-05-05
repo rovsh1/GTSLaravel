@@ -7,6 +7,7 @@ use Custom\Framework\Contracts\Bus\CommandBusInterface;
 use Custom\Framework\Contracts\Bus\QueryBusInterface;
 use Module\Hotel\Application\Command\CloseRoomQuota;
 use Module\Hotel\Application\Command\OpenRoomQuota;
+use Module\Hotel\Application\Command\ResetRoomQuota;
 use Module\Hotel\Application\Command\UpdateRoomQuota;
 use Module\Hotel\Application\Query\GetRoomById;
 use Module\Hotel\Domain\Exception\Room\RoomNotFound;
@@ -40,6 +41,14 @@ class RoomQuotaUpdater
         $this->checkRoomExistCallback(
             roomId: $roomId,
             callback: fn() => $this->commandBus->execute(new CloseRoomQuota($roomId, $period))
+        );
+    }
+
+    public function resetRoomQuota(int $roomId, CarbonPeriod $period): void
+    {
+        $this->checkRoomExistCallback(
+            roomId: $roomId,
+            callback: fn() => $this->commandBus->execute(new ResetRoomQuota($roomId, $period))
         );
     }
 
