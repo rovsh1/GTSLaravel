@@ -20,6 +20,7 @@ const floating = ref(null)
 
 const { floatingStyles } = useFloating(reference, floating, {
   middleware: [flip()],
+  placement: 'bottom-start',
 })
 
 const closeMenu = () => {

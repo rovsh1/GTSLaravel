@@ -6,10 +6,6 @@ export type MenuPosition = {
 }
 
 export const useDayMenu = () => {
-  const hoveredDay = ref<string | null>(null)
-
-  const hoveredRoomTypeID = ref<number | null>(null)
-
   const menuRef = ref<HTMLElement | null>(null)
   const menuPosition = ref<MenuPosition | null>(null)
 
@@ -39,28 +35,10 @@ export const useDayMenu = () => {
     window.removeEventListener('scroll', closeDayMenu)
   })
 
-  const setHoveredRoomTypeID = (params: MenuPosition) => {
-    const {
-      dayKey,
-      roomTypeID,
-    } = params
-    hoveredDay.value = dayKey
-    hoveredRoomTypeID.value = roomTypeID
-  }
-
-  const resetHoveredRoomTypeID = () => {
-    hoveredDay.value = null
-    hoveredRoomTypeID.value = null
-  }
-
   return {
-    hoveredDay,
-    hoveredRoomTypeID,
     menuRef,
     menuPosition,
     openDayMenu,
     closeDayMenu,
-    setHoveredRoomTypeID,
-    resetHoveredRoomTypeID,
   }
 }

@@ -15,7 +15,6 @@ import { plural } from '~resources/lib/plural'
 
 import DayMenu from './DayMenu/DayMenu.vue'
 import EditableCell from './EditableCell.vue'
-import MenuButton from './MenuButton.vue'
 import RoomHeader from './RoomHeader.vue'
 
 import { useDayMenu } from './DayMenu/use-day-menu'
@@ -82,15 +81,16 @@ const {
   editedInRange: editedReleaseDaysInRange,
 })
 
+const resetActiveKey = () => {
+  activeQuotaKey.value = null
+  activeReleaseDaysKey.value = null
+}
+
 const {
-  hoveredDay,
-  hoveredRoomTypeID,
   menuRef,
   menuPosition,
   openDayMenu,
   closeDayMenu,
-  setHoveredRoomTypeID,
-  resetHoveredRoomTypeID,
 } = useDayMenu()
 
 type HandleValue<R> = (date: Date, value: number) => R
@@ -208,14 +208,6 @@ onHotelRoomReleaseDaysUpdateFinally(() => {
                 class="dayCell"
                 :class="{ isHoliday }"
                 tabindex="0"
-                @focusin="() => {
-                  setHoveredRoomTypeID({ dayKey: key, roomTypeID: room.id })
-                }"
-                @mouseenter="() => {
-                  setHoveredRoomTypeID({ dayKey: key, roomTypeID: room.id })
-                }"
-                @focusout="resetHoveredRoomTypeID"
-                @mouseleave="resetHoveredRoomTypeID"
               >
                 <div class="dayOfWeek">{{ dayOfWeek }}</div>
                 <div class="dayOfMonth"><strong>{{ dayOfMonth }}</strong></div>
@@ -230,14 +222,6 @@ onHotelRoomReleaseDaysUpdateFinally(() => {
                 :key="key"
                 :class="dayQuotaCellClassName(status)"
                 tabindex="0"
-                @focusin="() => {
-                  setHoveredRoomTypeID({ dayKey: key, roomTypeID: room.id })
-                }"
-                @mouseenter="() => {
-                  setHoveredRoomTypeID({ dayKey: key, roomTypeID: room.id })
-                }"
-                @focusout="resetHoveredRoomTypeID"
-                @mouseleave="resetHoveredRoomTypeID"
               >
                 <editable-cell
                   :active-key="activeQuotaKey"
@@ -250,7 +234,11 @@ onHotelRoomReleaseDaysUpdateFinally(() => {
                   :max="room.count"
                   :disabled="!editable"
                   :in-range="isQuotaCellInRange(getActiveCellKey(key, room.id))"
-                  @active-key="(value) => activeQuotaKey = value"
+                  @active-key="(value) => {
+                    activeQuotaKey = value
+                    activeReleaseDaysKey = null
+                  }"
+                  @reset="resetActiveKey"
                   @range-key="(value) => setQuotaRange({
                     dailyQuota,
                     roomTypeID: room.id,
@@ -269,6 +257,9 @@ onHotelRoomReleaseDaysUpdateFinally(() => {
                     handleQuotaInput(
                       getActiveCellKey(key, room.id), value, quotaRange as QuotaRange,
                     )
+                  }"
+                  @context-menu="(element) => {
+                    openDayMenu({ trigger: element, dayKey: key, roomTypeID: room.id })
                   }"
                 >
                   <template
@@ -301,14 +292,6 @@ onHotelRoomReleaseDaysUpdateFinally(() => {
                 :key="key"
                 :class="dayQuotaCellClassName(status)"
                 tabindex="0"
-                @focusin="() => {
-                  setHoveredRoomTypeID({ dayKey: key, roomTypeID: room.id })
-                }"
-                @mouseenter="() => {
-                  setHoveredRoomTypeID({ dayKey: key, roomTypeID: room.id })
-                }"
-                @focusout="resetHoveredRoomTypeID"
-                @mouseleave="resetHoveredRoomTypeID"
               >
                 <editable-cell
                   :active-key="activeReleaseDaysKey"
@@ -321,7 +304,11 @@ onHotelRoomReleaseDaysUpdateFinally(() => {
                   :max="30"
                   :disabled="!editable"
                   :in-range="isReleaseDaysCellInRange(getActiveCellKey(key, room.id))"
-                  @active-key="(value) => activeReleaseDaysKey = value"
+                  @active-key="(value) => {
+                    activeReleaseDaysKey = value
+                    activeQuotaKey = null
+                  }"
+                  @reset="resetActiveKey"
                   @range-key="(value) => setReleaseDaysRange({
                     dailyQuota,
                     roomTypeID: room.id,
@@ -340,6 +327,9 @@ onHotelRoomReleaseDaysUpdateFinally(() => {
                     handleReleaseDaysInput(
                       getActiveCellKey(key, room.id), value, releaseDaysRange,
                     )
+                  }"
+                  @context-menu="(element) => {
+                    openDayMenu({ trigger: element, dayKey: key, roomTypeID: room.id })
                   }"
                 >
                   <template
@@ -365,29 +355,6 @@ onHotelRoomReleaseDaysUpdateFinally(() => {
                 </editable-cell>
               </td>
             </tr>
-            <tr>
-              <th class="headingCell" />
-              <td
-                v-for="{ key } in dailyQuota"
-                :key="key"
-                class="menuButtonCell"
-                :class="{ isInvisible: !editable }"
-              >
-                <menu-button
-                  :visible="
-                    (hoveredDay === key && hoveredRoomTypeID === room.id)
-                      || (
-                        menuPosition !== null
-                        && getActiveCellKey(menuPosition.dayKey, menuPosition.roomTypeID)
-                          === getActiveCellKey(key, room.id)
-                      )
-                  "
-                  @click="(element) => {
-                    openDayMenu({ trigger: element, dayKey: key, roomTypeID: room.id })
-                  }"
-                />
-              </td>
-            </tr>
           </tbody>
         </table>
       </div>
@@ -398,10 +365,6 @@ onHotelRoomReleaseDaysUpdateFinally(() => {
           :menu-ref="menuRef"
           :menu-day-key="menuPosition ? menuPosition.dayKey : null"
           @close="closeDayMenu"
-          @focusin="() => menuPosition && setHoveredRoomTypeID(menuPosition)"
-          @mouseenter="() => menuPosition && setHoveredRoomTypeID(menuPosition)"
-          @focusout="resetHoveredRoomTypeID"
-          @mouseleave="resetHoveredRoomTypeID"
         />
       </OnClickOutside>
     </Teleport>
@@ -502,13 +465,6 @@ th {
 
   &.isClosed {
     background-color: hsl(0deg, 100%, 93%);
-  }
-}
-
-.menuButtonCell {
-  &.isInvisible {
-    opacity: 0;
-    pointer-events: none;
   }
 }
 </style>

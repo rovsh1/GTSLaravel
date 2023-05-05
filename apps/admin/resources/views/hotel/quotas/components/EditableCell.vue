@@ -1,6 +1,12 @@
 <script lang="ts" setup>
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import InlineSVG from 'vue-inline-svg'
 
+import cmdIcon from '@mdi/svg/svg/apple-keyboard-command.svg'
+import ctrlIcon from '@mdi/svg/svg/apple-keyboard-control.svg'
+import shiftIcon from '@mdi/svg/svg/apple-keyboard-shift.svg'
+import escapeIcon from '@mdi/svg/svg/keyboard-esc.svg'
+import enterIcon from '@mdi/svg/svg/keyboard-return.svg'
 import { Tooltip } from 'floating-vue'
 
 import { isMacOS } from '~resources/lib/platform'
@@ -22,12 +28,20 @@ const emit = defineEmits<{
   (event: 'pick-key', value: CellKey): void
   (event: 'input', value: number): void
   (event: 'value', value: number): void
+  (event: 'context-menu', value: HTMLElement): void
+  (event: 'reset'): void
 }>()
+
+const buttonRef = ref<HTMLButtonElement | null>(null)
 
 const inputRef = ref<HTMLInputElement | null>(null)
 
 const rangeMode = ref(false)
 const pickMode = ref(false)
+
+const macOS = computed(() => isMacOS())
+
+const singleDayTooltip = 'Нажмите правой кнопкой мыши, чтобы открыть, закрыть или сбросить статус этого дня'
 
 const handleInputMount = (input: HTMLInputElement) => {
   input.focus()
@@ -74,54 +88,91 @@ const handleButtonClick = (event: MouseEvent) => {
   emit('active-key', props.cellKey)
 }
 
-const pickModifier = computed(() => (isMacOS() ? '⌘' : 'Ctrl'))
+const reset = () => {
+  inputRef.value?.blur()
+  emit('reset')
+  emit('active-key', null)
+  emit('range-key', null)
+  emit('pick-key', null)
+  pickMode.value = false
+  rangeMode.value = false
+}
 
-const keydown = (event: KeyboardEvent) => {
+const onPressEsc = () => {
+  reset()
+}
+
+const onPressEnter = () => {
+  reset()
+}
+
+const handleKeyDown = (event: KeyboardEvent) => {
   if (event.shiftKey) rangeMode.value = true
   if (event.ctrlKey || event.metaKey) pickMode.value = true
 }
 
-const keyup = () => {
+const handleKeyUp = () => {
   rangeMode.value = false
   pickMode.value = false
 }
 
+const handleContextMenu = (event: MouseEvent) => {
+  const isInputRightClick = event.target === inputRef.value
+  const isButtonInRangeRightClick = event.target === buttonRef.value
+
+  if (isInputRightClick || isButtonInRangeRightClick) {
+    event.preventDefault()
+    emit('context-menu', event.target as HTMLElement)
+  }
+}
+
 onMounted(() => {
-  window.addEventListener('keydown', keydown)
-  window.addEventListener('keyup', keyup)
+  window.addEventListener('keydown', handleKeyDown)
+  window.addEventListener('keyup', handleKeyUp)
+  window.addEventListener('contextmenu', handleContextMenu)
 })
 
 onUnmounted(() => {
-  window.removeEventListener('keydown', keydown)
-  window.removeEventListener('keyup', keyup)
+  window.removeEventListener('keydown', handleKeyDown)
+  window.removeEventListener('keyup', handleKeyUp)
+  window.removeEventListener('contextmenu', handleContextMenu)
 })
 </script>
 <template>
-  <label v-if="activeKey === cellKey">
-    <input
-      :ref="(element) => inputRef = element as HTMLInputElement"
-      :value="value"
-      class="editableCellInput"
-      type="number"
-      :max="max"
-      @input="(event) => handleInput(event.target)"
-      @change="(event) => handleChange(event.target)"
-      @blur="(event) => {
-        if (rangeMode || pickMode) {
+  <Tooltip v-if="activeKey === cellKey">
+    <label>
+      <input
+        :ref="(element) => inputRef = element as HTMLInputElement"
+        :value="value"
+        class="editableCellInput"
+        type="number"
+        :max="max"
+        @input="(event) => handleInput(event.target)"
+        @change="(event) => handleChange(event.target)"
+        @blur="(event) => {
           event.preventDefault()
           inputRef?.focus()
-          return
-        }
-        emit('active-key', null)
-        emit('range-key', null)
-        emit('pick-key', null)
-      }"
-      @keydown.esc="inputRef?.blur()"
-      @keydown.enter="inputRef?.blur()"
-    />
-  </label>
-  <Tooltip v-else :disabled="activeKey === null" :delay="{ show: 2000 }">
+        }"
+        @keydown.esc="onPressEsc"
+        @keydown.enter="onPressEnter"
+      />
+    </label>
+    <template #popper>
+      <div>{{ singleDayTooltip }}</div>
+      <div>Нажмите <InlineSVG :src="enterIcon" /> Enter, чтобы подтвердить изменения</div>
+      <div>
+        Нажмите <template v-if="macOS">
+          ⎋ Esc
+        </template>
+        <template v-else>
+          <InlineSVG :src="escapeIcon" /> Esc
+        </template>, чтобы отменить их
+      </div>
+    </template>
+  </Tooltip>
+  <Tooltip v-else :delay="{ show: 2000 }">
     <button
+      :ref="(element) => buttonRef = element as HTMLButtonElement"
       type="button"
       class="editableDataCell"
       :class="{ inRange }"
@@ -131,8 +182,22 @@ onUnmounted(() => {
       <slot />
     </button>
     <template #popper>
-      <div>Зажмите Shift и кликните, чтобы задать значения для всех дней от выбранного до этого.</div>
-      <div>Зажмите {{ pickModifier }} и кликните, чтобы добавить день в выборку или удалить из неё.</div>
+      <template v-if="activeKey !== null">
+        <div>Зажмите <InlineSVG :src="shiftIcon" /> Shift и кликните, чтобы задать значения для всех дней от выбранного до этого.</div>
+        <div>
+          Зажмите <template v-if="macOS">
+            <InlineSVG :src="cmdIcon" /> command
+          </template><template v-else>
+            <InlineSVG :src="ctrlIcon" /> Ctrl
+          </template> и кликните, чтобы добавить день в выборку или удалить из неё.
+        </div>
+      </template>
+      <template v-if="inRange">
+        <div>Нажмите правой кнопкой мыши, чтобы открыть, закрыть или сбросить статус выбранных дней</div>
+      </template>
+      <template v-else>
+        <div>{{ singleDayTooltip }}</div>
+      </template>
     </template>
   </Tooltip>
 </template>
@@ -183,5 +248,11 @@ onUnmounted(() => {
   &.inRange {
     border-color: rgba(blue, 0.3);
   }
+}
+
+svg {
+  width: auto;
+  height: 1em;
+  fill: currentcolor;
 }
 </style>
