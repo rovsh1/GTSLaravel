@@ -143,7 +143,8 @@ export const getRoomQuotas: GetRoomQuotas = (params) => {
                 id: quotaID,
                 status,
                 release_days: releaseDays,
-                count_available: countAvailable,
+                // count_available: countAvailable,
+                count_total: countTotal,
                 count_booked: countBooked,
                 count_reserved: countReserved,
               } = foundQuota
@@ -151,8 +152,8 @@ export const getRoomQuotas: GetRoomQuotas = (params) => {
                 ...common,
                 id: quotaID,
                 status: quotaStatusMap[status],
-                quota: countBooked,
-                sold: countAvailable,
+                quota: countTotal,
+                sold: countBooked,
                 reserve: countReserved,
                 releaseDays,
               }

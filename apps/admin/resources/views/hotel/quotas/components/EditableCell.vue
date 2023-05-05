@@ -141,6 +141,7 @@ onUnmounted(() => {
 <template>
   <Tooltip v-if="activeKey === cellKey">
     <label>
+      <!-- TODO min/max validation display -->
       <input
         :ref="(element) => inputRef = element as HTMLInputElement"
         :value="value"

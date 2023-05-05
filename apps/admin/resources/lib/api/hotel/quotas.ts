@@ -42,6 +42,7 @@ export type HotelQuotaResponse = {
   status: QuotaStatus
   release_days: number
   count_available: number
+  count_total: number
   count_booked: number
   count_reserved: number
 }
