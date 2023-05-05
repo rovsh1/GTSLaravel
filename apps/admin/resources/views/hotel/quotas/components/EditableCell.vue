@@ -107,6 +107,7 @@ const onPressEnter = () => {
 }
 
 const handleKeyDown = (event: KeyboardEvent) => {
+  if (props.disabled) return
   if (event.shiftKey) rangeMode.value = true
   if (event.ctrlKey || event.metaKey) pickMode.value = true
 }
@@ -120,7 +121,7 @@ const handleContextMenu = (event: MouseEvent) => {
   const isInputRightClick = event.target === inputRef.value
   const isButtonInRangeRightClick = event.target === buttonRef.value
 
-  if (isInputRightClick || isButtonInRangeRightClick) {
+  if ((isInputRightClick || isButtonInRangeRightClick) && !props.disabled) {
     event.preventDefault()
     emit('context-menu', event.target as HTMLElement)
   }

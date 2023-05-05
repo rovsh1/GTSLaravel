@@ -1,30 +1,33 @@
 import { onMounted, onUnmounted, ref } from 'vue'
 
 export type MenuPosition = {
+  date: Date
   dayKey: string
   roomTypeID: number
 }
 
 export const useDayMenu = () => {
-  const menuRef = ref<HTMLElement | null>(null)
-  const menuPosition = ref<MenuPosition | null>(null)
+  const dayMenuRef = ref<HTMLElement | null>(null)
+  const dayMenuPosition = ref<MenuPosition | null>(null)
 
   const openDayMenu = (params: { trigger: HTMLElement } & MenuPosition) => {
     const {
       trigger,
+      date,
       dayKey,
       roomTypeID,
     } = params
-    menuRef.value = trigger
-    menuPosition.value = {
+    dayMenuRef.value = trigger
+    dayMenuPosition.value = {
+      date,
       dayKey,
       roomTypeID,
     }
   }
 
   const closeDayMenu = () => {
-    menuRef.value = null
-    menuPosition.value = null
+    dayMenuRef.value = null
+    dayMenuPosition.value = null
   }
 
   onMounted(() => {
@@ -36,8 +39,8 @@ export const useDayMenu = () => {
   })
 
   return {
-    menuRef,
-    menuPosition,
+    dayMenuRef,
+    dayMenuPosition,
     openDayMenu,
     closeDayMenu,
   }
