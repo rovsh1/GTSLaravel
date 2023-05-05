@@ -118,8 +118,11 @@ const payload = computed<FiltersPayload>(() => ({
   roomID: selectedRoomID.value === '' ? null : selectedRoomID.value,
 }))
 
+const lastSubmittedPayload = ref<FiltersPayload>(defaultFiltersPayload)
+
 const submit = () => {
   emit('submit', payload.value)
+  lastSubmittedPayload.value = payload.value
 }
 
 const reset = () => {
@@ -131,7 +134,8 @@ const reset = () => {
   submit()
 }
 
-const isStateChanged = computed<boolean>(() => !isEqual(payload.value, defaultFiltersPayload))
+const isStateChanged = computed<boolean>(() =>
+  !isEqual(payload.value, lastSubmittedPayload.value))
 </script>
 <template>
   <div class="quotasFilters">
