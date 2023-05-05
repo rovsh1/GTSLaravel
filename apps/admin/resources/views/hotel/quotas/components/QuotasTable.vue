@@ -15,8 +15,8 @@ import { plural } from '~resources/lib/plural'
 
 import DayMenu from './DayMenu/DayMenu.vue'
 import EditableCell from './EditableCell.vue'
-import HeadingCell from './HeadingCell.vue'
 import MenuButton from './MenuButton.vue'
+import RoomHeader from './RoomHeader.vue'
 
 import { useDayMenu } from './DayMenu/use-day-menu'
 import {
@@ -173,7 +173,7 @@ onHotelRoomReleaseDaysUpdateFinally(() => {
 </script>
 <template>
   <div class="quotasRooms">
-    <heading-cell
+    <room-header
       :label="room.label"
       :custom-name="room.customName"
       :guests="room.guests"
