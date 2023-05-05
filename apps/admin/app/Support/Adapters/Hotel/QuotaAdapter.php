@@ -22,10 +22,9 @@ class QuotaAdapter extends AbstractHotelAdapter
     {
         $this->request('updateRoomQuota', [
             'room_id' => $roomId,
-            'date_from' => $date,
-            'date_to' => $date->clone()->endOfDay(),
             'quota' => $count,
-            'release_days' => $releaseDays
+            'release_days' => $releaseDays,
+            ...$this->getPeriodByDate($date)
         ]);
     }
 
@@ -33,8 +32,7 @@ class QuotaAdapter extends AbstractHotelAdapter
     {
         $this->request('openRoomQuota', [
             'room_id' => $roomId,
-            'date_from' => $date,
-            'date_to' => $date->clone()->endOfDay(),
+            ...$this->getPeriodByDate($date)
         ]);
     }
 
@@ -42,8 +40,7 @@ class QuotaAdapter extends AbstractHotelAdapter
     {
         $this->request('closeRoomQuota', [
             'room_id' => $roomId,
-            'date_from' => $date,
-            'date_to' => $date->clone()->endOfDay(),
+            ...$this->getPeriodByDate($date)
         ]);
     }
 
@@ -51,8 +48,19 @@ class QuotaAdapter extends AbstractHotelAdapter
     {
         $this->request('resetRoomQuota', [
             'room_id' => $roomId,
+            ...$this->getPeriodByDate($date)
+        ]);
+    }
+
+    /**
+     * @param CarbonInterface $date
+     * @return array<string, CarbonInterface>
+     */
+    private function getPeriodByDate(CarbonInterface $date): array
+    {
+        return [
             'date_from' => $date,
             'date_to' => $date->clone()->endOfDay(),
-        ]);
+        ];
     }
 }
