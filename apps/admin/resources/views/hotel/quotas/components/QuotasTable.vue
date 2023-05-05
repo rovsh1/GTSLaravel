@@ -18,7 +18,7 @@ import EditableCell from './EditableCell.vue'
 import HeadingCell from './HeadingCell.vue'
 import MenuButton from './MenuButton.vue'
 
-import { MenuPosition, useDayMenu } from './DayMenu/use-day-menu'
+import { useDayMenu } from './DayMenu/use-day-menu'
 import {
   ActiveKey,
   getActiveCellKey,
@@ -396,10 +396,10 @@ onHotelRoomReleaseDaysUpdateFinally(() => {
       <OnClickOutside @trigger="closeDayMenu">
         <day-menu
           :menu-ref="menuRef"
-          :menu-day-key="(menuPosition as MenuPosition).dayKey"
+          :menu-day-key="menuPosition ? menuPosition.dayKey : null"
           @close="closeDayMenu"
-          @focusin="() => setHoveredRoomTypeID(menuPosition as MenuPosition)"
-          @mouseenter="() => setHoveredRoomTypeID(menuPosition as MenuPosition)"
+          @focusin="() => menuPosition && setHoveredRoomTypeID(menuPosition)"
+          @mouseenter="() => menuPosition && setHoveredRoomTypeID(menuPosition)"
           @focusout="resetHoveredRoomTypeID"
           @mouseleave="resetHoveredRoomTypeID"
         />

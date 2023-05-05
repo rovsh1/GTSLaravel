@@ -1,5 +1,7 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
+
+import { flip, useFloating } from '@floating-ui/vue'
 
 import BootstrapButton from '~resources/components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 
@@ -12,16 +14,12 @@ const emit = defineEmits<{
   (event: 'close'): void
 }>()
 
-const menuTop = computed(() => {
-  if (props.menuRef === null) return 0
-  const { top, height } = props.menuRef.getBoundingClientRect()
-  return top + height
-})
+const reference = computed(() => props.menuRef)
 
-const menuLeft = computed(() => {
-  if (props.menuRef === null) return 0
-  const { left } = props.menuRef.getBoundingClientRect()
-  return left
+const floating = ref(null)
+
+const { floatingStyles } = useFloating(reference, floating, {
+  middleware: [flip()],
 })
 
 const closeMenu = () => {
@@ -44,83 +42,32 @@ const resetDay = () => {
 }
 </script>
 <template>
-  <ul class="menu">
-    <li>
+  <div ref="floating" :style="floatingStyles">
+    <div class="btn-group-vertical list-group menu">
       <BootstrapButton
         size="small"
         severity="light"
-        class="button"
         label="Открыть"
         @click="openDay"
       />
-    </li>
-    <li>
       <BootstrapButton
         size="small"
         severity="light"
-        class="button"
         label="Закрыть"
         @click="closeDay"
       />
-    </li>
-    <li>
       <BootstrapButton
         size="small"
         severity="danger"
-        class="button"
         label="Сбросить"
         @click="resetDay"
       />
-    </li>
-  </ul>
+    </div>
+  </div>
 </template>
-<style lang="scss" scoped>
-@use '~resources/sass/variables' as vars;
-
+<style scoped>
 .menu {
-  position: fixed;
-  top: calc(v-bind(menuTop) * 1px);
-  left: calc(v-bind(menuLeft) * 1px);
-  margin: unset;
-  padding: unset;
-  border-radius: 0.375em;
-  background-color: vars.$body-bg;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 20%);
-  list-style: none;
-
-  li {
-    &:first-child {
-      .button {
-        border-bottom-right-radius: unset;
-        border-bottom-left-radius: unset;
-      }
-    }
-
-    &:last-child {
-      .button {
-        border-top-left-radius: unset;
-        border-top-right-radius: unset;
-      }
-    }
-
-    &:not(:first-child) {
-      .button {
-        border-top-left-radius: unset;
-        border-top-right-radius: unset;
-      }
-    }
-
-    &:not(:last-child) {
-      .button {
-        border-bottom-right-radius: unset;
-        border-bottom-left-radius: unset;
-      }
-    }
-  }
-
-}
-
-.button {
-  width: 100%;
+  border: solid var(--bs-list-group-border-width) var(--bs-list-group-border-color);
+  border-radius: var(--bs-list-group-border-radius);
 }
 </style>
