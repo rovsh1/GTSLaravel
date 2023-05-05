@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 import { flip, useFloating } from '@floating-ui/vue'
 
@@ -51,11 +51,12 @@ const updateProps = computed<HotelRoomQuotasStatusUpdateProps | null>(() => {
 
 const {
   execute,
-  onFetchFinally,
+  data,
   isFetching,
 } = useHotelRoomQuotasStatusUpdate(updateProps)
 
-onFetchFinally(() => {
+watch(data, (value) => {
+  if (value === null || !value.success) return
   emit('done')
   selectedKind.value = null
 })

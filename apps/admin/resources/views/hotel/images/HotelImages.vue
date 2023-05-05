@@ -81,7 +81,7 @@ const imagesToUpload = ref<File[] | null>(null)
 const {
   execute: executeImagesUpload,
   isFetching: isImagesUploadFetching,
-  onFetchResponse: onImagesUploadResponse,
+  data: imagesUploadData,
 } = useHotelImagesUploadAPI(computed(() => ({
   hotelID,
   roomID,
@@ -94,7 +94,8 @@ const uploadImages = () => {
   executeImagesUpload()
 }
 
-onImagesUploadResponse(() => {
+watch(imagesUploadData, (value) => {
+  if (value === null || !value.success) return
   fetchImages()
   fetchRoomImages()
   imagesToUpload.value = null
@@ -116,7 +117,6 @@ const imageToRemove = computed<HotelImageResponse | null>(() => {
 const {
   isFetching: isImageRemoveFetching,
   execute: executeRemoveImage,
-  onFetchFinally: onRemoveImageFinally,
   data: removeImageData,
 } = useHotelImageRemoveAPI(computed(() => ({
   hotelID,
@@ -134,20 +134,18 @@ const cancelRemoveImage = () => {
 }
 
 watch(removeImageData, (value) => {
-  if (value && value.success && imageToRemove.value !== null) {
-    showToast({
-      title: 'Фото удалено',
-      description: imageToRemove.value.file.name,
-    })
-    fetchImages()
-  } else {
+  if (value === null || !value.success) {
     showToast('Не удалось удалить фото')
+    return
   }
-})
-
-onRemoveImageFinally(() => {
   isRemoveImagePromptOpened.value = false
   imageIDToRemove.value = null
+  if (imageToRemove.value === null) return
+  showToast({
+    title: 'Фото удалено',
+    description: imageToRemove.value.file.name,
+  })
+  fetchImages()
 })
 
 const {

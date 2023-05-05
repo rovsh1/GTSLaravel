@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 import { OnClickOutside } from '@vueuse/components'
 
@@ -113,10 +113,11 @@ const hotelRoomQuotasUpdateProps = ref<HotelRoomQuotasUpdateProps | null>(null)
 
 const {
   execute: executeHotelRoomQuotasUpdate,
-  onFetchFinally: onHotelRoomQuotasUpdateFinally,
+  data: hotelRoomQuotasUpdateData,
 } = useHotelRoomQuotasUpdate(hotelRoomQuotasUpdateProps)
 
-onHotelRoomQuotasUpdateFinally(() => {
+watch(hotelRoomQuotasUpdateData, (value) => {
+  if (value === null || !value.success) return
   hotelRoomQuotasUpdateProps.value = null
   emit('update')
 })

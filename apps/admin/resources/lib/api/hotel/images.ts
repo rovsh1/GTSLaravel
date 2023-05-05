@@ -65,6 +65,7 @@ export const useHotelImagesUploadAPI = (props: MaybeRef<HotelImagesUploadProps>)
       }
       return formData
     }))
+    .json<{ success: boolean }>()
 
 export const useHotelImageRemoveAPI = (props: MaybeRef<{ hotelID: number; imageID: number | null }>) =>
   useAdminAPI(computed(() => getRef(props, ({ hotelID, imageID }) =>
