@@ -10,18 +10,25 @@ return new class extends Migration {
     {
         $q = DB::connection('mysql_old')->table('price_lists');
         foreach ($q->cursor() as $r) {
-            DB::table('price_lists')
+            DB::table('client_currency_rates')
                 ->insert([
                     'id' => $r->id,
                     'client_id' => $r->client_id,
                     'currency_id' => $r->currency_id,
                     'rate' => $r->rate,
-                    'file_guid' => null,
-                    'date_from' => $r->date_from,
-                    'date_to' => $r->date_to,
-                    'status' => $r->status,
+                    'date_start' => $r->date_from,
+                    'date_end' => $r->date_to,
                     'created_at' => now(),
                     'updated_at' => now(),
+                ]);
+        }
+
+        $q = DB::connection('mysql_old')->table('price_lists_options')->where('entity', 'hotel');
+        foreach ($q->cursor() as $r) {
+            DB::table('client_currency_rate_hotels')
+                ->insert([
+                    'rate_id' => $r->price_list_id,
+                    'hotel_id' => $r->entity_id,
                 ]);
         }
     }
