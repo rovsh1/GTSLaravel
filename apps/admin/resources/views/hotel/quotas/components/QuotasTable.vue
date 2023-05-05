@@ -5,10 +5,8 @@ import { OnClickOutside } from '@vueuse/components'
 
 import { HotelResponse } from '~resources/lib/api/hotel/hotel'
 import {
-  HotelRoomQuotasUpdatePayload,
-  HotelRoomQuotasUpdateProps,
-  HotelRoomReleaseDaysUpdateProps,
-  useHotelRoomQuotasUpdate, useHotelRoomReleaseDaysUpdate,
+  HotelRoomQuotasCountUpdateProps, HotelRoomQuotasUpdateProps,
+  HotelRoomReleaseDaysUpdateProps, useHotelRoomQuotasUpdate,
 } from '~resources/lib/api/hotel/quotas'
 import { formatDateToAPIDate } from '~resources/lib/date'
 import { plural } from '~resources/lib/plural'
@@ -102,46 +100,41 @@ const {
   onFetchFinally: onHotelRoomQuotasUpdateFinally,
 } = useHotelRoomQuotasUpdate(hotelRoomQuotasUpdateProps)
 
-const getQuotaPayload: HandleValue<HotelRoomQuotasUpdatePayload> = (date, value) => {
+onHotelRoomQuotasUpdateFinally(() => {
+  hotelRoomQuotasUpdateProps.value = null
+  emit('update')
+})
+
+const getQuotasCountPayload: HandleValue<HotelRoomQuotasCountUpdateProps> = (date, value) => {
+  const common = {
+    kind: 'count' as const,
+    hotelID: props.hotel.id,
+    roomID: props.room.id,
+  }
   const range = quotaRange.value
   if (range === null) {
     return {
+      ...common,
       dates: [formatDateToAPIDate(date)],
       count: value,
     }
   }
   const { quotas } = range
   return {
+    ...common,
     dates: quotas.map((quota) => formatDateToAPIDate(quota.date)),
     count: value,
   }
 }
 
 const handleQuotaValue: HandleValue<void> = (date, value) => {
-  const { dates, count } = getQuotaPayload(date, value)
-  hotelRoomQuotasUpdateProps.value = {
-    hotelID: props.hotel.id,
-    roomID: props.room.id,
-    dates,
-    count,
-  }
+  hotelRoomQuotasUpdateProps.value = getQuotasCountPayload(date, value)
   executeHotelRoomQuotasUpdate()
 }
 
-onHotelRoomQuotasUpdateFinally(() => {
-  hotelRoomQuotasUpdateProps.value = null
-  emit('update')
-})
-
-const hotelRoomReleaseDaysUpdateProps = ref<HotelRoomReleaseDaysUpdateProps | null>(null)
-
-const {
-  execute: executeHotelRoomReleaseDaysUpdate,
-  onFetchFinally: onHotelRoomReleaseDaysUpdateFinally,
-} = useHotelRoomReleaseDaysUpdate(hotelRoomReleaseDaysUpdateProps)
-
 const getReleaseDaysPayload: HandleValue<HotelRoomReleaseDaysUpdateProps> = (date, value) => {
   const common = {
+    kind: 'releaseDays' as const,
     hotelID: props.hotel.id,
     roomID: props.room.id,
   }
@@ -162,14 +155,9 @@ const getReleaseDaysPayload: HandleValue<HotelRoomReleaseDaysUpdateProps> = (dat
 }
 
 const handleReleaseDaysValue: HandleValue<void> = (date, value) => {
-  hotelRoomReleaseDaysUpdateProps.value = getReleaseDaysPayload(date, value)
-  executeHotelRoomReleaseDaysUpdate()
+  hotelRoomQuotasUpdateProps.value = getReleaseDaysPayload(date, value)
+  executeHotelRoomQuotasUpdate()
 }
-
-onHotelRoomReleaseDaysUpdateFinally(() => {
-  hotelRoomReleaseDaysUpdateProps.value = null
-  emit('update')
-})
 </script>
 <template>
   <div class="quotasRooms">
