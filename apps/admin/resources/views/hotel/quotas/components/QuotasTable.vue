@@ -392,6 +392,8 @@ const handleReleaseDaysValue: HandleValue<void> = (date, value) => {
 }
 
 .quotasTable {
+  --cell-width: 4em;
+
   overflow: auto;
 }
 
@@ -410,7 +412,7 @@ th {
 .dayCell {
   @extend %cell;
 
-  min-width: 4em;
+  min-width: var(--cell-width);
   text-align: center;
 
   &.isHoliday {
@@ -470,6 +472,8 @@ th {
 }
 
 .dayQuotaCell {
+  max-width: var(--cell-width);
+
   &.isOpened {
     background-color: hsl(120deg, 100%, 91%);
   }
