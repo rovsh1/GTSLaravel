@@ -89,7 +89,6 @@ const {
 })))
 
 const uploadImages = () => {
-  console.log('upload', imagesToUpload.value)
   if (imagesToUpload.value === null) return
   executeImagesUpload()
 }
@@ -139,12 +138,12 @@ watch(removeImageData, (value) => {
     return
   }
   isRemoveImagePromptOpened.value = false
-  imageIDToRemove.value = null
   if (imageToRemove.value === null) return
   showToast({
     title: 'Фото удалено',
     description: imageToRemove.value.file.name,
   })
+  imageIDToRemove.value = null
   fetchImages()
 })
 
