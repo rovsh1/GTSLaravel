@@ -1,4 +1,4 @@
-import { computed, unref } from 'vue'
+import { computed } from 'vue'
 
 import { AfterFetchContext, MaybeRef } from '@vueuse/core'
 
@@ -55,7 +55,7 @@ type HotelQuotasResponse = HotelQuotaResponse[]
 export type UseHotelQuota = HotelQuota[] | null
 
 export const useHotelQuotasAPI = (props: MaybeRef<HotelRoomQuotaProps>) =>
-  useAdminAPI(computed(() => getRef(props, ({ hotelID }) =>
+  useAdminAPI(props)(computed(() => getRef(props, ({ hotelID }) =>
     `/hotels/${hotelID}/quotas`)), {
     afterFetch: (ctx: AfterFetchContext<HotelQuotasResponse>) =>
       alternateDataAfterFetch<HotelQuotasResponse, UseHotelQuota>(ctx, (data) =>
@@ -113,11 +113,7 @@ type HotelRoomQuotasUpdatePayload = {
 export const useHotelRoomQuotasUpdate = (props: MaybeRef<HotelRoomQuotasUpdateProps | null>) => {
   const url = computed(() => getNullableRef(props, ({ hotelID, roomID }) =>
     `/hotels/${hotelID}/rooms/${roomID}/quota`, ''))
-  return useAdminAPI(url, {
-    beforeFetch: (ctx) => {
-      if (unref(props) === null) ctx.cancel()
-    },
-  })
+  return useAdminAPI(props)(url)
     .put(computed<string>(() => JSON.stringify(
       getNullableRef<HotelRoomQuotasUpdateProps, HotelRoomQuotasUpdatePayload>(
         props,
@@ -158,11 +154,7 @@ export const useHotelRoomQuotasStatusUpdate = (props: MaybeRef<HotelRoomQuotasSt
       `/hotels/${hotelID}/rooms/${roomID}/quota/${kind}`,
     '',
   ))
-  return useAdminAPI(url, {
-    beforeFetch: (ctx) => {
-      if (unref(props) === null) ctx.cancel()
-    },
-  })
+  return useAdminAPI(props)(url)
     .put(computed<string>(() => JSON.stringify(
       getNullableRef<HotelRoomQuotasStatusUpdateProps, HotelRoomQuotasUpdateStatusPayload>(
         props,

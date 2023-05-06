@@ -26,7 +26,7 @@ export type RoomImageResponse = HotelImageResponse & {
 }
 
 export const useHotelImagesListAPI = (props: MaybeRef<{ hotelID: number }>) =>
-  useAdminAPI(computed(() => getRef(props, ({ hotelID }) =>
+  useAdminAPI(props)(computed(() => getRef(props, ({ hotelID }) =>
     `/hotels/${hotelID}/images/get`)))
     .get()
     .json<HotelImageResponse[]>()
@@ -40,11 +40,7 @@ export const useHotelRoomImagesAPI = (props: MaybeRef<HotelRoomImagesProps | nul
   const url = computed(() =>
     getNullableRef(props, ({ hotelID, roomID }) =>
       `/hotels/${hotelID}/images/${roomID}/list`, ''))
-  return useAdminAPI(url, {
-    beforeFetch(ctx) {
-      if (unref(props) === undefined) ctx.cancel()
-    },
-  })
+  return useAdminAPI(props)(url)
     .get()
     .json<RoomImageResponse[]>()
 }
@@ -58,11 +54,7 @@ export const useHotelImagesUploadAPI = (props: MaybeRef<HotelImagesUploadProps |
   const url = computed(() =>
     getNullableRef(props, ({ hotelID }) =>
       `/hotels/${hotelID}/images/upload`, ''))
-  return useAdminAPI(url, {
-    beforeFetch(ctx) {
-      if (unref(props) === null) ctx.cancel()
-    },
-  })
+  return useAdminAPI(props)(url)
     .post(computed<FormData | null>(() => {
       const unwrapped = unref(props)
       if (unwrapped === null) return null
@@ -88,11 +80,7 @@ export const useHotelImageRemoveAPI = (props: MaybeRef<HotelImageRemoveProps | n
   const url = computed(() =>
     getNullableRef(props, ({ hotelID, imageID }) =>
       `/hotels/${hotelID}/images/${imageID}`, ''))
-  return useAdminAPI(url, {
-    beforeFetch(ctx) {
-      if (unref(props) === null) ctx.cancel()
-    },
-  })
+  return useAdminAPI(props)(url)
     .delete()
     .json<{ success: boolean }>()
 }
@@ -109,11 +97,7 @@ type HotelImagesReorderPayload = {
 export const useHotelImagesReorderAPI = (props: MaybeRef<HotelImagesReorderProps | null>) => {
   const url = computed(() => getNullableRef(props, ({ hotelID }) =>
     `/hotels/${hotelID}/images/reorder`, ''))
-  return useAdminAPI(url, {
-    beforeFetch(ctx) {
-      if (unref(props) === null) ctx.cancel()
-    },
-  })
+  return useAdminAPI(props)(url)
     .post(computed<string>(() => JSON.stringify(
       getNullableRef<HotelImagesReorderProps, HotelImagesReorderPayload>(
         props,
@@ -130,11 +114,11 @@ type HotelRoomImageProps = {
 }
 
 export const useHotelRoomImageCreateAPI = (props: MaybeRef<HotelRoomImageProps>) =>
-  useAdminAPI(computed(() => getRef(props, ({ hotelID, roomID, imageID }) =>
+  useAdminAPI(props)(computed(() => getRef(props, ({ hotelID, roomID, imageID }) =>
     `/hotels/${hotelID}/rooms/${roomID}/images/${imageID}/set`)))
     .post()
 
 export const useHotelRoomImageDeleteAPI = (props: MaybeRef<HotelRoomImageProps>) =>
-  useAdminAPI(getRef(props, ({ hotelID, roomID, imageID }) =>
+  useAdminAPI(props)(getRef(props, ({ hotelID, roomID, imageID }) =>
     `/hotels/${hotelID}/rooms/${roomID}/images/${imageID}/unset`))
     .post()

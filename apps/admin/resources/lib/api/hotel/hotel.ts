@@ -31,7 +31,7 @@ export type HotelResponse = {
 }
 
 export const useHotelAPI = (props: MaybeRef<{ hotelID: number }>) =>
-  useAdminAPI(computed(() => getRef(props, ({ hotelID }) =>
+  useAdminAPI(props)(computed(() => getRef(props, ({ hotelID }) =>
     `/hotels/${hotelID}/get`)))
     .get()
     .json<HotelResponse>()

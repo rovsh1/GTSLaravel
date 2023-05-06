@@ -25,7 +25,7 @@ export type ContractResponse = {
 }
 
 export const useHotelContractGetAPI = (props: MaybeRef<{ hotelID: number; contractID: number }>) =>
-  useAdminAPI(computed(() => getRef(props, ({ hotelID, contractID }) =>
+  useAdminAPI(props)(computed(() => getRef(props, ({ hotelID, contractID }) =>
     `/hotels/${hotelID}/contracts/${contractID}/get`)))
     .get()
     .json<ContractResponse>()

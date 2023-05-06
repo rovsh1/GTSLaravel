@@ -1,4 +1,6 @@
-import { AfterFetchContext, createFetch } from '@vueuse/core'
+import { unref } from 'vue'
+
+import { AfterFetchContext, createFetch, MaybeRef } from '@vueuse/core'
 import qs from 'qs'
 
 import { ADMIN_API_URL } from '~resources/lib/env'
@@ -9,10 +11,13 @@ export type DateResponse = string
 // @example '2023-04-23'
 export type APIDate = string
 
-export const useAdminAPI = createFetch({
+export const useAdminAPI = <T>(props: MaybeRef<T | null>) => createFetch({
   baseUrl: ADMIN_API_URL,
   options: {
     immediate: false,
+    beforeFetch: (ctx) => {
+      if (unref(props) === null) ctx.cancel()
+    },
   },
 })
 

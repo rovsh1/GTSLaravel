@@ -22,7 +22,7 @@ export const useHotelRoomsListAPI = (props: MaybeRef<HotelRoomsListProps | null>
   const url = computed(() =>
     getNullableRef(props, ({ hotelID }) =>
       `/hotels/${hotelID}/rooms/list`, ''))
-  return useAdminAPI(url, {
+  return useAdminAPI(props)(url, {
     afterFetch: (ctx: AfterFetchContext<HotelRoomsResponse>) =>
       alternateDataAfterFetch<HotelRoomsResponse, UseHotelRooms>(ctx, (data) =>
         (data.length > 0 ? data.map(({
