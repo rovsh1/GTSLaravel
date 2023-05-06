@@ -1,11 +1,12 @@
 import { computed, unref } from 'vue'
 
-import { AfterFetchContext, createFetch, MaybeRef, UseFetchOptions } from '@vueuse/core'
+import { AfterFetchContext, createFetch, MaybeRef, useFetch, UseFetchOptions } from '@vueuse/core'
 import qs from 'qs'
 
 import { ADMIN_API_URL } from '~lib/env'
-import { showToast } from '~lib/toast'
 import { getNullableRef, RefGetter } from '~lib/vue'
+
+import { showToast } from '~components/Bootstrap/BootstrapToast'
 
 // @example "2021-10-05T14:55:20.000000Z"
 export type DateResponse = string
@@ -18,7 +19,7 @@ const useAPI = (base: string) => <T>(
   urlGetter: RefGetter<T, string>,
   options?: UseFetchOptions,
 ) => {
-  const api = createFetch({
+  const api: typeof useFetch = createFetch({
     baseUrl: base,
     options: {
       immediate: false,

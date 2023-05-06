@@ -51,12 +51,13 @@
     "selector-class-pattern": null,
     "color-function-notation": null,
     "at-rule-no-unknown": [true, {
-      "ignoreAtRules": ["use", "include", "each", "mixin", "extend"]
+      "ignoreAtRules": ["use", "include", "each", "mixin", "extend", "if", "else"]
     }],
     "at-rule-empty-line-before": ["always", {
       "ignore": [
         "first-nested",
-        "blockless-after-blockless"
+        "blockless-after-blockless",
+        "after-comment"
       ]
     }],
     "no-invalid-position-at-import-rule": [true, {

@@ -196,6 +196,7 @@ a.btn {
   &.onlyIcon {
     padding: 0.5em;
     border-radius: 20em;
+    color: inherit;
 
     &.sizeTiny {
       padding: 0;

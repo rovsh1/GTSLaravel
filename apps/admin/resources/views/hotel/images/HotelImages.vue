@@ -18,12 +18,12 @@ import { useHotelRoomImageCreateAPI, useHotelRoomImageDeleteAPI } from '~api/hot
 import { useHotelImagesUploadAPI } from '~api/hotel/images/upload'
 import { HotelRoomResponse, useHotelRoomAPI } from '~api/hotel/room'
 
-import { showToast } from '~lib/toast'
 import { useUrlParams } from '~lib/url-params'
 
 import BaseDialog from '~components/BaseDialog.vue'
 import BaseLayout from '~components/BaseLayout.vue'
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
+import { showToast } from '~components/Bootstrap/BootstrapToast'
 import ImageZoom from '~components/ImageZoom.vue'
 import LoadingSpinner from '~components/LoadingSpinner.vue'
 
@@ -149,7 +149,7 @@ const cancelRemoveImage = () => {
 
 watch(removeImageData, (value) => {
   if (value === null || !value.success) {
-    showToast('Не удалось удалить фото')
+    showToast({ title: 'Не удалось удалить фото' })
     return
   }
   isRemoveImagePromptOpened.value = false
