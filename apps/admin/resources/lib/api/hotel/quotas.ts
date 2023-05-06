@@ -55,8 +55,8 @@ type HotelQuotasResponse = HotelQuotaResponse[]
 export type UseHotelQuota = HotelQuota[] | null
 
 export const useHotelQuotasAPI = (props: MaybeRef<HotelRoomQuotaProps>) =>
-  useAdminAPI(props)(computed(() => getRef(props, ({ hotelID }) =>
-    `/hotels/${hotelID}/quotas`)), {
+  useAdminAPI(props, ({ hotelID }) =>
+    `/hotels/${hotelID}/quotas`, {
     afterFetch: (ctx: AfterFetchContext<HotelQuotasResponse>) =>
       alternateDataAfterFetch<HotelQuotasResponse, UseHotelQuota>(ctx, (data) =>
         (data.length === 0
@@ -110,10 +110,9 @@ type HotelRoomQuotasUpdatePayload = {
   release_days?: number
 }
 
-export const useHotelRoomQuotasUpdate = (props: MaybeRef<HotelRoomQuotasUpdateProps | null>) => {
-  const url = computed(() => getNullableRef(props, ({ hotelID, roomID }) =>
-    `/hotels/${hotelID}/rooms/${roomID}/quota`, ''))
-  return useAdminAPI(props)(url)
+export const useHotelRoomQuotasUpdate = (props: MaybeRef<HotelRoomQuotasUpdateProps | null>) =>
+  useAdminAPI(props, ({ hotelID, roomID }) =>
+    `/hotels/${hotelID}/rooms/${roomID}/quota`)
     .put(computed<string>(() => JSON.stringify(
       getNullableRef<HotelRoomQuotasUpdateProps, HotelRoomQuotasUpdatePayload>(
         props,
@@ -135,7 +134,6 @@ export const useHotelRoomQuotasUpdate = (props: MaybeRef<HotelRoomQuotasUpdatePr
       ),
     )), 'application/json')
     .json<{ success: boolean }>()
-}
 
 export type HotelRoomQuotasStatusUpdateKind = 'open' | 'close' | 'reset'
 
@@ -147,14 +145,9 @@ type HotelRoomQuotasUpdateStatusPayload = {
   dates: APIDate[]
 }
 
-export const useHotelRoomQuotasStatusUpdate = (props: MaybeRef<HotelRoomQuotasStatusUpdateProps | null>) => {
-  const url = computed(() => getNullableRef(
-    props,
-    ({ hotelID, roomID, kind }) =>
-      `/hotels/${hotelID}/rooms/${roomID}/quota/${kind}`,
-    '',
-  ))
-  return useAdminAPI(props)(url)
+export const useHotelRoomQuotasStatusUpdate = (props: MaybeRef<HotelRoomQuotasStatusUpdateProps | null>) =>
+  useAdminAPI(props, ({ hotelID, roomID, kind }) =>
+    `/hotels/${hotelID}/rooms/${roomID}/quota/${kind}`)
     .put(computed<string>(() => JSON.stringify(
       getNullableRef<HotelRoomQuotasStatusUpdateProps, HotelRoomQuotasUpdateStatusPayload>(
         props,
@@ -162,4 +155,3 @@ export const useHotelRoomQuotasStatusUpdate = (props: MaybeRef<HotelRoomQuotasSt
       ),
     )), 'application/json')
     .json<{ success: boolean }>()
-}

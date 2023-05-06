@@ -1,8 +1,6 @@
-import { computed, unref } from 'vue'
-
 import { MaybeRef } from '@vueuse/core'
 
-import { getURL, useAdminAPI } from '~resources/lib/api/index'
+import { useAdminAPI } from '~resources/lib/api/index'
 
 export type CountryID = number
 
@@ -18,6 +16,6 @@ export type CityResponse = {
 }
 
 export const useCitySearchAPI = (props: MaybeRef<{ countryID: number }>) =>
-  useAdminAPI(props)(computed(() => getURL('/cities/search', unref(props))))
+  useAdminAPI(props, () => '/cities/search')
     .get()
     .json<CityResponse[]>()

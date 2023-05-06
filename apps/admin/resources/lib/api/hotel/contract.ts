@@ -1,9 +1,6 @@
-import { computed } from 'vue'
-
 import { MaybeRef } from '@vueuse/core'
 
 import { DateResponse, useAdminAPI } from '~resources/lib/api'
-import { getRef } from '~resources/lib/vue'
 
 type SeasonID = number
 
@@ -25,7 +22,7 @@ export type ContractResponse = {
 }
 
 export const useHotelContractGetAPI = (props: MaybeRef<{ hotelID: number; contractID: number }>) =>
-  useAdminAPI(props)(computed(() => getRef(props, ({ hotelID, contractID }) =>
-    `/hotels/${hotelID}/contracts/${contractID}/get`)))
+  useAdminAPI(props, ({ hotelID, contractID }) =>
+    `/hotels/${hotelID}/contracts/${contractID}/get`)
     .get()
     .json<ContractResponse>()

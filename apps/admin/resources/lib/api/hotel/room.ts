@@ -1,10 +1,7 @@
-import { computed } from 'vue'
-
 import { MaybeRef } from '@vueuse/core'
 
 import { useAdminAPI } from '~resources/lib/api'
 import { HotelID } from '~resources/lib/api/hotel/hotel'
-import { getNullableRef } from '~resources/lib/vue'
 
 export type HotelRoomID = number
 
@@ -22,11 +19,8 @@ export type HotelRoomResponse = {
   guests_number: number
 }
 
-export const useHotelRoomAPI = (props: MaybeRef<HotelRoomProps | null>) => {
-  const url = computed(() =>
-    getNullableRef(props, ({ hotelID, roomID }) =>
-      `/hotels/${hotelID}/rooms/${roomID}/get`, ''))
-  return useAdminAPI(props)(url)
+export const useHotelRoomAPI = (props: MaybeRef<HotelRoomProps | null>) =>
+  useAdminAPI(props, ({ hotelID, roomID }) =>
+    `/hotels/${hotelID}/rooms/${roomID}/get`)
     .get()
     .json<HotelRoomResponse>()
-}

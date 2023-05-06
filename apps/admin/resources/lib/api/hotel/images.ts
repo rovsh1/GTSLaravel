@@ -3,7 +3,7 @@ import { computed, unref } from 'vue'
 import { MaybeRef } from '@vueuse/core'
 
 import { useAdminAPI } from '~resources/lib/api'
-import { getNullableRef, getRef } from '~resources/lib/vue'
+import { getNullableRef } from '~resources/lib/vue'
 
 export type FileResponse = {
   guid: string
@@ -26,8 +26,8 @@ export type RoomImageResponse = HotelImageResponse & {
 }
 
 export const useHotelImagesListAPI = (props: MaybeRef<{ hotelID: number }>) =>
-  useAdminAPI(props)(computed(() => getRef(props, ({ hotelID }) =>
-    `/hotels/${hotelID}/images/get`)))
+  useAdminAPI(props, ({ hotelID }) =>
+    `/hotels/${hotelID}/images/get`)
     .get()
     .json<HotelImageResponse[]>()
 
@@ -36,25 +36,20 @@ type HotelRoomImagesProps = {
   roomID: number
 }
 
-export const useHotelRoomImagesAPI = (props: MaybeRef<HotelRoomImagesProps | null>) => {
-  const url = computed(() =>
-    getNullableRef(props, ({ hotelID, roomID }) =>
-      `/hotels/${hotelID}/images/${roomID}/list`, ''))
-  return useAdminAPI(props)(url)
+export const useHotelRoomImagesAPI = (props: MaybeRef<HotelRoomImagesProps | null>) =>
+  useAdminAPI(props, ({ hotelID, roomID }) =>
+    `/hotels/${hotelID}/images/${roomID}/list`)
     .get()
     .json<RoomImageResponse[]>()
-}
 
 type HotelImagesUploadProps = {
   hotelID: number
   roomID?: number
   images: File[]
 }
-export const useHotelImagesUploadAPI = (props: MaybeRef<HotelImagesUploadProps | null>) => {
-  const url = computed(() =>
-    getNullableRef(props, ({ hotelID }) =>
-      `/hotels/${hotelID}/images/upload`, ''))
-  return useAdminAPI(props)(url)
+export const useHotelImagesUploadAPI = (props: MaybeRef<HotelImagesUploadProps | null>) =>
+  useAdminAPI(props, ({ hotelID }) =>
+    `/hotels/${hotelID}/images/upload`)
     .post(computed<FormData | null>(() => {
       const unwrapped = unref(props)
       if (unwrapped === null) return null
@@ -69,21 +64,17 @@ export const useHotelImagesUploadAPI = (props: MaybeRef<HotelImagesUploadProps |
       return formData
     }))
     .json<{ success: boolean }>()
-}
 
 type HotelImageRemoveProps = {
   hotelID: number
   imageID: number
 }
 
-export const useHotelImageRemoveAPI = (props: MaybeRef<HotelImageRemoveProps | null>) => {
-  const url = computed(() =>
-    getNullableRef(props, ({ hotelID, imageID }) =>
-      `/hotels/${hotelID}/images/${imageID}`, ''))
-  return useAdminAPI(props)(url)
+export const useHotelImageRemoveAPI = (props: MaybeRef<HotelImageRemoveProps | null>) =>
+  useAdminAPI(props, ({ hotelID, imageID }) =>
+    `/hotels/${hotelID}/images/${imageID}`)
     .delete()
     .json<{ success: boolean }>()
-}
 
 type HotelImagesReorderProps = {
   hotelID: number
@@ -94,10 +85,9 @@ type HotelImagesReorderPayload = {
   indexes: number[]
 }
 
-export const useHotelImagesReorderAPI = (props: MaybeRef<HotelImagesReorderProps | null>) => {
-  const url = computed(() => getNullableRef(props, ({ hotelID }) =>
-    `/hotels/${hotelID}/images/reorder`, ''))
-  return useAdminAPI(props)(url)
+export const useHotelImagesReorderAPI = (props: MaybeRef<HotelImagesReorderProps | null>) =>
+  useAdminAPI(props, ({ hotelID }) =>
+    `/hotels/${hotelID}/images/reorder`)
     .post(computed<string>(() => JSON.stringify(
       getNullableRef<HotelImagesReorderProps, HotelImagesReorderPayload>(
         props,
@@ -105,7 +95,6 @@ export const useHotelImagesReorderAPI = (props: MaybeRef<HotelImagesReorderProps
       ),
     )), 'application/json')
     .json<{ success: boolean }>()
-}
 
 type HotelRoomImageProps = {
   hotelID: number
@@ -114,11 +103,11 @@ type HotelRoomImageProps = {
 }
 
 export const useHotelRoomImageCreateAPI = (props: MaybeRef<HotelRoomImageProps>) =>
-  useAdminAPI(props)(computed(() => getRef(props, ({ hotelID, roomID, imageID }) =>
-    `/hotels/${hotelID}/rooms/${roomID}/images/${imageID}/set`)))
+  useAdminAPI(props, ({ hotelID, roomID, imageID }) =>
+    `/hotels/${hotelID}/rooms/${roomID}/images/${imageID}/set`)
     .post()
 
 export const useHotelRoomImageDeleteAPI = (props: MaybeRef<HotelRoomImageProps>) =>
-  useAdminAPI(props)(getRef(props, ({ hotelID, roomID, imageID }) =>
-    `/hotels/${hotelID}/rooms/${roomID}/images/${imageID}/unset`))
+  useAdminAPI(props, ({ hotelID, roomID, imageID }) =>
+    `/hotels/${hotelID}/rooms/${roomID}/images/${imageID}/unset`)
     .post()
