@@ -6,11 +6,12 @@ import { MaybeRef } from '@vueuse/core'
 import { isEqual } from 'lodash'
 import { DateTime } from 'luxon'
 
-import BootstrapButton from '~resources/components/Bootstrap/BootstrapButton/BootstrapButton.vue'
-import { MonthNumber } from '~resources/lib/api/hotel/quotas/list'
-import { HotelRoomID } from '~resources/lib/api/hotel/room'
-import { HotelRoom } from '~resources/lib/api/hotel/rooms'
-import { getEachMonthInYear } from '~resources/lib/date'
+import { MonthNumber } from '~lib/api/hotel/quotas/list'
+import { HotelRoomID } from '~lib/api/hotel/room'
+import { HotelRoom } from '~lib/api/hotel/rooms'
+import { getEachMonthInYear } from '~lib/date'
+
+import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 
 import FiltersSelect from '../FiltersSelect.vue'
 

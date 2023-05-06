@@ -1,6 +1,6 @@
 import { MaybeRef } from '@vueuse/core'
 
-import { useAdminAPI } from '~resources/lib/api/index'
+import { useAdminAPI } from '~lib/api/index'
 
 export type CountryID = number
 

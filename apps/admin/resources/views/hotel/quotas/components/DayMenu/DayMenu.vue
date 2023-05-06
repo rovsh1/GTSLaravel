@@ -3,14 +3,15 @@ import { computed, ref, watch } from 'vue'
 
 import { flip, useFloating } from '@floating-ui/vue'
 
-import BootstrapButton from '~resources/components/Bootstrap/BootstrapButton/BootstrapButton.vue'
-import { HotelID } from '~resources/lib/api/hotel/get'
+import { HotelID } from '~lib/api/hotel/get'
 import {
   HotelRoomQuotasStatusUpdateKind,
   HotelRoomQuotasStatusUpdateProps, useHotelRoomQuotasStatusUpdate,
-} from '~resources/lib/api/hotel/quotas/status'
-import { HotelRoomID } from '~resources/lib/api/hotel/room'
-import { formatDateToAPIDate } from '~resources/lib/date'
+} from '~lib/api/hotel/quotas/status'
+import { HotelRoomID } from '~lib/api/hotel/room'
+import { formatDateToAPIDate } from '~lib/date'
+
+import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 
 import { useDayMenuButtonStatus } from './use-day-menu-button-status'
 

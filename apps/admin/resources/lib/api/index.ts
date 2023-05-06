@@ -3,8 +3,8 @@ import { computed, unref } from 'vue'
 import { AfterFetchContext, createFetch, MaybeRef, UseFetchOptions } from '@vueuse/core'
 import qs from 'qs'
 
-import { ADMIN_API_URL } from '~resources/lib/env'
-import { getNullableRef, RefGetter } from '~resources/lib/vue'
+import { ADMIN_API_URL } from '~lib/env'
+import { getNullableRef, RefGetter } from '~lib/vue'
 
 // @example "2021-10-05T14:55:20.000000Z"
 export type DateResponse = string

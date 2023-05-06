@@ -3,14 +3,14 @@ import { computed, ref, watch } from 'vue'
 
 import { OnClickOutside } from '@vueuse/components'
 
-import { HotelResponse } from '~resources/lib/api/hotel/get'
+import { HotelResponse } from '~lib/api/hotel/get'
 import {
   HotelRoomQuotasCountUpdateProps,
   HotelRoomQuotasUpdateProps, HotelRoomReleaseDaysUpdateProps,
   useHotelRoomQuotasUpdate,
-} from '~resources/lib/api/hotel/quotas/update'
-import { formatDateToAPIDate } from '~resources/lib/date'
-import { plural } from '~resources/lib/plural'
+} from '~lib/api/hotel/quotas/update'
+import { formatDateToAPIDate } from '~lib/date'
+import { plural } from '~lib/plural'
 
 import DayMenu from './DayMenu/DayMenu.vue'
 import EditableCell from './EditableCell.vue'

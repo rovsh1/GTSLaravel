@@ -6,8 +6,8 @@ import { MaybeRef } from '@vueuse/core'
 import { nanoid } from 'nanoid'
 import prettyBytes from 'pretty-bytes'
 
-import BaseDialog from '~resources/components/BaseDialog.vue'
-import BootstrapButton from '~resources/components/Bootstrap/BootstrapButton/BootstrapButton.vue'
+import BaseDialog from '~components/BaseDialog.vue'
+import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 
 import DropZone from './DropZone.vue'
 

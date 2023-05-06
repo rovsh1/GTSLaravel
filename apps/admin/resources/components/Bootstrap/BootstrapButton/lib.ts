@@ -1,4 +1,4 @@
-import { BootstrapSeverity } from '~resources/components/Bootstrap/lib'
+import { BootstrapSeverity } from '~components/Bootstrap/lib'
 
 export type ButtonType = 'auto' | 'submit' | 'reset'
 

@@ -4,8 +4,8 @@ import InlineSVG from 'vue-inline-svg'
 
 import { MaybeRef } from '@vueuse/core'
 
-import { BootstrapSeverity } from '~resources/components/Bootstrap/lib'
-import LoadingSpinner from '~resources/components/LoadingSpinner.vue'
+import { BootstrapSeverity } from '~components/Bootstrap/lib'
+import LoadingSpinner from '~components/LoadingSpinner.vue'
 
 import { ButtonSeverity, ButtonSize, ButtonType, ButtonVariant } from './lib'
 

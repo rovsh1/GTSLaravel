@@ -1,8 +1,8 @@
 import { MaybeRef } from '@vueuse/core'
 
-import { useAdminAPI } from '~resources/lib/api'
-import { HotelID } from '~resources/lib/api/hotel/get'
-import { HotelRoomID } from '~resources/lib/api/hotel/room'
+import { useAdminAPI } from '~lib/api'
+import { HotelID } from '~lib/api/hotel/get'
+import { HotelRoomID } from '~lib/api/hotel/room'
 
 import { HotelImageID } from '.'
 

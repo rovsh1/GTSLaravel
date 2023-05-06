@@ -1,10 +1,11 @@
 import { DateTime, Interval } from 'luxon'
 
-import { HotelQuotaID, QuotaStatus, UseHotelQuota } from '~resources/lib/api/hotel/quotas/list'
-import { HotelRoomID } from '~resources/lib/api/hotel/room'
-import { UseHotelRooms } from '~resources/lib/api/hotel/rooms'
-import { getEachDayInMonth, isBusinessDay } from '~resources/lib/date'
 import { FiltersPayload } from '~resources/views/hotel/quotas/components/QuotasFilters/lib'
+
+import { HotelQuotaID, QuotaStatus, UseHotelQuota } from '~lib/api/hotel/quotas/list'
+import { HotelRoomID } from '~lib/api/hotel/room'
+import { UseHotelRooms } from '~lib/api/hotel/rooms'
+import { getEachDayInMonth, isBusinessDay } from '~lib/date'
 
 export type Day = {
   key: string

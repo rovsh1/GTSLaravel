@@ -9,7 +9,7 @@ import escapeIcon from '@mdi/svg/svg/keyboard-esc.svg'
 import enterIcon from '@mdi/svg/svg/keyboard-return.svg'
 import { Tooltip } from 'floating-vue'
 
-import { isMacOS } from '~resources/lib/platform'
+import { isMacOS } from '~lib/platform'
 
 type CellKey = string | null
 

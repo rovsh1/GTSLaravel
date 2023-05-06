@@ -1,7 +1,7 @@
 import { MaybeRef } from '@vueuse/core'
 
-import { DateResponse, useAdminAPI } from '~resources/lib/api'
-import { CityID } from '~resources/lib/api/city'
+import { DateResponse, useAdminAPI } from '~lib/api'
+import { CityID } from '~lib/api/city'
 
 export type HotelID = number
 

@@ -4,7 +4,7 @@ import { ref } from 'vue'
 import crossIcon from '@mdi/svg/svg/close.svg'
 import { MaybeRef, useDropZone } from '@vueuse/core'
 
-import BootstrapButton from '~resources/components/Bootstrap/BootstrapButton/BootstrapButton.vue'
+import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 
 import { SelectedFile } from './lib'
 

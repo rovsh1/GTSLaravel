@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { pluralForm } from '~resources/lib/plural'
+import { pluralForm } from '~lib/plural'
 
 defineProps<{
   label: string

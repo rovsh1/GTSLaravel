@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { MaybeRef } from '@vueuse/core'
 
-import LoadingSpinner from '~resources/components/LoadingSpinner.vue'
+import LoadingSpinner from '~components/LoadingSpinner.vue'
 
 withDefaults(defineProps<{
   title: string

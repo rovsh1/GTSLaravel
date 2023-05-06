@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { BootstrapSeverity } from '~resources/components/Bootstrap/lib'
+import { BootstrapSeverity } from '~components/Bootstrap/lib'
 
 type SpinnerSeverity = BootstrapSeverity
 

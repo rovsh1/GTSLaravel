@@ -1,7 +1,8 @@
-import { createVueInstance } from '~resources/lib/vue'
 import CancellationConditions from '~resources/views/hotel/settings/CancellationConditions.vue'
 import PriceConditions from '~resources/views/hotel/settings/PriceConditions.vue'
 import ResidenceConditions from '~resources/views/hotel/settings/ResidenceConditions.vue'
+
+import { createVueInstance } from '~lib/vue'
 
 import '~resources/views/main'
 

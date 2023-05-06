@@ -1,4 +1,4 @@
-import { createVueInstance } from '~resources/lib/vue'
+import { createVueInstance } from '~lib/vue'
 
 import HotelImages from './HotelImages.vue'
 
