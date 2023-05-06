@@ -14,18 +14,13 @@ import BaseLayout from '~resources/components/BaseLayout.vue'
 import BootstrapButton from '~resources/components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 import ImageZoom from '~resources/components/ImageZoom.vue'
 import LoadingSpinner from '~resources/components/LoadingSpinner.vue'
-import { HotelResponse, useHotelAPI } from '~resources/lib/api/hotel/hotel'
-import {
-  HotelImageResponse,
-  RoomImageResponse,
-  useHotelImageRemoveAPI,
-  useHotelImagesListAPI,
-  useHotelImagesReorderAPI,
-  useHotelImagesUploadAPI,
-  useHotelRoomImageCreateAPI,
-  useHotelRoomImageDeleteAPI,
-  useHotelRoomImagesAPI,
-} from '~resources/lib/api/hotel/images'
+import { HotelResponse, useHotelAPI } from '~resources/lib/api/hotel/get'
+import { HotelImageResponse } from '~resources/lib/api/hotel/images'
+import { RoomImageResponse, useHotelImagesListAPI, useHotelRoomImagesAPI } from '~resources/lib/api/hotel/images/list'
+import { useHotelImageRemoveAPI } from '~resources/lib/api/hotel/images/remove'
+import { useHotelImagesReorderAPI } from '~resources/lib/api/hotel/images/reorder'
+import { useHotelRoomImageCreateAPI, useHotelRoomImageDeleteAPI } from '~resources/lib/api/hotel/images/update'
+import { useHotelImagesUploadAPI } from '~resources/lib/api/hotel/images/upload'
 import { HotelRoomResponse, useHotelRoomAPI } from '~resources/lib/api/hotel/room'
 import { showToast } from '~resources/lib/toast'
 import { useUrlParams } from '~resources/lib/url-params'

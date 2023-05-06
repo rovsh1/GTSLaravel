@@ -1,6 +1,6 @@
 import { DateTime, Interval } from 'luxon'
 
-import { HotelQuotaID, QuotaStatus, UseHotelQuota } from '~resources/lib/api/hotel/quotas'
+import { HotelQuotaID, QuotaStatus, UseHotelQuota } from '~resources/lib/api/hotel/quotas/list'
 import { HotelRoomID } from '~resources/lib/api/hotel/room'
 import { UseHotelRooms } from '~resources/lib/api/hotel/rooms'
 import { getEachDayInMonth, isBusinessDay } from '~resources/lib/date'

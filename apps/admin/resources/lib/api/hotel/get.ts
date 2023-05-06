@@ -3,7 +3,7 @@ import { MaybeRef } from '@vueuse/core'
 import { DateResponse, useAdminAPI } from '~resources/lib/api'
 import { CityID } from '~resources/lib/api/city'
 
-export type HotelID = string
+export type HotelID = number
 
 export type HotelResponse = {
   id: HotelID

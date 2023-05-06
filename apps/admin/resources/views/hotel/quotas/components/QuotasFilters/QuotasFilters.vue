@@ -7,7 +7,7 @@ import { isEqual } from 'lodash'
 import { DateTime } from 'luxon'
 
 import BootstrapButton from '~resources/components/Bootstrap/BootstrapButton/BootstrapButton.vue'
-import { MonthNumber } from '~resources/lib/api/hotel/quotas'
+import { MonthNumber } from '~resources/lib/api/hotel/quotas/list'
 import { HotelRoomID } from '~resources/lib/api/hotel/room'
 import { HotelRoom } from '~resources/lib/api/hotel/rooms'
 import { getEachMonthInYear } from '~resources/lib/date'

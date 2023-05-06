@@ -1,7 +1,8 @@
 import { MaybeRef } from '@vueuse/core'
 
 import { useAdminAPI } from '~resources/lib/api'
-import { HotelID } from '~resources/lib/api/hotel/hotel'
+
+import { HotelID } from './get'
 
 export type HotelRoomID = number
 

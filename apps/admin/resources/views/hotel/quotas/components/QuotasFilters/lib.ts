@@ -1,4 +1,4 @@
-import { MonthNumber, QueryInterval } from '~resources/lib/api/hotel/quotas'
+import { MonthNumber, QueryInterval } from '~resources/lib/api/hotel/quotas/list'
 import { HotelRoomID } from '~resources/lib/api/hotel/room'
 
 export type Year = {
