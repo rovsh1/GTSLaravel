@@ -16,15 +16,13 @@ export type Month = {
   value: MonthNumber
 }
 
-export type MonthsCount = 1 | 3 | 6 | 12 | 24 | 36
+export type MonthsCount = 1 | 3 | 6 | 12
 
 export const intervalByMonthsCount: Record<MonthsCount, QueryInterval> = {
   1: 'P1M',
   3: 'P3M',
   6: 'P6M',
   12: 'P1Y',
-  24: 'P2Y',
-  36: 'P3Y',
 }
 
 export type AvailabilityValue = 'sold' | 'stopped' | 'available'

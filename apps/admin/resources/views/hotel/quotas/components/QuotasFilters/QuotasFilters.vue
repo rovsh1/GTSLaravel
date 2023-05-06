@@ -76,8 +76,6 @@ const monthsCountOptions: MonthsCountOption[] = [
   { value: 3, label: 'Кварталу' },
   { value: 6, label: '6 месяцев' },
   { value: 12, label: 'Году' },
-  { value: 24, label: '2 года' },
-  { value: 36, label: '3 года' },
 ]
 
 const selectedMonthsCount = ref<MonthsCountOption['value']>(defaultState.monthsCount)
