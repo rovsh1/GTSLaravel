@@ -24,7 +24,7 @@ export const createVueInstance = (params: CreateVueInstanceParams) => {
 
 export const getRef = <T, R>(ref: T | Ref<T>, getter: (data: T) => R) => getter(unref(ref))
 
-export const getNullableRef = <T, R, N>(
+export const getNullableRef = <T, R, N = null>(
   ref: T | null | Ref<T | null>,
   onSome: (data: T) => R,
   onNull: N | null = null,

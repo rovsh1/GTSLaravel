@@ -47,11 +47,14 @@ watch(imagesData, (value) => {
   images.value = value
 })
 
+const hotelRoomImagesProps = computed(() =>
+  (roomID === undefined ? null : { hotelID, roomID }))
+
 const {
   execute: fetchRoomImages,
   data: roomImagesData,
   isFetching: isRoomImagesFetching,
-} = useHotelRoomImagesAPI({ hotelID, roomID })
+} = useHotelRoomImagesAPI(hotelRoomImagesProps)
 
 const roomImages = computed<RoomImageResponse[]>(() => {
   if (roomImagesData.value === null) return []
@@ -66,11 +69,16 @@ const {
 
 const hotel = computed<HotelResponse | null>(() => hotelData.value)
 
+const hotelRoomProps = computed(() =>
+  (roomID === undefined
+    ? null
+    : { hotelID, roomID }))
+
 const {
   execute: fetchRoom,
   data: roomData,
   isFetching: isRoomFetching,
-} = useHotelRoomAPI({ hotelID, roomID })
+} = useHotelRoomAPI(hotelRoomProps)
 
 const room = computed<HotelRoomResponse | null>(() => roomData.value)
 
@@ -78,15 +86,20 @@ const isUploadDialogOpened = ref(false)
 
 const imagesToUpload = ref<File[] | null>(null)
 
+const hotelImagesUploadProps = computed(() =>
+  (imagesToUpload.value === null
+    ? null
+    : {
+      hotelID,
+      roomID,
+      images: imagesToUpload.value,
+    }))
+
 const {
   execute: executeImagesUpload,
   isFetching: isImagesUploadFetching,
   data: imagesUploadData,
-} = useHotelImagesUploadAPI(computed(() => ({
-  hotelID,
-  roomID,
-  images: imagesToUpload.value,
-})))
+} = useHotelImagesUploadAPI(hotelImagesUploadProps)
 
 const uploadImages = () => {
   if (imagesToUpload.value === null) return
@@ -113,14 +126,19 @@ const imageToRemove = computed<HotelImageResponse | null>(() => {
   return found
 })
 
+const hotelImageRemoveProps = computed(() =>
+  (imageIDToRemove.value === null
+    ? null
+    : {
+      hotelID,
+      imageID: imageIDToRemove.value,
+    }))
+
 const {
   isFetching: isImageRemoveFetching,
   execute: executeRemoveImage,
   data: removeImageData,
-} = useHotelImageRemoveAPI(computed(() => ({
-  hotelID,
-  imageID: imageIDToRemove.value,
-})))
+} = useHotelImageRemoveAPI(hotelImageRemoveProps)
 
 const removeImage = (imageID: number) => {
   imageIDToRemove.value = imageID
@@ -147,13 +165,16 @@ watch(removeImageData, (value) => {
   fetchImages()
 })
 
+const hotelImagesReorderProps = computed(() =>
+  (images.value === null ? null : {
+    hotelID,
+    imagesIDs: images.value.map(({ id }) => id),
+  }))
+
 const {
   execute: executeHotelImagesReorder,
   isFetching: isHotelImagesReorderFetching,
-} = useHotelImagesReorderAPI(computed(() => ({
-  hotelID,
-  imagesIDs: images.value?.map(({ id }) => id) ?? null,
-})))
+} = useHotelImagesReorderAPI(hotelImagesReorderProps)
 
 const onDraggableUpdate = () => {
   nextTick(() => {

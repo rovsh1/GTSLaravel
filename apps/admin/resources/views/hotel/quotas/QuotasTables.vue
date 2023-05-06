@@ -34,7 +34,7 @@ const {
   data: roomsData,
   execute: fetchHotelRoomsAPI,
   isFetching: isHotelRoomsFetching,
-} = useHotelRoomsListAPI(computed(() => ({ hotelID })))
+} = useHotelRoomsListAPI({ hotelID })
 
 const rooms = computed<UseHotelRooms>(() => roomsData.value)
 

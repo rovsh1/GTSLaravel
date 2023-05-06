@@ -3,7 +3,7 @@ import { computed, unref } from 'vue'
 import { MaybeRef } from '@vueuse/core'
 
 import { useAdminAPI } from '~resources/lib/api'
-import { getRef } from '~resources/lib/vue'
+import { getNullableRef, getRef } from '~resources/lib/vue'
 
 export type FileResponse = {
   guid: string
@@ -31,33 +31,44 @@ export const useHotelImagesListAPI = (props: MaybeRef<{ hotelID: number }>) =>
     .get()
     .json<HotelImageResponse[]>()
 
-export const useHotelRoomImagesAPI = (props: MaybeRef<{ hotelID: number; roomID?: number }>) =>
-  useAdminAPI(computed(() =>
-    getRef(props, ({ hotelID, roomID }) =>
-      `/hotels/${hotelID}/images/${roomID}/list`)), {
+type HotelRoomImagesProps = {
+  hotelID: number
+  roomID: number
+}
+
+export const useHotelRoomImagesAPI = (props: MaybeRef<HotelRoomImagesProps | null>) => {
+  const url = computed(() =>
+    getNullableRef(props, ({ hotelID, roomID }) =>
+      `/hotels/${hotelID}/images/${roomID}/list`, ''))
+  return useAdminAPI(url, {
     beforeFetch(ctx) {
-      if (getRef(props, ({ roomID }) => roomID) === undefined) ctx.cancel()
+      if (unref(props) === undefined) ctx.cancel()
     },
   })
     .get()
     .json<RoomImageResponse[]>()
+}
 
 type HotelImagesUploadProps = {
   hotelID: number
   roomID?: number
-  images: File[] | null
+  images: File[]
 }
-export const useHotelImagesUploadAPI = (props: MaybeRef<HotelImagesUploadProps>) =>
-  useAdminAPI(computed(() => getRef(props, ({ hotelID }) =>
-    `/hotels/${hotelID}/images/upload`)), {
+export const useHotelImagesUploadAPI = (props: MaybeRef<HotelImagesUploadProps | null>) => {
+  const url = computed(() =>
+    getNullableRef(props, ({ hotelID }) =>
+      `/hotels/${hotelID}/images/upload`, ''))
+  return useAdminAPI(url, {
     beforeFetch(ctx) {
-      if (getRef(props, ({ images }) => images) === null) ctx.cancel()
+      if (unref(props) === null) ctx.cancel()
     },
   })
-    .post(computed<FormData>(() => {
-      const { roomID, images } = unref(props)
+    .post(computed<FormData | null>(() => {
+      const unwrapped = unref(props)
+      if (unwrapped === null) return null
+      const { roomID, images } = unwrapped
       const formData = new FormData()
-      images?.forEach((image) => {
+      images.forEach((image) => {
         formData.append('files[]', image)
       })
       if (roomID !== undefined) {
@@ -66,31 +77,51 @@ export const useHotelImagesUploadAPI = (props: MaybeRef<HotelImagesUploadProps>)
       return formData
     }))
     .json<{ success: boolean }>()
+}
 
-export const useHotelImageRemoveAPI = (props: MaybeRef<{ hotelID: number; imageID: number | null }>) =>
-  useAdminAPI(computed(() => getRef(props, ({ hotelID, imageID }) =>
-    `/hotels/${hotelID}/images/${imageID}`)), {
+type HotelImageRemoveProps = {
+  hotelID: number
+  imageID: number
+}
+
+export const useHotelImageRemoveAPI = (props: MaybeRef<HotelImageRemoveProps | null>) => {
+  const url = computed(() =>
+    getNullableRef(props, ({ hotelID, imageID }) =>
+      `/hotels/${hotelID}/images/${imageID}`, ''))
+  return useAdminAPI(url, {
     beforeFetch(ctx) {
-      if (getRef(props, ({ imageID }) => imageID) === null) ctx.cancel()
+      if (unref(props) === null) ctx.cancel()
     },
-  }).delete()
+  })
+    .delete()
     .json<{ success: boolean }>()
+}
 
 type HotelImagesReorderProps = {
   hotelID: number
-  imagesIDs: HotelImageResponse['id'][] | null
+  imagesIDs: HotelImageResponse['id'][]
 }
-export const useHotelImagesReorderAPI = (props: MaybeRef<HotelImagesReorderProps>) =>
-  useAdminAPI(computed(() => getRef(props, ({ hotelID }) =>
-    `/hotels/${hotelID}/images/reorder`)), {
+
+type HotelImagesReorderPayload = {
+  indexes: number[]
+}
+
+export const useHotelImagesReorderAPI = (props: MaybeRef<HotelImagesReorderProps | null>) => {
+  const url = computed(() => getNullableRef(props, ({ hotelID }) =>
+    `/hotels/${hotelID}/images/reorder`, ''))
+  return useAdminAPI(url, {
     beforeFetch(ctx) {
-      if (unref(props).imagesIDs === null) ctx.cancel()
+      if (unref(props) === null) ctx.cancel()
     },
   })
-    .post(computed<{ indexes: number[] }>(() =>
-      getRef(props, ({ imagesIDs }) =>
-        ({ indexes: imagesIDs ?? [] }))))
+    .post(computed<string>(() => JSON.stringify(
+      getNullableRef<HotelImagesReorderProps, HotelImagesReorderPayload>(
+        props,
+        ({ imagesIDs }) => ({ indexes: imagesIDs }),
+      ),
+    )), 'application/json')
     .json<{ success: boolean }>()
+}
 
 type HotelRoomImageProps = {
   hotelID: number

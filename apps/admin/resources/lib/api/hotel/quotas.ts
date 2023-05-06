@@ -118,8 +118,8 @@ export const useHotelRoomQuotasUpdate = (props: MaybeRef<HotelRoomQuotasUpdatePr
       if (unref(props) === null) ctx.cancel()
     },
   })
-    .put(computed<string | null>(() => JSON.stringify(
-      getNullableRef<HotelRoomQuotasUpdateProps, HotelRoomQuotasUpdatePayload, null>(
+    .put(computed<string>(() => JSON.stringify(
+      getNullableRef<HotelRoomQuotasUpdateProps, HotelRoomQuotasUpdatePayload>(
         props,
         (payload) => {
           const { dates, kind } = payload
@@ -163,8 +163,8 @@ export const useHotelRoomQuotasStatusUpdate = (props: MaybeRef<HotelRoomQuotasSt
       if (unref(props) === null) ctx.cancel()
     },
   })
-    .put(computed<string | null>(() => JSON.stringify(
-      getNullableRef<HotelRoomQuotasStatusUpdateProps, HotelRoomQuotasUpdateStatusPayload, null>(
+    .put(computed<string>(() => JSON.stringify(
+      getNullableRef<HotelRoomQuotasStatusUpdateProps, HotelRoomQuotasUpdateStatusPayload>(
         props,
         ({ dates }) => ({ dates }),
       ),
