@@ -1,6 +1,6 @@
 import { MaybeRef } from '@vueuse/core'
 
-import { useAdminAPI } from '~lib/api'
+import { useAdminAPI } from '~api'
 
 import { HotelImageResponse } from '.'
 

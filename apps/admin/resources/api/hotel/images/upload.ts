@@ -2,7 +2,7 @@ import { computed, unref } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
 
-import { useAdminAPI } from '~lib/api'
+import { useAdminAPI } from '~api'
 
 type HotelImagesUploadProps = {
   hotelID: number

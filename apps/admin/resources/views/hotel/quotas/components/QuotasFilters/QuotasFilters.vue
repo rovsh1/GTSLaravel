@@ -6,9 +6,10 @@ import { MaybeRef } from '@vueuse/core'
 import { isEqual } from 'lodash'
 import { DateTime } from 'luxon'
 
-import { MonthNumber } from '~lib/api/hotel/quotas/list'
-import { HotelRoomID } from '~lib/api/hotel/room'
-import { HotelRoom } from '~lib/api/hotel/rooms'
+import { MonthNumber } from '~api/hotel/quotas/list'
+import { HotelRoomID } from '~api/hotel/room'
+import { HotelRoom } from '~api/hotel/rooms'
+
 import { getEachMonthInYear } from '~lib/date'
 
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'

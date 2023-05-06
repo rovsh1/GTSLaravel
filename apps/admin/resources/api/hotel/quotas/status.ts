@@ -2,7 +2,8 @@ import { computed } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
 
-import { APIDate, useAdminAPI } from '~lib/api'
+import { APIDate, useAdminAPI } from '~api'
+
 import { getNullableRef } from '~lib/vue'
 
 import { HotelRoomQuotasUpdateBaseProps } from '.'

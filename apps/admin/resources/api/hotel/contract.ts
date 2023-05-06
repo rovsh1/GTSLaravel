@@ -1,6 +1,6 @@
 import { MaybeRef } from '@vueuse/core'
 
-import { DateResponse, useAdminAPI } from '~lib/api'
+import { DateResponse, useAdminAPI } from '~api'
 
 type SeasonID = number
 

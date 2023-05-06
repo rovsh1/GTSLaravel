@@ -2,7 +2,8 @@ import { computed } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
 
-import { useAdminAPI } from '~lib/api'
+import { useAdminAPI } from '~api'
+
 import { getNullableRef } from '~lib/vue'
 
 import { HotelImageID } from '.'

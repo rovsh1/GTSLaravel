@@ -1,7 +1,7 @@
 import { AfterFetchContext, MaybeRef } from '@vueuse/core'
 
-import { alternateDataAfterFetch, useAdminAPI } from '~lib/api'
-import { HotelRoomResponse } from '~lib/api/hotel/room'
+import { alternateDataAfterFetch, useAdminAPI } from '~api'
+import { HotelRoomResponse } from '~api/hotel/room'
 
 type HotelRoomsResponse = HotelRoomResponse[]
 

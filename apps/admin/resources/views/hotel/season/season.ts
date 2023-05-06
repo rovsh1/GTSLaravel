@@ -2,7 +2,8 @@ import moment, { Moment } from 'moment/moment'
 
 import { useDateRangePicker } from '~resources/js/vendor/daterangepicker'
 
-import { SeasonResponse, useHotelContractGetAPI } from '~lib/api/hotel/contract'
+import { SeasonResponse, useHotelContractGetAPI } from '~api/hotel/contract'
+
 import { useUrlParams } from '~lib/url-params'
 
 import '~resources/views/main'

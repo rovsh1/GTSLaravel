@@ -3,12 +3,13 @@ import { computed, ref, watch } from 'vue'
 
 import { flip, useFloating } from '@floating-ui/vue'
 
-import { HotelID } from '~lib/api/hotel/get'
+import { HotelID } from '~api/hotel/get'
 import {
   HotelRoomQuotasStatusUpdateKind,
   HotelRoomQuotasStatusUpdateProps, useHotelRoomQuotasStatusUpdate,
-} from '~lib/api/hotel/quotas/status'
-import { HotelRoomID } from '~lib/api/hotel/room'
+} from '~api/hotel/quotas/status'
+import { HotelRoomID } from '~api/hotel/room'
+
 import { formatDateToAPIDate } from '~lib/date'
 
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'

@@ -92,8 +92,9 @@ export default defineConfig(({ command }) => ({
   resolve: {
     alias: {
       '~resources': path.resolve(__dirname, 'resources'),
-      '~components': path.resolve(__dirname, 'resources/components'),
+      '~api': path.resolve(__dirname, 'resources/api'),
       '~lib': path.resolve(__dirname, 'resources/lib'),
+      '~components': path.resolve(__dirname, 'resources/components'),
     },
   },
   css: {

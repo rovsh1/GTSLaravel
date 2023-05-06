@@ -55,6 +55,7 @@ module.exports = defineConfig({
         // Root
         ['^~resources'],
         // Aliases
+        ['^~api'],
         ['^~lib'],
         ['^~components'],
         // `./*.vue` or `../*.vue`

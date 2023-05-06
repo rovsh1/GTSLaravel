@@ -3,12 +3,13 @@ import { computed, ref, watch } from 'vue'
 
 import { OnClickOutside } from '@vueuse/components'
 
-import { HotelResponse } from '~lib/api/hotel/get'
+import { HotelResponse } from '~api/hotel/get'
 import {
   HotelRoomQuotasCountUpdateProps,
   HotelRoomQuotasUpdateProps, HotelRoomReleaseDaysUpdateProps,
   useHotelRoomQuotasUpdate,
-} from '~lib/api/hotel/quotas/update'
+} from '~api/hotel/quotas/update'
+
 import { formatDateToAPIDate } from '~lib/date'
 import { plural } from '~lib/plural'
 

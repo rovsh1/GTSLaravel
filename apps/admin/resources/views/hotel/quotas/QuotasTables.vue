@@ -4,9 +4,10 @@ import { computed, ref, watch } from 'vue'
 import checkIcon from '@mdi/svg/svg/check.svg'
 import pencilIcon from '@mdi/svg/svg/pencil.svg'
 
-import { HotelResponse, useHotelAPI } from '~lib/api/hotel/get'
-import { useHotelQuotasAPI } from '~lib/api/hotel/quotas/list'
-import { UseHotelRooms, useHotelRoomsListAPI } from '~lib/api/hotel/rooms'
+import { HotelResponse, useHotelAPI } from '~api/hotel/get'
+import { useHotelQuotasAPI } from '~api/hotel/quotas/list'
+import { UseHotelRooms, useHotelRoomsListAPI } from '~api/hotel/rooms'
+
 import { useUrlParams } from '~lib/url-params'
 
 import BaseLayout from '~components/BaseLayout.vue'

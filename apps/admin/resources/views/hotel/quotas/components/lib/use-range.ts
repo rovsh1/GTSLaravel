@@ -1,8 +1,8 @@
 import { Ref, watch } from 'vue'
 
-import { HotelRoomID } from '~lib/api/hotel/room'
+import { HotelRoomID } from '~api/hotel/room'
 
-import { ActiveKey, getActiveCellKey, RoomQuota } from './index'
+import { ActiveKey, getActiveCellKey, RoomQuota } from '.'
 
 export type QuotaRange = {
   roomID: HotelRoomID

@@ -2,8 +2,9 @@ import { computed } from 'vue'
 
 import { AfterFetchContext, MaybeRef } from '@vueuse/core'
 
-import { alternateDataAfterFetch, DateResponse, useAdminAPI } from '~lib/api'
-import { HotelRoomID } from '~lib/api/hotel/room'
+import { alternateDataAfterFetch, DateResponse, useAdminAPI } from '~api'
+import { HotelRoomID } from '~api/hotel/room'
+
 import { getRef } from '~lib/vue'
 
 export type HotelQuotaID = number

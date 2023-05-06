@@ -26,8 +26,11 @@
         "baseUrl": "./",
         "paths": {
             "~resources/*": ["resources/*"],
-            "~components/*": ["resources/components/*"],
-            "~lib/*": ["resources/lib/*"]
+            "~api": ["resources/api/index"],
+            "~api/*": ["resources/api/*"],
+            "~lib": ["resources/lib/index"],
+            "~lib/*": ["resources/lib/*"],
+            "~components/*": ["resources/components/*"]
         }
     },
     "include": [

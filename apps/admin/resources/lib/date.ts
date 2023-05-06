@@ -1,6 +1,6 @@
 import { DateTime, Interval, Settings } from 'luxon'
 
-import { APIDate } from '~lib/api'
+import { APIDate } from '~api'
 
 Settings.defaultLocale = 'ru'
 
