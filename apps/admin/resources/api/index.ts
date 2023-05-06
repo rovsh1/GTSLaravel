@@ -4,6 +4,7 @@ import { AfterFetchContext, createFetch, MaybeRef, UseFetchOptions } from '@vueu
 import qs from 'qs'
 
 import { ADMIN_API_URL } from '~lib/env'
+import { showToast } from '~lib/toast'
 import { getNullableRef, RefGetter } from '~lib/vue'
 
 // @example "2021-10-05T14:55:20.000000Z"
@@ -23,6 +24,15 @@ const useAPI = (base: string) => <T>(
       immediate: false,
       beforeFetch: (ctx) => {
         if (unref(props) === null) ctx.cancel()
+      },
+      onFetchError: (ctx) => {
+        showToast({
+          title: 'Ошибка сервера',
+          description: ctx.error.message,
+        }, {
+          type: 'danger',
+        })
+        return ctx
       },
     },
   })
