@@ -7,8 +7,9 @@
         "lint:scripts:fix": "npm run lint:scripts -- --fix",
         "lint:styles": "stylelint \"./resources/**/*.{scss,vue}\"",
         "lint:styles:fix": "npm run lint:styles -- --fix",
-        "lint:vue": "vue-tsc --noEmit",
-        "lint": "npm run lint:scripts; npm run lint:styles; npm run lint:vue"
+        "lint:types": "tsc --noEmit",
+        "lint:types:vue": "vue-tsc --noEmit",
+        "lint": "npm run lint:scripts; npm run lint:styles; npm run lint:types; npm run lint:types:vue"
     },
     "volta": {
         "node": "18.16.0"

@@ -9,7 +9,11 @@ pre-commit:
       root: "apps/admin"
       glob: "*.{vue,scss}"
       run: npx stylelint {staged_files}
-    admin-vue:
+    admin-types:
+      root: "apps/admin"
+      glob: "*.ts"
+      run: npx tsc --noEmit
+    admin-types-vue:
       root: "apps/admin"
       glob: "*.vue"
       run: npx vue-tsc --noEmit
