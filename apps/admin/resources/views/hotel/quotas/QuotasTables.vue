@@ -15,7 +15,7 @@ import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButt
 import LoadingSpinner from '~components/LoadingSpinner.vue'
 
 import QuotasFilters from './components/QuotasFilters/QuotasFilters.vue'
-import QuotasTable from './components/QuotasTable.vue'
+import RoomQuotas from './components/RoomQuotas.vue'
 
 import { getRoomQuotas } from './components/lib'
 import { defaultFiltersPayload, FiltersPayload, intervalByMonthsCount } from './components/QuotasFilters/lib'
@@ -105,7 +105,7 @@ const handleFilters = (value: FiltersPayload) => {
         Не удалось найти комнаты для этого отеля.
       </div>
       <div v-else class="quotasTables">
-        <quotas-table
+        <RoomQuotas
           v-for="{ room, monthlyQuotas } in roomsQuotas"
           :key="room.id"
           :hotel="hotel"
