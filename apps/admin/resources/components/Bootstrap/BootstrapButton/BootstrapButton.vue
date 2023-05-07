@@ -184,6 +184,12 @@ a.btn {
 
 //
 
+.btn {
+  &.btn-outline-link {
+    color: inherit;
+  }
+}
+
 .button {
   --button-icon-size: 1.5em;
 
@@ -196,7 +202,7 @@ a.btn {
   &.onlyIcon {
     padding: 0.5em;
     border-radius: 20em;
-    color: inherit;
+    //color: inherit;
 
     &.sizeTiny {
       padding: 0;
