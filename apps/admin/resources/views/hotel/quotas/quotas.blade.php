@@ -6,7 +6,7 @@
 
 @section('content')
     <div
-        id="quotas-tables"
+        id="hotel-quotas"
         data-vue-initial="{{ json_encode(['hotel-id' => $hotel->id]) }}"
     ></div>
 @endsection

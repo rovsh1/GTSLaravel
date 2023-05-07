@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-// TODO rename to HotelQuotas.vue
-
 import { computed, ref, watch } from 'vue'
 
 import checkIcon from '@mdi/svg/svg/check.svg'

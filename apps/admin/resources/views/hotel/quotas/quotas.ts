@@ -1,10 +1,10 @@
 import { createVueInstance } from '~lib/vue'
 
-import QuotasTables from './QuotasTables.vue'
+import HotelQuotas from './HotelQuotas.vue'
 
 import '~resources/views/main'
 
 createVueInstance({
-  rootComponent: QuotasTables,
-  rootContainer: '#quotas-tables',
+  rootComponent: HotelQuotas,
+  rootContainer: '#hotel-quotas',
 })
