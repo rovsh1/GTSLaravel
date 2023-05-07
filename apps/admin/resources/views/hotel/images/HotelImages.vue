@@ -18,7 +18,7 @@ import { useHotelRoomImageCreateAPI, useHotelRoomImageDeleteAPI } from '~api/hot
 import { useHotelImagesUploadAPI } from '~api/hotel/images/upload'
 import { HotelRoomResponse, useHotelRoomAPI } from '~api/hotel/room'
 
-import { useUrlParams } from '~lib/url-params'
+import { injectInitialData } from '~lib/vue'
 
 import BaseDialog from '~components/BaseDialog.vue'
 import BaseLayout from '~components/BaseLayout.vue'
@@ -29,7 +29,10 @@ import LoadingSpinner from '~components/LoadingSpinner.vue'
 
 import UploadDialog from './components/UploadDialog.vue'
 
-const { hotel: hotelID } = useUrlParams()
+const { 'hotel-id': hotelID } = injectInitialData<{ 'hotel-id': number }>({
+  'hotel-id': 'number',
+})
+
 const { room_id: roomID } = useUrlSearchParams<{ room_id?: number }>()
 
 const {

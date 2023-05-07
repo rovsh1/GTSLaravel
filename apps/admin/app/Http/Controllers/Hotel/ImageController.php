@@ -32,7 +32,7 @@ class ImageController extends Controller
         $this->hotel($hotel);
 
         return Layout::title((string)$hotel)
-            ->view('hotel.images.images');
+            ->view('hotel.images.images', ['hotel' => $hotel]);
     }
 
     public function get(Request $request, Hotel $hotel): JsonResponse

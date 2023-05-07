@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+// TODO rename to HotelQuotas.vue
+
 import { computed, ref, watch } from 'vue'
 
 import checkIcon from '@mdi/svg/svg/check.svg'
@@ -8,7 +10,7 @@ import { HotelResponse, useHotelAPI } from '~api/hotel/get'
 import { useHotelQuotasAPI } from '~api/hotel/quotas/list'
 import { UseHotelRooms, useHotelRoomsListAPI } from '~api/hotel/rooms'
 
-import { useUrlParams } from '~lib/url-params'
+import { injectInitialData } from '~lib/vue'
 
 import BaseLayout from '~components/BaseLayout.vue'
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
@@ -20,7 +22,9 @@ import RoomQuotas from './components/RoomQuotas.vue'
 import { getRoomQuotas } from './components/lib'
 import { defaultFiltersPayload, FiltersPayload, intervalByMonthsCount } from './components/QuotasFilters/lib'
 
-const { hotel: hotelID } = useUrlParams()
+const { 'hotel-id': hotelID } = injectInitialData<{ 'hotel-id': number }>({
+  'hotel-id': 'number',
+})
 
 const {
   data: hotelData,

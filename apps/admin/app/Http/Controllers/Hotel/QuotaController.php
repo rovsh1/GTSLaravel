@@ -27,7 +27,7 @@ class QuotaController extends Controller
         $this->hotel($hotel);
 
         return Layout::title((string)$hotel)
-            ->view('hotel.quotas.quotas');
+            ->view('hotel.quotas.quotas', ['hotel' => $hotel]);
     }
 
     public function get(GetQuotaRequest $request, Hotel $hotel): JsonResponse

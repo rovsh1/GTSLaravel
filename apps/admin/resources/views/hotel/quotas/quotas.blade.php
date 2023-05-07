@@ -5,5 +5,8 @@
 @endsection
 
 @section('content')
-    <div id="quotas-tables"></div>
+    <div
+        id="quotas-tables"
+        data-vue-initial="{{ json_encode(['hotel-id' => $hotel->id]) }}"
+    ></div>
 @endsection
