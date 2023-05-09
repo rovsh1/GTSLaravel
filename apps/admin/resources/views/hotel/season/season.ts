@@ -1,9 +1,10 @@
-import moment, { Moment } from 'moment/moment'
+import { DateTime, Interval } from 'luxon'
 
 import { useDateRangePicker } from '~resources/js/vendor/daterangepicker'
 
 import { SeasonResponse, useHotelContractGetAPI } from '~api/hotel/contract'
 
+import { parseAPIDate } from '~lib/date'
 import { useUrlParams } from '~lib/url-params'
 
 import '~resources/views/main'
@@ -17,18 +18,22 @@ const handleChangeContract = async ($periodInput: JQuery<HTMLElement>, contractI
   useDateRangePicker($periodInput, {
     // @todo ренджи должны быть в будущем
     ranges: undefined,
-    isInvalidDate(date: Moment) {
-      return contract.value?.seasons?.find((season: SeasonResponse): boolean => {
+    isInvalidDate: (inputDate: Date) =>
+      contract.value?.seasons?.find((season: SeasonResponse): boolean => {
         const isSameContract = season.contract_id === contractId
         const isSameSeason = season.id === seasonID
 
+        const { date_start: dateStart, date_end: dateEnd } = season
+        const start = parseAPIDate(dateStart)
+        const end = parseAPIDate(dateEnd)
+        const inputDateTime = DateTime.fromJSDate(inputDate)
+
         return isSameContract
           && !isSameSeason
-          && date.isBetween(season.date_start, season.date_end, 'date', '[]')
-      })
-    },
-    minDate: moment(contract.value?.date_start),
-    maxDate: moment(contract.value?.date_end),
+          && Interval.fromDateTimes(start, end).contains(inputDateTime)
+      }) !== undefined,
+    minDate: contract.value ? parseAPIDate(contract.value.date_start).toJSDate() : undefined,
+    maxDate: contract.value ? parseAPIDate(contract.value.date_end).toJSDate() : undefined,
   })
 }
 

@@ -1,8 +1,10 @@
 import { DateTime, Interval, Settings } from 'luxon'
 
-import { APIDate } from '~api'
+import { APIDate, DateResponse } from '~api'
 
 Settings.defaultLocale = 'ru'
+
+export const parseAPIDate = (date: DateResponse): DateTime => DateTime.fromISO(date)
 
 export const formatDateToAPIDate = (date: Date): APIDate => DateTime
   .fromJSDate(date).toFormat('yyyy-LL-dd')

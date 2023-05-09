@@ -16,7 +16,7 @@ declare global {
 
     deleteButton(): void
 
-    daterangepicker(options: any): JQuery<HTMLElement>
+    daterangepicker(options: daterangepicker.Options): JQuery<HTMLElement>
   }
 
   interface Window {
