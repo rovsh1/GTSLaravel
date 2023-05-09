@@ -13,7 +13,7 @@ const axiosIns = axios.create({
   headers: {
     // X-header: authData!==null ? `${authData.token_type} ${authData.accessToken}`:''
     'Content-Type': 'application/json; charset=utf-8',
-    Accept: 'application/json',
+    'Accept': 'application/json',
   },
 })
 

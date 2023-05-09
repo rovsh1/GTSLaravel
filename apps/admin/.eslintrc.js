@@ -80,10 +80,10 @@ module.exports = defineConfig({
     'no-debugger': 'off',
     'max-lines': ['error', 300],
 
-    semi: ['error', 'never'],
+    'semi': ['error', 'never'],
     'max-len': 'off',
     'linebreak-style': 'off',
-    camelcase: [
+    'camelcase': [
       'error',
       {
         properties: 'never',
@@ -138,6 +138,7 @@ module.exports = defineConfig({
         argsIgnorePattern: '^_',
       },
     ],
+    'quote-props': ['error', 'consistent-as-needed'],
   },
   overrides: [
     {
