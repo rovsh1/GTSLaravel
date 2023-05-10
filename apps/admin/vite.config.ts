@@ -33,6 +33,7 @@ export default defineConfig(({ command }) => ({
         'resources/views/administration/access-group-form/access-group-form.ts',
         'resources/views/administration/access-group-form/access-group-form.scss',
         'resources/views/auth/login/login.scss',
+        'resources/views/client/currency-rate/main.js',
         'resources/views/default/grid/grid.scss',
         'resources/views/default/form/form.scss',
         'resources/views/file-manager/file-manager.ts',

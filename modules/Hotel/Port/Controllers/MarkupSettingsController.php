@@ -28,6 +28,7 @@ class MarkupSettingsController
 
     public function updateMarkupSettings(Request $request): void
     {
+        //@todo сделать 1 эндпоинт + 1 команду с экшеном update / deleteFromCollection / addToCollection
         $request->validate([
             'hotel_id' => ['required', 'numeric'],
             'key' => ['required', 'string'],

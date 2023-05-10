@@ -43,7 +43,7 @@ class CurrencyRate extends Model
 {
     use HasQuicksearch;
 
-    protected array $quicksearch = ['client_name%'];
+    protected array $quicksearch = ['clients.name%'];
 
     protected $table = 'client_currency_rates';
 

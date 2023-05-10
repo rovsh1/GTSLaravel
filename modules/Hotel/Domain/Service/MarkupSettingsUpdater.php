@@ -17,6 +17,11 @@ class MarkupSettingsUpdater
 
     public function updateByKey(int $id, string $key, mixed $value): void
     {
+        //AppService -> getObjectByKey (от доменной модели)
+
+        //1. Получаю объект VO или Collection внутри Application по ключу (ссылка)
+        //2. Изменяю его
+        //3. Сохраняю все сеттинги
         $markupSettings = $this->repository->get($id);
         $this->set($markupSettings, $key, $value);
         $this->repository->update($markupSettings);
@@ -37,6 +42,7 @@ class MarkupSettingsUpdater
         $markupSettings = $this->repository->get($id);
         $collection = $this->getNestedCollection($markupSettings, $key);
         $collection->offsetUnset($index);
+//        dd($collection,$markupSettings);
         //@todo как записать в Markup, как работать с сеттингами?
         dd('delete', $key, $index, $collection);
         $this->repository->update($markupSettings);

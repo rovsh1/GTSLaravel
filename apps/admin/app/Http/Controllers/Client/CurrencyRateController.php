@@ -10,12 +10,25 @@ use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Grid\SearchForm;
+use App\Admin\Support\View\Layout as LayoutContract;
 
 class CurrencyRateController extends AbstractPrototypeController
 {
     protected function getPrototypeKey(): string
     {
         return 'client-currency-rate';
+    }
+
+    public function create(): LayoutContract
+    {
+        return parent::create()
+            ->view('client.currency-rate.create.create');
+    }
+
+    public function edit(int $id): LayoutContract
+    {
+        return parent::edit($id)
+            ->view('client.currency-rate.edit.edit');
     }
 
     protected function gridFactory(): GridContract
@@ -26,7 +39,7 @@ class CurrencyRateController extends AbstractPrototypeController
             ->edit($this->prototype)
             ->text('client_id', ['text' => 'Клиент', 'renderer' => fn($r, $v) => $r['client_name']])
             ->text('currency_id', ['text' => 'Валюта', 'renderer' => fn($r, $v) => $r['currency_name']])
-            ->text('rate', ['text' => 'Курс', 'renderer' => fn($r, $v) => round($v) . ' ' . $r['currency_code_char']])
+            ->number('rate', ['text' => 'Курс', 'format' => 'number'])
             ->text('period', ['text' => 'Период', 'renderer' => fn($r, $t) => Format::period($t)]);
     }
 
@@ -40,8 +53,7 @@ class CurrencyRateController extends AbstractPrototypeController
             'items' => Hotel::all()
         ])
             ->client('client_id', ['label' => 'Клиент', 'emptyItem' => '', 'required' => true])
-            //@todo добавить реализацию получения валют клиента через API
-            ->currency('currency_id', ['label' => 'Валюта', 'required' => true])
+            ->select('currency_id', ['label' => 'Валюта', 'required' => true])
             ->number('rate', ['label' => 'Курс', 'required' => true])
             ->dateRange('period', ['label' => 'Период действия', 'required' => true]);
     }
