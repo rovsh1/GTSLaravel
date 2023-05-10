@@ -89,6 +89,7 @@ class ImageController extends Controller
     {
         Breadcrumb::prototype('hotel')
             ->addUrl(route('hotels.show', $hotel), (string)$hotel)
+            // TODO add room if exists
             ->addUrl(route('hotels.images.index', $hotel), 'Фотографии');
 
         Sidebar::submenu(new HotelMenu($hotel, 'images'));

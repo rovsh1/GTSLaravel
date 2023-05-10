@@ -228,9 +228,13 @@ fetchHotel()
 fetchImages()
 
 const title = computed<string>(() => {
-  if (roomID && room.value) return room.value.custom_name
-  if (hotel.value) return hotel.value.name
-  return ''
+  if (hotel.value === null) return ''
+  const { name: hotelLabel } = hotel.value
+  if (roomID && room.value) {
+    const { custom_name: roomLabel } = room.value
+    return `${hotelLabel} — ${roomLabel}`
+  }
+  return hotelLabel
 })
 </script>
 <template>
