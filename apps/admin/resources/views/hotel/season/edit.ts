@@ -1,15 +1,19 @@
 import { DateTime, Interval } from 'luxon'
+import { z } from 'zod'
 
 import { useDateRangePicker } from '~resources/js/vendor/daterangepicker'
 
 import { SeasonResponse, useHotelContractGetAPI } from '~api/hotel/contract'
 
 import { parseAPIDate } from '~lib/date'
-import { useUrlParams } from '~lib/url-params'
+import { requestInitialData } from '~lib/initial-data'
 
 import '~resources/views/main'
 
-const { hotel: hotelID, season: seasonID } = useUrlParams()
+const { hotelID, seasonID } = requestInitialData(z.object({
+  hotelID: z.number(),
+  seasonID: z.optional(z.number()),
+}))
 
 const handleChangeContract = async ($periodInput: JQuery<HTMLElement>, contractId: number): Promise<void> => {
   const { data: contract, execute: fetchContract } = useHotelContractGetAPI({ hotelID, contractID: contractId })

@@ -3,6 +3,7 @@ import { computed, ref, watch } from 'vue'
 
 import checkIcon from '@mdi/svg/svg/check.svg'
 import pencilIcon from '@mdi/svg/svg/pencil.svg'
+import { z } from 'zod'
 
 import { HotelResponse, useHotelAPI } from '~api/hotel/get'
 import { useHotelQuotasAPI } from '~api/hotel/quotas/list'
@@ -20,9 +21,9 @@ import RoomQuotas from './components/RoomQuotas.vue'
 import { getRoomQuotas } from './components/lib'
 import { defaultFiltersPayload, FiltersPayload, intervalByMonthsCount } from './components/QuotasFilters/lib'
 
-const { 'hotel-id': hotelID } = injectInitialData<{ 'hotel-id': number }>({
-  'hotel-id': 'number',
-})
+const { hotelID } = injectInitialData(z.object({
+  hotelID: z.number(),
+}))
 
 const {
   data: hotelData,

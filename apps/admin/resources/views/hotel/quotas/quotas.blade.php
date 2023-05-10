@@ -7,6 +7,6 @@
 @section('content')
     <div
         id="hotel-quotas"
-        data-vue-initial="{{ json_encode(['hotel-id' => $hotel->id]) }}"
+        data-vue-initial="{{ json_encode(['hotelID' => $hotel->id]) }}"
     ></div>
 @endsection

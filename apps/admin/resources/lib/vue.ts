@@ -1,6 +1,9 @@
 import { ComponentOptions, createApp, h, inject, Ref, unref } from 'vue'
 
 import { VTooltip } from 'floating-vue'
+import { ZodObject, ZodRawShape } from 'zod/lib/types'
+
+import { parseInitialData } from '~lib/initial-data'
 
 import '~resources/sass/vendor/floating-vue.scss'
 
@@ -36,25 +39,8 @@ export const createVueInstance = (params: CreateVueInstanceParams) => {
   return app
 }
 
-type InitialDataValue = string | number
-
-type InjectInitialDataValidations<T> = Record<keyof T, 'string' | 'number'>
-
-export const injectInitialData = <T extends Record<string, InitialDataValue>>(validations: InjectInitialDataValidations<T>) => {
-  const injected = inject<T>(initialDataKey)
-  if (injected === undefined) {
-    throw new Error('Initial data not provided')
-  }
-  Object.keys(injected).forEach((key) => {
-    const value = injected[key]
-    const valueType = typeof value
-    const requiredType = validations[key]
-    if (valueType !== requiredType) {
-      throw new TypeError(`Initial data type mismatch: '${key}' must be a number, got '${valueType}' instead: '${value}'`)
-    }
-  })
-  return injected
-}
+export const injectInitialData = <T extends ZodRawShape>(schema: ZodObject<T>) =>
+  parseInitialData(schema, inject(initialDataKey))
 
 export type RefGetter<T, R> = (data: T) => R
 

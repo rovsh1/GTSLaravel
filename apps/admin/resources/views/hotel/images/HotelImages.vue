@@ -8,6 +8,7 @@ import linkOffIcon from '@mdi/svg/svg/link-off.svg'
 import plusIcon from '@mdi/svg/svg/plus.svg'
 import trashIcon from '@mdi/svg/svg/trash-can-outline.svg'
 import { useArrayFind, useUrlSearchParams } from '@vueuse/core'
+import { z } from 'zod'
 
 import { HotelResponse, useHotelAPI } from '~api/hotel/get'
 import { HotelImageResponse } from '~api/hotel/images'
@@ -29,9 +30,9 @@ import LoadingSpinner from '~components/LoadingSpinner.vue'
 
 import UploadDialog from './components/UploadDialog.vue'
 
-const { 'hotel-id': hotelID } = injectInitialData<{ 'hotel-id': number }>({
-  'hotel-id': 'number',
-})
+const { hotelID } = injectInitialData(z.object({
+  hotelID: z.number(),
+}))
 
 const { room_id: roomID } = useUrlSearchParams<{ room_id?: number }>()
 
