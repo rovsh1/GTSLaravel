@@ -239,6 +239,7 @@ const handleReleaseDaysValue: HandleValue<void> = (date, value) => {
                       : editedQuotasCount.toString()
                   "
                   :max="room.count"
+                  :range-error="(min, max) => `Есть только ${max} таких комнат`"
                   :disabled="!editable"
                   :in-range="isQuotaCellInRange(getActiveCellKey(key, room.id))"
                   @active-key="(value) => {
@@ -310,7 +311,7 @@ const handleReleaseDaysValue: HandleValue<void> = (date, value) => {
                       ? releaseDays === null ? '' : releaseDays.toString()
                       : editedReleaseDays.toString()
                   "
-                  :max="30"
+                  :max="99"
                   :disabled="!editable"
                   :in-range="isReleaseDaysCellInRange(getActiveCellKey(key, room.id))"
                   @active-key="(value) => {

@@ -16,7 +16,7 @@ const emit = defineEmits<{
   <div class="content">
     <div class="header">
       <div class="title">{{ title }}</div>
-      <!-- TODO v-tooltip not initialized here, runtime warning -->
+      <!-- TODO Failed to resolve directive: tooltip -->
       <BootstrapButton
         label="Закрыть"
         :only-icon="closeIcon"

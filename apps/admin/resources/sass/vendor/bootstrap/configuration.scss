@@ -8,7 +8,7 @@
 @import "node_modules/bootstrap/scss/mixins";
 @import "node_modules/bootstrap/scss/utilities";
 
-// ~bootstrap/scss/helpers/_color-bg.scss
+// @see ~bootstrap/scss/helpers/_color-bg.scss
 @mixin color-bg($color) {
   background-color: $color;
   color: color-contrast($color);

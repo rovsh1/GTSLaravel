@@ -8,19 +8,30 @@ import shiftIcon from '@mdi/svg/svg/apple-keyboard-shift.svg'
 import escapeIcon from '@mdi/svg/svg/keyboard-esc.svg'
 import enterIcon from '@mdi/svg/svg/keyboard-return.svg'
 import { Tooltip } from 'floating-vue'
+import { GenericValidateFunction, useField } from 'vee-validate'
+import { z } from 'zod'
 
 import { isMacOS } from '~lib/platform'
 
 type CellKey = string | null
 
-const props = defineProps<{
+type RangeError = (min: number, max: number) => string
+
+const defaultMin = 1
+
+const defaultRangeError: RangeError = (min, max) => `Введите от ${min} до ${max}`
+
+const props = withDefaults(defineProps<{
   cellKey: string
   activeKey: CellKey
   value: string
   max: number
+  rangeError?: RangeError
   disabled: boolean
   inRange: boolean
-}>()
+}>(), {
+  rangeError: (min, max) => `Введите от ${min} до ${max}`,
+})
 
 const emit = defineEmits<{
   (event: 'active-key', value: CellKey): void
@@ -53,26 +64,22 @@ watch(inputRef, (element) => {
   handleInputMount(element)
 })
 
-const validateInput = (value: string): number | null => {
-  if (value === '') return null
-  const number = Number(value)
-  if (isNaN(number)) return null
-  return number
+const parseValue = (value: string) => z.coerce.number().parse(value)
+
+const validateValue: GenericValidateFunction<typeof props.value | undefined> = (value) => {
+  if (value === undefined) return 'undefined'
+  const { max, rangeError } = props
+  const number = parseValue(value)
+  if (number < 1) {
+    return defaultRangeError(defaultMin, max)
+  }
+  if (number > max) {
+    return rangeError(defaultMin, max)
+  }
+  return true
 }
 
-const handleValue = (target: EventTarget | null, done: (value: number) => void) => {
-  if (target === null) return
-  const { value } = target as HTMLInputElement
-  const number = validateInput(value)
-  if (number === null) return
-  done(number)
-}
-
-const handleChange = (target: EventTarget | null) =>
-  handleValue(target, (number) => emit('value', number))
-
-const handleInput = (target: EventTarget | null) =>
-  handleValue(target, (number) => emit('input', number))
+const { value: valueModel, errorMessage } = useField(() => props.value, validateValue)
 
 const handleButtonClick = (event: MouseEvent) => {
   if (rangeMode.value) {
@@ -104,10 +111,15 @@ const onPressEsc = () => {
 
 const onPressEnter = () => {
   reset()
+  if (
+    errorMessage.value !== undefined
+    || valueModel.value === undefined
+  ) return
+  emit('value', parseValue(valueModel.value))
 }
 
 const handleKeyDown = (event: KeyboardEvent) => {
-  if (props.disabled) return
+  if (props.disabled || props.activeKey === null) return
   if (event.shiftKey) rangeMode.value = true
   if (event.ctrlKey || event.metaKey) pickMode.value = true
 }
@@ -140,17 +152,18 @@ onUnmounted(() => {
 })
 </script>
 <template>
-  <Tooltip v-if="activeKey === cellKey">
+  <Tooltip
+    v-if="activeKey === cellKey"
+    :theme="errorMessage === undefined ? 'tooltip' : 'danger-tooltip'"
+    handle-resize
+  >
     <label>
-      <!-- TODO min/max validation display -->
       <input
         :ref="(element) => inputRef = element as HTMLInputElement"
-        :value="value"
+        v-model="valueModel"
         class="editableCellInput"
+        :class="{ isInvalid: errorMessage !== undefined }"
         type="number"
-        :max="max"
-        @input="(event) => handleInput(event.target)"
-        @change="(event) => handleChange(event.target)"
         @blur="(event) => {
           event.preventDefault()
           inputRef?.focus()
@@ -160,16 +173,17 @@ onUnmounted(() => {
       />
     </label>
     <template #popper>
-      <div>{{ singleDayTooltip }}</div>
-      <div>Нажмите <InlineSVG :src="enterIcon" /> Enter, чтобы подтвердить изменения</div>
-      <div>
-        Нажмите <template v-if="macOS">
-          ⎋ Esc
-        </template>
-        <template v-else>
-          <InlineSVG :src="escapeIcon" /> Esc
-        </template>, чтобы отменить их
-      </div>
+      <div v-if="errorMessage">{{ errorMessage }}</div>
+      <template v-else>
+        <div>{{ singleDayTooltip }}</div>
+        <div>Нажмите <InlineSVG :src="enterIcon" /> Enter, чтобы подтвердить изменения</div>
+        <div>
+          Нажмите
+          <template v-if="macOS">⎋ Esc</template>
+          <template v-else><InlineSVG :src="escapeIcon" /> Esc</template>,
+          чтобы отменить изменения и сбросить выделение
+        </div>
+      </template>
     </template>
   </Tooltip>
   <Tooltip v-else :delay="{ show: 2000 }">
@@ -204,6 +218,7 @@ onUnmounted(() => {
   </Tooltip>
 </template>
 <style lang="scss" scoped>
+@use '~resources/sass/vendor/bootstrap/configuration' as bs;
 @use './shared' as shared;
 
 %cell {
@@ -225,6 +240,10 @@ onUnmounted(() => {
   &::-webkit-inner-spin-button {
     margin: 0;
     appearance: none;
+  }
+
+  &.isInvalid {
+    outline-color: bs.$danger;
   }
 }
 

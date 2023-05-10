@@ -1,11 +1,9 @@
 import { ComponentOptions, createApp, h, inject, Ref, unref } from 'vue'
 
-import { VTooltip } from 'floating-vue'
 import { ZodObject, ZodRawShape } from 'zod/lib/types'
 
 import { parseInitialData } from '~lib/initial-data'
-
-import '~resources/sass/vendor/floating-vue.scss'
+import { installFloatingVue } from '~lib/tooltip/install-tooltip'
 
 const initialDataKey = 'initial'
 
@@ -32,7 +30,7 @@ export const createVueInstance = (params: CreateVueInstanceParams) => {
     ? {}
     : JSON.parse(initialData))
 
-  app.directive('tooltip', VTooltip)
+  installFloatingVue(app)
 
   app.mount(rootContainer)
 
