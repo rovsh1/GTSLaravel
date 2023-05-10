@@ -11,8 +11,11 @@ trait HasQuicksearch
     {
 //        static $seoColumns = ['title', 'text', 'head'];
 
-        //@todo добавить проверку на переданную таблицу
         $clearName = trim($name, '%');
+        if ($this->fieldHasTable($clearName)) {
+            return $clearName;
+        }
+
         if ($name === 'id') {
             return $this->table . '.' . $clearName;
         } elseif (isset($this->translatable) && in_array($name, $this->translatable)) {
@@ -56,6 +59,11 @@ trait HasQuicksearch
                 $query->orWhere($identifier, 'like', $t);
             }
         });
+    }
+
+    private function fieldHasTable(string $field): bool
+    {
+        return mb_strpos($field, '.') !== false;
     }
 
 }
