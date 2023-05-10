@@ -1,1 +1,5 @@
-export const isMacOS = () => navigator.platform === 'MacIntel'
+const detectMacOS = () => navigator.platform === 'MacIntel'
+
+export const usePlatformDetect = () => ({
+  isMacOS: detectMacOS(),
+})

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
 import InlineSVG from 'vue-inline-svg'
 
 import cmdIcon from '@mdi/svg/svg/apple-keyboard-command.svg'
@@ -11,7 +11,7 @@ import { Tooltip } from 'floating-vue'
 import { GenericValidateFunction, useField } from 'vee-validate'
 import { z } from 'zod'
 
-import { isMacOS } from '~lib/platform'
+import { usePlatformDetect } from '~lib/platform'
 
 type CellKey = string | null
 
@@ -50,7 +50,7 @@ const inputRef = ref<HTMLInputElement | null>(null)
 const rangeMode = ref(false)
 const pickMode = ref(false)
 
-const macOS = computed(() => isMacOS())
+const { isMacOS } = usePlatformDetect()
 
 const singleDayTooltip = 'Нажмите правой кнопкой мыши, чтобы открыть, закрыть или сбросить статус этого дня'
 
@@ -179,7 +179,7 @@ onUnmounted(() => {
         <div>Нажмите <InlineSVG :src="enterIcon" /> Enter, чтобы подтвердить изменения</div>
         <div>
           Нажмите
-          <template v-if="macOS">⎋ Esc</template>
+          <template v-if="isMacOS">⎋ Esc</template>
           <template v-else><InlineSVG :src="escapeIcon" /> Esc</template>,
           чтобы отменить изменения и сбросить выделение
         </div>
@@ -201,7 +201,7 @@ onUnmounted(() => {
       <template v-if="activeKey !== null">
         <div>Зажмите <InlineSVG :src="shiftIcon" /> Shift и кликните, чтобы задать значения для всех дней от выбранного до этого.</div>
         <div>
-          Зажмите <template v-if="macOS">
+          Зажмите <template v-if="isMacOS">
             <InlineSVG :src="cmdIcon" /> command
           </template><template v-else>
             <InlineSVG :src="ctrlIcon" /> Ctrl
