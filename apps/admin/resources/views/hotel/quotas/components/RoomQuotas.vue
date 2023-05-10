@@ -223,9 +223,9 @@ const handleReleaseDaysValue: HandleValue<void> = (date, value) => {
           </thead>
           <tbody>
             <tr class="roomTypeHeadingRow">
-              <th class="headingCell">Квоты / Продано</th>
+              <th class="headingCell">Квоты</th>
               <td
-                v-for="{ key, quota, sold, status, date } in dailyQuota"
+                v-for="{ key, quota, status, date } in dailyQuota"
                 :key="key"
                 :class="dayQuotaCellClassName(status)"
                 tabindex="0"
@@ -279,26 +279,20 @@ const handleReleaseDaysValue: HandleValue<void> = (date, value) => {
                   >
                     {{ editedQuotasCountInRange?.value }}
                   </template>
-                  <template v-else-if="quota === null && sold === null">
+                  <template v-else-if="quota === null">
                     <template v-if="editable">—</template>
                     <template v-else>&nbsp;</template>
                   </template>
-                  <template v-else-if="sold === null">
-                    {{ quota }} / 0
-                  </template>
-                  <template v-else-if="quota === null">
-                    0 / {{ sold }}
-                  </template>
                   <template v-else>
-                    {{ quota }} / {{ sold }}
+                    {{ quota }}
                   </template>
                 </editable-cell>
               </td>
             </tr>
             <tr>
-              <th class="headingCell">Релиз-дни / Резерв</th>
+              <th class="headingCell">Релиз-дни</th>
               <td
-                v-for="{ key, releaseDays, reserve, status, date } in dailyQuota"
+                v-for="{ key, releaseDays, status, date } in dailyQuota"
                 :key="key"
                 :class="dayQuotaCellClassName(status)"
                 tabindex="0"
@@ -351,20 +345,36 @@ const handleReleaseDaysValue: HandleValue<void> = (date, value) => {
                   >
                     {{ editedReleaseDaysInRange?.value }}
                   </template>
-                  <template v-else-if="releaseDays === null && reserve === null">
+                  <template v-else-if="releaseDays === null">
                     <template v-if="editable">—</template>
                     <template v-else>&nbsp;</template>
                   </template>
-                  <template v-else-if="reserve === null">
-                    {{ releaseDays }} / 0
-                  </template>
-                  <template v-else-if="releaseDays === null">
-                    0 / {{ reserve }}
-                  </template>
                   <template v-else>
-                    {{ releaseDays }} / {{ reserve }}
+                    {{ releaseDays }}
                   </template>
                 </editable-cell>
+              </td>
+            </tr>
+            <tr>
+              <th class="headingCell">Продано / Резерв</th>
+              <td
+                v-for="{ key, sold, reserve, status } in dailyQuota"
+                :key="key"
+                class="staticDataCell"
+                :class="dayQuotaCellClassName(status)"
+              >
+                <template v-if="sold === null && reserve === null">
+                  &nbsp;
+                </template>
+                <template v-else-if="sold === null">
+                  0 / {{ reserve }}
+                </template>
+                <template v-else-if="reserve === null">
+                  {{ sold }} / 0
+                </template>
+                <template v-else>
+                  {{ sold }} / {{ reserve }}
+                </template>
               </td>
             </tr>
           </tbody>
@@ -432,10 +442,6 @@ th {
   @extend %data-cell;
 }
 
-%reserve-cell {
-  padding-block: 0.25em;
-}
-
 %heading-cell {
   @extend %cell;
 
@@ -485,5 +491,11 @@ th {
   &.isClosed {
     background-color: hsl(0deg, 100%, 93%);
   }
+}
+
+.staticDataCell {
+  @extend %data-cell;
+
+  padding: 0.731em;
 }
 </style>
