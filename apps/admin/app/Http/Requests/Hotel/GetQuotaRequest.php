@@ -23,7 +23,7 @@ class GetQuotaRequest extends FormRequest
             'month' => ['required', 'numeric', 'between:1,12'],
             'year' => ['required', 'date_format:Y'],
             'interval' => ['required', new DateIntervalRule],
-            'availability' => ['nullable', 'numeric']
+            'availability' => ['nullable', 'string']
         ];
     }
 
