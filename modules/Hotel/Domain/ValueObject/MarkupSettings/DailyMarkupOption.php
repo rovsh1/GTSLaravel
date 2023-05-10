@@ -31,6 +31,11 @@ class DailyMarkupOption implements ValueObjectInterface, SerializableDataInterfa
         return $this->daysCount;
     }
 
+    public function setDaysCount(int $daysCount): void
+    {
+        $this->daysCount = $daysCount;
+    }
+
     public function toData(): array
     {
         return [

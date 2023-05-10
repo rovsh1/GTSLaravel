@@ -25,6 +25,18 @@ class TimePeriod implements ValueObjectInterface, SerializableDataInterface
         return $this->to;
     }
 
+    public function setFrom(string $from): void
+    {
+        $this->from = $this->validateTime($from);
+        $this->validateFromLessTo();
+    }
+
+    public function setTo(string $to): void
+    {
+        $this->to = $this->validateTime($to);
+        $this->validateFromLessTo();
+    }
+
     public function toData(): array
     {
         return [

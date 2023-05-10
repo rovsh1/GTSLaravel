@@ -11,7 +11,7 @@ use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 /**
  * @extends Collection<int, DailyMarkupOption>
  */
-class DailyMarkupCollection extends Collection implements ValueObjectInterface,SerializableDataInterface
+class DailyMarkupCollection extends Collection implements ValueObjectInterface, SerializableDataInterface
 {
     public function toData(): array
     {
