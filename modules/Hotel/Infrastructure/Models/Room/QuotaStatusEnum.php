@@ -4,6 +4,6 @@ namespace Module\Hotel\Infrastructure\Models\Room;
 
 enum QuotaStatusEnum: int
 {
-    case Close = 0;
-    case Open = 1;
+    case CLOSE = 0;
+    case OPEN = 1;
 }

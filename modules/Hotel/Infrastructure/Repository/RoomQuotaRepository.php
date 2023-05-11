@@ -4,6 +4,7 @@ namespace Module\Hotel\Infrastructure\Repository;
 
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
+use Module\Hotel\Application\Enums\QuotaAvailabilityEnum;
 use Module\Hotel\Domain\Factory\RoomQuotaFactory;
 use Module\Hotel\Domain\Repository\RoomQuotaRepositoryInterface;
 use Module\Hotel\Infrastructure\Models\Room\Quota as EloquentQuota;
@@ -11,7 +12,7 @@ use Module\Hotel\Infrastructure\Models\Room\QuotaStatusEnum;
 
 class RoomQuotaRepository implements RoomQuotaRepositoryInterface
 {
-    public function get(int $hotelId, CarbonPeriod $period, ?int $roomId = null): array
+    public function get(int $hotelId, CarbonPeriod $period, ?int $roomId = null, ?QuotaAvailabilityEnum $availability = null): array
     {
         $models = EloquentQuota::query()
             ->where(function (Builder $builder) use ($roomId, $hotelId) {
@@ -25,6 +26,7 @@ class RoomQuotaRepository implements RoomQuotaRepositoryInterface
             })
             ->where('date', '>=', $period->getStartDate())
             ->where('date', '<', $period->getEndDate())
+            ->whereAvailability($availability)
             ->get();
 
         return app(RoomQuotaFactory::class)->createCollectionFrom($models);
@@ -32,7 +34,7 @@ class RoomQuotaRepository implements RoomQuotaRepositoryInterface
 
     public function updateRoomQuota(int $roomId, CarbonPeriod $period, ?int $quota, ?int $releaseDays = null): void
     {
-        $updateData = ['date' => $period->getStartDate(), 'room_id' => $roomId, 'status' => QuotaStatusEnum::Close];
+        $updateData = ['date' => $period->getStartDate(), 'room_id' => $roomId, 'status' => QuotaStatusEnum::CLOSE];
         if ($quota !== null) {
             $updateData['count_total'] = $quota;
         }
@@ -50,7 +52,7 @@ class RoomQuotaRepository implements RoomQuotaRepositoryInterface
         EloquentQuota::whereRoomId($roomId)
             ->where('date', '>=', $period->getStartDate())
             ->where('date', '<', $period->getEndDate())
-            ->update(['status' => QuotaStatusEnum::Close]);
+            ->update(['status' => QuotaStatusEnum::CLOSE]);
     }
 
     public function openRoomQuota(int $roomId, CarbonPeriod $period): void
@@ -58,7 +60,7 @@ class RoomQuotaRepository implements RoomQuotaRepositoryInterface
         EloquentQuota::whereRoomId($roomId)
             ->where('date', '>=', $period->getStartDate())
             ->where('date', '<', $period->getEndDate())
-            ->update(['status' => QuotaStatusEnum::Open]);
+            ->update(['status' => QuotaStatusEnum::OPEN]);
     }
 
     public function resetRoomQuota(int $roomId, CarbonPeriod $period): void

@@ -2,6 +2,7 @@
 
 namespace App\Admin\Http\Requests\Hotel;
 
+use App\Admin\Support\Adapters\Hotel\QuotaAvailabilityEnum;
 use App\Core\Validation\Rules\DateIntervalRule;
 use Carbon\Carbon;
 use Carbon\CarbonInterval;
@@ -10,6 +11,13 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class GetQuotaRequest extends FormRequest
 {
+
+    /** @var array<string, QuotaAvailabilityEnum> $availabilityMap */
+    private array $availabilityMap = [
+        'sold' => QuotaAvailabilityEnum::SOLD,
+        'stopped' => QuotaAvailabilityEnum::STOPPED,
+        'available' => QuotaAvailabilityEnum::AVAILABLE,
+    ];
 
     /**
      * Get the validation rules that apply to the request.
@@ -23,13 +31,17 @@ class GetQuotaRequest extends FormRequest
             'month' => ['required', 'numeric', 'between:1,12'],
             'year' => ['required', 'date_format:Y'],
             'interval' => ['required', new DateIntervalRule],
-            'availability' => ['nullable', 'string']
+            'availability' => ['nullable', 'in:sold,stopped,available']
         ];
     }
 
-    public function getAvailability(): int
+    public function getAvailability(): ?QuotaAvailabilityEnum
     {
-        return $this->get('availability');
+        $availability = $this->get('availability');
+        if ($availability === null) {
+            return null;
+        }
+        return $this->availabilityMap[$availability];
     }
 
     public function getRoomId(): ?int

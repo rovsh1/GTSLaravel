@@ -19,7 +19,7 @@ class GetQuotasHandler implements QueryHandlerInterface
      */
     public function handle(QueryInterface|GetQuotas $query): array
     {
-        $quotas = $this->repository->get($query->hotelId, $query->period, $query->roomId);
+        $quotas = $this->repository->get($query->hotelId, $query->period, $query->roomId, $query->availability);
         return QuotaDto::collection($quotas)->all();
     }
 }

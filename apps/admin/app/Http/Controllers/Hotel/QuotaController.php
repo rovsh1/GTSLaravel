@@ -32,11 +32,12 @@ class QuotaController extends Controller
 
     public function get(GetQuotaRequest $request, Hotel $hotel): JsonResponse
     {
-        //@todo $request->getAvailability(), логика доступности
-        //1. Проданные - 0 доступных
-        //2. Остановленные - статус "Остановлено"
-        //3. Доступные - не "остановлено" И доступных >0
-        $quotas = QuotaAdapter::getHotelQuotas($hotel->id, $request->getPeriod(), $request->getRoomId());
+        $quotas = QuotaAdapter::getHotelQuotas(
+            $hotel->id,
+            $request->getPeriod(),
+            $request->getRoomId(),
+            $request->getAvailability()
+        );
         return response()->json(RoomQuota::collection($quotas));
     }
 

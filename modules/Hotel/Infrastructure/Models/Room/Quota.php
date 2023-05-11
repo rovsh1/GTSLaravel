@@ -3,7 +3,9 @@
 namespace Module\Hotel\Infrastructure\Models\Room;
 
 use Custom\Framework\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Module\Hotel\Application\Enums\QuotaAvailabilityEnum;
 use Module\Hotel\Infrastructure\Models\Room;
 
 /**
@@ -29,6 +31,7 @@ use Module\Hotel\Infrastructure\Models\Room;
  * @method static \Illuminate\Database\Eloquent\Builder|Quota whereDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Quota whereRoomId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Quota whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Quota whereAvailability(int|null $availability)
  * @mixin \Eloquent
  */
 class Quota extends Model
@@ -56,5 +59,21 @@ class Quota extends Model
     public function room(): BelongsTo
     {
         return $this->belongsTo(Room::class);
+    }
+
+    public function scopeWhereAvailability(Builder $builder, ?QuotaAvailabilityEnum $availability): void
+    {
+        if ($availability === null) {
+            return;
+        }
+        if ($availability === QuotaAvailabilityEnum::SOLD) {
+            $builder->where('count_available', 0)
+                ->where('count_total', '>', 0);
+        } elseif ($availability === QuotaAvailabilityEnum::STOPPED) {
+            $builder->whereStatus(QuotaStatusEnum::CLOSE);
+        } elseif ($availability === QuotaAvailabilityEnum::AVAILABLE) {
+            $builder->whereStatus(QuotaStatusEnum::OPEN)
+                ->where('count_available', '>', 0);
+        }
     }
 }

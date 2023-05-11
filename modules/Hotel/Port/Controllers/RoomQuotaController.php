@@ -5,6 +5,8 @@ namespace Module\Hotel\Port\Controllers;
 use Carbon\CarbonPeriod;
 use Custom\Framework\Contracts\Bus\QueryBusInterface;
 use Custom\Framework\PortGateway\Request;
+use Illuminate\Validation\Rules\Enum;
+use Module\Hotel\Application\Enums\QuotaAvailabilityEnum;
 use Module\Hotel\Application\Query\GetQuotas;
 use Module\Hotel\Application\Service\RoomQuotaUpdater;
 
@@ -22,6 +24,7 @@ class RoomQuotaController
             'room_id' => 'nullable|numeric',
             'date_from' => 'required|date',
             'date_to' => 'required|date',
+            'availability' => ['nullable', new Enum(QuotaAvailabilityEnum::class)]
         ]);
 
         return $this->queryBus->execute(
@@ -29,6 +32,7 @@ class RoomQuotaController
                 $request->hotel_id,
                 new CarbonPeriod($request->date_from, $request->date_to),
                 $request->room_id,
+                $request->availability !== null ? QuotaAvailabilityEnum::from($request->availability) : null
             )
         );
     }

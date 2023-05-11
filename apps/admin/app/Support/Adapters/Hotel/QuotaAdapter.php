@@ -8,13 +8,14 @@ use Carbon\CarbonPeriod;
 
 class QuotaAdapter extends AbstractHotelAdapter
 {
-    public function getHotelQuotas(int $hotelId, CarbonPeriod $period, ?int $roomId = null): array
+    public function getHotelQuotas(int $hotelId, CarbonPeriod $period, ?int $roomId = null, ?QuotaAvailabilityEnum $availability = null): array
     {
         return $this->request('getHotelQuotas', [
             'hotel_id' => $hotelId,
             'room_id' => $roomId,
             'date_from' => $period->getStartDate(),
             'date_to' => $period->getEndDate(),
+            'availability' => $availability?->value
         ]);
     }
 
