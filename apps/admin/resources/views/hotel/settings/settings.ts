@@ -8,7 +8,7 @@ import '~resources/views/main'
 
 createVueInstance({
   rootComponent: ResidenceConditions,
-  rootContainer: '#living-conditions',
+  rootContainer: '#residence-conditions',
 })
 
 createVueInstance({
