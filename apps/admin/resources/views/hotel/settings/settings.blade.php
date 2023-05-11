@@ -19,7 +19,7 @@
 
         <div class="mt-3" id="cancellation-conditions"></div>
 
-        <div class="mt-3" id="price-conditions"></div>
+        <div class="mt-3" id="markup-conditions"></div>
 
         <div class="mt-3">
             <x-ui.card :collapsable="true" header="Правила отеля">
@@ -31,6 +31,12 @@
                 </x-slot:header-controls>
 
                 {!! $rulesGrid !!}
+            </x-ui.card>
+        </div>
+
+        <div class="mt-3">
+            <x-ui.card :collapsable="true" header="Номера">
+                Номера
             </x-ui.card>
         </div>
 

@@ -2,12 +2,11 @@
 
 @section('head-end')
     <script id="hotel-season-edit-initial-data">
-        window['view-initial-data'] = {!!
-            json_encode([
+        window['view-initial-data'] = {{ Js::from([
                 'hotelID' => $hotel->id,
                 'seasonID' => $season->id,
             ])
-        !!}
+        }}
     </script>
 @endsection
 

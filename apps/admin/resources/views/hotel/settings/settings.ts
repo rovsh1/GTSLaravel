@@ -1,5 +1,5 @@
 import CancellationConditions from '~resources/views/hotel/settings/CancellationConditions.vue'
-import PriceConditions from '~resources/views/hotel/settings/PriceConditions.vue'
+import MarkupConditions from '~resources/views/hotel/settings/MarkupConditions.vue'
 import ResidenceConditions from '~resources/views/hotel/settings/ResidenceConditions.vue'
 
 import { createVueInstance } from '~lib/vue'
@@ -17,8 +17,8 @@ createVueInstance({
 })
 
 createVueInstance({
-  rootComponent: PriceConditions,
-  rootContainer: '#price-conditions',
+  rootComponent: MarkupConditions,
+  rootContainer: '#markup-conditions',
 })
 
 $((): void => {
