@@ -82,14 +82,7 @@ module.exports = defineConfig({
     'semi': ['error', 'never'],
     'max-len': 'off',
     'linebreak-style': 'off',
-    'camelcase': [
-      'error',
-      {
-        properties: 'never',
-        ignoreDestructuring: true,
-        ignoreImports: true,
-      },
-    ],
+    'camelcase': 'error',
 
     // typescript
     '@typescript-eslint/explicit-member-accessibility': 'off',
