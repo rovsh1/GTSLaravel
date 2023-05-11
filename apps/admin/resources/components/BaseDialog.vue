@@ -78,7 +78,7 @@ watch(() => props.opened, (value) => {
   </Teleport>
 </template>
 <style lang="scss" scoped>
-@use '~resources/sass/variables' as vars;
+@use '~resources/sass/vendor/bootstrap/configuration' as bs;
 
 .dialog {
   --dialog-width: 40em;
@@ -116,7 +116,7 @@ watch(() => props.opened, (value) => {
   margin: 1em;
   border: 1px solid rgba(black, 17.5%);
   border-radius: 0.5em;
-  background-color: vars.$body-bg;
+  background-color: bs.$body-bg;
   box-shadow:
     0 3px 5px -1px rgba(black, 20%),
     0 6px 10px 0 rgba(black, 14%),
