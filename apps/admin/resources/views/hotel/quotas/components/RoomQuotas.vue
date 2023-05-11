@@ -13,19 +13,14 @@ import {
 import { formatDateToAPIDate } from '~lib/date'
 import { plural } from '~lib/plural'
 
+import OverlayLoading from '~components/OverlayLoading.vue'
+
 import DayMenu from './DayMenu/DayMenu.vue'
 import EditableCell from './EditableCell.vue'
 import RoomHeader from './RoomHeader.vue'
 
 import { useDayMenu } from './DayMenu/use-day-menu'
-import {
-  ActiveKey,
-  getActiveCellKey,
-  MonthlyQuota,
-  RoomQuota,
-  RoomQuotaStatus,
-  RoomRender,
-} from './lib'
+import { ActiveKey, getActiveCellKey, MonthlyQuota, RoomQuota, RoomQuotaStatus, RoomRender } from './lib'
 import { EditedQuota, QuotaRange, useQuotasTableRange } from './lib/use-range'
 
 const props = defineProps<{
@@ -122,6 +117,7 @@ const hotelRoomQuotasUpdateProps = ref<HotelRoomQuotasUpdateProps | null>(null)
 const {
   execute: executeHotelRoomQuotasUpdate,
   data: hotelRoomQuotasUpdateData,
+  isFetching: isHotelRoomQuotasUpdateFetching,
 } = useHotelRoomQuotasUpdate(hotelRoomQuotasUpdateProps)
 
 watch(hotelRoomQuotasUpdateData, (value) => {
@@ -189,7 +185,7 @@ const handleReleaseDaysValue: HandleValue<void> = (date, value) => {
 }
 </script>
 <template>
-  <div class="quotasRooms">
+  <div>
     <room-header
       :label="room.label"
       :custom-name="room.customName"
@@ -197,6 +193,7 @@ const handleReleaseDaysValue: HandleValue<void> = (date, value) => {
       :count="room.count"
     />
     <div class="quotasTables">
+      <OverlayLoading v-if="isHotelRoomQuotasUpdateFetching" />
       <div
         v-for="{ dailyQuota, monthKey, monthName, days, quotasCount } in monthlyQuotas"
         :key="monthKey"
@@ -392,6 +389,7 @@ const handleReleaseDaysValue: HandleValue<void> = (date, value) => {
 @use 'shared' as shared;
 
 .quotasTables {
+  position: relative;
   display: flex;
   flex-flow: column;
   gap: 1em;
