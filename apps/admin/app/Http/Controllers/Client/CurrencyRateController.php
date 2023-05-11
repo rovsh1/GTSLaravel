@@ -10,25 +10,12 @@ use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Grid\SearchForm;
-use App\Admin\Support\View\Layout as LayoutContract;
 
 class CurrencyRateController extends AbstractPrototypeController
 {
     protected function getPrototypeKey(): string
     {
         return 'client-currency-rate';
-    }
-
-    public function create(): LayoutContract
-    {
-        return parent::create()
-            ->view('client.currency-rate.create.create');
-    }
-
-    public function edit(int $id): LayoutContract
-    {
-        return parent::edit($id)
-            ->view('client.currency-rate.edit.edit');
     }
 
     protected function gridFactory(): GridContract
@@ -53,7 +40,7 @@ class CurrencyRateController extends AbstractPrototypeController
             'items' => Hotel::all()
         ])
             ->client('client_id', ['label' => 'Клиент', 'emptyItem' => '', 'required' => true])
-            ->select('currency_id', ['label' => 'Валюта', 'required' => true])
+            ->currency('currency_id', ['label' => 'Валюта', 'required' => true, 'emptyItem' => ''])
             ->number('rate', ['label' => 'Курс', 'required' => true])
             ->dateRange('period', ['label' => 'Период действия', 'required' => true]);
     }
