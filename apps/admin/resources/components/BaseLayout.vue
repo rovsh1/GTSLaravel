@@ -4,9 +4,10 @@ import { MaybeRef } from '@vueuse/core'
 import LoadingSpinner from '~components/LoadingSpinner.vue'
 
 withDefaults(defineProps<{
-  title: string
+  title?: string
   loading?: MaybeRef<boolean>
 }>(), {
+  title: undefined,
   loading: false,
 })
 </script>
@@ -15,8 +16,11 @@ withDefaults(defineProps<{
     <LoadingSpinner v-if="loading" class="loadingSpinner" />
     <template v-else>
       <div class="content-header">
-        <div v-if="title" class="title">
-          {{ title }}
+        <div v-if="title !== undefined || $slots['title']" class="title">
+          <slot v-if="$slots['title']" name="title" />
+          <template v-else-if="title !== undefined">
+            {{ title }}
+          </template>
         </div>
         <slot name="header-controls" />
       </div>
@@ -42,7 +46,7 @@ withDefaults(defineProps<{
 
 .content-header {
   display: flex;
-  gap: 0.5em;
+  gap: 1em;
   width: 100%;
 }
 

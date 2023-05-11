@@ -80,10 +80,10 @@ const handleFilters = (value: FiltersPayload) => {
 }
 </script>
 <template>
-  <BaseLayout
-    :title="hotel?.name ?? ''"
-    :loading="isHotelFetching || isHotelRoomsFetching"
-  >
+  <BaseLayout :loading="isHotelFetching || isHotelRoomsFetching">
+    <template #title>
+      <div class="title">{{ hotel?.name ?? '' }}</div>
+    </template>
     <template #header-controls>
       <BootstrapButton
         :label="editable ? 'Готово' : 'Редактировать'"
@@ -122,6 +122,12 @@ const handleFilters = (value: FiltersPayload) => {
   </BaseLayout>
 </template>
 <style lang="scss" scoped>
+@use '~resources/sass/vendor/bootstrap/configuration' as bs;
+
+.title {
+  padding-left: calc(#{bs.$form-select-padding-x} - 0.1em);
+}
+
 .quotasBody {
   display: flex;
   flex-flow: column;
