@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { computed, nextTick, ref, watch } from 'vue'
 import { VueDraggable } from 'vue-draggable-plus'
+import InlineSVG from 'vue-inline-svg'
 
 import dragIcon from '@mdi/svg/svg/drag.svg'
 import linkIcon from '@mdi/svg/svg/link.svg'
 import linkOffIcon from '@mdi/svg/svg/link-off.svg'
 import plusIcon from '@mdi/svg/svg/plus.svg'
 import trashIcon from '@mdi/svg/svg/trash-can-outline.svg'
-import { useArrayFind, useUrlSearchParams } from '@vueuse/core'
+import { useUrlSearchParams } from '@vueuse/core'
 import { z } from 'zod'
 
 import { HotelResponse, useHotelAPI } from '~api/hotel/get'
@@ -203,23 +204,13 @@ const deleteRoomImage = async (imageID: number) => {
   await fetchImages()
 }
 
-const getRoomImage = (id: number): RoomImageResponse | undefined => {
-  if (roomImages.value.length === 0) {
-    return undefined
-  }
-  const existRoomImage = useArrayFind(
-    roomImages,
-    (image) => image.image_id === id,
-  )
-  return existRoomImage.value
-}
+const isImageAttachedToRoom = (id: number): boolean =>
+  roomImages.value.find((image) => image.image_id === id) !== undefined
 
-const isNeedHideImage = (id: number): boolean => {
-  if (!roomID) {
-    return false
-  }
+const isImageVisible = (id: number): boolean => {
+  if (roomID === undefined) return true
 
-  return !getRoomImage(id)
+  return isImageAttachedToRoom(id) !== undefined
 }
 
 fetchRoom()
@@ -265,7 +256,7 @@ const title = computed<string>(() => {
         v-for="{ id, file: { url, name } } in images"
         :key="id"
         class="card"
-        :class="{ hidden: isNeedHideImage(id) }"
+        :class="{ hidden: !isImageVisible(id) }"
       >
         <div class="pictureContainer">
           <BootstrapButton
@@ -276,8 +267,13 @@ const title = computed<string>(() => {
             :only-icon="dragIcon"
             :loading="isHotelImagesReorderFetching"
           />
+          <div v-if="roomID !== undefined && !isImageAttachedToRoom(id)" class="pictureOverlay">
+            <InlineSVG :src="linkOffIcon" class="pictureOverlayIcon" />
+            Фото не привязано к номеру
+          </div>
           <ImageZoom
             class="card-img-top picture"
+            :class="{ isNotAttachedToRoom: roomID !== undefined && !isImageAttachedToRoom(id) }"
             :src="url"
             :alt="name"
           />
@@ -287,14 +283,16 @@ const title = computed<string>(() => {
             <div class="actionsStart">
               <template v-if="roomID">
                 <BootstrapButton
-                  v-if="!getRoomImage(id)"
+                  v-if="!isImageAttachedToRoom(id)"
                   severity="primary"
+                  variant="outline"
                   label="Привязать к номеру"
                   :start-icon="linkIcon"
                   @click="setImageToRoom(id)"
                 />
                 <BootstrapButton
                   v-else
+                  severity="warning"
                   label="Отвязать от номера"
                   :start-icon="linkOffIcon"
                   @click="deleteRoomImage(id)"
@@ -303,7 +301,7 @@ const title = computed<string>(() => {
             </div>
             <div class="actionsEnd">
               <BootstrapButton
-                v-if="!getRoomImage(id)"
+                v-if="roomID === undefined || !isImageAttachedToRoom(id)"
                 label="Удалить"
                 severity="danger"
                 :only-icon="trashIcon"
@@ -370,13 +368,31 @@ const title = computed<string>(() => {
   flex-grow: 1;
 }
 
+.pictureOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.pictureOverlayIcon {
+  width: 50%;
+}
+
 .picture {
   display: block;
   object-fit: cover;
   object-position: center;
   width: 100%;
   aspect-ratio: 4/3;
-  backdrop-filter: blur(10px);
+
+  &.isNotAttachedToRoom {
+    &:not(.medium-zoom-image--opened) {
+      opacity: 0.3;
+    }
+  }
 }
 
 .imageDragHandle {
