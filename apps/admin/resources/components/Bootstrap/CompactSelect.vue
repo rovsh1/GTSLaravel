@@ -60,17 +60,18 @@ const computedOptions = computed<SelectOption[]>(() => (props.allowDeselect ? [
 }
 
 .label {
-  --padding-block: 0.25em;
+  --padding-block: 0.1em;
   --padding-inline: 0.5em;
   --left: calc(#{bs.$form-select-padding-x} - var(--padding-inline) + 0.1em);
 
   position: absolute;
-  top: calc(-0.75em - var(--padding-block));
+  top: calc(-0.9em - var(--padding-block));
   left: var(--left);
   z-index: 1;
   overflow: hidden;
   max-width: calc(100% - var(--left));
   padding: var(--padding-block) var(--padding-inline);
+  border-radius: 0.5em;
   background-color: bs.$body-bg;
   font-size: 0.8em;
   text-overflow: ellipsis;
