@@ -13,8 +13,7 @@ import { HotelRoom } from '~api/hotel/rooms'
 import { getEachMonthInYear } from '~lib/date'
 
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
-
-import FiltersSelect from './FiltersSelect.vue'
+import CompactSelect from '~components/Bootstrap/CompactSelect.vue'
 
 import {
   AvailabilityValue,
@@ -139,14 +138,14 @@ const isStateChanged = computed<boolean>(() =>
 </script>
 <template>
   <div class="quotasFilters">
-    <FiltersSelect
+    <CompactSelect
       :value="selectedYear"
       :options="years"
       label="Год"
       :disabled="loading"
       @input="(value) => selectedYear = Number(value)"
     />
-    <FiltersSelect
+    <CompactSelect
       :options="months"
       label="Месяц"
       :value="selectedMonth"
@@ -154,14 +153,14 @@ const isStateChanged = computed<boolean>(() =>
       :disabled="loading"
       @input="(value) => selectedMonth = Number(value) as unknown as MonthNumber"
     />
-    <FiltersSelect
+    <CompactSelect
       :options="monthsCountOptions"
       label="Выводить по"
       :value="selectedMonthsCount"
       :disabled="loading"
       @input="(value) => selectedMonthsCount = Number(value) as unknown as MonthsCount"
     />
-    <FiltersSelect
+    <CompactSelect
       :options="availabilityOptions"
       label="Доступность"
       :value="selectedAvailabilityOption"
@@ -171,7 +170,7 @@ const isStateChanged = computed<boolean>(() =>
         selectedAvailabilityOption = value.toString() as unknown as AvailabilityValue
       }"
     />
-    <FiltersSelect
+    <CompactSelect
       :options="rooms"
       label="Номер"
       :value="selectedRoomID"
