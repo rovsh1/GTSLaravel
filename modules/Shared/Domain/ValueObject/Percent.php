@@ -28,7 +28,7 @@ class Percent implements ValueObjectInterface
      */
     private function validatePercent(int $percent): int
     {
-        if ($percent < 0 || $percent > 100) {
+        if ($percent < 0) {
             throw new \InvalidArgumentException("Invalid percent value [{$percent}]");
         }
         return $percent;
