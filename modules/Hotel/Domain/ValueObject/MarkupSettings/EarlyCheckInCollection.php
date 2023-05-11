@@ -15,7 +15,7 @@ class EarlyCheckInCollection extends Collection implements ValueObjectInterface,
 {
     public function toData(): array
     {
-        return $this->map(fn(Condition $condition) => $condition->toData())->all();
+        return $this->map(fn(Condition $condition) => $condition->toData())->values()->all();
     }
 
     public static function fromData(array $data): static

@@ -15,7 +15,7 @@ class DailyMarkupCollection extends Collection implements ValueObjectInterface, 
 {
     public function toData(): array
     {
-        return $this->map(fn(DailyMarkupOption $dailyMarkupPercent) => $dailyMarkupPercent->toData())->all();
+        return $this->map(fn(DailyMarkupOption $dailyMarkupPercent) => $dailyMarkupPercent->toData())->values()->all();
     }
 
     public static function fromData(array $data): static

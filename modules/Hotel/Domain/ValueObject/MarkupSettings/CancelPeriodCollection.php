@@ -15,7 +15,7 @@ class CancelPeriodCollection extends Collection implements ValueObjectInterface,
 {
     public function toData(): array
     {
-        return $this->map(fn(CancelPeriod $cancelPeriod) => $cancelPeriod->toData())->all();
+        return $this->map(fn(CancelPeriod $cancelPeriod) => $cancelPeriod->toData())->values()->all();
     }
 
     public static function fromData(array $data): static
