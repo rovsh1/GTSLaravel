@@ -186,12 +186,14 @@ const handleReleaseDaysValue: HandleValue<void> = (date, value) => {
 </script>
 <template>
   <div>
-    <room-header
-      :label="room.label"
-      :custom-name="room.customName"
-      :guests="room.guests"
-      :count="room.count"
-    />
+    <div class="roomHeader">
+      <room-header
+        :label="room.label"
+        :custom-name="room.customName"
+        :guests="room.guests"
+        :count="room.count"
+      />
+    </div>
     <div class="quotasTables">
       <OverlayLoading v-if="isHotelRoomQuotasUpdateFetching" />
       <div
@@ -385,8 +387,12 @@ const handleReleaseDaysValue: HandleValue<void> = (date, value) => {
   </div>
 </template>
 <style lang="scss" scoped>
-@use '~resources/sass/variables' as vars;
+@use '~resources/sass/vendor/bootstrap/configuration' as bs;
 @use 'shared' as shared;
+
+.roomHeader {
+  padding-left: bs.$form-select-padding-x;
+}
 
 .quotasTables {
   position: relative;
@@ -404,7 +410,7 @@ const handleReleaseDaysValue: HandleValue<void> = (date, value) => {
 th {
   position: sticky;
   left: 0;
-  background-color: vars.$body-bg;
+  background-color: bs.$body-bg;
   font-weight: normal;
   white-space: nowrap;
 }
@@ -420,7 +426,7 @@ th {
   text-align: center;
 
   &.isHoliday {
-    color: vars.$error;
+    color: bs.$error;
   }
 }
 

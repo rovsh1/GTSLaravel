@@ -21,7 +21,7 @@ defineProps<{
   </p>
 </template>
 <style lang="scss" scoped>
-@use '~resources/sass/variables' as vars;
+@use '~resources/sass/vendor/bootstrap/configuration' as bs;
 
 .roomTypeStats {
   display: grid;
@@ -37,7 +37,7 @@ defineProps<{
 .roomTypeStatValue {
   margin: unset;
   margin-right: 0.25em;
-  color: vars.$error;
+  color: bs.$error;
   font-weight: bold;
 }
 </style>
