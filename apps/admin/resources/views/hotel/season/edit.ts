@@ -10,10 +10,13 @@ import { requestInitialData } from '~lib/initial-data'
 
 import '~resources/views/main'
 
-const { hotelID, seasonID } = requestInitialData(z.object({
-  hotelID: z.number(),
-  seasonID: z.optional(z.number()),
-}))
+const { hotelID, seasonID } = requestInitialData(
+  'view-initial-data-hotel-season-edit',
+  z.object({
+    hotelID: z.number(),
+    seasonID: z.optional(z.number()),
+  }),
+)
 
 const handleChangeContract = async ($periodInput: JQuery<HTMLElement>, contractId: number): Promise<void> => {
   const { data: contract, execute: fetchContract } = useHotelContractGetAPI({ hotelID, contractID: contractId })

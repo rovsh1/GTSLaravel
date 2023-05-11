@@ -2,7 +2,8 @@
 
 @section('head-end')
     <script id="hotel-season-edit-initial-data">
-        window['view-initial-data'] = {{ Js::from([
+        window['view-initial-data-hotel-season-edit'] = {{
+            Js::from([
                 'hotelID' => $hotel->id,
                 'seasonID' => $season->id,
             ])
