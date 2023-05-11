@@ -14,7 +14,7 @@ import { getEachMonthInYear } from '~lib/date'
 
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 
-import FiltersSelect from '../FiltersSelect.vue'
+import FiltersSelect from './FiltersSelect.vue'
 
 import {
   AvailabilityValue,
