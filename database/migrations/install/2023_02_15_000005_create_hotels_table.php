@@ -20,7 +20,9 @@ return new class extends Migration {
             $table->double('address_lat', 11, 8)->nullable();
             $table->double('address_lon', 11, 8)->nullable();
             $table->integer('city_distance')->nullable();
-            $table->json('markup_settings')->nullable();
+//            $table->json('markup_settings')->nullable();
+            //@todo заменить на json когда будет норм версия базы на проде
+            $table->text('markup_settings')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
