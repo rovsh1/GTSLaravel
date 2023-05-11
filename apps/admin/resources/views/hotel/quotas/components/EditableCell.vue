@@ -81,6 +81,11 @@ const validateValue: GenericValidateFunction<typeof props.value | undefined> = (
 
 const { value: valueModel, errorMessage } = useField(() => props.value, validateValue)
 
+watch(valueModel, (value) => {
+  if (value === undefined) return
+  emit('input', parseValue(value))
+})
+
 const handleButtonClick = (event: MouseEvent) => {
   if (rangeMode.value) {
     event.preventDefault()
@@ -95,7 +100,7 @@ const handleButtonClick = (event: MouseEvent) => {
   emit('active-key', props.cellKey)
 }
 
-const reset = () => {
+const onPressEsc = () => {
   inputRef.value?.blur()
   emit('reset')
   emit('active-key', null)
@@ -105,12 +110,7 @@ const reset = () => {
   rangeMode.value = false
 }
 
-const onPressEsc = () => {
-  reset()
-}
-
 const onPressEnter = () => {
-  reset()
   if (
     errorMessage.value !== undefined
     || valueModel.value === undefined

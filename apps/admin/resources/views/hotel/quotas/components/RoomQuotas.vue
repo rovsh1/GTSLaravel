@@ -47,43 +47,49 @@ const dayCellClassNameByRoomQuotaStatus: Record<RoomQuotaStatus, string> = {
 const dayQuotaCellClassName = (status: RoomQuota['status']) =>
   ['dayQuotaCell', status !== null && dayCellClassNameByRoomQuotaStatus[status]]
 
+const allMonthsDailyQuotas = computed(() =>
+  props.monthlyQuotas.map(({ dailyQuota }) => dailyQuota).flat())
+
 const editedQuotasCount = ref<number | null>(null)
-const quotasCountRange = ref<QuotaRange>(null)
 const activeQuotasCountKey = ref<ActiveKey>(null)
 const editedQuotasCountInRange = ref<EditedQuota | null>(null)
 const {
-  setRange: setQuotaRange,
-  setPick: setQuotaPick,
-  isCellInRange: isQuotaCellInRange,
-  handleInput: handleQuotaInput,
-  showEdited: showEditedQuota,
-} = useQuotasTableRange({
-  editedRef: editedQuotasCount,
   rangeRef: quotasCountRange,
+  setRange: setQuotasCountRange,
+  setPick: setQuotasCountPick,
+  isCellInRange: isQuotasCountCellInRange,
+  handleInput: handleQuotasCountInput,
+  showEdited: showEditedQuotasCount,
+} = useQuotasTableRange({
+  roomQuotas: allMonthsDailyQuotas,
+  editedRef: editedQuotasCount,
   activeKey: activeQuotasCountKey,
   editedInRange: editedQuotasCountInRange,
 })
 
 const editedReleaseDays = ref<number | null>(null)
-const releaseDaysRange = ref<QuotaRange>(null)
 const activeReleaseDaysKey = ref<ActiveKey>(null)
 const editedReleaseDaysInRange = ref<EditedQuota | null>(null)
 const {
+  rangeRef: releaseDaysRange,
   setRange: setReleaseDaysRange,
   setPick: setReleaseDaysPick,
   isCellInRange: isReleaseDaysCellInRange,
   handleInput: handleReleaseDaysInput,
   showEdited: showEditedReleaseDays,
 } = useQuotasTableRange({
+  roomQuotas: allMonthsDailyQuotas,
   editedRef: editedReleaseDays,
-  rangeRef: releaseDaysRange,
   activeKey: activeReleaseDaysKey,
   editedInRange: editedReleaseDaysInRange,
 })
 
 const resetActiveKey = () => {
   activeQuotasCountKey.value = null
+  editedQuotasCount.value = null
+
   activeReleaseDaysKey.value = null
+  editedReleaseDays.value = null
 }
 
 const {
@@ -122,9 +128,12 @@ watch(hotelRoomQuotasUpdateData, (value) => {
   if (value === null || !value.success) return
   hotelRoomQuotasUpdateProps.value = null
   emit('update')
+  activeQuotasCountKey.value = null
+  activeReleaseDaysKey.value = null
 })
 
-const getQuotasCountPayload: HandleValue<HotelRoomQuotasCountUpdateProps> = (date, value) => {
+type GetQuotasCountPayload = HandleValue<HotelRoomQuotasCountUpdateProps>
+const getQuotasCountPayload: GetQuotasCountPayload = (date, value) => {
   const common = {
     kind: 'count' as const,
     hotelID: props.hotel.id,
@@ -151,7 +160,8 @@ const handleQuotaValue: HandleValue<void> = (date, value) => {
   executeHotelRoomQuotasUpdate()
 }
 
-const getReleaseDaysPayload: HandleValue<HotelRoomReleaseDaysUpdateProps> = (date, value) => {
+type GetReleaseDaysPayload = HandleValue<HotelRoomReleaseDaysUpdateProps>
+const getReleaseDaysPayload: GetReleaseDaysPayload = (date, value) => {
   const common = {
     kind: 'releaseDays' as const,
     hotelID: props.hotel.id,
@@ -241,42 +251,33 @@ const handleReleaseDaysValue: HandleValue<void> = (date, value) => {
                   :max="room.count"
                   :range-error="(min, max) => `Есть только ${max} таких комнат`"
                   :disabled="!editable"
-                  :in-range="isQuotaCellInRange(getActiveCellKey(key, room.id))"
+                  :in-range="isQuotasCountCellInRange(getActiveCellKey(key, room.id))"
                   @active-key="(value) => {
                     activeQuotasCountKey = value
                     activeReleaseDaysKey = null
                   }"
                   @reset="resetActiveKey"
-                  @range-key="(value) => setQuotaRange({
+                  @range-key="(value) => setQuotasCountRange({
                     dailyQuota,
                     roomTypeID: room.id,
                     activeKey: activeQuotasCountKey,
                     rangeKey: value,
                   })"
-                  @pick-key="(value) => setQuotaPick({
+                  @pick-key="(value) => setQuotasCountPick({
                     oldRange: quotasCountRange as QuotaRange,
-                    dailyQuota,
                     roomTypeID: room.id,
                     activeKey: activeQuotasCountKey,
                     pickKey: value,
                   })"
                   @value="value => handleQuotaValue(date, value)"
-                  @input="value => {
-                    handleQuotaInput(
-                      getActiveCellKey(key, room.id), value, quotasCountRange as QuotaRange,
-                    )
-                  }"
+                  @input="value => handleQuotasCountInput(getActiveCellKey(key, room.id), value)"
                   @context-menu="(element) => {
                     openDayMenu({
                       trigger: element, date, dayKey: key, roomTypeID: room.id,
                     })
                   }"
                 >
-                  <template
-                    v-if="showEditedQuota(
-                      getActiveCellKey(key, room.id), quotasCountRange as QuotaRange,
-                    )"
-                  >
+                  <template v-if="showEditedQuotasCount(getActiveCellKey(key, room.id))">
                     {{ editedQuotasCountInRange?.value }}
                   </template>
                   <template v-else-if="quota === null">
@@ -321,28 +322,19 @@ const handleReleaseDaysValue: HandleValue<void> = (date, value) => {
                   })"
                   @pick-key="(value) => setReleaseDaysPick({
                     oldRange: releaseDaysRange,
-                    dailyQuota,
                     roomTypeID: room.id,
                     activeKey: activeReleaseDaysKey,
                     pickKey: value,
                   })"
                   @value="value => handleReleaseDaysValue(date, value)"
-                  @input="value => {
-                    handleReleaseDaysInput(
-                      getActiveCellKey(key, room.id), value, releaseDaysRange,
-                    )
-                  }"
+                  @input="value => handleReleaseDaysInput(getActiveCellKey(key, room.id), value)"
                   @context-menu="(element) => {
                     openDayMenu({
                       trigger: element, date, dayKey: key, roomTypeID: room.id,
                     })
                   }"
                 >
-                  <template
-                    v-if="showEditedReleaseDays(
-                      getActiveCellKey(key, room.id), releaseDaysRange,
-                    )"
-                  >
+                  <template v-if="showEditedReleaseDays(getActiveCellKey(key, room.id))">
                     {{ editedReleaseDaysInRange?.value }}
                   </template>
                   <template v-else-if="releaseDays === null">
