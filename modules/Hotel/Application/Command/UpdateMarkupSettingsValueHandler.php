@@ -60,9 +60,7 @@ class UpdateMarkupSettingsValueHandler implements CommandHandlerInterface
                 'lateCheckOuts' => $settings->lateCheckOut(),
                 'cancelPeriod' => $settings->cancelPeriods()->get($keyParts[1]),
                 'cancelPeriods' => $settings->cancelPeriods(),
-                'cancelPeriods.dailyMarkup' => $settings->cancelPeriods()->get($keyParts[1])->dailyMarkups()->get(
-                    $keyParts[2]
-                ),
+                'cancelPeriods.dailyMarkup' => $settings->cancelPeriods()->get($keyParts[1])->dailyMarkups()->get($keyParts[2]),
                 'cancelPeriods.dailyMarkups' => $settings->cancelPeriods()->get($keyParts[1])->dailyMarkups(),
             };
             break;
