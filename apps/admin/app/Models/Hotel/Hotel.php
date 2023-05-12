@@ -92,9 +92,16 @@ class Hotel extends Model
         return $this->hasMany(Room::class);
     }
 
-    public function seasons(): HasMany
+    public function seasons(): BelongsToMany
     {
-        return $this->hasMany(Season::class);
+        return $this->belongsToMany(
+            Season::class,
+            'hotel_contracts',
+            'hotel_id',
+            'id',
+            'id',
+            'contract_id',
+        );
     }
 
     public function contacts(): HasMany

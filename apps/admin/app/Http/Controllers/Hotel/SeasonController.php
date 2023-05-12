@@ -35,7 +35,7 @@ class SeasonController extends Controller
     {
         $this->hotel($hotel);
 
-        $query = Season::whereHotelId($hotel->id);
+        $query = Season::whereHotelId($hotel->id)->withContractNumber();
         $grid = $this->gridFactory($hotel->id)->data($query);
 
         return Layout::title('Сезоны')

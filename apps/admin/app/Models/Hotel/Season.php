@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder|Season newQuery()
  * @method static Builder|Season query()
  * @method static Builder|Season whereHotelId(int $id)
+ * @method static Builder|Season withContractNumber()
  */
 class Season extends Model
 {
@@ -40,15 +41,13 @@ class Season extends Model
         'hotel_id' => 'int',
     ];
 
-    public static function booted()
+    public function scopeWithContractNumber(Builder $builder): void
     {
-        static::addGlobalScope('default', function (Builder $builder) {
-            $builder
-                ->addSelect('hotel_seasons.*')
-                ->join('hotel_contracts', 'hotel_contracts.id', '=', 'hotel_seasons.contract_id')
-                ->addSelect('hotel_contracts.status as contract_status')
-                ->addSelect('hotel_contracts.id as contract_number');
-        });
+        $builder
+            ->addSelect('hotel_seasons.*')
+            ->join('hotel_contracts', 'hotel_contracts.id', '=', 'hotel_seasons.contract_id')
+            ->addSelect('hotel_contracts.status as contract_status')
+            ->addSelect('hotel_contracts.id as contract_number');
     }
 
     public function contract(): BelongsTo
