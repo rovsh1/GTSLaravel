@@ -1,7 +1,5 @@
 import type { TinyMCE } from 'tinymce'
 
-export {}
-
 declare global {
   interface JQuery extends JQueryStatic {
     elementCity(options: any): JQuery<HTMLElement>
@@ -16,7 +14,7 @@ declare global {
 
     deleteButton(): void
 
-    daterangepicker(options: daterangepicker.Options): JQuery<HTMLElement>
+    multiselect(options: { popupCls: string }): JQuery<HTMLElement>
   }
 
   interface Window {
