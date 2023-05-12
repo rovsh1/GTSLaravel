@@ -2,7 +2,7 @@ import { computed, unref } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
 
-import { useAdminAPI } from '~api'
+import { BaseResponse, useAdminAPI } from '~api'
 
 type HotelImagesUploadProps = {
   hotelID: number
@@ -25,4 +25,4 @@ export const useHotelImagesUploadAPI = (props: MaybeRef<HotelImagesUploadProps |
       }
       return formData
     }))
-    .json<{ success: boolean }>()
+    .json<BaseResponse>()

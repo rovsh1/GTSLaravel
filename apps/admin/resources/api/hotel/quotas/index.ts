@@ -1,6 +1,6 @@
 import { APIDate } from '~api'
+import { HotelRoomID } from '~api/hotel'
 import { HotelID } from '~api/hotel/get'
-import { HotelRoomID } from '~api/hotel/room'
 
 export type HotelRoomQuotasUpdateBaseProps = {
   hotelID: HotelID

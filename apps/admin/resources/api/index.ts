@@ -14,6 +14,11 @@ export type DateResponse = string
 // @example '2023-04-23'
 export type APIDate = string
 
+export type BaseResponse = {
+  success: boolean
+  data: []
+}
+
 const useAPI = (base: string) => <T>(
   props: MaybeRef<T | null>,
   urlGetter: RefGetter<T, string>,

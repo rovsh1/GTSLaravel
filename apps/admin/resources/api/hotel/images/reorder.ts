@@ -2,7 +2,7 @@ import { computed } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
 
-import { useAdminAPI } from '~api'
+import { BaseResponse, useAdminAPI } from '~api'
 
 import { getNullableRef } from '~lib/vue'
 
@@ -26,4 +26,4 @@ export const useHotelImagesReorderAPI = (props: MaybeRef<HotelImagesReorderProps
         ({ imagesIDs }) => ({ indexes: imagesIDs }),
       ),
     )), 'application/json')
-    .json<{ success: boolean }>()
+    .json<BaseResponse>()

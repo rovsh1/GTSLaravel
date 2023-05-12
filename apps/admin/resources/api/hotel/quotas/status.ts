@@ -2,7 +2,7 @@ import { computed } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
 
-import { APIDate, useAdminAPI } from '~api'
+import { APIDate, BaseResponse, useAdminAPI } from '~api'
 
 import { getNullableRef } from '~lib/vue'
 
@@ -28,4 +28,4 @@ export const useHotelRoomQuotasStatusUpdate = (props: MaybeRef<HotelRoomQuotasSt
         ({ dates }) => ({ dates }),
       ),
     )), 'application/json')
-    .json<{ success: boolean }>()
+    .json<BaseResponse>()

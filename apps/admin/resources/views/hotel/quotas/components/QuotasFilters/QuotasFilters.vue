@@ -6,9 +6,9 @@ import { MaybeRef } from '@vueuse/core'
 import { isEqual } from 'lodash'
 import { DateTime } from 'luxon'
 
+import { HotelRoomID } from '~api/hotel'
 import { MonthNumber } from '~api/hotel/quotas/list'
-import { HotelRoomID } from '~api/hotel/room'
-import { HotelRoom } from '~api/hotel/rooms'
+import { HotelRoom } from '~api/hotel/room'
 
 import { getEachMonthInYear } from '~lib/date'
 
@@ -92,7 +92,7 @@ const availabilityOptions: AvailabilityOption[] = [
 
 const selectedAvailabilityOption = ref<AvailabilityOption['value'] | ''>(defaultState.availability)
 
-const rooms = computed(() => props.rooms.map(({ id, name, custom_name: customName }) => ({
+const rooms = computed(() => props.rooms.map(({ id, name, customName }) => ({
   value: id,
   label: `${name} (${customName})`,
 })))
