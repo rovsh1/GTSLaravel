@@ -29,8 +29,7 @@ const useAPI = (base: string) => <T>(
         }
         ctx.options.headers = {
           ...ctx.options.headers,
-          'Content-Type': 'application/json; charset=utf-8',
-          'Accept': 'application/json',
+          Accept: 'application/json',
         }
       },
       onFetchError: (ctx) => {

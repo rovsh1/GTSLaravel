@@ -1,7 +1,6 @@
 import CancellationConditions from '~resources/views/hotel/settings/CancellationConditions.vue'
 import MarkupConditions from '~resources/views/hotel/settings/MarkupConditions.vue'
 import ResidenceConditions from '~resources/views/hotel/settings/ResidenceConditions.vue'
-import RoomMarkups from '~resources/views/hotel/settings/RoomMarkups.vue'
 
 import { createVueInstance } from '~lib/vue'
 
@@ -22,10 +21,10 @@ createVueInstance({
   rootContainer: '#markup-conditions',
 })
 
-createVueInstance({
-  rootComponent: RoomMarkups,
-  rootContainer: '#room-markups',
-})
+// createVueInstance({
+//   rootComponent: RoomMarkups,
+//   rootContainer: '#room-markups',
+// })
 
 $((): void => {
   $('#btn-rules-add').click(function (e: any) {

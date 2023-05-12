@@ -31,17 +31,6 @@ class Room extends Model
         'markup_settings',
     ];
 
-    protected $casts = [
-        'hotel_id' => 'int',
-        'name_id' => 'int',
-        'type_id' => 'int',
-        'rooms_number' => 'int',
-        'guests_number' => 'int',
-        'square' => 'int',
-        'position' => 'int',
-        'markup_settings' => 'array'
-    ];
-
     public function displayName(): Attribute
     {
         return Attribute::get(fn() => "{$this->name} ($this->custom_name)");

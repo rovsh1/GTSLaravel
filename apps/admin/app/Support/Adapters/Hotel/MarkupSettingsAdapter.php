@@ -13,11 +13,6 @@ class MarkupSettingsAdapter extends AbstractHotelAdapter
         return $this->request('getHotelMarkupSettings', ['hotel_id' => $hotelId, 'room_id' => $roomId]);
     }
 
-    public function getRoomMarkupSettings(int $hotelId, int $roomId): mixed
-    {
-        return $this->request('getRoomMarkupSettings', ['hotel_id' => $hotelId, 'room_id' => $roomId]);
-    }
-
     public function updateMarkupSettings(int $hotelId, string $key, mixed $value): mixed
     {
         return $this->request('updateMarkupSettingsValue', [
@@ -46,5 +41,15 @@ class MarkupSettingsAdapter extends AbstractHotelAdapter
             'value' => $index,
             'action' => 'deleteFromCollection'
         ]);
+    }
+
+    public function getRoomMarkupSettings(int $hotelId, int $roomId): mixed
+    {
+        return $this->request('getRoomMarkupSettings', ['hotel_id' => $hotelId, 'room_id' => $roomId]);
+    }
+
+    public function updateRoomMarkupSettings(int $roomId, string $key, int $value): mixed
+    {
+        return $this->request('updateRoomMarkupSettings', ['room_id' => $roomId, 'key' => $key, 'value' => $value]);
     }
 }

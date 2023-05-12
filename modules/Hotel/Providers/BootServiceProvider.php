@@ -35,5 +35,9 @@ class BootServiceProvider extends ServiceProvider
             Domain\Repository\MarkupSettingsRepositoryInterface::class,
             Infrastructure\Repository\MarkupSettingsRepository::class
         );
+        $this->app->singleton(
+            Domain\Repository\RoomMarkupSettingsRepositoryInterface::class,
+            Infrastructure\Repository\RoomMarkupSettingsRepository::class
+        );
     }
 }

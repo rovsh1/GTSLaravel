@@ -4,6 +4,7 @@ namespace App\Admin\Http\Controllers\Hotel;
 
 use App\Admin\Exceptions\FormSubmitFailedException;
 use App\Admin\Http\Controllers\Controller;
+use App\Admin\Http\Resources\Room as RoomResource;
 use App\Admin\Models\Hotel\Hotel;
 use App\Admin\Models\Hotel\Reference\BedType;
 use App\Admin\Models\Hotel\Reference\RoomName;
@@ -124,7 +125,7 @@ class RoomController extends Controller
 
     public function get(Request $request, Hotel $hotel, Room $room): JsonResponse
     {
-        return response()->json($room);
+        return response()->json(RoomResource::make($room));
     }
 
     private function formFactory(): FormContract

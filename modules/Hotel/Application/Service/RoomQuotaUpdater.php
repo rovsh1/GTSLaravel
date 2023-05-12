@@ -5,10 +5,10 @@ namespace Module\Hotel\Application\Service;
 use Carbon\CarbonPeriod;
 use Custom\Framework\Contracts\Bus\CommandBusInterface;
 use Custom\Framework\Contracts\Bus\QueryBusInterface;
-use Module\Hotel\Application\Command\CloseRoomQuota;
-use Module\Hotel\Application\Command\OpenRoomQuota;
-use Module\Hotel\Application\Command\ResetRoomQuota;
-use Module\Hotel\Application\Command\UpdateRoomQuota;
+use Module\Hotel\Application\Command\Room\Quota\Close;
+use Module\Hotel\Application\Command\Room\Quota\Open;
+use Module\Hotel\Application\Command\Room\Quota\Reset;
+use Module\Hotel\Application\Command\Room\Quota\Update;
 use Module\Hotel\Application\Query\GetRoomById;
 use Module\Hotel\Domain\Exception\Room\RoomNotFound;
 
@@ -24,7 +24,7 @@ class RoomQuotaUpdater
     {
         $this->checkRoomExistCallback(
             roomId: $roomId,
-            callback: fn() => $this->commandBus->execute(new UpdateRoomQuota($roomId, $period, $quota, $releaseDays))
+            callback: fn() => $this->commandBus->execute(new Update($roomId, $period, $quota, $releaseDays))
         );
     }
 
@@ -32,7 +32,7 @@ class RoomQuotaUpdater
     {
         $this->checkRoomExistCallback(
             roomId: $roomId,
-            callback: fn() => $this->commandBus->execute(new OpenRoomQuota($roomId, $period))
+            callback: fn() => $this->commandBus->execute(new Open($roomId, $period))
         );
     }
 
@@ -40,7 +40,7 @@ class RoomQuotaUpdater
     {
         $this->checkRoomExistCallback(
             roomId: $roomId,
-            callback: fn() => $this->commandBus->execute(new CloseRoomQuota($roomId, $period))
+            callback: fn() => $this->commandBus->execute(new Close($roomId, $period))
         );
     }
 
@@ -48,7 +48,7 @@ class RoomQuotaUpdater
     {
         $this->checkRoomExistCallback(
             roomId: $roomId,
-            callback: fn() => $this->commandBus->execute(new ResetRoomQuota($roomId, $period))
+            callback: fn() => $this->commandBus->execute(new Reset($roomId, $period))
         );
     }
 

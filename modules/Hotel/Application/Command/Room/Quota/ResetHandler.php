@@ -1,19 +1,19 @@
 <?php
 
-namespace Module\Hotel\Application\Command;
+namespace Module\Hotel\Application\Command\Room\Quota;
 
 use Custom\Framework\Contracts\Bus\CommandHandlerInterface;
 use Custom\Framework\Contracts\Bus\CommandInterface;
 use Module\Hotel\Domain\Repository\RoomQuotaRepositoryInterface;
 
-class CloseRoomQuotaHandler implements CommandHandlerInterface
+class ResetHandler implements CommandHandlerInterface
 {
     public function __construct(
         private RoomQuotaRepositoryInterface $quotaRepository
     ) {}
 
-    public function handle(CommandInterface|CloseRoomQuota $command): void
+    public function handle(CommandInterface|Reset $command): void
     {
-        $this->quotaRepository->closeRoomQuota($command->roomId, $command->period);
+        $this->quotaRepository->resetRoomQuota($command->roomId, $command->period);
     }
 }

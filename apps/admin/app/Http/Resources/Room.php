@@ -20,7 +20,8 @@ class Room extends JsonResource
             'name' => $this->name,
             'custom_name' => $this->custom_name,
             'rooms_number' => $this->rooms_number,
-            'guests_number' => $this->guests_number
+            'guests_number' => $this->guests_number,
+            'images' => $this->imageFiles
         ];
     }
 }

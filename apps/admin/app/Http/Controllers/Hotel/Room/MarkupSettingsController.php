@@ -46,10 +46,11 @@ class MarkupSettingsController extends Controller
 
         $form->trySubmit(route('hotels.rooms.settings.edit', ['hotel' => $hotel->id, 'room' => $room->id]));
 
-        dd($form->getData());
-        MarkupSettingsAdapter::updateMarkupSettings($hotel->id, '', $form->getData());
+        foreach ($form->getData() as $param => $value) {
+            MarkupSettingsAdapter::updateRoomMarkupSettings($hotel->id, $param, $value ?? 0);
+        }
 
-        return redirect()->route('hotels.settings.index');
+        return redirect()->route('hotels.settings.index', $hotel);
     }
 
     protected function formFactory(): FormContract

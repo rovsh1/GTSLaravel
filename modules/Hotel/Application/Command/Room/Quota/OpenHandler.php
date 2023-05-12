@@ -1,18 +1,18 @@
 <?php
 
-namespace Module\Hotel\Application\Command;
+namespace Module\Hotel\Application\Command\Room\Quota;
 
 use Custom\Framework\Contracts\Bus\CommandHandlerInterface;
 use Custom\Framework\Contracts\Bus\CommandInterface;
 use Module\Hotel\Domain\Repository\RoomQuotaRepositoryInterface;
 
-class OpenRoomQuotaHandler implements CommandHandlerInterface
+class OpenHandler implements CommandHandlerInterface
 {
     public function __construct(
         private RoomQuotaRepositoryInterface $quotaRepository
     ) {}
 
-    public function handle(CommandInterface|OpenRoomQuota $command): void
+    public function handle(CommandInterface|Open $command): void
     {
         $this->quotaRepository->openRoomQuota($command->roomId, $command->period);
     }

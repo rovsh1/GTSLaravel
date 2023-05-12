@@ -36,6 +36,10 @@
 
         <div class="mt-3" id="markup-conditions"></div>
 
-        <div class="mt-3" id="room-markups"></div>
+        <div class="mt-3" id="room-markups">
+            <x-ui.card :collapsable="true" header="Номера" class="card-grid">
+                @include('hotel.settings.components.room-markups')
+            </x-ui.card>
+        </div>
 
 @endsection
