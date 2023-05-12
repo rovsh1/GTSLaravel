@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { VueDraggable } from 'vue-draggable-plus'
 import InlineSVG from 'vue-inline-svg'
 
@@ -184,12 +184,6 @@ const {
   isFetching: isHotelImagesReorderFetching,
 } = useHotelImagesReorderAPI(hotelImagesReorderProps)
 
-const handleDraggableUpdate = () => {
-  nextTick(() => {
-    executeHotelImagesReorder()
-  })
-}
-
 const attachImageToRoom = async (imageID: number) => {
   if (roomID === undefined) return
   await useHotelRoomAttachImageAPI({ hotelID, roomID, imageID })
@@ -284,7 +278,7 @@ const isRefetching = computed(() => (
       class="images"
       handle="[data-draggable-handle]"
       animation="300"
-      @update="handleDraggableUpdate"
+      @update="executeHotelImagesReorder"
     >
       <OverlayLoading v-if="isRefetching" />
       <div
