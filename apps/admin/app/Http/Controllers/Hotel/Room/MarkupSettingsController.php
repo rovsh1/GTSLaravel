@@ -33,7 +33,7 @@ class MarkupSettingsController extends Controller
                 'form' => $this->formFactory()
                     ->method('put')
                     ->action(
-                        route('hotels.rooms.settings.update', ['hotel' => $hotel->id, 'room' => $room->id])
+                        route('hotels.rooms.settings.update', [$hotel, $room])
                     )
                     ->data($roomSettings)
             ]);
@@ -44,10 +44,10 @@ class MarkupSettingsController extends Controller
         $form = $this->formFactory()
             ->method('put');
 
-        $form->trySubmit(route('hotels.rooms.settings.edit', ['hotel' => $hotel->id, 'room' => $room->id]));
+        $form->trySubmit(route('hotels.rooms.settings.edit', [$hotel, $room]));
 
         foreach ($form->getData() as $param => $value) {
-            MarkupSettingsAdapter::updateRoomMarkupSettings($hotel->id, $param, $value ?? 0);
+            MarkupSettingsAdapter::updateRoomMarkupSettings($room->id, $param, $value ?? 0);
         }
 
         return redirect()->route('hotels.settings.index', $hotel);

@@ -17,9 +17,9 @@ class RoomMarkupSettingsRepository implements RoomMarkupSettingsRepositoryInterf
 
     public function get(int $id): MarkupSettings
     {
-        $hotel = Room::find($id);
+        $room = Room::find($id);
 
-        return $this->deserializeSettings($hotel);
+        return $this->deserializeSettings($room);
     }
 
     public function update(MarkupSettings $markupSettings): bool

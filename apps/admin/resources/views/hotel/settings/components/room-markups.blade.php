@@ -17,11 +17,11 @@
                 <a href="{{ route('hotels.rooms.settings.edit', [$model, $room]) }}"><i class="icon">edit</i></a>
             </td>
             <td class="column-text">{{ $room->display_name }}</td>
-            <td class="column-number">15</td>
-            <td class="column-number">15</td>
-            <td class="column-number">15</td>
-            <td class="column-number">15</td>
-            <td class="column-number">15</td>
+            <td class="column-number">{{ $room->markup_settings?->discount ?? 0 }}</td>
+            <td class="column-number">{{ $room->markup_settings?->individual ?? 0 }}</td>
+            <td class="column-number">{{ $room->markup_settings?->OTA ?? 0 }}</td>
+            <td class="column-number">{{ $room->markup_settings?->TA ?? 0 }}</td>
+            <td class="column-number">{{ $room->markup_settings?->TO ?? 0 }}</td>
         </tr>
     @endforeach
     </tbody>

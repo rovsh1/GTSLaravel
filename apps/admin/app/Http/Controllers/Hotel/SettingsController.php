@@ -4,7 +4,6 @@ namespace App\Admin\Http\Controllers\Hotel;
 
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Models\Hotel\Hotel;
-use App\Admin\Models\Hotel\Room;
 use App\Admin\Models\Hotel\Rule;
 use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Grid;
