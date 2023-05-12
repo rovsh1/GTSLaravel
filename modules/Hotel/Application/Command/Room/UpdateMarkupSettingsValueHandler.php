@@ -5,8 +5,6 @@ namespace Module\Hotel\Application\Command\Room;
 use Custom\Framework\Contracts\Bus\CommandHandlerInterface;
 use Custom\Framework\Contracts\Bus\CommandInterface;
 use Module\Hotel\Domain\Repository\RoomMarkupSettingsRepositoryInterface;
-use Module\Shared\Domain\Entity\EntityInterface;
-use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 
 class UpdateMarkupSettingsValueHandler implements CommandHandlerInterface
 {
@@ -18,20 +16,15 @@ class UpdateMarkupSettingsValueHandler implements CommandHandlerInterface
     {
         $settings = $this->repository->get($command->id);
 
+        $reflection = new \ReflectionClass($settings);
+        $settingsProps = collect($reflection->getProperties())->map->name->all();
+        if (!in_array($command->key, $settingsProps)) {
+            throw new \InvalidArgumentException("Unknown key [{$command->key}] for room markup settings");
+        }
 
+        $paramName = $command->key;
+        $settings->$paramName()->setValue($command->value);
 
         $this->repository->update($settings);
-    }
-
-    private function setByObjectKey(ValueObjectInterface|EntityInterface $object, string $key, mixed $value): void
-    {
-        $setterMethod = 'set' . \Str::ucfirst($key);
-        if (method_exists($object, $setterMethod)) {
-            $object->$setterMethod($value);
-        } elseif (method_exists($object, 'setValue')) {
-            $object->setValue($value);
-        } else {
-            throw new \InvalidArgumentException("Can not update value for key [$key]");
-        }
     }
 }

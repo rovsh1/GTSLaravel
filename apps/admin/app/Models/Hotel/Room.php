@@ -90,11 +90,6 @@ class Room extends Model
         return Attribute::get(fn() => $this->images()->first() !== null ? HotelImage::find($this->images()->first()->file_guid) : null);
     }
 
-    public function imageFiles(): Attribute
-    {
-        return Attribute::get(fn() => $this->images->map(fn(Image $image) => HotelImage::find($image->file_guid)));
-    }
-
     public function images(): BelongsToMany
     {
         return $this->belongsToMany(

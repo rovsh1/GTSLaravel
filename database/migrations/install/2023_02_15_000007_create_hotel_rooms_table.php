@@ -21,6 +21,7 @@ return new class extends Migration {
             //            $table->json('markup_settings')->nullable();
             //@todo заменить на json когда будет норм версия базы на проде
             $table->text('markup_settings')->nullable();
+            $table->timestamps();
 
             $table->foreign('hotel_id')
                 ->references('id')
