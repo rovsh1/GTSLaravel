@@ -52,7 +52,11 @@ const {
   isFetching: isImagesFetching,
 } = useHotelImagesListAPI({ hotelID })
 
-const images = computed(() => imagesData.value)
+const images = ref<UseHotelImages>(null)
+
+watch(imagesData, (value) => {
+  images.value = value
+})
 
 const hotelRoomImagesProps = computed(() =>
   (roomID === undefined ? null : { hotelID, roomID }))
@@ -180,7 +184,7 @@ const {
   isFetching: isHotelImagesReorderFetching,
 } = useHotelImagesReorderAPI(hotelImagesReorderProps)
 
-const onDraggableUpdate = () => {
+const handleDraggableUpdate = () => {
   nextTick(() => {
     executeHotelImagesReorder()
   })
@@ -280,7 +284,7 @@ const isRefetching = computed(() => (
       class="images"
       handle="[data-draggable-handle]"
       animation="300"
-      @update="onDraggableUpdate"
+      @update="handleDraggableUpdate"
     >
       <OverlayLoading v-if="isRefetching" />
       <div

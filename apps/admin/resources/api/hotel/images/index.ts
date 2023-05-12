@@ -1,6 +1,7 @@
 import { HotelID } from '~api/hotel/get'
 
 export type HotelImageID = number
+export type HotelImageIndex = number
 
 export type FileResponse = {
   guid: string
@@ -13,7 +14,7 @@ export type HotelImageResponse = {
   id: HotelImageID
   hotel_id: HotelID
   title: string | null
-  order: number
+  index: HotelImageIndex
   file: FileResponse
 }
 
@@ -21,7 +22,7 @@ export type HotelImage = {
   id: HotelImageID
   hotelID: HotelID
   title: string | null
-  order: number
+  index: HotelImageIndex
   file: FileResponse
 }
 
@@ -29,12 +30,12 @@ export const mapHotelImageResponseToImageResponse = ({
   id,
   hotel_id: hotelID,
   title,
-  order,
+  index,
   file,
 }: HotelImageResponse): HotelImage => ({
   id,
   hotelID,
   title,
-  order,
+  index,
   file,
 })
