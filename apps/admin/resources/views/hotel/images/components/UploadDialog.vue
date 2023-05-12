@@ -115,7 +115,7 @@ const handleFileInput = async (event: Event) => {
         <input
           :id="instanceID"
           type="file"
-          accept="image/jpeg"
+          accept="image/jpg,image/jpeg,image/png"
           multiple
           :disabled="loading as boolean"
           class="form-control"

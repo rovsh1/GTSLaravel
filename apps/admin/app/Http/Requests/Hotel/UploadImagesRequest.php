@@ -17,7 +17,7 @@ class UploadImagesRequest extends FormRequest
     {
         return [
             'files' => ['required', 'array'],
-            'files.*' => 'mimetypes:image/*',
+            'files.*' => 'mimetypes:image/jpg,image/jpeg,image/png',
             'room_id' => ['nullable', 'numeric']
         ];
     }
