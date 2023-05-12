@@ -2,8 +2,8 @@ import { DateTime, Interval } from 'luxon'
 
 import { FiltersPayload } from '~resources/views/hotel/quotas/components/QuotasFilters/lib'
 
+import { HotelRoomID } from '~api/hotel'
 import { HotelQuotaID, QuotaStatus, UseHotelQuota } from '~api/hotel/quotas/list'
-import { HotelRoomID } from '~api/hotel/room'
 import { UseHotelRooms } from '~api/hotel/rooms'
 
 import { getEachDayInMonth, isBusinessDay } from '~lib/date'
@@ -82,9 +82,9 @@ export const getRoomQuotas: GetRoomQuotas = (params) => {
     const {
       id,
       name: label,
-      custom_name: customName,
-      guests_number: guests,
-      rooms_number: count,
+      customName,
+      guestsNumber: guests,
+      roomsNumber: count,
     } = room
 
     const startDate = DateTime.fromFormat(getMonthKey(year, month), monthKeyFormat)

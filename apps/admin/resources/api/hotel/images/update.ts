@@ -1,8 +1,8 @@
 import { MaybeRef } from '@vueuse/core'
 
-import { useAdminAPI } from '~api'
+import { BaseResponse, useAdminAPI } from '~api'
+import { HotelRoomID } from '~api/hotel'
 import { HotelID } from '~api/hotel/get'
-import { HotelRoomID } from '~api/hotel/room'
 
 import { HotelImageID } from '.'
 
@@ -12,12 +12,14 @@ type HotelRoomImageUpdateProps = {
   imageID: HotelImageID
 }
 
-export const useHotelRoomImageCreateAPI = (props: MaybeRef<HotelRoomImageUpdateProps>) =>
+export const useHotelRoomAttachImageAPI = (props: MaybeRef<HotelRoomImageUpdateProps | null>) =>
   useAdminAPI(props, ({ hotelID, roomID, imageID }) =>
     `/hotels/${hotelID}/rooms/${roomID}/images/${imageID}/set`)
     .post()
+    .json<BaseResponse>()
 
-export const useHotelRoomImageDeleteAPI = (props: MaybeRef<HotelRoomImageUpdateProps>) =>
+export const useHotelRoomDetachImageAPI = (props: MaybeRef<HotelRoomImageUpdateProps | null>) =>
   useAdminAPI(props, ({ hotelID, roomID, imageID }) =>
     `/hotels/${hotelID}/rooms/${roomID}/images/${imageID}/unset`)
     .post()
+    .json<BaseResponse>()

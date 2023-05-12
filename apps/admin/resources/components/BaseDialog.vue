@@ -38,7 +38,7 @@ watch(() => props.opened, (value) => {
 </script>
 <template>
   <Teleport to="body">
-    <BodyScrollLock :value="opened" class="dialog" :class="{ opened }">
+    <BodyScrollLock :value="opened" class="dialog" :class="{ opened }" v-bind="$attrs">
       <div class="inner">
         <OnClickOutside class="body" @trigger="close">
           <template v-if="$slots['title']">
@@ -82,6 +82,9 @@ watch(() => props.opened, (value) => {
 
 .dialog {
   --dialog-width: 40em;
+  --part-padding: #{bs.$modal-inner-padding};
+  --body-border: 1px solid #{rgba(black, 17.5%)};
+  --body-margin: 1em;
 
   position: fixed;
   inset: 0;
@@ -113,9 +116,9 @@ watch(() => props.opened, (value) => {
   @extend %opened-body;
 
   width: var(--dialog-width);
-  margin: 1em;
-  border: 1px solid rgba(black, 17.5%);
-  border-radius: 0.5em;
+  margin: var(--body-margin);
+  border: var(--body-border);
+  border-radius: bs.$modal-content-border-radius;
   background-color: bs.$body-bg;
   box-shadow:
     0 3px 5px -1px rgba(black, 20%),
@@ -126,7 +129,7 @@ watch(() => props.opened, (value) => {
 }
 
 %part {
-  padding: 1em;
+  padding: var(--part-padding);
 }
 
 .title {

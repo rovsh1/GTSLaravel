@@ -3,12 +3,12 @@ import { computed, ref, watch } from 'vue'
 
 import { flip, useFloating } from '@floating-ui/vue'
 
+import { HotelRoomID } from '~api/hotel'
 import { HotelID } from '~api/hotel/get'
 import {
   HotelRoomQuotasStatusUpdateKind,
   HotelRoomQuotasStatusUpdateProps, useHotelRoomQuotasStatusUpdate,
 } from '~api/hotel/quotas/status'
-import { HotelRoomID } from '~api/hotel/room'
 
 import { formatDateToAPIDate } from '~lib/date'
 

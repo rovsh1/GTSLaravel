@@ -1,6 +1,6 @@
 import { Ref, ref, watch } from 'vue'
 
-import { HotelRoomID } from '~api/hotel/room'
+import { HotelRoomID } from '~api/hotel'
 
 import { ActiveKey, getActiveCellKey, RoomQuota } from '.'
 

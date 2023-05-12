@@ -11,14 +11,22 @@ import trashIcon from '@mdi/svg/svg/trash-can-outline.svg'
 import { useUrlSearchParams } from '@vueuse/core'
 import { z } from 'zod'
 
-import { HotelResponse, useHotelAPI } from '~api/hotel/get'
-import { HotelImageResponse } from '~api/hotel/images'
-import { RoomImageResponse, useHotelImagesListAPI, useHotelRoomImagesAPI } from '~api/hotel/images/list'
+import AttachmentDialog from '~resources/views/hotel/images/components/AttachmentDialog.vue'
+import { AttachmentDialogImageProp, isImageAttachedToRoom } from '~resources/views/hotel/images/components/lib'
+
+import { HotelID, HotelResponse, useHotelAPI } from '~api/hotel/get'
+import { FileResponse, HotelImage, HotelImageID } from '~api/hotel/images'
+import {
+  UseHotelImages,
+  useHotelImagesListAPI,
+  useHotelRoomImagesAPI,
+} from '~api/hotel/images/list'
 import { useHotelImageRemoveAPI } from '~api/hotel/images/remove'
 import { useHotelImagesReorderAPI } from '~api/hotel/images/reorder'
-import { useHotelRoomImageCreateAPI, useHotelRoomImageDeleteAPI } from '~api/hotel/images/update'
+import { useHotelRoomAttachImageAPI, useHotelRoomDetachImageAPI } from '~api/hotel/images/update'
 import { useHotelImagesUploadAPI } from '~api/hotel/images/upload'
-import { HotelRoomResponse, useHotelRoomAPI } from '~api/hotel/room'
+import { HotelRoom, useHotelRoomAPI } from '~api/hotel/room'
+import { UseHotelRooms, useHotelRoomsListAPI } from '~api/hotel/rooms'
 
 import { injectInitialData } from '~lib/vue'
 
@@ -28,6 +36,7 @@ import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButt
 import { showToast } from '~components/Bootstrap/BootstrapToast'
 import ImageZoom from '~components/ImageZoom.vue'
 import LoadingSpinner from '~components/LoadingSpinner.vue'
+import OverlayLoading from '~components/OverlayLoading.vue'
 
 import UploadDialog from './components/UploadDialog.vue'
 
@@ -43,11 +52,7 @@ const {
   isFetching: isImagesFetching,
 } = useHotelImagesListAPI({ hotelID })
 
-const images = ref<HotelImageResponse[] | null>(null)
-
-watch(imagesData, (value) => {
-  images.value = value
-})
+const images = computed(() => imagesData.value)
 
 const hotelRoomImagesProps = computed(() =>
   (roomID === undefined ? null : { hotelID, roomID }))
@@ -58,10 +63,7 @@ const {
   isFetching: isRoomImagesFetching,
 } = useHotelRoomImagesAPI(hotelRoomImagesProps)
 
-const roomImages = computed<RoomImageResponse[]>(() => {
-  if (roomImagesData.value === null) return []
-  return roomImagesData.value
-})
+const roomImages = computed<UseHotelImages>(() => roomImagesData.value)
 
 const {
   execute: fetchHotel,
@@ -82,7 +84,7 @@ const {
   isFetching: isRoomFetching,
 } = useHotelRoomAPI(hotelRoomProps)
 
-const room = computed<HotelRoomResponse | null>(() => roomData.value)
+const room = computed<HotelRoom | null>(() => roomData.value)
 
 const isUploadDialogOpened = ref(false)
 
@@ -120,7 +122,7 @@ const imageIDToRemove = ref<number | null>(null)
 
 const isRemoveImagePromptOpened = ref(false)
 
-const imageToRemove = computed<HotelImageResponse | null>(() => {
+const imageToRemove = computed<HotelImage | null>(() => {
   if (images.value === null) return null
   if (imageIDToRemove.value === null) return null
   const found = images.value.find(({ id }) => id === imageIDToRemove.value)
@@ -184,49 +186,77 @@ const onDraggableUpdate = () => {
   })
 }
 
-const setImageToRoom = async (imageID: number) => {
-  if (!roomID) {
-    return
-  }
-  await useHotelRoomImageCreateAPI({ hotelID, roomID, imageID })
+const attachImageToRoom = async (imageID: number) => {
+  if (roomID === undefined) return
+  await useHotelRoomAttachImageAPI({ hotelID, roomID, imageID })
     .execute()
   await fetchRoomImages()
   await fetchImages()
 }
 
 const deleteRoomImage = async (imageID: number) => {
-  if (!roomID) {
-    return
-  }
-  await useHotelRoomImageDeleteAPI({ hotelID, roomID, imageID })
+  if (roomID === undefined) return
+  await useHotelRoomDetachImageAPI({ hotelID, roomID, imageID })
     .execute()
   await fetchRoomImages()
   await fetchImages()
 }
 
-const isImageAttachedToRoom = (id: number): boolean =>
-  roomImages.value.find((image) => image.image_id === id) !== undefined
-
-const isImageVisible = (id: number): boolean => {
-  if (roomID === undefined) return true
-
-  return isImageAttachedToRoom(id) !== undefined
+const isImageVisible = (id: HotelImageID): boolean => {
+  if (roomID === undefined || room.value === null) return true
+  return isImageAttachedToRoom(id, room.value) !== undefined
 }
+
+const {
+  data: hotelRoomsData,
+  execute: fetchHotelRooms,
+  isFetching: isHotelRoomsFetching,
+} = useHotelRoomsListAPI({ hotelID })
+
+const hotelRooms = computed<UseHotelRooms>(() => hotelRoomsData.value)
 
 fetchRoom()
 fetchRoomImages()
 fetchHotel()
 fetchImages()
 
+if (roomID === undefined) {
+  fetchHotelRooms()
+}
+
+const attachmentDialogImage = ref<AttachmentDialogImageProp | null>(null)
+
+const isAttachmentDialogOpened = ref(false)
+
+type OpenAttachmentDialogProps = { id: HotelImageID } & Pick<FileResponse, 'url' | 'name'>
+const openAttachmentDialog = ({ id, url, name }: OpenAttachmentDialogProps) => {
+  isAttachmentDialogOpened.value = true
+  attachmentDialogImage.value = { id, src: url, alt: name }
+}
+
+const closeAttachmentDialog = () => {
+  isAttachmentDialogOpened.value = false
+}
+
 const title = computed<string>(() => {
   if (hotel.value === null) return ''
   const { name: hotelLabel } = hotel.value
   if (roomID && room.value) {
-    const { custom_name: roomLabel } = room.value
-    return `${hotelLabel} — ${roomLabel}`
+    const { customName } = room.value
+    return `${hotelLabel} — ${customName}`
   }
   return hotelLabel
 })
+
+const isInitialFetching = computed(() => (
+  (room.value === null && isRoomFetching.value)
+    || ((images.value === null || images.value.length === 0) && isImagesFetching.value)
+    || ((roomImages.value === null || roomImages.value.length === 0) && isRoomImagesFetching.value)
+))
+
+const isRefetching = computed(() => (
+  isRoomFetching.value || isImagesFetching.value || isRoomImagesFetching.value
+))
 </script>
 <template>
   <BaseLayout :title="title" :loading="isHotelFetching">
@@ -238,7 +268,7 @@ const title = computed<string>(() => {
         @click="isUploadDialogOpened = true"
       />
     </template>
-    <div v-if="isRoomFetching || isImagesFetching || isRoomImagesFetching">
+    <div v-if="isInitialFetching">
       <LoadingSpinner class="loadingSpinner" />
     </div>
     <div v-else-if="images === null || images.length === 0">
@@ -252,6 +282,7 @@ const title = computed<string>(() => {
       animation="300"
       @update="onDraggableUpdate"
     >
+      <OverlayLoading v-if="isRefetching" />
       <div
         v-for="{ id, file: { url, name } } in images"
         :key="id"
@@ -267,13 +298,25 @@ const title = computed<string>(() => {
             :only-icon="dragIcon"
             :loading="isHotelImagesReorderFetching"
           />
-          <div v-if="roomID !== undefined && !isImageAttachedToRoom(id)" class="pictureOverlay">
+          <div
+            v-if="
+              roomID !== undefined
+                && room !== null
+                && !isImageAttachedToRoom(id, room)
+            "
+            class="pictureOverlay"
+          >
             <InlineSVG :src="linkOffIcon" class="pictureOverlayIcon" />
             Фото не привязано к номеру
           </div>
           <ImageZoom
             class="card-img-top picture"
-            :class="{ isNotAttachedToRoom: roomID !== undefined && !isImageAttachedToRoom(id) }"
+            :class="{
+              isNotAttachedToRoom:
+                roomID !== undefined
+                && room !== null
+                && !isImageAttachedToRoom(id, room),
+            }"
             :src="url"
             :alt="name"
           />
@@ -283,12 +326,12 @@ const title = computed<string>(() => {
             <div class="actionsStart">
               <template v-if="roomID">
                 <BootstrapButton
-                  v-if="!isImageAttachedToRoom(id)"
+                  v-if="room !== null && !isImageAttachedToRoom(id, room)"
                   severity="primary"
                   variant="outline"
                   label="Привязать к номеру"
                   :start-icon="linkIcon"
-                  @click="setImageToRoom(id)"
+                  @click="attachImageToRoom(id)"
                 />
                 <BootstrapButton
                   v-else
@@ -298,10 +341,27 @@ const title = computed<string>(() => {
                   @click="deleteRoomImage(id)"
                 />
               </template>
+              <template v-else>
+                <BootstrapButton
+                  severity="primary"
+                  variant="outline"
+                  label="Привязать к номерам"
+                  :start-icon="linkIcon"
+                  @click="openAttachmentDialog({ id, url, name })"
+                  @mouseover="attachmentDialogImage = { id, src: url, alt: name }"
+                  @focusin="attachmentDialogImage = { id, src: url, alt: name }"
+                />
+              </template>
             </div>
             <div class="actionsEnd">
               <BootstrapButton
-                v-if="roomID === undefined || !isImageAttachedToRoom(id)"
+                v-if="
+                  roomID === undefined
+                    || (
+                      room !== null
+                      && !isImageAttachedToRoom(id, room)
+                    )
+                "
                 label="Удалить"
                 severity="danger"
                 :only-icon="trashIcon"
@@ -351,6 +411,16 @@ const title = computed<string>(() => {
       />
     </template>
   </BaseDialog>
+  <AttachmentDialog
+    v-if="attachmentDialogImage !== null && hotelRooms !== null"
+    :image="attachmentDialogImage"
+    :rooms="hotelRooms"
+    :is-rooms-fetching="isHotelRoomsFetching"
+    :hotel="hotelID as HotelID"
+    :opened="isAttachmentDialogOpened"
+    @close="closeAttachmentDialog"
+    @update-rooms="fetchHotelRooms"
+  />
 </template>
 <style lang="scss" scoped>
 .loadingSpinner {

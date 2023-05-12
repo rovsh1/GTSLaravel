@@ -1,6 +1,6 @@
 import { MaybeRef } from '@vueuse/core'
 
-import { useAdminAPI } from '~api'
+import { BaseResponse, useAdminAPI } from '~api'
 
 type HotelImageRemoveProps = {
   hotelID: number
@@ -11,4 +11,4 @@ export const useHotelImageRemoveAPI = (props: MaybeRef<HotelImageRemoveProps | n
   useAdminAPI(props, ({ hotelID, imageID }) =>
     `/hotels/${hotelID}/images/${imageID}`)
     .delete()
-    .json<{ success: boolean }>()
+    .json<BaseResponse>()

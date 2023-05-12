@@ -1,13 +1,9 @@
 import { AfterFetchContext, MaybeRef } from '@vueuse/core'
 
 import { alternateDataAfterFetch, useAdminAPI } from '~api'
-import { HotelRoomResponse } from '~api/hotel/room'
+import { HotelRoom, HotelRoomResponse, mapHotelRoomResponseToHotelRoom } from '~api/hotel/room'
 
 type HotelRoomsResponse = HotelRoomResponse[]
-
-export type HotelRoom = Omit<HotelRoomResponse, 'id'> & {
-  id: number
-}
 
 type HotelRoomsListProps = {
   hotelID: number
@@ -20,13 +16,7 @@ export const useHotelRoomsListAPI = (props: MaybeRef<HotelRoomsListProps | null>
     `/hotels/${hotelID}/rooms/list`, {
     afterFetch: (ctx: AfterFetchContext<HotelRoomsResponse>) =>
       alternateDataAfterFetch<HotelRoomsResponse, UseHotelRooms>(ctx, (data) =>
-        (data.length > 0 ? data.map(({
-          id,
-          ...rest
-        }) => ({
-          id: Number(id),
-          ...rest,
-        })) : null)),
+        (data.length > 0 ? data.map(mapHotelRoomResponseToHotelRoom) : null)),
   })
     .get()
     .json<UseHotelRooms>()
