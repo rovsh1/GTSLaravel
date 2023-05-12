@@ -30,8 +30,6 @@ const emit = defineEmits<{
   (event: 'update-rooms'): void
 }>()
 
-const roomIDToFetchImages = ref<HotelRoomID | null>(null)
-
 const roomIDToChangeImageAttachment = ref<HotelRoomID | null>(null)
 
 const hotelRoomChangeImageAttachmentPayload = computed(() =>
@@ -43,25 +41,33 @@ const hotelRoomChangeImageAttachmentPayload = computed(() =>
 
 const {
   execute: executeAttach,
+  data: attachData,
   isFetching: isAttachFetching,
 } = useHotelRoomAttachImageAPI(hotelRoomChangeImageAttachmentPayload)
 
 const {
   execute: executeDetach,
+  data: detachData,
   isFetching: isDetachFetching,
 } = useHotelRoomDetachImageAPI(hotelRoomChangeImageAttachmentPayload)
 
 const changeImageAttachment = async (roomID: HotelRoomID, value: boolean) => {
+  // TODO revert checkbox state to previous if request is not success
   if (value) {
     roomIDToChangeImageAttachment.value = roomID
     await executeAttach()
+    if (attachData.value !== null && attachData.value.success) {
+      roomIDToChangeImageAttachment.value = null
+      emit('update-rooms')
+    }
   } else {
     roomIDToChangeImageAttachment.value = roomID
     await executeDetach()
+    if (detachData.value !== null && detachData.value.success) {
+      roomIDToChangeImageAttachment.value = null
+      emit('update-rooms')
+    }
   }
-  roomIDToChangeImageAttachment.value = null
-  roomIDToFetchImages.value = roomID
-  emit('update-rooms')
 }
 
 const isChangeImageAttachmentInProgress = computed<boolean>(() => (
