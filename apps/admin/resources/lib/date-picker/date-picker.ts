@@ -5,7 +5,13 @@ import { dateRangeDelimiter } from '~lib/date'
 
 import './style.scss'
 
-import { datePickerRootAttributeName, destroyOldDatePicker, registerDatePickerInstance, stringifyFormat } from './lib'
+import {
+  datePickerRootAttributeName,
+  destroyOldDatePicker,
+  prefillDatePickerFromInput,
+  registerDatePickerInstance,
+  stringifyFormat,
+} from './lib'
 
 type Options = Partial<ILPConfiguration>
 
@@ -29,5 +35,15 @@ export const useDatePicker = (element: HTMLInputElement, options?: Options) => {
 
   registerDatePickerInstance(element, picker)
 
+  prefillDatePickerFromInput(element, picker)
+
   return picker
 }
+
+export const useDateRangePicker = (element: HTMLInputElement, options?: Options) =>
+  useDatePicker(element, {
+    singleMode: false,
+    numberOfMonths: 2,
+    numberOfColumns: 2,
+    ...options,
+  })

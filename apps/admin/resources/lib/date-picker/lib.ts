@@ -17,6 +17,10 @@ declare global {
 export const stringifyFormat = 'DD.MM.YYYY'
 export const parseFormat = 'dd.MM.yyyy'
 
+const parseMatch = /\d{2}.\d{2}\.\d{4}/
+
+const rangeParseMatch = /\d{2}.\d{2}\.\d{4} - \d{2}.\d{2}\.\d{4}/
+
 export const datePickerRootAttributeName = 'data-date-picker-root'
 
 export const registerDatePickerInstance = (element: HTMLInputElement, picker: Litepicker) => {
@@ -34,14 +38,19 @@ export const destroyOldDatePicker = (element: HTMLInputElement) => {
   instance.picker.destroy()
 }
 
-export const prefillDatePickerFromInput = (picker: Litepicker, input: HTMLInputElement) => {
+export const prefillDatePickerFromInput = (input: HTMLInputElement, picker: Litepicker) => {
   const value = input.getAttribute('value')
-  if (value === null) return
-  const [start, end] = value.split(dateRangeDelimiter)
-  const startDate = DateTime.fromFormat(start, parseFormat)
-    .toJSDate()
-  const endDate = DateTime.fromFormat(end, parseFormat)
-    .toJSDate()
+  if (value === null || value === '') return
 
-  picker.setDateRange(startDate, endDate)
+  if (value.match(parseMatch)) {
+    const [start, end] = value.split(dateRangeDelimiter)
+    const startDate = DateTime.fromFormat(start, parseFormat).toJSDate()
+    const endDate = DateTime.fromFormat(end, parseFormat).toJSDate()
+    picker.setDateRange(startDate, endDate)
+  } else if (value.match(rangeParseMatch)) {
+    const date = DateTime.fromFormat(value, parseFormat).toJSDate()
+    picker.setDate(date)
+  } else {
+    throw new Error(`Value '${value}' from input is not matches datetime format '${parseFormat}'`)
+  }
 }

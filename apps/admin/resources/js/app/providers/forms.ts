@@ -1,6 +1,6 @@
 import { Tab } from 'bootstrap'
 
-import { useDatePicker } from '~lib/date-picker/date-picker'
+import { useDateRangePicker } from '~lib/date-picker/date-picker'
 
 function bootDeleteButtons() {
   $('button.btn-delete')
@@ -20,9 +20,7 @@ function bootMultiselect() {
 function bootDateRangePicker() {
   const element = document.querySelector<HTMLInputElement>('.daterange')
   if (element === null) return
-  useDatePicker(element, {
-    singleMode: false,
-  })
+  useDateRangePicker(element)
 }
 
 function bootFileFields() {

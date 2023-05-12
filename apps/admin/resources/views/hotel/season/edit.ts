@@ -5,8 +5,7 @@ import { z } from 'zod'
 import { ContractID, useHotelContractGetAPI } from '~api/hotel/contract'
 
 import { parseAPIDate } from '~lib/date'
-import { useDatePicker } from '~lib/date-picker/date-picker'
-import { prefillDatePickerFromInput } from '~lib/date-picker/lib'
+import { useDateRangePicker } from '~lib/date-picker/date-picker'
 import { requestInitialData } from '~lib/initial-data'
 import { getNullableRef } from '~lib/vue'
 
@@ -28,9 +27,8 @@ const handleChangeContract = async (periodInput: HTMLInputElement, contractID: C
   const minDate = getContract?.dateStart
   const maxDate = getContract?.dateEnd
 
-  const picker = useDatePicker(periodInput, {
+  const picker = useDateRangePicker(periodInput, {
     // @todo ренджи должны быть в будущем
-    singleMode: false,
     minDate,
     maxDate,
     lockDaysFilter: (inputDate) => {
@@ -49,8 +47,6 @@ const handleChangeContract = async (periodInput: HTMLInputElement, contractID: C
       }) !== undefined
     },
   })
-
-  prefillDatePickerFromInput(picker, periodInput)
 
   return picker
 }
