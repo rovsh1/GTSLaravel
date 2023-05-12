@@ -1,12 +1,14 @@
 import { datePickerRootAttributeName } from '~lib/date-picker/lib'
 
+const popupSelector = '#grid-filters-popup'
+
 export default function bootGrid() {
   const $btn = $('#btn-grid-filters')
-  const $popup = $('#grid-filters-popup')
+  const $popup = $(popupSelector)
   const close = (event: MouseEvent) => {
     if (event.target === null) return
     const target = event.target as HTMLElement
-    const parent = target.closest(`#grid-filters-popup, [${datePickerRootAttributeName}]`)
+    const parent = target.closest(`${popupSelector}, [${datePickerRootAttributeName}]`)
     if (parent !== null) return
     $popup.hide()
     document.removeEventListener('click', close)
