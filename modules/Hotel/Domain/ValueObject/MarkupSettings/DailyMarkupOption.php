@@ -8,7 +8,7 @@ use Module\Shared\Domain\ValueObject\Percent;
 use Module\Shared\Domain\ValueObject\SerializableDataInterface;
 use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 
-class DailyMarkupOption implements ValueObjectInterface, SerializableDataInterface
+final class DailyMarkupOption implements ValueObjectInterface, SerializableDataInterface
 {
     public function __construct(
         private readonly Percent $percent,

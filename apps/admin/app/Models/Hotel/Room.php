@@ -3,6 +3,7 @@
 namespace App\Admin\Models\Hotel;
 
 use App\Admin\Files\HotelImage;
+use App\Admin\Support\Facades\Hotel\MarkupSettingsAdapter;
 use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -77,6 +78,11 @@ class Room extends Model
     public function displayName(): Attribute
     {
         return Attribute::get(fn() => $this->name . ($this->custom_name ? ' (' . $this->custom_name . ')' : ''));
+    }
+
+    public function markupSettings(): Attribute
+    {
+        return Attribute::get(fn() => MarkupSettingsAdapter::getRoomMarkupSettings($this->hotel_id, $this->id));
     }
 
     public function mainImage(): Attribute

@@ -8,9 +8,14 @@ use App\Core\Support\Adapters\AbstractHotelAdapter;
 
 class MarkupSettingsAdapter extends AbstractHotelAdapter
 {
-    public function getHotelMarkupSettings(int $hotelId): mixed
+    public function getHotelMarkupSettings(int $hotelId, ?int $roomId = null): mixed
     {
-        return $this->request('getHotelMarkupSettings', ['hotel_id' => $hotelId]);
+        return $this->request('getHotelMarkupSettings', ['hotel_id' => $hotelId, 'room_id' => $roomId]);
+    }
+
+    public function getRoomMarkupSettings(int $hotelId, int $roomId): mixed
+    {
+        return $this->request('getRoomMarkupSettings', ['hotel_id' => $hotelId, 'room_id' => $roomId]);
     }
 
     public function updateMarkupSettings(int $hotelId, string $key, mixed $value): mixed

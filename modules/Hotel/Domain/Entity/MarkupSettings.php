@@ -12,7 +12,7 @@ use Module\Shared\Domain\Entity\EntityInterface;
 use Module\Shared\Domain\ValueObject\Percent;
 use Module\Shared\Domain\ValueObject\SerializableDataInterface;
 
-class MarkupSettings implements EntityInterface, SerializableDataInterface
+final class MarkupSettings implements EntityInterface, SerializableDataInterface
 {
     public function __construct(
         private readonly int $id,
@@ -81,7 +81,7 @@ class MarkupSettings implements EntityInterface, SerializableDataInterface
             clientMarkups: ClientMarkups::fromData($data['clientMarkups']),
             earlyCheckIn: EarlyCheckInCollection::fromData($data['earlyCheckIn']),
             lateCheckOut: LateCheckOutCollection::fromData($data['lateCheckOut']),
-            cancelPeriods: CancelPeriodCollection::fromData($data['cancelPeriods'])
+            cancelPeriods: CancelPeriodCollection::fromData($data['cancelPeriods']),
         );
     }
 }

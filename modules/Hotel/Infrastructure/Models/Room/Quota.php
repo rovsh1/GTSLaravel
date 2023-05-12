@@ -31,7 +31,10 @@ use Module\Hotel\Infrastructure\Models\Room;
  * @method static \Illuminate\Database\Eloquent\Builder|Quota whereDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Quota whereRoomId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Quota whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Quota whereAvailability(int|null $availability)
+ * @method static \Illuminate\Database\Eloquent\Builder|Quota whereHotelId(int $hotelId)
+ * @method static \Illuminate\Database\Eloquent\Builder|Quota whereSold()
+ * @method static \Illuminate\Database\Eloquent\Builder|Quota whereStopped()
+ * @method static \Illuminate\Database\Eloquent\Builder|Quota whereAvailable()
  * @mixin \Eloquent
  */
 class Quota extends Model
@@ -61,19 +64,27 @@ class Quota extends Model
         return $this->belongsTo(Room::class);
     }
 
-    public function scopeWhereAvailability(Builder $builder, ?QuotaAvailabilityEnum $availability): void
+    public function scopeWhereHotelId(Builder $builder, int $hotelId): void
     {
-        if ($availability === null) {
-            return;
-        }
-        if ($availability === QuotaAvailabilityEnum::SOLD) {
-            $builder->where('count_available', 0)
-                ->where('count_total', '>', 0);
-        } elseif ($availability === QuotaAvailabilityEnum::STOPPED) {
-            $builder->whereStatus(QuotaStatusEnum::CLOSE);
-        } elseif ($availability === QuotaAvailabilityEnum::AVAILABLE) {
-            $builder->whereStatus(QuotaStatusEnum::OPEN)
-                ->where('count_available', '>', 0);
-        }
+        $builder->whereHas('room', function (Builder $query) use ($hotelId) {
+            $query->whereHotelId($hotelId);
+        });
+    }
+
+    public function scopeWhereSold(Builder $builder): void
+    {
+        $builder->where('count_available', 0)
+            ->where('count_total', '>', 0);
+    }
+
+    public function scopeWhereStopped(Builder $builder): void
+    {
+        $builder->whereStatus(QuotaStatusEnum::CLOSE);
+    }
+
+    public function scopeWhereAvailable(Builder $builder): void
+    {
+        $builder->whereStatus(QuotaStatusEnum::OPEN)
+            ->where('count_available', '>', 0);
     }
 }

@@ -15,6 +15,8 @@ AclRoute::for('hotel')
         ],
         'except' => ['show']
     ])
+    ->get('/{hotel}/rooms/{room}/settings', Controllers\Hotel\Room\MarkupSettingsController::class.'@edit','update','rooms.settings.edit')
+    ->put('/{hotel}/rooms/{room}/settings', Controllers\Hotel\Room\MarkupSettingsController::class.'@update','update','rooms.settings.update')
 
     ->resource('prices', Controllers\Hotel\PriceController::class, ['except' => ['show']])
     ->resource('contacts', Controllers\Hotel\ContactController::class, ['except' => ['show', 'index']])

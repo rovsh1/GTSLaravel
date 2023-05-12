@@ -5,9 +5,7 @@ namespace Module\Hotel\Port\Controllers;
 use Carbon\CarbonPeriod;
 use Custom\Framework\Contracts\Bus\QueryBusInterface;
 use Custom\Framework\PortGateway\Request;
-use Illuminate\Validation\Rules\Enum;
-use Module\Hotel\Application\Enums\QuotaAvailabilityEnum;
-use Module\Hotel\Application\Query\GetQuotas;
+use Module\Hotel\Application\Query\Quota;
 use Module\Hotel\Application\Service\RoomQuotaUpdater;
 
 class RoomQuotaController
@@ -17,22 +15,74 @@ class RoomQuotaController
         private readonly QueryBusInterface $queryBus
     ) {}
 
-    public function getHotelQuotas(Request $request)
+    public function getQuotas(Request $request)
     {
         $request->validate([
             'hotel_id' => 'required|numeric',
             'room_id' => 'nullable|numeric',
             'date_from' => 'required|date',
             'date_to' => 'required|date',
-            'availability' => ['nullable', new Enum(QuotaAvailabilityEnum::class)]
         ]);
 
         return $this->queryBus->execute(
-            new GetQuotas(
+            new Quota\Get(
                 $request->hotel_id,
                 new CarbonPeriod($request->date_from, $request->date_to),
                 $request->room_id,
-                $request->availability !== null ? QuotaAvailabilityEnum::from($request->availability) : null
+            )
+        );
+    }
+
+    public function getAvailableQuotas(Request $request)
+    {
+        $request->validate([
+            'hotel_id' => 'required|numeric',
+            'room_id' => 'nullable|numeric',
+            'date_from' => 'required|date',
+            'date_to' => 'required|date',
+        ]);
+
+        return $this->queryBus->execute(
+            new Quota\GetAvailable(
+                $request->hotel_id,
+                new CarbonPeriod($request->date_from, $request->date_to),
+                $request->room_id,
+            )
+        );
+    }
+
+    public function getSoldQuotas(Request $request)
+    {
+        $request->validate([
+            'hotel_id' => 'required|numeric',
+            'room_id' => 'nullable|numeric',
+            'date_from' => 'required|date',
+            'date_to' => 'required|date',
+        ]);
+
+        return $this->queryBus->execute(
+            new Quota\GetSold(
+                $request->hotel_id,
+                new CarbonPeriod($request->date_from, $request->date_to),
+                $request->room_id,
+            )
+        );
+    }
+
+    public function getStoppedQuotas(Request $request)
+    {
+        $request->validate([
+            'hotel_id' => 'required|numeric',
+            'room_id' => 'nullable|numeric',
+            'date_from' => 'required|date',
+            'date_to' => 'required|date',
+        ]);
+
+        return $this->queryBus->execute(
+            new Quota\GetStopped(
+                $request->hotel_id,
+                new CarbonPeriod($request->date_from, $request->date_to),
+                $request->room_id,
             )
         );
     }
@@ -96,4 +146,6 @@ class RoomQuotaController
             new CarbonPeriod($request->date_from, $request->date_to),
         );
     }
+
+    private function validateGetQuotaRequest(Request $request): void {}
 }

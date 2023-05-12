@@ -11,7 +11,7 @@ use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 /**
  * @extends Collection<int, Condition>
  */
-class LateCheckOutCollection extends Collection implements ValueObjectInterface, SerializableDataInterface
+final class LateCheckOutCollection extends Collection implements ValueObjectInterface, SerializableDataInterface
 {
     public function toData(): array
     {

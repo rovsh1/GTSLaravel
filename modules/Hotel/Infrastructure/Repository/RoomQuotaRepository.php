@@ -4,7 +4,6 @@ namespace Module\Hotel\Infrastructure\Repository;
 
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
-use Module\Hotel\Application\Enums\QuotaAvailabilityEnum;
 use Module\Hotel\Domain\Factory\RoomQuotaFactory;
 use Module\Hotel\Domain\Repository\RoomQuotaRepositoryInterface;
 use Module\Hotel\Infrastructure\Models\Room\Quota as EloquentQuota;
@@ -12,21 +11,35 @@ use Module\Hotel\Infrastructure\Models\Room\QuotaStatusEnum;
 
 class RoomQuotaRepository implements RoomQuotaRepositoryInterface
 {
-    public function get(int $hotelId, CarbonPeriod $period, ?int $roomId = null, ?QuotaAvailabilityEnum $availability = null): array
+    public function get(int $hotelId, CarbonPeriod $period, ?int $roomId = null): array
     {
-        $models = EloquentQuota::query()
-            ->where(function (Builder $builder) use ($roomId, $hotelId) {
-                if ($roomId !== null) {
-                    $builder->whereRoomId($roomId);
-                } else {
-                    $builder->whereHas('room', function (Builder $query) use ($hotelId) {
-                        $query->whereHotelId($hotelId);
-                    });
-                }
-            })
-            ->where('date', '>=', $period->getStartDate())
-            ->where('date', '<', $period->getEndDate())
-            ->whereAvailability($availability)
+        $models = $this->getBaseQuotaQuery($hotelId, $period, $roomId)->get();
+
+        return app(RoomQuotaFactory::class)->createCollectionFrom($models);
+    }
+
+    public function getAvailable(int $hotelId, CarbonPeriod $period, ?int $roomId = null): array
+    {
+        $models = $this->getBaseQuotaQuery($hotelId, $period, $roomId)
+            ->whereAvailable()
+            ->get();
+
+        return app(RoomQuotaFactory::class)->createCollectionFrom($models);
+    }
+
+    public function getSold(int $hotelId, CarbonPeriod $period, ?int $roomId = null): array
+    {
+        $models = $this->getBaseQuotaQuery($hotelId, $period, $roomId)
+            ->whereSold()
+            ->get();
+
+        return app(RoomQuotaFactory::class)->createCollectionFrom($models);
+    }
+
+    public function getStopped(int $hotelId, CarbonPeriod $period, ?int $roomId = null): array
+    {
+        $models = $this->getBaseQuotaQuery($hotelId, $period, $roomId)
+            ->whereStopped()
             ->get();
 
         return app(RoomQuotaFactory::class)->createCollectionFrom($models);
@@ -69,5 +82,25 @@ class RoomQuotaRepository implements RoomQuotaRepositoryInterface
             ->where('date', '>=', $period->getStartDate())
             ->where('date', '<', $period->getEndDate())
             ->delete();
+    }
+
+    /**
+     * @param int $hotelId
+     * @param CarbonPeriod $period
+     * @param int|null $roomId
+     * @return EloquentQuota
+     */
+    private function getBaseQuotaQuery(int $hotelId, CarbonPeriod $period, ?int $roomId = null): Builder
+    {
+        return EloquentQuota::query()
+            ->where(function (Builder $builder) use ($roomId, $hotelId) {
+                if ($roomId !== null) {
+                    $builder->whereRoomId($roomId);
+                } else {
+                    $builder->whereHotelId($hotelId);
+                }
+            })
+            ->where('date', '>=', $period->getStartDate())
+            ->where('date', '<', $period->getEndDate());
     }
 }

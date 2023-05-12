@@ -9,7 +9,7 @@ use Module\Shared\Domain\ValueObject\SerializableDataInterface;
 use Module\Shared\Domain\ValueObject\TimePeriod;
 use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 
-class Condition implements ValueObjectInterface, SerializableDataInterface
+final class Condition implements ValueObjectInterface, SerializableDataInterface
 {
     public function __construct(
         private readonly TimePeriod $timePeriod,

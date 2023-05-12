@@ -11,7 +11,7 @@ use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 /**
  * @extends Collection<int, CancelPeriod>
  */
-class CancelPeriodCollection extends Collection implements ValueObjectInterface, SerializableDataInterface
+final class CancelPeriodCollection extends Collection implements ValueObjectInterface, SerializableDataInterface
 {
     public function toData(): array
     {

@@ -8,7 +8,7 @@ use Carbon\CarbonPeriod;
 use Module\Shared\Domain\ValueObject\SerializableDataInterface;
 use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 
-class CancelPeriod implements ValueObjectInterface, SerializableDataInterface
+final class CancelPeriod implements ValueObjectInterface, SerializableDataInterface
 {
     public function __construct(
         private readonly CarbonPeriod $period,

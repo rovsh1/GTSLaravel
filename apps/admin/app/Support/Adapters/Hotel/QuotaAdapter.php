@@ -8,14 +8,43 @@ use Carbon\CarbonPeriod;
 
 class QuotaAdapter extends AbstractHotelAdapter
 {
-    public function getHotelQuotas(int $hotelId, CarbonPeriod $period, ?int $roomId = null, ?QuotaAvailabilityEnum $availability = null): array
+    public function getQuotas(int $hotelId, CarbonPeriod $period, ?int $roomId = null): array
     {
-        return $this->request('getHotelQuotas', [
+        return $this->request('getQuotas', [
             'hotel_id' => $hotelId,
             'room_id' => $roomId,
             'date_from' => $period->getStartDate(),
             'date_to' => $period->getEndDate(),
-            'availability' => $availability?->value
+        ]);
+    }
+
+    public function getAvailableQuotas(int $hotelId, CarbonPeriod $period, ?int $roomId = null): array
+    {
+        return $this->request('getAvailableQuotas', [
+            'hotel_id' => $hotelId,
+            'room_id' => $roomId,
+            'date_from' => $period->getStartDate(),
+            'date_to' => $period->getEndDate(),
+        ]);
+    }
+
+    public function getSoldQuotas(int $hotelId, CarbonPeriod $period, ?int $roomId = null): array
+    {
+        return $this->request('getSoldQuotas', [
+            'hotel_id' => $hotelId,
+            'room_id' => $roomId,
+            'date_from' => $period->getStartDate(),
+            'date_to' => $period->getEndDate(),
+        ]);
+    }
+
+    public function getStoppedQuotas(int $hotelId, CarbonPeriod $period, ?int $roomId = null): array
+    {
+        return $this->request('getStoppedQuotas', [
+            'hotel_id' => $hotelId,
+            'room_id' => $roomId,
+            'date_from' => $period->getStartDate(),
+            'date_to' => $period->getEndDate(),
         ]);
     }
 

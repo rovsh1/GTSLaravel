@@ -24,7 +24,14 @@ const useAPI = (base: string) => <T>(
     options: {
       immediate: false,
       beforeFetch: (ctx) => {
-        if (unref(props) === null) ctx.cancel()
+        if (unref(props) === null) {
+          ctx.cancel()
+        }
+        ctx.options.headers = {
+          ...ctx.options.headers,
+          'Content-Type': 'application/json; charset=utf-8',
+          'Accept': 'application/json',
+        }
       },
       onFetchError: (ctx) => {
         showToast({

@@ -72,7 +72,6 @@ return new class extends Migration {
 
             $margins = DB::connection('mysql_old')
                 ->table('hotel_margins')
-                //@todo room_id = null потому что инфа по комнатам будет содержаться в комнатах
                 ->select([
                     \DB::raw(
                         "(SELECT `value` FROM hotel_margins WHERE hotel_id = {$hotelId} AND room_id IS NULL AND client_model = " . self::OTA . ') as `OTA`'
@@ -146,9 +145,7 @@ return new class extends Migration {
                     $dailyMarkupCollection
                 );
             });
-            $cancelPeriodCollection = new CancelPeriodCollection(
-                $cancelPeriods->all()
-            );
+            $cancelPeriodCollection = new CancelPeriodCollection($cancelPeriods->all());
 
             $markupSettings = new MarkupSettings(
                 $hotelId,
@@ -157,7 +154,7 @@ return new class extends Migration {
                 $clientMarkups,
                 $earlyCheckIn,
                 $lateCheckOut,
-                $cancelPeriodCollection
+                $cancelPeriodCollection,
             );
 
             DB::table('hotels')

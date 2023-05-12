@@ -18,6 +18,9 @@ return new class extends Migration {
             $table->unsignedTinyInteger('guests_number');
             $table->unsignedSmallInteger('square')->nullable();
             $table->unsignedTinyInteger('position')->default(0);
+            //            $table->json('markup_settings')->nullable();
+            //@todo заменить на json когда будет норм версия базы на проде
+            $table->text('markup_settings')->nullable();
 
             $table->foreign('hotel_id')
                 ->references('id')
