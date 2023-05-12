@@ -70,8 +70,6 @@ const isChangeImageAttachmentInProgress = computed<boolean>(() => (
 
 const isCheckboxDisabled = computed<boolean>(() =>
   props.rooms.length === 0 || isChangeImageAttachmentInProgress.value)
-
-const src = computed(() => props.image.src)
 </script>
 <template>
   <BaseDialog
