@@ -19,6 +19,10 @@ AclRoute::for('hotel')
     ->put('/{hotel}/rooms/{room}/settings', Controllers\Hotel\Room\MarkupSettingsController::class.'@update','update','rooms.settings.update')
 
     ->resource('prices', Controllers\Hotel\PriceController::class, ['except' => ['show']])
+    ->get('/{hotel}/seasons/prices',Controllers\Hotel\PriceController::class.'@getSeasonsPrices','read','prices.seasons.get')
+    ->put('/{hotel}/seasons/{season}/prices',Controllers\Hotel\PriceController::class.'@updateSeasonPrice','update','prices.seasons.update')
+    ->get('/{hotel}/seasons/{season}/prices/date',Controllers\Hotel\PriceController::class.'@getDatePrices','read','prices.seasons.date.get')
+    ->put('/{hotel}/seasons/{season}/prices/date',Controllers\Hotel\PriceController::class.'@updateDatePrice','update','prices.seasons.date.update')
     ->resource('contacts', Controllers\Hotel\ContactController::class, ['except' => ['show', 'index']])
 
     ->get('/{hotel}/notes', Controllers\Hotel\NotesController::class . '@edit', 'update', 'notes.edit')

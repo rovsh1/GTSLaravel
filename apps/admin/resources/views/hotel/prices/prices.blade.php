@@ -17,7 +17,7 @@
         @foreach($rooms as $room)
             <div class="card room" data-id="{{ $room->id }}">
                 <div class="card-header">
-                    {{ $room->name }}
+                    {{ $room->display_name }}
                 </div>
                 <div class="card-body">
 

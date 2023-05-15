@@ -3,26 +3,57 @@
 namespace App\Admin\Support\Adapters\Hotel;
 
 use App\Core\Support\Adapters\AbstractHotelAdapter;
+use Carbon\CarbonInterface;
 
 class PricesAdapter extends AbstractHotelAdapter
 {
+    public function getSeasonsPrices(int $hotelId): array
+    {
+        return $this->request('getSeasonsPrices', ['hotelId' => $hotelId]);
+    }
+
     public function setSeasonPrice(
-        int $hotelId,
         int $roomId,
         int $seasonId,
         int $rateId,
         int $guestsNumber,
-        int $residency,
+        bool $isResident,
         float $price,
         int $currencyId
     ): bool {
-        return $this->request('prices/setSeasonPrice', [
-            'hotelId' => $hotelId,
+        return $this->request('setSeasonPrice', [
             'roomId' => $roomId,
             'seasonId' => $seasonId,
             'rateId' => $rateId,
             'guestsNumber' => $guestsNumber,
-            'residency' => $residency,
+            'isResident' => $isResident,
+            'price' => $price,
+            'currencyId' => $currencyId,
+        ]);
+    }
+
+    public function getDatePrices(int $seasonId): array
+    {
+        return $this->request('getDatePrices', ['seasonId' => $seasonId]);
+    }
+
+    public function setDatePrice(
+        CarbonInterface $date,
+        int $roomId,
+        int $seasonId,
+        int $rateId,
+        int $guestsNumber,
+        bool $isResident,
+        float $price,
+        int $currencyId
+    ): bool {
+        return $this->request('setDatePrice', [
+            'date' => $date,
+            'roomId' => $roomId,
+            'seasonId' => $seasonId,
+            'rateId' => $rateId,
+            'guestsNumber' => $guestsNumber,
+            'isResident' => $isResident,
             'price' => $price,
             'currencyId' => $currencyId,
         ]);

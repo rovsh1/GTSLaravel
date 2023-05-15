@@ -39,9 +39,9 @@ return new class extends Migration {
 //            $table->unsignedInteger('aggregator_id')->nullable();
             $table->unsignedInteger('rate_id');
             $table->unsignedTinyInteger('guests_number');
-            $table->unsignedTinyInteger('residency');
+            $table->boolean('is_resident');
 
-            $table->unique(['rate_id', 'guests_number', 'residency']);
+            $table->unique(['rate_id', 'guests_number', 'is_resident']);
 
             $table->foreign('rate_id')
                 ->references('id')
@@ -53,7 +53,7 @@ return new class extends Migration {
 
     private function createPrices()
     {
-        Schema::create('hotel_price_calendar', function (Blueprint $table) {
+        Schema::create('hotel_calculated_price_calendar', function (Blueprint $table) {
             $table->date('date');
             $table->unsignedInteger('group_id');
             $table->unsignedInteger('room_id');
@@ -85,7 +85,7 @@ return new class extends Migration {
 
     public function down()
     {
-        Schema::dropIfExists('hotel_price_calendar');
+        Schema::dropIfExists('hotel_calculated_price_calendar');
         Schema::dropIfExists('hotel_price_groups');
         Schema::dropIfExists('hotel_price_rates');
     }

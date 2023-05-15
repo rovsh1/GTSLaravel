@@ -52,7 +52,7 @@ return new class extends Migration {
     private function createSeasonPrices()
     {
         Schema::create('hotel_season_prices', function (Blueprint $table) {
-            //$table->increments('id');
+            $table->increments('id');
             $table->unsignedInteger('season_id');
             $table->unsignedInteger('group_id');
             $table->unsignedInteger('room_id');
@@ -60,7 +60,7 @@ return new class extends Migration {
             $table->unsignedSmallInteger('currency_id');
             $table->comment('Таблица цен по сезонам по умолчанию, для заполнения календаря цен');
 
-            $table->primary(['group_id', 'season_id', 'room_id']);
+            $table->unique(['group_id', 'season_id', 'room_id']);
 
             $table->foreign('season_id')
                 ->references('id')

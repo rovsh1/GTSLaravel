@@ -2,6 +2,7 @@
 
 namespace App\Admin\Providers;
 
+use App\Admin\Support\Adapters\Hotel\PricesAdapter;
 use App\Admin\Support\Adapters\Hotel\QuotaAdapter;
 use App\Admin\Support\Adapters\Hotel\MarkupSettingsAdapter;
 use App\Admin\Support\Adapters\MailAdapter;
@@ -18,5 +19,6 @@ class AdapterServiceProvider extends ServiceProvider
         $this->app->singleton('mail-adapter', MailAdapter::class);
         $this->app->singleton(QuotaAdapter::class, QuotaAdapter::class);
         $this->app->singleton(MarkupSettingsAdapter::class, MarkupSettingsAdapter::class);
+        $this->app->singleton(PricesAdapter::class, PricesAdapter::class);
     }
 }
