@@ -29,6 +29,15 @@ class RoomImageRepository
         );
     }
 
+    public function getImageRoomIds(int $hotelId, int $imageId): array
+    {
+        return RoomImage::whereHotelId($hotelId)
+            ->whereImageId($imageId)
+            ->get()
+            ->pluck('room_id')
+            ->all();
+    }
+
     public function delete(int $imageId, int $roomId): void
     {
         RoomImage::query()->where('room_id', $roomId)->where('image_id', $imageId)->delete();

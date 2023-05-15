@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static Collection getEntityFiles(int $entityId, string $fileType)
  * @method static string|null getContents(string|FileInterface $guid, ?int $part)
  * @method static array fileInfo(string|FileInterface $guid, ?int $part)
- * @method static string|null url(string|FileInterface $guid, ?int $part)
+ * @method static string|null url(string|FileInterface $guid, int $part = null)
  * @method static FileInterface|null create(string $fileType, ?int $entityId, string $name = null, string $contents = null)
  * @method static bool put(string|FileInterface $guid, string $contents)
  * @method static bool delete(string|FileInterface $guid)

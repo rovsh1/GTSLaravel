@@ -53,7 +53,7 @@ class FileAdapter extends AbstractModuleAdapter
         ]);
     }
 
-    public function url(string|FileInterface $guid, ?int $part): ?string
+    public function url(string|FileInterface $guid, int $part = null): ?string
     {
         return $this->request('url', [
             'guid' => is_string($guid) ? $guid : $guid->guid(),
