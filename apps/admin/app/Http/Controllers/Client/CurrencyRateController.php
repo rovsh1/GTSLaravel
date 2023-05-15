@@ -3,6 +3,7 @@
 namespace App\Admin\Http\Controllers\Client;
 
 use App\Admin\Models\Hotel\Hotel;
+use App\Admin\Models\Reference\City;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Format;
 use App\Admin\Support\Facades\Grid;
@@ -37,6 +38,8 @@ class CurrencyRateController extends AbstractPrototypeController
             'emptyItem' => '',
             'required' => true,
             'multiple' => true,
+            'groupIndex' => 'city_id',
+            'groups' => City::whereHasHotel()->get(),
             'items' => Hotel::all()
         ])
             ->client('client_id', ['label' => 'Клиент', 'emptyItem' => '', 'required' => true])
