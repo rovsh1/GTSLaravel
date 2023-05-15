@@ -2,6 +2,8 @@
 
 namespace App\Admin\Http\Controllers\Client;
 
+use App\Admin\Exceptions\FormSubmitFailedException;
+use App\Admin\Models\Client\CurrencyRate;
 use App\Admin\Models\Hotel\Hotel;
 use App\Admin\Models\Reference\City;
 use App\Admin\Support\Facades\Form;
@@ -11,12 +13,55 @@ use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Grid\SearchForm;
+use Carbon\CarbonPeriod;
+use Gsdk\Form\Form as FormRequest;
+use Illuminate\Http\RedirectResponse;
 
 class CurrencyRateController extends AbstractPrototypeController
 {
     protected function getPrototypeKey(): string
     {
         return 'client-currency-rate';
+    }
+
+    public function store(): RedirectResponse
+    {
+        $form = $this->formFactory()
+            ->method('post');
+
+        $redirectUrl = $this->prototype->route('create');
+        $form->trySubmit($redirectUrl);
+        $this->validatePeriodIntersections($form, $redirectUrl);
+
+        $preparedData = $this->saving($form->getData());
+        $this->model = $this->repository->create($preparedData);
+
+        $redirectUrl = $this->prototype->route('index');
+        if ($this->hasShowAction()) {
+            $redirectUrl = $this->prototype->route('show', $this->model);
+        }
+        return redirect($redirectUrl);
+    }
+
+    public function update(int $id): RedirectResponse
+    {
+        $this->model = $this->repository->findOrFail($id);
+
+        $form = $this->formFactory()
+            ->method('put');
+
+        $redirectUrl = $this->prototype->route('edit', $this->model);
+        $form->trySubmit($redirectUrl);
+        $this->validatePeriodIntersections($form, $redirectUrl, $id);
+
+        $preparedData = $this->saving($form->getData());
+        $this->repository->update($this->model->id, $preparedData);
+
+        $redirectUrl = $this->prototype->route('index');
+        if ($this->hasShowAction()) {
+            $redirectUrl = $this->prototype->route('show', $this->model);
+        }
+        return redirect($redirectUrl);
     }
 
     protected function gridFactory(): GridContract
@@ -54,5 +99,36 @@ class CurrencyRateController extends AbstractPrototypeController
             ->currency('currency_id', ['label' => __('label.currency'), 'emptyItem' => ''])
             ->dateRange('start_period', ['label' => 'Дата начала'])
             ->dateRange('end_period', ['label' => 'Дата завершения']);
+    }
+
+    /**
+     * @param FormRequest $form
+     * @param string $redirectUrl
+     * @param int|null $currencyRateId
+     * @return void
+     * @throws FormSubmitFailedException
+     */
+    private function validatePeriodIntersections(FormRequest $form, string $redirectUrl, ?int $currencyRateId = null): void {
+        $clientId = $form->getData()['client_id'];
+        $currencyId = $form->getData()['currency_id'];
+        $clientRates = CurrencyRate::whereClientId($clientId)
+            ->whereCurrencyId($currencyId)
+            ->get();
+
+        /** @var CarbonPeriod $period */
+        $period = $form->getData()['period'];
+        foreach ($clientRates as $clientRate) {
+            if ($clientRate->id === $currencyRateId) {
+                continue;
+            }
+            if ($period->overlaps($clientRate->period)) {
+                $exception = new FormSubmitFailedException();
+                $exception->setErrors(
+                    ['period' => 'Невозможно создать несколько курсов валют с пересекающимися датами для одного клиента.']
+                );
+                $exception->setRedirectUrl($redirectUrl);
+                throw $exception;
+            }
+        }
     }
 }

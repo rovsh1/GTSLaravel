@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property \Custom\Framework\Support\DateTime $date_start
  * @property \Custom\Framework\Support\DateTime $date_end
  * @property float $rate
+ * @property CarbonPeriod $period
  * @property-read string $client_name
  * @property-read string $currency_name
  * @property-read string $currency_code_char
