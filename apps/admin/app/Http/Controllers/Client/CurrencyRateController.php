@@ -111,9 +111,7 @@ class CurrencyRateController extends AbstractPrototypeController
     private function validatePeriodIntersections(FormRequest $form, string $redirectUrl, ?int $toSkipCurrencyRateId = null): void {
         $clientId = $form->getData()['client_id'];
         $currencyId = $form->getData()['currency_id'];
-        $clientRates = CurrencyRate::whereClientId($clientId)
-            ->whereCurrencyId($currencyId)
-            ->get();
+        $clientRates = CurrencyRate::whereClientId($clientId)->get();
 
         /** @var CarbonPeriod $period */
         $period = $form->getData()['period'];
@@ -123,9 +121,7 @@ class CurrencyRateController extends AbstractPrototypeController
             }
             if ($period->overlaps($clientRate->period)) {
                 $exception = new FormSubmitFailedException();
-                $exception->setErrors(
-                    ['period' => 'Невозможно создать несколько курсов валют с пересекающимися датами для одного клиента.']
-                );
+                $exception->setErrors(['period' => 'Невозможно создать несколько курсов валют с пересекающимися датами для одного клиента.']);
                 $exception->setRedirectUrl($redirectUrl);
                 throw $exception;
             }
