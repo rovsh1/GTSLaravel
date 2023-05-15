@@ -104,11 +104,11 @@ class CurrencyRateController extends AbstractPrototypeController
     /**
      * @param FormRequest $form
      * @param string $redirectUrl
-     * @param int|null $currencyRateId
+     * @param int|null $toSkipCurrencyRateId
      * @return void
      * @throws FormSubmitFailedException
      */
-    private function validatePeriodIntersections(FormRequest $form, string $redirectUrl, ?int $currencyRateId = null): void {
+    private function validatePeriodIntersections(FormRequest $form, string $redirectUrl, ?int $toSkipCurrencyRateId = null): void {
         $clientId = $form->getData()['client_id'];
         $currencyId = $form->getData()['currency_id'];
         $clientRates = CurrencyRate::whereClientId($clientId)
@@ -118,7 +118,7 @@ class CurrencyRateController extends AbstractPrototypeController
         /** @var CarbonPeriod $period */
         $period = $form->getData()['period'];
         foreach ($clientRates as $clientRate) {
-            if ($clientRate->id === $currencyRateId) {
+            if ($clientRate->id === $toSkipCurrencyRateId) {
                 continue;
             }
             if ($period->overlaps($clientRate->period)) {
