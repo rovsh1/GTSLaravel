@@ -4,6 +4,8 @@ namespace App\Admin\Http\Controllers\Hotel;
 
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Http\Requests\Hotel\UploadImagesRequest;
+use App\Admin\Http\Resources\HotelImage;
+use App\Admin\Http\Resources\Room as RoomResource;
 use App\Admin\Models\Hotel\Hotel;
 use App\Admin\Models\Hotel\Image;
 use App\Admin\Models\Hotel\Room;
@@ -78,7 +80,9 @@ class ImageController extends Controller
     {
         $files = $this->roomImageRepository->get($hotel->id, $room->id);
 
-        return response()->json($files);
+        return response()->json(
+            HotelImage::collection($files)
+        );
     }
 
     public function setRoomImage(Request $request, Hotel $hotel, Room $room, Image $image): AjaxResponseInterface
@@ -93,6 +97,18 @@ class ImageController extends Controller
         $this->roomImageRepository->delete($image->id, $room->id);
 
         return new AjaxSuccessResponse();
+    }
+
+    public function getImageRooms(Request $request, Hotel $hotel, Image $image): JsonResponse
+    {
+        $roomIds = $this->roomImageRepository->getImageRoomIds($hotel->id, $image->id);
+        $rooms = RoomResource::collection($hotel->rooms)->toArray($request);
+        $rooms = array_map(function (array $roomData) use ($roomIds) {
+            $roomData['is_image_linked'] = in_array($roomData['id'], $roomIds);
+            return $roomData;
+        }, $rooms);
+
+        return response()->json($rooms);
     }
 
     private function hotel(Hotel $hotel): void
