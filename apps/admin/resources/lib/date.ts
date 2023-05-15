@@ -9,6 +9,8 @@ export const parseAPIDate = (date: DateResponse): DateTime => DateTime.fromISO(d
 export const formatDateToAPIDate = (date: Date): APIDate => DateTime
   .fromJSDate(date).toFormat('yyyy-LL-dd')
 
+export const dateRangeDelimiter = ' - '
+
 export const getEachDayInMonth = (date: Date): Date[] => {
   const month = DateTime.fromJSDate(date)
   return Interval

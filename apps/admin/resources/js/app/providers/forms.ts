@@ -1,6 +1,6 @@
 import { Tab } from 'bootstrap'
 
-import { useDateRangePicker } from '~resources/js/vendor/daterangepicker'
+import { useDateRangePicker } from '~lib/date-picker/date-picker'
 
 function bootDeleteButtons() {
   $('button.btn-delete')
@@ -18,7 +18,9 @@ function bootMultiselect() {
 }
 
 function bootDateRangePicker() {
-  useDateRangePicker($('.daterange'))
+  const element = document.querySelector<HTMLInputElement>('.daterange')
+  if (element === null) return
+  useDateRangePicker(element)
 }
 
 function bootFileFields() {
@@ -26,7 +28,7 @@ function bootFileFields() {
     e.preventDefault()
     const thumb = $(this).parent()
 
-    MessageConfirm('Подверждение удаления', 'Файл будет удален без возможности восстановления, продолжить?', () => {
+    window.MessageConfirm('Подверждение удаления', 'Файл будет удален без возможности восстановления, продолжить?', () => {
       thumb.addClass('loading')
 
       $.ajax({

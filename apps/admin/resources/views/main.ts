@@ -5,7 +5,7 @@ import bootSitemap from '~resources/js/app/providers/sitemap'
 
 import '~resources/js/bootstrap'
 import '~resources/js/vendor/jquery.cookie'
-import '~resources/js/vendor/daterangepicker'
+import '~lib/date-picker/date-picker'
 import '~resources/js/libs/dialog/helpers'
 import '~resources/js/plugins/multiselect'
 import '~resources/js/plugins/child-combo'

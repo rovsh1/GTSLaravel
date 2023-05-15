@@ -47,14 +47,14 @@ export const useHotelRoomImagesAPI = (props: MaybeRef<HotelRoomImagesProps | nul
           hotel_id: hotelID,
           room_id: roomID,
           title,
-          order,
+          index,
           file,
         }) => ({
           id,
           hotelID,
           roomID,
           title,
-          order,
+          index,
           file,
         })) : null)),
   })
