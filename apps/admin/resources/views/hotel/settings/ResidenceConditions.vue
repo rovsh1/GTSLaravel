@@ -6,13 +6,13 @@ import { useToggle } from '@vueuse/core'
 import { z } from 'zod'
 
 import CollapsableBlock from '~resources/views/hotel/settings/components/CollapsableBlock.vue'
-import EditTableRowButton from '~resources/views/hotel/settings/components/EditTableRowButton.vue'
+import ConditionsTable from '~resources/views/hotel/settings/components/ConditionsTable.vue'
 import TimeSelect from '~resources/views/hotel/settings/components/TimeSelect.vue'
 
-import { HotelMarkupSettingsUpdateProps,
+import { addConditionHotelMarkupSettings,
   MarkupCondition,
-  useHotelMarkupSettingsAPI,
-  useHotelMarkupSettingsUpdateAPI } from '~api/hotel/markup-settings'
+  updateConditionHotelMarkupSettings,
+  useHotelMarkupSettingsAPI } from '~api/hotel/markup-settings'
 
 import { requestInitialData } from '~lib/initial-data'
 
@@ -38,17 +38,14 @@ const {
   data: markupSettings,
 } = useHotelMarkupSettingsAPI({ hotelID })
 
+const isConditionsFetching = ref<boolean>(false)
+
 const editableConditionKey = ref<string>()
 const editableCondition = ref<MarkupCondition>()
-const updateMarkupSettingsPayload = ref<HotelMarkupSettingsUpdateProps | null>(null)
-
-const {
-  execute: fetchUpdateMarkupSettings,
-  isFetching: isModalFetching,
-} = useHotelMarkupSettingsUpdateAPI(updateMarkupSettingsPayload)
 
 const [isShowModal, toggleModal] = useToggle()
 const modalTitle = ref<string>('Добавить новое условие')
+const isCreateCondition = ref<boolean>(false)
 
 const handleEditConditions = (
   conditionType: ConditionType,
@@ -58,13 +55,16 @@ const handleEditConditions = (
   modalTitle.value = 'Изменение условия'
   editableCondition.value = condition
   editableConditionKey.value = `${conditionType}.${index}`
+  isCreateCondition.value = false
 
   toggleModal()
 }
 
-// eslint-disable-next-line unused-imports/no-unused-vars
 const handleAddConditions = (conditionType: ConditionType) => {
   modalTitle.value = 'Добавить новое условие'
+  editableCondition.value = { from: '', to: '' } as MarkupCondition
+  editableConditionKey.value = `${conditionType}`
+  isCreateCondition.value = true
 
   toggleModal()
 }
@@ -75,13 +75,20 @@ const onModalSubmit = async () => {
     return
   }
 
-  updateMarkupSettingsPayload.value = {
+  const payload = {
     hotelID,
     key: editableConditionKey.value as string,
     value: editableCondition.value as MarkupCondition,
   }
 
-  await fetchUpdateMarkupSettings()
+  isConditionsFetching.value = true
+  if (!isCreateCondition.value) {
+    await updateConditionHotelMarkupSettings(payload)
+  } else {
+    await addConditionHotelMarkupSettings(payload)
+  }
+  isConditionsFetching.value = false
+
   await fetchMarkupSettings()
   toggleModal(false)
 }
@@ -93,7 +100,7 @@ fetchMarkupSettings()
 <template>
   <BaseDialog
     :opened="isShowModal as boolean"
-    :loading="isFetching || isModalFetching"
+    :loading="isFetching || isConditionsFetching"
     @close="toggleModal(false)"
   >
     <template #title>{{ modalTitle }}</template>
@@ -136,38 +143,20 @@ fetchMarkupSettings()
     </div>
 
     <div v-if="!isFetching" class="d-flex flex-row gap-4 mt-4">
-      <div class="w-100">
-        <h6>Условия раннего заезда</h6>
-        <table class="table">
-          <tbody>
-            <tr v-for="(condition, idx) in markupSettings?.earlyCheckIn" :key="`${condition.from}_${condition.to}`">
-              <td class="column-edit">
-                <EditTableRowButton
-                  @click.prevent="handleEditConditions(ConditionTypeEnum.earlyCheckIn, condition, idx)"
-                />
-              </td>
-              <td>С {{ condition.from }} до {{ condition.to }}</td>
-              <td>{{ condition.percent }}%</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="w-100">
-        <h6>Условия позднего выезда</h6>
-        <table class="table">
-          <tbody>
-            <tr v-for="(condition, idx) in markupSettings?.lateCheckOut" :key="`${condition.from}_${condition.to}`">
-              <td class="column-edit">
-                <EditTableRowButton
-                  @click.prevent="handleEditConditions(ConditionTypeEnum.lateCheckOut, condition, idx)"
-                />
-              </td>
-              <td>С {{ condition.from }} до {{ condition.to }}</td>
-              <td>{{ condition.percent }}%</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <ConditionsTable
+        class="w-100"
+        title="Условия раннего заезда"
+        :conditions="markupSettings?.earlyCheckIn as MarkupCondition[]"
+        @add="handleAddConditions(ConditionTypeEnum.earlyCheckIn)"
+        @edit="({ condition, index }) => handleEditConditions(ConditionTypeEnum.earlyCheckIn, condition, index)"
+      />
+      <ConditionsTable
+        class="w-100"
+        title="Условия позднего выезда"
+        :conditions="markupSettings?.lateCheckOut as MarkupCondition[]"
+        @add="handleAddConditions(ConditionTypeEnum.lateCheckOut)"
+        @edit="({ condition, index }) => handleEditConditions(ConditionTypeEnum.lateCheckOut, condition, index)"
+      />
     </div>
 
     <div class="d-flex flex-row gap-4 mt-2">

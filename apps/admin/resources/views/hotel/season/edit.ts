@@ -28,7 +28,6 @@ const handleChangeContract = async (periodInput: HTMLInputElement, contractID: C
   const maxDate = getContract?.dateEnd
 
   const picker = useDateRangePicker(periodInput, {
-    // @todo ренджи должны быть в будущем
     minDate,
     maxDate,
     lockDaysFilter: (inputDate) => {

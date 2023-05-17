@@ -138,8 +138,8 @@ module.exports = defineConfig({
       rules: {
         'max-lines': ['error', 600],
         'vue/max-len': ['error', {
-          code: 110,
-          template: 110,
+          code: 130,
+          template: 130,
           tabWidth: 2,
           comments: 100,
           ignorePattern: '',

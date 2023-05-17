@@ -61,19 +61,61 @@ export type HotelMarkupSettingsUpdateProps = {
   value: string | number | MarkupCondition | DailyMarkup
 }
 
+export type HotelMarkupSettingsConditionAddProps = {
+  hotelID: number
+  key: string
+  value: MarkupCondition | DailyMarkup
+}
+
+export type HotelMarkupSettingsConditionDeleteProps = {
+  hotelID: number
+  key: string
+  index: number
+}
+
 export const useHotelMarkupSettingsAPI = (props: MaybeRef<HotelMarkupSettingsProps | null>) =>
-  useAdminAPI(props, ({ hotelID }) =>
-    `/hotels/${hotelID}/settings/markup`)
+  useAdminAPI(props, ({ hotelID }) => `/hotels/${hotelID}/settings/markup`)
     .get()
     .json<MarkupSettings>()
 
-export const useHotelMarkupSettingsUpdateAPI = (props: MaybeRef<HotelMarkupSettingsUpdateProps | null>) =>
-  useAdminAPI(props, ({ hotelID }) =>
-    `/hotels/${hotelID}/settings/markup`)
+export const updateConditionHotelMarkupSettings = (props: MaybeRef<HotelMarkupSettingsUpdateProps | null>) =>
+  useAdminAPI(
+    props,
+    ({ hotelID }) => `/hotels/${hotelID}/settings/markup`,
+    { immediate: true },
+  )
     .put(computed<string>(() => JSON.stringify(
       getNullableRef<HotelMarkupSettingsUpdateProps, any>(
         props,
         (payload: HotelMarkupSettingsUpdateProps): any => ({ key: payload.key, value: payload.value }),
+      ),
+    )), 'application/json')
+    .json<BaseResponse>()
+
+export const addConditionHotelMarkupSettings = (props: MaybeRef<HotelMarkupSettingsConditionAddProps | null>) =>
+  useAdminAPI(
+    props,
+    ({ hotelID }) => `/hotels/${hotelID}/settings/markup/condition`,
+    { immediate: true },
+  )
+    .post(computed<string>(() => JSON.stringify(
+      getNullableRef<HotelMarkupSettingsConditionAddProps, any>(
+        props,
+        (payload: HotelMarkupSettingsConditionAddProps): any => ({ key: payload.key, value: payload.value }),
+      ),
+    )), 'application/json')
+    .json<BaseResponse>()
+
+export const deleteConditionHotelMarkupSettings = (props: MaybeRef<HotelMarkupSettingsConditionDeleteProps | null>) =>
+  useAdminAPI(
+    props,
+    ({ hotelID }) => `/hotels/${hotelID}/settings/markup/condition`,
+    { immediate: true },
+  )
+    .delete(computed<string>(() => JSON.stringify(
+      getNullableRef<HotelMarkupSettingsConditionDeleteProps, any>(
+        props,
+        (payload: HotelMarkupSettingsConditionDeleteProps): any => ({ key: payload.key, index: payload.index }),
       ),
     )), 'application/json')
     .json<BaseResponse>()

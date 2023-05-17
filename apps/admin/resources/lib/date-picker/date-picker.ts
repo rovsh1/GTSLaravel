@@ -33,34 +33,34 @@ export const useDatePicker = (element: HTMLInputElement, options?: Options) => {
       DateTime.now().startOf('month').toJSDate(),
       DateTime.now().endOf('month').toJSDate(),
     ],
-    'Текущая неделя': [
-      DateTime.now().startOf('week').toJSDate(),
-      DateTime.now().endOf('week').toJSDate(),
-    ],
+    // 'Текущая неделя': [
+    //   DateTime.now().startOf('week').toJSDate(),
+    //   DateTime.now().endOf('week').toJSDate(),
+    // ],
     'Текущий год': [
       DateTime.now().startOf('year').toJSDate(),
       DateTime.now().endOf('year').toJSDate(),
     ],
-    'Последние 7 дней': [
-      DateTime.now().minus({ days: 6 }).toJSDate(),
-      DateTime.now().toJSDate(),
-    ],
-    'Последние 14 дней': [
-      DateTime.now().minus({ days: 13 }).toJSDate(),
-      DateTime.now().toJSDate(),
-    ],
-    'Последние 30 дней': [
-      DateTime.now().minus({ days: 29 }).toJSDate(),
-      DateTime.now().toJSDate(),
-    ],
+    // 'Последние 7 дней': [
+    //   DateTime.now().minus({ days: 6 }).toJSDate(),
+    //   DateTime.now().toJSDate(),
+    // ],
+    // 'Последние 14 дней': [
+    //   DateTime.now().minus({ days: 13 }).toJSDate(),
+    //   DateTime.now().toJSDate(),
+    // ],
+    // 'Последние 30 дней': [
+    //   DateTime.now().minus({ days: 29 }).toJSDate(),
+    //   DateTime.now().toJSDate(),
+    // ],
     'Прошлый месяц': [
       DateTime.now().minus({ months: 1 }).startOf('month').toJSDate(),
       DateTime.now().minus({ months: 1 }).endOf('month').toJSDate(),
     ],
-    'Прошлая неделя': [
-      DateTime.now().minus({ weeks: 1 }).startOf('week').toJSDate(),
-      DateTime.now().minus({ weeks: 1 }).endOf('week').toJSDate(),
-    ],
+    // 'Прошлая неделя': [
+    //   DateTime.now().minus({ weeks: 1 }).startOf('week').toJSDate(),
+    //   DateTime.now().minus({ weeks: 1 }).endOf('week').toJSDate(),
+    // ],
     'Прошлый год': [
       DateTime.now().minus({ years: 1 }).startOf('year').toJSDate(),
       DateTime.now().minus({ years: 1 }).endOf('year').toJSDate(),
