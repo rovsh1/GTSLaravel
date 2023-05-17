@@ -15,8 +15,10 @@ const emit = defineEmits<{
 const props = withDefaults(defineProps<{
   opened: boolean
   disabled?: MaybeRef<boolean>
+  loading?: MaybeRef<boolean>
 }>(), {
   disabled: false,
+  loading: false,
 })
 
 const close = () => {
@@ -58,7 +60,7 @@ watch(() => props.opened, (value) => {
             </div>
           </template>
           <template v-if="$slots['default']">
-            <div class="content">
+            <div class="content" :class="{ loading: loading }">
               <slot />
             </div>
           </template>

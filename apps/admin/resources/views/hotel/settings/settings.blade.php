@@ -1,5 +1,15 @@
 @extends('layouts.main')
 
+@section('head-end')
+    <script id="hotel-settings-initial-data">
+      window['view-initial-data-hotel-settings'] = {{
+            Js::from([
+                'hotelID' => $model->id,
+            ])
+        }}
+    </script>
+@endsection
+
 @section('styles')
     @vite('resources/views/hotel/settings/settings.scss')
 @endsection

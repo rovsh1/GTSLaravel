@@ -17,4 +17,4 @@ export type AttachmentDialogImageProp = {
 }
 
 export const isImageAttachedToRoom = (id: HotelImageID, room: HotelRoom): boolean =>
-  room.images.find((image) => image.id === id) !== undefined
+  room.images?.find((image) => image.id === id) !== undefined
