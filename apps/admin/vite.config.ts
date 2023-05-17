@@ -20,7 +20,7 @@ export default defineConfig(({ command }) => ({
     target: 'esnext',
   },
   esbuild: {
-    drop: command === 'serve' ? [] : ['console', 'debugger'],
+    // drop: command === 'serve' ? [] : ['console', 'debugger'],
   },
   plugins: [
     laravel({
