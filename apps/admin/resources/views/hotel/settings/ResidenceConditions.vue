@@ -10,7 +10,8 @@ import ConditionsTable from '~resources/views/hotel/settings/components/Conditio
 import TimeSelect from '~resources/views/hotel/settings/components/TimeSelect.vue'
 
 import {
-  addConditionHotelMarkupSettings, deleteConditionHotelMarkupSettings,
+  addConditionHotelMarkupSettings,
+  deleteConditionHotelMarkupSettings,
   MarkupCondition,
   updateConditionHotelMarkupSettings,
   useHotelMarkupSettingsAPI,

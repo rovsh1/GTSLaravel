@@ -6,47 +6,47 @@ namespace Module\Shared\Domain\ValueObject;
 
 class TimePeriod implements ValueObjectInterface, SerializableDataInterface
 {
-    private string $from;
-    private string $to;
+    private Time $from;
+    private Time $to;
 
     public function __construct(string $from, string $to)
     {
-        $this->validateTime($from);
-        $this->validateTime($to);
-        $this->validateFromLessTo($from, $to);
-        $this->from = $from;
-        $this->to = $to;
+        $fromTime = new Time($from);
+        $toTime = new Time($to);
+        $this->validateFromLessTo($fromTime, $toTime);
+        $this->from = $fromTime;
+        $this->to = $toTime;
     }
 
     public function from(): string
     {
-        return $this->from;
+        return $this->from->value();
     }
 
     public function to(): string
     {
-        return $this->to;
+        return $this->to->value();
     }
 
     public function setFrom(string $from): void
     {
-        $this->validateTime($from);
-        $this->validateFromLessTo($from, $this->to);
-        $this->from = $from;
+        $time = new Time($from);
+        $this->validateFromLessTo($time, $this->to);
+        $this->from = $time;
     }
 
     public function setTo(string $to): void
     {
-        $this->validateTime($to);
-        $this->validateFromLessTo($this->from, $to);
-        $this->to = $to;
+        $time = new Time($to);
+        $this->validateFromLessTo($this->from, $time);
+        $this->to = $time;
     }
 
     public function toData(): array
     {
         return [
-            'from' => $this->from,
-            'to' => $this->to
+            'from' => $this->from->value(),
+            'to' => $this->to->value()
         ];
     }
 
@@ -56,27 +56,15 @@ class TimePeriod implements ValueObjectInterface, SerializableDataInterface
     }
 
     /**
-     * @param string $value
+     * @param Time $from
+     * @param Time $to
      * @return void
      * @throws \InvalidArgumentException
      */
-    private function validateTime(string $value): void
-    {
-        if (!preg_match('/^([0-1]?[0-9]|2[0-4]):[0-5][0-9]$/m', $value)) {
-            throw new \InvalidArgumentException("Invalid value for period [{$value}]");
-        }
-    }
-
-    /**
-     * @param string $from
-     * @param string $to
-     * @return void
-     * @throws \InvalidArgumentException
-     */
-    private function validateFromLessTo(string $from, string $to): void
+    private function validateFromLessTo(Time $from, Time $to): void
     {
         if ($from > $to) {
-            throw new \InvalidArgumentException("Invalid period values, from [{$from}] to [{$to}]");
+            throw new \InvalidArgumentException("Invalid period values, from [{$from->value()}] to [{$to->value()}]");
         }
     }
 }
