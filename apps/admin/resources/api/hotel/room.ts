@@ -46,7 +46,7 @@ export const mapHotelRoomResponseToHotelRoom = ({
   customName,
   roomsNumber,
   guestsNumber,
-  images: images.map(mapHotelImageResponseToImageResponse),
+  images: images?.map(mapHotelImageResponseToImageResponse),
 })
 
 export const useHotelRoomAPI = (props: MaybeRef<HotelRoomProps | null>) =>

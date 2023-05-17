@@ -38,6 +38,7 @@ const useAPI = (base: string) => <T>(
         }
       },
       onFetchError: (ctx) => {
+        console.error(ctx.error)
         showToast({
           title: 'Ошибка сервера',
           description: ctx.error.message,
