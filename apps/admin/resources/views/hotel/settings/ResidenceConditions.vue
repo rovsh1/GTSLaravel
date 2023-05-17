@@ -9,10 +9,12 @@ import CollapsableBlock from '~resources/views/hotel/settings/components/Collaps
 import ConditionsTable from '~resources/views/hotel/settings/components/ConditionsTable.vue'
 import TimeSelect from '~resources/views/hotel/settings/components/TimeSelect.vue'
 
-import { addConditionHotelMarkupSettings,
+import {
+  addConditionHotelMarkupSettings, deleteConditionHotelMarkupSettings,
   MarkupCondition,
   updateConditionHotelMarkupSettings,
-  useHotelMarkupSettingsAPI } from '~api/hotel/markup-settings'
+  useHotelMarkupSettingsAPI,
+} from '~api/hotel/markup-settings'
 
 import { requestInitialData } from '~lib/initial-data'
 
@@ -67,6 +69,17 @@ const handleAddConditions = (conditionType: ConditionType) => {
   isCreateCondition.value = true
 
   toggleModal()
+}
+
+const handleDeleteConditions = async (conditionType: ConditionType, index: number) => {
+  isConditionsFetching.value = true
+  await deleteConditionHotelMarkupSettings({
+    hotelID,
+    key: conditionType,
+    index,
+  })
+  isConditionsFetching.value = false
+  await fetchMarkupSettings()
 }
 
 const conditionsModalForm = ref<HTMLFormElement>()
@@ -142,20 +155,24 @@ fetchMarkupSettings()
       </div>
     </div>
 
-    <div v-if="!isFetching" class="d-flex flex-row gap-4 mt-4">
+    <div class="d-flex flex-row gap-4 mt-4">
       <ConditionsTable
         class="w-100"
         title="Условия раннего заезда"
         :conditions="markupSettings?.earlyCheckIn as MarkupCondition[]"
+        :loading="isFetching || isConditionsFetching"
         @add="handleAddConditions(ConditionTypeEnum.earlyCheckIn)"
         @edit="({ condition, index }) => handleEditConditions(ConditionTypeEnum.earlyCheckIn, condition, index)"
+        @delete="index => handleDeleteConditions(ConditionTypeEnum.earlyCheckIn, index)"
       />
       <ConditionsTable
         class="w-100"
         title="Условия позднего выезда"
         :conditions="markupSettings?.lateCheckOut as MarkupCondition[]"
+        :loading="isFetching || isConditionsFetching"
         @add="handleAddConditions(ConditionTypeEnum.lateCheckOut)"
         @edit="({ condition, index }) => handleEditConditions(ConditionTypeEnum.lateCheckOut, condition, index)"
+        @delete="index => handleDeleteConditions(ConditionTypeEnum.lateCheckOut, index)"
       />
     </div>
 
