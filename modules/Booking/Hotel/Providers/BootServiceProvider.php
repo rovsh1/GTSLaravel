@@ -14,9 +14,22 @@ class BootServiceProvider extends ServiceProvider
     {
         $this->app->register(EventServiceProvider::class);
 
-        $this->app->singleton(FileStorageAdapterInterface::class, FileStorageAdapter::class);
+        $this->app->singleton(
+            FileStorageAdapterInterface::class,
+            FileStorageAdapter::class
+        );
+        $this->app->singleton(
+            Domain\Adapter\OrderAdapterInterface::class,
+            Infrastructure\Adapter\OrderAdapter::class
+        );
 
-        $this->app->singleton(Domain\Repository\ReservationRepositoryInterface::class, Infrastructure\Repository\ReservationRepository::class);
-        $this->app->singleton(Domain\Repository\RoomRepositoryInterface::class, Infrastructure\Repository\RoomRepository::class);
+        $this->app->singleton(
+            Domain\Repository\BookingRepositoryInterface::class,
+            Infrastructure\Repository\BookingRepository::class
+        );
+//        $this->app->singleton(
+//            Domain\Repository\RoomRepositoryInterface::class,
+//            Infrastructure\Repository\RoomRepository::class
+//        );
     }
 }

@@ -4,6 +4,7 @@ use App\Admin\Http\Controllers;
 use App\Admin\Support\Facades\AclRoute;
 
 AclRoute::for('hotel')
+    ->get('/search', Controllers\Hotel\HotelController::class . '@search', 'read', 'search')
     ->get('/{hotel}/get', Controllers\Hotel\HotelController::class . '@get', 'read', 'get')
     ->get('/{hotel}/rooms/list', Controllers\Hotel\HotelController::class . '@getRooms', 'read', 'rooms.list')
 

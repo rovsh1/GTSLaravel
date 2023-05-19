@@ -4,6 +4,7 @@ namespace App\Admin\Models\Hotel;
 
 use App\Admin\Enums\Hotel\Contract\StatusEnum;
 use App\Admin\Files\ContractDocument;
+use App\Admin\Support\Models\HasPeriod;
 use Carbon\CarbonPeriod;
 use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -40,6 +41,8 @@ use Illuminate\Support\Collection;
  */
 class Contract extends Model
 {
+    use HasPeriod;
+
     protected $table = 'hotel_contracts';
 
     protected $fillable = [
@@ -47,7 +50,6 @@ class Contract extends Model
         'status',
         'date_start',
         'date_end',
-        'period',
         'documents'
     ];
 
@@ -86,17 +88,6 @@ class Contract extends Model
     public function scopeActive(Builder $builder)
     {
         $builder->whereStatus(StatusEnum::ACTIVE);
-    }
-
-    public function period(): Attribute
-    {
-        return Attribute::make(
-            get: fn() => new CarbonPeriod($this->date_start, $this->date_end),
-            set: fn(CarbonPeriod $period) => [
-                'date_start' => $period->getStartDate(),
-                'date_end' => $period->getEndDate()
-            ]
-        );
     }
 
     public function documents(): Attribute

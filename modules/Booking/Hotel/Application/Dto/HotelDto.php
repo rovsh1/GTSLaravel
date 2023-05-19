@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Module\Booking\Hotel\Application\Dto;
 
-use Module\Booking\Hotel\Domain\ValueObject\Hotel;
+use Module\Booking\Hotel\Domain\Entity\Details\Hotel;
 use Module\Shared\Application\Dto\AbstractDomainBasedDto;
 use Module\Shared\Domain\Entity\EntityInterface;
 use Module\Shared\Domain\ValueObject\ValueObjectInterface;
@@ -10,17 +12,17 @@ use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 class HotelDto extends AbstractDomainBasedDto
 {
     public function __construct(
-        public readonly int     $id,
-        public readonly ?string $checkInTime,
-        public readonly ?string $checkOutTime,
+        public readonly int $id,
+        public readonly string $checkInTime,
+        public readonly string $checkOutTime,
     ) {}
 
-    public static function fromDomain(EntityInterface|ValueObjectInterface|Hotel $hotel): static
+    public static function fromDomain(EntityInterface|ValueObjectInterface|Hotel $entity): static
     {
         return new static(
-            $hotel->id(),
-            $hotel->checkInTime(),
-            $hotel->checkOutTime(),
+            $entity->id(),
+            $entity->checkInTime()->value(),
+            $entity->checkOutTime()->value(),
         );
     }
 }

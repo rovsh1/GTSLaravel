@@ -2,7 +2,7 @@
 
 namespace Module\Booking\Hotel\Application\Dto;
 
-use Module\Booking\Hotel\Domain\Entity\Room;
+use Module\Booking\Hotel\Domain\Entity\Details\Room;
 use Module\Shared\Application\Dto\AbstractDomainBasedDto;
 use Module\Shared\Domain\Entity\EntityInterface;
 use Module\Shared\Domain\ValueObject\ValueObjectInterface;

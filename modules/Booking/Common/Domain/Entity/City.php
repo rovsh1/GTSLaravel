@@ -1,0 +1,25 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Module\Booking\Common\Domain\Entity;
+
+use Module\Shared\Domain\Entity\EntityInterface;
+
+class City implements EntityInterface
+{
+    public function __construct(
+        private readonly int $id,
+        private readonly string $name,
+    ) {}
+
+    public function id(): int
+    {
+        return $this->id;
+    }
+
+    public function name(): string
+    {
+        return $this->name;
+    }
+}

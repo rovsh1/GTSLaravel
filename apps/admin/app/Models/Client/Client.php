@@ -9,9 +9,6 @@ class Client extends Model
 {
     use HasQuicksearch;
 
-    public const CREATED_AT = 'created';
-    public const UPDATED_AT = 'updated';
-
     public $timestamps = false;
 
     protected array $quicksearch = ['id', 'name%'];

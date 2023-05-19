@@ -11,4 +11,8 @@ return Factory::key('hotel-booking')
         "index" => "Брони отелей",
         "create" => "Новая бронь"
     ])
+    ->views([
+        'show' => 'hotel-booking.show.show',
+        'form' => 'hotel-booking.form.form'
+    ])
     ->priority(209);

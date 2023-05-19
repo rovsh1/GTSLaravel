@@ -2,7 +2,7 @@
 
 namespace Module\Booking\Hotel\Application\Dto;
 
-use Module\Booking\Hotel\Domain\Entity\Room;
+use Module\Booking\Hotel\Domain\ValueObject\Details\Guest;
 use Module\Shared\Application\Dto\AbstractDomainBasedDto;
 use Module\Shared\Domain\Entity\EntityInterface;
 use Module\Shared\Domain\ValueObject\ValueObjectInterface;
@@ -14,11 +14,11 @@ class GuestDto extends AbstractDomainBasedDto
         public readonly string $fullName,
     ) {}
 
-    public static function fromDomain(EntityInterface|ValueObjectInterface|Room\Guest $guest): static
+    public static function fromDomain(EntityInterface|ValueObjectInterface|Guest $entity): static
     {
         return new static(
-            $guest->id(),
-            $guest->fullName(),
+            $entity->id(),
+            $entity->fullName(),
         );
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Admin\Models\Client;
 
 use App\Admin\Models\Hotel\Hotel;
+use App\Admin\Support\Models\HasPeriod;
 use Carbon\CarbonPeriod;
 use Custom\Framework\Database\Eloquent\HasQuicksearch;
 use Custom\Framework\Database\Eloquent\Model;
@@ -42,7 +43,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  */
 class CurrencyRate extends Model
 {
-    use HasQuicksearch;
+    use HasQuicksearch, HasPeriod;
 
     protected array $quicksearch = ['clients.name%'];
 
@@ -54,7 +55,6 @@ class CurrencyRate extends Model
         'date_start',
         'date_end',
         'rate',
-        'period',
         'hotel_ids',
     ];
 
@@ -98,17 +98,6 @@ class CurrencyRate extends Model
     public function scopeWhereCurrencyId(Builder $builder, int $id): void
     {
         $builder->where('client_currency_rates.currency_id', $id);
-    }
-
-    public function period(): Attribute
-    {
-        return Attribute::make(
-            get: fn() => new CarbonPeriod($this->date_start, $this->date_end),
-            set: fn(CarbonPeriod $period) => [
-                'date_start' => $period->getStartDate(),
-                'date_end' => $period->getEndDate()
-            ]
-        );
     }
 
     public function hotels(): BelongsToMany

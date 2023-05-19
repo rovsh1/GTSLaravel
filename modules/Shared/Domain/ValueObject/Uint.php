@@ -6,21 +6,16 @@ namespace Module\Shared\Domain\ValueObject;
 
 class Uint implements ValueObjectInterface
 {
-    protected int $value;
+    protected readonly int $value;
 
     public function __construct(int $value)
     {
-        $this->setValue($value);
+        $this->value = $this->validatePositiveInteger($value);
     }
 
     public function value(): int
     {
         return $this->value;
-    }
-
-    public function setValue(int $value): void
-    {
-        $this->value = $this->validatePositiveInteger($value);
     }
 
     /**

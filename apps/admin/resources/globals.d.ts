@@ -4,6 +4,8 @@ declare global {
   interface JQuery extends JQueryStatic {
     elementCity(options: any): JQuery<HTMLElement>
 
+    childCombo(options: any): JQuery<HTMLElement>
+
     coordinatesInput(options: any): JQuery<HTMLElement>
 
     cardContacts(options: any = {}): JQuery<HTMLElement>

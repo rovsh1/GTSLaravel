@@ -2,4 +2,12 @@
 
 namespace Module\Booking\Common\Domain\Entity;
 
-interface ReservationInterface { }
+use Module\Booking\Common\Domain\Entity\Details\BookingDetailsInterface;
+use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
+
+interface ReservationInterface
+{
+    public function status(): BookingStatusEnum;
+
+    public function details(): BookingDetailsInterface;
+}

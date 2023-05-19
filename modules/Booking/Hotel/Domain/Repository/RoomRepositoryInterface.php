@@ -2,7 +2,7 @@
 
 namespace Module\Booking\Hotel\Domain\Repository;
 
-use Module\Booking\Hotel\Domain\Entity\Room;
+use Module\Booking\Hotel\Domain\Entity\Details\Room;
 
 interface RoomRepositoryInterface
 {

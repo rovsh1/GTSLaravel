@@ -5,6 +5,8 @@ namespace App\Admin\Http\Controllers\Hotel;
 use App\Admin\Enums\Hotel\RatingEnum;
 use App\Admin\Enums\Hotel\StatusEnum;
 use App\Admin\Enums\Hotel\VisibilityEnum;
+use App\Admin\Http\Requests\Hotel\SearchRequest;
+use App\Admin\Http\Resources\Hotel as HotelResource;
 use App\Admin\Http\Resources\Room;
 use App\Admin\Models\Hotel\Contract;
 use App\Admin\Models\Hotel\Hotel;
@@ -77,6 +79,15 @@ class HotelController extends AbstractPrototypeController
     {
         return response()->json(
             Room::collection($hotel->rooms)
+        );
+    }
+
+    public function search(SearchRequest $request): JsonResponse
+    {
+        $hotels = Hotel::whereCityId($request->getCityId())->get();
+
+        return response()->json(
+            HotelResource::collection($hotels)
         );
     }
 

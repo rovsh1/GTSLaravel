@@ -2,6 +2,7 @@
 
 namespace App\Admin\Models\Hotel;
 
+use App\Admin\Support\Models\HasPeriod;
 use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
 use Custom\Framework\Database\Eloquent\Model;
@@ -25,6 +26,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Season extends Model
 {
+    use HasPeriod;
+
     public $timestamps = false;
 
     protected $table = 'hotel_seasons';
@@ -34,7 +37,6 @@ class Season extends Model
         'name',
         'date_start',
         'date_end',
-        'period',
     ];
 
     protected $casts = [
@@ -53,17 +55,6 @@ class Season extends Model
     public function contract(): BelongsTo
     {
         return $this->belongsTo(Contract::class, 'contract_id', 'id');
-    }
-
-    public function period(): Attribute
-    {
-        return Attribute::make(
-            get: fn() => new CarbonPeriod($this->date_start, $this->date_end),
-            set: fn(CarbonPeriod $period) => [
-                'date_start' => $period->getStartDate(),
-                'date_end' => $period->getEndDate()
-            ]
-        );
     }
 
     public function scopeWhereHotelId(Builder $builder, int $hotelId): void
