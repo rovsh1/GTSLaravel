@@ -31,7 +31,8 @@ class UpdateMarkupSettingsValueHandler implements CommandHandlerInterface
         'earlyCheckIns' => '/^earlyCheckIn$/',
         'lateCheckOut' => '/^lateCheckOut\.(\d+)(?:\.(from|to|percent))?$/',
         'lateCheckOuts' => '/^lateCheckOut$/',
-        'cancelPeriod' => '/^cancelPeriods\.(\d+)(?:\.(from|to|percent|noCheckInMarkup))?$/',
+        'cancelPeriod' => '/^cancelPeriods\.(\d+)(?:\.(from|to))?$/',
+        'cancelPeriod.noCheckInMarkup' => '/^cancelPeriods\.(\d+)(?:\.(noCheckInMarkup))\.(percent)?$/',
         'cancelPeriods' => '/^cancelPeriods$/',
         'cancelPeriods.dailyMarkup' => '/^cancelPeriods\.(\d+)\.dailyMarkups\.(\d+)\.(percent|cancelPeriodType|daysCount)$/',
         'cancelPeriods.dailyMarkups' => '/^cancelPeriods\.(\d+)\.dailyMarkups$/',
@@ -52,15 +53,18 @@ class UpdateMarkupSettingsValueHandler implements CommandHandlerInterface
             }
             $keyToUpdate = \Arr::last($keyParts);
             $object = match ($domainKey) {
-                'settings' => $settings->$keyToUpdate(),
-                'clientMarkups' => $settings->clientMarkups()->$keyToUpdate(),
+                'settings' => $settings,
+                'clientMarkups' => $settings->clientMarkups(),
                 'earlyCheckIn' => $settings->earlyCheckIn()->get($keyParts[1]),
                 'earlyCheckIns' => $settings->earlyCheckIn(),
                 'lateCheckOut' => $settings->lateCheckOut()->get($keyParts[1]),
                 'lateCheckOuts' => $settings->lateCheckOut(),
                 'cancelPeriod' => $settings->cancelPeriods()->get($keyParts[1]),
+                'cancelPeriod.noCheckInMarkup' => $settings->cancelPeriods()->get($keyParts[1])->noCheckInMarkup(),
                 'cancelPeriods' => $settings->cancelPeriods(),
-                'cancelPeriods.dailyMarkup' => $settings->cancelPeriods()->get($keyParts[1])->dailyMarkups()->get($keyParts[2]),
+                'cancelPeriods.dailyMarkup' => $settings->cancelPeriods()->get($keyParts[1])->dailyMarkups()->get(
+                    $keyParts[2]
+                ),
                 'cancelPeriods.dailyMarkups' => $settings->cancelPeriods()->get($keyParts[1])->dailyMarkups(),
             };
             break;
@@ -86,24 +90,32 @@ class UpdateMarkupSettingsValueHandler implements CommandHandlerInterface
     private function handleUpdateCondition(Condition $condition, string $key, mixed $value): void
     {
         if (is_array($value) && is_numeric($key)) {
+            $periodFrom = $condition->timePeriod()->from();
+            $periodTo = $condition->timePeriod()->to();
             if (array_key_exists('from', $value)) {
-                $condition->timePeriod()->setFrom($value['from']);
+                $periodFrom = $value['from'];
             }
             if (array_key_exists('to', $value)) {
-                $condition->timePeriod()->setTo($value['to']);
+                $periodTo = $value['to'];
             }
+            $condition->setTimePeriod(new TimePeriod($periodFrom, $periodTo));
+
             if (array_key_exists('percent', $value)) {
-                $condition->priceMarkup()->setValue($value['percent']);
+                $condition->setPriceMarkup(new Percent($value['percent']));
             }
             return;
         }
 
         if ($key === 'from') {
-            $condition->timePeriod()->setFrom($value);
+            $condition->setTimePeriod(
+                new TimePeriod($value, $condition->timePeriod()->to())
+            );
         } elseif ($key === 'to') {
-            $condition->timePeriod()->setTo($value);
+            $condition->setTimePeriod(
+                new TimePeriod($condition->timePeriod()->from(), $value)
+            );
         } elseif ($key === 'percent') {
-            $condition->priceMarkup()->setValue($value);
+            $condition->setPriceMarkup(new Percent($value));
         }
     }
 
@@ -184,9 +196,12 @@ class UpdateMarkupSettingsValueHandler implements CommandHandlerInterface
     {
         $setterMethod = 'set' . \Str::ucfirst($key);
         if (method_exists($object, $setterMethod)) {
-            $object->$setterMethod($value);
-        } elseif (method_exists($object, 'setValue')) {
-            $object->setValue($value);
+            $preparedValue = $value;
+            $argumentType = (new \ReflectionClass($object))->getMethod($setterMethod)->getParameters()[0]?->getType()?->getName();
+            if (class_exists($argumentType)) {
+                $preparedValue = new $argumentType($value);
+            }
+            $object->$setterMethod($preparedValue);
         } else {
             throw new \InvalidArgumentException("Can not update value for key [$key]");
         }

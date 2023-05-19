@@ -12,8 +12,8 @@ use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 final class Condition implements ValueObjectInterface, SerializableDataInterface
 {
     public function __construct(
-        private readonly TimePeriod $timePeriod,
-        private readonly Percent $priceMarkup
+        private TimePeriod $timePeriod,
+        private Percent $priceMarkup
     ) {}
 
     public function timePeriod(): TimePeriod
@@ -24,6 +24,16 @@ final class Condition implements ValueObjectInterface, SerializableDataInterface
     public function priceMarkup(): Percent
     {
         return $this->priceMarkup;
+    }
+
+    public function setTimePeriod(TimePeriod $timePeriod): void
+    {
+        $this->timePeriod = $timePeriod;
+    }
+
+    public function setPriceMarkup(Percent $priceMarkup): void
+    {
+        $this->priceMarkup = $priceMarkup;
     }
 
     public function toData(): array

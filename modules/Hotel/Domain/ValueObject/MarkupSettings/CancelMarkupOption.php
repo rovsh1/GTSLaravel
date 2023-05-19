@@ -11,13 +11,18 @@ use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 final class CancelMarkupOption implements ValueObjectInterface, SerializableDataInterface
 {
     public function __construct(
-        private readonly Percent $percent,
+        private Percent $percent,
         private readonly CancelPeriodTypeEnum $cancelPeriodType
     ) {}
 
     public function percent(): Percent
     {
         return $this->percent;
+    }
+
+    public function setPercent(Percent $percent): void
+    {
+        $this->percent = $percent;
     }
 
     public function cancelPeriodType(): CancelPeriodTypeEnum

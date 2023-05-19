@@ -11,8 +11,8 @@ use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 final class CancelPeriod implements ValueObjectInterface, SerializableDataInterface
 {
     public function __construct(
-        private readonly CarbonPeriod $period,
-        private readonly CancelMarkupOption $noCheckInMarkup,
+        private CarbonPeriod $period,
+        private CancelMarkupOption $noCheckInMarkup,
         private readonly DailyMarkupCollection $dailyMarkups
     ) {}
 
@@ -21,9 +21,19 @@ final class CancelPeriod implements ValueObjectInterface, SerializableDataInterf
         return $this->period;
     }
 
+    public function setPeriod(CarbonPeriod $period): void
+    {
+        $this->period = $period;
+    }
+
     public function noCheckInMarkup(): CancelMarkupOption
     {
         return $this->noCheckInMarkup;
+    }
+
+    public function setNoCheckInMarkup(CancelMarkupOption $noCheckInMarkup): void
+    {
+        $this->noCheckInMarkup = $noCheckInMarkup;
     }
 
     public function dailyMarkups(): DailyMarkupCollection

@@ -17,6 +17,6 @@ class GetHotelMarkupSettingsHandler implements QueryHandlerInterface
     {
         $markup = $this->repository->get($query->hotelId);
 
-        return MarkupSettingsDto::from($markup);
+        return MarkupSettingsDto::fromDomain($markup);
     }
 }

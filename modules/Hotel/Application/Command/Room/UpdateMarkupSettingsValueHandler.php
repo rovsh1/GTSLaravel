@@ -5,6 +5,7 @@ namespace Module\Hotel\Application\Command\Room;
 use Custom\Framework\Contracts\Bus\CommandHandlerInterface;
 use Custom\Framework\Contracts\Bus\CommandInterface;
 use Module\Hotel\Domain\Repository\RoomMarkupSettingsRepositoryInterface;
+use Module\Shared\Domain\ValueObject\Percent;
 
 class UpdateMarkupSettingsValueHandler implements CommandHandlerInterface
 {
@@ -22,8 +23,12 @@ class UpdateMarkupSettingsValueHandler implements CommandHandlerInterface
             throw new \InvalidArgumentException("Unknown key [{$command->key}] for room markup settings");
         }
 
-        $paramName = $command->key;
-        $settings->$paramName()->setValue($command->value);
+        $setterMethod = 'set' . \Str::ucfirst($command->key);
+        if (method_exists($settings, $setterMethod)) {
+            $setterMethod->$setterMethod(new Percent($command->value));
+        } else {
+            throw new \InvalidArgumentException("Can not update value for key [{$command->key}]");
+        }
 
         $this->repository->update($settings);
     }

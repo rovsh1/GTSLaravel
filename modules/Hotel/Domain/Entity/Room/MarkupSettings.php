@@ -12,11 +12,11 @@ final class MarkupSettings implements EntityInterface, SerializableDataInterface
 {
     public function __construct(
         private readonly int $id,
-        private readonly Percent $individual,
-        private readonly Percent $TA,
-        private readonly Percent $OTA,
-        private readonly Percent $TO,
-        private readonly Percent $discount,
+        private Percent $individual,
+        private Percent $TA,
+        private Percent $OTA,
+        private Percent $TO,
+        private Percent $discount,
     ) {}
 
     public function id(): int
@@ -47,6 +47,31 @@ final class MarkupSettings implements EntityInterface, SerializableDataInterface
     public function discount(): Percent
     {
         return $this->discount;
+    }
+
+    public function setIndividual(Percent $individual): void
+    {
+        $this->individual = $individual;
+    }
+
+    public function setTA(Percent $TA): void
+    {
+        $this->TA = $TA;
+    }
+
+    public function setOTA(Percent $OTA): void
+    {
+        $this->OTA = $OTA;
+    }
+
+    public function setTO(Percent $TO): void
+    {
+        $this->TO = $TO;
+    }
+
+    public function setDiscount(Percent $discount): void
+    {
+        $this->discount = $discount;
     }
 
     public function toData(): array

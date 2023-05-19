@@ -16,8 +16,8 @@ final class MarkupSettings implements EntityInterface, SerializableDataInterface
 {
     public function __construct(
         private readonly int $id,
-        private readonly Percent $vat,
-        private readonly Percent $touristTax,
+        private Percent $vat,
+        private Percent $touristTax,
         private readonly ClientMarkups $clientMarkups,
         private readonly EarlyCheckInCollection $earlyCheckIn,
         private readonly LateCheckOutCollection $lateCheckOut,
@@ -34,9 +34,19 @@ final class MarkupSettings implements EntityInterface, SerializableDataInterface
         return $this->vat;
     }
 
+    public function setVat(int $vat): void
+    {
+        $this->vat = new Percent($vat);
+    }
+
     public function touristTax(): Percent
     {
         return $this->touristTax;
+    }
+
+    public function setTouristTax(int $touristTax): void
+    {
+        $this->touristTax = new Percent($touristTax);
     }
 
     public function clientMarkups(): ClientMarkups
