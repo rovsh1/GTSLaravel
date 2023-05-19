@@ -21,7 +21,7 @@ class HotelBookingController extends AbstractPrototypeController
     {
         return Grid::enableQuicksearch()
             ->id('id', ['text' => '№', 'route' => $this->prototype->routeName('show'), 'order' => true])
-            ->text('status', ['text' => 'Статус', 'renderer'=>fn($v, $t) => $t->name, 'order' => true])
+            ->text('status', ['text' => 'Статус', 'renderer' => fn($v, $t) => $t->name, 'order' => true])
             ->text('client_name', ['text' => 'Клиент'])
             ->date('date_start', ['text' => 'Дата заезда'])
             ->date('date_end', ['text' => 'Дата выезда'])
@@ -91,26 +91,19 @@ class HotelBookingController extends AbstractPrototypeController
 
     public function show(int $id): LayoutContract
     {
-        $this->model = HotelAdapter::getBooking($id);
         $title = "Бронь №{$id}";
+        $model = HotelAdapter::getBooking($id);
 
-        Breadcrumb::prototype($this->prototype)
-            ->add($title);
+//        Breadcrumb::prototype($this->prototype)
+//            ->add($title);
 
-        $this->prepareShowMenu($this->model);
+//        $this->prepareShowMenu($this->model);
 
         return Layout::title($title)
-            ->view($this->prototype->view('show') ?? ($this->getPrototypeKey() . '.show'), [
-                'model' => $this->model,
-                'params' => $this->paramsTable(),
-                'editUrl' => $this->isAllowed('update') ? $this->prototype->route(
-                    'edit',
-                    $this->model->id
-                ) : null,
-                'deleteUrl' => $this->isAllowed('delete') ? $this->prototype->route(
-                    'destroy',
-                    $this->model->id
-                ) : null,
+            ->view($this->getPrototypeKey() . '.show.show', [
+                'model' => $model,
+                'editUrl' => $this->isAllowed('update') ? $this->route('edit', $id) : null,
+                'deleteUrl' => $this->isAllowed('delete') ? $this->route('destroy', $id) : null,
             ]);
     }
 
@@ -139,17 +132,6 @@ class HotelBookingController extends AbstractPrototypeController
                     $id
                 ) : null
             ]);
-    }
-
-    private function paramsTable(): ParamsTable
-    {
-        return (new ParamsTable())
-            ->text('client_id', 'Клиент')
-            ->text('city_id', 'Город')
-            ->text('hotel_id', 'Отель')
-            ->date('created_at', 'Создана', ['format' => 'datetime'])
-            ->text('note', 'Примечание')
-            ->data($this->model);
     }
 
     protected function formFactory(): FormContract
@@ -198,5 +180,10 @@ class HotelBookingController extends AbstractPrototypeController
     protected function getPrototypeKey(): string
     {
         return 'hotel-booking';
+    }
+
+    protected function route(string $name, mixed $parameters = []): string
+    {
+        return route("hotel-booking.{$name}", $parameters);
     }
 }

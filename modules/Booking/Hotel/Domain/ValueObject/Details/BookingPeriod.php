@@ -9,7 +9,7 @@ final class BookingPeriod
     public function __construct(
         private ?DateTime $dateFrom,
         private ?DateTime $dateTo,
-        private int $nightsNumber = 0,
+        private int $nightsCount = 0,
     ) {}
 
     public function dateFrom(): ?DateTime
@@ -32,13 +32,13 @@ final class BookingPeriod
         $this->dateTo = $dateTime;
     }
 
-    public function nightsNumber(): int
+    public function nightsCount(): int
     {
-        return $this->nightsNumber;
+        return $this->nightsCount;
     }
 
-    public function setNightsNumber(int $nightsNumber): void
+    public function setNightsCount(int $nightsCount): void
     {
-        $this->nightsNumber = $nightsNumber;
+        $this->nightsCount = $nightsCount;
     }
 }

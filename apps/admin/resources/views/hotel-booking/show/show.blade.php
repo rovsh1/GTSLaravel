@@ -22,46 +22,57 @@
             <div class="card-body">
                 <table class="table-params">
                     <tbody>
+                    {{--                    <tr class="">--}}
+                    {{--                        <th>Заказ (ID)</th>--}}
+                    {{--                        <td>--}}
+                    {{--                            <a href="#" target="_blank">{{$model->order_id}}</a>--}}
+                    {{--                        </td>--}}
+                    {{--                    </tr>--}}
+                    {{--                    <tr class="">--}}
+                    {{--                        <th>Дата заезда и выезда</th>--}}
+                    {{--                        <td>{{$model->period}}</td>--}}
+                    {{--                    </tr>--}}
+                    {{--                    <tr class="">--}}
+                    {{--                        <th>Источник</th>--}}
+                    {{--                        <td>{{$model->source}}</td>--}}
+                    {{--                    </tr>--}}
+                    {{--                    <tr class="">--}}
+                    {{--                        <th>Страна</th>--}}
+                    {{--                        <td>{{$model->city_id}}</td>--}}
+                    {{--                    </tr>--}}
+                    {{--                    <tr class="">--}}
+                    {{--                        <th>Клиент</th>--}}
+                    {{--                        <td>{{$model->client_name}}</td>--}}
+                    {{--                    </tr>--}}
+                    {{--                    <tr class="">--}}
+                    {{--                        <th>Отель</th>--}}
+                    {{--                        <td>{{$model->hotel_id ?? null}}</td>--}}
+                    {{--                    </tr>--}}
+                    {{--                    <tr class="">--}}
+                    {{--                        <th>Создана</th>--}}
+                    {{--                        <td>{{$model->created_at}}</td>--}}
+                    {{--                    </tr>--}}
                     <tr class="">
-                        <th>Заказ (ID)</th>
-                        <td>
-                            <a href="#" target="_blank">{{$model->order_id}}</a>
-                        </td>
+                        <th>Статус</th>
+                        <td>{{$model->status}}</td>
                     </tr>
                     <tr class="">
-                        <th>Дата заезда и выезда</th>
-                        <td>{{$model->period}}</td>
-                    </tr>
-                    <tr class="">
-                        <th>Источник</th>
-                        <td>{{$model->source}}</td>
-                    </tr>
-                    <tr class="">
-                        <th>Страна</th>
-                        <td>{{$model->city_id}}</td>
-                    </tr>
-                    <tr class="">
-                        <th>Клиент</th>
-                        <td>{{$model->client_name}}</td>
-                    </tr>
-                    <tr class="">
-                        <th>Отель</th>
-                        <td>{{$model->hotel_id ?? null}}</td>
-                    </tr>
-                    <tr class="">
-                        <th>Создана</th>
-                        <td>{{$model->created_at}}</td>
+                        <th>Примечание</th>
+                        <td>{{$model->note}}</td>
                     </tr>
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <div class="card card-form mt-3">
-            <h5>Номера</h5>
-            @php
-                dd($model->hotelDetails);
-            @endphp
+        <h5 class="mt-3">Номера</h5>
+        <div class="card card-form mt-1 d-flex flex-column">
+            <div class="card m-2">
+                <span>Номер крутой</span>
+            </div>
+            <div class="card m-2">
+                <span>Номер крутой</span>
+            </div>
         </div>
     </div>
 @endsection

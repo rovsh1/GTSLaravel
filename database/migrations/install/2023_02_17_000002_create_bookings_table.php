@@ -37,6 +37,7 @@ return new class extends Migration {
             $table->unsignedInteger('hotel_id');
             $table->date('date_start');
             $table->date('date_end');
+            $table->unsignedInteger('nights_count');
             $table->json('additional_data')->nullable();
             $table->json('rooms')->default(new Expression('(JSON_ARRAY())'));
             $table->timestamps();

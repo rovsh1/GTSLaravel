@@ -3,6 +3,7 @@
 namespace App\Admin\Http\Controllers\Hotel;
 
 use App\Admin\Http\Controllers\Controller;
+use App\Admin\Http\Requests\Hotel\BatchUpdatePriceRequest;
 use App\Admin\Http\Requests\Hotel\UpdatePriceRequest;
 use App\Admin\Http\Resources\Price;
 use App\Admin\Models\Hotel\Hotel;
@@ -76,6 +77,28 @@ class PriceController extends Controller
             currencyId: $request->getCurrencyId(),
             date: $request->getDate()
         );
+        return new AjaxSuccessResponse();
+    }
+
+    public function batchUpdateDatePrice(BatchUpdatePriceRequest $request, Hotel $hotel, Season $season): AjaxResponseInterface
+    {
+        foreach ($request->getPeriod() as $date) {
+            //@todo переделать на норм запрос
+            $isNeedUpdate = in_array($date->dayOfWeekIso, $request->getWeekDays());
+            if (!$isNeedUpdate) {
+                continue;
+            }
+            PricesAdapter::setDatePrice(
+                roomId: $request->getRoomId(),
+                seasonId: $season->id,
+                rateId: $request->getRateId(),
+                guestsNumber: $request->getGuestsNumber(),
+                isResident: $request->getIsResident(),
+                price: $request->getPrice(),
+                currencyId: $request->getCurrencyId(),
+                date: $date
+            );
+        }
         return new AjaxSuccessResponse();
     }
 

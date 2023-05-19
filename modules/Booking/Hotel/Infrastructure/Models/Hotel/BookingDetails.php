@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Hotel\Infrastructure\Models\Hotel;
 
+use Carbon\CarbonPeriod;
 use Custom\Framework\Database\Eloquent\Model;
 
 class BookingDetails extends Model
@@ -15,7 +16,17 @@ class BookingDetails extends Model
         'hotel_id',
         'date_start',
         'date_end',
+        'nights_count',
         'additional_data',//@todo Тип номера подтверждения бронирования
         'rooms',
     ];
+
+    protected static function booted()
+    {
+        static::saving(function (self $model) {
+            $model->nights_count = CarbonPeriod::create($model->date_start, $model->date_end, 'P1D')
+                ->excludeEndDate()
+                ->count();
+        });
+    }
 }

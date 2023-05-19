@@ -24,6 +24,7 @@ AclRoute::for('hotel')
     ->put('/{hotel}/seasons/{season}/prices',Controllers\Hotel\PriceController::class.'@updateSeasonPrice','update','prices.seasons.update')
     ->get('/{hotel}/seasons/{season}/prices/date',Controllers\Hotel\PriceController::class.'@getDatePrices','read','prices.seasons.date.get')
     ->put('/{hotel}/seasons/{season}/prices/date',Controllers\Hotel\PriceController::class.'@updateDatePrice','update','prices.seasons.date.update')
+    ->put('/{hotel}/seasons/{season}/prices/date/batch',Controllers\Hotel\PriceController::class.'@batchUpdateDatePrice','update','prices.seasons.date.update.batch')
     ->resource('contacts', Controllers\Hotel\ContactController::class, ['except' => ['show', 'index']])
 
     ->get('/{hotel}/notes', Controllers\Hotel\NotesController::class . '@edit', 'update', 'notes.edit')

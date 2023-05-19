@@ -13,17 +13,15 @@ class BookingDto extends AbstractDomainBasedDto
 {
     public function __construct(
         public readonly int $id,
-        public readonly BookingStatusDto $status,
-        public readonly string $note,
+        public readonly int $status,
+        public readonly ?string $note,
     ) {}
 
     public static function fromDomain(EntityInterface|ValueObjectInterface|Booking $entity): static
     {
         return new static(
             $entity->id(),
-            CityDto::fromDomain($entity->city()),
-            ClientDto::fromDomain($entity->client()),
-            HotelDetailsDto::fromDomain($entity->hotelDetails()),
+            $entity->status()->value,
             $entity->note()
         );
     }

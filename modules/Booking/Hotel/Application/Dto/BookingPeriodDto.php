@@ -15,7 +15,7 @@ class BookingPeriodDto extends AbstractDomainBasedDto
     public function __construct(
         public readonly Carbon $dateFrom,
         public readonly Carbon $dateTo,
-        public readonly int $nightsNumber,
+        public readonly int $nightsCount,
     ) {}
 
     public static function fromDomain(EntityInterface|ValueObjectInterface|BookingPeriod $entity): static
@@ -23,7 +23,7 @@ class BookingPeriodDto extends AbstractDomainBasedDto
         return new static(
             new Carbon($entity->dateFrom()),
             new Carbon($entity->dateTo()),
-            $entity->nightsNumber()
+            $entity->nightsCount()
         );
     }
 }
