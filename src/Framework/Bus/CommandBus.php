@@ -27,8 +27,9 @@ class CommandBus implements CommandBusInterface
     public function execute(CommandInterface $command): mixed
     {
         $commandHandler = $this->getCommandHandler($command);
-        if (!$commandHandler)
+        if (!$commandHandler) {
             throw new \Exception('Command [' . $command::class . '] handler undefined');
+        }
 
         $action = fn($command) => $commandHandler->handle($command);
 
@@ -56,12 +57,19 @@ class CommandBus implements CommandBusInterface
 
     private function getCommandHandler(CommandInterface $command)
     {
-        if ($this->hasCommandHandler($command))
+        if ($this->hasCommandHandler($command)) {
             return $this->container->make($this->handlers[get_class($command)]);
+        }
 
         $handlerClass = $command::class . 'Handler';
-        if (class_exists($handlerClass))
+        if (class_exists($handlerClass)) {
             return $this->container->make($handlerClass);
+        }
+
+        $handlerClass = (new \ReflectionClass($command))->getNamespaceName() . '\\Handler';
+        if (class_exists($handlerClass)) {
+            return $this->container->make($handlerClass);
+        }
 
         return null;
     }
@@ -70,8 +78,9 @@ class CommandBus implements CommandBusInterface
     {
         $middlewares = [];
         foreach ($this->handlersMiddlewares as $interface => $middleware) {
-            if ($commandHandler instanceof $interface)
+            if ($commandHandler instanceof $interface) {
                 $middlewares[] = $middleware;
+            }
         }
 
         return $middlewares;
@@ -80,8 +89,9 @@ class CommandBus implements CommandBusInterface
     private function terminateMiddlewares($command, $middlewares)
     {
         foreach ($middlewares as $middleware) {
-            if (method_exists($middleware, 'terminate'))
+            if (method_exists($middleware, 'terminate')) {
                 $middleware->terminate($command);
+            }
         }
     }
 }
