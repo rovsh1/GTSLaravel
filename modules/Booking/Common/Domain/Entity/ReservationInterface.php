@@ -8,6 +8,4 @@ use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 interface ReservationInterface
 {
     public function status(): BookingStatusEnum;
-
-    public function details(): BookingDetailsInterface;
 }

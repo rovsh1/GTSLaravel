@@ -9,23 +9,28 @@ use Module\Shared\Application\Dto\AbstractDomainBasedDto;
 use Module\Shared\Domain\Entity\EntityInterface;
 use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 
-class HotelDetailsDto extends AbstractDomainBasedDto
+class DetailsDto extends AbstractDomainBasedDto
 {
     public function __construct(
-        public readonly HotelDto $hotel,
+        public readonly int $hotelId,
         public readonly BookingPeriodDto $period,
-        public readonly AdditionalInfoDto $additionalInfo,
+        public readonly ?AdditionalInfoDto $additionalInfo,
         /** @var RoomDto[] $rooms */
         public readonly array $rooms
     ) {}
 
     public static function fromDomain(EntityInterface|ValueObjectInterface|HotelDetailsInterface $entity): static
     {
+        $additionalInfo = $entity->additionalInfo();
+        if ($additionalInfo !== null) {
+            $additionalInfo = AdditionalInfoDto::fromDomain($additionalInfo);
+        }
+
         return new static(
-            HotelDto::fromDomain($entity->hotel()),
+            $entity->hotelId(),
             BookingPeriodDto::fromDomain($entity->period()),
-            AdditionalInfoDto::fromDomain($entity->additionalInfo()),
-            RoomDto::collectionFromDomain($entity->rooms())
+            $additionalInfo,
+            RoomDto::collectionFromDomain($entity->rooms()->all())
         );
     }
 }

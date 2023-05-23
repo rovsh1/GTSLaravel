@@ -10,11 +10,11 @@ use Module\Shared\Domain\Entity\EntityInterface;
 
 interface HotelDetailsInterface extends BookingDetailsInterface
 {
-    public function hotel(): EntityInterface;
+    public function hotelId(): int;
 
     public function period(): BookingPeriod;
 
-    public function additionalInfo(): AdditionalInfoInterface;
+    public function additionalInfo(): ?AdditionalInfoInterface;
 
     public function rooms(): Collection;
 }

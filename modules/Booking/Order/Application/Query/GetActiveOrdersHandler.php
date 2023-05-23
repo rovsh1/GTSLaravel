@@ -13,10 +13,7 @@ class GetActiveOrdersHandler implements QueryHandlerInterface
 {
     public function handle(QueryInterface|GetActiveOrders $query): array
     {
-        $orders = Order::query()
-            ->withoutHotelBookings()
-            ->get()
-            ->all();
+        $orders = Order::query()->get()->all();
 
         return OrderDto::collection($orders)->all();
     }

@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Admin\Http\Controllers\Booking;
+namespace App\Admin\Http\Controllers\Booking\Hotel;
 
+use App\Admin\Models\Hotel\Room;
+use App\Admin\Http\Resources\Room as RoomResource;
 use App\Admin\Support\Facades\Booking\HotelAdapter;
 use App\Admin\Support\Facades\Booking\OrderAdapter;
 use App\Admin\Support\Facades\Breadcrumb;
@@ -12,10 +14,9 @@ use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Layout as LayoutContract;
-use Gsdk\Format\View\ParamsTable;
 use Illuminate\Http\RedirectResponse;
 
-class HotelBookingController extends AbstractPrototypeController
+class BookingController extends AbstractPrototypeController
 {
     protected function gridFactory(): GridContract
     {
@@ -99,11 +100,15 @@ class HotelBookingController extends AbstractPrototypeController
 
 //        $this->prepareShowMenu($this->model);
 
+        //@todo получить детали отдельно от бронирования
+        $hotelId = $model->details->hotelId;
+
         return Layout::title($title)
             ->view($this->getPrototypeKey() . '.show.show', [
                 'model' => $model,
                 'editUrl' => $this->isAllowed('update') ? $this->route('edit', $id) : null,
                 'deleteUrl' => $this->isAllowed('delete') ? $this->route('destroy', $id) : null,
+                'rooms' => RoomResource::collection(Room::whereHotelId($hotelId)->get())
             ]);
     }
 
@@ -127,10 +132,7 @@ class HotelBookingController extends AbstractPrototypeController
                 'model' => $this->model,
                 'form' => $form,
                 'cancelUrl' => $this->prototype->route('show', $id),
-                'deleteUrl' => $this->isAllowed('delete') ? $this->prototype->route(
-                    'destroy',
-                    $id
-                ) : null
+                'deleteUrl' => $this->isAllowed('delete') ? $this->prototype->route('destroy', $id) : null
             ]);
     }
 

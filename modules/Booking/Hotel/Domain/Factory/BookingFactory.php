@@ -19,6 +19,7 @@ class BookingFactory extends AbstractEntityFactory
             $data['id'],
             BookingStatusEnum::from($data['status']),
             $data['note'],
+            app(DetailsFactory::class)->createFrom($data['hotel_details'])
         );
     }
 }

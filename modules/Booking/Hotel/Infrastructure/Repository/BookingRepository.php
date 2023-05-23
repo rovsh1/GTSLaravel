@@ -12,7 +12,7 @@ class BookingRepository implements BookingRepositoryInterface
 {
     public function find(int $id): ?Entity
     {
-        $model = Model::find($id);
+        $model = Model::withHotelDetails()->find($id);
         if (!$model) {
             return null;
         }

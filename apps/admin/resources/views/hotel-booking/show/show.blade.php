@@ -4,6 +4,15 @@
     @vite('resources/views/hotel-booking/show/show.scss')
 @endsection
 
+@section('head-end')
+    <script>
+      window['view-initial-data-hotel-booking'] = {{ Js::from([
+            'hotelID' => $model->details->hotelId,
+            'rooms' => $rooms,
+        ]) }}
+    </script>
+@endsection
+
 @section('scripts')
     @vite('resources/views/hotel-booking/show/show.ts')
 @endsection
@@ -65,14 +74,6 @@
             </div>
         </div>
 
-        <h5 class="mt-3">Номера</h5>
-        <div class="card card-form mt-1 d-flex flex-column">
-            <div class="card m-2">
-                <span>Номер крутой</span>
-            </div>
-            <div class="card m-2">
-                <span>Номер крутой</span>
-            </div>
-        </div>
+        <div id="booking-rooms"></div>
     </div>
 @endsection
