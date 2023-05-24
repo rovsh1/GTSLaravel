@@ -6,6 +6,7 @@ use App\Admin\Http\Controllers\Controller;
 use App\Admin\Http\Requests\Hotel\BatchUpdatePriceRequest;
 use App\Admin\Http\Requests\Hotel\UpdatePriceRequest;
 use App\Admin\Http\Resources\Price;
+use App\Admin\Http\Resources\PriceRate;
 use App\Admin\Models\Hotel\Hotel;
 use App\Admin\Models\Hotel\Season;
 use App\Admin\Support\Facades\Breadcrumb;
@@ -28,7 +29,7 @@ class PriceController extends Controller
             ->view('hotel.prices.prices', [
                 'rooms' => $hotel->rooms,
                 'seasons' => $hotel->seasons,
-                'priceRates' => $hotel->priceRates,
+                'priceRates' => PriceRate::collection($hotel->priceRates),
             ]);
     }
 
