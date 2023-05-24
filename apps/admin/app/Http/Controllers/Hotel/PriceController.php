@@ -28,6 +28,7 @@ class PriceController extends Controller
             ->view('hotel.prices.prices', [
                 'rooms' => $hotel->rooms,
                 'seasons' => $hotel->seasons,
+                'priceRates' => $hotel->priceRates,
             ]);
     }
 
@@ -80,8 +81,11 @@ class PriceController extends Controller
         return new AjaxSuccessResponse();
     }
 
-    public function batchUpdateDatePrice(BatchUpdatePriceRequest $request, Hotel $hotel, Season $season): AjaxResponseInterface
-    {
+    public function batchUpdateDatePrice(
+        BatchUpdatePriceRequest $request,
+        Hotel $hotel,
+        Season $season
+    ): AjaxResponseInterface {
         foreach ($request->getPeriod() as $date) {
             //@todo переделать на норм запрос
             $isNeedUpdate = in_array($date->dayOfWeekIso, $request->getWeekDays());

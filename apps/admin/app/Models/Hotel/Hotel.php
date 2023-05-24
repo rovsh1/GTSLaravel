@@ -30,6 +30,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read Collection<Usability>|Usability[] $usabilities
  * @property-read Collection<Landmark>|Landmark[] $landmarks
  * @property-read Collection<Image>|Image[] $images
+ * @property-read Collection<int, PriceRate> $priceRates
  * @method static Builder|Hotel wherePeriod(CarbonPeriod $period)
  * @method static Builder|Hotel withRoomsCount()
  * @mixin \Eloquent
@@ -172,6 +173,11 @@ class Hotel extends Model
     public function users(): HasMany
     {
         return $this->hasMany(User::class);
+    }
+
+    public function priceRates(): HasMany
+    {
+        return $this->hasMany(PriceRate::class);
     }
 
     protected function images(): HasMany
