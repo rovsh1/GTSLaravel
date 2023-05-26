@@ -19,6 +19,7 @@ export interface HotelBookingDetailsRoom {
   id: number
   rateId: number
   status: number
+  roomCount: number
   guests: HotelBookingGuest[]
   guestNote: string
   discount: Percent

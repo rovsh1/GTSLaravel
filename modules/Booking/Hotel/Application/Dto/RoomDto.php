@@ -14,6 +14,9 @@ class RoomDto extends AbstractDomainBasedDto
         public readonly int $rateId,
         public readonly int $status,
         public readonly bool $isResident,
+        public readonly int $roomCount,
+        public readonly mixed $earlyCheckIn = null,
+        public readonly mixed $lateCheckOut = null,
         public readonly ?int $discount,
         /** @var GuestDto[] $guests */
         public readonly array $guests,
@@ -26,16 +29,16 @@ class RoomDto extends AbstractDomainBasedDto
     public static function fromDomain(EntityInterface|ValueObjectInterface|Room $room): static
     {
         return new static(
-            $room->id(),
-            $room->rateId(),
-            $room->status()->value,
-            $room->isResident(),
-            $room->discount()->value(),
-            GuestDto::collectionFromDomain($room->guests()->all()),
-            $room->guestNote(),
-//            $room->priceNetto()->value(),
-//            $room->checkInTime(),
-//            $room->checkOutTime(),
+            id: $room->id(),
+            rateId: $room->rateId(),
+            status: $room->status()->value,
+            isResident: $room->isResident(),
+            roomCount: $room->roomCount(),
+            discount: $room->discount()->value(),
+            guests: GuestDto::collectionFromDomain($room->guests()->all()),
+            guestNote: $room->guestNote(),
+            earlyCheckIn: $room->earlyCheckIn(),
+            lateCheckOut: $room->lateCheckOut()
         );
     }
 }

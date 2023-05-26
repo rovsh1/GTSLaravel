@@ -154,6 +154,10 @@ const getRoomName = (id: number): string | undefined => {
                 <td>{{ getRoomStatusName(room.status) }}</td>
               </tr>
               <tr>
+                <th>Кол-во номеров</th>
+                <td>{{ room.roomCount }}</td>
+              </tr>
+              <tr>
                 <th>Тип стоимости</th>
                 <td>{{ room.isResident ? 'Резидент' : 'Не резидент' }}</td>
               </tr>
@@ -162,7 +166,19 @@ const getRoomName = (id: number): string | undefined => {
                 <td>{{ getPriceRateName(room.rateId) }}</td>
               </tr>
               <tr>
-                <th>Примечание</th>
+                <th>Скидка</th>
+                <td>{{ room.discount }}</td>
+              </tr>
+              <tr>
+                <th>Время заезда</th>
+                <td>-</td>
+              </tr>
+              <tr>
+                <th>Время выезда</th>
+                <td>-</td>
+              </tr>
+              <tr>
+                <th>Примечание (запрос в отель, ваучер)</th>
                 <td>{{ room.guestNote }}</td>
               </tr>
             </tbody>

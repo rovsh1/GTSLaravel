@@ -146,13 +146,21 @@ class AdminController
         ]);
 
         $details = $this->detailsRepository->find($request->id);
+        $currentRoom = $details->rooms()->get($request->roomIndex);
+        $guests = $currentRoom->guests();
+
+        $hotelRoom = $this->hotelRoomAdapter->findById($request->roomId);
+        $expectedGuestCount = $guests->count();
+        if ($expectedGuestCount > $hotelRoom->guestsNumber) {
+            $guests = $guests->slice(0, $hotelRoom->guestsNumber);
+        }
         $details->updateRoom(
             $request->roomIndex,
             new Room(
                 id: $request->roomId,
                 rateId: $request->rateId,
                 status: RoomStatusEnum::from($request->status),
-                guests: new GuestCollection(),
+                guests: $guests,
                 isResident: $request->isResident,
                 guestNote: $request->note,
                 roomCount: $request->roomCount,
