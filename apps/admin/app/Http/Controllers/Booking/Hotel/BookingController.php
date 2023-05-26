@@ -2,8 +2,8 @@
 
 namespace App\Admin\Http\Controllers\Booking\Hotel;
 
-use App\Admin\Models\Hotel\Room;
 use App\Admin\Http\Resources\Room as RoomResource;
+use App\Admin\Models\Hotel\Room;
 use App\Admin\Support\Facades\Booking\HotelAdapter;
 use App\Admin\Support\Facades\Booking\OrderAdapter;
 use App\Admin\Support\Facades\Breadcrumb;
@@ -14,24 +14,11 @@ use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Layout as LayoutContract;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 
 class BookingController extends AbstractPrototypeController
 {
-    protected function gridFactory(): GridContract
-    {
-        return Grid::enableQuicksearch()
-            ->id('id', ['text' => '№', 'route' => $this->prototype->routeName('show'), 'order' => true])
-            ->text('status', ['text' => 'Статус', 'renderer' => fn($v, $t) => $t->name, 'order' => true])
-            ->text('client_name', ['text' => 'Клиент'])
-            ->date('date_start', ['text' => 'Дата заезда'])
-            ->date('date_end', ['text' => 'Дата выезда'])
-            ->text('city_name', ['text' => 'Город'])
-            ->text('hotel_name', ['text' => 'Отель'])
-            ->date('created_at', ['text' => 'Создан', 'format' => 'datetime', 'order' => true])
-            ->paginator(20);
-    }
-
     public function index(): LayoutContract
     {
         Breadcrumb::prototype($this->prototype);
@@ -93,23 +80,32 @@ class BookingController extends AbstractPrototypeController
     public function show(int $id): LayoutContract
     {
         $title = "Бронь №{$id}";
-        $model = HotelAdapter::getBooking($id);
+        $booking = HotelAdapter::getBooking($id);
+        $details = HotelAdapter::getBookingDetails($id);
 
 //        Breadcrumb::prototype($this->prototype)
 //            ->add($title);
 
 //        $this->prepareShowMenu($this->model);
 
-        //@todo получить детали отдельно от бронирования
-        $hotelId = $model->details->hotelId;
+        $hotelId = $details->hotelId;
 
         return Layout::title($title)
             ->view($this->getPrototypeKey() . '.show.show', [
-                'model' => $model,
+                'bookingId' => $id,
+                'hotelId' => $hotelId,
+                'model' => $booking,
                 'editUrl' => $this->isAllowed('update') ? $this->route('edit', $id) : null,
                 'deleteUrl' => $this->isAllowed('delete') ? $this->route('destroy', $id) : null,
-                'rooms' => RoomResource::collection(Room::whereHotelId($hotelId)->get())
+                'hotelRooms' => RoomResource::collection(Room::whereHotelId($hotelId)->get())
             ]);
+    }
+
+    public function getDetails(int $id): JsonResponse
+    {
+        return response()->json(
+            HotelAdapter::getBookingDetails($id)
+        );
     }
 
     public function edit(int $id): LayoutContract
@@ -136,6 +132,20 @@ class BookingController extends AbstractPrototypeController
             ]);
     }
 
+    protected function gridFactory(): GridContract
+    {
+        return Grid::enableQuicksearch()
+            ->id('id', ['text' => '№', 'route' => $this->prototype->routeName('show'), 'order' => true])
+            ->text('status', ['text' => 'Статус', 'renderer' => fn($v, $t) => $t->name, 'order' => true])
+            ->text('client_name', ['text' => 'Клиент'])
+            ->date('date_start', ['text' => 'Дата заезда'])
+            ->date('date_end', ['text' => 'Дата выезда'])
+            ->text('city_name', ['text' => 'Город'])
+            ->text('hotel_name', ['text' => 'Отель'])
+            ->date('created_at', ['text' => 'Создан', 'format' => 'datetime', 'order' => true])
+            ->paginator(20);
+    }
+
     protected function formFactory(): FormContract
     {
         return Form::name('data')
@@ -149,7 +159,7 @@ class BookingController extends AbstractPrototypeController
                 'emptyItem' => '',
                 'required' => true
             ])
-            ->client('client_id', [
+            ->select('client_id', [
                 'label' => __('label.client'),
                 'emptyItem' => '',
                 'required' => true

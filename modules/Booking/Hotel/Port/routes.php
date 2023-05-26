@@ -11,7 +11,13 @@ Route::register('searchUpdatedReservations', [InfoController::class, 'searchUpda
 
 Route::register('getBookings', [AdminController::class, 'getBookings']);
 Route::register('getBooking', [AdminController::class, 'getBooking']);
+Route::register('getBookingDetails', [AdminController::class, 'getBookingDetails']);
 Route::register('createBooking', [AdminController::class, 'createBooking']);
+Route::register('addRoom', [AdminController::class, 'addRoom']);
+Route::register('updateRoom', [AdminController::class, 'updateRoom']);
+Route::register('deleteRoom', [AdminController::class, 'deleteRoom']);
+Route::register('addRoomGuest', [AdminController::class, 'addRoomGuest']);
+Route::register('updateRoomGuest', [AdminController::class, 'updateRoomGuest']);
 
 //FIXME TEST
 Route::register('booking-cancel', [ReservationController::class, 'cancel']);

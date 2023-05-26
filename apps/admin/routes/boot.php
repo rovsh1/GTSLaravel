@@ -20,4 +20,6 @@ Route::group([], __DIR__ . '/hotel.php');
 Route::group([], __DIR__ . '/service-provider.php');
 Route::group([], __DIR__ . '/file-manager.php');
 Route::group([], __DIR__ . '/city.php');
+Route::group([], __DIR__ . '/client.php');
+Route::group([], __DIR__ . '/country.php');
 Route::group([], __DIR__ . '/hotel-booking.php');

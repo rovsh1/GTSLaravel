@@ -120,9 +120,9 @@ class QuotaAndPriceUpdater
     private function convertExternalDomainCodeToApiError(ErrorCodeEnum $domainCode): TravelineResponseErrorInterface
     {
         return match ($domainCode) {
-            ErrorCodeEnum::RoomNotFound => new InvalidRoomType(),
-            ErrorCodeEnum::PriceRateNotFound => new InvalidRatePlan(),
-            ErrorCodeEnum::UnsupportedRoomGuestsNumber => new InvalidRateAccomodation(),
+            ErrorCodeEnum::ROOM_NOT_FOUND => new InvalidRoomType(),
+            ErrorCodeEnum::PRICE_RATE_NOT_FOUND => new InvalidRatePlan(),
+            ErrorCodeEnum::UNSUPPORTED_ROOM_GUESTS_NUMBER => new InvalidRateAccomodation(),
         };
     }
 

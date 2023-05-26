@@ -9,6 +9,6 @@ class UnsupportedRoomGuestsNumber extends \RuntimeException implements DomainEnt
 {
     public function domainCode(): ErrorCodeEnum
     {
-        return ErrorCodeEnum::UnsupportedRoomGuestsNumber;
+        return ErrorCodeEnum::UNSUPPORTED_ROOM_GUESTS_NUMBER;
     }
 }

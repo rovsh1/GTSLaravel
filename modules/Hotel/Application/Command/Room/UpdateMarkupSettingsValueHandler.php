@@ -25,7 +25,7 @@ class UpdateMarkupSettingsValueHandler implements CommandHandlerInterface
 
         $setterMethod = 'set' . \Str::ucfirst($command->key);
         if (method_exists($settings, $setterMethod)) {
-            $setterMethod->$setterMethod(new Percent($command->value));
+            $settings->$setterMethod(new Percent($command->value));
         } else {
             throw new \InvalidArgumentException("Can not update value for key [{$command->key}]");
         }

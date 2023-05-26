@@ -30,12 +30,16 @@ $.fn.childCombo = function (options) {
   }
 
   const trigger = function (fn, arg) {
-    if (!preparedOptions[fn]) return
+    if (!preparedOptions[fn]) {
+      return
+    }
     preparedOptions[fn].call(child, arg)
   }
 
   const onchange = function () {
-    if (preparedOptions.dateRange && parent.val().length < 14) return
+    if (preparedOptions.dateRange && parent.val().length < 14) {
+      return
+    }
 
     trigger('change')
 
@@ -68,11 +72,16 @@ $.fn.childCombo = function (options) {
     axios.get(preparedOptions.url, { params: data }).then((result) => {
       child.html('')
       const items = result[preparedOptions.resultIndex]
-      const val = []; let i; const
-        l = items.length
+      const val = [];
+      let i;
+      const l = items.length
       if (l === 0) {
-        if (preparedOptions.emptyText !== false) child.append(`<option value="">${preparedOptions.emptyText}</option>`)
-        if (preparedOptions.hideEmpty) child.parent().hide()
+        if (preparedOptions.emptyText !== false) {
+          child.append(`<option value="">${preparedOptions.emptyText}</option>`)
+        }
+        if (preparedOptions.hideEmpty) {
+          child.parent().hide()
+        }
         trigger('load', items)
         return
       }
@@ -91,6 +100,7 @@ $.fn.childCombo = function (options) {
 
       child.prop('disabled', false)
 
+      console.log(val)
       if (val.length) {
         child.val(isMultiple ? val : val[0])
       }

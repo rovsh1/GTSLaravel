@@ -15,6 +15,6 @@ class PriceRateNotFound extends EntityNotFoundException implements DomainEntityE
 
     public function domainCode(): ErrorCodeEnum
     {
-        return ErrorCodeEnum::PriceRateNotFound;
+        return ErrorCodeEnum::PRICE_RATE_NOT_FOUND;
     }
 }

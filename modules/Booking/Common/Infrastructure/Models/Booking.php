@@ -6,6 +6,7 @@ namespace Module\Booking\Common\Infrastructure\Models;
 
 use Custom\Framework\Database\Eloquent\Model;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
+use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
 
 class Booking extends Model
 {

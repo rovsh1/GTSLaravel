@@ -12,7 +12,7 @@ class BookingRepository implements BookingRepositoryInterface
 {
     public function find(int $id): ?Entity
     {
-        $model = Model::withHotelDetails()->find($id);
+        $model = Model::find($id);
         if (!$model) {
             return null;
         }
@@ -32,7 +32,7 @@ class BookingRepository implements BookingRepositoryInterface
 
         $models = $modelsQuery->get();
 
-        return app(ReservationFactory::class)->createCollectionFrom($models);
+        return app(BookingFactory::class)->createCollectionFrom($models);
     }
 
     public function searchActive(?int $hotelId): array
@@ -48,6 +48,6 @@ class BookingRepository implements BookingRepositoryInterface
 
         $models = $modelsQuery->get();
 
-        return app(ReservationFactory::class)->createCollectionFrom($models);
+        return app(BookingFactory::class)->createCollectionFrom($models);
     }
 }

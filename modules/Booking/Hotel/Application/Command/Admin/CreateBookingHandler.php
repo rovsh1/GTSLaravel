@@ -9,7 +9,7 @@ use Custom\Framework\Contracts\Bus\CommandInterface;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Hotel\Domain\Adapter\OrderAdapterInterface;
 use Module\Booking\Hotel\Infrastructure\Models\Booking;
-use Module\Booking\Hotel\Infrastructure\Models\Hotel\BookingDetails;
+use Module\Booking\Hotel\Infrastructure\Models\BookingDetails;
 
 class CreateBookingHandler implements CommandHandlerInterface
 {

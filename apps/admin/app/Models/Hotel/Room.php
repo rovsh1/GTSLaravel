@@ -7,6 +7,7 @@ use App\Admin\Support\Facades\Hotel\MarkupSettingsAdapter;
 use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -16,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read string $display_name
  * @property-read Image $images
  * @property-read HotelImage|null $main_image
+ * @property-read Collection<int, PriceRate> $priceRates
  */
 class Room extends Model
 {
@@ -62,6 +64,11 @@ class Room extends Model
         });
     }
 
+    public function scopeWhereId(Builder $builder, int $id): void
+    {
+        $builder->where('hotel_rooms.id', $id);
+    }
+
     public function beds(): HasMany
     {
         return $this->hasMany(RoomBed::class);
@@ -87,7 +94,9 @@ class Room extends Model
 
     public function mainImage(): Attribute
     {
-        return Attribute::get(fn() => $this->images()->first() !== null ? HotelImage::find($this->images()->first()->file_guid) : null);
+        return Attribute::get(
+            fn() => $this->images()->first() !== null ? HotelImage::find($this->images()->first()->file_guid) : null
+        );
     }
 
     public function images(): BelongsToMany
@@ -100,6 +109,16 @@ class Room extends Model
             'id',
             'id'
         )->orderBy('index');
+    }
+
+    public function priceRates(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            PriceRate::class,
+            'hotel_price_rate_rooms',
+            'room_id',
+            'rate_id',
+        );
     }
 
     public function __toString()

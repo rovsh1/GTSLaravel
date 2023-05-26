@@ -10,26 +10,32 @@ use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 class RoomDto extends AbstractDomainBasedDto
 {
     public function __construct(
-        public readonly int     $id,
+        public readonly int $id,
+        public readonly int $rateId,
+        public readonly int $status,
+        public readonly bool $isResident,
+        public readonly ?int $discount,
         /** @var GuestDto[] $guests */
-        public readonly array   $guests,
-        public readonly int     $rateId,
-        public readonly float   $priceNetto,
-        public readonly ?string $checkInTime,
-        public readonly ?string $checkOutTime,
+        public readonly array $guests,
         public readonly ?string $guestNote,
+//        public readonly float   $priceNetto,
+//        public readonly ?string $checkInTime,
+//        public readonly ?string $checkOutTime,
     ) {}
 
     public static function fromDomain(EntityInterface|ValueObjectInterface|Room $room): static
     {
         return new static(
             $room->id(),
-            GuestDto::collectionFromDomain($room->guests()),
             $room->rateId(),
-            $room->priceNetto()->value(),
-            $room->checkInTime(),
-            $room->checkOutTime(),
+            $room->status()->value,
+            $room->isResident(),
+            $room->discount()->value(),
+            GuestDto::collectionFromDomain($room->guests()->all()),
             $room->guestNote(),
+//            $room->priceNetto()->value(),
+//            $room->checkInTime(),
+//            $room->checkOutTime(),
         );
     }
 }

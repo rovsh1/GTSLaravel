@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Hotel\Domain\Entity;
 
 use Module\Booking\Common\Domain\Entity\Details\HotelDetailsInterface;
+use Module\Booking\Hotel\Domain\Entity\Details\Room;
 use Module\Booking\Hotel\Domain\Entity\Details\RoomCollection;
 use Module\Booking\Hotel\Domain\ValueObject\Details\AdditionalInfo;
 use Module\Booking\Hotel\Domain\ValueObject\Details\BookingPeriod;
@@ -42,5 +43,20 @@ final class Details implements HotelDetailsInterface
     public function rooms(): RoomCollection
     {
         return $this->rooms;
+    }
+
+    public function addRoom(Room $room): void
+    {
+        $this->rooms->add($room);
+    }
+
+    public function updateRoom(int $index, Room $room): void
+    {
+        $this->rooms->offsetSet($index, $room);
+    }
+
+    public function deleteRoom(int $index): void
+    {
+        $this->rooms->offsetUnset($index);
     }
 }

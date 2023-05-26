@@ -1,0 +1,112 @@
+<script setup lang="ts">
+
+import { computed, Ref, ref, unref } from 'vue'
+
+import { MaybeRef } from '@vueuse/core'
+import { z } from 'zod'
+
+import { genderOptions } from '~resources/views/hotel-booking/show/constants'
+import { GuestFormData, validateForm } from '~resources/views/hotel-booking/show/form'
+
+import { addGuestToBooking, updateBookingGuest } from '~api/booking/rooms'
+import { CountryResponse } from '~api/country'
+
+import { requestInitialData } from '~lib/initial-data'
+
+import BaseDialog from '~components/BaseDialog.vue'
+import BootstrapSelectBase from '~components/Bootstrap/BootstrapSelectBase.vue'
+import { SelectOption } from '~components/Bootstrap/lib'
+
+const props = defineProps<{
+  opened: MaybeRef<boolean>
+  roomIndex: MaybeRef<number>
+  countries: CountryResponse[]
+  formData: Partial<GuestFormData>
+  guestIndex?: number
+}>()
+
+const emit = defineEmits<{
+  (event: 'close'): void
+  (event: 'submit'): void
+}>()
+
+const { bookingID } = requestInitialData(
+  'view-initial-data-hotel-booking',
+  z.object({
+    bookingID: z.number(),
+  }),
+)
+
+const formData = computed<GuestFormData>(() => ({
+  bookingID,
+  guestIndex: props.guestIndex,
+  ...props.formData,
+}))
+
+const isFetching = ref<boolean>(false)
+
+const modalForm = ref<HTMLFormElement>()
+const onModalSubmit = async () => {
+  if (!validateForm<GuestFormData>(modalForm as Ref<HTMLFormElement>, formData)) {
+    return
+  }
+  isFetching.value = true
+  formData.value.roomIndex = unref<number>(props.roomIndex)
+  if (formData.value.guestIndex !== undefined) {
+    await updateBookingGuest(formData)
+  } else {
+    await addGuestToBooking(formData)
+  }
+  isFetching.value = false
+  emit('submit')
+}
+
+const countryOptions = computed<SelectOption[]>(
+  () => props.countries?.map((country: CountryResponse) => ({ value: country.id, label: country.name })) || [],
+)
+
+</script>
+
+<template>
+  <BaseDialog
+    :opened="opened as boolean"
+    :loading="isFetching"
+    @close="$emit('close')"
+  >
+    <template #title>Данные гостя</template>
+
+    <form ref="modalForm" class="row g-3">
+      <div class="col-md-12">
+        <BootstrapSelectBase
+          id="nationality_id"
+          :options="countryOptions"
+          label="Гражданство"
+          :value="formData.nationalityId as number"
+          required
+          @input="value => formData.nationalityId = value as number"
+        />
+      </div>
+      <div class="col-md-12">
+        <div class="field-required">
+          <label for="full_name">ФИО</label>
+          <input id="full_name" v-model="formData.fullName" class="form-control" required>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <BootstrapSelectBase
+          id="gender"
+          :options="genderOptions"
+          label="Пол"
+          :value="formData.gender as number"
+          required
+          @input="value => formData.gender = value as number"
+        />
+      </div>
+    </form>
+
+    <template #actions-end>
+      <button class="btn btn-primary" type="button" @click="onModalSubmit">Сохранить</button>
+      <button class="btn btn-cancel" type="button" @click="$emit('close')">Отмена</button>
+    </template>
+  </BaseDialog>
+</template>

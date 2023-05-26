@@ -7,7 +7,7 @@ import { BaseResponse, useAdminAPI } from '~api'
 import { getNullableRef } from '~lib/vue'
 
 export type Percent = number
-export type Time = string
+export type Time = `${number | ''}${number}:${number}${number}`
 export type DateTime = string
 export type CancelPeriodType = number
 
@@ -18,7 +18,11 @@ export type ClientMarkups = {
   TO: Percent
 }
 
-export type MarkupCondition = {
+export interface RoomMarkupSettings extends ClientMarkups {
+  discount: Percent
+}
+
+export interface MarkupCondition {
   from: Time
   to: Time
   percent: Percent
@@ -53,6 +57,11 @@ export type MarkupSettings = {
 
 type HotelMarkupSettingsProps = {
   hotelID: number
+}
+
+interface HotelRoomMarkupSettingsProps {
+  hotelID: number
+  roomID: number
 }
 
 export type HotelMarkupSettingsUpdateProps = {
@@ -119,3 +128,8 @@ export const deleteConditionHotelMarkupSettings = (props: MaybeRef<HotelMarkupSe
       ),
     )), 'application/json')
     .json<BaseResponse>()
+
+export const useHotelRoomMarkupSettings = (props: MaybeRef<HotelRoomMarkupSettingsProps | null>) =>
+  useAdminAPI(props, ({ hotelID, roomID }) => `/hotels/${hotelID}/rooms/${roomID}/settings/markup`)
+    .get()
+    .json<RoomMarkupSettings>()

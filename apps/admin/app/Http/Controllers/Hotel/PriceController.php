@@ -27,7 +27,7 @@ class PriceController extends Controller
 
         return Layout::title((string)$hotel)
             ->view('hotel.prices.prices', [
-                'rooms' => $hotel->rooms,
+                'rooms' => $hotel->rooms->load(['priceRates']),
                 'seasons' => $hotel->seasons,
                 'priceRates' => PriceRate::collection($hotel->priceRates),
             ]);

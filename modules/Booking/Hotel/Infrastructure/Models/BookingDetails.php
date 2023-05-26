@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Hotel\Infrastructure\Models\Hotel;
+namespace Module\Booking\Hotel\Infrastructure\Models;
 
 use Carbon\CarbonPeriod;
 use Custom\Framework\Database\Eloquent\Model;

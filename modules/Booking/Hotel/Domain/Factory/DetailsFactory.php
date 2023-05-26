@@ -28,6 +28,7 @@ class DetailsFactory extends AbstractEntityFactory
             $additionalData = $this->serializer->deserialize(AdditionalInfo::class, $data['additional_data']);
         }
         return new $this->entity(
+            $data['booking_id'],
             $data['hotel_id'],
             new BookingPeriod(
                 new \DateTime($data['date_start']),

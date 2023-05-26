@@ -43,7 +43,7 @@ final class Guest implements ValueObjectInterface, SerializableDataInterface
         return new static(
             $data['fullName'],
             $data['nationalityId'],
-            GenderEnum::from($data['fullName']),
+            GenderEnum::from($data['gender']),
         );
     }
 }

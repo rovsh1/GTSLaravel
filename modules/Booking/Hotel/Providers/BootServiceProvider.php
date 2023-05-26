@@ -22,10 +22,18 @@ class BootServiceProvider extends ServiceProvider
             Domain\Adapter\OrderAdapterInterface::class,
             Infrastructure\Adapter\OrderAdapter::class
         );
+        $this->app->singleton(
+            Domain\Adapter\HotelRoomAdapterInterface::class,
+            Infrastructure\Adapter\HotelRoomAdapter::class
+        );
 
         $this->app->singleton(
             Domain\Repository\BookingRepositoryInterface::class,
             Infrastructure\Repository\BookingRepository::class
+        );
+        $this->app->singleton(
+            Domain\Repository\DetailsRepositoryInterface::class,
+            Infrastructure\Repository\DetailsRepository::class
         );
 //        $this->app->singleton(
 //            Domain\Repository\RoomRepositoryInterface::class,

@@ -1,9 +1,10 @@
 <?php
 
 use Custom\Framework\Support\Facades\Route;
-use Module\Hotel\Port\Controllers\PriceController;
-use Module\Hotel\Port\Controllers\RoomQuotaController;
 use Module\Hotel\Port\Controllers\MarkupSettingsController;
+use Module\Hotel\Port\Controllers\PriceController;
+use Module\Hotel\Port\Controllers\RoomController;
+use Module\Hotel\Port\Controllers\RoomQuotaController;
 
 //Route::register('updateRoomsPositions', [PriceController::class, 'updateRoomsPositions']);
 
@@ -28,3 +29,6 @@ Route::register('getSeasonsPrices', [PriceController::class, 'getSeasonsPrices']
 Route::register('setSeasonPrice', [PriceController::class, 'setSeasonPrice']);
 Route::register('getDatePrices', [PriceController::class, 'getDatePrices']);
 Route::register('setDatePrice', [PriceController::class, 'setDatePrice']);
+
+//номера
+Route::register('getRoom', [RoomController::class, 'getRoom']);

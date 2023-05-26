@@ -15,6 +15,6 @@ class RoomNotFound extends EntityNotFoundException implements DomainEntityExcept
 
     public function domainCode(): ErrorCodeEnum
     {
-        return ErrorCodeEnum::RoomNotFound;
+        return ErrorCodeEnum::ROOM_NOT_FOUND;
     }
 }

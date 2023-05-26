@@ -19,6 +19,11 @@ class HotelAdapter extends AbstractModuleAdapter
         return $this->request('getBooking', ['id' => $id]);
     }
 
+    public function getBookingDetails(int $id): mixed
+    {
+        return $this->request('getBookingDetails', ['id' => $id]);
+    }
+
     public function createBooking(
         int $cityId,
         int $clientId,
@@ -35,6 +40,102 @@ class HotelAdapter extends AbstractModuleAdapter
             'dateEnd' => $period->getEndDate(),
             'orderId' => $orderId,
             'note' => $note,
+        ]);
+    }
+
+    public function addRoom(
+        int $bookingId,
+        int $roomId,
+        int $rateId,
+        int $status,
+        bool $isResident,
+        int $roomCount,
+        array|null $earlyCheckIn = null,
+        array|null $lateCheckOut = null,
+        ?string $note = null,
+        ?int $discount = null
+    ): void {
+        $this->request('addRoom', [
+            'id' => $bookingId,
+            'roomId' => $roomId,
+            'rateId' => $rateId,
+            'status' => $status,
+            'isResident' => $isResident,
+            'roomCount' => $roomCount,
+            'earlyCheckIn' => $earlyCheckIn,
+            'lateCheckOut' => $lateCheckOut,
+            'note' => $note,
+            'discount' => $discount,
+        ]);
+    }
+
+    public function updateRoom(
+        int $bookingId,
+        int $roomIndex,
+        int $roomId,
+        int $rateId,
+        int $status,
+        bool $isResident,
+        int $roomCount,
+        array|null $earlyCheckIn = null,
+        array|null $lateCheckOut = null,
+        ?string $note = null,
+        ?int $discount = null
+    ): void {
+        $this->request('updateRoom', [
+            'id' => $bookingId,
+            'roomIndex' => $roomIndex,
+            'roomId' => $roomId,
+            'rateId' => $rateId,
+            'status' => $status,
+            'isResident' => $isResident,
+            'roomCount' => $roomCount,
+            'earlyCheckIn' => $earlyCheckIn,
+            'lateCheckOut' => $lateCheckOut,
+            'note' => $note,
+            'discount' => $discount,
+        ]);
+    }
+
+    public function deleteRoom(int $bookingId, int $roomIndex,): void
+    {
+        $this->request('deleteRoom', [
+            'id' => $bookingId,
+            'roomIndex' => $roomIndex,
+        ]);
+    }
+
+    public function addRoomGuest(
+        int $bookingId,
+        int $roomIndex,
+        string $fullName,
+        int $nationalityId,
+        int $gender
+    ): void {
+        $this->request('addRoomGuest', [
+            'id' => $bookingId,
+            'roomIndex' => $roomIndex,
+            'fullName' => $fullName,
+            'nationalityId' => $nationalityId,
+            'gender' => $gender,
+        ]);
+    }
+
+    public function updateRoomGuest(
+        int $bookingId,
+        int $roomIndex,
+        int $guestIndex,
+        string $fullName,
+        int $nationalityId,
+        int $gender
+    ): void {
+        $this->request('updateRoomGuest', [
+            'id' => $bookingId,
+            'roomIndex' => $roomIndex,
+            'guestIndex' => $guestIndex,
+            'fullName' => $fullName,
+            'nationalityId' => $nationalityId,
+            'gender' => $gender,
         ]);
     }
 

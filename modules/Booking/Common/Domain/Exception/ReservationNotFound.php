@@ -10,6 +10,6 @@ class ReservationNotFound extends EntityNotFoundException implements DomainEntit
 {
     public function domainCode(): ErrorCodeEnum
     {
-        return ErrorCodeEnum::ReservationNotFound;
+        return ErrorCodeEnum::RESERVATION_NOT_FOUND;
     }
 }

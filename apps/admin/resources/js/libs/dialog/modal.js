@@ -130,13 +130,12 @@ export default class Modal {
   }
 
   trigger(event, ...args) {
-    const eventHandlers = this.#eventHandlers
-      .filter((h) => h[0] === event)
+    const eventHandlers = this.#eventHandlers.filter((h) => h[0] === event)
 
     const l = eventHandlers.length
     for (let i = 0; i < l; i++) {
       if (eventHandlers[i][1].apply(eventHandlers[i][2] || this, args) === false) {
-        return
+        return false
       }
     }
   }

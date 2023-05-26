@@ -13,6 +13,11 @@ class OrderAdapter extends AbstractModuleAdapter
         return $this->request('getActiveOrders');
     }
 
+    public function findOrder(int $id): mixed
+    {
+        return $this->request('getOrder', ['id' => $id]);
+    }
+
     protected function getModuleKey(): string
     {
         return 'BookingOrder';

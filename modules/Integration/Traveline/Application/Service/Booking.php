@@ -32,7 +32,7 @@ class Booking
                 if (!$e->getPrevious() instanceof DomainEntityExceptionInterface) {
                     throw $e;
                 }
-                if ($e->getPrevious()->domainCode() === ErrorCodeEnum::ReservationNotFound) {
+                if ($e->getPrevious()->domainCode() === ErrorCodeEnum::RESERVATION_NOT_FOUND) {
                     $this->errors[] = new ReservationNotFound($reservationRequest->number);
                 }
                 //@todo отлов других ошибок (пока непонятно какие могут быть ошибки)

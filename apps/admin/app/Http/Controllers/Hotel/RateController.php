@@ -4,6 +4,8 @@ namespace App\Admin\Http\Controllers\Hotel;
 
 use App\Admin\Exceptions\FormSubmitFailedException;
 use App\Admin\Http\Controllers\Controller;
+use App\Admin\Http\Requests\Hotel\PriceRate\SearchRequest;
+use App\Admin\Http\Resources\PriceRate as PriceRateResource;
 use App\Admin\Models\Hotel\Hotel;
 use App\Admin\Models\Hotel\PriceRate;
 use App\Admin\Models\Hotel\Room;
@@ -23,6 +25,7 @@ use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Layout as LayoutContract;
 use App\Admin\View\Menus\HotelMenu;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -80,6 +83,19 @@ class RateController extends Controller
     public function destroy(Hotel $hotel, PriceRate $rate): AjaxResponseInterface
     {
         return (new DefaultDestroyAction())->handle($rate);
+    }
+
+    public function search(SearchRequest $request, Hotel $hotel): JsonResponse
+    {
+        $query = PriceRate::query()->whereHotelId($hotel->id);
+        if ($request->getRoomId() !== null) {
+            $query = Room::whereHotelId($hotel->id)->whereId($request->getRoomId())->first()->priceRates();
+        }
+        return response()->json(
+            PriceRateResource::collection(
+                $query->get()
+            )
+        );
     }
 
     protected function formFactory(int $hotelId): FormContract

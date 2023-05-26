@@ -17,28 +17,13 @@ final class BookingPeriod
         return $this->dateFrom;
     }
 
-    public function setDateFrom(DateTime $dateTime): void
-    {
-        $this->dateFrom = $dateTime;
-    }
-
     public function dateTo(): ?DateTime
     {
         return $this->dateTo;
     }
 
-    public function setDateTo(DateTime $dateTime): void
-    {
-        $this->dateTo = $dateTime;
-    }
-
     public function nightsCount(): int
     {
         return $this->nightsCount;
-    }
-
-    public function setNightsCount(int $nightsCount): void
-    {
-        $this->nightsCount = $nightsCount;
     }
 }

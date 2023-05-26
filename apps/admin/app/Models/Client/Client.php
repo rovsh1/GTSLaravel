@@ -17,6 +17,11 @@ class Client extends Model
 
     protected $fillable = [
         'name',
+        'city_id',
+        'currency_id',
+        'type',
+        'status',
+        'description'
     ];
 
     public function __toString()

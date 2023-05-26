@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+
 import { MaybeRef } from '@vueuse/core'
 
 import { SelectOption } from './lib'
@@ -10,10 +11,12 @@ withDefaults(defineProps<{
   label?: string
   disabled?: MaybeRef<boolean>
   required?: boolean
+  disabledPlaceholder?: string
 }>(), {
   label: '',
   disabled: false,
   required: false,
+  disabledPlaceholder: undefined,
 })
 
 const emit = defineEmits<{
@@ -29,11 +32,12 @@ const emit = defineEmits<{
     <select
       :id="id"
       :value="value"
-      class="form-select"
+      class="form-select form-control"
       :disabled="disabled as boolean"
-      :required="required"
+      :required="required as boolean"
       @input="event => emit('input', (event.target as HTMLInputElement).value)"
     >
+      <option v-if="disabled && disabledPlaceholder" selected disabled>{{ disabledPlaceholder }}</option>
       <option
         v-for="option in options"
         :key="option.value"

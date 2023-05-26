@@ -91,6 +91,9 @@
     "Hotel\\Contract\\StatusEnum::INACTIVE": "Неактивный",
     "Hotel\\Contract\\StatusEnum::ARCHIVE": "Архив",
 
+    "Client\\TypeEnum::PHYSICAL": "Физическое лицо",
+    "Client\\TypeEnum::LEGAL_ENTITY": "Юридическое лицо",
+
     "mail.CUSTOMER_REGISTRATION": "Регистрация пользователя",
     "mail.CUSTOMER_PASSWORD_RECOVERY": "Восстановление пароля"
 }

@@ -18,6 +18,7 @@ AclRoute::for('hotel')
     ])
     ->get('/{hotel}/rooms/{room}/settings', Controllers\Hotel\Room\MarkupSettingsController::class.'@edit','update','rooms.settings.edit')
     ->put('/{hotel}/rooms/{room}/settings', Controllers\Hotel\Room\MarkupSettingsController::class.'@update','update','rooms.settings.update')
+    ->get('/{hotel}/rooms/{room}/settings/markup', Controllers\Hotel\Room\MarkupSettingsController::class.'@get','read','rooms.settings.get')
 
     ->resource('prices', Controllers\Hotel\PriceController::class, ['except' => ['show']])
     ->get('/{hotel}/seasons/prices',Controllers\Hotel\PriceController::class.'@getSeasonsPrices','read','prices.seasons.get')
@@ -65,7 +66,8 @@ AclRoute::for('hotel')
     ->get('/{hotel}/contracts/{contract}/get', Controllers\Hotel\ContractController::class . '@get','update', 'contracts.get')
 
     ->resource('seasons', Controllers\Hotel\SeasonController::class)
-    ->resource('rates', Controllers\Hotel\RateController::class)
+    ->resource('rates', Controllers\Hotel\RateController::class, ['except' => ['show']])
+    ->get('/{hotel}/rates/search', Controllers\Hotel\RateController::class . '@search','read', 'rates.search')
 
     ->get('/{hotel}/settings/markup', Controllers\Hotel\MarkupSettingsController::class . '@get','read', 'settings.markup.get')
     ->put('/{hotel}/settings/markup', Controllers\Hotel\MarkupSettingsController::class . '@update','update', 'settings.markup.update')

@@ -23,13 +23,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string name
  * @property int rating
  * @property string address
- * @property-read Collection<Room>|Room[] $rooms
- * @property-read Collection<Season>|Season[] $seasons
- * @property-read Collection<Contact>|Contact[] $contacts
- * @property-read Collection<Service>|Service[] $services
- * @property-read Collection<Usability>|Usability[] $usabilities
- * @property-read Collection<Landmark>|Landmark[] $landmarks
- * @property-read Collection<Image>|Image[] $images
+ * @property-read Collection<int, Room> $rooms
+ * @property-read Collection<int, Season> $seasons
+ * @property-read Collection<int, Contact> $contacts
+ * @property-read Collection<int, Service> $services
+ * @property-read Collection<int, Usability> $usabilities
+ * @property-read Collection<int, Landmark> $landmarks
+ * @property-read Collection<int, Image> $images
  * @property-read Collection<int, PriceRate> $priceRates
  * @method static Builder|Hotel wherePeriod(CarbonPeriod $period)
  * @method static Builder|Hotel withRoomsCount()

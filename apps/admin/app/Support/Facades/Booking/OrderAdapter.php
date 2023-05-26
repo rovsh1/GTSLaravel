@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static array getActiveOrders()
+ * @method static mixed findOrder(int $id)
  **/
 class OrderAdapter extends Facade
 {

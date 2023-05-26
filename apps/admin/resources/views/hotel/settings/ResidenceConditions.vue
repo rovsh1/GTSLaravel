@@ -65,7 +65,7 @@ const handleEditConditions = (
 
 const handleAddConditions = (conditionType: ConditionType) => {
   modalTitle.value = 'Добавить новое условие'
-  editableCondition.value = { from: '', to: '' } as MarkupCondition
+  editableCondition.value = { from: '', to: '' } as unknown as MarkupCondition
   editableConditionKey.value = `${conditionType}`
   isCreateCondition.value = true
 

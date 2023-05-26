@@ -6,6 +6,7 @@ namespace Module\Booking\Hotel\Domain\Factory;
 
 use Custom\Framework\Foundation\Support\EntityFactory\AbstractEntityFactory;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
+use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
 use Module\Booking\Hotel\Domain\Entity\Booking;
 
 class BookingFactory extends AbstractEntityFactory
@@ -18,8 +19,8 @@ class BookingFactory extends AbstractEntityFactory
         return new $this->entity(
             $data['id'],
             BookingStatusEnum::from($data['status']),
+            BookingTypeEnum::from($data['type']),
             $data['note'],
-            app(DetailsFactory::class)->createFrom($data['hotel_details'])
         );
     }
 }

@@ -38,10 +38,10 @@ const useAPI = (base: string) => <T>(
         }
       },
       onFetchError: (ctx) => {
-        console.error(ctx.error)
+        const message = ctx.data?.error || ctx.error.message
         showToast({
           title: 'Ошибка сервера',
-          description: ctx.error.message,
+          description: message,
         }, {
           type: 'danger',
         })

@@ -15,6 +15,7 @@ use App\Admin\Support\Facades\Sidebar;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Layout as LayoutContract;
 use App\Admin\View\Menus\HotelMenu;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 
 class MarkupSettingsController extends Controller
@@ -51,6 +52,14 @@ class MarkupSettingsController extends Controller
         }
 
         return redirect()->route('hotels.settings.index', $hotel);
+    }
+
+    public function get(Hotel $hotel, Room $room): JsonResponse
+    {
+        $roomSettings = MarkupSettingsAdapter::getRoomMarkupSettings($hotel->id, $room->id);
+        return response()->json(
+            $roomSettings
+        );
     }
 
     protected function formFactory(): FormContract

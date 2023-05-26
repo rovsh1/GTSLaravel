@@ -1,153 +1,208 @@
 <script setup lang="ts">
 
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 
 import { useToggle } from '@vueuse/core'
 import { z } from 'zod'
 
-import { HotelRoom } from '~api/hotel/room'
+import EditTableRowButton from '~resources/views/hotel/settings/components/EditTableRowButton.vue'
+import GuestModal from '~resources/views/hotel-booking/show/components/GuestModal.vue'
+import RoomModal from '~resources/views/hotel-booking/show/components/RoomModal.vue'
+import { getGenderName, getRoomStatusName } from '~resources/views/hotel-booking/show/constants'
+import { GuestFormData, RoomFormData } from '~resources/views/hotel-booking/show/form'
 
+import { HotelBookingDetailsRoom, HotelBookingGuest, useBookingHotelDetailsAPI } from '~api/booking/details'
+import { deleteBookingRoom } from '~api/booking/rooms'
+import { CountryResponse, useCountrySearchAPI } from '~api/country'
+import { HotelRate, useHotelRatesAPI } from '~api/hotel/price-rate'
+import { HotelRoomResponse } from '~api/hotel/room'
+
+import { showConfirmDialog } from '~lib/confirm-dialog'
 import { requestInitialData } from '~lib/initial-data'
 
-import BaseDialog from '~components/BaseDialog.vue'
-import BootstrapSelectBase from '~components/Bootstrap/BootstrapSelectBase.vue'
-import { SelectOption } from '~components/Bootstrap/lib'
+const [isShowRoomModal, toggleRoomModal] = useToggle()
+const [isShowGuestModal, toggleGuestModal] = useToggle()
 
-const { hotelID, rooms } = requestInitialData(
+const { bookingID, hotelID, hotelRooms } = requestInitialData(
   'view-initial-data-hotel-booking',
   z.object({
     hotelID: z.number(),
-    rooms: z.array(z.any()),
+    bookingID: z.number(),
+    // @todo не понял как указать строгий тип
+    hotelRooms: z.array(z.any()),
   }),
 )
 
-console.log(hotelID)
+const { execute: fetchDetails, data: bookingDetails } = useBookingHotelDetailsAPI({ bookingID })
+fetchDetails()
 
-const preparedRooms = computed<SelectOption[]>(() => rooms.map((room: HotelRoom) => ({ value: room.id, label: room.name })))
+const { execute: fetchPriceRates, data: priceRates } = useHotelRatesAPI({ hotelID })
+fetchPriceRates()
 
-const [isShowModal, toggleModal] = useToggle()
-const isFetching = ref<boolean>(false)
+const { data: countries, execute: fetchCountries } = useCountrySearchAPI()
+fetchCountries()
 
-const modalForm = ref<HTMLFormElement>()
-const onModalSubmit = async () => {
-  if (!modalForm.value?.reportValidity()) {
-    return
+const onModalSubmit = () => {
+  toggleRoomModal(false)
+  toggleGuestModal(false)
+  fetchDetails()
+}
+
+const getPriceRateName = (id: number): string | undefined =>
+  priceRates.value?.find((priceRate: HotelRate) => priceRate.id === id)?.name
+
+const getCountryName = (id: number): string | undefined =>
+  countries.value?.find((country: CountryResponse) => country.id === id)?.name
+
+const roomForm = ref<Partial<RoomFormData>>({})
+const guestForm = ref<Partial<GuestFormData>>({})
+
+const editRoomIndex = ref<number>()
+const editGuestIndex = ref<number>()
+const handleAddRoomGuest = (roomIndex: number) => {
+  editRoomIndex.value = roomIndex
+  editGuestIndex.value = undefined
+  guestForm.value = {}
+  toggleGuestModal()
+}
+
+const handleEditGuest = (roomIndex: number, guestIndex: number, guest: HotelBookingGuest): void => {
+  editRoomIndex.value = roomIndex
+  editGuestIndex.value = guestIndex
+  guestForm.value = guest
+  toggleGuestModal()
+}
+
+const handleAddRoom = (): void => {
+  editRoomIndex.value = undefined
+  roomForm.value = {}
+  toggleRoomModal()
+}
+
+const handleEditRoom = (roomIndex: number, room: HotelBookingDetailsRoom): void => {
+  editRoomIndex.value = roomIndex
+  roomForm.value = room
+  roomForm.value.residentType = room.isResident ? 1 : 0
+  roomForm.value.note = room.guestNote
+  toggleRoomModal()
+}
+
+const handleDeleteRoom = async (roomIndex: number): Promise<void> => {
+  const { result: isApproved, toggleLoading, toggleClose } = await showConfirmDialog('Удалить номер?')
+  if (isApproved) {
+    toggleLoading()
+    await deleteBookingRoom({ bookingID, roomIndex })
+    await fetchDetails()
+    toggleClose()
   }
-  isFetching.value = true
+}
 
-  //
-  isFetching.value = false
+const getRoomName = (id: number): string | undefined => {
+  const room = hotelRooms.find((roomData: HotelRoomResponse) => roomData.id === id)
+  if (!room) {
+    return undefined
+  }
 
-  toggleModal(false)
+  return `${room.name} (${room.custom_name})`
 }
 
 </script>
 
 <template>
-  <BaseDialog
-    :opened="isShowModal as boolean"
-    :loading="isFetching"
-    @close="toggleModal(false)"
-  >
-    <form ref="modalForm" class="row g-3">
-      <div class="col-md-12">
-        <BootstrapSelectBase
-          id="room_id"
-          :options="preparedRooms"
-          label="Номер"
-          value=""
-          required
-        />
-      </div>
-      <div class="col-md-6">
-        <BootstrapSelectBase
-          id="guests_count"
-          :options="[]"
-          label="Кол-во гостей"
-          value=""
-          required
-        />
-      </div>
-      <div class="col-md-6">
-        <label for="rooms_count" class="col-form-label">Кол-во номеров</label>
-        <input id="rooms_count" type="number" class="form-control" required>
-      </div>
-      <div class="col-md-6">
-        <BootstrapSelectBase
-          id="resident_type"
-          label="Тип стоимости"
-          :options="[]"
-          value=""
-          required
-        />
-      </div>
-      <div class="col-md-6">
-        <BootstrapSelectBase
-          id="discount"
-          label="Скидка"
-          :options="[]"
-          value=""
-        />
-      </div>
-      <div class="col-md-6">
-        <BootstrapSelectBase
-          id="early_checkin"
-          :options="[]"
-          label="Ранний заезд"
-          value=""
-        />
-      </div>
-      <div class="col-md-6">
-        <BootstrapSelectBase
-          id="late_checkout"
-          :options="[]"
-          label="Поздний выезд"
-          value=""
-        />
-      </div>
-      <div class="col-md-12">
-        <BootstrapSelectBase
-          id="rate_id"
-          :options="[]"
-          label="Тариф"
-          value=""
-          required
-        />
-      </div>
-      <div class="col-md-12">
-        <label for="note" class=" col-form-label">Примечание</label>
-        <textarea id="note" class="form-control" />
-      </div>
-    </form>
+  <RoomModal
+    :opened="isShowRoomModal"
+    :form-data="roomForm"
+    :room-index="editRoomIndex"
+    @close="toggleRoomModal(false)"
+    @submit="onModalSubmit"
+  />
 
-    <template #actions-end>
-      <button class="btn btn-primary" type="button" @click="onModalSubmit">Сохранить</button>
-      <button class="btn btn-cancel" type="button" @click="toggleModal(false)">Отмена</button>
-    </template>
-  </BaseDialog>
+  <GuestModal
+    v-if="countries && editRoomIndex !== undefined"
+    :opened="isShowGuestModal"
+    :room-index="editRoomIndex"
+    :guest-index="editGuestIndex"
+    :form-data="guestForm"
+    :countries="countries as CountryResponse[]"
+    @close="toggleGuestModal(false)"
+    @submit="onModalSubmit"
+  />
 
   <h5 class="mt-3">Номера</h5>
-  <div class="card flex-grow-1 flex-basis-200 mt-1">
+  <div
+    v-for="(room, idx) in bookingDetails?.rooms"
+    :key="idx"
+    class="card mt-2 mb-4"
+  >
     <div class="card-body">
-      <h5 class="card-title">
-        Номер 1
-      </h5>
-      <table class="table-params">
-        <tbody>
-          <tr class="">
-            <th>Статус</th>
-            <td>Status</td>
-          </tr>
-          <tr class="">
-            <th>Примечание</th>
-            <td>-</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="d-flex">
+        <h5 class="card-title mr-4">
+          {{ getRoomName(room.id) }}
+        </h5>
+        <EditTableRowButton
+          @edit="handleEditRoom(idx as number, room)"
+          @delete="handleDeleteRoom(idx as number)"
+        />
+      </div>
+      <div class="d-flex flex-row gap-4">
+        <div class="w-100 rounded shadow-lg p-4">
+          <h6>Параметры размещения</h6>
+          <table class="table-params">
+            <tbody>
+              <tr>
+                <th>Статус</th>
+                <td>{{ getRoomStatusName(room.status) }}</td>
+              </tr>
+              <tr>
+                <th>Тип стоимости</th>
+                <td>{{ room.isResident ? 'Резидент' : 'Не резидент' }}</td>
+              </tr>
+              <tr>
+                <th>Тариф</th>
+                <td>{{ getPriceRateName(room.rateId) }}</td>
+              </tr>
+              <tr>
+                <th>Примечание</th>
+                <td>{{ room.guestNote }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="w-100 rounded shadow-lg p-4">
+          <h6>Список гостей</h6>
+          <a href="#" @click.prevent="handleAddRoomGuest(idx as number)">
+            <i class="icon">add</i>
+          </a>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>№</th>
+                <th class="column-text">ФИО</th>
+                <th class="column-text">Пол</th>
+                <th class="column-text">Гражданство</th>
+                <th />
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(guest, guestIdx) in room.guests" :key="guestIdx">
+                <td>{{ guestIdx + 1 }}</td>
+                <td>{{ guest.fullName }}</td>
+                <td>{{ getCountryName(guest.nationalityId) }}</td>
+                <td>{{ getGenderName(guest.gender) }}</td>
+                <td class="column-edit">
+                  <a href="#" @click.prevent="handleEditGuest(idx as number, guestIdx as number, guest)">
+                    <i class="icon">edit</i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="mt-4">
-    <button type="button" class="btn btn-primary" @click="isShowModal = true">Добавить номер</button>
+  <div>
+    <button type="button" class="btn btn-primary" @click="handleAddRoom">Добавить номер</button>
   </div>
 </template>

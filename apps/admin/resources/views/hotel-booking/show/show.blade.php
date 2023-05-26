@@ -7,8 +7,9 @@
 @section('head-end')
     <script>
       window['view-initial-data-hotel-booking'] = {{ Js::from([
-            'hotelID' => $model->details->hotelId,
-            'rooms' => $rooms,
+            'bookingID' => $bookingId,
+            'hotelID' => $hotelId,
+            'hotelRooms' => $hotelRooms,
         ]) }}
     </script>
 @endsection

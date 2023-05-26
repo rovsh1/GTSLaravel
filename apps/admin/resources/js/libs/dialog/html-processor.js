@@ -7,7 +7,7 @@ function processForm(modal, form) {
     if(!form[0].reportValidity()) {
         return
     }
-    if (modal.trigger('beforeSubmit', form) === false) {
+    if (modal.trigger('beforeSubmit', form, () => modal.close(), (value = true) => modal.setLoading(value)) === false) {
       return
     }
 
