@@ -149,10 +149,10 @@ class AdminController
         $currentRoom = $details->rooms()->get($request->roomIndex);
         $guests = $currentRoom->guests();
 
-        $hotelRoom = $this->hotelRoomAdapter->findById($request->roomId);
+        $hotelRoomSettings = $this->hotelRoomAdapter->findById($request->roomId);
         $expectedGuestCount = $guests->count();
-        if ($expectedGuestCount > $hotelRoom->guestsNumber) {
-            $guests = $guests->slice(0, $hotelRoom->guestsNumber);
+        if ($expectedGuestCount > $hotelRoomSettings->guestsNumber) {
+            $guests = $guests->slice(0, $hotelRoomSettings->guestsNumber);
         }
         $details->updateRoom(
             $request->roomIndex,
@@ -196,12 +196,12 @@ class AdminController
         try {
             $details = $this->detailsRepository->find($request->id);
             $room = $details->rooms()->get($request->roomIndex);
-            $hotelRoom = $this->hotelRoomAdapter->findById($room->id());
+            $hotelRoomSettings = $this->hotelRoomAdapter->findById($room->id());
             $expectedGuestCount = $room->guests()->count() + 1;
             //@todo перенести валидацию в сервис
-            if ($expectedGuestCount > $hotelRoom->guestsNumber) {
+            if ($expectedGuestCount > $hotelRoomSettings->guestsNumber) {
                 throw new TooManyRoomGuests(
-                    "Room doesn't support {$expectedGuestCount} guests, max {$hotelRoom->guestsNumber} available."
+                    "Room doesn't support {$expectedGuestCount} guests, max {$hotelRoomSettings->guestsNumber} available."
                 );
             }
 
