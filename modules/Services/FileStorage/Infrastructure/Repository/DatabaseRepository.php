@@ -2,11 +2,10 @@
 
 namespace Module\Services\FileStorage\Infrastructure\Repository;
 
-use Custom\Framework\Foundation\Exception\EntityNotFoundException;
 use Module\Services\FileStorage\Domain\Entity\File;
 use Module\Services\FileStorage\Domain\Repository\DatabaseRepositoryInterface;
-use Module\Services\FileStorage\Domain\Repository\StorageRepositoryInterface;
 use Module\Services\FileStorage\Infrastructure\Model\File as Model;
+use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
 class DatabaseRepository implements DatabaseRepositoryInterface
 {

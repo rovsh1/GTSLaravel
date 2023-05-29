@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Hotel\Port\Controllers;
 
-use Custom\Framework\Contracts\Bus\QueryBusInterface;
-use Custom\Framework\PortGateway\Request;
 use Module\Hotel\Application\Query\GetRoomById;
+use Sdk\Module\Contracts\Bus\QueryBusInterface;
+use Sdk\Module\PortGateway\Request;
 
 class RoomController
 {

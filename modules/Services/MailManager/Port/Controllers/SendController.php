@@ -2,12 +2,12 @@
 
 namespace Module\Services\MailManager\Port\Controllers;
 
-use Custom\Framework\Contracts\Bus\CommandBusInterface;
-use Custom\Framework\PortGateway\Request;
 use Module\Services\MailManager\Application\Command\SendQueued;
 use Module\Services\MailManager\Application\Command\SendSync;
 use Module\Services\MailManager\Application\Command\SendTemplateQueued;
 use Module\Services\MailManager\Application\Dto\MailMessageDto;
+use Sdk\Module\Contracts\Bus\CommandBusInterface;
+use Sdk\Module\PortGateway\Request;
 
 class SendController
 {

@@ -2,9 +2,9 @@
 
 namespace Module\Hotel\Infrastructure\Models;
 
-use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Sdk\Module\Database\Eloquent\Model;
 
 class Season extends Model
 {

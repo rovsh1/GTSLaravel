@@ -2,7 +2,7 @@
 
 namespace Module\Hotel\Application\Query\Price\Date;
 
-use Custom\Framework\Contracts\Bus\QueryInterface;
+use Sdk\Module\Contracts\Bus\QueryInterface;
 
 class Get implements QueryInterface
 {

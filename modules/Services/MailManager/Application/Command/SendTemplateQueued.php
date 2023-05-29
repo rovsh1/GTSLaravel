@@ -2,8 +2,8 @@
 
 namespace Module\Services\MailManager\Application\Command;
 
-use Custom\Framework\Contracts\Bus\CommandInterface;
 use Module\Services\MailManager\Application\Dto\MailMessageDto;
+use Sdk\Module\Contracts\Bus\CommandInterface;
 
 class SendTemplateQueued implements CommandInterface
 {

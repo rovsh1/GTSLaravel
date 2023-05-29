@@ -2,14 +2,14 @@
 
 namespace Module\Services\FileStorage\Port\Controllers;
 
-use Custom\Framework\Contracts\Bus\CommandBusInterface;
-use Custom\Framework\PortGateway\Request;
 use Module\Services\FileStorage\Application\Command\CreateFile;
 use Module\Services\FileStorage\Application\Command\DeleteFile;
 use Module\Services\FileStorage\Application\Command\PutFileContents;
 use Module\Services\FileStorage\Application\Dto\DataMapper;
 use Module\Services\FileStorage\Application\Dto\FileDto;
 use Module\Services\FileStorage\Domain\Service\UrlGeneratorInterface;
+use Sdk\Module\Contracts\Bus\CommandBusInterface;
+use Sdk\Module\PortGateway\Request;
 
 class WriteController
 {

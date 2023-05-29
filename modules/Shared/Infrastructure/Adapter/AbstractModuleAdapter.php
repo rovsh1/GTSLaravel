@@ -2,8 +2,8 @@
 
 namespace Module\Shared\Infrastructure\Adapter;
 
-use Custom\Framework\Contracts\PortGateway\PortGatewayInterface;
-use Custom\Framework\Foundation\Module;
+use Sdk\Module\Contracts\PortGateway\PortGatewayInterface;
+use Sdk\Module\Foundation\Module;
 
 abstract class AbstractModuleAdapter
 {

@@ -2,11 +2,11 @@
 
 namespace Module\Hotel\Application\Query\Price\Date;
 
-use Custom\Framework\Contracts\Bus\QueryHandlerInterface;
-use Custom\Framework\Contracts\Bus\QueryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Module\Hotel\Application\Dto\PriceDto;
 use Module\Hotel\Infrastructure\Models\DatePrice;
+use Sdk\Module\Contracts\Bus\QueryHandlerInterface;
+use Sdk\Module\Contracts\Bus\QueryInterface;
 
 class GetHandler implements QueryHandlerInterface
 {

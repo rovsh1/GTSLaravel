@@ -2,9 +2,9 @@
 
 namespace App\Admin\Models\Reference;
 
-use Custom\Framework\Database\Eloquent\HasQuicksearch;
-use Custom\Framework\Database\Eloquent\HasTranslations;
-use Custom\Framework\Database\Eloquent\Model;
+use Sdk\Module\Database\Eloquent\HasQuicksearch;
+use Sdk\Module\Database\Eloquent\HasTranslations;
+use Sdk\Module\Database\Eloquent\Model;
 
 class Currency extends Model
 {

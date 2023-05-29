@@ -2,7 +2,7 @@
 
 namespace Module\Hotel\Application\Command\Room;
 
-use Custom\Framework\Contracts\Bus\CommandInterface;
+use Sdk\Module\Contracts\Bus\CommandInterface;
 
 class UpdateMarkupSettingsValue implements CommandInterface
 {

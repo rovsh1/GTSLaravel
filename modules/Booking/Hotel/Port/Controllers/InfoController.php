@@ -2,9 +2,9 @@
 
 namespace Module\Booking\Hotel\Port\Controllers;
 
-use Custom\Framework\PortGateway\Request;
 use Module\Booking\Hotel\Application\Dto\ExtendedReservationDto;
 use Module\Booking\Hotel\Application\Service\InfoService;
+use Sdk\Module\PortGateway\Request;
 
 class InfoController
 {

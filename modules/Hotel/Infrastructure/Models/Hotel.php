@@ -2,8 +2,8 @@
 
 namespace Module\Hotel\Infrastructure\Models;
 
-use Custom\Framework\Database\Eloquent\Model;
 use Module\HotelOld\Infrastructure\Models\Room;
+use Sdk\Module\Database\Eloquent\Model;
 
 class Hotel extends Model
 {

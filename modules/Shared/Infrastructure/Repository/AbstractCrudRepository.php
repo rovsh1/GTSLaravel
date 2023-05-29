@@ -2,8 +2,8 @@
 
 namespace Module\Shared\Infrastructure\Repository;
 
-use Custom\Framework\Foundation\Exception\EntityNotFoundException;
 use Illuminate\Database\Eloquent\Collection;
+use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
 abstract class AbstractCrudRepository
 {

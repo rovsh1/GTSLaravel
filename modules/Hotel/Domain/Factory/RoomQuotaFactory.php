@@ -2,9 +2,9 @@
 
 namespace Module\Hotel\Domain\Factory;
 
-use Custom\Framework\Support\DateTime;
-use Custom\Framework\Foundation\Support\EntityFactory\AbstractEntityFactory;
 use Module\Hotel\Domain\Entity\RoomQuota;
+use Sdk\Module\Foundation\Support\EntityFactory\AbstractEntityFactory;
+use Sdk\Module\Support\DateTime;
 
 class RoomQuotaFactory extends AbstractEntityFactory
 {

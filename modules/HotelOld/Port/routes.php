@@ -1,9 +1,9 @@
 <?php
 
-use Custom\Framework\Support\Facades\Route;
 use Module\HotelOld\Port\Controllers\InfoController;
 use Module\HotelOld\Port\Controllers\RoomPriceController;
 use Module\HotelOld\Port\Controllers\RoomQuotaController;
+use Sdk\Module\Support\Route;
 
 
 Route::register('findById', [InfoController::class, 'findById']);

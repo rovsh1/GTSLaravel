@@ -6,12 +6,12 @@ use App\Admin\Enums\Hotel\Contract\StatusEnum;
 use App\Admin\Files\ContractDocument;
 use App\Admin\Support\Models\HasPeriod;
 use Carbon\CarbonPeriod;
-use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
+use Sdk\Module\Database\Eloquent\Model;
 
 /**
  * App\Admin\Models\Hotel\Contract
@@ -19,10 +19,10 @@ use Illuminate\Support\Collection;
  * @property int $id
  * @property int $hotel_id
  * @property int $status
- * @property \Custom\Framework\Support\DateTime $date_start
- * @property \Custom\Framework\Support\DateTime $date_end
- * @property \Custom\Framework\Support\DateTime $created_at
- * @property \Custom\Framework\Support\DateTime $updated_at
+ * @property \Sdk\Module\Support\DateTime $date_start
+ * @property \Sdk\Module\Support\DateTime $date_end
+ * @property \Sdk\Module\Support\DateTime $created_at
+ * @property \Sdk\Module\Support\DateTime $updated_at
  * @property CarbonPeriod $period
  * @property Collection<ContractDocument>|ContractDocument[] $documents
  * @property-read Collection<Season>|Season[] $seasons

@@ -2,7 +2,7 @@
 
 namespace Module\Services\FileStorage\Application\Command;
 
-use Custom\Framework\Contracts\Bus\CommandInterface;
+use Sdk\Module\Contracts\Bus\CommandInterface;
 
 class DeleteFile implements CommandInterface
 {

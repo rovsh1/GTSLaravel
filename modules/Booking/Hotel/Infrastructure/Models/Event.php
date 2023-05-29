@@ -2,7 +2,7 @@
 
 namespace Module\Booking\Hotel\Infrastructure\Models;
 
-use Custom\Framework\Database\Eloquent\Model;
+use Sdk\Module\Database\Eloquent\Model;
 
 class Event extends Model
 {

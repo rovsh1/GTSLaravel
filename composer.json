@@ -45,7 +45,8 @@
       "Gsdk\\Navigation\\": "src/Navigation/",
       "Gsdk\\Meta\\": "src/Meta/",
       "Gsdk\\Filemanager\\": "src/Filemanager/",
-      "Custom\\": "src/",
+      "Sdk\\": "src/sdk",
+      "Custom\\Illuminate\\": "src/Illuminate",
       "Database\\Factories\\": "database/factories/",
       "Database\\Seeders\\": "database/seeders/"
     }

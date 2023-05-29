@@ -1,10 +1,10 @@
 <?php
 
-use Custom\Framework\Support\Facades\Route;
 use Module\Hotel\Port\Controllers\MarkupSettingsController;
 use Module\Hotel\Port\Controllers\PriceController;
 use Module\Hotel\Port\Controllers\RoomController;
 use Module\Hotel\Port\Controllers\RoomQuotaController;
+use Sdk\Module\Support\Route;
 
 //Route::register('updateRoomsPositions', [PriceController::class, 'updateRoomsPositions']);
 

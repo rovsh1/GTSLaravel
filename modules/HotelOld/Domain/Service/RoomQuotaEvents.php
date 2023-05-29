@@ -2,13 +2,13 @@
 
 namespace Module\HotelOld\Domain\Service;
 
-use Custom\Framework\Contracts\Event\DomainEventDispatcherInterface;
-use Custom\Framework\Support\DateTimeInterface;
-use Module\HotelOld\Domain\Repository\QuotaRepositoryInterface;
 use Module\HotelOld\Domain\Event\QuotaAdded;
 use Module\HotelOld\Domain\Event\QuotaRemoved;
 use Module\HotelOld\Domain\Event\QuotaReserved;
 use Module\HotelOld\Domain\Event\QuotaSold;
+use Module\HotelOld\Domain\Repository\QuotaRepositoryInterface;
+use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
+use Sdk\Module\Support\Facades\DateTimeInterface;
 
 class RoomQuotaEvents
 {

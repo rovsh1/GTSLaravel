@@ -5,11 +5,11 @@ namespace App\Admin\Models\Client;
 use App\Admin\Models\Hotel\Hotel;
 use App\Admin\Support\Models\HasPeriod;
 use Carbon\CarbonPeriod;
-use Custom\Framework\Database\Eloquent\HasQuicksearch;
-use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Sdk\Module\Database\Eloquent\HasQuicksearch;
+use Sdk\Module\Database\Eloquent\Model;
 
 /**
  * App\Admin\Models\Client\CurrencyRate
@@ -17,15 +17,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property int $id
  * @property int $client_id
  * @property int $currency_id
- * @property \Custom\Framework\Support\DateTime $date_start
- * @property \Custom\Framework\Support\DateTime $date_end
+ * @property \Sdk\Module\Support\DateTime $date_start
+ * @property \Sdk\Module\Support\DateTime $date_end
  * @property float $rate
  * @property CarbonPeriod $period
  * @property-read string $client_name
  * @property-read string $currency_name
  * @property-read string $currency_code_char
- * @property \Custom\Framework\Support\DateTime|null $created_at
- * @property \Custom\Framework\Support\DateTime|null $updated_at
+ * @property \Sdk\Module\Support\DateTime|null $created_at
+ * @property \Sdk\Module\Support\DateTime|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Hotel> $hotels
  * @method static Builder|CurrencyRate newModelQuery()
  * @method static Builder|CurrencyRate newQuery()

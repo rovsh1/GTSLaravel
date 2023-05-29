@@ -3,9 +3,9 @@
 namespace App\Admin\Models\ServiceProvider;
 
 use Carbon\CarbonPeriod;
-use Custom\Framework\Database\Eloquent\HasQuicksearch;
-use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Sdk\Module\Database\Eloquent\HasQuicksearch;
+use Sdk\Module\Database\Eloquent\Model;
 
 class Season extends Model
 {

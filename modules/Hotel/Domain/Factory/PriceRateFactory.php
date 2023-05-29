@@ -2,8 +2,8 @@
 
 namespace Module\Hotel\Domain\Factory;
 
-use Custom\Framework\Foundation\Support\EntityFactory\AbstractEntityFactory;
 use Module\Hotel\Domain\Entity\PriceRate;
+use Sdk\Module\Foundation\Support\EntityFactory\AbstractEntityFactory;
 
 class PriceRateFactory extends AbstractEntityFactory
 {

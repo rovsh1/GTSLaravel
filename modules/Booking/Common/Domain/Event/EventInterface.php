@@ -2,4 +2,4 @@
 
 namespace Module\Booking\Common\Domain\Event;
 
-interface EventInterface extends \Custom\Framework\Contracts\Event\DomainEventInterface { }
+interface EventInterface extends \Sdk\Module\Contracts\Event\DomainEventInterface { }

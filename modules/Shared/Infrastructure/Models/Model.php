@@ -2,4 +2,4 @@
 
 namespace Module\Shared\Infrastructure\Models;
 
-class Model extends \Custom\Framework\Database\Eloquent\Model { }
+class Model extends \Sdk\Module\Database\Eloquent\Model { }

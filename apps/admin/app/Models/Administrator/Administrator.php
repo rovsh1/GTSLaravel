@@ -3,12 +3,12 @@
 namespace App\Admin\Models\Administrator;
 
 use App\Admin\Files\AdministratorAvatar;
-use Custom\Framework\Database\Eloquent\HasQuicksearch;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
+use Sdk\Module\Database\Eloquent\HasQuicksearch;
 
 /**
  * @property int id

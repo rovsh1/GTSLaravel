@@ -2,7 +2,7 @@
 
 namespace Module\HotelOld\Infrastructure\Models;
 
-use Custom\Framework\Database\Eloquent\Model;
+use Sdk\Module\Database\Eloquent\Model;
 
 /**
  * Module\HotelOld\Infrastructure\Models\Contract
@@ -11,9 +11,9 @@ use Custom\Framework\Database\Eloquent\Model;
  * @property int $hotel_id
  * @property int $number
  * @property int $status
- * @property \Custom\Framework\Support\DateTime $date_from
- * @property \Custom\Framework\Support\DateTime $date_to
- * @property \Custom\Framework\Support\DateTime $created
+ * @property \Sdk\Module\Support\DateTime $date_from
+ * @property \Sdk\Module\Support\DateTime $date_to
+ * @property \Sdk\Module\Support\DateTime $created
  * @method static \Illuminate\Database\Eloquent\Builder|Contract newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Contract newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Contract query()

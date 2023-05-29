@@ -2,9 +2,9 @@
 
 namespace Module\Services\MailManager\Port\Controllers;
 
-use Custom\Framework\PortGateway\Request;
 use Module\Services\MailManager\Domain\ValueObject\MailTemplateEnum;
 use Module\Services\MailManager\Infrastructure\Model\QueueMessage;
+use Sdk\Module\PortGateway\Request;
 
 class AdminController
 {

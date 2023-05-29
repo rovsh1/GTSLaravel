@@ -3,8 +3,8 @@
 namespace Module\HotelOld\Port\Controllers;
 
 use Carbon\CarbonPeriod;
-use Custom\Framework\PortGateway\Request;
 use Module\HotelOld\Application\Service\RoomQuotaUpdater;
+use Sdk\Module\PortGateway\Request;
 
 class RoomQuotaController
 {

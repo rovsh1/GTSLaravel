@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Module\Booking\Hotel\Domain\Factory;
 
 use Carbon\Carbon;
-use Custom\Framework\Foundation\Support\EntityFactory\AbstractEntityFactory;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
 use Module\Booking\Hotel\Domain\Entity\Booking;
+use Sdk\Module\Foundation\Support\EntityFactory\AbstractEntityFactory;
 
 class BookingFactory extends AbstractEntityFactory
 {

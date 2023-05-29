@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Module\Booking\Hotel\Domain\Factory;
 
-use Custom\Framework\Foundation\Support\EntityFactory\AbstractEntityFactory;
 use Module\Booking\Hotel\Domain\Entity\Details;
 use Module\Booking\Hotel\Domain\ValueObject\Details\AdditionalInfo;
 use Module\Booking\Hotel\Domain\ValueObject\Details\BookingPeriod;
 use Module\Shared\Infrastructure\Service\JsonSerializer;
+use Sdk\Module\Foundation\Support\EntityFactory\AbstractEntityFactory;
 
 class DetailsFactory extends AbstractEntityFactory
 {

@@ -2,7 +2,7 @@
 
 namespace Module\Hotel\Application\Query;
 
-use Custom\Framework\Contracts\Bus\QueryInterface;
+use Sdk\Module\Contracts\Bus\QueryInterface;
 
 class GetRoomMarkupSettings implements QueryInterface
 {

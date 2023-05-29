@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Module\Booking\Order\Application\Query;
 
-use Custom\Framework\Contracts\Bus\QueryHandlerInterface;
-use Custom\Framework\Contracts\Bus\QueryInterface;
 use Module\Booking\Order\Application\Dto\OrderDto;
 use Module\Booking\Order\Infrastructure\Model\Order;
+use Sdk\Module\Contracts\Bus\QueryHandlerInterface;
+use Sdk\Module\Contracts\Bus\QueryInterface;
 
 class GetActiveOrdersHandler implements QueryHandlerInterface
 {

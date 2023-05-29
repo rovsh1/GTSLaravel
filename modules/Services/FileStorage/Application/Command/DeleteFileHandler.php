@@ -2,10 +2,10 @@
 
 namespace Module\Services\FileStorage\Application\Command;
 
-use Custom\Framework\Contracts\Bus\CommandHandlerInterface;
-use Custom\Framework\Contracts\Bus\CommandInterface;
 use Module\Services\FileStorage\Domain\Repository\DatabaseRepositoryInterface;
 use Module\Services\FileStorage\Domain\Repository\StorageRepositoryInterface;
+use Sdk\Module\Contracts\Bus\CommandHandlerInterface;
+use Sdk\Module\Contracts\Bus\CommandInterface;
 
 class DeleteFileHandler implements CommandHandlerInterface
 {

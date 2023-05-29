@@ -2,9 +2,9 @@
 
 namespace Module\Pricing\CurrencyRate\Application\Command;
 
-use Custom\Framework\Contracts\Bus\CommandInterface;
-use Module\Pricing\CurrencyRate\Domain\ValueObject\CountryEnum;
 use DateTime;
+use Module\Pricing\CurrencyRate\Domain\ValueObject\CountryEnum;
+use Sdk\Module\Contracts\Bus\CommandInterface;
 
 class UpdateRates implements CommandInterface
 {

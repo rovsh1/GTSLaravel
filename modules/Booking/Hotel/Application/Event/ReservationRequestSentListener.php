@@ -2,10 +2,7 @@
 
 namespace Module\Booking\Hotel\Application\Event;
 
-use Custom\Framework\Contracts\Event\DomainEventInterface;
-use Custom\Framework\Contracts\Event\DomainEventListenerInterface;
-
-class ReservationRequestSentListener implements DomainEventListenerInterface
+class ReservationRequestSentListener implements \Sdk\Module\Contracts\Event\DomainEventListenerInterface
 {
-    public function handle(DomainEventInterface $event) {}
+    public function handle(\Sdk\Module\Contracts\Event\DomainEventInterface $event) {}
 }

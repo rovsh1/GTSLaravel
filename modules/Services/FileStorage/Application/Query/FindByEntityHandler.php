@@ -2,12 +2,12 @@
 
 namespace Module\Services\FileStorage\Application\Query;
 
-use Custom\Framework\Contracts\Bus\QueryHandlerInterface;
-use Custom\Framework\Contracts\Bus\QueryInterface;
 use Module\Services\FileStorage\Application\Dto\DataMapper;
 use Module\Services\FileStorage\Application\Dto\FileDto;
 use Module\Services\FileStorage\Domain\Repository\DatabaseRepositoryInterface;
 use Module\Services\FileStorage\Domain\Service\UrlGeneratorInterface;
+use Sdk\Module\Contracts\Bus\QueryHandlerInterface;
+use Sdk\Module\Contracts\Bus\QueryInterface;
 
 class FindByEntityHandler implements QueryHandlerInterface
 {

@@ -2,9 +2,9 @@
 
 namespace Module\Booking\Hotel\Application\Event;
 
-use Custom\Framework\Contracts\Event\DomainEventInterface;
-use Custom\Framework\Contracts\Event\DomainEventListenerInterface;
 use Module\Booking\Hotel\Domain\Entity\StatusHistoryService;
+use Sdk\Module\Contracts\Event\DomainEventInterface;
+use Sdk\Module\Contracts\Event\DomainEventListenerInterface;
 
 class StatusChangedListener implements DomainEventListenerInterface
 {

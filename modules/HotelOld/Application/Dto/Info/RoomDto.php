@@ -2,9 +2,9 @@
 
 namespace Module\HotelOld\Application\Dto\Info;
 
-use Custom\Framework\Foundation\Support\Dto\Dto;
-use Custom\Framework\Foundation\Support\Dto\DtoCollection;
-use Custom\Framework\Foundation\Support\Dto\DtoCollectionOf;
+use Sdk\Module\Foundation\Support\Dto\Dto;
+use Sdk\Module\Foundation\Support\Dto\DtoCollection;
+use Sdk\Module\Foundation\Support\Dto\DtoCollectionOf;
 
 class RoomDto extends Dto
 {

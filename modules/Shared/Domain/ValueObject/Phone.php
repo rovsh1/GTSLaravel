@@ -2,7 +2,7 @@
 
 namespace Module\Shared\Domain\ValueObject;
 
-use Custom\Framework\Foundation\Exception\ValidationException;
+use Sdk\Module\Foundation\Exception\ValidationException;
 
 class Phone
 {

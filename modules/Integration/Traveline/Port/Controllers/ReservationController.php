@@ -2,7 +2,6 @@
 
 namespace Module\Integration\Traveline\Port\Controllers;
 
-use Custom\Framework\PortGateway\Request;
 use Module\Integration\Traveline\Application\Service\Booking;
 use Module\Integration\Traveline\Application\Service\ReservationFinder;
 use Module\Integration\Traveline\Domain\Api\Response\EmptySuccessResponse;
@@ -10,6 +9,7 @@ use Module\Integration\Traveline\Domain\Api\Response\ErrorResponse;
 use Module\Integration\Traveline\Domain\Api\Response\GetReservationsActionResponse;
 use Module\Integration\Traveline\Domain\Api\Response\HotelNotConnectedToChannelManagerResponse;
 use Module\Integration\Traveline\Domain\Exception\HotelNotConnectedException;
+use Sdk\Module\PortGateway\Request;
 
 class ReservationController
 {

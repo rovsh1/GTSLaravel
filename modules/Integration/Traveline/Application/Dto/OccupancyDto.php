@@ -2,11 +2,10 @@
 
 namespace Module\Integration\Traveline\Application\Dto;
 
-use Custom\Framework\Foundation\Support\Dto\Dto;
 use Module\Integration\Traveline\Domain\Service\HotelRoomCodeGeneratorInterface;
 use Module\Integration\Traveline\Domain\ValueObject\HotelRoomCode;
 
-class OccupancyDto extends Dto
+class OccupancyDto extends \Sdk\Module\Foundation\Support\Dto\Dto
 {
     private const DEFAULT_BED_TYPE = 'adultBed';
 

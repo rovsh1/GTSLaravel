@@ -2,9 +2,7 @@
 
 namespace Module\Hotel\Domain\Event;
 
-use Custom\Framework\Contracts\Event\DomainEventInterface;
-
-class BookingClosed implements DomainEventInterface
+class BookingClosed implements \Sdk\Module\Contracts\Event\DomainEventInterface
 {
     public function __construct(int $roomId, \DateTime $date) {}
 }

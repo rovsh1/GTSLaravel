@@ -5,10 +5,9 @@ namespace App\Admin\Models\Hotel;
 use App\Admin\Support\Models\HasPeriod;
 use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
-use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Sdk\Module\Database\Eloquent\Model;
 
 /**
  * @property int $id

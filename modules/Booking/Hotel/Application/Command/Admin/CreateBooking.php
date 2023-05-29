@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Hotel\Application\Command\Admin;
 
 use Carbon\CarbonPeriod;
-use Custom\Framework\Contracts\Bus\CommandInterface;
+use Sdk\Module\Contracts\Bus\CommandInterface;
 
 class CreateBooking implements CommandInterface
 {

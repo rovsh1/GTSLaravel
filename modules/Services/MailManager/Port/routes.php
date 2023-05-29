@@ -1,8 +1,8 @@
 <?php
 
-use Custom\Framework\Support\Facades\Route;
 use Module\Services\MailManager\Port\Controllers\AdminController;
 use Module\Services\MailManager\Port\Controllers\SendController;
+use Sdk\Module\Support\Route;
 
 Route::register('templates-list', AdminController::class);
 Route::register('get-queue', AdminController::class);

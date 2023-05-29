@@ -2,7 +2,6 @@
 
 namespace Module\Pricing\CurrencyRate\Providers;
 
-use Custom\Framework\Foundation\Support\Providers\ServiceProvider;
 use Module\Pricing\CurrencyRate\Domain\Adapter\LoggerAdapterInterface;
 use Module\Pricing\CurrencyRate\Domain\Repository\ApiRepositoryInterface;
 use Module\Pricing\CurrencyRate\Domain\Repository\CacheRepositoryInterface;
@@ -11,6 +10,7 @@ use Module\Pricing\CurrencyRate\Infrastructure\Adapter\LoggerAdapter;
 use Module\Pricing\CurrencyRate\Infrastructure\Repository\ApiRepository;
 use Module\Pricing\CurrencyRate\Infrastructure\Repository\CacheRepository;
 use Module\Pricing\CurrencyRate\Infrastructure\Repository\DatabaseRepository;
+use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {

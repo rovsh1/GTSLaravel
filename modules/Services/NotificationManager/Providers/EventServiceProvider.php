@@ -2,9 +2,9 @@
 
 namespace Module\Services\NotificationManager\Providers;
 
-use Custom\Framework\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Module\Services\NotificationManager\Domain\Listener;
 use Module\Services\NotificationManager\Domain\Notification;
+use Sdk\Module\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
 {

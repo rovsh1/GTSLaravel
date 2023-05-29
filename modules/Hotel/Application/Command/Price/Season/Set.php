@@ -2,7 +2,7 @@
 
 namespace Module\Hotel\Application\Command\Price\Season;
 
-use Custom\Framework\Contracts\Bus\CommandInterface;
+use Sdk\Module\Contracts\Bus\CommandInterface;
 
 class Set implements CommandInterface
 {

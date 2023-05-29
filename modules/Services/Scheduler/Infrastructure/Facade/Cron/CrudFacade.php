@@ -2,8 +2,8 @@
 
 namespace Module\Services\Scheduler\Infrastructure\Facade\Cron;
 
-use Custom\Framework\Foundation\Exception\EntityNotFoundException;
 use Module\Services\Scheduler\Infrastructure\Models\Cron;
+use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
 class CrudFacade implements CrudFacadeInterface
 {

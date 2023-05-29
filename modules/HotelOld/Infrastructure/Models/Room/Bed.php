@@ -2,7 +2,7 @@
 
 namespace Module\HotelOld\Infrastructure\Models\Room;
 
-use Custom\Framework\Database\Eloquent\Model;
+use Sdk\Module\Database\Eloquent\Model;
 
 /**
  * Module\HotelOld\Infrastructure\Models\Room\Bed

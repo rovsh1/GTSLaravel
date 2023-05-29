@@ -2,9 +2,9 @@
 
 namespace Module\Booking\Hotel\Port\Controllers;
 
-use Custom\Framework\Contracts\Event\DomainEventDispatcherInterface;
-use Custom\Framework\PortGateway\Request;
 use Module\Booking\Hotel\Domain\Event\ReservationCancelled;
+use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
+use Sdk\Module\PortGateway\Request;
 
 class ReservationController
 {

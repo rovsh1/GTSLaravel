@@ -2,8 +2,8 @@
 
 namespace Module\Services\NotificationManager\Domain\Notifiable;
 
-use Custom\Framework\Foundation\Exception\ValidationException;
 use Module\Services\NotificationManager\Domain\Entity\NotifiableInterface;
+use Sdk\Module\Foundation\Exception\ValidationException;
 
 class EmailAddress implements NotifiableInterface
 {

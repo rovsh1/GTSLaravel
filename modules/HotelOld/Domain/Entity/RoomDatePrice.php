@@ -2,8 +2,8 @@
 
 namespace Module\HotelOld\Domain\Entity;
 
-use Custom\Framework\Support\DateTimeInterface;
 use Module\HotelOld\Domain\ValueObject\RoomPrice as ValueObject;
+use Sdk\Module\Support\Facades\DateTimeInterface;
 
 class RoomDatePrice
 {

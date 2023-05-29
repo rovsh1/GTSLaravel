@@ -1,8 +1,8 @@
 <?php
 
-use Custom\Framework\Support\Facades\Route;
 use Module\Services\FileStorage\Port\Controllers\ReadController;
 use Module\Services\FileStorage\Port\Controllers\WriteController;
+use Sdk\Module\Support\Route;
 
 Route::register('create', WriteController::class);
 Route::register('put', WriteController::class);

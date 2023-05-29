@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Booking\Common\Infrastructure\Models;
 
-use Custom\Framework\Database\Eloquent\Model;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
+use Sdk\Module\Database\Eloquent\Model;
 
 class Booking extends Model
 {

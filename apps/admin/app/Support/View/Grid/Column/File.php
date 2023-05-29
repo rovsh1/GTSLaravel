@@ -3,10 +3,10 @@
 namespace App\Admin\Support\View\Grid\Column;
 
 use App\Core\Contracts\File\FileInterface;
-use Custom\Framework\Database\Eloquent\Model;
 use Gsdk\Grid\Column\Url;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Collection;
+use Sdk\Module\Database\Eloquent\Model;
 
 class File extends Url
 {

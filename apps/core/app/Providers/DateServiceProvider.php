@@ -2,10 +2,9 @@
 
 namespace App\Core\Providers;
 
-use Custom\Framework\Support\DateTime;
-
 use Illuminate\Support\DateFactory;
 use Illuminate\Support\ServiceProvider;
+use Sdk\Module\Support\DateTime;
 
 class DateServiceProvider extends ServiceProvider
 {

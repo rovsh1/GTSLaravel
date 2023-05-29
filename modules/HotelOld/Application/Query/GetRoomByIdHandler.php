@@ -2,10 +2,10 @@
 
 namespace Module\HotelOld\Application\Query;
 
-use Custom\Framework\Contracts\Bus\QueryHandlerInterface;
-use Custom\Framework\Contracts\Bus\QueryInterface;
 use Module\HotelOld\Application\Dto\Info\RoomDto;
 use Module\HotelOld\Domain\Repository\RoomRepositoryInterface;
+use Sdk\Module\Contracts\Bus\QueryHandlerInterface;
+use Sdk\Module\Contracts\Bus\QueryInterface;
 
 class GetRoomByIdHandler implements QueryHandlerInterface
 {

@@ -1,9 +1,9 @@
 <?php
 
-use Custom\Framework\Support\Facades\Route;
 use Module\Booking\Hotel\Port\Controllers\AdminController;
 use Module\Booking\Hotel\Port\Controllers\InfoController;
 use Module\Booking\Hotel\Port\Controllers\ReservationController;
+use Sdk\Module\Support\Route;
 
 Route::register('findById', [InfoController::class, 'findById']);
 Route::register('searchActiveReservations', [InfoController::class, 'searchActiveReservations']);

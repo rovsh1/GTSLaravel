@@ -2,10 +2,10 @@
 
 namespace App\Admin\Models\Reference;
 
-use Custom\Framework\Database\Eloquent\HasQuicksearch;
-use Custom\Framework\Database\Eloquent\HasTranslations;
-use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Sdk\Module\Database\Eloquent\HasQuicksearch;
+use Sdk\Module\Database\Eloquent\HasTranslations;
+use Sdk\Module\Database\Eloquent\Model;
 
 class AbstractList extends Model
 {

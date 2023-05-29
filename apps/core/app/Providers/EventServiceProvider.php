@@ -3,10 +3,9 @@
 namespace App\Core\Providers;
 
 use App\Core\Events\IntegrationEventHandler;
-use Custom\Framework\Contracts\Event\IntegrationEventHandlerInterface;
-use Custom\Framework\Foundation\Support\Providers\ServiceProvider;
+use Sdk\Module\Contracts\Event\IntegrationEventHandlerInterface;
 
-class EventServiceProvider extends ServiceProvider
+class EventServiceProvider extends \Sdk\Module\Foundation\Support\Providers\ServiceProvider
 {
     public function register()
     {

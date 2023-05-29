@@ -4,12 +4,12 @@ namespace App\Admin\Models\Hotel;
 
 use App\Admin\Files\HotelImage;
 use App\Admin\Support\Facades\Hotel\MarkupSettingsAdapter;
-use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Sdk\Module\Database\Eloquent\Model;
 
 /**
  * @property int id

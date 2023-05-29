@@ -2,8 +2,8 @@
 
 namespace Module\Hotel\Application\Command;
 
-use Custom\Framework\Contracts\Bus\CommandInterface;
 use Module\Hotel\Application\Enums\UpdateMarkupSettingsActionEnum;
+use Sdk\Module\Contracts\Bus\CommandInterface;
 
 class UpdateMarkupSettingsValue implements CommandInterface
 {

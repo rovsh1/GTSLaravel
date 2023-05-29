@@ -2,12 +2,12 @@
 
 namespace Module\HotelOld\Port\Controllers;
 
-use Custom\Framework\Contracts\Bus\QueryBusInterface;
-use Custom\Framework\PortGateway\Request;
 use Module\HotelOld\Application\Dto\Info\HotelDto;
 use Module\HotelOld\Application\Dto\Info\RoomDto;
 use Module\HotelOld\Application\Query\GetHotelById;
 use Module\HotelOld\Application\Query\GetRoomsWithPriceRatesByHotelId;
+use Sdk\Module\Contracts\Bus\QueryBusInterface;
+use Sdk\Module\PortGateway\Request;
 
 class InfoController
 {
@@ -24,7 +24,7 @@ class InfoController
     }
 
     /**
-     * @param Request $request
+     * @param \Sdk\Module\PortGateway\Request $request
      * @return RoomDto[]
      */
     public function getRoomsWithPriceRatesByHotelId(Request $request): array

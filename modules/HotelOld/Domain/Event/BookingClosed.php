@@ -2,7 +2,7 @@
 
 namespace Module\HotelOld\Domain\Event;
 
-use Custom\Framework\Contracts\Event\DomainEventInterface;
+use Sdk\Module\Contracts\Event\DomainEventInterface;
 
 class BookingClosed implements DomainEventInterface
 {

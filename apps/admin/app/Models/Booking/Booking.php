@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Admin\Models\Booking;
 
-use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Sdk\Module\Database\Eloquent\Model;
 
 class Booking extends Model
 {

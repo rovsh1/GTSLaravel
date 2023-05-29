@@ -2,10 +2,10 @@
 
 namespace Module\Booking\Hotel\Application\Query;
 
-use Custom\Framework\Contracts\Bus\QueryHandlerInterface;
-use Custom\Framework\Contracts\Bus\QueryInterface;
 use Module\Booking\Hotel\Application\Dto\ReservationDto;
 use Module\Booking\Hotel\Domain\Repository\BookingRepositoryInterface;
+use Sdk\Module\Contracts\Bus\QueryHandlerInterface;
+use Sdk\Module\Contracts\Bus\QueryInterface;
 
 class FindHandler implements QueryHandlerInterface
 {

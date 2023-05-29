@@ -2,9 +2,9 @@
 
 namespace Module\HotelOld\Application\Command;
 
-use Custom\Framework\Contracts\Bus\CommandHandlerInterface;
-use Custom\Framework\Contracts\Bus\CommandInterface;
 use Module\HotelOld\Domain\Repository\RoomQuotaRepositoryInterface;
+use Sdk\Module\Contracts\Bus\CommandHandlerInterface;
+use Sdk\Module\Contracts\Bus\CommandInterface;
 
 class UpdateRoomQuotaHandler implements CommandHandlerInterface
 {

@@ -10,12 +10,12 @@ use App\Admin\Models\Hotel\Reference\Usability;
 use App\Admin\Models\Reference\Landmark;
 use App\Admin\Support\Models\HasCoordinates;
 use Carbon\CarbonPeriod;
-use Custom\Framework\Database\Eloquent\HasQuicksearch;
-use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Sdk\Module\Database\Eloquent\HasQuicksearch;
+use Sdk\Module\Database\Eloquent\Model;
 
 /**
  * @property int city_id

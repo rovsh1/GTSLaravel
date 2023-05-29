@@ -4,11 +4,11 @@ namespace App\Admin\Models\ServiceProvider;
 
 use App\Admin\Models\Reference\City;
 use App\Admin\Models\Reference\TransportCar;
-use Custom\Framework\Database\Eloquent\HasQuicksearch;
-use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Sdk\Module\Database\Eloquent\HasQuicksearch;
+use Sdk\Module\Database\Eloquent\Model;
 
 class Provider extends Model
 {

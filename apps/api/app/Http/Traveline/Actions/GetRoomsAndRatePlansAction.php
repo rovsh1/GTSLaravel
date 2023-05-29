@@ -3,7 +3,7 @@
 namespace App\Api\Http\Traveline\Actions;
 
 use App\Api\Http\Traveline\Requests\GetRoomsAndRatePlansActionRequest;
-use Custom\Framework\Contracts\PortGateway\PortGatewayInterface;
+use Sdk\Module\Contracts\PortGateway\PortGatewayInterface;
 
 class GetRoomsAndRatePlansAction
 {

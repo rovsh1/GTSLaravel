@@ -2,7 +2,7 @@
 
 namespace Module\Integration\Traveline\Application\Dto\Reservation;
 
-use Custom\Framework\Foundation\Support\Dto\Casts\CastInterface;
+use Sdk\Module\Foundation\Support\Dto\Casts\CastInterface;
 use Spatie\LaravelData\Support\DataProperty;
 
 class MiddleNameCast implements CastInterface

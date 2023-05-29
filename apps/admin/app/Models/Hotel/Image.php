@@ -16,8 +16,8 @@ use Illuminate\Support\Facades\DB;
  * @property string $file_guid
  * @property int $index
  * @property string|null $title
- * @property \Custom\Framework\Support\DateTime|null $created_at
- * @property \Custom\Framework\Support\DateTime|null $updated_at
+ * @property \Sdk\Module\Support\DateTime|null $created_at
+ * @property \Sdk\Module\Support\DateTime|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|Image newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Image newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Image query()

@@ -2,8 +2,8 @@
 
 namespace Module\HotelOld\Domain\Factory;
 
-use Custom\Framework\Foundation\Support\EntityFactory\AbstractEntityFactory;
 use Module\HotelOld\Domain\Entity\Hotel;
+use Sdk\Module\Foundation\Support\EntityFactory\AbstractEntityFactory;
 
 class HotelFactory extends AbstractEntityFactory
 {

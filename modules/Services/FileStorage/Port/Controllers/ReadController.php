@@ -2,8 +2,6 @@
 
 namespace Module\Services\FileStorage\Port\Controllers;
 
-use Custom\Framework\Contracts\Bus\QueryBusInterface;
-use Custom\Framework\PortGateway\Request;
 use Module\Services\FileStorage\Application\Dto\FileDto;
 use Module\Services\FileStorage\Application\Dto\FileInfoDto;
 use Module\Services\FileStorage\Application\Query\FindByEntity;
@@ -11,6 +9,8 @@ use Module\Services\FileStorage\Application\Query\FindByGuid;
 use Module\Services\FileStorage\Application\Query\GetEntityImages;
 use Module\Services\FileStorage\Domain\Repository\StorageRepositoryInterface;
 use Module\Services\FileStorage\Domain\Service\UrlGeneratorInterface;
+use Sdk\Module\Contracts\Bus\QueryBusInterface;
+use Sdk\Module\PortGateway\Request;
 
 class ReadController
 {

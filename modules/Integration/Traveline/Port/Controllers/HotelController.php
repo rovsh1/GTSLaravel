@@ -2,7 +2,6 @@
 
 namespace Module\Integration\Traveline\Port\Controllers;
 
-use Custom\Framework\PortGateway\Request;
 use Module\Integration\Traveline\Application\Service\HotelFinder;
 use Module\Integration\Traveline\Application\Service\QuotaAndPriceUpdater;
 use Module\Integration\Traveline\Domain\Api\Response\EmptySuccessResponse;
@@ -11,6 +10,7 @@ use Module\Integration\Traveline\Domain\Api\Response\GetRoomsAndRatePlansActionR
 use Module\Integration\Traveline\Domain\Api\Response\HotelNotConnectedToChannelManagerResponse;
 use Module\Integration\Traveline\Domain\Api\Response\HotelNotExistInChannelResponse;
 use Module\Integration\Traveline\Domain\Exception\HotelNotConnectedException;
+use Sdk\Module\PortGateway\Request;
 
 class HotelController
 {

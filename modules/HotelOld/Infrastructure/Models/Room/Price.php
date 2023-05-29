@@ -2,7 +2,7 @@
 
 namespace Module\HotelOld\Infrastructure\Models\Room;
 
-use Custom\Framework\Database\Eloquent\Model;
+use Sdk\Module\Database\Eloquent\Model;
 
 /**
  * Module\HotelOld\Infrastructure\Models\Room\Price
@@ -13,7 +13,7 @@ use Custom\Framework\Database\Eloquent\Model;
  * @property int $guests_number
  * @property int $type
  * @property string $price
- * @property \Custom\Framework\Support\DateTime $date
+ * @property \Sdk\Module\Support\DateTime $date
  * @method static \Illuminate\Database\Eloquent\Builder|Price newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Price newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Price query()

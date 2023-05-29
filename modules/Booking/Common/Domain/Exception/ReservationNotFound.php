@@ -2,11 +2,10 @@
 
 namespace Module\Booking\Common\Domain\Exception;
 
-use Custom\Framework\Foundation\Exception\EntityNotFoundException;
 use Module\Shared\Domain\Exception\DomainEntityExceptionInterface;
 use Module\Shared\Domain\Exception\ErrorCodeEnum;
 
-class ReservationNotFound extends EntityNotFoundException implements DomainEntityExceptionInterface
+class ReservationNotFound extends \Sdk\Module\Foundation\Exception\EntityNotFoundException implements DomainEntityExceptionInterface
 {
     public function domainCode(): ErrorCodeEnum
     {

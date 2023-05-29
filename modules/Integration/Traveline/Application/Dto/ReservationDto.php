@@ -3,15 +3,13 @@
 namespace Module\Integration\Traveline\Application\Dto;
 
 use Carbon\CarbonInterface;
-use Custom\Framework\Foundation\Support\Dto\Attributes\MapInputName;
-use Custom\Framework\Foundation\Support\Dto\Attributes\WithCast;
-use Custom\Framework\Foundation\Support\Dto\Casts\CarbonInterfaceCast;
-use Custom\Framework\Foundation\Support\Dto\Casts\EnumCast;
-use Custom\Framework\Foundation\Support\Dto\Dto;
-use Custom\Framework\Foundation\Support\Dto\DtoCollection;
-use Custom\Framework\Foundation\Support\Dto\DtoCollectionOf;
 use Module\Integration\Traveline\Application\Dto\Reservation\PaymentMethodEnum;
 use Module\Integration\Traveline\Application\Dto\Reservation\StatusEnum;
+use Sdk\Module\Foundation\Support\Dto\Attributes\MapInputName;
+use Sdk\Module\Foundation\Support\Dto\Attributes\WithCast;
+use Sdk\Module\Foundation\Support\Dto\Casts\CarbonInterfaceCast;
+use Sdk\Module\Foundation\Support\Dto\Casts\EnumCast;
+use Sdk\Module\Foundation\Support\Dto\Dto;
 
 class ReservationDto extends Dto
 {
@@ -30,8 +28,8 @@ class ReservationDto extends Dto
         public readonly ?string           $departureTime,
 
         /** @var Reservation\RoomDto[] */
-        #[MapInputName('rooms'), DtoCollectionOf(Reservation\RoomDto::class)]
-        public readonly ?DtoCollection    $roomStays = null,
+        #[MapInputName('rooms'), \Sdk\Module\Foundation\Support\Dto\DtoCollectionOf(Reservation\RoomDto::class)]
+        public readonly ?\Sdk\Module\Foundation\Support\Dto\DtoCollection    $roomStays = null,
 
         #[WithCast(EnumCast::class)]
         public readonly StatusEnum        $status = StatusEnum::New,

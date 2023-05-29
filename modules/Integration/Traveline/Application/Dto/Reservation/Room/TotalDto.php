@@ -2,7 +2,7 @@
 
 namespace Module\Integration\Traveline\Application\Dto\Reservation\Room;
 
-use Custom\Framework\Foundation\Support\Dto\Dto;
+use Sdk\Module\Foundation\Support\Dto\Dto;
 
 class TotalDto extends Dto
 {

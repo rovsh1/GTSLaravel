@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Module\Booking\Hotel\Application\Command\Admin;
 
-use Custom\Framework\Contracts\Bus\CommandHandlerInterface;
-use Custom\Framework\Contracts\Bus\CommandInterface;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Hotel\Domain\Adapter\OrderAdapterInterface;
 use Module\Booking\Hotel\Infrastructure\Models\Booking;
 use Module\Booking\Hotel\Infrastructure\Models\BookingDetails;
+use Sdk\Module\Contracts\Bus\CommandHandlerInterface;
+use Sdk\Module\Contracts\Bus\CommandInterface;
 
 class CreateBookingHandler implements CommandHandlerInterface
 {

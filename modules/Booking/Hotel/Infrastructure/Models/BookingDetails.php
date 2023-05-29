@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Hotel\Infrastructure\Models;
 
 use Carbon\CarbonPeriod;
-use Custom\Framework\Database\Eloquent\Model;
+use Sdk\Module\Database\Eloquent\Model;
 
 class BookingDetails extends Model
 {

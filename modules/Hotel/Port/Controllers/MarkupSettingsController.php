@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Module\Hotel\Port\Controllers;
 
-use Custom\Framework\Contracts\Bus\CommandBusInterface;
-use Custom\Framework\Contracts\Bus\QueryBusInterface;
-use Custom\Framework\PortGateway\Request;
 use Illuminate\Validation\Rules\Enum;
 use Module\Hotel\Application\Command\Room;
 use Module\Hotel\Application\Command\UpdateMarkupSettingsValue;
 use Module\Hotel\Application\Enums\UpdateMarkupSettingsActionEnum;
 use Module\Hotel\Application\Query\GetHotelMarkupSettings;
 use Module\Hotel\Application\Query\GetRoomMarkupSettings;
+use Sdk\Module\Contracts\Bus\CommandBusInterface;
+use Sdk\Module\Contracts\Bus\QueryBusInterface;
+use Sdk\Module\PortGateway\Request;
 
 class MarkupSettingsController
 {

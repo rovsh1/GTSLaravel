@@ -4,7 +4,6 @@ namespace Module\HotelOld\Application\Service;
 
 use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
-use Custom\Framework\Contracts\Bus\QueryBusInterface;
 use Module\HotelOld\Application\Dto\Info\RoomDto;
 use Module\HotelOld\Application\Query\GetRoomById;
 use Module\HotelOld\Domain\Entity\Season;
@@ -15,6 +14,7 @@ use Module\HotelOld\Domain\Repository\PriceRateRepositoryInterface;
 use Module\HotelOld\Domain\Repository\RoomPriceRepositoryInterface;
 use Module\HotelOld\Domain\Repository\SeasonRepositoryInterface;
 use Module\Integration\Traveline\Domain\Entity\ConfigInterface;
+use Sdk\Module\Contracts\Bus\QueryBusInterface;
 
 class RoomPriceUpdater
 {

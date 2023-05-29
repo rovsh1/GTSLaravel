@@ -2,10 +2,9 @@
 
 namespace Module\Shared\Providers;
 
-use Custom\Framework\Foundation\Support\Providers\SharedServiceProvider;
 use Module\Shared\Domain\Service\ConstantManager;
 
-class BootServiceProvider extends SharedServiceProvider
+class BootServiceProvider extends \Sdk\Module\Foundation\Support\Providers\SharedServiceProvider
 {
     public function boot()
     {

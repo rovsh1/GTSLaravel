@@ -3,10 +3,10 @@
 namespace Module\Hotel\Port\Controllers;
 
 use Carbon\CarbonPeriod;
-use Custom\Framework\Contracts\Bus\QueryBusInterface;
-use Custom\Framework\PortGateway\Request;
 use Module\Hotel\Application\Query\Quota;
 use Module\Hotel\Application\Service\RoomQuotaUpdater;
+use Sdk\Module\Contracts\Bus\QueryBusInterface;
+use Sdk\Module\PortGateway\Request;
 
 class RoomQuotaController
 {

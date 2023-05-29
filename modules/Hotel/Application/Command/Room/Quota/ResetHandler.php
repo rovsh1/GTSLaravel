@@ -2,9 +2,9 @@
 
 namespace Module\Hotel\Application\Command\Room\Quota;
 
-use Custom\Framework\Contracts\Bus\CommandHandlerInterface;
-use Custom\Framework\Contracts\Bus\CommandInterface;
 use Module\Hotel\Domain\Repository\RoomQuotaRepositoryInterface;
+use Sdk\Module\Contracts\Bus\CommandHandlerInterface;
+use Sdk\Module\Contracts\Bus\CommandInterface;
 
 class ResetHandler implements CommandHandlerInterface
 {

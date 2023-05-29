@@ -3,7 +3,7 @@
 namespace Module\Hotel\Application\Command\Room\Quota;
 
 use Carbon\CarbonPeriod;
-use Custom\Framework\Contracts\Bus\CommandInterface;
+use Sdk\Module\Contracts\Bus\CommandInterface;
 
 class Update implements CommandInterface
 {

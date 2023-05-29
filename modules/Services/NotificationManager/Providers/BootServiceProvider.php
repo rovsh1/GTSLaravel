@@ -2,9 +2,9 @@
 
 namespace Module\Services\NotificationManager\Providers;
 
-use Custom\Framework\Foundation\Support\Providers\ServiceProvider;
 use Module\Services\NotificationManager\Domain\Factory\NotifiableFactoryInterface;
 use Module\Services\NotificationManager\Infrastructure\Factory\NotifiableFactory;
+use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {

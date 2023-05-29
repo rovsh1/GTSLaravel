@@ -2,9 +2,9 @@
 
 namespace Module\HotelOld\Domain\Exception\Room;
 
-use Custom\Framework\Foundation\Exception\EntityNotFoundException;
 use Module\Shared\Domain\Exception\DomainEntityExceptionInterface;
 use Module\Shared\Domain\Exception\ErrorCodeEnum;
+use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
 class PriceRateNotFound extends EntityNotFoundException implements DomainEntityExceptionInterface
 {

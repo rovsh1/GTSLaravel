@@ -2,7 +2,6 @@
 
 namespace Module\Services\MailManager\Providers;
 
-use Custom\Framework\Foundation\Support\Providers\ServiceProvider;
 use Module\Services\MailManager\Domain\Repository\MailTemplateRepositoryInterface;
 use Module\Services\MailManager\Domain\Repository\QueueRepositoryInterface;
 use Module\Services\MailManager\Domain\Service\MailerInterface;
@@ -12,7 +11,7 @@ use Module\Services\MailManager\Infrastructure\Repository\MailTemplateRepository
 use Module\Services\MailManager\Infrastructure\Repository\QueueRepository;
 use Module\Services\MailManager\Infrastructure\Service\Mailer;
 
-class BootServiceProvider extends ServiceProvider
+class BootServiceProvider extends \Sdk\Module\Foundation\Support\Providers\ServiceProvider
 {
     public function boot()
     {

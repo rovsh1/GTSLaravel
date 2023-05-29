@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Module\Booking\Order\Application\Command;
 
-use Custom\Framework\Contracts\Bus\CommandHandlerInterface;
-use Custom\Framework\Contracts\Bus\CommandInterface;
 use Module\Booking\Order\Infrastructure\Model\Order;
 use Module\Booking\Order\Infrastructure\Model\OrderStatusEnum;
+use Sdk\Module\Contracts\Bus\CommandHandlerInterface;
+use Sdk\Module\Contracts\Bus\CommandInterface;
 
 class CreateOrderHandler implements CommandHandlerInterface
 {

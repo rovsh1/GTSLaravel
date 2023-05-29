@@ -2,7 +2,7 @@
 
 namespace App\Admin\Models\Hotel;
 
-use Custom\Framework\Database\Eloquent\Model;
+use Sdk\Module\Database\Eloquent\Model;
 
 class RoomBed extends Model
 {

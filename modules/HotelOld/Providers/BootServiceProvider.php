@@ -2,11 +2,10 @@
 
 namespace Module\HotelOld\Providers;
 
-use Custom\Framework\Foundation\Support\Providers\ServiceProvider;
 use Module\HotelOld\Domain;
 use Module\HotelOld\Infrastructure;
 
-class BootServiceProvider extends ServiceProvider
+class BootServiceProvider extends \Sdk\Module\Foundation\Support\Providers\ServiceProvider
 {
     public function register()
     {

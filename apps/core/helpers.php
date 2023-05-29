@@ -1,7 +1,7 @@
 <?php
 
 use App\Core\Support\Facades\Constants;
-use Custom\Framework\Foundation\Module;
+use Sdk\Module\Foundation\Module;
 
 function module(string $name): ?Module
 {

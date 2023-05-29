@@ -2,11 +2,10 @@
 
 namespace Module\Services\Scheduler\Providers;
 
-use Custom\Framework\Foundation\Support\Providers\ServiceProvider;
 use Module\Services\Scheduler\Infrastructure\Facade\Cron\CrudFacade;
 use Module\Services\Scheduler\Infrastructure\Facade\Cron\CrudFacadeInterface;
 
-class BootServiceProvider extends ServiceProvider
+class BootServiceProvider extends \Sdk\Module\Foundation\Support\Providers\ServiceProvider
 {
     public function register()
     {

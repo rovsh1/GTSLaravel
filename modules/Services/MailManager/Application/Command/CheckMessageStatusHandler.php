@@ -2,10 +2,10 @@
 
 namespace Module\Services\MailManager\Application\Command;
 
-use Custom\Framework\Contracts\Bus\CommandHandlerInterface;
-use Custom\Framework\Contracts\Bus\CommandInterface;
 use Module\Services\MailManager\Application\Dto\QueueMessageStatusDto;
 use Module\Services\MailManager\Domain\Repository\QueueRepositoryInterface;
+use Sdk\Module\Contracts\Bus\CommandHandlerInterface;
+use Sdk\Module\Contracts\Bus\CommandInterface;
 
 class CheckMessageStatusHandler implements CommandHandlerInterface
 {

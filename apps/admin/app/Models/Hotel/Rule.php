@@ -2,9 +2,9 @@
 
 namespace App\Admin\Models\Hotel;
 
-use Custom\Framework\Database\Eloquent\HasTranslations;
-use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Sdk\Module\Database\Eloquent\HasTranslations;
+use Sdk\Module\Database\Eloquent\Model;
 
 /**
  * App\Admin\Models\Hotel\Rule

@@ -2,7 +2,7 @@
 
 namespace Module\Shared\Infrastructure\Adapter;
 
-use Custom\Framework\Contracts\PortGateway\PortGatewayInterface;
+use Sdk\Module\Contracts\PortGateway\PortGatewayInterface;
 
 abstract class AbstractPortAdapter
 {

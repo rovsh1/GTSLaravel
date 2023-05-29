@@ -2,9 +2,7 @@
 
 namespace Module\Integration\Traveline\Application\Dto;
 
-use Custom\Framework\Foundation\Support\Dto\Dto;
-
-class HotelDto extends Dto
+class HotelDto extends \Sdk\Module\Foundation\Support\Dto\Dto
 {
     public function __construct(
         public readonly int   $hotelId,

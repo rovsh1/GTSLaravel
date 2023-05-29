@@ -3,7 +3,7 @@
 namespace Module\HotelOld\Application\Command;
 
 use Carbon\CarbonPeriod;
-use Custom\Framework\Contracts\Bus\CommandInterface;
+use Sdk\Module\Contracts\Bus\CommandInterface;
 
 class OpenRoomQuota implements CommandInterface
 {

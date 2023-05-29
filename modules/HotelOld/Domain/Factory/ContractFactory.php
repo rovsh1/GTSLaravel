@@ -3,8 +3,8 @@
 namespace Module\HotelOld\Domain\Factory;
 
 use Carbon\CarbonPeriod;
-use Custom\Framework\Foundation\Support\EntityFactory\AbstractEntityFactory;
 use Module\HotelOld\Domain\Entity\Contract;
+use Sdk\Module\Foundation\Support\EntityFactory\AbstractEntityFactory;
 
 class ContractFactory extends AbstractEntityFactory
 {

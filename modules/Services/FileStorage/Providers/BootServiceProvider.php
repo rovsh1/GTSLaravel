@@ -3,9 +3,6 @@
 namespace Module\Services\FileStorage\Providers;
 
 use Illuminate\Support\Facades\Storage;
-
-use Custom\Framework\Foundation\Support\Providers\ServiceProvider;
-
 use Module\Services\FileStorage\Domain\Repository\DatabaseRepositoryInterface;
 use Module\Services\FileStorage\Domain\Repository\StorageRepositoryInterface;
 use Module\Services\FileStorage\Domain\Service\PathGenerator;
@@ -15,7 +12,7 @@ use Module\Services\FileStorage\Domain\Service\UrlGeneratorInterface;
 use Module\Services\FileStorage\Infrastructure\Repository\DatabaseRepository;
 use Module\Services\FileStorage\Infrastructure\Repository\StorageRepository;
 
-class BootServiceProvider extends ServiceProvider
+class BootServiceProvider extends \Sdk\Module\Foundation\Support\Providers\ServiceProvider
 {
     public function boot()
     {

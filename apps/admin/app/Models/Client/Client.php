@@ -2,8 +2,8 @@
 
 namespace App\Admin\Models\Client;
 
-use Custom\Framework\Database\Eloquent\HasQuicksearch;
-use Custom\Framework\Database\Eloquent\Model;
+use Sdk\Module\Database\Eloquent\HasQuicksearch;
+use Sdk\Module\Database\Eloquent\Model;
 
 class Client extends Model
 {

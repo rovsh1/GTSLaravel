@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Common\Port\Controllers;
 
-use Custom\Framework\PortGateway\Request;
+use Sdk\Module\PortGateway\Request;
 
 class StatusController
 {

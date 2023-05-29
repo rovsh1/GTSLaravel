@@ -3,8 +3,8 @@
 namespace App\Admin\Models\Hotel;
 
 use App\Admin\Enums\ContactTypeEnum;
-use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Sdk\Module\Database\Eloquent\Model;
 
 class Contact extends Model
 {

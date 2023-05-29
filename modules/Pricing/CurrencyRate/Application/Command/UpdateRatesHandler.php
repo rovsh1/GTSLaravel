@@ -2,11 +2,11 @@
 
 namespace Module\Pricing\CurrencyRate\Application\Command;
 
-use Custom\Framework\Contracts\Bus\CommandHandlerInterface;
-use Custom\Framework\Contracts\Bus\CommandInterface;
-use Module\Pricing\CurrencyRate\Domain\Service\RateManager;
-use Throwable;
 use Exception;
+use Module\Pricing\CurrencyRate\Domain\Service\RateManager;
+use Sdk\Module\Contracts\Bus\CommandHandlerInterface;
+use Sdk\Module\Contracts\Bus\CommandInterface;
+use Throwable;
 
 class UpdateRatesHandler implements CommandHandlerInterface
 {

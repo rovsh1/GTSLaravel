@@ -2,8 +2,8 @@
 
 namespace App\Admin\Models\Hotel;
 
-use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Sdk\Module\Database\Eloquent\Model;
 
 /**
  * App\Admin\Models\Hotel\Employee

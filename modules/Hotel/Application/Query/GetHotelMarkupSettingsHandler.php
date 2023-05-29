@@ -2,10 +2,10 @@
 
 namespace Module\Hotel\Application\Query;
 
-use Custom\Framework\Contracts\Bus\QueryHandlerInterface;
-use Custom\Framework\Contracts\Bus\QueryInterface;
 use Module\Hotel\Application\Dto\MarkupSettingsDto;
 use Module\Hotel\Infrastructure\Repository\MarkupSettingsRepository;
+use Sdk\Module\Contracts\Bus\QueryHandlerInterface;
+use Sdk\Module\Contracts\Bus\QueryInterface;
 
 class GetHotelMarkupSettingsHandler implements QueryHandlerInterface
 {

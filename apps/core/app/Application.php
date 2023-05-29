@@ -2,25 +2,32 @@
 
 namespace App\Core;
 
-use App\Core\Support\ModulesRepository;
-use App\Core\Support\ModulesRepositoryInterface;
-use Custom\Framework\Foundation\Module;
+use App\Core\Providers\ModuleServiceProvider;
+use Sdk\Module\Contracts\Api\ApiInterface;
+use Sdk\Module\Contracts\UseCase\UseCaseInterface;
+use Sdk\Module\Foundation\Module;
+use Sdk\Module\Foundation\ModulesManager;
+use Sdk\Module\Foundation\Support\SharedContainer;
 
 class Application extends \Illuminate\Foundation\Application
 {
-    private ModulesRepository $modules;
-
     public function __construct(private string $rootPath)
     {
-        $this->modules = new ModulesRepository($this);
-
         parent::__construct();
+
+        $this->instance(
+            ModulesManager::class,
+            new ModulesManager(
+                'Module',
+                $this->rootPath('modules')
+            )
+        );
+        $this->alias(ModulesManager::class, 'modules');
+
+        $this->registerRequiredServiceProviders();
 
         $this->useStoragePath($this->rootPath . DIRECTORY_SEPARATOR . 'storage');
         $this->useDatabasePath($this->rootPath . DIRECTORY_SEPARATOR . 'database');
-
-        $this->bind(ModulesRepositoryInterface::class, fn($app) => $app->modules());
-        $this->alias(ModulesRepositoryInterface::class, 'modules');
     }
 
     public function setNamespace(string $namespace)
@@ -63,9 +70,9 @@ class Application extends \Illuminate\Foundation\Application
         return $this->modules->get($name);
     }
 
-    public function modules(): ModulesRepository
+    public function modules(): ModulesManager
     {
-        return $this->modules;
+        return $this->instances[ModulesManager::class];
     }
 
     public function registerModule(Module $module): void
@@ -81,6 +88,24 @@ class Application extends \Illuminate\Foundation\Application
     public function moduleLoaded(string $name): bool
     {
         return $this->modules->get($name)->isBooted();
+    }
+
+    public function build($concrete)
+    {
+        if (!is_string($concrete)) {
+            return parent::build($concrete);
+        } elseif (is_subclass_of($concrete, ApiInterface::class)) {
+            return $this->instances[SharedContainer::class]->makeApi($concrete);
+        } elseif (is_subclass_of($concrete, UseCaseInterface::class)) {
+            return $this->instances[SharedContainer::class]->makeUseCase($concrete);
+        } else {
+            return parent::build($concrete);
+        }
+    }
+
+    private function registerRequiredServiceProviders()
+    {
+        $this->register(ModuleServiceProvider::class);
     }
 
     protected function bindPathsInContainer()

@@ -2,12 +2,10 @@
 
 namespace Module\Integration\Traveline\Application\Dto;
 
-use Custom\Framework\Foundation\Support\Dto\Dto;
-use Custom\Framework\Foundation\Support\Dto\DtoCollection;
-use Custom\Framework\Foundation\Support\Dto\Optional;
 use Module\Integration\Traveline\Domain\Service\HotelRoomCodeGeneratorInterface;
+use Sdk\Module\Foundation\Support\Dto\DtoCollection;
 
-class RoomDto extends Dto
+class RoomDto extends \Sdk\Module\Foundation\Support\Dto\Dto
 {
     public function __construct(
         public readonly int                    $roomTypeId,
@@ -15,7 +13,7 @@ class RoomDto extends Dto
         /** @var RatePlanDto[] $ratePlans */
         public readonly DtoCollection          $ratePlans,
         /** @var OccupancyDto[] $occupancies */
-        public readonly DtoCollection|Optional $occupancies
+        public readonly DtoCollection|\Sdk\Module\Foundation\Support\Dto\Optional $occupancies
     ) {}
 
     public static function collectionFromHotelRooms(HotelRoomCodeGeneratorInterface $codeGenerator, mixed $hotelRoomsData): array

@@ -2,10 +2,10 @@
 
 namespace Module\Hotel\Application\Query\Quota;
 
-use Custom\Framework\Contracts\Bus\QueryHandlerInterface;
-use Custom\Framework\Contracts\Bus\QueryInterface;
 use Module\Hotel\Application\Dto\QuotaDto;
 use Module\Hotel\Domain\Repository\RoomQuotaRepositoryInterface;
+use Sdk\Module\Contracts\Bus\QueryHandlerInterface;
+use Sdk\Module\Contracts\Bus\QueryInterface;
 
 class GetSoldHandler implements QueryHandlerInterface
 {

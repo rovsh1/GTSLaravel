@@ -2,11 +2,11 @@
 
 namespace Module\Services\NotificationManager\Domain\Listener\Customer;
 
-use Custom\Framework\Contracts\Event\IntegrationEventInterface;
-use Custom\Framework\Contracts\Event\IntegrationEventListenerInterface;
 use Module\Services\NotificationManager\Domain\Notification\Customer\CustomerRegistered;
 use Module\Services\NotificationManager\Domain\Support\Listener\AdministratorsNotificationTrait;
 use Module\Services\NotificationManager\Domain\Support\Listener\CustomerNotificationTrait;
+use Sdk\Module\Contracts\Event\IntegrationEventInterface;
+use Sdk\Module\Contracts\Event\IntegrationEventListenerInterface;
 
 class CustomerRegisteredListener implements IntegrationEventListenerInterface
 {

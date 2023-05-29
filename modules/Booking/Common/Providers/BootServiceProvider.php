@@ -2,14 +2,10 @@
 
 namespace Module\Booking\Common\Providers;
 
-use Custom\Framework\Foundation\Support\Providers\ServiceProvider;
 use Module\Booking\Hotel\Domain;
-use Module\Booking\Hotel\Domain\Adapter\FileStorageAdapterInterface;
 use Module\Booking\Hotel\Infrastructure;
-use Module\Booking\Hotel\Infrastructure\Adapter\FileStorageAdapter;
-use Module\Booking\Hotel\Providers\EventServiceProvider;
 
-class BootServiceProvider extends ServiceProvider
+class BootServiceProvider extends \Sdk\Module\Foundation\Support\Providers\ServiceProvider
 {
     public function register()
     {

@@ -3,8 +3,6 @@
 namespace Module\Hotel\Application\Command;
 
 use Carbon\CarbonPeriod;
-use Custom\Framework\Contracts\Bus\CommandHandlerInterface;
-use Custom\Framework\Contracts\Bus\CommandInterface;
 use Illuminate\Support\Collection;
 use Module\Hotel\Application\Enums\UpdateMarkupSettingsActionEnum;
 use Module\Hotel\Domain\Repository\MarkupSettingsRepositoryInterface;
@@ -21,6 +19,8 @@ use Module\Shared\Domain\Entity\EntityInterface;
 use Module\Shared\Domain\ValueObject\Percent;
 use Module\Shared\Domain\ValueObject\TimePeriod;
 use Module\Shared\Domain\ValueObject\ValueObjectInterface;
+use Sdk\Module\Contracts\Bus\CommandHandlerInterface;
+use Sdk\Module\Contracts\Bus\CommandInterface;
 
 class UpdateMarkupSettingsValueHandler implements CommandHandlerInterface
 {

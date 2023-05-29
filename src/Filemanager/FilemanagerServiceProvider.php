@@ -2,8 +2,8 @@
 
 namespace Gsdk\Filemanager;
 
-use Custom\Framework\Foundation\Support\Providers\ServiceProvider;
 use Gsdk\Filemanager\Services\StorageService;
+use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
 
 class FilemanagerServiceProvider extends ServiceProvider
 {

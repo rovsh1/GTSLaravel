@@ -2,12 +2,12 @@
 
 namespace App\Core\Console;
 
-use Custom\Framework\Foundation\Console\Commands\MakeModule;
-use Custom\Framework\Services\NamespaceReader;
 use Illuminate\Console\Application as Artisan;
 use Illuminate\Console\Command;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Sdk\Module\Foundation\Console\Commands\MakeModule;
+use Sdk\Module\Services\NamespaceReader;
 
 class Kernel extends ConsoleKernel
 {
@@ -38,7 +38,7 @@ class Kernel extends ConsoleKernel
 //        $this->loadNamespacePath('App\\Site\\Console\\Commands', site_path('app/Console/Commands'));
 //        $this->loadNamespacePath('App\\Api\\Console\\Commands', api_path('app/Console/Commands'));
 
-        foreach (app('modules')->registeredModules() as $module) {
+        foreach (app('modules')->modules() as $module) {
             $commandsPath = $module->path('Console/Commands');
             if (is_dir($commandsPath)) {
                 $this->loadNamespacePath($module->namespace('Console\\Commands'), $commandsPath);

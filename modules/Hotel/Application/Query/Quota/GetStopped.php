@@ -3,7 +3,7 @@
 namespace Module\Hotel\Application\Query\Quota;
 
 use Carbon\CarbonPeriod;
-use Custom\Framework\Contracts\Bus\QueryInterface;
+use Sdk\Module\Contracts\Bus\QueryInterface;
 
 class GetStopped implements QueryInterface
 {

@@ -2,15 +2,15 @@
 
 namespace Module\Integration\Traveline\Application\Dto\Reservation;
 
-use Custom\Framework\Foundation\Support\Dto\Attributes\MapInputName;
-use Custom\Framework\Foundation\Support\Dto\Attributes\WithCast;
-use Custom\Framework\Foundation\Support\Dto\Dto;
-use Custom\Framework\Foundation\Support\Dto\DtoCollection;
-use Custom\Framework\Foundation\Support\Dto\DtoCollectionOf;
 use Module\Integration\Traveline\Application\Dto\Reservation\Room\AdultsCast;
 use Module\Integration\Traveline\Application\Dto\Reservation\Room\GuestDto;
 use Module\Integration\Traveline\Application\Dto\Reservation\Room\TotalCast;
 use Module\Integration\Traveline\Application\Dto\Reservation\Room\TotalDto;
+use Sdk\Module\Foundation\Support\Dto\Attributes\MapInputName;
+use Sdk\Module\Foundation\Support\Dto\Attributes\WithCast;
+use Sdk\Module\Foundation\Support\Dto\Dto;
+use Sdk\Module\Foundation\Support\Dto\DtoCollection;
+use Sdk\Module\Foundation\Support\Dto\DtoCollectionOf;
 
 class RoomDto extends Dto
 {

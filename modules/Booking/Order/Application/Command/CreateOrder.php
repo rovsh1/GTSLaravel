@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Order\Application\Command;
 
-use Custom\Framework\Contracts\Bus\CommandInterface;
+use Sdk\Module\Contracts\Bus\CommandInterface;
 
 class CreateOrder implements CommandInterface
 {

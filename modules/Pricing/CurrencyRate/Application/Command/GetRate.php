@@ -2,10 +2,10 @@
 
 namespace Module\Pricing\CurrencyRate\Application\Command;
 
-use Custom\Framework\Contracts\Bus\CommandInterface;
+use DateTime;
 use Module\Pricing\CurrencyRate\Domain\ValueObject\CountryEnum;
 use Module\Pricing\CurrencyRate\Domain\ValueObject\CurrencyEnum;
-use DateTime;
+use Sdk\Module\Contracts\Bus\CommandInterface;
 
 class GetRate implements CommandInterface
 {

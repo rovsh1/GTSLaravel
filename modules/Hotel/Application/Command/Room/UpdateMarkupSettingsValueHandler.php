@@ -2,10 +2,10 @@
 
 namespace Module\Hotel\Application\Command\Room;
 
-use Custom\Framework\Contracts\Bus\CommandHandlerInterface;
-use Custom\Framework\Contracts\Bus\CommandInterface;
 use Module\Hotel\Domain\Repository\RoomMarkupSettingsRepositoryInterface;
 use Module\Shared\Domain\ValueObject\Percent;
+use Sdk\Module\Contracts\Bus\CommandHandlerInterface;
+use Sdk\Module\Contracts\Bus\CommandInterface;
 
 class UpdateMarkupSettingsValueHandler implements CommandHandlerInterface
 {

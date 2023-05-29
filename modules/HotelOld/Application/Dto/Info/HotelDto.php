@@ -2,7 +2,7 @@
 
 namespace Module\HotelOld\Application\Dto\Info;
 
-use Custom\Framework\Foundation\Support\Dto\Dto;
+use Sdk\Module\Foundation\Support\Dto\Dto;
 
 class HotelDto extends Dto
 {

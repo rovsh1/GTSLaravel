@@ -3,7 +3,7 @@
 namespace App\Admin\Models\ServiceProvider;
 
 use App\Admin\Enums\ContactTypeEnum;
-use Custom\Framework\Database\Eloquent\Model;
+use Sdk\Module\Database\Eloquent\Model;
 
 class Contact extends Model
 {

@@ -2,11 +2,11 @@
 
 namespace Module\Hotel\Domain\Service;
 
-use Custom\Framework\Contracts\Event\DomainEventDispatcherInterface;
-use Custom\Framework\Support\DateTimeInterface;
-use Module\Hotel\Domain\Repository\QuotaRepositoryInterface;
 use Module\Hotel\Domain\Event\BookingClosed;
 use Module\Hotel\Domain\Event\BookingOpened;
+use Module\Hotel\Domain\Repository\QuotaRepositoryInterface;
+use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
+use Sdk\Module\Support\Facades\DateTimeInterface;
 
 class RoomQuotaStatus
 {

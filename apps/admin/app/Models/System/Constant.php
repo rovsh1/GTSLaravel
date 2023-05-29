@@ -2,8 +2,8 @@
 
 namespace App\Admin\Models\System;
 
-use Custom\Framework\Database\Eloquent\HasQuicksearch;
 use Illuminate\Database\Eloquent\Model;
+use Sdk\Module\Database\Eloquent\HasQuicksearch;
 
 class Constant extends Model
 {

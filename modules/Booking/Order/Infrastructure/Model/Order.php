@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Module\Booking\Order\Infrastructure\Model;
 
-use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Module\Booking\Hotel\Infrastructure\Models\Client;
+use Sdk\Module\Database\Eloquent\Model;
 
 class Order extends Model
 {

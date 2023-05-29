@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Admin\Models\Booking;
 
-use Custom\Framework\Database\Eloquent\Model;
+use Sdk\Module\Database\Eloquent\Model;
 
 class Administrator extends Model
 {

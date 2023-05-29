@@ -2,8 +2,8 @@
 
 namespace Module\Integration\Traveline\Providers;
 
-use Custom\Framework\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Module\Integration\Traveline\Application\Event\SendReservationNotificationListener;
+use Sdk\Module\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
 {

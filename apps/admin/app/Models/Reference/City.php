@@ -3,11 +3,11 @@
 namespace App\Admin\Models\Reference;
 
 use App\Admin\Support\Models\HasCoordinates;
-use Custom\Framework\Database\Eloquent\HasQuicksearch;
-use Custom\Framework\Database\Eloquent\HasTranslations;
-use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
+use Sdk\Module\Database\Eloquent\HasQuicksearch;
+use Sdk\Module\Database\Eloquent\HasTranslations;
+use Sdk\Module\Database\Eloquent\Model;
 
 /**
  * App\Admin\Models\Reference\City

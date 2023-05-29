@@ -2,9 +2,9 @@
 
 namespace Module\Pricing\CurrencyRate\Infrastructure\Model;
 
-use Custom\Framework\Database\Eloquent\Model;
 use Module\Pricing\CurrencyRate\Domain\ValueObject\CountryEnum;
 use Module\Pricing\CurrencyRate\Domain\ValueObject\CurrencyEnum;
+use Sdk\Module\Database\Eloquent\Model;
 
 class CurrencyRate extends Model
 {

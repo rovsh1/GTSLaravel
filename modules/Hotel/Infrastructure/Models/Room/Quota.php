@@ -2,11 +2,11 @@
 
 namespace Module\Hotel\Infrastructure\Models\Room;
 
-use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Module\Hotel\Application\Enums\QuotaAvailabilityEnum;
 use Module\Hotel\Infrastructure\Models\Room;
+use Sdk\Module\Database\Eloquent\Model;
 
 /**
  * Module\Hotel\Infrastructure\Models\Room\Quota

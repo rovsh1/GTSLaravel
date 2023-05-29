@@ -3,14 +3,14 @@
 namespace Module\Hotel\Application\Service;
 
 use Carbon\CarbonPeriod;
-use Custom\Framework\Contracts\Bus\CommandBusInterface;
-use Custom\Framework\Contracts\Bus\QueryBusInterface;
 use Module\Hotel\Application\Command\Room\Quota\Close;
 use Module\Hotel\Application\Command\Room\Quota\Open;
 use Module\Hotel\Application\Command\Room\Quota\Reset;
 use Module\Hotel\Application\Command\Room\Quota\Update;
 use Module\Hotel\Application\Query\GetRoomById;
 use Module\Hotel\Domain\Exception\Room\RoomNotFound;
+use Sdk\Module\Contracts\Bus\CommandBusInterface;
+use Sdk\Module\Contracts\Bus\QueryBusInterface;
 
 class RoomQuotaUpdater
 {

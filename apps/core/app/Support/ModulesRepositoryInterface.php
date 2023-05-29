@@ -2,7 +2,7 @@
 
 namespace App\Core\Support;
 
-use Custom\Framework\Foundation\Module;
+use Sdk\Module\Foundation\Module;
 
 interface ModulesRepositoryInterface
 {

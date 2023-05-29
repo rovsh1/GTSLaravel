@@ -3,7 +3,7 @@
 namespace Module\Hotel\Application\Dto;
 
 use Carbon\CarbonInterface;
-use Custom\Framework\Foundation\Support\Dto\Dto;
+use Sdk\Module\Foundation\Support\Dto\Dto;
 
 class QuotaDto extends Dto
 {

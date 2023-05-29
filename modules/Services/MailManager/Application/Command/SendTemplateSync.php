@@ -2,7 +2,7 @@
 
 namespace Module\Services\MailManager\Application\Command;
 
-use Custom\Framework\Contracts\Bus\CommandInterface;
+use Sdk\Module\Contracts\Bus\CommandInterface;
 
 class SendTemplateSync implements CommandInterface
 {

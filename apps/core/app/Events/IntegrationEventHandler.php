@@ -3,9 +3,9 @@
 namespace App\Core\Events;
 
 use App\Core\Support\ModulesRepositoryInterface;
-use Custom\Framework\Contracts\Event\IntegrationEventDispatcherInterface;
-use Custom\Framework\Contracts\Event\IntegrationEventHandlerInterface;
-use Custom\Framework\Contracts\Event\IntegrationEventInterface;
+use Sdk\Module\Contracts\Event\IntegrationEventDispatcherInterface;
+use Sdk\Module\Contracts\Event\IntegrationEventHandlerInterface;
+use Sdk\Module\Contracts\Event\IntegrationEventInterface;
 
 class IntegrationEventHandler implements IntegrationEventHandlerInterface
 {

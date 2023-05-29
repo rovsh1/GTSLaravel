@@ -2,9 +2,9 @@
 
 namespace Module\Integration\Traveline\Application\Dto\Reservation;
 
-use Custom\Framework\Foundation\Support\Dto\Attributes\MapInputName;
-use Custom\Framework\Foundation\Support\Dto\Attributes\WithCast;
-use Custom\Framework\Foundation\Support\Dto\Dto;
+use Sdk\Module\Foundation\Support\Dto\Attributes\MapInputName;
+use Sdk\Module\Foundation\Support\Dto\Attributes\WithCast;
+use Sdk\Module\Foundation\Support\Dto\Dto;
 
 class CustomerDto extends Dto
 {

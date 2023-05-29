@@ -2,7 +2,7 @@
 
 namespace Module\Hotel\Domain\ValueObject\RoomPrice;
 
-use Custom\Framework\Support\DateTimeInterface;
+use Sdk\Module\Support\Facades\DateTimeInterface;
 
 class Identifier
 {

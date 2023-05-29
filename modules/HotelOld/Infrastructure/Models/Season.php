@@ -2,9 +2,9 @@
 
 namespace Module\HotelOld\Infrastructure\Models;
 
-use Custom\Framework\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\JoinClause;
+use Sdk\Module\Database\Eloquent\Model;
 
 /**
  * Module\HotelOld\Infrastructure\Models\Season
@@ -13,8 +13,8 @@ use Illuminate\Database\Query\JoinClause;
  * @property int $hotel_id
  * @property int $contract_id
  * @property string $name
- * @property \Custom\Framework\Support\DateTime $date_from
- * @property \Custom\Framework\Support\DateTime $date_to
+ * @property \Sdk\Module\Support\DateTime $date_from
+ * @property \Sdk\Module\Support\DateTime $date_to
  * @property-read \Module\HotelOld\Infrastructure\Models\Contract|null $contract
  * @property-read \Module\HotelOld\Infrastructure\Models\Hotel|null $hotel
  * @method static \Illuminate\Database\Eloquent\Builder|Season newModelQuery()
