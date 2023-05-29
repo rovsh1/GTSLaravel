@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Module\Booking\Common\Port\Controllers;
 
 use Custom\Framework\PortGateway\Request;
+use Illuminate\Validation\Rules\Enum;
+use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 
 class StatusController
 {
@@ -28,5 +30,13 @@ class StatusController
             ['id' => 2, 'name' => 'В работе'],
             ['id' => 3, 'name' => 'Отменен'],
         ];
+    }
+
+    public function updateStatus(Request $request): void
+    {
+        $request->validate([
+            'id' => ['required', 'int'],
+            'status' => ['required', new Enum(BookingStatusEnum::class)]
+        ]);
     }
 }
