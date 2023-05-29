@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->tinyInteger('status');
             $table->tinyInteger('source');
             $table->text('note')->nullable();
+            $table->unsignedInteger('creator_id');
             $table->timestamps();
 
             $table->foreign('order_id')
@@ -25,9 +26,16 @@ return new class extends Migration {
                 ->on('orders')
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
+
+            $table->foreign('creator_id')
+                ->references('id')
+                ->on('administrators')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
         });
 
         $this->upBookingHotels();
+        $this->upAdministratorBookings();
     }
 
     private function upBookingHotels(): void
@@ -56,6 +64,26 @@ return new class extends Migration {
         });
     }
 
+    private function upAdministratorBookings(): void
+    {
+        Schema::create('administrator_bookings', function (Blueprint $table) {
+            $table->unsignedInteger('booking_id')->primary();
+            $table->unsignedInteger('administrator_id');
+
+            $table->foreign('booking_id')
+                ->references('id')
+                ->on('bookings')
+                ->restrictOnDelete()
+                ->cascadeOnUpdate();
+
+            $table->foreign('administrator_id')
+                ->references('id')
+                ->on('administrators')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+        });
+    }
+
     /**
      * Reverse the migrations.
      */
@@ -63,5 +91,6 @@ return new class extends Migration {
     {
         Schema::dropIfExists('bookings');
         Schema::dropIfExists('booking_hotel_details');
+        Schema::dropIfExists('administrator_bookings');
     }
 };

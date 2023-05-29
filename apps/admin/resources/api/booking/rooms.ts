@@ -4,6 +4,7 @@ import { MaybeRef } from '@vueuse/core'
 
 import { BaseResponse, useAdminAPI } from '~api'
 import { BookingID } from '~api/booking/index'
+import { MarkupCondition } from '~api/hotel/markup-settings'
 
 import { getNullableRef } from '~lib/vue'
 
@@ -16,8 +17,8 @@ export interface BookingAddRoomPayload {
   discount?: number
   rateId: number
   note?: string
-  earlyCheckIn?: string
-  lateCheckOut?: string
+  earlyCheckIn?: MarkupCondition
+  lateCheckOut?: MarkupCondition
 }
 
 export interface BookingUpdateRoomPayload extends BookingAddRoomPayload {

@@ -8,12 +8,13 @@ import { z } from 'zod'
 import EditTableRowButton from '~resources/views/hotel/settings/components/EditTableRowButton.vue'
 import GuestModal from '~resources/views/hotel-booking/show/components/GuestModal.vue'
 import RoomModal from '~resources/views/hotel-booking/show/components/RoomModal.vue'
-import { getGenderName, getRoomStatusName } from '~resources/views/hotel-booking/show/constants'
+import { getConditionLabel, getGenderName, getRoomStatusName } from '~resources/views/hotel-booking/show/constants'
 import { GuestFormData, RoomFormData } from '~resources/views/hotel-booking/show/form'
 
 import { HotelBookingDetailsRoom, HotelBookingGuest, useBookingHotelDetailsAPI } from '~api/booking/details'
 import { deleteBookingRoom } from '~api/booking/rooms'
 import { CountryResponse, useCountrySearchAPI } from '~api/country'
+import { MarkupSettings, useHotelMarkupSettingsAPI } from '~api/hotel/markup-settings'
 import { HotelRate, useHotelRatesAPI } from '~api/hotel/price-rate'
 import { HotelRoomResponse } from '~api/hotel/room'
 
@@ -32,6 +33,9 @@ const { bookingID, hotelID, hotelRooms } = requestInitialData(
     hotelRooms: z.array(z.any()),
   }),
 )
+
+const { data: markupSettings, execute: fetchMarkupSettings } = useHotelMarkupSettingsAPI({ hotelID })
+fetchMarkupSettings()
 
 const { execute: fetchDetails, data: bookingDetails } = useBookingHotelDetailsAPI({ bookingID })
 fetchDetails()
@@ -106,6 +110,24 @@ const getRoomName = (id: number): string | undefined => {
   return `${room.name} (${room.custom_name})`
 }
 
+const getCheckInTime = (room: HotelBookingDetailsRoom) => {
+  if (room.earlyCheckIn) {
+    return getConditionLabel(room.earlyCheckIn)
+  }
+
+  // @todo тут будут дефолтные настройки из отеля
+  return ''
+}
+
+const getCheckOutTime = (room: HotelBookingDetailsRoom) => {
+  if (room.lateCheckOut) {
+    return getConditionLabel(room.lateCheckOut)
+  }
+
+  // @todo тут будут дефолтные настройки из отеля
+  return ''
+}
+
 </script>
 
 <template>
@@ -113,6 +135,7 @@ const getRoomName = (id: number): string | undefined => {
     :opened="isShowRoomModal"
     :form-data="roomForm"
     :room-index="editRoomIndex"
+    :hotel-markup-settings="markupSettings as MarkupSettings"
     @close="toggleRoomModal(false)"
     @submit="onModalSubmit"
   />
@@ -171,11 +194,11 @@ const getRoomName = (id: number): string | undefined => {
               </tr>
               <tr>
                 <th>Время заезда</th>
-                <td>-</td>
+                <td>{{ getCheckInTime(room) }}</td>
               </tr>
               <tr>
                 <th>Время выезда</th>
-                <td>-</td>
+                <td>{{ getCheckOutTime(room) }}</td>
               </tr>
               <tr>
                 <th>Примечание (запрос в отель, ваучер)</th>

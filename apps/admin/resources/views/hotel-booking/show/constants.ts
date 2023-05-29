@@ -1,3 +1,5 @@
+import { MarkupCondition } from '~api/hotel/markup-settings'
+
 import { SelectOption } from '~components/Bootstrap/lib'
 
 export interface EntityInterface {
@@ -44,6 +46,8 @@ export const residentTypeOptions: SelectOption[] = mapEntitiesToSelectOptions(re
 export const roomStatusOptions: SelectOption[] = mapEntitiesToSelectOptions(roomStatuses)
 
 export const externalNumberTypeOptions: SelectOption[] = mapEntitiesToSelectOptions(externalNumberTypes)
+
+export const getConditionLabel = (condition: MarkupCondition) => `с ${condition.from} по ${condition.to} (+${condition.percent}%)`
 
 export const getGenderName = (id: number): string | undefined =>
   genders?.find((gender: any) => gender.id === id)?.name

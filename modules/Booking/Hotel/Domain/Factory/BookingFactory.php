@@ -23,6 +23,7 @@ class BookingFactory extends AbstractEntityFactory
             BookingStatusEnum::from($data['status']),
             BookingTypeEnum::from($data['type']),
             new Carbon($data['created_at']),
+            $data['creator_id'],
             $data['note'],
         );
     }

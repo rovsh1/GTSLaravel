@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static array getBookings()
  * @method static int getBooking(int $id)
  * @method static int getBookingDetails(int $id)
- * @method static int createBooking(int $cityId, int $clientId, int $hotelId, CarbonPeriod $period, ?int $orderId, ?string $note = null)
+ * @method static int createBooking(int $cityId, int $clientId, int $hotelId, CarbonPeriod $period, int $creatorId, ?int $orderId, ?string $note = null)
  * @method static void addRoom(int $bookingId, int $roomId, int $rateId, int $status, bool $isResident, int $roomCount, array|null $earlyCheckIn = null, array|null $lateCheckOut = null, string|null $note = null, int|null $discount = null)
  * @method static void updateRoom(int $bookingId, int $roomIndex, int $roomId, int $rateId, int $status, bool $isResident, int $roomCount, array|null $earlyCheckIn = null, array|null $lateCheckOut = null, string|null $note = null, int|null $discount = null)
  * @method static void deleteRoom(int $bookingId, int $roomIndex)

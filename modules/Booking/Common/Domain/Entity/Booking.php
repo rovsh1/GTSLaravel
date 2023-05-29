@@ -17,6 +17,7 @@ abstract class Booking implements EntityInterface, ReservationInterface
         private readonly BookingStatusEnum $status,
         private readonly BookingTypeEnum $type,
         private readonly Carbon $dateCreate,
+        private readonly int $creatorId,
         private ?string $note = null,
     ) {}
 
@@ -48,6 +49,11 @@ abstract class Booking implements EntityInterface, ReservationInterface
     public function dateCreate(): Carbon
     {
         return $this->dateCreate;
+    }
+
+    public function creatorId(): int
+    {
+        return $this->creatorId;
     }
 
     public function setNote(string|null $note): void

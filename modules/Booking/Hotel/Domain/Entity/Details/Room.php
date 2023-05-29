@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Module\Booking\Hotel\Domain\Entity\Details;
 
+use Module\Booking\Hotel\Domain\ValueObject\Details\Condition;
 use Module\Booking\Hotel\Domain\ValueObject\Details\Guest;
 use Module\Booking\Hotel\Domain\ValueObject\Details\GuestCollection;
 use Module\Booking\Hotel\Domain\ValueObject\Details\RoomStatusEnum;
-use Module\Hotel\Domain\ValueObject\MarkupSettings\Condition;
 use Module\Shared\Domain\Entity\EntityInterface;
 use Module\Shared\Domain\ValueObject\Percent;
 use Module\Shared\Domain\ValueObject\SerializableDataInterface;
@@ -21,7 +21,6 @@ final class Room implements EntityInterface, SerializableDataInterface
         private GuestCollection $guests,
         private bool $isResident,
         private int $roomCount = 1,
-        //@todo hack сейчас взял VO из другого модуля
         private Condition|null $earlyCheckIn = null,
         private Condition|null $lateCheckOut = null,
         private string|null $guestNote = null,

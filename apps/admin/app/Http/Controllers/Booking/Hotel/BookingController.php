@@ -3,9 +3,13 @@
 namespace App\Admin\Http\Controllers\Booking\Hotel;
 
 use App\Admin\Http\Resources\Room as RoomResource;
+use App\Admin\Models\Booking\Administrator;
+use App\Admin\Models\Client\Client;
+use App\Admin\Models\Hotel\Hotel;
 use App\Admin\Models\Hotel\Room;
 use App\Admin\Support\Facades\Booking\HotelAdapter;
 use App\Admin\Support\Facades\Booking\OrderAdapter;
+use App\Admin\Support\Facades\Booking\StatusAdapter;
 use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Grid;
@@ -63,14 +67,20 @@ class BookingController extends AbstractPrototypeController
         $form->trySubmit($this->prototype->route('create'));
 
         $data = $form->getData();
+        $creator = request()->user();
         $bookingId = HotelAdapter::createBooking(
             cityId: $data['city_id'],
             clientId: $data['client_id'],
             hotelId: $data['hotel_id'],
             period: $data['period'],
+            creatorId: $creator->id,
             orderId: $data['order_id'] ?? null,
             note: $data['note'] ?? null
         );
+        Administrator::create([
+            'booking_id' => $bookingId,
+            'administrator_id' => $creator->id
+        ]);
 
         return redirect(
             $this->prototype->route('show', $bookingId)
@@ -80,25 +90,40 @@ class BookingController extends AbstractPrototypeController
     public function show(int $id): LayoutContract
     {
         $title = "Бронь №{$id}";
+
+        $order = OrderAdapter::findOrder($id);
         $booking = HotelAdapter::getBooking($id);
         $details = HotelAdapter::getBookingDetails($id);
+        $hotelId = $details->hotelId;
+        $client = Client::find($order->clientId);
+        $hotel = Hotel::find($hotelId);
 
 //        Breadcrumb::prototype($this->prototype)
 //            ->add($title);
 
 //        $this->prepareShowMenu($this->model);
 
-        $hotelId = $details->hotelId;
 
         return Layout::title($title)
             ->view($this->getPrototypeKey() . '.show.show', [
                 'bookingId' => $id,
                 'hotelId' => $hotelId,
+                'hotel' => $hotel,
                 'model' => $booking,
+                'details' => $details,
+                'client' => $client,
+                'order' => $order,
                 'editUrl' => $this->isAllowed('update') ? $this->route('edit', $id) : null,
                 'deleteUrl' => $this->isAllowed('delete') ? $this->route('destroy', $id) : null,
                 'hotelRooms' => RoomResource::collection(Room::whereHotelId($hotelId)->get())
             ]);
+    }
+
+    public function get(int $id): JsonResponse
+    {
+        return response()->json(
+            HotelAdapter::getBooking($id)
+        );
     }
 
     public function getDetails(int $id): JsonResponse
@@ -132,6 +157,20 @@ class BookingController extends AbstractPrototypeController
             ]);
     }
 
+    public function getStatuses(): JsonResponse
+    {
+        return response()->json(
+            StatusAdapter::getStatuses()
+        );
+    }
+
+    public function getAvailableStatuses(int $id): JsonResponse
+    {
+        return response()->json(
+            StatusAdapter::getAvailableStatuses($id)
+        );
+    }
+
     protected function gridFactory(): GridContract
     {
         return Grid::enableQuicksearch()
@@ -159,10 +198,9 @@ class BookingController extends AbstractPrototypeController
                 'emptyItem' => '',
                 'required' => true
             ])
-            ->select('client_id', [
+            ->hidden('client_id', [
                 'label' => __('label.client'),
-                'emptyItem' => '',
-                'required' => true
+                'required' => true,
             ])
 //            ->hidden('legal_id', [
 //                'label' => 'Юр. лицо',

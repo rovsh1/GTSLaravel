@@ -18,6 +18,7 @@ use Module\Booking\Hotel\Domain\Entity\Details\Room;
 use Module\Booking\Hotel\Domain\Exception\TooManyRoomGuests;
 use Module\Booking\Hotel\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\Hotel\Domain\Repository\DetailsRepositoryInterface;
+use Module\Booking\Hotel\Domain\ValueObject\Details\Condition;
 use Module\Booking\Hotel\Domain\ValueObject\Details\Guest;
 use Module\Booking\Hotel\Domain\ValueObject\Details\GuestCollection;
 use Module\Booking\Hotel\Domain\ValueObject\Details\RoomStatusEnum;
@@ -26,6 +27,7 @@ use Module\Shared\Application\Exception\BaseApplicationException;
 use Module\Shared\Domain\Exception\DomainEntityExceptionInterface;
 use Module\Shared\Domain\ValueObject\GenderEnum;
 use Module\Shared\Domain\ValueObject\Percent;
+use Module\Shared\Domain\ValueObject\TimePeriod;
 
 class AdminController
 {
@@ -78,6 +80,7 @@ class AdminController
             'cityId' => ['required', 'int'],
             'clientId' => ['required', 'int'],
             'hotelId' => ['required', 'int'],
+            'creatorId' => ['required', 'int'],
             'orderId' => ['nullable', 'int'],
             'dateStart' => ['nullable', 'date'],
             'dateEnd' => ['nullable', 'date'],
@@ -90,6 +93,7 @@ class AdminController
                 clientId: $request->clientId,
                 hotelId: $request->hotelId,
                 period: new CarbonPeriod($request->dateStart, $request->dateEnd),
+                creatorId: $request->creatorId,
                 orderId: $request->orderId,
                 note: $request->note,
             )
@@ -121,8 +125,8 @@ class AdminController
                 isResident: $request->isResident,
                 guestNote: $request->note,
                 roomCount: $request->roomCount,
-//                earlyCheckIn: $request->earlyCheckIn !== null ? Condition::fromData($request->earlyCheckIn) : null,
-//                lateCheckOut: $request->lateCheckOut !== null ? Condition::fromData($request->lateCheckOut) : null,
+                earlyCheckIn: $request->earlyCheckIn !== null ? $this->buildMarkupCondition($request->earlyCheckIn) : null,
+                lateCheckOut: $request->lateCheckOut !== null ? $this->buildMarkupCondition($request->lateCheckOut) : null,
                 discount: new Percent($request->discount ?? 0),
             )
         );
@@ -164,8 +168,8 @@ class AdminController
                 isResident: $request->isResident,
                 guestNote: $request->note,
                 roomCount: $request->roomCount,
-//                earlyCheckIn: $request->earlyCheckIn !== null ? Condition::fromData($request->earlyCheckIn) : null,
-//                lateCheckOut: $request->lateCheckOut !== null ? Condition::fromData($request->lateCheckOut) : null,
+                earlyCheckIn: $request->earlyCheckIn !== null ? $this->buildMarkupCondition($request->earlyCheckIn) : null,
+                lateCheckOut: $request->lateCheckOut !== null ? $this->buildMarkupCondition($request->lateCheckOut) : null,
                 discount: new Percent($request->discount ?? 0),
             )
         );
@@ -234,5 +238,13 @@ class AdminController
         $newGuest = new Guest($request->fullName, $request->countryId, GenderEnum::from($request->gender));
         $room->updateGuest($request->guestIndex, $newGuest);
         $this->detailsRepository->update($details);
+    }
+
+    private function buildMarkupCondition(array $data): Condition
+    {
+        return new Condition(
+            new TimePeriod($data['from'], $data['to']),
+            new Percent($data['percent'])
+        );
     }
 }

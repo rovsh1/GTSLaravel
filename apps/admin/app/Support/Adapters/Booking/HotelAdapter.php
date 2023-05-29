@@ -29,6 +29,7 @@ class HotelAdapter extends AbstractModuleAdapter
         int $clientId,
         int $hotelId,
         CarbonPeriod $period,
+        int $creatorId,
         ?int $orderId,
         ?string $note = null
     ): int {
@@ -38,6 +39,7 @@ class HotelAdapter extends AbstractModuleAdapter
             'hotelId' => $hotelId,
             'dateStart' => $period->getStartDate(),
             'dateEnd' => $period->getEndDate(),
+            'creatorId' => $creatorId,
             'orderId' => $orderId,
             'note' => $note,
         ]);

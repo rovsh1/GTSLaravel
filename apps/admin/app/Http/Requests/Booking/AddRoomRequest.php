@@ -16,8 +16,8 @@ class AddRoomRequest extends FormRequest
             'rate_id' => ['required', 'numeric'],
             'note' => ['nullable', 'string'],
             'discount' => ['nullable', 'numeric'],
-            'late_check_out' => ['nullable', 'string'],
-            'early_check_in' => ['nullable', 'string'],
+            'late_check_out' => ['nullable', 'array'],
+            'early_check_in' => ['nullable', 'array'],
         ];
     }
 
@@ -58,19 +58,11 @@ class AddRoomRequest extends FormRequest
 
     public function getLateCheckOut(): ?array
     {
-        $data = $this->post('late_check_out');
-        if ($data === null) {
-            return null;
-        }
-        return json_decode($data, true);
+        return $this->post('late_check_out');
     }
 
     public function getEarlyCheckIn(): ?array
     {
-        $data = $this->post('early_check_in');
-        if ($data === null) {
-            return null;
-        }
-        return json_decode($data, true);
+        return $this->post('early_check_in');
     }
 }

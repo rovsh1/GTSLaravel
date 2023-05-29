@@ -17,6 +17,7 @@ class BookingDto extends AbstractDomainBasedDto
         public readonly int $status,
         public readonly int $orderId,
         public readonly Carbon $dateCreate,
+        public readonly int $creatorId,
         public readonly ?string $note,
     ) {}
 
@@ -27,6 +28,7 @@ class BookingDto extends AbstractDomainBasedDto
             $entity->orderId(),
             $entity->status()->value,
             $entity->dateCreate(),
+            $entity->creatorId(),
             $entity->note(),
         );
     }

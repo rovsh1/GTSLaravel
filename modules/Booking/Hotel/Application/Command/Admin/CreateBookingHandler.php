@@ -30,6 +30,7 @@ class CreateBookingHandler implements CommandHandlerInterface
                 'source' => 1, //@todo hack
                 'status' => BookingStatusEnum::CREATED,
                 'note' => $command->note,
+                'creator_id' => $command->creatorId,
             ]);
 
             BookingDetails::create([

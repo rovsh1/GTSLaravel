@@ -14,6 +14,7 @@ class CreateBooking implements CommandInterface
         public readonly int $clientId,
         public readonly int $hotelId,
         public readonly CarbonPeriod $period,
+        public readonly int $creatorId,
         public readonly ?int $orderId,
         public readonly ?string $note = null
     ) {}

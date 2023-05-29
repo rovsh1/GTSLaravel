@@ -1,5 +1,7 @@
 import { Ref } from 'vue'
 
+import { MarkupCondition } from '~api/hotel/markup-settings'
+
 export interface RoomFormData {
   bookingID: number
   id?: number
@@ -9,8 +11,8 @@ export interface RoomFormData {
   discount?: number
   rateId?: number
   note?: string
-  earlyCheckIn?: string
-  lateCheckOut?: string
+  earlyCheckIn?: MarkupCondition
+  lateCheckOut?: MarkupCondition
   roomIndex?: number
 }
 

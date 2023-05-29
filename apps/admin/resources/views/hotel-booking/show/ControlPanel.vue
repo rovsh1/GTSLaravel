@@ -1,26 +1,65 @@
 <script setup lang="ts">
 
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
+
+import { z } from 'zod'
 
 import { ExternalNumberTypeEnum, externalNumberTypeOptions } from '~resources/views/hotel-booking/show/constants'
+
+import { useBookingAPI } from '~api/booking'
+import { useBookingAvailableStatusesAPI } from '~api/booking/status'
+
+import { requestInitialData } from '~lib/initial-data'
 
 import BootstrapSelectBase from '~components/Bootstrap/BootstrapSelectBase.vue'
 
 import StatusSelect from './components/StatusSelect.vue'
 
-const status = ref<number>(0)
-const externalNumberType = ref<number>()
+const { bookingID } = requestInitialData(
+  'view-initial-data-hotel-booking',
+  z.object({
+    bookingID: z.number(),
+  }),
+)
+
+const externalNumberType = ref<number | string>()
 const externalNumber = ref<string>()
 const isNeedShowExternalNumber = computed<boolean>(
-  () => externalNumberType.value === ExternalNumberTypeEnum.HotelBookingNumber
-    || externalNumberType.value === ExternalNumberTypeEnum.FullName,
+  () => Number(externalNumberType.value) === ExternalNumberTypeEnum.HotelBookingNumber
+    || Number(externalNumberType.value) === ExternalNumberTypeEnum.FullName,
 )
+
+const isExternalNumberChanged = ref<boolean>(false)
+watch(externalNumberType, () => {
+  isExternalNumberChanged.value = true
+})
+watch(externalNumber, () => {
+  isExternalNumberChanged.value = true
+})
+
+const { data: booking, execute: fetchBooking } = useBookingAPI({ bookingID })
+const { data: availableStatuses, execute: fetchAvailableStatuses } = useBookingAvailableStatusesAPI({ bookingID })
+
+fetchBooking()
+fetchAvailableStatuses()
+
+const handleStatusChange = (value: number) => {
+  // @todo запрос на смену статуса брони
+  if (booking.value) {
+    booking.value.status = value
+  }
+}
 
 </script>
 
 <template>
   <div class="d-flex flex-wrap flex-grow-1 gap-2">
-    <StatusSelect v-model="status" />
+    <StatusSelect
+      v-if="booking"
+      v-model="booking.status"
+      :available-statuses="availableStatuses"
+      @change="handleStatusChange"
+    />
     <a href="#" class="btn-log">История изменений</a>
     <div class="float-end">
       Общая сумма: <strong>0 <span class="cur">сўм</span></strong>
@@ -54,7 +93,7 @@ const isNeedShowExternalNumber = computed<boolean>(
             Пожалуйста, заполните номер брони.
           </div>
         </div>
-        <div class="ml-2">
+        <div v-if="isExternalNumberChanged" class="ml-2">
           <a class="btn btn-primary">Сохранить</a>
         </div>
       </div>

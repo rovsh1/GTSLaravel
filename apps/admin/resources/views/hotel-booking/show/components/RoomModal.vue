@@ -5,11 +5,15 @@ import { computed, Ref, ref, watch } from 'vue'
 import { MaybeRef } from '@vueuse/core'
 import { z } from 'zod'
 
-import { residentTypeOptions, roomStatusOptions } from '~resources/views/hotel-booking/show/constants'
+import {
+  getConditionLabel,
+  residentTypeOptions,
+  roomStatusOptions,
+} from '~resources/views/hotel-booking/show/constants'
 import { RoomFormData, validateForm } from '~resources/views/hotel-booking/show/form'
 
 import { addRoomToBooking, updateBookingRoom } from '~api/booking/rooms'
-import { MarkupCondition, useHotelMarkupSettingsAPI, useHotelRoomMarkupSettings } from '~api/hotel/markup-settings'
+import { MarkupCondition, MarkupSettings, useHotelRoomMarkupSettings } from '~api/hotel/markup-settings'
 import { HotelRate, useHotelRatesAPI } from '~api/hotel/price-rate'
 import { HotelRoomResponse } from '~api/hotel/room'
 
@@ -23,6 +27,7 @@ const props = defineProps<{
   opened: MaybeRef<boolean>
   formData: Partial<RoomFormData>
   roomIndex?: number
+  hotelMarkupSettings: MarkupSettings | null
 }>()
 
 const emit = defineEmits<{
@@ -39,6 +44,8 @@ const { bookingID, hotelID, hotelRooms } = requestInitialData(
     hotelRooms: z.array(z.any()),
   }),
 )
+
+const markupSettings = computed<MarkupSettings | null>(() => props.hotelMarkupSettings)
 
 const formData = computed<RoomFormData>(() => ({
   roomCount: 1,
@@ -79,14 +86,11 @@ const preparedRoomRates = computed<SelectOption[]>(
   () => roomRates.value?.map((rate: HotelRate) => ({ value: rate.id, label: rate.name })) || [],
 )
 
-const { data: markupSettings, execute: fetchMarkupSettings } = useHotelMarkupSettingsAPI({ hotelID })
-fetchMarkupSettings()
-
 const { data: roomMarkupSettings, execute: fetchRoomMarkupSettings } = useHotelRoomMarkupSettings(roomRatesPayload)
 
 const mapConditionToSelectOption = (condition: MarkupCondition): SelectOption => ({
   value: JSON.stringify(condition),
-  label: `с ${condition.from} по ${condition.to} (+${condition.percent}%)`,
+  label: getConditionLabel(condition),
 })
 
 const earlyCheckIn = computed<SelectOption[]>(() => markupSettings.value?.earlyCheckIn.map(mapConditionToSelectOption) || [])
@@ -116,6 +120,20 @@ watch(formData, (value: RoomFormData, oldValue: RoomFormData) => {
     handleChangeRoomId()
   }
 }, { deep: true })
+
+const earlyCheckInValue = computed<string>({
+  get: (): string => JSON.stringify(formData.value.earlyCheckIn),
+  set: (value: string): void => {
+    formData.value.earlyCheckIn = JSON.parse(value)
+  },
+})
+
+const lateCheckOutValue = computed<string>({
+  get: (): string => JSON.stringify(formData.value.lateCheckOut),
+  set: (value: string): void => {
+    formData.value.lateCheckOut = JSON.parse(value)
+  },
+})
 
 </script>
 
@@ -197,8 +215,8 @@ watch(formData, (value: RoomFormData, oldValue: RoomFormData) => {
           id="early_checkin"
           :options="earlyCheckIn"
           label="Ранний заезд"
-          :value="formData.earlyCheckIn as string"
-          @input="value => formData.earlyCheckIn = value as string"
+          :value="earlyCheckInValue"
+          @input="value => earlyCheckInValue = value as string"
         />
       </div>
       <div class="col-md-6">
@@ -206,8 +224,8 @@ watch(formData, (value: RoomFormData, oldValue: RoomFormData) => {
           id="late_checkout"
           :options="lateCheckOut"
           label="Поздний выезд"
-          :value="formData.lateCheckOut as string"
-          @input="value => formData.lateCheckOut = value as string"
+          :value="lateCheckOutValue"
+          @input="value => lateCheckOutValue = value as string"
         />
       </div>
       <div class="col-md-12">

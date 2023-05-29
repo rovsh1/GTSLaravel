@@ -14,6 +14,9 @@ return [
     /**
      * @deprecated end
      */
+    'CommonBooking' => [
+        'path' => modules_path('Booking/Common')
+    ],
     'HotelBooking' => [
         'path' => modules_path('Booking/Hotel')
     ],

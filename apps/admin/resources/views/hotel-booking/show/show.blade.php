@@ -37,12 +37,12 @@
                             <tr>
                                 <th>Заказ (ID)</th>
                                 <td>
-                                    <a href="#" target="_blank">{{ $model->orderId }}</a>
+                                    <a href="{{ route('booking-order.show', $model->orderId) }}" target="_blank">{{ $model->orderId }}</a>
                                 </td>
                             </tr>
                             <tr>
                                 <th>Дата заезда и выезда</th>
-                                <td>-</td>
+                                <td>{{ Format::period(new \Carbon\CarbonPeriod($details->period->dateFrom, $details->period->dateTo)) }}</td>
                             </tr>
                             <tr>
                                 <th>Источник</th>
@@ -50,15 +50,15 @@
                             </tr>
                             <tr>
                                 <th>Страна</th>
-                                <td>-</td>
+                                <td>{{ $hotel->country_name }} / {{ $hotel->city_name }}</td>
                             </tr>
                             <tr>
                                 <th>Клиент</th>
-                                <td>-</td>
+                                <td>{{ $client->name }}</td>
                             </tr>
                             <tr>
                                 <th>Отель</th>
-                                <td>-</td>
+                                <td>{{ $hotel->name }}</td>
                             </tr>
                             <tr>
                                 <th>Транспортная бронь (ID)</th>
@@ -69,12 +69,20 @@
                                 <td>-</td>
                             </tr>
                             <tr>
+                                <th>Менеджер</th>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <th>Автор</th>
+                                <td>{{ $model->creatorId }}</td>
+                            </tr>
+                            <tr>
                                 <th>Создана</th>
                                 <td>{{ $model->dateCreate }}</td>
                             </tr>
                             <tr>
                                 <th>Статус</th>
-                                <td>-</td>
+                                <td>{{ $model->status }}</td>
                             </tr>
                             <tr>
                                 <th>Примечание</th>
