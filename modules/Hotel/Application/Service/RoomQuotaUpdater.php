@@ -30,7 +30,7 @@ class RoomQuotaUpdater
     {
         $this->checkRoomExistCallback(
             roomId: $roomId,
-            callback: $this->commandBus->execute(new OpenRoomQuota($roomId, $period, $priceRateId))
+            callback: fn () => $this->commandBus->execute(new OpenRoomQuota($roomId, $period, $priceRateId))
         );
     }
 
@@ -38,7 +38,7 @@ class RoomQuotaUpdater
     {
         $this->checkRoomExistCallback(
             roomId: $roomId,
-            callback: $this->commandBus->execute(new CloseRoomQuota($roomId, $period, $priceRateId))
+            callback: fn () => $this->commandBus->execute(new CloseRoomQuota($roomId, $period, $priceRateId))
         );
     }
 
