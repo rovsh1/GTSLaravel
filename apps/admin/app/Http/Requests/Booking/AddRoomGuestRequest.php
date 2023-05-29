@@ -10,7 +10,7 @@ class AddRoomGuestRequest extends FormRequest
     {
         return [
             'full_name' => ['required', 'string'],
-            'nationality_id' => ['required', 'numeric'],
+            'country_id' => ['required', 'numeric'],
             'gender' => ['required', 'numeric'],
             'room_index' => ['required', 'numeric'],
         ];
@@ -26,9 +26,9 @@ class AddRoomGuestRequest extends FormRequest
         return $this->post('full_name');
     }
 
-    public function getNationalityId(): int
+    public function getCountryId(): int
     {
-        return $this->post('nationality_id');
+        return $this->post('country_id');
     }
 
     public function getGender(): int

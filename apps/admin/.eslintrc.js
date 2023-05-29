@@ -131,6 +131,7 @@ module.exports = defineConfig({
       },
     ],
     'quote-props': ['error', 'consistent-as-needed'],
+    'vuejs-accessibility/form-control-has-label': 'off',
   },
   overrides: [
     {

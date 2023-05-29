@@ -11,7 +11,7 @@ export interface BookingHotelDetailsPayload {
 export interface HotelBookingGuest {
   id: number
   fullName: string
-  nationalityId: number
+  countryId: number
   gender: number
 }
 

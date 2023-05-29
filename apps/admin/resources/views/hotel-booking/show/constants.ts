@@ -25,11 +25,25 @@ export const roomStatuses = [
   { id: 3, name: 'Подтвержден' },
 ]
 
+export enum ExternalNumberTypeEnum {
+  HotelBookingNumber = 2,
+  FullName = 3,
+  GotoStansBookingNuber = 1,
+}
+
+export const externalNumberTypes = [
+  { id: ExternalNumberTypeEnum.HotelBookingNumber, name: 'Номер подтверждения брони отеля' },
+  { id: ExternalNumberTypeEnum.FullName, name: 'Заезд по ФИО' },
+  { id: ExternalNumberTypeEnum.GotoStansBookingNuber, name: 'Номер брони GotoStans' },
+]
+
 export const genderOptions: SelectOption[] = mapEntitiesToSelectOptions(genders)
 
 export const residentTypeOptions: SelectOption[] = mapEntitiesToSelectOptions(residentTypes)
 
 export const roomStatusOptions: SelectOption[] = mapEntitiesToSelectOptions(roomStatuses)
+
+export const externalNumberTypeOptions: SelectOption[] = mapEntitiesToSelectOptions(externalNumberTypes)
 
 export const getGenderName = (id: number): string | undefined =>
   genders?.find((gender: any) => gender.id === id)?.name

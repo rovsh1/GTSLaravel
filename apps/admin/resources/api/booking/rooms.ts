@@ -32,7 +32,7 @@ export interface DeleteBookingRoomPayload {
 export interface BookingAddRoomGuestPayload {
   bookingID: BookingID
   roomIndex: number
-  nationalityId: number
+  countryId: number
   fullName: string
   gender: number
 }
@@ -115,7 +115,7 @@ export const addGuestToBooking = (props: MaybeRef<BookingAddRoomGuestPayload | n
         props,
         (payload: BookingAddRoomGuestPayload): any => ({
           full_name: payload.fullName,
-          nationality_id: payload.nationalityId,
+          country_id: payload.countryId,
           gender: payload.gender,
           room_index: payload.roomIndex,
         }),
@@ -134,7 +134,7 @@ export const updateBookingGuest = (props: MaybeRef<BookingUpdateRoomGuestPayload
         props,
         (payload: BookingUpdateRoomGuestPayload): any => ({
           full_name: payload.fullName,
-          nationality_id: payload.nationalityId,
+          country_id: payload.countryId,
           gender: payload.gender,
           room_index: payload.roomIndex,
           guest_index: payload.guestIndex,

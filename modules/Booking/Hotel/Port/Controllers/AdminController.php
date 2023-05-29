@@ -189,7 +189,7 @@ class AdminController
             'id' => ['required', 'int'],
             'roomIndex' => ['required', 'int'],
             'fullName' => ['required', 'string'],
-            'nationalityId' => ['nullable', 'int'],
+            'countryId' => ['nullable', 'int'],
             'gender' => ['nullable', new Enum(GenderEnum::class)],
         ]);
 
@@ -208,7 +208,7 @@ class AdminController
             $details->rooms()->get($request->roomIndex)->addGuest(
                 new Guest(
                     $request->fullName,
-                    $request->nationalityId,
+                    $request->countryId,
                     GenderEnum::from($request->gender),
                 )
             );
@@ -225,13 +225,13 @@ class AdminController
             'roomIndex' => ['required', 'int'],
             'guestIndex' => ['required', 'int'],
             'fullName' => ['required', 'string'],
-            'nationalityId' => ['nullable', 'int'],
+            'countryId' => ['nullable', 'int'],
             'gender' => ['nullable', new Enum(GenderEnum::class)],
         ]);
 
         $details = $this->detailsRepository->find($request->id);
         $room = $details->rooms()->get($request->roomIndex);
-        $newGuest = new Guest($request->fullName, $request->nationalityId, GenderEnum::from($request->gender));
+        $newGuest = new Guest($request->fullName, $request->countryId, GenderEnum::from($request->gender));
         $room->updateGuest($request->guestIndex, $newGuest);
         $this->detailsRepository->update($details);
     }

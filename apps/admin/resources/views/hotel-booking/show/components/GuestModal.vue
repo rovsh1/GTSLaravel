@@ -81,9 +81,9 @@ const countryOptions = computed<SelectOption[]>(
           id="nationality_id"
           :options="countryOptions"
           label="Гражданство"
-          :value="formData.nationalityId as number"
+          :value="formData.countryId as number"
           required
-          @input="value => formData.nationalityId = value as number"
+          @input="value => formData.countryId = value as number"
         />
       </div>
       <div class="col-md-12">

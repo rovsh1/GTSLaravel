@@ -79,7 +79,7 @@ class RoomController
                 $id,
                 $request->getRoomIndex(),
                 $request->getFullName(),
-                $request->getNationalityId(),
+                $request->getCountryId(),
                 $request->getGender(),
             );
         } catch (\Throwable $e) {
@@ -97,7 +97,7 @@ class RoomController
                 $request->getRoomIndex(),
                 $request->getGuestIndex(),
                 $request->getFullName(),
-                $request->getNationalityId(),
+                $request->getCountryId(),
                 $request->getGender(),
             );
         } catch (\Throwable $e) {

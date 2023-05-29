@@ -30,48 +30,63 @@
     <div class="content-body">
         <div class="card card-form mt-3">
             <div class="card-body">
-                <table class="table-params">
-                    <tbody>
-                    {{--                    <tr class="">--}}
-                    {{--                        <th>Заказ (ID)</th>--}}
-                    {{--                        <td>--}}
-                    {{--                            <a href="#" target="_blank">{{$model->order_id}}</a>--}}
-                    {{--                        </td>--}}
-                    {{--                    </tr>--}}
-                    {{--                    <tr class="">--}}
-                    {{--                        <th>Дата заезда и выезда</th>--}}
-                    {{--                        <td>{{$model->period}}</td>--}}
-                    {{--                    </tr>--}}
-                    {{--                    <tr class="">--}}
-                    {{--                        <th>Источник</th>--}}
-                    {{--                        <td>{{$model->source}}</td>--}}
-                    {{--                    </tr>--}}
-                    {{--                    <tr class="">--}}
-                    {{--                        <th>Страна</th>--}}
-                    {{--                        <td>{{$model->city_id}}</td>--}}
-                    {{--                    </tr>--}}
-                    {{--                    <tr class="">--}}
-                    {{--                        <th>Клиент</th>--}}
-                    {{--                        <td>{{$model->client_name}}</td>--}}
-                    {{--                    </tr>--}}
-                    {{--                    <tr class="">--}}
-                    {{--                        <th>Отель</th>--}}
-                    {{--                        <td>{{$model->hotel_id ?? null}}</td>--}}
-                    {{--                    </tr>--}}
-                    {{--                    <tr class="">--}}
-                    {{--                        <th>Создана</th>--}}
-                    {{--                        <td>{{$model->created_at}}</td>--}}
-                    {{--                    </tr>--}}
-                    <tr class="">
-                        <th>Статус</th>
-                        <td>{{$model->status}}</td>
-                    </tr>
-                    <tr class="">
-                        <th>Примечание</th>
-                        <td>{{$model->note}}</td>
-                    </tr>
-                    </tbody>
-                </table>
+                <div class="d-flex flex-row gap-4">
+                    <div class="w-100 rounded shadow-lg p-4">
+                        <table class="table-params">
+                            <tbody>
+                            <tr>
+                                <th>Заказ (ID)</th>
+                                <td>
+                                    <a href="#" target="_blank">{{ $model->orderId }}</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Дата заезда и выезда</th>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <th>Источник</th>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <th>Страна</th>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <th>Клиент</th>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <th>Отель</th>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <th>Транспортная бронь (ID)</th>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <th>Услуга в аэропорту (ID)</th>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <th>Создана</th>
+                                <td>{{ $model->dateCreate }}</td>
+                            </tr>
+                            <tr>
+                                <th>Статус</th>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <th>Примечание</th>
+                                <td>{{ $model->note }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="w-100 rounded shadow-lg p-4">
+                        <div id="booking-control-panel"></div>
+                    </div>
+                </div>
             </div>
         </div>
 

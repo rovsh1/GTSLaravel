@@ -10,7 +10,7 @@ final class Guest implements ValueObjectInterface, SerializableDataInterface
 {
     public function __construct(
         private readonly string $fullName,
-        private readonly int $nationalityId,
+        private readonly int $countryId,
         private readonly GenderEnum $gender,
     ) {}
 
@@ -19,9 +19,9 @@ final class Guest implements ValueObjectInterface, SerializableDataInterface
         return $this->fullName;
     }
 
-    public function nationalityId(): int
+    public function countryId(): int
     {
-        return $this->nationalityId;
+        return $this->countryId;
     }
 
     public function gender(): GenderEnum
@@ -33,7 +33,7 @@ final class Guest implements ValueObjectInterface, SerializableDataInterface
     {
         return [
             'fullName' => $this->fullName,
-            'nationalityId' => $this->nationalityId,
+            'countryId' => $this->countryId,
             'gender' => $this->gender->value
         ];
     }
@@ -42,7 +42,7 @@ final class Guest implements ValueObjectInterface, SerializableDataInterface
     {
         return new static(
             $data['fullName'],
-            $data['nationalityId'],
+            $data['countryId'],
             GenderEnum::from($data['gender']),
         );
     }

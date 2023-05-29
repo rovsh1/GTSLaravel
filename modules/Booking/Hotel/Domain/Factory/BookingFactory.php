@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Hotel\Domain\Factory;
 
+use Carbon\Carbon;
 use Custom\Framework\Foundation\Support\EntityFactory\AbstractEntityFactory;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
@@ -18,8 +19,10 @@ class BookingFactory extends AbstractEntityFactory
     {
         return new $this->entity(
             $data['id'],
+            $data['order_id'],
             BookingStatusEnum::from($data['status']),
             BookingTypeEnum::from($data['type']),
+            new Carbon($data['created_at']),
             $data['note'],
         );
     }

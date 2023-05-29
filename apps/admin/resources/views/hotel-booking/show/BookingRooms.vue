@@ -203,7 +203,7 @@ const getRoomName = (id: number): string | undefined => {
               <tr v-for="(guest, guestIdx) in room.guests" :key="guestIdx">
                 <td>{{ guestIdx + 1 }}</td>
                 <td>{{ guest.fullName }}</td>
-                <td>{{ getCountryName(guest.nationalityId) }}</td>
+                <td>{{ getCountryName(guest.countryId) }}</td>
                 <td>{{ getGenderName(guest.gender) }}</td>
                 <td class="column-edit">
                   <a href="#" @click.prevent="handleEditGuest(idx as number, guestIdx as number, guest)">

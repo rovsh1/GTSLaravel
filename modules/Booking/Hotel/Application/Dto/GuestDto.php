@@ -12,7 +12,7 @@ class GuestDto extends AbstractDomainBasedDto
 {
     public function __construct(
         public readonly string $fullName,
-        public readonly int $nationalityId,
+        public readonly int $countryId,
         public readonly int $gender,
     ) {}
 
@@ -20,7 +20,7 @@ class GuestDto extends AbstractDomainBasedDto
     {
         return new static(
             $entity->fullName(),
-            $entity->nationalityId(),
+            $entity->countryId(),
             $entity->gender()->value,
         );
     }

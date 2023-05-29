@@ -28,7 +28,7 @@ const emit = defineEmits<{
     <template v-if="$slots['label']">
       <slot name="label" />
     </template>
-    <label v-else :for="id" class="form-label">{{ label }}</label>
+    <label v-else-if="label" :for="id" class="form-label">{{ label }}</label>
     <select
       :id="id"
       :value="value"
