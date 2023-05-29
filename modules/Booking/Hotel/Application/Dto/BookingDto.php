@@ -25,8 +25,8 @@ class BookingDto extends AbstractDomainBasedDto
     {
         return new static(
             $entity->id(),
-            $entity->orderId(),
             $entity->status()->value,
+            $entity->orderId(),
             $entity->dateCreate(),
             $entity->creatorId(),
             $entity->note(),

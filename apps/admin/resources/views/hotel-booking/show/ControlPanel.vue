@@ -1,12 +1,12 @@
 <script setup lang="ts">
 
-import { computed, ref, watch } from 'vue'
+import { computed, reactive, ref, watch } from 'vue'
 
 import { z } from 'zod'
 
 import { ExternalNumberTypeEnum, externalNumberTypeOptions } from '~resources/views/hotel-booking/show/constants'
 
-import { useBookingAPI } from '~api/booking'
+import { Booking, updateBookingStatus, useGetBookingAPI } from '~api/booking'
 import { useBookingAvailableStatusesAPI } from '~api/booking/status'
 
 import { requestInitialData } from '~lib/initial-data'
@@ -37,17 +37,20 @@ watch(externalNumber, () => {
   isExternalNumberChanged.value = true
 })
 
-const { data: booking, execute: fetchBooking } = useBookingAPI({ bookingID })
+const { data: bookingData, execute: fetchBooking } = useGetBookingAPI({ bookingID })
 const { data: availableStatuses, execute: fetchAvailableStatuses } = useBookingAvailableStatusesAPI({ bookingID })
 
 fetchBooking()
 fetchAvailableStatuses()
 
-const handleStatusChange = (value: number) => {
-  // @todo запрос на смену статуса брони
-  if (booking.value) {
-    booking.value.status = value
-  }
+const booking = reactive<Booking>(bookingData as unknown as Booking)
+
+const handleStatusChange = async (value: number): Promise<void> => {
+  await updateBookingStatus({
+    bookingID,
+    status: value,
+  })
+  fetchBooking()
 }
 
 </script>

@@ -7,6 +7,7 @@ AclRoute::for('hotel-booking')
     ->get('/status/list', Controllers\Booking\Hotel\BookingController::class . '@getStatuses', 'read', 'status.list')
 
     ->get('/{booking}/get', Controllers\Booking\Hotel\BookingController::class . '@get', 'read', 'get')
+    ->put('/{booking}/status/update', Controllers\Booking\Hotel\BookingController::class . '@updateStatus', 'update', 'status.update')
     ->get('/{booking}/details', Controllers\Booking\Hotel\BookingController::class . '@getDetails', 'read', 'details.get')
     ->get('/{booking}/status/available', Controllers\Booking\Hotel\BookingController::class . '@getAvailableStatuses', 'read', 'status.get')
 

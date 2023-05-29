@@ -10,19 +10,25 @@ const props = defineProps<{
   availableStatuses: MaybeRef<BookingStatusesResponse[] | null>
 }>()
 
-defineEmits<{
+const emit = defineEmits<{
+  (event: 'update:modelValue', value: number): void
   (event: 'change', value: number): void
 }>()
 
-const { data: statuses, execute: fetchStatuses } = useBookingStatusesAPI()
+const { data: statuses, execute: fetchStatuses, isFetching } = useBookingStatusesAPI()
 fetchStatuses()
 
-const label = computed<string>(() => {
+const label = computed<string | undefined>(() => {
   const status = statuses.value?.find((statusData: BookingStatusesResponse) => statusData.id === props.modelValue)
-  return status?.name || 'Новый'
+  return status?.name
 })
 
 const availableStatuses = computed<BookingStatusesResponse[] | null>(() => unref(props.availableStatuses))
+
+const handleChangeStatus = (value: number): void => {
+  emit('update:modelValue', value)
+  emit('change', value)
+}
 
 </script>
 
@@ -31,6 +37,7 @@ const availableStatuses = computed<BookingStatusesResponse[] | null>(() => unref
     <button
       class="btn btn-secondary dropdown-toggle w-25 align-left"
       type="button"
+      :disabled="isFetching"
       data-bs-toggle="dropdown"
       aria-expanded="false"
     >
@@ -41,7 +48,7 @@ const availableStatuses = computed<BookingStatusesResponse[] | null>(() => unref
         <a
           class="dropdown-item"
           href="#"
-          @click.prevent="$emit('change', status.id)"
+          @click.prevent="handleChangeStatus(status.id)"
         >
           {{ status.name }}
         </a>
@@ -56,6 +63,10 @@ const availableStatuses = computed<BookingStatusesResponse[] | null>(() => unref
     min-width: 9rem;
     font-weight: bold;
     text-align: left;
+
+    &:disabled {
+      cursor: not-allowed;
+    }
   }
 }
 </style>

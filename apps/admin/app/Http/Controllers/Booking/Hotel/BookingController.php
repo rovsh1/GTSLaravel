@@ -18,6 +18,8 @@ use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Layout as LayoutContract;
+use App\Core\Support\Http\Responses\AjaxResponseInterface;
+use App\Core\Support\Http\Responses\AjaxSuccessResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 
@@ -169,6 +171,11 @@ class BookingController extends AbstractPrototypeController
         return response()->json(
             StatusAdapter::getAvailableStatuses($id)
         );
+    }
+
+    public function updateStatus(int $id): AjaxResponseInterface
+    {
+        return new AjaxSuccessResponse();
     }
 
     protected function gridFactory(): GridContract
