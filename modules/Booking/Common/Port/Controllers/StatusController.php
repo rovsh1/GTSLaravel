@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Booking\Common\Port\Controllers;
 
-use Custom\Framework\PortGateway\Request;
 use Illuminate\Validation\Rules\Enum;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
+use Sdk\Module\PortGateway\Request;
 
 class StatusController
 {

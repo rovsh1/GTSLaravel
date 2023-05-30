@@ -2,44 +2,44 @@
 
 namespace Module\Booking\Common\Domain\Service\StatusRules;
 
-use Module\Booking\Common\Domain\ValueObject\StatusEnum;
+use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 
 class AdministratorRules extends AbstractRules
 {
     public function __construct()
     {
-        $this->addTransition(StatusEnum::DRAFT, StatusEnum::CREATED);
+        $this->addTransition(BookingStatusEnum::DRAFT, BookingStatusEnum::CREATED);
 
-        $this->addTransition(StatusEnum::CREATED, StatusEnum::PROCESSING);
-        $this->addTransition(StatusEnum::CREATED, StatusEnum::CANCELLED);
+        $this->addTransition(BookingStatusEnum::CREATED, BookingStatusEnum::PROCESSING);
+        $this->addTransition(BookingStatusEnum::CREATED, BookingStatusEnum::CANCELLED);
 
-        $this->addTransition(StatusEnum::PROCESSING, StatusEnum::CANCELLED);
-        //$this->addTransition(StatusEnum::PROCESSING, StatusEnum::WAITING_CONFIRMATION);
+        $this->addTransition(BookingStatusEnum::PROCESSING, BookingStatusEnum::CANCELLED);
+        //$this->addTransition(BookingStatusEnum::PROCESSING, BookingStatusEnum::WAITING_CONFIRMATION);
 
-        $this->addTransition(StatusEnum::WAITING_CONFIRMATION, StatusEnum::CONFIRMED);
-        $this->addTransition(StatusEnum::WAITING_CONFIRMATION, StatusEnum::NOT_CONFIRMED);
+        $this->addTransition(BookingStatusEnum::WAITING_CONFIRMATION, BookingStatusEnum::CONFIRMED);
+        $this->addTransition(BookingStatusEnum::WAITING_CONFIRMATION, BookingStatusEnum::NOT_CONFIRMED);
 
-        //$this->addTransition(StatusEnum::NOT_CONFIRMED, StatusEnum::WAITING_CONFIRMATION);
-        $this->addTransition(StatusEnum::NOT_CONFIRMED, StatusEnum::CANCELLED);
+        //$this->addTransition(BookingStatusEnum::NOT_CONFIRMED, BookingStatusEnum::WAITING_CONFIRMATION);
+        $this->addTransition(BookingStatusEnum::NOT_CONFIRMED, BookingStatusEnum::CANCELLED);
 
-        $this->addTransition(StatusEnum::CONFIRMED, StatusEnum::INVOICED);
-        //$this->addTransition(StatusEnum::CONFIRMED, StatusEnum::WAITING_PROCESSING);
-        //$this->addTransition(StatusEnum::CONFIRMED, StatusEnum::CANCELLED_FEE);
-        //$this->addTransition(StatusEnum::CONFIRMED, StatusEnum::CANCELLED_NO_FEE);
+        $this->addTransition(BookingStatusEnum::CONFIRMED, BookingStatusEnum::INVOICED);
+        //$this->addTransition(BookingStatusEnum::CONFIRMED, BookingStatusEnum::WAITING_PROCESSING);
+        //$this->addTransition(BookingStatusEnum::CONFIRMED, BookingStatusEnum::CANCELLED_FEE);
+        //$this->addTransition(BookingStatusEnum::CONFIRMED, BookingStatusEnum::CANCELLED_NO_FEE);
 
-        //$this->addTransition(StatusEnum::WAITING_PROCESSING, StatusEnum::WAITING_CONFIRMATION);
+        //$this->addTransition(BookingStatusEnum::WAITING_PROCESSING, BookingStatusEnum::WAITING_CONFIRMATION);
 
-        $this->addTransition(StatusEnum::INVOICED, StatusEnum::PAID);
-        $this->addTransition(StatusEnum::INVOICED, StatusEnum::PARTIALLY_PAID);
-        //$this->addTransition(StatusEnum::INVOICED, StatusEnum::WAITING_CANCELLATION);
+        $this->addTransition(BookingStatusEnum::INVOICED, BookingStatusEnum::PAID);
+        $this->addTransition(BookingStatusEnum::INVOICED, BookingStatusEnum::PARTIALLY_PAID);
+        //$this->addTransition(BookingStatusEnum::INVOICED, BookingStatusEnum::WAITING_CANCELLATION);
 
-        $this->addTransition(StatusEnum::WAITING_CANCELLATION, StatusEnum::CANCELLED_FEE);
-        $this->addTransition(StatusEnum::WAITING_CANCELLATION, StatusEnum::CANCELLED_NO_FEE);
+        $this->addTransition(BookingStatusEnum::WAITING_CANCELLATION, BookingStatusEnum::CANCELLED_FEE);
+        $this->addTransition(BookingStatusEnum::WAITING_CANCELLATION, BookingStatusEnum::CANCELLED_NO_FEE);
 
-        $this->addTransition(StatusEnum::CANCELLED_FEE, StatusEnum::CANCELLED_NO_FEE);
-        $this->addTransition(StatusEnum::CANCELLED_FEE, StatusEnum::REFUND_FEE);
+        $this->addTransition(BookingStatusEnum::CANCELLED_FEE, BookingStatusEnum::CANCELLED_NO_FEE);
+        $this->addTransition(BookingStatusEnum::CANCELLED_FEE, BookingStatusEnum::REFUND_FEE);
 
-        $this->addTransition(StatusEnum::CANCELLED_NO_FEE, StatusEnum::CANCELLED_FEE);
-        $this->addTransition(StatusEnum::CANCELLED_NO_FEE, StatusEnum::REFUND_NO_FEE);
+        $this->addTransition(BookingStatusEnum::CANCELLED_NO_FEE, BookingStatusEnum::CANCELLED_FEE);
+        $this->addTransition(BookingStatusEnum::CANCELLED_NO_FEE, BookingStatusEnum::REFUND_NO_FEE);
     }
 }

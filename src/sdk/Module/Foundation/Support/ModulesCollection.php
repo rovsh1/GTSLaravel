@@ -47,7 +47,7 @@ class ModulesCollection implements \Iterator
         return $this->modules[$this->position];
     }
 
-    public function next()
+    public function next(): void
     {
         $this->position++;
     }
@@ -62,7 +62,7 @@ class ModulesCollection implements \Iterator
         return isset($this->modules[$this->position]);
     }
 
-    public function rewind()
+    public function rewind(): void
     {
         $this->position = 0;
     }
