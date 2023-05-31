@@ -2,7 +2,7 @@ import { computed } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
 
-import { useAdminAPI } from '~api'
+import { BaseResponse, useAdminAPI } from '~api'
 
 import { getNullableRef } from '~lib/vue'
 
@@ -22,8 +22,15 @@ export interface GetBookingPayload {
   bookingID: BookingID
 }
 
-export interface UpdateBookingStatusPayload extends GetBookingPayload {
+export interface UpdateBookingStatusPayload {
+  bookingID: BookingID
   status: number
+}
+
+export interface UpdateExternalNumberPayload {
+  bookingID: BookingID
+  type: number
+  number?: string | null
 }
 
 export const useGetBookingAPI = (props: MaybeRef<GetBookingPayload>) =>
@@ -45,4 +52,21 @@ export const updateBookingStatus = (props: MaybeRef<UpdateBookingStatusPayload>)
         }),
       ),
     )), 'application/json')
-    .json<Booking>()
+    .json<BaseResponse>()
+
+export const updateExternalNumber = (props: MaybeRef<UpdateExternalNumberPayload>) =>
+  useAdminAPI(
+    props,
+    ({ bookingID }) => `/hotel-booking/${bookingID}/external/number`,
+    { immediate: true },
+  )
+    .put(computed<string>(() => JSON.stringify(
+      getNullableRef<UpdateExternalNumberPayload, any>(
+        props,
+        (payload: UpdateExternalNumberPayload): any => ({
+          type: payload.type,
+          number: payload.number,
+        }),
+      ),
+    )), 'application/json')
+    .json<BaseResponse>()

@@ -1,4 +1,4 @@
-import { ComponentOptions, createApp, h, inject, Ref, unref } from 'vue'
+import { ComponentOptions, createApp, h, inject, Plugin, Ref, unref } from 'vue'
 
 import { ZodObject, ZodRawShape } from 'zod/lib/types'
 
@@ -10,6 +10,7 @@ const initialDataKey = 'initial'
 type CreateVueInstanceParams = {
   rootComponent: ComponentOptions
   rootContainer: string
+  plugins?: Plugin[]
 }
 export const createVueInstance = (params: CreateVueInstanceParams) => {
   const { rootComponent, rootContainer } = params
@@ -32,6 +33,9 @@ export const createVueInstance = (params: CreateVueInstanceParams) => {
 
   installFloatingVue(app)
 
+  params.plugins?.forEach((plugin): void => {
+    app.use(plugin)
+  })
   app.mount(rootContainer)
 
   return app

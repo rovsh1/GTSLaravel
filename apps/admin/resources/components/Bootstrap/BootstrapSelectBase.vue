@@ -6,7 +6,7 @@ import { SelectOption } from './lib'
 
 withDefaults(defineProps<{
   id: string
-  value: SelectOption['value']
+  value: SelectOption['value'] | undefined
   options: SelectOption[]
   label?: string
   disabled?: MaybeRef<boolean>

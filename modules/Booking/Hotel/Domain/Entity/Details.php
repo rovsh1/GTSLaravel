@@ -16,9 +16,12 @@ final class Details implements HotelDetailsInterface
         private readonly int $id,
         private readonly int $hotelId,
         private readonly BookingPeriod $period,
-        private readonly ?AdditionalInfo $additionalInfo,
+        private ?AdditionalInfo $additionalInfo,
         private readonly RoomCollection $rooms
     ) {}
+
+    //@todo из квот release_days, до даты booking_start_date - release_days (бесплатно)
+    //@todo добавить условия отмены из отеля при создании
 
     public function id(): int
     {
@@ -38,6 +41,11 @@ final class Details implements HotelDetailsInterface
     public function additionalInfo(): ?AdditionalInfo
     {
         return $this->additionalInfo;
+    }
+
+    public function setAdditionalInfo(?AdditionalInfo $additionalInfo): void
+    {
+        $this->additionalInfo = $additionalInfo;
     }
 
     public function rooms(): RoomCollection

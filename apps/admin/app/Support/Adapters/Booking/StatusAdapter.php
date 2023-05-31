@@ -4,27 +4,24 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Adapters\Booking;
 
-use App\Core\Support\Adapters\AbstractModuleAdapter;
+use Module\Booking\Common\Application\UseCase\GetAvailableStatuses;
+use Module\Booking\Common\Application\UseCase\GetStatuses;
+use Module\Booking\Common\Application\UseCase\UpdateBookingStatus;
 
-class StatusAdapter extends AbstractModuleAdapter
+class StatusAdapter
 {
     public function getStatuses(): array
     {
-        return $this->request('getStatuses');
+        return app(GetStatuses::class)->execute();
     }
 
     public function getAvailableStatuses(int $id): array
     {
-        return $this->request('getAvailableStatuses', ['id' => $id]);
+        return app(GetAvailableStatuses::class)->execute($id);
     }
 
     public function updateStatus(int $id, int $status): void
     {
-        $this->request('updateStatus', ['id' => $id, 'status' => $status]);
-    }
-
-    protected function getModuleKey(): string
-    {
-        return 'CommonBooking';
+        app(UpdateBookingStatus::class)->execute($id, $status);
     }
 }

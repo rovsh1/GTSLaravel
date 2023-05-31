@@ -1,13 +1,18 @@
 <script setup lang="ts">
 
-import { computed, reactive, ref, watch } from 'vue'
+import { computed, reactive, ref } from 'vue'
 
 import { z } from 'zod'
 
-import { ExternalNumberTypeEnum, externalNumberTypeOptions } from '~resources/views/hotel-booking/show/constants'
+import RequestBlock from '~resources/views/hotel-booking/show/components/RequestBlock.vue'
+import { externalNumberTypeOptions } from '~resources/views/hotel-booking/show/constants'
+import { useBookingStore } from '~resources/views/hotel-booking/show/store'
 
-import { Booking, updateBookingStatus, useGetBookingAPI } from '~api/booking'
-import { useBookingAvailableStatusesAPI } from '~api/booking/status'
+import { Booking, updateBookingStatus, updateExternalNumber, useGetBookingAPI } from '~api/booking'
+import { ExternalNumber, ExternalNumberType, ExternalNumberTypeEnum } from '~api/booking/details'
+import { sendBookingRequest } from '~api/booking/request'
+import { useBookingAvailableStatusesAPI, useBookingStatusesAPI } from '~api/booking/status'
+import { MarkupSettings } from '~api/hotel/markup-settings'
 
 import { requestInitialData } from '~lib/initial-data'
 
@@ -22,28 +27,63 @@ const { bookingID } = requestInitialData(
   }),
 )
 
-const externalNumberType = ref<number | string>()
-const externalNumber = ref<string>()
-const isNeedShowExternalNumber = computed<boolean>(
-  () => Number(externalNumberType.value) === ExternalNumberTypeEnum.HotelBookingNumber
-    || Number(externalNumberType.value) === ExternalNumberTypeEnum.FullName,
-)
+const bookingStore = useBookingStore()
+const { fetchBookingDetails } = bookingStore
+const markupSettings = computed<MarkupSettings | null>(() => bookingStore.markupSettings)
+
+const externalNumberData = ref<ExternalNumber>({
+  type: ExternalNumberTypeEnum.HotelBookingNumber,
+  number: null,
+})
 
 const isExternalNumberChanged = ref<boolean>(false)
-watch(externalNumberType, () => {
-  isExternalNumberChanged.value = true
+// watch(externalNumberData, () => {
+//   isExternalNumberChanged.value = true
+// }, { deep: true })
+
+// @todo протестить как работает без watch
+const externalNumberType = computed<ExternalNumberType>({
+  get: () => {
+    if (isExternalNumberChanged.value) {
+      return externalNumberData.value.type
+    }
+    return bookingStore.bookingDetails?.additionalInfo?.externalNumber?.type || ExternalNumberTypeEnum.HotelBookingNumber
+  },
+  set: (value: ExternalNumberType) => {
+    isExternalNumberChanged.value = true
+    externalNumberData.value.type = value
+    externalNumberData.value.number = null
+  },
 })
-watch(externalNumber, () => {
-  isExternalNumberChanged.value = true
+const externalNumber = computed<string | null>({
+  get: () => {
+    if (isExternalNumberChanged.value) {
+      return externalNumberData.value.number
+    }
+    return bookingStore.bookingDetails?.additionalInfo?.externalNumber?.number || null
+  },
+  set: (value: string | null): void => {
+    isExternalNumberChanged.value = true
+    externalNumberData.value.number = value
+  },
 })
+const isNeedShowExternalNumber = computed<boolean>(
+  () => Number(externalNumberType.value) === ExternalNumberTypeEnum.HotelBookingNumber,
+)
 
 const { data: bookingData, execute: fetchBooking } = useGetBookingAPI({ bookingID })
+const { data: statuses, execute: fetchStatuses } = useBookingStatusesAPI()
 const { data: availableStatuses, execute: fetchAvailableStatuses } = useBookingAvailableStatusesAPI({ bookingID })
 
-fetchBooking()
+fetchStatuses()
 fetchAvailableStatuses()
+fetchBooking()
 
 const booking = reactive<Booking>(bookingData as unknown as Booking)
+
+// @todo прописать логику
+const isRequestableStatus = computed<boolean>(() => bookingData.value?.status === 2)
+const isRoomsAndGuestsFilled = computed<boolean>(() => !bookingStore.isEmptyGuests && !bookingStore.isEmptyRooms)
 
 const handleStatusChange = async (value: number): Promise<void> => {
   await updateBookingStatus({
@@ -51,6 +91,23 @@ const handleStatusChange = async (value: number): Promise<void> => {
     status: value,
   })
   fetchBooking()
+  fetchAvailableStatuses()
+}
+
+const isRequestFetching = ref<boolean>(false)
+const handleRequestSend = async () => {
+  isRequestFetching.value = true
+  await sendBookingRequest({
+    bookingID,
+    type: 'type',
+  })
+  await fetchBookingDetails()
+  isRequestFetching.value = false
+}
+
+const handleUpdateExternalNumber = async () => {
+  await updateExternalNumber({ bookingID, ...externalNumberData.value })
+  isExternalNumberChanged.value = false
 }
 
 </script>
@@ -58,8 +115,9 @@ const handleStatusChange = async (value: number): Promise<void> => {
 <template>
   <div class="d-flex flex-wrap flex-grow-1 gap-2">
     <StatusSelect
-      v-if="booking"
+      v-if="booking && statuses"
       v-model="booking.status"
+      :statuses="statuses"
       :available-statuses="availableStatuses"
       @change="handleStatusChange"
     />
@@ -79,7 +137,7 @@ const handleStatusChange = async (value: number): Promise<void> => {
           disabled-placeholder="Номер подтверждения брони в отеля"
           :value="externalNumberType as number"
           :options="externalNumberTypeOptions"
-          @input="value => externalNumberType = value as number"
+          @input="value => externalNumberType = value as 3 | 2 | 1"
         />
       </div>
       <div class="d-flex ml-2">
@@ -88,7 +146,6 @@ const handleStatusChange = async (value: number): Promise<void> => {
             v-if="isNeedShowExternalNumber"
             v-model="externalNumber"
             class="form-control"
-            name="external_number"
             type="text"
             placeholder="№ брони"
           >
@@ -97,7 +154,7 @@ const handleStatusChange = async (value: number): Promise<void> => {
           </div>
         </div>
         <div v-if="isExternalNumberChanged" class="ml-2">
-          <a class="btn btn-primary">Сохранить</a>
+          <a href="#" class="btn btn-primary" @click.prevent="handleUpdateExternalNumber">Сохранить</a>
         </div>
       </div>
     </div>
@@ -107,10 +164,47 @@ const handleStatusChange = async (value: number): Promise<void> => {
     <h6>Финансовая стоимость брони</h6>
     <hr>
   </div>
+
+  <div v-if="isRequestableStatus" class="mt-4">
+    <h6>Запросы в гостиницу</h6>
+    <hr>
+    <RequestBlock
+      v-if="isRoomsAndGuestsFilled"
+      text="Запрос на бронирование еще не отправлен"
+      :loading="isRequestFetching"
+      @click="handleRequestSend"
+    />
+    <RequestBlock
+      v-else
+      :show-button="false"
+      text="Для отправки запроса необходимо заполнить информацию по номерам и гостям"
+    />
+  </div>
+
+  <div class="mt-4">
+    <h6>Условия отмены</h6>
+    <hr>
+    <table class="table-params">
+      <tbody>
+        <tr>
+          <th>Отмена без штрафа</th>
+          <td>до -</td>
+        </tr>
+        <tr>
+          <th>Незаезд</th>
+          <td>100% За первую ночь</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
 
 <style scoped lang="scss">
 .ml-2 {
   margin-left: 0.5rem;
+}
+
+hr {
+  margin: 0.5rem 0 0.75rem;
 }
 </style>

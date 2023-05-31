@@ -28,9 +28,33 @@ export interface HotelBookingDetailsRoom {
   lateCheckOut: MarkupCondition
 }
 
+export enum ExternalNumberTypeEnum {
+  GotoStansBookingNumber = 1,
+  HotelBookingNumber = 2,
+  FullName = 3,
+}
+
+const ExternalNumberTypes = {
+  GotoStansBookingNumber: 1,
+  HotelBookingNumber: 2,
+  FullName: 3,
+} as const
+
+export type ExternalNumberType = typeof ExternalNumberTypes[keyof typeof ExternalNumberTypes]
+
+export interface ExternalNumber {
+  type: ExternalNumberType
+  number: string | null
+}
+
+export interface AdditionalInfo {
+  externalNumber: ExternalNumber | null
+}
+
 export interface HotelBookingDetails {
   id: number
   rooms: HotelBookingDetailsRoom[]
+  additionalInfo: AdditionalInfo | null
 }
 
 export const useBookingHotelDetailsAPI = (props: MaybeRef<BookingHotelDetailsPayload | null>) =>

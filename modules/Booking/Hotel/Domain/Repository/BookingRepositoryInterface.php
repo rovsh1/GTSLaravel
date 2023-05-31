@@ -3,7 +3,7 @@
 namespace Module\Booking\Hotel\Domain\Repository;
 
 use Carbon\CarbonInterface;
-use Module\Booking\Hotel\Domain\Entity\Booking;
+use Module\Booking\Common\Domain\Entity\Booking;
 
 interface BookingRepositoryInterface
 {

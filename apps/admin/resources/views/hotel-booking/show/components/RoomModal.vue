@@ -40,8 +40,16 @@ const { bookingID, hotelID, hotelRooms } = requestInitialData(
   z.object({
     bookingID: z.number(),
     hotelID: z.number(),
-    // @todo не понял как указать строгий тип
-    hotelRooms: z.array(z.any()),
+    hotelRooms: z.array(
+      z.object({
+        id: z.number(),
+        hotel_id: z.number(),
+        name: z.string(),
+        custom_name: z.string(),
+        rooms_number: z.number(),
+        guests_number: z.number(),
+      }),
+    ),
   }),
 )
 

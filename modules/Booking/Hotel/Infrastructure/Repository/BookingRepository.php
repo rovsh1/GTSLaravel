@@ -3,8 +3,8 @@
 namespace Module\Booking\Hotel\Infrastructure\Repository;
 
 use Carbon\CarbonInterface;
-use Module\Booking\Hotel\Domain\Entity\Booking as Entity;
-use Module\Booking\Hotel\Domain\Factory\BookingFactory;
+use Module\Booking\Common\Factory\BookingFactory;
+use Module\Booking\Common\Domain\Entity\Booking as Entity;
 use Module\Booking\Hotel\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\Hotel\Infrastructure\Models\Booking as Model;
 
@@ -38,9 +38,9 @@ class BookingRepository implements BookingRepositoryInterface
     public function searchActive(?int $hotelId): array
     {
         $modelsQuery = Model::query()
-            ->withClient()
+            ->withClient();
             //todo уточнить по поводу статуса у Анвара
-            ->where('reservation.status', BookingStatusEnum::WaitingConfirmation);
+//            ->where('reservation.status', BookingStatusEnum::WaitingConfirmation);
 
         if ($hotelId !== null) {
             $modelsQuery->where('hotel_id', $hotelId);

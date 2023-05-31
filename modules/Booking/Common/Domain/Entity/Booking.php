@@ -5,16 +5,18 @@ declare(strict_types=1);
 namespace Module\Booking\Common\Domain\Entity;
 
 use Carbon\Carbon;
+use Module\Booking\Common\Domain\Exception\InvalidStatusTransition;
+use Module\Booking\Common\Domain\Service\StatusRules\Rules;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
 use Module\Shared\Domain\Entity\EntityInterface;
 
-abstract class Booking implements EntityInterface, ReservationInterface
+class Booking implements EntityInterface, ReservationInterface
 {
     public function __construct(
         private readonly int $id,
         private readonly int $orderId,
-        private readonly BookingStatusEnum $status,
+        private BookingStatusEnum $status,
         private readonly BookingTypeEnum $type,
         private readonly Carbon $dateCreate,
         private readonly int $creatorId,
@@ -34,6 +36,15 @@ abstract class Booking implements EntityInterface, ReservationInterface
     public function status(): BookingStatusEnum
     {
         return $this->status;
+    }
+
+    public function setStatus(BookingStatusEnum $status): void
+    {
+        //@todo решить как получать Rules
+        if (!app(Rules::class)->canTransit($this->status, $status)) {
+            throw new InvalidStatusTransition("Can't change status for booking [{$this->id}]]");
+        }
+        $this->status = $status;
     }
 
     public function type(): BookingTypeEnum

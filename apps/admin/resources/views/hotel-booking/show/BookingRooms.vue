@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 import { useToggle } from '@vueuse/core'
 import { z } from 'zod'
@@ -10,11 +10,12 @@ import GuestModal from '~resources/views/hotel-booking/show/components/GuestModa
 import RoomModal from '~resources/views/hotel-booking/show/components/RoomModal.vue'
 import { getConditionLabel, getGenderName, getRoomStatusName } from '~resources/views/hotel-booking/show/constants'
 import { GuestFormData, RoomFormData } from '~resources/views/hotel-booking/show/form'
+import { useBookingStore } from '~resources/views/hotel-booking/show/store'
 
-import { HotelBookingDetailsRoom, HotelBookingGuest, useBookingHotelDetailsAPI } from '~api/booking/details'
+import { HotelBookingDetails, HotelBookingDetailsRoom, HotelBookingGuest } from '~api/booking/details'
 import { deleteBookingRoom } from '~api/booking/rooms'
 import { CountryResponse, useCountrySearchAPI } from '~api/country'
-import { MarkupSettings, useHotelMarkupSettingsAPI } from '~api/hotel/markup-settings'
+import { MarkupSettings } from '~api/hotel/markup-settings'
 import { HotelRate, useHotelRatesAPI } from '~api/hotel/price-rate'
 import { HotelRoomResponse } from '~api/hotel/room'
 
@@ -29,16 +30,24 @@ const { bookingID, hotelID, hotelRooms } = requestInitialData(
   z.object({
     hotelID: z.number(),
     bookingID: z.number(),
-    // @todo не понял как указать строгий тип
-    hotelRooms: z.array(z.any()),
+    hotelRooms: z.array(
+      z.object({
+        id: z.number(),
+        hotel_id: z.number(),
+        name: z.string(),
+        custom_name: z.string(),
+        rooms_number: z.number(),
+        guests_number: z.number(),
+      }),
+    ),
   }),
 )
 
-const { data: markupSettings, execute: fetchMarkupSettings } = useHotelMarkupSettingsAPI({ hotelID })
-fetchMarkupSettings()
-
-const { execute: fetchDetails, data: bookingDetails } = useBookingHotelDetailsAPI({ bookingID })
-fetchDetails()
+const bookingStore = useBookingStore()
+const { fetchBookingDetails } = bookingStore
+fetchBookingDetails()
+const bookingDetails = computed<HotelBookingDetails | null>(() => bookingStore.bookingDetails)
+const markupSettings = computed<MarkupSettings | null>(() => bookingStore.markupSettings)
 
 const { execute: fetchPriceRates, data: priceRates } = useHotelRatesAPI({ hotelID })
 fetchPriceRates()
@@ -49,7 +58,7 @@ fetchCountries()
 const onModalSubmit = () => {
   toggleRoomModal(false)
   toggleGuestModal(false)
-  fetchDetails()
+  fetchBookingDetails()
 }
 
 const getPriceRateName = (id: number): string | undefined =>
@@ -96,7 +105,7 @@ const handleDeleteRoom = async (roomIndex: number): Promise<void> => {
   if (isApproved) {
     toggleLoading()
     await deleteBookingRoom({ bookingID, roomIndex })
-    await fetchDetails()
+    await fetchBookingDetails()
     toggleClose()
   }
 }
@@ -135,7 +144,7 @@ const getCheckOutTime = (room: HotelBookingDetailsRoom) => {
     :opened="isShowRoomModal"
     :form-data="roomForm"
     :room-index="editRoomIndex"
-    :hotel-markup-settings="markupSettings as MarkupSettings"
+    :hotel-markup-settings="markupSettings"
     @close="toggleRoomModal(false)"
     @submit="onModalSubmit"
   />

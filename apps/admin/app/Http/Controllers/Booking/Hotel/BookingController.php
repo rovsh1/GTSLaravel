@@ -2,6 +2,7 @@
 
 namespace App\Admin\Http\Controllers\Booking\Hotel;
 
+use App\Admin\Http\Requests\Booking\UpdateExternalNumberRequest;
 use App\Admin\Http\Requests\Booking\UpdateStatusRequest;
 use App\Admin\Http\Resources\Room as RoomResource;
 use App\Admin\Models\Booking\Administrator;
@@ -177,6 +178,12 @@ class BookingController extends AbstractPrototypeController
     public function updateStatus(UpdateStatusRequest $request, int $id): AjaxResponseInterface
     {
         StatusAdapter::updateStatus($id, $request->getStatus());
+        return new AjaxSuccessResponse();
+    }
+
+    public function updateExternalNumber(UpdateExternalNumberRequest $request, int $id): AjaxResponseInterface
+    {
+        HotelAdapter::updateExternalNumber($id, $request->getType(), $request->getNumber());
         return new AjaxSuccessResponse();
     }
 

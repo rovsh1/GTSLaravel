@@ -17,7 +17,7 @@ class BookingDetails extends Model
         'date_start',
         'date_end',
         'nights_count',
-        'additional_data',//@todo Тип номера подтверждения бронирования
+        'additional_data',
         'rooms',
     ];
 

@@ -6,6 +6,7 @@ namespace App\Admin\Support\Adapters\Booking;
 
 use App\Core\Support\Adapters\AbstractModuleAdapter;
 use Carbon\CarbonPeriod;
+use Module\Booking\Hotel\Application\UseCase\UpdateExternalNumber;
 
 class HotelAdapter extends AbstractModuleAdapter
 {
@@ -139,6 +140,11 @@ class HotelAdapter extends AbstractModuleAdapter
             'countryId' => $countryId,
             'gender' => $gender,
         ]);
+    }
+
+    public function updateExternalNumber(int $bookingId, int $type, ?string $number): void
+    {
+        app(UpdateExternalNumber::class)->execute($bookingId, $type, $number);
     }
 
     protected function getModuleKey(): string

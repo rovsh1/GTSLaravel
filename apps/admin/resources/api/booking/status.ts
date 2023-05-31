@@ -8,6 +8,7 @@ export type StatusID = number
 export interface BookingStatusesResponse {
   id: StatusID
   name: string
+  key: string
 }
 
 export interface BookingAvailableStatusesPayload {
