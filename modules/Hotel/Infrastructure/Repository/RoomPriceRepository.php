@@ -24,9 +24,9 @@ class RoomPriceRepository implements RoomPriceRepositoryInterface
             'rate_id' => $rateId,
             'guests_number' => $guestsNumber,
             'type' => $isResident ? PriceTypeEnum::Resident : PriceTypeEnum::Nonresident,
-            'date' => $date,
+            'date' => $date->toDateString(),
         ];
 
-        EloquentPrice::updateOrCreate($roomPriceData, [...$roomPriceData, 'price' => $price]);
+        EloquentPrice::updateOrCreate($roomPriceData, ['price' => $price]);
     }
 }
