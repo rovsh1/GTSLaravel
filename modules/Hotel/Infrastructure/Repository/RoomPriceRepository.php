@@ -9,8 +9,15 @@ use Module\Hotel\Infrastructure\Models\Room\PriceTypeEnum;
 
 class RoomPriceRepository implements RoomPriceRepositoryInterface
 {
-    public function updateRoomPrices(int $roomId, int $seasonId, int $rateId, int $guestsNumber, bool $isResident, CarbonInterface $date, float $price)
-    {
+    public function updateRoomPrices(
+        int $roomId,
+        int $seasonId,
+        int $rateId,
+        int $guestsNumber,
+        bool $isResident,
+        CarbonInterface $date,
+        float $price
+    ) {
         $roomPriceData = [
             'room_id' => $roomId,
             'season_id' => $seasonId,
@@ -18,9 +25,8 @@ class RoomPriceRepository implements RoomPriceRepositoryInterface
             'guests_number' => $guestsNumber,
             'type' => $isResident ? PriceTypeEnum::Resident : PriceTypeEnum::Nonresident,
             'date' => $date,
-            'price' => $price,
         ];
 
-        EloquentPrice::updateOrCreate($roomPriceData);
+        EloquentPrice::updateOrCreate($roomPriceData, [...$roomPriceData, 'price' => $price]);
     }
 }
