@@ -9,13 +9,15 @@ use Module\Booking\Common\Infrastructure\Models\Booking as Model;
 
 class BookingRepository implements BookingRepositoryInterface
 {
+    public function __construct(private readonly BookingFactory $bookingFactory) {}
+
     public function find(int $id): ?Entity
     {
         $model = Model::find($id);
         if (!$model) {
             return null;
         }
-        return app(BookingFactory::class)->createFrom($model);
+        return $this->bookingFactory->createFrom($model);
     }
 
     public function update(Entity $booking): bool
