@@ -28,10 +28,6 @@ class RoomPriceRepository implements RoomPriceRepositoryInterface
             'price' => $price
         ];
 
-        try {
-            EloquentPrice::upsert([$roomPriceData], array_keys($roomPriceData), ['price']);
-        } catch (\Throwable $e) {
-            dd($e);
-        }
+        EloquentPrice::upsert([$roomPriceData], array_keys($roomPriceData), ['price']);
     }
 }
