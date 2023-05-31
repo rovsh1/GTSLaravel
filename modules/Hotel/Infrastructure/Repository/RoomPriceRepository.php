@@ -27,6 +27,8 @@ class RoomPriceRepository implements RoomPriceRepositoryInterface
             'date' => $date->toDateString(),
         ];
 
+        dd(EloquentPrice::where($roomPriceData)->first());
+
         EloquentPrice::updateOrCreate($roomPriceData, ['price' => $price]);
     }
 }
