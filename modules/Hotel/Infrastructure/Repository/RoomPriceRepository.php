@@ -25,10 +25,11 @@ class RoomPriceRepository implements RoomPriceRepositoryInterface
             'guests_number' => $guestsNumber,
             'type' => $isResident ? PriceTypeEnum::Resident : PriceTypeEnum::Nonresident,
             'date' => $date->toDateString(),
+            'price' => $price
         ];
 
         try {
-            EloquentPrice::updateOrCreate($roomPriceData, ['price' => $price]);
+            EloquentPrice::upsert([$roomPriceData], array_keys($roomPriceData), ['price']);
         } catch (\Throwable $e) {
             dd($e);
         }
