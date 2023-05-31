@@ -31,6 +31,8 @@ class Price extends Model
     public const CREATED_AT = null;
     public const UPDATED_AT = null;
 
+    public $incrementing = false;
+
     protected $table = 'hotel_room_price_days';
 
     protected $fillable = [
