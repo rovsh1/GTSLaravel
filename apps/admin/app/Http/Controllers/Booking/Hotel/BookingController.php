@@ -233,7 +233,8 @@ class BookingController extends AbstractPrototypeController
             ->city('city_id', [
                 'label' => __('label.city'),
                 'emptyItem' => '',
-                'required' => true
+                'required' => true,
+                'onlyWithHotels' => true
             ])
             ->hidden('client_id', [
                 'label' => __('label.client'),

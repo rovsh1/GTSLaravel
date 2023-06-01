@@ -3,6 +3,7 @@
 namespace App\Admin\Models\Reference;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Facades\DB;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
 use Sdk\Module\Database\Eloquent\HasTranslations;
@@ -45,12 +46,23 @@ class Country extends Model
         });
     }
 
-    public function scopeWhereHasCity($query)
+    public function scopeWhereHasCity(Builder $query)
     {
-        $query->whereExists(function ($query) {
+        $query->whereExists(function (QueryBuilder $query) {
             $query->select(DB::raw(1))
                 ->from('r_cities as t')
                 ->whereColumn('t.country_id', 'r_countries.id');
+        });
+    }
+
+    public function scopeWhereHasHotel(Builder $query)
+    {
+        $query->whereExists(function (QueryBuilder $query) {
+            $query
+                ->join('r_cities', 'r_cities.country_id', '=', 'r_countries.id')
+                ->select(DB::raw(1))
+                ->from('hotels as t')
+                ->whereColumn('t.city_id', 'r_cities.id');
         });
     }
 
