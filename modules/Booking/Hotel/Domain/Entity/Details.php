@@ -9,6 +9,7 @@ use Module\Booking\Hotel\Domain\Entity\Details\Room;
 use Module\Booking\Hotel\Domain\Entity\Details\RoomCollection;
 use Module\Booking\Hotel\Domain\ValueObject\Details\AdditionalInfo;
 use Module\Booking\Hotel\Domain\ValueObject\Details\BookingPeriod;
+use Module\Booking\Hotel\Domain\ValueObject\Details\CancelConditions;
 
 final class Details implements HotelDetailsInterface
 {
@@ -17,11 +18,9 @@ final class Details implements HotelDetailsInterface
         private readonly int $hotelId,
         private readonly BookingPeriod $period,
         private ?AdditionalInfo $additionalInfo,
-        private readonly RoomCollection $rooms
+        private readonly RoomCollection $rooms,
+        private readonly CancelConditions $cancelConditions
     ) {}
-
-    //@todo из квот release_days, до даты booking_start_date - release_days (бесплатно)
-    //@todo добавить условия отмены из отеля при создании
 
     public function id(): int
     {
@@ -66,5 +65,10 @@ final class Details implements HotelDetailsInterface
     public function deleteRoom(int $index): void
     {
         $this->rooms->offsetUnset($index);
+    }
+
+    public function cancelConditions(): CancelConditions
+    {
+        return $this->cancelConditions;
     }
 }

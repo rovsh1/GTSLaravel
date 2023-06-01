@@ -16,7 +16,8 @@ class DetailsDto extends AbstractDomainBasedDto
         public readonly BookingPeriodDto $period,
         public readonly ?AdditionalInfoDto $additionalInfo,
         /** @var RoomDto[] $rooms */
-        public readonly array $rooms
+        public readonly array $rooms,
+        public readonly CancelConditionsDto $cancelConditions
     ) {}
 
     public static function fromDomain(EntityInterface|ValueObjectInterface|HotelDetailsInterface $entity): static
@@ -30,7 +31,8 @@ class DetailsDto extends AbstractDomainBasedDto
             $entity->hotelId(),
             BookingPeriodDto::fromDomain($entity->period()),
             $additionalInfo,
-            RoomDto::collectionFromDomain($entity->rooms()->all())
+            RoomDto::collectionFromDomain($entity->rooms()->all()),
+            CancelConditionsDto::fromDomain($entity->cancelConditions())
         );
     }
 }

@@ -137,7 +137,7 @@ return new class extends Migration {
                 );
 
                 return new CancelPeriod(
-                    new \Carbon\CarbonPeriod($cancelPeriod->date_from, $cancelPeriod->date_to),
+                    new \Carbon\CarbonPeriodImmutable($cancelPeriod->date_from, $cancelPeriod->date_to),
                     new CancelMarkupOption(
                         new Percent($cancelPeriod->price_markup),
                         CancelPeriodTypeEnum::from($cancelPeriod->period_type)

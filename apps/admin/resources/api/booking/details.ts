@@ -2,7 +2,7 @@ import { MaybeRef } from '@vueuse/core'
 
 import { useAdminAPI } from '~api'
 import { BookingID } from '~api/booking/index'
-import { MarkupCondition, Percent } from '~api/hotel/markup-settings'
+import { DailyMarkup, MarkupCondition, NoCheckInMarkup, Percent } from '~api/hotel/markup-settings'
 
 export interface BookingHotelDetailsPayload {
   bookingID: BookingID
@@ -51,10 +51,17 @@ export interface AdditionalInfo {
   externalNumber: ExternalNumber | null
 }
 
+export interface CancelConditions {
+  cancelNoFeeDate: string | null
+  noCheckInMarkup: NoCheckInMarkup
+  dailyMarkups: DailyMarkup[]
+}
+
 export interface HotelBookingDetails {
   id: number
   rooms: HotelBookingDetailsRoom[]
   additionalInfo: AdditionalInfo | null
+  cancelConditions: CancelConditions
 }
 
 export const useBookingHotelDetailsAPI = (props: MaybeRef<BookingHotelDetailsPayload | null>) =>

@@ -3,7 +3,9 @@
 namespace Module\Shared\Providers;
 
 use Module\Shared\Domain\Service\ConstantManager;
+use Module\Shared\Domain\Service\SerializerInterface;
 use Module\Shared\Domain\Service\TranslatorInterface;
+use Module\Shared\Infrastructure\Service\JsonSerializer;
 use Module\Shared\Infrastructure\Service\Translator;
 
 class BootServiceProvider extends \Sdk\Module\Foundation\Support\Providers\SharedServiceProvider
@@ -12,5 +14,6 @@ class BootServiceProvider extends \Sdk\Module\Foundation\Support\Providers\Share
     {
         $this->sharedSingleton(ConstantManager::class, ConstantManager::class);
         $this->sharedSingleton(TranslatorInterface::class, Translator::class);
+        $this->sharedSingleton(SerializerInterface::class, JsonSerializer::class);
     }
 }

@@ -6,12 +6,12 @@ use Module\Booking\Hotel\Domain\Entity\Details as Entity;
 use Module\Booking\Hotel\Domain\Factory\DetailsFactory;
 use Module\Booking\Hotel\Domain\Repository\DetailsRepositoryInterface;
 use Module\Booking\Hotel\Infrastructure\Models\BookingDetails as Model;
-use Module\Shared\Infrastructure\Service\JsonSerializer;
+use Module\Shared\Domain\Service\SerializerInterface;
 
 class DetailsRepository implements DetailsRepositoryInterface
 {
     public function __construct(
-        private readonly JsonSerializer $serializer
+        private readonly SerializerInterface $serializer
     ) {}
 
     public function find(int $id): ?Entity

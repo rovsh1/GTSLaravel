@@ -2,7 +2,8 @@
 
 namespace Module\Hotel\Application\Command;
 
-use Carbon\CarbonPeriod;
+use Carbon\CarbonImmutable;
+use Carbon\CarbonPeriodImmutable;
 use Illuminate\Support\Collection;
 use Module\Hotel\Application\Enums\UpdateMarkupSettingsActionEnum;
 use Module\Hotel\Domain\Repository\MarkupSettingsRepositoryInterface;
@@ -121,10 +122,16 @@ class UpdateMarkupSettingsValueHandler implements CommandHandlerInterface
 
     private function handleUpdateCancelPeriod(CancelPeriod $cancelPeriod, string $key, mixed $value): void
     {
+        $startDate = $cancelPeriod->period()->getStartDate();
+        $endDate = $cancelPeriod->period()->getEndDate();
         if ($key === 'from') {
-            $cancelPeriod->period()->setStartDate($value);
+            $startDate = new CarbonImmutable($value);
+            $period = new CarbonPeriodImmutable($startDate, $endDate, $cancelPeriod->period()->getDateInterval());
+            $cancelPeriod->setPeriod($period);
         } elseif ($key === 'to') {
-            $cancelPeriod->period()->setEndDate($value);
+            $endDate = new CarbonImmutable($value);
+            $period = new CarbonPeriodImmutable($startDate, $endDate, $cancelPeriod->period()->getDateInterval());
+            $cancelPeriod->setPeriod($period);
         } else {
             $this->setByObjectKey($cancelPeriod, $key, $value);
         }
@@ -169,7 +176,7 @@ class UpdateMarkupSettingsValueHandler implements CommandHandlerInterface
             throw new \InvalidArgumentException('Can not add condition: Invalid noCheckInMarkup item');
         }
         return new CancelPeriod(
-            period: new CarbonPeriod($data['from'], $data['to']),
+            period: new CarbonPeriodImmutable($data['from'], $data['to']),
             noCheckInMarkup: new CancelMarkupOption(
                 new Percent($data['noCheckInMarkup']['percent']),
                 CancelPeriodTypeEnum::from($data['noCheckInMarkup']['cancelPeriodType'])
@@ -197,7 +204,8 @@ class UpdateMarkupSettingsValueHandler implements CommandHandlerInterface
         $setterMethod = 'set' . \Str::ucfirst($key);
         if (method_exists($object, $setterMethod)) {
             $preparedValue = $value;
-            $argumentType = (new \ReflectionClass($object))->getMethod($setterMethod)->getParameters()[0]?->getType()?->getName();
+            $argumentType = (new \ReflectionClass($object))->getMethod($setterMethod)->getParameters()[0]?->getType(
+            )?->getName();
             if (class_exists($argumentType)) {
                 $preparedValue = new $argumentType($value);
             }

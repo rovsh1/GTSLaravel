@@ -19,6 +19,7 @@ class BookingDetails extends Model
         'nights_count',
         'additional_data',
         'rooms',
+        'cancel_conditions',
     ];
 
     protected static function booted()

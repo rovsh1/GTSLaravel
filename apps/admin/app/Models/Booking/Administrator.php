@@ -10,6 +10,8 @@ class Administrator extends Model
 {
     protected $table = 'administrator_bookings';
 
+    public $timestamps = false;
+
     protected $fillable = [
         'booking_id',
         'administrator_id'

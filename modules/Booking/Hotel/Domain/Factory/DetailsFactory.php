@@ -7,13 +7,14 @@ namespace Module\Booking\Hotel\Domain\Factory;
 use Module\Booking\Hotel\Domain\Entity\Details;
 use Module\Booking\Hotel\Domain\ValueObject\Details\AdditionalInfo;
 use Module\Booking\Hotel\Domain\ValueObject\Details\BookingPeriod;
-use Module\Shared\Infrastructure\Service\JsonSerializer;
+use Module\Booking\Hotel\Domain\ValueObject\Details\CancelConditions;
+use Module\Shared\Domain\Service\SerializerInterface;
 use Sdk\Module\Foundation\Support\EntityFactory\AbstractEntityFactory;
 
 class DetailsFactory extends AbstractEntityFactory
 {
     public function __construct(
-        private readonly JsonSerializer $serializer
+        private readonly SerializerInterface $serializer
     ) {
         parent::__construct();
     }
@@ -37,6 +38,7 @@ class DetailsFactory extends AbstractEntityFactory
             ),
             $additionalData,
             $this->serializer->deserialize(Details\RoomCollection::class, $data['rooms']),
+            $this->serializer->deserialize(CancelConditions::class, $data['cancel_conditions']),
         );
     }
 }

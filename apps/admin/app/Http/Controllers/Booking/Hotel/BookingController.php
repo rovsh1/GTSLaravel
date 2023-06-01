@@ -123,20 +123,6 @@ class BookingController extends AbstractPrototypeController
             ]);
     }
 
-    public function get(int $id): JsonResponse
-    {
-        return response()->json(
-            HotelAdapter::getBooking($id)
-        );
-    }
-
-    public function getDetails(int $id): JsonResponse
-    {
-        return response()->json(
-            HotelAdapter::getBookingDetails($id)
-        );
-    }
-
     public function edit(int $id): LayoutContract
     {
         $breadcrumbs = Breadcrumb::prototype($this->prototype);
@@ -159,6 +145,41 @@ class BookingController extends AbstractPrototypeController
                 'cancelUrl' => $this->prototype->route('show', $id),
                 'deleteUrl' => $this->isAllowed('delete') ? $this->prototype->route('destroy', $id) : null
             ]);
+    }
+
+    public function update(int $id): RedirectResponse
+    {
+        //@todo при обновлении дат, не забудь обновить CancelConditions
+        throw new \Exception('Not implemented yet.');
+        $this->model = $this->repository->findOrFail($id);
+
+        $form = $this->formFactory()
+            ->method('put');
+
+        $form->trySubmit($this->prototype->route('edit', $this->model));
+
+        $preparedData = $this->saving($form->getData());
+        $this->repository->update($this->model->id, $preparedData);
+
+        $redirectUrl = $this->prototype->route('index');
+        if ($this->hasShowAction()) {
+            $redirectUrl = $this->prototype->route('show', $this->model);
+        }
+        return redirect($redirectUrl);
+    }
+
+    public function get(int $id): JsonResponse
+    {
+        return response()->json(
+            HotelAdapter::getBooking($id)
+        );
+    }
+
+    public function getDetails(int $id): JsonResponse
+    {
+        return response()->json(
+            HotelAdapter::getBookingDetails($id)
+        );
     }
 
     public function getStatuses(): JsonResponse

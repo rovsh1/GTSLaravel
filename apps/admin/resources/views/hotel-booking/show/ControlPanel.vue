@@ -9,10 +9,9 @@ import { externalNumberTypeOptions } from '~resources/views/hotel-booking/show/c
 import { useBookingStore } from '~resources/views/hotel-booking/show/store'
 
 import { Booking, updateBookingStatus, updateExternalNumber, useGetBookingAPI } from '~api/booking'
-import { ExternalNumber, ExternalNumberType, ExternalNumberTypeEnum } from '~api/booking/details'
+import { CancelConditions, ExternalNumber, ExternalNumberType, ExternalNumberTypeEnum } from '~api/booking/details'
 import { sendBookingRequest } from '~api/booking/request'
 import { useBookingAvailableStatusesAPI, useBookingStatusesAPI } from '~api/booking/status'
-import { MarkupSettings } from '~api/hotel/markup-settings'
 
 import { requestInitialData } from '~lib/initial-data'
 
@@ -29,7 +28,6 @@ const { bookingID } = requestInitialData(
 
 const bookingStore = useBookingStore()
 const { fetchBookingDetails } = bookingStore
-const markupSettings = computed<MarkupSettings | null>(() => bookingStore.markupSettings)
 
 const externalNumberData = ref<ExternalNumber>({
   type: ExternalNumberTypeEnum.HotelBookingNumber,
@@ -37,11 +35,7 @@ const externalNumberData = ref<ExternalNumber>({
 })
 
 const isExternalNumberChanged = ref<boolean>(false)
-// watch(externalNumberData, () => {
-//   isExternalNumberChanged.value = true
-// }, { deep: true })
 
-// @todo протестить как работает без watch
 const externalNumberType = computed<ExternalNumberType>({
   get: () => {
     if (isExternalNumberChanged.value) {
@@ -70,6 +64,8 @@ const externalNumber = computed<string | null>({
 const isNeedShowExternalNumber = computed<boolean>(
   () => Number(externalNumberType.value) === ExternalNumberTypeEnum.HotelBookingNumber,
 )
+
+const cancelConditions = computed<CancelConditions | null>(() => bookingStore.bookingDetails?.cancelConditions || null)
 
 const { data: bookingData, execute: fetchBooking } = useGetBookingAPI({ bookingID })
 const { data: statuses, execute: fetchStatuses } = useBookingStatusesAPI()
@@ -107,6 +103,7 @@ const handleRequestSend = async () => {
 
 const handleUpdateExternalNumber = async () => {
   await updateExternalNumber({ bookingID, ...externalNumberData.value })
+  await fetchBookingDetails()
   isExternalNumberChanged.value = false
 }
 
@@ -188,11 +185,13 @@ const handleUpdateExternalNumber = async () => {
       <tbody>
         <tr>
           <th>Отмена без штрафа</th>
-          <td>до -</td>
+          <td>до {{ cancelConditions?.cancelNoFeeDate || '-' }}</td>
         </tr>
         <tr>
           <th>Незаезд</th>
-          <td>100% За первую ночь</td>
+          <td v-if="cancelConditions">
+            {{ cancelConditions.noCheckInMarkup.percent }}% за {{ cancelConditions.noCheckInMarkup.cancelPeriodType }}
+          </td>
         </tr>
       </tbody>
     </table>

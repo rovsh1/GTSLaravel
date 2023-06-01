@@ -4,7 +4,7 @@ namespace Module\Booking\Common\Domain\Service\StatusRules;
 
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 
-class Rules extends AbstractRules
+class Rules extends AbstractRules implements StatusRulesInterface
 {
     public function __construct()
     {

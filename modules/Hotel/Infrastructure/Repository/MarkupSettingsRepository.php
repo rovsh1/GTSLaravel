@@ -7,12 +7,12 @@ namespace Module\Hotel\Infrastructure\Repository;
 use Module\Hotel\Domain\Entity\MarkupSettings;
 use Module\Hotel\Domain\Repository\MarkupSettingsRepositoryInterface;
 use Module\Hotel\Infrastructure\Models\Hotel;
-use Module\Shared\Infrastructure\Service\JsonSerializer;
+use Module\Shared\Domain\Service\SerializerInterface;
 
 class MarkupSettingsRepository implements MarkupSettingsRepositoryInterface
 {
     public function __construct(
-        private readonly JsonSerializer $serializer
+        private readonly SerializerInterface $serializer
     ) {}
 
     public function get(int $id): MarkupSettings

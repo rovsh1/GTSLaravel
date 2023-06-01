@@ -22,6 +22,10 @@ class BootServiceProvider extends \Sdk\Module\Foundation\Support\Providers\Servi
             Infrastructure\Adapter\OrderAdapter::class
         );
         $this->app->singleton(
+            Domain\Adapter\HotelAdapterInterface::class,
+            Infrastructure\Adapter\HotelAdapter::class
+        );
+        $this->app->singleton(
             Domain\Adapter\HotelRoomAdapterInterface::class,
             Infrastructure\Adapter\HotelRoomAdapter::class
         );

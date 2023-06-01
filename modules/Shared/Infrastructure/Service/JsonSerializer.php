@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Module\Shared\Infrastructure\Service;
 
+use Module\Shared\Domain\Service\SerializerInterface;
 use Module\Shared\Domain\ValueObject\SerializableDataInterface;
 
-class JsonSerializer
+class JsonSerializer implements SerializerInterface
 {
     public function serialize(SerializableDataInterface $object): string
     {

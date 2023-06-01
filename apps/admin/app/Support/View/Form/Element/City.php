@@ -14,7 +14,8 @@ class City extends Select
 
         parent::__construct($name, $options);
 
+        //@todo добавить настройку, по которой буду вытаскивать только те города/страны где есть отели. Добавить whereHasHotel в страну
         $this->setGroups(Country::whereHasCity()->get());
-        $this->setItems(Model::get());
+        $this->setItems(Model::whereHasHotel()->get());
     }
 }
