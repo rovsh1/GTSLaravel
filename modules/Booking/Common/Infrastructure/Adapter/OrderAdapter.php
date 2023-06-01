@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Hotel\Infrastructure\Adapter;
+namespace Module\Booking\Common\Infrastructure\Adapter;
 
 use App\Core\Support\Adapters\AbstractModuleAdapter;
-use Module\Booking\Hotel\Domain\Adapter\OrderAdapterInterface;
+use Module\Booking\Common\Domain\Adapter\OrderAdapterInterface;
 
 class OrderAdapter extends AbstractModuleAdapter implements OrderAdapterInterface
 {

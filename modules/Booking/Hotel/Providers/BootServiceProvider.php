@@ -6,8 +6,9 @@ use Module\Booking\Hotel\Domain;
 use Module\Booking\Hotel\Domain\Adapter\FileStorageAdapterInterface;
 use Module\Booking\Hotel\Infrastructure;
 use Module\Booking\Hotel\Infrastructure\Adapter\FileStorageAdapter;
+use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
 
-class BootServiceProvider extends \Sdk\Module\Foundation\Support\Providers\ServiceProvider
+class BootServiceProvider extends ServiceProvider
 {
     public function register()
     {
@@ -18,10 +19,6 @@ class BootServiceProvider extends \Sdk\Module\Foundation\Support\Providers\Servi
             FileStorageAdapter::class
         );
         $this->app->singleton(
-            Domain\Adapter\OrderAdapterInterface::class,
-            Infrastructure\Adapter\OrderAdapter::class
-        );
-        $this->app->singleton(
             Domain\Adapter\HotelAdapterInterface::class,
             Infrastructure\Adapter\HotelAdapter::class
         );
@@ -30,8 +27,8 @@ class BootServiceProvider extends \Sdk\Module\Foundation\Support\Providers\Servi
             Infrastructure\Adapter\HotelRoomAdapter::class
         );
         $this->app->singleton(
-            Domain\Repository\BookingRepositoryInterface::class,
-            Infrastructure\Repository\BookingRepository::class
+            Domain\Adapter\CommonAdapterInterface::class,
+            Infrastructure\Adapter\CommonAdapter::class
         );
         $this->app->singleton(
             Domain\Repository\DetailsRepositoryInterface::class,

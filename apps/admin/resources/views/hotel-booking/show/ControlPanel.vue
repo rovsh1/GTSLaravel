@@ -11,7 +11,7 @@ import { useBookingStore } from '~resources/views/hotel-booking/show/store'
 import { Booking, updateBookingStatus, updateExternalNumber, useGetBookingAPI } from '~api/booking'
 import { CancelConditions, ExternalNumber, ExternalNumberType, ExternalNumberTypeEnum } from '~api/booking/details'
 import { sendBookingRequest } from '~api/booking/request'
-import { useBookingAvailableStatusesAPI, useBookingStatusesAPI } from '~api/booking/status'
+import { useBookingAvailableActionsAPI, useBookingStatusesAPI } from '~api/booking/status'
 
 import { requestInitialData } from '~lib/initial-data'
 
@@ -49,6 +49,9 @@ const externalNumberType = computed<ExternalNumberType>({
     externalNumberData.value.number = null
   },
 })
+
+// @todo валидация перед переходом на статус "Подтверждена" для админки отелей.
+// @todo валидация перед отправкой ваучера для админки GTS.
 const externalNumber = computed<string | null>({
   get: () => {
     if (isExternalNumberChanged.value) {
@@ -69,22 +72,21 @@ const cancelConditions = computed<CancelConditions | null>(() => bookingStore.bo
 
 const { data: bookingData, execute: fetchBooking } = useGetBookingAPI({ bookingID })
 const { data: statuses, execute: fetchStatuses } = useBookingStatusesAPI()
-const { data: availableStatuses, execute: fetchAvailableStatuses } = useBookingAvailableStatusesAPI({ bookingID })
+const { data: availableActions, execute: fetchAvailableActions } = useBookingAvailableActionsAPI({ bookingID })
 
 fetchStatuses()
-fetchAvailableStatuses()
+fetchAvailableActions()
 fetchBooking()
 
 const booking = reactive<Booking>(bookingData as unknown as Booking)
 
-// @todo прописать логику
-const isRequestableStatus = computed<boolean>(() => bookingData.value?.status === 2)
+const isRequestableStatus = computed<boolean>(() => availableActions.value?.isRequestable || false)
 const isRoomsAndGuestsFilled = computed<boolean>(() => !bookingStore.isEmptyGuests && !bookingStore.isEmptyRooms)
 
 const handleStatusChange = async (value: number): Promise<void> => {
   await updateBookingStatus({ bookingID, status: value })
   fetchBooking()
-  fetchAvailableStatuses()
+  fetchAvailableActions()
 }
 
 const isRequestFetching = ref<boolean>(false)
@@ -109,7 +111,7 @@ const handleUpdateExternalNumber = async () => {
       v-if="booking && statuses"
       v-model="booking.status"
       :statuses="statuses"
-      :available-statuses="availableStatuses"
+      :available-statuses="availableActions?.statuses || null"
       @change="handleStatusChange"
     />
     <a href="#" class="btn-log">История изменений</a>

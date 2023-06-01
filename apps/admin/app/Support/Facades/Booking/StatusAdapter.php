@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static array getStatuses()
- * @method static array getAvailableStatuses(int $id)
  * @method static void updateStatus(int $id, int $status)
  **/
 class StatusAdapter extends Facade

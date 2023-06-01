@@ -11,6 +11,11 @@ export interface BookingStatusesResponse {
   key: string
 }
 
+export interface BookingAvailableActionsResponse {
+  isRequestable: boolean
+  statuses: BookingStatusesResponse[]
+}
+
 export interface BookingAvailableStatusesPayload {
   bookingID: BookingID
 }
@@ -20,8 +25,8 @@ export const useBookingStatusesAPI = (props?: any) =>
     .get()
     .json<BookingStatusesResponse[]>()
 
-export const useBookingAvailableStatusesAPI = (props: MaybeRef<BookingAvailableStatusesPayload | null>) =>
+export const useBookingAvailableActionsAPI = (props: MaybeRef<BookingAvailableStatusesPayload | null>) =>
   useAdminAPI(props, ({ bookingID }) =>
-    `/hotel-booking/${bookingID}/status/available`)
+    `/hotel-booking/${bookingID}/actions/available`)
     .get()
-    .json<BookingStatusesResponse[]>()
+    .json<BookingAvailableActionsResponse>()

@@ -2,6 +2,7 @@
 
 namespace Module\Booking\Common\Infrastructure\Repository;
 
+use Carbon\CarbonInterface;
 use Module\Booking\Common\Domain\Entity\Booking as Entity;
 use Module\Booking\Common\Domain\Factory\BookingFactory;
 use Module\Booking\Common\Domain\Repository\BookingRepositoryInterface;
@@ -13,7 +14,7 @@ class BookingRepository implements BookingRepositoryInterface
 
     public function find(int $id): ?Entity
     {
-        $model = Model::find($id);
+        $model = Model::withHotelDetails()->find($id);
         if (!$model) {
             return null;
         }
@@ -29,5 +30,37 @@ class BookingRepository implements BookingRepositoryInterface
             'note' => $booking->note(),
             'creator_id' => $booking->creatorId(),
         ]);
+    }
+
+    public function searchByDateUpdate(CarbonInterface $dateUpdate, ?int $hotelId): array
+    {
+        $modelsQuery = Model::query()
+            ->withClient()
+            //todo сейчас нет даты обновления в базе
+            ->where('', '>=', $dateUpdate);
+
+        if ($hotelId !== null) {
+            $modelsQuery->where('hotel_id', $hotelId);
+        }
+
+        $models = $modelsQuery->get();
+
+        return app(BookingFactory::class)->createCollectionFrom($models);
+    }
+
+    public function searchActive(?int $hotelId): array
+    {
+        $modelsQuery = Model::query()
+            ->withClient();
+        //todo уточнить по поводу статуса у Анвара
+//            ->where('reservation.status', BookingStatusEnum::WaitingConfirmation);
+
+        if ($hotelId !== null) {
+            $modelsQuery->where('hotel_id', $hotelId);
+        }
+
+        $models = $modelsQuery->get();
+
+        return app(BookingFactory::class)->createCollectionFrom($models);
     }
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Hotel\Application\Dto;
+namespace Module\Booking\Common\Application\Dto;
 
 use Carbon\Carbon;
 use Module\Booking\Common\Domain\Entity\Booking;

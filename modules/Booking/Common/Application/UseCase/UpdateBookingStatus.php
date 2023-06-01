@@ -20,7 +20,7 @@ class UpdateBookingStatus implements UseCaseInterface
         $statusEnum = BookingStatusEnum::from($statusId);
         $booking = $this->repository->find($bookingId);
         $rules = app(Rules::class);
-        $booking->setStatus($statusEnum, $rules);
+        $booking->updateStatus($statusEnum, $rules);
         $this->repository->update($booking);
     }
 }

@@ -45,15 +45,17 @@ class RequestRules implements RequestRulesInterface
         return $nextStatus;
     }
 
-    public function getDocumentGenerator(BookingRequestableInterface|CancelRequestableInterface|ChangeRequestableInterface $booking): DocumentGeneratorInterface {
+    public function getDocumentGenerator(BookingRequestableInterface $booking): DocumentGeneratorInterface
+    {
         return match ($booking->status()) {
             BookingStatusEnum::CONFIRMED => $booking->getCancelRequestDocumentGenerator(),
             BookingStatusEnum::WAITING_PROCESSING => $booking->getChangeRequestDocumentGenerator(),
             BookingStatusEnum::PROCESSING => $booking->getBookingRequestDocumentGenerator(),
+            default => throw new NotRequestableStatus("Status [{$booking->status()->value}] not requestable.")
         };
     }
 
-    protected function addTransition(BookingStatusEnum $fromStatus, BookingStatusEnum $toStatus): void
+    private function addTransition(BookingStatusEnum $fromStatus, BookingStatusEnum $toStatus): void
     {
         $this->transitions[$fromStatus->value] = $toStatus;
     }

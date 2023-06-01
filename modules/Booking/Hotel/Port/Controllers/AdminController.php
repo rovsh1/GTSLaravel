@@ -6,9 +6,7 @@ namespace Module\Booking\Hotel\Port\Controllers;
 
 use Carbon\CarbonPeriod;
 use Illuminate\Validation\Rules\Enum;
-use Module\Booking\Hotel\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\Hotel\Application\Command\Admin\CreateBooking;
-use Module\Booking\Hotel\Application\Dto\BookingDto;
 use Module\Booking\Hotel\Application\Dto\DetailsDto;
 use Module\Booking\Hotel\Domain\Adapter\HotelRoomAdapterInterface;
 use Module\Booking\Hotel\Domain\Entity\Details\Room;
@@ -18,48 +16,22 @@ use Module\Booking\Hotel\Domain\ValueObject\Details\Condition;
 use Module\Booking\Hotel\Domain\ValueObject\Details\Guest;
 use Module\Booking\Hotel\Domain\ValueObject\Details\GuestCollection;
 use Module\Booking\Hotel\Domain\ValueObject\Details\RoomStatusEnum;
-use Module\Booking\Hotel\Infrastructure\Models\Booking;
 use Module\Shared\Application\Exception\BaseApplicationException;
 use Module\Shared\Domain\Exception\DomainEntityExceptionInterface;
 use Module\Shared\Domain\ValueObject\GenderEnum;
 use Module\Shared\Domain\ValueObject\Percent;
 use Module\Shared\Domain\ValueObject\TimePeriod;
 use Sdk\Module\Contracts\Bus\CommandBusInterface;
-use Sdk\Module\Contracts\Bus\QueryBusInterface;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 use Sdk\Module\PortGateway\Request;
 
 class AdminController
 {
     public function __construct(
-        private readonly QueryBusInterface $queryBus,
         private readonly CommandBusInterface $commandBus,
-        private readonly BookingRepositoryInterface $repository,
         private readonly DetailsRepositoryInterface $detailsRepository,
         private readonly HotelRoomAdapterInterface $hotelRoomAdapter
     ) {}
-
-    public function getBookings(Request $request): mixed
-    {
-        $request->validate([
-            //filters
-        ]);
-
-        return Booking::query()->get();
-    }
-
-    public function getBooking(Request $request): mixed
-    {
-        $request->validate([
-            'id' => ['required', 'int'],
-        ]);
-
-        $booking = $this->repository->find($request->id);
-        if ($booking === null) {
-            throw new EntityNotFoundException("Booking not found [{$request->id}]");
-        }
-        return BookingDto::fromDomain($booking);
-    }
 
     public function getBookingDetails(Request $request): mixed
     {
@@ -125,8 +97,12 @@ class AdminController
                 isResident: $request->isResident,
                 guestNote: $request->note,
                 roomCount: $request->roomCount,
-                earlyCheckIn: $request->earlyCheckIn !== null ? $this->buildMarkupCondition($request->earlyCheckIn) : null,
-                lateCheckOut: $request->lateCheckOut !== null ? $this->buildMarkupCondition($request->lateCheckOut) : null,
+                earlyCheckIn: $request->earlyCheckIn !== null ? $this->buildMarkupCondition(
+                    $request->earlyCheckIn
+                ) : null,
+                lateCheckOut: $request->lateCheckOut !== null ? $this->buildMarkupCondition(
+                    $request->lateCheckOut
+                ) : null,
                 discount: new Percent($request->discount ?? 0),
             )
         );
@@ -168,8 +144,12 @@ class AdminController
                 isResident: $request->isResident,
                 guestNote: $request->note,
                 roomCount: $request->roomCount,
-                earlyCheckIn: $request->earlyCheckIn !== null ? $this->buildMarkupCondition($request->earlyCheckIn) : null,
-                lateCheckOut: $request->lateCheckOut !== null ? $this->buildMarkupCondition($request->lateCheckOut) : null,
+                earlyCheckIn: $request->earlyCheckIn !== null ? $this->buildMarkupCondition(
+                    $request->earlyCheckIn
+                ) : null,
+                lateCheckOut: $request->lateCheckOut !== null ? $this->buildMarkupCondition(
+                    $request->lateCheckOut
+                ) : null,
                 discount: new Percent($request->discount ?? 0),
             )
         );

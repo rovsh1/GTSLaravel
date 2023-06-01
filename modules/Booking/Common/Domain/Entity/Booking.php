@@ -9,7 +9,6 @@ use Module\Booking\Common\Domain\Exception\InvalidStatusTransition;
 use Module\Booking\Common\Domain\Exception\NotRequestableEntity;
 use Module\Booking\Common\Domain\Exception\NotRequestableStatus;
 use Module\Booking\Common\Domain\Service\StatusRules\RequestRulesInterface;
-use Module\Booking\Common\Domain\Service\StatusRules\Rules;
 use Module\Booking\Common\Domain\Service\StatusRules\StatusRulesInterface;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
@@ -42,9 +41,8 @@ class Booking implements EntityInterface, ReservationInterface
         return $this->status;
     }
 
-    public function setStatus(BookingStatusEnum $status, StatusRulesInterface $rules): void
+    public function updateStatus(BookingStatusEnum $status, StatusRulesInterface $rules): void
     {
-        //@todo решить как получать Rules
         if (!$rules->canTransit($this->status, $status)) {
             throw new InvalidStatusTransition("Can't change status for booking [{$this->id}]]");
         }
@@ -87,14 +85,10 @@ class Booking implements EntityInterface, ReservationInterface
         if (!$requestRules->isRequestableStatus($this->status)) {
             throw new NotRequestableStatus("Booking status [{$this->status->value}] not requestable.");
         }
-        if (!$this instanceof BookingRequestableInterface && !$this instanceof ChangeRequestableInterface && !$this instanceof CancelRequestableInterface) {
-            throw new NotRequestableEntity("Attempt to generate a request from Common Booking.");
-        }
         //@todo прикрепить куда-то документ
         $documentContent = $requestRules->getDocumentGenerator($this)->generate($this);
 
         $nextStatus = $requestRules->getNextStatus($this->status);
-        //@todo как тут получать рулсы? По идее не нужно прокидывать сверху, т.к. действует другая логика. Можно встроить в RequestRules
-        $this->setStatus($nextStatus, app(Rules::class));
+        $this->status = $nextStatus;
     }
 }

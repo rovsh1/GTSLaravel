@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Hotel\Domain\Adapter;
+namespace Module\Booking\Common\Domain\Adapter;
 
 interface OrderAdapterInterface
 {

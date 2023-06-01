@@ -9,8 +9,6 @@ Route::register('findById', [InfoController::class, 'findById']);
 Route::register('searchActiveReservations', [InfoController::class, 'searchActiveReservations']);
 Route::register('searchUpdatedReservations', [InfoController::class, 'searchUpdatedReservations']);
 
-Route::register('getBookings', [AdminController::class, 'getBookings']);
-Route::register('getBooking', [AdminController::class, 'getBooking']);
 Route::register('getBookingDetails', [AdminController::class, 'getBookingDetails']);
 Route::register('createBooking', [AdminController::class, 'createBooking']);
 Route::register('addRoom', [AdminController::class, 'addRoom']);

@@ -14,5 +14,9 @@ class BootServiceProvider extends ServiceProvider
             Domain\Repository\BookingRepositoryInterface::class,
             Infrastructure\Repository\BookingRepository::class
         );
+        $this->app->singleton(
+            Domain\Adapter\OrderAdapterInterface::class,
+            Infrastructure\Adapter\OrderAdapter::class
+        );
     }
 }

@@ -6,18 +6,20 @@ namespace App\Admin\Support\Adapters\Booking;
 
 use App\Core\Support\Adapters\AbstractModuleAdapter;
 use Carbon\CarbonPeriod;
+use Module\Booking\Common\Application\UseCase\GetBooking;
+use Module\Booking\Common\Application\UseCase\GetBookingsByFilters;
 use Module\Booking\Hotel\Application\UseCase\UpdateExternalNumber;
 
 class HotelAdapter extends AbstractModuleAdapter
 {
     public function getBookings(array $filters = []): mixed
     {
-        return $this->request('getBookings', []);
+        return app(GetBookingsByFilters::class)->execute($filters);
     }
 
     public function getBooking(int $id): mixed
     {
-        return $this->request('getBooking', ['id' => $id]);
+        return app(GetBooking::class)->execute($id);
     }
 
     public function getBookingDetails(int $id): mixed

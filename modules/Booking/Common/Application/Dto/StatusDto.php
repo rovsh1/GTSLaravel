@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Common\Application\Response;
+namespace Module\Booking\Common\Application\Dto;
 
 use Sdk\Module\Foundation\Support\Dto\Dto;
 

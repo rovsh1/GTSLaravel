@@ -9,6 +9,7 @@ use App\Admin\Models\Booking\Administrator;
 use App\Admin\Models\Client\Client;
 use App\Admin\Models\Hotel\Hotel;
 use App\Admin\Models\Hotel\Room;
+use App\Admin\Support\Facades\Booking\BookingAdapter;
 use App\Admin\Support\Facades\Booking\HotelAdapter;
 use App\Admin\Support\Facades\Booking\OrderAdapter;
 use App\Admin\Support\Facades\Booking\StatusAdapter;
@@ -95,8 +96,8 @@ class BookingController extends AbstractPrototypeController
     {
         $title = "Бронь №{$id}";
 
-        $order = OrderAdapter::findOrder($id);
         $booking = HotelAdapter::getBooking($id);
+        $order = OrderAdapter::findOrder($booking->orderId);
         $details = HotelAdapter::getBookingDetails($id);
         $hotelId = $details->hotelId;
         $client = Client::find($order->clientId);
@@ -189,10 +190,10 @@ class BookingController extends AbstractPrototypeController
         );
     }
 
-    public function getAvailableStatuses(int $id): JsonResponse
+    public function getAvailableActions(int $id): JsonResponse
     {
         return response()->json(
-            StatusAdapter::getAvailableStatuses($id)
+            BookingAdapter::getAvailableActions($id)
         );
     }
 

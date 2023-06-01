@@ -5,15 +5,13 @@ declare(strict_types=1);
 namespace Module\Booking\Hotel\Application\Command\Admin;
 
 use Carbon\CarbonPeriod;
-use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
+use Module\Booking\Hotel\Domain\Adapter\CommonAdapterInterface;
 use Module\Booking\Hotel\Domain\Adapter\HotelAdapterInterface;
-use Module\Booking\Hotel\Domain\Adapter\OrderAdapterInterface;
 use Module\Booking\Hotel\Domain\ValueObject\Details\CancelCondition\CancelMarkupOption;
 use Module\Booking\Hotel\Domain\ValueObject\Details\CancelCondition\CancelPeriodTypeEnum;
 use Module\Booking\Hotel\Domain\ValueObject\Details\CancelCondition\DailyMarkupCollection;
 use Module\Booking\Hotel\Domain\ValueObject\Details\CancelCondition\DailyMarkupOption;
 use Module\Booking\Hotel\Domain\ValueObject\Details\CancelConditions;
-use Module\Booking\Hotel\Infrastructure\Models\Booking;
 use Module\Booking\Hotel\Infrastructure\Models\BookingDetails;
 use Module\Shared\Domain\Service\SerializerInterface;
 use Module\Shared\Domain\ValueObject\Percent;
@@ -23,7 +21,7 @@ use Sdk\Module\Contracts\Bus\CommandInterface;
 class CreateBookingHandler implements CommandHandlerInterface
 {
     public function __construct(
-        private readonly OrderAdapterInterface $orderAdapter,
+        private readonly CommonAdapterInterface $commonAdapter,
         private readonly HotelAdapterInterface $hotelAdapter,
         private readonly SerializerInterface $serializer
     ) {}
@@ -31,18 +29,7 @@ class CreateBookingHandler implements CommandHandlerInterface
     public function handle(CommandInterface|CreateBooking $command): int
     {
         return \DB::transaction(function () use ($command) {
-            $orderId = $command->orderId;
-            if ($orderId === null) {
-                $orderId = $this->orderAdapter->createOrder($command->clientId);
-            }
-
-            $booking = Booking::create([
-                'order_id' => $orderId,
-                'source' => 1, //@todo hack источник создания брони
-                'status' => BookingStatusEnum::CREATED,
-                'note' => $command->note,
-                'creator_id' => $command->creatorId,
-            ]);
+            $bookingId = $this->commonAdapter->createBooking($command);
 
             $markupSettings = $this->hotelAdapter->getMarkupSettings($command->hotelId);
             $cancelConditions = $this->buildCancelConditionsByCancelPeriods(
@@ -53,14 +40,14 @@ class CreateBookingHandler implements CommandHandlerInterface
 
             //@todo чтобы получить release_days нужен ID номера, квоты без номеров не существуют
             BookingDetails::create([
-                'booking_id' => $booking->id,
+                'booking_id' => $bookingId,
                 'hotel_id' => $command->hotelId,
                 'date_start' => $command->period->getStartDate(),
                 'date_end' => $command->period->getEndDate(),
                 'cancel_conditions' => $this->serializer->serialize($cancelConditions)
             ]);
 
-            return $booking->id;
+            return $bookingId;
         });
     }
 

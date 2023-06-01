@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Common\Application\Factory;
 
-use Module\Booking\Common\Application\Response\StatusDto;
+use Module\Booking\Common\Application\Dto\StatusDto;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Shared\Domain\Service\TranslatorInterface;
 

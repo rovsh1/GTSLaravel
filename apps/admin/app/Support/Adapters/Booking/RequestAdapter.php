@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Adapters\Booking;
 
-use Module\Booking\Hotel\Application\UseCase\SendRequest;
+use Module\Booking\Common\Application\UseCase\SendRequest;
 
 class RequestAdapter
 {

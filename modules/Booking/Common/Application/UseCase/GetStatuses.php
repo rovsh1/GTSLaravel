@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Common\Application\UseCase;
 
 use Module\Booking\Common\Application\Factory\StatusDtoFactory;
-use Module\Booking\Common\Application\Response\StatusDto;
+use Module\Booking\Common\Application\Dto\StatusDto;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
