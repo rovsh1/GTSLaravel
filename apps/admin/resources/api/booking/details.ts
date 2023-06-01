@@ -35,9 +35,9 @@ export enum ExternalNumberTypeEnum {
 }
 
 const ExternalNumberTypes = {
-  GotoStansBookingNumber: 1,
-  HotelBookingNumber: 2,
-  FullName: 3,
+  GotoStansBookingNumber: ExternalNumberTypeEnum.GotoStansBookingNumber,
+  HotelBookingNumber: ExternalNumberTypeEnum.HotelBookingNumber,
+  FullName: ExternalNumberTypeEnum.FullName,
 } as const
 
 export type ExternalNumberType = typeof ExternalNumberTypes[keyof typeof ExternalNumberTypes]

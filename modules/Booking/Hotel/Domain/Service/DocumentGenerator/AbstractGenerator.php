@@ -5,7 +5,7 @@ namespace Module\Booking\Hotel\Domain\Service\DocumentGenerator;
 use Module\Booking\Common\Domain\Entity\ReservationInterface;
 use Module\Booking\Common\Domain\Service\DocumentGenerator\DocumentGeneratorInterface;
 use Module\Booking\Common\Domain\Service\DocumentGenerator\TemplateBuilder;
-use Module\Booking\Hotel\Domain\Entity\Booking;
+use Module\Booking\Common\Domain\Entity\Booking;
 
 abstract class AbstractGenerator implements DocumentGeneratorInterface
 {

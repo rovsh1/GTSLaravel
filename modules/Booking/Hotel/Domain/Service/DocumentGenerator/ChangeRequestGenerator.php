@@ -2,7 +2,7 @@
 
 namespace Module\Booking\Hotel\Domain\Service\DocumentGenerator;
 
-use Module\Booking\Hotel\Domain\Entity\Booking;
+use Module\Booking\Common\Domain\Entity\Booking;
 
 class ChangeRequestGenerator extends AbstractGenerator
 {

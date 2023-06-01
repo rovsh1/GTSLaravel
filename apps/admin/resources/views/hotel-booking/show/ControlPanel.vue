@@ -130,7 +130,7 @@ const handleUpdateExternalNumber = async () => {
           disabled-placeholder="Номер подтверждения брони в отеля"
           :value="externalNumberType as number"
           :options="externalNumberTypeOptions"
-          @input="value => externalNumberType = value as 3 | 2 | 1"
+          @input="value => externalNumberType = value as ExternalNumberType"
         />
       </div>
       <div class="d-flex ml-2">

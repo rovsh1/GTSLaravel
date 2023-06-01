@@ -14,7 +14,7 @@ use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
 use Module\Shared\Domain\Entity\EntityInterface;
 
-class Booking implements EntityInterface, ReservationInterface
+class Booking implements EntityInterface, ReservationInterface, BookingRequestableInterface
 {
     public function __construct(
         private readonly int $id,

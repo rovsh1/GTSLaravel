@@ -2,7 +2,7 @@
 
 namespace Module\Booking\Common\Domain\Entity;
 
-interface BookingRequestableInterface extends ReservationInterface
+interface BookingRequestableInterface
 {
 
 }
