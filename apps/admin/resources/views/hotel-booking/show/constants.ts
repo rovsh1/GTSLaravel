@@ -34,6 +34,11 @@ export const externalNumberTypes = [
   { id: ExternalNumberTypeEnum.GotoStansBookingNumber, name: 'Номер брони GotoStans' },
 ]
 
+export const cancelPeriods = [
+  { id: 1, name: 'За первую ночь' },
+  { id: 2, name: 'За весь период' },
+]
+
 export const genderOptions: SelectOption[] = mapEntitiesToSelectOptions(genders)
 
 export const residentTypeOptions: SelectOption[] = mapEntitiesToSelectOptions(residentTypes)
@@ -49,3 +54,6 @@ export const getGenderName = (id: number): string | undefined =>
 
 export const getRoomStatusName = (id: number): string | undefined =>
   roomStatuses?.find((gender: any) => gender.id === id)?.name
+
+export const getCancelPeriodTypeName = (id: number): string | undefined =>
+  cancelPeriods.find((cancelPeriod: any) => cancelPeriod.id === id)?.name

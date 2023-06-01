@@ -3,7 +3,7 @@
 namespace Module\Booking\Hotel\Domain\Repository;
 
 use Carbon\CarbonInterface;
-use Module\Booking\Common\Domain\Entity\Booking;
+use Module\Booking\Hotel\Domain\Entity\Booking;
 
 interface BookingRepositoryInterface
 {
@@ -21,4 +21,6 @@ interface BookingRepositoryInterface
      * @return Reservation[]
      */
     public function searchActive(?int $hotelId): array;
+
+    public function update(Booking $booking): bool;
 }

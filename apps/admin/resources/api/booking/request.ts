@@ -9,7 +9,6 @@ import { getNullableRef } from '~lib/vue'
 
 export interface SendBookingRequestPayload {
   bookingID: BookingID
-  type: string
 }
 
 export const sendBookingRequest = (props: MaybeRef<SendBookingRequestPayload>) =>
@@ -21,9 +20,7 @@ export const sendBookingRequest = (props: MaybeRef<SendBookingRequestPayload>) =
     .post(computed<string>(() => JSON.stringify(
       getNullableRef<SendBookingRequestPayload, any>(
         props,
-        (payload: SendBookingRequestPayload): any => ({
-          type: payload.type,
-        }),
+        (): any => ({}),
       ),
     )), 'application/json')
     .json<BaseResponse>()

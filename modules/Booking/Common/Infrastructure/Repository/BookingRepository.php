@@ -3,8 +3,8 @@
 namespace Module\Booking\Common\Infrastructure\Repository;
 
 use Module\Booking\Common\Domain\Entity\Booking as Entity;
+use Module\Booking\Common\Domain\Factory\BookingFactory;
 use Module\Booking\Common\Domain\Repository\BookingRepositoryInterface;
-use Module\Booking\Common\Factory\BookingFactory;
 use Module\Booking\Common\Infrastructure\Models\Booking as Model;
 
 class BookingRepository implements BookingRepositoryInterface

@@ -2,18 +2,18 @@
 
 namespace Module\Booking\Common\Domain\Service\DocumentGenerator;
 
-use Module\Booking\Common\Domain\Entity\ReservationRequestableInterface;
+use Module\Booking\Common\Domain\Entity\BookingRequestableInterface;
 
 abstract class AbstractRequestGenerator
 {
-    final public function generate(ReservationRequestableInterface $booking): string
+    final public function generate(BookingRequestableInterface $booking): string
     {
         return (new TemplateBuilder($this->getTemplateName()))
-            ->attributes($this->getReservationAttributes($reservation))
+            ->attributes($this->getReservationAttributes($booking))
             ->generate();
     }
 
-    abstract protected function getReservationAttributes(ReservationRequestableInterface $reservation): array;
+    abstract protected function getReservationAttributes(BookingRequestableInterface $reservation): array;
 
     abstract protected function getTemplateName(): string;
 }

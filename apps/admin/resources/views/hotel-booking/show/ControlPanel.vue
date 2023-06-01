@@ -5,7 +5,7 @@ import { computed, reactive, ref } from 'vue'
 import { z } from 'zod'
 
 import RequestBlock from '~resources/views/hotel-booking/show/components/RequestBlock.vue'
-import { externalNumberTypeOptions } from '~resources/views/hotel-booking/show/constants'
+import { externalNumberTypeOptions, getCancelPeriodTypeName } from '~resources/views/hotel-booking/show/constants'
 import { useBookingStore } from '~resources/views/hotel-booking/show/store'
 
 import { Booking, updateBookingStatus, updateExternalNumber, useGetBookingAPI } from '~api/booking'
@@ -82,10 +82,7 @@ const isRequestableStatus = computed<boolean>(() => bookingData.value?.status ==
 const isRoomsAndGuestsFilled = computed<boolean>(() => !bookingStore.isEmptyGuests && !bookingStore.isEmptyRooms)
 
 const handleStatusChange = async (value: number): Promise<void> => {
-  await updateBookingStatus({
-    bookingID,
-    status: value,
-  })
+  await updateBookingStatus({ bookingID, status: value })
   fetchBooking()
   fetchAvailableStatuses()
 }
@@ -93,10 +90,7 @@ const handleStatusChange = async (value: number): Promise<void> => {
 const isRequestFetching = ref<boolean>(false)
 const handleRequestSend = async () => {
   isRequestFetching.value = true
-  await sendBookingRequest({
-    bookingID,
-    type: 'type',
-  })
+  await sendBookingRequest({ bookingID })
   await fetchBookingDetails()
   isRequestFetching.value = false
 }
@@ -190,7 +184,7 @@ const handleUpdateExternalNumber = async () => {
         <tr>
           <th>Незаезд</th>
           <td v-if="cancelConditions">
-            {{ cancelConditions.noCheckInMarkup.percent }}% за {{ cancelConditions.noCheckInMarkup.cancelPeriodType }}
+            {{ cancelConditions.noCheckInMarkup.percent }}% {{ getCancelPeriodTypeName(cancelConditions.noCheckInMarkup.cancelPeriodType) }}
           </td>
         </tr>
       </tbody>

@@ -14,9 +14,9 @@ enum BookingTypeEnum: int
     {
         if ($booking instanceof \Module\Booking\Hotel\Domain\Entity\Booking)
             return self::HOTEL;
-        elseif ($booking instanceof \Module\Booking\Common\Domain\Entity\TransferReservation\TransferReservation)
+        elseif ($booking instanceof \Module\Booking\Common\Domain\Entity\TransferReservation\Transfer)
             return self::TRANSFER;
-        elseif ($booking instanceof \Module\Booking\Common\Domain\Entity\AirportReservation\AirportReservation)
+        elseif ($booking instanceof \Module\Booking\Common\Domain\Entity\AirportReservation\Airport)
             return self::AIRPORT;
         elseif ($booking instanceof \Module\Booking\Common\Domain\Entity\AdditionalReservation\AdditionalReservation)
             return self::ADDITIONAL;

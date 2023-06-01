@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Common\Factory;
+namespace Module\Booking\Common\Domain\Factory;
 
 use Carbon\Carbon;
+use Module\Booking\Common\Domain\Entity\Booking;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
-use Module\Booking\Common\Domain\Entity\Booking;
 use Sdk\Module\Foundation\Support\EntityFactory\AbstractEntityFactory;
 
 class BookingFactory extends AbstractEntityFactory

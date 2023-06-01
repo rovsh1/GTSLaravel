@@ -3,11 +3,11 @@
 namespace Module\Booking\Common\Domain\Entity\AirportReservation;
 
 use Module\Booking\Common\Domain\Entity\ReservationItemInterface;
-use Module\Booking\Common\Domain\Entity\ReservationRequestableInterface;
+use Module\Booking\Common\Domain\Entity\BookingRequestableInterface;
 use Module\Booking\Common\Domain\Service\PriceCalculator\AirportReservationCalculation;
 use Module\Booking\Common\Domain\Service\PriceCalculator\ReservationCalculationInterface;
 
-class AirportReservation implements ReservationItemInterface, ReservationRequestableInterface
+class Airport implements ReservationItemInterface, BookingRequestableInterface
 {
     public function getPriceCalculator(): ReservationCalculationInterface
     {
