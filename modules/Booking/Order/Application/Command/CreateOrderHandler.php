@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Booking\Order\Application\Command;
 
-use Module\Booking\Order\Infrastructure\Model\Order;
-use Module\Booking\Order\Infrastructure\Model\OrderStatusEnum;
+use Module\Booking\Order\Infrastructure\Models\Order;
+use Module\Booking\Order\Infrastructure\Models\OrderStatusEnum;
 use Sdk\Module\Contracts\Bus\CommandHandlerInterface;
 use Sdk\Module\Contracts\Bus\CommandInterface;
 

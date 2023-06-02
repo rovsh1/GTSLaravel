@@ -2,11 +2,11 @@
 
 namespace Module\Booking\Hotel\Providers;
 
+use Module\Booking\Common\Support\Providers\BootServiceProvider as ServiceProvider;
 use Module\Booking\Hotel\Domain;
 use Module\Booking\Hotel\Domain\Adapter\FileStorageAdapterInterface;
 use Module\Booking\Hotel\Infrastructure;
 use Module\Booking\Hotel\Infrastructure\Adapter\FileStorageAdapter;
-use Module\Booking\Common\Support\Providers\BootServiceProvider as ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {
@@ -25,10 +25,6 @@ class BootServiceProvider extends ServiceProvider
         $this->app->singleton(
             Domain\Adapter\HotelRoomAdapterInterface::class,
             Infrastructure\Adapter\HotelRoomAdapter::class
-        );
-        $this->app->singleton(
-            Domain\Adapter\CommonAdapterInterface::class,
-            Infrastructure\Adapter\CommonAdapter::class
         );
         $this->app->singleton(
             Domain\Repository\DetailsRepositoryInterface::class,

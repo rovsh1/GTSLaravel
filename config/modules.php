@@ -15,7 +15,8 @@ return [
      * @deprecated end
      */
     'HotelBooking' => [
-        'path' => modules_path('Booking/Hotel')
+        'path' => modules_path('Booking/Hotel'),
+        'templates_path' => storage_path('app/booking/templates')
     ],
     'BookingOrder' => [
         'path' => modules_path('Booking/Order')

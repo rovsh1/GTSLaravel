@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Module\Booking\Common\Domain\Service\StatusRules;
 
 use Module\Booking\Common\Domain\Entity\BookingRequestableInterface;
-use Module\Booking\Common\Domain\Entity\CancelRequestableInterface;
-use Module\Booking\Common\Domain\Entity\ChangeRequestableInterface;
 use Module\Booking\Common\Domain\Exception\BookingTypeDoesntHaveDocumentGenerator;
 use Module\Booking\Common\Domain\Exception\NotRequestableStatus;
 use Module\Booking\Common\Domain\Service\DocumentGenerator\DocumentGeneratorInterface;

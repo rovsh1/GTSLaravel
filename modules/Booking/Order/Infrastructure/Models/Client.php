@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Booking\Hotel\Infrastructure\Models;
+namespace Module\Booking\Order\Infrastructure\Models;
 
 use Sdk\Module\Database\Eloquent\Model;
 

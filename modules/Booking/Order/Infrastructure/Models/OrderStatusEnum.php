@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Order\Infrastructure\Model;
+namespace Module\Booking\Order\Infrastructure\Models;
 
 enum OrderStatusEnum: int
 {

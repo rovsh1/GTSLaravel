@@ -2,16 +2,17 @@
 
 namespace Module\Booking\Hotel\Domain\Service\DocumentGenerator;
 
+use Module\Booking\Common\Domain\Entity\Booking;
 use Module\Booking\Common\Domain\Entity\ReservationInterface;
 use Module\Booking\Common\Domain\Service\DocumentGenerator\DocumentGeneratorInterface;
 use Module\Booking\Common\Domain\Service\DocumentGenerator\TemplateBuilder;
-use Module\Booking\Common\Domain\Entity\Booking;
 
 abstract class AbstractGenerator implements DocumentGeneratorInterface
 {
     public function generate(ReservationInterface|Booking $booking): string
     {
-        return (new TemplateBuilder($this->getTemplateName()))
+        dd($this->module->config('templates_path'));
+        return (new TemplateBuilder($this->module->config('templates_path'), $this->getTemplateName()))
             ->attributes($this->getReservationAttributes($booking))
             ->generate();
     }
@@ -19,15 +20,4 @@ abstract class AbstractGenerator implements DocumentGeneratorInterface
     abstract protected function getTemplateName(): string;
 
     abstract protected function getReservationAttributes(Booking $booking): array;
-
-    private function getTemplateContents(): string
-    {
-        //@todo вынести все шаблоны в sotrage/app/templates + добавить в конфиг модуля
-        $filename = __DIR__ . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . $this->getTemplateName();
-        if (!file_exists($filename)) {
-            throw new \LogicException('Request template [' . $this->getTemplateName() . '] undefined');
-        }
-
-        return file_get_contents($filename);
-    }
 }

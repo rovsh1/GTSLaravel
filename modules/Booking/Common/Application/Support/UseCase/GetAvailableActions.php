@@ -29,7 +29,10 @@ class GetAvailableActions implements UseCaseInterface
 
         return new AvailableActionsDto(
             $statusesDto,
-            $this->requestRules->isRequestableStatus($booking->status())
+            $this->requestRules->isRequestableStatus($booking->status()),
+            $booking->canSendClientVoucher(),
+            $booking->canCancel(),
+            true, //@todo прописать логику для этого флага
         );
     }
 }

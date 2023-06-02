@@ -6,17 +6,15 @@ class TemplateBuilder
 {
     private array $attributes = [];
 
-    protected readonly string $templatesPath;
-
-    public function __construct(private readonly string $name)
-    {
-        $this->templatesPath = __DIR__ . DIRECTORY_SEPARATOR . 'templates';
-    }
+    public function __construct(
+        private readonly string $templatesPath,
+        private readonly string $file
+    ) {}
 
     public function generate(): string
     {
         $builder = (new DocumentBuilder())
-            ->template($this->getTemplateContents($this->name))
+            ->template($this->getTemplateContents($this->file))
             ->attributes($this->attributes);
 
         $this->prepare($builder);
@@ -44,8 +42,8 @@ class TemplateBuilder
             ->image('stamp_only', $this->getTemplateContents('stamp_only.jpg'));
     }
 
-    private function getTemplateContents(string $name): string
+    private function getTemplateContents(string $file): string
     {
-        return file_get_contents($this->templatesPath . DIRECTORY_SEPARATOR . $name);
+        return file_get_contents($this->templatesPath . DIRECTORY_SEPARATOR . $file);
     }
 }

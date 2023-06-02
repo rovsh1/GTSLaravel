@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Order\Application\Query;
 
 use Module\Booking\Order\Application\Dto\OrderDto;
-use Module\Booking\Order\Infrastructure\Model\Order;
+use Module\Booking\Order\Infrastructure\Models\Order;
 use Sdk\Module\Contracts\Bus\QueryHandlerInterface;
 use Sdk\Module\Contracts\Bus\QueryInterface;
 

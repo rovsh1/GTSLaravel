@@ -8,15 +8,8 @@ use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {
-    public function register()
-    {
-        $this->app->singleton(
-            Domain\Repository\BookingRepositoryInterface::class,
-            Infrastructure\Repository\BookingRepository::class
-        );
-        $this->app->singleton(
-            Domain\Adapter\OrderAdapterInterface::class,
-            Infrastructure\Adapter\OrderAdapter::class
-        );
-    }
+    public $singletons = [
+        Domain\Repository\BookingRepositoryInterface::class => Infrastructure\Repository\BookingRepository::class,
+        Domain\Adapter\OrderAdapterInterface::class => Infrastructure\Adapter\OrderAdapter::class,
+    ];
 }

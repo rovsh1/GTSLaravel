@@ -13,6 +13,9 @@ export interface BookingStatusesResponse {
 
 export interface BookingAvailableActionsResponse {
   isRequestable: boolean
+  canCancel: boolean
+  canSendVoucher: boolean
+  canEditExternalNumber: boolean
   statuses: BookingStatusesResponse[]
 }
 

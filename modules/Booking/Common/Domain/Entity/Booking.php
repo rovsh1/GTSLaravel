@@ -103,6 +103,16 @@ class Booking extends AbstractAggregateRoot implements
         $this->forceChangeStatus($nextStatus);
     }
 
+    public function canCancel(): bool
+    {
+        return $this->status === BookingStatusEnum::CONFIRMED;
+    }
+
+    public function canSendClientVoucher(): bool
+    {
+        return $this->status === BookingStatusEnum::CONFIRMED;
+    }
+
     private function forceChangeStatus(BookingStatusEnum $status): void
     {
         $oldStatus = $this->status;

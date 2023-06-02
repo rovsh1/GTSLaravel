@@ -81,8 +81,9 @@ fetchBooking()
 const booking = reactive<Booking>(bookingData as unknown as Booking)
 
 const isRequestableStatus = computed<boolean>(() => availableActions.value?.isRequestable || false)
-const canSendClientVoucher = computed<boolean>(() => true)
-const isCancelRequestAvailable = computed<boolean>(() => true)
+const canSendClientVoucher = computed<boolean>(() => availableActions.value?.canSendVoucher || false)
+const isCancelRequestAvailable = computed<boolean>(() => availableActions.value?.canCancel || false)
+const canEditExternalNumber = computed<boolean>(() => availableActions.value?.canEditExternalNumber || false)
 const isRoomsAndGuestsFilled = computed<boolean>(() => !bookingStore.isEmptyGuests && !bookingStore.isEmptyRooms)
 
 const handleStatusChange = async (value: number): Promise<void> => {
@@ -130,6 +131,7 @@ const handleUpdateExternalNumber = async () => {
       <div>
         <BootstrapSelectBase
           id="external_number_type"
+          :disabled="!canEditExternalNumber"
           disabled-placeholder="Номер подтверждения брони в отеля"
           :value="externalNumberType as number"
           :options="externalNumberTypeOptions"
@@ -142,6 +144,7 @@ const handleUpdateExternalNumber = async () => {
             v-if="isNeedShowExternalNumber"
             v-model="externalNumber"
             class="form-control"
+            :disabled="!canEditExternalNumber"
             type="text"
             placeholder="№ брони"
           >
