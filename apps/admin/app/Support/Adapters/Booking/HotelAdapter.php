@@ -6,8 +6,10 @@ namespace App\Admin\Support\Adapters\Booking;
 
 use App\Core\Support\Adapters\AbstractModuleAdapter;
 use Carbon\CarbonPeriod;
-use Module\Booking\Common\Application\UseCase\GetBooking;
-use Module\Booking\Common\Application\UseCase\GetBookingsByFilters;
+use Module\Booking\Hotel\Application\Request\CreateBookingDto;
+use Module\Booking\Hotel\Application\UseCase\CreateBooking;
+use Module\Booking\Hotel\Application\UseCase\GetBooking;
+use Module\Booking\Hotel\Application\UseCase\GetBookingsByFilters;
 use Module\Booking\Hotel\Application\UseCase\UpdateExternalNumber;
 
 class HotelAdapter extends AbstractModuleAdapter
@@ -36,16 +38,17 @@ class HotelAdapter extends AbstractModuleAdapter
         ?int $orderId,
         ?string $note = null
     ): int {
-        return $this->request('createBooking', [
-            'cityId' => $cityId,
-            'clientId' => $clientId,
-            'hotelId' => $hotelId,
-            'dateStart' => $period->getStartDate(),
-            'dateEnd' => $period->getEndDate(),
-            'creatorId' => $creatorId,
-            'orderId' => $orderId,
-            'note' => $note,
-        ]);
+        return app(CreateBooking::class)->execute(
+            new CreateBookingDto(
+                cityId: $cityId,
+                creatorId: $creatorId,
+                clientId: $clientId,
+                hotelId: $hotelId,
+                orderId: $orderId,
+                period: $period,
+                note: $note
+            )
+        );
     }
 
     public function addRoom(

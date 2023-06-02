@@ -12,9 +12,14 @@ use Module\Booking\Common\Domain\Service\StatusRules\RequestRulesInterface;
 use Module\Booking\Common\Domain\Service\StatusRules\StatusRulesInterface;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
+use Module\Booking\Hotel\Domain\Event\BookingStatusChanged;
 use Module\Shared\Domain\Entity\EntityInterface;
+use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
-class Booking implements EntityInterface, ReservationInterface, BookingRequestableInterface
+class Booking extends AbstractAggregateRoot implements
+    EntityInterface,
+    ReservationInterface,
+    BookingRequestableInterface
 {
     public function __construct(
         private readonly int $id,
@@ -46,7 +51,7 @@ class Booking implements EntityInterface, ReservationInterface, BookingRequestab
         if (!$rules->canTransit($this->status, $status)) {
             throw new InvalidStatusTransition("Can't change status for booking [{$this->id}]]");
         }
-        $this->status = $status;
+        $this->forceChangeStatus($status);
     }
 
     public function type(): BookingTypeEnum
@@ -85,10 +90,23 @@ class Booking implements EntityInterface, ReservationInterface, BookingRequestab
         if (!$requestRules->isRequestableStatus($this->status)) {
             throw new NotRequestableStatus("Booking status [{$this->status->value}] not requestable.");
         }
-        //@todo прикрепить куда-то документ
-        $documentContent = $requestRules->getDocumentGenerator($this)->generate($this);
+        try {
+            //@todo прикрепить куда-то документ
+            $documentContent = $requestRules->getDocumentGenerator($this)->generate($this);
+            //@todo сформирован такой-то документ - нужно определить какой запрос
+            $this->pushEvent();
+        } catch (\Throwable $e) {
+            dd($e);
+        }
 
         $nextStatus = $requestRules->getNextStatus($this->status);
-        $this->status = $nextStatus;
+        $this->forceChangeStatus($nextStatus);
+    }
+
+    private function forceChangeStatus(BookingStatusEnum $status): void
+    {
+        $oldStatus = $this->status;
+        $this->status = $status;
+        $this->pushEvent(new BookingStatusChanged($this, $oldStatus));
     }
 }

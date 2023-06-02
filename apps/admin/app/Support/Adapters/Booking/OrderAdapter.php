@@ -4,22 +4,18 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Adapters\Booking;
 
-use App\Core\Support\Adapters\AbstractModuleAdapter;
+use Module\Booking\Order\Application\UseCase\GetActiveOrders;
+use Module\Booking\Order\Application\UseCase\GetOrder;
 
-class OrderAdapter extends AbstractModuleAdapter
+class OrderAdapter
 {
     public function getActiveOrders(): array
     {
-        return $this->request('getActiveOrders');
+        return app(GetActiveOrders::class)->execute();
     }
 
     public function findOrder(int $id): mixed
     {
-        return $this->request('getOrder', ['id' => $id]);
-    }
-
-    protected function getModuleKey(): string
-    {
-        return 'BookingOrder';
+        return app(GetOrder::class)->execute($id);
     }
 }

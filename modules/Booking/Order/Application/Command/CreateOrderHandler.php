@@ -17,6 +17,7 @@ class CreateOrderHandler implements CommandHandlerInterface
             'status' => OrderStatusEnum::NEW,
             'client_id' => $command->clientId,
         ]);
+        //@todo ивенты созданного заказа
         return $order->id;
     }
 }

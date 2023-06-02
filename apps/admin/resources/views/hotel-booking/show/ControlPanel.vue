@@ -81,6 +81,8 @@ fetchBooking()
 const booking = reactive<Booking>(bookingData as unknown as Booking)
 
 const isRequestableStatus = computed<boolean>(() => availableActions.value?.isRequestable || false)
+const canSendClientVoucher = computed<boolean>(() => true)
+const isCancelRequestAvailable = computed<boolean>(() => true)
 const isRoomsAndGuestsFilled = computed<boolean>(() => !bookingStore.isEmptyGuests && !bookingStore.isEmptyRooms)
 
 const handleStatusChange = async (value: number): Promise<void> => {
@@ -93,6 +95,7 @@ const isRequestFetching = ref<boolean>(false)
 const handleRequestSend = async () => {
   isRequestFetching.value = true
   await sendBookingRequest({ bookingID })
+  await fetchBooking()
   await fetchBookingDetails()
   isRequestFetching.value = false
 }
@@ -172,6 +175,21 @@ const handleUpdateExternalNumber = async () => {
       :show-button="false"
       text="Для отправки запроса необходимо заполнить информацию по номерам и гостям"
     />
+
+    <RequestBlock
+      v-if="isCancelRequestAvailable"
+      text="Бронирование подтверждено, до выставления счета доступен запрос на отмену"
+      variant="danger"
+    />
+  </div>
+
+  <div v-if="canSendClientVoucher" class="mt-4">
+    <h6>Файлы, отправленные клиенту</h6>
+    <hr>
+    <RequestBlock
+      variant="success"
+      text="При необходимости клиенту можно отправить ваучер"
+    />
   </div>
 
   <div class="mt-4">
@@ -182,6 +200,12 @@ const handleUpdateExternalNumber = async () => {
         <tr>
           <th>Отмена без штрафа</th>
           <td>до {{ cancelConditions?.cancelNoFeeDate || '-' }}</td>
+        </tr>
+        <tr v-for="dailyMarkup in cancelConditions?.dailyMarkups" :key="dailyMarkup.daysCount">
+          <th>За {{ dailyMarkup.daysCount }} дней</th>
+          <td>
+            {{ dailyMarkup.percent }}% {{ getCancelPeriodTypeName(dailyMarkup.cancelPeriodType) }}
+          </td>
         </tr>
         <tr>
           <th>Незаезд</th>

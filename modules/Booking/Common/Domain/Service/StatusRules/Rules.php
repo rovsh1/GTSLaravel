@@ -16,8 +16,8 @@ class Rules extends AbstractRules implements StatusRulesInterface
         $this->addTransition(BookingStatusEnum::PROCESSING, BookingStatusEnum::CANCELLED);
         //$this->addTransition(BookingStatusEnum::PROCESSING, BookingStatusEnum::WAITING_CONFIRMATION);
 
-        $this->addTransition(BookingStatusEnum::REGISTERED, BookingStatusEnum::CONFIRMED);
-        $this->addTransition(BookingStatusEnum::REGISTERED, BookingStatusEnum::NOT_CONFIRMED);
+        $this->addTransition(BookingStatusEnum::WAITING_CONFIRMATION, BookingStatusEnum::CONFIRMED);
+        $this->addTransition(BookingStatusEnum::WAITING_CONFIRMATION, BookingStatusEnum::NOT_CONFIRMED);
 
         //$this->addTransition(BookingStatusEnum::NOT_CONFIRMED, BookingStatusEnum::WAITING_CONFIRMATION);
         $this->addTransition(BookingStatusEnum::NOT_CONFIRMED, BookingStatusEnum::CANCELLED);

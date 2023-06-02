@@ -46,32 +46,6 @@ class AdminController
         return DetailsDto::fromDomain($details);
     }
 
-    public function createBooking(Request $request): int
-    {
-        $request->validate([
-            'cityId' => ['required', 'int'],
-            'clientId' => ['required', 'int'],
-            'hotelId' => ['required', 'int'],
-            'creatorId' => ['required', 'int'],
-            'orderId' => ['nullable', 'int'],
-            'dateStart' => ['nullable', 'date'],
-            'dateEnd' => ['nullable', 'date'],
-            'note' => ['nullable', 'string'],
-        ]);
-
-        return $this->commandBus->execute(
-            new CreateBooking(
-                cityId: $request->cityId,
-                clientId: $request->clientId,
-                hotelId: $request->hotelId,
-                period: new CarbonPeriod($request->dateStart, $request->dateEnd),
-                creatorId: $request->creatorId,
-                orderId: $request->orderId,
-                note: $request->note,
-            )
-        );
-    }
-
     public function addRoom(Request $request): void
     {
         $request->validate([

@@ -22,6 +22,7 @@ abstract class AbstractGenerator implements DocumentGeneratorInterface
 
     private function getTemplateContents(): string
     {
+        //@todo вынести все шаблоны в sotrage/app/templates + добавить в конфиг модуля
         $filename = __DIR__ . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . $this->getTemplateName();
         if (!file_exists($filename)) {
             throw new \LogicException('Request template [' . $this->getTemplateName() . '] undefined');

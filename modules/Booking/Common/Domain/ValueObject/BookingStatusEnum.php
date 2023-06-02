@@ -17,8 +17,7 @@ enum BookingStatusEnum: int
     case CANCELLED_FEE = 10;
     case REFUND_NO_FEE = 11;
     case REFUND_FEE = 12;
-    //case WAITING_CONFIRMATION = 13;
-    case REGISTERED = 13;
+    case WAITING_CONFIRMATION = 13;
     case WAITING_CANCELLATION = 14;
     case WAITING_PROCESSING = 15;
 }

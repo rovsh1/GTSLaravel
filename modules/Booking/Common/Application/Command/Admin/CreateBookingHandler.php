@@ -32,6 +32,7 @@ class CreateBookingHandler implements CommandHandlerInterface
                 'creator_id' => $command->creatorId,
                 'type' => $command->type
             ]);
+            //ивент создания брони
 
             return $booking->id;
         });

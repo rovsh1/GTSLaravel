@@ -10,7 +10,6 @@ Route::register('searchActiveReservations', [InfoController::class, 'searchActiv
 Route::register('searchUpdatedReservations', [InfoController::class, 'searchUpdatedReservations']);
 
 Route::register('getBookingDetails', [AdminController::class, 'getBookingDetails']);
-Route::register('createBooking', [AdminController::class, 'createBooking']);
 Route::register('addRoom', [AdminController::class, 'addRoom']);
 Route::register('updateRoom', [AdminController::class, 'updateRoom']);
 Route::register('deleteRoom', [AdminController::class, 'deleteRoom']);

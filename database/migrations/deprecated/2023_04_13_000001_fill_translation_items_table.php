@@ -102,9 +102,9 @@ return new class extends Migration {
                 'updated_at' => now(),
             ],
             [
-                'name' => BookingStatusEnum::class . '::' . BookingStatusEnum::REGISTERED->name,
-                'value_ru' => 'REGISTERED',
-                'value_en' => null,
+                'name' => BookingStatusEnum::class . '::' . BookingStatusEnum::WAITING_CONFIRMATION->name,
+                'value_ru' => 'Ожидает подтверждения',
+                'value_en' => 'Waiting confirmation',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

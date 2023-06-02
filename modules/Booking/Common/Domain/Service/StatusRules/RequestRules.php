@@ -26,9 +26,9 @@ class RequestRules implements RequestRulesInterface
     public function __construct()
     {
         $this->addTransition(BookingStatusEnum::CONFIRMED, BookingStatusEnum::WAITING_CANCELLATION);
-        //@todo тут раньше было WAITING_CONFIRMATION
-        $this->addTransition(BookingStatusEnum::WAITING_PROCESSING, BookingStatusEnum::REGISTERED);
-        $this->addTransition(BookingStatusEnum::PROCESSING, BookingStatusEnum::REGISTERED);
+        $this->addTransition(BookingStatusEnum::WAITING_PROCESSING, BookingStatusEnum::WAITING_CONFIRMATION);
+        $this->addTransition(BookingStatusEnum::PROCESSING, BookingStatusEnum::WAITING_CONFIRMATION);
+        $this->addTransition(BookingStatusEnum::NOT_CONFIRMED, BookingStatusEnum::WAITING_CONFIRMATION);
     }
 
     public function isRequestableStatus(BookingStatusEnum $status): bool
