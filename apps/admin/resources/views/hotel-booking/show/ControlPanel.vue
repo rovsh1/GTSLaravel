@@ -82,7 +82,9 @@ const booking = reactive<Booking>(bookingData as unknown as Booking)
 
 const isRequestableStatus = computed<boolean>(() => availableActions.value?.isRequestable || false)
 const canSendClientVoucher = computed<boolean>(() => availableActions.value?.canSendVoucher || false)
-const isCancelRequestAvailable = computed<boolean>(() => availableActions.value?.canCancel || false)
+const canSendCancellationRequest = computed<boolean>(() => availableActions.value?.canSendCancellationRequest || false)
+const canSendBookingRequest = computed<boolean>(() => availableActions.value?.canSendBookingRequest || false)
+const canSendChangeRequest = computed<boolean>(() => availableActions.value?.canSendChangeRequest || false)
 const canEditExternalNumber = computed<boolean>(() => availableActions.value?.canEditExternalNumber || false)
 const isRoomsAndGuestsFilled = computed<boolean>(() => !bookingStore.isEmptyGuests && !bookingStore.isEmptyRooms)
 
@@ -96,6 +98,7 @@ const isRequestFetching = ref<boolean>(false)
 const handleRequestSend = async () => {
   isRequestFetching.value = true
   await sendBookingRequest({ bookingID })
+  await fetchAvailableActions()
   await fetchBooking()
   await fetchBookingDetails()
   isRequestFetching.value = false
@@ -167,22 +170,34 @@ const handleUpdateExternalNumber = async () => {
   <div v-if="isRequestableStatus" class="mt-4">
     <h6>Запросы в гостиницу</h6>
     <hr>
+    <div v-if="canSendBookingRequest">
+      <RequestBlock
+        v-if="isRoomsAndGuestsFilled"
+        text="Запрос на бронирование еще не отправлен"
+        :loading="isRequestFetching"
+        @click="handleRequestSend"
+      />
+      <RequestBlock
+        v-else
+        :show-button="false"
+        text="Для отправки запроса необходимо заполнить информацию по номерам и гостям"
+      />
+    </div>
+
     <RequestBlock
-      v-if="isRoomsAndGuestsFilled"
-      text="Запрос на бронирование еще не отправлен"
+      v-if="canSendCancellationRequest"
       :loading="isRequestFetching"
+      text="Бронирование подтверждено, до выставления счета доступен запрос на отмену"
+      variant="danger"
       @click="handleRequestSend"
-    />
-    <RequestBlock
-      v-else
-      :show-button="false"
-      text="Для отправки запроса необходимо заполнить информацию по номерам и гостям"
     />
 
     <RequestBlock
-      v-if="isCancelRequestAvailable"
-      text="Бронирование подтверждено, до выставления счета доступен запрос на отмену"
+      v-if="canSendChangeRequest"
+      :loading="isRequestFetching"
+      text="Ожидание изменений и отправки запроса"
       variant="danger"
+      @click="handleRequestSend"
     />
   </div>
 

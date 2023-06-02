@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Common\Domain\Service\StatusRules;
+namespace Module\Booking\Common\Domain\Factory;
 
 use Module\Booking\Common\Domain\Entity\BookingRequestableInterface;
 use Module\Booking\Common\Domain\Exception\BookingTypeDoesntHaveDocumentGenerator;
@@ -14,39 +14,9 @@ use Module\Booking\Hotel\Domain\Service\DocumentGenerator\CancellationRequestGen
 use Module\Booking\Hotel\Domain\Service\DocumentGenerator\ChangeRequestGenerator;
 use Module\Booking\Hotel\Domain\Service\DocumentGenerator\ReservationRequestGenerator;
 
-class RequestRules implements RequestRulesInterface
+class DocumentGeneratorFactory
 {
-    /**
-     * @var array<int, BookingStatusEnum> $transitions
-     */
-    protected array $transitions = [];
-
-    public function __construct()
-    {
-        $this->addTransition(BookingStatusEnum::CONFIRMED, BookingStatusEnum::WAITING_CANCELLATION);
-        $this->addTransition(BookingStatusEnum::WAITING_PROCESSING, BookingStatusEnum::WAITING_CONFIRMATION);
-        $this->addTransition(BookingStatusEnum::PROCESSING, BookingStatusEnum::WAITING_CONFIRMATION);
-        $this->addTransition(BookingStatusEnum::NOT_CONFIRMED, BookingStatusEnum::WAITING_CONFIRMATION);
-    }
-
-    public function isRequestableStatus(BookingStatusEnum $status): bool
-    {
-        return array_key_exists($status->value, $this->transitions);
-    }
-
-    /**
-     * @param BookingStatusEnum $status
-     * @return BookingStatusEnum
-     * @throws NotRequestableStatus
-     */
-    public function getNextStatus(BookingStatusEnum $status): BookingStatusEnum
-    {
-        $nextStatus = $this->transitions[$status->value] ?? null;
-        if ($nextStatus === null) {
-            throw new NotRequestableStatus("Status [{$status->value}] not requestable.");
-        }
-        return $nextStatus;
-    }
+    public function __construct(private readonly string $templatesPath) {}
 
     public function getDocumentGenerator(BookingRequestableInterface $booking): DocumentGeneratorInterface
     {
@@ -61,7 +31,7 @@ class RequestRules implements RequestRulesInterface
     private function getCancelDocumentGenerator(BookingRequestableInterface $booking): DocumentGeneratorInterface
     {
         return match ($booking->type()) {
-            BookingTypeEnum::HOTEL => new CancellationRequestGenerator(),
+            BookingTypeEnum::HOTEL => new CancellationRequestGenerator($this->templatesPath),
             default => throw new BookingTypeDoesntHaveDocumentGenerator()
         };
     }
@@ -69,7 +39,7 @@ class RequestRules implements RequestRulesInterface
     private function getChangeDocumentGenerator(BookingRequestableInterface $booking): DocumentGeneratorInterface
     {
         return match ($booking->type()) {
-            BookingTypeEnum::HOTEL => new ChangeRequestGenerator(),
+            BookingTypeEnum::HOTEL => new ChangeRequestGenerator($this->templatesPath),
             default => throw new BookingTypeDoesntHaveDocumentGenerator()
         };
     }
@@ -77,13 +47,8 @@ class RequestRules implements RequestRulesInterface
     private function getBookingDocumentGenerator(BookingRequestableInterface $booking): DocumentGeneratorInterface
     {
         return match ($booking->type()) {
-            BookingTypeEnum::HOTEL => new ReservationRequestGenerator(),
+            BookingTypeEnum::HOTEL => new ReservationRequestGenerator($this->templatesPath),
             default => throw new BookingTypeDoesntHaveDocumentGenerator()
         };
-    }
-
-    private function addTransition(BookingStatusEnum $fromStatus, BookingStatusEnum $toStatus): void
-    {
-        $this->transitions[$fromStatus->value] = $toStatus;
     }
 }

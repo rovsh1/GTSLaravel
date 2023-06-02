@@ -33,10 +33,7 @@ export const useBookingStore = defineStore('booking', () => {
     hotelRoomGuests[hotelRoom.id] = hotelRoom.guests_number
   })
 
-  const isEmptyGuests = computed<boolean>(() => Boolean(bookingDetails.value?.rooms.find((room: HotelBookingDetailsRoom) => {
-    const roomGuests = hotelRoomGuests[room.id]
-    return room.guests.length !== roomGuests
-  })))
+  const isEmptyGuests = computed<boolean>(() => Boolean(bookingDetails.value?.rooms.find((room: HotelBookingDetailsRoom) => room.guests.length === 0)))
   const isEmptyRooms = computed<boolean>(() => bookingDetails.value?.rooms.length === 0)
 
   const fetchBookingDetails = async (): Promise<void> => {

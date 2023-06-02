@@ -9,10 +9,11 @@ use Module\Booking\Common\Domain\Service\DocumentGenerator\TemplateBuilder;
 
 abstract class AbstractGenerator implements DocumentGeneratorInterface
 {
+    public function __construct(private readonly string $templatesPath) {}
+
     public function generate(ReservationInterface|Booking $booking): string
     {
-        dd($this->module->config('templates_path'));
-        return (new TemplateBuilder($this->module->config('templates_path'), $this->getTemplateName()))
+        return (new TemplateBuilder($this->templatesPath, $this->getTemplateName()))
             ->attributes($this->getReservationAttributes($booking))
             ->generate();
     }

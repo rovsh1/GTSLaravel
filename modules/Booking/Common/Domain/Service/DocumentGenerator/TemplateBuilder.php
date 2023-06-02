@@ -37,9 +37,9 @@ class TemplateBuilder
     protected function prepare($builder): void
     {
         $builder
-            ->image('logo', $this->getTemplateContents('logo.jpg'))
-            ->image('stamp', $this->getTemplateContents('stamp.jpg'))
-            ->image('stamp_only', $this->getTemplateContents('stamp_only.jpg'));
+            ->image('logo', $this->getTemplateContents('logo.png'))
+            ->image('stamp', $this->getTemplateContents('stamp.png'))
+            ->image('stamp_only', $this->getTemplateContents('stamp_only.png'));
     }
 
     private function getTemplateContents(string $file): string

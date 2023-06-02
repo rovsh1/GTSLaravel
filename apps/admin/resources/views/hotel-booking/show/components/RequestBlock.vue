@@ -45,19 +45,19 @@ defineEmits<{
     position: absolute;
     right: 0;
     display: inline-block;
+    vertical-align: middle;
     height: 100%;
     padding: 0 8px;
     border-radius: 0 4px 4px 0;
     color: black;
-    vertical-align: middle;
     transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   }
 
   a::before {
     content: "";
     display: inline-block;
-    height: 100%;
     vertical-align: middle;
+    height: 100%;
   }
 
   &.warning {

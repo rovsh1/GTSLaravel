@@ -2,16 +2,18 @@
 
 namespace Sdk\Module\Event;
 
+use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
+use Sdk\Module\Contracts\Event\DomainEventHandlerInterface;
 use Sdk\Module\Contracts\Event\DomainEventInterface;
 use Sdk\Module\Foundation\Module;
 
-class DomainEventDispatcher implements \Sdk\Module\Contracts\Event\DomainEventDispatcherInterface
+class DomainEventDispatcher implements DomainEventDispatcherInterface
 {
     private array $listeners = [];
 
     public function __construct(
         private readonly Module $module,
-        private readonly \Sdk\Module\Contracts\Event\DomainEventHandlerInterface $domainEventHandler
+//        private readonly DomainEventHandlerInterface $domainEventHandler
     ) {}
 
     public function listen(string $eventClass, string $listenerClass)
@@ -20,6 +22,13 @@ class DomainEventDispatcher implements \Sdk\Module\Contracts\Event\DomainEventDi
             $this->listeners[$eventClass] = [];
         }
         $this->listeners[$eventClass][] = $listenerClass;
+    }
+
+    public function dispatchAll(DomainEventInterface ...$events): void
+    {
+        foreach ($events as $event) {
+            $this->dispatch($event);
+        }
     }
 
     public function dispatch(DomainEventInterface $event): void
@@ -37,10 +46,10 @@ class DomainEventDispatcher implements \Sdk\Module\Contracts\Event\DomainEventDi
 
         $this->dispatchGlobalListeners($event);
 
-        $this->domainEventHandler->handle($event);
+//        $this->domainEventHandler->handle($event);
     }
 
-    private function dispatchGlobalListeners(\Sdk\Module\Contracts\Event\DomainEventInterface $event)
+    private function dispatchGlobalListeners(DomainEventInterface $event)
     {
         if (!isset($this->listeners['*'])) {
             return;

@@ -5,10 +5,15 @@ declare(strict_types=1);
 namespace Module\Booking\Common\Domain\Entity;
 
 use Carbon\Carbon;
+use Module\Booking\Common\Domain\Event\BookingRequestSent;
+use Module\Booking\Common\Domain\Event\CancellationRequestSent;
+use Module\Booking\Common\Domain\Event\ChangeRequestSent;
 use Module\Booking\Common\Domain\Exception\InvalidStatusTransition;
 use Module\Booking\Common\Domain\Exception\NotRequestableEntity;
 use Module\Booking\Common\Domain\Exception\NotRequestableStatus;
-use Module\Booking\Common\Domain\Service\StatusRules\RequestRulesInterface;
+use Module\Booking\Common\Domain\Service\RequestCreator;
+use Module\Booking\Common\Domain\Service\RequestRules;
+use Module\Booking\Common\Domain\Service\RequestRulesInterface;
 use Module\Booking\Common\Domain\Service\StatusRules\StatusRulesInterface;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
@@ -85,27 +90,23 @@ class Booking extends AbstractAggregateRoot implements
      * @throws NotRequestableStatus
      * @throws NotRequestableEntity
      */
-    public function generateRequest(RequestRulesInterface $requestRules): void
+    public function generateRequest(RequestRules $requestRules, RequestCreator $requestCreator): void
     {
         if (!$requestRules->isRequestableStatus($this->status)) {
             throw new NotRequestableStatus("Booking status [{$this->status->value}] not requestable.");
         }
-        try {
-            //@todo прикрепить куда-то документ
-            $documentContent = $requestRules->getDocumentGenerator($this)->generate($this);
-            //@todo сформирован такой-то документ - нужно определить какой запрос
-            $this->pushEvent();
-        } catch (\Throwable $e) {
-            dd($e);
-        }
 
-        $nextStatus = $requestRules->getNextStatus($this->status);
-        $this->forceChangeStatus($nextStatus);
-    }
+        $request = $requestCreator->create($this);
+        $event = match ($this->status) {
+            BookingStatusEnum::PROCESSING => new BookingRequestSent($this->id, $request->id(), $request->fileGuid()),
+            BookingStatusEnum::CONFIRMED => new CancellationRequestSent(),
+            default => new ChangeRequestSent()
+        };
+        $this->pushEvent($event);
 
-    public function canCancel(): bool
-    {
-        return $this->status === BookingStatusEnum::CONFIRMED;
+        $this->forceChangeStatus(
+            $requestRules->getNextStatus($this->status)
+        );
     }
 
     public function canSendClientVoucher(): bool

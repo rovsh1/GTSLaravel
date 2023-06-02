@@ -67,7 +67,7 @@ const handleChangeStatus = (value: number): void => {
 <style scoped lang="scss">
 .dropdown {
   button {
-    min-width: 9rem;
+    min-width: 12.5rem;
     font-weight: bold;
     text-align: left;
 

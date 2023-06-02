@@ -7,15 +7,15 @@ namespace Module\Booking\Common\Application\Support\UseCase;
 use Module\Booking\Common\Application\Dto\AvailableActionsDto;
 use Module\Booking\Common\Application\Factory\StatusDtoFactory;
 use Module\Booking\Common\Domain\Repository\BookingRepositoryInterface;
-use Module\Booking\Common\Domain\Service\StatusRules\RequestRules;
-use Module\Booking\Common\Domain\Service\StatusRules\Rules;
+use Module\Booking\Common\Domain\Service\RequestRules;
+use Module\Booking\Common\Domain\Service\StatusRules\StatusRulesInterface;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class GetAvailableActions implements UseCaseInterface
 {
     public function __construct(
-        private readonly Rules $statusRules,
+        private readonly StatusRulesInterface $statusRules,
         private readonly RequestRules $requestRules,
         private readonly BookingRepositoryInterface $repository,
         private readonly StatusDtoFactory $factory
@@ -30,9 +30,11 @@ class GetAvailableActions implements UseCaseInterface
         return new AvailableActionsDto(
             $statusesDto,
             $this->requestRules->isRequestableStatus($booking->status()),
+            $this->requestRules->canSendBookingRequest($booking->status()),
+            $this->requestRules->canSendCancellationRequest($booking->status()),
+            $this->requestRules->canSendChangeRequest($booking->status()),
             $booking->canSendClientVoucher(),
-            $booking->canCancel(),
-            true, //@todo прописать логику для этого флага
+            true, //@todo прописать логику для этого флага (у отеля и админки она разная)
         );
     }
 }

@@ -2,23 +2,25 @@
 
 namespace Sdk\Module\Event;
 
+use Sdk\Module\Contracts\Event\DomainEventHandlerInterface;
+use Sdk\Module\Contracts\Event\DomainEventInterface;
 use Sdk\Module\Contracts\Event\IntegrationEventHandlerInterface;
 use Sdk\Module\Contracts\Event\IntegrationEventInterface;
 use Sdk\Module\Foundation\Module;
 
-class DomainEventHandler implements \Sdk\Module\Contracts\Event\DomainEventHandlerInterface
+class DomainEventHandler implements DomainEventHandlerInterface
 {
     public function __construct(
         private readonly Module $module,
         private readonly IntegrationEventHandlerInterface $integrationEventHandler
     ) {}
 
-    public function handle(\Sdk\Module\Contracts\Event\DomainEventInterface $event)
+    public function handle(DomainEventInterface $event)
     {
         $this->integrationEventHandler->handle($this->buildIntegrationEvent($event));
     }
 
-    private function buildIntegrationEvent(\Sdk\Module\Contracts\Event\DomainEventInterface $event): IntegrationEventInterface
+    private function buildIntegrationEvent(DomainEventInterface $event): IntegrationEventInterface
     {
         $eventsNamespace = $this->module->namespace('Domain\Event');
 
