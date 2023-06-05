@@ -2,12 +2,12 @@
 
 namespace Module\Booking\Hotel\Providers;
 
+use Module\Booking\Common\Domain\Adapter\FileStorageAdapterInterface;
 use Module\Booking\Common\Domain\Factory\DocumentGeneratorFactory;
+use Module\Booking\Common\Infrastructure\Adapter\FileStorageAdapter;
 use Module\Booking\Common\Support\Providers\BootServiceProvider as ServiceProvider;
 use Module\Booking\Hotel\Domain;
-use Module\Booking\Hotel\Domain\Adapter\FileStorageAdapterInterface;
 use Module\Booking\Hotel\Infrastructure;
-use Module\Booking\Hotel\Infrastructure\Adapter\FileStorageAdapter;
 use Sdk\Module\Contracts\ModuleInterface;
 
 class BootServiceProvider extends ServiceProvider

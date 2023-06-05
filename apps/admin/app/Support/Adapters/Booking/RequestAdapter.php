@@ -4,12 +4,24 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Adapters\Booking;
 
-use Module\Booking\Hotel\Application\UseCase\SendRequest;
+use Module\Booking\Hotel\Application\UseCase\Request\GetDocumentFileInfo;
+use Module\Booking\Hotel\Application\UseCase\Request\GetBookingRequests;
+use Module\Booking\Hotel\Application\UseCase\Request\SendRequest;
 
 class RequestAdapter
 {
-    public function sendRequest(int $id): void
+    public function sendRequest(int $bookingId): void
     {
-        app(SendRequest::class)->execute($id);
+        app(SendRequest::class)->execute($bookingId);
+    }
+
+    public function getBookingRequests(int $bookingId): array
+    {
+        return app(GetBookingRequests::class)->execute($bookingId);
+    }
+
+    public function getDocumentFileInfo(int $requestId): mixed
+    {
+        return app(GetDocumentFileInfo::class)->execute($requestId);
     }
 }

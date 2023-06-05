@@ -7,7 +7,9 @@ namespace App\Admin\Support\Facades\Booking;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static void sendRequest(int $id)
+ * @method static void sendRequest(int $bookingId)
+ * @method static array getBookingRequests(int $bookingId)
+ * @method static mixed getDocumentFileInfo(int $requestId)
  **/
 class RequestAdapter extends Facade
 {

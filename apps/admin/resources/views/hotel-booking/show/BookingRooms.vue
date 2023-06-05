@@ -10,7 +10,7 @@ import GuestModal from '~resources/views/hotel-booking/show/components/GuestModa
 import RoomModal from '~resources/views/hotel-booking/show/components/RoomModal.vue'
 import { getConditionLabel, getGenderName, getRoomStatusName } from '~resources/views/hotel-booking/show/constants'
 import { GuestFormData, RoomFormData } from '~resources/views/hotel-booking/show/form'
-import { useBookingStore } from '~resources/views/hotel-booking/show/store'
+import { useBookingStore } from '~resources/views/hotel-booking/show/store/booking'
 
 import { HotelBookingDetails, HotelBookingDetailsRoom, HotelBookingGuest } from '~api/booking/details'
 import { deleteBookingRoom } from '~api/booking/rooms'

@@ -11,6 +11,6 @@ Route::register('delete', WriteController::class);
 Route::register('find', ReadController::class);
 Route::register('getEntityFile', ReadController::class);
 Route::register('getEntityFiles', ReadController::class);
-Route::register('contents', [ReadController::class, 'getContents']);
+Route::register('getContents', [ReadController::class, 'getContents']);
 Route::register('fileInfo', ReadController::class);
 Route::register('url', ReadController::class);

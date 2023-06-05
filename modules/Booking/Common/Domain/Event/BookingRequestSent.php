@@ -7,6 +7,5 @@ class BookingRequestSent implements EventInterface, StatusEventInterface, Reques
     public function __construct(
         public readonly int $bookingId,
         public readonly int $requestId,
-        public readonly string $fileGuid,
     ) {}
 }

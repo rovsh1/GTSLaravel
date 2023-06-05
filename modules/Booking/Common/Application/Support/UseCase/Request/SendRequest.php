@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Common\Application\Support\UseCase;
+namespace Module\Booking\Common\Application\Support\UseCase\Request;
 
 use Module\Booking\Common\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\Common\Domain\Service\RequestCreator;

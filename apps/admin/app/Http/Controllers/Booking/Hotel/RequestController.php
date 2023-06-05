@@ -7,6 +7,7 @@ namespace App\Admin\Http\Controllers\Booking\Hotel;
 use App\Admin\Support\Facades\Booking\RequestAdapter;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use App\Core\Support\Http\Responses\AjaxSuccessResponse;
+use Illuminate\Http\JsonResponse;
 
 class RequestController
 {
@@ -21,4 +22,15 @@ class RequestController
         return new AjaxSuccessResponse();
     }
 
+    public function getBookingRequests(int $bookingId): JsonResponse
+    {
+        $requests = RequestAdapter::getBookingRequests($bookingId);
+        return response()->json($requests);
+    }
+
+    public function getFileInfo(int $bookingId, int $requestId): JsonResponse
+    {
+        $fileInfo = RequestAdapter::getDocumentFileInfo($requestId);
+        return response()->json($fileInfo);
+    }
 }

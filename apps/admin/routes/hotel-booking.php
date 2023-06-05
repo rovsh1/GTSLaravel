@@ -19,4 +19,6 @@ AclRoute::for('hotel-booking')
     ->post('/{booking}/rooms/guests/add', Controllers\Booking\Hotel\RoomController::class . '@addRoomGuest', 'update', 'rooms.guests.add')
     ->put('/{booking}/rooms/guests', Controllers\Booking\Hotel\RoomController::class . '@updateRoomGuest', 'update', 'rooms.guests.update')
 
-    ->post('/{booking}/request', Controllers\Booking\Hotel\RequestController::class . '@sendRequest', 'update', 'request.send');
+    ->get('/{booking}/request/list', Controllers\Booking\Hotel\RequestController::class . '@getBookingRequests', 'read', 'request.list')
+    ->post('/{booking}/request', Controllers\Booking\Hotel\RequestController::class . '@sendRequest', 'update', 'request.send')
+    ->get('/{booking}/request/{request}/file', Controllers\Booking\Hotel\RequestController::class . '@getFileInfo', 'read', 'request.download');

@@ -6,15 +6,15 @@ import { z } from 'zod'
 
 import RequestBlock from '~resources/views/hotel-booking/show/components/RequestBlock.vue'
 import { externalNumberTypeOptions, getCancelPeriodTypeName } from '~resources/views/hotel-booking/show/constants'
-import { useBookingStore } from '~resources/views/hotel-booking/show/store'
+import { useBookingStore } from '~resources/views/hotel-booking/show/store/booking'
+import { useBookingRequestStore } from '~resources/views/hotel-booking/show/store/request'
 
-import { DateResponse } from '~api'
 import { Booking, updateBookingStatus, updateExternalNumber, useGetBookingAPI } from '~api/booking'
 import { CancelConditions, ExternalNumber, ExternalNumberType, ExternalNumberTypeEnum } from '~api/booking/details'
-import { sendBookingRequest } from '~api/booking/request'
+import { BookingRequest, downloadRequestDocument, sendBookingRequest } from '~api/booking/request'
 import { useBookingAvailableActionsAPI, useBookingStatusesAPI } from '~api/booking/status'
 
-import { parseAPIDate } from '~lib/date'
+import { formatDate, formatDateTime } from '~lib/date'
 import { requestInitialData } from '~lib/initial-data'
 
 import BootstrapSelectBase from '~components/Bootstrap/BootstrapSelectBase.vue'
@@ -30,6 +30,8 @@ const { bookingID } = requestInitialData(
 
 const bookingStore = useBookingStore()
 const { fetchBookingDetails } = bookingStore
+const requestStore = useBookingRequestStore()
+const { fetchBookingRequests } = requestStore
 
 const externalNumberData = ref<ExternalNumber>({
   type: ExternalNumberTypeEnum.HotelBookingNumber,
@@ -80,10 +82,6 @@ const {
   isFetching: isAvailableActionsFetching,
 } = useBookingAvailableActionsAPI({ bookingID })
 
-fetchStatuses()
-fetchAvailableActions()
-fetchBooking()
-
 const booking = reactive<Booking>(bookingData as unknown as Booking)
 
 const isRequestableStatus = computed<boolean>(() => availableActions.value?.isRequestable || false)
@@ -93,13 +91,16 @@ const canSendBookingRequest = computed<boolean>(() => availableActions.value?.ca
 const canSendChangeRequest = computed<boolean>(() => availableActions.value?.canSendChangeRequest || false)
 const canEditExternalNumber = computed<boolean>(() => availableActions.value?.canEditExternalNumber || false)
 const isRoomsAndGuestsFilled = computed<boolean>(() => !bookingStore.isEmptyGuests && !bookingStore.isEmptyRooms)
+const bookingRequests = computed<BookingRequest[] | null>(() => requestStore.requests)
 
 const isStatusUpdateFetching = ref(false)
 const handleStatusChange = async (value: number): Promise<void> => {
   isStatusUpdateFetching.value = true
   await updateBookingStatus({ bookingID, status: value })
-  await fetchBooking()
-  await fetchAvailableActions()
+  await Promise.all([
+    fetchBooking(),
+    fetchAvailableActions(),
+  ])
   isStatusUpdateFetching.value = false
 }
 
@@ -107,9 +108,12 @@ const isRequestFetching = ref<boolean>(false)
 const handleRequestSend = async () => {
   isRequestFetching.value = true
   await sendBookingRequest({ bookingID })
-  await fetchAvailableActions()
-  await fetchBooking()
-  await fetchBookingDetails()
+  await Promise.all([
+    fetchAvailableActions(),
+    fetchBooking(),
+    fetchBookingDetails(),
+    fetchBookingRequests(),
+  ])
   isRequestFetching.value = false
 }
 
@@ -122,7 +126,26 @@ const handleUpdateExternalNumber = async () => {
   isUpdateExternalNumberFetching.value = false
 }
 
-const formatDate = (date: DateResponse) => parseAPIDate(date).toLocaleString()
+const handleDownloadDocument = async (requestId: number): Promise<void> => {
+  await downloadRequestDocument({ requestID: requestId, bookingID })
+}
+
+const getHumanRequestType = (type: number): string => {
+  let preparedType = 'изменение'
+  if (type === 1) {
+    preparedType = 'бронирование'
+  }
+  if (type === 3) {
+    preparedType = 'отмену'
+  }
+
+  return preparedType
+}
+
+fetchStatuses()
+fetchAvailableActions()
+fetchBooking()
+fetchBookingRequests()
 
 </script>
 
@@ -184,38 +207,55 @@ const formatDate = (date: DateResponse) => parseAPIDate(date).toLocaleString()
     <hr>
   </div>
 
-  <div v-if="isRequestableStatus" class="mt-4">
+  <div class="mt-4">
     <h6>Запросы в гостиницу</h6>
     <hr>
-    <div v-if="canSendBookingRequest">
-      <RequestBlock
-        v-if="isRoomsAndGuestsFilled"
-        text="Запрос на бронирование еще не отправлен"
-        :loading="isRequestFetching"
-        @click="handleRequestSend"
-      />
-      <RequestBlock
-        v-else
-        :show-button="false"
-        text="Для отправки запроса необходимо заполнить информацию по номерам и гостям"
-      />
+
+    <div class="reservation-requests mb-2">
+      <div
+        v-for="bookingRequest in bookingRequests"
+        :key="bookingRequest.id"
+        class="d-flex flex-row justify-content-between w-100 py-1"
+      >
+        <div>
+          Запрос на {{ getHumanRequestType(bookingRequest.type) }}
+          <span class="date align-left ml-2">от {{ formatDateTime(bookingRequest.dateCreate) }}</span>
+        </div>
+        <a href="#" class="btn-download" @click.prevent="handleDownloadDocument(bookingRequest.id)">Скачать</a>
+      </div>
     </div>
 
-    <RequestBlock
-      v-if="canSendCancellationRequest"
-      :loading="isRequestFetching"
-      text="Бронирование подтверждено, до выставления счета доступен запрос на отмену"
-      variant="danger"
-      @click="handleRequestSend"
-    />
+    <div v-if="isRequestableStatus">
+      <div v-if="canSendBookingRequest">
+        <RequestBlock
+          v-if="isRoomsAndGuestsFilled"
+          text="Запрос на бронирование еще не отправлен"
+          :loading="isRequestFetching"
+          @click="handleRequestSend"
+        />
+        <RequestBlock
+          v-else
+          :show-button="false"
+          text="Для отправки запроса необходимо заполнить информацию по номерам и гостям"
+        />
+      </div>
 
-    <RequestBlock
-      v-if="canSendChangeRequest"
-      :loading="isRequestFetching"
-      text="Ожидание изменений и отправки запроса"
-      variant="warning"
-      @click="handleRequestSend"
-    />
+      <RequestBlock
+        v-if="canSendCancellationRequest"
+        :loading="isRequestFetching"
+        text="Бронирование подтверждено, до выставления счета доступен запрос на отмену"
+        variant="danger"
+        @click="handleRequestSend"
+      />
+
+      <RequestBlock
+        v-if="canSendChangeRequest"
+        :loading="isRequestFetching"
+        text="Ожидание изменений и отправки запроса"
+        variant="warning"
+        @click="handleRequestSend"
+      />
+    </div>
   </div>
 
   <div v-if="canSendClientVoucher" class="mt-4">
@@ -260,5 +300,18 @@ const formatDate = (date: DateResponse) => parseAPIDate(date).toLocaleString()
 
 hr {
   margin: 0.5rem 0 0.75rem;
+}
+
+.reservation-requests {
+  line-height: 18px;
+
+  span.date {
+    color: #b5b5c3;
+    font-size: 11px;
+  }
+
+  .btn-download {
+    font-size: 11px;
+  }
 }
 </style>

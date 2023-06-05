@@ -13,7 +13,6 @@ use Module\Booking\Common\Domain\Exception\NotRequestableEntity;
 use Module\Booking\Common\Domain\Exception\NotRequestableStatus;
 use Module\Booking\Common\Domain\Service\RequestCreator;
 use Module\Booking\Common\Domain\Service\RequestRules;
-use Module\Booking\Common\Domain\Service\RequestRulesInterface;
 use Module\Booking\Common\Domain\Service\StatusRules\StatusRulesInterface;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
@@ -96,12 +95,13 @@ class Booking extends AbstractAggregateRoot implements
             throw new NotRequestableStatus("Booking status [{$this->status->value}] not requestable.");
         }
 
-        $request = $requestCreator->create($this);
-        $event = match ($this->status) {
-            BookingStatusEnum::PROCESSING => new BookingRequestSent($this->id, $request->id(), $request->fileGuid()),
-            BookingStatusEnum::CONFIRMED => new CancellationRequestSent(),
-            default => new ChangeRequestSent()
-        };
+        $request = $requestCreator->create($this, $requestRules);
+        $event = new ChangeRequestSent();
+        if ($requestRules->canSendCancellationRequest($this->status)) {
+            $event = new CancellationRequestSent();
+        } elseif ($requestRules->canSendBookingRequest($this->status)) {
+            $event = new BookingRequestSent($this->id, $request->id());
+        }
         $this->pushEvent($event);
 
         $this->forceChangeStatus(
