@@ -23,7 +23,7 @@ class AdministratorRules extends AbstractRules implements StatusRulesInterface
         $this->addTransition(BookingStatusEnum::NOT_CONFIRMED, BookingStatusEnum::CANCELLED);
 
         $this->addTransition(BookingStatusEnum::CONFIRMED, BookingStatusEnum::INVOICED);
-        //$this->addTransition(BookingStatusEnum::CONFIRMED, BookingStatusEnum::WAITING_PROCESSING);
+        $this->addTransition(BookingStatusEnum::CONFIRMED, BookingStatusEnum::WAITING_PROCESSING);
         //$this->addTransition(BookingStatusEnum::CONFIRMED, BookingStatusEnum::CANCELLED_FEE);
         //$this->addTransition(BookingStatusEnum::CONFIRMED, BookingStatusEnum::CANCELLED_NO_FEE);
 

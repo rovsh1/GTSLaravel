@@ -5,10 +5,13 @@ import { MaybeRef } from '@vueuse/core'
 
 import { BookingStatusesResponse } from '~api/booking/status'
 
+import ButtonLoadingSpinner from '~components/ButtonLoadingSpinner.vue'
+
 const props = defineProps<{
   modelValue: number
   statuses: MaybeRef<BookingStatusesResponse[]>
   availableStatuses: MaybeRef<BookingStatusesResponse[] | null>
+  isLoading?: MaybeRef<boolean>
 }>()
 
 const emit = defineEmits<{
@@ -33,9 +36,13 @@ const statusClass = computed<string>(() => {
 
 const availableStatuses = computed<BookingStatusesResponse[] | null>(() => unref(props.availableStatuses))
 
+const isLoading = computed<boolean>(() => Boolean(unref(props.isLoading)))
+
 const handleChangeStatus = (value: number): void => {
-  emit('update:modelValue', value)
-  emit('change', value)
+  setTimeout(() => {
+    emit('update:modelValue', value)
+    emit('change', value)
+  })
 }
 
 </script>
@@ -43,12 +50,13 @@ const handleChangeStatus = (value: number): void => {
 <template>
   <div class="dropdown">
     <button
-      :class="`btn btn-secondary dropdown-toggle w-25 align-left ${statusClass}`"
+      :class="`btn btn-secondary dropdown-toggle w-25 align-left border-0 ${statusClass}`"
       type="button"
-      :disabled="availableStatuses?.length === 0"
+      :disabled="availableStatuses?.length === 0 || isLoading"
       data-bs-toggle="dropdown"
     >
       {{ label }}
+      <ButtonLoadingSpinner :show="isLoading" />
     </button>
     <ul class="dropdown-menu">
       <li v-for="status in availableStatuses" :key="status.id">

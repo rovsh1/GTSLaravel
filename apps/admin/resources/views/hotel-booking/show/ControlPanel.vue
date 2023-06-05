@@ -8,11 +8,13 @@ import RequestBlock from '~resources/views/hotel-booking/show/components/Request
 import { externalNumberTypeOptions, getCancelPeriodTypeName } from '~resources/views/hotel-booking/show/constants'
 import { useBookingStore } from '~resources/views/hotel-booking/show/store'
 
+import { DateResponse } from '~api'
 import { Booking, updateBookingStatus, updateExternalNumber, useGetBookingAPI } from '~api/booking'
 import { CancelConditions, ExternalNumber, ExternalNumberType, ExternalNumberTypeEnum } from '~api/booking/details'
 import { sendBookingRequest } from '~api/booking/request'
 import { useBookingAvailableActionsAPI, useBookingStatusesAPI } from '~api/booking/status'
 
+import { parseAPIDate } from '~lib/date'
 import { requestInitialData } from '~lib/initial-data'
 
 import BootstrapSelectBase from '~components/Bootstrap/BootstrapSelectBase.vue'
@@ -72,7 +74,11 @@ const cancelConditions = computed<CancelConditions | null>(() => bookingStore.bo
 
 const { data: bookingData, execute: fetchBooking } = useGetBookingAPI({ bookingID })
 const { data: statuses, execute: fetchStatuses } = useBookingStatusesAPI()
-const { data: availableActions, execute: fetchAvailableActions } = useBookingAvailableActionsAPI({ bookingID })
+const {
+  data: availableActions,
+  execute: fetchAvailableActions,
+  isFetching: isAvailableActionsFetching,
+} = useBookingAvailableActionsAPI({ bookingID })
 
 fetchStatuses()
 fetchAvailableActions()
@@ -88,10 +94,13 @@ const canSendChangeRequest = computed<boolean>(() => availableActions.value?.can
 const canEditExternalNumber = computed<boolean>(() => availableActions.value?.canEditExternalNumber || false)
 const isRoomsAndGuestsFilled = computed<boolean>(() => !bookingStore.isEmptyGuests && !bookingStore.isEmptyRooms)
 
+const isStatusUpdateFetching = ref(false)
 const handleStatusChange = async (value: number): Promise<void> => {
+  isStatusUpdateFetching.value = true
   await updateBookingStatus({ bookingID, status: value })
-  fetchBooking()
-  fetchAvailableActions()
+  await fetchBooking()
+  await fetchAvailableActions()
+  isStatusUpdateFetching.value = false
 }
 
 const isRequestFetching = ref<boolean>(false)
@@ -104,11 +113,16 @@ const handleRequestSend = async () => {
   isRequestFetching.value = false
 }
 
+const isUpdateExternalNumberFetching = ref(false)
 const handleUpdateExternalNumber = async () => {
+  isUpdateExternalNumberFetching.value = true
   await updateExternalNumber({ bookingID, ...externalNumberData.value })
   await fetchBookingDetails()
   isExternalNumberChanged.value = false
+  isUpdateExternalNumberFetching.value = false
 }
+
+const formatDate = (date: DateResponse) => parseAPIDate(date).toLocaleString()
 
 </script>
 
@@ -119,6 +133,7 @@ const handleUpdateExternalNumber = async () => {
       v-model="booking.status"
       :statuses="statuses"
       :available-statuses="availableActions?.statuses || null"
+      :is-loading="isStatusUpdateFetching || isAvailableActionsFetching"
       @change="handleStatusChange"
     />
     <a href="#" class="btn-log">История изменений</a>
@@ -130,7 +145,7 @@ const handleUpdateExternalNumber = async () => {
   <div class="mt-4">
     <h6>Тип номера подтверждения бронирования</h6>
     <hr>
-    <div class="d-flex align-content-around">
+    <div class="d-flex align-content-around" :class="{ loading: isUpdateExternalNumberFetching }">
       <div>
         <BootstrapSelectBase
           id="external_number_type"
@@ -156,7 +171,9 @@ const handleUpdateExternalNumber = async () => {
           </div>
         </div>
         <div v-if="isExternalNumberChanged" class="ml-2">
-          <a href="#" class="btn btn-primary" @click.prevent="handleUpdateExternalNumber">Сохранить</a>
+          <a href="#" class="btn btn-primary" @click.prevent="handleUpdateExternalNumber">
+            Сохранить
+          </a>
         </div>
       </div>
     </div>
@@ -196,7 +213,7 @@ const handleUpdateExternalNumber = async () => {
       v-if="canSendChangeRequest"
       :loading="isRequestFetching"
       text="Ожидание изменений и отправки запроса"
-      variant="danger"
+      variant="warning"
       @click="handleRequestSend"
     />
   </div>
@@ -217,7 +234,7 @@ const handleUpdateExternalNumber = async () => {
       <tbody>
         <tr>
           <th>Отмена без штрафа</th>
-          <td>до {{ cancelConditions?.cancelNoFeeDate || '-' }}</td>
+          <td>до {{ cancelConditions?.cancelNoFeeDate ? formatDate(cancelConditions.cancelNoFeeDate) : '-' }}</td>
         </tr>
         <tr v-for="dailyMarkup in cancelConditions?.dailyMarkups" :key="dailyMarkup.daysCount">
           <th>За {{ dailyMarkup.daysCount }} дней</th>

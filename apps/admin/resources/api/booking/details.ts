@@ -1,6 +1,6 @@
 import { MaybeRef } from '@vueuse/core'
 
-import { useAdminAPI } from '~api'
+import { DateResponse, useAdminAPI } from '~api'
 import { BookingID } from '~api/booking/index'
 import { DailyMarkup, MarkupCondition, NoCheckInMarkup, Percent } from '~api/hotel/markup-settings'
 
@@ -52,7 +52,7 @@ export interface AdditionalInfo {
 }
 
 export interface CancelConditions {
-  cancelNoFeeDate: string | null
+  cancelNoFeeDate: DateResponse | null
   noCheckInMarkup: NoCheckInMarkup
   dailyMarkups: DailyMarkup[]
 }
