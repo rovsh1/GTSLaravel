@@ -12,7 +12,7 @@ import { useBookingRequestStore } from '~resources/views/hotel-booking/show/stor
 import { Booking, updateBookingStatus, updateExternalNumber, useGetBookingAPI } from '~api/booking'
 import { CancelConditions, ExternalNumber, ExternalNumberType, ExternalNumberTypeEnum } from '~api/booking/details'
 import { BookingRequest, downloadRequestDocument, sendBookingRequest } from '~api/booking/request'
-import { useBookingAvailableActionsAPI, useBookingStatusesAPI } from '~api/booking/status'
+import { BookingAvailableActionsResponse, useBookingStatusesAPI } from '~api/booking/status'
 
 import { formatDate, formatDateTime } from '~lib/date'
 import { requestInitialData } from '~lib/initial-data'
@@ -29,7 +29,7 @@ const { bookingID } = requestInitialData(
 )
 
 const bookingStore = useBookingStore()
-const { fetchBookingDetails } = bookingStore
+const { fetchBookingDetails, fetchAvailableActions } = bookingStore
 const requestStore = useBookingRequestStore()
 const { fetchBookingRequests } = requestStore
 
@@ -76,14 +76,11 @@ const cancelConditions = computed<CancelConditions | null>(() => bookingStore.bo
 
 const { data: bookingData, execute: fetchBooking } = useGetBookingAPI({ bookingID })
 const { data: statuses, execute: fetchStatuses } = useBookingStatusesAPI()
-const {
-  data: availableActions,
-  execute: fetchAvailableActions,
-  isFetching: isAvailableActionsFetching,
-} = useBookingAvailableActionsAPI({ bookingID })
 
 const booking = reactive<Booking>(bookingData as unknown as Booking)
 
+const availableActions = computed<BookingAvailableActionsResponse | null>(() => bookingStore.availableActions)
+const isAvailableActionsFetching = computed<boolean>(() => bookingStore.isAvailableActionsFetching)
 const isRequestableStatus = computed<boolean>(() => availableActions.value?.isRequestable || false)
 const canSendClientVoucher = computed<boolean>(() => availableActions.value?.canSendVoucher || false)
 const canSendCancellationRequest = computed<boolean>(() => availableActions.value?.canSendCancellationRequest || false)

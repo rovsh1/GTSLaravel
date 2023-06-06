@@ -9,4 +9,6 @@ use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 interface StatusRulesInterface
 {
     public function canTransit(BookingStatusEnum $fromStatus, BookingStatusEnum $toStatus): bool;
+
+    public function isEditableStatus(BookingStatusEnum $status): bool;
 }

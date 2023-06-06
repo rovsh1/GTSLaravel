@@ -10,6 +10,7 @@ class AvailableActionsDto extends Dto
 {
     public function __construct(
         public readonly array $statuses,
+        public readonly bool $isEditable,
         public readonly bool $isRequestable,
         public readonly bool $canSendBookingRequest,
         public readonly bool $canSendCancellationRequest,

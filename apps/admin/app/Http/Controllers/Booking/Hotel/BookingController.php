@@ -4,9 +4,11 @@ namespace App\Admin\Http\Controllers\Booking\Hotel;
 
 use App\Admin\Http\Requests\Booking\UpdateExternalNumberRequest;
 use App\Admin\Http\Requests\Booking\UpdateStatusRequest;
+use App\Admin\Http\Resources\Room as RoomResource;
 use App\Admin\Models\Booking\Administrator;
 use App\Admin\Models\Client\Client;
 use App\Admin\Models\Hotel\Hotel;
+use App\Admin\Models\Hotel\Room;
 use App\Admin\Support\Facades\Booking\BookingAdapter;
 use App\Admin\Support\Facades\Booking\HotelAdapter;
 use App\Admin\Support\Facades\Booking\OrderAdapter;
@@ -118,6 +120,7 @@ class BookingController extends AbstractPrototypeController
                 'order' => $order,
                 'editUrl' => $this->isAllowed('update') ? $this->route('edit', $id) : null,
                 'deleteUrl' => $this->isAllowed('delete') ? $this->route('destroy', $id) : null,
+                'hotelRooms' => RoomResource::collection(Room::whereHotelId($hotelId)->get())
             ]);
     }
 
@@ -163,7 +166,6 @@ class BookingController extends AbstractPrototypeController
         if ($this->hasShowAction()) {
             $redirectUrl = $this->prototype->route('show', $this->model);
         }
-
         return redirect($redirectUrl);
     }
 
@@ -198,14 +200,12 @@ class BookingController extends AbstractPrototypeController
     public function updateStatus(UpdateStatusRequest $request, int $id): AjaxResponseInterface
     {
         StatusAdapter::updateStatus($id, $request->getStatus());
-
         return new AjaxSuccessResponse();
     }
 
     public function updateExternalNumber(UpdateExternalNumberRequest $request, int $id): AjaxResponseInterface
     {
         HotelAdapter::updateExternalNumber($id, $request->getType(), $request->getNumber());
-
         return new AjaxSuccessResponse();
     }
 

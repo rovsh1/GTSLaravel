@@ -42,4 +42,10 @@ class AdministratorRules extends AbstractRules implements StatusRulesInterface
         $this->addTransition(BookingStatusEnum::CANCELLED_NO_FEE, BookingStatusEnum::CANCELLED_FEE);
         $this->addTransition(BookingStatusEnum::CANCELLED_NO_FEE, BookingStatusEnum::REFUND_NO_FEE);
     }
+
+    public function isEditableStatus(BookingStatusEnum $status): bool
+    {
+        //@TODO: прописать логику для изменяемых статусов
+        return true;
+    }
 }

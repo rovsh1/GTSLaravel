@@ -37,12 +37,10 @@ const { fetchBookingDetails } = bookingStore
 fetchBookingDetails()
 const bookingDetails = computed<HotelBookingDetails | null>(() => bookingStore.bookingDetails)
 const markupSettings = computed<MarkupSettings | null>(() => bookingStore.markupSettings)
+const isEditableStatus = computed<boolean>(() => bookingStore.availableActions?.isEditable || false)
 
 const { execute: fetchPriceRates, data: priceRates } = useHotelRatesAPI({ hotelID })
-fetchPriceRates()
-
 const { data: countries, execute: fetchCountries } = useCountrySearchAPI()
-fetchCountries()
 
 const onModalSubmit = () => {
   toggleRoomModal(false)
@@ -124,6 +122,9 @@ const getCheckOutTime = (room: HotelRoomBooking) => {
   return ''
 }
 
+fetchPriceRates()
+fetchCountries()
+
 </script>
 
 <template>
@@ -159,6 +160,7 @@ const getCheckOutTime = (room: HotelRoomBooking) => {
           {{ room.roomInfo.name }}
         </h5>
         <EditTableRowButton
+          v-if="isEditableStatus"
           @edit="handleEditRoom(idx as number, room)"
           @delete="handleDeleteRoom(idx as number)"
         />
@@ -205,7 +207,7 @@ const getCheckOutTime = (room: HotelRoomBooking) => {
         </div>
         <div class="w-100 rounded shadow-lg p-4">
           <h6>Список гостей</h6>
-          <a href="#" @click.prevent="handleAddRoomGuest(idx as number)">
+          <a v-if="isEditableStatus" href="#" @click.prevent="handleAddRoomGuest(idx as number)">
             <i class="icon">add</i>
           </a>
           <table class="table table-striped">
@@ -225,7 +227,7 @@ const getCheckOutTime = (room: HotelRoomBooking) => {
                 <td>{{ getCountryName(guest.countryId) }}</td>
                 <td>{{ getGenderName(guest.gender) }}</td>
                 <td class="column-edit">
-                  <a href="#" @click.prevent="handleEditGuest(idx as number, guestIdx as number, guest)">
+                  <a v-if="isEditableStatus" href="#" @click.prevent="handleEditGuest(idx as number, guestIdx as number, guest)">
                     <i class="icon">edit</i>
                   </a>
                 </td>
@@ -238,6 +240,13 @@ const getCheckOutTime = (room: HotelRoomBooking) => {
   </div>
 
   <div>
-    <button type="button" class="btn btn-primary" @click="handleAddRoom">Добавить номер</button>
+    <button
+      v-if="isEditableStatus"
+      type="button"
+      class="btn btn-primary"
+      @click="handleAddRoom"
+    >
+      Добавить номер
+    </button>
   </div>
 </template>
