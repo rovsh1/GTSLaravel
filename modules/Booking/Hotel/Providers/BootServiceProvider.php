@@ -34,7 +34,10 @@ class BootServiceProvider extends ServiceProvider
         );
         $this->app->singleton(
             DocumentGeneratorFactory::class,
-            fn(ModuleInterface $module) => new DocumentGeneratorFactory($module->config('templates_path'))
+            fn(ModuleInterface $module) => new DocumentGeneratorFactory(
+                $module->config('templates_path'),
+                $module->get(FileStorageAdapterInterface::class)
+            )
         );
 //        $this->app->singleton(
 //            Domain\Repository\RoomRepositoryInterface::class,

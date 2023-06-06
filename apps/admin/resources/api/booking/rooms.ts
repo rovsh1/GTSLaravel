@@ -36,6 +36,7 @@ export interface BookingAddRoomGuestPayload {
   countryId: number
   fullName: string
   gender: number
+  isAdult: boolean
 }
 
 export interface BookingUpdateRoomGuestPayload extends BookingAddRoomGuestPayload {
@@ -119,6 +120,7 @@ export const addGuestToBooking = (props: MaybeRef<BookingAddRoomGuestPayload | n
           country_id: payload.countryId,
           gender: payload.gender,
           room_index: payload.roomIndex,
+          is_adult: payload.isAdult,
         }),
       ),
     )), 'application/json')
@@ -139,6 +141,7 @@ export const updateBookingGuest = (props: MaybeRef<BookingUpdateRoomGuestPayload
           gender: payload.gender,
           room_index: payload.roomIndex,
           guest_index: payload.guestIndex,
+          is_adult: payload.isAdult,
         }),
       ),
     )), 'application/json')

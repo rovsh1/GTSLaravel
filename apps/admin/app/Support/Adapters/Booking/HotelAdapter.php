@@ -118,7 +118,8 @@ class HotelAdapter extends AbstractModuleAdapter
         int $roomIndex,
         string $fullName,
         int $countryId,
-        int $gender
+        int $gender,
+        bool $isAdult
     ): void {
         $this->request('addRoomGuest', [
             'id' => $bookingId,
@@ -126,6 +127,7 @@ class HotelAdapter extends AbstractModuleAdapter
             'fullName' => $fullName,
             'countryId' => $countryId,
             'gender' => $gender,
+            'isAdult' => $isAdult,
         ]);
     }
 
@@ -135,7 +137,8 @@ class HotelAdapter extends AbstractModuleAdapter
         int $guestIndex,
         string $fullName,
         int $countryId,
-        int $gender
+        int $gender,
+        bool $isAdult
     ): void {
         $this->request('updateRoomGuest', [
             'id' => $bookingId,
@@ -144,6 +147,7 @@ class HotelAdapter extends AbstractModuleAdapter
             'fullName' => $fullName,
             'countryId' => $countryId,
             'gender' => $gender,
+            'isAdult' => $isAdult,
         ]);
     }
 

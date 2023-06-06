@@ -21,7 +21,7 @@ class RequestDto extends AbstractDomainBasedDto
     public static function fromDomain(EntityInterface|ValueObjectInterface|Request $entity): static
     {
         return new static(
-            $entity->id(),
+            $entity->id()->value(),
             $entity->type()->value,
             $entity->dateCreate()
         );

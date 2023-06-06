@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Booking\Hotel\Domain\ValueObject\Details;
+namespace Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking;
 
 use Module\Shared\Domain\ValueObject\GenderEnum;
 use Module\Shared\Domain\ValueObject\SerializableDataInterface;
@@ -12,6 +12,7 @@ final class Guest implements ValueObjectInterface, SerializableDataInterface
         private readonly string $fullName,
         private readonly int $countryId,
         private readonly GenderEnum $gender,
+        private readonly bool $isAdult,
     ) {}
 
     public function fullName(): string
@@ -29,12 +30,18 @@ final class Guest implements ValueObjectInterface, SerializableDataInterface
         return $this->gender;
     }
 
+    public function isAdult(): bool
+    {
+        return $this->isAdult;
+    }
+
     public function toData(): array
     {
         return [
             'fullName' => $this->fullName,
             'countryId' => $this->countryId,
-            'gender' => $this->gender->value
+            'gender' => $this->gender->value,
+            'isAdult' => $this->isAdult,
         ];
     }
 
@@ -44,6 +51,7 @@ final class Guest implements ValueObjectInterface, SerializableDataInterface
             $data['fullName'],
             $data['countryId'],
             GenderEnum::from($data['gender']),
+            $data['isAdult'],
         );
     }
 }

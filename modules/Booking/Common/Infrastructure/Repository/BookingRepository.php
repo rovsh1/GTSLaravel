@@ -23,7 +23,7 @@ class BookingRepository implements BookingRepositoryInterface
 
     public function update(Entity $booking): bool
     {
-        return (bool)Model::whereId($booking->id())->update([
+        return (bool)Model::whereId($booking->id()->value())->update([
             'order_id' => $booking->orderId(),
             'type' => $booking->type(),
             'status' => $booking->status(),

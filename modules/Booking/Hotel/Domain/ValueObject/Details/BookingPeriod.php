@@ -2,22 +2,31 @@
 
 namespace Module\Booking\Hotel\Domain\ValueObject\Details;
 
-use DateTime;
+use Carbon\CarbonImmutable;
+use Carbon\CarbonPeriod;
+use Module\Shared\Domain\ValueObject\SerializableDataInterface;
+use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 
-final class BookingPeriod
+final class BookingPeriod implements ValueObjectInterface, SerializableDataInterface
 {
-    public function __construct(
-        private ?DateTime $dateFrom,
-        private ?DateTime $dateTo,
-        private int $nightsCount = 0,
-    ) {}
+    private int $nightsCount;
 
-    public function dateFrom(): ?DateTime
+    public function __construct(
+        private ?CarbonImmutable $dateFrom,
+        private ?CarbonImmutable $dateTo,
+    ) {
+        $calculatedNightsCount = CarbonPeriod::create($dateFrom, $dateFrom, 'P1D')
+            ->excludeEndDate()
+            ->count();
+        $this->nightsCount = $calculatedNightsCount;
+    }
+
+    public function dateFrom(): ?CarbonImmutable
     {
         return $this->dateFrom;
     }
 
-    public function dateTo(): ?DateTime
+    public function dateTo(): ?CarbonImmutable
     {
         return $this->dateTo;
     }
@@ -25,5 +34,22 @@ final class BookingPeriod
     public function nightsCount(): int
     {
         return $this->nightsCount;
+    }
+
+    public function toData(): array
+    {
+        return [
+            'dateFrom' => $this->dateFrom->getTimestamp(),
+            'dateTo' => $this->dateTo->getTimestamp(),
+            'nightsCount' => $this->nightsCount
+        ];
+    }
+
+    public static function fromData(array $data): static
+    {
+        return new static(
+            CarbonImmutable::createFromFormat('U', $data['dateFrom']),
+            CarbonImmutable::createFromFormat('U', $data['dateTo']),
+        );
     }
 }

@@ -40,6 +40,7 @@ const { bookingID } = requestInitialData(
 const formData = computed<GuestFormData>(() => ({
   bookingID,
   guestIndex: props.guestIndex,
+  isAdult: true,
   ...props.formData,
 }))
 
@@ -101,6 +102,18 @@ const countryOptions = computed<SelectOption[]>(
           required
           @input="value => formData.gender = value as number"
         />
+      </div>
+      <div class="col-md-12">
+        <!--        <div class="field-required">-->
+        <!--          <label for="is_adult">До 18 лет</label>-->
+        <!--          <input-->
+        <!--            id="is_adult"-->
+        <!--            v-model="formData.isAdult"-->
+        <!--            type="checkbox"-->
+        <!--            class="btn-check"-->
+        <!--            autocomplete="off"-->
+        <!--          >-->
+        <!--        </div>-->
       </div>
     </form>
 

@@ -1,0 +1,87 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking;
+
+use Module\Booking\Hotel\Domain\ValueObject\Details\Condition;
+use Module\Shared\Domain\ValueObject\Percent;
+use Module\Shared\Domain\ValueObject\SerializableDataInterface;
+use Module\Shared\Domain\ValueObject\ValueObjectInterface;
+
+class   RoomBookingDetails implements ValueObjectInterface, SerializableDataInterface
+{
+    public function __construct(
+        private int $rateId,
+        private bool $isResident,
+        private int $roomCount = 1,
+        private Condition|null $earlyCheckIn = null,
+        private Condition|null $lateCheckOut = null,
+        private string|null $guestNote = null,
+        private Percent $discount = new Percent(0),
+    ) {}
+
+    public function rateId(): int
+    {
+        return $this->rateId;
+    }
+
+    public function roomCount(): int
+    {
+        return $this->roomCount;
+    }
+
+    public function lateCheckOut(): ?Condition
+    {
+        return $this->lateCheckOut;
+    }
+
+    public function earlyCheckIn(): ?Condition
+    {
+        return $this->earlyCheckIn;
+    }
+
+    public function guestNote(): ?string
+    {
+        return $this->guestNote;
+    }
+
+    public function isResident(): bool
+    {
+        return $this->isResident;
+    }
+
+    public function discount(): Percent
+    {
+        return $this->discount;
+    }
+
+    public function toData(): array
+    {
+        return [
+            'rateId' => $this->rateId,
+            'roomCount' => $this->roomCount,
+            'lateCheckOut' => $this->lateCheckOut?->toData(),
+            'earlyCheckIn' => $this->earlyCheckIn?->toData(),
+            'guestNote' => $this->guestNote,
+            'isResident' => $this->isResident,
+            'discount' => $this->discount->value()
+        ];
+    }
+
+    public static function fromData(array $data): static
+    {
+        $lateCheckOut = $data['lateCheckOut'] ?? null;
+        $earlyCheckIn = $data['earlyCheckIn'] ?? null;
+
+        return new static(
+            $data['rateId'],
+            $data['isResident'],
+            $data['roomCount'],
+            $lateCheckOut !== null ? Condition::fromData($data['lateCheckOut']) : null,
+            $earlyCheckIn !== null ? Condition::fromData($data['earlyCheckIn']) : null,
+            $data['guestNote'],
+            new Percent($data['discount'])
+        );
+    }
+}

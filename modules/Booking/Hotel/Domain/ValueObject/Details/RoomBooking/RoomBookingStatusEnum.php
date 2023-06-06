@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Hotel\Domain\ValueObject\Details;
+namespace Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking;
 
-enum RoomStatusEnum: int
+enum RoomBookingStatusEnum: int
 {
     case WAITING_CONFIRMATION = 1;
     case CANCELLED = 2;

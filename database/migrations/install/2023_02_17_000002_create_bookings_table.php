@@ -46,9 +46,7 @@ return new class extends Migration {
             $table->date('date_start');
             $table->date('date_end');
             $table->unsignedInteger('nights_count');
-            $table->json('additional_data')->nullable();
-            $table->json('rooms')->default(new Expression('(JSON_ARRAY())'));
-            $table->json('cancel_conditions')->nullable();
+            $table->json('data');
             $table->timestamps();
 
             $table->foreign('booking_id')

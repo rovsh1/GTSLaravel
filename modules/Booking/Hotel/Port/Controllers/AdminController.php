@@ -4,21 +4,22 @@ declare(strict_types=1);
 
 namespace Module\Booking\Hotel\Port\Controllers;
 
-use Carbon\CarbonPeriod;
 use Illuminate\Validation\Rules\Enum;
-use Module\Booking\Hotel\Application\Command\Admin\CreateBooking;
 use Module\Booking\Hotel\Application\Dto\DetailsDto;
 use Module\Booking\Hotel\Domain\Adapter\HotelRoomAdapterInterface;
-use Module\Booking\Hotel\Domain\Entity\Details\Room;
 use Module\Booking\Hotel\Domain\Exception\TooManyRoomGuests;
 use Module\Booking\Hotel\Domain\Repository\DetailsRepositoryInterface;
 use Module\Booking\Hotel\Domain\ValueObject\Details\Condition;
-use Module\Booking\Hotel\Domain\ValueObject\Details\Guest;
 use Module\Booking\Hotel\Domain\ValueObject\Details\GuestCollection;
-use Module\Booking\Hotel\Domain\ValueObject\Details\RoomStatusEnum;
+use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking;
+use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking\Guest;
+use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking\RoomBookingDetails;
+use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking\RoomBookingStatusEnum;
+use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking\RoomInfo;
 use Module\Shared\Application\Exception\BaseApplicationException;
 use Module\Shared\Domain\Exception\DomainEntityExceptionInterface;
 use Module\Shared\Domain\ValueObject\GenderEnum;
+use Module\Shared\Domain\ValueObject\Id;
 use Module\Shared\Domain\ValueObject\Percent;
 use Module\Shared\Domain\ValueObject\TimePeriod;
 use Sdk\Module\Contracts\Bus\CommandBusInterface;
@@ -43,6 +44,7 @@ class AdminController
         if ($details === null) {
             throw new EntityNotFoundException("Details not found [{$request->id}]");
         }
+
         return DetailsDto::fromDomain($details);
     }
 
@@ -62,22 +64,24 @@ class AdminController
         ]);
 
         $details = $this->detailsRepository->find($request->id);
-        $details->addRoom(
-            new Room(
-                id: $request->roomId,
-                rateId: $request->rateId,
-                status: RoomStatusEnum::from($request->status),
+        $hotelRoomDto = $this->hotelRoomAdapter->findById($request->roomId);
+        $details->addRoomBooking(
+            new RoomBooking(
+                status: RoomBookingStatusEnum::from($request->status),
+                roomInfo: new RoomInfo(
+                    $hotelRoomDto->id,
+                    $hotelRoomDto->name,
+                ),
                 guests: new GuestCollection(),
-                isResident: $request->isResident,
-                guestNote: $request->note,
-                roomCount: $request->roomCount,
-                earlyCheckIn: $request->earlyCheckIn !== null ? $this->buildMarkupCondition(
-                    $request->earlyCheckIn
-                ) : null,
-                lateCheckOut: $request->lateCheckOut !== null ? $this->buildMarkupCondition(
-                    $request->lateCheckOut
-                ) : null,
-                discount: new Percent($request->discount ?? 0),
+                details: new RoomBookingDetails(
+                    rateId: $request->rateId,
+                    isResident: $request->isResident,
+                    guestNote: $request->note,
+                    roomCount: $request->roomCount,
+                    earlyCheckIn: $request->earlyCheckIn !== null ? $this->buildMarkupCondition($request->earlyCheckIn) : null,
+                    lateCheckOut: $request->lateCheckOut !== null ? $this->buildMarkupCondition($request->lateCheckOut) : null,
+                    discount: new Percent($request->discount ?? 0),
+                ),
             )
         );
         $this->detailsRepository->update($details);
@@ -100,31 +104,32 @@ class AdminController
         ]);
 
         $details = $this->detailsRepository->find($request->id);
-        $currentRoom = $details->rooms()->get($request->roomIndex);
+        $currentRoom = $details->roomBookings()->get($request->roomIndex);
         $guests = $currentRoom->guests();
 
-        $hotelRoomSettings = $this->hotelRoomAdapter->findById($request->roomId);
+        $hotelRoomDto = $this->hotelRoomAdapter->findById($request->roomId);
         $expectedGuestCount = $guests->count();
-        if ($expectedGuestCount > $hotelRoomSettings->guestsNumber) {
-            $guests = $guests->slice(0, $hotelRoomSettings->guestsNumber);
+        if ($expectedGuestCount > $hotelRoomDto->guestsNumber) {
+            $guests = $guests->slice(0, $hotelRoomDto->guestsNumber);
         }
-        $details->updateRoom(
+        $details->updateRoomBooking(
             $request->roomIndex,
-            new Room(
-                id: $request->roomId,
-                rateId: $request->rateId,
-                status: RoomStatusEnum::from($request->status),
+            new RoomBooking(
+                status: RoomBookingStatusEnum::from($request->status),
+                roomInfo: new RoomInfo(
+                    $hotelRoomDto->id,
+                    $hotelRoomDto->name,
+                ),
                 guests: $guests,
-                isResident: $request->isResident,
-                guestNote: $request->note,
-                roomCount: $request->roomCount,
-                earlyCheckIn: $request->earlyCheckIn !== null ? $this->buildMarkupCondition(
-                    $request->earlyCheckIn
-                ) : null,
-                lateCheckOut: $request->lateCheckOut !== null ? $this->buildMarkupCondition(
-                    $request->lateCheckOut
-                ) : null,
-                discount: new Percent($request->discount ?? 0),
+                details: new RoomBookingDetails(
+                    rateId: $request->rateId,
+                    isResident: $request->isResident,
+                    guestNote: $request->note,
+                    roomCount: $request->roomCount,
+                    earlyCheckIn: $request->earlyCheckIn !== null ? $this->buildMarkupCondition($request->earlyCheckIn) : null,
+                    lateCheckOut: $request->lateCheckOut !== null ? $this->buildMarkupCondition($request->lateCheckOut) : null,
+                    discount: new Percent($request->discount ?? 0),
+                ),
             )
         );
         $this->detailsRepository->update($details);
@@ -137,7 +142,7 @@ class AdminController
             'roomIndex' => ['required', 'int'],
         ]);
         $details = $this->detailsRepository->find($request->id);
-        $details->deleteRoom($request->roomIndex);
+        $details->deleteRoomBooking($request->roomIndex);
         $this->detailsRepository->update($details);
     }
 
@@ -147,14 +152,15 @@ class AdminController
             'id' => ['required', 'int'],
             'roomIndex' => ['required', 'int'],
             'fullName' => ['required', 'string'],
+            'isAdult' => ['required', 'boolean'],
             'countryId' => ['nullable', 'int'],
             'gender' => ['nullable', new Enum(GenderEnum::class)],
         ]);
 
         try {
             $details = $this->detailsRepository->find($request->id);
-            $room = $details->rooms()->get($request->roomIndex);
-            $hotelRoomSettings = $this->hotelRoomAdapter->findById($room->id());
+            $room = $details->roomBookings()->get($request->roomIndex);
+            $hotelRoomSettings = $this->hotelRoomAdapter->findById($room->roomInfo()->id());
             $expectedGuestCount = $room->guests()->count() + 1;
             //@todo перенести валидацию в сервис
             if ($expectedGuestCount > $hotelRoomSettings->guestsNumber) {
@@ -163,11 +169,12 @@ class AdminController
                 );
             }
 
-            $details->rooms()->get($request->roomIndex)->addGuest(
+            $details->roomBookings()->get($request->roomIndex)->addGuest(
                 new Guest(
                     $request->fullName,
                     $request->countryId,
                     GenderEnum::from($request->gender),
+                    $request->isAdult,
                 )
             );
             $this->detailsRepository->update($details);
@@ -183,13 +190,14 @@ class AdminController
             'roomIndex' => ['required', 'int'],
             'guestIndex' => ['required', 'int'],
             'fullName' => ['required', 'string'],
+            'isAdult' => ['required', 'boolean'],
             'countryId' => ['nullable', 'int'],
             'gender' => ['nullable', new Enum(GenderEnum::class)],
         ]);
 
         $details = $this->detailsRepository->find($request->id);
-        $room = $details->rooms()->get($request->roomIndex);
-        $newGuest = new Guest($request->fullName, $request->countryId, GenderEnum::from($request->gender));
+        $room = $details->roomBookings()->get($request->roomIndex);
+        $newGuest = new Guest($request->fullName, $request->countryId, GenderEnum::from($request->gender), $request->isAdult);
         $room->updateGuest($request->guestIndex, $newGuest);
         $this->detailsRepository->update($details);
     }

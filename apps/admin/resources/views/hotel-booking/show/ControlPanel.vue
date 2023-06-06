@@ -219,7 +219,7 @@ fetchBookingRequests()
       >
         <div>
           Запрос на {{ getHumanRequestType(bookingRequest.type) }}
-          <span class="date align-left ml-2">от {{ formatDateTime(bookingRequest.dateCreate) }}</span>
+          <span class="date align-left ml-1">от {{ formatDateTime(bookingRequest.dateCreate) }}</span>
         </div>
         <a href="#" class="btn-download" @click.prevent="handleDownloadDocument(bookingRequest.id)">Скачать</a>
       </div>

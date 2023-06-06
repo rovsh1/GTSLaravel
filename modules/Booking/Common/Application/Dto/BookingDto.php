@@ -24,7 +24,7 @@ class BookingDto extends AbstractDomainBasedDto
     public static function fromDomain(EntityInterface|ValueObjectInterface|Booking $entity): static
     {
         return new static(
-            $entity->id(),
+            $entity->id()->value(),
             $entity->status()->value,
             $entity->orderId(),
             $entity->dateCreate(),

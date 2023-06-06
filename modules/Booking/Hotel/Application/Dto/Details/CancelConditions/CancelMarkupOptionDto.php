@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Hotel\Application\Dto\CancelConditions;
+namespace Module\Booking\Hotel\Application\Dto\Details\CancelConditions;
 
 use Module\Booking\Hotel\Domain\ValueObject\Details\CancelCondition\CancelMarkupOption;
 use Module\Shared\Application\Dto\AbstractDomainBasedDto;

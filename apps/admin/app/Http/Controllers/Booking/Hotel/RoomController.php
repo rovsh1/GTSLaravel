@@ -81,6 +81,7 @@ class RoomController
                 $request->getFullName(),
                 $request->getCountryId(),
                 $request->getGender(),
+                $request->getIsAdult(),
             );
         } catch (\Throwable $e) {
             //@todo отлов доменных эксепшнов
@@ -99,6 +100,7 @@ class RoomController
                 $request->getFullName(),
                 $request->getCountryId(),
                 $request->getGender(),
+                $request->getIsAdult(),
             );
         } catch (\Throwable $e) {
             //@todo отлов доменных эксепшнов

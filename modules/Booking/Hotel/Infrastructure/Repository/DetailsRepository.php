@@ -25,16 +25,12 @@ class DetailsRepository implements DetailsRepositoryInterface
 
     public function update(Entity $details): bool
     {
-        $additionalData = null;
-        if ($details->additionalInfo() !== null) {
-            $additionalData = $this->serializer->serialize($details->additionalInfo());
-        }
-        return (bool)Model::whereBookingId($details->id())->update([
-            'hotel_id' => $details->hotelId(),
+        return (bool)Model::whereBookingId($details->id()->value())->update([
+            'hotel_id' => $details->hotelInfo()->id(),
             'date_start' => $details->period()->dateFrom(),
             'date_end' => $details->period()->dateTo(),
-            'additional_data' => $additionalData,
-            'rooms' => $this->serializer->serialize($details->rooms())
+            'nights_count' => $details->period()->nightsCount(),
+            'data' => $this->serializer->serialize($details)
         ]);
     }
 }

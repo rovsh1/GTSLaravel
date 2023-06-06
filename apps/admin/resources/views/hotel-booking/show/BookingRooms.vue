@@ -12,12 +12,11 @@ import { getConditionLabel, getGenderName, getRoomStatusName } from '~resources/
 import { GuestFormData, RoomFormData } from '~resources/views/hotel-booking/show/form'
 import { useBookingStore } from '~resources/views/hotel-booking/show/store/booking'
 
-import { HotelBookingDetails, HotelBookingDetailsRoom, HotelBookingGuest } from '~api/booking/details'
+import { HotelBookingDetails, HotelBookingGuest, HotelRoomBooking } from '~api/booking/details'
 import { deleteBookingRoom } from '~api/booking/rooms'
 import { CountryResponse, useCountrySearchAPI } from '~api/country'
 import { MarkupSettings } from '~api/hotel/markup-settings'
 import { HotelRate, useHotelRatesAPI } from '~api/hotel/price-rate'
-import { HotelRoomResponse } from '~api/hotel/room'
 
 import { showConfirmDialog } from '~lib/confirm-dialog'
 import { requestInitialData } from '~lib/initial-data'
@@ -25,21 +24,11 @@ import { requestInitialData } from '~lib/initial-data'
 const [isShowRoomModal, toggleRoomModal] = useToggle()
 const [isShowGuestModal, toggleGuestModal] = useToggle()
 
-const { bookingID, hotelID, hotelRooms } = requestInitialData(
+const { bookingID, hotelID } = requestInitialData(
   'view-initial-data-hotel-booking',
   z.object({
     hotelID: z.number(),
     bookingID: z.number(),
-    hotelRooms: z.array(
-      z.object({
-        id: z.number(),
-        hotel_id: z.number(),
-        name: z.string(),
-        custom_name: z.string(),
-        rooms_number: z.number(),
-        guests_number: z.number(),
-      }),
-    ),
   }),
 )
 
@@ -92,11 +81,18 @@ const handleAddRoom = (): void => {
   toggleRoomModal()
 }
 
-const handleEditRoom = (roomIndex: number, room: HotelBookingDetailsRoom): void => {
+const handleEditRoom = (roomIndex: number, room: HotelRoomBooking): void => {
   editRoomIndex.value = roomIndex
   roomForm.value = room
-  roomForm.value.residentType = room.isResident ? 1 : 0
-  roomForm.value.note = room.guestNote
+  roomForm.value.id = room.roomInfo.id
+  roomForm.value.status = room.status
+  roomForm.value.roomCount = room.details.roomCount
+  roomForm.value.discount = room.details.discount
+  roomForm.value.rateId = room.details.rateId
+  roomForm.value.earlyCheckIn = room.details.earlyCheckIn
+  roomForm.value.lateCheckOut = room.details.lateCheckOut
+  roomForm.value.residentType = room.details.isResident ? 1 : 0
+  roomForm.value.note = room.details.guestNote
   toggleRoomModal()
 }
 
@@ -110,27 +106,18 @@ const handleDeleteRoom = async (roomIndex: number): Promise<void> => {
   }
 }
 
-const getRoomName = (id: number): string | undefined => {
-  const room = hotelRooms.find((roomData: HotelRoomResponse) => roomData.id === id)
-  if (!room) {
-    return undefined
-  }
-
-  return `${room.name} (${room.custom_name})`
-}
-
-const getCheckInTime = (room: HotelBookingDetailsRoom) => {
-  if (room.earlyCheckIn) {
-    return getConditionLabel(room.earlyCheckIn)
+const getCheckInTime = (room: HotelRoomBooking) => {
+  if (room.details.earlyCheckIn) {
+    return getConditionLabel(room.details.earlyCheckIn)
   }
 
   // @todo тут будут дефолтные настройки из отеля
   return ''
 }
 
-const getCheckOutTime = (room: HotelBookingDetailsRoom) => {
-  if (room.lateCheckOut) {
-    return getConditionLabel(room.lateCheckOut)
+const getCheckOutTime = (room: HotelRoomBooking) => {
+  if (room.details.lateCheckOut) {
+    return getConditionLabel(room.details.lateCheckOut)
   }
 
   // @todo тут будут дефолтные настройки из отеля
@@ -162,14 +149,14 @@ const getCheckOutTime = (room: HotelBookingDetailsRoom) => {
 
   <h5 class="mt-3">Номера</h5>
   <div
-    v-for="(room, idx) in bookingDetails?.rooms"
+    v-for="(room, idx) in bookingDetails?.roomBookings"
     :key="idx"
     class="card mt-2 mb-4"
   >
     <div class="card-body">
       <div class="d-flex">
         <h5 class="card-title mr-4">
-          {{ getRoomName(room.id) }}
+          {{ room.roomInfo.name }}
         </h5>
         <EditTableRowButton
           @edit="handleEditRoom(idx as number, room)"
@@ -187,19 +174,19 @@ const getCheckOutTime = (room: HotelBookingDetailsRoom) => {
               </tr>
               <tr>
                 <th>Кол-во номеров</th>
-                <td>{{ room.roomCount }}</td>
+                <td>{{ room.details.roomCount }}</td>
               </tr>
               <tr>
                 <th>Тип стоимости</th>
-                <td>{{ room.isResident ? 'Резидент' : 'Не резидент' }}</td>
+                <td>{{ room.details.isResident ? 'Резидент' : 'Не резидент' }}</td>
               </tr>
               <tr>
                 <th>Тариф</th>
-                <td>{{ getPriceRateName(room.rateId) }}</td>
+                <td>{{ getPriceRateName(room.details.rateId) }}</td>
               </tr>
               <tr>
                 <th>Скидка</th>
-                <td>{{ room.discount }}</td>
+                <td>{{ room.details.discount }}</td>
               </tr>
               <tr>
                 <th>Время заезда</th>
@@ -211,7 +198,7 @@ const getCheckOutTime = (room: HotelBookingDetailsRoom) => {
               </tr>
               <tr>
                 <th>Примечание (запрос в отель, ваучер)</th>
-                <td>{{ room.guestNote }}</td>
+                <td>{{ room.details.guestNote }}</td>
               </tr>
             </tbody>
           </table>

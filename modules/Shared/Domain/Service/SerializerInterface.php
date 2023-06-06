@@ -11,9 +11,10 @@ interface SerializerInterface
     public function serialize(SerializableDataInterface $object): string;
 
     /**
-     * @param class-string<SerializableDataInterface> $object
+     * @template T
+     * @param class-string<T> $object
      * @param string $serializedData
-     * @return SerializableDataInterface
+     * @return T
      */
     public function deserialize(string $object, string $serializedData): SerializableDataInterface;
 }

@@ -2,13 +2,13 @@
 
 namespace Module\Booking\Hotel\Domain\Repository;
 
-use Module\Booking\Hotel\Domain\Entity\Details\Room;
+use Module\Booking\Hotel\Domain\Entity\Details\RoomAccommodation;
 
 interface RoomRepositoryInterface
 {
     /**
      * @param int $reservationId
-     * @return Room[]
+     * @return RoomAccommodation[]
      */
     public function getReservationRooms(int $reservationId): array;
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Hotel\Domain\ValueObject\Details;
 
 use Illuminate\Support\Collection;
+use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking\Guest;
 use Module\Shared\Domain\ValueObject\SerializableDataInterface;
 
 /**

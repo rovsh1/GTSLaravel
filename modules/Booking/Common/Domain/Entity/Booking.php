@@ -16,8 +16,10 @@ use Module\Booking\Common\Domain\Service\RequestRules;
 use Module\Booking\Common\Domain\Service\StatusRules\StatusRulesInterface;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
+use Module\Booking\Common\Domain\ValueObject\RequestTypeEnum;
 use Module\Booking\Hotel\Domain\Event\BookingStatusChanged;
 use Module\Shared\Domain\Entity\EntityInterface;
+use Module\Shared\Domain\ValueObject\Id;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
 class Booking extends AbstractAggregateRoot implements
@@ -26,7 +28,7 @@ class Booking extends AbstractAggregateRoot implements
     BookingRequestableInterface
 {
     public function __construct(
-        private readonly int $id,
+        private readonly Id $id,
         private readonly int $orderId,
         private BookingStatusEnum $status,
         private readonly BookingTypeEnum $type,
@@ -35,7 +37,7 @@ class Booking extends AbstractAggregateRoot implements
         private ?string $note = null,
     ) {}
 
-    public function id(): int
+    public function id(): Id
     {
         return $this->id;
     }
@@ -96,12 +98,11 @@ class Booking extends AbstractAggregateRoot implements
         }
 
         $request = $requestCreator->create($this, $requestRules);
-        $event = new ChangeRequestSent();
-        if ($requestRules->canSendCancellationRequest($this->status)) {
-            $event = new CancellationRequestSent();
-        } elseif ($requestRules->canSendBookingRequest($this->status)) {
-            $event = new BookingRequestSent($this->id, $request->id());
-        }
+        $event = match ($request->type()) {
+            RequestTypeEnum::BOOKING => new BookingRequestSent($this->id->value(), $request->id()->value()),
+            RequestTypeEnum::CHANGE => new ChangeRequestSent(),
+            RequestTypeEnum::CANCEL => new CancellationRequestSent(),
+        };
         $this->pushEvent($event);
 
         $this->forceChangeStatus(

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Hotel\Application\Dto;
+namespace Module\Booking\Hotel\Application\Dto\Details;
 
 use Module\Booking\Common\Domain\Entity\Details\AdditionalInfoInterface;
-use Module\Booking\Hotel\Application\Dto\AdditionalInfo\ExternalNumberDto;
+use Module\Booking\Hotel\Application\Dto\Details\AdditionalInfo\ExternalNumberDto;
 use Module\Shared\Application\Dto\AbstractDomainBasedDto;
 use Module\Shared\Domain\Entity\EntityInterface;
 use Module\Shared\Domain\ValueObject\ValueObjectInterface;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Hotel\Application\Dto;
+namespace Module\Booking\Hotel\Application\Dto\Details;
 
 use Module\Booking\Hotel\Domain\ValueObject\Details\Condition;
 use Module\Shared\Application\Dto\AbstractDomainBasedDto;

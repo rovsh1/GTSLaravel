@@ -13,6 +13,7 @@ class AddRoomGuestRequest extends FormRequest
             'country_id' => ['required', 'numeric'],
             'gender' => ['required', 'numeric'],
             'room_index' => ['required', 'numeric'],
+            'is_adult' => ['required', 'bool'],
         ];
     }
 
@@ -34,5 +35,10 @@ class AddRoomGuestRequest extends FormRequest
     public function getGender(): int
     {
         return $this->post('gender');
+    }
+
+    public function getIsAdult(): bool
+    {
+        return $this->post('is_adult');
     }
 }

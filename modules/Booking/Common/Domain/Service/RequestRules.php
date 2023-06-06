@@ -6,6 +6,7 @@ namespace Module\Booking\Common\Domain\Service;
 
 use Module\Booking\Common\Domain\Exception\NotRequestableStatus;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
+use Module\Booking\Common\Domain\ValueObject\RequestTypeEnum;
 
 class RequestRules
 {
@@ -44,6 +45,19 @@ class RequestRules
             && !$this->canSendBookingRequest($status);
     }
 
+    public function getRequestTypeByStatus(BookingStatusEnum $status): RequestTypeEnum
+    {
+        $requestType = RequestTypeEnum::CHANGE;
+        if ($this->canSendBookingRequest($status)) {
+            $requestType = RequestTypeEnum::BOOKING;
+        }
+        if ($this->canSendCancellationRequest($status)) {
+            $requestType = RequestTypeEnum::CANCEL;
+        }
+
+        return $requestType;
+    }
+
     /**
      * @param BookingStatusEnum $status
      * @return BookingStatusEnum
@@ -55,6 +69,7 @@ class RequestRules
         if ($nextStatus === null) {
             throw new NotRequestableStatus("Status [{$status->value}] not requestable.");
         }
+
         return $nextStatus;
     }
 

@@ -4,32 +4,35 @@ declare(strict_types=1);
 
 namespace Module\Booking\Hotel\Domain\Entity;
 
-use Module\Booking\Common\Domain\Entity\Details\HotelDetailsInterface;
-use Module\Booking\Hotel\Domain\Entity\Details\Room;
-use Module\Booking\Hotel\Domain\Entity\Details\RoomCollection;
+use Module\Booking\Common\Domain\Entity\Details\BookingDetailsInterface;
 use Module\Booking\Hotel\Domain\ValueObject\Details\AdditionalInfo;
 use Module\Booking\Hotel\Domain\ValueObject\Details\BookingPeriod;
 use Module\Booking\Hotel\Domain\ValueObject\Details\CancelConditions;
+use Module\Booking\Hotel\Domain\ValueObject\Details\HotelInfo;
+use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking;
+use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBookingCollection;
+use Module\Shared\Domain\ValueObject\Id;
+use Module\Shared\Domain\ValueObject\SerializableDataInterface;
 
-final class Details implements HotelDetailsInterface
+final class Details implements BookingDetailsInterface, SerializableDataInterface
 {
     public function __construct(
-        private readonly int $id,
-        private readonly int $hotelId,
-        private readonly BookingPeriod $period,
+        private readonly Id $id,
+        private HotelInfo $hotelInfo,
+        private BookingPeriod $period,
         private ?AdditionalInfo $additionalInfo,
-        private readonly RoomCollection $rooms,
-        private readonly CancelConditions $cancelConditions
+        private RoomBookingCollection $roomBookings,
+        private CancelConditions $cancelConditions
     ) {}
 
-    public function id(): int
+    public function id(): Id
     {
         return $this->id;
     }
 
-    public function hotelId(): int
+    public function hotelInfo(): HotelInfo
     {
-        return $this->hotelId;
+        return $this->hotelInfo;
     }
 
     public function period(): BookingPeriod
@@ -47,28 +50,54 @@ final class Details implements HotelDetailsInterface
         $this->additionalInfo = $additionalInfo;
     }
 
-    public function rooms(): RoomCollection
+    public function roomBookings(): RoomBookingCollection
     {
-        return $this->rooms;
+        return $this->roomBookings;
     }
 
-    public function addRoom(Room $room): void
+    public function addRoomBooking(RoomBooking $booking): void
     {
-        $this->rooms->add($room);
+        $this->roomBookings->add($booking);
     }
 
-    public function updateRoom(int $index, Room $room): void
+    public function updateRoomBooking(int $index, RoomBooking $booking): void
     {
-        $this->rooms->offsetSet($index, $room);
+        $this->roomBookings->offsetSet($index, $booking);
     }
 
-    public function deleteRoom(int $index): void
+    public function deleteRoomBooking(int $index): void
     {
-        $this->rooms->offsetUnset($index);
+        $this->roomBookings->offsetUnset($index);
     }
 
     public function cancelConditions(): CancelConditions
     {
         return $this->cancelConditions;
+    }
+
+    public function toData(): array
+    {
+        return [
+            'id' => $this->id->value(),
+            'hotelInfo' => $this->hotelInfo->toData(),
+            'additionalInfo' => $this->additionalInfo?->toData(),
+            'period' => $this->period->toData(),
+            'roomBookings' => $this->roomBookings->toData(),
+            'cancelConditions' => $this->cancelConditions->toData(),
+        ];
+    }
+
+    public static function fromData(array $data): static
+    {
+        $additionalInfo = $data['additionalInfo'] ?? null;
+
+        return new static(
+            new Id($data['id']),
+            HotelInfo::fromData($data['hotelInfo']),
+            BookingPeriod::fromData($data['period']),
+            $additionalInfo !== null ? AdditionalInfo::fromData($data['additionalInfo']) : null,
+            RoomBookingCollection::fromData($data['roomBookings']),
+            CancelConditions::fromData($data['cancelConditions'])
+        );
     }
 }

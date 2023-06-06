@@ -8,14 +8,19 @@ use Carbon\CarbonPeriod;
 use Module\Booking\Common\Application\Command\Admin\CreateBooking as CreateEntityCommand;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
 use Module\Booking\Hotel\Domain\Adapter\HotelAdapterInterface;
+use Module\Booking\Hotel\Domain\Entity\Details;
+use Module\Booking\Hotel\Domain\ValueObject\Details\BookingPeriod;
 use Module\Booking\Hotel\Domain\ValueObject\Details\CancelCondition\CancelMarkupOption;
 use Module\Booking\Hotel\Domain\ValueObject\Details\CancelCondition\CancelPeriodTypeEnum;
 use Module\Booking\Hotel\Domain\ValueObject\Details\CancelCondition\DailyMarkupCollection;
 use Module\Booking\Hotel\Domain\ValueObject\Details\CancelCondition\DailyMarkupOption;
 use Module\Booking\Hotel\Domain\ValueObject\Details\CancelConditions;
+use Module\Booking\Hotel\Domain\ValueObject\Details\HotelInfo;
 use Module\Booking\Hotel\Infrastructure\Models\BookingDetails;
 use Module\Shared\Domain\Service\SerializerInterface;
+use Module\Shared\Domain\ValueObject\Id;
 use Module\Shared\Domain\ValueObject\Percent;
+use Module\Shared\Domain\ValueObject\Time;
 use Sdk\Module\Contracts\Bus\CommandBusInterface;
 use Sdk\Module\Contracts\Bus\CommandHandlerInterface;
 use Sdk\Module\Contracts\Bus\CommandInterface;
@@ -41,18 +46,37 @@ class CreateBookingHandler implements CommandHandlerInterface
                 )
             );
 
+            $hotelDto = $this->hotelAdapter->findById($command->hotelId);
             $markupSettings = $this->hotelAdapter->getMarkupSettings($command->hotelId);
             $cancelConditions = $this->buildCancelConditionsByCancelPeriods(
                 $markupSettings->cancelPeriods,
                 $command->period
             );
+            $bookingPeriod = new BookingPeriod(
+                $command->period->getStartDate()->toImmutable(),
+                $command->period->getEndDate()->toImmutable(),
+            );
+            $bookingDetails = new Details(
+                new Id($bookingId),
+                new HotelInfo(
+                    $hotelDto->id,
+                    $hotelDto->name,
+                    new Time('14:00'), //@todo забрать из настроек отеля
+                    new Time('12:00'),
+                ),
+                $bookingPeriod,
+                null,
+                new \Module\Booking\Hotel\Domain\ValueObject\Details\RoomBookingCollection(),
+                $cancelConditions
+            );
 
             BookingDetails::create([
                 'booking_id' => $bookingId,
                 'hotel_id' => $command->hotelId,
-                'date_start' => $command->period->getStartDate(),
-                'date_end' => $command->period->getEndDate(),
-                'cancel_conditions' => $this->serializer->serialize($cancelConditions)
+                'date_start' => $bookingPeriod->dateFrom(),
+                'date_end' => $bookingPeriod->dateTo(),
+                'nights_count' => $bookingPeriod->nightsCount(),
+                'data' => $this->serializer->serialize($bookingDetails)
             ]);
 
             return $bookingId;

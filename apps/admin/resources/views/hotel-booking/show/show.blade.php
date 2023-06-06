@@ -9,7 +9,6 @@
       window['view-initial-data-hotel-booking'] = {{ Js::from([
             'bookingID' => $bookingId,
             'hotelID' => $hotelId,
-            'hotelRooms' => $hotelRooms,
         ]) }}
     </script>
 @endsection

@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Module\Booking\Common\Domain\Entity\Booking;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
+use Module\Shared\Domain\ValueObject\Id;
 use Sdk\Module\Foundation\Support\EntityFactory\AbstractEntityFactory;
 
 class BookingFactory extends AbstractEntityFactory
@@ -18,7 +19,7 @@ class BookingFactory extends AbstractEntityFactory
     protected function fromArray(array $data): Booking
     {
         return new $this->entity(
-            $data['id'],
+            new Id($data['id']),
             $data['order_id'],
             BookingStatusEnum::from($data['status']),
             BookingTypeEnum::from($data['type']),

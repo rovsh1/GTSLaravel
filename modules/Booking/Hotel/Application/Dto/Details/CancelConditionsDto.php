@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Hotel\Application\Dto;
+namespace Module\Booking\Hotel\Application\Dto\Details;
 
 use Carbon\CarbonInterface;
-use Module\Booking\Hotel\Application\Dto\CancelConditions\CancelMarkupOptionDto;
-use Module\Booking\Hotel\Application\Dto\CancelConditions\DailyMarkupDto;
+use Module\Booking\Hotel\Application\Dto\Details\CancelConditions\CancelMarkupOptionDto;
+use Module\Booking\Hotel\Application\Dto\Details\CancelConditions\DailyMarkupDto;
 use Module\Booking\Hotel\Domain\ValueObject\Details\CancelConditions;
 use Module\Shared\Application\Dto\AbstractDomainBasedDto;
 use Module\Shared\Domain\Entity\EntityInterface;

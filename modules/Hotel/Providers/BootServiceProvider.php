@@ -23,6 +23,10 @@ class BootServiceProvider extends \Sdk\Module\Foundation\Support\Providers\Servi
     {
 //        $this->app->singleton(Domain\Repository\RoomQuotaRepositoryInterface::class, Infrastructure\Repository\RoomQuotaRepository::class);
         $this->app->singleton(
+            Domain\Repository\HotelRepositoryInterface::class,
+            Infrastructure\Repository\HotelRepository::class
+        );
+        $this->app->singleton(
             Domain\Repository\RoomRepositoryInterface::class,
             Infrastructure\Repository\RoomRepository::class
         );

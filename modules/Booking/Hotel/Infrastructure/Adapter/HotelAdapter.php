@@ -4,17 +4,15 @@ namespace Module\Booking\Hotel\Infrastructure\Adapter;
 
 use Module\Booking\Hotel\Domain\Adapter\HotelAdapterInterface;
 use Module\Hotel\Application\Dto\MarkupSettingsDto;
+use Module\Hotel\Application\UseCase\GetHotelById;
 use Module\Hotel\Application\UseCase\GetMarkupSettings;
 use Module\Shared\Infrastructure\Adapter\AbstractModuleAdapter;
 
 class HotelAdapter extends AbstractModuleAdapter implements HotelAdapterInterface
 {
-
-    public function findById(int $id)
+    public function findById(int $id): mixed
     {
-        $hotelDto = $this->request('findById', ['id' => $id]);
-
-        return $hotelDto;
+        return app(GetHotelById::class)->execute($id);
     }
 
     public function getMarkupSettings(int $id): MarkupSettingsDto

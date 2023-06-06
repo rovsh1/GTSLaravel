@@ -2,7 +2,7 @@ import { MaybeRef } from '@vueuse/core'
 
 import { DateResponse, useAdminAPI } from '~api'
 import { BookingID } from '~api/booking/index'
-import { DailyMarkup, MarkupCondition, NoCheckInMarkup, Percent } from '~api/hotel/markup-settings'
+import { DailyMarkup, MarkupCondition, NoCheckInMarkup, Percent, Time } from '~api/hotel/markup-settings'
 
 export interface BookingHotelDetailsPayload {
   bookingID: BookingID
@@ -13,19 +13,29 @@ export interface HotelBookingGuest {
   fullName: string
   countryId: number
   gender: number
+  isAdult: boolean
 }
 
-export interface HotelBookingDetailsRoom {
+export interface RoomInfo {
   id: number
+  name: string
+}
+
+export interface HotelRoomBookingDetails {
   rateId: number
-  status: number
-  roomCount: number
-  guests: HotelBookingGuest[]
-  guestNote: string
-  discount: Percent
   isResident: boolean
-  earlyCheckIn: MarkupCondition
-  lateCheckOut: MarkupCondition
+  roomCount: number
+  earlyCheckIn?: MarkupCondition
+  lateCheckOut?: MarkupCondition
+  guestNote?: string
+  discount: Percent
+}
+
+export interface HotelRoomBooking {
+  status: number
+  roomInfo: RoomInfo
+  guests: HotelBookingGuest[]
+  details: HotelRoomBookingDetails
 }
 
 export enum ExternalNumberTypeEnum {
@@ -57,9 +67,24 @@ export interface CancelConditions {
   dailyMarkups: DailyMarkup[]
 }
 
+export interface BookingPeriod {
+  dateFrom: DateResponse
+  dateTo: DateResponse
+  nightsCount: number
+}
+
+export interface HotelInfo {
+  id: number
+  name: string
+  checkInTime: Time
+  checkOutTime: Time
+}
+
 export interface HotelBookingDetails {
   id: number
-  rooms: HotelBookingDetailsRoom[]
+  hotelInfo: HotelInfo
+  period: BookingPeriod
+  roomBookings: HotelRoomBooking[]
   additionalInfo: AdditionalInfo | null
   cancelConditions: CancelConditions
 }
