@@ -18,7 +18,8 @@
     "spatie/laravel-data": "^3.2",
     "ext-curl": "*",
     "ext-simplexml": "*",
-    "ext-fileinfo": "*"
+    "ext-fileinfo": "*",
+    "ext-pdo": "*"
   },
   "require-dev": {
     "barryvdh/laravel-ide-helper": "^2.12",

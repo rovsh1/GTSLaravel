@@ -3,6 +3,7 @@
 namespace Module\Services\FileStorage\Application\Command;
 
 use Module\Services\FileStorage\Domain\Entity\File;
+use Module\Services\FileStorage\Domain\Repository\CacheRepositoryInterface;
 use Module\Services\FileStorage\Domain\Repository\DatabaseRepositoryInterface;
 use Module\Services\FileStorage\Domain\Repository\StorageRepositoryInterface;
 use Sdk\Module\Contracts\Bus\CommandHandlerInterface;
@@ -13,6 +14,7 @@ class CreateFileHandler implements CommandHandlerInterface
     public function __construct(
         private readonly DatabaseRepositoryInterface $databaseRepository,
         private readonly StorageRepositoryInterface $storageRepository,
+        private readonly CacheRepositoryInterface $cacheRepository,
     ) {}
 
     public function handle(CommandInterface|CreateFile $command): File
@@ -22,6 +24,8 @@ class CreateFileHandler implements CommandHandlerInterface
         if (null !== $command->contents) {
             $this->storageRepository->put($file, $command->contents);
         }
+
+        $this->cacheRepository->store($file);
 
         return $file;
     }

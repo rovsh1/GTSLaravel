@@ -5,9 +5,8 @@ namespace Module\Pricing\CurrencyRate\Application\Request;
 use DateTime;
 use Module\Pricing\CurrencyRate\Domain\ValueObject\CountryEnum;
 use Module\Pricing\CurrencyRate\Domain\ValueObject\CurrencyEnum;
-use Sdk\Module\Contracts\Bus\CommandInterface;
 
-class GetRateDto implements CommandInterface
+class GetRateDto
 {
     public function __construct(
         public readonly CountryEnum $country,

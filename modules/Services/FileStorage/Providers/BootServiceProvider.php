@@ -3,16 +3,19 @@
 namespace Module\Services\FileStorage\Providers;
 
 use Illuminate\Support\Facades\Storage;
+use Module\Services\FileStorage\Domain\Repository\CacheRepositoryInterface;
 use Module\Services\FileStorage\Domain\Repository\DatabaseRepositoryInterface;
 use Module\Services\FileStorage\Domain\Repository\StorageRepositoryInterface;
 use Module\Services\FileStorage\Domain\Service\PathGenerator;
 use Module\Services\FileStorage\Domain\Service\PathGeneratorInterface;
 use Module\Services\FileStorage\Domain\Service\UrlGenerator;
 use Module\Services\FileStorage\Domain\Service\UrlGeneratorInterface;
+use Module\Services\FileStorage\Infrastructure\Repository\CacheRepository;
 use Module\Services\FileStorage\Infrastructure\Repository\DatabaseRepository;
 use Module\Services\FileStorage\Infrastructure\Repository\StorageRepository;
+use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
 
-class BootServiceProvider extends \Sdk\Module\Foundation\Support\Providers\ServiceProvider
+class BootServiceProvider extends ServiceProvider
 {
     public function boot()
     {
@@ -38,5 +41,6 @@ class BootServiceProvider extends \Sdk\Module\Foundation\Support\Providers\Servi
             return new StorageRepository($config, $app->get(PathGeneratorInterface::class));
         });
         $this->app->singleton(DatabaseRepositoryInterface::class, DatabaseRepository::class);
+        $this->app->singleton(CacheRepositoryInterface::class, CacheRepository::class);
     }
 }
