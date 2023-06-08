@@ -18,7 +18,7 @@ class RequestFactory extends AbstractEntityFactory
     {
         return new $this->entity(
             new Id($data['id']),
-            $data['booking_id'],
+            new Id($data['booking_id']),
             RequestTypeEnum::from($data['type']),
             new CarbonImmutable($data['created_at']),
         );

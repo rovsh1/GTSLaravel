@@ -25,12 +25,19 @@ export interface GetBookingPayload {
 export interface UpdateBookingStatusPayload {
   bookingID: BookingID
   status: number
+  notConfirmedReason?: string
+  cancelFeeAmount?: number
 }
 
 export interface UpdateExternalNumberPayload {
   bookingID: BookingID
   type: number
   number?: string | null
+}
+
+export interface UpdateBookingStatusResponse {
+  isNotConfirmedReasonRequired: boolean
+  isCancelFeeAmountRequired: boolean
 }
 
 export const useGetBookingAPI = (props: MaybeRef<GetBookingPayload>) =>
@@ -49,10 +56,11 @@ export const updateBookingStatus = (props: MaybeRef<UpdateBookingStatusPayload>)
         props,
         (payload: UpdateBookingStatusPayload): any => ({
           status: payload.status,
+          not_confirmed_reason: payload.notConfirmedReason,
         }),
       ),
     )), 'application/json')
-    .json<BaseResponse>()
+    .json<UpdateBookingStatusResponse>()
 
 export const updateExternalNumber = (props: MaybeRef<UpdateExternalNumberPayload>) =>
   useAdminAPI(

@@ -20,11 +20,11 @@ class BookingFactory extends AbstractEntityFactory
     {
         return new $this->entity(
             new Id($data['id']),
-            $data['order_id'],
+            new Id($data['order_id']),
             BookingStatusEnum::from($data['status']),
             BookingTypeEnum::from($data['type']),
             new Carbon($data['created_at']),
-            $data['creator_id'],
+            new Id($data['creator_id']),
             $data['note'],
         );
     }

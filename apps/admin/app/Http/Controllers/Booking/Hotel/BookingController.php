@@ -166,6 +166,7 @@ class BookingController extends AbstractPrototypeController
         if ($this->hasShowAction()) {
             $redirectUrl = $this->prototype->route('show', $this->model);
         }
+
         return redirect($redirectUrl);
     }
 
@@ -197,15 +198,24 @@ class BookingController extends AbstractPrototypeController
         );
     }
 
-    public function updateStatus(UpdateStatusRequest $request, int $id): AjaxResponseInterface
+    public function updateStatus(UpdateStatusRequest $request, int $id): JsonResponse
     {
-        StatusAdapter::updateStatus($id, $request->getStatus());
-        return new AjaxSuccessResponse();
+        return response()->json(
+            StatusAdapter::updateStatus($id, $request->getStatus(), $request->getNotConfirmedReason())
+        );
+    }
+
+    public function getStatusHistory(int $id): JsonResponse
+    {
+        return response()->json(
+            StatusAdapter::getStatusHistory($id)
+        );
     }
 
     public function updateExternalNumber(UpdateExternalNumberRequest $request, int $id): AjaxResponseInterface
     {
         HotelAdapter::updateExternalNumber($id, $request->getType(), $request->getNumber());
+
         return new AjaxSuccessResponse();
     }
 

@@ -2,18 +2,28 @@
 
 import { computed, reactive, ref } from 'vue'
 
+import { useToggle } from '@vueuse/core'
 import { z } from 'zod'
 
 import RequestBlock from '~resources/views/hotel-booking/show/components/RequestBlock.vue'
+import StatusHistoryModal from '~resources/views/hotel-booking/show/components/StatusHistoryModal.vue'
 import { externalNumberTypeOptions, getCancelPeriodTypeName } from '~resources/views/hotel-booking/show/constants'
+import { showNotConfirmedReasonDialog } from '~resources/views/hotel-booking/show/modals'
 import { useBookingStore } from '~resources/views/hotel-booking/show/store/booking'
 import { useBookingRequestStore } from '~resources/views/hotel-booking/show/store/request'
 
-import { Booking, updateBookingStatus, updateExternalNumber, useGetBookingAPI } from '~api/booking'
+import {
+  Booking,
+  updateBookingStatus,
+  UpdateBookingStatusPayload,
+  updateExternalNumber,
+  useGetBookingAPI,
+} from '~api/booking'
 import { CancelConditions, ExternalNumber, ExternalNumberType, ExternalNumberTypeEnum } from '~api/booking/details'
 import { BookingRequest, downloadRequestDocument, sendBookingRequest } from '~api/booking/request'
 import { BookingAvailableActionsResponse, useBookingStatusesAPI } from '~api/booking/status'
 
+import { showConfirmDialog } from '~lib/confirm-dialog'
 import { formatDate, formatDateTime } from '~lib/date'
 import { requestInitialData } from '~lib/initial-data'
 
@@ -89,11 +99,28 @@ const canSendChangeRequest = computed<boolean>(() => availableActions.value?.can
 const canEditExternalNumber = computed<boolean>(() => availableActions.value?.canEditExternalNumber || false)
 const isRoomsAndGuestsFilled = computed<boolean>(() => !bookingStore.isEmptyGuests && !bookingStore.isEmptyRooms)
 const bookingRequests = computed<BookingRequest[] | null>(() => requestStore.requests)
+const [isHistoryModalOpened, toggleHistoryModal] = useToggle<boolean>(false)
+
+const updateStatusPayload = reactive<UpdateBookingStatusPayload>({ bookingID } as UpdateBookingStatusPayload)
 
 const isStatusUpdateFetching = ref(false)
 const handleStatusChange = async (value: number): Promise<void> => {
   isStatusUpdateFetching.value = true
-  await updateBookingStatus({ bookingID, status: value })
+  updateStatusPayload.status = value
+  const { data: updateStatusResponse } = await updateBookingStatus(updateStatusPayload)
+  if (updateStatusResponse.value?.isNotConfirmedReasonRequired) {
+    const { result: isSaved, reason, toggleClose } = await showNotConfirmedReasonDialog()
+    if (isSaved) {
+      updateStatusPayload.notConfirmedReason = reason
+      toggleClose()
+      await handleStatusChange(value)
+      updateStatusPayload.notConfirmedReason = undefined
+      return
+    }
+  }
+  if (updateStatusResponse.value?.isCancelFeeAmountRequired) {
+    alert('Укажите сумму штрафа')
+  }
   await Promise.all([
     fetchBooking(),
     fetchAvailableActions(),
@@ -104,13 +131,17 @@ const handleStatusChange = async (value: number): Promise<void> => {
 const isRequestFetching = ref<boolean>(false)
 const handleRequestSend = async () => {
   isRequestFetching.value = true
-  await sendBookingRequest({ bookingID })
-  await Promise.all([
-    fetchAvailableActions(),
-    fetchBooking(),
-    fetchBookingDetails(),
-    fetchBookingRequests(),
-  ])
+  const { result: isSuccess, toggleClose } = await showConfirmDialog('Отправить запрос?')
+  if (isSuccess) {
+    setTimeout(toggleClose)
+    await sendBookingRequest({ bookingID })
+    await Promise.all([
+      fetchAvailableActions(),
+      fetchBooking(),
+      fetchBookingDetails(),
+      fetchBookingRequests(),
+    ])
+  }
   isRequestFetching.value = false
 }
 
@@ -124,7 +155,10 @@ const handleUpdateExternalNumber = async () => {
 }
 
 const handleDownloadDocument = async (requestId: number): Promise<void> => {
-  await downloadRequestDocument({ requestID: requestId, bookingID })
+  await downloadRequestDocument({
+    requestID: requestId,
+    bookingID,
+  })
 }
 
 const getHumanRequestType = (type: number): string => {
@@ -147,6 +181,11 @@ fetchBookingRequests()
 </script>
 
 <template>
+  <StatusHistoryModal
+    :opened="isHistoryModalOpened"
+    @close="toggleHistoryModal(false)"
+  />
+
   <div class="d-flex flex-wrap flex-grow-1 gap-2">
     <StatusSelect
       v-if="booking && statuses"
@@ -156,7 +195,7 @@ fetchBookingRequests()
       :is-loading="isStatusUpdateFetching || isAvailableActionsFetching"
       @change="handleStatusChange"
     />
-    <a href="#" class="btn-log">История изменений</a>
+    <a href="#" class="btn-log" @click.prevent="toggleHistoryModal()">История изменений</a>
     <div class="float-end">
       Общая сумма: <strong>0 <span class="cur">сўм</span></strong>
     </div>
@@ -282,7 +321,8 @@ fetchBookingRequests()
         <tr>
           <th>Незаезд</th>
           <td v-if="cancelConditions">
-            {{ cancelConditions.noCheckInMarkup.percent }}% {{ getCancelPeriodTypeName(cancelConditions.noCheckInMarkup.cancelPeriodType) }}
+            {{ cancelConditions.noCheckInMarkup.percent }}%
+            {{ getCancelPeriodTypeName(cancelConditions.noCheckInMarkup.cancelPeriodType) }}
           </td>
         </tr>
       </tbody>

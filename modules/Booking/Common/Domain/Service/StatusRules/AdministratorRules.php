@@ -2,6 +2,7 @@
 
 namespace Module\Booking\Common\Domain\Service\StatusRules;
 
+use Module\Booking\Common\Domain\Service\RequestRules;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 
 class AdministratorRules extends AbstractRules implements StatusRulesInterface
@@ -43,9 +44,8 @@ class AdministratorRules extends AbstractRules implements StatusRulesInterface
         $this->addTransition(BookingStatusEnum::CANCELLED_NO_FEE, BookingStatusEnum::REFUND_NO_FEE);
     }
 
-    public function isEditableStatus(BookingStatusEnum $status): bool
+    public function isEditableStatus(BookingStatusEnum $status, RequestRules $requestRules): bool
     {
-        //@TODO: прописать логику для изменяемых статусов
-        return true;
+        return $requestRules->isRequestableStatus($status) && $status !== BookingStatusEnum::CONFIRMED;
     }
 }

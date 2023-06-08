@@ -2,6 +2,7 @@
 
 namespace Sdk\Module\Foundation\Support\Providers;
 
+use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\Event\IntegrationEventDispatcherInterface;
 
 class EventServiceProvider extends ServiceProvider
@@ -10,7 +11,7 @@ class EventServiceProvider extends ServiceProvider
 
     public function register()
     {
-        $eventDispatcher = $this->app->get(IntegrationEventDispatcherInterface::class);
+        $eventDispatcher = $this->app->get(DomainEventDispatcherInterface::class);
 
         $this->registerListeners($eventDispatcher);
     }

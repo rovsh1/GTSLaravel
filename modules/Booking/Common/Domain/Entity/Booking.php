@@ -5,19 +5,17 @@ declare(strict_types=1);
 namespace Module\Booking\Common\Domain\Entity;
 
 use Carbon\Carbon;
+use Module\Booking\Common\Domain\Entity\Concerns\HasStatusesTrait;
 use Module\Booking\Common\Domain\Event\BookingRequestSent;
 use Module\Booking\Common\Domain\Event\CancellationRequestSent;
 use Module\Booking\Common\Domain\Event\ChangeRequestSent;
-use Module\Booking\Common\Domain\Exception\InvalidStatusTransition;
 use Module\Booking\Common\Domain\Exception\NotRequestableEntity;
 use Module\Booking\Common\Domain\Exception\NotRequestableStatus;
 use Module\Booking\Common\Domain\Service\RequestCreator;
 use Module\Booking\Common\Domain\Service\RequestRules;
-use Module\Booking\Common\Domain\Service\StatusRules\StatusRulesInterface;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
 use Module\Booking\Common\Domain\ValueObject\RequestTypeEnum;
-use Module\Booking\Hotel\Domain\Event\BookingStatusChanged;
 use Module\Shared\Domain\Entity\EntityInterface;
 use Module\Shared\Domain\ValueObject\Id;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
@@ -27,13 +25,15 @@ class Booking extends AbstractAggregateRoot implements
     ReservationInterface,
     BookingRequestableInterface
 {
+    use HasStatusesTrait;
+
     public function __construct(
         private readonly Id $id,
-        private readonly int $orderId,
+        private readonly Id $orderId,
         private BookingStatusEnum $status,
         private readonly BookingTypeEnum $type,
         private readonly Carbon $dateCreate,
-        private readonly int $creatorId,
+        private readonly Id $creatorId,
         private ?string $note = null,
     ) {}
 
@@ -42,7 +42,7 @@ class Booking extends AbstractAggregateRoot implements
         return $this->id;
     }
 
-    public function orderId(): int
+    public function orderId(): Id
     {
         return $this->orderId;
     }
@@ -50,14 +50,6 @@ class Booking extends AbstractAggregateRoot implements
     public function status(): BookingStatusEnum
     {
         return $this->status;
-    }
-
-    public function updateStatus(BookingStatusEnum $status, StatusRulesInterface $rules): void
-    {
-        if (!$rules->canTransit($this->status, $status)) {
-            throw new InvalidStatusTransition("Can't change status for booking [{$this->id}]]");
-        }
-        $this->forceChangeStatus($status);
     }
 
     public function type(): BookingTypeEnum
@@ -75,7 +67,7 @@ class Booking extends AbstractAggregateRoot implements
         return $this->dateCreate;
     }
 
-    public function creatorId(): int
+    public function creatorId(): Id
     {
         return $this->creatorId;
     }
@@ -98,27 +90,30 @@ class Booking extends AbstractAggregateRoot implements
         }
 
         $request = $requestCreator->create($this, $requestRules);
-        $event = match ($request->type()) {
-            RequestTypeEnum::BOOKING => new BookingRequestSent($this->id->value(), $request->id()->value()),
-            RequestTypeEnum::CHANGE => new ChangeRequestSent(),
-            RequestTypeEnum::CANCEL => new CancellationRequestSent(),
-        };
+        switch ($request->type()) {
+            case RequestTypeEnum::BOOKING:
+                $event = new BookingRequestSent($this, $request->id()->value());
+                $this->toWaitingConfirmation();
+                break;
+            case RequestTypeEnum::CHANGE:
+                $event = new ChangeRequestSent($this, $request->id()->value());
+                $this->toWaitingConfirmation();
+                break;
+            case RequestTypeEnum::CANCEL:
+                $event = new CancellationRequestSent($this, $request->id()->value());
+                $this->toWaitingCancellation();
+                break;
+        }
         $this->pushEvent($event);
+    }
 
-        $this->forceChangeStatus(
-            $requestRules->getNextStatus($this->status)
-        );
+    private function setStatus(BookingStatusEnum $status): void
+    {
+        $this->status = $status;
     }
 
     public function canSendClientVoucher(): bool
     {
         return $this->status === BookingStatusEnum::CONFIRMED;
-    }
-
-    private function forceChangeStatus(BookingStatusEnum $status): void
-    {
-        $oldStatus = $this->status;
-        $this->status = $status;
-        $this->pushEvent(new BookingStatusChanged($this, $oldStatus));
     }
 }

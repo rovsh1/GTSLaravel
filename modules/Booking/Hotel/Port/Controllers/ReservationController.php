@@ -2,7 +2,7 @@
 
 namespace Module\Booking\Hotel\Port\Controllers;
 
-use Module\Booking\Hotel\Domain\Event\ReservationCancelled;
+use Module\Booking\Common\Domain\Event\Status\BookingCancelled;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\PortGateway\Request;
 
@@ -15,7 +15,7 @@ class ReservationController
     //FIXME TEST
     public function cancel(Request $request)
     {
-        $this->eventDispatcher->dispatch(new ReservationCancelled(12, 'Test cancel'));
+        $this->eventDispatcher->dispatch(new BookingCancelled(12, 'Test cancel'));
     }
 
 }

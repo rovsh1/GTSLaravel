@@ -10,11 +10,17 @@ class UpdateStatusRequest extends FormRequest
     {
         return [
             'status' => ['required', 'numeric'],
+            'not_confirmed_reason' => ['nullable', 'string']
         ];
     }
 
     public function getStatus(): int
     {
         return $this->post('status');
+    }
+
+    public function getNotConfirmedReason(): ?string
+    {
+        return $this->post('not_confirmed_reason');
     }
 }

@@ -16,6 +16,7 @@ class RoomBooking implements ValueObjectInterface, SerializableDataInterface
     public function __construct(
         private RoomBookingStatusEnum $status,
         private RoomInfo $roomInfo,
+        //@todo возможно придется переносить гостей в отдельную таблицу с привязкой к заказу (для составных броней)
         private GuestCollection $guests,
         private RoomBookingDetails $details
     ) {}

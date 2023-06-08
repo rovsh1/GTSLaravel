@@ -6,6 +6,7 @@ use Carbon\CarbonInterface;
 use Module\Booking\Common\Domain\Entity\Booking as Entity;
 use Module\Booking\Common\Domain\Factory\BookingFactory;
 use Module\Booking\Common\Domain\Repository\BookingRepositoryInterface;
+use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Common\Infrastructure\Models\Booking as Model;
 
 class BookingRepository implements BookingRepositoryInterface
@@ -18,17 +19,18 @@ class BookingRepository implements BookingRepositoryInterface
         if (!$model) {
             return null;
         }
+
         return $this->bookingFactory->createFrom($model);
     }
 
     public function update(Entity $booking): bool
     {
         return (bool)Model::whereId($booking->id()->value())->update([
-            'order_id' => $booking->orderId(),
+            'order_id' => $booking->orderId()->value(),
             'type' => $booking->type(),
             'status' => $booking->status(),
             'note' => $booking->note(),
-            'creator_id' => $booking->creatorId(),
+            'creator_id' => $booking->creatorId()->value(),
         ]);
     }
 

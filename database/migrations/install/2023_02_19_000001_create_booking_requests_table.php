@@ -15,6 +15,12 @@ return new class extends Migration {
             $table->unsignedInteger('booking_id');
             $table->unsignedSmallInteger('type');
             $table->timestamps();
+
+            $table->foreign('booking_id')
+                ->references('id')
+                ->on('bookings')
+                ->restrictOnDelete()
+                ->cascadeOnUpdate();
         });
     }
 

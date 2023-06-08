@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static array getStatuses()
- * @method static void updateStatus(int $id, int $status)
+ * @method static mixed updateStatus(int $id, int $status, string|null $notConfirmedReason = null)
+ * @method static array getStatusHistory(int $id)
  **/
 class StatusAdapter extends Facade
 {

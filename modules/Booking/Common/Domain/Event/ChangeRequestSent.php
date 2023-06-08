@@ -2,7 +2,22 @@
 
 namespace Module\Booking\Common\Domain\Event;
 
-class ChangeRequestSent implements EventInterface, StatusEventInterface, RequestEventInterface
-{
+use Module\Booking\Common\Domain\Entity\Booking;
 
+class ChangeRequestSent implements RequestBookingEventInterface
+{
+    public function __construct(
+        public readonly Booking $booking,
+        public readonly int $requestId,
+    ) {}
+
+    public function bookingId(): int
+    {
+        return $this->booking->id()->value();
+    }
+
+    public function orderId(): int
+    {
+        return $this->booking->orderId()->value();
+    }
 }

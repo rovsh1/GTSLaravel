@@ -15,7 +15,7 @@ class Request extends AbstractAggregateRoot implements EntityInterface
     //@todo нужен статус вместо флага + кнопка сформировать запрос, после этого появляются 2 кнопки: отправить в отель и переформировать
     public function __construct(
         private readonly Id $id,
-        private readonly int $bookingId,
+        private readonly Id $bookingId,
         private readonly RequestTypeEnum $type,
         private readonly CarbonImmutable $dateCreate,
     ) {}
@@ -25,7 +25,7 @@ class Request extends AbstractAggregateRoot implements EntityInterface
         return $this->id;
     }
 
-    public function bookingId(): int
+    public function bookingId(): Id
     {
         return $this->bookingId;
     }

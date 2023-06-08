@@ -7,10 +7,10 @@ namespace App\Admin\Support\Adapters\Booking;
 use App\Core\Support\Adapters\AbstractModuleAdapter;
 use Carbon\CarbonPeriod;
 use Module\Booking\Hotel\Application\Request\CreateBookingDto;
-use Module\Booking\Hotel\Application\UseCase\CreateBooking;
-use Module\Booking\Hotel\Application\UseCase\GetBooking;
-use Module\Booking\Hotel\Application\UseCase\GetBookingsByFilters;
-use Module\Booking\Hotel\Application\UseCase\UpdateExternalNumber;
+use Module\Booking\Hotel\Application\UseCase\Admin\CreateBooking;
+use Module\Booking\Hotel\Application\UseCase\Admin\GetBooking;
+use Module\Booking\Hotel\Application\UseCase\Admin\GetBookingsByFilters;
+use Module\Booking\Hotel\Application\UseCase\Admin\UpdateExternalNumber;
 
 class HotelAdapter extends AbstractModuleAdapter
 {

@@ -3,9 +3,9 @@
 namespace Module\Booking\Hotel\Domain\Event;
 
 use Module\Booking\Common\Domain\Event\EditEventInterface;
-use Module\Booking\Common\Domain\Event\EventInterface;
+use Module\Booking\Common\Domain\Event\BookingEventInterface;
 
-class RoomAdded implements EventInterface, EditEventInterface
+class RoomAdded implements BookingEventInterface, EditEventInterface
 {
     public function __construct(
         public readonly int $hotelId,

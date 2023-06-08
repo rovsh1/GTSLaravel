@@ -3,7 +3,6 @@
 namespace Sdk\Module\Event;
 
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
-use Sdk\Module\Contracts\Event\DomainEventHandlerInterface;
 use Sdk\Module\Contracts\Event\DomainEventInterface;
 use Sdk\Module\Foundation\Module;
 
@@ -24,14 +23,14 @@ class DomainEventDispatcher implements DomainEventDispatcherInterface
         $this->listeners[$eventClass][] = $listenerClass;
     }
 
-    public function dispatchAll(DomainEventInterface ...$events): void
+    public function dispatch(DomainEventInterface ...$events): void
     {
         foreach ($events as $event) {
-            $this->dispatch($event);
+            $this->dispatchEvent($event);
         }
     }
 
-    public function dispatch(DomainEventInterface $event): void
+    private function dispatchEvent(DomainEventInterface $event): void
     {
         /*foreach ($this->middlewareHandlers as $middlewareHandler) {
             $middlewareHandler($command);
@@ -45,7 +44,6 @@ class DomainEventDispatcher implements DomainEventDispatcherInterface
         }
 
         $this->dispatchGlobalListeners($event);
-
 //        $this->domainEventHandler->handle($event);
     }
 

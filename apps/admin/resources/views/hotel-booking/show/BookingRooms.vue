@@ -95,7 +95,7 @@ const handleEditRoom = (roomIndex: number, room: HotelRoomBooking): void => {
 }
 
 const handleDeleteRoom = async (roomIndex: number): Promise<void> => {
-  const { result: isApproved, toggleLoading, toggleClose } = await showConfirmDialog('Удалить номер?')
+  const { result: isApproved, toggleLoading, toggleClose } = await showConfirmDialog('Удалить номер?', 'btn-danger')
   if (isApproved) {
     toggleLoading()
     await deleteBookingRoom({ bookingID, roomIndex })
@@ -148,7 +148,7 @@ fetchCountries()
     @submit="onModalSubmit"
   />
 
-  <h5 class="mt-3">Номера</h5>
+  <div class="mt-3" />
   <div
     v-for="(room, idx) in bookingDetails?.roomBookings"
     :key="idx"
