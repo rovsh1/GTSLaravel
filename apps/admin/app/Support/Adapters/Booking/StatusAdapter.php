@@ -15,9 +15,13 @@ class StatusAdapter
         return app(GetStatuses::class)->execute();
     }
 
-    public function updateStatus(int $id, int $status, ?string $notConfirmedReason = null): mixed
-    {
-        return app(UpdateBookingStatus::class)->execute($id, $status, $notConfirmedReason);
+    public function updateStatus(
+        int $id,
+        int $status,
+        ?string $notConfirmedReason = null,
+        ?float $cancelFeeAmount = null
+    ): mixed {
+        return app(UpdateBookingStatus::class)->execute($id, $status, $notConfirmedReason, $cancelFeeAmount);
     }
 
     public function getStatusHistory(int $id): array

@@ -201,7 +201,12 @@ class BookingController extends AbstractPrototypeController
     public function updateStatus(UpdateStatusRequest $request, int $id): JsonResponse
     {
         return response()->json(
-            StatusAdapter::updateStatus($id, $request->getStatus(), $request->getNotConfirmedReason())
+            StatusAdapter::updateStatus(
+                $id,
+                $request->getStatus(),
+                $request->getNotConfirmedReason(),
+                $request->getCancelFeeAmount()
+            )
         );
     }
 

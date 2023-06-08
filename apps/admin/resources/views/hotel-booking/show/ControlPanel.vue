@@ -8,7 +8,7 @@ import { z } from 'zod'
 import RequestBlock from '~resources/views/hotel-booking/show/components/RequestBlock.vue'
 import StatusHistoryModal from '~resources/views/hotel-booking/show/components/StatusHistoryModal.vue'
 import { externalNumberTypeOptions, getCancelPeriodTypeName } from '~resources/views/hotel-booking/show/constants'
-import { showNotConfirmedReasonDialog } from '~resources/views/hotel-booking/show/modals'
+import { showCancelFeeDialog, showNotConfirmedReasonDialog } from '~resources/views/hotel-booking/show/modals'
 import { useBookingStore } from '~resources/views/hotel-booking/show/store/booking'
 import { useBookingRequestStore } from '~resources/views/hotel-booking/show/store/request'
 
@@ -119,7 +119,14 @@ const handleStatusChange = async (value: number): Promise<void> => {
     }
   }
   if (updateStatusResponse.value?.isCancelFeeAmountRequired) {
-    alert('Укажите сумму штрафа')
+    const { result: isSaved, cancelFeeAmount, toggleClose } = await showCancelFeeDialog()
+    if (isSaved) {
+      updateStatusPayload.cancelFeeAmount = cancelFeeAmount
+      toggleClose()
+      await handleStatusChange(value)
+      updateStatusPayload.cancelFeeAmount = undefined
+      return
+    }
   }
   await Promise.all([
     fetchBooking(),

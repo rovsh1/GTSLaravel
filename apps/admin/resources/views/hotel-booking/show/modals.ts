@@ -38,9 +38,7 @@ export const showNotConfirmedReasonDialog = (): Promise<ShowNotConfirmedReasonDi
     .append('<label for="form_data_reason" class="col-sm-5 col-form-label">Выберите причину</label>')
     .append($selectElement)
 
-  const $form = $('<form />', {
-    method: 'post',
-  })
+  const $form = $('<form />', { method: 'post' })
     .append($reasonSelectField)
     .append($reasonDescriptionField)
 
@@ -54,6 +52,44 @@ export const showNotConfirmedReasonDialog = (): Promise<ShowNotConfirmedReasonDi
     },
     close: () => {
       resolve({ result: false, reason: reasonDescription, toggleLoading: () => {}, toggleClose: () => {} })
+    },
+  })
+})
+
+export interface ShowCancelFeeDialogResponse extends ShowDialogResponse {
+  cancelFeeAmount: number
+}
+
+export const showCancelFeeDialog = (): Promise<ShowCancelFeeDialogResponse> => new Promise((resolve): void => {
+  let cancelFeeAmount: number = 0
+
+  const $descriptionElement = $('<input />', {
+    id: 'form_data_penalty_net',
+    class: 'form-control',
+    type: 'number',
+    required: true,
+  }).on('input', (e) => {
+    cancelFeeAmount = Number($(e.target).val())
+  })
+  const $reasonDescriptionField = $('<div />', { class: 'row form-field field-text field-value field-required' })
+    .append('<label for="form_data_penalty_net" class="col-sm-5 col-form-label">Сумма штрафа</label>')
+    .append(
+      $('<div />', { class: 'col-sm-7 d-flex align-items-center' }).append($descriptionElement),
+    )
+
+  const $form = $('<form />', { method: 'post' })
+    .append($reasonDescriptionField)
+
+  window.WindowDialog({
+    title: 'Укажите сумму штрафа',
+    html: $form,
+    buttons: [{ text: 'Сохранить', cls: 'btn btn-primary', handler: 'submit' }, 'cancel'],
+    beforeSubmit: (form: any, closeHandler: ToggleCloseFunction, toggleLoading: ToggleLoadingFunction) => {
+      resolve({ result: true, cancelFeeAmount, toggleLoading, toggleClose: closeHandler })
+      return false
+    },
+    close: () => {
+      resolve({ result: false, cancelFeeAmount, toggleLoading: () => {}, toggleClose: () => {} })
     },
   })
 })
