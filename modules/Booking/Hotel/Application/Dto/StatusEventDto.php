@@ -5,29 +5,16 @@ declare(strict_types=1);
 namespace Module\Booking\Hotel\Application\Dto;
 
 use Carbon\CarbonInterface;
-use Module\Booking\Common\Domain\ValueObject\StatusChangeEvent;
-use Module\Shared\Application\Dto\AbstractDomainBasedDto;
-use Module\Shared\Domain\Entity\EntityInterface;
-use Module\Shared\Domain\ValueObject\ValueObjectInterface;
+use Sdk\Module\Foundation\Support\Dto\Dto;
 
-class StatusEventDto extends AbstractDomainBasedDto
+class StatusEventDto extends Dto
 {
     public function __construct(
         public readonly string $event,
-        public readonly array $payload,
-        public readonly int $source,
-        public readonly int $userId,
+        public readonly ?string $color,
+        public readonly ?array $payload,
+        public readonly ?string $source,
+        public readonly ?string $administratorName,
         public readonly CarbonInterface $dateCreate
     ) {}
-
-    public static function fromDomain(EntityInterface|ValueObjectInterface|StatusChangeEvent $entity): static
-    {
-        return new static(
-            $entity->event(),
-            [],
-            $entity->source(),
-            $entity->userId(),
-            $entity->dateCreate(),
-        );
-    }
 }

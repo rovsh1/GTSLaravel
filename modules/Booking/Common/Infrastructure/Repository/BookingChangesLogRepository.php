@@ -4,56 +4,51 @@ declare(strict_types=1);
 
 namespace Module\Booking\Common\Infrastructure\Repository;
 
-use App\Core\Support\Facades\AppContext;
+use Illuminate\Database\Eloquent\Collection;
 use Module\Booking\Common\Domain\Event\BookingEventInterface;
-use Module\Booking\Common\Domain\Event\RequestBookingEventInterface;
-use Module\Booking\Common\Domain\Event\StatusBookingEventInterface;
+use Module\Booking\Common\Domain\Event\BookingRequestEventInterface;
+use Module\Booking\Common\Domain\Event\BookingStatusEventInterface;
 use Module\Booking\Common\Domain\Repository\BookingChangesLogRepositoryInterface;
-use Module\Booking\Common\Domain\ValueObject\StatusChangeEvent;
 use Module\Booking\Common\Infrastructure\Models\BookingChangesLog;
 use Module\Booking\Common\Infrastructure\Models\EventTypeEnum;
+use Module\Shared\Domain\Service\Context;
 
 class BookingChangesLogRepository implements
     BookingChangesLogRepositoryInterface
 {
-    public function __construct() {}
+    public function __construct(
+        private readonly Context $contextService
+    ) {}
 
-    public function logBookingChange(BookingEventInterface $event, array $context): void
+    public function logBookingChange(BookingEventInterface $event, array $context = []): void
     {
         $eventType = $this->getEventType($event);
         BookingChangesLog::create([
             'event' => $event::class,
             'event_type' => $eventType,
-            'payload' => [],
+            'payload' => $event->payload(),
             'order_id' => $event->orderId(),
             'booking_id' => $event->bookingId(),
-            'context' => AppContext::get()
+            'context' => array_merge($this->contextService->get(), $context),
         ]);
     }
 
     /**
      * @param int $bookingId
-     * @return StatusChangeEvent[]
+     * @return Collection<int, BookingChangesLog>
      */
-    public function getStatusHistory(int $bookingId): array
+    public function getStatusHistory(int $bookingId): Collection
     {
-        return BookingChangesLog::whereBookingId($bookingId)->get()->map(
-            fn(BookingChangesLog $eventModel) => new StatusChangeEvent(
-                \Str::afterLast($eventModel->event, '\\'),
-                1,
-                1,
-                $eventModel->created_at->toImmutable()
-            )
-        )->all();
+        return BookingChangesLog::whereBookingId($bookingId)->whereEventType(EventTypeEnum::STATUS)->get();
     }
 
     private function getEventType(BookingEventInterface $event): EventTypeEnum
     {
         $eventType = EventTypeEnum::OTHER;
-        if ($event instanceof StatusBookingEventInterface) {
+        if ($event instanceof BookingStatusEventInterface) {
             $eventType = EventTypeEnum::STATUS;
         }
-        if ($event instanceof RequestBookingEventInterface) {
+        if ($event instanceof BookingRequestEventInterface) {
             $eventType = EventTypeEnum::REQUEST;
         }
 

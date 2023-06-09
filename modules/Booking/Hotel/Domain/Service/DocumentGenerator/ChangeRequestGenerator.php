@@ -13,6 +13,10 @@ class ChangeRequestGenerator extends AbstractGenerator
 
     protected function getReservationAttributes(Booking $booking): array
     {
-        return [];
+        return [
+            'reservNumber' => $booking->id()->value(),
+            'reservChangedAt' => now(),
+            'reservCreatedAt' => $booking->dateCreate()
+        ];
     }
 }

@@ -11,6 +11,6 @@ class StatusDto extends Dto
     public function __construct(
         public readonly int $id,
         public readonly string $name,
-        public readonly string $key,
+        public readonly ?string $color,
     ) {}
 }

@@ -5,14 +5,14 @@ import { BookingID } from '~api/booking/index'
 
 export type StatusID = number
 
-export interface BookingStatusesResponse {
+export interface BookingStatusResponse {
   id: StatusID
   name: string
-  key: string
+  color: string
 }
 
 export interface BookingAvailableActionsResponse {
-  statuses: BookingStatusesResponse[]
+  statuses: BookingStatusResponse[]
   isEditable: boolean
   isRequestable: boolean
   canSendBookingRequest: boolean
@@ -22,10 +22,17 @@ export interface BookingAvailableActionsResponse {
   canEditExternalNumber: boolean
 }
 
+export interface BookingStatusHistoryData extends Record<string, any> {
+  reason?: string
+  cancelFeeAmount?: number
+}
+
 export interface BookingStatusHistoryResponse {
   event: string
-  userId: number
-  source: number
+  color: string
+  payload: BookingStatusHistoryData | null
+  administratorName: string
+  source: string
   dateCreate: DateResponse
 }
 
@@ -40,7 +47,7 @@ export interface BookingStatusHistoryPayload {
 export const useBookingStatusesAPI = (props?: any) =>
   useAdminAPI(props, () => '/hotel-booking/status/list')
     .get()
-    .json<BookingStatusesResponse[]>()
+    .json<BookingStatusResponse[]>()
 
 export const useBookingAvailableActionsAPI = (props: MaybeRef<BookingAvailableStatusesPayload | null>) =>
   useAdminAPI(props, ({ bookingID }) =>

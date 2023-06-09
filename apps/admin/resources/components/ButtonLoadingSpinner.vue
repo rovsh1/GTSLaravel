@@ -22,8 +22,8 @@ withDefaults(defineProps<{
 
 <style scoped lang="scss">
 .button-spinner {
-  height: 12px;
   width: 11px;
+  height: 12px;
   margin-left: 2px;
 }
 </style>

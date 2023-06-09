@@ -14,6 +14,6 @@ class BookingChangesListener implements DomainEventListenerInterface
 
     public function handle(BookingEventInterface $event)
     {
-        $this->changesLogRepository->logBookingChange($event, []);
+        $this->changesLogRepository->logBookingChange($event);
     }
 }

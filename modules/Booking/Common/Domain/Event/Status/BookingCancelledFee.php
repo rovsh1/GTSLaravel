@@ -3,22 +3,20 @@
 namespace Module\Booking\Common\Domain\Event\Status;
 
 use Module\Booking\Common\Domain\Entity\Booking;
-use Module\Booking\Common\Domain\Event\StatusBookingEventInterface;
 
-class BookingCancelledFee implements StatusBookingEventInterface
+class BookingCancelledFee extends AbstractStatusEvent
 {
     public function __construct(
-        public readonly Booking $booking,
+        Booking $booking,
         public readonly float $cancelFeeAmount
-    ) {}
-
-    public function bookingId(): int
-    {
-        return $this->booking->id()->value();
+    ) {
+        parent::__construct($booking);
     }
 
-    public function orderId(): int
+    public function payload(): ?array
     {
-        return $this->booking->orderId()->value();
+        return [
+            'cancelFeeAmount' => $this->cancelFeeAmount
+        ];
     }
 }

@@ -1,14 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Module\Booking\Common\Domain\Event;
 
 use Module\Booking\Common\Domain\Entity\Booking;
 
-class CancellationRequestSent implements RequestBookingEventInterface
+abstract class AbstractBookingEvent implements BookingEventInterface
 {
     public function __construct(
         public readonly Booking $booking,
-        public readonly int $requestId,
     ) {}
 
     public function bookingId(): int
@@ -19,5 +20,10 @@ class CancellationRequestSent implements RequestBookingEventInterface
     public function orderId(): int
     {
         return $this->booking->orderId()->value();
+    }
+
+    public function payload(): ?array
+    {
+        return null;
     }
 }

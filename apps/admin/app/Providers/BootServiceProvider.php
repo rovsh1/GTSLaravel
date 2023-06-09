@@ -2,10 +2,10 @@
 
 namespace App\Admin\Providers;
 
-use App\Core\Components\Context\SourceEnum;
 use App\Core\Support\Facades\AppContext;
 use Gsdk\Filemanager\FilemanagerServiceProvider;
 use Illuminate\Support\ServiceProvider;
+use Module\Shared\Enum\SourceEnum;
 
 class BootServiceProvider extends ServiceProvider
 {

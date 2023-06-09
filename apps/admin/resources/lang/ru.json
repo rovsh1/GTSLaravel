@@ -94,6 +94,22 @@
     "Client\\TypeEnum::PHYSICAL": "Физическое лицо",
     "Client\\TypeEnum::LEGAL_ENTITY": "Юридическое лицо",
 
+    "Module\\Booking\\Common\\Domain\\Event\\Status\\BookingCreated": "Новая",
+    "Module\\Booking\\Common\\Domain\\Event\\Status\\BookingProcessing": "В работе",
+    "Module\\Booking\\Common\\Domain\\Event\\Status\\BookingCancelled": "Отменена",
+    "Module\\Booking\\Common\\Domain\\Event\\Status\\BookingConfirmed": "Подтверждена",
+    "Module\\Booking\\Common\\Domain\\Event\\Status\\BookingNotConfirmed": "Не подтверждена",
+    "Module\\Booking\\Common\\Domain\\Event\\Status\\BookingInvoiced": "Выписан счет",
+    "Module\\Booking\\Common\\Domain\\Event\\Status\\BookingPaid": "Оплачена",
+    "Module\\Booking\\Common\\Domain\\Event\\Status\\BookingPartiallyPaid": "Частично оплачена",
+    "Module\\Booking\\Common\\Domain\\Event\\Status\\BookingCancelledNoFee": "Отмена без штрафа",
+    "Module\\Booking\\Common\\Domain\\Event\\Status\\BookingCancelledFee": "Отмена со штрафом",
+    "Module\\Booking\\Common\\Domain\\Event\\Status\\BookingRefundNoFee": "Возврат без штрафа",
+    "Module\\Booking\\Common\\Domain\\Event\\Status\\BookingRefundFee": "Возврат со штрафом",
+    "Module\\Booking\\Common\\Domain\\Event\\Status\\BookingWaitingConfirmation": "Ожидает подтверждения",
+    "Module\\Booking\\Common\\Domain\\Event\\Status\\BookingWaitingCancellation": "Ожидает аннулирования",
+    "Module\\Booking\\Common\\Domain\\Event\\Status\\BookingWaitingProcessing": "Ожидает обработки",
+
     "mail.CUSTOMER_REGISTRATION": "Регистрация пользователя",
     "mail.CUSTOMER_PASSWORD_RECOVERY": "Восстановление пароля"
 }

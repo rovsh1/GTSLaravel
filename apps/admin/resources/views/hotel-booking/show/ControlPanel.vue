@@ -11,6 +11,7 @@ import { externalNumberTypeOptions, getCancelPeriodTypeName } from '~resources/v
 import { showCancelFeeDialog, showNotConfirmedReasonDialog } from '~resources/views/hotel-booking/show/modals'
 import { useBookingStore } from '~resources/views/hotel-booking/show/store/booking'
 import { useBookingRequestStore } from '~resources/views/hotel-booking/show/store/request'
+import { useBookingStatusHistoryStore } from '~resources/views/hotel-booking/show/store/status-history'
 
 import {
   Booking,
@@ -21,7 +22,7 @@ import {
 } from '~api/booking'
 import { CancelConditions, ExternalNumber, ExternalNumberType, ExternalNumberTypeEnum } from '~api/booking/details'
 import { BookingRequest, downloadRequestDocument, sendBookingRequest } from '~api/booking/request'
-import { BookingAvailableActionsResponse, useBookingStatusesAPI } from '~api/booking/status'
+import { BookingAvailableActionsResponse, BookingStatusResponse } from '~api/booking/status'
 
 import { showConfirmDialog } from '~lib/confirm-dialog'
 import { formatDate, formatDateTime } from '~lib/date'
@@ -42,6 +43,8 @@ const bookingStore = useBookingStore()
 const { fetchBookingDetails, fetchAvailableActions } = bookingStore
 const requestStore = useBookingRequestStore()
 const { fetchBookingRequests } = requestStore
+const statusHistoryStore = useBookingStatusHistoryStore()
+const { fetchStatusHistory } = statusHistoryStore
 
 const externalNumberData = ref<ExternalNumber>({
   type: ExternalNumberTypeEnum.HotelBookingNumber,
@@ -84,11 +87,13 @@ const isNeedShowExternalNumber = computed<boolean>(
 
 const cancelConditions = computed<CancelConditions | null>(() => bookingStore.bookingDetails?.cancelConditions || null)
 
-const { data: bookingData, execute: fetchBooking } = useGetBookingAPI({ bookingID })
-const { data: statuses, execute: fetchStatuses } = useBookingStatusesAPI()
+const {
+  data: bookingData,
+  execute: fetchBooking,
+} = useGetBookingAPI({ bookingID })
 
 const booking = reactive<Booking>(bookingData as unknown as Booking)
-
+const statuses = computed<BookingStatusResponse[] | null>(() => bookingStore.statuses)
 const availableActions = computed<BookingAvailableActionsResponse | null>(() => bookingStore.availableActions)
 const isAvailableActionsFetching = computed<boolean>(() => bookingStore.isAvailableActionsFetching)
 const isRequestableStatus = computed<boolean>(() => availableActions.value?.isRequestable || false)
@@ -99,6 +104,7 @@ const canSendChangeRequest = computed<boolean>(() => availableActions.value?.can
 const canEditExternalNumber = computed<boolean>(() => availableActions.value?.canEditExternalNumber || false)
 const isRoomsAndGuestsFilled = computed<boolean>(() => !bookingStore.isEmptyGuests && !bookingStore.isEmptyRooms)
 const bookingRequests = computed<BookingRequest[] | null>(() => requestStore.requests)
+const lastHistoryItem = computed(() => statusHistoryStore.lastHistoryItem)
 const [isHistoryModalOpened, toggleHistoryModal] = useToggle<boolean>(false)
 
 const updateStatusPayload = reactive<UpdateBookingStatusPayload>({ bookingID } as UpdateBookingStatusPayload)
@@ -109,7 +115,11 @@ const handleStatusChange = async (value: number): Promise<void> => {
   updateStatusPayload.status = value
   const { data: updateStatusResponse } = await updateBookingStatus(updateStatusPayload)
   if (updateStatusResponse.value?.isNotConfirmedReasonRequired) {
-    const { result: isSaved, reason, toggleClose } = await showNotConfirmedReasonDialog()
+    const {
+      result: isSaved,
+      reason,
+      toggleClose,
+    } = await showNotConfirmedReasonDialog()
     if (isSaved) {
       updateStatusPayload.notConfirmedReason = reason
       toggleClose()
@@ -119,7 +129,11 @@ const handleStatusChange = async (value: number): Promise<void> => {
     }
   }
   if (updateStatusResponse.value?.isCancelFeeAmountRequired) {
-    const { result: isSaved, cancelFeeAmount, toggleClose } = await showCancelFeeDialog()
+    const {
+      result: isSaved,
+      cancelFeeAmount,
+      toggleClose,
+    } = await showCancelFeeDialog()
     if (isSaved) {
       updateStatusPayload.cancelFeeAmount = cancelFeeAmount
       toggleClose()
@@ -131,15 +145,19 @@ const handleStatusChange = async (value: number): Promise<void> => {
   await Promise.all([
     fetchBooking(),
     fetchAvailableActions(),
+    fetchStatusHistory(),
   ])
   isStatusUpdateFetching.value = false
 }
 
 const isRequestFetching = ref<boolean>(false)
 const handleRequestSend = async () => {
-  isRequestFetching.value = true
-  const { result: isSuccess, toggleClose } = await showConfirmDialog('Отправить запрос?')
+  const {
+    result: isSuccess,
+    toggleClose,
+  } = await showConfirmDialog('Отправить запрос?')
   if (isSuccess) {
+    isRequestFetching.value = true
     setTimeout(toggleClose)
     await sendBookingRequest({ bookingID })
     await Promise.all([
@@ -147,6 +165,7 @@ const handleRequestSend = async () => {
       fetchBooking(),
       fetchBookingDetails(),
       fetchBookingRequests(),
+      fetchStatusHistory(),
     ])
   }
   isRequestFetching.value = false
@@ -180,7 +199,6 @@ const getHumanRequestType = (type: number): string => {
   return preparedType
 }
 
-fetchStatuses()
 fetchAvailableActions()
 fetchBooking()
 fetchBookingRequests()
@@ -248,6 +266,32 @@ fetchBookingRequests()
   <div class="mt-4">
     <h6>Финансовая стоимость брони</h6>
     <hr>
+    <div class="d-flex flex-row gap-3">
+      <div class="w-50 rounded shadow-lg p-3">
+        <h6>Приход</h6>
+        <hr>
+        <div>
+          Общая сумма (брутто): 22 <span class="currency">$</span>
+        </div>
+        <a href="#">Изменить</a>
+      </div>
+      <div class="w-50 rounded shadow-lg p-3">
+        <h6>Расход</h6>
+        <hr>
+        <div>
+          Общая сумма (нетто): 243 225 <span class="currency">сўм</span>
+        </div>
+        <a href="#">Изменить</a>
+      </div>
+    </div>
+
+    <div class="mt-2">
+      Прибыль = 22 $ - 21 $ = 0 $
+    </div>
+
+    <div v-if="lastHistoryItem && lastHistoryItem?.payload?.reason" class="mt-2 alert alert-warning" role="alert">
+      {{ lastHistoryItem.payload.reason }}
+    </div>
   </div>
 
   <div class="mt-4">
@@ -356,6 +400,28 @@ hr {
 
   .btn-download {
     font-size: 11px;
+  }
+}
+
+.alert {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 7px 140px 7px 16px;
+  border-radius: 4px;
+  color: black;
+
+  &.alert-warning {
+    background: #fff4de;
+
+    a {
+      background: #ffa800;
+
+      &:hover {
+        background-color: #FFCA2CFF;
+      }
+    }
   }
 }
 </style>

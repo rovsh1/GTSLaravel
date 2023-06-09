@@ -204,6 +204,35 @@ fetchCountries()
               </tr>
             </tbody>
           </table>
+
+          <div class="mt-2">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th />
+                  <th>Цена за ночь</th>
+                  <th>Итого</th>
+                  <th>Подробный расчет</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Стоимость брутто</td>
+                  <td>8 <span class="cur">$</span></td>
+                  <td>22 <span class="cur">$</span></td>
+                  <td>(8 <span class="cur">$</span> (брутто) * 1 (номер) * 1 (ночь)) + 4 <span class="cur">$</span> (ранний заезд) * 1 (номер) + 8 <span class="cur">$</span> (поздний выезд) * 1 (номер)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="conditions">
+            <span class="condition-item">Ранний заезд  - 4 <span class="cur">$</span></span>
+            <span class="condition-item">Поздний выезд  - 8 <span class="cur">$</span></span>
+          </div>
+          <div class="d-flex flex-row justify-content-between w-100 mt-2">
+            <strong>Итого: 22 <span class="cur">$</span></strong>
+            <a href="#">Изменить цену номера</a>
+          </div>
         </div>
         <div class="w-100 rounded shadow-lg p-4">
           <h6>Список гостей</h6>

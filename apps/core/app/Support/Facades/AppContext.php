@@ -2,9 +2,9 @@
 
 namespace App\Core\Support\Facades;
 
-use App\Core\Components\Context\SourceEnum;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Facade;
+use Module\Shared\Enum\SourceEnum;
 
 /**
  * @method static void setSource(SourceEnum $source)

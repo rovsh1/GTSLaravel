@@ -3,12 +3,12 @@
 import { computed, watch } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
-import { z } from 'zod'
 
-import { useBookingStatusHistoryAPI } from '~api/booking/status'
+import { useBookingStatusHistoryStore } from '~resources/views/hotel-booking/show/store/status-history'
+
+import { BookingStatusHistoryResponse } from '~api/booking/status'
 
 import { formatDateTime } from '~lib/date'
-import { requestInitialData } from '~lib/initial-data'
 
 import BaseDialog from '~components/BaseDialog.vue'
 
@@ -20,18 +20,10 @@ defineEmits<{
   (event: 'close'): void
 }>()
 
-const { bookingID } = requestInitialData(
-  'view-initial-data-hotel-booking',
-  z.object({
-    bookingID: z.number(),
-  }),
-)
-
-const {
-  data: statusHistoryEvents,
-  execute: fetchStatusHistory,
-  isFetching,
-} = useBookingStatusHistoryAPI({ bookingID })
+const statusHistoryStore = useBookingStatusHistoryStore()
+const { fetchStatusHistory } = statusHistoryStore
+const isFetching = computed<boolean>(() => statusHistoryStore.isFetching)
+const statusHistoryEvents = computed<BookingStatusHistoryResponse[] | null>(() => statusHistoryStore.statusHistoryEvents)
 
 const isOpened = computed(() => props.opened)
 watch(isOpened, (opened) => {
@@ -50,7 +42,6 @@ watch(isOpened, (opened) => {
     @close="$emit('close')"
   >
     <template #title>История статусов</template>
-
     <table class="table table-striped">
       <thead>
         <tr>
@@ -62,9 +53,13 @@ watch(isOpened, (opened) => {
       </thead>
       <tbody>
         <tr v-for="(statusEvent, idx) in statusHistoryEvents" :key="idx">
-          <td>{{ statusEvent.event }}</td>
-          <td>-</td>
-          <td>-</td>
+          <td>
+            <span :class="`badge rounded-pill text-bg-${statusEvent.color} px-2`">
+              {{ statusEvent.event }}
+            </span>
+          </td>
+          <td>{{ statusEvent.source }}</td>
+          <td>{{ statusEvent.administratorName }}</td>
           <td>{{ formatDateTime(statusEvent.dateCreate) }}</td>
         </tr>
         <tr v-if="!isFetching && statusHistoryEvents?.length === 0">
@@ -78,5 +73,24 @@ watch(isOpened, (opened) => {
 <style>
 :root .statusHistoryDialog {
   --dialog-width: 50rem;
+}
+</style>
+
+<style scoped lang="scss">
+.event {
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 1rem;
+    display: inline-block;
+    vertical-align: middle;
+    width: 6px;
+    height: 6px;
+    margin-top: -3px;
+    margin-right: 5px;
+    border-radius: 50%;
+    background-color: black;
+  }
 }
 </style>

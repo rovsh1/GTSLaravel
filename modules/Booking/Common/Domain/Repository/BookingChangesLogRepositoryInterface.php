@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace Module\Booking\Common\Domain\Repository;
 
+use Illuminate\Database\Eloquent\Collection;
 use Module\Booking\Common\Domain\Event\BookingEventInterface;
-use Module\Booking\Common\Domain\ValueObject\StatusChangeEvent;
+use Module\Booking\Common\Infrastructure\Models\BookingChangesLog;
 
 interface BookingChangesLogRepositoryInterface
 {
-    public function logBookingChange(BookingEventInterface $event, array $context): void;
+    public function logBookingChange(BookingEventInterface $event, array $context = []): void;
 
     /**
      * @param int $bookingId
-     * @return StatusChangeEvent[]
+     * @return Collection<int, BookingChangesLog>
      */
-    public function getStatusHistory(int $bookingId): array;
+    public function getStatusHistory(int $bookingId): Collection;
 }

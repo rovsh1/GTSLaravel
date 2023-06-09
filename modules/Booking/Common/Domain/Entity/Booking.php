@@ -6,9 +6,9 @@ namespace Module\Booking\Common\Domain\Entity;
 
 use Carbon\Carbon;
 use Module\Booking\Common\Domain\Entity\Concerns\HasStatusesTrait;
-use Module\Booking\Common\Domain\Event\BookingRequestSent;
-use Module\Booking\Common\Domain\Event\CancellationRequestSent;
-use Module\Booking\Common\Domain\Event\ChangeRequestSent;
+use Module\Booking\Common\Domain\Event\Request\BookingRequestSent;
+use Module\Booking\Common\Domain\Event\Request\CancellationRequestSent;
+use Module\Booking\Common\Domain\Event\Request\ChangeRequestSent;
 use Module\Booking\Common\Domain\Exception\NotRequestableEntity;
 use Module\Booking\Common\Domain\Exception\NotRequestableStatus;
 use Module\Booking\Common\Domain\Service\RequestCreator;
