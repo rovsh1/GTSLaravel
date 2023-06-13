@@ -62,8 +62,6 @@ class Administrator extends Authenticatable
         'status' => 'bool'
     ];
 
-    public $timestamps = true;
-
 //    protected static function booted()
 //    {
 //        parent::saving(function (Administrator $model) {

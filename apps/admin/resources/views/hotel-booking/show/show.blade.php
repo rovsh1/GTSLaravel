@@ -49,6 +49,14 @@
                                 <td>-</td>
                             </tr>
                             <tr>
+                                <th>Тип брони</th>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <th>Тип карты оплаты</th>
+                                <td>-</td>
+                            </tr>
+                            <tr>
                                 <th>Страна</th>
                                 <td>{{ $hotel->country_name }} / {{ $hotel->city_name }}</td>
                             </tr>
@@ -70,20 +78,17 @@
                             </tr>
                             <tr>
                                 <th>Менеджер</th>
-                                <td>-</td>
+                                <td> {{ $manager->presentation }}</td>
                             </tr>
                             <tr>
                                 <th>Автор</th>
-                                <td>{{ $model->creatorId }}</td>
+                                <td>{{ $creator->presentation }}</td>
                             </tr>
                             <tr>
                                 <th>Создана</th>
                                 <td>{{ $model->dateCreate }}</td>
                             </tr>
                             <tr>
-                                <th>Статус</th>
-                                <td>{{ $model->status }}</td>
-                            </tr>
                             <tr>
                                 <th>Примечание</th>
                                 <td>{{ $model->note }}</td>

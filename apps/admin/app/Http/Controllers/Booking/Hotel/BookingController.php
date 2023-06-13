@@ -5,10 +5,11 @@ namespace App\Admin\Http\Controllers\Booking\Hotel;
 use App\Admin\Http\Requests\Booking\UpdateExternalNumberRequest;
 use App\Admin\Http\Requests\Booking\UpdateStatusRequest;
 use App\Admin\Http\Resources\Room as RoomResource;
-use App\Admin\Models\Booking\Administrator;
+use App\Admin\Models\Administrator\Administrator;
 use App\Admin\Models\Client\Client;
 use App\Admin\Models\Hotel\Hotel;
 use App\Admin\Models\Hotel\Room;
+use App\Admin\Repositories\BookingAdministratorRepository;
 use App\Admin\Support\Facades\Booking\BookingAdapter;
 use App\Admin\Support\Facades\Booking\HotelAdapter;
 use App\Admin\Support\Facades\Booking\OrderAdapter;
@@ -28,11 +29,18 @@ use Illuminate\Http\RedirectResponse;
 
 class BookingController extends AbstractPrototypeController
 {
+    public function __construct(
+        private readonly BookingAdministratorRepository $administratorRepository
+    ) {
+        parent::__construct();
+    }
+
     public function index(): LayoutContract
     {
         Breadcrumb::prototype($this->prototype);
 
-        $grid = $this->gridFactory();
+        $statuses = StatusAdapter::getStatuses();
+        $grid = $this->gridFactory($statuses);
 //        $query = $this->repository->queryWithCriteria($grid->getSearchCriteria());
 //        $this->prepareGridQuery($query);
         $data = HotelAdapter::getBookings();
@@ -82,10 +90,7 @@ class BookingController extends AbstractPrototypeController
             orderId: $data['order_id'] ?? null,
             note: $data['note'] ?? null
         );
-        Administrator::create([
-            'booking_id' => $bookingId,
-            'administrator_id' => $creator->id
-        ]);
+        $this->administratorRepository->create($bookingId, $creator->id);
 
         return redirect(
             $this->prototype->route('show', $bookingId)
@@ -108,7 +113,6 @@ class BookingController extends AbstractPrototypeController
 
 //        $this->prepareShowMenu($this->model);
 
-
         return Layout::title($title)
             ->view($this->getPrototypeKey() . '.show.show', [
                 'bookingId' => $id,
@@ -118,6 +122,8 @@ class BookingController extends AbstractPrototypeController
                 'details' => $details,
                 'client' => $client,
                 'order' => $order,
+                'manager' => $this->administratorRepository->get($id),
+                'creator' => Administrator::find($booking->creatorId),
                 'editUrl' => $this->isAllowed('update') ? $this->route('edit', $id) : null,
                 'deleteUrl' => $this->isAllowed('delete') ? $this->route('destroy', $id) : null,
                 'hotelRooms' => RoomResource::collection(Room::whereHotelId($hotelId)->get())
@@ -224,11 +230,13 @@ class BookingController extends AbstractPrototypeController
         return new AjaxSuccessResponse();
     }
 
-    protected function gridFactory(): GridContract
+    protected function gridFactory(array $statuses = []): GridContract
     {
         return Grid::enableQuicksearch()
             ->id('id', ['text' => '№', 'route' => $this->prototype->routeName('show'), 'order' => true])
-            ->text('status', ['text' => 'Статус', 'renderer' => fn($v, $t) => $t->name, 'order' => true])
+            //@todo добавить тип status, который обрабатывает статусы из DTO
+//            ->text('status', ['text' => 'Статус', 'renderer' => fn($v, $t) => $t->name, 'order' => true])
+            ->bookingStatus('status', ['text' => 'Статус', 'order' => true, 'statuses'=> $statuses])
             ->text('client_name', ['text' => 'Клиент'])
             ->date('date_start', ['text' => 'Дата заезда'])
             ->date('date_end', ['text' => 'Дата выезда'])
