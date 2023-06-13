@@ -234,9 +234,7 @@ class BookingController extends AbstractPrototypeController
     {
         return Grid::enableQuicksearch()
             ->id('id', ['text' => '№', 'route' => $this->prototype->routeName('show'), 'order' => true])
-            //@todo добавить тип status, который обрабатывает статусы из DTO
-//            ->text('status', ['text' => 'Статус', 'renderer' => fn($v, $t) => $t->name, 'order' => true])
-            ->bookingStatus('status', ['text' => 'Статус', 'order' => true, 'statuses'=> $statuses])
+            ->bookingStatus('status', ['text' => 'Статус', 'statuses'=> $statuses])
             ->text('client_name', ['text' => 'Клиент'])
             ->date('date_start', ['text' => 'Дата заезда'])
             ->date('date_end', ['text' => 'Дата выезда'])
