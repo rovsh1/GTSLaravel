@@ -12,7 +12,6 @@ class BootServiceProvider extends ServiceProvider
         Domain\Repository\BookingRepositoryInterface::class => Infrastructure\Repository\BookingRepository::class,
         Domain\Repository\RequestRepositoryInterface::class => Infrastructure\Repository\RequestRepository::class,
         Domain\Repository\BookingChangesLogRepositoryInterface::class => Infrastructure\Repository\BookingChangesLogRepository::class,
-        Domain\Adapter\OrderAdapterInterface::class => Infrastructure\Adapter\OrderAdapter::class,
         Domain\Adapter\FileStorageAdapterInterface::class => Infrastructure\Adapter\FileStorageAdapter::class,
     ];
 }

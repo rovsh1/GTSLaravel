@@ -2,7 +2,6 @@
 
 namespace Module\Hotel\Application\Dto;
 
-use Module\HotelOld\Application\Dto\Info\PriceRateDto;
 use Sdk\Module\Foundation\Support\Dto\Dto;
 use Sdk\Module\Foundation\Support\Dto\DtoCollection;
 use Sdk\Module\Foundation\Support\Dto\DtoCollectionOf;

@@ -5,19 +5,13 @@ declare(strict_types=1);
 namespace App\Admin\Support\Adapters\Booking;
 
 use Carbon\CarbonPeriod;
-use Module\Booking\Hotel\Application\Request\AddRoomDto;
 use Module\Booking\Hotel\Application\Request\CreateBookingDto;
-use Module\Booking\Hotel\Application\Request\Guest\AddRoomGuestDto;
-use Module\Booking\Hotel\Application\Request\Guest\UpdateRoomGuestDto;
-use Module\Booking\Hotel\Application\Request\UpdateRoomDto;
 use Module\Booking\Hotel\Application\UseCase\Admin\CreateBooking;
 use Module\Booking\Hotel\Application\UseCase\Admin\GetBooking;
 use Module\Booking\Hotel\Application\UseCase\Admin\GetBookingsByFilters;
-use Module\Booking\Hotel\Application\UseCase\Admin\GetDetails;
-use Module\Booking\Hotel\Application\UseCase\Admin\Room;
 use Module\Booking\Hotel\Application\UseCase\Admin\UpdateExternalNumber;
 
-class HotelAdapter
+class AirportAdapter
 {
     public function getBookings(array $filters = []): mixed
     {
@@ -31,7 +25,7 @@ class HotelAdapter
 
     public function getBookingDetails(int $id): mixed
     {
-        return app(GetDetails::class)->execute($id);
+        return $this->request('getBookingDetails', ['id' => $id]);
     }
 
     public function createBooking(
@@ -68,20 +62,18 @@ class HotelAdapter
         ?string $note = null,
         ?int $discount = null
     ): void {
-        app(Room\Add::class)->execute(
-            new AddRoomDto(
-                bookingId: $bookingId,
-                roomId: $roomId,
-                rateId: $rateId,
-                status: $status,
-                isResident: $isResident,
-                roomCount: $roomCount,
-                earlyCheckIn: $earlyCheckIn,
-                lateCheckOut: $lateCheckOut,
-                note: $note,
-                discount: $discount
-            )
-        );
+        $this->request('addRoom', [
+            'id' => $bookingId,
+            'roomId' => $roomId,
+            'rateId' => $rateId,
+            'status' => $status,
+            'isResident' => $isResident,
+            'roomCount' => $roomCount,
+            'earlyCheckIn' => $earlyCheckIn,
+            'lateCheckOut' => $lateCheckOut,
+            'note' => $note,
+            'discount' => $discount,
+        ]);
     }
 
     public function updateRoom(
@@ -97,26 +89,27 @@ class HotelAdapter
         ?string $note = null,
         ?int $discount = null
     ): void {
-        app(Room\Update::class)->execute(
-            new UpdateRoomDto(
-                bookingId: $bookingId,
-                roomIndex: $roomIndex,
-                roomId: $roomId,
-                rateId: $rateId,
-                status: $status,
-                isResident: $isResident,
-                roomCount: $roomCount,
-                earlyCheckIn: $earlyCheckIn,
-                lateCheckOut: $lateCheckOut,
-                note: $note,
-                discount: $discount
-            )
-        );
+        $this->request('updateRoom', [
+            'id' => $bookingId,
+            'roomIndex' => $roomIndex,
+            'roomId' => $roomId,
+            'rateId' => $rateId,
+            'status' => $status,
+            'isResident' => $isResident,
+            'roomCount' => $roomCount,
+            'earlyCheckIn' => $earlyCheckIn,
+            'lateCheckOut' => $lateCheckOut,
+            'note' => $note,
+            'discount' => $discount,
+        ]);
     }
 
-    public function deleteRoom(int $bookingId, int $roomIndex): void
+    public function deleteRoom(int $bookingId, int $roomIndex,): void
     {
-        app(Room\Delete::class)->execute($bookingId, $roomIndex);
+        $this->request('deleteRoom', [
+            'id' => $bookingId,
+            'roomIndex' => $roomIndex,
+        ]);
     }
 
     public function addRoomGuest(
@@ -127,16 +120,14 @@ class HotelAdapter
         int $gender,
         bool $isAdult
     ): void {
-        app(Room\Guest\Add::class)->execute(
-            new AddRoomGuestDto(
-                bookingId: $bookingId,
-                roomIndex: $roomIndex,
-                countryId: $countryId,
-                fullName: $fullName,
-                isAdult: $isAdult,
-                gender: $gender
-            )
-        );
+        $this->request('addRoomGuest', [
+            'id' => $bookingId,
+            'roomIndex' => $roomIndex,
+            'fullName' => $fullName,
+            'countryId' => $countryId,
+            'gender' => $gender,
+            'isAdult' => $isAdult,
+        ]);
     }
 
     public function updateRoomGuest(
@@ -148,21 +139,14 @@ class HotelAdapter
         int $gender,
         bool $isAdult
     ): void {
-        app(Room\Guest\Update::class)->execute(
-            new UpdateRoomGuestDto(
-                bookingId: $bookingId,
-                roomIndex: $roomIndex,
-                guestIndex: $guestIndex,
-                countryId: $countryId,
-                fullName: $fullName,
-                isAdult: $isAdult,
-                gender: $gender
-            )
-        );
-    }
-
-    public function updateExternalNumber(int $bookingId, int $type, ?string $number): void
-    {
-        app(UpdateExternalNumber::class)->execute($bookingId, $type, $number);
+        $this->request('updateRoomGuest', [
+            'id' => $bookingId,
+            'roomIndex' => $roomIndex,
+            'guestIndex' => $guestIndex,
+            'fullName' => $fullName,
+            'countryId' => $countryId,
+            'gender' => $gender,
+            'isAdult' => $isAdult,
+        ]);
     }
 }

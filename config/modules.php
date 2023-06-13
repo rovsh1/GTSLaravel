@@ -4,22 +4,9 @@ return [
     'Hotel' => [
         'path' => modules_path('Hotel')
     ],
-    /**
-     * @deprecated start
-     * @todo удалить после переноса модуля Traveline на новую логику
-     */
-    'HotelOld' => [
-        'path' => modules_path('HotelOld')
-    ],
-    /**
-     * @deprecated end
-     */
-    'HotelBooking' => [
-        'path' => modules_path('Booking/Hotel'),
-        'templates_path' => storage_path('app/booking/templates')
-    ],
-    'BookingOrder' => [
-        'path' => modules_path('Booking/Order')
+    'Booking' => [
+        'path' => modules_path('Booking'),
+        'templates_path' => storage_path('app/booking/templates'),
     ],
     'CurrencyRate' => [
         'path' => modules_path('Pricing/CurrencyRate'),

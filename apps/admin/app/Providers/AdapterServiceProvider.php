@@ -21,6 +21,7 @@ class AdapterServiceProvider extends ServiceProvider
         $this->app->singleton(Hotel\PricesAdapter::class, Hotel\PricesAdapter::class);
         $this->app->singleton(Booking\BookingAdapter::class, Booking\BookingAdapter::class);
         $this->app->singleton(Booking\HotelAdapter::class, Booking\HotelAdapter::class);
+        $this->app->singleton(Booking\AirportAdapter::class, Booking\AirportAdapter::class);
         $this->app->singleton(Booking\OrderAdapter::class, Booking\OrderAdapter::class);
         $this->app->singleton(Booking\StatusAdapter::class, Booking\StatusAdapter::class);
         $this->app->singleton(Booking\RequestAdapter::class, Booking\RequestAdapter::class);
