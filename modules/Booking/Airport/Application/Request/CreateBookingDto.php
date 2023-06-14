@@ -2,18 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Hotel\Application\Command\Admin;
+namespace Module\Booking\Airport\Application\Request;
 
-use Carbon\CarbonPeriod;
-use Sdk\Module\Contracts\Bus\CommandInterface;
+use Carbon\CarbonInterface;
 
-class CreateBooking implements CommandInterface
+class CreateBookingDto
 {
     public function __construct(
         public readonly int $cityId,
         public readonly int $clientId,
-        public readonly int $hotelId,
-        public readonly CarbonPeriod $period,
+        public readonly int $airportId,
+        public readonly CarbonInterface $date,
         public readonly int $creatorId,
         public readonly ?int $orderId,
         public readonly ?string $note = null

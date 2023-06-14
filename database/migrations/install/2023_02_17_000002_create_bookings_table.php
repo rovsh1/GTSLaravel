@@ -33,11 +33,12 @@ return new class extends Migration {
                 ->cascadeOnUpdate();
         });
 
-        $this->upBookingHotels();
+        $this->upBookingHotel();
+        $this->upBookingAirport();
         $this->upAdministratorBookings();
     }
 
-    private function upBookingHotels(): void
+    private function upBookingHotel(): void
     {
         Schema::create('booking_hotel_details', function (Blueprint $table) {
             $table->unsignedInteger('booking_id')->primary();
@@ -57,6 +58,29 @@ return new class extends Migration {
             $table->foreign('hotel_id')
                 ->references('id')
                 ->on('hotels')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+        });
+    }
+
+    private function upBookingAirport(): void
+    {
+        Schema::create('booking_airport_details', function (Blueprint $table) {
+            $table->unsignedInteger('booking_id')->primary();
+            $table->unsignedInteger('airport_id');
+            $table->date('date');
+            $table->json('data');
+            $table->timestamps();
+
+            $table->foreign('booking_id')
+                ->references('id')
+                ->on('bookings')
+                ->restrictOnDelete()
+                ->cascadeOnUpdate();
+
+            $table->foreign('airport_id')
+                ->references('id')
+                ->on('r_airports')
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
         });

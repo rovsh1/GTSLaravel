@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Common\Domain\Service;
 
+use Module\Booking\Airport\Infrastructure\Repository\BookingRepository as AirportBookingRepository;
 use Module\Booking\Common\Domain\Entity\BookingInterface;
 use Module\Booking\Common\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
@@ -28,6 +29,7 @@ class BookingUpdater
     {
         return match ($booking->type()) {
             BookingTypeEnum::HOTEL => new HotelBookingRepository(),
+            BookingTypeEnum::AIRPORT => new AirportBookingRepository(),
             default => throw new \DomainException('Unknown booking type')
         };
     }
