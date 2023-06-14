@@ -16,19 +16,19 @@ class BookingUpdater
         private readonly DomainEventDispatcherInterface $eventDispatcher
     ) {}
 
-    private function repository(BookingInterface $booking): BookingRepositoryInterface
-    {
-        return match ($booking->type()) {
-            BookingTypeEnum::HOTEL => new HotelBookingRepository(),
-            default => throw new \DomainException('Unknown booking type')
-        };
-    }
-
     public function store(BookingInterface $booking): bool
     {
         $success = $this->repository($booking)->store($booking);
         $this->eventDispatcher->dispatch(...$booking->pullEvents());
 
         return $success;
+    }
+
+    private function repository(BookingInterface $booking): BookingRepositoryInterface
+    {
+        return match ($booking->type()) {
+            BookingTypeEnum::HOTEL => new HotelBookingRepository(),
+            default => throw new \DomainException('Unknown booking type')
+        };
     }
 }
