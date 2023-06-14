@@ -10,7 +10,7 @@ class BookingAdministratorRepository
 {
     public function create(int $bookingId, int $administratorId): void
     {
-        \DB::table('administrator_bookings')->create([
+        \DB::table('administrator_bookings')->insert([
             'booking_id' => $bookingId,
             'administrator_id' => $administratorId
         ]);

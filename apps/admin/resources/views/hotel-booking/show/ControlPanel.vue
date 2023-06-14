@@ -18,7 +18,6 @@ import {
   updateBookingStatus,
   UpdateBookingStatusPayload,
   updateExternalNumber,
-  useGetBookingAPI,
 } from '~api/booking'
 import { CancelConditions, ExternalNumber, ExternalNumberType, ExternalNumberTypeEnum } from '~api/booking/details'
 import { BookingRequest, downloadRequestDocument, sendBookingRequest } from '~api/booking/request'
@@ -40,7 +39,7 @@ const { bookingID } = requestInitialData(
 )
 
 const bookingStore = useBookingStore()
-const { fetchBookingDetails, fetchAvailableActions } = bookingStore
+const { fetchBooking, fetchAvailableActions } = bookingStore
 const requestStore = useBookingRequestStore()
 const { fetchBookingRequests } = requestStore
 const statusHistoryStore = useBookingStatusHistoryStore()
@@ -58,7 +57,7 @@ const externalNumberType = computed<ExternalNumberType>({
     if (isExternalNumberChanged.value) {
       return externalNumberData.value.type
     }
-    return bookingStore.bookingDetails?.additionalInfo?.externalNumber?.type || ExternalNumberTypeEnum.HotelBookingNumber
+    return bookingStore.booking?.additionalInfo?.externalNumber?.type || ExternalNumberTypeEnum.HotelBookingNumber
   },
   set: (value: ExternalNumberType) => {
     isExternalNumberChanged.value = true
@@ -74,7 +73,7 @@ const externalNumber = computed<string | null>({
     if (isExternalNumberChanged.value) {
       return externalNumberData.value.number
     }
-    return bookingStore.bookingDetails?.additionalInfo?.externalNumber?.number || null
+    return bookingStore.booking?.additionalInfo?.externalNumber?.number || null
   },
   set: (value: string | null): void => {
     isExternalNumberChanged.value = true
@@ -85,14 +84,9 @@ const isNeedShowExternalNumber = computed<boolean>(
   () => Number(externalNumberType.value) === ExternalNumberTypeEnum.HotelBookingNumber,
 )
 
-const cancelConditions = computed<CancelConditions | null>(() => bookingStore.bookingDetails?.cancelConditions || null)
+const cancelConditions = computed<CancelConditions | null>(() => bookingStore.booking?.cancelConditions || null)
 
-const {
-  data: bookingData,
-  execute: fetchBooking,
-} = useGetBookingAPI({ bookingID })
-
-const booking = reactive<Booking>(bookingData as unknown as Booking)
+const booking = computed<Booking | null>(() => bookingStore.booking)
 const statuses = computed<BookingStatusResponse[] | null>(() => bookingStore.statuses)
 const availableActions = computed<BookingAvailableActionsResponse | null>(() => bookingStore.availableActions)
 const isAvailableActionsFetching = computed<boolean>(() => bookingStore.isAvailableActionsFetching)
@@ -163,7 +157,6 @@ const handleRequestSend = async () => {
     await Promise.all([
       fetchAvailableActions(),
       fetchBooking(),
-      fetchBookingDetails(),
       fetchBookingRequests(),
       fetchStatusHistory(),
     ])
@@ -175,7 +168,7 @@ const isUpdateExternalNumberFetching = ref(false)
 const handleUpdateExternalNumber = async () => {
   isUpdateExternalNumberFetching.value = true
   await updateExternalNumber({ bookingID, ...externalNumberData.value })
-  await fetchBookingDetails()
+  await fetchBooking()
   isExternalNumberChanged.value = false
   isUpdateExternalNumberFetching.value = false
 }
@@ -200,7 +193,6 @@ const getHumanRequestType = (type: number): string => {
 }
 
 fetchAvailableActions()
-fetchBooking()
 fetchBookingRequests()
 
 </script>

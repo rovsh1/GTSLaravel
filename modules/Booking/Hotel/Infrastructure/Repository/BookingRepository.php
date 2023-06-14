@@ -6,6 +6,7 @@ namespace Module\Booking\Hotel\Infrastructure\Repository;
 
 use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
+use Illuminate\Database\Eloquent\Collection;
 use Module\Booking\Common\Domain\Entity\BookingInterface;
 use Module\Booking\Common\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\Common\Infrastructure\Repository\AbstractBookingRepository as BaseRepository;
@@ -43,9 +44,9 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         return $this->buildEntityFromModel($booking, $detailsModel);
     }
 
-    public function get(): mixed
+    public function get(): Collection
     {
-        return $this->getModel()::query()->get();
+        return $this->getModel()::query()->withDetails()->get();
     }
 
     public function create(
@@ -74,7 +75,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
             status: $bookingModel->status,
             type: $bookingModel->type,
             createdAt: $bookingModel->created_at->toImmutable(),
-            creatorId: $bookingModel->creator_id,
+            creatorId: new Id($bookingModel->creator_id),
             roomBookings: new RoomBookingCollection(),
             cancelConditions: $cancelConditions,
             additionalInfo: null,
