@@ -3,8 +3,8 @@
 namespace Module\Booking\Common\Domain\Entity\AdditionalReservation;
 
 use Module\Booking\Common\Domain\Entity\ReservationItemInterface;
-use Module\Booking\Common\Domain\Service\PriceCalculator\AdditionalReservationCalculation;
-use Module\Booking\Common\Domain\Service\PriceCalculator\ReservationCalculationInterface;
+use Module\Booking\PriceCalculator\Domain\Service\AdditionalReservationCalculation;
+use Module\Booking\PriceCalculator\Domain\Service\ReservationCalculationInterface;
 
 class AdditionalReservation implements ReservationItemInterface
 {
