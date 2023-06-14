@@ -33,9 +33,8 @@ const { bookingID, hotelID } = requestInitialData(
 )
 
 const bookingStore = useBookingStore()
-const { fetchBookingDetails } = bookingStore
-fetchBookingDetails()
-const bookingDetails = computed<HotelBookingDetails | null>(() => bookingStore.bookingDetails)
+const { fetchBooking } = bookingStore
+const bookingDetails = computed<HotelBookingDetails | null>(() => bookingStore.booking)
 const markupSettings = computed<MarkupSettings | null>(() => bookingStore.markupSettings)
 const isEditableStatus = computed<boolean>(() => bookingStore.availableActions?.isEditable || false)
 
@@ -45,7 +44,7 @@ const { data: countries, execute: fetchCountries } = useCountrySearchAPI()
 const onModalSubmit = () => {
   toggleRoomModal(false)
   toggleGuestModal(false)
-  fetchBookingDetails()
+  fetchBooking()
 }
 
 const getPriceRateName = (id: number): string | undefined =>
@@ -99,7 +98,7 @@ const handleDeleteRoom = async (roomIndex: number): Promise<void> => {
   if (isApproved) {
     toggleLoading()
     await deleteBookingRoom({ bookingID, roomIndex })
-    await fetchBookingDetails()
+    await fetchBooking()
     toggleClose()
   }
 }

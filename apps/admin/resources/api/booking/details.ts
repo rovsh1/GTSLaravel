@@ -1,12 +1,5 @@
-import { MaybeRef } from '@vueuse/core'
-
-import { DateResponse, useAdminAPI } from '~api'
-import { BookingID } from '~api/booking/index'
+import { DateResponse } from '~api'
 import { DailyMarkup, MarkupCondition, NoCheckInMarkup, Percent, Time } from '~api/hotel/markup-settings'
-
-export interface BookingHotelDetailsPayload {
-  bookingID: BookingID
-}
 
 export interface HotelBookingGuest {
   id: number
@@ -88,9 +81,3 @@ export interface HotelBookingDetails {
   additionalInfo: AdditionalInfo | null
   cancelConditions: CancelConditions
 }
-
-export const useBookingHotelDetailsAPI = (props: MaybeRef<BookingHotelDetailsPayload | null>) =>
-  useAdminAPI(props, ({ bookingID }) =>
-    `/hotel-booking/${bookingID}/details`)
-    .get()
-    .json<HotelBookingDetails>()

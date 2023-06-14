@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Hotel\Application\UseCase\Admin\Room\Guest;
 
+use Module\Booking\Common\Domain\Service\BookingUpdater;
 use Module\Booking\Hotel\Application\Request\Guest\UpdateRoomGuestDto;
 use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking\Guest;
 use Module\Booking\Hotel\Infrastructure\Repository\BookingRepository;
@@ -13,7 +14,8 @@ use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 class Update implements UseCaseInterface
 {
     public function __construct(
-        private readonly BookingRepository $repository
+        private readonly BookingRepository $repository,
+        private readonly BookingUpdater $bookingUpdater,
     ) {}
 
     public function execute(UpdateRoomGuestDto $request): void
@@ -27,6 +29,6 @@ class Update implements UseCaseInterface
             $request->isAdult
         );
         $room->updateGuest($request->guestIndex, $newGuest);
-        $this->repository->store($details);
+        $this->bookingUpdater->store($details);
     }
 }

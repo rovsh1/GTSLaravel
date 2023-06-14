@@ -132,7 +132,7 @@ class BookingController extends AbstractPrototypeController
     {
         $breadcrumbs = Breadcrumb::prototype($this->prototype);
 
-        $this->model = HotelAdapter::getBooking($id);
+        $booking = HotelAdapter::getBooking($id);
 
         $title = "Бронь №{$id}";
         $breadcrumbs->addUrl($this->prototype->route('show', $id), $title);
@@ -141,11 +141,11 @@ class BookingController extends AbstractPrototypeController
         $form = $this->formFactory()
             ->method('put')
             ->action($this->prototype->route('update', $id))
-            ->data($this->model);
+            ->data($booking);
 
         return Layout::title($title)
             ->view($this->prototype->view('edit') ?? $this->prototype->view('form') ?? 'default.form.form', [
-                'model' => $this->model,
+                'model' => $booking,
                 'form' => $form,
                 'cancelUrl' => $this->prototype->route('show', $id),
                 'deleteUrl' => $this->isAllowed('delete') ? $this->prototype->route('destroy', $id) : null

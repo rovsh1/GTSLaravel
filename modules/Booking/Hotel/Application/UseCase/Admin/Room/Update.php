@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Hotel\Application\UseCase\Admin\Room;
 
+use Module\Booking\Common\Domain\Service\BookingUpdater;
 use Module\Booking\Hotel\Application\Request\UpdateRoomDto;
 use Module\Booking\Hotel\Domain\Adapter\HotelRoomAdapterInterface;
 use Module\Booking\Hotel\Domain\ValueObject\Details\Condition;
@@ -20,7 +21,8 @@ class Update implements UseCaseInterface
 {
     public function __construct(
         private readonly BookingRepository $repository,
-        private readonly HotelRoomAdapterInterface $hotelRoomAdapter
+        private readonly HotelRoomAdapterInterface $hotelRoomAdapter,
+        private readonly BookingUpdater $bookingUpdater,
     ) {}
 
     public function execute(UpdateRoomDto $request): void
@@ -58,7 +60,7 @@ class Update implements UseCaseInterface
                 ),
             )
         );
-        $this->repository->store($booking);
+        $this->bookingUpdater->store($booking);
     }
 
     private function buildMarkupCondition(array $data): Condition

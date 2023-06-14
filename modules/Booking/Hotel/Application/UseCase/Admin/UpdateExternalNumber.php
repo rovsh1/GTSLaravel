@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Hotel\Application\UseCase\Admin;
 
+use Module\Booking\Common\Domain\Service\BookingUpdater;
 use Module\Booking\Hotel\Domain\ValueObject\Details\AdditionalInfo;
 use Module\Booking\Hotel\Domain\ValueObject\Details\AdditionalInfo\ExternalNumber;
 use Module\Booking\Hotel\Domain\ValueObject\Details\AdditionalInfo\ExternalNumberTypeEnum;
@@ -13,7 +14,8 @@ use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 class UpdateExternalNumber implements UseCaseInterface
 {
     public function __construct(
-        private readonly BookingRepository $repository
+        private readonly BookingRepository $repository,
+        private readonly BookingUpdater $bookingUpdater,
     ) {}
 
     public function execute(int $id, int $type, ?string $number): void
@@ -26,6 +28,6 @@ class UpdateExternalNumber implements UseCaseInterface
             $booking->setAdditionalInfo($additionalInfo);
         }
         $booking->additionalInfo()->setExternalNumber($externalNumber);
-        $this->repository->store($booking);
+        $this->bookingUpdater->store($booking);
     }
 }

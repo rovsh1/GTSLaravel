@@ -6,17 +6,14 @@ namespace Module\Booking\Common\Domain\Service;
 
 use Module\Booking\Common\Domain\Entity\BookingInterface;
 use Module\Booking\Common\Domain\Exception\InvalidStatusTransition;
-use Module\Booking\Common\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\Common\Domain\Service\StatusRules\AdministratorRules;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
-use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 
 class StatusUpdater
 {
     public function __construct(
         private readonly AdministratorRules $statusRules,
-        private readonly BookingRepositoryInterface $repository,
-        private readonly DomainEventDispatcherInterface $eventDispatcher
+        private readonly BookingUpdater $bookingUpdater
     ) {}
 
     public function toProcessing(BookingInterface $booking): void
@@ -156,7 +153,7 @@ class StatusUpdater
     {
         $this->checkCanTransitToStatus($booking, $status);
         $callback($booking);
-        $this->updateBooking($booking);
+        $this->bookingUpdater->store($booking);
     }
 
     /**
@@ -170,11 +167,5 @@ class StatusUpdater
         if (!$this->statusRules->canTransit($booking->status(), $status)) {
             throw new InvalidStatusTransition("Can't change status for booking [{$booking->id()->value()}]]");
         }
-    }
-
-    private function updateBooking(BookingInterface $booking): void
-    {
-        $this->repository->store($booking);
-        $this->eventDispatcher->dispatch(...$booking->pullEvents());
     }
 }

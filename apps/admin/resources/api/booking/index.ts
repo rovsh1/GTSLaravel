@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { MaybeRef } from '@vueuse/core'
 
 import { BaseResponse, useAdminAPI } from '~api'
+import { AdditionalInfo, BookingPeriod, CancelConditions, HotelInfo, HotelRoomBooking } from '~api/booking/details'
 
 import { getNullableRef } from '~lib/vue'
 
@@ -13,9 +14,14 @@ export interface Booking {
   orderId: number
   status: number
   type: number
-  note: string
   source: number
   creatorId: number
+  note: string | null
+  hotelInfo: HotelInfo
+  period: BookingPeriod
+  roomBookings: HotelRoomBooking[]
+  additionalInfo: AdditionalInfo | null
+  cancelConditions: CancelConditions
 }
 
 export interface GetBookingPayload {
