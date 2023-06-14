@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Common\Domain\Entity;
 
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Module\Booking\Common\Domain\Entity\Concerns\HasStatusesTrait;
 use Module\Booking\Common\Domain\Event\Request\BookingRequestSent;
 use Module\Booking\Common\Domain\Event\Request\CancellationRequestSent;
@@ -16,13 +16,11 @@ use Module\Booking\Common\Domain\Service\RequestRules;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
 use Module\Booking\Common\Domain\ValueObject\RequestTypeEnum;
-use Module\Shared\Domain\Entity\EntityInterface;
 use Module\Shared\Domain\ValueObject\Id;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
-class Booking extends AbstractAggregateRoot implements
-    EntityInterface,
-    ReservationInterface,
+abstract class AbstractBooking extends AbstractAggregateRoot implements
+    BookingInterface,
     BookingRequestableInterface
 {
     use HasStatusesTrait;
@@ -32,9 +30,8 @@ class Booking extends AbstractAggregateRoot implements
         private readonly Id $orderId,
         private BookingStatusEnum $status,
         private readonly BookingTypeEnum $type,
-        private readonly Carbon $dateCreate,
+        private readonly CarbonImmutable $createdAt,
         private readonly Id $creatorId,
-        private ?string $note = null,
     ) {}
 
     public function id(): Id
@@ -57,14 +54,9 @@ class Booking extends AbstractAggregateRoot implements
         return $this->type;
     }
 
-    public function note(): ?string
+    public function createdAt(): CarbonImmutable
     {
-        return $this->note;
-    }
-
-    public function dateCreate(): Carbon
-    {
-        return $this->dateCreate;
+        return $this->createdAt;
     }
 
     public function creatorId(): Id
@@ -72,10 +64,6 @@ class Booking extends AbstractAggregateRoot implements
         return $this->creatorId;
     }
 
-    public function setNote(string|null $note): void
-    {
-        $this->note = $note;
-    }
 
     /**
      * @param RequestRulesInterface $requestRules

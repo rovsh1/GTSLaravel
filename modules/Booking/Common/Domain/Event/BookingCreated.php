@@ -2,11 +2,11 @@
 
 namespace Module\Booking\Common\Domain\Event;
 
-use Module\Booking\Common\Domain\Entity\Booking;
+use Module\Booking\Common\Domain\Entity\AbstractBooking;
 
 class BookingCreated implements BookingEventInterface
 {
-    public function __construct(public readonly Booking $booking) {}
+    public function __construct(public readonly AbstractBooking $booking) {}
 
     public function bookingId(): int
     {

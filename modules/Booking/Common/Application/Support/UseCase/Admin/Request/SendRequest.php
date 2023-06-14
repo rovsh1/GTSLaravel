@@ -24,6 +24,6 @@ class SendRequest implements UseCaseInterface
         $booking->generateRequest(new RequestRules(), $this->requestCreator);
         $events = $booking->pullEvents();
         $this->eventDispatcher->dispatch(...$events);
-        $this->repository->update($booking);
+        $this->repository->store($booking);
     }
 }

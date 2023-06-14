@@ -3,9 +3,9 @@
 namespace Module\Booking\Hotel\Domain\Service\DocumentGenerator;
 
 use Module\Booking\Common\Domain\Adapter\FileStorageAdapterInterface;
-use Module\Booking\Common\Domain\Entity\Booking;
+use Module\Booking\Common\Domain\Entity\AbstractBooking;
 use Module\Booking\Common\Domain\Entity\Request;
-use Module\Booking\Common\Domain\Entity\ReservationInterface;
+use Module\Booking\Common\Domain\Entity\BookingInterface;
 use Module\Booking\Common\Domain\Service\DocumentGenerator\DocumentGeneratorInterface;
 use Module\Booking\Common\Domain\Service\DocumentGenerator\TemplateBuilder;
 
@@ -16,7 +16,7 @@ abstract class AbstractGenerator implements DocumentGeneratorInterface
         private readonly FileStorageAdapterInterface $fileStorageAdapter
     ) {}
 
-    public function generate(Request $request, ReservationInterface|Booking $booking): void
+    public function generate(Request $request, BookingInterface|AbstractBooking $booking): void
     {
         $documentContent = (new TemplateBuilder($this->templatesPath, $this->getTemplateName()))
             ->attributes($this->getReservationAttributes($booking))
@@ -32,5 +32,5 @@ abstract class AbstractGenerator implements DocumentGeneratorInterface
 
     abstract protected function getTemplateName(): string;
 
-    abstract protected function getReservationAttributes(Booking $booking): array;
+    abstract protected function getReservationAttributes(AbstractBooking $booking): array;
 }

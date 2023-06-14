@@ -18,4 +18,8 @@ class BookingDetails extends Model
         'nights_count',
         'data',
     ];
+
+    protected $casts = [
+        'data' => 'array'
+    ];
 }

@@ -2,7 +2,7 @@
 
 namespace Module\Booking\Hotel\Domain\Service\DocumentGenerator;
 
-use Module\Booking\Common\Domain\Entity\Booking;
+use Module\Booking\Common\Domain\Entity\AbstractBooking;
 
 class VoucherGenerator extends AbstractGenerator
 {
@@ -11,7 +11,7 @@ class VoucherGenerator extends AbstractGenerator
         return 'hotel/voucher.html';
     }
 
-    protected function getReservationAttributes(Booking $booking): array
+    protected function getReservationAttributes(AbstractBooking $booking): array
     {
 //        $this->hotel = $reservation->getHotel();
 //        $requisites = $this->getRequisites($reservation);

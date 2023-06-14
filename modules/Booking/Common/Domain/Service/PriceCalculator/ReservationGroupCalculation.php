@@ -2,11 +2,11 @@
 
 namespace Module\Booking\Common\Domain\Service\PriceCalculator;
 
-use Module\Booking\Common\Domain\Entity\ReservationInterface;
+use Module\Booking\Common\Domain\Entity\BookingInterface;
 
 class ReservationGroupCalculation implements ReservationCalculationInterface
 {
-    public function calculate(ReservationInterface $booking): ReservationPriceInterface
+    public function calculate(BookingInterface $booking): ReservationPriceInterface
     {
         // TODO: Implement calculate() method.
     }

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Module\Booking\Common\Domain\Event;
 
-use Module\Booking\Common\Domain\Entity\Booking;
+use Module\Booking\Common\Domain\Entity\AbstractBooking;
 
 abstract class AbstractBookingEvent implements BookingEventInterface
 {
     public function __construct(
-        public readonly Booking $booking,
+        public readonly AbstractBooking $booking,
     ) {}
 
     public function bookingId(): int

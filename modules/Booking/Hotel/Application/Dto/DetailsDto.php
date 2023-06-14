@@ -9,7 +9,7 @@ use Module\Booking\Hotel\Application\Dto\Details\BookingPeriodDto;
 use Module\Booking\Hotel\Application\Dto\Details\CancelConditionsDto;
 use Module\Booking\Hotel\Application\Dto\Details\HotelInfoDto;
 use Module\Booking\Hotel\Application\Dto\Details\RoomBookingDto;
-use Module\Booking\Hotel\Domain\Entity\Details;
+use Module\Booking\Hotel\Domain\ValueObject\Details;
 use Module\Shared\Application\Dto\AbstractDomainBasedDto;
 use Module\Shared\Domain\Entity\EntityInterface;
 use Module\Shared\Domain\ValueObject\ValueObjectInterface;

@@ -2,9 +2,9 @@
 
 namespace Module\Booking\Airport\Providers;
 
-use Module\Booking\Common\Support\Providers\BootServiceProvider as ServiceProvider;
 use Module\Booking\Hotel\Domain;
 use Module\Booking\Hotel\Infrastructure;
+use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {

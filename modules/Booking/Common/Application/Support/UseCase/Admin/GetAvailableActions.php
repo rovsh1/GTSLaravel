@@ -7,7 +7,7 @@ namespace Module\Booking\Common\Application\Support\UseCase\Admin;
 use Module\Booking\Common\Application\Dto\AvailableActionsDto;
 use Module\Booking\Common\Application\Dto\StatusDto;
 use Module\Booking\Common\Application\Query\Admin\GetStatusSettings;
-use Module\Booking\Common\Domain\Entity\Booking;
+use Module\Booking\Common\Domain\Entity\AbstractBooking;
 use Module\Booking\Common\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\Common\Domain\Service\RequestRules;
 use Module\Booking\Common\Domain\Service\StatusRules\StatusRulesInterface;
@@ -42,10 +42,10 @@ class GetAvailableActions implements UseCaseInterface
     }
 
     /**
-     * @param Booking $booking
+     * @param AbstractBooking $booking
      * @return StatusDto[]
      */
-    private function getAvailableStatuses(Booking $booking): array
+    private function getAvailableStatuses(AbstractBooking $booking): array
     {
         $statuses = $this->statusRules->getStatusTransitions($booking->status());
         $statusIds = array_flip(array_map(fn(BookingStatusEnum $status) => $status->value, $statuses));

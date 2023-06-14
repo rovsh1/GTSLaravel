@@ -2,9 +2,9 @@
 
 namespace Module\Booking\Common\Domain\Service\PriceCalculator;
 
-use Module\Booking\Common\Domain\Entity\ReservationInterface;
+use Module\Booking\Common\Domain\Entity\BookingInterface;
 
 interface ReservationPriceInterface
 {
-    public function calculate(ReservationInterface $booking);
+    public function calculate(BookingInterface $booking);
 }

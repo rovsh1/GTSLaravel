@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Common\Application\Support\UseCase\Admin;
+namespace Module\Booking\Airport\Application\UseCase\Admin;
 
 use Module\Booking\Common\Domain\Repository\BookingRepositoryInterface;
+use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
+use Module\Booking\Common\Infrastructure\Models\Booking;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class GetBookingsByFilters implements UseCaseInterface
@@ -15,7 +17,6 @@ class GetBookingsByFilters implements UseCaseInterface
 
     public function execute(array $filters = []): mixed
     {
-        //@todo hack временно, пока дергаю только из админки
-        return \Module\Booking\Common\Infrastructure\Models\Booking::withHotelDetails()->get();
+        return Booking::whereType(BookingTypeEnum::AIRPORT)->withAirportDetails()->get();
     }
 }

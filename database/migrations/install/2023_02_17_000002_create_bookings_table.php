@@ -17,7 +17,6 @@ return new class extends Migration {
             $table->tinyInteger('type');
             $table->tinyInteger('status');
             $table->tinyInteger('source');
-            $table->text('note')->nullable();
             $table->unsignedInteger('creator_id');
             $table->timestamps();
 

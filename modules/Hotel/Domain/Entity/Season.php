@@ -16,7 +16,7 @@ class Season
 
     public function getHotelId(): int
     {
-        return $this->hotel->id;
+        return $this->hotel->id();
     }
 
     public function getContractId(): int

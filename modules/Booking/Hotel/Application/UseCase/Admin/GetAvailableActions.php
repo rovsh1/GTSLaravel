@@ -8,6 +8,7 @@ use Module\Booking\Common\Application\Support\UseCase\Admin\GetAvailableActions 
 use Module\Booking\Common\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\Common\Domain\Service\RequestRules;
 use Module\Booking\Common\Domain\Service\StatusRules\AdministratorRules;
+use Module\Booking\Hotel\Infrastructure\Repository\BookingRepository;
 use Sdk\Module\Contracts\Bus\QueryBusInterface;
 
 class GetAvailableActions extends Base
@@ -15,7 +16,7 @@ class GetAvailableActions extends Base
     public function __construct(
 //        StatusRulesInterface $statusRules,
         RequestRules $requestRules,
-        BookingRepositoryInterface $repository,
+        BookingRepository $repository,
         QueryBusInterface $queryBus
     ) {
         //@todo тут пробрасываются рулзы вручную пока
