@@ -62,10 +62,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
             function () use ($orderId, $creatorId, $hotelId, $period, $note, $hotelDto, $hotelMarkupSettings) {
                 $bookingModel = $this->createBase($orderId, $creatorId);
                 //@todo усли изменятся DTOшки, все сломается
-                $cancelConditions = $this->buildCancelConditionsByCancelPeriods(
-                    $hotelMarkupSettings->cancelPeriods,
-                    $period
-                );
+                $cancelConditions = $this->buildCancelConditionsByCancelPeriods($hotelMarkupSettings->cancelPeriods, $period);
                 $bookingPeriod = BookingPeriod::fromCarbon($period);
                 $hotelInfo = new HotelInfo(
                     $hotelDto->id,
@@ -185,10 +182,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         ];
     }
 
-    private function buildCancelConditionsByCancelPeriods(
-        array $cancelPeriods,
-        CarbonPeriod $bookingPeriod
-    ): CancelConditions {
+    private function buildCancelConditionsByCancelPeriods(array $cancelPeriods, CarbonPeriod $bookingPeriod): CancelConditions {
         $availablePeriod = collect($cancelPeriods)->first(
             fn(mixed $cancelPeriod) => $bookingPeriod->overlaps($cancelPeriod->from, $cancelPeriod->to)
         );
