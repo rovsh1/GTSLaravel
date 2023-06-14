@@ -6,13 +6,13 @@ namespace Module\Booking\Hotel\Application\UseCase\Admin\Room;
 
 use Module\Booking\Hotel\Application\Request\AddRoomDto;
 use Module\Booking\Hotel\Domain\Adapter\HotelRoomAdapterInterface;
-use Module\Booking\Hotel\Domain\Repository\DetailsRepositoryInterface;
 use Module\Booking\Hotel\Domain\ValueObject\Details\Condition;
 use Module\Booking\Hotel\Domain\ValueObject\Details\GuestCollection;
 use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking;
 use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking\RoomBookingDetails;
 use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking\RoomBookingStatusEnum;
 use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking\RoomInfo;
+use Module\Booking\Hotel\Infrastructure\Repository\BookingRepository;
 use Module\Shared\Domain\ValueObject\Percent;
 use Module\Shared\Domain\ValueObject\TimePeriod;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
@@ -20,15 +20,15 @@ use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 class Add implements UseCaseInterface
 {
     public function __construct(
-        private readonly DetailsRepositoryInterface $detailsRepository,
+        private readonly BookingRepository $repository,
         private readonly HotelRoomAdapterInterface $hotelRoomAdapter
     ) {}
 
     public function execute(AddRoomDto $request): void
     {
-        $details = $this->detailsRepository->find($request->bookingId);
+        $booking = $this->repository->find($request->bookingId);
         $hotelRoomDto = $this->hotelRoomAdapter->findById($request->roomId);
-        $details->addRoomBooking(
+        $booking->addRoomBooking(
             new RoomBooking(
                 status: RoomBookingStatusEnum::from($request->status),
                 roomInfo: new RoomInfo(
@@ -51,7 +51,7 @@ class Add implements UseCaseInterface
                 ),
             )
         );
-        $this->detailsRepository->update($details);
+        $this->repository->store($booking);
     }
 
     private function buildMarkupCondition(array $data): Condition

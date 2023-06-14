@@ -2,7 +2,7 @@
 
 namespace Module\Booking\Hotel\Domain\Service\DocumentGenerator;
 
-use Module\Booking\Common\Domain\Entity\Booking;
+use Module\Booking\Common\Domain\Entity\AbstractBooking;
 
 class InvoiceGenerator extends AbstractGenerator
 {
@@ -11,7 +11,7 @@ class InvoiceGenerator extends AbstractGenerator
         return 'hotel/invoice.html';
     }
 
-    protected function getReservationAttributes(Booking $booking): array
+    protected function getReservationAttributes(AbstractBooking $booking): array
     {
         return [];
     }

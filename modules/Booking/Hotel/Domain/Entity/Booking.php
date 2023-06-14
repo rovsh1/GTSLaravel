@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Module\Booking\Hotel\Domain\Entity;
 
-use Module\Booking\Common\Domain\Entity\Details\BookingDetailsInterface;
+use Carbon\CarbonImmutable;
+use Module\Booking\Common\Domain\Entity\AbstractBooking;
+use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
+use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
 use Module\Booking\Hotel\Domain\ValueObject\Details\AdditionalInfo;
 use Module\Booking\Hotel\Domain\ValueObject\Details\BookingPeriod;
 use Module\Booking\Hotel\Domain\ValueObject\Details\CancelConditions;
@@ -12,22 +15,24 @@ use Module\Booking\Hotel\Domain\ValueObject\Details\HotelInfo;
 use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking;
 use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBookingCollection;
 use Module\Shared\Domain\ValueObject\Id;
-use Module\Shared\Domain\ValueObject\SerializableDataInterface;
 
-final class Details implements BookingDetailsInterface, SerializableDataInterface
+final class Booking extends AbstractBooking
 {
     public function __construct(
-        private readonly Id $id,
+        Id $id,
+        Id $orderId,
+        BookingStatusEnum $status,
+        BookingTypeEnum $type,
+        CarbonImmutable $createdAt,
+        Id $creatorId,
+        private ?string $note = null,
         private HotelInfo $hotelInfo,
         private BookingPeriod $period,
         private ?AdditionalInfo $additionalInfo,
         private RoomBookingCollection $roomBookings,
         private CancelConditions $cancelConditions
-    ) {}
-
-    public function id(): Id
-    {
-        return $this->id;
+    ) {
+        parent::__construct($id, $orderId, $status, $type, $createdAt, $creatorId);
     }
 
     public function hotelInfo(): HotelInfo
@@ -75,29 +80,13 @@ final class Details implements BookingDetailsInterface, SerializableDataInterfac
         return $this->cancelConditions;
     }
 
-    public function toData(): array
+    public function note(): ?string
     {
-        return [
-            'id' => $this->id->value(),
-            'hotelInfo' => $this->hotelInfo->toData(),
-            'additionalInfo' => $this->additionalInfo?->toData(),
-            'period' => $this->period->toData(),
-            'roomBookings' => $this->roomBookings->toData(),
-            'cancelConditions' => $this->cancelConditions->toData(),
-        ];
+        return $this->note;
     }
 
-    public static function fromData(array $data): static
+    public function setNote(string|null $note): void
     {
-        $additionalInfo = $data['additionalInfo'] ?? null;
-
-        return new static(
-            new Id($data['id']),
-            HotelInfo::fromData($data['hotelInfo']),
-            BookingPeriod::fromData($data['period']),
-            $additionalInfo !== null ? AdditionalInfo::fromData($data['additionalInfo']) : null,
-            RoomBookingCollection::fromData($data['roomBookings']),
-            CancelConditions::fromData($data['cancelConditions'])
-        );
+        $this->note = $note;
     }
 }

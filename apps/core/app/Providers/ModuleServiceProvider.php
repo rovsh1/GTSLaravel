@@ -2,6 +2,7 @@
 
 namespace App\Core\Providers;
 
+use App\Core\Support\Adapters\ConstantAdapter;
 use Module\Shared\Domain\Service\SerializerInterface;
 use Module\Shared\Domain\Service\TranslatorInterface;
 use Module\Shared\Infrastructure\Service\JsonSerializer;
@@ -15,6 +16,7 @@ class ModuleServiceProvider extends ServiceProvider
     {
         $this->app->singleton(TranslatorInterface::class, Translator::class);
         $this->app->singleton(SerializerInterface::class, JsonSerializer::class);
+        $this->app->singleton(ConstantAdapter::class);
 
         $kernel = new SharedKernel($this->app, $this->app->modules());
         $this->app->instance(SharedKernel::class, $kernel);

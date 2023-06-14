@@ -103,8 +103,7 @@ class BookingController extends AbstractPrototypeController
 
         $booking = HotelAdapter::getBooking($id);
         $order = OrderAdapter::findOrder($booking->orderId);
-        $details = HotelAdapter::getBookingDetails($id);
-        $hotelId = $details->hotelInfo->id;
+        $hotelId = $booking->hotelInfo->id;
         $client = Client::find($order->clientId);
         $hotel = Hotel::find($hotelId);
 
@@ -119,7 +118,6 @@ class BookingController extends AbstractPrototypeController
                 'hotelId' => $hotelId,
                 'hotel' => $hotel,
                 'model' => $booking,
-                'details' => $details,
                 'client' => $client,
                 'order' => $order,
                 'manager' => $this->administratorRepository->get($id),
@@ -180,13 +178,6 @@ class BookingController extends AbstractPrototypeController
     {
         return response()->json(
             HotelAdapter::getBooking($id)
-        );
-    }
-
-    public function getDetails(int $id): JsonResponse
-    {
-        return response()->json(
-            HotelAdapter::getBookingDetails($id)
         );
     }
 

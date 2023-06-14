@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Module\Booking\Hotel\Application\UseCase\Admin\Room;
 
-use Module\Booking\Hotel\Domain\Repository\DetailsRepositoryInterface;
+use Module\Booking\Hotel\Infrastructure\Repository\BookingRepository;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class Delete implements UseCaseInterface
 {
     public function __construct(
-        private readonly DetailsRepositoryInterface $detailsRepository
+        private readonly BookingRepository $repository,
     ) {}
 
     public function execute(int $bookingId, int $roomIndex): void
     {
-        $details = $this->detailsRepository->find($bookingId);
+        $details = $this->repository->find($bookingId);
         $details->deleteRoomBooking($roomIndex);
-        $this->detailsRepository->update($details);
+        $this->repository->store($details);
     }
 }

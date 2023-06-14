@@ -6,12 +6,12 @@ namespace Module\Booking\Hotel\Application\UseCase\Admin\Room;
 
 use Module\Booking\Hotel\Application\Request\UpdateRoomDto;
 use Module\Booking\Hotel\Domain\Adapter\HotelRoomAdapterInterface;
-use Module\Booking\Hotel\Domain\Repository\DetailsRepositoryInterface;
 use Module\Booking\Hotel\Domain\ValueObject\Details\Condition;
 use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking;
 use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking\RoomBookingDetails;
 use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking\RoomBookingStatusEnum;
 use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking\RoomInfo;
+use Module\Booking\Hotel\Infrastructure\Repository\BookingRepository;
 use Module\Shared\Domain\ValueObject\Percent;
 use Module\Shared\Domain\ValueObject\TimePeriod;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
@@ -19,14 +19,14 @@ use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 class Update implements UseCaseInterface
 {
     public function __construct(
-        private readonly DetailsRepositoryInterface $detailsRepository,
+        private readonly BookingRepository $repository,
         private readonly HotelRoomAdapterInterface $hotelRoomAdapter
     ) {}
 
     public function execute(UpdateRoomDto $request): void
     {
-        $details = $this->detailsRepository->find($request->bookingId);
-        $currentRoom = $details->roomBookings()->get($request->roomIndex);
+        $booking = $this->repository->find($request->bookingId);
+        $currentRoom = $booking->roomBookings()->get($request->roomIndex);
         $guests = $currentRoom->guests();
 
         $hotelRoomDto = $this->hotelRoomAdapter->findById($request->roomId);
@@ -34,7 +34,7 @@ class Update implements UseCaseInterface
         if ($expectedGuestCount > $hotelRoomDto->guestsNumber) {
             $guests = $guests->slice(0, $hotelRoomDto->guestsNumber);
         }
-        $details->updateRoomBooking(
+        $booking->updateRoomBooking(
             $request->roomIndex,
             new RoomBooking(
                 status: RoomBookingStatusEnum::from($request->status),
@@ -58,7 +58,7 @@ class Update implements UseCaseInterface
                 ),
             )
         );
-        $this->detailsRepository->update($details);
+        $this->repository->store($booking);
     }
 
     private function buildMarkupCondition(array $data): Condition

@@ -4,6 +4,7 @@ namespace Module\Booking\Hotel\Domain\ValueObject\Details;
 
 use Carbon\CarbonImmutable;
 use Carbon\CarbonPeriod;
+use Carbon\CarbonPeriodImmutable;
 use Module\Shared\Domain\ValueObject\SerializableDataInterface;
 use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 
@@ -50,6 +51,14 @@ final class BookingPeriod implements ValueObjectInterface, SerializableDataInter
         return new static(
             CarbonImmutable::createFromFormat('U', $data['dateFrom']),
             CarbonImmutable::createFromFormat('U', $data['dateTo']),
+        );
+    }
+
+    public static function fromCarbon(CarbonPeriod|CarbonPeriodImmutable $period): static
+    {
+        return new static(
+            $period->getStartDate()->toImmutable(),
+            $period->getEndDate()->toImmutable(),
         );
     }
 }

@@ -3,24 +3,22 @@
 namespace Module\Booking\Common\Domain\Repository;
 
 use Carbon\CarbonInterface;
-use Module\Booking\Common\Domain\Entity\Booking;
+use Module\Booking\Common\Domain\Entity\BookingInterface;
 
 interface BookingRepositoryInterface
 {
-    public function find(int $id): ?Booking;
-
-    public function update(Booking $booking): bool;
+    public function find(int $id): ?BookingInterface;
 
     /**
      * @param CarbonInterface $dateUpdate
      * @param int|null $hotelId
-     * @return Booking[]
+     * @return BookingInterface[]
      */
     public function searchByDateUpdate(CarbonInterface $dateUpdate, ?int $hotelId): array;
 
     /**
      * @param int|null $hotelId
-     * @return Booking[]
+     * @return BookingInterface[]
      */
     public function searchActive(?int $hotelId): array;
 }

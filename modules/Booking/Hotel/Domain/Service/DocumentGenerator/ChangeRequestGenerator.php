@@ -2,7 +2,7 @@
 
 namespace Module\Booking\Hotel\Domain\Service\DocumentGenerator;
 
-use Module\Booking\Common\Domain\Entity\Booking;
+use Module\Booking\Common\Domain\Entity\AbstractBooking;
 
 class ChangeRequestGenerator extends AbstractGenerator
 {
@@ -11,12 +11,12 @@ class ChangeRequestGenerator extends AbstractGenerator
         return 'hotel/change_request.html';
     }
 
-    protected function getReservationAttributes(Booking $booking): array
+    protected function getReservationAttributes(AbstractBooking $booking): array
     {
         return [
             'reservNumber' => $booking->id()->value(),
             'reservChangedAt' => now(),
-            'reservCreatedAt' => $booking->dateCreate()
+            'reservCreatedAt' => $booking->createdAt()
         ];
     }
 }

@@ -42,7 +42,7 @@
                             </tr>
                             <tr>
                                 <th>Дата заезда и выезда</th>
-                                <td>{{ Format::period(new \Carbon\CarbonPeriod($details->period->dateFrom, $details->period->dateTo)) }}</td>
+                                <td>{{ Format::period(new \Carbon\CarbonPeriod($model->period->dateFrom, $model->period->dateTo)) }}</td>
                             </tr>
                             <tr>
                                 <th>Источник</th>
@@ -86,7 +86,7 @@
                             </tr>
                             <tr>
                                 <th>Создана</th>
-                                <td>{{ $model->dateCreate }}</td>
+                                <td>{{ $model->createdAt }}</td>
                             </tr>
                             <tr>
                             <tr>

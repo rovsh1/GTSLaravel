@@ -10,7 +10,7 @@ enum BookingTypeEnum: int
     case AIRPORT = 3;
     case ADDITIONAL = 4;
 
-    public static function fromEntity(\Module\Booking\Common\Domain\Entity\ReservationInterface $booking): self
+    public static function fromEntity(\Module\Booking\Common\Domain\Entity\BookingInterface $booking): self
     {
         if ($booking instanceof \Module\Booking\Hotel\Domain\Entity\Booking)
             return self::HOTEL;
