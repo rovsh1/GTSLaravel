@@ -3,11 +3,11 @@
 namespace App\Core;
 
 use App\Core\Providers\ModuleServiceProvider;
+use Module\SharedKernel;
 use Sdk\Module\Contracts\Api\ApiInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 use Sdk\Module\Foundation\Module;
 use Sdk\Module\Foundation\ModulesManager;
-use Sdk\Module\Foundation\Support\SharedContainer;
 
 class Application extends \Illuminate\Foundation\Application
 {
@@ -95,9 +95,9 @@ class Application extends \Illuminate\Foundation\Application
         if (!is_string($concrete)) {
             return parent::build($concrete);
         } elseif (is_subclass_of($concrete, ApiInterface::class)) {
-            return $this->instances[SharedContainer::class]->makeApi($concrete);
+            return $this->instances[SharedKernel::class]->makeApi($concrete);
         } elseif (is_subclass_of($concrete, UseCaseInterface::class)) {
-            return $this->instances[SharedContainer::class]->makeUseCase($concrete);
+            return $this->instances[SharedKernel::class]->makeUseCase($concrete);
         } else {
             return parent::build($concrete);
         }
