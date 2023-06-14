@@ -58,58 +58,67 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         mixed $hotelDto,
         mixed $hotelMarkupSettings
     ): BookingInterface {
-        $bookingModel = $this->createBase($orderId, $creatorId);
-        //@todo усли изменятся дтошки, все сломается
-        $cancelConditions = $this->buildCancelConditionsByCancelPeriods($hotelMarkupSettings->cancelPeriods, $period);
-        $bookingPeriod = BookingPeriod::fromCarbon($period);
-        $hotelInfo = new HotelInfo(
-            $hotelDto->id,
-            $hotelDto->name,
-            new Time('14:00'), //@todo забрать из настроек отеля
-            new Time('12:00'),
+        return \DB::transaction(
+            function () use ($orderId, $creatorId, $hotelId, $period, $note, $hotelDto, $hotelMarkupSettings) {
+                $bookingModel = $this->createBase($orderId, $creatorId);
+                //@todo усли изменятся DTOшки, все сломается
+                $cancelConditions = $this->buildCancelConditionsByCancelPeriods(
+                    $hotelMarkupSettings->cancelPeriods,
+                    $period
+                );
+                $bookingPeriod = BookingPeriod::fromCarbon($period);
+                $hotelInfo = new HotelInfo(
+                    $hotelDto->id,
+                    $hotelDto->name,
+                    new Time('14:00'), //@todo забрать из настроек отеля
+                    new Time('12:00'),
+                );
+
+                $booking = new Booking(
+                    id: new Id($bookingModel->id),
+                    orderId: new Id($bookingModel->order_id),
+                    status: $bookingModel->status,
+                    type: $bookingModel->type,
+                    createdAt: $bookingModel->created_at->toImmutable(),
+                    creatorId: new Id($bookingModel->creator_id),
+                    roomBookings: new RoomBookingCollection(),
+                    cancelConditions: $cancelConditions,
+                    additionalInfo: null,
+                    hotelInfo: $hotelInfo,
+                    period: $bookingPeriod,
+                    note: $note
+                );
+
+                BookingDetails::create([
+                    'booking_id' => $booking->id()->value(),
+                    'hotel_id' => $hotelId,
+                    'date_start' => $bookingPeriod->dateFrom(),
+                    'date_end' => $bookingPeriod->dateTo(),
+                    'nights_count' => $bookingPeriod->nightsCount(),
+                    'data' => $this->serializeDetails($booking)
+                ]);
+
+                return $booking;
+            }
         );
-
-        $booking = new Booking(
-            id: new Id($bookingModel->id),
-            orderId: new Id($bookingModel->order_id),
-            status: $bookingModel->status,
-            type: $bookingModel->type,
-            createdAt: $bookingModel->created_at->toImmutable(),
-            creatorId: new Id($bookingModel->creator_id),
-            roomBookings: new RoomBookingCollection(),
-            cancelConditions: $cancelConditions,
-            additionalInfo: null,
-            hotelInfo: $hotelInfo,
-            period: $bookingPeriod,
-            note: $note
-        );
-
-        BookingDetails::create([
-            'booking_id' => $booking->id()->value(),
-            'hotel_id' => $hotelId,
-            'date_start' => $bookingPeriod->dateFrom(),
-            'date_end' => $bookingPeriod->dateTo(),
-            'nights_count' => $bookingPeriod->nightsCount(),
-            'data' => $this->serializeDetails($booking)
-        ]);
-
-        return $booking;
     }
 
     public function store(BookingInterface $booking): bool
     {
-        $base = $this->storeBase($booking);
+        return \DB::transaction(function () use ($booking) {
+            $base = $this->storeBase($booking);
 
-        $details = (bool)BookingDetails::whereBookingId($booking->id()->value())
-            ->update([
-                'hotel_id' => $booking->hotelInfo()->id(),
-                'date_start' => $booking->period()->dateFrom(),
-                'date_end' => $booking->period()->dateTo(),
-                'nights_count' => $booking->period()->nightsCount(),
-                'data' => $this->serializeDetails($booking)
-            ]);
+            $details = (bool)BookingDetails::whereBookingId($booking->id()->value())
+                ->update([
+                    'hotel_id' => $booking->hotelInfo()->id(),
+                    'date_start' => $booking->period()->dateFrom(),
+                    'date_end' => $booking->period()->dateTo(),
+                    'nights_count' => $booking->period()->nightsCount(),
+                    'data' => $this->serializeDetails($booking)
+                ]);
 
-        return $base && $details;
+            return $base && $details;
+        });
     }
 
     public function searchByDateUpdate(CarbonInterface $dateUpdate, ?int $hotelId): array

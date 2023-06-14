@@ -21,26 +21,24 @@ class CreateBookingHandler implements CommandHandlerInterface
 
     public function handle(CommandInterface|CreateBooking $command): int
     {
-        return \DB::transaction(function () use ($command) {
-            $orderId = $command->orderId;
-            if ($orderId === null) {
-                $orderId = $this->commandBus->execute(new CreateOrder($command->clientId));
-            }
+        $orderId = $command->orderId;
+        if ($orderId === null) {
+            $orderId = $this->commandBus->execute(new CreateOrder($command->clientId));
+        }
 
-            $hotelDto = $this->hotelAdapter->findById($command->hotelId);
-            $markupSettings = $this->hotelAdapter->getMarkupSettings($command->hotelId);
-            $booking = $this->repository->create(
-                $orderId,
-                $command->creatorId,
-                $command->hotelId,
-                $command->period,
-                $command->note,
-                $hotelDto,
-                $markupSettings
-            );
+        $hotelDto = $this->hotelAdapter->findById($command->hotelId);
+        $markupSettings = $this->hotelAdapter->getMarkupSettings($command->hotelId);
+        $booking = $this->repository->create(
+            $orderId,
+            $command->creatorId,
+            $command->hotelId,
+            $command->period,
+            $command->note,
+            $hotelDto,
+            $markupSettings
+        );
 
-            return $booking->id()->value();
-        });
+        return $booking->id()->value();
     }
 
 
