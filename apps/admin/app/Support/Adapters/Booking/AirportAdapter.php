@@ -26,6 +26,7 @@ class AirportAdapter
         int $cityId,
         int $clientId,
         int $airportId,
+        int $serviceId,
         CarbonInterface $date,
         int $creatorId,
         ?int $orderId,
@@ -37,6 +38,7 @@ class AirportAdapter
                 creatorId: $creatorId,
                 clientId: $clientId,
                 airportId: $airportId,
+                serviceId: $serviceId,
                 orderId: $orderId,
                 date: $date,
                 note: $note

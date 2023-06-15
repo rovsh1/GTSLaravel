@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Airport\Infrastructure\Model;
+namespace Module\Booking\Airport\Infrastructure\Models;
 
 use Sdk\Module\Database\Eloquent\Model;
 

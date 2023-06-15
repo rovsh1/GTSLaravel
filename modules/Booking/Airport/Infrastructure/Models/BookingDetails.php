@@ -13,7 +13,8 @@ class BookingDetails extends Model
     protected $fillable = [
         'booking_id',
         'airport_id',
-        //@todo скорее всего дата, для фильтрации
+        'service_id',
+        'date',
         'data',
     ];
 

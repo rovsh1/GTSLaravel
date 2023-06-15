@@ -12,6 +12,7 @@ class CreateBookingDto
         public readonly int $cityId,
         public readonly int $clientId,
         public readonly int $airportId,
+        public readonly int $serviceId,
         public readonly CarbonInterface $date,
         public readonly int $creatorId,
         public readonly ?int $orderId,

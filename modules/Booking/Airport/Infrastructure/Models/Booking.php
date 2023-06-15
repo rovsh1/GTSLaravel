@@ -14,6 +14,18 @@ class Booking extends BaseModel
         'type' => BookingTypeEnum::AIRPORT,
     ];
 
+    protected static function booted()
+    {
+        static::addGlobalScope('default', function (Builder $builder) {
+            $builder->whereType(BookingTypeEnum::AIRPORT);
+        });
+    }
+
+    public function scopeWhereType(Builder $builder, BookingTypeEnum $type): void
+    {
+        $builder->where($this->getTable() . '.type', $type);
+    }
+
     public function scopeWithDetails(Builder $builder): void
     {
 //        $builder->addSelect('bookings.*')

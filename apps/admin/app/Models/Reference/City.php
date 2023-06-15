@@ -26,6 +26,7 @@ use Sdk\Module\Database\Eloquent\Model;
  * @method static Builder|City whereCenterLon($value)
  * @method static Builder|City whereCountryId($value)
  * @method static Builder|City whereHasHotel()
+ * @method static Builder|City whereHasAirport()
  * @method static Builder|City whereId($value)
  * @mixin \Eloquent
  */
@@ -71,6 +72,15 @@ class City extends Model
         $query->whereExists(function ($query) {
             $query->select(DB::raw(1))
                 ->from('hotels as t')
+                ->whereColumn('t.city_id', 'r_cities.id');
+        });
+    }
+
+    public function scopeWhereHasAirport($query)
+    {
+        $query->whereExists(function ($query) {
+            $query->select(DB::raw(1))
+                ->from('r_airports as t')
                 ->whereColumn('t.city_id', 'r_cities.id');
         });
     }

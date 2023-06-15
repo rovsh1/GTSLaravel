@@ -7,6 +7,7 @@ namespace Module\Booking\Airport\Application\Dto;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Module\Booking\Airport\Application\Dto\Details\AirportInfoDto;
+use Module\Booking\Airport\Application\Dto\Details\ServiceInfoDto;
 use Module\Booking\Airport\Domain\Entity\Booking;
 use Module\Booking\Common\Application\Dto\BookingDto as BaseDto;
 use Module\Booking\Common\Domain\Entity\BookingInterface;
@@ -23,6 +24,7 @@ class BookingDto extends BaseDto
         int $creatorId,
         public readonly ?string $note,
         public readonly AirportInfoDto $airportInfo,
+        public readonly ServiceInfoDto $serviceInfo,
         public readonly CarbonInterface $date,
     ) {
         parent::__construct($id, $status, $orderId, $createdAt, $creatorId);
@@ -38,6 +40,7 @@ class BookingDto extends BaseDto
             $entity->creatorId()->value(),
             $entity->note(),
             AirportInfoDto::fromDomain($entity->airportInfo()),
+            ServiceInfoDto::fromDomain($entity->serviceInfo()),
             $entity->date(),
         );
     }

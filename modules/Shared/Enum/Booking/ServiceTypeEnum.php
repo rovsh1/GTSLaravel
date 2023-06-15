@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Enums\ServiceProvider;
+namespace Module\Shared\Enum\Booking;
 
 enum ServiceTypeEnum: int
 {

@@ -66,6 +66,17 @@ class Country extends Model
         });
     }
 
+    public function scopeWhereHasAirport(Builder $query)
+    {
+        $query->whereExists(function (QueryBuilder $query) {
+            $query
+                ->join('r_cities', 'r_cities.country_id', '=', 'r_countries.id')
+                ->select(DB::raw(1))
+                ->from('r_airports as t')
+                ->whereColumn('t.city_id', 'r_cities.id');
+        });
+    }
+
     public function __toString()
     {
         return (string)$this->name;

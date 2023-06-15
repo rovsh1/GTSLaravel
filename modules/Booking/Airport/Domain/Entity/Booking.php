@@ -6,6 +6,7 @@ namespace Module\Booking\Airport\Domain\Entity;
 
 use Carbon\CarbonImmutable;
 use Module\Booking\Airport\Domain\ValueObject\Details\AirportInfo;
+use Module\Booking\Airport\Domain\ValueObject\Details\ServiceInfo;
 use Module\Booking\Common\Domain\Entity\AbstractBooking;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
@@ -20,7 +21,7 @@ class Booking extends AbstractBooking
         BookingTypeEnum $type,
         CarbonImmutable $createdAt,
         Id $creatorId,
-        private readonly Id $serviceId,
+        private readonly ServiceInfo $serviceInfo,
         private readonly AirportInfo $airportInfo,
         private readonly CarbonImmutable $date,
         private ?string $note
@@ -28,9 +29,9 @@ class Booking extends AbstractBooking
         parent::__construct($id, $orderId, $status, $type, $createdAt, $creatorId);
     }
 
-    public function serviceId(): Id
+    public function serviceInfo(): ServiceInfo
     {
-        return $this->serviceId;
+        return $this->serviceInfo;
     }
 
     public function airportInfo(): AirportInfo

@@ -14,7 +14,8 @@ AclRoute::for('service-provider')
     ->resource('services', Controllers\ServiceProvider\ServicesController::class, [
         'slug' => 'provider',
         'except' => ['show']
-    ]);
+    ])
+    ->get('/services/search', Controllers\ServiceProvider\ServicesController::class . '@search', 'read', 'services.search');
 
 
 

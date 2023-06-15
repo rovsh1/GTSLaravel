@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 namespace Module\Booking\Airport\Infrastructure\Repository;
 
+use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Collection;
+use Module\Booking\Airport\Domain\Entity\Airport;
 use Module\Booking\Airport\Domain\Entity\Booking as Entity;
+use Module\Booking\Airport\Domain\Entity\Service;
 use Module\Booking\Airport\Domain\Repository\BookingRepositoryInterface;
+use Module\Booking\Airport\Domain\ValueObject\Details\AirportInfo;
+use Module\Booking\Airport\Domain\ValueObject\Details\ServiceInfo;
 use Module\Booking\Airport\Infrastructure\Models\Booking as Model;
 use Module\Booking\Airport\Infrastructure\Models\BookingDetails;
 use Module\Booking\Common\Infrastructure\Repository\AbstractBookingRepository as BaseRepository;
@@ -39,14 +44,14 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
     public function create(
         int $orderId,
         int $creatorId,
-        int $airportId,
+        Service $service,
+        Airport $airport,
         CarbonInterface $date,
         ?string $note = null
     ): Entity {
         return \DB::transaction(
-            function () use ($orderId, $creatorId, $airportId, $date, $note) {
+            function () use ($orderId, $creatorId, $service, $airport, $date, $note) {
                 $bookingModel = $this->createBase($orderId, $creatorId);
-                //@todo усли изменятся DTOшки, все сломается
 
                 $booking = new Entity(
                     id: new Id($bookingModel->id),
@@ -55,12 +60,23 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
                     type: $bookingModel->type,
                     createdAt: $bookingModel->created_at->toImmutable(),
                     creatorId: new Id($bookingModel->creator_id),
-                    note: $note
+                    note: $note,
+                    airportInfo: new AirportInfo(
+                        $airport->id()->value(),
+                        $airport->name()
+                    ),
+                    date: $date->toImmutable(),
+                    serviceInfo: new ServiceInfo(
+                        $service->id()->value(),
+                        $service->name(),
+                        $service->type()
+                    ),
                 );
 
                 BookingDetails::create([
                     'booking_id' => $booking->id()->value(),
-                    'airport_id' => $airportId,
+                    'airport_id' => $airport->id()->value(),
+                    'service_id' => $service->id()->value(),
                     'date' => $date,
                     'data' => $this->serializeDetails($booking)
                 ]);
@@ -98,6 +114,9 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
             createdAt: $booking->created_at->toImmutable(),
             creatorId: new Id($booking->creator_id),
             note: $detailsData['note'] ?? null,
+            airportInfo: AirportInfo::fromData($detailsData['airportInfo']),
+            serviceInfo: ServiceInfo::fromData($detailsData['serviceInfo']),
+            date: CarbonImmutable::createFromFormat('U', $detailsData['date'])
         );
     }
 
@@ -106,6 +125,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         return [
             'note' => $booking->note(),
             'airportInfo' => $booking->airportInfo()->toData(),
+            'serviceInfo' => $booking->serviceInfo()->toData(),
             'date' => $booking->date()->getTimestamp(),
         ];
     }

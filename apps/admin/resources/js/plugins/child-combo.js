@@ -100,7 +100,6 @@ $.fn.childCombo = function (options) {
 
       child.prop('disabled', false)
 
-      console.log(val)
       if (val.length) {
         child.val(isMultiple ? val : val[0])
       }

@@ -68,6 +68,7 @@ return new class extends Migration {
         Schema::create('booking_airport_details', function (Blueprint $table) {
             $table->unsignedInteger('booking_id')->primary();
             $table->unsignedInteger('airport_id');
+            $table->unsignedInteger('service_id');
             $table->date('date');
             $table->json('data');
             $table->timestamps();
@@ -81,6 +82,12 @@ return new class extends Migration {
             $table->foreign('airport_id')
                 ->references('id')
                 ->on('r_airports')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+
+            $table->foreign('service_id')
+                ->references('id')
+                ->on('service_provider_services')
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
         });

@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static array getBookings()
- * @method static int createBooking(int $cityId, int $clientId, int $airportId, CarbonInterface $date, int $creatorId, ?int $orderId, ?string $note = null)
+ * @method static mixed getBooking(int $id)
+ * @method static int createBooking(int $cityId, int $clientId, int $airportId, int $serviceId, CarbonInterface $date, int $creatorId, ?int $orderId, ?string $note = null)
  * @method static void addTourist(int $bookingId, string $fullName, int $countryId, int $gender, bool $isAdult)
  * @method static void updateTourist(int $bookingId, int $touristIndex, string $fullName, int $countryId, int $gender, bool $isAdult)
  **/
