@@ -6,7 +6,6 @@ export interface RoomFormData {
   bookingID: number
   id?: number
   status?: number
-  roomCount?: number
   residentType?: number
   discount?: number
   rateId?: number

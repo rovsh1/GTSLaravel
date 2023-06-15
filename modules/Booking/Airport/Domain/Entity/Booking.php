@@ -20,11 +20,17 @@ class Booking extends AbstractBooking
         BookingTypeEnum $type,
         CarbonImmutable $createdAt,
         Id $creatorId,
+        private readonly Id $serviceId,
         private readonly AirportInfo $airportInfo,
         private readonly CarbonImmutable $date,
         private ?string $note
     ) {
         parent::__construct($id, $orderId, $status, $type, $createdAt, $creatorId);
+    }
+
+    public function serviceId(): Id
+    {
+        return $this->serviceId;
     }
 
     public function airportInfo(): AirportInfo

@@ -12,7 +12,6 @@ class AddRoomDto
         public readonly int $rateId,
         public readonly int $status,
         public readonly bool $isResident,
-        public readonly int $roomCount,
         public readonly array|null $earlyCheckIn = null,
         public readonly array|null $lateCheckOut = null,
         public readonly ?string $note = null,

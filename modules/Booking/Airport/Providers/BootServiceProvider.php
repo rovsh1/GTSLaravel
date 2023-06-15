@@ -10,9 +10,9 @@ class BootServiceProvider extends ServiceProvider
 {
     public function register()
     {
-//        $this->app->singleton(
-//            FileStorageAdapterInterface::class,
-//            FileStorageAdapter::class
-//        );
+        $this->app->singleton(
+            Domain\Repository\BookingRepositoryInterface::class,
+            Infrastructure\Repository\BookingRepository::class
+        );
     }
 }

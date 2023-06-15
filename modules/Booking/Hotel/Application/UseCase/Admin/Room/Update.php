@@ -49,7 +49,6 @@ class Update implements UseCaseInterface
                     rateId: $request->rateId,
                     isResident: $request->isResident,
                     guestNote: $request->note,
-                    roomCount: $request->roomCount,
                     earlyCheckIn: $request->earlyCheckIn !== null ? $this->buildMarkupCondition(
                         $request->earlyCheckIn
                     ) : null,

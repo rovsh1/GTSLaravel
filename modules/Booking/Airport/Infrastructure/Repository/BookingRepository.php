@@ -7,10 +7,9 @@ namespace Module\Booking\Airport\Infrastructure\Repository;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Module\Booking\Airport\Domain\Entity\Booking as Entity;
+use Module\Booking\Airport\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\Airport\Infrastructure\Models\Booking as Model;
 use Module\Booking\Airport\Infrastructure\Models\BookingDetails;
-use Module\Booking\Common\Domain\Entity\BookingInterface;
-use Module\Booking\Common\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\Common\Infrastructure\Repository\AbstractBookingRepository as BaseRepository;
 use Module\Shared\Domain\ValueObject\Id;
 
@@ -21,7 +20,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         return Model::class;
     }
 
-    public function find(int $id): ?BookingInterface
+    public function find(int $id): ?Entity
     {
         $booking = $this->findBase($id);
         if ($booking === null) {
@@ -43,7 +42,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         int $airportId,
         CarbonInterface $date,
         ?string $note = null
-    ): BookingInterface {
+    ): Entity {
         return \DB::transaction(
             function () use ($orderId, $creatorId, $airportId, $date, $note) {
                 $bookingModel = $this->createBase($orderId, $creatorId);
@@ -71,7 +70,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         );
     }
 
-    public function store(BookingInterface $booking): bool
+    public function store(Entity $booking): bool
     {
         return \DB::transaction(function () use ($booking) {
             $base = $this->storeBase($booking);
@@ -87,27 +86,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         });
     }
 
-    /**
-     * @param CarbonInterface $dateUpdate
-     * @param int|null $hotelId
-     * @return BookingInterface[]
-     */
-    public function searchByDateUpdate(CarbonInterface $dateUpdate, ?int $hotelId): array
-    {
-        // TODO: Implement searchByDateUpdate() method.
-    }
-
-    /**
-     * @param int|null $hotelId
-     * @return BookingInterface[]
-     */
-    public function searchActive(?int $hotelId): array
-    {
-        // TODO: Implement searchActive() method.
-    }
-
-
-    private function buildEntityFromModel(Model $booking, BookingDetails $detailsModel): BookingInterface
+    private function buildEntityFromModel(Model $booking, BookingDetails $detailsModel): Entity
     {
         $detailsData = $detailsModel->data;
 

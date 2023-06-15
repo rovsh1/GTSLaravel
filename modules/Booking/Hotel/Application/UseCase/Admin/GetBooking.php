@@ -6,11 +6,11 @@ namespace Module\Booking\Hotel\Application\UseCase\Admin;
 
 use Module\Booking\Common\Application\Support\UseCase\Admin\AbstractGetBooking as Base;
 use Module\Booking\Hotel\Application\Dto\BookingDto;
-use Module\Booking\Hotel\Infrastructure\Repository\BookingRepository;
+use Module\Booking\Hotel\Domain\Repository\BookingRepositoryInterface;
 
 class GetBooking extends Base
 {
-    public function __construct(BookingRepository $repository)
+    public function __construct(BookingRepositoryInterface $repository)
     {
         parent::__construct($repository);
     }

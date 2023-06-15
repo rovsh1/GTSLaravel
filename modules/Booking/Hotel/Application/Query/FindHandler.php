@@ -2,8 +2,8 @@
 
 namespace Module\Booking\Hotel\Application\Query;
 
-use Module\Booking\Common\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\Hotel\Application\Dto\ReservationDto;
+use Module\Booking\Hotel\Domain\Repository\BookingRepositoryInterface;
 use Sdk\Module\Contracts\Bus\QueryHandlerInterface;
 use Sdk\Module\Contracts\Bus\QueryInterface;
 

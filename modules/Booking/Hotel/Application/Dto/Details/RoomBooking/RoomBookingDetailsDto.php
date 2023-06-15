@@ -15,7 +15,6 @@ class RoomBookingDetailsDto extends AbstractDomainBasedDto
     public function __construct(
         public readonly int $rateId,
         public readonly bool $isResident,
-        public readonly int $roomCount,
         public readonly ConditionDto|null $earlyCheckIn = null,
         public readonly ConditionDto|null $lateCheckOut = null,
         public readonly string|null $guestNote = null,
@@ -27,7 +26,6 @@ class RoomBookingDetailsDto extends AbstractDomainBasedDto
         return new static(
             $entity->rateId(),
             $entity->isResident(),
-            $entity->roomCount(),
             $entity->earlyCheckIn() !== null ? ConditionDto::fromDomain($entity->earlyCheckIn()) : null,
             $entity->lateCheckOut() !== null ? ConditionDto::fromDomain($entity->lateCheckOut()) : null,
             $entity->guestNote(),

@@ -14,7 +14,6 @@ class   RoomBookingDetails implements ValueObjectInterface, SerializableDataInte
     public function __construct(
         private int $rateId,
         private bool $isResident,
-        private int $roomCount = 1,
         private Condition|null $earlyCheckIn = null,
         private Condition|null $lateCheckOut = null,
         private string|null $guestNote = null,
@@ -24,11 +23,6 @@ class   RoomBookingDetails implements ValueObjectInterface, SerializableDataInte
     public function rateId(): int
     {
         return $this->rateId;
-    }
-
-    public function roomCount(): int
-    {
-        return $this->roomCount;
     }
 
     public function lateCheckOut(): ?Condition
@@ -60,7 +54,6 @@ class   RoomBookingDetails implements ValueObjectInterface, SerializableDataInte
     {
         return [
             'rateId' => $this->rateId,
-            'roomCount' => $this->roomCount,
             'lateCheckOut' => $this->lateCheckOut?->toData(),
             'earlyCheckIn' => $this->earlyCheckIn?->toData(),
             'guestNote' => $this->guestNote,
@@ -77,7 +70,6 @@ class   RoomBookingDetails implements ValueObjectInterface, SerializableDataInte
         return new static(
             $data['rateId'],
             $data['isResident'],
-            $data['roomCount'],
             $lateCheckOut !== null ? Condition::fromData($data['lateCheckOut']) : null,
             $earlyCheckIn !== null ? Condition::fromData($data['earlyCheckIn']) : null,
             $data['guestNote'],

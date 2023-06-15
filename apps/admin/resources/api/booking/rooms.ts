@@ -12,7 +12,6 @@ export interface BookingAddRoomPayload {
   bookingID: BookingID
   id: number
   status: number
-  roomCount: number
   residentType: number
   discount?: number
   rateId: number
@@ -55,7 +54,6 @@ export const addRoomToBooking = (props: MaybeRef<BookingAddRoomPayload | null>) 
         (payload: BookingAddRoomPayload): any => ({
           room_id: payload.id,
           status: payload.status,
-          room_count: payload.roomCount,
           is_resident: Boolean(Number(payload.residentType)),
           discount: payload.discount,
           rate_id: payload.rateId,
@@ -80,7 +78,6 @@ export const updateBookingRoom = (props: MaybeRef<BookingUpdateRoomPayload | nul
           room_index: payload.roomIndex,
           room_id: payload.id,
           status: payload.status,
-          room_count: payload.roomCount,
           is_resident: Boolean(Number(payload.residentType)),
           discount: payload.discount,
           rate_id: payload.rateId,
