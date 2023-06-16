@@ -17,7 +17,6 @@ export interface RoomInfo {
 export interface HotelRoomBookingDetails {
   rateId: number
   isResident: boolean
-  roomCount: number
   earlyCheckIn?: MarkupCondition
   lateCheckOut?: MarkupCondition
   guestNote?: string

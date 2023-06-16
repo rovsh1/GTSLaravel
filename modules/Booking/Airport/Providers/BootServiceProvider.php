@@ -2,17 +2,25 @@
 
 namespace Module\Booking\Airport\Providers;
 
-use Module\Booking\Hotel\Domain;
-use Module\Booking\Hotel\Infrastructure;
+use Module\Booking\Airport\Domain;
+use Module\Booking\Airport\Infrastructure;
 use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {
     public function register()
     {
-//        $this->app->singleton(
-//            FileStorageAdapterInterface::class,
-//            FileStorageAdapter::class
-//        );
+        $this->app->singleton(
+            Domain\Repository\BookingRepositoryInterface::class,
+            Infrastructure\Repository\BookingRepository::class
+        );
+        $this->app->singleton(
+            Domain\Repository\AirportRepositoryInterface::class,
+            Infrastructure\Repository\AirportRepository::class
+        );
+        $this->app->singleton(
+            Domain\Repository\ServiceRepositoryInterface::class,
+            Infrastructure\Repository\ServiceRepository::class
+        );
     }
 }

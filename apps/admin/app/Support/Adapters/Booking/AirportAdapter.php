@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Adapters\Booking;
 
-use Carbon\CarbonPeriod;
-use Module\Booking\Hotel\Application\Request\CreateBookingDto;
-use Module\Booking\Hotel\Application\UseCase\Admin\CreateBooking;
-use Module\Booking\Hotel\Application\UseCase\Admin\GetBooking;
+use Carbon\CarbonInterface;
+use Module\Booking\Airport\Application\Request\CreateBookingDto;
+use Module\Booking\Airport\Application\UseCase\Admin\CreateBooking;
 use Module\Booking\Airport\Application\UseCase\Admin\GetBookingsByFilters;
+use Module\Booking\Airport\Application\UseCase\Admin\GetBooking;
 
 class AirportAdapter
 {
@@ -22,16 +22,12 @@ class AirportAdapter
         return app(GetBooking::class)->execute($id);
     }
 
-    public function getBookingDetails(int $id): mixed
-    {
-        return $this->request('getBookingDetails', ['id' => $id]);
-    }
-
     public function createBooking(
         int $cityId,
         int $clientId,
-        int $hotelId,
-        CarbonPeriod $period,
+        int $airportId,
+        int $serviceId,
+        CarbonInterface $date,
         int $creatorId,
         ?int $orderId,
         ?string $note = null
@@ -41,79 +37,17 @@ class AirportAdapter
                 cityId: $cityId,
                 creatorId: $creatorId,
                 clientId: $clientId,
-                hotelId: $hotelId,
+                airportId: $airportId,
+                serviceId: $serviceId,
                 orderId: $orderId,
-                period: $period,
+                date: $date,
                 note: $note
             )
         );
     }
 
-    public function addRoom(
+    public function addTourist(
         int $bookingId,
-        int $roomId,
-        int $rateId,
-        int $status,
-        bool $isResident,
-        int $roomCount,
-        array|null $earlyCheckIn = null,
-        array|null $lateCheckOut = null,
-        ?string $note = null,
-        ?int $discount = null
-    ): void {
-        $this->request('addRoom', [
-            'id' => $bookingId,
-            'roomId' => $roomId,
-            'rateId' => $rateId,
-            'status' => $status,
-            'isResident' => $isResident,
-            'roomCount' => $roomCount,
-            'earlyCheckIn' => $earlyCheckIn,
-            'lateCheckOut' => $lateCheckOut,
-            'note' => $note,
-            'discount' => $discount,
-        ]);
-    }
-
-    public function updateRoom(
-        int $bookingId,
-        int $roomIndex,
-        int $roomId,
-        int $rateId,
-        int $status,
-        bool $isResident,
-        int $roomCount,
-        array|null $earlyCheckIn = null,
-        array|null $lateCheckOut = null,
-        ?string $note = null,
-        ?int $discount = null
-    ): void {
-        $this->request('updateRoom', [
-            'id' => $bookingId,
-            'roomIndex' => $roomIndex,
-            'roomId' => $roomId,
-            'rateId' => $rateId,
-            'status' => $status,
-            'isResident' => $isResident,
-            'roomCount' => $roomCount,
-            'earlyCheckIn' => $earlyCheckIn,
-            'lateCheckOut' => $lateCheckOut,
-            'note' => $note,
-            'discount' => $discount,
-        ]);
-    }
-
-    public function deleteRoom(int $bookingId, int $roomIndex,): void
-    {
-        $this->request('deleteRoom', [
-            'id' => $bookingId,
-            'roomIndex' => $roomIndex,
-        ]);
-    }
-
-    public function addRoomGuest(
-        int $bookingId,
-        int $roomIndex,
         string $fullName,
         int $countryId,
         int $gender,
@@ -121,7 +55,6 @@ class AirportAdapter
     ): void {
         $this->request('addRoomGuest', [
             'id' => $bookingId,
-            'roomIndex' => $roomIndex,
             'fullName' => $fullName,
             'countryId' => $countryId,
             'gender' => $gender,
@@ -129,10 +62,9 @@ class AirportAdapter
         ]);
     }
 
-    public function updateRoomGuest(
+    public function updateTourist(
         int $bookingId,
-        int $roomIndex,
-        int $guestIndex,
+        int $touristIndex,
         string $fullName,
         int $countryId,
         int $gender,
@@ -140,8 +72,7 @@ class AirportAdapter
     ): void {
         $this->request('updateRoomGuest', [
             'id' => $bookingId,
-            'roomIndex' => $roomIndex,
-            'guestIndex' => $guestIndex,
+            'guestIndex' => $touristIndex,
             'fullName' => $fullName,
             'countryId' => $countryId,
             'gender' => $gender,

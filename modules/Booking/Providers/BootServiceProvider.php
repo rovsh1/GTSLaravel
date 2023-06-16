@@ -12,7 +12,6 @@ use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
 class BootServiceProvider extends ServiceProvider
 {
     public $singletons = [
-        Domain\Repository\BookingRepositoryInterface::class => Infrastructure\Repository\AbstractBookingRepository::class,
         Domain\Repository\RequestRepositoryInterface::class => Infrastructure\Repository\RequestRepository::class,
         Domain\Repository\BookingChangesLogRepositoryInterface::class => Infrastructure\Repository\BookingChangesLogRepository::class,
         Domain\Adapter\FileStorageAdapterInterface::class => Infrastructure\Adapter\FileStorageAdapter::class,

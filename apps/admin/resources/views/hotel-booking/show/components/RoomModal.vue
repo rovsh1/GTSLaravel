@@ -56,7 +56,6 @@ const { bookingID, hotelID, hotelRooms } = requestInitialData(
 const markupSettings = computed<MarkupSettings | null>(() => props.hotelMarkupSettings)
 
 const formData = computed<RoomFormData>(() => ({
-  roomCount: 1,
   bookingID,
   roomIndex: props.roomIndex,
   ...props.formData,
@@ -173,7 +172,7 @@ const lateCheckOutValue = computed<string>({
           @input="value => formData.status = value as number"
         />
       </div>
-      <div class="col-md-6">
+      <div class="col-md-12">
         <BootstrapSelectBase
           id="rate_id"
           :options="preparedRoomRates"
@@ -184,18 +183,6 @@ const lateCheckOutValue = computed<string>({
           disabled-placeholder="Выберите номер"
           @input="value => formData.rateId = value as number"
         />
-      </div>
-      <div class="col-md-6">
-        <div class="field-required">
-          <label for="rooms_count" class="col-form-label">Кол-во номеров</label>
-          <input
-            id="rooms_count"
-            v-model="formData.roomCount"
-            type="number"
-            class="form-control"
-            required
-          >
-        </div>
       </div>
       <div class="col-md-6">
         <BootstrapSelectBase

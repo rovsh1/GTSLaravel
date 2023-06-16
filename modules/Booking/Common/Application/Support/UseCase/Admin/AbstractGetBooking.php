@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Module\Booking\Common\Application\Support\UseCase\Admin;
 
+use Module\Booking\Common\Application\Dto\BookingDto;
 use Module\Booking\Common\Domain\Repository\BookingRepositoryInterface;
-use Module\Booking\Hotel\Application\Dto\BookingDto;
+use Module\Shared\Application\Dto\AbstractDomainBasedDto;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
-class GetBooking implements UseCaseInterface
+abstract class AbstractGetBooking implements UseCaseInterface
 {
     public function __construct(
         private readonly BookingRepositoryInterface $repository
@@ -22,6 +23,11 @@ class GetBooking implements UseCaseInterface
             throw new EntityNotFoundException("Booking not found [{$id}]");
         }
 
-        return BookingDto::fromDomain($booking);
+        return $this->getDto()::fromDomain($booking);
     }
+
+    /**
+     * @return class-string<AbstractDomainBasedDto>
+     */
+    abstract protected function getDto(): string;
 }

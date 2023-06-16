@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Module\Booking\Common\Application\Support\UseCase\Admin;
 
 use Module\Booking\Common\Application\Dto\UpdateStatusResponseDto;
-use Module\Booking\Common\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\Common\Domain\Service\StatusUpdater;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
+use Module\Booking\Common\Domain\Repository\BookingRepositoryInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class UpdateBookingStatus implements UseCaseInterface

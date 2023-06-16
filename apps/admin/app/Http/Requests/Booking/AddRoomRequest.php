@@ -11,7 +11,6 @@ class AddRoomRequest extends FormRequest
         return [
             'room_id' => ['required', 'numeric'],
             'status' => ['required', 'numeric'],
-            'room_count' => ['required', 'numeric'],
             'is_resident' => ['required', 'boolean'],
             'rate_id' => ['required', 'numeric'],
             'note' => ['nullable', 'string'],
@@ -29,11 +28,6 @@ class AddRoomRequest extends FormRequest
     public function getStatus(): int
     {
         return $this->post('status');
-    }
-
-    public function getRoomCount(): int
-    {
-        return $this->post('room_count');
     }
 
     public function getIsResident(): bool

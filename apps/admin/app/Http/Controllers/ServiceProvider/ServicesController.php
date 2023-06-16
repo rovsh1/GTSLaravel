@@ -3,8 +3,9 @@
 namespace App\Admin\Http\Controllers\ServiceProvider;
 
 use App\Admin\Components\Factory\Prototype;
-use App\Admin\Enums\ServiceProvider\ServiceTypeEnum;
 use App\Admin\Http\Controllers\Controller;
+use App\Admin\Http\Requests\ServiceProvider\SearchServicesRequest;
+use App\Admin\Http\Resources\Service as ServiceResource;
 use App\Admin\Models\ServiceProvider\Provider;
 use App\Admin\Models\ServiceProvider\Service;
 use App\Admin\Support\Facades\Acl;
@@ -14,18 +15,20 @@ use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Facades\Layout;
 use App\Admin\Support\Facades\Prototypes;
 use App\Admin\Support\Facades\Sidebar;
+use App\Admin\Support\Http\Actions\DefaultDestroyAction;
 use App\Admin\Support\Http\Actions\DefaultFormCreateAction;
 use App\Admin\Support\Http\Actions\DefaultFormEditAction;
 use App\Admin\Support\Http\Actions\DefaultFormStoreAction;
 use App\Admin\Support\Http\Actions\DefaultFormUpdateAction;
-use App\Admin\Support\Http\Actions\DefaultDestroyAction;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Layout as LayoutContract;
 use App\Admin\View\Menus\ServiceProviderMenu;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Module\Shared\Enum\Booking\ServiceTypeEnum;
 
 class ServicesController extends Controller
 {
@@ -85,6 +88,15 @@ class ServicesController extends Controller
     public function destroy(Provider $provider, Service $service): AjaxResponseInterface
     {
         return (new DefaultDestroyAction())->handle($service);
+    }
+
+    public function search(SearchServicesRequest $request): JsonResponse
+    {
+        $services = Service::whereCity($request->getCityId())->get();
+
+        return response()->json(
+            ServiceResource::collection($services)
+        );
     }
 
     protected function formFactory(int $providerId): FormContract

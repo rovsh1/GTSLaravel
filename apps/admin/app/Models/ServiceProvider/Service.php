@@ -2,8 +2,10 @@
 
 namespace App\Admin\Models\ServiceProvider;
 
-use App\Admin\Enums\ServiceProvider\ServiceTypeEnum;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Support\Facades\DB;
+use Module\Shared\Enum\Booking\ServiceTypeEnum;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
 use Sdk\Module\Database\Eloquent\Model;
 
@@ -29,7 +31,20 @@ class Service extends Model
     public static function booted()
     {
         static::addGlobalScope('default', function (Builder $builder) {
-            $builder->orderBy('name');
+            $builder->orderBy('name')
+                ->addSelect('service_provider_services.*')
+                ->join('service_providers','service_providers.id','=','service_provider_services.provider_id')
+                ->addSelect('service_providers.name as provider_name');
+        });
+    }
+
+    public function scopeWhereCity(Builder $builder, int $cityId): void
+    {
+        $builder->whereExists(function (QueryBuilder $query) use ($cityId) {
+            $query->select(DB::raw(1))
+                ->from('service_provider_cities as t')
+                ->whereColumn('t.provider_id', 'service_provider_services.provider_id')
+                ->where('city_id', $cityId);
         });
     }
 

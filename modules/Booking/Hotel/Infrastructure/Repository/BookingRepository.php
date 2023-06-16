@@ -7,10 +7,9 @@ namespace Module\Booking\Hotel\Infrastructure\Repository;
 use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Collection;
-use Module\Booking\Common\Domain\Entity\BookingInterface;
-use Module\Booking\Common\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\Common\Infrastructure\Repository\AbstractBookingRepository as BaseRepository;
 use Module\Booking\Hotel\Domain\Entity\Booking;
+use Module\Booking\Hotel\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\Hotel\Domain\ValueObject\Details\AdditionalInfo;
 use Module\Booking\Hotel\Domain\ValueObject\Details\BookingPeriod;
 use Module\Booking\Hotel\Domain\ValueObject\Details\CancelCondition\CancelMarkupOption;
@@ -33,7 +32,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         return Model::class;
     }
 
-    public function find(int $id): ?BookingInterface
+    public function find(int $id): ?Booking
     {
         $booking = $this->findBase($id);
         if ($booking === null) {
@@ -57,12 +56,15 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         ?string $note = null,
         mixed $hotelDto,
         mixed $hotelMarkupSettings
-    ): BookingInterface {
+    ): Booking {
         return \DB::transaction(
             function () use ($orderId, $creatorId, $hotelId, $period, $note, $hotelDto, $hotelMarkupSettings) {
                 $bookingModel = $this->createBase($orderId, $creatorId);
                 //@todo усли изменятся DTOшки, все сломается
-                $cancelConditions = $this->buildCancelConditionsByCancelPeriods($hotelMarkupSettings->cancelPeriods, $period);
+                $cancelConditions = $this->buildCancelConditionsByCancelPeriods(
+                    $hotelMarkupSettings->cancelPeriods,
+                    $period
+                );
                 $bookingPeriod = BookingPeriod::fromCarbon($period);
                 $hotelInfo = new HotelInfo(
                     $hotelDto->id,
@@ -100,7 +102,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         );
     }
 
-    public function store(BookingInterface $booking): bool
+    public function store(Booking $booking): bool
     {
         return \DB::transaction(function () use ($booking) {
             $base = $this->storeBase($booking);
@@ -149,7 +151,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         return app(BookingFactory::class)->createCollectionFrom($models);
     }
 
-    private function buildEntityFromModel(Model $booking, BookingDetails $detailsModel): BookingInterface
+    private function buildEntityFromModel(Model $booking, BookingDetails $detailsModel): Booking
     {
         $detailsData = $detailsModel->data;
         $additionalInfo = $detailsData['additionalInfo'] ?? null;
@@ -182,7 +184,10 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         ];
     }
 
-    private function buildCancelConditionsByCancelPeriods(array $cancelPeriods, CarbonPeriod $bookingPeriod): CancelConditions {
+    private function buildCancelConditionsByCancelPeriods(
+        array $cancelPeriods,
+        CarbonPeriod $bookingPeriod
+    ): CancelConditions {
         $availablePeriod = collect($cancelPeriods)->first(
             fn(mixed $cancelPeriod) => $bookingPeriod->overlaps($cancelPeriod->from, $cancelPeriod->to)
         );

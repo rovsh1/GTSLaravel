@@ -21,6 +21,12 @@ class City extends Select
             $countryQuery->whereHasHotel();
             $cityQuery->whereHasHotel();
         }
+        $onlyWithAirports = $options['onlyWithAirports'] ?? false;
+        if ($onlyWithAirports) {
+            $countryQuery->whereHasAirport();
+            $cityQuery->whereHasAirport();
+        }
+
         $this->setGroups($countryQuery->get());
         $this->setItems($cityQuery->get());
     }

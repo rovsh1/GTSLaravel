@@ -83,7 +83,6 @@ const handleEditRoom = (roomIndex: number, room: HotelRoomBooking): void => {
   roomForm.value = room
   roomForm.value.id = room.roomInfo.id
   roomForm.value.status = room.status
-  roomForm.value.roomCount = room.details.roomCount
   roomForm.value.discount = room.details.discount
   roomForm.value.rateId = room.details.rateId
   roomForm.value.earlyCheckIn = room.details.earlyCheckIn
@@ -172,10 +171,6 @@ fetchCountries()
               <tr>
                 <th>Статус</th>
                 <td>{{ getRoomStatusName(room.status) }}</td>
-              </tr>
-              <tr>
-                <th>Кол-во номеров</th>
-                <td>{{ room.details.roomCount }}</td>
               </tr>
               <tr>
                 <th>Тип стоимости</th>
