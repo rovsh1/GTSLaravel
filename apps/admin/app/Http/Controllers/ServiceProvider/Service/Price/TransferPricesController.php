@@ -3,6 +3,7 @@
 namespace App\Admin\Http\Controllers\ServiceProvider\Service\Price;
 
 use App\Admin\Http\Requests\ServiceProvider\UpdateTransferPriceRequest;
+use App\Admin\Models\Reference\Currency;
 use App\Admin\Models\ServiceProvider\CarPrice;
 use App\Admin\Models\ServiceProvider\Provider;
 use App\Admin\Models\ServiceProvider\TransferService;
@@ -17,14 +18,13 @@ class TransferPricesController extends AbstractPricesController
     {
         $this->provider($provider);
 
-        $query = TransferService::where('provider_id', $provider->id);
-
         return Layout::title('Цены')
             ->view('service-provider.service.price.transfer.index', [
                 'provider' => $provider,
-                'cars' => $provider->cars()->get(),
+                'cars' => $provider->cars()->with(['cities'])->get(),
                 'seasons' => $provider->seasons,
-                'services' => $provider->services
+                'services' => $provider->services,
+                'currencies' => Currency::all()
             ]);
     }
 
@@ -37,7 +37,7 @@ class TransferPricesController extends AbstractPricesController
 
     public function update(UpdateTransferPriceRequest $request, Provider $provider, TransferService $service): JsonResponse
     {
-        $data = ['currency_id' => 1];
+        $data = ['currency_id' => $request->getCurrencyId()];
         if ($request->getPriceNet() !== null) {
             $data['price_net'] = $request->getPriceNet();
         }

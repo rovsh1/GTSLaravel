@@ -57,6 +57,7 @@ const onPressEsc = () => {
       <input
         v-model="localValue"
         class="form-control"
+        :placeholder="placeholder"
         type="number"
         @keydown.esc="onPressEsc"
         @keydown.enter="onPressEnter"

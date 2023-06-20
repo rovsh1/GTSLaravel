@@ -18,7 +18,7 @@ export interface PeriodInterface {
   date_end: DateResponse
 }
 
-export const formatPeriod = (period: PeriodInterface) => `${formatDate(period.date_start)} - ${formatDate(period.date_start)}`
+export const formatPeriod = (period: PeriodInterface) => `${formatDate(period.date_start)} - ${formatDate(period.date_end)}`
 
 export const dateRangeDelimiter = ' - '
 

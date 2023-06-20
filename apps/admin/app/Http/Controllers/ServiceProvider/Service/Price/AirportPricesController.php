@@ -18,10 +18,6 @@ class AirportPricesController extends AbstractPricesController
     {
         $this->provider($provider);
 
-        $query = TransferService::where('provider_id', $provider->id);
-
-//        $grid = $this->gridFactory($provider)->data($query);
-
         return Layout::title('Цены')
             ->view('service-provider.service.price.airport.index', [
                 'provider' => $provider,
@@ -36,7 +32,7 @@ class AirportPricesController extends AbstractPricesController
     }
 
     public function update(UpdateAirportPriceRequest $request, Provider $provider, AirportService $service): JsonResponse {
-        $data = ['currency_id' => 1];
+        $data = ['currency_id' => $request->getCurrencyId()];
         if ($request->getPriceNet() !== null) {
             $data['price_net'] = $request->getPriceNet();
         }

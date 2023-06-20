@@ -98,7 +98,6 @@ class SeasonController extends Controller
     protected function gridFactory(Provider $provider): GridContract
     {
         return Grid::paginator(16)
-            ->enableQuicksearch()
             ->edit(fn($r) => $this->prototype->route('seasons.edit', [$provider, $r->id]))
             ->text('number', ['text' => 'Название', 'order' => true])
             ->datePeriod('period', ['text' => 'Период']);

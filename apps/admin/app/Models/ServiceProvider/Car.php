@@ -8,10 +8,15 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Sdk\Module\Database\Eloquent\HasQuicksearch;
 use Sdk\Module\Database\Eloquent\Model;
 
 class Car extends Model
 {
+    use HasQuicksearch;
+
+    protected array $quicksearch = ['id', 'mark%', 'model%'];
+
     protected $table = 'service_provider_cars';
 
     public $timestamps = false;

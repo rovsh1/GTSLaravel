@@ -1,12 +1,14 @@
 <script setup lang="ts">
 
+import { computed } from 'vue'
+
 import EditableCell from '~resources/views/service-provider/service/price/components/EditableCell.vue'
 
-import { ServicePriceResponse, updateCarPrice, useServiceProviderPricesAPI } from '~api/service-provider/transfer'
+import { ServicePriceResponse, updateCarPrice, useServiceProviderTransferPricesAPI } from '~api/service-provider/transfer'
 
 import { formatPeriod } from '~lib/date'
 
-import { Car, Season } from './lib'
+import { Car, City, Currency, Season } from './lib'
 
 const props = defineProps<{
   header: string
@@ -14,16 +16,15 @@ const props = defineProps<{
   serviceId: number
   seasons: Season[]
   cars: Car[]
+  currencies: Currency[]
 }>()
 
-// @todo разделить енумы справочников транспорта и аэро
-// @todo справочник - машины поставщика (+город мультиселект)
-// @todo для аэро тоже самое (выбор город + аэропорт)
-
-const { data: servicePrices, execute: fetchPrices } = useServiceProviderPricesAPI({
+const { data: servicePrices, execute: fetchPrices } = useServiceProviderTransferPricesAPI({
   providerId: props.providerId,
   serviceId: props.serviceId,
 })
+
+const currencies = computed<Currency[]>(() => props.currencies)
 
 const handleChangePrice = async (seasonId: number, carId: number, priceNet?: number, priceGross?: number): Promise<void> => {
   if (!priceGross && !priceNet) {
@@ -36,8 +37,16 @@ const handleChangePrice = async (seasonId: number, carId: number, priceNet?: num
     providerId: props.providerId,
     priceNet,
     priceGross,
+    currencyId: 1,
   })
   fetchPrices()
+}
+
+const getDisplayCarCities = (cities?:City[]): string => {
+  if (!cities || cities.length === 0) {
+    return 'Все города'
+  }
+  return cities.map((city) => city.name).join(', ')
 }
 
 const getServicePrice = (seasonId: number, carId: number): ServicePriceResponse | undefined =>
@@ -50,7 +59,7 @@ fetchPrices()
 <template>
   <div class="card card-form mb-4">
     <div class="card-header">
-      {{ header }}
+      <h5 class="mb-0">{{ header }}</h5>
     </div>
     <div class="card-body">
       <table class="table table-striped">
@@ -59,7 +68,7 @@ fetchPrices()
             <th scope="col">Автомобиль</th>
             <th scope="col">Город</th>
             <th v-for="season in seasons" :key="season.id" scope="col" colspan="2">
-              {{ formatPeriod(season) }}
+              {{ season.number }} ({{ formatPeriod(season) }})
             </th>
           </tr>
           <tr>
@@ -75,7 +84,7 @@ fetchPrices()
             <td>
               {{ car.mark }} {{ car.model }}
             </td>
-            <td>Город</td>
+            <td>{{ getDisplayCarCities(car.cities) }}</td>
 
             <template v-for="season in seasons" :key="season.id">
               <td>

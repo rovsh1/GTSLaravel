@@ -11,6 +11,7 @@
             'services' => $services,
             'cars' => $cars,
             'seasons' => $seasons,
+            'currencies' => $currencies
         ]) }}
     </script>
 @endsection

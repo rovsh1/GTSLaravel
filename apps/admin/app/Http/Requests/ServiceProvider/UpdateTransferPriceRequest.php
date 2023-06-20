@@ -13,6 +13,7 @@ class UpdateTransferPriceRequest extends FormRequest
         return [
             'car_id' => ['required', 'numeric'],
             'season_id' => ['required', 'numeric'],
+            'currency_id' => ['required', 'numeric'],
             'price_net' => ['required_without:price_gross', 'numeric'],
             'price_gross' => ['required_without:price_net', 'numeric'],
         ];
@@ -21,6 +22,11 @@ class UpdateTransferPriceRequest extends FormRequest
     public function getCarId(): int
     {
         return (int)$this->post('car_id');
+    }
+
+    public function getCurrencyId(): int
+    {
+        return (int)$this->post('currency_id');
     }
 
     public function getSeasonId(): int
