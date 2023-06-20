@@ -15,6 +15,7 @@ class GetBookingsByFilters implements UseCaseInterface
 
     public function execute(array $filters = []): mixed
     {
+        //@todo возвращать QueryBuilder и прокидыать в грид админки
         return $this->repository->get();
     }
 }

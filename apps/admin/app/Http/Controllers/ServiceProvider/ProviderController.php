@@ -30,14 +30,6 @@ class ProviderController extends AbstractPrototypeController
                 'label' => 'Города',
                 'multiple' => true,
                 'items' => City::get()
-            ])
-            ->select('cars', [
-                'label' => 'Авто',
-                'multiple' => true,
-                'items' => TransportCar::get()->map(fn($r) => [
-                    'value' => $r->id,
-                    'text' => (string)$r
-                ])
             ]);
     }
 

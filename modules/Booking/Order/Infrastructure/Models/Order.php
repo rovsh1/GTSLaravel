@@ -25,15 +25,4 @@ class Order extends Model
     {
         return $this->belongsTo(Client::class);
     }
-
-    public function scopeWithoutHotelBookings(Builder $builder): void
-    {
-        $builder->whereNotExists(function (\Illuminate\Database\Query\Builder $query) {
-            $query->selectRaw('1')
-                ->from('bookings')
-                ->whereRaw('`orders`.`id` = `bookings`.`order_id`')
-                //@todo hack енум из другого модуля
-                ->where('bookings.type', BookingTypeEnum::HOTEL);
-        });
-    }
 }

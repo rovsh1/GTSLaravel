@@ -17,8 +17,6 @@ class CreateBooking extends AbstractCreateBooking
     public function __construct(
         CommandBusInterface $commandBus,
         BookingRepositoryInterface $repository,
-        private readonly AirportRepositoryInterface $airportRepository,
-        private readonly ServiceRepositoryInterface $serviceRepository,
     ) {
         parent::__construct($commandBus, $repository);
     }
@@ -26,19 +24,11 @@ class CreateBooking extends AbstractCreateBooking
     public function execute(CreateBookingDto $request): int
     {
         $orderId = $this->getOrderIdFromRequest($request);
-        $airport = $this->airportRepository->get($request->airportId);
-        if ($airport === null) {
-            throw new EntityNotFoundException('Airport not found');
-        }
-        $service = $this->serviceRepository->get($request->serviceId);
-        if ($service === null) {
-            throw new EntityNotFoundException('Service not found');
-        }
         $booking = $this->repository->create(
             $orderId,
             $request->creatorId,
-            $service,
-            $airport,
+            $request->serviceId,
+            $request->airportId,
             $request->date,
             $request->note,
         );

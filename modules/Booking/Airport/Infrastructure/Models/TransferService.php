@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Module\Booking\Airport\Infrastructure\Models;
 
-use Module\Shared\Enum\Booking\ServiceTypeEnum;
+use Module\Shared\Enum\Booking\TransferServiceTypeEnum;
 use Sdk\Module\Database\Eloquent\Model;
 
-class Service extends Model
+class TransferService extends Model
 {
     protected $table = 'service_provider_services';
 
@@ -19,6 +19,6 @@ class Service extends Model
 
     protected $casts = [
         'provider_id' => 'int',
-        'type' => ServiceTypeEnum::class,
+        'type' => TransferServiceTypeEnum::class,
     ];
 }

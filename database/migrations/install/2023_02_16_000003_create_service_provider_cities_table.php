@@ -18,13 +18,13 @@ return new class extends Migration {
                 ->references('id')
                 ->on('r_cities')
                 ->cascadeOnUpdate()
-                ->cascadeOnUpdate();
+                ->cascadeOnDelete();
 
             $table->foreign('provider_id', 'fk_service_provider_cities_provider_id')
                 ->references('id')
                 ->on('service_providers')
                 ->cascadeOnUpdate()
-                ->cascadeOnUpdate();
+                ->cascadeOnDelete();
         });
     }
 

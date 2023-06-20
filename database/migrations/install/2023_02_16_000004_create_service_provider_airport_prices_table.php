@@ -21,27 +21,27 @@ return new class extends Migration {
 
             $table->foreign('service_id', 'fk_service_provider_airport_prices_service_id')
                 ->references('id')
-                ->on('service_provider_services')
+                ->on('service_provider_airport_services')
                 ->cascadeOnUpdate()
-                ->cascadeOnUpdate();
+                ->cascadeOnDelete();
 
             $table->foreign('season_id', 'fk_service_provider_airport_prices_season_id')
                 ->references('id')
                 ->on('service_provider_seasons')
                 ->cascadeOnUpdate()
-                ->cascadeOnUpdate();
+                ->cascadeOnDelete();
 
             $table->foreign('airport_id', 'fk_service_provider_airport_prices_airport_id')
                 ->references('id')
                 ->on('r_airports')
                 ->cascadeOnUpdate()
-                ->cascadeOnUpdate();
+                ->cascadeOnDelete();
 
             $table->foreign('currency_id', 'fk_service_provider_airport_prices_currency_id')
                 ->references('id')
                 ->on('r_currencies')
                 ->cascadeOnUpdate()
-                ->cascadeOnUpdate();
+                ->cascadeOnDelete();
         });
     }
 

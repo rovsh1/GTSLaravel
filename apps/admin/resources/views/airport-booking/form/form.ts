@@ -11,7 +11,7 @@ $(() => {
   })
 
   $('#form_data_service_id').childCombo({
-    url: '/service-provider/services/search',
+    url: '/service-provider/services-airport/search',
     value: window.get_url_parameter('city_id'),
     disabledText: 'Выберите город',
     parent: $('#form_data_city_id'),

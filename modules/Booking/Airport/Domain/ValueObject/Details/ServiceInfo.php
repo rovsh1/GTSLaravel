@@ -6,14 +6,14 @@ namespace Module\Booking\Airport\Domain\ValueObject\Details;
 
 use Module\Shared\Domain\ValueObject\SerializableDataInterface;
 use Module\Shared\Domain\ValueObject\ValueObjectInterface;
-use Module\Shared\Enum\Booking\ServiceTypeEnum;
+use Module\Shared\Enum\Booking\TransferServiceTypeEnum;
 
 class ServiceInfo implements ValueObjectInterface, SerializableDataInterface
 {
     public function __construct(
         private readonly int $id,
         private readonly string $name,
-        private readonly ServiceTypeEnum $type
+        private readonly TransferServiceTypeEnum $type
     ) {}
 
     public function id(): int
@@ -26,7 +26,7 @@ class ServiceInfo implements ValueObjectInterface, SerializableDataInterface
         return $this->name;
     }
 
-    public function type(): ServiceTypeEnum
+    public function type(): TransferServiceTypeEnum
     {
         return $this->type;
     }
@@ -45,7 +45,7 @@ class ServiceInfo implements ValueObjectInterface, SerializableDataInterface
         return new static(
             $data['id'],
             $data['name'],
-            ServiceTypeEnum::from($data['type']),
+            TransferServiceTypeEnum::from($data['type']),
         );
     }
 }

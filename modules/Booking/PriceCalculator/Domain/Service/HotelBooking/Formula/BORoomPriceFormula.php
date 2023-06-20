@@ -22,6 +22,7 @@ final class BORoomPriceFormula extends AbstractRoomPriceFormula
         $D = 0;
         $k = $this->variables->nightsCount;
         $Z = $this->calculateConditionMarkup($Sb);
+        //dump(compact('Sb', 'k', 'Z'));
 
         return (float)(($Sb - $D) * $k + $Z);
     }
@@ -39,6 +40,7 @@ final class BORoomPriceFormula extends AbstractRoomPriceFormula
         $Sn = $netValue;
         $N = $this->calculateClientMarkup($Sn);
         $NDS = $this->calculateNds($Sn + $N);
+        //dump(compact('Sn', 'N', 'NDS'));
 
         return (float)($Sn + $N + $NDS);
     }
@@ -60,6 +62,7 @@ final class BORoomPriceFormula extends AbstractRoomPriceFormula
         $NDS = $this->calculateNds($Sn + $N);
         $T = $this->markupVariables->touristTax;
         $n = $guestsCount;
+        //dump(compact('Sn', 'N', 'NDS', 'T'));
 
         return (float)($Sn + $N + $NDS + $T * $n);
     }

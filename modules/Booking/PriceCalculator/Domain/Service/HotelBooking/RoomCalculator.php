@@ -13,39 +13,36 @@ use Module\Booking\PriceCalculator\Domain\Service\HotelBooking\Formula\BORoomPri
 use Module\Booking\PriceCalculator\Domain\Service\HotelBooking\Formula\MarkupVariables;
 use Module\Booking\PriceCalculator\Domain\Service\HotelBooking\Formula\HORoomPriceFormula;
 use Module\Booking\PriceCalculator\Domain\Service\HotelBooking\Formula\RoomVariables;
-use Module\Booking\PriceCalculator\Domain\Service\HotelBooking\Support\BookingDaysCollection;
 
 class RoomCalculator
 {
     public function __construct(
-        private readonly OrderRepositoryInterface $orderRepository,
-        private readonly BookingRepositoryInterface $bookingRepository,
+//        private readonly OrderRepositoryInterface $orderRepository,
+//        private readonly BookingRepositoryInterface $bookingRepository,
         private readonly HotelAdapterInterface $hotelAdapter,
-        private readonly ClientAdapterInterface $clientAdapter
+//        private readonly ClientAdapterInterface $clientAdapter
     ) {
     }
 
     public function calculate(CalculateVariables $calculateVariables): RoomPrice
     {
-        $hotelBooking = $this->bookingRepository->find($calculateVariables->bookingId);
-
-        $markupVariables = $this->buildMarkupVariables($hotelBooking, $calculateVariables);
+        $markupVariables = $this->buildMarkupVariables($calculateVariables);
         $formulaVariables = new RoomVariables($calculateVariables->isResident, $calculateVariables->guestsCount, 1);
         $hoFormula = new HORoomPriceFormula($markupVariables, $formulaVariables);
         $boFormula = new BORoomPriceFormula($markupVariables, $formulaVariables);
 
-        $daysCollection = $this->buildBookingDaysCollection($hotelBooking);
+        $dates = $calculateVariables->bookingPeriod->includedDates();
 
         $netValue = 0.0;
         $hoValue = 0.0;
         $boValue = 0.0;
-        foreach ($daysCollection as $date) {
+        foreach ($dates as $date) {
             $datePrice = $this->getDatePrice($calculateVariables->roomId, $date);
             $netValue += $datePrice;
             $hoValue += $hoFormula->calculate($datePrice);
             $boValue += $boFormula->calculate($datePrice);
         }
-        $avgDailyValue = $netValue / $daysCollection->nightsCount();
+        $avgDailyValue = $netValue / $calculateVariables->bookingPeriod->nightsCount();
 
         return new RoomPrice(
             $netValue,
@@ -55,27 +52,27 @@ class RoomCalculator
         );
     }
 
-    private function buildMarkupVariables(
-        Booking $hotelBooking,
-        CalculateVariables $calculateVariables
-    ): MarkupVariables {
-        $markupDto = $this->hotelAdapter->getMarkupSettings($hotelBooking->hotelInfo()->id());
-        $order = $this->orderRepository->find($hotelBooking->orderId()->value());
-        $clientDto = $this->clientAdapter->find($order->clientId());
-        $clientType = 'TO';
-
+    private function buildMarkupVariables(CalculateVariables $calculateVariables): MarkupVariables
+    {
         return new MarkupVariables(
-            $markupDto->vat,
-            $markupDto->clientMarkups->$clientType,
+            $calculateVariables->vatPercent,
+            $calculateVariables->clientMarkupPercent,
             $calculateVariables->earlyCheckInPercent,
             $calculateVariables->lateCheckOutPercent,
-            $markupDto->touristTax
+            $calculateVariables->touristTax
         );
-    }
-
-    private function buildBookingDaysCollection(Booking $hotelBooking): BookingDaysCollection
-    {
-        return new BookingDaysCollection($hotelBooking->period()->includedDates());
+//        $markupDto = $this->hotelAdapter->getMarkupSettings($hotelBooking->hotelInfo()->id());
+//        $order = $this->orderRepository->find($hotelBooking->orderId()->value());
+//        $clientDto = $this->clientAdapter->find($order->clientId());
+//        $clientType = 'TO';
+//
+//        return new MarkupVariables(
+//            $markupDto->vat,
+//            $markupDto->clientMarkups->$clientType,
+//            $calculateVariables->earlyCheckInPercent,
+//            $calculateVariables->lateCheckOutPercent,
+//            $markupDto->touristTax
+//        );
     }
 
     private function getDatePrice(int $roomId, DateTime $date): float

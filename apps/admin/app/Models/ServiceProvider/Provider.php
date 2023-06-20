@@ -3,7 +3,6 @@
 namespace App\Admin\Models\ServiceProvider;
 
 use App\Admin\Models\Reference\City;
-use App\Admin\Models\Reference\TransportCar;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -22,11 +21,9 @@ class Provider extends Model
         'name',
 
         'cities',
-        'cars'
     ];
 
     private array $savingCities;
-    private array $savingCars;
 
     public static function booted()
     {
@@ -34,10 +31,6 @@ class Provider extends Model
             if (isset($model->savingCities)) {
                 $model->cities()->sync($model->savingCities);
                 unset($model->savingCities);
-            }
-            if (isset($model->savingCars)) {
-                $model->cars()->sync($model->savingCars);
-                unset($model->savingCars);
             }
         });
         static::addGlobalScope('default', function (Builder $builder) {
@@ -55,9 +48,19 @@ class Provider extends Model
         return $this->belongsToMany(City::class, 'service_provider_cities', 'provider_id', 'city_id');
     }
 
-    public function cars(): BelongsToMany
+    public function cars(): HasMany
     {
-        return $this->belongsToMany(TransportCar::class, 'service_provider_cars', 'provider_id', 'car_id');
+        return $this->hasMany(Car::class);
+    }
+
+    public function seasons(): HasMany
+    {
+        return $this->hasMany(Season::class);
+    }
+
+    public function services(): HasMany
+    {
+        return $this->hasMany(TransferService::class);
     }
 
     public function getCitiesAttribute(): array
@@ -68,16 +71,6 @@ class Provider extends Model
     public function setCitiesAttribute(array $cities): void
     {
         $this->savingCities = $cities;
-    }
-
-    public function getCarsAttribute(): array
-    {
-        return $this->cars()->pluck('id')->toArray();
-    }
-
-    public function setCarsAttribute(array $cars): void
-    {
-        $this->savingCars = $cars;
     }
 
     public function getForeignKey()

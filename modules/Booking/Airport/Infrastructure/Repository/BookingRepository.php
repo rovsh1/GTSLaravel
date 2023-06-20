@@ -44,14 +44,17 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
     public function create(
         int $orderId,
         int $creatorId,
-        Service $service,
-        Airport $airport,
+        int $serviceId,
+        int $airportId,
         CarbonInterface $date,
         ?string $note = null
     ): Entity {
         return \DB::transaction(
-            function () use ($orderId, $creatorId, $service, $airport, $date, $note) {
+            function () use ($orderId, $creatorId, $serviceId, $airportId, $date, $note) {
                 $bookingModel = $this->createBase($orderId, $creatorId);
+
+                $airport = \Module\Booking\Airport\Infrastructure\Models\Airport::find($airportId);
+                $service = \Module\Booking\Airport\Infrastructure\Models\TransferService::find($serviceId);
 
                 $booking = new Entity(
                     id: new Id($bookingModel->id),
@@ -62,21 +65,21 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
                     creatorId: new Id($bookingModel->creator_id),
                     note: $note,
                     airportInfo: new AirportInfo(
-                        $airport->id()->value(),
-                        $airport->name()
+                        $airport->id,
+                        $airport->name
                     ),
                     date: $date->toImmutable(),
                     serviceInfo: new ServiceInfo(
-                        $service->id()->value(),
-                        $service->name(),
-                        $service->type()
+                        $service->id,
+                        $service->name,
+                        $service->type
                     ),
                 );
 
                 BookingDetails::create([
                     'booking_id' => $booking->id()->value(),
-                    'airport_id' => $airport->id()->value(),
-                    'service_id' => $service->id()->value(),
+                    'airport_id' => $airport->id,
+                    'service_id' => $service->id,
                     'date' => $date,
                     'data' => $this->serializeDetails($booking)
                 ]);

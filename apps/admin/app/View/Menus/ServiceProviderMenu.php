@@ -24,8 +24,19 @@ class ServiceProviderMenu extends AbstractSubmenu
     {
         $this
             ->addUrl('info', route('service-provider.show', $this->model), 'Описание', ['icon' => 'description'])
+            ->addUrl('prices', route('service-provider.service.transfer.prices.index', $this->model), 'Цены', ['icon' => 'currency_ruble']);
+
+        $group = (new Group('services'))
+            ->addUrl('services-transfer', route('service-provider.services-transfer.index', $this->model),'Транспорт',['icon' => 'airport_shuttle'])
+            ->addUrl('services-airport', route('service-provider.services-airport.index', $this->model),'Аэропорт',['icon' => 'flight_land']);
+
+        $this->addGroup($group);
+
+        $group = (new Group('reference'))
             ->addUrl('seasons', route('service-provider.seasons.index', $this->model), 'Сезоны', ['icon' => 'assignment'])
-            ->addUrl('services', route('service-provider.services.index', $this->model), 'Услуги', ['icon' => 'lan'])
-            ->addUrl('prices', route('service-provider.show', $this->model), 'Цены', ['icon' => 'currency_ruble']);
+            ->addUrl('cars', route('service-provider.cars.index', $this->model),'Автомобили', ['icon' => 'airport_shuttle'])
+        ;
+
+        $this->addGroup($group);
     }
 }

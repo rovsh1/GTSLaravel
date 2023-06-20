@@ -45,7 +45,7 @@ final class BookingPeriod implements ValueObjectInterface, SerializableDataInter
         do {
             $dates[] = $date;
             $date->modify('+1 day');
-        } while ($date->format('Ymd') <= $toYmd);
+        } while ($date->format('Ymd') < $toYmd);
 
         return $dates;
     }

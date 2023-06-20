@@ -49,51 +49,37 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
     }
 
     public function create(
-        int $orderId,
-        int $creatorId,
-        int $hotelId,
-        CarbonPeriod $period,
+        Id $orderId,
+        Id $creatorId,
+        BookingPeriod $period,
         ?string $note = null,
-        mixed $hotelDto,
-        mixed $hotelMarkupSettings
+        HotelInfo $hotelInfo,
+        CancelConditions $cancelConditions
     ): Booking {
         return \DB::transaction(
-            function () use ($orderId, $creatorId, $hotelId, $period, $note, $hotelDto, $hotelMarkupSettings) {
-                $bookingModel = $this->createBase($orderId, $creatorId);
-                //@todo усли изменятся DTOшки, все сломается
-                $cancelConditions = $this->buildCancelConditionsByCancelPeriods(
-                    $hotelMarkupSettings->cancelPeriods,
-                    $period
-                );
-                $bookingPeriod = BookingPeriod::fromCarbon($period);
-                $hotelInfo = new HotelInfo(
-                    $hotelDto->id,
-                    $hotelDto->name,
-                    new Time('14:00'), //@todo забрать из настроек отеля
-                    new Time('12:00'),
-                );
-
+            function () use ($orderId, $creatorId, $period, $note, $hotelInfo, $cancelConditions) {
+                $bookingModel = $this->createBase($orderId->value(), $creatorId->value());
                 $booking = new Booking(
                     id: new Id($bookingModel->id),
-                    orderId: new Id($bookingModel->order_id),
+                    orderId: $orderId,
                     status: $bookingModel->status,
                     type: $bookingModel->type,
                     createdAt: $bookingModel->created_at->toImmutable(),
-                    creatorId: new Id($bookingModel->creator_id),
+                    creatorId: $creatorId,
                     roomBookings: new RoomBookingCollection(),
                     cancelConditions: $cancelConditions,
                     additionalInfo: null,
                     hotelInfo: $hotelInfo,
-                    period: $bookingPeriod,
+                    period: $period,
                     note: $note
                 );
 
                 BookingDetails::create([
                     'booking_id' => $booking->id()->value(),
-                    'hotel_id' => $hotelId,
-                    'date_start' => $bookingPeriod->dateFrom(),
-                    'date_end' => $bookingPeriod->dateTo(),
-                    'nights_count' => $bookingPeriod->nightsCount(),
+                    'hotel_id' => $hotelInfo->id(),
+                    'date_start' => $period->dateFrom(),
+                    'date_end' => $period->dateTo(),
+                    'nights_count' => $period->nightsCount(),
                     'data' => $this->serializeDetails($booking)
                 ]);
 
@@ -182,46 +168,5 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
             'roomBookings' => $booking->roomBookings()->toData(),
             'cancelConditions' => $booking->cancelConditions()->toData(),
         ];
-    }
-
-    private function buildCancelConditionsByCancelPeriods(
-        array $cancelPeriods,
-        CarbonPeriod $bookingPeriod
-    ): CancelConditions {
-        $availablePeriod = collect($cancelPeriods)->first(
-            fn(mixed $cancelPeriod) => $bookingPeriod->overlaps($cancelPeriod->from, $cancelPeriod->to)
-        );
-        if ($availablePeriod === null) {
-            //@todo понять что тут делать
-            throw new \Exception('Not found cancel period for booking');
-        }
-
-        $maxDaysCount = null;
-        $dailyMarkups = new DailyMarkupCollection();
-        foreach ($availablePeriod->dailyMarkups as $dailyMarkup) {
-            if ($dailyMarkup->daysCount > $maxDaysCount) {
-                $maxDaysCount = $dailyMarkup->daysCount;
-            }
-            $dailyMarkups->add(
-                new DailyMarkupOption(
-                    new Percent($dailyMarkup->percent),
-                    CancelPeriodTypeEnum::from($dailyMarkup->cancelPeriodType),
-                    $dailyMarkup->daysCount
-                )
-            );
-        }
-        $cancelNoFeeDate = null;
-        if ($maxDaysCount !== null) {
-            $cancelNoFeeDate = $bookingPeriod->getStartDate()->clone()->subDays($maxDaysCount)->toImmutable();
-        }
-
-        return new CancelConditions(
-            new CancelMarkupOption(
-                new Percent($availablePeriod->noCheckInMarkup->percent),
-                CancelPeriodTypeEnum::from($availablePeriod->noCheckInMarkup->cancelPeriodType)
-            ),
-            $dailyMarkups,
-            $cancelNoFeeDate
-        );
     }
 }
