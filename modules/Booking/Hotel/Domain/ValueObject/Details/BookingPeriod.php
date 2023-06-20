@@ -37,6 +37,19 @@ final class BookingPeriod implements ValueObjectInterface, SerializableDataInter
         return $this->nightsCount;
     }
 
+    public function includedDates(): array
+    {
+        $date = new \DateTime($this->dateFrom->format('Y-m-d'));
+        $toYmd = $this->dateTo->format('Ymd');
+        $dates = [];
+        do {
+            $dates[] = $date;
+            $date->modify('+1 day');
+        } while ($date->format('Ymd') <= $toYmd);
+
+        return $dates;
+    }
+
     public function toData(): array
     {
         return [

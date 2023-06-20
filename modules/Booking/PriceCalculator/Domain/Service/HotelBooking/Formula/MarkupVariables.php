@@ -2,12 +2,13 @@
 
 namespace Module\Booking\PriceCalculator\Domain\Service\HotelBooking\Formula;
 
-abstract class FormulaVariables
+class MarkupVariables
 {
     public function __construct(
         public readonly int $vatPercent,
         public readonly int $clientMarkupPercent,
-        public readonly int $conditionalMarkupPercent,
+        public readonly ?int $earlyCheckInPercent,
+        public readonly ?int $lateCheckOutPercent,
         public readonly int $touristTax
     ) {
     }
