@@ -13,6 +13,13 @@ export const formatDate = (date: DateResponse) => parseAPIDate(date).toLocaleStr
 
 export const formatDateTime = (date: DateResponse) => parseAPIDate(date).toLocaleString(DateTime.DATETIME_SHORT)
 
+export interface PeriodInterface {
+  date_start: DateResponse
+  date_end: DateResponse
+}
+
+export const formatPeriod = (period: PeriodInterface) => `${formatDate(period.date_start)} - ${formatDate(period.date_start)}`
+
 export const dateRangeDelimiter = ' - '
 
 export const getEachDayInMonth = (date: Date): Date[] => {

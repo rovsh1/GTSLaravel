@@ -5,17 +5,17 @@ namespace App\Admin\Models\ServiceProvider;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Facades\DB;
-use Module\Shared\Enum\Booking\ServiceTypeEnum;
+use Module\Shared\Enum\Booking\AirportServiceTypeEnum;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
 use Sdk\Module\Database\Eloquent\Model;
 
-class Service extends Model
+class AirportService extends Model
 {
     use HasQuicksearch;
 
     protected array $quicksearch = ['id', 'name%'];
 
-    protected $table = 'service_provider_services';
+    protected $table = 'service_provider_airport_services';
 
     protected $fillable = [
         'provider_id',
@@ -25,15 +25,20 @@ class Service extends Model
 
     protected $casts = [
         'provider_id' => 'int',
-        'type' => ServiceTypeEnum::class,
+        'type' => AirportServiceTypeEnum::class,
     ];
 
     public static function booted()
     {
         static::addGlobalScope('default', function (Builder $builder) {
             $builder->orderBy('name')
-                ->addSelect('service_provider_services.*')
-                ->join('service_providers','service_providers.id','=','service_provider_services.provider_id')
+                ->addSelect('service_provider_airport_services.*')
+                ->join(
+                    'service_providers',
+                    'service_providers.id',
+                    '=',
+                    'service_provider_airport_services.provider_id'
+                )
                 ->addSelect('service_providers.name as provider_name');
         });
     }
@@ -43,14 +48,9 @@ class Service extends Model
         $builder->whereExists(function (QueryBuilder $query) use ($cityId) {
             $query->select(DB::raw(1))
                 ->from('service_provider_cities as t')
-                ->whereColumn('t.provider_id', 'service_provider_services.provider_id')
+                ->whereColumn('t.provider_id', 'service_provider_airport_services.provider_id')
                 ->where('city_id', $cityId);
         });
-    }
-
-    public function getForeignKey()
-    {
-        return 'service_id';
     }
 
     public function __toString()

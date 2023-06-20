@@ -10,9 +10,8 @@ return new class extends Migration {
     {
         Schema::create('service_provider_car_prices', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('service_id');
             $table->unsignedInteger('season_id');
-            $table->unsignedInteger('city_id');
+            $table->unsignedInteger('service_id');
             $table->unsignedInteger('car_id');
             $table->unsignedSmallInteger('currency_id');
             $table->unsignedDecimal('price_net');
@@ -20,35 +19,29 @@ return new class extends Migration {
 
 //            $table->unique(['car_id', 'city_id', 'service_id', 'currency_id'], 'uid');
 
-            $table->foreign('season_id', 'fk_service_provider_car_prices_season_id')
+            $table->foreign('season_id')
                 ->references('id')
                 ->on('service_provider_seasons')
                 ->cascadeOnUpdate()
-                ->cascadeOnUpdate();
+                ->cascadeOnDelete();
 
-            $table->foreign('city_id', 'fk_service_provider_car_prices_city_id')
+            $table->foreign('service_id')
                 ->references('id')
-                ->on('r_cities')
+                ->on('service_provider_transfer_services')
                 ->cascadeOnUpdate()
-                ->cascadeOnUpdate();
+                ->cascadeOnDelete();
 
-            $table->foreign('service_id', 'fk_service_provider_car_prices_service_id')
-                ->references('id')
-                ->on('service_provider_services')
-                ->cascadeOnUpdate()
-                ->cascadeOnUpdate();
-
-            $table->foreign('currency_id', 'fk_service_provider_car_prices_currency_id')
+            $table->foreign('currency_id')
                 ->references('id')
                 ->on('r_currencies')
                 ->cascadeOnUpdate()
-                ->cascadeOnUpdate();
+                ->cascadeOnDelete();
 
-            $table->foreign('car_id', 'fk_service_provider_car_prices_car_id')
+            $table->foreign('car_id')
                 ->references('id')
-                ->on('r_transport_cars')
+                ->on('service_provider_cars')
                 ->cascadeOnUpdate()
-                ->cascadeOnUpdate();
+                ->cascadeOnDelete();
         });
     }
 

@@ -9,22 +9,21 @@ return new class extends Migration {
     public function up()
     {
         Schema::create('service_provider_cars', function (Blueprint $table) {
-            $table->unsignedInteger('car_id');
+            $table->increments('id');
             $table->unsignedInteger('provider_id');
+            $table->unsignedInteger('car_id');
 
-            $table->unique(['car_id', 'provider_id',], 'service_provider_cars_uid');
-
-            $table->foreign('car_id', 'fk_service_provider_cars_car_id')
+            $table->foreign('car_id')
                 ->references('id')
                 ->on('r_transport_cars')
                 ->cascadeOnUpdate()
-                ->cascadeOnUpdate();
+                ->cascadeOnDelete();
 
-            $table->foreign('provider_id', 'fk_service_provider_cars_provider_id')
+            $table->foreign('provider_id')
                 ->references('id')
                 ->on('service_providers')
                 ->cascadeOnUpdate()
-                ->cascadeOnUpdate();
+                ->cascadeOnDelete();
         });
     }
 

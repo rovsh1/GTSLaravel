@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Admin\Http\Controllers\ServiceProvider;
+namespace App\Admin\Http\Controllers\ServiceProvider\Service;
 
 use App\Admin\Components\Factory\Prototype;
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Http\Requests\ServiceProvider\SearchServicesRequest;
 use App\Admin\Http\Resources\Service as ServiceResource;
 use App\Admin\Models\ServiceProvider\Provider;
-use App\Admin\Models\ServiceProvider\Service;
+use App\Admin\Models\ServiceProvider\TransferService;
 use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Form;
@@ -28,9 +28,9 @@ use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Module\Shared\Enum\Booking\ServiceTypeEnum;
+use Module\Shared\Enum\Booking\TransferServiceTypeEnum;
 
-class ServicesController extends Controller
+class TransferServicesController extends Controller
 {
     private Prototype $prototype;
 
@@ -43,15 +43,15 @@ class ServicesController extends Controller
     {
         $this->provider($provider);
 
-        $query = Service::where('provider_id', $provider->id);
+        $query = TransferService::where('provider_id', $provider->id);
         $grid = $this->gridFactory($provider)->data($query);
 
-        return Layout::title('Услуги поставщика')
+        return Layout::title('Услуги трансфер')
             ->view('default.grid.grid', [
                 'quicksearch' => $grid->getQuicksearch(),
                 'grid' => $grid,
                 'createUrl' => Acl::isUpdateAllowed($this->prototype->key)
-                    ? $this->prototype->route('services.create', $provider)
+                    ? $this->prototype->route('services-transfer.create', $provider)
                     : null,
             ]);
     }
@@ -67,32 +67,32 @@ class ServicesController extends Controller
     public function store(Request $request, Provider $provider): RedirectResponse
     {
         return (new DefaultFormStoreAction($this->formFactory($provider->id)))
-            ->handle(Service::class);
+            ->handle(TransferService::class);
     }
 
-    public function edit(Request $request, Provider $provider, Service $service): LayoutContract
+    public function edit(Request $request, Provider $provider, TransferService $servicesTransfer): LayoutContract
     {
         $this->provider($provider);
 
         return (new DefaultFormEditAction($this->formFactory($provider->id)))
             ->deletable()
-            ->handle($service);
+            ->handle($servicesTransfer);
     }
 
-    public function update(Provider $provider, Service $service): RedirectResponse
+    public function update(Provider $provider, TransferService $servicesTransfer): RedirectResponse
     {
         return (new DefaultFormUpdateAction($this->formFactory($provider->id)))
-            ->handle($service);
+            ->handle($servicesTransfer);
     }
 
-    public function destroy(Provider $provider, Service $service): AjaxResponseInterface
+    public function destroy(Provider $provider, TransferService $servicesTransfer): AjaxResponseInterface
     {
-        return (new DefaultDestroyAction())->handle($service);
+        return (new DefaultDestroyAction())->handle($servicesTransfer);
     }
 
     public function search(SearchServicesRequest $request): JsonResponse
     {
-        $services = Service::whereCity($request->getCityId())->get();
+        $services = TransferService::whereCity($request->getCityId())->get();
 
         return response()->json(
             ServiceResource::collection($services)
@@ -108,7 +108,7 @@ class ServicesController extends Controller
                 'label' => 'Тип услуги',
                 'emptyItem' => '',
                 'required' => true,
-                'enum' => ServiceTypeEnum::class
+                'enum' => TransferServiceTypeEnum::class
             ]);
     }
 
@@ -116,9 +116,9 @@ class ServicesController extends Controller
     {
         return Grid::paginator(16)
             ->enableQuicksearch()
-            ->edit(fn($r) => $this->prototype->route('services.edit', [$provider, $r->id]))
+            ->edit(fn($r) => $this->prototype->route('services-transfer.edit', [$provider, $r->id]))
             ->text('name', ['text' => 'Название', 'order' => true])
-            ->enum('type', ['text' => 'Тип', 'enum' => ServiceTypeEnum::class]);
+            ->enum('type', ['text' => 'Тип', 'enum' => TransferServiceTypeEnum::class]);
     }
 
     private function provider(Provider $provider): void
@@ -128,8 +128,8 @@ class ServicesController extends Controller
                 $this->prototype->route('show', $provider),
                 (string)$provider
             )
-            ->addUrl($this->prototype->route('services.index', $provider), 'Услуги');
+            ->addUrl($this->prototype->route('services-transfer.index', $provider), 'Услуги');
 
-        Sidebar::submenu(new ServiceProviderMenu($provider, 'services'));
+        Sidebar::submenu(new ServiceProviderMenu($provider, 'services-transfer'));
     }
 }

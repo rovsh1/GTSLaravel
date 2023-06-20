@@ -8,14 +8,14 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up()
     {
-        Schema::create('service_provider_services', function (Blueprint $table) {
+        Schema::create('service_provider_airport_services', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('provider_id');
             $table->string('name');
             $table->unsignedTinyInteger('type');
             $table->timestamps();
 
-            $table->foreign('provider_id', 'fk_service_provider_services_provider_id')
+            $table->foreign('provider_id')
                 ->references('id')
                 ->on('service_providers')
                 ->restrictOnDelete()
@@ -30,6 +30,6 @@ return new class extends Migration {
     public function down()
     {
 //        Schema::dropIfExists('r_transfer_services_translation');
-        Schema::dropIfExists('r_transfer_services');
+        Schema::dropIfExists('service_provider_airport_services');
     }
 };
