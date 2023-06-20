@@ -4,6 +4,12 @@
     @vite('resources/views/hotel/prices/prices.scss')
 @endsection
 
+@section('head-end')
+    <script >
+      window['view-initial-data-hotel-prices'] = {{ Js::from(['hotelID' => $hotel->id]) }}
+    </script>
+@endsection
+
 @section('scripts')
     @vite('resources/views/hotel/prices/prices.ts')
 @endsection
@@ -14,15 +20,5 @@
     </div>
 
     <div class="content-body rooms-cards" id="hotel-prices">
-        @foreach($rooms as $room)
-            <div class="card room" data-id="{{ $room->id }}">
-                <div class="card-header">
-                    {{ $room->display_name }}
-                </div>
-                <div class="card-body">
-
-                </div>
-            </div>
-        @endforeach
-    </div>
+      </div>
 @endsection
