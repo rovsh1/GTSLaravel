@@ -27,6 +27,7 @@ class PriceController extends Controller
 
         return Layout::title((string)$hotel)
             ->view('hotel.prices.prices', [
+                'hotel' => $hotel,
                 'rooms' => $hotel->rooms->load(['priceRates']),
                 'seasons' => $hotel->seasons,
                 'priceRates' => PriceRate::collection($hotel->priceRates),
@@ -36,6 +37,7 @@ class PriceController extends Controller
     public function getSeasonsPrices(Request $request, Hotel $hotel, Season $season): JsonResponse
     {
         $prices = PricesAdapter::getSeasonsPrices($hotel->id);
+
         return response()->json(
             Price::collection($prices)
         );
@@ -52,12 +54,14 @@ class PriceController extends Controller
             price: $request->getPrice(),
             currencyId: $request->getCurrencyId()
         );
+
         return new AjaxSuccessResponse();
     }
 
     public function getDatePrices(Request $request, Hotel $hotel, Season $season): JsonResponse
     {
         $prices = PricesAdapter::getDatePrices($season->id);
+
         return response()->json(
             Price::collection($prices)
         );
@@ -79,6 +83,7 @@ class PriceController extends Controller
             currencyId: $request->getCurrencyId(),
             date: $request->getDate()
         );
+
         return new AjaxSuccessResponse();
     }
 
@@ -104,6 +109,7 @@ class PriceController extends Controller
                 date: $date
             );
         }
+
         return new AjaxSuccessResponse();
     }
 
