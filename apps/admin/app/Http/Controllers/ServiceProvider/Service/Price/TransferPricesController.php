@@ -35,8 +35,7 @@ class TransferPricesController extends AbstractPricesController
         );
     }
 
-    public function update(UpdateTransferPriceRequest $request, Provider $provider, TransferService $service): JsonResponse
-    {
+    public function update(UpdateTransferPriceRequest $request, Provider $provider, TransferService $service): JsonResponse {
         $data = ['currency_id' => $request->getCurrencyId()];
         if ($request->getPriceNet() !== null) {
             $data['price_net'] = $request->getPriceNet();

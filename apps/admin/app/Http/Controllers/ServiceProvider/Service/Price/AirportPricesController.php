@@ -6,7 +6,6 @@ use App\Admin\Http\Requests\ServiceProvider\UpdateAirportPriceRequest;
 use App\Admin\Models\ServiceProvider\AirportPrice;
 use App\Admin\Models\ServiceProvider\AirportService;
 use App\Admin\Models\ServiceProvider\Provider;
-use App\Admin\Models\ServiceProvider\TransferService;
 use App\Admin\Support\Facades\Layout;
 use App\Admin\Support\View\Layout as LayoutContract;
 use Illuminate\Http\JsonResponse;
