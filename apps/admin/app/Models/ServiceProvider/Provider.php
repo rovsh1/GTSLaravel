@@ -58,9 +58,14 @@ class Provider extends Model
         return $this->hasMany(Season::class);
     }
 
-    public function services(): HasMany
+    public function transferServices(): HasMany
     {
         return $this->hasMany(TransferService::class);
+    }
+
+    public function airportServices(): HasMany
+    {
+        return $this->hasMany(AirportService::class);
     }
 
     public function getCitiesAttribute(): array

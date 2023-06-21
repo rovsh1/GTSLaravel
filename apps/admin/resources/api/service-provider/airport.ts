@@ -45,6 +45,7 @@ export const updateAirportPrice = (props: MaybeRef<UpdateAirportPricePayload>) =
           airport_id: payload.airportId,
           price_gross: payload.priceGross,
           price_net: payload.priceNet,
+          currency_id: payload.currencyId,
         }),
       ),
     )), 'application/json')
