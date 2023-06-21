@@ -26,7 +26,7 @@ class RoomMarkupSettingsRepository implements RoomMarkupSettingsRepositoryInterf
     {
         $markupSettingsData = $this->serializer->serialize($markupSettings);
 
-        return (bool)Room::whereId($markupSettings->id())->update(['markup_settings' => $markupSettingsData]);
+        return (bool)Room::whereId($markupSettings->id()->value())->update(['markup_settings' => $markupSettingsData]);
     }
 
     private function deserializeSettings(Room $room): MarkupSettings

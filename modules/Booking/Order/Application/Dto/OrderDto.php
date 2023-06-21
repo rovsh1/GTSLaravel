@@ -4,14 +4,25 @@ declare(strict_types=1);
 
 namespace Module\Booking\Order\Application\Dto;
 
-use Sdk\Module\Foundation\Support\Dto\Attributes\MapInputName;
-use Sdk\Module\Foundation\Support\Dto\Dto;
+use Module\Booking\Order\Domain\Entity\Order;
+use Module\Shared\Application\Dto\AbstractDomainBasedDto;
+use Module\Shared\Domain\Entity\EntityInterface;
+use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 
-class OrderDto extends Dto
+class OrderDto extends AbstractDomainBasedDto
 {
     public function __construct(
         public readonly int $id,
-        #[MapInputName('client_id')]
         public readonly int $clientId,
+        public readonly ?int $legalId,
     ) {}
+
+    public static function fromDomain(EntityInterface|ValueObjectInterface|Order $entity): static
+    {
+        return new static(
+            $entity->id()->value(),
+            $entity->clientId()->value(),
+            $entity->legalId()?->value()
+        );
+    }
 }

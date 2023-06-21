@@ -26,7 +26,7 @@ class MarkupSettingsRepository implements MarkupSettingsRepositoryInterface
     {
         $markupSettingsData = $this->serializer->serialize($markupSettings);
 
-        return (bool)Hotel::whereId($markupSettings->id())->update(['markup_settings' => $markupSettingsData]);
+        return (bool)Hotel::whereId($markupSettings->id()->value())->update(['markup_settings' => $markupSettingsData]);
     }
 
     private function deserializeSettings(Hotel $hotel): MarkupSettings

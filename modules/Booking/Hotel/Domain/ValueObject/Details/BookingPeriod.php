@@ -67,8 +67,8 @@ final class BookingPeriod implements ValueObjectInterface, SerializableDataInter
     public static function fromData(array $data): static
     {
         return new static(
-            CarbonImmutable::createFromFormat('U', $data['dateFrom']),
-            CarbonImmutable::createFromFormat('U', $data['dateTo']),
+            CarbonImmutable::createFromTimestamp($data['dateFrom']),
+            CarbonImmutable::createFromTimestamp($data['dateTo']),
         );
     }
 

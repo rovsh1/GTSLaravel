@@ -119,7 +119,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
             note: $detailsData['note'] ?? null,
             airportInfo: AirportInfo::fromData($detailsData['airportInfo']),
             serviceInfo: ServiceInfo::fromData($detailsData['serviceInfo']),
-            date: CarbonImmutable::createFromFormat('U', $detailsData['date'])
+            date: CarbonImmutable::createFromTimestamp($detailsData['date'])
         );
     }
 

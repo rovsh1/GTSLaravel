@@ -13,6 +13,7 @@ return new class extends Migration {
         Schema::create('orders', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('client_id');
+            $table->unsignedInteger('legal_id')->nullable();
             $table->tinyInteger('status');
             $table->timestamps();
 
@@ -21,6 +22,13 @@ return new class extends Migration {
                 ->on('clients')
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
+
+            //@todo сейчас нет такой таблицы
+//            $table->foreign('legal_id')
+//                ->references('id')
+//                ->on('client_legals')
+//                ->cascadeOnDelete()
+//                ->cascadeOnUpdate();
         });
     }
 

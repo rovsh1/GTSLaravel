@@ -45,10 +45,11 @@ class CancelConditions implements ValueObjectInterface, SerializableDataInterfac
     public static function fromData(array $data): static
     {
         $cancelNoFeeDate = $data['cancelNoFeeDate'] ?? null;
+
         return new static(
             CancelMarkupOption::fromData($data['noCheckInMarkup']),
             DailyMarkupCollection::fromData($data['dailyMarkups']),
-            $cancelNoFeeDate !== null ? CarbonImmutable::createFromFormat('U', $cancelNoFeeDate) : null,
+            $cancelNoFeeDate !== null ? CarbonImmutable::createFromTimestamp($cancelNoFeeDate) : null,
         );
     }
 }

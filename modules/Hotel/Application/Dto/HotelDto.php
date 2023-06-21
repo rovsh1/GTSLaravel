@@ -14,13 +14,15 @@ class HotelDto extends AbstractDomainBasedDto
     public function __construct(
         public readonly int $id,
         public readonly string $name,
+        public readonly TimeSettingsDto $timeSettings
     ) {}
 
     public static function fromDomain(EntityInterface|ValueObjectInterface|Hotel $entity): static
     {
         return new static(
             $entity->id()->value(),
-            $entity->name()
+            $entity->name(),
+            TimeSettingsDto::fromDomain($entity->timeSettings())
         );
     }
 }

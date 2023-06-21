@@ -11,7 +11,8 @@ final class Order implements EntityInterface
 {
     public function __construct(
         private readonly Id $id,
-        private readonly int $clientId
+        private readonly Id $clientId,
+        private readonly ?Id $legalId
     ) {}
 
     public function id(): Id
@@ -19,8 +20,13 @@ final class Order implements EntityInterface
         return $this->id;
     }
 
-    public function clientId(): int
+    public function clientId(): Id
     {
         return $this->clientId;
+    }
+
+    public function legalId(): ?Id
+    {
+        return $this->legalId;
     }
 }

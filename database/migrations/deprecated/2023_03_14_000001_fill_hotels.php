@@ -14,14 +14,19 @@ use Module\Hotel\Domain\ValueObject\MarkupSettings\DailyMarkupCollection;
 use Module\Hotel\Domain\ValueObject\MarkupSettings\DailyMarkupOption;
 use Module\Hotel\Domain\ValueObject\MarkupSettings\EarlyCheckInCollection;
 use Module\Hotel\Domain\ValueObject\MarkupSettings\LateCheckOutCollection;
+use Module\Hotel\Domain\ValueObject\TimeSettings;
 use Module\Shared\Domain\ValueObject\Id;
 use Module\Shared\Domain\ValueObject\Percent;
+use Module\Shared\Domain\ValueObject\Time;
 use Module\Shared\Domain\ValueObject\TimePeriod;
 
 return new class extends Migration {
 
+    private const CHECKIN_START_PRESET = 10;
+    private const CHECKOUT_END_PRESET = 11;
     private const TOUR_FEE = 12;
     private const VAT = 13;
+    private const BREAKFAST_TIME = 14;
 
     private const CONDITION_CHECK_IN = 1;
     private const CONDITION_CHECK_OUT = 2;
@@ -105,6 +110,15 @@ return new class extends Migration {
                     \DB::raw(
                         "(SELECT `value` FROM `hotel_options` WHERE `hotel_id` = {$hotelId} AND `option` = " . self::TOUR_FEE . ') as touristTax'
                     ),
+                    \DB::raw(
+                        "(SELECT `value` FROM `hotel_options` WHERE `hotel_id` = {$hotelId} AND `option` = " . self::CHECKIN_START_PRESET . ') as checkInTime'
+                    ),
+                    \DB::raw(
+                        "(SELECT `value` FROM `hotel_options` WHERE `hotel_id` = {$hotelId} AND `option` = " . self::CHECKOUT_END_PRESET . ') as checkOutTime'
+                    ),
+                    \DB::raw(
+                        "(SELECT `value` FROM `hotel_options` WHERE `hotel_id` = {$hotelId} AND `option` = " . self::BREAKFAST_TIME . ') as breakfastTime'
+                    ),
                 ])
                 ->first();
 
@@ -113,6 +127,23 @@ return new class extends Migration {
             );
             $touristTaxPercent = new Percent(
                 is_numeric($options->touristTax) ? $options->touristTax : 0
+            );
+
+            //@todo уточнить у Анвара, что сюда писать в случае ошибок.
+            $checkInTime = new Time($options->checkInTime ?? '12:00');
+            $checkOutTime = new Time($options->checkOutTime ?? '14:00');
+            $breakfastPeriod = null;
+            if (!empty($options->breakfastTime)) {
+                $breakfastTimeFrom = $options->breakfastTime;
+                try {
+                    $breakfastPeriod = new TimeSettings\BreakfastPeriod($breakfastTimeFrom, null);
+                } catch (\Throwable $e) {
+                }
+            }
+            $timeSettings = new TimeSettings(
+                $checkInTime,
+                $checkOutTime,
+                $breakfastPeriod
             );
 
             $cancelPeriods = DB::connection('mysql_old')
@@ -173,6 +204,7 @@ return new class extends Migration {
                     'status' => $r->status,
                     'visibility' => $this->getVisibilityValue($r->visible_for),
                     'markup_settings' => json_encode($markupSettings->toData()),
+                    'time_settings' => json_encode($timeSettings->toData()),
                     'created_at' => $r->created,
                     'updated_at' => $r->updated,
                 ]);
@@ -185,6 +217,7 @@ return new class extends Migration {
         if ($visibleFor === 3) {
             $visibility = VisibilityEnum::B2B;
         }
+
         return $visibility;
     }
 
