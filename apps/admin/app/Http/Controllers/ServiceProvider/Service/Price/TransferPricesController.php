@@ -22,7 +22,7 @@ class TransferPricesController extends AbstractPricesController
             ->view('service-provider.service.price.transfer.index', [
                 'provider' => $provider,
                 'cars' => $provider->cars()->with(['cities'])->get(),
-                'seasons' => $provider->seasons(),
+                'seasons' => $provider->seasons,
                 'services' => $provider->transferServices,
                 'currencies' => Currency::all()
             ]);

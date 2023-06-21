@@ -8,7 +8,8 @@ import { ServicePriceResponse, updateCarPrice, useServiceProviderTransferPricesA
 
 import { formatPeriod } from '~lib/date'
 
-import { Car, City, Currency, Season } from './lib'
+import { Currency, Season } from '../data-types'
+import { Car, City } from './data-types'
 
 const props = defineProps<{
   header: string

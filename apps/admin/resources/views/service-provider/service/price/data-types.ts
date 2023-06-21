@@ -1,18 +1,5 @@
 import { DateResponse } from '~api'
 
-export interface City {
-  id: number
-  name: string
-}
-
-export interface Airport {
-  id: number
-  city_id: number
-  code: string
-  name: string
-  city_name: string
-}
-
 export interface Season {
   id: number
   number: string

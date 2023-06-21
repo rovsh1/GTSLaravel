@@ -6,7 +6,8 @@ import { requestInitialData } from '~lib/initial-data'
 
 import PricesTable from './PricesTable.vue'
 
-import { Car, Currency, Season } from './lib'
+import { Currency, Season } from '../data-types'
+import { Car } from './data-types'
 
 const { seasons, services, cars, providerId, currencies } = requestInitialData('view-initial-data-service-provider', z.object({
   providerId: z.number(),

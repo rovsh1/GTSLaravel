@@ -8,7 +8,8 @@ import { ServicePriceResponse, updateAirportPrice, useServiceProviderAirportPric
 
 import { formatPeriod } from '~lib/date'
 
-import { Airport, Currency, Season } from './lib'
+import { Currency, Season } from '../data-types'
+import { Airport } from './data-types'
 
 const props = defineProps<{
   header: string
