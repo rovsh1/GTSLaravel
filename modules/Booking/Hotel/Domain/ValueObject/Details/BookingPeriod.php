@@ -37,6 +37,11 @@ final class BookingPeriod implements ValueObjectInterface, SerializableDataInter
         return $this->nightsCount;
     }
 
+    /**
+     * Booking dates array (without last)
+     * @return array
+     * @throws \Exception
+     */
     public function includedDates(): array
     {
         $date = new \DateTime($this->dateFrom->format('Y-m-d'));

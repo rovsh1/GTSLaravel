@@ -13,7 +13,7 @@ class CalculateVariables
         public readonly int $guestsCount,
         public readonly int $vatPercent,
         public readonly int $clientMarkupPercent,
-        public readonly int $touristTax,
+        public readonly float $touristTax,
         public readonly ?int $earlyCheckInPercent,
         public readonly ?int $lateCheckOutPercent,
     ) {

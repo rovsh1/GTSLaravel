@@ -2,7 +2,7 @@
 
 namespace Module;
 
-use App\Core\Support\Adapters\ConstantAdapter;
+use Module\Shared\Domain\Adapter\ConstantAdapterInterface;
 use Module\Shared\Domain\Service\SerializerInterface;
 use Module\Shared\Domain\Service\TranslatorInterface;
 use Sdk\Module\Contracts\PortGateway\PortGatewayInterface;
@@ -15,7 +15,7 @@ class SharedKernel extends BaseKernel
         //ModulesBusInterface::class
         TranslatorInterface::class,
         SerializerInterface::class,
-        ConstantAdapter::class,
+        ConstantAdapterInterface::class,
     ];
 
     protected function registerSharedBindings(): void {}

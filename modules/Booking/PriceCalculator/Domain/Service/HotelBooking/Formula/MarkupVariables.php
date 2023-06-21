@@ -9,7 +9,7 @@ class MarkupVariables
         public readonly int $clientMarkupPercent,
         public readonly ?int $earlyCheckInPercent,
         public readonly ?int $lateCheckOutPercent,
-        public readonly int $touristTax
+        public readonly float $touristTax
     ) {
     }
 

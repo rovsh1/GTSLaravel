@@ -4,10 +4,7 @@ namespace Module\Booking\PriceCalculator\Domain\Service\HotelBooking;
 
 use DateTime;
 use Module\Booking\Hotel\Domain\Entity\Booking;
-use Module\Booking\Hotel\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\Hotel\Domain\ValueObject\RoomPrice;
-use Module\Booking\Order\Domain\Repository\OrderRepositoryInterface;
-use Module\Booking\PriceCalculator\Domain\Adapter\ClientAdapterInterface;
 use Module\Booking\PriceCalculator\Domain\Adapter\HotelAdapterInterface;
 use Module\Booking\PriceCalculator\Domain\Service\HotelBooking\Formula\BORoomPriceFormula;
 use Module\Booking\PriceCalculator\Domain\Service\HotelBooking\Formula\MarkupVariables;
@@ -17,11 +14,29 @@ use Module\Booking\PriceCalculator\Domain\Service\HotelBooking\Formula\RoomVaria
 class RoomCalculator
 {
     public function __construct(
-//        private readonly OrderRepositoryInterface $orderRepository,
-//        private readonly BookingRepositoryInterface $bookingRepository,
         private readonly HotelAdapterInterface $hotelAdapter,
-//        private readonly ClientAdapterInterface $clientAdapter
+        private readonly VariablesBuilder $variablesBuilder
     ) {
+    }
+
+    public function calculateByBooking(
+        Booking $hotelBooking,
+        int $roomId,
+        bool $isResident,
+        int $guestsCount,
+        ?int $earlyCheckInPercent,
+        ?int $lateCheckOutPercent
+    ): RoomPrice {
+        return $this->calculate(
+            $this->variablesBuilder->build(
+                $hotelBooking,
+                $roomId,
+                $isResident,
+                $guestsCount,
+                $earlyCheckInPercent,
+                $lateCheckOutPercent
+            )
+        );
     }
 
     public function calculate(CalculateVariables $calculateVariables): RoomPrice

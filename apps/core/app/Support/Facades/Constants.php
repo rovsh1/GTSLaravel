@@ -2,18 +2,19 @@
 
 namespace App\Core\Support\Facades;
 
-use App\Core\Support\Adapters\ConstantAdapter;
 use Illuminate\Support\Facades\Facade;
+use Module\Shared\Domain\Adapter\ConstantAdapterInterface;
+use Module\Shared\Infrastructure\Adapter\ConstantAdapter;
 
 /**
  * @method static mixed value(string $key)
  *
- * @see \App\Core\Support\Adapters\ConstantAdapter
+ * @see ConstantAdapter
  */
 class Constants extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return ConstantAdapter::class;
+        return ConstantAdapterInterface::class;
     }
 }
