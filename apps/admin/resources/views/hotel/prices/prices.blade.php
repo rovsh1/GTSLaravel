@@ -6,7 +6,12 @@
 
 @section('head-end')
     <script >
-      window['view-initial-data-hotel-prices'] = {{ Js::from(['hotelID' => $hotel->id]) }}
+      window['view-initial-data-hotel-prices'] = {{ Js::from([
+            'hotelID' => $hotel->id,
+            'seasons' => $seasons,
+            'priceRates' => $priceRates,
+            'rooms' => $rooms
+      ]) }}
     </script>
 @endsection
 
