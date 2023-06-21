@@ -8,7 +8,7 @@ use Module\Shared\Domain\ValueObject\Id;
 class Hotel
 {
     public function __construct(
-        private readonly Id    $id,
+        private readonly Id $id,
         private string $name,
         private TimeSettings $timeSettings,
     ) {}
