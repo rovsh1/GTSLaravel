@@ -14,8 +14,9 @@ use Illuminate\Support\Facades\Facade;
  * @method static void addRoom(int $bookingId, int $roomId, int $rateId, int $status, bool $isResident, array|null $earlyCheckIn = null, array|null $lateCheckOut = null, string|null $note = null, int|null $discount = null)
  * @method static void updateRoom(int $bookingId, int $roomIndex, int $roomId, int $rateId, int $status, bool $isResident, array|null $earlyCheckIn = null, array|null $lateCheckOut = null, string|null $note = null, int|null $discount = null)
  * @method static void deleteRoom(int $bookingId, int $roomIndex)
- * @method static void addRoomGuest(int $bookingId, int $roomIndex, string $fullName, int $countryId, int $gender, bool $isAdult)
- * @method static void updateRoomGuest(int $bookingId, int $roomIndex, int $guestIndex, string $fullName, int $countryId, int $gender, bool $isAdult)
+ * @method static void addRoomGuest(int $bookingId, int $roomIndex, string $fullName, int $countryId, int $gender, bool $isAdult, int|null $age)
+ * @method static void updateRoomGuest(int $bookingId, int $roomIndex, int $guestIndex, string $fullName, int $countryId, int $gender, bool $isAdult, int|null $age)
+ * @method static void deleteRoomGuest(int $bookingId, int $roomIndex, int $guestIndex)
  * @method static void updateExternalNumber(int $bookingId, int $type, string|null $number)
  **/
 class HotelAdapter extends Facade

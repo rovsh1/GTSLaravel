@@ -115,7 +115,8 @@ class HotelAdapter
         string $fullName,
         int $countryId,
         int $gender,
-        bool $isAdult
+        bool $isAdult,
+        ?int $age,
     ): void {
         app(Room\Guest\Add::class)->execute(
             new AddRoomGuestDto(
@@ -124,7 +125,8 @@ class HotelAdapter
                 countryId: $countryId,
                 fullName: $fullName,
                 isAdult: $isAdult,
-                gender: $gender
+                gender: $gender,
+                age: $age
             )
         );
     }
@@ -136,7 +138,8 @@ class HotelAdapter
         string $fullName,
         int $countryId,
         int $gender,
-        bool $isAdult
+        bool $isAdult,
+        ?int $age,
     ): void {
         app(Room\Guest\Update::class)->execute(
             new UpdateRoomGuestDto(
@@ -146,8 +149,18 @@ class HotelAdapter
                 countryId: $countryId,
                 fullName: $fullName,
                 isAdult: $isAdult,
-                gender: $gender
+                gender: $gender,
+                age: $age
             )
+        );
+    }
+
+    public function deleteRoomGuest(int $bookingId, int $roomIndex, int $guestIndex): void
+    {
+        app(Room\Guest\Delete::class)->execute(
+            bookingId: $bookingId,
+            roomIndex: $roomIndex,
+            guestIndex: $guestIndex,
         );
     }
 

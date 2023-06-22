@@ -41,27 +41,23 @@ const isEditableStatus = computed<boolean>(() => bookingStore.availableActions?.
 const { execute: fetchPriceRates, data: priceRates } = useHotelRatesAPI({ hotelID })
 const { data: countries, execute: fetchCountries } = useCountrySearchAPI()
 
-const onModalSubmit = () => {
-  toggleRoomModal(false)
-  toggleGuestModal(false)
-  fetchBooking()
-}
-
 const getPriceRateName = (id: number): string | undefined =>
   priceRates.value?.find((priceRate: HotelRate) => priceRate.id === id)?.name
 
 const getCountryName = (id: number): string | undefined =>
   countries.value?.find((country: CountryResponse) => country.id === id)?.name
 
+const getDefaultGuestForm = () => ({ isAdult: true })
+
 const roomForm = ref<Partial<RoomFormData>>({})
-const guestForm = ref<Partial<GuestFormData>>({})
+const guestForm = ref<Partial<GuestFormData>>(getDefaultGuestForm())
 
 const editRoomIndex = ref<number>()
 const editGuestIndex = ref<number>()
 const handleAddRoomGuest = (roomIndex: number) => {
   editRoomIndex.value = roomIndex
   editGuestIndex.value = undefined
-  guestForm.value = {}
+  guestForm.value = getDefaultGuestForm()
   toggleGuestModal()
 }
 
@@ -118,6 +114,12 @@ const getCheckOutTime = (room: HotelRoomBooking) => {
 
   // @todo тут будут дефолтные настройки из отеля
   return ''
+}
+
+const onModalSubmit = () => {
+  toggleRoomModal(false)
+  toggleGuestModal(false)
+  fetchBooking()
 }
 
 fetchPriceRates()
@@ -240,6 +242,7 @@ fetchCountries()
                 <th class="column-text">ФИО</th>
                 <th class="column-text">Пол</th>
                 <th class="column-text">Гражданство</th>
+                <th class="column-text">Тип</th>
                 <th />
               </tr>
             </thead>
@@ -249,6 +252,7 @@ fetchCountries()
                 <td>{{ guest.fullName }}</td>
                 <td>{{ getCountryName(guest.countryId) }}</td>
                 <td>{{ getGenderName(guest.gender) }}</td>
+                <td>{{ guest.isAdult ? 'Взрослый' : 'Ребенок' }}</td>
                 <td class="column-edit">
                   <a v-if="isEditableStatus" href="#" @click.prevent="handleEditGuest(idx as number, guestIdx as number, guest)">
                     <i class="icon">edit</i>

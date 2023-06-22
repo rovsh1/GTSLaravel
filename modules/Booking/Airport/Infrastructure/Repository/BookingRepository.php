@@ -7,9 +7,7 @@ namespace Module\Booking\Airport\Infrastructure\Repository;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Collection;
-use Module\Booking\Airport\Domain\Entity\Airport;
 use Module\Booking\Airport\Domain\Entity\Booking as Entity;
-use Module\Booking\Airport\Domain\Entity\Service;
 use Module\Booking\Airport\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\Airport\Domain\ValueObject\Details\AirportInfo;
 use Module\Booking\Airport\Domain\ValueObject\Details\ServiceInfo;
@@ -54,7 +52,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
                 $bookingModel = $this->createBase($orderId, $creatorId);
 
                 $airport = \Module\Booking\Airport\Infrastructure\Models\Airport::find($airportId);
-                $service = \Module\Booking\Airport\Infrastructure\Models\TransferService::find($serviceId);
+                $service = \Module\Booking\Airport\Infrastructure\Models\AirportService::find($serviceId);
 
                 $booking = new Entity(
                     id: new Id($bookingModel->id),

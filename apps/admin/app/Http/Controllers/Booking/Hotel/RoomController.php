@@ -6,6 +6,7 @@ namespace App\Admin\Http\Controllers\Booking\Hotel;
 
 use App\Admin\Http\Requests\Booking\AddRoomGuestRequest;
 use App\Admin\Http\Requests\Booking\AddRoomRequest;
+use App\Admin\Http\Requests\Booking\DeleteRoomGuestRequest;
 use App\Admin\Http\Requests\Booking\DeleteRoomRequest;
 use App\Admin\Http\Requests\Booking\UpdateRoomGuestRequest;
 use App\Admin\Http\Requests\Booking\UpdateRoomRequest;
@@ -34,6 +35,7 @@ class RoomController
             //@todo отлов доменных эксепшнов
             dd($e);
         }
+
         return new AjaxSuccessResponse();
     }
 
@@ -56,6 +58,7 @@ class RoomController
             //@todo отлов доменных эксепшнов
             dd($e);
         }
+
         return new AjaxSuccessResponse();
     }
 
@@ -67,6 +70,7 @@ class RoomController
             //@todo отлов доменных эксепшнов
             dd($e);
         }
+
         return new AjaxSuccessResponse();
     }
 
@@ -80,11 +84,13 @@ class RoomController
                 $request->getCountryId(),
                 $request->getGender(),
                 $request->getIsAdult(),
+                $request->getAge(),
             );
         } catch (\Throwable $e) {
             //@todo отлов доменных эксепшнов
             return new AjaxErrorResponse($e->getMessage());
         }
+
         return new AjaxSuccessResponse();
     }
 
@@ -99,11 +105,25 @@ class RoomController
                 $request->getCountryId(),
                 $request->getGender(),
                 $request->getIsAdult(),
+                $request->getAge(),
             );
         } catch (\Throwable $e) {
             //@todo отлов доменных эксепшнов
             return new AjaxErrorResponse($e->getMessage());
         }
+
+        return new AjaxSuccessResponse();
+    }
+
+    public function deleteRoomGuest(DeleteRoomGuestRequest $request, int $id): AjaxResponseInterface
+    {
+        try {
+            HotelAdapter::deleteRoomGuest($id, $request->getRoomIndex(), $request->getGuestIndex(),);
+        } catch (\Throwable $e) {
+            //@todo отлов доменных эксепшнов
+            return new AjaxErrorResponse($e->getMessage());
+        }
+
         return new AjaxSuccessResponse();
     }
 }

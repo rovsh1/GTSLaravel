@@ -13,6 +13,7 @@ final class Guest implements ValueObjectInterface, SerializableDataInterface
         private readonly int $countryId,
         private readonly GenderEnum $gender,
         private readonly bool $isAdult,
+        private readonly ?int $age,
     ) {}
 
     public function fullName(): string
@@ -35,6 +36,11 @@ final class Guest implements ValueObjectInterface, SerializableDataInterface
         return $this->isAdult;
     }
 
+    public function age(): ?int
+    {
+        return $this->age;
+    }
+
     public function toData(): array
     {
         return [
@@ -42,6 +48,7 @@ final class Guest implements ValueObjectInterface, SerializableDataInterface
             'countryId' => $this->countryId,
             'gender' => $this->gender->value,
             'isAdult' => $this->isAdult,
+            'age' => $this->age,
         ];
     }
 
@@ -52,6 +59,7 @@ final class Guest implements ValueObjectInterface, SerializableDataInterface
             $data['countryId'],
             GenderEnum::from($data['gender']),
             $data['isAdult'],
+            $data['age'],
         );
     }
 }

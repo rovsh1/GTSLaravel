@@ -2,16 +2,51 @@
 
 namespace Module\Booking\Common\Domain\ValueObject;
 
+use Module\Shared\Domain\ValueObject\SerializableDataInterface;
 
-use Module\Pricing\CurrencyRate\Domain\ValueObject\CurrencyEnum;
-
-class BookingPrice
+final class BookingPrice implements SerializableDataInterface
 {
     public function __construct(
-        private readonly CurrencyEnum $currency,
         private readonly float $netValue,
-        private readonly float $hotelValue,
-        private readonly float $clientValue
-    ) {
+        private readonly float $hoValue,
+        private readonly float $boValue
+    ) {}
+
+    public static function buildEmpty(): static
+    {
+        return new static(0, 0, 0);
+    }
+
+    public function netValue(): float
+    {
+        return $this->netValue;
+    }
+
+    public function hoValue(): float
+    {
+        return $this->hoValue;
+    }
+
+    public function boValue(): float
+    {
+        return $this->boValue;
+    }
+
+    public function toData(): array
+    {
+        return [
+            'netValue' => $this->netValue,
+            'hoValue' => $this->hoValue,
+            'boValue' => $this->boValue,
+        ];
+    }
+
+    public static function fromData(array $data): static
+    {
+        return new BookingPrice(
+            $data['netValue'],
+            $data['hoValue'],
+            $data['boValue'],
+        );
     }
 }

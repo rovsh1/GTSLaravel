@@ -7,7 +7,6 @@ namespace Module\Booking\Hotel\Application\UseCase\Admin\Room;
 use Module\Booking\Common\Domain\Service\BookingUpdater;
 use Module\Booking\Hotel\Application\Request\AddRoomDto;
 use Module\Booking\Hotel\Domain\Adapter\HotelRoomAdapterInterface;
-use Module\Booking\Hotel\Domain\Entity\Booking;
 use Module\Booking\Hotel\Domain\ValueObject\Details\Condition;
 use Module\Booking\Hotel\Domain\ValueObject\Details\GuestCollection;
 use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking;
@@ -16,7 +15,6 @@ use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking\RoomBookingStatu
 use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking\RoomInfo;
 use Module\Booking\Hotel\Domain\ValueObject\RoomPrice;
 use Module\Booking\Hotel\Infrastructure\Repository\BookingRepository;
-use Module\Booking\PriceCalculator\Domain\Service\HotelBooking\RoomCalculator;
 use Module\Shared\Domain\ValueObject\Percent;
 use Module\Shared\Domain\ValueObject\TimePeriod;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
@@ -31,7 +29,6 @@ class Add implements UseCaseInterface
 
     public function execute(AddRoomDto $request): void
     {
-        //@todo добавить Listener который слушает изменение брони и пересчитывает цену + записывает в базу. + спросить у Анвара нужно ли слушать отельные изменения
         $booking = $this->repository->find($request->bookingId);
         $hotelRoomDto = $this->hotelRoomAdapter->findById($request->roomId);
         $earlyCheckIn = $request->earlyCheckIn !== null ? $this->buildMarkupCondition($request->earlyCheckIn) : null;

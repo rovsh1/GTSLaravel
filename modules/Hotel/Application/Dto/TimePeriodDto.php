@@ -14,7 +14,7 @@ class TimePeriodDto extends AbstractDomainBasedDto
 {
     public function __construct(
         public readonly string $from,
-        public readonly string $to,
+        public readonly ?string $to,
     ) {}
 
     public static function fromDomain(EntityInterface|ValueObjectInterface|TimePeriod|BreakfastPeriod $entity): static

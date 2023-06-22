@@ -50,12 +50,20 @@ class RoomBooking implements ValueObjectInterface, SerializableDataInterface
 
     public function addGuest(Guest $guest): void
     {
+        //@todo скорее всего нужно убрать
         $this->guests->add($guest);
     }
 
     public function updateGuest(int $index, Guest $guest): void
     {
+        //@todo скорее всего нужно убрать
         $this->guests->offsetSet($index, $guest);
+    }
+
+    public function deleteGuest(int $index): void
+    {
+        //@todo скорее всего нужно убрать
+        $this->guests->offsetUnset($index);
     }
 
     public function toData(): array

@@ -2,12 +2,12 @@
 
 namespace Module\Booking\Common\Domain\Event\Status;
 
-use Module\Booking\Common\Domain\Entity\AbstractBooking;
+use Module\Booking\Common\Domain\Entity\BookingInterface;
 
 class BookingCancelledFee extends AbstractStatusEvent
 {
     public function __construct(
-        AbstractBooking $booking,
+        BookingInterface $booking,
         public readonly float $cancelFeeAmount
     ) {
         parent::__construct($booking);

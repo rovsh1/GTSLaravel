@@ -14,6 +14,7 @@ class GuestDto extends AbstractDomainBasedDto
         public readonly int $countryId,
         public readonly int $gender,
         public readonly bool $isAdult,
+        public readonly ?int $age
     ) {}
 
     public static function fromDomain(EntityInterface|ValueObjectInterface|Guest $entity): static
@@ -22,7 +23,8 @@ class GuestDto extends AbstractDomainBasedDto
             $entity->fullName(),
             $entity->countryId(),
             $entity->gender()->value,
-            $entity->isAdult()
+            $entity->isAdult(),
+            $entity->age()
         );
     }
 }

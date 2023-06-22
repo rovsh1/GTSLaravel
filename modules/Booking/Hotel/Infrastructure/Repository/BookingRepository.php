@@ -5,25 +5,20 @@ declare(strict_types=1);
 namespace Module\Booking\Hotel\Infrastructure\Repository;
 
 use Carbon\CarbonInterface;
-use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Collection;
+use Module\Booking\Common\Domain\ValueObject\BookingPrice;
 use Module\Booking\Common\Infrastructure\Repository\AbstractBookingRepository as BaseRepository;
 use Module\Booking\Hotel\Domain\Entity\Booking;
 use Module\Booking\Hotel\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\Hotel\Domain\ValueObject\Details\AdditionalInfo;
 use Module\Booking\Hotel\Domain\ValueObject\Details\BookingPeriod;
-use Module\Booking\Hotel\Domain\ValueObject\Details\CancelCondition\CancelMarkupOption;
-use Module\Booking\Hotel\Domain\ValueObject\Details\CancelCondition\CancelPeriodTypeEnum;
-use Module\Booking\Hotel\Domain\ValueObject\Details\CancelCondition\DailyMarkupCollection;
-use Module\Booking\Hotel\Domain\ValueObject\Details\CancelCondition\DailyMarkupOption;
 use Module\Booking\Hotel\Domain\ValueObject\Details\CancelConditions;
 use Module\Booking\Hotel\Domain\ValueObject\Details\HotelInfo;
+use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking;
 use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBookingCollection;
 use Module\Booking\Hotel\Infrastructure\Models\Booking as Model;
 use Module\Booking\Hotel\Infrastructure\Models\BookingDetails;
 use Module\Shared\Domain\ValueObject\Id;
-use Module\Shared\Domain\ValueObject\Percent;
-use Module\Shared\Domain\ValueObject\Time;
 
 class BookingRepository extends BaseRepository implements BookingRepositoryInterface
 {
@@ -71,7 +66,8 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
                     additionalInfo: null,
                     hotelInfo: $hotelInfo,
                     period: $period,
-                    note: $note
+                    note: $note,
+                    price: BookingPrice::buildEmpty()
                 );
 
                 BookingDetails::create([
@@ -141,6 +137,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
     {
         $detailsData = $detailsModel->data;
         $additionalInfo = $detailsData['additionalInfo'] ?? null;
+        $roomBookings = RoomBookingCollection::fromData($detailsData['roomBookings']);
 
         return new Booking(
             id: new Id($booking->id),
@@ -153,8 +150,9 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
             hotelInfo: HotelInfo::fromData($detailsData['hotelInfo']),
             period: BookingPeriod::fromData($detailsData['period']),
             additionalInfo: $additionalInfo !== null ? AdditionalInfo::fromData($detailsData['additionalInfo']) : null,
-            roomBookings: RoomBookingCollection::fromData($detailsData['roomBookings']),
+            roomBookings: $roomBookings,
             cancelConditions: CancelConditions::fromData($detailsData['cancelConditions']),
+            price: $this->buildBookingPrice($roomBookings)
         );
     }
 
@@ -168,5 +166,21 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
             'roomBookings' => $booking->roomBookings()->toData(),
             'cancelConditions' => $booking->cancelConditions()->toData(),
         ];
+    }
+
+    private function buildBookingPrice(RoomBookingCollection $roomBookings): BookingPrice
+    {
+        ['netValue' => $netValue, 'hoValue' => $hoValue, 'boValue' => $boValue] = $roomBookings->reduce(
+            function (array $result, RoomBooking $roomBooking) {
+                $result['netValue'] += $roomBooking->price()->netValue();
+                $result['hoValue'] += $roomBooking->price()->hoValue();
+                $result['boValue'] += $roomBooking->price()->boValue();
+
+                return $result;
+            },
+            ['netValue' => 0, 'hoValue' => 0, 'boValue' => 0]
+        );
+
+        return new BookingPrice($netValue, $hoValue, $boValue);
     }
 }

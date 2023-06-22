@@ -37,12 +37,14 @@ class Add implements UseCaseInterface
                 );
             }
 
-            $booking->roomBookings()->get($request->roomIndex)->addGuest(
+            $booking->addRoomBookingGuest(
+                $request->roomIndex,
                 new Guest(
                     $request->fullName,
                     $request->countryId,
                     GenderEnum::from($request->gender),
                     $request->isAdult,
+                    $request->age
                 )
             );
             $this->bookingUpdater->store($booking);

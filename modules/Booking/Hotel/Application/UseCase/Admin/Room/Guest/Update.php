@@ -20,15 +20,15 @@ class Update implements UseCaseInterface
 
     public function execute(UpdateRoomGuestDto $request): void
     {
-        $details = $this->repository->find($request->bookingId);
-        $room = $details->roomBookings()->get($request->roomIndex);
+        $booking = $this->repository->find($request->bookingId);
         $newGuest = new Guest(
             $request->fullName,
             $request->countryId,
             GenderEnum::from($request->gender),
-            $request->isAdult
+            $request->isAdult,
+            $request->age
         );
-        $room->updateGuest($request->guestIndex, $newGuest);
-        $this->bookingUpdater->store($details);
+        $booking->updateRoomBookingGuest($request->roomIndex, $request->guestIndex, $newGuest);
+        $this->bookingUpdater->store($booking);
     }
 }

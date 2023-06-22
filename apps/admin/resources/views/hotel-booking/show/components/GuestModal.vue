@@ -37,10 +37,28 @@ const { bookingID } = requestInitialData(
   }),
 )
 
+const ageTypeOptions: SelectOption[] = [
+  { value: 0, label: 'Взрослый' },
+  { value: 1, label: 'Ребенок' },
+]
+
+const localAgeType = ref<number>()
+const ageType = computed<number>({
+  get: () => {
+    if (localAgeType.value !== undefined) {
+      return localAgeType.value
+    }
+
+    return props.formData.isAdult ? 0 : 1
+  },
+  set: (type: number): void => {
+    localAgeType.value = type
+  },
+})
+
 const formData = computed<GuestFormData>(() => ({
   bookingID,
   guestIndex: props.guestIndex,
-  isAdult: true,
   ...props.formData,
 }))
 
@@ -65,6 +83,12 @@ const onModalSubmit = async () => {
 const countryOptions = computed<SelectOption[]>(
   () => props.countries?.map((country: CountryResponse) => ({ value: country.id, label: country.name })) || [],
 )
+
+const handleChangeAgeType = (type: number): void => {
+  ageType.value = type
+  formData.value.isAdult = type === 0
+  formData.value.age = null
+}
 
 </script>
 
@@ -104,16 +128,27 @@ const countryOptions = computed<SelectOption[]>(
         />
       </div>
       <div class="col-md-12">
-        <!--        <div class="field-required">-->
-        <!--          <label for="is_adult">До 18 лет</label>-->
-        <!--          <input-->
-        <!--            id="is_adult"-->
-        <!--            v-model="formData.isAdult"-->
-        <!--            type="checkbox"-->
-        <!--            class="btn-check"-->
-        <!--            autocomplete="off"-->
-        <!--          >-->
-        <!--        </div>-->
+        <BootstrapSelectBase
+          id="age_type"
+          :options="ageTypeOptions"
+          label="Тип"
+          :value="ageType"
+          @input="value => handleChangeAgeType(Number(value))"
+        />
+      </div>
+
+      <div v-if="!formData.isAdult" class="col-md-12">
+        <div class="field-required">
+          <label for="child_age">Возраст</label>
+          <input
+            id="child_age"
+            v-model="formData.age"
+            type="number"
+            class="form-control"
+            autocomplete="off"
+            required
+          >
+        </div>
       </div>
     </form>
 

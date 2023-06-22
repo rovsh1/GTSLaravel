@@ -12,6 +12,7 @@ class AddRoomGuestDto
         public readonly string $fullName,
         public readonly int $countryId,
         public readonly int $gender,
-        public readonly bool $isAdult
+        public readonly bool $isAdult,
+        public readonly ?int $age
     ) {}
 }

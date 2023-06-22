@@ -9,8 +9,8 @@ final class RoomPrice implements SerializableDataInterface
     public function __construct(
         private readonly float $netValue,
         private readonly float $avgDailyValue,
-        private readonly float $hotelValue,
-        private readonly float $clientValue
+        private readonly float $hoValue,
+        private readonly float $boValue
     ) {}
 
     public static function buildEmpty(): static
@@ -28,14 +28,14 @@ final class RoomPrice implements SerializableDataInterface
         return $this->avgDailyValue;
     }
 
-    public function hotelValue(): float
+    public function hoValue(): float
     {
-        return $this->hotelValue;
+        return $this->hoValue;
     }
 
-    public function clientValue(): float
+    public function boValue(): float
     {
-        return $this->clientValue;
+        return $this->boValue;
     }
 
     public function toData(): array
@@ -43,8 +43,8 @@ final class RoomPrice implements SerializableDataInterface
         return [
             'netValue' => $this->netValue,
             'avgDailyValue' => $this->avgDailyValue,
-            'hotelValue' => $this->hotelValue,
-            'clientValue' => $this->clientValue,
+            'hoValue' => $this->hoValue,
+            'boValue' => $this->boValue,
         ];
     }
 
@@ -53,8 +53,8 @@ final class RoomPrice implements SerializableDataInterface
         return new RoomPrice(
             $data['netValue'],
             $data['avgDailyValue'],
-            $data['hotelValue'],
-            $data['clientValue'],
+            $data['hoValue'],
+            $data['boValue'],
         );
     }
 }
