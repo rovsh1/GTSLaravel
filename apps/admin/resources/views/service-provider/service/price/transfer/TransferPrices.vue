@@ -2,12 +2,11 @@
 
 import { z } from 'zod'
 
+import { Car, Currency, Season } from '~api/models'
+
 import { requestInitialData } from '~lib/initial-data'
 
 import PricesTable from './PricesTable.vue'
-
-import { Currency, Season } from '../data-types'
-import { Car } from './data-types'
 
 const { seasons, services, cars, providerId, currencies } = requestInitialData('view-initial-data-service-provider', z.object({
   providerId: z.number(),

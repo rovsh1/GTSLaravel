@@ -4,12 +4,10 @@ import { computed } from 'vue'
 
 import EditableCell from '~resources/views/service-provider/service/price/components/EditableCell.vue'
 
+import { Airport, Currency, Season } from '~api/models'
 import { ServicePriceResponse, updateAirportPrice, useServiceProviderAirportPricesAPI } from '~api/service-provider/airport'
 
 import { formatPeriod } from '~lib/date'
-
-import { Currency, Season } from '../data-types'
-import { Airport } from './data-types'
 
 const props = defineProps<{
   header: string
@@ -26,6 +24,7 @@ const { data: servicePrices, execute: fetchPrices } = useServiceProviderAirportP
 })
 
 const currencies = computed<Currency[]>(() => props.currencies)
+console.log(currencies)
 
 const handleChangePrice = async (seasonId: number, airportId: number, priceNet?: number, priceGross?: number): Promise<void> => {
   if (!priceGross && !priceNet) {

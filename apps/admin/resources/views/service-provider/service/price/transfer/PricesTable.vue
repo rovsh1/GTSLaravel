@@ -4,12 +4,11 @@ import { computed } from 'vue'
 
 import EditableCell from '~resources/views/service-provider/service/price/components/EditableCell.vue'
 
+import { CityResponse } from '~api/city'
+import { Car, Currency, Season } from '~api/models'
 import { ServicePriceResponse, updateCarPrice, useServiceProviderTransferPricesAPI } from '~api/service-provider/transfer'
 
 import { formatPeriod } from '~lib/date'
-
-import { Currency, Season } from '../data-types'
-import { Car, City } from './data-types'
 
 const props = defineProps<{
   header: string
@@ -26,6 +25,7 @@ const { data: servicePrices, execute: fetchPrices } = useServiceProviderTransfer
 })
 
 const currencies = computed<Currency[]>(() => props.currencies)
+console.log(currencies)
 
 const handleChangePrice = async (seasonId: number, carId: number, priceNet?: number, priceGross?: number): Promise<void> => {
   if (!priceGross && !priceNet) {
@@ -43,7 +43,7 @@ const handleChangePrice = async (seasonId: number, carId: number, priceNet?: num
   fetchPrices()
 }
 
-const getDisplayCarCities = (cities?:City[]): string => {
+const getDisplayCarCities = (cities?: CityResponse[]): string => {
   if (!cities || cities.length === 0) {
     return 'Все города'
   }
