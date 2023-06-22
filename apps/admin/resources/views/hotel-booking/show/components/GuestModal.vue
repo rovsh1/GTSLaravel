@@ -76,6 +76,7 @@ const onModalSubmit = async () => {
   } else {
     await addGuestToBooking(formData)
   }
+  localAgeType.value = undefined
   isFetching.value = false
   emit('submit')
 }
