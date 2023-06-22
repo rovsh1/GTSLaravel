@@ -2,14 +2,20 @@
 
 namespace Module\Booking\Hotel\Domain\ValueObject;
 
-final class RoomPrice
+use Module\Shared\Domain\ValueObject\SerializableDataInterface;
+
+final class RoomPrice implements SerializableDataInterface
 {
     public function __construct(
         private readonly float $netValue,
         private readonly float $avgDailyValue,
         private readonly float $hotelValue,
         private readonly float $clientValue
-    ) {
+    ) {}
+
+    public static function buildEmpty(): static
+    {
+        return new static(0, 0, 0, 0);
     }
 
     public function netValue(): float
@@ -32,7 +38,7 @@ final class RoomPrice
         return $this->clientValue;
     }
 
-    public function serialize(): array
+    public function toData(): array
     {
         return [
             'netValue' => $this->netValue,
@@ -42,13 +48,13 @@ final class RoomPrice
         ];
     }
 
-    public static function deserialize(array $payload): RoomPrice
+    public static function fromData(array $data): static
     {
         return new RoomPrice(
-            $payload['netValue'],
-            $payload['avgDailyValue'],
-            $payload['hotelValue'],
-            $payload['clientValue'],
+            $data['netValue'],
+            $data['avgDailyValue'],
+            $data['hotelValue'],
+            $data['clientValue'],
         );
     }
 }

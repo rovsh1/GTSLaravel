@@ -9,7 +9,7 @@ use Sdk\Module\Database\Eloquent\Model;
 
 class AirportService extends Model
 {
-    protected $table = 'service_provider_services';
+    protected $table = 'service_provider_airport_services';
 
     protected $fillable = [
         'provider_id',

@@ -9,7 +9,7 @@ use Sdk\Module\Database\Eloquent\Model;
 
 class TransferService extends Model
 {
-    protected $table = 'service_provider_services';
+    protected $table = 'service_provider_transfer_services';
 
     protected $fillable = [
         'provider_id',

@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace App\Admin\Support\Adapters\Hotel;
 
 use App\Core\Support\Adapters\AbstractHotelAdapter;
+use Module\Hotel\Application\UseCase\GetMarkupSettings;
+use Module\Hotel\Application\UseCase\GetRoomMarkupSettings;
 
 class MarkupSettingsAdapter extends AbstractHotelAdapter
 {
-    public function getHotelMarkupSettings(int $hotelId, ?int $roomId = null): mixed
+    public function getHotelMarkupSettings(int $hotelId): mixed
     {
-        return $this->request('getHotelMarkupSettings', ['hotel_id' => $hotelId, 'room_id' => $roomId]);
+        return app(GetMarkupSettings::class)->execute($hotelId);
     }
 
     public function updateMarkupSettings(int $hotelId, string $key, mixed $value): mixed
@@ -45,7 +47,7 @@ class MarkupSettingsAdapter extends AbstractHotelAdapter
 
     public function getRoomMarkupSettings(int $hotelId, int $roomId): mixed
     {
-        return $this->request('getRoomMarkupSettings', ['hotel_id' => $hotelId, 'room_id' => $roomId]);
+        return app(GetRoomMarkupSettings::class)->execute($hotelId, $roomId);
     }
 
     public function updateRoomMarkupSettings(int $roomId, string $key, int $value): mixed

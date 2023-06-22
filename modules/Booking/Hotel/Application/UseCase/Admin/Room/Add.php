@@ -27,17 +27,15 @@ class Add implements UseCaseInterface
         private readonly BookingRepository $repository,
         private readonly HotelRoomAdapterInterface $hotelRoomAdapter,
         private readonly BookingUpdater $bookingUpdater,
-        private readonly RoomCalculator $priceCalculator
-    ) {
-    }
+    ) {}
 
     public function execute(AddRoomDto $request): void
     {
+        //@todo добавить Listener который слушает изменение брони и пересчитывает цену + записывает в базу. + спросить у Анвара нужно ли слушать отельные изменения
         $booking = $this->repository->find($request->bookingId);
         $hotelRoomDto = $this->hotelRoomAdapter->findById($request->roomId);
         $earlyCheckIn = $request->earlyCheckIn !== null ? $this->buildMarkupCondition($request->earlyCheckIn) : null;
         $lateCheckOut = $request->lateCheckOut !== null ? $this->buildMarkupCondition($request->lateCheckOut) : null;
-        $roomPrice = $this->buildPrice($booking, $hotelRoomDto->id, $request, $earlyCheckIn, $lateCheckOut);
         $booking->addRoomBooking(
             new RoomBooking(
                 status: RoomBookingStatusEnum::from($request->status),
@@ -54,26 +52,10 @@ class Add implements UseCaseInterface
                     lateCheckOut: $lateCheckOut,
                     discount: new Percent($request->discount ?? 0),
                 ),
+                price: RoomPrice::buildEmpty()
             )
         );
         $this->bookingUpdater->store($booking);
-    }
-
-    private function buildPrice(
-        Booking $booking,
-        int $roomId,
-        AddRoomDto $request,
-        ?Condition $earlyCheckIn,
-        ?Condition $lateCheckOut
-    ): RoomPrice {
-        return $this->priceCalculator->calculateByBooking(
-            $booking,
-            $roomId,
-            $request->isResident,
-            $guestsCount = 1,
-            $earlyCheckIn?->priceMarkup()->value(),
-            $lateCheckOut?->priceMarkup()->value()
-        );
     }
 
     private function buildMarkupCondition(array $data): Condition

@@ -8,6 +8,7 @@ use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking\Guest;
 use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking\RoomBookingDetails;
 use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking\RoomBookingStatusEnum;
 use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking\RoomInfo;
+use Module\Booking\Hotel\Domain\ValueObject\RoomPrice;
 use Module\Shared\Domain\ValueObject\SerializableDataInterface;
 use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 
@@ -18,7 +19,8 @@ class RoomBooking implements ValueObjectInterface, SerializableDataInterface
         private RoomInfo $roomInfo,
         //@todo возможно придется переносить гостей в отдельную таблицу с привязкой к заказу (для составных броней)
         private GuestCollection $guests,
-        private RoomBookingDetails $details
+        private RoomBookingDetails $details,
+        private RoomPrice $price,
     ) {}
 
     public function status(): RoomBookingStatusEnum
@@ -41,6 +43,11 @@ class RoomBooking implements ValueObjectInterface, SerializableDataInterface
         return $this->details;
     }
 
+    public function price(): RoomPrice
+    {
+        return $this->price;
+    }
+
     public function addGuest(Guest $guest): void
     {
         $this->guests->add($guest);
@@ -58,6 +65,7 @@ class RoomBooking implements ValueObjectInterface, SerializableDataInterface
             'guests' => $this->guests->toData(),
             'roomInfo' => $this->roomInfo->toData(),
             'details' => $this->details->toData(),
+            'price' => $this->price->toData()
         ];
     }
 
@@ -67,7 +75,8 @@ class RoomBooking implements ValueObjectInterface, SerializableDataInterface
             RoomBookingStatusEnum::from($data['status']),
             RoomInfo::fromData($data['roomInfo']),
             GuestCollection::fromData($data['guests']),
-            RoomBookingDetails::fromData($data['details'])
+            RoomBookingDetails::fromData($data['details']),
+            RoomPrice::fromData($data['price'])
         );
     }
 }
