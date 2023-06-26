@@ -31,7 +31,8 @@ class BookingDto extends BaseDto
         public readonly ?AdditionalInfoDto $additionalInfo,
         /** @var RoomBookingDto[] $rooms */
         public readonly array $roomBookings,
-        public readonly CancelConditionsDto $cancelConditions
+        public readonly CancelConditionsDto $cancelConditions,
+        public readonly BookingPriceDto $price,
     ) {
         parent::__construct($id, $status, $orderId, $createdAt, $creatorId);
     }
@@ -49,7 +50,8 @@ class BookingDto extends BaseDto
             BookingPeriodDto::fromDomain($entity->period()),
             $entity->additionalInfo() !== null ? AdditionalInfoDto::fromDomain($entity->additionalInfo()) : null,
             RoomBookingDto::collectionFromDomain($entity->roomBookings()->all()),
-            CancelConditionsDto::fromDomain($entity->cancelConditions())
+            CancelConditionsDto::fromDomain($entity->cancelConditions()),
+            BookingPriceDto::fromDomain($entity->price())
         );
     }
 }

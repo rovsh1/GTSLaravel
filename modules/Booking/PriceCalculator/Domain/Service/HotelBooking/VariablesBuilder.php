@@ -22,6 +22,7 @@ class VariablesBuilder
     public function build(
         Booking $hotelBooking,
         int $roomId,
+        int $rateId,
         bool $isResident,
         int $guestsCount,
         ?int $earlyCheckInPercent,
@@ -32,6 +33,7 @@ class VariablesBuilder
         return new CalculateVariables(
             $hotelBooking->period(),
             $roomId,
+            $rateId,
             $isResident,
             $guestsCount,
             $markupDto->vat,
@@ -48,7 +50,7 @@ class VariablesBuilder
         //TODO implement legal entities
         $legalId = null;//$order->legalId()?->value();
         if ($legalId) {
-            $legal = $this->clientAdapter->find($order->clientId());
+            $legal = $this->clientAdapter->find($order->clientId()->value());
 
             return $markupDto->clientMarkups->{$legal->type};
         } else {

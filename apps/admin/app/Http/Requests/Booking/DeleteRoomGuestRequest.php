@@ -8,13 +8,8 @@ class DeleteRoomGuestRequest extends AddRoomGuestRequest
     {
         return [
             'guest_index' => ['required', 'numeric'],
-            'room_index' => ['required', 'numeric'],
+            'room_booking_id' => ['required', 'numeric'],
         ];
-    }
-
-    public function getRoomIndex(): int
-    {
-        return $this->post('room_index');
     }
 
     public function getGuestIndex(): int

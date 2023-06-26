@@ -7,13 +7,13 @@ class UpdateRoomRequest extends AddRoomRequest
     public function rules()
     {
         return [
-            'room_index' => ['required', 'numeric'],
+            'room_booking_id' => ['required', 'numeric'],
             ...parent::rules(),
         ];
     }
 
-    public function getRoomIndex(): int
+    public function getRoomBookingId(): int
     {
-        return $this->post('room_index');
+        return $this->post('room_booking_id');
     }
 }

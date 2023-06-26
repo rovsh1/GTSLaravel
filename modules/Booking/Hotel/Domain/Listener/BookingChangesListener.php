@@ -1,9 +1,10 @@
 <?php
 
-namespace Module\Booking\Hotel\Application\Event;
+namespace Module\Booking\Hotel\Domain\Listener;
 
 use Module\Booking\Common\Domain\Event\BookingEventInterface;
 use Module\Booking\Common\Domain\Repository\BookingChangesLogRepositoryInterface;
+use Sdk\Module\Contracts\Event\DomainEventInterface;
 use Sdk\Module\Contracts\Event\DomainEventListenerInterface;
 
 class BookingChangesListener implements DomainEventListenerInterface
@@ -12,7 +13,7 @@ class BookingChangesListener implements DomainEventListenerInterface
         private readonly BookingChangesLogRepositoryInterface $changesLogRepository
     ) {}
 
-    public function handle(BookingEventInterface $event)
+    public function handle(DomainEventInterface|BookingEventInterface $event)
     {
         $this->changesLogRepository->logBookingChange($event);
     }

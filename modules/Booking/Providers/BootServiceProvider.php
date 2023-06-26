@@ -7,6 +7,7 @@ use Module\Booking\Common\Domain;
 use Module\Booking\Common\Infrastructure;
 use Module\Booking\Hotel\Providers\BootServiceProvider as HotelBootProvider;
 use Module\Booking\Order\Providers\BootServiceProvider as OrderBootProvider;
+use Module\Booking\PriceCalculator\Providers\BootServiceProvider as PriceCalculatorBootProvider;
 use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
@@ -22,5 +23,6 @@ class BootServiceProvider extends ServiceProvider
         $this->app->register(OrderBootProvider::class);
         $this->app->register(HotelBootProvider::class);
         $this->app->register(AirportBootProvider::class);
+        $this->app->register(PriceCalculatorBootProvider::class);
     }
 }

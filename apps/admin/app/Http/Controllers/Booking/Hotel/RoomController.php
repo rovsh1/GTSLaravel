@@ -44,7 +44,7 @@ class RoomController
         try {
             HotelAdapter::updateRoom(
                 bookingId: $id,
-                roomIndex: $request->getRoomIndex(),
+                roomBookingId: $request->getRoomBookingId(),
                 roomId: $request->getRoomId(),
                 rateId: $request->getRateId(),
                 status: $request->getStatus(),
@@ -65,7 +65,7 @@ class RoomController
     public function deleteRoom(DeleteRoomRequest $request, int $id): AjaxResponseInterface
     {
         try {
-            HotelAdapter::deleteRoom($id, $request->getRoomIndex());
+            HotelAdapter::deleteRoom($id, $request->getRoomBookingId());
         } catch (\Throwable $e) {
             //@todo отлов доменных эксепшнов
             dd($e);
@@ -79,7 +79,7 @@ class RoomController
         try {
             HotelAdapter::addRoomGuest(
                 $id,
-                $request->getRoomIndex(),
+                $request->getRoomBookingId(),
                 $request->getFullName(),
                 $request->getCountryId(),
                 $request->getGender(),
@@ -99,7 +99,7 @@ class RoomController
         try {
             HotelAdapter::updateRoomGuest(
                 $id,
-                $request->getRoomIndex(),
+                $request->getRoomBookingId(),
                 $request->getGuestIndex(),
                 $request->getFullName(),
                 $request->getCountryId(),
@@ -118,7 +118,7 @@ class RoomController
     public function deleteRoomGuest(DeleteRoomGuestRequest $request, int $id): AjaxResponseInterface
     {
         try {
-            HotelAdapter::deleteRoomGuest($id, $request->getRoomIndex(), $request->getGuestIndex(),);
+            HotelAdapter::deleteRoomGuest($id, $request->getRoomBookingId(), $request->getGuestIndex(),);
         } catch (\Throwable $e) {
             //@todo отлов доменных эксепшнов
             return new AjaxErrorResponse($e->getMessage());

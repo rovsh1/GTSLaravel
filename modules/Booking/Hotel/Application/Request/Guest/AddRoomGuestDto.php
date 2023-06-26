@@ -8,7 +8,7 @@ class AddRoomGuestDto
 {
     public function __construct(
         public readonly int $bookingId,
-        public readonly int $roomIndex,
+        public readonly int $roomBookingId,
         public readonly string $fullName,
         public readonly int $countryId,
         public readonly int $gender,

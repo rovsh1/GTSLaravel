@@ -78,7 +78,7 @@ class HotelAdapter
 
     public function updateRoom(
         int $bookingId,
-        int $roomIndex,
+        int $roomBookingId,
         int $roomId,
         int $rateId,
         int $status,
@@ -91,7 +91,7 @@ class HotelAdapter
         app(Room\Update::class)->execute(
             new UpdateRoomDto(
                 bookingId: $bookingId,
-                roomIndex: $roomIndex,
+                roomBookingId: $roomBookingId,
                 roomId: $roomId,
                 rateId: $rateId,
                 status: $status,
@@ -104,14 +104,14 @@ class HotelAdapter
         );
     }
 
-    public function deleteRoom(int $bookingId, int $roomIndex): void
+    public function deleteRoom(int $bookingId, int $roomBookingId): void
     {
-        app(Room\Delete::class)->execute($bookingId, $roomIndex);
+        app(Room\Delete::class)->execute($bookingId, $roomBookingId);
     }
 
     public function addRoomGuest(
         int $bookingId,
-        int $roomIndex,
+        int $roomBookingId,
         string $fullName,
         int $countryId,
         int $gender,
@@ -121,7 +121,7 @@ class HotelAdapter
         app(Room\Guest\Add::class)->execute(
             new AddRoomGuestDto(
                 bookingId: $bookingId,
-                roomIndex: $roomIndex,
+                roomBookingId: $roomBookingId,
                 countryId: $countryId,
                 fullName: $fullName,
                 isAdult: $isAdult,
@@ -133,7 +133,7 @@ class HotelAdapter
 
     public function updateRoomGuest(
         int $bookingId,
-        int $roomIndex,
+        int $roomBookingId,
         int $guestIndex,
         string $fullName,
         int $countryId,
@@ -144,7 +144,7 @@ class HotelAdapter
         app(Room\Guest\Update::class)->execute(
             new UpdateRoomGuestDto(
                 bookingId: $bookingId,
-                roomIndex: $roomIndex,
+                roomBookingId: $roomBookingId,
                 guestIndex: $guestIndex,
                 countryId: $countryId,
                 fullName: $fullName,
@@ -155,11 +155,11 @@ class HotelAdapter
         );
     }
 
-    public function deleteRoomGuest(int $bookingId, int $roomIndex, int $guestIndex): void
+    public function deleteRoomGuest(int $bookingId, int $roomBookingId, int $guestIndex): void
     {
         app(Room\Guest\Delete::class)->execute(
             bookingId: $bookingId,
-            roomIndex: $roomIndex,
+            roomBookingId: $roomBookingId,
             guestIndex: $guestIndex,
         );
     }

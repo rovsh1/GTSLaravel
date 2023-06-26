@@ -2,7 +2,7 @@
 
 namespace Module\Booking\Common\Domain\Service\DocumentGenerator;
 
-use Module\Booking\Common\Domain\Entity\BookingRequestableInterface;
+use Module\Booking\Common\Domain\Event\Contracts\BookingRequestableInterface;
 
 abstract class AbstractRequestGenerator
 {

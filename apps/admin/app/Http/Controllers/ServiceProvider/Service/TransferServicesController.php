@@ -46,7 +46,7 @@ class TransferServicesController extends Controller
         $query = TransferService::where('provider_id', $provider->id);
         $grid = $this->gridFactory($provider)->data($query);
 
-        return Layout::title('Услуги трансфер')
+        return Layout::title('Услуги транспорт')
             ->view('default.grid.grid', [
                 'quicksearch' => $grid->getQuicksearch(),
                 'grid' => $grid,

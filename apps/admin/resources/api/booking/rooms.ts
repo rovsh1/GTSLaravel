@@ -21,17 +21,17 @@ export interface BookingAddRoomPayload {
 }
 
 export interface BookingUpdateRoomPayload extends BookingAddRoomPayload {
-  roomIndex: number
+  roomBookingId: number
 }
 
 export interface DeleteBookingRoomPayload {
   bookingID: BookingID
-  roomIndex: number
+  roomBookingId: number
 }
 
 export interface BookingAddRoomGuestPayload {
   bookingID: BookingID
-  roomIndex: number
+  roomBookingId: number
   countryId: number
   fullName: string
   gender: number
@@ -76,7 +76,7 @@ export const updateBookingRoom = (props: MaybeRef<BookingUpdateRoomPayload | nul
       getNullableRef<BookingUpdateRoomPayload, any>(
         props,
         (payload: BookingUpdateRoomPayload): any => ({
-          room_index: payload.roomIndex,
+          room_booking_id: payload.roomBookingId,
           room_id: payload.id,
           status: payload.status,
           is_resident: Boolean(Number(payload.residentType)),
@@ -99,7 +99,7 @@ export const deleteBookingRoom = (props: MaybeRef<DeleteBookingRoomPayload | nul
     .delete(computed<string>(() => JSON.stringify(
       getNullableRef<DeleteBookingRoomPayload, any>(
         props,
-        (payload: DeleteBookingRoomPayload): any => ({ room_index: payload.roomIndex }),
+        (payload: DeleteBookingRoomPayload): any => ({ room_booking_id: payload.roomBookingId }),
       ),
     )), 'application/json')
     .json<BaseResponse>()
@@ -117,7 +117,7 @@ export const addGuestToBooking = (props: MaybeRef<BookingAddRoomGuestPayload | n
           full_name: payload.fullName,
           country_id: payload.countryId,
           gender: payload.gender,
-          room_index: payload.roomIndex,
+          room_booking_id: payload.roomBookingId,
           is_adult: payload.isAdult,
           age: payload.age,
         }),
@@ -138,7 +138,7 @@ export const updateBookingGuest = (props: MaybeRef<BookingUpdateRoomGuestPayload
           full_name: payload.fullName,
           country_id: payload.countryId,
           gender: payload.gender,
-          room_index: payload.roomIndex,
+          room_booking_id: payload.roomBookingId,
           guest_index: payload.guestIndex,
           is_adult: payload.isAdult,
           age: payload.age,

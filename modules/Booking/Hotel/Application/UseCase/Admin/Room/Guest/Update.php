@@ -4,23 +4,23 @@ declare(strict_types=1);
 
 namespace Module\Booking\Hotel\Application\UseCase\Admin\Room\Guest;
 
-use Module\Booking\Common\Domain\Service\BookingUpdater;
 use Module\Booking\Hotel\Application\Request\Guest\UpdateRoomGuestDto;
+use Module\Booking\Hotel\Domain\Repository\RoomBookingRepositoryInterface;
 use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking\Guest;
-use Module\Booking\Hotel\Infrastructure\Repository\BookingRepository;
 use Module\Shared\Domain\ValueObject\GenderEnum;
+use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class Update implements UseCaseInterface
 {
     public function __construct(
-        private readonly BookingRepository $repository,
-        private readonly BookingUpdater $bookingUpdater,
+        private readonly RoomBookingRepositoryInterface $repository,
+        private readonly DomainEventDispatcherInterface $eventDispatcher
     ) {}
 
     public function execute(UpdateRoomGuestDto $request): void
     {
-        $booking = $this->repository->find($request->bookingId);
+        $roomBooking = $this->repository->find($request->roomBookingId);
         $newGuest = new Guest(
             $request->fullName,
             $request->countryId,
@@ -28,7 +28,8 @@ class Update implements UseCaseInterface
             $request->isAdult,
             $request->age
         );
-        $booking->updateRoomBookingGuest($request->roomIndex, $request->guestIndex, $newGuest);
-        $this->bookingUpdater->store($booking);
+        $roomBooking->updateGuest($request->guestIndex, $newGuest);
+        $this->repository->store($roomBooking);
+        $this->eventDispatcher->dispatch(...$roomBooking->pullEvents());
     }
 }

@@ -50,17 +50,6 @@ class PriceController
         );
     }
 
-    public function getDatePrices(Request $request): array
-    {
-        $request->validate([
-            'seasonId' => 'required|int',
-        ]);
-
-        return $this->queryBus->execute(
-            new Query\Price\Date\Get($request->seasonId),
-        );
-    }
-
     public function setDatePrice(Request $request): bool
     {
         $request->validate([

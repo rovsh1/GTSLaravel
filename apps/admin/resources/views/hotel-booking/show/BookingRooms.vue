@@ -52,30 +52,30 @@ const getDefaultGuestForm = () => ({ isAdult: true })
 const roomForm = ref<Partial<RoomFormData>>({})
 const guestForm = ref<Partial<GuestFormData>>(getDefaultGuestForm())
 
-const editRoomIndex = ref<number>()
+const editRoomBookingId = ref<number>()
 const editGuestIndex = ref<number>()
-const handleAddRoomGuest = (roomIndex: number) => {
-  editRoomIndex.value = roomIndex
+const handleAddRoomGuest = (roomBookingId: number) => {
+  editRoomBookingId.value = roomBookingId
   editGuestIndex.value = undefined
   guestForm.value = getDefaultGuestForm()
   toggleGuestModal()
 }
 
-const handleEditGuest = (roomIndex: number, guestIndex: number, guest: HotelBookingGuest): void => {
-  editRoomIndex.value = roomIndex
+const handleEditGuest = (roomBookingId: number, guestIndex: number, guest: HotelBookingGuest): void => {
+  editRoomBookingId.value = roomBookingId
   editGuestIndex.value = guestIndex
   guestForm.value = guest
   toggleGuestModal()
 }
 
 const handleAddRoom = (): void => {
-  editRoomIndex.value = undefined
+  editRoomBookingId.value = undefined
   roomForm.value = {}
   toggleRoomModal()
 }
 
-const handleEditRoom = (roomIndex: number, room: HotelRoomBooking): void => {
-  editRoomIndex.value = roomIndex
+const handleEditRoom = (roomBookingId: number, room: HotelRoomBooking): void => {
+  editRoomBookingId.value = roomBookingId
   roomForm.value = room
   roomForm.value.id = room.roomInfo.id
   roomForm.value.status = room.status
@@ -88,11 +88,11 @@ const handleEditRoom = (roomIndex: number, room: HotelRoomBooking): void => {
   toggleRoomModal()
 }
 
-const handleDeleteRoom = async (roomIndex: number): Promise<void> => {
+const handleDeleteRoom = async (roomBookingId: number): Promise<void> => {
   const { result: isApproved, toggleLoading, toggleClose } = await showConfirmDialog('Удалить номер?', 'btn-danger')
   if (isApproved) {
     toggleLoading()
-    await deleteBookingRoom({ bookingID, roomIndex })
+    await deleteBookingRoom({ bookingID, roomBookingId })
     await fetchBooking()
     toggleClose()
   }
@@ -131,16 +131,16 @@ fetchCountries()
   <RoomModal
     :opened="isShowRoomModal"
     :form-data="roomForm"
-    :room-index="editRoomIndex"
+    :room-booking-id="editRoomBookingId"
     :hotel-markup-settings="markupSettings"
     @close="toggleRoomModal(false)"
     @submit="onModalSubmit"
   />
 
   <GuestModal
-    v-if="countries && editRoomIndex !== undefined"
+    v-if="countries && editRoomBookingId !== undefined"
     :opened="isShowGuestModal"
-    :room-index="editRoomIndex"
+    :room-booking-id="editRoomBookingId"
     :guest-index="editGuestIndex"
     :form-data="guestForm"
     :countries="countries as CountryResponse[]"
@@ -150,8 +150,8 @@ fetchCountries()
 
   <div class="mt-3" />
   <div
-    v-for="(room, idx) in bookingDetails?.roomBookings"
-    :key="idx"
+    v-for="room in bookingDetails?.roomBookings"
+    :key="room.id"
     class="card mt-2 mb-4"
   >
     <div class="card-body">
@@ -161,8 +161,8 @@ fetchCountries()
         </h5>
         <EditTableRowButton
           v-if="isEditableStatus"
-          @edit="handleEditRoom(idx as number, room)"
-          @delete="handleDeleteRoom(idx as number)"
+          @edit="handleEditRoom(room.id, room)"
+          @delete="handleDeleteRoom(room.id)"
         />
       </div>
       <div class="d-flex flex-row gap-4">
@@ -226,13 +226,13 @@ fetchCountries()
             <span class="condition-item">Поздний выезд  - 8 <span class="cur">$</span></span>
           </div>
           <div class="d-flex flex-row justify-content-between w-100 mt-2">
-            <strong>Итого: 22 <span class="cur">$</span></strong>
+            <strong>Итого: {{ room.price.hoValue }} <span class="cur">$</span></strong>
             <a href="#">Изменить цену номера</a>
           </div>
         </div>
         <div class="w-100 rounded shadow-lg p-4">
           <h6>Список гостей</h6>
-          <a v-if="isEditableStatus" href="#" @click.prevent="handleAddRoomGuest(idx as number)">
+          <a v-if="isEditableStatus" href="#" @click.prevent="handleAddRoomGuest(room.id)">
             <i class="icon">add</i>
           </a>
           <table class="table table-striped">
@@ -254,7 +254,7 @@ fetchCountries()
                 <td>{{ getGenderName(guest.gender) }}</td>
                 <td>{{ guest.isAdult ? 'Взрослый' : 'Ребенок' }}</td>
                 <td class="column-edit">
-                  <a v-if="isEditableStatus" href="#" @click.prevent="handleEditGuest(idx as number, guestIdx as number, guest)">
+                  <a v-if="isEditableStatus" href="#" @click.prevent="handleEditGuest(room.id, guestIdx as number, guest)">
                     <i class="icon">edit</i>
                   </a>
                 </td>

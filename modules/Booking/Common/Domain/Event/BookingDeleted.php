@@ -4,7 +4,7 @@ namespace Module\Booking\Common\Domain\Event;
 
 use Module\Booking\Common\Domain\Entity\AbstractBooking;
 
-class BookingDeleted implements BookingEventInterface, EditEventInterface
+class BookingDeleted implements BookingEventInterface
 {
     public function __construct(public readonly AbstractBooking $booking) {}
 

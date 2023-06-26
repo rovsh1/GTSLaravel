@@ -2,12 +2,18 @@
 
 namespace Module\Booking\PriceCalculator\Domain\Adapter;
 
-use DateTime;
+use Carbon\CarbonInterface;
 use Module\Hotel\Application\Dto\MarkupSettingsDto;
 
 interface HotelAdapterInterface
 {
-    public function getRoomPrice(int $roomId, DateTime $date): ?float;
+    public function getRoomPrice(
+        int $roomId,
+        int $rateId,
+        bool $isResident,
+        int $guestsCount,
+        CarbonInterface $date
+    ): ?float;
 
     public function getMarkupSettings(int $hotelId): MarkupSettingsDto;
 }

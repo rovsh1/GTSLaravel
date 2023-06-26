@@ -4,6 +4,7 @@ namespace Module\Hotel\Domain\Factory;
 
 use Carbon\CarbonPeriod;
 use Module\Hotel\Domain\Entity\Season;
+use Module\Shared\Domain\ValueObject\Id;
 use Sdk\Module\Foundation\Support\EntityFactory\AbstractEntityFactory;
 
 class SeasonFactory extends AbstractEntityFactory
@@ -21,9 +22,9 @@ class SeasonFactory extends AbstractEntityFactory
             : null;
 
         return new $this->entity(
-            $data['id'],
+            new Id($data['id']),
             $data['name'],
-            new CarbonPeriod($data['date_from'], $data['date_to']),
+            new CarbonPeriod($data['date_start'], $data['date_end']),
             $hotel,
             $contract
         );

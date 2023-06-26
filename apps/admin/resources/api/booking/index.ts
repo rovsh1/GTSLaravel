@@ -9,6 +9,12 @@ import { getNullableRef } from '~lib/vue'
 
 export type BookingID = number
 
+export interface BookingPrice {
+  boValue: number
+  hoValue: number
+  netValue: number
+}
+
 export interface Booking {
   id: BookingID
   orderId: number
@@ -22,6 +28,7 @@ export interface Booking {
   roomBookings: HotelRoomBooking[]
   additionalInfo: AdditionalInfo | null
   cancelConditions: CancelConditions
+  price: BookingPrice
 }
 
 export interface GetBookingPayload {

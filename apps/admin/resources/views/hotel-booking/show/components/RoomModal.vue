@@ -26,7 +26,7 @@ import { SelectOption } from '~components/Bootstrap/lib'
 const props = defineProps<{
   opened: MaybeRef<boolean>
   formData: Partial<RoomFormData>
-  roomIndex?: number
+  roomBookingId?: number
   hotelMarkupSettings: MarkupSettings | null
 }>()
 
@@ -57,7 +57,7 @@ const markupSettings = computed<MarkupSettings | null>(() => props.hotelMarkupSe
 
 const formData = computed<RoomFormData>(() => ({
   bookingID,
-  roomIndex: props.roomIndex,
+  roomBookingId: props.roomBookingId,
   ...props.formData,
 }))
 
@@ -73,7 +73,7 @@ const onModalSubmit = async () => {
     return
   }
   isFetching.value = true
-  if (formData.value.roomIndex !== undefined) {
+  if (formData.value.roomBookingId !== undefined) {
     await updateBookingRoom(formData)
   } else {
     await addRoomToBooking(formData)

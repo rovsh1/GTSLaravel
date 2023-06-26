@@ -1,12 +1,13 @@
 <?php
 
-namespace Module\Booking\Hotel\Application\Event;
+namespace Module\Booking\Hotel\Domain\Listener;
 
+use Sdk\Module\Contracts\Event\DomainEventInterface;
 use Sdk\Module\Contracts\Event\DomainEventListenerInterface;
 
 class RequestableDocumentSentListener implements DomainEventListenerInterface
 {
-    public function handle(\Sdk\Module\Contracts\Event\DomainEventInterface $event) {
+    public function handle(DomainEventInterface $event) {
 
     }
 }

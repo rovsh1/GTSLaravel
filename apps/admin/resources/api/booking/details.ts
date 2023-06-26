@@ -23,11 +23,20 @@ export interface HotelRoomBookingDetails {
   discount: Percent
 }
 
+export interface RoomBookingPrice {
+  avgDailyValue: number
+  boValue: number
+  hoValue: number
+  netValue: number
+}
+
 export interface HotelRoomBooking {
+  id: number
   status: number
   roomInfo: RoomInfo
   guests: HotelBookingGuest[]
   details: HotelRoomBookingDetails
+  price: RoomBookingPrice
 }
 
 export enum ExternalNumberTypeEnum {

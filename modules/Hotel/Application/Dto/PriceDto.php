@@ -12,7 +12,7 @@ class PriceDto extends \Sdk\Module\Foundation\Support\Dto\Dto
         public readonly int $seasonId,
         public readonly int $roomId,
         public readonly int $rateId,
-        public readonly int $guestsNumber,
+        public readonly int $guestsCount,
         public readonly bool $isResident,
         public readonly float $price,
         public readonly int $currencyId,

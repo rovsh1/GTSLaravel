@@ -12,15 +12,15 @@ class AddRoomGuestRequest extends FormRequest
             'full_name' => ['required', 'string'],
             'country_id' => ['required', 'numeric'],
             'gender' => ['required', 'numeric'],
-            'room_index' => ['required', 'numeric'],
+            'room_booking_id' => ['required', 'numeric'],
             'is_adult' => ['required', 'bool'],
             'age' => ['required_if:is_adult,false', 'numeric', 'nullable']
         ];
     }
 
-    public function getRoomIndex(): int
+    public function getRoomBookingId(): int
     {
-        return $this->post('room_index');
+        return $this->post('room_booking_id');
     }
 
     public function getFullName(): string

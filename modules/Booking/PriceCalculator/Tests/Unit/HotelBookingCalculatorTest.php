@@ -47,6 +47,7 @@ class HotelBookingCalculatorTest extends TestCase
     }
 
     private function makeVariables(
+        int $rateId,
         bool $isResident
     ): CalculateVariables {
         return new CalculateVariables(
@@ -55,6 +56,7 @@ class HotelBookingCalculatorTest extends TestCase
                 now()->modify('+11 days')->toImmutable(),
             ),
             $roomId = 1,
+            $rateId,
             $isResident,
             $guestsCount = 1,
             $vatPercent = 10,

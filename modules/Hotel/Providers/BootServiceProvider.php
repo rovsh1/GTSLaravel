@@ -42,5 +42,9 @@ class BootServiceProvider extends \Sdk\Module\Foundation\Support\Providers\Servi
             Domain\Repository\RoomMarkupSettingsRepositoryInterface::class,
             Infrastructure\Repository\RoomMarkupSettingsRepository::class
         );
+        $this->app->singleton(
+            Domain\Repository\SeasonRepositoryInterface::class,
+            Infrastructure\Repository\SeasonRepository::class
+        );
     }
 }

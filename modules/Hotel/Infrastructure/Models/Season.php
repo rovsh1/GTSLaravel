@@ -4,6 +4,8 @@ namespace Module\Hotel\Infrastructure\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Support\Facades\DB;
 use Sdk\Module\Database\Eloquent\Model;
 
 class Season extends Model
@@ -24,18 +26,14 @@ class Season extends Model
 
     public function scopeWhereRoomId(Builder $builder, int $roomId)
     {
-        //@todo пока убрал, нужно будет для Traveline
-//        $builder->addSelect("{$this->getTable()}.*");
-//
-//        $joinableTable = with(new Room)->getTable();
-//        $builder->leftJoin(
-//            $joinableTable,
-//            function (JoinClause $join) use ($joinableTable) {
-//                $join->on("{$joinableTable}.hotel_id", '=', "{$this->getTable()}.hotel_id");
-//            }
-//        )->addSelect("{$joinableTable}.id as room_id");
-//
-//        $builder->where("{$joinableTable}.id", $roomId);
+        $builder->whereExists(function (QueryBuilder $query) use ($roomId) {
+            $query
+                ->join('hotel_contracts', 'hotel_contracts.id', '=', 'hotel_seasons.contract_id')
+                ->select(DB::raw(1))
+                ->from('hotel_rooms as t')
+                ->whereColumn('t.hotel_id', 'hotel_contracts.hotel_id')
+                ->where('t.id', $roomId);
+        });
     }
 
     public function contract(): BelongsTo

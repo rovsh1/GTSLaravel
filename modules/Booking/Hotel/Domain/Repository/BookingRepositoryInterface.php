@@ -3,7 +3,6 @@
 namespace Module\Booking\Hotel\Domain\Repository;
 
 use Carbon\CarbonInterface;
-use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Collection;
 use Module\Booking\Common\Domain\Entity\BookingInterface;
 use Module\Booking\Common\Domain\Repository\BookingRepositoryInterface as Base;

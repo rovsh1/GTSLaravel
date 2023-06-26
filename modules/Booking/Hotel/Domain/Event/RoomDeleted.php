@@ -4,11 +4,10 @@ namespace Module\Booking\Hotel\Domain\Event;
 
 use Module\Booking\Common\Domain\Entity\BookingInterface;
 use Module\Booking\Common\Domain\Event\AbstractBookingEvent;
-use Module\Booking\Common\Domain\Event\CalculationChangesEventInterface;
-use Module\Booking\Common\Domain\Event\EditEventInterface;
+use Module\Booking\Common\Domain\Event\Contracts\PriceBecomeDeprecatedEventInterface;
 use Module\Booking\Hotel\Domain\Entity\Booking;
 
-class RoomDeleted extends AbstractBookingEvent implements EditEventInterface, CalculationChangesEventInterface
+class RoomDeleted extends AbstractBookingEvent implements PriceBecomeDeprecatedEventInterface
 {
     public function __construct(
         BookingInterface|Booking $booking,

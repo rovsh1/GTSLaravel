@@ -2,13 +2,13 @@
 
 namespace Module\Booking\PriceCalculator\Domain\Service\HotelBooking;
 
-use DateTime;
+use Carbon\CarbonInterface;
 use Module\Booking\Hotel\Domain\Entity\Booking;
 use Module\Booking\Hotel\Domain\ValueObject\RoomPrice;
 use Module\Booking\PriceCalculator\Domain\Adapter\HotelAdapterInterface;
 use Module\Booking\PriceCalculator\Domain\Service\HotelBooking\Formula\BORoomPriceFormula;
-use Module\Booking\PriceCalculator\Domain\Service\HotelBooking\Formula\MarkupVariables;
 use Module\Booking\PriceCalculator\Domain\Service\HotelBooking\Formula\HORoomPriceFormula;
+use Module\Booking\PriceCalculator\Domain\Service\HotelBooking\Formula\MarkupVariables;
 use Module\Booking\PriceCalculator\Domain\Service\HotelBooking\Formula\RoomVariables;
 
 class RoomCalculator
@@ -16,12 +16,12 @@ class RoomCalculator
     public function __construct(
         private readonly HotelAdapterInterface $hotelAdapter,
         private readonly VariablesBuilder $variablesBuilder
-    ) {
-    }
+    ) {}
 
     public function calculateByBooking(
         Booking $hotelBooking,
         int $roomId,
+        int $rateId,
         bool $isResident,
         int $guestsCount,
         ?int $earlyCheckInPercent,
@@ -31,6 +31,7 @@ class RoomCalculator
             $this->variablesBuilder->build(
                 $hotelBooking,
                 $roomId,
+                $rateId,
                 $isResident,
                 $guestsCount,
                 $earlyCheckInPercent,
@@ -52,7 +53,13 @@ class RoomCalculator
         $hoValue = 0.0;
         $boValue = 0.0;
         foreach ($dates as $date) {
-            $datePrice = $this->getDatePrice($calculateVariables->roomId, $date);
+            $datePrice = $this->getDatePrice(
+                $calculateVariables->roomId,
+                $calculateVariables->rateId,
+                $calculateVariables->isResident,
+                $calculateVariables->guestsCount,
+                $date
+            );
             $netValue += $datePrice;
             $hoValue += $hoFormula->calculate($datePrice);
             $boValue += $boFormula->calculate($datePrice);
@@ -90,8 +97,13 @@ class RoomCalculator
 //        );
     }
 
-    private function getDatePrice(int $roomId, DateTime $date): float
-    {
-        return $this->hotelAdapter->getRoomPrice($roomId, $date) ?? 0;
+    private function getDatePrice(
+        int $roomId,
+        int $rateId,
+        bool $isResident,
+        int $guestsCount,
+        CarbonInterface $date
+    ): float {
+        return $this->hotelAdapter->getRoomPrice($roomId, $rateId, $isResident, $guestsCount, $date) ?? 0;
     }
 }

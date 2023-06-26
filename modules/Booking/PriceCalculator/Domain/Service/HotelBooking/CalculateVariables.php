@@ -9,6 +9,7 @@ class CalculateVariables
     public function __construct(
         public readonly BookingPeriod $bookingPeriod,
         public readonly int $roomId,
+        public readonly int $rateId,
         public readonly bool $isResident,
         public readonly int $guestsCount,
         public readonly int $vatPercent,

@@ -4,6 +4,7 @@ namespace App\Admin\Support\Adapters\Hotel;
 
 use App\Core\Support\Adapters\AbstractHotelAdapter;
 use Carbon\CarbonInterface;
+use Module\Hotel\Application\UseCase\Price\GetRoomPrices;
 
 class PricesAdapter extends AbstractHotelAdapter
 {
@@ -34,7 +35,7 @@ class PricesAdapter extends AbstractHotelAdapter
 
     public function getDatePrices(int $seasonId): array
     {
-        return $this->request('getDatePrices', ['seasonId' => $seasonId]);
+        return app(GetRoomPrices::class)->execute($seasonId);
     }
 
     public function setDatePrice(

@@ -3,6 +3,7 @@
 namespace Module\Booking\Hotel\Domain\ValueObject\Details;
 
 use Carbon\CarbonImmutable;
+use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
 use Carbon\CarbonPeriodImmutable;
 use Module\Shared\Domain\ValueObject\SerializableDataInterface;
@@ -19,6 +20,7 @@ final class BookingPeriod implements ValueObjectInterface, SerializableDataInter
         $calculatedNightsCount = CarbonPeriod::create($dateFrom, $dateTo, 'P1D')
             ->excludeEndDate()
             ->count();
+
         $this->nightsCount = $calculatedNightsCount;
     }
 
@@ -39,20 +41,14 @@ final class BookingPeriod implements ValueObjectInterface, SerializableDataInter
 
     /**
      * Booking dates array (without last)
-     * @return array
+     * @return array<int, CarbonInterface>
      * @throws \Exception
      */
     public function includedDates(): array
     {
-        $date = new \DateTime($this->dateFrom->format('Y-m-d'));
-        $toYmd = $this->dateTo->format('Ymd');
-        $dates = [];
-        do {
-            $dates[] = $date;
-            $date->modify('+1 day');
-        } while ($date->format('Ymd') < $toYmd);
-
-        return $dates;
+        return CarbonPeriod::create($this->dateFrom, $this->dateTo, 'P1D')
+            ->excludeEndDate()
+            ->toArray();
     }
 
     public function toData(): array

@@ -12,12 +12,12 @@ export interface RoomFormData {
   note?: string
   earlyCheckIn?: MarkupCondition
   lateCheckOut?: MarkupCondition
-  roomIndex?: number
+  roomBookingId?: number
 }
 
 export interface GuestFormData {
   bookingID: number
-  roomIndex?: number
+  roomBookingId?: number
   guestIndex?: number
   countryId?: number
   fullName?: string

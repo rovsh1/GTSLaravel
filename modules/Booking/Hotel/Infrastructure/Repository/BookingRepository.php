@@ -9,12 +9,13 @@ use Illuminate\Database\Eloquent\Collection;
 use Module\Booking\Common\Domain\ValueObject\BookingPrice;
 use Module\Booking\Common\Infrastructure\Repository\AbstractBookingRepository as BaseRepository;
 use Module\Booking\Hotel\Domain\Entity\Booking;
+use Module\Booking\Hotel\Domain\Entity\RoomBooking;
 use Module\Booking\Hotel\Domain\Repository\BookingRepositoryInterface;
+use Module\Booking\Hotel\Domain\Repository\RoomBookingRepositoryInterface;
 use Module\Booking\Hotel\Domain\ValueObject\Details\AdditionalInfo;
 use Module\Booking\Hotel\Domain\ValueObject\Details\BookingPeriod;
 use Module\Booking\Hotel\Domain\ValueObject\Details\CancelConditions;
 use Module\Booking\Hotel\Domain\ValueObject\Details\HotelInfo;
-use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking;
 use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBookingCollection;
 use Module\Booking\Hotel\Infrastructure\Models\Booking as Model;
 use Module\Booking\Hotel\Infrastructure\Models\BookingDetails;
@@ -22,6 +23,10 @@ use Module\Shared\Domain\ValueObject\Id;
 
 class BookingRepository extends BaseRepository implements BookingRepositoryInterface
 {
+    public function __construct(
+        private readonly RoomBookingRepositoryInterface $roomBookingRepository
+    ) {}
+
     protected function getModel(): string
     {
         return Model::class;
@@ -34,8 +39,9 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
             return null;
         }
         $detailsModel = BookingDetails::whereBookingId($id)->first();
+        $roomBookings = $this->roomBookingRepository->get($id);
 
-        return $this->buildEntityFromModel($booking, $detailsModel);
+        return $this->buildEntityFromModel($booking, $detailsModel, $roomBookings);
     }
 
     public function get(): Collection
@@ -89,6 +95,10 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         return \DB::transaction(function () use ($booking) {
             $base = $this->storeBase($booking);
 
+            foreach ($booking->roomBookings() as $roomBooking) {
+                $this->roomBookingRepository->store($roomBooking);
+            }
+
             $details = (bool)BookingDetails::whereBookingId($booking->id()->value())
                 ->update([
                     'hotel_id' => $booking->hotelInfo()->id(),
@@ -133,11 +143,13 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         return app(BookingFactory::class)->createCollectionFrom($models);
     }
 
-    private function buildEntityFromModel(Model $booking, BookingDetails $detailsModel): Booking
-    {
+    private function buildEntityFromModel(
+        Model $booking,
+        BookingDetails $detailsModel,
+        RoomBookingCollection $roomBookings
+    ): Booking {
         $detailsData = $detailsModel->data;
         $additionalInfo = $detailsData['additionalInfo'] ?? null;
-        $roomBookings = RoomBookingCollection::fromData($detailsData['roomBookings']);
 
         return new Booking(
             id: new Id($booking->id),
@@ -163,7 +175,6 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
             'hotelInfo' => $booking->hotelInfo()->toData(),
             'additionalInfo' => $booking->additionalInfo()?->toData(),
             'period' => $booking->period()->toData(),
-            'roomBookings' => $booking->roomBookings()->toData(),
             'cancelConditions' => $booking->cancelConditions()->toData(),
         ];
     }

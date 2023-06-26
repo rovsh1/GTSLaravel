@@ -2,14 +2,14 @@
 
 namespace Module\Booking\PriceCalculator\Providers;
 
-use Module\Booking\Common\Domain\Event\CalculationChangesEventInterface;
-use Module\Booking\PriceCalculator\Application\Event\CalculateBookingPricesListener;
+use Module\Booking\Common\Domain\Event\Contracts\PriceBecomeDeprecatedEventInterface;
+use Module\Booking\PriceCalculator\Domain\Listener\RecalculateBookingPricesListener;
 use Sdk\Module\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
 {
     protected $listen = [
-        CalculationChangesEventInterface::class => CalculateBookingPricesListener::class
+        PriceBecomeDeprecatedEventInterface::class => RecalculateBookingPricesListener::class
     ];
 
 //    public function registerListeners($eventDispatcher)

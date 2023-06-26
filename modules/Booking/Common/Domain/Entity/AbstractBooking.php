@@ -6,6 +6,7 @@ namespace Module\Booking\Common\Domain\Entity;
 
 use Carbon\CarbonImmutable;
 use Module\Booking\Common\Domain\Entity\Concerns\HasStatusesTrait;
+use Module\Booking\Common\Domain\Event\Contracts\BookingRequestableInterface;
 use Module\Booking\Common\Domain\Event\Request\BookingRequestSent;
 use Module\Booking\Common\Domain\Event\Request\CancellationRequestSent;
 use Module\Booking\Common\Domain\Event\Request\ChangeRequestSent;

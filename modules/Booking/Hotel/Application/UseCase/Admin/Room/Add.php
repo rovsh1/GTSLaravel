@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Module\Booking\Hotel\Application\UseCase\Admin\Room;
 
-use Module\Booking\Common\Domain\Service\BookingUpdater;
 use Module\Booking\Hotel\Application\Request\AddRoomDto;
 use Module\Booking\Hotel\Domain\Adapter\HotelRoomAdapterInterface;
+use Module\Booking\Hotel\Domain\Repository\RoomBookingRepositoryInterface;
 use Module\Booking\Hotel\Domain\ValueObject\Details\Condition;
 use Module\Booking\Hotel\Domain\ValueObject\Details\GuestCollection;
-use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking;
 use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking\RoomBookingDetails;
 use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking\RoomBookingStatusEnum;
 use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking\RoomInfo;
@@ -17,14 +16,16 @@ use Module\Booking\Hotel\Domain\ValueObject\RoomPrice;
 use Module\Booking\Hotel\Infrastructure\Repository\BookingRepository;
 use Module\Shared\Domain\ValueObject\Percent;
 use Module\Shared\Domain\ValueObject\TimePeriod;
+use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class Add implements UseCaseInterface
 {
     public function __construct(
         private readonly BookingRepository $repository,
+        private readonly RoomBookingRepositoryInterface $roomBookingRepository,
         private readonly HotelRoomAdapterInterface $hotelRoomAdapter,
-        private readonly BookingUpdater $bookingUpdater,
+        private readonly DomainEventDispatcherInterface $eventDispatcher
     ) {}
 
     public function execute(AddRoomDto $request): void
@@ -33,26 +34,28 @@ class Add implements UseCaseInterface
         $hotelRoomDto = $this->hotelRoomAdapter->findById($request->roomId);
         $earlyCheckIn = $request->earlyCheckIn !== null ? $this->buildMarkupCondition($request->earlyCheckIn) : null;
         $lateCheckOut = $request->lateCheckOut !== null ? $this->buildMarkupCondition($request->lateCheckOut) : null;
-        $booking->addRoomBooking(
-            new RoomBooking(
-                status: RoomBookingStatusEnum::from($request->status),
-                roomInfo: new RoomInfo(
-                    $hotelRoomDto->id,
-                    $hotelRoomDto->name,
-                ),
-                guests: new GuestCollection(),
-                details: new RoomBookingDetails(
-                    rateId: $request->rateId,
-                    isResident: $request->isResident,
-                    guestNote: $request->note,
-                    earlyCheckIn: $earlyCheckIn,
-                    lateCheckOut: $lateCheckOut,
-                    discount: new Percent($request->discount ?? 0),
-                ),
-                price: RoomPrice::buildEmpty()
-            )
+
+        $roomBooking = $this->roomBookingRepository->create(
+            bookingId: $request->bookingId,
+            status: RoomBookingStatusEnum::from($request->status),
+            roomInfo: new RoomInfo(
+                $hotelRoomDto->id,
+                $hotelRoomDto->name,
+            ),
+            guests: new GuestCollection(),
+            details: new RoomBookingDetails(
+                rateId: $request->rateId,
+                isResident: $request->isResident,
+                guestNote: $request->note,
+                earlyCheckIn: $earlyCheckIn,
+                lateCheckOut: $lateCheckOut,
+                discount: new Percent($request->discount ?? 0),
+            ),
+            price: RoomPrice::buildEmpty()
         );
-        $this->bookingUpdater->store($booking);
+
+        $booking->addRoomBooking($roomBooking);
+        $this->eventDispatcher->dispatch(...$booking->pullEvents());
     }
 
     private function buildMarkupCondition(array $data): Condition

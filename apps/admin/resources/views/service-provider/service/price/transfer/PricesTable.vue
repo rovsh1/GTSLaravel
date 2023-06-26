@@ -76,7 +76,7 @@ fetchPrices()
             <th scope="col" colspan="2" />
             <template v-for="season in seasons" :key="season.id">
               <th scope="col">Нетто (UZS)</th>
-              <th scope="col">Брутто (UZS)</th>
+              <th scope="col">Брутто</th>
             </template>
           </tr>
         </thead>

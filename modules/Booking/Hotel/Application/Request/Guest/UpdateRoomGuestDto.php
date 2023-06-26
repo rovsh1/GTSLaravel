@@ -8,7 +8,7 @@ class UpdateRoomGuestDto
 {
     public function __construct(
         public readonly int $bookingId,
-        public readonly int $roomIndex,
+        public readonly int $roomBookingId,
         public readonly int $guestIndex,
         public readonly string $fullName,
         public readonly int $countryId,

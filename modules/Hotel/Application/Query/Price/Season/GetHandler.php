@@ -23,7 +23,7 @@ class GetHandler implements QueryHandlerInterface
             seasonId: $seasonPrice->season_id,
             price: $seasonPrice->price,
             rateId: $seasonPrice->rate_id,
-            guestsNumber: $seasonPrice->guests_number,
+            guestsCount: $seasonPrice->guests_number,
             roomId: $seasonPrice->room_id,
             currencyId: $seasonPrice->currency_id,
             isResident: $seasonPrice->is_resident

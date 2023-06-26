@@ -2,11 +2,12 @@
 
 namespace Module\Booking\PriceCalculator\Infrastructure\Adapter;
 
-use DateTime;
+use Carbon\CarbonInterface;
 use Module\Booking\PriceCalculator\Domain\Adapter\HotelAdapterInterface;
 use Module\Hotel\Application\Dto\MarkupSettingsDto;
 use Module\Hotel\Application\UseCase\GetHotelById;
 use Module\Hotel\Application\UseCase\GetMarkupSettings;
+use Module\Hotel\Application\UseCase\Price\FindRoomPrice;
 
 class HotelAdapter implements HotelAdapterInterface
 {
@@ -20,8 +21,15 @@ class HotelAdapter implements HotelAdapterInterface
         return app(GetMarkupSettings::class)->execute($hotelId);
     }
 
-    public function getRoomPrice(int $roomId, DateTime $date): ?float
-    {
-        return null;
+    public function getRoomPrice(
+        int $roomId,
+        int $rateId,
+        bool $isResident,
+        int $guestsCount,
+        CarbonInterface $date
+    ): ?float {
+        $roomPriceDto = app(FindRoomPrice::class)->execute($roomId, $rateId, $isResident, $guestsCount, $date);
+
+        return $roomPriceDto->price;
     }
 }

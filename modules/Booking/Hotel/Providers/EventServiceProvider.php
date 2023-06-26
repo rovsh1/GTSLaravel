@@ -3,7 +3,7 @@
 namespace Module\Booking\Hotel\Providers;
 
 use Module\Booking\Common\Domain\Event\BookingEventInterface;
-use Module\Booking\Hotel\Application\Event\BookingChangesListener;
+use Module\Booking\Hotel\Domain\Listener\BookingChangesListener;
 use Sdk\Module\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider

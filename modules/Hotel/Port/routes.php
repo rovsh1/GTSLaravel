@@ -27,7 +27,6 @@ Route::register('resetRoomQuota', [RoomQuotaController::class, 'resetRoomQuota']
 //цены
 Route::register('getSeasonsPrices', [PriceController::class, 'getSeasonsPrices']);
 Route::register('setSeasonPrice', [PriceController::class, 'setSeasonPrice']);
-Route::register('getDatePrices', [PriceController::class, 'getDatePrices']);
 Route::register('setDatePrice', [PriceController::class, 'setDatePrice']);
 
 //номера

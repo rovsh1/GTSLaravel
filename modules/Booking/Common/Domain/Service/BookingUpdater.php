@@ -11,11 +11,13 @@ use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
 use Module\Booking\Hotel\Domain\Entity\Booking as HotelBooking;
 use Module\Booking\Hotel\Infrastructure\Repository\BookingRepository as HotelBookingRepository;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
+use Sdk\Module\Contracts\ModuleInterface;
 
 class BookingUpdater
 {
     public function __construct(
-        private readonly DomainEventDispatcherInterface $eventDispatcher
+        private readonly DomainEventDispatcherInterface $eventDispatcher,
+        private readonly ModuleInterface $module
     ) {}
 
     public function store(HotelBooking|AirportBooking $booking): bool
@@ -29,8 +31,8 @@ class BookingUpdater
     private function repository(BookingInterface $booking): HotelBookingRepository|AirportBookingRepository
     {
         return match ($booking->type()) {
-            BookingTypeEnum::HOTEL => new HotelBookingRepository(),
-            BookingTypeEnum::AIRPORT => new AirportBookingRepository(),
+            BookingTypeEnum::HOTEL => $this->module->get(HotelBookingRepository::class),
+            BookingTypeEnum::AIRPORT => $this->module->get(AirportBookingRepository::class),
             default => throw new \DomainException('Unknown booking type')
         };
     }

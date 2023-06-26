@@ -10,9 +10,6 @@ use Module\Booking\Common\Domain\ValueObject\BookingPrice;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
 use Module\Booking\Hotel\Domain\Event\BookingPeriodChanged;
-use Module\Booking\Hotel\Domain\Event\GuestAdded;
-use Module\Booking\Hotel\Domain\Event\GuestDeleted;
-use Module\Booking\Hotel\Domain\Event\GuestEdited;
 use Module\Booking\Hotel\Domain\Event\RoomAdded;
 use Module\Booking\Hotel\Domain\Event\RoomDeleted;
 use Module\Booking\Hotel\Domain\Event\RoomEdited;
@@ -20,8 +17,6 @@ use Module\Booking\Hotel\Domain\ValueObject\Details\AdditionalInfo;
 use Module\Booking\Hotel\Domain\ValueObject\Details\BookingPeriod;
 use Module\Booking\Hotel\Domain\ValueObject\Details\CancelConditions;
 use Module\Booking\Hotel\Domain\ValueObject\Details\HotelInfo;
-use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking;
-use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking\Guest;
 use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBookingCollection;
 use Module\Shared\Domain\ValueObject\Id;
 
@@ -89,9 +84,13 @@ final class Booking extends AbstractBooking
         );
     }
 
-    public function updateRoomBooking(int $index, RoomBooking $booking): void
+    public function updateRoomBooking(int $id, RoomBooking $booking): void
     {
-        $this->roomBookings->offsetSet($index, $booking);
+        $roomIndex = $this->roomBookings->search(
+            fn(RoomBooking $roomBooking) => $roomBooking->id()->value() === $id
+        );
+        $this->roomBookings->offsetSet($roomIndex, $booking);
+
         $this->pushEvent(
             new RoomEdited(
                 $this,
@@ -104,55 +103,18 @@ final class Booking extends AbstractBooking
         );
     }
 
-    public function deleteRoomBooking(int $index): void
+    public function deleteRoomBooking(int $id): void
     {
-        $this->roomBookings->offsetUnset($index);
+        $roomIndex = $this->roomBookings->search(
+            fn(RoomBooking $roomBooking) => $roomBooking->id()->value() === $id
+        );
+        $this->roomBookings->offsetUnset($roomIndex);
         $this->pushEvent(
             new RoomDeleted(
                 $this,
                 $this->hotelInfo()->id(),
-                $index,
+                $roomIndex,
                 '',//@todo надо ли?
-            )
-        );
-    }
-
-    public function addRoomBookingGuest(int $roomIndex, Guest $guest): void
-    {
-        $this->roomBookings->get($roomIndex)->addGuest($guest);
-        $this->pushEvent(
-            new GuestAdded(
-                $this,
-                $roomIndex,
-                $guest
-            )
-        );
-    }
-
-    public function updateRoomBookingGuest(int $roomIndex, int $guestIndex, Guest $guest): void
-    {
-        $this->roomBookings->get($roomIndex)->updateGuest($guestIndex, $guest);
-        $this->pushEvent(
-            new GuestEdited(
-                $this,
-                $roomIndex,
-                $guest,
-                '',
-                '',
-                ''
-            )
-        );
-    }
-
-    public function deleteRoomBookingGuest(int $roomIndex, int $guestIndex): void
-    {
-        $this->roomBookings->get($roomIndex)->deleteGuest($guestIndex);
-        $this->pushEvent(
-            new GuestDeleted(
-                $this,
-                $roomIndex,
-                $guestIndex,
-                ''//@todo надо ли?
             )
         );
     }

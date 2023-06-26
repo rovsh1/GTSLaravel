@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Module\Booking\Common\Domain\Factory;
 
 use Module\Booking\Common\Domain\Adapter\FileStorageAdapterInterface;
-use Module\Booking\Common\Domain\Entity\BookingRequestableInterface;
 use Module\Booking\Common\Domain\Entity\Request;
+use Module\Booking\Common\Domain\Event\Contracts\BookingRequestableInterface;
 use Module\Booking\Common\Domain\Exception\BookingTypeDoesntHaveDocumentGenerator;
 use Module\Booking\Common\Domain\Service\DocumentGenerator\DocumentGeneratorInterface;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;

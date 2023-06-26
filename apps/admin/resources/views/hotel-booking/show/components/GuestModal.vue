@@ -19,7 +19,7 @@ import { SelectOption } from '~components/Bootstrap/lib'
 
 const props = defineProps<{
   opened: MaybeRef<boolean>
-  roomIndex: MaybeRef<number>
+  roomBookingId: MaybeRef<number>
   countries: CountryResponse[]
   formData: Partial<GuestFormData>
   guestIndex?: number
@@ -70,7 +70,7 @@ const onModalSubmit = async () => {
     return
   }
   isFetching.value = true
-  formData.value.roomIndex = unref<number>(props.roomIndex)
+  formData.value.roomBookingId = unref<number>(props.roomBookingId)
   if (formData.value.guestIndex !== undefined) {
     await updateBookingGuest(formData)
   } else {
@@ -148,6 +148,8 @@ const handleChangeAgeType = (type: number): void => {
             class="form-control"
             autocomplete="off"
             required
+            min="0"
+            max="18"
           >
         </div>
       </div>

@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Module\Booking\Hotel\Application\UseCase\Admin;
 
-use Module\Booking\Hotel\Infrastructure\Repository\BookingRepository;
+use Module\Booking\Hotel\Domain\Repository\BookingRepositoryInterface;
+use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
-class GetBookingsByFilters
+class GetBookingsByFilters implements UseCaseInterface
 {
     public function __construct(
-        private readonly BookingRepository $repository
+        private readonly BookingRepositoryInterface $repository
     ) {}
 
     public function execute(array $filters = []): mixed
