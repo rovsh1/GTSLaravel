@@ -20,7 +20,7 @@ abstract class AbstractCreateBooking implements UseCaseInterface
     {
         $orderId = $request->orderId;
         if ($orderId === null) {
-            $orderId = $this->commandBus->execute(new CreateOrder($request->clientId));
+            $orderId = $this->commandBus->execute(new CreateOrder($request->clientId, $request->legalId));
         }
 
         return $orderId;

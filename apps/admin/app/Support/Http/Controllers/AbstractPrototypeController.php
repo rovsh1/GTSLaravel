@@ -112,6 +112,7 @@ abstract class AbstractPrototypeController extends Controller
         if ($this->hasShowAction()) {
             $redirectUrl = $this->prototype->route('show', $this->model);
         }
+
         return redirect($redirectUrl);
     }
 
@@ -138,11 +139,12 @@ abstract class AbstractPrototypeController extends Controller
             ->view($this->prototype->view('edit') ?? $this->prototype->view('form') ?? 'default.form.form', [
                 'model' => $model,
                 'form' => $form,
-                'cancelUrl' => $this->prototype->route('index'),
-                'deleteUrl' => $this->isAllowed('delete') ? $this->prototype->route(
-                    'destroy',
-                    $model->id
-                ) : null
+                'cancelUrl' => $this->hasShowAction()
+                    ? $this->prototype->route('show', $model)
+                    : $this->prototype->route('index'),
+                'deleteUrl' => $this->isAllowed('delete')
+                    ? $this->prototype->route('destroy', $model->id)
+                    : null
             ]);
     }
 
@@ -162,6 +164,7 @@ abstract class AbstractPrototypeController extends Controller
         if ($this->hasShowAction()) {
             $redirectUrl = $this->prototype->route('show', $this->model);
         }
+
         return redirect($redirectUrl);
     }
 

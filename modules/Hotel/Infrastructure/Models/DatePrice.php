@@ -24,7 +24,8 @@ class DatePrice extends Model
     ];
 
     protected $casts = [
-        'date' => 'date'
+        'date' => 'date',
+        'price' => 'float'
     ];
 
     public function scopeWithGroup(Builder $builder): void

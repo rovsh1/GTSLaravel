@@ -11,11 +11,16 @@ use Sdk\Module\Contracts\Bus\CommandInterface;
 
 class CreateOrderHandler implements CommandHandlerInterface
 {
+    public function __construct(
+
+    ) {}
+
     public function handle(CommandInterface|CreateOrder $command): int
     {
         $order = Order::create([
             'status' => OrderStatusEnum::NEW,
             'client_id' => $command->clientId,
+            'legal_id' => $command->legalId
         ]);
         //@todo ивенты созданного заказа
         return $order->id;

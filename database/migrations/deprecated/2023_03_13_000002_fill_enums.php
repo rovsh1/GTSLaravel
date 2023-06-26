@@ -12,8 +12,8 @@ return new class extends Migration {
         'room-type' => 1,
         'hotel-type' => 5,
         'administrator-post' => 11,
-//        'legal-entity-attribute' => 7,
-        'legal-entity-industry' => 10,
+//        'client-legal-requisite' => 7,
+        'client-legal-industry' => 10,
         'hotel-usability-group' => 19
     ];
 

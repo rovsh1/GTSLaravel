@@ -2,6 +2,8 @@
 
 namespace App\Admin\Models\Client;
 
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
 use Sdk\Module\Database\Eloquent\Model;
 
@@ -23,6 +25,26 @@ class Client extends Model
         'status',
         'description'
     ];
+
+    protected static function booted()
+    {
+        static::addGlobalScope('default', function (Builder $builder) {
+            $builder
+                ->addSelect('clients.*')
+                ->join('r_cities', 'r_cities.id', '=', 'clients.city_id')
+                ->joinTranslatable('r_cities', 'name as city_name');
+        });
+    }
+
+    public function scopeWhereId(Builder $builder, int $id): void
+    {
+        $builder->where('clients.id', $id);
+    }
+
+    public function legals(): HasMany
+    {
+        return $this->hasMany(Legal::class);
+    }
 
     public function __toString()
     {

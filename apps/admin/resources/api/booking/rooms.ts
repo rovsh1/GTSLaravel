@@ -43,6 +43,12 @@ export interface BookingUpdateRoomGuestPayload extends BookingAddRoomGuestPayloa
   guestIndex: number
 }
 
+export interface BookingDeleteRoomGuestPayload {
+  bookingID: BookingID
+  roomBookingId: number
+  guestIndex: number
+}
+
 export const addRoomToBooking = (props: MaybeRef<BookingAddRoomPayload | null>) =>
   useAdminAPI(
     props,
@@ -144,5 +150,16 @@ export const updateBookingGuest = (props: MaybeRef<BookingUpdateRoomGuestPayload
           age: payload.age,
         }),
       ),
+    )), 'application/json')
+    .json<BaseResponse>()
+
+export const deleteBookingGuest = (props: MaybeRef<BookingDeleteRoomGuestPayload | null>) =>
+  useAdminAPI(
+    props,
+    ({ bookingID }) => `/hotel-booking/${bookingID}/rooms/guests`,
+    { immediate: true },
+  )
+    .delete(computed<string>(() => JSON.stringify(
+      getNullableRef<BookingDeleteRoomGuestPayload, any>(props, (payload: BookingDeleteRoomGuestPayload): any => ({ room_booking_id: payload.roomBookingId, guest_index: payload.guestIndex })),
     )), 'application/json')
     .json<BaseResponse>()

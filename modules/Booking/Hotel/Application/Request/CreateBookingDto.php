@@ -11,6 +11,7 @@ class CreateBookingDto
     public function __construct(
         public readonly int $cityId,
         public readonly int $clientId,
+        public readonly ?int $legalId,
         public readonly int $hotelId,
         public readonly CarbonPeriod $period,
         public readonly int $creatorId,

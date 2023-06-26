@@ -25,6 +25,7 @@ class AirportAdapter
     public function createBooking(
         int $cityId,
         int $clientId,
+        ?int $legalId,
         int $airportId,
         int $serviceId,
         CarbonInterface $date,
@@ -37,6 +38,7 @@ class AirportAdapter
                 cityId: $cityId,
                 creatorId: $creatorId,
                 clientId: $clientId,
+                legalId: $legalId,
                 airportId: $airportId,
                 serviceId: $serviceId,
                 orderId: $orderId,

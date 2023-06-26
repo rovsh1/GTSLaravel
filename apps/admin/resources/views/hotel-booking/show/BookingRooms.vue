@@ -13,7 +13,7 @@ import { GuestFormData, RoomFormData } from '~resources/views/hotel-booking/show
 import { useBookingStore } from '~resources/views/hotel-booking/show/store/booking'
 
 import { HotelBookingDetails, HotelBookingGuest, HotelRoomBooking } from '~api/booking/details'
-import { deleteBookingRoom } from '~api/booking/rooms'
+import { deleteBookingGuest, deleteBookingRoom } from '~api/booking/rooms'
 import { CountryResponse, useCountrySearchAPI } from '~api/country'
 import { MarkupSettings } from '~api/hotel/markup-settings'
 import { HotelRate, useHotelRatesAPI } from '~api/hotel/price-rate'
@@ -66,6 +66,16 @@ const handleEditGuest = (roomBookingId: number, guestIndex: number, guest: Hotel
   editGuestIndex.value = guestIndex
   guestForm.value = guest
   toggleGuestModal()
+}
+
+const handleDeleteGuest = async (roomBookingId: number, guestIndex: number): Promise<void> => {
+  const { result: isApproved, toggleLoading, toggleClose } = await showConfirmDialog('Удалить гостя?', 'btn-danger')
+  if (isApproved) {
+    toggleLoading()
+    await deleteBookingGuest({ bookingID, roomBookingId, guestIndex })
+    await fetchBooking()
+    toggleClose()
+  }
 }
 
 const handleAddRoom = (): void => {
@@ -243,6 +253,7 @@ fetchCountries()
                 <th class="column-text">Пол</th>
                 <th class="column-text">Гражданство</th>
                 <th class="column-text">Тип</th>
+                <th class="column-text" />
                 <th />
               </tr>
             </thead>
@@ -254,9 +265,11 @@ fetchCountries()
                 <td>{{ getGenderName(guest.gender) }}</td>
                 <td>{{ guest.isAdult ? 'Взрослый' : 'Ребенок' }}</td>
                 <td class="column-edit">
-                  <a v-if="isEditableStatus" href="#" @click.prevent="handleEditGuest(room.id, guestIdx as number, guest)">
-                    <i class="icon">edit</i>
-                  </a>
+                  <EditTableRowButton
+                    v-if="isEditableStatus"
+                    @edit="handleEditGuest(room.id, guestIdx as number, guest)"
+                    @delete="handleDeleteGuest(room.id, guestIdx as number)"
+                  />
                 </td>
               </tr>
             </tbody>

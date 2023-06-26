@@ -1,3 +1,5 @@
+import { Client } from '~api/client'
+
 import '~resources/views/main'
 
 $(() => {
@@ -9,6 +11,31 @@ $(() => {
     dataIndex: 'city_id',
   })
 
+  let clients: Client[] = []
+
+  const handleChangeClientId = (event: any): void => {
+    const clientId = $(event.target).val()
+    const client = clients.find((cl) => cl.id === Number(clientId))
+
+    const $legalIdField = $('div.field-legal_id')
+    if (!client?.is_legal) {
+      $legalIdField.hide()
+      return
+    }
+    $legalIdField.show()
+
+    const $legalIdInput = $('#form_data_legal_id')
+    if ($legalIdInput.is('input')) {
+      $legalIdInput.childCombo({
+        url: '/client/legals/search',
+        value: window.get_url_parameter('client_id'),
+        disabledText: 'Выберите клиента',
+        parent: $('#form_data_client_id'),
+        dataIndex: 'client_id',
+      })
+    }
+  }
+
   $('#form_data_client_id').childCombo({
     url: '/client/search',
     value: window.get_url_parameter('order_id'),
@@ -16,5 +43,9 @@ $(() => {
     parent: $('#form_data_order_id'),
     dataIndex: 'order_id',
     allowEmpty: true,
+    load: (items: Client[]): void => {
+      clients = items
+    },
+    childChange: handleChangeClientId,
   })
 })

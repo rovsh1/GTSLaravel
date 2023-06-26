@@ -4,17 +4,22 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('orders', function (Blueprint $table) {
+        Schema::create('client_legals', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('client_id');
-            $table->unsignedInteger('legal_id')->nullable();
-            $table->tinyInteger('status');
+            $table->unsignedInteger('city_id')->nullable();
+            $table->unsignedInteger('industry_id')->nullable();
+            $table->tinyInteger('type');
+            $table->string('name');
+            $table->string('address');
+            $table->json('requisites')->nullable();
             $table->timestamps();
 
             $table->foreign('client_id')
@@ -23,9 +28,9 @@ return new class extends Migration {
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
 
-            $table->foreign('legal_id')
+            $table->foreign('city_id')
                 ->references('id')
-                ->on('client_legals')
+                ->on('r_cities')
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
         });
@@ -36,6 +41,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('orders');
+        Schema::dropIfExists('client_legals');
     }
 };

@@ -78,6 +78,7 @@ class BookingController extends Controller
         $bookingId = AirportAdapter::createBooking(
             cityId: $data['city_id'],
             clientId: $data['client_id'],
+            legalId: $data['legal_id'],
             airportId: $data['airport_id'],
             serviceId: $data['service_id'],
             date: new Carbon($data['date'] . ' ' . $data['time']),
@@ -132,6 +133,9 @@ class BookingController extends Controller
                 'label' => __('label.client'),
                 'required' => true,
             ])
+            ->hidden('legal_id', [
+                'label' => 'Юр. лицо',
+            ])
             ->city('city_id', [
                 'label' => __('label.city'),
                 'emptyItem' => '',
@@ -142,9 +146,6 @@ class BookingController extends Controller
                 'label' => 'Услуга',
                 'required' => true,
             ])
-//            ->hidden('legal_id', [
-//                'label' => 'Юр. лицо',
-//            ])
             ->hidden('airport_id', [
                 'label' => 'Аэропорт',
                 'required' => true,

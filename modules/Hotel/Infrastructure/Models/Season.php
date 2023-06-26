@@ -2,7 +2,9 @@
 
 namespace Module\Hotel\Infrastructure\Models;
 
+use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Facades\DB;
@@ -24,6 +26,11 @@ class Season extends Model
         'date_end' => 'date',
     ];
 
+    public function period(): Attribute
+    {
+        return Attribute::get(fn() => new CarbonPeriod($this->date_start, $this->date_end, 'P1D'));
+    }
+
     public function scopeWhereRoomId(Builder $builder, int $roomId)
     {
         $builder->whereExists(function (QueryBuilder $query) use ($roomId) {
@@ -33,6 +40,17 @@ class Season extends Model
                 ->from('hotel_rooms as t')
                 ->whereColumn('t.hotel_id', 'hotel_contracts.hotel_id')
                 ->where('t.id', $roomId);
+        });
+    }
+
+    public function scopeWhereHotelId(Builder $builder, int $hotelId)
+    {
+        $builder->whereExists(function (QueryBuilder $query) use ($hotelId) {
+            $query
+                ->join('hotel_contracts', 'hotel_contracts.id', '=', 'hotel_seasons.contract_id')
+                ->select(DB::raw(1))
+                ->where('hotel_contracts.hotel_id', $hotelId)
+                ->where('hotel_contracts.status', 1);
         });
     }
 

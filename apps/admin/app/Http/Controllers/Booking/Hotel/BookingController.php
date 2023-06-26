@@ -84,6 +84,7 @@ class BookingController extends AbstractPrototypeController
         $bookingId = HotelAdapter::createBooking(
             cityId: $data['city_id'],
             clientId: $data['client_id'],
+            legalId: $data['legal_id'],
             hotelId: $data['hotel_id'],
             period: $data['period'],
             creatorId: $creator->id,
@@ -253,9 +254,9 @@ class BookingController extends AbstractPrototypeController
                 'label' => __('label.client'),
                 'required' => true,
             ])
-//            ->hidden('legal_id', [
-//                'label' => 'Юр. лицо',
-//            ])
+            ->hidden('legal_id', [
+                'label' => 'Юр. лицо',
+            ])
             ->hotel('hotel_id', [
                 'label' => 'Отель',
                 'required' => true,

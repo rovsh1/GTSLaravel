@@ -14,7 +14,8 @@ class Order extends Model
 
     protected $fillable = [
         'client_id',
-        'status'
+        'legal_id',
+        'status',
     ];
 
     protected $casts = [

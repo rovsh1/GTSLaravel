@@ -95,6 +95,10 @@
     "Client\\TypeEnum::PHYSICAL": "Физическое лицо",
     "Client\\TypeEnum::LEGAL_ENTITY": "Юридическое лицо",
 
+    "Module\\Shared\\Enum\\Client\\LegalTypeEnum::ONLINE_TRAVEL_AGENCY": "OTA",
+    "Module\\Shared\\Enum\\Client\\LegalTypeEnum::TRAVEL_AGENCY": "TA",
+    "Module\\Shared\\Enum\\Client\\LegalTypeEnum::TOUR_OPERATOR": "TO",
+
     "Module\\Booking\\Common\\Domain\\Event\\Status\\BookingCreated": "Новая",
     "Module\\Booking\\Common\\Domain\\Event\\Status\\BookingProcessing": "В работе",
     "Module\\Booking\\Common\\Domain\\Event\\Status\\BookingCancelled": "Отменена",

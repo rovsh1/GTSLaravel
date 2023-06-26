@@ -23,7 +23,7 @@ $.fn.childCombo = function (options) {
 
   if (child.is('input[type="hidden"]')) {
     preparedOptions.hidden = true
-    const c = $(`<select class="form-select" name="${child.attr('name')}"></select>`)
+    const c = $(`<select class="form-select" id="${child.attr('id')}" name="${child.attr('name')}"></select>`)
     child.after(c)
     child.remove()
     child = c
@@ -35,6 +35,8 @@ $.fn.childCombo = function (options) {
     }
     preparedOptions[fn].call(child, arg)
   }
+
+  child.on('change', (e) => trigger('childChange', e))
 
   const onchange = function () {
     if (preparedOptions.dateRange && parent.val().length < 14) {

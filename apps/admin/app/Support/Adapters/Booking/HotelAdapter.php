@@ -31,6 +31,7 @@ class HotelAdapter
     public function createBooking(
         int $cityId,
         int $clientId,
+        ?int $legalId,
         int $hotelId,
         CarbonPeriod $period,
         int $creatorId,
@@ -42,6 +43,7 @@ class HotelAdapter
                 cityId: $cityId,
                 creatorId: $creatorId,
                 clientId: $clientId,
+                legalId: $legalId,
                 hotelId: $hotelId,
                 orderId: $orderId,
                 period: $period,
