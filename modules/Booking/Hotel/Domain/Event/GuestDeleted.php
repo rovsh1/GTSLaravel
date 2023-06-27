@@ -25,7 +25,7 @@ class GuestDeleted implements BookingEventInterface, PriceBecomeDeprecatedEventI
 
     public function orderId(): int
     {
-        // TODO: Implement orderId() method.
+        return $this->roomBooking->orderId()->value();
     }
 
     public function payload(): ?array

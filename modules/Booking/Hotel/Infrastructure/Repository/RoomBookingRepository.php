@@ -99,6 +99,7 @@ class RoomBookingRepository implements RoomBookingRepositoryInterface
         return new RoomBooking(
             id: new Id($model->id),
             bookingId: new Id($model->booking_id),
+            orderId: new Id($model->booking_order_id),
             status: RoomBookingStatusEnum::from($data['status']),
             roomInfo: RoomInfo::fromData($data['roomInfo']),
             guests: GuestCollection::fromData($data['guests']),

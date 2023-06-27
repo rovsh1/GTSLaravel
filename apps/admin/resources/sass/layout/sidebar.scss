@@ -154,6 +154,12 @@ aside.sidebar {
     color: rgb(0 0 0 / 100%);
   }
 
+  nav > a.disabled {
+    color: rgba(0, 0, 0, 30%);
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
   nav > a.current {
     background: #F0F5FE;
   }

@@ -52,18 +52,19 @@ final class RoomPrice implements SerializableDataInterface
             'avgDailyValue' => $this->avgDailyValue,
             'hoValue' => $this->hoValue,
             'boValue' => $this->boValue,
-            'calculationNotes' => $this->calculationNotes->toData(),
+            'calculationNotes' => $this->calculationNotes?->toData(),
         ];
     }
 
     public static function fromData(array $data): static
     {
+        $calculationNotes = $data['calculationNotes'] ?? null;
         return new RoomPrice(
             $data['netValue'],
             $data['avgDailyValue'],
             $data['hoValue'],
             $data['boValue'],
-            $data['calculationNotes'] ? PriceCalculationNotes::fromData() : null,
+            $calculationNotes !== null ? PriceCalculationNotes::fromData($calculationNotes) : null,
         );
     }
 }

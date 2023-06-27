@@ -10,3 +10,4 @@ auth.json
 /.fleet
 /.idea
 /.vscode
+/.phpunit.cache

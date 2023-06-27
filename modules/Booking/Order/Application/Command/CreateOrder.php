@@ -11,5 +11,6 @@ class CreateOrder implements CommandInterface
     public function __construct(
         public readonly int $clientId,
         public readonly ?int $legalId,
+        public readonly int $currencyId,
     ) {}
 }

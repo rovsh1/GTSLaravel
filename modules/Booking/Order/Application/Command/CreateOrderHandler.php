@@ -20,7 +20,8 @@ class CreateOrderHandler implements CommandHandlerInterface
         $order = Order::create([
             'status' => OrderStatusEnum::NEW,
             'client_id' => $command->clientId,
-            'legal_id' => $command->legalId
+            'legal_id' => $command->legalId,
+            'currency_id' => $command->currencyId
         ]);
         //@todo ивенты созданного заказа
         return $order->id;

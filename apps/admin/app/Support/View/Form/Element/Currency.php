@@ -12,5 +12,6 @@ class Currency extends Select
         parent::__construct($name, $options);
 
         $this->setItems(Model::orderBy('name')->get());
+        $this->setValue($options['value'] ?? $options['default'] ?? null);
     }
 }

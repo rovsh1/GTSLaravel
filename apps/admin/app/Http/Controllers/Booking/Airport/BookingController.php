@@ -79,6 +79,7 @@ class BookingController extends Controller
             cityId: $data['city_id'],
             clientId: $data['client_id'],
             legalId: $data['legal_id'],
+            currencyId: $data['currency_id'],
             airportId: $data['airport_id'],
             serviceId: $data['service_id'],
             date: new Carbon($data['date'] . ' ' . $data['time']),
@@ -135,6 +136,11 @@ class BookingController extends Controller
             ])
             ->hidden('legal_id', [
                 'label' => 'Юр. лицо',
+            ])
+            ->currency('currency_id', [
+                'label' => 'Валюта',
+                'required' => true,
+                'default' => 1,
             ])
             ->city('city_id', [
                 'label' => __('label.city'),

@@ -24,14 +24,16 @@ $(() => {
     const clientId = $(event.target).val()
     const client = clients.find((cl) => cl.id === Number(clientId))
 
+    const $legalIdInput = $('#form_data_legal_id')
     const $legalIdField = $('div.field-legal_id')
     if (!client?.is_legal) {
-      $legalIdField.hide()
+      $legalIdField.hide().toggleClass('field-required', false)
+      $legalIdInput.removeAttr('required')
       return
     }
-    $legalIdField.show()
+    $legalIdField.show().toggleClass('field-required', true)
+    $legalIdInput.attr('required', 'required')
 
-    const $legalIdInput = $('#form_data_legal_id')
     if ($legalIdInput.is('input')) {
       $legalIdInput.childCombo({
         url: '/client/legals/search',

@@ -85,6 +85,7 @@ class BookingController extends AbstractPrototypeController
             cityId: $data['city_id'],
             clientId: $data['client_id'],
             legalId: $data['legal_id'],
+            currencyId: $data['currency_id'],
             hotelId: $data['hotel_id'],
             period: $data['period'],
             creatorId: $creator->id,
@@ -253,6 +254,11 @@ class BookingController extends AbstractPrototypeController
             ->hidden('client_id', [
                 'label' => __('label.client'),
                 'required' => true,
+            ])
+            ->currency('currency_id', [
+                'label' => 'Валюта',
+                'required' => true,
+                'value' => 1
             ])
             ->hidden('legal_id', [
                 'label' => 'Юр. лицо',

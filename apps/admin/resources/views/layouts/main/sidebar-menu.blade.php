@@ -2,7 +2,7 @@
     @if(count($menu->items()) > 0)
         <nav>
             @foreach($menu->items() as $item)
-                <a href="{{ $item->url }}" class="{{ $menu->isCurrent($item) ? 'current' : '' }}">
+                <a href="{{ $item->url }}" class="{{ $menu->isCurrent($item) ? 'current' : '' }} {{$item->disabled ? 'disabled' : ''}}" {{$item->disabled ? 'disabled' : ''}}>
                     <x-icon :key="$item->icon"/>
                     {{ $item->text }}
                 </a>
@@ -16,7 +16,7 @@
             <div class="group-items">
                 <nav>
                     @foreach($group->items() as $item)
-                        <a href="{{ $item->url }}" class="{{ $menu->isCurrent($item) ? 'current' : '' }}">
+                        <a href="{{ $item->url }}" class="{{ $menu->isCurrent($item) ? 'current' : '' }} {{$item->disabled ? 'disabled' : ''}}" {{$item->disabled ? 'disabled' : ''}}>
                             <x-icon :key="$item->icon"/>
                             {{ $item->text }}
                         </a>

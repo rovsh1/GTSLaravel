@@ -22,6 +22,7 @@ class RoomBooking extends AbstractAggregateRoot implements EntityInterface
     public function __construct(
         private readonly Id $id,
         private readonly Id $bookingId,
+        private readonly Id $orderId,
         private RoomBookingStatusEnum $status,
         private RoomInfo $roomInfo,
         //@todo возможно придется переносить гостей в отдельную таблицу с привязкой к заказу (для составных броней)
@@ -39,6 +40,11 @@ class RoomBooking extends AbstractAggregateRoot implements EntityInterface
     public function bookingId(): Id
     {
         return $this->bookingId;
+    }
+
+    public function orderId(): Id
+    {
+        return $this->orderId;
     }
 
     public function status(): RoomBookingStatusEnum

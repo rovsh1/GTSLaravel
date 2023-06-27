@@ -14,12 +14,19 @@ return new class extends Migration {
             $table->increments('id');
             $table->unsignedInteger('client_id');
             $table->unsignedInteger('legal_id')->nullable();
+            $table->unsignedSmallInteger('currency_id');
             $table->tinyInteger('status');
             $table->timestamps();
 
             $table->foreign('client_id')
                 ->references('id')
                 ->on('clients')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+
+            $table->foreign('currency_id')
+                ->references('id')
+                ->on('r_currencies')
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
 

@@ -21,7 +21,7 @@ class GuestAdded implements BookingEventInterface, PriceBecomeDeprecatedEventInt
 
     public function orderId(): int
     {
-        // TODO: Implement orderId() method.
+        return $this->roomBooking->orderId()->value();
     }
 
     public function payload(): ?array

@@ -15,7 +15,9 @@ class RoomPriceDto extends AbstractDomainBasedDto
         public readonly float $netValue,
         public readonly float $avgDailyValue,
         public readonly float $hoValue,
-        public readonly float $boValue
+        public readonly float $boValue,
+        public readonly ?string $hoNote,
+        public readonly ?string $boNote,
     ) {}
 
     public static function fromDomain(EntityInterface|ValueObjectInterface|RoomPrice $entity): static
@@ -25,6 +27,8 @@ class RoomPriceDto extends AbstractDomainBasedDto
             $entity->avgDailyValue(),
             $entity->hoValue(),
             $entity->boValue(),
+            $entity->calculationNotes()?->hoNote(),
+            $entity->calculationNotes()?->boNote(),
         );
     }
 }
