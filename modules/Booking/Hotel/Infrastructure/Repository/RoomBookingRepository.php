@@ -48,6 +48,8 @@ class RoomBookingRepository implements RoomBookingRepositoryInterface
             'booking_id' => $bookingId,
             'data' => $this->serializeData($status, $roomInfo, $guests, $details, $price),
         ]);
+        //hack потому что default scope не подтягивается после создания модели, а тут нужно, т.к. booking_order_id подгружается join'ом
+        $model = Model::find($model->id);
 
         return $this->buildEntityFromModel($model);
     }
