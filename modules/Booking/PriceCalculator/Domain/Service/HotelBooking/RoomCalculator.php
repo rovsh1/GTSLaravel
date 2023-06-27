@@ -3,6 +3,7 @@
 namespace Module\Booking\PriceCalculator\Domain\Service\HotelBooking;
 
 use Carbon\CarbonInterface;
+use Module\Booking\Common\Domain\ValueObject\PriceCalculationNotes;
 use Module\Booking\Hotel\Domain\Entity\Booking;
 use Module\Booking\Hotel\Domain\ValueObject\RoomPrice;
 use Module\Booking\PriceCalculator\Domain\Adapter\HotelAdapterInterface;
@@ -16,7 +17,8 @@ class RoomCalculator
     public function __construct(
         private readonly HotelAdapterInterface $hotelAdapter,
         private readonly VariablesBuilder $variablesBuilder
-    ) {}
+    ) {
+    }
 
     public function calculateByBooking(
         Booking $hotelBooking,
@@ -52,6 +54,8 @@ class RoomCalculator
         $netValue = 0.0;
         $hoValue = 0.0;
         $boValue = 0.0;
+        $hoNotes = null;
+        $boNotes = null;
         foreach ($dates as $date) {
             $datePrice = $this->getDatePrice(
                 $calculateVariables->roomId,
@@ -61,8 +65,14 @@ class RoomCalculator
                 $date
             );
             $netValue += $datePrice;
-            $hoValue += $hoFormula->calculate($datePrice);
-            $boValue += $boFormula->calculate($datePrice);
+            $hoResult = $hoFormula->calculate($datePrice);
+            $boResult = $boFormula->calculate($datePrice);
+            $hoValue += $hoResult->value;
+            $boValue += $boResult->value;
+            if (null === $hoNotes) {
+                $hoNotes = $hoResult->notes;
+                $boNotes = $boResult->notes;
+            }
         }
         $avgDailyValue = $netValue / $calculateVariables->bookingPeriod->nightsCount();
 
@@ -70,7 +80,11 @@ class RoomCalculator
             $netValue,
             $avgDailyValue,
             $hoValue,
-            $boValue
+            $boValue,
+            new PriceCalculationNotes(
+                $hoNotes,
+                $boNotes
+            )
         );
     }
 

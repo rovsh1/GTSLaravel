@@ -2,9 +2,12 @@
 
 namespace Module\Booking\PriceCalculator\Domain\Service\HotelBooking\Formula;
 
+use Module\Booking\PriceCalculator\Domain\Service\ExpressionEvaluator;
+use Module\Booking\PriceCalculator\Domain\ValueObject\CalculationResult;
+
 final class HORoomPriceFormula extends AbstractRoomPriceFormula
 {
-    public function calculate(int|float $netValue): float
+    public function calculate(int|float $netValue): CalculationResult
     {
         /**
          * S (итоговая сумма по номеру) = Sh * n * k + Z * n
@@ -18,11 +21,13 @@ final class HORoomPriceFormula extends AbstractRoomPriceFormula
         $Sh = $this->variables->isResident
             ? $this->calculateResidentNetPrice($netValue)
             : $this->calculateNonResidentNetPrice($netValue, $this->variables->guestsCount);
-        $n = 1;
-        $k = $this->variables->nightsCount;
-        $Z = $this->calculateConditionMarkup($Sh);
 
-        return (float)($Sh * $k + $Z);
+        return (new ExpressionEvaluator('((Sb - D) * k + Z) * n'))
+            ->addVariable('Sh', $Sh, 'нетто')
+            ->addVariable('n', 1, 'номеров')
+            ->addVariable('k', $this->variables->nightsCount, 'ночей')
+            ->addVariable('Z', $this->calculateConditionMarkup($Sh), 'надбавка')
+            ->evaluate();
     }
 
     private function calculateResidentNetPrice(int|float $netValue): float

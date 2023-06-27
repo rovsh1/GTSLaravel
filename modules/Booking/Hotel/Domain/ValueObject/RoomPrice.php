@@ -2,6 +2,7 @@
 
 namespace Module\Booking\Hotel\Domain\ValueObject;
 
+use Module\Booking\Common\Domain\ValueObject\PriceCalculationNotes;
 use Module\Shared\Domain\ValueObject\SerializableDataInterface;
 
 final class RoomPrice implements SerializableDataInterface
@@ -10,12 +11,13 @@ final class RoomPrice implements SerializableDataInterface
         private readonly float $netValue,
         private readonly float $avgDailyValue,
         private readonly float $hoValue,
-        private readonly float $boValue
+        private readonly float $boValue,
+        private readonly ?PriceCalculationNotes $calculationNotes,
     ) {}
 
     public static function buildEmpty(): static
     {
-        return new static(0, 0, 0, 0);
+        return new static(0, 0, 0, 0, null);
     }
 
     public function netValue(): float
@@ -38,6 +40,11 @@ final class RoomPrice implements SerializableDataInterface
         return $this->boValue;
     }
 
+    public function calculationNotes(): ?PriceCalculationNotes
+    {
+        return $this->calculationNotes;
+    }
+
     public function toData(): array
     {
         return [
@@ -45,6 +52,7 @@ final class RoomPrice implements SerializableDataInterface
             'avgDailyValue' => $this->avgDailyValue,
             'hoValue' => $this->hoValue,
             'boValue' => $this->boValue,
+            'calculationNotes' => $this->calculationNotes->toData(),
         ];
     }
 
@@ -55,6 +63,7 @@ final class RoomPrice implements SerializableDataInterface
             $data['avgDailyValue'],
             $data['hoValue'],
             $data['boValue'],
+            $data['calculationNotes'] ? PriceCalculationNotes::fromData() : null,
         );
     }
 }

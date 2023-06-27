@@ -2,12 +2,15 @@
 
 namespace Module\Booking\PriceCalculator\Domain\Service\HotelBooking\Formula;
 
+use Module\Booking\PriceCalculator\Domain\Service\ExpressionEvaluator;
+use Module\Booking\PriceCalculator\Domain\ValueObject\CalculationResult;
+
 final class BORoomPriceFormula extends AbstractRoomPriceFormula
 {
-    public function calculate(int|float $netValue): float
+    public function calculate(int|float $netValue): CalculationResult
     {
         /**
-         * S (итоговая сумма по номеру) = (Sb – D) * n * k + Z * n
+         * S (итоговая сумма по номеру) = (Sb - D) * n * k + Z * n
          *
          * Sb – цена брутто номера за 1 ночь
          * n – количество номеров (=1)
@@ -15,16 +18,17 @@ final class BORoomPriceFormula extends AbstractRoomPriceFormula
          * D – сумма скидки = Sn * (процент/100), где Sn – цена нетто номера за 1 ночь
          * Z – надбавка за ранний заезд/поздний выезд = Sb * (процент/100)
          */
-
         $Sb = $this->variables->isResident
             ? $this->calculateResidentGrossPrice($netValue)
             : $this->calculateNonResidentGrossPrice($netValue, $this->variables->guestsCount);
-        $D = 0;
-        $k = $this->variables->nightsCount;
-        $Z = $this->calculateConditionMarkup($Sb);
-        //dump(compact('Sb', 'k', 'Z'));
 
-        return (float)(($Sb - $D) * $k + $Z);
+        return (new ExpressionEvaluator('((Sb - D) * k + Z) * n'))
+            ->addVariable('Sb', $Sb, 'брутто')
+            ->addVariable('D', 0, 'скидка')
+            ->addVariable('n', 1, 'номеров')
+            ->addVariable('k', $this->variables->nightsCount, 'ночей')
+            ->addVariable('Z', $this->calculateConditionMarkup($Sb), 'надбавка')
+            ->evaluate();
     }
 
     private function calculateResidentGrossPrice(int|float $netValue): float
@@ -40,6 +44,7 @@ final class BORoomPriceFormula extends AbstractRoomPriceFormula
         $Sn = $netValue;
         $N = $this->calculateClientMarkup($Sn);
         $NDS = $this->calculateNds($Sn + $N);
+
         //dump(compact('Sn', 'N', 'NDS'));
 
         return (float)($Sn + $N + $NDS);
@@ -62,6 +67,7 @@ final class BORoomPriceFormula extends AbstractRoomPriceFormula
         $NDS = $this->calculateNds($Sn + $N);
         $T = $this->markupVariables->touristTax;
         $n = $guestsCount;
+
         //dump(compact('Sn', 'N', 'NDS', 'T'));
 
         return (float)($Sn + $N + $NDS + $T * $n);

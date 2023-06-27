@@ -2,6 +2,8 @@
 
 namespace Module\Booking\PriceCalculator\Domain\Service\HotelBooking\Formula;
 
+use Module\Booking\PriceCalculator\Domain\ValueObject\CalculationResult;
+
 abstract class AbstractRoomPriceFormula
 {
     public function __construct(
@@ -10,7 +12,7 @@ abstract class AbstractRoomPriceFormula
     ) {
     }
 
-    abstract public function calculate(int|float $netValue): float;
+    abstract public function calculate(int|float $netValue): CalculationResult;
 
     protected function calculateConditionMarkup(float $value): float
     {
