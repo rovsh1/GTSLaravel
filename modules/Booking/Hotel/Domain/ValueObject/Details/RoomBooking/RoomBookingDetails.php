@@ -64,14 +64,14 @@ class   RoomBookingDetails implements ValueObjectInterface, SerializableDataInte
 
     public static function fromData(array $data): static
     {
-        $lateCheckOut = $data['lateCheckOut'] ?? null;
         $earlyCheckIn = $data['earlyCheckIn'] ?? null;
+        $lateCheckOut = $data['lateCheckOut'] ?? null;
 
         return new static(
             $data['rateId'],
             $data['isResident'],
-            $lateCheckOut !== null ? Condition::fromData($data['lateCheckOut']) : null,
             $earlyCheckIn !== null ? Condition::fromData($data['earlyCheckIn']) : null,
+            $lateCheckOut !== null ? Condition::fromData($data['lateCheckOut']) : null,
             $data['guestNote'],
             new Percent($data['discount'])
         );

@@ -32,6 +32,6 @@ class HotelAdapter implements HotelAdapterInterface
     ): ?float {
         $roomPriceDto = app(FindRoomPrice::class)->execute($roomId, $rateId, $isResident, $guestsCount, $date);
 
-        return $roomPriceDto->price;
+        return $roomPriceDto?->price;
     }
 }

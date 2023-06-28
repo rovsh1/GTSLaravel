@@ -36,7 +36,7 @@ class Update implements UseCaseInterface
     {
         $booking = $this->repository->find($request->bookingId);
         $currentRoom = $this->roomBookingRepository->find($request->roomBookingId);
-        $guests = $currentRoom->guests();
+        $guests = $currentRoom?->guests() ?? 0;
 
         $hotelRoomDto = $this->hotelRoomAdapter->findById($request->roomId);
         $expectedGuestCount = $guests->count();

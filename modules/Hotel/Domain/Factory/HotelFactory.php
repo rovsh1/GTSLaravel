@@ -23,7 +23,7 @@ class HotelFactory extends AbstractEntityFactory
         return new $this->entity(
             new Id($data['id']),
             $data['name'],
-            CurrencyEnum::from($data['currency_id']),
+            CurrencyEnum::fromId($data['currency_id']),
             $this->serializer->deserialize(TimeSettings::class, $data['time_settings'])
         );
     }

@@ -124,7 +124,7 @@ class RoomCalculator
     ): float {
         //TODO get currency from hotel
         $hotelDto = $this->hotelAdapter->findById(61);
-        $hotelCurrency = CurrencyEnum::tryFromName($hotelDto->currency);
+        $hotelCurrency = CurrencyEnum::from($hotelDto->currency);
 
         $roomPrice = $this->hotelAdapter->getRoomPrice(
             $roomId,
