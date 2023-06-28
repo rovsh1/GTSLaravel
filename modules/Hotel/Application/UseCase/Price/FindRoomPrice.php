@@ -24,7 +24,6 @@ class FindRoomPrice implements UseCaseInterface
         int $rateId,
         bool $isResident,
         int $guestsCount,
-        int $currencyId,
         CarbonInterface $date
     ): PriceDto {
         $seasons = $this->seasonRepository->getActiveSeasonsByRoomIdIncludesPeriod(
@@ -39,7 +38,7 @@ class FindRoomPrice implements UseCaseInterface
 
         //@todo что делать если цен нет в таблице? брать из сезона?
         return $this->queryBus->execute(
-            new Query($roomId, $season->id()->value(), $rateId, $isResident, $guestsCount, $currencyId, $date)
+            new Query($roomId, $season->id()->value(), $rateId, $isResident, $guestsCount, $date)
         );
     }
 }

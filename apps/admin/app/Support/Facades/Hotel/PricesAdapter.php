@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static array getSeasonsPrices(int $hotelId)
- * @method static mixed setSeasonPrice(int $roomId, int $seasonId, int $rateId, int $guestsNumber, bool $isResident, float $price, int $currencyId)
+ * @method static mixed setSeasonPrice(int $roomId, int $seasonId, int $rateId, int $guestsCount, bool $isResident, float $price)
  * @method static array getDatePrices(int $seasonId)
- * @method static mixed setDatePrice(CarbonInterface $date, int $roomId, int $seasonId, int $rateId, int $guestsNumber, bool $isResident, float $price, int $currencyId)
+ * @method static mixed setDatePrice(CarbonInterface $date, int $roomId, int $seasonId, int $rateId, int $guestsCount, bool $isResident, float $price)
  */
 class PricesAdapter extends Facade
 {

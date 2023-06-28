@@ -16,7 +16,7 @@ class PriceCalculator
 
     private Room $room;
 
-    private int $guestsNumber;
+    private int $guestsCount;
 
     private $residentType;
 
@@ -42,9 +42,9 @@ class PriceCalculator
         return $this;
     }
 
-    public function guestsNumber(int $guestsNumber): static
+    public function guestsCount(int $guestsCount): static
     {
-        $this->guestsNumber = $guestsNumber;
+        $this->guestsCount = guestsCount;
         return $this;
     }
 

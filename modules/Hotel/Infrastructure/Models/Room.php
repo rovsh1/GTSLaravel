@@ -25,7 +25,7 @@ class Room extends Model
         'type_id',
         'custom_name',
         'rooms_number',
-        'guests_number',
+        'guests_count',
         'square',
         'position',
         'markup_settings',

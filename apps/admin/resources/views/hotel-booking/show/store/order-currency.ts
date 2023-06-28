@@ -12,7 +12,7 @@ const { order, currencies } = requestInitialData(
   z.object({
     order: z.object({
       id: z.number(),
-      currencyId: z.number(),
+      currency: z.string(),
       clientId: z.number(),
       legalId: z.number().nullable(),
     }),
@@ -27,7 +27,7 @@ const { order, currencies } = requestInitialData(
 )
 
 export const useOrderStore = defineStore('booking-order', () => {
-  const currency = computed<Currency | undefined>(() => currencies.find((cur) => order.currencyId === cur.id))
+  const currency = computed<Currency | undefined>(() => currencies.find((cur) => order.currency === cur.code_char))
 
   return {
     currency,

@@ -6,6 +6,7 @@ use Module\Hotel\Domain\Entity\Hotel;
 use Module\Hotel\Domain\ValueObject\TimeSettings;
 use Module\Shared\Domain\Service\SerializerInterface;
 use Module\Shared\Domain\ValueObject\Id;
+use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Foundation\Support\EntityFactory\AbstractEntityFactory;
 
 class HotelFactory extends AbstractEntityFactory
@@ -22,6 +23,7 @@ class HotelFactory extends AbstractEntityFactory
         return new $this->entity(
             new Id($data['id']),
             $data['name'],
+            CurrencyEnum::from($data['currency_id']),
             $this->serializer->deserialize(TimeSettings::class, $data['time_settings'])
         );
     }

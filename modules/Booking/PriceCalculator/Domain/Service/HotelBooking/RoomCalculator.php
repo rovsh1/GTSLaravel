@@ -20,8 +20,7 @@ class RoomCalculator
         private readonly HotelAdapterInterface $hotelAdapter,
         private readonly VariablesBuilder $variablesBuilder,
         private readonly CurrencyRateAdapterInterface $currencyRateAdapter
-    ) {
-    }
+    ) {}
 
     public function calculateByBooking(
         Booking $hotelBooking,
@@ -123,16 +122,17 @@ class RoomCalculator
         CurrencyEnum $orderCurrency,
         CarbonInterface $date
     ): float {
+        //TODO get currency from hotel
+        $hotelDto = $this->hotelAdapter->findById(61);
+        $hotelCurrency = CurrencyEnum::tryFromName($hotelDto->currency);
+
         $roomPrice = $this->hotelAdapter->getRoomPrice(
             $roomId,
             $rateId,
             $isResident,
             $guestsCount,
-            //$orderCurrency,
             $date
         ) ?? 0;
-        //TODO get currency from hotel
-        $hotelCurrency = CurrencyEnum::UZS;
 
         return $this->currencyRateAdapter->convertNetRate($roomPrice, $hotelCurrency, $orderCurrency, 'UZ');
     }

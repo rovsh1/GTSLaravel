@@ -7,13 +7,14 @@ namespace Module\Booking\Order\Domain\Entity;
 use Module\Booking\Order\Domain\Event\ClientChanged;
 use Module\Shared\Domain\Entity\EntityInterface;
 use Module\Shared\Domain\ValueObject\Id;
+use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
 final class Order extends AbstractAggregateRoot implements EntityInterface
 {
     public function __construct(
         private readonly Id $id,
-        private Id $currencyId,
+        private CurrencyEnum $currency,
         private Id $clientId,
         private readonly ?Id $legalId,
     ) {}
@@ -39,8 +40,8 @@ final class Order extends AbstractAggregateRoot implements EntityInterface
         return $this->legalId;
     }
 
-    public function currencyId(): Id
+    public function currency(): CurrencyEnum
     {
-        return $this->currencyId;
+        return $this->currency;
     }
 }

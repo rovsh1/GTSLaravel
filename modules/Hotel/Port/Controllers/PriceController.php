@@ -32,20 +32,18 @@ class PriceController
             'seasonId' => 'required|int',
             'roomId' => 'required|int',
             'rateId' => 'required|int',
-            'guestsNumber' => 'required|int',
+            'guestsCount' => 'required|int',
             'isResident' => 'required|boolean',
             'price' => 'required|numeric',
-            'currencyId' => 'required|int',
         ]);
         return $this->commandBus->execute(
             new Command\Price\Season\Set(
                 seasonId: $request->seasonId,
                 roomId: $request->roomId,
                 rateId: $request->rateId,
-                guestsNumber: $request->guestsNumber,
+                guestsCount: $request->guestsCount,
                 isResident: $request->isResident,
                 price: $request->price,
-                currencyId: $request->currencyId
             )
         );
     }
@@ -56,10 +54,9 @@ class PriceController
             'seasonId' => 'required|int',
             'roomId' => 'required|int',
             'rateId' => 'required|int',
-            'guestsNumber' => 'required|int',
+            'guestsCount' => 'required|int',
             'isResident' => 'required|boolean',
             'price' => 'required|numeric',
-            'currencyId' => 'required|int',
             'date' => ['required', 'date']
         ]);
 
@@ -69,10 +66,9 @@ class PriceController
                 seasonId: $request->seasonId,
                 roomId: $request->roomId,
                 rateId: $request->rateId,
-                guestsNumber: $request->guestsNumber,
+                guestsCount: $request->guestsCount,
                 isResident: $request->isResident,
                 price: $request->price,
-                currencyId: $request->currencyId
             )
         );
     }

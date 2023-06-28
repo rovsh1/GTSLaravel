@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->unsignedSmallInteger('type_id');
             $table->string('custom_name')->nullable()->comment('Внутреннее наименование для отеля');
             $table->unsignedTinyInteger('rooms_number');
-            $table->unsignedTinyInteger('guests_number');
+            $table->unsignedTinyInteger('guests_count');
             $table->unsignedSmallInteger('square')->nullable();
             $table->unsignedTinyInteger('position')->default(0);
             $table->json('markup_settings')->nullable();

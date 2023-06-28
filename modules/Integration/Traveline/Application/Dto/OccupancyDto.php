@@ -15,10 +15,10 @@ class OccupancyDto extends \Sdk\Module\Foundation\Support\Dto\Dto
         public readonly string $bedType = self::DEFAULT_BED_TYPE,
     ) {}
 
-    public static function createByGuestsNumber(HotelRoomCodeGeneratorInterface $codeGenerator, int $roomId, int $guestsNumber)
+    public static function createByGuestsCount(HotelRoomCodeGeneratorInterface $codeGenerator, int $roomId, int $guestsCount)
     {
         $occupancies = [];
-        for ($i = 1; $i <= $guestsNumber; $i++) {
+        for ($i = 1; $i <= $guestsCount; $i++) {
             /** @var string $roomCode */
             $roomCode = $codeGenerator->stringifyRoomCode(new HotelRoomCode($roomId, $i));
             $occupancies[] = [

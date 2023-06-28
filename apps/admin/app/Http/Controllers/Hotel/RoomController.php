@@ -148,7 +148,7 @@ class RoomController extends Controller
                 ['label' => 'Наименование (уникальное)', 'hint' => 'Внутреннее наименования для отеля']
             )
             ->number('rooms_number', ['label' => 'Кол-во номеров', 'required' => true])
-            ->number('guests_number', ['label' => 'Вместимость номера', 'required' => true])
+            ->number('guests_count', ['label' => 'Вместимость номера', 'required' => true])
             ->number('square', ['label' => 'Площадь']);
     }
 

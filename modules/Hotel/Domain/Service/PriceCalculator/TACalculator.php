@@ -16,7 +16,7 @@ class TACalculator implements CalculatorInterface
 
     private Room $room;
 
-    private int $guestsNumber;
+    private int $guestsCount;
 
     private $residentType;
 
@@ -40,9 +40,9 @@ class TACalculator implements CalculatorInterface
         return $this;
     }
 
-    public function guestsNumber(int $guestsNumber): static
+    public function guestsCount(int $guestsCount): static
     {
-        $this->guestsNumber = $guestsNumber;
+        $this->guestsCount = $guestsCount;
         return $this;
     }
 

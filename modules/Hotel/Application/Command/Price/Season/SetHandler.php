@@ -34,13 +34,13 @@ class SetHandler implements CommandHandlerInterface
         }
 
         $group = Group::whereRateId($command->rateId)
-            ->whereGuestsNumber($command->guestsNumber)
+            ->whereGuestsCount($command->guestsCount)
             ->whereIsResident($command->isResident)
             ->first();
         if ($group === null) {
             $group = Group::create([
                 'rate_id' => $command->rateId,
-                'guests_number' => $command->guestsNumber,
+                'guests_count' => $command->guestsCount,
                 'is_resident' => $command->isResident,
             ]);
         }
@@ -52,7 +52,6 @@ class SetHandler implements CommandHandlerInterface
                 'season_id' => $command->seasonId,
                 'room_id' => $command->roomId,
                 'price' => $command->price,
-                'currency_id' => $command->currencyId,
             ]
         );
 

@@ -31,7 +31,7 @@ class Room extends Model
         'type_id',
         'custom_name',
         'rooms_number',
-        'guests_number',
+        'guests_count',
         'square',
         'position',
     ];
@@ -41,7 +41,7 @@ class Room extends Model
         'name_id' => 'int',
         'type_id' => 'int',
         'rooms_number' => 'int',
-        'guests_number' => 'int',
+        'guests_count' => 'int',
         'square' => 'int',
         'position' => 'int',
     ];

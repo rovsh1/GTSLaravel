@@ -12,7 +12,7 @@ interface HotelAdapterInterface
 
     public function updateRoomQuota(CarbonPeriod $period, int $roomId, int $quota);
 
-    public function updateRoomPrice(CarbonPeriod $period, int $roomId, int $rateId, int $guestsNumber, bool $isResident, string $currencyCode, float $price);
+    public function updateRoomPrice(CarbonPeriod $period, int $roomId, int $rateId, int $guestsCount, bool $isResident, string $currencyCode, float $price);
 
     public function openRoomRate(CarbonPeriod $period, int $roomId, int $rateId);
 

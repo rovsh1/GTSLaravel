@@ -9,6 +9,6 @@ class Room
         public readonly string $name,
         /** @var PriceRate[] $priceRates */
         public readonly array $priceRates,
-        public readonly int $guestsNumber
+        public readonly int $guestsCount
     ) {}
 }

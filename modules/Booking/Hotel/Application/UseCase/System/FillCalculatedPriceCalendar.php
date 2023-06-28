@@ -20,7 +20,6 @@ class FillCalculatedPriceCalendar implements UseCaseInterface
                     'date' => $date,
                     'season_id' => $seasonPrice->season->id,
                     'group_id' => $seasonPrice->group_id,
-                    'currency_id' => $seasonPrice->currency_id,
                     'price' => $seasonPrice->price,
                     'room_id' => $seasonPrice->room_id,
                 ];
@@ -30,7 +29,7 @@ class FillCalculatedPriceCalendar implements UseCaseInterface
         \DB::table('hotel_season_price_calendar')->upsert(
             $pricesData,
             ['date', 'season_id', 'group_id', 'room_id'],
-            ['date', 'season_id', 'group_id', 'room_id', 'currency_id', 'price']
+            ['date', 'season_id', 'group_id', 'room_id', 'price']
         );
     }
 }

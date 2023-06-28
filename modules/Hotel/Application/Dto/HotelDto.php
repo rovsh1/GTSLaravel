@@ -14,6 +14,7 @@ class HotelDto extends AbstractDomainBasedDto
     public function __construct(
         public readonly int $id,
         public readonly string $name,
+        public readonly string $currency,
         public readonly TimeSettingsDto $timeSettings
     ) {}
 
@@ -22,6 +23,7 @@ class HotelDto extends AbstractDomainBasedDto
         return new static(
             $entity->id()->value(),
             $entity->name(),
+            $entity->currency()->name,
             TimeSettingsDto::fromDomain($entity->timeSettings())
         );
     }

@@ -6,6 +6,7 @@ namespace Module\Booking\Order\Domain\Factory;
 
 use Module\Booking\Order\Domain\Entity\Order;
 use Module\Shared\Domain\ValueObject\Id;
+use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Foundation\Support\EntityFactory\AbstractEntityFactory;
 
 class OrderFactory extends AbstractEntityFactory
@@ -16,9 +17,10 @@ class OrderFactory extends AbstractEntityFactory
     {
         $legalId = $data['legal_id'] ?? null;
 
+
         return new $this->entity(
             new Id($data['id']),
-            new Id($data['currency_id']),
+            CurrencyEnum::from($data['currency_id']),
             new Id($data['client_id']),
             $legalId !== null ? new Id($legalId) : null,
         );

@@ -20,7 +20,6 @@ class DatePrice extends Model
         'group_id',
         'room_id',
         'price',
-        'currency_id',
     ];
 
     protected $casts = [
@@ -34,7 +33,7 @@ class DatePrice extends Model
             ->addSelect('hotel_season_price_calendar.*')
             ->join('hotel_price_groups', 'hotel_price_groups.id', '=', 'hotel_season_price_calendar.group_id')
             ->addSelect('hotel_price_groups.rate_id as rate_id')
-            ->addSelect('hotel_price_groups.guests_number as guests_number')
+            ->addSelect('hotel_price_groups.guests_count as guests_count')
             ->addSelect('hotel_price_groups.is_resident as is_resident');
     }
 

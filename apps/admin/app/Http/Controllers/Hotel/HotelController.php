@@ -94,8 +94,10 @@ class HotelController extends AbstractPrototypeController
     protected function formFactory(): FormContract
     {
         $coordinates = isset($this->model) ? $this->model->coordinates : null;
+
         return Form::city('city_id', ['label' => 'Город', 'required' => true, 'emptyItem' => ''])
             ->select('type_id', ['label' => 'Тип отеля', 'required' => true, 'emptyItem' => '', 'items' => Type::get()])
+            ->currency('currency_id', ['label' => 'Валюта', 'required' => true, 'emptyItem' => ''])
             ->enum('visibility', ['label' => __('label.visibility'), 'emptyItem' => '', 'enum' => VisibilityEnum::class]
             )
             ->text('name', ['label' => 'Наименование', 'required' => true])
@@ -131,6 +133,7 @@ class HotelController extends AbstractPrototypeController
                     if (!$contract) {
                         return '-';
                     }
+
                     return $contract . '<br>' . Format::period($contract->period);
                 }
             ])
@@ -144,6 +147,7 @@ class HotelController extends AbstractPrototypeController
     {
         $showUrl = $this->prototype->route('show', $this->model->id);
         $isUpdateAllowed = Acl::isUpdateAllowed($this->getPrototypeKey());
+
         return [
             'params' => $this->hotelParams($this->model),
             'contactsUrl' => $showUrl . '/contacts',
@@ -184,6 +188,7 @@ class HotelController extends AbstractPrototypeController
         $from = new Point($city->center_lat, $city->center_lon);
         $to = Point::buildFromCoordinates($data['coordinates']);
         $preparedData['city_distance'] = $this->distanceCalculator->getDistance($from, $to);
+
         return $preparedData;
     }
 

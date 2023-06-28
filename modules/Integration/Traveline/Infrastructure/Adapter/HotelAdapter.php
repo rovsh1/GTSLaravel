@@ -32,7 +32,7 @@ class HotelAdapter extends AbstractModuleAdapter implements HotelAdapterInterfac
         CarbonPeriod $period,
         int $roomId,
         int $rateId,
-        int $guestsNumber,
+        int $guestsCount,
         bool $isResident,
         string $currencyCode,
         float $price
@@ -40,7 +40,7 @@ class HotelAdapter extends AbstractModuleAdapter implements HotelAdapterInterfac
         return $this->request('updateRoomPrice', [
             'room_id' => $roomId,
             'rate_id' => $rateId,
-            'guests_number' => $guestsNumber,
+            'guests_count' => $guestsCount,
             'currency_code' => $currencyCode,
             'price' => $price,
             'date_from' => $period->getStartDate(),

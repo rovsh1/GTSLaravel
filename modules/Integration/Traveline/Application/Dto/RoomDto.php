@@ -27,7 +27,7 @@ class RoomDto extends \Sdk\Module\Foundation\Support\Dto\Dto
             $hotelRoomData->id,
             $hotelRoomData->name,
             RatePlanDto::collection($hotelRoomData->priceRates),
-            OccupancyDto::createByGuestsNumber($codeGenerator, $hotelRoomData->id, $hotelRoomData->guestsNumber),
+            OccupancyDto::createByGuestsCount($codeGenerator, $hotelRoomData->id, $hotelRoomData->guestsCount),
         );
     }
 }

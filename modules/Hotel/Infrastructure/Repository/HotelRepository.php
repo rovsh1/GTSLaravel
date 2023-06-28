@@ -9,10 +9,14 @@ use Module\Hotel\Infrastructure\Models\Hotel as HotelEloquent;
 
 class HotelRepository implements HotelRepositoryInterface
 {
+    public function __construct(
+        private readonly HotelFactory $factory
+    ) {}
+
     public function find(int $id): ?Hotel
     {
         $hotel = HotelEloquent::find($id);
 
-        return app(HotelFactory::class)->createFrom($hotel);
+        return $this->factory->createFrom($hotel);
     }
 }

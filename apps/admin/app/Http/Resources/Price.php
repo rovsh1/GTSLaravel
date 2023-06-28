@@ -16,9 +16,8 @@ class Price extends JsonResource
             'room_id' => $this->roomId,
             'rate_id' => $this->rateId,
             'is_resident' => $this->isResident,
-            'guests_number' => $this->guestsNumber,
+            'guests_count' => $this->guestsCount,
             'price' => $this->price,
-            'currency_id' => $this->currencyId,
         ];
         if (isset($this->date)) {
             $data['date'] = $this->date;

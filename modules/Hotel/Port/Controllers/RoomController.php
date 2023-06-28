@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Hotel\Port\Controllers;
 
-use Module\Hotel\Application\Query\GetRoomById;
+use Module\Hotel\Application\Query\FindRoom;
 use Sdk\Module\Contracts\Bus\QueryBusInterface;
 use Sdk\Module\PortGateway\Request;
 
@@ -21,6 +21,6 @@ class RoomController
             'id' => ['required', 'int'],
         ]);
 
-        return $this->queryBus->execute(new GetRoomById($request->id));
+        return $this->queryBus->execute(new FindRoom($request->id));
     }
 }

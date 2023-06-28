@@ -17,19 +17,17 @@ class PricesAdapter extends AbstractHotelAdapter
         int $roomId,
         int $seasonId,
         int $rateId,
-        int $guestsNumber,
+        int $guestsCount,
         bool $isResident,
         float $price,
-        int $currencyId
     ): bool {
         return $this->request('setSeasonPrice', [
             'roomId' => $roomId,
             'seasonId' => $seasonId,
             'rateId' => $rateId,
-            'guestsNumber' => $guestsNumber,
+            'guestsCount' => $guestsCount,
             'isResident' => $isResident,
             'price' => $price,
-            'currencyId' => $currencyId,
         ]);
     }
 
@@ -43,20 +41,18 @@ class PricesAdapter extends AbstractHotelAdapter
         int $roomId,
         int $seasonId,
         int $rateId,
-        int $guestsNumber,
+        int $guestsCount,
         bool $isResident,
         float $price,
-        int $currencyId
     ): bool {
         return $this->request('setDatePrice', [
             'date' => $date,
             'roomId' => $roomId,
             'seasonId' => $seasonId,
             'rateId' => $rateId,
-            'guestsNumber' => $guestsNumber,
+            'guestsCount' => $guestsCount,
             'isResident' => $isResident,
             'price' => $price,
-            'currencyId' => $currencyId,
         ]);
     }
 }

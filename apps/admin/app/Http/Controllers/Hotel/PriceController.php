@@ -49,10 +49,9 @@ class PriceController extends Controller
             roomId: $request->getRoomId(),
             seasonId: $season->id,
             rateId: $request->getRateId(),
-            guestsNumber: $request->getGuestsNumber(),
+            guestsCount: $request->getGuestsCount(),
             isResident: $request->getIsResident(),
             price: $request->getPrice(),
-            currencyId: $request->getCurrencyId()
         );
 
         return new AjaxSuccessResponse();
@@ -77,10 +76,9 @@ class PriceController extends Controller
             roomId: $request->getRoomId(),
             seasonId: $season->id,
             rateId: $request->getRateId(),
-            guestsNumber: $request->getGuestsNumber(),
+            guestsCount: $request->getGuestsCount(),
             isResident: $request->getIsResident(),
             price: $request->getPrice(),
-            currencyId: $request->getCurrencyId(),
             date: $request->getDate()
         );
 
@@ -102,10 +100,9 @@ class PriceController extends Controller
                 roomId: $request->getRoomId(),
                 seasonId: $season->id,
                 rateId: $request->getRateId(),
-                guestsNumber: $request->getGuestsNumber(),
+                guestsCount: $request->getGuestsCount(),
                 isResident: $request->getIsResident(),
                 price: $request->getPrice(),
-                currencyId: $request->getCurrencyId(),
                 date: $date
             );
         }

@@ -17,13 +17,13 @@ class HotelRoomCodeGenerator implements HotelRoomCodeGeneratorInterface
     public function parseRoomCode(string $code): HotelRoomCode
     {
         try {
-            [$roomId, $guestsNumber] = explode(self::ROOM_CODE_SEPARATOR, $code);
+            [$roomId, $guestsCount] = explode(self::ROOM_CODE_SEPARATOR, $code);
         } catch (\Throwable $e) {
             throw new InvalidHotelRoomCode();
         }
-        if (!is_numeric($roomId) || !is_numeric($guestsNumber)) {
+        if (!is_numeric($roomId) || !is_numeric($guestsCount)) {
             throw new InvalidHotelRoomCode();
         }
-        return new HotelRoomCode($roomId, $guestsNumber);
+        return new HotelRoomCode($roomId, $guestsCount);
     }
 }

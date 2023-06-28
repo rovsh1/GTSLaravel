@@ -16,9 +16,8 @@ class BatchUpdatePriceRequest extends FormRequest
     {
         return [
             'room_id' => ['required', 'integer'],
-            'currency_id' => ['required', 'int'],
             'rate_id' => ['required', 'int'],
-            'guests_number' => ['required', 'numeric'],
+            'guests_count' => ['required', 'numeric'],
             'is_resident' => ['required', 'boolean'],
             'price' => ['required', 'numeric'],
             'date_from' => ['required', 'date'],
@@ -33,19 +32,14 @@ class BatchUpdatePriceRequest extends FormRequest
         return $this->post('room_id');
     }
 
-    public function getCurrencyId(): int
-    {
-        return $this->post('currency_id');
-    }
-
     public function getRateId(): int
     {
         return $this->post('rate_id');
     }
 
-    public function getGuestsNumber(): int
+    public function getGuestsCount(): int
     {
-        return $this->post('guests_number');
+        return $this->post('guests_count');
     }
 
     public function getIsResident(): bool

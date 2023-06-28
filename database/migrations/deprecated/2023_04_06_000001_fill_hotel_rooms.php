@@ -62,7 +62,7 @@ return new class extends Migration {
                     'type_id' => $r->type_id,
                     'custom_name' => $r->custom_name,
                     'rooms_number' => $r->rooms_number,
-                    'guests_number' => $r->guests_number,
+                    'guests_count' => $r->guests_number,
                     'square' => $r->size,
                     'position' => $r->index,
                     'markup_settings' => json_encode($roomMarkup->toData()),

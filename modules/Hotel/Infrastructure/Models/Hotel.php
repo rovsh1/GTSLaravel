@@ -12,6 +12,7 @@ class Hotel extends Model
     protected $fillable = [
         'city_id',
         'type_id',
+        'currency_id',
         'status',
         'visibility',
         'rating',

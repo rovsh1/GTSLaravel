@@ -15,10 +15,9 @@ class FindHandler implements QueryHandlerInterface
             ->whereSeasonId($query->seasonId)
             ->whereRoomId($query->roomId)
             ->whereDate('date', '=', $query->date)
-            ->where('guests_number', '=', $query->guestsCount)
+            ->where('guests_count', '=', $query->guestsCount)
             ->where('is_resident', '=', $query->isResident)
             ->where('rate_id', '=', $query->rateId)
-            ->whereCurrencyId($query->currencyId)
             ->first();
         if ($datePrice === null) {
             return null;
@@ -28,9 +27,8 @@ class FindHandler implements QueryHandlerInterface
             seasonId: $datePrice->season_id,
             price: $datePrice->price,
             rateId: $datePrice->rate_id,
-            guestsCount: $datePrice->guests_number,
+            guestsCount: $datePrice->guests_count,
             roomId: $datePrice->room_id,
-            currencyId: $datePrice->currency_id,
             isResident: $datePrice->is_resident,
             date: $datePrice->date,
         );

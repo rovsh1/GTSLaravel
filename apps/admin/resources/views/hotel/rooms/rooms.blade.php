@@ -29,7 +29,7 @@
                 <div class="body">
                     <div class="type">
                         {{ $room->type_name }} на
-                        <b>{{ $room->guests_number }}</b> {{ trans_choice('человека|человека|человек', $room->guests_number) }}
+                        <b>{{ $room->guests_count }}</b> {{ trans_choice('человека|человека|человек', $room->guests_number) }}
                         (<b>x{{ $room->rooms_number }}</b>)
                     </div>
                     <div class="buttons">

@@ -26,7 +26,6 @@ final class Booking extends AbstractBooking
         Id $id,
         Id $orderId,
         BookingStatusEnum $status,
-        BookingTypeEnum $type,
         CarbonImmutable $createdAt,
         Id $creatorId,
         private ?string $note = null,
@@ -37,7 +36,7 @@ final class Booking extends AbstractBooking
         private CancelConditions $cancelConditions,
         private BookingPrice $price,
     ) {
-        parent::__construct($id, $orderId, $status, $type, $createdAt, $creatorId);
+        parent::__construct($id, $orderId, $status, $createdAt, $creatorId);
     }
 
     public function hotelInfo(): HotelInfo
@@ -69,6 +68,11 @@ final class Booking extends AbstractBooking
     public function roomBookings(): RoomBookingCollection
     {
         return $this->roomBookings;
+    }
+
+    public function type(): BookingTypeEnum
+    {
+        return BookingTypeEnum::HOTEL;
     }
 
     public function addRoomBooking(RoomBooking $booking): void

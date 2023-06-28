@@ -9,7 +9,7 @@ class Price
 {
     public function __construct(
         public readonly int   $roomId,
-        public readonly int   $guestsNumber,
+        public readonly int   $guestsCount,
         public readonly float $price,
     ) {}
 

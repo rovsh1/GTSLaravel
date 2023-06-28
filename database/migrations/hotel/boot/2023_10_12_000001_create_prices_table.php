@@ -16,7 +16,7 @@ return new class extends Migration {
             //$table->integer('id')->unsigned()->autoIncrement();
             $table->integer('room_id')->unsigned();
             $table->date('date');
-            $table->tinyInteger('guests_number')->unsigned();
+            $table->tinyInteger('guests_count')->unsigned();
             $table->tinyInteger('resident_type')->unsigned();
             $table->integer('aggregator_id')->unsigned();
         });

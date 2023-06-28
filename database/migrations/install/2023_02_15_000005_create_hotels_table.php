@@ -11,6 +11,7 @@ return new class extends Migration {
             $table->integer('id')->unsigned()->autoIncrement();
             $table->integer('city_id')->unsigned();
             $table->smallInteger('type_id')->unsigned();
+            $table->unsignedSmallInteger('currency_id');
             $table->tinyInteger('status')->unsigned()->default(0);
             $table->tinyInteger('visibility')->unsigned()->default(0);
             $table->tinyInteger('rating')->unsigned()->nullable();
@@ -34,6 +35,12 @@ return new class extends Migration {
             $table->foreign('type_id')
                 ->references('id')
                 ->on('r_enums')
+                ->restrictOnDelete()
+                ->cascadeOnUpdate();
+
+            $table->foreign('currency_id')
+                ->references('id')
+                ->on('r_currencies')
                 ->restrictOnDelete()
                 ->cascadeOnUpdate();
         });

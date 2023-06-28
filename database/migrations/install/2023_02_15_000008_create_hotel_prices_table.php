@@ -38,10 +38,10 @@ return new class extends Migration {
             $table->increments('id');
 //            $table->unsignedInteger('aggregator_id')->nullable();
             $table->unsignedInteger('rate_id');
-            $table->unsignedTinyInteger('guests_number');
+            $table->unsignedTinyInteger('guests_count');
             $table->boolean('is_resident');
 
-            $table->unique(['rate_id', 'guests_number', 'is_resident']);
+            $table->unique(['rate_id', 'guests_count', 'is_resident']);
 
             $table->foreign('rate_id')
                 ->references('id')
@@ -58,10 +58,9 @@ return new class extends Migration {
             $table->unsignedInteger('group_id');
             $table->unsignedInteger('room_id');
             $table->unsignedDecimal('price', 11, 2);
-            $table->unsignedSmallInteger('currency_id');
             $table->unsignedTinyInteger('fill_type');
 
-            $table->primary(['date', 'group_id', 'room_id', 'currency_id']);
+            $table->primary(['date', 'group_id', 'room_id']);
 
             $table->foreign('group_id')
                 ->references('id')
@@ -72,12 +71,6 @@ return new class extends Migration {
             $table->foreign('room_id')
                 ->references('id')
                 ->on('hotel_rooms')
-                ->cascadeOnDelete()
-                ->cascadeOnUpdate();
-
-            $table->foreign('currency_id')
-                ->references('id')
-                ->on('r_currencies')
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
         });

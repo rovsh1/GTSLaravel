@@ -40,8 +40,8 @@ class Update implements UseCaseInterface
 
         $hotelRoomDto = $this->hotelRoomAdapter->findById($request->roomId);
         $expectedGuestCount = $guests->count();
-        if ($expectedGuestCount > $hotelRoomDto->guestsNumber) {
-            $guests = $guests->slice(0, $hotelRoomDto->guestsNumber);
+        if ($expectedGuestCount > $hotelRoomDto->guestsCount) {
+            $guests = $guests->slice(0, $hotelRoomDto->guestsCount);
         }
         $earlyCheckIn = $request->earlyCheckIn !== null ? $this->buildMarkupCondition($request->earlyCheckIn) : null;
         $lateCheckOut = $request->lateCheckOut !== null ? $this->buildMarkupCondition($request->lateCheckOut) : null;

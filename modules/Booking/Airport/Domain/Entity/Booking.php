@@ -18,7 +18,6 @@ class Booking extends AbstractBooking
         Id $id,
         Id $orderId,
         BookingStatusEnum $status,
-        BookingTypeEnum $type,
         CarbonImmutable $createdAt,
         Id $creatorId,
         private readonly ServiceInfo $serviceInfo,
@@ -26,7 +25,7 @@ class Booking extends AbstractBooking
         private readonly CarbonImmutable $date,
         private ?string $note
     ) {
-        parent::__construct($id, $orderId, $status, $type, $createdAt, $creatorId);
+        parent::__construct($id, $orderId, $status, $createdAt, $creatorId);
     }
 
     public function serviceInfo(): ServiceInfo
@@ -52,5 +51,10 @@ class Booking extends AbstractBooking
     public function setNote(string|null $note): void
     {
         $this->note = $note;
+    }
+
+    public function type(): BookingTypeEnum
+    {
+        return BookingTypeEnum::AIRPORT;
     }
 }

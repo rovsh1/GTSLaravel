@@ -30,7 +30,6 @@ abstract class AbstractBooking extends AbstractAggregateRoot implements
         private readonly Id $id,
         private readonly Id $orderId,
         private BookingStatusEnum $status,
-        private readonly BookingTypeEnum $type,
         private readonly CarbonImmutable $createdAt,
         private readonly Id $creatorId,
     ) {}
@@ -50,10 +49,7 @@ abstract class AbstractBooking extends AbstractAggregateRoot implements
         return $this->status;
     }
 
-    public function type(): BookingTypeEnum
-    {
-        return $this->type;
-    }
+    abstract public function type(): BookingTypeEnum;
 
     public function createdAt(): CarbonImmutable
     {

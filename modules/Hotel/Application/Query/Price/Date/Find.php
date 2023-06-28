@@ -3,6 +3,7 @@
 namespace Module\Hotel\Application\Query\Price\Date;
 
 use Carbon\CarbonInterface;
+use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Contracts\Bus\QueryInterface;
 
 class Find implements QueryInterface
@@ -13,7 +14,6 @@ class Find implements QueryInterface
         public readonly int $rateId,
         public readonly bool $isResident,
         public readonly int $guestsCount,
-        public readonly int $currencyId,
         public readonly CarbonInterface $date
     ) {}
 }

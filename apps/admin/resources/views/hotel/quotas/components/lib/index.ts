@@ -83,7 +83,7 @@ export const getRoomQuotas: GetRoomQuotas = (params) => {
       id,
       name: label,
       customName,
-      guestsNumber: guests,
+      guestsCount: guests,
       roomsNumber: count,
     } = room
 

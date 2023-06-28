@@ -13,7 +13,7 @@ class RoomDatePrice
 //        $date,
 
         private readonly ValueObject\GuestsCriteria $guestsParams,
-//        $guestsNumber,
+//        $guestsCount,
 //        $residentType,
 //        $residentType,
 

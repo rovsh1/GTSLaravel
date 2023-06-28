@@ -7,7 +7,7 @@ use Module\Hotel\Application\Command\Room\Quota\Close;
 use Module\Hotel\Application\Command\Room\Quota\Open;
 use Module\Hotel\Application\Command\Room\Quota\Reset;
 use Module\Hotel\Application\Command\Room\Quota\Update;
-use Module\Hotel\Application\Query\GetRoomById;
+use Module\Hotel\Application\Query\FindRoom;
 use Module\Hotel\Domain\Exception\Room\RoomNotFound;
 use Sdk\Module\Contracts\Bus\CommandBusInterface;
 use Sdk\Module\Contracts\Bus\QueryBusInterface;
@@ -68,7 +68,7 @@ class RoomQuotaUpdater
 
     private function isRoomExist(int $roomId): bool
     {
-        return $this->queryBus->execute(new GetRoomById($roomId)) !== null;
+        return $this->queryBus->execute(new FindRoom($roomId)) !== null;
     }
 
 }

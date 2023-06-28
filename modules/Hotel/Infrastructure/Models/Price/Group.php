@@ -14,7 +14,7 @@ class Group extends Model
 
     protected $fillable = [
         'rate_id',
-        'guests_number',
+        'guests_count',
         'is_resident',
     ];
 }

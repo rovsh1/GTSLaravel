@@ -19,6 +19,7 @@ use Module\Shared\Domain\ValueObject\Id;
 use Module\Shared\Domain\ValueObject\Percent;
 use Module\Shared\Domain\ValueObject\Time;
 use Module\Shared\Domain\ValueObject\TimePeriod;
+use Module\Shared\Enum\CurrencyEnum;
 
 return new class extends Migration {
 
@@ -194,6 +195,7 @@ return new class extends Migration {
                     'id' => $hotelId,
                     'city_id' => $r->city_id,
                     'type_id' => $r->type_id,
+                    'currency_id' => CurrencyEnum::UZS,
                     'rating' => $r->rating,
                     'name' => $r->name,
                     'address' => $r->address,

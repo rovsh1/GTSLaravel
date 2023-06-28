@@ -257,13 +257,13 @@ class BookingController extends AbstractPrototypeController
                 'label' => __('label.client'),
                 'required' => true,
             ])
+            ->hidden('legal_id', [
+                'label' => 'Юр. лицо',
+            ])
             ->currency('currency_id', [
                 'label' => 'Валюта',
                 'required' => true,
                 'value' => 1
-            ])
-            ->hidden('legal_id', [
-                'label' => 'Юр. лицо',
             ])
             ->hotel('hotel_id', [
                 'label' => 'Отель',

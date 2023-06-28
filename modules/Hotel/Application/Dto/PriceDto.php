@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Module\Hotel\Application\Dto;
 
 use Carbon\CarbonInterface;
+use Sdk\Module\Foundation\Support\Dto\Dto;
 
-class PriceDto extends \Sdk\Module\Foundation\Support\Dto\Dto
+class PriceDto extends Dto
 {
     public function __construct(
         public readonly int $seasonId,
@@ -15,7 +16,6 @@ class PriceDto extends \Sdk\Module\Foundation\Support\Dto\Dto
         public readonly int $guestsCount,
         public readonly bool $isResident,
         public readonly float $price,
-        public readonly int $currencyId,
         public readonly ?CarbonInterface $date = null,
     ) {}
 }

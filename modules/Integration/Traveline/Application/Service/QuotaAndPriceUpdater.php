@@ -109,7 +109,7 @@ class QuotaAndPriceUpdater
                 $updateRequest->getDatePeriod(),
                 $price->roomId,
                 $updateRequest->ratePlanId,
-                $price->guestsNumber,
+                $price->guestsCount,
                 $this->isPricesForResidents,
                 $updateRequest->currencyCode,
                 $price->price,

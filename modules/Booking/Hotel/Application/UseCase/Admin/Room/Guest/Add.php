@@ -32,9 +32,9 @@ class Add implements UseCaseInterface
             $hotelRoomSettings = $this->hotelRoomAdapter->findById($roomBooking->roomInfo()->id());
             $expectedGuestCount = $roomBooking->guests()->count() + 1;
             //@todo перенести валидацию в сервис
-            if ($expectedGuestCount > $hotelRoomSettings->guestsNumber) {
+            if ($expectedGuestCount > $hotelRoomSettings->guestsCount) {
                 throw new TooManyRoomGuests(
-                    "Room doesn't support {$expectedGuestCount} guests, max {$hotelRoomSettings->guestsNumber} available."
+                    "Room doesn't support {$expectedGuestCount} guests, max {$hotelRoomSettings->guestsCount} available."
                 );
             }
 
