@@ -227,19 +227,31 @@ fetchCountries()
               <tbody>
                 <tr v-if="orderCurrency">
                   <td>Стоимость брутто</td>
-                  <td class="text-nowrap">{{ room.price.avgDailyValue }} <span class="cur">{{ orderCurrency.sign }}</span></td>
-                  <td class="text-nowrap">{{ room.price.boValue }} <span class="cur">{{ orderCurrency.sign }}</span></td>
+                  <td class="text-nowrap">
+                    {{ room.price.avgDailyValue }}
+                    <span class="cur">{{ orderCurrency.sign }}</span>
+                  </td>
+                  <td class="text-nowrap">
+                    {{ room.price.boValue }}
+                    <span class="cur">{{ orderCurrency.sign }}</span>
+                  </td>
                   <td class="text-nowrap">{{ room.price.boNote }}</td>
                 </tr>
               </tbody>
             </table>
           </div>
           <div v-if="orderCurrency" class="conditions">
-            <span class="condition-item">Ранний заезд  - <code>????</code> <span class="cur">{{ orderCurrency.sign }}</span></span>
-            <span class="condition-item">Поздний выезд  - <code>????</code> <span class="cur">{{ orderCurrency.sign }}</span></span>
+            <span class="condition-item">Ранний заезд  - <code>????</code>
+              <span class="cur">{{ orderCurrency.sign }}</span>
+            </span>
+            <span class="condition-item">Поздний выезд  - <code>????</code>
+              <span class="cur">{{ orderCurrency.sign }}</span>
+            </span>
           </div>
           <div v-if="orderCurrency" class="d-flex flex-row justify-content-between w-100 mt-2">
-            <strong>Итого: {{ room.price.hoValue }} <span class="cur">{{ orderCurrency.sign }}</span></strong>
+            <strong>Итого: {{ room.price.hoValue }}
+              <span class="cur">{{ orderCurrency.sign }}</span>
+            </strong>
             <a href="#">Изменить цену номера</a>
           </div>
         </div>

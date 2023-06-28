@@ -218,7 +218,11 @@ fetchBookingRequests()
     />
     <a href="#" class="btn-log" @click.prevent="toggleHistoryModal()">История изменений</a>
     <div v-if="booking && orderCurrency" class="float-end">
-      Общая сумма: <strong>{{ booking.price.boValue }} <span class="cur">{{ orderCurrency.sign }}</span></strong>
+      Общая сумма:
+      <strong>
+        {{ booking.price.boValue }}
+        <span class="cur">{{ orderCurrency.sign }}</span>
+      </strong>
     </div>
   </div>
 
@@ -267,7 +271,8 @@ fetchBookingRequests()
         <h6>Приход</h6>
         <hr>
         <div v-if="booking && orderCurrency">
-          Общая сумма (брутто): {{ booking.price.hoValue }} <span class="currency">{{ orderCurrency.sign }}</span>
+          Общая сумма (брутто): {{ booking.price.hoValue }}
+          <span class="currency">{{ orderCurrency.sign }}</span>
         </div>
         <a href="#">Изменить</a>
       </div>
@@ -275,7 +280,8 @@ fetchBookingRequests()
         <h6>Расход</h6>
         <hr>
         <div v-if="booking && orderCurrency">
-          Общая сумма (нетто): {{ booking.price.boValue }} <span class="currency">{{ orderCurrency.sign }}</span>
+          Общая сумма (нетто): {{ booking.price.boValue }}
+          <span class="currency">{{ orderCurrency.sign }}</span>
         </div>
         <a href="#">Изменить</a>
       </div>
