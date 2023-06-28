@@ -9,6 +9,7 @@ use App\Admin\Models\Administrator\Administrator;
 use App\Admin\Models\Client\Client;
 use App\Admin\Models\Hotel\Hotel;
 use App\Admin\Models\Hotel\Room;
+use App\Admin\Models\Reference\Currency;
 use App\Admin\Repositories\BookingAdministratorRepository;
 use App\Admin\Support\Facades\Booking\BookingAdapter;
 use App\Admin\Support\Facades\Booking\HotelAdapter;
@@ -122,6 +123,7 @@ class BookingController extends AbstractPrototypeController
                 'model' => $booking,
                 'client' => $client,
                 'order' => $order,
+                'currencies' => Currency::get(),
                 'manager' => $this->administratorRepository->get($id),
                 'creator' => Administrator::find($booking->creatorId),
                 'editUrl' => $this->isAllowed('update') ? $this->route('edit', $id) : null,

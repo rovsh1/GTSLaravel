@@ -24,13 +24,13 @@ class BankRequisites implements ValueObjectInterface, SerializableDataInterface
     {
         return new static(
             bik: $data['bik'],
-            cityId: $data['city_id'],
+            cityId: $data['cityId'],
             inn: $data['inn'],
             okpo: $data['okpo'],
-            correspondentAccount: $data['correspondent_account'],
+            correspondentAccount: $data['correspondentAccount'],
             kpp: $data['kpp'],
-            bankName: $data['bank_name'],
-            currentAccount: $data['current_account'],
+            bankName: $data['bankName'],
+            currentAccount: $data['currentAccount'],
         );
     }
 
@@ -38,13 +38,13 @@ class BankRequisites implements ValueObjectInterface, SerializableDataInterface
     {
         return [
             'bik' => $this->bik,
-            'city_id' => $this->cityId,
+            'cityId' => $this->cityId,
             'inn' => $this->inn,
             'okpo' => $this->okpo,
-            'correspondent_account' => $this->correspondentAccount,
+            'correspondentAccount' => $this->correspondentAccount,
             'kpp' => $this->kpp,
-            'bank_name' => $this->bankName,
-            'current_account' => $this->currentAccount,
+            'bankName' => $this->bankName,
+            'currentAccount' => $this->currentAccount,
         ];
     }
 }

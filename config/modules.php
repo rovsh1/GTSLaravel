@@ -4,6 +4,9 @@ return [
     'Hotel' => [
         'path' => modules_path('Hotel')
     ],
+    'Client' => [
+        'path' => modules_path('Client')
+    ],
     'Booking' => [
         'path' => modules_path('Booking'),
         'templates_path' => storage_path('app/booking/templates'),

@@ -35,5 +35,6 @@ export interface Currency {
   id: number
   code_num: number
   code_char: string
+  name: string
   sign: string
 }

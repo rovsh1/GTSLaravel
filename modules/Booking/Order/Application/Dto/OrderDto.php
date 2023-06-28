@@ -13,6 +13,7 @@ class OrderDto extends AbstractDomainBasedDto
 {
     public function __construct(
         public readonly int $id,
+        public readonly int $currencyId,
         public readonly int $clientId,
         public readonly ?int $legalId,
     ) {}
@@ -21,6 +22,7 @@ class OrderDto extends AbstractDomainBasedDto
     {
         return new static(
             $entity->id()->value(),
+            $entity->currencyId()->value(),
             $entity->clientId()->value(),
             $entity->legalId()?->value()
         );

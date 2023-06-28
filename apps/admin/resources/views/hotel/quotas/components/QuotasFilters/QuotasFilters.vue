@@ -143,6 +143,7 @@ const isStateChanged = computed<boolean>(() =>
       :options="years"
       label="Год"
       :disabled="loading"
+      required
       @input="(value) => selectedYear = Number(value)"
     />
     <CompactSelect
@@ -151,6 +152,7 @@ const isStateChanged = computed<boolean>(() =>
       :value="selectedMonth"
       class="month"
       :disabled="loading"
+      required
       @input="(value) => selectedMonth = Number(value) as unknown as MonthNumber"
     />
     <CompactSelect
@@ -158,6 +160,7 @@ const isStateChanged = computed<boolean>(() =>
       label="Выводить по"
       :value="selectedMonthsCount"
       :disabled="loading"
+      required
       @input="(value) => selectedMonthsCount = Number(value) as unknown as MonthsCount"
     />
     <CompactSelect

@@ -28,6 +28,8 @@ export interface RoomBookingPrice {
   boValue: number
   hoValue: number
   netValue: number
+  boNote: string
+  hoNote: string
 }
 
 export interface HotelRoomBooking {

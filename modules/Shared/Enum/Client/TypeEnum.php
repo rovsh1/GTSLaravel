@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Enums\Client;
+namespace Module\Shared\Enum\Client;
 
 enum TypeEnum: int
 {

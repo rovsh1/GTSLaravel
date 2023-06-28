@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Admin\Http\Controllers\Client;
 
-use App\Admin\Enums\Client\TypeEnum;
 use App\Admin\Http\Requests\Client\SearchRequest;
 use App\Admin\Http\Resources\Client as ClientResource;
 use App\Admin\Models\Client\Client;
@@ -22,6 +21,7 @@ use App\Admin\View\Menus\ClientMenu;
 use Gsdk\Format\View\ParamsTable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
+use Module\Shared\Enum\Client\TypeEnum;
 
 class ClientController extends AbstractPrototypeController
 {
@@ -95,6 +95,7 @@ class ClientController extends AbstractPrototypeController
             ->text('name', 'Наименование')
             ->enum('type', 'Тип', TypeEnum::class)
             ->text('city_name', 'Город')
+            ->text('currency_name', 'Валюта')
             ->data($this->model);
     }
 
@@ -110,6 +111,7 @@ class ClientController extends AbstractPrototypeController
     {
         return Form::text('name', ['label' => 'ФИО или название компании'])
             ->enum('type', ['label' => 'Тип', 'enum' => TypeEnum::class])
-            ->city('city_id', ['label' => 'Город']);
+            ->city('city_id', ['label' => 'Город'])
+            ->currency('currency_id', ['label' => 'Валюта']);
     }
 }

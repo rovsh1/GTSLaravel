@@ -15,10 +15,12 @@ const props = withDefaults(defineProps<{
   disabled?: MaybeRef<boolean>
   allowDeselect?: boolean
   unselectedLabel?: string
+  required?: boolean
 }>(), {
   disabled: false,
   allowDeselect: false,
   unselectedLabel: 'Не выбрано',
+  required: false,
 })
 
 const emit = defineEmits<{
@@ -44,7 +46,8 @@ const computedOptions = computed<SelectOption[]>(() => (props.allowDeselect ? [
       :value="value"
       :options="computedOptions"
       :disabled="disabled"
-      @input="value => emit('input', value)"
+      :required="required"
+      @input="value => emit('input', value as string | number)"
     >
       <template #label>
         <label :for="id" class="label a1">{{ label }}</label>

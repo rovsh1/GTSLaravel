@@ -98,6 +98,10 @@ Login with developer credentials:
 
 They can be found in `database/migrations/install/2023_03_12_000003_fill_default_data.php` file
 
+## 9. Additional
+
+If you use MacOS, we recommended install docker-sync and apply `GTS_local_docker-sync_patch.patch`. For starting project use `docker-sync start` then `docker-compose up -d`.
+
 # Utilities
 
 1. `docker/bin/attach {container_name}` runs command line inside a container
@@ -109,3 +113,4 @@ Existing containers:
 1. `php`
 2. `nginx`
 3. `mariadb`
+

@@ -8,6 +8,7 @@ use Module\Booking\PriceCalculator\Domain\Adapter\ClientAdapterInterface;
 use Module\Booking\PriceCalculator\Domain\Adapter\HotelAdapterInterface;
 use Module\Hotel\Application\Dto\MarkupSettingsDto;
 use Module\Shared\Domain\Adapter\ConstantAdapterInterface;
+use Module\Shared\Enum\Client\LegalTypeEnum;
 
 class VariablesBuilder
 {
@@ -16,8 +17,7 @@ class VariablesBuilder
         private readonly OrderRepositoryInterface $orderRepository,
         private readonly HotelAdapterInterface $hotelAdapter,
         private readonly ClientAdapterInterface $clientAdapter
-    ) {
-    }
+    ) {}
 
     public function build(
         Booking $hotelBooking,
@@ -47,15 +47,16 @@ class VariablesBuilder
     private function calculateClientMarkupPercent(Booking $hotelBooking, MarkupSettingsDto $markupDto): int
     {
         $order = $this->orderRepository->find($hotelBooking->orderId()->value());
-        //TODO implement legal entities
-        $legalId = null;//$order->legalId()?->value();
-        if ($legalId) {
-            $legal = $this->clientAdapter->find($order->clientId()->value());
 
-            return $markupDto->clientMarkups->{$legal->type};
-        } else {
-            return $markupDto->clientMarkups->individual;
+        $legalId = $order->legalId()?->value();
+        if ($legalId !== null) {
+            $legal = $this->clientAdapter->findLegal($legalId);
+            $legalType = LegalTypeEnum::from($legal->type);
+
+            return $markupDto->clientMarkups->{$legalType->getKey()};
         }
+
+        return $markupDto->clientMarkups->individual;
     }
 
     private function calculateTouristTax(int $taxPercent): float

@@ -37,6 +37,7 @@ const { seasons, services, cars, providerId, currencies } = requestInitialData('
     code_num: z.number(),
     code_char: z.string(),
     sign: z.string(),
+    name: z.string(),
   })),
 }))
 

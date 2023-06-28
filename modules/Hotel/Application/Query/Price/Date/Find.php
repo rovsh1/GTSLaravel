@@ -13,6 +13,7 @@ class Find implements QueryInterface
         public readonly int $rateId,
         public readonly bool $isResident,
         public readonly int $guestsCount,
+        public readonly int $currencyId,
         public readonly CarbonInterface $date
     ) {}
 }

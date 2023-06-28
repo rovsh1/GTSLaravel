@@ -22,7 +22,7 @@ final class HORoomPriceFormula extends AbstractRoomPriceFormula
             ? $this->calculateResidentNetPrice($netValue)
             : $this->calculateNonResidentNetPrice($netValue, $this->variables->guestsCount);
 
-        return (new ExpressionEvaluator('((Sb - D) * k + Z) * n'))
+        return (new ExpressionEvaluator('(Sh * k + Z) * n'))
             ->addVariable('Sh', $Sh, 'нетто')
             ->addVariable('n', 1, 'номеров')
             ->addVariable('k', $this->variables->nightsCount, 'ночей')

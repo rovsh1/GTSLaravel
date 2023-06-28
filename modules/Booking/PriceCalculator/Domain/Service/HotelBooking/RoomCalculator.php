@@ -58,11 +58,12 @@ class RoomCalculator
         $boNotes = null;
         foreach ($dates as $date) {
             $datePrice = $this->getDatePrice(
-                $calculateVariables->roomId,
-                $calculateVariables->rateId,
-                $calculateVariables->isResident,
-                $calculateVariables->guestsCount,
-                $date
+                roomId: $calculateVariables->roomId,
+                rateId: $calculateVariables->rateId,
+                isResident: $calculateVariables->isResident,
+                guestsCount: $calculateVariables->guestsCount,
+                currencyId: 1, //@todo валюта
+                date: $date
             );
             $netValue += $datePrice;
             $hoResult = $hoFormula->calculate($datePrice);
@@ -116,8 +117,9 @@ class RoomCalculator
         int $rateId,
         bool $isResident,
         int $guestsCount,
+        int $currencyId,
         CarbonInterface $date
     ): float {
-        return $this->hotelAdapter->getRoomPrice($roomId, $rateId, $isResident, $guestsCount, $date) ?? 0;
+        return $this->hotelAdapter->getRoomPrice($roomId, $rateId, $isResident, $guestsCount, $currencyId, $date) ?? 0;
     }
 }

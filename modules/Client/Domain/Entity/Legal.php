@@ -7,15 +7,16 @@ namespace Module\Client\Domain\Entity;
 use Module\Client\Domain\ValueObject\BankRequisites;
 use Module\Shared\Domain\Entity\EntityInterface;
 use Module\Shared\Domain\ValueObject\Id;
-use Module\Shared\Enum\Client\TypeEnum;
+use Module\Shared\Enum\Client\LegalTypeEnum;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
-class Client extends AbstractAggregateRoot implements EntityInterface
+class Legal extends AbstractAggregateRoot implements EntityInterface
 {
     public function __construct(
         private readonly Id $id,
         private string $name,
-        private readonly TypeEnum $type,
+        private readonly LegalTypeEnum $type,
+        private BankRequisites $requisites,
     ) {}
 
     public function id(): Id
@@ -33,8 +34,18 @@ class Client extends AbstractAggregateRoot implements EntityInterface
         $this->name = $name;
     }
 
-    public function type(): TypeEnum
+    public function type(): LegalTypeEnum
     {
         return $this->type;
+    }
+
+    public function requisites(): ?BankRequisites
+    {
+        return $this->requisites;
+    }
+
+    public function setRequisites(?BankRequisites $requisites): void
+    {
+        $this->requisites = $requisites;
     }
 }

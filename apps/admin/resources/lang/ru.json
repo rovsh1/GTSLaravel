@@ -92,8 +92,8 @@
     "Hotel\\Contract\\StatusEnum::INACTIVE": "Неактивный",
     "Hotel\\Contract\\StatusEnum::ARCHIVE": "Архив",
 
-    "Client\\TypeEnum::PHYSICAL": "Физическое лицо",
-    "Client\\TypeEnum::LEGAL_ENTITY": "Юридическое лицо",
+    "Module\\Shared\\Enum\\Client\\TypeEnum::PHYSICAL": "Физическое лицо",
+    "Module\\Shared\\Enum\\Client\\TypeEnum::LEGAL_ENTITY": "Юридическое лицо",
 
     "Module\\Shared\\Enum\\Client\\LegalTypeEnum::ONLINE_TRAVEL_AGENCY": "OTA",
     "Module\\Shared\\Enum\\Client\\LegalTypeEnum::TRAVEL_AGENCY": "TA",

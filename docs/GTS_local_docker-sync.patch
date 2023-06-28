@@ -1,0 +1,101 @@
+Subject: [PATCH] GTS local docker-sync patch
+---
+Index: docker/php/docker-entrypoint.sh
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/docker/php/docker-entrypoint.sh b/docker/php/docker-entrypoint.sh
+--- a/docker/php/docker-entrypoint.sh	(revision 92d8d976cdf39b17fc94395369d17efae9dedb86)
++++ b/docker/php/docker-entrypoint.sh	(date 1687932638555)
+@@ -56,4 +56,6 @@
+   rm -rf /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+ fi
+ 
++chmod -R 777 /var/www/html/storage
++
+ exec "$@"
+Index: docker-sync.yml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/docker-sync.yml b/docker-sync.yml
+new file mode 100644
+--- /dev/null	(date 1687932564307)
++++ b/docker-sync.yml	(date 1687932564307)
+@@ -0,0 +1,31 @@
++version: 2
++
++options:
++  compose-file-path: './docker-compose.yml'
++  verbose: false
++  cli_mode: 'auto'
++  sync_strategy: 'native_osx'
++  max_attempt: 5
++  project_root: 'config_path'
++  host_disk_mount_mode: 'cached'
++  notify_terminal: true
++  sync_excludes_type: 'Name'
++  sync_host_ip: 'auto'
++  sync_prefer: 'default'
++  sync_userid: '0'
++  sync_group: 'root'
++  sync_groupid: '0'
++  monit_enable: true
++  monit_interval: 5
++  monit_high_cpu_cycles: 2
++
++syncs:
++  root-sync:
++    src: './'
++    sync_excludes: ['.DS_Store', '.docker-sync', '.idea', '.gitignore', '.git', '_ide_helper.php', '_ide_helper_models.php', '.phpstorm.meta.php', '.env.example', '.editorconfig', '.md', '.cache', 'Makefile', 'lefthook.yml', 'docs', 'bin', 'vendor', 'apps']
++  vendor-sync:
++    src: './vendor'
++    sync_excludes: ['.DS_Store', '.idea', '.gitignore', '.git']
++  apps-sync:
++    src: './apps'
++    sync_excludes: ['.DS_Store', '.idea', '.gitignore', '.git']
+Index: docker-compose.yml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/docker-compose.yml b/docker-compose.yml
+--- a/docker-compose.yml	(revision 92d8d976cdf39b17fc94395369d17efae9dedb86)
++++ b/docker-compose.yml	(date 1687932575105)
+@@ -7,7 +7,9 @@
+     ports:
+       - '80:80'
+     volumes:
+-      - .:/var/www/html:delegated
++      - root-sync:/var/www/html:nocopy
++      - apps-sync:/var/www/html/apps:nocopy
++      - vendor-sync:/var/www/html/vendor:nocopy
+     depends_on:
+       - php
+     networks:
+@@ -27,7 +29,9 @@
+       PHP_IDE_CONFIG: "serverName=phpstorm-server"
+       REMOTE_HOST: "docker.for.mac.localhost"
+     volumes:
+-      - '.:/var/www/html'
++      - root-sync:/var/www/html:nocopy
++      - apps-sync:/var/www/html/apps:nocopy
++      - vendor-sync:/var/www/html/vendor:nocopy
+     networks:
+       - sail
+     depends_on:
+@@ -63,6 +67,12 @@
+   sail:
+     driver: bridge
+ volumes:
++  root-sync:
++    external: true
++  apps-sync:
++    external: true
++  vendor-sync:
++    external: true
+   sail-mariadb:
+     driver: local
+   sail-redis:

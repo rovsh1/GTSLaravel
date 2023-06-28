@@ -57,6 +57,7 @@ class Update implements UseCaseInterface
 
         $roomBooking = new RoomBooking(
             id: $currentRoom->id(),
+            orderId: $booking->orderId(),
             bookingId: new Id($request->bookingId),
             status: RoomBookingStatusEnum::from($request->status),
             roomInfo: new RoomInfo(

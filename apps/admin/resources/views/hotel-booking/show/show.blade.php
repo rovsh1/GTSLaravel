@@ -4,18 +4,20 @@
     @vite('resources/views/hotel-booking/show/show.scss')
 @endsection
 
+@section('scripts')
+    @vite('resources/views/hotel-booking/show/show.ts')
+@endsection
+
 @section('head-end')
     <script>
       window['view-initial-data-hotel-booking'] = {{ Js::from([
             'bookingID' => $bookingId,
             'hotelID' => $hotelId,
             'hotelRooms' => $hotelRooms,
+            'order' => $order,
+            'currencies' => $currencies
         ]) }}
     </script>
-@endsection
-
-@section('scripts')
-    @vite('resources/views/hotel-booking/show/show.ts')
 @endsection
 
 @section('content')

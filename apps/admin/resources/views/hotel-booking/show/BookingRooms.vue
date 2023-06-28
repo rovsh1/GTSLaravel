@@ -11,12 +11,14 @@ import RoomModal from '~resources/views/hotel-booking/show/components/RoomModal.
 import { getConditionLabel, getGenderName, getRoomStatusName } from '~resources/views/hotel-booking/show/constants'
 import { GuestFormData, RoomFormData } from '~resources/views/hotel-booking/show/form'
 import { useBookingStore } from '~resources/views/hotel-booking/show/store/booking'
+import { useOrderStore } from '~resources/views/hotel-booking/show/store/order-currency'
 
 import { HotelBookingDetails, HotelBookingGuest, HotelRoomBooking } from '~api/booking/details'
 import { deleteBookingGuest, deleteBookingRoom } from '~api/booking/rooms'
 import { CountryResponse, useCountrySearchAPI } from '~api/country'
 import { MarkupSettings } from '~api/hotel/markup-settings'
 import { HotelRate, useHotelRatesAPI } from '~api/hotel/price-rate'
+import { Currency } from '~api/models'
 
 import { showConfirmDialog } from '~lib/confirm-dialog'
 import { requestInitialData } from '~lib/initial-data'
@@ -34,9 +36,12 @@ const { bookingID, hotelID } = requestInitialData(
 
 const bookingStore = useBookingStore()
 const { fetchBooking } = bookingStore
+const orderStore = useOrderStore()
+
 const bookingDetails = computed<HotelBookingDetails | null>(() => bookingStore.booking)
 const markupSettings = computed<MarkupSettings | null>(() => bookingStore.markupSettings)
 const isEditableStatus = computed<boolean>(() => bookingStore.availableActions?.isEditable || false)
+const orderCurrency = computed<Currency | undefined>(() => orderStore.currency)
 
 const { execute: fetchPriceRates, data: priceRates } = useHotelRatesAPI({ hotelID })
 const { data: countries, execute: fetchCountries } = useCountrySearchAPI()
@@ -113,8 +118,7 @@ const getCheckInTime = (room: HotelRoomBooking) => {
     return getConditionLabel(room.details.earlyCheckIn)
   }
 
-  // @todo тут будут дефолтные настройки из отеля
-  return ''
+  return `с ${bookingDetails.value?.hotelInfo.checkInTime}`
 }
 
 const getCheckOutTime = (room: HotelRoomBooking) => {
@@ -122,8 +126,7 @@ const getCheckOutTime = (room: HotelRoomBooking) => {
     return getConditionLabel(room.details.lateCheckOut)
   }
 
-  // @todo тут будут дефолтные настройки из отеля
-  return ''
+  return `до ${bookingDetails.value?.hotelInfo.checkOutTime}`
 }
 
 const onModalSubmit = () => {
@@ -216,27 +219,27 @@ fetchCountries()
               <thead>
                 <tr>
                   <th />
-                  <th>Цена за ночь</th>
-                  <th>Итого</th>
-                  <th>Подробный расчет</th>
+                  <th class="text-nowrap">Цена за ночь</th>
+                  <th class="text-nowrap">Итого</th>
+                  <th class="text-nowrap">Подробный расчет</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                <tr v-if="orderCurrency">
                   <td>Стоимость брутто</td>
-                  <td>8 <span class="cur">$</span></td>
-                  <td>22 <span class="cur">$</span></td>
-                  <td>(8 <span class="cur">$</span> (брутто) * 1 (номер) * 1 (ночь)) + 4 <span class="cur">$</span> (ранний заезд) * 1 (номер) + 8 <span class="cur">$</span> (поздний выезд) * 1 (номер)</td>
+                  <td class="text-nowrap">{{ room.price.avgDailyValue }} <span class="cur">{{ orderCurrency.sign }}</span></td>
+                  <td class="text-nowrap">{{ room.price.boValue }} <span class="cur">{{ orderCurrency.sign }}</span></td>
+                  <td class="text-nowrap">{{ room.price.boNote }}</td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <div class="conditions">
-            <span class="condition-item">Ранний заезд  - 4 <span class="cur">$</span></span>
-            <span class="condition-item">Поздний выезд  - 8 <span class="cur">$</span></span>
+          <div v-if="orderCurrency" class="conditions">
+            <span class="condition-item">Ранний заезд  - <code>????</code> <span class="cur">{{ orderCurrency.sign }}</span></span>
+            <span class="condition-item">Поздний выезд  - <code>????</code> <span class="cur">{{ orderCurrency.sign }}</span></span>
           </div>
-          <div class="d-flex flex-row justify-content-between w-100 mt-2">
-            <strong>Итого: {{ room.price.hoValue }} <span class="cur">$</span></strong>
+          <div v-if="orderCurrency" class="d-flex flex-row justify-content-between w-100 mt-2">
+            <strong>Итого: {{ room.price.hoValue }} <span class="cur">{{ orderCurrency.sign }}</span></strong>
             <a href="#">Изменить цену номера</a>
           </div>
         </div>

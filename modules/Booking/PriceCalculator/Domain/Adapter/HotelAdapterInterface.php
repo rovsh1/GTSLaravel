@@ -12,6 +12,7 @@ interface HotelAdapterInterface
         int $rateId,
         bool $isResident,
         int $guestsCount,
+        int $currencyId,
         CarbonInterface $date
     ): ?float;
 

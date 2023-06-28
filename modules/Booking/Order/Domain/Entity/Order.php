@@ -13,8 +13,9 @@ final class Order extends AbstractAggregateRoot implements EntityInterface
 {
     public function __construct(
         private readonly Id $id,
+        private Id $currencyId,
         private Id $clientId,
-        private readonly ?Id $legalId
+        private readonly ?Id $legalId,
     ) {}
 
     public function id(): Id
@@ -36,5 +37,10 @@ final class Order extends AbstractAggregateRoot implements EntityInterface
     public function legalId(): ?Id
     {
         return $this->legalId;
+    }
+
+    public function currencyId(): Id
+    {
+        return $this->currencyId;
     }
 }

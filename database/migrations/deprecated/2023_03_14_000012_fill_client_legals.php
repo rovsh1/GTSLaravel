@@ -58,7 +58,7 @@ return new class extends Migration {
                     'name' => $r->name,
                     'type' => $r->type,
                     'address' => $r->address,
-                    'requisites' => json_encode($bankRequisites),
+                    'requisites' => json_encode($bankRequisites->toData()),
                     'created_at' => now(),
                     'updated_at' => now()
                 ]);

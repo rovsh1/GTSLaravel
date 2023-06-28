@@ -2,9 +2,8 @@
 
 namespace App\Admin\View\Menus;
 
-use App\Admin\Enums\Client\TypeEnum;
 use App\Admin\Support\View\Sidebar\AbstractSubmenu;
-use App\Admin\Support\View\Sidebar\Menu\Group;
+use Module\Shared\Enum\Client\TypeEnum;
 
 class ClientMenu extends AbstractSubmenu
 {

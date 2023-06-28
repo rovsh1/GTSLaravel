@@ -18,6 +18,7 @@ class OrderFactory extends AbstractEntityFactory
 
         return new $this->entity(
             new Id($data['id']),
+            new Id($data['currency_id']),
             new Id($data['client_id']),
             $legalId !== null ? new Id($legalId) : null,
         );

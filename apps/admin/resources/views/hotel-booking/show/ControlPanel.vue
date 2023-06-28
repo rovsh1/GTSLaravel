@@ -10,6 +10,7 @@ import StatusHistoryModal from '~resources/views/hotel-booking/show/components/S
 import { externalNumberTypeOptions, getCancelPeriodTypeName } from '~resources/views/hotel-booking/show/constants'
 import { showCancelFeeDialog, showNotConfirmedReasonDialog } from '~resources/views/hotel-booking/show/modals'
 import { useBookingStore } from '~resources/views/hotel-booking/show/store/booking'
+import { useOrderStore } from '~resources/views/hotel-booking/show/store/order-currency'
 import { useBookingRequestStore } from '~resources/views/hotel-booking/show/store/request'
 import { useBookingStatusHistoryStore } from '~resources/views/hotel-booking/show/store/status-history'
 
@@ -22,6 +23,7 @@ import {
 import { CancelConditions, ExternalNumber, ExternalNumberType, ExternalNumberTypeEnum } from '~api/booking/details'
 import { BookingRequest, downloadRequestDocument, sendBookingRequest } from '~api/booking/request'
 import { BookingAvailableActionsResponse, BookingStatusResponse } from '~api/booking/status'
+import { Currency } from '~api/models'
 
 import { showConfirmDialog } from '~lib/confirm-dialog'
 import { formatDate, formatDateTime } from '~lib/date'
@@ -44,6 +46,7 @@ const requestStore = useBookingRequestStore()
 const { fetchBookingRequests } = requestStore
 const statusHistoryStore = useBookingStatusHistoryStore()
 const { fetchStatusHistory } = statusHistoryStore
+const orderStore = useOrderStore()
 
 const externalNumberData = ref<ExternalNumber>({
   type: ExternalNumberTypeEnum.HotelBookingNumber,
@@ -87,6 +90,7 @@ const isNeedShowExternalNumber = computed<boolean>(
 const cancelConditions = computed<CancelConditions | null>(() => bookingStore.booking?.cancelConditions || null)
 
 const booking = computed<Booking | null>(() => bookingStore.booking)
+const orderCurrency = computed<Currency | undefined>(() => orderStore.currency)
 const statuses = computed<BookingStatusResponse[] | null>(() => bookingStore.statuses)
 const availableActions = computed<BookingAvailableActionsResponse | null>(() => bookingStore.availableActions)
 const isAvailableActionsFetching = computed<boolean>(() => bookingStore.isAvailableActionsFetching)
@@ -213,8 +217,8 @@ fetchBookingRequests()
       @change="handleStatusChange"
     />
     <a href="#" class="btn-log" @click.prevent="toggleHistoryModal()">История изменений</a>
-    <div class="float-end">
-      Общая сумма: <strong>0 <span class="cur">сўм</span></strong>
+    <div v-if="booking && orderCurrency" class="float-end">
+      Общая сумма: <strong>{{ booking.price.boValue }} <span class="cur">{{ orderCurrency.sign }}</span></strong>
     </div>
   </div>
 
@@ -262,23 +266,23 @@ fetchBookingRequests()
       <div class="w-50 rounded shadow-lg p-3">
         <h6>Приход</h6>
         <hr>
-        <div>
-          Общая сумма (брутто): 22 <span class="currency">$</span>
+        <div v-if="booking && orderCurrency">
+          Общая сумма (брутто): {{ booking.price.hoValue }} <span class="currency">{{ orderCurrency.sign }}</span>
         </div>
         <a href="#">Изменить</a>
       </div>
       <div class="w-50 rounded shadow-lg p-3">
         <h6>Расход</h6>
         <hr>
-        <div>
-          Общая сумма (нетто): 243 225 <span class="currency">сўм</span>
+        <div v-if="booking && orderCurrency">
+          Общая сумма (нетто): {{ booking.price.boValue }} <span class="currency">{{ orderCurrency.sign }}</span>
         </div>
         <a href="#">Изменить</a>
       </div>
     </div>
 
-    <div class="mt-2">
-      Прибыль = 22 $ - 21 $ = 0 $
+    <div v-if="booking && orderCurrency" class="mt-2">
+      Прибыль = {{ booking.price.boValue }} {{ orderCurrency.sign }} - {{ booking.price.hoValue }} {{ orderCurrency.sign }} = {{ booking.price.boValue - booking.price.hoValue }} {{ orderCurrency.sign }}
     </div>
 
     <div v-if="lastHistoryItem && lastHistoryItem?.payload?.reason" class="mt-2 alert alert-warning" role="alert">

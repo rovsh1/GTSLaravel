@@ -32,7 +32,9 @@ class Client extends Model
             $builder
                 ->addSelect('clients.*')
                 ->join('r_cities', 'r_cities.id', '=', 'clients.city_id')
-                ->joinTranslatable('r_cities', 'name as city_name');
+                ->joinTranslatable('r_cities', 'name as city_name')
+                ->join('r_currencies', 'r_currencies.id', '=', 'clients.currency_id')
+                ->joinTranslatable('r_currencies', 'name as currency_name');
         });
     }
 

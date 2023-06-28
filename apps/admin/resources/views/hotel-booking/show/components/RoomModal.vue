@@ -128,17 +128,25 @@ watch(formData, (value: RoomFormData, oldValue: RoomFormData) => {
   }
 }, { deep: true })
 
-const earlyCheckInValue = computed<string>({
-  get: (): string => JSON.stringify(formData.value.earlyCheckIn),
-  set: (value: string): void => {
-    formData.value.earlyCheckIn = JSON.parse(value)
+const earlyCheckInValue = computed<string | undefined>({
+  get: () => (formData.value.earlyCheckIn ? JSON.stringify(formData.value.earlyCheckIn) : undefined),
+  set: (value: string | undefined): void => {
+    if (value) {
+      formData.value.earlyCheckIn = JSON.parse(value)
+    } else {
+      formData.value.earlyCheckIn = undefined
+    }
   },
 })
 
-const lateCheckOutValue = computed<string>({
-  get: (): string => JSON.stringify(formData.value.lateCheckOut),
-  set: (value: string): void => {
-    formData.value.lateCheckOut = JSON.parse(value)
+const lateCheckOutValue = computed<string | undefined>({
+  get: () => (formData.value.lateCheckOut ? JSON.stringify(formData.value.lateCheckOut) : undefined),
+  set: (value: string | undefined): void => {
+    if (value) {
+      formData.value.lateCheckOut = JSON.parse(value)
+    } else {
+      formData.value.lateCheckOut = undefined
+    }
   },
 })
 

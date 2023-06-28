@@ -14,8 +14,8 @@ class HotelInfoFactory
         return new HotelInfo(
             $hotelDto->id,
             $hotelDto->name,
-            new Time('14:00'), //@todo забрать из настроек отеля
-            new Time('12:00'),
+            new Time($hotelDto->timeSettings->checkInAfter),
+            new Time($hotelDto->timeSettings->checkOutBefore),
         );
     }
 }

@@ -4,9 +4,11 @@ import { MaybeRef } from '@vueuse/core'
 
 import { SelectOption } from './lib'
 
+export type SelectedValue = SelectOption['value'] | undefined
+
 withDefaults(defineProps<{
   id: string
-  value: SelectOption['value'] | undefined
+  value: SelectedValue
   options: SelectOption[]
   label?: string
   disabled?: MaybeRef<boolean>
@@ -20,7 +22,7 @@ withDefaults(defineProps<{
 })
 
 const emit = defineEmits<{
-  (event: 'input', value: SelectOption['value']): void
+  (event: 'input', value: SelectedValue): void
 }>()
 </script>
 <template>
@@ -38,6 +40,7 @@ const emit = defineEmits<{
       @input="event => emit('input', (event.target as HTMLInputElement).value)"
     >
       <option v-if="disabled && disabledPlaceholder" selected disabled>{{ disabledPlaceholder }}</option>
+      <option v-else-if="!required" :value="undefined" />
       <option
         v-for="option in options"
         :key="option.value"

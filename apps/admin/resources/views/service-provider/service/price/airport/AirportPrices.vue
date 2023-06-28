@@ -35,6 +35,7 @@ const { seasons, services, airports, providerId, currencies } = requestInitialDa
     code_num: z.number(),
     code_char: z.string(),
     sign: z.string(),
+    name: z.string(),
   })),
 }))
 

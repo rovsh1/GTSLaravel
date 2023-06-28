@@ -1,7 +1,8 @@
 <?php
 
-namespace Module\Booking\Order\Infrastructure\Models;
+namespace Module\Client\Infrastructure\Models;
 
+use Module\Shared\Enum\Client\TypeEnum;
 use Sdk\Module\Database\Eloquent\Model;
 
 class Client extends Model
@@ -21,4 +22,7 @@ class Client extends Model
         'deletion_mark',
     ];
 
+    protected $casts = [
+        'type' => TypeEnum::class
+    ];
 }

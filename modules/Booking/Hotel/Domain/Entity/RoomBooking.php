@@ -110,10 +110,17 @@ class RoomBooking extends AbstractAggregateRoot implements EntityInterface
         );
     }
 
+    public function setPrice(RoomPrice $price): void
+    {
+        $this->price = $price;
+    }
+
     public function toData(): array
     {
         return [
             'id' => $this->id->value(),
+            'orderId' => $this->orderId->value(),
+            'bookingId' => $this->bookingId->value(),
             'status' => $this->status->value,
             'guests' => $this->guests->toData(),
             'roomInfo' => $this->roomInfo->toData(),
@@ -125,12 +132,14 @@ class RoomBooking extends AbstractAggregateRoot implements EntityInterface
     public static function fromData(array $data): static
     {
         return new static(
-            new Id($data['id']),
-            RoomBookingStatusEnum::from($data['status']),
-            RoomInfo::fromData($data['roomInfo']),
-            GuestCollection::fromData($data['guests']),
-            RoomBookingDetails::fromData($data['details']),
-            RoomPrice::fromData($data['price'])
+            id: new Id($data['id']),
+            orderId: new Id($data['orderId']),
+            bookingId: new Id($data['bookingId']),
+            status: RoomBookingStatusEnum::from($data['status']),
+            roomInfo: RoomInfo::fromData($data['roomInfo']),
+            guests: GuestCollection::fromData($data['guests']),
+            details: RoomBookingDetails::fromData($data['details']),
+            price: RoomPrice::fromData($data['price'])
         );
     }
 }

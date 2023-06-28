@@ -11,10 +11,14 @@ class FindHandler implements QueryHandlerInterface
 {
     public function handle(QueryInterface|Find $query): ?PriceDto
     {
-        $datePrice = DatePrice::whereSeasonId($query->seasonId)
+        $datePrice = DatePrice::withGroup()
+            ->whereSeasonId($query->seasonId)
             ->whereRoomId($query->roomId)
             ->whereDate('date', '=', $query->date)
-            ->withGroup()
+            ->where('guests_number', '=', $query->guestsCount)
+            ->where('is_resident', '=', $query->isResident)
+            ->where('rate_id', '=', $query->rateId)
+            ->whereCurrencyId($query->currencyId)
             ->first();
         if ($datePrice === null) {
             return null;
