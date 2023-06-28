@@ -3,6 +3,7 @@
 namespace Module\Booking\PriceCalculator\Domain\Service\HotelBooking;
 
 use Module\Booking\Hotel\Domain\Entity\Booking;
+use Module\Booking\Order\Domain\Entity\Order;
 use Module\Booking\Order\Domain\Repository\OrderRepositoryInterface;
 use Module\Booking\PriceCalculator\Domain\Adapter\ClientAdapterInterface;
 use Module\Booking\PriceCalculator\Domain\Adapter\HotelAdapterInterface;
@@ -29,27 +30,27 @@ class VariablesBuilder
         ?int $lateCheckOutPercent
     ): CalculateVariables {
         $markupDto = $this->hotelAdapter->getMarkupSettings($hotelBooking->hotelInfo()->id());
+        $order = $this->orderRepository->find($hotelBooking->orderId()->value());
 
         return new CalculateVariables(
+            $order->currency(),
             $hotelBooking->period(),
             $roomId,
             $rateId,
             $isResident,
             $guestsCount,
             $markupDto->vat,
-            $this->calculateClientMarkupPercent($hotelBooking, $markupDto),
+            $this->calculateClientMarkupPercent($order, $markupDto),
             $this->calculateTouristTax($markupDto->touristTax),
             $earlyCheckInPercent,
             $lateCheckOutPercent
         );
     }
 
-    private function calculateClientMarkupPercent(Booking $hotelBooking, MarkupSettingsDto $markupDto): int
+    private function calculateClientMarkupPercent(Order $order, MarkupSettingsDto $markupDto): int
     {
-        $order = $this->orderRepository->find($hotelBooking->orderId()->value());
-
         $legalId = $order->legalId()?->value();
-        if ($legalId !== null) {
+        if ($legalId) {
             $legal = $this->clientAdapter->findLegal($legalId);
             $legalType = LegalTypeEnum::from($legal->type);
 

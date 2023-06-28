@@ -2,6 +2,8 @@
 
 namespace Module\Pricing\CurrencyRate\Domain\ValueObject;
 
+use Module\Shared\Enum\CurrencyEnum;
+
 enum CountryEnum: string
 {
     case RU = 'RU';

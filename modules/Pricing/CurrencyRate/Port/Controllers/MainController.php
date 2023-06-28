@@ -6,8 +6,8 @@ use DateTime;
 use Module\Pricing\CurrencyRate\Application\Command\GetRate;
 use Module\Pricing\CurrencyRate\Application\Command\UpdateRates;
 use Module\Pricing\CurrencyRate\Domain\ValueObject\CountryEnum;
-use Module\Pricing\CurrencyRate\Domain\ValueObject\CurrencyEnum;
 use Module\Pricing\CurrencyRate\Domain\ValueObject\CurrencyRate;
+use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Contracts\Bus\CommandBusInterface;
 use Sdk\Module\PortGateway\Request;
 

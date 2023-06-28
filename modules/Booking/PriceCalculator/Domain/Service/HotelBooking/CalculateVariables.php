@@ -3,10 +3,12 @@
 namespace Module\Booking\PriceCalculator\Domain\Service\HotelBooking;
 
 use Module\Booking\Hotel\Domain\ValueObject\Details\BookingPeriod;
+use Module\Shared\Enum\CurrencyEnum;
 
 class CalculateVariables
 {
     public function __construct(
+        public readonly CurrencyEnum $orderCurrency,
         public readonly BookingPeriod $bookingPeriod,
         public readonly int $roomId,
         public readonly int $rateId,

@@ -3,6 +3,7 @@
 namespace Module;
 
 use Module\Shared\Domain\Adapter\ConstantAdapterInterface;
+use Module\Shared\Domain\Adapter\CurrencyRateAdapterInterface;
 use Module\Shared\Domain\Service\SerializerInterface;
 use Module\Shared\Domain\Service\TranslatorInterface;
 use Sdk\Module\Contracts\PortGateway\PortGatewayInterface;
@@ -16,6 +17,7 @@ class SharedKernel extends BaseKernel
         TranslatorInterface::class,
         SerializerInterface::class,
         ConstantAdapterInterface::class,
+        CurrencyRateAdapterInterface::class
     ];
 
     protected function registerSharedBindings(): void {}

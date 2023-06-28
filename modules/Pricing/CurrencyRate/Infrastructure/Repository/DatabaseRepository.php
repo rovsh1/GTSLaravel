@@ -2,15 +2,15 @@
 
 namespace Module\Pricing\CurrencyRate\Infrastructure\Repository;
 
+use DateTime;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Module\Pricing\CurrencyRate\Domain\Repository\DatabaseRepositoryInterface;
 use Module\Pricing\CurrencyRate\Domain\ValueObject\CountryEnum;
-use Module\Pricing\CurrencyRate\Domain\ValueObject\CurrencyEnum;
 use Module\Pricing\CurrencyRate\Domain\ValueObject\CurrencyRate;
 use Module\Pricing\CurrencyRate\Domain\ValueObject\CurrencyRatesCollection;
 use Module\Pricing\CurrencyRate\Infrastructure\Model\CurrencyRate as Model;
-use DateTime;
+use Module\Shared\Enum\CurrencyEnum;
 
 class DatabaseRepository implements DatabaseRepositoryInterface
 {

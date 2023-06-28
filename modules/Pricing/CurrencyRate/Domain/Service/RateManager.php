@@ -2,14 +2,14 @@
 
 namespace Module\Pricing\CurrencyRate\Domain\Service;
 
+use DateTime;
+use Exception;
 use Module\Pricing\CurrencyRate\Domain\Repository\ApiRepositoryInterface;
 use Module\Pricing\CurrencyRate\Domain\Repository\CacheRepositoryInterface;
 use Module\Pricing\CurrencyRate\Domain\Repository\DatabaseRepositoryInterface;
 use Module\Pricing\CurrencyRate\Domain\ValueObject\CountryEnum;
-use Module\Pricing\CurrencyRate\Domain\ValueObject\CurrencyEnum;
 use Module\Pricing\CurrencyRate\Domain\ValueObject\CurrencyRate;
-use DateTime;
-use Exception;
+use Module\Shared\Enum\CurrencyEnum;
 use Throwable;
 
 class RateManager

@@ -3,6 +3,7 @@
 namespace Module\Pricing\CurrencyRate\Domain\ValueObject;
 
 use Exception;
+use Module\Shared\Enum\CurrencyEnum;
 
 class CurrencyRate
 {

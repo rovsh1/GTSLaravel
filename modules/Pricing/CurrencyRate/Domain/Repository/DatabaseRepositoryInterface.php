@@ -2,11 +2,11 @@
 
 namespace Module\Pricing\CurrencyRate\Domain\Repository;
 
+use DateTime;
 use Module\Pricing\CurrencyRate\Domain\ValueObject\CountryEnum;
-use Module\Pricing\CurrencyRate\Domain\ValueObject\CurrencyEnum;
 use Module\Pricing\CurrencyRate\Domain\ValueObject\CurrencyRate;
 use Module\Pricing\CurrencyRate\Domain\ValueObject\CurrencyRatesCollection;
-use DateTime;
+use Module\Shared\Enum\CurrencyEnum;
 
 interface DatabaseRepositoryInterface
 {

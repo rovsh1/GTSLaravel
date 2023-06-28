@@ -2,13 +2,13 @@
 
 namespace Module\Pricing\CurrencyRate\Infrastructure\Repository;
 
+use DateTime;
+use Illuminate\Support\Facades\Cache;
 use Module\Pricing\CurrencyRate\Domain\Repository\CacheRepositoryInterface;
 use Module\Pricing\CurrencyRate\Domain\ValueObject\CountryEnum;
-use Module\Pricing\CurrencyRate\Domain\ValueObject\CurrencyEnum;
 use Module\Pricing\CurrencyRate\Domain\ValueObject\CurrencyRate;
 use Module\Pricing\CurrencyRate\Domain\ValueObject\CurrencyRatesCollection;
-use Illuminate\Support\Facades\Cache;
-use DateTime;
+use Module\Shared\Enum\CurrencyEnum;
 
 class CacheRepository implements CacheRepositoryInterface
 {

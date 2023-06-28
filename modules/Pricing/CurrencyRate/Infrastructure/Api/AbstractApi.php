@@ -2,11 +2,11 @@
 
 namespace Module\Pricing\CurrencyRate\Infrastructure\Api;
 
-use Module\Pricing\CurrencyRate\Domain\ValueObject\CurrencyEnum;
+use Exception;
 use Module\Pricing\CurrencyRate\Domain\ValueObject\CurrencyRate;
 use Module\Pricing\CurrencyRate\Domain\ValueObject\CurrencyRatesCollection;
+use Module\Shared\Enum\CurrencyEnum;
 use SimpleXMLElement;
-use Exception;
 
 abstract class AbstractApi implements ApiInterface
 {

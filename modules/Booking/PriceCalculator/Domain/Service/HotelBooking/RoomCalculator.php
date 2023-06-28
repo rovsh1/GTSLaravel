@@ -11,12 +11,15 @@ use Module\Booking\PriceCalculator\Domain\Service\HotelBooking\Formula\BORoomPri
 use Module\Booking\PriceCalculator\Domain\Service\HotelBooking\Formula\HORoomPriceFormula;
 use Module\Booking\PriceCalculator\Domain\Service\HotelBooking\Formula\MarkupVariables;
 use Module\Booking\PriceCalculator\Domain\Service\HotelBooking\Formula\RoomVariables;
+use Module\Shared\Domain\Adapter\CurrencyRateAdapterInterface;
+use Module\Shared\Enum\CurrencyEnum;
 
 class RoomCalculator
 {
     public function __construct(
         private readonly HotelAdapterInterface $hotelAdapter,
-        private readonly VariablesBuilder $variablesBuilder
+        private readonly VariablesBuilder $variablesBuilder,
+        private readonly CurrencyRateAdapterInterface $currencyRateAdapter
     ) {
     }
 
@@ -62,7 +65,7 @@ class RoomCalculator
                 rateId: $calculateVariables->rateId,
                 isResident: $calculateVariables->isResident,
                 guestsCount: $calculateVariables->guestsCount,
-                currencyId: 1, //@todo валюта
+                orderCurrency: $calculateVariables->orderCurrency,
                 date: $date
             );
             $netValue += $datePrice;
@@ -117,9 +120,20 @@ class RoomCalculator
         int $rateId,
         bool $isResident,
         int $guestsCount,
-        int $currencyId,
+        CurrencyEnum $orderCurrency,
         CarbonInterface $date
     ): float {
-        return $this->hotelAdapter->getRoomPrice($roomId, $rateId, $isResident, $guestsCount, $currencyId, $date) ?? 0;
+        $roomPrice = $this->hotelAdapter->getRoomPrice(
+            $roomId,
+            $rateId,
+            $isResident,
+            $guestsCount,
+            //$orderCurrency,
+            $date
+        ) ?? 0;
+        //TODO get currency from hotel
+        $hotelCurrency = CurrencyEnum::UZS;
+
+        return $this->currencyRateAdapter->convertNetRate($roomPrice, $hotelCurrency, $orderCurrency, 'UZ');
     }
 }

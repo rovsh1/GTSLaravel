@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Pricing\CurrencyRate\Domain\ValueObject;
+namespace Module\Shared\Enum;
 
 enum CurrencyEnum: string
 {

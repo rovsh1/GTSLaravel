@@ -3,7 +3,7 @@
 namespace Module\Pricing\CurrencyRate\Infrastructure\Model;
 
 use Module\Pricing\CurrencyRate\Domain\ValueObject\CountryEnum;
-use Module\Pricing\CurrencyRate\Domain\ValueObject\CurrencyEnum;
+use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Database\Eloquent\Model;
 
 class CurrencyRate extends Model

@@ -21,8 +21,10 @@ class PathGenerator implements PathGeneratorInterface
     {
         return implode($this->pathSeparator, $this->guidPaths($file->guid()))
             . $this->pathSeparator . $file->guid()
-            . ($part ? '_' . $part : '')
-            . $file->extension();
+            . $this->pathSeparator . $file->name()
+//            . ($part ? '_' . $part : '')
+//            . $file->extension()
+            ;
     }
 
     public function path(File $file, int $part = null): string
@@ -37,6 +39,7 @@ class PathGenerator implements PathGeneratorInterface
         for ($i = 0; $i < $this->nestingLevel; $i++) {
             $paths[] = substr($guid, $i * $this->pathNameLength, $this->pathNameLength);
         }
+
         return $paths;
     }
 }
