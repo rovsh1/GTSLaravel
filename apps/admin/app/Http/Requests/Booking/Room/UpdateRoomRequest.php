@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Admin\Http\Requests\Booking;
+namespace App\Admin\Http\Requests\Booking\Room;
 
-class DeleteRoomRequest extends AddRoomRequest
+class UpdateRoomRequest extends AddRoomRequest
 {
     public function rules()
     {
         return [
             'room_booking_id' => ['required', 'numeric'],
+            ...parent::rules(),
         ];
     }
 

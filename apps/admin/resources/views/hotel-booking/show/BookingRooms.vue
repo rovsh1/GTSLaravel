@@ -8,6 +8,7 @@ import { z } from 'zod'
 import EditTableRowButton from '~resources/views/hotel/settings/components/EditTableRowButton.vue'
 import GuestModal from '~resources/views/hotel-booking/show/components/GuestModal.vue'
 import RoomModal from '~resources/views/hotel-booking/show/components/RoomModal.vue'
+import RoomPriceModal from '~resources/views/hotel-booking/show/components/RoomPriceModal.vue'
 import { getConditionLabel, getGenderName, getRoomStatusName } from '~resources/views/hotel-booking/show/constants'
 import { GuestFormData, RoomFormData } from '~resources/views/hotel-booking/show/form'
 import { useBookingStore } from '~resources/views/hotel-booking/show/store/booking'
@@ -25,6 +26,7 @@ import { requestInitialData } from '~lib/initial-data'
 
 const [isShowRoomModal, toggleRoomModal] = useToggle()
 const [isShowGuestModal, toggleGuestModal] = useToggle()
+const [isShowRoomPriceModal, toggleRoomPriceModal] = useToggle()
 
 const { bookingID, hotelID } = requestInitialData(
   'view-initial-data-hotel-booking',
@@ -42,6 +44,7 @@ const bookingDetails = computed<HotelBookingDetails | null>(() => bookingStore.b
 const markupSettings = computed<MarkupSettings | null>(() => bookingStore.markupSettings)
 const isEditableStatus = computed<boolean>(() => bookingStore.availableActions?.isEditable || false)
 const orderCurrency = computed<Currency | undefined>(() => orderStore.currency)
+const canChangeRoomPrice = computed<boolean>(() => true)
 
 const { execute: fetchPriceRates, data: priceRates } = useHotelRatesAPI({ hotelID })
 const { data: countries, execute: fetchCountries } = useCountrySearchAPI()
@@ -113,6 +116,11 @@ const handleDeleteRoom = async (roomBookingId: number): Promise<void> => {
   }
 }
 
+const handleEditRoomPrice = (roomBookingId: number): void => {
+  editRoomBookingId.value = roomBookingId
+  toggleRoomPriceModal(true)
+}
+
 const getCheckInTime = (room: HotelRoomBooking) => {
   if (room.details.earlyCheckIn) {
     return getConditionLabel(room.details.earlyCheckIn)
@@ -159,6 +167,13 @@ fetchCountries()
     :countries="countries as CountryResponse[]"
     @close="toggleGuestModal(false)"
     @submit="onModalSubmit"
+  />
+
+  <RoomPriceModal
+    v-if="editRoomBookingId !== undefined"
+    :room-booking-id="editRoomBookingId"
+    :opened="isShowRoomPriceModal"
+    @close="toggleRoomPriceModal(false)"
   />
 
   <div class="mt-3" />
@@ -252,7 +267,13 @@ fetchCountries()
             <strong>Итого: {{ room.price.hoValue }}
               <span class="cur">{{ orderCurrency.sign }}</span>
             </strong>
-            <a href="#">Изменить цену номера</a>
+            <a
+              v-if="canChangeRoomPrice"
+              href="#"
+              @click.prevent="handleEditRoomPrice(room.id)"
+            >
+              Изменить цену номера
+            </a>
           </div>
         </div>
         <div class="w-100 rounded shadow-lg p-4">

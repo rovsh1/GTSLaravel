@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Facade;
  * @method static void updateRoomGuest(int $bookingId, int $roomBookingId, int $guestIndex, string $fullName, int $countryId, int $gender, bool $isAdult, int|null $age)
  * @method static void deleteRoomGuest(int $bookingId, int $roomBookingId, int $guestIndex)
  * @method static void updateExternalNumber(int $bookingId, int $type, string|null $number)
+ * @method static void updatePrice(int $bookingId, float|null $boPrice, float|null $hoPrice)
+ * @method static void updateRoomPrice(int $bookingId, int $roomBookingId, float|null $boPrice, float|null $hoPrice)
  **/
 class HotelAdapter extends Facade
 {

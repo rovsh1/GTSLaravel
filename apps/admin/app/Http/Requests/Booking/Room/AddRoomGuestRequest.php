@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Http\Requests\Booking;
+namespace App\Admin\Http\Requests\Booking\Room;
 
 use Illuminate\Foundation\Http\FormRequest;
 

@@ -3,6 +3,7 @@
 namespace App\Admin\Http\Controllers\Booking\Hotel;
 
 use App\Admin\Http\Requests\Booking\UpdateExternalNumberRequest;
+use App\Admin\Http\Requests\Booking\UpdatePriceRequest;
 use App\Admin\Http\Requests\Booking\UpdateStatusRequest;
 use App\Admin\Http\Resources\Room as RoomResource;
 use App\Admin\Models\Administrator\Administrator;
@@ -225,11 +226,18 @@ class BookingController extends AbstractPrototypeController
         return new AjaxSuccessResponse();
     }
 
+    public function updatePrice(UpdatePriceRequest $request, int $id): AjaxResponseInterface
+    {
+        HotelAdapter::updatePrice($id, $request->getBoPrice(), $request->getHoPrice());
+
+        return new AjaxSuccessResponse();
+    }
+
     protected function gridFactory(array $statuses = []): GridContract
     {
         return Grid::enableQuicksearch()
             ->id('id', ['text' => '№', 'route' => $this->prototype->routeName('show'), 'order' => true])
-            ->bookingStatus('status', ['text' => 'Статус', 'statuses'=> $statuses])
+            ->bookingStatus('status', ['text' => 'Статус', 'statuses' => $statuses])
             ->text('client_name', ['text' => 'Клиент'])
             ->date('date_start', ['text' => 'Дата заезда'])
             ->date('date_end', ['text' => 'Дата выезда'])

@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Admin\Http\Controllers\Booking\Hotel;
 
-use App\Admin\Http\Requests\Booking\AddRoomGuestRequest;
-use App\Admin\Http\Requests\Booking\AddRoomRequest;
-use App\Admin\Http\Requests\Booking\DeleteRoomGuestRequest;
-use App\Admin\Http\Requests\Booking\DeleteRoomRequest;
-use App\Admin\Http\Requests\Booking\UpdateRoomGuestRequest;
-use App\Admin\Http\Requests\Booking\UpdateRoomRequest;
+use App\Admin\Http\Requests\Booking\Room\AddRoomGuestRequest;
+use App\Admin\Http\Requests\Booking\Room\AddRoomRequest;
+use App\Admin\Http\Requests\Booking\Room\DeleteRoomGuestRequest;
+use App\Admin\Http\Requests\Booking\Room\DeleteRoomRequest;
+use App\Admin\Http\Requests\Booking\Room\UpdatePriceRequest;
+use App\Admin\Http\Requests\Booking\Room\UpdateRoomGuestRequest;
+use App\Admin\Http\Requests\Booking\Room\UpdateRoomRequest;
 use App\Admin\Support\Facades\Booking\HotelAdapter;
 use App\Core\Support\Http\Responses\AjaxErrorResponse;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
@@ -123,6 +124,18 @@ class RoomController
             //@todo отлов доменных эксепшнов
             return new AjaxErrorResponse($e->getMessage());
         }
+
+        return new AjaxSuccessResponse();
+    }
+
+    public function updatePrice(UpdatePriceRequest $request, int $id): AjaxResponseInterface
+    {
+        HotelAdapter::updateRoomPrice(
+            $id,
+            $request->getRoomBookingId(),
+            $request->getBoPrice(),
+            $request->getHoPrice()
+        );
 
         return new AjaxSuccessResponse();
     }

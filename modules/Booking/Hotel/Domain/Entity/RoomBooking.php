@@ -7,11 +7,13 @@ namespace Module\Booking\Hotel\Domain\Entity;
 use Module\Booking\Hotel\Domain\Event\GuestAdded;
 use Module\Booking\Hotel\Domain\Event\GuestDeleted;
 use Module\Booking\Hotel\Domain\Event\GuestEdited;
+use Module\Booking\Hotel\Domain\Service\RoomPriceValidator;
 use Module\Booking\Hotel\Domain\ValueObject\Details\GuestCollection;
 use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking\Guest;
 use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking\RoomBookingDetails;
 use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking\RoomBookingStatusEnum;
 use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking\RoomInfo;
+use Module\Booking\Hotel\Domain\ValueObject\ManualChangablePrice;
 use Module\Booking\Hotel\Domain\ValueObject\RoomPrice;
 use Module\Shared\Domain\Entity\EntityInterface;
 use Module\Shared\Domain\ValueObject\Id;
@@ -29,8 +31,7 @@ class RoomBooking extends AbstractAggregateRoot implements EntityInterface
         private GuestCollection $guests,
         private RoomBookingDetails $details,
         private RoomPrice $price,
-    ) {
-    }
+    ) {}
 
     public function id(): Id
     {
@@ -110,7 +111,17 @@ class RoomBooking extends AbstractAggregateRoot implements EntityInterface
         );
     }
 
-    public function setPrice(RoomPrice $price): void
+    public function setHoPriceValue(ManualChangablePrice $price, RoomPriceValidator $validator): void
+    {
+        $validator->checkCanChangeHoPrice($price);
+    }
+
+    public function setBoPriceValue(ManualChangablePrice $price, RoomPriceValidator $validator): void
+    {
+        $validator->checkCanChangeBoPrice($price);
+    }
+
+    public function setPrice(RoomPrice $price, RoomPriceValidator $validator): void
     {
         $this->price = $price;
     }

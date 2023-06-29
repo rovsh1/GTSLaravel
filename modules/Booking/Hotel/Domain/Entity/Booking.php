@@ -133,6 +133,11 @@ final class Booking extends AbstractBooking
         return $this->price;
     }
 
+    public function setPrice(BookingPrice $price): void
+    {
+        $this->price = $price;
+    }
+
     public function note(): ?string
     {
         return $this->note;

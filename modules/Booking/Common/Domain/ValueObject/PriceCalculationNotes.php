@@ -9,6 +9,7 @@ final class PriceCalculationNotes implements SerializableDataInterface
     public function __construct(
         private readonly string $hoNote,
         private readonly string $boNote,
+        private readonly float $avgDailyValue,
     ) {
     }
 
@@ -22,9 +23,15 @@ final class PriceCalculationNotes implements SerializableDataInterface
         return $this->boNote;
     }
 
+    public function avgDailyValue(): float
+    {
+        return $this->avgDailyValue;
+    }
+
     public function toData(): array
     {
         return [
+            'avgDailyValue' => $this->avgDailyValue,
             'hoNote' => $this->hoNote,
             'boNote' => $this->boNote,
         ];
@@ -35,6 +42,7 @@ final class PriceCalculationNotes implements SerializableDataInterface
         return new PriceCalculationNotes(
             $data['hoNote'],
             $data['boNote'],
+            $data['avgDailyValue'],
         );
     }
 }

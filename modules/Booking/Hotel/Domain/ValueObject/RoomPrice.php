@@ -9,15 +9,14 @@ final class RoomPrice implements SerializableDataInterface
 {
     public function __construct(
         private readonly float $netValue,
-        private readonly float $avgDailyValue,
-        private readonly float $hoValue,
-        private readonly float $boValue,
+        private readonly ManualChangablePrice $hoPrice,
+        private readonly ManualChangablePrice $boPrice,
         private readonly ?PriceCalculationNotes $calculationNotes,
     ) {}
 
     public static function buildEmpty(): static
     {
-        return new static(0, 0, 0, 0, null);
+        return new static(0, 0, 0, null);
     }
 
     public function netValue(): float
@@ -25,19 +24,14 @@ final class RoomPrice implements SerializableDataInterface
         return $this->netValue;
     }
 
-    public function avgDailyValue(): float
+    public function hoValue(): ManualChangablePrice
     {
-        return $this->avgDailyValue;
+        return $this->hoPrice;
     }
 
-    public function hoValue(): float
+    public function boValue(): ManualChangablePrice
     {
-        return $this->hoValue;
-    }
-
-    public function boValue(): float
-    {
-        return $this->boValue;
+        return $this->boPrice;
     }
 
     public function calculationNotes(): ?PriceCalculationNotes
@@ -49,9 +43,8 @@ final class RoomPrice implements SerializableDataInterface
     {
         return [
             'netValue' => $this->netValue,
-            'avgDailyValue' => $this->avgDailyValue,
-            'hoValue' => $this->hoValue,
-            'boValue' => $this->boValue,
+            'hoValue' => $this->hoPrice,
+            'boValue' => $this->boPrice,
             'calculationNotes' => $this->calculationNotes?->toData(),
         ];
     }
@@ -61,7 +54,6 @@ final class RoomPrice implements SerializableDataInterface
         $calculationNotes = $data['calculationNotes'] ?? null;
         return new RoomPrice(
             $data['netValue'],
-            $data['avgDailyValue'],
             $data['hoValue'],
             $data['boValue'],
             $calculationNotes !== null ? PriceCalculationNotes::fromData($calculationNotes) : null,

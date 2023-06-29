@@ -5,6 +5,7 @@ import { computed, reactive, ref } from 'vue'
 import { useToggle } from '@vueuse/core'
 import { z } from 'zod'
 
+import PriceModal from '~resources/views/hotel-booking/show/components/PriceModal.vue'
 import RequestBlock from '~resources/views/hotel-booking/show/components/RequestBlock.vue'
 import StatusHistoryModal from '~resources/views/hotel-booking/show/components/StatusHistoryModal.vue'
 import { externalNumberTypeOptions, getCancelPeriodTypeName } from '~resources/views/hotel-booking/show/constants'
@@ -104,6 +105,8 @@ const isRoomsAndGuestsFilled = computed<boolean>(() => !bookingStore.isEmptyGues
 const bookingRequests = computed<BookingRequest[] | null>(() => requestStore.requests)
 const lastHistoryItem = computed(() => statusHistoryStore.lastHistoryItem)
 const [isHistoryModalOpened, toggleHistoryModal] = useToggle<boolean>(false)
+const [isNetPriceModalOpened, toggleNetPriceModal] = useToggle<boolean>(false)
+const [isBruttoPriceModalOpened, toggleBruttoPriceModal] = useToggle<boolean>(false)
 
 const updateStatusPayload = reactive<UpdateBookingStatusPayload>({ bookingID } as UpdateBookingStatusPayload)
 
@@ -207,6 +210,20 @@ fetchBookingRequests()
     @close="toggleHistoryModal(false)"
   />
 
+  <PriceModal
+    header="Общая сумма (нетто)"
+    label="Общая сумма (нетто) в UZS"
+    :opened="isNetPriceModalOpened"
+    @close="toggleNetPriceModal(false)"
+  />
+
+  <PriceModal
+    header="Общая сумма (брутто)"
+    label="Общая сумма (брутто)"
+    :opened="isBruttoPriceModalOpened"
+    @close="toggleBruttoPriceModal(false)"
+  />
+
   <div class="d-flex flex-wrap flex-grow-1 gap-2">
     <StatusSelect
       v-if="booking && statuses"
@@ -274,7 +291,7 @@ fetchBookingRequests()
           Общая сумма (брутто): {{ booking.price.hoValue }}
           <span class="currency">{{ orderCurrency.sign }}</span>
         </div>
-        <a href="#">Изменить</a>
+        <a href="#" @click.prevent="toggleBruttoPriceModal(true)">Изменить</a>
       </div>
       <div class="w-50 rounded shadow-lg p-3">
         <h6>Расход</h6>
@@ -283,7 +300,7 @@ fetchBookingRequests()
           Общая сумма (нетто): {{ booking.price.boValue }}
           <span class="currency">{{ orderCurrency.sign }}</span>
         </div>
-        <a href="#">Изменить</a>
+        <a href="#" @click.prevent="toggleNetPriceModal(true)">Изменить</a>
       </div>
     </div>
 

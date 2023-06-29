@@ -162,6 +162,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
             additionalInfo: $additionalInfo !== null ? AdditionalInfo::fromData($detailsData['additionalInfo']) : null,
             roomBookings: $roomBookings,
             cancelConditions: CancelConditions::fromData($detailsData['cancelConditions']),
+//            price: BookingPrice::fromData($detailsData['price'])
             price: $this->buildBookingPrice($roomBookings)
         );
     }
@@ -174,6 +175,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
             'additionalInfo' => $booking->additionalInfo()?->toData(),
             'period' => $booking->period()->toData(),
             'cancelConditions' => $booking->cancelConditions()->toData(),
+            'price' => $booking->price()->toData()
         ];
     }
 

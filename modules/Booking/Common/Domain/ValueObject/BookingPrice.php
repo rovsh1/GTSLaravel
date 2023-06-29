@@ -9,7 +9,8 @@ final class BookingPrice implements SerializableDataInterface
     public function __construct(
         private readonly float $netValue,
         private readonly float $hoValue,
-        private readonly float $boValue
+        private readonly float $boValue,
+        private readonly bool $isManual = false,
     ) {}
 
     public static function buildEmpty(): static
@@ -38,6 +39,7 @@ final class BookingPrice implements SerializableDataInterface
             'netValue' => $this->netValue,
             'hoValue' => $this->hoValue,
             'boValue' => $this->boValue,
+            'isManual' => $this->isManual
         ];
     }
 
@@ -47,6 +49,7 @@ final class BookingPrice implements SerializableDataInterface
             $data['netValue'],
             $data['hoValue'],
             $data['boValue'],
+            $data['isManual'],
         );
     }
 }

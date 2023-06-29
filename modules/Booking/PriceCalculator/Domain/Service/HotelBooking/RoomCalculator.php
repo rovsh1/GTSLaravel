@@ -81,12 +81,12 @@ class RoomCalculator
 
         return new RoomPrice(
             $netValue,
-            $avgDailyValue,
             $hoValue,
             $boValue,
             new PriceCalculationNotes(
                 $hoNotes,
-                $boNotes
+                $boNotes,
+                $avgDailyValue,
             )
         );
     }
