@@ -7,7 +7,7 @@ use Module\Booking\Order\Domain\Entity\Order;
 use Module\Booking\Order\Domain\Repository\OrderRepositoryInterface;
 use Module\Booking\PriceCalculator\Domain\Adapter\ClientAdapterInterface;
 use Module\Booking\PriceCalculator\Domain\Adapter\HotelAdapterInterface;
-use Module\Hotel\Application\Dto\MarkupSettingsDto;
+use Module\Hotel\Application\Response\MarkupSettingsDto;
 use Module\Shared\Domain\Adapter\ConstantAdapterInterface;
 use Module\Shared\Enum\Client\LegalTypeEnum;
 

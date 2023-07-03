@@ -1,9 +1,13 @@
 <script setup lang="ts">
 
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
+
+import { Time } from '~api/hotel/markup-settings'
+
+type TimeValue = Time | null
 
 const props = withDefaults(defineProps<{
-  modelValue?: string
+  modelValue?: TimeValue
   from?: string
   to?: string
   label?: string
@@ -17,30 +21,37 @@ const props = withDefaults(defineProps<{
 })
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: string): void
+  (e: 'update:modelValue', value: TimeValue): void
+  (e: 'change'): void
 }>()
 
-const localValue = computed<string | undefined>({
-  get: () => props.modelValue,
-  set: (value: string | undefined) => emit('update:modelValue', value as string),
+const localValue = computed<TimeValue>({
+  get: () => props.modelValue as TimeValue,
+  set: (value: TimeValue) => {
+    emit('update:modelValue', value)
+    emit('change')
+  },
 })
 
-const items = ref<string[]>([])
-for (let i = 0; i <= 24; i++) {
-  let hour = `${i}`
-  if (i < 10) {
-    hour = `0${i}`
-  }
-  const hourTime = `${hour}:00`
-  if (hourTime >= props.from && hourTime <= props.to) {
-    items.value.push(hourTime)
-  }
+const items = computed<string[]>(() => {
+  const options = []
+  for (let i = 0; i <= 24; i++) {
+    let hour = `${i}`
+    if (i < 10) {
+      hour = `0${i}`
+    }
+    const hourTime = `${hour}:00`
+    if (hourTime >= props.from && hourTime <= props.to) {
+      options.push(hourTime)
+    }
 
-  const halfHourTime = `${hour}:30`
-  if (halfHourTime >= props.from && halfHourTime <= props.to && i !== 24) {
-    items.value.push(halfHourTime)
+    const halfHourTime = `${hour}:30`
+    if (halfHourTime >= props.from && halfHourTime <= props.to && i !== 24) {
+      options.push(halfHourTime)
+    }
   }
-}
+  return options
+})
 
 </script>
 
@@ -53,6 +64,7 @@ for (let i = 0; i <= 24; i++) {
       :disabled="disabled"
       required
     >
+      <option :value="null" />
       <option v-for="item in items" :key="item">{{ item }}</option>
     </select>
   </div>

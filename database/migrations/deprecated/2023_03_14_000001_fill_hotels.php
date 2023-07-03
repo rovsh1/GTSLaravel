@@ -137,7 +137,7 @@ return new class extends Migration {
             if (!empty($options->breakfastTime)) {
                 $breakfastTimeFrom = $options->breakfastTime;
                 try {
-                    $breakfastPeriod = new TimeSettings\BreakfastPeriod($breakfastTimeFrom, null);
+                    $breakfastPeriod = new TimeSettings\BreakfastPeriod($breakfastTimeFrom, '12:00');
                 } catch (\Throwable $e) {
                 }
             }
@@ -195,7 +195,7 @@ return new class extends Migration {
                     'id' => $hotelId,
                     'city_id' => $r->city_id,
                     'type_id' => $r->type_id,
-                    'currency_id' => CurrencyEnum::UZS,
+                    'currency_id' => CurrencyEnum::UZS->id(),
                     'rating' => $r->rating,
                     'name' => $r->name,
                     'address' => $r->address,

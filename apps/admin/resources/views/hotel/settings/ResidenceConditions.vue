@@ -1,32 +1,29 @@
 <script setup lang="ts">
 
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
-import { useToggle } from '@vueuse/core'
+import { MaybeRef } from '@vueuse/core'
 import { z } from 'zod'
 
 import CollapsableBlock from '~resources/views/hotel/settings/components/CollapsableBlock.vue'
 import ConditionsTable from '~resources/views/hotel/settings/components/ConditionsTable.vue'
 import TimeSelect from '~resources/views/hotel/settings/components/TimeSelect.vue'
+import { useEditableModal } from '~resources/views/hotel/settings/composables/editable-modal'
+import { ConditionType, ConditionTypeEnum, useMarkupSettingsStore } from '~resources/views/hotel/settings/composables/markup-settings'
+import { useTimeSettings } from '~resources/views/hotel/settings/composables/time-settings'
 
 import {
   addConditionHotelMarkupSettings,
   deleteConditionHotelMarkupSettings,
+  HotelMarkupSettingsConditionAddProps,
+  HotelMarkupSettingsUpdateProps,
   MarkupCondition,
   updateConditionHotelMarkupSettings,
-  useHotelMarkupSettingsAPI,
 } from '~api/hotel/markup-settings'
 
 import { requestInitialData } from '~lib/initial-data'
 
 import BaseDialog from '~components/BaseDialog.vue'
-
-enum ConditionTypeEnum {
-  earlyCheckIn = 'earlyCheckIn',
-  lateCheckOut = 'lateCheckOut',
-}
-
-type ConditionType = keyof typeof ConditionTypeEnum
 
 const { hotelID } = requestInitialData(
   'view-initial-data-hotel-settings',
@@ -35,41 +32,65 @@ const { hotelID } = requestInitialData(
   }),
 )
 
+const markupSettingsStore = useMarkupSettingsStore()
+const { fetchMarkupSettings } = markupSettingsStore
+const isFetching = computed(() => markupSettingsStore.isFetching)
+const markupSettings = computed(() => markupSettingsStore.markupSettings)
 const {
-  isFetching,
-  execute: fetchMarkupSettings,
-  data: markupSettings,
-} = useHotelMarkupSettingsAPI({ hotelID })
+  checkOutBefore,
+  checkInAfter,
+  breakfastPeriodFrom,
+  breakfastPeriodTo,
+  fetchTimeSettings,
+  updateTimeSettings,
+} = useTimeSettings(hotelID)
 
+type AddPayload = HotelMarkupSettingsConditionAddProps
+type EditPayload = HotelMarkupSettingsUpdateProps
+
+const modalSettings = {
+  add: {
+    title: 'Добавить новое условие',
+    handler: async (request: MaybeRef<AddPayload>) => {
+      await addConditionHotelMarkupSettings(request)
+    },
+  },
+  edit: {
+    title: 'Изменение условия',
+    handler: async (request: MaybeRef<EditPayload>) => {
+      await updateConditionHotelMarkupSettings(request)
+    },
+  },
+}
+
+const {
+  isOpened,
+  isLoading,
+  title: modalTitle,
+  close,
+  openAdd,
+  openEdit,
+  handleAdd,
+  handleEdit,
+} = useEditableModal<AddPayload, EditPayload>(modalSettings)
+
+const isCreateCondition = ref<boolean>(false)
 const isConditionsFetching = ref<boolean>(false)
-
 const editableConditionKey = ref<string>()
 const editableCondition = ref<MarkupCondition>()
 
-const [isShowModal, toggleModal] = useToggle()
-const modalTitle = ref<string>('Добавить новое условие')
-const isCreateCondition = ref<boolean>(false)
-
-const handleEditConditions = (
-  conditionType: ConditionType,
-  condition: MarkupCondition,
-  index: number,
-) => {
-  modalTitle.value = 'Изменение условия'
+const handleEditConditions = (conditionType: ConditionType, condition: MarkupCondition, index: number) => {
   editableCondition.value = condition
   editableConditionKey.value = `${conditionType}.${index}`
   isCreateCondition.value = false
-
-  toggleModal()
+  openEdit()
 }
 
 const handleAddConditions = (conditionType: ConditionType) => {
-  modalTitle.value = 'Добавить новое условие'
   editableCondition.value = { from: '', to: '' } as unknown as MarkupCondition
   editableConditionKey.value = `${conditionType}`
   isCreateCondition.value = true
-
-  toggleModal()
+  openAdd()
 }
 
 const handleDeleteConditions = async (conditionType: ConditionType, index: number) => {
@@ -97,25 +118,27 @@ const onModalSubmit = async () => {
 
   isConditionsFetching.value = true
   if (!isCreateCondition.value) {
-    await updateConditionHotelMarkupSettings(payload)
+    await handleEdit(payload)
   } else {
-    await addConditionHotelMarkupSettings(payload)
+    await handleAdd(payload as unknown as AddPayload)
   }
   isConditionsFetching.value = false
 
   await fetchMarkupSettings()
-  toggleModal(false)
 }
 
-fetchMarkupSettings()
+const handleUpdateHotelSettings = async () => {
+  await updateTimeSettings()
+  await fetchTimeSettings()
+}
 
 </script>
 
 <template>
   <BaseDialog
-    :opened="isShowModal as boolean"
-    :loading="isFetching || isConditionsFetching"
-    @close="toggleModal(false)"
+    :opened="isOpened as boolean"
+    :loading="isLoading || isConditionsFetching"
+    @close="close"
   >
     <template #title>{{ modalTitle }}</template>
 
@@ -140,7 +163,7 @@ fetchMarkupSettings()
 
     <template #actions-end>
       <button class="btn btn-primary" type="button" @click="onModalSubmit">Сохранить</button>
-      <button class="btn btn-cancel" type="button" @click="toggleModal(false)">Отмена</button>
+      <button class="btn btn-cancel" type="button" @click="close">Отмена</button>
     </template>
   </BaseDialog>
 
@@ -148,11 +171,19 @@ fetchMarkupSettings()
     <div class="d-flex flex-row gap-4">
       <div class="w-100">
         <h6>Стандартные условия заезда</h6>
-        <TimeSelect class="w-25" />
+        <TimeSelect
+          v-model="checkInAfter"
+          class="w-25"
+          @change="handleUpdateHotelSettings"
+        />
       </div>
       <div class="w-100">
         <h6>Стандартные условия выезда</h6>
-        <TimeSelect class="w-25" />
+        <TimeSelect
+          v-model="checkOutBefore"
+          class="w-25"
+          @change="handleUpdateHotelSettings"
+        />
       </div>
     </div>
 
@@ -160,7 +191,7 @@ fetchMarkupSettings()
       <ConditionsTable
         class="w-100"
         title="Условия раннего заезда"
-        :conditions="markupSettings?.earlyCheckIn as MarkupCondition[]"
+        :conditions="markupSettings?.earlyCheckIn || [] as MarkupCondition[]"
         :loading="isFetching || isConditionsFetching"
         @add="handleAddConditions(ConditionTypeEnum.earlyCheckIn)"
         @edit="({ condition, index }) => handleEditConditions(ConditionTypeEnum.earlyCheckIn, condition, index)"
@@ -169,7 +200,7 @@ fetchMarkupSettings()
       <ConditionsTable
         class="w-100"
         title="Условия позднего выезда"
-        :conditions="markupSettings?.lateCheckOut as MarkupCondition[]"
+        :conditions="markupSettings?.lateCheckOut || [] as MarkupCondition[]"
         :loading="isFetching || isConditionsFetching"
         @add="handleAddConditions(ConditionTypeEnum.lateCheckOut)"
         @edit="({ condition, index }) => handleEditConditions(ConditionTypeEnum.lateCheckOut, condition, index)"
@@ -180,7 +211,21 @@ fetchMarkupSettings()
     <div class="d-flex flex-row gap-4 mt-2">
       <div class="w-100">
         <h6>Время завтрака</h6>
-        <TimeSelect class="w-25" />
+        <div class="d-flex flex-row gap-2">
+          <TimeSelect
+            v-model="breakfastPeriodFrom"
+            label="C"
+            class="w-25"
+            @change="handleUpdateHotelSettings"
+          />
+          <TimeSelect
+            v-model="breakfastPeriodTo"
+            :from="breakfastPeriodFrom"
+            label="До"
+            class="w-25"
+            @change="handleUpdateHotelSettings"
+          />
+        </div>
       </div>
       <div class="w-100" />
     </div>

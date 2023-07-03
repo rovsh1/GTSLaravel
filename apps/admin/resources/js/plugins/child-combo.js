@@ -60,7 +60,7 @@ $.fn.childCombo = function (options) {
 
     const value = preparedOptions.value || child.val()
     let valTemp = []
-    const data = $.extend({}, preparedOptions.data)
+    const data = { ...preparedOptions.data }
     if (!isEmpty) {
       data[preparedOptions.dataIndex] = parent.val()
     }

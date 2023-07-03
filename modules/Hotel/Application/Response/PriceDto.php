@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Hotel\Application\Dto;
+namespace Module\Hotel\Application\Response;
 
 use Carbon\CarbonInterface;
 use Sdk\Module\Foundation\Support\Dto\Dto;

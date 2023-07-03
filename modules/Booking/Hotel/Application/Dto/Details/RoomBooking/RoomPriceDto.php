@@ -13,8 +13,8 @@ class RoomPriceDto extends AbstractDomainBasedDto
 {
     public function __construct(
         public readonly float $netValue,
-        public readonly float $hoValue,
-        public readonly float $boValue,
+        public readonly ManualChangablePriceDto $hoValue,
+        public readonly ManualChangablePriceDto $boValue,
         public readonly ?float $avgDailyValue,
         public readonly ?string $hoNote,
         public readonly ?string $boNote,
@@ -24,8 +24,8 @@ class RoomPriceDto extends AbstractDomainBasedDto
     {
         return new static(
             $entity->netValue(),
-            $entity->hoValue(),
-            $entity->boValue(),
+            ManualChangablePriceDto::fromDomain($entity->hoValue()),
+            ManualChangablePriceDto::fromDomain($entity->boValue()),
             $entity->calculationNotes()?->avgDailyValue(),
             $entity->calculationNotes()?->hoNote(),
             $entity->calculationNotes()?->boNote(),

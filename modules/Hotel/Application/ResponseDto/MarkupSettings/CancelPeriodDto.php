@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Hotel\Application\Dto\MarkupSettings;
+namespace Module\Hotel\Application\ResponseDto\MarkupSettings;
 
 use Carbon\CarbonInterface;
 use Module\Hotel\Domain\ValueObject\MarkupSettings\CancelPeriod;

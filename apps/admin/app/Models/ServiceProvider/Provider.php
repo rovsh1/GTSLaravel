@@ -2,6 +2,7 @@
 
 namespace App\Admin\Models\ServiceProvider;
 
+use App\Admin\Models\Reference\Airport;
 use App\Admin\Models\Reference\City;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -51,6 +52,16 @@ class Provider extends Model
     public function cars(): HasMany
     {
         return $this->hasMany(Car::class);
+    }
+
+    public function airports(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Airport::class,
+            'service_provider_airports',
+            'provider_id',
+            'airport_id'
+        );
     }
 
     public function seasons(): HasMany

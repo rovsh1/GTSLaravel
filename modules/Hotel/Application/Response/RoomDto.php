@@ -1,7 +1,8 @@
 <?php
 
-namespace Module\Hotel\Application\Dto;
+namespace Module\Hotel\Application\Response;
 
+use Module\Hotel\Application\ResponseDto\PriceRateDto;
 use Sdk\Module\Foundation\Support\Dto\Dto;
 use Sdk\Module\Foundation\Support\Dto\DtoCollection;
 use Sdk\Module\Foundation\Support\Dto\DtoCollectionOf;

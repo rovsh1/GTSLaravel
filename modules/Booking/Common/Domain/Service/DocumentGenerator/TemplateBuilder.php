@@ -2,6 +2,8 @@
 
 namespace Module\Booking\Common\Domain\Service\DocumentGenerator;
 
+use Illuminate\Contracts\View\View;
+
 class TemplateBuilder
 {
     private array $attributes = [];
@@ -14,8 +16,9 @@ class TemplateBuilder
     public function generate(): string
     {
         $builder = (new DocumentBuilder())
-            ->template($this->getTemplateContents($this->file))
-            ->attributes($this->attributes);
+            ->template(
+                $this->getTemplateView($this->file)->render()
+            );
 
         $this->prepare($builder);
 
@@ -25,12 +28,14 @@ class TemplateBuilder
     public function template(string $template): static
     {
         $this->template = $template;
+
         return $this;
     }
 
     public function attributes(array $attributes): static
     {
         $this->attributes = $attributes;
+
         return $this;
     }
 
@@ -45,5 +50,10 @@ class TemplateBuilder
     private function getTemplateContents(string $file): string
     {
         return file_get_contents($this->templatesPath . DIRECTORY_SEPARATOR . $file);
+    }
+
+    private function getTemplateView(string $file): View
+    {
+        return view($file, $this->attributes);
     }
 }

@@ -32,7 +32,8 @@ class BootServiceProvider extends ServiceProvider
             DocumentGeneratorFactory::class,
             fn(ModuleInterface $module) => new DocumentGeneratorFactory(
                 $module->config('templates_path'),
-                $module->get(FileStorageAdapterInterface::class)
+                $module->get(FileStorageAdapterInterface::class),
+                $module
             )
         );
         $this->app->singleton(

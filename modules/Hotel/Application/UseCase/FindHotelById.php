@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Hotel\Application\UseCase;
 
-use Module\Hotel\Application\Dto\HotelDto;
 use Module\Hotel\Application\Query\Find as Query;
+use Module\Hotel\Application\Response\HotelDto;
 use Sdk\Module\Contracts\Bus\QueryBusInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 

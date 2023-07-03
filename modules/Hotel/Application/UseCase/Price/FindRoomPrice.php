@@ -6,8 +6,8 @@ namespace Module\Hotel\Application\UseCase\Price;
 
 use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
-use Module\Hotel\Application\Dto\PriceDto;
 use Module\Hotel\Application\Query\Price\Date\Find as Query;
+use Module\Hotel\Application\Response\PriceDto;
 use Module\Hotel\Domain\Repository\SeasonRepositoryInterface;
 use Sdk\Module\Contracts\Bus\QueryBusInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;

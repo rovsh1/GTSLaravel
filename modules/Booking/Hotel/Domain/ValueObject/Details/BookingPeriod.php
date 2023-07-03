@@ -14,8 +14,8 @@ final class BookingPeriod implements ValueObjectInterface, SerializableDataInter
     private int $nightsCount;
 
     public function __construct(
-        private ?CarbonImmutable $dateFrom,
-        private ?CarbonImmutable $dateTo,
+        private CarbonImmutable $dateFrom,
+        private CarbonImmutable $dateTo,
     ) {
         $calculatedNightsCount = CarbonPeriod::create($dateFrom, $dateTo, 'P1D')
             ->excludeEndDate()
@@ -24,12 +24,12 @@ final class BookingPeriod implements ValueObjectInterface, SerializableDataInter
         $this->nightsCount = $calculatedNightsCount;
     }
 
-    public function dateFrom(): ?CarbonImmutable
+    public function dateFrom(): CarbonImmutable
     {
         return $this->dateFrom;
     }
 
-    public function dateTo(): ?CarbonImmutable
+    public function dateTo(): CarbonImmutable
     {
         return $this->dateTo;
     }

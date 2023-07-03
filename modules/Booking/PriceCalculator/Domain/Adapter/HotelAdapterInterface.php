@@ -3,9 +3,8 @@
 namespace Module\Booking\PriceCalculator\Domain\Adapter;
 
 use Carbon\CarbonInterface;
-use Module\Hotel\Application\Dto\HotelDto;
-use Module\Hotel\Application\Dto\MarkupSettingsDto;
-use Module\Shared\Enum\CurrencyEnum;
+use Module\Hotel\Application\Response\HotelDto;
+use Module\Hotel\Application\Response\MarkupSettingsDto;
 
 interface HotelAdapterInterface
 {

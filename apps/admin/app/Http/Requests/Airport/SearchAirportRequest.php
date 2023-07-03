@@ -12,11 +12,17 @@ class SearchAirportRequest extends FormRequest
     {
         return [
             'service_id' => ['required', 'numeric'],
+            'city_id' => ['required', 'numeric'],
         ];
     }
 
     public function getServiceId(): int
     {
-        return $this->get('service_id');
+        return (int)$this->get('service_id');
+    }
+
+    public function getCityId(): int
+    {
+        return (int)$this->get('city_id');
     }
 }

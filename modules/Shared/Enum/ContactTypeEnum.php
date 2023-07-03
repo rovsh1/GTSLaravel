@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Enums;
+namespace Module\Shared\Enum;
 
 enum ContactTypeEnum: int
 {

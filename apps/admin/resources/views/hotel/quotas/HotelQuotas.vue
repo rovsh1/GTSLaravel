@@ -5,7 +5,7 @@ import checkIcon from '@mdi/svg/svg/check.svg'
 import pencilIcon from '@mdi/svg/svg/pencil.svg'
 import { z } from 'zod'
 
-import { HotelResponse, useHotelAPI } from '~api/hotel/get'
+import { HotelResponse, useHotelGetAPI } from '~api/hotel/get'
 import { useHotelQuotasAPI } from '~api/hotel/quotas/list'
 import { UseHotelRooms, useHotelRoomsListAPI } from '~api/hotel/rooms'
 
@@ -29,7 +29,7 @@ const {
   data: hotelData,
   execute: fetchHotel,
   isFetching: isHotelFetching,
-} = useHotelAPI({ hotelID })
+} = useHotelGetAPI({ hotelID })
 
 fetchHotel()
 

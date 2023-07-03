@@ -8,8 +8,6 @@ class DocumentBuilder
 
     private string $template;
 
-    private array $attributes = [];
-
     public function __construct()
     {
         $tempPath = sys_get_temp_dir();
@@ -26,7 +24,7 @@ class DocumentBuilder
     public function generate(): string
     {
         $this->mpdf->SetDisplayMode('fullpage');
-        $this->mpdf->WriteHTML($this->prepareTemplate());
+        $this->mpdf->WriteHTML($this->template);
 
         return $this->mpdf->OutputBinaryData();
     }
@@ -37,33 +35,10 @@ class DocumentBuilder
         return $this;
     }
 
-    public function attributes(array $attributes): static
-    {
-        $this->attributes = $attributes;
-        return $this;
-    }
-
-    public function attribute(string $name, string $value): static
-    {
-        $this->attributes[$name] = $value;
-        return $this;
-    }
-
     public function image(string $name, string $content): static
     {
         $this->mpdf->imageVars[$name] = $content;
         $this->mpdf->Image('var:' . $name, 0, 0);
         return $this;
-    }
-
-    private function prepareTemplate(): string
-    {
-        $html = $this->template;
-
-        foreach ($this->attributes as $key => $requisite) {
-            $html = str_replace('{' . $key . '}', $requisite, $html);
-        }
-
-        return $html;
     }
 }

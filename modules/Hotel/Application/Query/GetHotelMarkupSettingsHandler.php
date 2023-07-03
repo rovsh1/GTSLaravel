@@ -2,7 +2,7 @@
 
 namespace Module\Hotel\Application\Query;
 
-use Module\Hotel\Application\Dto\MarkupSettingsDto;
+use Module\Hotel\Application\Response\MarkupSettingsDto;
 use Module\Hotel\Infrastructure\Repository\MarkupSettingsRepository;
 use Sdk\Module\Contracts\Bus\QueryHandlerInterface;
 use Sdk\Module\Contracts\Bus\QueryInterface;

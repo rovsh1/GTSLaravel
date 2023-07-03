@@ -135,6 +135,8 @@ abstract class AbstractPrototypeController extends Controller
             ->action($this->prototype->route('update', $model->id))
             ->data($model);
 
+        $this->prepareEditMenu($this->model);
+
         return Layout::title($title)
             ->view($this->prototype->view('edit') ?? $this->prototype->view('form') ?? 'default.form.form', [
                 'model' => $model,
@@ -204,6 +206,10 @@ abstract class AbstractPrototypeController extends Controller
     }
 
     protected function prepareShowMenu(Model $model)
+    {
+    }
+
+    protected function prepareEditMenu(Model $model)
     {
     }
 

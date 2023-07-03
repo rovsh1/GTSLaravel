@@ -7,22 +7,16 @@ namespace Module\Hotel\Domain\ValueObject\TimeSettings;
 use Module\Shared\Domain\ValueObject\SerializableDataInterface;
 use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 
-/**
- * @deprecated
- * @todo hack для миграции т.к. в старой системе время завтрака не было периодом
- */
 class BreakfastPeriod implements ValueObjectInterface, SerializableDataInterface
 {
     private readonly string $from;
-    private readonly ?string $to;
+    private readonly string $to;
 
-    public function __construct(string $from, ?string $to)
+    public function __construct(string $from, string $to)
     {
         $this->validateTime($from);
-        if ($to !== null) {
-            $this->validateTime($to);
-            $this->validateFromLessTo($from, $to);
-        }
+        $this->validateTime($to);
+        $this->validateFromLessTo($from, $to);
         $this->from = $from;
         $this->to = $to;
     }
@@ -32,7 +26,7 @@ class BreakfastPeriod implements ValueObjectInterface, SerializableDataInterface
         return $this->from;
     }
 
-    public function to(): ?string
+    public function to(): string
     {
         return $this->to;
     }

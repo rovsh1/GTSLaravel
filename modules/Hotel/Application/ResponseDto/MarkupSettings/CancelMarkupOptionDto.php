@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Hotel\Application\Dto\MarkupSettings;
+namespace Module\Hotel\Application\ResponseDto\MarkupSettings;
 
 use Module\Hotel\Domain\ValueObject\MarkupSettings\CancelMarkupOption;
 use Module\Shared\Application\Dto\AbstractDomainBasedDto;

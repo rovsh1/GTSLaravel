@@ -6,14 +6,14 @@
 
 @section('head-end')
     <script>
-      window['view-initial-data-hotel-booking'] = {{ Js::from([
+      window['view-initial-data-airport-booking'] = {{ Js::from([
             'bookingID' => $bookingId,
         ]) }}
     </script>
 @endsection
 
 @section('scripts')
-    @vite('resources/views/hotel-booking/show/show.ts')
+    @vite('resources/views/airport-booking/show/show.ts')
 @endsection
 
 @section('content')

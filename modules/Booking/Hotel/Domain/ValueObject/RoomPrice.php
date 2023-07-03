@@ -16,7 +16,12 @@ final class RoomPrice implements SerializableDataInterface
 
     public static function buildEmpty(): static
     {
-        return new static(0, 0, 0, null);
+        return new static(
+            0,
+            new ManualChangablePrice(0),
+            new ManualChangablePrice(0),
+            null
+        );
     }
 
     public function netValue(): float
@@ -43,8 +48,8 @@ final class RoomPrice implements SerializableDataInterface
     {
         return [
             'netValue' => $this->netValue,
-            'hoValue' => $this->hoPrice,
-            'boValue' => $this->boPrice,
+            'hoValue' => $this->hoPrice->toData(),
+            'boValue' => $this->boPrice->toData(),
             'calculationNotes' => $this->calculationNotes?->toData(),
         ];
     }
@@ -52,10 +57,11 @@ final class RoomPrice implements SerializableDataInterface
     public static function fromData(array $data): static
     {
         $calculationNotes = $data['calculationNotes'] ?? null;
+
         return new RoomPrice(
             $data['netValue'],
-            $data['hoValue'],
-            $data['boValue'],
+            ManualChangablePrice::fromData($data['hoValue']),
+            ManualChangablePrice::fromData($data['boValue']),
             $calculationNotes !== null ? PriceCalculationNotes::fromData($calculationNotes) : null,
         );
     }

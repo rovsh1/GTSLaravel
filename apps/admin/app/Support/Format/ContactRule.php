@@ -2,9 +2,8 @@
 
 namespace App\Admin\Support\Format;
 
-use App\Admin\Enums\ContactTypeEnum;
 use Gsdk\Format\Rules\RuleInterface;
-use Illuminate\Database\Eloquent\Model;
+use Module\Shared\Enum\ContactTypeEnum;
 
 class ContactRule implements RuleInterface
 {

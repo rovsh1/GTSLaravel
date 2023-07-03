@@ -2,7 +2,7 @@
 
 namespace Module\Hotel\Application\Query\Price\Date;
 
-use Module\Hotel\Application\Dto\PriceDto;
+use Module\Hotel\Application\Response\PriceDto;
 use Module\Hotel\Infrastructure\Models\DatePrice;
 use Sdk\Module\Contracts\Bus\QueryHandlerInterface;
 use Sdk\Module\Contracts\Bus\QueryInterface;

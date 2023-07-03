@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Hotel\Application\Factory;
 
 use Illuminate\Support\Enumerable;
-use Module\Hotel\Application\Dto\PriceDto;
+use Module\Hotel\Application\Response\PriceDto;
 
 class PriceDtoFactory
 {

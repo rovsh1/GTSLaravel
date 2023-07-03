@@ -2,6 +2,8 @@
 
 namespace Module\Hotel\Domain\Entity;
 
+use Module\Hotel\Domain\ValueObject\Address;
+use Module\Hotel\Domain\ValueObject\ContactCollection;
 use Module\Hotel\Domain\ValueObject\TimeSettings;
 use Module\Shared\Domain\ValueObject\Id;
 use Module\Shared\Enum\CurrencyEnum;
@@ -13,6 +15,8 @@ class Hotel
         private string $name,
         private CurrencyEnum $currency,
         private TimeSettings $timeSettings,
+        private Address $address,
+        private readonly ContactCollection $contacts
     ) {}
 
     public function id(): Id
@@ -33,5 +37,20 @@ class Hotel
     public function timeSettings(): TimeSettings
     {
         return $this->timeSettings;
+    }
+
+    public function setTimeSettings(TimeSettings $timeSettings): void
+    {
+        $this->timeSettings = $timeSettings;
+    }
+
+    public function address(): Address
+    {
+        return $this->address;
+    }
+
+    public function contacts(): ContactCollection
+    {
+        return $this->contacts;
     }
 }

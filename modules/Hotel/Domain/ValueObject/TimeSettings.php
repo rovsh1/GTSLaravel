@@ -43,10 +43,12 @@ class TimeSettings implements ValueObjectInterface, SerializableDataInterface
 
     public static function fromData(array $data): static
     {
+        $breakfastPeriod = $data['breakfastPeriod'] ?? null;
+
         return new static(
             new Time($data['checkInAfter']),
             new Time($data['checkOutBefore']),
-            BreakfastPeriod::fromData($data['breakfastPeriod'])
+            $breakfastPeriod !== null ? BreakfastPeriod::fromData($data['breakfastPeriod']) : null
         );
     }
 }

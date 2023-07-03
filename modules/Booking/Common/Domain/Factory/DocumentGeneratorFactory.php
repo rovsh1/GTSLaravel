@@ -11,15 +11,18 @@ use Module\Booking\Common\Domain\Exception\BookingTypeDoesntHaveDocumentGenerato
 use Module\Booking\Common\Domain\Service\DocumentGenerator\DocumentGeneratorInterface;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
 use Module\Booking\Common\Domain\ValueObject\RequestTypeEnum;
+use Module\Booking\Hotel\Domain\Adapter\HotelAdapterInterface;
 use Module\Booking\Hotel\Domain\Service\DocumentGenerator\CancellationRequestGenerator;
 use Module\Booking\Hotel\Domain\Service\DocumentGenerator\ChangeRequestGenerator;
 use Module\Booking\Hotel\Domain\Service\DocumentGenerator\ReservationRequestGenerator;
+use Sdk\Module\Contracts\ModuleInterface;
 
 class DocumentGeneratorFactory
 {
     public function __construct(
         private readonly string $templatesPath,
-        private readonly FileStorageAdapterInterface $fileStorageAdapter
+        private readonly FileStorageAdapterInterface $fileStorageAdapter,
+        private readonly ModuleInterface $module
     ) {
     }
 
@@ -36,6 +39,7 @@ class DocumentGeneratorFactory
     private function getCancelDocumentGenerator(BookingRequestableInterface $booking): DocumentGeneratorInterface
     {
         return match ($booking->type()) {
+            //@todo прокинуть зависимости
             BookingTypeEnum::HOTEL => new CancellationRequestGenerator($this->templatesPath, $this->fileStorageAdapter),
             default => throw new BookingTypeDoesntHaveDocumentGenerator()
         };
@@ -52,7 +56,11 @@ class DocumentGeneratorFactory
     private function getBookingDocumentGenerator(BookingRequestableInterface $booking): DocumentGeneratorInterface
     {
         return match ($booking->type()) {
-            BookingTypeEnum::HOTEL => new ReservationRequestGenerator($this->templatesPath, $this->fileStorageAdapter),
+            BookingTypeEnum::HOTEL => new ReservationRequestGenerator(
+                $this->templatesPath,
+                $this->fileStorageAdapter,
+                $this->module->get(HotelAdapterInterface::class)
+            ),
             default => throw new BookingTypeDoesntHaveDocumentGenerator()
         };
     }

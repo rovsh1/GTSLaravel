@@ -3,6 +3,9 @@
 namespace App\Admin\Http\Controllers\Data;
 
 use App\Admin\Http\Requests\Airport\SearchAirportRequest;
+use App\Admin\Http\Resources\Airport as AirportResource;
+use App\Admin\Models\Reference\Airport;
+use App\Admin\Models\ServiceProvider\AirportPrice;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
@@ -19,7 +22,19 @@ class AirportController extends AbstractPrototypeController
 
     public function search(SearchAirportRequest $request): JsonResponse
     {
-        return response()->json([['id' => 1, 'name' => 'Аэропорт Мира']]);
+        $serviceAirportIds = AirportPrice::whereServiceId($request->getServiceId())
+            ->get()
+            ->pluck('airport_id')
+            ->unique()
+            ->toArray();
+
+        $airports = Airport::whereIn('r_airports.id', $serviceAirportIds)
+            ->whereCityId($request->getCityId())
+            ->get();
+
+        return response()->json(
+            AirportResource::collection($airports)
+        );
     }
 
     protected function formFactory(): FormContract

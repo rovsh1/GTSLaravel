@@ -3,7 +3,6 @@
 namespace App\Admin\Support\Http\Controllers;
 
 use App\Admin\Components\Factory\Prototype;
-use App\Admin\Enums\ContactTypeEnum;
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\Form;
@@ -12,6 +11,7 @@ use App\Admin\Support\View\Form\Form as FormContract;
 use App\Core\Support\Http\Responses\AjaxErrorResponse;
 use App\Core\Support\Http\Responses\AjaxReloadResponse;
 use Illuminate\Contracts\View\View;
+use Module\Shared\Enum\ContactTypeEnum;
 
 abstract class AbstractContactController extends Controller
 {

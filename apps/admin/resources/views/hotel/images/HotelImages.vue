@@ -14,7 +14,7 @@ import { z } from 'zod'
 import AttachmentDialog from '~resources/views/hotel/images/components/AttachmentDialog.vue'
 import { AttachmentDialogImageProp, isImageAttachedToRoom } from '~resources/views/hotel/images/components/lib'
 
-import { HotelID, HotelResponse, useHotelAPI } from '~api/hotel/get'
+import { HotelID, HotelResponse, useHotelGetAPI } from '~api/hotel/get'
 import { FileResponse, HotelImage, HotelImageID } from '~api/hotel/images'
 import {
   UseHotelImages,
@@ -73,7 +73,7 @@ const {
   execute: fetchHotel,
   data: hotelData,
   isFetching: isHotelFetching,
-} = useHotelAPI({ hotelID })
+} = useHotelGetAPI({ hotelID })
 
 const hotel = computed<HotelResponse | null>(() => hotelData.value)
 

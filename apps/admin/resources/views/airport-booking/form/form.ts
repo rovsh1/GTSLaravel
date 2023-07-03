@@ -2,13 +2,22 @@ import { Client } from '~api/client'
 
 import '~resources/views/main'
 
+interface ServiceSearchPayload {
+  city_id: null | number
+}
+
 $(() => {
+  const serviceSearchPayload: ServiceSearchPayload = { city_id: null }
+
   $('#form_data_service_id').childCombo({
     url: '/service-provider/services-airport/search',
     value: window.get_url_parameter('city_id'),
     disabledText: 'Выберите город',
     parent: $('#form_data_city_id'),
     dataIndex: 'city_id',
+    change: () => {
+      serviceSearchPayload.city_id = $('#form_data_city_id option:selected').val() as number
+    },
   })
 
   $('#form_data_airport_id').childCombo({
@@ -17,6 +26,7 @@ $(() => {
     disabledText: 'Выберите услугу',
     parent: $('#form_data_service_id'),
     dataIndex: 'service_id',
+    data: serviceSearchPayload,
   })
 
   let clients: Client[] = []

@@ -2,7 +2,7 @@
 
 namespace Module\Hotel\Application\Query;
 
-use Module\Hotel\Application\Dto\HotelDto;
+use Module\Hotel\Application\Response\HotelDto;
 use Module\Hotel\Domain\Repository\HotelRepositoryInterface;
 use Sdk\Module\Contracts\Bus\QueryHandlerInterface;
 use Sdk\Module\Contracts\Bus\QueryInterface;

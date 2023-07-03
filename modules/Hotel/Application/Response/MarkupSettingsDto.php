@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Module\Hotel\Application\Dto;
+namespace Module\Hotel\Application\Response;
 
-use Module\Hotel\Application\Dto\MarkupSettings\CancelPeriodDto;
-use Module\Hotel\Application\Dto\MarkupSettings\ClientMarkupsDto;
-use Module\Hotel\Application\Dto\MarkupSettings\ConditionDto;
+use Module\Hotel\Application\ResponseDto\MarkupSettings\CancelPeriodDto;
+use Module\Hotel\Application\ResponseDto\MarkupSettings\ClientMarkupsDto;
+use Module\Hotel\Application\ResponseDto\MarkupSettings\ConditionDto;
 use Module\Hotel\Domain\Entity\MarkupSettings;
 use Module\Shared\Application\Dto\AbstractDomainBasedDto;
 use Module\Shared\Domain\Entity\EntityInterface;

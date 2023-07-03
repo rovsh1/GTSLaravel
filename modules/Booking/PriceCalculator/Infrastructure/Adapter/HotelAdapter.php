@@ -4,12 +4,11 @@ namespace Module\Booking\PriceCalculator\Infrastructure\Adapter;
 
 use Carbon\CarbonInterface;
 use Module\Booking\PriceCalculator\Domain\Adapter\HotelAdapterInterface;
-use Module\Hotel\Application\Dto\HotelDto;
-use Module\Hotel\Application\Dto\MarkupSettingsDto;
+use Module\Hotel\Application\Response\HotelDto;
+use Module\Hotel\Application\Response\MarkupSettingsDto;
 use Module\Hotel\Application\UseCase\FindHotelById;
 use Module\Hotel\Application\UseCase\GetMarkupSettings;
 use Module\Hotel\Application\UseCase\Price\FindRoomPrice;
-use Module\Shared\Enum\CurrencyEnum;
 
 class HotelAdapter implements HotelAdapterInterface
 {

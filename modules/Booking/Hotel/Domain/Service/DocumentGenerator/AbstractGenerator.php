@@ -4,8 +4,8 @@ namespace Module\Booking\Hotel\Domain\Service\DocumentGenerator;
 
 use Module\Booking\Common\Domain\Adapter\FileStorageAdapterInterface;
 use Module\Booking\Common\Domain\Entity\AbstractBooking;
-use Module\Booking\Common\Domain\Entity\Request;
 use Module\Booking\Common\Domain\Entity\BookingInterface;
+use Module\Booking\Common\Domain\Entity\Request;
 use Module\Booking\Common\Domain\Service\DocumentGenerator\DocumentGeneratorInterface;
 use Module\Booking\Common\Domain\Service\DocumentGenerator\TemplateBuilder;
 
@@ -19,7 +19,12 @@ abstract class AbstractGenerator implements DocumentGeneratorInterface
     public function generate(Request $request, BookingInterface|AbstractBooking $booking): void
     {
         $documentContent = (new TemplateBuilder($this->templatesPath, $this->getTemplateName()))
-            ->attributes($this->getReservationAttributes($booking))
+            ->attributes(
+                array_merge(
+                    $this->getCompanyAttributes(),
+                    $this->getReservationAttributes($booking),
+                )
+            )
             ->generate();
 
         $this->fileStorageAdapter->create(
@@ -28,6 +33,17 @@ abstract class AbstractGenerator implements DocumentGeneratorInterface
             \Str::random(18) . '.pdf',
             $documentContent
         );
+    }
+
+    private function getCompanyAttributes(): array
+    {
+        //@todo получить реквизиты компании
+        return [
+            'company' => 'ООО GotoStans',
+            'phone' => '+99878 120-90-12',
+            'email' => 'info@gotostans.com',
+            'address' => 'Узбекистан, г.Ташкент, 100015, ул. Кичик Бешагач, д. 104А',
+        ];
     }
 
     abstract protected function getTemplateName(): string;

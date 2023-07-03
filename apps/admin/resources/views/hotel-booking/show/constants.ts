@@ -47,6 +47,8 @@ export const roomStatusOptions: SelectOption[] = mapEntitiesToSelectOptions(room
 
 export const externalNumberTypeOptions: SelectOption[] = mapEntitiesToSelectOptions(externalNumberTypes)
 
+export const cancelPeriodOptions: SelectOption[] = mapEntitiesToSelectOptions(cancelPeriods)
+
 export const getConditionLabel = (condition: MarkupCondition) => `с ${condition.from} по ${condition.to} (+${condition.percent}%)`
 
 export const getGenderName = (id: number): string | undefined =>

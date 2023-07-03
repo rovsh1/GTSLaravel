@@ -63,6 +63,11 @@ class ProviderController extends AbstractPrototypeController
         Sidebar::submenu(new ServiceProviderMenu($model, 'info'));
     }
 
+    protected function prepareEditMenu(Model $model)
+    {
+        Sidebar::submenu(new ServiceProviderMenu($model, 'info'));
+    }
+
     protected function getShowViewData(): array
     {
         return [

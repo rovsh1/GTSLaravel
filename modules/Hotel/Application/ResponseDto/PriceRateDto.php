@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Hotel\Application\Dto;
+namespace Module\Hotel\Application\ResponseDto;
 
 use Sdk\Module\Foundation\Support\Dto\Dto;
 

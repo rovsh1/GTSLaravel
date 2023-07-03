@@ -83,10 +83,10 @@
     "Hotel\\RatingEnum::FOUR": "✯ ✯ ✯ ✯",
     "Hotel\\RatingEnum::FIVE": "✯ ✯ ✯ ✯ ✯",
 
-    "ContactTypeEnum::PHONE": "Телефон",
-    "ContactTypeEnum::EMAIL": "Email",
-    "ContactTypeEnum::SITE": "Сайт",
-    "ContactTypeEnum::ADDRESS": "Адрес",
+    "Module\\Shared\\Enum\\ContactTypeEnum::PHONE": "Телефон",
+    "Module\\Shared\\Enum\\ContactTypeEnum::EMAIL": "Email",
+    "Module\\Shared\\Enum\\ContactTypeEnum::SITE": "Сайт",
+    "Module\\Shared\\Enum\\ContactTypeEnum::ADDRESS": "Адрес",
 
     "Hotel\\Contract\\StatusEnum::ACTIVE": "Активный",
     "Hotel\\Contract\\StatusEnum::INACTIVE": "Неактивный",

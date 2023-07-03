@@ -6,6 +6,7 @@ use App\Admin\Enums\Hotel\RatingEnum;
 use App\Admin\Enums\Hotel\StatusEnum;
 use App\Admin\Enums\Hotel\VisibilityEnum;
 use App\Admin\Http\Requests\Hotel\SearchRequest;
+use App\Admin\Http\Requests\Hotel\UpdateSettingsRequest;
 use App\Admin\Http\Resources\Hotel as HotelResource;
 use App\Admin\Http\Resources\Room;
 use App\Admin\Models\Hotel\Contract;
@@ -19,6 +20,7 @@ use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Format;
 use App\Admin\Support\Facades\Grid;
+use App\Admin\Support\Facades\Hotel\SettingsAdapter;
 use App\Admin\Support\Facades\Sidebar;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
@@ -27,6 +29,8 @@ use App\Admin\Support\View\Grid\SearchForm;
 use App\Admin\Support\View\Layout as LayoutContract;
 use App\Admin\View\Components\Helpers\HotelRating;
 use App\Admin\View\Menus\HotelMenu;
+use App\Core\Support\Http\Responses\AjaxResponseInterface;
+use App\Core\Support\Http\Responses\AjaxSuccessResponse;
 use Gsdk\Format\View\ParamsTable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
@@ -73,6 +77,26 @@ class HotelController extends AbstractPrototypeController
     public function get(Request $request, Hotel $hotel): JsonResponse
     {
         return response()->json($hotel);
+    }
+
+    public function settings(Request $request, int $id): JsonResponse
+    {
+        $hotelSettings = SettingsAdapter::getHotelSettings($id);
+
+        return response()->json($hotelSettings);
+    }
+
+    public function updateSettings(UpdateSettingsRequest $request, int $id): AjaxResponseInterface
+    {
+        SettingsAdapter::updateHotelTimeSettings(
+            $id,
+            $request->getCheckInAfter(),
+            $request->getCheckOutBefore(),
+            $request->getBreakfastPeriodFrom(),
+            $request->getBreakfastPeriodTo()
+        );
+
+        return new AjaxSuccessResponse();
     }
 
     public function getRooms(Request $request, Hotel $hotel): JsonResponse

@@ -2,7 +2,7 @@
 
 namespace App\Admin\Models\ServiceProvider;
 
-use App\Admin\Enums\ContactTypeEnum;
+use Module\Shared\Enum\ContactTypeEnum;
 use Sdk\Module\Database\Eloquent\Model;
 
 class Contact extends Model

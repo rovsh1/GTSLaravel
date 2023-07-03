@@ -35,6 +35,7 @@ class ServiceProviderMenu extends AbstractSubmenu
         $group = (new Group('reference'))
             ->addUrl('seasons', route('service-provider.seasons.index', $this->model), 'Сезоны', ['icon' => 'assignment'])
             ->addUrl('cars', route('service-provider.cars.index', $this->model),'Автомобили', ['icon' => 'airport_shuttle'])
+            ->addUrl('airports', route('service-provider.airports.index', $this->model),'Аэропорты', ['icon' => 'flight_land'])
         ;
 
         $this->addGroup($group);

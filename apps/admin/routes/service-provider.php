@@ -64,4 +64,8 @@ AclRoute::for('service-provider')
     ->resource('cars', ServiceProvider\CarController::class, [
         'slug' => 'provider',
         'except' => ['show']
+    ])
+    ->resource('airports', ServiceProvider\AirportController::class, [
+        'slug' => 'provider',
+        'except' => ['show']
     ]);

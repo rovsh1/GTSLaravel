@@ -3,7 +3,6 @@
 namespace App\Admin\Http\Controllers\ServiceProvider\Service\Price;
 
 use App\Admin\Http\Requests\ServiceProvider\UpdateAirportPriceRequest;
-use App\Admin\Models\Reference\Airport;
 use App\Admin\Models\Reference\Currency;
 use App\Admin\Models\ServiceProvider\AirportPrice;
 use App\Admin\Models\ServiceProvider\AirportService;
@@ -22,7 +21,7 @@ class AirportPricesController extends AbstractPricesController
         return Layout::title('Цены')
             ->view('service-provider.service.price.airport.index', [
                 'provider' => $provider,
-                'airports' => Airport::whereIn('city_id', $provider->cities)->get(),
+                'airports' => $provider->airports,
                 'seasons' => $provider->seasons,
                 'services' => $provider->airportServices,
                 'currencies' => Currency::all()

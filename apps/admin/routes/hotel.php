@@ -6,6 +6,8 @@ use App\Admin\Support\Facades\AclRoute;
 AclRoute::for('hotel')
     ->get('/search', Controllers\Hotel\HotelController::class . '@search', 'read', 'search')
     ->get('/{hotel}/get', Controllers\Hotel\HotelController::class . '@get', 'read', 'get')
+    ->get('/{hotel}/settings/get', Controllers\Hotel\HotelController::class . '@settings', 'read', 'settings')
+    ->put('/{hotel}/settings', Controllers\Hotel\HotelController::class . '@updateSettings', 'update', 'settings.update')
     ->get('/{hotel}/rooms/list', Controllers\Hotel\HotelController::class . '@getRooms', 'read', 'rooms.list')
 
     ->get('/{hotel}/rooms/{room}/get', Controllers\Hotel\RoomController::class . '@get', 'read', 'get')

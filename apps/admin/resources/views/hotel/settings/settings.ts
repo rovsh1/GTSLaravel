@@ -1,3 +1,5 @@
+import { createPinia } from 'pinia'
+
 import CancellationConditions from '~resources/views/hotel/settings/CancellationConditions.vue'
 import MarkupConditions from '~resources/views/hotel/settings/MarkupConditions.vue'
 import ResidenceConditions from '~resources/views/hotel/settings/ResidenceConditions.vue'
@@ -6,19 +8,24 @@ import { createVueInstance } from '~lib/vue'
 
 import '~resources/views/main'
 
+const pinia = createPinia()
+
 createVueInstance({
   rootComponent: ResidenceConditions,
   rootContainer: '#residence-conditions',
+  plugins: [pinia],
 })
 
 createVueInstance({
   rootComponent: CancellationConditions,
   rootContainer: '#cancellation-conditions',
+  plugins: [pinia],
 })
 
 createVueInstance({
   rootComponent: MarkupConditions,
   rootContainer: '#markup-conditions',
+  plugins: [pinia],
 })
 
 // createVueInstance({

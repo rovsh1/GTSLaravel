@@ -184,8 +184,8 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         ['netValue' => $netValue, 'hoValue' => $hoValue, 'boValue' => $boValue] = $roomBookings->reduce(
             function (array $result, RoomBooking $roomBooking) {
                 $result['netValue'] += $roomBooking->price()->netValue();
-                $result['hoValue'] += $roomBooking->price()->hoValue();
-                $result['boValue'] += $roomBooking->price()->boValue();
+                $result['hoValue'] += $roomBooking->price()->hoValue()->value();
+                $result['boValue'] += $roomBooking->price()->boValue()->value();
 
                 return $result;
             },

@@ -27,7 +27,7 @@ export type HotelResponse = {
   deleted_at: DateResponse | null
 }
 
-export const useHotelAPI = (props: MaybeRef<{ hotelID: number }>) =>
+export const useHotelGetAPI = (props: MaybeRef<{ hotelID: number }>) =>
   useAdminAPI(props, ({ hotelID }) =>
     `/hotels/${hotelID}/get`)
     .get()
