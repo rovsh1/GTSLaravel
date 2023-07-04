@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Common\Domain\Factory;
 
+use Module\Booking\Common\Domain\Adapter\AdministratorAdapterInterface;
 use Module\Booking\Common\Domain\Adapter\FileStorageAdapterInterface;
 use Module\Booking\Common\Domain\Entity\Request;
 use Module\Booking\Common\Domain\Event\Contracts\BookingRequestableInterface;
@@ -59,7 +60,8 @@ class DocumentGeneratorFactory
             BookingTypeEnum::HOTEL => new ReservationRequestGenerator(
                 $this->templatesPath,
                 $this->fileStorageAdapter,
-                $this->module->get(HotelAdapterInterface::class)
+                $this->module->get(HotelAdapterInterface::class),
+                $this->module->get(AdministratorAdapterInterface::class),
             ),
             default => throw new BookingTypeDoesntHaveDocumentGenerator()
         };

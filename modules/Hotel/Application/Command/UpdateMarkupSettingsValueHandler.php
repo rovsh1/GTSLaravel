@@ -104,6 +104,7 @@ class UpdateMarkupSettingsValueHandler implements CommandHandlerInterface
             if (array_key_exists('percent', $value)) {
                 $condition->setPriceMarkup(new Percent($value['percent']));
             }
+
             return;
         }
 
@@ -122,6 +123,14 @@ class UpdateMarkupSettingsValueHandler implements CommandHandlerInterface
 
     private function handleUpdateCancelPeriod(CancelPeriod $cancelPeriod, string $key, mixed $value): void
     {
+        if (is_numeric($key) && is_array($value)) {
+            $newPeriod = $this->buildCancelPeriod($value);
+            $cancelPeriod->setPeriod($newPeriod->period());
+            $cancelPeriod->setNoCheckInMarkup($newPeriod->noCheckInMarkup());
+
+            return;
+        }
+
         $startDate = $cancelPeriod->period()->getStartDate();
         $endDate = $cancelPeriod->period()->getEndDate();
         if ($key === 'from') {
@@ -161,6 +170,7 @@ class UpdateMarkupSettingsValueHandler implements CommandHandlerInterface
         if (!\Arr::has($data, ['from', 'to', 'percent'])) {
             throw new \InvalidArgumentException('Can not add condition: Invalid item');
         }
+
         return new Condition(
             timePeriod: new TimePeriod($data['from'], $data['to']),
             priceMarkup: new Percent($data['percent'])
@@ -175,6 +185,7 @@ class UpdateMarkupSettingsValueHandler implements CommandHandlerInterface
         if (!\Arr::has($data['noCheckInMarkup'], ['percent', 'cancelPeriodType'])) {
             throw new \InvalidArgumentException('Can not add condition: Invalid noCheckInMarkup item');
         }
+
         return new CancelPeriod(
             period: new CarbonPeriodImmutable($data['from'], $data['to']),
             noCheckInMarkup: new CancelMarkupOption(
@@ -192,6 +203,7 @@ class UpdateMarkupSettingsValueHandler implements CommandHandlerInterface
         if (!\Arr::has($data, ['percent', 'cancelPeriodType', 'daysCount'])) {
             throw new \InvalidArgumentException('Can not add daily markup option: Invalid item');
         }
+
         return new DailyMarkupOption(
             percent: new Percent($data['percent']),
             cancelPeriodType: CancelPeriodTypeEnum::from($data['cancelPeriodType']),

@@ -1,4 +1,4 @@
-import { Ref, ref } from 'vue'
+import { readonly, Ref, ref } from 'vue'
 
 import { MaybeRef, useToggle } from '@vueuse/core'
 
@@ -12,23 +12,28 @@ export interface ModalSettings<A, E> {
   edit?: ModalTypeSettings<E>
 }
 
-export interface UseEditableModalReturn<A, E> {
+export interface UseEditableModalReturn<A, E, T> {
   isOpened: Readonly<Ref<boolean>>
   isLoading: Readonly<Ref<boolean>>
   title: Readonly<Ref<string>>
+  editableId: Readonly<Ref<number | undefined>>
+  editableObject: Ref<T | undefined>
   close: () => void
   openAdd: () => void
-  openEdit: () => void
-  handleAdd: (payload: MaybeRef<A>) => void
-  handleEdit: (payload: MaybeRef<E>) => void
+  openEdit: (id: number, object: T) => void
+  submit: (payload: MaybeRef<A | E>) => void
 }
 
-export const useEditableModal = <A, E>(settings: ModalSettings<A, E>): UseEditableModalReturn<A, E> => {
+export const useEditableModal = <A, E, T>(settings: ModalSettings<A, E>): UseEditableModalReturn<A, E, T> => {
   const [isOpened, toggleModal] = useToggle()
   const [isLoading, toggleLoading] = useToggle()
   const title = ref<string>('')
+  const editableId = ref<number>()
+  const editableObject = ref<T>()
 
   const close = (): void => {
+    editableId.value = undefined
+    editableObject.value = undefined
     toggleModal(false)
   }
 
@@ -40,20 +45,12 @@ export const useEditableModal = <A, E>(settings: ModalSettings<A, E>): UseEditab
     toggleModal(true)
   }
 
-  const handleAdd = async (payload: MaybeRef<A>): Promise<void> => {
-    if (!settings.add) {
-      return
-    }
-    toggleLoading(true)
-    await settings.add.handler(payload)
-    toggleLoading(false)
-    close()
-  }
-
-  const openEdit = (): void => {
+  const openEdit = (id: number, object: T): void => {
     if (!settings.edit) {
       return
     }
+    editableId.value = id
+    editableObject.value = object
     title.value = settings.edit.title
     toggleModal(true)
   }
@@ -68,14 +65,33 @@ export const useEditableModal = <A, E>(settings: ModalSettings<A, E>): UseEditab
     close()
   }
 
+  const handleAdd = async (payload: MaybeRef<A>): Promise<void> => {
+    if (!settings.add) {
+      return
+    }
+    toggleLoading(true)
+    await settings.add.handler(payload)
+    toggleLoading(false)
+    close()
+  }
+
+  const submit = async (payload: MaybeRef<A | E>): Promise<void> => {
+    if (editableId.value === undefined) {
+      await handleAdd(payload as A)
+    } else {
+      await handleEdit(payload as E)
+    }
+  }
+
   return {
+    editableId: readonly(editableId),
+    editableObject,
     isOpened,
     isLoading,
-    title,
+    title: readonly(title),
     openEdit,
     openAdd,
     close,
-    handleEdit,
-    handleAdd,
+    submit,
   }
 }

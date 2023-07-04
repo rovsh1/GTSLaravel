@@ -5,8 +5,9 @@ import { computed, Ref, ref, unref } from 'vue'
 import { MaybeRef } from '@vueuse/core'
 import { z } from 'zod'
 
+import { validateForm } from '~resources/composables/form'
 import { genderOptions } from '~resources/views/hotel-booking/show/constants'
-import { GuestFormData, validateForm } from '~resources/views/hotel-booking/show/form'
+import { GuestFormData } from '~resources/views/hotel-booking/show/form'
 
 import { addGuestToBooking, updateBookingGuest } from '~api/booking/rooms'
 import { CountryResponse } from '~api/country'

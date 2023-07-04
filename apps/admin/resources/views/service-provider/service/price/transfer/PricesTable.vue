@@ -2,13 +2,13 @@
 
 import { computed } from 'vue'
 
-import EditableCell from '~resources/views/service-provider/service/price/components/EditableCell.vue'
-
 import { CityResponse } from '~api/city'
 import { Car, Currency, Season } from '~api/models'
 import { ServicePriceResponse, updateCarPrice, useServiceProviderTransferPricesAPI } from '~api/service-provider/transfer'
 
 import { formatPeriod } from '~lib/date'
+
+import EditableCell from '~components/EditableCell.vue'
 
 const props = defineProps<{
   header: string
@@ -58,6 +58,7 @@ fetchPrices()
 </script>
 
 <template>
+  //@todo фильтр по услуге
   <div class="card card-form mb-4">
     <div class="card-header">
       <h5 class="mb-0">{{ header }}</h5>
@@ -68,16 +69,9 @@ fetchPrices()
           <tr>
             <th scope="col">Автомобиль</th>
             <th scope="col">Город</th>
-            <th v-for="season in seasons" :key="season.id" scope="col" colspan="2">
+            <th v-for="season in seasons" :key="season.id" scope="col">
               {{ season.number }} ({{ formatPeriod(season) }})
             </th>
-          </tr>
-          <tr>
-            <th scope="col" colspan="2" />
-            <template v-for="season in seasons" :key="season.id">
-              <th scope="col">Нетто (UZS)</th>
-              <th scope="col">Брутто</th>
-            </template>
           </tr>
         </thead>
         <tbody>
@@ -89,17 +83,11 @@ fetchPrices()
 
             <template v-for="season in seasons" :key="season.id">
               <td>
+                //всегда отображается цена нетто + валюта поставщика
                 <EditableCell
                   :value="getServicePrice(season.id, car.id)?.price_net"
                   placeholder="Введите цену"
                   @change="(price) => handleChangePrice(season.id, car.id, price)"
-                />
-              </td>
-              <td>
-                <EditableCell
-                  :value="getServicePrice(season.id, car.id)?.price_gross"
-                  placeholder="Введите цену"
-                  @change="(price) => handleChangePrice(season.id, car.id, undefined, price)"
                 />
               </td>
             </template>

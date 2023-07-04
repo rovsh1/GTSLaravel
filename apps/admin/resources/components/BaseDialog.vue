@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { watch } from 'vue'
+import { computed, watch } from 'vue'
 
 import closeIcon from '@mdi/svg/svg/close.svg'
 import { OnClickOutside } from '@vueuse/components'
-import { MaybeRef } from '@vueuse/core'
+import { MaybeElementRef, MaybeRef, OnClickOutsideOptions } from '@vueuse/core'
 
 import BodyScrollLock from '~components/BodyScrollLock.vue'
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
@@ -16,9 +16,11 @@ const props = withDefaults(defineProps<{
   opened: boolean
   disabled?: MaybeRef<boolean>
   loading?: MaybeRef<boolean>
+  clickOutsideIgnore?: (MaybeElementRef | string)[]
 }>(), {
   disabled: false,
   loading: false,
+  clickOutsideIgnore: undefined,
 })
 
 const close = () => {
@@ -29,6 +31,8 @@ const close = () => {
 const keydown = (event: KeyboardEvent) => {
   if (event.key === 'Escape') close()
 }
+
+const clickOutsideOptions = computed<OnClickOutsideOptions>(() => ({ ignore: props.clickOutsideIgnore }))
 
 watch(() => props.opened, (value) => {
   if (value) {
@@ -42,7 +46,7 @@ watch(() => props.opened, (value) => {
   <Teleport to="body">
     <BodyScrollLock :value="opened" class="dialog" :class="{ opened }" v-bind="$attrs">
       <div class="inner">
-        <OnClickOutside class="body" @trigger="close">
+        <OnClickOutside class="body" :options="clickOutsideOptions" @trigger="close">
           <template v-if="$slots['title']">
             <div class="title">
               <div class="titleLabel">

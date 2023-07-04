@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import InlineSVG from 'vue-inline-svg'
 
 import escapeIcon from '@mdi/svg/svg/keyboard-esc.svg'
@@ -13,6 +13,7 @@ import { usePlatformDetect } from '~lib/platform'
 const props = defineProps<{
   value: number | undefined
   placeholder?: string
+  dimension?: string
 }>()
 
 const emit = defineEmits<{
@@ -22,6 +23,7 @@ const emit = defineEmits<{
 const [isEditable, toggleEditable] = useToggle()
 const { isMacOS } = usePlatformDetect()
 
+const inputRef = ref<HTMLInputElement | null>(null)
 const editedValue = ref<number>()
 const isChanged = ref(false)
 
@@ -33,12 +35,20 @@ const localValue = computed<number>({
   },
 })
 
+watch(inputRef, (element) => {
+  if (element === null) {
+    return
+  }
+  element.focus()
+})
+
 const onPressEnter = () => {
   emit('change', localValue.value)
   toggleEditable(false)
 }
 
 const onPressEsc = () => {
+  inputRef.value?.blur()
   isChanged.value = false
   toggleEditable(false)
 }
@@ -47,7 +57,9 @@ const onPressEsc = () => {
 
 <template>
   <div>
-    <a v-if="!isEditable" href="#" @click.prevent="toggleEditable(true)">{{ localValue || 'Не установлена' }}</a>
+    <a v-if="!isEditable" href="#" @click.prevent="toggleEditable(true)">
+      {{ localValue || 'Не установлена' }}<template v-if="dimension && localValue">{{ dimension }}</template>
+    </a>
 
     <Tooltip
       v-else
@@ -55,7 +67,8 @@ const onPressEsc = () => {
       handle-resize
     >
       <input
-        v-model="localValue"
+        ref="inputRef"
+        v-model.number="localValue"
         class="form-control"
         :placeholder="placeholder"
         type="number"

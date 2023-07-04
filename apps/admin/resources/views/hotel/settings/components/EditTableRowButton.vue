@@ -1,6 +1,17 @@
 <script setup lang="ts">
 
+withDefaults(defineProps<{
+  canAdd?: boolean
+  canEdit?: boolean
+  canDelete?: boolean
+}>(), {
+  canAdd: false,
+  canEdit: true,
+  canDelete: true,
+})
+
 defineEmits<{
+  (event: 'add'): void
   (event: 'edit'): void
   (event: 'delete'): void
 }>()
@@ -18,7 +29,17 @@ defineEmits<{
       aria-labelledby="menu-actions"
       data-popper-placement="bottom-start"
     >
-      <li>
+      <li v-if="canAdd">
+        <a
+          class="dropdown-item"
+          href="#"
+          @click.prevent="$emit('add')"
+        >
+          <i class="icon">add</i>
+          Добавить
+        </a>
+      </li>
+      <li v-if="canEdit">
         <a
           class="dropdown-item"
           href="#"
@@ -28,7 +49,7 @@ defineEmits<{
           Редактировать
         </a>
       </li>
-      <li>
+      <li v-if="canDelete">
         <a
           class="dropdown-item"
           href="#"

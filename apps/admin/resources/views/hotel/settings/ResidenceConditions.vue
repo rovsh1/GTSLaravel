@@ -67,14 +67,12 @@ const {
   isOpened,
   isLoading,
   title: modalTitle,
+  submit: submitModal,
   close,
   openAdd,
   openEdit,
-  handleAdd,
-  handleEdit,
-} = useEditableModal<AddPayload, EditPayload>(modalSettings)
+} = useEditableModal<AddPayload, EditPayload, MarkupCondition>(modalSettings)
 
-const isCreateCondition = ref<boolean>(false)
 const isConditionsFetching = ref<boolean>(false)
 const editableConditionKey = ref<string>()
 const editableCondition = ref<MarkupCondition>()
@@ -82,14 +80,12 @@ const editableCondition = ref<MarkupCondition>()
 const handleEditConditions = (conditionType: ConditionType, condition: MarkupCondition, index: number) => {
   editableCondition.value = condition
   editableConditionKey.value = `${conditionType}.${index}`
-  isCreateCondition.value = false
-  openEdit()
+  openEdit(index, condition)
 }
 
 const handleAddConditions = (conditionType: ConditionType) => {
   editableCondition.value = { from: '', to: '' } as unknown as MarkupCondition
   editableConditionKey.value = `${conditionType}`
-  isCreateCondition.value = true
   openAdd()
 }
 
@@ -117,13 +113,8 @@ const onModalSubmit = async () => {
   }
 
   isConditionsFetching.value = true
-  if (!isCreateCondition.value) {
-    await handleEdit(payload)
-  } else {
-    await handleAdd(payload as unknown as AddPayload)
-  }
+  await submitModal(payload)
   isConditionsFetching.value = false
-
   await fetchMarkupSettings()
 }
 
@@ -142,14 +133,14 @@ const handleUpdateHotelSettings = async () => {
   >
     <template #title>{{ modalTitle }}</template>
 
-    <form v-if="editableCondition" ref="conditionsModalForm" class="row g-3">
+    <form v-if="editableCondition" ref="conditionsModalForm" class="row g-3" @submit.prevent="onModalSubmit">
       <div class="col-md-6">
-        <TimeSelect id="from" v-model="editableCondition.from" label="Начало" />
+        <TimeSelect id="from" v-model="editableCondition.from" label="Начало" required />
       </div>
       <div class="col-md-6">
-        <TimeSelect id="to" v-model="editableCondition.to" label="Конец" />
+        <TimeSelect id="to" v-model="editableCondition.to" label="Конец" required />
       </div>
-      <div class="col-md-12">
+      <div class="col-md-12 field-required">
         <label for="markup">Наценка</label>
         <input
           id="markup"

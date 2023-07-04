@@ -2,12 +2,12 @@
 
 import { computed } from 'vue'
 
-import EditableCell from '~resources/views/service-provider/service/price/components/EditableCell.vue'
-
 import { Airport, Currency, Season } from '~api/models'
 import { ServicePriceResponse, updateAirportPrice, useServiceProviderAirportPricesAPI } from '~api/service-provider/airport'
 
 import { formatPeriod } from '~lib/date'
+
+import EditableCell from '~components/EditableCell.vue'
 
 const props = defineProps<{
   header: string

@@ -12,12 +12,14 @@ const props = withDefaults(defineProps<{
   to?: string
   label?: string
   disabled?: boolean
+  required?: boolean
 }>(), {
   modelValue: undefined,
   from: '00:00',
   to: '24:00',
   label: undefined,
   disabled: false,
+  required: false,
 })
 
 const emit = defineEmits<{
@@ -56,13 +58,13 @@ const items = computed<string[]>(() => {
 </script>
 
 <template>
-  <div>
+  <div :class="{ 'field-required': required }">
     <label v-if="label" for="s">{{ label }}</label>
     <select
       v-model="localValue"
       class="form-select form-control"
       :disabled="disabled"
-      required
+      :required="required"
     >
       <option :value="null" />
       <option v-for="item in items" :key="item">{{ item }}</option>

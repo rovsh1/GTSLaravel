@@ -31,23 +31,28 @@ export const registerDatePickerInstance = (element: HTMLInputElement, picker: Li
 }
 
 export const destroyOldDatePicker = (element: HTMLInputElement) => {
-  if (window.datePickerInstances === undefined) return
-  const instance = window.datePickerInstances
-    .find((item) => item.element === element)
-  if (instance === undefined) return
+  if (window.datePickerInstances === undefined) {
+    return
+  }
+  const instance = window.datePickerInstances.find((item) => item.element === element)
+  if (instance === undefined) {
+    return
+  }
   instance.picker.destroy()
 }
 
 export const prefillDatePickerFromInput = (input: HTMLInputElement, picker: Litepicker) => {
   const value = input.getAttribute('value')
-  if (value === null || value === '') return
+  if (value === null || value === '') {
+    return
+  }
 
-  if (value.match(parseMatch)) {
+  if (value.match(rangeParseMatch)) {
     const [start, end] = value.split(dateRangeDelimiter)
     const startDate = DateTime.fromFormat(start, parseFormat).toJSDate()
     const endDate = DateTime.fromFormat(end, parseFormat).toJSDate()
     picker.setDateRange(startDate, endDate)
-  } else if (value.match(rangeParseMatch)) {
+  } else if (value.match(parseMatch)) {
     const date = DateTime.fromFormat(value, parseFormat).toJSDate()
     picker.setDate(date)
   } else {

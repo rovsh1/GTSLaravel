@@ -5,12 +5,13 @@ import { computed, Ref, ref, watch } from 'vue'
 import { MaybeRef } from '@vueuse/core'
 import { z } from 'zod'
 
+import { validateForm } from '~resources/composables/form'
 import {
   getConditionLabel,
   residentTypeOptions,
   roomStatusOptions,
 } from '~resources/views/hotel-booking/show/constants'
-import { RoomFormData, validateForm } from '~resources/views/hotel-booking/show/form'
+import { RoomFormData } from '~resources/views/hotel-booking/show/form'
 
 import { addRoomToBooking, updateBookingRoom } from '~api/booking/rooms'
 import { MarkupCondition, MarkupSettings, useHotelRoomMarkupSettings } from '~api/hotel/markup-settings'

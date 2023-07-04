@@ -2,6 +2,7 @@
 
 namespace Module\Booking\Hotel\Domain\Service\DocumentGenerator;
 
+use Module\Booking\Common\Domain\Adapter\AdministratorAdapterInterface;
 use Module\Booking\Common\Domain\Adapter\FileStorageAdapterInterface;
 use Module\Booking\Common\Domain\Entity\AbstractBooking;
 use Module\Booking\Hotel\Domain\Adapter\HotelAdapterInterface;
@@ -13,7 +14,8 @@ class ReservationRequestGenerator extends AbstractGenerator
     public function __construct(
         string $templatesPath,
         FileStorageAdapterInterface $fileStorageAdapter,
-        private readonly HotelAdapterInterface $hotelAdapter
+        private readonly HotelAdapterInterface $hotelAdapter,
+        private readonly AdministratorAdapterInterface $administratorAdapter,
     ) {
         parent::__construct($templatesPath, $fileStorageAdapter);
     }
@@ -37,6 +39,8 @@ class ReservationRequestGenerator extends AbstractGenerator
             ->filter()
             ->implode(', ');
 
+        //@todo вывести менеджера
+        $administrator = $this->administratorAdapter->getManagerByBookingId($booking->id()->value());
         //@todo инфо о гостях сейчас в айдишниках
 
         return [

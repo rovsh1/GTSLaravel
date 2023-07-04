@@ -77,8 +77,8 @@ const handleEditGuest = (roomBookingId: number, guestIndex: number, guest: Hotel
 }
 
 const handleDeleteGuest = async (roomBookingId: number, guestIndex: number): Promise<void> => {
-  const { result: isApproved, toggleLoading, toggleClose } = await showConfirmDialog('Удалить гостя?', 'btn-danger')
-  if (isApproved) {
+  const { result: isConfirmed, toggleLoading, toggleClose } = await showConfirmDialog('Удалить гостя?', 'btn-danger')
+  if (isConfirmed) {
     toggleLoading()
     await deleteBookingGuest({ bookingID, roomBookingId, guestIndex })
     await fetchBooking()
@@ -107,8 +107,8 @@ const handleEditRoom = (roomBookingId: number, room: HotelRoomBooking): void => 
 }
 
 const handleDeleteRoom = async (roomBookingId: number): Promise<void> => {
-  const { result: isApproved, toggleLoading, toggleClose } = await showConfirmDialog('Удалить номер?', 'btn-danger')
-  if (isApproved) {
+  const { result: isConfirmed, toggleLoading, toggleClose } = await showConfirmDialog('Удалить номер?', 'btn-danger')
+  if (isConfirmed) {
     toggleLoading()
     await deleteBookingRoom({ bookingID, roomBookingId })
     await fetchBooking()

@@ -67,13 +67,13 @@ interface HotelRoomMarkupSettingsProps {
 export type HotelMarkupSettingsUpdateProps = {
   hotelID: number
   key: string
-  value: string | number | MarkupCondition | DailyMarkup
+  value: string | number | MarkupCondition | DailyMarkup | CancelPeriod
 }
 
 export type HotelMarkupSettingsConditionAddProps = {
   hotelID: number
   key: string
-  value: MarkupCondition | DailyMarkup
+  value: MarkupCondition | DailyMarkup | CancelPeriod
 }
 
 export type HotelMarkupSettingsConditionDeleteProps = {
