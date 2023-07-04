@@ -2,20 +2,25 @@
 
 namespace Module\Booking\Common\Domain\ValueObject;
 
+use Module\Booking\Hotel\Domain\ValueObject\ManualChangablePrice;
 use Module\Shared\Domain\ValueObject\SerializableDataInterface;
 
 final class BookingPrice implements SerializableDataInterface
 {
     public function __construct(
         private readonly float $netValue,
-        private readonly float $hoValue,
-        private readonly float $boValue,
+        private readonly ManualChangablePrice $hoValue,
+        private readonly ManualChangablePrice $boValue,
         private readonly bool $isManual = false,
     ) {}
 
     public static function buildEmpty(): static
     {
-        return new static(0, 0, 0);
+        return new static(
+            0,
+            new ManualChangablePrice(0),
+            new ManualChangablePrice(0),
+        );
     }
 
     public function netValue(): float
@@ -23,12 +28,12 @@ final class BookingPrice implements SerializableDataInterface
         return $this->netValue;
     }
 
-    public function hoValue(): float
+    public function hoValue(): ManualChangablePrice
     {
         return $this->hoValue;
     }
 
-    public function boValue(): float
+    public function boValue(): ManualChangablePrice
     {
         return $this->boValue;
     }
@@ -37,8 +42,8 @@ final class BookingPrice implements SerializableDataInterface
     {
         return [
             'netValue' => $this->netValue,
-            'hoValue' => $this->hoValue,
-            'boValue' => $this->boValue,
+            'hoValue' => $this->hoValue->toData(),
+            'boValue' => $this->boValue->toData(),
             'isManual' => $this->isManual
         ];
     }
@@ -47,8 +52,8 @@ final class BookingPrice implements SerializableDataInterface
     {
         return new BookingPrice(
             $data['netValue'],
-            $data['hoValue'],
-            $data['boValue'],
+            ManualChangablePrice::fromData($data['hoValue']),
+            ManualChangablePrice::fromData($data['boValue']),
             $data['isManual'],
         );
     }

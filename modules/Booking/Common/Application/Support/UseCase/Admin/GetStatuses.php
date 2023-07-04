@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Booking\Common\Application\Support\UseCase\Admin;
 
-use Module\Booking\Common\Application\Dto\StatusDto;
 use Module\Booking\Common\Application\Query\Admin\GetStatusSettings;
+use Module\Booking\Common\Application\Response\StatusDto;
 use Sdk\Module\Contracts\Bus\QueryBusInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 

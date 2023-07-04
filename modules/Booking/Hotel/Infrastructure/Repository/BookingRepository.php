@@ -17,6 +17,7 @@ use Module\Booking\Hotel\Domain\ValueObject\Details\BookingPeriod;
 use Module\Booking\Hotel\Domain\ValueObject\Details\CancelConditions;
 use Module\Booking\Hotel\Domain\ValueObject\Details\HotelInfo;
 use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBookingCollection;
+use Module\Booking\Hotel\Domain\ValueObject\ManualChangablePrice;
 use Module\Booking\Hotel\Infrastructure\Models\Booking as Model;
 use Module\Booking\Hotel\Infrastructure\Models\BookingDetails;
 use Module\Shared\Domain\ValueObject\Id;
@@ -192,6 +193,10 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
             ['netValue' => 0, 'hoValue' => 0, 'boValue' => 0]
         );
 
-        return new BookingPrice($netValue, $hoValue, $boValue);
+        return new BookingPrice(
+            $netValue,
+            new ManualChangablePrice($hoValue),
+            new ManualChangablePrice($boValue)
+        );
     }
 }

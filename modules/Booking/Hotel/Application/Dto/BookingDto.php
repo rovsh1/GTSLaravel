@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Booking\Hotel\Application\Dto;
 
-use Carbon\Carbon;
 use Carbon\CarbonImmutable;
-use Module\Booking\Common\Application\Dto\BookingDto as BaseDto;
+use Module\Booking\Common\Application\Response\BookingDto as BaseDto;
 use Module\Booking\Common\Domain\Entity\BookingInterface;
 use Module\Booking\Hotel\Application\Dto\Details\AdditionalInfoDto;
 use Module\Booking\Hotel\Application\Dto\Details\BookingPeriodDto;

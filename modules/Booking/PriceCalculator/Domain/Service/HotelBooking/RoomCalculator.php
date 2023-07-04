@@ -5,6 +5,7 @@ namespace Module\Booking\PriceCalculator\Domain\Service\HotelBooking;
 use Carbon\CarbonInterface;
 use Module\Booking\Common\Domain\ValueObject\PriceCalculationNotes;
 use Module\Booking\Hotel\Domain\Entity\Booking;
+use Module\Booking\Hotel\Domain\ValueObject\ManualChangablePrice;
 use Module\Booking\Hotel\Domain\ValueObject\RoomPrice;
 use Module\Booking\PriceCalculator\Domain\Adapter\HotelAdapterInterface;
 use Module\Booking\PriceCalculator\Domain\Service\HotelBooking\Formula\BORoomPriceFormula;
@@ -81,8 +82,8 @@ class RoomCalculator
 
         return new RoomPrice(
             $netValue,
-            $hoValue,
-            $boValue,
+            new ManualChangablePrice($hoValue),
+            new ManualChangablePrice($boValue),
             new PriceCalculationNotes(
                 $hoNotes,
                 $boNotes,

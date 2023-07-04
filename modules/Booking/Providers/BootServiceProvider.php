@@ -16,7 +16,7 @@ class BootServiceProvider extends ServiceProvider
         Domain\Repository\RequestRepositoryInterface::class => Infrastructure\Repository\RequestRepository::class,
         Domain\Repository\BookingChangesLogRepositoryInterface::class => Infrastructure\Repository\BookingChangesLogRepository::class,
         Domain\Adapter\FileStorageAdapterInterface::class => Infrastructure\Adapter\FileStorageAdapter::class,
-        Domain\Adapter\AdministratorAdapterInterface::class => Infrastructure\Adapter\FileStorageAdapter::class,
+        Domain\Adapter\AdministratorAdapterInterface::class => Infrastructure\Adapter\AdministratorAdapter::class,
     ];
 
     public function register()

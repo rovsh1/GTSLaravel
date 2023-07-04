@@ -23,10 +23,15 @@ export interface HotelRoomBookingDetails {
   discount: Percent
 }
 
+export interface ManualChangablePrice {
+  value: number
+  isManual: boolean
+}
+
 export interface RoomBookingPrice {
   avgDailyValue: number
-  boValue: number
-  hoValue: number
+  boValue: ManualChangablePrice
+  hoValue: ManualChangablePrice
   netValue: number
   boNote: string
   hoNote: string

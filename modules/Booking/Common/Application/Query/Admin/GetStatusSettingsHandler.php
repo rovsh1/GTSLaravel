@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Common\Application\Query\Admin;
 
-use Module\Booking\Common\Application\Dto\StatusDto;
+use Module\Booking\Common\Application\Response\StatusDto;
 use Module\Booking\Common\Infrastructure\Models\StatusSettings;
 use Sdk\Module\Contracts\Bus\QueryHandlerInterface;
 use Sdk\Module\Contracts\Bus\QueryInterface;

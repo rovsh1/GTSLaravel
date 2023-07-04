@@ -18,9 +18,13 @@ class RecalculateBookingPricesListener implements DomainEventListenerInterface
         private readonly RoomCalculator $roomCalculator,
     ) {}
 
-    public function handle(DomainEventInterface|PriceBecomeDeprecatedEventInterface $event)
+    public function handle(DomainEventInterface|PriceBecomeDeprecatedEventInterface $event): void
     {
         $booking = $this->repository->find($event->bookingId());
+        //@todo уточнить у Сергея по поводу boValue
+        if ($booking->price()->boValue()->isManual()) {
+            return;
+        }
         $validator = new RoomPriceValidator($booking);
         foreach ($booking->roomBookings() as $roomBooking) {
             $roomPrice = $this->roomCalculator->calculateByBooking(
@@ -35,9 +39,5 @@ class RecalculateBookingPricesListener implements DomainEventListenerInterface
             $roomBooking->setPrice($roomPrice, $validator);
             $this->roomBookingRepository->store($roomBooking);
         }
-//        if (!$booking->price()->isManual()) {
-//            $newPrice = $this->buildBookingPrice($booking->roomBookings());
-//            $booking->setPrice($newPrice);
-//        }
     }
 }

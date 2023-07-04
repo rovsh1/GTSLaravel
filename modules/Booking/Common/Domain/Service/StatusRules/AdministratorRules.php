@@ -48,4 +48,9 @@ class AdministratorRules extends AbstractRules implements StatusRulesInterface
     {
         return $requestRules->isRequestableStatus($status) && $status !== BookingStatusEnum::CONFIRMED;
     }
+
+    public function canEditExternalNumber(BookingStatusEnum $status): bool
+    {
+        return $status === BookingStatusEnum::CONFIRMED;
+    }
 }

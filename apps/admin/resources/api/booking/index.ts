@@ -3,15 +3,22 @@ import { computed } from 'vue'
 import { MaybeRef } from '@vueuse/core'
 
 import { BaseResponse, useAdminAPI } from '~api'
-import { AdditionalInfo, BookingPeriod, CancelConditions, HotelInfo, HotelRoomBooking } from '~api/booking/details'
+import {
+  AdditionalInfo,
+  BookingPeriod,
+  CancelConditions,
+  HotelInfo,
+  HotelRoomBooking,
+  ManualChangablePrice,
+} from '~api/booking/details'
 
 import { getNullableRef } from '~lib/vue'
 
 export type BookingID = number
 
 export interface BookingPrice {
-  boValue: number
-  hoValue: number
+  boValue: ManualChangablePrice
+  hoValue: ManualChangablePrice
   netValue: number
 }
 

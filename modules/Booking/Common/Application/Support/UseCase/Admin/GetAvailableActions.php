@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Module\Booking\Common\Application\Support\UseCase\Admin;
 
-use Module\Booking\Common\Application\Dto\AvailableActionsDto;
-use Module\Booking\Common\Application\Dto\StatusDto;
 use Module\Booking\Common\Application\Query\Admin\GetStatusSettings;
+use Module\Booking\Common\Application\Response\AvailableActionsDto;
+use Module\Booking\Common\Application\Response\StatusDto;
 use Module\Booking\Common\Domain\Entity\AbstractBooking;
+use Module\Booking\Common\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\Common\Domain\Service\RequestRules;
 use Module\Booking\Common\Domain\Service\StatusRules\StatusRulesInterface;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
-use Module\Booking\Common\Domain\Repository\BookingRepositoryInterface;
 use Sdk\Module\Contracts\Bus\QueryBusInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
@@ -37,7 +37,7 @@ class GetAvailableActions implements UseCaseInterface
             $this->requestRules->canSendCancellationRequest($booking->status()),
             $this->requestRules->canSendChangeRequest($booking->status()),
             $booking->canSendClientVoucher(),
-            true, //@todo прописать логику для этого флага (у отеля и админки она разная)
+            $this->statusRules->canEditExternalNumber($booking->status()), //@todo прописать логику для этого флага (у отеля и админки она разная)
         );
     }
 

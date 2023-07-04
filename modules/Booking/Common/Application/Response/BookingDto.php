@@ -2,11 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Common\Application\Dto;
+namespace Module\Booking\Common\Application\Response;
 
-use Carbon\Carbon;
 use Carbon\CarbonImmutable;
-use Module\Booking\Common\Domain\Entity\AbstractBooking;
 use Module\Booking\Common\Domain\Entity\BookingInterface;
 use Module\Shared\Application\Dto\AbstractDomainBasedDto;
 use Module\Shared\Domain\Entity\EntityInterface;

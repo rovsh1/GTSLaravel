@@ -247,7 +247,7 @@ fetchCountries()
                     <span class="cur">{{ orderCurrency.sign }}</span>
                   </td>
                   <td class="text-nowrap">
-                    {{ room.price.boValue }}
+                    {{ room.price.boValue.value }}
                     <span class="cur">{{ orderCurrency.sign }}</span>
                   </td>
                   <td class="text-nowrap">{{ room.price.boNote }}</td>
@@ -264,7 +264,7 @@ fetchCountries()
             </span>
           </div>
           <div v-if="orderCurrency" class="d-flex flex-row justify-content-between w-100 mt-2">
-            <strong>Итого: {{ room.price.hoValue }}
+            <strong>Итого: {{ room.price.hoValue.value }}
               <span class="cur">{{ orderCurrency.sign }}</span>
             </strong>
             <a
@@ -275,6 +275,7 @@ fetchCountries()
               Изменить цену номера
             </a>
           </div>
+          <span v-if="room.price.hoValue.isManual" class="text-muted">(цена за номер выставлена вручную)</span>
         </div>
         <div class="w-100 rounded shadow-lg p-4">
           <h6>Список гостей</h6>

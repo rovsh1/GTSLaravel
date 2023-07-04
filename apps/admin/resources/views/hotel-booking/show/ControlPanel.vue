@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import { computed, reactive, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 import { useToggle } from '@vueuse/core'
 import { z } from 'zod'
@@ -9,24 +9,18 @@ import PriceModal from '~resources/views/hotel-booking/show/components/PriceModa
 import RequestBlock from '~resources/views/hotel-booking/show/components/RequestBlock.vue'
 import StatusHistoryModal from '~resources/views/hotel-booking/show/components/StatusHistoryModal.vue'
 import { externalNumberTypeOptions, getCancelPeriodTypeName } from '~resources/views/hotel-booking/show/constants'
-import { showCancelFeeDialog, showNotConfirmedReasonDialog } from '~resources/views/hotel-booking/show/modals'
 import { useBookingStore } from '~resources/views/hotel-booking/show/store/booking'
 import { useOrderStore } from '~resources/views/hotel-booking/show/store/order-currency'
 import { useBookingRequestStore } from '~resources/views/hotel-booking/show/store/request'
 import { useBookingStatusHistoryStore } from '~resources/views/hotel-booking/show/store/status-history'
+import { useBookingVoucherStore } from '~resources/views/hotel-booking/show/store/voucher'
 
-import {
-  Booking,
-  updateBookingStatus,
-  UpdateBookingStatusPayload,
-  updateExternalNumber,
-} from '~api/booking'
+import { Booking } from '~api/booking'
 import { CancelConditions, ExternalNumber, ExternalNumberType, ExternalNumberTypeEnum } from '~api/booking/details'
-import { BookingRequest, downloadRequestDocument, sendBookingRequest } from '~api/booking/request'
+import { BookingRequest, downloadRequestDocument } from '~api/booking/request'
 import { BookingAvailableActionsResponse, BookingStatusResponse } from '~api/booking/status'
 import { Currency } from '~api/models'
 
-import { showConfirmDialog } from '~lib/confirm-dialog'
 import { formatDate, formatDateTime } from '~lib/date'
 import { requestInitialData } from '~lib/initial-data'
 
@@ -48,6 +42,12 @@ const { fetchBookingRequests } = requestStore
 const statusHistoryStore = useBookingStatusHistoryStore()
 const { fetchStatusHistory } = statusHistoryStore
 const orderStore = useOrderStore()
+const voucherStore = useBookingVoucherStore()
+
+const isStatusUpdateFetching = computed(() => bookingStore.isStatusUpdateFetching)
+const isRequestFetching = computed(() => requestStore.requestSendIsFetching)
+const isUpdateExternalNumberFetching = computed(() => bookingStore.isUpdateExternalNumberFetching)
+const isVoucherFetching = computed(() => voucherStore.voucherSendIsFetching)
 
 const externalNumberData = ref<ExternalNumber>({
   type: ExternalNumberTypeEnum.HotelBookingNumber,
@@ -55,6 +55,7 @@ const externalNumberData = ref<ExternalNumber>({
 })
 
 const isExternalNumberChanged = ref<boolean>(false)
+const isExternalNumberInvalid = computed(() => !bookingStore.isExternalNumberValid)
 
 const externalNumberType = computed<ExternalNumberType>({
   get: () => {
@@ -65,13 +66,11 @@ const externalNumberType = computed<ExternalNumberType>({
   },
   set: (value: ExternalNumberType) => {
     isExternalNumberChanged.value = true
-    externalNumberData.value.type = value
+    externalNumberData.value.type = Number(value)
     externalNumberData.value.number = null
   },
 })
 
-// @todo валидация перед переходом на статус "Подтверждена" для админки отелей.
-// @todo валидация перед отправкой ваучера для админки GTS.
 const externalNumber = computed<string | null>({
   get: () => {
     if (isExternalNumberChanged.value) {
@@ -108,76 +107,25 @@ const [isHistoryModalOpened, toggleHistoryModal] = useToggle<boolean>(false)
 const [isNetPriceModalOpened, toggleNetPriceModal] = useToggle<boolean>(false)
 const [isBruttoPriceModalOpened, toggleBruttoPriceModal] = useToggle<boolean>(false)
 
-const updateStatusPayload = reactive<UpdateBookingStatusPayload>({ bookingID } as UpdateBookingStatusPayload)
-
-const isStatusUpdateFetching = ref(false)
 const handleStatusChange = async (value: number): Promise<void> => {
-  isStatusUpdateFetching.value = true
-  updateStatusPayload.status = value
-  const { data: updateStatusResponse } = await updateBookingStatus(updateStatusPayload)
-  if (updateStatusResponse.value?.isNotConfirmedReasonRequired) {
-    const {
-      result: isSaved,
-      reason,
-      toggleClose,
-    } = await showNotConfirmedReasonDialog()
-    if (isSaved) {
-      updateStatusPayload.notConfirmedReason = reason
-      toggleClose()
-      await handleStatusChange(value)
-      updateStatusPayload.notConfirmedReason = undefined
-      return
-    }
-  }
-  if (updateStatusResponse.value?.isCancelFeeAmountRequired) {
-    const {
-      result: isSaved,
-      cancelFeeAmount,
-      toggleClose,
-    } = await showCancelFeeDialog()
-    if (isSaved) {
-      updateStatusPayload.cancelFeeAmount = cancelFeeAmount
-      toggleClose()
-      await handleStatusChange(value)
-      updateStatusPayload.cancelFeeAmount = undefined
-      return
-    }
-  }
+  await bookingStore.changeStatus(value)
+  await fetchStatusHistory()
+}
+
+const handleRequestSend = async () => {
+  await requestStore.sendRequest()
   await Promise.all([
-    fetchBooking(),
     fetchAvailableActions(),
+    fetchBooking(),
     fetchStatusHistory(),
   ])
-  isStatusUpdateFetching.value = false
 }
 
-const isRequestFetching = ref<boolean>(false)
-const handleRequestSend = async () => {
-  const {
-    result: isSuccess,
-    toggleClose,
-  } = await showConfirmDialog('Отправить запрос?')
-  if (isSuccess) {
-    isRequestFetching.value = true
-    setTimeout(toggleClose)
-    await sendBookingRequest({ bookingID })
-    await Promise.all([
-      fetchAvailableActions(),
-      fetchBooking(),
-      fetchBookingRequests(),
-      fetchStatusHistory(),
-    ])
-  }
-  isRequestFetching.value = false
-}
-
-const isUpdateExternalNumberFetching = ref(false)
 const handleUpdateExternalNumber = async () => {
-  isUpdateExternalNumberFetching.value = true
-  await updateExternalNumber({ bookingID, ...externalNumberData.value })
-  await fetchBooking()
-  isExternalNumberChanged.value = false
-  isUpdateExternalNumberFetching.value = false
+  const isSuccess = await bookingStore.updateExternalNumber(externalNumberData.value)
+  if (isSuccess) {
+    isExternalNumberChanged.value = false
+  }
 }
 
 const handleDownloadDocument = async (requestId: number): Promise<void> => {
@@ -199,8 +147,20 @@ const getHumanRequestType = (type: number): string => {
   return preparedType
 }
 
-fetchAvailableActions()
-fetchBookingRequests()
+const handleVoucherSend = async () => {
+  if (!bookingStore.validateExternalNumber(externalNumberType.value, externalNumber.value)) {
+    return
+  }
+  if (isExternalNumberChanged.value) {
+    await handleUpdateExternalNumber()
+  }
+  await voucherStore.sendVoucher()
+}
+
+onMounted(() => {
+  fetchAvailableActions()
+  fetchBookingRequests()
+})
 
 </script>
 
@@ -219,7 +179,7 @@ fetchBookingRequests()
 
   <PriceModal
     header="Общая сумма (брутто)"
-    label="Общая сумма (брутто)"
+    :label="`Общая сумма (брутто) ${orderCurrency?.code_char}`"
     :opened="isBruttoPriceModalOpened"
     @close="toggleBruttoPriceModal(false)"
   />
@@ -237,17 +197,18 @@ fetchBookingRequests()
     <div v-if="booking && orderCurrency" class="float-end">
       Общая сумма:
       <strong>
-        {{ booking.price.boValue }}
+        {{ booking.price.boValue.value }}
         <span class="cur">{{ orderCurrency.sign }}</span>
       </strong>
+      <span v-if="booking.price.boValue.isManual" class="text-muted">(выставлена вручную)</span>
     </div>
   </div>
 
   <div class="mt-4">
     <h6>Тип номера подтверждения бронирования</h6>
     <hr>
-    <div class="d-flex align-content-around" :class="{ loading: isUpdateExternalNumberFetching }">
-      <div>
+    <div class="d-flex flex-row gap-2" :class="{ loading: isUpdateExternalNumberFetching }">
+      <div class="w-50">
         <BootstrapSelectBase
           id="external_number_type"
           :disabled="!canEditExternalNumber"
@@ -257,21 +218,21 @@ fetchBookingRequests()
           @input="value => externalNumberType = value as ExternalNumberType"
         />
       </div>
-      <div class="d-flex ml-2">
-        <div class="external-number-wrapper">
+      <div class="d-flex flex-row gap-2">
+        <div v-if="isNeedShowExternalNumber" class="external-number-wrapper">
           <input
-            v-if="isNeedShowExternalNumber"
             v-model="externalNumber"
             class="form-control"
+            :class="{ 'invalid-input': isExternalNumberInvalid }"
             :disabled="!canEditExternalNumber"
             type="text"
             placeholder="№ брони"
           >
-          <div class="invalid-feedback">
+          <div class="invalid-feedback" :class="{ 'd-block': isExternalNumberInvalid }">
             Пожалуйста, заполните номер брони.
           </div>
         </div>
-        <div v-if="isExternalNumberChanged" class="ml-2">
+        <div v-if="isExternalNumberChanged">
           <a href="#" class="btn btn-primary" @click.prevent="handleUpdateExternalNumber">
             Сохранить
           </a>
@@ -288,7 +249,7 @@ fetchBookingRequests()
         <h6>Приход</h6>
         <hr>
         <div v-if="booking && orderCurrency">
-          Общая сумма (брутто): {{ booking.price.hoValue }}
+          Общая сумма (брутто): {{ booking.price.boValue.value }}
           <span class="currency">{{ orderCurrency.sign }}</span>
         </div>
         <a href="#" @click.prevent="toggleBruttoPriceModal(true)">Изменить</a>
@@ -297,7 +258,7 @@ fetchBookingRequests()
         <h6>Расход</h6>
         <hr>
         <div v-if="booking && orderCurrency">
-          Общая сумма (нетто): {{ booking.price.boValue }}
+          Общая сумма (нетто): {{ booking.price.hoValue.value }}
           <span class="currency">{{ orderCurrency.sign }}</span>
         </div>
         <a href="#" @click.prevent="toggleNetPriceModal(true)">Изменить</a>
@@ -305,7 +266,10 @@ fetchBookingRequests()
     </div>
 
     <div v-if="booking && orderCurrency" class="mt-2">
-      Прибыль = {{ booking.price.boValue }} {{ orderCurrency.sign }} - {{ booking.price.hoValue }} {{ orderCurrency.sign }} = {{ booking.price.boValue - booking.price.hoValue }} {{ orderCurrency.sign }}
+      Прибыль = {{ booking.price.boValue.value }} {{ orderCurrency.sign }} - {{ booking.price.hoValue.value }}
+      {{ orderCurrency.sign }} = {{ booking.price.boValue.value - booking.price.hoValue.value }} {{
+        orderCurrency.sign
+      }}
     </div>
 
     <div v-if="lastHistoryItem && lastHistoryItem?.payload?.reason" class="mt-2 alert alert-warning" role="alert">
@@ -370,6 +334,8 @@ fetchBookingRequests()
     <RequestBlock
       variant="success"
       text="При необходимости клиенту можно отправить ваучер"
+      :loading="isVoucherFetching"
+      @click="handleVoucherSend"
     />
   </div>
 
@@ -442,5 +408,13 @@ hr {
       }
     }
   }
+}
+
+.invalid-input {
+  border-color: var(--bs-form-invalid-border-color);
+  padding-right: calc(1.5em + 0.75rem);
+  background-repeat: no-repeat;
+  background-position: right calc(0.375em + 0.1875rem) center;
+  background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
 }
 </style>
