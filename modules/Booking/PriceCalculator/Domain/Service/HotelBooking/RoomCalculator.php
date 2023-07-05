@@ -5,6 +5,7 @@ namespace Module\Booking\PriceCalculator\Domain\Service\HotelBooking;
 use Carbon\CarbonInterface;
 use Module\Booking\Common\Domain\ValueObject\PriceCalculationNotes;
 use Module\Booking\Hotel\Domain\Entity\Booking;
+use Module\Booking\Hotel\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\Hotel\Domain\ValueObject\ManualChangablePrice;
 use Module\Booking\Hotel\Domain\ValueObject\RoomPrice;
 use Module\Booking\PriceCalculator\Domain\Adapter\HotelAdapterInterface;
@@ -20,11 +21,12 @@ class RoomCalculator
     public function __construct(
         private readonly HotelAdapterInterface $hotelAdapter,
         private readonly VariablesBuilder $variablesBuilder,
-        private readonly CurrencyRateAdapterInterface $currencyRateAdapter
+        private readonly CurrencyRateAdapterInterface $currencyRateAdapter,
+        private readonly BookingRepositoryInterface $bookingRepository,
     ) {}
 
     public function calculateByBooking(
-        Booking $hotelBooking,
+        Booking $booking,
         int $roomId,
         int $rateId,
         bool $isResident,
@@ -32,6 +34,30 @@ class RoomCalculator
         ?int $earlyCheckInPercent,
         ?int $lateCheckOutPercent
     ): RoomPrice {
+        return $this->calculate(
+            $this->variablesBuilder->build(
+                $booking,
+                $roomId,
+                $rateId,
+                $isResident,
+                $guestsCount,
+                $earlyCheckInPercent,
+                $lateCheckOutPercent
+            )
+        );
+    }
+
+    public function calculateByBookingId(
+        int $hotelBookingId,
+        int $roomId,
+        int $rateId,
+        bool $isResident,
+        int $guestsCount,
+        ?int $earlyCheckInPercent,
+        ?int $lateCheckOutPercent
+    ): RoomPrice {
+        $hotelBooking = $this->bookingRepository->find($hotelBookingId);
+
         return $this->calculate(
             $this->variablesBuilder->build(
                 $hotelBooking,

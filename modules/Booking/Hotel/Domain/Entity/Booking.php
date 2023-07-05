@@ -28,15 +28,15 @@ final class Booking extends AbstractBooking
         BookingStatusEnum $status,
         CarbonImmutable $createdAt,
         Id $creatorId,
-        private ?string $note = null,
+        BookingPrice $price,
+        private ?string $note,
         private HotelInfo $hotelInfo,
         private BookingPeriod $period,
         private ?AdditionalInfo $additionalInfo,
         private RoomBookingCollection $roomBookings,
         private CancelConditions $cancelConditions,
-        private BookingPrice $price,
     ) {
-        parent::__construct($id, $orderId, $status, $createdAt, $creatorId);
+        parent::__construct($id, $orderId, $status, $createdAt, $creatorId, $price);
     }
 
     public function hotelInfo(): HotelInfo
@@ -126,16 +126,6 @@ final class Booking extends AbstractBooking
     public function cancelConditions(): CancelConditions
     {
         return $this->cancelConditions;
-    }
-
-    public function price(): BookingPrice
-    {
-        return $this->price;
-    }
-
-    public function setPrice(BookingPrice $price): void
-    {
-        $this->price = $price;
     }
 
     public function note(): ?string

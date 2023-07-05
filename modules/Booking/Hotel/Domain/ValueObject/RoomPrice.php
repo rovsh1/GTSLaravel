@@ -2,7 +2,6 @@
 
 namespace Module\Booking\Hotel\Domain\ValueObject;
 
-use Module\Booking\Common\Domain\ValueObject\PriceCalculationNotes;
 use Module\Shared\Domain\ValueObject\SerializableDataInterface;
 
 final class RoomPrice implements SerializableDataInterface
@@ -11,7 +10,8 @@ final class RoomPrice implements SerializableDataInterface
         private readonly float $netValue,
         private readonly ManualChangablePrice $hoPrice,
         private readonly ManualChangablePrice $boPrice,
-        private readonly ?PriceCalculationNotes $calculationNotes,
+        private readonly RoomPriceDetails $hoPriceDetails,
+        private readonly RoomPriceDetails $boPriceDetails,
     ) {}
 
     public static function buildEmpty(): static
@@ -20,7 +20,8 @@ final class RoomPrice implements SerializableDataInterface
             0,
             new ManualChangablePrice(0),
             new ManualChangablePrice(0),
-            null
+            new RoomPriceDetails(new DayPriceCollection(), null),
+            new RoomPriceDetails(new DayPriceCollection(), null)
         );
     }
 
@@ -39,30 +40,35 @@ final class RoomPrice implements SerializableDataInterface
         return $this->boPrice;
     }
 
-    public function calculationNotes(): ?PriceCalculationNotes
+    public function hoPriceDetails(): RoomPriceDetails
     {
-        return $this->calculationNotes;
+        return $this->hoPriceDetails;
+    }
+
+    public function boPriceDetails(): RoomPriceDetails
+    {
+        return $this->boPriceDetails;
     }
 
     public function toData(): array
     {
         return [
             'netValue' => $this->netValue,
-            'hoValue' => $this->hoPrice->toData(),
-            'boValue' => $this->boPrice->toData(),
-            'calculationNotes' => $this->calculationNotes?->toData(),
+            'hoPrice' => $this->hoPrice->toData(),
+            'boPrice' => $this->boPrice->toData(),
+            'boPriceDetails' => $this->boPriceDetails->toData(),
+            'hoPriceDetails' => $this->hoPriceDetails->toData(),
         ];
     }
 
     public static function fromData(array $data): static
     {
-        $calculationNotes = $data['calculationNotes'] ?? null;
-
         return new RoomPrice(
-            $data['netValue'],
-            ManualChangablePrice::fromData($data['hoValue']),
-            ManualChangablePrice::fromData($data['boValue']),
-            $calculationNotes !== null ? PriceCalculationNotes::fromData($calculationNotes) : null,
+            netValue: $data['netValue'],
+            hoPrice: ManualChangablePrice::fromData($data['hoPrice']),
+            boPrice: ManualChangablePrice::fromData($data['boPrice']),
+            hoPriceDetails: RoomPriceDetails::fromData($data['hoPriceDetails']),
+            boPriceDetails: RoomPriceDetails::fromData($data['boPriceDetails']),
         );
     }
 }

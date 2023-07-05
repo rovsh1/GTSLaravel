@@ -73,7 +73,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
                     hotelInfo: $hotelInfo,
                     period: $period,
                     note: $note,
-                    price: BookingPrice::buildEmpty()
+                    price: BookingPrice::fromData($bookingModel->price)
                 );
 
                 BookingDetails::create([
@@ -163,8 +163,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
             additionalInfo: $additionalInfo !== null ? AdditionalInfo::fromData($detailsData['additionalInfo']) : null,
             roomBookings: $roomBookings,
             cancelConditions: CancelConditions::fromData($detailsData['cancelConditions']),
-//            price: BookingPrice::fromData($detailsData['price'])
-            price: $this->buildBookingPrice($roomBookings)
+            price: BookingPrice::fromData($booking->price)
         );
     }
 
@@ -176,27 +175,6 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
             'additionalInfo' => $booking->additionalInfo()?->toData(),
             'period' => $booking->period()->toData(),
             'cancelConditions' => $booking->cancelConditions()->toData(),
-            'price' => $booking->price()->toData()
         ];
-    }
-
-    private function buildBookingPrice(RoomBookingCollection $roomBookings): BookingPrice
-    {
-        ['netValue' => $netValue, 'hoValue' => $hoValue, 'boValue' => $boValue] = $roomBookings->reduce(
-            function (array $result, RoomBooking $roomBooking) {
-                $result['netValue'] += $roomBooking->price()->netValue();
-                $result['hoValue'] += $roomBooking->price()->hoValue()->value();
-                $result['boValue'] += $roomBooking->price()->boValue()->value();
-
-                return $result;
-            },
-            ['netValue' => 0, 'hoValue' => 0, 'boValue' => 0]
-        );
-
-        return new BookingPrice(
-            $netValue,
-            new ManualChangablePrice($hoValue),
-            new ManualChangablePrice($boValue)
-        );
     }
 }

@@ -3,6 +3,7 @@
 namespace Module\Booking\Common\Infrastructure\Repository;
 
 use Module\Booking\Common\Domain\Entity\BookingInterface;
+use Module\Booking\Common\Domain\ValueObject\BookingPrice;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Common\Infrastructure\Models\Booking;
 use Module\Booking\Common\Infrastructure\Models\Booking as Model;
@@ -31,6 +32,7 @@ abstract class AbstractBookingRepository
             'source' => 1, //@todo источник создания брони
             'status' => BookingStatusEnum::CREATED,
             'creator_id' => $creatorId,
+            'price' => BookingPrice::buildEmpty()->toData(),
         ]);
     }
 
@@ -41,6 +43,7 @@ abstract class AbstractBookingRepository
             'type' => $booking->type(),
             'status' => $booking->status(),
             'creator_id' => $booking->creatorId()->value(),
+            'price' => $booking->price()->toData(),
         ]);
     }
 }

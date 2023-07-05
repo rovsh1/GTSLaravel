@@ -8,7 +8,7 @@ class ChangeRequestGenerator extends AbstractGenerator
 {
     protected function getTemplateName(): string
     {
-        return 'hotel/change_request.html';
+        return 'hotel.change_request';
     }
 
     protected function getReservationAttributes(AbstractBooking $booking): array

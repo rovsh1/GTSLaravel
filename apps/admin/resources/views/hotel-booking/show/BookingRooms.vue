@@ -44,7 +44,7 @@ const bookingDetails = computed<HotelBookingDetails | null>(() => bookingStore.b
 const markupSettings = computed<MarkupSettings | null>(() => bookingStore.markupSettings)
 const isEditableStatus = computed<boolean>(() => bookingStore.availableActions?.isEditable || false)
 const orderCurrency = computed<Currency | undefined>(() => orderStore.currency)
-const canChangeRoomPrice = computed<boolean>(() => true)
+const canChangeRoomPrice = computed<boolean>(() => bookingStore.availableActions?.canChangeRoomPrice || false)
 
 const { execute: fetchPriceRates, data: priceRates } = useHotelRatesAPI({ hotelID })
 const { data: countries, execute: fetchCountries } = useCountrySearchAPI()
@@ -171,9 +171,11 @@ fetchCountries()
 
   <RoomPriceModal
     v-if="editRoomBookingId !== undefined"
+    :booking-id="bookingID"
     :room-booking-id="editRoomBookingId"
     :opened="isShowRoomPriceModal"
     @close="toggleRoomPriceModal(false)"
+    @submit="toggleRoomPriceModal(false)"
   />
 
   <div class="mt-3" />

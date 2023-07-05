@@ -5,7 +5,7 @@ namespace Module\Booking\PriceCalculator\Domain\Listener;
 use Module\Booking\Common\Domain\Event\Contracts\PriceBecomeDeprecatedEventInterface;
 use Module\Booking\Hotel\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\Hotel\Domain\Repository\RoomBookingRepositoryInterface;
-use Module\Booking\Hotel\Domain\Service\RoomPriceValidator;
+use Module\Booking\PriceCalculator\Domain\Service\HotelBooking\BookingCalculator;
 use Module\Booking\PriceCalculator\Domain\Service\HotelBooking\RoomCalculator;
 use Sdk\Module\Contracts\Event\DomainEventInterface;
 use Sdk\Module\Contracts\Event\DomainEventListenerInterface;
@@ -16,16 +16,15 @@ class RecalculateBookingPricesListener implements DomainEventListenerInterface
         private readonly BookingRepositoryInterface $repository,
         private readonly RoomBookingRepositoryInterface $roomBookingRepository,
         private readonly RoomCalculator $roomCalculator,
+        private readonly BookingCalculator $bookingCalculator,
     ) {}
 
     public function handle(DomainEventInterface|PriceBecomeDeprecatedEventInterface $event): void
     {
         $booking = $this->repository->find($event->bookingId());
-        //@todo уточнить у Сергея по поводу boValue
-        if ($booking->price()->boValue()->isManual()) {
+        if ($booking->isManualBoPrice()) {
             return;
         }
-        $validator = new RoomPriceValidator($booking);
         foreach ($booking->roomBookings() as $roomBooking) {
             $roomPrice = $this->roomCalculator->calculateByBooking(
                 $booking,
@@ -36,8 +35,11 @@ class RecalculateBookingPricesListener implements DomainEventListenerInterface
                 $roomBooking->details()->earlyCheckIn()?->priceMarkup()->value(),
                 $roomBooking->details()->lateCheckOut()?->priceMarkup()->value()
             );
-            $roomBooking->setPrice($roomPrice, $validator);
+            $roomBooking->setPrice($roomPrice);
             $this->roomBookingRepository->store($roomBooking);
         }
+
+
+        $this->repository->store()
     }
 }

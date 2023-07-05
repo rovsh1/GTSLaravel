@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted } from 'vue'
 
 import { useToggle } from '@vueuse/core'
 import { z } from 'zod'
@@ -8,6 +8,7 @@ import { z } from 'zod'
 import PriceModal from '~resources/views/hotel-booking/show/components/PriceModal.vue'
 import RequestBlock from '~resources/views/hotel-booking/show/components/RequestBlock.vue'
 import StatusHistoryModal from '~resources/views/hotel-booking/show/components/StatusHistoryModal.vue'
+import { useExternalNumber } from '~resources/views/hotel-booking/show/composables/external-number'
 import { externalNumberTypeOptions, getCancelPeriodTypeName } from '~resources/views/hotel-booking/show/constants'
 import { useBookingStore } from '~resources/views/hotel-booking/show/store/booking'
 import { useOrderStore } from '~resources/views/hotel-booking/show/store/order-currency'
@@ -16,7 +17,7 @@ import { useBookingStatusHistoryStore } from '~resources/views/hotel-booking/sho
 import { useBookingVoucherStore } from '~resources/views/hotel-booking/show/store/voucher'
 
 import { Booking } from '~api/booking'
-import { CancelConditions, ExternalNumber, ExternalNumberType, ExternalNumberTypeEnum } from '~api/booking/details'
+import { CancelConditions, ExternalNumberType, ExternalNumberTypeEnum } from '~api/booking/details'
 import { BookingRequest, downloadRequestDocument } from '~api/booking/request'
 import { BookingAvailableActionsResponse, BookingStatusResponse } from '~api/booking/status'
 import { Currency } from '~api/models'
@@ -43,58 +44,34 @@ const statusHistoryStore = useBookingStatusHistoryStore()
 const { fetchStatusHistory } = statusHistoryStore
 const orderStore = useOrderStore()
 const voucherStore = useBookingVoucherStore()
-
-const isStatusUpdateFetching = computed(() => bookingStore.isStatusUpdateFetching)
-const isRequestFetching = computed(() => requestStore.requestSendIsFetching)
-const isUpdateExternalNumberFetching = computed(() => bookingStore.isUpdateExternalNumberFetching)
-const isVoucherFetching = computed(() => voucherStore.voucherSendIsFetching)
-
-const externalNumberData = ref<ExternalNumber>({
-  type: ExternalNumberTypeEnum.HotelBookingNumber,
-  number: null,
-})
-
-const isExternalNumberChanged = ref<boolean>(false)
-const isExternalNumberInvalid = computed(() => !bookingStore.isExternalNumberValid)
-
-const externalNumberType = computed<ExternalNumberType>({
-  get: () => {
-    if (isExternalNumberChanged.value) {
-      return externalNumberData.value.type
-    }
-    return bookingStore.booking?.additionalInfo?.externalNumber?.type || ExternalNumberTypeEnum.HotelBookingNumber
-  },
-  set: (value: ExternalNumberType) => {
-    isExternalNumberChanged.value = true
-    externalNumberData.value.type = Number(value)
-    externalNumberData.value.number = null
-  },
-})
-
-const externalNumber = computed<string | null>({
-  get: () => {
-    if (isExternalNumberChanged.value) {
-      return externalNumberData.value.number
-    }
-    return bookingStore.booking?.additionalInfo?.externalNumber?.number || null
-  },
-  set: (value: string | null): void => {
-    isExternalNumberChanged.value = true
-    externalNumberData.value.number = value
-  },
-})
-const isNeedShowExternalNumber = computed<boolean>(
-  () => Number(externalNumberType.value) === ExternalNumberTypeEnum.HotelBookingNumber,
-)
-
-const cancelConditions = computed<CancelConditions | null>(() => bookingStore.booking?.cancelConditions || null)
+const {
+  externalNumberType,
+  externalNumber,
+  isExternalNumberValid,
+  isUpdateExternalNumberFetching,
+  isExternalNumberChanged,
+  validateExternalNumber,
+  updateExternalNumber,
+} = useExternalNumber(bookingID)
 
 const booking = computed<Booking | null>(() => bookingStore.booking)
+const cancelConditions = computed<CancelConditions | null>(() => bookingStore.booking?.cancelConditions || null)
 const orderCurrency = computed<Currency | undefined>(() => orderStore.currency)
 const statuses = computed<BookingStatusResponse[] | null>(() => bookingStore.statuses)
 const availableActions = computed<BookingAvailableActionsResponse | null>(() => bookingStore.availableActions)
+
+// flags
 const isAvailableActionsFetching = computed<boolean>(() => bookingStore.isAvailableActionsFetching)
 const isRequestableStatus = computed<boolean>(() => availableActions.value?.isRequestable || false)
+const isStatusUpdateFetching = computed(() => bookingStore.isStatusUpdateFetching)
+const isRequestFetching = computed(() => requestStore.requestSendIsFetching)
+const isVoucherFetching = computed(() => voucherStore.voucherSendIsFetching)
+const isNeedShowExternalNumber = computed<boolean>(
+  () => Number(externalNumberType.value) === ExternalNumberTypeEnum.HotelBookingNumber,
+)
+const isExternalNumberInvalid = computed(() => !isExternalNumberValid.value)
+
+// access
 const canSendClientVoucher = computed<boolean>(() => availableActions.value?.canSendVoucher || false)
 const canSendCancellationRequest = computed<boolean>(() => availableActions.value?.canSendCancellationRequest || false)
 const canSendBookingRequest = computed<boolean>(() => availableActions.value?.canSendBookingRequest || false)
@@ -122,7 +99,7 @@ const handleRequestSend = async () => {
 }
 
 const handleUpdateExternalNumber = async () => {
-  const isSuccess = await bookingStore.updateExternalNumber(externalNumberData.value)
+  const isSuccess = await updateExternalNumber()
   if (isSuccess) {
     isExternalNumberChanged.value = false
   }
@@ -148,7 +125,7 @@ const getHumanRequestType = (type: number): string => {
 }
 
 const handleVoucherSend = async () => {
-  if (!bookingStore.validateExternalNumber(externalNumberType.value, externalNumber.value)) {
+  if (!validateExternalNumber()) {
     return
   }
   if (isExternalNumberChanged.value) {
@@ -411,10 +388,10 @@ hr {
 }
 
 .invalid-input {
-  border-color: var(--bs-form-invalid-border-color);
   padding-right: calc(1.5em + 0.75rem);
-  background-repeat: no-repeat;
+  border-color: var(--bs-form-invalid-border-color);
   background-position: right calc(0.375em + 0.1875rem) center;
   background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+  background-repeat: no-repeat;
 }
 </style>

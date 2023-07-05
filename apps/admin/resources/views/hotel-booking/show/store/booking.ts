@@ -5,8 +5,8 @@ import { z } from 'zod'
 
 import { showCancelFeeDialog, showNotConfirmedReasonDialog } from '~resources/views/hotel-booking/show/modals'
 
-import { updateBookingStatus, UpdateBookingStatusPayload, updateExternalNumber as updateExternalNumberRequest, useGetBookingAPI } from '~api/booking'
-import { ExternalNumber, ExternalNumberTypeEnum, HotelRoomBooking } from '~api/booking/details'
+import { updateBookingStatus, UpdateBookingStatusPayload, useGetBookingAPI } from '~api/booking'
+import { HotelRoomBooking } from '~api/booking/details'
 import { useBookingAvailableActionsAPI, useBookingStatusesAPI } from '~api/booking/status'
 import { useHotelMarkupSettingsAPI } from '~api/hotel/markup-settings'
 
@@ -26,8 +26,6 @@ export const useBookingStore = defineStore('booking', () => {
   const isEmptyGuests = computed<boolean>(() => Boolean(booking.value?.roomBookings.find((room: HotelRoomBooking) => room.guests.length === 0)))
   const isEmptyRooms = computed<boolean>(() => booking.value?.roomBookings.length === 0)
   const isStatusUpdateFetching = ref(false)
-  const isUpdateExternalNumberFetching = ref(false)
-  const isExternalNumberValid = ref(true)
 
   const updateStatusPayload = reactive<UpdateBookingStatusPayload>({ bookingID } as UpdateBookingStatusPayload)
   const changeStatus = async (status: number) => {
@@ -61,29 +59,6 @@ export const useBookingStore = defineStore('booking', () => {
     isStatusUpdateFetching.value = false
   }
 
-  const validateExternalNumber = (numberType: ExternalNumberTypeEnum, number: string | null): boolean => {
-    // @todo валидация перед переходом на статус "Подтверждена" для админки отелей.
-    const isHotelNumberType = numberType === ExternalNumberTypeEnum.HotelBookingNumber
-    const isEmptyNumber = (!number || number?.trim().length === 0)
-    if (isHotelNumberType && isEmptyNumber) {
-      isExternalNumberValid.value = false
-      return false
-    }
-    isExternalNumberValid.value = true
-    return true
-  }
-
-  const updateExternalNumber = async (externalNumber: ExternalNumber): Promise<boolean> => {
-    if (!validateExternalNumber(externalNumber.type, externalNumber.number)) {
-      return false
-    }
-    isUpdateExternalNumberFetching.value = true
-    await updateExternalNumberRequest({ bookingID, ...externalNumber })
-    await fetchBooking()
-    isUpdateExternalNumberFetching.value = false
-    return true
-  }
-
   onMounted(() => {
     fetchMarkupSettings()
     fetchStatuses()
@@ -92,20 +67,16 @@ export const useBookingStore = defineStore('booking', () => {
 
   return {
     booking,
-    markupSettings,
     fetchBooking,
+    markupSettings,
     isEmptyGuests,
     isEmptyRooms,
     availableActions,
     fetchAvailableActions,
     isAvailableActionsFetching,
     isStatusUpdateFetching,
-    isUpdateExternalNumberFetching,
     statuses,
     fetchStatuses,
     changeStatus,
-    updateExternalNumber,
-    isExternalNumberValid,
-    validateExternalNumber,
   }
 })

@@ -23,7 +23,7 @@ class UpdatePriceRequest extends FormRequest
 
     public function getBoPrice(): ?float
     {
-        if ($this->has('boPrice')) {
+        if ($this->exists('boPrice')) {
             return (float)$this->post('boPrice');
         }
 
@@ -32,7 +32,7 @@ class UpdatePriceRequest extends FormRequest
 
     public function getHoPrice(): ?float
     {
-        if ($this->has('hoPrice')) {
+        if ($this->exists('hoPrice')) {
             return (float)$this->post('hoPrice');
         }
 

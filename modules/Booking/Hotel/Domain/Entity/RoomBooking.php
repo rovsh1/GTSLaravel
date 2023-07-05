@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Module\Booking\Hotel\Domain\Entity;
 
+use Module\Booking\Common\Domain\ValueObject\BookingPrice;
 use Module\Booking\Hotel\Domain\Event\GuestAdded;
 use Module\Booking\Hotel\Domain\Event\GuestDeleted;
 use Module\Booking\Hotel\Domain\Event\GuestEdited;
-use Module\Booking\Hotel\Domain\Service\RoomPriceValidator;
 use Module\Booking\Hotel\Domain\ValueObject\Details\GuestCollection;
 use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking\Guest;
 use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking\RoomBookingDetails;
@@ -15,6 +15,7 @@ use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking\RoomBookingStatu
 use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking\RoomInfo;
 use Module\Booking\Hotel\Domain\ValueObject\ManualChangablePrice;
 use Module\Booking\Hotel\Domain\ValueObject\RoomPrice;
+use Module\Booking\PriceCalculator\Domain\Service\HotelBooking\RoomCalculator;
 use Module\Shared\Domain\Entity\EntityInterface;
 use Module\Shared\Domain\ValueObject\Id;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
@@ -111,19 +112,64 @@ class RoomBooking extends AbstractAggregateRoot implements EntityInterface
         );
     }
 
-    public function setHoPriceValue(ManualChangablePrice $price, RoomPriceValidator $validator): void
+    public function setHoDayPrice(float $price): void
     {
-        $validator->checkCanChangeHoPrice($price);
+        $this->price = new RoomPrice(
+            boPrice: $this->price->boValue(),
+            hoPrice: new ManualChangablePrice($price, true),
+            calculationNotes: $this->price->calculationNotes(),
+            netValue: $this->price->netValue()
+        );
     }
 
-    public function setBoPriceValue(ManualChangablePrice $price, RoomPriceValidator $validator): void
+    public function setBoDayPrice(float $price): void
     {
-        $validator->checkCanChangeBoPrice($price);
+        $this->price = new RoomPrice(
+            boPrice: new ManualChangablePrice($price, true),
+            hoPrice: $this->price->hoValue(),
+            calculationNotes: $this->price->calculationNotes(),
+            netValue: $this->price->netValue()
+        );
     }
 
-    public function setPrice(RoomPrice $price, RoomPriceValidator $validator): void
+    public function setCalculatedPrices(RoomCalculator $calculator): void
     {
-        $this->price = $price;
+        $this->price = $this->calculatePrice($calculator);
+    }
+
+    public function setCalculatedBoPrice(RoomCalculator $calculator): void
+    {
+        $newPrice = $this->calculatePrice($calculator);
+        $this->price = new RoomPrice(
+            netValue: $this->price->netValue(),
+            boPrice: $newPrice->boValue(),
+            hoPrice: $this->price()->hoValue(),
+            calculationNotes: $this->price
+        );
+    }
+
+    public function setCalculatedHoPrice(RoomCalculator $calculator): void
+    {
+        $this->price = new BookingPrice(
+            netValue: $this->price->netValue(),
+            hoPrice: new ManualChangablePrice(
+                $calculator->calculateHoPrice($this)
+            ),
+            boPrice: $this->price()->boValue()
+        );
+    }
+
+    private function calculatePrice(RoomCalculator $calculator): RoomPrice
+    {
+        return $calculator->calculateByBookingId(
+            $this->bookingId->value(),
+            $this->roomInfo()->id(),
+            $this->details()->rateId(),
+            $this->details()->isResident(),
+            $this->guests()->count(),
+            $this->details()->earlyCheckIn()?->priceMarkup()->value(),
+            $this->details()->lateCheckOut()?->priceMarkup()->value()
+        );
     }
 
     public function toData(): array

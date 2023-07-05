@@ -1,0 +1,163 @@
+<style>
+    body {
+        font-size: 1.45em;
+        font-family: Tahoma, sans-serif;
+    }
+
+    table {
+        border-spacing: 0;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    .title {
+        padding: 50px 0 30px;
+        font-size: 2.1em;
+        color: #0000ff;
+    }
+
+    .text-align-left {
+        text-align: left;
+    }
+
+    .text-align-right {
+        text-align: right;
+    }
+
+    .text-align-center {
+        text-align: center;
+    }
+
+    table tr.first td {
+        padding-top: 10px;
+        border-top: 2px solid;
+    }
+
+    table tr.last td {
+        padding-bottom: 10px;
+        border-bottom: 2px solid;
+    }
+
+    .top-table-left {
+        width: 250px;
+    }
+</style>
+<table>
+    <tbody>
+    <tr>
+        <td class="text-align-left" style="width: 250px"><img src="var:logo" alt="" width="250"></td>
+        <td style="width: 650px; ">
+            <table class="text-align-right">
+                <tr>
+                    <td>{company}</td>
+                </tr>
+                <tr>
+                    <td>Тел: {phone}</td>
+                </tr>
+                <tr>
+                    <td>E-mail: {email}</td>
+                </tr>
+                <tr>
+                    <td>{address}</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td class="title text-align-center" colspan="2">ОТМЕНА БРОНИРОВАНИЯ</td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <table>
+                <tbody>
+                <tr>
+                    <td>
+                        <table>
+                            <tr>
+                                <td class="top-table-left" style="font-size: 24px; font-weight: bold; color: red">Номер (ID):</td>
+                                <td style="font-size: 24px; font-weight: bold; color: red"><b>{reservNumber}</b></td>
+                                <td class="text-align-right" colspan="2"><b>Дата и время отмены: {reservCancelledAt}</b></td>
+                            </tr>
+                            <tr>
+                                <td>&ensp;</td>
+                                <td>&ensp;</td>
+                                <td class="text-align-right" colspan="2"><b>Дата и время создания: {reservCreatedAt}</b></td>
+                            </tr>
+                            <tr>
+                                <td class="top-table-left">Гостиница:</td>
+                                <td><b>{hotelName} ({cityName})</b></td>
+                            </tr>
+                            <tr>
+                                <td class="top-table-left">Телефон:</td>
+                                <td><b>{hotelPhone}</b></td>
+                            </tr>
+                            <tr>
+                                <td class="top-table-left">Период пребывания:</td>
+                                <td><b>{reservStartDate}</b> - <b>{reservEndDate}</b></td>
+                            </tr>
+                            <tr>
+                                <td class="top-table-left">Количество ночей:</td>
+                                <td><b>{reservNightCount}</b></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" style="padding-top: 20px;">
+            <table>
+                <thead>
+                <tr>
+                    <th class="text-align-center" style="width: 5%;">№</th>
+                    <th class="text-align-left">Информация о размещении</th>
+                    <th style="width: 33%;"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {rooms}
+                <tr class="first">
+                    <td colspan="3">
+                        <p style="text-align: justify"><b>Внимание!</b> Компания гарантирует оплату за количество ночей и услуги указанные в заявке,
+                            в случае раннего заезда / позднего выезда и прочих дополнительных услуг не указанных в
+                            заявке компания не несет ответственности и отель обязуется сам взимать оплату с гостя по
+                            своим расценкам.</p>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <table>
+                <tbody>
+                <tr>
+                    <td style="width: 500px;">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td>&ensp;</td>
+                            </tr>
+                            <tr>
+                                <td>Менеджер: <b>{managerName}</b></td>
+                            </tr>
+                            <tr>
+                                <td>E-mail: {managerEmail}</td>
+                            </tr>
+                            <tr>
+                                <td>Мобильный номер: {managerPhone}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+        <td class="text-align-right" style="width: 250px"><img src="var:stamp" alt="" width="250"/></td>
+    </tr>
+    </tbody>
+</table>

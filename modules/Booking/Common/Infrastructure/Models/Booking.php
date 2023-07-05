@@ -18,10 +18,12 @@ abstract class Booking extends Model
         'status',
         'source',
         'creator_id',
+        'price',
     ];
 
     protected $casts = [
         'status' => BookingStatusEnum::class,
         'type' => BookingTypeEnum::class,
+        'price' => 'array',
     ];
 }

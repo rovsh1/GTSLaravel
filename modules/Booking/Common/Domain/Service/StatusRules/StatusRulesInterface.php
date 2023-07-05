@@ -14,4 +14,6 @@ interface StatusRulesInterface
     public function isEditableStatus(BookingStatusEnum $status, RequestRules $requestRules): bool;
 
     public function canEditExternalNumber(BookingStatusEnum $status): bool;
+
+    public function canChangeRoomPrice(BookingStatusEnum $status): bool;
 }

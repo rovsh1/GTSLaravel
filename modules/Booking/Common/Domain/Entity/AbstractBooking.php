@@ -14,9 +14,12 @@ use Module\Booking\Common\Domain\Exception\NotRequestableEntity;
 use Module\Booking\Common\Domain\Exception\NotRequestableStatus;
 use Module\Booking\Common\Domain\Service\RequestCreator;
 use Module\Booking\Common\Domain\Service\RequestRules;
+use Module\Booking\Common\Domain\ValueObject\BookingPrice;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
 use Module\Booking\Common\Domain\ValueObject\RequestTypeEnum;
+use Module\Booking\Hotel\Domain\ValueObject\ManualChangablePrice;
+use Module\Booking\PriceCalculator\Domain\Service\BookingCalculatorInterface;
 use Module\Shared\Domain\ValueObject\Id;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
@@ -32,6 +35,7 @@ abstract class AbstractBooking extends AbstractAggregateRoot implements
         private BookingStatusEnum $status,
         private readonly CarbonImmutable $createdAt,
         private readonly Id $creatorId,
+        private BookingPrice $price,
     ) {}
 
     public function id(): Id
@@ -61,9 +65,67 @@ abstract class AbstractBooking extends AbstractAggregateRoot implements
         return $this->creatorId;
     }
 
+    public function price(): BookingPrice
+    {
+        return $this->price;
+    }
+
+    public function setBoPriceManually(float $price): void
+    {
+        $this->price = new BookingPrice(
+            netValue: $this->price->netValue(),
+            boPrice: new ManualChangablePrice($price, true),
+            hoPrice: $this->price->hoPrice()
+        );
+    }
+
+    public function setHoPriceManually(float $price): void
+    {
+        $this->price = new BookingPrice(
+            netValue: $this->price->netValue(),
+            boPrice: $this->price->boPrice(),
+            hoPrice: new ManualChangablePrice($price, true),
+        );
+    }
+
+    public function setCalculatedPrices(BookingCalculatorInterface $calculator): void
+    {
+        $this->price = new BookingPrice(
+            netValue: $this->price->netValue(),
+            boPrice: new ManualChangablePrice(
+                $calculator->calculateBoPrice($this)
+            ),
+            hoPrice: new ManualChangablePrice(
+                $calculator->calculateHoPrice($this)
+            ),
+        );
+    }
+
+    public function setCalculatedBoPrice(BookingCalculatorInterface $calculator): void
+    {
+        $this->price = new BookingPrice(
+            netValue: $this->price->netValue(),
+            boPrice: new ManualChangablePrice(
+                $calculator->calculateBoPrice($this)
+            ),
+            hoPrice: $this->price()->hoPrice()
+        );
+    }
+
+    public function setCalculatedHoPrice(BookingCalculatorInterface $calculator): void
+    {
+        $this->price = new BookingPrice(
+            netValue: $this->price->netValue(),
+            hoPrice: new ManualChangablePrice(
+                $calculator->calculateHoPrice($this)
+            ),
+            boPrice: $this->price()->boPrice()
+        );
+    }
+
 
     /**
-     * @param RequestRulesInterface $requestRules
+     * @param RequestRules $requestRules
      * @return void
      * @throws NotRequestableStatus
      * @throws NotRequestableEntity
@@ -92,13 +154,19 @@ abstract class AbstractBooking extends AbstractAggregateRoot implements
         $this->pushEvent($event);
     }
 
-    private function setStatus(BookingStatusEnum $status): void
+    public function isManualBoPrice(): bool
     {
-        $this->status = $status;
+        //@todo уточнить у Сергея по поводу boValue
+        return $this->price()->boPrice()->isManual();
     }
 
     public function canSendClientVoucher(): bool
     {
         return $this->status === BookingStatusEnum::CONFIRMED;
+    }
+
+    private function setStatus(BookingStatusEnum $status): void
+    {
+        $this->status = $status;
     }
 }

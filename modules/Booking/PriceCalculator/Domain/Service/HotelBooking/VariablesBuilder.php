@@ -3,6 +3,7 @@
 namespace Module\Booking\PriceCalculator\Domain\Service\HotelBooking;
 
 use Module\Booking\Hotel\Domain\Entity\Booking;
+use Module\Booking\Hotel\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\Order\Domain\Entity\Order;
 use Module\Booking\Order\Domain\Repository\OrderRepositoryInterface;
 use Module\Booking\PriceCalculator\Domain\Adapter\ClientAdapterInterface;
@@ -17,7 +18,7 @@ class VariablesBuilder
         private readonly ConstantAdapterInterface $constantAdapter,
         private readonly OrderRepositoryInterface $orderRepository,
         private readonly HotelAdapterInterface $hotelAdapter,
-        private readonly ClientAdapterInterface $clientAdapter
+        private readonly ClientAdapterInterface $clientAdapter,
     ) {}
 
     public function build(

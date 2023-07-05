@@ -99,6 +99,7 @@ const handleChangeAgeType = (type: number): void => {
     :opened="opened as boolean"
     :loading="isFetching"
     @close="$emit('close')"
+    @keyup.enter="onModalSubmit"
   >
     <template #title>Данные гостя</template>
 

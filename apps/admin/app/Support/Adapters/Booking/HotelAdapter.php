@@ -15,7 +15,7 @@ use Module\Booking\Hotel\Application\UseCase\Admin\GetBooking;
 use Module\Booking\Hotel\Application\UseCase\Admin\GetBookingsByFilters;
 use Module\Booking\Hotel\Application\UseCase\Admin\Room;
 use Module\Booking\Hotel\Application\UseCase\Admin\UpdateExternalNumber;
-use Module\Booking\Hotel\Application\UseCase\Admin\UpdatePrice;
+use Module\Booking\Hotel\Application\UseCase\Admin\SetManualPrice;
 
 class HotelAdapter
 {
@@ -172,15 +172,5 @@ class HotelAdapter
     public function updateExternalNumber(int $bookingId, int $type, ?string $number): void
     {
         app(UpdateExternalNumber::class)->execute($bookingId, $type, $number);
-    }
-
-    public function updatePrice(int $bookingId, float|null $boPrice, float|null $hoPrice): void
-    {
-        app(UpdatePrice::class)->execute($bookingId, $boPrice, $hoPrice);
-    }
-
-    public function updateRoomPrice(int $bookingId, int $roomBookingId, float|null $boPrice, float|null $hoPrice): void
-    {
-        app(Room\UpdatePrice::class)->execute($bookingId, $roomBookingId, $boPrice, $hoPrice);
     }
 }

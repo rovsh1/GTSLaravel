@@ -7,6 +7,7 @@ use Module\Booking\Common\Domain\Exception\NotRequestableEntity;
 use Module\Booking\Common\Domain\Exception\NotRequestableStatus;
 use Module\Booking\Common\Domain\Service\RequestCreator;
 use Module\Booking\Common\Domain\Service\RequestRules;
+use Module\Booking\Common\Domain\ValueObject\BookingPrice;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
 use Module\Shared\Domain\Entity\EntityInterface;
@@ -23,6 +24,8 @@ interface BookingInterface extends EntityInterface
     public function createdAt(): CarbonImmutable;
 
     public function creatorId(): Id;
+
+    public function price(): BookingPrice;
 
     /**
      * @param RequestRules $requestRules

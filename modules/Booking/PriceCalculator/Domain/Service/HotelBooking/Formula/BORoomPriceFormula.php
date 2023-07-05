@@ -7,7 +7,7 @@ use Module\Booking\PriceCalculator\Domain\ValueObject\CalculationResult;
 
 final class BORoomPriceFormula extends AbstractRoomPriceFormula
 {
-    public function calculate(int|float $netValue): CalculationResult
+    public function calculate(int|float $dayPrice): CalculationResult
     {
         /**
          * S (итоговая сумма по номеру) = (Sb - D) * n * k + Z * n
@@ -18,9 +18,7 @@ final class BORoomPriceFormula extends AbstractRoomPriceFormula
          * D – сумма скидки = Sn * (процент/100), где Sn – цена нетто номера за 1 ночь
          * Z – надбавка за ранний заезд/поздний выезд = Sb * (процент/100)
          */
-        $Sb = $this->variables->isResident
-            ? $this->calculateResidentGrossPrice($netValue)
-            : $this->calculateNonResidentGrossPrice($netValue, $this->variables->guestsCount);
+        $Sb = $dayPrice;
 
         return (new ExpressionEvaluator('((Sb - D) * k + Z) * n'))
             ->addVariable('Sb', $Sb, 'брутто')
@@ -29,6 +27,13 @@ final class BORoomPriceFormula extends AbstractRoomPriceFormula
             ->addVariable('k', $this->variables->nightsCount, 'ночей')
             ->addVariable('Z', $this->calculateConditionMarkup($Sb), 'надбавка')
             ->evaluate();
+    }
+
+    public function calculateDayPrice(int|float $netValue): float
+    {
+        return $this->variables->isResident
+            ? $this->calculateResidentGrossPrice($netValue)
+            : $this->calculateNonResidentGrossPrice($netValue, $this->variables->guestsCount);
     }
 
     private function calculateResidentGrossPrice(int|float $netValue): float

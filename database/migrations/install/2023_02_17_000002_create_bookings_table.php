@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->tinyInteger('status');
             $table->tinyInteger('source');
             $table->unsignedInteger('creator_id');
+            $table->json('price');
             $table->timestamps();
 
             $table->foreign('order_id')

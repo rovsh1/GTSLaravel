@@ -19,6 +19,8 @@ class CalculateVariables
         public readonly float $touristTax,
         public readonly ?int $earlyCheckInPercent,
         public readonly ?int $lateCheckOutPercent,
+        public readonly int|float|null $hoDay,
+        public readonly int|float|null $boDay,
     ) {
     }
 }

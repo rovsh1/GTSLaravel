@@ -53,4 +53,15 @@ class AdministratorRules extends AbstractRules implements StatusRulesInterface
     {
         return $status === BookingStatusEnum::CONFIRMED;
     }
+
+    public function canChangeRoomPrice(BookingStatusEnum $status): bool
+    {
+        return in_array($status, [
+            BookingStatusEnum::CREATED,
+            BookingStatusEnum::PROCESSING,
+            BookingStatusEnum::WAITING_PROCESSING,
+        ]);
+    }
+
+
 }

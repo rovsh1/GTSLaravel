@@ -8,7 +8,7 @@ class CancellationRequestGenerator extends AbstractGenerator
 {
     protected function getTemplateName(): string
     {
-        return 'hotel/cancellation_request.html';
+        return 'hotel.cancellation_request';
     }
 
     protected function getReservationAttributes(AbstractBooking $booking): array

@@ -9,9 +9,8 @@ final class BookingPrice implements SerializableDataInterface
 {
     public function __construct(
         private readonly float $netValue,
-        private readonly ManualChangablePrice $hoValue,
-        private readonly ManualChangablePrice $boValue,
-        private readonly bool $isManual = false,
+        private readonly ManualChangablePrice $hoPrice,
+        private readonly ManualChangablePrice $boPrice,
     ) {}
 
     public static function buildEmpty(): static
@@ -28,23 +27,22 @@ final class BookingPrice implements SerializableDataInterface
         return $this->netValue;
     }
 
-    public function hoValue(): ManualChangablePrice
+    public function hoPrice(): ManualChangablePrice
     {
-        return $this->hoValue;
+        return $this->hoPrice;
     }
 
-    public function boValue(): ManualChangablePrice
+    public function boPrice(): ManualChangablePrice
     {
-        return $this->boValue;
+        return $this->boPrice;
     }
 
     public function toData(): array
     {
         return [
             'netValue' => $this->netValue,
-            'hoValue' => $this->hoValue->toData(),
-            'boValue' => $this->boValue->toData(),
-            'isManual' => $this->isManual
+            'hoPrice' => $this->hoPrice->toData(),
+            'boPrice' => $this->boPrice->toData(),
         ];
     }
 
@@ -52,9 +50,8 @@ final class BookingPrice implements SerializableDataInterface
     {
         return new BookingPrice(
             $data['netValue'],
-            ManualChangablePrice::fromData($data['hoValue']),
-            ManualChangablePrice::fromData($data['boValue']),
-            $data['isManual'],
+            ManualChangablePrice::fromData($data['hoPrice']),
+            ManualChangablePrice::fromData($data['boPrice']),
         );
     }
 }
