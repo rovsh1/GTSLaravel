@@ -14,6 +14,7 @@ const props = defineProps<{
   value: number | undefined
   placeholder?: string
   dimension?: string
+  emptyValue?: string
 }>()
 
 const emit = defineEmits<{
@@ -33,6 +34,15 @@ const localValue = computed<number>({
     editedValue.value = value
     isChanged.value = true
   },
+})
+
+const displayValue = computed(() => {
+  if (!localValue.value) {
+    return props.emptyValue || 'Не установлена'
+  }
+  const dimensionText = props.dimension && localValue ? props.dimension : ''
+
+  return `${localValue.value} ${dimensionText}`
 })
 
 watch(inputRef, (element) => {
@@ -58,7 +68,7 @@ const onPressEsc = () => {
 <template>
   <div>
     <a v-if="!isEditable" href="#" @click.prevent="toggleEditable(true)">
-      {{ localValue || 'Не установлена' }}<template v-if="dimension && localValue">{{ dimension }}</template>
+      {{ displayValue }}
     </a>
 
     <Tooltip
