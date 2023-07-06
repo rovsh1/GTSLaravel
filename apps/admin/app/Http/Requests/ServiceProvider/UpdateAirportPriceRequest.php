@@ -14,8 +14,10 @@ class UpdateAirportPriceRequest extends FormRequest
             'airport_id' => ['required', 'numeric'],
             'season_id' => ['required', 'numeric'],
             'currency_id' => ['required', 'numeric'],
-            'price_net' => ['required_without:price_gross', 'numeric'],
-            'price_gross' => ['required_without:price_net', 'numeric'],
+            'price_net' => ['required', 'numeric'],
+            'prices_gross' => ['required', 'array'],
+            'prices_gross.*.amount' => ['required', 'numeric'],
+            'prices_gross.*.currency_id' => ['required', 'numeric'],
         ];
     }
 
@@ -34,13 +36,13 @@ class UpdateAirportPriceRequest extends FormRequest
         return (int)$this->post('season_id');
     }
 
-    public function getPriceNet(): ?float
+    public function getPriceNet(): float
     {
-        return $this->post('price_net');
+        return (float)$this->post('price_net');
     }
 
-    public function getPriceGross(): ?float
+    public function getPricesGross(): array
     {
-        return $this->post('price_gross');
+        return $this->post('prices_gross');
     }
 }

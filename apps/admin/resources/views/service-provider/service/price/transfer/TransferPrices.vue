@@ -1,8 +1,13 @@
 <script setup lang="ts">
 
+import { computed } from 'vue'
+
 import { z } from 'zod'
 
-import { Car, Currency, Season } from '~api/models'
+import { useQuickSearch } from '~resources/composables/quick-search'
+import { useCurrenciesStore } from '~resources/views/service-provider/service/price/composables/currency'
+
+import { Car, Season } from '~api/models'
 
 import { requestInitialData } from '~lib/initial-data'
 
@@ -41,16 +46,26 @@ const { seasons, services, cars, providerId, currencies } = requestInitialData('
   })),
 }))
 
+useCurrenciesStore().setCurrencies(currencies)
+
+const { quickSearch } = useQuickSearch()
+
+const filteredServices = computed(() => {
+  if (quickSearch && quickSearch.trim().length > 0) {
+    return services.filter((service) => service.name.includes(quickSearch))
+  }
+  return services
+})
+
 </script>
 
 <template>
   <PricesTable
-    v-for="service in services"
+    v-for="service in filteredServices"
     :key="service.id"
     :header="service.name"
     :cars="cars as Car[]"
     :seasons="seasons as Season[]"
-    :currencies="currencies as Currency[]"
     :provider-id="providerId as number"
     :service-id="service.id"
   />

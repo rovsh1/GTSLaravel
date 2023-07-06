@@ -1,13 +1,16 @@
 <script setup lang="ts">
 
-import { computed } from 'vue'
+import { onMounted, ref } from 'vue'
 
-import { Airport, Currency, Season } from '~api/models'
+import { useToggle } from '@vueuse/core'
+
+import PricesModal from '~resources/views/service-provider/service/price/ components/PricesModal.vue'
+import { useCurrenciesStore } from '~resources/views/service-provider/service/price/composables/currency'
+
+import { Airport, Money, Season } from '~api/models'
 import { ServicePriceResponse, updateAirportPrice, useServiceProviderAirportPricesAPI } from '~api/service-provider/airport'
 
 import { formatPeriod } from '~lib/date'
-
-import EditableCell from '~components/EditableCell.vue'
 
 const props = defineProps<{
   header: string
@@ -15,7 +18,6 @@ const props = defineProps<{
   serviceId: number
   seasons: Season[]
   airports: Airport[]
-  currencies: Currency[]
 }>()
 
 const { data: servicePrices, execute: fetchPrices } = useServiceProviderAirportPricesAPI({
@@ -23,33 +25,71 @@ const { data: servicePrices, execute: fetchPrices } = useServiceProviderAirportP
   serviceId: props.serviceId,
 })
 
-const currencies = computed<Currency[]>(() => props.currencies)
-console.log(currencies)
+const { getCurrencyChar } = useCurrenciesStore()
+const editableServicePrice = ref<ServicePriceResponse>()
+const [isOpenedModal, toggleModal] = useToggle()
+const isModalLoading = ref<boolean>(false)
 
-const handleChangePrice = async (seasonId: number, airportId: number, priceNet?: number, priceGross?: number): Promise<void> => {
-  if (!priceGross && !priceNet) {
+const handleChangePrice = async (priceNet?: number, pricesGross?: Money[]): Promise<void> => {
+  if (!pricesGross && !priceNet) {
     return
   }
+  isModalLoading.value = true
   await updateAirportPrice({
-    seasonId,
-    airportId,
+    seasonId: editableServicePrice.value?.season_id as number,
+    airportId: editableServicePrice.value?.airport_id as number,
     serviceId: props.serviceId,
     providerId: props.providerId,
     priceNet,
-    priceGross,
+    pricesGross,
     currencyId: 1,
   })
   fetchPrices()
+  isModalLoading.value = false
+  toggleModal()
 }
 
 const getServicePrice = (seasonId: number, airportId: number): ServicePriceResponse | undefined =>
   servicePrices.value?.find((servicePrice) => servicePrice.airport_id === airportId && servicePrice.season_id === seasonId)
 
-fetchPrices()
+const getPriceButtonText = (seasonId: number, airportId: number): string => {
+  const servicePrice = getServicePrice(seasonId, airportId)
+  if (!servicePrice) {
+    return 'Не установлена'
+  }
+
+  return `${servicePrice.price_net} ${getCurrencyChar(servicePrice.currency_id)}`
+}
+
+const handleEditServicePrice = (seasonId: number, airportId: number) => {
+  const servicePrice = getServicePrice(seasonId, airportId)
+  if (servicePrice) {
+    editableServicePrice.value = servicePrice
+  } else {
+    editableServicePrice.value = {
+      season_id: seasonId,
+      airport_id: airportId,
+      service_id: props.serviceId,
+    } as unknown as ServicePriceResponse
+  }
+  toggleModal(true)
+}
+
+onMounted(() => {
+  fetchPrices()
+})
 
 </script>
 
 <template>
+  <PricesModal
+    :opened="isOpenedModal"
+    :loading="isModalLoading"
+    :service-price="editableServicePrice"
+    @close="toggleModal(false)"
+    @submit="handleChangePrice"
+  />
+
   <div class="card card-form mb-4">
     <div class="card-header">
       <h5 class="mb-0">{{ header }}</h5>
@@ -64,13 +104,6 @@ fetchPrices()
               {{ season.number }} ({{ formatPeriod(season) }})
             </th>
           </tr>
-          <tr>
-            <th scope="col" colspan="2" />
-            <template v-for="season in seasons" :key="season.id">
-              <th scope="col">Нетто (UZS)</th>
-              <th scope="col">Брутто (UZS)</th>
-            </template>
-          </tr>
         </thead>
         <tbody>
           <tr v-for="airport in airports" :key="airport.id">
@@ -81,18 +114,9 @@ fetchPrices()
 
             <template v-for="season in seasons" :key="season.id">
               <td>
-                <EditableCell
-                  :value="getServicePrice(season.id, airport.id)?.price_net"
-                  placeholder="Введите цену"
-                  @change="(price) => handleChangePrice(season.id, airport.id, price)"
-                />
-              </td>
-              <td>
-                <EditableCell
-                  :value="getServicePrice(season.id, airport.id)?.price_gross"
-                  placeholder="Введите цену"
-                  @change="(price) => handleChangePrice(season.id, airport.id, undefined, price)"
-                />
+                <a href="#" @click.prevent="handleEditServicePrice(season.id, airport.id)">
+                  {{ getPriceButtonText(season.id, airport.id) }}
+                </a>
               </td>
             </template>
           </tr>

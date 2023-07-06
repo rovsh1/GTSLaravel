@@ -8,7 +8,7 @@ export interface EntityInterface {
   name: string
 }
 
-const mapEntitiesToSelectOptions = (entities: EntityInterface[]): SelectOption[] => entities.map(
+export const mapEntitiesToSelectOptions = (entities: EntityInterface[]): SelectOption[] => entities.map(
   (entity) => ({ value: entity.id, label: entity.name }),
 )
 

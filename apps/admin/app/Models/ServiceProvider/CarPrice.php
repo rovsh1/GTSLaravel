@@ -18,11 +18,11 @@ class CarPrice extends Model
         'car_id',
         'currency_id',
         'price_net',
-        'price_gross',
+        'prices_gross',
     ];
 
     protected $casts = [
         'price_net' => 'float',
-        'price_gross' => 'float',
+        'prices_gross' => 'array',
     ];
 }

@@ -7,6 +7,7 @@ use App\Admin\Models\Reference\Currency;
 use App\Admin\Models\ServiceProvider\AirportPrice;
 use App\Admin\Models\ServiceProvider\AirportService;
 use App\Admin\Models\ServiceProvider\Provider;
+use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Facades\Layout;
 use App\Admin\Support\View\Layout as LayoutContract;
 use Illuminate\Http\JsonResponse;
@@ -24,7 +25,8 @@ class AirportPricesController extends AbstractPricesController
                 'airports' => $provider->airports,
                 'seasons' => $provider->seasons,
                 'services' => $provider->airportServices,
-                'currencies' => Currency::all()
+                'currencies' => Currency::all(),
+                'quicksearch' => Grid::enableQuicksearch()->getQuicksearch()
             ]);
     }
 
@@ -40,8 +42,8 @@ class AirportPricesController extends AbstractPricesController
         if ($request->getPriceNet() !== null) {
             $data['price_net'] = $request->getPriceNet();
         }
-        if ($request->getPriceGross() !== null) {
-            $data['price_gross'] = $request->getPriceGross();
+        if ($request->getPricesGross() !== null) {
+            $data['prices_gross'] = $request->getPricesGross();
         }
 
         AirportPrice::updateOrCreate(

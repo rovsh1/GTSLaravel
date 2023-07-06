@@ -38,3 +38,8 @@ export interface Currency {
   name: string
   sign: string
 }
+
+export interface Money {
+  amount?: number
+  currency_id?: number
+}

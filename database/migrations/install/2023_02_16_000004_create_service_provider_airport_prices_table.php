@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->unsignedInteger('airport_id');
             $table->unsignedSmallInteger('currency_id');
             $table->unsignedDecimal('price_net');
-            $table->unsignedDecimal('price_gross');
+            $table->json('prices_gross');
 
 //            $table->unique(['car_id', 'city_id', 'service_id', 'currency_id'], 'uid');
 
