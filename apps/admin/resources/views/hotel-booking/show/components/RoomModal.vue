@@ -10,8 +10,8 @@ import {
   getConditionLabel,
   residentTypeOptions,
   roomStatusOptions,
-} from '~resources/views/hotel-booking/show/constants'
-import { RoomFormData } from '~resources/views/hotel-booking/show/form'
+} from '~resources/views/hotel-booking/show/composables/constants'
+import { RoomFormData } from '~resources/views/hotel-booking/show/composables/form'
 
 import { addRoomToBooking, updateBookingRoom } from '~api/booking/rooms'
 import { MarkupCondition, MarkupSettings, useHotelRoomMarkupSettings } from '~api/hotel/markup-settings'

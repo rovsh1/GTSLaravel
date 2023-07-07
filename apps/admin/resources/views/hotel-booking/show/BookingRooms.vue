@@ -9,8 +9,8 @@ import EditTableRowButton from '~resources/views/hotel/settings/components/EditT
 import GuestModal from '~resources/views/hotel-booking/show/components/GuestModal.vue'
 import RoomModal from '~resources/views/hotel-booking/show/components/RoomModal.vue'
 import RoomPriceModal from '~resources/views/hotel-booking/show/components/RoomPriceModal.vue'
-import { getConditionLabel, getGenderName, getRoomStatusName } from '~resources/views/hotel-booking/show/constants'
-import { GuestFormData, RoomFormData } from '~resources/views/hotel-booking/show/form'
+import { getConditionLabel, getGenderName, getRoomStatusName } from '~resources/views/hotel-booking/show/composables/constants'
+import { GuestFormData, RoomFormData } from '~resources/views/hotel-booking/show/composables/form'
 import { useBookingStore } from '~resources/views/hotel-booking/show/store/booking'
 import { useOrderStore } from '~resources/views/hotel-booking/show/store/order-currency'
 
