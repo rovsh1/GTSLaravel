@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->unsignedTinyInteger('guests_count');
             $table->unsignedSmallInteger('square')->nullable();
             $table->unsignedTinyInteger('position')->default(0);
-            $table->json('markup_settings')->nullable();
+            $table->text('markup_settings')->nullable();//json('markup_settings')
             $table->timestamps();
 
             $table->foreign('hotel_id')

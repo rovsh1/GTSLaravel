@@ -4,6 +4,7 @@ import { onMounted, ref } from 'vue'
 
 import { useToggle } from '@vueuse/core'
 
+import CollapsableBlock from '~resources/views/hotel/settings/components/CollapsableBlock.vue'
 import PricesModal from '~resources/views/service-provider/service/price/ components/PricesModal.vue'
 import { useCurrenciesStore } from '~resources/views/service-provider/service/price/composables/currency'
 
@@ -98,38 +99,33 @@ onMounted(() => {
     @submit="handleChangePrice"
   />
 
-  <div class="card card-form mb-4">
-    <div class="card-header">
-      <h5 class="mb-0">{{ header }}</h5>
-    </div>
-    <div class="card-body">
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th scope="col">Автомобиль</th>
-            <th scope="col">Город</th>
-            <th v-for="season in seasons" :key="season.id" scope="col">
-              {{ season.number }} ({{ formatPeriod(season) }})
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="car in cars" :key="car.id">
-            <td>
-              {{ car.mark }} {{ car.model }}
-            </td>
-            <td>{{ getDisplayCarCities(car.cities) }}</td>
+  <CollapsableBlock :id="`airport-service-prices-${serviceId}`" :title="header" class="card-grid mb-3">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Автомобиль</th>
+          <th scope="col">Город</th>
+          <th v-for="season in seasons" :key="season.id" scope="col">
+            {{ season.number }} ({{ formatPeriod(season) }})
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="car in cars" :key="car.id">
+          <td>
+            {{ car.mark }} {{ car.model }}
+          </td>
+          <td>{{ getDisplayCarCities(car.cities) }}</td>
 
-            <template v-for="season in seasons" :key="season.id">
-              <td>
-                <a href="#" @click.prevent="handleEditServicePrice(season.id, car.id)">
-                  {{ getPriceButtonText(season.id, car.id) }}
-                </a>
-              </td>
-            </template>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+          <template v-for="season in seasons" :key="season.id">
+            <td>
+              <a href="#" @click.prevent="handleEditServicePrice(season.id, car.id)">
+                {{ getPriceButtonText(season.id, car.id) }}
+              </a>
+            </td>
+          </template>
+        </tr>
+      </tbody>
+    </table>
+  </CollapsableBlock>
 </template>

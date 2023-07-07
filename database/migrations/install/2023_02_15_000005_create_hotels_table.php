@@ -21,8 +21,8 @@ return new class extends Migration {
             $table->double('address_lat', 11, 8)->nullable();
             $table->double('address_lon', 11, 8)->nullable();
             $table->integer('city_distance')->nullable();
-            $table->json('markup_settings')->nullable();
-            $table->json('time_settings')->nullable();
+            $table->text('markup_settings')->nullable();//json('markup_settings')
+            $table->text('time_settings')->nullable();//json('time_settings')
             $table->timestamps();
             $table->softDeletes();
 

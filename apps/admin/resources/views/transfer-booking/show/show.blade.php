@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('styles')
-    @vite('resources/views/airport-booking/show/show.scss')
+    @vite('resources/views/transfer-booking/show/show.scss')
 @endsection
 
 @section('head-end')
@@ -13,7 +13,7 @@
 @endsection
 
 @section('scripts')
-    @vite('resources/views/airport-booking/show/show.ts')
+    @vite('resources/views/transfer-booking/show/show.ts')
 @endsection
 
 @section('content')

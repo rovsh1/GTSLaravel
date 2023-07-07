@@ -52,7 +52,7 @@ const { quickSearch } = useQuickSearch()
 
 const filteredServices = computed(() => {
   if (quickSearch && quickSearch.trim().length > 0) {
-    return services.filter((service) => service.name.includes(quickSearch))
+    return services.filter((service) => service.name.toLowerCase().includes(quickSearch.toLowerCase()))
   }
   return services
 })

@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->tinyInteger('status');
             $table->tinyInteger('source');
             $table->unsignedInteger('creator_id');
-            $table->json('price');
+            $table->text('price');//json('price')
             $table->timestamps();
 
             $table->foreign('order_id')
@@ -47,7 +47,7 @@ return new class extends Migration {
             $table->date('date_start');
             $table->date('date_end');
             $table->unsignedInteger('nights_count');
-            $table->json('data');
+            $table->text('data');//json('data')
             $table->timestamps();
 
             $table->foreign('booking_id')
@@ -71,7 +71,7 @@ return new class extends Migration {
             $table->unsignedInteger('airport_id');
             $table->unsignedInteger('service_id');
             $table->date('date');
-            $table->json('data');
+            $table->text('data');//json('data')
             $table->timestamps();
 
             $table->foreign('booking_id')

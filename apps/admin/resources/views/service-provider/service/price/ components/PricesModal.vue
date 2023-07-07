@@ -63,6 +63,7 @@ watchEffect(() => {
   >
     <template #title>{{ header || 'Стоимость услуги' }}</template>
 
+    //@todo сделать таблицу валюта-стоимость
     <form ref="modalPricesForm" class="row g-3">
       <div class="col-md-12 field-required">
         <label for="net-price">Нетто (UZS)</label>

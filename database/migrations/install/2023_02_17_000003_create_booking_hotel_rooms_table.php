@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('booking_hotel_rooms', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('booking_id');
-            $table->json('data');
+            $table->text('data');//json('data')
             $table->timestamps();
 
             $table->foreign('booking_id')

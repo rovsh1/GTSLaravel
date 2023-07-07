@@ -6,7 +6,7 @@ return Factory::key('transfer-booking')
     ->category(Factory::CATEGORY_BOOKING)
     ->group('bookings')
 //    ->model(\App\Admin\Models\System\Constant::class)
-//    ->controller(\App\Admin\Http\Controllers\Administration\ConstantController::class, ['except' => ['show']])
+    ->controller(\App\Admin\Http\Controllers\Booking\Transfer\BookingController::class)
     ->titles([
         "index" => "Брони транспортных услуг",
         "create" => "Новая бронь"

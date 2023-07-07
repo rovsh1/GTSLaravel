@@ -16,6 +16,12 @@ AclRoute::for('service-provider')
         'except' => ['show']
     ])
     ->get(
+        '/services-transfer/search',
+        ServiceProvider\Service\TransferServicesController::class . '@search',
+        'read',
+        'service.airport.search'
+    )
+    ->get(
         '/{provider}/service-transfer/prices',
         ServiceProvider\Service\Price\TransferPricesController::class . '@index',
         'read',
