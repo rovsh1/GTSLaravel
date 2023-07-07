@@ -4,7 +4,7 @@ import { type ComponentPublicInstance, type ImgHTMLAttributes, watch } from 'vue
 import { MaybeRef } from '@vueuse/core'
 import mediumZoom, { type Zoom, type ZoomOptions } from 'medium-zoom'
 
-interface Props extends ImgHTMLAttributes {
+interface Props extends /* @vue-ignore */ ImgHTMLAttributes {
   options?: ZoomOptions
   disabled?: MaybeRef<boolean>
 }
