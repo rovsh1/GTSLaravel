@@ -49,19 +49,23 @@ return new class extends Migration {
                 okpo: $requisites[self::$migrationAssoc['okpo']] ?? '',
             );
 
-            DB::table('client_legals')
-                ->insert([
-                    'id' => $r->id,
-                    'client_id' => $r->client_id,
-                    'city_id' => $r->city_id,
-                    'industry_id' => $r->industry_id,
-                    'name' => $r->name,
-                    'type' => $r->type,
-                    'address' => $r->address,
-                    'requisites' => json_encode($bankRequisites->toData()),
-                    'created_at' => now(),
-                    'updated_at' => now()
-                ]);
+            try {
+                DB::table('client_legals')
+                    ->insert([
+                        'id' => $r->id,
+                        'client_id' => $r->client_id,
+                        'city_id' => $r->city_id,
+                        'industry_id' => $r->industry_id,
+                        'name' => $r->name,
+                        'type' => $r->type,
+                        'address' => $r->address,
+                        'requisites' => json_encode($bankRequisites->toData()),
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ]);
+            } catch (\Throwable $e) {
+                //@todo hack на проде есть юр. лица без клиентов
+            }
         }
     }
 
