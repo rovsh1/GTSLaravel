@@ -58,6 +58,7 @@ export default defineConfig(({ command }) => ({
         'resources/views/profile/profile/profile.ts',
         'resources/views/profile/profile/profile.scss',
         'resources/views/service-provider/show.js',
+        'resources/views/service-provider/show.scss',
         'resources/views/main.scss',
         'resources/views/main.ts',
       ],
