@@ -11,8 +11,6 @@ import { ServicePriceResponse as AirportServicePriceResponse } from '~api/servic
 import { ServicePriceResponse as TransferServicePriceResponse } from '~api/service-provider/transfer'
 
 import BaseDialog from '~components/BaseDialog.vue'
-import BootstrapSelectBase from '~components/Bootstrap/BootstrapSelectBase.vue'
-import SmallDeleteButton from '~components/SmallDeleteButton.vue'
 
 const props = defineProps<{
   opened: MaybeRef<boolean>
@@ -27,8 +25,8 @@ const emit = defineEmits<{
 }>()
 
 const currenciesStore = useCurrenciesStore()
-const { getCurrencyChar } = currenciesStore
-const currencySelectOptions = computed(() => currenciesStore.currencySelectOptions)
+const { getCurrencyChar, isDefaultCurrency, defaultCurrencyId } = currenciesStore
+const currencies = computed(() => currenciesStore.currencies)
 
 const netPrice = ref<number>()
 const grossPrices = ref<Money[]>([])
@@ -49,8 +47,33 @@ watchEffect(() => {
   }
 
   netPrice.value = undefined
-  grossPrices.value = [{ amount: undefined, currency_id: 1 }]
+  grossPrices.value = [{ amount: undefined, currency_id: defaultCurrencyId }]
 })
+
+const getGrossPriceLabel = (currencyId?: number): string => {
+  if (!currencyId) {
+    return ''
+  }
+  const currencyChar = getCurrencyChar(currencyId)
+  if (!currencyChar) {
+    return ''
+  }
+  return `Брутто (${currencyChar})`
+}
+
+const handleChangeGrossPrice = (currencyId: number, event: any) => {
+  const amount = Number(event.target.value)
+  const grossPrice = grossPrices.value.find((price) => price.currency_id === currencyId)
+  if (grossPrice) {
+    grossPrice.amount = amount
+    return
+  }
+  grossPrices.value.push({ amount, currency_id: currencyId })
+}
+
+const getGrossPriceAmountByCurrency = (currencyId: number) => (
+  grossPrices.value.find((price) => price.currency_id === currencyId)?.amount
+)
 
 </script>
 
@@ -63,41 +86,27 @@ watchEffect(() => {
   >
     <template #title>{{ header || 'Стоимость услуги' }}</template>
 
-    //@todo сделать таблицу валюта-стоимость
     <form ref="modalPricesForm" class="row g-3">
       <div class="col-md-12 field-required">
         <label for="net-price">Нетто (UZS)</label>
         <input id="net-price" v-model.number="netPrice" type="number" class="form-control" required>
       </div>
 
-      <template v-for="(price, idx) in grossPrices" :key="idx">
-        <div class="col-md-6 field-required">
-          <label :for="`brutto-price-${idx}`">
-            Брутто <template v-if="price.currency_id">({{ getCurrencyChar(price.currency_id) }})</template>
+      <template v-for="currency in currencies" :key="currency.id">
+        <div class="col-md-12" :class="{ 'field-required': isDefaultCurrency(currency.id) }">
+          <label :for="`brutto-price-${currency.id}`">
+            {{ getGrossPriceLabel(currency.id) }}
           </label>
-          <input :id="`brutto-price-${idx}`" v-model.number="price.amount" type="number" class="form-control" required>
-        </div>
-        <div class="col-md-5 field-required">
-          <label :for="`brutto-currency-${idx}`">Валюта</label>
-          <BootstrapSelectBase
-            :id="`brutto-currency-${idx}`"
-            :options="currencySelectOptions"
-            :value="price.currency_id"
-            required
-            @input="value => price.currency_id = Number(value)"
-          />
-        </div>
-        <div class="col-md-1 pt-4">
-          <SmallDeleteButton @click.prevent="grossPrices.splice(idx, 1)" />
+          <input
+            :id="`brutto-price-${currency.id}`"
+            type="number"
+            class="form-control"
+            :required="isDefaultCurrency(currency.id)"
+            :value="getGrossPriceAmountByCurrency(currency.id)"
+            @input="handleChangeGrossPrice(currency.id, $event)"
+          >
         </div>
       </template>
-
-      <div class="col-md-12">
-        <a href="#" class="btn btn-add" @click.prevent="grossPrices.push({})">
-          <i class="icon">add</i>
-          Добавить цену брутто
-        </a>
-      </div>
     </form>
 
     <template #actions-end>
