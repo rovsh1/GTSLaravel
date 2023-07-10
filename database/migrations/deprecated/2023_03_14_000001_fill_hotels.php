@@ -137,7 +137,11 @@ return new class extends Migration {
             if (!empty($options->breakfastTime)) {
                 $breakfastTimeFrom = $options->breakfastTime;
                 try {
-                    $breakfastPeriod = new TimeSettings\BreakfastPeriod($breakfastTimeFrom, '12:00');
+                    $breakfastTimeTo = (new \Carbon\Carbon($breakfastTimeFrom))->addHours(2);
+                    $breakfastPeriod = new TimeSettings\BreakfastPeriod(
+                        $breakfastTimeFrom,
+                        $breakfastTimeTo->format('H:i')
+                    );
                 } catch (\Throwable $e) {
                 }
             }

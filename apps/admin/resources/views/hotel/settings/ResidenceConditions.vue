@@ -162,19 +162,27 @@ const handleUpdateHotelSettings = async () => {
     <div class="d-flex flex-row gap-4">
       <div class="w-100">
         <h6>Стандартные условия заезда</h6>
-        <TimeSelect
-          v-model="checkInAfter"
-          class="w-25"
-          @change="handleUpdateHotelSettings"
-        />
+        <div class="row g-3 align-items-center">
+          <label for="check-in-select" class="col-auto">С</label>
+          <TimeSelect
+            id="check-in-select"
+            v-model="checkInAfter"
+            class="col-auto w-25"
+            @change="handleUpdateHotelSettings"
+          />
+        </div>
       </div>
       <div class="w-100">
         <h6>Стандартные условия выезда</h6>
-        <TimeSelect
-          v-model="checkOutBefore"
-          class="w-25"
-          @change="handleUpdateHotelSettings"
-        />
+        <div class="row g-3 align-items-center">
+          <label for="check-out-select" class="col-auto">До</label>
+          <TimeSelect
+            id="check-out-select"
+            v-model="checkOutBefore"
+            class="col-auto w-25"
+            @change="handleUpdateHotelSettings"
+          />
+        </div>
       </div>
     </div>
 
@@ -202,18 +210,20 @@ const handleUpdateHotelSettings = async () => {
     <div class="d-flex flex-row gap-4 mt-2">
       <div class="w-100">
         <h6>Время завтрака</h6>
-        <div class="d-flex flex-row gap-2">
+        <div class="row g-3 align-items-center">
+          <label for="breakfast-from-select" class="col-auto">С</label>
           <TimeSelect
+            id="breakfast-from-select"
             v-model="breakfastPeriodFrom"
-            label="C"
-            class="w-25"
+            class="col-auto w-25"
             @change="handleUpdateHotelSettings"
           />
+          <label for="breakfast-to-select" class="col-auto">До</label>
           <TimeSelect
+            id="breakfast-to-select"
             v-model="breakfastPeriodTo"
             :from="breakfastPeriodFrom"
-            label="До"
-            class="w-25"
+            class="col-auto w-25"
             @change="handleUpdateHotelSettings"
           />
         </div>
