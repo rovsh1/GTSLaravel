@@ -44,6 +44,9 @@ class AirportServicesController extends Controller
         $this->provider($provider);
 
         $query = AirportService::where('provider_id', $provider->id);
+        if ($request->has('quicksearch')) {
+            $query->quicksearch($request->get('quicksearch'));
+        }
         $grid = $this->gridFactory($provider)->data($query);
 
         return Layout::title('Услуги аэропорт')

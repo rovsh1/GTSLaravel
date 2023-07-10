@@ -13,7 +13,7 @@ class AirportService extends Model
 {
     use HasQuicksearch;
 
-    protected array $quicksearch = ['id', 'name%'];
+    protected array $quicksearch = ['id', 'service_provider_airport_services.name%'];
 
     protected $table = 'service_provider_airport_services';
 
