@@ -35,7 +35,7 @@ class RoomPriceUpdater
 
         $this->hotelSeasons = $this->seasonRepository->getActiveSeasonsByRoomIdIncludesPeriod($roomId, $period);
         if (count($this->hotelSeasons) === 0) {
-            \Log::warning('Not found hotel season for period', ['period' => $period]);
+            \Log::warning('Not found hotel season for period', ['period' => $period->toIso8601String()]);
             return;
         }
 
