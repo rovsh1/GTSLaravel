@@ -5,8 +5,8 @@ namespace Module\Integration\Traveline\Domain\Api\Request;
 class Reservation
 {
     public function __construct(
-        public readonly int                   $number,
-        public readonly int                   $externalNumber,
+        public readonly int $number,
+        public readonly string $externalNumber,
         public readonly ReservationStatusEnum $status,
     ) {}
 
