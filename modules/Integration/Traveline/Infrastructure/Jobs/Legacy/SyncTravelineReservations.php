@@ -222,7 +222,7 @@ class SyncTravelineReservations implements ShouldQueue
             $comment .= "Поздний выезд до {$roomCheckOutCondition->end}";
         }
 
-        return  $comment;
+        return $comment;
     }
 
     /**
