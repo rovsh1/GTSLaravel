@@ -5,11 +5,13 @@ namespace Module\Integration\Traveline\Application\Dto;
 use Carbon\CarbonInterface;
 use Custom\Framework\Foundation\Support\Dto\Attributes\MapInputName;
 use Custom\Framework\Foundation\Support\Dto\Attributes\WithCast;
+use Custom\Framework\Foundation\Support\Dto\Attributes\WithTransformer;
 use Custom\Framework\Foundation\Support\Dto\Casts\CarbonInterfaceCast;
 use Custom\Framework\Foundation\Support\Dto\Casts\EnumCast;
 use Custom\Framework\Foundation\Support\Dto\Dto;
 use Custom\Framework\Foundation\Support\Dto\DtoCollection;
 use Custom\Framework\Foundation\Support\Dto\DtoCollectionOf;
+use Custom\Framework\Foundation\Support\Dto\Transformers\CarbonInterfaceTransformer;
 use Module\Integration\Traveline\Application\Dto\Reservation\CustomerDto;
 use Module\Integration\Traveline\Application\Dto\Reservation\PaymentMethodEnum;
 use Module\Integration\Traveline\Application\Dto\Reservation\StatusEnum;
@@ -21,7 +23,8 @@ class ReservationDto extends Dto
         public readonly int               $number,
         public readonly int               $hotelId,
 
-        #[MapInputName('createdDate'), WithCast(CarbonInterfaceCast::class, format: 'Y-m-d H:i:s')]
+        #[MapInputName('createdDate'), WithCast(CarbonInterfaceCast::class)]
+        #[WithTransformer(CarbonInterfaceTransformer::class, format: 'Y-m-d H:i:s')]
         public readonly CarbonInterface   $created,
 
         #[MapInputName('checkInTime')]
