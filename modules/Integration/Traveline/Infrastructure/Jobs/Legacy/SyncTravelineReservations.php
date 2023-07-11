@@ -162,20 +162,19 @@ class SyncTravelineReservations implements ShouldQueue
                 'departureTime' => $reservation->hotelDefaultCheckOutEnd?->value,
                 'rooms' => $this->convertHotelReservationsRoomsToDto(
                     $reservation->rooms,
-                    $reservation->client_name,
                     new CarbonPeriod($reservation->date_checkin, $reservation->date_checkout),
                     $reservation->hotelDefaultCheckInStart,
                     $reservation->hotelDefaultCheckOutEnd,
                 ),
                 'status' => Dto\Reservation\StatusEnum::from($status),
                 'currencyCode' => env('DEFAULT_CURRENCY_CODE'),
+                'customer' => CustomerDto::from(['fullName' => $reservation->client_name]),
             ]
         );
     }
 
     /**
      * @param Collection $rooms
-     * @param string $clientName
      * @param CarbonPeriod $period
      * @param Option|null $hotelDefaultCheckInStart
      * @param Option|null $hotelDefaultCheckOutEnd
@@ -183,20 +182,18 @@ class SyncTravelineReservations implements ShouldQueue
      */
     private function convertHotelReservationsRoomsToDto(
         Collection $rooms,
-        string $clientName,
         CarbonPeriod $period,
         ?Option $hotelDefaultCheckInStart,
         ?Option $hotelDefaultCheckOutEnd
     ): array {
         return $rooms->map(
-            function (Room $room) use ($clientName, $period, $hotelDefaultCheckInStart, $hotelDefaultCheckOutEnd) {
+            function (Room $room) use ($period, $hotelDefaultCheckInStart, $hotelDefaultCheckOutEnd) {
                 $guestsDto = $this->covertRoomGuestsToDto($room->guests);
                 return new RoomDto(
                     $room->room_id,
                     $room->rate_id,
                     $guestsDto,
                     $room->guests->count(),
-                    CustomerDto::from(['fullName' => $clientName]),
                     $this->buildRoomPerDayPrices(
                         $period,
                         $room->price_net,

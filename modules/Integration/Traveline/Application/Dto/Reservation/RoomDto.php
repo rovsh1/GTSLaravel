@@ -28,7 +28,6 @@ class RoomDto extends Dto
         #[MapInputName('guests'), WithCast(AdultsCast::class)]
         public readonly int           $adults,
 
-        public readonly ?CustomerDto  $customer = null,
         public readonly ?array        $bookingPerDayPrices = null,
 
 //        #[MapInputName('priceNetto'), WithCast(TotalCast::class)]

@@ -10,6 +10,7 @@ use Custom\Framework\Foundation\Support\Dto\Casts\EnumCast;
 use Custom\Framework\Foundation\Support\Dto\Dto;
 use Custom\Framework\Foundation\Support\Dto\DtoCollection;
 use Custom\Framework\Foundation\Support\Dto\DtoCollectionOf;
+use Module\Integration\Traveline\Application\Dto\Reservation\CustomerDto;
 use Module\Integration\Traveline\Application\Dto\Reservation\PaymentMethodEnum;
 use Module\Integration\Traveline\Application\Dto\Reservation\StatusEnum;
 
@@ -32,6 +33,9 @@ class ReservationDto extends Dto
         /** @var Reservation\RoomDto[] */
         #[MapInputName('rooms'), DtoCollectionOf(Reservation\RoomDto::class)]
         public readonly ?DtoCollection    $roomStays = null,
+
+        #[MapInputName('customer')]
+        public readonly ?CustomerDto $customer = null,
 
         #[WithCast(EnumCast::class)]
         public readonly StatusEnum        $status = StatusEnum::New,
