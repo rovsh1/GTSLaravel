@@ -43,7 +43,7 @@ class ReservationController
         $request->validate([
             'reservations' => 'required|array',
             'reservations.*.number' => 'required|numeric',
-            'reservations.*.externalNumber' => 'required|numeric',
+            'reservations.*.externalNumber' => 'required',
             'reservations.*.status' => 'required|string',
         ]);
 
