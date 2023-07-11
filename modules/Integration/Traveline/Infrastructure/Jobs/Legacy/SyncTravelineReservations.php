@@ -72,16 +72,23 @@ class SyncTravelineReservations implements ShouldQueue
             ->whereNotNull('accepted_at')
             ->join($this->getTravelineReservationsTable(), function ($join) {
                 $hotelReservationsTable = with(new Reservation)->getTable();
-                $join->on("{$this->getTravelineReservationsTable()}.reservation_id", '=', "{$hotelReservationsTable}.id");
+                $join->on(
+                    "{$this->getTravelineReservationsTable()}.reservation_id",
+                    '=',
+                    "{$hotelReservationsTable}.id"
+                );
             })
             ->addSelect($this->getTravelineReservationsTable() . '.data as data');
 
         $q->chunk(100, function (Collection $collection) {
-            $updateData = $collection->map(fn(Reservation $reservation) => $this->mapReservationsToTravelineUpdateData($reservation))
+            $updateData = $collection->map(
+                fn(Reservation $reservation) => $this->mapReservationsToTravelineUpdateData($reservation)
+            )
                 ->filter()
                 ->all();
 
-            TravelineReservation::upsert($updateData, 'reservation_id', ['data', 'status', 'updated_at', 'accepted_at']);
+            TravelineReservation::upsert($updateData, 'reservation_id', ['data', 'status', 'updated_at', 'accepted_at']
+            );
         });
     }
 
@@ -174,27 +181,47 @@ class SyncTravelineReservations implements ShouldQueue
      * @param Option|null $hotelDefaultCheckOutEnd
      * @return RoomDto[]
      */
-    private function convertHotelReservationsRoomsToDto(Collection $rooms, string $clientName, CarbonPeriod $period, ?Option $hotelDefaultCheckInStart, ?Option $hotelDefaultCheckOutEnd): array
-    {
-        return $rooms->map(function (Room $room) use ($clientName, $period, $hotelDefaultCheckInStart, $hotelDefaultCheckOutEnd) {
-            return new RoomDto(
-                $room->room_id,
-                $room->rate_id,
-                $this->covertRoomGuestsToDto($room->guests),
-                $room->guests->count(),
-                CustomerDto::from(['fullName' => $clientName]),
-                $this->buildRoomPerDayPrices(
-                    $period,
-                    $room->price_net,
-                    $room->checkInCondition,
-                    $room->checkOutCondition,
-                    $hotelDefaultCheckInStart,
-                    $hotelDefaultCheckOutEnd
-                ),
-                Dto\Reservation\Room\TotalDto::from(['amountAfterTaxes' => $room->price_net]),
-                $room->note
-            );
-        })->all();
+    private function convertHotelReservationsRoomsToDto(
+        Collection $rooms,
+        string $clientName,
+        CarbonPeriod $period,
+        ?Option $hotelDefaultCheckInStart,
+        ?Option $hotelDefaultCheckOutEnd
+    ): array {
+        return $rooms->map(
+            function (Room $room) use ($clientName, $period, $hotelDefaultCheckInStart, $hotelDefaultCheckOutEnd) {
+                return new RoomDto(
+                    $room->room_id,
+                    $room->rate_id,
+                    $this->covertRoomGuestsToDto($room->guests),
+                    $room->guests->count(),
+                    CustomerDto::from(['fullName' => $clientName]),
+                    $this->buildRoomPerDayPrices(
+                        $period,
+                        $room->price_net,
+                        $room->checkInCondition,
+                        $room->checkOutCondition,
+                        $hotelDefaultCheckInStart,
+                        $hotelDefaultCheckOutEnd
+                    ),
+                    Dto\Reservation\Room\TotalDto::from(['amountAfterTaxes' => $room->price_net]),
+                    $room->note,
+                    $this->buildAdditionalInfo($room->checkInCondition, $room->checkOutCondition)
+                );
+            }
+        )->all();
+    }
+
+    private function buildAdditionalInfo(?Room\CheckInOutConditions $roomCheckInCondition, ?Room\CheckInOutConditions $roomCheckOutCondition): ?string {
+        $comment = null;
+        if($roomCheckInCondition?->start !== null){
+            $comment = "Ранний заезд с {$roomCheckInCondition->start}.";
+        }
+        if($roomCheckOutCondition?->end !== null){
+            $comment .= "Поздний выезд до {$roomCheckOutCondition->end}";
+        }
+
+        return  $comment;
     }
 
     /**
@@ -204,6 +231,7 @@ class SyncTravelineReservations implements ShouldQueue
     private function covertRoomGuestsToDto(Collection $guests)
     {
         $preparedGuests = $guests->map(fn(Guest $guest) => ['fullName' => $guest->fullname])->all();
+
         return Dto\Reservation\Room\GuestDto::collection($preparedGuests);
     }
 
@@ -217,14 +245,13 @@ class SyncTravelineReservations implements ShouldQueue
      * @return Dto\Reservation\Room\DayPriceDto[]
      */
     private function buildRoomPerDayPrices(
-        CarbonPeriod               $period,
-        float                      $allDaysPrice,
+        CarbonPeriod $period,
+        float $allDaysPrice,
         ?Room\CheckInOutConditions $roomCheckInCondition,
         ?Room\CheckInOutConditions $roomCheckOutCondition,
-        ?Option                    $hotelDefaultCheckInStart,
-        ?Option                    $hotelDefaultCheckOutEnd
-    ): array
-    {
+        ?Option $hotelDefaultCheckInStart,
+        ?Option $hotelDefaultCheckOutEnd
+    ): array {
         /**
          * @todo тут временно будет логика квотирования раннего/позднего заезда/выезда:
          *  - если ранний заезд - включаем день перед началом периода
@@ -239,14 +266,19 @@ class SyncTravelineReservations implements ShouldQueue
         foreach ($preparedPeriod as $date) {
             $prices[] = new Dto\Reservation\Room\DayPriceDto($date->format('Y-m-d'), $dailyPrice);
         }
+
         return $prices;
     }
 
-    private function getPeriodByCheckInCondition(CarbonPeriod $period, ?Option $hotelDefaultCheckInStart, ?Room\CheckInOutConditions $roomCheckInCondition): CarbonPeriod
-    {
+    private function getPeriodByCheckInCondition(
+        CarbonPeriod $period,
+        ?Option $hotelDefaultCheckInStart,
+        ?Room\CheckInOutConditions $roomCheckInCondition
+    ): CarbonPeriod {
         if ($hotelDefaultCheckInStart === null) {
             //@todo что тут делать?
             \Log::warning('У отеля отсутствует дефолтное время заезда');
+
             return $period;
         }
         if ($roomCheckInCondition === null) {
@@ -258,14 +290,19 @@ class SyncTravelineReservations implements ShouldQueue
         if ($expectedCheckInTime < $defaultCheckInTime) {
             $startDate->subDay();
         }
+
         return new CarbonPeriod($startDate, $period->getEndDate());
     }
 
-    private function getPeriodByCheckOutCondition(CarbonPeriod $period, ?Option $hotelDefaultCheckOutEnd, ?Room\CheckInOutConditions $roomCheckOutCondition): CarbonPeriod
-    {
+    private function getPeriodByCheckOutCondition(
+        CarbonPeriod $period,
+        ?Option $hotelDefaultCheckOutEnd,
+        ?Room\CheckInOutConditions $roomCheckOutCondition
+    ): CarbonPeriod {
         if ($hotelDefaultCheckOutEnd === null) {
             //@todo что тут делать?
             \Log::warning('У отеля отсутствует дефолтное время выезда');
+
             return $period;
         }
         if ($roomCheckOutCondition === null) {
@@ -277,6 +314,7 @@ class SyncTravelineReservations implements ShouldQueue
         if ($expectedCheckInTime > $defaultCheckInTime) {
             $endDate->addDay();
         }
+
         return new CarbonPeriod($period->getStartDate(), $endDate);
     }
 
