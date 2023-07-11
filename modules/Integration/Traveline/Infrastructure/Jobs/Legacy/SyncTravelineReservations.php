@@ -48,6 +48,7 @@ class SyncTravelineReservations implements ShouldQueue
     {
         $this->addNewReservations();
         $this->updateExistsReservations();
+        $this->cancelSoftDeletedReservations();
     }
 
     private function addNewReservations(): void
@@ -87,6 +88,31 @@ class SyncTravelineReservations implements ShouldQueue
                 ->all();
 
             TravelineReservation::upsert($updateData, 'reservation_id', ['data', 'status', 'updated_at', 'accepted_at']);
+        });
+    }
+
+    private function cancelSoftDeletedReservations(): void
+    {
+        $q = $this->getReservationQuery()
+            ->whereExists(function ($query) {
+                $query->select(\DB::raw(1))
+                    ->from("{$this->getTravelineReservationsTable()} as t")
+                    ->whereColumn('t.reservation_id', 'reservation.id')
+                    ->where('reservation.deletion_mark', 1);
+            })
+            ->join($this->getTravelineReservationsTable(), function (JoinClause $join) {
+                $hotelReservationsTable = with(new Reservation)->getTable();
+                $join->on(
+                    "{$this->getTravelineReservationsTable()}.reservation_id",
+                    '=',
+                    "{$hotelReservationsTable}.id"
+                );
+            })
+            ->where("{$this->getTravelineReservationsTable()}.status",'!=', TravelineReservationStatusEnum::Cancelled);
+
+        $q->chunk(100, function (Collection $collection) {
+            TravelineReservation::whereIn('reservation_id', $collection->pluck('id')->toArray())
+                ->update(['status' => TravelineReservationStatusEnum::Cancelled]);
         });
     }
 
