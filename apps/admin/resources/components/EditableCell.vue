@@ -5,17 +5,23 @@ import InlineSVG from 'vue-inline-svg'
 
 import escapeIcon from '@mdi/svg/svg/keyboard-esc.svg'
 import enterIcon from '@mdi/svg/svg/keyboard-return.svg'
-import { useToggle } from '@vueuse/core'
+import { onClickOutside, useToggle } from '@vueuse/core'
 import { Tooltip } from 'floating-vue'
 
 import { usePlatformDetect } from '~lib/platform'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   value: number | undefined
   placeholder?: string
   dimension?: string
   emptyValue?: string
-}>()
+  hideClickOutside?: boolean
+}>(), {
+  placeholder: undefined,
+  emptyValue: undefined,
+  dimension: undefined,
+  hideClickOutside: true,
+})
 
 const emit = defineEmits<{
   (event: 'change', value: number): void
@@ -52,15 +58,23 @@ watch(inputRef, (element) => {
   element.focus()
 })
 
+const hideEditable = () => {
+  inputRef.value?.blur()
+  isChanged.value = false
+  toggleEditable(false)
+}
+
 const onPressEnter = () => {
   emit('change', localValue.value)
   toggleEditable(false)
 }
 
 const onPressEsc = () => {
-  inputRef.value?.blur()
-  isChanged.value = false
-  toggleEditable(false)
+  hideEditable()
+}
+
+if (props.hideClickOutside) {
+  onClickOutside(inputRef, hideEditable)
 }
 
 </script>

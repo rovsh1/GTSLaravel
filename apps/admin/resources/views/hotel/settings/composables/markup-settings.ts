@@ -42,7 +42,7 @@ export const useMarkupSettingsStore = defineStore('hotel-markup-settings', () =>
 
   onMounted(fetchMarkupSettings)
 
-  const updateCancelPeriodDailyMarkup = async (payload: UpdateDailyMarkupPayload) => {
+  const updateCancelPeriodDailyMarkupField = async (payload: UpdateDailyMarkupPayload) => {
     const key = `cancelPeriods.${payload.cancelPeriodIndex}.dailyMarkups.${payload.dailyMarkupIndex}.${payload.field}`
     const request = {
       hotelID,
@@ -68,7 +68,7 @@ export const useMarkupSettingsStore = defineStore('hotel-markup-settings', () =>
     isFetching,
     markupSettings,
     fetchMarkupSettings,
-    updateCancelPeriodDailyMarkup,
+    updateCancelPeriodDailyMarkupField,
     deleteCancelPeriodDailyMarkup,
   }
 })

@@ -20,6 +20,8 @@ defineEmits<{
   (event: 'delete', value: number): void
 }>()
 
+// @todo если есть условие раннего или позднего, не могу менять базовое
+
 </script>
 
 <template>

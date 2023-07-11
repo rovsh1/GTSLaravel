@@ -36,7 +36,7 @@ const { hotelID } = requestInitialData(
 
 const markupSettingsStore = useMarkupSettingsStore()
 const cancelPeriods = computed(() => markupSettingsStore.markupSettings?.cancelPeriods)
-const { fetchMarkupSettings, updateCancelPeriodDailyMarkup, deleteCancelPeriodDailyMarkup } = markupSettingsStore
+const { fetchMarkupSettings, updateCancelPeriodDailyMarkupField, deleteCancelPeriodDailyMarkup } = markupSettingsStore
 
 const modalSettings = {
   add: {
@@ -93,6 +93,12 @@ const dailyMarkupsModalSettings = {
       await addConditionHotelMarkupSettings(request)
     },
   },
+  edit: {
+    title: 'Изменить условие',
+    handler: async (request: MaybeRef<HotelMarkupSettingsUpdateProps>) => {
+      console.log({ request })
+    },
+  },
 }
 
 const {
@@ -100,6 +106,9 @@ const {
   isLoading: isDailyModalLoading,
   title: dailyModalTitle,
   openAdd: openAddDailyModal,
+  openEdit: openEditDailyModal,
+  editableId: editableDailyMarkupId,
+  editableObject: editableDailyMarkup,
   close: closeDailyModal,
   submit: submitDailyModal,
 } = useEditableModal<HotelMarkupSettingsConditionAddProps, HotelMarkupSettingsUpdateProps, DailyMarkup>(dailyMarkupsModalSettings)
@@ -109,19 +118,30 @@ const handleAddDailyModal = (periodIndex: number) => {
   openAddDailyModal()
 }
 
+const handleEditDailyModal = (periodIndex: number, dailyMarkupIndex: number) => {
+  if (!cancelPeriods.value) {
+    return
+  }
+  editablePeriodId.value = periodIndex
+  openEditDailyModal(dailyMarkupIndex, cancelPeriods.value[periodIndex].dailyMarkups[dailyMarkupIndex])
+}
+
 const onSubmitDailyModal = async (dailyMarkup: DailyMarkup) => {
-  const key = `cancelPeriods.${editablePeriodId.value}.dailyMarkups`
+  let key = `cancelPeriods.${editablePeriodId.value}.dailyMarkups`
+  if (editableDailyMarkupId.value !== undefined) {
+    key += `.${editableDailyMarkupId.value}`
+  }
   const payload = { hotelID, key, value: dailyMarkup }
   await submitDailyModal(payload)
   await fetchMarkupSettings()
 }
 
-const handleUpdateDailyMarkupSettings = (
+const handleUpdateDailyMarkupField = (
   cancelPeriodIndex: number,
   dailyMarkupIndex: number,
   field: string,
   value: number,
-) => updateCancelPeriodDailyMarkup({ cancelPeriodIndex, dailyMarkupIndex, field, value })
+) => updateCancelPeriodDailyMarkupField({ cancelPeriodIndex, dailyMarkupIndex, field, value })
 
 const handleDeleteDailyMarkup = async (cancelPeriodIndex: number, dailyMarkupIndex: number) => {
   const { result: isConfirmed, toggleLoading, toggleClose } = await showConfirmDialog('Удалить период?', 'btn-danger')
@@ -146,6 +166,7 @@ const handleDeleteDailyMarkup = async (cancelPeriodIndex: number, dailyMarkupInd
   />
 
   <DailyMarkupModal
+    :value="editableDailyMarkup"
     :opened="isOpenedDailyModal"
     :loading="isDailyModalLoading"
     :title="dailyModalTitle"
@@ -167,7 +188,8 @@ const handleDeleteDailyMarkup = async (cancelPeriodIndex: number, dailyMarkupInd
         :cancel-period="cancelPeriod"
         :daily-markups="cancelPeriod.dailyMarkups"
         @add="handleAddDailyModal(idx)"
-        @edit="({ index, field, value }) => handleUpdateDailyMarkupSettings(idx, index, field, value)"
+        @edit-field="({ index, field, value }) => handleUpdateDailyMarkupField(idx, index, field, value)"
+        @edit="index => handleEditDailyModal(idx, index)"
         @delete="index => handleDeleteDailyMarkup(idx, index)"
         @edit-base="openEdit(idx, cancelPeriod)"
         @delete-base="handleDeletePeriod(idx)"

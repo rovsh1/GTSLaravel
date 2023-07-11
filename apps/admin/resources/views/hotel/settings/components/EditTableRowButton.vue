@@ -2,12 +2,18 @@
 
 withDefaults(defineProps<{
   canAdd?: boolean
+  addTitle?: string
   canEdit?: boolean
+  editTitle?: string
   canDelete?: boolean
+  deleteTitle?: string
 }>(), {
   canAdd: false,
   canEdit: true,
   canDelete: true,
+  addTitle: undefined,
+  editTitle: undefined,
+  deleteTitle: undefined,
 })
 
 defineEmits<{
@@ -36,7 +42,7 @@ defineEmits<{
           @click.prevent="$emit('add')"
         >
           <i class="icon">add</i>
-          Добавить
+          {{ addTitle || 'Добавить' }}
         </a>
       </li>
       <li v-if="canEdit">
@@ -46,7 +52,7 @@ defineEmits<{
           @click.prevent="$emit('edit')"
         >
           <i class="icon">edit</i>
-          Редактировать
+          {{ editTitle || 'Редактировать' }}
         </a>
       </li>
       <li v-if="canDelete">
@@ -56,7 +62,7 @@ defineEmits<{
           @click.prevent="$emit('delete')"
         >
           <i class="icon">delete</i>
-          Удалить
+          {{ deleteTitle || 'Удалить' }}
         </a>
       </li>
     </ul>

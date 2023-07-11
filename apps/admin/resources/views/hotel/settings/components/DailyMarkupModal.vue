@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import { ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
 
@@ -11,11 +11,13 @@ import { DailyMarkup } from '~api/hotel/markup-settings'
 import BaseDialog from '~components/BaseDialog.vue'
 import BootstrapSelectBase from '~components/Bootstrap/BootstrapSelectBase.vue'
 
-withDefaults(defineProps<{
+const props = withDefaults(defineProps<{
+  value?: DailyMarkup
   opened: MaybeRef<boolean>
   title: string
   loading?: MaybeRef<boolean>
 }>(), {
+  value: undefined,
   loading: false,
 })
 
@@ -26,9 +28,19 @@ const emit = defineEmits<{
 
 const ignoreElements = ['.litepicker']
 
+const localValue = computed(() => props.value)
 const daysCount = ref<number>()
 const markupPercent = ref<number>()
 const markupType = ref<number>()
+
+watch(localValue, (dailyMarkup) => {
+  if (!dailyMarkup) {
+    return
+  }
+  daysCount.value = dailyMarkup.daysCount
+  markupPercent.value = dailyMarkup.percent
+  markupType.value = dailyMarkup.cancelPeriodType
+})
 
 const clearForm = () => {
   daysCount.value = undefined

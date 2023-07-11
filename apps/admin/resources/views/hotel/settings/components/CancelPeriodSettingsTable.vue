@@ -23,7 +23,8 @@ type DailyMarkupField = keyof DailyMarkup
 defineEmits<{
   (event: 'editBase'): void
   (event: 'deleteBase'): void
-  (event: 'edit', payload: { field: DailyMarkupField; value: number; index: number }): void
+  (event: 'edit', index: number): void
+  (event: 'edit-field', payload: { field: DailyMarkupField; value: number; index: number }): void
   (event: 'add'): void
   (event: 'delete', index: number): void
 }>()
@@ -36,6 +37,7 @@ defineEmits<{
       <h6 style="margin-left: 0.5rem;">{{ title }}</h6>
       <EditTableRowButton
         can-add
+        add-title="Добавить условие"
         @add="$emit('add')"
         @edit="$emit('editBase')"
         @delete="$emit('deleteBase')"
@@ -52,24 +54,35 @@ defineEmits<{
       </thead>
       <tbody :class="{ loading: loading }">
         <tr>
-          <td>По-умолчанию</td>
-          <td>{{ cancelPeriod.noCheckInMarkup.percent }}%</td>
-          <td>{{ getCancelPeriodTypeName(cancelPeriod.noCheckInMarkup.cancelPeriodType) }}</td>
+          <td>Не заезд</td>
+          <td>
+            {{ cancelPeriod.noCheckInMarkup.percent }} %
+          </td>
+          <td>
+            {{ getCancelPeriodTypeName(cancelPeriod.noCheckInMarkup.cancelPeriodType) }}
+          </td>
           <td />
         </tr>
         <tr v-for="(dailyMarkup, idx) in dailyMarkups" :key="idx">
           <td>
-            <EditableCell :value="dailyMarkup.daysCount" @change="value => $emit('edit', { field: 'daysCount', index: idx, value })" />
+            <EditableCell
+              :value="dailyMarkup.daysCount"
+              @change="value => $emit('edit-field', { field: 'daysCount', index: idx, value })"
+            />
           </td>
           <td>
             <div class="text-nowrap">
-              <EditableCell :value="dailyMarkup.percent" dimension="%" @change="value => $emit('edit', { field: 'percent', index: idx, value })" />
+              <EditableCell
+                :value="dailyMarkup.percent"
+                dimension="%"
+                @change="value => $emit('edit-field', { field: 'percent', index: idx, value })"
+              />
             </div>
           </td>
           <td>{{ getCancelPeriodTypeName(dailyMarkup.cancelPeriodType) }}</td>
           <td class="column-edit">
             <EditTableRowButton
-              :can-edit="false"
+              @edit="$emit('edit', idx)"
               @delete="$emit('delete', idx)"
             />
           </td>
