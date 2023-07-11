@@ -7,6 +7,7 @@ use Carbon\CarbonPeriod;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Query\JoinClause;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
@@ -81,14 +82,11 @@ class SyncTravelineReservations implements ShouldQueue
             ->addSelect($this->getTravelineReservationsTable() . '.data as data');
 
         $q->chunk(100, function (Collection $collection) {
-            $updateData = $collection->map(
-                fn(Reservation $reservation) => $this->mapReservationsToTravelineUpdateData($reservation)
-            )
+            $updateData = $collection->map(fn(Reservation $reservation) => $this->mapReservationsToTravelineUpdateData($reservation))
                 ->filter()
                 ->all();
 
-            TravelineReservation::upsert($updateData, 'reservation_id', ['data', 'status', 'updated_at', 'accepted_at']
-            );
+            TravelineReservation::upsert($updateData, 'reservation_id', ['data', 'status', 'updated_at', 'accepted_at']);
         });
     }
 
@@ -114,7 +112,7 @@ class SyncTravelineReservations implements ShouldQueue
 
     private function mapReservationsToTravelineUpdateData(Reservation $reservation): ?array
     {
-        $isCancelled = $this->isCancelledHotelReservationStatus($reservation->status);
+        $isCancelled = $reservation->deletion_mark || $this->isCancelledHotelReservationStatus($reservation->status);
         $travelineReservationStatus = $isCancelled ? TravelineReservationStatusEnum::Cancelled : TravelineReservationStatusEnum::Modified;
 
         $oldHash = md5($reservation->data);

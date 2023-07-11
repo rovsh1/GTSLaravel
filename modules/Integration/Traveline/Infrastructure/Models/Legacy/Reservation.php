@@ -29,7 +29,7 @@ use Module\Integration\Traveline\Infrastructure\Models\Legacy\Hotel\OptionTypeEn
  * @property int $flag_invoice
  * @property int $flag_voucher
  * @property string|null $note
- * @property int $deletion_mark
+ * @property bool $deletion_mark
  * @property \Custom\Framework\Support\DateTime $created
  * @property string|null $penalty_gross
  * @property string|null $penalty_net
@@ -127,6 +127,7 @@ class Reservation extends Model
     protected $casts = [
         'date_checkin' => 'date',
         'date_checkout' => 'date',
+        'deletion_mark' => 'boolean',
         'status' => ReservationStatusEnum::class,
     ];
 
