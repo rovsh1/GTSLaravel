@@ -143,7 +143,9 @@ class SyncTravelineReservations implements ShouldQueue
     {
         $preparedReservations = $hotelReservations->map(fn(Reservation $reservation) => [
             'reservation_id' => $reservation->id,
-            'data' => json_encode($this->convertHotelReservationToDto($reservation, TravelineReservationStatusEnum::New->value)),
+            'data' => json_encode(
+                $this->convertHotelReservationToDto($reservation, TravelineReservationStatusEnum::New->value)
+            ),
             'status' => TravelineReservationStatusEnum::New,
             'created_at' => $reservation->created,
             'updated_at' => $reservation->created,
@@ -168,8 +170,24 @@ class SyncTravelineReservations implements ShouldQueue
                 ),
                 'status' => Dto\Reservation\StatusEnum::from($status),
                 'currencyCode' => env('DEFAULT_CURRENCY_CODE'),
-                'customer' => CustomerDto::from(['fullName' => $reservation->client_name]),
+                'customer' => $this->convertFullNameToCustomer($reservation->client_name),
             ]
+        );
+    }
+
+    private function convertFullNameToCustomer(string $fullName): CustomerDto
+    {
+        $nameParts = explode(' ', $fullName);
+        $middleName = null;
+
+        if (count($nameParts) === 3) {
+            $middleName = $nameParts[2];
+        }
+
+        return new CustomerDto(
+            $nameParts[0],
+            $nameParts[1] ?? null,
+            $middleName
         );
     }
 
@@ -189,6 +207,7 @@ class SyncTravelineReservations implements ShouldQueue
         return $rooms->map(
             function (Room $room) use ($period, $hotelDefaultCheckInStart, $hotelDefaultCheckOutEnd) {
                 $guestsDto = $this->covertRoomGuestsToDto($room->guests);
+
                 return new RoomDto(
                     $room->room_id,
                     $room->rate_id,
@@ -210,12 +229,15 @@ class SyncTravelineReservations implements ShouldQueue
         )->all();
     }
 
-    private function buildAdditionalInfo(?Room\CheckInOutConditions $roomCheckInCondition, ?Room\CheckInOutConditions $roomCheckOutCondition): ?string {
+    private function buildAdditionalInfo(
+        ?Room\CheckInOutConditions $roomCheckInCondition,
+        ?Room\CheckInOutConditions $roomCheckOutCondition
+    ): ?string {
         $comment = null;
-        if($roomCheckInCondition?->start !== null){
+        if ($roomCheckInCondition?->start !== null) {
             $comment = "Ранний заезд с {$roomCheckInCondition->start}.";
         }
-        if($roomCheckOutCondition?->end !== null){
+        if ($roomCheckOutCondition?->end !== null) {
             $comment .= "Поздний выезд до {$roomCheckOutCondition->end}";
         }
 
@@ -256,7 +278,11 @@ class SyncTravelineReservations implements ShouldQueue
          *  - если поздний заезд - включаем последний день периода
          */
         $preparedPeriod = $this->getPeriodByCheckInCondition($period, $hotelDefaultCheckInStart, $roomCheckInCondition);
-        $preparedPeriod = $this->getPeriodByCheckOutCondition($preparedPeriod, $hotelDefaultCheckOutEnd, $roomCheckOutCondition);
+        $preparedPeriod = $this->getPeriodByCheckOutCondition(
+            $preparedPeriod,
+            $hotelDefaultCheckOutEnd,
+            $roomCheckOutCondition
+        );
 
         $countDays = $preparedPeriod->count();
         $dailyPrice = $allDaysPrice / $countDays;
