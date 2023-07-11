@@ -135,15 +135,11 @@ class Reservation extends Model
         $builder->addSelect("{$this->getTable()}.*");
 
         $clientsTable = with(new Client)->getTable();
-        $builder->rightJoin(
-            $clientsTable,
-            function ($join) use ($clientsTable) {
-                $join->on("{$clientsTable}.id", '=', "{$this->getTable()}.client_id");
-            }
-        )->addSelect([
-            "{$clientsTable}.type as client_type",
-            "{$clientsTable}.name as client_name",
-        ]);
+        $builder->join($clientsTable, "{$clientsTable}.id", '=', "{$this->getTable()}.client_id")
+            ->addSelect([
+                "{$clientsTable}.type as client_type",
+                "{$clientsTable}.name as client_name",
+            ]);
     }
 
     public function rooms()
