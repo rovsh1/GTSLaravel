@@ -7,7 +7,6 @@ use Carbon\CarbonPeriod;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Query\JoinClause;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
@@ -29,31 +28,16 @@ class SyncTravelineReservations implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
     public function handle()
     {
         $this->addNewReservations();
         $this->updateExistsReservations();
-        $this->cancelSoftDeletedReservations();
     }
 
     private function addNewReservations(): void
     {
         $q = $this->getReservationQuery()
+            ->withoutSoftDeleted()
             ->whereNotExists(function ($query) {
                 $query->select(\DB::raw(1))
                     ->from("{$this->getTravelineReservationsTable()} as t")
@@ -91,31 +75,6 @@ class SyncTravelineReservations implements ShouldQueue
         });
     }
 
-    private function cancelSoftDeletedReservations(): void
-    {
-        $q = $this->getReservationQuery()
-            ->whereExists(function ($query) {
-                $query->select(\DB::raw(1))
-                    ->from("{$this->getTravelineReservationsTable()} as t")
-                    ->whereColumn('t.reservation_id', 'reservation.id')
-                    ->where('reservation.deletion_mark', 1);
-            })
-            ->join($this->getTravelineReservationsTable(), function (JoinClause $join) {
-                $hotelReservationsTable = with(new Reservation)->getTable();
-                $join->on(
-                    "{$this->getTravelineReservationsTable()}.reservation_id",
-                    '=',
-                    "{$hotelReservationsTable}.id"
-                );
-            })
-            ->where("{$this->getTravelineReservationsTable()}.status",'!=', TravelineReservationStatusEnum::Cancelled);
-
-        $q->chunk(100, function (Collection $collection) {
-            TravelineReservation::whereIn('reservation_id', $collection->pluck('id')->toArray())
-                ->update(['status' => TravelineReservationStatusEnum::Cancelled]);
-        });
-    }
-
     private function getReservationQuery(): Builder
     {
         return Reservation::query()
@@ -126,6 +85,7 @@ class SyncTravelineReservations implements ShouldQueue
                     ->whereColumn('t.hotel_id', 'reservation.hotel_id');
             })
             ->withClient()
+            ->whereQuoteType()
             ->with([
                 'rooms',
                 'rooms.guests',
@@ -264,10 +224,8 @@ class SyncTravelineReservations implements ShouldQueue
         )->all();
     }
 
-    private function buildAdditionalInfo(
-        ?Room\CheckInOutConditions $roomCheckInCondition,
-        ?Room\CheckInOutConditions $roomCheckOutCondition
-    ): ?string {
+    private function buildAdditionalInfo(?Room\CheckInOutConditions $roomCheckInCondition, ?Room\CheckInOutConditions $roomCheckOutCondition): ?string
+    {
         $comment = null;
         if ($roomCheckInCondition?->start !== null) {
             $comment = "Ранний заезд с {$roomCheckInCondition->start}.";
@@ -321,11 +279,7 @@ class SyncTravelineReservations implements ShouldQueue
          *  - если поздний заезд - включаем последний день периода
          */
         $preparedPeriod = $this->getPeriodByCheckInCondition($period, $hotelDefaultCheckInStart, $roomCheckInCondition);
-        $preparedPeriod = $this->getPeriodByCheckOutCondition(
-            $preparedPeriod,
-            $hotelDefaultCheckOutEnd,
-            $roomCheckOutCondition
-        );
+        $preparedPeriod = $this->getPeriodByCheckOutCondition($preparedPeriod, $hotelDefaultCheckOutEnd, $roomCheckOutCondition);
 
         $countDays = $preparedPeriod->count();
         $dailyPrice = $allDaysPrice / $countDays;

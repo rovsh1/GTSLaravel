@@ -78,6 +78,9 @@ use Module\Integration\Traveline\Infrastructure\Models\Legacy\Hotel\OptionTypeEn
  * @method static Builder|Reservation whereType($value)
  * @method static Builder|Reservation whereUserId($value)
  * @method static Builder|Reservation withClient()
+ * @method static Builder|Reservation whereQuoteType()
+ * @method static Builder|Reservation onlySoftDeleted()
+ * @method static Builder|Reservation withoutSoftDeleted()
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Option> $hotelOptions
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Module\Integration\Traveline\Infrastructure\Models\Legacy\Room> $rooms
  * @property-read int $client_type
@@ -129,7 +132,23 @@ class Reservation extends Model
         'date_checkout' => 'date',
         'deletion_mark' => 'boolean',
         'status' => ReservationStatusEnum::class,
+        'type' => ReservationRequestTypeEnum::class
     ];
+
+    public function scopeWhereQuoteType(Builder $builder): void
+    {
+        $builder->where($this->getTable() . '.type', ReservationRequestTypeEnum::QUOTE);
+    }
+
+    public function scopeOnlySoftDeleted(Builder $builder): void
+    {
+        $builder->where($this->getTable() . '.deletion_mark', true);
+    }
+
+    public function scopeWithoutSoftDeleted(Builder $builder): void
+    {
+        $builder->where($this->getTable() . '.deletion_mark', false);
+    }
 
     public function scopeWithClient(Builder $builder)
     {
