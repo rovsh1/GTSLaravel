@@ -23,7 +23,7 @@ class ReservationDto extends Dto
         public readonly int               $number,
         public readonly int               $hotelId,
 
-        #[MapInputName('createdDate'), WithCast(CarbonInterfaceCast::class)]
+        #[MapInputName('createdDate'), WithCast(CarbonInterfaceCast::class, format: 'Y-m-d H:i:s')]
         #[WithTransformer(CarbonInterfaceTransformer::class, format: 'Y-m-d H:i:s')]
         public readonly CarbonInterface   $created,
 
