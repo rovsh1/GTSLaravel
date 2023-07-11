@@ -190,10 +190,11 @@ class SyncTravelineReservations implements ShouldQueue
     ): array {
         return $rooms->map(
             function (Room $room) use ($clientName, $period, $hotelDefaultCheckInStart, $hotelDefaultCheckOutEnd) {
+                $guestsDto = $this->covertRoomGuestsToDto($room->guests);
                 return new RoomDto(
                     $room->room_id,
                     $room->rate_id,
-                    $this->covertRoomGuestsToDto($room->guests),
+                    $guestsDto,
                     $room->guests->count(),
                     CustomerDto::from(['fullName' => $clientName]),
                     $this->buildRoomPerDayPrices(

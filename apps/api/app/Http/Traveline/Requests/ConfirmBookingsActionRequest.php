@@ -9,7 +9,7 @@ class ConfirmBookingsActionRequest extends AbstractTravelineRequest
         return array_merge([
             'data.confirmBookings' => 'required|array',
             'data.confirmBookings.*.number' => 'required|numeric',
-            'data.confirmBookings.*.externalNumber' => 'required|numeric',
+            'data.confirmBookings.*.externalNumber' => 'required',
             'data.confirmBookings.*.status' => 'required|string',
         ], parent::rules());
     }
