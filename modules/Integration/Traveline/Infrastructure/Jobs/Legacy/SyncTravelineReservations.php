@@ -175,7 +175,7 @@ class SyncTravelineReservations implements ShouldQueue
         );
     }
 
-    private function convertFullNameToCustomer(string $fullName): CustomerDto
+    private function getFullNameParts(string $fullName): array
     {
         $nameParts = explode(' ', $fullName);
         $middleName = null;
@@ -184,10 +184,21 @@ class SyncTravelineReservations implements ShouldQueue
             $middleName = $nameParts[2];
         }
 
-        return new CustomerDto(
+        return [
             $nameParts[0],
             $nameParts[1] ?? null,
             $middleName
+        ];
+    }
+
+    private function convertFullNameToCustomer(string $fullName): CustomerDto
+    {
+        $fullNameParts = $this->getFullNameParts($fullName);
+
+        return new CustomerDto(
+            $fullNameParts[0],
+            $fullNameParts[1],
+            $fullNameParts[2],
         );
     }
 
@@ -250,7 +261,15 @@ class SyncTravelineReservations implements ShouldQueue
      */
     private function covertRoomGuestsToDto(Collection $guests)
     {
-        $preparedGuests = $guests->map(fn(Guest $guest) => ['fullName' => $guest->fullname])->all();
+        $preparedGuests = $guests->map(function (Guest $guest) {
+            [$name, $lastName, $middleName] = $this->getFullNameParts($guest->fullname);
+
+            return [
+                'firstName' => $name,
+                'lastName' => $lastName,
+                'middleName' => $middleName
+            ];
+        })->all();
 
         return Dto\Reservation\Room\GuestDto::collection($preparedGuests);
     }
