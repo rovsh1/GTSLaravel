@@ -6,69 +6,87 @@ use Module\Shared\Domain\ValueObject\SerializableDataInterface;
 
 final class RoomPrice implements SerializableDataInterface
 {
-    public function __construct(
-        private readonly float $netValue,
-        private readonly ManualChangablePrice $hoPrice,
-        private readonly ManualChangablePrice $boPrice,
-        private readonly RoomPriceDetails $hoPriceDetails,
-        private readonly RoomPriceDetails $boPriceDetails,
-    ) {}
-
-    public static function buildEmpty(): static
+    public static function buildEmpty(): RoomPrice
     {
-        return new static(
-            0,
-            new ManualChangablePrice(0),
-            new ManualChangablePrice(0),
-            new RoomPriceDetails(new DayPriceCollection(), null),
-            new RoomPriceDetails(new DayPriceCollection(), null)
+        return new RoomPrice(
+            false,
+            false,
+            new RoomDayPriceCollection()
         );
+    }
+
+    public function __construct(
+        private readonly ?float $boDayValue,
+        private readonly ?float $hoDayValue,
+        private readonly RoomDayPriceCollection $dayPrices,
+    ) {
+    }
+
+    public function isBoManuallyChanged(): bool
+    {
+        return (bool)$this->boDayValue;
+    }
+
+    public function isHoManuallyChanged(): bool
+    {
+        return (bool)$this->hoDayValue;
+    }
+
+    public function boDayValue(): ?float
+    {
+        return $this->boDayValue;
+    }
+
+    public function hoDayValue(): ?float
+    {
+        return $this->hoDayValue;
+    }
+
+    public function dayPrices(): RoomDayPriceCollection
+    {
+        return $this->dayPrices;
     }
 
     public function netValue(): float
     {
-        return $this->netValue;
+        return $this->calculateValueSum('netValue');
     }
 
-    public function hoValue(): ManualChangablePrice
+    public function hoValue(): float
     {
-        return $this->hoPrice;
+        return $this->calculateValueSum('hoValue');
     }
 
-    public function boValue(): ManualChangablePrice
+    public function boValue(): float
     {
-        return $this->boPrice;
-    }
-
-    public function hoPriceDetails(): RoomPriceDetails
-    {
-        return $this->hoPriceDetails;
-    }
-
-    public function boPriceDetails(): RoomPriceDetails
-    {
-        return $this->boPriceDetails;
+        return $this->calculateValueSum('boValue');
     }
 
     public function toData(): array
     {
         return [
-            'netValue' => $this->netValue,
-            'hoPrice' => $this->hoPrice->toData(),
-            'boPrice' => $this->boPrice->toData(),
-            'boPriceDetails' => $this->boPriceDetails->toData(),
-            'hoPriceDetails' => $this->hoPriceDetails->toData(),
+            'boDayValue' => $this->boDayValue,
+            'hoDayValue' => $this->hoDayValue,
+            'dayPrices' => $this->dayPrices->toData(),
         ];
     }
 
     public static function fromData(array $data): static
     {
         return new RoomPrice(
-            netValue: $data['netValue'],
-            hoPrice: ManualChangablePrice::fromData($data['hoPrice']),
-            boPrice: ManualChangablePrice::fromData($data['boPrice']),
-            hoPriceDetails: RoomPriceDetails::fromData($data['hoPriceDetails']),
-            boPriceDetails: RoomPriceDetails::fromData($data['boPriceDetails']),
+            boDayValue: $data['boDayValue'],
+            hoDayValue: $data['hoDayValue'],
+            dayPrices: RoomDayPriceCollection::fromData($data['dayPrices']),
         );
+    }
+
+    private function calculateValueSum(string $key): float
+    {
+        $netValue = 0.0;
+        foreach ($this->dayPrices as $dayPrice) {
+            $netValue += $dayPrice->$key();
+        }
+
+        return $netValue;
     }
 }
