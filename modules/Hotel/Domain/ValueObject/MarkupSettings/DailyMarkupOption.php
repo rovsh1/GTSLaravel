@@ -12,7 +12,7 @@ final class DailyMarkupOption implements ValueObjectInterface, SerializableDataI
 {
     public function __construct(
         private Percent $percent,
-        private readonly CancelPeriodTypeEnum $cancelPeriodType,
+        private CancelPeriodTypeEnum $cancelPeriodType,
         private int $daysCount
     ) {}
 
@@ -24,6 +24,11 @@ final class DailyMarkupOption implements ValueObjectInterface, SerializableDataI
     public function setPercent(Percent $percent): void
     {
         $this->percent = $percent;
+    }
+
+    public function setCancelPeriodType(CancelPeriodTypeEnum $cancelPeriodType): void
+    {
+        $this->cancelPeriodType = $cancelPeriodType;
     }
 
     public function cancelPeriodType(): CancelPeriodTypeEnum
