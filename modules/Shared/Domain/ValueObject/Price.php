@@ -2,9 +2,10 @@
 
 namespace Module\Shared\Domain\ValueObject;
 
+use Module\Shared\Contracts\CanCompare;
 use Sdk\Module\Foundation\Exception\ValidationException;
 
-class Price
+class Price implements CanCompare
 {
     private ?float $value;
 
@@ -48,6 +49,15 @@ class Price
     {
         $this->value = null;
         $this->currency = null;
+    }
+
+    public function compareTo(mixed $b): int
+    {
+        if (!$b instanceof Price) {
+            throw new \InvalidArgumentException();
+        }
+
+        return $this->value <=> $b->value();
     }
 
     public function __toString(): string
