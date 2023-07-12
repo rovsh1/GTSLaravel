@@ -35,7 +35,7 @@ class UpdateMarkupSettingsValueHandler implements CommandHandlerInterface
         'cancelPeriod' => '/^cancelPeriods\.(\d+)(?:\.(from|to))?$/',
         'cancelPeriod.noCheckInMarkup' => '/^cancelPeriods\.(\d+)(?:\.(noCheckInMarkup))\.(percent)?$/',
         'cancelPeriods' => '/^cancelPeriods$/',
-        'cancelPeriods.dailyMarkup' => '/^cancelPeriods\.(\d+)\.dailyMarkups\.(\d+)\.(percent|cancelPeriodType|daysCount)$/',
+        'cancelPeriods.dailyMarkup' => '/^cancelPeriods\.(\d+)\.dailyMarkups\.(\d+)(?:\.(percent|cancelPeriodType|daysCount))?$/',
         'cancelPeriods.dailyMarkups' => '/^cancelPeriods\.(\d+)\.dailyMarkups$/',
     ];
 
@@ -63,9 +63,7 @@ class UpdateMarkupSettingsValueHandler implements CommandHandlerInterface
                 'cancelPeriod' => $settings->cancelPeriods()->get($keyParts[1]),
                 'cancelPeriod.noCheckInMarkup' => $settings->cancelPeriods()->get($keyParts[1])->noCheckInMarkup(),
                 'cancelPeriods' => $settings->cancelPeriods(),
-                'cancelPeriods.dailyMarkup' => $settings->cancelPeriods()->get($keyParts[1])->dailyMarkups()->get(
-                    $keyParts[2]
-                ),
+                'cancelPeriods.dailyMarkup' => $settings->cancelPeriods()->get($keyParts[1])->dailyMarkups()->get($keyParts[2]),
                 'cancelPeriods.dailyMarkups' => $settings->cancelPeriods()->get($keyParts[1])->dailyMarkups(),
             };
             break;
@@ -76,6 +74,8 @@ class UpdateMarkupSettingsValueHandler implements CommandHandlerInterface
                 $this->handleUpdateCondition($object, $keyToUpdate, $command->value);
             } elseif ($object instanceof CancelPeriod) {
                 $this->handleUpdateCancelPeriod($object, $keyToUpdate, $command->value);
+            } elseif ($object instanceof DailyMarkupOption) {
+                $this->handleUpdateDailyMarkupOption($object, $keyToUpdate, $command->value);
             } else {
                 $this->setByObjectKey($object, $keyToUpdate, $command->value);
             }
@@ -144,6 +144,19 @@ class UpdateMarkupSettingsValueHandler implements CommandHandlerInterface
         } else {
             $this->setByObjectKey($cancelPeriod, $key, $value);
         }
+    }
+
+    private function handleUpdateDailyMarkupOption(DailyMarkupOption $dailyMarkup, string $key, mixed $value): void
+    {
+        if (is_numeric($key) && is_array($value)) {
+            $newDailyMarkup = $this->buildDailyMarkupOption($value);
+            $dailyMarkup->setPercent($newDailyMarkup->percent());
+            $dailyMarkup->setCancelPeriodType($newDailyMarkup->cancelPeriodType());
+            $dailyMarkup->setDaysCount($newDailyMarkup->daysCount());
+
+            return;
+        }
+        $this->setByObjectKey($dailyMarkup, $key, $value);
     }
 
     private function handleAddToCollection(Collection $collection, mixed $value): void

@@ -96,7 +96,7 @@ const dailyMarkupsModalSettings = {
   edit: {
     title: 'Изменить условие',
     handler: async (request: MaybeRef<HotelMarkupSettingsUpdateProps>) => {
-      console.log({ request })
+      await updateConditionHotelMarkupSettings(request)
     },
   },
 }
