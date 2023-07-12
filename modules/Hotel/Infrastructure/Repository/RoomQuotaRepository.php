@@ -11,10 +11,16 @@ class RoomQuotaRepository implements RoomQuotaRepositoryInterface
 {
     public function updateRoomQuota(int $roomId, CarbonPeriod $period, int $quota): void
     {
-        EloquentQuota::whereRoomId($roomId)
-            ->where('date', '>=', $period->getStartDate())
-            ->where('date', '<', $period->getEndDate())
-            ->update(['count_available' => $quota]);
+        EloquentQuota::updateOrInsert(
+            ['room_id' => $roomId, 'date' => $period->getStartDate()],
+            [
+                'room_id' => $roomId,
+                'date' => $period->getStartDate(),
+                'count_available' => $quota,
+                'period' => 0,//@todo в будущем minimumAdvanceBooking
+                'type' => $quota > 0 ? QuotaTypeEnum::Open : QuotaTypeEnum::Close,
+            ],
+        );
     }
 
     public function closeRoomQuota(int $roomId, CarbonPeriod $period)
