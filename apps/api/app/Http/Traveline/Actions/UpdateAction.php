@@ -11,6 +11,8 @@ class UpdateAction
 
     public function handle(UpdateActionRequest $request)
     {
+        \Log::debug('[App\Api\Http\Traveline\Actions\UpdateAction::handle] Request', $request->toArray());
+
         return $this->portGateway->request('traveline/update', [
             'hotel_id' => $request->getHotelId(),
             'updates' => $request->getUpdates(),
