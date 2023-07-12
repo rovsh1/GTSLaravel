@@ -70,9 +70,10 @@ class QuotaAndPriceUpdater
                 $updateRequest->getDatePeriod(),
                 $updateRequest->roomTypeId,
                 $updateRequest->quota,
-                $updateRequest->releaseDays,
             );
-        } elseif ($updateRequest->releaseDays !== null) {
+        }
+
+        if ($updateRequest->hasReleaseDays()) {
             $this->adapter->updateReleaseDays(
                 $updateRequest->getDatePeriod(),
                 $updateRequest->roomTypeId,

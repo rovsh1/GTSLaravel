@@ -14,6 +14,6 @@ class UpdateRoomQuotaHandler implements CommandHandlerInterface
 
     public function handle(CommandInterface|UpdateRoomQuota $command): void
     {
-        $this->quotaRepository->updateRoomQuota($command->roomId, $command->period, $command->quota, $command->releaseDays);
+        $this->quotaRepository->updateRoomQuota($command->roomId, $command->period, $command->quota);
     }
 }

@@ -10,7 +10,7 @@ interface HotelAdapterInterface
 
     public function getRoomsAndRatePlans(int $hotelId);
 
-    public function updateRoomQuota(CarbonPeriod $period, int $roomId, int $quota, ?int $releaseDays);
+    public function updateRoomQuota(CarbonPeriod $period, int $roomId, int $quota);
 
     public function updateReleaseDays(CarbonPeriod $period, int $roomId, int $releaseDays): mixed;
 

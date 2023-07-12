@@ -19,14 +19,12 @@ class RoomQuotaController
             'date_from' => 'required|date',
             'date_to' => 'required|date',
             'quota' => 'required|int',
-            'release_days' => ['nullable', 'int'],
         ]);
 
         $this->quotaUpdater->updateRoomQuota(
             $request->room_id,
             new CarbonPeriod($request->date_from, $request->date_to),
             $request->quota,
-            $request->release_days,
         );
     }
 

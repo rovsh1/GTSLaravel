@@ -6,7 +6,7 @@ use Carbon\CarbonPeriod;
 
 interface RoomQuotaRepositoryInterface
 {
-    public function updateRoomQuota(int $roomId, CarbonPeriod $period, int $quota, ?int $releaseDays = null);
+    public function updateRoomQuota(int $roomId, CarbonPeriod $period, int $quota);
 
     public function updateRoomReleaseDays(int $roomId, CarbonPeriod $period, int $releaseDays): void;
 

@@ -33,6 +33,11 @@ class Update
         return $this->quota !== null;
     }
 
+    public function hasReleaseDays(): bool
+    {
+        return $this->releaseDays !== null;
+    }
+
     public function hasPrices(): bool
     {
         return $this->prices !== null;
