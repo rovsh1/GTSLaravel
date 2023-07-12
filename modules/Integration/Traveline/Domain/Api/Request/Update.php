@@ -19,7 +19,8 @@ class Update
         public readonly ?bool           $closed,
         /** @var Price[]|null $prices */
         public readonly ?array          $prices,
-        public readonly ?int            $quota
+        public readonly ?int            $quota,
+        public readonly ?int            $releaseDays
     ) {}
 
     public function getDatePeriod(): CarbonPeriod
@@ -62,6 +63,7 @@ class Update
             $data['closed'] ?? null,
             $prices,
             $data['quota'] ?? null,
+            $data['minimumAdvanceBooking'] ?? null,
         );
     }
 

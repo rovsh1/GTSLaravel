@@ -10,19 +10,29 @@ use Module\Hotel\Application\Command\OpenRoomQuota;
 use Module\Hotel\Application\Command\UpdateRoomQuota;
 use Module\Hotel\Application\Query\GetRoomById;
 use Module\Hotel\Domain\Exception\Room\RoomNotFound;
+use Module\Hotel\Domain\Repository\RoomQuotaRepositoryInterface;
 
 class RoomQuotaUpdater
 {
     public function __construct(
-        private readonly QueryBusInterface   $queryBus,
+        private readonly QueryBusInterface $queryBus,
         private readonly CommandBusInterface $commandBus,
+        private readonly RoomQuotaRepositoryInterface $repository
     ) {}
 
-    public function updateRoomQuota(int $roomId, CarbonPeriod $period, int $quota): void
+    public function updateRoomReleaseDays(int $roomId, CarbonPeriod $period, int $releaseDays): void
     {
         $this->checkRoomExistCallback(
             roomId: $roomId,
-            callback: fn() => $this->commandBus->execute(new UpdateRoomQuota($roomId, $period, $quota))
+            callback: fn() => $this->repository->updateRoomReleaseDays($roomId, $period, $releaseDays)
+        );
+    }
+
+    public function updateRoomQuota(int $roomId, CarbonPeriod $period, int $quota, ?int $releaseDays): void
+    {
+        $this->checkRoomExistCallback(
+            roomId: $roomId,
+            callback: fn() => $this->commandBus->execute(new UpdateRoomQuota($roomId, $period, $quota, $releaseDays))
         );
     }
 
@@ -30,7 +40,7 @@ class RoomQuotaUpdater
     {
         $this->checkRoomExistCallback(
             roomId: $roomId,
-            callback: fn () => $this->commandBus->execute(new OpenRoomQuota($roomId, $period, $priceRateId))
+            callback: fn() => $this->commandBus->execute(new OpenRoomQuota($roomId, $period, $priceRateId))
         );
     }
 
@@ -38,7 +48,7 @@ class RoomQuotaUpdater
     {
         $this->checkRoomExistCallback(
             roomId: $roomId,
-            callback: fn () => $this->commandBus->execute(new CloseRoomQuota($roomId, $period, $priceRateId))
+            callback: fn() => $this->commandBus->execute(new CloseRoomQuota($roomId, $period, $priceRateId))
         );
     }
 

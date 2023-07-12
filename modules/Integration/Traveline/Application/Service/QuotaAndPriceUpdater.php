@@ -4,7 +4,6 @@ namespace Module\Integration\Traveline\Application\Service;
 
 use Module\Integration\Traveline\Domain\Adapter\HotelAdapterInterface;
 use Module\Integration\Traveline\Domain\Api\Request\Update;
-use Module\Integration\Traveline\Domain\Api\Response\Error\AbstractTravelineError;
 use Module\Integration\Traveline\Domain\Api\Response\Error\InvalidCurrencyCode;
 use Module\Integration\Traveline\Domain\Api\Response\Error\InvalidRateAccomodation;
 use Module\Integration\Traveline\Domain\Api\Response\Error\InvalidRatePlan;
@@ -23,10 +22,10 @@ class QuotaAndPriceUpdater
     private array $errors = [];
 
     public function __construct(
-        private readonly HotelAdapterInterface           $adapter,
-        private readonly HotelRepositoryInterface        $hotelRepository,
+        private readonly HotelAdapterInterface $adapter,
+        private readonly HotelRepositoryInterface $hotelRepository,
         private readonly HotelRoomCodeGeneratorInterface $codeGenerator,
-        private readonly bool                            $isPricesForResidents = false
+        private readonly bool $isPricesForResidents = false
     ) {}
 
     /**
@@ -46,6 +45,7 @@ class QuotaAndPriceUpdater
             $updateRequests = Update::collectionFromArray($updates, $this->codeGenerator);
         } catch (InvalidHotelRoomCode $e) {
             $this->errors[] = new InvalidRateAccomodation();
+
             return $this->errors;
         }
 
@@ -69,7 +69,14 @@ class QuotaAndPriceUpdater
             $this->adapter->updateRoomQuota(
                 $updateRequest->getDatePeriod(),
                 $updateRequest->roomTypeId,
-                $updateRequest->quota
+                $updateRequest->quota,
+                $updateRequest->releaseDays,
+            );
+        } elseif ($updateRequest->releaseDays !== null) {
+            $this->adapter->updateReleaseDays(
+                $updateRequest->getDatePeriod(),
+                $updateRequest->roomTypeId,
+                $updateRequest->releaseDays,
             );
         }
 

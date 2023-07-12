@@ -10,6 +10,7 @@ Route::register('findById', [InfoController::class, 'findById']);
 Route::register('getRoomsWithPriceRatesByHotelId', [InfoController::class, 'getRoomsWithPriceRatesByHotelId']);
 
 Route::register('updateRoomQuota', [RoomQuotaController::class, 'updateRoomQuota']);
+Route::register('updateReleaseDays', [RoomQuotaController::class, 'updateReleaseDays']);
 Route::register('openRoomQuota', [RoomQuotaController::class, 'openRoomQuota']);
 Route::register('closeRoomQuota', [RoomQuotaController::class, 'closeRoomQuota']);
 

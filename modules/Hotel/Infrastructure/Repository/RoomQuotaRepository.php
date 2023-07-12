@@ -9,7 +9,7 @@ use Module\Hotel\Infrastructure\Models\Room\QuotaTypeEnum;
 
 class RoomQuotaRepository implements RoomQuotaRepositoryInterface
 {
-    public function updateRoomQuota(int $roomId, CarbonPeriod $period, int $quota): void
+    public function updateRoomQuota(int $roomId, CarbonPeriod $period, int $quota, ?int $releaseDays = null): void
     {
         EloquentQuota::updateOrInsert(
             ['room_id' => $roomId, 'date' => $period->getStartDate()],
@@ -17,10 +17,18 @@ class RoomQuotaRepository implements RoomQuotaRepositoryInterface
                 'room_id' => $roomId,
                 'date' => $period->getStartDate(),
                 'count_available' => $quota,
-                'period' => 0,//@todo в будущем minimumAdvanceBooking
+                'period' => $releaseDays ?? 0,
                 'type' => $quota > 0 ? QuotaTypeEnum::Open : QuotaTypeEnum::Close,
             ],
         );
+    }
+
+    public function updateRoomReleaseDays(int $roomId, CarbonPeriod $period, int $releaseDays): void
+    {
+        EloquentQuota::whereRoomId($roomId)
+            ->where('date', '>=', $period->getStartDate())
+            ->where('date', '<', $period->getEndDate())
+            ->update(['period' => $releaseDays]);
     }
 
     public function closeRoomQuota(int $roomId, CarbonPeriod $period)
