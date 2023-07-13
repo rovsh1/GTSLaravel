@@ -16,11 +16,13 @@ const props = withDefaults(defineProps<{
   dimension?: string
   emptyValue?: string
   hideClickOutside?: boolean
+  saveClickOutside?: boolean
 }>(), {
   placeholder: undefined,
   emptyValue: undefined,
   dimension: undefined,
-  hideClickOutside: true,
+  hideClickOutside: false,
+  saveClickOutside: true,
 })
 
 const emit = defineEmits<{
@@ -64,17 +66,25 @@ const hideEditable = () => {
   toggleEditable(false)
 }
 
-const onPressEnter = () => {
+const applyEditable = () => {
   emit('change', localValue.value)
   toggleEditable(false)
+}
+
+const onPressEnter = () => {
+  applyEditable()
 }
 
 const onPressEsc = () => {
   hideEditable()
 }
 
-if (props.hideClickOutside) {
+if (props.hideClickOutside && !props.saveClickOutside) {
   onClickOutside(inputRef, hideEditable)
+}
+
+if (props.saveClickOutside && !props.hideClickOutside) {
+  onClickOutside(inputRef, applyEditable)
 }
 
 </script>
