@@ -7,9 +7,11 @@ import { z } from 'zod'
 
 import CollapsableBlock from '~resources/views/hotel/settings/components/CollapsableBlock.vue'
 import ConditionsTable from '~resources/views/hotel/settings/components/ConditionsTable.vue'
+import MarkupConditionModal from '~resources/views/hotel/settings/components/MarkupConditionModal.vue'
 import TimeSelect from '~resources/views/hotel/settings/components/TimeSelect.vue'
 import { useEditableModal } from '~resources/views/hotel/settings/composables/editable-modal'
 import { ConditionType, ConditionTypeEnum, useMarkupSettingsStore } from '~resources/views/hotel/settings/composables/markup-settings'
+import { useTimeConditions } from '~resources/views/hotel/settings/composables/time-conditions'
 import { useTimeSettings } from '~resources/views/hotel/settings/composables/time-settings'
 
 import {
@@ -17,13 +19,11 @@ import {
   deleteConditionHotelMarkupSettings,
   HotelMarkupSettingsConditionAddProps,
   HotelMarkupSettingsUpdateProps,
-  MarkupCondition,
+  MarkupCondition, Time,
   updateConditionHotelMarkupSettings,
 } from '~api/hotel/markup-settings'
 
 import { requestInitialData } from '~lib/initial-data'
-
-import BaseDialog from '~components/BaseDialog.vue'
 
 const { hotelID } = requestInitialData(
   'view-initial-data-hotel-settings',
@@ -66,6 +66,7 @@ const modalSettings = {
 const {
   isOpened,
   isLoading,
+  editableObject: editableCondition,
   title: modalTitle,
   submit: submitModal,
   close,
@@ -75,17 +76,30 @@ const {
 
 const isConditionsFetching = ref<boolean>(false)
 const editableConditionKey = ref<string>()
-const editableCondition = ref<MarkupCondition>()
+const { minTime, maxTime, setConditions, setLimits, isTimeAvailable } = useTimeConditions()
+
+const setConditionTimeLimits = (conditionType: ConditionType): void => {
+  if (conditionType === 'earlyCheckIn') {
+    setConditions(markupSettings.value?.earlyCheckIn || [])
+    setLimits('00:00', checkInAfter.value as Time)
+    return
+  }
+
+  setConditions(markupSettings.value?.lateCheckOut || [])
+  setLimits(checkOutBefore.value as Time, '24:00')
+}
 
 const handleEditConditions = (conditionType: ConditionType, condition: MarkupCondition, index: number) => {
   editableCondition.value = condition
   editableConditionKey.value = `${conditionType}.${index}`
+  setConditionTimeLimits(conditionType)
   openEdit(index, condition)
 }
 
 const handleAddConditions = (conditionType: ConditionType) => {
   editableCondition.value = { from: '', to: '' } as unknown as MarkupCondition
   editableConditionKey.value = `${conditionType}`
+  setConditionTimeLimits(conditionType)
   openAdd()
 }
 
@@ -100,16 +114,11 @@ const handleDeleteConditions = async (conditionType: ConditionType, index: numbe
   await fetchMarkupSettings()
 }
 
-const conditionsModalForm = ref<HTMLFormElement>()
-const onModalSubmit = async () => {
-  if (!conditionsModalForm.value?.reportValidity()) {
-    return
-  }
-
+const onModalSubmit = async (markupCondition: MarkupCondition) => {
   const payload = {
     hotelID,
     key: editableConditionKey.value as string,
-    value: editableCondition.value as MarkupCondition,
+    value: markupCondition,
   }
 
   isConditionsFetching.value = true
@@ -126,37 +135,20 @@ const handleUpdateHotelSettings = async () => {
 </script>
 
 <template>
-  <BaseDialog
-    :opened="isOpened as boolean"
+  <MarkupConditionModal
+    v-if="checkInAfter && checkOutBefore"
+    :value="editableCondition"
+    :title="modalTitle"
+    :opened="isOpened"
     :loading="isLoading || isConditionsFetching"
+    :min-to="minTime"
+    :max-to="maxTime"
+    :min-from="minTime"
+    :max-from="maxTime"
+    :is-time-available="isTimeAvailable"
     @close="close"
-  >
-    <template #title>{{ modalTitle }}</template>
-
-    <form v-if="editableCondition" ref="conditionsModalForm" class="row g-3" @submit.prevent="onModalSubmit">
-      <div class="col-md-6">
-        <TimeSelect id="from" v-model="editableCondition.from" label="Начало" required />
-      </div>
-      <div class="col-md-6">
-        <TimeSelect id="to" v-model="editableCondition.to" label="Конец" required />
-      </div>
-      <div class="col-md-12 field-required">
-        <label for="markup">Наценка</label>
-        <input
-          id="markup"
-          v-model="editableCondition.percent"
-          type="number"
-          class="form-control"
-          required
-        >
-      </div>
-    </form>
-
-    <template #actions-end>
-      <button class="btn btn-primary" type="button" @click="onModalSubmit">Сохранить</button>
-      <button class="btn btn-cancel" type="button" @click="close">Отмена</button>
-    </template>
-  </BaseDialog>
+    @submit="onModalSubmit"
+  />
 
   <CollapsableBlock id="residence-conditions" title="Порядок проживания">
     <div class="d-flex flex-row gap-4">
@@ -222,7 +214,7 @@ const handleUpdateHotelSettings = async () => {
           <TimeSelect
             id="breakfast-to-select"
             v-model="breakfastPeriodTo"
-            :from="breakfastPeriodFrom"
+            :min="breakfastPeriodFrom"
             class="col-auto w-25"
             @change="handleUpdateHotelSettings"
           />

@@ -8,18 +8,20 @@ type TimeValue = Time | null
 
 const props = withDefaults(defineProps<{
   modelValue?: TimeValue
-  from?: string
-  to?: string
+  min?: Time
+  max?: Time
   label?: string
   disabled?: boolean
   required?: boolean
+  isTimeAvailable?: (time: Time) => boolean
 }>(), {
   modelValue: undefined,
-  from: '00:00',
-  to: '24:00',
+  min: '00:00',
+  max: '24:00',
   label: undefined,
   disabled: false,
   required: false,
+  isTimeAvailable: (time: Time) => true,
 })
 
 const emit = defineEmits<{
@@ -35,21 +37,27 @@ const localValue = computed<TimeValue>({
   },
 })
 
+type TimeHour = `${number}` | `${number}${number}`
+
 const items = computed<string[]>(() => {
   const options = []
   for (let i = 0; i <= 24; i++) {
-    let hour = `${i}`
+    let hour: TimeHour = `${i}`
     if (i < 10) {
       hour = `0${i}`
     }
-    const hourTime = `${hour}:00`
-    if (hourTime >= props.from && hourTime <= props.to) {
-      options.push(hourTime)
+    const hourTime: Time = `${hour}:00`
+    if (hourTime >= props.min && hourTime <= props.max) {
+      if (props.isTimeAvailable(hourTime)) {
+        options.push(hourTime)
+      }
     }
 
-    const halfHourTime = `${hour}:30`
-    if (halfHourTime >= props.from && halfHourTime <= props.to && i !== 24) {
-      options.push(halfHourTime)
+    const halfHourTime: Time = `${hour}:30`
+    if (halfHourTime >= props.min && halfHourTime <= props.max && i !== 24) {
+      if (props.isTimeAvailable(halfHourTime)) {
+        options.push(halfHourTime)
+      }
     }
   }
   return options
