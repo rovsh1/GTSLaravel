@@ -342,7 +342,6 @@ class SyncTravelineReservations implements ShouldQueue
     private function isCancelledHotelReservationStatus(ReservationStatusEnum $status): bool
     {
         return in_array($status, [
-            ReservationStatusEnum::WaitingCancellation,
             ReservationStatusEnum::Cancelled,
             ReservationStatusEnum::CancelledFee,
             ReservationStatusEnum::CancelledNoFee,
