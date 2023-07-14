@@ -210,7 +210,12 @@ class SyncTravelineReservations implements ShouldQueue
         return $rooms->map(
             function (Room $room) use ($period, $hotelDefaultCheckInStart, $hotelDefaultCheckOutEnd, &$fakeRooms) {
                 $guestsDto = $this->covertRoomGuestsToDto($room->guests);
-                $guestChunks = array_chunk($guestsDto->all(), $room->guests_number);
+                $guestsInRoomCount = 1;
+                if ($room->rooms_number > 1) {
+                    $guestsInRoomCount = $room->guests_number;
+                }
+                $guestChunks = array_chunk($guestsDto->all(), $guestsInRoomCount);
+                $preparedPrice = $room->price_net / count($guestChunks);
                 while (count($guestChunks) > 1) {
                     $guests = array_shift($guestChunks);
                     $fakeRooms[] = new RoomDto(
@@ -220,13 +225,13 @@ class SyncTravelineReservations implements ShouldQueue
                         count($guests),
                         $this->buildRoomPerDayPrices(
                             $period,
-                            $room->price_net,
+                            $preparedPrice,
                             $room->checkInCondition,
                             $room->checkOutCondition,
                             $hotelDefaultCheckInStart,
                             $hotelDefaultCheckOutEnd
                         ),
-                        Dto\Reservation\Room\TotalDto::from(['amountAfterTaxes' => $room->price_net]),
+                        Dto\Reservation\Room\TotalDto::from(['amountAfterTaxes' => $preparedPrice]),
                         $room->note,
                         $this->buildAdditionalInfo($room->checkInCondition, $room->checkOutCondition)
                     );
@@ -241,13 +246,13 @@ class SyncTravelineReservations implements ShouldQueue
                     count($guests),
                     $this->buildRoomPerDayPrices(
                         $period,
-                        $room->price_net,
+                        $preparedPrice,
                         $room->checkInCondition,
                         $room->checkOutCondition,
                         $hotelDefaultCheckInStart,
                         $hotelDefaultCheckOutEnd
                     ),
-                    Dto\Reservation\Room\TotalDto::from(['amountAfterTaxes' => $room->price_net]),
+                    Dto\Reservation\Room\TotalDto::from(['amountAfterTaxes' => $preparedPrice]),
                     $room->note,
                     $this->buildAdditionalInfo($room->checkInCondition, $room->checkOutCondition)
                 );
