@@ -204,15 +204,41 @@ class SyncTravelineReservations implements ShouldQueue
         ?Option $hotelDefaultCheckInStart,
         ?Option $hotelDefaultCheckOutEnd
     ): array {
+        //в старом интерфейсе можно указать кол-во комнат, и не расселять гостей по ним. Для таких кейсов создаю отдельные комнаты в тревелайн.
+        $fakeRooms = [];
+
         return $rooms->map(
-            function (Room $room) use ($period, $hotelDefaultCheckInStart, $hotelDefaultCheckOutEnd) {
+            function (Room $room) use ($period, $hotelDefaultCheckInStart, $hotelDefaultCheckOutEnd, &$fakeRooms) {
                 $guestsDto = $this->covertRoomGuestsToDto($room->guests);
+                $guestChunks = array_chunk($guestsDto->all(), $room->guests_number);
+                while (count($guestChunks) > 1) {
+                    $guests = array_shift($guestChunks);
+                    $fakeRooms[] = new RoomDto(
+                        $room->room_id,
+                        $room->rate_id,
+                        $guests,
+                        count($guests),
+                        $this->buildRoomPerDayPrices(
+                            $period,
+                            $room->price_net,
+                            $room->checkInCondition,
+                            $room->checkOutCondition,
+                            $hotelDefaultCheckInStart,
+                            $hotelDefaultCheckOutEnd
+                        ),
+                        Dto\Reservation\Room\TotalDto::from(['amountAfterTaxes' => $room->price_net]),
+                        $room->note,
+                        $this->buildAdditionalInfo($room->checkInCondition, $room->checkOutCondition)
+                    );
+                }
+
+                $guests = array_shift($guestChunks);
 
                 return new RoomDto(
                     $room->room_id,
                     $room->rate_id,
-                    $guestsDto,
-                    $room->guests->count(),
+                    $guests,
+                    count($guests),
                     $this->buildRoomPerDayPrices(
                         $period,
                         $room->price_net,
@@ -226,7 +252,7 @@ class SyncTravelineReservations implements ShouldQueue
                     $this->buildAdditionalInfo($room->checkInCondition, $room->checkOutCondition)
                 );
             }
-        )->all();
+        )->merge($fakeRooms)->all();
     }
 
     private function buildAdditionalInfo(?Room\CheckInOutConditions $roomCheckInCondition, ?Room\CheckInOutConditions $roomCheckOutCondition): ?string
