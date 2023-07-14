@@ -216,7 +216,7 @@ class SyncTravelineReservations implements ShouldQueue
                     $fakeRooms[] = new RoomDto(
                         $room->room_id,
                         $room->rate_id,
-                        $guests,
+                        Dto\Reservation\Room\GuestDto::collection($guests),
                         count($guests),
                         $this->buildRoomPerDayPrices(
                             $period,
@@ -237,7 +237,7 @@ class SyncTravelineReservations implements ShouldQueue
                 return new RoomDto(
                     $room->room_id,
                     $room->rate_id,
-                    $guests,
+                    Dto\Reservation\Room\GuestDto::collection($guests),
                     count($guests),
                     $this->buildRoomPerDayPrices(
                         $period,
