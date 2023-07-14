@@ -125,15 +125,20 @@ class SyncTravelineReservations implements ShouldQueue
 
     private function createTravelineReservations(Collection $hotelReservations): void
     {
-        $preparedReservations = $hotelReservations->map(fn(Reservation $reservation) => [
-            'reservation_id' => $reservation->id,
-            'data' => json_encode(
-                $this->convertHotelReservationToDto($reservation, TravelineReservationStatusEnum::New->value)
-            ),
-            'status' => TravelineReservationStatusEnum::New,
-            'created_at' => $reservation->created,
-            'updated_at' => $reservation->created,
-        ])->all();
+        $preparedReservations = $hotelReservations->map(function (Reservation $reservation) {
+            $reservationDto = $this->convertHotelReservationToDto($reservation, TravelineReservationStatusEnum::New->value);
+            if ($reservationDto->roomStays->count() === 0) {
+                return null;
+            }
+
+            return [
+                'reservation_id' => $reservation->id,
+                'data' => json_encode($reservationDto),
+                'status' => TravelineReservationStatusEnum::New,
+                'created_at' => $reservation->created,
+                'updated_at' => $reservation->created,
+            ];
+        })->filter()->all();
 
         TravelineReservation::insert($preparedReservations);
     }
