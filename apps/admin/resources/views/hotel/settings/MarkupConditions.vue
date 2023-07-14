@@ -25,8 +25,8 @@ const { fetchMarkupSettings } = markupSettingsStore
 const markupSettings = computed(() => markupSettingsStore.markupSettings)
 const isFetching = computed(() => markupSettingsStore.isFetching)
 
-const handleUpdateMarkupSettings = async (key: string, value: number): Promise<void> => {
-  await updateConditionHotelMarkupSettings({ hotelID, key, value })
+const handleUpdateMarkupSettings = async (key: string, value: number | string): Promise<void> => {
+  await updateConditionHotelMarkupSettings({ hotelID, key, value: Number(value) })
   fetchMarkupSettings()
 }
 
