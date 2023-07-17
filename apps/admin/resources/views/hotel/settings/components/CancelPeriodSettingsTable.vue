@@ -67,6 +67,7 @@ defineEmits<{
           <td>
             <EditableCell
               :value="dailyMarkup.daysCount"
+              required
               @change="value => $emit('edit-field', { field: 'daysCount', index: idx, value })"
             />
           </td>
@@ -74,6 +75,7 @@ defineEmits<{
             <div class="text-nowrap">
               <EditableCell
                 :value="dailyMarkup.percent"
+                required
                 dimension="%"
                 @change="value => $emit('edit-field', { field: 'percent', index: idx, value })"
               />

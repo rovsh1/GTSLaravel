@@ -17,12 +17,14 @@ const props = withDefaults(defineProps<{
   emptyValue?: string
   hideClickOutside?: boolean
   saveClickOutside?: boolean
+  required?: boolean
 }>(), {
   placeholder: undefined,
   emptyValue: undefined,
   dimension: undefined,
   hideClickOutside: false,
   saveClickOutside: true,
+  required: false,
 })
 
 const emit = defineEmits<{
@@ -67,6 +69,10 @@ const hideEditable = () => {
 }
 
 const applyEditable = () => {
+  const isEmptyValue = String(localValue.value).trim().length === 0
+  if (props.required && isEmptyValue && !inputRef.value?.reportValidity()) {
+    return
+  }
   emit('change', localValue.value)
   toggleEditable(false)
 }
@@ -105,6 +111,7 @@ if (props.saveClickOutside && !props.hideClickOutside) {
         v-model.number="localValue"
         class="form-control"
         :placeholder="placeholder"
+        :required="required"
         type="number"
         @keydown.esc="onPressEsc"
         @keydown.enter="onPressEnter"
