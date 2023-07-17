@@ -109,7 +109,7 @@ if (props.saveClickOutside && !props.hideClickOutside) {
       <input
         ref="inputRef"
         v-model.number="localValue"
-        class="form-control"
+        class="form-control editable-input"
         :placeholder="placeholder"
         :required="required"
         type="number"
@@ -134,5 +134,9 @@ svg {
   width: auto;
   height: 1em;
   fill: currentcolor;
+}
+
+.editable-input {
+  width: 80px!important;
 }
 </style>

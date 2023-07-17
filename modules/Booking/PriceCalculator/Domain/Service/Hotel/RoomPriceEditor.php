@@ -15,7 +15,11 @@ class RoomPriceEditor
         private readonly RoomDataHelperFactory $dataFactory,
         private readonly FormulaVariablesFactory $variablesFactory,
         private readonly NetPriceFetcher $netPriceFetcher
-    ) {
+    ) {}
+
+    public function recalculatePrices(RoomBooking $roomBooking): RoomPrice
+    {
+        return $this->calculate($roomBooking, $roomBooking->price()->boDayValue(), $roomBooking->price()->hoDayValue());
     }
 
     public function setCalculatedPrices(RoomBooking $roomBooking): RoomPrice

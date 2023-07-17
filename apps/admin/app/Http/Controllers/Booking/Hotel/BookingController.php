@@ -14,6 +14,7 @@ use App\Admin\Models\Reference\Currency;
 use App\Admin\Repositories\BookingAdministratorRepository;
 use App\Admin\Support\Facades\Booking\BookingAdapter;
 use App\Admin\Support\Facades\Booking\HotelAdapter;
+use App\Admin\Support\Facades\Booking\HotelPriceAdapter;
 use App\Admin\Support\Facades\Booking\OrderAdapter;
 use App\Admin\Support\Facades\Booking\StatusAdapter;
 use App\Admin\Support\Facades\Breadcrumb;
@@ -228,7 +229,22 @@ class BookingController extends AbstractPrototypeController
 
     public function updatePrice(UpdatePriceRequest $request, int $id): AjaxResponseInterface
     {
-        HotelAdapter::updatePrice($id, $request->getBoPrice(), $request->getHoPrice());
+        $boPrice = $request->getBoPrice();
+        $hoPrice = $request->getHoPrice();
+
+        if ($request->isBoPriceExists() && $boPrice === null) {
+            HotelPriceAdapter::setCalculatedBoPrice($id);
+        }
+        if ($request->isHoPriceExists() && $hoPrice === null) {
+            HotelPriceAdapter::setCalculatedHoPrice($id);
+        }
+
+        if ($boPrice !== null) {
+            HotelPriceAdapter::setBoPrice($id, $boPrice);
+        }
+        if ($hoPrice !== null) {
+            HotelPriceAdapter::setHoPrice($id, $hoPrice);
+        }
 
         return new AjaxSuccessResponse();
     }

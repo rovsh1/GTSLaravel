@@ -13,7 +13,6 @@ const props = withDefaults(defineProps<{
   label?: string
   disabled?: boolean
   required?: boolean
-  isTimeAvailable?: (time: Time) => boolean
 }>(), {
   modelValue: undefined,
   min: '00:00',
@@ -21,7 +20,6 @@ const props = withDefaults(defineProps<{
   label: undefined,
   disabled: false,
   required: false,
-  isTimeAvailable: (time: Time) => true,
 })
 
 const emit = defineEmits<{
@@ -48,16 +46,12 @@ const items = computed<string[]>(() => {
     }
     const hourTime: Time = `${hour}:00`
     if (hourTime >= props.min && hourTime <= props.max) {
-      if (props.isTimeAvailable(hourTime)) {
-        options.push(hourTime)
-      }
+      options.push(hourTime)
     }
 
     const halfHourTime: Time = `${hour}:30`
     if (halfHourTime >= props.min && halfHourTime <= props.max && i !== 24) {
-      if (props.isTimeAvailable(halfHourTime)) {
-        options.push(halfHourTime)
-      }
+      options.push(halfHourTime)
     }
   }
   return options

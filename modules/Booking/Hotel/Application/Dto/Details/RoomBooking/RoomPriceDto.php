@@ -12,23 +12,22 @@ use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 class RoomPriceDto extends AbstractDomainBasedDto
 {
     public function __construct(
-        public readonly float $netValue,
-        public readonly ManualChangablePriceDto $hoValue,
-        public readonly ManualChangablePriceDto $boValue,
-        public readonly ?float $avgDailyValue,
-        public readonly ?string $hoNote,
-        public readonly ?string $boNote,
+        public readonly ?float $boDayValue,
+        public readonly ?float $hoDayValue,
+        /** @var RoomDayPriceDto[] $dayPrices */
+        public readonly array $dayPrices,
+        public readonly int|float $boValue,
+        public readonly int|float $hoValue,
     ) {}
 
     public static function fromDomain(EntityInterface|ValueObjectInterface|RoomPrice $entity): static
     {
         return new static(
-            $entity->netValue(),
-            ManualChangablePriceDto::fromDomain($entity->hoValue()),
-            ManualChangablePriceDto::fromDomain($entity->boValue()),
-            $entity->calculationNotes()?->avgDailyValue(),
-            $entity->calculationNotes()?->hoNote(),
-            $entity->calculationNotes()?->boNote(),
+            $entity->boDayValue(),
+            $entity->hoDayValue(),
+            RoomDayPriceDto::collectionFromDomain($entity->dayPrices()->all()),
+            $entity->boValue(),
+            $entity->hoValue(),
         );
     }
 }

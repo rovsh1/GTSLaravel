@@ -11,6 +11,11 @@ export type Time = `${number | ''}${number}:${number}${number}`
 export type DateTime = string
 export type CancelPeriodType = number
 
+export interface TimePeriod {
+  from: Time
+  to: Time
+}
+
 export type ClientMarkups = {
   individual: Percent
   TA: Percent

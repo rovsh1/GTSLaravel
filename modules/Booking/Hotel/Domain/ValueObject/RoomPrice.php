@@ -9,8 +9,8 @@ final class RoomPrice implements SerializableDataInterface
     public static function buildEmpty(): RoomPrice
     {
         return new RoomPrice(
-            false,
-            false,
+            null,
+            null,
             new RoomDayPriceCollection()
         );
     }

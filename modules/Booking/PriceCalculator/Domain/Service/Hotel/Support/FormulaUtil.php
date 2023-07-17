@@ -11,9 +11,18 @@ abstract class FormulaUtil
 
     public static function calculateConditionMarkup(
         float $value,
-        int|float $earlyCheckInPercent,
-        int|float $lateCheckOutPercent
+        int|float|null $earlyCheckInPercent,
+        int|float|null $lateCheckOutPercent
     ): float {
-        return $value * $earlyCheckInPercent / 100 + $value * $lateCheckOutPercent / 100;
+        $earlyCheckInValue = 0;
+        if ($earlyCheckInPercent !== null) {
+            $earlyCheckInValue = $value * $earlyCheckInPercent / 100;
+        }
+        $lateCheckOutValue = 0;
+        if ($lateCheckOutPercent !== null) {
+            $lateCheckOutValue = $value * $lateCheckOutPercent / 100;
+        }
+
+        return $earlyCheckInValue + $lateCheckOutValue;
     }
 }

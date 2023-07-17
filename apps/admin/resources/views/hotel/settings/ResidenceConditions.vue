@@ -76,7 +76,7 @@ const {
 
 const isConditionsFetching = ref<boolean>(false)
 const editableConditionKey = ref<string>()
-const { minTime, maxTime, setConditions, setLimits, isTimeAvailable } = useTimeConditions()
+const { minTime, maxTime, setConditions, setLimits, freePeriods } = useTimeConditions()
 
 const setConditionTimeLimits = (conditionType: ConditionType): void => {
   if (conditionType === 'earlyCheckIn') {
@@ -141,11 +141,9 @@ const handleUpdateHotelSettings = async () => {
     :title="modalTitle"
     :opened="isOpened"
     :loading="isLoading || isConditionsFetching"
-    :min-to="minTime"
-    :max-to="maxTime"
-    :min-from="minTime"
-    :max-from="maxTime"
-    :is-time-available="isTimeAvailable"
+    :min="minTime"
+    :max="maxTime"
+    :free-periods="freePeriods"
     @close="close"
     @submit="onModalSubmit"
   />

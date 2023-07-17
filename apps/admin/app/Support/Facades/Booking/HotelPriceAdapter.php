@@ -11,13 +11,13 @@ use Illuminate\Support\Facades\Facade;
  * @method static void setHoPrice(int $bookingId, float $price)
  * @method static void setCalculatedBoPrice(int $bookingId)
  * @method static void setCalculatedHoPrice(int $bookingId)
- * @method static void setCalculatedPrices(int $bookingId)
  *
- * @method static void setBoRoomPrice(int $bookingId, int $roomBookingId, float $price)
- * @method static void setHoRoomPrice(int $bookingId, int $roomBookingId, float $price)
- * @method static void setCalculatedBoRoomPrice(int $bookingId, int $roomBookingId)
- * @method static void setCalculatedHoRoomPrice(int $bookingId, int $roomBookingId)
- * @method static void setCalculatedRoomPrices(int $bookingId, int $roomBookingId)
+// * @method static void setBoRoomPrice(int $bookingId, int $roomBookingId, float $price)
+// * @method static void setHoRoomPrice(int $bookingId, int $roomBookingId, float $price)
+// * @method static void setCalculatedBoRoomPrice(int $bookingId, int $roomBookingId)
+// * @method static void setCalculatedHoRoomPrice(int $bookingId, int $roomBookingId)
+// * @method static void setCalculatedRoomPrices(int $bookingId, int $roomBookingId)
+ * @method static void updateRoomPrice(int $bookingId, int $roomBookingId, float|null $boPrice, float|null $hoPrice)
  */
 class HotelPriceAdapter extends Facade
 {

@@ -28,13 +28,21 @@ export interface ManualChangablePrice {
   isManual: boolean
 }
 
-export interface RoomBookingPrice {
-  avgDailyValue: number
-  boValue: ManualChangablePrice
-  hoValue: ManualChangablePrice
+export interface RoomBookingDayPrice {
+  date: DateResponse
   netValue: number
-  boNote: string
-  hoNote: string
+  boValue: number
+  hoValue: number
+  boFormula: string
+  hoFormula: string
+}
+
+export interface RoomBookingPrice {
+  dayPrices: RoomBookingDayPrice[]
+  boValue: number
+  hoValue: number
+  hoDayValue: number | null
+  boDayValue: number | null
 }
 
 export interface HotelRoomBooking {

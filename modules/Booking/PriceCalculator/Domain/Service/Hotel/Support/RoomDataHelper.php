@@ -22,7 +22,7 @@ class RoomDataHelper
 
     public function roomId(): int
     {
-        return $this->roomBooking->id()->value();
+        return $this->roomBooking->roomInfo()->id();
     }
 
     public function rateId(): int

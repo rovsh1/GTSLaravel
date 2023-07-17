@@ -15,7 +15,6 @@ use Module\Booking\Hotel\Application\UseCase\Admin\GetBooking;
 use Module\Booking\Hotel\Application\UseCase\Admin\GetBookingsByFilters;
 use Module\Booking\Hotel\Application\UseCase\Admin\Room;
 use Module\Booking\Hotel\Application\UseCase\Admin\UpdateExternalNumber;
-use Module\Booking\Hotel\Application\UseCase\Admin\SetManualPrice;
 
 class HotelAdapter
 {

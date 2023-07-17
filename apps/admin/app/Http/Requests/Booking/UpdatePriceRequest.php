@@ -16,24 +16,33 @@ class UpdatePriceRequest extends FormRequest
         ];
     }
 
-    public function getRoomBookingId(): int
+    public function isBoPriceExists(): bool
     {
-        return (int)$this->post('room_booking_id');
+        return $this->exists('boPrice');
     }
 
     public function getBoPrice(): ?float
     {
-        if ($this->exists('boPrice')) {
-            return (float)$this->post('boPrice');
+        if ($this->isBoPriceExists()) {
+            $value = (float)$this->post('boPrice');
+
+            return $value <= 0 ? null : $value;
         }
 
         return null;
     }
 
+    public function isHoPriceExists(): bool
+    {
+        return $this->exists('hoPrice');
+    }
+
     public function getHoPrice(): ?float
     {
-        if ($this->exists('hoPrice')) {
-            return (float)$this->post('hoPrice');
+        if ($this->isHoPriceExists()) {
+            $value = (float)$this->post('hoPrice');
+
+            return $value <= 0 ? null : $value;
         }
 
         return null;

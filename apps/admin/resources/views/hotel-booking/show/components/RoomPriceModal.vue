@@ -1,27 +1,52 @@
 <script setup lang="ts">
 
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
 
+import { RoomBookingPrice } from '~api/booking/details'
+
 import BaseDialog from '~components/BaseDialog.vue'
 
-defineProps<{
+const props = defineProps<{
   bookingId: number
   opened: MaybeRef<boolean>
-  roomBookingId: MaybeRef<number>
+  roomPrice?: RoomBookingPrice
 }>()
+
+interface SubmitPayload {
+  boPrice: number | undefined | null
+  hoPrice: number | undefined | null
+}
 
 const emit = defineEmits<{
   (event: 'close'): void
-  (event: 'submit'): void
+  (event: 'submit', payload: SubmitPayload): void
 }>()
 
-const boPrice = ref<number>()
-const hoPrice = ref<number>()
+const isBoPriceChanged = ref<boolean>(false)
+const boPrice = ref<number | null>()
+const isHoPriceChanged = ref<boolean>(false)
+const hoPrice = ref<number | null>()
+
+const localBoPrice = computed({
+  get: () => (!isBoPriceChanged.value ? props.roomPrice?.boDayValue : boPrice.value),
+  set: (value: number | undefined | null) => {
+    isBoPriceChanged.value = true
+    boPrice.value = value
+  },
+})
+
+const localHoPrice = computed({
+  get: () => (!isHoPriceChanged.value ? props.roomPrice?.hoDayValue : hoPrice.value),
+  set: (value: number | undefined | null) => {
+    isHoPriceChanged.value = true
+    hoPrice.value = value
+  },
+})
 
 const submit = () => {
-  emit('submit')
+  emit('submit', { boPrice: localBoPrice.value, hoPrice: localHoPrice.value })
 }
 
 </script>
@@ -37,12 +62,12 @@ const submit = () => {
     <form ref="modalForm" class="row g-3">
       <div class="col-md-12">
         <label for="room-brutto-price">Цена за номер (брутто) в UZS</label>
-        <input id="room-brutto-price" v-model.number="boPrice" type="number" class="form-control">
+        <input id="room-brutto-price" v-model.number="localBoPrice" type="number" class="form-control">
       </div>
 
       <div class="col-md-12">
         <label for="room-netto-price">Цена за номер (нетто) в UZS</label>
-        <input id="room-netto-price" v-model.number="hoPrice" type="number" class="form-control">
+        <input id="room-netto-price" v-model.number="localHoPrice" type="number" class="form-control">
       </div>
     </form>
 

@@ -8,10 +8,11 @@ use App\Admin\Http\Requests\Booking\Room\AddRoomGuestRequest;
 use App\Admin\Http\Requests\Booking\Room\AddRoomRequest;
 use App\Admin\Http\Requests\Booking\Room\DeleteRoomGuestRequest;
 use App\Admin\Http\Requests\Booking\Room\DeleteRoomRequest;
-use App\Admin\Http\Requests\Booking\Room\UpdatePriceRequest;
 use App\Admin\Http\Requests\Booking\Room\UpdateRoomGuestRequest;
 use App\Admin\Http\Requests\Booking\Room\UpdateRoomRequest;
+use App\Admin\Http\Requests\Booking\UpdatePriceRequest;
 use App\Admin\Support\Facades\Booking\HotelAdapter;
+use App\Admin\Support\Facades\Booking\HotelPriceAdapter;
 use App\Core\Support\Http\Responses\AjaxErrorResponse;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use App\Core\Support\Http\Responses\AjaxSuccessResponse;
@@ -128,11 +129,11 @@ class RoomController
         return new AjaxSuccessResponse();
     }
 
-    public function updatePrice(UpdatePriceRequest $request, int $id): AjaxResponseInterface
+    public function updatePrice(UpdatePriceRequest $request, int $id, int $roomBookingId): AjaxResponseInterface
     {
-        HotelAdapter::updateRoomPrice(
+        HotelPriceAdapter::updateRoomPrice(
             $id,
-            $request->getRoomBookingId(),
+            $roomBookingId,
             $request->getBoPrice(),
             $request->getHoPrice()
         );

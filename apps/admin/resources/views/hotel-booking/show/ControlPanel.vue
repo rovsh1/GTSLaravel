@@ -18,6 +18,7 @@ import { useBookingVoucherStore } from '~resources/views/hotel-booking/show/stor
 
 import { Booking } from '~api/booking'
 import { CancelConditions, ExternalNumberType, ExternalNumberTypeEnum } from '~api/booking/details'
+import { updateBookingPrice } from '~api/booking/price'
 import { BookingRequest, downloadRequestDocument } from '~api/booking/request'
 import { BookingAvailableActionsResponse, BookingStatusResponse } from '~api/booking/status'
 import { Currency } from '~api/models'
@@ -81,8 +82,8 @@ const isRoomsAndGuestsFilled = computed<boolean>(() => !bookingStore.isEmptyGues
 const bookingRequests = computed<BookingRequest[] | null>(() => requestStore.requests)
 const lastHistoryItem = computed(() => statusHistoryStore.lastHistoryItem)
 const [isHistoryModalOpened, toggleHistoryModal] = useToggle<boolean>(false)
-const [isNetPriceModalOpened, toggleNetPriceModal] = useToggle<boolean>(false)
-const [isBruttoPriceModalOpened, toggleBruttoPriceModal] = useToggle<boolean>(false)
+const [isHoPriceModalOpened, toggleHoPriceModal] = useToggle<boolean>(false)
+const [isBoPriceModalOpened, toggleBoPriceModal] = useToggle<boolean>(false)
 
 const handleStatusChange = async (value: number): Promise<void> => {
   await bookingStore.changeStatus(value)
@@ -134,6 +135,24 @@ const handleVoucherSend = async () => {
   await voucherStore.sendVoucher()
 }
 
+const handleSaveBoManualPrice = async (value: number | undefined) => {
+  toggleBoPriceModal(false)
+  await updateBookingPrice({
+    bookingID,
+    boPrice: value,
+  })
+  fetchBooking()
+}
+
+const handleSaveHoManualPrice = async (value: number | undefined) => {
+  toggleHoPriceModal(false)
+  await updateBookingPrice({
+    bookingID,
+    hoPrice: value,
+  })
+  fetchBooking()
+}
+
 onMounted(() => {
   fetchAvailableActions()
   fetchBookingRequests()
@@ -150,15 +169,19 @@ onMounted(() => {
   <PriceModal
     header="Общая сумма (нетто)"
     label="Общая сумма (нетто) в UZS"
-    :opened="isNetPriceModalOpened"
-    @close="toggleNetPriceModal(false)"
+    :value="booking?.price.hoPrice.isManual ? booking?.price.hoPrice.value : undefined"
+    :opened="isHoPriceModalOpened"
+    @close="toggleHoPriceModal(false)"
+    @submit="handleSaveHoManualPrice"
   />
 
   <PriceModal
     header="Общая сумма (брутто)"
     :label="`Общая сумма (брутто) ${orderCurrency?.code_char}`"
-    :opened="isBruttoPriceModalOpened"
-    @close="toggleBruttoPriceModal(false)"
+    :value="booking?.price.boPrice.isManual ? booking?.price.boPrice.value : undefined"
+    :opened="isBoPriceModalOpened"
+    @close="toggleBoPriceModal(false)"
+    @submit="handleSaveBoManualPrice"
   />
 
   <div class="d-flex flex-wrap flex-grow-1 gap-2">
@@ -174,10 +197,10 @@ onMounted(() => {
     <div v-if="booking && orderCurrency" class="float-end">
       Общая сумма:
       <strong>
-        {{ booking.price.boValue.value }}
+        {{ booking.price.boPrice.value }}
         <span class="cur">{{ orderCurrency.sign }}</span>
       </strong>
-      <span v-if="booking.price.boValue.isManual" class="text-muted">(выставлена вручную)</span>
+      <span v-if="booking.price.boPrice.isManual" class="text-muted">(выставлена вручную)</span>
     </div>
   </div>
 
@@ -226,25 +249,25 @@ onMounted(() => {
         <h6>Приход</h6>
         <hr>
         <div v-if="booking && orderCurrency">
-          Общая сумма (брутто): {{ booking.price.boValue.value }}
+          Общая сумма (брутто): {{ booking.price.boPrice.value }}
           <span class="currency">{{ orderCurrency.sign }}</span>
         </div>
-        <a href="#" @click.prevent="toggleBruttoPriceModal(true)">Изменить</a>
+        <a href="#" @click.prevent="toggleBoPriceModal(true)">Изменить</a>
       </div>
       <div class="w-50 rounded shadow-lg p-3">
         <h6>Расход</h6>
         <hr>
         <div v-if="booking && orderCurrency">
-          Общая сумма (нетто): {{ booking.price.hoValue.value }}
+          Общая сумма (нетто): {{ booking.price.hoPrice.value }}
           <span class="currency">{{ orderCurrency.sign }}</span>
         </div>
-        <a href="#" @click.prevent="toggleNetPriceModal(true)">Изменить</a>
+        <a href="#" @click.prevent="toggleHoPriceModal(true)">Изменить</a>
       </div>
     </div>
 
     <div v-if="booking && orderCurrency" class="mt-2">
-      Прибыль = {{ booking.price.boValue.value }} {{ orderCurrency.sign }} - {{ booking.price.hoValue.value }}
-      {{ orderCurrency.sign }} = {{ booking.price.boValue.value - booking.price.hoValue.value }} {{
+      Прибыль = {{ booking.price.boPrice.value }} {{ orderCurrency.sign }} - {{ booking.price.hoPrice.value }}
+      {{ orderCurrency.sign }} = {{ booking.price.boPrice.value - booking.price.hoPrice.value }} {{
         orderCurrency.sign
       }}
     </div>
@@ -296,7 +319,7 @@ onMounted(() => {
       />
 
       <RequestBlock
-        v-if="canSendChangeRequest"
+        v-if="canSendChangeRequest && isRoomsAndGuestsFilled"
         :loading="isRequestFetching"
         text="Ожидание изменений и отправки запроса"
         variant="warning"

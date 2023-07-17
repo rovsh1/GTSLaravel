@@ -4,9 +4,7 @@ import { computed, ref, watch } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
 
-import TimeSelect from '~resources/views/hotel/settings/components/TimeSelect.vue'
-
-import { MarkupCondition, Time } from '~api/hotel/markup-settings'
+import { MarkupCondition, Time, TimePeriod } from '~api/hotel/markup-settings'
 
 import BaseDialog from '~components/BaseDialog.vue'
 
@@ -15,19 +13,14 @@ const props = withDefaults(defineProps<{
   opened: MaybeRef<boolean>
   title: string
   loading?: MaybeRef<boolean>
-  isTimeAvailable?: (time: Time) => boolean
-  minFrom?: Time
-  maxFrom?: Time
-  minTo?: Time
-  maxTo?: Time
+  min?: Time
+  max?: Time
+  freePeriods: TimePeriod[]
 }>(), {
   loading: false,
   value: undefined,
-  minFrom: undefined,
-  maxFrom: undefined,
-  minTo: undefined,
-  maxTo: undefined,
-  isTimeAvailable: undefined,
+  min: undefined,
+  max: undefined,
 })
 
 const emit = defineEmits<{
@@ -40,18 +33,19 @@ const from = ref<Time>()
 const to = ref<Time>()
 const percent = ref<number>()
 
-const minFrom = computed(() => props.minFrom)
-const maxFrom = computed(() => props.maxFrom)
+const minFrom = computed(() => props.min)
+const maxFrom = computed(() => props.max)
 const minTo = computed(() => {
-  if (from.value && !props.minTo) {
+  if (from.value && !props.min) {
     return from.value
   }
-  if (from.value && props.minTo && from.value > props.minTo) {
+  if (from.value && props.min && from.value > props.min) {
     return from.value
   }
-  return props.minTo
+  return props.min
 })
-const maxTo = computed(() => props.maxTo)
+const maxTo = computed(() => props.max)
+const freePeriods = computed(() => props.freePeriods)
 
 watch(localValue, (markupCondition) => {
   if (!markupCondition) {
@@ -91,6 +85,76 @@ const onModalSubmit = async () => {
   clearForm()
 }
 
+const items = computed<string[]>(() => {
+  const options = []
+  for (let i = 0; i <= 24; i++) {
+    let hour = `${i}`
+    if (i < 10) {
+      hour = `0${i}`
+    }
+    const hourTime = `${hour}:00`
+    options.push(hourTime)
+
+    const halfHourTime = `${hour}:30`
+    if (i !== 24) {
+      options.push(halfHourTime)
+    }
+  }
+  return options
+})
+const freeItems = computed(() => {
+  const free: string[] = []
+  items.value.forEach((time) => {
+    freePeriods.value.forEach((period) => {
+      if (time >= period.from && time <= period.to) {
+        free.push(time)
+      }
+    })
+  })
+
+  return free
+})
+
+const selectedItemsPrev = ref([])
+const selectedItems = ref([])
+const startSelectionFrom = ref()
+
+const updateSelection = (index: any) => {
+  if (startSelectionFrom.value === null) {
+    return
+  }
+  const value = items.value[index]
+  if (!freeItems.value.includes(value)) {
+    return
+  }
+
+  const iMin = Math.min(startSelectionFrom.value, index)
+  const iMax = Math.max(startSelectionFrom.value, index)
+
+  selectedItems.value = Array.from(
+    [
+      ...selectedItemsPrev.value,
+      ...items.value.slice(iMin, iMax + 1),
+    ].reduce((acc, n) => acc.set(n, (acc.get(n) ?? 0) + 1), new Map()),
+  )
+    .filter((n) => n[1] === 1)
+    .map((n) => n[0])
+}
+
+const startSelection = (index: any) => {
+  const value = items.value[index]
+  if (!freeItems.value.includes(value)) {
+    return
+  }
+  selectedItemsPrev.value = [...selectedItems.value]
+  startSelectionFrom.value = index
+  updateSelection(index)
+}
+
+const stopSelection = () => {
+  startSelectionFrom.value = null
+}
+
 </script>
 
 <template>
@@ -102,28 +166,49 @@ const onModalSubmit = async () => {
     <template #title>{{ title }}</template>
 
     <form ref="markupConditionModalForm" class="row g-3" @submit.prevent="onModalSubmit">
-      <div class="col-md-6">
-        <TimeSelect
-          id="from"
-          v-model="from"
-          label="Начало"
-          :min="minFrom"
-          :max="maxFrom"
-          :is-time-available="isTimeAvailable"
-          required
-        />
+      <div class="field-required">
+        <label>Период</label>
+        <div
+          class="d-grid column-gap-2 row-gap-1"
+          style="grid-template-columns: 2fr 2fr 2fr 2fr 2fr 2fr 2fr;"
+          @mouseleave="stopSelection"
+          @blur="stopSelection"
+        >
+          <div
+            v-for="(item, idx) in items"
+            :key="item"
+            class="text-center time-block"
+            :class="{ selected: selectedItems.includes(item), disabled: !freeItems.includes(item) }"
+            @mousedown="startSelection(idx)"
+            @mouseenter="updateSelection(idx)"
+            @focusin="updateSelection(idx)"
+            @mouseup="stopSelection"
+          >
+            {{ item }}
+          </div>
+        </div>
       </div>
-      <div class="col-md-6">
-        <TimeSelect
-          id="to"
-          v-model="to"
-          label="Конец"
-          :min="minTo"
-          :max="maxTo"
-          :is-time-available="isTimeAvailable"
-          required
-        />
-      </div>
+
+      <!--      <div class="col-md-6">-->
+      <!--        <TimeSelect-->
+      <!--          id="from"-->
+      <!--          v-model="from"-->
+      <!--          label="Начало"-->
+      <!--          :min="minFrom"-->
+      <!--          :max="maxFrom"-->
+      <!--          required-->
+      <!--        />-->
+      <!--      </div>-->
+      <!--      <div class="col-md-6">-->
+      <!--        <TimeSelect-->
+      <!--          id="to"-->
+      <!--          v-model="to"-->
+      <!--          label="Конец"-->
+      <!--          :min="minTo"-->
+      <!--          :max="maxTo"-->
+      <!--          required-->
+      <!--        />-->
+      <!--      </div>-->
       <div class="col-md-12 field-required">
         <label for="markup">Наценка</label>
         <input
@@ -142,3 +227,38 @@ const onModalSubmit = async () => {
     </template>
   </BaseDialog>
 </template>
+
+<style scoped lang="scss">
+.time-block {
+  display: inline-block;
+  color: var(--bs-secondary-color);
+  background-color: white;
+  padding: 0.2rem;
+  border: var(--bs-border-width) solid var(--bs-border-color);
+
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  &:hover {
+    background-color: rgba(0, 123, 255, 0.5);
+    color: white;
+  }
+
+  &.selected {
+    background-color: var(--bs-primary);
+    color: white;
+  }
+
+  &.disabled {
+    //background-color: gray;
+    background-color: var(--bs-secondary-bg);
+    color: gray;
+    cursor: not-allowed;
+    opacity: .5;
+  }
+}
+</style>

@@ -30,8 +30,7 @@ class RoomBooking extends AbstractAggregateRoot implements EntityInterface
         private GuestCollection $guests,
         private RoomBookingDetails $details,
         private RoomPrice $price,
-    ) {
-    }
+    ) {}
 
     public function id(): Id
     {
@@ -109,6 +108,11 @@ class RoomBooking extends AbstractAggregateRoot implements EntityInterface
                 ''//@todo надо ли?
             )
         );
+    }
+
+    public function recalculatePrices(RoomPriceEditor $editor): void
+    {
+        $this->price = $editor->recalculatePrices($this);
     }
 
     public function setHoDayPrice(float $price, RoomPriceEditor $editor): void

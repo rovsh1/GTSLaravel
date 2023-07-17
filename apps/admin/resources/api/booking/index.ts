@@ -17,8 +17,8 @@ import { getNullableRef } from '~lib/vue'
 export type BookingID = number
 
 export interface BookingPrice {
-  boValue: ManualChangablePrice
-  hoValue: ManualChangablePrice
+  boPrice: ManualChangablePrice
+  hoPrice: ManualChangablePrice
   netValue: number
 }
 

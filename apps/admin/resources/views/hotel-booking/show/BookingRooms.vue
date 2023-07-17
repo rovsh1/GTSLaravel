@@ -14,7 +14,13 @@ import { GuestFormData, RoomFormData } from '~resources/views/hotel-booking/show
 import { useBookingStore } from '~resources/views/hotel-booking/show/store/booking'
 import { useOrderStore } from '~resources/views/hotel-booking/show/store/order-currency'
 
-import { HotelBookingDetails, HotelBookingGuest, HotelRoomBooking } from '~api/booking/details'
+import {
+  HotelBookingDetails,
+  HotelBookingGuest,
+  HotelRoomBooking,
+  RoomBookingPrice,
+} from '~api/booking/details'
+import { updateRoomBookingPrice } from '~api/booking/price'
 import { deleteBookingGuest, deleteBookingRoom } from '~api/booking/rooms'
 import { CountryResponse, useCountrySearchAPI } from '~api/country'
 import { MarkupSettings } from '~api/hotel/markup-settings'
@@ -22,6 +28,7 @@ import { HotelRate, useHotelRatesAPI } from '~api/hotel/price-rate'
 import { Currency } from '~api/models'
 
 import { showConfirmDialog } from '~lib/confirm-dialog'
+import { formatDate } from '~lib/date'
 import { requestInitialData } from '~lib/initial-data'
 
 const [isShowRoomModal, toggleRoomModal] = useToggle()
@@ -37,7 +44,7 @@ const { bookingID, hotelID } = requestInitialData(
 )
 
 const bookingStore = useBookingStore()
-const { fetchBooking } = bookingStore
+const { fetchBooking, fetchAvailableActions } = bookingStore
 const orderStore = useOrderStore()
 
 const bookingDetails = computed<HotelBookingDetails | null>(() => bookingStore.booking)
@@ -90,6 +97,7 @@ const handleAddRoom = (): void => {
   editRoomBookingId.value = undefined
   roomForm.value = {}
   toggleRoomModal()
+  fetchAvailableActions()
 }
 
 const handleEditRoom = (roomBookingId: number, room: HotelRoomBooking): void => {
@@ -116,9 +124,22 @@ const handleDeleteRoom = async (roomBookingId: number): Promise<void> => {
   }
 }
 
-const handleEditRoomPrice = (roomBookingId: number): void => {
+const editableRoomPrice = ref<RoomBookingPrice>()
+const handleEditRoomPrice = (roomBookingId: number, roomPrice: RoomBookingPrice): void => {
   editRoomBookingId.value = roomBookingId
+  editableRoomPrice.value = roomPrice
   toggleRoomPriceModal(true)
+}
+
+const handleUpdateRoomPrice = async (boPrice: number | undefined, hoPrice: number | undefined) => {
+  toggleRoomPriceModal(false)
+  await updateRoomBookingPrice({
+    bookingID,
+    roomBookingId: editRoomBookingId.value as number,
+    boPrice,
+    hoPrice,
+  })
+  fetchBooking()
 }
 
 const getCheckInTime = (room: HotelRoomBooking) => {
@@ -170,12 +191,11 @@ fetchCountries()
   />
 
   <RoomPriceModal
-    v-if="editRoomBookingId !== undefined"
     :booking-id="bookingID"
-    :room-booking-id="editRoomBookingId"
+    :room-price="editableRoomPrice"
     :opened="isShowRoomPriceModal"
     @close="toggleRoomPriceModal(false)"
-    @submit="toggleRoomPriceModal(false)"
+    @submit="({ boPrice, hoPrice }) => handleUpdateRoomPrice(boPrice, hoPrice)"
   />
 
   <div class="mt-3" />
@@ -236,48 +256,47 @@ fetchCountries()
               <thead>
                 <tr>
                   <th />
-                  <th class="text-nowrap">Цена за ночь</th>
+                  <th class="text-nowrap">Дата</th>
                   <th class="text-nowrap">Итого</th>
                   <th class="text-nowrap">Подробный расчет</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr v-if="orderCurrency">
+              <tbody v-if="orderCurrency">
+                <tr v-for="dayPrice in room.price.dayPrices" :key="dayPrice.date">
                   <td>Стоимость брутто</td>
                   <td class="text-nowrap">
-                    {{ room.price.avgDailyValue }}
-                    <span class="cur">{{ orderCurrency.sign }}</span>
+                    {{ formatDate(dayPrice.date) }}
                   </td>
                   <td class="text-nowrap">
-                    {{ room.price.boValue.value }}
+                    {{ dayPrice.boValue }}
                     <span class="cur">{{ orderCurrency.sign }}</span>
                   </td>
-                  <td class="text-nowrap">{{ room.price.boNote }}</td>
+                  <td class="text-nowrap">{{ dayPrice.boFormula }}</td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <div v-if="orderCurrency" class="conditions">
-            <span class="condition-item">Ранний заезд  - <code>????</code>
-              <span class="cur">{{ orderCurrency.sign }}</span>
-            </span>
-            <span class="condition-item">Поздний выезд  - <code>????</code>
-              <span class="cur">{{ orderCurrency.sign }}</span>
-            </span>
-          </div>
+          <!--          <div v-if="orderCurrency" class="conditions">-->
+          <!--            <span class="condition-item">Ранний заезд  - <code>????</code>-->
+          <!--              <span class="cur">{{ orderCurrency.sign }}</span>-->
+          <!--            </span>-->
+          <!--            <span class="condition-item">Поздний выезд  - <code>????</code>-->
+          <!--              <span class="cur">{{ orderCurrency.sign }}</span>-->
+          <!--            </span>-->
+          <!--          </div>-->
           <div v-if="orderCurrency" class="d-flex flex-row justify-content-between w-100 mt-2">
-            <strong>Итого: {{ room.price.hoValue.value }}
+            <strong>Итого: {{ room.price.boValue }}
               <span class="cur">{{ orderCurrency.sign }}</span>
             </strong>
             <a
               v-if="canChangeRoomPrice"
               href="#"
-              @click.prevent="handleEditRoomPrice(room.id)"
+              @click.prevent="handleEditRoomPrice(room.id, room.price)"
             >
               Изменить цену номера
             </a>
           </div>
-          <span v-if="room.price.hoValue.isManual" class="text-muted">(цена за номер выставлена вручную)</span>
+          <span v-if="room.price.boDayValue" class="text-muted">(цена за номер выставлена вручную)</span>
         </div>
         <div class="w-100 rounded shadow-lg p-4">
           <h6>Список гостей</h6>

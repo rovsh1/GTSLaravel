@@ -20,8 +20,8 @@ final class BORoomPriceFormula implements RoomPriceFormulaInterface
     private string $expression = '((Sb - D) * k + Z) * n';
 
     public function __construct(
-        private readonly int|float $earlyCheckInPercent,
-        private readonly int|float $lateCheckInPercent,
+        private readonly int|float|null $earlyCheckInPercent,
+        private readonly int|float|null $lateCheckInPercent,
         //private readonly int $nightsCount,
     )
     {

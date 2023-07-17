@@ -15,7 +15,7 @@ use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking\RoomBookingStatu
 use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBooking\RoomInfo;
 use Module\Booking\Hotel\Domain\ValueObject\RoomPrice;
 use Module\Booking\Hotel\Infrastructure\Repository\BookingRepository;
-use Module\Booking\PriceCalculator\Domain\Service\HotelBooking\RoomCalculator;
+use Module\Booking\PriceCalculator\Domain\Service\Hotel\RoomPriceEditor;
 use Module\Shared\Domain\ValueObject\Id;
 use Module\Shared\Domain\ValueObject\Percent;
 use Module\Shared\Domain\ValueObject\TimePeriod;
@@ -28,8 +28,8 @@ class Update implements UseCaseInterface
         private readonly BookingRepository $repository,
         private readonly RoomBookingRepositoryInterface $roomBookingRepository,
         private readonly HotelRoomAdapterInterface $hotelRoomAdapter,
-        private readonly RoomCalculator $priceCalculator,
-        private readonly DomainEventDispatcherInterface $eventDispatcher
+        private readonly DomainEventDispatcherInterface $eventDispatcher,
+        private readonly RoomPriceEditor $roomPriceEditor,
     ) {}
 
     public function execute(UpdateRoomDto $request): void
@@ -45,15 +45,6 @@ class Update implements UseCaseInterface
         }
         $earlyCheckIn = $request->earlyCheckIn !== null ? $this->buildMarkupCondition($request->earlyCheckIn) : null;
         $lateCheckOut = $request->lateCheckOut !== null ? $this->buildMarkupCondition($request->lateCheckOut) : null;
-        $roomPrice = $this->buildPrice(
-            $booking,
-            $hotelRoomDto->id,
-            $request->rateId,
-            $guests->count(),
-            $request->isResident,
-            $earlyCheckIn,
-            $lateCheckOut
-        );
 
         $roomBooking = new RoomBooking(
             id: $currentRoom->id(),
@@ -73,34 +64,14 @@ class Update implements UseCaseInterface
                 lateCheckOut: $lateCheckOut,
                 discount: new Percent($request->discount ?? 0),
             ),
-            price: $roomPrice,
+            price: $currentRoom->price(),
         );
+        $roomBooking->recalculatePrices($this->roomPriceEditor);
 
         $this->roomBookingRepository->store($roomBooking);
         $booking->updateRoomBooking($request->roomBookingId, $roomBooking);
         $this->eventDispatcher->dispatch(...$booking->pullEvents());
     }
-
-    private function buildPrice(
-        Booking $booking,
-        int $roomId,
-        int $rateId,
-        int $guestsCount,
-        bool $isResident,
-        ?Condition $earlyCheckIn,
-        ?Condition $lateCheckOut
-    ): RoomPrice {
-        return $this->priceCalculator->calculateByBooking(
-            $booking,
-            $roomId,
-            $rateId,
-            $isResident,
-            $guestsCount,
-            $earlyCheckIn?->priceMarkup()->value(),
-            $lateCheckOut?->priceMarkup()->value()
-        );
-    }
-
 
     private function buildMarkupCondition(array $data): Condition
     {

@@ -1,19 +1,36 @@
 <script setup lang="ts">
 
+import { computed, ref } from 'vue'
+
 import { MaybeRef } from '@vueuse/core'
 
 import BaseDialog from '~components/BaseDialog.vue'
 
-defineProps<{
+const props = defineProps<{
   opened: MaybeRef<boolean>
   header: string
   label: string
+  value?: number
 }>()
 
-defineEmits<{
+const emit = defineEmits<{
   (event: 'close'): void
-  (event: 'submit'): void
+  (event: 'submit', value: number | undefined): void
 }>()
+
+const isChanged = ref(false)
+const tempValue = ref<number | undefined>()
+const localValue = computed({
+  get: () => (!isChanged.value ? props.value : tempValue.value),
+  set: (value: number | undefined) => {
+    isChanged.value = true
+    tempValue.value = value
+  },
+})
+
+const handleSubmit = () => {
+  emit('submit', localValue.value)
+}
 
 </script>
 
@@ -27,12 +44,12 @@ defineEmits<{
     <form ref="modalForm" class="row g-3">
       <div class="col-md-12">
         <label for="brutto-price">{{ label }}</label>
-        <input id="brutto-price" type="number" class="form-control">
+        <input id="brutto-price" v-model.number="localValue" type="number" class="form-control">
       </div>
     </form>
 
     <template #actions-end>
-      <button class="btn btn-primary" type="button" @click="$emit('submit')">Сохранить</button>
+      <button class="btn btn-primary" type="button" @click="handleSubmit">Сохранить</button>
       <button class="btn btn-cancel" type="button" @click="$emit('close')">Отмена</button>
     </template>
   </BaseDialog>

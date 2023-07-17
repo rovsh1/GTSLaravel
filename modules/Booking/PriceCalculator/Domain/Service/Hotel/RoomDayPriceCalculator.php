@@ -2,6 +2,7 @@
 
 namespace Module\Booking\PriceCalculator\Domain\Service\Hotel;
 
+use Carbon\CarbonInterface;
 use Module\Booking\Hotel\Domain\ValueObject\RoomDayPrice;
 use Module\Booking\PriceCalculator\Domain\Service\Hotel\Formula\BONonResidentDayPriceFormula;
 use Module\Booking\PriceCalculator\Domain\Service\Hotel\Formula\BOResidentDayPriceFormula;
@@ -12,6 +13,7 @@ use Module\Booking\PriceCalculator\Domain\Service\Hotel\Formula\HOResidentDayPri
 use Module\Booking\PriceCalculator\Domain\Service\Hotel\Formula\HORoomPriceFormula;
 use Module\Booking\PriceCalculator\Domain\Service\Hotel\Support\FormulaVariables;
 use Module\Booking\PriceCalculator\Domain\ValueObject\CalculationResult;
+use Module\Shared\Domain\ValueObject\Date;
 
 class RoomDayPriceCalculator
 {
@@ -36,13 +38,13 @@ class RoomDayPriceCalculator
         $this->hoDayPriceCalculator = $this->makeHODayPriceCalculator();
     }
 
-    public function calculate($date, float $netValue): RoomDayPrice
+    public function calculate(CarbonInterface $date, float $netValue): RoomDayPrice
     {
         $boResult = $this->getBoResult($netValue);
         $hoResult = $this->getHoResult($netValue);
 
         return new RoomDayPrice(
-            date: $date,
+            date: new Date($date->toIso8601String()),
             netValue: $netValue,
             boValue: $boResult->value,
             hoValue: $hoResult->value,
