@@ -131,7 +131,7 @@ const handleEditRoomPrice = (roomBookingId: number, roomPrice: RoomBookingPrice)
   toggleRoomPriceModal(true)
 }
 
-const handleUpdateRoomPrice = async (boPrice: number | undefined, hoPrice: number | undefined) => {
+const handleUpdateRoomPrice = async (boPrice: number | undefined | null, hoPrice: number | undefined | null) => {
   toggleRoomPriceModal(false)
   await updateRoomBookingPrice({
     bookingID,

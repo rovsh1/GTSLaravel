@@ -33,18 +33,18 @@ const from = ref<Time>()
 const to = ref<Time>()
 const percent = ref<number>()
 
-const minFrom = computed(() => props.min)
-const maxFrom = computed(() => props.max)
-const minTo = computed(() => {
-  if (from.value && !props.min) {
-    return from.value
-  }
-  if (from.value && props.min && from.value > props.min) {
-    return from.value
-  }
-  return props.min
-})
-const maxTo = computed(() => props.max)
+// const minFrom = computed(() => props.min)
+// const maxFrom = computed(() => props.max)
+// const minTo = computed(() => {
+//   if (from.value && !props.min) {
+//     return from.value
+//   }
+//   if (from.value && props.min && from.value > props.min) {
+//     return from.value
+//   }
+//   return props.min
+// })
+// const maxTo = computed(() => props.max)
 const freePeriods = computed(() => props.freePeriods)
 
 watch(localValue, (markupCondition) => {
@@ -115,8 +115,8 @@ const freeItems = computed(() => {
   return free
 })
 
-const selectedItemsPrev = ref([])
-const selectedItems = ref([])
+const selectedItemsPrev = ref<string[]>([])
+const selectedItems = ref<string[]>([])
 const startSelectionFrom = ref()
 
 const updateSelection = (index: any) => {
@@ -167,7 +167,10 @@ const stopSelection = () => {
 
     <form ref="markupConditionModalForm" class="row g-3" @submit.prevent="onModalSubmit">
       <div class="field-required">
-        <label>Период</label>
+        <label>
+          Период
+          <input type="hidden">
+        </label>
         <div
           class="d-grid column-gap-2 row-gap-1"
           style="grid-template-columns: 2fr 2fr 2fr 2fr 2fr 2fr 2fr;"
@@ -231,20 +234,15 @@ const stopSelection = () => {
 <style scoped lang="scss">
 .time-block {
   display: inline-block;
-  color: var(--bs-secondary-color);
-  background-color: white;
   padding: 0.2rem;
   border: var(--bs-border-width) solid var(--bs-border-color);
-
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
+  background-color: white;
+  color: var(--bs-secondary-color);
   user-select: none;
+  -webkit-touch-callout: none;
 
   &:hover {
-    background-color: rgba(0, 123, 255, 0.5);
+    background-color: rgba(0, 123, 255, 50%);
     color: white;
   }
 
@@ -254,11 +252,10 @@ const stopSelection = () => {
   }
 
   &.disabled {
-    //background-color: gray;
     background-color: var(--bs-secondary-bg);
     color: gray;
+    opacity: 0.5;
     cursor: not-allowed;
-    opacity: .5;
   }
 }
 </style>

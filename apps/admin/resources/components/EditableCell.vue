@@ -137,6 +137,6 @@ svg {
 }
 
 .editable-input {
-  width: 80px!important;
+  width: 80px;
 }
 </style>

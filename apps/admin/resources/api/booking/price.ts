@@ -9,8 +9,8 @@ import { getNullableRef } from '~lib/vue'
 
 export interface UpdateBookingPricePayload {
   bookingID: number
-  boPrice?: number
-  hoPrice?: number
+  boPrice?: number | null
+  hoPrice?: number | null
 }
 
 export interface UpdateRoomBookingPricePayload extends UpdateBookingPricePayload {
