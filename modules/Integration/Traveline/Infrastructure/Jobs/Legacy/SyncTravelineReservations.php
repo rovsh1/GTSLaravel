@@ -210,11 +210,7 @@ class SyncTravelineReservations implements ShouldQueue
         return $rooms->map(
             function (Room $room) use ($period, $hotelDefaultCheckInStart, $hotelDefaultCheckOutEnd, &$fakeRooms) {
                 $guestsDto = $this->covertRoomGuestsToDto($room->guests);
-                $guestsInRoomCount = 1;
-                if ($room->rooms_number > 1) {
-                    $guestsInRoomCount = $room->guests_number;
-                }
-                $guestChunks = array_chunk($guestsDto->all(), $guestsInRoomCount);
+                $guestChunks = array_chunk($guestsDto->all(), $room->guests_number);
                 $countChunks = count($guestChunks);
                 $preparedPrice = $room->price_net;
                 if ($countChunks > 1) {
