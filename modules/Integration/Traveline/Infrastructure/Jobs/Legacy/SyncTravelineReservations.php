@@ -104,9 +104,6 @@ class SyncTravelineReservations implements ShouldQueue
         $oldHash = md5($reservation->data);
         $newDto = $this->convertHotelReservationToDto($reservation, $travelineReservationStatus->value);
         $newHash = md5(json_encode($newDto));
-        if ($reservation->id === 6397) {
-            \Log::debug('BOOKING: 6397', ['old' => $oldHash, 'new' => $newHash, 'obj' => $newDto]);
-        }
         if ($oldHash === $newHash) {
             return null;
         }
