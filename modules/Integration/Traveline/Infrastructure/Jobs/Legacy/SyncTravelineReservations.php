@@ -215,7 +215,11 @@ class SyncTravelineReservations implements ShouldQueue
                     $guestsInRoomCount = $room->guests_number;
                 }
                 $guestChunks = array_chunk($guestsDto->all(), $guestsInRoomCount);
-                $preparedPrice = $room->price_net / count($guestChunks);
+                $countChunks = count($guestChunks);
+                $preparedPrice = $room->price_net;
+                if ($countChunks > 1) {
+                    $preparedPrice = $room->price_net / $countChunks;
+                }
                 while (count($guestChunks) > 1) {
                     $guests = array_shift($guestChunks);
                     $fakeRooms[] = new RoomDto(
