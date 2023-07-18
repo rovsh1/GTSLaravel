@@ -3,9 +3,10 @@
 namespace Module\Booking\Common\Domain\ValueObject;
 
 use Module\Booking\Hotel\Domain\ValueObject\ManualChangablePrice;
+use Module\Shared\Contracts\CanEquate;
 use Module\Shared\Domain\ValueObject\SerializableDataInterface;
 
-final class BookingPrice implements SerializableDataInterface
+final class BookingPrice implements SerializableDataInterface, CanEquate
 {
     public function __construct(
         private readonly float $netValue,
@@ -53,5 +54,16 @@ final class BookingPrice implements SerializableDataInterface
             ManualChangablePrice::fromData($data['hoPrice']),
             ManualChangablePrice::fromData($data['boPrice']),
         );
+    }
+
+    /**
+     * @param static $b
+     * @return bool
+     */
+    public function isEqual(mixed $b): bool
+    {
+        return $this->netValue === $b->netValue
+            && $this->boPrice->isEqual($b->boPrice)
+            && $this->hoPrice->isEqual($b->hoPrice);
     }
 }

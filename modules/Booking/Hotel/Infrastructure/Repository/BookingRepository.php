@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Collection;
 use Module\Booking\Common\Domain\ValueObject\BookingPrice;
 use Module\Booking\Common\Infrastructure\Repository\AbstractBookingRepository as BaseRepository;
 use Module\Booking\Hotel\Domain\Entity\Booking;
-use Module\Booking\Hotel\Domain\Entity\RoomBooking;
 use Module\Booking\Hotel\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\Hotel\Domain\Repository\RoomBookingRepositoryInterface;
 use Module\Booking\Hotel\Domain\ValueObject\Details\AdditionalInfo;
@@ -17,7 +16,6 @@ use Module\Booking\Hotel\Domain\ValueObject\Details\BookingPeriod;
 use Module\Booking\Hotel\Domain\ValueObject\Details\CancelConditions;
 use Module\Booking\Hotel\Domain\ValueObject\Details\HotelInfo;
 use Module\Booking\Hotel\Domain\ValueObject\Details\RoomBookingCollection;
-use Module\Booking\Hotel\Domain\ValueObject\ManualChangablePrice;
 use Module\Booking\Hotel\Infrastructure\Models\Booking as Model;
 use Module\Booking\Hotel\Infrastructure\Models\BookingDetails;
 use Module\Shared\Domain\ValueObject\Id;
@@ -146,7 +144,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
     private function buildEntityFromModel(
         Model $booking,
         BookingDetails $detailsModel,
-        RoomBookingCollection $roomBookings
+        RoomBookingCollection $roomBookings,
     ): Booking {
         $detailsData = $detailsModel->data;
         $additionalInfo = $detailsData['additionalInfo'] ?? null;

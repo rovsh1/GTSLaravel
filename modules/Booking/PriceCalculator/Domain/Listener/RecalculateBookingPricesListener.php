@@ -24,14 +24,11 @@ class RecalculateBookingPricesListener implements DomainEventListenerInterface
     public function handle(DomainEventInterface|PriceBecomeDeprecatedEventInterface $event): void
     {
         $booking = $this->repository->find($event->bookingId());
-        if ($booking->isManualBoPrice()) {
-            return;
-        }
         foreach ($booking->roomBookings() as $roomBooking) {
             $roomBooking->recalculatePrices($this->roomPriceEditor);
             $this->roomBookingRepository->store($roomBooking);
         }
-        $booking->setCalculatedPrices($this->bookingCalculator);
+        $booking->recalculatePrices($this->bookingCalculator);
         $this->bookingUpdater->store($booking);
     }
 }

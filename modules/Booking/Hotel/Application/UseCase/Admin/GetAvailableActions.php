@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Module\Booking\Hotel\Application\UseCase\Admin;
 
+use Module\Booking\Common\Application\Service\StatusStorage;
 use Module\Booking\Common\Application\Support\UseCase\Admin\GetAvailableActions as Base;
 use Module\Booking\Common\Domain\Service\RequestRules;
 use Module\Booking\Common\Domain\Service\StatusRules\AdministratorRules;
 use Module\Booking\Hotel\Domain\Repository\BookingRepositoryInterface;
-use Module\Booking\Hotel\Infrastructure\Repository\BookingRepository;
-use Sdk\Module\Contracts\Bus\QueryBusInterface;
 
 class GetAvailableActions extends Base
 {
@@ -17,9 +16,9 @@ class GetAvailableActions extends Base
 //        StatusRulesInterface $statusRules,
         RequestRules $requestRules,
         BookingRepositoryInterface $repository,
-        QueryBusInterface $queryBus
+        StatusStorage $statusStorage
     ) {
         //@todo тут пробрасываются рулзы вручную пока
-        parent::__construct(new AdministratorRules(), $requestRules, $repository, $queryBus);
+        parent::__construct(new AdministratorRules(), $requestRules, $repository, $statusStorage);
     }
 }

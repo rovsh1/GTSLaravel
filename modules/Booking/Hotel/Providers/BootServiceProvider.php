@@ -2,9 +2,11 @@
 
 namespace Module\Booking\Hotel\Providers;
 
+use Module\Booking\Common\Application\Factory\BookingDtoFactoryInterface;
 use Module\Booking\Common\Domain\Adapter\FileStorageAdapterInterface;
 use Module\Booking\Common\Domain\Factory\DocumentGeneratorFactory;
 use Module\Booking\Common\Infrastructure\Adapter\FileStorageAdapter;
+use Module\Booking\Hotel\Application\Factory\BookingDtoFactory;
 use Module\Booking\Hotel\Domain;
 use Module\Booking\Hotel\Infrastructure;
 use Module\Booking\PriceCalculator\Domain\Service\BookingCalculatorInterface;
@@ -39,7 +41,8 @@ class BootServiceProvider extends ServiceProvider
             )
         );
         $this->app->singleton(
-            Domain\Repository\RoomBookingRepositoryInterface::class, Infrastructure\Repository\RoomBookingRepository::class,
+            Domain\Repository\RoomBookingRepositoryInterface::class,
+            Infrastructure\Repository\RoomBookingRepository::class,
         );
         $this->app->singleton(
             Domain\Repository\BookingRepositoryInterface::class,
@@ -48,6 +51,10 @@ class BootServiceProvider extends ServiceProvider
         $this->app->singleton(
             BookingCalculatorInterface::class,
             BookingCalculator::class,
+        );
+        $this->app->singleton(
+            BookingDtoFactoryInterface::class,
+            BookingDtoFactory::class,
         );
 //        $this->app->singleton(
 //            Domain\Repository\RoomRepositoryInterface::class,

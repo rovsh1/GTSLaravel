@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Common\Application\Support\UseCase\Admin;
 
-use Module\Booking\Common\Application\Query\Admin\GetStatusSettings;
+use Module\Booking\Common\Application\Service\StatusStorage;
 use Module\Booking\Common\Domain\Event\BookingCreated;
 use Module\Booking\Common\Domain\Event\Status\BookingCancelled;
 use Module\Booking\Common\Domain\Event\Status\BookingCancelledFee;
@@ -24,20 +24,19 @@ use Module\Booking\Common\Domain\Repository\BookingChangesLogRepositoryInterface
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Common\Infrastructure\Models\BookingChangesLog;
 use Module\Booking\Hotel\Application\Dto\StatusEventDto;
-use Sdk\Module\Contracts\Bus\QueryBusInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class GetStatusHistory implements UseCaseInterface
 {
     public function __construct(
         private readonly BookingChangesLogRepositoryInterface $changesLogRepository,
-        private readonly QueryBusInterface $queryBus
+        private readonly StatusStorage $statusStorage
     ) {}
 
     public function execute(int $id): array
     {
         $statusEvents = $this->changesLogRepository->getStatusHistory($id);
-        $statusesSettings = $this->queryBus->execute(new GetStatusSettings());
+        $statusesSettings = $this->statusStorage->statuses();
         $statusColorsIndexedByStatusId = collect($statusesSettings)->keyBy('id')->map->color;
 
         return $statusEvents->map(fn(BookingChangesLog $changesLog) => new StatusEventDto(

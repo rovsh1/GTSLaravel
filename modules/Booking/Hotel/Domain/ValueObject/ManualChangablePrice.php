@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace Module\Booking\Hotel\Domain\ValueObject;
 
+use Module\Shared\Contracts\CanEquate;
 use Module\Shared\Domain\ValueObject\SerializableDataInterface;
 use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 
-class ManualChangablePrice implements ValueObjectInterface, SerializableDataInterface
+final class ManualChangablePrice implements ValueObjectInterface, SerializableDataInterface, CanEquate
 {
     public function __construct(
         private readonly float $value,
         private readonly bool $isManual = false
-    ) {}
+    ) {
+    }
 
     public function value(): float
     {
@@ -38,5 +40,15 @@ class ManualChangablePrice implements ValueObjectInterface, SerializableDataInte
             $data['value'],
             $data['isManual'],
         );
+    }
+
+    /**
+     * @param static $b
+     * @return bool
+     */
+    public function isEqual(mixed $b): bool
+    {
+        return $this->isManual === $b->isManual
+            && $this->value === $b->value;
     }
 }

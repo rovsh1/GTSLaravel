@@ -1,7 +1,6 @@
 import { MaybeRef } from '@vueuse/core'
 
 import { DateResponse, useAdminAPI } from '~api'
-import { BookingID } from '~api/booking/index'
 
 export type StatusID = number
 
@@ -38,11 +37,11 @@ export interface BookingStatusHistoryResponse {
 }
 
 export interface BookingAvailableStatusesPayload {
-  bookingID: BookingID
+  bookingID: number
 }
 
 export interface BookingStatusHistoryPayload {
-  bookingID: BookingID
+  bookingID: number
 }
 
 export const useBookingStatusesAPI = (props?: any) =>

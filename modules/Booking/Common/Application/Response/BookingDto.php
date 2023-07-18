@@ -14,7 +14,7 @@ abstract class BookingDto extends AbstractDomainBasedDto
 {
     public function __construct(
         public readonly int $id,
-        public readonly int $status,
+        public readonly StatusDto $status,
         public readonly int $orderId,
         public readonly CarbonImmutable $createdAt,
         public readonly int $creatorId,

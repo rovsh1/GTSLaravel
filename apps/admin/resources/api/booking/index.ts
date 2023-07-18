@@ -11,6 +11,7 @@ import {
   HotelRoomBooking,
   ManualChangablePrice,
 } from '~api/booking/details'
+import { BookingStatusResponse } from '~api/booking/status'
 
 import { getNullableRef } from '~lib/vue'
 
@@ -25,7 +26,7 @@ export interface BookingPrice {
 export interface Booking {
   id: BookingID
   orderId: number
-  status: number
+  status: BookingStatusResponse
   type: number
   source: number
   creatorId: number

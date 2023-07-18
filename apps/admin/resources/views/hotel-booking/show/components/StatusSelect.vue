@@ -8,36 +8,31 @@ import { BookingStatusResponse } from '~api/booking/status'
 import ButtonLoadingSpinner from '~components/ButtonLoadingSpinner.vue'
 
 const props = defineProps<{
-  modelValue: number
+  modelValue: BookingStatusResponse
   statuses: MaybeRef<BookingStatusResponse[]>
   availableStatuses: MaybeRef<BookingStatusResponse[] | null>
   isLoading?: MaybeRef<boolean>
 }>()
 
 const emit = defineEmits<{
-  (event: 'update:modelValue', value: number): void
+  (event: 'update:modelValue', value: BookingStatusResponse): void
   (event: 'change', value: number): void
 }>()
 
-const statuses = unref(props.statuses)
+const statuses = Object.values(unref(props.statuses))
 
-const label = computed<string | undefined>(() => {
-  const status = statuses.find((statusData: BookingStatusResponse) => statusData.id === props.modelValue)
-  return status?.name
-})
+const label = computed<string | undefined>(() => props.modelValue.name)
 
-const statusClass = computed<string>(() => {
-  const status = statuses.find((statusData: BookingStatusResponse) => statusData.id === props.modelValue)
-  return status?.color ? `text-bg-${status.color}` : 'text-bg-secondary'
-})
+const statusClass = computed<string>(() => (props.modelValue.color ? `text-bg-${props.modelValue.color}` : 'text-bg-secondary'))
 
 const availableStatuses = computed<BookingStatusResponse[] | null>(() => unref(props.availableStatuses))
 
 const isLoading = computed<boolean>(() => Boolean(unref(props.isLoading)))
 
 const handleChangeStatus = (value: number): void => {
+  const newStatus = statuses.find((status) => status.id === value)
   setTimeout(() => {
-    emit('update:modelValue', value)
+    emit('update:modelValue', newStatus as BookingStatusResponse)
     emit('change', value)
   })
 }

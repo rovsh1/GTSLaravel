@@ -70,6 +70,19 @@ abstract class AbstractBooking extends AbstractAggregateRoot implements
         return $this->price;
     }
 
+    public function recalculatePrices(BookingCalculatorInterface $calculator): void
+    {
+        $this->price = new BookingPrice(
+            netValue: $this->price->netValue(),
+            boPrice: $this->price()->boPrice()->isManual()
+                ? $this->price()->boPrice()
+                : new ManualChangablePrice($calculator->calculateBoPrice($this)),
+            hoPrice: $this->price()->hoPrice()->isManual()
+                ? $this->price()->hoPrice()
+                : new ManualChangablePrice($calculator->calculateHoPrice($this)),
+        );
+    }
+
     public function setBoPriceManually(float $price): void
     {
         $this->price = new BookingPrice(
@@ -156,8 +169,12 @@ abstract class AbstractBooking extends AbstractAggregateRoot implements
 
     public function isManualBoPrice(): bool
     {
-        //@todo уточнить у Сергея по поводу boValue
         return $this->price()->boPrice()->isManual();
+    }
+
+    public function isManualHoPrice(): bool
+    {
+        return $this->price()->hoPrice()->isManual();
     }
 
     public function canSendClientVoucher(): bool

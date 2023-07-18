@@ -36,7 +36,7 @@ class SetManualPrice implements UseCaseInterface
         $this->roomBookingRepository->store($roomBooking);
 
         $booking = $this->bookingRepository->find($bookingId);
-        $booking->setCalculatedPrices($this->bookingCalculator);
+        $booking->recalculatePrices($this->bookingCalculator);
         $this->bookingUpdater->store($booking);
     }
 }

@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace Module\Booking\Common\Application\Support\UseCase\Admin;
 
-use Module\Booking\Common\Application\Query\Admin\GetStatusSettings;
 use Module\Booking\Common\Application\Response\AvailableActionsDto;
 use Module\Booking\Common\Application\Response\StatusDto;
+use Module\Booking\Common\Application\Service\StatusStorage;
 use Module\Booking\Common\Domain\Entity\AbstractBooking;
 use Module\Booking\Common\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\Common\Domain\Service\RequestRules;
 use Module\Booking\Common\Domain\Service\StatusRules\StatusRulesInterface;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
-use Sdk\Module\Contracts\Bus\QueryBusInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class GetAvailableActions implements UseCaseInterface
@@ -21,7 +20,7 @@ class GetAvailableActions implements UseCaseInterface
         private readonly StatusRulesInterface $statusRules,
         private readonly RequestRules $requestRules,
         private readonly BookingRepositoryInterface $repository,
-        private readonly QueryBusInterface $queryBus
+        private readonly StatusStorage $statusStorage,
     ) {}
 
     public function execute(int $bookingId): AvailableActionsDto
@@ -50,7 +49,7 @@ class GetAvailableActions implements UseCaseInterface
     {
         $statuses = $this->statusRules->getStatusTransitions($booking->status());
         $statusIds = array_flip(array_map(fn(BookingStatusEnum $status) => $status->value, $statuses));
-        $statusSettings = $this->queryBus->execute(new GetStatusSettings());
+        $statusSettings = $this->statusStorage->statuses();
 
         return array_values(
             array_filter($statusSettings, fn(StatusDto $statusDto) => array_key_exists($statusDto->id, $statusIds))

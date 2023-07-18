@@ -120,7 +120,7 @@ const selectedItems = ref<string[]>([])
 const startSelectionFrom = ref()
 
 const updateSelection = (index: any) => {
-  if (startSelectionFrom.value === null) {
+  if (startSelectionFrom.value === undefined) {
     return
   }
   const value = items.value[index]
@@ -141,7 +141,15 @@ const updateSelection = (index: any) => {
     .map((n) => n[0])
 }
 
-const startSelection = (index: any) => {
+const stopSelection = () => {
+  startSelectionFrom.value = undefined
+}
+
+const startOrStopSelection = (index: any) => {
+  if (startSelectionFrom.value !== undefined) {
+    stopSelection()
+    return
+  }
   const value = items.value[index]
   if (!freeItems.value.includes(value)) {
     return
@@ -149,10 +157,6 @@ const startSelection = (index: any) => {
   selectedItemsPrev.value = [...selectedItems.value]
   startSelectionFrom.value = index
   updateSelection(index)
-}
-
-const stopSelection = () => {
-  startSelectionFrom.value = null
 }
 
 </script>
@@ -182,10 +186,9 @@ const stopSelection = () => {
             :key="item"
             class="text-center time-block"
             :class="{ selected: selectedItems.includes(item), disabled: !freeItems.includes(item) }"
-            @mousedown="startSelection(idx)"
+            @mousedown="startOrStopSelection(idx)"
             @mouseenter="updateSelection(idx)"
             @focusin="updateSelection(idx)"
-            @mouseup="stopSelection"
           >
             {{ item }}
           </div>

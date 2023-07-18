@@ -6,6 +6,7 @@ namespace Module\Booking\Hotel\Application\Dto;
 
 use Carbon\CarbonImmutable;
 use Module\Booking\Common\Application\Response\BookingDto as BaseDto;
+use Module\Booking\Common\Application\Response\StatusDto;
 use Module\Booking\Common\Domain\Entity\BookingInterface;
 use Module\Booking\Hotel\Application\Dto\Details\AdditionalInfoDto;
 use Module\Booking\Hotel\Application\Dto\Details\BookingPeriodDto;
@@ -20,7 +21,7 @@ class BookingDto extends BaseDto
 {
     public function __construct(
         int $id,
-        int $status,
+        StatusDto $status,
         int $orderId,
         CarbonImmutable $createdAt,
         int $creatorId,
