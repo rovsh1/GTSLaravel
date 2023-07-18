@@ -17,8 +17,10 @@ use Module\Booking\Hotel\Domain\Entity\Booking;
 
 class BookingDtoFactory extends AbstractBookingDtoFactory
 {
-    public function createFromEntity(BookingInterface|Booking $booking): BookingDto
+    public function createFromEntity(BookingInterface $booking): BookingDto
     {
+        assert($booking instanceof Booking);
+
         return new BookingDto(
             $booking->id()->value(),
             $this->statusStorage->get($booking->status()),
