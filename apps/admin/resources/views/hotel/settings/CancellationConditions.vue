@@ -161,6 +161,8 @@ const handleDeleteDailyMarkup = async (cancelPeriodIndex: number, dailyMarkupInd
     :opened="isOpened"
     :loading="isLoading"
     :title="title"
+    :cancel-periods="cancelPeriods"
+    :editable-id="editableId"
     @close="close"
     @submit="onModalSubmit"
   />

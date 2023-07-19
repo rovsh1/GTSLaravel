@@ -16,6 +16,11 @@ export interface TimePeriod {
   to: Time
 }
 
+export interface DatePeriod {
+  from: DateTime
+  to: DateTime
+}
+
 export type ClientMarkups = {
   individual: Percent
   TA: Percent

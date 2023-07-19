@@ -17,9 +17,13 @@ const props = withDefaults(defineProps<{
   opened: MaybeRef<boolean>
   title: string
   loading?: MaybeRef<boolean>
+  cancelPeriods?: CancelPeriod[]
+  editableId?: number
 }>(), {
   loading: false,
   value: undefined,
+  cancelPeriods: undefined,
+  editableId: undefined,
 })
 
 const emit = defineEmits<{
@@ -93,6 +97,8 @@ const onModalSubmit = async () => {
         id="period"
         label="Период"
         required
+        :lock-periods="cancelPeriods"
+        :editable-id="editableId"
         :value="period"
         @input="(dates) => period = dates"
       />

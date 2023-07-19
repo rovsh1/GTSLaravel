@@ -27,18 +27,20 @@ const handleChangeContract = async (periodInput: HTMLInputElement, contractID: C
   const minDate = getContract?.dateStart
   const maxDate = getContract?.dateEnd
 
-  const picker = useDateRangePicker(periodInput, {
+  return useDateRangePicker(periodInput, {
     minDate,
     maxDate,
     lockDaysFilter: (inputDate) => {
-      if (inputDate === null) return false
+      if (inputDate === null) {
+        return false
+      }
       return contract.value?.seasons?.find((season): boolean => {
         const isSameContract = season.contractID === contractID
         const isSameSeason = season.id === seasonID
 
         const { dateStart, dateEnd } = season
         const start = parseAPIDate(dateStart)
-        const end = parseAPIDate(dateEnd)
+        const end = parseAPIDate(dateEnd).endOf('day')
         const inputDateTime = DateTime.fromJSDate(inputDate.toJSDate())
         const withinInterval = Interval.fromDateTimes(start, end).contains(inputDateTime)
 
@@ -46,8 +48,6 @@ const handleChangeContract = async (periodInput: HTMLInputElement, contractID: C
       }) !== undefined
     },
   })
-
-  return picker
 }
 
 $(async () => {
@@ -55,7 +55,9 @@ $(async () => {
     .querySelector<HTMLInputElement>('#form_data_contract_id')
   const periodInput = document
     .querySelector<HTMLInputElement>('.daterange')
-  if (contractSelect === null || periodInput === null) return
+  if (contractSelect === null || periodInput === null) {
+    return
+  }
 
   let picker: Litepicker
 
@@ -68,11 +70,17 @@ $(async () => {
 
   contractSelect.addEventListener('change', async (event) => {
     const eventTarget = event.target as HTMLSelectElement | null
-    if (eventTarget === null) return
+    if (eventTarget === null) {
+      return
+    }
     const eventValue = eventTarget.value
-    if (eventValue === '') return
+    if (eventValue === '') {
+      return
+    }
     const contractID = z.coerce.number().parse(eventValue)
-    picker.destroy()
+    if (picker) {
+      picker.destroy()
+    }
     periodInput.disabled = true
     picker = await handleChangeContract(periodInput, contractID)
     periodInput.disabled = false
