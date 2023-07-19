@@ -2,6 +2,8 @@
 
 namespace App\Admin\Http\Controllers\Booking\Hotel;
 
+use App\Admin\Components\Factory\Prototype;
+use App\Admin\Http\Controllers\Controller;
 use App\Admin\Http\Requests\Booking\UpdateExternalNumberRequest;
 use App\Admin\Http\Requests\Booking\UpdatePriceRequest;
 use App\Admin\Http\Requests\Booking\UpdateStatusRequest;
@@ -12,6 +14,7 @@ use App\Admin\Models\Hotel\Hotel;
 use App\Admin\Models\Hotel\Room;
 use App\Admin\Models\Reference\Currency;
 use App\Admin\Repositories\BookingAdministratorRepository;
+use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\Booking\BookingAdapter;
 use App\Admin\Support\Facades\Booking\HotelAdapter;
 use App\Admin\Support\Facades\Booking\HotelPriceAdapter;
@@ -21,7 +24,7 @@ use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Facades\Layout;
-use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
+use App\Admin\Support\Facades\Prototypes;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Layout as LayoutContract;
@@ -30,12 +33,14 @@ use App\Core\Support\Http\Responses\AjaxSuccessResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 
-class BookingController extends AbstractPrototypeController
+class BookingController extends Controller
 {
+    protected Prototype $prototype;
+
     public function __construct(
         private readonly BookingAdministratorRepository $administratorRepository
     ) {
-        parent::__construct();
+        $this->prototype = Prototypes::get($this->getPrototypeKey());
     }
 
     public function index(): LayoutContract
@@ -292,7 +297,8 @@ class BookingController extends AbstractPrototypeController
             ->hotel('hotel_id', [
                 'label' => 'Отель',
                 'required' => true,
-                'emptyItem' => ''
+                'emptyItem' => '',
+                //'disabled' => true, @todo при редактировании - disabled
             ])
             ->dateRange('period', [
                 'label' => 'Дата заезда/выезда',
@@ -314,6 +320,11 @@ class BookingController extends AbstractPrototypeController
     protected function getPrototypeKey(): string
     {
         return 'hotel-booking';
+    }
+
+    protected function isAllowed(string $permission): bool
+    {
+        return $this->prototype->hasPermission($permission) && Acl::isAllowed($this->prototype->key, $permission);
     }
 
     protected function route(string $name, mixed $parameters = []): string

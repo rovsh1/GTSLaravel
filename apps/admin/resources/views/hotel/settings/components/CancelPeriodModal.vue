@@ -84,7 +84,7 @@ const onModalSubmit = async () => {
     :loading="loading as boolean"
     :click-outside-ignore="ignoreElements"
     @close="closeModal"
-    @keyup.enter="onModalSubmit"
+    @keydown.enter="onModalSubmit"
   >
     <template #title>{{ title }}</template>
 

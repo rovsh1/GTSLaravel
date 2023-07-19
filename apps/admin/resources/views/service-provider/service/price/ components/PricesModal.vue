@@ -82,7 +82,7 @@ const getGrossPriceAmountByCurrency = (currencyId: number) => (
     :opened="opened as boolean"
     :loading="loading"
     @close="$emit('close')"
-    @keyup.enter="submit"
+    @keydown.enter="submit"
   >
     <template #title>{{ header || 'Стоимость услуги' }}</template>
 

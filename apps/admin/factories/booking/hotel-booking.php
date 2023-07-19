@@ -5,7 +5,6 @@ use App\Admin\Components\Factory\Factory;
 return Factory::key('hotel-booking')
     ->category(Factory::CATEGORY_BOOKING)
     ->group('bookings')
-    ->repository(\App\Admin\Repositories\HotelBookingRepository::class)
     ->controller(\App\Admin\Http\Controllers\Booking\Hotel\BookingController::class)
     ->titles([
         "index" => "Брони отелей",

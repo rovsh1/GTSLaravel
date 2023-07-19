@@ -55,7 +55,7 @@ const submit = () => {
   <BaseDialog
     :opened="opened as boolean"
     @close="$emit('close')"
-    @keyup.enter="submit"
+    @keydown.enter="submit"
   >
     <template #title>Цена за номер</template>
 

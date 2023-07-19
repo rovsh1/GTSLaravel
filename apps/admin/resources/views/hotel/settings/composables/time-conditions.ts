@@ -6,7 +6,7 @@ export const useTimeConditions = () => {
   const conditions = ref<MarkupCondition[]>([])
   const minTime = ref<Time>('00:00')
   const maxTime = ref<Time>('24:00')
-  const freePeriods = ref<TimePeriod[]>([])
+  const freePeriods = ref<TimePeriod[]>([{ from: minTime.value, to: maxTime.value }])
 
   const refreshFreePeriods = () => {
     conditions.value.sort((a, b) => a.from.localeCompare(b.from))
@@ -37,21 +37,6 @@ export const useTimeConditions = () => {
     maxTime.value = max
     refreshFreePeriods()
   }
-
-  // const isTimeAvailable = (time: Time): boolean => {
-  //   if (!minTime.value && !maxTime.value && conditions.value.length === 0) {
-  //     return true
-  //   }
-  //   const isLessThanMin = Boolean(minTime.value && time < minTime.value)
-  //   const isMoreThanMax = Boolean(maxTime.value && time > maxTime.value)
-  //   if (isLessThanMin || isMoreThanMax) {
-  //     return false
-  //   }
-  //
-  //   const periodWithTimeInside = conditions.value.find((condition: MarkupCondition) => time >= condition.from && time <= condition.to)
-  //
-  //   return !periodWithTimeInside
-  // }
 
   return {
     freePeriods,

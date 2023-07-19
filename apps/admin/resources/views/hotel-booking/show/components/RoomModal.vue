@@ -158,7 +158,7 @@ const lateCheckOutValue = computed<string | undefined>({
     :opened="opened as boolean"
     :loading="isFetching"
     @close="$emit('close')"
-    @keyup.enter="onModalSubmit"
+    @keydown.enter="onModalSubmit"
   >
     <form ref="modalForm" class="row g-3">
       <div class="col-md-12">

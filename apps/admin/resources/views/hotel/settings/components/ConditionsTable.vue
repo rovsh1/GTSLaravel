@@ -1,4 +1,5 @@
 <script setup lang="ts">
+
 import { MaybeRef } from '@vueuse/core'
 
 import AddConditionButton from '~resources/views/hotel/settings/components/AddConditionButton.vue'
@@ -10,8 +11,10 @@ withDefaults(defineProps<{
   conditions: MarkupCondition[]
   title: string
   loading: MaybeRef<boolean>
+  canAdd?: boolean
 }>(), {
   loading: false,
+  canAdd: true,
 })
 
 defineEmits<{
@@ -29,6 +32,7 @@ defineEmits<{
     <div class="d-flex">
       <h6>{{ title }}</h6>
       <AddConditionButton
+        v-if="canAdd"
         @click.prevent="$emit('add')"
       />
     </div>

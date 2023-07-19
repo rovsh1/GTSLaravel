@@ -73,14 +73,14 @@ const handleAddRoomGuest = (roomBookingId: number) => {
   editRoomBookingId.value = roomBookingId
   editGuestIndex.value = undefined
   guestForm.value = getDefaultGuestForm()
-  toggleGuestModal()
+  toggleGuestModal(true)
 }
 
 const handleEditGuest = (roomBookingId: number, guestIndex: number, guest: HotelBookingGuest): void => {
   editRoomBookingId.value = roomBookingId
   editGuestIndex.value = guestIndex
   guestForm.value = guest
-  toggleGuestModal()
+  toggleGuestModal(true)
 }
 
 const handleDeleteGuest = async (roomBookingId: number, guestIndex: number): Promise<void> => {

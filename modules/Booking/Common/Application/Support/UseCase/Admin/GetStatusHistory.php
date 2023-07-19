@@ -33,6 +33,10 @@ class GetStatusHistory implements UseCaseInterface
         private readonly StatusStorage $statusStorage
     ) {}
 
+    /**
+     * @param int $id
+     * @return array<int, StatusEventDto>
+     */
     public function execute(int $id): array
     {
         $statusEvents = $this->changesLogRepository->getStatusHistory($id);

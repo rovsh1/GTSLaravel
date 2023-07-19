@@ -66,6 +66,7 @@ const modalSettings = {
 const {
   isOpened,
   isLoading,
+  editableId,
   editableObject: editableCondition,
   title: modalTitle,
   submit: submitModal,
@@ -144,6 +145,7 @@ const handleUpdateHotelSettings = async () => {
     :min="minTime"
     :max="maxTime"
     :free-periods="freePeriods"
+    :is-edit-mode="editableId !== undefined"
     @close="close"
     @submit="onModalSubmit"
   />
