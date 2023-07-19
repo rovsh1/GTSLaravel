@@ -17,8 +17,8 @@ const props = withDefaults(defineProps<{
   isEditMode: false,
   disabled: false,
   required: false,
-  defaultMin: undefined,
-  defaultMax: undefined,
+  defaultMin: '00:00',
+  defaultMax: '24:00',
 })
 
 const emit = defineEmits<{
@@ -60,9 +60,7 @@ const to = computed({
 
 const isTimeWithinFreePeriod = (time: Time, isStrictTo: boolean = false) => {
   if (isEditMode.value) {
-    const defaultMinValue = defaultMin.value || '12:00'
-    const defaultMaxValue = defaultMax.value || '24:00'
-    return time >= defaultMinValue && (isStrictTo ? time < defaultMaxValue : time <= defaultMaxValue)
+    return time >= defaultMin.value && (isStrictTo ? time < defaultMax.value : time <= defaultMax.value)
   }
   if (isStrictTo) {
     return Boolean(freePeriods.value?.find((period) => time >= period.from && time < period.to))
