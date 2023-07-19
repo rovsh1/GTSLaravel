@@ -49,10 +49,8 @@ class BookingController extends Controller
 
         $statuses = StatusAdapter::getStatuses();
         $grid = $this->gridFactory($statuses);
-//        $query = $this->repository->queryWithCriteria($grid->getSearchCriteria());
-//        $this->prepareGridQuery($query);
-        $data = HotelAdapter::getBookings();
-        $grid->data($data);
+        $query = HotelAdapter::getBookingQuery()->applyCriteria($grid->getSearchCriteria());
+        $grid->data($query);
 
         return Layout::title($this->prototype->title('index'))
             ->view($this->prototype->view('index') ?? $this->prototype->view('grid') ?? 'default.grid.grid', [

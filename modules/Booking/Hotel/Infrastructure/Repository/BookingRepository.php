@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Hotel\Infrastructure\Repository;
 
 use Carbon\CarbonInterface;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Module\Booking\Common\Domain\ValueObject\BookingPrice;
 use Module\Booking\Common\Infrastructure\Repository\AbstractBookingRepository as BaseRepository;
@@ -46,6 +47,11 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
     public function get(): Collection
     {
         return $this->getModel()::query()->withDetails()->get();
+    }
+
+    public function query(): Builder
+    {
+        return $this->getModel()::query()->withDetails();
     }
 
     public function create(

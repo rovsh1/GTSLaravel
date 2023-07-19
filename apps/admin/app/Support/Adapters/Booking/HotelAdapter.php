@@ -12,6 +12,7 @@ use Module\Booking\Hotel\Application\Request\Guest\UpdateRoomGuestDto;
 use Module\Booking\Hotel\Application\Request\UpdateRoomDto;
 use Module\Booking\Hotel\Application\UseCase\Admin\CreateBooking;
 use Module\Booking\Hotel\Application\UseCase\Admin\GetBooking;
+use Module\Booking\Hotel\Application\UseCase\Admin\GetBookingQuery;
 use Module\Booking\Hotel\Application\UseCase\Admin\GetBookingsByFilters;
 use Module\Booking\Hotel\Application\UseCase\Admin\Room;
 use Module\Booking\Hotel\Application\UseCase\Admin\UpdateExternalNumber;
@@ -21,6 +22,11 @@ class HotelAdapter
     public function getBookings(array $filters = []): mixed
     {
         return app(GetBookingsByFilters::class)->execute($filters);
+    }
+
+    public function getBookingQuery(): mixed
+    {
+        return app(GetBookingQuery::class)->execute();
     }
 
     public function getBooking(int $id): mixed

@@ -3,6 +3,7 @@
 namespace Module\Booking\Hotel\Domain\Repository;
 
 use Carbon\CarbonInterface;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Module\Booking\Common\Domain\Entity\BookingInterface;
 use Module\Booking\Common\Domain\Repository\BookingRepositoryInterface as Base;
@@ -17,6 +18,8 @@ interface BookingRepositoryInterface extends Base
     public function find(int $id): ?Booking;
 
     public function get(): Collection;
+
+    public function query(): Builder;
 
     public function create(
         Id $orderId,
