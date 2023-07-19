@@ -39,7 +39,7 @@ const handleChangeContract = async (periodInput: HTMLInputElement, contractID: C
         const isSameSeason = season.id === seasonID
 
         const { dateStart, dateEnd } = season
-        const start = parseAPIDate(dateStart)
+        const start = parseAPIDate(dateStart).startOf('day')
         const end = parseAPIDate(dateEnd).endOf('day')
         const inputDateTime = DateTime.fromJSDate(inputDate.toJSDate())
         const withinInterval = Interval.fromDateTimes(start, end).contains(inputDateTime)

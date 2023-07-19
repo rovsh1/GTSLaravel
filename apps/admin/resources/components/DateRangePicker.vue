@@ -53,7 +53,7 @@ const lockDaysFilter = (inputDate: any) => {
   return lockPeriods.value?.find((period, index): boolean => {
     const isSamePeriod = editableId.value === index
     const { from, to } = period
-    const start = parseAPIDate(from)
+    const start = parseAPIDate(from).startOf('day')
     const end = parseAPIDate(to).endOf('day')
     const inputDateTime = DateTime.fromJSDate(inputDate.toJSDate())
 
