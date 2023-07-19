@@ -101,6 +101,11 @@ const handleAddConditions = (conditionType: ConditionType) => {
   editableCondition.value = { from: '', to: '' } as unknown as MarkupCondition
   editableConditionKey.value = `${conditionType}`
   setConditionTimeLimits(conditionType)
+  if (freePeriods.value.length === 0) {
+    // @todo сделать нормальное уведомление
+    alert('Все интервалы заняты')
+    return
+  }
   openAdd()
 }
 
