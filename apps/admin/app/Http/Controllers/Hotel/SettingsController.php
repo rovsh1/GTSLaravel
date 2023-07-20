@@ -25,7 +25,7 @@ class SettingsController extends Controller
                 'model' => $hotel,
                 'createRuleUrl' => route('hotels.rules.create', $hotel),
                 'rulesGrid' => $this->rulesGridFactory($hotel->id),
-                'contracts' => $hotel->contracts
+                'contract' => $hotel->contracts()->active()->first(),
             ]);
     }
 

@@ -14,8 +14,10 @@ withDefaults(defineProps<{
   dailyMarkups: DailyMarkup[]
   title: string
   loading?: MaybeRef<boolean>
+  canEditBase?: boolean
 }>(), {
   loading: false,
+  canEditBase: true,
 })
 
 type DailyMarkupField = keyof DailyMarkup
@@ -37,6 +39,7 @@ defineEmits<{
       <h6 style="margin-left: 0.5rem;">{{ title }}</h6>
       <EditTableRowButton
         can-add
+        :can-edit="canEditBase"
         add-title="Добавить условие"
         @add="$emit('add')"
         @edit="$emit('editBase')"

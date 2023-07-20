@@ -5,7 +5,7 @@
       window['view-initial-data-hotel-settings'] = {{
             Js::from([
                 'hotelID' => $model->id,
-                'contracts' => $contracts,
+                'contract' => $contract,
             ])
         }}
     </script>
