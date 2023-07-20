@@ -6,6 +6,7 @@ import { MaybeRef } from '@vueuse/core'
 
 import { cancelPeriodOptions } from '~resources/views/hotel-booking/show/composables/constants'
 
+import { DateResponse } from '~api'
 import { CancelPeriod } from '~api/hotel/markup-settings'
 
 import BaseDialog from '~components/BaseDialog.vue'
@@ -19,11 +20,15 @@ const props = withDefaults(defineProps<{
   loading?: MaybeRef<boolean>
   cancelPeriods?: CancelPeriod[]
   editableId?: number
+  minDate?: DateResponse
+  maxDate?: DateResponse
 }>(), {
   loading: false,
   value: undefined,
   cancelPeriods: undefined,
   editableId: undefined,
+  minDate: undefined,
+  maxDate: undefined,
 })
 
 const emit = defineEmits<{
@@ -99,6 +104,8 @@ const onModalSubmit = async () => {
         required
         :lock-periods="cancelPeriods"
         :editable-id="editableId"
+        :min-date="minDate"
+        :max-date="maxDate"
         :value="period"
         @input="(dates) => period = dates"
       />

@@ -65,7 +65,7 @@ AclRoute::for('hotel')
     ->resource('rules', Controllers\Hotel\RuleController::class, ['except' => ['index', 'show']])
 
     ->resource('contracts', Controllers\Hotel\ContractController::class)
-    ->get('/{hotel}/contracts/{contract}/get', Controllers\Hotel\ContractController::class . '@get','update', 'contracts.get')
+    ->get('/{hotel}/contracts/{contract}/get', Controllers\Hotel\ContractController::class . '@get','read', 'contracts.get')
 
     ->resource('seasons', Controllers\Hotel\SeasonController::class)
     ->resource('rates', Controllers\Hotel\RateController::class, ['except' => ['show']])

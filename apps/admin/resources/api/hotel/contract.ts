@@ -22,8 +22,9 @@ export type Season = {
   dateEnd: DateResponse
 }
 
-type ContractResponse = {
+export interface ContractResponse {
   id: ContractID
+  status: number
   date_start: DateResponse
   date_end: DateResponse
   seasons?: SeasonResponse[]
@@ -31,6 +32,7 @@ type ContractResponse = {
 
 export type Contract = {
   id: ContractID
+  status: number
   dateStart: DateResponse
   dateEnd: DateResponse
   seasons?: Season[]
@@ -58,11 +60,13 @@ export const useHotelContractGetAPI = (props: MaybeRef<{ hotelID: number; contra
         ctx,
         ({
           id,
+          status,
           date_start: dateStart,
           date_end: dateEnd,
           seasons,
         }) => ({
           id,
+          status,
           dateStart,
           dateEnd,
           seasons: seasons?.map(mapSeasonResponseToSeason),

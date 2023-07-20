@@ -4,6 +4,7 @@ import { computed, onMounted, onUnmounted } from 'vue'
 import { Litepicker } from 'litepicker'
 import { DateTime, Interval } from 'luxon'
 
+import { DateResponse } from '~api'
 import { DatePeriod } from '~api/hotel/markup-settings'
 
 import { formatPeriod, parseAPIDate } from '~lib/date'
@@ -17,6 +18,8 @@ const props = withDefaults(defineProps<{
   value?: [Date, Date]
   lockPeriods?: DatePeriod[]
   editableId?: number
+  minDate?: DateResponse
+  maxDate?: DateResponse
 }>(), {
   required: false,
   label: undefined,
@@ -24,6 +27,8 @@ const props = withDefaults(defineProps<{
   value: undefined,
   lockPeriods: undefined,
   editableId: undefined,
+  minDate: undefined,
+  maxDate: undefined,
 })
 
 const emit = defineEmits<{
@@ -45,17 +50,25 @@ const displayValue = computed(() => {
 
 const lockPeriods = computed(() => props.lockPeriods)
 const editableId = computed(() => props.editableId)
+const minDateTime = computed(() => props.minDate && parseAPIDate(props.minDate).startOf('day'))
+const maxDateTime = computed(() => props.maxDate && parseAPIDate(props.maxDate).endOf('day'))
 
 const lockDaysFilter = (inputDate: any) => {
   if (inputDate === null) {
     return false
+  }
+  const inputDateTime = DateTime.fromJSDate(inputDate.toJSDate()).startOf('day')
+  if (minDateTime.value && inputDateTime < minDateTime.value) {
+    return true
+  }
+  if (maxDateTime.value && inputDateTime > maxDateTime.value) {
+    return true
   }
   return lockPeriods.value?.find((period, index): boolean => {
     const isSamePeriod = editableId.value === index
     const { from, to } = period
     const start = parseAPIDate(from).startOf('day')
     const end = parseAPIDate(to).endOf('day')
-    const inputDateTime = DateTime.fromJSDate(inputDate.toJSDate())
 
     return !isSamePeriod && Interval.fromDateTimes(start, end).contains(inputDateTime)
   }) !== undefined

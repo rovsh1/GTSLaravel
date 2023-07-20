@@ -7,6 +7,7 @@ import { z } from 'zod'
 
 import DailyMarkupModal from '~resources/views/hotel/settings/components/DailyMarkupModal.vue'
 
+import { ContractResponse } from '~api/hotel/contract'
 import {
   addConditionHotelMarkupSettings,
   CancelPeriod, DailyMarkup,
@@ -27,16 +28,26 @@ import CollapsableBlock from './components/CollapsableBlock.vue'
 import { useEditableModal } from './composables/editable-modal'
 import { useMarkupSettingsStore } from './composables/markup-settings'
 
-const { hotelID } = requestInitialData(
+const { hotelID, contracts } = requestInitialData(
   'view-initial-data-hotel-settings',
   z.object({
     hotelID: z.number(),
+    contracts: z.array(z.object({
+      id: z.number(),
+      status: z.number(),
+      date_start: z.string(),
+      date_end: z.string(),
+    })),
   }),
 )
 
 const markupSettingsStore = useMarkupSettingsStore()
 const cancelPeriods = computed(() => markupSettingsStore.markupSettings?.cancelPeriods)
 const { fetchMarkupSettings, updateCancelPeriodDailyMarkupField, deleteCancelPeriodDailyMarkup } = markupSettingsStore
+
+const sortedContracts = contracts.sort((a: ContractResponse, b: ContractResponse) => (a.date_start > b.date_start ? 1 : -1))
+const minContractDate = computed(() => sortedContracts[0].date_start)
+const maxContractDate = computed(() => sortedContracts[sortedContracts.length - 1].date_end)
 
 const modalSettings = {
   add: {
@@ -163,6 +174,8 @@ const handleDeleteDailyMarkup = async (cancelPeriodIndex: number, dailyMarkupInd
     :title="title"
     :cancel-periods="cancelPeriods"
     :editable-id="editableId"
+    :min-date="minContractDate"
+    :max-date="maxContractDate"
     @close="close"
     @submit="onModalSubmit"
   />
