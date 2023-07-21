@@ -31,6 +31,7 @@ use App\Admin\Support\View\Grid\SearchForm;
 use App\Admin\Support\View\Layout as LayoutContract;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use App\Core\Support\Http\Responses\AjaxSuccessResponse;
+use Carbon\CarbonPeriod;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Module\Shared\Enum\SourceEnum;
@@ -149,40 +150,38 @@ class BookingController extends Controller
         $breadcrumbs->addUrl($this->prototype->route('show', $id), $title);
         $breadcrumbs->add($this->prototype->title('edit') ?? 'Редактирование');
 
-        $form = $this->formFactory()
+        $form = $this->formFactory(true)
             ->method('put')
             ->action($this->prototype->route('update', $id))
-            ->data($booking);
+            ->data($this->prepareFormData($booking));
 
         return Layout::title($title)
             ->view($this->prototype->view('edit') ?? $this->prototype->view('form') ?? 'default.form.form', [
                 'model' => $booking,
                 'form' => $form,
                 'cancelUrl' => $this->prototype->route('show', $id),
-                'deleteUrl' => $this->isAllowed('delete') ? $this->prototype->route('destroy', $id) : null
+//                'deleteUrl' => $this->isAllowed('delete') ? $this->prototype->route('destroy', $id) : null
             ]);
     }
 
     public function update(int $id): RedirectResponse
     {
-        //@todo при обновлении дат, не забудь обновить CancelConditions
-        throw new \Exception('Not implemented yet.');
-        $this->model = $this->repository->findOrFail($id);
+        $form = $this->formFactory(true)->method('put');
 
-        $form = $this->formFactory()
-            ->method('put');
+        $form->trySubmit($this->prototype->route('edit', $id));
 
-        $form->trySubmit($this->prototype->route('edit', $this->model));
+        $data = $form->getData();
+        HotelAdapter::updateBooking(
+            id: $id,
+            clientId: $data['client_id'],
+            legalId: $data['legal_id'],
+            currencyId: $data['currency_id'],
+            period: $data['period'],
+            note: $data['note'] ?? null
+        );
+        $this->administratorRepository->update($id, request()->user()->id);
 
-        $preparedData = $this->saving($form->getData());
-        $this->repository->update($this->model->id, $preparedData);
-
-        $redirectUrl = $this->prototype->route('index');
-        if ($this->hasShowAction()) {
-            $redirectUrl = $this->prototype->route('show', $this->model);
-        }
-
-        return redirect($redirectUrl);
+        return redirect($this->prototype->route('show', $id));
     }
 
     public function get(int $id): JsonResponse
@@ -286,19 +285,39 @@ class BookingController extends Controller
             ->dateRange('created_period', ['label' => 'Дата создания']);
     }
 
-    protected function formFactory(): FormContract
+    private function prepareFormData(object $booking): array
+    {
+        $hotelId = $booking->hotelInfo->id;
+        $cityId = Hotel::find($hotelId)->city_id;
+        $order = OrderAdapter::findOrder($booking->orderId);
+
+        return [
+            'order_id' => $booking->orderId,
+            'currency_id' => $order->currency->id,
+            'hotel_id' => $hotelId,
+            'city_id' => $cityId,
+            'client_id' => $order->clientId,
+            'legal_id' => $order->legalId,
+            'period' => new CarbonPeriod($booking->period->dateFrom, $booking->period->dateTo),
+            'note' => $booking->note,
+        ];
+    }
+
+    protected function formFactory(bool $isEdit = false): FormContract
     {
         return Form::name('data')
             ->select('order_id', [
                 'label' => 'Заказ',
                 'emptyItem' => 'Создать новый заказ',
-                'items' => OrderAdapter::getActiveOrders()
+                'items' => OrderAdapter::getActiveOrders(),
+                'disabled' => $isEdit
             ])
             ->city('city_id', [
                 'label' => __('label.city'),
                 'emptyItem' => '',
-                'required' => true,
-                'onlyWithHotels' => true
+                'required' => !$isEdit,
+                'onlyWithHotels' => true,
+                'disabled' => $isEdit
             ])
             ->hidden('client_id', [
                 'label' => __('label.client'),
@@ -312,11 +331,11 @@ class BookingController extends Controller
                 'required' => true,
                 'value' => 1
             ])
-            ->hotel('hotel_id', [
+            ->hidden('hotel_id', [
                 'label' => 'Отель',
-                'required' => true,
+                'required' => !$isEdit,
                 'emptyItem' => '',
-                //'disabled' => true, @todo при редактировании - disabled
+                'disabled' => $isEdit,
             ])
             ->dateRange('period', [
                 'label' => 'Дата заезда/выезда',

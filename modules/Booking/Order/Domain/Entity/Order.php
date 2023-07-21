@@ -16,7 +16,7 @@ final class Order extends AbstractAggregateRoot implements EntityInterface
         private readonly Id $id,
         private CurrencyEnum $currency,
         private Id $clientId,
-        private readonly ?Id $legalId,
+        private ?Id $legalId,
     ) {}
 
     public function id(): Id
@@ -35,9 +35,19 @@ final class Order extends AbstractAggregateRoot implements EntityInterface
         $this->pushEvent(new ClientChanged($this));
     }
 
+    public function setCurrency(CurrencyEnum $currency): void
+    {
+        $this->currency = $currency;
+    }
+
     public function legalId(): ?Id
     {
         return $this->legalId;
+    }
+
+    public function setLegalId(?Id $legalId): void
+    {
+        $this->legalId = $legalId;
     }
 
     public function currency(): CurrencyEnum

@@ -9,12 +9,14 @@ use Module\Booking\Hotel\Application\Request\AddRoomDto;
 use Module\Booking\Hotel\Application\Request\CreateBookingDto;
 use Module\Booking\Hotel\Application\Request\Guest\AddRoomGuestDto;
 use Module\Booking\Hotel\Application\Request\Guest\UpdateRoomGuestDto;
+use Module\Booking\Hotel\Application\Request\UpdateBookingDto;
 use Module\Booking\Hotel\Application\Request\UpdateRoomDto;
 use Module\Booking\Hotel\Application\UseCase\Admin\CreateBooking;
 use Module\Booking\Hotel\Application\UseCase\Admin\GetBooking;
 use Module\Booking\Hotel\Application\UseCase\Admin\GetBookingQuery;
 use Module\Booking\Hotel\Application\UseCase\Admin\GetBookingsByFilters;
 use Module\Booking\Hotel\Application\UseCase\Admin\Room;
+use Module\Booking\Hotel\Application\UseCase\Admin\UpdateBooking;
 use Module\Booking\Hotel\Application\UseCase\Admin\UpdateExternalNumber;
 
 class HotelAdapter
@@ -44,8 +46,8 @@ class HotelAdapter
         int $creatorId,
         ?int $orderId,
         ?string $note = null
-    ): int {
-        return app(CreateBooking::class)->execute(
+    ): void {
+        app(CreateBooking::class)->execute(
             new CreateBookingDto(
                 cityId: $cityId,
                 creatorId: $creatorId,
@@ -54,6 +56,26 @@ class HotelAdapter
                 currencyId: $currencyId,
                 hotelId: $hotelId,
                 orderId: $orderId,
+                period: $period,
+                note: $note
+            )
+        );
+    }
+
+    public function updateBooking(
+        int $id,
+        int $clientId,
+        ?int $legalId,
+        int $currencyId,
+        CarbonPeriod $period,
+        ?string $note = null
+    ): void {
+        app(UpdateBooking::class)->execute(
+            new UpdateBookingDto(
+                id: $id,
+                clientId: $clientId,
+                legalId: $legalId,
+                currencyId: $currencyId,
                 period: $period,
                 note: $note
             )

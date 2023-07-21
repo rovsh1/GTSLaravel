@@ -137,4 +137,9 @@ final class Booking extends AbstractBooking
     {
         $this->note = $note;
     }
+
+    public function setCancelConditions(CancelConditions $cancelConditions): void
+    {
+        $this->cancelConditions = $cancelConditions;
+    }
 }

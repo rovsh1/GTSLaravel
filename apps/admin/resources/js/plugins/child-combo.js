@@ -26,6 +26,7 @@ $.fn.childCombo = function (options) {
     valTemp = isMultiple ? value : [value]
   }
 
+  const childDisabled = child.prop("disabled")
   if (child.is('input[type="hidden"]')) {
     preparedOptions.hidden = true
     const c = $(`<select class="form-select" id="${child.attr('id')}" name="${child.attr('name')}"></select>`)
@@ -33,6 +34,7 @@ $.fn.childCombo = function (options) {
     child.remove()
     child = c
   }
+
 
   const trigger = function (fn, arg) {
     if (!preparedOptions[fn]) {
@@ -106,7 +108,9 @@ $.fn.childCombo = function (options) {
         child.append(`<option value='${items[i].id}'>${items[i].name}</option>`)
       }
 
-      child.prop('disabled', false)
+      if(!childDisabled) {
+        child.prop('disabled', false)
+      }
 
       if (val.length) {
         child.val(isMultiple ? val : val[0])

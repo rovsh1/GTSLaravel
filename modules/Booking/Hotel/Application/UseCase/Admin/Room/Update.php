@@ -39,7 +39,7 @@ class Update implements UseCaseInterface
         $guests = $currentRoom?->guests() ?? 0;
 
         $hotelRoomDto = $this->hotelRoomAdapter->findById($request->roomId);
-        $expectedGuestCount = $guests->count();
+        $expectedGuestCount = $guests?->count();
         if ($expectedGuestCount > $hotelRoomDto->guestsCount) {
             $guests = $guests->slice(0, $hotelRoomDto->guestsCount);
         }

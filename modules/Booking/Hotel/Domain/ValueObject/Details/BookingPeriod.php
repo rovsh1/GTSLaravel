@@ -6,10 +6,11 @@ use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
 use Carbon\CarbonPeriodImmutable;
+use Module\Shared\Contracts\CanEquate;
 use Module\Shared\Domain\ValueObject\SerializableDataInterface;
 use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 
-final class BookingPeriod implements ValueObjectInterface, SerializableDataInterface
+final class BookingPeriod implements ValueObjectInterface, SerializableDataInterface, CanEquate
 {
     private int $nightsCount;
 
@@ -74,5 +75,16 @@ final class BookingPeriod implements ValueObjectInterface, SerializableDataInter
             $period->getStartDate()->toImmutable(),
             $period->getEndDate()->toImmutable(),
         );
+    }
+
+    /**
+     * @param self $b
+     * @return bool
+     */
+    public function isEqual(mixed $b): bool
+    {
+        return $this->dateFrom->eq($b->dateFrom)
+            && $this->dateTo->eq($b->dateTo)
+            && $this->nightsCount === $b->nightsCount;
     }
 }

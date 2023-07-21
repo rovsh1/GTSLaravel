@@ -3,6 +3,7 @@
 namespace Module\Booking\Order\Application\Query;
 
 use Module\Booking\Order\Application\Dto\OrderDto;
+use Module\Booking\Order\Application\Factory\OrderDtoFactory;
 use Module\Booking\Order\Domain\Repository\OrderRepositoryInterface;
 use Sdk\Module\Contracts\Bus\QueryHandlerInterface;
 use Sdk\Module\Contracts\Bus\QueryInterface;
@@ -10,7 +11,8 @@ use Sdk\Module\Contracts\Bus\QueryInterface;
 class FindHandler implements QueryHandlerInterface
 {
     public function __construct(
-        private readonly OrderRepositoryInterface $repository
+        private readonly OrderRepositoryInterface $repository,
+        private readonly OrderDtoFactory $factory,
     ) {}
 
     public function handle(QueryInterface|Find $query): ?OrderDto
@@ -20,6 +22,6 @@ class FindHandler implements QueryHandlerInterface
             return null;
         }
 
-        return OrderDto::fromDomain($order);
+        return $this->factory->createFromEntity($order);
     }
 }
