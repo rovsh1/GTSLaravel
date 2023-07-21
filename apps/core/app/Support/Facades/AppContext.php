@@ -8,6 +8,7 @@ use Module\Shared\Enum\SourceEnum;
 
 /**
  * @method static void setSource(SourceEnum $source)
+ * @method static SourceEnum getSource()
  * @method static void setRequest(Request $request)
  * @method static void setUser(int $id, string $name = null)
  * @method static void setAdministrator(int $id, string $name)

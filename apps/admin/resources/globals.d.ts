@@ -34,7 +34,7 @@ declare global {
       is_function(value: any): boolean
     }
     coreFn: {
-      in_array(value: any, array: any): boolean
+      in_array<T = string | number>(value: T, array: T[]): boolean
     }
 
     google: any

@@ -11,7 +11,12 @@ class AppContext
 
     public function setSource(SourceEnum $source): void
     {
-        $this->context['source'] = $source->value;
+        $this->context['source'] = $source;
+    }
+
+    public function getSource(): SourceEnum
+    {
+        return $this->context['source'];
     }
 
     public function setRequest(Request $request): void

@@ -13,6 +13,8 @@ return new class extends Migration {
         Schema::create('booking_hotel_rooms', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('booking_id');
+            $table->unsignedInteger('hotel_room_id');
+            $table->unsignedTinyInteger('guests_count');
             $table->text('data');//json('data')
             $table->timestamps();
 

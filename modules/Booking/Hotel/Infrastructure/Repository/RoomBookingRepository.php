@@ -46,6 +46,8 @@ class RoomBookingRepository implements RoomBookingRepositoryInterface
     ): RoomBooking {
         $model = Model::create([
             'booking_id' => $bookingId,
+            'hotel_room_id' => $roomInfo->id(),
+            'guests_count' => $guests->count(),
             'data' => $this->serializeData($status, $roomInfo, $guests, $details, $price),
         ]);
         //hack потому что default scope не подтягивается после создания модели, а тут нужно, т.к. booking_order_id подгружается join'ом
@@ -58,6 +60,8 @@ class RoomBookingRepository implements RoomBookingRepositoryInterface
     {
         return (bool)Model::whereId($booking->id()->value())
             ->update([
+                'hotel_room_id' => $booking->roomInfo()->id(),
+                'guests_count' => $booking->guests()->count(),
                 'data' => $this->serializeEntity($booking)
             ]);
     }

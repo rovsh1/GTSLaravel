@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->unsignedInteger('order_id');
             $table->tinyInteger('type');
             $table->tinyInteger('status');
-            $table->tinyInteger('source');
+            $table->string('source');
             $table->unsignedInteger('creator_id');
             $table->text('price');//json('price')
             $table->timestamps();

@@ -2,6 +2,7 @@
 
 namespace App\Admin\Support\View\Form\Element;
 
+use App\Admin\Support\View\Form\ValueObject\NumRangeValue;
 use Gsdk\Form\Element\Text;
 
 class NumRange extends Text
@@ -21,14 +22,15 @@ class NumRange extends Text
             . ' name="' . $inputName . '[valueFrom]"'
             . $this->_attr('min', 0, 0)
             . $this->_attr('placeholder', 0)
-            . ' value="' . ($values ? $values['valueFrom'] : '') . '" />';
+            . ' value="' . ($values ? $values->from : '') . '" />';
         $s .= '<input type="number"'
             . ' class="form-control"'
             . ' name="' . $inputName . '[valueTo]"'
             . $this->_attr('min', 1, 0)
             . $this->_attr('placeholder', 1)
-            . ' value="' . ($values ? $values['valueTo'] : '') . '" />';
+            . ' value="' . ($values ? $values->to : '') . '" />';
         $s .= '</div>';
+
         return $s;
     }
 
@@ -36,33 +38,36 @@ class NumRange extends Text
     {
         $valueFrom = $this->_getValue($value, 'valueFrom');
         $valueTo = $this->_getValue($value, 'valueTo');
-        if (null === $valueFrom && null === $valueTo)
+        if (null === $valueFrom && null === $valueTo) {
             return null;
+        }
 
-        if (null !== $valueTo && $valueFrom > $valueTo)
+        if (null !== $valueTo && $valueFrom > $valueTo) {
             $valueTo = $valueFrom;
+        }
 
-        return [
-            'valueFrom' => $valueFrom,
-            'valueTo' => $valueTo
-        ];
+        return new NumRangeValue($valueFrom, $valueTo);
     }
 
     private function _getValue($value, $assoc)
     {
-        if (!isset($value[$assoc]) || $value[$assoc] === '')
+        if (!isset($value[$assoc]) || $value[$assoc] === '') {
             return null;
+        }
+
         return (int)$value[$assoc];
     }
 
     private function _attr($name, $num, $default = false)
     {
         if (!$this->$name || !isset($this->$name[$num])) {
-            if (false === $default)
+            if (false === $default) {
                 return '';
+            }
 
             return ' ' . $name . '="' . $default . '"';
         }
+
         return ' ' . $name . '="' . $this->$name[$num] . '"';
     }
 }

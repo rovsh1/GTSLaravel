@@ -29,14 +29,14 @@ export const useDatePicker = (element: HTMLInputElement, options?: Options) => {
       DateTime.now().minus({ days: 1 }).toJSDate(),
       DateTime.now().minus({ days: 1 }).toJSDate(),
     ],
+    'Текущая неделя': [
+      DateTime.now().startOf('week').toJSDate(),
+      DateTime.now().endOf('week').toJSDate(),
+    ],
     'Текущий месяц': [
       DateTime.now().startOf('month').toJSDate(),
       DateTime.now().endOf('month').toJSDate(),
     ],
-    // 'Текущая неделя': [
-    //   DateTime.now().startOf('week').toJSDate(),
-    //   DateTime.now().endOf('week').toJSDate(),
-    // ],
     'Текущий год': [
       DateTime.now().startOf('year').toJSDate(),
       DateTime.now().endOf('year').toJSDate(),

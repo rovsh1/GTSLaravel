@@ -11,6 +11,7 @@ return Factory::key('hotel-booking')
         "create" => "Новая бронь"
     ])
     ->views([
+        'index' => 'hotel-booking.main.main',
         'show' => 'hotel-booking.show.show',
         'form' => 'hotel-booking.form.form'
     ])

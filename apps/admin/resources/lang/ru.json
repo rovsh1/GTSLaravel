@@ -56,6 +56,12 @@
     "group.notification": "Уведомления",
     "group.services": "Услуги",
 
+    "Module\\Shared\\Enum\\SourceEnum::SITE": "Сайт",
+    "Module\\Shared\\Enum\\SourceEnum::ADMIN": "Панель администратора",
+    "Module\\Shared\\Enum\\SourceEnum::HOTEL": "Панель гостиницы",
+    "Module\\Shared\\Enum\\SourceEnum::API": "API",
+    "Module\\Shared\\Enum\\SourceEnum::CONSOLE": "Крон",
+
     "Module\\Shared\\Enum\\Booking\\TransferServiceTypeEnum::CAR_RENT": "Аренда авто",
     "Module\\Shared\\Enum\\Booking\\TransferServiceTypeEnum::TRANSFER_TO_RAILWAY": "Трансфер до ж/д вокзала",
     "Module\\Shared\\Enum\\Booking\\TransferServiceTypeEnum::TRANSFER_FROM_RAILWAY": "Трансфер от ж/д вокзала",

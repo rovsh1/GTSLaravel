@@ -2,6 +2,7 @@
 
 namespace Module\Booking\Common\Infrastructure\Repository;
 
+use App\Core\Support\Facades\AppContext;
 use Module\Booking\Common\Domain\Entity\BookingInterface;
 use Module\Booking\Common\Domain\ValueObject\BookingPrice;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
@@ -29,7 +30,7 @@ abstract class AbstractBookingRepository
     {
         return $this->getModel()::create([
             'order_id' => $orderId,
-            'source' => 1, //@todo источник создания брони
+            'source' => AppContext::getSource(),
             'status' => BookingStatusEnum::CREATED,
             'creator_id' => $creatorId,
             'price' => BookingPrice::buildEmpty()->toData(),

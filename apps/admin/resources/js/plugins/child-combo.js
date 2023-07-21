@@ -20,6 +20,11 @@ $.fn.childCombo = function (options) {
 
   let child = $(this)
   const isMultiple = child.attr('multiple')
+  const value = preparedOptions.value || child.val()
+  let valTemp = []
+  if (value) {
+    valTemp = isMultiple ? value : [value]
+  }
 
   if (child.is('input[type="hidden"]')) {
     preparedOptions.hidden = true
@@ -58,20 +63,21 @@ $.fn.childCombo = function (options) {
 
     child.parent().show()
 
-    const value = preparedOptions.value || child.val()
-    let valTemp = []
+
     const data = { ...preparedOptions.data }
     if (!isEmpty) {
       data[preparedOptions.dataIndex] = parent.val()
-    }
-    if (value) {
-      valTemp = isMultiple ? value : [value]
     }
     // delete preparedOptions.value;
 
     child.html("<option value=''>Загрузка</option>")
 
-    axios.get(preparedOptions.url, { params: data }).then((result) => {
+    let url = preparedOptions.url
+    if (preparedOptions.urlGetter) {
+      url = preparedOptions.urlGetter(parent.val())
+    }
+
+    axios.get(url, { params: data }).then((result) => {
       child.html('')
       const items = result[preparedOptions.resultIndex]
       const val = [];
@@ -93,7 +99,7 @@ $.fn.childCombo = function (options) {
       }
 
       for (i = 0; i < l; i++) {
-        if (in_array(items[i].id, valTemp)) {
+        if (in_array(`${items[i].id}`, valTemp)) {
           val[val.length] = items[i].id
         }
 

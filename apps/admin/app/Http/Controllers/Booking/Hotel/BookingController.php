@@ -27,11 +27,13 @@ use App\Admin\Support\Facades\Layout;
 use App\Admin\Support\Facades\Prototypes;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
+use App\Admin\Support\View\Grid\SearchForm;
 use App\Admin\Support\View\Layout as LayoutContract;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use App\Core\Support\Http\Responses\AjaxSuccessResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Module\Shared\Enum\SourceEnum;
 
 class BookingController extends Controller
 {
@@ -255,6 +257,7 @@ class BookingController extends Controller
     protected function gridFactory(array $statuses = []): GridContract
     {
         return Grid::enableQuicksearch()
+            ->setSearchForm($this->searchForm())
             ->id('id', ['text' => '№', 'route' => $this->prototype->routeName('show'), 'order' => true])
             ->bookingStatus('status', ['text' => 'Статус', 'statuses' => $statuses])
             ->text('client_name', ['text' => 'Клиент'])
@@ -264,6 +267,23 @@ class BookingController extends Controller
             ->text('hotel_name', ['text' => 'Отель'])
             ->date('created_at', ['text' => 'Создан', 'format' => 'datetime', 'order' => true])
             ->paginator(20);
+    }
+
+    private function searchForm()
+    {
+        return (new SearchForm())
+            ->country('country_id', ['label' => 'Страна', 'default' => '1'])
+            ->city('city_id', ['label' => 'Город', 'emptyItem' => '', 'onlyWithHotels' => true])
+            ->hidden('hotel_id', ['label' => 'Отель'])
+            ->hidden('hotel_room_id', ['label' => 'Тип номера'])
+            ->client('client_id', ['label' => 'Клиент', 'emptyItem' => ''])
+            ->select('manager_id', ['label' => 'Менеджер', 'items' => Administrator::all(), 'emptyItem' => ''])
+            ->select('status', ['label' => 'Статус', 'items' => StatusAdapter::getStatuses(), 'emptyItem' => ''])
+            ->enum('source', ['label' => 'Источник', 'enum' => SourceEnum::class, 'emptyItem' => ''])
+            ->numRange('guests_count', ['label' => 'Кол-во гостей'])
+            ->dateRange('start_period', ['label' => 'Дата заезда'])
+            ->dateRange('end_period', ['label' => 'Дата выезда'])
+            ->dateRange('created_period', ['label' => 'Дата создания']);
     }
 
     protected function formFactory(): FormContract

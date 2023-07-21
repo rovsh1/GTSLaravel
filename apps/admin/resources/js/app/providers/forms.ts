@@ -18,9 +18,10 @@ function bootMultiselect() {
 }
 
 function bootDateRangePicker() {
-  const element = document.querySelector<HTMLInputElement>('.daterange')
-  if (element === null) return
-  useDateRangePicker(element)
+  const elements = document.querySelectorAll<HTMLInputElement>('.daterange')
+  elements.forEach((element) => {
+    useDateRangePicker(element)
+  })
 }
 
 function bootFileFields() {
