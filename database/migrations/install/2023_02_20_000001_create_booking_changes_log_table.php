@@ -15,8 +15,8 @@ return new class extends Migration {
             $table->unsignedInteger('booking_id')->nullable();
             $table->string('event');
             $table->unsignedTinyInteger('event_type');
-            $table->text('payload')->nullable();//json('payload')
-            $table->text('context');//json('context')
+            $table->json('payload')->nullable();
+            $table->json('context');
             $table->timestamp('created_at')->useCurrent();
 
             $table->foreign('order_id')

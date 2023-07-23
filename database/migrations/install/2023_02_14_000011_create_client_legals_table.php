@@ -19,7 +19,7 @@ return new class extends Migration
             $table->tinyInteger('type');
             $table->string('name');
             $table->string('address');
-            $table->text('requisites')->nullable();//json('requisites')
+            $table->json('requisites')->nullable();
             $table->timestamps();
 
             $table->foreign('client_id')

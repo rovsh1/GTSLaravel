@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->unsignedInteger('booking_id');
             $table->unsignedInteger('hotel_room_id');
             $table->unsignedTinyInteger('guests_count');
-            $table->text('data');//json('data')
+            $table->json('data');
             $table->timestamps();
 
             $table->foreign('booking_id')
