@@ -46,8 +46,8 @@ class HotelAdapter
         int $creatorId,
         ?int $orderId,
         ?string $note = null
-    ): void {
-        app(CreateBooking::class)->execute(
+    ): int {
+        return app(CreateBooking::class)->execute(
             new CreateBookingDto(
                 cityId: $cityId,
                 creatorId: $creatorId,
