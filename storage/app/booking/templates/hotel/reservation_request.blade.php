@@ -49,27 +49,7 @@
 <body>
 <table>
     <tbody>
-    <tr>
-        <td class="text-align-left" style="width: 250px"><img src="var:logo" alt="" width="250"></td>
-        <td style="width: 650px; ">
-            <table class="text-align-right">
-                <tbody>
-                <tr>
-                    <td>{{$company}}</td>
-                </tr>
-                <tr>
-                    <td>Тел: {{$phone}}</td>
-                </tr>
-                <tr>
-                    <td>E-mail: {{$email}}</td>
-                </tr>
-                <tr>
-                    <td>{{$address}}</td>
-                </tr>
-                </tbody>
-            </table>
-        </td>
-    </tr>
+    @include('hotel._partials.company_requisites_header')
     <tr>
         <td class="title text-align-center" colspan="2">НОВОЕ БРОНИРОВАНИЕ</td>
     </tr>
@@ -131,56 +111,9 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($rooms as $roomIndex => $room)
-                    @if($roomIndex === 0)
-                        <tr class="first">
-                    @else
-                        <tr>
-                    @endif
-                        <td>
-                            <b>{{++$roomIndex}}</b>
-                        </td>
-                        <td>
-                            <b>{{$room->roomInfo()->name()}}</b>
-                        </td>
-                        <td>
-                            Время заезда: {{$room->details()->earlyCheckIn()?->timePeriod()->from() ?? $hotelDefaultCheckInTime}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>
-                            Питание: без завтрака
-                        </td>
-                        <td>
-                            Время выезда: {{$room->details()->lateCheckOut()?->timePeriod()->to() ?? $hotelDefaultCheckOutTime}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>
-                            Туристы ({{$room->guests()->count()}}):
-                        </td>
-                        <td></td>
-                    </tr>
-                    @foreach($room->guests() as $index => $guest)
-                        <tr>
-                            <td></td>
-                            <td>
-                                {{++$index}}. {{$guest->fullName()}}, {{$guest->gender()->value}}, {{$guest->countryId()}}
-                            </td>
-                            <td></td>
-                        </tr>
-                    @endforeach
-                    <tr>
-                        <td></td>
-                        <td>
-                            Примечание (запрос в отель, ваучер):
-                        </td>
-                        <td></td>
-                    </tr>
 
-                @endforeach
+                @include('hotel._partials.rooms')
+
                 <tr class="first">
                     <td colspan="3">
                         <p style="text-align: justify"><b>Внимание!</b> Компания гарантирует оплату за количество ночей

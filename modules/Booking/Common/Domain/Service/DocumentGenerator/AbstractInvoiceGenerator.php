@@ -3,17 +3,29 @@
 namespace Module\Booking\Common\Domain\Service\DocumentGenerator;
 
 use Module\Booking\Common\Domain\Entity\BookingInterface;
+use Module\Booking\Common\Domain\Entity\Invoice;
 
-abstract class AbstractInvoiceGenerator
+abstract class AbstractInvoiceGenerator extends AbstractDocumentGenerator
 {
-    final public function generate(BookingInterface $booking): string
+    final public function generate(Invoice $invoice, BookingInterface $booking): void
     {
-        return (new TemplateBuilder($this->getTemplateName()))
-            ->attributes($this->getReservationAttributes($booking))
+        $documentContent = (new TemplateBuilder($this->templatesPath, $this->getTemplateName()))
+            ->attributes(
+                array_merge(
+                    $this->getCompanyAttributes(),
+                    $this->getReservationAttributes($booking),
+                    $this->getInvoiceAttributes($invoice),
+                )
+            )
             ->generate();
+
+        $this->fileStorageAdapter->create(
+            $invoice::class,
+            $invoice->id()->value(),
+            "invoice_{$invoice->id()->value()}.pdf",
+            $documentContent
+        );
     }
 
-    abstract protected function getReservationAttributes(BookingInterface $reservation): array;
-
-    abstract protected function getTemplateName(): string;
+    abstract protected function getInvoiceAttributes(Invoice $invoice): array;
 }

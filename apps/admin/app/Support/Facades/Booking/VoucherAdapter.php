@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Facade;
 /**
  * @method static void sendVoucher(int $bookingId)
  * @method static array getBookingVouchers(int $bookingId)
+ * @method static mixed getDocumentFileInfo(int $voucherId)
  **/
 class VoucherAdapter extends Facade
 {

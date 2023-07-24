@@ -9,7 +9,7 @@ use Module\Booking\Common\Domain\Adapter\FileStorageAdapterInterface;
 use Module\Booking\Common\Domain\Entity\Request;
 use Module\Booking\Common\Domain\Event\Contracts\BookingRequestableInterface;
 use Module\Booking\Common\Domain\Exception\BookingTypeDoesntHaveDocumentGenerator;
-use Module\Booking\Common\Domain\Service\DocumentGenerator\DocumentGeneratorInterface;
+use Module\Booking\Common\Domain\Service\DocumentGenerator\RequestGeneratorInterface;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
 use Module\Booking\Common\Domain\ValueObject\RequestTypeEnum;
 use Module\Booking\Hotel\Domain\Adapter\HotelAdapterInterface;
@@ -27,7 +27,7 @@ class DocumentGeneratorFactory
     ) {
     }
 
-    public function getGenerator(Request $request, BookingRequestableInterface $booking): DocumentGeneratorInterface
+    public function getRequestGenerator(Request $request, BookingRequestableInterface $booking): RequestGeneratorInterface
     {
         return match ($request->type()) {
             RequestTypeEnum::BOOKING => $this->getBookingDocumentGenerator($booking),
@@ -37,24 +37,34 @@ class DocumentGeneratorFactory
         };
     }
 
-    private function getCancelDocumentGenerator(BookingRequestableInterface $booking): DocumentGeneratorInterface
+    private function getCancelDocumentGenerator(BookingRequestableInterface $booking): RequestGeneratorInterface
     {
         return match ($booking->type()) {
             //@todo прокинуть зависимости
-            BookingTypeEnum::HOTEL => new CancellationRequestGenerator($this->templatesPath, $this->fileStorageAdapter),
+            BookingTypeEnum::HOTEL => new CancellationRequestGenerator(
+                $this->templatesPath,
+                $this->fileStorageAdapter,
+                $this->module->get(HotelAdapterInterface::class),
+                $this->module->get(AdministratorAdapterInterface::class),
+            ),
             default => throw new BookingTypeDoesntHaveDocumentGenerator()
         };
     }
 
-    private function getChangeDocumentGenerator(BookingRequestableInterface $booking): DocumentGeneratorInterface
+    private function getChangeDocumentGenerator(BookingRequestableInterface $booking): RequestGeneratorInterface
     {
         return match ($booking->type()) {
-            BookingTypeEnum::HOTEL => new ChangeRequestGenerator($this->templatesPath, $this->fileStorageAdapter),
+            BookingTypeEnum::HOTEL => new ChangeRequestGenerator(
+                $this->templatesPath,
+                $this->fileStorageAdapter,
+                $this->module->get(HotelAdapterInterface::class),
+                $this->module->get(AdministratorAdapterInterface::class),
+            ),
             default => throw new BookingTypeDoesntHaveDocumentGenerator()
         };
     }
 
-    private function getBookingDocumentGenerator(BookingRequestableInterface $booking): DocumentGeneratorInterface
+    private function getBookingDocumentGenerator(BookingRequestableInterface $booking): RequestGeneratorInterface
     {
         return match ($booking->type()) {
             BookingTypeEnum::HOTEL => new ReservationRequestGenerator(

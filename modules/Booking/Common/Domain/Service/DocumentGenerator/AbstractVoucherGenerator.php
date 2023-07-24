@@ -3,17 +3,29 @@
 namespace Module\Booking\Common\Domain\Service\DocumentGenerator;
 
 use Module\Booking\Common\Domain\Entity\BookingInterface;
+use Module\Booking\Common\Domain\Entity\Voucher;
 
-abstract class AbstractVoucherGenerator
+abstract class AbstractVoucherGenerator extends AbstractDocumentGenerator
 {
-    final public function generate(BookingInterface $booking): string
+    final public function generate(Voucher $voucher, BookingInterface $booking): void
     {
-        return (new TemplateBuilder($this->getTemplateName()))
-            ->attributes($this->getReservationAttributes($booking))
+        $documentContent = (new TemplateBuilder($this->templatesPath, $this->getTemplateName()))
+            ->attributes(
+                array_merge(
+                    $this->getCompanyAttributes(),
+                    $this->getReservationAttributes($booking),
+                    $this->getVoucherAttributes($voucher),
+                )
+            )
             ->generate();
+
+        $this->fileStorageAdapter->create(
+            $voucher::class,
+            $voucher->id()->value(),
+            "voucher_{$voucher->id()->value()}.pdf",
+            $documentContent
+        );
     }
 
-    abstract protected function getReservationAttributes(BookingInterface $booking): array;
-
-    abstract protected function getTemplateName(): string;
+    abstract protected function getVoucherAttributes(Voucher $voucher): array;
 }

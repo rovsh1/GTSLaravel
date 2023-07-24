@@ -13,7 +13,8 @@ class StatusUpdater
 {
     public function __construct(
         private readonly AdministratorRules $statusRules,
-        private readonly BookingUpdater $bookingUpdater
+        private readonly BookingUpdater $bookingUpdater,
+        private readonly InvoiceCreator $invoiceCreator,
     ) {}
 
     public function toProcessing(BookingInterface $booking): void
@@ -68,6 +69,7 @@ class StatusUpdater
             BookingStatusEnum::PAID,
             fn(BookingInterface $booking) => $booking->toPaid()
         );
+        $booking->generateInvoice($this->invoiceCreator);//@todo уточнить у Сергея, в этом ли месте?
     }
 
     public function toPartiallyPaid(BookingInterface $booking): void

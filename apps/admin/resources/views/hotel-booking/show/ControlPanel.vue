@@ -19,7 +19,7 @@ import { useBookingVoucherStore } from '~resources/views/hotel-booking/show/stor
 import { Booking } from '~api/booking'
 import { CancelConditions, ExternalNumberType, ExternalNumberTypeEnum } from '~api/booking/details'
 import { updateBookingPrice } from '~api/booking/price'
-import { BookingRequest, downloadRequestDocument } from '~api/booking/request'
+import { BookingRequest } from '~api/booking/request'
 import { BookingAvailableActionsResponse, BookingStatusResponse } from '~api/booking/status'
 import { Currency } from '~api/models'
 
@@ -45,6 +45,7 @@ const statusHistoryStore = useBookingStatusHistoryStore()
 const { fetchStatusHistory } = statusHistoryStore
 const orderStore = useOrderStore()
 const voucherStore = useBookingVoucherStore()
+const vouchers = computed(() => voucherStore.vouchers)
 const {
   externalNumberType,
   externalNumber,
@@ -106,13 +107,6 @@ const handleUpdateExternalNumber = async () => {
   }
 }
 
-const handleDownloadDocument = async (requestId: number): Promise<void> => {
-  await downloadRequestDocument({
-    requestID: requestId,
-    bookingID,
-  })
-}
-
 const getHumanRequestType = (type: number): string => {
   let preparedType = 'изменение'
   if (type === 1) {
@@ -155,7 +149,6 @@ const handleSaveHoManualPrice = async (value: number | undefined) => {
 
 onMounted(() => {
   fetchAvailableActions()
-  fetchBookingRequests()
 })
 
 </script>
@@ -291,7 +284,7 @@ onMounted(() => {
           Запрос на {{ getHumanRequestType(bookingRequest.type) }}
           <span class="date align-left ml-1">от {{ formatDateTime(bookingRequest.dateCreate) }}</span>
         </div>
-        <a href="#" class="btn-download" @click.prevent="handleDownloadDocument(bookingRequest.id)">Скачать</a>
+        <a href="#" class="btn-download" @click.prevent="requestStore.downloadDocument(bookingRequest.id)">Скачать</a>
       </div>
     </div>
 
@@ -331,9 +324,25 @@ onMounted(() => {
   <div v-if="canSendClientVoucher" class="mt-4">
     <h6>Файлы, отправленные клиенту</h6>
     <hr>
+
+    <div class="reservation-requests mb-2">
+      <div
+        v-for="bookingVoucher in vouchers"
+        :key="bookingVoucher.id"
+        class="d-flex flex-row justify-content-between w-100 py-1"
+      >
+        <div>
+          Общий ваучер
+          <span class="date align-left ml-1">от {{ formatDateTime(bookingVoucher.dateCreate) }}</span>
+        </div>
+        <a href="#" class="btn-download" @click.prevent="voucherStore.downloadDocument(bookingVoucher.id)">Скачать</a>
+      </div>
+    </div>
+
     <RequestBlock
       variant="success"
       text="При необходимости клиенту можно отправить ваучер"
+      button-text="Отправить ваучер"
       :loading="isVoucherFetching"
       @click="handleVoucherSend"
     />

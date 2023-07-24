@@ -33,7 +33,8 @@ class NotesController extends Controller
 
         return Layout::title('Изменить примечание отеля')
             ->view('hotel.notes.notes', [
-                'value' => ''
+                'value' => '',
+                'cancelUrl' => $this->prototype->route('show', $hotel)
             ]);
     }
 

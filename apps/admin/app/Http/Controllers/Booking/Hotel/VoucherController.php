@@ -28,4 +28,10 @@ class VoucherController
         $requests = VoucherAdapter::getBookingVouchers($bookingId);
         return response()->json($requests);
     }
+
+    public function getFileInfo(int $bookingId, int $voucherId): JsonResponse
+    {
+        $fileInfo = VoucherAdapter::getDocumentFileInfo($voucherId);
+        return response()->json($fileInfo);
+    }
 }

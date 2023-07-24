@@ -2,10 +2,12 @@
 
 namespace Module\Booking\Hotel\Providers;
 
+use Module\Booking\Common\Domain\Adapter\AdministratorAdapterInterface;
 use Module\Booking\Common\Domain\Adapter\FileStorageAdapterInterface;
 use Module\Booking\Common\Domain\Factory\DocumentGeneratorFactory;
 use Module\Booking\Common\Infrastructure\Adapter\FileStorageAdapter;
 use Module\Booking\Hotel\Domain;
+use Module\Booking\Hotel\Domain\Adapter\HotelAdapterInterface;
 use Module\Booking\Hotel\Infrastructure;
 use Module\Booking\PriceCalculator\Domain\Service\BookingCalculatorInterface;
 use Module\Booking\PriceCalculator\Domain\Service\Hotel\BookingCalculator;
@@ -37,6 +39,17 @@ class BootServiceProvider extends ServiceProvider
                 $module->get(FileStorageAdapterInterface::class),
                 $module
             )
+        );
+        $this->app->singleton(
+            Domain\Service\DocumentGenerator\VoucherGenerator::class,
+            function (ModuleInterface $module) {
+                return new Domain\Service\DocumentGenerator\VoucherGenerator(
+                    $module->config('templates_path'),
+                    $module->get(FileStorageAdapterInterface::class),
+                    $module->get(HotelAdapterInterface::class),
+                    $module->get(AdministratorAdapterInterface::class),
+                );
+            }
         );
         $this->app->singleton(
             Domain\Repository\RoomBookingRepositoryInterface::class,

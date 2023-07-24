@@ -27,4 +27,5 @@ AclRoute::for('hotel-booking')
     ->get('/{booking}/request/{request}/file', Controllers\Booking\Hotel\RequestController::class . '@getFileInfo', 'read', 'request.download')
 
     ->get('/{booking}/voucher/list', Controllers\Booking\Hotel\VoucherController::class . '@getBookingVouchers', 'read', 'voucher.list')
-    ->post('/{booking}/voucher', Controllers\Booking\Hotel\VoucherController::class . '@sendVoucher', 'update', 'voucher.send');
+    ->post('/{booking}/voucher', Controllers\Booking\Hotel\VoucherController::class . '@sendVoucher', 'update', 'voucher.send')
+    ->get('/{booking}/voucher/{voucher}/file', Controllers\Booking\Hotel\VoucherController::class . '@getFileInfo', 'read', 'voucher.download');

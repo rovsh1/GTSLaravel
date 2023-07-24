@@ -12,8 +12,10 @@ use Module\Booking\Common\Domain\Event\Request\CancellationRequestSent;
 use Module\Booking\Common\Domain\Event\Request\ChangeRequestSent;
 use Module\Booking\Common\Domain\Exception\NotRequestableEntity;
 use Module\Booking\Common\Domain\Exception\NotRequestableStatus;
+use Module\Booking\Common\Domain\Service\InvoiceCreator;
 use Module\Booking\Common\Domain\Service\RequestCreator;
 use Module\Booking\Common\Domain\Service\RequestRules;
+use Module\Booking\Common\Domain\Service\VoucherCreator;
 use Module\Booking\Common\Domain\ValueObject\BookingPrice;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
@@ -165,6 +167,18 @@ abstract class AbstractBooking extends AbstractAggregateRoot implements
                 break;
         }
         $this->pushEvent($event);
+    }
+
+    public function generateVoucher(VoucherCreator $voucherCreator): void
+    {
+        $voucherCreator->create($this);
+        //@todo кинуть ивент
+    }
+
+    public function generateInvoice(InvoiceCreator $invoiceCreator): void
+    {
+        $invoiceCreator->create($this);
+        //@todo кинуть ивент
     }
 
     public function isManualBoPrice(): bool

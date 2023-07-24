@@ -5,12 +5,14 @@ type ColorVariant = 'warning' | 'success' | 'danger'
 withDefaults(defineProps<{
   text: string
   showButton?: boolean
+  buttonText?: string
   loading?: boolean
   variant?: ColorVariant
 }>(), {
   showButton: true,
   loading: false,
   variant: 'warning',
+  buttonText: 'Отправить запрос',
 })
 
 defineEmits<{
@@ -26,7 +28,7 @@ defineEmits<{
       href="#"
       @click.prevent="$emit('click')"
     >
-      Отправить запрос
+      {{ buttonText }}
     </a>
   </div>
 </template>

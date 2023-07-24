@@ -5,11 +5,13 @@ namespace Module\Booking\Hotel\Domain\Service\DocumentGenerator;
 use Module\Booking\Common\Domain\Adapter\AdministratorAdapterInterface;
 use Module\Booking\Common\Domain\Adapter\FileStorageAdapterInterface;
 use Module\Booking\Common\Domain\Entity\AbstractBooking;
+use Module\Booking\Common\Domain\Entity\BookingInterface;
+use Module\Booking\Common\Domain\Service\DocumentGenerator\AbstractRequestGenerator;
 use Module\Booking\Hotel\Domain\Adapter\HotelAdapterInterface;
 use Module\Booking\Hotel\Domain\Entity\Booking;
 use Module\Shared\Enum\ContactTypeEnum;
 
-class ReservationRequestGenerator extends AbstractGenerator
+class ReservationRequestGenerator extends AbstractRequestGenerator
 {
     public function __construct(
         string $templatesPath,
@@ -25,7 +27,7 @@ class ReservationRequestGenerator extends AbstractGenerator
         return 'hotel.reservation_request';
     }
 
-    protected function getReservationAttributes(AbstractBooking|Booking $booking): array
+    protected function getReservationAttributes(BookingInterface|Booking $booking): array
     {
         $hotelDto = $this->hotelAdapter->findById($booking->hotelInfo()->id());
         $phones = collect($hotelDto->contacts)
@@ -41,6 +43,7 @@ class ReservationRequestGenerator extends AbstractGenerator
 
         //@todo вывести менеджера
         $administrator = $this->administratorAdapter->getManagerByBookingId($booking->id()->value());
+
         //@todo инфо о гостях сейчас в айдишниках
 
         return [

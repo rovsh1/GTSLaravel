@@ -13,7 +13,6 @@ export interface BookingVoucherPayload {
 
 export interface BookingVoucher {
   id: number
-  type: number
   dateCreate: DateResponse
 }
 

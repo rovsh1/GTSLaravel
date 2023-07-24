@@ -8,7 +8,7 @@ use Module\Booking\Common\Domain\Adapter\FileStorageAdapterInterface;
 use Module\Booking\Common\Domain\Entity\Request;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
-class GetDocumentFileInfo implements UseCaseInterface
+abstract class GetDocumentFileInfo implements UseCaseInterface
 {
     public function __construct(
         private readonly FileStorageAdapterInterface $fileStorageAdapter
@@ -16,6 +16,11 @@ class GetDocumentFileInfo implements UseCaseInterface
 
     public function execute(int $requestId)
     {
-        return $this->fileStorageAdapter->getEntityFile($requestId, Request::class);
+        return $this->fileStorageAdapter->getEntityFile($requestId, $this->getFileType());
     }
+
+    /**
+     * @return class-string
+     */
+    abstract protected function getFileType(): string;
 }

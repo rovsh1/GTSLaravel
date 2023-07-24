@@ -39,30 +39,12 @@
 </style>
 <table>
     <tbody>
+    @include('hotel._partials.company_requisites_header')
     <tr>
-        <td class="text-align-left" style="width: 250px"><img src="var:logo" alt="" width="250"></td>
-        <td style="width: 650px;">
-            <table class="text-align-right">
-                <tr>
-                    <td>{company}</td>
-                </tr>
-                <tr>
-                    <td>Тел: {phone}</td>
-                </tr>
-                <tr>
-                    <td>E-mail: {email}</td>
-                </tr>
-                <tr>
-                    <td>{address}</td>
-                </tr>
-            </table>
-        </td>
+        <td class="title text-align-center" colspan="2">ИНВОЙС № {{$number}}</td>
     </tr>
     <tr>
-        <td class="title text-align-center" colspan="2">ИНВОЙС № {number}</td>
-    </tr>
-    <tr>
-        <td class="text-align-right" colspan="2">{created}</td>
+        <td class="text-align-right" colspan="2">{{$createdAt}}</td>
     </tr>
     <tr>
         <td colspan="2">
@@ -75,26 +57,26 @@
                                 <td>Тип услуги: Проживание</td>
                             </tr>
                             <tr>
-                                <td>Гостиница: {hotelName}</td>
+                                <td>Гостиница: {{$hotelName}}</td>
                             </tr>
                             <tr>
-                                <td>Адрес: г.{cityName}, {hotelAddress}</td>
+                                <td>Адрес: г.{{$cityName}}, {hotelAddress}</td>
                             </tr>
                             <tr>
-                                <td>Телефон: {hotelPhone}</td>
+                                <td>Телефон: {{$hotelPhone}}</td>
                             </tr>
                             <tr>
-                                <td>Период пребывания: {reservStartDate} - {reservEndDate}</td>
+                                <td><b>{{$reservStartDate}}</b> - <b>{{$reservEndDate}}</b></td>
                             </tr>
                             <tr>
-                                <td>Количество ночей: {reservNightCount}</td>
+                                <td>Количество ночей: {{$reservNightCount}}</td>
                             </tr>
                         </table>
                     </td>
                     <td style="width: 45%; text-align: left">
                         <table>
                             <tr>
-                                <td style="font-size: 24px; font-weight: bold; color: red">Номер брони: {reservNumber}</td>
+                                <td style="font-size: 24px; font-weight: bold; color: red">Номер брони: {{$reservNumber}}</td>
                             </tr>
                             <tr>
                                 <td>Статус брони: {reservStatus}</td>

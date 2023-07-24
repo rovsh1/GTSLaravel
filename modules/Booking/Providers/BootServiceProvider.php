@@ -14,6 +14,8 @@ class BootServiceProvider extends ServiceProvider
 {
     public $singletons = [
         Domain\Repository\RequestRepositoryInterface::class => Infrastructure\Repository\RequestRepository::class,
+        Domain\Repository\VoucherRepositoryInterface::class => Infrastructure\Repository\VoucherRepository::class,
+        Domain\Repository\InvoiceRepositoryInterface::class => Infrastructure\Repository\InvoiceRepository::class,
         Domain\Repository\BookingChangesLogRepositoryInterface::class => Infrastructure\Repository\BookingChangesLogRepository::class,
         Domain\Adapter\FileStorageAdapterInterface::class => Infrastructure\Adapter\FileStorageAdapter::class,
         Domain\Adapter\AdministratorAdapterInterface::class => Infrastructure\Adapter\AdministratorAdapter::class,

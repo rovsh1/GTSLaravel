@@ -44,25 +44,7 @@
 </style>
 <table>
     <tbody>
-    <tr>
-        <td class="text-align-left" style="width: 250px"><img src="var:logo" alt="" width="250"></td>
-        <td style="width: 650px; ">
-            <table class="text-align-right">
-                <tr>
-                    <td>{company}</td>
-                </tr>
-                <tr>
-                    <td>Тел: {phone}</td>
-                </tr>
-                <tr>
-                    <td>E-mail: {email}</td>
-                </tr>
-                <tr>
-                    <td>{address}</td>
-                </tr>
-            </table>
-        </td>
-    </tr>
+    @include('hotel._partials.company_requisites_header')
     <tr>
         <td class="title text-align-center" colspan="2">ОТМЕНА БРОНИРОВАНИЯ</td>
     </tr>
@@ -75,29 +57,29 @@
                         <table>
                             <tr>
                                 <td class="top-table-left" style="font-size: 24px; font-weight: bold; color: red">Номер (ID):</td>
-                                <td style="font-size: 24px; font-weight: bold; color: red"><b>{reservNumber}</b></td>
-                                <td class="text-align-right" colspan="2"><b>Дата и время отмены: {reservCancelledAt}</b></td>
+                                <td style="font-size: 24px; font-weight: bold; color: red"><b>{{$reservNumber}}</b></td>
+                                <td class="text-align-right" colspan="2"><b>Дата и время отмены: {{$reservCancelledAt}}</b></td>
                             </tr>
                             <tr>
                                 <td>&ensp;</td>
                                 <td>&ensp;</td>
-                                <td class="text-align-right" colspan="2"><b>Дата и время создания: {reservCreatedAt}</b></td>
+                                <td class="text-align-right" colspan="2"><b>Дата и время создания: {{$reservCreatedAt}}</b></td>
                             </tr>
                             <tr>
                                 <td class="top-table-left">Гостиница:</td>
-                                <td><b>{hotelName} ({cityName})</b></td>
+                                <td><b>{{$hotelName}} ({{$cityName}})</b></td>
                             </tr>
                             <tr>
                                 <td class="top-table-left">Телефон:</td>
-                                <td><b>{hotelPhone}</b></td>
+                                <td><b>{{$hotelPhone}}</b></td>
                             </tr>
                             <tr>
                                 <td class="top-table-left">Период пребывания:</td>
-                                <td><b>{reservStartDate}</b> - <b>{reservEndDate}</b></td>
+                                <td><b>{{$reservStartDate}}</b> - <b>{{$reservEndDate}}</b></td>
                             </tr>
                             <tr>
                                 <td class="top-table-left">Количество ночей:</td>
-                                <td><b>{reservNightCount}</b></td>
+                                <td><b>{{$reservNightCount}}</b></td>
                             </tr>
                         </table>
                     </td>
@@ -117,7 +99,9 @@
                 </tr>
                 </thead>
                 <tbody>
-                {rooms}
+
+                @include('hotel._partials.rooms')
+
                 <tr class="first">
                     <td colspan="3">
                         <p style="text-align: justify"><b>Внимание!</b> Компания гарантирует оплату за количество ночей и услуги указанные в заявке,
