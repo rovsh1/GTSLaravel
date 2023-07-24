@@ -135,22 +135,7 @@
                 <tbody>
                 <tr>
                     <td style="width: 500px;">
-                        <table>
-                            <tbody>
-                            <tr>
-                                <td> </td>
-                            </tr>
-                            <tr>
-                                <td>Менеджер: <b>{managerName}</b></td>
-                            </tr>
-                            <tr>
-                                <td>E-mail: {managerEmail}</td>
-                            </tr>
-                            <tr>
-                                <td>Мобильный номер: {managerPhone}</td>
-                            </tr>
-                            </tbody>
-                        </table>
+                        @include('hotel._partials.manager_requisites')
                     </td>
                 </tr>
                 </tbody>

@@ -2,6 +2,7 @@
 
 namespace Module\Booking\Hotel\Domain\Service\DocumentGenerator;
 
+use Module\Booking\Common\Application\Service\StatusStorage;
 use Module\Booking\Common\Domain\Adapter\AdministratorAdapterInterface;
 use Module\Booking\Common\Domain\Adapter\FileStorageAdapterInterface;
 use Module\Booking\Common\Domain\Entity\AbstractBooking;
@@ -18,6 +19,7 @@ class ReservationRequestGenerator extends AbstractRequestGenerator
         FileStorageAdapterInterface $fileStorageAdapter,
         private readonly HotelAdapterInterface $hotelAdapter,
         private readonly AdministratorAdapterInterface $administratorAdapter,
+        private readonly StatusStorage $statusStorage,
     ) {
         parent::__construct($templatesPath, $fileStorageAdapter);
     }
@@ -41,7 +43,6 @@ class ReservationRequestGenerator extends AbstractRequestGenerator
             ->filter()
             ->implode(', ');
 
-        //@todo вывести менеджера
         $administrator = $this->administratorAdapter->getManagerByBookingId($booking->id()->value());
 
         //@todo инфо о гостях сейчас в айдишниках
@@ -55,10 +56,13 @@ class ReservationRequestGenerator extends AbstractRequestGenerator
             'reservEndDate' => $booking->period()->dateTo()->format('d.m.Y'),
             'reservNightCount' => $booking->period()->nightsCount(),
             'reservNumber' => $booking->id()->value(),
-            'reservStatus' => $booking->status()->name,
+            'reservStatus' => $this->statusStorage->get($booking->status())->name,
             'rooms' => $booking->roomBookings(),
             'hotelDefaultCheckInTime' => $booking->hotelInfo()->checkInTime()->value(),
             'hotelDefaultCheckOutTime' => $booking->hotelInfo()->checkOutTime()->value(),
+            'managerName' => $administrator?->name ?? $administrator?->presentation,//@todo надо ли?
+            'managerPhone' => $administrator?->phone,
+            'managerEmail' => $administrator?->email,
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Module\Booking\Hotel\Providers;
 
+use Module\Booking\Common\Application\Service\StatusStorage;
 use Module\Booking\Common\Domain\Adapter\AdministratorAdapterInterface;
 use Module\Booking\Common\Domain\Adapter\FileStorageAdapterInterface;
 use Module\Booking\Common\Domain\Factory\DocumentGeneratorFactory;
@@ -48,6 +49,16 @@ class BootServiceProvider extends ServiceProvider
                     $module->get(FileStorageAdapterInterface::class),
                     $module->get(HotelAdapterInterface::class),
                     $module->get(AdministratorAdapterInterface::class),
+                    $module->get(StatusStorage::class),
+                );
+            }
+        );
+        $this->app->singleton(
+            Domain\Service\DocumentGenerator\InvoiceGenerator::class,
+            function (ModuleInterface $module) {
+                return new Domain\Service\DocumentGenerator\InvoiceGenerator(
+                    $module->config('templates_path'),
+                    $module->get(FileStorageAdapterInterface::class),
                 );
             }
         );

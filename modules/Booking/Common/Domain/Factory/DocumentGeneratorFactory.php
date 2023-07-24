@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Common\Domain\Factory;
 
+use Module\Booking\Common\Application\Service\StatusStorage;
 use Module\Booking\Common\Domain\Adapter\AdministratorAdapterInterface;
 use Module\Booking\Common\Domain\Adapter\FileStorageAdapterInterface;
 use Module\Booking\Common\Domain\Entity\Request;
@@ -46,6 +47,7 @@ class DocumentGeneratorFactory
                 $this->fileStorageAdapter,
                 $this->module->get(HotelAdapterInterface::class),
                 $this->module->get(AdministratorAdapterInterface::class),
+                $this->module->get(StatusStorage::class),
             ),
             default => throw new BookingTypeDoesntHaveDocumentGenerator()
         };
@@ -59,6 +61,7 @@ class DocumentGeneratorFactory
                 $this->fileStorageAdapter,
                 $this->module->get(HotelAdapterInterface::class),
                 $this->module->get(AdministratorAdapterInterface::class),
+                $this->module->get(StatusStorage::class),
             ),
             default => throw new BookingTypeDoesntHaveDocumentGenerator()
         };
@@ -72,6 +75,7 @@ class DocumentGeneratorFactory
                 $this->fileStorageAdapter,
                 $this->module->get(HotelAdapterInterface::class),
                 $this->module->get(AdministratorAdapterInterface::class),
+                $this->module->get(StatusStorage::class),
             ),
             default => throw new BookingTypeDoesntHaveDocumentGenerator()
         };

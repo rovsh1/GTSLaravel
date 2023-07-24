@@ -62,7 +62,7 @@
                                 <td>Гостиница: {{$hotelName}}</td>
                             </tr>
                             <tr>
-                                <td>Адрес: г.{{$cityName}}, {hotelAddress}</td>
+                                <td>Адрес: г.{{$cityName}}, {{$hotelAddress}}</td>
                             </tr>
                             <tr>
                                 <td>Телефон: {{$hotelPhone}}</td>
@@ -84,7 +84,7 @@
                                 <td style="font-size: 24px; font-weight: bold; color: red">Номер брони: {{$reservNumber}}</td>
                             </tr>
                             <tr>
-                                <td>Статус брони: {reservStatus}</td>
+                                <td>Статус брони: {{$reservStatus}}</td>
                             </tr>
                             <tr>
                                 <td>&ensp;</td>
@@ -119,22 +119,87 @@
                 </tr>
                 </thead>
                 <tbody>
-                {rooms}
+
+                @foreach($rooms as $roomIndex => $room)
+                    @if($roomIndex === 0)
+                        <tr class="first">
+                    @else
+                        <tr>
+                    @endif
+                            <td>
+                                <b>{{++$roomIndex}}</b>
+                            </td>
+                            <td>
+                                <b>{{$room->roomInfo()->name()}}</b>
+                            </td>
+                            <td>
+                                <b>1</b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                Питание: без завтрака
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                Туристы ({{$room->guests()->count()}}):
+                            </td>
+                            <td></td>
+                        </tr>
+                        @foreach($room->guests() as $index => $guest)
+                            <tr>
+                                <td></td>
+                                <td>
+                                    {{++$index}}. {{$guest->fullName()}}, {{$guest->gender()->value}}, {{$guest->countryId()}}
+                                </td>
+                                <td></td>
+                            </tr>
+                        @endforeach
+                        <tr>
+                            <td></td>
+                            <td>
+                                Время заезда: {{$room->details()->earlyCheckIn()?->timePeriod()->from() ?? $hotelDefaultCheckInTime}}
+                            </td>
+                            <td></td>
+                        </tr>
+
+                        <tr>
+                            <td></td>
+                            <td>
+                                Время выезда: {{$room->details()->lateCheckOut()?->timePeriod()->to() ?? $hotelDefaultCheckOutTime}}
+                            </td>
+                            <td></td>
+                        </tr>
+
+                        <tr>
+                            <td></td>
+                            <td>
+                                Примечание (запрос в отель, ваучер):
+                            </td>
+                            <td></td>
+                        </tr>
+                @endforeach
+
                 <tr>
-                    <td>&ensp;</td>
+                    <td></td>
                     <td>
                         <table>
                             <tbody>
-                            <tr>
-                                <td style="width: 25%">Условия отмены:</td>
-                                <td style="width: 75%">{hotelCancelPeriod}</td>
-                            </tr>
+                                <tr>
+                                    <td style="width: 25%">Условия отмены:</td>
+                                    <td style="width: 75%">{hotelCancelPeriod}</td>
+                                </tr>
                             {cancelPeriods}
                             </tbody>
                         </table>
                     </td>
                     <td>&ensp;</td>
                 </tr>
+
                 <tr class="first">
                     <td>&ensp;</td>
                     <td>
@@ -153,22 +218,7 @@
                 <tbody>
                 <tr>
                     <td style="width: 500px;">
-                        <table>
-                            <tbody>
-                            <tr>
-                                <td>&ensp;</td>
-                            </tr>
-                            <tr>
-                                <td>Менеджер: {managerName}</td>
-                            </tr>
-                            <tr>
-                                <td>E-mail: {managerEmail}</td>
-                            </tr>
-                            <tr>
-                                <td>Мобильный номер: {managerPhone}</td>
-                            </tr>
-                            </tbody>
-                        </table>
+                        @include('hotel._partials.manager_requisites')
                     </td>
                 </tr>
                 </tbody>
