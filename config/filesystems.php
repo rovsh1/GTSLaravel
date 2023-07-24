@@ -84,6 +84,7 @@ return [
 
     'links' => [
         root_path('apps/admin/public/upload') => storage_path('app/upload'),
+        root_path('apps/admin/public/file') => storage_path('app/file'),
         root_path('apps/site/public/upload') => storage_path('app/upload'),
         root_path('apps/site/public/file') => storage_path('app/files'),
     ],
