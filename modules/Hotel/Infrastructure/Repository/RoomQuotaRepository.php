@@ -17,6 +17,17 @@ class RoomQuotaRepository implements RoomQuotaRepositoryInterface
             ['room_id', 'date'],
             ['count_available', 'type']
         );
+
+        //@hack потому что сейчас система считает доступные квоты как count_available - count_booked
+        $quotasWithBooked = EloquentQuota::whereRoomId($roomId)
+            ->whereBetween('date', [$period->getStartDate(), $period->getEndDate()])
+            ->where('count_booked', '>', 0)
+            ->get();
+        foreach ($quotasWithBooked as $quotaWithBooked) {
+            $quotaWithBooked->update([
+                'count_available' => $quotaWithBooked->count_available + $quotaWithBooked->count_booked,
+            ]);
+        }
     }
 
     public function updateRoomReleaseDays(int $roomId, CarbonPeriod $period, int $releaseDays): void
