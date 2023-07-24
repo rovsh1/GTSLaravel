@@ -9,6 +9,7 @@ use Module\Services\FileStorage\Infrastructure\Facade\ReaderFacadeInterface;
 use Sdk\Module\Contracts\PortGateway\PortGatewayInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+//TODO check deprecated
 class GetAction
 {
     protected array $defaultImages = [

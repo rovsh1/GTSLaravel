@@ -3,10 +3,10 @@
 namespace Module\Shared\Support\Adapters;
 
 use DateTimeInterface;
-use Module\Pricing\CurrencyRate\Application\UseCase\ConvertNetRate;
-use Module\Pricing\CurrencyRate\Application\UseCase\GetNetRate;
 use Module\Shared\Domain\Adapter\CurrencyRateAdapterInterface;
 use Module\Shared\Enum\CurrencyEnum;
+use Module\Support\CurrencyRate\Application\UseCase\ConvertNetRate;
+use Module\Support\CurrencyRate\Application\UseCase\GetNetRate;
 
 class CurrencyRateAdapter implements CurrencyRateAdapterInterface
 {

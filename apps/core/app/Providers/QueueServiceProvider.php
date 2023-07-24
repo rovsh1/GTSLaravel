@@ -2,8 +2,8 @@
 
 namespace App\Core\Providers;
 
-use Module\Services\MailManager\Infrastructure\Queue\MailConnector;
 use Illuminate\Queue\QueueServiceProvider as ServiceProvider;
+use Module\Support\MailManager\Infrastructure\Queue\MailConnector;
 
 class QueueServiceProvider extends ServiceProvider
 {

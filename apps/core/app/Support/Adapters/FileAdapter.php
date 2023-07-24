@@ -2,11 +2,11 @@
 
 namespace App\Core\Support\Adapters;
 
+use App\Core\Contracts\File\FileInterface;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
-use App\Core\Contracts\File\FileInterface;
-use Module\Services\FileStorage\Application\Dto\FileDto;
-use Module\Services\FileStorage\Application\Dto\FileInfoDto;
+use Module\Support\FileStorage\Application\Dto\FileDto;
+use Module\Support\FileStorage\Application\Dto\FileInfoDto;
 
 class FileAdapter extends AbstractModuleAdapter
 {

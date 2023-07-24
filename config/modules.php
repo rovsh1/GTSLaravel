@@ -15,10 +15,10 @@ return [
         'templates_path' => storage_path('app/booking/templates'),
     ],
     'CurrencyRate' => [
-        'path' => modules_path('Pricing/CurrencyRate'),
+        'path' => modules_path('Support/CurrencyRate'),
     ],
     'FileStorage' => [
-        'path' => modules_path('Services/FileStorage'),
+        'path' => modules_path('Support/FileStorage'),
         'alias' => 'files',
         'disk' => 'files',
         'url' => env('APP_URL'),
@@ -26,11 +26,11 @@ return [
         'path_name_length' => 2
     ],
     'MailManager' => [
-        'path' => modules_path('Services/MailManager'),
+        'path' => modules_path('Support/MailManager'),
         'alias' => 'mail',
     ],
     'Scheduler' => [
-        'path' => modules_path('Services/Scheduler')
+        'path' => modules_path('Support/Scheduler')
     ],
     'Traveline' => [
         'enabled' => env('TRAVELINE_ENABLED', true),
