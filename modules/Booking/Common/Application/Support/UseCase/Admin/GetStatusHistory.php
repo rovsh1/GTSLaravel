@@ -23,7 +23,7 @@ use Module\Booking\Common\Domain\Event\Status\BookingWaitingProcessing;
 use Module\Booking\Common\Domain\Repository\BookingChangesLogRepositoryInterface;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Common\Infrastructure\Models\BookingChangesLog;
-use Module\Booking\Hotel\Application\Dto\StatusEventDto;
+use Module\Booking\HotelBooking\Application\Dto\StatusEventDto;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class GetStatusHistory implements UseCaseInterface

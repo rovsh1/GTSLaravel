@@ -8,8 +8,8 @@ use Module\Booking\Airport\Domain\Entity\Booking as AirportBooking;
 use Module\Booking\Airport\Infrastructure\Repository\BookingRepository as AirportBookingRepository;
 use Module\Booking\Common\Domain\Entity\BookingInterface;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
-use Module\Booking\Hotel\Domain\Entity\Booking as HotelBooking;
-use Module\Booking\Hotel\Infrastructure\Repository\BookingRepository as HotelBookingRepository;
+use Module\Booking\HotelBooking\Domain\Entity\Booking as HotelBooking;
+use Module\Booking\HotelBooking\Infrastructure\Repository\BookingRepository as HotelBookingRepository;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\ModuleInterface;
 

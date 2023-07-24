@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Module\Booking\Hotel\Application\UseCase\System\FillCalculatedPriceCalendar;
+use Module\Booking\HotelBooking\Application\UseCase\System\FillCalculatedPriceCalendar;
 
 return new class extends Migration {
     /**

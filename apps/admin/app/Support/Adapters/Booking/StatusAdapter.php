@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Adapters\Booking;
 
-use Module\Booking\Hotel\Application\UseCase\Admin\GetStatuses;
-use Module\Booking\Hotel\Application\UseCase\Admin\GetStatusHistory;
-use Module\Booking\Hotel\Application\UseCase\Admin\UpdateBookingStatus;
+use Module\Booking\HotelBooking\Application\UseCase\Admin\GetStatuses;
+use Module\Booking\HotelBooking\Application\UseCase\Admin\GetStatusHistory;
+use Module\Booking\HotelBooking\Application\UseCase\Admin\UpdateBookingStatus;
 
 class StatusAdapter
 {

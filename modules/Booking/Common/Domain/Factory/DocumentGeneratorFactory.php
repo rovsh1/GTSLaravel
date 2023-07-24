@@ -13,10 +13,10 @@ use Module\Booking\Common\Domain\Exception\BookingTypeDoesntHaveDocumentGenerato
 use Module\Booking\Common\Domain\Service\DocumentGenerator\RequestGeneratorInterface;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
 use Module\Booking\Common\Domain\ValueObject\RequestTypeEnum;
-use Module\Booking\Hotel\Domain\Adapter\HotelAdapterInterface;
-use Module\Booking\Hotel\Domain\Service\DocumentGenerator\CancellationRequestGenerator;
-use Module\Booking\Hotel\Domain\Service\DocumentGenerator\ChangeRequestGenerator;
-use Module\Booking\Hotel\Domain\Service\DocumentGenerator\ReservationRequestGenerator;
+use Module\Booking\HotelBooking\Domain\Adapter\HotelAdapterInterface;
+use Module\Booking\HotelBooking\Domain\Service\DocumentGenerator\CancellationRequestGenerator;
+use Module\Booking\HotelBooking\Domain\Service\DocumentGenerator\ChangeRequestGenerator;
+use Module\Booking\HotelBooking\Domain\Service\DocumentGenerator\ReservationRequestGenerator;
 use Sdk\Module\Contracts\ModuleInterface;
 
 class DocumentGeneratorFactory

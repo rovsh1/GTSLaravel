@@ -12,7 +12,7 @@ enum BookingTypeEnum: int
 
     public static function fromEntity(\Module\Booking\Common\Domain\Entity\BookingInterface $booking): self
     {
-        if ($booking instanceof \Module\Booking\Hotel\Domain\Entity\Booking)
+        if ($booking instanceof \Module\Booking\HotelBooking\Domain\Entity\Booking)
             return self::HOTEL;
         elseif ($booking instanceof \Module\Booking\Common\Domain\Entity\TransferReservation\Transfer)
             return self::TRANSFER;

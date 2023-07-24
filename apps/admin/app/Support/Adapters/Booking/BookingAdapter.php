@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Adapters\Booking;
 
-use Module\Booking\Hotel\Application\UseCase\Admin\GetAvailableActions;
+use Module\Booking\HotelBooking\Application\UseCase\Admin\GetAvailableActions;
 
 class BookingAdapter
 {

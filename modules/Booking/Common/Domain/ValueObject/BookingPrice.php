@@ -2,7 +2,7 @@
 
 namespace Module\Booking\Common\Domain\ValueObject;
 
-use Module\Booking\Hotel\Domain\ValueObject\ManualChangablePrice;
+use Module\Booking\HotelBooking\Domain\ValueObject\ManualChangablePrice;
 use Module\Shared\Contracts\CanEquate;
 use Module\Shared\Domain\ValueObject\SerializableDataInterface;
 

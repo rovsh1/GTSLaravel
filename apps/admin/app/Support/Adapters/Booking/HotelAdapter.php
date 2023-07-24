@@ -5,19 +5,18 @@ declare(strict_types=1);
 namespace App\Admin\Support\Adapters\Booking;
 
 use Carbon\CarbonPeriod;
-use Module\Booking\Hotel\Application\Request\AddRoomDto;
-use Module\Booking\Hotel\Application\Request\CreateBookingDto;
-use Module\Booking\Hotel\Application\Request\Guest\AddRoomGuestDto;
-use Module\Booking\Hotel\Application\Request\Guest\UpdateRoomGuestDto;
-use Module\Booking\Hotel\Application\Request\UpdateBookingDto;
-use Module\Booking\Hotel\Application\Request\UpdateRoomDto;
-use Module\Booking\Hotel\Application\UseCase\Admin\CreateBooking;
-use Module\Booking\Hotel\Application\UseCase\Admin\GetBooking;
-use Module\Booking\Hotel\Application\UseCase\Admin\GetBookingQuery;
-use Module\Booking\Hotel\Application\UseCase\Admin\GetBookingsByFilters;
-use Module\Booking\Hotel\Application\UseCase\Admin\Room;
-use Module\Booking\Hotel\Application\UseCase\Admin\UpdateBooking;
-use Module\Booking\Hotel\Application\UseCase\Admin\UpdateExternalNumber;
+use Module\Booking\HotelBooking\Application\Request\AddRoomDto;
+use Module\Booking\HotelBooking\Application\Request\CreateBookingDto;
+use Module\Booking\HotelBooking\Application\Request\Guest\AddRoomGuestDto;
+use Module\Booking\HotelBooking\Application\Request\Guest\UpdateRoomGuestDto;
+use Module\Booking\HotelBooking\Application\Request\UpdateBookingDto;
+use Module\Booking\HotelBooking\Application\Request\UpdateRoomDto;
+use Module\Booking\HotelBooking\Application\UseCase\Admin\CreateBooking;
+use Module\Booking\HotelBooking\Application\UseCase\Admin\GetBooking;
+use Module\Booking\HotelBooking\Application\UseCase\Admin\GetBookingQuery;
+use Module\Booking\HotelBooking\Application\UseCase\Admin\GetBookingsByFilters;
+use Module\Booking\HotelBooking\Application\UseCase\Admin\UpdateBooking;
+use Module\Booking\HotelBooking\Application\UseCase\Admin\UpdateExternalNumber;
 
 class HotelAdapter
 {
@@ -93,7 +92,8 @@ class HotelAdapter
         ?string $note = null,
         ?int $discount = null
     ): void {
-        app(Room\Add::class)->execute(
+        //TODO use AddRoom name
+        app(\Module\Booking\HotelBooking\Application\UseCase\Admin\Room\Add::class)->execute(
             new AddRoomDto(
                 bookingId: $bookingId,
                 roomId: $roomId,
@@ -120,7 +120,7 @@ class HotelAdapter
         ?string $note = null,
         ?int $discount = null
     ): void {
-        app(Room\Update::class)->execute(
+        app(\Module\Booking\HotelBooking\Application\UseCase\Admin\Room\Update::class)->execute(
             new UpdateRoomDto(
                 bookingId: $bookingId,
                 roomBookingId: $roomBookingId,
@@ -138,7 +138,7 @@ class HotelAdapter
 
     public function deleteRoom(int $bookingId, int $roomBookingId): void
     {
-        app(Room\Delete::class)->execute($bookingId, $roomBookingId);
+        app(\Module\Booking\HotelBooking\Application\UseCase\Admin\Room\Delete::class)->execute($bookingId, $roomBookingId);
     }
 
     public function addRoomGuest(
@@ -150,7 +150,7 @@ class HotelAdapter
         bool $isAdult,
         ?int $age,
     ): void {
-        app(Room\Guest\Add::class)->execute(
+        app(\Module\Booking\HotelBooking\Application\UseCase\Admin\Room\Guest\Add::class)->execute(
             new AddRoomGuestDto(
                 bookingId: $bookingId,
                 roomBookingId: $roomBookingId,
@@ -173,7 +173,7 @@ class HotelAdapter
         bool $isAdult,
         ?int $age,
     ): void {
-        app(Room\Guest\Update::class)->execute(
+        app(\Module\Booking\HotelBooking\Application\UseCase\Admin\Room\Guest\Update::class)->execute(
             new UpdateRoomGuestDto(
                 bookingId: $bookingId,
                 roomBookingId: $roomBookingId,
@@ -189,7 +189,7 @@ class HotelAdapter
 
     public function deleteRoomGuest(int $bookingId, int $roomBookingId, int $guestIndex): void
     {
-        app(Room\Guest\Delete::class)->execute(
+        app(\Module\Booking\HotelBooking\Application\UseCase\Admin\Room\Guest\Delete::class)->execute(
             bookingId: $bookingId,
             roomBookingId: $roomBookingId,
             guestIndex: $guestIndex,

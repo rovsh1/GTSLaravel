@@ -6,7 +6,7 @@ namespace Module\Booking\Common\Application\Support\UseCase\Admin;
 
 use Module\Booking\Airport\Application\Request\CreateBookingDto as CreateAirportBooking;
 use Module\Booking\Common\Domain\Repository\BookingRepositoryInterface;
-use Module\Booking\Hotel\Application\Request\CreateBookingDto as CreateHotelBookingDto;
+use Module\Booking\HotelBooking\Application\Request\CreateBookingDto as CreateHotelBookingDto;
 use Module\Booking\Order\Application\Command\CreateOrder;
 use Sdk\Module\Contracts\Bus\CommandBusInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;

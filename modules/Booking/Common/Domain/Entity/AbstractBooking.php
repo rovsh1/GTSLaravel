@@ -12,6 +12,7 @@ use Module\Booking\Common\Domain\Event\Request\CancellationRequestSent;
 use Module\Booking\Common\Domain\Event\Request\ChangeRequestSent;
 use Module\Booking\Common\Domain\Exception\NotRequestableEntity;
 use Module\Booking\Common\Domain\Exception\NotRequestableStatus;
+use Module\Booking\Common\Domain\Service\BookingCalculatorInterface;
 use Module\Booking\Common\Domain\Service\InvoiceCreator;
 use Module\Booking\Common\Domain\Service\RequestCreator;
 use Module\Booking\Common\Domain\Service\RequestRules;
@@ -20,8 +21,7 @@ use Module\Booking\Common\Domain\ValueObject\BookingPrice;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
 use Module\Booking\Common\Domain\ValueObject\RequestTypeEnum;
-use Module\Booking\Hotel\Domain\ValueObject\ManualChangablePrice;
-use Module\Booking\PriceCalculator\Domain\Service\BookingCalculatorInterface;
+use Module\Booking\HotelBooking\Domain\ValueObject\ManualChangablePrice;
 use Module\Shared\Domain\ValueObject\Id;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 

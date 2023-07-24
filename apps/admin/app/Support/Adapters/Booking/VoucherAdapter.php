@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Adapters\Booking;
 
-use Module\Booking\Hotel\Application\UseCase\Admin\Voucher\GetDocumentFileInfo;
-use Module\Booking\Hotel\Application\UseCase\Admin\Voucher\GetBookingVouchers;
-use Module\Booking\Hotel\Application\UseCase\Admin\Voucher\SendVoucher;
+use Module\Booking\HotelBooking\Application\UseCase\Admin\Voucher\GetBookingVouchers;
+use Module\Booking\HotelBooking\Application\UseCase\Admin\Voucher\GetDocumentFileInfo;
+use Module\Booking\HotelBooking\Application\UseCase\Admin\Voucher\SendVoucher;
 
 class VoucherAdapter
 {

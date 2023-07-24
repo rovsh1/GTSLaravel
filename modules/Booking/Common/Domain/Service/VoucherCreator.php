@@ -7,7 +7,7 @@ namespace Module\Booking\Common\Domain\Service;
 use Module\Booking\Common\Domain\Entity\BookingInterface;
 use Module\Booking\Common\Domain\Entity\Voucher;
 use Module\Booking\Common\Domain\Repository\VoucherRepositoryInterface;
-use Module\Booking\Hotel\Domain\Service\DocumentGenerator\VoucherGenerator;
+use Module\Booking\HotelBooking\Domain\Service\DocumentGenerator\VoucherGenerator;
 
 class VoucherCreator
 {

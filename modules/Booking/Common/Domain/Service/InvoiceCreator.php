@@ -7,7 +7,7 @@ namespace Module\Booking\Common\Domain\Service;
 use Module\Booking\Common\Domain\Entity\BookingInterface;
 use Module\Booking\Common\Domain\Entity\Invoice;
 use Module\Booking\Common\Domain\Repository\InvoiceRepositoryInterface;
-use Module\Booking\Hotel\Domain\Service\DocumentGenerator\InvoiceGenerator;
+use Module\Booking\HotelBooking\Domain\Service\DocumentGenerator\InvoiceGenerator;
 
 class InvoiceCreator
 {
