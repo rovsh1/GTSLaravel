@@ -209,6 +209,9 @@ class SyncTravelineReservations implements ShouldQueue
 
         return $rooms->map(
             function (Room $room) use ($period, $hotelDefaultCheckInStart, $hotelDefaultCheckOutEnd, &$fakeRooms) {
+                if ($room->guests()->count() === 0) {
+                    return null;
+                }
                 $guestsDto = $this->covertRoomGuestsToDto($room->guests);
                 $guestChunks = array_chunk($guestsDto->all(), $room->guests_number);
                 $countChunks = count($guestChunks);
@@ -257,7 +260,7 @@ class SyncTravelineReservations implements ShouldQueue
                     $this->buildAdditionalInfo($room->checkInCondition, $room->checkOutCondition)
                 );
             }
-        )->merge($fakeRooms)->all();
+        )->filter()->merge($fakeRooms)->all();
     }
 
     private function buildAdditionalInfo(?Room\CheckInOutConditions $roomCheckInCondition, ?Room\CheckInOutConditions $roomCheckOutCondition): ?string
