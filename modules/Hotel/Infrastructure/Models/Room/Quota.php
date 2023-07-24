@@ -31,6 +31,10 @@ class Quota extends Model
 
     protected $table = 'hotel_room_quotes';
 
+    protected $primaryKey = null;
+
+    public $incrementing = false;
+
     protected $fillable = [
         'room_id',
         'date',

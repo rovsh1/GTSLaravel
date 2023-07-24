@@ -24,9 +24,11 @@ class RoomQuotaRepository implements RoomQuotaRepositoryInterface
             ->where('count_booked', '>', 0)
             ->get();
         foreach ($quotasWithBooked as $quotaWithBooked) {
-            $quotaWithBooked->update([
-                'count_available' => $quotaWithBooked->count_available + $quotaWithBooked->count_booked,
-            ]);
+            EloquentQuota::whereRoomId($roomId)
+                ->whereDate($quotaWithBooked->date)
+                ->update([
+                    'count_available' => $quotaWithBooked->count_available + $quotaWithBooked->count_booked,
+                ]);
         }
     }
 
