@@ -3,7 +3,6 @@
 namespace Sdk\Module\Foundation;
 
 use Illuminate\Support\ServiceProvider;
-use Module\Booking\HotelBooking\Domain\Service\DocumentGenerator\VoucherGenerator;
 use Sdk\Module\Container\Container;
 use Sdk\Module\Contracts\Api\ApiInterface;
 use Sdk\Module\Contracts\ModuleInterface;
