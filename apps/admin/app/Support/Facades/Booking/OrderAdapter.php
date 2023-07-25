@@ -7,7 +7,7 @@ namespace App\Admin\Support\Facades\Booking;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static array getActiveOrders()
+ * @method static array getActiveOrders(int|null $clientId)
  * @method static mixed findOrder(int $id)
  **/
 class OrderAdapter extends Facade

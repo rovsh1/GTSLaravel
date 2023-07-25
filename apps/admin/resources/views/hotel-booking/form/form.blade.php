@@ -8,6 +8,14 @@
     @vite('resources/views/hotel-booking/form/form.ts')
 @endsection
 
+@section('head-end')
+    <script>
+      window['view-initial-data-hotel-booking'] = {{ Js::from([
+            'clients' => $clients
+        ]) }}
+    </script>
+@endsection
+
 @section('content')
     {!! ContentTitle::default() !!}
 

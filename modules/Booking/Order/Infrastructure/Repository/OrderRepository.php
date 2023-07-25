@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Order\Infrastructure\Repository;
 
+use Illuminate\Database\Eloquent\Builder;
 use Module\Booking\Order\Domain\Entity\Order;
 use Module\Booking\Order\Domain\Factory\OrderFactory;
 use Module\Booking\Order\Domain\Repository\OrderRepositoryInterface;
@@ -24,6 +25,7 @@ class OrderRepository implements OrderRepositoryInterface
             'legal_id' => $legalId,
             'currency_id' => $currencyId,
         ]);
+
         return $this->factory->createFrom($model);
     }
 
@@ -40,9 +42,16 @@ class OrderRepository implements OrderRepositoryInterface
     /**
      * @return Order[]
      */
-    public function getActiveOrders(): array
+    public function getActiveOrders(int|null $clientId): array
     {
-        $models = Model::query()->get()->all();
+        $models = Model::query()
+            ->where(function (Builder $builder) use ($clientId) {
+                if ($clientId !== null) {
+                    $builder->whereClientId($clientId);
+                }
+            })
+            ->get()
+            ->all();
 
         return $this->factory->createCollectionFrom($models);
     }

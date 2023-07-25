@@ -9,9 +9,9 @@ use Module\Booking\Order\Application\UseCase\GetOrder;
 
 class OrderAdapter
 {
-    public function getActiveOrders(): array
+    public function getActiveOrders(int|null $clientId): array
     {
-        return app(GetActiveOrders::class)->execute();
+        return app(GetActiveOrders::class)->execute($clientId);
     }
 
     public function findOrder(int $id): mixed

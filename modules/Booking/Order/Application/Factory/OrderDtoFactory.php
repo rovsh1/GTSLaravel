@@ -21,7 +21,8 @@ class OrderDtoFactory
             $entity->id()->value(),
             CurrencyDto::fromEnum($entity->currency(), $this->translator),
             $entity->clientId()->value(),
-            $entity->legalId()?->value()
+            $entity->legalId()?->value(),
+            $entity->createdAt()
         );
     }
 

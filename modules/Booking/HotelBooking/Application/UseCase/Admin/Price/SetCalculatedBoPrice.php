@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Booking\HotelBooking\Application\UseCase\Admin\Price;
 
-use Module\Booking\Common\Domain\Service\BookingCalculatorInterface;
 use Module\Booking\Common\Domain\Service\BookingUpdater;
+use Module\Booking\HotelBooking\Domain\Service\PriceCalculator\BookingCalculator;
 use Module\Booking\HotelBooking\Infrastructure\Repository\BookingRepository;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
@@ -14,7 +14,7 @@ class SetCalculatedBoPrice implements UseCaseInterface
     public function __construct(
         private readonly BookingRepository $repository,
         private readonly BookingUpdater $bookingUpdater,
-        private readonly BookingCalculatorInterface $bookingCalculator
+        private readonly BookingCalculator $bookingCalculator
     ) {}
 
     public function execute(int $bookingId): void

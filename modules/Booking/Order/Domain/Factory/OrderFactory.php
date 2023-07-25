@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Order\Domain\Factory;
 
+use Carbon\CarbonImmutable;
 use Module\Booking\Order\Domain\Entity\Order;
 use Module\Shared\Domain\ValueObject\Id;
 use Module\Shared\Enum\CurrencyEnum;
@@ -17,12 +18,12 @@ class OrderFactory extends AbstractEntityFactory
     {
         $legalId = $data['legal_id'] ?? null;
 
-
         return new $this->entity(
             new Id($data['id']),
             CurrencyEnum::fromId($data['currency_id']),
             new Id($data['client_id']),
             $legalId !== null ? new Id($legalId) : null,
+            new CarbonImmutable($data['created_at'])
         );
     }
 }

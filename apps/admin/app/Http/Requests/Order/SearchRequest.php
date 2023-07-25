@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Http\Requests\Client;
+namespace App\Admin\Http\Requests\Order;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -15,12 +15,12 @@ class SearchRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'order_id' => ['nullable', 'numeric']
+            'client_id' => ['nullable', 'numeric']
         ];
     }
 
-    public function getOrderId(): ?int
+    public function getClientId(): ?int
     {
-        return $this->get('order_id');
+        return $this->get('client_id');
     }
 }

@@ -93,7 +93,10 @@ $.fn.childCombo = function (options) {
           child.parent().hide()
         }
         trigger('load', items)
-        return
+
+        if(!preparedOptions.allowEmpty){
+          return
+        }
       }
 
       if (preparedOptions.emptyItem !== false) {
@@ -105,7 +108,12 @@ $.fn.childCombo = function (options) {
           val[val.length] = items[i].id
         }
 
-        child.append(`<option value='${items[i].id}'>${items[i].name}</option>`)
+        let name = items[i].name
+        if(preparedOptions.labelGetter){
+          name = preparedOptions.labelGetter(items[i])
+        }
+
+        child.append(`<option value='${items[i].id}'>${name}</option>`)
       }
 
       if(!childDisabled) {

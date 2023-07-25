@@ -3,6 +3,7 @@
 namespace Sdk\Module\Foundation;
 
 use Illuminate\Support\ServiceProvider;
+use Module\Booking\HotelBooking\Domain\Service\DocumentGenerator\VoucherGenerator;
 use Sdk\Module\Container\Container;
 use Sdk\Module\Contracts\Api\ApiInterface;
 use Sdk\Module\Contracts\ModuleInterface;
@@ -76,11 +77,6 @@ class Module extends Container implements ModuleInterface
         return $this->config('namespace') . '\\' . trim($namespace, '\\');
     }
 
-    public function manifestPath(): string
-    {
-        return $this->path('manifest.json');
-    }
-
     public function register($provider, $force = false)
     {
         if (($registered = $this->getProvider($provider)) && !$force) {
@@ -128,9 +124,9 @@ class Module extends Container implements ModuleInterface
     public function getProvider($provider)
     {
         $name = is_string($provider) ? $provider : get_class($provider);
-        foreach ($this->serviceProviders as $provider) {
-            if ($provider instanceof $name) {
-                return $provider;
+        foreach ($this->serviceProviders as $serviceProvider) {
+            if ($serviceProvider instanceof $name) {
+                return $serviceProvider;
             }
         }
 

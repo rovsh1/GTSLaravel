@@ -1,8 +1,67 @@
-import { Client } from '~api/client'
+import { z } from 'zod'
+
+import { formatDate } from '~lib/date'
+import { requestInitialData } from '~lib/initial-data'
 
 import '~resources/views/main'
 
+const { clients } = requestInitialData('view-initial-data-hotel-booking', z.object({
+  clients: z.array(z.object({
+    id: z.number(),
+    name: z.string(),
+    is_legal: z.boolean().optional(),
+  })),
+}))
+
 $(() => {
+  const toggleLegalIdInput = (required: boolean = true): void => {
+    const $legalIdInput = $('#form_data_legal_id')
+    const $legalIdField = $('div.field-legal_id')
+
+    if (required) {
+      $legalIdField.show().toggleClass('field-required', true)
+      $legalIdInput.attr('required', 'required')
+
+      return
+    }
+    $legalIdField.hide().toggleClass('field-required', false)
+    $legalIdInput.removeAttr('required')
+  }
+
+  const handleChangeClientId = (orderId?: number): void => {
+    const $clientIdInput = $('#form_data_client_id')
+    const clientId = $clientIdInput.val()
+    const client = clients.find((cl) => cl.id === Number(clientId))
+
+    toggleLegalIdInput(orderId === undefined ? Boolean(client?.is_legal) : false)
+
+    const $legalIdInput = $('#form_data_legal_id')
+    if ($legalIdInput.is('input')) {
+      $legalIdInput.childCombo({
+        url: '/client/legals/search',
+        disabledText: 'Выберите клиента',
+        parent: $clientIdInput,
+        dataIndex: 'client_id',
+      })
+    }
+  }
+
+  const toggleOrderFields = (event: any): void => {
+    const orderId: string = $(event.target).val() as string
+    const $currencyField = $('div.field-currency_id')
+    const $currencyInput = $('#form_data_currency_id')
+    if (orderId.length === 0) {
+      $currencyField.show().toggleClass('field-required', true)
+      $currencyInput.attr('required', 'required')
+      handleChangeClientId(undefined)
+      return
+    }
+
+    handleChangeClientId(Number(orderId))
+    $currencyField.hide().toggleClass('field-required', false)
+    $currencyInput.removeAttr('required')
+  }
+
   $('#form_data_hotel_id').childCombo({
     url: '/hotels/search',
     disabledText: 'Выберите город',
@@ -10,45 +69,21 @@ $(() => {
     dataIndex: 'city_id',
   })
 
-  let clients: Client[] = []
+  const $clientIdInput = $('#form_data_client_id')
 
-  const handleChangeClientId = (event: any): void => {
-    const clientId = $(event.target)
-      .val()
-    const client = clients.find((cl) => cl.id === Number(clientId))
+  $clientIdInput
+    .change(() => handleChangeClientId(undefined))
+    .ready(() => handleChangeClientId(undefined))
 
-    const $legalIdInput = $('#form_data_legal_id')
-    const $legalIdField = $('div.field-legal_id')
-    if (!client?.is_legal) {
-      $legalIdField.hide()
-        .toggleClass('field-required', false)
-      $legalIdInput.removeAttr('required')
-      return
-    }
-    $legalIdField.show()
-      .toggleClass('field-required', true)
-    $legalIdInput.attr('required', 'required')
-
-    if ($legalIdInput.is('input')) {
-      $legalIdInput.childCombo({
-        url: '/client/legals/search',
-        value: window.get_url_parameter('client_id'),
-        disabledText: 'Выберите клиента',
-        parent: $('#form_data_client_id'),
-        dataIndex: 'client_id',
-      })
-    }
-  }
-
-  $('#form_data_client_id').childCombo({
-    url: '/client/search',
-    disabledText: 'Выберите заказ',
-    parent: $('#form_data_order_id'),
-    dataIndex: 'order_id',
+  $('#form_data_order_id').childCombo({
+    url: '/booking-order/search',
+    disabledText: 'Выберите клиента',
+    parent: $clientIdInput,
+    dataIndex: 'client_id',
     allowEmpty: true,
-    load: (items: Client[]): void => {
-      clients = items
-    },
-    childChange: (e: any) => setTimeout(handleChangeClientId, undefined, e),
+    emptyText: false,
+    emptyItem: 'Создать новый заказ',
+    labelGetter: (order: Record<string, any>) => `№${order.id} от ${formatDate(order.createdAt)}`,
+    childChange: toggleOrderFields,
   })
 })

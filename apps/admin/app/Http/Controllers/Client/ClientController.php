@@ -38,21 +38,6 @@ class ClientController extends AbstractPrototypeController
         return $layout;
     }
 
-    public function search(SearchRequest $request): JsonResponse
-    {
-        $clientsQuery = Client::orderBy('name');
-        if ($request->getOrderId() !== null) {
-            $order = OrderAdapter::findOrder($request->getOrderId());
-            if (!empty($order)) {
-                $clientsQuery->whereId($order->clientId);
-            }
-        }
-
-        return response()->json(
-            ClientResource::collection($clientsQuery->get())
-        );
-    }
-
     protected function getShowViewData(): array
     {
         $showUrl = $this->prototype->route('show', $this->model->id);

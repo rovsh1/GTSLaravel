@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Order\Domain\Entity;
 
+use Carbon\CarbonImmutable;
 use Module\Booking\Order\Domain\Event\ClientChanged;
 use Module\Shared\Domain\Entity\EntityInterface;
 use Module\Shared\Domain\ValueObject\Id;
@@ -17,6 +18,7 @@ final class Order extends AbstractAggregateRoot implements EntityInterface
         private CurrencyEnum $currency,
         private Id $clientId,
         private ?Id $legalId,
+        private readonly CarbonImmutable $createdAt,
     ) {}
 
     public function id(): Id
@@ -53,5 +55,10 @@ final class Order extends AbstractAggregateRoot implements EntityInterface
     public function currency(): CurrencyEnum
     {
         return $this->currency;
+    }
+
+    public function createdAt(): CarbonImmutable
+    {
+        return $this->createdAt;
     }
 }

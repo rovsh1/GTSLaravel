@@ -7,6 +7,7 @@ use App\Admin\Http\Controllers\Controller;
 use App\Admin\Http\Requests\Booking\UpdateExternalNumberRequest;
 use App\Admin\Http\Requests\Booking\UpdatePriceRequest;
 use App\Admin\Http\Requests\Booking\UpdateStatusRequest;
+use App\Admin\Http\Resources\Client as ClientResource;
 use App\Admin\Http\Resources\Room as RoomResource;
 use App\Admin\Models\Administrator\Administrator;
 use App\Admin\Models\Client\Client;
@@ -52,7 +53,17 @@ class BookingController extends Controller
 
         $statuses = StatusAdapter::getStatuses();
         $grid = $this->gridFactory($statuses);
-        $query = HotelAdapter::getBookingQuery()->applyCriteria($grid->getSearchCriteria());
+        $query = HotelAdapter::getBookingQuery()
+            ->applyCriteria($grid->getSearchCriteria())
+            ->join('administrator_bookings', 'administrator_bookings.booking_id', '=', 'bookings.id')
+            ->join('administrators', 'administrators.id', '=', 'administrator_bookings.administrator_id')
+            ->addSelect('administrators.presentation as manager_name')
+            ->addSelect(
+                \DB::raw(
+                    '(SELECT SUM(guests_count) FROM booking_hotel_rooms WHERE booking_id=bookings.id) as guests_count'
+                )
+            );
+        //@todo спросить у Сергея точно ли тут?
         $grid->data($query);
 
         return Layout::title($this->prototype->title('index'))
@@ -77,19 +88,20 @@ class BookingController extends Controller
         return Layout::title($this->prototype->title('create'))
             ->view($this->prototype->view('form'), [
                 'form' => $form,
+                'clients' => ClientResource::collection(Client::orderBy('name')->get()),
                 'cancelUrl' => $this->prototype->route('index')
             ]);
     }
 
     public function store(): RedirectResponse
     {
-        $form = $this->formFactory()
-            ->method('post');
+        $creatorId = request()->user()->id;
 
+        $form = $this->formFactory()->method('post');
         $form->trySubmit($this->prototype->route('create'));
 
         $data = $form->getData();
-        $creator = request()->user();
+        //@todo добавить селект типа брони По квоте/По запросу (списывать квоту сразу, если по квоте)
         $bookingId = HotelAdapter::createBooking(
             cityId: $data['city_id'],
             clientId: $data['client_id'],
@@ -97,11 +109,11 @@ class BookingController extends Controller
             currencyId: $data['currency_id'],
             hotelId: $data['hotel_id'],
             period: $data['period'],
-            creatorId: $creator->id,
+            creatorId: $creatorId,
             orderId: $data['order_id'] ?? null,
             note: $data['note'] ?? null
         );
-        $this->administratorRepository->create($bookingId, $creator->id);
+        $this->administratorRepository->create($bookingId, $data['manager_id'] ?? $creatorId);
 
         return redirect(
             $this->prototype->route('show', $bookingId)
@@ -159,6 +171,7 @@ class BookingController extends Controller
             ->view($this->prototype->view('edit') ?? $this->prototype->view('form') ?? 'default.form.form', [
                 'model' => $booking,
                 'form' => $form,
+                'clients' => ClientResource::collection(Client::orderBy('name')->get()),
                 'cancelUrl' => $this->prototype->route('show', $id),
 //                'deleteUrl' => $this->isAllowed('delete') ? $this->prototype->route('destroy', $id) : null
             ]);
@@ -179,7 +192,7 @@ class BookingController extends Controller
             period: $data['period'],
             note: $data['note'] ?? null
         );
-        $this->administratorRepository->update($id, request()->user()->id);
+        $this->administratorRepository->update($id, $data['manager_id'] ?? request()->user()->id);
 
         return redirect($this->prototype->route('show', $id));
     }
@@ -260,10 +273,12 @@ class BookingController extends Controller
             ->id('id', ['text' => '№', 'route' => $this->prototype->routeName('show'), 'order' => true])
             ->bookingStatus('status', ['text' => 'Статус', 'statuses' => $statuses])
             ->text('client_name', ['text' => 'Клиент'])
+            ->text('manager_name', ['text' => 'Менеджер'])
             ->date('date_start', ['text' => 'Дата заезда'])
             ->date('date_end', ['text' => 'Дата выезда'])
             ->text('city_name', ['text' => 'Город'])
             ->text('hotel_name', ['text' => 'Отель'])
+            ->text('guests_count', ['text' => 'Гостей'])
             ->date('created_at', ['text' => 'Создан', 'format' => 'datetime', 'order' => true])
             ->paginator(20);
     }
@@ -290,8 +305,10 @@ class BookingController extends Controller
         $hotelId = $booking->hotelInfo->id;
         $cityId = Hotel::find($hotelId)->city_id;
         $order = OrderAdapter::findOrder($booking->orderId);
+        $manager = $this->administratorRepository->get($booking->id);
 
         return [
+            'manager_id' => $manager->id,
             'order_id' => $booking->orderId,
             'currency_id' => $order->currency->id,
             'hotel_id' => $hotelId,
@@ -306,22 +323,15 @@ class BookingController extends Controller
     protected function formFactory(bool $isEdit = false): FormContract
     {
         return Form::name('data')
-            ->select('order_id', [
-                'label' => 'Заказ',
-                'emptyItem' => 'Создать новый заказ',
-                'items' => OrderAdapter::getActiveOrders(),
-                'disabled' => $isEdit
-            ])
-            ->city('city_id', [
-                'label' => __('label.city'),
-                'emptyItem' => '',
-                'required' => !$isEdit,
-                'onlyWithHotels' => true,
-                'disabled' => $isEdit
-            ])
-            ->hidden('client_id', [
+            ->select('client_id', [
                 'label' => __('label.client'),
                 'required' => true,
+                'emptyItem' => '',
+                'items' => Client::orderBy('name')->get(),
+            ])
+            ->hidden('order_id', [
+                'label' => 'Заказ',
+                'disabled' => $isEdit
             ])
             ->hidden('legal_id', [
                 'label' => 'Юр. лицо',
@@ -331,11 +341,23 @@ class BookingController extends Controller
                 'required' => true,
                 'value' => 1
             ])
+            ->city('city_id', [
+                'label' => __('label.city'),
+                'emptyItem' => '',
+                'required' => !$isEdit,
+                'onlyWithHotels' => true,
+                'disabled' => $isEdit
+            ])
             ->hidden('hotel_id', [
                 'label' => 'Отель',
                 'required' => !$isEdit,
                 'emptyItem' => '',
                 'disabled' => $isEdit,
+            ])
+            ->manager('manager_id', [
+                'label' => 'Менеджер',
+                'emptyItem' => '',
+                'value' => request()->user()->id,
             ])
             ->dateRange('period', [
                 'label' => 'Дата заезда/выезда',
