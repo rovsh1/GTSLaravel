@@ -15,7 +15,7 @@ return [
         'templates_path' => storage_path('app/booking/templates'),
     ],
     'CurrencyRate' => [
-        'path' => modules_path('Support/CurrencyRate'),
+        'path' => modules_path('Generic/CurrencyRate'),
     ],
     'FileStorage' => [
         'path' => modules_path('Support/FileStorage'),
