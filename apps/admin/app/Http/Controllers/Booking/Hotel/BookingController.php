@@ -174,6 +174,7 @@ class BookingController extends Controller
                 'model' => $booking,
                 'form' => $form,
                 'clients' => ClientResource::collection(Client::orderBy('name')->get()),
+                'createClientUrl' => route('client.dialog.create'),
                 'cancelUrl' => $this->prototype->route('show', $id),
 //                'deleteUrl' => $this->isAllowed('delete') ? $this->prototype->route('destroy', $id) : null
             ]);
