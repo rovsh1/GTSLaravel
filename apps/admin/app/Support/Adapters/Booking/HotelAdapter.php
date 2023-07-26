@@ -13,6 +13,7 @@ use Module\Booking\HotelBooking\Application\Request\UpdateBookingDto;
 use Module\Booking\HotelBooking\Application\Request\UpdateRoomDto;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\BulkDeleteBookings;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\CreateBooking;
+use Module\Booking\HotelBooking\Application\UseCase\Admin\DeleteBooking;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\GetBooking;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\GetBookingQuery;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\GetBookingsByFilters;
@@ -34,6 +35,11 @@ class HotelAdapter
     public function getBooking(int $id): mixed
     {
         return app(GetBooking::class)->execute($id);
+    }
+
+    public function deleteBooking(int $id): void
+    {
+        app(DeleteBooking::class)->execute($id);
     }
 
     /**

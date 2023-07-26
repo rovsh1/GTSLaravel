@@ -147,6 +147,11 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         return app(BookingFactory::class)->createCollectionFrom($models);
     }
 
+    public function delete(int $id): void
+    {
+        $this->getModel()::query()->whereId($id)->delete();
+    }
+
     /**
      * @param int[] $ids
      * @return void

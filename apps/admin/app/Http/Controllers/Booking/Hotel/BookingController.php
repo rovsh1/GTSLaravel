@@ -31,6 +31,7 @@ use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Grid\SearchForm;
 use App\Admin\Support\View\Layout as LayoutContract;
+use App\Core\Support\Http\Responses\AjaxRedirectResponse;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use App\Core\Support\Http\Responses\AjaxSuccessResponse;
 use Carbon\CarbonPeriod;
@@ -198,6 +199,13 @@ class BookingController extends Controller
         $this->administratorRepository->update($id, $data['manager_id'] ?? request()->user()->id);
 
         return redirect($this->prototype->route('show', $id));
+    }
+
+    public function destroy(int $id): AjaxResponseInterface
+    {
+        HotelAdapter::deleteBooking($id);
+
+        return new AjaxRedirectResponse($this->prototype->route());
     }
 
     public function get(int $id): JsonResponse

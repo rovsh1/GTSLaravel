@@ -18,7 +18,7 @@ $.fn.deleteButton = function () {
       html: $form,
       buttons: [{
         text: 'Подтвердить',
-        cls: 'btn btn-primary',
+        cls: 'btn btn-danger',
         handler: 'submit',
       }, 'cancel'],
       submit: () => {

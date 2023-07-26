@@ -45,6 +45,8 @@ interface BookingRepositoryInterface extends Base
      */
     public function searchActive(?int $hotelId): array;
 
+    public function delete(int $id): void;
+
     /**
      * @param int[] $ids
      * @return void
