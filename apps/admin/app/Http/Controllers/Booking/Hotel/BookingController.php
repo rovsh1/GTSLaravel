@@ -53,8 +53,7 @@ class BookingController extends Controller
     {
         Breadcrumb::prototype($this->prototype);
 
-        $statuses = StatusAdapter::getStatuses();
-        $grid = $this->gridFactory($statuses);
+        $grid = $this->gridFactory();
         $query = HotelAdapter::getBookingQuery()
             ->applyCriteria($grid->getSearchCriteria())
             ->join('administrator_bookings', 'administrator_bookings.booking_id', '=', 'bookings.id')
@@ -284,7 +283,7 @@ class BookingController extends Controller
         return new AjaxSuccessResponse();
     }
 
-    protected function gridFactory(array $statuses = []): GridContract
+    protected function gridFactory(): GridContract
     {
         return Grid::enableQuicksearch()
             ->setSearchForm($this->searchForm())
