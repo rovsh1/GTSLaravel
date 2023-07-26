@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->unsignedInteger('creator_id');
             $table->json('price');
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('order_id')
                 ->references('id')

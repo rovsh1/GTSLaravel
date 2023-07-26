@@ -11,6 +11,7 @@ use Module\Booking\HotelBooking\Application\Request\Guest\AddRoomGuestDto;
 use Module\Booking\HotelBooking\Application\Request\Guest\UpdateRoomGuestDto;
 use Module\Booking\HotelBooking\Application\Request\UpdateBookingDto;
 use Module\Booking\HotelBooking\Application\Request\UpdateRoomDto;
+use Module\Booking\HotelBooking\Application\UseCase\Admin\BulkDeleteBookings;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\CreateBooking;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\GetBooking;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\GetBookingQuery;
@@ -33,6 +34,15 @@ class HotelAdapter
     public function getBooking(int $id): mixed
     {
         return app(GetBooking::class)->execute($id);
+    }
+
+    /**
+     * @param int[] $ids
+     * @return void
+     */
+    public function bulkDeleteBookings(array $ids): void
+    {
+        app(BulkDeleteBookings::class)->execute($ids);
     }
 
     public function createBooking(
@@ -138,7 +148,10 @@ class HotelAdapter
 
     public function deleteRoom(int $bookingId, int $roomBookingId): void
     {
-        app(\Module\Booking\HotelBooking\Application\UseCase\Admin\Room\Delete::class)->execute($bookingId, $roomBookingId);
+        app(\Module\Booking\HotelBooking\Application\UseCase\Admin\Room\Delete::class)->execute(
+            $bookingId,
+            $roomBookingId
+        );
     }
 
     public function addRoomGuest(

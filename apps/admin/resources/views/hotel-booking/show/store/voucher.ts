@@ -3,11 +3,11 @@ import { onMounted, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { z } from 'zod'
 
+import { downloadDocument as downloadDocumentRequest } from '~api/booking/document'
 import { sendBookingVoucher, useBookingVoucherListAPI } from '~api/booking/voucher'
 
 import { showConfirmDialog } from '~lib/confirm-dialog'
 import { requestInitialData } from '~lib/initial-data'
-import { downloadDocument as downloadDocumentRequest } from '~api/booking/document'
 
 const { bookingID } = requestInitialData('view-initial-data-hotel-booking', z.object({
   bookingID: z.number(),

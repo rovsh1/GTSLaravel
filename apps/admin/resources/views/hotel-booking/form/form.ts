@@ -5,7 +5,8 @@ import { requestInitialData } from '~lib/initial-data'
 
 import '~resources/views/main'
 
-const { clients } = requestInitialData('view-initial-data-hotel-booking', z.object({
+const { clients, createClientUrl } = requestInitialData('view-initial-data-hotel-booking', z.object({
+  createClientUrl: z.string(),
   clients: z.array(z.object({
     id: z.number(),
     name: z.string(),
@@ -69,16 +70,32 @@ $(() => {
     dataIndex: 'city_id',
   })
 
-  const $clientIdInput = $('#form_data_client_id')
+  const $clientIdSelect = $('#form_data_client_id')
+  const $clientIdSelectWrapper = $clientIdSelect.parent()
+  $clientIdSelectWrapper.removeClass('col-sm-7').addClass('col-sm-6')
 
-  $clientIdInput
+  const $createClientButton = $('<button />', {
+    type: 'button',
+    class: 'btn btn-add',
+    html: '<i class="icon">add</i>Создать',
+  }).click((): void => {
+    window.WindowDialog({
+      url: createClientUrl,
+      title: 'Создать клиента',
+      buttons: ['submit', 'cancel'],
+    })
+  })
+
+  $clientIdSelectWrapper.after($('<div />', { class: 'col-sm-1' }).append($createClientButton))
+
+  $clientIdSelect
     .change(() => handleChangeClientId(undefined))
     .ready(() => handleChangeClientId(undefined))
 
   $('#form_data_order_id').childCombo({
     url: '/booking-order/search',
     disabledText: 'Выберите клиента',
-    parent: $clientIdInput,
+    parent: $clientIdSelect,
     dataIndex: 'client_id',
     allowEmpty: true,
     emptyText: false,

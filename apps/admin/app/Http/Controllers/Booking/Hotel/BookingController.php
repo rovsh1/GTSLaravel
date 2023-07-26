@@ -4,6 +4,7 @@ namespace App\Admin\Http\Controllers\Booking\Hotel;
 
 use App\Admin\Components\Factory\Prototype;
 use App\Admin\Http\Controllers\Controller;
+use App\Admin\Http\Requests\Booking\BulkDeleteRequest;
 use App\Admin\Http\Requests\Booking\UpdateExternalNumberRequest;
 use App\Admin\Http\Requests\Booking\UpdatePriceRequest;
 use App\Admin\Http\Requests\Booking\UpdateStatusRequest;
@@ -89,7 +90,8 @@ class BookingController extends Controller
             ->view($this->prototype->view('form'), [
                 'form' => $form,
                 'clients' => ClientResource::collection(Client::orderBy('name')->get()),
-                'cancelUrl' => $this->prototype->route('index')
+                'cancelUrl' => $this->prototype->route('index'),
+                'createClientUrl' => route('client.dialog.create'),
             ]);
     }
 
@@ -266,12 +268,20 @@ class BookingController extends Controller
         return new AjaxSuccessResponse();
     }
 
+    public function bulkDelete(BulkDeleteRequest $request): AjaxResponseInterface
+    {
+        HotelAdapter::bulkDeleteBookings($request->getIds());
+
+        return new AjaxSuccessResponse();
+    }
+
     protected function gridFactory(array $statuses = []): GridContract
     {
         return Grid::enableQuicksearch()
             ->setSearchForm($this->searchForm())
+            ->checkbox('checked', ['checkboxClass' => 'js-select-booking', 'dataAttributeName' => 'booking-id'])
             ->id('id', ['text' => '№', 'route' => $this->prototype->routeName('show'), 'order' => true])
-            ->bookingStatus('status', ['text' => 'Статус', 'statuses' => $statuses])
+            ->bookingStatus('status', ['text' => 'Статус', 'statuses' => StatusAdapter::getStatuses()])
             ->text('client_name', ['text' => 'Клиент'])
             ->text('manager_name', ['text' => 'Менеджер'])
             ->date('date_start', ['text' => 'Дата заезда'])
@@ -279,6 +289,7 @@ class BookingController extends Controller
             ->text('city_name', ['text' => 'Город'])
             ->text('hotel_name', ['text' => 'Отель'])
             ->text('guests_count', ['text' => 'Гостей'])
+            ->text('source', ['text' => 'Источник'])
             ->date('created_at', ['text' => 'Создан', 'format' => 'datetime', 'order' => true])
             ->paginator(20);
     }
@@ -363,16 +374,6 @@ class BookingController extends Controller
                 'label' => 'Дата заезда/выезда',
                 'required' => true
             ])
-
-//            ->addElement('manager_id', 'select', [
-//                'label' => 'Менеджер',
-//                'default' => App::getUserId(),
-//                'textIndex' => 'presentation',
-//                'items' => $managers
-//            ])
-//            ->addElement('period', 'daterange', ['label' => 'Дата заезда/выезда', 'required' => true,])
-            //->addElement('date_checkin', 'date', ['required' => true, 'label' => 'Дата заезда'])
-            //->addElement('date_checkout', 'date', ['required' => true, 'label' => 'Дата выезда'])
             ->textarea('note', ['label' => 'Примечание']);
     }
 

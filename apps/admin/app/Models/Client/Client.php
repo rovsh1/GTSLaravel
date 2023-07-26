@@ -4,6 +4,8 @@ namespace App\Admin\Models\Client;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Module\Shared\Enum\Client\StatusEnum;
+use Module\Shared\Enum\Client\TypeEnum;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
 use Sdk\Module\Database\Eloquent\Model;
 
@@ -24,6 +26,11 @@ class Client extends Model
         'type',
         'status',
         'description'
+    ];
+
+    protected $casts = [
+        'status' => StatusEnum::class,
+        'type' => TypeEnum::class,
     ];
 
     protected static function booted()

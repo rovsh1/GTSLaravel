@@ -10,11 +10,13 @@ class BookingStatus extends AbstractColumn
 {
     protected function init()
     {
-        $this->statuses = collect($this->statuses)->keyBy('id')->map->name;
+        $this->statuses = collect($this->statuses)->keyBy('id');
     }
 
     public function formatValue($value, $row = null)
     {
-        return $this->statuses->get($value->value);
+        $status = $this->statuses->get($value->value);
+
+        return "<span class='badge rounded-pill px-2 text-bg-{$status->color}'>{$status->name}</span>";
     }
 }

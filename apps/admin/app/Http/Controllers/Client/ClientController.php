@@ -4,12 +4,8 @@ declare(strict_types=1);
 
 namespace App\Admin\Http\Controllers\Client;
 
-use App\Admin\Http\Requests\Client\SearchRequest;
-use App\Admin\Http\Resources\Client as ClientResource;
-use App\Admin\Models\Client\Client;
 use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\ActionsMenu;
-use App\Admin\Support\Facades\Booking\OrderAdapter;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Facades\Sidebar;
@@ -18,9 +14,12 @@ use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Layout as LayoutContract;
 use App\Admin\View\Menus\ClientMenu;
+use App\Core\Support\Http\Responses\AjaxReloadResponse;
+use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use Gsdk\Format\View\ParamsTable;
+use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\JsonResponse;
+use Module\Shared\Enum\Client\StatusEnum;
 use Module\Shared\Enum\Client\TypeEnum;
 
 class ClientController extends AbstractPrototypeController
@@ -28,6 +27,29 @@ class ClientController extends AbstractPrototypeController
     protected function getPrototypeKey(): string
     {
         return 'client';
+    }
+
+    public function createDialog(): View
+    {
+        $form = $this->formFactory()
+            ->action($this->prototype->route('dialog.store'));
+
+        return view('default.dialog-form', [
+            'form' => $form,
+        ]);
+    }
+
+    public function storeDialog(): AjaxResponseInterface
+    {
+        $form = $this->formFactory()
+            ->method('post');
+
+        $form->trySubmit($this->prototype->route('dialog.create'));
+
+        $preparedData = $this->saving($form->getData());
+        $this->model = $this->repository->create($preparedData);
+
+        return new AjaxReloadResponse();
     }
 
     public function edit(int $id): LayoutContract
@@ -97,6 +119,7 @@ class ClientController extends AbstractPrototypeController
         return Form::text('name', ['label' => 'ФИО или название компании'])
             ->enum('type', ['label' => 'Тип', 'enum' => TypeEnum::class])
             ->city('city_id', ['label' => 'Город'])
+            ->enum('status', ['label' => 'Статус', 'enum' => StatusEnum::class])
             ->currency('currency_id', ['label' => 'Валюта']);
     }
 }

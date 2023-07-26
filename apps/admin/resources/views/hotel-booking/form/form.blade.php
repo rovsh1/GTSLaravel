@@ -11,7 +11,8 @@
 @section('head-end')
     <script>
       window['view-initial-data-hotel-booking'] = {{ Js::from([
-            'clients' => $clients
+            'clients' => $clients,
+            'createClientUrl' => $createClientUrl
         ]) }}
     </script>
 @endsection

@@ -5,6 +5,7 @@ use App\Admin\Support\Facades\AclRoute;
 
 AclRoute::for('hotel-booking')
     ->get('/status/list', Controllers\Booking\Hotel\BookingController::class . '@getStatuses', 'read', 'status.list')
+    ->delete('/bulk', Controllers\Booking\Hotel\BookingController::class . '@bulkDelete', 'delete', 'bulk.delete')
 
     ->get('/{booking}/get', Controllers\Booking\Hotel\BookingController::class . '@get', 'read', 'get')
     ->put('/{booking}/status/update', Controllers\Booking\Hotel\BookingController::class . '@updateStatus', 'update', 'status.update')

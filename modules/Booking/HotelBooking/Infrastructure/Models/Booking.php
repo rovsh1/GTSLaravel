@@ -7,6 +7,7 @@ namespace Module\Booking\HotelBooking\Infrastructure\Models;
 use App\Admin\Support\View\Form\ValueObject\NumRangeValue;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
 use Module\Booking\Common\Infrastructure\Models\Booking as BaseModel;
@@ -14,7 +15,7 @@ use Sdk\Module\Database\Eloquent\HasQuicksearch;
 
 class Booking extends BaseModel
 {
-    use HasQuicksearch;
+    use HasQuicksearch, SoftDeletes;
 
     protected array $quicksearch = ['id', 'hotels.name%'];
 

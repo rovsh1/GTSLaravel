@@ -40,7 +40,6 @@ const { bookingID } = requestInitialData(
 const bookingStore = useBookingStore()
 const { fetchBooking, fetchAvailableActions } = bookingStore
 const requestStore = useBookingRequestStore()
-const { fetchBookingRequests } = requestStore
 const statusHistoryStore = useBookingStatusHistoryStore()
 const { fetchStatusHistory } = statusHistoryStore
 const orderStore = useOrderStore()

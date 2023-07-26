@@ -105,6 +105,10 @@
     "Module\\Shared\\Enum\\Client\\LegalTypeEnum::TRAVEL_AGENCY": "TA",
     "Module\\Shared\\Enum\\Client\\LegalTypeEnum::TOUR_OPERATOR": "TO",
 
+    "Module\\Shared\\Enum\\Client\\StatusEnum::ACTIVE": "Активный",
+    "Module\\Shared\\Enum\\Client\\StatusEnum::BLOCKED": "Заблокирован",
+    "Module\\Shared\\Enum\\Client\\StatusEnum::ARCHIVE": "Архив",
+
     "Module\\Booking\\Common\\Domain\\Event\\Status\\BookingCreated": "Новая",
     "Module\\Booking\\Common\\Domain\\Event\\Status\\BookingProcessing": "В работе",
     "Module\\Booking\\Common\\Domain\\Event\\Status\\BookingCancelled": "Отменена",

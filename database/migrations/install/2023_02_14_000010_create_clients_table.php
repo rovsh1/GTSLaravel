@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->tinyInteger('type')->unsigned();
             $table->tinyInteger('status')->unsigned();
             $table->string('name', 50);
-            $table->mediumText('description');
+            $table->mediumText('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
