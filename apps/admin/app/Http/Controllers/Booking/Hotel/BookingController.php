@@ -290,7 +290,7 @@ class BookingController extends Controller
             ->setSearchForm($this->searchForm())
             ->checkbox('checked', ['checkboxClass' => 'js-select-booking', 'dataAttributeName' => 'booking-id'])
             ->id('id', ['text' => '№', 'route' => $this->prototype->routeName('show'), 'order' => true])
-            ->bookingStatus('status', ['text' => 'Статус', 'statuses' => StatusAdapter::getStatuses()])
+            ->bookingStatus('status', ['text' => 'Статус', 'statuses' => StatusAdapter::getStatuses(), 'order' => true])
             ->text('client_name', ['text' => 'Клиент'])
             ->text('manager_name', ['text' => 'Менеджер'])
             ->date('date_start', ['text' => 'Дата заезда'])
@@ -298,7 +298,7 @@ class BookingController extends Controller
             ->text('city_name', ['text' => 'Город'])
             ->text('hotel_name', ['text' => 'Отель'])
             ->text('guests_count', ['text' => 'Гостей'])
-            ->text('source', ['text' => 'Источник'])
+            ->text('source', ['text' => 'Источник', 'order' => true])
             ->date('created_at', ['text' => 'Создан', 'format' => 'datetime', 'order' => true])
             ->paginator(20);
     }
