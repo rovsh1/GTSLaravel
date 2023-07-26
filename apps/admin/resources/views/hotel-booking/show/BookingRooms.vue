@@ -234,7 +234,7 @@ fetchCountries()
               </tr>
               <tr>
                 <th>Скидка</th>
-                <td>{{ room.details.discount }}</td>
+                <td>{{ room.details.discount || 'Не указано' }}</td>
               </tr>
               <tr>
                 <th>Время заезда</th>
