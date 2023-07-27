@@ -20,7 +20,7 @@ class CancelConditionsFactory
             fn(mixed $cancelPeriod) => $period->overlaps($cancelPeriod->from, $cancelPeriod->to)
         );
         if ($availablePeriod === null) {
-            //@todo понять что тут делать
+            //@todo понять что тут делать у Анвара
             throw new \Exception('Not found cancel period for booking');
         }
 

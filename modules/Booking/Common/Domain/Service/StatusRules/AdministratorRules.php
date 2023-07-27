@@ -37,10 +37,8 @@ class AdministratorRules extends AbstractRules implements StatusRulesInterface
         $this->addTransition(BookingStatusEnum::WAITING_CANCELLATION, BookingStatusEnum::CANCELLED_FEE);
         $this->addTransition(BookingStatusEnum::WAITING_CANCELLATION, BookingStatusEnum::CANCELLED_NO_FEE);
 
-        $this->addTransition(BookingStatusEnum::CANCELLED_FEE, BookingStatusEnum::CANCELLED_NO_FEE);
         $this->addTransition(BookingStatusEnum::CANCELLED_FEE, BookingStatusEnum::REFUND_FEE);
 
-        $this->addTransition(BookingStatusEnum::CANCELLED_NO_FEE, BookingStatusEnum::CANCELLED_FEE);
         $this->addTransition(BookingStatusEnum::CANCELLED_NO_FEE, BookingStatusEnum::REFUND_NO_FEE);
     }
 
