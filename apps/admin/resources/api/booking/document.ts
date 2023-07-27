@@ -19,10 +19,24 @@ const getDocumentFileInfo = (props: MaybeRef<DownloadDocumentRequest>) =>
     .get()
     .json<FileResponse>()
 
+const downloadFile = async (url: string, filename: string): Promise<void> => {
+  const response = await fetch(url, { mode: 'no-cors' })
+  const blob = await response.blob()
+  const href = URL.createObjectURL(blob)
+  const anchorElement = document.createElement('a')
+
+  anchorElement.href = href
+  anchorElement.download = filename
+  document.body.appendChild(anchorElement)
+  anchorElement.click()
+  document.body.removeChild(anchorElement)
+  URL.revokeObjectURL(href)
+}
+
 export const downloadDocument = async (props: MaybeRef<DownloadDocumentRequest>): Promise<void> => {
   const { data: fileInfo } = await getDocumentFileInfo(props)
   if (!fileInfo.value) {
     return
   }
-  window.open(fileInfo.value.url, '_blank')
+  await downloadFile(fileInfo.value.url, fileInfo.value.name)
 }
