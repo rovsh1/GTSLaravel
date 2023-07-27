@@ -15,6 +15,18 @@
     width: 32px;
     padding: 0;
   }
+
+  .filter-badge {
+    padding: 0.35rem;
+
+    .badge-text {
+      position: absolute;
+      top: -9px;
+      right: 3px;
+      color: white;
+      font-size: 9px;
+    }
+  }
 }
 
 .search-popup-wrapper {

@@ -64,7 +64,6 @@ class BookingController extends Controller
                     '(SELECT SUM(guests_count) FROM booking_hotel_rooms WHERE booking_id=bookings.id) as guests_count'
                 )
             );
-        //@todo спросить у Сергея точно ли тут?
         $grid->data($query);
 
         return Layout::title($this->prototype->title('index'))

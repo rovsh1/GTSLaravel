@@ -59,10 +59,63 @@ function bootTabsAnchor() {
   Tab.getOrCreateInstance(triggerEl).show()
 }
 
+function bootGridFilters() {
+  const $counterElement = $('#grid-filters-counter')
+  const $counterText = $('#grid-filters-counter  span.badge-text')
+
+  const toggleCounter = (isVisible?: boolean) => {
+    $counterElement.toggleClass('d-none', !isVisible)
+  }
+
+  const setCounterText = (number: number) => {
+    $counterText.text(number)
+    if (number > 0) {
+      toggleCounter(true)
+      return
+    }
+    toggleCounter(false)
+  }
+
+  const filledFields: string[] = []
+
+  const $gridFiltersFormInputs = $('#grid-filters-popup input, #grid-filters-popup select')
+  $gridFiltersFormInputs.each((_, element) => {
+    const $element = $(element)
+    const elementName = $element.prop('name')
+    if (elementName === '_method') {
+      return
+    }
+
+    const clearFieldName = elementName.split('[')[0]
+    const elementValue = $element.val()?.toString() || ''
+    if (!filledFields.includes(clearFieldName) && elementValue.length > 0) {
+      filledFields.push(clearFieldName)
+    }
+  })
+  setCounterText(filledFields.length)
+
+  $gridFiltersFormInputs.on('change', (event: any) => {
+    const $element = $(event.target)
+    const clearFieldName = $element.prop('name').split('[')[0]
+    const elementValue = $element.val()?.toString() || ''
+    const fieldNameIndex = filledFields.indexOf(clearFieldName)
+    const isFieldExists = fieldNameIndex !== -1
+    if (!isFieldExists && elementValue.length > 0) {
+      filledFields.push(clearFieldName)
+    }
+    if (isFieldExists && elementValue.length === 0) {
+      filledFields.splice(fieldNameIndex, 1)
+    }
+
+    setCounterText(filledFields.length)
+  })
+}
+
 export default function bootForms() {
   bootDeleteButtons()
   bootMultiselect()
   bootDateRangePicker()
   bootFileFields()
   bootTabsAnchor()
+  bootGridFilters()
 }
