@@ -3,6 +3,9 @@
 
 @use "vendor/bootstrap/common" as bs;
 
+@use 'select2/dist/css/select2.min.css' as select2base;
+@use '@ttskch/select2-bootstrap4-theme/dist/select2-bootstrap4.min.css' as select2bootstrap;
+
 @use "layout/layout";
 
 @use "partials/common" as partials;

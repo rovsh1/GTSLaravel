@@ -63,11 +63,16 @@ $(() => {
     $currencyInput.removeAttr('required')
   }
 
+  $('#form_data_client_id').select2()
+  $('#form_data_city_id').select2()
+  $('#form_data_manager_id').select2()
+
   $('#form_data_hotel_id').childCombo({
     url: '/hotels/search',
     disabledText: 'Выберите город',
     parent: $('#form_data_city_id'),
     dataIndex: 'city_id',
+    useSelect2: true,
   })
 
   const $clientIdSelect = $('#form_data_client_id')

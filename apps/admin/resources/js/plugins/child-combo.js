@@ -11,6 +11,7 @@ $.fn.childCombo = function (options) {
     emptyText: 'Пусто',
     hidden: false,
     dateRange: false,
+    useSelect2: false,
     ...options,
   }
   const parent = $(preparedOptions.parent)
@@ -133,5 +134,8 @@ $.fn.childCombo = function (options) {
 
   onchange()
 
+  if(preparedOptions.useSelect2) {
+    return child.select2()
+  }
   return child
 }
