@@ -14,7 +14,8 @@ class RequestCreator
     public function __construct(
         private readonly DocumentGeneratorFactory $documentGeneratorFactory,
         private readonly RequestRepositoryInterface $requestRepository,
-    ) {}
+    ) {
+    }
 
     public function create(BookingRequestableInterface $booking, RequestRules $rules): Request
     {

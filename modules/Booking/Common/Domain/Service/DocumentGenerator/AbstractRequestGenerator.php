@@ -22,7 +22,7 @@ abstract class AbstractRequestGenerator extends AbstractDocumentGenerator implem
         $this->fileStorageAdapter->create(
             $request::class,
             $request->id()->value(),
-            "request_{$request->id()->value()}.pdf",
+            "{$request->getFilename()}.pdf",
             $documentContent
         );
     }
