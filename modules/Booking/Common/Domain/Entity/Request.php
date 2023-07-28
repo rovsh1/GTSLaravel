@@ -43,9 +43,9 @@ class Request extends AbstractAggregateRoot implements EntityInterface
     public function getFilename(): string
     {
         return match ($this->type) {
-            RequestTypeEnum::BOOKING => "new_booking_{$this->id->value()}",
-            RequestTypeEnum::CHANGE => "change_booking_{$this->id->value()}",
-            RequestTypeEnum::CANCEL => "cancel_booking_{$this->id->value()}",
+            RequestTypeEnum::BOOKING => "new_booking_{$this->bookingId->value()}",
+            RequestTypeEnum::CHANGE => "change_booking_{$this->bookingId->value()}",
+            RequestTypeEnum::CANCEL => "cancel_booking_{$this->bookingId->value()}",
         };
     }
 }
