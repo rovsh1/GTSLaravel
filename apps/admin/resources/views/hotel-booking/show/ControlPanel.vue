@@ -340,7 +340,7 @@ onMounted(() => {
         class="d-flex flex-row justify-content-between w-100 py-1"
       >
         <div>
-          Общий ваучер
+          {{ true ? 'Ваучер' : 'Общий ваучер' }}
           <span class="date align-left ml-1">от {{ formatDateTime(bookingVoucher.dateCreate) }}</span>
         </div>
         <a href="#" class="btn-download" @click.prevent="voucherStore.downloadDocument(bookingVoucher.id)">Скачать</a>
