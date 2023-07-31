@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static array getBookings()
  * @method static Builder getBookingQuery()
  * @method static mixed getBooking(int $id)
+ * @method static int copyBooking(int $id)
  * @method static void deleteBooking(int $id)
  * @method static void bulkDeleteBookings(int[] $id)
  * @method static int createBooking(int $cityId, int $clientId, int|null $legalId, int $currencyId,  int $hotelId, CarbonPeriod $period, int $creatorId, ?int $orderId, ?string $note = null)

@@ -5,7 +5,7 @@ import { z } from 'zod'
 
 import { showCancelFeeDialog, showNotConfirmedReasonDialog } from '~resources/views/hotel-booking/show/composables/modals'
 
-import { updateBookingStatus, UpdateBookingStatusPayload, useGetBookingAPI } from '~api/booking'
+import { copyBooking, updateBookingStatus, UpdateBookingStatusPayload, useGetBookingAPI } from '~api/booking'
 import { HotelRoomBooking } from '~api/booking/details'
 import { useBookingAvailableActionsAPI, useBookingStatusesAPI } from '~api/booking/status'
 import { useHotelMarkupSettingsAPI } from '~api/hotel/markup-settings'
@@ -59,6 +59,10 @@ export const useBookingStore = defineStore('booking', () => {
     isStatusUpdateFetching.value = false
   }
 
+  const copy = async () => {
+    await copyBooking({ bookingID })
+  }
+
   onMounted(() => {
     fetchMarkupSettings()
     fetchStatuses()
@@ -78,5 +82,6 @@ export const useBookingStore = defineStore('booking', () => {
     statuses,
     fetchStatuses,
     changeStatus,
+    copy,
   }
 })

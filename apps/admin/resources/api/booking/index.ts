@@ -1,4 +1,4 @@
-import { computed } from 'vue'
+import { computed, unref } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
 
@@ -61,6 +61,10 @@ export interface UpdateBookingStatusResponse {
   isCancelFeeAmountRequired: boolean
 }
 
+export interface CopyBookingPayload {
+  bookingID: BookingID
+}
+
 export const useGetBookingAPI = (props: MaybeRef<GetBookingPayload>) =>
   useAdminAPI(props, ({ bookingID }) => `/hotel-booking/${bookingID}/get`)
     .get()
@@ -100,3 +104,12 @@ export const updateExternalNumber = (props: MaybeRef<UpdateExternalNumberPayload
       ),
     )), 'application/json')
     .json<BaseResponse>()
+
+export const copyBooking = (props: MaybeRef<CopyBookingPayload>) => {
+  const payload = unref(props)
+  const form = document.createElement('form')
+  document.body.appendChild(form)
+  form.method = 'post'
+  form.action = `/hotel-booking/${payload.bookingID}/copy`
+  form.submit()
+}

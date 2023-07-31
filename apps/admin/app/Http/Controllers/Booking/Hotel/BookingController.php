@@ -218,6 +218,18 @@ class BookingController extends Controller
         );
     }
 
+    public function copy(int $id): RedirectResponse
+    {
+        $newBookingId = HotelAdapter::copyBooking($id);
+
+        $administrator = $this->administratorRepository->get($id);
+        $this->administratorRepository->create($newBookingId, $administrator->id);
+
+        return redirect(
+            $this->prototype->route('show', $newBookingId)
+        );
+    }
+
     public function getStatuses(): JsonResponse
     {
         return response()->json(

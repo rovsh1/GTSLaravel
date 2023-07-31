@@ -8,6 +8,7 @@ AclRoute::for('hotel-booking')
     ->delete('/bulk', Controllers\Booking\Hotel\BookingController::class . '@bulkDelete', 'delete', 'bulk.delete')
 
     ->get('/{booking}/get', Controllers\Booking\Hotel\BookingController::class . '@get', 'read', 'get')
+    ->post('/{booking}/copy', Controllers\Booking\Hotel\BookingController::class . '@copy', 'update', 'get')
     ->put('/{booking}/status/update', Controllers\Booking\Hotel\BookingController::class . '@updateStatus', 'update', 'status.update')
     ->get('/{booking}/status/history', Controllers\Booking\Hotel\BookingController::class . '@getStatusHistory', 'read', 'status.history')
     ->get('/{booking}/actions/available', Controllers\Booking\Hotel\BookingController::class . '@getAvailableActions', 'read', 'status.get')

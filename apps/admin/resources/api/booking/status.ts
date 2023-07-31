@@ -20,6 +20,7 @@ export interface BookingAvailableActionsResponse {
   canSendVoucher: boolean
   canEditExternalNumber: boolean
   canChangeRoomPrice: boolean
+  canCopy: boolean
 }
 
 export interface BookingStatusHistoryData extends Record<string, any> {

@@ -49,6 +49,17 @@ class AdministratorRules extends AbstractRules implements StatusRulesInterface
             || ($requestRules->isRequestableStatus($status) && $status !== BookingStatusEnum::CONFIRMED);
     }
 
+    public function isCancelledStatus(BookingStatusEnum $status): bool
+    {
+        return in_array($status, [
+            BookingStatusEnum::CANCELLED,
+            BookingStatusEnum::CANCELLED_FEE,
+            BookingStatusEnum::CANCELLED_NO_FEE,
+            BookingStatusEnum::REFUND_FEE,
+            BookingStatusEnum::REFUND_NO_FEE
+        ]);
+    }
+
     public function canEditExternalNumber(BookingStatusEnum $status): bool
     {
         return $status === BookingStatusEnum::CONFIRMED;

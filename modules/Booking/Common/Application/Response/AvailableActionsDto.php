@@ -18,5 +18,6 @@ class AvailableActionsDto extends Dto
         public readonly bool $canSendVoucher,
         public readonly bool $canEditExternalNumber,
         public readonly bool $canChangeRoomPrice,
+        public readonly bool $canCopy,
     ) {}
 }

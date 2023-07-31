@@ -4,6 +4,7 @@ import { createVueInstance } from '~lib/vue'
 
 import BookingRooms from './BookingRooms.vue'
 import ControlPanel from './ControlPanel.vue'
+import CopyButton from './CopyButton.vue'
 
 import '~resources/views/main'
 
@@ -18,5 +19,11 @@ createVueInstance({
 createVueInstance({
   rootComponent: ControlPanel,
   rootContainer: '#booking-control-panel',
+  plugins: [pinia],
+})
+
+createVueInstance({
+  rootComponent: CopyButton,
+  rootContainer: '#booking-copy-button',
   plugins: [pinia],
 })
