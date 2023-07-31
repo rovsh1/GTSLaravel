@@ -53,6 +53,7 @@ const {
   isExternalNumberChanged,
   validateExternalNumber,
   updateExternalNumber,
+  hideValidation,
 } = useExternalNumber(bookingID)
 
 const booking = computed<Booking | null>(() => bookingStore.booking)
@@ -92,11 +93,13 @@ const [isHoPriceModalOpened, toggleHoPriceModal] = useToggle<boolean>(false)
 const [isBoPriceModalOpened, toggleBoPriceModal] = useToggle<boolean>(false)
 
 const handleStatusChange = async (value: number): Promise<void> => {
+  hideValidation()
   await bookingStore.changeStatus(value)
   await fetchStatusHistory()
 }
 
 const handleRequestSend = async () => {
+  hideValidation()
   await requestStore.sendRequest()
   await Promise.all([
     fetchAvailableActions(),
