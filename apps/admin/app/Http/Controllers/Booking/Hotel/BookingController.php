@@ -60,10 +60,14 @@ class BookingController extends Controller
             ->join('administrators', 'administrators.id', '=', 'administrator_bookings.administrator_id')
             ->addSelect('administrators.presentation as manager_name')
             ->addSelect(
-                \DB::raw('(SELECT SUM(guests_count) FROM booking_hotel_rooms WHERE booking_id=bookings.id) as guests_count')
+                \DB::raw(
+                    '(SELECT SUM(guests_count) FROM booking_hotel_rooms WHERE booking_id=bookings.id) as guests_count'
+                )
             )
             ->addSelect(
-                \DB::raw("(SELECT GROUP_CONCAT(JSON_VALUE(data, '$.roomInfo.name')) FROM booking_hotel_rooms WHERE booking_id=bookings.id) as room_names")
+                \DB::raw(
+                    "(SELECT GROUP_CONCAT(JSON_VALUE(data, '$.roomInfo.name')) FROM booking_hotel_rooms WHERE booking_id=bookings.id) as room_names"
+                )
             );
         $grid->data($query);
 
@@ -300,6 +304,7 @@ class BookingController extends Controller
             ->text('guests_count', ['text' => 'Гостей'])
             ->text('source', ['text' => 'Источник', 'order' => true])
             ->date('created_at', ['text' => 'Создан', 'format' => 'datetime', 'order' => true])
+            ->orderBy('created_at', 'desc')
             ->paginator(20);
     }
 
