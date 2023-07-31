@@ -105,6 +105,7 @@ $(() => {
     allowEmpty: true,
     emptyText: false,
     emptyItem: 'Создать новый заказ',
+    useSelect2: true,
     labelGetter: (order: Record<string, any>) => `№${order.id} от ${formatDate(order.createdAt)}`,
     childChange: toggleOrderFields,
   })
