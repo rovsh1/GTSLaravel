@@ -73,7 +73,13 @@ const isNeedShowExternalNumber = computed<boolean>(
 const isExternalNumberInvalid = computed(() => !isExternalNumberValid.value)
 
 // access
-const canSendClientVoucher = computed<boolean>(() => availableActions.value?.canSendVoucher || false)
+const canSendClientVoucher = computed<boolean>(() => {
+  if (!availableActions.value?.canSendVoucher) {
+    return false
+  }
+
+  return (vouchers.value?.length || 0) === 0
+})
 const canSendCancellationRequest = computed<boolean>(() => availableActions.value?.canSendCancellationRequest || false)
 const canSendBookingRequest = computed<boolean>(() => availableActions.value?.canSendBookingRequest || false)
 const canSendChangeRequest = computed<boolean>(() => availableActions.value?.canSendChangeRequest || false)
@@ -320,7 +326,7 @@ onMounted(() => {
     </div>
   </div>
 
-  <div v-if="canSendClientVoucher" class="mt-4">
+  <div class="mt-4">
     <h6>Файлы, отправленные клиенту</h6>
     <hr>
 
@@ -339,6 +345,7 @@ onMounted(() => {
     </div>
 
     <RequestBlock
+      v-if="canSendClientVoucher"
       variant="success"
       text="При необходимости клиенту можно отправить ваучер"
       button-text="Отправить ваучер"
