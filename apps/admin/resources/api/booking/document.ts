@@ -20,6 +20,9 @@ const getDocumentFileInfo = (props: MaybeRef<DownloadDocumentRequest>) =>
     .json<FileResponse>()
 
 const downloadFile = async (url: string, filename: string): Promise<void> => {
+  window.open(url)
+  // @todo проверить почему скачивается пустой файл
+  return
   const response = await fetch(url, { mode: 'no-cors' })
   const blob = await response.blob()
   const href = URL.createObjectURL(blob)

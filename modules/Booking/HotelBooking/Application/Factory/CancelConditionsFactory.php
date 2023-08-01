@@ -10,19 +10,23 @@ use Module\Booking\HotelBooking\Domain\ValueObject\Details\CancelCondition\Cance
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\CancelCondition\DailyMarkupCollection;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\CancelCondition\DailyMarkupOption;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\CancelConditions;
+use Module\Hotel\Application\ResponseDto\MarkupSettings\CancelPeriodDto;
 use Module\Shared\Domain\ValueObject\Percent;
 
 class CancelConditionsFactory
 {
+    /**
+     * @param CancelPeriodDto[] $cancelPeriods
+     * @param CarbonPeriod $period
+     * @return CancelConditions
+     * @throws \Exception
+     */
     public static function fromDto(array $cancelPeriods, CarbonPeriod $period): CancelConditions
     {
+        /** @var CancelPeriodDto $availablePeriod */
         $availablePeriod = collect($cancelPeriods)->first(
             fn(mixed $cancelPeriod) => $period->overlaps($cancelPeriod->from, $cancelPeriod->to)
         );
-        if ($availablePeriod === null) {
-            //@todo понять что тут делать у Анвара
-            throw new \Exception('Not found cancel period for booking');
-        }
 
         $maxDaysCount = null;
         $dailyMarkups = new DailyMarkupCollection();

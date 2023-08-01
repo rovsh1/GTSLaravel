@@ -10,6 +10,7 @@ use Module\Booking\HotelBooking\Application\Request\UpdateBookingDto;
 use Module\Booking\HotelBooking\Domain\Adapter\HotelAdapterInterface;
 use Module\Booking\HotelBooking\Domain\Entity\Booking;
 use Module\Booking\HotelBooking\Domain\Repository\BookingRepositoryInterface;
+use Module\Booking\HotelBooking\Domain\Service\HotelValidator;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\BookingPeriod;
 use Module\Booking\Order\Domain\Repository\OrderRepositoryInterface;
 use Module\Booking\Order\Domain\Service\OrderUpdater;
@@ -25,6 +26,7 @@ class UpdateBooking implements UseCaseInterface
         private readonly HotelAdapterInterface $hotelAdapter,
         private readonly OrderRepositoryInterface $orderRepository,
         private readonly OrderUpdater $orderUpdater,
+        private readonly HotelValidator $hotelValidator
     ) {}
 
     public function execute(UpdateBookingDto $request): void
@@ -52,6 +54,7 @@ class UpdateBooking implements UseCaseInterface
         $periodFromRequest = BookingPeriod::fromCarbon($request->period);
         if (!$booking->period()->isEqual($periodFromRequest)) {
             $markupSettings = $this->hotelAdapter->getMarkupSettings($booking->hotelInfo()->id());
+            $this->hotelValidator->validateById($booking->hotelInfo()->id(), $request->period);
             $cancelConditions = CancelConditionsFactory::fromDto($markupSettings->cancelPeriods, $request->period);
             $booking->setPeriod($periodFromRequest);
             $booking->setCancelConditions($cancelConditions);

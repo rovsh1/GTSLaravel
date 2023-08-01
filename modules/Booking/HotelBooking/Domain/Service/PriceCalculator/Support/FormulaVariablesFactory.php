@@ -36,6 +36,7 @@ class FormulaVariablesFactory
 
     private function calculateClientMarkupPercent(Order $order, MarkupSettingsDto $markupDto): int
     {
+        //@todo проверить, что будет если в отеле не заполнены наценки при калькуляции
         $legalId = $order->legalId()?->value();
         if ($legalId) {
             $legal = $this->clientAdapter->findLegal($legalId);

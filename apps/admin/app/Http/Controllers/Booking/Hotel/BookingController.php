@@ -107,12 +107,13 @@ class BookingController extends Controller
         $form->trySubmit($this->prototype->route('create'));
 
         $data = $form->getData();
+        $client = Client::find($data['client_id']);
         //@todo добавить селект типа брони По квоте/По запросу (списывать квоту сразу, если по квоте)
         $bookingId = HotelAdapter::createBooking(
             cityId: $data['city_id'],
             clientId: $data['client_id'],
             legalId: $data['legal_id'],
-            currencyId: $data['currency_id'],
+            currencyId: $data['currency_id'] ?? $client->currency_id,
             hotelId: $data['hotel_id'],
             period: $data['period'],
             creatorId: $creatorId,
@@ -191,11 +192,12 @@ class BookingController extends Controller
         $form->trySubmit($this->prototype->route('edit', $id));
 
         $data = $form->getData();
+        $client = Client::find($data['client_id']);
         HotelAdapter::updateBooking(
             id: $id,
             clientId: $data['client_id'],
             legalId: $data['legal_id'],
-            currencyId: $data['currency_id'],
+            currencyId: $data['currency_id'] ?? $client->currency_id,
             period: $data['period'],
             note: $data['note'] ?? null
         );
@@ -373,11 +375,11 @@ class BookingController extends Controller
             ->hidden('legal_id', [
                 'label' => 'Юр. лицо',
             ])
-            ->currency('currency_id', [
-                'label' => 'Валюта',
-                'required' => true,
-                'value' => 1
-            ])
+//            ->currency('currency_id', [
+//                'label' => 'Валюта',
+//                'required' => true,
+//                'value' => 1
+//            ])
             ->city('city_id', [
                 'label' => __('label.city'),
                 'emptyItem' => '',

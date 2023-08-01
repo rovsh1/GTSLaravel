@@ -49,18 +49,18 @@ $(() => {
 
   const toggleOrderFields = (event: any): void => {
     const orderId: string = $(event.target).val() as string
-    const $currencyField = $('div.field-currency_id')
-    const $currencyInput = $('#form_data_currency_id')
+    // const $currencyField = $('div.field-currency_id')
+    // const $currencyInput = $('#form_data_currency_id')
     if (orderId.length === 0) {
-      $currencyField.show().toggleClass('field-required', true)
-      $currencyInput.attr('required', 'required')
+      // $currencyField.show().toggleClass('field-required', true)
+      // $currencyInput.attr('required', 'required')
       handleChangeClientId(undefined)
       return
     }
 
     handleChangeClientId(Number(orderId))
-    $currencyField.hide().toggleClass('field-required', false)
-    $currencyInput.removeAttr('required')
+    // $currencyField.hide().toggleClass('field-required', false)
+    // $currencyInput.removeAttr('required')
   }
 
   $('#form_data_client_id').select2()
