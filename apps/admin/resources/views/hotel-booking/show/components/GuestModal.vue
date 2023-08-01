@@ -6,8 +6,8 @@ import { MaybeRef } from '@vueuse/core'
 import { z } from 'zod'
 
 import { validateForm } from '~resources/composables/form'
-import { genderOptions } from '~resources/views/hotel-booking/show/composables/constants'
-import { GuestFormData } from '~resources/views/hotel-booking/show/composables/form'
+import { genderOptions } from '~resources/views/hotel-booking/show/lib/constants'
+import { GuestFormData } from '~resources/views/hotel-booking/show/lib/data-types'
 
 import { addGuestToBooking, updateBookingGuest } from '~api/booking/rooms'
 import { CountryResponse } from '~api/country'

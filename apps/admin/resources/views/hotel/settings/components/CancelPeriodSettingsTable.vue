@@ -7,7 +7,7 @@ import { CancelPeriod, DailyMarkup } from '~api/hotel/markup-settings'
 
 import EditableCell from '~components/EditableCell.vue'
 
-import { getCancelPeriodTypeName } from '../../../hotel-booking/show/composables/constants'
+import { getCancelPeriodTypeName } from '../../../hotel-booking/show/lib/constants'
 
 withDefaults(defineProps<{
   cancelPeriod: CancelPeriod

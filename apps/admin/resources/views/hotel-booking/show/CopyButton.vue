@@ -15,7 +15,7 @@ const handleCopyBooking = () => {
 </script>
 
 <template>
-  <div>
+  <div style="margin-left: 1rem;">
     <a v-if="canCopy" href="#" @click.prevent="handleCopyBooking">Копировать</a>
   </div>
 </template>
