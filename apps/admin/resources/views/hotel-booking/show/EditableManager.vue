@@ -12,7 +12,6 @@ const { data: administrators, execute: fetchAdministrators } = useAdministratorG
 
 const bookingStore = useBookingStore()
 
-const canEdit = computed(() => Boolean(bookingStore.availableActions?.isEditable))
 const managerId = computed(() => bookingStore.bookingManagerId)
 const selectOptions = computed(
   () => administrators.value?.map(({ id, presentation }) => ({ value: id, label: presentation })) || [],
@@ -27,7 +26,6 @@ onMounted(() => fetchAdministrators())
     id="booking-manager"
     :value="managerId"
     :items="selectOptions"
-    :can-edit="canEdit"
     required
     :show-empty-item="false"
     @change="bookingStore.updateManager"
