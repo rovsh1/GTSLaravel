@@ -41,7 +41,9 @@ class BookingCalculator implements BookingCalculatorInterface
         return new BookingPrice(
             $netSum,
             new ManualChangablePrice($hoSum),
-            new ManualChangablePrice($boSum)
+            new ManualChangablePrice($boSum),
+            null,
+            null,
         );
     }
 }

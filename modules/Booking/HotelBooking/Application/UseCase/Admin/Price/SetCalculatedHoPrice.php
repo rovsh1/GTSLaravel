@@ -21,6 +21,6 @@ class SetCalculatedHoPrice implements UseCaseInterface
     {
         $booking = $this->repository->find($bookingId);
         $booking->setCalculatedHoPrice($this->bookingCalculator);
-        $this->bookingUpdater->store($booking);
+        $this->bookingUpdater->storeIfHasEvents($booking);
     }
 }

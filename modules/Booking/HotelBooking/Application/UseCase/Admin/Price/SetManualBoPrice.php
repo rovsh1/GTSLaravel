@@ -19,6 +19,6 @@ class SetManualBoPrice implements UseCaseInterface
     {
         $booking = $this->repository->find($bookingId);
         $booking->setBoPriceManually($price);
-        $this->bookingUpdater->store($booking);
+        $this->bookingUpdater->storeIfHasEvents($booking);
     }
 }

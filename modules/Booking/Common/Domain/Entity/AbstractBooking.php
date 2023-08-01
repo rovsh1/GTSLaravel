@@ -6,6 +6,7 @@ namespace Module\Booking\Common\Domain\Entity;
 
 use Carbon\CarbonImmutable;
 use Module\Booking\Common\Domain\Entity\Concerns\HasStatusesTrait;
+use Module\Booking\Common\Domain\Event\BookingPriceChanged;
 use Module\Booking\Common\Domain\Event\Contracts\BookingRequestableInterface;
 use Module\Booking\Common\Domain\Event\Request\BookingRequestSent;
 use Module\Booking\Common\Domain\Event\Request\CancellationRequestSent;
@@ -13,6 +14,7 @@ use Module\Booking\Common\Domain\Event\Request\ChangeRequestSent;
 use Module\Booking\Common\Domain\Exception\NotRequestableEntity;
 use Module\Booking\Common\Domain\Exception\NotRequestableStatus;
 use Module\Booking\Common\Domain\Service\BookingCalculatorInterface;
+use Module\Booking\Common\Domain\Service\BookingPriceChangeDecorator;
 use Module\Booking\Common\Domain\Service\InvoiceCreator;
 use Module\Booking\Common\Domain\Service\RequestCreator;
 use Module\Booking\Common\Domain\Service\RequestRules;
@@ -74,70 +76,89 @@ abstract class AbstractBooking extends AbstractAggregateRoot implements
 
     public function recalculatePrices(BookingCalculatorInterface $calculator): void
     {
-        $this->price = new BookingPrice(
-            netValue: $this->price->netValue(),
-            boPrice: $this->price()->boPrice()->isManual()
-                ? $this->price()->boPrice()
-                : new ManualChangablePrice($calculator->calculateBoPrice($this)),
-            hoPrice: $this->price()->hoPrice()->isManual()
-                ? $this->price()->hoPrice()
-                : new ManualChangablePrice($calculator->calculateHoPrice($this)),
-        );
+        $boPrice = $this->price()->boPrice()->isManual()
+            ? $this->price()->boPrice()
+            : new ManualChangablePrice($calculator->calculateBoPrice($this));
+
+        $hoPrice = $this->price()->hoPrice()->isManual()
+            ? $this->price()->hoPrice()
+            : new ManualChangablePrice($calculator->calculateHoPrice($this));
+
+        $priceBuilder = new BookingPriceChangeDecorator($this->price);
+        $priceBuilder->setPrices($boPrice, $hoPrice);
+        $this->changePrice($priceBuilder);
     }
 
     public function setBoPriceManually(float $price): void
     {
-        $this->price = new BookingPrice(
-            netValue: $this->price->netValue(),
-            boPrice: new ManualChangablePrice($price, true),
-            hoPrice: $this->price->hoPrice()
+        $priceBuilder = new BookingPriceChangeDecorator($this->price);
+        $priceBuilder->setBoPrice(
+            new ManualChangablePrice($price, true)
         );
+        $this->changePrice($priceBuilder);
     }
 
     public function setHoPriceManually(float $price): void
     {
-        $this->price = new BookingPrice(
-            netValue: $this->price->netValue(),
-            boPrice: $this->price->boPrice(),
-            hoPrice: new ManualChangablePrice($price, true),
+        $priceBuilder = new BookingPriceChangeDecorator($this->price);
+        $priceBuilder->setHoPrice(
+            new ManualChangablePrice($price, true)
+
         );
+        $this->changePrice($priceBuilder);
     }
 
     public function setCalculatedPrices(BookingCalculatorInterface $calculator): void
     {
-        $this->price = new BookingPrice(
-            netValue: $this->price->netValue(),
-            boPrice: new ManualChangablePrice(
+        $priceBuilder = new BookingPriceChangeDecorator($this->price);
+        $priceBuilder->setBoPrice(
+            new ManualChangablePrice(
                 $calculator->calculateBoPrice($this)
-            ),
-            hoPrice: new ManualChangablePrice(
-                $calculator->calculateHoPrice($this)
-            ),
+            )
         );
+        $priceBuilder->setHoPrice(
+            new ManualChangablePrice(
+                $calculator->calculateHoPrice($this)
+            )
+        );
+        $this->changePrice($priceBuilder);
     }
 
     public function setCalculatedBoPrice(BookingCalculatorInterface $calculator): void
     {
-        $this->price = new BookingPrice(
-            netValue: $this->price->netValue(),
-            boPrice: new ManualChangablePrice(
+        $priceBuilder = new BookingPriceChangeDecorator($this->price);
+        $priceBuilder->setBoPrice(
+            new ManualChangablePrice(
                 $calculator->calculateBoPrice($this)
-            ),
-            hoPrice: $this->price()->hoPrice()
+            )
         );
+        $this->changePrice($priceBuilder);
     }
 
     public function setCalculatedHoPrice(BookingCalculatorInterface $calculator): void
     {
-        $this->price = new BookingPrice(
-            netValue: $this->price->netValue(),
-            hoPrice: new ManualChangablePrice(
+        $priceBuilder = new BookingPriceChangeDecorator($this->price);
+        $priceBuilder->setHoPrice(
+            new ManualChangablePrice(
                 $calculator->calculateHoPrice($this)
-            ),
-            boPrice: $this->price()->boPrice()
+            )
         );
+        $this->changePrice($priceBuilder);
     }
 
+    public function setBoPenalty(float|null $amount): void
+    {
+        $priceBuilder = new BookingPriceChangeDecorator($this->price);
+        $priceBuilder->setBoPenalty($amount);
+        $this->changePrice($priceBuilder);
+    }
+
+    public function setHoPenalty(float|null $amount): void
+    {
+        $priceBuilder = new BookingPriceChangeDecorator($this->price);
+        $priceBuilder->setHoPenalty($amount);
+        $this->changePrice($priceBuilder);
+    }
 
     /**
      * @param RequestRules $requestRules
@@ -199,5 +220,19 @@ abstract class AbstractBooking extends AbstractAggregateRoot implements
     private function setStatus(BookingStatusEnum $status): void
     {
         $this->status = $status;
+    }
+
+    private function changePrice(BookingPriceChangeDecorator $priceBuilder): void
+    {
+        if (!$priceBuilder->isPriceChanged()) {
+            return;
+        }
+        $this->price = $priceBuilder->getPriceAfter();
+        $this->pushEvent(
+            new BookingPriceChanged(
+                $this,
+                $priceBuilder->getPriceBefore(),
+            )
+        );
     }
 }

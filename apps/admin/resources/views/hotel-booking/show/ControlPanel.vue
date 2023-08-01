@@ -254,12 +254,25 @@ onMounted(() => {
           <span class="currency">{{ orderCurrency.sign }}</span>
         </div>
         <a href="#" @click.prevent="toggleBoPriceModal(true)">Изменить</a>
+
+        <div v-if="(booking?.price.boPenalty || 0) > 0 && orderCurrency">
+          Сумма штрафа для клиента: {{ booking?.price.boPenalty || 0 }}
+          <span class="currency">{{ orderCurrency.sign }}</span>
+        </div>
+        <a href="#" @click.prevent="toggleBoPriceModal(true)">Изменить</a>
       </div>
+
       <div class="w-50 rounded shadow-lg p-3">
         <h6>Расход</h6>
         <hr>
         <div v-if="booking && orderCurrency">
           Общая сумма (нетто): {{ booking.price.hoPrice.value }}
+          <span class="currency">{{ orderCurrency.sign }}</span>
+        </div>
+        <a href="#" @click.prevent="toggleHoPriceModal(true)">Изменить</a>
+
+        <div v-if="(booking?.price.hoPenalty || 0) > 0 && orderCurrency">
+          Сумма штрафа от гостиницы: {{ booking?.price.hoPenalty }}
           <span class="currency">{{ orderCurrency.sign }}</span>
         </div>
         <a href="#" @click.prevent="toggleHoPriceModal(true)">Изменить</a>

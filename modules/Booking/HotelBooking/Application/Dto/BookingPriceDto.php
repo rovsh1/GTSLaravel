@@ -15,7 +15,9 @@ class BookingPriceDto extends AbstractDomainBasedDto
     public function __construct(
         public readonly float $netValue,
         public readonly ManualChangablePriceDto $hoPrice,
-        public readonly ManualChangablePriceDto $boPrice
+        public readonly ManualChangablePriceDto $boPrice,
+        public readonly ?float $hoPenalty,
+        public readonly ?float $boPenalty,
     ) {}
 
     public static function fromDomain(EntityInterface|ValueObjectInterface|BookingPrice $entity): static
@@ -24,6 +26,8 @@ class BookingPriceDto extends AbstractDomainBasedDto
             $entity->netValue(),
             ManualChangablePriceDto::fromDomain($entity->hoPrice()),
             ManualChangablePriceDto::fromDomain($entity->boPrice()),
+            $entity->hoPenalty(),
+            $entity->boPenalty()
         );
     }
 }

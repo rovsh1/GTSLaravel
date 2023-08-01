@@ -15,6 +15,7 @@ class RoomBooking extends Model
         'booking_id',
         'hotel_room_id',
         'guests_count',
+        'room_name',
         'data',
     ];
 

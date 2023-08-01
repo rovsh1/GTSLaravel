@@ -28,6 +28,23 @@ class BookingUpdater
         return $success;
     }
 
+    /**
+     * @param HotelBooking|AirportBooking $booking
+     * @return bool
+     * @todo подумать как точно провернить, что были изменения в броне
+     */
+    public function storeIfHasEvents(HotelBooking|AirportBooking $booking): bool
+    {
+        $events = $booking->pullEvents();
+        if (count($events) === 0) {
+            return true;
+        }
+        $success = $this->repository($booking)->store($booking);
+        $this->eventDispatcher->dispatch(...$events);
+
+        return $success;
+    }
+
     private function repository(BookingInterface $booking): HotelBookingRepository|AirportBookingRepository
     {
         return match ($booking->type()) {

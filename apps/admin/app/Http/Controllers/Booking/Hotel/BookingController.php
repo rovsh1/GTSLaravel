@@ -66,7 +66,7 @@ class BookingController extends Controller
             )
             ->addSelect(
                 \DB::raw(
-                    "(SELECT GROUP_CONCAT(JSON_VALUE(data, '$.roomInfo.name')) FROM booking_hotel_rooms WHERE booking_id=bookings.id) as room_names"
+                    "(SELECT GROUP_CONCAT(room_name) FROM booking_hotel_rooms WHERE booking_id=bookings.id) as room_names"
                 )
             );
         $grid->data($query);

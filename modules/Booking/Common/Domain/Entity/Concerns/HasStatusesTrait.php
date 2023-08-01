@@ -89,6 +89,7 @@ trait HasStatusesTrait
             throw new \InvalidArgumentException('Cancel fee amount can\'t be below zero');
         }
         $this->setStatus(BookingStatusEnum::CANCELLED_FEE);
+        $this->setHoPenalty($cancelFeeAmount);
         $this->pushEvent(new BookingCancelledFee($this, $cancelFeeAmount));
     }
 

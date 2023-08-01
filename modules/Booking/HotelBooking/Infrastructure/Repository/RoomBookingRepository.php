@@ -48,6 +48,7 @@ class RoomBookingRepository implements RoomBookingRepositoryInterface
             'booking_id' => $bookingId,
             'hotel_room_id' => $roomInfo->id(),
             'guests_count' => $guests->count(),
+            'room_name' => $roomInfo->name(),
             'data' => $this->serializeData($status, $roomInfo, $guests, $details, $price),
         ]);
         //hack потому что default scope не подтягивается после создания модели, а тут нужно, т.к. booking_order_id подгружается join'ом
@@ -62,6 +63,7 @@ class RoomBookingRepository implements RoomBookingRepositoryInterface
             ->update([
                 'hotel_room_id' => $booking->roomInfo()->id(),
                 'guests_count' => $booking->guests()->count(),
+                'room_name' => $booking->roomInfo()->name(),
                 'data' => $this->serializeEntity($booking)
             ]);
     }

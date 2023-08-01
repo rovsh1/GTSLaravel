@@ -12,6 +12,8 @@ final class BookingPrice implements SerializableDataInterface, CanEquate
         private readonly float $netValue,
         private readonly ManualChangablePrice $hoPrice,
         private readonly ManualChangablePrice $boPrice,
+        private readonly ?float $hoPenalty,
+        private readonly ?float $boPenalty,
     ) {}
 
     public static function buildEmpty(): static
@@ -20,6 +22,8 @@ final class BookingPrice implements SerializableDataInterface, CanEquate
             0,
             new ManualChangablePrice(0),
             new ManualChangablePrice(0),
+            null,
+            null,
         );
     }
 
@@ -38,12 +42,24 @@ final class BookingPrice implements SerializableDataInterface, CanEquate
         return $this->boPrice;
     }
 
+    public function hoPenalty(): ?float
+    {
+        return $this->hoPenalty;
+    }
+
+    public function boPenalty(): ?float
+    {
+        return $this->boPenalty;
+    }
+
     public function toData(): array
     {
         return [
             'netValue' => $this->netValue,
             'hoPrice' => $this->hoPrice->toData(),
             'boPrice' => $this->boPrice->toData(),
+            'hoPenalty' => $this->hoPenalty,
+            'boPenalty' => $this->boPenalty,
         ];
     }
 
@@ -53,6 +69,8 @@ final class BookingPrice implements SerializableDataInterface, CanEquate
             $data['netValue'],
             ManualChangablePrice::fromData($data['hoPrice']),
             ManualChangablePrice::fromData($data['boPrice']),
+            $data['hoPenalty'],
+            $data['boPenalty'],
         );
     }
 
@@ -64,6 +82,8 @@ final class BookingPrice implements SerializableDataInterface, CanEquate
     {
         return $this->netValue === $b->netValue
             && $this->boPrice->isEqual($b->boPrice)
-            && $this->hoPrice->isEqual($b->hoPrice);
+            && $this->hoPrice->isEqual($b->hoPrice)
+            && $this->hoPenalty === $b->hoPenalty
+            && $this->boPenalty === $b->boPenalty;
     }
 }

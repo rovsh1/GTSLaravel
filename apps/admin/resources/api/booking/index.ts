@@ -21,6 +21,8 @@ export interface BookingPrice {
   boPrice: ManualChangablePrice
   hoPrice: ManualChangablePrice
   netValue: number
+  hoPenalty: number | null
+  boPenalty: number | null
 }
 
 export interface Booking {
