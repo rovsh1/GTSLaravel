@@ -18,6 +18,7 @@
             'currencies' => $currencies,
             'editUrl' => $editUrl,
             'deleteUrl' => $deleteUrl,
+            'manager' => $manager,
         ]) }}
     </script>
 @endsection
@@ -81,7 +82,9 @@
                             </tr>
                             <tr>
                                 <th>Менеджер</th>
-                                <td> {{ $manager->presentation }}</td>
+                                <td>
+                                    <div id="booking-editable-manager"></div>
+                                </td>
                             </tr>
                             <tr>
                                 <th>Автор</th>
@@ -94,7 +97,9 @@
                             <tr>
                             <tr>
                                 <th>Примечание</th>
-                                <td>{{ $model->note }}</td>
+                                <td>
+                                    <div id="booking-editable-note"></div>
+                                </td>
                             </tr>
                             </tbody>
                         </table>

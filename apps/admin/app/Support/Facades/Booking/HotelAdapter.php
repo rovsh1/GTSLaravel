@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static void updateRoomGuest(int $bookingId, int $roomBookingId, int $guestIndex, string $fullName, int $countryId, int $gender, bool $isAdult, int|null $age)
  * @method static void deleteRoomGuest(int $bookingId, int $roomBookingId, int $guestIndex)
  * @method static void updateExternalNumber(int $bookingId, int $type, string|null $number)
+ * @method static void updateNote(int $bookingId, string|null $note)
  **/
 class HotelAdapter extends Facade
 {

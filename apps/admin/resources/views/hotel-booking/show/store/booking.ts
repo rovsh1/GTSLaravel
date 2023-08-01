@@ -5,16 +5,26 @@ import { z } from 'zod'
 
 import { showCancelFeeDialog, showNotConfirmedReasonDialog } from '~resources/views/hotel-booking/show/lib/modals'
 
-import { copyBooking, updateBookingStatus, UpdateBookingStatusPayload, useGetBookingAPI } from '~api/booking'
+import {
+  copyBooking,
+  updateBookingStatus,
+  UpdateBookingStatusPayload,
+  updateManager as executeUpdateManager,
+  updateNote as executeUpdateNote,
+  useGetBookingAPI,
+} from '~api/booking'
 import { HotelRoomBooking } from '~api/booking/details'
 import { useBookingAvailableActionsAPI, useBookingStatusesAPI } from '~api/booking/status'
 import { useHotelMarkupSettingsAPI } from '~api/hotel/markup-settings'
 
 import { requestInitialData } from '~lib/initial-data'
 
-const { hotelID, bookingID } = requestInitialData('view-initial-data-hotel-booking', z.object({
+const { hotelID, bookingID, manager } = requestInitialData('view-initial-data-hotel-booking', z.object({
   hotelID: z.number(),
   bookingID: z.number(),
+  manager: z.object({
+    id: z.number(),
+  }),
 }))
 
 export const useBookingStore = defineStore('booking', () => {
@@ -26,6 +36,7 @@ export const useBookingStore = defineStore('booking', () => {
   const isEmptyGuests = computed<boolean>(() => Boolean(booking.value?.roomBookings.find((room: HotelRoomBooking) => room.guests.length === 0)))
   const isEmptyRooms = computed<boolean>(() => booking.value?.roomBookings.length === 0)
   const isStatusUpdateFetching = ref(false)
+  const bookingManagerId = ref(manager.id)
 
   const updateStatusPayload = reactive<UpdateBookingStatusPayload>({ bookingID } as UpdateBookingStatusPayload)
   const changeStatus = async (status: number) => {
@@ -63,6 +74,16 @@ export const useBookingStore = defineStore('booking', () => {
     await copyBooking({ bookingID })
   }
 
+  const updateNote = async (note?: string) => {
+    await executeUpdateNote({ bookingID, note })
+    fetchBooking()
+  }
+
+  const updateManager = async (managerId: number) => {
+    await executeUpdateManager({ bookingID, managerId })
+    bookingManagerId.value = Number(managerId)
+  }
+
   onMounted(() => {
     fetchMarkupSettings()
     fetchStatuses()
@@ -71,6 +92,7 @@ export const useBookingStore = defineStore('booking', () => {
 
   return {
     booking,
+    bookingManagerId,
     fetchBooking,
     markupSettings,
     isEmptyGuests,
@@ -83,5 +105,7 @@ export const useBookingStore = defineStore('booking', () => {
     fetchStatuses,
     changeStatus,
     copy,
+    updateNote,
+    updateManager,
   }
 })

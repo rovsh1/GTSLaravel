@@ -2,6 +2,7 @@
 
 namespace App\Admin\Http\Controllers\Administration;
 
+use App\Admin\Http\Resources\Manager;
 use App\Admin\Models\Administrator\AccessGroup;
 use App\Admin\Models\Administrator\Post;
 use App\Admin\Support\Facades\Acl;
@@ -11,12 +12,22 @@ use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\JsonResponse;
 
 class AdministratorController extends AbstractPrototypeController
 {
     protected function getPrototypeKey(): string
     {
         return 'administrator';
+    }
+
+    public function get(): JsonResponse
+    {
+        $managers = $this->repository->query()->get();
+
+        return response()->json(
+            Manager::collection($managers)
+        );
     }
 
     protected function formFactory(): FormContract

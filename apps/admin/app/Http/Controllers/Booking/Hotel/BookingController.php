@@ -6,6 +6,8 @@ use App\Admin\Components\Factory\Prototype;
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Http\Requests\Booking\BulkDeleteRequest;
 use App\Admin\Http\Requests\Booking\UpdateExternalNumberRequest;
+use App\Admin\Http\Requests\Booking\UpdateManagerRequest;
+use App\Admin\Http\Requests\Booking\UpdateNoteRequest;
 use App\Admin\Http\Requests\Booking\UpdatePriceRequest;
 use App\Admin\Http\Requests\Booking\UpdateStatusRequest;
 use App\Admin\Http\Resources\Client as ClientResource;
@@ -297,6 +299,20 @@ class BookingController extends Controller
     public function bulkDelete(BulkDeleteRequest $request): AjaxResponseInterface
     {
         HotelAdapter::bulkDeleteBookings($request->getIds());
+
+        return new AjaxSuccessResponse();
+    }
+
+    public function updateNote(int $id, UpdateNoteRequest $request): AjaxResponseInterface
+    {
+        HotelAdapter::updateNote($id, $request->getNote());
+
+        return new AjaxSuccessResponse();
+    }
+
+    public function updateManager(int $id, UpdateManagerRequest $request): AjaxResponseInterface
+    {
+        $this->administratorRepository->update($id, $request->getManagerId());
 
         return new AjaxSuccessResponse();
     }

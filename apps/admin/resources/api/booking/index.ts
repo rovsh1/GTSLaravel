@@ -58,6 +58,16 @@ export interface UpdateExternalNumberPayload {
   number?: string | null
 }
 
+export interface UpdateNotePayload {
+  bookingID: BookingID
+  note?: string
+}
+
+export interface UpdateManagerPayload {
+  bookingID: BookingID
+  managerId: number | `${number}`
+}
+
 export interface UpdateBookingStatusResponse {
   isNotConfirmedReasonRequired: boolean
   isCancelFeeAmountRequired: boolean
@@ -102,6 +112,38 @@ export const updateExternalNumber = (props: MaybeRef<UpdateExternalNumberPayload
         (payload: UpdateExternalNumberPayload): any => ({
           type: payload.type,
           number: payload.number,
+        }),
+      ),
+    )), 'application/json')
+    .json<BaseResponse>()
+
+export const updateNote = (props: MaybeRef<UpdateNotePayload>) =>
+  useAdminAPI(
+    props,
+    ({ bookingID }) => `/hotel-booking/${bookingID}/note`,
+    { immediate: true },
+  )
+    .put(computed<string>(() => JSON.stringify(
+      getNullableRef<UpdateNotePayload, any>(
+        props,
+        (payload: UpdateNotePayload): any => ({
+          note: payload.note,
+        }),
+      ),
+    )), 'application/json')
+    .json<BaseResponse>()
+
+export const updateManager = (props: MaybeRef<UpdateManagerPayload>) =>
+  useAdminAPI(
+    props,
+    ({ bookingID }) => `/hotel-booking/${bookingID}/manager`,
+    { immediate: true },
+  )
+    .put(computed<string>(() => JSON.stringify(
+      getNullableRef<UpdateManagerPayload, any>(
+        props,
+        (payload: UpdateManagerPayload): any => ({
+          manager_id: payload.managerId,
         }),
       ),
     )), 'application/json')

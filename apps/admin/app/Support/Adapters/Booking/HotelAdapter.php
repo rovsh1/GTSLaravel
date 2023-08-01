@@ -20,6 +20,7 @@ use Module\Booking\HotelBooking\Application\UseCase\Admin\GetBookingQuery;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\GetBookingsByFilters;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\UpdateBooking;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\UpdateExternalNumber;
+use Module\Booking\HotelBooking\Application\UseCase\Admin\UpdateNote;
 
 class HotelAdapter
 {
@@ -224,5 +225,10 @@ class HotelAdapter
     public function updateExternalNumber(int $bookingId, int $type, ?string $number): void
     {
         app(UpdateExternalNumber::class)->execute($bookingId, $type, $number);
+    }
+
+    public function updateNote(int $bookingId, string|null $note): void
+    {
+        app(UpdateNote::class)->execute($bookingId, $note);
     }
 }

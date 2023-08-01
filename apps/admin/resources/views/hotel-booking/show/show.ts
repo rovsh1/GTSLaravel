@@ -6,6 +6,8 @@ import ActionsMenu from './ActionsMenu.vue'
 import BookingRooms from './BookingRooms.vue'
 import ControlPanel from './ControlPanel.vue'
 import CopyButton from './CopyButton.vue'
+import EditableManager from './EditableManager.vue'
+import EditableNote from './EditableNote.vue'
 
 import '~resources/views/main'
 
@@ -32,5 +34,17 @@ createVueInstance({
 createVueInstance({
   rootComponent: ActionsMenu,
   rootContainer: '#booking-actions-menu',
+  plugins: [pinia],
+})
+
+createVueInstance({
+  rootComponent: EditableNote,
+  rootContainer: '#booking-editable-note',
+  plugins: [pinia],
+})
+
+createVueInstance({
+  rootComponent: EditableManager,
+  rootContainer: '#booking-editable-manager',
   plugins: [pinia],
 })

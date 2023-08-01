@@ -11,13 +11,15 @@ import { Tooltip } from 'floating-vue'
 import { usePlatformDetect } from '~lib/platform'
 
 const props = withDefaults(defineProps<{
-  value: number | undefined
+  value: string | undefined
   placeholder?: string
   dimension?: string
   emptyValue?: string
   hideClickOutside?: boolean
   saveClickOutside?: boolean
   required?: boolean
+  rows?: number
+  canEdit?: boolean
 }>(), {
   placeholder: undefined,
   emptyValue: undefined,
@@ -25,22 +27,24 @@ const props = withDefaults(defineProps<{
   hideClickOutside: false,
   saveClickOutside: true,
   required: false,
+  rows: 2,
+  canEdit: true,
 })
 
 const emit = defineEmits<{
-  (event: 'change', value: number): void
+  (event: 'change', value: string): void
 }>()
 
 const [isEditable, toggleEditable] = useToggle()
 const { isMacOS } = usePlatformDetect()
 
-const inputRef = ref<HTMLInputElement | null>(null)
-const editedValue = ref<number>()
+const inputRef = ref<HTMLTextAreaElement | null>(null)
+const editedValue = ref<string>()
 const isChanged = ref(false)
 
-const localValue = computed<number>({
-  get: () => (isChanged.value ? editedValue.value : props.value) as number,
-  set: (value: number) => {
+const localValue = computed<string>({
+  get: () => (isChanged.value ? editedValue.value : props.value) as string,
+  set: (value: string) => {
     editedValue.value = value
     isChanged.value = true
   },
@@ -97,22 +101,26 @@ if (props.saveClickOutside && !props.hideClickOutside) {
 
 <template>
   <div>
-    <a v-if="!isEditable" href="#" @click.prevent="toggleEditable(true)">
+    <a v-if="!isEditable && canEdit" href="#" @click.prevent="toggleEditable(true)">
       {{ displayValue }}
     </a>
+
+    <span v-else-if="!canEdit">
+      {{ displayValue }}
+    </span>
 
     <Tooltip
       v-else
       theme="tooltip"
       handle-resize
     >
-      <input
+      <textarea
         ref="inputRef"
-        v-model.number="localValue"
+        v-model="localValue"
         class="form-control editable-input"
         :placeholder="placeholder"
         :required="required"
-        type="number"
+        :rows="rows"
         @keydown.esc="onPressEsc"
         @keydown.enter="onPressEnter"
       />
@@ -134,9 +142,5 @@ svg {
   width: auto;
   height: 1em;
   fill: currentcolor;
-}
-
-.editable-input {
-  width: 80px;
 }
 </style>

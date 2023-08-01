@@ -11,7 +11,7 @@ import { updateConditionHotelMarkupSettings } from '~api/hotel/markup-settings'
 
 import { requestInitialData } from '~lib/initial-data'
 
-import EditableCell from '~components/EditableCell.vue'
+import EditableCell from '~components/Editable/EditableNumberInput.vue'
 
 const { hotelID } = requestInitialData(
   'view-initial-data-hotel-settings',

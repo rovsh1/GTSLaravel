@@ -5,7 +5,7 @@ import EditTableRowButton from '~resources/views/hotel/settings/components/EditT
 
 import { CancelPeriod, DailyMarkup } from '~api/hotel/markup-settings'
 
-import EditableCell from '~components/EditableCell.vue'
+import EditableCell from '~components/Editable/EditableNumberInput.vue'
 
 import { getCancelPeriodTypeName } from '../../../hotel-booking/show/lib/constants'
 

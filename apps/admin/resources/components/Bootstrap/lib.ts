@@ -12,3 +12,5 @@ export type SelectOption = {
   value: string | number | ''
   label: string
 }
+
+export type SelectedValue = SelectOption['value'] | undefined
