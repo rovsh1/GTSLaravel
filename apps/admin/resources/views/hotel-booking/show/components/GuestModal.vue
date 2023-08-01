@@ -92,13 +92,18 @@ const handleChangeAgeType = (type: number): void => {
   formData.value.age = null
 }
 
+const closeModal = () => {
+  modalForm.value?.reset()
+  emit('close')
+}
+
 </script>
 
 <template>
   <BaseDialog
     :opened="opened as boolean"
     :loading="isFetching"
-    @close="$emit('close')"
+    @close="closeModal"
     @keydown.enter="onModalSubmit"
   >
     <template #title>Данные гостя</template>

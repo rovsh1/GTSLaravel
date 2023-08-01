@@ -54,20 +54,21 @@ const { bookingID, hotelID, hotelRooms } = requestInitialData(
   }),
 )
 
-const markupSettings = computed<MarkupSettings | null>(() => props.hotelMarkupSettings)
-
 const formData = computed<RoomFormData>(() => ({
   bookingID,
   roomBookingId: props.roomBookingId,
   ...props.formData,
 }))
 
-const preparedRooms = computed<SelectOption[]>(
-  () => hotelRooms.map((room: HotelRoomResponse) => ({ value: room.id, label: room.name })),
-)
+const roomRatesPayload = ref<{
+  hotelID: number
+  roomID: number
+}>({ hotelID, roomID: formData.value.id as number })
+
+const { execute: fetchRoomRates, data: roomRates, isFetching: isRoomDataFetching } = useHotelRatesAPI(roomRatesPayload)
+const { data: roomMarkupSettings, execute: fetchRoomMarkupSettings } = useHotelRoomMarkupSettings(roomRatesPayload)
 
 const isFetching = ref<boolean>(false)
-
 const modalForm = ref<HTMLFormElement>()
 const onModalSubmit = async () => {
   if (!validateForm<RoomFormData>(modalForm as Ref<HTMLFormElement>, formData)) {
@@ -83,38 +84,6 @@ const onModalSubmit = async () => {
   emit('submit')
 }
 
-const roomRatesPayload = ref<{
-  hotelID: number
-  roomID: number
-}>({ hotelID, roomID: formData.value.id as number })
-
-const { execute: fetchRoomRates, data: roomRates, isFetching: isRoomDataFetching } = useHotelRatesAPI(roomRatesPayload)
-
-const preparedRoomRates = computed<SelectOption[]>(
-  () => roomRates.value?.map((rate: HotelRate) => ({ value: rate.id, label: rate.name })) || [],
-)
-
-const { data: roomMarkupSettings, execute: fetchRoomMarkupSettings } = useHotelRoomMarkupSettings(roomRatesPayload)
-
-const mapConditionToSelectOption = (condition: MarkupCondition): SelectOption => ({
-  value: JSON.stringify(condition),
-  label: getConditionLabel(condition),
-})
-
-const earlyCheckIn = computed<SelectOption[]>(() => markupSettings.value?.earlyCheckIn.map(mapConditionToSelectOption) || [])
-const lateCheckOut = computed<SelectOption[]>(() => markupSettings.value?.lateCheckOut.map(mapConditionToSelectOption) || [])
-const discounts = computed<SelectOption[]>(() => {
-  if (!roomMarkupSettings.value?.discount) {
-    return []
-  }
-
-  const options = []
-  for (let i = 1; i <= roomMarkupSettings.value?.discount; i++) {
-    options.push({ value: i, label: `${i}` })
-  }
-  return options
-})
-
 const handleChangeRoomId = () => {
   if (formData.value.id !== undefined) {
     roomRatesPayload.value.roomID = formData.value.id
@@ -128,6 +97,31 @@ watch(formData, (value: RoomFormData, oldValue: RoomFormData) => {
     handleChangeRoomId()
   }
 }, { deep: true })
+
+const mapConditionToSelectOption = (condition: MarkupCondition): SelectOption => ({
+  value: JSON.stringify(condition),
+  label: getConditionLabel(condition),
+})
+const markupSettings = computed<MarkupSettings | null>(() => props.hotelMarkupSettings)
+const preparedRooms = computed<SelectOption[]>(
+  () => hotelRooms.map((room: HotelRoomResponse) => ({ value: room.id, label: room.name })),
+)
+const preparedRoomRates = computed<SelectOption[]>(
+  () => roomRates.value?.map((rate: HotelRate) => ({ value: rate.id, label: rate.name })) || [],
+)
+const earlyCheckIn = computed<SelectOption[]>(() => markupSettings.value?.earlyCheckIn.map(mapConditionToSelectOption) || [])
+const lateCheckOut = computed<SelectOption[]>(() => markupSettings.value?.lateCheckOut.map(mapConditionToSelectOption) || [])
+const discounts = computed<SelectOption[]>(() => {
+  if (!roomMarkupSettings.value?.discount) {
+    return []
+  }
+
+  const options = []
+  for (let i = 1; i <= roomMarkupSettings.value?.discount; i++) {
+    options.push({ value: i, label: `${i}` })
+  }
+  return options
+})
 
 const earlyCheckInValue = computed<string | undefined>({
   get: () => (formData.value.earlyCheckIn ? JSON.stringify(formData.value.earlyCheckIn) : undefined),
@@ -151,13 +145,18 @@ const lateCheckOutValue = computed<string | undefined>({
   },
 })
 
+const closeModal = () => {
+  modalForm.value?.reset()
+  emit('close')
+}
+
 </script>
 
 <template>
   <BaseDialog
     :opened="opened as boolean"
     :loading="isFetching"
-    @close="$emit('close')"
+    @close="closeModal"
     @keydown.enter="onModalSubmit"
   >
     <form ref="modalForm" class="row g-3">

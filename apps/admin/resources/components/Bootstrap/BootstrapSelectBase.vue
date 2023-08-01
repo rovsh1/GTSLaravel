@@ -40,7 +40,7 @@ const emit = defineEmits<{
       @input="event => emit('input', (event.target as HTMLInputElement).value)"
     >
       <option v-if="disabled && disabledPlaceholder" selected disabled>{{ disabledPlaceholder }}</option>
-      <option v-else-if="!required" :value="undefined" />
+      <option v-else :value="undefined" />
       <option
         v-for="option in options"
         :key="option.value"
