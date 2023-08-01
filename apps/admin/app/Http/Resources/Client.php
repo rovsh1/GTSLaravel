@@ -19,7 +19,7 @@ class Client extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'type' => $this->type,
-            'is_legal' => $this->type === TypeEnum::LEGAL_ENTITY->value
+            'is_legal' => $this->type === TypeEnum::LEGAL_ENTITY
         ];
     }
 }
