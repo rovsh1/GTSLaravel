@@ -22,7 +22,7 @@ class FormulaVariablesFactory
             isResident: $dataHelper->isResident(),
             guestsCount: $dataHelper->guestsCount(),
             vatPercent: $dataHelper->markupDto->vat,
-            clientMarkupPercent: $this->calculateClientMarkupPercent($dataHelper->order, $dataHelper->markupDto),
+            clientMarkupPercent: $this->calculateClientMarkupPercent($dataHelper),
             touristTax: $this->calculateTouristTax($dataHelper->markupDto->touristTax),
             earlyCheckInPercent: $dataHelper->earlyCheckInPercent(),
             lateCheckOutPercent: $dataHelper->lateCheckOutPercent()
@@ -34,17 +34,20 @@ class FormulaVariablesFactory
         return $this->constantAdapter->basicCalculatedValue() * $taxPercent / 100;
     }
 
-    private function calculateClientMarkupPercent(Order $order, MarkupSettingsDto $markupDto): int
+    private function calculateClientMarkupPercent(RoomDataHelper $dataHelper): int
     {
         //@todo проверить, что будет если в отеле не заполнены наценки при калькуляции
-        $legalId = $order->legalId()?->value();
+        //TODO путаница в наименованиях ДТО
+        $hotelMarkups = $dataHelper->markupDto->clientMarkups;
+        $roomMarkups = $dataHelper->roomMarkupDto;
+        $legalId = $dataHelper->order->legalId()?->value();
         if ($legalId) {
             $legal = $this->clientAdapter->findLegal($legalId);
             $legalType = LegalTypeEnum::from($legal->type);
 
-            return $markupDto->clientMarkups->{$legalType->getKey()};
+            return $roomMarkups->{$legalType->getKey()} ?? $hotelMarkups->{$legalType->getKey()};
         }
 
-        return $markupDto->clientMarkups->individual;
+        return $roomMarkups->individual ?? $hotelMarkups->individual;
     }
 }

@@ -29,13 +29,15 @@ class RoomDataHelperFactory
         $order = $this->orderRepository->find($hotelBooking->orderId()->value());
         $hotelDto = $this->hotelAdapter->findById($hotelBooking->hotelInfo()->id());
         $markupDto = $this->hotelAdapter->getMarkupSettings($hotelBooking->hotelInfo()->id());
+        $roomMarkupDto = $this->hotelAdapter->getRoomMarkupSettings($roomBooking->roomInfo()->id());
 
         return new RoomDataHelper(
             $roomBooking,
             $hotelBooking,
             $order,
             $hotelDto,
-            $markupDto
+            $markupDto,
+            $roomMarkupDto
         );
     }
 }
