@@ -34,6 +34,12 @@ $(() => {
     const clientId = $clientIdInput.val()
     const client = clients.find((cl) => cl.id === Number(clientId))
 
+    if (!client) {
+      $('#form_data_order_id').attr('disabled', 'disabled')
+    } else {
+      $('#form_data_order_id').removeAttr('disabled')
+    }
+
     toggleLegalIdInput(orderId === undefined ? Boolean(client?.is_legal) : false)
 
     const $legalIdInput = $('#form_data_legal_id')
