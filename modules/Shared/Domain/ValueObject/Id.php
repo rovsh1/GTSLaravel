@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Shared\Domain\ValueObject;
 
+/** @deprecated  */
 class Id implements ValueObjectInterface
 {
     public function __construct(

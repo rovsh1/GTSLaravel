@@ -6,7 +6,7 @@ namespace Module\Shared\Domain\ValueObject;
 
 use Module\Shared\Contracts\CanEquate;
 
-abstract class AbstractIntId implements CanEquate
+abstract class AbstractIntId implements CanEquate, ValueObjectInterface
 {
     private int $id;
 
