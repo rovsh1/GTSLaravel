@@ -9,15 +9,19 @@ use Module\Booking\Common\Domain\Service\InvoiceCreator;
 use Module\Booking\Common\Domain\Service\RequestCreator;
 use Module\Booking\Common\Domain\Service\RequestRules;
 use Module\Booking\Common\Domain\Service\VoucherCreator;
+use Module\Booking\Common\Domain\ValueObject\BookingId;
 use Module\Booking\Common\Domain\ValueObject\BookingPrice;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
+use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Shared\Domain\Entity\EntityInterface;
 use Module\Shared\Domain\ValueObject\Id;
 
 interface BookingInterface extends EntityInterface
 {
-    public function orderId(): Id;
+    public function id(): BookingId;
+
+    public function orderId(): OrderId;
 
     public function type(): BookingTypeEnum;
 

@@ -19,9 +19,11 @@ use Module\Booking\Common\Domain\Service\InvoiceCreator;
 use Module\Booking\Common\Domain\Service\RequestCreator;
 use Module\Booking\Common\Domain\Service\RequestRules;
 use Module\Booking\Common\Domain\Service\VoucherCreator;
+use Module\Booking\Common\Domain\ValueObject\BookingId;
 use Module\Booking\Common\Domain\ValueObject\BookingPrice;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
+use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\Common\Domain\ValueObject\RequestTypeEnum;
 use Module\Booking\HotelBooking\Domain\ValueObject\ManualChangablePrice;
 use Module\Shared\Domain\ValueObject\Id;
@@ -34,20 +36,20 @@ abstract class AbstractBooking extends AbstractAggregateRoot implements
     use HasStatusesTrait;
 
     public function __construct(
-        private readonly Id $id,
-        private readonly Id $orderId,
+        private readonly BookingId $id,
+        private readonly OrderId $orderId,
         private BookingStatusEnum $status,
         private readonly CarbonImmutable $createdAt,
         private readonly Id $creatorId,
         private BookingPrice $price,
     ) {}
 
-    public function id(): Id
+    public function id(): BookingId
     {
         return $this->id;
     }
 
-    public function orderId(): Id
+    public function orderId(): OrderId
     {
         return $this->orderId;
     }

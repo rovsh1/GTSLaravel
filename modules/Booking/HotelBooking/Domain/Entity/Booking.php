@@ -6,9 +6,11 @@ namespace Module\Booking\HotelBooking\Domain\Entity;
 
 use Carbon\CarbonImmutable;
 use Module\Booking\Common\Domain\Entity\AbstractBooking;
+use Module\Booking\Common\Domain\ValueObject\BookingId;
 use Module\Booking\Common\Domain\ValueObject\BookingPrice;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
+use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\HotelBooking\Domain\Event\BookingPeriodChanged;
 use Module\Booking\HotelBooking\Domain\Event\RoomAdded;
 use Module\Booking\HotelBooking\Domain\Event\RoomDeleted;
@@ -23,8 +25,8 @@ use Module\Shared\Domain\ValueObject\Id;
 final class Booking extends AbstractBooking
 {
     public function __construct(
-        Id $id,
-        Id $orderId,
+        BookingId $id,
+        OrderId $orderId,
         BookingStatusEnum $status,
         CarbonImmutable $createdAt,
         Id $creatorId,
@@ -141,5 +143,16 @@ final class Booking extends AbstractBooking
     public function setCancelConditions(CancelConditions $cancelConditions): void
     {
         $this->cancelConditions = $cancelConditions;
+    }
+
+    public function pullEvents(): array
+    {
+        $parentEvents = parent::pullEvents();
+        $childrenEvents = [];
+        foreach ($this->roomBookings as $roomBooking) {
+            $childrenEvents[] = $roomBooking->pullEvents();
+        }
+
+        return array_merge($parentEvents, ...$childrenEvents);
     }
 }

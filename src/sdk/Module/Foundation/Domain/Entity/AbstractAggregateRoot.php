@@ -14,7 +14,7 @@ abstract class AbstractAggregateRoot
     /**
      * @return DomainEventInterface[]
      */
-    final public function pullEvents(): array
+    public function pullEvents(): array
     {
         $domainEvents       = $this->domainEvents;
         $this->domainEvents = [];

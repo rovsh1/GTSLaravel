@@ -7,7 +7,9 @@ namespace Module\Booking\HotelBooking\Infrastructure\Repository;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Module\Booking\Common\Domain\ValueObject\BookingId;
 use Module\Booking\Common\Domain\ValueObject\BookingPrice;
+use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\Common\Infrastructure\Repository\AbstractBookingRepository as BaseRepository;
 use Module\Booking\HotelBooking\Domain\Entity\Booking;
 use Module\Booking\HotelBooking\Domain\Repository\BookingRepositoryInterface;
@@ -55,7 +57,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
     }
 
     public function create(
-        Id $orderId,
+        OrderId $orderId,
         Id $creatorId,
         BookingPeriod $period,
         ?string $note = null,
@@ -64,9 +66,9 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
     ): Booking {
         return \DB::transaction(
             function () use ($orderId, $creatorId, $period, $note, $hotelInfo, $cancelConditions) {
-                $bookingModel = $this->createBase($orderId->value(), $creatorId->value());
+                $bookingModel = $this->createBase($orderId, $creatorId->value());
                 $booking = new Booking(
-                    id: new Id($bookingModel->id),
+                    id: new BookingId($bookingModel->id),
                     orderId: $orderId,
                     status: $bookingModel->status,
                     createdAt: $bookingModel->created_at->toImmutable(),
@@ -171,8 +173,8 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         $additionalInfo = $detailsData['additionalInfo'] ?? null;
 
         return new Booking(
-            id: new Id($booking->id),
-            orderId: new Id($booking->order_id),
+            id: new BookingId($booking->id),
+            orderId: new OrderId($booking->order_id),
             status: $booking->status,
             createdAt: $booking->created_at->toImmutable(),
             creatorId: new Id($booking->creator_id),

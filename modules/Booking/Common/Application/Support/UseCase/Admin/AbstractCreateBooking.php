@@ -6,6 +6,7 @@ namespace Module\Booking\Common\Application\Support\UseCase\Admin;
 
 use Module\Booking\Airport\Application\Request\CreateBookingDto as CreateAirportBooking;
 use Module\Booking\Common\Domain\Repository\BookingRepositoryInterface;
+use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\HotelBooking\Application\Request\CreateBookingDto as CreateHotelBookingDto;
 use Module\Booking\Order\Application\Command\CreateOrder;
 use Sdk\Module\Contracts\Bus\CommandBusInterface;
@@ -18,7 +19,7 @@ abstract class AbstractCreateBooking implements UseCaseInterface
         protected readonly BookingRepositoryInterface $repository
     ) {}
 
-    protected function getOrderIdFromRequest(CreateHotelBookingDto|CreateAirportBooking $request): int
+    protected function getOrderIdFromRequest(CreateHotelBookingDto|CreateAirportBooking $request): OrderId
     {
         $orderId = $request->orderId;
         if ($orderId === null) {
@@ -27,6 +28,6 @@ abstract class AbstractCreateBooking implements UseCaseInterface
             );
         }
 
-        return $orderId;
+        return new OrderId($orderId);
     }
 }

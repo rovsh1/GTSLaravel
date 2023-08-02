@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Module\Booking\Common\Domain\Entity\BookingInterface;
 use Module\Booking\Common\Domain\Repository\BookingRepositoryInterface as Base;
+use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\HotelBooking\Domain\Entity\Booking;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\BookingPeriod;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\CancelConditions;
@@ -22,7 +23,7 @@ interface BookingRepositoryInterface extends Base
     public function query(): Builder;
 
     public function create(
-        Id $orderId,
+        OrderId $orderId,
         Id $creatorId,
         BookingPeriod $period,
         ?string $note = null,

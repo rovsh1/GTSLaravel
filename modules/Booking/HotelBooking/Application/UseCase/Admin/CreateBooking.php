@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\HotelBooking\Application\UseCase\Admin;
 
 use Module\Booking\Common\Application\Support\UseCase\Admin\AbstractCreateBooking;
+use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\HotelBooking\Application\Factory\CancelConditionsFactory;
 use Module\Booking\HotelBooking\Application\Factory\HotelInfoFactory;
 use Module\Booking\HotelBooking\Application\Request\CreateBookingDto;
@@ -33,7 +34,7 @@ class CreateBooking extends AbstractCreateBooking
         $markupSettings = $this->hotelAdapter->getMarkupSettings($request->hotelId);
         $this->hotelValidator->validateByDto($markupSettings, $request->period);
         $booking = $this->repository->create(
-            orderId: new Id($orderId),
+            orderId: $orderId,
             creatorId: new Id($request->creatorId),
             hotelInfo: HotelInfoFactory::fromDto($hotelDto),
             period: BookingPeriod::fromCarbon($request->period),

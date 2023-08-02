@@ -13,6 +13,8 @@ use Module\Booking\Airport\Domain\ValueObject\Details\AirportInfo;
 use Module\Booking\Airport\Domain\ValueObject\Details\ServiceInfo;
 use Module\Booking\Airport\Infrastructure\Models\Booking as Model;
 use Module\Booking\Airport\Infrastructure\Models\BookingDetails;
+use Module\Booking\Common\Domain\ValueObject\BookingId;
+use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\Common\Infrastructure\Repository\AbstractBookingRepository as BaseRepository;
 use Module\Shared\Domain\ValueObject\Id;
 
@@ -40,7 +42,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
     }
 
     public function create(
-        int $orderId,
+        OrderId $orderId,
         int $creatorId,
         int $serviceId,
         int $airportId,
@@ -107,8 +109,8 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         $detailsData = $detailsModel->data;
 
         return new Entity(
-            id: new Id($booking->id),
-            orderId: new Id($booking->order_id),
+            id: new BookingId($booking->id),
+            orderId: new OrderId($booking->order_id),
             status: $booking->status,
             createdAt: $booking->created_at->toImmutable(),
             creatorId: new Id($booking->creator_id),
