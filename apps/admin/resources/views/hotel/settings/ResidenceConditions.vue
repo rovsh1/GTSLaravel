@@ -103,6 +103,7 @@ const handleAddConditions = (conditionType: ConditionType) => {
   setConditionTimeLimits(conditionType)
   if (freePeriods.value.length === 0) {
     // @todo сделать нормальное уведомление
+    // eslint-disable-next-line no-alert
     alert('Все интервалы заняты')
     return
   }

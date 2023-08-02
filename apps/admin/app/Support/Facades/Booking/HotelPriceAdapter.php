@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Facade;
  * @method static void setHoPrice(int $bookingId, float $price)
  * @method static void setCalculatedBoPrice(int $bookingId)
  * @method static void setCalculatedHoPrice(int $bookingId)
+ * @method static void setHoPenalty(int $bookingId, float|null $penalty)
+ * @method static void setBoPenalty(int $bookingId, float|null $penalty)
  *
 // * @method static void setBoRoomPrice(int $bookingId, int $roomBookingId, float $price)
 // * @method static void setHoRoomPrice(int $bookingId, int $roomBookingId, float $price)

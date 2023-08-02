@@ -11,10 +11,15 @@ export interface UpdateBookingPricePayload {
   bookingID: number
   boPrice?: number | null
   hoPrice?: number | null
+  boPenalty?: number | null
+  hoPenalty?: number | null
 }
 
-export interface UpdateRoomBookingPricePayload extends UpdateBookingPricePayload {
+export interface UpdateRoomBookingPricePayload {
   roomBookingId: number
+  bookingID: number
+  boPrice?: number | null
+  hoPrice?: number | null
 }
 
 export const updateBookingPrice = (props: MaybeRef<UpdateBookingPricePayload>) =>
@@ -29,6 +34,8 @@ export const updateBookingPrice = (props: MaybeRef<UpdateBookingPricePayload>) =
         (payload: UpdateBookingPricePayload): any => ({
           boPrice: payload.boPrice,
           hoPrice: payload.hoPrice,
+          boPenalty: payload.boPenalty,
+          hoPenalty: payload.hoPenalty,
         }),
       ),
     )), 'application/json')

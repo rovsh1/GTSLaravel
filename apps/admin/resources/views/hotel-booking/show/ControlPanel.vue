@@ -5,6 +5,8 @@ import { computed, onMounted } from 'vue'
 import { useToggle } from '@vueuse/core'
 import { z } from 'zod'
 
+import AmountBlock from '~resources/views/hotel-booking/show/components/AmountBlock.vue'
+import ControlPanelSection from '~resources/views/hotel-booking/show/components/ControlPanelSection.vue'
 import PriceModal from '~resources/views/hotel-booking/show/components/PriceModal.vue'
 import RequestBlock from '~resources/views/hotel-booking/show/components/RequestBlock.vue'
 import StatusHistoryModal from '~resources/views/hotel-booking/show/components/StatusHistoryModal.vue'
@@ -91,6 +93,8 @@ const lastHistoryItem = computed(() => statusHistoryStore.lastHistoryItem)
 const [isHistoryModalOpened, toggleHistoryModal] = useToggle<boolean>(false)
 const [isHoPriceModalOpened, toggleHoPriceModal] = useToggle<boolean>(false)
 const [isBoPriceModalOpened, toggleBoPriceModal] = useToggle<boolean>(false)
+const [isHoPenaltyModalOpened, toggleHoPenaltyModal] = useToggle<boolean>(false)
+const [isBoPenaltyModalOpened, toggleBoPenaltyModal] = useToggle<boolean>(false)
 
 const handleStatusChange = async (value: number): Promise<void> => {
   hideValidation()
@@ -155,6 +159,24 @@ const handleSaveHoManualPrice = async (value: number | undefined) => {
   fetchBooking()
 }
 
+const handleSaveBoPenalty = async (value: number | undefined) => {
+  toggleBoPenaltyModal(false)
+  await updateBookingPrice({
+    bookingID,
+    boPenalty: value,
+  })
+  fetchBooking()
+}
+
+const handleSaveHoPenalty = async (value: number | undefined) => {
+  toggleHoPenaltyModal(false)
+  await updateBookingPrice({
+    bookingID,
+    hoPenalty: value,
+  })
+  fetchBooking()
+}
+
 onMounted(() => {
   fetchAvailableActions()
 })
@@ -185,6 +207,24 @@ onMounted(() => {
     @submit="handleSaveBoManualPrice"
   />
 
+  <PriceModal
+    header="Сумма штрафа для клиента"
+    :label="`Сумма штрафа для клиента в ${orderCurrency?.code_char}`"
+    :value="booking?.price.boPenalty || undefined"
+    :opened="isBoPenaltyModalOpened"
+    @close="toggleBoPenaltyModal(false)"
+    @submit="handleSaveBoPenalty"
+  />
+
+  <PriceModal
+    header="Сумма штрафа от гостиницы"
+    :label="`Сумма штрафа от гостиницы в ${orderCurrency?.code_char}`"
+    :value="booking?.price.hoPenalty || undefined"
+    :opened="isHoPenaltyModalOpened"
+    @close="toggleHoPenaltyModal(false)"
+    @submit="handleSaveHoPenalty"
+  />
+
   <div class="d-flex flex-wrap flex-grow-1 gap-2">
     <StatusSelect
       v-if="booking && statuses"
@@ -205,9 +245,7 @@ onMounted(() => {
     </div>
   </div>
 
-  <div class="mt-4">
-    <h6>Тип номера подтверждения бронирования</h6>
-    <hr>
+  <ControlPanelSection title="Тип номера подтверждения бронирования" class="mt-4">
     <div class="d-flex flex-row gap-2" :class="{ loading: isUpdateExternalNumberFetching }">
       <div class="w-50">
         <BootstrapSelectBase
@@ -240,43 +278,35 @@ onMounted(() => {
         </div>
       </div>
     </div>
-  </div>
+  </ControlPanelSection>
 
-  <div class="mt-4">
-    <h6>Финансовая стоимость брони</h6>
-    <hr>
+  <ControlPanelSection title="Финансовая стоимость брони" class="mt-4">
     <div class="d-flex flex-row gap-3">
-      <div class="w-50 rounded shadow-lg p-3">
-        <h6>Приход</h6>
-        <hr>
-        <div v-if="booking && orderCurrency">
-          Общая сумма (брутто): {{ booking.price.boPrice.value }}
-          <span class="currency">{{ orderCurrency.sign }}</span>
-        </div>
-        <a href="#" @click.prevent="toggleBoPriceModal(true)">Изменить</a>
+      <AmountBlock
+        v-if="booking"
+        title="Приход"
+        :currency="orderCurrency"
+        amount-title="Общая сумма (брутто)"
+        :amount-value="booking.price.boPrice.value"
+        penalty-title="Сумма штрафа для клиента"
+        :penalty-value="booking.price.boPenalty"
+        :need-show-penalty="(booking?.price.hoPenalty || 0) > 0"
+        @click-change-price="toggleBoPriceModal(true)"
+        @click-change-penalty="toggleBoPenaltyModal(true)"
+      />
 
-        <div v-if="(booking?.price.boPenalty || 0) > 0 && orderCurrency">
-          Сумма штрафа для клиента: {{ booking?.price.boPenalty || 0 }}
-          <span class="currency">{{ orderCurrency.sign }}</span>
-        </div>
-        <a v-if="(booking?.price.hoPenalty || 0) > 0 && orderCurrency" href="#" @click.prevent="toggleBoPriceModal(true)">Изменить</a>
-      </div>
-
-      <div class="w-50 rounded shadow-lg p-3">
-        <h6>Расход</h6>
-        <hr>
-        <div v-if="booking && orderCurrency">
-          Общая сумма (нетто): {{ booking.price.hoPrice.value }}
-          <span class="currency">{{ orderCurrency.sign }}</span>
-        </div>
-        <a href="#" @click.prevent="toggleHoPriceModal(true)">Изменить</a>
-
-        <div v-if="(booking?.price.hoPenalty || 0) > 0 && orderCurrency">
-          Сумма штрафа от гостиницы: {{ booking?.price.hoPenalty }}
-          <span class="currency">{{ orderCurrency.sign }}</span>
-        </div>
-        <a v-if="(booking?.price.hoPenalty || 0) > 0 && orderCurrency" href="#" @click.prevent="toggleHoPriceModal(true)">Изменить</a>
-      </div>
+      <AmountBlock
+        v-if="booking"
+        title="Расход"
+        :currency="orderCurrency"
+        amount-title="Общая сумма (нетто)"
+        :amount-value="booking.price.hoPrice.value"
+        penalty-title="Сумма штрафа от гостиницы"
+        :penalty-value="booking.price.hoPenalty"
+        :need-show-penalty="(booking?.price.hoPenalty || 0) > 0"
+        @click-change-price="toggleHoPriceModal(true)"
+        @click-change-penalty="toggleHoPenaltyModal(true)"
+      />
     </div>
 
     <div v-if="booking && orderCurrency" class="mt-2">
@@ -289,12 +319,9 @@ onMounted(() => {
     <div v-if="lastHistoryItem && lastHistoryItem?.payload?.reason" class="mt-2 alert alert-warning" role="alert">
       {{ lastHistoryItem.payload.reason }}
     </div>
-  </div>
+  </ControlPanelSection>
 
-  <div class="mt-4">
-    <h6>Запросы в гостиницу</h6>
-    <hr>
-
+  <ControlPanelSection title="Запросы в гостиницу" class="mt-4">
     <div class="reservation-requests mb-2">
       <div
         v-for="bookingRequest in bookingRequests"
@@ -340,12 +367,9 @@ onMounted(() => {
         @click="handleRequestSend"
       />
     </div>
-  </div>
+  </ControlPanelSection>
 
-  <div class="mt-4">
-    <h6>Файлы, отправленные клиенту</h6>
-    <hr>
-
+  <ControlPanelSection title="Файлы, отправленные клиенту" class="mt-4">
     <div class="reservation-requests mb-2">
       <div
         v-for="bookingVoucher in vouchers"
@@ -368,11 +392,9 @@ onMounted(() => {
       :loading="isVoucherFetching"
       @click="handleVoucherSend"
     />
-  </div>
+  </ControlPanelSection>
 
-  <div class="mt-4">
-    <h6>Условия отмены</h6>
-    <hr>
+  <ControlPanelSection title="Условия отмены" class="mt-4">
     <table class="table-params">
       <tbody>
         <tr>
@@ -394,16 +416,12 @@ onMounted(() => {
         </tr>
       </tbody>
     </table>
-  </div>
+  </ControlPanelSection>
 </template>
 
 <style scoped lang="scss">
 .ml-2 {
   margin-left: 0.5rem;
-}
-
-hr {
-  margin: 0.5rem 0 0.75rem;
 }
 
 .reservation-requests {

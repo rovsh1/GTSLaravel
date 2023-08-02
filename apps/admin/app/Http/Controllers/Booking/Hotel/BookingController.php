@@ -292,6 +292,12 @@ class BookingController extends Controller
         if ($hoPrice !== null) {
             HotelPriceAdapter::setHoPrice($id, $hoPrice);
         }
+        if ($request->isBoPenaltyExists()) {
+            HotelPriceAdapter::setBoPenalty($id, $request->getBoPenalty());
+        }
+        if ($request->isHoPenaltyExists()) {
+            HotelPriceAdapter::setHoPenalty($id, $request->getHoPenalty());
+        }
 
         return new AjaxSuccessResponse();
     }
