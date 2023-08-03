@@ -85,11 +85,13 @@ $(() => {
         }
         if (availableActions.isRequestable && requestText) {
           // @todo выводим в popover тект + кнопку "отправить" handler: axios.post(`/${bookingId}/request`)
+          // перезагрузить страницу после запроса
         }
         if (availableActions.canSendVoucher) {
           const voucherText = 'При необходимости клиенту можно отправить ваучер'
           console.log(voucherText)
           // @todo также вывести в поповер текст + кнопку "отправить" handler: axios.post(`/${bookingId}/voucher`)
+          // перезагрузить страницу после запроса
         }
       })
 
