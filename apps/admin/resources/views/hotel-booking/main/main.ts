@@ -84,14 +84,12 @@ $(() => {
           requestText = 'Бронирование подтверждено, до выставления счета доступен запрос на отмену'
         }
         if (availableActions.isRequestable && requestText) {
-          // @todo выводим в popover тект + кнопку "отправить"
-          // axios.post(`/${bookingId}/request`)
+          // @todo выводим в popover тект + кнопку "отправить" handler: axios.post(`/${bookingId}/request`)
         }
         if (availableActions.canSendVoucher) {
-          // @todo также вывести в поповер текст + кнопку "отправить"
           const voucherText = 'При необходимости клиенту можно отправить ваучер'
           console.log(voucherText)
-          // axios.post(`/${bookingId}/voucher`)
+          // @todo также вывести в поповер текст + кнопку "отправить" handler: axios.post(`/${bookingId}/voucher`)
         }
       })
 
@@ -104,7 +102,7 @@ $(() => {
         ])
         console.log(requests)
         console.log(vouchers)
-        // @todo вывести все ваучеры и запросы в поповер + кнопка "Скачать" у каждого
+        // @todo сгруппировать запросы по параметру type, вывести все type по одной штуке(последний по дате) и вывести все ваучеры в поповер + кнопка "Скачать" у каждого
         // @todo скачивание файлов реализовано тут apps/admin/resources/api/booking/document.ts:39
       })
 
