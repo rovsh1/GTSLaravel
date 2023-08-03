@@ -15,7 +15,7 @@ class GetRoomMarkups implements UseCaseInterface
         private readonly QueryBusInterface $queryBus,
     ) {}
 
-    public function execute(int $hotelId, int $roomId): ?RoomMarkupsDto
+    public function execute(int $roomId): ?RoomMarkupsDto
     {
         return $this->queryBus->execute(new Query($roomId));
     }

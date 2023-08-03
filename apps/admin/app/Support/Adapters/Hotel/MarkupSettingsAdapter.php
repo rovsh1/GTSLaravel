@@ -47,7 +47,7 @@ class MarkupSettingsAdapter extends AbstractHotelAdapter
 
     public function getRoomMarkupSettings(int $hotelId, int $roomId): mixed
     {
-        return app(GetRoomMarkups::class)->execute($hotelId, $roomId);
+        return app(GetRoomMarkups::class)->execute($roomId);
     }
 
     public function updateRoomMarkupSettings(int $roomId, string $key, int $value): mixed
