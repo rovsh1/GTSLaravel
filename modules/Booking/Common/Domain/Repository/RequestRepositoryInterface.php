@@ -11,6 +11,8 @@ interface RequestRepositoryInterface
 {
     public function create(int $bookingId, RequestTypeEnum $type): Request;
 
+    public function getLastChangeRequest(int $bookingId): ?Request;
+
     /**
      * @param int $bookingId
      * @return Request[]

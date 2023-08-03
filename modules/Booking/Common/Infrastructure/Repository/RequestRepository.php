@@ -26,6 +26,16 @@ class RequestRepository implements RequestRepositoryInterface
         return $this->factory->createFrom($model);
     }
 
+    public function getLastChangeRequest(int $bookingId): ?Entity
+    {
+        $model = Model::whereBookingId($bookingId)->whereType(RequestTypeEnum::CHANGE)->first();
+        if ($model === null) {
+            return null;
+        }
+
+        return $this->factory->createFrom($model);
+    }
+
     /**
      * @param int $bookingId
      * @return Entity[]

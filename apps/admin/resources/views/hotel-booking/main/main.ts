@@ -1,5 +1,9 @@
 import axios from '~resources/js/app/api'
 
+import { BookingRequest } from '~api/booking/request'
+import { BookingAvailableActionsResponse } from '~api/booking/status'
+import { BookingVoucher } from '~api/booking/voucher'
+
 import { showConfirmDialog } from '~lib/confirm-dialog'
 
 import '~resources/views/main'
@@ -56,5 +60,56 @@ $(() => {
         $deleteBookingsButton.toggleClass('disabled', true)
       }
     }
+  })
+
+  $('td.column-actions').each(function () {
+    const bookingId = $(this).parent().data('id')
+
+    const getNewIconButton = (icon: string) => $('<a />', { href: '#', html: `<i class="icon">${icon}</i>` })
+
+    const $sendButton = getNewIconButton('mail')
+      .on('click', async (e: any) => {
+        e.preventDefault()
+        const { data: availableActions } = await axios.get<BookingAvailableActionsResponse>(`/hotel-booking/${bookingId}/actions/available`)
+        console.log(bookingId, availableActions)
+
+        let requestText
+        if (availableActions.canSendBookingRequest) {
+          requestText = 'Запрос на бронирование еще не отправлен'
+        }
+        if (availableActions.canSendChangeRequest) {
+          requestText = 'Ожидание изменений и отправки запроса'
+        }
+        if (availableActions.canSendCancellationRequest) {
+          requestText = 'Бронирование подтверждено, до выставления счета доступен запрос на отмену'
+        }
+        if (availableActions.isRequestable && requestText) {
+          // @todo выводим в popover тект + кнопку "отправить"
+          // axios.post(`/${bookingId}/request`)
+        }
+        if (availableActions.canSendVoucher) {
+          // @todo также вывести в поповер текст + кнопку "отправить"
+          const voucherText = 'При необходимости клиенту можно отправить ваучер'
+          console.log(voucherText)
+          // axios.post(`/${bookingId}/voucher`)
+        }
+      })
+
+    const $downloadButton = getNewIconButton('download')
+      .on('click', async (e: any) => {
+        e.preventDefault()
+        const [{ data: requests }, { data: vouchers }] = await Promise.all([
+          axios.get<BookingRequest[]>(`/hotel-booking/${bookingId}/request/list`),
+          axios.get<BookingVoucher[]>(`/hotel-booking/${bookingId}/voucher/list`),
+        ])
+        console.log(requests)
+        console.log(vouchers)
+        // @todo вывести все ваучеры и запросы в поповер + кнопка "Скачать" у каждого
+        // @todo скачивание файлов реализовано тут apps/admin/resources/api/booking/document.ts:39
+      })
+
+    const $buttonsWrapper = $('<div />', { class: 'd-flex flex-row gap-2' }).append($sendButton).append($downloadButton)
+
+    $(this).append($buttonsWrapper)
   })
 })

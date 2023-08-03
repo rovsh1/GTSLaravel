@@ -28,6 +28,7 @@ class HotelValidator
 
     public function validateByDto(MarkupSettingsDto $markupSettings, CarbonPeriod $bookingPeriod): void
     {
+        //@todo накапливать массив ошибок и выкидывать в эксепшене
         /** @var CancelPeriodDto $availablePeriod */
         $availablePeriod = collect($markupSettings->cancelPeriods)->first(
             fn(mixed $cancelPeriod) => $bookingPeriod->overlaps($cancelPeriod->from, $cancelPeriod->to)

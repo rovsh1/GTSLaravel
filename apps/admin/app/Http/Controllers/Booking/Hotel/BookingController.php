@@ -340,6 +340,7 @@ class BookingController extends Controller
             ->text('guests_count', ['text' => 'Гостей'])
             ->text('source', ['text' => 'Источник', 'order' => true])
             ->date('created_at', ['text' => 'Создан', 'format' => 'datetime', 'order' => true])
+            ->text('actions')
             ->orderBy('created_at', 'desc')
             ->paginator(20);
     }
