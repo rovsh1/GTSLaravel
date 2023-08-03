@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace Module\Hotel\Domain\Entity\Room;
 
+use Module\Hotel\Domain\ValueObject\RoomId;
 use Module\Shared\Domain\Entity\EntityInterface;
-use Module\Shared\Domain\ValueObject\Id;
 use Module\Shared\Domain\ValueObject\Percent;
 use Module\Shared\Domain\ValueObject\SerializableDataInterface;
 
-final class MarkupSettings implements EntityInterface, SerializableDataInterface
+//@todo Нужен рефакторинг, настройки должны быть частью какого-то агрегата настроек отеля/комнат
+final class RoomMarkups implements EntityInterface, SerializableDataInterface
 {
     public function __construct(
-        private readonly Id $id,
+        private readonly RoomId $roomId,
         private Percent $individual,
         private Percent $TA,
         private Percent $OTA,
@@ -20,9 +21,26 @@ final class MarkupSettings implements EntityInterface, SerializableDataInterface
         private Percent $discount,
     ) {}
 
-    public function id(): Id
+    public static function buildEmpty(RoomId $id): static
     {
-        return $this->id;
+        return new static(
+            $id,
+            new Percent(0),
+            new Percent(0),
+            new Percent(0),
+            new Percent(0),
+            new Percent(0),
+        );
+    }
+
+    public function id(): RoomId
+    {
+        return $this->roomId;
+    }
+
+    public function roomId(): RoomId
+    {
+        return $this->roomId;
     }
 
     public function individual(): Percent
@@ -78,7 +96,7 @@ final class MarkupSettings implements EntityInterface, SerializableDataInterface
     public function toData(): array
     {
         return [
-            'id' => $this->id->value(),
+            'id' => $this->roomId->value(),
             'individual' => $this->individual()->value(),
             'TA' => $this->TA()->value(),
             'OTA' => $this->OTA()->value(),
@@ -90,7 +108,7 @@ final class MarkupSettings implements EntityInterface, SerializableDataInterface
     public static function fromData(array $data): static
     {
         return new static(
-            id: new Id($data['id']),
+            roomId: new RoomId($data['id']),
             individual: new Percent($data['individual']),
             TA: new Percent($data['TA']),
             OTA: new Percent($data['OTA']),

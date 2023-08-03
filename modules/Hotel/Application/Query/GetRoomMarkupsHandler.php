@@ -2,21 +2,26 @@
 
 namespace Module\Hotel\Application\Query;
 
-use Module\Hotel\Application\Response\RoomMarkupSettingsDto;
+use Module\Hotel\Application\Response\RoomMarkupsDto;
 use Module\Hotel\Domain\Repository\RoomMarkupSettingsRepositoryInterface;
 use Sdk\Module\Contracts\Bus\QueryHandlerInterface;
 use Sdk\Module\Contracts\Bus\QueryInterface;
 
-class GetRoomMarkupSettingsHandler implements QueryHandlerInterface
+class GetRoomMarkupsHandler implements QueryHandlerInterface
 {
     public function __construct(
         private readonly RoomMarkupSettingsRepositoryInterface $repository
     ) {}
 
-    public function handle(QueryInterface|GetRoomMarkupSettings $query): RoomMarkupSettingsDto
+    public function handle(QueryInterface $query): ?RoomMarkupsDto
     {
-        $markup = $this->repository->get($query->roomId);
+        assert($query instanceof GetRoomMarkups);
 
-        return RoomMarkupSettingsDto::from($markup);
+        $markup = $this->repository->get($query->roomId);
+        if ($markup === null) {
+            return null;
+        }
+
+        return RoomMarkupsDto::from($markup);
     }
 }

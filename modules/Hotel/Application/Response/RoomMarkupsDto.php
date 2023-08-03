@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Module\Hotel\Application\Response;
 
-use Module\Hotel\Domain\Entity\Room\MarkupSettings;
+use Module\Hotel\Domain\Entity\Room\RoomMarkups;
 use Module\Shared\Application\Dto\AbstractDomainBasedDto;
 use Module\Shared\Domain\Entity\EntityInterface;
 use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 
-class RoomMarkupSettingsDto extends AbstractDomainBasedDto
+class RoomMarkupsDto extends AbstractDomainBasedDto
 {
     public function __construct(
         public readonly int $individual,
@@ -19,7 +19,7 @@ class RoomMarkupSettingsDto extends AbstractDomainBasedDto
         public readonly int $discount,
     ) {}
 
-    public static function fromDomain(EntityInterface|ValueObjectInterface|MarkupSettings $entity): static
+    public static function fromDomain(EntityInterface|ValueObjectInterface|RoomMarkups $entity): static
     {
         return new static(
             $entity->individual()->value(),

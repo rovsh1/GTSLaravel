@@ -18,4 +18,9 @@ class ClientChanged implements OrderEventInterface, PriceBecomeDeprecatedEventIn
     {
         return $this->order->id()->value();
     }
+
+    public function bookingId(): int
+    {
+        // TODO: Implement bookingId() method.
+    }
 }

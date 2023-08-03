@@ -2,7 +2,9 @@
 
 namespace Module\Hotel\Application\Command\Room;
 
+use Module\Hotel\Domain\Entity\Room\RoomMarkups;
 use Module\Hotel\Domain\Repository\RoomMarkupSettingsRepositoryInterface;
+use Module\Hotel\Domain\ValueObject\RoomId;
 use Module\Shared\Domain\ValueObject\Percent;
 use Sdk\Module\Contracts\Bus\CommandHandlerInterface;
 use Sdk\Module\Contracts\Bus\CommandInterface;
@@ -16,6 +18,11 @@ class UpdateMarkupSettingsValueHandler implements CommandHandlerInterface
     public function handle(CommandInterface|UpdateMarkupSettingsValue $command): void
     {
         $settings = $this->repository->get($command->id);
+        if ($settings === null) {
+            $settings = RoomMarkups::buildEmpty(
+                new RoomId($command->id)
+            );
+        }
 
         $reflection = new \ReflectionClass($settings);
         $settingsProps = collect($reflection->getProperties())->map->name->all();

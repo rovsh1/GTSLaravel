@@ -5,7 +5,7 @@ namespace Module\Booking\HotelBooking\Domain\Adapter;
 use Carbon\CarbonInterface;
 use Module\Hotel\Application\Response\HotelDto;
 use Module\Hotel\Application\Response\MarkupSettingsDto;
-use Module\Hotel\Application\Response\RoomMarkupSettingsDto;
+use Module\Hotel\Application\Response\RoomMarkupsDto;
 
 interface HotelAdapterInterface
 {
@@ -21,5 +21,5 @@ interface HotelAdapterInterface
 
     public function getMarkupSettings(int $hotelId): MarkupSettingsDto;
 
-    public function getRoomMarkupSettings(int $roomId): ?RoomMarkupSettingsDto;
+    public function getRoomMarkupSettings(int $roomId): ?RoomMarkupsDto;
 }

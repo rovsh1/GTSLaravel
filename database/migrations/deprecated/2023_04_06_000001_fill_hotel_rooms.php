@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Module\Hotel\Domain\Entity\Room\MarkupSettings;
+use Module\Hotel\Domain\Entity\Room\RoomMarkups;
 use Module\Shared\Domain\ValueObject\Id;
 use Module\Shared\Domain\ValueObject\Percent;
 
@@ -45,7 +45,7 @@ return new class extends Migration {
                 ])
                 ->first();
 
-            $roomMarkup = new MarkupSettings(
+            $roomMarkup = new RoomMarkups(
                 new Id($r->id),
                 new Percent($margins->individual ?? 0),
                 new Percent($margins->TA ?? 0),

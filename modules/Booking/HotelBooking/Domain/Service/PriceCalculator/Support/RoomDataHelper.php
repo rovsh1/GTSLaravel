@@ -7,7 +7,7 @@ use Module\Booking\HotelBooking\Domain\Entity\RoomBooking;
 use Module\Booking\Order\Domain\Entity\Order;
 use Module\Hotel\Application\Response\HotelDto;
 use Module\Hotel\Application\Response\MarkupSettingsDto;
-use Module\Hotel\Application\Response\RoomMarkupSettingsDto;
+use Module\Hotel\Application\Response\RoomMarkupsDto;
 use Module\Shared\Enum\CurrencyEnum;
 
 class RoomDataHelper
@@ -18,7 +18,7 @@ class RoomDataHelper
         public readonly Order $order,
         public readonly HotelDto $hotelDto,
         public readonly MarkupSettingsDto $markupDto,
-        public readonly ?RoomMarkupSettingsDto $roomMarkupDto,
+        public readonly ?RoomMarkupsDto $roomMarkupDto,
     ) {
     }
 

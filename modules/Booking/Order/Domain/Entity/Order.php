@@ -21,6 +21,13 @@ final class Order extends AbstractAggregateRoot implements EntityInterface
         private readonly CarbonImmutable $createdAt,
     ) {}
 
+    public function generateInvoice(): void
+    {
+        //@todo валидация - все брони имеют статус "Подтверждена"
+
+        //@todo после генерации все брони переходят в статус "Выставлен счет"
+    }
+
     public function id(): Id
     {
         return $this->id;

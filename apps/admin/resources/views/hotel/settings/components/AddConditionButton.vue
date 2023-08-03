@@ -1,18 +1,7 @@
 <script setup lang="ts">
-
+import IconButton from '~components/IconButton.vue'
 </script>
 
 <template>
-  <a href="#">
-    <i class="icon">add</i>
-  </a>
+  <IconButton icon="add" />
 </template>
-
-<style scoped lang="scss">
-a i {
-  vertical-align: top;
-  margin-left: 5px;
-  font-weight: bold;
-  font-size: 18px;
-}
-</style>

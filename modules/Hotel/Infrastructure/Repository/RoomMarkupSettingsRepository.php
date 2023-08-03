@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Hotel\Infrastructure\Repository;
 
-use Module\Hotel\Domain\Entity\Room\MarkupSettings;
+use Module\Hotel\Domain\Entity\Room\RoomMarkups;
 use Module\Hotel\Domain\Repository\RoomMarkupSettingsRepositoryInterface;
 use Module\Hotel\Infrastructure\Models\Room;
 use Module\Shared\Domain\Service\SerializerInterface;
@@ -15,22 +15,25 @@ class RoomMarkupSettingsRepository implements RoomMarkupSettingsRepositoryInterf
         private readonly SerializerInterface $serializer
     ) {}
 
-    public function get(int $id): MarkupSettings
+    public function get(int $id): ?RoomMarkups
     {
         $room = Room::find($id);
+        if ($room?->markup_settings === null) {
+            return null;
+        }
 
         return $this->deserializeSettings($room);
     }
 
-    public function update(MarkupSettings $markupSettings): bool
+    public function update(RoomMarkups $markupSettings): bool
     {
         $markupSettingsData = $this->serializer->serialize($markupSettings);
 
         return (bool)Room::whereId($markupSettings->id()->value())->update(['markup_settings' => $markupSettingsData]);
     }
 
-    private function deserializeSettings(Room $room): MarkupSettings
+    private function deserializeSettings(Room $room): RoomMarkups
     {
-        return $this->serializer->deserialize(MarkupSettings::class, $room->markup_settings);
+        return $this->serializer->deserialize(RoomMarkups::class, $room->markup_settings);
     }
 }

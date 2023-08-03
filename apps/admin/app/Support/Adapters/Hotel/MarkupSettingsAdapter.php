@@ -6,7 +6,7 @@ namespace App\Admin\Support\Adapters\Hotel;
 
 use App\Core\Support\Adapters\AbstractHotelAdapter;
 use Module\Hotel\Application\UseCase\GetMarkupSettings;
-use Module\Hotel\Application\UseCase\GetRoomMarkupSettings;
+use Module\Hotel\Application\UseCase\GetRoomMarkups;
 
 class MarkupSettingsAdapter extends AbstractHotelAdapter
 {
@@ -47,7 +47,7 @@ class MarkupSettingsAdapter extends AbstractHotelAdapter
 
     public function getRoomMarkupSettings(int $hotelId, int $roomId): mixed
     {
-        return app(GetRoomMarkupSettings::class)->execute($hotelId, $roomId);
+        return app(GetRoomMarkups::class)->execute($hotelId, $roomId);
     }
 
     public function updateRoomMarkupSettings(int $roomId, string $key, int $value): mixed

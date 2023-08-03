@@ -9,7 +9,7 @@ use Module\Hotel\Application\Command\Room;
 use Module\Hotel\Application\Command\UpdateMarkupSettingsValue;
 use Module\Hotel\Application\Enums\UpdateMarkupSettingsActionEnum;
 use Module\Hotel\Application\Query\GetHotelMarkupSettings;
-use Module\Hotel\Application\Query\GetRoomMarkupSettings;
+use Module\Hotel\Application\Query\GetRoomMarkups;
 use Sdk\Module\Contracts\Bus\CommandBusInterface;
 use Sdk\Module\Contracts\Bus\QueryBusInterface;
 use Sdk\Module\PortGateway\Request;
@@ -55,7 +55,7 @@ class MarkupSettingsController
             'room_id' => ['required', 'numeric'],
         ]);
 
-        return $this->queryBus->execute(new GetRoomMarkupSettings($request->room_id));
+        return $this->queryBus->execute(new GetRoomMarkups($request->room_id));
     }
 
     public function updateRoomMarkupSettings(Request $request): void

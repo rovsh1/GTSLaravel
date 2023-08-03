@@ -6,9 +6,10 @@ use Carbon\CarbonInterface;
 use Module\Booking\HotelBooking\Domain\Adapter\HotelAdapterInterface;
 use Module\Hotel\Application\Response\HotelDto;
 use Module\Hotel\Application\Response\MarkupSettingsDto;
-use Module\Hotel\Application\Response\RoomMarkupSettingsDto;
+use Module\Hotel\Application\Response\RoomMarkupsDto;
 use Module\Hotel\Application\UseCase\FindHotelById;
 use Module\Hotel\Application\UseCase\GetMarkupSettings;
+use Module\Hotel\Application\UseCase\GetRoomMarkups;
 use Module\Hotel\Application\UseCase\Price\FindRoomPrice;
 
 class HotelAdapter implements HotelAdapterInterface
@@ -35,9 +36,8 @@ class HotelAdapter implements HotelAdapterInterface
         return app(GetMarkupSettings::class)->execute($hotelId);
     }
 
-    public function getRoomMarkupSettings(int $roomId): ?RoomMarkupSettingsDto
+    public function getRoomMarkupSettings(int $roomId): ?RoomMarkupsDto
     {
-        //TODO: Implement getRoomMarkupSettings() method.
-        return null;
+        return app(GetRoomMarkups::class)->execute($roomId);
     }
 }
