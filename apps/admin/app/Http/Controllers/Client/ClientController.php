@@ -17,8 +17,8 @@ use App\Admin\View\Menus\ClientMenu;
 use App\Core\Support\Http\Responses\AjaxReloadResponse;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use Gsdk\Format\View\ParamsTable;
-use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
+use Module\Shared\Enum\Client\PriceTypeEnum;
 use Module\Shared\Enum\Client\StatusEnum;
 use Module\Shared\Enum\Client\TypeEnum;
 
@@ -93,6 +93,8 @@ class ClientController extends AbstractPrototypeController
             ->enum('type', 'Тип', TypeEnum::class)
             ->text('city_name', 'Город')
             ->text('currency_name', 'Валюта')
+            ->text('rates', 'Тариф')
+            ->text('administrator_name', 'Менеджер')
             ->data($this->model);
     }
 
@@ -101,15 +103,20 @@ class ClientController extends AbstractPrototypeController
         return Grid::enableQuicksearch()
             ->paginator(self::GRID_LIMIT)
             ->text('name', ['text' => 'ФИО', 'route' => $this->prototype->routeName('show')])
-            ->enum('type', ['text' => 'Тип', 'enum' => TypeEnum::class]);
+            ->enum('type', ['text' => 'Тип', 'enum' => TypeEnum::class])
+            ->text('country_name', ['text' => 'Страна'])
+            ->text('city_name', ['text' => 'Город'])
+            ->enum('status', ['text' => 'Статус', 'enum' => StatusEnum::class]);
     }
 
     protected function formFactory(): FormContract
     {
-        return Form::text('name', ['label' => 'ФИО или название компании'])
-            ->enum('type', ['label' => 'Тип', 'enum' => TypeEnum::class])
-            ->city('city_id', ['label' => 'Город'])
+        return Form::text('name', ['label' => 'ФИО или название компании', 'required' => true])
+            ->enum('type', ['label' => 'Тип', 'enum' => TypeEnum::class, 'required' => true])
+            ->city('city_id', ['label' => 'Город', 'required' => true])
             ->enum('status', ['label' => 'Статус', 'enum' => StatusEnum::class])
-            ->currency('currency_id', ['label' => 'Валюта']);
+            ->currency('currency_id', ['label' => 'Валюта', 'required' => true])
+            ->enum('price_types', ['label' => 'Тип цены', 'multiple' => true, 'enum' => PriceTypeEnum::class, 'required' => true])
+            ->manager('administrator_id',['label'=>'Менеджер']);
     }
 }

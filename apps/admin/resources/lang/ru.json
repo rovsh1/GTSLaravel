@@ -109,6 +109,9 @@
     "Module\\Shared\\Enum\\Client\\StatusEnum::BLOCKED": "Заблокирован",
     "Module\\Shared\\Enum\\Client\\StatusEnum::ARCHIVE": "Архив",
 
+    "Module\\Shared\\Enum\\Client\\PriceTypeEnum::RESIDENT": "Резидент",
+    "Module\\Shared\\Enum\\Client\\PriceTypeEnum::NONRESIDENT": "Не резидент",
+
     "Module\\Booking\\Common\\Domain\\Event\\Status\\BookingCreated": "Новая",
     "Module\\Booking\\Common\\Domain\\Event\\Status\\BookingProcessing": "В работе",
     "Module\\Booking\\Common\\Domain\\Event\\Status\\BookingCancelled": "Отменена",

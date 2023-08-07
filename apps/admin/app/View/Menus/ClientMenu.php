@@ -24,7 +24,7 @@ class ClientMenu extends AbstractSubmenu
     {
         $this
             ->addUrl('info', route('client.show', $this->model), 'Описание', ['icon' => 'description'])
-            ->addUrl('legals', route('client.legals.index', $this->model), 'Юр. лица', ['icon' => 'gavel', 'disabled' => $this->model->type !== TypeEnum::LEGAL_ENTITY->value])
+            ->addUrl('legals', route('client.legals.index', $this->model), 'Юр. лица', ['icon' => 'gavel', 'disabled' => $this->model->type !== TypeEnum::LEGAL_ENTITY])
             ->addUrl('documents', route('client.show', $this->model), 'Документы', ['icon' => 'pending_actions'])
             ->addUrl('users', route('client.show', $this->model), 'Пользователи', ['icon' => 'person']);
     }
