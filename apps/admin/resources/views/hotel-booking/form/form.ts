@@ -1,18 +1,25 @@
+import { createPinia } from 'pinia'
 import { z } from 'zod'
 
+import CreateClientButton from '~resources/views/hotel-booking/form/CreateClientButton.vue'
+
 import { formatDate } from '~lib/date'
+import { useApplicationEventBus } from '~lib/event-bus'
 import { requestInitialData } from '~lib/initial-data'
+import { createVueInstance } from '~lib/vue'
 
 import '~resources/views/main'
 
-const { clients, createClientUrl } = requestInitialData('view-initial-data-hotel-booking', z.object({
-  createClientUrl: z.string(),
+const { clients, bookingID } = requestInitialData('view-initial-data-hotel-booking', z.object({
+  bookingID: z.number().nullable(),
   clients: z.array(z.object({
     id: z.number(),
     name: z.string(),
     is_legal: z.boolean().optional(),
   })),
 }))
+
+const pinia = createPinia()
 
 $(() => {
   const toggleLegalIdInput = (required: boolean = true): void => {
@@ -34,16 +41,19 @@ $(() => {
     const clientId = $clientIdInput.val()
     const client = clients.find((cl) => cl.id === Number(clientId))
 
-    if (!client) {
-      $('#form_data_order_id').attr('disabled', 'disabled')
-    } else {
-      $('#form_data_order_id').removeAttr('disabled')
+    if (bookingID === null) {
+      if (!client) {
+        $('#form_data_order_id').attr('disabled', 'disabled')
+      } else {
+        $('#form_data_order_id').removeAttr('disabled')
+      }
     }
 
     toggleLegalIdInput(orderId === undefined ? Boolean(client?.is_legal) : false)
 
     const $legalIdInput = $('#form_data_legal_id')
     if ($legalIdInput.is('input')) {
+      // еще не был инстанцирован, т.е. выведен в html через php form
       $legalIdInput.childCombo({
         url: '/client/legals/search',
         disabledText: 'Выберите клиента',
@@ -69,10 +79,9 @@ $(() => {
     // $currencyInput.removeAttr('required')
   }
 
-  $('#form_data_client_id').select2()
+  const $clientIdSelect = $('#form_data_client_id').select2()
   $('#form_data_city_id').select2()
   $('#form_data_manager_id').select2()
-
   $('#form_data_hotel_id').childCombo({
     url: '/hotels/search',
     disabledText: 'Выберите город',
@@ -81,23 +90,26 @@ $(() => {
     useSelect2: true,
   })
 
-  const $clientIdSelect = $('#form_data_client_id')
-  const $clientIdSelectWrapper = $clientIdSelect.parent()
-  $clientIdSelectWrapper.removeClass('col-sm-7').addClass('col-sm-6')
+  if (bookingID === null) {
+    const $clientIdSelectWrapper = $clientIdSelect.parent()
+    $clientIdSelectWrapper.removeClass('col-sm-7').addClass('col-sm-6')
 
-  const $createClientButton = $('<button />', {
-    type: 'button',
-    class: 'btn btn-add',
-    html: '<i class="icon">add</i>Создать',
-  }).click((): void => {
-    window.WindowDialog({
-      url: createClientUrl,
-      title: 'Создать клиента',
-      buttons: ['submit', 'cancel'],
+    const $createClientButton = $('<div />', { id: 'create-client-button' })
+
+    $clientIdSelectWrapper.after($('<div />', { class: 'col-sm-1' })
+      .append($createClientButton))
+
+    createVueInstance({
+      rootComponent: CreateClientButton,
+      rootContainer: '#create-client-button',
+      plugins: [pinia],
     })
-  })
 
-  $clientIdSelectWrapper.after($('<div />', { class: 'col-sm-1' }).append($createClientButton))
+    const eventBus = useApplicationEventBus()
+    eventBus.on('client-created', (event: CustomEventInit) => {
+      $clientIdSelect.val(event.detail.clientId).trigger('change')
+    })
+  }
 
   $clientIdSelect
     .change(() => handleChangeClientId(undefined))

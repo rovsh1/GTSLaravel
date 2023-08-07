@@ -39,6 +39,11 @@ export const cancelPeriods = [
   { id: 2, name: 'За весь период' },
 ]
 
+const clientTypes = [
+  { id: 1, name: 'Физическое лицо' },
+  { id: 2, name: 'Юридическое лицо' },
+]
+
 export const genderOptions: SelectOption[] = mapEntitiesToSelectOptions(genders)
 
 export const residentTypeOptions: SelectOption[] = mapEntitiesToSelectOptions(residentTypes)
@@ -48,6 +53,8 @@ export const roomStatusOptions: SelectOption[] = mapEntitiesToSelectOptions(room
 export const externalNumberTypeOptions: SelectOption[] = mapEntitiesToSelectOptions(externalNumberTypes)
 
 export const cancelPeriodOptions: SelectOption[] = mapEntitiesToSelectOptions(cancelPeriods)
+
+export const clientTypeOptions: SelectOption[] = mapEntitiesToSelectOptions(clientTypes)
 
 export const getConditionLabel = (condition: MarkupCondition) => `с ${condition.from} по ${condition.to} (+${condition.percent}%)`
 

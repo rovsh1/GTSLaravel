@@ -86,18 +86,12 @@ class HotelAdapter
 
     public function updateBooking(
         int $id,
-        int $clientId,
-        ?int $legalId,
-        int $currencyId,
         CarbonPeriod $period,
         ?string $note = null
     ): void {
         app(UpdateBooking::class)->execute(
             new UpdateBookingDto(
                 id: $id,
-                clientId: $clientId,
-                legalId: $legalId,
-                currencyId: $currencyId,
                 period: $period,
                 note: $note
             )

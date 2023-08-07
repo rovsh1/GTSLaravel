@@ -12,10 +12,6 @@ use Module\Booking\HotelBooking\Domain\Entity\Booking;
 use Module\Booking\HotelBooking\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\HotelBooking\Domain\Service\HotelValidator;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\BookingPeriod;
-use Module\Booking\Order\Domain\Repository\OrderRepositoryInterface;
-use Module\Booking\Order\Domain\Service\OrderUpdater;
-use Module\Shared\Domain\ValueObject\Id;
-use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class UpdateBooking implements UseCaseInterface
@@ -24,8 +20,6 @@ class UpdateBooking implements UseCaseInterface
         private readonly BookingRepositoryInterface $repository,
         private readonly BookingUpdater $bookingUpdater,
         private readonly HotelAdapterInterface $hotelAdapter,
-        private readonly OrderRepositoryInterface $orderRepository,
-        private readonly OrderUpdater $orderUpdater,
         private readonly HotelValidator $hotelValidator
     ) {}
 
@@ -33,24 +27,6 @@ class UpdateBooking implements UseCaseInterface
     {
         /** @var Booking $booking */
         $booking = $this->repository->find($request->id);
-        $order = $this->orderRepository->find($booking->orderId()->value());
-
-        if ($order->clientId()->value() !== $request->clientId) {
-            $order->setClientId(
-                new Id($request->clientId)
-            );
-        }
-        $currencyFromRequest = CurrencyEnum::fromId($request->currencyId);
-        if ($order->currency()->value !== $currencyFromRequest->value) {
-            $order->setCurrency($currencyFromRequest);
-        }
-        if ($order->legalId()?->value() !== $request->legalId) {
-            $order->setLegalId(
-                new Id($request->legalId)
-            );
-        }
-        $this->orderUpdater->store($order);
-
         $periodFromRequest = BookingPeriod::fromCarbon($request->period);
         if (!$booking->period()->isEqual($periodFromRequest)) {
             $markupSettings = $this->hotelAdapter->getMarkupSettings($booking->hotelInfo()->id());
@@ -66,5 +42,4 @@ class UpdateBooking implements UseCaseInterface
 
         $this->bookingUpdater->store($booking);
     }
-
 }

@@ -16,12 +16,14 @@ const props = withDefaults(defineProps<{
   disabled?: MaybeRef<boolean>
   disabledPlaceholder?: string
   showEmptyItem?: boolean
+  parent?: string
 }>(), {
   label: '',
   disabled: false,
   required: false,
   disabledPlaceholder: undefined,
   showEmptyItem: true,
+  parent: undefined,
 })
 
 const emit = defineEmits<{
@@ -29,8 +31,11 @@ const emit = defineEmits<{
 }>()
 
 onMounted(() => {
+  const options = {
+    dropdownParent: props.parent,
+  }
   $(`#${props.id}`)
-    .select2()
+    .select2(options)
     .change((val: any) => emit('input', val.target.value))
 })
 

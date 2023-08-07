@@ -97,7 +97,6 @@ class BookingController extends Controller
                 'form' => $form,
                 'clients' => ClientResource::collection(Client::orderBy('name')->get()),
                 'cancelUrl' => $this->prototype->route('index'),
-                'createClientUrl' => route('client.dialog.create'),
             ]);
     }
 
@@ -181,7 +180,6 @@ class BookingController extends Controller
                 'model' => $booking,
                 'form' => $form,
                 'clients' => ClientResource::collection(Client::orderBy('name')->get()),
-                'createClientUrl' => route('client.dialog.create'),
                 'cancelUrl' => $this->prototype->route('show', $id),
 //                'deleteUrl' => $this->isAllowed('delete') ? $this->prototype->route('destroy', $id) : null
             ]);
@@ -194,12 +192,8 @@ class BookingController extends Controller
         $form->trySubmit($this->prototype->route('edit', $id));
 
         $data = $form->getData();
-        $client = Client::find($data['client_id']);
         HotelAdapter::updateBooking(
             id: $id,
-            clientId: $data['client_id'],
-            legalId: $data['legal_id'],
-            currencyId: $data['currency_id'] ?? $client->currency_id,
             period: $data['period'],
             note: $data['note'] ?? null
         );
@@ -387,9 +381,10 @@ class BookingController extends Controller
         return Form::name('data')
             ->select('client_id', [
                 'label' => __('label.client'),
-                'required' => true,
+                'required' => !$isEdit,
                 'emptyItem' => '',
                 'items' => Client::orderBy('name')->get(),
+                'disabled' => $isEdit,
             ])
             ->hidden('order_id', [
                 'label' => 'Заказ',

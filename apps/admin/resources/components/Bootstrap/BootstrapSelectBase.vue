@@ -8,6 +8,7 @@ withDefaults(defineProps<{
   id: string
   value: SelectedValue
   options: SelectOption[]
+  multiple?: boolean
   label?: string
   required?: boolean
   disabled?: MaybeRef<boolean>
@@ -19,6 +20,7 @@ withDefaults(defineProps<{
   required: false,
   disabledPlaceholder: undefined,
   showEmptyItem: true,
+  multiple: false,
 })
 
 const emit = defineEmits<{
@@ -37,6 +39,7 @@ const emit = defineEmits<{
       class="form-select form-control"
       :disabled="disabled as boolean"
       :required="required as boolean"
+      :multiple="multiple"
       @input="event => emit('input', (event.target as HTMLInputElement).value)"
     >
       <option v-if="disabled && disabledPlaceholder" selected disabled>{{ disabledPlaceholder }}</option>

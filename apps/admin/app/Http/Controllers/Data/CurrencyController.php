@@ -2,6 +2,7 @@
 
 namespace App\Admin\Http\Controllers\Data;
 
+use App\Admin\Http\Resources\Currency as CurrencyResource;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Format;
 use App\Admin\Support\Facades\Grid;
@@ -9,12 +10,22 @@ use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Core\Support\Facades\CurrencyAdapter;
+use Illuminate\Http\JsonResponse;
 
 class CurrencyController extends AbstractPrototypeController
 {
     protected function getPrototypeKey(): string
     {
         return 'currency';
+    }
+
+    public function get(): JsonResponse
+    {
+        return response()->json(
+            CurrencyResource::collection(
+                $this->repository->query()->get()
+            )
+        );
     }
 
     protected function formFactory(): FormContract

@@ -12,7 +12,7 @@
     <script>
       window['view-initial-data-hotel-booking'] = {{ Js::from([
             'clients' => $clients,
-            'createClientUrl' => $createClientUrl
+            'bookingID' => $model->id ?? null,
         ]) }}
     </script>
 @endsection

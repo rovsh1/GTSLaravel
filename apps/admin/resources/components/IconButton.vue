@@ -2,10 +2,17 @@
 defineProps<{
   icon: string
 }>()
+
+defineEmits<{
+  (event: 'click'):void
+}>()
 </script>
 
 <template>
-  <a href="#">
+  <a
+    href="#"
+    @click.prevent="$emit('click')"
+  >
     <i class="icon">add</i>
     <slot />
   </a>

@@ -15,7 +15,7 @@ export type CityResponse = {
   center_lon: number
 }
 
-export const useCitySearchAPI = (props: MaybeRef<{ countryID: number }>) =>
+export const useCitySearchAPI = (props: MaybeRef<{ countryID?: number }>) =>
   useAdminAPI(props, () => '/cities/search')
     .get()
     .json<CityResponse[]>()

@@ -10,5 +10,4 @@ AclRoute::for('client')
         'except' => ['show']
     ])
     ->get('/legals/search', Controllers\Client\LegalsController::class . '@search', 'read', 'search')
-    ->get('/create/dialog', Controllers\Client\ClientController::class . '@createDialog', 'create', 'dialog.create')
     ->post('/create/dialog', Controllers\Client\ClientController::class . '@storeDialog', 'create', 'dialog.store');

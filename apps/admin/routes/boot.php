@@ -28,3 +28,4 @@ Route::group([], __DIR__ . '/hotel-booking.php');
 Route::group([], __DIR__ . '/airport-booking.php');
 Route::group([], __DIR__ . '/transfer-booking.php');
 Route::group([], __DIR__ . '/booking-order.php');
+Route::group([], __DIR__ . '/currency.php');

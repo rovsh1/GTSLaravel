@@ -29,16 +29,6 @@ class ClientController extends AbstractPrototypeController
         return 'client';
     }
 
-    public function createDialog(): View
-    {
-        $form = $this->formFactory()
-            ->action($this->prototype->route('dialog.store'));
-
-        return view('default.dialog-form', [
-            'form' => $form,
-        ]);
-    }
-
     public function storeDialog(): AjaxResponseInterface
     {
         $form = $this->formFactory()

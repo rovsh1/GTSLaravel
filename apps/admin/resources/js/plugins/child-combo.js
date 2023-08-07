@@ -30,12 +30,16 @@ $.fn.childCombo = function (options) {
   const childDisabled = child.prop("disabled")
   if (child.is('input[type="hidden"]')) {
     preparedOptions.hidden = true
-    const c = $(`<select class="form-select" id="${child.attr('id')}" name="${child.attr('name')}"></select>`)
+    const c = $(`<select />`, {
+      class: 'form-select',
+      id: child.attr('id'),
+      name: child.attr('name'),
+      disabled: childDisabled
+    })
     child.after(c)
     child.remove()
     child = c
   }
-
 
   const trigger = function (fn, arg) {
     if (!preparedOptions[fn]) {
@@ -65,7 +69,6 @@ $.fn.childCombo = function (options) {
     }
 
     child.parent().show()
-
 
     const data = { ...preparedOptions.data }
     if (!isEmpty) {
