@@ -83,6 +83,7 @@ const onModalSubmit = async () => {
   } else {
     tab.value = Tab.getOrCreateInstance('a[data-bs-target="#legal-details"]')
   }
+  // @todo это сейчас не работает, возможно нужно сделать компонент stepper/wizard
   console.log(tab.value)
   tab.value.show()
 

@@ -106,8 +106,8 @@ $(() => {
     })
 
     const eventBus = useApplicationEventBus()
-    eventBus.on('client-created', (event: CustomEventInit) => {
-      $clientIdSelect.val(event.detail.clientId).trigger('change')
+    eventBus.on('client-created', (event: { clientId: number }) => {
+      $clientIdSelect.val(event.clientId).trigger('change')
     })
   }
 
