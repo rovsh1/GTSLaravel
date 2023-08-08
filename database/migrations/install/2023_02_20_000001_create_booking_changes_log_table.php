@@ -10,7 +10,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('booking_changes_log', function (Blueprint $table) {
+        Schema::create('booking_history', function (Blueprint $table) {
             $table->unsignedInteger('order_id');
             $table->unsignedInteger('booking_id')->nullable();
             $table->string('event');
@@ -38,6 +38,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('booking_changes_log');
+        Schema::dropIfExists('booking_history');
     }
 };

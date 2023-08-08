@@ -11,11 +11,12 @@ return new class extends Migration {
         Schema::create('clients', function (Blueprint $table) {
             $table->integer('id')->unsigned()->autoIncrement();
             $table->integer('city_id')->unsigned();
-            $table->smallInteger('currency_id')->unsigned();
+            $table->unsignedSmallInteger('currency_id')->nullable();
             $table->tinyInteger('type')->unsigned();
             $table->tinyInteger('status')->unsigned();
             $table->string('name', 50);
             $table->mediumText('description')->nullable();
+            $table->boolean('is_b2b');
             $table->timestamps();
             $table->softDeletes();
 

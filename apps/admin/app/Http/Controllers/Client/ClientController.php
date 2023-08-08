@@ -29,6 +29,8 @@ class ClientController extends AbstractPrototypeController
         return 'client';
     }
 
+    //@todo менеджер клиента - в таблицу administrator_clients
+
     public function storeDialog(): AjaxResponseInterface
     {
         $form = $this->formFactory()
@@ -48,6 +50,11 @@ class ClientController extends AbstractPrototypeController
         Sidebar::submenu(new ClientMenu($this->model, 'info'));
 
         return $layout;
+    }
+
+    protected function saving(array $data): array
+    {
+        return array_merge($data, ['is_b2b' => true]);
     }
 
     protected function getShowViewData(): array
@@ -116,7 +123,10 @@ class ClientController extends AbstractPrototypeController
             ->city('city_id', ['label' => 'Город', 'required' => true])
             ->enum('status', ['label' => 'Статус', 'enum' => StatusEnum::class])
             ->currency('currency_id', ['label' => 'Валюта', 'required' => true])
-            ->enum('price_types', ['label' => 'Тип цены', 'multiple' => true, 'enum' => PriceTypeEnum::class, 'required' => true])
-            ->manager('administrator_id',['label'=>'Менеджер']);
+            ->enum(
+                'price_types',
+                ['label' => 'Тип цены', 'multiple' => true, 'enum' => PriceTypeEnum::class, 'required' => true]
+            )
+            ->manager('administrator_id', ['label' => 'Менеджер']);
     }
 }

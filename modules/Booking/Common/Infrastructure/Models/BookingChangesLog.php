@@ -10,7 +10,7 @@ class BookingChangesLog extends Model
 {
     public $timestamps = false;
 
-    protected $table = 'booking_changes_log';
+    protected $table = 'booking_history';
 
     protected $fillable = [
         'event',

@@ -15,7 +15,7 @@ class Client extends Model
 
     public $timestamps = false;
 
-    protected array $quicksearch = ['id', 'name%'];
+    protected array $quicksearch = ['id', 'clients.name%'];
 
     protected $table = 'clients';
 
@@ -23,6 +23,7 @@ class Client extends Model
         'name',
         'city_id',
         'currency_id',
+        'is_b2b',
         'type',
         'status',
         'description'
@@ -31,6 +32,7 @@ class Client extends Model
     protected $casts = [
         'status' => StatusEnum::class,
         'type' => TypeEnum::class,
+        'is_b2b' => 'boolean',
     ];
 
     protected static function booted()
@@ -42,7 +44,7 @@ class Client extends Model
                 ->joinTranslatable('r_cities', 'name as city_name')
                 ->join('r_countries', 'r_countries.id', '=', 'r_cities.country_id')
                 ->joinTranslatable('r_countries', 'name as country_name')
-                ->join('r_currencies', 'r_currencies.id', '=', 'clients.currency_id')
+                ->leftJoin('r_currencies', 'r_currencies.id', '=', 'clients.currency_id')
                 ->joinTranslatable('r_currencies', 'name as currency_name');
         });
     }

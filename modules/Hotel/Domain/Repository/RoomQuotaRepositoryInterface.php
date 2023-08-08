@@ -4,6 +4,7 @@ namespace Module\Hotel\Domain\Repository;
 
 use Carbon\CarbonPeriod;
 use Module\Hotel\Domain\Entity\RoomQuota;
+use Module\Hotel\Domain\ValueObject\QuotaChangeTypeEnum;
 
 interface RoomQuotaRepositoryInterface
 {
@@ -44,6 +45,4 @@ interface RoomQuotaRepositoryInterface
     public function closeRoomQuota(int $roomId, CarbonPeriod $period): void;
 
     public function openRoomQuota(int $roomId, CarbonPeriod $period): void;
-
-    public function resetRoomQuota(int $roomId, CarbonPeriod $period): void;
 }

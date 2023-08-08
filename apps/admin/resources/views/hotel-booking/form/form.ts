@@ -1,3 +1,4 @@
+import { isEmpty } from 'lodash'
 import { createPinia } from 'pinia'
 import { z } from 'zod'
 
@@ -16,6 +17,7 @@ const { clients, bookingID } = requestInitialData('view-initial-data-hotel-booki
     id: z.number(),
     name: z.string(),
     is_legal: z.boolean().optional(),
+    currency_id: z.number().nullable(),
   })),
 }))
 
@@ -36,6 +38,18 @@ $(() => {
     $legalIdInput.removeAttr('required')
   }
 
+  const toggleCurrencyIdField = (state?: boolean) => {
+    const $currencyField = $('div.field-currency_id')
+    const $currencyInput = $('#form_data_currency_id')
+    if (state) {
+      $currencyField.show().toggleClass('field-required', true)
+      $currencyInput.attr('required', 'required')
+      return
+    }
+    $currencyField.hide().toggleClass('field-required', false)
+    $currencyInput.removeAttr('required')
+  }
+
   const handleChangeClientId = (orderId?: number): void => {
     const $clientIdInput = $('#form_data_client_id')
     const clientId = $clientIdInput.val()
@@ -46,6 +60,7 @@ $(() => {
         $('#form_data_order_id').attr('disabled', 'disabled')
       } else {
         $('#form_data_order_id').removeAttr('disabled')
+        toggleCurrencyIdField(client.currency_id === null)
       }
     }
 
@@ -53,7 +68,7 @@ $(() => {
 
     const $legalIdInput = $('#form_data_legal_id')
     if ($legalIdInput.is('input')) {
-      // еще не был инстанцирован, т.е. выведен в html через php form
+      // еще не был инстанцирован, т.е. выведен как hidden input в html через php form
       $legalIdInput.childCombo({
         url: '/client/legals/search',
         disabledText: 'Выберите клиента',
@@ -65,18 +80,15 @@ $(() => {
 
   const toggleOrderFields = (event: any): void => {
     const orderId: string = $(event.target).val() as string
-    // const $currencyField = $('div.field-currency_id')
-    // const $currencyInput = $('#form_data_currency_id')
-    if (orderId.length === 0) {
-      // $currencyField.show().toggleClass('field-required', true)
-      // $currencyInput.attr('required', 'required')
+
+    const isOrderIdEmpty = isEmpty(orderId)
+    toggleCurrencyIdField(isOrderIdEmpty)
+    if (isOrderIdEmpty) {
       handleChangeClientId(undefined)
       return
     }
 
     handleChangeClientId(Number(orderId))
-    // $currencyField.hide().toggleClass('field-required', false)
-    // $currencyInput.removeAttr('required')
   }
 
   const $clientIdSelect = $('#form_data_client_id').select2()

@@ -9,6 +9,7 @@ use Module\Booking\HotelBooking\Domain\Entity\RoomBooking;
 use Module\Booking\HotelBooking\Domain\Repository\RoomBookingRepositoryInterface;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\GuestCollection;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBookingDetails;
+use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBookingId;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBookingStatusEnum;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomInfo;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBookingCollection;
@@ -105,7 +106,7 @@ class RoomBookingRepository implements RoomBookingRepositoryInterface
         $data = $model->data;
 
         return new RoomBooking(
-            id: new Id($model->id),
+            id: new RoomBookingId($model->id),
             bookingId: new Id($model->booking_id),
             orderId: new Id($model->booking_order_id),
             status: RoomBookingStatusEnum::from($data['status']),

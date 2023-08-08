@@ -11,6 +11,7 @@ use Module\Booking\HotelBooking\Domain\Service\PriceCalculator\RoomPriceEditor;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\GuestCollection;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\Guest;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBookingDetails;
+use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBookingId;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBookingStatusEnum;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomInfo;
 use Module\Booking\HotelBooking\Domain\ValueObject\RoomPrice;
@@ -21,7 +22,7 @@ use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 class RoomBooking extends AbstractAggregateRoot implements EntityInterface
 {
     public function __construct(
-        private readonly Id $id,
+        private readonly RoomBookingId $id,
         private readonly Id $bookingId,
         private readonly Id $orderId,
         private RoomBookingStatusEnum $status,
@@ -32,7 +33,7 @@ class RoomBooking extends AbstractAggregateRoot implements EntityInterface
         private RoomPrice $price,
     ) {}
 
-    public function id(): Id
+    public function id(): RoomBookingId
     {
         return $this->id;
     }
@@ -157,7 +158,7 @@ class RoomBooking extends AbstractAggregateRoot implements EntityInterface
     public static function fromData(array $data): static
     {
         return new static(
-            id: new Id($data['id']),
+            id: new RoomBookingId($data['id']),
             orderId: new Id($data['orderId']),
             bookingId: new Id($data['bookingId']),
             status: RoomBookingStatusEnum::from($data['status']),

@@ -10,14 +10,14 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('booking_vouchers', function (Blueprint $table) {
+        Schema::create('order_vouchers', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('booking_id');
+            $table->unsignedInteger('order_id');
             $table->timestamps();
 
-            $table->foreign('booking_id')
+            $table->foreign('order_id')
                 ->references('id')
-                ->on('bookings')
+                ->on('orders')
                 ->restrictOnDelete()
                 ->cascadeOnUpdate();
         });
@@ -28,6 +28,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('booking_vouchers');
+        Schema::dropIfExists('order_vouchers');
     }
 };

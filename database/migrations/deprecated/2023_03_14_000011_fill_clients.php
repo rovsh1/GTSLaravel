@@ -6,7 +6,12 @@ use Illuminate\Support\Facades\DB;
 return new class extends Migration {
     public function up()
     {
-        $q = DB::connection('mysql_old')->table('clients');
+        $q = DB::connection('mysql_old')
+            ->table('clients')
+            ->select(
+                '*',
+                DB::raw('(SELECT 1 FROM client_legal_entities WHERE client_id=clients.id) as is_b2b')
+            );
         foreach ($q->cursor() as $r) {
             try {
                 DB::table('clients')
@@ -18,6 +23,7 @@ return new class extends Migration {
                         'name' => $r->name,
                         'description' => $r->description,
                         'status' => $r->status,
+                        'is_b2b' => (bool)$r->is_b2b,
                         'created_at' => $r->created,
                         'updated_at' => $r->updated
                     ]);

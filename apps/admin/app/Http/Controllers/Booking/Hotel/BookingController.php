@@ -393,11 +393,10 @@ class BookingController extends Controller
             ->hidden('legal_id', [
                 'label' => 'Юр. лицо',
             ])
-//            ->currency('currency_id', [
-//                'label' => 'Валюта',
-//                'required' => true,
-//                'value' => 1
-//            ])
+            ->currency('currency_id', [
+                'label' => 'Валюта',
+                'emptyItem' => '',
+            ])
             ->city('city_id', [
                 'label' => __('label.city'),
                 'emptyItem' => '',

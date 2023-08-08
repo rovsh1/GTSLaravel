@@ -2,9 +2,12 @@
 
 namespace Module\Hotel\Domain\Repository;
 
-use Sdk\Module\Support\Facades\DateTimeInterface;
+use Carbon\CarbonPeriod;
+use Module\Hotel\Domain\ValueObject\QuotaChangeTypeEnum;
 
 interface QuotaEventRepositoryInterface
 {
-    public function reserveRoomQuotaByDate(int $roomId, DateTimeInterface $period, int $quota);
+    public function registerChanges(int $roomId, CarbonPeriod $period, QuotaChangeTypeEnum $changeType, int $count, array $context): void;
+
+    public function resetRoomQuota(int $roomId, CarbonPeriod $period): void;
 }
