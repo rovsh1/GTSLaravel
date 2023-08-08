@@ -67,11 +67,14 @@ class SyncTravelineReservations implements ShouldQueue
             ->addSelect($this->getTravelineReservationsTable() . '.data as data');
 
         $q->chunk(100, function (Collection $collection) {
-            $updateData = $collection->map(fn(Reservation $reservation) => $this->mapReservationsToTravelineUpdateData($reservation))
+            $updateData = $collection->map(
+                fn(Reservation $reservation) => $this->mapReservationsToTravelineUpdateData($reservation)
+            )
                 ->filter()
                 ->all();
 
-            TravelineReservation::upsert($updateData, 'reservation_id', ['data', 'status', 'updated_at', 'accepted_at']);
+            TravelineReservation::upsert($updateData, 'reservation_id', ['data', 'status', 'updated_at', 'accepted_at']
+            );
         });
     }
 
@@ -86,6 +89,7 @@ class SyncTravelineReservations implements ShouldQueue
             })
             ->withClient()
             ->whereQuoteType()
+            ->withManagerEmail()
             ->with([
                 'rooms',
                 'rooms.guests',
@@ -126,7 +130,10 @@ class SyncTravelineReservations implements ShouldQueue
     private function createTravelineReservations(Collection $hotelReservations): void
     {
         $preparedReservations = $hotelReservations->map(function (Reservation $reservation) {
-            $reservationDto = $this->convertHotelReservationToDto($reservation, TravelineReservationStatusEnum::New->value);
+            $reservationDto = $this->convertHotelReservationToDto(
+                $reservation,
+                TravelineReservationStatusEnum::New->value
+            );
             if ($reservationDto->roomStays->count() === 0) {
                 return null;
             }
@@ -159,7 +166,7 @@ class SyncTravelineReservations implements ShouldQueue
                 ),
                 'status' => Dto\Reservation\StatusEnum::from($status),
                 'currencyCode' => env('DEFAULT_CURRENCY_CODE'),
-                'customer' => $this->convertFullNameToCustomer($reservation->client_name),
+                'customer' => $this->getDefaultCustomer($reservation->manager_email),
             ]
         );
     }
@@ -180,14 +187,14 @@ class SyncTravelineReservations implements ShouldQueue
         ];
     }
 
-    private function convertFullNameToCustomer(string $fullName): CustomerDto
+    private function getDefaultCustomer(?string $managerEmail): CustomerDto
     {
-        $fullNameParts = $this->getFullNameParts($fullName);
-
         return new CustomerDto(
-            $fullNameParts[0],
-            $fullNameParts[1],
-            $fullNameParts[2],
+            'GoToStans',
+            null,
+            null,
+            $managerEmail ?? 'info@gotostans.com',
+            '+998 78 120-90-12',
         );
     }
 
@@ -263,8 +270,10 @@ class SyncTravelineReservations implements ShouldQueue
         )->filter()->merge($fakeRooms)->all();
     }
 
-    private function buildAdditionalInfo(?Room\CheckInOutConditions $roomCheckInCondition, ?Room\CheckInOutConditions $roomCheckOutCondition): ?string
-    {
+    private function buildAdditionalInfo(
+        ?Room\CheckInOutConditions $roomCheckInCondition,
+        ?Room\CheckInOutConditions $roomCheckOutCondition
+    ): ?string {
         $comment = null;
         if ($roomCheckInCondition?->start !== null) {
             $comment = "Ранний заезд с {$roomCheckInCondition->start}.";
@@ -318,7 +327,11 @@ class SyncTravelineReservations implements ShouldQueue
          *  - если поздний заезд - включаем последний день периода
          */
         $preparedPeriod = $this->getPeriodByCheckInCondition($period, $hotelDefaultCheckInStart, $roomCheckInCondition);
-        $preparedPeriod = $this->getPeriodByCheckOutCondition($preparedPeriod, $hotelDefaultCheckOutEnd, $roomCheckOutCondition);
+        $preparedPeriod = $this->getPeriodByCheckOutCondition(
+            $preparedPeriod,
+            $hotelDefaultCheckOutEnd,
+            $roomCheckOutCondition
+        );
 
         $countDays = $preparedPeriod->count();
         $dailyPrice = $allDaysPrice / $countDays;
