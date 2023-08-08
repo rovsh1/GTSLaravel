@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Integration\Traveline\Infrastructure\Jobs\Legacy;
 
+use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -33,6 +34,6 @@ class SendTravelineNotifications implements ShouldQueue
     {
         $notificationsUrl = config('modules.Traveline.notifications_url');
 
-        return new TravelineAdapter(app(ClientInterface::class), $notificationsUrl);
+        return new TravelineAdapter(new Client(), $notificationsUrl);
     }
 }
