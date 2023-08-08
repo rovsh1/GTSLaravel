@@ -9,14 +9,14 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Module\Integration\Traveline\Domain\Adapter\TravelineAdapterInterface;
+use Module\Integration\Traveline\Infrastructure\Adapter\TravelineAdapter;
 use Module\Integration\Traveline\Infrastructure\Models\Legacy\TravelineReservation;
 
 class SendTravelineNotifications implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function handle(TravelineAdapterInterface $travelineAdapter): void
+    public function handle(TravelineAdapter $travelineAdapter): void
     {
         \Log::debug('[SendTravelineNotifications] Start');
         if (!TravelineReservation::whereNull('accepted_at')->exists()) {
