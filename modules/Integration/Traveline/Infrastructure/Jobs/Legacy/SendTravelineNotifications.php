@@ -33,6 +33,6 @@ class SendTravelineNotifications implements ShouldQueue
     {
         $notificationsUrl = config('modules.Traveline.notifications_url');
 
-        return new TravelineAdapter(new Client(), $notificationsUrl);
+        return new TravelineAdapter(new Client(['verify' => false]), $notificationsUrl);
     }
 }
