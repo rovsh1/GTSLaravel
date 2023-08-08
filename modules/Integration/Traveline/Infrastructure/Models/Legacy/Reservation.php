@@ -165,9 +165,8 @@ class Reservation extends Model
 
     public function scopeWithManagerEmail(Builder $builder)
     {
-        $builder->leftJoin('administrator_clients', 'administrator_clients.client_id', '=', 'clients.id')
-            ->leftJoin('administrators', 'administrators.id', '=', 'administrator_clients.administrator_id')
-            ->addSelect('administrator_clients.email as manager_email');
+        $builder->leftJoin('users', 'users.id', '=', 'clients.administrator_id')
+            ->addSelect('users.email as manager_email');
     }
 
     public function rooms()
