@@ -7,6 +7,7 @@ use Illuminate\Console\Application as Artisan;
 use Illuminate\Console\Command;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Module\Integration\Traveline\Infrastructure\Jobs\Legacy\SendTravelineNotifications;
 use Module\Integration\Traveline\Infrastructure\Jobs\Legacy\SyncTravelineReservations;
 
 class Kernel extends ConsoleKernel
@@ -21,6 +22,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->job(SyncTravelineReservations::class, null, 'sync');
+        $schedule->job(SendTravelineNotifications::class, null, 'sync');
     }
 
     /**
