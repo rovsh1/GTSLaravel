@@ -78,6 +78,7 @@ use Module\Integration\Traveline\Infrastructure\Models\Legacy\Hotel\OptionTypeEn
  * @method static Builder|Reservation whereType($value)
  * @method static Builder|Reservation whereUserId($value)
  * @method static Builder|Reservation withClient()
+ * @method static Builder|Reservation withManagerEmail()
  * @method static Builder|Reservation whereQuoteType()
  * @method static Builder|Reservation onlySoftDeleted()
  * @method static Builder|Reservation withoutSoftDeleted()
@@ -160,6 +161,13 @@ class Reservation extends Model
                 "{$clientsTable}.type as client_type",
                 "{$clientsTable}.name as client_name",
             ]);
+    }
+
+    public function scopeWithManagerEmail(Builder $builder)
+    {
+        $builder->leftJoin('administrator_clients', 'administrator_clients.client_id', '=', 'clients.id')
+            ->leftJoin('administrators', 'administrators.id', '=', 'administrator_clients.administrator_id')
+            ->addSelect('administrator_clients.email as manager_email');
     }
 
     public function rooms()
