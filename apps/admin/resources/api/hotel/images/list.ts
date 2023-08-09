@@ -42,7 +42,7 @@ export const useHotelRoomImagesAPI = (props: MaybeRef<HotelRoomImagesProps | nul
     `/hotels/${hotelID}/images/${roomID}/list`, {
     afterFetch: (ctx: AfterFetchContext<RoomImagesResponse>) =>
       alternateDataAfterFetch<RoomImagesResponse, UseHotelRoomImages>(ctx, (data) =>
-      (data.length > 0 ? data.map(({
+        (data.length > 0 ? data.map(({
           id,
           hotel_id: hotelID,
           room_id: roomID,

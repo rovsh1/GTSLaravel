@@ -1,6 +1,6 @@
-import { HotelImage, HotelImageID } from '~api/hotel/images'
-import { HotelRoom } from '~api/hotel/room'
-import { UseHotelImages, UseHotelRoomImages } from '~resources/api/hotel/images/list'
+import { UseHotelImages } from '~resources/api/hotel/images/list'
+
+import { HotelImageID } from '~api/hotel/images'
 
 export type SelectedFile = {
   id: string

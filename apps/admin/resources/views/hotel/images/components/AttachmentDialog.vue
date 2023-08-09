@@ -4,13 +4,11 @@ import { computed, ref, unref } from 'vue'
 import closeIcon from '@mdi/svg/svg/close.svg'
 import { MaybeRef } from '@vueuse/core'
 
-import { AttachmentDialogImageProp, isImageAttachedToRoom } from '~resources/views/hotel/images/components/lib'
+import { AttachmentDialogImageProp } from '~resources/views/hotel/images/components/lib'
 
-import { HotelRoomID } from '~api/hotel'
+import { HotelRoomID, HotelRoomImage } from '~api/hotel'
 import { HotelID } from '~api/hotel/get'
 import { useHotelRoomAttachImageAPI, useHotelRoomDetachImageAPI } from '~api/hotel/images/update'
-
-import { HotelRoomImage } from '~api/hotel'
 
 import BaseDialog from '~components/BaseDialog.vue'
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'

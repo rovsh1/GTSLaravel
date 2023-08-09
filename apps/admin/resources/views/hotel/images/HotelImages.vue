@@ -18,8 +18,8 @@ import { HotelID, HotelResponse, useHotelGetAPI } from '~api/hotel/get'
 import { FileResponse, HotelImage, HotelImageID } from '~api/hotel/images'
 import {
   UseHotelImages,
-  UseHotelRoomImages,
   useHotelImagesListAPI,
+  UseHotelRoomImages,
   useHotelRoomImagesAPI,
 } from '~api/hotel/images/list'
 import { useHotelImageRemoveAPI } from '~api/hotel/images/remove'
@@ -27,8 +27,8 @@ import { useHotelImagesReorderAPI } from '~api/hotel/images/reorder'
 import { useHotelRoomAttachImageAPI, useHotelRoomDetachImageAPI } from '~api/hotel/images/update'
 import { useHotelImagesUploadAPI } from '~api/hotel/images/upload'
 import { HotelRoom, useHotelRoomAPI } from '~api/hotel/room'
-import { UseHotelRooms, useHotelRoomsListAPI } from '~api/hotel/rooms'
-import { UseHotelRoomsImage, useHotelRoomsListWithAttachedImageAPI } from '~api/hotel/rooms-image'
+import { useHotelRoomsListWithAttachedImageAPI } from '~api/hotel/rooms-image'
+
 import { injectInitialData } from '~lib/vue'
 
 import BaseDialog from '~components/BaseDialog.vue'
@@ -54,10 +54,6 @@ const {
 } = useHotelImagesListAPI({ hotelID })
 
 const images = ref<UseHotelImages>(null)
-
-watch(imagesData, (value) => {
-  images.value = value
-})
 
 const hotelRoomImagesProps = computed(() =>
   (roomID === undefined ? null : { hotelID, roomID }))
@@ -136,12 +132,12 @@ const imageToRemove = computed<HotelImage | null>(() => {
 })
 
 const hotelImageRemoveProps = computed(() =>
-(imageIDToRemove.value === null
-  ? null
-  : {
-    hotelID,
-    imageID: imageIDToRemove.value,
-  }))
+  (imageIDToRemove.value === null
+    ? null
+    : {
+      hotelID,
+      imageID: imageIDToRemove.value,
+    }))
 
 const {
   isFetching: isImageRemoveFetching,
@@ -209,10 +205,10 @@ const isImageVisible = (id: HotelImageID): boolean => {
 const attachmentDialogImage = ref<AttachmentDialogImageProp | null>(null)
 
 const hotelRoomsWithAttachedImageProps = computed(() =>
-(attachmentDialogImage.value === null ? null : {
-  hotelID,
-  imageID: attachmentDialogImage.value.id,
-}))
+  (attachmentDialogImage.value === null ? null : {
+    hotelID,
+    imageID: attachmentDialogImage.value.id,
+  }))
 
 const isAttachmentDialogOpened = ref(false)
 
@@ -223,7 +219,7 @@ const {
 } = useHotelRoomsListWithAttachedImageAPI(hotelRoomsWithAttachedImageProps)
 
 watch([isAttachmentDialogOpened, hotelRoomsWithAttachedImageProps], (value) => {
-  if(value[0]) {
+  if (value[0]) {
     fetchHotelRoomsWithAttachedImage()
   }
 })
@@ -235,7 +231,7 @@ fetchImages()
 
 type OpenAttachmentDialogProps = { id: HotelImageID } & Pick<FileResponse, 'url' | 'name'>
 const openAttachmentDialog = async ({ id, url, name }: OpenAttachmentDialogProps) => {
-  attachmentDialogImage.value = { id, src: url, alt: name } 
+  attachmentDialogImage.value = { id, src: url, alt: name }
   isAttachmentDialogOpened.value = true
 }
 
@@ -262,6 +258,21 @@ const isInitialFetching = computed(() => (
 const isRefetching = computed(() => (
   isRoomFetching.value || isImagesFetching.value || isRoomImagesFetching.value
 ))
+
+const sortedPhotosIfSetRoomID = () => {
+  if (roomID) {
+    const attachedImages = images.value?.filter((image) => isImageAttachedToRoom(image.id, roomImages.value)) as UseHotelImages
+    const unAttachedImages = images.value?.filter((image) => !isImageAttachedToRoom(image.id, roomImages.value)) as UseHotelImages
+    images.value = attachedImages?.concat(unAttachedImages || []) as UseHotelImages
+  }
+  executeHotelImagesReorder()
+}
+
+watch(imagesData, (value) => {
+  images.value = value
+  sortedPhotosIfSetRoomID()
+})
+
 </script>
 <template>
   <BaseLayout :title="title" :loading="isHotelFetching">
@@ -279,105 +290,111 @@ const isRefetching = computed(() => (
     <div v-else-if="images === null || images.length === 0">
       У этого отеля ещё нет фото. Загрузите их, нажав на кнопку выше.
     </div>
-    <VueDraggable
-      v-else
-      v-model="images"
-      class="images"
-      handle="[data-draggable-handle]"
-      animation="300"
-      @update="executeHotelImagesReorder"
-    >
-      <OverlayLoading v-if="isRefetching" />
-      <div
-        v-for="{ id, file: { url, name } } in images"
-        :key="id"
-        class="card"
-        :class="{ hidden: !isImageVisible(id) }"
+    <div v-else>
+      <VueDraggable
+        v-model="images"
+        class="images"
+        handle="[data-draggable-handle]"
+        animation="300"
+        @update="sortedPhotosIfSetRoomID"
       >
-        <div class="pictureContainer">
-          <BootstrapButton
-            data-draggable-handle
-            class="imageDragHandle"
-            label="Потяните, чтобы изменить порядок фотографий"
-            severity="dark"
-            :only-icon="dragIcon"
-            :loading="isHotelImagesReorderFetching"
-          />
-          <div
-            v-if="
-              roomID !== undefined
-                && room !== null
-                && !isImageAttachedToRoom(id, roomImages)
-            "
-            class="pictureOverlay"
-          >
-            <InlineSVG :src="linkOffIcon" class="pictureOverlayIcon" />
-            Фото не привязано к номеру
-          </div>
-          <ImageZoom
-            class="card-img-top picture"
-            :class="{
-              isNotAttachedToRoom:
+        <OverlayLoading v-if="isRefetching" />
+        <div
+          v-for="{ id, file: { url, name } } in images"
+          :key="id"
+          class="card"
+          :class="{ hidden: !isImageVisible(id) }"
+        >
+          <div class="pictureContainer">
+            <BootstrapButton
+              v-if="
+                (roomID !== undefined
+                  && room !== null
+                  && isImageAttachedToRoom(id, roomImages)) || (roomID == undefined || room == null)
+              "
+              data-draggable-handle
+              class="imageDragHandle"
+              label="Потяните, чтобы изменить порядок фотографий"
+              severity="dark"
+              :only-icon="dragIcon"
+              :loading="isHotelImagesReorderFetching"
+            />
+            <div
+              v-if="
                 roomID !== undefined
-                && room !== null
-                && !isImageAttachedToRoom(id, roomImages),
-            }"
-            :src="url"
-            :alt="name"
-          />
-        </div>
-        <div class="card-body">
-          <div class="actions">
-            <div class="actionsStart">
-              <template v-if="roomID">
-                <BootstrapButton
-                  v-if="room !== null && !isImageAttachedToRoom(id, roomImages)"
-                  severity="primary"
-                  variant="outline"
-                  label="Привязать к номеру"
-                  :start-icon="linkIcon"
-                  @click="attachImageToRoom(id)"
-                />
-                <BootstrapButton
-                  v-else
-                  severity="warning"
-                  label="Отвязать от номера"
-                  :start-icon="linkOffIcon"
-                  @click="deleteRoomImage(id)"
-                />
-              </template>
-              <template v-else>
-                <BootstrapButton
-                  severity="primary"
-                  variant="outline"
-                  label="Привязать к номерам"
-                  :start-icon="linkIcon"
-                  @click="openAttachmentDialog({ id, url, name })"
-                  @mouseover="attachmentDialogImage = { id, src: url, alt: name }"
-                  @focusin="attachmentDialogImage = { id, src: url, alt: name }"
-                />
-              </template>
+                  && room !== null
+                  && !isImageAttachedToRoom(id, roomImages)
+              "
+              class="pictureOverlay"
+            >
+              <InlineSVG :src="linkOffIcon" class="pictureOverlayIcon" />
+              Фото не привязано к номеру
             </div>
-            <div class="actionsEnd">
-              <BootstrapButton
-                v-if="
-                  roomID === undefined
-                    || (
-                      room !== null
-                      && !isImageAttachedToRoom(id, roomImages)
-                    )
-                "
-                label="Удалить"
-                severity="danger"
-                :only-icon="trashIcon"
-                :loading="isImageRemoveFetching && imageIDToRemove === id"
-                @click="removeImage(id)"
-              />
+            <ImageZoom
+              class="card-img-top picture"
+              :class="{
+                isNotAttachedToRoom:
+                  roomID !== undefined
+                  && room !== null
+                  && !isImageAttachedToRoom(id, roomImages),
+              }"
+              :src="url"
+              :alt="name"
+            />
+          </div>
+          <div class="card-body">
+            <div class="actions">
+              <div class="actionsStart">
+                <template v-if="roomID">
+                  <BootstrapButton
+                    v-if="room !== null && !isImageAttachedToRoom(id, roomImages)"
+                    severity="primary"
+                    variant="outline"
+                    label="Привязать к номеру"
+                    :start-icon="linkIcon"
+                    @click="attachImageToRoom(id)"
+                  />
+                  <BootstrapButton
+                    v-else
+                    severity="warning"
+                    label="Отвязать от номера"
+                    :start-icon="linkOffIcon"
+                    @click="deleteRoomImage(id)"
+                  />
+                </template>
+                <template v-else>
+                  <BootstrapButton
+                    severity="primary"
+                    variant="outline"
+                    label="Привязать к номерам"
+                    :start-icon="linkIcon"
+                    @click="openAttachmentDialog({ id, url, name })"
+                    @mouseover="attachmentDialogImage = { id, src: url, alt: name }"
+                    @focusin="attachmentDialogImage = { id, src: url, alt: name }"
+                  />
+                </template>
+              </div>
+              <div class="actionsEnd">
+                <BootstrapButton
+                  v-if="
+                    roomID === undefined
+                      || (
+                        room !== null
+                        && !isImageAttachedToRoom(id, roomImages)
+                      )
+                  "
+                  label="Удалить"
+                  severity="danger"
+                  :only-icon="trashIcon"
+                  :loading="isImageRemoveFetching && imageIDToRemove === id"
+                  @click="removeImage(id)"
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </vuedraggable>
+      </vuedraggable>
+    </div>
   </BaseLayout>
   <UploadDialog
     :opened="isUploadDialogOpened"
