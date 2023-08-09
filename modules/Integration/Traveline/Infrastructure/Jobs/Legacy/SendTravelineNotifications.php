@@ -20,13 +20,11 @@ class SendTravelineNotifications implements ShouldQueue
 
     public function handle(): void
     {
-        \Log::debug('[SendTravelineNotifications] Start');
         if (!TravelineReservation::whereNull('accepted_at')->exists()) {
             return;
         }
         $travelineAdapter = $this->getTravelineAdapter();
         $travelineAdapter->sendReservationNotification();
-        \Log::debug('[SendTravelineNotifications] End');
     }
 
     private function getTravelineAdapter(): TravelineAdapterInterface
