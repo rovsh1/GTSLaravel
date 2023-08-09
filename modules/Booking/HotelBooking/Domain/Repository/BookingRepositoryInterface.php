@@ -13,6 +13,7 @@ use Module\Booking\HotelBooking\Domain\ValueObject\Details\BookingPeriod;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\CancelConditions;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\HotelInfo;
 use Module\Shared\Domain\ValueObject\Id;
+use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 
 interface BookingRepositoryInterface extends Base
 {
@@ -28,7 +29,8 @@ interface BookingRepositoryInterface extends Base
         BookingPeriod $period,
         ?string $note = null,
         HotelInfo $hotelInfo,
-        CancelConditions $cancelConditions
+        CancelConditions $cancelConditions,
+        QuotaProcessingMethodEnum $quotaProcessingMethod,
     ): Booking;
 
     public function store(Booking $booking): bool;

@@ -54,7 +54,7 @@
                             </tr>
                             <tr>
                                 <th>Тип брони</th>
-                                <td>-</td>
+                                <td>{{$model->quotaProcessingMethod === \Module\Shared\Enum\Booking\QuotaProcessingMethodEnum::REQUEST ? 'По запросу' : 'По квоте'}}</td>
                             </tr>
                             <tr>
                                 <th>Тип карты оплаты</th>

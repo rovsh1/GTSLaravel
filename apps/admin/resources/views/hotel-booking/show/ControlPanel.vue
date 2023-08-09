@@ -384,14 +384,15 @@ onMounted(() => {
       </div>
     </div>
 
-    <RequestBlock
-      v-if="canSendClientVoucher"
-      variant="success"
-      text="При необходимости клиенту можно отправить ваучер"
-      button-text="Отправить ваучер"
-      :loading="isVoucherFetching"
-      @click="handleVoucherSend"
-    />
+    <!--    @todo будет перенесено в order-->
+    <!--    <RequestBlock-->
+    <!--      v-if="canSendClientVoucher"-->
+    <!--      variant="success"-->
+    <!--      text="При необходимости клиенту можно отправить ваучер"-->
+    <!--      button-text="Отправить ваучер"-->
+    <!--      :loading="isVoucherFetching"-->
+    <!--      @click="handleVoucherSend"-->
+    <!--    />-->
   </ControlPanelSection>
 
   <ControlPanelSection title="Условия отмены" class="mt-4">

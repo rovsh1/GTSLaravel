@@ -16,6 +16,7 @@ class CreateBookingDto
         public readonly int $hotelId,
         public readonly CarbonPeriod $period,
         public readonly int $creatorId,
+        public readonly int $quotaProcessingMethod,
         public readonly ?int $orderId,
         public readonly ?string $note = null
     ) {}
