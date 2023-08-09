@@ -1,14 +1,14 @@
 import axios from '~resources/js/app/api'
 
+import { downloadDocument } from '~api/booking/document'
 import { BookingRequest } from '~api/booking/request'
 import { BookingAvailableActionsResponse } from '~api/booking/status'
 import { BookingVoucher } from '~api/booking/voucher'
-import { showConfirmDialog } from '~lib/confirm-dialog'
-import createPopover, { PopoverItem } from '~lib/popover/popover'
-import { getHumanRequestType } from '~lib/human-request-type'
-import { formatDateTime } from '~lib/date'
-import { downloadDocument } from '~api/booking/document'
 
+import { showConfirmDialog } from '~lib/confirm-dialog'
+import { formatDateTime } from '~lib/date'
+import { getHumanRequestType } from '~lib/human-request-type'
+import createPopover, { PopoverItem } from '~lib/popover/popover'
 
 import '~resources/views/main'
 
@@ -75,7 +75,7 @@ $(() => {
       .on('click', async (e: any) => {
         e.preventDefault()
         const { data: availableActions } = await axios.get<BookingAvailableActionsResponse>(`/hotel-booking/${bookingId}/actions/available`)
-        let popoverContentSend: Array<PopoverItem> = []
+        const popoverContentSend: Array<PopoverItem> = []
         let requestText
         if (availableActions.canSendBookingRequest) {
           requestText = 'Запрос на бронирование еще не отправлен'
@@ -87,32 +87,32 @@ $(() => {
           requestText = 'Бронирование подтверждено, до выставления счета доступен запрос на отмену'
         }
         if (availableActions.isRequestable && requestText) {
-          let popoverContentActions: PopoverItem = {
+          const popoverContentActions: PopoverItem = {
             text: requestText,
-            buttonText: "Отправить",
+            buttonText: 'Отправить',
             callback: async () => {
-              await axios.post(`/${bookingId}/request`)
+              await axios.post(`/hotel-booking/${bookingId}/request`)
               location.reload()
-            }
+            },
           }
-          popoverContentSend.push(popoverContentActions);
+          popoverContentSend.push(popoverContentActions)
         }
         if (availableActions.canSendVoucher) {
           const voucherText = 'При необходимости клиенту можно отправить ваучер'
-          let popoverContentVoucher: PopoverItem = {
+          const popoverContentVoucher: PopoverItem = {
             text: voucherText,
-            buttonText: "Отправить",
+            buttonText: 'Отправить',
             callback: async () => {
-              await axios.post(`/${bookingId}/voucher`)
+              await axios.post(`/hotel-booking/${bookingId}/voucher`)
               location.reload()
-            }
+            },
           }
-          popoverContentSend.push(popoverContentVoucher);
+          popoverContentSend.push(popoverContentVoucher)
         }
         const popover = createPopover({
           relationElement: e.currentTarget,
-          textForEmpty: "Нет возможных действий",
-          content: popoverContentSend
+          textForEmpty: 'Нет возможных действий',
+          content: popoverContentSend,
         })
       })
 
@@ -123,44 +123,44 @@ $(() => {
           axios.get<BookingRequest[]>(`/hotel-booking/${bookingId}/request/list`),
           axios.get<BookingVoucher[]>(`/hotel-booking/${bookingId}/voucher/list`),
         ])
-        let popoverContentDownload: Array<PopoverItem> = []
+        const popoverContentDownload: Array<PopoverItem> = []
         const groupedRequests: { [type: string]: BookingRequest[] } = requests.reduce((result, request) => {
           if (!result[request.type]) {
-            result[request.type] = [];
+            result[request.type] = []
           }
-          result[request.type].push(request);
-          return result;
-        }, {} as any);
+          result[request.type].push(request)
+          return result
+        }, {} as any)
         for (const groupName in groupedRequests) {
-          groupedRequests[groupName].sort((a: BookingRequest, b: BookingRequest) => new Date(b.dateCreate).getTime() - new Date(a.dateCreate).getTime());
-          let groupFirstRequest = groupedRequests[groupName].length ? groupedRequests[groupName][0] : null;
-          if(groupFirstRequest) {
-            let popoverContentActions: PopoverItem = {
+          groupedRequests[groupName].sort((a: BookingRequest, b: BookingRequest) => new Date(b.dateCreate).getTime() - new Date(a.dateCreate).getTime())
+          const groupFirstRequest = groupedRequests[groupName].length ? groupedRequests[groupName][0] : null
+          if (groupFirstRequest) {
+            const popoverContentActions: PopoverItem = {
               text: `Запрос на ${getHumanRequestType(groupFirstRequest.type)} от ${formatDateTime(groupFirstRequest.dateCreate)}`,
-              buttonText: "Скачать",
+              buttonText: 'Скачать',
               callback: async () => {
                 if (groupFirstRequest?.id) {
                   await downloadDocument({ documentID: groupFirstRequest.id, documentType: 'request', bookingID: bookingId })
                 }
-              }
+              },
             }
-            popoverContentDownload.push(popoverContentActions);
+            popoverContentDownload.push(popoverContentActions)
           }
         }
         vouchers.forEach((voucher) => {
-          let popoverContentVouchers: PopoverItem = {
+          const popoverContentVouchers: PopoverItem = {
             text: `Ваучер от ${formatDateTime(voucher.dateCreate)}`,
-            buttonText: "Скачать",
+            buttonText: 'Скачать',
             callback: async () => {
               await downloadDocument({ documentID: voucher.id, documentType: 'voucher', bookingID: bookingId })
-            }
+            },
           }
-          popoverContentDownload.push(popoverContentVouchers);
+          popoverContentDownload.push(popoverContentVouchers)
         })
         const popover = createPopover({
           relationElement: e.currentTarget,
-          textForEmpty: "Нет возможных действий",
-          content: popoverContentDownload
+          textForEmpty: 'Нет возможных действий',
+          content: popoverContentDownload,
         })
       })
     const $buttonsWrapper = $('<div />', { class: 'd-flex flex-row gap-2' }).append($sendButton).append($downloadButton)
