@@ -4,6 +4,7 @@ namespace Module\Integration\Traveline\Domain\Adapter;
 
 use Carbon\CarbonInterface;
 use Module\Integration\Traveline\Application\Dto\ReservationDto;
+use Module\Integration\Traveline\Infrastructure\Models\Legacy\TravelineReservationStatusEnum;
 
 interface ReservationAdapterInterface
 {
@@ -27,5 +28,5 @@ interface ReservationAdapterInterface
      */
     public function getUpdatedReservations(CarbonInterface $startDate, ?int $hotelId = null): array;
 
-    public function confirmReservation(int $id, string $status): void;
+    public function confirmReservation(int $id, TravelineReservationStatusEnum $status): void;
 }

@@ -7,6 +7,7 @@ use Carbon\CarbonPeriod;
 use Module\Integration\Traveline\Application\Dto\Reservation;
 use Module\Integration\Traveline\Application\Dto\ReservationDto;
 use Module\Integration\Traveline\Domain\Adapter\ReservationAdapterInterface;
+use Module\Integration\Traveline\Infrastructure\Models\Legacy\TravelineReservationStatusEnum;
 use Module\Shared\Infrastructure\Adapter\AbstractPortAdapter;
 
 class ReservationAdapter extends AbstractPortAdapter implements ReservationAdapterInterface
@@ -16,9 +17,10 @@ class ReservationAdapter extends AbstractPortAdapter implements ReservationAdapt
      * Если менеджер каналов НЕ подтверждает получение брони ответом, содержащим «success»: true, то каналу необходимо хранить и отдавать в последующих запросах данное бронирование на своей стороне до момента подтверждения менеджером каналов его получения.
      * Менеджер каналов подтверждает факт успешного приема бронирований функцией GetBookingsActionRS.
      * @param int $id
+     * @param TravelineReservationStatusEnum $status
      * @return void
      */
-    public function confirmReservation(int $id, string $status): void
+    public function confirmReservation(int $id, TravelineReservationStatusEnum $status): void
     {
         // TODO: Implement confirmReservation() method.
         //todo логика: помечаем флагом последнюю бронь по номеру и статусу

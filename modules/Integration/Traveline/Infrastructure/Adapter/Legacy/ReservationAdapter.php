@@ -7,17 +7,21 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Module\Integration\Traveline\Application\Dto\ReservationDto;
 use Module\Integration\Traveline\Domain\Adapter\ReservationAdapterInterface;
+use Module\Integration\Traveline\Infrastructure\Models\Legacy\Reservation;
+use Module\Integration\Traveline\Infrastructure\Models\Legacy\ReservationStatusEnum;
 use Module\Integration\Traveline\Infrastructure\Models\Legacy\TravelineReservation;
+use Module\Integration\Traveline\Infrastructure\Models\Legacy\TravelineReservationStatusEnum;
 use Module\Reservation\Common\Domain\Exception\ReservationNotFound;
 
 class ReservationAdapter implements ReservationAdapterInterface
 {
     /**
      * @param int $id
+     * @param TravelineReservationStatusEnum $status
      * @return void
      * @throws \Throwable
      */
-    public function confirmReservation(int $id, string $status): void
+    public function confirmReservation(int $id, TravelineReservationStatusEnum $status): void
     {
         $existReservation = TravelineReservation::whereReservationId($id)->exists();
         if (!$existReservation) {
@@ -26,6 +30,10 @@ class ReservationAdapter implements ReservationAdapterInterface
         TravelineReservation::whereReservationId($id)
             ->whereStatus($status)
             ->update(['accepted_at' => now()]);
+
+        if ($status === TravelineReservationStatusEnum::New) {
+            Reservation::whereId($id)->update(['status' => ReservationStatusEnum::Confirmed]);
+        }
     }
 
     public function getActiveReservations(): array

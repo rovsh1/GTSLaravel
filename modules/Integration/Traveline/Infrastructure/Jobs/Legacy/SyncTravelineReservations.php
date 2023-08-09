@@ -38,6 +38,8 @@ class SyncTravelineReservations implements ShouldQueue
     {
         $q = $this->getReservationQuery()
             ->withoutSoftDeleted()
+            //Processing - созданная чрез админку. Paid - создана через сайт и оплачена картой. Confirmed - создана через сайт и оплата по договору.
+            ->whereIn('reservation.status', [ReservationStatusEnum::Processing, ReservationStatusEnum::Paid, ReservationStatusEnum::Confirmed])
             ->whereNotExists(function ($query) {
                 $query->select(\DB::raw(1))
                     ->from("{$this->getTravelineReservationsTable()} as t")
@@ -73,8 +75,7 @@ class SyncTravelineReservations implements ShouldQueue
                 ->filter()
                 ->all();
 
-            TravelineReservation::upsert($updateData, 'reservation_id', ['data', 'status', 'updated_at', 'accepted_at']
-            );
+            TravelineReservation::upsert($updateData, 'reservation_id', ['data', 'status', 'updated_at', 'accepted_at']);
         });
     }
 
