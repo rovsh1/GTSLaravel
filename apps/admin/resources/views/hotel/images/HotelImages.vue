@@ -18,6 +18,7 @@ import { HotelID, HotelResponse, useHotelGetAPI } from '~api/hotel/get'
 import { FileResponse, HotelImage, HotelImageID } from '~api/hotel/images'
 import {
   UseHotelImages,
+  UseHotelRoomImages,
   useHotelImagesListAPI,
   useHotelRoomImagesAPI,
 } from '~api/hotel/images/list'
@@ -27,7 +28,7 @@ import { useHotelRoomAttachImageAPI, useHotelRoomDetachImageAPI } from '~api/hot
 import { useHotelImagesUploadAPI } from '~api/hotel/images/upload'
 import { HotelRoom, useHotelRoomAPI } from '~api/hotel/room'
 import { UseHotelRooms, useHotelRoomsListAPI } from '~api/hotel/rooms'
-
+import { UseHotelRoomsImage, useHotelRoomsListWithAttachedImageAPI } from '~api/hotel/rooms-image'
 import { injectInitialData } from '~lib/vue'
 
 import BaseDialog from '~components/BaseDialog.vue'
@@ -67,7 +68,7 @@ const {
   isFetching: isRoomImagesFetching,
 } = useHotelRoomImagesAPI(hotelRoomImagesProps)
 
-const roomImages = computed<UseHotelImages>(() => roomImagesData.value)
+const roomImages = computed<UseHotelRoomImages>(() => roomImagesData.value)
 
 const {
   execute: fetchHotel,
@@ -135,12 +136,12 @@ const imageToRemove = computed<HotelImage | null>(() => {
 })
 
 const hotelImageRemoveProps = computed(() =>
-  (imageIDToRemove.value === null
-    ? null
-    : {
-      hotelID,
-      imageID: imageIDToRemove.value,
-    }))
+(imageIDToRemove.value === null
+  ? null
+  : {
+    hotelID,
+    imageID: imageIDToRemove.value,
+  }))
 
 const {
   isFetching: isImageRemoveFetching,
@@ -202,34 +203,40 @@ const deleteRoomImage = async (imageID: number) => {
 
 const isImageVisible = (id: HotelImageID): boolean => {
   if (roomID === undefined || room.value === null) return true
-  return isImageAttachedToRoom(id, room.value) !== undefined
+  return isImageAttachedToRoom(id, roomImages.value) !== undefined
 }
 
-const {
-  data: hotelRoomsData,
-  execute: fetchHotelRooms,
-  isFetching: isHotelRoomsFetching,
-} = useHotelRoomsListAPI({ hotelID })
+const attachmentDialogImage = ref<AttachmentDialogImageProp | null>(null)
 
-const hotelRooms = computed<UseHotelRooms>(() => hotelRoomsData.value)
+const hotelRoomsWithAttachedImageProps = computed(() =>
+(attachmentDialogImage.value === null ? null : {
+  hotelID,
+  imageID: attachmentDialogImage.value.id,
+}))
+
+const isAttachmentDialogOpened = ref(false)
+
+const {
+  data: hotelRoomsWithAttachedImage,
+  execute: fetchHotelRoomsWithAttachedImage,
+  isFetching: isHotelRoomsWithAttachedImageFetching,
+} = useHotelRoomsListWithAttachedImageAPI(hotelRoomsWithAttachedImageProps)
+
+watch([isAttachmentDialogOpened, hotelRoomsWithAttachedImageProps], (value) => {
+  if(value[0]) {
+    fetchHotelRoomsWithAttachedImage()
+  }
+})
 
 fetchRoom()
 fetchRoomImages()
 fetchHotel()
 fetchImages()
 
-if (roomID === undefined) {
-  fetchHotelRooms()
-}
-
-const attachmentDialogImage = ref<AttachmentDialogImageProp | null>(null)
-
-const isAttachmentDialogOpened = ref(false)
-
 type OpenAttachmentDialogProps = { id: HotelImageID } & Pick<FileResponse, 'url' | 'name'>
-const openAttachmentDialog = ({ id, url, name }: OpenAttachmentDialogProps) => {
+const openAttachmentDialog = async ({ id, url, name }: OpenAttachmentDialogProps) => {
+  attachmentDialogImage.value = { id, src: url, alt: name } 
   isAttachmentDialogOpened.value = true
-  attachmentDialogImage.value = { id, src: url, alt: name }
 }
 
 const closeAttachmentDialog = () => {
@@ -300,7 +307,7 @@ const isRefetching = computed(() => (
             v-if="
               roomID !== undefined
                 && room !== null
-                && !isImageAttachedToRoom(id, room)
+                && !isImageAttachedToRoom(id, roomImages)
             "
             class="pictureOverlay"
           >
@@ -313,7 +320,7 @@ const isRefetching = computed(() => (
               isNotAttachedToRoom:
                 roomID !== undefined
                 && room !== null
-                && !isImageAttachedToRoom(id, room),
+                && !isImageAttachedToRoom(id, roomImages),
             }"
             :src="url"
             :alt="name"
@@ -324,7 +331,7 @@ const isRefetching = computed(() => (
             <div class="actionsStart">
               <template v-if="roomID">
                 <BootstrapButton
-                  v-if="room !== null && !isImageAttachedToRoom(id, room)"
+                  v-if="room !== null && !isImageAttachedToRoom(id, roomImages)"
                   severity="primary"
                   variant="outline"
                   label="Привязать к номеру"
@@ -357,7 +364,7 @@ const isRefetching = computed(() => (
                   roomID === undefined
                     || (
                       room !== null
-                      && !isImageAttachedToRoom(id, room)
+                      && !isImageAttachedToRoom(id, roomImages)
                     )
                 "
                 label="Удалить"
@@ -410,14 +417,14 @@ const isRefetching = computed(() => (
     </template>
   </BaseDialog>
   <AttachmentDialog
-    v-if="attachmentDialogImage !== null && hotelRooms !== null"
+    v-if="attachmentDialogImage !== null && hotelRoomsWithAttachedImage !== null"
     :image="attachmentDialogImage"
-    :rooms="hotelRooms"
-    :is-rooms-fetching="isHotelRoomsFetching"
+    :rooms="hotelRoomsWithAttachedImage"
+    :is-rooms-fetching="isHotelRoomsWithAttachedImageFetching"
     :hotel="hotelID as HotelID"
     :opened="isAttachmentDialogOpened"
+    @update-attached-image-rooms="fetchHotelRoomsWithAttachedImage"
     @close="closeAttachmentDialog"
-    @update-rooms="fetchHotelRooms"
   />
 </template>
 <style lang="scss" scoped>

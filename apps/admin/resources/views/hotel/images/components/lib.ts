@@ -1,5 +1,6 @@
-import { HotelImageID } from '~api/hotel/images'
+import { HotelImage, HotelImageID } from '~api/hotel/images'
 import { HotelRoom } from '~api/hotel/room'
+import { UseHotelImages, UseHotelRoomImages } from '~resources/api/hotel/images/list'
 
 export type SelectedFile = {
   id: string
@@ -16,5 +17,4 @@ export type AttachmentDialogImageProp = {
   alt: string
 }
 
-export const isImageAttachedToRoom = (id: HotelImageID, room: HotelRoom): boolean =>
-  room.images?.find((image) => image.id === id) !== undefined
+export const isImageAttachedToRoom = (id: HotelImageID, roomImages: UseHotelImages): boolean => roomImages?.find((image) => image?.id === id) !== undefined

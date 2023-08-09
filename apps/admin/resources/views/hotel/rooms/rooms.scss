@@ -23,6 +23,14 @@
     height: 200px;
     background: #F3F3F3 url("~resources/images/nophoto.webp") 50% 50% no-repeat;
 
+    img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+    }
+
     .name {
       position: absolute;
       bottom: 0;
