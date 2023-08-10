@@ -140,6 +140,7 @@ const remove = (idToRemove: string) => {
   object-fit: cover;
   object-position: center;
   max-width: 100%;
+  height: 140px;
   border-radius: 0.75em;
   aspect-ratio: 1/1;
 }
@@ -149,7 +150,7 @@ const remove = (idToRemove: string) => {
   max-width: 100%;
   font-size: 0.9em;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  white-space: normal;
 }
 
 .input {

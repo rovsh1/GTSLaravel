@@ -4,12 +4,11 @@ import { computed, ref, unref } from 'vue'
 import closeIcon from '@mdi/svg/svg/close.svg'
 import { MaybeRef } from '@vueuse/core'
 
-import { AttachmentDialogImageProp, isImageAttachedToRoom } from '~resources/views/hotel/images/components/lib'
+import { AttachmentDialogImageProp } from '~resources/views/hotel/images/components/lib'
 
-import { HotelRoomID } from '~api/hotel'
+import { HotelRoomID, HotelRoomImage } from '~api/hotel'
 import { HotelID } from '~api/hotel/get'
 import { useHotelRoomAttachImageAPI, useHotelRoomDetachImageAPI } from '~api/hotel/images/update'
-import { HotelRoom } from '~api/hotel/room'
 
 import BaseDialog from '~components/BaseDialog.vue'
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
@@ -18,7 +17,7 @@ import BootstrapCheckbox from '~components/Bootstrap/BootstrapCheckbox.vue'
 const props = withDefaults(defineProps<{
   image: AttachmentDialogImageProp
   hotel: HotelID
-  rooms: HotelRoom[]
+  rooms: HotelRoomImage[]
   isRoomsFetching?: MaybeRef<boolean>
   opened: boolean
 }>(), {
@@ -27,7 +26,7 @@ const props = withDefaults(defineProps<{
 
 const emit = defineEmits<{
   (event: 'close'): void
-  (event: 'update-rooms'): void
+  (event: 'update-attached-image-rooms'): void
 }>()
 
 const roomIDToChangeImageAttachment = ref<HotelRoomID | null>(null)
@@ -58,14 +57,14 @@ const changeImageAttachment = async (roomID: HotelRoomID, value: boolean) => {
     await executeAttach()
     if (attachData.value !== null && attachData.value.success) {
       roomIDToChangeImageAttachment.value = null
-      emit('update-rooms')
+      emit('update-attached-image-rooms')
     }
   } else {
     roomIDToChangeImageAttachment.value = roomID
     await executeDetach()
     if (detachData.value !== null && detachData.value.success) {
       roomIDToChangeImageAttachment.value = null
-      emit('update-rooms')
+      emit('update-attached-image-rooms')
     }
   }
 }
@@ -95,7 +94,7 @@ const isCheckboxDisabled = computed<boolean>(() =>
           >
             <BootstrapCheckbox
               :label="room.customName"
-              :value="isImageAttachedToRoom(image.id, room)"
+              :value="room.isImageLinked"
               :disabled="isCheckboxDisabled"
               @input="value => changeImageAttachment(room.id, value)"
             />
