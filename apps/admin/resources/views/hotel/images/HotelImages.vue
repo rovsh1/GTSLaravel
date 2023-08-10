@@ -408,7 +408,6 @@ watch([imagesData, roomImages], (value) => {
                 </template>
               </div>
               <div class="actionsEnd">
-                {{ id }}
                 <BootstrapButton
                   v-if="
                     roomID === undefined
