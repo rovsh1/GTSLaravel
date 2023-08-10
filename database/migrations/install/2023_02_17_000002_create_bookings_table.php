@@ -12,7 +12,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('bookings', function (Blueprint $table) {
-            $table->increments('id');
+            $table->increments('id')->from(100);
             $table->unsignedInteger('order_id');
             $table->tinyInteger('type');
             $table->tinyInteger('status');

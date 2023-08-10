@@ -173,7 +173,7 @@ $(() => {
         }) */
         createPopover({
           relationElement: e.currentTarget,
-          textForEmpty: 'Нет возможных действий',
+          textForEmpty: 'Нет файлов для загрузки',
           content: popoverContentDownload,
         })
       })

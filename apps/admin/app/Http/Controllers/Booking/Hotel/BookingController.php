@@ -324,28 +324,29 @@ class BookingController extends Controller
         return Grid::enableQuicksearch()
             ->setSearchForm($this->searchForm())
             ->checkbox('checked', ['checkboxClass' => 'js-select-booking', 'dataAttributeName' => 'booking-id'])
-            ->id('id', ['text' => '№', 'route' => $this->prototype->routeName('show'), 'order' => true])
+            ->id('id', [
+                'text' => '№',
+                'order' => true,
+                'renderer' => function ($row, $val) {
+                    $bookingUrl = route($this->prototype->routeName('show'), $row['id']);
+                    $idLink = "<a href='{$bookingUrl}' target='_blank'>{$row['id']}</a>";
+                    $orderId = $row['order_id'];
+                    $orderUrl = route('booking-order.show', $orderId);
+                    $orderLink = "<a href='{$orderUrl}' target='_blank'>{$orderId}</a>";
+
+                    return "$idLink / {$orderLink}";
+                }
+            ])
             ->bookingStatus('status', ['text' => 'Статус', 'statuses' => StatusAdapter::getStatuses(), 'order' => true])
-            ->id(
-                'order_id',
-                [
-                    'text' => '№ заказа',
-                    'route' => fn($r) => route('booking-order.show', $r['order_id']),
-                    'order' => true
-                ]
-            )
             ->text('client_name', ['text' => 'Клиент'])
             ->text('manager_name', ['text' => 'Менеджер'])
             ->text(
                 'date_start',
-                [
-                    'text' => 'Заезд - выезд',
-                    'renderer' => fn($row, $val) => \Format::period(new CarbonPeriod($val, $row['date_end']))
-                ]
+                ['text' => 'Заезд - выезд', 'renderer' => fn($row, $val) => \Format::period(new CarbonPeriod($val, $row['date_end']))]
             )
             ->text(
                 'city_name',
-                ['text' => 'Город/Отель', 'renderer' => fn($row, $val) => "{$val}/{$row['hotel_name']}"]
+                ['text' => 'Город / Отель', 'renderer' => fn($row, $val) => "{$val} / {$row['hotel_name']}"]
             )
             ->text(
                 'room_names',
@@ -362,6 +363,7 @@ class BookingController extends Controller
     private function searchForm()
     {
         return (new SearchForm())
+            ->number('order_id', ['label' => '№ Заказа'])
             ->country('country_id', ['label' => 'Страна', 'default' => '1'])
             ->city('city_id', ['label' => 'Город', 'emptyItem' => '', 'onlyWithHotels' => true])
             ->hidden('hotel_id', ['label' => 'Отель'])
