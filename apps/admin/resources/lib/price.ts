@@ -1,5 +1,15 @@
 export const formatPrice = (price: number, currency?: string) : string => {
-  const parts = price.toString().split('.')
-  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
-  return parts.join('.') + (currency && currency.length > 0 ? ` ${currency}` : '')
+  const roundedPrice = price.toFixed(2)
+  const [integerPart, fractionalPart] = roundedPrice.split('.')
+  const formattedIntegerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
+  let formattedFractionalPart = fractionalPart
+  formattedFractionalPart = formattedFractionalPart.replace(/0+$/, '')
+  let formattedPrice = formattedIntegerPart
+  if (formattedFractionalPart.length > 0) {
+    formattedPrice += `.${formattedFractionalPart}`
+  }
+  if (currency && currency.length > 0) {
+    formattedPrice += ` ${currency}`
+  }
+  return formattedPrice
 }
