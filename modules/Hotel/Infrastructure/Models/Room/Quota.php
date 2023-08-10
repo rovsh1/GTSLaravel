@@ -2,9 +2,11 @@
 
 namespace Module\Hotel\Infrastructure\Models\Room;
 
+use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Module\Hotel\Application\Enums\QuotaAvailabilityEnum;
+use Illuminate\Support\Facades\DB;
+use Module\Hotel\Domain\ValueObject\QuotaChangeTypeEnum;
 use Module\Hotel\Infrastructure\Models\Room;
 use Sdk\Module\Database\Eloquent\Model;
 
@@ -35,6 +37,8 @@ use Sdk\Module\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Quota whereSold()
  * @method static \Illuminate\Database\Eloquent\Builder|Quota whereStopped()
  * @method static \Illuminate\Database\Eloquent\Builder|Quota whereAvailable()
+ * @method static \Illuminate\Database\Eloquent\Builder|Quota wherePeriod(CarbonPeriod $period)
+ * @method static \Illuminate\Database\Eloquent\Builder|Quota addCountColumns()
  * @mixin \Eloquent
  */
 class Quota extends Model
@@ -64,6 +68,12 @@ class Quota extends Model
         return $this->belongsTo(Room::class);
     }
 
+    public function scopeWherePeriod(Builder $builder, CarbonPeriod $period): void
+    {
+        $builder->where('date', '>=', $period->getStartDate())
+            ->where('date', '<', $period->getEndDate());
+    }
+
     public function scopeWhereHotelId(Builder $builder, int $hotelId): void
     {
         $builder->whereHas('room', function (Builder $query) use ($hotelId) {
@@ -86,5 +96,31 @@ class Quota extends Model
     {
         $builder->whereStatus(QuotaStatusEnum::OPEN)
             ->where('count_available', '>', 0);
+    }
+
+    public function scopeAddCountColumns(Builder $builder): void
+    {
+        $this->addCountColumnsQuery(
+            $builder,
+            [QuotaChangeTypeEnum::RESERVE_BY_BOOKING, QuotaChangeTypeEnum::CANCEL_RESERVE_BY_BOOKING],
+            'count_reserve'
+        );
+        $this->addCountColumnsQuery(
+            $builder,
+            [QuotaChangeTypeEnum::BOOK_BY_BOOKING, QuotaChangeTypeEnum::CANCEL_BOOK_BY_BOOKING],
+            'count_booked'
+        );
+        $builder->selectRaw('(count_total - count_booked - count_reserve) as count_available');
+    }
+
+    private function addCountColumnsQuery(Builder $builder, array $events, string $alias): Builder
+    {
+        return $builder->selectSub(
+            DB::table('hotel_room_quota_history')
+                ->select('SUM(value)')
+                ->whereColumn('hotel_room_quota_history.quota_id', '=', 'hotel_room_quota.id')
+                ->whereIn('event', $events),
+            $alias
+        );
     }
 }

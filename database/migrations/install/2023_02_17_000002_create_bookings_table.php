@@ -48,6 +48,7 @@ return new class extends Migration {
             $table->date('date_start');
             $table->date('date_end');
             $table->unsignedInteger('nights_count');
+            $table->unsignedTinyInteger('quota_processing_method');
             $table->json('data');
             $table->timestamps();
 

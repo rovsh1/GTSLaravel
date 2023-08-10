@@ -16,6 +16,7 @@ use Module\Booking\HotelBooking\Application\Dto\Details\RoomBookingDto;
 use Module\Booking\HotelBooking\Domain\Entity\Booking;
 use Module\Shared\Domain\Entity\EntityInterface;
 use Module\Shared\Domain\ValueObject\ValueObjectInterface;
+use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 
 class BookingDto extends BaseDto
 {
@@ -33,6 +34,7 @@ class BookingDto extends BaseDto
         public readonly array $roomBookings,
         public readonly CancelConditionsDto $cancelConditions,
         public readonly BookingPriceDto $price,
+        public readonly QuotaProcessingMethodEnum $quotaProcessingMethod,
     ) {
         parent::__construct($id, $status, $orderId, $createdAt, $creatorId);
     }
@@ -51,7 +53,8 @@ class BookingDto extends BaseDto
             $entity->additionalInfo() !== null ? AdditionalInfoDto::fromDomain($entity->additionalInfo()) : null,
             RoomBookingDto::collectionFromDomain($entity->roomBookings()->all()),
             CancelConditionsDto::fromDomain($entity->cancelConditions()),
-            BookingPriceDto::fromDomain($entity->price())
+            BookingPriceDto::fromDomain($entity->price()),
+            $entity->quotaProcessingMethod()
         );
     }
 }

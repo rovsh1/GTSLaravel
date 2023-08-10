@@ -24,7 +24,8 @@ class CopyBooking implements UseCaseInterface
             $booking->period(),
             $booking->note(),
             $booking->hotelInfo(),
-            $booking->cancelConditions()
+            $booking->cancelConditions(),
+            $booking->quotaProcessingMethod(),
         );
 
         $rooms = $this->roomBookingRepository->get($id);

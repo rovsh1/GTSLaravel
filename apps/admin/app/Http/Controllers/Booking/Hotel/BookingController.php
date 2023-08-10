@@ -39,6 +39,7 @@ use App\Core\Support\Http\Responses\AjaxSuccessResponse;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 use Module\Shared\Enum\SourceEnum;
 
 class BookingController extends Controller
@@ -119,7 +120,8 @@ class BookingController extends Controller
             period: $data['period'],
             creatorId: $creatorId,
             orderId: $data['order_id'] ?? null,
-            note: $data['note'] ?? null
+            note: $data['note'] ?? null,
+            quotaProcessingMethod: $data['quota_processing_method'],
         );
         $this->administratorRepository->create($bookingId, $data['manager_id'] ?? $creatorId);
 
@@ -324,13 +326,31 @@ class BookingController extends Controller
             ->checkbox('checked', ['checkboxClass' => 'js-select-booking', 'dataAttributeName' => 'booking-id'])
             ->id('id', ['text' => '№', 'route' => $this->prototype->routeName('show'), 'order' => true])
             ->bookingStatus('status', ['text' => 'Статус', 'statuses' => StatusAdapter::getStatuses(), 'order' => true])
+            ->id(
+                'order_id',
+                [
+                    'text' => '№ заказа',
+                    'route' => fn($r) => route('booking-order.show', $r['order_id']),
+                    'order' => true
+                ]
+            )
             ->text('client_name', ['text' => 'Клиент'])
             ->text('manager_name', ['text' => 'Менеджер'])
-            ->date('date_start', ['text' => 'Дата заезда'])
-            ->date('date_end', ['text' => 'Дата выезда'])
-            ->text('city_name', ['text' => 'Город'])
-            ->text('hotel_name', ['text' => 'Отель'])
-            ->text('room_names', ['text' => 'Номера', 'renderer' => fn($row, $val) => str_replace(', ', '<br>', $val)])
+            ->text(
+                'date_start',
+                [
+                    'text' => 'Заезд - выезд',
+                    'renderer' => fn($row, $val) => \Format::period(new CarbonPeriod($val, $row['date_end']))
+                ]
+            )
+            ->text(
+                'city_name',
+                ['text' => 'Город/Отель', 'renderer' => fn($row, $val) => "{$val}/{$row['hotel_name']}"]
+            )
+            ->text(
+                'room_names',
+                ['text' => 'Номера', 'renderer' => fn($row, $val) => str_replace(', ', '<br>', $val)]
+            )
             ->text('guests_count', ['text' => 'Гостей'])
             ->text('source', ['text' => 'Источник', 'order' => true])
             ->date('created_at', ['text' => 'Создан', 'format' => 'datetime', 'order' => true])
@@ -379,6 +399,16 @@ class BookingController extends Controller
     protected function formFactory(bool $isEdit = false): FormContract
     {
         return Form::name('data')
+            ->radio('quota_processing_method', [
+                'label' => 'Тип брони',
+                'required' => !$isEdit,
+                'disabled' => $isEdit,
+                'default' => 1,
+                'items' => [
+                    ['id' => QuotaProcessingMethodEnum::REQUEST, 'name' => 'По запросу'],
+                    ['id' => QuotaProcessingMethodEnum::QUOTE, 'name' => 'По квоте'],
+                ]
+            ])
             ->select('client_id', [
                 'label' => __('label.client'),
                 'required' => !$isEdit,

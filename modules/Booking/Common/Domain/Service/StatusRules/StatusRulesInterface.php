@@ -11,7 +11,7 @@ interface StatusRulesInterface
 {
     public function canTransit(BookingStatusEnum $fromStatus, BookingStatusEnum $toStatus): bool;
 
-    public function isEditableStatus(BookingStatusEnum $status, RequestRules $requestRules): bool;
+    public function isEditableStatus(BookingStatusEnum $status): bool;
 
     public function isCancelledStatus(BookingStatusEnum $status): bool;
 

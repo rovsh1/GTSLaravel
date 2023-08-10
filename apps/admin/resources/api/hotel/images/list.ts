@@ -24,7 +24,7 @@ type HotelRoomImagesProps = {
   roomID: number
 }
 
-export type RoomImageResponse = Omit<HotelImageResponse, 'id'> & {
+export type RoomImageResponse = HotelImageResponse & {
   image_id: HotelImageID
   room_id: HotelRoomID
 }
@@ -43,7 +43,7 @@ export const useHotelRoomImagesAPI = (props: MaybeRef<HotelRoomImagesProps | nul
     afterFetch: (ctx: AfterFetchContext<RoomImagesResponse>) =>
       alternateDataAfterFetch<RoomImagesResponse, UseHotelRoomImages>(ctx, (data) =>
         (data.length > 0 ? data.map(({
-          image_id: id,
+          id,
           hotel_id: hotelID,
           room_id: roomID,
           title,

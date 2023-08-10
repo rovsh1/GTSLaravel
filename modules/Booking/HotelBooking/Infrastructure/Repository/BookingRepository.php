@@ -22,6 +22,7 @@ use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBookingCollection
 use Module\Booking\HotelBooking\Infrastructure\Models\Booking as Model;
 use Module\Booking\HotelBooking\Infrastructure\Models\BookingDetails;
 use Module\Shared\Domain\ValueObject\Id;
+use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 
 class BookingRepository extends BaseRepository implements BookingRepositoryInterface
 {
@@ -62,10 +63,19 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         BookingPeriod $period,
         ?string $note = null,
         HotelInfo $hotelInfo,
-        CancelConditions $cancelConditions
+        CancelConditions $cancelConditions,
+        QuotaProcessingMethodEnum $quotaProcessingMethod,
     ): Booking {
         return \DB::transaction(
-            function () use ($orderId, $creatorId, $period, $note, $hotelInfo, $cancelConditions) {
+            function () use (
+                $orderId,
+                $creatorId,
+                $period,
+                $note,
+                $hotelInfo,
+                $cancelConditions,
+                $quotaProcessingMethod
+            ) {
                 $bookingModel = $this->createBase($orderId, $creatorId->value());
                 $booking = new Booking(
                     id: new BookingId($bookingModel->id),
@@ -79,7 +89,8 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
                     hotelInfo: $hotelInfo,
                     period: $period,
                     note: $note,
-                    price: BookingPrice::fromData($bookingModel->price)
+                    price: BookingPrice::fromData($bookingModel->price),
+                    quotaProcessingMethod: $quotaProcessingMethod,
                 );
 
                 BookingDetails::create([
@@ -88,6 +99,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
                     'date_start' => $period->dateFrom(),
                     'date_end' => $period->dateTo(),
                     'nights_count' => $period->nightsCount(),
+                    'quota_processing_method' => $quotaProcessingMethod,
                     'data' => $this->serializeDetails($booking)
                 ]);
 
@@ -111,6 +123,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
                     'date_start' => $booking->period()->dateFrom(),
                     'date_end' => $booking->period()->dateTo(),
                     'nights_count' => $booking->period()->nightsCount(),
+                    'quota_processing_method' => $booking->quotaProcessingMethod(),
                     'data' => $this->serializeDetails($booking)
                 ]);
 
@@ -184,7 +197,8 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
             additionalInfo: $additionalInfo !== null ? AdditionalInfo::fromData($detailsData['additionalInfo']) : null,
             roomBookings: $roomBookings,
             cancelConditions: CancelConditions::fromData($detailsData['cancelConditions']),
-            price: BookingPrice::fromData($booking->price)
+            price: BookingPrice::fromData($booking->price),
+            quotaProcessingMethod: $detailsModel->quota_processing_method
         );
     }
 

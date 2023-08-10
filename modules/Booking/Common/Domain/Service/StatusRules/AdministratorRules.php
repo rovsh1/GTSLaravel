@@ -7,8 +7,9 @@ use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 
 class AdministratorRules extends AbstractRules implements StatusRulesInterface
 {
-    public function __construct()
-    {
+    public function __construct(
+        private readonly RequestRules $requestRules
+    ) {
         $this->addTransition(BookingStatusEnum::DRAFT, BookingStatusEnum::CREATED);
 
         $this->addTransition(BookingStatusEnum::CREATED, BookingStatusEnum::PROCESSING);
@@ -43,10 +44,10 @@ class AdministratorRules extends AbstractRules implements StatusRulesInterface
         $this->addTransition(BookingStatusEnum::CANCELLED_NO_FEE, BookingStatusEnum::REFUND_NO_FEE);
     }
 
-    public function isEditableStatus(BookingStatusEnum $status, RequestRules $requestRules): bool
+    public function isEditableStatus(BookingStatusEnum $status): bool
     {
         return $status === BookingStatusEnum::CREATED
-            || ($requestRules->isRequestableStatus($status) && $status !== BookingStatusEnum::CONFIRMED);
+            || ($this->requestRules->isRequestableStatus($status) && $status !== BookingStatusEnum::CONFIRMED);
     }
 
     public function isCancelledStatus(BookingStatusEnum $status): bool
