@@ -10,7 +10,7 @@ return new class extends Migration {
             ->table('clients')
             ->select(
                 '*',
-                DB::raw('SELECT EXISTS(SELECT 1 FROM client_legal_entities WHERE client_id=clients.id) as is_b2b')
+                DB::raw('(SELECT 1 FROM client_legal_entities WHERE client_id=clients.id LIMIT 1) as is_b2b')
             );
         foreach ($q->cursor() as $r) {
             try {
