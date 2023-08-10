@@ -66,6 +66,7 @@ class HotelAdapter
         int $hotelId,
         CarbonPeriod $period,
         int $creatorId,
+        int $quotaProcessingMethod,
         ?int $orderId,
         ?string $note = null
     ): int {
@@ -79,7 +80,8 @@ class HotelAdapter
                 hotelId: $hotelId,
                 orderId: $orderId,
                 period: $period,
-                note: $note
+                note: $note,
+                quotaProcessingMethod: $quotaProcessingMethod,
             )
         );
     }

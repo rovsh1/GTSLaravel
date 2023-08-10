@@ -11,13 +11,13 @@ import PriceModal from '~resources/views/hotel-booking/show/components/PriceModa
 import RequestBlock from '~resources/views/hotel-booking/show/components/RequestBlock.vue'
 import StatusHistoryModal from '~resources/views/hotel-booking/show/components/StatusHistoryModal.vue'
 import { useExternalNumber } from '~resources/views/hotel-booking/show/composables/external-number'
-import { externalNumberTypeOptions, getCancelPeriodTypeName } from '~resources/views/hotel-booking/show/lib/constants'
+import { externalNumberTypeOptions, getCancelPeriodTypeName, getHumanRequestType } from '~resources/views/hotel-booking/show/lib/constants'
 import { useBookingStore } from '~resources/views/hotel-booking/show/store/booking'
 import { useOrderStore } from '~resources/views/hotel-booking/show/store/order-currency'
 import { useBookingRequestStore } from '~resources/views/hotel-booking/show/store/request'
 import { useBookingStatusHistoryStore } from '~resources/views/hotel-booking/show/store/status-history'
-import { useBookingVoucherStore } from '~resources/views/hotel-booking/show/store/voucher'
 
+// import { useBookingVoucherStore } from '~resources/views/hotel-booking/show/store/voucher'
 import { Booking } from '~api/booking'
 import { CancelConditions, ExternalNumberType, ExternalNumberTypeEnum } from '~api/booking/details'
 import { updateBookingPrice } from '~api/booking/price'
@@ -46,15 +46,15 @@ const requestStore = useBookingRequestStore()
 const statusHistoryStore = useBookingStatusHistoryStore()
 const { fetchStatusHistory } = statusHistoryStore
 const orderStore = useOrderStore()
-const voucherStore = useBookingVoucherStore()
-const vouchers = computed(() => voucherStore.vouchers)
+// const voucherStore = useBookingVoucherStore()
+// const vouchers = computed(() => voucherStore.vouchers)
 const {
   externalNumberType,
   externalNumber,
   isExternalNumberValid,
   isUpdateExternalNumberFetching,
   isExternalNumberChanged,
-  validateExternalNumber,
+  // validateExternalNumber,
   updateExternalNumber,
   hideValidation,
 } = useExternalNumber(bookingID)
@@ -70,20 +70,20 @@ const isAvailableActionsFetching = computed<boolean>(() => bookingStore.isAvaila
 const isRequestableStatus = computed<boolean>(() => availableActions.value?.isRequestable || false)
 const isStatusUpdateFetching = computed(() => bookingStore.isStatusUpdateFetching)
 const isRequestFetching = computed(() => requestStore.requestSendIsFetching)
-const isVoucherFetching = computed(() => voucherStore.voucherSendIsFetching)
+// const isVoucherFetching = computed(() => voucherStore.voucherSendIsFetching)
 const isNeedShowExternalNumber = computed<boolean>(
   () => Number(externalNumberType.value) === ExternalNumberTypeEnum.HotelBookingNumber,
 )
 const isExternalNumberInvalid = computed(() => !isExternalNumberValid.value)
 
 // access
-const canSendClientVoucher = computed<boolean>(() => {
-  if (!availableActions.value?.canSendVoucher) {
-    return false
-  }
-
-  return (vouchers.value?.length || 0) === 0
-})
+// const canSendClientVoucher = computed<boolean>(() => {
+//   if (!availableActions.value?.canSendVoucher) {
+//     return false
+//   }
+//
+//   return (vouchers.value?.length || 0) === 0
+// })
 const canSendCancellationRequest = computed<boolean>(() => availableActions.value?.canSendCancellationRequest || false)
 const canSendBookingRequest = computed<boolean>(() => availableActions.value?.canSendBookingRequest || false)
 const canSendChangeRequest = computed<boolean>(() => availableActions.value?.canSendChangeRequest || false)
@@ -120,27 +120,15 @@ const handleUpdateExternalNumber = async () => {
   }
 }
 
-const getHumanRequestType = (type: number): string => {
-  let preparedType = 'изменение'
-  if (type === 1) {
-    preparedType = 'бронирование'
-  }
-  if (type === 3) {
-    preparedType = 'отмену'
-  }
-
-  return preparedType
-}
-
-const handleVoucherSend = async () => {
-  if (!validateExternalNumber()) {
-    return
-  }
-  if (isExternalNumberChanged.value) {
-    await handleUpdateExternalNumber()
-  }
-  await voucherStore.sendVoucher()
-}
+// const handleVoucherSend = async () => {
+//   if (!validateExternalNumber()) {
+//     return
+//   }
+//   if (isExternalNumberChanged.value) {
+//     await handleUpdateExternalNumber()
+//   }
+//   await voucherStore.sendVoucher()
+// }
 
 const handleSaveBoManualPrice = async (value: number | undefined) => {
   toggleBoPriceModal(false)
@@ -368,30 +356,38 @@ onMounted(() => {
     </div>
   </ControlPanelSection>
 
-  <ControlPanelSection title="Файлы, отправленные клиенту" class="mt-4">
-    <div class="reservation-requests mb-2">
-      <div
-        v-for="bookingVoucher in vouchers"
-        :key="bookingVoucher.id"
-        class="d-flex flex-row justify-content-between w-100 py-1"
-      >
-        <div>
-          {{ true ? 'Ваучер' : 'Общий ваучер' }}
-          <span class="date align-left ml-1">от {{ formatDateTime(bookingVoucher.dateCreate) }}</span>
-        </div>
-        <a href="#" class="btn-download" @click.prevent="voucherStore.downloadDocument(bookingVoucher.id)">Скачать</a>
-      </div>
-    </div>
+  <!--  <ControlPanelSection title="Файлы, отправленные клиенту" class="mt-4">-->
+  <!--    <div class="reservation-requests mb-2">-->
+  <!--      <div-->
+  <!--        v-for="bookingVoucher in vouchers"-->
+  <!--        :key="bookingVoucher.id"-->
+  <!--        class="d-flex flex-row justify-content-between w-100 py-1"-->
+  <!--      >-->
+  <!--        <div>-->
+  <!--          {{ true ? 'Ваучер' : 'Общий ваучер' }}-->
+  <!--          <span class="date align-left ml-1">
+  от {{ formatDateTime(bookingVoucher.dateCreate) }}</span>-->
+  <!--        </div>-->
+  <!-- <a
+  href="#"
+  class="btn-download"
+  @click.prevent="voucherStore.downloadDocument(bookingVoucher.id)"
+  >
+  Скачать
+  </a>-->
+  <!--      </div>-->
+  <!--    </div>-->
 
-    <RequestBlock
-      v-if="canSendClientVoucher"
-      variant="success"
-      text="При необходимости клиенту можно отправить ваучер"
-      button-text="Отправить ваучер"
-      :loading="isVoucherFetching"
-      @click="handleVoucherSend"
-    />
-  </ControlPanelSection>
+  <!--    @todo будет перенесено в order-->
+  <!--    <RequestBlock-->
+  <!--      v-if="canSendClientVoucher"-->
+  <!--      variant="success"-->
+  <!--      text="При необходимости клиенту можно отправить ваучер"-->
+  <!--      button-text="Отправить ваучер"-->
+  <!--      :loading="isVoucherFetching"-->
+  <!--      @click="handleVoucherSend"-->
+  <!--    />-->
+  <!--  </ControlPanelSection>-->
 
   <ControlPanelSection title="Условия отмены" class="mt-4">
     <table class="table-params">

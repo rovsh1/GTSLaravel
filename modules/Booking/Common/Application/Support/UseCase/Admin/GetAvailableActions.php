@@ -30,7 +30,7 @@ class GetAvailableActions implements UseCaseInterface
 
         return new AvailableActionsDto(
             $statuses,
-            $this->statusRules->isEditableStatus($booking->status(), $this->requestRules),
+            $this->statusRules->isEditableStatus($booking->status()),
             $this->requestRules->isRequestableStatus($booking->status()),
             $this->requestRules->canSendBookingRequest($booking->status()),
             $this->requestRules->canSendCancellationRequest($booking->status()),

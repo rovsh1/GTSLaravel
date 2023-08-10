@@ -4,10 +4,10 @@ namespace Module\Booking\HotelBooking\Domain\Service\QuotaManager;
 
 use Module\Booking\HotelBooking\Domain\Entity\Booking;
 
-class ByRequest implements QuotaMethodInterface
+class BySite implements QuotaMethodInterface
 {
     public function process(Booking $booking): void
     {
-        //Списание квот не требуется
+        // TODO: Implement process() method.
     }
 }

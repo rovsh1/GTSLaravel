@@ -21,6 +21,7 @@ use Module\Booking\HotelBooking\Domain\ValueObject\Details\CancelConditions;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\HotelInfo;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBookingCollection;
 use Module\Shared\Domain\ValueObject\Id;
+use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 
 final class Booking extends AbstractBooking
 {
@@ -37,6 +38,7 @@ final class Booking extends AbstractBooking
         private ?AdditionalInfo $additionalInfo,
         private RoomBookingCollection $roomBookings,
         private CancelConditions $cancelConditions,
+        private readonly QuotaProcessingMethodEnum $quotaProcessingMethod,
     ) {
         parent::__construct($id, $orderId, $status, $createdAt, $creatorId, $price);
     }
@@ -75,6 +77,11 @@ final class Booking extends AbstractBooking
     public function type(): BookingTypeEnum
     {
         return BookingTypeEnum::HOTEL;
+    }
+
+    public function quotaProcessingMethod(): QuotaProcessingMethodEnum
+    {
+        return $this->quotaProcessingMethod;
     }
 
     public function addRoomBooking(RoomBooking $booking): void

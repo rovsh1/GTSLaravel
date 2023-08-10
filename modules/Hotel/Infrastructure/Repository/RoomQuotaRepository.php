@@ -55,32 +55,28 @@ class RoomQuotaRepository implements RoomQuotaRepositoryInterface
             $updateData['release_days'] = $releaseDays;
         }
         EloquentQuota::whereRoomId($roomId)
-            ->where('date', '>=', $period->getStartDate())
-            ->where('date', '<', $period->getEndDate())
+            ->wherePeriod($period)
             ->updateOrCreate(['date' => $period->getStartDate(), 'room_id' => $roomId], $updateData);
     }
 
     public function closeRoomQuota(int $roomId, CarbonPeriod $period): void
     {
         EloquentQuota::whereRoomId($roomId)
-            ->where('date', '>=', $period->getStartDate())
-            ->where('date', '<', $period->getEndDate())
+            ->wherePeriod($period)
             ->update(['status' => QuotaStatusEnum::CLOSE]);
     }
 
     public function openRoomQuota(int $roomId, CarbonPeriod $period): void
     {
         EloquentQuota::whereRoomId($roomId)
-            ->where('date', '>=', $period->getStartDate())
-            ->where('date', '<', $period->getEndDate())
+            ->wherePeriod($period)
             ->update(['status' => QuotaStatusEnum::OPEN]);
     }
 
     public function resetRoomQuota(int $roomId, CarbonPeriod $period): void
     {
         EloquentQuota::whereRoomId($roomId)
-            ->where('date', '>=', $period->getStartDate())
-            ->where('date', '<', $period->getEndDate())
+            ->wherePeriod($period)
             ->delete();
     }
 
@@ -100,7 +96,7 @@ class RoomQuotaRepository implements RoomQuotaRepositoryInterface
                     $builder->whereHotelId($hotelId);
                 }
             })
-            ->where('date', '>=', $period->getStartDate())
-            ->where('date', '<', $period->getEndDate());
+            ->wherePeriod($period)
+            ->addCountColumns();
     }
 }

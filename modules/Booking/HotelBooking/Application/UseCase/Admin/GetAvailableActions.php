@@ -19,6 +19,6 @@ class GetAvailableActions extends Base
         StatusStorage $statusStorage
     ) {
         //@todo тут пробрасываются рулзы вручную пока
-        parent::__construct(new AdministratorRules(), $requestRules, $repository, $statusStorage);
+        parent::__construct(new AdministratorRules($requestRules), $requestRules, $repository, $statusStorage);
     }
 }
