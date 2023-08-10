@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Booking\HotelBooking\Domain\Entity;
 
+use Module\Booking\Common\Domain\ValueObject\BookingId;
+use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\HotelBooking\Domain\Event\GuestAdded;
 use Module\Booking\HotelBooking\Domain\Event\GuestDeleted;
 use Module\Booking\HotelBooking\Domain\Event\GuestEdited;
@@ -16,15 +18,14 @@ use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBooki
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomInfo;
 use Module\Booking\HotelBooking\Domain\ValueObject\RoomPrice;
 use Module\Shared\Domain\Entity\EntityInterface;
-use Module\Shared\Domain\ValueObject\Id;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
 class RoomBooking extends AbstractAggregateRoot implements EntityInterface
 {
     public function __construct(
         private readonly RoomBookingId $id,
-        private readonly Id $bookingId,
-        private readonly Id $orderId,
+        private readonly BookingId $bookingId,
+        private readonly OrderId $orderId,
         private RoomBookingStatusEnum $status,
         private RoomInfo $roomInfo,
         //@todo возможно придется переносить гостей в отдельную таблицу с привязкой к заказу (для составных броней)
@@ -38,12 +39,12 @@ class RoomBooking extends AbstractAggregateRoot implements EntityInterface
         return $this->id;
     }
 
-    public function bookingId(): Id
+    public function bookingId(): BookingId
     {
         return $this->bookingId;
     }
 
-    public function orderId(): Id
+    public function orderId(): OrderId
     {
         return $this->orderId;
     }
@@ -159,8 +160,8 @@ class RoomBooking extends AbstractAggregateRoot implements EntityInterface
     {
         return new static(
             id: new RoomBookingId($data['id']),
-            orderId: new Id($data['orderId']),
-            bookingId: new Id($data['bookingId']),
+            orderId: new OrderId($data['orderId']),
+            bookingId: new BookingId($data['bookingId']),
             status: RoomBookingStatusEnum::from($data['status']),
             roomInfo: RoomInfo::fromData($data['roomInfo']),
             guests: GuestCollection::fromData($data['guests']),
