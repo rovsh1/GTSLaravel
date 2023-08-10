@@ -23,7 +23,7 @@ import {
   useHotelRoomImagesAPI,
 } from '~api/hotel/images/list'
 import { useHotelImageRemoveAPI } from '~api/hotel/images/remove'
-import { useHotelImagesReorderAPI } from '~api/hotel/images/reorder'
+import { useHotelImagesReorderAPI, useHotelRoomImagesReorderAPI } from '~api/hotel/images/reorder'
 import { useHotelRoomAttachImageAPI, useHotelRoomDetachImageAPI } from '~api/hotel/images/update'
 import { useHotelImagesUploadAPI } from '~api/hotel/images/upload'
 import { HotelRoom, useHotelRoomAPI } from '~api/hotel/room'
@@ -176,10 +176,22 @@ const hotelImagesReorderProps = computed(() =>
     imagesIDs: images.value.map(({ id }) => id),
   }))
 
+const hotelRoomImagesReorderProps = computed(() =>
+  (images.value === null || !roomID ? null : {
+    hotelID,
+    roomID,
+    imagesIDs: images.value.map(({ id }) => id),
+  }))
+
 const {
   execute: executeHotelImagesReorder,
   isFetching: isHotelImagesReorderFetching,
 } = useHotelImagesReorderAPI(hotelImagesReorderProps)
+
+const {
+  execute: executeHotelRoomImagesReorder,
+  isFetching: isHotelRoomImagesReorderFetching,
+} = useHotelRoomImagesReorderAPI(hotelRoomImagesReorderProps)
 
 const attachImageToRoom = async (imageID: number) => {
   if (roomID === undefined) return
@@ -264,8 +276,10 @@ const sortedPhotosIfSetRoomID = () => {
     const attachedImages = images.value?.filter((image) => isImageAttachedToRoom(image.id, roomImages.value)) as UseHotelImages
     const unAttachedImages = images.value?.filter((image) => !isImageAttachedToRoom(image.id, roomImages.value)) as UseHotelImages
     images.value = attachedImages?.concat(unAttachedImages || []) as UseHotelImages
+    executeHotelRoomImagesReorder()
+  } else {
+    executeHotelImagesReorder()
   }
-  executeHotelImagesReorder()
 }
 
 watch(imagesData, (value) => {
@@ -317,7 +331,7 @@ watch(imagesData, (value) => {
               label="Потяните, чтобы изменить порядок фотографий"
               severity="dark"
               :only-icon="dragIcon"
-              :loading="isHotelImagesReorderFetching"
+              :loading="isHotelImagesReorderFetching || isHotelRoomImagesReorderFetching"
             />
             <div
               v-if="
