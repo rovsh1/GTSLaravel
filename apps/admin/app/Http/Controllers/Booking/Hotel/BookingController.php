@@ -329,10 +329,10 @@ class BookingController extends Controller
                 'order' => true,
                 'renderer' => function ($row, $val) {
                     $bookingUrl = route($this->prototype->routeName('show'), $row['id']);
-                    $idLink = "<a href='{$bookingUrl}' target='_blank'>{$row['id']}</a>";
+                    $idLink = "<a href='{$bookingUrl}'>{$row['id']}</a>";
                     $orderId = $row['order_id'];
                     $orderUrl = route('booking-order.show', $orderId);
-                    $orderLink = "<a href='{$orderUrl}' target='_blank'>{$orderId}</a>";
+                    $orderLink = "<a href='{$orderUrl}'>{$orderId}</a>";
 
                     return "$idLink / {$orderLink}";
                 }
@@ -405,6 +405,7 @@ class BookingController extends Controller
                 'label' => 'Тип брони',
                 'required' => !$isEdit,
                 'disabled' => $isEdit,
+                'hidden' => $isEdit,
                 'default' => 1,
                 'items' => [
                     ['id' => QuotaProcessingMethodEnum::REQUEST, 'name' => 'По запросу'],
