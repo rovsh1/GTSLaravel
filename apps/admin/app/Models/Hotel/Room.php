@@ -3,6 +3,7 @@
 namespace App\Admin\Models\Hotel;
 
 use App\Admin\Files\HotelImage;
+use App\Admin\Models\HasIndexedChildren;
 use App\Admin\Support\Facades\Hotel\MarkupSettingsAdapter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -21,6 +22,8 @@ use Sdk\Module\Database\Eloquent\Model;
  */
 class Room extends Model
 {
+    use HasIndexedChildren;
+
     public $timestamps = false;
 
     protected $table = 'hotel_rooms';
@@ -119,6 +122,23 @@ class Room extends Model
             'room_id',
             'rate_id',
         );
+    }
+
+    /**
+     * @param int[] $ids
+     * @return bool
+     * @throws \Throwable
+     */
+    public function updateImageIndexes(array $ids): bool
+    {
+        $i = 0;
+        foreach ($ids as $id) {
+            RoomImage::whereRoomId($this->id)
+                ->whereImageId($id)
+                ->update(['hotel_room_images.index' => $i++]);
+        }
+
+        return true;
     }
 
     public function __toString()

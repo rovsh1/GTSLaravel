@@ -46,6 +46,7 @@ class ImageRepository
                 RoomImage::create([
                     'room_id' => $roomId,
                     'image_id' => $hotelImage->id,
+                    'index' => RoomImage::getNextIndexByRoomId($roomId)
                 ]);
             }
 

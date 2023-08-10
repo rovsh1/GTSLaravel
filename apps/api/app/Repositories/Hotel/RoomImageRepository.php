@@ -25,7 +25,7 @@ class RoomImageRepository
     {
         RoomImage::updateOrCreate(
             ['room_id' => $roomId, 'image_id' => $imageId],
-            ['room_id' => $roomId, 'image_id' => $imageId]
+            ['room_id' => $roomId, 'image_id' => $imageId, 'index' => RoomImage::getNextIndexByRoomId($roomId)]
         );
     }
 

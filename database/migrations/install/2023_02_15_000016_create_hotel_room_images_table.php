@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('hotel_room_images', function (Blueprint $table) {
             $table->unsignedInteger('image_id');
             $table->unsignedInteger('room_id');
+            $table->unsignedSmallInteger('index')->default(0);
 
             $table->foreign('room_id')
                 ->references('id')
