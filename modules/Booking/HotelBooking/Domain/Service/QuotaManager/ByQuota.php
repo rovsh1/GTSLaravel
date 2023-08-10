@@ -15,6 +15,7 @@ class ByQuota implements QuotaMethodInterface
 
     public function process(Booking $booking): void
     {
+        //@todo отправлять в отель пачкой, чтобы это была транзакция
         if ($this->isEditableBooking($booking)) {
             //@todo зарезервировать квоты
         } elseif ($this->isBookingConfirmed($booking)) {
