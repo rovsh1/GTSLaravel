@@ -47,8 +47,6 @@ const { hotelID } = injectInitialData(z.object({
 
 const { room_id: roomID } = useUrlSearchParams<{ room_id?: number }>()
 
-let isFirstLoading = true
-
 const {
   execute: fetchImages,
   data: imagesData,
@@ -66,7 +64,7 @@ const {
   isFetching: isRoomImagesFetching,
 } = useHotelRoomImagesAPI(hotelRoomImagesProps)
 
-const waitingLoadAllImages = async () => {
+const loadAllImages = async () => {
   await Promise.all([
     fetchRoomImages(),
     fetchImages(),
@@ -122,7 +120,7 @@ const uploadImages = () => {
 
 watch(imagesUploadData, (value) => {
   if (value === null || !value.success) return
-  waitingLoadAllImages()
+  loadAllImages()
   imagesToUpload.value = null
   isUploadDialogOpened.value = false
 })
@@ -205,14 +203,14 @@ const attachImageToRoom = async (imageID: number) => {
   if (roomID === undefined) return
   await useHotelRoomAttachImageAPI({ hotelID, roomID, imageID })
     .execute()
-  await waitingLoadAllImages()
+  await loadAllImages()
 }
 
 const deleteRoomImage = async (imageID: number) => {
   if (roomID === undefined) return
   await useHotelRoomDetachImageAPI({ hotelID, roomID, imageID })
     .execute()
-  await waitingLoadAllImages()
+  await loadAllImages()
 }
 
 const isImageVisible = (id: HotelImageID): boolean => {
@@ -244,7 +242,7 @@ watch([isAttachmentDialogOpened, hotelRoomsWithAttachedImageProps], (value) => {
 
 fetchRoom()
 fetchHotel()
-waitingLoadAllImages()
+loadAllImages()
 
 type OpenAttachmentDialogProps = { id: HotelImageID } & Pick<FileResponse, 'url' | 'name'>
 const openAttachmentDialog = async ({ id, url, name }: OpenAttachmentDialogProps) => {
@@ -276,34 +274,33 @@ const isRefetching = computed(() => (
   isRoomFetching.value || isImagesFetching.value || isRoomImagesFetching.value
 ))
 
-const sortedPhotosIfSetRoomID = () => {
+const reorderRoomImages = async () => {
   if (roomID) {
     const attachedImages = images.value?.filter((image) => isImageAttachedToRoom(image.id, roomImages.value)) as UseHotelImages
-    const attachedImagesOrdered = [] as UseHotelImages
+    const orderedAttachedImages = [] as UseHotelImages
     roomImages.value.forEach((roomImage) => {
-      const findedImage = attachedImages?.find((attachedImag) => attachedImag.id === roomImage.id)
+      const findedImage = attachedImages?.find((attachedImage) => attachedImage.id === roomImage.id)
       if (findedImage) {
-        attachedImagesOrdered.push(findedImage)
+        orderedAttachedImages.push(findedImage)
       }
     })
     const unAttachedImages = images.value?.filter((image) => !isImageAttachedToRoom(image.id, roomImages.value)) as UseHotelImages
-    images.value = attachedImagesOrdered?.concat(unAttachedImages || []) as UseHotelImages
-    if (!isFirstLoading) {
-      executeHotelRoomImagesReorder()
-    }
-  } else {
-    executeHotelImagesReorder()
+    images.value = orderedAttachedImages?.concat(unAttachedImages || []) as UseHotelImages
   }
+}
+
+const updateHotelRoomImagesOrder = async () => {
+  if (roomID) {
+    await executeHotelRoomImagesReorder()
+  } else {
+    await executeHotelImagesReorder()
+  }
+  loadAllImages()
 }
 
 watch([imagesData, roomImages], (value) => {
   images.value = value[0] ? [...value[0]] : []
-  sortedPhotosIfSetRoomID()
-  if (!value[0] || !value[1]) {
-    isFirstLoading = true
-  } else {
-    isFirstLoading = false
-  }
+  reorderRoomImages()
 })
 
 </script>
@@ -329,7 +326,7 @@ watch([imagesData, roomImages], (value) => {
         class="images"
         handle="[data-draggable-handle]"
         animation="300"
-        @update="sortedPhotosIfSetRoomID"
+        @update="updateHotelRoomImagesOrder"
       >
         <OverlayLoading v-if="isRefetching" />
         <div
