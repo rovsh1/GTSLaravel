@@ -33,7 +33,8 @@ class BookingDtoFactory extends AbstractBookingDtoFactory
             $booking->additionalInfo() !== null ? AdditionalInfoDto::fromDomain($booking->additionalInfo()) : null,
             RoomBookingDto::collectionFromDomain($booking->roomBookings()->all()),
             CancelConditionsDto::fromDomain($booking->cancelConditions()),
-            BookingPriceDto::fromDomain($booking->price())
+            BookingPriceDto::fromDomain($booking->price()),
+            $booking->quotaProcessingMethod(),
         );
     }
 }

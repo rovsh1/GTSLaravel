@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->increments('id');
+            $table->increments('id')->from(100);
             $table->unsignedInteger('client_id');
             $table->unsignedInteger('legal_id')->nullable();
             $table->unsignedSmallInteger('currency_id');

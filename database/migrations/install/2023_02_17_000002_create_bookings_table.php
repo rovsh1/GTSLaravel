@@ -12,7 +12,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('bookings', function (Blueprint $table) {
-            $table->increments('id');
+            $table->increments('id')->from(100);
             $table->unsignedInteger('order_id');
             $table->tinyInteger('type');
             $table->tinyInteger('status');
@@ -48,6 +48,7 @@ return new class extends Migration {
             $table->date('date_start');
             $table->date('date_end');
             $table->unsignedInteger('nights_count');
+            $table->unsignedTinyInteger('quota_processing_method');
             $table->json('data');
             $table->timestamps();
 

@@ -25,6 +25,7 @@ class ReservationAdapter extends AbstractModuleAdapter implements ReservationAda
         // TODO: Implement confirmReservation() method.
         //todo логика: помечаем флагом последнюю бронь по номеру и статусу
         //todo логика проверки на наличие брони с таким кодом
+        //todo перевести бронь в статус "Подтверждена"
     }
 
     public function getActiveReservations(): array

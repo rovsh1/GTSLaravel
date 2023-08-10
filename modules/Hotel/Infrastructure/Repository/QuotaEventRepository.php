@@ -15,22 +15,7 @@ class QuotaEventRepository implements QuotaEventRepositoryInterface
         int $count,
         array $context
     ): void {
-        if ($changeType === QuotaChangeTypeEnum::RESERVE_BY_BOOKING) {
-            //добавить событие о резервации RESERVE_BY_BOOKING (-count)
-        }
-
-        if ($changeType === QuotaChangeTypeEnum::BOOK_BY_BOOKING) {
-            //добавить событие о списании BOOK_BY_BOOKING (-count)
-            //добавить событие о добавлении резерва RESERVE_BY_BOOKING (+count)
-        }
-
-        if ($changeType === QuotaChangeTypeEnum::CANCEL_RESERVE_BY_BOOKING) {
-            //добавить событие о добавлении резерва RESERVE_BY_BOOKING (+count)
-        }
-
-        if ($changeType === QuotaChangeTypeEnum::CANCEL_BOOK_BY_BOOKING) {
-            //добавить событие о добавлении резерва BOOK_BY_BOOKING (+count)
-        }
+//@todo записать в базу
     }
 
     public function resetRoomQuota(int $roomId, CarbonPeriod $period): void
