@@ -4,7 +4,6 @@ import { getHumanRequestType } from '~resources/views/hotel-booking/show/lib/con
 import { downloadDocument } from '~api/booking/document'
 import { BookingRequest } from '~api/booking/request'
 import { BookingAvailableActionsResponse } from '~api/booking/status'
-import { BookingVoucher } from '~api/booking/voucher'
 
 import { showConfirmDialog } from '~lib/confirm-dialog'
 import { formatDateTime } from '~lib/date'
@@ -119,9 +118,13 @@ $(() => {
     const $downloadButton = getNewIconButton('download')
       .on('click', async (e: any) => {
         e.preventDefault()
-        const [{ data: requests }, { data: vouchers }] = await Promise.all([
+        const [
+          { data: requests },
+          // { data: vouchers }
+        ] = await Promise.all([
           axios.get<BookingRequest[]>(`/hotel-booking/${bookingId}/request/list`),
-          axios.get<BookingVoucher[]>(`/hotel-booking/${bookingId}/voucher/list`),
+          // @todo ваучеры будут перенесены в Orders. Также как и тут
+          // axios.get<BookingVoucher[]>(`/hotel-booking/${bookingId}/voucher/list`),
         ])
         const popoverContentDownload: Array<PopoverItem> = []
         const groupedRequests: { [type: string]: BookingRequest[] } = requests.reduce((result, request) => {
