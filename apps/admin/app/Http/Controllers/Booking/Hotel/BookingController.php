@@ -409,7 +409,7 @@ class BookingController extends Controller
                 'default' => 1,
                 'items' => [
                     ['id' => QuotaProcessingMethodEnum::REQUEST, 'name' => 'По запросу'],
-                    ['id' => QuotaProcessingMethodEnum::QUOTE, 'name' => 'По квоте'],
+                    ['id' => QuotaProcessingMethodEnum::QUOTA, 'name' => 'По квоте'],
                 ]
             ])
             ->select('client_id', [

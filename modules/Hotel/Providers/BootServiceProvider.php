@@ -35,6 +35,10 @@ class BootServiceProvider extends \Sdk\Module\Foundation\Support\Providers\Servi
             Infrastructure\Repository\RoomQuotaRepository::class
         );
         $this->app->singleton(
+            Domain\Repository\QuotaEventRepositoryInterface::class,
+            Infrastructure\Repository\QuotaEventRepository::class
+        );
+        $this->app->singleton(
             Domain\Repository\MarkupSettingsRepositoryInterface::class,
             Infrastructure\Repository\MarkupSettingsRepository::class
         );

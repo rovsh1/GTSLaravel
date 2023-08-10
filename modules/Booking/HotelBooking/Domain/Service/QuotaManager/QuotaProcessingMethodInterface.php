@@ -4,7 +4,7 @@ namespace Module\Booking\HotelBooking\Domain\Service\QuotaManager;
 
 use Module\Booking\HotelBooking\Domain\Entity\Booking;
 
-interface QuotaMethodInterface
+interface QuotaProcessingMethodInterface
 {
     //Нужна таблица hotel_room_quota_values - quota_id, type, value, context (json), created_at, deleted_at
 

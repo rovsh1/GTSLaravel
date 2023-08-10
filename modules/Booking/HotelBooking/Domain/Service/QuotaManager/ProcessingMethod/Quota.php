@@ -1,20 +1,27 @@
 <?php
 
-namespace Module\Booking\HotelBooking\Domain\Service\QuotaManager;
+namespace Module\Booking\HotelBooking\Domain\Service\QuotaManager\ProcessingMethod;
 
 use Illuminate\Support\Collection;
 use Module\Booking\Common\Domain\Service\StatusRules\AdministratorRules;
+use Module\Booking\HotelBooking\Domain\Adapter\HotelQuotaAdapterInterface;
 use Module\Booking\HotelBooking\Domain\Entity\Booking;
 use Module\Booking\HotelBooking\Domain\Entity\RoomBooking;
+use Module\Booking\HotelBooking\Domain\Service\QuotaManager\QuotaProcessingMethodInterface;
 
-class ByQuota implements QuotaMethodInterface
+class Quota implements QuotaProcessingMethodInterface
 {
     public function __construct(
         private readonly AdministratorRules $administratorRules,
+        private readonly HotelQuotaAdapterInterface $hotelQuotaAdapter
     ) {}
 
     public function process(Booking $booking): void
     {
+        if (!$this->isProcessable($booking)) {
+            return;
+        }
+        $roomsCountIndexedByRoomId = $this->countRooms($booking);
         //@todo отправлять в отель пачкой, чтобы это была транзакция
         if ($this->isEditableBooking($booking)) {
             //@todo зарезервировать квоты
@@ -25,6 +32,13 @@ class ByQuota implements QuotaMethodInterface
             //@todo удалить все записи от брони
             //reset
         }
+    }
+
+    private function isProcessable(Booking $booking): bool
+    {
+        return $this->isEditableBooking($booking)
+            || $this->isBookingConfirmed($booking)
+            || $this->isBookingCancelled($booking);
     }
 
     private function countRooms(Booking $booking): mixed

@@ -12,6 +12,11 @@ abstract class AbstractBookingEvent implements BookingEventInterface
         public readonly BookingInterface $booking,
     ) {}
 
+    public function booking(): BookingInterface
+    {
+        return $this->booking;
+    }
+
     public function bookingId(): int
     {
         return $this->booking->id()->value();

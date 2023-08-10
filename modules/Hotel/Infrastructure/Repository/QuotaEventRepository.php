@@ -3,8 +3,10 @@
 namespace Module\Hotel\Infrastructure\Repository;
 
 use Carbon\CarbonPeriod;
+use Illuminate\Support\Facades\DB;
 use Module\Hotel\Domain\Repository\QuotaEventRepositoryInterface;
 use Module\Hotel\Domain\ValueObject\QuotaChangeTypeEnum;
+use Module\Hotel\Infrastructure\Models\Room\Quota;
 
 class QuotaEventRepository implements QuotaEventRepositoryInterface
 {
@@ -15,7 +17,9 @@ class QuotaEventRepository implements QuotaEventRepositoryInterface
         int $count,
         array $context
     ): void {
-//@todo записать в базу
+        DB::transaction(function () use ($roomId, $period, $changeType, $count, $context) {
+            $quotas = Quota::whereRoomId($roomId)->wherePeriod($period)->get();
+        });
     }
 
     public function resetRoomQuota(int $roomId, CarbonPeriod $period): void
