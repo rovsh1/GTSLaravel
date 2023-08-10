@@ -44,6 +44,11 @@ const clientTypes = [
   { id: 2, name: 'Юридическое лицо' },
 ]
 
+const humanRequestType = [
+  { id: 1, name: 'бронирование' },
+  { id: 3, name: 'отмену' },
+]
+
 export const genderOptions: SelectOption[] = mapEntitiesToSelectOptions(genders)
 
 export const residentTypeOptions: SelectOption[] = mapEntitiesToSelectOptions(residentTypes)
@@ -66,3 +71,8 @@ export const getRoomStatusName = (id: number): string | undefined =>
 
 export const getCancelPeriodTypeName = (id: number): string | undefined =>
   cancelPeriods.find((cancelPeriod: any) => cancelPeriod.id === id)?.name
+
+export const getHumanRequestType = (typeId: number): string | undefined => {
+  const preparedType = humanRequestType?.find((type: any) => type.id === typeId)?.name
+  return preparedType || 'изменение'
+}

@@ -1,4 +1,5 @@
 import axios from '~resources/js/app/api'
+import { getHumanRequestType } from '~resources/views/hotel-booking/show/lib/constants'
 
 import { downloadDocument } from '~api/booking/document'
 import { BookingRequest } from '~api/booking/request'
@@ -7,7 +8,6 @@ import { BookingVoucher } from '~api/booking/voucher'
 
 import { showConfirmDialog } from '~lib/confirm-dialog'
 import { formatDateTime } from '~lib/date'
-import { getHumanRequestType } from '~lib/human-request-type'
 import createPopover, { PopoverItem } from '~lib/popover/popover'
 
 import '~resources/views/main'
@@ -109,7 +109,7 @@ $(() => {
           }
           popoverContentSend.push(popoverContentVoucher)
         }
-        const popover = createPopover({
+        createPopover({
           relationElement: e.currentTarget,
           textForEmpty: 'Нет возможных действий',
           content: popoverContentSend,
@@ -125,29 +125,40 @@ $(() => {
         ])
         const popoverContentDownload: Array<PopoverItem> = []
         const groupedRequests: { [type: string]: BookingRequest[] } = requests.reduce((result, request) => {
-          if (!result[request.type]) {
-            result[request.type] = []
+          const resultItem = result
+          if (!resultItem[request.type]) {
+            resultItem[request.type] = []
           }
-          result[request.type].push(request)
-          return result
+          resultItem[request.type].push(request)
+          return resultItem
         }, {} as any)
-        for (const groupName in groupedRequests) {
-          groupedRequests[groupName].sort((a: BookingRequest, b: BookingRequest) => new Date(b.dateCreate).getTime() - new Date(a.dateCreate).getTime())
+        Object.keys(groupedRequests).forEach((groupName) => {
+          groupedRequests[groupName].sort(
+            (a: BookingRequest, b: BookingRequest) =>
+              new Date(b.dateCreate).getTime() - new Date(a.dateCreate).getTime(),
+          )
           const groupFirstRequest = groupedRequests[groupName].length ? groupedRequests[groupName][0] : null
           if (groupFirstRequest) {
             const popoverContentActions: PopoverItem = {
-              text: `Запрос на ${getHumanRequestType(groupFirstRequest.type)} от ${formatDateTime(groupFirstRequest.dateCreate)}`,
+              text: `Запрос на ${getHumanRequestType(groupFirstRequest.type)} от ${formatDateTime(
+                groupFirstRequest.dateCreate,
+              )}`,
               buttonText: 'Скачать',
               callback: async () => {
                 if (groupFirstRequest?.id) {
-                  await downloadDocument({ documentID: groupFirstRequest.id, documentType: 'request', bookingID: bookingId })
+                  await downloadDocument({
+                    documentID: groupFirstRequest.id,
+                    documentType: 'request',
+                    bookingID: bookingId,
+                  })
                 }
               },
             }
             popoverContentDownload.push(popoverContentActions)
           }
-        }
-        vouchers.forEach((voucher) => {
+        })
+
+        /* vouchers.forEach((voucher) => {
           const popoverContentVouchers: PopoverItem = {
             text: `Ваучер от ${formatDateTime(voucher.dateCreate)}`,
             buttonText: 'Скачать',
@@ -156,8 +167,8 @@ $(() => {
             },
           }
           popoverContentDownload.push(popoverContentVouchers)
-        })
-        const popover = createPopover({
+        }) */
+        createPopover({
           relationElement: e.currentTarget,
           textForEmpty: 'Нет возможных действий',
           content: popoverContentDownload,

@@ -11,7 +11,7 @@ import PriceModal from '~resources/views/hotel-booking/show/components/PriceModa
 import RequestBlock from '~resources/views/hotel-booking/show/components/RequestBlock.vue'
 import StatusHistoryModal from '~resources/views/hotel-booking/show/components/StatusHistoryModal.vue'
 import { useExternalNumber } from '~resources/views/hotel-booking/show/composables/external-number'
-import { externalNumberTypeOptions, getCancelPeriodTypeName } from '~resources/views/hotel-booking/show/lib/constants'
+import { externalNumberTypeOptions, getCancelPeriodTypeName, getHumanRequestType } from '~resources/views/hotel-booking/show/lib/constants'
 import { useBookingStore } from '~resources/views/hotel-booking/show/store/booking'
 import { useOrderStore } from '~resources/views/hotel-booking/show/store/order-currency'
 import { useBookingRequestStore } from '~resources/views/hotel-booking/show/store/request'
@@ -117,18 +117,6 @@ const handleUpdateExternalNumber = async () => {
   if (isSuccess) {
     isExternalNumberChanged.value = false
   }
-}
-
-const getHumanRequestType = (type: number): string => {
-  let preparedType = 'изменение'
-  if (type === 1) {
-    preparedType = 'бронирование'
-  }
-  if (type === 3) {
-    preparedType = 'отмену'
-  }
-
-  return preparedType
 }
 
 const handleVoucherSend = async () => {
