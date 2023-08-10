@@ -27,7 +27,7 @@ class ImageRepository
     public function create(UploadedFile $file, int $hotelId, ?int $roomId = null, ?string $title = null): int
     {
         return DB::transaction(function () use ($file, $hotelId, $roomId, $title) {
-            $image = HotelImage::create(
+            $imageFile = HotelImage::create(
                 $hotelId,
                 $file->getClientOriginalName(),
                 $file->getContent()
@@ -39,11 +39,11 @@ class ImageRepository
                 'hotel_id' => $hotelId,
                 'title' => $title,
                 'index' => $index,
-                'file_guid' => $image->guid(),
+                'file_guid' => $imageFile->guid(),
             ]);
 
             if ($roomId !== null) {
-                RoomImage::create([
+                RoomImage::insert([
                     'room_id' => $roomId,
                     'image_id' => $hotelImage->id,
                     'index' => RoomImage::getNextIndexByRoomId($roomId)

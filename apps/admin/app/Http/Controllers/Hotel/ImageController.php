@@ -76,7 +76,7 @@ class ImageController extends Controller
         return new AjaxSuccessResponse();
     }
 
-    public function reorderRoomImages(Request $request, Room $room): AjaxResponseInterface
+    public function reorderRoomImages(Request $request, Hotel $hotel, Room $room): AjaxResponseInterface
     {
         $room->updateImageIndexes($request->input('indexes'));
 
