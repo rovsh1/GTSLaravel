@@ -49,11 +49,11 @@ AclRoute::for('hotel')
     ->delete('/{hotel}/images/{image}', Controllers\Hotel\ImageController::class . '@destroy', 'update', 'images.destroy')
     ->post('/{hotel}/images/reorder', Controllers\Hotel\ImageController::class . '@reorder', 'update', 'images.reorder')
     ->get('/{hotel}/images/{image}/rooms', Controllers\Hotel\ImageController::class . '@getImageRooms', 'update', 'images.rooms')
-    ->post('/{hotel}/images/rooms/{room}/reorder', Controllers\Hotel\ImageController::class . '@reorderRoomImages', 'update', 'images.room.reorder')
 
     ->get('/{hotel}/images/{room}/list', Controllers\Hotel\ImageController::class . '@getRoomImages', 'update', 'images.room.get')
     ->post('/{hotel}/rooms/{room}/images/{image}/set', Controllers\Hotel\ImageController::class . '@setRoomImage', 'update', 'images.room.set')
     ->post('/{hotel}/rooms/{room}/images/{image}/unset', Controllers\Hotel\ImageController::class . '@unsetRoomImage', 'update', 'images.room.unset')
+    ->post('/{hotel}/rooms/{room}/images/reorder', Controllers\Hotel\ImageController::class . '@reorderRoomImages', 'update', 'images.room.reorder')
 
     ->get('/{hotel}/quotas', Controllers\Hotel\QuotaController::class . '@index', 'read', 'quotas.index')
     ->post('/{hotel}/quotas', Controllers\Hotel\QuotaController::class . '@get', 'read', 'quotas.get')
