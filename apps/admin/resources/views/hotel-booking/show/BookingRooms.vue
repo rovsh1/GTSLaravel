@@ -30,6 +30,7 @@ import { Currency } from '~api/models'
 import { showConfirmDialog } from '~lib/confirm-dialog'
 import { formatDate } from '~lib/date'
 import { requestInitialData } from '~lib/initial-data'
+import { formatPrice } from '~lib/price'
 
 const [isShowRoomModal, toggleRoomModal] = useToggle()
 const [isShowGuestModal, toggleGuestModal] = useToggle()
@@ -268,8 +269,7 @@ fetchCountries()
                     {{ formatDate(dayPrice.date) }}
                   </td>
                   <td class="text-nowrap">
-                    {{ dayPrice.boValue }}
-                    <span class="cur">{{ orderCurrency.sign }}</span>
+                    {{ formatPrice(dayPrice.boValue, orderCurrency.sign) }}
                   </td>
                   <td class="text-nowrap">{{ dayPrice.boFormula }}</td>
                 </tr>
@@ -285,8 +285,8 @@ fetchCountries()
           <!--            </span>-->
           <!--          </div>-->
           <div v-if="orderCurrency" class="d-flex flex-row justify-content-between w-100 mt-2">
-            <strong>Итого: {{ room.price.boValue }}
-              <span class="cur">{{ orderCurrency.sign }}</span>
+            <strong>
+              Итого: {{ formatPrice(room.price.boValue, orderCurrency.sign) }}
             </strong>
             <a
               v-if="canChangeRoomPrice"
