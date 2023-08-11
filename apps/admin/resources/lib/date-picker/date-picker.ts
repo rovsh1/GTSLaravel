@@ -89,11 +89,11 @@ export const useDatePicker = (element: HTMLInputElement, options?: Options) => {
   })
 
   picker.on('selected', () => {
-    const customChangeEvent = new CustomEvent('customLitePickerChangeEvent')
+    const customChangeEvent = new CustomEvent('customEventChangeLitePicker')
     element?.dispatchEvent(customChangeEvent)
   })
 
-  $(element).on('customLitePickerClearEvent', () => {
+  $(element).on('customEventClearLitePicker', () => {
     picker.clearSelection()
   })
 

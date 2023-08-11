@@ -1,7 +1,7 @@
 import { Tab } from 'bootstrap'
 
 import { useDateRangePicker } from '~lib/date-picker/date-picker'
-import { observeDynamicElements } from '~lib/observe-dynamic-elements'
+import { observeDynamicElements } from '~lib/observe'
 
 function bootDeleteButtons() {
   $('button.btn-delete')
@@ -110,7 +110,7 @@ function bootGridFilters() {
     setCounterText(filledFields.length)
   }
 
-  $gridFiltersFormInputs.on('change customLitePickerChangeEvent', (event: any) => {
+  $gridFiltersFormInputs.on('change customEventChangeLitePicker', (event: any) => {
     gridFiltersFormInputsChangeEvent(event)
   })
 
