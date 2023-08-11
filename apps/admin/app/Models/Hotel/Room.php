@@ -111,7 +111,7 @@ class Room extends Model
             'image_id',
             'id',
             'id'
-        )->orderBy('index');
+        )->orderBy('hotel_room_images.index');
     }
 
     public function priceRates(): BelongsToMany
