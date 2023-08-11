@@ -2,52 +2,29 @@
 
 namespace Module\Booking\HotelBooking\Domain\Service\QuotaManager\ProcessingMethod;
 
-use Illuminate\Support\Collection;
 use Module\Booking\Common\Domain\Service\StatusRules\AdministratorRules;
-use Module\Booking\HotelBooking\Domain\Adapter\HotelQuotaAdapterInterface;
+use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\HotelBooking\Domain\Entity\Booking;
-use Module\Booking\HotelBooking\Domain\Entity\RoomBooking;
 use Module\Booking\HotelBooking\Domain\Service\QuotaManager\QuotaProcessingMethodInterface;
+use Module\Booking\HotelBooking\Domain\Service\QuotaManager\QuotaReservationManager;
 
 class Quota implements QuotaProcessingMethodInterface
 {
     public function __construct(
         private readonly AdministratorRules $administratorRules,
-        private readonly HotelQuotaAdapterInterface $hotelQuotaAdapter
-    ) {}
+        private readonly QuotaReservationManager $quotaReservationManager
+    ) {
+    }
 
     public function process(Booking $booking): void
     {
-        if (!$this->isProcessable($booking)) {
-            return;
-        }
-        $roomsCountIndexedByRoomId = $this->countRooms($booking);
-        //@todo отправлять в отель пачкой, чтобы это была транзакция
         if ($this->isEditableBooking($booking)) {
-            //@todo зарезервировать квоты
+            $this->quotaReservationManager->reserve($booking);
         } elseif ($this->isBookingConfirmed($booking)) {
-            //@todo списать квоты
-            //@todo вернуть резерв
+            $this->quotaReservationManager->book($booking);
         } elseif ($this->isBookingCancelled($booking)) {
-            //@todo удалить все записи от брони
-            //reset
+            $this->quotaReservationManager->cancel($booking);
         }
-    }
-
-    private function isProcessable(Booking $booking): bool
-    {
-        return $this->isEditableBooking($booking)
-            || $this->isBookingConfirmed($booking)
-            || $this->isBookingCancelled($booking);
-    }
-
-    private function countRooms(Booking $booking): mixed
-    {
-        $roomsCountByHotelRoomId = $booking->roomBookings()
-            ->groupBy(fn(RoomBooking $roomBooking) => $roomBooking->roomInfo()->id())
-            ->map(fn(Collection $rooms) => $rooms->count());
-
-        return $roomsCountByHotelRoomId;
     }
 
     private function isEditableBooking(Booking $booking): bool
@@ -57,7 +34,8 @@ class Quota implements QuotaProcessingMethodInterface
 
     private function isBookingConfirmed(Booking $booking): bool
     {
-        return false;
+        //@todo надо перенести в рулзы
+        return $booking->status() === BookingStatusEnum::CONFIRMED;
     }
 
     private function isBookingCancelled(Booking $booking): bool

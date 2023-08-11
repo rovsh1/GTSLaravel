@@ -6,7 +6,9 @@ use Module\Booking\HotelBooking\Domain\Entity\Booking;
 
 interface QuotaProcessingMethodInterface
 {
-    //Нужна таблица hotel_room_quota_values - quota_id, type, value, context (json), created_at, deleted_at
+    //Нужна таблица hotel_room_quota_values - quota_id, type, value, booking_id, context (json), created_at, deleted_at
+
+    //booking_quota_reservation
 
     //Логика листенера:
     //        - События смены периода
@@ -19,8 +21,6 @@ interface QuotaProcessingMethodInterface
     //  -  определить тип (booked/reserved)
     //  -  создать новую запись
 
-    public function process(Booking $booking): void;
-
     //UseCase 1: Юзер оплатил бронь
     //UseCase 2: Бронь подтверждена в админке
     //1. Получаю бронь
@@ -32,4 +32,6 @@ interface QuotaProcessingMethodInterface
     //3. Для каждого (номера + дата) создаю резервы
 
     //3. Для каждого (номера + дата) отменяю списания
+
+    public function process(Booking $booking): void;
 }

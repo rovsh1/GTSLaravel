@@ -9,7 +9,7 @@ use Module\Booking\HotelBooking\Domain\Service\QuotaManager\ProcessingMethod\Req
 use Module\Booking\HotelBooking\Domain\Service\QuotaManager\ProcessingMethod\Site;
 use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 
-class QuotaMethodFactory
+class QuotaProcessingMethodFactory
 {
     public function __construct(
         private readonly AdministratorRules $administratorRules,

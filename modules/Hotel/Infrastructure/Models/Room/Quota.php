@@ -6,8 +6,8 @@ use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\DB;
-use Module\Hotel\Domain\ValueObject\QuotaChangeTypeEnum;
 use Module\Hotel\Infrastructure\Models\Room;
+use Module\Shared\Enum\Booking\QuotaChangeTypeEnum;
 use Sdk\Module\Database\Eloquent\Model;
 
 /**
@@ -38,7 +38,7 @@ use Sdk\Module\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Quota whereStopped()
  * @method static \Illuminate\Database\Eloquent\Builder|Quota whereAvailable()
  * @method static \Illuminate\Database\Eloquent\Builder|Quota wherePeriod(CarbonPeriod $period)
- * @method static \Illuminate\Database\Eloquent\Builder|Quota addCountColumns()
+ * @method static \Illuminate\Database\Eloquent\Builder|Quota withCountColumns()
  * @mixin \Eloquent
  */
 class Quota extends Model
@@ -98,7 +98,7 @@ class Quota extends Model
             ->where('count_available', '>', 0);
     }
 
-    public function scopeAddCountColumns(Builder $builder): void
+    public function scopeWithCountColumns(Builder $builder): void
     {
         $this->addCountColumnsQuery(
             $builder,

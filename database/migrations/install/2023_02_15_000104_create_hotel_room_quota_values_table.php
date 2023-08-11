@@ -10,13 +10,19 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('hotel_room_quota_values', function (Blueprint $table) {
+        Schema::create('booking_quota_reservation', function (Blueprint $table) {
+            $table->unsignedInteger('booking_id');
             $table->unsignedInteger('quota_id');
             $table->unsignedTinyInteger('type');
             $table->unsignedSmallInteger('value');
             $table->json('context');
             $table->timestamp('created_at')->nullable();
-            $table->softDeletes();
+
+            $table->foreign('booking_id')
+                ->references('id')
+                ->on('bookings')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
 
             $table->foreign('quota_id')
                 ->references('id')
@@ -31,6 +37,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('hotel_room_quota_values');
+        Schema::dropIfExists('booking_quota_reservation');
     }
 };
