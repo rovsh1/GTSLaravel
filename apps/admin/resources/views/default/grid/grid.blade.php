@@ -14,7 +14,7 @@
             @if (!empty($searchForm))
                 <button type="button" class="btn btn-white" id="btn-grid-filters">
                     <x-icon key="filter"/>
-                    <span id="grid-filters-counter" class="position-absolute translate-middle bg-danger border border-light rounded-circle filter-badge d-none">
+                    <span id="grid-filters-counter" class="position-absolute bg-danger border border-light rounded-circle filter-badge d-none">
                         <span class="badge-text">
                             0
                         </span>

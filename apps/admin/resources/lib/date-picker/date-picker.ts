@@ -88,6 +88,15 @@ export const useDatePicker = (element: HTMLInputElement, options?: Options) => {
     container.setAttribute(datePickerRootAttributeName, '')
   })
 
+  picker.on('selected', () => {
+    const customChangeEvent = new CustomEvent('customLitePickerChangeEvent')
+    element?.dispatchEvent(customChangeEvent)
+  })
+
+  $(element).on('customLitePickerClearEvent', () => {
+    picker.clearSelection()
+  })
+
   registerDatePickerInstance(element, picker)
 
   prefillDatePickerFromInput(element, picker)

@@ -1,6 +1,7 @@
 import { Tab } from 'bootstrap'
 
 import { useDateRangePicker } from '~lib/date-picker/date-picker'
+import { observeDynamicElements } from '~lib/observe-dynamic-elements'
 
 function bootDeleteButtons() {
   $('button.btn-delete')
@@ -94,7 +95,7 @@ function bootGridFilters() {
   })
   setCounterText(filledFields.length)
 
-  $gridFiltersFormInputs.on('change', (event: any) => {
+  const gridFiltersFormInputsChangeEvent = (event: any) => {
     const $element = $(event.target)
     const clearFieldName = $element.prop('name').split('[')[0]
     const elementValue = $element.val()?.toString() || ''
@@ -106,9 +107,14 @@ function bootGridFilters() {
     if (isFieldExists && elementValue.length === 0) {
       filledFields.splice(fieldNameIndex, 1)
     }
-
     setCounterText(filledFields.length)
+  }
+
+  $gridFiltersFormInputs.on('change customLitePickerChangeEvent', (event: any) => {
+    gridFiltersFormInputsChangeEvent(event)
   })
+
+  observeDynamicElements(document.getElementById('grid-filters-popup'), 'select', 'change', (event) => { gridFiltersFormInputsChangeEvent(event) })
 }
 
 export default function bootForms() {
