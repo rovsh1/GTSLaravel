@@ -23,9 +23,9 @@ class RoomImageRepository
 
     public function create(int $imageId, int $roomId): void
     {
-        RoomImage::updateOrCreate(
+        RoomImage::updateOrInsert(
             ['room_id' => $roomId, 'image_id' => $imageId],
-            ['room_id' => $roomId, 'image_id' => $imageId]
+            ['room_id' => $roomId, 'image_id' => $imageId, 'index' => RoomImage::getNextIndexByRoomId($roomId)]
         );
     }
 

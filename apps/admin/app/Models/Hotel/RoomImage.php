@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 /**
  * App\Admin\Models\Hotel\RoomImage
@@ -32,11 +33,14 @@ class RoomImage extends Model
 
     public $timestamps = false;
 
+    protected $primaryKey = null;
+
     protected $table = 'hotel_room_images';
 
     protected $fillable = [
         'room_id',
         'image_id',
+        'index',
     ];
 
     public static function booted()
@@ -47,8 +51,7 @@ class RoomImage extends Model
                 ->join('hotel_images', 'hotel_images.id', '=', 'hotel_room_images.image_id')
                 ->addSelect('hotel_images.file_guid as file_guid')
                 ->addSelect('hotel_images.hotel_id as hotel_id')
-                ->addSelect('hotel_images.title as title')
-                ->addSelect('hotel_images.index as index');
+                ->addSelect('hotel_images.title as title');
         });
     }
 
@@ -59,11 +62,21 @@ class RoomImage extends Model
 
     public function scopeOrderByIndex(Builder $builder): void
     {
-        $builder->orderBy('hotel_images.index');
+        $builder->orderBy('hotel_room_images.index');
     }
 
     public function file(): Attribute
     {
         return Attribute::get(fn() => HotelImage::find($this->file_guid));
+    }
+
+    public static function getNextIndexByRoomId(int $roomId): int
+    {
+        $index = DB::select(
+            'SELECT MAX(`index`) as `index` FROM `hotel_room_images` WHERE `room_id`= :room_id',
+            ['room_id' => $roomId]
+        );
+        $index = $index[0];
+        return $index->index !== null ? $index->index + 1 : 0;
     }
 }

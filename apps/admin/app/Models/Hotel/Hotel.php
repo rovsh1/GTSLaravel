@@ -5,6 +5,7 @@ namespace App\Admin\Models\Hotel;
 use App\Admin\Enums\Hotel\RatingEnum;
 use App\Admin\Enums\Hotel\StatusEnum;
 use App\Admin\Enums\Hotel\VisibilityEnum;
+use App\Admin\Models\HasIndexedChildren;
 use App\Admin\Models\Hotel\Reference\Service;
 use App\Admin\Models\Hotel\Reference\Usability;
 use App\Admin\Models\Reference\Landmark;
@@ -39,6 +40,7 @@ class Hotel extends Model
 {
     use HasQuicksearch;
     use HasCoordinates;
+    use HasIndexedChildren;
 
     //use SoftDeletes;
 
@@ -219,26 +221,5 @@ class Hotel extends Model
     protected function getLongitudeField(): string
     {
         return 'address_lon';
-    }
-
-    /**
-     * @param array $ids
-     * @param class-string $model
-     * @param string $indexField
-     * @return bool
-     * @throws \Throwable
-     */
-    private function updateChildIndexes(array $ids, string $model, string $indexField = 'index'): bool
-    {
-        $i = 1;
-        foreach ($ids as $id) {
-            $image = $model::find($id);
-            if (!$image) {
-                throw new \Exception('Model not found', 404);
-            }
-
-            $image->update([$indexField => $i++]);
-        }
-        return true;
     }
 }
