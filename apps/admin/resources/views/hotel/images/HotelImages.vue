@@ -53,7 +53,7 @@ const {
   isFetching: isImagesFetching,
 } = useHotelImagesListAPI({ hotelID })
 
-const images = ref<UseHotelImages>(null)
+const images = ref<UseHotelImages>([])
 
 const hotelRoomImagesProps = computed(() =>
   (roomID === undefined ? null : { hotelID, roomID }))

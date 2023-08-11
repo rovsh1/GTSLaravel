@@ -98,7 +98,9 @@ class Room extends Model
     public function mainImage(): Attribute
     {
         return Attribute::get(
-            fn() => $this->images()->first() !== null ? HotelImage::find($this->images()->first()->file_guid) : null
+            fn() => $this->images()->first() !== null
+                ? HotelImage::find($this->images()->first()->file_guid)
+                : null
         );
     }
 
