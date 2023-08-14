@@ -6,9 +6,9 @@ use Module\Hotel\Domain\Entity\Hotel;
 use Module\Hotel\Domain\ValueObject\Address;
 use Module\Hotel\Domain\ValueObject\Contact;
 use Module\Hotel\Domain\ValueObject\ContactCollection;
+use Module\Hotel\Domain\ValueObject\HotelId;
 use Module\Hotel\Domain\ValueObject\TimeSettings;
 use Module\Shared\Domain\Service\SerializerInterface;
-use Module\Shared\Domain\ValueObject\Id;
 use Module\Shared\Enum\ContactTypeEnum;
 use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Foundation\Support\EntityFactory\AbstractEntityFactory;
@@ -27,7 +27,7 @@ class HotelFactory extends AbstractEntityFactory
         $contacts = $this->buildContacts($data['contacts']);
 
         return new $this->entity(
-            id: new Id($data['id']),
+            id: new HotelId($data['id']),
             name: $data['name'],
             currency: CurrencyEnum::fromId($data['currency_id']),
             timeSettings: $this->serializer->deserialize(TimeSettings::class, $data['time_settings']),

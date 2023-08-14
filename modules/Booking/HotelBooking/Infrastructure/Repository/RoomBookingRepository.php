@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Module\Booking\HotelBooking\Infrastructure\Repository;
 
 use Illuminate\Database\Eloquent\Collection;
+use Module\Booking\Common\Domain\ValueObject\BookingId;
+use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\HotelBooking\Domain\Entity\RoomBooking;
 use Module\Booking\HotelBooking\Domain\Repository\RoomBookingRepositoryInterface;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\GuestCollection;
@@ -15,7 +17,6 @@ use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomInfo;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBookingCollection;
 use Module\Booking\HotelBooking\Domain\ValueObject\RoomPrice;
 use Module\Booking\HotelBooking\Infrastructure\Models\RoomBooking as Model;
-use Module\Shared\Domain\ValueObject\Id;
 
 class RoomBookingRepository implements RoomBookingRepositoryInterface
 {
@@ -107,8 +108,8 @@ class RoomBookingRepository implements RoomBookingRepositoryInterface
 
         return new RoomBooking(
             id: new RoomBookingId($model->id),
-            bookingId: new Id($model->booking_id),
-            orderId: new Id($model->booking_order_id),
+            bookingId: new BookingId($model->booking_id),
+            orderId: new OrderId($model->booking_order_id),
             status: RoomBookingStatusEnum::from($data['status']),
             roomInfo: RoomInfo::fromData($data['roomInfo']),
             guests: GuestCollection::fromData($data['guests']),

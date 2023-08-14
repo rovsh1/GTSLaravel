@@ -3,7 +3,6 @@
 use Illuminate\Database\Migrations\Migration;
 use Module\Hotel\Domain\Entity\Room\RoomMarkups;
 use Module\Hotel\Domain\ValueObject\RoomId;
-use Module\Shared\Domain\ValueObject\Id;
 use Module\Shared\Domain\ValueObject\Percent;
 
 return new class extends Migration {

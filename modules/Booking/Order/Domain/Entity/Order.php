@@ -5,19 +5,21 @@ declare(strict_types=1);
 namespace Module\Booking\Order\Domain\Entity;
 
 use Carbon\CarbonImmutable;
+use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\Order\Domain\Event\ClientChanged;
+use Module\Booking\Order\Domain\ValueObject\ClientId;
+use Module\Booking\Order\Domain\ValueObject\LegalId;
 use Module\Shared\Domain\Entity\EntityInterface;
-use Module\Shared\Domain\ValueObject\Id;
 use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
 final class Order extends AbstractAggregateRoot implements EntityInterface
 {
     public function __construct(
-        private readonly Id $id,
+        private readonly OrderId $id,
         private CurrencyEnum $currency,
-        private Id $clientId,
-        private ?Id $legalId,
+        private ClientId $clientId,
+        private ?LegalId $legalId,
         private readonly CarbonImmutable $createdAt,
     ) {}
 
@@ -28,17 +30,17 @@ final class Order extends AbstractAggregateRoot implements EntityInterface
         //@todo после генерации все брони переходят в статус "Выставлен счет"
     }
 
-    public function id(): Id
+    public function id(): OrderId
     {
         return $this->id;
     }
 
-    public function clientId(): Id
+    public function clientId(): ClientId
     {
         return $this->clientId;
     }
 
-    public function setClientId(Id $clientId): void
+    public function setClientId(ClientId $clientId): void
     {
         $this->clientId = $clientId;
         $this->pushEvent(new ClientChanged($this));
@@ -49,12 +51,12 @@ final class Order extends AbstractAggregateRoot implements EntityInterface
         $this->currency = $currency;
     }
 
-    public function legalId(): ?Id
+    public function legalId(): ?LegalId
     {
         return $this->legalId;
     }
 
-    public function setLegalId(?Id $legalId): void
+    public function setLegalId(?LegalId $legalId): void
     {
         $this->legalId = $legalId;
     }

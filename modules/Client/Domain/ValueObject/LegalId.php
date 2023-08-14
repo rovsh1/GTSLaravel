@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Module\Hotel\Domain\ValueObject;
+namespace Module\Client\Domain\ValueObject;
 
 use Module\Shared\Domain\ValueObject\AbstractIntId;
 
-class RoomId extends AbstractIntId
+class LegalId extends AbstractIntId
 {
 
 }
