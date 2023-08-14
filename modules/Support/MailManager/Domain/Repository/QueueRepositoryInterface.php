@@ -2,30 +2,24 @@
 
 namespace Module\Support\MailManager\Domain\Repository;
 
-use Module\Support\MailManager\Domain\Entity\QueueMessage;
-use Module\Support\MailManager\Domain\ValueObject\QueueMailStatusEnum;
+use Module\Support\MailManager\Domain\Entity\Mail;
+use Module\Support\MailManager\Domain\ValueObject\MailId;
 
 interface QueueRepositoryInterface
 {
-    public function find(string $uuid): ?QueueMessage;
+    public function find(MailId $uuid): ?Mail;
 
-    public function push(
-        string $subject,
-        string $payload,
-        int $priority = 0,
-        QueueMailStatusEnum $status = QueueMailStatusEnum::WAITING,
-        array $context = null
-    ): QueueMessage;
+    public function push(Mail $mail, int $priority = 0, array $context = null): void;
 
-    public function retry(string $uuid): void;
+    public function retry(MailId $uuid): void;
 
     public function retryAll(): void;
 
-    public function updateStatus(string $uuid, QueueMailStatusEnum $status): void;
+    public function store(Mail $mail): void;
 
-    public function findWaiting(): ?QueueMessage;
+    public function findWaiting(): ?Mail;
 
-    public function clearExpired(\DateTime $date): void;
+    public function clearExpired(\DateTimeInterface $date): void;
 
     public function waitingCount(): int;
 }

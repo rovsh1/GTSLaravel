@@ -2,7 +2,9 @@
 
 namespace Module\Support\MailManager\Domain\ValueObject;
 
-class AddressList implements \Iterator
+use Module\Shared\Contracts\Support\Serializable;
+
+final class AddressList implements \Iterator, Serializable
 {
     private int $position = 0;
 
@@ -36,6 +38,7 @@ class AddressList implements \Iterator
                 return true;
             }
         }
+
         return false;
     }
 
@@ -67,5 +70,15 @@ class AddressList implements \Iterator
     public function rewind(): void
     {
         $this->position = 0;
+    }
+
+    public function serialize(): array
+    {
+        return $this->toArray();
+    }
+
+    public static function deserialize(array $payload): AddressList
+    {
+        return new AddressList($payload);
     }
 }

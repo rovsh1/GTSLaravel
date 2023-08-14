@@ -10,8 +10,9 @@ use Module\Support\MailManager\Domain\Service\QueueManagerInterface;
 use Module\Support\MailManager\Infrastructure\Repository\MailTemplateRepository;
 use Module\Support\MailManager\Infrastructure\Repository\QueueRepository;
 use Module\Support\MailManager\Infrastructure\Service\Mailer;
+use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
 
-class BootServiceProvider extends \Sdk\Module\Foundation\Support\Providers\ServiceProvider
+class BootServiceProvider extends ServiceProvider
 {
     public function boot()
     {

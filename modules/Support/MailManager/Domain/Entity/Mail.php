@@ -2,11 +2,14 @@
 
 namespace Module\Support\MailManager\Domain\Entity;
 
+use Module\Shared\Contracts\Support\Serializable;
 use Module\Support\MailManager\Domain\ValueObject\AddressList;
 use Module\Support\MailManager\Domain\ValueObject\Attachments;
 use Module\Support\MailManager\Domain\ValueObject\MailBody;
+use Module\Support\MailManager\Domain\ValueObject\MailId;
+use Module\Support\MailManager\Domain\ValueObject\QueueMailStatusEnum;
 
-class Mail
+final class Mail implements Serializable
 {
     private readonly AddressList $from;
 
@@ -22,9 +25,9 @@ class Mail
 
     private array $metadata = [];
 
-    private int $priority = 0;
-
     public function __construct(
+        private readonly MailId $id,
+        private QueueMailStatusEnum $status,
         private readonly AddressList $to,
         private string $subject,
         private readonly MailBody $body,
@@ -34,6 +37,16 @@ class Mail
         $this->cc = new AddressList();
         $this->bcc = new AddressList();
         $this->attachments = new Attachments();
+    }
+
+    public function id(): MailId
+    {
+        return $this->id;
+    }
+
+    public function status(): QueueMailStatusEnum
+    {
+        return $this->status;
     }
 
     public function to(): AddressList
@@ -81,28 +94,55 @@ class Mail
         return $this->bcc;
     }
 
-    public function priority(): int
-    {
-        return $this->priority;
-    }
-
     public function setPriority(int $priority): void
     {
         $this->priority = $priority;
     }
 
-    public function serialize(): string
+    public function setProcessingStatus(): void
     {
-        return json_encode([
-            'to' => $this->to->toArray(),
+        $this->status = QueueMailStatusEnum::PROCESSING;
+    }
+
+    public function setFailedStatus(\Throwable $exception): void
+    {
+        $this->status = QueueMailStatusEnum::FAILED;
+    }
+
+    public function setSentStatus(): void
+    {
+        $this->status = QueueMailStatusEnum::SENT;
+    }
+
+    public function serialize(): array
+    {
+        return [
+            'id' => $this->id->value(),
+            'status' => $this->status->value,
+            'to' => $this->to->serialize(),
             'subject' => $this->subject,
             'body' => $this->body->value(),
-            'from' => $this->from->toArray(),
-            'replyTo' => $this->replyTo->toArray(),
-            'cc' => $this->cc->toArray(),
-            'bcc' => $this->bcc->toArray(),
+            'from' => $this->from->serialize(),
+            'replyTo' => $this->replyTo->serialize(),
+            'cc' => $this->cc->serialize(),
+            'bcc' => $this->bcc->serialize(),
             //'attachments' => $this->attachments,
-            'priority' => $this->priority,
-        ]);
+        ];
+    }
+
+    public static function deserialize(array $payload): Mail
+    {
+        return new Mail(
+            new MailId($payload['id']),
+            QueueMailStatusEnum::from($payload['status']),
+            AddressList::deserialize($payload['to']),
+            $payload['subject'],
+            new MailBody($payload['body']),
+//            AddressList::deserialize($payload['from']),
+//            AddressList::deserialize($payload['replyTo']),
+//            AddressList::deserialize($payload['cc']),
+//            AddressList::deserialize($payload['bcc']),
+//            $payload['priority']
+        );
     }
 }
