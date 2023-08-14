@@ -5,7 +5,6 @@ namespace Module\Booking\HotelBooking\Infrastructure\Models\Hotel;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
-use Module\Hotel\Infrastructure\Models\Room;
 use Module\Hotel\Infrastructure\Models\Room\QuotaStatusEnum;
 use Sdk\Module\Database\Eloquent\Model;
 
@@ -17,7 +16,7 @@ use Sdk\Module\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon $date
  * @property int $release_days
  * @property QuotaStatusEnum $status
- * @property int $count_available
+ * @property int $count_unavailable
  * @property int $count_total
  * @method static \Illuminate\Database\Eloquent\Builder|RoomQuota newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RoomQuota newQuery()
@@ -43,20 +42,20 @@ class RoomQuota extends Model
     protected static function booted()
     {
         static::addGlobalScope('default', function (Builder $query) {
+            $query->addSelect('hotel_room_quota.*');
             $query->selectSub(
                 DB::table('booking_quota_reservation')
-                    ->select('SUM(value)')
+                    ->selectRaw('SUM(value)')
                     ->whereColumn('booking_quota_reservation.quota_id', '=', 'hotel_room_quota.id'),
                 'count_unavailable'
-            )
-                ->select('(count_total - count_unavailable) as count_available');
+            );
         });
     }
 
     public function scopeWherePeriod(Builder $builder, CarbonPeriod $period): void
     {
         $builder->where('date', '>=', $period->getStartDate())
-            ->where('date', '<', $period->getEndDate());
+            ->where('date', '<=', $period->getEndDate());
     }
 
     public function scopeWhereBookingId(Builder $builder, int $bookingId): void

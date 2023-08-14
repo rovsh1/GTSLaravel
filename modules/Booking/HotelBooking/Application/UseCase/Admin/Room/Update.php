@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\HotelBooking\Application\UseCase\Admin\Room;
 
+use Module\Booking\Common\Domain\ValueObject\BookingId;
 use Module\Booking\HotelBooking\Application\Request\UpdateRoomDto;
 use Module\Booking\HotelBooking\Domain\Adapter\HotelRoomAdapterInterface;
 use Module\Booking\HotelBooking\Domain\Entity\RoomBooking;
@@ -14,7 +15,6 @@ use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBooki
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBookingStatusEnum;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomInfo;
 use Module\Booking\HotelBooking\Infrastructure\Repository\BookingRepository;
-use Module\Shared\Domain\ValueObject\Id;
 use Module\Shared\Domain\ValueObject\Percent;
 use Module\Shared\Domain\ValueObject\TimePeriod;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
@@ -47,7 +47,7 @@ class Update implements UseCaseInterface
         $roomBooking = new RoomBooking(
             id: $currentRoom->id(),
             orderId: $booking->orderId(),
-            bookingId: new Id($request->bookingId),
+            bookingId: new BookingId($request->bookingId),
             status: RoomBookingStatusEnum::from($request->status),
             roomInfo: new RoomInfo(
                 $hotelRoomDto->id,

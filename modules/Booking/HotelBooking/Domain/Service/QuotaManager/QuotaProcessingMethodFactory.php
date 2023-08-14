@@ -3,7 +3,6 @@
 namespace Module\Booking\HotelBooking\Domain\Service\QuotaManager;
 
 use Module\Booking\Common\Domain\Service\StatusRules\AdministratorRules;
-use Module\Booking\HotelBooking\Domain\Adapter\HotelQuotaAdapterInterface;
 use Module\Booking\HotelBooking\Domain\Service\QuotaManager\ProcessingMethod\Quota;
 use Module\Booking\HotelBooking\Domain\Service\QuotaManager\ProcessingMethod\Request;
 use Module\Booking\HotelBooking\Domain\Service\QuotaManager\ProcessingMethod\Site;
@@ -13,13 +12,13 @@ class QuotaProcessingMethodFactory
 {
     public function __construct(
         private readonly AdministratorRules $administratorRules,
-        private readonly HotelQuotaAdapterInterface $hotelQuotaAdapter,
+        private readonly QuotaReservationManager $quotaReservationManager
     ) {}
 
     public function build(QuotaProcessingMethodEnum $method): QuotaProcessingMethodInterface
     {
         return match ($method) {
-            QuotaProcessingMethodEnum::QUOTA => new Quota($this->administratorRules, $this->hotelQuotaAdapter),
+            QuotaProcessingMethodEnum::QUOTA => new Quota($this->administratorRules, $this->quotaReservationManager),
             QuotaProcessingMethodEnum::REQUEST => new Request(),
             QuotaProcessingMethodEnum::SITE => new Site(),
         };

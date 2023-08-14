@@ -15,9 +15,11 @@ class Request extends Model
     protected $fillable = [
         'booking_id',
         'type',
+        'is_archive',
     ];
 
     protected $casts = [
-        'type' => RequestTypeEnum::class
+        'type' => RequestTypeEnum::class,
+        'is_archive' => 'boolean'
     ];
 }

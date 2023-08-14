@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Booking\HotelBooking\Domain\Entity;
 
+use Module\Booking\Common\Domain\ValueObject\BookingId;
+use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\HotelBooking\Domain\Event\GuestAdded;
 use Module\Booking\HotelBooking\Domain\Event\GuestDeleted;
 use Module\Booking\HotelBooking\Domain\Event\GuestEdited;
@@ -23,8 +25,8 @@ class RoomBooking extends AbstractAggregateRoot implements EntityInterface
 {
     public function __construct(
         private readonly RoomBookingId $id,
-        private readonly Id $bookingId,
-        private readonly Id $orderId,
+        private readonly BookingId $bookingId,
+        private readonly OrderId $orderId,
         private RoomBookingStatusEnum $status,
         private RoomInfo $roomInfo,
         //@todo возможно придется переносить гостей в отдельную таблицу с привязкой к заказу (для составных броней)
@@ -38,12 +40,12 @@ class RoomBooking extends AbstractAggregateRoot implements EntityInterface
         return $this->id;
     }
 
-    public function bookingId(): Id
+    public function bookingId(): BookingId
     {
         return $this->bookingId;
     }
 
-    public function orderId(): Id
+    public function orderId(): OrderId
     {
         return $this->orderId;
     }

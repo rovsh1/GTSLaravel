@@ -5,15 +5,16 @@ declare(strict_types=1);
 namespace Module\Booking\HotelBooking\Domain\Service\QuotaManager\Model;
 
 use Carbon\CarbonInterface;
+use Module\Booking\HotelBooking\Domain\ValueObject\QuotaId;
 
-class QuotaCountByDate implements QuotaInterface
+class RoomDateQuotaReservation implements QuotaInterface
 {
     public function __construct(
         public readonly int $roomId,
         public readonly int $count,
         public readonly CarbonInterface $date,
-    ) {
-    }
+        private ?QuotaId $quotaId = null
+    ) {}
 
     public function roomId(): int
     {
@@ -23,5 +24,15 @@ class QuotaCountByDate implements QuotaInterface
     public function date(): CarbonInterface
     {
         return $this->date;
+    }
+
+    public function quotaId(): ?QuotaId
+    {
+        return $this->quotaId;
+    }
+
+    public function setQuotaId(?QuotaId $quotaId): void
+    {
+        $this->quotaId = $quotaId;
     }
 }

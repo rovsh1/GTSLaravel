@@ -7,7 +7,10 @@ namespace Module\Booking\HotelBooking\Domain\Service\QuotaManager;
 use Module\Booking\HotelBooking\Domain\Entity\Booking;
 use Module\Booking\HotelBooking\Domain\Entity\RoomQuota;
 use Module\Booking\HotelBooking\Domain\Repository\BookingQuotaRepositoryInterface;
-use Module\Booking\HotelBooking\Domain\Service\QuotaManager\Model\QuotaCountByDate;
+use Module\Booking\HotelBooking\Domain\Service\QuotaManager\Exception\ClosedRoomDateQuota;
+use Module\Booking\HotelBooking\Domain\Service\QuotaManager\Exception\NotEnoughRoomDateQuota;
+use Module\Booking\HotelBooking\Domain\Service\QuotaManager\Exception\NotFoundRoomDateQuota;
+use Module\Booking\HotelBooking\Domain\Service\QuotaManager\Model\RoomDateQuotaReservation;
 use Module\Booking\HotelBooking\Domain\Service\QuotaManager\Model\QuotaInterface;
 use Module\Hotel\Infrastructure\Models\Room\QuotaStatusEnum;
 
@@ -18,13 +21,14 @@ class QuotaValidator
 
     public function __construct(
         private readonly BookingQuotaRepositoryInterface $quotaRepository
-    ) {
-    }
+    ) {}
 
     /**
      * @param Booking $booking
-     * @return array<int, QuotaCountByDate>
-     * @throws \Exception
+     * @return array<int, RoomDateQuotaReservation>
+     * @throws NotFoundRoomDateQuota
+     * @throws ClosedRoomDateQuota
+     * @throws NotEnoughRoomDateQuota
      */
     public function getQuotasIfAvailable(Booking $booking): array
     {
@@ -34,28 +38,33 @@ class QuotaValidator
             $this->quotas[$hash] = $quota;
         }
 
-        $countRoomsByDate = $this->countRooms($booking);
-        foreach ($countRoomsByDate as $roomCount) {
-            $hash = $this->getQuotaHash($roomCount);
+        $roomQuotaReservations = $this->getRoomQuotaReservations($booking);
+        foreach ($roomQuotaReservations as $roomQuotaReservation) {
+            $hash = $this->getQuotaHash($roomQuotaReservation);
             $availableQuota = $this->quotas[$hash] ?? null;
             if ($availableQuota === null) {
-                throw new \Exception('Нет квот на дату');
+                throw new NotFoundRoomDateQuota('Нет квот на дату');
             }
             $isOpened = $availableQuota->status() === QuotaStatusEnum::OPEN;
-            $isAvailableCount = $availableQuota->countAvailable() <= $roomCount->count;
-            if (!$isOpened || !$isAvailableCount) {
-                throw new \Exception('Недостаточно квот на дату');
+            if (!$isOpened) {
+                throw new ClosedRoomDateQuota('Квота на дату закрыта');
             }
+            $isAvailableCount = $roomQuotaReservation->count <= $availableQuota->countAvailable();
+            if (!$isAvailableCount) {
+                throw new NotEnoughRoomDateQuota('Недостаточно квот на дату');
+            }
+            //@todo уточнить у Сергея, т.к. сейчас костыльно
+            $roomQuotaReservation->setQuotaId($availableQuota->id());
         }
 
-        return $countRoomsByDate;
+        return $roomQuotaReservations;
     }
 
     /**
      * @param Booking $booking
-     * @return array<int, QuotaCountByDate>
+     * @return array<int, RoomDateQuotaReservation>
      */
-    private function countRooms(Booking $booking): array
+    private function getRoomQuotaReservations(Booking $booking): array
     {
         $roomsCount = [];
         foreach ($booking->roomBookings() as $roomBooking) {
@@ -70,7 +79,7 @@ class QuotaValidator
         $roomsCountByDate = [];
         foreach ($booking->period()->includedDates() as $date) {
             foreach ($roomsCount as $roomId => $count) {
-                $roomsCountByDate[] = new QuotaCountByDate(
+                $roomsCountByDate[] = new RoomDateQuotaReservation(
                     roomId: $roomId,
                     date: $date,
                     count: $count

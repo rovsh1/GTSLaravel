@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->unsignedInteger('booking_id');
             $table->unsignedSmallInteger('type');
+            $table->boolean('is_archive')->default(false);
             $table->timestamps();
 
             $table->foreign('booking_id')

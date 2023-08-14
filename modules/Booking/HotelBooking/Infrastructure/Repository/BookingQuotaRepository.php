@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Booking\HotelBooking\Infrastructure\Repository;
 
-use Carbon\CarbonImmutable;
 use Carbon\CarbonPeriod;
 use Carbon\CarbonPeriodImmutable;
 use Module\Booking\Common\Domain\ValueObject\BookingId;
@@ -40,44 +39,37 @@ class BookingQuotaRepository implements BookingQuotaRepositoryInterface
                 roomId: $roomQuota->room_id,
                 date: $roomQuota->date->toImmutable(),
                 status: $roomQuota->status,
-                countAvailable: $roomQuota->count_available,
+                countAvailable: $roomQuota->count_total - ($roomQuota->count_unavailable ?? 0),
                 countTotal: $roomQuota->count_total
             )
-        );
+        )->all();
     }
 
-    public function book(BookingId $id, int $roomId, CarbonImmutable $date, int $count, array $context): void
+    public function book(BookingId $id, QuotaId $quotaId, int $count, array $context): void
     {
-        $quotas = Model::whereRoomId($roomId)->wherePeriod($preparedPeriod)->withCountColumns();
-
-        $values = [];
-        foreach ($quotas->cursor() as $quota) {
-            $values[] = new QuotaReservation([
-                'quota_id' => $quota->id,
-                'room_id' => $roomId,
-                'booking_id' => $id->value(),
-                'type' => QuotaChangeTypeEnum::BOOKED,
-                'value' => $count,
-                'context' => $context
-            ]);
-        }
-
-        QuotaReservation::insert($values);
+        QuotaReservation::create([
+            'quota_id' => $quotaId->value(),
+            'booking_id' => $id->value(),
+            'type' => QuotaChangeTypeEnum::BOOKED,
+            'value' => $count,
+            'context' => $context
+        ]);
     }
 
-    public function reserve(BookingId $id, int $roomId, CarbonImmutable $date, int $count, array $context): void
+    public function reserve(BookingId $id, QuotaId $quotaId, int $count, array $context): void
     {
-        // TODO: Implement reserve() method.
+        QuotaReservation::create([
+            'quota_id' => $quotaId->value(),
+            'booking_id' => $id->value(),
+            'type' => QuotaChangeTypeEnum::RESERVED,
+            'value' => $count,
+            'context' => $context
+        ]);
     }
 
     public function resetByBookingId(BookingId $id): void
     {
-        // TODO: Implement resetByBookingId() method.
-    }
-
-    public function resetRoomQuota(int $roomId, CarbonPeriod $period): void
-    {
-        // TODO: Implement resetRoomQuota() method.
+        QuotaReservation::whereBookingId($id->value())->delete();
     }
 
     public function convertBookingPeriodToCarbonPeriod(BookingPeriod $period): CarbonPeriodImmutable

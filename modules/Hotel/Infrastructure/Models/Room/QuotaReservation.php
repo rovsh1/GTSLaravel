@@ -9,6 +9,8 @@ class QuotaReservation extends Model
 {
     protected $table = 'booking_quota_reservation';
 
+    public $incrementing = false;
+
     protected $primaryKey = null;
 
     public const UPDATED_AT = null;
@@ -23,5 +25,6 @@ class QuotaReservation extends Model
 
     protected $casts = [
         'type' => QuotaChangeTypeEnum::class,
+        'context' => 'array',
     ];
 }
