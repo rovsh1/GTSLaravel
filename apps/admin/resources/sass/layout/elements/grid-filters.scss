@@ -7,11 +7,22 @@
   justify-content: flex-end;
   align-items: flex-start;
 
+  #grid-filters-counter {
+    top: -7px;
+    right: -7px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 15px;
+    height: 15px;
+  }
+
   .btn {
     color: variables.$secondary
   }
 
-  & > .btn {
+  &>.btn {
+    position: relative;
     width: 32px;
     padding: 0;
   }
@@ -20,9 +31,6 @@
     padding: 0.35rem;
 
     .badge-text {
-      position: absolute;
-      top: -9px;
-      right: 3px;
       color: white;
       font-size: 9px;
     }
