@@ -23,7 +23,7 @@ import {
   useHotelRoomImagesAPI,
 } from '~api/hotel/images/list'
 import { useHotelImageRemoveAPI } from '~api/hotel/images/remove'
-import { useHotelImagesReorderAPI } from '~api/hotel/images/reorder'
+import { useHotelImagesReorderAPI, useHotelRoomImagesReorderAPI } from '~api/hotel/images/reorder'
 import { useHotelRoomAttachImageAPI, useHotelRoomDetachImageAPI } from '~api/hotel/images/update'
 import { useHotelImagesUploadAPI } from '~api/hotel/images/upload'
 import { HotelRoom, useHotelRoomAPI } from '~api/hotel/room'
@@ -53,7 +53,7 @@ const {
   isFetching: isImagesFetching,
 } = useHotelImagesListAPI({ hotelID })
 
-const images = ref<UseHotelImages>(null)
+const images = ref<UseHotelImages>([])
 
 const hotelRoomImagesProps = computed(() =>
   (roomID === undefined ? null : { hotelID, roomID }))
@@ -64,7 +64,14 @@ const {
   isFetching: isRoomImagesFetching,
 } = useHotelRoomImagesAPI(hotelRoomImagesProps)
 
-const roomImages = computed<UseHotelRoomImages>(() => roomImagesData.value)
+const loadAllImages = async () => {
+  await Promise.all([
+    fetchRoomImages(),
+    fetchImages(),
+  ])
+}
+
+const roomImages = computed<UseHotelRoomImages>(() => roomImagesData.value || [])
 
 const {
   execute: fetchHotel,
@@ -113,8 +120,7 @@ const uploadImages = () => {
 
 watch(imagesUploadData, (value) => {
   if (value === null || !value.success) return
-  fetchImages()
-  fetchRoomImages()
+  loadAllImages()
   imagesToUpload.value = null
   isUploadDialogOpened.value = false
 })
@@ -176,25 +182,35 @@ const hotelImagesReorderProps = computed(() =>
     imagesIDs: images.value.map(({ id }) => id),
   }))
 
+const hotelRoomImagesReorderProps = computed(() =>
+  (images.value === null || !roomID ? null : {
+    hotelID,
+    roomID,
+    imagesIDs: images.value.map(({ id }) => id),
+  }))
+
 const {
   execute: executeHotelImagesReorder,
   isFetching: isHotelImagesReorderFetching,
 } = useHotelImagesReorderAPI(hotelImagesReorderProps)
 
+const {
+  execute: executeHotelRoomImagesReorder,
+  isFetching: isHotelRoomImagesReorderFetching,
+} = useHotelRoomImagesReorderAPI(hotelRoomImagesReorderProps)
+
 const attachImageToRoom = async (imageID: number) => {
   if (roomID === undefined) return
   await useHotelRoomAttachImageAPI({ hotelID, roomID, imageID })
     .execute()
-  await fetchRoomImages()
-  await fetchImages()
+  await loadAllImages()
 }
 
 const deleteRoomImage = async (imageID: number) => {
   if (roomID === undefined) return
   await useHotelRoomDetachImageAPI({ hotelID, roomID, imageID })
     .execute()
-  await fetchRoomImages()
-  await fetchImages()
+  await loadAllImages()
 }
 
 const isImageVisible = (id: HotelImageID): boolean => {
@@ -225,9 +241,8 @@ watch([isAttachmentDialogOpened, hotelRoomsWithAttachedImageProps], (value) => {
 })
 
 fetchRoom()
-fetchRoomImages()
 fetchHotel()
-fetchImages()
+loadAllImages()
 
 type OpenAttachmentDialogProps = { id: HotelImageID } & Pick<FileResponse, 'url' | 'name'>
 const openAttachmentDialog = async ({ id, url, name }: OpenAttachmentDialogProps) => {
@@ -259,18 +274,33 @@ const isRefetching = computed(() => (
   isRoomFetching.value || isImagesFetching.value || isRoomImagesFetching.value
 ))
 
-const sortedPhotosIfSetRoomID = () => {
+const reorderRoomImages = async () => {
   if (roomID) {
     const attachedImages = images.value?.filter((image) => isImageAttachedToRoom(image.id, roomImages.value)) as UseHotelImages
+    const orderedAttachedImages = [] as UseHotelImages
+    roomImages.value.forEach((roomImage) => {
+      const findedImage = attachedImages?.find((attachedImage) => attachedImage.id === roomImage.id)
+      if (findedImage) {
+        orderedAttachedImages.push(findedImage)
+      }
+    })
     const unAttachedImages = images.value?.filter((image) => !isImageAttachedToRoom(image.id, roomImages.value)) as UseHotelImages
-    images.value = attachedImages?.concat(unAttachedImages || []) as UseHotelImages
+    images.value = orderedAttachedImages?.concat(unAttachedImages || []) as UseHotelImages
   }
-  executeHotelImagesReorder()
 }
 
-watch(imagesData, (value) => {
-  images.value = value
-  sortedPhotosIfSetRoomID()
+const updateHotelRoomImagesOrder = async () => {
+  if (roomID) {
+    await executeHotelRoomImagesReorder()
+  } else {
+    await executeHotelImagesReorder()
+  }
+  loadAllImages()
+}
+
+watch([imagesData, roomImages], (value) => {
+  images.value = value[0] ? [...value[0]] : []
+  reorderRoomImages()
 })
 
 </script>
@@ -296,7 +326,7 @@ watch(imagesData, (value) => {
         class="images"
         handle="[data-draggable-handle]"
         animation="300"
-        @update="sortedPhotosIfSetRoomID"
+        @update="updateHotelRoomImagesOrder"
       >
         <OverlayLoading v-if="isRefetching" />
         <div
@@ -317,7 +347,7 @@ watch(imagesData, (value) => {
               label="Потяните, чтобы изменить порядок фотографий"
               severity="dark"
               :only-icon="dragIcon"
-              :loading="isHotelImagesReorderFetching"
+              :loading="isHotelImagesReorderFetching || isHotelRoomImagesReorderFetching"
             />
             <div
               v-if="

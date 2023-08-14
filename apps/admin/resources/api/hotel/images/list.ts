@@ -7,14 +7,14 @@ import { HotelImage, HotelImageID, HotelImageResponse, mapHotelImageResponseToIm
 
 type HotelImagesResponse = HotelImageResponse[]
 
-export type UseHotelImages = HotelImage[] | null
+export type UseHotelImages = HotelImage[]
 
 export const useHotelImagesListAPI = (props: MaybeRef<{ hotelID: number }>) =>
   useAdminAPI(props, ({ hotelID }) =>
     `/hotels/${hotelID}/images/get`, {
     afterFetch: (ctx: AfterFetchContext<HotelImagesResponse>) =>
       alternateDataAfterFetch<HotelImagesResponse, UseHotelImages>(ctx, (data) =>
-        (data.length > 0 ? data.map(mapHotelImageResponseToImageResponse) : null)),
+        (data.length > 0 ? data.map(mapHotelImageResponseToImageResponse) : [])),
   })
     .get()
     .json<UseHotelImages>()
@@ -35,7 +35,7 @@ export type HotelRoomImage = HotelImage & {
   roomID: HotelRoomID
 }
 
-export type UseHotelRoomImages = HotelRoomImage[] | null
+export type UseHotelRoomImages = HotelRoomImage[]
 
 export const useHotelRoomImagesAPI = (props: MaybeRef<HotelRoomImagesProps | null>) =>
   useAdminAPI(props, ({ hotelID, roomID }) =>
@@ -56,7 +56,7 @@ export const useHotelRoomImagesAPI = (props: MaybeRef<HotelRoomImagesProps | nul
           title,
           index,
           file,
-        })) : null)),
+        })) : [])),
   })
     .get()
     .json<UseHotelRoomImages>()
