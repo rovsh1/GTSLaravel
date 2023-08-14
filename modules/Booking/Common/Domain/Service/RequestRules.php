@@ -7,21 +7,26 @@ namespace Module\Booking\Common\Domain\Service;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Common\Domain\ValueObject\RequestTypeEnum;
 
-class RequestRules
+final class RequestRules
 {
     /**
      * @var array<int, BookingStatusEnum> $requestableStatuses
      */
-    protected array $requestableStatuses = [
+    private const REQUESTABLE_STATUSES = [
         BookingStatusEnum::PROCESSING,
         BookingStatusEnum::CONFIRMED,
         BookingStatusEnum::WAITING_PROCESSING,
         BookingStatusEnum::NOT_CONFIRMED,
     ];
 
+    public static function getRequestableStatuses(): array
+    {
+        return self::REQUESTABLE_STATUSES;
+    }
+
     public function isRequestableStatus(BookingStatusEnum $status): bool
     {
-        return in_array($status, $this->requestableStatuses);
+        return in_array($status, self::REQUESTABLE_STATUSES);
     }
 
     public function canSendCancellationRequest(BookingStatusEnum $status): bool
@@ -36,9 +41,7 @@ class RequestRules
 
     public function canSendChangeRequest(BookingStatusEnum $status): bool
     {
-        return $this->isRequestableStatus($status)
-            && !$this->canSendCancellationRequest($status)
-            && !$this->canSendBookingRequest($status);
+        return in_array($status, [BookingStatusEnum::WAITING_PROCESSING, BookingStatusEnum::NOT_CONFIRMED]);
     }
 
     public function getRequestTypeByStatus(BookingStatusEnum $status): RequestTypeEnum

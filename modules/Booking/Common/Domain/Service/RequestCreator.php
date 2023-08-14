@@ -19,6 +19,7 @@ class RequestCreator
     public function create(BookingRequestableInterface $booking, RequestRules $rules): Request
     {
         $requestType = $rules->getRequestTypeByStatus($booking->status());
+        $this->requestRepository->archiveByBooking($booking->id()->value(), $requestType);
         $request = $this->requestRepository->create($booking->id()->value(), $requestType);
         $documentGenerator = $this->documentGeneratorFactory->getRequestGenerator($request, $booking);
         $documentGenerator->generate($request, $booking);

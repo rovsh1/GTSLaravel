@@ -46,4 +46,9 @@ class RequestRepository implements RequestRepositoryInterface
 
         return $this->factory->createCollectionFrom($models);
     }
+
+    public function archiveByBooking(int $bookingId, RequestTypeEnum $type): void
+    {
+        Model::whereBookingId($bookingId)->whereType($type)->update(['is_archive' => true]);
+    }
 }
