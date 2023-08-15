@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Module\Hotel\Domain\Entity;
 
+use Module\Hotel\Domain\ValueObject\HotelId;
 use Module\Hotel\Domain\ValueObject\MarkupSettings\CancelPeriodCollection;
 use Module\Hotel\Domain\ValueObject\MarkupSettings\ClientMarkups;
 use Module\Hotel\Domain\ValueObject\MarkupSettings\EarlyCheckInCollection;
 use Module\Hotel\Domain\ValueObject\MarkupSettings\LateCheckOutCollection;
 use Module\Shared\Domain\Entity\EntityInterface;
-use Module\Shared\Domain\ValueObject\Id;
 use Module\Shared\Domain\ValueObject\Percent;
 use Module\Shared\Domain\ValueObject\SerializableDataInterface;
 
 final class MarkupSettings implements EntityInterface, SerializableDataInterface
 {
     public function __construct(
-        private readonly Id $id,
+        private readonly HotelId $id,
         private Percent $vat,
         private Percent $touristTax,
         private readonly ClientMarkups $clientMarkups,
@@ -25,7 +25,7 @@ final class MarkupSettings implements EntityInterface, SerializableDataInterface
         private readonly CancelPeriodCollection $cancelPeriods,
     ) {}
 
-    public function id(): Id
+    public function id(): HotelId
     {
         return $this->id;
     }
@@ -86,7 +86,7 @@ final class MarkupSettings implements EntityInterface, SerializableDataInterface
     public static function fromData(array $data): static
     {
         return new static(
-            id: new Id($data['id']),
+            id: new HotelId($data['id']),
             vat: new Percent($data['vat']),
             touristTax: new Percent($data['touristTax']),
             clientMarkups: ClientMarkups::fromData($data['clientMarkups']),

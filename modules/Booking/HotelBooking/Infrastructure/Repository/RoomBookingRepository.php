@@ -17,7 +17,6 @@ use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomInfo;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBookingCollection;
 use Module\Booking\HotelBooking\Domain\ValueObject\RoomPrice;
 use Module\Booking\HotelBooking\Infrastructure\Models\RoomBooking as Model;
-use Module\Shared\Domain\ValueObject\Id;
 
 class RoomBookingRepository implements RoomBookingRepositoryInterface
 {

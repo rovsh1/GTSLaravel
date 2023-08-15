@@ -45,7 +45,7 @@ class Radio extends AbstractElement
         $selected = $this->getValue();
 
         if (!$this->multiple) {
-            return ($value === $selected);
+            return ($value == $selected);
         } elseif (is_array($selected)) {
             return in_array($value, $selected);
         } else {

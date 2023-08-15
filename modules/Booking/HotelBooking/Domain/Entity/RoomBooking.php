@@ -18,7 +18,6 @@ use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBooki
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomInfo;
 use Module\Booking\HotelBooking\Domain\ValueObject\RoomPrice;
 use Module\Shared\Domain\Entity\EntityInterface;
-use Module\Shared\Domain\ValueObject\Id;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
 class RoomBooking extends AbstractAggregateRoot implements EntityInterface
@@ -161,8 +160,8 @@ class RoomBooking extends AbstractAggregateRoot implements EntityInterface
     {
         return new static(
             id: new RoomBookingId($data['id']),
-            orderId: new Id($data['orderId']),
-            bookingId: new Id($data['bookingId']),
+            orderId: new OrderId($data['orderId']),
+            bookingId: new BookingId($data['bookingId']),
             status: RoomBookingStatusEnum::from($data['status']),
             roomInfo: RoomInfo::fromData($data['roomInfo']),
             guests: GuestCollection::fromData($data['guests']),

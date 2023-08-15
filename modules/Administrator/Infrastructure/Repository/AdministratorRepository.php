@@ -6,8 +6,8 @@ namespace Module\Administrator\Infrastructure\Repository;
 
 use Module\Administrator\Domain\Entity\Administrator;
 use Module\Administrator\Domain\Repository\AdministratorRepositoryInterface;
+use Module\Administrator\Domain\ValueObject\AdministratorId;
 use Module\Administrator\Infrastructure\Models\Administrator as Model;
-use Module\Shared\Domain\ValueObject\Id;
 
 class AdministratorRepository implements AdministratorRepositoryInterface
 {
@@ -34,7 +34,7 @@ class AdministratorRepository implements AdministratorRepositoryInterface
     private function buildEntity(Model $model): Administrator
     {
         return new Administrator(
-            new Id($model->id),
+            new AdministratorId($model->id),
             $model->presentation,
             $model->email,
             $model->phone,

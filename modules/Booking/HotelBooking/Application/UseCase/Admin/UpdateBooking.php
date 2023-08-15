@@ -12,6 +12,7 @@ use Module\Booking\HotelBooking\Domain\Entity\Booking;
 use Module\Booking\HotelBooking\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\HotelBooking\Domain\Service\HotelValidator;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\BookingPeriod;
+use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class UpdateBooking implements UseCaseInterface
@@ -38,6 +39,12 @@ class UpdateBooking implements UseCaseInterface
 
         if ($booking->note() !== $request->note) {
             $booking->setNote($request->note);
+        }
+
+        $quotaProcessingMethodFromRequest = QuotaProcessingMethodEnum::from($request->quotaProcessingMethod);
+        if ($booking->quotaProcessingMethod() !== $quotaProcessingMethodFromRequest) {
+            //@todo запуск обновления квот по брони (сброс или заполнение)
+            $booking->setQuotaProcessingMethod($quotaProcessingMethodFromRequest);
         }
 
         $this->bookingUpdater->store($booking);

@@ -6,12 +6,15 @@ namespace Module\Booking\HotelBooking\Domain\Service;
 
 use Carbon\CarbonPeriod;
 use Module\Booking\HotelBooking\Domain\Adapter\HotelAdapterInterface;
+use Module\Booking\HotelBooking\Domain\Exception\NotFoundHotelCancelPeriod;
 use Module\Hotel\Application\Response\MarkupSettingsDto;
 use Module\Hotel\Application\ResponseDto\MarkupSettings\CancelPeriodDto;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
 class HotelValidator
 {
+
+
     public function __construct(
         private readonly HotelAdapterInterface $hotelAdapter
     ) {}
@@ -34,9 +37,9 @@ class HotelValidator
             fn(mixed $cancelPeriod) => $bookingPeriod->overlaps($cancelPeriod->from, $cancelPeriod->to)
         );
         if ($availablePeriod === null) {
-            throw new \Exception('Not found cancel period for booking');
+            throw new NotFoundHotelCancelPeriod('Not found cancel period for booking');
         }
-        //@todo проверить цены, квоты (уточнить у Анвара), наценки, условия отмены, стандартные условия заезда/выезда,
+        //@todo проверить цены, наценки, условия отмены, стандартные условия заезда/выезда,
     }
 
     public function isValid(int $hotelId, CarbonPeriod $bookingPeriod): bool

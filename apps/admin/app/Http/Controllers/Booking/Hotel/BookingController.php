@@ -69,16 +69,22 @@ class BookingController extends Controller
             ->join('administrators', 'administrators.id', '=', 'administrator_bookings.administrator_id')
             ->addSelect('administrators.presentation as manager_name')
             ->addSelect(
-                DB::raw('(SELECT SUM(guests_count) FROM booking_hotel_rooms WHERE booking_id=bookings.id) as guests_count')
+                DB::raw(
+                    '(SELECT SUM(guests_count) FROM booking_hotel_rooms WHERE booking_id=bookings.id) as guests_count'
+                )
             )
             ->addSelect(
-                DB::raw('(SELECT GROUP_CONCAT(room_name) FROM booking_hotel_rooms WHERE booking_id=bookings.id) as room_names')
+                DB::raw(
+                    '(SELECT GROUP_CONCAT(room_name) FROM booking_hotel_rooms WHERE booking_id=bookings.id) as room_names'
+                )
             )
             ->addSelect(
                 DB::raw('(SELECT bookings.status IN (' . implode(',', $requestableStatuses) . ')) as is_requestable'),
             )
             ->addSelect(
-                DB::raw('EXISTS(SELECT 1 FROM booking_requests WHERE bookings.id = booking_requests.booking_id AND is_archive = 0) as has_downloadable_request'),
+                DB::raw(
+                    'EXISTS(SELECT 1 FROM booking_requests WHERE bookings.id = booking_requests.booking_id AND is_archive = 0) as has_downloadable_request'
+                ),
             );
 
         $grid->data($query);
@@ -206,6 +212,7 @@ class BookingController extends Controller
         HotelAdapter::updateBooking(
             id: $id,
             period: $data['period'],
+            quotaProcessingMethod: $data['quota_processing_method'],
             note: $data['note'] ?? null
         );
         $this->administratorRepository->update($id, $data['manager_id'] ?? request()->user()->id);
@@ -367,9 +374,27 @@ class BookingController extends Controller
             ->text('guests_count', ['text' => 'Гостей'])
             ->text('source', ['text' => 'Источник', 'order' => true])
             ->date('created_at', ['text' => 'Создан', 'format' => 'datetime', 'order' => true])
-            ->text('actions')
+            ->text('actions', ['renderer' => fn($row, $val) => $this->getActionButtons($row)])
             ->orderBy('created_at', 'desc')
             ->paginator(20);
+    }
+
+    private function getActionButtons(mixed $tableRow): string
+    {
+        $buttons = '';
+        $isRequestable = $tableRow['is_requestable'] ?? false;
+        $hasDownloadableRequest = $tableRow['has_downloadable_request'] ?? false;
+        if ($isRequestable) {
+            $buttons .= '<a href="#" class="btn-request-send"><i class="icon">mail</i></a>';
+        }
+        if ($hasDownloadableRequest) {
+            $buttons .= '<a href="#" class="btn-request-download"><i class="icon">download</i></a>';
+        }
+        if (strlen($buttons) === 0) {
+            return '';
+        }
+
+        return "<div class='d-flex flex-row gap-2'>{$buttons}</div>";
     }
 
     private function searchForm()
@@ -398,6 +423,7 @@ class BookingController extends Controller
         $manager = $this->administratorRepository->get($booking->id);
 
         return [
+            'quota_processing_method' => $booking->quotaProcessingMethod->value,
             'manager_id' => $manager->id,
             'order_id' => $booking->orderId,
             'currency_id' => $order->currency->id,
@@ -413,14 +439,13 @@ class BookingController extends Controller
     protected function formFactory(bool $isEdit = false): FormContract
     {
         return Form::name('data')
-            ->select('quota_processing_method', [
+            ->radio('quota_processing_method', [
                 'label' => 'Тип брони',
-                'required' => !$isEdit,
-                'disabled' => $isEdit,
                 'emptyItem' => '',
+                'required' => true,
                 'items' => [
                     ['id' => QuotaProcessingMethodEnum::REQUEST->value, 'name' => 'По запросу'],
-                    ['id' => QuotaProcessingMethodEnum::QUOTA->value, 'name' => 'По квоте'],
+                    ['id' => QuotaProcessingMethodEnum::QUOTE->value, 'name' => 'По квоте'],
                 ]
             ])
             ->select('client_id', [

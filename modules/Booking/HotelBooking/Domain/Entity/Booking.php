@@ -38,7 +38,7 @@ final class Booking extends AbstractBooking
         private ?AdditionalInfo $additionalInfo,
         private RoomBookingCollection $roomBookings,
         private CancelConditions $cancelConditions,
-        private readonly QuotaProcessingMethodEnum $quotaProcessingMethod,
+        private QuotaProcessingMethodEnum $quotaProcessingMethod,
     ) {
         parent::__construct($id, $orderId, $status, $createdAt, $creatorId, $price);
     }
@@ -82,6 +82,11 @@ final class Booking extends AbstractBooking
     public function quotaProcessingMethod(): QuotaProcessingMethodEnum
     {
         return $this->quotaProcessingMethod;
+    }
+
+    public function setQuotaProcessingMethod(QuotaProcessingMethodEnum $quotaProcessingMethod): void
+    {
+        $this->quotaProcessingMethod = $quotaProcessingMethod;
     }
 
     public function addRoomBooking(RoomBooking $booking): void
