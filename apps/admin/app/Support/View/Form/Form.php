@@ -61,15 +61,40 @@ class Form extends Base
     /**
      * @throws FormSubmitFailedException
      */
-    public function trySubmit(string $redirectUrl): void
+    public function trySubmit(?string $redirectUrl = null): void
     {
         if ($this->submit()) {
             return;
         }
+        if ($redirectUrl !== null) {
+            $this->failUrl($redirectUrl);
+        }
+        $this->throwError();
+    }
 
+    public function failUrl(string $url): static
+    {
+        $this->setOption('failUrl', $url);
+
+        return $this;
+    }
+
+    public function throwException(\Throwable $error, ?string $redirectUrl = null): void
+    {
+        if ($redirectUrl !== null) {
+            $this->failUrl($redirectUrl);
+        }
+        $this->error($error->getMessage());
+        $this->throwError();
+    }
+
+    private function throwError(): void
+    {
         $exception = new FormSubmitFailedException();
         $exception->setErrors($this->errors());
-        $exception->setRedirectUrl($redirectUrl);
+        $exception->setRedirectUrl(
+            $this->getOption('failUrl')
+        );
 
         throw $exception;
     }

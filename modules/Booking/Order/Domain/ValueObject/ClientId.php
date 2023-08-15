@@ -2,7 +2,9 @@
 
 namespace Module\Booking\Order\Domain\ValueObject;
 
-class ClientId
+use Module\Shared\Domain\ValueObject\AbstractIntId;
+
+class ClientId extends AbstractIntId
 {
 
 }

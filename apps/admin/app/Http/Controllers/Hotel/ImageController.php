@@ -60,12 +60,14 @@ class ImageController extends Controller
         foreach ($request->getFiles() as $file) {
             $this->repository->create($file, $hotel->id, $request->getRoomId());
         }
+
         return new AjaxSuccessResponse();
     }
 
     public function destroy(Request $request, Hotel $hotel, Image $image): AjaxResponseInterface
     {
         $this->repository->delete($image);
+
         return new AjaxSuccessResponse();
     }
 
@@ -112,10 +114,25 @@ class ImageController extends Controller
         $rooms = RoomResource::collection($hotel->rooms)->toArray($request);
         $rooms = array_map(function (array $roomData) use ($roomIds) {
             $roomData['is_image_linked'] = in_array($roomData['id'], $roomIds);
+
             return $roomData;
         }, $rooms);
 
         return response()->json($rooms);
+    }
+
+    public function setMainImage(Request $request, Hotel $hotel, Image $image): AjaxResponseInterface
+    {
+        $image->update(['is_main' => true]);
+
+        return new AjaxSuccessResponse();
+    }
+
+    public function unsetMainImage(Request $request, Hotel $hotel, Image $image): AjaxResponseInterface
+    {
+        $image->update(['is_main' => false]);
+
+        return new AjaxSuccessResponse();
     }
 
     private function hotel(Hotel $hotel): void

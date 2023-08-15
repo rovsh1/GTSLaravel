@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
  * @property int $id
  * @property int $hotel_id
  * @property string $file_guid
+ * @property bool $is_main
  * @property int $index
  * @property string|null $title
  * @property \Sdk\Module\Support\DateTime|null $created_at
@@ -41,6 +42,11 @@ class Image extends Model
         'file_guid',
         'index',
         'title',
+        'is_main',
+    ];
+
+    protected $casts = [
+        'is_main' => 'boolean'
     ];
 
     public function file(): Attribute
