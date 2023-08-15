@@ -117,6 +117,11 @@ function bootGridFilters() {
   observeDynamicElements(document.getElementById('grid-filters-popup'), 'select', 'change', (event) => { gridFiltersFormInputsChangeEvent(event) })
 }
 
+function bootTooltips() {
+  // const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+  // const tooltipList = [...tooltipTriggerList].map((tooltipTriggerEl) => new Tooltip(tooltipTriggerEl))
+}
+
 export default function bootForms() {
   bootDeleteButtons()
   bootMultiselect()
@@ -124,4 +129,5 @@ export default function bootForms() {
   bootFileFields()
   bootTabsAnchor()
   bootGridFilters()
+  bootTooltips()
 }
