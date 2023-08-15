@@ -29,6 +29,8 @@ import IconButton from '~components/IconButton.vue'
 import OverlayLoading from '~components/OverlayLoading.vue'
 import Select2BaseSelect from '~components/Select2BaseSelect.vue'
 
+import { BasicFormData, ClientFormData, LegalEntityFormData, PhysicalEntityFormData } from './lib/types'
+
 const legalIndustryOptions = mapEntitiesToSelectOptions([
   { id: 1, name: 'Турагенство' },
   { id: 2, name: 'Туристическая компания' },
@@ -81,7 +83,7 @@ const tabsItems = ref<TabItem[]>([{
   isDisabled: true,
 }])
 
-const basicData = reactive({
+const basicData = reactive<BasicFormData>({
   name: '',
   type: 1,
   cityId: 0,
@@ -91,7 +93,7 @@ const basicData = reactive({
   priceTypes: [],
 })
 
-const legalEntityData = reactive({
+const legalEntityData = reactive<LegalEntityFormData>({
   legalName: '',
   legalIndustry: 0,
   legalType: 0,
@@ -106,7 +108,7 @@ const legalEntityData = reactive({
   legalCurrentAccount: '',
 })
 
-const physicalEntityData = reactive({
+const physicalEntityData = reactive<PhysicalEntityFormData>({
   physicalGender: 0,
 })
 
@@ -146,14 +148,12 @@ const validateLegalDataForm = computed(() => (isValidData(null, legalEntityData.
 const switchTab = (currentTab: TabItem) => {
   if (currentTab.isDisabled && !validateBaseDataForm.value) return
   tabsItems.value.forEach((tabItem) => {
-    const a = tabItem
-    a.isActive = false
+    const tabItemDuplicate = tabItem
+    tabItemDuplicate.isActive = false
   })
-  const b = currentTab
-  b.isActive = true
+  const currentTabDuplicate = currentTab
+  currentTabDuplicate.isActive = true
 }
-
-const eventBus = useApplicationEventBus()
 
 const resetForm = () => {
   basicData.name = ''
@@ -179,10 +179,13 @@ const resetForm = () => {
   clientCitySelect2.value.clearComponentValue()
   priceTypesSelect2.value.clearComponentValue()
   clientManagerSelect2.value.clearManagerComponentValue()
+  switchTab(tabsItems.value[0])
   nextTick(() => {
     $('.select2-hidden-accessible').removeClass('is-invalid')
   })
 }
+
+const eventBus = useApplicationEventBus()
 
 const onModalSubmit = async () => {
   if ((basicData.type === 1 && !validateBaseDataForm.value) || (basicData.type === 2 && !validateLegalDataForm.value)) {
@@ -194,9 +197,15 @@ const onModalSubmit = async () => {
     waitCreatingClient.value = false
   }, 2000)
 
-  console.log(basicData)
-  console.log(legalEntityData)
-  console.log(physicalEntityData)
+  const formData: ClientFormData = { ...basicData,
+    priceTypes: basicData.priceTypes
+      .map((priceType) => Number(priceType))
+      .filter((parsedNumber) => !isNaN(parsedNumber)),
+    physicalEntityData: basicData.type === 1 ? { ...physicalEntityData } : null,
+    legalEntityData: basicData.type === 2 ? { ...legalEntityData } : null }
+
+  // todo отправка запроса на сервер
+  console.log(formData)
 
   const clientId = 123
   eventBus.emit('client-created', { clientId })
@@ -254,7 +263,7 @@ const onModalSubmit = async () => {
               />
             </div>
 
-            <div class="col-md-12 mt-2 city-wrapper" style="position: relative;">
+            <div class="col-md-12 mt-2 city-wrapper">
               <Select2BaseSelect
                 id="client-city"
                 ref="clientCitySelect2"
@@ -293,7 +302,7 @@ const onModalSubmit = async () => {
               />
             </div>
 
-            <div class="col-md-12 mt-2 price-types-wrapper" style="position: relative;">
+            <div class="col-md-12 mt-2 price-types-wrapper">
               <Select2BaseSelect
                 id="price-types"
                 ref="priceTypesSelect2"
@@ -309,7 +318,7 @@ const onModalSubmit = async () => {
               />
             </div>
 
-            <div class="col-md-12 mt-2 manager-wrapper" style="position: relative;">
+            <div class="col-md-12 mt-2 manager-wrapper">
               <ManagerSelect
                 ref="clientManagerSelect2"
                 :value="basicData.managerId"
@@ -479,5 +488,11 @@ const onModalSubmit = async () => {
 a.has-required-fields::after {
   content: " *";
   color: #DC493A;
+}
+
+.city-wrapper,
+.price-types-wrapper,
+.manager-wrapper {
+  position: relative;
 }
 </style>

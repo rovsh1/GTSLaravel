@@ -31,7 +31,6 @@ const props = withDefaults(defineProps<{
 })
 
 const changegValue = ref(props.value)
-
 let select2: any = null
 
 const emit = defineEmits<{
