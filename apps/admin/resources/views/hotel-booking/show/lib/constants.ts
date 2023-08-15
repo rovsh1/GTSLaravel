@@ -6,10 +6,11 @@ import { SelectOption } from '~components/Bootstrap/lib'
 export interface EntityInterface {
   id: number
   name: string
+  group?: string
 }
 
 export const mapEntitiesToSelectOptions = (entities: EntityInterface[]): SelectOption[] => entities.map(
-  (entity) => ({ value: entity.id, label: entity.name }),
+  (entity) => ({ value: entity.id, label: entity.name, group: entity.group }),
 )
 
 export const genders = [
