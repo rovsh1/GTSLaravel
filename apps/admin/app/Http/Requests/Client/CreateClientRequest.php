@@ -22,6 +22,23 @@ class CreateClientRequest extends FormRequest
             'priceTypes' => ['required', 'array'],
             'status' => ['nullable', 'numeric'],
             'managerId' => ['nullable', 'numeric'],
+
+            'physical' => ['required_without:legal', 'array'],
+            'physical.gender' => ['nullable', 'numeric'],
+
+            'legal' => ['required_without:physical', 'array'],
+            'legal.name' => ['nullable', 'string'],
+            'legal.industry' => ['nullable', 'numeric'],
+            'legal.type' => ['required', 'numeric'],
+            'legal.address' => ['required', 'string'],
+            'legal.bik' => ['nullable', 'string'],
+            'legal.bankCity' => ['nullable', 'string'],
+            'legal.inn' => ['nullable', 'string'],
+            'legal.okpoCode' => ['nullable', 'string'],
+            'legal.corrAccount' => ['nullable', 'string'],
+            'legal.kpp' => ['nullable', 'string'],
+            'legal.bankName' => ['nullable', 'string'],
+            'legal.currentAccount' => ['nullable', 'string'],
         ];
     }
 
@@ -40,5 +57,8 @@ class CreateClientRequest extends FormRequest
         return $this->post('cityId');
     }
 
-
+    public function getCurrencyId(): int
+    {
+        return $this->post('currency');
+    }
 }
