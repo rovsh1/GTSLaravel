@@ -9,9 +9,11 @@ use Module\Booking\HotelBooking\Application\Factory\CancelConditionsFactory;
 use Module\Booking\HotelBooking\Application\Factory\HotelInfoFactory;
 use Module\Booking\HotelBooking\Application\Request\CreateBookingDto;
 use Module\Booking\HotelBooking\Domain\Adapter\HotelAdapterInterface;
+use Module\Booking\HotelBooking\Domain\Exception\NotFoundHotelCancelPeriod;
 use Module\Booking\HotelBooking\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\HotelBooking\Domain\Service\HotelValidator;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\BookingPeriod;
+use Module\Shared\Application\Exception\ApplicationException;
 use Module\Shared\Domain\ValueObject\Id;
 use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 use Sdk\Module\Contracts\Bus\CommandBusInterface;
@@ -32,7 +34,15 @@ class CreateBooking extends AbstractCreateBooking
         $orderId = $this->getOrderIdFromRequest($request);
         $hotelDto = $this->hotelAdapter->findById($request->hotelId);
         $markupSettings = $this->hotelAdapter->getMarkupSettings($request->hotelId);
-        $this->hotelValidator->validateByDto($markupSettings, $request->period);
+        try {
+            $this->hotelValidator->validateByDto($markupSettings, $request->period);
+        } catch (NotFoundHotelCancelPeriod $e) {
+            throw new ApplicationException(
+                'У отеля не заполнены условия отмены на период брони.',
+                ApplicationException::BOOKING_NOT_FOUND_HOTEL_CANCEL_PERIOD,
+                $e
+            );
+        }
         $booking = $this->repository->create(
             orderId: $orderId,
             creatorId: new Id($request->creatorId),

@@ -37,7 +37,7 @@ class HotelValidator
             fn(mixed $cancelPeriod) => $bookingPeriod->overlaps($cancelPeriod->from, $cancelPeriod->to)
         );
         if ($availablePeriod === null) {
-            throw new NotFoundHotelCancelPeriod('Not found cancel period for booking');
+            throw new NotFoundHotelCancelPeriod();
         }
         //@todo проверить цены, наценки, условия отмены, стандартные условия заезда/выезда,
     }
