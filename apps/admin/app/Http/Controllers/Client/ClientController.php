@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Admin\Http\Controllers\Client;
 
 use App\Admin\Http\Requests\Client\CreateClientRequest;
+use App\Admin\Http\Resources\Client as ClientResource;
+use App\Admin\Models\Client\Legal;
 use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\ActionsMenu;
 use App\Admin\Support\Facades\Form;
@@ -15,10 +17,9 @@ use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Layout as LayoutContract;
 use App\Admin\View\Menus\ClientMenu;
-use App\Core\Support\Http\Responses\AjaxReloadResponse;
-use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use Gsdk\Format\View\ParamsTable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\JsonResponse;
 use Module\Shared\Enum\Client\PriceTypeEnum;
 use Module\Shared\Enum\Client\StatusEnum;
 use Module\Shared\Enum\Client\TypeEnum;
@@ -32,12 +33,32 @@ class ClientController extends AbstractPrototypeController
 
     //@todo менеджер клиента - в таблицу administrator_clients
 
-    public function storeDialog(CreateClientRequest $request): AjaxResponseInterface
+    public function storeDialog(CreateClientRequest $request): JsonResponse
     {
-        dd($request->toArray());
-//        $this->model = $this->repository->create($preparedData);
+        $data = $this->saving([
+            'city_id' => $request->getCityId(),
+            'currency_id' => $request->getCurrencyId(),
+            'type' => $request->getType(),
+            'name' => $request->getName(),
+            'status' => $request->getStatus(),
+        ]);
+        $this->model = $this->repository->create($data);
+        $legalData = $request->getLegal();
+        if ($legalData !== null) {
+            Legal::create([
+                'client_id' => $this->model->id,
+                'city_id' => $request->getCityId(),
+                'industry_id' => $legalData->industry,
+                'type' => $legalData->type,
+                'name' => $legalData->name,
+                'address' => $legalData->address,
+                //@todo реквизиты
+            ]);
+        }
 
-        return new AjaxReloadResponse();
+        return response()->json(
+            ClientResource::make($this->model)
+        );
     }
 
     public function edit(int $id): LayoutContract

@@ -24,7 +24,6 @@ import BootstrapTabs from '~components/Bootstrap/BootstrapTabs/BootstrapTabs.vue
 import BootstrapTabsLink from '~components/Bootstrap/BootstrapTabs/components/BootstrapTabsLink.vue'
 import BootstrapTabsTabContent from '~components/Bootstrap/BootstrapTabs/components/BootstrapTabsTabContent.vue'
 import { TabItem } from '~components/Bootstrap/BootstrapTabs/types'
-import { showToast } from '~components/Bootstrap/BootstrapToast'
 import { SelectOption } from '~components/Bootstrap/lib'
 import IconButton from '~components/IconButton.vue'
 import OverlayLoading from '~components/OverlayLoading.vue'
@@ -192,11 +191,6 @@ const onModalSubmit = async () => {
   if ((basicData.type === 1 && !validateBaseDataForm.value) || (basicData.type === 2 && !validateLegalDataForm.value)) {
     return
   }
-  waitCreatingClient.value = true
-  setTimeout(() => {
-    showToast({ title: 'Клиент успешно создан' })
-    waitCreatingClient.value = false
-  }, 2000)
 
   const formData: ClientFormData = { ...basicData,
     priceTypes: basicData.priceTypes
@@ -207,8 +201,11 @@ const onModalSubmit = async () => {
 
   // todo отправка запроса на сервер
   console.log(formData)
+  // waitCreatingClient.value = true
   // const { data: newClient } = await createClient(formData)
   // console.log(newClient)
+  // showToast({ title: 'Клиент успешно создан' })
+  // waitCreatingClient.value = false
 
   const clientId = 123
   eventBus.emit('client-created', { clientId })

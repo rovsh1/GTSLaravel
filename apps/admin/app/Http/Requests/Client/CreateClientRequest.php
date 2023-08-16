@@ -61,4 +61,39 @@ class CreateClientRequest extends FormRequest
     {
         return $this->post('currency');
     }
+
+    public function getPriceTypes(): array
+    {
+        return $this->post('priceTypes');
+    }
+
+    public function getStatus(): ?int
+    {
+        return $this->post('status');
+    }
+
+    public function getManagerId(): ?int
+    {
+        return $this->post('managerId');
+    }
+
+    public function getPhysical(): ?PhysicalDto
+    {
+        $data = $this->post('physical');
+        if ($data === null) {
+            return null;
+        }
+
+        return PhysicalDto::from($data);
+    }
+
+    public function getLegal(): ?LegalDto
+    {
+        $data = $this->post('legal');
+        if ($data === null) {
+            return null;
+        }
+
+        return LegalDto::from($data);
+    }
 }
