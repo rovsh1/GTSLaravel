@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Admin\Http\Controllers\Client;
 
+use App\Admin\Http\Requests\Client\CreateClientRequest;
 use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\ActionsMenu;
 use App\Admin\Support\Facades\Form;
@@ -31,15 +32,10 @@ class ClientController extends AbstractPrototypeController
 
     //@todo менеджер клиента - в таблицу administrator_clients
 
-    public function storeDialog(): AjaxResponseInterface
+    public function storeDialog(CreateClientRequest $request): AjaxResponseInterface
     {
-        $form = $this->formFactory()
-            ->method('post');
-
-        $form->trySubmit($this->prototype->route('dialog.create'));
-
-        $preparedData = $this->saving($form->getData());
-        $this->model = $this->repository->create($preparedData);
+        dd($request->toArray());
+//        $this->model = $this->repository->create($preparedData);
 
         return new AjaxReloadResponse();
     }

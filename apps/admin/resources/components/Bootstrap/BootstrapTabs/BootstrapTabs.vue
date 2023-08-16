@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-4">
+  <div>
     <ul class="nav nav-underline border-bottom" role="tablist">
       <slot name="links" />
     </ul>

@@ -15,6 +15,7 @@ import {
   mapEntitiesToSelectOptions, residentTypeOptions,
 } from '~resources/views/hotel-booking/show/lib/constants'
 
+// import { createClient } from '~api/client'
 import { useApplicationEventBus } from '~lib/event-bus'
 
 import BaseDialog from '~components/BaseDialog.vue'
@@ -206,6 +207,8 @@ const onModalSubmit = async () => {
 
   // todo отправка запроса на сервер
   console.log(formData)
+  // const { data: newClient } = await createClient(formData)
+  // console.log(newClient)
 
   const clientId = 123
   eventBus.emit('client-created', { clientId })
@@ -309,7 +312,7 @@ const onModalSubmit = async () => {
                 label="Тариф"
                 :options="residentTypeOptions"
                 :value="basicData.priceTypes"
-                :parent="'.price-types-wrapper'"
+                parent=".price-types-wrapper"
                 :enable-multiple="true"
                 required
                 :show-empty-item="false"
