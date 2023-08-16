@@ -18,7 +18,7 @@ use App\Core\Support\Http\Responses\AjaxReloadResponse;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use Gsdk\Format\View\ParamsTable;
 use Illuminate\Database\Eloquent\Model;
-use Module\Shared\Enum\Client\PriceTypeEnum;
+use Module\Shared\Enum\Client\ResidencyEnum;
 use Module\Shared\Enum\Client\StatusEnum;
 use Module\Shared\Enum\Client\TypeEnum;
 
@@ -100,7 +100,7 @@ class ClientController extends AbstractPrototypeController
             ->enum('type', 'Тип', TypeEnum::class)
             ->text('city_name', 'Город')
             ->text('currency_name', 'Валюта')
-            ->text('rates', 'Тариф')
+            ->enum('residency', 'Тип цены', ResidencyEnum::class)
             ->text('administrator_name', 'Менеджер')
             ->data($this->model);
     }
@@ -124,8 +124,8 @@ class ClientController extends AbstractPrototypeController
             ->enum('status', ['label' => 'Статус', 'enum' => StatusEnum::class])
             ->currency('currency_id', ['label' => 'Валюта', 'required' => true])
             ->enum(
-                'price_types',
-                ['label' => 'Тип цены', 'multiple' => true, 'enum' => PriceTypeEnum::class, 'required' => true]
+                'residency',
+                ['label' => 'Тип цены', 'enum' => ResidencyEnum::class, 'required' => true, 'emptyItem' => '']
             )
             ->manager('administrator_id', ['label' => 'Менеджер']);
     }

@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Booking\HotelBooking\Infrastructure\Repository;
 
-use Carbon\CarbonPeriod;
 use Carbon\CarbonPeriodImmutable;
 use Module\Booking\Common\Domain\ValueObject\BookingId;
-use Module\Booking\HotelBooking\Domain\Entity\Booking;
 use Module\Booking\HotelBooking\Domain\Entity\RoomQuota as Entity;
 use Module\Booking\HotelBooking\Domain\Repository\BookingQuotaRepositoryInterface;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\BookingPeriod;
@@ -22,15 +20,15 @@ class BookingQuotaRepository implements BookingQuotaRepositoryInterface
     use CanTransactionTrait;
 
     /**
-     * @param Booking $booking
-     * @param CarbonPeriod $period
-     * @return array<int, Entity>
+     * @param BookingPeriod $period
+     * @param int[] $roomIds
+     * @return Entity[]
      */
-    public function getAvailableQuotas(Booking $booking): array
+    public function getAvailableQuotas(BookingPeriod $period, array $roomIds): array
     {
-        $preparedPeriod = $this->convertBookingPeriodToCarbonPeriod($booking->period());
+        $preparedPeriod = $this->convertBookingPeriodToCarbonPeriod($period);
         $roomQuotas = Model::wherePeriod($preparedPeriod)
-            ->whereBookingId($booking->id()->value())
+            ->whereIn('room_id', $roomIds)
             ->get();
 
         return $roomQuotas->map(
@@ -39,7 +37,7 @@ class BookingQuotaRepository implements BookingQuotaRepositoryInterface
                 roomId: $roomQuota->room_id,
                 date: $roomQuota->date->toImmutable(),
                 status: $roomQuota->status,
-                countAvailable: $roomQuota->count_total - ($roomQuota->count_unavailable ?? 0),
+                countAvailable: $roomQuota->count_available,
                 countTotal: $roomQuota->count_total
             )
         )->all();

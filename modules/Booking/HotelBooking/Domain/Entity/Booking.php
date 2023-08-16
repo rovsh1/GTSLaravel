@@ -15,6 +15,8 @@ use Module\Booking\HotelBooking\Domain\Event\BookingPeriodChanged;
 use Module\Booking\HotelBooking\Domain\Event\RoomAdded;
 use Module\Booking\HotelBooking\Domain\Event\RoomDeleted;
 use Module\Booking\HotelBooking\Domain\Event\RoomEdited;
+use Module\Booking\HotelBooking\Domain\Service\QuotaManager\QuotaValidator;
+use Module\Booking\HotelBooking\Domain\Service\RoomAvailabilityValidator;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\AdditionalInfo;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\BookingPeriod;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\CancelConditions;
@@ -89,31 +91,31 @@ final class Booking extends AbstractBooking
         $this->quotaProcessingMethod = $quotaProcessingMethod;
     }
 
-    public function addRoomBooking(RoomBooking $booking): void
+    public function addRoomBooking(RoomBooking $roomBooking): void
     {
-        $this->roomBookings->add($booking);
+        $this->roomBookings->add($roomBooking);
         $this->pushEvent(
             new RoomAdded(
                 $this,
                 $this->hotelInfo()->id(),
-                $booking->roomInfo()->id(),
-                $booking->roomInfo()->name()
+                $roomBooking->roomInfo()->id(),
+                $roomBooking->roomInfo()->name()
             )
         );
     }
 
-    public function updateRoomBooking(int $id, RoomBooking $booking): void
+    public function updateRoomBooking(int $id, RoomBooking $roomBooking): void
     {
         $roomIndex = $this->roomBookings->search(
             fn(RoomBooking $roomBooking) => $roomBooking->id()->value() === $id
         );
-        $this->roomBookings->offsetSet($roomIndex, $booking);
+        $this->roomBookings->offsetSet($roomIndex, $roomBooking);
 
         $this->pushEvent(
             new RoomEdited(
                 $this,
-                $booking->roomInfo()->id(),
-                $booking->roomInfo()->name(),
+                $roomBooking->roomInfo()->id(),
+                $roomBooking->roomInfo()->name(),
                 '',
                 '',
                 '',

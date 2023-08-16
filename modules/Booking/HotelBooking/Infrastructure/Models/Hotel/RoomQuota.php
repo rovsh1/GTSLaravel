@@ -4,6 +4,7 @@ namespace Module\Booking\HotelBooking\Infrastructure\Models\Hotel;
 
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Facades\DB;
 use Module\Hotel\Infrastructure\Models\Room\QuotaStatusEnum;
 use Sdk\Module\Database\Eloquent\Model;
@@ -16,8 +17,9 @@ use Sdk\Module\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon $date
  * @property int $release_days
  * @property QuotaStatusEnum $status
- * @property int $count_unavailable
  * @property int $count_total
+ * @property int $count_unavailable
+ * @property int $count_available
  * @method static \Illuminate\Database\Eloquent\Builder|RoomQuota newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RoomQuota newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RoomQuota query()
@@ -58,13 +60,8 @@ class RoomQuota extends Model
             ->where('date', '<=', $period->getEndDate());
     }
 
-    public function scopeWhereBookingId(Builder $builder, int $bookingId): void
+    public function countAvailable(): Attribute
     {
-        $builder->whereExists(function (\Illuminate\Database\Query\Builder $query) use ($bookingId) {
-            $query->selectRaw('1')
-                ->from('booking_hotel_rooms')
-                ->whereColumn('booking_hotel_rooms.hotel_room_id', 'hotel_room_quota.room_id')
-                ->where('booking_hotel_rooms.booking_id', $bookingId);
-        });
+        return Attribute::get(fn() => $this->count_total - ($this->count_unavailable ?? 0));
     }
 }

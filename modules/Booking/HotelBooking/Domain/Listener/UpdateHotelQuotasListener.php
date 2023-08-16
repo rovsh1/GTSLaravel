@@ -20,6 +20,6 @@ class UpdateHotelQuotasListener implements DomainEventListenerInterface
         assert($event instanceof QuotaAffectEventInterface || $event instanceof BookingStatusEventInterface);
 
         $quotaProcessingMethod = $this->quotaProcessingMethodFactory->build($event->booking()->quotaProcessingMethod());
-        $quotaProcessingMethod->process($event->booking());
+        $quotaProcessingMethod->process($event->booking()->id());
     }
 }

@@ -10,6 +10,8 @@ use Module\Booking\HotelBooking\Domain\Adapter\HotelRoomAdapterInterface;
 use Module\Booking\HotelBooking\Domain\Entity\RoomBooking;
 use Module\Booking\HotelBooking\Domain\Repository\RoomBookingRepositoryInterface;
 use Module\Booking\HotelBooking\Domain\Service\PriceCalculator\RoomPriceEditor;
+use Module\Booking\HotelBooking\Domain\Service\RoomAvailabilityValidator;
+use Module\Booking\HotelBooking\Domain\Service\RoomBookingService;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\Condition;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBookingDetails;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBookingStatusEnum;
@@ -23,16 +25,13 @@ use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 class Update implements UseCaseInterface
 {
     public function __construct(
-        private readonly BookingRepository $repository,
-        private readonly RoomBookingRepositoryInterface $roomBookingRepository,
+        private readonly RoomBookingService $roomBookingService,
         private readonly HotelRoomAdapterInterface $hotelRoomAdapter,
-        private readonly DomainEventDispatcherInterface $eventDispatcher,
-        private readonly RoomPriceEditor $roomPriceEditor,
+        private readonly RoomBookingRepositoryInterface $roomBookingRepository
     ) {}
 
     public function execute(UpdateRoomDto $request): void
     {
-        $booking = $this->repository->find($request->bookingId);
         $currentRoom = $this->roomBookingRepository->find($request->roomBookingId);
         $guests = $currentRoom?->guests() ?? 0;
 
@@ -44,9 +43,8 @@ class Update implements UseCaseInterface
         $earlyCheckIn = $request->earlyCheckIn !== null ? $this->buildMarkupCondition($request->earlyCheckIn) : null;
         $lateCheckOut = $request->lateCheckOut !== null ? $this->buildMarkupCondition($request->lateCheckOut) : null;
 
-        $roomBooking = new RoomBooking(
+        $this->roomBookingService->updateRoomBooking(
             id: $currentRoom->id(),
-            orderId: $booking->orderId(),
             bookingId: new BookingId($request->bookingId),
             status: RoomBookingStatusEnum::from($request->status),
             roomInfo: new RoomInfo(
@@ -64,11 +62,6 @@ class Update implements UseCaseInterface
             ),
             price: $currentRoom->price(),
         );
-        $roomBooking->recalculatePrices($this->roomPriceEditor);
-
-        $this->roomBookingRepository->store($roomBooking);
-        $booking->updateRoomBooking($request->roomBookingId, $roomBooking);
-        $this->eventDispatcher->dispatch(...$booking->pullEvents());
     }
 
     private function buildMarkupCondition(array $data): Condition
