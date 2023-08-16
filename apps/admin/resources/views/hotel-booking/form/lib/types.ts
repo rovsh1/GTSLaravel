@@ -1,36 +1,36 @@
 export interface LegalEntityFormData {
-  legalName: string
-  legalIndustry: number
-  legalType: number
-  legalAddress: string
-  legalBik: string
-  legalBankCity: string
-  legalInn: string
-  legalOkpoCode: string
-  legalCorrAccount: string
-  legalKpp: string
-  legalBankName: string
-  legalCurrentAccount: string
+  name: string | null
+  industry: number | null
+  type: number
+  address: string
+  bik: string | null
+  bankCity: string | null
+  inn: string | null
+  okpoCode: string | null
+  corrAccount: string | null
+  kpp: string | null
+  bankName: string | null
+  currentAccount: string | null
 }
 
 export interface PhysicalEntityFormData {
-  physicalGender: number
+  gender: number | null
 }
 
 export interface BasicFormData {
   name: string
   type: number
   cityId: number
-  status: number
+  status: number | null
   currency: number
-  managerId: number
+  managerId: number | null
   priceTypes: string[]
 }
 
-export type ClientFormDataUnion = Omit<BasicFormData, 'priceTypes'> & {
-  priceTypes: number[]
-  legalEntityData: LegalEntityFormData | null
-  physicalEntityData: PhysicalEntityFormData | null
+export interface CreatePhysicalClient extends BasicFormData {
+  physical: PhysicalEntityFormData
 }
 
-export type ClientFormData = Partial<ClientFormDataUnion>
+export interface CreateLegalClient extends BasicFormData {
+  legal: LegalEntityFormData
+}

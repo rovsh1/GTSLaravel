@@ -15,7 +15,8 @@ import {
   mapEntitiesToSelectOptions, residentTypeOptions,
 } from '~resources/views/hotel-booking/show/lib/constants'
 
-// import { createClient } from '~api/client'
+import { createClient } from '~api/client'
+
 import { useApplicationEventBus } from '~lib/event-bus'
 
 import BaseDialog from '~components/BaseDialog.vue'
@@ -26,10 +27,12 @@ import BootstrapTabsTabContent from '~components/Bootstrap/BootstrapTabs/compone
 import { TabItem } from '~components/Bootstrap/BootstrapTabs/types'
 import { SelectOption } from '~components/Bootstrap/lib'
 import IconButton from '~components/IconButton.vue'
+import MultiSelect from '~components/MultiSelect.vue'
 import OverlayLoading from '~components/OverlayLoading.vue'
 import Select2BaseSelect from '~components/Select2BaseSelect.vue'
 
-import { BasicFormData, ClientFormData, LegalEntityFormData, PhysicalEntityFormData } from './lib/types'
+import { tabsItemsSettings } from './lib/composables'
+import { BasicFormData, LegalEntityFormData, PhysicalEntityFormData } from './lib/types'
 
 const legalIndustryOptions = mapEntitiesToSelectOptions([
   { id: 1, name: 'Турагенство' },
@@ -43,7 +46,6 @@ const legalTypeOptions = mapEntitiesToSelectOptions([
 ])
 
 const clientCitySelect2 = ref()
-const priceTypesSelect2 = ref()
 const clientManagerSelect2 = ref()
 
 const { cities } = storeToRefs(useCityStore())
@@ -61,55 +63,35 @@ const [isOpened, toggleModal] = useToggle()
 
 const waitCreatingClient = ref(false)
 
-const tabsItems = ref<TabItem[]>([{
-  name: 'basic-details',
-  title: '1. Основные данные',
-  isActive: true,
-  isRequired: false,
-  isDisabled: false,
-}, {
-  name: 'legal-details',
-  title: '2. Данные физ. лица',
-  value: 1,
-  isActive: false,
-  isRequired: false,
-  isDisabled: true,
-}, {
-  name: 'physical-details',
-  title: '2. Данные юр. лица',
-  value: 2,
-  isActive: false,
-  isRequired: true,
-  isDisabled: true,
-}])
+const tabsItems = ref<TabItem[]>(tabsItemsSettings)
 
 const basicData = reactive<BasicFormData>({
   name: '',
   type: 1,
   cityId: 0,
-  status: 0,
+  status: null,
   currency: 0,
-  managerId: 0,
+  managerId: null,
   priceTypes: [],
 })
 
 const legalEntityData = reactive<LegalEntityFormData>({
-  legalName: '',
-  legalIndustry: 0,
-  legalType: 0,
-  legalAddress: '',
-  legalBik: '',
-  legalBankCity: '',
-  legalInn: '',
-  legalOkpoCode: '',
-  legalCorrAccount: '',
-  legalKpp: '',
-  legalBankName: '',
-  legalCurrentAccount: '',
+  name: null,
+  industry: null,
+  type: 0,
+  address: '',
+  bik: null,
+  bankCity: null,
+  inn: null,
+  okpoCode: null,
+  corrAccount: null,
+  kpp: null,
+  bankName: null,
+  currentAccount: null,
 })
 
 const physicalEntityData = reactive<PhysicalEntityFormData>({
-  physicalGender: 0,
+  gender: null,
 })
 
 const getActiveTab = computed(() => {
@@ -120,7 +102,7 @@ const getActiveTab = computed(() => {
   return null
 })
 
-const isValidData = ($event: any, value: any): boolean => {
+const isDataValid = ($event: any, value: any): boolean => {
   let isValid = false
   if (Array.isArray(value)) {
     isValid = value.length > 0
@@ -138,12 +120,23 @@ const isValidData = ($event: any, value: any): boolean => {
   return false
 }
 
-const validateBaseDataForm = computed(() => (isValidData(null, basicData.name)
-  && isValidData(null, basicData.type) && isValidData(null, basicData.cityId)
-  && isValidData(null, basicData.currency) && isValidData(null, basicData.priceTypes)))
+const validateBaseDataForm = computed(() => (isDataValid(null, basicData.name)
+  && isDataValid(null, basicData.type) && isDataValid(null, basicData.cityId)
+  && isDataValid(null, basicData.currency) && isDataValid(null, basicData.priceTypes)))
 
-const validateLegalDataForm = computed(() => (isValidData(null, legalEntityData.legalType)
-  && isValidData(null, legalEntityData.legalAddress)))
+const validateLegalDataForm = computed(() => (isDataValid(null, legalEntityData.type)
+  && isDataValid(null, legalEntityData.address)))
+
+const isFormValid = (): boolean => {
+  switch (basicData.type) {
+    case 1:
+      return !!validateBaseDataForm.value
+    case 2:
+      return !!(validateBaseDataForm.value && validateLegalDataForm.value)
+    default:
+      return false
+  }
+}
 
 const switchTab = (currentTab: TabItem) => {
   if (currentTab.isDisabled && !validateBaseDataForm.value) return
@@ -155,62 +148,87 @@ const switchTab = (currentTab: TabItem) => {
   currentTabDuplicate.isActive = true
 }
 
+const showTabByClientType = (clientType: number, tabType: number | undefined): boolean => {
+  if (!clientType && tabType && tabType === 1) {
+    return true
+  }
+  if (tabType) {
+    if (tabType && tabType === clientType) {
+      return true
+    }
+    return false
+  }
+  return true
+}
+
 const resetForm = () => {
   basicData.name = ''
   basicData.type = 0
   basicData.cityId = 0
-  basicData.status = 0
+  basicData.status = null
   basicData.currency = 0
-  basicData.managerId = 0
+  basicData.managerId = null
   basicData.priceTypes = []
-  legalEntityData.legalName = ''
-  legalEntityData.legalIndustry = 0
-  legalEntityData.legalType = 0
-  legalEntityData.legalAddress = ''
-  legalEntityData.legalBik = ''
-  legalEntityData.legalBankCity = ''
-  legalEntityData.legalInn = ''
-  legalEntityData.legalOkpoCode = ''
-  legalEntityData.legalCorrAccount = ''
-  legalEntityData.legalKpp = ''
-  legalEntityData.legalBankName = ''
-  legalEntityData.legalCurrentAccount = ''
-  physicalEntityData.physicalGender = 0
+  legalEntityData.name = null
+  legalEntityData.industry = null
+  legalEntityData.type = 0
+  legalEntityData.address = ''
+  legalEntityData.bik = null
+  legalEntityData.bankCity = null
+  legalEntityData.inn = null
+  legalEntityData.okpoCode = null
+  legalEntityData.corrAccount = null
+  legalEntityData.kpp = null
+  legalEntityData.bankName = null
+  legalEntityData.currentAccount = null
+  physicalEntityData.gender = null
   clientCitySelect2.value.clearComponentValue()
-  priceTypesSelect2.value.clearComponentValue()
   clientManagerSelect2.value.clearManagerComponentValue()
   switchTab(tabsItems.value[0])
   nextTick(() => {
-    $('.select2-hidden-accessible').removeClass('is-invalid')
+    $('.is-invalid').removeClass('is-invalid')
   })
+}
+
+const getClientDataByType = (type: number) : any => {
+  if (type === 1) {
+    const physicalClientData: any = { ...basicData,
+      physical: { ...physicalEntityData } }
+    return physicalClientData
+  } if (type === 2) {
+    const legalClientData: any = { ...basicData,
+      legal: { ...legalEntityData } }
+    return legalClientData
+  }
+  return null
 }
 
 const eventBus = useApplicationEventBus()
 
 const onModalSubmit = async () => {
-  if ((basicData.type === 1 && !validateBaseDataForm.value) || (basicData.type === 2 && !validateLegalDataForm.value)) {
+  if (!isFormValid()) {
     return
   }
+  const clientData: any = getClientDataByType(basicData.type)
+  if (!clientData) return
 
-  const formData: ClientFormData = { ...basicData,
-    priceTypes: basicData.priceTypes
+  // УБРАЛ ПОТОМУ КАК У ТЕБЯ В ТИПЕ ТАМ МАССИВ СТРОК
+  /* priceTypes: basicData.priceTypes
       .map((priceType) => Number(priceType))
-      .filter((parsedNumber) => !isNaN(parsedNumber)),
-    physicalEntityData: basicData.type === 1 ? { ...physicalEntityData } : null,
-    legalEntityData: basicData.type === 2 ? { ...legalEntityData } : null }
+      .filter((parsedNumber) => !isNaN(parsedNumber)), */
 
   // todo отправка запроса на сервер
-  console.log(formData)
+  // console.log(formData)
   // waitCreatingClient.value = true
-  // const { data: newClient } = await createClient(formData)
-  // console.log(newClient)
+  const { data: newClient } = await createClient(clientData)
+  console.log(newClient)
   // showToast({ title: 'Клиент успешно создан' })
   // waitCreatingClient.value = false
 
   const clientId = 123
   eventBus.emit('client-created', { clientId })
-  resetForm()
-  toggleModal()
+  // resetForm()
+  // toggleModal()
 }
 
 </script>
@@ -223,7 +241,7 @@ const onModalSubmit = async () => {
       <template #links>
         <template v-for="tab in tabsItems" :key="tab.name">
           <BootstrapTabsLink
-            v-if="tab.value ? (((tab.value === 1 && !basicData.type) || basicData.type === tab.value) ? true : false) : true"
+            v-if="showTabByClientType(basicData.type, tab.value)"
             :tab-name="tab.name"
             :is-active="tab.isActive"
             :is-required="tab.isRequired"
@@ -245,8 +263,8 @@ const onModalSubmit = async () => {
                   v-model="basicData.name"
                   class="form-control"
                   required
-                  @blur="isValidData($event, basicData.name)"
-                  @input="isValidData($event, basicData.name)"
+                  @blur="isDataValid($event, basicData.name)"
+                  @input="isDataValid($event, basicData.name)"
                 >
               </div>
             </div>
@@ -258,7 +276,7 @@ const onModalSubmit = async () => {
                 :options="clientTypeOptions"
                 :value="basicData.type"
                 required
-                @blur="isValidData($event, basicData.type)"
+                @blur="isDataValid($event, basicData.type)"
                 @input="value => basicData.type = Number(value)"
               />
             </div>
@@ -270,11 +288,11 @@ const onModalSubmit = async () => {
                 label="Город"
                 :options="cityOptions"
                 :value="basicData.cityId"
-                :parent="'.city-wrapper'"
+                parent=".city-wrapper"
                 :enable-tags="true"
                 required
                 :show-empty-item="false"
-                @blur="isValidData($event, basicData.cityId)"
+                @blur="isDataValid($event, basicData.cityId)"
                 @input="value => basicData.cityId = Number(value)"
               />
             </div>
@@ -297,23 +315,19 @@ const onModalSubmit = async () => {
                 :options="currencyOptions"
                 :value="basicData.currency"
                 required
-                @blur="isValidData($event, basicData.currency)"
+                @blur="isDataValid($event, basicData.currency)"
                 @input="value => basicData.currency = Number(value)"
               />
             </div>
 
             <div class="col-md-12 mt-2 price-types-wrapper">
-              <Select2BaseSelect
+              <MultiSelect
                 id="price-types"
-                ref="priceTypesSelect2"
                 label="Тариф"
-                :options="residentTypeOptions"
-                :value="basicData.priceTypes"
-                parent=".price-types-wrapper"
-                :enable-multiple="true"
                 required
-                :show-empty-item="false"
-                @blur="isValidData($event, basicData.priceTypes)"
+                :value="basicData.priceTypes"
+                :options="residentTypeOptions"
+                @blur="isDataValid($event, basicData.priceTypes)"
                 @input="value => basicData.priceTypes = value"
               />
             </div>
@@ -323,7 +337,7 @@ const onModalSubmit = async () => {
                 ref="clientManagerSelect2"
                 :value="basicData.managerId"
                 parent=".manager-wrapper"
-                @input="value => basicData.managerId = value"
+                @input="value => basicData.managerId = Number(value)"
               />
             </div>
           </form>
@@ -332,7 +346,7 @@ const onModalSubmit = async () => {
           <form ref="clientLegalForm" class="tab-content">
             <div class="col-md-12 mt-2">
               <label for="legal-name">Наименование</label>
-              <input id="legal-name" v-model="legalEntityData.legalName" class="form-control">
+              <input id="legal-name" v-model="legalEntityData.name" class="form-control">
             </div>
 
             <div class="col-md-12 mt-2">
@@ -340,8 +354,8 @@ const onModalSubmit = async () => {
                 id="industry"
                 label="Индустрия"
                 :options="legalIndustryOptions"
-                :value="legalEntityData.legalIndustry"
-                @input="value => legalEntityData.legalIndustry = Number(value)"
+                :value="legalEntityData.industry"
+                @input="value => legalEntityData.industry = Number(value)"
               />
             </div>
 
@@ -350,10 +364,10 @@ const onModalSubmit = async () => {
                 id="legal-type"
                 label="Тип"
                 :options="legalTypeOptions"
-                :value="legalEntityData.legalType"
+                :value="legalEntityData.type"
                 required
-                @blur="isValidData($event, legalEntityData.legalType)"
-                @input="value => legalEntityData.legalType = Number(value)"
+                @blur="isDataValid($event, legalEntityData.type)"
+                @input="value => legalEntityData.type = Number(value)"
               />
             </div>
 
@@ -362,11 +376,11 @@ const onModalSubmit = async () => {
                 <label for="legal-address">Адрес</label>
                 <input
                   id="legal-address"
-                  v-model="legalEntityData.legalAddress"
+                  v-model="legalEntityData.address"
                   required
                   class="form-control"
-                  @blur="isValidData($event, legalEntityData.legalAddress)"
-                  @input="isValidData($event, legalEntityData.legalAddress)"
+                  @blur="isDataValid($event, legalEntityData.address)"
+                  @input="isDataValid($event, legalEntityData.address)"
                 >
               </div>
             </div>
@@ -374,56 +388,56 @@ const onModalSubmit = async () => {
             <div class="col-md-12 mt-2">
               <div>
                 <label for="legal-bik">БИК</label>
-                <input id="legal-bik" v-model="legalEntityData.legalBik" class="form-control">
+                <input id="legal-bik" v-model="legalEntityData.bik" class="form-control">
               </div>
             </div>
 
             <div class="col-md-12 mt-2">
               <div>
                 <label for="legal-bank-city">Город банка</label>
-                <input id="legal-bank-city" v-model="legalEntityData.legalBankCity" class="form-control">
+                <input id="legal-bank-city" v-model="legalEntityData.bankCity" class="form-control">
               </div>
             </div>
 
             <div class="col-md-12 mt-2">
               <div>
                 <label for="legal-inn">ИНН</label>
-                <input id="legal-inn" v-model="legalEntityData.legalInn" class="form-control">
+                <input id="legal-inn" v-model="legalEntityData.inn" class="form-control">
               </div>
             </div>
 
             <div class="col-md-12 mt-2">
               <div>
                 <label for="legal-okpo-code">Код ОКПО</label>
-                <input id="legal-okpo-code" v-model="legalEntityData.legalOkpoCode" class="form-control">
+                <input id="legal-okpo-code" v-model="legalEntityData.okpoCode" class="form-control">
               </div>
             </div>
 
             <div class="col-md-12 mt-2">
               <div>
                 <label for="legal-corr-acc">Корреспондентский счет</label>
-                <input id="legal-corr-acc" v-model="legalEntityData.legalCorrAccount" class="form-control">
+                <input id="legal-corr-acc" v-model="legalEntityData.corrAccount" class="form-control">
               </div>
             </div>
 
             <div class="col-md-12 mt-2">
               <div>
                 <label for="legal-kpp">КПП</label>
-                <input id="legal-kpp" v-model="legalEntityData.legalKpp" class="form-control">
+                <input id="legal-kpp" v-model="legalEntityData.kpp" class="form-control">
               </div>
             </div>
 
             <div class="col-md-12 mt-2">
               <div>
                 <label for="legal-bank-name">Наименование банка</label>
-                <input id="legal-bank-name" v-model="legalEntityData.legalBankName" class="form-control">
+                <input id="legal-bank-name" v-model="legalEntityData.bankName" class="form-control">
               </div>
             </div>
 
             <div class="col-md-12 mt-2">
               <div>
                 <label for="legal-current-acc">Рассчетный счет</label>
-                <input id="legal-current-acc" v-model="legalEntityData.legalCurrentAccount" class="form-control">
+                <input id="legal-current-acc" v-model="legalEntityData.currentAccount" class="form-control">
               </div>
             </div>
           </form>
@@ -439,8 +453,8 @@ const onModalSubmit = async () => {
                 id="gender"
                 label="Пол"
                 :options="genderOptions"
-                :value="physicalEntityData.physicalGender"
-                @input="value => physicalEntityData.physicalGender = Number(value)"
+                :value="physicalEntityData.gender"
+                @input="value => physicalEntityData.gender = Number(value)"
               />
             </div>
           </form>
