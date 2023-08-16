@@ -15,8 +15,6 @@ use Module\Booking\HotelBooking\Domain\Event\BookingPeriodChanged;
 use Module\Booking\HotelBooking\Domain\Event\RoomAdded;
 use Module\Booking\HotelBooking\Domain\Event\RoomDeleted;
 use Module\Booking\HotelBooking\Domain\Event\RoomEdited;
-use Module\Booking\HotelBooking\Domain\Service\QuotaManager\QuotaValidator;
-use Module\Booking\HotelBooking\Domain\Service\RoomAvailabilityValidator;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\AdditionalInfo;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\BookingPeriod;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\CancelConditions;

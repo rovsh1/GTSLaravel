@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\HotelBooking\Domain\Service\QuotaManager;
+namespace Module\Booking\HotelBooking\Domain\Service\QuotaManager\ProcessingMethod\Quota;
 
 use Module\Booking\HotelBooking\Domain\Entity\Booking;
 use Module\Booking\HotelBooking\Domain\Entity\RoomQuota;

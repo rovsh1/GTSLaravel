@@ -7,8 +7,8 @@ use Module\Booking\Common\Domain\ValueObject\BookingId;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\HotelBooking\Domain\Entity\Booking;
 use Module\Booking\HotelBooking\Domain\Repository\BookingRepositoryInterface;
+use Module\Booking\HotelBooking\Domain\Service\QuotaManager\ProcessingMethod\Quota\QuotaReservationManager;
 use Module\Booking\HotelBooking\Domain\Service\QuotaManager\QuotaProcessingMethodInterface;
-use Module\Booking\HotelBooking\Domain\Service\QuotaManager\QuotaReservationManager;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
 class Quota implements QuotaProcessingMethodInterface

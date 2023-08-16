@@ -8,7 +8,11 @@ use Module\Booking\Common\Domain\Adapter\ClientAdapterInterface;
 use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\HotelBooking\Domain\Entity\Booking;
 use Module\Booking\HotelBooking\Domain\Exception\InvalidRoomResidency;
-use Module\Booking\HotelBooking\Domain\Service\QuotaManager\QuotaProcessingMethodFactory;
+use Module\Booking\HotelBooking\Domain\ValueObject\Details\GuestCollection;
+use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBookingDetails;
+use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBookingStatusEnum;
+use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomInfo;
+use Module\Booking\HotelBooking\Domain\ValueObject\RoomPrice;
 use Module\Booking\Order\Domain\Repository\OrderRepositoryInterface;
 use Module\Shared\Enum\Client\ResidencyEnum;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
@@ -18,21 +22,24 @@ class RoomAvailabilityValidator
     public function __construct(
         private readonly OrderRepositoryInterface $orderRepository,
         private readonly ClientAdapterInterface $clientAdapter,
-        private readonly QuotaProcessingMethodFactory $quotaProcessingMethodFactory,
     ) {}
 
-    public function ensureRoomAvailable(Booking $booking, int $roomId, bool $isResident): void
-    {
+    public function validateRoomData(
+        Booking $booking,
+        RoomBookingStatusEnum $status,
+        RoomInfo $roomInfo,
+        GuestCollection $guests,
+        RoomBookingDetails $details,
+        RoomPrice $price
+    ): void {
         $clientResidency = $this->getClientResidency($booking->orderId());
-        if ($isResident && !in_array($clientResidency, [ResidencyEnum::RESIDENT, ResidencyEnum::ALL])) {
+        if ($details->isResident() && !in_array($clientResidency, [ResidencyEnum::RESIDENT, ResidencyEnum::ALL])) {
             throw new InvalidRoomResidency('Client doesn\'t support resident prices');
         }
 
-        if (!$isResident && !in_array($clientResidency, [ResidencyEnum::NONRESIDENT, ResidencyEnum::ALL])) {
+        if (!$details->isResident() && !in_array($clientResidency, [ResidencyEnum::NONRESIDENT, ResidencyEnum::ALL])) {
             throw new InvalidRoomResidency('Client doesn\'t support non resident prices');
         }
-        $quotaProcessingMethod = $this->quotaProcessingMethodFactory->build($booking->quotaProcessingMethod());
-        $quotaProcessingMethod->ensureRoomAvailable($booking, $roomId);
     }
 
     private function getClientResidency(OrderId $orderId): ResidencyEnum

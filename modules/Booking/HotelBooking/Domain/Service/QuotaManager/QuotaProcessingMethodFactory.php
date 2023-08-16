@@ -5,6 +5,7 @@ namespace Module\Booking\HotelBooking\Domain\Service\QuotaManager;
 use Module\Booking\Common\Domain\Service\StatusRules\AdministratorRules;
 use Module\Booking\HotelBooking\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\HotelBooking\Domain\Service\QuotaManager\ProcessingMethod\Quota;
+use Module\Booking\HotelBooking\Domain\Service\QuotaManager\ProcessingMethod\Quota\QuotaReservationManager;
 use Module\Booking\HotelBooking\Domain\Service\QuotaManager\ProcessingMethod\Request;
 use Module\Booking\HotelBooking\Domain\Service\QuotaManager\ProcessingMethod\Site;
 use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;

@@ -11,6 +11,7 @@ use Module\Booking\HotelBooking\Domain\Event\RoomAdded;
 use Module\Booking\HotelBooking\Domain\Event\RoomDeleted;
 use Module\Booking\HotelBooking\Domain\Event\RoomEdited;
 use Module\Booking\HotelBooking\Domain\Repository\RoomBookingRepositoryInterface;
+use Module\Booking\HotelBooking\Domain\Service\QuotaManager\QuotaProcessingMethodFactory;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\GuestCollection;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBookingDetails;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBookingId;
@@ -27,6 +28,7 @@ class RoomBookingService
         private readonly BookingRepository $bookingRepository,
         private readonly RoomBookingRepositoryInterface $roomBookingRepository,
         private readonly RoomAvailabilityValidator $roomAvailabilityValidator,
+        private readonly QuotaProcessingMethodFactory $quotaProcessingMethodFactory,
         private readonly DomainEventDispatcherInterface $eventDispatcher,
     ) {}
 
@@ -49,21 +51,26 @@ class RoomBookingService
         RoomPrice $price
     ): void {
         $booking = $this->findBookingOrFail($bookingId);
-        $this->roomAvailabilityValidator->ensureRoomAvailable($booking, $roomInfo->id(), $details->isResident());
-        $roomBooking = $this->roomBookingRepository->create(
-            $bookingId->value(),
-            $status,
-            $roomInfo,
-            $guests,
-            $details,
-            $price
-        );
-        $this->eventDispatcher->dispatch(
-            new RoomAdded(
-                $booking,
-                $roomBooking,
-            )
-        );
+        $this->roomAvailabilityValidator->validateRoomData($booking, $status, $roomInfo, $guests, $details, $price);
+        $quotaProcessingMethod = $this->quotaProcessingMethodFactory->build($booking->quotaProcessingMethod());
+        try {
+            $quotaProcessingMethod->ensureRoomAvailable($bookingId);
+            $roomBooking = $this->roomBookingRepository->create(
+                $bookingId->value(),
+                $status,
+                $roomInfo,
+                $guests,
+                $details,
+                $price
+            );
+            $this->eventDispatcher->dispatch(
+                new RoomAdded(
+                    $booking,
+                    $roomBooking,
+                )
+            );
+        } catch (\Throwable $e) {
+        }
     }
 
     public function updateRoomBooking(
@@ -83,7 +90,7 @@ class RoomBookingService
         $isHotelRoomChanged = $roomBooking->roomInfo()->id() !== $roomInfo->id();
         $isResidentChanged = $roomBooking->details()->isResident() !== $details->isResident();
         if ($isHotelRoomChanged || $isResidentChanged) {
-            $this->roomAvailabilityValidator->ensureRoomAvailable($booking, $roomInfo->id(), $details->isResident());
+            $this->roomAvailabilityValidator->validateRoomData($booking, $status, $roomInfo, $guests, $details, $price);
         }
         $this->roomBookingRepository->delete($id->value());
         $roomBooking = $this->roomBookingRepository->create(
