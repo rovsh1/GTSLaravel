@@ -211,18 +211,24 @@ class BookingController extends Controller
 
     public function update(int $id): RedirectResponse
     {
-        $form = $this->formFactory(true)->method('put');
+        $form = $this->formFactory(true)
+            ->method('put')
+            ->failUrl($this->prototype->route('edit', $id));
 
-        $form->trySubmit($this->prototype->route('edit', $id));
+        $form->trySubmit();
 
         $data = $form->getData();
-        HotelAdapter::updateBooking(
-            id: $id,
-            period: $data['period'],
-            quotaProcessingMethod: $data['quota_processing_method'],
-            note: $data['note'] ?? null
-        );
-        $this->administratorRepository->update($id, $data['manager_id'] ?? request()->user()->id);
+        try {
+            HotelAdapter::updateBooking(
+                id: $id,
+                period: $data['period'],
+                quotaProcessingMethod: $data['quota_processing_method'],
+                note: $data['note'] ?? null
+            );
+            $this->administratorRepository->update($id, $data['manager_id'] ?? request()->user()->id);
+        } catch (ApplicationException $e) {
+            $form->throwException($e);
+        }
 
         return redirect($this->prototype->route('show', $id));
     }

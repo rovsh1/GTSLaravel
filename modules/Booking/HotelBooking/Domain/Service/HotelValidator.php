@@ -19,6 +19,12 @@ class HotelValidator
         private readonly HotelAdapterInterface $hotelAdapter
     ) {}
 
+    /**
+     * @param int $hotelId
+     * @param CarbonPeriod $bookingPeriod
+     * @return void
+     * @throws NotFoundHotelCancelPeriod
+     */
     public function validateById(int $hotelId, CarbonPeriod $bookingPeriod): void
     {
         /** @var MarkupSettingsDto|null $hotelDto */
@@ -29,6 +35,12 @@ class HotelValidator
         $this->validateByDto($markupSettings, $bookingPeriod);
     }
 
+    /**
+     * @param MarkupSettingsDto $markupSettings
+     * @param CarbonPeriod $bookingPeriod
+     * @return void
+     * @throws NotFoundHotelCancelPeriod
+     */
     public function validateByDto(MarkupSettingsDto $markupSettings, CarbonPeriod $bookingPeriod): void
     {
         //@todo накапливать массив ошибок и выкидывать в эксепшене
