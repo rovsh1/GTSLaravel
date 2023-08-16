@@ -128,6 +128,13 @@ class ImageController extends Controller
         return new AjaxSuccessResponse();
     }
 
+    public function unsetMainImage(Request $request, Hotel $hotel, Image $image): AjaxResponseInterface
+    {
+        $image->update(['is_main' => false]);
+
+        return new AjaxSuccessResponse();
+    }
+
     private function hotel(Hotel $hotel): void
     {
         Breadcrumb::prototype('hotel')

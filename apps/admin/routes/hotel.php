@@ -50,6 +50,7 @@ AclRoute::for('hotel')
     ->post('/{hotel}/images/reorder', Controllers\Hotel\ImageController::class . '@reorder', 'update', 'images.reorder')
     ->get('/{hotel}/images/{image}/rooms', Controllers\Hotel\ImageController::class . '@getImageRooms', 'update', 'images.rooms')
     ->post('/{hotel}/images/{image}/main/set', Controllers\Hotel\ImageController::class . '@setMainImage', 'update', 'images.main.set')
+    ->post('/{hotel}/images/{image}/main/unset', Controllers\Hotel\ImageController::class . '@unsetMainImage', 'update', 'images.main.unset')
 
     ->get('/{hotel}/images/{room}/list', Controllers\Hotel\ImageController::class . '@getRoomImages', 'update', 'images.room.get')
     ->post('/{hotel}/rooms/{room}/images/{image}/set', Controllers\Hotel\ImageController::class . '@setRoomImage', 'update', 'images.room.set')
