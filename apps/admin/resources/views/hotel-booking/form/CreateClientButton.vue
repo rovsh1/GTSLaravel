@@ -216,7 +216,7 @@ const onModalSubmit = async () => {
   showToast({ title: 'Клиент успешно создан' })
   waitCreatingClient.value = false
 
-  eventBus.emit('client-created', { id: newClient.value?.id })
+  eventBus.emit('client-created', { clientId: newClient.value?.id })
   toggleModal()
   resetForm()
 }

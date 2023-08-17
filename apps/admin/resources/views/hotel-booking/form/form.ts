@@ -2,6 +2,7 @@ import { isEmpty } from 'lodash'
 import { createPinia } from 'pinia'
 import { z } from 'zod'
 
+import axios from '~resources/js/app/api'
 import CreateClientButton from '~resources/views/hotel-booking/form/CreateClientButton.vue'
 
 import { formatDate } from '~lib/date'
@@ -10,6 +11,9 @@ import { requestInitialData } from '~lib/initial-data'
 import { createVueInstance } from '~lib/vue'
 
 import '~resources/views/main'
+
+import { mapClientsToSelect2Options } from './lib/constants'
+import { Select2Option } from './lib/types'
 
 const { clients, bookingID } = requestInitialData('view-initial-data-hotel-booking', z.object({
   bookingID: z.number().nullable(),
@@ -102,6 +106,13 @@ $(() => {
     useSelect2: true,
   })
 
+  const reloadClientsSelect = async (): Promise<void> => {
+    const clientsList = await axios.get('/client/list')
+    const clientsSelectOptions: Select2Option[] = clientsList && clientsList.data ? mapClientsToSelect2Options(clientsList.data) : []
+    $clientIdSelect.select2('destroy').empty().select2({ data: clientsSelectOptions }).val('')
+      .trigger('change')
+  }
+
   if (bookingID === null) {
     const $clientIdSelectWrapper = $clientIdSelect.parent()
     $clientIdSelectWrapper.removeClass('col-sm-7').addClass('col-sm-6')
@@ -118,7 +129,8 @@ $(() => {
     })
 
     const eventBus = useApplicationEventBus()
-    eventBus.on('client-created', (event: { clientId: number }) => {
+    eventBus.on('client-created', async (event: { clientId: number }) => {
+      await reloadClientsSelect()
       $clientIdSelect.val(event.clientId).trigger('change')
     })
   }
