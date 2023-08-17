@@ -69,6 +69,15 @@ class ClientController extends AbstractPrototypeController
         return $layout;
     }
 
+    public function list(): JsonResponse
+    {
+        return response()->json(
+            ClientResource::collection(
+                $this->repository->query()->get()
+            )
+        );
+    }
+
     protected function saving(array $data): array
     {
         return array_merge($data, ['is_b2b' => true]);

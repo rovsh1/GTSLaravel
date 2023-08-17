@@ -65,7 +65,12 @@ export const createClient = (props: MaybeRef<CreatePhysicalClientPayload | Creat
     )), 'application/json')
     .json<Client>()
 
+export const useClientListAPI = () =>
+  useAdminAPI({}, () => '/client/list')
+    .get()
+    .json<Client[]>()
+
 export const useIndustryListAPI = () =>
-  useAdminAPI({ }, () => '/client/industry/list')
+  useAdminAPI({}, () => '/client/industry/list')
     .get()
     .json<Industry[]>()
