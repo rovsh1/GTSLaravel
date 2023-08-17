@@ -13,6 +13,11 @@ export interface Client {
   is_legal: boolean
 }
 
+export interface Industry {
+  id: number
+  name: string
+}
+
 interface CreateClientPayload {
   name: string
   type: number
@@ -59,3 +64,8 @@ export const createClient = (props: MaybeRef<CreatePhysicalClientPayload | Creat
       ),
     )), 'application/json')
     .json<Client>()
+
+export const useIndustryListAPI = () =>
+  useAdminAPI({ }, () => '/client/industry/list')
+    .get()
+    .json<Industry[]>()

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import { computed, nextTick, reactive, ref } from 'vue'
+import { computed, nextTick, onMounted, reactive, ref } from 'vue'
 
 import { useToggle } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
@@ -15,7 +15,7 @@ import {
   mapEntitiesToSelectOptions, residentTypeOptions,
 } from '~resources/views/hotel-booking/show/lib/constants'
 
-import { createClient } from '~api/client'
+import { createClient, useIndustryListAPI } from '~api/client'
 
 import { useApplicationEventBus } from '~lib/event-bus'
 
@@ -34,11 +34,6 @@ import Select2BaseSelect from '~components/Select2BaseSelect.vue'
 
 import { tabsItemsSettings } from './lib/composables'
 import { BasicFormData, LegalEntityFormData, PhysicalEntityFormData } from './lib/types'
-
-const legalIndustryOptions = mapEntitiesToSelectOptions([
-  { id: 1, name: 'Турагенство' },
-  { id: 2, name: 'Туристическая компания' },
-])
 
 const legalTypeOptions = mapEntitiesToSelectOptions([
   { id: 1, name: 'OTA' },
@@ -59,6 +54,9 @@ const cityOptions = computed(() => {
 
 const { currencies } = storeToRefs(useCurrencyStore())
 const currencyOptions = computed(() => (currencies.value ? mapEntitiesToSelectOptions(currencies.value) : []))
+
+const { data: industries, execute: fetchIndustries } = useIndustryListAPI()
+const legalIndustryOptions = computed(() => (industries.value ? mapEntitiesToSelectOptions(industries.value) : []))
 
 const [isOpened, toggleModal] = useToggle()
 
@@ -222,6 +220,10 @@ const onModalSubmit = async () => {
   resetForm()
   toggleModal()
 }
+
+onMounted(() => {
+  fetchIndustries()
+})
 
 </script>
 
