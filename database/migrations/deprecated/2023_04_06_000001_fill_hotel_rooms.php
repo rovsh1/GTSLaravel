@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 use Module\Hotel\Domain\Entity\Room\RoomMarkups;
 use Module\Hotel\Domain\ValueObject\RoomId;
 use Module\Shared\Domain\ValueObject\Percent;
@@ -12,6 +13,8 @@ return new class extends Migration {
     private const TO = 3;
     private const INDIVIDUAL = 4;
 
+    private const ROOM_NAME_ENUM_GROUP_ID = 2;
+
     /**
      * Run the migrations.
      */
@@ -22,6 +25,16 @@ return new class extends Migration {
             ->addSelect(
                 DB::raw(
                     '(SELECT text FROM hotel_rooms_translation WHERE translatable_id=hotel_rooms.id AND language="ru") as text'
+                )
+            )
+            ->leftJoin('r_enums', function (\Illuminate\Database\Query\JoinClause $query) {
+                $query->whereColumn('hotel_rooms.name_id', 'r_enums.id')
+                    ->where('group_id', self::ROOM_NAME_ENUM_GROUP_ID)
+                    ->limit(1);
+            })
+            ->addSelect(
+                DB::raw(
+                    '(SELECT name FROM r_enums_translation WHERE r_enums_translation.translatable_id=r_enums.id AND language="ru") as room_name'
                 )
             );
 
@@ -58,9 +71,7 @@ return new class extends Migration {
                 ->insert([
                     'id' => $r->id,
                     'hotel_id' => $r->hotel_id,
-                    'name_id' => $r->name_id,
                     'type_id' => $r->type_id,
-                    'custom_name' => $r->custom_name,
                     'rooms_number' => $r->rooms_number,
                     'guests_count' => $r->guests_number,
                     'square' => $r->size,
@@ -70,14 +81,11 @@ return new class extends Migration {
                     'updated_at' => now(),
                 ]);
 
-            if (!empty($r->text)) {
-                DB::table('hotel_rooms_translation')
-                    ->insert([
-                        'translatable_id' => $r->id,
-                        'language' => 'ru',
-                        'text' => $r->text,
-                    ]);
-            }
+            $translations = [
+                ['translatable_id' => $r->id, 'language' => 'ru', 'name' => $r->room_name, 'text' => $r->text ?? null],
+                ['translatable_id' => $r->id, 'language' => 'en', 'name' => $r->custom_name, 'text' => null],
+            ];
+            DB::table('hotel_rooms_translation')->insert($translations);
         }
     }
 

@@ -34,7 +34,7 @@ const initUsabilitiesModal = () => {
 
       let html = '<div class="rooms-wrapper">'
       for (let i = 0; i < rooms.length; i++) {
-        html += roomHTML(rooms[i].id, `${rooms[i].name} (${rooms[i].custom_name || ''})`)
+        html += roomHTML(rooms[i].id, `${rooms[i].name}`)
       }
       html += '</div>'
 

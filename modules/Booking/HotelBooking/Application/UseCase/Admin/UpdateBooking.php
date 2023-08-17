@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Module\Booking\HotelBooking\Application\UseCase\Admin;
 
 use Module\Booking\Common\Domain\Service\BookingUpdater;
+use Module\Booking\HotelBooking\Application\Exception\NotFoundHotelCancelPeriod as ApplicationException;
 use Module\Booking\HotelBooking\Application\Factory\CancelConditionsFactory;
 use Module\Booking\HotelBooking\Application\Request\UpdateBookingDto;
 use Module\Booking\HotelBooking\Domain\Adapter\HotelAdapterInterface;
 use Module\Booking\HotelBooking\Domain\Entity\Booking;
+use Module\Booking\HotelBooking\Domain\Exception\NotFoundHotelCancelPeriod;
 use Module\Booking\HotelBooking\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\HotelBooking\Domain\Service\HotelValidator;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\BookingPeriod;
@@ -31,7 +33,11 @@ class UpdateBooking implements UseCaseInterface
         $periodFromRequest = BookingPeriod::fromCarbon($request->period);
         if (!$booking->period()->isEqual($periodFromRequest)) {
             $markupSettings = $this->hotelAdapter->getMarkupSettings($booking->hotelInfo()->id());
-            $this->hotelValidator->validateById($booking->hotelInfo()->id(), $request->period);
+            try {
+                $this->hotelValidator->validateById($booking->hotelInfo()->id(), $request->period);
+            } catch (NotFoundHotelCancelPeriod $e) {
+                throw new ApplicationException($e);
+            }
             $cancelConditions = CancelConditionsFactory::fromDto($markupSettings->cancelPeriods, $request->period);
             $booking->setPeriod($periodFromRequest);
             $booking->setCancelConditions($cancelConditions);

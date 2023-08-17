@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Module\Booking\HotelBooking\Application\UseCase\Admin;
 
 use Module\Booking\Common\Application\Support\UseCase\Admin\AbstractCreateBooking;
+use Module\Booking\HotelBooking\Application\Exception\NotFoundHotelCancelPeriod as ApplicationException;
 use Module\Booking\HotelBooking\Application\Factory\CancelConditionsFactory;
 use Module\Booking\HotelBooking\Application\Factory\HotelInfoFactory;
 use Module\Booking\HotelBooking\Application\Request\CreateBookingDto;
 use Module\Booking\HotelBooking\Domain\Adapter\HotelAdapterInterface;
+use Module\Booking\HotelBooking\Domain\Exception\NotFoundHotelCancelPeriod;
 use Module\Booking\HotelBooking\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\HotelBooking\Domain\Service\HotelValidator;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\BookingPeriod;
@@ -32,7 +34,11 @@ class CreateBooking extends AbstractCreateBooking
         $orderId = $this->getOrderIdFromRequest($request);
         $hotelDto = $this->hotelAdapter->findById($request->hotelId);
         $markupSettings = $this->hotelAdapter->getMarkupSettings($request->hotelId);
-        $this->hotelValidator->validateByDto($markupSettings, $request->period);
+        try {
+            $this->hotelValidator->validateByDto($markupSettings, $request->period);
+        } catch (NotFoundHotelCancelPeriod $e) {
+            throw new ApplicationException($e);
+        }
         $booking = $this->repository->create(
             orderId: $orderId,
             creatorId: new Id($request->creatorId),

@@ -13,7 +13,7 @@ class RoomFactory extends AbstractEntityFactory
     {
         return new $this->entity(
             $data['id'],
-            $data['display_name'],
+            $data['name'],
             app(PriceRateFactory::class)->createCollectionFrom($data['price_rates']),
             $data['guests_count']
         );

@@ -19,6 +19,12 @@ class HotelValidator
         private readonly HotelAdapterInterface $hotelAdapter
     ) {}
 
+    /**
+     * @param int $hotelId
+     * @param CarbonPeriod $bookingPeriod
+     * @return void
+     * @throws NotFoundHotelCancelPeriod
+     */
     public function validateById(int $hotelId, CarbonPeriod $bookingPeriod): void
     {
         /** @var MarkupSettingsDto|null $hotelDto */
@@ -29,6 +35,12 @@ class HotelValidator
         $this->validateByDto($markupSettings, $bookingPeriod);
     }
 
+    /**
+     * @param MarkupSettingsDto $markupSettings
+     * @param CarbonPeriod $bookingPeriod
+     * @return void
+     * @throws NotFoundHotelCancelPeriod
+     */
     public function validateByDto(MarkupSettingsDto $markupSettings, CarbonPeriod $bookingPeriod): void
     {
         //@todo накапливать массив ошибок и выкидывать в эксепшене
@@ -37,7 +49,7 @@ class HotelValidator
             fn(mixed $cancelPeriod) => $bookingPeriod->overlaps($cancelPeriod->from, $cancelPeriod->to)
         );
         if ($availablePeriod === null) {
-            throw new NotFoundHotelCancelPeriod('Not found cancel period for booking');
+            throw new NotFoundHotelCancelPeriod();
         }
         //@todo проверить цены, наценки, условия отмены, стандартные условия заезда/выезда,
     }

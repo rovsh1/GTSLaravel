@@ -42,6 +42,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Module\Booking\Common\Domain\Service\RequestRules;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
+use Module\Shared\Application\Exception\ApplicationException;
 use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 use Module\Shared\Enum\SourceEnum;
 
@@ -120,25 +121,31 @@ class BookingController extends Controller
     {
         $creatorId = request()->user()->id;
 
-        $form = $this->formFactory()->method('post');
-        $form->trySubmit($this->prototype->route('create'));
+        $form = $this->formFactory()
+            ->method('post')
+            ->failUrl($this->prototype->route('create'));
+
+        $form->trySubmit();
 
         $data = $form->getData();
         $client = Client::find($data['client_id']);
-        //@todo добавить селект типа брони По квоте/По запросу (списывать квоту сразу, если по квоте)
-        $bookingId = HotelAdapter::createBooking(
-            cityId: $data['city_id'],
-            clientId: $data['client_id'],
-            legalId: $data['legal_id'],
-            currencyId: $data['currency_id'] ?? $client->currency_id,
-            hotelId: $data['hotel_id'],
-            period: $data['period'],
-            creatorId: $creatorId,
-            orderId: $data['order_id'] ?? null,
-            note: $data['note'] ?? null,
-            quotaProcessingMethod: $data['quota_processing_method'],
-        );
-        $this->administratorRepository->create($bookingId, $data['manager_id'] ?? $creatorId);
+        try {
+            $bookingId = HotelAdapter::createBooking(
+                cityId: $data['city_id'],
+                clientId: $data['client_id'],
+                legalId: $data['legal_id'],
+                currencyId: $data['currency_id'] ?? $client->currency_id,
+                hotelId: $data['hotel_id'],
+                period: $data['period'],
+                creatorId: $creatorId,
+                orderId: $data['order_id'] ?? null,
+                note: $data['note'] ?? null,
+                quotaProcessingMethod: $data['quota_processing_method'],
+            );
+            $this->administratorRepository->create($bookingId, $data['manager_id'] ?? $creatorId);
+        } catch (ApplicationException $e) {
+            $form->throwException($e);
+        }
 
         return redirect(
             $this->prototype->route('show', $bookingId)
@@ -204,18 +211,24 @@ class BookingController extends Controller
 
     public function update(int $id): RedirectResponse
     {
-        $form = $this->formFactory(true)->method('put');
+        $form = $this->formFactory(true)
+            ->method('put')
+            ->failUrl($this->prototype->route('edit', $id));
 
-        $form->trySubmit($this->prototype->route('edit', $id));
+        $form->trySubmit();
 
         $data = $form->getData();
-        HotelAdapter::updateBooking(
-            id: $id,
-            period: $data['period'],
-            quotaProcessingMethod: $data['quota_processing_method'],
-            note: $data['note'] ?? null
-        );
-        $this->administratorRepository->update($id, $data['manager_id'] ?? request()->user()->id);
+        try {
+            HotelAdapter::updateBooking(
+                id: $id,
+                period: $data['period'],
+                quotaProcessingMethod: $data['quota_processing_method'],
+                note: $data['note'] ?? null
+            );
+            $this->administratorRepository->update($id, $data['manager_id'] ?? request()->user()->id);
+        } catch (ApplicationException $e) {
+            $form->throwException($e);
+        }
 
         return redirect($this->prototype->route('show', $id));
     }
