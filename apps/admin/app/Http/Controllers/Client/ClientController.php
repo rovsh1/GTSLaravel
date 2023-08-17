@@ -73,7 +73,7 @@ class ClientController extends AbstractPrototypeController
     {
         return response()->json(
             ClientResource::collection(
-                $this->repository->query()->get()
+                $this->repository->query()->orderBy('name')->get()
             )
         );
     }
