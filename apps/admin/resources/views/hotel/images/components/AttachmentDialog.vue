@@ -93,7 +93,7 @@ const isCheckboxDisabled = computed<boolean>(() =>
             class="list-group-item"
           >
             <BootstrapCheckbox
-              :label="room.customName"
+              :label="room.name"
               :value="room.isImageLinked"
               :disabled="isCheckboxDisabled"
               @input="value => changeImageAttachment(room.id, value)"
