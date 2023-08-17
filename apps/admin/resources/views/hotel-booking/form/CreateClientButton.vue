@@ -25,6 +25,7 @@ import BootstrapTabs from '~components/Bootstrap/BootstrapTabs/BootstrapTabs.vue
 import BootstrapTabsLink from '~components/Bootstrap/BootstrapTabs/components/BootstrapTabsLink.vue'
 import BootstrapTabsTabContent from '~components/Bootstrap/BootstrapTabs/components/BootstrapTabsTabContent.vue'
 import { TabItem } from '~components/Bootstrap/BootstrapTabs/types'
+import { showToast } from '~components/Bootstrap/BootstrapToast'
 import { SelectOption } from '~components/Bootstrap/lib'
 import IconButton from '~components/IconButton.vue'
 import MultiSelect from '~components/MultiSelect.vue'
@@ -69,7 +70,7 @@ const basicData = reactive<BasicFormData>({
   name: '',
   type: 1,
   cityId: 0,
-  status: null,
+  status: 1,
   currency: 0,
   managerId: null,
   priceTypes: [],
@@ -212,23 +213,14 @@ const onModalSubmit = async () => {
   const clientData: any = getClientDataByType(basicData.type)
   if (!clientData) return
 
-  // УБРАЛ ПОТОМУ КАК У ТЕБЯ В ТИПЕ ТАМ МАССИВ СТРОК
-  /* priceTypes: basicData.priceTypes
-      .map((priceType) => Number(priceType))
-      .filter((parsedNumber) => !isNaN(parsedNumber)), */
-
-  // todo отправка запроса на сервер
-  // console.log(formData)
-  // waitCreatingClient.value = true
+  waitCreatingClient.value = true
   const { data: newClient } = await createClient(clientData)
-  console.log(newClient)
-  // showToast({ title: 'Клиент успешно создан' })
-  // waitCreatingClient.value = false
+  showToast({ title: 'Клиент успешно создан' })
+  waitCreatingClient.value = false
 
-  const clientId = 123
-  eventBus.emit('client-created', { clientId })
-  // resetForm()
-  // toggleModal()
+  eventBus.emit('client-created', { id: newClient.value?.id })
+  resetForm()
+  toggleModal()
 }
 
 </script>
