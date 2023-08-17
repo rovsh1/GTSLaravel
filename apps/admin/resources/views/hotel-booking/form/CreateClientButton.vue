@@ -217,8 +217,8 @@ const onModalSubmit = async () => {
   waitCreatingClient.value = false
 
   eventBus.emit('client-created', { id: newClient.value?.id })
-  resetForm()
   toggleModal()
+  resetForm()
 }
 
 onMounted(() => {
