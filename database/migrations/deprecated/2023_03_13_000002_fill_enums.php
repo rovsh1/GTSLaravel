@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     private static array $migrationAssoc = [
         'bed-type' => 3,
-        'room-name' => 2,
+//        'room-name' => 2,
         'room-type' => 1,
         'hotel-type' => 5,
         'administrator-post' => 11,

@@ -18,7 +18,6 @@ class Room extends JsonResource
             'id' => $this->id,
             'hotel_id' => $this->hotel_id,
             'name' => $this->name,
-            'custom_name' => $this->custom_name,
             'rooms_number' => $this->rooms_number,
             'guests_count' => $this->guests_count,
         ];

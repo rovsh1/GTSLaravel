@@ -16,7 +16,7 @@ use Sdk\Module\Database\Eloquent\Model;
 /**
  * @property int id
  * @property HasMany beds
- * @property-read string $display_name
+ * @property-read string $name
  * @property-read Image $images
  * @property-read HotelImage|null $main_image
  * @property-read Collection<int, PriceRate> $priceRates
@@ -34,9 +34,7 @@ class Room extends Model
 
     protected $fillable = [
         'hotel_id',
-//        'name_id',
         'type_id',
-        'custom_name',
         'rooms_number',
         'guests_count',
         'square',
@@ -45,16 +43,11 @@ class Room extends Model
 
     protected $casts = [
         'hotel_id' => 'int',
-//        'name_id' => 'int',
         'type_id' => 'int',
         'rooms_number' => 'int',
         'guests_count' => 'int',
         'square' => 'int',
         'position' => 'int',
-    ];
-
-    protected $appends = [
-        'display_name',
     ];
 
     public static function booted()
@@ -63,9 +56,7 @@ class Room extends Model
             $builder
                 ->addSelect('hotel_rooms.*')
                 //->join('clients', 'clients.id', '=', 'price_lists.client_id')
-//                ->join('r_enums as r_names', 'r_names.id', '=', 'hotel_rooms.name_id')
                 ->join('r_enums as r_types', 'r_types.id', '=', 'hotel_rooms.type_id')
-//                ->joinTranslatable('r_names', 'name')
                 ->joinTranslatable('r_types', 'name as type_name')
                 ->joinTranslations()
                 ->orderBy('position', 'asc');
@@ -88,11 +79,6 @@ class Room extends Model
         foreach ($beds as $bed) {
             RoomBed::create(array_merge($bed, ['room_id' => $this->id]));
         }
-    }
-
-    public function displayName(): Attribute
-    {
-        return Attribute::get(fn() => $this->name . ($this->custom_name ? ' (' . $this->custom_name . ')' : ''));
     }
 
     public function markupSettings(): Attribute
@@ -150,6 +136,6 @@ class Room extends Model
 
     public function __toString()
     {
-        return $this->display_name;
+        return $this->name;
     }
 }
