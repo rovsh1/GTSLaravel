@@ -2,8 +2,6 @@
 
 import { onMounted, watch } from 'vue'
 
-import { MaybeRef } from '@vueuse/core'
-
 import { SelectOption } from '~components/Bootstrap/lib'
 
 const props = withDefaults(defineProps<{
@@ -12,7 +10,7 @@ const props = withDefaults(defineProps<{
   value: string[]
   required?: boolean
   options: SelectOption[]
-  disabled?: MaybeRef<boolean>
+  disabled?: boolean
 }>(), {
   disabled: false,
   required: false,
@@ -21,12 +19,28 @@ const props = withDefaults(defineProps<{
 let multipleSelect:any = null
 let currentValue:string[] | null = null
 
-watch(() => props.value, (newValue:string[] | null) => {
-  const valuesEqual = JSON.stringify(newValue) === JSON.stringify(currentValue)
+const setValue = (value: string[]) => {
+  const valuesEqual = JSON.stringify(value) === JSON.stringify(currentValue)
   if (!valuesEqual) {
-    multipleSelect.val(newValue)
+    multipleSelect.val(value)
     multipleSelect.change()
   }
+}
+
+const setDisabled = (value: boolean | null) => {
+  if (value) {
+    multipleSelect.multiselect('disable')
+  } else {
+    multipleSelect.multiselect('enable')
+  }
+}
+
+watch(() => props.value, (newValue:string[]) => {
+  setValue(newValue)
+})
+
+watch(() => props.disabled, (newValue:boolean | null) => {
+  setDisabled(newValue)
 })
 
 const emit = defineEmits<{
@@ -44,6 +58,10 @@ onMounted(() => {
     const elementForShowStatus = val.currentTarget.parentNode.getElementsByClassName('form-control')[0]
     emit('blur', { target: elementForShowStatus })
   })
+  if (props.value.length > 0) {
+    setValue(props.value)
+  }
+  setDisabled(props.disabled)
 })
 
 </script>
@@ -64,4 +82,15 @@ label {
 .ui-multiselect {
   width: 100%;
 }
+
+.ui-multiselect.disabled {
+  opacity: 1;
+
+  .label,
+  .dropdown-menu .dropdown-item,
+  .select {
+    opacity: 0.6;
+  }
+}
+
 </style>
