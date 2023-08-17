@@ -9,21 +9,25 @@ use Module\Booking\HotelBooking\Domain\Repository\RoomBookingRepositoryInterface
 use Module\Booking\HotelBooking\Domain\Service\RoomUpdater\Validator\ClientResidencyValidator;
 use Module\Booking\HotelBooking\Domain\Service\RoomUpdater\Validator\QuotaAvailabilityValidator;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBookingId;
+use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
+use Sdk\Module\Contracts\Event\DomainEventInterface;
 use Sdk\Module\Contracts\ModuleInterface;
 
 class RoomUpdater
 {
+    /** @var DomainEventInterface[] $events */
     private array $events = [];
 
     public function __construct(
         private readonly ModuleInterface $module,
         private readonly RoomBookingRepositoryInterface $roomBookingRepository,
+        private readonly DomainEventDispatcherInterface $eventDispatcher,
     ) {
     }
 
     public function add(UpdateDataHelper $dataHelper): void
     {
-        $this->doAction(fn () => $this->doAdd($dataHelper));
+        $this->doAction(fn() => $this->doAdd($dataHelper));
     }
 
     public function update(RoomBookingId $roomBookingId, UpdateDataHelper $dataHelper): void
@@ -42,7 +46,14 @@ class RoomUpdater
     private function doAdd(UpdateDataHelper $dataHelper): void
     {
         $this->makePipeline()->send($dataHelper);
-        $roomBooking = $this->roomBookingRepository->create();
+        $roomBooking = $this->roomBookingRepository->create(
+            $dataHelper->bookingId->value(),
+            $dataHelper->status,
+            $dataHelper->roomInfo,
+            $dataHelper->guests,
+            $dataHelper->details,
+            $dataHelper->price
+        );
         $this->processQuota();
         $this->events[] = new RoomAdded($roomBooking);
     }

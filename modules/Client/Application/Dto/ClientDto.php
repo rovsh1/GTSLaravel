@@ -9,6 +9,7 @@ use Module\Shared\Application\Dto\AbstractDomainBasedDto;
 use Module\Shared\Domain\Entity\EntityInterface;
 use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 use Module\Shared\Enum\Client\ResidencyEnum;
+use Module\Shared\Enum\Client\TypeEnum;
 
 final class ClientDto extends AbstractDomainBasedDto
 {
@@ -27,5 +28,10 @@ final class ClientDto extends AbstractDomainBasedDto
             $entity->type()->value,
             $entity->residency()
         );
+    }
+
+    public function isLegal(): bool
+    {
+        return $this->type === TypeEnum::LEGAL_ENTITY->value;
     }
 }

@@ -2,10 +2,12 @@
 
 namespace Module\Booking\HotelBooking\Domain\Service\RoomUpdater;
 
+use Module\Booking\HotelBooking\Domain\Service\RoomUpdater\Validator\ValidatorInterface;
 use Sdk\Module\Contracts\ModuleInterface;
 
 class ValidatorPipeline
 {
+    /** @var class-string<ValidatorInterface>[] $validators  */
     private array $validators = [];
 
     public function __construct(
@@ -21,8 +23,26 @@ class ValidatorPipeline
         return $this;
     }
 
+    /**
+     * @param class-string<ValidatorInterface> $validator
+     * @return $this
+     */
+    public function through(string $validator): static
+    {
+        $this->validators[] = $validator;
+
+        return $this;
+    }
+
+    /**
+     * @param class-string<ValidatorInterface> $class
+     * @param UpdateDataHelper $dataHelper
+     * @return void
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
     private function callValidator(string $class, UpdateDataHelper $dataHelper): void
     {
+        /** @var ValidatorInterface $validator */
         $validator = $this->module->make($class);
         $validator->validate($dataHelper);
     }
