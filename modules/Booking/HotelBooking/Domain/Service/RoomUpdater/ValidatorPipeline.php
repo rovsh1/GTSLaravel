@@ -7,7 +7,7 @@ use Sdk\Module\Contracts\ModuleInterface;
 
 class ValidatorPipeline
 {
-    /** @var class-string<ValidatorInterface>[] $validators  */
+    /** @var class-string<ValidatorInterface>[] $validators */
     private array $validators = [];
 
     public function __construct(
@@ -30,6 +30,20 @@ class ValidatorPipeline
     public function through(string $validator): static
     {
         $this->validators[] = $validator;
+
+        return $this;
+    }
+
+    /**
+     * @param bool $needValidate
+     * @param class-string<ValidatorInterface> $validator
+     * @return $this
+     */
+    public function throughWhen(bool $needValidate, string $validator): static
+    {
+        if ($needValidate) {
+            $this->validators[] = $validator;
+        }
 
         return $this;
     }
