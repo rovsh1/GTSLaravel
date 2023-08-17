@@ -189,7 +189,7 @@ const handleReleaseDaysValue: HandleValue<void> = (date, value) => {
     <div class="roomHeader">
       <room-header
         :label="room.label"
-        :custom-name="room.customName"
+        custom-name=""
         :guests="room.guests"
         :count="room.count"
       />

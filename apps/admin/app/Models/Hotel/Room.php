@@ -16,7 +16,7 @@ use Sdk\Module\Database\Eloquent\Model;
 /**
  * @property int id
  * @property HasMany beds
- * @property-read string $display_name
+ * @property-read string $name
  * @property-read Image $images
  * @property-read HotelImage|null $main_image
  * @property-read Collection<int, PriceRate> $priceRates
@@ -92,6 +92,7 @@ class Room extends Model
 
     public function displayName(): Attribute
     {
+        dd($this->name);
         return Attribute::get(fn() => $this->name . ($this->custom_name ? ' (' . $this->custom_name . ')' : ''));
     }
 
@@ -150,6 +151,6 @@ class Room extends Model
 
     public function __toString()
     {
-        return $this->display_name;
+        return $this->name;
     }
 }

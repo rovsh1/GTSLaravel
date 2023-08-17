@@ -44,7 +44,6 @@ const quotaDateFormat = 'yyyy-MM-dd'
 export type RoomRender = {
   id: HotelRoomID
   label: string
-  customName: string
   guests: number
   count: number
 }
@@ -82,7 +81,6 @@ export const getRoomQuotas: GetRoomQuotas = (params) => {
     const {
       id,
       name: label,
-      customName,
       guestsCount: guests,
       roomsNumber: count,
     } = room
@@ -94,7 +92,7 @@ export const getRoomQuotas: GetRoomQuotas = (params) => {
       : quotas.filter((hotelQuota) => hotelQuota.roomID === id)
 
     return {
-      room: { id, label, customName, guests, count },
+      room: { id, label, guests, count },
       monthlyQuotas: Interval
         .fromDateTimes(startDate, startDate.plus({ months: monthsCount }))
         .splitBy({ months: 1 })
