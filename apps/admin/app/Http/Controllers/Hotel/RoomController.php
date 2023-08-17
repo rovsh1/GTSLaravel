@@ -7,7 +7,6 @@ use App\Admin\Http\Controllers\Controller;
 use App\Admin\Http\Resources\Room as RoomResource;
 use App\Admin\Models\Hotel\Hotel;
 use App\Admin\Models\Hotel\Reference\BedType;
-use App\Admin\Models\Hotel\Reference\RoomName;
 use App\Admin\Models\Hotel\Reference\RoomType;
 use App\Admin\Models\Hotel\Room;
 use App\Admin\Support\Facades\Acl;
@@ -137,15 +136,9 @@ class RoomController extends Controller
                 'items' => RoomType::get(),
                 'emptyItem' => ''
             ])
-            ->select('name_id', [
-                'label' => 'Наименование',
-                'required' => true,
-                'items' => RoomName::get(),
-                'emptyItem' => ''
-            ])
-            ->text(
-                'custom_name',
-                ['label' => 'Наименование (уникальное)', 'hint' => 'Внутреннее наименования для отеля']
+            ->localeText(
+                'name',
+                ['label' => 'Наименование', 'required' => true]
             )
             ->number('rooms_number', ['label' => 'Кол-во номеров', 'required' => true])
             ->number('guests_count', ['label' => 'Вместимость номера', 'required' => true])
