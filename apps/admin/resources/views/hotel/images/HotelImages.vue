@@ -244,9 +244,9 @@ fetchRoom()
 fetchHotel()
 loadAllImages()
 
-type OpenAttachmentDialogProps = { id: HotelImageID } & Pick<FileResponse, 'url' | 'name'>
-const openAttachmentDialog = async ({ id, url, name }: OpenAttachmentDialogProps) => {
-  attachmentDialogImage.value = { id, src: url, alt: name }
+type OpenAttachmentDialogProps = { id: HotelImageID; isMain: boolean } & Pick<FileResponse, 'url' | 'name'>
+const openAttachmentDialog = async ({ id, url, name, isMain }: OpenAttachmentDialogProps) => {
+  attachmentDialogImage.value = { id, src: url, alt: name, isMain }
   isAttachmentDialogOpened.value = true
 }
 
@@ -330,7 +330,7 @@ watch([imagesData, roomImages], (value) => {
       >
         <OverlayLoading v-if="isRefetching" />
         <div
-          v-for="{ id, file: { url, name } } in images"
+          v-for="{ id, isMain, file: { url, name } } in images"
           :key="id"
           class="card"
           :class="{ hidden: !isImageVisible(id) }"
@@ -398,9 +398,9 @@ watch([imagesData, roomImages], (value) => {
                     variant="outline"
                     label="Привязать к номерам"
                     :start-icon="linkIcon"
-                    @click="openAttachmentDialog({ id, url, name })"
-                    @mouseover="attachmentDialogImage = { id, src: url, alt: name }"
-                    @focusin="attachmentDialogImage = { id, src: url, alt: name }"
+                    @click="openAttachmentDialog({ id, url, name, isMain: !!isMain })"
+                    @mouseover="attachmentDialogImage = { id, src: url, alt: name, isMain: !!isMain }"
+                    @focusin="attachmentDialogImage = { id, src: url, alt: name, isMain: !!isMain }"
                   />
                 </template>
               </div>
@@ -470,6 +470,7 @@ watch([imagesData, roomImages], (value) => {
     :is-rooms-fetching="isHotelRoomsWithAttachedImageFetching"
     :hotel="hotelID as HotelID"
     :opened="isAttachmentDialogOpened"
+    @update-set-main-image-hotel="fetchImages"
     @update-attached-image-rooms="fetchHotelRoomsWithAttachedImage"
     @close="closeAttachmentDialog"
   />
