@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Sdk\Module\Database\Eloquent\HasTranslations;
 use Sdk\Module\Database\Eloquent\Model;
 
 /**
@@ -23,14 +24,17 @@ use Sdk\Module\Database\Eloquent\Model;
 class Room extends Model
 {
     use HasIndexedChildren;
+    use HasTranslations;
 
     public $timestamps = false;
 
     protected $table = 'hotel_rooms';
 
+    protected array $translatable = ['name', 'text'];
+
     protected $fillable = [
         'hotel_id',
-        'name_id',
+//        'name_id',
         'type_id',
         'custom_name',
         'rooms_number',
@@ -41,7 +45,7 @@ class Room extends Model
 
     protected $casts = [
         'hotel_id' => 'int',
-        'name_id' => 'int',
+//        'name_id' => 'int',
         'type_id' => 'int',
         'rooms_number' => 'int',
         'guests_count' => 'int',
@@ -59,10 +63,11 @@ class Room extends Model
             $builder
                 ->addSelect('hotel_rooms.*')
                 //->join('clients', 'clients.id', '=', 'price_lists.client_id')
-                ->join('r_enums as r_names', 'r_names.id', '=', 'hotel_rooms.name_id')
+//                ->join('r_enums as r_names', 'r_names.id', '=', 'hotel_rooms.name_id')
                 ->join('r_enums as r_types', 'r_types.id', '=', 'hotel_rooms.type_id')
-                ->joinTranslatable('r_names', 'name')
+//                ->joinTranslatable('r_names', 'name')
                 ->joinTranslatable('r_types', 'name as type_name')
+                ->joinTranslations()
                 ->orderBy('position', 'asc');
         });
     }
