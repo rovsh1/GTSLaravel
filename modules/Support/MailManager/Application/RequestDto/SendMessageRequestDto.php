@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Module\Support\MailManager\Application\RequestDto;
 
 use Module\Support\MailManager\Application\Dto\MailMessageDto;

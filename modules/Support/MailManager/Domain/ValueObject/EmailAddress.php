@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Module\Support\MailManager\Domain\ValueObject;
 
-class EmailAddress
+final class EmailAddress
 {
     private string $email;
 
@@ -27,6 +29,7 @@ class EmailAddress
         if (!filter_var($address, FILTER_VALIDATE_EMAIL)) {
             throw new \Exception('Email address [' . $address . '] invalid');
         }
+
         return $address;
     }
 }

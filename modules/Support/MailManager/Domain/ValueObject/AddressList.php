@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Module\Support\MailManager\Domain\ValueObject;
 
 use Module\Shared\Contracts\Support\Serializable;
@@ -12,20 +14,7 @@ final class AddressList implements \Iterator, Serializable
 
     public function __construct(array $addresses = [])
     {
-        $this->set($addresses);
-    }
-
-    public function set(array $addresses): void
-    {
-        $this->list = [];
         foreach ($addresses as $address) {
-            $this->add($address);
-        }
-    }
-
-    public function add(EmailAddress|string $address): void
-    {
-        if (!$this->exists($address)) {
             $this->list[] = is_string($address) ? new EmailAddress($address) : $address;
         }
     }
@@ -40,6 +29,11 @@ final class AddressList implements \Iterator, Serializable
         }
 
         return false;
+    }
+
+    public function isEmpty(): bool
+    {
+        return empty($this->list);
     }
 
     public function toArray(): array

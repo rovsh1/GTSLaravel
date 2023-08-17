@@ -11,15 +11,15 @@ use Module\Support\MailManager\Domain\ValueObject\QueueMailStatusEnum;
 
 final class Mail implements Serializable
 {
-    private readonly AddressList $from;
+    private AddressList $from;
 
-    private readonly AddressList $replyTo;
+    private AddressList $replyTo;
 
-    private readonly AddressList $cc;
+    private AddressList $cc;
 
-    private readonly AddressList $bcc;
+    private AddressList $bcc;
 
-    private readonly Attachments $attachments;
+    private Attachments $attachments;
 
     private array $tags = [];
 
@@ -28,9 +28,9 @@ final class Mail implements Serializable
     public function __construct(
         private readonly MailId $id,
         private QueueMailStatusEnum $status,
-        private readonly AddressList $to,
+        private AddressList $to,
         private string $subject,
-        private readonly MailBody $body,
+        private MailBody $body,
     ) {
         $this->from = new AddressList();
         $this->replyTo = new AddressList();
