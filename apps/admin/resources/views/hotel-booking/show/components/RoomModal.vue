@@ -46,7 +46,6 @@ const { bookingID, hotelID, hotelRooms } = requestInitialData(
         id: z.number(),
         hotel_id: z.number(),
         name: z.string(),
-        custom_name: z.string(),
         rooms_number: z.number(),
         guests_count: z.number(),
       }),
