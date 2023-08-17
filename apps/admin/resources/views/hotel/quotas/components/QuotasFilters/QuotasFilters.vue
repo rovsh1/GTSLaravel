@@ -94,7 +94,7 @@ const selectedAvailabilityOption = ref<AvailabilityOption['value'] | ''>(default
 
 const rooms = computed(() => props.rooms.map(({ id, name }) => ({
   value: id,
-  label: `${name}`,
+  label: name,
 })))
 
 const selectedRoomID = ref<HotelRoomID | ''>(defaultState.roomID)
