@@ -4,6 +4,7 @@ namespace Module\Hotel\Infrastructure\Models\Room;
 
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\DB;
 use Module\Hotel\Infrastructure\Models\Room;
@@ -18,10 +19,10 @@ use Sdk\Module\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon $date
  * @property int $release_days
  * @property QuotaStatusEnum $status
- * @property int $count_available
  * @property int $count_total
  * @property int $count_booked
  * @property int $count_reserved
+ * @property int $count_available
  * @property-read Room|null $room
  * @method static \Illuminate\Database\Eloquent\Builder|Quota newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Quota newQuery()
@@ -58,10 +59,31 @@ class Quota extends Model
         'count_reserved',
     ];
 
+    protected $appends = [
+        'count_available',
+        'count_booked',
+        'count_reserved',
+    ];
+
     protected $casts = [
         'date' => 'date',
         'status' => QuotaStatusEnum::class
     ];
+
+    public function countAvailable(): Attribute
+    {
+        return Attribute::get(fn() => $this->count_total - $this->count_booked - $this->count_reserved);
+    }
+
+    public function countBooked(): Attribute
+    {
+        return Attribute::get(fn(int|null $val, array $attributes) => (int)($attributes['count_booked'] ?? 0));
+    }
+
+    public function countReserved(): Attribute
+    {
+        return Attribute::get(fn(int|null $val, array $attributes) => (int)($attributes['count_reserved'] ?? 0));
+    }
 
     public function room(): BelongsTo
     {
@@ -100,26 +122,26 @@ class Quota extends Model
 
     public function scopeWithCountColumns(Builder $builder): void
     {
+        $builder->addSelect('hotel_room_quota.*');
         $this->addCountColumnsQuery(
             $builder,
-            [QuotaChangeTypeEnum::RESERVE_BY_BOOKING, QuotaChangeTypeEnum::CANCEL_RESERVE_BY_BOOKING],
-            'count_reserve'
+            [QuotaChangeTypeEnum::RESERVED],
+            'count_reserved'
         );
         $this->addCountColumnsQuery(
             $builder,
-            [QuotaChangeTypeEnum::BOOK_BY_BOOKING, QuotaChangeTypeEnum::CANCEL_BOOK_BY_BOOKING],
+            [QuotaChangeTypeEnum::BOOKED],
             'count_booked'
         );
-        $builder->selectRaw('(count_total - count_booked - count_reserve) as count_available');
     }
 
     private function addCountColumnsQuery(Builder $builder, array $events, string $alias): Builder
     {
         return $builder->selectSub(
-            DB::table('hotel_room_quota_history')
-                ->select('SUM(value)')
-                ->whereColumn('hotel_room_quota_history.quota_id', '=', 'hotel_room_quota.id')
-                ->whereIn('event', $events),
+            DB::table('booking_quota_reservation')
+                ->selectRaw('SUM(value)')
+                ->whereColumn('hotel_room_quota.id', '=', 'booking_quota_reservation.quota_id')
+                ->whereIn('type', $events),
             $alias
         );
     }

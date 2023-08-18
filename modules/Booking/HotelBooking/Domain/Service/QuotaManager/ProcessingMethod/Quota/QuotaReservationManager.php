@@ -57,9 +57,7 @@ class QuotaReservationManager
 
     public function cancel(Booking $booking): void
     {
-        $this->quotaRepository->startTransaction();
         $this->quotaRepository->resetByBookingId($booking->id());
-        $this->quotaRepository->commitTransaction();
     }
 
     /**
@@ -72,15 +70,9 @@ class QuotaReservationManager
      */
     private function executeWithAvailableQuota(Booking $booking, callable $callback): void
     {
-        $this->quotaRepository->startTransaction();
         //сбрасываю квоты до получения доступных, т.к. если получать до сброса комнаты из брони минусуют available.
         $this->quotaRepository->resetByBookingId($booking->id());
-        try {
-            $availableQuotas = $this->quotaValidator->getQuotasIfAvailable($booking);
-        } catch (\Throwable $e) {
-            $this->quotaRepository->rollBackTransaction();
-            throw $e;
-        }
+        $availableQuotas = $this->quotaValidator->getQuotasIfAvailable($booking);
 
         foreach ($availableQuotas as $quota) {
             $callback(
@@ -90,7 +82,5 @@ class QuotaReservationManager
                 $this->context->get()
             );
         }
-
-        $this->quotaRepository->commitTransaction();
     }
 }

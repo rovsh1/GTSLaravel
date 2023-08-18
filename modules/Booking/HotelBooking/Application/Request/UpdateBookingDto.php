@@ -11,7 +11,6 @@ class UpdateBookingDto
     public function __construct(
         public readonly int $id,
         public readonly CarbonPeriod $period,
-        public readonly int $quotaProcessingMethod,
         public readonly ?string $note = null
     ) {}
 }

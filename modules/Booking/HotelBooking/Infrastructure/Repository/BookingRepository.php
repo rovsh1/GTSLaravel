@@ -23,6 +23,7 @@ use Module\Booking\HotelBooking\Infrastructure\Models\Booking as Model;
 use Module\Booking\HotelBooking\Infrastructure\Models\BookingDetails;
 use Module\Shared\Domain\ValueObject\Id;
 use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
+use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
 class BookingRepository extends BaseRepository implements BookingRepositoryInterface
 {
@@ -45,6 +46,16 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         $roomBookings = $this->roomBookingRepository->get($id);
 
         return $this->buildEntityFromModel($booking, $detailsModel, $roomBookings);
+    }
+
+    public function findOrFail(int $id): Booking
+    {
+        $booking = $this->find($id);
+        if ($booking === null) {
+            throw new EntityNotFoundException('Booking not found');
+        }
+
+        return $booking;
     }
 
     public function get(): Collection

@@ -11,6 +11,6 @@ class TransactionalExecutor implements SafeExecutorInterface
 {
     public function execute(\Closure $closure, int $attempts = 1): void
     {
-        DB::transction($closure);
+        DB::transaction($closure, $attempts);
     }
 }

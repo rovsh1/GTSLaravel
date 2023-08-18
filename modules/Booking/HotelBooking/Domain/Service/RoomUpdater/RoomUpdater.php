@@ -4,7 +4,11 @@ namespace Module\Booking\HotelBooking\Domain\Service\RoomUpdater;
 
 use Module\Booking\Common\Domain\ValueObject\BookingId;
 use Module\Booking\HotelBooking\Domain\Adapter\HotelRoomAdapterInterface;
+use Module\Booking\HotelBooking\Domain\Entity\Booking;
 use Module\Booking\HotelBooking\Domain\Entity\RoomBooking;
+use Module\Booking\HotelBooking\Domain\Event\RoomAdded;
+use Module\Booking\HotelBooking\Domain\Event\RoomDeleted;
+use Module\Booking\HotelBooking\Domain\Event\RoomEdited;
 use Module\Booking\HotelBooking\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\HotelBooking\Domain\Repository\RoomBookingRepositoryInterface;
 use Module\Booking\HotelBooking\Domain\Service\QuotaManager\QuotaProcessingMethodFactory;
@@ -52,12 +56,12 @@ class RoomUpdater
         $this->doAction($action);
     }
 
-    public function delete(BookingId $bookingId, RoomBookingId $roomBookingId): void
+    public function delete(Booking $booking, RoomBookingId $roomBookingId): void
     {
-        $this->doAction(function () use ($bookingId, $roomBookingId) {
+        $this->doAction(function () use ($booking, $roomBookingId) {
             $this->roomBookingRepository->delete($roomBookingId->value());
-            $this->processQuota($bookingId);
-//            $this->events[] = new RoomDeleted($bookingId);
+            $this->processQuota($booking);
+            $this->events[] = new RoomDeleted($booking, $roomBookingId);
         });
     }
 
@@ -65,22 +69,22 @@ class RoomUpdater
     {
         $this->makePipeline()->send($dataHelper);
         $roomBooking = $this->roomBookingRepository->create(
-            $dataHelper->bookingId->value(),
+            $dataHelper->booking->id(),
             $dataHelper->status,
             $dataHelper->roomInfo,
             $dataHelper->guests,
             $dataHelper->details,
             $dataHelper->price
         );
-        $this->processQuota($dataHelper->bookingId);
-//        $this->events[] = new RoomAdded($roomBooking);
+        $this->processQuota($dataHelper->booking);
+        $this->events[] = new RoomAdded($dataHelper->booking, $roomBooking);
     }
 
     private function doUpdate(RoomBooking $currentRoomBooking, UpdateDataHelper $dataHelper): void
     {
-        $this->makePipeline(false)->send($dataHelper);
+        $this->makePipeline()->send($dataHelper);
         $this->roomBookingRepository->store($currentRoomBooking);
-//        $this->events[] = new RoomEdited($currentRoomBooking);
+        $this->events[] = new RoomEdited($dataHelper->booking, $currentRoomBooking);
     }
 
     private function doReplace(RoomBooking $currentRoomBooking, UpdateDataHelper $dataHelper): void
@@ -92,12 +96,12 @@ class RoomUpdater
         }
         $this->doAdd($dataHelper);
         $this->roomBookingRepository->delete($currentRoomBooking->id()->value());
-//        $this->events[] = new RoomDeleted($currentRoomBooking);
+        $this->events[] = new RoomDeleted($dataHelper->booking, $currentRoomBooking->id());
     }
 
-    private function processQuota(BookingId $bookingId): void
+    private function processQuota(Booking $booking): void
     {
-        $booking = $this->bookingRepository->find($bookingId->value());
+        $booking = $this->bookingRepository->find($booking->id()->value());
         if ($booking === null) {
             throw new EntityNotFoundException('Booking not found');
         }
@@ -105,12 +109,10 @@ class RoomUpdater
         $quotaProcessingMethod->process($booking);
     }
 
-    private function makePipeline(bool $needValidateQuota = true): ValidatorPipeline
+    private function makePipeline(): ValidatorPipeline
     {
         return (new ValidatorPipeline($this->module))
-            ->through(ClientResidencyValidator::class)
-            //@todo скорее всего не нужен (для фронта будет отдельный метод: получить номера с квотами)
-            ->throughWhen($needValidateQuota, QuotaAvailabilityValidator::class);
+            ->through(ClientResidencyValidator::class);
     }
 
     private function doAction(\Closure $action): void

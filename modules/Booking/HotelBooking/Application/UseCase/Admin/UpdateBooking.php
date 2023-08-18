@@ -47,12 +47,6 @@ class UpdateBooking implements UseCaseInterface
             $booking->setNote($request->note);
         }
 
-        $quotaProcessingMethodFromRequest = QuotaProcessingMethodEnum::from($request->quotaProcessingMethod);
-        if ($booking->quotaProcessingMethod() !== $quotaProcessingMethodFromRequest) {
-            //@todo запуск обновления квот по брони (сброс или заполнение)
-            $booking->setQuotaProcessingMethod($quotaProcessingMethodFromRequest);
-        }
-
         $this->bookingUpdater->store($booking);
     }
 }

@@ -14,10 +14,18 @@ use Module\Booking\HotelBooking\Domain\ValueObject\Details\CancelConditions;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\HotelInfo;
 use Module\Shared\Domain\ValueObject\Id;
 use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
+use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
 interface BookingRepositoryInterface extends Base
 {
     public function find(int $id): ?Booking;
+
+    /**
+     * @param int $id
+     * @return Booking
+     * @throws EntityNotFoundException
+     */
+    public function findOrFail(int $id): Booking;
 
     public function get(): Collection;
 

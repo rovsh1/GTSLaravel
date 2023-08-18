@@ -13,7 +13,8 @@ class Radio extends AbstractElement
         'valueIndex' => 'id',
         'textIndex' => 'name',
         'multiple' => false,
-        'inline' => true
+        'inline' => true,
+        'disabled' => false
     ];
 
     private array $items = [];
@@ -112,6 +113,7 @@ class Radio extends AbstractElement
             . ' value="' . htmlspecialchars($item->value) . '"'
             . ' name="' . $inputName . '"'
             . ' id="' . $inputId . '"'
+            . ($this->options['disabled'] ? ' disabled' : '')
             . ($this->isChecked($item->value) ? ' checked' : '') . '>'
             . '<label class="' . $this->labelClass . '" for="' . $inputId . '">' . $item->text . '</label>'
             . '</div>';
