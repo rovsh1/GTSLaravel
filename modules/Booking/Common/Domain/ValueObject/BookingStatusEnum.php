@@ -20,4 +20,5 @@ enum BookingStatusEnum: int
     case WAITING_CONFIRMATION = 13;
     case WAITING_CANCELLATION = 14;
     case WAITING_PROCESSING = 15;
+    case DELETED = 17;
 }

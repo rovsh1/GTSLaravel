@@ -39,7 +39,7 @@ class Quota implements QuotaProcessingMethodInterface
 
     private function isBookingCancelled(Booking $booking): bool
     {
-        //@todo добавить условние если бронь удалена
-        return $this->administratorRules->isCancelledStatus($booking->status());
+        return $this->administratorRules->isCancelledStatus($booking->status())
+            || $this->administratorRules->isDeletedStatus($booking->status());
     }
 }

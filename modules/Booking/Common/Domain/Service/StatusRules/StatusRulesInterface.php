@@ -15,6 +15,8 @@ interface StatusRulesInterface
 
     public function isCancelledStatus(BookingStatusEnum $status): bool;
 
+    public function isDeletedStatus(BookingStatusEnum $status): bool;
+
     public function canEditExternalNumber(BookingStatusEnum $status): bool;
 
     public function canChangeRoomPrice(BookingStatusEnum $status): bool;

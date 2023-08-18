@@ -8,7 +8,7 @@ use Module\Booking\Common\Domain\Event\Contracts\PriceBecomeDeprecatedEventInter
 use Module\Booking\HotelBooking\Domain\Entity\Booking;
 use Module\Booking\HotelBooking\Domain\Entity\RoomBooking;
 
-class RoomEdited extends AbstractBookingEvent implements PriceBecomeDeprecatedEventInterface, QuotaAffectEventInterface
+class RoomEdited extends AbstractBookingEvent implements PriceBecomeDeprecatedEventInterface
 {
     public function __construct(
         BookingInterface|Booking $booking,

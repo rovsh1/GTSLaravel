@@ -61,6 +61,11 @@ class AdministratorRules extends AbstractRules implements StatusRulesInterface
         ]);
     }
 
+    public function isDeletedStatus(BookingStatusEnum $status): bool
+    {
+        return $status == BookingStatusEnum::DELETED;
+    }
+
     public function canEditExternalNumber(BookingStatusEnum $status): bool
     {
         return $status === BookingStatusEnum::CONFIRMED;

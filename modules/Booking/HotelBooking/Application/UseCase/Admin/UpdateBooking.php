@@ -38,6 +38,7 @@ class UpdateBooking implements UseCaseInterface
             } catch (NotFoundHotelCancelPeriod $e) {
                 throw new ApplicationException($e);
             }
+            //@todo проверить доступность квот
             $cancelConditions = CancelConditionsFactory::fromDto($markupSettings->cancelPeriods, $request->period);
             $booking->setPeriod($periodFromRequest);
             $booking->setCancelConditions($cancelConditions);

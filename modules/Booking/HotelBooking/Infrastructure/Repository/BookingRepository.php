@@ -48,9 +48,9 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         return $this->buildEntityFromModel($booking, $detailsModel, $roomBookings);
     }
 
-    public function findOrFail(int $id): Booking
+    public function findOrFail(BookingId $id): Booking
     {
-        $booking = $this->find($id);
+        $booking = $this->find($id->value());
         if ($booking === null) {
             throw new EntityNotFoundException('Booking not found');
         }
@@ -173,9 +173,12 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         return app(BookingFactory::class)->createCollectionFrom($models);
     }
 
-    public function delete(int $id): void
+    public function delete(Booking $booking): void
     {
-        $this->getModel()::query()->whereId($id)->delete();
+        $this->getModel()::query()->whereId($booking->id()->value())->update([
+            'status' => $booking->status(),
+            'deleted_at' => now()
+        ]);
     }
 
     /**
