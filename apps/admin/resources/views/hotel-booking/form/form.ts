@@ -5,6 +5,8 @@ import { z } from 'zod'
 import axios from '~resources/js/app/api'
 import CreateClientButton from '~resources/views/hotel-booking/form/CreateClientButton.vue'
 
+import { Client } from '~api/client'
+
 import { formatDate } from '~lib/date'
 import { useApplicationEventBus } from '~lib/event-bus'
 import { requestInitialData } from '~lib/initial-data'
@@ -15,15 +17,12 @@ import '~resources/views/main'
 import { mapClientsToSelect2Options } from './lib/constants'
 import { Select2Option } from './lib/types'
 
-const { clients, bookingID } = requestInitialData('view-initial-data-hotel-booking', z.object({
+const { bookingID } = requestInitialData('view-initial-data-hotel-booking', z.object({
   bookingID: z.number().nullable(),
-  clients: z.array(z.object({
-    id: z.number(),
-    name: z.string(),
-    is_legal: z.boolean().optional(),
-    currency_id: z.number().nullable(),
-  })),
 }))
+
+// @todo загрузить из api
+const clients = [] as Client[]
 
 const pinia = createPinia()
 
