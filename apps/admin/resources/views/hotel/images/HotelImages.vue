@@ -12,7 +12,7 @@ import { useUrlSearchParams } from '@vueuse/core'
 import { z } from 'zod'
 
 import AttachmentDialog from '~resources/views/hotel/images/components/AttachmentDialog.vue'
-import { AttachmentDialogImageProp, isImageAttachedToRoom } from '~resources/views/hotel/images/components/lib'
+import { AttachmentDialogImageProp, isImageAttachedToRoom, UploadStatus } from '~resources/views/hotel/images/components/lib'
 
 import { HotelID, HotelResponse, useHotelGetAPI } from '~api/hotel/get'
 import { FileResponse, HotelImage, HotelImageID } from '~api/hotel/images'
@@ -96,34 +96,43 @@ const room = computed<HotelRoom | null>(() => roomData.value)
 
 const isUploadDialogOpened = ref(false)
 
+const isImagesUploadFetching = ref(false)
+
 const imagesToUpload = ref<File[] | null>(null)
 
-const hotelImagesUploadProps = computed(() =>
-  (imagesToUpload.value === null
-    ? null
-    : {
+const uploadsImageStatus = ref<UploadStatus[] | null>(null)
+
+const uploadImages = async () => {
+  if (imagesToUpload.value === null) return
+  isImagesUploadFetching.value = true
+  const uploadPromises = imagesToUpload.value.map(async (image) => {
+    const { data, execute } = useHotelImagesUploadAPI({
       hotelID,
       roomID,
-      images: imagesToUpload.value,
-    }))
+      image,
+    })
+    await execute()
+    return {
+      status: data.value?.success || false,
+      name: image.name,
+    }
+  })
 
-const {
-  execute: executeImagesUpload,
-  isFetching: isImagesUploadFetching,
-  data: imagesUploadData,
-} = useHotelImagesUploadAPI(hotelImagesUploadProps)
+  const results = await Promise.all(uploadPromises)
 
-const uploadImages = () => {
-  if (imagesToUpload.value === null) return
-  executeImagesUpload()
-}
+  uploadsImageStatus.value = results
 
-watch(imagesUploadData, (value) => {
-  if (value === null || !value.success) return
+  const wrongStatusUploadImage = uploadsImageStatus.value.filter((upload) => !upload.status)
+
   loadAllImages()
-  imagesToUpload.value = null
-  isUploadDialogOpened.value = false
-})
+  if (wrongStatusUploadImage.length > 0) {
+    isImagesUploadFetching.value = false
+  } else {
+    isUploadDialogOpened.value = false
+    isImagesUploadFetching.value = false
+    imagesToUpload.value = null
+  }
+}
 
 const imageIDToRemove = ref<number | null>(null)
 
@@ -266,8 +275,8 @@ const title = computed<string>(() => {
 
 const isInitialFetching = computed(() => (
   (room.value === null && isRoomFetching.value)
-    || ((images.value === null || images.value.length === 0) && isImagesFetching.value)
-    || ((roomImages.value === null || roomImages.value.length === 0) && isRoomImagesFetching.value)
+  || ((images.value === null || images.value.length === 0) && isImagesFetching.value)
+  || ((roomImages.value === null || roomImages.value.length === 0) && isRoomImagesFetching.value)
 ))
 
 const isRefetching = computed(() => (
@@ -337,10 +346,9 @@ watch([imagesData, roomImages], (value) => {
         >
           <div class="pictureContainer">
             <BootstrapButton
-              v-if="
-                (roomID !== undefined
-                  && room !== null
-                  && isImageAttachedToRoom(id, roomImages)) || (roomID == undefined || room == null)
+              v-if="(roomID !== undefined
+                && room !== null
+                && isImageAttachedToRoom(id, roomImages)) || (roomID == undefined || room == null)
               "
               data-draggable-handle
               class="imageDragHandle"
@@ -350,10 +358,9 @@ watch([imagesData, roomImages], (value) => {
               :loading="isHotelImagesReorderFetching || isHotelRoomImagesReorderFetching"
             />
             <div
-              v-if="
-                roomID !== undefined
-                  && room !== null
-                  && !isImageAttachedToRoom(id, roomImages)
+              v-if="roomID !== undefined
+                && room !== null
+                && !isImageAttachedToRoom(id, roomImages)
               "
               class="pictureOverlay"
             >
@@ -406,12 +413,11 @@ watch([imagesData, roomImages], (value) => {
               </div>
               <div class="actionsEnd">
                 <BootstrapButton
-                  v-if="
-                    roomID === undefined
-                      || (
-                        room !== null
-                        && !isImageAttachedToRoom(id, roomImages)
-                      )
+                  v-if="roomID === undefined
+                    || (
+                      room !== null
+                      && !isImageAttachedToRoom(id, roomImages)
+                    )
                   "
                   label="Удалить"
                   severity="danger"
@@ -430,14 +436,12 @@ watch([imagesData, roomImages], (value) => {
     :opened="isUploadDialogOpened"
     :loading="isImagesUploadFetching"
     :files="imagesToUpload"
+    :upload-status="uploadsImageStatus"
     @files="(files) => imagesToUpload = files"
     @upload="() => uploadImages()"
     @close="() => isUploadDialogOpened = false"
   />
-  <BaseDialog
-    :opened="isRemoveImagePromptOpened"
-    :disabled="isImageRemoveFetching"
-  >
+  <BaseDialog :opened="isRemoveImagePromptOpened" :disabled="isImageRemoveFetching">
     <template #title>Действительно удалить это фото?</template>
     <ImageZoom
       v-if="imageToRemove !== null"
@@ -455,12 +459,7 @@ watch([imagesData, roomImages], (value) => {
         :start-icon="trashIcon"
         @click="executeRemoveImage"
       />
-      <BootstrapButton
-        label="Отмена"
-        severity="light"
-        :disabled="isImageRemoveFetching"
-        @click="cancelRemoveImage"
-      />
+      <BootstrapButton label="Отмена" severity="light" :disabled="isImageRemoveFetching" @click="cancelRemoveImage" />
     </template>
   </BaseDialog>
   <AttachmentDialog
