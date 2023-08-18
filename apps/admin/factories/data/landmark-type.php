@@ -10,4 +10,5 @@ return Factory::key('landmark-type')
     ->titles([
         "index" => "Типы достопримечательностей",
         "create" => "Новый тип"
-    ]);
+    ])
+    ->priority(21);

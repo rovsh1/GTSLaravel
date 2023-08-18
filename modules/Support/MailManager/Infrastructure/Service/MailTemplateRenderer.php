@@ -21,6 +21,6 @@ class MailTemplateRenderer implements TemplateRendererInterface
     {
         $serviceKey = 'hotel-booking';
 
-        return root_path("modules/Support/MailManager/resources/mail/$serviceKey/$view.blade.php");
+        return root_path("resources/mail/$serviceKey/$view.blade.php");
     }
 }

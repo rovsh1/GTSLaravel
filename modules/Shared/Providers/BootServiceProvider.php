@@ -9,10 +9,6 @@ use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {
-    public $singletons = [
-        Domain\Repository\ConstantRepositoryInterface::class => Infrastructure\Repository\ConstantRepository::class,
-    ];
-
     public function boot()
     {
         $this->app->singleton(Domain\Adapter\CurrencyRateAdapterInterface::class, CurrencyRateAdapter::class);

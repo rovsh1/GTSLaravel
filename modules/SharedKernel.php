@@ -2,7 +2,6 @@
 
 namespace Module;
 
-use Module\Shared\Domain\Adapter\ConstantAdapterInterface;
 use Module\Shared\Domain\Adapter\CurrencyRateAdapterInterface;
 use Module\Shared\Domain\Service\SerializerInterface;
 use Module\Shared\Domain\Service\TranslatorInterface;
@@ -16,7 +15,6 @@ class SharedKernel extends BaseKernel
         //ModulesBusInterface::class
         TranslatorInterface::class,
         SerializerInterface::class,
-        ConstantAdapterInterface::class,
         CurrencyRateAdapterInterface::class
     ];
 

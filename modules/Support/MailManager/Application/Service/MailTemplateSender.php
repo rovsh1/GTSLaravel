@@ -2,8 +2,8 @@
 
 namespace Module\Support\MailManager\Application\Service;
 
+use Module\Shared\Application\Service\CompanyRequisites;
 use Module\Support\MailManager\Domain\Entity\Mail;
-use Module\Support\MailManager\Domain\Service\DataBuilder\Data\DataInterface;
 use Module\Support\MailManager\Domain\Service\DataBuilder\DataBuilderInterface;
 use Module\Support\MailManager\Domain\Service\DataBuilder\DataDto\RecipientDataDto;
 use Module\Support\MailManager\Domain\Service\DataBuilder\DataDto\SenderDataDto;
@@ -85,10 +85,10 @@ class MailTemplateSender
     private function makeSenderDto(array $context): SenderDataDto
     {
         return new SenderDataDto(
-            presentation: 'asdsd',
-            postName: 'ds',
-            email: 'we',
-            phone: 'dsd'
+            presentation: CompanyRequisites::name(),
+            postName: null,
+            email: CompanyRequisites::email(),
+            phone: CompanyRequisites::phone()
         );
     }
 }

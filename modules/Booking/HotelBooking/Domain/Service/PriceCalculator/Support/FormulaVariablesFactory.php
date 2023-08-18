@@ -3,16 +3,13 @@
 namespace Module\Booking\HotelBooking\Domain\Service\PriceCalculator\Support;
 
 use Module\Booking\Common\Domain\Adapter\ClientAdapterInterface;
-use Module\Booking\Order\Domain\Entity\Order;
-use Module\Hotel\Application\Response\MarkupSettingsDto;
-use Module\Shared\Domain\Adapter\ConstantAdapterInterface;
+use Module\Shared\Application\Service\ApplicationConstants;
 use Module\Shared\Enum\Client\LegalTypeEnum;
 
 class FormulaVariablesFactory
 {
     public function __construct(
-        private readonly ClientAdapterInterface $clientAdapter,
-        private readonly ConstantAdapterInterface $constantAdapter,
+        private readonly ClientAdapterInterface $clientAdapter
     ) {
     }
 
@@ -31,7 +28,7 @@ class FormulaVariablesFactory
 
     private function calculateTouristTax(int $taxPercent): float
     {
-        return $this->constantAdapter->basicCalculatedValue() * $taxPercent / 100;
+        return ApplicationConstants::basicCalculatedValue() * $taxPercent / 100;
     }
 
     private function calculateClientMarkupPercent(RoomDataHelper $dataHelper): int

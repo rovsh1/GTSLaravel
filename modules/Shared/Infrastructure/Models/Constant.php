@@ -13,21 +13,11 @@ class Constant extends Model
 
     protected $fillable = [
         'key',
-        'value',
-        'enabled'
-    ];
-
-    protected $casts = [
-        'enabled' => 'bool'
+        'value'
     ];
 
     public function __toString(): string
     {
         return (string)$this->key;
-    }
-
-    public static function scopeWhereEnabled($query)
-    {
-        $query->where('s_constants.enabled', 1);
     }
 }
