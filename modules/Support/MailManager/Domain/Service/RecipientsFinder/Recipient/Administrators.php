@@ -6,4 +6,13 @@ namespace Module\Support\MailManager\Domain\Service\RecipientsFinder\Recipient;
 
 final class Administrators implements RecipientInterface
 {
+    public static function key(): string
+    {
+        return 'administrators';
+    }
+
+    public function id(): ?string
+    {
+        return null;
+    }
 }

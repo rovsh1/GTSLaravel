@@ -6,7 +6,17 @@ namespace Module\Support\MailManager\Domain\Service\RecipientsFinder\Recipient;
 
 final class HotelContacts implements RecipientInterface
 {
-    public function __construct(public readonly int $hotelId)
+    public function __construct(private readonly int $hotelId)
     {
+    }
+
+    public static function key(): string
+    {
+        return 'client-contacts';
+    }
+
+    public function id(): ?string
+    {
+        return (string)$this->hotelId;
     }
 }

@@ -12,18 +12,22 @@ final class AddressList implements \Iterator, Serializable
 
     private array $list = [];
 
-    public function __construct(array $addresses = [])
+    public function __construct(iterable $addresses = [])
     {
+//        if (empty($addresses)) {
+//            throw new \Exception('AddressList cant be empty');
+//        }
+
         foreach ($addresses as $address) {
-            $this->list[] = is_string($address) ? new EmailAddress($address) : $address;
+            $this->list[] = $address instanceof EmailAddress ? $address : new EmailAddress($address);
         }
     }
 
     public function exists(EmailAddress|string $address): bool
     {
-        $searchValue = is_string($address) ? $address : $address->value();
+        $searchValue = is_string($address) ? $address : $address->email();
         foreach ($this->list as $address) {
-            if ($address->value() === $searchValue) {
+            if ($address->email() === $searchValue) {
                 return true;
             }
         }
@@ -38,7 +42,7 @@ final class AddressList implements \Iterator, Serializable
 
     public function toArray(): array
     {
-        return array_map(fn(EmailAddress $address) => $address->value(), $this->list);
+        return array_map(fn(EmailAddress $address) => $address->email(), $this->list);
     }
 
     public function current(): EmailAddress

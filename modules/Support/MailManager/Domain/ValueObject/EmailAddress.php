@@ -8,14 +8,22 @@ final class EmailAddress
 {
     private string $email;
 
-    public function __construct(string $email)
+    private ?string $name;
+
+    public function __construct(string $email, ?string $name = null)
     {
         $this->email = $this->validateEmail($email);
+        $this->name = $name;
     }
 
-    public function value(): string
+    public function email(): string
     {
         return $this->email;
+    }
+
+    public function name(): ?string
+    {
+        return $this->name;
     }
 
     public function __toString(): string
