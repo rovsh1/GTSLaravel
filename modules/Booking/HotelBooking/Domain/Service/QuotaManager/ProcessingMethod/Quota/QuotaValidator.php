@@ -33,9 +33,14 @@ class QuotaValidator
      */
     public function getQuotasIfAvailable(Booking $booking): array
     {
-        $bookingQuotaReservation = new BookingQuotaReservation($booking);
-        $roomQuotaReservations = $bookingQuotaReservation->getRoomQuotaReservations();
-        $this->loadAvailableQuotas($booking, $bookingQuotaReservation->getRoomIds());
+        $roomQuotaReservations = $this->getRoomQuotaReservations($booking);
+        $roomIds = array_unique(
+            array_map(
+                fn(RoomDateQuotaReservation $roomQuotaReservation) => $roomQuotaReservation->roomId,
+                $roomQuotaReservations
+            )
+        );
+        $this->loadAvailableQuotas($booking, $roomIds);
         foreach ($roomQuotaReservations as $roomQuotaReservation) {
             $this->ensureDateQuotaAvailable($roomQuotaReservation);
             /** @var RoomQuota $availableQuota */
@@ -44,25 +49,6 @@ class QuotaValidator
         }
 
         return $roomQuotaReservations;
-    }
-
-    /**
-     * @param Booking $booking
-     * @param int $roomId
-     * @return void
-     * @throws ClosedRoomDateQuota
-     * @throws NotEnoughRoomDateQuota
-     * @throws NotFoundRoomDateQuota
-     */
-    public function ensureRoomAvailable(Booking $booking, int $roomId): void
-    {
-        $bookingQuotaReservation = new BookingQuotaReservation($booking);
-        $bookingQuotaReservation->addRoom($roomId);
-        $this->loadAvailableQuotas($booking, $bookingQuotaReservation->getRoomIds());
-        $roomQuotaReservations = $bookingQuotaReservation->getRoomQuotaReservations();
-        foreach ($roomQuotaReservations as $roomQuotaReservation) {
-            $this->ensureDateQuotaAvailable($roomQuotaReservation);
-        }
     }
 
     private function loadAvailableQuotas(Booking $booking, array $roomIds): void
@@ -88,6 +74,36 @@ class QuotaValidator
         if (!$isAvailableCount) {
             throw new NotEnoughRoomDateQuota('Недостаточно квот на дату');
         }
+    }
+
+    /**
+     * @param Booking $booking
+     * @return array<int, RoomDateQuotaReservation>
+     */
+    private function getRoomQuotaReservations(Booking $booking): array
+    {
+        $roomsCount = [];
+        foreach ($booking->roomBookings() as $roomBooking) {
+            $hotelRoomId = $roomBooking->roomInfo()->id();
+            if (!array_key_exists($hotelRoomId, $roomsCount)) {
+                $roomsCount[$hotelRoomId] = 1;
+            } else {
+                $roomsCount[$hotelRoomId]++;
+            }
+        }
+
+        $roomsCountByDate = [];
+        foreach ($booking->period()->includedDates() as $date) {
+            foreach ($roomsCount as $roomId => $count) {
+                $roomsCountByDate[] = new RoomDateQuotaReservation(
+                    roomId: $roomId,
+                    date: $date,
+                    count: $count
+                );
+            }
+        }
+
+        return $roomsCountByDate;
     }
 
     private function getAvailableRoomQuota(RoomDateQuotaReservation $roomQuotaReservation): ?RoomQuota

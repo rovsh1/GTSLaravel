@@ -8,8 +8,8 @@ class QuotaAvailabilityValidator implements ValidatorInterface
 {
     public function validate(UpdateDataHelper $dataHelper): void
     {
-        if ($bookingType) {
-            throw new HotelQuotaUnavailableException();
-        }
+//        if ($bookingType) {
+//            throw new HotelQuotaUnavailableException();
+//        }
     }
 }

@@ -8,13 +8,8 @@ use Module\Booking\HotelBooking\Domain\Service\QuotaManager\QuotaProcessingMetho
 
 class Site implements QuotaProcessingMethodInterface
 {
-    public function process(BookingId $bookingId): void
+    public function process(Booking $booking): void
     {
         // TODO: Implement process() method.
-    }
-
-    public function ensureRoomAvailable(Booking $booking, int $roomId): void
-    {
-        // TODO: Implement ensureRoomAvailable() method.
     }
 }

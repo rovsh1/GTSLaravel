@@ -5,16 +5,17 @@ namespace Module\Booking\HotelBooking\Domain\Service\RoomUpdater;
 use Module\Booking\Common\Domain\ValueObject\BookingId;
 use Module\Booking\HotelBooking\Domain\Adapter\HotelRoomAdapterInterface;
 use Module\Booking\HotelBooking\Domain\Entity\RoomBooking;
-use Module\Booking\HotelBooking\Domain\Event\RoomAdded;
-use Module\Booking\HotelBooking\Domain\Event\RoomDeleted;
-use Module\Booking\HotelBooking\Domain\Event\RoomEdited;
+use Module\Booking\HotelBooking\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\HotelBooking\Domain\Repository\RoomBookingRepositoryInterface;
+use Module\Booking\HotelBooking\Domain\Service\QuotaManager\QuotaProcessingMethodFactory;
 use Module\Booking\HotelBooking\Domain\Service\RoomUpdater\Validator\ClientResidencyValidator;
 use Module\Booking\HotelBooking\Domain\Service\RoomUpdater\Validator\QuotaAvailabilityValidator;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBookingId;
+use Module\Shared\Domain\Service\SafeExecutorInterface;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\Event\DomainEventInterface;
 use Sdk\Module\Contracts\ModuleInterface;
+use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
 class RoomUpdater
 {
@@ -26,8 +27,10 @@ class RoomUpdater
         private readonly RoomBookingRepositoryInterface $roomBookingRepository,
         private readonly HotelRoomAdapterInterface $hotelRoomAdapter,
         private readonly DomainEventDispatcherInterface $eventDispatcher,
-    ) {
-    }
+        private readonly QuotaProcessingMethodFactory $quotaProcessingMethodFactory,
+        private readonly BookingRepositoryInterface $bookingRepository,
+        private readonly SafeExecutorInterface $executor
+    ) {}
 
     public function add(UpdateDataHelper $dataHelper): void
     {
@@ -40,6 +43,7 @@ class RoomUpdater
         $action = function () use ($currentRoomBooking, $dataHelper): void {
             if ($currentRoomBooking->roomInfo()->id() !== $dataHelper->roomInfo->id()) {
                 $this->doReplace($currentRoomBooking, $dataHelper);
+
                 return;
             }
 
@@ -52,8 +56,8 @@ class RoomUpdater
     {
         $this->doAction(function () use ($bookingId, $roomBookingId) {
             $this->roomBookingRepository->delete($roomBookingId->value());
-            //@todo возврат квот
-            $this->events[] = new RoomDeleted($bookingId);
+            $this->processQuota($bookingId);
+//            $this->events[] = new RoomDeleted($bookingId);
         });
     }
 
@@ -68,16 +72,15 @@ class RoomUpdater
             $dataHelper->details,
             $dataHelper->price
         );
-        $this->processQuota();
-        $this->events[] = new RoomAdded($roomBooking);
+        $this->processQuota($dataHelper->bookingId);
+//        $this->events[] = new RoomAdded($roomBooking);
     }
 
     private function doUpdate(RoomBooking $currentRoomBooking, UpdateDataHelper $dataHelper): void
     {
         $this->makePipeline(false)->send($dataHelper);
-        $roomBooking = $currentRoomBooking;
-        $this->roomBookingRepository->store($roomBooking);
-        $this->events[] = new RoomEdited($roomBooking);
+        $this->roomBookingRepository->store($currentRoomBooking);
+//        $this->events[] = new RoomEdited($currentRoomBooking);
     }
 
     private function doReplace(RoomBooking $currentRoomBooking, UpdateDataHelper $dataHelper): void
@@ -89,25 +92,30 @@ class RoomUpdater
         }
         $this->doAdd($dataHelper);
         $this->roomBookingRepository->delete($currentRoomBooking->id()->value());
-        $this->events[] = new RoomDeleted($currentRoomBooking);
+//        $this->events[] = new RoomDeleted($currentRoomBooking);
     }
 
-    private function processQuota(): void
+    private function processQuota(BookingId $bookingId): void
     {
+        $booking = $this->bookingRepository->find($bookingId->value());
+        if ($booking === null) {
+            throw new EntityNotFoundException('Booking not found');
+        }
+        $quotaProcessingMethod = $this->quotaProcessingMethodFactory->build($booking->quotaProcessingMethod());
+        $quotaProcessingMethod->process($booking);
     }
 
     private function makePipeline(bool $needValidateQuota = true): ValidatorPipeline
     {
         return (new ValidatorPipeline($this->module))
             ->through(ClientResidencyValidator::class)
+            //@todo скорее всего не нужен (для фронта будет отдельный метод: получить номера с квотами)
             ->throughWhen($needValidateQuota, QuotaAvailabilityValidator::class);
     }
 
     private function doAction(\Closure $action): void
     {
-        //start transaction
-        $action();
-        //commit
+        $this->executor->execute($action);
         $this->eventDispatcher->dispatch(...$this->events);
     }
 }

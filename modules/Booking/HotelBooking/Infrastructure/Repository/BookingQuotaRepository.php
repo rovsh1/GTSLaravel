@@ -13,12 +13,9 @@ use Module\Booking\HotelBooking\Domain\ValueObject\QuotaId;
 use Module\Booking\HotelBooking\Infrastructure\Models\Hotel\RoomQuota as Model;
 use Module\Hotel\Infrastructure\Models\Room\QuotaReservation;
 use Module\Shared\Enum\Booking\QuotaChangeTypeEnum;
-use Module\Shared\Support\Repository\CanTransactionTrait;
 
 class BookingQuotaRepository implements BookingQuotaRepositoryInterface
 {
-    use CanTransactionTrait;
-
     /**
      * @param BookingPeriod $period
      * @param int[] $roomIds

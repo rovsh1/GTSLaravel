@@ -62,11 +62,6 @@ class QuotaReservationManager
         $this->quotaRepository->commitTransaction();
     }
 
-    public function ensureRoomAvailable(Booking $booking, int $roomId): void
-    {
-        $this->quotaValidator->ensureRoomAvailable($booking, $roomId);
-    }
-
     /**
      * @param Booking $booking
      * @param callable $callback

@@ -4,15 +4,12 @@ declare(strict_types=1);
 
 namespace Module\Booking\HotelBooking\Domain\Repository;
 
-use Carbon\CarbonPeriod;
 use Module\Booking\Common\Domain\ValueObject\BookingId;
-use Module\Booking\HotelBooking\Domain\Entity\Booking;
 use Module\Booking\HotelBooking\Domain\Entity\RoomQuota;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\BookingPeriod;
 use Module\Booking\HotelBooking\Domain\ValueObject\QuotaId;
-use Module\Shared\Contracts\Repository\CanTransactionInterface;
 
-interface BookingQuotaRepositoryInterface extends CanTransactionInterface
+interface BookingQuotaRepositoryInterface
 {
     /**
      * @param BookingPeriod $period

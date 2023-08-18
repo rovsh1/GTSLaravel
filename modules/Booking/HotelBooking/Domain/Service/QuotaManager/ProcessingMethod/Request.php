@@ -8,12 +8,7 @@ use Module\Booking\HotelBooking\Domain\Service\QuotaManager\QuotaProcessingMetho
 
 class Request implements QuotaProcessingMethodInterface
 {
-    public function process(BookingId $bookingId): void
-    {
-        //Списание квот не требуется
-    }
-
-    public function ensureRoomAvailable(Booking $booking, int $roomId): void
+    public function process(Booking $booking): void
     {
         //Списание квот не требуется
     }

@@ -15,13 +15,12 @@ class QuotaProcessingMethodFactory
     public function __construct(
         private readonly AdministratorRules $administratorRules,
         private readonly QuotaReservationManager $quotaReservationManager,
-        private readonly BookingRepositoryInterface $bookingRepository
     ) {}
 
     public function build(QuotaProcessingMethodEnum $method): QuotaProcessingMethodInterface
     {
         return match ($method) {
-            QuotaProcessingMethodEnum::QUOTA => new Quota($this->administratorRules, $this->quotaReservationManager, $this->bookingRepository),
+            QuotaProcessingMethodEnum::QUOTA => new Quota($this->administratorRules, $this->quotaReservationManager),
             QuotaProcessingMethodEnum::REQUEST => new Request(),
             QuotaProcessingMethodEnum::SITE => new Site(),
         };

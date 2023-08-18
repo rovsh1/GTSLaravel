@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\HotelBooking\Application\UseCase\Admin\Room;
 
 use Module\Booking\Common\Domain\ValueObject\BookingId;
+use Module\Booking\HotelBooking\Application\Factory\RoomUpdateDataHelperFactory;
 use Module\Booking\HotelBooking\Application\Request\AddRoomDto;
 use Module\Booking\HotelBooking\Domain\Adapter\HotelRoomAdapterInterface;
 use Module\Booking\HotelBooking\Domain\Service\RoomUpdater\RoomUpdater;
@@ -25,6 +26,7 @@ class Add implements UseCaseInterface
     public function __construct(
         private readonly RoomUpdater $roomUpdater,
         private readonly HotelRoomAdapterInterface $hotelRoomAdapter,
+        private readonly RoomUpdateDataHelperFactory $dataHelperFactory,
     ) {}
 
     public function execute(AddRoomDto $request): void
