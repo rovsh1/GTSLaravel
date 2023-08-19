@@ -150,4 +150,6 @@ $(() => {
     labelGetter: (order: Record<string, any>) => `№${order.id} от ${formatDate(order.createdAt)}`,
     childChange: toggleOrderFields,
   })
+
+  reloadClientsSelect()
 })
