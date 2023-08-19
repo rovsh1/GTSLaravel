@@ -57,8 +57,8 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
                 $service = \Module\Booking\Airport\Infrastructure\Models\AirportService::find($serviceId);
 
                 $booking = new Entity(
-                    id: new Id($bookingModel->id),
-                    orderId: new Id($bookingModel->order_id),
+                    id: new BookingId($bookingModel->id),
+                    orderId: new OrderId($bookingModel->order_id),
                     status: $bookingModel->status,
                     createdAt: $bookingModel->created_at->toImmutable(),
                     creatorId: new Id($bookingModel->creator_id),

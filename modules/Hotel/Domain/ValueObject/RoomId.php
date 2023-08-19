@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Hotel\Domain\ValueObject;
 
-class RoomId extends \Module\Shared\Domain\ValueObject\AbstractIntId
+use Module\Shared\Domain\ValueObject\AbstractIntId;
+
+class RoomId extends AbstractIntId
 {
 
 }

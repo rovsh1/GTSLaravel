@@ -16,6 +16,7 @@ export type HotelImageResponse = {
   title: string | null
   index: HotelImageIndex
   file: FileResponse
+  is_main?: boolean
 }
 
 export type HotelImage = {
@@ -24,6 +25,7 @@ export type HotelImage = {
   title: string | null
   index: HotelImageIndex
   file: FileResponse
+  isMain?: boolean
 }
 
 export const mapHotelImageResponseToImageResponse = ({
@@ -32,10 +34,12 @@ export const mapHotelImageResponseToImageResponse = ({
   title,
   index,
   file,
+  is_main: isMain,
 }: HotelImageResponse): HotelImage => ({
   id,
   hotelID,
   title,
   index,
   file,
+  isMain,
 })

@@ -258,8 +258,8 @@ const title = computed<string>(() => {
   if (hotel.value === null) return ''
   const { name: hotelLabel } = hotel.value
   if (roomID && room.value) {
-    const { customName } = room.value
-    return `${hotelLabel} — ${customName}`
+    const { name } = room.value
+    return `${hotelLabel} — ${name}`
   }
   return hotelLabel
 })

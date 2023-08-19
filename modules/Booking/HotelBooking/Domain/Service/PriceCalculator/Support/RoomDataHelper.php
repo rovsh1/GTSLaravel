@@ -5,6 +5,7 @@ namespace Module\Booking\HotelBooking\Domain\Service\PriceCalculator\Support;
 use Module\Booking\HotelBooking\Domain\Entity\Booking;
 use Module\Booking\HotelBooking\Domain\Entity\RoomBooking;
 use Module\Booking\Order\Domain\Entity\Order;
+use Module\Booking\Order\Domain\ValueObject\ClientId;
 use Module\Hotel\Application\Response\HotelDto;
 use Module\Hotel\Application\Response\MarkupSettingsDto;
 use Module\Hotel\Application\Response\RoomMarkupsDto;
@@ -40,6 +41,11 @@ class RoomDataHelper
     public function guestsCount(): int
     {
         return $this->roomBooking->guests()->count();
+    }
+
+    public function clientId(): ClientId
+    {
+        return $this->order->clientId();
     }
 
     public function orderCurrency(): CurrencyEnum

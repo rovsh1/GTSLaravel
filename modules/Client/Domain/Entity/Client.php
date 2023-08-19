@@ -5,20 +5,20 @@ declare(strict_types=1);
 namespace Module\Client\Domain\Entity;
 
 use Module\Client\Domain\ValueObject\BankRequisites;
+use Module\Client\Domain\ValueObject\ClientId;
 use Module\Shared\Domain\Entity\EntityInterface;
-use Module\Shared\Domain\ValueObject\Id;
 use Module\Shared\Enum\Client\TypeEnum;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
 class Client extends AbstractAggregateRoot implements EntityInterface
 {
     public function __construct(
-        private readonly Id $id,
+        private readonly ClientId $id,
         private string $name,
         private readonly TypeEnum $type,
     ) {}
 
-    public function id(): Id
+    public function id(): ClientId
     {
         return $this->id;
     }

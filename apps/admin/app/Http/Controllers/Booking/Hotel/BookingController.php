@@ -39,6 +39,10 @@ use App\Core\Support\Http\Responses\AjaxSuccessResponse;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
+use Module\Booking\Common\Domain\Service\RequestRules;
+use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
+use Module\Shared\Application\Exception\ApplicationException;
 use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 use Module\Shared\Enum\SourceEnum;
 
@@ -56,6 +60,9 @@ class BookingController extends Controller
     {
         Breadcrumb::prototype($this->prototype);
 
+        $requestableStatuses = array_map(fn(BookingStatusEnum $status) => $status->value,
+            RequestRules::getRequestableStatuses());
+
         $grid = $this->gridFactory();
         $query = HotelAdapter::getBookingQuery()
             ->applyCriteria($grid->getSearchCriteria())
@@ -63,15 +70,24 @@ class BookingController extends Controller
             ->join('administrators', 'administrators.id', '=', 'administrator_bookings.administrator_id')
             ->addSelect('administrators.presentation as manager_name')
             ->addSelect(
-                \DB::raw(
+                DB::raw(
                     '(SELECT SUM(guests_count) FROM booking_hotel_rooms WHERE booking_id=bookings.id) as guests_count'
                 )
             )
             ->addSelect(
-                \DB::raw(
-                    "(SELECT GROUP_CONCAT(room_name) FROM booking_hotel_rooms WHERE booking_id=bookings.id) as room_names"
+                DB::raw(
+                    '(SELECT GROUP_CONCAT(room_name) FROM booking_hotel_rooms WHERE booking_id=bookings.id) as room_names'
                 )
+            )
+            ->addSelect(
+                DB::raw('(SELECT bookings.status IN (' . implode(',', $requestableStatuses) . ')) as is_requestable'),
+            )
+            ->addSelect(
+                DB::raw(
+                    'EXISTS(SELECT 1 FROM booking_requests WHERE bookings.id = booking_requests.booking_id AND is_archive = 0) as has_downloadable_request'
+                ),
             );
+
         $grid->data($query);
 
         return Layout::title($this->prototype->title('index'))
@@ -104,25 +120,31 @@ class BookingController extends Controller
     {
         $creatorId = request()->user()->id;
 
-        $form = $this->formFactory()->method('post');
-        $form->trySubmit($this->prototype->route('create'));
+        $form = $this->formFactory()
+            ->method('post')
+            ->failUrl($this->prototype->route('create'));
+
+        $form->trySubmit();
 
         $data = $form->getData();
         $client = Client::find($data['client_id']);
-        //@todo добавить селект типа брони По квоте/По запросу (списывать квоту сразу, если по квоте)
-        $bookingId = HotelAdapter::createBooking(
-            cityId: $data['city_id'],
-            clientId: $data['client_id'],
-            legalId: $data['legal_id'],
-            currencyId: $data['currency_id'] ?? $client->currency_id,
-            hotelId: $data['hotel_id'],
-            period: $data['period'],
-            creatorId: $creatorId,
-            orderId: $data['order_id'] ?? null,
-            note: $data['note'] ?? null,
-            quotaProcessingMethod: $data['quota_processing_method'],
-        );
-        $this->administratorRepository->create($bookingId, $data['manager_id'] ?? $creatorId);
+        try {
+            $bookingId = HotelAdapter::createBooking(
+                cityId: $data['city_id'],
+                clientId: $data['client_id'],
+                legalId: $data['legal_id'],
+                currencyId: $data['currency_id'] ?? $client->currency_id,
+                hotelId: $data['hotel_id'],
+                period: $data['period'],
+                creatorId: $creatorId,
+                orderId: $data['order_id'] ?? null,
+                note: $data['note'] ?? null,
+                quotaProcessingMethod: $data['quota_processing_method'],
+            );
+            $this->administratorRepository->create($bookingId, $data['manager_id'] ?? $creatorId);
+        } catch (ApplicationException $e) {
+            $form->throwException($e);
+        }
 
         return redirect(
             $this->prototype->route('show', $bookingId)
@@ -187,17 +209,24 @@ class BookingController extends Controller
 
     public function update(int $id): RedirectResponse
     {
-        $form = $this->formFactory(true)->method('put');
+        $form = $this->formFactory(true)
+            ->method('put')
+            ->failUrl($this->prototype->route('edit', $id));
 
-        $form->trySubmit($this->prototype->route('edit', $id));
+        $form->trySubmit();
 
         $data = $form->getData();
-        HotelAdapter::updateBooking(
-            id: $id,
-            period: $data['period'],
-            note: $data['note'] ?? null
-        );
-        $this->administratorRepository->update($id, $data['manager_id'] ?? request()->user()->id);
+        try {
+            HotelAdapter::updateBooking(
+                id: $id,
+                period: $data['period'],
+                quotaProcessingMethod: $data['quota_processing_method'],
+                note: $data['note'] ?? null
+            );
+            $this->administratorRepository->update($id, $data['manager_id'] ?? request()->user()->id);
+        } catch (ApplicationException $e) {
+            $form->throwException($e);
+        }
 
         return redirect($this->prototype->route('show', $id));
     }
@@ -340,7 +369,10 @@ class BookingController extends Controller
             ->text('manager_name', ['text' => 'Менеджер'])
             ->text(
                 'date_start',
-                ['text' => 'Заезд - выезд', 'renderer' => fn($row, $val) => \Format::period(new CarbonPeriod($val, $row['date_end']))]
+                [
+                    'text' => 'Заезд - выезд',
+                    'renderer' => fn($row, $val) => \Format::period(new CarbonPeriod($val, $row['date_end']))
+                ]
             )
             ->text(
                 'city_name',
@@ -353,9 +385,27 @@ class BookingController extends Controller
             ->text('guests_count', ['text' => 'Гостей'])
             ->text('source', ['text' => 'Источник', 'order' => true])
             ->date('created_at', ['text' => 'Создан', 'format' => 'datetime', 'order' => true])
-            ->text('actions')
+            ->text('actions', ['renderer' => fn($row, $val) => $this->getActionButtons($row)])
             ->orderBy('created_at', 'desc')
             ->paginator(20);
+    }
+
+    private function getActionButtons(mixed $tableRow): string
+    {
+        $buttons = '';
+        $isRequestable = $tableRow['is_requestable'] ?? false;
+        $hasDownloadableRequest = $tableRow['has_downloadable_request'] ?? false;
+        if ($isRequestable) {
+            $buttons .= '<a href="#" class="btn-request-send"><i class="icon">mail</i></a>';
+        }
+        if ($hasDownloadableRequest) {
+            $buttons .= '<a href="#" class="btn-request-download"><i class="icon">download</i></a>';
+        }
+        if (strlen($buttons) === 0) {
+            return '';
+        }
+
+        return "<div class='d-flex flex-row gap-2'>{$buttons}</div>";
     }
 
     private function searchForm()
@@ -384,6 +434,7 @@ class BookingController extends Controller
         $manager = $this->administratorRepository->get($booking->id);
 
         return [
+            'quota_processing_method' => $booking->quotaProcessingMethod->value,
             'manager_id' => $manager->id,
             'order_id' => $booking->orderId,
             'currency_id' => $order->currency->id,
@@ -401,13 +452,11 @@ class BookingController extends Controller
         return Form::name('data')
             ->radio('quota_processing_method', [
                 'label' => 'Тип брони',
-                'required' => !$isEdit,
-                'disabled' => $isEdit,
-                'hidden' => $isEdit,
-                'default' => 1,
+                'emptyItem' => '',
+                'required' => true,
                 'items' => [
-                    ['id' => QuotaProcessingMethodEnum::REQUEST, 'name' => 'По запросу'],
-                    ['id' => QuotaProcessingMethodEnum::QUOTE, 'name' => 'По квоте'],
+                    ['id' => QuotaProcessingMethodEnum::REQUEST->value, 'name' => 'По запросу'],
+                    ['id' => QuotaProcessingMethodEnum::QUOTE->value, 'name' => 'По квоте'],
                 ]
             ])
             ->select('client_id', [

@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Module\Administrator\Domain\Entity;
 
+use Module\Administrator\Domain\ValueObject\AdministratorId;
 use Module\Shared\Domain\Entity\EntityInterface;
-use Module\Shared\Domain\ValueObject\Id;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
 class Administrator extends AbstractAggregateRoot implements EntityInterface
 {
     public function __construct(
-        private readonly Id $id,
+        private readonly AdministratorId $id,
         private string $presentation,
         private ?string $email,
         private ?string $phone,
@@ -19,7 +19,7 @@ class Administrator extends AbstractAggregateRoot implements EntityInterface
         private ?string $surname,
     ) {}
 
-    public function id(): Id
+    public function id(): AdministratorId
     {
         return $this->id;
     }

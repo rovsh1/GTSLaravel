@@ -27,7 +27,13 @@ export default function bootGrid() {
 
   $popup.find('button[type="reset"]').click((e) => {
     e.preventDefault()
-
     $popup.find('input,select').val('')
+    const selects = document.querySelectorAll(`${popupSelector} select`)
+    const inputs = document.querySelectorAll(`${popupSelector} input`)
+    const combinedElements = Array.from(selects).concat(Array.from(inputs))
+    combinedElements.forEach((select) => {
+      select.dispatchEvent(new Event('change'))
+    })
+    $popup.find('.daterange').trigger('customEventClearLitePicker')
   })
 }

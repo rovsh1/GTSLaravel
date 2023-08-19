@@ -4,14 +4,14 @@ namespace Module\Hotel\Domain\Entity;
 
 use Module\Hotel\Domain\ValueObject\Address;
 use Module\Hotel\Domain\ValueObject\ContactCollection;
+use Module\Hotel\Domain\ValueObject\HotelId;
 use Module\Hotel\Domain\ValueObject\TimeSettings;
-use Module\Shared\Domain\ValueObject\Id;
 use Module\Shared\Enum\CurrencyEnum;
 
 class Hotel
 {
     public function __construct(
-        private readonly Id $id,
+        private readonly HotelId $id,
         private string $name,
         private CurrencyEnum $currency,
         private TimeSettings $timeSettings,
@@ -19,7 +19,7 @@ class Hotel
         private readonly ContactCollection $contacts
     ) {}
 
-    public function id(): Id
+    public function id(): HotelId
     {
         return $this->id;
     }

@@ -20,6 +20,7 @@ class HotelImage extends JsonResource
             'hotel_id' => $this->hotel_id,
             'title' => $this->title,
             'index' => $this->index,
+            'is_main' => $this->whenHas('is_main'),
 //            'url' => FileAdapter::url($this->file_guid),
         ];
     }

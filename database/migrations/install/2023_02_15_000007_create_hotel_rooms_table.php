@@ -11,9 +11,7 @@ return new class extends Migration {
         Schema::create('hotel_rooms', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('hotel_id');
-            $table->unsignedSmallInteger('name_id');
             $table->unsignedSmallInteger('type_id');
-            $table->string('custom_name')->nullable()->comment('Внутреннее наименование для отеля');
             $table->unsignedTinyInteger('rooms_number');
             $table->unsignedTinyInteger('guests_count');
             $table->unsignedSmallInteger('square')->nullable();
@@ -27,12 +25,6 @@ return new class extends Migration {
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
 
-            $table->foreign('name_id')
-                ->references('id')
-                ->on('r_enums')
-                ->restrictOnDelete()
-                ->cascadeOnUpdate();
-
             $table->foreign('type_id')
                 ->references('id')
                 ->on('r_enums')
@@ -41,6 +33,7 @@ return new class extends Migration {
         });
 
         (new TranslationTable('hotel_rooms'))
+            ->text('name')
             ->text('text', ['nullable' => true])
             ->create();
 

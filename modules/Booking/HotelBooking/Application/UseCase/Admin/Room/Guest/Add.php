@@ -9,7 +9,7 @@ use Module\Booking\HotelBooking\Domain\Adapter\HotelRoomAdapterInterface;
 use Module\Booking\HotelBooking\Domain\Exception\TooManyRoomGuests;
 use Module\Booking\HotelBooking\Domain\Repository\RoomBookingRepositoryInterface;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\Guest;
-use Module\Shared\Application\Exception\BaseApplicationException;
+use Module\Shared\Application\Exception\ApplicationException;
 use Module\Shared\Domain\Exception\DomainEntityExceptionInterface;
 use Module\Shared\Domain\ValueObject\GenderEnum;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
@@ -48,7 +48,7 @@ class Add implements UseCaseInterface
             $this->repository->store($roomBooking);
             $this->eventDispatcher->dispatch(...$roomBooking->pullEvents());
         } catch (DomainEntityExceptionInterface $e) {
-            throw new BaseApplicationException($e->getMessage(), $e->getCode(), $e);
+            throw new ApplicationException($e->getMessage(), $e->getCode(), $e);
         }
     }
 }

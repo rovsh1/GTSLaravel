@@ -17,13 +17,10 @@ class Room extends Model
 
     protected array $translatable = ['name', 'text'];
 
-    protected $appends = ['display_name'];
-
     protected $fillable = [
         'hotel_id',
         'name_id',
         'type_id',
-        'custom_name',
         'rooms_number',
         'guests_count',
         'square',
@@ -31,9 +28,13 @@ class Room extends Model
         'markup_settings',
     ];
 
-    public function displayName(): Attribute
+    public static function booted()
     {
-        return Attribute::get(fn() => "{$this->name} ($this->custom_name)");
+        static::addGlobalScope('default', function (Builder $builder) {
+            $builder
+                ->addSelect('hotel_rooms.*')
+                ->joinTranslations();
+        });
     }
 
     public function scopeWithPriceRates(Builder $builder)
