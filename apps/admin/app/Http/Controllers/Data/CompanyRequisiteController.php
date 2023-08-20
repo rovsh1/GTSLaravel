@@ -7,11 +7,19 @@ use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
-use Module\Shared\Application\Entity\CompanyRequisite\CompanyRequisiteInterface;
-use Module\Shared\Application\Service\CompanyRequisites;
+use Module\Shared\Domain\Service\CompanyRequisitesInterface;
+use Module\Shared\Infrastructure\Service\CompanyRequisites\Entity\CompanyRequisiteInterface;
 
 class CompanyRequisiteController extends AbstractPrototypeController
 {
+    private CompanyRequisitesInterface $requisites;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->requisites = app(CompanyRequisitesInterface::class);
+    }
+
     protected function getPrototypeKey(): string
     {
         return 'company-requisite';
@@ -28,13 +36,13 @@ class CompanyRequisiteController extends AbstractPrototypeController
         return Grid::enableQuicksearch()
             ->paginator(self::GRID_LIMIT)
             ->edit($this->prototype)
-            ->text('name', ['text' => 'Расшифровка', 'renderer' => fn($r) => self::getRequisite($r->key)?->name()])
-            ->text('value', ['text' => 'Значение', 'renderer' => fn($r) => self::castValue($r->key, $r->value)]);
+            ->text('name', ['text' => 'Расшифровка', 'renderer' => fn($r) => $this->getRequisite($r->key)?->name()])
+            ->text('value', ['text' => 'Значение', 'renderer' => fn($r) => $this->castValue($r->key, $r->value)]);
     }
 
-    private static function getRequisite(string $key): ?CompanyRequisiteInterface
+    private function getRequisite(string $key): ?CompanyRequisiteInterface
     {
-        foreach (CompanyRequisites::getInstance() as $entity) {
+        foreach ($this->requisites as $entity) {
             if ($entity->key() === $key) {
                 return $entity;
             }
@@ -43,9 +51,9 @@ class CompanyRequisiteController extends AbstractPrototypeController
         return null;
     }
 
-    private static function castValue(string $key, mixed $value)
+    private function castValue(string $key, mixed $value)
     {
-        return match (self::getRequisite($key)->cast()) {
+        return match ($this->getRequisite($key)->cast()) {
             'image' => '<img src="' . $value . '" alt="">',
             'email' => "<a href=\"mailto:$value\">$value</a>",
             default => $value,

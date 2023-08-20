@@ -2,15 +2,15 @@
 
 namespace Module\Support\MailManager\Application\Service;
 
-use Module\Shared\Application\Service\CompanyRequisites;
+use Module\Shared\Domain\Service\CompanyRequisitesInterface;
 use Module\Support\MailManager\Domain\Entity\Mail;
 use Module\Support\MailManager\Domain\Service\DataBuilder\DataBuilderInterface;
 use Module\Support\MailManager\Domain\Service\DataBuilder\DataDto\RecipientDataDto;
 use Module\Support\MailManager\Domain\Service\DataBuilder\DataDto\SenderDataDto;
 use Module\Support\MailManager\Domain\Service\DataBuilder\Dto\DataDtoInterface;
 use Module\Support\MailManager\Domain\Service\QueueManagerInterface;
-use Module\Support\MailManager\Domain\Service\RecipientsFinder\Recipient\RecipientInterface;
 use Module\Support\MailManager\Domain\Service\RecipientsFinder\AddressResolverInterface;
+use Module\Support\MailManager\Domain\Service\RecipientsFinder\Recipient\RecipientInterface;
 use Module\Support\MailManager\Domain\Service\RecipientsFinder\RecipientsFinderInterface;
 use Module\Support\MailManager\Domain\Service\TemplateRenderer\Template\TemplateInterface;
 use Module\Support\MailManager\Domain\Service\TemplateRenderer\TemplateRendererInterface;
@@ -27,6 +27,7 @@ class MailTemplateSender
         private readonly DataBuilderInterface $dataBuilder,
         private readonly TemplateRendererInterface $templateRenderer,
         private readonly AddressResolverInterface $addressResolver,
+        private readonly CompanyRequisitesInterface $companyRequisites,
     ) {
     }
 
@@ -85,10 +86,10 @@ class MailTemplateSender
     private function makeSenderDto(array $context): SenderDataDto
     {
         return new SenderDataDto(
-            presentation: CompanyRequisites::name(),
+            presentation: $this->companyRequisites->name(),
             postName: null,
-            email: CompanyRequisites::email(),
-            phone: CompanyRequisites::phone()
+            email: $this->companyRequisites->email(),
+            phone: $this->companyRequisites->phone()
         );
     }
 }

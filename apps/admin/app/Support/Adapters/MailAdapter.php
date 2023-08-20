@@ -2,7 +2,6 @@
 
 namespace App\Admin\Support\Adapters;
 
-use App\Core\Support\Facades\AppContext;
 use Illuminate\Database\Eloquent\Builder;
 use Module\Support\MailManager\Application\Dto\MailMessageDto;
 use Module\Support\MailManager\Application\RequestDto\SendMessageRequestDto;
@@ -21,7 +20,7 @@ class MailAdapter
                     subject: $subject,
                     body: $body
                 ),
-                context: AppContext::get()
+                context: []
             )
         );
     }

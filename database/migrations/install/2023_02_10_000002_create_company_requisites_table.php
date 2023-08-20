@@ -5,7 +5,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Module\Shared\Application\Service\CompanyRequisites;
+use Module\Shared\Domain\Service\CompanyRequisitesInterface;
 
 return new class extends Migration {
     public function up()
@@ -24,7 +24,7 @@ return new class extends Migration {
 
     private function fill(): void
     {
-        foreach (CompanyRequisites::getInstance() as $constant) {
+        foreach (app(CompanyRequisitesInterface::class) as $constant) {
             $id = DB::table('s_company_requisites')->insertGetId([
                 'key' => $constant->key()
             ]);

@@ -31,7 +31,7 @@ abstract class AbstractBookingRepository
     {
         return $this->getModel()::create([
             'order_id' => $orderId->value(),
-            'source' => AppContext::getSource(),
+            'source' => AppContext::source(),
             'status' => BookingStatusEnum::CREATED,
             'creator_id' => $creatorId,
             'price' => BookingPrice::buildEmpty()->toData(),

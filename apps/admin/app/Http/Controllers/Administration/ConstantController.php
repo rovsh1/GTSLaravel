@@ -7,10 +7,18 @@ use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
-use Module\Shared\Application\Service\ApplicationConstants;
+use Module\Shared\Domain\Service\ApplicationConstantsInterface;
 
 class ConstantController extends AbstractPrototypeController
 {
+    private ApplicationConstantsInterface $constants;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->constants = app(ApplicationConstantsInterface::class);
+    }
+
     protected function getPrototypeKey(): string
     {
         return 'constant';
@@ -26,13 +34,13 @@ class ConstantController extends AbstractPrototypeController
     {
         return Grid::paginator(self::GRID_LIMIT)
             ->edit($this->prototype)
-            ->text('name', ['text' => 'Расшифровка', 'renderer' => fn($r) => self::getConstantName($r->key)])
+            ->text('name', ['text' => 'Расшифровка', 'renderer' => fn($r) => $this->getConstantName($r->key)])
             ->text('value', ['text' => 'Значение']);
     }
 
-    private static function getConstantName(string $key): string
+    private function getConstantName(string $key): string
     {
-        foreach (ApplicationConstants::getInstance() as $constant) {
+        foreach ($this->constants as $constant) {
             if ($constant->key() === $key) {
                 return $constant->name();
             }

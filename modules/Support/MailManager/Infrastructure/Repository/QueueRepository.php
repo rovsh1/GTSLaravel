@@ -3,6 +3,7 @@
 namespace Module\Support\MailManager\Infrastructure\Repository;
 
 use Illuminate\Support\Facades\DB;
+use Module\Shared\Domain\Service\ApplicationContextInterface;
 use Module\Support\MailManager\Domain\Entity\Mail;
 use Module\Support\MailManager\Domain\Repository\QueueRepositoryInterface;
 use Module\Support\MailManager\Domain\ValueObject\MailId;
@@ -13,6 +14,11 @@ class QueueRepository implements QueueRepositoryInterface
 {
     public const EXPIRED_DATES = '-14 days';
     public const MAX_ATTEMPTS  = 3;
+
+    public function __construct(
+        private readonly ApplicationContextInterface $applicationContext
+    ) {
+    }
 
     public function find(MailId $uuid): ?Mail
     {
@@ -27,7 +33,7 @@ class QueueRepository implements QueueRepositoryInterface
             'payload' => $mail->serialize(),
             'priority' => $priority,
             'status' => $mail->status()->value,
-            'context' => $context
+            'context' => $this->applicationContext->toArray($context ?? [])
         ]);
     }
 
