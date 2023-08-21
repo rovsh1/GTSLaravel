@@ -11,12 +11,13 @@ import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButt
 
 import DropZone from './DropZone.vue'
 
-import { SelectedFile } from './lib'
+import { SelectedFile, UploadStatus } from './lib'
 
 const props = withDefaults(defineProps<{
   opened: boolean
   loading?: MaybeRef<boolean>
   files: File[] | null
+  uploadStatus: UploadStatus[] | null
 }>(), {
   loading: false,
 })
@@ -52,18 +53,26 @@ const mapFilesToDropped = async (files: File[]): Promise<SelectedFile[]> =>
 
 const selectedFiles = ref<SelectedFile[] | null>(null)
 
-watch(selectedFiles, (files) => {
-  if (files === null) {
+const pushSelectedImagesToUploadFiles = () => {
+  if (selectedFiles.value === null) {
     emit('files', [])
-  } else {
-    emit('files', files.map(({ raw }) => raw))
+  } else if (selectedFiles.value[0] && selectedFiles.value[0].raw) {
+    emit('files', selectedFiles.value.map(({ raw }) => raw))
   }
-})
+}
 
 watch(() => props.files, async (value) => {
   if (value === null) {
     selectedFiles.value = null
   }
+})
+
+watch(() => props.uploadStatus, async (value) => {
+  const wrongStatusUploadImage = value?.filter((upload) => !upload.status)
+  const result = selectedFiles.value?.filter((item1) =>
+    wrongStatusUploadImage?.some((item2) => item1.name === item2.name))
+  selectedFiles.value = result || null
+  pushSelectedImagesToUploadFiles()
 })
 
 const handleDropzoneFiles = async (files: File[] | null) => {
@@ -73,6 +82,7 @@ const handleDropzoneFiles = async (files: File[] | null) => {
     const mapped = await mapFilesToDropped(files)
     selectedFiles.value = mapped
   }
+  pushSelectedImagesToUploadFiles()
 }
 
 const addFiles = async (files: File[] | null) => {
@@ -83,6 +93,7 @@ const addFiles = async (files: File[] | null) => {
   } else {
     selectedFiles.value.push(...mapped)
   }
+  pushSelectedImagesToUploadFiles()
 }
 
 const handleFileInput = async (event: Event) => {
@@ -94,20 +105,12 @@ const handleFileInput = async (event: Event) => {
 }
 </script>
 <template>
-  <BaseDialog
-    :opened="opened"
-    :disabled="loading"
-    @close="emit('close')"
-  >
+  <BaseDialog :opened="opened" :disabled="loading" @close="emit('close')">
     <template #title>
       <div>Добавить фотографии</div>
     </template>
     <div class="upload">
-      <DropZone
-        :value="selectedFiles"
-        :disabled="loading"
-        @input="files => handleDropzoneFiles(files)"
-      />
+      <DropZone :value="selectedFiles" :disabled="loading" @input="files => handleDropzoneFiles(files)" />
     </div>
     <template #actions-start>
       <div class="input">
@@ -124,13 +127,7 @@ const handleFileInput = async (event: Event) => {
       </div>
     </template>
     <template #actions-end>
-      <BootstrapButton
-        severity="primary"
-        variant="filled"
-        label="Загрузить"
-        :loading="loading"
-        @click="emit('upload')"
-      />
+      <BootstrapButton severity="primary" variant="filled" label="Загрузить" :loading="loading" @click="emit('upload')" />
     </template>
   </BaseDialog>
 </template>
