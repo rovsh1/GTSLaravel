@@ -102,15 +102,16 @@ const handleAddRoom = (): void => {
 
 const handleEditRoom = (roomBookingId: number, room: HotelRoomBooking): void => {
   editRoomBookingId.value = roomBookingId
-  roomForm.value = room
-  roomForm.value.id = room.roomInfo.id
-  roomForm.value.status = room.status
-  roomForm.value.discount = room.details.discount
-  roomForm.value.rateId = room.details.rateId
-  roomForm.value.earlyCheckIn = room.details.earlyCheckIn
-  roomForm.value.lateCheckOut = room.details.lateCheckOut
-  roomForm.value.residentType = room.details.isResident ? 1 : 0
-  roomForm.value.note = room.details.guestNote
+  roomForm.value = {
+    id: room.roomInfo.id,
+    status: room.status,
+    discount: room.details.discount,
+    rateId: room.details.rateId,
+    earlyCheckIn: room.details.earlyCheckIn,
+    lateCheckOut: room.details.lateCheckOut,
+    residentType: room.details.isResident ? 1 : 0,
+    note: room.details.guestNote,
+  }
   toggleRoomModal()
 }
 
@@ -164,6 +165,11 @@ const onModalSubmit = () => {
   fetchBooking()
 }
 
+const onCloseModal = () => {
+  roomForm.value = {}
+  toggleRoomModal(false)
+}
+
 fetchPriceRates()
 fetchCountries()
 
@@ -175,7 +181,7 @@ fetchCountries()
     :form-data="roomForm"
     :room-booking-id="editRoomBookingId"
     :hotel-markup-settings="markupSettings"
-    @close="toggleRoomModal(false)"
+    @close="onCloseModal"
     @submit="onModalSubmit"
   />
 
