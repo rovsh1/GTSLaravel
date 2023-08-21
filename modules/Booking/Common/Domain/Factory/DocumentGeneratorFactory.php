@@ -17,6 +17,7 @@ use Module\Booking\HotelBooking\Domain\Adapter\HotelAdapterInterface;
 use Module\Booking\HotelBooking\Domain\Service\DocumentGenerator\CancellationRequestGenerator;
 use Module\Booking\HotelBooking\Domain\Service\DocumentGenerator\ChangeRequestGenerator;
 use Module\Booking\HotelBooking\Domain\Service\DocumentGenerator\ReservationRequestGenerator;
+use Module\Shared\Domain\Service\TemplateBuilder\ViewFactoryInterface;
 use Sdk\Module\Contracts\ModuleInterface;
 
 class DocumentGeneratorFactory
@@ -24,6 +25,7 @@ class DocumentGeneratorFactory
     public function __construct(
         private readonly string $templatesPath,
         private readonly FileStorageAdapterInterface $fileStorageAdapter,
+        private readonly ViewFactoryInterface $viewFactory,
         private readonly ModuleInterface $module
     ) {
     }
@@ -45,6 +47,7 @@ class DocumentGeneratorFactory
             BookingTypeEnum::HOTEL => new CancellationRequestGenerator(
                 $this->templatesPath,
                 $this->fileStorageAdapter,
+                $this->viewFactory,
                 $this->module->get(HotelAdapterInterface::class),
                 $this->module->get(AdministratorAdapterInterface::class),
                 $this->module->get(StatusStorage::class),
@@ -59,6 +62,7 @@ class DocumentGeneratorFactory
             BookingTypeEnum::HOTEL => new ChangeRequestGenerator(
                 $this->templatesPath,
                 $this->fileStorageAdapter,
+                $this->viewFactory,
                 $this->module->get(HotelAdapterInterface::class),
                 $this->module->get(AdministratorAdapterInterface::class),
                 $this->module->get(StatusStorage::class),
@@ -73,6 +77,7 @@ class DocumentGeneratorFactory
             BookingTypeEnum::HOTEL => new ReservationRequestGenerator(
                 $this->templatesPath,
                 $this->fileStorageAdapter,
+                $this->viewFactory,
                 $this->module->get(HotelAdapterInterface::class),
                 $this->module->get(AdministratorAdapterInterface::class),
                 $this->module->get(StatusStorage::class),

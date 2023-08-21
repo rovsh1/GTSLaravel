@@ -9,6 +9,7 @@ use Module\Booking\Common\Domain\Entity\BookingInterface;
 use Module\Booking\Common\Domain\Entity\Voucher;
 use Module\Booking\Common\Domain\Service\DocumentGenerator\AbstractVoucherGenerator;
 use Module\Booking\HotelBooking\Domain\Adapter\HotelAdapterInterface;
+use Module\Shared\Domain\Service\TemplateBuilder\ViewFactoryInterface;
 use Module\Shared\Enum\ContactTypeEnum;
 
 class VoucherGenerator extends AbstractVoucherGenerator
@@ -16,11 +17,12 @@ class VoucherGenerator extends AbstractVoucherGenerator
     public function __construct(
         string $templatesPath,
         FileStorageAdapterInterface $fileStorageAdapter,
+        ViewFactoryInterface $viewFactory,
         private readonly HotelAdapterInterface $hotelAdapter,
         private readonly AdministratorAdapterInterface $administratorAdapter,
         private readonly StatusStorage $statusStorage,
     ) {
-        parent::__construct($templatesPath, $fileStorageAdapter);
+        parent::__construct($templatesPath, $fileStorageAdapter, $viewFactory);
     }
 
     protected function getTemplateName(): string

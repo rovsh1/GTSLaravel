@@ -9,7 +9,7 @@ abstract class AbstractVoucherGenerator extends AbstractDocumentGenerator
 {
     final public function generate(Voucher $voucher, BookingInterface $booking): void
     {
-        $documentContent = (new TemplateBuilder($this->templatesPath, $this->getTemplateName()))
+        $documentContent = $this->getTemplateBuilder()
             ->attributes(
                 array_merge(
                     $this->getCompanyAttributes(),

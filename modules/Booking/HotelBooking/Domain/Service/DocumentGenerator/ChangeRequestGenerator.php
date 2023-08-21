@@ -8,6 +8,7 @@ use Module\Booking\Common\Domain\Adapter\FileStorageAdapterInterface;
 use Module\Booking\Common\Domain\Entity\BookingInterface;
 use Module\Booking\Common\Domain\Service\DocumentGenerator\AbstractRequestGenerator;
 use Module\Booking\HotelBooking\Domain\Adapter\HotelAdapterInterface;
+use Module\Shared\Domain\Service\TemplateBuilder\ViewFactoryInterface;
 use Module\Shared\Enum\ContactTypeEnum;
 
 class ChangeRequestGenerator extends AbstractRequestGenerator
@@ -15,16 +16,17 @@ class ChangeRequestGenerator extends AbstractRequestGenerator
     public function __construct(
         string $templatesPath,
         FileStorageAdapterInterface $fileStorageAdapter,
+        ViewFactoryInterface $viewFactory,
         private readonly HotelAdapterInterface $hotelAdapter,
         private readonly AdministratorAdapterInterface $administratorAdapter,
         private readonly StatusStorage $statusStorage,
     ) {
-        parent::__construct($templatesPath, $fileStorageAdapter);
+        parent::__construct($templatesPath, $fileStorageAdapter, $viewFactory);
     }
 
     protected function getTemplateName(): string
     {
-        return 'hotel.change_request';
+        return 'hotel/change_request';
     }
 
     protected function getReservationAttributes(BookingInterface $booking): array

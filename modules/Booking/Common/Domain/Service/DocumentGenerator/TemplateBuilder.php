@@ -3,6 +3,7 @@
 namespace Module\Booking\Common\Domain\Service\DocumentGenerator;
 
 use Illuminate\Contracts\View\View;
+use Module\Shared\Domain\Service\TemplateBuilder\ViewFactoryInterface;
 
 class TemplateBuilder
 {
@@ -10,7 +11,8 @@ class TemplateBuilder
 
     public function __construct(
         private readonly string $templatesPath,
-        private readonly string $file
+        private readonly string $file,
+        private readonly ViewFactoryInterface $viewFactory,
     ) {
     }
 
@@ -55,6 +57,9 @@ class TemplateBuilder
 
     private function getTemplateView(string $file): View
     {
-        return view($file, $this->attributes);
+        return $this->viewFactory->file(
+            $this->templatesPath . DIRECTORY_SEPARATOR . $file . '.blade.php',
+            $this->attributes
+        );
     }
 }
