@@ -2,7 +2,6 @@
 
 namespace Module\Booking\HotelBooking\Domain\Service\RoomUpdater;
 
-use Module\Booking\Common\Domain\ValueObject\BookingId;
 use Module\Booking\HotelBooking\Domain\Adapter\HotelRoomAdapterInterface;
 use Module\Booking\HotelBooking\Domain\Entity\Booking;
 use Module\Booking\HotelBooking\Domain\Entity\RoomBooking;
@@ -11,9 +10,8 @@ use Module\Booking\HotelBooking\Domain\Event\RoomDeleted;
 use Module\Booking\HotelBooking\Domain\Event\RoomEdited;
 use Module\Booking\HotelBooking\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\HotelBooking\Domain\Repository\RoomBookingRepositoryInterface;
-use Module\Booking\HotelBooking\Domain\Service\QuotaManager\QuotaProcessingMethodFactory;
+use Module\Booking\HotelBooking\Domain\Service\QuotaManager\QuotaManager;
 use Module\Booking\HotelBooking\Domain\Service\RoomUpdater\Validator\ClientResidencyValidator;
-use Module\Booking\HotelBooking\Domain\Service\RoomUpdater\Validator\QuotaAvailabilityValidator;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBookingId;
 use Module\Shared\Domain\Service\SafeExecutorInterface;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
@@ -31,9 +29,9 @@ class RoomUpdater
         private readonly RoomBookingRepositoryInterface $roomBookingRepository,
         private readonly HotelRoomAdapterInterface $hotelRoomAdapter,
         private readonly DomainEventDispatcherInterface $eventDispatcher,
-        private readonly QuotaProcessingMethodFactory $quotaProcessingMethodFactory,
         private readonly BookingRepositoryInterface $bookingRepository,
-        private readonly SafeExecutorInterface $executor
+        private readonly SafeExecutorInterface $executor,
+        private readonly QuotaManager $quotaManager
     ) {}
 
     public function add(UpdateDataHelper $dataHelper): void
@@ -105,8 +103,7 @@ class RoomUpdater
         if ($booking === null) {
             throw new EntityNotFoundException('Booking not found');
         }
-        $quotaProcessingMethod = $this->quotaProcessingMethodFactory->build($booking->quotaProcessingMethod());
-        $quotaProcessingMethod->process($booking);
+        $this->quotaManager->process($booking);
     }
 
     private function makePipeline(): ValidatorPipeline

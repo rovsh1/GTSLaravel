@@ -10,7 +10,6 @@ use Module\Booking\HotelBooking\Domain\Repository\BookingQuotaRepositoryInterfac
 use Module\Booking\HotelBooking\Domain\Service\QuotaManager\Exception\ClosedRoomDateQuota;
 use Module\Booking\HotelBooking\Domain\Service\QuotaManager\Exception\NotEnoughRoomDateQuota;
 use Module\Booking\HotelBooking\Domain\Service\QuotaManager\Exception\NotFoundRoomDateQuota;
-use Module\Booking\HotelBooking\Domain\Service\QuotaManager\Model\BookingQuotaReservation;
 use Module\Booking\HotelBooking\Domain\Service\QuotaManager\Model\QuotaInterface;
 use Module\Booking\HotelBooking\Domain\Service\QuotaManager\Model\RoomDateQuotaReservation;
 use Module\Hotel\Infrastructure\Models\Room\QuotaStatusEnum;

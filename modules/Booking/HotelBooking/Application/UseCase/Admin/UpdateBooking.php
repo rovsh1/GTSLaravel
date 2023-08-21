@@ -13,8 +13,8 @@ use Module\Booking\HotelBooking\Domain\Entity\Booking;
 use Module\Booking\HotelBooking\Domain\Exception\NotFoundHotelCancelPeriod;
 use Module\Booking\HotelBooking\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\HotelBooking\Domain\Service\HotelValidator;
+use Module\Booking\HotelBooking\Domain\Service\QuotaManager\QuotaManager;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\BookingPeriod;
-use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class UpdateBooking implements UseCaseInterface
@@ -23,7 +23,8 @@ class UpdateBooking implements UseCaseInterface
         private readonly BookingRepositoryInterface $repository,
         private readonly BookingUpdater $bookingUpdater,
         private readonly HotelAdapterInterface $hotelAdapter,
-        private readonly HotelValidator $hotelValidator
+        private readonly HotelValidator $hotelValidator,
+        private readonly QuotaManager $quotaManager,
     ) {}
 
     public function execute(UpdateBookingDto $request): void
@@ -42,6 +43,12 @@ class UpdateBooking implements UseCaseInterface
             $cancelConditions = CancelConditionsFactory::fromDto($markupSettings->cancelPeriods, $request->period);
             $booking->setPeriod($periodFromRequest);
             $booking->setCancelConditions($cancelConditions);
+
+            try {
+                $this->quotaManager->process($booking);
+            } catch (\Throwable $e) {
+                throw new ApplicationException($e);
+            }
         }
 
         if ($booking->note() !== $request->note) {
