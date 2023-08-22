@@ -5,21 +5,21 @@ declare(strict_types=1);
 namespace Module\Client\Domain\Entity;
 
 use Module\Client\Domain\ValueObject\BankRequisites;
+use Module\Client\Domain\ValueObject\LegalId;
 use Module\Shared\Domain\Entity\EntityInterface;
-use Module\Shared\Domain\ValueObject\Id;
 use Module\Shared\Enum\Client\LegalTypeEnum;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
 class Legal extends AbstractAggregateRoot implements EntityInterface
 {
     public function __construct(
-        private readonly Id $id,
+        private readonly LegalId $id,
         private string $name,
         private readonly LegalTypeEnum $type,
         private BankRequisites $requisites,
     ) {}
 
-    public function id(): Id
+    public function id(): LegalId
     {
         return $this->id;
     }

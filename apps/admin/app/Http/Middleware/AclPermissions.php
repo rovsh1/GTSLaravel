@@ -22,7 +22,7 @@ class AclPermissions
 
         $route = $request->route()->getName();
         if ($route && $acl->isRouteAssigned($route) && !$acl->isRouteAllowed($route)) {
-            return abort(403);
+            abort(403);
         }
 
         return $next($request);
@@ -38,16 +38,16 @@ class AclPermissions
         $administrator = Auth::user();
         if ($administrator->superuser) {
             $permissions->superuser(true);
-            AppContext::set('superuser', true);
-        } else {
-            $context = [];
-            $rules = AccessRule::whereAdministrator($administrator->id)
-                ->where('flag', true);
-            foreach ($rules->cursor() as $r) {
-                $permissions->allow($r->resource, $r->permission);
-                $context[$r->resource] = $r->permission;
-            }
-            AppContext::set('permissions', $context);
+//            AppContext::set('superuser', true);
+//        } else {
+//            $context = [];
+//            $rules = AccessRule::whereAdministrator($administrator->id)
+//                ->where('flag', true);
+//            foreach ($rules->cursor() as $r) {
+//                $permissions->allow($r->resource, $r->permission);
+//                $context[$r->resource] = $r->permission;
+//            }
+//            AppContext::set('permissions', $context);
         }
     }
 }

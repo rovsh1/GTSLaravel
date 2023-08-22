@@ -8,7 +8,7 @@ import { AttachmentDialogImageProp } from '~resources/views/hotel/images/compone
 
 import { HotelRoomID, HotelRoomImage } from '~api/hotel'
 import { HotelID } from '~api/hotel/get'
-import { useHotelRoomAttachImageAPI, useHotelRoomDetachImageAPI } from '~api/hotel/images/update'
+import { useHotelRoomAttachImageAPI, useHotelRoomDetachImageAPI, useHotelSetMainImageAPI, useHotelUnSetMainImageAPI } from '~api/hotel/images/update'
 
 import BaseDialog from '~components/BaseDialog.vue'
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
@@ -27,6 +27,7 @@ const props = withDefaults(defineProps<{
 const emit = defineEmits<{
   (event: 'close'): void
   (event: 'update-attached-image-rooms'): void
+  (event: 'update-set-main-image-hotel'): void
 }>()
 
 const roomIDToChangeImageAttachment = ref<HotelRoomID | null>(null)
@@ -37,6 +38,12 @@ const hotelRoomChangeImageAttachmentPayload = computed(() =>
     roomID: roomIDToChangeImageAttachment.value,
     imageID: props.image.id,
   })))
+
+const hotelSetMainImagePayload = computed(() =>
+  ({
+    hotelID: props.hotel,
+    imageID: props.image.id,
+  }))
 
 const {
   execute: executeAttach,
@@ -49,6 +56,18 @@ const {
   data: detachData,
   isFetching: isDetachFetching,
 } = useHotelRoomDetachImageAPI(hotelRoomChangeImageAttachmentPayload)
+
+const {
+  execute: executeSetMainImage,
+  data: setMainImageData,
+  isFetching: isSetMainImageFetching,
+} = useHotelSetMainImageAPI(hotelSetMainImagePayload)
+
+const {
+  execute: executeUnSetMainImage,
+  data: unSetMainImageData,
+  isFetching: isUnSetMainImageFetching,
+} = useHotelUnSetMainImageAPI(hotelSetMainImagePayload)
 
 const changeImageAttachment = async (roomID: HotelRoomID, value: boolean) => {
   // TODO revert checkbox state to previous if request is not success
@@ -69,8 +88,24 @@ const changeImageAttachment = async (roomID: HotelRoomID, value: boolean) => {
   }
 }
 
+const changeSetMainImageToHotel = async (value: boolean) => {
+  // TODO revert checkbox state to previous if request is not success
+  if (value) {
+    await executeSetMainImage()
+    if (setMainImageData.value !== null && setMainImageData.value.success) {
+      emit('update-set-main-image-hotel')
+    }
+  } else {
+    await executeUnSetMainImage()
+    if (unSetMainImageData.value !== null && unSetMainImageData.value.success) {
+      emit('update-set-main-image-hotel')
+    }
+  }
+}
+
 const isChangeImageAttachmentInProgress = computed<boolean>(() => (
   isAttachFetching.value || isDetachFetching.value || unref(props.isRoomsFetching)
+  || isSetMainImageFetching.value || isUnSetMainImageFetching.value
 ))
 
 const isCheckboxDisabled = computed<boolean>(() =>
@@ -83,7 +118,7 @@ const isCheckboxDisabled = computed<boolean>(() =>
     class="attachmentDialog"
     @close="emit('close')"
   >
-    <div class="body">
+    <div v-if="opened" class="body">
       <div class="bodyForm">
         <div class="formTitle h6">Укажите, изображён ли здесь номер:</div>
         <ul class="roomsList list-group list-group-flush">
@@ -93,10 +128,18 @@ const isCheckboxDisabled = computed<boolean>(() =>
             class="list-group-item"
           >
             <BootstrapCheckbox
-              :label="room.customName"
+              :label="room.name"
               :value="room.isImageLinked"
               :disabled="isCheckboxDisabled"
               @input="value => changeImageAttachment(room.id, value)"
+            />
+          </li>
+          <li class="list-group-item gts-list-group-item__border-top--bold">
+            <BootstrapCheckbox
+              label="На главную отеля"
+              :value="image.isMain"
+              :disabled="isChangeImageAttachmentInProgress"
+              @input="value => changeSetMainImageToHotel(value)"
             />
           </li>
         </ul>

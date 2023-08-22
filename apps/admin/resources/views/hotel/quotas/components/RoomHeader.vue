@@ -3,7 +3,6 @@ import { pluralForm } from '~lib/plural'
 
 defineProps<{
   label: string
-  customName: string
   guests: number
   count: number
 }>()
@@ -11,7 +10,6 @@ defineProps<{
 <template>
   <div>
     <strong>{{ label }}</strong>
-    ({{ customName }})
   </div>
   <p>
     <span class="roomTypeStatValue">{{ guests }}</span>

@@ -12,9 +12,9 @@ import {
   updateManager as executeUpdateManager,
   updateNote as executeUpdateNote,
   useGetBookingAPI,
-} from '~api/booking'
-import { HotelRoomBooking } from '~api/booking/details'
-import { useBookingAvailableActionsAPI, useBookingStatusesAPI } from '~api/booking/status'
+} from '~api/booking/hotel'
+import { HotelRoomBooking } from '~api/booking/hotel/details'
+import { useBookingAvailableActionsAPI, useBookingStatusesAPI } from '~api/booking/hotel/status'
 import { useHotelMarkupSettingsAPI } from '~api/hotel/markup-settings'
 
 import { requestInitialData } from '~lib/initial-data'

@@ -107,7 +107,7 @@ class Handler extends ExceptionHandler
     protected function context(): array
     {
         if (app()->has('app-context')) {
-            return AppContext::get();
+            return AppContext::toArray();
         } else {
             return [];
         }

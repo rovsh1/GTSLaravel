@@ -1,18 +1,22 @@
-// import BookingRooms from './BookingRooms.vue'
-// import ControlPanel from './ControlPanel.vue'
+import { createPinia } from 'pinia'
+
+import EditableManager from '~resources/views/booking/EditableManager.vue'
+import EditableNote from '~resources/views/booking/EditableNote.vue'
+
+import { createVueInstance } from '~lib/vue'
 
 import '~resources/views/main'
 
-// const pinia = createPinia()
-//
-// createVueInstance({
-//   rootComponent: BookingRooms,
-//   rootContainer: '#booking-rooms',
-//   plugins: [pinia],
-// })
-//
-// createVueInstance({
-//   rootComponent: ControlPanel,
-//   rootContainer: '#booking-control-panel',
-//   plugins: [pinia],
-// })
+const pinia = createPinia()
+
+createVueInstance({
+  rootComponent: EditableNote,
+  rootContainer: '#booking-editable-note',
+  plugins: [pinia],
+})
+
+createVueInstance({
+  rootComponent: EditableManager,
+  rootContainer: '#booking-editable-manager',
+  plugins: [pinia],
+})

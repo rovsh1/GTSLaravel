@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Client\Domain\Factory;
 
 use Module\Client\Domain\Entity\Client;
-use Module\Shared\Domain\ValueObject\Id;
+use Module\Client\Domain\ValueObject\ClientId;
 use Module\Shared\Enum\Client\TypeEnum;
 use Sdk\Module\Foundation\Support\EntityFactory\AbstractEntityFactory;
 
@@ -16,7 +16,7 @@ class ClientFactory extends AbstractEntityFactory
     protected function fromArray(array $data): mixed
     {
         return new $this->entity(
-            new Id($data['id']),
+            new ClientId($data['id']),
             $data['name'],
             TypeEnum::from($data['type']),
         );

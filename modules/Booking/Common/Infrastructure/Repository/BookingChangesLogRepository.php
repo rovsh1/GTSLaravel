@@ -11,14 +11,15 @@ use Module\Booking\Common\Domain\Event\BookingStatusEventInterface;
 use Module\Booking\Common\Domain\Repository\BookingChangesLogRepositoryInterface;
 use Module\Booking\Common\Infrastructure\Models\BookingChangesLog;
 use Module\Booking\Common\Infrastructure\Models\EventTypeEnum;
-use Module\Shared\Domain\Service\Context;
+use Module\Shared\Domain\Service\ApplicationContextInterface;
 
 class BookingChangesLogRepository implements
     BookingChangesLogRepositoryInterface
 {
     public function __construct(
-        private readonly Context $contextService
-    ) {}
+        private readonly ApplicationContextInterface $contextService
+    ) {
+    }
 
     public function logBookingChange(BookingEventInterface $event, array $context = []): void
     {
@@ -29,7 +30,7 @@ class BookingChangesLogRepository implements
             'payload' => $event->payload(),
             'order_id' => $event->orderId(),
             'booking_id' => $event->bookingId(),
-            'context' => array_merge($this->contextService->get(), $context),
+            'context' => $this->contextService->toArray($context),
         ]);
     }
 

@@ -7,7 +7,6 @@ use App\Admin\Http\Controllers\Controller;
 use App\Admin\Http\Resources\Room as RoomResource;
 use App\Admin\Models\Hotel\Hotel;
 use App\Admin\Models\Hotel\Reference\BedType;
-use App\Admin\Models\Hotel\Reference\RoomName;
 use App\Admin\Models\Hotel\Reference\RoomType;
 use App\Admin\Models\Hotel\Room;
 use App\Admin\Support\Facades\Acl;
@@ -21,6 +20,7 @@ use App\Admin\View\Menus\HotelMenu;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RoomController extends Controller
 {
@@ -128,6 +128,19 @@ class RoomController extends Controller
         return response()->json(RoomResource::make($room));
     }
 
+    public function getRoomNames(Request $request, Hotel $hotel, string $lang): JsonResponse
+    {
+        $roomNames = DB::table('hotel_rooms_translation')
+            ->where('language', $lang)
+            ->select('name')
+            ->distinct()
+            ->get()
+            ->pluck('name')
+            ->toArray();
+
+        return response()->json($roomNames);
+    }
+
     private function formFactory(): FormContract
     {
         return Form::hidden('beds')
@@ -137,15 +150,9 @@ class RoomController extends Controller
                 'items' => RoomType::get(),
                 'emptyItem' => ''
             ])
-            ->select('name_id', [
-                'label' => 'Наименование',
-                'required' => true,
-                'items' => RoomName::get(),
-                'emptyItem' => ''
-            ])
-            ->text(
-                'custom_name',
-                ['label' => 'Наименование (уникальное)', 'hint' => 'Внутреннее наименования для отеля']
+            ->localeText(
+                'name',
+                ['label' => 'Наименование', 'required' => true]
             )
             ->number('rooms_number', ['label' => 'Кол-во номеров', 'required' => true])
             ->number('guests_count', ['label' => 'Вместимость номера', 'required' => true])

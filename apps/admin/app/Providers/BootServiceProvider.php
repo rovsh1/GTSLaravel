@@ -29,6 +29,16 @@ class BootServiceProvider extends ServiceProvider
     public function boot(): void
     {
         AppContext::setSource(SourceEnum::ADMIN);
-        AppContext::setRequest(request());
+        $this->setRequestContext();
+    }
+
+    private function setRequestContext(): void
+    {
+        $request = request();
+        AppContext::setHttpHost($request->getHttpHost());
+        AppContext::setHttpMethod($request->getMethod());
+        AppContext::setHttpUrl($request->getUri());
+        AppContext::setUserIp($request->ip());
+        AppContext::setUserAgent($request->userAgent());
     }
 }

@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->char('file_guid', 32);
             $table->unsignedSmallInteger('index')->default(0);
             $table->string('title')->nullable();
+            $table->boolean('is_main')->default(false);
             $table->timestamps();
 
             $table->foreign('hotel_id')

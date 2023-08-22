@@ -2,7 +2,7 @@ import { isEmpty } from 'lodash'
 import { createPinia } from 'pinia'
 import { z } from 'zod'
 
-import CreateClientButton from '~resources/views/hotel-booking/form/CreateClientButton.vue'
+import CreateClientButton from '~resources/views/booking/CreateClientButton.vue'
 
 import { formatDate } from '~lib/date'
 import { useApplicationEventBus } from '~lib/event-bus'
