@@ -6,7 +6,7 @@ import { MaybeRef } from '@vueuse/core'
 
 import { useBookingStatusHistoryStore } from '~resources/views/hotel-booking/show/store/status-history'
 
-import { BookingStatusHistoryResponse } from '~api/booking/status'
+import { BookingStatusHistoryResponse } from '~api/booking/hotel/status'
 
 import { formatDateTime } from '~lib/date'
 

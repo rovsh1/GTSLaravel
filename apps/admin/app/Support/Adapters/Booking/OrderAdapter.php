@@ -9,7 +9,7 @@ use Module\Booking\Order\Application\UseCase\GetOrder;
 
 class OrderAdapter
 {
-    public function getActiveOrders(int|null $clientId): array
+    public function getActiveOrders(int|null $clientId = null): array
     {
         return app(GetActiveOrders::class)->execute($clientId);
     }

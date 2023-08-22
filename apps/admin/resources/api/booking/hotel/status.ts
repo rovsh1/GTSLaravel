@@ -1,14 +1,7 @@
 import { MaybeRef } from '@vueuse/core'
 
 import { DateResponse, useAdminAPI } from '~api'
-
-export type StatusID = number
-
-export interface BookingStatusResponse {
-  id: StatusID
-  name: string
-  color: string
-}
+import { BookingStatusResponse } from '~api/booking/models'
 
 export interface BookingAvailableActionsResponse {
   statuses: BookingStatusResponse[]

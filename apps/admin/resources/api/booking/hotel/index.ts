@@ -9,37 +9,18 @@ import {
   CancelConditions,
   HotelInfo,
   HotelRoomBooking,
-  ManualChangablePrice,
-} from '~api/booking/details'
-import { BookingStatusResponse } from '~api/booking/status'
+} from '~api/booking/hotel/details'
+import { BaseBooking, BookingID } from '~api/booking/models'
 
 import { getNullableRef } from '~lib/vue'
 
-export type BookingID = number
-
-export interface BookingPrice {
-  boPrice: ManualChangablePrice
-  hoPrice: ManualChangablePrice
-  netValue: number
-  hoPenalty: number | null
-  boPenalty: number | null
-}
-
-export interface Booking {
-  id: BookingID
-  orderId: number
-  status: BookingStatusResponse
-  type: number
-  source: number
-  creatorId: number
-  note: string | null
+export type Booking = {
   hotelInfo: HotelInfo
   period: BookingPeriod
   roomBookings: HotelRoomBooking[]
   additionalInfo: AdditionalInfo | null
   cancelConditions: CancelConditions
-  price: BookingPrice
-}
+} & BaseBooking
 
 export interface GetBookingPayload {
   bookingID: BookingID

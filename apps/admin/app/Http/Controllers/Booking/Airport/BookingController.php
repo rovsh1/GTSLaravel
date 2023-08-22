@@ -33,8 +33,7 @@ class BookingController extends Controller
         Breadcrumb::add('Бронирование');
         Breadcrumb::add('Брони услуг аэропорта');
 
-        $statuses = StatusAdapter::getStatuses();
-        $grid = $this->gridFactory($statuses);
+        $grid = $this->gridFactory();
 //        $query = $this->repository->queryWithCriteria($grid->getSearchCriteria());
 //        $this->prepareGridQuery($query);
         $data = AirportAdapter::getBookings();
@@ -74,20 +73,27 @@ class BookingController extends Controller
         $form->trySubmit(route('airport-booking.store'));
 
         $data = $form->getData();
-        $creator = request()->user();
+        $creatorId = request()->user()->id;
+        $orderId = $data['order_id'] ?? null;
+        $currencyId = $data['currency_id'] ?? null;
+        if ($orderId !== null && $currencyId === null) {
+            $order = OrderAdapter::findOrder($orderId);
+            $currencyId = $order->currency->id;
+        }
+        $client = Client::find($data['client_id']);
         $bookingId = AirportAdapter::createBooking(
             cityId: $data['city_id'],
             clientId: $data['client_id'],
             legalId: $data['legal_id'],
-            currencyId: $data['currency_id'],
+            currencyId: $currencyId ?? $client->currency_id,
             airportId: $data['airport_id'],
             serviceId: $data['service_id'],
             date: new Carbon($data['date'] . ' ' . $data['time']),
-            creatorId: $creator->id,
+            creatorId: $creatorId,
             orderId: $data['order_id'] ?? null,
             note: $data['note'] ?? null
         );
-        $this->administratorRepository->create($bookingId, $creator->id);
+        $this->administratorRepository->create($bookingId, $creatorId);
 
         return redirect(
             route('airport-booking.show', $bookingId)
@@ -122,25 +128,26 @@ class BookingController extends Controller
             ]);
     }
 
-    protected function formFactory(): FormContract
+    protected function formFactory(bool $isEdit = false): FormContract
     {
         return Form::name('data')
-            ->select('order_id', [
-                'label' => 'Заказ',
-                'emptyItem' => 'Создать новый заказ',
-                'items' => OrderAdapter::getActiveOrders()
-            ])
-            ->hidden('client_id', [
+            ->select('client_id', [
                 'label' => __('label.client'),
-                'required' => true,
+                'required' => !$isEdit,
+                'emptyItem' => '',
+                'items' => Client::orderBy('name')->get(),
+                'disabled' => $isEdit,
+            ])
+            ->hidden('order_id', [
+                'label' => 'Заказ',
+                'disabled' => $isEdit
             ])
             ->hidden('legal_id', [
                 'label' => 'Юр. лицо',
             ])
             ->currency('currency_id', [
                 'label' => 'Валюта',
-                'required' => true,
-                'default' => 1,
+                'emptyItem' => '',
             ])
             ->city('city_id', [
                 'label' => __('label.city'),
@@ -156,6 +163,11 @@ class BookingController extends Controller
                 'label' => 'Аэропорт',
                 'required' => true,
             ])
+            ->manager('manager_id', [
+                'label' => 'Менеджер',
+                'emptyItem' => '',
+                'value' => request()->user()->id,
+            ])
             ->date('date', [
                 'label' => 'Дата прилёта/вылета',
                 'required' => true
@@ -164,21 +176,27 @@ class BookingController extends Controller
                 'label' => 'Время',
                 'required' => true
             ])
-
-//            ->addElement('manager_id', 'select', [
-//                'label' => 'Менеджер',
-//                'default' => App::getUserId(),
-//                'textIndex' => 'presentation',
-//                'items' => $managers
-//            ])
             ->textarea('note', ['label' => 'Примечание']);
     }
 
-    protected function gridFactory(array $statuses = []): GridContract
+    protected function gridFactory(): GridContract
     {
         return Grid::enableQuicksearch()
-            ->id('id', ['text' => '№', 'route' => fn($r) => route('airport-booking.show', $r), 'order' => true])
-            ->bookingStatus('status', ['text' => 'Статус', 'statuses' => $statuses])
+            ->checkbox('checked', ['checkboxClass' => 'js-select-booking', 'dataAttributeName' => 'booking-id'])
+            ->id('id', [
+                'text' => '№',
+                'order' => true,
+                'renderer' => function ($row, $val) {
+                    $bookingUrl = route('airport-booking.show', $row['id']);
+                    $idLink = "<a href='{$bookingUrl}'>{$row['id']}</a>";
+                    $orderId = $row['order_id'];
+                    $orderUrl = route('booking-order.show', $orderId);
+                    $orderLink = "<a href='{$orderUrl}'>{$orderId}</a>";
+
+                    return "$idLink / {$orderLink}";
+                }
+            ])
+            ->bookingStatus('status', ['text' => 'Статус', 'statuses' => StatusAdapter::getStatuses(), 'order' => true])
             ->text('client_name', ['text' => 'Клиент'])
             ->text('city_name', ['text' => 'Город'])
             ->text('service_name', ['text' => 'Название услуги'])

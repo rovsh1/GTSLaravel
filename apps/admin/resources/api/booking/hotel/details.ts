@@ -23,11 +23,6 @@ export interface HotelRoomBookingDetails {
   discount: Percent
 }
 
-export interface ManualChangablePrice {
-  value: number
-  isManual: boolean
-}
-
 export interface RoomBookingDayPrice {
   date: DateResponse
   netValue: number

@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import { MaybeRef } from '@vueuse/core'
 
 import { useAdminAPI } from '~api'
-import { UpdateBookingStatusResponse } from '~api/booking/index'
+import { UpdateBookingStatusResponse } from '~api/booking/hotel/index'
 
 import { getNullableRef } from '~lib/vue'
 

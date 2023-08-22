@@ -7,7 +7,7 @@ import { Tab } from 'bootstrap'
 
 import { useCityStore } from '~resources/store/city'
 import { useCurrencyStore } from '~resources/store/currency'
-import ManagerSelect from '~resources/views/hotel-booking/form/components/ManagerSelect.vue'
+import ManagerSelect from '~resources/views/booking/components/ManagerSelect.vue'
 import {
   clientTypeOptions,
   genderOptions,

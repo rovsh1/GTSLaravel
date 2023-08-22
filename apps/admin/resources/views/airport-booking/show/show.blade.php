@@ -8,6 +8,7 @@
     <script>
       window['view-initial-data-airport-booking'] = {{ Js::from([
             'bookingID' => $bookingId,
+            'manager' => $manager,
         ]) }}
     </script>
 @endsection
@@ -39,10 +40,6 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>Бронь (ID)</th>
-                                <td>-</td>
-                            </tr>
-                            <tr>
                                 <th>Источник</th>
                                 <td>-</td>
                             </tr>
@@ -53,10 +50,6 @@
                             <tr>
                                 <th>Тип карты оплаты</th>
                                 <td>-</td>
-                            </tr>
-                            <tr>
-                                <th>Дата прилёта/вылета</th>
-                                <td>{{ $model->date }}</td>
                             </tr>
                             <tr>
                                 <th>Город</th>
@@ -75,8 +68,18 @@
                                 <td>-</td>
                             </tr>
                             <tr>
+                                <th>Дата прилёта/вылета</th>
+                                <td>{{ $model->date->format('d.m.Y') }}</td>
+                            </tr>
+                            <tr>
+                                <th>Время прилёта/вылета</th>
+                                <td>{{ $model->date->format('H:i') }}</td>
+                            </tr>
+                            <tr>
                                 <th>Менеджер</th>
-                                <td> {{ $manager->presentation }}</td>
+                                <td>
+                                    <div id="booking-editable-manager"></div>
+                                </td>
                             </tr>
                             <tr>
                                 <th>Автор</th>
@@ -88,7 +91,9 @@
                             </tr>
                             <tr>
                                 <th>Примечание</th>
-                                <td>{{ $model->note }}</td>
+                                <td>
+                                    <div id="booking-editable-note"></div>
+                                </td>
                             </tr>
                             </tbody>
                         </table>

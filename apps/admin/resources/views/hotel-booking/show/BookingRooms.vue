@@ -19,9 +19,9 @@ import {
   HotelBookingGuest,
   HotelRoomBooking,
   RoomBookingPrice,
-} from '~api/booking/details'
-import { updateRoomBookingPrice } from '~api/booking/price'
-import { deleteBookingGuest, deleteBookingRoom } from '~api/booking/rooms'
+} from '~api/booking/hotel/details'
+import { updateRoomBookingPrice } from '~api/booking/hotel/price'
+import { deleteBookingGuest, deleteBookingRoom } from '~api/booking/hotel/rooms'
 import { CountryResponse, useCountrySearchAPI } from '~api/country'
 import { MarkupSettings } from '~api/hotel/markup-settings'
 import { HotelRate, useHotelRatesAPI } from '~api/hotel/price-rate'

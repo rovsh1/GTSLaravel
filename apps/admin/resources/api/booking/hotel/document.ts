@@ -1,7 +1,7 @@
 import { MaybeRef } from '@vueuse/core'
 
 import { useAdminAPI } from '~api'
-import { BookingID } from '~api/booking/index'
+import { BookingID } from '~api/booking/models'
 import { FileResponse } from '~api/hotel/images'
 
 export interface DownloadDocumentRequest {
