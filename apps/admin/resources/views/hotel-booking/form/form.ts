@@ -21,7 +21,6 @@ const { bookingID } = requestInitialData('view-initial-data-hotel-booking', z.ob
   bookingID: z.number().nullable(),
 }))
 
-// @todo загрузить из api
 let clients = [] as Client[]
 
 const pinia = createPinia()
