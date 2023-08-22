@@ -1,12 +1,14 @@
 <script lang="ts" setup>
 
+import { computed } from 'vue'
+
 import { MaybeRef } from '@vueuse/core'
 
-import { SelectedValue, SelectOption } from './lib'
+import { SelectOption } from './lib'
 
-withDefaults(defineProps<{
+const props = withDefaults(defineProps<{
   id: string
-  value: SelectedValue
+  value: any
   options: SelectOption[]
   multiple?: boolean
   label?: string
@@ -14,6 +16,7 @@ withDefaults(defineProps<{
   disabled?: MaybeRef<boolean>
   disabledPlaceholder?: string
   showEmptyItem?: boolean
+  enableTags?: boolean
 }>(), {
   label: '',
   disabled: false,
@@ -21,10 +24,25 @@ withDefaults(defineProps<{
   disabledPlaceholder: undefined,
   showEmptyItem: true,
   multiple: false,
+  enableTags: false,
+})
+
+const groupOptions = computed(() => {
+  const allOptions: SelectOption[] = props.options
+  const groupedData: any = {}
+  allOptions.forEach((item) => {
+    const group = item.group ? item.group : ''
+    if (!groupedData[group]) {
+      groupedData[group] = []
+    }
+    groupedData[group].push(item)
+  })
+  return groupedData
 })
 
 const emit = defineEmits<{
-  (event: 'input', value: SelectedValue): void
+  (event: 'input', value: any): void
+  (event: 'blur', e: any): void
 }>()
 </script>
 <template>
@@ -40,17 +58,22 @@ const emit = defineEmits<{
       :disabled="disabled as boolean"
       :required="required as boolean"
       :multiple="multiple"
+      @change="event => emit('blur', event)"
+      @blur="event => emit('blur', event)"
       @input="event => emit('input', (event.target as HTMLInputElement).value)"
     >
       <option v-if="disabled && disabledPlaceholder" selected disabled>{{ disabledPlaceholder }}</option>
       <option v-else-if="showEmptyItem" :value="undefined" />
-      <option
-        v-for="option in options"
-        :key="option.value"
-        :value="option.value"
-      >
-        {{ option.label }}
-      </option>
+      <template v-if="!enableTags">
+        <option v-for="option in options" :key="option.value" :value="option.value">
+          {{ option.label }}
+        </option>
+      </template>
+      <template v-else>
+        <optgroup v-for="(optionInGroup, nameGroup) in groupOptions" :key="nameGroup" :label="nameGroup.toString()">
+          <option v-for="option in optionInGroup" :key="option.value" :value="option.value">{{ option.label }}</option>
+        </optgroup>
+      </template>
     </select>
   </div>
 </template>
