@@ -220,8 +220,8 @@ const onModalSubmit = async () => {
   resetForm()
   nextTick(() => {
     $('.is-invalid').removeClass('is-invalid')
+    toggleModal()
   })
-  toggleModal()
 }
 
 onMounted(() => {
