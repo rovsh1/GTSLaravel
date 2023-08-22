@@ -30,6 +30,7 @@ class QueueMessage extends BaseModel
     ];
 
     protected $casts = [
+        'payload' => 'array',
         'priority' => 'int',
         'attempts' => 'int',
         'status' => 'int',

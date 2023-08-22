@@ -3,10 +3,8 @@
 namespace Module\Support\MailManager\Domain\Service;
 
 use Module\Support\MailManager\Domain\Entity\Mail;
-use Module\Support\MailManager\Domain\Entity\QueueMessage;
-use Module\Support\MailManager\Domain\Factory\MailMessageFactory;
 use Module\Support\MailManager\Domain\Repository\QueueRepositoryInterface;
-use Module\Support\MailManager\Domain\ValueObject\QueueMailStatusEnum;
+use Module\Support\MailManager\Domain\ValueObject\MailId;
 use Throwable;
 
 class QueueManager implements QueueManagerInterface
@@ -22,47 +20,29 @@ class QueueManager implements QueueManagerInterface
         return $this->queueRepository->waitingCount();
     }
 
-    public function pop(): ?QueueMessage
+    public function pop(): ?Mail
     {
         return $this->queueRepository->findWaiting();
     }
 
-    public function sendSync(Mail $mailMessage, array $context = null): QueueMessage
+    public function sendSync(Mail $mailMessage, array $context = null): void
     {
-        $queueMessage = $this->queueRepository->push(
-            $mailMessage->subject(),
-            $mailMessage->serialize(),
-            0,
-            QueueMailStatusEnum::PROCESSING,
-            $context
-        );
+        $this->queueRepository->push($mailMessage, 0, $context);
 
-        $this->sendWaitingMessage($queueMessage);
-
-        return $queueMessage;
+        $this->sendWaitingMessage($mailMessage);
     }
 
-    public function push(Mail $mailMessage, int $priority = 0, array $context = null): QueueMessage
+    public function push(Mail $mailMessage, int $priority = 0, array $context = null): void
     {
-        return $this->queueRepository->push(
-            $mailMessage->subject(),
-            $mailMessage->serialize(),
-            $priority,
-            QueueMailStatusEnum::WAITING,
-            $context
-        );
+        $this->queueRepository->push($mailMessage, $priority, $context);
     }
 
-//    public function send(QueueMessage $queueMessage): void
-//    {
-//        if ($queueMessage->isWaiting()) {
-//            throw new \Exception('Cant send not new message');
-//        }
-//
-//        $this->queueRepository->updateStatus($queueMessage->uuid, QueueMailStatusEnum::PROCESSING);
-//
-//        $this->sendWaitingMessage($queueMessage);
-//    }
+    public function resendMessage(MailId $uuid): void
+    {
+        $message = $this->queueRepository->find($uuid);
+
+        $this->sendWaitingMessage($message);
+    }
 
     public function sendWaitingMessages(): void
     {
@@ -71,35 +51,27 @@ class QueueManager implements QueueManagerInterface
         }
     }
 
-    public function sendWaitingMessage(QueueMessage $queueMessage): void
+    public function sendWaitingMessage(Mail $mailMessage): void
     {
-        $this->queueRepository->updateStatus($queueMessage->uuid, QueueMailStatusEnum::PROCESSING);
-
-        $mailMessage = MailMessageFactory::deserialize($queueMessage->payload);
+        $mailMessage->setProcessingStatus();
+        $this->queueRepository->store($mailMessage);
 
         try {
             $this->mailer->send($mailMessage);
         } catch (Throwable $exception) {
-            $this->queueRepository->updateStatus($queueMessage->uuid, QueueMailStatusEnum::FAILED);
+            $mailMessage->setFailedStatus($exception);
+            $this->queueRepository->store($mailMessage);
 
             return;
-//            throw $exception;
         }
 
-//        $queueCommand = $queueRecord->command();
-//        try {
-//            $this->commandBus->execute($queueCommand);
-//        } catch (\Throwable $exception) {
-//            //$preProcessor->fail($queueMessage, $mailMessage, $exception);
-//            continue;
-//        }
-
-        $this->queueRepository->updateStatus($queueMessage->uuid, QueueMailStatusEnum::SENT);
+        $mailMessage->setSentStatus();
+        $this->queueRepository->store($mailMessage);
     }
 
-    public function retry(QueueMessage $message): void
+    public function retry(MailId $uuid): void
     {
-        $this->queueRepository->retry($message->uuid);
+        $this->queueRepository->retry($uuid);
     }
 
     public function retryAll(): void

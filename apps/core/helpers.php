@@ -1,6 +1,5 @@
 <?php
 
-use App\Core\Support\Facades\Constants;
 use Sdk\Module\Foundation\Module;
 
 function module(string $name): ?Module
@@ -36,9 +35,4 @@ function api_path($path = ''): string
 function modules_path($path = '')
 {
     return app()->modulesPath($path);
-}
-
-function app_constant(string $keyOrClass)
-{
-    return Constants::value($keyOrClass);
 }

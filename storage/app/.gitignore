@@ -1,5 +1,4 @@
 *
 !public/
-!booking/
-!booking/**
+!public/**
 !.gitignore

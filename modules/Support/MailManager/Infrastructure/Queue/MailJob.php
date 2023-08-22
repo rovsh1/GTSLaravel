@@ -3,7 +3,7 @@
 namespace Module\Support\MailManager\Infrastructure\Queue;
 
 use Illuminate\Contracts\Queue\Job as JobContract;
-use Module\Support\MailManager\Domain\Entity\QueueMessage;
+use Module\Support\MailManager\Domain\Entity\Mail;
 use Module\Support\MailManager\Domain\Service\QueueManagerInterface;
 use Module\Support\MailManager\Domain\ValueObject\QueueMailStatusEnum;
 
@@ -11,7 +11,7 @@ class MailJob implements JobContract
 {
     public function __construct(
         private readonly QueueManagerInterface $mailManager,
-        private readonly QueueMessage $queueMessage
+        private readonly Mail $queueMessage
     ) {
     }
 
@@ -31,12 +31,12 @@ class MailJob implements JobContract
 
     public function getName(): string
     {
-        return 'SendMail [' . $this->queueMessage->uuid . ']';
+        return 'SendMail [' . $this->queueMessage->id() . ']';
     }
 
     public function uuid()
     {
-        return $this->queueMessage->uuid;
+        return $this->queueMessage->id()->value();
     }
 
     public function getJobId()
@@ -56,17 +56,17 @@ class MailJob implements JobContract
 
     public function isDeleted(): bool
     {
-        return $this->queueMessage->status !== QueueMailStatusEnum::WAITING;
+        return $this->queueMessage->status() !== QueueMailStatusEnum::WAITING;
     }
 
     public function payload()
     {
-        return null;
+        return $this->queueMessage->serialize();
     }
 
     public function isReleased(): bool
     {
-        return $this->queueMessage->status === QueueMailStatusEnum::WAITING;
+        return $this->queueMessage->status() === QueueMailStatusEnum::WAITING;
     }
 
     public function delete()
@@ -80,7 +80,7 @@ class MailJob implements JobContract
 
     public function hasFailed(): bool
     {
-        return $this->queueMessage->status === QueueMailStatusEnum::FAILED;
+        return $this->queueMessage->status() === QueueMailStatusEnum::FAILED;
     }
 
     public function markAsFailed()

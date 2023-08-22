@@ -10,25 +10,22 @@ return new class extends Migration {
     {
         Schema::create('s_constants', function (Blueprint $table) {
             $table->smallInteger('id')->unsigned()->autoIncrement();
-            $table->string('key', 50);
-            $table->string('name', 50);
-            $table->string('value');
-            $table->boolean('enabled')->default(false);
+            $table->string('key');
+            $table->string('value')->nullable();
         });
 
         $this->fill();
     }
 
-    private function fill()
+    private function fill(): void
     {
-        $constant = new Module\Shared\Domain\Constant\WageRateMin();
-        DB::table('s_constants')
-            ->insert([
+        $constants = app(\Module\Shared\Domain\Service\ApplicationConstantsInterface::class);
+        foreach ($constants as $constant) {
+            DB::table('s_constants')->insert([
                 'key' => $constant->key(),
-                'name' => 'Базовая расчетная величина',
-                'value' => '300000',
-                'enabled' => true
+                'value' => $constant->default()
             ]);
+        }
     }
 
     public function down()

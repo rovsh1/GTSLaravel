@@ -3,7 +3,7 @@ import { computed, unref } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
 
-import { BookingStatusResponse } from '~api/booking/status'
+import { BookingStatusResponse } from '~api/booking/models'
 
 import ButtonLoadingSpinner from '~components/ButtonLoadingSpinner.vue'
 

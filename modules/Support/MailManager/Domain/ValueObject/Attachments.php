@@ -1,14 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Module\Support\MailManager\Domain\ValueObject;
 
-class Attachments
+final class Attachments
 {
-    public function __construct()
+    public
+    function __construct()
     {
     }
 
-    public function toArray(): array
+    public
+    function toArray(): array
     {
         return [];
     }

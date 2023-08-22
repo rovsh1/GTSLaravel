@@ -3,7 +3,6 @@ import { createPinia } from 'pinia'
 import { z } from 'zod'
 
 import axios from '~resources/js/app/api'
-import CreateClientButton from '~resources/views/hotel-booking/form/CreateClientButton.vue'
 
 import { Client } from '~api/client'
 
@@ -11,6 +10,7 @@ import { formatDate } from '~lib/date'
 import { useApplicationEventBus } from '~lib/event-bus'
 import { requestInitialData } from '~lib/initial-data'
 import { createVueInstance } from '~lib/vue'
+import CreateClientButton from '~resources/views/hotel-booking/form/CreateClientButton.vue'
 
 import '~resources/views/main'
 

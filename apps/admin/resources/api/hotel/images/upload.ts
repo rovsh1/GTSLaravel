@@ -4,10 +4,10 @@ import { MaybeRef } from '@vueuse/core'
 
 import { BaseResponse, useAdminAPI } from '~api'
 
-type HotelImagesUploadProps = {
+export type HotelImagesUploadProps = {
   hotelID: number
   roomID?: number
-  images: File[]
+  image: File
 }
 export const useHotelImagesUploadAPI = (props: MaybeRef<HotelImagesUploadProps | null>) =>
   useAdminAPI(props, ({ hotelID }) =>
@@ -15,11 +15,9 @@ export const useHotelImagesUploadAPI = (props: MaybeRef<HotelImagesUploadProps |
     .post(computed<FormData | null>(() => {
       const unwrapped = unref(props)
       if (unwrapped === null) return null
-      const { roomID, images } = unwrapped
+      const { roomID, image } = unwrapped
       const formData = new FormData()
-      images.forEach((image) => {
-        formData.append('files[]', image)
-      })
+      formData.append('files[]', image)
       if (roomID !== undefined) {
         formData.append('room_id', String(roomID))
       }
