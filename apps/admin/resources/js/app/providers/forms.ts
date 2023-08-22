@@ -1,4 +1,4 @@
-import { Tab } from 'bootstrap'
+import { Tab, Tooltip } from 'bootstrap'
 
 import { useDateRangePicker } from '~lib/date-picker/date-picker'
 import { observeDynamicElements } from '~lib/observe'
@@ -118,8 +118,8 @@ function bootGridFilters() {
 }
 
 function bootTooltips() {
-  // const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-  // const tooltipList = [...tooltipTriggerList].map((tooltipTriggerEl) => new Tooltip(tooltipTriggerEl))
+  const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+  tooltipTriggerList.forEach((tooltipTriggerEl) => new Tooltip(tooltipTriggerEl))
 }
 
 export default function bootForms() {

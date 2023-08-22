@@ -402,18 +402,19 @@ class BookingController extends Controller
             ->paginator(20);
     }
 
+
     private function getRoomNamesTooltip(mixed $tableRow): string
     {
         $roomNames = $tableRow['room_names'] ?? null;
         if ($roomNames === null) {
             return '';
         }
-        $roomNames = explode(', ', $roomNames);
+        $roomNames = explode(',', $roomNames);
 
-        $r = collect($roomNames)
+        return collect($roomNames)
             ->groupBy(fn(string $val) => trim($val))
-            ->mapWithKeys(fn(Collection $values, $key) => "{$key}: {$values->count()}");
-        dd($r);
+            ->map(fn(Collection $values, $key) => "{$values->first()}: {$values->count()}")
+            ->implode('<br>');
     }
 
     private function getActionButtons(mixed $tableRow): string
