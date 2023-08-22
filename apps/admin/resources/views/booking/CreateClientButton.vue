@@ -7,6 +7,7 @@ import { storeToRefs } from 'pinia'
 
 import { useCityStore } from '~resources/store/city'
 import { useCurrencyStore } from '~resources/store/currency'
+import ManagerSelect from '~resources/views/booking/components/ManagerSelect.vue'
 import { tabsItemsSettings } from '~resources/views/hotel-booking/form/lib/composables'
 import { statusOptions } from '~resources/views/hotel-booking/form/lib/constants'
 import { BasicFormData, LegalEntityFormData, PhysicalEntityFormData } from '~resources/views/hotel-booking/form/lib/types'
@@ -32,7 +33,6 @@ import IconButton from '~components/IconButton.vue'
 import MultiSelect from '~components/MultiSelect.vue'
 import OverlayLoading from '~components/OverlayLoading.vue'
 import Select2BaseSelect from '~components/Select2BaseSelect.vue'
-import ManagerSelect from '~resources/views/hotel-booking/form/components/ManagerSelect.vue'
 
 const legalTypeOptions = mapEntitiesToSelectOptions([
   { id: 1, name: 'OTA' },
