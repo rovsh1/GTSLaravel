@@ -1,5 +1,11 @@
 <script lang="ts" setup>
+import { ref } from 'vue'
+
+import DateRangePicker from '~components/DateRangePicker.vue'
+
 import RoomPriceTable from './RoomPriceTable.vue'
+
+const period = ref<[Date, Date]>()
 
 const props = withDefaults(defineProps<{
   title: string
@@ -19,10 +25,19 @@ const props = withDefaults(defineProps<{
 
       <div class="card season-edit-price">
         <div class="card-body">
-          <form method="post" class="form-labels form-inline">
+          <div class="form-labels form-inline">
             <div class="form-field field-daterange field-period field-required">
-              <label for="form_data_period" class="form-element-label  field-daterange">Период <span class="required-label">*</span></label>
-              <input id="form_data_period" type="text" name="data[period]" class=" field-daterange" autocomplete="off" value="">
+              <DateRangePicker
+                id="period"
+                label="Период"
+                required
+                :lock-periods="undefined"
+                :editable-id="undefined"
+                :min-date="undefined"
+                :max-date="undefined"
+                :value="undefined"
+                @input="(dates) => period = dates"
+              />
             </div>
             <div class="form-field field-select field-days field-required">
               <label for="form_data_days" class="form-element-label  field-select">Выберите дни недели <span class="required-label">*</span></label>
@@ -56,7 +71,7 @@ const props = withDefaults(defineProps<{
               <input id="form_data_price" type="text" name="data[price]" class=" field-number" value="">
             </div>
             <button type="submit" class="btn btn-submit">Обновить</button>
-          </form>
+          </div>
         </div>
       </div>
     </div>
