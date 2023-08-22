@@ -2,24 +2,26 @@ import { isEmpty } from 'lodash'
 import { createPinia } from 'pinia'
 import { z } from 'zod'
 
-import CreateClientButton from '~resources/views/booking/CreateClientButton.vue'
+import axios from '~resources/js/app/api'
+
+import { Client } from '~api/client'
 
 import { formatDate } from '~lib/date'
 import { useApplicationEventBus } from '~lib/event-bus'
 import { requestInitialData } from '~lib/initial-data'
 import { createVueInstance } from '~lib/vue'
+import CreateClientButton from '~resources/views/hotel-booking/form/CreateClientButton.vue'
 
 import '~resources/views/main'
 
-const { clients, bookingID } = requestInitialData('view-initial-data-hotel-booking', z.object({
+import { mapClientsToSelect2Options } from './lib/constants'
+import { Select2Option } from './lib/types'
+
+const { bookingID } = requestInitialData('view-initial-data-hotel-booking', z.object({
   bookingID: z.number().nullable(),
-  clients: z.array(z.object({
-    id: z.number(),
-    name: z.string(),
-    is_legal: z.boolean().optional(),
-    currency_id: z.number().nullable(),
-  })),
 }))
+
+let clients = [] as Client[]
 
 const pinia = createPinia()
 
@@ -102,6 +104,15 @@ $(() => {
     useSelect2: true,
   })
 
+  const reloadClientsSelect = async (): Promise<void> => {
+    const clientsList = await axios.get('/client/list')
+    const clientsListData = clientsList && clientsList.data ? clientsList.data : []
+    clients = clientsListData
+    const clientsSelectOptions: Select2Option[] = mapClientsToSelect2Options(clientsListData)
+    $clientIdSelect.select2('destroy').empty().select2({ data: clientsSelectOptions }).val('')
+      .trigger('change')
+  }
+
   if (bookingID === null) {
     const $clientIdSelectWrapper = $clientIdSelect.parent()
     $clientIdSelectWrapper.removeClass('col-sm-7').addClass('col-sm-6')
@@ -118,8 +129,10 @@ $(() => {
     })
 
     const eventBus = useApplicationEventBus()
-    eventBus.on('client-created', (event: { clientId: number }) => {
+    eventBus.on('client-created', async (event: { clientId: number }) => {
+      await reloadClientsSelect()
       $clientIdSelect.val(event.clientId).trigger('change')
+      handleChangeClientId(event.clientId)
     })
   }
 
@@ -139,4 +152,6 @@ $(() => {
     labelGetter: (order: Record<string, any>) => `№${order.id} от ${formatDate(order.createdAt)}`,
     childChange: toggleOrderFields,
   })
+
+  reloadClientsSelect()
 })

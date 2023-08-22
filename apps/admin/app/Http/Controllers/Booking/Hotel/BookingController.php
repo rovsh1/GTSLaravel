@@ -116,7 +116,6 @@ class BookingController extends Controller
         return Layout::title($this->prototype->title('create'))
             ->view($this->prototype->view('form'), [
                 'form' => $form,
-                'clients' => ClientResource::collection(Client::orderBy('name')->get()),
                 'cancelUrl' => $this->prototype->route('index'),
             ]);
     }
@@ -213,7 +212,6 @@ class BookingController extends Controller
             ->view($this->prototype->view('edit') ?? $this->prototype->view('form') ?? 'default.form.form', [
                 'model' => $booking,
                 'form' => $form,
-                'clients' => ClientResource::collection(Client::orderBy('name')->get()),
                 'cancelUrl' => $this->prototype->route('show', $id),
 //                'deleteUrl' => $this->isAllowed('delete') ? $this->prototype->route('destroy', $id) : null
             ]);
