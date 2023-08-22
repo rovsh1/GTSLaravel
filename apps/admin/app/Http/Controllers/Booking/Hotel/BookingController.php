@@ -39,6 +39,7 @@ use App\Core\Support\Http\Responses\AjaxSuccessResponse;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Module\Booking\Common\Domain\Service\RequestRules;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
@@ -78,6 +79,9 @@ class BookingController extends Controller
                 DB::raw(
                     '(SELECT GROUP_CONCAT(room_name) FROM booking_hotel_rooms WHERE booking_id=bookings.id) as room_names'
                 )
+            )
+            ->addSelect(
+                DB::raw('(SELECT COUNT(id) FROM booking_hotel_rooms WHERE booking_id=bookings.id) as rooms_count')
             )
             ->addSelect(
                 DB::raw('(SELECT bookings.status IN (' . implode(',', $requestableStatuses) . ')) as is_requestable'),
@@ -386,9 +390,9 @@ class BookingController extends Controller
                 'city_name',
                 ['text' => 'Город / Отель', 'renderer' => fn($row, $val) => "{$val} / {$row['hotel_name']}"]
             )
-            ->text(
-                'room_names',
-                ['text' => 'Номера', 'renderer' => fn($row, $val) => str_replace(', ', '<br>', $val)]
+            ->textWithTooltip(
+                'rooms_count',
+                ['text' => 'Номера', 'tooltip' => fn($row, $val) => $this->getRoomNamesTooltip($row)]
             )
             ->text('guests_count', ['text' => 'Гостей'])
             ->text('source', ['text' => 'Источник', 'order' => true])
@@ -396,6 +400,21 @@ class BookingController extends Controller
             ->text('actions', ['renderer' => fn($row, $val) => $this->getActionButtons($row)])
             ->orderBy('created_at', 'desc')
             ->paginator(20);
+    }
+
+
+    private function getRoomNamesTooltip(mixed $tableRow): string
+    {
+        $roomNames = $tableRow['room_names'] ?? null;
+        if ($roomNames === null) {
+            return '';
+        }
+        $roomNames = explode(',', $roomNames);
+
+        return collect($roomNames)
+            ->groupBy(fn(string $val) => trim($val))
+            ->map(fn(Collection $values, $key) => "{$values->first()}: {$values->count()}")
+            ->implode('<br>');
     }
 
     private function getActionButtons(mixed $tableRow): string
