@@ -4,7 +4,7 @@ import { z } from 'zod'
 
 import { requestInitialData } from '~lib/initial-data'
 
-import BaseLayout from '~components/BaseLayout.vue'
+import RoomPriceCard from './components/RoomPriceCard.vue'
 
 const { hotelID } = requestInitialData(
   'view-initial-data-hotel-prices',
@@ -39,34 +39,11 @@ console.log('hotelId:', hotelID)
 // const editable = ref(false)
 </script>
 <template>
-  <BaseLayout>
-    <!-- <ul class="list">
-      <li v-for="price in prices">{{ price }}</li>
-    </ul> -->
-  </BaseLayout>
+  <RoomPriceCard title="Четырехместный (170)" :data="{}" />
+  <RoomPriceCard title="Двухместный (90)" :data="{}" />
 </template>
+
 <style lang="scss" scoped>
 @use "~resources/sass/vendor/bootstrap/configuration" as bs;
 
-.title {
-  padding-left: calc(#{bs.$form-select-padding-x} - 0.1em);
-}
-
-.quotasBody {
-  display: flex;
-  flex-flow: column;
-  gap: 2em;
-}
-
-.quotasTables {
-  display: flex;
-  flex-flow: column;
-  gap: 2em;
-}
-
-.rooms-cards {
-  display: flex;
-  flex-flow: column wrap;
-  gap: 32px;
-}
 </style>
