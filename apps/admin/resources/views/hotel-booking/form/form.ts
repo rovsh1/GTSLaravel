@@ -22,7 +22,7 @@ const { bookingID } = requestInitialData('view-initial-data-hotel-booking', z.ob
 }))
 
 // @todo загрузить из api
-const clients = [] as Client[]
+let clients = [] as Client[]
 
 const pinia = createPinia()
 
@@ -107,7 +107,9 @@ $(() => {
 
   const reloadClientsSelect = async (): Promise<void> => {
     const clientsList = await axios.get('/client/list')
-    const clientsSelectOptions: Select2Option[] = clientsList && clientsList.data ? mapClientsToSelect2Options(clientsList.data) : []
+    const clientsListData = clientsList && clientsList.data ? clientsList.data : []
+    clients = clientsListData
+    const clientsSelectOptions: Select2Option[] = mapClientsToSelect2Options(clientsListData)
     $clientIdSelect.select2('destroy').empty().select2({ data: clientsSelectOptions }).val('')
       .trigger('change')
   }
@@ -131,6 +133,7 @@ $(() => {
     eventBus.on('client-created', async (event: { clientId: number }) => {
       await reloadClientsSelect()
       $clientIdSelect.val(event.clientId).trigger('change')
+      handleChangeClientId(event.clientId)
     })
   }
 

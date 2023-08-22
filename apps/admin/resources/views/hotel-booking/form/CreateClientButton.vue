@@ -217,8 +217,11 @@ const onModalSubmit = async () => {
   waitCreatingClient.value = false
 
   eventBus.emit('client-created', { clientId: newClient.value?.id })
-  toggleModal()
   resetForm()
+  nextTick(() => {
+    $('.is-invalid').removeClass('is-invalid')
+  })
+  toggleModal()
 }
 
 onMounted(() => {
