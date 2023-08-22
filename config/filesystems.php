@@ -32,6 +32,7 @@ return [
         'files' => [
             'driver' => 'local',
             'root' => storage_path('app/files'),
+            'url' => env('APP_URL') . '/files',
             'throw' => false,
         ],
 
@@ -52,7 +53,7 @@ return [
         'upload' => [
             'driver' => 'local',
             'root' => storage_path('app/upload'),
-            'url' => '/upload',
+            'url' => env('APP_URL') . '/upload',
             'visibility' => 'public',
             'throw' => false,
         ],
@@ -83,8 +84,7 @@ return [
     */
 
     'links' => [
-        root_path('apps/admin/public/upload') => storage_path('app/upload'),
-        root_path('apps/admin/public/file') => storage_path('app/files'),
+        root_path('apps/site/public/storage') => storage_path('app/public'),
         root_path('apps/site/public/upload') => storage_path('app/upload'),
         root_path('apps/site/public/file') => storage_path('app/files'),
     ],

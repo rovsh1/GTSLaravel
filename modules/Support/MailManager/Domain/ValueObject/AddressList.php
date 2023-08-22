@@ -1,47 +1,48 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Module\Support\MailManager\Domain\ValueObject;
 
-class AddressList implements \Iterator
+use Module\Shared\Contracts\Support\Serializable;
+
+final class AddressList implements \Iterator, Serializable
 {
     private int $position = 0;
 
     private array $list = [];
 
-    public function __construct(array $addresses = [])
+    public function __construct(iterable $addresses = [])
     {
-        $this->set($addresses);
-    }
+//        if (empty($addresses)) {
+//            throw new \Exception('AddressList cant be empty');
+//        }
 
-    public function set(array $addresses): void
-    {
-        $this->list = [];
         foreach ($addresses as $address) {
-            $this->add($address);
-        }
-    }
-
-    public function add(EmailAddress|string $address): void
-    {
-        if (!$this->exists($address)) {
-            $this->list[] = is_string($address) ? new EmailAddress($address) : $address;
+            $this->list[] = $address instanceof EmailAddress ? $address : new EmailAddress($address);
         }
     }
 
     public function exists(EmailAddress|string $address): bool
     {
-        $searchValue = is_string($address) ? $address : $address->value();
+        $searchValue = is_string($address) ? $address : $address->email();
         foreach ($this->list as $address) {
-            if ($address->value() === $searchValue) {
+            if ($address->email() === $searchValue) {
                 return true;
             }
         }
+
         return false;
+    }
+
+    public function isEmpty(): bool
+    {
+        return empty($this->list);
     }
 
     public function toArray(): array
     {
-        return array_map(fn(EmailAddress $address) => $address->value(), $this->list);
+        return array_map(fn(EmailAddress $address) => $address->email(), $this->list);
     }
 
     public function current(): EmailAddress
@@ -67,5 +68,15 @@ class AddressList implements \Iterator
     public function rewind(): void
     {
         $this->position = 0;
+    }
+
+    public function serialize(): array
+    {
+        return $this->toArray();
+    }
+
+    public static function deserialize(array $payload): AddressList
+    {
+        return new AddressList($payload);
     }
 }

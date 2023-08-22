@@ -20,6 +20,7 @@ use App\Admin\View\Menus\HotelMenu;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RoomController extends Controller
 {
@@ -125,6 +126,19 @@ class RoomController extends Controller
     public function get(Request $request, Hotel $hotel, Room $room): JsonResponse
     {
         return response()->json(RoomResource::make($room));
+    }
+
+    public function getRoomNames(Request $request, Hotel $hotel, string $lang): JsonResponse
+    {
+        $roomNames = DB::table('hotel_rooms_translation')
+            ->where('language', $lang)
+            ->select('name')
+            ->distinct()
+            ->get()
+            ->pluck('name')
+            ->toArray();
+
+        return response()->json($roomNames);
     }
 
     private function formFactory(): FormContract

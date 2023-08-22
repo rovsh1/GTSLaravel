@@ -4,7 +4,6 @@ namespace App\Admin\Http\Controllers\Profile;
 
 use App\Admin\Files\AdministratorAvatar;
 use App\Admin\Http\Controllers\Controller;
-use App\Admin\Http\Controllers\UserGender;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Layout;
 use App\Core\Support\Facades\FileAdapter;

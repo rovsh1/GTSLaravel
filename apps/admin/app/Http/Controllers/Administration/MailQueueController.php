@@ -27,7 +27,7 @@ class MailQueueController extends Controller
 
         $grid = $this->gridFactory();
 //throw new \Exception('asd');
-        //MailAdapter::sendTo('ds@mail.ru', 'dd', 'eerr');
+//        MailAdapter::sendTo('s16121986@yandex.ru', 'dd', 'eerr');
         $data = MailAdapter::getQueue([
             //'limit' => 10
         ])
@@ -53,6 +53,7 @@ class MailQueueController extends Controller
             3 => 'Sent',
             4 => 'Failed'
         ];
+
         return Grid::enableQuicksearch()
             ->paginator(10)
 //            ->text('uuid', ['text' => 'UUID'])
@@ -67,7 +68,7 @@ class MailQueueController extends Controller
             ->text('payload', [
                 'text' => 'Данные',
                 'renderer' => fn($r, $t) => '<div class="icon" title="' . htmlspecialchars(
-                        json_encode(json_decode($t), JSON_PRETTY_PRINT)
+                        json_encode($t, JSON_PRETTY_PRINT)
                     ) . '">description</div>'
             ])
             ->text('context', [

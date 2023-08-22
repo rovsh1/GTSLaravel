@@ -2,8 +2,8 @@ import { computed, ref } from 'vue'
 
 import { useBookingStore } from '~resources/views/hotel-booking/show/store/booking'
 
-import { updateExternalNumber as updateExternalNumberRequest } from '~api/booking'
-import { ExternalNumber, ExternalNumberType, ExternalNumberTypeEnum } from '~api/booking/details'
+import { updateExternalNumber as updateExternalNumberRequest } from '~api/booking/hotel'
+import { ExternalNumber, ExternalNumberType, ExternalNumberTypeEnum } from '~api/booking/hotel/details'
 
 export const useExternalNumber = (bookingID: number) => {
   const bookingStore = useBookingStore()

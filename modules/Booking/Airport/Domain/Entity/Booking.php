@@ -9,6 +9,7 @@ use Module\Booking\Airport\Domain\ValueObject\Details\AirportInfo;
 use Module\Booking\Airport\Domain\ValueObject\Details\ServiceInfo;
 use Module\Booking\Common\Domain\Entity\AbstractBooking;
 use Module\Booking\Common\Domain\ValueObject\BookingId;
+use Module\Booking\Common\Domain\ValueObject\BookingPrice;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
 use Module\Booking\Common\Domain\ValueObject\OrderId;
@@ -22,12 +23,13 @@ class Booking extends AbstractBooking
         BookingStatusEnum $status,
         CarbonImmutable $createdAt,
         Id $creatorId,
+        BookingPrice $price,
         private readonly ServiceInfo $serviceInfo,
         private readonly AirportInfo $airportInfo,
         private readonly CarbonImmutable $date,
         private ?string $note
     ) {
-        parent::__construct($id, $orderId, $status, $createdAt, $creatorId);
+        parent::__construct($id, $orderId, $status, $createdAt, $creatorId, $price);
     }
 
     public function serviceInfo(): ServiceInfo

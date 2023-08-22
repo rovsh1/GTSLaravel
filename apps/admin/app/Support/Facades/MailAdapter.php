@@ -15,6 +15,6 @@ class MailAdapter extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'mail-adapter';
+        return \App\Admin\Support\Adapters\MailAdapter::class;
     }
 }

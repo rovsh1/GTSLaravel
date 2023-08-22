@@ -128,13 +128,19 @@ class BookingController extends Controller
         $form->trySubmit();
 
         $data = $form->getData();
+        $orderId = $data['order_id'] ?? null;
+        $currencyId = $data['currency_id'] ?? null;
+        if ($orderId !== null && $currencyId === null) {
+            $order = OrderAdapter::findOrder($orderId);
+            $currencyId = $order->currency->id;
+        }
         $client = Client::find($data['client_id']);
         try {
             $bookingId = HotelAdapter::createBooking(
                 cityId: $data['city_id'],
                 clientId: $data['client_id'],
                 legalId: $data['legal_id'],
-                currencyId: $data['currency_id'] ?? $client->currency_id,
+                currencyId: $currencyId ?? $client->currency_id,
                 hotelId: $data['hotel_id'],
                 period: $data['period'],
                 creatorId: $creatorId,
@@ -168,7 +174,7 @@ class BookingController extends Controller
 //        $this->prepareShowMenu($this->model);
 
         return Layout::title($title)
-            ->view($this->getPrototypeKey() . '.show.show', [
+            ->view($this->prototype->view('show'), [
                 'bookingId' => $id,
                 'hotelId' => $hotelId,
                 'hotel' => $hotel,

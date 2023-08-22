@@ -3,8 +3,10 @@
 namespace Module\Support\MailManager\Infrastructure\Repository;
 
 use Illuminate\Support\Facades\DB;
-use Module\Support\MailManager\Domain\Entity\QueueMessage;
+use Module\Shared\Domain\Service\ApplicationContextInterface;
+use Module\Support\MailManager\Domain\Entity\Mail;
 use Module\Support\MailManager\Domain\Repository\QueueRepositoryInterface;
+use Module\Support\MailManager\Domain\ValueObject\MailId;
 use Module\Support\MailManager\Domain\ValueObject\QueueMailStatusEnum;
 use Module\Support\MailManager\Infrastructure\Model\QueueMessage as Model;
 
@@ -13,32 +15,31 @@ class QueueRepository implements QueueRepositoryInterface
     public const EXPIRED_DATES = '-14 days';
     public const MAX_ATTEMPTS  = 3;
 
-    public function find(string $uuid): ?QueueMessage
+    public function __construct(
+        private readonly ApplicationContextInterface $applicationContext
+    ) {
+    }
+
+    public function find(MailId $uuid): ?Mail
     {
         return $this->entityFromModel(Model::find($uuid));
     }
 
-    public function push(
-        string $subject,
-        string $payload,
-        int $priority = 0,
-        QueueMailStatusEnum $status = QueueMailStatusEnum::WAITING,
-        array $context = null
-    ): QueueMessage {
-        $model = Model::create([
-            'subject' => $subject,
-            'payload' => $payload,
+    public function push(Mail $mail, int $priority = 0, array $context = null): void
+    {
+        Model::create([
+            'uuid' => $mail->id()->value(),
+            'subject' => $mail->subject(),
+            'payload' => $mail->serialize(),
             'priority' => $priority,
-            'status' => $status->value,
-            'context' => $context
+            'status' => $mail->status()->value,
+            'context' => $this->applicationContext->toArray($context ?? [])
         ]);
-
-        return $this->entityFromModel($model);
     }
 
-    public function retry(string $uuid): void
+    public function retry(MailId $uuid): void
     {
-        $model = $this->findModel($uuid);
+        $model = $this->findModel($uuid->value());
 
         $model->update([
             'status' => QueueMailStatusEnum::WAITING->value,
@@ -50,7 +51,7 @@ class QueueRepository implements QueueRepositoryInterface
     public function retryAll(): void
     {
         Model::where('status', QueueMailStatusEnum::FAILED->value)
-            ->where('attempts', '<', self::MAX_ATTEMPTS)
+//            ->where('attempts', '<', self::MAX_ATTEMPTS)
             ->update([
                 'status' => QueueMailStatusEnum::WAITING->value,
                 'failed_at' => null,
@@ -58,14 +59,14 @@ class QueueRepository implements QueueRepositoryInterface
             ]);
     }
 
-    public function updateStatus(string $uuid, QueueMailStatusEnum $status): void
+    public function store(Mail $mail): void
     {
-        $model = $this->findModel($uuid);
+        $model = $this->findModel($mail->id()->value());
         $updateData = [
-            'status' => $status->value,
+            'status' => $mail->status()->value,
         ];
 
-        switch ($status) {
+        switch ($mail->status()) {
             case QueueMailStatusEnum::FAILED:
                 $updateData['failed_at'] = now();
                 break;
@@ -77,14 +78,14 @@ class QueueRepository implements QueueRepositoryInterface
         $model->update($updateData);
     }
 
-    public function findWaiting(): ?QueueMessage
+    public function findWaiting(): ?Mail
     {
         $model = Model::where('status', QueueMailStatusEnum::WAITING->value)->first();
 
         return $this->entityFromModel($model);
     }
 
-    public function clearExpired(\DateTime $date = null): void
+    public function clearExpired(\DateTimeInterface $date = null): void
     {
         if (null === $date) {
             $date = now();
@@ -93,6 +94,11 @@ class QueueRepository implements QueueRepositoryInterface
 
         Model::where('date', '<', $date)
             ->delete();
+    }
+
+    public function waitingCount(): int
+    {
+        return Model::where('status', QueueMailStatusEnum::WAITING->value)->count();
     }
 
     private function findModel(string $uuid): Model
@@ -105,21 +111,12 @@ class QueueRepository implements QueueRepositoryInterface
         return $model;
     }
 
-    private function entityFromModel(Model|null $model): ?QueueMessage
+    private function entityFromModel(Model|null $model): ?Mail
     {
         if (!$model) {
             return null;
         }
 
-        return new QueueMessage(
-            $model->uuid,
-            $model->payload,
-            QueueMailStatusEnum::from($model->status)
-        );
-    }
-
-    public function waitingCount(): int
-    {
-        return Model::where('status', QueueMailStatusEnum::WAITING->value)->count();
+        return Mail::deserialize($model->payload);
     }
 }

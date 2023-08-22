@@ -8,6 +8,14 @@
     @vite('resources/views/airport-booking/form/form.ts')
 @endsection
 
+@section('head-end')
+    <script>
+      window['view-initial-data-airport-booking'] = {{ Js::from([
+            'bookingID' => $model->id ?? null,
+        ]) }}
+    </script>
+@endsection
+
 @section('content')
     {!! ContentTitle::default() !!}
 

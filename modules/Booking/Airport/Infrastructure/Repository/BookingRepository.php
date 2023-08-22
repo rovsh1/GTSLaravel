@@ -11,9 +11,12 @@ use Module\Booking\Airport\Domain\Entity\Booking as Entity;
 use Module\Booking\Airport\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\Airport\Domain\ValueObject\Details\AirportInfo;
 use Module\Booking\Airport\Domain\ValueObject\Details\ServiceInfo;
+use Module\Booking\Airport\Infrastructure\Models\Airport;
+use Module\Booking\Airport\Infrastructure\Models\AirportService;
 use Module\Booking\Airport\Infrastructure\Models\Booking as Model;
 use Module\Booking\Airport\Infrastructure\Models\BookingDetails;
 use Module\Booking\Common\Domain\ValueObject\BookingId;
+use Module\Booking\Common\Domain\ValueObject\BookingPrice;
 use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\Common\Infrastructure\Repository\AbstractBookingRepository as BaseRepository;
 use Module\Shared\Domain\ValueObject\Id;
@@ -53,8 +56,8 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
             function () use ($orderId, $creatorId, $serviceId, $airportId, $date, $note) {
                 $bookingModel = $this->createBase($orderId, $creatorId);
 
-                $airport = \Module\Booking\Airport\Infrastructure\Models\Airport::find($airportId);
-                $service = \Module\Booking\Airport\Infrastructure\Models\AirportService::find($serviceId);
+                $airport = Airport::find($airportId);
+                $service = AirportService::find($serviceId);
 
                 $booking = new Entity(
                     id: new BookingId($bookingModel->id),
@@ -62,6 +65,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
                     status: $bookingModel->status,
                     createdAt: $bookingModel->created_at->toImmutable(),
                     creatorId: new Id($bookingModel->creator_id),
+                    price: BookingPrice::buildEmpty(),
                     note: $note,
                     airportInfo: new AirportInfo(
                         $airport->id,
@@ -115,6 +119,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
             createdAt: $booking->created_at->toImmutable(),
             creatorId: new Id($booking->creator_id),
             note: $detailsData['note'] ?? null,
+            price: BookingPrice::fromData($detailsData['price']),
             airportInfo: AirportInfo::fromData($detailsData['airportInfo']),
             serviceInfo: ServiceInfo::fromData($detailsData['serviceInfo']),
             date: CarbonImmutable::createFromTimestamp($detailsData['date'])
@@ -128,6 +133,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
             'airportInfo' => $booking->airportInfo()->toData(),
             'serviceInfo' => $booking->serviceInfo()->toData(),
             'date' => $booking->date()->getTimestamp(),
+            'price' => $booking->price()->toData(),
         ];
     }
 }
