@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Module\Booking\HotelBooking\Domain\Service\QuotaManager;
 
 use Module\Booking\HotelBooking\Domain\Entity\Booking;
+use Module\Booking\HotelBooking\Domain\Service\QuotaManager\Exception\ClosedRoomDateQuota;
+use Module\Booking\HotelBooking\Domain\Service\QuotaManager\Exception\NotEnoughRoomDateQuota;
+use Module\Booking\HotelBooking\Domain\Service\QuotaManager\Exception\NotFoundRoomDateQuota;
 
 class QuotaManager
 {
@@ -15,6 +18,9 @@ class QuotaManager
     /**
      * @param Booking $booking
      * @return void
+     * @throws NotFoundRoomDateQuota
+     * @throws ClosedRoomDateQuota
+     * @throws NotEnoughRoomDateQuota
      */
     public function process(Booking $booking): void
     {

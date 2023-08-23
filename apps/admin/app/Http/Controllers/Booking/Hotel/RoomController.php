@@ -16,6 +16,7 @@ use App\Admin\Support\Facades\Booking\HotelPriceAdapter;
 use App\Core\Support\Http\Responses\AjaxErrorResponse;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use App\Core\Support\Http\Responses\AjaxSuccessResponse;
+use Module\Shared\Application\Exception\ApplicationException;
 
 class RoomController
 {
@@ -33,9 +34,8 @@ class RoomController
                 note: $request->getNote(),
                 discount: $request->getDiscount()
             );
-        } catch (\Throwable $e) {
-            //@todo отлов доменных эксепшнов
-            dd($e);
+        } catch (ApplicationException $e) {
+            return new AjaxErrorResponse($e->getMessage());
         }
 
         return new AjaxSuccessResponse();
@@ -56,9 +56,8 @@ class RoomController
                 note: $request->getNote(),
                 discount: $request->getDiscount()
             );
-        } catch (\Throwable $e) {
-            //@todo отлов доменных эксепшнов
-            dd($e);
+        } catch (ApplicationException $e) {
+            return new AjaxErrorResponse($e->getMessage());
         }
 
         return new AjaxSuccessResponse();
