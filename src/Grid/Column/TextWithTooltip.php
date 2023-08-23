@@ -19,6 +19,6 @@ class TextWithTooltip extends AbstractColumn
             return $value;
         }
 
-        return "<a href='#' data-bs-toggle='tooltip' data-bs-html='true' data-bs-title='{$tooltip}'>{$value}</a>";
+        return "<a href='#' data-bs-toggle='tooltip' data-bs-html='true' data-bs-trigger='hover' data-bs-title='{$tooltip}'>{$value}</a>";
     }
 }
