@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Order\Application\UseCase;
+namespace Module\Booking\Order\Application\UseCase\Admin;
 
 use Module\Booking\Order\Application\Factory\OrderDtoFactory;
 use Module\Booking\Order\Domain\Repository\OrderRepositoryInterface;

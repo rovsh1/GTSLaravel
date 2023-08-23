@@ -8,9 +8,9 @@ use Carbon\CarbonInterface;
 use Module\Booking\Airport\Application\Request\AddTouristDto;
 use Module\Booking\Airport\Application\Request\CreateBookingDto;
 use Module\Booking\Airport\Application\Request\UpdateTouristDto;
-use Module\Booking\Airport\Application\UseCase\Admin\AddTourist;
+use Module\Booking\Airport\Application\UseCase\Admin\BindOrderTourist;
 use Module\Booking\Airport\Application\UseCase\Admin\CreateBooking;
-use Module\Booking\Airport\Application\UseCase\Admin\DeleteTourist;
+use Module\Booking\Airport\Application\UseCase\Admin\UnbindOrderTourist;
 use Module\Booking\Airport\Application\UseCase\Admin\GetBooking;
 use Module\Booking\Airport\Application\UseCase\Admin\GetBookingsByFilters;
 use Module\Booking\Airport\Application\UseCase\Admin\UpdateTourist;
@@ -63,7 +63,7 @@ class AirportAdapter
         bool $isAdult,
         ?int $age
     ): void {
-        app(AddTourist::class)->execute(
+        app(BindOrderTourist::class)->execute(
             new AddTouristDto(
                 bookingId: $bookingId,
                 fullName: $fullName,
@@ -99,6 +99,6 @@ class AirportAdapter
 
     public function deleteTourist(int $bookingId, int $touristId): void
     {
-        app(DeleteTourist::class)->execute($bookingId, $touristId);
+        app(UnbindOrderTourist::class)->execute($bookingId, $touristId);
     }
 }

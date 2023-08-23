@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Airport\Application\Request;
+namespace Module\Booking\Order\Application\Request;
 
-class AddTouristDto
+class UpdateTouristDto
 {
     public function __construct(
         public readonly int $bookingId,
+        public readonly int $touristId,
         public readonly string $fullName,
         public readonly int $countryId,
         public readonly int $gender,

@@ -7,7 +7,7 @@ namespace Module\Booking\Airport\Application\UseCase\Admin;
 use Module\Booking\Airport\Application\Request\AddTouristDto;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
-class AddTourist implements UseCaseInterface
+class UnbindOrderTourist implements UseCaseInterface
 {
-    public function execute(AddTouristDto $request): void {}
+    public function execute(int $bookingId, int $touristId): void {}
 }

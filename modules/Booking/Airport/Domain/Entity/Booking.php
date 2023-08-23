@@ -27,6 +27,7 @@ class Booking extends AbstractBooking
         private readonly ServiceInfo $serviceInfo,
         private readonly AirportInfo $airportInfo,
         private readonly CarbonImmutable $date,
+        //@todo номер рейса + доп. инфо
         private ?string $note
     ) {
         parent::__construct($id, $orderId, $status, $createdAt, $creatorId, $price);
@@ -60,5 +61,9 @@ class Booking extends AbstractBooking
     public function type(): BookingTypeEnum
     {
         return BookingTypeEnum::AIRPORT;
+    }
+
+    public function addTourist(OrderTouristId $touristId): void {
+
     }
 }

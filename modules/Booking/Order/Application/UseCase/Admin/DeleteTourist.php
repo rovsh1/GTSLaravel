@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Airport\Application\UseCase\Admin;
+namespace Module\Booking\Order\Application\UseCase\Admin;
 
-use Module\Booking\Airport\Application\Request\AddTouristDto;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class DeleteTourist implements UseCaseInterface

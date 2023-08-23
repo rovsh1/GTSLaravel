@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Adapters\Booking;
 
-use Module\Booking\Order\Application\UseCase\GetActiveOrders;
-use Module\Booking\Order\Application\UseCase\GetOrder;
+use Module\Booking\Order\Application\UseCase\Admin\GetActiveOrders;
+use Module\Booking\Order\Application\UseCase\Admin\GetOrder;
 
 class OrderAdapter
 {
