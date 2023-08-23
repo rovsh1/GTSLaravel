@@ -7,6 +7,7 @@ import { SelectOption } from '~components/Bootstrap/lib'
 const props = withDefaults(defineProps<{
   id: string
   label: string
+  labelMargin?: boolean
   value: string[]
   required?: boolean
   options: SelectOption[]
@@ -14,6 +15,7 @@ const props = withDefaults(defineProps<{
 }>(), {
   disabled: false,
   required: false,
+  labelMargin: true,
 })
 
 let multipleSelect:any = null
@@ -67,7 +69,7 @@ onMounted(() => {
 </script>
 <template>
   <div :class="{ 'field-required': required }">
-    <label :for="id" class="form-label">{{ label }}</label>
+    <label :for="id" :class="{ 'form-label': labelMargin }">{{ label }}</label>
     <select :id="id" multiple>
       <option v-for="option in options" :key="option.value" :value="option.value">{{ option.label }}</option>
     </select>

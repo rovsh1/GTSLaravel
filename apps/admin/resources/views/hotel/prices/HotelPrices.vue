@@ -1,10 +1,17 @@
 <script lang="ts" setup>
 
+import { ref } from 'vue'
+
 import { z } from 'zod'
 
 import { requestInitialData } from '~lib/initial-data'
 
-import RoomPriceCard from './components/RoomPriceCard.vue'
+import BootstrapCard from '~components/Bootstrap/BootstrapCard/BootstrapCard.vue'
+
+import HotelPricesTable from './components/HotelPricesTable.vue'
+import RoomMargins from './components/RoomMargins.vue'
+import SeasonEditPrice from './components/SeasonEditPrice.vue'
+import SeasonPriceDaysTable from './components/SeasonPriceDaysTable.vue'
 
 const { hotelID } = requestInitialData(
   'view-initial-data-hotel-prices',
@@ -36,14 +43,50 @@ console.log('hotelId:', hotelID)
 
 // watch(filtersPayload, () => fetchHotelPrices())
 
-// const editable = ref(false)
+const editable = ref(false)
 </script>
 <template>
-  <RoomPriceCard title="Четырехместный (170)" :data="{}" />
-  <RoomPriceCard title="Двухместный (90)" :data="{}" />
+  <BootstrapCard>
+    <template #title>
+      <h2>Четырехместный (170)</h2>
+    </template>
+    <HotelPricesTable
+      :data="[{
+        id: 1,
+        value: 10000,
+      }, {
+        id: 2,
+        value: 10001,
+      }, {
+        id: 3,
+        value: 10002,
+      }, {
+        id: 4,
+        value: 10003,
+      }]"
+      @show-season="editable = !editable"
+    />
+    <SeasonEditPrice v-if="editable" />
+    <SeasonPriceDaysTable
+      v-if="editable"
+      :data="[{
+        id: 1,
+        value: 10000,
+      }, {
+        id: 2,
+        value: 10001,
+      }, {
+        id: 3,
+        value: 10002,
+      }, {
+        id: 4,
+        value: 10003,
+      }]"
+    />
+    <RoomMargins />
+  </BootstrapCard>
 </template>
 
 <style lang="scss" scoped>
 @use "~resources/sass/vendor/bootstrap/configuration" as bs;
-
 </style>

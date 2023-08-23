@@ -1,9 +1,12 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
 
+import { useToggle } from '@vueuse/core'
 import { nanoid } from 'nanoid'
 
-import RoomPriceTableEditableCell from './RoomPriceTableEditableCell.vue'
+import BaseDialog from '~components/BaseDialog.vue'
+
+import EditableCell from './EditableCell.vue'
 
 const props = withDefaults(defineProps<{
   data?: any
@@ -11,9 +14,18 @@ const props = withDefaults(defineProps<{
   data: [],
 })
 
+const emit = defineEmits<{
+  (event: 'showSeason', item: any): void
+}>()
+
+const [isOpened, toggleModal] = useToggle()
 const id = `price-table-${nanoid()}`
 const baseColumnsWidth = ref<HTMLElement | null>(null)
-const open = ref(false)
+
+const localData = ref(props.data)
+
+let currentSeasonData: any = null
+let currentSeasonNewPriceData: any = null
 
 const setIdenticalColumnsWidth = (columnCount: number) => {
   const containerWidth = baseColumnsWidth.value?.offsetWidth
@@ -24,6 +36,20 @@ const setIdenticalColumnsWidth = (columnCount: number) => {
     const columnElement = column as HTMLElement
     columnElement.style.width = `${calculateColumnWidth}px`
   })
+}
+
+const changeData = (item: any, value: any) => {
+  if (value) {
+    currentSeasonData = item
+    currentSeasonNewPriceData = value
+    toggleModal()
+    // item.value = value
+  }
+}
+
+const onSubmitChangeData = () => {
+  currentSeasonData.value = currentSeasonNewPriceData
+  toggleModal(false)
 }
 
 onMounted(() => {
@@ -55,88 +81,35 @@ onMounted(() => {
       <tr>
         <th ref="susctractElement1" rowspan="2" class="rate-name text-left align-middle">test1</th>
         <th ref="susctractElement2" class="type-name text-left align-middle">Резидент</th>
-        <td
-          class="priced align-middle"
-          @click.stop="open = !open"
-          @keydown="open = !open"
-        >
-          <RoomPriceTableEditableCell :is-edit="open" />
-        </td>
-        <td
-          class="priced align-middle"
-        >
-          <RoomPriceTableEditableCell :is-edit="false" />
-        </td>
-        <td
-          class="priced align-middle"
-        >
-          <RoomPriceTableEditableCell :is-edit="false" />
-        </td>
-        <td
-          class="priced align-middle"
-        >
-          <RoomPriceTableEditableCell :is-edit="false" />
+        <td v-for="item in localData" :key="item.id" class="priced align-middle">
+          <EditableCell
+            :value="item.value"
+            :enable-context-menu="true"
+            @activated-context-menu="emit('showSeason', item)"
+            @change="value => changeData(item, value)"
+          />
         </td>
       </tr>
       <tr>
         <th class="type-name text-left align-middle">Не резидент</th>
-        <td
-          class="priced align-middle"
-        >
-          <RoomPriceTableEditableCell :is-edit="false" />
-        </td>
-        <td
-          class="priced align-middle"
-        >
-          <RoomPriceTableEditableCell :is-edit="false" />
-        </td>
-        <td
-          class="priced align-middle"
-        >
-          <RoomPriceTableEditableCell :is-edit="false" />
-        </td>
-        <td
-          class="priced align-middle"
-        >
-          <RoomPriceTableEditableCell :is-edit="false" />
+        <td v-for="item in localData" :key="item.id" class="priced align-middle">
+          <EditableCell
+            :value="item.value"
+            :enable-context-menu="true"
+            @activated-context-menu="emit('showSeason', item)"
+            @change="value => changeData(item, value)"
+          />
         </td>
       </tr>
     </tbody>
   </table>
+  <BaseDialog :opened="isOpened as boolean" @close="toggleModal(false)">
+    <template #title>Вы уверены что хотите перезаписать цену на весь сезон?</template>
+    <template #actions-end>
+      <button class="btn btn-primary" type="button" @click="onSubmitChangeData">
+        ОК
+      </button>
+      <button class="btn btn-cancel" type="button" @click="toggleModal(false)">Отмена</button>
+    </template>
+  </BaseDialog>
 </template>
-
-<style lang="scss" scoped>
-table {
-  font-size: 11px;
-
-  tr {
-    th.rate-name {
-      width: 200px;
-    }
-
-    th.type-name {
-      width: 120px;
-    }
-
-    &:hover td {
-      box-shadow: none
-    }
-
-    td {
-      background-color: #fff;
-      white-space: nowrap;
-      cursor: pointer;
-
-      &.priced {
-        padding: 0;
-        line-height: 32px;
-        text-align: right;
-      }
-
-      &:hover {
-        box-shadow: inset 0 0 5px rgba(0, 0, 0, 25%);
-      }
-    }
-  }
-}
-</style>
