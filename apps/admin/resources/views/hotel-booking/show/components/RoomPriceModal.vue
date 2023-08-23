@@ -4,7 +4,7 @@ import { computed, ref } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
 
-import { RoomBookingPrice } from '~api/booking/details'
+import { RoomBookingPrice } from '~api/booking/hotel/details'
 
 import BaseDialog from '~components/BaseDialog.vue'
 

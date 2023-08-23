@@ -12,8 +12,6 @@ class BootServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        \View::addLocation($this->app->config('templates_path'));
-
         $this->app->register(CommonBootProvider::class);
         $this->app->register(OrderBootProvider::class);
         $this->app->register(HotelBootProvider::class);

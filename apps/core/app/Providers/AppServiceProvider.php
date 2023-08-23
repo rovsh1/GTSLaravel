@@ -2,7 +2,6 @@
 
 namespace App\Core\Providers;
 
-use App\Core\Components\Context\AppContext;
 use App\Core\Components\Locale\Languages;
 use Sdk\Module\Database\Eloquent\MacrosServiceProvider;
 use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
@@ -36,8 +35,6 @@ class AppServiceProvider extends ServiceProvider
 
     private function registerApp()
     {
-        $this->app->singleton('app-context', AppContext::class);
-
         $namespace = $this->app->getNamespace();
         if ($namespace && class_exists($namespace . 'Providers\BootServiceProvider')) {
             $this->app->register($namespace . 'Providers\BootServiceProvider');

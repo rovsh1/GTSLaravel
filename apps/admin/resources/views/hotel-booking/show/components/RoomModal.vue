@@ -13,7 +13,7 @@ import {
 } from '~resources/views/hotel-booking/show/lib/constants'
 import { RoomFormData } from '~resources/views/hotel-booking/show/lib/data-types'
 
-import { addRoomToBooking, updateBookingRoom } from '~api/booking/rooms'
+import { addRoomToBooking, updateBookingRoom } from '~api/booking/hotel/rooms'
 import { MarkupCondition, MarkupSettings, useHotelRoomMarkupSettings } from '~api/hotel/markup-settings'
 import { HotelRate, useHotelRatesAPI } from '~api/hotel/price-rate'
 import { HotelRoomResponse } from '~api/hotel/room'

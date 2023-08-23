@@ -9,7 +9,7 @@ import { validateForm } from '~resources/composables/form'
 import { genderOptions } from '~resources/views/hotel-booking/show/lib/constants'
 import { GuestFormData } from '~resources/views/hotel-booking/show/lib/data-types'
 
-import { addGuestToBooking, updateBookingGuest } from '~api/booking/rooms'
+import { addGuestToBooking, updateBookingGuest } from '~api/booking/hotel/rooms'
 import { CountryResponse } from '~api/country'
 
 import { requestInitialData } from '~lib/initial-data'

@@ -8,7 +8,6 @@ use Module\Booking\Common\Domain\Entity\BookingInterface;
 abstract class AbstractDocumentGenerator
 {
     public function __construct(
-        protected readonly string $templatesPath,
         protected readonly FileStorageAdapterInterface $fileStorageAdapter
     ) {}
 

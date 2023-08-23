@@ -22,7 +22,6 @@ use Sdk\Module\Contracts\ModuleInterface;
 class DocumentGeneratorFactory
 {
     public function __construct(
-        private readonly string $templatesPath,
         private readonly FileStorageAdapterInterface $fileStorageAdapter,
         private readonly ModuleInterface $module
     ) {
@@ -43,7 +42,6 @@ class DocumentGeneratorFactory
         return match ($booking->type()) {
             //@todo прокинуть зависимости
             BookingTypeEnum::HOTEL => new CancellationRequestGenerator(
-                $this->templatesPath,
                 $this->fileStorageAdapter,
                 $this->module->get(HotelAdapterInterface::class),
                 $this->module->get(AdministratorAdapterInterface::class),
@@ -57,7 +55,6 @@ class DocumentGeneratorFactory
     {
         return match ($booking->type()) {
             BookingTypeEnum::HOTEL => new ChangeRequestGenerator(
-                $this->templatesPath,
                 $this->fileStorageAdapter,
                 $this->module->get(HotelAdapterInterface::class),
                 $this->module->get(AdministratorAdapterInterface::class),
@@ -71,7 +68,6 @@ class DocumentGeneratorFactory
     {
         return match ($booking->type()) {
             BookingTypeEnum::HOTEL => new ReservationRequestGenerator(
-                $this->templatesPath,
                 $this->fileStorageAdapter,
                 $this->module->get(HotelAdapterInterface::class),
                 $this->module->get(AdministratorAdapterInterface::class),

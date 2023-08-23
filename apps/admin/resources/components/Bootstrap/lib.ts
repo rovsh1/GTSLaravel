@@ -11,6 +11,7 @@ export type BootstrapSeverity =
 export type SelectOption = {
   value: string | number | ''
   label: string
+  group?: string
 }
 
 export type SelectedValue = SelectOption['value'] | undefined

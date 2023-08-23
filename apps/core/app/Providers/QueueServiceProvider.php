@@ -11,7 +11,7 @@ class QueueServiceProvider extends ServiceProvider
     {
         parent::registerConnectors($manager);
 
-        $manager->addConnector('mail', function () {
+        $manager->addConnector('Mail', function () {
             $module = module('mail');
             $module->boot();
             return $module->make(MailConnector::class);

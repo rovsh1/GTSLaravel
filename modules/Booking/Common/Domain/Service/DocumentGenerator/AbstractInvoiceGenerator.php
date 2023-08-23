@@ -9,7 +9,7 @@ abstract class AbstractInvoiceGenerator extends AbstractDocumentGenerator
 {
     final public function generate(Invoice $invoice, BookingInterface $booking): void
     {
-        $documentContent = (new TemplateBuilder($this->templatesPath, $this->getTemplateName()))
+        $documentContent = (new TemplateBuilder($this->getTemplateName()))
             ->attributes(
                 array_merge(
                     $this->getCompanyAttributes(),

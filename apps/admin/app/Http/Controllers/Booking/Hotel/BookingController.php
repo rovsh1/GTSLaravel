@@ -39,6 +39,7 @@ use App\Core\Support\Http\Responses\AjaxSuccessResponse;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Module\Booking\Common\Domain\Service\RequestRules;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
@@ -80,6 +81,9 @@ class BookingController extends Controller
                 )
             )
             ->addSelect(
+                DB::raw('(SELECT COUNT(id) FROM booking_hotel_rooms WHERE booking_id=bookings.id) as rooms_count')
+            )
+            ->addSelect(
                 DB::raw('(SELECT bookings.status IN (' . implode(',', $requestableStatuses) . ')) as is_requestable'),
             )
             ->addSelect(
@@ -112,7 +116,6 @@ class BookingController extends Controller
         return Layout::title($this->prototype->title('create'))
             ->view($this->prototype->view('form'), [
                 'form' => $form,
-                'clients' => ClientResource::collection(Client::orderBy('name')->get()),
                 'cancelUrl' => $this->prototype->route('index'),
             ]);
     }
@@ -128,13 +131,19 @@ class BookingController extends Controller
         $form->trySubmit();
 
         $data = $form->getData();
+        $orderId = $data['order_id'] ?? null;
+        $currencyId = $data['currency_id'] ?? null;
+        if ($orderId !== null && $currencyId === null) {
+            $order = OrderAdapter::findOrder($orderId);
+            $currencyId = $order->currency->id;
+        }
         $client = Client::find($data['client_id']);
         try {
             $bookingId = HotelAdapter::createBooking(
                 cityId: $data['city_id'],
                 clientId: $data['client_id'],
                 legalId: $data['legal_id'],
-                currencyId: $data['currency_id'] ?? $client->currency_id,
+                currencyId: $currencyId ?? $client->currency_id,
                 hotelId: $data['hotel_id'],
                 period: $data['period'],
                 creatorId: $creatorId,
@@ -168,7 +177,7 @@ class BookingController extends Controller
 //        $this->prepareShowMenu($this->model);
 
         return Layout::title($title)
-            ->view($this->getPrototypeKey() . '.show.show', [
+            ->view($this->prototype->view('show'), [
                 'bookingId' => $id,
                 'hotelId' => $hotelId,
                 'hotel' => $hotel,
@@ -203,7 +212,6 @@ class BookingController extends Controller
             ->view($this->prototype->view('edit') ?? $this->prototype->view('form') ?? 'default.form.form', [
                 'model' => $booking,
                 'form' => $form,
-                'clients' => ClientResource::collection(Client::orderBy('name')->get()),
                 'cancelUrl' => $this->prototype->route('show', $id),
 //                'deleteUrl' => $this->isAllowed('delete') ? $this->prototype->route('destroy', $id) : null
             ]);
@@ -379,9 +387,9 @@ class BookingController extends Controller
                 'city_name',
                 ['text' => 'Город / Отель', 'renderer' => fn($row, $val) => "{$val} / {$row['hotel_name']}"]
             )
-            ->text(
-                'room_names',
-                ['text' => 'Номера', 'renderer' => fn($row, $val) => str_replace(', ', '<br>', $val)]
+            ->textWithTooltip(
+                'rooms_count',
+                ['text' => 'Номера', 'tooltip' => fn($row, $val) => $this->getRoomNamesTooltip($row)]
             )
             ->text('guests_count', ['text' => 'Гостей'])
             ->text('source', ['text' => 'Источник', 'order' => true])
@@ -389,6 +397,21 @@ class BookingController extends Controller
             ->text('actions', ['renderer' => fn($row, $val) => $this->getActionButtons($row)])
             ->orderBy('created_at', 'desc')
             ->paginator(20);
+    }
+
+
+    private function getRoomNamesTooltip(mixed $tableRow): string
+    {
+        $roomNames = $tableRow['room_names'] ?? null;
+        if ($roomNames === null) {
+            return '';
+        }
+        $roomNames = explode(',', $roomNames);
+
+        return collect($roomNames)
+            ->groupBy(fn(string $val) => trim($val))
+            ->map(fn(Collection $values, $key) => "{$values->first()}: {$values->count()}")
+            ->implode('<br>');
     }
 
     private function getActionButtons(mixed $tableRow): string

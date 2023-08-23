@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Module\Support\MailManager\Domain\ValueObject;
 
-class MailBody
+final class MailBody
 {
     private string $body;
 
@@ -26,6 +28,7 @@ class MailBody
         if (empty($body)) {
             throw new \Exception('Mail body empty');
         }
+
         return $body;
     }
 }

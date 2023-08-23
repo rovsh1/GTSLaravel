@@ -11,17 +11,14 @@ class Price extends JsonResource
 {
     public function toArray(Request $request)
     {
-        $data = [
+        return [
             'season_id' => $this->seasonId,
             'room_id' => $this->roomId,
             'rate_id' => $this->rateId,
+            'date' => $this->whenHas('date'),
             'is_resident' => $this->isResident,
             'guests_count' => $this->guestsCount,
             'price' => $this->price,
         ];
-        if (isset($this->date)) {
-            $data['date'] = $this->date;
-        }
-        return $data;
     }
 }

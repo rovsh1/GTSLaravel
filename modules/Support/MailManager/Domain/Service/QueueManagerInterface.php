@@ -3,19 +3,21 @@
 namespace Module\Support\MailManager\Domain\Service;
 
 use Module\Support\MailManager\Domain\Entity\Mail;
-use Module\Support\MailManager\Domain\Entity\QueueMessage;
+use Module\Support\MailManager\Domain\ValueObject\MailId;
 
 interface QueueManagerInterface
 {
     public function size(): int;
 
-    public function pop(): ?QueueMessage;
+    public function pop(): ?Mail;
 
-    public function push(Mail $mailMessage, int $priority = 0, array $context = null): QueueMessage;
+    public function push(Mail $mailMessage, int $priority = 0, array $context = null): void;
 
-    public function sendSync(Mail $mailMessage, array $context = null): QueueMessage;
+    public function resendMessage(MailId $uuid): void;
+
+    public function sendSync(Mail $mailMessage, array $context = null): void;
 
     public function sendWaitingMessages(): void;
 
-    public function sendWaitingMessage(QueueMessage $queueMessage): void;
+    public function sendWaitingMessage(Mail $mailMessage): void;
 }

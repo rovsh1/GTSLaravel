@@ -18,11 +18,12 @@ import { useBookingRequestStore } from '~resources/views/hotel-booking/show/stor
 import { useBookingStatusHistoryStore } from '~resources/views/hotel-booking/show/store/status-history'
 
 // import { useBookingVoucherStore } from '~resources/views/hotel-booking/show/store/voucher'
-import { Booking } from '~api/booking'
-import { CancelConditions, ExternalNumberType, ExternalNumberTypeEnum } from '~api/booking/details'
-import { updateBookingPrice } from '~api/booking/price'
-import { BookingRequest } from '~api/booking/request'
-import { BookingAvailableActionsResponse, BookingStatusResponse } from '~api/booking/status'
+import { Booking } from '~api/booking/hotel'
+import { CancelConditions, ExternalNumberType, ExternalNumberTypeEnum } from '~api/booking/hotel/details'
+import { updateBookingPrice } from '~api/booking/hotel/price'
+import { BookingRequest } from '~api/booking/hotel/request'
+import { BookingAvailableActionsResponse } from '~api/booking/hotel/status'
+import { BookingStatusResponse } from '~api/booking/models'
 import { Currency } from '~api/models'
 
 import { formatDate, formatDateTime } from '~lib/date'

@@ -1,4 +1,4 @@
-import { ExternalNumberTypeEnum } from '~api/booking/details'
+import { ExternalNumberTypeEnum } from '~api/booking/hotel/details'
 import { MarkupCondition } from '~api/hotel/markup-settings'
 
 import { SelectOption } from '~components/Bootstrap/lib'
@@ -6,10 +6,11 @@ import { SelectOption } from '~components/Bootstrap/lib'
 export interface EntityInterface {
   id: number
   name: string
+  group?: string
 }
 
 export const mapEntitiesToSelectOptions = (entities: EntityInterface[]): SelectOption[] => entities.map(
-  (entity) => ({ value: entity.id, label: entity.name }),
+  (entity) => ({ value: entity.id, label: entity.name, group: entity.group }),
 )
 
 export const genders = [

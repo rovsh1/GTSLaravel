@@ -10,7 +10,7 @@ abstract class AbstractRequestGenerator extends AbstractDocumentGenerator implem
 {
     final public function generate(Request $request, BookingRequestableInterface|AbstractBooking $booking): void
     {
-        $documentContent = (new TemplateBuilder($this->templatesPath, $this->getTemplateName()))
+        $documentContent = (new TemplateBuilder($this->getTemplateName()))
             ->attributes(
                 array_merge(
                     $this->getCompanyAttributes(),

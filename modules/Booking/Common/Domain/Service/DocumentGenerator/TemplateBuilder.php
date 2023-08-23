@@ -9,7 +9,6 @@ class TemplateBuilder
     private array $attributes = [];
 
     public function __construct(
-        private readonly string $templatesPath,
         private readonly string $file
     ) {}
 
@@ -42,14 +41,16 @@ class TemplateBuilder
     protected function prepare($builder): void
     {
         $builder
-            ->image('logo', $this->getTemplateContents('logo.png'))
-            ->image('stamp', $this->getTemplateContents('stamp.png'))
-            ->image('stamp_only', $this->getTemplateContents('stamp_only.png'));
+            ->image('logo', $this->getTemplateContents('company-logo-small.png'))
+            ->image('stamp', $this->getTemplateContents('company-stamp-with-sign.png'))
+            ->image('stamp_only', $this->getTemplateContents('company-stamp-without-sign.png'));
     }
 
-    private function getTemplateContents(string $file): string
+    private function getTemplateContents(string $file): false|string
     {
-        return file_get_contents($this->templatesPath . DIRECTORY_SEPARATOR . $file);
+        $path = storage_path("app/public/{$file}");
+
+        return file_get_contents($path);
     }
 
     private function getTemplateView(string $file): View
