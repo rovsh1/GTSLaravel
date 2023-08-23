@@ -12,10 +12,15 @@ use Module\Booking\HotelBooking\Domain\ValueObject\Details\BookingPeriod;
 use Module\Booking\HotelBooking\Domain\ValueObject\QuotaId;
 use Module\Booking\HotelBooking\Infrastructure\Models\Hotel\RoomQuota as Model;
 use Module\Hotel\Infrastructure\Models\Room\QuotaReservation;
+use Module\Shared\Domain\Service\ApplicationContextInterface;
 use Module\Shared\Enum\Booking\QuotaChangeTypeEnum;
 
 class BookingQuotaRepository implements BookingQuotaRepositoryInterface
 {
+    public function __construct(
+        private readonly ApplicationContextInterface $context,
+    ) {}
+
     /**
      * @param BookingPeriod $period
      * @param int[] $roomIds
@@ -47,7 +52,7 @@ class BookingQuotaRepository implements BookingQuotaRepositoryInterface
             'booking_id' => $id->value(),
             'type' => QuotaChangeTypeEnum::BOOKED,
             'value' => $count,
-            'context' => $context
+            'context' => $this->context->toArray($context)
         ]);
     }
 
@@ -58,11 +63,11 @@ class BookingQuotaRepository implements BookingQuotaRepositoryInterface
             'booking_id' => $id->value(),
             'type' => QuotaChangeTypeEnum::RESERVED,
             'value' => $count,
-            'context' => $context
+            'context' => $this->context->toArray($context)
         ]);
     }
 
-    public function resetByBookingId(BookingId $id): void
+    public function cancel(BookingId $id): void
     {
         QuotaReservation::whereBookingId($id->value())->delete();
     }

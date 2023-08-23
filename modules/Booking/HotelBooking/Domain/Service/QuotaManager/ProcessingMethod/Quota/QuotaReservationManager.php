@@ -17,7 +17,6 @@ class QuotaReservationManager
 {
     public function __construct(
         private readonly BookingQuotaRepositoryInterface $quotaRepository,
-        private readonly ApplicationContextInterface $context,
         private readonly QuotaValidator $quotaValidator
     ) {}
 
@@ -57,7 +56,7 @@ class QuotaReservationManager
 
     public function cancel(Booking $booking): void
     {
-        $this->quotaRepository->resetByBookingId($booking->id());
+        $this->quotaRepository->cancel($booking->id());
     }
 
     /**
@@ -79,12 +78,7 @@ class QuotaReservationManager
                 $booking->id(),
                 $quota->quotaId(),
                 $quota->count,
-                [
-                    //@todo прописать контекст
-                    'source' => $this->context->source(),
-                    'administrator_id' => $this->context->administratorId(),
-                    'channel' => $this->context->channel(),
-                ]
+                []
             );
         }
     }

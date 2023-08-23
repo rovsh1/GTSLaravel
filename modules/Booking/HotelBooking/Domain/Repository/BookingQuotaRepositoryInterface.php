@@ -22,5 +22,5 @@ interface BookingQuotaRepositoryInterface
 
     public function reserve(BookingId $id, QuotaId $quotaId, int $count, array $context): void;
 
-    public function resetByBookingId(BookingId $id): void;
+    public function cancel(BookingId $id): void;
 }
