@@ -1,5 +1,9 @@
 @use "~resources/views/main";
 
+.field-locale-inputs-wrapper {
+  width: 100%;
+}
+
 .room-beds {
   display: flex;
   flex-direction: column;
