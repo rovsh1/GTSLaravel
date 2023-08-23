@@ -8,6 +8,8 @@ use Module\Client\Domain\Entity\Client;
 use Module\Shared\Application\Dto\AbstractDomainBasedDto;
 use Module\Shared\Domain\Entity\EntityInterface;
 use Module\Shared\Domain\ValueObject\ValueObjectInterface;
+use Module\Shared\Enum\Client\ResidencyEnum;
+use Module\Shared\Enum\Client\TypeEnum;
 
 final class ClientDto extends AbstractDomainBasedDto
 {
@@ -15,6 +17,7 @@ final class ClientDto extends AbstractDomainBasedDto
         public readonly int $id,
         public readonly string $name,
         public readonly int $type,
+        public readonly ResidencyEnum $residency,
     ) {}
 
     public static function fromDomain(EntityInterface|ValueObjectInterface|Client $entity): static
@@ -22,7 +25,13 @@ final class ClientDto extends AbstractDomainBasedDto
         return new static(
             $entity->id()->value(),
             $entity->name(),
-            $entity->type()->value
+            $entity->type()->value,
+            $entity->residency()
         );
+    }
+
+    public function isLegal(): bool
+    {
+        return $this->type === TypeEnum::LEGAL_ENTITY->value;
     }
 }

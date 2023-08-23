@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->unsignedSmallInteger('currency_id')->nullable();
             $table->tinyInteger('type')->unsigned();
             $table->tinyInteger('status')->unsigned();
+            $table->tinyInteger('residency')->unsigned();
             $table->string('name', 50);
             $table->mediumText('description')->nullable();
             $table->boolean('is_b2b');

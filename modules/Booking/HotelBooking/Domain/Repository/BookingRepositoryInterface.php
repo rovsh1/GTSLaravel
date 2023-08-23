@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Module\Booking\Common\Domain\Entity\BookingInterface;
 use Module\Booking\Common\Domain\Repository\BookingRepositoryInterface as Base;
+use Module\Booking\Common\Domain\ValueObject\BookingId;
 use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\HotelBooking\Domain\Entity\Booking;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\BookingPeriod;
@@ -14,10 +15,18 @@ use Module\Booking\HotelBooking\Domain\ValueObject\Details\CancelConditions;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\HotelInfo;
 use Module\Shared\Domain\ValueObject\Id;
 use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
+use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
 interface BookingRepositoryInterface extends Base
 {
     public function find(int $id): ?Booking;
+
+    /**
+     * @param int $id
+     * @return Booking
+     * @throws EntityNotFoundException
+     */
+    public function findOrFail(BookingId $id): Booking;
 
     public function get(): Collection;
 
@@ -48,7 +57,7 @@ interface BookingRepositoryInterface extends Base
      */
     public function searchActive(?int $hotelId): array;
 
-    public function delete(int $id): void;
+    public function delete(Booking $booking): void;
 
     /**
      * @param int[] $ids

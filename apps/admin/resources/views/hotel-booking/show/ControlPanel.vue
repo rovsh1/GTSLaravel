@@ -326,34 +326,34 @@ onMounted(() => {
     </div>
 
     <div v-if="isRequestableStatus">
-      <div v-if="canSendBookingRequest">
+      <div v-if="isRoomsAndGuestsFilled">
         <RequestBlock
-          v-if="isRoomsAndGuestsFilled"
+          v-if="canSendBookingRequest"
           text="Запрос на бронирование еще не отправлен"
           :loading="isRequestFetching"
           @click="handleRequestSend"
         />
+
         <RequestBlock
-          v-else
-          :show-button="false"
-          text="Для отправки запроса необходимо заполнить информацию по номерам и гостям"
+          v-else-if="canSendCancellationRequest"
+          :loading="isRequestFetching"
+          text="Бронирование подтверждено, до выставления счета доступен запрос на отмену"
+          variant="danger"
+          @click="handleRequestSend"
+        />
+
+        <RequestBlock
+          v-else-if="canSendChangeRequest"
+          :loading="isRequestFetching"
+          text="Ожидание изменений и отправки запроса"
+          variant="warning"
+          @click="handleRequestSend"
         />
       </div>
-
       <RequestBlock
-        v-if="canSendCancellationRequest"
-        :loading="isRequestFetching"
-        text="Бронирование подтверждено, до выставления счета доступен запрос на отмену"
-        variant="danger"
-        @click="handleRequestSend"
-      />
-
-      <RequestBlock
-        v-if="canSendChangeRequest && isRoomsAndGuestsFilled"
-        :loading="isRequestFetching"
-        text="Ожидание изменений и отправки запроса"
-        variant="warning"
-        @click="handleRequestSend"
+        v-else
+        :show-button="false"
+        text="Для отправки запроса необходимо заполнить информацию по номерам и гостям"
       />
     </div>
   </ControlPanelSection>

@@ -2,6 +2,7 @@
 
 namespace Module\Booking\Common\Domain\Event;
 
+use Module\Booking\Common\Domain\Entity\BookingInterface;
 use Sdk\Module\Contracts\Event\DomainEventInterface;
 
 interface BookingEventInterface extends DomainEventInterface

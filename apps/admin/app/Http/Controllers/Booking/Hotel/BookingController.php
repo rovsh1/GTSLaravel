@@ -230,7 +230,6 @@ class BookingController extends Controller
             HotelAdapter::updateBooking(
                 id: $id,
                 period: $data['period'],
-                quotaProcessingMethod: $data['quota_processing_method'],
                 note: $data['note'] ?? null
             );
             $this->administratorRepository->update($id, $data['manager_id'] ?? request()->user()->id);
@@ -478,10 +477,11 @@ class BookingController extends Controller
             ->radio('quota_processing_method', [
                 'label' => 'Тип брони',
                 'emptyItem' => '',
-                'required' => true,
+                'required' => !$isEdit,
+                'disabled' => $isEdit,
                 'items' => [
                     ['id' => QuotaProcessingMethodEnum::REQUEST->value, 'name' => 'По запросу'],
-                    ['id' => QuotaProcessingMethodEnum::QUOTE->value, 'name' => 'По квоте'],
+                    ['id' => QuotaProcessingMethodEnum::QUOTA->value, 'name' => 'По квоте'],
                 ]
             ])
             ->select('client_id', [

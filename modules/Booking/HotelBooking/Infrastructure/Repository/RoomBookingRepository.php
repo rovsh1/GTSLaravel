@@ -39,7 +39,7 @@ class RoomBookingRepository implements RoomBookingRepositoryInterface
     }
 
     public function create(
-        int $bookingId,
+        BookingId $bookingId,
         RoomBookingStatusEnum $status,
         RoomInfo $roomInfo,
         GuestCollection $guests,
@@ -47,7 +47,7 @@ class RoomBookingRepository implements RoomBookingRepositoryInterface
         RoomPrice $price
     ): RoomBooking {
         $model = Model::create([
-            'booking_id' => $bookingId,
+            'booking_id' => $bookingId->value(),
             'hotel_room_id' => $roomInfo->id(),
             'guests_count' => $guests->count(),
             'room_name' => $roomInfo->name(),

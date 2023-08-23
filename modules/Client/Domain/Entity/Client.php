@@ -7,6 +7,7 @@ namespace Module\Client\Domain\Entity;
 use Module\Client\Domain\ValueObject\BankRequisites;
 use Module\Client\Domain\ValueObject\ClientId;
 use Module\Shared\Domain\Entity\EntityInterface;
+use Module\Shared\Enum\Client\ResidencyEnum;
 use Module\Shared\Enum\Client\TypeEnum;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
@@ -16,6 +17,7 @@ class Client extends AbstractAggregateRoot implements EntityInterface
         private readonly ClientId $id,
         private string $name,
         private readonly TypeEnum $type,
+        private ResidencyEnum $residency,
     ) {}
 
     public function id(): ClientId
@@ -36,5 +38,15 @@ class Client extends AbstractAggregateRoot implements EntityInterface
     public function type(): TypeEnum
     {
         return $this->type;
+    }
+
+    public function residency(): ResidencyEnum
+    {
+        return $this->residency;
+    }
+
+    public function setResidency(ResidencyEnum $residency): void
+    {
+        $this->residency = $residency;
     }
 }

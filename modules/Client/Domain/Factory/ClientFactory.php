@@ -6,6 +6,7 @@ namespace Module\Client\Domain\Factory;
 
 use Module\Client\Domain\Entity\Client;
 use Module\Client\Domain\ValueObject\ClientId;
+use Module\Shared\Enum\Client\ResidencyEnum;
 use Module\Shared\Enum\Client\TypeEnum;
 use Sdk\Module\Foundation\Support\EntityFactory\AbstractEntityFactory;
 
@@ -19,6 +20,7 @@ class ClientFactory extends AbstractEntityFactory
             new ClientId($data['id']),
             $data['name'],
             TypeEnum::from($data['type']),
+            ResidencyEnum::from($data['residency'])
         );
     }
 }
