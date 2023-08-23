@@ -14,13 +14,12 @@ use Module\Shared\Enum\ContactTypeEnum;
 class ReservationRequestGenerator extends AbstractRequestGenerator
 {
     public function __construct(
-        string $templatesPath,
         FileStorageAdapterInterface $fileStorageAdapter,
         private readonly HotelAdapterInterface $hotelAdapter,
         private readonly AdministratorAdapterInterface $administratorAdapter,
         private readonly StatusStorage $statusStorage,
     ) {
-        parent::__construct($templatesPath, $fileStorageAdapter);
+        parent::__construct($fileStorageAdapter);
     }
 
     protected function getTemplateName(): string
