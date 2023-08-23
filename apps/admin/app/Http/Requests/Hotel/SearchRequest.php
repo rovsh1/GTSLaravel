@@ -17,12 +17,16 @@ class SearchRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'city_id' => ['required', 'numeric'],
+            'city_id' => ['nullable', 'numeric'],
         ];
     }
 
-    public function getCityId(): int
+    public function getCityId(): ?int
     {
+        if (!$this->has('city_id')) {
+            return null;
+        }
+
         return (int)$this->get('city_id');
     }
 }
