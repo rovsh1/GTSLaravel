@@ -26,7 +26,7 @@ class ChangeRequestGenerator extends AbstractRequestGenerator
         return 'hotel.change_request';
     }
 
-    protected function getReservationAttributes(BookingInterface $booking): array
+    protected function getBookingAttributes(BookingInterface $booking): array
     {
         $hotelDto = $this->hotelAdapter->findById($booking->hotelInfo()->id());
         $phones = collect($hotelDto->contacts)

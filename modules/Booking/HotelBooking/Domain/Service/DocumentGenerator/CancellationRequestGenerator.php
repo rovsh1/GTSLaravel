@@ -26,7 +26,7 @@ class CancellationRequestGenerator extends AbstractRequestGenerator
         return 'hotel.cancellation_request';
     }
 
-    protected function getReservationAttributes(BookingInterface $booking): array
+    protected function getBookingAttributes(BookingInterface $booking): array
     {
         $hotelDto = $this->hotelAdapter->findById($booking->hotelInfo()->id());
         $phones = collect($hotelDto->contacts)

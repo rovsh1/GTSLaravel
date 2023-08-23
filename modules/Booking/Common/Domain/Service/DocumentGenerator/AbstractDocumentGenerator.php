@@ -24,5 +24,5 @@ abstract class AbstractDocumentGenerator
 
     abstract protected function getTemplateName(): string;
 
-    abstract protected function getReservationAttributes(BookingInterface $booking): array;
+    abstract protected function getBookingAttributes(BookingInterface $booking): array;
 }

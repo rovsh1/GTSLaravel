@@ -14,7 +14,7 @@ abstract class AbstractRequestGenerator extends AbstractDocumentGenerator implem
             ->attributes(
                 array_merge(
                     $this->getCompanyAttributes(),
-                    $this->getReservationAttributes($booking),
+                    $this->getBookingAttributes($booking),
                 )
             )
             ->generate();

@@ -13,7 +13,7 @@ abstract class AbstractInvoiceGenerator extends AbstractDocumentGenerator
             ->attributes(
                 array_merge(
                     $this->getCompanyAttributes(),
-                    $this->getReservationAttributes($booking),
+                    $this->getBookingAttributes($booking),
                     $this->getInvoiceAttributes($invoice),
                 )
             )

@@ -13,7 +13,7 @@ class InvoiceGenerator extends AbstractInvoiceGenerator
         return 'hotel.invoice';
     }
 
-    protected function getReservationAttributes(BookingInterface $booking): array
+    protected function getBookingAttributes(BookingInterface $booking): array
     {
         return [];
     }
