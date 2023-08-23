@@ -233,4 +233,8 @@ const isCheckboxDisabled = computed<boolean>(() =>
 .roomsList {
   border-bottom-left-radius: bs.$modal-content-border-radius;
 }
+
+.gts-list-group-item__border-top--bold {
+  border-top: 2px solid #000;
+}
 </style>
