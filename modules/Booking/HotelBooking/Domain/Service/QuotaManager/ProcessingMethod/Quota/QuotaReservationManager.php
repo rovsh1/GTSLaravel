@@ -11,13 +11,13 @@ use Module\Booking\HotelBooking\Domain\Service\QuotaManager\Exception\ClosedRoom
 use Module\Booking\HotelBooking\Domain\Service\QuotaManager\Exception\NotEnoughRoomDateQuota;
 use Module\Booking\HotelBooking\Domain\Service\QuotaManager\Exception\NotFoundRoomDateQuota;
 use Module\Booking\HotelBooking\Domain\ValueObject\QuotaId;
-use Module\Shared\Domain\Service\Context;
+use Module\Shared\Domain\Service\ApplicationContextInterface;
 
 class QuotaReservationManager
 {
     public function __construct(
         private readonly BookingQuotaRepositoryInterface $quotaRepository,
-        private readonly Context $context,
+        private readonly ApplicationContextInterface $context,
         private readonly QuotaValidator $quotaValidator
     ) {}
 
@@ -79,7 +79,12 @@ class QuotaReservationManager
                 $booking->id(),
                 $quota->quotaId(),
                 $quota->count,
-                $this->context->get()
+                [
+                    //@todo прописать контекст
+                    'source' => $this->context->source(),
+                    'administrator_id' => $this->context->administratorId(),
+                    'channel' => $this->context->channel(),
+                ]
             );
         }
     }
