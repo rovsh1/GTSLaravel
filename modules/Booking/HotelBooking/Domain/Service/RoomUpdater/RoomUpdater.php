@@ -8,8 +8,12 @@ use Module\Booking\HotelBooking\Domain\Entity\RoomBooking;
 use Module\Booking\HotelBooking\Domain\Event\RoomAdded;
 use Module\Booking\HotelBooking\Domain\Event\RoomDeleted;
 use Module\Booking\HotelBooking\Domain\Event\RoomEdited;
+use Module\Booking\HotelBooking\Domain\Exception\InvalidRoomResidency;
 use Module\Booking\HotelBooking\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\HotelBooking\Domain\Repository\RoomBookingRepositoryInterface;
+use Module\Booking\HotelBooking\Domain\Service\QuotaManager\Exception\ClosedRoomDateQuota;
+use Module\Booking\HotelBooking\Domain\Service\QuotaManager\Exception\NotEnoughRoomDateQuota;
+use Module\Booking\HotelBooking\Domain\Service\QuotaManager\Exception\NotFoundRoomDateQuota;
 use Module\Booking\HotelBooking\Domain\Service\QuotaManager\QuotaManager;
 use Module\Booking\HotelBooking\Domain\Service\RoomUpdater\Validator\ClientResidencyValidator;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBookingId;
@@ -34,11 +38,30 @@ class RoomUpdater
         private readonly QuotaManager $quotaManager
     ) {}
 
+    /**
+     * @param UpdateDataHelper $dataHelper
+     * @return void
+     * @throws EntityNotFoundException
+     * @throws InvalidRoomResidency
+     * @throws NotFoundRoomDateQuota
+     * @throws ClosedRoomDateQuota
+     * @throws NotEnoughRoomDateQuota
+     */
     public function add(UpdateDataHelper $dataHelper): void
     {
         $this->doAction(fn() => $this->doAdd($dataHelper));
     }
 
+    /**
+     * @param RoomBookingId $roomBookingId
+     * @param UpdateDataHelper $dataHelper
+     * @return void
+     * @throws EntityNotFoundException
+     * @throws InvalidRoomResidency
+     * @throws NotFoundRoomDateQuota
+     * @throws ClosedRoomDateQuota
+     * @throws NotEnoughRoomDateQuota
+     */
     public function update(RoomBookingId $roomBookingId, UpdateDataHelper $dataHelper): void
     {
         $currentRoomBooking = $this->roomBookingRepository->find($roomBookingId->value());
