@@ -10,7 +10,7 @@ AclRoute::for('hotel')
     ->put('/{hotel}/settings', Controllers\Hotel\HotelController::class . '@updateSettings', 'update', 'settings.update')
     ->get('/{hotel}/rooms/list', Controllers\Hotel\HotelController::class . '@getRooms', 'read', 'rooms.list')
 
-    ->get('/{hotel}/rooms/names/{lang}/list', Controllers\Hotel\RoomController::class . '@getRoomNames', 'read', 'rooms.names.list')
+    ->get('/rooms/names/{lang}/list', Controllers\Hotel\RoomController::class . '@getRoomNames', 'read', 'rooms.names.list')
     ->get('/{hotel}/rooms/{room}/get', Controllers\Hotel\RoomController::class . '@get', 'read', 'get')
     ->put('/{hotel}/rooms/position', Controllers\Hotel\RoomController::class . '@position', 'update', 'rooms.position')
     ->resource('rooms', Controllers\Hotel\RoomController::class, [
