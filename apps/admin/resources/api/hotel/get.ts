@@ -1,6 +1,6 @@
 import { MaybeRef } from '@vueuse/core'
 
-import { DateResponse, useAdminAPI } from '~api'
+import { DateResponse, getURL, useAdminAPI } from '~api'
 import { CityID } from '~api/city'
 
 export type HotelID = number
@@ -32,3 +32,9 @@ export const useHotelGetAPI = (props: MaybeRef<{ hotelID: number }>) =>
     `/hotels/${hotelID}/get`)
     .get()
     .json<HotelResponse>()
+
+export const useHotelSearchAPI = (props: MaybeRef<{ cityId?: number }>) =>
+  useAdminAPI(props, ({ cityId }) =>
+    getURL('/hotels/search', cityId ? { city_id: cityId } : undefined))
+    .get()
+    .json<HotelResponse[]>()
