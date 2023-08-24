@@ -10,8 +10,13 @@ $(() => {
   const switchInputToSelect = async (inputID: string, urlForGetData: string): Promise<void> => {
     const replaceInput = $(`#${inputID}`)
     if (!replaceInput) return
-    const roomsNameList = await axios.get(urlForGetData)
-    const roomsNameListData = roomsNameList && roomsNameList.data ? roomsNameList.data : []
+    let roomsNameListData = []
+    try {
+      const roomsNameList = await axios.get(urlForGetData)
+      roomsNameListData = roomsNameList && roomsNameList.data ? roomsNameList.data : []
+    } catch (e) {
+      roomsNameListData = []
+    }
     const roomsNameSelectOptions: Select2Option[] = mapRoomsNameToSelect2Options(roomsNameListData)
     const replaceInputAttrClass = replaceInput.attr('class')
     const replaceInputAttrName = replaceInput.attr('name')
@@ -34,7 +39,7 @@ $(() => {
     selectElement.val(searchValueFromInput[0] ? searchValueFromInput[0].id : '').trigger('change')
   }
 
-  switchInputToSelect('form_data_name_ru', `/hotels/${hotelID}/rooms/names/ru/list`)
-  switchInputToSelect('form_data_name_en', `/hotels/${hotelID}/rooms/names/en/list`)
+  switchInputToSelect('form_data_name_ru', '/hotels/rooms/names/ru/list')
+  switchInputToSelect('form_data_name_en', '/hotels/rooms/names/en/list')
   bootBeds($('#room-beds'))
 })
