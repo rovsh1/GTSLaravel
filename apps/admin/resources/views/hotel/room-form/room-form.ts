@@ -1,12 +1,10 @@
 import axios from '~resources/js/app/api'
 import bootBeds from '~resources/views/hotel/_services/room-editor'
-import { mapRoomsNameToSelect2Options } from '~resources/views/hotel/room-form/lib/constants'
 import { Select2Option } from '~resources/views/hotel-booking/form/lib/types'
 
 import '~resources/views/main'
 
 $(() => {
-  const hotelID = 308
   const switchInputToSelect = async (inputID: string, urlForGetData: string): Promise<void> => {
     const replaceInput = $(`#${inputID}`)
     if (!replaceInput) return
@@ -17,7 +15,9 @@ $(() => {
     } catch (e) {
       roomsNameListData = []
     }
-    const roomsNameSelectOptions: Select2Option[] = mapRoomsNameToSelect2Options(roomsNameListData)
+    const roomsNameSelectOptions: Select2Option[] = roomsNameListData.map(
+      (roomName: string) => ({ id: roomName, text: roomName }),
+    )
     const replaceInputAttrClass = replaceInput.attr('class')
     const replaceInputAttrName = replaceInput.attr('name')
     const replaceInputAttrDataLang = replaceInput.attr('data-lang')
