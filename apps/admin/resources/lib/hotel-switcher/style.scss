@@ -1,3 +1,42 @@
-* {
-  opacity: 1;
+.dropdown-container {
+  position: relative;
+  display: inline-block;
+  width: 200px;
+}
+
+.toggle-button {
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.menu-list {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  list-style: none;
+  padding: 0;
+}
+
+.menu-list li {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.menu-list li:last-child {
+  border-bottom: none;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
