@@ -1,75 +1,111 @@
+import { HotelResponse, useHotelSearchAPI } from '~resources/api/hotel/get'
+
 import './style.scss'
 
-type SwitcherOptions = {
-  apiURL: string
-  container: HTMLElement | string
-}
+const containerID = 'hotel-switcher'
 
-type SwitcherItem = {
-  id: number
-  text: string
-}
+export function createHotelSwitcher() {
+  let isFirstOpen = true
+  const dropdownContainer = document.getElementById(containerID)
+  if (!dropdownContainer) return
+  dropdownContainer?.classList.add('hotel-switcher-container')
 
-// Функция для создания выпадающего меню
-export const createDropdown = (apiUrl: string) => {
-  // Создаем основной контейнер для выпадающего меню
-  const dropdownContainer = document.createElement('div')
-  dropdownContainer.classList.add('dropdown-container')
-
-  // Создаем кнопку
   const toggleButton = document.createElement('button')
-  toggleButton.innerText = 'Открыть меню'
-  toggleButton.classList.add('toggle-button')
+  toggleButton.classList.add('hotel-switcher-toggle-button')
 
-  // Создаем список элементов выпадающего меню
-  const menuList = document.createElement('ul')
-  menuList.classList.add('menu-list')
+  const menuListContainer = document.createElement('div')
+  menuListContainer.classList.add('hotel-switcher-menu-list-container')
+  const menuList = document.createElement('div')
+  menuList.classList.add('hotel-switcher-menu-list')
 
-  // Флаг для отслеживания состояния меню (открыто или закрыто)
-  let isMenuOpen = false
+  const menuListLoader = document.createElement('div')
+  menuListLoader.classList.add('hotel-switcher-loading')
 
-  // Функция для загрузки данных из API
-  const loadDataFromApi = async (): Promise<any> => {
-    try {
-      const response = await fetch(apiUrl)
-      const data = await response.json()
-      return data
-    } catch (error) {
-      console.error('Ошибка при получении данных из API:', error)
-      return []
+  async function populateMenu() {
+    const currentPath = location.pathname
+    const regexForSearchHotelID = /(\/(hotels?|hotels?\/\w+)+\/)\d+/
+    const match = currentPath.match(regexForSearchHotelID)
+    let currentHotelID: string | null = null
+    if (match) {
+      const fullMatchPath = match[0] ? match[0] : ''
+      const fullMatch = fullMatchPath.match(/\d+/)
+      currentHotelID = fullMatch && fullMatch.length > 0 ? fullMatch[0].toString() : null
     }
-  }
-
-  // Функция для заполнения выпадающего меню данными
-  const populateMenu = async () => {
-    if (!isMenuOpen) {
-      const data = await loadDataFromApi()
-
-      data.forEach((item: string) => {
-        const menuItem = document.createElement('li')
-        menuItem.innerText = item
+    try {
+      const {
+        execute: fetchHotel,
+        data: hotelData,
+      } = useHotelSearchAPI({})
+      await fetchHotel()
+      const data = hotelData.value
+      data?.forEach((item: HotelResponse) => {
+        if (item.id.toString() === currentHotelID) return
+        const menuItem = document.createElement('div')
+        menuItem.classList.add('hotel-switcher-menu-list-item')
+        menuItem.setAttribute('data-hotelid', item.id.toString())
+        menuItem.innerText = item.name
+        menuItem.addEventListener('click', () => {
+          const newHotelID = menuItem.getAttribute('data-hotelid')
+          const updatedString = location.pathname.replace(regexForSearchHotelID, `$1${newHotelID}`)
+          location.href = updatedString
+        })
         menuList.appendChild(menuItem)
       })
-
-      isMenuOpen = true
+      menuListLoader.style.display = 'none'
+    } catch (error) {
+      menuListLoader.style.display = 'none'
     }
   }
 
-  // Обработчик события клика по кнопке
+  function searchMenuItems(query: string) {
+    const items = menuList.querySelectorAll('.hotel-switcher-menu-list-item')
+    items.forEach((item) => {
+      const itemSource = item as HTMLElement
+      const text = itemSource.innerHTML.trim().toLowerCase()
+      if (text.includes(query.trim().toLowerCase())) {
+        itemSource.style.display = 'block'
+      } else {
+        itemSource.style.display = 'none'
+      }
+    })
+  }
+
   toggleButton.addEventListener('click', () => {
-    if (menuList.style.display === 'block') {
-      menuList.style.display = 'none'
-    } else {
-      menuList.style.display = 'block'
-      // Загружаем данные из API при первом открытии
+    if (isFirstOpen) {
       populateMenu()
+      isFirstOpen = false
+    }
+    if (menuListContainer.style.display === 'block') {
+      menuListContainer.style.display = 'none'
+    } else {
+      menuListContainer.style.display = 'block'
     }
   })
 
-  // Добавляем элементы в контейнер
-  dropdownContainer.appendChild(toggleButton)
-  dropdownContainer.appendChild(menuList)
+  const searchInputContainer = document.createElement('div')
+  searchInputContainer.classList.add('hotel-switcher-search-container')
+  const searchInput = document.createElement('input')
+  searchInput.classList.add('form-control')
+  searchInput.placeholder = 'Поиск'
+  searchInput.addEventListener('input', (event) => {
+    const query = (event.target as HTMLInputElement).value
+    searchMenuItems(query)
+  })
 
-  // Возвращаем созданный компонент
-  return dropdownContainer
+  searchInputContainer.appendChild(searchInput)
+  menuListContainer.appendChild(searchInputContainer)
+  menuListContainer.appendChild(menuList)
+  menuListContainer.appendChild(menuListLoader)
+
+  dropdownContainer?.appendChild(toggleButton)
+  dropdownContainer?.appendChild(menuListContainer)
+
+  document.addEventListener('click', (event) => {
+    const isClickInsideMenu = menuListContainer.contains(event.target as Node)
+    const isClickInsideToggleButton = toggleButton.contains(event.target as Node)
+
+    if (!isClickInsideMenu && !isClickInsideToggleButton) {
+      menuListContainer.style.display = 'none'
+    }
+  })
 }
