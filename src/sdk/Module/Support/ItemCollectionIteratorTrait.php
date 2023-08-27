@@ -2,8 +2,14 @@
 
 namespace Sdk\Module\Support;
 
+/**
+ * @template TKey of array-key
+ *
+ * @template-covariant TValue
+ */
 trait ItemCollectionIteratorTrait
 {
+    /** @var array<TKey, TValue>  */
     protected array $items = [];
 
     private int $position = 0;

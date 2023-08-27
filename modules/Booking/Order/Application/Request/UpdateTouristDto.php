@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Module\Booking\Order\Application\Request;
 
-class AddTouristDto
+class UpdateTouristDto
 {
     public function __construct(
-        public readonly int $orderId,
+        public readonly int $touristId,
         public readonly string $fullName,
         public readonly int $countryId,
         public readonly int $gender,

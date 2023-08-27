@@ -14,5 +14,10 @@ class BootServiceProvider extends ServiceProvider
             Domain\Repository\OrderRepositoryInterface::class,
             Infrastructure\Repository\OrderRepository::class,
         );
+
+        $this->app->singleton(
+            Domain\Repository\TouristRepositoryInterface::class,
+            Infrastructure\Repository\TouristRepository::class,
+        );
     }
 }

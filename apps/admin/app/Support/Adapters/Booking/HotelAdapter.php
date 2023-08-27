@@ -7,8 +7,6 @@ namespace App\Admin\Support\Adapters\Booking;
 use Carbon\CarbonPeriod;
 use Module\Booking\HotelBooking\Application\Request\AddRoomDto;
 use Module\Booking\HotelBooking\Application\Request\CreateBookingDto;
-use Module\Booking\HotelBooking\Application\Request\Guest\AddRoomGuestDto;
-use Module\Booking\HotelBooking\Application\Request\Guest\UpdateRoomGuestDto;
 use Module\Booking\HotelBooking\Application\Request\UpdateBookingDto;
 use Module\Booking\HotelBooking\Application\Request\UpdateRoomDto;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\BulkDeleteBookings;
@@ -18,6 +16,8 @@ use Module\Booking\HotelBooking\Application\UseCase\Admin\DeleteBooking;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\GetBooking;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\GetBookingQuery;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\GetBookingsByFilters;
+use Module\Booking\HotelBooking\Application\UseCase\Admin\Room\Tourist\Bind;
+use Module\Booking\HotelBooking\Application\UseCase\Admin\Room\Tourist\Unbind;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\UpdateBooking;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\UpdateExternalNumber;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\UpdateNote;
@@ -163,58 +163,21 @@ class HotelAdapter
         );
     }
 
-    public function addRoomGuest(
-        int $bookingId,
-        int $roomBookingId,
-        string $fullName,
-        int $countryId,
-        int $gender,
-        bool $isAdult,
-        ?int $age,
-    ): void {
-        app(\Module\Booking\HotelBooking\Application\UseCase\Admin\Room\Guest\Add::class)->execute(
-            new AddRoomGuestDto(
-                bookingId: $bookingId,
-                roomBookingId: $roomBookingId,
-                countryId: $countryId,
-                fullName: $fullName,
-                isAdult: $isAdult,
-                gender: $gender,
-                age: $age
-            )
-        );
-    }
-
-    public function updateRoomGuest(
-        int $bookingId,
-        int $roomBookingId,
-        int $guestIndex,
-        string $fullName,
-        int $countryId,
-        int $gender,
-        bool $isAdult,
-        ?int $age,
-    ): void {
-        app(\Module\Booking\HotelBooking\Application\UseCase\Admin\Room\Guest\Update::class)->execute(
-            new UpdateRoomGuestDto(
-                bookingId: $bookingId,
-                roomBookingId: $roomBookingId,
-                guestIndex: $guestIndex,
-                countryId: $countryId,
-                fullName: $fullName,
-                isAdult: $isAdult,
-                gender: $gender,
-                age: $age
-            )
-        );
-    }
-
-    public function deleteRoomGuest(int $bookingId, int $roomBookingId, int $guestIndex): void
+    public function bindRoomGuest(int $bookingId, int $roomBookingId, int $touristId): void
     {
-        app(\Module\Booking\HotelBooking\Application\UseCase\Admin\Room\Guest\Delete::class)->execute(
+        app(Bind::class)->execute(
             bookingId: $bookingId,
             roomBookingId: $roomBookingId,
-            guestIndex: $guestIndex,
+            touristId: $touristId
+        );
+    }
+
+    public function unbindRoomGuest(int $bookingId, int $roomBookingId, int $touristId): void
+    {
+        app(Unbind::class)->execute(
+            bookingId: $bookingId,
+            roomBookingId: $roomBookingId,
+            touristId: $touristId
         );
     }
 

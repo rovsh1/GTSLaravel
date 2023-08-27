@@ -5,15 +5,12 @@ declare(strict_types=1);
 namespace App\Admin\Support\Adapters\Booking;
 
 use Carbon\CarbonInterface;
-use Module\Booking\Airport\Application\Request\AddTouristDto;
 use Module\Booking\Airport\Application\Request\CreateBookingDto;
-use Module\Booking\Airport\Application\Request\UpdateTouristDto;
-use Module\Booking\Airport\Application\UseCase\Admin\BindOrderTourist;
 use Module\Booking\Airport\Application\UseCase\Admin\CreateBooking;
-use Module\Booking\Airport\Application\UseCase\Admin\UnbindOrderTourist;
 use Module\Booking\Airport\Application\UseCase\Admin\GetBooking;
 use Module\Booking\Airport\Application\UseCase\Admin\GetBookingsByFilters;
-use Module\Booking\Airport\Application\UseCase\Admin\UpdateTourist;
+use Module\Booking\Airport\Application\UseCase\Admin\Tourist\Bind;
+use Module\Booking\Airport\Application\UseCase\Admin\Tourist\Unbind;
 
 class AirportAdapter
 {
@@ -55,50 +52,13 @@ class AirportAdapter
         );
     }
 
-    public function addTourist(
-        int $bookingId,
-        string $fullName,
-        int $countryId,
-        int $gender,
-        bool $isAdult,
-        ?int $age
-    ): void {
-        app(BindOrderTourist::class)->execute(
-            new AddTouristDto(
-                bookingId: $bookingId,
-                fullName: $fullName,
-                countryId: $countryId,
-                gender: $gender,
-                isAdult: $isAdult,
-                age: $age
-            )
-        );
-    }
-
-    public function updateTourist(
-        int $bookingId,
-        int $touristId,
-        string $fullName,
-        int $countryId,
-        int $gender,
-        bool $isAdult,
-        ?int $age
-    ): void {
-        app(UpdateTourist::class)->execute(
-            new UpdateTouristDto(
-                bookingId: $bookingId,
-                touristId: $touristId,
-                fullName: $fullName,
-                countryId: $countryId,
-                age: $age,
-                gender: $gender,
-                isAdult: $isAdult
-            )
-        );
-    }
-
-    public function deleteTourist(int $bookingId, int $touristId): void
+    public function bindTourist(int $bookingId, int $touristId): void
     {
-        app(UnbindOrderTourist::class)->execute($bookingId, $touristId);
+        app(Bind::class)->execute($bookingId, $touristId);
+    }
+
+    public function unbindTourist(int $bookingId, int $touristId): void
+    {
+        app(Unbind::class)->execute($bookingId, $touristId);
     }
 }

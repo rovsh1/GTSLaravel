@@ -2,7 +2,7 @@
 
 namespace Module\Booking\Order\Application\Query;
 
-use Module\Booking\Order\Application\Dto\OrderDto;
+use Module\Booking\Order\Application\Response\OrderDto;
 use Module\Booking\Order\Application\Factory\OrderDtoFactory;
 use Module\Booking\Order\Domain\Repository\OrderRepositoryInterface;
 use Sdk\Module\Contracts\Bus\QueryHandlerInterface;
