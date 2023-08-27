@@ -9,17 +9,40 @@ import { requestInitialData } from '~lib/initial-data'
 import BootstrapCard from '~components/Bootstrap/BootstrapCard/BootstrapCard.vue'
 
 import HotelPricesTable from './components/HotelPricesTable.vue'
-import RoomMargins from './components/RoomMargins.vue'
 import SeasonEditPrice from './components/SeasonEditPrice.vue'
 import SeasonPriceDaysTable from './components/SeasonPriceDaysTable.vue'
 
-const { hotelID } = requestInitialData(
+const { hotelID, rooms, seasons } = requestInitialData(
   'view-initial-data-hotel-prices',
   z.object({
     hotelID: z.number(),
+    rooms: z.array(z.object({
+      id: z.number(),
+      hotel_id: z.number(),
+      type_id: z.number(),
+      rooms_number: z.number(),
+      guests_count: z.number(),
+      type_name: z.string(),
+      name: z.string().nullable(),
+      price_rates: z.array(z.object({
+        id: z.number(),
+        hotel_id: z.number(),
+        name: z.string(),
+        description: z.string(),
+      })),
+    })),
+    seasons: z.array(z.object({
+      id: z.number(),
+      contract_id: z.number(),
+      name: z.string(),
+      date_start: z.string(),
+      date_end: z.string(),
+    })),
   }),
 )
 console.log('hotelId:', hotelID)
+console.log('rooms:', rooms)
+console.log('seasons:', seasons)
 
 // const prices = computed(() => useHotelPricesListAPI({ hotelID }));
 
@@ -83,7 +106,6 @@ const editable = ref(false)
         value: 10003,
       }]"
     />
-    <RoomMargins />
   </BootstrapCard>
 </template>
 
