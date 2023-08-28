@@ -124,10 +124,6 @@ const handleFilters = (value: FiltersPayload) => {
 <style lang="scss" scoped>
 @use '~resources/sass/vendor/bootstrap/configuration' as bs;
 
-.title {
-  padding-left: calc(#{bs.$form-select-padding-x} - 0.1em);
-}
-
 .quotasBody {
   display: flex;
   flex-flow: column;
