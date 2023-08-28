@@ -104,7 +104,7 @@ class RoomController extends Controller
 
         $data = $form->getData();
         $room->update($data);
-        $room->updateBeds($data['beds']);
+        $room->updateBeds($data['beds'] ?? []);
 
         return redirect(route('hotels.rooms.index', $hotel));
     }
