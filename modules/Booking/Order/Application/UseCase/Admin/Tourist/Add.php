@@ -31,7 +31,7 @@ class Add implements UseCaseInterface
             age: $request->age
         );
 
-        $this->eventDispatcher->dispatch(new TouristCreated($tourist));
+        $this->eventDispatcher->dispatch(new TouristCreated($tourist->id()));
 
         return TouristDto::fromDomain($tourist);
     }

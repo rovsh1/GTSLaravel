@@ -4,18 +4,17 @@ declare(strict_types=1);
 
 namespace Module\Booking\HotelBooking\Application\Factory;
 
-use Module\Booking\Common\Domain\ValueObject\BookingId;
 use Module\Booking\HotelBooking\Application\Request\AddRoomDto;
 use Module\Booking\HotelBooking\Application\Request\UpdateRoomDto;
 use Module\Booking\HotelBooking\Domain\Adapter\HotelRoomAdapterInterface;
 use Module\Booking\HotelBooking\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\HotelBooking\Domain\Service\RoomUpdater\UpdateDataHelper;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\Condition;
-use Module\Booking\HotelBooking\Domain\ValueObject\Details\GuestCollection;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBookingDetails;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBookingStatusEnum;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomInfo;
 use Module\Booking\HotelBooking\Domain\ValueObject\RoomPrice;
+use Module\Booking\Order\Domain\ValueObject\TouristIdsCollection;
 use Module\Shared\Domain\ValueObject\Percent;
 use Module\Shared\Domain\ValueObject\TimePeriod;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
@@ -29,7 +28,7 @@ class RoomUpdaterDataHelperFactory
 
     public function build(
         AddRoomDto|UpdateRoomDto $request,
-        GuestCollection $guests,
+        TouristIdsCollection $guestIds,
         RoomPrice $price
     ): UpdateDataHelper {
         $booking = $this->bookingRepository->find($request->bookingId);
@@ -52,7 +51,7 @@ class RoomUpdaterDataHelperFactory
                 $hotelRoomDto->id,
                 $hotelRoomDto->name,
             ),
-            guests: $guests,
+            guestIds: $guestIds,
             details: new RoomBookingDetails(
                 rateId: $request->rateId,
                 isResident: $request->isResident,

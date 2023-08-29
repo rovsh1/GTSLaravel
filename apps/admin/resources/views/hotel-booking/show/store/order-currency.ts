@@ -1,8 +1,9 @@
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 
 import { defineStore } from 'pinia'
 import { z } from 'zod'
 
+import { useGetOrderTouristsAPI } from '~api/booking/order/tourists'
 import { Currency } from '~api/models'
 
 import { requestInitialData } from '~lib/initial-data'
@@ -34,8 +35,15 @@ export const useOrderStore = defineStore('booking-order', () => {
   const currency = computed<Currency | undefined>(
     () => currencies.find((cur) => order.currency.value === cur.code_char),
   )
+  const { data: tourists, execute: fetchTourists } = useGetOrderTouristsAPI({ orderId: order.id })
+
+  onMounted(() => {
+    fetchTourists()
+  })
 
   return {
     currency,
+    order,
+    tourists,
   }
 })

@@ -8,6 +8,7 @@ use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\Order\Domain\Entity\Tourist;
 use Module\Booking\Order\Domain\Repository\TouristRepositoryInterface;
 use Module\Booking\Order\Domain\ValueObject\TouristId;
+use Module\Booking\Order\Domain\ValueObject\TouristIdsCollection;
 use Module\Booking\Order\Infrastructure\Models\Tourist as Model;
 use Module\Shared\Domain\ValueObject\GenderEnum;
 
@@ -42,6 +43,19 @@ class TouristRepository implements TouristRepositoryInterface
 
         return $this->buildEntity($model);
     }
+
+    /**
+     * @param TouristIdsCollection $ids
+     * @return array<int, Tourist>
+     */
+    public function get(TouristIdsCollection $ids): array
+    {
+        $preparedIds = $ids->map(fn(TouristId $id) => $id->value());
+        $models = Model::whereIn('id', $preparedIds)->get();
+
+        return $models->map(fn(Model $model) => $this->buildEntity($model))->all();
+    }
+
 
     public function store(Tourist $tourist): bool
     {

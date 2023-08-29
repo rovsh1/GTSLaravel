@@ -14,7 +14,6 @@ return new class extends Migration {
             $table->increments('id');
             $table->unsignedInteger('booking_id');
             $table->unsignedInteger('hotel_room_id');
-            $table->unsignedTinyInteger('guests_count');
             $table->string('room_name');
             $table->json('data');
             $table->timestamps();

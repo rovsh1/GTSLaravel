@@ -7,6 +7,7 @@ namespace Module\Booking\Order\Domain\Repository;
 use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\Order\Domain\Entity\Tourist;
 use Module\Booking\Order\Domain\ValueObject\TouristId;
+use Module\Booking\Order\Domain\ValueObject\TouristIdsCollection;
 use Module\Shared\Domain\ValueObject\GenderEnum;
 
 interface TouristRepositoryInterface
@@ -21,6 +22,12 @@ interface TouristRepositoryInterface
     ): Tourist;
 
     public function find(TouristId $id): ?Tourist;
+
+    /**
+     * @param TouristIdsCollection $ids
+     * @return array<int, Tourist>
+     */
+    public function get(TouristIdsCollection $ids): array;
 
     public function store(Tourist $tourist): bool;
 

@@ -65,7 +65,8 @@ class Booking extends AbstractBooking
         return BookingTypeEnum::AIRPORT;
     }
 
-    public function addTourist(OrderTouristId $touristId): void {
-
+    public function touristIds(): TouristIdsCollection
+    {
+        return $this->touristIds;
     }
 }

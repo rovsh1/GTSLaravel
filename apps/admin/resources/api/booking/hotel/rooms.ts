@@ -32,21 +32,13 @@ export interface DeleteBookingRoomPayload {
 export interface BookingAddRoomGuestPayload {
   bookingID: BookingID
   roomBookingId: number
-  countryId: number
-  fullName: string
-  gender: number
-  isAdult: boolean
-  age?: number | null
-}
-
-export interface BookingUpdateRoomGuestPayload extends BookingAddRoomGuestPayload {
-  guestIndex: number
+  guestId: number
 }
 
 export interface BookingDeleteRoomGuestPayload {
   bookingID: BookingID
   roomBookingId: number
-  guestIndex: number
+  guestId: number
 }
 
 export const addRoomToBooking = (props: MaybeRef<BookingAddRoomPayload | null>) =>
@@ -117,39 +109,7 @@ export const addGuestToBooking = (props: MaybeRef<BookingAddRoomGuestPayload | n
     { immediate: true },
   )
     .post(computed<string>(() => JSON.stringify(
-      getNullableRef<BookingAddRoomGuestPayload, any>(
-        props,
-        (payload: BookingAddRoomGuestPayload): any => ({
-          full_name: payload.fullName,
-          country_id: payload.countryId,
-          gender: payload.gender,
-          room_booking_id: payload.roomBookingId,
-          is_adult: payload.isAdult,
-          age: payload.age,
-        }),
-      ),
-    )), 'application/json')
-    .json<BaseResponse>()
-
-export const updateBookingGuest = (props: MaybeRef<BookingUpdateRoomGuestPayload | null>) =>
-  useAdminAPI(
-    props,
-    ({ bookingID }) => `/hotel-booking/${bookingID}/rooms/guests`,
-    { immediate: true },
-  )
-    .put(computed<string>(() => JSON.stringify(
-      getNullableRef<BookingUpdateRoomGuestPayload, any>(
-        props,
-        (payload: BookingUpdateRoomGuestPayload): any => ({
-          full_name: payload.fullName,
-          country_id: payload.countryId,
-          gender: payload.gender,
-          room_booking_id: payload.roomBookingId,
-          guest_index: payload.guestIndex,
-          is_adult: payload.isAdult,
-          age: payload.age,
-        }),
-      ),
+      getNullableRef<BookingDeleteRoomGuestPayload, any>(props, (payload: BookingDeleteRoomGuestPayload): any => ({ room_booking_id: payload.roomBookingId, guest_id: payload.guestId })),
     )), 'application/json')
     .json<BaseResponse>()
 
@@ -160,6 +120,6 @@ export const deleteBookingGuest = (props: MaybeRef<BookingDeleteRoomGuestPayload
     { immediate: true },
   )
     .delete(computed<string>(() => JSON.stringify(
-      getNullableRef<BookingDeleteRoomGuestPayload, any>(props, (payload: BookingDeleteRoomGuestPayload): any => ({ room_booking_id: payload.roomBookingId, guest_index: payload.guestIndex })),
+      getNullableRef<BookingDeleteRoomGuestPayload, any>(props, (payload: BookingDeleteRoomGuestPayload): any => ({ room_booking_id: payload.roomBookingId, guest_id: payload.guestId })),
     )), 'application/json')
     .json<BaseResponse>()

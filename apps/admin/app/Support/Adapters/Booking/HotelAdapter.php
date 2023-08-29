@@ -16,8 +16,11 @@ use Module\Booking\HotelBooking\Application\UseCase\Admin\DeleteBooking;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\GetBooking;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\GetBookingQuery;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\GetBookingsByFilters;
+use Module\Booking\HotelBooking\Application\UseCase\Admin\Room\Add;
+use Module\Booking\HotelBooking\Application\UseCase\Admin\Room\Delete;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\Room\Tourist\Bind;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\Room\Tourist\Unbind;
+use Module\Booking\HotelBooking\Application\UseCase\Admin\Room\Update;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\UpdateBooking;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\UpdateExternalNumber;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\UpdateNote;
@@ -112,7 +115,7 @@ class HotelAdapter
         ?int $discount = null
     ): void {
         //TODO use AddRoom name
-        app(\Module\Booking\HotelBooking\Application\UseCase\Admin\Room\Add::class)->execute(
+        app(Add::class)->execute(
             new AddRoomDto(
                 bookingId: $bookingId,
                 roomId: $roomId,
@@ -139,7 +142,7 @@ class HotelAdapter
         ?string $note = null,
         ?int $discount = null
     ): void {
-        app(\Module\Booking\HotelBooking\Application\UseCase\Admin\Room\Update::class)->execute(
+        app(Update::class)->execute(
             new UpdateRoomDto(
                 bookingId: $bookingId,
                 roomBookingId: $roomBookingId,
@@ -157,7 +160,7 @@ class HotelAdapter
 
     public function deleteRoom(int $bookingId, int $roomBookingId): void
     {
-        app(\Module\Booking\HotelBooking\Application\UseCase\Admin\Room\Delete::class)->execute(
+        app(Delete::class)->execute(
             $bookingId,
             $roomBookingId
         );

@@ -16,7 +16,8 @@ export interface RoomFormData {
 export interface GuestFormData {
   bookingID: number
   roomBookingId?: number
-  guestIndex?: number
+  orderId?: number
+  id?: number
   countryId?: number
   fullName?: string
   gender?: number

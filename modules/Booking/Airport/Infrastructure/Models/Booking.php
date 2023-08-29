@@ -53,7 +53,7 @@ class Booking extends BaseModel
     public function touristIds(): Attribute
     {
         return Attribute::get(
-            fn() => $this->tourists()->pluck('id')->toArray()
+            fn() => $this->tourists()->pluck('tourist_id')->toArray()
         );
     }
 
@@ -62,7 +62,7 @@ class Booking extends BaseModel
         return $this->belongsToMany(
             Tourist::class,
             'booking_airport_tourists',
-            'booking_id',
+            'booking_airport_id',
             'tourist_id',
         );
     }

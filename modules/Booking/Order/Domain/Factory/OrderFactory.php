@@ -21,11 +21,7 @@ class OrderFactory extends AbstractEntityFactory
     protected function fromArray(array $data): mixed
     {
         $legalId = $data['legal_id'] ?? null;
-
-        $touristIds = [];
-        foreach ($data['tourist_ids'] ?? [] as $touristId) {
-            $touristIds[] = new TouristId($touristId);
-        }
+        $touristIds = array_map(fn(int $id) => new TouristId($id), $data['tourist_ids'] ?? []);
 
         return new $this->entity(
             new OrderId($data['id']),

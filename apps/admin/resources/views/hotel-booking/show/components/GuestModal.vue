@@ -8,8 +8,10 @@ import { z } from 'zod'
 import { validateForm } from '~resources/composables/form'
 import { genderOptions } from '~resources/views/hotel-booking/show/lib/constants'
 import { GuestFormData } from '~resources/views/hotel-booking/show/lib/data-types'
+import { useOrderStore } from '~resources/views/hotel-booking/show/store/order-currency'
 
-import { addGuestToBooking, updateBookingGuest } from '~api/booking/hotel/rooms'
+import { addGuestToBooking } from '~api/booking/hotel/rooms'
+import { addOrderTourist, updateOrderTourist } from '~api/booking/order/tourists'
 import { CountryResponse } from '~api/country'
 
 import { requestInitialData } from '~lib/initial-data'
@@ -23,7 +25,7 @@ const props = defineProps<{
   roomBookingId: MaybeRef<number>
   countries: CountryResponse[]
   formData: Partial<GuestFormData>
-  guestIndex?: number
+  guestId?: number
 }>()
 
 const emit = defineEmits<{
@@ -37,6 +39,9 @@ const { bookingID } = requestInitialData(
     bookingID: z.number(),
   }),
 )
+
+const orderStore = useOrderStore()
+const orderId = computed(() => orderStore.order.id)
 
 const ageTypeOptions: SelectOption[] = [
   { value: 0, label: 'Взрослый' },
@@ -59,7 +64,7 @@ const ageType = computed<number>({
 
 const formData = computed<GuestFormData>(() => ({
   bookingID,
-  guestIndex: props.guestIndex,
+  id: props.guestId,
   ...props.formData,
 }))
 
@@ -72,10 +77,22 @@ const onModalSubmit = async () => {
   }
   isFetching.value = true
   formData.value.roomBookingId = unref<number>(props.roomBookingId)
-  if (formData.value.guestIndex !== undefined) {
-    await updateBookingGuest(formData)
+  formData.value.orderId = orderId.value
+  if (formData.value.id !== undefined) {
+    const payload = {
+      touristId: formData.value.id,
+      ...formData.value,
+    }
+    await updateOrderTourist(payload)
   } else {
-    await addGuestToBooking(formData)
+    const { data: tourist } = await addOrderTourist(formData)
+    // @todo добавить возможность выбрать из списка туристов заказа,
+    // @todo перенести в контроллер
+    await addGuestToBooking({
+      guestId: tourist.value?.id as number,
+      bookingID,
+      roomBookingId: formData.value.roomBookingId,
+    })
   }
   localAgeType.value = undefined
   isFetching.value = false

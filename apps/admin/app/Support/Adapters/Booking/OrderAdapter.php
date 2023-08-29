@@ -11,6 +11,7 @@ use Module\Booking\Order\Application\UseCase\Admin\GetActiveOrders;
 use Module\Booking\Order\Application\UseCase\Admin\GetOrder;
 use Module\Booking\Order\Application\UseCase\Admin\Tourist\Add;
 use Module\Booking\Order\Application\UseCase\Admin\Tourist\Delete;
+use Module\Booking\Order\Application\UseCase\Admin\Tourist\Get;
 use Module\Booking\Order\Application\UseCase\Admin\Tourist\Update;
 
 class OrderAdapter
@@ -68,5 +69,10 @@ class OrderAdapter
     public function deleteTourist(int $touristId): void
     {
         app(Delete::class)->execute($touristId);
+    }
+
+    public function getTourists(int $orderId): array
+    {
+        return app(Get::class)->execute($orderId);
     }
 }

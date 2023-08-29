@@ -22,7 +22,6 @@ AclRoute::for('hotel-booking')
     ->delete('/{booking}/rooms', Controllers\Booking\Hotel\RoomController::class . '@deleteRoom', 'update', 'rooms.delete')
 
     ->post('/{booking}/rooms/guests/add', Controllers\Booking\Hotel\RoomController::class . '@addRoomGuest', 'update', 'rooms.guests.add')
-    ->put('/{booking}/rooms/guests', Controllers\Booking\Hotel\RoomController::class . '@updateRoomGuest', 'update', 'rooms.guests.update')
     ->delete('/{booking}/rooms/guests', Controllers\Booking\Hotel\RoomController::class . '@deleteRoomGuest', 'delete', 'rooms.guests.delete')
     ->put('/{booking}/rooms/{roomBookingId}/price', Controllers\Booking\Hotel\RoomController::class . '@updatePrice', 'update', 'rooms.price.update')
 

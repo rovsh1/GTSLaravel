@@ -10,6 +10,7 @@ use Module\Booking\HotelBooking\Domain\Event\RoomDeleted;
 use Module\Booking\HotelBooking\Domain\Event\RoomEdited;
 use Module\Booking\HotelBooking\Domain\Exception\InvalidRoomResidency;
 use Module\Booking\HotelBooking\Domain\Repository\BookingRepositoryInterface;
+use Module\Booking\HotelBooking\Domain\Repository\BookingTouristRepositoryInterface;
 use Module\Booking\HotelBooking\Domain\Repository\RoomBookingRepositoryInterface;
 use Module\Booking\HotelBooking\Domain\Service\QuotaManager\Exception\ClosedRoomDateQuota;
 use Module\Booking\HotelBooking\Domain\Service\QuotaManager\Exception\NotEnoughRoomDateQuota;
@@ -34,6 +35,7 @@ class RoomUpdater
         private readonly HotelRoomAdapterInterface $hotelRoomAdapter,
         private readonly DomainEventDispatcherInterface $eventDispatcher,
         private readonly BookingRepositoryInterface $bookingRepository,
+        private readonly BookingTouristRepositoryInterface $bookingTouristRepository,
         private readonly SafeExecutorInterface $executor,
         private readonly QuotaManager $quotaManager
     ) {}
@@ -86,19 +88,20 @@ class RoomUpdater
         });
     }
 
-    private function doAdd(UpdateDataHelper $dataHelper): void
+    private function doAdd(UpdateDataHelper $dataHelper): RoomBooking
     {
         $this->makePipeline()->send($dataHelper);
         $roomBooking = $this->roomBookingRepository->create(
             $dataHelper->booking->id(),
             $dataHelper->status,
             $dataHelper->roomInfo,
-            $dataHelper->guests,
             $dataHelper->details,
             $dataHelper->price
         );
         $this->processQuota($dataHelper->booking);
         $this->events[] = new RoomAdded($dataHelper->booking, $roomBooking);
+
+        return $roomBooking;
     }
 
     private function doUpdate(RoomBooking $currentRoomBooking, UpdateDataHelper $dataHelper): void
@@ -111,11 +114,16 @@ class RoomUpdater
     private function doReplace(RoomBooking $currentRoomBooking, UpdateDataHelper $dataHelper): void
     {
         $hotelRoomDto = $this->hotelRoomAdapter->findById($dataHelper->roomInfo->id());
-        $expectedGuestCount = $dataHelper->guests->count();
-        if ($expectedGuestCount > $hotelRoomDto->guestsCount) {
-            $dataHelper->guests->slice(0, $hotelRoomDto->guestsCount);
+        $roomBooking = $this->doAdd($dataHelper);
+        //@todo кинуть ексепшн если кол-во гостей больше доступного
+        $maxGuestCount = $hotelRoomDto->guestsCount;
+        foreach ($dataHelper->guestIds as $index => $guestId) {
+            $guestNumber = $index + 1;
+            if ($guestNumber > $maxGuestCount) {
+                break;
+            }
+            $this->bookingTouristRepository->bind($roomBooking->id(), $guestId);
         }
-        $this->doAdd($dataHelper);
         $this->roomBookingRepository->delete($currentRoomBooking->id()->value());
         $this->events[] = new RoomDeleted($dataHelper->booking, $currentRoomBooking->id());
     }

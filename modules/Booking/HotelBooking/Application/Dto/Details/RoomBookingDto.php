@@ -2,36 +2,21 @@
 
 namespace Module\Booking\HotelBooking\Application\Dto\Details;
 
-use Module\Booking\HotelBooking\Application\Dto\Details\RoomBooking\GuestDto;
 use Module\Booking\HotelBooking\Application\Dto\Details\RoomBooking\RoomBookingDetailsDto;
 use Module\Booking\HotelBooking\Application\Dto\Details\RoomBooking\RoomInfoDto;
 use Module\Booking\HotelBooking\Application\Dto\Details\RoomBooking\RoomPriceDto;
-use Module\Booking\HotelBooking\Domain\Entity\RoomBooking;
-use Module\Shared\Application\Dto\AbstractDomainBasedDto;
-use Module\Shared\Domain\Entity\EntityInterface;
-use Module\Shared\Domain\ValueObject\ValueObjectInterface;
+use Module\Booking\Order\Application\Response\TouristDto;
+use Sdk\Module\Foundation\Support\Dto\Dto;
 
-class RoomBookingDto extends AbstractDomainBasedDto
+class RoomBookingDto extends Dto
 {
     public function __construct(
         public readonly int $id,
         public readonly int $status,
         public readonly RoomInfoDto $roomInfo,
-        /** @var GuestDto[] $guests */
+        /** @var TouristDto[] $guests */
         public readonly array $guests,
         public readonly RoomBookingDetailsDto $details,
         public readonly RoomPriceDto $price
     ) {}
-
-    public static function fromDomain(EntityInterface|ValueObjectInterface|RoomBooking $entity): static
-    {
-        return new static(
-            id: $entity->id()->value(),
-            status: $entity->status()->value,
-            roomInfo: RoomInfoDto::fromDomain($entity->roomInfo()),
-            guests: GuestDto::collectionFromDomain($entity->guests()->all()),
-            details: RoomBookingDetailsDto::fromDomain($entity->details()),
-            price: RoomPriceDto::fromDomain($entity->price())
-        );
-    }
 }
