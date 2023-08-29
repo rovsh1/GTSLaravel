@@ -13,8 +13,8 @@ use Module\Booking\HotelBooking\Domain\Service\QuotaManager\Exception\ClosedRoom
 use Module\Booking\HotelBooking\Domain\Service\QuotaManager\Exception\NotEnoughRoomDateQuota;
 use Module\Booking\HotelBooking\Domain\Service\QuotaManager\Exception\NotFoundRoomDateQuota;
 use Module\Booking\HotelBooking\Domain\Service\RoomUpdater\RoomUpdater;
-use Module\Booking\HotelBooking\Domain\ValueObject\Details\GuestCollection;
 use Module\Booking\HotelBooking\Domain\ValueObject\RoomPrice;
+use Module\Booking\Order\Domain\ValueObject\GuestIdsCollection;
 use Module\Shared\Application\Exception\ApplicationException;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
@@ -28,7 +28,7 @@ class Add implements UseCaseInterface
     public function execute(AddRoomDto $request): void
     {
         try {
-            $addRoomDto = $this->dataHelperFactory->build($request, new GuestCollection(), RoomPrice::buildEmpty());
+            $addRoomDto = $this->dataHelperFactory->build($request, new GuestIdsCollection(), RoomPrice::buildEmpty());
             $this->roomUpdater->add($addRoomDto);
         } catch (InvalidRoomResidency $e) {
             throw new InvalidRoomClientResidencyException($e);

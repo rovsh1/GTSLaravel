@@ -6,17 +6,13 @@ namespace Module\Booking\HotelBooking\Domain\Entity;
 
 use Module\Booking\Common\Domain\ValueObject\BookingId;
 use Module\Booking\Common\Domain\ValueObject\OrderId;
-use Module\Booking\HotelBooking\Domain\Event\GuestAdded;
-use Module\Booking\HotelBooking\Domain\Event\GuestDeleted;
-use Module\Booking\HotelBooking\Domain\Event\GuestEdited;
 use Module\Booking\HotelBooking\Domain\Service\PriceCalculator\RoomPriceEditor;
-use Module\Booking\HotelBooking\Domain\ValueObject\Details\GuestCollection;
-use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\Guest;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBookingDetails;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBookingId;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBookingStatusEnum;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomInfo;
 use Module\Booking\HotelBooking\Domain\ValueObject\RoomPrice;
+use Module\Booking\Order\Domain\ValueObject\GuestIdsCollection;
 use Module\Shared\Domain\Entity\EntityInterface;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
@@ -28,8 +24,7 @@ class RoomBooking extends AbstractAggregateRoot implements EntityInterface
         private readonly OrderId $orderId,
         private RoomBookingStatusEnum $status,
         private RoomInfo $roomInfo,
-        //@todo возможно придется переносить гостей в отдельную таблицу с привязкой к заказу (для составных броней)
-        private GuestCollection $guests,
+        private GuestIdsCollection $guestsIds,
         private RoomBookingDetails $details,
         private RoomPrice $price,
     ) {}
@@ -54,9 +49,9 @@ class RoomBooking extends AbstractAggregateRoot implements EntityInterface
         return $this->status;
     }
 
-    public function guests(): GuestCollection
+    public function guestIds(): GuestIdsCollection
     {
-        return $this->guests;
+        return $this->guestsIds;
     }
 
     public function roomInfo(): RoomInfo
@@ -72,44 +67,6 @@ class RoomBooking extends AbstractAggregateRoot implements EntityInterface
     public function price(): RoomPrice
     {
         return $this->price;
-    }
-
-    public function addGuest(Guest $guest): void
-    {
-        $this->guests->add($guest);
-        $this->pushEvent(
-            new GuestAdded(
-                $this,
-                $guest
-            )
-        );
-    }
-
-    public function updateGuest(int $index, Guest $guest): void
-    {
-        $this->guests->offsetSet($index, $guest);
-        $this->pushEvent(
-            new GuestEdited(
-                $this,
-                $guest,
-                '',
-                '',
-                ''
-            )
-        );
-    }
-
-    public function deleteGuest(int $index): void
-    {
-        $this->guests->offsetUnset($index);
-        //@todo кинуть ивент
-        $this->pushEvent(
-            new GuestDeleted(
-                $this,
-                $index,
-                ''//@todo надо ли?
-            )
-        );
     }
 
     public function recalculatePrices(RoomPriceEditor $editor): void
@@ -149,7 +106,6 @@ class RoomBooking extends AbstractAggregateRoot implements EntityInterface
             'orderId' => $this->orderId->value(),
             'bookingId' => $this->bookingId->value(),
             'status' => $this->status->value,
-            'guests' => $this->guests->toData(),
             'roomInfo' => $this->roomInfo->toData(),
             'details' => $this->details->toData(),
             'price' => $this->price->toData()
@@ -164,7 +120,7 @@ class RoomBooking extends AbstractAggregateRoot implements EntityInterface
             bookingId: new BookingId($data['bookingId']),
             status: RoomBookingStatusEnum::from($data['status']),
             roomInfo: RoomInfo::fromData($data['roomInfo']),
-            guests: GuestCollection::fromData($data['guests']),
+            guestsIds: GuestIdsCollection::fromData($data['guestIds']),
             details: RoomBookingDetails::fromData($data['details']),
             price: RoomPrice::fromData($data['price'])
         );

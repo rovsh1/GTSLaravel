@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Order\Application\UseCase\Admin;
 
-use Module\Booking\Order\Application\Dto\OrderDto;
+use Module\Booking\Order\Application\Response\OrderDto;
 use Module\Booking\Order\Application\Query\Find as Query;
 use Sdk\Module\Contracts\Bus\QueryBusInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;

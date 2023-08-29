@@ -5,9 +5,17 @@ declare(strict_types=1);
 namespace Module\Booking\Airport\Infrastructure\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
 use Module\Booking\Common\Infrastructure\Models\Booking as BaseModel;
 
+/**
+ * Module\Booking\Airport\Infrastructure\Models\Booking
+ *
+ * @property int $id
+ * @property-read int[] $guest_ids
+ */
 class Booking extends BaseModel
 {
     protected $attributes = [
@@ -40,5 +48,22 @@ class Booking extends BaseModel
 //            ->addSelect('hotels.name as hotel_name')
 //            ->join('r_cities', 'r_cities.id', '=', 'hotels.city_id')
 //            ->joinTranslatable('r_cities', 'name as city_name');
+    }
+
+    public function guestIds(): Attribute
+    {
+        return Attribute::get(
+            fn() => $this->guests()->pluck('guest_id')->toArray()
+        );
+    }
+
+    public function guests(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Guest::class,
+            'booking_airport_guests',
+            'booking_airport_id',
+            'guest_id',
+        );
     }
 }

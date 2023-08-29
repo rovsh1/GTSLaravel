@@ -105,6 +105,6 @@
             </div>
         </div>
 
-        <div id="booking-rooms"></div>
+        <div id="booking-details"></div>
     </div>
 @endsection

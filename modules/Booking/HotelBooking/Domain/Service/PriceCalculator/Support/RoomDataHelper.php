@@ -40,7 +40,7 @@ class RoomDataHelper
 
     public function guestsCount(): int
     {
-        return $this->roomBooking->guests()->count();
+        return $this->roomBooking->guestIds()->count();
     }
 
     public function clientId(): ClientId

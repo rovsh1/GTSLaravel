@@ -34,7 +34,7 @@ class Update implements UseCaseInterface
             throw new EntityNotFoundException('Room booking not found');
         }
         try {
-            $updateRoomDto = $this->dataHelperFactory->build($request, $roomBooking->guests(), $roomBooking->price());
+            $updateRoomDto = $this->dataHelperFactory->build($request, $roomBooking->guestIds(), $roomBooking->price());
             $this->roomUpdater->update($roomBooking->id(), $updateRoomDto);
         } catch (InvalidRoomResidency $e) {
             throw new InvalidRoomClientResidencyException($e);

@@ -5,6 +5,10 @@ declare(strict_types=1);
 namespace Module\Booking\HotelBooking\Infrastructure\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\DB;
+use Module\Booking\HotelBooking\Infrastructure\Models\Room\Guest;
 use Sdk\Module\Database\Eloquent\Model;
 
 class RoomBooking extends Model
@@ -14,7 +18,6 @@ class RoomBooking extends Model
     protected $fillable = [
         'booking_id',
         'hotel_room_id',
-        'guests_count',
         'room_name',
         'data',
     ];
@@ -36,5 +39,22 @@ class RoomBooking extends Model
     public function scopeWhereId(Builder $builder, int $id): void
     {
         $builder->where('booking_hotel_rooms.id', $id);
+    }
+
+    public function guests(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Guest::class,
+            'booking_hotel_room_guests',
+            'booking_hotel_room_id',
+            'guest_id'
+        );
+    }
+
+    public function guestIds(): Attribute
+    {
+        return Attribute::get(
+            fn() => $this->guests()->pluck('guest_id')->toArray()
+        );
     }
 }
