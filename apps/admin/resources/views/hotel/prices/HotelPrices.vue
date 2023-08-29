@@ -1,16 +1,16 @@
 <script lang="ts" setup>
 
-import { ref } from 'vue'
+import { onMounted } from 'vue'
 
 import { z } from 'zod'
+
+import { useRoomSeasonsPricesListAPI } from '~resources/api/hotel/prices/seasons'
 
 import { requestInitialData } from '~lib/initial-data'
 
 import BootstrapCard from '~components/Bootstrap/BootstrapCard/BootstrapCard.vue'
 
 import HotelPricesTable from './components/HotelPricesTable.vue'
-import SeasonEditPrice from './components/SeasonEditPrice.vue'
-import SeasonPriceDaysTable from './components/SeasonPriceDaysTable.vue'
 
 const { hotelID, rooms, seasons } = requestInitialData(
   'view-initial-data-hotel-prices',
@@ -40,71 +40,25 @@ const { hotelID, rooms, seasons } = requestInitialData(
     })),
   }),
 )
-console.log('hotelId:', hotelID)
-console.log('rooms:', rooms)
-console.log('seasons:', seasons)
 
-// const prices = computed(() => useHotelPricesListAPI({ hotelID }));
+const { data: prices, isFetching: pricesLoad, execute: fetchPrices } = useRoomSeasonsPricesListAPI({ hotelID })
 
-// const b =computed(()=>useHotelPricesListAPI({ hotelID }))
-
-// async function fetchData() {
-//   try {
-//     console.log("test test")
-//    const res= useHotelPricesListAPI({ hotelID })
-//    console.log("-------------res------------:",res)
-//   } catch (error) {
-//     console.error(error)
-//   }
-// }
-
-// onMounted(fetchData)
-
-// watchEffect(() => {
-//   console.log(fetchData())
-// })
-
-// watch(filtersPayload, () => fetchHotelPrices())
-
-const editable = ref(false)
+onMounted(async () => {
+  await fetchPrices()
+})
 </script>
 <template>
-  <BootstrapCard>
+  <BootstrapCard v-for="room in rooms" :key="room.id">
     <template #title>
-      <h2>Четырехместный (170)</h2>
+      <h2>{{ room.name }} ({{ room.type_name }})</h2>
     </template>
     <HotelPricesTable
-      :data="[{
-        id: 1,
-        value: 10000,
-      }, {
-        id: 2,
-        value: 10001,
-      }, {
-        id: 3,
-        value: 10002,
-      }, {
-        id: 4,
-        value: 10003,
-      }]"
-      @show-season="editable = !editable"
-    />
-    <SeasonEditPrice v-if="editable" />
-    <SeasonPriceDaysTable
-      v-if="editable"
-      :data="[{
-        id: 1,
-        value: 10000,
-      }, {
-        id: 2,
-        value: 10001,
-      }, {
-        id: 3,
-        value: 10002,
-      }, {
-        id: 4,
-        value: 10003,
-      }]"
+      :hotel-id="hotelID"
+      :room-data="room"
+      :seasons-data="seasons"
+      :prices-data="prices"
+      :is-fetching="pricesLoad"
+      @update-data="fetchPrices"
     />
   </BootstrapCard>
 </template>

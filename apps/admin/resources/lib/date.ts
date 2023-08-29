@@ -20,6 +20,14 @@ export interface PeriodInterface {
 
 export const formatPeriod = (period: PeriodInterface) => `${formatDate(period.date_start)} - ${formatDate(period.date_end)}`
 
+export const formatSeasonPeriod = (period: PeriodInterface) => {
+  const dateStart = parseAPIDate(period.date_start)
+  const dateEnd = parseAPIDate(period.date_end)
+  return `${dateStart.day} ${dateStart.monthLong} - ${dateEnd.day} ${dateEnd.monthLong} ${dateEnd.year}`
+}
+
+export const getMonthName = (date: DateTime) => date.monthLong
+
 export const dateRangeDelimiter = ' - '
 
 export const getEachDayInMonth = (date: Date): Date[] => {

@@ -6,7 +6,7 @@ import { onClickOutside } from '@vueuse/core'
 import EditableButton from './EditableButton.vue'
 
 const props = withDefaults(defineProps<{
-  value: number
+  value: number | null
   enableContextMenu?: boolean
 }>(), {
   enableContextMenu: false,
