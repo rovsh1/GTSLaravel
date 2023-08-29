@@ -23,6 +23,9 @@ export interface AddOrderGuestPayload {
   gender: number
   isAdult: boolean
   age?: number | null
+  hotelBookingId?: number
+  hotelBookingRoomId?: number
+  airportBookingId?: number
 }
 
 export interface UpdateOrderGuestPayload {
@@ -64,6 +67,9 @@ export const addOrderGuest = (props: MaybeRef<AddOrderGuestPayload | null>) =>
           gender: payload.gender,
           is_adult: payload.isAdult,
           age: payload.age,
+          hotelBookingId: payload.hotelBookingId,
+          hotelBookingRoomId: payload.hotelBookingRoomId,
+          airportBookingId: payload.airportBookingId,
         }),
       ),
     )), 'application/json')

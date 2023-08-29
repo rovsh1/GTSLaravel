@@ -13,7 +13,11 @@ class AddRequest extends FormRequest
             'country_id' => ['required', 'numeric'],
             'gender' => ['required', 'numeric'],
             'is_adult' => ['required', 'bool'],
-            'age' => ['required_if:is_adult,false', 'numeric', 'nullable']
+            'age' => ['required_if:is_adult,false', 'numeric', 'nullable'],
+
+            'hotelBookingId' => ['nullable', 'numeric'],
+            'hotelBookingRoomId' => ['required_with:hotelBookingId', 'numeric'],
+            'airportBookingId' => ['nullable', 'numeric'],
         ];
     }
 
@@ -40,5 +44,20 @@ class AddRequest extends FormRequest
     public function getAge(): ?int
     {
         return $this->post('age');
+    }
+
+    public function hotelBookingId(): ?int
+    {
+        return $this->post('hotelBookingId');
+    }
+
+    public function hotelBookingRoomId(): ?int
+    {
+        return $this->post('hotelBookingRoomId');
+    }
+
+    public function airportBookingId(): ?int
+    {
+        return $this->post('airportBookingId');
     }
 }

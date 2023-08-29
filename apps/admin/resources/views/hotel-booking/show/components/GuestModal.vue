@@ -10,7 +10,6 @@ import { genderOptions } from '~resources/views/hotel-booking/show/lib/constants
 import { GuestFormData } from '~resources/views/hotel-booking/show/lib/data-types'
 import { useOrderStore } from '~resources/views/hotel-booking/show/store/order-currency'
 
-import { addGuestToBooking } from '~api/booking/hotel/rooms'
 import { addOrderGuest, updateOrderGuest } from '~api/booking/order/guest'
 import { CountryResponse } from '~api/country'
 
@@ -85,14 +84,13 @@ const onModalSubmit = async () => {
     }
     await updateOrderGuest(payload)
   } else {
-    const { data: guest } = await addOrderGuest(formData)
+    const payload = {
+      hotelBookingRoomId: formData.value.roomBookingId,
+      hotelBookingId: bookingID,
+      ...formData.value,
+    }
+    await addOrderGuest(payload)
     // @todo добавить возможность выбрать из списка туристов заказа,
-    // @todo перенести в контроллер
-    await addGuestToBooking({
-      guestId: guest.value?.id as number,
-      bookingID,
-      roomBookingId: formData.value.roomBookingId,
-    })
   }
   localAgeType.value = undefined
   isFetching.value = false
