@@ -10,7 +10,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('order_tourists', function (Blueprint $table) {
+        Schema::create('order_guests', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('order_id');
             $table->string('name');
@@ -33,18 +33,18 @@ return new class extends Migration {
                 ->cascadeOnUpdate();
         });
 
-        $this->upBookingHotelRoomTourists();
-        $this->upBookingAirportTourists();
+        $this->upBookingHotelRoomGuests();
+        $this->upBookingAirportGuests();
     }
 
-    private function upBookingHotelRoomTourists(): void
+    private function upBookingHotelRoomGuests(): void
     {
-        Schema::create('booking_hotel_room_tourists', function (Blueprint $table) {
+        Schema::create('booking_hotel_room_guests', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('booking_hotel_room_id');
-            $table->unsignedInteger('tourist_id');
+            $table->unsignedInteger('guest_id');
 
-            $table->unique(['booking_hotel_room_id', 'tourist_id'],'booking_hotel_room_tourists_room_id_tourist_id_unique');
+            $table->unique(['booking_hotel_room_id', 'guest_id'],'booking_hotel_room_guests_room_id_guest_id_unique');
 
             $table->foreign('booking_hotel_room_id')
                 ->references('id')
@@ -52,22 +52,22 @@ return new class extends Migration {
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
 
-            $table->foreign('tourist_id')
+            $table->foreign('guest_id')
                 ->references('id')
-                ->on('order_tourists')
+                ->on('order_guests')
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
         });
     }
 
-    private function upBookingAirportTourists(): void
+    private function upBookingAirportGuests(): void
     {
-        Schema::create('booking_airport_tourists', function (Blueprint $table) {
+        Schema::create('booking_airport_guests', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('booking_airport_id');
-            $table->unsignedInteger('tourist_id');
+            $table->unsignedInteger('guest_id');
 
-            $table->unique(['booking_airport_id', 'tourist_id']);
+            $table->unique(['booking_airport_id', 'guest_id']);
 
             $table->foreign('booking_airport_id')
                 ->references('id')
@@ -75,9 +75,9 @@ return new class extends Migration {
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
 
-            $table->foreign('tourist_id')
+            $table->foreign('guest_id')
                 ->references('id')
-                ->on('order_tourists')
+                ->on('order_guests')
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
         });
@@ -88,8 +88,8 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('booking_hotel_room_tourists');
-        Schema::dropIfExists('booking_airport_tourists');
-        Schema::dropIfExists('order_tourists');
+        Schema::dropIfExists('booking_hotel_room_guests');
+        Schema::dropIfExists('booking_airport_guests');
+        Schema::dropIfExists('order_guests');
     }
 };

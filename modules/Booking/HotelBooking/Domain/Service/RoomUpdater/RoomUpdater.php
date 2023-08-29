@@ -10,7 +10,7 @@ use Module\Booking\HotelBooking\Domain\Event\RoomDeleted;
 use Module\Booking\HotelBooking\Domain\Event\RoomEdited;
 use Module\Booking\HotelBooking\Domain\Exception\InvalidRoomResidency;
 use Module\Booking\HotelBooking\Domain\Repository\BookingRepositoryInterface;
-use Module\Booking\HotelBooking\Domain\Repository\BookingTouristRepositoryInterface;
+use Module\Booking\HotelBooking\Domain\Repository\BookingGuestRepositoryInterface;
 use Module\Booking\HotelBooking\Domain\Repository\RoomBookingRepositoryInterface;
 use Module\Booking\HotelBooking\Domain\Service\QuotaManager\Exception\ClosedRoomDateQuota;
 use Module\Booking\HotelBooking\Domain\Service\QuotaManager\Exception\NotEnoughRoomDateQuota;
@@ -35,7 +35,7 @@ class RoomUpdater
         private readonly HotelRoomAdapterInterface $hotelRoomAdapter,
         private readonly DomainEventDispatcherInterface $eventDispatcher,
         private readonly BookingRepositoryInterface $bookingRepository,
-        private readonly BookingTouristRepositoryInterface $bookingTouristRepository,
+        private readonly BookingGuestRepositoryInterface $bookingGuestRepository,
         private readonly SafeExecutorInterface $executor,
         private readonly QuotaManager $quotaManager
     ) {}
@@ -122,7 +122,7 @@ class RoomUpdater
             if ($guestNumber > $maxGuestCount) {
                 break;
             }
-            $this->bookingTouristRepository->bind($roomBooking->id(), $guestId);
+            $this->bookingGuestRepository->bind($roomBooking->id(), $guestId);
         }
         $this->roomBookingRepository->delete($currentRoomBooking->id()->value());
         $this->events[] = new RoomDeleted($dataHelper->booking, $currentRoomBooking->id());

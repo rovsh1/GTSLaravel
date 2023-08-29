@@ -14,7 +14,7 @@ use Module\Booking\Common\Infrastructure\Models\Booking as BaseModel;
  * Module\Booking\Airport\Infrastructure\Models\Booking
  *
  * @property int $id
- * @property-read int[] $tourist_ids
+ * @property-read int[] $guest_ids
  */
 class Booking extends BaseModel
 {
@@ -50,20 +50,20 @@ class Booking extends BaseModel
 //            ->joinTranslatable('r_cities', 'name as city_name');
     }
 
-    public function touristIds(): Attribute
+    public function guestIds(): Attribute
     {
         return Attribute::get(
-            fn() => $this->tourists()->pluck('tourist_id')->toArray()
+            fn() => $this->guests()->pluck('guest_id')->toArray()
         );
     }
 
-    public function tourists(): BelongsToMany
+    public function guests(): BelongsToMany
     {
         return $this->belongsToMany(
-            Tourist::class,
-            'booking_airport_tourists',
+            Guest::class,
+            'booking_airport_guests',
             'booking_airport_id',
-            'tourist_id',
+            'guest_id',
         );
     }
 }

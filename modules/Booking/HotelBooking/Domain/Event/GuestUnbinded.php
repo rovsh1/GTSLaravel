@@ -8,7 +8,7 @@ use Module\Booking\Common\Domain\ValueObject\BookingId;
 use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\HotelBooking\Domain\Entity\RoomBooking;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBookingId;
-use Module\Booking\Order\Domain\ValueObject\TouristId;
+use Module\Booking\Order\Domain\ValueObject\GuestId;
 
 class GuestUnbinded implements BookingEventInterface, PriceBecomeDeprecatedEventInterface
 {
@@ -16,7 +16,7 @@ class GuestUnbinded implements BookingEventInterface, PriceBecomeDeprecatedEvent
         public readonly BookingId $bookingId,
         public readonly OrderId $orderId,
         public readonly RoomBookingId $roomBookingId,
-        public readonly TouristId $touristId,
+        public readonly GuestId $guestId,
     ) {
     }
 

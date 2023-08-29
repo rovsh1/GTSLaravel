@@ -19,14 +19,14 @@ use Module\Booking\HotelBooking\Application\Dto\Details\RoomBooking\RoomPriceDto
 use Module\Booking\HotelBooking\Application\Dto\Details\RoomBookingDto;
 use Module\Booking\HotelBooking\Domain\Entity\Booking;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBookingCollection;
-use Module\Booking\Order\Application\Response\TouristDto;
-use Module\Booking\Order\Domain\Repository\TouristRepositoryInterface;
+use Module\Booking\Order\Application\Response\GuestDto;
+use Module\Booking\Order\Domain\Repository\GuestRepositoryInterface;
 
 class BookingDtoFactory extends AbstractBookingDtoFactory
 {
     public function __construct(
         StatusStorage $statusStorage,
-        private readonly TouristRepositoryInterface $touristRepository
+        private readonly GuestRepositoryInterface $guestRepository
     ) {
         parent::__construct($statusStorage);
     }
@@ -61,12 +61,12 @@ class BookingDtoFactory extends AbstractBookingDtoFactory
         $dtos = [];
         foreach ($roomBookings as $roomBooking) {
             //@todo Поместить туристов в заказы, и на фронте склеивать по id
-            $tourists = $this->touristRepository->get($roomBooking->guestIds());
+            $guests = $this->guestRepository->get($roomBooking->guestIds());
             $dtos[] = new RoomBookingDto(
                 id: $roomBooking->id()->value(),
                 status: $roomBooking->status()->value,
                 roomInfo: RoomInfoDto::fromDomain($roomBooking->roomInfo()),
-                guests: TouristDto::collectionFromDomain($tourists),
+                guests: GuestDto::collectionFromDomain($guests),
                 details: RoomBookingDetailsDto::fromDomain($roomBooking->details()),
                 price: RoomPriceDto::fromDomain($roomBooking->price())
             );

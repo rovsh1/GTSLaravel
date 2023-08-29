@@ -13,7 +13,7 @@ use Module\Booking\Common\Domain\ValueObject\BookingPrice;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
 use Module\Booking\Common\Domain\ValueObject\OrderId;
-use Module\Booking\Order\Domain\ValueObject\TouristIdsCollection;
+use Module\Booking\Order\Domain\ValueObject\GuestIdsCollection;
 use Module\Shared\Domain\ValueObject\Id;
 
 class Booking extends AbstractBooking
@@ -29,7 +29,7 @@ class Booking extends AbstractBooking
         private readonly AirportInfo $airportInfo,
         private readonly CarbonImmutable $date,
         //@todo номер рейса + доп. инфо
-        private readonly TouristIdsCollection $touristIds,
+        private readonly GuestIdsCollection $guestIds,
         private ?string $note
     ) {
         parent::__construct($id, $orderId, $status, $createdAt, $creatorId, $price);
@@ -65,8 +65,8 @@ class Booking extends AbstractBooking
         return BookingTypeEnum::AIRPORT;
     }
 
-    public function touristIds(): TouristIdsCollection
+    public function guestIds(): GuestIdsCollection
     {
-        return $this->touristIds;
+        return $this->guestIds;
     }
 }

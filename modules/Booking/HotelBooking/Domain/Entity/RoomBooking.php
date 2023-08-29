@@ -12,7 +12,7 @@ use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBooki
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBookingStatusEnum;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomInfo;
 use Module\Booking\HotelBooking\Domain\ValueObject\RoomPrice;
-use Module\Booking\Order\Domain\ValueObject\TouristIdsCollection;
+use Module\Booking\Order\Domain\ValueObject\GuestIdsCollection;
 use Module\Shared\Domain\Entity\EntityInterface;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
@@ -24,7 +24,7 @@ class RoomBooking extends AbstractAggregateRoot implements EntityInterface
         private readonly OrderId $orderId,
         private RoomBookingStatusEnum $status,
         private RoomInfo $roomInfo,
-        private TouristIdsCollection $guestsIds,
+        private GuestIdsCollection $guestsIds,
         private RoomBookingDetails $details,
         private RoomPrice $price,
     ) {}
@@ -49,7 +49,7 @@ class RoomBooking extends AbstractAggregateRoot implements EntityInterface
         return $this->status;
     }
 
-    public function guestIds(): TouristIdsCollection
+    public function guestIds(): GuestIdsCollection
     {
         return $this->guestsIds;
     }
@@ -120,7 +120,7 @@ class RoomBooking extends AbstractAggregateRoot implements EntityInterface
             bookingId: new BookingId($data['bookingId']),
             status: RoomBookingStatusEnum::from($data['status']),
             roomInfo: RoomInfo::fromData($data['roomInfo']),
-            guestsIds: TouristIdsCollection::fromData($data['guestIds']),
+            guestsIds: GuestIdsCollection::fromData($data['guestIds']),
             details: RoomBookingDetails::fromData($data['details']),
             price: RoomPrice::fromData($data['price'])
         );

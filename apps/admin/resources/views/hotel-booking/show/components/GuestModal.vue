@@ -11,7 +11,7 @@ import { GuestFormData } from '~resources/views/hotel-booking/show/lib/data-type
 import { useOrderStore } from '~resources/views/hotel-booking/show/store/order-currency'
 
 import { addGuestToBooking } from '~api/booking/hotel/rooms'
-import { addOrderTourist, updateOrderTourist } from '~api/booking/order/tourists'
+import { addOrderGuest, updateOrderGuest } from '~api/booking/order/guest'
 import { CountryResponse } from '~api/country'
 
 import { requestInitialData } from '~lib/initial-data'
@@ -80,16 +80,16 @@ const onModalSubmit = async () => {
   formData.value.orderId = orderId.value
   if (formData.value.id !== undefined) {
     const payload = {
-      touristId: formData.value.id,
+      guestId: formData.value.id,
       ...formData.value,
     }
-    await updateOrderTourist(payload)
+    await updateOrderGuest(payload)
   } else {
-    const { data: tourist } = await addOrderTourist(formData)
+    const { data: guest } = await addOrderGuest(formData)
     // @todo добавить возможность выбрать из списка туристов заказа,
     // @todo перенести в контроллер
     await addGuestToBooking({
-      guestId: tourist.value?.id as number,
+      guestId: guest.value?.id as number,
       bookingID,
       roomBookingId: formData.value.roomBookingId,
     })

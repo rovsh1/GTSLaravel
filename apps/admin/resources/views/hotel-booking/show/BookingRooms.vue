@@ -7,11 +7,11 @@ import { z } from 'zod'
 
 import EditTableRowButton from '~resources/views/hotel/settings/components/EditTableRowButton.vue'
 import GuestModal from '~resources/views/hotel-booking/show/components/GuestModal.vue'
+import GuestsTable from '~resources/views/hotel-booking/show/components/GuestsTable.vue'
 import InfoBlock from '~resources/views/hotel-booking/show/components/InfoBlock/InfoBlock.vue'
 import InfoBlockTitle from '~resources/views/hotel-booking/show/components/InfoBlock/InfoBlockTitle.vue'
 import RoomModal from '~resources/views/hotel-booking/show/components/RoomModal.vue'
 import RoomPriceModal from '~resources/views/hotel-booking/show/components/RoomPriceModal.vue'
-import TouristsTable from '~resources/views/hotel-booking/show/components/TouristsTable.vue'
 import { getConditionLabel, getRoomStatusName } from '~resources/views/hotel-booking/show/lib/constants'
 import { GuestFormData, RoomFormData } from '~resources/views/hotel-booking/show/lib/data-types'
 import { useBookingStore } from '~resources/views/hotel-booking/show/store/booking'
@@ -25,7 +25,7 @@ import {
 } from '~api/booking/hotel/details'
 import { updateRoomBookingPrice } from '~api/booking/hotel/price'
 import { deleteBookingGuest, deleteBookingRoom } from '~api/booking/hotel/rooms'
-import { Tourist } from '~api/booking/order/tourists'
+import { Guest } from '~api/booking/order/guest'
 import { CountryResponse, useCountrySearchAPI } from '~api/country'
 import { MarkupSettings } from '~api/hotel/markup-settings'
 import { HotelRate, useHotelRatesAPI } from '~api/hotel/price-rate'
@@ -60,7 +60,7 @@ const bookingDetails = computed<HotelBookingDetails | null>(() => bookingStore.b
 const markupSettings = computed<MarkupSettings | null>(() => bookingStore.markupSettings)
 const isEditableStatus = computed<boolean>(() => bookingStore.availableActions?.isEditable || false)
 const orderCurrency = computed<Currency | undefined>(() => orderStore.currency)
-const orderTourists = computed<Tourist[]>(() => orderStore.tourists || [])
+const orderGuests = computed<Guest[]>(() => orderStore.guests || [])
 const canChangeRoomPrice = computed<boolean>(() => bookingStore.availableActions?.canChangeRoomPrice || false)
 
 const { execute: fetchPriceRates, data: priceRates } = useHotelRatesAPI({ hotelID })
@@ -322,14 +322,14 @@ fetchCountries()
           </div>
         </template>
 
-        <TouristsTable
+        <GuestsTable
           v-if="countries"
           :can-edit="isEditableStatus"
-          :tourists="room.guests"
-          :order-tourists="orderTourists"
+          :guests="room.guests"
+          :order-guests="orderGuests"
           :countries="countries"
-          @edit="(tourist) => handleEditGuest(room.id, tourist)"
-          @delete="(tourist) => handleDeleteGuest(room.id, tourist.id)"
+          @edit="(guest) => handleEditGuest(room.id, guest)"
+          @delete="(guest) => handleDeleteGuest(room.id, guest.id)"
         />
       </InfoBlock>
     </div>

@@ -70,13 +70,13 @@ class BookingController extends Controller
             ->join('administrators', 'administrators.id', '=', 'administrator_bookings.administrator_id')
             ->addSelect('administrators.presentation as manager_name')
             ->selectSub(
-                DB::table('booking_hotel_room_tourists')
+                DB::table('booking_hotel_room_guests')
                     ->selectRaw('count(id)')
                     ->whereExists(function ($query) {
                         $query->selectRaw(1)
                             ->from('booking_hotel_rooms')
                             ->whereColumn('booking_hotel_rooms.booking_id', 'bookings.id')
-                            ->whereColumn('booking_hotel_room_tourists.booking_hotel_room_id', 'booking_hotel_rooms.id');
+                            ->whereColumn('booking_hotel_room_guests.booking_hotel_room_id', 'booking_hotel_rooms.id');
                     }),
                 'guests_count'
             )

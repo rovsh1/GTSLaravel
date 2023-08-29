@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Adapters\Booking;
 
-use Module\Booking\Order\Application\Request\AddTouristDto;
-use Module\Booking\Order\Application\Request\UpdateTouristDto;
-use Module\Booking\Order\Application\Response\TouristDto;
+use Module\Booking\Order\Application\Request\AddGuestDto;
+use Module\Booking\Order\Application\Request\UpdateGuestDto;
+use Module\Booking\Order\Application\Response\GuestDto;
 use Module\Booking\Order\Application\UseCase\Admin\GetActiveOrders;
 use Module\Booking\Order\Application\UseCase\Admin\GetOrder;
-use Module\Booking\Order\Application\UseCase\Admin\Tourist\Add;
-use Module\Booking\Order\Application\UseCase\Admin\Tourist\Delete;
-use Module\Booking\Order\Application\UseCase\Admin\Tourist\Get;
-use Module\Booking\Order\Application\UseCase\Admin\Tourist\Update;
+use Module\Booking\Order\Application\UseCase\Admin\Guest\Add;
+use Module\Booking\Order\Application\UseCase\Admin\Guest\Delete;
+use Module\Booking\Order\Application\UseCase\Admin\Guest\Get;
+use Module\Booking\Order\Application\UseCase\Admin\Guest\Update;
 
 class OrderAdapter
 {
@@ -26,16 +26,16 @@ class OrderAdapter
         return app(GetOrder::class)->execute($id);
     }
 
-    public function addTourist(
+    public function addGuest(
         int $orderId,
         string $fullName,
         int $countryId,
         int $gender,
         bool $isAdult,
         int|null $age
-    ): TouristDto {
+    ): GuestDto {
         return app(Add::class)->execute(
-            new AddTouristDto(
+            new AddGuestDto(
                 orderId: $orderId,
                 fullName: $fullName,
                 countryId: $countryId,
@@ -46,8 +46,8 @@ class OrderAdapter
         );
     }
 
-    public function updateTourist(
-        int $touristId,
+    public function updateGuest(
+        int $guestId,
         string $fullName,
         int $countryId,
         int $gender,
@@ -55,8 +55,8 @@ class OrderAdapter
         int|null $age
     ): bool {
         return app(Update::class)->execute(
-            new UpdateTouristDto(
-                touristId: $touristId,
+            new UpdateGuestDto(
+                guestId: $guestId,
                 fullName: $fullName,
                 countryId: $countryId,
                 gender: $gender,
@@ -66,12 +66,12 @@ class OrderAdapter
         );
     }
 
-    public function deleteTourist(int $touristId): void
+    public function deleteGuest(int $guestId): void
     {
-        app(Delete::class)->execute($touristId);
+        app(Delete::class)->execute($guestId);
     }
 
-    public function getTourists(int $orderId): array
+    public function getGuests(int $orderId): array
     {
         return app(Get::class)->execute($orderId);
     }

@@ -14,7 +14,7 @@ use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBooki
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBookingStatusEnum;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomInfo;
 use Module\Booking\HotelBooking\Domain\ValueObject\RoomPrice;
-use Module\Booking\Order\Domain\ValueObject\TouristIdsCollection;
+use Module\Booking\Order\Domain\ValueObject\GuestIdsCollection;
 use Module\Shared\Domain\ValueObject\Percent;
 use Module\Shared\Domain\ValueObject\TimePeriod;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
@@ -28,7 +28,7 @@ class RoomUpdaterDataHelperFactory
 
     public function build(
         AddRoomDto|UpdateRoomDto $request,
-        TouristIdsCollection $guestIds,
+        GuestIdsCollection $guestIds,
         RoomPrice $price
     ): UpdateDataHelper {
         $booking = $this->bookingRepository->find($request->bookingId);

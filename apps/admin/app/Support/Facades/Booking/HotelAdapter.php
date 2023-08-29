@@ -20,8 +20,8 @@ use Illuminate\Support\Facades\Facade;
  * @method static void addRoom(int $bookingId, int $roomId, int $rateId, int $status, bool $isResident, array|null $earlyCheckIn = null, array|null $lateCheckOut = null, string|null $note = null, int|null $discount = null)
  * @method static void updateRoom(int $bookingId, int $roomBookingId, int $roomId, int $rateId, int $status, bool $isResident, array|null $earlyCheckIn = null, array|null $lateCheckOut = null, string|null $note = null, int|null $discount = null)
  * @method static void deleteRoom(int $bookingId, int $roomBookingId)
- * @method static void bindRoomGuest(int $bookingId, int $roomBookingId, int $touristId)
- * @method static void unbindRoomGuest(int $bookingId, int $roomBookingId, int $touristId)
+ * @method static void bindRoomGuest(int $bookingId, int $roomBookingId, int $guestId)
+ * @method static void unbindRoomGuest(int $bookingId, int $roomBookingId, int $guestId)
  * @method static void updateExternalNumber(int $bookingId, int $type, string|null $number)
  * @method static void updateNote(int $bookingId, string|null $note)
  **/

@@ -19,7 +19,7 @@ use Module\Booking\Common\Domain\ValueObject\BookingId;
 use Module\Booking\Common\Domain\ValueObject\BookingPrice;
 use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\Common\Infrastructure\Repository\AbstractBookingRepository as BaseRepository;
-use Module\Booking\Order\Domain\ValueObject\TouristIdsCollection;
+use Module\Booking\Order\Domain\ValueObject\GuestIdsCollection;
 use Module\Shared\Domain\ValueObject\Id;
 
 class BookingRepository extends BaseRepository implements BookingRepositoryInterface
@@ -72,7 +72,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
                         $airport->id,
                         $airport->name
                     ),
-                    touristIds: new TouristIdsCollection(),
+                    guestIds: new GuestIdsCollection(),
                     date: $date->toImmutable(),
                     serviceInfo: new ServiceInfo(
                         $service->id,
@@ -122,7 +122,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
             creatorId: new Id($booking->creator_id),
             note: $detailsData['note'] ?? null,
             price: BookingPrice::fromData($detailsData['price']),
-            touristIds: TouristIdsCollection::fromData($booking->tourist_ids),
+            guestIds: GuestIdsCollection::fromData($booking->guest_ids),
             airportInfo: AirportInfo::fromData($detailsData['airportInfo']),
             serviceInfo: ServiceInfo::fromData($detailsData['serviceInfo']),
             date: CarbonImmutable::createFromTimestamp($detailsData['date'])

@@ -16,7 +16,7 @@ use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomInfo;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBookingCollection;
 use Module\Booking\HotelBooking\Domain\ValueObject\RoomPrice;
 use Module\Booking\HotelBooking\Infrastructure\Models\RoomBooking as Model;
-use Module\Booking\Order\Domain\ValueObject\TouristIdsCollection;
+use Module\Booking\Order\Domain\ValueObject\GuestIdsCollection;
 
 class RoomBookingRepository implements RoomBookingRepositoryInterface
 {
@@ -106,7 +106,7 @@ class RoomBookingRepository implements RoomBookingRepositoryInterface
             orderId: new OrderId($model->booking_order_id),
             status: RoomBookingStatusEnum::from($data['status']),
             roomInfo: RoomInfo::fromData($data['roomInfo']),
-            guestsIds: TouristIdsCollection::fromData($model->guest_ids),
+            guestsIds: GuestIdsCollection::fromData($model->guest_ids),
             details: RoomBookingDetails::fromData($data['details']),
             price: RoomPrice::fromData($data['price'])
         );

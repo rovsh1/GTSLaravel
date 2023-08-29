@@ -6,13 +6,9 @@ namespace App\Admin\Http\Controllers\Booking\Order;
 
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Http\Requests\Order\SearchRequest;
-use App\Admin\Http\Requests\Order\Tourist\AddRequest;
-use App\Admin\Http\Requests\Order\Tourist\UpdateRequest;
 use App\Admin\Support\Facades\Booking\OrderAdapter;
 use App\Admin\Support\Facades\Layout;
 use App\Admin\Support\View\Layout as LayoutContract;
-use App\Core\Support\Http\Responses\AjaxResponseInterface;
-use App\Core\Support\Http\Responses\AjaxSuccessResponse;
 use Illuminate\Http\JsonResponse;
 
 class OrderController extends Controller

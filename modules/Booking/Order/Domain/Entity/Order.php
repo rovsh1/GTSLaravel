@@ -9,7 +9,7 @@ use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\Order\Domain\Event\ClientChanged;
 use Module\Booking\Order\Domain\ValueObject\ClientId;
 use Module\Booking\Order\Domain\ValueObject\LegalId;
-use Module\Booking\Order\Domain\ValueObject\TouristIdsCollection;
+use Module\Booking\Order\Domain\ValueObject\GuestIdsCollection;
 use Module\Shared\Domain\Entity\EntityInterface;
 use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
@@ -22,7 +22,7 @@ final class Order extends AbstractAggregateRoot implements EntityInterface
         private ClientId $clientId,
         private ?LegalId $legalId,
         private readonly CarbonImmutable $createdAt,
-        private readonly TouristIdsCollection $touristIds,
+        private readonly GuestIdsCollection $guestIds,
     ) {}
 
     public function generateInvoice(): void
@@ -73,8 +73,8 @@ final class Order extends AbstractAggregateRoot implements EntityInterface
         return $this->createdAt;
     }
 
-    public function touristIds(): TouristIdsCollection
+    public function guestIds(): GuestIdsCollection
     {
-        return $this->touristIds;
+        return $this->guestIds;
     }
 }

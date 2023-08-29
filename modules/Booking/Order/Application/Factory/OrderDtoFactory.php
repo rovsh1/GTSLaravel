@@ -6,7 +6,7 @@ namespace Module\Booking\Order\Application\Factory;
 
 use Module\Booking\Order\Application\Response\OrderDto;
 use Module\Booking\Order\Domain\Entity\Order;
-use Module\Booking\Order\Domain\ValueObject\TouristId;
+use Module\Booking\Order\Domain\ValueObject\GuestId;
 use Module\Shared\Application\Dto\CurrencyDto;
 use Module\Shared\Domain\Service\TranslatorInterface;
 
@@ -24,7 +24,7 @@ class OrderDtoFactory
             $entity->clientId()->value(),
             $entity->legalId()?->value(),
             $entity->createdAt(),
-            $entity->touristIds()->map(fn(TouristId $id) => $id->value()),
+            $entity->guestIds()->map(fn(GuestId $id) => $id->value()),
         );
     }
 

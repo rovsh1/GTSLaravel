@@ -9,8 +9,8 @@ use Module\Booking\Airport\Application\Request\CreateBookingDto;
 use Module\Booking\Airport\Application\UseCase\Admin\CreateBooking;
 use Module\Booking\Airport\Application\UseCase\Admin\GetBooking;
 use Module\Booking\Airport\Application\UseCase\Admin\GetBookingsByFilters;
-use Module\Booking\Airport\Application\UseCase\Admin\Tourist\Bind;
-use Module\Booking\Airport\Application\UseCase\Admin\Tourist\Unbind;
+use Module\Booking\Airport\Application\UseCase\Admin\Guest\Bind;
+use Module\Booking\Airport\Application\UseCase\Admin\Guest\Unbind;
 
 class AirportAdapter
 {
@@ -52,13 +52,13 @@ class AirportAdapter
         );
     }
 
-    public function bindTourist(int $bookingId, int $touristId): void
+    public function bindGuest(int $bookingId, int $guestId): void
     {
-        app(Bind::class)->execute($bookingId, $touristId);
+        app(Bind::class)->execute($bookingId, $guestId);
     }
 
-    public function unbindTourist(int $bookingId, int $touristId): void
+    public function unbindGuest(int $bookingId, int $guestId): void
     {
-        app(Unbind::class)->execute($bookingId, $touristId);
+        app(Unbind::class)->execute($bookingId, $guestId);
     }
 }

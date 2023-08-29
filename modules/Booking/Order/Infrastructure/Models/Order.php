@@ -24,20 +24,20 @@ class Order extends Model
     ];
 
     protected $appends = [
-        'tourist_ids'
+        'guest_ids'
     ];
 
-    public function touristIds(): Attribute
+    public function guestIds(): Attribute
     {
         return Attribute::get(
-            fn() => $this->tourists()->pluck('id')->toArray()
+            fn() => $this->guests()->pluck('id')->toArray()
         );
     }
 
-    public function tourists(): HasMany
+    public function guests(): HasMany
     {
         return $this->hasMany(
-            Tourist::class,
+            Guest::class,
             'order_id',
             'id'
         );

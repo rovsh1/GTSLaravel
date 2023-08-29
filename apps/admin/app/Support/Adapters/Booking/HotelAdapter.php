@@ -18,8 +18,8 @@ use Module\Booking\HotelBooking\Application\UseCase\Admin\GetBookingQuery;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\GetBookingsByFilters;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\Room\Add;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\Room\Delete;
-use Module\Booking\HotelBooking\Application\UseCase\Admin\Room\Tourist\Bind;
-use Module\Booking\HotelBooking\Application\UseCase\Admin\Room\Tourist\Unbind;
+use Module\Booking\HotelBooking\Application\UseCase\Admin\Room\Guest\Bind;
+use Module\Booking\HotelBooking\Application\UseCase\Admin\Room\Guest\Unbind;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\Room\Update;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\UpdateBooking;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\UpdateExternalNumber;
@@ -166,21 +166,21 @@ class HotelAdapter
         );
     }
 
-    public function bindRoomGuest(int $bookingId, int $roomBookingId, int $touristId): void
+    public function bindRoomGuest(int $bookingId, int $roomBookingId, int $guestId): void
     {
         app(Bind::class)->execute(
             bookingId: $bookingId,
             roomBookingId: $roomBookingId,
-            touristId: $touristId
+            guestId: $guestId
         );
     }
 
-    public function unbindRoomGuest(int $bookingId, int $roomBookingId, int $touristId): void
+    public function unbindRoomGuest(int $bookingId, int $roomBookingId, int $guestId): void
     {
         app(Unbind::class)->execute(
             bookingId: $bookingId,
             roomBookingId: $roomBookingId,
-            touristId: $touristId
+            guestId: $guestId
         );
     }
 

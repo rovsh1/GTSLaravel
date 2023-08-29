@@ -4,11 +4,11 @@ import { computed, onMounted } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
 
-import TouristModal from '~resources/views/airport-booking/show/components/TouristModal.vue'
+import GuestModal from '~resources/views/airport-booking/show/components/GuestModal.vue'
 import { useEditableModal } from '~resources/views/hotel/settings/composables/editable-modal'
+import GuestsTable from '~resources/views/hotel-booking/show/components/GuestsTable.vue'
 import InfoBlock from '~resources/views/hotel-booking/show/components/InfoBlock/InfoBlock.vue'
 import InfoBlockTitle from '~resources/views/hotel-booking/show/components/InfoBlock/InfoBlockTitle.vue'
-import TouristsTable from '~resources/views/hotel-booking/show/components/TouristsTable.vue'
 
 import { useCountrySearchAPI } from '~api/country'
 import {
@@ -46,27 +46,27 @@ const modalSettings = {
 }
 
 const {
-  isOpened: isTouristModalOpened,
-  isLoading: isTouristModalLoading,
-  title: touristModalTitle,
-  openAdd: openAddTouristModal,
-  // openEdit: openEditTouristModal,
+  isOpened: isGuestModalOpened,
+  isLoading: isGuestModalLoading,
+  title: guestModalTitle,
+  openAdd: openAddGuestModal,
+  openEdit: openEditGuestModal,
   // editableId: touristId,
   // editableObject: tourist,
-  close: closeTouristModal,
+  close: closeGuestModal,
   // submit: submitTouristModal,
 } = useEditableModal(modalSettings)
 
 </script>
 
 <template>
-  <TouristModal
+  <GuestModal
     v-if="countries"
-    :opened="isTouristModalOpened"
-    :loading="isTouristModalLoading"
-    :title="touristModalTitle"
+    :opened="isGuestModalOpened"
+    :loading="isGuestModalLoading"
+    :title="guestModalTitle"
     :countries="countries"
-    @close="closeTouristModal"
+    @close="closeGuestModal"
   />
 
   <BootstrapCard>
@@ -76,21 +76,22 @@ const {
       <InfoBlock>
         <template #header>
           <div class="d-flex gap-1">
-            <InfoBlockTitle title="Туристы" />
+            <InfoBlockTitle title="Гости" />
             <IconButton
               v-if="isEditableStatus"
               icon="add"
-              @click="openAddTouristModal"
+              @click="openAddGuestModal"
             />
           </div>
         </template>
 
-        <TouristsTable
+        <GuestsTable
           v-if="countries"
           :can-edit="isEditableStatus"
-          :tourists="[]"
-          :order-tourists="[]"
+          :guests="[]"
+          :order-guests="[]"
           :countries="countries"
+          @edit="guest => openEditGuestModal(guest.id, guest)"
         />
       </InfoBlock>
 
