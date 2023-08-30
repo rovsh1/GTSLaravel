@@ -6,11 +6,15 @@ import { BaseResponse, getURL, useAdminAPI } from '~api'
 
 import { getNullableRef } from '~lib/vue'
 
-interface RoomSeasonsPricesProps {
+type RoomSeasonsPricesProps = {
   hotelID: number
 }
 
-export interface RoomSeasonPrice {
+type RoomSeasonsDaysPricesProps = RoomSeasonsPricesProps & {
+  seasonID: number
+}
+
+export type RoomSeasonPrice = {
   season_id: number
   room_id: number
   rate_id: number
@@ -20,7 +24,7 @@ export interface RoomSeasonPrice {
   date?: string
 }
 
-export interface UpdateRoomSeasonPricePayload {
+export type UpdateRoomSeasonPricePayload = {
   hotelID: number
   seasonID: number
   roomID: number
@@ -30,9 +34,25 @@ export interface UpdateRoomSeasonPricePayload {
   price: number
 }
 
+export type UpdateRoomSeasonPricesBatchPayload = UpdateRoomSeasonPricePayload & {
+  date_from: string
+  date_to: string
+  week_days: number[]
+}
+
+export type UpdateRoomSeasonPricesByDayPayload = UpdateRoomSeasonPricePayload & {
+  date: string
+}
+
 export const useRoomSeasonsPricesListAPI = (props: MaybeRef<RoomSeasonsPricesProps | null>) =>
   useAdminAPI(props, ({ hotelID }) =>
     getURL(`/hotels/${hotelID}/seasons/prices`))
+    .get()
+    .json<RoomSeasonPrice[]>()
+
+export const useRoomSeasonsDaysPricesListAPI = (props: MaybeRef<RoomSeasonsDaysPricesProps | null>) =>
+  useAdminAPI(props, ({ hotelID, seasonID }) =>
+    getURL(`/hotels/${hotelID}/seasons/${seasonID}/prices/date`))
     .get()
     .json<RoomSeasonPrice[]>()
 
@@ -51,6 +71,50 @@ export const updateRoomSeasonPrice = (props: MaybeRef<UpdateRoomSeasonPricePaylo
           guests_count: payload.guestsCount,
           is_resident: payload.isResident,
           price: payload.price,
+        }),
+      ),
+    )), 'application/json')
+    .json<BaseResponse>()
+
+export const updateRoomSeasonPricesBatch = (props: MaybeRef<UpdateRoomSeasonPricesBatchPayload>) =>
+  useAdminAPI(
+    props,
+    ({ hotelID, seasonID }) => `/hotels/${hotelID}/seasons/${seasonID}/prices/date/batch`,
+    { immediate: true },
+  )
+    .put(computed<string>(() => JSON.stringify(
+      getNullableRef<UpdateRoomSeasonPricesBatchPayload, any>(
+        props,
+        (payload: UpdateRoomSeasonPricesBatchPayload): any => ({
+          room_id: payload.roomID,
+          rate_id: payload.rateID,
+          guests_count: payload.guestsCount,
+          is_resident: payload.isResident,
+          price: payload.price,
+          date_from: payload.date_from,
+          date_to: payload.date_to,
+          week_days: payload.week_days,
+        }),
+      ),
+    )), 'application/json')
+    .json<BaseResponse>()
+
+export const updateRoomSeasonPricesByDay = (props: MaybeRef<UpdateRoomSeasonPricesByDayPayload>) =>
+  useAdminAPI(
+    props,
+    ({ hotelID, seasonID }) => `/hotels/${hotelID}/seasons/${seasonID}/prices/date`,
+    { immediate: true },
+  )
+    .put(computed<string>(() => JSON.stringify(
+      getNullableRef<UpdateRoomSeasonPricesByDayPayload, any>(
+        props,
+        (payload: UpdateRoomSeasonPricesByDayPayload): any => ({
+          room_id: payload.roomID,
+          rate_id: payload.rateID,
+          guests_count: payload.guestsCount,
+          is_resident: payload.isResident,
+          price: payload.price,
+          date: payload.date,
         }),
       ),
     )), 'application/json')

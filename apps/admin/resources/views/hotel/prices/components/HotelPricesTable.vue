@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { nextTick, onMounted, ref, watchEffect } from 'vue'
+import { nextTick, ref, watch, watchEffect } from 'vue'
 
 import { useToggle } from '@vueuse/core'
 import { nanoid } from 'nanoid'
@@ -15,7 +15,7 @@ import EditableCell from './EditableCell.vue'
 import SeasonEditPrice from './SeasonEditPrice.vue'
 import SeasonPriceDaysTable from './SeasonPriceDaysTable.vue'
 
-import { PricesAccumulationData, Room, RoomSeasonPrice, Season } from '../lib/types'
+import { PricesAccumulationData, Room, RoomSeasonPrice, Season, SeasonPeriod } from '../lib/types'
 
 const props = withDefaults(defineProps<{
   hotelId: number
@@ -23,25 +23,30 @@ const props = withDefaults(defineProps<{
   seasonsData: Season[]
   pricesData: RoomSeasonPrice[] | null
   isFetching: boolean
+  closeAllBut?: string
 }>(), {
-
+  closeAllBut: undefined,
 })
 
 const emit = defineEmits<{
   (event: 'updateData'): void
+  (event: 'closeAll', item: string | undefined): void
 }>()
 
 const [isOpened, toggleModal] = useToggle()
-const tableID = `price-table-${nanoid()}`
+const tableElementID = `price-table-${nanoid()}`
 const baseColumnsWidth = ref<HTMLElement | null>(null)
 const baseRowWidth = ref<HTMLElement | null>(null)
 
 const roomSeasonsPricesData = ref<PricesAccumulationData[]>([])
 
 const isEditSeasonData = ref<boolean>(false)
+const waitComponentProcess = ref<boolean>(false)
 
-let currentSeasonData: PricesAccumulationData | null = null
-let currentSeasonNewPrice: number | null = null
+const currentSeasonPeriod = ref<SeasonPeriod | null>(null)
+const currentSeasonData = ref<PricesAccumulationData | null>(null)
+const currentSeasonNewPrice = ref<number | null>(null)
+const currentCellID = ref<string | undefined>()
 
 const setIdenticalColumnsWidth = (columnCount: number) => {
   const rowWidth = baseRowWidth.value?.offsetWidth
@@ -49,12 +54,19 @@ const setIdenticalColumnsWidth = (columnCount: number) => {
   const containerWidth = rowWidth && columnWidth ? rowWidth - columnWidth : null
   if (!containerWidth) return
   const calculateColumnWidth = containerWidth / columnCount
-  const columns = document.querySelectorAll(`#${tableID} .priced`)
+  const columns = document.querySelectorAll(`#${tableElementID} .priced`)
   columns.forEach((column) => {
     const columnElement = column as HTMLElement
     columnElement.style.width = `${calculateColumnWidth}px`
   })
 }
+
+watch(() => props.closeAllBut, (value) => {
+  if (value !== currentCellID.value) {
+    isEditSeasonData.value = false
+    currentSeasonData.value = null
+  }
+})
 
 watchEffect(() => {
   if (!props.isFetching) {
@@ -68,6 +80,7 @@ watchEffect(() => {
             seasonID: season.id,
             guestsCount: i,
             rateID: rate.id,
+            rateName: rate.name,
             price: null,
           }
           roomSeasonsPricesData.value.push({ id: nanoid(), ...accumulationDataObject, isResident: true })
@@ -94,23 +107,37 @@ watchEffect(() => {
   }
 })
 
-const editableSeason = (item: any) => {
-  isEditSeasonData.value = !isEditSeasonData.value
+const editableSeasonDays = (item: PricesAccumulationData) => {
+  const seasonFiltered = props.seasonsData.filter((season) => season.id === item.seasonID)
+  currentSeasonPeriod.value = seasonFiltered && seasonFiltered.length > 0 ? {
+    from: seasonFiltered[0].date_start,
+    to: seasonFiltered[0].date_end,
+  } : null
+  if (!currentSeasonPeriod.value) return
+  if (currentSeasonData.value?.id === item.id) {
+    isEditSeasonData.value = false
+    currentSeasonData.value = null
+  } else {
+    isEditSeasonData.value = true
+    currentSeasonData.value = item
+  }
+  currentCellID.value = item.id
+  emit('closeAll', currentCellID.value)
 }
 
 const changeSeasonPrice = async (item: PricesAccumulationData, newPrice: number | null) => {
   if (newPrice) {
-    currentSeasonData = item
-    currentSeasonNewPrice = newPrice
+    currentSeasonData.value = item
+    currentSeasonNewPrice.value = newPrice
     toggleModal()
   }
 }
 
 const onSubmitChangeData = async () => {
-  if (!currentSeasonData || !currentSeasonNewPrice) return
+  if (!currentSeasonData.value || !currentSeasonNewPrice.value) return
   const { data: updateStatusResponse } = await updateRoomSeasonPrice({
-    ...currentSeasonData,
-    price: currentSeasonNewPrice,
+    ...currentSeasonData.value,
+    price: currentSeasonNewPrice.value,
   })
   if (updateStatusResponse.value?.success) {
     emit('updateData')
@@ -120,15 +147,20 @@ const onSubmitChangeData = async () => {
   toggleModal(false)
 }
 
-onMounted(() => {
-
-})
+const handlerUpdateSeasonDaysData = (status :boolean) => {
+  if (!status) {
+    emit('updateData')
+    waitComponentProcess.value = false
+  } else {
+    waitComponentProcess.value = true
+  }
+}
 </script>
 
 <template>
   <div class="hotel-prices-table-wrapper">
-    <OverlayLoading v-if="isFetching" />
-    <table :id="tableID" ref="containerElement" class="hotel-prices table table-bordered table-sm table-light">
+    <OverlayLoading v-if="isFetching || waitComponentProcess" />
+    <table :id="tableElementID" ref="containerElement" class="hotel-prices table table-bordered table-sm table-light">
       <caption>Стоимость</caption>
       <thead>
         <tr ref="baseRowWidth">
@@ -164,7 +196,7 @@ onMounted(() => {
                 <EditableCell
                   :value="item.price"
                   :enable-context-menu="true"
-                  @activated-context-menu="editableSeason"
+                  @activated-context-menu="editableSeasonDays(item)"
                   @change="value => changeSeasonPrice(item, value)"
                 />
               </td>
@@ -177,7 +209,7 @@ onMounted(() => {
                 <EditableCell
                   :value="item.price"
                   :enable-context-menu="true"
-                  @activated-context-menu="isEditSeasonData = !isEditSeasonData"
+                  @activated-context-menu="editableSeasonDays(item)"
                   @change="value => changeSeasonPrice(item, value)"
                 />
               </td>
@@ -186,8 +218,20 @@ onMounted(() => {
         </template>
       </tbody>
     </table>
-    <SeasonEditPrice v-if="isEditSeasonData" :is-fetching="isFetching" />
-    <SeasonPriceDaysTable v-if="isEditSeasonData" :data="[]" />
+    <SeasonEditPrice
+      v-if="isEditSeasonData && currentSeasonPeriod && currentSeasonData"
+      :season-period="currentSeasonPeriod"
+      :season-data="currentSeasonData"
+      :cell-id="currentCellID"
+      @update-season-days-data="handlerUpdateSeasonDaysData"
+    />
+    <SeasonPriceDaysTable
+      v-if="isEditSeasonData && currentSeasonPeriod && currentSeasonData"
+      :season-period="currentSeasonPeriod"
+      :season-data="currentSeasonData"
+      :refresh-days-prices="isFetching"
+      @update-season-days-data="handlerUpdateSeasonDaysData"
+    />
     <BaseDialog :opened="isOpened as boolean" @close="toggleModal(false)">
       <template #title>Вы уверены что хотите перезаписать цену на весь сезон?</template>
       <template #actions-end>

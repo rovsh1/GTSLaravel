@@ -12,6 +12,8 @@ const props = withDefaults(defineProps<{
   enableContextMenu: false,
 })
 
+// todo формат чисел
+
 const emit = defineEmits<{
   (event: 'change', value: number | null): void
   (event: 'activatedContextMenu'): void

@@ -9,6 +9,8 @@ export const parseAPIDate = (date: DateResponse): DateTime => DateTime.fromISO(d
 export const formatDateToAPIDate = (date: Date): APIDate => DateTime
   .fromJSDate(date).toFormat('yyyy-LL-dd')
 
+export const formatDateTimeToAPIDate = (date: DateTime): APIDate => date.toFormat('yyyy-LL-dd')
+
 export const formatDate = (date: DateResponse) => parseAPIDate(date).toLocaleString()
 
 export const formatDateTime = (date: DateResponse) => parseAPIDate(date).toLocaleString(DateTime.DATETIME_SHORT)

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 
 import { z } from 'zod'
 
@@ -41,6 +41,8 @@ const { hotelID, rooms, seasons } = requestInitialData(
   }),
 )
 
+const closeAllButParam = ref<string | undefined>()
+
 const { data: prices, isFetching: pricesLoad, execute: fetchPrices } = useRoomSeasonsPricesListAPI({ hotelID })
 
 onMounted(async () => {
@@ -58,6 +60,8 @@ onMounted(async () => {
       :seasons-data="seasons"
       :prices-data="prices"
       :is-fetching="pricesLoad"
+      :close-all-but="closeAllButParam"
+      @close-all="but => closeAllButParam = but"
       @update-data="fetchPrices"
     />
   </BootstrapCard>

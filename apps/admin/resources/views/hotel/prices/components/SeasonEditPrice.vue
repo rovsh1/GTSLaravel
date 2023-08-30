@@ -1,50 +1,66 @@
 <script lang="ts" setup>
-import { computed, reactive, ref } from 'vue'
+import { computed, reactive, watch } from 'vue'
 
 import { nanoid } from 'nanoid'
 
+import { updateRoomSeasonPricesBatch } from '~resources/api/hotel/prices/seasons'
+import { formatDateToAPIDate } from '~resources/lib/date'
+
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
+import { showToast } from '~components/Bootstrap/BootstrapToast'
 import DateRangePicker from '~components/DateRangePicker.vue'
-// import EditableInput from '~components/Editable/EditableNumberInput.vue'
 import MultiSelect from '~components/MultiSelect.vue'
 
+import { daysOfWeekOptions } from '../lib/constants'
 import { stringToNumber } from '../lib/convert'
-
-interface FormData {
-  period: [Date, Date] | undefined
-  daysWeekSelected: string[]
-  price: string
-}
+import { PricesAccumulationData, SeasonPeriod, SeasonUpdateFormData } from '../lib/types'
 
 const props = withDefaults(defineProps<{
-  period?: [Date, Date]
-  isFetching: boolean
+  cellId?: string
+  seasonPeriod: SeasonPeriod
+  seasonData: PricesAccumulationData
 }>(), {
-  period: undefined,
+  cellId: undefined,
 })
+
+const emit = defineEmits<{
+  (event: 'updateSeasonDaysData', status: boolean): void
+}>()
 
 const periodElementID = `${nanoid()}_period`
 const priceTypesElementID = `${nanoid()}_price-types`
 const priceElementID = `${nanoid()}_price-filter`
 
-const daysWeek = ref<any[]>([
-  { value: 1, label: 'понедельник' },
-  { value: 2, label: 'вторник' },
-  { value: 3, label: 'среда' },
-  { value: 4, label: 'четверг' },
-  { value: 5, label: 'пятница' },
-  { value: 6, label: 'суббота' },
-  { value: 7, label: 'воскресенье' },
-])
-
-const seasonFormData = reactive<FormData>({
-  period: props.period,
-  daysWeekSelected: daysWeek.value.map((day) => day.value),
+const seasonFormData = reactive<SeasonUpdateFormData>({
+  period: [new Date(props.seasonPeriod.from), new Date(props.seasonPeriod.to)],
+  daysWeekSelected: daysOfWeekOptions.map((day) => day.value) as string[],
   price: '',
 })
 
+watch(() => props.cellId, () => {
+  seasonFormData.period = [new Date(props.seasonPeriod.from), new Date(props.seasonPeriod.to)]
+  seasonFormData.daysWeekSelected = daysOfWeekOptions.map((day) => day.value) as string[]
+  seasonFormData.price = ''
+})
+
 const isValidForm = computed(() => stringToNumber(seasonFormData.price)
-&& seasonFormData.period?.length === 2 && seasonFormData.daysWeekSelected?.length > 0)
+  && seasonFormData.period?.length === 2 && seasonFormData.daysWeekSelected?.length > 0)
+
+const onSubmitUpdateData = async () => {
+  if (!isValidForm.value) return
+  emit('updateSeasonDaysData', true)
+  const { data: updateStatusResponse } = await updateRoomSeasonPricesBatch({
+    ...props.seasonData,
+    price: Number(seasonFormData.price),
+    date_from: formatDateToAPIDate(seasonFormData.period[0]),
+    date_to: formatDateToAPIDate(seasonFormData.period[1]),
+    week_days: seasonFormData.daysWeekSelected.map((str) => parseInt(str, 10)),
+  })
+  if (!updateStatusResponse.value || !updateStatusResponse.value.success) {
+    showToast({ title: 'Не удалось изменить цену' })
+  }
+  emit('updateSeasonDaysData', false)
+}
 </script>
 
 <template>
@@ -54,10 +70,8 @@ const isValidForm = computed(() => stringToNumber(seasonFormData.price)
         :id="periodElementID"
         label="Период"
         required
-        :lock-periods="undefined"
-        :editable-id="undefined"
-        :min-date="undefined"
-        :max-date="undefined"
+        :min-date="seasonPeriod.from"
+        :max-date="seasonPeriod.to"
         :value="seasonFormData.period"
         @input="(dates) => seasonFormData.period = dates"
       />
@@ -69,7 +83,7 @@ const isValidForm = computed(() => stringToNumber(seasonFormData.price)
         :label-margin="false"
         required
         :value="seasonFormData.daysWeekSelected"
-        :options="daysWeek"
+        :options="daysOfWeekOptions"
         @input="value => seasonFormData.daysWeekSelected = value"
       />
     </div>
@@ -78,7 +92,7 @@ const isValidForm = computed(() => stringToNumber(seasonFormData.price)
       <input :id="priceElementID" v-model="seasonFormData.price" required type="text" class="form-control">
     </div>
     <div class="form-field form-button">
-      <BootstrapButton label="Обновить" size="small" severity="primary" :disabled="!isValidForm" />
+      <BootstrapButton label="Обновить" size="small" severity="primary" :disabled="!isValidForm" @click="onSubmitUpdateData" />
     </div>
   </div>
 </template>

@@ -1,11 +1,11 @@
-export interface PriceRate {
+export type PriceRate = {
   id: number
   hotel_id: number
   name: string
   description: string
 }
 
-export interface Room {
+export type Room = {
   id: number
   hotel_id: number
   type_id: number
@@ -16,7 +16,7 @@ export interface Room {
   price_rates: PriceRate[]
 }
 
-export interface Season {
+export type Season = {
   id: number
   contract_id: number
   name: string
@@ -24,7 +24,7 @@ export interface Season {
   date_end: string
 }
 
-export interface RoomSeasonPrice {
+export type RoomSeasonPrice = {
   season_id: number
   room_id: number
   rate_id: number
@@ -33,13 +33,33 @@ export interface RoomSeasonPrice {
   price: number
 }
 
-export interface PricesAccumulationData {
+export type PricesAccumulationData = {
   id?: string
   hotelID: number
   roomID: number
   seasonID: number
   guestsCount: number
   rateID: number
+  rateName?: string
   isResident?: boolean
   price: number | null
+}
+
+export type PricesAccumulationDataForDays = PricesAccumulationData & {
+  date?: string
+  dayOfWeek?: string
+  dayNumberTitle?: string
+}
+
+export type DateTime = string
+
+export type SeasonPeriod = {
+  from: DateTime
+  to: DateTime
+}
+
+export type SeasonUpdateFormData = {
+  period: [Date, Date]
+  daysWeekSelected: string[]
+  price: string
 }
