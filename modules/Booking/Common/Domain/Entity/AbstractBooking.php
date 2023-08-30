@@ -6,6 +6,7 @@ namespace Module\Booking\Common\Domain\Entity;
 
 use Carbon\CarbonImmutable;
 use Module\Booking\Common\Domain\Entity\Concerns\HasStatusesTrait;
+use Module\Booking\Common\Domain\Event\BookingDeleted;
 use Module\Booking\Common\Domain\Event\BookingPriceChanged;
 use Module\Booking\Common\Domain\Event\Contracts\BookingRequestableInterface;
 use Module\Booking\Common\Domain\Event\Request\BookingRequestSent;
@@ -217,6 +218,14 @@ abstract class AbstractBooking extends AbstractAggregateRoot implements
     public function canSendClientVoucher(): bool
     {
         return $this->status === BookingStatusEnum::CONFIRMED;
+    }
+
+    public function delete(): void
+    {
+        $this->setStatus(BookingStatusEnum::DELETED);
+        $this->pushEvent(
+            new BookingDeleted($this)
+        );
     }
 
     private function setStatus(BookingStatusEnum $status): void

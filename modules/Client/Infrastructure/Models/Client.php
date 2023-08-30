@@ -2,6 +2,7 @@
 
 namespace Module\Client\Infrastructure\Models;
 
+use Module\Shared\Enum\Client\ResidencyEnum;
 use Module\Shared\Enum\Client\TypeEnum;
 use Sdk\Module\Database\Eloquent\Model;
 
@@ -9,20 +10,20 @@ class Client extends Model
 {
     protected $table = 'clients';
 
-    //@todo оставить только нужные поля для модуля
     protected $fillable = [
         'city_id',
-        'administrator_id',
         'currency_id',
-        'price_type',
         'type',
+        'residency',
+        'status',
         'name',
         'description',
-        'status',
-        'deletion_mark',
+        'is_b2b',
     ];
 
     protected $casts = [
-        'type' => TypeEnum::class
+        'type' => TypeEnum::class,
+        'residency' => ResidencyEnum::class,
+        'is_b2b' => 'boolean',
     ];
 }

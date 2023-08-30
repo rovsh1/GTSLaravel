@@ -21,10 +21,10 @@ return new class extends Migration {
                     'date' => $r->date,
                     'release_days' => $r->period,
                     'count_total' => $r->count_available,
-                    'count_available' => $countAvailable,
-                    'count_booked' => $r->count_booked,
+//                    'count_available' => $countAvailable,
+//                    'count_booked' => $r->count_booked,
                     //@todo count_reserved нужно смотреть как считается
-                    'count_reserved' => 0,
+//                    'count_reserved' => 0,
                     'status' => $r->type,
                 ]);
         }

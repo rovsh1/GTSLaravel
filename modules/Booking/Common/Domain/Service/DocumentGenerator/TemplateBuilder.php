@@ -9,10 +9,8 @@ class TemplateBuilder
     private array $attributes = [];
 
     public function __construct(
-        private readonly string $templatesPath,
         private readonly string $file
-    ) {
-    }
+    ) {}
 
     public function generate(): string
     {
@@ -48,9 +46,11 @@ class TemplateBuilder
             ->image('stamp_only', $this->getTemplateContents('company-stamp-without-sign.png'));
     }
 
-    private function getTemplateContents(string $file): string
+    private function getTemplateContents(string $file): false|string
     {
-        return storage_path("app/public/$file");
+        $path = storage_path("app/public/{$file}");
+
+        return file_get_contents($path);
     }
 
     private function getTemplateView(string $file): View

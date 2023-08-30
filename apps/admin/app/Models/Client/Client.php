@@ -4,6 +4,7 @@ namespace App\Admin\Models\Client;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Module\Shared\Enum\Client\ResidencyEnum;
 use Module\Shared\Enum\Client\StatusEnum;
 use Module\Shared\Enum\Client\TypeEnum;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
@@ -26,12 +27,14 @@ class Client extends Model
         'is_b2b',
         'type',
         'status',
+        'residency',
         'description'
     ];
 
     protected $casts = [
         'status' => StatusEnum::class,
         'type' => TypeEnum::class,
+        'residency' => ResidencyEnum::class,
         'is_b2b' => 'boolean',
     ];
 

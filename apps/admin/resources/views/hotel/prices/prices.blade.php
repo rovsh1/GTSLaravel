@@ -21,9 +21,9 @@
 
 @section('content')
     <div class="content-header">
+        <div id="hotel-switcher"></div>
         <div class="title">{{ $title }}</div>
     </div>
-
     <div class="content-body" id="hotel-prices">
     </div>
 @endsection

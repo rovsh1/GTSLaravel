@@ -4,7 +4,6 @@ namespace Module\Hotel\Domain\Repository;
 
 use Carbon\CarbonPeriod;
 use Module\Hotel\Domain\Entity\RoomQuota;
-use Module\Hotel\Domain\ValueObject\QuotaChangeTypeEnum;
 
 interface RoomQuotaRepositoryInterface
 {

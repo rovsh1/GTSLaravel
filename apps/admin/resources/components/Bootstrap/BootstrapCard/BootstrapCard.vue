@@ -8,7 +8,6 @@
     </div>
   </div>
 </template>
-
 <style lang="scss">
 .card {
   margin-bottom: 16px;

@@ -8,7 +8,6 @@ use Module\Booking\Common\Domain\Entity\BookingInterface;
 abstract class AbstractDocumentGenerator
 {
     public function __construct(
-        protected readonly string $templatesPath,
         protected readonly FileStorageAdapterInterface $fileStorageAdapter
     ) {}
 
@@ -25,5 +24,5 @@ abstract class AbstractDocumentGenerator
 
     abstract protected function getTemplateName(): string;
 
-    abstract protected function getReservationAttributes(BookingInterface $booking): array;
+    abstract protected function getBookingAttributes(BookingInterface $booking): array;
 }

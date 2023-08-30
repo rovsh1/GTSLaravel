@@ -11,8 +11,8 @@ use Illuminate\Support\Facades\Facade;
  * @method static array getBookings(array $filters = [])
  * @method static mixed getBooking(int $id)
  * @method static int createBooking(int $cityId, int $clientId, int|null $legalId, int $currencyId, int $airportId, int $serviceId, CarbonInterface $date, int $creatorId, ?int $orderId, ?string $note = null)
- * @method static void addTourist(int $bookingId, string $fullName, int $countryId, int $gender, bool $isAdult)
- * @method static void updateTourist(int $bookingId, int $touristIndex, string $fullName, int $countryId, int $gender, bool $isAdult)
+ * @method static void bindGuest(int $bookingId, int $guestId)
+ * @method static void unbindGuest(int $bookingId, int $guestId)
  **/
 class AirportAdapter extends Facade
 {

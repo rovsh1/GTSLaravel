@@ -38,7 +38,7 @@ final class Booking extends AbstractBooking
         private ?AdditionalInfo $additionalInfo,
         private RoomBookingCollection $roomBookings,
         private CancelConditions $cancelConditions,
-        private QuotaProcessingMethodEnum $quotaProcessingMethod,
+        private readonly QuotaProcessingMethodEnum $quotaProcessingMethod,
     ) {
         parent::__construct($id, $orderId, $status, $createdAt, $creatorId, $price);
     }
@@ -84,36 +84,31 @@ final class Booking extends AbstractBooking
         return $this->quotaProcessingMethod;
     }
 
-    public function setQuotaProcessingMethod(QuotaProcessingMethodEnum $quotaProcessingMethod): void
+    public function addRoomBooking(RoomBooking $roomBooking): void
     {
-        $this->quotaProcessingMethod = $quotaProcessingMethod;
-    }
-
-    public function addRoomBooking(RoomBooking $booking): void
-    {
-        $this->roomBookings->add($booking);
+        $this->roomBookings->add($roomBooking);
         $this->pushEvent(
             new RoomAdded(
                 $this,
                 $this->hotelInfo()->id(),
-                $booking->roomInfo()->id(),
-                $booking->roomInfo()->name()
+                $roomBooking->roomInfo()->id(),
+                $roomBooking->roomInfo()->name()
             )
         );
     }
 
-    public function updateRoomBooking(int $id, RoomBooking $booking): void
+    public function updateRoomBooking(int $id, RoomBooking $roomBooking): void
     {
         $roomIndex = $this->roomBookings->search(
             fn(RoomBooking $roomBooking) => $roomBooking->id()->value() === $id
         );
-        $this->roomBookings->offsetSet($roomIndex, $booking);
+        $this->roomBookings->offsetSet($roomIndex, $roomBooking);
 
         $this->pushEvent(
             new RoomEdited(
                 $this,
-                $booking->roomInfo()->id(),
-                $booking->roomInfo()->name(),
+                $roomBooking->roomInfo()->id(),
+                $roomBooking->roomInfo()->name(),
                 '',
                 '',
                 '',

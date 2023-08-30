@@ -4,6 +4,14 @@ namespace Sdk\Module\Support;
 
 use Traversable;
 
+/**
+ * @template TKey of array-key
+ *
+ * @template-covariant TValue
+ *
+ * @implements \Iterator<TKey, TValue>
+ * @implements \Countable<TKey, TValue>
+ */
 class Collection implements \Iterator, \Countable
 {
     use ItemCollectionIteratorTrait;

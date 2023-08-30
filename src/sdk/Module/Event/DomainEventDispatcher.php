@@ -38,7 +38,7 @@ class DomainEventDispatcher implements DomainEventDispatcherInterface
 //        $this->dispatchApplicationListener($event);
 
         foreach ($this->listeners as $eventClass => $listeners) {
-            if (is_subclass_of($event, $eventClass)) {
+            if ($event::class === $eventClass || is_subclass_of($event, $eventClass)) {
                 $this->dispatchListeners($event, $listeners);
             }
         }
@@ -59,7 +59,7 @@ class DomainEventDispatcher implements DomainEventDispatcherInterface
     private function dispatchListeners(DomainEventInterface $event, array $listeners)
     {
         foreach ($listeners as $listenerClass) {
-            $listener = $this->module->make($listenerClass);
+            $listener = $this->module->get($listenerClass);
             $listener->handle($event);
         }
     }

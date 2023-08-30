@@ -11,11 +11,15 @@ use Module\Hotel\Infrastructure\Models\Room\QuotaStatusEnum;
 
 class RoomQuotaRepository implements RoomQuotaRepositoryInterface
 {
+    public function __construct(
+        private readonly RoomQuotaFactory $factory
+    ) {}
+
     public function get(int $hotelId, CarbonPeriod $period, ?int $roomId = null): array
     {
         $models = $this->getBaseQuotaQuery($hotelId, $period, $roomId)->get();
 
-        return app(RoomQuotaFactory::class)->createCollectionFrom($models);
+        return $this->factory->createCollectionFrom($models);
     }
 
     public function getAvailable(int $hotelId, CarbonPeriod $period, ?int $roomId = null): array
@@ -24,7 +28,7 @@ class RoomQuotaRepository implements RoomQuotaRepositoryInterface
             ->whereAvailable()
             ->get();
 
-        return app(RoomQuotaFactory::class)->createCollectionFrom($models);
+        return $this->factory->createCollectionFrom($models);
     }
 
     public function getSold(int $hotelId, CarbonPeriod $period, ?int $roomId = null): array
@@ -33,7 +37,7 @@ class RoomQuotaRepository implements RoomQuotaRepositoryInterface
             ->whereSold()
             ->get();
 
-        return app(RoomQuotaFactory::class)->createCollectionFrom($models);
+        return $this->factory->createCollectionFrom($models);
     }
 
     public function getStopped(int $hotelId, CarbonPeriod $period, ?int $roomId = null): array
@@ -42,7 +46,7 @@ class RoomQuotaRepository implements RoomQuotaRepositoryInterface
             ->whereStopped()
             ->get();
 
-        return app(RoomQuotaFactory::class)->createCollectionFrom($models);
+        return $this->factory->createCollectionFrom($models);
     }
 
     public function updateRoomQuota(int $roomId, CarbonPeriod $period, ?int $quota, ?int $releaseDays = null): void
@@ -97,6 +101,6 @@ class RoomQuotaRepository implements RoomQuotaRepositoryInterface
                 }
             })
             ->wherePeriod($period)
-            ->addCountColumns();
+            ->withCountColumns();
     }
 }

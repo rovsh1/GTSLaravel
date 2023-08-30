@@ -14,13 +14,12 @@ use Module\Shared\Enum\ContactTypeEnum;
 class ReservationRequestGenerator extends AbstractRequestGenerator
 {
     public function __construct(
-        string $templatesPath,
         FileStorageAdapterInterface $fileStorageAdapter,
         private readonly HotelAdapterInterface $hotelAdapter,
         private readonly AdministratorAdapterInterface $administratorAdapter,
         private readonly StatusStorage $statusStorage,
     ) {
-        parent::__construct($templatesPath, $fileStorageAdapter);
+        parent::__construct($fileStorageAdapter);
     }
 
     protected function getTemplateName(): string
@@ -28,7 +27,7 @@ class ReservationRequestGenerator extends AbstractRequestGenerator
         return 'hotel.reservation_request';
     }
 
-    protected function getReservationAttributes(BookingInterface|Booking $booking): array
+    protected function getBookingAttributes(BookingInterface|Booking $booking): array
     {
         $hotelDto = $this->hotelAdapter->findById($booking->hotelInfo()->id());
         $phones = collect($hotelDto->contacts)
