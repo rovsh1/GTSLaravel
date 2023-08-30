@@ -12,7 +12,7 @@ const props = withDefaults(defineProps<{
   enableContextMenu: false,
 })
 
-// todo формат чисел
+// todo формат цен, слить ветку GTS-1980
 
 const emit = defineEmits<{
   (event: 'change', value: number | null): void

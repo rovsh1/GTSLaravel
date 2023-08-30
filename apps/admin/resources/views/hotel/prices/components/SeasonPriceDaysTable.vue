@@ -181,8 +181,8 @@ onMounted(async () => {
 }
 
 .season-price-days-table {
-  display: flex;
   position: relative;
+  display: flex;
 }
 
 .priced {
