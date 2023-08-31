@@ -9,6 +9,8 @@ use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\Order\Domain\Entity\Order;
 use Module\Booking\Order\Domain\ValueObject\ClientId;
 use Module\Booking\Order\Domain\ValueObject\LegalId;
+use Module\Booking\Order\Domain\ValueObject\GuestId;
+use Module\Booking\Order\Domain\ValueObject\GuestIdsCollection;
 use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Foundation\Support\EntityFactory\AbstractEntityFactory;
 
@@ -19,13 +21,15 @@ class OrderFactory extends AbstractEntityFactory
     protected function fromArray(array $data): mixed
     {
         $legalId = $data['legal_id'] ?? null;
+        $guestIds = array_map(fn(int $id) => new GuestId($id), $data['guest_ids'] ?? []);
 
         return new $this->entity(
             new OrderId($data['id']),
             CurrencyEnum::fromId($data['currency_id']),
             new ClientId($data['client_id']),
             $legalId !== null ? new LegalId($legalId) : null,
-            new CarbonImmutable($data['created_at'])
+            new CarbonImmutable($data['created_at']),
+            new GuestIdsCollection($guestIds)
         );
     }
 }

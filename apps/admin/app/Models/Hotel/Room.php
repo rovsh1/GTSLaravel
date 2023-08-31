@@ -39,6 +39,8 @@ class Room extends Model
         'guests_count',
         'square',
         'position',
+        'name',
+        'text',
     ];
 
     protected $casts = [

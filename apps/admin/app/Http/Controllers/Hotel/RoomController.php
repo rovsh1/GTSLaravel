@@ -104,7 +104,7 @@ class RoomController extends Controller
 
         $data = $form->getData();
         $room->update($data);
-        $room->updateBeds($data['beds']);
+        $room->updateBeds($data['beds'] ?? []);
 
         return redirect(route('hotels.rooms.index', $hotel));
     }
@@ -128,7 +128,7 @@ class RoomController extends Controller
         return response()->json(RoomResource::make($room));
     }
 
-    public function getRoomNames(Request $request, Hotel $hotel, string $lang): JsonResponse
+    public function getRoomNames(Request $request, string $lang): JsonResponse
     {
         $roomNames = DB::table('hotel_rooms_translation')
             ->where('language', $lang)

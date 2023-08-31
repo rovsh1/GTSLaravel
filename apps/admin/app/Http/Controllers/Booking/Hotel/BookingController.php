@@ -10,7 +10,6 @@ use App\Admin\Http\Requests\Booking\UpdateManagerRequest;
 use App\Admin\Http\Requests\Booking\UpdateNoteRequest;
 use App\Admin\Http\Requests\Booking\UpdatePriceRequest;
 use App\Admin\Http\Requests\Booking\UpdateStatusRequest;
-use App\Admin\Http\Resources\Client as ClientResource;
 use App\Admin\Http\Resources\Room as RoomResource;
 use App\Admin\Models\Administrator\Administrator;
 use App\Admin\Models\Client\Client;
@@ -70,10 +69,16 @@ class BookingController extends Controller
             ->join('administrator_bookings', 'administrator_bookings.booking_id', '=', 'bookings.id')
             ->join('administrators', 'administrators.id', '=', 'administrator_bookings.administrator_id')
             ->addSelect('administrators.presentation as manager_name')
-            ->addSelect(
-                DB::raw(
-                    '(SELECT SUM(guests_count) FROM booking_hotel_rooms WHERE booking_id=bookings.id) as guests_count'
-                )
+            ->selectSub(
+                DB::table('booking_hotel_room_guests')
+                    ->selectRaw('count(id)')
+                    ->whereExists(function ($query) {
+                        $query->selectRaw(1)
+                            ->from('booking_hotel_rooms')
+                            ->whereColumn('booking_hotel_rooms.booking_id', 'bookings.id')
+                            ->whereColumn('booking_hotel_room_guests.booking_hotel_room_id', 'booking_hotel_rooms.id');
+                    }),
+                'guests_count'
             )
             ->addSelect(
                 DB::raw(

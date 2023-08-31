@@ -6,7 +6,6 @@ namespace Module\Booking\HotelBooking\Domain\Repository;
 
 use Module\Booking\Common\Domain\ValueObject\BookingId;
 use Module\Booking\HotelBooking\Domain\Entity\RoomBooking;
-use Module\Booking\HotelBooking\Domain\ValueObject\Details\GuestCollection;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBookingDetails;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBookingStatusEnum;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomInfo;
@@ -27,7 +26,6 @@ interface RoomBookingRepositoryInterface
         BookingId $bookingId,
         RoomBookingStatusEnum $status,
         RoomInfo $roomInfo,
-        GuestCollection $guests,
         RoomBookingDetails $details,
         RoomPrice $price
     ): RoomBooking;
