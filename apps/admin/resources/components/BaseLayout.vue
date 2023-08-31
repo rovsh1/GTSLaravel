@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import { nextTick, watch } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
-
-import { createHotelSwitcher } from '~resources/lib/hotel-switcher/hotel-switcher'
 
 import LoadingSpinner from '~components/LoadingSpinner.vue'
 
@@ -15,20 +12,12 @@ const props = withDefaults(defineProps<{
   loading: false,
 })
 
-watch(() => props.loading, (newValue) => {
-  if (newValue === false) {
-    nextTick(() => {
-      createHotelSwitcher()
-    })
-  }
-})
 </script>
 <template>
   <div class="baseLayout">
     <LoadingSpinner v-if="loading" class="loadingSpinner" />
     <template v-else>
       <div class="content-header">
-        <div id="hotel-switcher" />
         <div v-if="title !== undefined || $slots['title']" class="title">
           <slot v-if="$slots['title']" name="title" />
           <template v-else-if="title !== undefined">
@@ -61,10 +50,6 @@ watch(() => props.loading, (newValue) => {
   display: flex;
   gap: 1em;
   width: 100%;
-
-  #hotel-switcher {
-    margin-right: 0;
-  }
 }
 
 .content-body {
