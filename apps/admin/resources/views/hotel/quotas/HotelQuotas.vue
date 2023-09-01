@@ -75,6 +75,12 @@ const roomsQuotas = computed(() => getRoomQuotas({
   quotas: hotelQuotas.value,
 }))
 
+watch(editable, (value) => {
+  if (value === false) {
+    fetchHotelQuotas()
+  }
+})
+
 const handleFilters = (value: FiltersPayload) => {
   filtersPayload.value = value
 }

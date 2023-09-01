@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref, watch } from 'vue'
+import { onMounted, onUnmounted, ref, watch, watchEffect } from 'vue'
 import InlineSVG from 'vue-inline-svg'
 
 import cmdIcon from '@mdi/svg/svg/apple-keyboard-command.svg'
@@ -7,6 +7,7 @@ import ctrlIcon from '@mdi/svg/svg/apple-keyboard-control.svg'
 import shiftIcon from '@mdi/svg/svg/apple-keyboard-shift.svg'
 import escapeIcon from '@mdi/svg/svg/keyboard-esc.svg'
 import enterIcon from '@mdi/svg/svg/keyboard-return.svg'
+import { onClickOutside } from '@vueuse/core'
 import { Tooltip } from 'floating-vue'
 import { GenericValidateFunction, useField } from 'vee-validate'
 import { z } from 'zod'
@@ -25,6 +26,7 @@ const props = withDefaults(defineProps<{
   cellKey: string
   activeKey: CellKey
   value: string
+  initValue: string
   max: number
   rangeError?: RangeError
   disabled: boolean
@@ -41,11 +43,14 @@ const emit = defineEmits<{
   (event: 'value', value: number): void
   (event: 'context-menu', value: HTMLElement): void
   (event: 'reset'): void
+  (event: 'resetEditedValueToInit', value: number): void
 }>()
 
 const buttonRef = ref<HTMLButtonElement | null>(null)
 
 const inputRef = ref<HTMLInputElement | null>(null)
+
+const wrapperRef = ref<HTMLInputElement | null>(null)
 
 const rangeMode = ref(false)
 const pickMode = ref(false)
@@ -56,7 +61,9 @@ const singleDayTooltip = 'Нажмите правой кнопкой мыши, �
 
 const handleInputMount = (input: HTMLInputElement) => {
   input.focus()
-  input.select()
+  setTimeout(() => {
+    input.select()
+  }, 0)
 }
 
 watch(inputRef, (element) => {
@@ -81,8 +88,14 @@ const validateValue: GenericValidateFunction<typeof props.value | undefined> = (
 
 const { value: valueModel, errorMessage } = useField(() => props.value, validateValue)
 
+watch(() => props.value, (value) => {
+  if (valueModel.value !== value) {
+    valueModel.value = value
+  }
+})
+
 watch(valueModel, (value) => {
-  if (value === undefined) return
+  if (value === undefined || value === props.value) return
   emit('input', parseValue(value))
 })
 
@@ -139,6 +152,28 @@ const handleContextMenu = (event: MouseEvent) => {
   }
 }
 
+onClickOutside(inputRef, () => {
+  if (!rangeMode.value && !pickMode.value) {
+    if (props.inRange || valueModel.value !== props.initValue) {
+      onPressEnter()
+    } else if (!props.inRange && valueModel.value === props.initValue) {
+      onPressEsc()
+    }
+  }
+})
+
+watch(() => props.disabled, (value) => {
+  if (value === true) {
+    onPressEsc()
+  }
+})
+
+watchEffect(() => {
+  if (props.activeKey === props.cellKey) {
+    emit('resetEditedValueToInit', parseValue(props.initValue))
+  }
+})
+
 onMounted(() => {
   window.addEventListener('keydown', handleKeyDown)
   window.addEventListener('keyup', handleKeyUp)
@@ -153,7 +188,8 @@ onUnmounted(() => {
 </script>
 <template>
   <Tooltip
-    v-if="activeKey === cellKey"
+    v-if="activeKey === cellKey && !disabled"
+    ref="wrapperRef"
     :theme="errorMessage === undefined ? 'tooltip' : 'danger-tooltip'"
     handle-resize
   >
