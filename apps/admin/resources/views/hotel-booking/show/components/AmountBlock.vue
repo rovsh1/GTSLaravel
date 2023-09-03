@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { Currency } from '~api/models'
 
+import { formatPrice } from '~lib/price'
+
 withDefaults(defineProps<{
   title: string
   currency: Currency | undefined
@@ -26,15 +28,13 @@ defineEmits<{
     <h6>{{ title }}</h6>
     <hr>
     <div v-if="currency">
-      {{ amountTitle }}: {{ amountValue }}
-      <span class="currency">{{ currency.sign }}</span>
+      {{ amountTitle }}: {{ formatPrice(amountValue, currency.sign) }}
     </div>
     <a href="#" @click.prevent="$emit('clickChangePrice')">Изменить</a>
 
     <div v-if="needShowPenalty && currency">
       <div>
-        {{ penaltyTitle }}: {{ penaltyValue || 0 }}
-        <span class="currency">{{ currency.sign }}</span>
+        {{ penaltyTitle }}: {{ formatPrice((penaltyValue || 0), currency.sign) }}
       </div>
       <a href="#" @click.prevent="$emit('clickChangePenalty')">Изменить</a>
     </div>
