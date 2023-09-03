@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 
 import checkIcon from '@mdi/svg/svg/check.svg'
 import pencilIcon from '@mdi/svg/svg/pencil.svg'
@@ -46,6 +46,8 @@ const rooms = computed<UseHotelRooms>(() => roomsData.value)
 fetchHotelRoomsAPI()
 
 const filtersPayload = ref<FiltersPayload>(defaultFiltersPayload)
+const waitLoadAndRedrawData = ref<boolean>(false)
+const updatedRoomID = ref<number | null>(null)
 
 const {
   isFetching: isHotelQuotasFetching,
@@ -63,9 +65,25 @@ const {
   }
 }))
 
-fetchHotelQuotas()
+const fetchHotelQuotasWrapper = async () => {
+  waitLoadAndRedrawData.value = true
+  try {
+    await fetchHotelQuotas()
+    nextTick(() => {
+      waitLoadAndRedrawData.value = false
+      updatedRoomID.value = null
+    })
+  } catch (error) {
+    nextTick(() => {
+      waitLoadAndRedrawData.value = false
+      updatedRoomID.value = null
+    })
+  }
+}
 
-watch(filtersPayload, () => fetchHotelQuotas())
+fetchHotelQuotasWrapper()
+
+watch(filtersPayload, () => fetchHotelQuotasWrapper())
 
 const editable = ref(false)
 
@@ -79,7 +97,7 @@ const roomsQuotas = computed(() => getRoomQuotas({
 
 watch(editable, (value) => {
   if (value === false) {
-    fetchHotelQuotas()
+    fetchHotelQuotasWrapper()
   }
 })
 
@@ -105,11 +123,11 @@ const handleFilters = (value: FiltersPayload) => {
       <QuotasFilters
         v-if="rooms"
         :rooms="rooms"
-        :loading="isHotelQuotasFetching"
+        :loading="waitLoadAndRedrawData"
         @submit="value => handleFilters(value)"
         @switch-room="(value: number | null) => activeRoomID = value"
       />
-      <LoadingSpinner v-if="isHotelQuotasFetching && roomsQuotas === null" />
+      <LoadingSpinner v-if="waitLoadAndRedrawData && roomsQuotas === null" />
       <div v-else-if="hotel === null">
         Не удалось найти данные для отеля.
       </div>
@@ -125,7 +143,11 @@ const handleFilters = (value: FiltersPayload) => {
             :room="room"
             :monthly-quotas="monthlyQuotas"
             :editable="editable"
-            @update="fetchHotelQuotas"
+            :waiting-load-data="(updatedRoomID === room.id) ? waitLoadAndRedrawData : false"
+            @update="(updatedRoomIDParam: number) => {
+              updatedRoomID = updatedRoomIDParam
+              fetchHotelQuotasWrapper()
+            }"
           />
         </template>
       </div>

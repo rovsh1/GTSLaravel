@@ -30,10 +30,11 @@ const props = defineProps<{
   room: RoomRender
   monthlyQuotas: MonthlyQuota[]
   editable: boolean
+  waitingLoadData: boolean
 }>()
 
 const emit = defineEmits<{
-  (event: 'update'): void
+  (event: 'update', roomID: number): void
 }>()
 
 const dayCellClassNameByRoomQuotaStatus: Record<RoomQuotaStatus, string> = {
@@ -111,7 +112,7 @@ const dayMenuDates = computed<Date[] | null>(() => {
 
 const dayMenuDone = () => {
   closeDayMenu()
-  emit('update')
+  emit('update', props.room.id)
 }
 
 type HandleValue<R> = (date: Date, value: number) => R
@@ -127,7 +128,7 @@ const {
 watch(hotelRoomQuotasUpdateData, (value) => {
   if (value === null || !value.success) return
   hotelRoomQuotasUpdateProps.value = null
-  emit('update')
+  emit('update', props.room.id)
   activeQuotasCountKey.value = null
   activeReleaseDaysKey.value = null
 })
@@ -194,7 +195,7 @@ const handleReleaseDaysValue: HandleValue<void> = (date, value) => {
       <room-header :label="room.label" :guests="room.guests" :count="room.count" />
     </div>
     <div class="quotasTables">
-      <OverlayLoading v-if="isHotelRoomQuotasUpdateFetching" />
+      <OverlayLoading v-if="isHotelRoomQuotasUpdateFetching || waitingLoadData" />
       <div
         v-for="{ dailyQuota, monthKey, monthName, days, quotasCount } in monthlyQuotas"
         :key="monthKey"
