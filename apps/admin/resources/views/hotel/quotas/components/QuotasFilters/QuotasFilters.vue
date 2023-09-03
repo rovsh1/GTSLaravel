@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 
-import backspaceIcon from '@mdi/svg/svg/backspace.svg'
+import filterRemoveIcon from '@mdi/svg/svg/filter-remove.svg'
 import { MaybeRef } from '@vueuse/core'
 import { isEqual } from 'lodash'
 import { DateTime } from 'luxon'
@@ -34,6 +34,7 @@ const props = withDefaults(defineProps<{
 
 const emit = defineEmits<{
   (event: 'submit', value: FiltersPayload): void
+  (event: 'switchRoom', value: number | null): void
 }>()
 
 const defaultState = {
@@ -41,7 +42,6 @@ const defaultState = {
   month: defaultFiltersPayload.month,
   monthsCount: defaultFiltersPayload.monthsCount,
   availability: '' as const,
-  roomID: '' as const,
 }
 
 const selectedYear = ref<Year['value']>(defaultState.year)
@@ -97,7 +97,7 @@ const rooms = computed(() => props.rooms.map(({ id, name }) => ({
   label: name,
 })))
 
-const selectedRoomID = ref<HotelRoomID | ''>(defaultState.roomID)
+const selectedRoomID = ref<HotelRoomID | ''>('')
 
 const handleRoomInput = (value: string | number) => {
   const numericValue = Number(value)
@@ -114,27 +114,33 @@ const payload = computed<FiltersPayload>(() => ({
   monthsCount: selectedMonthsCount.value,
   availability: selectedAvailabilityOption.value === ''
     ? null : selectedAvailabilityOption.value,
-  roomID: selectedRoomID.value === '' ? null : selectedRoomID.value,
 }))
 
-const lastSubmittedPayload = ref<FiltersPayload>(defaultFiltersPayload)
+const lastSubmittedPayload = ref<FiltersPayload>({ ...defaultState, availability: null })
 
 const submit = () => {
   emit('submit', payload.value)
-  lastSubmittedPayload.value = payload.value
 }
+
+watch(payload, () => {
+  submit()
+})
+
+watch(selectedRoomID, () => {
+  emit('switchRoom', selectedRoomID.value === '' ? null : selectedRoomID.value)
+})
 
 const reset = () => {
   selectedYear.value = defaultState.year
   selectedMonth.value = defaultState.month
   selectedMonthsCount.value = defaultState.monthsCount
   selectedAvailabilityOption.value = defaultState.availability
-  selectedRoomID.value = defaultState.roomID
+  selectedRoomID.value = ''
   submit()
 }
 
 const isStateChanged = computed<boolean>(() =>
-  !isEqual(payload.value, lastSubmittedPayload.value))
+  !isEqual({ ...payload.value, roomID: selectedRoomID.value }, { ...lastSubmittedPayload.value, roomID: '' }))
 </script>
 <template>
   <div class="quotasFilters">
@@ -183,16 +189,8 @@ const isStateChanged = computed<boolean>(() =>
     />
     <div class="actions">
       <BootstrapButton
-        label="Обновить"
-        variant="outline"
-        severity="primary"
-        :loading="loading"
-        :disabled="!isStateChanged"
-        @click="submit"
-      />
-      <BootstrapButton
         label="Сбросить"
-        :only-icon="backspaceIcon"
+        :only-icon="filterRemoveIcon"
         variant="outline"
         severity="link"
         :disabled="loading || !isStateChanged"

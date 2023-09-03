@@ -52,13 +52,13 @@ const {
   execute: fetchHotelQuotas,
   data: hotelQuotas,
 } = useHotelQuotasAPI(computed(() => {
-  const { month, year, monthsCount, availability, roomID } = filtersPayload.value
+  const { month, year, monthsCount, availability } = filtersPayload.value
   return {
     hotelID,
     month,
     year,
     interval: intervalByMonthsCount[monthsCount],
-    roomID: roomID ?? undefined,
+    roomID: undefined,
     availability: availability ?? undefined,
   }
 }))
@@ -68,6 +68,8 @@ fetchHotelQuotas()
 watch(filtersPayload, () => fetchHotelQuotas())
 
 const editable = ref(false)
+
+const activeRoomID = ref<number | null>(null)
 
 const roomsQuotas = computed(() => getRoomQuotas({
   rooms: rooms.value,
@@ -105,6 +107,7 @@ const handleFilters = (value: FiltersPayload) => {
         :rooms="rooms"
         :loading="isHotelQuotasFetching"
         @submit="value => handleFilters(value)"
+        @switch-room="(value: number | null) => activeRoomID = value"
       />
       <LoadingSpinner v-if="isHotelQuotasFetching && roomsQuotas === null" />
       <div v-else-if="hotel === null">
@@ -114,15 +117,17 @@ const handleFilters = (value: FiltersPayload) => {
         Не удалось найти комнаты для этого отеля.
       </div>
       <div v-else class="quotasTables">
-        <RoomQuotas
-          v-for="{ room, monthlyQuotas } in roomsQuotas"
-          :key="room.id"
-          :hotel="hotel"
-          :room="room"
-          :monthly-quotas="monthlyQuotas"
-          :editable="editable && !isHotelQuotasFetching"
-          @update="fetchHotelQuotas"
-        />
+        <template v-for="{ room, monthlyQuotas } in roomsQuotas">
+          <RoomQuotas
+            v-if="room.id === activeRoomID || activeRoomID === null"
+            :key="room.id"
+            :hotel="hotel"
+            :room="room"
+            :monthly-quotas="monthlyQuotas"
+            :editable="editable"
+            @update="fetchHotelQuotas"
+          />
+        </template>
       </div>
     </div>
   </BaseLayout>

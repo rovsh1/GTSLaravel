@@ -32,7 +32,7 @@ export type FiltersPayload = {
   month: MonthNumber
   monthsCount: MonthsCount
   availability: AvailabilityValue | null
-  roomID: HotelRoomID | null
+  roomID?: HotelRoomID | null
 }
 
 export const defaultFiltersPayload: FiltersPayload = {
