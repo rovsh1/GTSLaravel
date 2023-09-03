@@ -23,8 +23,6 @@ import { useDayMenu } from './DayMenu/use-day-menu'
 import { ActiveKey, getActiveCellKey, MonthlyQuota, RoomQuota, RoomQuotaStatus, RoomRender } from './lib'
 import { EditedQuota, QuotaRange, useQuotasTableRange } from './lib/use-range'
 
-type CellKey = string | null
-
 const props = defineProps<{
   hotel: HotelResponse
   room: RoomRender
@@ -255,12 +253,12 @@ const handleReleaseDaysValue: HandleValue<void> = (date, value) => {
                     setEditedInRangeQuotasCount(key, value)
                     editedQuotasCount = value
                   }"
-                  @active-key="(value: CellKey) => {
+                  @active-key="(value: ActiveKey) => {
                     activeQuotasCountKey = value
                     activeReleaseDaysKey = null
                   }"
                   @reset="resetActiveKey"
-                  @range-key="(value: CellKey) => {
+                  @range-key="(value: ActiveKey) => {
                     setQuotasCountRange({
                       dailyQuota,
                       roomTypeID: room.id,
@@ -268,7 +266,7 @@ const handleReleaseDaysValue: HandleValue<void> = (date, value) => {
                       rangeKey: value,
                     })
                   }"
-                  @pick-key="(value: CellKey) => {
+                  @pick-key="(value: ActiveKey) => {
                     setQuotasCountPick({
                       oldRange: quotasCountRange as QuotaRange,
                       roomTypeID: room.id,
@@ -320,18 +318,18 @@ const handleReleaseDaysValue: HandleValue<void> = (date, value) => {
                     setEditedInRangeReleaseDays(key, value)
                     editedReleaseDays = value
                   }"
-                  @active-key="(value: CellKey) => {
+                  @active-key="(value: ActiveKey) => {
                     activeReleaseDaysKey = value
                     activeQuotasCountKey = null
                   }"
                   @reset="resetActiveKey"
-                  @range-key="(value: CellKey) => setReleaseDaysRange({
+                  @range-key="(value: ActiveKey) => setReleaseDaysRange({
                     dailyQuota,
                     roomTypeID: room.id,
                     activeKey: activeReleaseDaysKey,
                     rangeKey: value,
                   })"
-                  @pick-key="(value: CellKey) => setReleaseDaysPick({
+                  @pick-key="(value: ActiveKey) => setReleaseDaysPick({
                     oldRange: releaseDaysRange,
                     roomTypeID: room.id,
                     activeKey: activeReleaseDaysKey,

@@ -50,7 +50,6 @@ const waitLoadAndRedrawData = ref<boolean>(false)
 const updatedRoomID = ref<number | null>(null)
 
 const {
-  isFetching: isHotelQuotasFetching,
   execute: fetchHotelQuotas,
   data: hotelQuotas,
 } = useHotelQuotasAPI(computed(() => {
