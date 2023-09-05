@@ -11,13 +11,29 @@
         </div>
 
         <div class="main-wrapper">
-            <div class="main" id="sitemap-categories-menus">
-                @foreach($categories as $category)
-                    <div class="category-menu-wrapper" style="{{ $sitemap->isCurrent($category) ? '' : 'display:none' }}" data-category="{{ $category->key }}">
-                        <div class="title">{{ $category->title }}</div>
-                        {!! $category->render() !!}
-                    </div>
-                @endforeach
+            <div class="btn-sitemap-toggle-switch-wrapper">
+                <div class="main" id="sitemap-categories-menus">
+                    {!! Layout::sidebar() !!}
+                    @foreach($categories as $category)
+                        @if(!$sitemap->isCurrent($category))
+                            <aside class="sidebar" data-category="{{ $category->key }}">
+                                <div class="main-menu-wrapper">
+                                    <div class="sidebar-header">
+                                        <x-icon :key="$category->key"/>
+                                        <div class="title">{{ $category->title }}</div>
+                                    </div>
+
+                                    <div class="menu-wrapper">
+                                        {!! $category->render() !!}
+                                    </div>
+                                </div>
+                            </aside>
+                        @endif
+                    @endforeach
+                </div>
+                <div class="btn-sitemap-toggle-switch">
+                    <x-icon key="chevron_right"/>
+                </div>
             </div>
         </div>
     </div>

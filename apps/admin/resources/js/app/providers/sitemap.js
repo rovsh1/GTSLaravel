@@ -1,21 +1,49 @@
-function sitemapBtnHandler(e) {
-  const $sitemap = $('div.sitemap')
-  if (!$sitemap.is(e.target) && $sitemap.find(e.target).length === 0) {
-    $('#btn-sitemap').click()
-  }
-}
-
 export default function bootSitemap() {
-  $('#btn-sitemap').click((e) => {
-    e.stopPropagation()
+  let menuOpenFlag = false
+  let isFirstLoadPage = true
+  let hoveredEffectActive = false
 
+  function initMenuMode() {
+    const menuOpenFlagFromStorage = localStorage.getItem('menu_open_flag')
+    if (menuOpenFlagFromStorage) {
+      menuOpenFlag = !!JSON.parse(menuOpenFlagFromStorage)
+    } else {
+      menuOpenFlag = false
+    }
+    const checkDisableAnimation = (isFirstLoadPage && menuOpenFlag) || (menuOpenFlag && hoveredEffectActive)
+    if (checkDisableAnimation) {
+      $('body').addClass('sitemap-disable-animation')
+    } else {
+      $('body').removeClass('sitemap-disable-animation')
+    }
+    if (menuOpenFlag) {
+      $('.btn-sitemap-toggle-switch').addClass('rotate-btn')
+      $('body').removeClass('sitemap-absolute-mode')
+      $('body').addClass('sitemap-expanded')
+    } else {
+      $('.btn-sitemap-toggle-switch').removeClass('rotate-btn')
+      $('body').addClass('sitemap-absolute-mode')
+      $('body').removeClass('sitemap-expanded')
+    }
+    isFirstLoadPage = false
+  }
+
+  $('#sitemap-categories, #btn-sitemap').mouseenter((e) => {
+    e.stopPropagation()
+    if (menuOpenFlag) return
+    if (!document.body.classList.contains('sitemap-expanded')) {
+      document.body.classList.add('sitemap-expanded')
+    }
+    hoveredEffectActive = true
+  })
+
+  $('.sitemap-wrapper').mouseleave((e) => {
+    e.stopPropagation()
+    if (menuOpenFlag) return
     if (document.body.classList.contains('sitemap-expanded')) {
       document.body.classList.remove('sitemap-expanded')
-      document.body.removeEventListener('click', sitemapBtnHandler)
-    } else {
-      document.body.classList.add('sitemap-expanded')
-      document.body.addEventListener('click', sitemapBtnHandler)
     }
+    hoveredEffectActive = false
   })
 
   $('#sitemap-categories a').click(function (e) {
@@ -27,7 +55,7 @@ export default function bootSitemap() {
     $('#sitemap-categories .current').removeClass('current')
     item.addClass('current')
 
-    const menus = $('#sitemap-categories-menus > div')
+    const menus = $('#sitemap-categories-menus > aside')
     menus.each((i, m) => {
       if ($(m).data('category') === category) {
         $(m).show()
@@ -42,8 +70,19 @@ export default function bootSitemap() {
   }
 
   $('#btn-sidebar-toggle').click(() => {
-    $('#sidebar').toggleClass('submenu-collapsed')
-
+    $('.current-category-sidebar').toggleClass('submenu-collapsed')
     $(this).find('i')
   })
+
+  $('.btn-sitemap-toggle-switch').click((e) => {
+    if (menuOpenFlag) {
+      localStorage.setItem('menu_open_flag', 'false')
+    } else {
+      localStorage.setItem('menu_open_flag', 'true')
+    }
+    initMenuMode()
+    hoveredEffectActive = false
+  })
+
+  initMenuMode()
 }
