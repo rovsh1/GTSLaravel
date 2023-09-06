@@ -31,8 +31,10 @@
                         @endif
                     @endforeach
                 </div>
-                <div class="btn-sitemap-toggle-switch">
-                    <x-icon key="chevron_right"/>
+                <div class="btn-sitemap-toggle-switch-hover-effect">
+                    <div class="btn-sitemap-toggle-switch">
+                        <x-icon key="chevron_right"/>
+                    </div>
                 </div>
             </div>
         </div>

@@ -4,12 +4,13 @@ export default function bootSitemap() {
   let hoveredEffectActive = false
 
   function initMenuMode() {
-    const menuOpenFlagFromStorage = localStorage.getItem('menu_open_flag')
+    const menuOpenFlagFromStorage = $.cookie('menu_open_flag')
     if (menuOpenFlagFromStorage) {
       menuOpenFlag = !!JSON.parse(menuOpenFlagFromStorage)
     } else {
       menuOpenFlag = false
     }
+
     const checkDisableAnimation = (isFirstLoadPage && menuOpenFlag) || (menuOpenFlag && hoveredEffectActive)
     if (checkDisableAnimation) {
       $('body').addClass('sitemap-disable-animation')
@@ -76,9 +77,9 @@ export default function bootSitemap() {
 
   $('.btn-sitemap-toggle-switch').click((e) => {
     if (menuOpenFlag) {
-      localStorage.setItem('menu_open_flag', 'false')
+      $.cookie('menu_open_flag', 'false', { sameSite: 'None', secure: false })
     } else {
-      localStorage.setItem('menu_open_flag', 'true')
+      $.cookie('menu_open_flag', 'true', { sameSite: 'None', secure: false })
     }
     initMenuMode()
     hoveredEffectActive = false
