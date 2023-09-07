@@ -5,12 +5,11 @@ import { computed } from 'vue'
 import EditTableRowButton from '~resources/views/hotel/settings/components/EditTableRowButton.vue'
 import { getGenderName } from '~resources/views/hotel-booking/show/lib/constants'
 
-import { HotelBookingGuest } from '~api/booking/hotel/details'
 import { Guest } from '~api/booking/order/guest'
 import { CountryResponse } from '~api/country'
 
 const props = defineProps<{
-  guests: HotelBookingGuest[]
+  guestIds?: number[]
   countries: CountryResponse[]
   orderGuests: Guest[]
   canEdit: boolean
@@ -27,7 +26,11 @@ const getCountryName = (id: number): string | undefined =>
   countries.value?.find((country: CountryResponse) => country.id === id)?.name
 
 const notExistsOrderGuests = computed(
-  () => props.orderGuests.filter((guest) => !props.guests.map((t) => t.id).includes(guest.id)),
+  () => props.orderGuests.filter((guest) => !props.guestIds || !props.guestIds.includes(guest.id)),
+)
+
+const guests = computed(
+  () => props.orderGuests.filter((guest) => props.guestIds && props.guestIds.includes(guest.id)),
 )
 
 </script>

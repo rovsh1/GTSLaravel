@@ -13,7 +13,7 @@ import StatusHistoryModal from '~resources/views/hotel-booking/show/components/S
 import { useExternalNumber } from '~resources/views/hotel-booking/show/composables/external-number'
 import { externalNumberTypeOptions, getCancelPeriodTypeName, getHumanRequestType } from '~resources/views/hotel-booking/show/lib/constants'
 import { useBookingStore } from '~resources/views/hotel-booking/show/store/booking'
-import { useOrderStore } from '~resources/views/hotel-booking/show/store/order-currency'
+import { useOrderStore } from '~resources/views/hotel-booking/show/store/order'
 import { useBookingRequestStore } from '~resources/views/hotel-booking/show/store/request'
 import { useBookingStatusHistoryStore } from '~resources/views/hotel-booking/show/store/status-history'
 

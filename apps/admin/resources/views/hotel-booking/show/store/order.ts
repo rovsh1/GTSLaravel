@@ -6,10 +6,15 @@ import { z } from 'zod'
 import { useGetOrderGuestsAPI } from '~api/booking/order/guest'
 import { Currency } from '~api/models'
 
-import { requestInitialData } from '~lib/initial-data'
+import { isInitialDataExists, requestInitialData, ViewInitialDataKey } from '~lib/initial-data'
+
+let initialDataKey: ViewInitialDataKey = 'view-initial-data-hotel-booking'
+if (isInitialDataExists('view-initial-data-airport-booking')) {
+  initialDataKey = 'view-initial-data-airport-booking'
+}
 
 const { order, currencies } = requestInitialData(
-  'view-initial-data-hotel-booking',
+  initialDataKey,
   z.object({
     order: z.object({
       id: z.number(),
@@ -35,15 +40,16 @@ export const useOrderStore = defineStore('booking-order', () => {
   const currency = computed<Currency | undefined>(
     () => currencies.find((cur) => order.currency.value === cur.code_char),
   )
-  const { data: guests, execute: fetchTourists } = useGetOrderGuestsAPI({ orderId: order.id })
+  const { data: guests, execute: fetchGuests } = useGetOrderGuestsAPI({ orderId: order.id })
 
   onMounted(() => {
-    fetchTourists()
+    fetchGuests()
   })
 
   return {
     currency,
     order,
     guests,
+    fetchGuests,
   }
 })

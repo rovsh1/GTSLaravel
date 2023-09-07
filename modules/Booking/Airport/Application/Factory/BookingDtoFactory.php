@@ -10,6 +10,7 @@ use Module\Booking\Airport\Application\Dto\Details\ServiceInfoDto;
 use Module\Booking\Airport\Domain\Entity\Booking;
 use Module\Booking\Common\Application\Factory\AbstractBookingDtoFactory;
 use Module\Booking\Common\Domain\Entity\BookingInterface;
+use Module\Booking\Order\Domain\ValueObject\GuestId;
 
 class BookingDtoFactory extends AbstractBookingDtoFactory
 {
@@ -27,6 +28,7 @@ class BookingDtoFactory extends AbstractBookingDtoFactory
             AirportInfoDto::fromDomain($booking->airportInfo()),
             ServiceInfoDto::fromDomain($booking->serviceInfo()),
             $booking->date(),
+            $booking->guestIds()->map(fn(GuestId $id) => $id->value())
         );
     }
 }

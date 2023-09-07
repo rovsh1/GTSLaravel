@@ -15,7 +15,7 @@ import RoomPriceModal from '~resources/views/hotel-booking/show/components/RoomP
 import { getConditionLabel, getRoomStatusName } from '~resources/views/hotel-booking/show/lib/constants'
 import { GuestFormData, RoomFormData } from '~resources/views/hotel-booking/show/lib/data-types'
 import { useBookingStore } from '~resources/views/hotel-booking/show/store/booking'
-import { useOrderStore } from '~resources/views/hotel-booking/show/store/order-currency'
+import { useOrderStore } from '~resources/views/hotel-booking/show/store/order'
 
 import {
   HotelBookingDetails,
@@ -325,7 +325,7 @@ fetchCountries()
         <GuestsTable
           v-if="countries"
           :can-edit="isEditableStatus"
-          :guests="room.guests"
+          :guest-ids="room.guestIds"
           :order-guests="orderGuests"
           :countries="countries"
           @edit="(guest) => handleEditGuest(room.id, guest)"

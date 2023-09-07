@@ -27,6 +27,7 @@ class BookingDto extends BaseDto
         public readonly AirportInfoDto $airportInfo,
         public readonly ServiceInfoDto $serviceInfo,
         public readonly CarbonInterface $date,
+        public readonly array $guestIds,
     ) {
         parent::__construct($id, $status, $orderId, $createdAt, $creatorId);
     }
@@ -43,6 +44,7 @@ class BookingDto extends BaseDto
             AirportInfoDto::fromDomain($entity->airportInfo()),
             ServiceInfoDto::fromDomain($entity->serviceInfo()),
             $entity->date(),
+            $entity->guestIds()->all()
         );
     }
 }

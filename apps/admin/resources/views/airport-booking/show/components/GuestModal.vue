@@ -1,26 +1,89 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+
+import { computed, Ref, ref } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
+import { z } from 'zod'
+
+import { validateForm } from '~resources/composables/form'
+import { genderOptions } from '~resources/views/hotel-booking/show/lib/constants'
+import { GuestFormData } from '~resources/views/hotel-booking/show/lib/data-types'
+import { useOrderStore } from '~resources/views/hotel-booking/show/store/order'
 
 import { CountryResponse } from '~api/country'
 
-import BaseDialog from '~components/BaseDialog.vue'
+import { requestInitialData } from '~lib/initial-data'
 
-defineProps<{
+import BaseDialog from '~components/BaseDialog.vue'
+import BootstrapSelectBase from '~components/Bootstrap/BootstrapSelectBase.vue'
+import { SelectOption } from '~components/Bootstrap/lib'
+
+const props = defineProps<{
   opened: MaybeRef<boolean>
+  loading: MaybeRef<boolean>
   countries: CountryResponse[]
+  formData: Partial<GuestFormData>
+  guestId?: number
 }>()
 
 const emit = defineEmits<{
   (event: 'close'): void
-  (event: 'submit'): void
+  (event: 'submit', payload: Required<GuestFormData>): void
 }>()
 
-const modalForm = ref<HTMLFormElement>()
-const isFetching = ref(false)
+const { bookingID } = requestInitialData(
+  'view-initial-data-airport-booking',
+  z.object({
+    bookingID: z.number(),
+  }),
+)
 
+const orderStore = useOrderStore()
+const orderId = computed(() => orderStore.order.id)
+
+const ageTypeOptions: SelectOption[] = [
+  { value: 0, label: 'Взрослый' },
+  { value: 1, label: 'Ребенок' },
+]
+
+const formData = computed<GuestFormData>(() => ({
+  bookingID,
+  id: props.guestId,
+  ...props.formData,
+}))
+
+const localAgeType = ref<number>()
+const ageType = computed<number>({
+  get: () => {
+    if (localAgeType.value !== undefined) {
+      return localAgeType.value
+    }
+
+    return formData.value.isAdult ? 0 : 1
+  },
+  set: (type: number): void => {
+    localAgeType.value = type
+  },
+})
+
+const modalForm = ref<HTMLFormElement>()
 const onModalSubmit = async () => {
+  if (!validateForm<GuestFormData>(modalForm as Ref<HTMLFormElement>, formData)) {
+    return
+  }
+  formData.value.orderId = orderId.value
+  emit('submit', formData.value)
+  localAgeType.value = undefined
+}
+
+const countryOptions = computed<SelectOption[]>(
+  () => props.countries?.map((country: CountryResponse) => ({ value: country.id, label: country.name })) || [],
+)
+
+const handleChangeAgeType = (type: number): void => {
+  ageType.value = type
+  formData.value.isAdult = type === 0
+  formData.value.age = null
 }
 
 const closeModal = () => {
@@ -33,71 +96,65 @@ const closeModal = () => {
 <template>
   <BaseDialog
     :opened="opened as boolean"
-    :loading="isFetching"
+    :loading="loading"
     @close="closeModal"
     @keydown.enter="onModalSubmit"
   >
-    Модалка
-    <!--    <template #title>Данные гостя</template>-->
+    <template #title>Данные гостя</template>
 
-    <!--    <form ref="modalForm" class="row g-3">-->
-    <!--      <div class="col-md-12">-->
-    <!--        <BootstrapSelectBase-->
-    <!--          id="nationality_id"-->
-    <!--          :options="countryOptions"-->
-    <!--          label="Гражданство"-->
-    <!--          :value="formData.countryId as number"-->
-    <!--          required-->
-    <!--          @input="value => formData.countryId = value as number"-->
-    <!--        />-->
-    <!--      </div>-->
-    <!--      <div class="col-md-12">-->
-    <!--        <div class="field-required">-->
-    <!--          <label for="full_name">ФИО</label>-->
-    <!--              <input -->
-    <!--                id="full_name" -->
-    <!--                v-model="formData.fullName" -->
-    <!--                class="form-control" -->
-    <!--                required-->
-    <!--              >-->
-    <!--        </div>-->
-    <!--      </div>-->
-    <!--      <div class="col-md-12">-->
-    <!--        <BootstrapSelectBase-->
-    <!--          id="gender"-->
-    <!--          :options="genderOptions"-->
-    <!--          label="Пол"-->
-    <!--          :value="formData.gender as number"-->
-    <!--          required-->
-    <!--          @input="value => formData.gender = value as number"-->
-    <!--        />-->
-    <!--      </div>-->
-    <!--      <div class="col-md-12">-->
-    <!--        <BootstrapSelectBase-->
-    <!--          id="age_type"-->
-    <!--          :options="ageTypeOptions"-->
-    <!--          label="Тип"-->
-    <!--          :value="ageType"-->
-    <!--          @input="value => handleChangeAgeType(Number(value))"-->
-    <!--        />-->
-    <!--      </div>-->
+    <form ref="modalForm" class="row g-3">
+      <div class="col-md-12">
+        <BootstrapSelectBase
+          id="nationality_id"
+          :options="countryOptions"
+          label="Гражданство"
+          :value="formData.countryId as number"
+          required
+          @input="value => formData.countryId = value as number"
+        />
+      </div>
+      <div class="col-md-12">
+        <div class="field-required">
+          <label for="full_name">ФИО</label>
+          <input id="full_name" v-model="formData.fullName" class="form-control" required>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <BootstrapSelectBase
+          id="gender"
+          :options="genderOptions"
+          label="Пол"
+          :value="formData.gender as number"
+          required
+          @input="value => formData.gender = value as number"
+        />
+      </div>
+      <div class="col-md-12">
+        <BootstrapSelectBase
+          id="age_type"
+          :options="ageTypeOptions"
+          label="Тип"
+          :value="ageType"
+          @input="value => handleChangeAgeType(Number(value))"
+        />
+      </div>
 
-    <!--      <div v-if="!formData.isAdult" class="col-md-12">-->
-    <!--        <div class="field-required">-->
-    <!--          <label for="child_age">Возраст</label>-->
-    <!--          <input-->
-    <!--            id="child_age"-->
-    <!--            v-model="formData.age"-->
-    <!--            type="number"-->
-    <!--            class="form-control"-->
-    <!--            autocomplete="off"-->
-    <!--            required-->
-    <!--            min="0"-->
-    <!--            max="18"-->
-    <!--          >-->
-    <!--        </div>-->
-    <!--      </div>-->
-    <!--    </form>-->
+      <div v-if="!formData.isAdult" class="col-md-12">
+        <div class="field-required">
+          <label for="child_age">Возраст</label>
+          <input
+            id="child_age"
+            v-model="formData.age"
+            type="number"
+            class="form-control"
+            autocomplete="off"
+            required
+            min="0"
+            max="18"
+          >
+        </div>
+      </div>
+    </form>
 
     <template #actions-end>
       <button class="btn btn-primary" type="button" @click="onModalSubmit">Сохранить</button>

@@ -21,6 +21,7 @@ export type AirportInfo = {
 export type Booking = {
   serviceInfo: ServiceInfo
   airportInfo: AirportInfo
+  guestIds: number[]
 } & BaseBooking
 
 export interface GetBookingPayload {

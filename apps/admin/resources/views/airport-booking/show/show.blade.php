@@ -9,6 +9,8 @@
       window['view-initial-data-airport-booking'] = {{ Js::from([
             'bookingID' => $bookingId,
             'manager' => $manager,
+            'order' => $order,
+            'currencies' => $currencies,
         ]) }}
     </script>
 @endsection

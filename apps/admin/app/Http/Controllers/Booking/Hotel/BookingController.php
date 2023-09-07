@@ -4,12 +4,12 @@ namespace App\Admin\Http\Controllers\Booking\Hotel;
 
 use App\Admin\Components\Factory\Prototype;
 use App\Admin\Http\Controllers\Controller;
-use App\Admin\Http\Requests\Booking\BulkDeleteRequest;
-use App\Admin\Http\Requests\Booking\UpdateExternalNumberRequest;
-use App\Admin\Http\Requests\Booking\UpdateManagerRequest;
-use App\Admin\Http\Requests\Booking\UpdateNoteRequest;
-use App\Admin\Http\Requests\Booking\UpdatePriceRequest;
-use App\Admin\Http\Requests\Booking\UpdateStatusRequest;
+use App\Admin\Http\Requests\Booking\Hotel\BulkDeleteRequest;
+use App\Admin\Http\Requests\Booking\Hotel\UpdateExternalNumberRequest;
+use App\Admin\Http\Requests\Booking\Hotel\UpdateManagerRequest;
+use App\Admin\Http\Requests\Booking\Hotel\UpdateNoteRequest;
+use App\Admin\Http\Requests\Booking\Hotel\UpdatePriceRequest;
+use App\Admin\Http\Requests\Booking\Hotel\UpdateStatusRequest;
 use App\Admin\Http\Resources\Room as RoomResource;
 use App\Admin\Models\Administrator\Administrator;
 use App\Admin\Models\Client\Client;

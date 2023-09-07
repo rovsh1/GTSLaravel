@@ -14,8 +14,8 @@ class RoomBookingDto extends Dto
         public readonly int $id,
         public readonly int $status,
         public readonly RoomInfoDto $roomInfo,
-        /** @var GuestDto[] $guests */
-        public readonly array $guests,
+        /** @var int[] $guestIds */
+        public readonly array $guestIds,
         public readonly RoomBookingDetailsDto $details,
         public readonly RoomPriceDto $price
     ) {}

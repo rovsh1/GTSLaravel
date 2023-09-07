@@ -1,4 +1,4 @@
-import { computed, onMounted, reactive, ref } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 
 import { defineStore } from 'pinia'
 import { z } from 'zod'
@@ -12,15 +12,11 @@ import {
   updateManager as executeUpdateManager,
   updateNote as executeUpdateNote,
   useGetBookingAPI,
-} from '~api/booking/hotel'
-import { HotelRoomBooking } from '~api/booking/hotel/details'
-import { useBookingAvailableActionsAPI, useBookingStatusesAPI } from '~api/booking/hotel/status'
-import { useHotelMarkupSettingsAPI } from '~api/hotel/markup-settings'
+} from '~api/booking/airport'
 
 import { requestInitialData } from '~lib/initial-data'
 
-const { hotelID, bookingID, manager } = requestInitialData('view-initial-data-hotel-booking', z.object({
-  hotelID: z.number(),
+const { bookingID, manager } = requestInitialData('view-initial-data-airport-booking', z.object({
   bookingID: z.number(),
   manager: z.object({
     id: z.number(),
@@ -29,12 +25,11 @@ const { hotelID, bookingID, manager } = requestInitialData('view-initial-data-ho
 
 export const useBookingStore = defineStore('booking', () => {
   const { data: booking, execute: fetchBooking } = useGetBookingAPI({ bookingID })
-  const { data: markupSettings, execute: fetchMarkupSettings } = useHotelMarkupSettingsAPI({ hotelID })
-  const { data: availableActions, execute: fetchAvailableActions, isFetching: isAvailableActionsFetching } = useBookingAvailableActionsAPI({ bookingID })
-  const { data: statuses, execute: fetchStatuses } = useBookingStatusesAPI()
+  // const { data: availableActions, execute: fetchAvailableActions, isFetching: isAvailableActionsFetching } = useBookingAvailableActionsAPI({ bookingID })
+  // const { data: statuses, execute: fetchStatuses } = useBookingStatusesAPI()
 
-  const isEmptyGuests = computed<boolean>(() => Boolean(booking.value?.roomBookings.find((room: HotelRoomBooking) => room.guestIds.length === 0)))
-  const isEmptyRooms = computed<boolean>(() => booking.value?.roomBookings.length === 0)
+  // const isEmptyGuests = computed<boolean>(() => Boolean(booking.value?.roomBookings.find((room: HotelRoomBooking) => room.guests.length === 0)))
+  // const isEmptyRooms = computed<boolean>(() => booking.value?.roomBookings.length === 0)
   const isStatusUpdateFetching = ref(false)
   const bookingManagerId = ref(manager.id)
 
@@ -65,7 +60,7 @@ export const useBookingStore = defineStore('booking', () => {
     }
     await Promise.all([
       fetchBooking(),
-      fetchAvailableActions(),
+      // fetchAvailableActions(),
     ])
     isStatusUpdateFetching.value = false
   }
@@ -85,8 +80,8 @@ export const useBookingStore = defineStore('booking', () => {
   }
 
   onMounted(() => {
-    fetchMarkupSettings()
-    fetchStatuses()
+    // fetchMarkupSettings()
+    // fetchStatuses()
     fetchBooking()
   })
 
@@ -94,15 +89,14 @@ export const useBookingStore = defineStore('booking', () => {
     booking,
     bookingManagerId,
     fetchBooking,
-    markupSettings,
-    isEmptyGuests,
-    isEmptyRooms,
-    availableActions,
-    fetchAvailableActions,
-    isAvailableActionsFetching,
+    // isEmptyGuests,
+    // isEmptyRooms,
+    // availableActions,
+    // fetchAvailableActions,
+    // isAvailableActionsFetching,
     isStatusUpdateFetching,
-    statuses,
-    fetchStatuses,
+    // statuses,
+    // fetchStatuses,
     changeStatus,
     copy,
     updateNote,

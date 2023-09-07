@@ -44,7 +44,7 @@ export interface HotelRoomBooking {
   id: number
   status: number
   roomInfo: RoomInfo
-  guests: HotelBookingGuest[]
+  guestIds: number[]
   details: HotelRoomBookingDetails
   price: RoomBookingPrice
 }

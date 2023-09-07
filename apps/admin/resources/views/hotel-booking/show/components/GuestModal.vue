@@ -8,7 +8,7 @@ import { z } from 'zod'
 import { validateForm } from '~resources/composables/form'
 import { genderOptions } from '~resources/views/hotel-booking/show/lib/constants'
 import { GuestFormData } from '~resources/views/hotel-booking/show/lib/data-types'
-import { useOrderStore } from '~resources/views/hotel-booking/show/store/order-currency'
+import { useOrderStore } from '~resources/views/hotel-booking/show/store/order'
 
 import { addOrderGuest, updateOrderGuest } from '~api/booking/order/guest'
 import { CountryResponse } from '~api/country'

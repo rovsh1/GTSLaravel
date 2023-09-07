@@ -18,15 +18,14 @@ use Module\Booking\HotelBooking\Application\Dto\Details\RoomBooking\RoomInfoDto;
 use Module\Booking\HotelBooking\Application\Dto\Details\RoomBooking\RoomPriceDto;
 use Module\Booking\HotelBooking\Application\Dto\Details\RoomBookingDto;
 use Module\Booking\HotelBooking\Domain\Entity\Booking;
+use Module\Booking\HotelBooking\Domain\Entity\RoomBooking;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBookingCollection;
-use Module\Booking\Order\Application\Response\GuestDto;
-use Module\Booking\Order\Domain\Repository\GuestRepositoryInterface;
+use Module\Booking\Order\Domain\ValueObject\GuestId;
 
 class BookingDtoFactory extends AbstractBookingDtoFactory
 {
     public function __construct(
         StatusStorage $statusStorage,
-        private readonly GuestRepositoryInterface $guestRepository
     ) {
         parent::__construct($statusStorage);
     }
@@ -45,7 +44,7 @@ class BookingDtoFactory extends AbstractBookingDtoFactory
             HotelInfoDto::fromDomain($booking->hotelInfo()),
             BookingPeriodDto::fromDomain($booking->period()),
             $booking->additionalInfo() !== null ? AdditionalInfoDto::fromDomain($booking->additionalInfo()) : null,
-            $this->buildGuests($booking->roomBookings()),
+            $this->buildRooms($booking->roomBookings()),
             CancelConditionsDto::fromDomain($booking->cancelConditions()),
             BookingPriceDto::fromDomain($booking->price()),
             $booking->quotaProcessingMethod(),
@@ -56,22 +55,15 @@ class BookingDtoFactory extends AbstractBookingDtoFactory
      * @param RoomBookingCollection $roomBookings
      * @return array<int, RoomBookingDto>
      */
-    private function buildGuests(RoomBookingCollection $roomBookings): array
+    private function buildRooms(RoomBookingCollection $roomBookings): array
     {
-        $dtos = [];
-        foreach ($roomBookings as $roomBooking) {
-            //@todo Поместить туристов в заказы, и на фронте склеивать по id
-            $guests = $this->guestRepository->get($roomBooking->guestIds());
-            $dtos[] = new RoomBookingDto(
-                id: $roomBooking->id()->value(),
-                status: $roomBooking->status()->value,
-                roomInfo: RoomInfoDto::fromDomain($roomBooking->roomInfo()),
-                guests: GuestDto::collectionFromDomain($guests),
-                details: RoomBookingDetailsDto::fromDomain($roomBooking->details()),
-                price: RoomPriceDto::fromDomain($roomBooking->price())
-            );
-        }
-
-        return $dtos;
+        return $roomBookings->map(fn(RoomBooking $roomBooking) => new RoomBookingDto(
+            id: $roomBooking->id()->value(),
+            status: $roomBooking->status()->value,
+            roomInfo: RoomInfoDto::fromDomain($roomBooking->roomInfo()),
+            guestIds: $roomBooking->guestIds()->map(fn(GuestId $id) => $id->value()),
+            details: RoomBookingDetailsDto::fromDomain($roomBooking->details()),
+            price: RoomPriceDto::fromDomain($roomBooking->price())
+        ))->all();
     }
 }

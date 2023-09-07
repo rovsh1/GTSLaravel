@@ -1,6 +1,6 @@
 import { ZodObject, ZodRawShape } from 'zod/lib/types'
 
-type ViewInitialDataKey = `view-initial-data-${string}`
+export type ViewInitialDataKey = `view-initial-data-${string}`
 
 declare global {
   interface Window {
@@ -17,3 +17,5 @@ export const parseInitialData = <T extends ZodRawShape>(schema: ZodObject<T>, da
 
 export const requestInitialData = <T extends ZodRawShape>(key: ViewInitialDataKey, schema: ZodObject<T>) =>
   parseInitialData(schema, window[key])
+
+export const isInitialDataExists = (key: ViewInitialDataKey): boolean => Boolean(window[key])

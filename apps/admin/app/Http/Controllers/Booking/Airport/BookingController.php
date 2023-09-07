@@ -7,8 +7,10 @@ namespace App\Admin\Http\Controllers\Booking\Airport;
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Models\Administrator\Administrator;
 use App\Admin\Models\Client\Client;
+use App\Admin\Models\Reference\Currency;
 use App\Admin\Repositories\BookingAdministratorRepository;
 use App\Admin\Support\Facades\Booking\AirportAdapter;
+use App\Admin\Support\Facades\Booking\HotelAdapter;
 use App\Admin\Support\Facades\Booking\OrderAdapter;
 use App\Admin\Support\Facades\Booking\StatusAdapter;
 use App\Admin\Support\Facades\Breadcrumb;
@@ -19,6 +21,7 @@ use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Layout as LayoutContract;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 
 class BookingController extends Controller
@@ -119,6 +122,7 @@ class BookingController extends Controller
                 'model' => $booking,
                 'client' => $client,
                 'order' => $order,
+                'currencies' => Currency::get(),
                 'manager' => $this->administratorRepository->get($id),
                 'creator' => Administrator::find($booking->creatorId),
 //                'editUrl' => $this->isAllowed('update') ? $this->route('edit', $id) : null,
@@ -126,6 +130,13 @@ class BookingController extends Controller
                 'editUrl' => null,
                 'deleteUrl' => null,
             ]);
+    }
+
+    public function get(int $id): JsonResponse
+    {
+        return response()->json(
+            AirportAdapter::getBooking($id)
+        );
     }
 
     protected function formFactory(bool $isEdit = false): FormContract

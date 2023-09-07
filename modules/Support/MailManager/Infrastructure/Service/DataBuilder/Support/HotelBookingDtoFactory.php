@@ -32,10 +32,10 @@ abstract class HotelBookingDtoFactory
             name: $roomDto->roomInfo->name,
             checkinTime: null,
             checkoutTime: null,
-            guestsNames: implode(', ', array_map(fn(GuestDto $g) => $g->fullName, $roomDto->guests)),
+            guestsNames: implode(', ', array_map(fn(GuestDto $g) => $g->fullName, $roomDto->guestIds)),
             priceNet: $roomDto->price->hoValue,
             status: $roomDto->status,
-            guestsNumber: count($roomDto->guests),
+            guestsNumber: count($roomDto->guestIds),
             note: $roomDto->details->guestNote
         ), $bookingDto->roomBookings);
     }
