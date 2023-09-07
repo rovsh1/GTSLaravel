@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
+use Module\Hotel\Infrastructure\Models\Room\QuotaStatusEnum;
 
 return new class extends Migration {
     /**
@@ -25,7 +26,7 @@ return new class extends Migration {
 //                    'count_booked' => $r->count_booked,
                     //@todo count_reserved нужно смотреть как считается
 //                    'count_reserved' => 0,
-                    'status' => $r->type,
+                    'status' => $r->type === 2 ? QuotaStatusEnum::CLOSE : QuotaStatusEnum::OPEN,
                 ]);
         }
     }
