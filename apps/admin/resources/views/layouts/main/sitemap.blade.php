@@ -16,7 +16,7 @@
                     {!! Layout::sidebar() !!}
                     @foreach($categories as $category)
                         @if(!$sitemap->isCurrent($category))
-                            <aside class="sidebar" data-category="{{ $category->key }}">
+                            <aside class="sidebar" data-category="{{ $category->key }}" style="display: none;">
                                 <div class="main-menu-wrapper">
                                     <div class="sidebar-header">
                                         <x-icon :key="$category->key"/>
