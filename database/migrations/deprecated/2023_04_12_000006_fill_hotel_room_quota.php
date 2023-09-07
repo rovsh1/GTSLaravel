@@ -29,7 +29,7 @@ return new class extends Migration {
 //                    'count_booked' => $r->count_booked,
                     //@todo count_reserved нужно смотреть как считается
 //                    'count_reserved' => 0,
-                    'status' => $r->type === self::CLOSE_VALUE_DEPRECATED ? QuotaStatusEnum::CLOSE : QuotaStatusEnum::OPEN,
+                    'status' => $r->type == self::CLOSE_VALUE_DEPRECATED ? QuotaStatusEnum::CLOSE : QuotaStatusEnum::OPEN,
                 ]);
         }
     }
