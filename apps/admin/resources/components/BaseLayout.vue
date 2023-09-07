@@ -4,7 +4,7 @@ import { MaybeRef } from '@vueuse/core'
 
 import LoadingSpinner from '~components/LoadingSpinner.vue'
 
-const props = withDefaults(defineProps<{
+withDefaults(defineProps<{
   title?: string
   loading?: MaybeRef<boolean>
 }>(), {

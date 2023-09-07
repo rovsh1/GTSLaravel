@@ -56,8 +56,8 @@ class RoomQuota extends Model
 
     public function scopeWherePeriod(Builder $builder, CarbonPeriod $period): void
     {
-        $builder->where('date', '>=', $period->getStartDate())
-            ->where('date', '<=', $period->getEndDate());
+        $builder->whereDate('date', '>=', $period->getStartDate())
+            ->whereDate('date', '<=', $period->getEndDate());
     }
 
     public function countAvailable(): Attribute
