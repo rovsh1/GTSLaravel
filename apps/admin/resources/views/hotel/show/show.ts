@@ -1,4 +1,5 @@
 import { editableTable } from '~resources/js/app/support/editable-table'
+import { createHotelSwitcher } from '~resources/lib/hotel-switcher/hotel-switcher'
 import initServicesModal from '~resources/views/hotel/_modals/services-modal'
 import initUsabilitiesModal from '~resources/views/hotel/_modals/usabilities-modal'
 
@@ -68,4 +69,6 @@ $(document)
       route: window.get_meta_content('hotel-landmark-base-route'),
       canEdit: false,
     })
+
+    createHotelSwitcher(document.getElementsByClassName('content-header')[0])
   })
