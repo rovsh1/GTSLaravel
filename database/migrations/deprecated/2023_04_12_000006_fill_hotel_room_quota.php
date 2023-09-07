@@ -4,6 +4,9 @@ use Illuminate\Database\Migrations\Migration;
 use Module\Hotel\Infrastructure\Models\Room\QuotaStatusEnum;
 
 return new class extends Migration {
+
+    private const CLOSE_VALUE_DEPRECATED = 2;
+
     /**
      * Run the migrations.
      */
@@ -26,7 +29,7 @@ return new class extends Migration {
 //                    'count_booked' => $r->count_booked,
                     //@todo count_reserved нужно смотреть как считается
 //                    'count_reserved' => 0,
-                    'status' => $r->type === 2 ? QuotaStatusEnum::CLOSE : QuotaStatusEnum::OPEN,
+                    'status' => $r->type === self::CLOSE_VALUE_DEPRECATED ? QuotaStatusEnum::CLOSE : QuotaStatusEnum::OPEN,
                 ]);
         }
     }
