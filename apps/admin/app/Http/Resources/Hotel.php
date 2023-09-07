@@ -17,6 +17,7 @@ class Hotel extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'city_name' => $this->whenHas('city_name')
         ];
     }
 }

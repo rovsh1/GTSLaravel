@@ -1,3 +1,5 @@
+import { createHotelSwitcher } from '~resources/lib/hotel-switcher/hotel-switcher'
+
 import '~resources/views/main'
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -32,4 +34,5 @@ $(() => {
       })
     },
   })
+  createHotelSwitcher(document.getElementsByClassName('content-header')[0])
 })
