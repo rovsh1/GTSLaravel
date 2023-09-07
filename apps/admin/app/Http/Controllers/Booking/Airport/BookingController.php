@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace App\Admin\Http\Controllers\Booking\Airport;
 
 use App\Admin\Http\Controllers\Controller;
+use App\Admin\Http\Requests\Booking\Hotel\UpdateStatusRequest;
 use App\Admin\Models\Administrator\Administrator;
 use App\Admin\Models\Client\Client;
 use App\Admin\Models\Reference\Currency;
 use App\Admin\Repositories\BookingAdministratorRepository;
 use App\Admin\Support\Facades\Booking\AirportAdapter;
-use App\Admin\Support\Facades\Booking\HotelAdapter;
 use App\Admin\Support\Facades\Booking\OrderAdapter;
-use App\Admin\Support\Facades\Booking\StatusAdapter;
 use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Grid;
@@ -139,6 +138,39 @@ class BookingController extends Controller
         );
     }
 
+    public function getAvailableActions(int $id): JsonResponse
+    {
+        return response()->json(
+            AirportAdapter::getAvailableActions($id)
+        );
+    }
+
+    public function getStatuses(): JsonResponse
+    {
+        return response()->json(
+            AirportAdapter::getStatuses()
+        );
+    }
+
+    public function updateStatus(UpdateStatusRequest $request, int $id): JsonResponse
+    {
+        return response()->json(
+            AirportAdapter::updateStatus(
+                $id,
+                $request->getStatus(),
+                $request->getNotConfirmedReason(),
+                $request->getCancelFeeAmount()
+            )
+        );
+    }
+
+    public function getStatusHistory(int $id): JsonResponse
+    {
+        return response()->json(
+            AirportAdapter::getStatusHistory($id)
+        );
+    }
+
     protected function formFactory(bool $isEdit = false): FormContract
     {
         return Form::name('data')
@@ -207,7 +239,7 @@ class BookingController extends Controller
                     return "$idLink / {$orderLink}";
                 }
             ])
-            ->bookingStatus('status', ['text' => 'Статус', 'statuses' => StatusAdapter::getStatuses(), 'order' => true])
+            ->bookingStatus('status', ['text' => 'Статус', 'statuses' => AirportAdapter::getStatuses(), 'order' => true])
             ->text('client_name', ['text' => 'Клиент'])
             ->text('city_name', ['text' => 'Город'])
             ->text('service_name', ['text' => 'Название услуги'])

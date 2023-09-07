@@ -4,16 +4,16 @@ use App\Admin\Http\Controllers;
 use App\Admin\Support\Facades\AclRoute;
 
 AclRoute::for('hotel-booking')
-    ->get('/status/list', Controllers\Booking\Hotel\BookingController::class . '@getStatuses', 'read', 'status.list')
+    ->get('/status/list', Controllers\Booking\Airport\BookingController::class . '@getStatuses', 'read', 'status.list')
     ->delete('/bulk', Controllers\Booking\Hotel\BookingController::class . '@bulkDelete', 'delete', 'bulk.delete')
 
     ->get('/{booking}/get', Controllers\Booking\Hotel\BookingController::class . '@get', 'read', 'get')
     ->put('/{booking}/note', Controllers\Booking\Hotel\BookingController::class . '@updateNote', 'update', 'note.update')
     ->put('/{booking}/manager', Controllers\Booking\Hotel\BookingController::class . '@updateManager', 'update', 'manager.update')
     ->post('/{booking}/copy', Controllers\Booking\Hotel\BookingController::class . '@copy', 'update', 'copy')
-    ->put('/{booking}/status/update', Controllers\Booking\Hotel\BookingController::class . '@updateStatus', 'update', 'status.update')
-    ->get('/{booking}/status/history', Controllers\Booking\Hotel\BookingController::class . '@getStatusHistory', 'read', 'status.history')
-    ->get('/{booking}/actions/available', Controllers\Booking\Hotel\BookingController::class . '@getAvailableActions', 'read', 'status.get')
+    ->put('/{booking}/status/update', Controllers\Booking\Airport\BookingController::class . '@updateStatus', 'update', 'status.update')
+    ->get('/{booking}/status/history', Controllers\Booking\Airport\BookingController::class . '@getStatusHistory', 'read', 'status.history')
+    ->get('/{booking}/actions/available', Controllers\Booking\Hotel\BookingController::class . '@getAvailableActions', 'read', 'actions.available.get')
     ->put('/{booking}/external/number', Controllers\Booking\Hotel\BookingController::class . '@updateExternalNumber', 'update', 'external.number.update')
     ->put('/{booking}/price', Controllers\Booking\Hotel\BookingController::class . '@updatePrice', 'update', 'price.update')
 

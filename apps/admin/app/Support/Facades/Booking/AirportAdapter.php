@@ -10,9 +10,13 @@ use Illuminate\Support\Facades\Facade;
 /**
  * @method static array getBookings(array $filters = [])
  * @method static mixed getBooking(int $id)
+ * @method static array getAvailableActions(int $id)
  * @method static int createBooking(int $cityId, int $clientId, int|null $legalId, int $currencyId, int $airportId, int $serviceId, CarbonInterface $date, int $creatorId, ?int $orderId, ?string $note = null)
  * @method static void bindGuest(int $bookingId, int $guestId)
  * @method static void unbindGuest(int $bookingId, int $guestId)
+ * @method static array getStatuses()
+ * @method static mixed updateStatus(int $id, int $status, string|null $notConfirmedReason = null, float|null $cancelFeeAmount = null)
+ * @method static array getStatusHistory(int $id)
  **/
 class AirportAdapter extends Facade
 {

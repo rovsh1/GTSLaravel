@@ -11,6 +11,10 @@ use Module\Booking\Airport\Application\UseCase\Admin\GetBooking;
 use Module\Booking\Airport\Application\UseCase\Admin\GetBookingsByFilters;
 use Module\Booking\Airport\Application\UseCase\Admin\Guest\Bind;
 use Module\Booking\Airport\Application\UseCase\Admin\Guest\Unbind;
+use Module\Booking\Airport\Application\UseCase\Admin\GetAvailableActions;
+use Module\Booking\Airport\Application\UseCase\Admin\GetStatuses;
+use Module\Booking\Airport\Application\UseCase\Admin\GetStatusHistory;
+use Module\Booking\Airport\Application\UseCase\Admin\UpdateBookingStatus;
 
 class AirportAdapter
 {
@@ -60,5 +64,29 @@ class AirportAdapter
     public function unbindGuest(int $bookingId, int $guestId): void
     {
         app(Unbind::class)->execute($bookingId, $guestId);
+    }
+
+    public function getAvailableActions(int $id): mixed
+    {
+        return app(GetAvailableActions::class)->execute($id);
+    }
+
+    public function getStatuses(): array
+    {
+        return app(GetStatuses::class)->execute();
+    }
+
+    public function updateStatus(
+        int $id,
+        int $status,
+        ?string $notConfirmedReason = null,
+        ?float $cancelFeeAmount = null
+    ): mixed {
+        return app(UpdateBookingStatus::class)->execute($id, $status, $notConfirmedReason, $cancelFeeAmount);
+    }
+
+    public function getStatusHistory(int $id): array
+    {
+        return app(GetStatusHistory::class)->execute($id);
     }
 }

@@ -13,6 +13,7 @@ import {
   updateNote as executeUpdateNote,
   useGetBookingAPI,
 } from '~api/booking/airport'
+import { useBookingAvailableActionsAPI, useBookingStatusesAPI } from '~api/booking/airport/status'
 
 import { requestInitialData } from '~lib/initial-data'
 
@@ -25,8 +26,8 @@ const { bookingID, manager } = requestInitialData('view-initial-data-airport-boo
 
 export const useBookingStore = defineStore('booking', () => {
   const { data: booking, execute: fetchBooking } = useGetBookingAPI({ bookingID })
-  // const { data: availableActions, execute: fetchAvailableActions, isFetching: isAvailableActionsFetching } = useBookingAvailableActionsAPI({ bookingID })
-  // const { data: statuses, execute: fetchStatuses } = useBookingStatusesAPI()
+  const { data: availableActions, execute: fetchAvailableActions, isFetching: isAvailableActionsFetching } = useBookingAvailableActionsAPI({ bookingID })
+  const { data: statuses, execute: fetchStatuses } = useBookingStatusesAPI()
 
   // const isEmptyGuests = computed<boolean>(() => Boolean(booking.value?.roomBookings.find((room: HotelRoomBooking) => room.guests.length === 0)))
   // const isEmptyRooms = computed<boolean>(() => booking.value?.roomBookings.length === 0)
@@ -60,7 +61,7 @@ export const useBookingStore = defineStore('booking', () => {
     }
     await Promise.all([
       fetchBooking(),
-      // fetchAvailableActions(),
+      fetchAvailableActions(),
     ])
     isStatusUpdateFetching.value = false
   }
@@ -80,9 +81,9 @@ export const useBookingStore = defineStore('booking', () => {
   }
 
   onMounted(() => {
-    // fetchMarkupSettings()
-    // fetchStatuses()
+    fetchStatuses()
     fetchBooking()
+    fetchAvailableActions()
   })
 
   return {
@@ -90,13 +91,12 @@ export const useBookingStore = defineStore('booking', () => {
     bookingManagerId,
     fetchBooking,
     // isEmptyGuests,
-    // isEmptyRooms,
-    // availableActions,
-    // fetchAvailableActions,
-    // isAvailableActionsFetching,
+    availableActions,
+    fetchAvailableActions,
+    isAvailableActionsFetching,
     isStatusUpdateFetching,
-    // statuses,
-    // fetchStatuses,
+    statuses,
+    fetchStatuses,
     changeStatus,
     copy,
     updateNote,

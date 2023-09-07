@@ -18,6 +18,7 @@ use App\Admin\Models\Hotel\Room;
 use App\Admin\Models\Reference\Currency;
 use App\Admin\Repositories\BookingAdministratorRepository;
 use App\Admin\Support\Facades\Acl;
+use App\Admin\Support\Facades\Booking\AirportAdapter;
 use App\Admin\Support\Facades\Booking\BookingAdapter;
 use App\Admin\Support\Facades\Booking\HotelAdapter;
 use App\Admin\Support\Facades\Booking\HotelPriceAdapter;
@@ -271,36 +272,10 @@ class BookingController extends Controller
         );
     }
 
-    public function getStatuses(): JsonResponse
-    {
-        return response()->json(
-            StatusAdapter::getStatuses()
-        );
-    }
-
     public function getAvailableActions(int $id): JsonResponse
     {
         return response()->json(
-            BookingAdapter::getAvailableActions($id)
-        );
-    }
-
-    public function updateStatus(UpdateStatusRequest $request, int $id): JsonResponse
-    {
-        return response()->json(
-            StatusAdapter::updateStatus(
-                $id,
-                $request->getStatus(),
-                $request->getNotConfirmedReason(),
-                $request->getCancelFeeAmount()
-            )
-        );
-    }
-
-    public function getStatusHistory(int $id): JsonResponse
-    {
-        return response()->json(
-            StatusAdapter::getStatusHistory($id)
+            HotelAdapter::getAvailableActions($id)
         );
     }
 
@@ -360,6 +335,32 @@ class BookingController extends Controller
         return new AjaxSuccessResponse();
     }
 
+    public function getStatuses(): JsonResponse
+    {
+        return response()->json(
+            HotelAdapter::getStatuses()
+        );
+    }
+
+    public function updateStatus(UpdateStatusRequest $request, int $id): JsonResponse
+    {
+        return response()->json(
+            HotelAdapter::updateStatus(
+                $id,
+                $request->getStatus(),
+                $request->getNotConfirmedReason(),
+                $request->getCancelFeeAmount()
+            )
+        );
+    }
+
+    public function getStatusHistory(int $id): JsonResponse
+    {
+        return response()->json(
+            HotelAdapter::getStatusHistory($id)
+        );
+    }
+
     protected function gridFactory(): GridContract
     {
         return Grid::enableQuicksearch()
@@ -378,7 +379,7 @@ class BookingController extends Controller
                     return "$idLink / {$orderLink}";
                 }
             ])
-            ->bookingStatus('status', ['text' => 'Статус', 'statuses' => StatusAdapter::getStatuses(), 'order' => true])
+            ->bookingStatus('status', ['text' => 'Статус', 'statuses' => HotelAdapter::getStatuses(), 'order' => true])
             ->text('client_name', ['text' => 'Клиент'])
             ->text('manager_name', ['text' => 'Менеджер'])
             ->text(
@@ -447,7 +448,7 @@ class BookingController extends Controller
             ->hidden('hotel_room_id', ['label' => 'Тип номера'])
             ->client('client_id', ['label' => 'Клиент', 'emptyItem' => ''])
             ->select('manager_id', ['label' => 'Менеджер', 'items' => Administrator::all(), 'emptyItem' => ''])
-            ->select('status', ['label' => 'Статус', 'items' => StatusAdapter::getStatuses(), 'emptyItem' => ''])
+            ->select('status', ['label' => 'Статус', 'items' => HotelAdapter::getStatuses(), 'emptyItem' => ''])
             ->enum('source', ['label' => 'Источник', 'enum' => SourceEnum::class, 'emptyItem' => ''])
             ->numRange('guests_count', ['label' => 'Кол-во гостей'])
             ->dateRange('start_period', ['label' => 'Дата заезда'])

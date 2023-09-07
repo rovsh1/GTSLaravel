@@ -13,15 +13,19 @@ use Module\Booking\HotelBooking\Application\UseCase\Admin\BulkDeleteBookings;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\CopyBooking;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\CreateBooking;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\DeleteBooking;
+use Module\Booking\HotelBooking\Application\UseCase\Admin\GetAvailableActions;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\GetBooking;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\GetBookingQuery;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\GetBookingsByFilters;
+use Module\Booking\HotelBooking\Application\UseCase\Admin\GetStatuses;
+use Module\Booking\HotelBooking\Application\UseCase\Admin\GetStatusHistory;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\Room\Add;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\Room\Delete;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\Room\Guest\Bind;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\Room\Guest\Unbind;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\Room\Update;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\UpdateBooking;
+use Module\Booking\HotelBooking\Application\UseCase\Admin\UpdateBookingStatus;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\UpdateExternalNumber;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\UpdateNote;
 
@@ -101,6 +105,11 @@ class HotelAdapter
                 note: $note
             )
         );
+    }
+
+    public function getAvailableActions(int $id): mixed
+    {
+        return app(GetAvailableActions::class)->execute($id);
     }
 
     public function addRoom(
@@ -192,5 +201,24 @@ class HotelAdapter
     public function updateNote(int $bookingId, string|null $note): void
     {
         app(UpdateNote::class)->execute($bookingId, $note);
+    }
+
+    public function getStatuses(): array
+    {
+        return app(GetStatuses::class)->execute();
+    }
+
+    public function updateStatus(
+        int $id,
+        int $status,
+        ?string $notConfirmedReason = null,
+        ?float $cancelFeeAmount = null
+    ): mixed {
+        return app(UpdateBookingStatus::class)->execute($id, $status, $notConfirmedReason, $cancelFeeAmount);
+    }
+
+    public function getStatusHistory(int $id): array
+    {
+        return app(GetStatusHistory::class)->execute($id);
     }
 }

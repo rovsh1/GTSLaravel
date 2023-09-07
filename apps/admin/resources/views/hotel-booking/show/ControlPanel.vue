@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import { computed, onMounted } from 'vue'
+import { computed } from 'vue'
 
 import { useToggle } from '@vueuse/core'
 import { z } from 'zod'
@@ -165,10 +165,6 @@ const handleSaveHoPenalty = async (value: number | undefined) => {
   })
   fetchBooking()
 }
-
-onMounted(() => {
-  fetchAvailableActions()
-})
 
 </script>
 
