@@ -41,7 +41,7 @@ class SyncTravelineReservations implements ShouldQueue
             //Processing - созданная чрез админку. Paid - создана через сайт и оплачена картой. Confirmed - создана через сайт и оплата по договору.
             ->whereIn('reservation.status', [ReservationStatusEnum::Processing, ReservationStatusEnum::Paid, ReservationStatusEnum::Confirmed])
             ->whereNotExists(function ($query) {
-                $query->select(\DB::raw(1))
+                $query->selectRaw(1)
                     ->from("{$this->getTravelineReservationsTable()} as t")
                     ->whereColumn('t.reservation_id', 'reservation.id');
             });
@@ -53,7 +53,7 @@ class SyncTravelineReservations implements ShouldQueue
     {
         $q = $this->getReservationQuery()
             ->whereExists(function ($query) {
-                $query->select(\DB::raw(1))
+                $query->selectRaw(1)
                     ->from("{$this->getTravelineReservationsTable()} as t")
                     ->whereColumn('t.reservation_id', 'reservation.id');
             })
@@ -84,9 +84,10 @@ class SyncTravelineReservations implements ShouldQueue
         return Reservation::query()
             ->whereExists(function ($query) {
                 $travelineHotelsTable = with(new TravelineHotel)->getTable();
-                $query->select(\DB::raw(1))
+                $query->selectRaw(1)
                     ->from("{$travelineHotelsTable} as t")
-                    ->whereColumn('t.hotel_id', 'reservation.hotel_id');
+                    ->whereColumn('t.hotel_id', 'reservation.hotel_id')
+                    ->whereColumn('reservation.created', '>=', 't.created_at');
             })
             ->withClient()
             ->whereQuoteType()
@@ -328,11 +329,7 @@ class SyncTravelineReservations implements ShouldQueue
          *  - если поздний заезд - включаем последний день периода
          */
         $preparedPeriod = $this->getPeriodByCheckInCondition($period, $hotelDefaultCheckInStart, $roomCheckInCondition);
-        $preparedPeriod = $this->getPeriodByCheckOutCondition(
-            $preparedPeriod,
-            $hotelDefaultCheckOutEnd,
-            $roomCheckOutCondition
-        );
+        $preparedPeriod = $this->getPeriodByCheckOutCondition($preparedPeriod, $hotelDefaultCheckOutEnd, $roomCheckOutCondition);
 
         $countDays = $preparedPeriod->count();
         $dailyPrice = $allDaysPrice / $countDays;
