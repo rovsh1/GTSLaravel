@@ -19,8 +19,8 @@ const booking = computed(() => bookingStore.booking)
 const statuses = computed<BookingStatusResponse[] | null>(() => bookingStore.statuses)
 const availableActions = computed<BookingAvailableActionsResponse | null>(() => bookingStore.availableActions)
 
-const handleStatusChange = () => {
-  console.log('change')
+const handleStatusChange = async (value: number) => {
+  await bookingStore.changeStatus(value)
 }
 
 </script>
