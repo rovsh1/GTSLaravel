@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\HotelBooking\Application\Dto\Details\CancelConditions;
 
-use Module\Booking\HotelBooking\Domain\ValueObject\Details\CancelCondition\DailyMarkupOption;
+use Module\Booking\Common\Domain\ValueObject\CancelCondition\DailyMarkupOption;
 use Module\Shared\Application\Dto\AbstractDomainBasedDto;
 use Module\Shared\Domain\Entity\EntityInterface;
 use Module\Shared\Domain\ValueObject\ValueObjectInterface;

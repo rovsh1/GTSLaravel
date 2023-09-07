@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Airport\Domain\Entity;
 
 use Carbon\CarbonImmutable;
+use Module\Booking\Airport\Domain\ValueObject\Details\AdditionalInfo;
 use Module\Booking\Airport\Domain\ValueObject\Details\AirportInfo;
 use Module\Booking\Airport\Domain\ValueObject\Details\ServiceInfo;
 use Module\Booking\Common\Domain\Entity\AbstractBooking;
@@ -12,9 +13,10 @@ use Module\Booking\Common\Domain\ValueObject\BookingId;
 use Module\Booking\Common\Domain\ValueObject\BookingPrice;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
+use Module\Booking\Common\Domain\ValueObject\CancelConditions;
+use Module\Booking\Common\Domain\ValueObject\CreatorId;
 use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\Order\Domain\ValueObject\GuestIdsCollection;
-use Module\Shared\Domain\ValueObject\Id;
 
 class Booking extends AbstractBooking
 {
@@ -23,12 +25,13 @@ class Booking extends AbstractBooking
         OrderId $orderId,
         BookingStatusEnum $status,
         CarbonImmutable $createdAt,
-        Id $creatorId,
+        CreatorId $creatorId,
         BookingPrice $price,
         private readonly ServiceInfo $serviceInfo,
         private readonly AirportInfo $airportInfo,
         private readonly CarbonImmutable $date,
-        //@todo номер рейса + доп. инфо
+        private CancelConditions $cancelConditions,
+        private AdditionalInfo $additionalInfo,
         private readonly GuestIdsCollection $guestIds,
         private ?string $note
     ) {
@@ -55,6 +58,11 @@ class Booking extends AbstractBooking
         return $this->note;
     }
 
+    public function additionalInfo(): AdditionalInfo
+    {
+        return $this->additionalInfo;
+    }
+
     public function setNote(string|null $note): void
     {
         $this->note = $note;
@@ -68,5 +76,15 @@ class Booking extends AbstractBooking
     public function guestIds(): GuestIdsCollection
     {
         return $this->guestIds;
+    }
+
+    public function cancelConditions(): CancelConditions
+    {
+        return $this->cancelConditions;
+    }
+
+    public function setCancelConditions(CancelConditions $cancelConditions): void
+    {
+        $this->cancelConditions = $cancelConditions;
     }
 }

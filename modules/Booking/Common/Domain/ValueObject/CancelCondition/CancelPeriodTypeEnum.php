@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\HotelBooking\Domain\ValueObject\Details\CancelCondition;
+namespace Module\Booking\Common\Domain\ValueObject\CancelCondition;
 
 /**
  * @see \Module\Hotel\Domain\ValueObject\MarkupSettings\CancelPeriodTypeEnum

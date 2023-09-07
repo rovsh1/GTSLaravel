@@ -25,10 +25,6 @@ const countries = computed(() => props.countries)
 const getCountryName = (id: number): string | undefined =>
   countries.value?.find((country: CountryResponse) => country.id === id)?.name
 
-const notExistsOrderGuests = computed(
-  () => props.orderGuests.filter((guest) => !props.guestIds || !props.guestIds.includes(guest.id)),
-)
-
 const guests = computed(
   () => props.orderGuests.filter((guest) => props.guestIds && props.guestIds.includes(guest.id)),
 )
@@ -61,21 +57,6 @@ const guests = computed(
             @edit="$emit('edit', guest)"
             @delete="$emit('delete', guest)"
           />
-        </td>
-      </tr>
-
-      <tr
-        v-for="guest in notExistsOrderGuests"
-        :key="guest.id"
-        class="table-danger"
-      >
-        <td>-</td>
-        <td>{{ guest.fullName }}</td>
-        <td>{{ getCountryName(guest.countryId) }}</td>
-        <td>{{ getGenderName(guest.gender) }}</td>
-        <td>{{ guest.isAdult ? 'Взрослый' : 'Ребенок' }}</td>
-        <td class="column-edit">
-          -
         </td>
       </tr>
     </tbody>

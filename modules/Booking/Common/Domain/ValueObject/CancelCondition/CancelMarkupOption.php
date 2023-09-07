@@ -2,21 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\HotelBooking\Domain\ValueObject\Details\CancelCondition;
+namespace Module\Booking\Common\Domain\ValueObject\CancelCondition;
 
 use Module\Shared\Domain\ValueObject\Percent;
 use Module\Shared\Domain\ValueObject\SerializableDataInterface;
 use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 
 /**
- * @see \Module\Hotel\Domain\ValueObject\MarkupSettings\DailyMarkupOption
+ * @see \Module\Hotel\Domain\ValueObject\MarkupSettings\CancelMarkupOption
  */
-final class DailyMarkupOption implements ValueObjectInterface, SerializableDataInterface
+final class CancelMarkupOption implements ValueObjectInterface, SerializableDataInterface
 {
     public function __construct(
         private readonly Percent $percent,
-        private readonly CancelPeriodTypeEnum $cancelPeriodType,
-        private readonly int $daysCount
+        private readonly CancelPeriodTypeEnum $cancelPeriodType
     ) {}
 
     public function percent(): Percent
@@ -29,17 +28,11 @@ final class DailyMarkupOption implements ValueObjectInterface, SerializableDataI
         return $this->cancelPeriodType;
     }
 
-    public function daysCount(): int
-    {
-        return $this->daysCount;
-    }
-
     public function toData(): array
     {
         return [
             'percent' => $this->percent->value(),
-            'cancelPeriodType' => $this->cancelPeriodType->value,
-            'daysCount' => $this->daysCount,
+            'cancelPeriodType' => $this->cancelPeriodType->value
         ];
     }
 
@@ -47,8 +40,7 @@ final class DailyMarkupOption implements ValueObjectInterface, SerializableDataI
     {
         return new static(
             new Percent($data['percent']),
-            CancelPeriodTypeEnum::from($data['cancelPeriodType']),
-            $data['daysCount'],
+            CancelPeriodTypeEnum::from($data['cancelPeriodType'])
         );
     }
 }

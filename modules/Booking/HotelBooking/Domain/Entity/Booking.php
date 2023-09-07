@@ -10,6 +10,8 @@ use Module\Booking\Common\Domain\ValueObject\BookingId;
 use Module\Booking\Common\Domain\ValueObject\BookingPrice;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
+use Module\Booking\Common\Domain\ValueObject\CancelConditions;
+use Module\Booking\Common\Domain\ValueObject\CreatorId;
 use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\HotelBooking\Domain\Event\BookingPeriodChanged;
 use Module\Booking\HotelBooking\Domain\Event\RoomAdded;
@@ -17,10 +19,8 @@ use Module\Booking\HotelBooking\Domain\Event\RoomDeleted;
 use Module\Booking\HotelBooking\Domain\Event\RoomEdited;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\AdditionalInfo;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\BookingPeriod;
-use Module\Booking\HotelBooking\Domain\ValueObject\Details\CancelConditions;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\HotelInfo;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBookingCollection;
-use Module\Shared\Domain\ValueObject\Id;
 use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 
 final class Booking extends AbstractBooking
@@ -30,7 +30,7 @@ final class Booking extends AbstractBooking
         OrderId $orderId,
         BookingStatusEnum $status,
         CarbonImmutable $createdAt,
-        Id $creatorId,
+        CreatorId $creatorId,
         BookingPrice $price,
         private ?string $note,
         private HotelInfo $hotelInfo,

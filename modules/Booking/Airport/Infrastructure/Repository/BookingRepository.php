@@ -9,6 +9,7 @@ use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Module\Booking\Airport\Domain\Entity\Booking as Entity;
 use Module\Booking\Airport\Domain\Repository\BookingRepositoryInterface;
+use Module\Booking\Airport\Domain\ValueObject\Details\AdditionalInfo;
 use Module\Booking\Airport\Domain\ValueObject\Details\AirportInfo;
 use Module\Booking\Airport\Domain\ValueObject\Details\ServiceInfo;
 use Module\Booking\Airport\Infrastructure\Models\Airport;
@@ -17,10 +18,11 @@ use Module\Booking\Airport\Infrastructure\Models\Booking as Model;
 use Module\Booking\Airport\Infrastructure\Models\BookingDetails;
 use Module\Booking\Common\Domain\ValueObject\BookingId;
 use Module\Booking\Common\Domain\ValueObject\BookingPrice;
+use Module\Booking\Common\Domain\ValueObject\CancelConditions;
+use Module\Booking\Common\Domain\ValueObject\CreatorId;
 use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\Common\Infrastructure\Repository\AbstractBookingRepository as BaseRepository;
 use Module\Booking\Order\Domain\ValueObject\GuestIdsCollection;
-use Module\Shared\Domain\ValueObject\Id;
 
 class BookingRepository extends BaseRepository implements BookingRepositoryInterface
 {
@@ -47,7 +49,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
 
     public function create(
         OrderId $orderId,
-        int $creatorId,
+        CreatorId $creatorId,
         int $serviceId,
         int $airportId,
         CarbonInterface $date,
@@ -65,13 +67,15 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
                     orderId: new OrderId($bookingModel->order_id),
                     status: $bookingModel->status,
                     createdAt: $bookingModel->created_at->toImmutable(),
-                    creatorId: new Id($bookingModel->creator_id),
+                    creatorId: new CreatorId($bookingModel->creator_id),
                     price: BookingPrice::buildEmpty(),
                     note: $note,
                     airportInfo: new AirportInfo(
                         $airport->id,
                         $airport->name
                     ),
+                    cancelConditions: CancelConditions::fromData($detailsData['cancelConditions']),
+                    additionalInfo: new AdditionalInfo($detailsData['flightNumber']),
                     guestIds: new GuestIdsCollection(),
                     date: $date->toImmutable(),
                     serviceInfo: new ServiceInfo(
@@ -119,7 +123,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
             orderId: new OrderId($booking->order_id),
             status: $booking->status,
             createdAt: $booking->created_at->toImmutable(),
-            creatorId: new Id($booking->creator_id),
+            creatorId: new CreatorId($booking->creator_id),
             note: $detailsData['note'] ?? null,
             price: BookingPrice::fromData($detailsData['price']),
             guestIds: GuestIdsCollection::fromData($booking->guest_ids),

@@ -21,8 +21,8 @@ import { useCountrySearchAPI } from '~api/country'
 import { showConfirmDialog } from '~lib/confirm-dialog'
 import { requestInitialData } from '~lib/initial-data'
 
-import BootstrapCard from '~components/Bootstrap/BootstrapCard/BootstrapCard.vue'
-import BootstrapCardTitle from '~components/Bootstrap/BootstrapCard/components/BootstrapCardTitle.vue'
+import Card from '~components/Bootstrap/BootstrapCard/BootstrapCard.vue'
+import CardTitle from '~components/Bootstrap/BootstrapCard/components/BootstrapCardTitle.vue'
 import IconButton from '~components/IconButton.vue'
 
 const { bookingID } = requestInitialData('view-initial-data-airport-booking', z.object({
@@ -110,8 +110,8 @@ const handleDeleteGuest = async (guestId: number) => {
     @submit="submitGuestModal"
   />
 
-  <BootstrapCard>
-    <BootstrapCardTitle class="mr-4" title="Информация о брони" />
+  <Card>
+    <CardTitle class="mr-4" title="Информация о брони" />
 
     <div class="d-flex gap-4">
       <InfoBlock>
@@ -143,5 +143,5 @@ const handleDeleteGuest = async (guestId: number) => {
         </template>
       </InfoBlock>
     </div>
-  </BootstrapCard>
+  </Card>
 </template>

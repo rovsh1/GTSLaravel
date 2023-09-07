@@ -5,11 +5,11 @@ namespace Module\Booking\Common\Domain\ValueObject;
 class Creator
 {
     public function __construct(
-        private readonly int $id,
+        private readonly CreatorId $id,
         private readonly CreatorTypeEnum $type,
     ) {}
 
-    public function id(): int
+    public function id(): CreatorId
     {
         return $this->id;
     }

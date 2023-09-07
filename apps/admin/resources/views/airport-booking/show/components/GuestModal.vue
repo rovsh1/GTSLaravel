@@ -133,6 +133,7 @@ const closeModal = () => {
         <BootstrapSelectBase
           id="age_type"
           :options="ageTypeOptions"
+          :show-empty-item="false"
           label="Тип"
           :value="ageType"
           @input="value => handleChangeAgeType(Number(value))"

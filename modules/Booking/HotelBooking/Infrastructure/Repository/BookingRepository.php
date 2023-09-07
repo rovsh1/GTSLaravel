@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Module\Booking\Common\Domain\ValueObject\BookingId;
 use Module\Booking\Common\Domain\ValueObject\BookingPrice;
+use Module\Booking\Common\Domain\ValueObject\CancelConditions;
+use Module\Booking\Common\Domain\ValueObject\CreatorId;
 use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\Common\Infrastructure\Repository\AbstractBookingRepository as BaseRepository;
 use Module\Booking\HotelBooking\Domain\Entity\Booking;
@@ -16,7 +18,6 @@ use Module\Booking\HotelBooking\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\HotelBooking\Domain\Repository\RoomBookingRepositoryInterface;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\AdditionalInfo;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\BookingPeriod;
-use Module\Booking\HotelBooking\Domain\ValueObject\Details\CancelConditions;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\HotelInfo;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBookingCollection;
 use Module\Booking\HotelBooking\Infrastructure\Models\Booking as Model;
@@ -70,7 +71,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
 
     public function create(
         OrderId $orderId,
-        Id $creatorId,
+        CreatorId $creatorId,
         BookingPeriod $period,
         ?string $note = null,
         HotelInfo $hotelInfo,
@@ -87,7 +88,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
                 $cancelConditions,
                 $quotaProcessingMethod
             ) {
-                $bookingModel = $this->createBase($orderId, $creatorId->value());
+                $bookingModel = $this->createBase($orderId, $creatorId);
                 $booking = new Booking(
                     id: new BookingId($bookingModel->id),
                     orderId: $orderId,

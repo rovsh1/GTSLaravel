@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\HotelBooking\Application\UseCase\Admin;
 
 use Module\Booking\Common\Application\Support\UseCase\Admin\AbstractCreateBooking;
+use Module\Booking\Common\Domain\ValueObject\CreatorId;
 use Module\Booking\HotelBooking\Application\Exception\NotFoundHotelCancelPeriod as ApplicationException;
 use Module\Booking\HotelBooking\Application\Factory\CancelConditionsFactory;
 use Module\Booking\HotelBooking\Application\Factory\HotelInfoFactory;
@@ -41,7 +42,7 @@ class CreateBooking extends AbstractCreateBooking
         }
         $booking = $this->repository->create(
             orderId: $orderId,
-            creatorId: new Id($request->creatorId),
+            creatorId: new CreatorId($request->creatorId),
             hotelInfo: HotelInfoFactory::fromDto($hotelDto),
             period: BookingPeriod::fromCarbon($request->period),
             note: $request->note,

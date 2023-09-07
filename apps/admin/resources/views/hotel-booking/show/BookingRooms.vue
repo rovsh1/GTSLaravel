@@ -36,8 +36,8 @@ import { formatDate } from '~lib/date'
 import { requestInitialData } from '~lib/initial-data'
 
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
-import BootstrapCard from '~components/Bootstrap/BootstrapCard/BootstrapCard.vue'
-import BootstrapCardTitle from '~components/Bootstrap/BootstrapCard/components/BootstrapCardTitle.vue'
+import Card from '~components/Bootstrap/BootstrapCard/BootstrapCard.vue'
+import CardTitle from '~components/Bootstrap/BootstrapCard/components/BootstrapCardTitle.vue'
 import IconButton from '~components/IconButton.vue'
 
 const [isShowRoomModal, toggleRoomModal] = useToggle()
@@ -212,12 +212,12 @@ fetchCountries()
   />
 
   <div class="mt-3" />
-  <BootstrapCard
+  <Card
     v-for="room in bookingDetails?.roomBookings"
     :key="room.id"
   >
     <div class="d-flex">
-      <BootstrapCardTitle class="mr-4" :title="room.roomInfo.name" />
+      <CardTitle class="mr-4" :title="room.roomInfo.name" />
       <EditTableRowButton
         v-if="isEditableStatus"
         @edit="handleEditRoom(room.id, room)"
@@ -333,7 +333,7 @@ fetchCountries()
         />
       </InfoBlock>
     </div>
-  </BootstrapCard>
+  </Card>
 
   <div>
     <BootstrapButton

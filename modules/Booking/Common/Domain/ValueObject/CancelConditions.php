@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\HotelBooking\Domain\ValueObject\Details;
+namespace Module\Booking\Common\Domain\ValueObject;
 
 use Carbon\CarbonImmutable;
-use Module\Booking\HotelBooking\Domain\ValueObject\Details\CancelCondition\CancelMarkupOption;
-use Module\Booking\HotelBooking\Domain\ValueObject\Details\CancelCondition\DailyMarkupCollection;
+use Module\Booking\Common\Domain\ValueObject\CancelCondition\CancelMarkupOption;
+use Module\Booking\Common\Domain\ValueObject\CancelCondition\DailyMarkupCollection;
 use Module\Shared\Domain\ValueObject\SerializableDataInterface;
 use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 

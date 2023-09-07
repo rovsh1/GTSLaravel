@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Module\Booking\HotelBooking\Application\Dto\Details;
 
 use Carbon\CarbonInterface;
+use Module\Booking\Common\Domain\ValueObject\CancelConditions;
 use Module\Booking\HotelBooking\Application\Dto\Details\CancelConditions\CancelMarkupOptionDto;
 use Module\Booking\HotelBooking\Application\Dto\Details\CancelConditions\DailyMarkupDto;
-use Module\Booking\HotelBooking\Domain\ValueObject\Details\CancelConditions;
 use Module\Shared\Application\Dto\AbstractDomainBasedDto;
 use Module\Shared\Domain\Entity\EntityInterface;
 use Module\Shared\Domain\ValueObject\ValueObjectInterface;
