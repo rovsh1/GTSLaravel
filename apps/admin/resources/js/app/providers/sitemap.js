@@ -29,7 +29,7 @@ export default function bootSitemap() {
     isFirstLoadPage = false
   }
 
-  $('#sitemap-categories, #btn-sitemap').mouseenter((e) => {
+  $('#sitemap-categories').mouseenter((e) => {
     e.stopPropagation()
     if (menuOpenFlag) return
     if (!document.body.classList.contains('sitemap-expanded')) {
@@ -75,7 +75,7 @@ export default function bootSitemap() {
     $(this).find('i')
   })
 
-  $('.btn-sitemap-toggle-switch').click(() => {
+  $('.btn-sitemap-toggle-switch, #btn-sitemap').click(() => {
     if (menuOpenFlag) {
       $.cookie('menu_open_flag', 'false', { sameSite: 'None', secure: false })
     } else {
