@@ -15,12 +15,13 @@ use App\Admin\Support\Facades\Sidebar;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
+use App\Admin\Support\View\Grid\SearchForm;
 use App\Admin\Support\View\Layout as LayoutContract;
 use App\Admin\View\Menus\ClientMenu;
 use Gsdk\Format\View\ParamsTable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
-use Module\Shared\Enum\Client\PriceTypeEnum;
+use Module\Shared\Enum\Client\LegalTypeEnum;
 use Module\Shared\Enum\Client\StatusEnum;
 use Module\Shared\Enum\Client\TypeEnum;
 
@@ -134,6 +135,7 @@ class ClientController extends AbstractPrototypeController
     protected function gridFactory(): GridContract
     {
         return Grid::enableQuicksearch()
+            ->setSearchForm($this->searchForm())
             ->paginator(self::GRID_LIMIT)
             ->text('name', ['text' => 'ФИО', 'route' => $this->prototype->routeName('show')])
             ->enum('type', ['text' => 'Тип', 'enum' => TypeEnum::class])
@@ -154,5 +156,15 @@ class ClientController extends AbstractPrototypeController
                 ['label' => 'Тип цены', 'multiple' => true, 'enum' => PriceTypeEnum::class, 'required' => true]
             )
             ->manager('administrator_id', ['label' => 'Менеджер']);
+    }
+
+    private function searchForm()
+    {
+        return (new SearchForm())
+            ->country('country_id', ['label' => 'Страна'])
+            ->city('city_id', ['label' => 'Город', 'emptyItem' => ''])
+            ->enum('type', ['label' => 'Тип', 'enum' => TypeEnum::class, 'emptyItem' => ''])
+            ->enum('legal_entity_type', ['label' => 'Тип юр. лица', 'enum'=>LegalTypeEnum::class, 'emptyItem' => '', 'multiple' => true])
+            ->enum('status', ['label' => 'Источник', 'enum' => StatusEnum::class, 'emptyItem' => '']);
     }
 }

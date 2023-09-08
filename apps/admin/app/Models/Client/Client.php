@@ -57,6 +57,17 @@ class Client extends Model
         $builder->where('clients.id', $id);
     }
 
+    public function scopeWhereLegalEntityType(Builder $builder, array $types): void
+    {
+        $builder->whereExists(function (\Illuminate\Database\Query\Builder $query) use ($types) {
+            $legalsTable = with(new Legal)->getTable();
+            $query->selectRaw(1)
+                ->from($legalsTable)
+                ->whereColumn("{$legalsTable}.client_id", 'clients.id')
+                ->whereIn('type', $types);
+        });
+    }
+
     public function legals(): HasMany
     {
         return $this->hasMany(Legal::class);
