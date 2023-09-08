@@ -78,9 +78,19 @@ const filledPricesDays = async () => {
     && price.room_id === seasonData.value.roomID
     && price.season_id === seasonData.value.seasonID)
     if (pricesForCurrentRoom.length) {
-      daysInPeriodFilled.forEach((dayInPeriod, index) => {
+      const priceMap = new Map()
+      pricesForCurrentRoom.forEach((priceData) => {
+        const date = priceData.date ? formatDateTimeToAPIDate(parseAPIDate(priceData.date)) : null
+        if (date) {
+          priceMap.set(date, priceData.price)
+        }
+      })
+      daysInPeriodFilled.forEach((dayInPeriod) => {
+        const { date } = dayInPeriod
         const dayInPeriodSource = dayInPeriod
-        dayInPeriodSource.price = pricesForCurrentRoom[index] ? pricesForCurrentRoom[index].price : null
+        if (date && priceMap.has(date)) {
+          dayInPeriodSource.price = priceMap.get(date)
+        }
       })
     }
   }
@@ -154,7 +164,7 @@ onMounted(async () => {
         </thead>
         <tbody>
           <tr>
-            <td v-for="item in daysInPeriod" :key="item.id" class="priced align-middle text-center">
+            <td v-for="item in daysInPeriod" :key="item.id" class="priced align-middle text-center isActive">
               <EditableCell :value="item.price" :enable-context-menu="false" @change="value => changeData(item, value)" />
             </td>
           </tr>

@@ -160,64 +160,66 @@ const handlerUpdateSeasonDaysData = (status :boolean) => {
 <template>
   <div class="hotel-prices-table-wrapper">
     <OverlayLoading v-if="isFetching || waitComponentProcess" />
-    <table :id="tableElementID" ref="containerElement" class="hotel-prices table table-bordered table-sm table-light">
-      <caption>Стоимость</caption>
-      <thead>
-        <tr ref="baseRowWidth">
-          <th ref="baseColumnsWidth" class="text-center align-middle" :colspan="2">Сезон</th>
-          <th
-            v-for="season in seasonsData"
-            :key="season.id"
-            class="text-center align-middle"
-            :colspan="roomData.guests_count"
-          >
-            <div class="name">{{ season.name }}</div>
-            <div class="period">
-              {{ formatSeasonPeriod({ date_start: season.date_start, date_end: season.date_end }) }}
-            </div>
-          </th>
-        </tr>
-        <tr>
-          <th class="text-center align-middle" colspan="2">Количество гостей</th>
-          <template v-for="season in seasonsData" :key="season.id">
-            <th v-for="count in roomData.guests_count" :key="count" class="text-center align-middle">{{ count }}</th>
-          </template>
-        </tr>
-      </thead>
-      <tbody>
-        <template v-for="rate in roomData.price_rates" :key="rate.id">
-          <tr>
-            <th ref="susctractElement1" rowspan="2" class="rate-name text-left align-middle">
-              {{ rate.name }}
+    <div class="table-wrapper-overflow">
+      <table :id="tableElementID" ref="containerElement" class="hotel-prices table table-bordered table-sm table-light">
+        <caption>Стоимость</caption>
+        <thead>
+          <tr ref="baseRowWidth">
+            <th ref="baseColumnsWidth" class="text-center align-middle" :colspan="2">Сезон</th>
+            <th
+              v-for="season in seasonsData"
+              :key="season.id"
+              class="text-center align-middle"
+              :colspan="roomData.guests_count"
+            >
+              <div class="name">{{ season.name }}</div>
+              <div class="period">
+                {{ formatSeasonPeriod({ date_start: season.date_start, date_end: season.date_end }) }}
+              </div>
             </th>
-            <th ref="susctractElement2" class="type-name text-left align-middle">Резидент</th>
-            <template v-for="item in roomSeasonsPricesData" :key="item.id">
-              <td v-if="item.rateID == rate.id && item.isResident" class="priced align-middle">
-                <EditableCell
-                  :value="item.price"
-                  :enable-context-menu="true"
-                  @activated-context-menu="editableSeasonDays(item)"
-                  @change="value => changeSeasonPrice(item, value)"
-                />
-              </td>
-            </template>
           </tr>
           <tr>
-            <th class="type-name text-left align-middle">Не резидент</th>
-            <template v-for="item in roomSeasonsPricesData" :key="item.id">
-              <td v-if="item.rateID == rate.id && !item.isResident" class="priced align-middle">
-                <EditableCell
-                  :value="item.price"
-                  :enable-context-menu="true"
-                  @activated-context-menu="editableSeasonDays(item)"
-                  @change="value => changeSeasonPrice(item, value)"
-                />
-              </td>
+            <th class="text-center align-middle" colspan="2">Количество гостей</th>
+            <template v-for="season in seasonsData" :key="season.id">
+              <th v-for="count in roomData.guests_count" :key="count" class="text-center align-middle">{{ count }}</th>
             </template>
           </tr>
-        </template>
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          <template v-for="rate in roomData.price_rates" :key="rate.id">
+            <tr>
+              <th ref="susctractElement1" rowspan="2" class="rate-name text-left align-middle">
+                {{ rate.name }}
+              </th>
+              <th ref="susctractElement2" class="type-name text-left align-middle">Резидент</th>
+              <template v-for="item in roomSeasonsPricesData" :key="item.id">
+                <td v-if="item.rateID == rate.id && item.isResident" class="priced align-middle isActive">
+                  <EditableCell
+                    :value="item.price"
+                    :enable-context-menu="true"
+                    @activated-context-menu="editableSeasonDays(item)"
+                    @change="value => changeSeasonPrice(item, value)"
+                  />
+                </td>
+              </template>
+            </tr>
+            <tr>
+              <th class="type-name text-left align-middle">Не резидент</th>
+              <template v-for="item in roomSeasonsPricesData" :key="item.id">
+                <td v-if="item.rateID == rate.id && !item.isResident" class="priced align-middle isActive">
+                  <EditableCell
+                    :value="item.price"
+                    :enable-context-menu="true"
+                    @activated-context-menu="editableSeasonDays(item)"
+                    @change="value => changeSeasonPrice(item, value)"
+                  />
+                </td>
+              </template>
+            </tr>
+          </template>
+        </tbody>
+      </table>
+    </div>
     <SeasonEditPrice
       v-if="isEditSeasonData && currentSeasonPeriod && currentSeasonData"
       :season-period="currentSeasonPeriod"
