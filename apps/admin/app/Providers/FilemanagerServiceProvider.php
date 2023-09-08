@@ -2,7 +2,7 @@
 
 namespace App\Admin\Providers;
 
-use Sdk\Filemanager\FilemanagerServiceProvider as ServiceProvider;
+use Gsdk\Filemanager\FilemanagerServiceProvider as ServiceProvider;
 
 class FilemanagerServiceProvider extends ServiceProvider
 {

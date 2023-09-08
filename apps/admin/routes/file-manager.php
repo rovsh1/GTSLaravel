@@ -1,7 +1,5 @@
 <?php
 
-namespace Gsdk\Filemanager\Http\Controllers;
-
-use Sdk\Filemanager\RouteRegistrar;
+use Gsdk\Filemanager\RouteRegistrar;
 
 RouteRegistrar::register();

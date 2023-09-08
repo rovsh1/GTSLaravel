@@ -27,7 +27,7 @@ class Layout
     public static function bodyClass(): string
     {
         $cls = [];
-        $cls[] = Sidebar::isExpanded() ? 'sidebar-expanded' : '';
+        $cls[] = Sidebar::isExpanded() ? 'sitemap-disable-animation sitemap-expanded' : '';
         return implode(' ', $cls);
     }
 
@@ -40,9 +40,9 @@ class Layout
     {
         if (app()->resolved('menu.actions')) {
             return app('menu.actions')->render();
-        } else {
-            return '';
         }
+
+        return '';
     }
 
     public static function title(): string
