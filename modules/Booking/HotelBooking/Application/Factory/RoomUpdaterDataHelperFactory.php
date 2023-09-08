@@ -11,7 +11,6 @@ use Module\Booking\HotelBooking\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\HotelBooking\Domain\Service\RoomUpdater\UpdateDataHelper;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\Condition;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBookingDetails;
-use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBookingStatusEnum;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomInfo;
 use Module\Booking\HotelBooking\Domain\ValueObject\RoomPrice;
 use Module\Booking\Order\Domain\ValueObject\GuestIdsCollection;
@@ -46,7 +45,6 @@ class RoomUpdaterDataHelperFactory
 
         return new UpdateDataHelper(
             booking: $booking,
-            status: RoomBookingStatusEnum::from($request->status),
             roomInfo: new RoomInfo(
                 $hotelRoomDto->id,
                 $hotelRoomDto->name,

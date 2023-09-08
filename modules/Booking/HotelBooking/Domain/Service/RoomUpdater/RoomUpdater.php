@@ -93,7 +93,6 @@ class RoomUpdater
         $this->makePipeline()->send($dataHelper);
         $roomBooking = $this->roomBookingRepository->create(
             $dataHelper->booking->id(),
-            $dataHelper->status,
             $dataHelper->roomInfo,
             $dataHelper->details,
             $dataHelper->price

@@ -23,12 +23,6 @@ export const residentTypes = [
   { id: 0, name: 'Не резидент' },
 ]
 
-export const roomStatuses = [
-  { id: 1, name: 'Ожидает подтверждения' },
-  { id: 2, name: 'Отменен' },
-  { id: 3, name: 'Подтвержден' },
-]
-
 export const externalNumberTypes = [
   { id: ExternalNumberTypeEnum.HotelBookingNumber, name: 'Номер подтверждения брони отеля' },
   { id: ExternalNumberTypeEnum.FullName, name: 'Заезд по ФИО' },
@@ -54,8 +48,6 @@ export const genderOptions: SelectOption[] = mapEntitiesToSelectOptions(genders)
 
 export const residentTypeOptions: SelectOption[] = mapEntitiesToSelectOptions(residentTypes)
 
-export const roomStatusOptions: SelectOption[] = mapEntitiesToSelectOptions(roomStatuses)
-
 export const externalNumberTypeOptions: SelectOption[] = mapEntitiesToSelectOptions(externalNumberTypes)
 
 export const cancelPeriodOptions: SelectOption[] = mapEntitiesToSelectOptions(cancelPeriods)
@@ -66,9 +58,6 @@ export const getConditionLabel = (condition: MarkupCondition) => `с ${condition
 
 export const getGenderName = (id: number): string | undefined =>
   genders?.find((gender: any) => gender.id === id)?.name
-
-export const getRoomStatusName = (id: number): string | undefined =>
-  roomStatuses?.find((gender: any) => gender.id === id)?.name
 
 export const getCancelPeriodTypeName = (id: number): string | undefined =>
   cancelPeriods.find((cancelPeriod: any) => cancelPeriod.id === id)?.name

@@ -9,7 +9,6 @@ import { validateForm } from '~resources/composables/form'
 import {
   getConditionLabel,
   residentTypeOptions,
-  roomStatusOptions,
 } from '~resources/views/hotel-booking/show/lib/constants'
 import { RoomFormData } from '~resources/views/hotel-booking/show/lib/data-types'
 
@@ -168,16 +167,6 @@ const closeModal = () => {
           required
           @input="value => formData.id = value as number"
           @change="handleChangeRoomId"
-        />
-      </div>
-      <div class="col-md-12">
-        <BootstrapSelectBase
-          id="status"
-          :options="roomStatusOptions"
-          label="Статус"
-          :value="formData.status as number"
-          required
-          @input="value => formData.status = value as number"
         />
       </div>
       <div class="col-md-12">

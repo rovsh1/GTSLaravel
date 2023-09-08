@@ -12,7 +12,7 @@ import InfoBlock from '~resources/views/hotel-booking/show/components/InfoBlock/
 import InfoBlockTitle from '~resources/views/hotel-booking/show/components/InfoBlock/InfoBlockTitle.vue'
 import RoomModal from '~resources/views/hotel-booking/show/components/RoomModal.vue'
 import RoomPriceModal from '~resources/views/hotel-booking/show/components/RoomPriceModal.vue'
-import { getConditionLabel, getRoomStatusName } from '~resources/views/hotel-booking/show/lib/constants'
+import { getConditionLabel } from '~resources/views/hotel-booking/show/lib/constants'
 import { GuestFormData, RoomFormData } from '~resources/views/hotel-booking/show/lib/data-types'
 import { useBookingStore } from '~resources/views/hotel-booking/show/store/booking'
 import { useOrderStore } from '~resources/views/hotel-booking/show/store/order-currency'
@@ -112,7 +112,6 @@ const handleEditRoom = (roomBookingId: number, room: HotelRoomBooking): void => 
   editRoomBookingId.value = roomBookingId
   roomForm.value = {
     id: room.roomInfo.id,
-    status: room.status,
     discount: room.details.discount,
     rateId: room.details.rateId,
     earlyCheckIn: room.details.earlyCheckIn,
@@ -232,10 +231,6 @@ fetchCountries()
         </template>
         <table class="table-params">
           <tbody>
-            <tr>
-              <th>Статус</th>
-              <td>{{ getRoomStatusName(room.status) }}</td>
-            </tr>
             <tr>
               <th>Тип стоимости</th>
               <td>{{ room.details.isResident ? 'Резидент' : 'Не резидент' }}</td>

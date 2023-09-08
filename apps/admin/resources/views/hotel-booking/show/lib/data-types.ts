@@ -3,7 +3,6 @@ import { MarkupCondition } from '~api/hotel/markup-settings'
 export interface RoomFormData {
   bookingID: number
   id?: number
-  status?: number
   residentType?: number
   discount?: number
   rateId?: number
