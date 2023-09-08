@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch, watchEffect } from 'vue'
 import { VueDraggable } from 'vue-draggable-plus'
 import InlineSVG from 'vue-inline-svg'
 
@@ -11,6 +11,7 @@ import trashIcon from '@mdi/svg/svg/trash-can-outline.svg'
 import { useUrlSearchParams } from '@vueuse/core'
 import { z } from 'zod'
 
+import { createHotelSwitcher } from '~resources/lib/hotel-switcher/hotel-switcher'
 import AttachmentDialog from '~resources/views/hotel/images/components/AttachmentDialog.vue'
 import { AttachmentDialogImageProp, isImageAttachedToRoom, UploadStatus } from '~resources/views/hotel/images/components/lib'
 
@@ -310,6 +311,14 @@ const updateHotelRoomImagesOrder = async () => {
 watch([imagesData, roomImages], (value) => {
   images.value = value[0] ? [...value[0]] : []
   reorderRoomImages()
+})
+
+watchEffect(() => {
+  if (!isHotelFetching.value) {
+    nextTick(() => {
+      createHotelSwitcher(document.getElementsByClassName('content-header')[0], false)
+    })
+  }
 })
 
 </script>

@@ -52,6 +52,16 @@ final class BookingPeriod implements ValueObjectInterface, SerializableDataInter
             ->toArray();
     }
 
+    /**
+     * Booking dates array (with last)
+     * @return CarbonInterface[]
+     */
+    public function dates(): array
+    {
+        return CarbonPeriod::create($this->dateFrom, $this->dateTo, 'P1D')
+            ->toArray();
+    }
+
     public function toData(): array
     {
         return [
