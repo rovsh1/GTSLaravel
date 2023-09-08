@@ -17,21 +17,20 @@
 @section('layout__content')
     <div class="dashboard-wrapper">
         @include('layouts/main/header')
-
-        {!! Layout::sitemap() !!}
-
-        {!! Layout::sidebar() !!}
-
-        <main class="main-wrapper">
-            <div class="content-wrapper">
-                <section class="content">
-                    {!! Layout::breadcrumbs() !!}
-
-                    @yield('content')
-                </section>
+        <div class="gts-content-wrapper">
+            <div class="gts-menu-wrapper">
+                {!! Layout::sitemap() !!}
             </div>
-        </main>
+            <main class="main-wrapper">
+                <div class="content-wrapper">
+                    <section class="content">
+                        {!! Layout::breadcrumbs() !!}
 
+                        @yield('content')
+                    </section>
+                </div>
+            </main>
+        </div>
         @include('layouts/main/footer')
     </div>
 @endsection

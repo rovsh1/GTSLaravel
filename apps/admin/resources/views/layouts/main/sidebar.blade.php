@@ -1,4 +1,4 @@
-<aside class="sidebar" id="sidebar">
+<aside class="sidebar current-category-sidebar" data-category="{{ $category->key }}">
     @if ($submenu)
         <button id="btn-sidebar-toggle" aria-label="Toggle sidebar menu">
             <x-icon key="arrow_back"/>
