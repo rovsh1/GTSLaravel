@@ -15,6 +15,10 @@ body {
   min-width: 320px;
   font-size: 13px;
   letter-spacing: 0.4px;
+
+  main {
+    overflow: auto;
+  }
 }
 
 input {
@@ -27,12 +31,9 @@ div.dashboard-wrapper {
 }
 
 main {
+  flex: 1;
   height: 100%;
-  padding: 48px 0 0;
-}
-
-body.sidebar-expanded main {
-  padding-left: 280px;
+  padding: 0;
 }
 
 .content {
@@ -57,11 +58,6 @@ body.sidebar-expanded main {
 
   .btn-menu {
     margin-left: 1rem;
-  }
-
-  #hotel-switcher {
-    position: relative;
-    margin-right: 1rem;
   }
 }
 

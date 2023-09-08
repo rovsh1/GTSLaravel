@@ -30,7 +30,6 @@ import { TabItem } from '~components/Bootstrap/BootstrapTabs/types'
 import { showToast } from '~components/Bootstrap/BootstrapToast'
 import { SelectOption } from '~components/Bootstrap/lib'
 import IconButton from '~components/IconButton.vue'
-import MultiSelect from '~components/MultiSelect.vue'
 import OverlayLoading from '~components/OverlayLoading.vue'
 import Select2BaseSelect from '~components/Select2BaseSelect.vue'
 
@@ -70,7 +69,7 @@ const basicData = reactive<BasicFormData>({
   status: 1,
   currency: 0,
   managerId: null,
-  priceTypes: [],
+  residency: 0,
 })
 
 const legalEntityData = reactive<LegalEntityFormData>({
@@ -120,7 +119,7 @@ const isDataValid = ($event: any, value: any): boolean => {
 
 const validateBaseDataForm = computed(() => (isDataValid(null, basicData.name)
   && isDataValid(null, basicData.type) && isDataValid(null, basicData.cityId)
-  && isDataValid(null, basicData.currency) && isDataValid(null, basicData.priceTypes)))
+  && isDataValid(null, basicData.currency) && isDataValid(null, basicData.residency)))
 
 const validateLegalDataForm = computed(() => (isDataValid(null, legalEntityData.type)
   && isDataValid(null, legalEntityData.address)))
@@ -166,7 +165,7 @@ const resetForm = () => {
   basicData.status = null
   basicData.currency = 0
   basicData.managerId = null
-  basicData.priceTypes = []
+  basicData.residency = 0
   legalEntityData.name = null
   legalEntityData.industry = null
   legalEntityData.type = 0
@@ -317,14 +316,14 @@ onMounted(() => {
             </div>
 
             <div class="col-md-12 mt-2 price-types-wrapper">
-              <MultiSelect
+              <BootstrapSelectBase
                 id="price-types"
                 label="Тариф"
                 required
-                :value="basicData.priceTypes"
+                :value="basicData.residency"
                 :options="residentTypeOptions"
-                @blur="isDataValid($event, basicData.priceTypes)"
-                @input="value => basicData.priceTypes = value"
+                @blur="isDataValid($event, basicData.residency)"
+                @input="value => basicData.residency = Number(value)"
               />
             </div>
 

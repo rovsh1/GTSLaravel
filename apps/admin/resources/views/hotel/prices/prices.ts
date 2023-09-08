@@ -6,7 +6,7 @@ import HotelPrices from './HotelPrices.vue'
 
 import '~resources/views/main'
 
-createHotelSwitcher()
+createHotelSwitcher(document.getElementsByClassName('content-header')[0])
 
 createVueInstance({
   rootComponent: HotelPrices,

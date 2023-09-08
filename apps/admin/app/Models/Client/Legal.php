@@ -31,7 +31,7 @@ class Legal extends Model
         static::addGlobalScope('default', function (Builder $builder) {
             $builder
                 ->addSelect('client_legals.*')
-                ->join('r_enums', 'r_enums.id', '=', 'client_legals.industry_id')
+                ->leftJoin('r_enums', 'r_enums.id', '=', 'client_legals.industry_id')
                 ->joinTranslatable('r_enums', 'name as industry_name');
         });
     }

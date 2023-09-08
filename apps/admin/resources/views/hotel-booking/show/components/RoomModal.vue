@@ -8,8 +8,7 @@ import { z } from 'zod'
 import { validateForm } from '~resources/composables/form'
 import {
   getConditionLabel,
-  residentTypeOptions,
-  roomStatusOptions,
+  mapEntitiesToSelectOptions,
 } from '~resources/views/hotel-booking/show/lib/constants'
 import { RoomFormData } from '~resources/views/hotel-booking/show/lib/data-types'
 
@@ -52,6 +51,11 @@ const { bookingID, hotelID, hotelRooms } = requestInitialData(
     ),
   }),
 )
+
+const residentTypeOptions = mapEntitiesToSelectOptions([
+  { id: 1, name: 'Резидент' },
+  { id: 0, name: 'Не резидент' },
+])
 
 const formData = computed<RoomFormData>(() => ({
   bookingID,
@@ -168,16 +172,6 @@ const closeModal = () => {
           required
           @input="value => formData.id = value as number"
           @change="handleChangeRoomId"
-        />
-      </div>
-      <div class="col-md-12">
-        <BootstrapSelectBase
-          id="status"
-          :options="roomStatusOptions"
-          label="Статус"
-          :value="formData.status as number"
-          required
-          @input="value => formData.status = value as number"
         />
       </div>
       <div class="col-md-12">

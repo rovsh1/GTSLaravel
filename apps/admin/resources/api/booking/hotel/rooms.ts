@@ -11,7 +11,6 @@ import { getNullableRef } from '~lib/vue'
 export interface BookingAddRoomPayload {
   bookingID: BookingID
   id: number
-  status: number
   residentType: number
   discount?: number
   rateId: number
@@ -52,7 +51,6 @@ export const addRoomToBooking = (props: MaybeRef<BookingAddRoomPayload | null>) 
         props,
         (payload: BookingAddRoomPayload): any => ({
           room_id: payload.id,
-          status: payload.status,
           is_resident: Boolean(Number(payload.residentType)),
           discount: payload.discount,
           rate_id: payload.rateId,
@@ -76,7 +74,6 @@ export const updateBookingRoom = (props: MaybeRef<BookingUpdateRoomPayload | nul
         (payload: BookingUpdateRoomPayload): any => ({
           room_booking_id: payload.roomBookingId,
           room_id: payload.id,
-          status: payload.status,
           is_resident: Boolean(Number(payload.residentType)),
           discount: payload.discount,
           rate_id: payload.rateId,

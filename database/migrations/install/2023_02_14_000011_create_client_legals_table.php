@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedInteger('city_id')->nullable();
             $table->unsignedInteger('industry_id')->nullable();
             $table->tinyInteger('type');
-            $table->string('name');
+            $table->string('name')->nullable();
             $table->string('address');
             $table->json('requisites')->nullable();
             $table->timestamps();

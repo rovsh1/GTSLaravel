@@ -3,6 +3,8 @@
 namespace App\Admin\Http\Requests\Client;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
+use Module\Shared\Enum\Client\ResidencyEnum;
 
 class CreateClientRequest extends FormRequest
 {
@@ -19,7 +21,7 @@ class CreateClientRequest extends FormRequest
             'type' => ['required', 'numeric'],
             'cityId' => ['required', 'numeric'],
             'currency' => ['required', 'numeric'],
-            'priceTypes' => ['required', 'array'],
+            'residency' => ['required', new Enum(ResidencyEnum::class)],
             'status' => ['nullable', 'numeric'],
             'managerId' => ['nullable', 'numeric'],
 
@@ -62,9 +64,9 @@ class CreateClientRequest extends FormRequest
         return $this->post('currency');
     }
 
-    public function getPriceTypes(): array
+    public function getResidency(): int
     {
-        return $this->post('priceTypes');
+        return $this->post('residency');
     }
 
     public function getStatus(): ?int

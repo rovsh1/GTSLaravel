@@ -1,9 +1,11 @@
 <script lang="ts" setup>
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch, watchEffect } from 'vue'
 
 import checkIcon from '@mdi/svg/svg/check.svg'
 import pencilIcon from '@mdi/svg/svg/pencil.svg'
 import { z } from 'zod'
+
+import { createHotelSwitcher } from '~resources/lib/hotel-switcher/hotel-switcher'
 
 import { HotelResponse, useHotelGetAPI } from '~api/hotel/get'
 import { useHotelQuotasAPI } from '~api/hotel/quotas/list'
@@ -103,6 +105,14 @@ watch(editable, (value) => {
 const handleFilters = (value: FiltersPayload) => {
   filtersPayload.value = value
 }
+
+watchEffect(() => {
+  if (!isHotelFetching.value && !isHotelRoomsFetching.value) {
+    nextTick(() => {
+      createHotelSwitcher(document.getElementsByClassName('content-header')[0], false)
+    })
+  }
+})
 </script>
 <template>
   <BaseLayout :loading="isHotelFetching || isHotelRoomsFetching">

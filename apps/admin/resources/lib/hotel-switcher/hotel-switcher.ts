@@ -2,16 +2,16 @@ import { HotelResponse, useHotelSearchAPI } from '~resources/api/hotel/get'
 
 import './style.scss'
 
-const containerID = 'hotel-switcher'
-
-export function createHotelSwitcher() {
+export function createHotelSwitcher(container: Element | HTMLElement, withMatgins: boolean = true) {
   let isFirstOpen = true
-  const dropdownContainer = document.getElementById(containerID)
-  if (!dropdownContainer) return
-  dropdownContainer?.classList.add('hotel-switcher-container')
+  if (!container) return
+  const dropdownContainer = document.createElement('div')
+  dropdownContainer.classList.add('hotel-switcher-container')
+  dropdownContainer.setAttribute('id', 'hotel-switcher')
 
   const toggleButton = document.createElement('button')
   toggleButton.classList.add('hotel-switcher-toggle-button')
+  toggleButton.style.marginRight = withMatgins ? '1rem' : '0'
 
   const menuListContainer = document.createElement('div')
   menuListContainer.classList.add('hotel-switcher-menu-list-container')
@@ -43,7 +43,7 @@ export function createHotelSwitcher() {
         const menuItem = document.createElement('div')
         menuItem.classList.add('hotel-switcher-menu-list-item')
         menuItem.setAttribute('data-hotelid', item.id.toString())
-        menuItem.innerText = item.name
+        menuItem.innerText = `${item.name} (${item.city_name})`
         menuItem.addEventListener('click', () => {
           const newHotelID = menuItem.getAttribute('data-hotelid')
           const updatedString = location.pathname.replace(regexForSearchHotelID, `$1${newHotelID}`)
@@ -99,6 +99,13 @@ export function createHotelSwitcher() {
 
   dropdownContainer?.appendChild(toggleButton)
   dropdownContainer?.appendChild(menuListContainer)
+
+  const firstParentChild = container.firstChild
+  if (firstParentChild) {
+    container.insertBefore(dropdownContainer, firstParentChild)
+  } else {
+    container.appendChild(dropdownContainer)
+  }
 
   document.addEventListener('click', (event) => {
     const isClickInsideMenu = menuListContainer.contains(event.target as Node)

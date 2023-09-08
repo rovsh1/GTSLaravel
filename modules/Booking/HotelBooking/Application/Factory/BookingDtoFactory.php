@@ -64,7 +64,6 @@ class BookingDtoFactory extends AbstractBookingDtoFactory
             $guests = $this->guestRepository->get($roomBooking->guestIds());
             $dtos[] = new RoomBookingDto(
                 id: $roomBooking->id()->value(),
-                status: $roomBooking->status()->value,
                 roomInfo: RoomInfoDto::fromDomain($roomBooking->roomInfo()),
                 guests: GuestDto::collectionFromDomain($guests),
                 details: RoomBookingDetailsDto::fromDomain($roomBooking->details()),

@@ -11,7 +11,6 @@ use Module\Booking\HotelBooking\Domain\Entity\RoomBooking;
 use Module\Booking\HotelBooking\Domain\Repository\RoomBookingRepositoryInterface;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBookingDetails;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBookingId;
-use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBookingStatusEnum;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomInfo;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBookingCollection;
 use Module\Booking\HotelBooking\Domain\ValueObject\RoomPrice;
@@ -40,7 +39,6 @@ class RoomBookingRepository implements RoomBookingRepositoryInterface
 
     public function create(
         BookingId $bookingId,
-        RoomBookingStatusEnum $status,
         RoomInfo $roomInfo,
         RoomBookingDetails $details,
         RoomPrice $price
@@ -49,7 +47,7 @@ class RoomBookingRepository implements RoomBookingRepositoryInterface
             'booking_id' => $bookingId->value(),
             'hotel_room_id' => $roomInfo->id(),
             'room_name' => $roomInfo->name(),
-            'data' => $this->serializeData($status, $roomInfo, $details, $price),
+            'data' => $this->serializeData($roomInfo, $details, $price),
         ]);
         //hack потому что default scope не подтягивается после создания модели, а тут нужно, т.к. booking_order_id подгружается join'ом
         $model = Model::find($model->id);
@@ -75,7 +73,6 @@ class RoomBookingRepository implements RoomBookingRepositoryInterface
     private function serializeEntity(RoomBooking $booking): array
     {
         return $this->serializeData(
-            status: $booking->status(),
             roomInfo: $booking->roomInfo(),
             details: $booking->details(),
             price: $booking->price(),
@@ -83,13 +80,11 @@ class RoomBookingRepository implements RoomBookingRepositoryInterface
     }
 
     private function serializeData(
-        RoomBookingStatusEnum $status,
         RoomInfo $roomInfo,
         RoomBookingDetails $details,
         RoomPrice $price
     ): array {
         return [
-            'status' => $status->value,
             'roomInfo' => $roomInfo->toData(),
             'details' => $details->toData(),
             'price' => $price->toData()
@@ -104,7 +99,6 @@ class RoomBookingRepository implements RoomBookingRepositoryInterface
             id: new RoomBookingId($model->id),
             bookingId: new BookingId($model->booking_id),
             orderId: new OrderId($model->booking_order_id),
-            status: RoomBookingStatusEnum::from($data['status']),
             roomInfo: RoomInfo::fromData($data['roomInfo']),
             guestsIds: GuestIdsCollection::fromData($model->guest_ids),
             details: RoomBookingDetails::fromData($data['details']),
