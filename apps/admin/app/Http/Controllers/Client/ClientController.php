@@ -7,6 +7,7 @@ namespace App\Admin\Http\Controllers\Client;
 use App\Admin\Http\Requests\Client\CreateClientRequest;
 use App\Admin\Http\Resources\Client as ClientResource;
 use App\Admin\Models\Client\Legal;
+use App\Admin\Models\Reference\Country;
 use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\ActionsMenu;
 use App\Admin\Support\Facades\Form;
@@ -22,6 +23,7 @@ use Gsdk\Format\View\ParamsTable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Module\Shared\Enum\Client\LegalTypeEnum;
+use Module\Shared\Enum\Client\ResidencyEnum;
 use Module\Shared\Enum\Client\StatusEnum;
 use Module\Shared\Enum\Client\TypeEnum;
 
@@ -42,6 +44,7 @@ class ClientController extends AbstractPrototypeController
             'type' => $request->getType(),
             'name' => $request->getName(),
             'status' => $request->getStatus(),
+            'residency' => $request->getResidency(),
         ]);
         $this->model = $this->repository->create($data);
         $legalData = $request->getLegal();
@@ -152,8 +155,8 @@ class ClientController extends AbstractPrototypeController
             ->enum('status', ['label' => 'Статус', 'enum' => StatusEnum::class])
             ->currency('currency_id', ['label' => 'Валюта', 'required' => true])
             ->enum(
-                'price_types',
-                ['label' => 'Тип цены', 'multiple' => true, 'enum' => PriceTypeEnum::class, 'required' => true]
+                'residency',
+                ['label' => 'Тип цены', 'enum' => ResidencyEnum::class, 'required' => true]
             )
             ->manager('administrator_id', ['label' => 'Менеджер']);
     }
@@ -161,7 +164,7 @@ class ClientController extends AbstractPrototypeController
     private function searchForm()
     {
         return (new SearchForm())
-            ->country('country_id', ['label' => 'Страна'])
+            ->select('country_id', ['label' => 'Страна', 'emptyItem' => '', 'items' => Country::get()])
             ->city('city_id', ['label' => 'Город', 'emptyItem' => ''])
             ->enum('type', ['label' => 'Тип', 'enum' => TypeEnum::class, 'emptyItem' => ''])
             ->enum('legal_entity_type', ['label' => 'Тип юр. лица', 'enum'=>LegalTypeEnum::class, 'multiple' => true])
