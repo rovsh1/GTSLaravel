@@ -10,7 +10,7 @@ export interface EntityInterface {
 }
 
 export const mapEntitiesToSelectOptions = (entities: EntityInterface[]): SelectOption[] => entities.map(
-  ({ id, name, group }) => ({ value: id, label: name, group }),
+  (entity) => ({ value: entity.id, label: entity.name, group: entity.group }),
 )
 
 export const genders = [
