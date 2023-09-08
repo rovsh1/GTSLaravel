@@ -75,7 +75,7 @@ export default function bootSitemap() {
     $(this).find('i')
   })
 
-  $('.btn-sitemap-toggle-switch').click((e) => {
+  $('.btn-sitemap-toggle-switch').click(() => {
     if (menuOpenFlag) {
       $.cookie('menu_open_flag', 'false', { sameSite: 'None', secure: false })
     } else {
