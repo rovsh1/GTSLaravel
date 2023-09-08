@@ -38,7 +38,6 @@ class CopyBooking implements UseCaseInterface
         foreach ($rooms as $room) {
             $roomBooking = $this->roomBookingRepository->create(
                 $newBooking->id(),
-                $room->status(),
                 $room->roomInfo(),
                 $room->details(),
                 $room->price()

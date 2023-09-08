@@ -11,7 +11,6 @@ final class BookingRoomDto
         public readonly ?string $checkoutTime,
         public readonly string $guestsNames,
         public readonly float $priceNet,
-        public readonly string $status,
         public readonly int $guestsNumber,
         public readonly ?string $note
     ) {

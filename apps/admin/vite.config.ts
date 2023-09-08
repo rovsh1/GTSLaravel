@@ -35,8 +35,6 @@ export default defineConfig(({ command }) => ({
         'resources/views/auth/login/login.scss',
         'resources/views/default/grid/grid.scss',
         'resources/views/default/form/form.scss',
-        'resources/views/file-manager/file-manager.ts',
-        'resources/views/file-manager/file-manager.scss',
         'resources/views/hotel/edit/edit.ts',
         'resources/views/hotel/employee/edit/edit.ts',
         'resources/views/hotel/main/main.ts',

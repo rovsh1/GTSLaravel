@@ -2,13 +2,13 @@
 @use "~resources/sass/variables" as variables;
 
 aside.sidebar {
-  position: fixed;
-  top: 48px;
+  position: relative;
+  top: 0;
   left: 0;
   z-index: 20;
   flex-direction: column;
   overflow: hidden;
-  width: 280px;
+  width: 100%;
   height: calc(100vh - 48px);
   border-right: 1px solid #E0E0E0;
   background: #fff;
@@ -41,7 +41,7 @@ aside.sidebar {
     }
   }
 
-  > div {
+  >div {
     position: absolute;
     top: 0;
     left: 0;
@@ -82,7 +82,7 @@ aside.sidebar {
     }
   }
 
-  .submenu-wrapper + .main-menu-wrapper {
+  .submenu-wrapper+.main-menu-wrapper {
     left: -100%;
     transition: left 0.3s ease;
   }
@@ -93,15 +93,17 @@ aside.sidebar {
       transform: rotate(180deg);
     }
 
-    & > .main-menu-wrapper {
+    &>.main-menu-wrapper {
       left: 0;
       z-index: 2;
     }
   }
 
   .sidebar-header {
+    position: relative;
     display: flex;
     align-items: center;
+    overflow: visible;
     height: 49px;
     border-bottom: 1px solid #E0E0E0;
     color: rgb(0 0 0 / 66%);
@@ -130,41 +132,44 @@ aside.sidebar {
   @include scrollbar.scrollable;
 
   overflow: auto;
+  overflow-x: hidden;
   height: 100%;
 
   nav {
     display: flex;
     flex-direction: column;
+    overflow: hidden;
   }
 
-  nav > a {
+  nav>a {
     display: flex;
     gap: 0.5rem;
     align-items: center;
     padding: 0 1rem;
     color: #000;
     line-height: 2rem;
+    white-space: nowrap;
   }
 
-  nav > a:hover {
+  nav>a:hover {
     background: #EBEBEB;
   }
 
-  nav > a:not(:hover) {
+  nav>a:not(:hover) {
     color: rgb(0 0 0 / 100%);
   }
 
-  nav > a.disabled {
+  nav>a.disabled {
     color: rgba(0, 0, 0, 30%);
     cursor: not-allowed;
     pointer-events: none;
   }
 
-  nav > a.current {
+  nav>a.current {
     background: #F0F5FE;
   }
 
-  nav > a.current:not(:hover) {
+  nav>a.current:not(:hover) {
     color: variables.$primary;
   }
 

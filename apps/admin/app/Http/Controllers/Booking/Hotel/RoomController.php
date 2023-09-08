@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace App\Admin\Http\Controllers\Booking\Hotel;
 
-use App\Admin\Http\Requests\Booking\Room\AddRoomGuestRequest;
 use App\Admin\Http\Requests\Booking\Room\AddRoomRequest;
-use App\Admin\Http\Requests\Booking\Room\DeleteRoomGuestRequest;
 use App\Admin\Http\Requests\Booking\Room\DeleteRoomRequest;
 use App\Admin\Http\Requests\Booking\Room\Guest\RoomGuestRequest;
-use App\Admin\Http\Requests\Booking\Room\UpdateRoomGuestRequest;
 use App\Admin\Http\Requests\Booking\Room\UpdateRoomRequest;
 use App\Admin\Http\Requests\Booking\UpdatePriceRequest;
 use App\Admin\Support\Facades\Booking\HotelAdapter;
@@ -31,7 +28,6 @@ class RoomController
                 isResident: $request->getIsResident(),
                 earlyCheckIn: $request->getEarlyCheckIn(),
                 lateCheckOut: $request->getLateCheckOut(),
-                status: $request->getStatus(),
                 note: $request->getNote(),
                 discount: $request->getDiscount()
             );
@@ -50,7 +46,6 @@ class RoomController
                 roomBookingId: $request->getRoomBookingId(),
                 roomId: $request->getRoomId(),
                 rateId: $request->getRateId(),
-                status: $request->getStatus(),
                 isResident: $request->getIsResident(),
                 earlyCheckIn: $request->getEarlyCheckIn(),
                 lateCheckOut: $request->getLateCheckOut(),

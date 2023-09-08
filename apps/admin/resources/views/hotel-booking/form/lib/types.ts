@@ -24,7 +24,7 @@ export interface BasicFormData {
   status: number | null
   currency: number
   managerId: number | null
-  priceTypes: string[]
+  residency: number
 }
 
 export interface CreatePhysicalClient extends BasicFormData {

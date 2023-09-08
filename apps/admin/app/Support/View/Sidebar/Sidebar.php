@@ -27,7 +27,9 @@ class Sidebar
 
     public function isExpanded(): bool
     {
-        return (bool)Sitemap::getCurrentCategory();
+        $isExpanded = $_COOKIE['menu_open_flag'] ?? null;
+
+        return $isExpanded === 'true';
     }
 
     public function render()
