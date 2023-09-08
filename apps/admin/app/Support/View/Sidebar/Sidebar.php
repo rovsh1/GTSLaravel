@@ -27,7 +27,7 @@ class Sidebar
 
     public function isExpanded(): bool
     {
-        $isExpanded = request()->cookie('menu_open_flag');
+        $isExpanded = $_COOKIE['menu_open_flag'] ?? null;
 
         return $isExpanded === 'true';
     }
