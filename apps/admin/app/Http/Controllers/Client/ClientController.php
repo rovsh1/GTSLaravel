@@ -164,7 +164,7 @@ class ClientController extends AbstractPrototypeController
             ->country('country_id', ['label' => 'Страна'])
             ->city('city_id', ['label' => 'Город', 'emptyItem' => ''])
             ->enum('type', ['label' => 'Тип', 'enum' => TypeEnum::class, 'emptyItem' => ''])
-            ->enum('legal_entity_type', ['label' => 'Тип юр. лица', 'enum'=>LegalTypeEnum::class, 'emptyItem' => '', 'multiple' => true])
+            ->enum('legal_entity_type', ['label' => 'Тип юр. лица', 'enum'=>LegalTypeEnum::class, 'multiple' => true])
             ->enum('status', ['label' => 'Источник', 'enum' => StatusEnum::class, 'emptyItem' => '']);
     }
 }
