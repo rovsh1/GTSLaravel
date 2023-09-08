@@ -8,7 +8,7 @@ import { z } from 'zod'
 import { validateForm } from '~resources/composables/form'
 import {
   getConditionLabel,
-  residentTypeOptions,
+  mapEntitiesToSelectOptions,
 } from '~resources/views/hotel-booking/show/lib/constants'
 import { RoomFormData } from '~resources/views/hotel-booking/show/lib/data-types'
 
@@ -51,6 +51,11 @@ const { bookingID, hotelID, hotelRooms } = requestInitialData(
     ),
   }),
 )
+
+const residentTypeOptions = mapEntitiesToSelectOptions([
+  { id: 1, name: 'Резидент' },
+  { id: 0, name: 'Не резидент' },
+])
 
 const formData = computed<RoomFormData>(() => ({
   bookingID,

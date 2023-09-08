@@ -113,6 +113,8 @@ class RoomUpdater
     private function doReplace(RoomBooking $currentRoomBooking, UpdateDataHelper $dataHelper): void
     {
         $hotelRoomDto = $this->hotelRoomAdapter->findById($dataHelper->roomInfo->id());
+        $this->roomBookingRepository->delete($currentRoomBooking->id()->value());
+        $this->events[] = new RoomDeleted($dataHelper->booking, $currentRoomBooking->id());
         $roomBooking = $this->doAdd($dataHelper);
         //@todo кинуть ексепшн если кол-во гостей больше доступного
         $maxGuestCount = $hotelRoomDto->guestsCount;
@@ -123,8 +125,6 @@ class RoomUpdater
             }
             $this->bookingGuestRepository->bind($roomBooking->id(), $guestId);
         }
-        $this->roomBookingRepository->delete($currentRoomBooking->id()->value());
-        $this->events[] = new RoomDeleted($dataHelper->booking, $currentRoomBooking->id());
     }
 
     private function processQuota(Booking $booking): void
