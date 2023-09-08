@@ -154,9 +154,9 @@ const handleContextMenu = (event: MouseEvent) => {
 
 onClickOutside(inputRef, () => {
   if (!rangeMode.value && !pickMode.value) {
-    if (props.inRange || valueModel.value !== props.initValue) {
+    if (props.inRange || (valueModel.value !== props.initValue && valueModel.value !== '0')) {
       onPressEnter()
-    } else if (!props.inRange && valueModel.value === props.initValue) {
+    } else if (!props.inRange && (valueModel.value === props.initValue || valueModel.value === '0')) {
       onPressEsc()
     }
   }
