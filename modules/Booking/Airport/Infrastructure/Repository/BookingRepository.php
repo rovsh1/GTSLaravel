@@ -62,6 +62,9 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
                 $airport = Airport::find($airportId);
                 $service = AirportService::find($serviceId);
 
+                //@todo добавить получение деталей аэроброни
+                $detailsData = [];
+
                 $booking = new Entity(
                     id: new BookingId($bookingModel->id),
                     orderId: new OrderId($bookingModel->order_id),
