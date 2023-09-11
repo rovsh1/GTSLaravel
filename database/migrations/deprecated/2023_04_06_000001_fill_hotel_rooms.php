@@ -84,6 +84,7 @@ return new class extends Migration {
             $translations = [
                 ['translatable_id' => $r->id, 'language' => 'ru', 'name' => $r->room_name, 'text' => $r->text ?? null],
                 ['translatable_id' => $r->id, 'language' => 'en', 'name' => $r->custom_name, 'text' => null],
+                ['translatable_id' => $r->id, 'language' => 'uz', 'name' => $r->custom_name, 'text' => null],
             ];
             DB::table('hotel_rooms_translation')->insert($translations);
         }

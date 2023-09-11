@@ -46,6 +46,7 @@ $(() => {
   }
 
   switchInputToSelect('form_data_name_ru', '/hotels/rooms/names/ru/list')
-  switchInputToSelect('form_data_name_en, form_data_name_uz', '/hotels/rooms/names/en/list')
+  switchInputToSelect('form_data_name_en', '/hotels/rooms/names/en/list')
+  switchInputToSelect('form_data_name_uz', '/hotels/rooms/names/uz/list')
   bootBeds($('#room-beds'))
 })
