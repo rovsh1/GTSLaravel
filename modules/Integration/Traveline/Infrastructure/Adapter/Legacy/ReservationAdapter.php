@@ -33,6 +33,11 @@ class ReservationAdapter implements ReservationAdapterInterface
 
         if ($status === TravelineReservationStatusEnum::New) {
             Reservation::whereId($id)->update(['status' => ReservationStatusEnum::Confirmed]);
+            return;
+        }
+        $reservation = Reservation::find($id);
+        if ($reservation->status === ReservationStatusEnum::WaitingProcessing) {
+            Reservation::whereId($id)->update(['status' => ReservationStatusEnum::Confirmed]);
         }
     }
 
@@ -41,6 +46,7 @@ class ReservationAdapter implements ReservationAdapterInterface
         $reservations = TravelineReservation::whereNull('accepted_at')->get();
 
         $preparedReservations = $this->prepareReservationCollection($reservations);
+
         return ReservationDto::collection($preparedReservations)->all();
     }
 
@@ -51,6 +57,7 @@ class ReservationAdapter implements ReservationAdapterInterface
             ->get();
 
         $preparedReservations = $this->prepareReservationCollection($reservations);
+
         return ReservationDto::collection($preparedReservations)->all();
     }
 
@@ -60,6 +67,7 @@ class ReservationAdapter implements ReservationAdapterInterface
         if ($reservation === null) {
             return null;
         }
+
         return ReservationDto::from($reservation->data);
     }
 
@@ -75,6 +83,7 @@ class ReservationAdapter implements ReservationAdapterInterface
             ->get();
 
         $preparedReservations = $this->prepareReservationCollection($reservations);
+
         return ReservationDto::collection($preparedReservations)->all();
     }
 
