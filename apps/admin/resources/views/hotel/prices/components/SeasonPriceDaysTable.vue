@@ -125,6 +125,16 @@ const changeData = async (item: PricesAccumulationDataForDays, newPrice: number 
   }
 }
 
+const getPriceStatus = (currentDayPrice: number | null): string => {
+  if (currentDayPrice) {
+    if (currentDayPrice === seasonData.value?.price) {
+      return 'isActive'
+    }
+    return 'isUnActive'
+  }
+  return ''
+}
+
 onMounted(async () => {
   await filledPricesDays()
 })
@@ -164,7 +174,12 @@ onMounted(async () => {
         </thead>
         <tbody>
           <tr>
-            <td v-for="item in daysInPeriod" :key="item.id" class="priced align-middle text-center isActive">
+            <td
+              v-for="item in daysInPeriod"
+              :key="item.id"
+              :class="[getPriceStatus(item.price)]"
+              class="priced align-middle text-center"
+            >
               <EditableCell :value="item.price" :enable-context-menu="false" @change="value => changeData(item, value)" />
             </td>
           </tr>

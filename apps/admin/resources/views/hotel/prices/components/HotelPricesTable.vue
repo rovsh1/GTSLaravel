@@ -140,6 +140,7 @@ const onSubmitChangeData = async () => {
     price: currentSeasonNewPrice.value,
   })
   if (updateStatusResponse.value?.success) {
+    currentSeasonData.value.price = currentSeasonNewPrice.value
     emit('updateData')
   } else {
     showToast({ title: 'Не удалось изменить цену' })
