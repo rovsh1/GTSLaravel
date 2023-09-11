@@ -59,6 +59,10 @@ class Quota extends Model
         'count_reserved',
     ];
 
+    protected $attributes = [
+        'status' => QuotaStatusEnum::OPEN,
+    ];
+
     protected $appends = [
         'count_available',
         'count_booked',
