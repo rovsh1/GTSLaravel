@@ -108,7 +108,7 @@ class LegalsController extends Controller
 
     protected function formFactory(Client $client): FormContract
     {
-        return Form::text('name', ['label' => 'Наименование'])
+        return Form::text('name', ['label' => 'Наименование', 'required' => true])
             ->hidden('client_id', ['value' => $client->id])
             ->select('industry_id', ['label' => 'Индустрия', 'emptyItem' => '', 'items' => Legal\Industry::get()])
             ->enum('type', ['label' => 'Тип', 'emptyItem' => '', 'enum' => LegalTypeEnum::class, 'required' => true])

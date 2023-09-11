@@ -121,7 +121,7 @@ const validateBaseDataForm = computed(() => (isDataValid(null, basicData.name)
   && isDataValid(null, basicData.type) && isDataValid(null, basicData.cityId)
   && isDataValid(null, basicData.currency) && isDataValid(null, basicData.residency)))
 
-const validateLegalDataForm = computed(() => (isDataValid(null, legalEntityData.type)
+const validateLegalDataForm = computed(() => (isDataValid(null, legalEntityData.name) && isDataValid(null, legalEntityData.type)
   && isDataValid(null, legalEntityData.address)))
 
 const isFormValid = (): boolean => {
@@ -340,8 +340,17 @@ onMounted(() => {
         <BootstrapTabsTabContent v-if="basicData.type == 2" tab-name="legal-details" :is-active="tabsItems[2].isActive">
           <form ref="clientLegalForm" class="tab-content">
             <div class="col-md-12 mt-2">
-              <label for="legal-name">Наименование</label>
-              <input id="legal-name" v-model="legalEntityData.name" class="form-control">
+              <div class="field-required">
+                <label for="legal-name">Наименование</label>
+                <input
+                  id="legal-name"
+                  v-model="legalEntityData.name"
+                  class="form-control"
+                  required
+                  @blur="isDataValid($event, legalEntityData.name)"
+                  @input="isDataValid($event, legalEntityData.name)"
+                >
+              </div>
             </div>
 
             <div class="col-md-12 mt-2">

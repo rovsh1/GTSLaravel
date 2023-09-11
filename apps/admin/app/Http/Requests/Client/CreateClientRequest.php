@@ -29,7 +29,7 @@ class CreateClientRequest extends FormRequest
             'physical.gender' => ['nullable', 'numeric'],
 
             'legal' => ['required_without:physical', 'array'],
-            'legal.name' => ['nullable', 'string'],
+            'legal.name' => ['required_with:legal', 'string'],
             'legal.industry' => ['nullable', 'numeric'],
             'legal.type' => ['required_with:legal', 'numeric'],
             'legal.address' => ['required_with:legal', 'string'],
