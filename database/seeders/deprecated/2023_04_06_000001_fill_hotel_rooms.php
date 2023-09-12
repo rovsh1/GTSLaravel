@@ -43,16 +43,16 @@ return new class extends Migration {
                 ->table('hotel_margins')
                 ->where('room_id', $r->id)
                 ->select([
-                    \DB::raw(
+                    DB::raw(
                         "(SELECT `value` FROM hotel_margins WHERE hotel_id = {$r->hotel_id} AND room_id = {$r->id} AND client_model = " . self::OTA . ') as `OTA`'
                     ),
-                    \DB::raw(
+                    DB::raw(
                         "(SELECT `value` FROM hotel_margins WHERE hotel_id = {$r->hotel_id} AND room_id = {$r->id} AND client_model = " . self::TA . ') as `TA`'
                     ),
-                    \DB::raw(
+                    DB::raw(
                         "(SELECT `value` FROM hotel_margins WHERE hotel_id = {$r->hotel_id} AND room_id = {$r->id} AND client_model = " . self::TO . ') as `TO`'
                     ),
-                    \DB::raw(
+                    DB::raw(
                         "(SELECT `value` FROM hotel_margins WHERE hotel_id = {$r->hotel_id} AND room_id = {$r->id} AND client_model = " . self::INDIVIDUAL . ') as `individual`'
                     ),
                 ])
