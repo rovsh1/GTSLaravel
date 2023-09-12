@@ -11,7 +11,7 @@ return new class extends Migration {
         'bank_name' => 17,
         'correspondent_account' => 18,
         'bik' => 19,
-        'city_id' => 20,
+        'city_name' => 20,
         'okpo' => 21
     ];
 
@@ -32,11 +32,7 @@ return new class extends Migration {
                 ->map
                 ->value;
 
-            $cityId = null;
-            $cityName = $requisites[self::$migrationAssoc['city_id']] ?? null;
-            if ($cityName !== null) {
-                $cityId = $cityIdIndexedByName[$cityName] ?? null;
-            }
+            $cityName = $requisites[self::$migrationAssoc['city_name']] ?? null;
 
             $bankRequisites = new BankRequisites(
                 inn: $requisites[self::$migrationAssoc['inn']] ?? '',
@@ -45,7 +41,7 @@ return new class extends Migration {
                 bankName: $requisites[self::$migrationAssoc['bank_name']] ?? '',
                 correspondentAccount: $requisites[self::$migrationAssoc['correspondent_account']] ?? '',
                 bik: $requisites[self::$migrationAssoc['bik']] ?? '',
-                cityId: $cityId,
+                cityName: $cityName,
                 okpo: $requisites[self::$migrationAssoc['okpo']] ?? '',
             );
 

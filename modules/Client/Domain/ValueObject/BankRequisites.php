@@ -11,7 +11,7 @@ class BankRequisites implements ValueObjectInterface, SerializableDataInterface
 {
     public function __construct(
         public readonly string $bik,
-        public readonly ?int $cityId,
+        public readonly ?string $cityName,
         public readonly string $inn,
         public readonly string $okpo,
         public readonly string $correspondentAccount,
@@ -24,7 +24,7 @@ class BankRequisites implements ValueObjectInterface, SerializableDataInterface
     {
         return new static(
             bik: $data['bik'],
-            cityId: $data['cityId'],
+            cityName: $data['cityName'],
             inn: $data['inn'],
             okpo: $data['okpo'],
             correspondentAccount: $data['correspondentAccount'],
@@ -38,7 +38,7 @@ class BankRequisites implements ValueObjectInterface, SerializableDataInterface
     {
         return [
             'bik' => $this->bik,
-            'cityId' => $this->cityId,
+            'cityName' => $this->cityName,
             'inn' => $this->inn,
             'okpo' => $this->okpo,
             'correspondentAccount' => $this->correspondentAccount,

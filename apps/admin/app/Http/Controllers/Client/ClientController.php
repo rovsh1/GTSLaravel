@@ -8,8 +8,10 @@ use App\Admin\Http\Requests\Client\CreateClientRequest;
 use App\Admin\Http\Resources\Client as ClientResource;
 use App\Admin\Models\Client\Legal;
 use App\Admin\Models\Reference\Country;
+use App\Admin\Repositories\ClientAdministratorRepository;
 use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\ActionsMenu;
+use App\Admin\Support\Facades\Client\LegalAdapter;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Facades\Sidebar;
@@ -29,12 +31,16 @@ use Module\Shared\Enum\Client\TypeEnum;
 
 class ClientController extends AbstractPrototypeController
 {
+    public function __construct(
+        private readonly ClientAdministratorRepository $clientAdministratorRepository
+    ) {
+        parent::__construct();
+    }
+
     protected function getPrototypeKey(): string
     {
         return 'client';
     }
-
-    //@todo менеджер клиента - в таблицу administrator_clients
 
     public function storeDialog(CreateClientRequest $request): JsonResponse
     {
@@ -49,16 +55,33 @@ class ClientController extends AbstractPrototypeController
         $this->model = $this->repository->create($data);
         $legalData = $request->getLegal();
         if ($legalData !== null) {
-            Legal::create([
+            $legal = Legal::create([
                 'client_id' => $this->model->id,
                 'city_id' => $request->getCityId(),
                 'industry_id' => $legalData->industry,
                 'type' => $legalData->type,
                 'name' => $legalData->name,
                 'address' => $legalData->address,
-                //@todo реквизиты
             ]);
+
+            LegalAdapter::setBankRequisites(
+                clientLegalId: $legal->id,
+                cityName: $legalData->bankCity ?? '',
+                currentAccount: $legalData->currentAccount ?? '',
+                correspondentAccount: $legalData->corrAccount ?? '',
+                kpp: $legalData->kpp ?? '',
+                okpo: $legalData->okpoCode ?? '',
+                inn: $legalData->inn ?? '',
+                bik: $legalData->bik ?? '',
+                bankName: $legalData->bankName ?? ''
+            );
         }
+
+        $managerId = $request->user()->id;
+        if ($request->getManagerId() !== null) {
+            $managerId = $request->getManagerId();
+        }
+        $this->clientAdministratorRepository->create($this->model->id, $managerId);
 
         return response()->json(
             ClientResource::make($this->model)
@@ -167,7 +190,7 @@ class ClientController extends AbstractPrototypeController
             ->select('country_id', ['label' => 'Страна', 'emptyItem' => '', 'items' => Country::get()])
             ->city('city_id', ['label' => 'Город', 'emptyItem' => ''])
             ->enum('type', ['label' => 'Тип', 'enum' => TypeEnum::class, 'emptyItem' => ''])
-            ->enum('legal_entity_type', ['label' => 'Тип юр. лица', 'enum'=>LegalTypeEnum::class, 'multiple' => true])
+            ->enum('legal_entity_type', ['label' => 'Тип юр. лица', 'enum' => LegalTypeEnum::class, 'multiple' => true])
             ->enum('status', ['label' => 'Источник', 'enum' => StatusEnum::class, 'emptyItem' => '']);
     }
 }

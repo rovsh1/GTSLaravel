@@ -9,4 +9,6 @@ use Module\Client\Domain\Entity\Legal;
 interface LegalRepositoryInterface
 {
     public function get(int $id): ?Legal;
+
+    public function store(Legal $legal): bool;
 }
