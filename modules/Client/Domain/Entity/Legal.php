@@ -16,7 +16,7 @@ class Legal extends AbstractAggregateRoot implements EntityInterface
         private readonly LegalId $id,
         private string $name,
         private readonly LegalTypeEnum $type,
-        private BankRequisites $requisites,
+        private ?BankRequisites $requisites,
     ) {}
 
     public function id(): LegalId
