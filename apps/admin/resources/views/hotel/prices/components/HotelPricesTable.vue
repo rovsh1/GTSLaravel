@@ -15,6 +15,7 @@ import EditableCell from './EditableCell.vue'
 import SeasonEditPrice from './SeasonEditPrice.vue'
 import SeasonPriceDaysTable from './SeasonPriceDaysTable.vue'
 
+import { getStatusClassByFlag } from '../lib/status'
 import { PricesAccumulationData, Room, RoomSeasonPrice, Season, SeasonPeriod } from '../lib/types'
 
 const props = withDefaults(defineProps<{
@@ -78,6 +79,7 @@ watchEffect(() => {
             hotelID: props.hotelId,
             roomID: props.roomData.id,
             seasonID: season.id,
+            seasonStatusFlag: null,
             guestsCount: i,
             rateID: rate.id,
             rateName: rate.name,
@@ -97,6 +99,7 @@ watchEffect(() => {
           && seasonPrice.is_resident === roomSeasonPrice.isResident
           && seasonPrice.guests_count === roomSeasonPrice.guestsCount) {
           sourceRoomSeasonPrice.price = seasonPrice.price
+          sourceRoomSeasonPrice.seasonStatusFlag = seasonPrice.has_date_prices
         }
       })
     })
@@ -194,7 +197,11 @@ const handlerUpdateSeasonDaysData = (status :boolean) => {
               </th>
               <th ref="susctractElement2" class="type-name text-left align-middle">Резидент</th>
               <template v-for="item in roomSeasonsPricesData" :key="item.id">
-                <td v-if="item.rateID == rate.id && item.isResident" class="priced align-middle isActive">
+                <td
+                  v-if="item.rateID == rate.id && item.isResident"
+                  :class="[getStatusClassByFlag(item.seasonStatusFlag)]"
+                  class="priced align-middle"
+                >
                   <EditableCell
                     :value="item.price"
                     :enable-context-menu="true"
@@ -207,7 +214,11 @@ const handlerUpdateSeasonDaysData = (status :boolean) => {
             <tr>
               <th class="type-name text-left align-middle">Не резидент</th>
               <template v-for="item in roomSeasonsPricesData" :key="item.id">
-                <td v-if="item.rateID == rate.id && !item.isResident" class="priced align-middle isActive">
+                <td
+                  v-if="item.rateID == rate.id && !item.isResident"
+                  :class="[getStatusClassByFlag(item.seasonStatusFlag)]"
+                  class="priced align-middle"
+                >
                   <EditableCell
                     :value="item.price"
                     :enable-context-menu="true"

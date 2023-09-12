@@ -12,7 +12,7 @@ import OverlayLoading from '~components/OverlayLoading.vue'
 import EditableCell from './EditableCell.vue'
 
 import { daysOfWeek } from '../lib/constants'
-import { getPriceStatusClass } from '../lib/status'
+import { getStatusClassByPrice } from '../lib/status'
 import { PricesAccumulationData, PricesAccumulationDataForDays, SeasonPeriod } from '../lib/types'
 
 const props = withDefaults(defineProps<{
@@ -168,7 +168,7 @@ onMounted(async () => {
             <td
               v-for="item in daysInPeriod"
               :key="item.id"
-              :class="[getPriceStatusClass(seasonData.price, item.price)]"
+              :class="[getStatusClassByPrice(seasonData.price, item.price)]"
               class="priced align-middle text-center"
             >
               <EditableCell :value="item.price" :enable-context-menu="false" @change="value => changeData(item, value)" />

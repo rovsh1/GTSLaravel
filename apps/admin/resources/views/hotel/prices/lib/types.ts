@@ -31,6 +31,7 @@ export type RoomSeasonPrice = {
   is_resident: boolean
   guests_count: number
   price: number
+  has_date_prices: boolean
 }
 
 export type PricesAccumulationData = {
@@ -38,6 +39,7 @@ export type PricesAccumulationData = {
   hotelID: number
   roomID: number
   seasonID: number
+  seasonStatusFlag: boolean | null
   guestsCount: number
   rateID: number
   rateName?: string

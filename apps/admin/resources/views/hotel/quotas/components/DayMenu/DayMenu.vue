@@ -97,7 +97,7 @@ const {
 } = useDayMenuButtonStatus({ kind: 'reset', selectedKind, isFetching })
 </script>
 <template>
-  <div ref="floating" :style="floatingStyles">
+  <div ref="floating" class="menu-floating" :style="floatingStyles">
     <div
       class="fakeTooltip tooltip bs-tooltip-auto"
       :data-popper-placement="placement"
@@ -133,6 +133,10 @@ const {
   </div>
 </template>
 <style lang="scss" scoped>
+.menu-floating {
+  z-index: 350;
+}
+
 .menu {
   border: solid var(--bs-list-group-border-width) var(--bs-list-group-border-color);
   border-radius: var(--bs-list-group-border-radius);
