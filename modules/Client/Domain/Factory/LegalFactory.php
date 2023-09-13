@@ -25,13 +25,15 @@ class LegalFactory extends AbstractEntityFactory
     protected function fromArray(array $data): mixed
     {
         $bankRequisites = $data['requisites'] ?? null;
-        if($bankRequisites !== null) {
+        if ($bankRequisites !== null) {
             $bankRequisites = $this->serializer->deserialize(BankRequisites::class, $bankRequisites);
         }
+        $industryId = $data['industry_id'] ?? null;
+
         return new $this->entity(
             new LegalId($data['id']),
             $data['name'],
-            new IndustryId($data['industry_id']),
+            $industryId !== null ? new IndustryId($industryId) : null,
             $data['address'],
             LegalTypeEnum::from($data['type']),
             $bankRequisites
