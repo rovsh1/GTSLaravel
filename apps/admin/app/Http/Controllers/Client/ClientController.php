@@ -174,6 +174,7 @@ class ClientController extends AbstractPrototypeController
     {
         return Form::text('name', ['label' => 'ФИО или название компании', 'required' => true])
             ->enum('type', ['label' => 'Тип', 'enum' => TypeEnum::class, 'required' => true, 'emptyItem' => ''])
+            ->hidden('gender', ['label' => 'Пол'])
             ->city('city_id', ['label' => 'Город', 'required' => true, 'emptyItem' => ''])
             ->enum('status', ['label' => 'Статус', 'enum' => StatusEnum::class])
             ->currency('currency_id', ['label' => 'Валюта', 'required' => true, 'emptyItem' => ''])
