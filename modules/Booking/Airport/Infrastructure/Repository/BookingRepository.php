@@ -77,8 +77,10 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
                         $airport->id,
                         $airport->name
                     ),
-                    cancelConditions: CancelConditions::fromData($detailsData['cancelConditions']),
-                    additionalInfo: new AdditionalInfo($detailsData['flightNumber']),
+//                    cancelConditions: CancelConditions::fromData($detailsData['cancelConditions']),
+//                    additionalInfo: new AdditionalInfo($detailsData['flightNumber']),
+                    cancelConditions: null,
+                    additionalInfo: null,
                     guestIds: new GuestIdsCollection(),
                     date: $date->toImmutable(),
                     serviceInfo: new ServiceInfo(
@@ -132,6 +134,8 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
             guestIds: GuestIdsCollection::fromData($booking->guest_ids),
             airportInfo: AirportInfo::fromData($detailsData['airportInfo']),
             serviceInfo: ServiceInfo::fromData($detailsData['serviceInfo']),
+            additionalInfo: null,
+            cancelConditions: null,
             date: CarbonImmutable::createFromTimestamp($detailsData['date'])
         );
     }

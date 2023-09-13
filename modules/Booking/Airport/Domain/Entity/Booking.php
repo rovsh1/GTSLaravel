@@ -30,8 +30,8 @@ class Booking extends AbstractBooking
         private readonly ServiceInfo $serviceInfo,
         private readonly AirportInfo $airportInfo,
         private readonly CarbonImmutable $date,
-        private CancelConditions $cancelConditions,
-        private AdditionalInfo $additionalInfo,
+        private ?CancelConditions $cancelConditions,
+        private ?AdditionalInfo $additionalInfo,
         private readonly GuestIdsCollection $guestIds,
         private ?string $note
     ) {
