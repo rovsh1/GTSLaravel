@@ -1,0 +1,1 @@
+[Дизайн](https://www.figma.com/file/k3KUQAQvecWChrfN4Uf1xW/GotoStans?type=design&node-id=227%3A917&mode=design&t=jTBhVJTvpcGIBJh5-1)

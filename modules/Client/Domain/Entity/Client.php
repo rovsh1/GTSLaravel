@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Client\Domain\Entity;
 
-use Module\Client\Domain\ValueObject\BankRequisites;
 use Module\Client\Domain\ValueObject\ClientId;
 use Module\Shared\Domain\Entity\EntityInterface;
 use Module\Shared\Enum\Client\ResidencyEnum;

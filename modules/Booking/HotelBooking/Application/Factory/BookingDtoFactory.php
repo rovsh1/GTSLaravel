@@ -57,13 +57,19 @@ class BookingDtoFactory extends AbstractBookingDtoFactory
      */
     private function buildRooms(RoomBookingCollection $roomBookings): array
     {
-        return $roomBookings->map(fn(RoomBooking $roomBooking) => new RoomBookingDto(
-            id: $roomBooking->id()->value(),
-            status: $roomBooking->status()->value,
-            roomInfo: RoomInfoDto::fromDomain($roomBooking->roomInfo()),
-            guestIds: $roomBooking->guestIds()->map(fn(GuestId $id) => $id->value()),
-            details: RoomBookingDetailsDto::fromDomain($roomBooking->details()),
-            price: RoomPriceDto::fromDomain($roomBooking->price())
-        ))->all();
+        $dtos = [];
+        foreach ($roomBookings as $roomBooking) {
+            //@todo Поместить туристов в заказы, и на фронте склеивать по id
+            $guests = $this->guestRepository->get($roomBooking->guestIds());
+            $dtos[] = new RoomBookingDto(
+                id: $roomBooking->id()->value(),
+                roomInfo: RoomInfoDto::fromDomain($roomBooking->roomInfo()),
+                guests: GuestDto::collectionFromDomain($guests),
+                details: RoomBookingDetailsDto::fromDomain($roomBooking->details()),
+                price: RoomPriceDto::fromDomain($roomBooking->price())
+            );
+        }
+
+        return $dtos;
     }
 }

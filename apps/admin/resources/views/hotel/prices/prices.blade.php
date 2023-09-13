@@ -23,7 +23,6 @@
     <div class="content-header">
         <div class="title">{{ $title }}</div>
     </div>
-
-    <div class="content-body rooms-cards" id="hotel-prices">
-      </div>
+    <div class="content-body" id="hotel-prices">
+    </div>
 @endsection

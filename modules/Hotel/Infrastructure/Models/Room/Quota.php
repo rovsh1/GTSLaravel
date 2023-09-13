@@ -59,6 +59,10 @@ class Quota extends Model
         'count_reserved',
     ];
 
+    protected $attributes = [
+        'status' => QuotaStatusEnum::OPEN,
+    ];
+
     protected $appends = [
         'count_available',
         'count_booked',
@@ -72,7 +76,7 @@ class Quota extends Model
 
     public function countAvailable(): Attribute
     {
-        return Attribute::get(fn() => $this->count_total - $this->count_booked - $this->count_reserved);
+        return Attribute::get(fn(int|null $val, array $attributes) => (int)($attributes['count_available'] ?? 0));
     }
 
     public function countBooked(): Attribute
@@ -105,7 +109,7 @@ class Quota extends Model
 
     public function scopeWhereSold(Builder $builder): void
     {
-        $builder->where('count_available', 0)
+        $builder->having('count_available', 0)
             ->where('count_total', '>', 0);
     }
 
@@ -117,7 +121,7 @@ class Quota extends Model
     public function scopeWhereAvailable(Builder $builder): void
     {
         $builder->whereStatus(QuotaStatusEnum::OPEN)
-            ->where('count_available', '>', 0);
+            ->having('count_available', '>', 0);
     }
 
     public function scopeWithCountColumns(Builder $builder): void
@@ -132,6 +136,15 @@ class Quota extends Model
             $builder,
             [QuotaChangeTypeEnum::BOOKED],
             'count_booked'
+        );
+
+        $countSoldSubQuery = DB::table('booking_quota_reservation')
+                ->selectRaw('SUM(value)')
+                ->whereColumn('hotel_room_quota.id', '=', 'booking_quota_reservation.quota_id')
+                ->whereIn('type', [QuotaChangeTypeEnum::RESERVED, QuotaChangeTypeEnum::BOOKED]);
+
+        $builder->addSelect(
+            DB::raw("(count_total - ({$countSoldSubQuery->toRawSql()})) as count_available"),
         );
     }
 

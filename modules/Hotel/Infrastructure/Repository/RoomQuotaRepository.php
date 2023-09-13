@@ -51,7 +51,7 @@ class RoomQuotaRepository implements RoomQuotaRepositoryInterface
 
     public function updateRoomQuota(int $roomId, CarbonPeriod $period, ?int $quota, ?int $releaseDays = null): void
     {
-        $updateData = ['date' => $period->getStartDate(), 'room_id' => $roomId, 'status' => QuotaStatusEnum::CLOSE];
+        $updateData = ['date' => $period->getStartDate(), 'room_id' => $roomId];
         if ($quota !== null) {
             $updateData['count_total'] = $quota;
         }

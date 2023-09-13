@@ -28,6 +28,7 @@ import { Currency } from '~api/models'
 
 import { formatDate, formatDateTime } from '~lib/date'
 import { requestInitialData } from '~lib/initial-data'
+import { formatPrice } from '~lib/price'
 
 import BootstrapSelectBase from '~components/Bootstrap/BootstrapSelectBase.vue'
 
@@ -223,8 +224,7 @@ const handleSaveHoPenalty = async (value: number | undefined) => {
     <div v-if="booking && orderCurrency" class="float-end">
       Общая сумма:
       <strong>
-        {{ booking.price.boPrice.value }}
-        <span class="cur">{{ orderCurrency.sign }}</span>
+        {{ formatPrice(booking.price.boPrice.value, orderCurrency.sign) }}
       </strong>
       <span v-if="booking.price.boPrice.isManual" class="text-muted">(выставлена вручную)</span>
     </div>
@@ -295,10 +295,9 @@ const handleSaveHoPenalty = async (value: number | undefined) => {
     </div>
 
     <div v-if="booking && orderCurrency" class="mt-2">
-      Прибыль = {{ booking.price.boPrice.value }} {{ orderCurrency.sign }} - {{ booking.price.hoPrice.value }}
-      {{ orderCurrency.sign }} = {{ booking.price.boPrice.value - booking.price.hoPrice.value }} {{
-        orderCurrency.sign
-      }}
+      Прибыль = {{ formatPrice(booking.price.boPrice.value, orderCurrency.sign) }} -
+      {{ formatPrice(booking.price.hoPrice.value, orderCurrency.sign) }} =
+      {{ formatPrice((booking.price.boPrice.value - booking.price.hoPrice.value), orderCurrency.sign) }}
     </div>
 
     <div v-if="lastHistoryItem && lastHistoryItem?.payload?.reason" class="mt-2 alert alert-warning" role="alert">

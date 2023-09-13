@@ -1,4 +1,5 @@
 <script setup lang="ts">
+
 import { MaybeRef } from '@vueuse/core'
 
 import LoadingSpinner from '~components/LoadingSpinner.vue'
@@ -10,6 +11,7 @@ withDefaults(defineProps<{
   title: undefined,
   loading: false,
 })
+
 </script>
 <template>
   <div class="baseLayout">

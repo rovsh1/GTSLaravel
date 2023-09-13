@@ -17,6 +17,8 @@ use App\Admin\Support\Facades\Sidebar;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Layout as LayoutContract;
 use App\Admin\View\Menus\HotelMenu;
+use App\Core\Support\Http\Responses\AjaxRedirectResponse;
+use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -104,16 +106,16 @@ class RoomController extends Controller
 
         $data = $form->getData();
         $room->update($data);
-        $room->updateBeds($data['beds']);
+        $room->updateBeds($data['beds'] ?? []);
 
         return redirect(route('hotels.rooms.index', $hotel));
     }
 
-    public function destroy(Request $request, Hotel $hotel, Room $room): RedirectResponse
+    public function destroy(Request $request, Hotel $hotel, Room $room): AjaxResponseInterface
     {
         $room->delete();
 
-        return redirect(route('hotels.rooms.index', $hotel));
+        return new AjaxRedirectResponse(route('hotels.rooms.index', $hotel));
     }
 
     public function position(Request $request, Hotel $hotel): array

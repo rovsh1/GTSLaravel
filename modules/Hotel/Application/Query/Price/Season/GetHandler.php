@@ -3,6 +3,7 @@
 namespace Module\Hotel\Application\Query\Price\Season;
 
 use Module\Hotel\Application\Factory\PriceDtoFactory;
+use Module\Hotel\Application\Factory\SeasonPriceDtoFactory;
 use Module\Hotel\Infrastructure\Models\SeasonPrice;
 use Sdk\Module\Contracts\Bus\QueryHandlerInterface;
 use Sdk\Module\Contracts\Bus\QueryInterface;
@@ -13,6 +14,6 @@ class GetHandler implements QueryHandlerInterface
     {
         $prices = SeasonPrice::whereHotelId($query->hotelId)->withGroup()->get();
 
-        return PriceDtoFactory::collection($prices);
+        return SeasonPriceDtoFactory::collection($prices);
     }
 }

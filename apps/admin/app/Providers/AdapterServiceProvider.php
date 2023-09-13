@@ -5,6 +5,7 @@ namespace App\Admin\Providers;
 use App\Admin\Support\Adapters\Booking;
 use App\Admin\Support\Adapters\Hotel;
 use App\Admin\Support\Adapters\MailAdapter;
+use App\Admin\Support\Facades\Client;
 use Illuminate\Support\ServiceProvider;
 
 class AdapterServiceProvider extends ServiceProvider
@@ -16,6 +17,7 @@ class AdapterServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->app->singleton(MailAdapter::class);
+        $this->app->singleton(Client\LegalAdapter::class, Client\LegalAdapter::class);
         $this->app->singleton(Hotel\QuotaAdapter::class, Hotel\QuotaAdapter::class);
         $this->app->singleton(Hotel\MarkupSettingsAdapter::class, Hotel\MarkupSettingsAdapter::class);
         $this->app->singleton(Hotel\PricesAdapter::class, Hotel\PricesAdapter::class);

@@ -7,6 +7,7 @@ use App\Admin\Http\Requests\Hotel\BatchUpdatePriceRequest;
 use App\Admin\Http\Requests\Hotel\UpdatePriceRequest;
 use App\Admin\Http\Resources\Price;
 use App\Admin\Http\Resources\PriceRate;
+use App\Admin\Http\Resources\SeasonPrice;
 use App\Admin\Models\Hotel\Hotel;
 use App\Admin\Models\Hotel\Season;
 use App\Admin\Support\Facades\Breadcrumb;
@@ -39,7 +40,7 @@ class PriceController extends Controller
         $prices = PricesAdapter::getSeasonsPrices($hotel->id);
 
         return response()->json(
-            Price::collection($prices)
+            SeasonPrice::collection($prices)
         );
     }
 

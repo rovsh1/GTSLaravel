@@ -9,7 +9,6 @@ use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\HotelBooking\Domain\Service\PriceCalculator\RoomPriceEditor;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBookingDetails;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBookingId;
-use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBookingStatusEnum;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomInfo;
 use Module\Booking\HotelBooking\Domain\ValueObject\RoomPrice;
 use Module\Booking\Order\Domain\ValueObject\GuestIdsCollection;
@@ -22,7 +21,6 @@ class RoomBooking extends AbstractAggregateRoot implements EntityInterface
         private readonly RoomBookingId $id,
         private readonly BookingId $bookingId,
         private readonly OrderId $orderId,
-        private RoomBookingStatusEnum $status,
         private RoomInfo $roomInfo,
         private GuestIdsCollection $guestsIds,
         private RoomBookingDetails $details,
@@ -42,11 +40,6 @@ class RoomBooking extends AbstractAggregateRoot implements EntityInterface
     public function orderId(): OrderId
     {
         return $this->orderId;
-    }
-
-    public function status(): RoomBookingStatusEnum
-    {
-        return $this->status;
     }
 
     public function guestIds(): GuestIdsCollection
@@ -105,7 +98,6 @@ class RoomBooking extends AbstractAggregateRoot implements EntityInterface
             'id' => $this->id->value(),
             'orderId' => $this->orderId->value(),
             'bookingId' => $this->bookingId->value(),
-            'status' => $this->status->value,
             'roomInfo' => $this->roomInfo->toData(),
             'details' => $this->details->toData(),
             'price' => $this->price->toData()
@@ -118,7 +110,6 @@ class RoomBooking extends AbstractAggregateRoot implements EntityInterface
             id: new RoomBookingId($data['id']),
             orderId: new OrderId($data['orderId']),
             bookingId: new BookingId($data['bookingId']),
-            status: RoomBookingStatusEnum::from($data['status']),
             roomInfo: RoomInfo::fromData($data['roomInfo']),
             guestsIds: GuestIdsCollection::fromData($data['guestIds']),
             details: RoomBookingDetails::fromData($data['details']),

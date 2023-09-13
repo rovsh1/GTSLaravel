@@ -12,7 +12,7 @@ import InfoBlock from '~resources/views/hotel-booking/show/components/InfoBlock/
 import InfoBlockTitle from '~resources/views/hotel-booking/show/components/InfoBlock/InfoBlockTitle.vue'
 import RoomModal from '~resources/views/hotel-booking/show/components/RoomModal.vue'
 import RoomPriceModal from '~resources/views/hotel-booking/show/components/RoomPriceModal.vue'
-import { getConditionLabel, getRoomStatusName } from '~resources/views/hotel-booking/show/lib/constants'
+import { getConditionLabel } from '~resources/views/hotel-booking/show/lib/constants'
 import { GuestFormData, RoomFormData } from '~resources/views/hotel-booking/show/lib/data-types'
 import { useBookingStore } from '~resources/views/hotel-booking/show/store/booking'
 import { useOrderStore } from '~resources/views/hotel-booking/show/store/order'
@@ -34,6 +34,7 @@ import { Currency } from '~api/models'
 import { showConfirmDialog } from '~lib/confirm-dialog'
 import { formatDate } from '~lib/date'
 import { requestInitialData } from '~lib/initial-data'
+import { formatPrice } from '~lib/price'
 
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 import Card from '~components/Bootstrap/BootstrapCard/BootstrapCard.vue'
@@ -61,7 +62,12 @@ const markupSettings = computed<MarkupSettings | null>(() => bookingStore.markup
 const isEditableStatus = computed<boolean>(() => bookingStore.availableActions?.isEditable || false)
 const orderCurrency = computed<Currency | undefined>(() => orderStore.currency)
 const orderGuests = computed<Guest[]>(() => orderStore.guests || [])
-const canChangeRoomPrice = computed<boolean>(() => bookingStore.availableActions?.canChangeRoomPrice || false)
+const isBookingPriceManual = computed(
+  () => bookingStore.booking?.price.boPrice.isManual || bookingStore.booking?.price.hoPrice.isManual,
+)
+const canChangeRoomPrice = computed<boolean>(
+  () => (bookingStore.availableActions?.canChangeRoomPrice && !isBookingPriceManual.value) || false,
+)
 
 const { execute: fetchPriceRates, data: priceRates } = useHotelRatesAPI({ hotelID })
 const { data: countries, execute: fetchCountries } = useCountrySearchAPI()
@@ -111,7 +117,6 @@ const handleEditRoom = (roomBookingId: number, room: HotelRoomBooking): void => 
   editRoomBookingId.value = roomBookingId
   roomForm.value = {
     id: room.roomInfo.id,
-    status: room.status,
     discount: room.details.discount,
     rateId: room.details.rateId,
     earlyCheckIn: room.details.earlyCheckIn,
@@ -232,10 +237,6 @@ fetchCountries()
         <table class="table-params">
           <tbody>
             <tr>
-              <th>Статус</th>
-              <td>{{ getRoomStatusName(room.status) }}</td>
-            </tr>
-            <tr>
               <th>Тип стоимости</th>
               <td>{{ room.details.isResident ? 'Резидент' : 'Не резидент' }}</td>
             </tr>
@@ -279,8 +280,7 @@ fetchCountries()
                   {{ formatDate(dayPrice.date) }}
                 </td>
                 <td class="text-nowrap">
-                  {{ dayPrice.boValue }}
-                  <span class="cur">{{ orderCurrency.sign }}</span>
+                  {{ formatPrice(dayPrice.boValue, orderCurrency.sign) }}
                 </td>
                 <td class="text-nowrap">{{ dayPrice.boFormula }}</td>
               </tr>
@@ -296,8 +296,8 @@ fetchCountries()
         <!--            </span>-->
         <!--          </div>-->
         <div v-if="orderCurrency" class="d-flex flex-row justify-content-between w-100 mt-2">
-          <strong>Итого: {{ room.price.boValue }}
-            <span class="cur">{{ orderCurrency.sign }}</span>
+          <strong>
+            Итого: {{ formatPrice(room.price.boValue, orderCurrency.sign) }}
           </strong>
           <a
             v-if="canChangeRoomPrice"

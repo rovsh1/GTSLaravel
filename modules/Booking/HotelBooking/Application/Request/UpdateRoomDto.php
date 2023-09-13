@@ -11,7 +11,6 @@ class UpdateRoomDto
         public readonly int $roomBookingId,
         public readonly int $roomId,
         public readonly int $rateId,
-        public readonly int $status,
         public readonly bool $isResident,
         public readonly array|null $earlyCheckIn = null,
         public readonly array|null $lateCheckOut = null,

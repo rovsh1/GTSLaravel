@@ -1,13 +1,11 @@
 @use "~resources/views/main";
 
 .rooms-cards {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 32px;
 
   .card {
-    flex-grow: 1;
-    flex-basis: 30%;
     overflow: hidden;
   }
 
@@ -76,5 +74,11 @@
 
   .ui-sortable-placeholder {
     border-style: dashed;
+  }
+}
+
+@media screen and (width <=1265px) {
+  .rooms-cards {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   }
 }

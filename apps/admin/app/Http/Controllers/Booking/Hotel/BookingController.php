@@ -169,18 +169,15 @@ class BookingController extends Controller
 
     public function show(int $id): LayoutContract
     {
-        $title = "Бронь №{$id}";
-
         $booking = HotelAdapter::getBooking($id);
         $order = OrderAdapter::findOrder($booking->orderId);
         $hotelId = $booking->hotelInfo->id;
         $client = Client::find($order->clientId);
         $hotel = Hotel::find($hotelId);
 
-//        Breadcrumb::prototype($this->prototype)
-//            ->add($title);
-
-//        $this->prepareShowMenu($this->model);
+        $title = "Бронь №{$id}";
+        Breadcrumb::prototype($this->prototype)
+            ->add($title);
 
         return Layout::title($title)
             ->view($this->prototype->view('show'), [

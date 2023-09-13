@@ -70,7 +70,7 @@ class QuotaReservationManager
     private function executeWithAvailableQuota(Booking $booking, callable $callback): void
     {
         //сбрасываю квоты до получения доступных, т.к. если получать до сброса комнаты из брони минусуют available.
-        $this->quotaRepository->resetByBookingId($booking->id());
+        $this->quotaRepository->cancel($booking->id());
         $availableQuotas = $this->quotaValidator->getQuotasIfAvailable($booking);
 
         foreach ($availableQuotas as $quota) {

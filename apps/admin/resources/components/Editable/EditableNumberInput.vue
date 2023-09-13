@@ -54,7 +54,7 @@ const displayValue = computed(() => {
   }
   const dimensionText = props.dimension && localValue ? props.dimension : ''
 
-  return `${localValue.value} ${dimensionText}`
+  return `${localValue.value}${dimensionText}`
 })
 
 watch(inputRef, (element) => {
@@ -107,11 +107,7 @@ if (props.saveClickOutside && !props.hideClickOutside) {
       {{ displayValue }}
     </span>
 
-    <Tooltip
-      v-else
-      theme="tooltip"
-      handle-resize
-    >
+    <Tooltip v-else theme="tooltip" handle-resize>
       <input
         ref="inputRef"
         v-model.number="localValue"
@@ -123,11 +119,16 @@ if (props.saveClickOutside && !props.hideClickOutside) {
         @keydown.enter="onPressEnter"
       />
       <template #popper>
-        <div>Нажмите <InlineSVG :src="enterIcon" /> Enter, чтобы подтвердить изменения</div>
+        <div>
+          Нажмите
+          <InlineSVG :src="enterIcon" /> Enter, чтобы подтвердить изменения
+        </div>
         <div>
           Нажмите
           <template v-if="isMacOS">⎋ Esc</template>
-          <template v-else><InlineSVG :src="escapeIcon" /> Esc</template>,
+          <template v-else>
+            <InlineSVG :src="escapeIcon" /> Esc
+          </template>,
           чтобы отменить изменения и сбросить выделение
         </div>
       </template>

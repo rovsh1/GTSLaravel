@@ -7,31 +7,40 @@ namespace App\Admin\Http\Controllers\Client;
 use App\Admin\Http\Requests\Client\CreateClientRequest;
 use App\Admin\Http\Resources\Client as ClientResource;
 use App\Admin\Models\Client\Legal;
+use App\Admin\Models\Reference\Country;
+use App\Admin\Repositories\ClientAdministratorRepository;
 use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\ActionsMenu;
+use App\Admin\Support\Facades\Client\LegalAdapter;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Facades\Sidebar;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
+use App\Admin\Support\View\Grid\SearchForm;
 use App\Admin\Support\View\Layout as LayoutContract;
 use App\Admin\View\Menus\ClientMenu;
 use Gsdk\Format\View\ParamsTable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
-use Module\Shared\Enum\Client\PriceTypeEnum;
+use Module\Shared\Enum\Client\LegalTypeEnum;
+use Module\Shared\Enum\Client\ResidencyEnum;
 use Module\Shared\Enum\Client\StatusEnum;
 use Module\Shared\Enum\Client\TypeEnum;
 
 class ClientController extends AbstractPrototypeController
 {
+    public function __construct(
+        private readonly ClientAdministratorRepository $clientAdministratorRepository
+    ) {
+        parent::__construct();
+    }
+
     protected function getPrototypeKey(): string
     {
         return 'client';
     }
-
-    //@todo менеджер клиента - в таблицу administrator_clients
 
     public function storeDialog(CreateClientRequest $request): JsonResponse
     {
@@ -41,20 +50,38 @@ class ClientController extends AbstractPrototypeController
             'type' => $request->getType(),
             'name' => $request->getName(),
             'status' => $request->getStatus(),
+            'residency' => $request->getResidency(),
         ]);
         $this->model = $this->repository->create($data);
         $legalData = $request->getLegal();
         if ($legalData !== null) {
-            Legal::create([
+            $legal = Legal::create([
                 'client_id' => $this->model->id,
                 'city_id' => $request->getCityId(),
                 'industry_id' => $legalData->industry,
                 'type' => $legalData->type,
                 'name' => $legalData->name,
                 'address' => $legalData->address,
-                //@todo реквизиты
             ]);
+
+            LegalAdapter::setBankRequisites(
+                clientLegalId: $legal->id,
+                cityName: $legalData->bankCity ?? '',
+                currentAccount: $legalData->currentAccount ?? '',
+                correspondentAccount: $legalData->corrAccount ?? '',
+                kpp: $legalData->kpp ?? '',
+                okpo: $legalData->okpoCode ?? '',
+                inn: $legalData->inn ?? '',
+                bik: $legalData->bik ?? '',
+                bankName: $legalData->bankName ?? ''
+            );
         }
+
+        $managerId = $request->user()->id;
+        if ($request->getManagerId() !== null) {
+            $managerId = $request->getManagerId();
+        }
+        $this->clientAdministratorRepository->create($this->model->id, $managerId);
 
         return response()->json(
             ClientResource::make($this->model)
@@ -134,6 +161,7 @@ class ClientController extends AbstractPrototypeController
     protected function gridFactory(): GridContract
     {
         return Grid::enableQuicksearch()
+            ->setSearchForm($this->searchForm())
             ->paginator(self::GRID_LIMIT)
             ->text('name', ['text' => 'ФИО', 'route' => $this->prototype->routeName('show')])
             ->enum('type', ['text' => 'Тип', 'enum' => TypeEnum::class])
@@ -145,14 +173,24 @@ class ClientController extends AbstractPrototypeController
     protected function formFactory(): FormContract
     {
         return Form::text('name', ['label' => 'ФИО или название компании', 'required' => true])
-            ->enum('type', ['label' => 'Тип', 'enum' => TypeEnum::class, 'required' => true])
-            ->city('city_id', ['label' => 'Город', 'required' => true])
+            ->enum('type', ['label' => 'Тип', 'enum' => TypeEnum::class, 'required' => true, 'emptyItem' => ''])
+            ->city('city_id', ['label' => 'Город', 'required' => true, 'emptyItem' => ''])
             ->enum('status', ['label' => 'Статус', 'enum' => StatusEnum::class])
-            ->currency('currency_id', ['label' => 'Валюта', 'required' => true])
+            ->currency('currency_id', ['label' => 'Валюта', 'required' => true, 'emptyItem' => ''])
             ->enum(
-                'price_types',
-                ['label' => 'Тип цены', 'multiple' => true, 'enum' => PriceTypeEnum::class, 'required' => true]
+                'residency',
+                ['label' => 'Тип цены', 'enum' => ResidencyEnum::class, 'required' => true, 'emptyItem' => '']
             )
-            ->manager('administrator_id', ['label' => 'Менеджер']);
+            ->manager('administrator_id', ['label' => 'Менеджер', 'emptyItem' => '']);
+    }
+
+    private function searchForm()
+    {
+        return (new SearchForm())
+            ->select('country_id', ['label' => 'Страна', 'emptyItem' => '', 'items' => Country::get()])
+            ->city('city_id', ['label' => 'Город', 'emptyItem' => ''])
+            ->enum('type', ['label' => 'Тип', 'enum' => TypeEnum::class, 'emptyItem' => ''])
+            ->enum('legal_entity_type', ['label' => 'Тип юр. лица', 'enum' => LegalTypeEnum::class, 'multiple' => true])
+            ->enum('status', ['label' => 'Источник', 'enum' => StatusEnum::class, 'emptyItem' => '']);
     }
 }

@@ -6,6 +6,7 @@ namespace Module\Client\Domain\Factory;
 
 use Module\Client\Domain\Entity\Legal;
 use Module\Client\Domain\ValueObject\BankRequisites;
+use Module\Client\Domain\ValueObject\IndustryId;
 use Module\Client\Domain\ValueObject\LegalId;
 use Module\Shared\Domain\Service\SerializerInterface;
 use Module\Shared\Enum\Client\LegalTypeEnum;
@@ -23,11 +24,19 @@ class LegalFactory extends AbstractEntityFactory
 
     protected function fromArray(array $data): mixed
     {
+        $bankRequisites = $data['requisites'] ?? null;
+        if ($bankRequisites !== null) {
+            $bankRequisites = $this->serializer->deserialize(BankRequisites::class, $bankRequisites);
+        }
+        $industryId = $data['industry_id'] ?? null;
+
         return new $this->entity(
             new LegalId($data['id']),
             $data['name'],
+            $industryId !== null ? new IndustryId($industryId) : null,
+            $data['address'],
             LegalTypeEnum::from($data['type']),
-            $this->serializer->deserialize(BankRequisites::class, $data['requisites'])
+            $bankRequisites
         );
     }
 }
