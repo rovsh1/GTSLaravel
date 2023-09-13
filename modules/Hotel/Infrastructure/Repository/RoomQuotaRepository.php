@@ -45,6 +45,7 @@ class RoomQuotaRepository implements RoomQuotaRepositoryInterface
     public function closeRoomQuota(int $roomId, CarbonPeriod $period)
     {
         $data = $this->prepareQuotaDataByPeriod($roomId, $period, type: QuotaTypeEnum::Close);
+        \Log::debug('closeRoomQuota', $data);
         EloquentQuota::upsert(
             $data,
             ['room_id', 'date'],
