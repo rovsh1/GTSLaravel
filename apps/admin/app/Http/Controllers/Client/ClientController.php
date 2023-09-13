@@ -173,15 +173,15 @@ class ClientController extends AbstractPrototypeController
     protected function formFactory(): FormContract
     {
         return Form::text('name', ['label' => 'ФИО или название компании', 'required' => true])
-            ->enum('type', ['label' => 'Тип', 'enum' => TypeEnum::class, 'required' => true])
-            ->city('city_id', ['label' => 'Город', 'required' => true])
+            ->enum('type', ['label' => 'Тип', 'enum' => TypeEnum::class, 'required' => true, 'emptyItem' => ''])
+            ->city('city_id', ['label' => 'Город', 'required' => true, 'emptyItem' => ''])
             ->enum('status', ['label' => 'Статус', 'enum' => StatusEnum::class])
-            ->currency('currency_id', ['label' => 'Валюта', 'required' => true])
+            ->currency('currency_id', ['label' => 'Валюта', 'required' => true, 'emptyItem' => ''])
             ->enum(
                 'residency',
-                ['label' => 'Тип цены', 'enum' => ResidencyEnum::class, 'required' => true]
+                ['label' => 'Тип цены', 'enum' => ResidencyEnum::class, 'required' => true, 'emptyItem' => '']
             )
-            ->manager('administrator_id', ['label' => 'Менеджер']);
+            ->manager('administrator_id', ['label' => 'Менеджер', 'emptyItem' => '']);
     }
 
     private function searchForm()
