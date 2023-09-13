@@ -1,0 +1,147 @@
+<script lang="ts" setup>
+import { computed, reactive, watch } from 'vue'
+
+import { nanoid } from 'nanoid'
+
+import { updateRoomSeasonPricesBatch } from '~resources/api/hotel/prices/seasons'
+import { formatDateToAPIDate } from '~resources/lib/date'
+
+import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
+import { showToast } from '~components/Bootstrap/BootstrapToast'
+import DateRangePicker from '~components/DateRangePicker.vue'
+import MultiSelect from '~components/MultiSelect.vue'
+
+import { daysOfWeekOptions } from '../lib/constants'
+import { stringToNumber } from '../lib/convert'
+import { PricesAccumulationData, SeasonPeriod, SeasonUpdateFormData } from '../lib/types'
+
+const props = withDefaults(defineProps<{
+  cellId?: string
+  seasonPeriod: SeasonPeriod
+  seasonData: PricesAccumulationData
+}>(), {
+  cellId: undefined,
+})
+
+const emit = defineEmits<{
+  (event: 'updateSeasonDaysData', status: boolean): void
+}>()
+
+const periodElementID = `${nanoid()}_period`
+const priceTypesElementID = `${nanoid()}_price-types`
+const priceElementID = `${nanoid()}_price-filter`
+
+const seasonFormData = reactive<SeasonUpdateFormData>({
+  period: [new Date(props.seasonPeriod.from), new Date(props.seasonPeriod.to)],
+  daysWeekSelected: daysOfWeekOptions.map((day) => day.value) as string[],
+  price: '',
+})
+
+watch(() => props.cellId, () => {
+  seasonFormData.period = [new Date(props.seasonPeriod.from), new Date(props.seasonPeriod.to)]
+  seasonFormData.daysWeekSelected = daysOfWeekOptions.map((day) => day.value) as string[]
+  seasonFormData.price = ''
+})
+
+const isValidForm = computed(() => stringToNumber(seasonFormData.price)
+  && seasonFormData.period?.length === 2 && seasonFormData.daysWeekSelected?.length > 0)
+
+const onSubmitUpdateData = async () => {
+  if (!isValidForm.value) return
+  emit('updateSeasonDaysData', true)
+  const { data: updateStatusResponse } = await updateRoomSeasonPricesBatch({
+    ...props.seasonData,
+    price: Number(seasonFormData.price),
+    date_from: formatDateToAPIDate(seasonFormData.period[0]),
+    date_to: formatDateToAPIDate(seasonFormData.period[1]),
+    week_days: seasonFormData.daysWeekSelected.map((str) => parseInt(str, 10)),
+  })
+  if (!updateStatusResponse.value || !updateStatusResponse.value.success) {
+    showToast({ title: 'Не удалось изменить цену' })
+  }
+  emit('updateSeasonDaysData', false)
+}
+</script>
+
+<template>
+  <div class="form-labels form-inline">
+    <div class="form-field field-daterange field-period field-required">
+      <DateRangePicker
+        :id="periodElementID"
+        label="Период"
+        required
+        :min-date="seasonPeriod.from"
+        :max-date="seasonPeriod.to"
+        :value="seasonFormData.period"
+        @input="(dates) => seasonFormData.period = dates"
+      />
+    </div>
+    <div class="form-field field-select field-days field-required">
+      <MultiSelect
+        :id="priceTypesElementID"
+        label="Выберите дни недели"
+        :label-margin="false"
+        required
+        :value="seasonFormData.daysWeekSelected"
+        :options="daysOfWeekOptions"
+        @input="value => seasonFormData.daysWeekSelected = value"
+      />
+    </div>
+    <div class="form-field field-price field-required">
+      <label :for="priceElementID">Цена</label>
+      <input :id="priceElementID" v-model="seasonFormData.price" required type="text" class="form-control">
+    </div>
+    <div class="form-field form-button">
+      <BootstrapButton label="Обновить" size="small" severity="primary" :disabled="!isValidForm" @click="onSubmitUpdateData" />
+    </div>
+  </div>
+</template>
+
+<style lang="scss">
+.form-inline {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-end;
+  margin-top: 1rem;
+
+  .form-button {
+    line-height: 21px;
+  }
+
+  .form-field {
+    margin-right: 16px;
+    margin-bottom: 16px;
+
+    label {
+      margin-bottom: 0;
+      font-size: 10px;
+    }
+
+    input,
+    .label {
+      font-size: 11px;
+    }
+  }
+
+  .field-period {
+    width: 180px;
+
+    input {
+      text-align: right;
+    }
+  }
+
+  .field-days {
+    width: 260px;
+  }
+
+  .field-price {
+    width: 90px;
+
+    input {
+      text-align: right;
+    }
+  }
+}
+</style>

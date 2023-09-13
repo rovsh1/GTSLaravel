@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Module\Hotel\Infrastructure\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\DB;
 use Module\Shared\Infrastructure\Models\Model;
 
 class SeasonPrice extends Model
@@ -22,6 +24,15 @@ class SeasonPrice extends Model
         'currency_id',
     ];
 
+    protected $appends = [
+        'has_date_prices'
+    ];
+
+    public function hasDatePrices(): Attribute
+    {
+        return Attribute::get(fn(int|null $val, array $attributes) => (bool)($attributes['has_date_prices'] ?? false));
+    }
+
     public function scopeWithGroup(Builder $builder): void
     {
         $builder
@@ -29,7 +40,16 @@ class SeasonPrice extends Model
             ->join('hotel_price_groups', 'hotel_price_groups.id', '=', 'hotel_season_prices.group_id')
             ->addSelect('hotel_price_groups.rate_id as rate_id')
             ->addSelect('hotel_price_groups.guests_count as guests_count')
-            ->addSelect('hotel_price_groups.is_resident as is_resident');
+            ->addSelect('hotel_price_groups.is_resident as is_resident')
+            ->selectSub(
+                DB::table('hotel_season_price_calendar')
+                    ->selectRaw('1')
+                    ->whereColumn('hotel_season_price_calendar.season_id', '=', 'hotel_season_prices.season_id')
+                    ->whereColumn('hotel_season_price_calendar.group_id', '=', 'hotel_season_prices.group_id')
+                    ->whereColumn('hotel_season_price_calendar.room_id', '=', 'hotel_season_prices.room_id')
+                    ->limit(1),
+                'has_date_prices'
+            );
     }
 
     public function scopeWhereHotelId(Builder $builder, int $hotelId): void

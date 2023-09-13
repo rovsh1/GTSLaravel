@@ -4,7 +4,10 @@
         "target": "ESNext",
         "strict": true,
         "module": "ESNext",
-        "lib": ["ESNext", "DOM"],
+        "lib": [
+            "ESNext",
+            "DOM"
+        ],
         "moduleResolution": "Node",
         "sourceMap": true,
         "allowSyntheticDefaultImports": true,
@@ -25,12 +28,24 @@
         ],
         "baseUrl": "./",
         "paths": {
-            "~resources/*": ["resources/*"],
-            "~api": ["resources/api/index"],
-            "~api/*": ["resources/api/*"],
-            "~lib": ["resources/lib/index"],
-            "~lib/*": ["resources/lib/*"],
-            "~components/*": ["resources/components/*"]
+            "~resources/*": [
+                "resources/*"
+            ],
+            "~api": [
+                "resources/api/index"
+            ],
+            "~api/*": [
+                "resources/api/*"
+            ],
+            "~lib": [
+                "resources/lib/index"
+            ],
+            "~lib/*": [
+                "resources/lib/*"
+            ],
+            "~components/*": [
+                "resources/components/*"
+            ]
         }
     },
     "include": [

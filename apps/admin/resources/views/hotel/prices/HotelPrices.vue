@@ -1,72 +1,72 @@
 <script lang="ts" setup>
 
+import { onMounted, ref } from 'vue'
+
 import { z } from 'zod'
+
+import { useRoomSeasonsPricesListAPI } from '~resources/api/hotel/prices/seasons'
 
 import { requestInitialData } from '~lib/initial-data'
 
-import BaseLayout from '~components/BaseLayout.vue'
+import BootstrapCard from '~components/Bootstrap/BootstrapCard/BootstrapCard.vue'
 
-const { hotelID } = requestInitialData(
+import HotelPricesTable from './components/HotelPricesTable.vue'
+
+const { hotelID, rooms, seasons } = requestInitialData(
   'view-initial-data-hotel-prices',
   z.object({
     hotelID: z.number(),
+    rooms: z.array(z.object({
+      id: z.number(),
+      hotel_id: z.number(),
+      type_id: z.number(),
+      rooms_number: z.number(),
+      guests_count: z.number(),
+      type_name: z.string(),
+      name: z.string().nullable(),
+      price_rates: z.array(z.object({
+        id: z.number(),
+        hotel_id: z.number(),
+        name: z.string(),
+        description: z.string(),
+      })),
+    })),
+    seasons: z.array(z.object({
+      id: z.number(),
+      contract_id: z.number(),
+      name: z.string(),
+      date_start: z.string(),
+      date_end: z.string(),
+    })),
   }),
 )
-console.log('hotelId:', hotelID)
 
-// const prices = computed(() => useHotelPricesListAPI({ hotelID }));
+const closeAllButParam = ref<string | undefined>()
 
-// const b =computed(()=>useHotelPricesListAPI({ hotelID }))
+const { data: prices, isFetching: pricesLoad, execute: fetchPrices } = useRoomSeasonsPricesListAPI({ hotelID })
 
-// async function fetchData() {
-//   try {
-//     console.log("test test")
-//    const res= useHotelPricesListAPI({ hotelID })
-//    console.log("-------------res------------:",res)
-//   } catch (error) {
-//     console.error(error)
-//   }
-// }
-
-// onMounted(fetchData)
-
-// watchEffect(() => {
-//   console.log(fetchData())
-// })
-
-// watch(filtersPayload, () => fetchHotelPrices())
-
-// const editable = ref(false)
+onMounted(async () => {
+  await fetchPrices()
+})
 </script>
 <template>
-  <BaseLayout>
-    <!-- <ul class="list">
-      <li v-for="price in prices">{{ price }}</li>
-    </ul> -->
-  </BaseLayout>
+  <BootstrapCard v-for="room in rooms" :key="room.id">
+    <template #title>
+      <h2>{{ room.name }} ({{ room.type_name }})</h2>
+    </template>
+    <HotelPricesTable
+      :hotel-id="hotelID"
+      :room-data="room"
+      :seasons-data="seasons"
+      :prices-data="prices"
+      :is-fetching="pricesLoad"
+      :close-all-but="closeAllButParam"
+      @close-all="but => closeAllButParam = but"
+      @update-data="fetchPrices"
+    />
+  </BootstrapCard>
 </template>
+
 <style lang="scss" scoped>
 @use "~resources/sass/vendor/bootstrap/configuration" as bs;
-
-.title {
-  padding-left: calc(#{bs.$form-select-padding-x} - 0.1em);
-}
-
-.quotasBody {
-  display: flex;
-  flex-flow: column;
-  gap: 2em;
-}
-
-.quotasTables {
-  display: flex;
-  flex-flow: column;
-  gap: 2em;
-}
-
-.rooms-cards {
-  display: flex;
-  flex-flow: column wrap;
-  gap: 32px;
-}
 </style>
