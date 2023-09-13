@@ -77,7 +77,7 @@ class RoomQuotaRepository implements RoomQuotaRepositoryInterface
                 'date' => $date,
                 'count_available' => $quota ?? 0,
                 'period' => $releaseDays ?? 0,
-                'type' => $type ?? $quota > 0 ? QuotaTypeEnum::Open : QuotaTypeEnum::Close,
+                'type' => $type ?? ($quota > 0 ? QuotaTypeEnum::Open : QuotaTypeEnum::Close),
             ];
         }
 
