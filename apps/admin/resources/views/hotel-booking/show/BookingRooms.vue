@@ -62,7 +62,12 @@ const markupSettings = computed<MarkupSettings | null>(() => bookingStore.markup
 const isEditableStatus = computed<boolean>(() => bookingStore.availableActions?.isEditable || false)
 const orderCurrency = computed<Currency | undefined>(() => orderStore.currency)
 const orderGuests = computed<Guest[]>(() => orderStore.guests || [])
-const canChangeRoomPrice = computed<boolean>(() => bookingStore.availableActions?.canChangeRoomPrice || false)
+const isBookingPriceManual = computed(
+  () => bookingStore.booking?.price.boPrice.isManual || bookingStore.booking?.price.hoPrice.isManual,
+)
+const canChangeRoomPrice = computed<boolean>(
+  () => (bookingStore.availableActions?.canChangeRoomPrice && !isBookingPriceManual.value) || false,
+)
 
 const { execute: fetchPriceRates, data: priceRates } = useHotelRatesAPI({ hotelID })
 const { data: countries, execute: fetchCountries } = useCountrySearchAPI()
