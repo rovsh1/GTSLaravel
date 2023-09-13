@@ -26,11 +26,11 @@
         <tr>
             <td></td>
             <td>
-                Туристы ({{$room->guests()->count()}}):
+                Туристы ({{$room->guestIds()->count()}}):
             </td>
             <td></td>
         </tr>
-        @foreach($room->guests() as $index => $guest)
+        @foreach($roomsGuests[$room->id()->value()] as $index => $guest)
             <tr>
                 <td></td>
                 <td>

@@ -17,6 +17,7 @@ use Module\Booking\HotelBooking\Domain\Adapter\HotelAdapterInterface;
 use Module\Booking\HotelBooking\Domain\Service\DocumentGenerator\CancellationRequestGenerator;
 use Module\Booking\HotelBooking\Domain\Service\DocumentGenerator\ChangeRequestGenerator;
 use Module\Booking\HotelBooking\Domain\Service\DocumentGenerator\ReservationRequestGenerator;
+use Module\Booking\Order\Domain\Repository\GuestRepositoryInterface;
 use Sdk\Module\Contracts\ModuleInterface;
 
 class DocumentGeneratorFactory
@@ -46,6 +47,7 @@ class DocumentGeneratorFactory
                 $this->module->get(HotelAdapterInterface::class),
                 $this->module->get(AdministratorAdapterInterface::class),
                 $this->module->get(StatusStorage::class),
+                $this->module->get(GuestRepositoryInterface::class),
             ),
             default => throw new BookingTypeDoesntHaveDocumentGenerator()
         };
@@ -59,6 +61,7 @@ class DocumentGeneratorFactory
                 $this->module->get(HotelAdapterInterface::class),
                 $this->module->get(AdministratorAdapterInterface::class),
                 $this->module->get(StatusStorage::class),
+                $this->module->get(GuestRepositoryInterface::class),
             ),
             default => throw new BookingTypeDoesntHaveDocumentGenerator()
         };
@@ -72,6 +75,7 @@ class DocumentGeneratorFactory
                 $this->module->get(HotelAdapterInterface::class),
                 $this->module->get(AdministratorAdapterInterface::class),
                 $this->module->get(StatusStorage::class),
+                $this->module->get(GuestRepositoryInterface::class),
             ),
             default => throw new BookingTypeDoesntHaveDocumentGenerator()
         };
