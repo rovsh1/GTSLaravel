@@ -262,4 +262,8 @@ const handlerUpdateSeasonDaysData = (status :boolean) => {
 .hotel-prices-table-wrapper {
   position: relative;
 }
+
+.priced {
+  height: 32px;
+}
 </style>

@@ -14,7 +14,6 @@ class DatabaseServiceProvider extends ServiceProvider
         $paths = [
             $path,
             $path . DIRECTORY_SEPARATOR . 'install',
-            $path . DIRECTORY_SEPARATOR . 'deprecated',
         ];
         $this->loadMigrationsFrom($paths);
     }

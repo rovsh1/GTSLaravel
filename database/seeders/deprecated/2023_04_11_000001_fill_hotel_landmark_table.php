@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
@@ -10,9 +11,11 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::table('hotels', function (Blueprint $table) {
-            $table->dropColumn('geolocation');
-        });
+        DB::unprepared(
+            'INSERT INTO hotel_landmark (hotel_id, landmark_id,distance)'
+            . ' SELECT hotel_id, showplace_id,distance'
+            . ' FROM ' . DB::connection('mysql_old')->getDatabaseName() . '.hotel_showplace'
+        );
     }
 
     /**
@@ -20,8 +23,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::table('hotels', function (Blueprint $table) {
-            $table->string('geolocation')->after('address');
-        });
+        DB::table('hotel_landmark')->truncate();
     }
 };

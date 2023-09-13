@@ -1,13 +1,14 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Module\Booking\HotelBooking\Application\UseCase\System\FillCalculatedPriceCalendar;
 
-return new class extends Migration {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+class TestDataSeeder extends Seeder
+{
+    public function run(): void
     {
         DB::table('hotel_calculated_price_calendar')->delete();
         DB::table('hotel_season_price_calendar')->delete();
@@ -41,12 +42,4 @@ return new class extends Migration {
 
         app(FillCalculatedPriceCalendar::class)->execute(61);
     }
-
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        //
-    }
-};
+}

@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
@@ -13,19 +12,6 @@ return new class extends Migration {
             $table->string('key');
             $table->string('value')->nullable();
         });
-
-        $this->fill();
-    }
-
-    private function fill(): void
-    {
-        $constants = app(\Module\Shared\Domain\Service\ApplicationConstantsInterface::class);
-        foreach ($constants as $constant) {
-            DB::table('s_constants')->insert([
-                'key' => $constant->key(),
-                'value' => $constant->default()
-            ]);
-        }
     }
 
     public function down()
