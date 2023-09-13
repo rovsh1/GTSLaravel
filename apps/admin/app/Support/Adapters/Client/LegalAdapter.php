@@ -2,11 +2,18 @@
 
 namespace App\Admin\Support\Adapters\Client;
 
+use Module\Client\Application\Dto\LegalDto;
 use Module\Client\Application\Request\SetLegalBankRequisitesDto;
+use Module\Client\Application\UseCase\FindLegal;
 use Module\Client\Application\UseCase\SetLegalBankRequisites;
 
 class LegalAdapter
 {
+    public function find(int $id): ?LegalDto
+    {
+        return app(FindLegal::class)->execute($id);
+    }
+
     public function setBankRequisites(
         int $clientLegalId,
         string $bik,

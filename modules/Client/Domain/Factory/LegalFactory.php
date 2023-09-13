@@ -6,6 +6,7 @@ namespace Module\Client\Domain\Factory;
 
 use Module\Client\Domain\Entity\Legal;
 use Module\Client\Domain\ValueObject\BankRequisites;
+use Module\Client\Domain\ValueObject\IndustryId;
 use Module\Client\Domain\ValueObject\LegalId;
 use Module\Shared\Domain\Service\SerializerInterface;
 use Module\Shared\Enum\Client\LegalTypeEnum;
@@ -30,6 +31,8 @@ class LegalFactory extends AbstractEntityFactory
         return new $this->entity(
             new LegalId($data['id']),
             $data['name'],
+            new IndustryId($data['industry_id']),
+            $data['address'],
             LegalTypeEnum::from($data['type']),
             $bankRequisites
         );
