@@ -16,6 +16,7 @@ use Module\Booking\HotelBooking\Domain\Service\HotelValidator;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\BookingPeriod;
 use Module\Shared\Domain\ValueObject\Id;
 use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
+use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Contracts\Bus\CommandBusInterface;
 
 class CreateBooking extends AbstractCreateBooking
@@ -34,6 +35,7 @@ class CreateBooking extends AbstractCreateBooking
         $orderId = $this->getOrderIdFromRequest($request);
         $hotelDto = $this->hotelAdapter->findById($request->hotelId);
         $markupSettings = $this->hotelAdapter->getMarkupSettings($request->hotelId);
+        $currency = CurrencyEnum::fromId($request->currencyId);
         try {
             $this->hotelValidator->validateByDto($markupSettings, $request->period);
         } catch (NotFoundHotelCancelPeriod $e) {
@@ -41,6 +43,7 @@ class CreateBooking extends AbstractCreateBooking
         }
         $booking = $this->repository->create(
             orderId: $orderId,
+            currency: $currency,
             creatorId: new Id($request->creatorId),
             hotelInfo: HotelInfoFactory::fromDto($hotelDto),
             period: BookingPeriod::fromCarbon($request->period),
