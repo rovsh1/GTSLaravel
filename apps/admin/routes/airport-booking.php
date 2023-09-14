@@ -13,4 +13,8 @@ AclRoute::for('airport-booking')
     ->get('/{booking}/actions/available', Controllers\Booking\Airport\BookingController::class . '@getAvailableActions', 'read', 'actions.available.get')
 
     ->delete('/{booking}/guests', Controllers\Booking\Airport\GuestController::class . '@deleteGuest', 'delete', 'guests.delete')
+
+    ->get('/{booking}/request/list', Controllers\Booking\Airport\RequestController::class . '@getBookingRequests', 'read', 'request.list')
+    ->post('/{booking}/request', Controllers\Booking\Airport\RequestController::class . '@sendRequest', 'update', 'request.send')
+    ->get('/{booking}/request/{request}/file', Controllers\Booking\Airport\RequestController::class . '@getFileInfo', 'read', 'request.download')
 ;
