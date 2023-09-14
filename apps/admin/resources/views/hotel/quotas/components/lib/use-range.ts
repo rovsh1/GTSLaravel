@@ -122,21 +122,30 @@ export const useQuotasTableRange = (params: UseQuotasTableRangeParams) => {
       const found = rangeRef.value.quotas.find(({ key }) => key === cellKey)
       return found !== undefined
     },
-    setPick: (setPickParams: SetPickParams) =>
+    setPick: (setPickParams: SetPickParams) => {
       setQuotaPick(setPickParams)(roomQuotas.value, ((newRange) => {
         rangeRef.value = newRange
-      })),
-    setRange: (setRangeParams: SetRangeParams) =>
+      }))
+      if (editedInRange.value && editedRef.value) {
+        editedInRange.value.value = editedRef.value
+      }
+    },
+    setRange: (setRangeParams: SetRangeParams) => {
       setQuotaRange(setRangeParams)(roomQuotas.value, ((newRange) => {
         rangeRef.value = newRange
-      })),
+      }))
+      if (editedInRange.value && editedRef.value) {
+        editedInRange.value.value = editedRef.value
+      }
+    },
+    setEdited: (key: ActiveKey, value: number) => {
+      editedInRange.value = { key, value }
+    },
     handleInput: (key: ActiveKey, value: number) => {
       editedRef.value = value
-      if (rangeRef.value === null) {
-        editedInRange.value = null
-        return
+      if (editedInRange.value) {
+        editedInRange.value.value = value
       }
-      editedInRange.value = { key, value }
     },
     showEdited: (key: ActiveKey): boolean => {
       if (editedInRange.value === null) return false

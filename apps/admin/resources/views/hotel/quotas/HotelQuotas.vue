@@ -48,34 +48,59 @@ const rooms = computed<UseHotelRooms>(() => roomsData.value)
 fetchHotelRoomsAPI()
 
 const filtersPayload = ref<FiltersPayload>(defaultFiltersPayload)
+const waitLoadAndRedrawData = ref<boolean>(false)
+const updatedRoomID = ref<number | null>(null)
 
 const {
-  isFetching: isHotelQuotasFetching,
   execute: fetchHotelQuotas,
   data: hotelQuotas,
 } = useHotelQuotasAPI(computed(() => {
-  const { month, year, monthsCount, availability, roomID } = filtersPayload.value
+  const { month, year, monthsCount, availability } = filtersPayload.value
   return {
     hotelID,
     month,
     year,
     interval: intervalByMonthsCount[monthsCount],
-    roomID: roomID ?? undefined,
+    roomID: undefined,
     availability: availability ?? undefined,
   }
 }))
 
-fetchHotelQuotas()
+const fetchHotelQuotasWrapper = async () => {
+  waitLoadAndRedrawData.value = true
+  try {
+    await fetchHotelQuotas()
+    nextTick(() => {
+      waitLoadAndRedrawData.value = false
+      updatedRoomID.value = null
+    })
+  } catch (error) {
+    nextTick(() => {
+      waitLoadAndRedrawData.value = false
+      updatedRoomID.value = null
+    })
+  }
+}
 
-watch(filtersPayload, () => fetchHotelQuotas())
+fetchHotelQuotasWrapper()
+
+watch(filtersPayload, () => fetchHotelQuotasWrapper())
 
 const editable = ref(false)
+
+const activeRoomID = ref<number | null>(null)
 
 const roomsQuotas = computed(() => getRoomQuotas({
   rooms: rooms.value,
   filters: filtersPayload.value,
   quotas: hotelQuotas.value,
 }))
+
+watch(editable, (value) => {
+  if (value === false) {
+    fetchHotelQuotasWrapper()
+  }
+})
 
 const handleFilters = (value: FiltersPayload) => {
   filtersPayload.value = value
@@ -107,10 +132,11 @@ watchEffect(() => {
       <QuotasFilters
         v-if="rooms"
         :rooms="rooms"
-        :loading="isHotelQuotasFetching"
+        :loading="waitLoadAndRedrawData"
         @submit="value => handleFilters(value)"
+        @switch-room="(value: number | null) => activeRoomID = value"
       />
-      <LoadingSpinner v-if="isHotelQuotasFetching && roomsQuotas === null" />
+      <LoadingSpinner v-if="waitLoadAndRedrawData && roomsQuotas === null" />
       <div v-else-if="hotel === null">
         Не удалось найти данные для отеля.
       </div>
@@ -118,15 +144,21 @@ watchEffect(() => {
         Не удалось найти комнаты для этого отеля.
       </div>
       <div v-else class="quotasTables">
-        <RoomQuotas
-          v-for="{ room, monthlyQuotas } in roomsQuotas"
-          :key="room.id"
-          :hotel="hotel"
-          :room="room"
-          :monthly-quotas="monthlyQuotas"
-          :editable="editable && !isHotelQuotasFetching"
-          @update="fetchHotelQuotas"
-        />
+        <template v-for="{ room, monthlyQuotas } in roomsQuotas">
+          <RoomQuotas
+            v-if="room.id === activeRoomID || activeRoomID === null"
+            :key="room.id"
+            :hotel="hotel"
+            :room="room"
+            :monthly-quotas="monthlyQuotas"
+            :editable="editable"
+            :waiting-load-data="(updatedRoomID === room.id) ? waitLoadAndRedrawData : false"
+            @update="(updatedRoomIDParam: number) => {
+              updatedRoomID = updatedRoomIDParam
+              fetchHotelQuotasWrapper()
+            }"
+          />
+        </template>
       </div>
     </div>
   </BaseLayout>
