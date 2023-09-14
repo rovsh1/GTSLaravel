@@ -47,6 +47,7 @@ const requestStore = useBookingRequestStore()
 const statusHistoryStore = useBookingStatusHistoryStore()
 const { fetchStatusHistory } = statusHistoryStore
 const orderStore = useOrderStore()
+
 // const voucherStore = useBookingVoucherStore()
 // const vouchers = computed(() => voucherStore.vouchers)
 const {
@@ -172,7 +173,10 @@ const handleSaveHoPenalty = async (value: number | undefined) => {
 <template>
   <StatusHistoryModal
     :opened="isHistoryModalOpened"
+    :is-fetching="statusHistoryStore.isFetching"
+    :status-history-events="statusHistoryStore.statusHistoryEvents"
     @close="toggleHistoryModal(false)"
+    @refresh="fetchStatusHistory"
   />
 
   <PriceModal

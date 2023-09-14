@@ -4,8 +4,6 @@ import { computed, watch } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
 
-import { useBookingStatusHistoryStore } from '~resources/views/hotel-booking/show/store/status-history'
-
 import { BookingStatusHistoryResponse } from '~api/booking/hotel/status'
 
 import { formatDateTime } from '~lib/date'
@@ -14,21 +12,23 @@ import BaseDialog from '~components/BaseDialog.vue'
 
 const props = defineProps<{
   opened: MaybeRef<boolean>
+  isFetching: boolean
+  statusHistoryEvents: BookingStatusHistoryResponse[] | null
 }>()
 
-defineEmits<{
+const emit = defineEmits<{
   (event: 'close'): void
+  (event: 'refresh'): void
 }>()
 
-const statusHistoryStore = useBookingStatusHistoryStore()
-const { fetchStatusHistory } = statusHistoryStore
-const isFetching = computed<boolean>(() => statusHistoryStore.isFetching)
-const statusHistoryEvents = computed<BookingStatusHistoryResponse[] | null>(() => statusHistoryStore.statusHistoryEvents)
+const isFetching = computed<boolean>(() => props.isFetching)
+
+const statusHistoryEvents = computed<BookingStatusHistoryResponse[] | null>(() => props.statusHistoryEvents)
 
 const isOpened = computed(() => props.opened)
 watch(isOpened, (opened) => {
   if (opened) {
-    fetchStatusHistory()
+    emit('refresh')
   }
 })
 
