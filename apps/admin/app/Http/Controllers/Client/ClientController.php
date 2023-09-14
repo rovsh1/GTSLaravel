@@ -49,7 +49,7 @@ class ClientController extends AbstractPrototypeController
             'currency_id' => $request->getCurrencyId(),
             'type' => $request->getType(),
             'name' => $request->getName(),
-            'status' => $request->getStatus(),
+            'status' => $request->getStatus() ?? StatusEnum::ACTIVE,
             'residency' => $request->getResidency(),
         ]);
         $this->model = $this->repository->create($data);

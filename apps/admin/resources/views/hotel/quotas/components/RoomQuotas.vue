@@ -28,10 +28,11 @@ const props = defineProps<{
   room: RoomRender
   monthlyQuotas: MonthlyQuota[]
   editable: boolean
+  waitingLoadData: boolean
 }>()
 
 const emit = defineEmits<{
-  (event: 'update'): void
+  (event: 'update', roomID: number): void
 }>()
 
 const dayCellClassNameByRoomQuotaStatus: Record<RoomQuotaStatus, string> = {
@@ -55,6 +56,7 @@ const {
   isCellInRange: isQuotasCountCellInRange,
   handleInput: handleQuotasCountInput,
   showEdited: showEditedQuotasCount,
+  setEdited: setEditedInRangeQuotasCount,
 } = useQuotasTableRange({
   roomQuotas: allMonthsDailyQuotas,
   editedRef: editedQuotasCount,
@@ -72,6 +74,7 @@ const {
   isCellInRange: isReleaseDaysCellInRange,
   handleInput: handleReleaseDaysInput,
   showEdited: showEditedReleaseDays,
+  setEdited: setEditedInRangeReleaseDays,
 } = useQuotasTableRange({
   roomQuotas: allMonthsDailyQuotas,
   editedRef: editedReleaseDays,
@@ -107,7 +110,7 @@ const dayMenuDates = computed<Date[] | null>(() => {
 
 const dayMenuDone = () => {
   closeDayMenu()
-  emit('update')
+  emit('update', props.room.id)
 }
 
 type HandleValue<R> = (date: Date, value: number) => R
@@ -123,7 +126,7 @@ const {
 watch(hotelRoomQuotasUpdateData, (value) => {
   if (value === null || !value.success) return
   hotelRoomQuotasUpdateProps.value = null
-  emit('update')
+  emit('update', props.room.id)
   activeQuotasCountKey.value = null
   activeReleaseDaysKey.value = null
 })
@@ -187,14 +190,10 @@ const handleReleaseDaysValue: HandleValue<void> = (date, value) => {
 <template>
   <div>
     <div class="roomHeader">
-      <room-header
-        :label="room.label"
-        :guests="room.guests"
-        :count="room.count"
-      />
+      <room-header :label="room.label" :guests="room.guests" :count="room.count" />
     </div>
     <div class="quotasTables">
-      <OverlayLoading v-if="isHotelRoomQuotasUpdateFetching" />
+      <OverlayLoading v-if="isHotelRoomQuotasUpdateFetching || waitingLoadData" />
       <div
         v-for="{ dailyQuota, monthKey, monthName, days, quotasCount } in monthlyQuotas"
         :key="monthKey"
@@ -241,32 +240,40 @@ const handleReleaseDaysValue: HandleValue<void> = (date, value) => {
                 <editable-cell
                   :active-key="activeQuotasCountKey"
                   :cell-key="getActiveCellKey(key, room.id)"
-                  :value="
-                    editedQuotasCount === null
-                      ? quota === null ? '' : quota.toString()
-                      : editedQuotasCount.toString()
+                  :value="editedQuotasCount === null
+                    ? (quota === null ? '' : quota.toString())
+                    : editedQuotasCount.toString()
                   "
                   :max="room.count"
                   :range-error="(min, max) => `Есть только ${max} таких комнат`"
-                  :disabled="!editable"
+                  :disabled="!editable || isHotelRoomQuotasUpdateFetching"
                   :in-range="isQuotasCountCellInRange(getActiveCellKey(key, room.id))"
-                  @active-key="(value) => {
+                  :init-value="quota === null ? '' : quota.toString()"
+                  @reset-edited-value-to-init="(value) => {
+                    setEditedInRangeQuotasCount(key, value)
+                    editedQuotasCount = value
+                  }"
+                  @active-key="(value: ActiveKey) => {
                     activeQuotasCountKey = value
                     activeReleaseDaysKey = null
                   }"
                   @reset="resetActiveKey"
-                  @range-key="(value) => setQuotasCountRange({
-                    dailyQuota,
-                    roomTypeID: room.id,
-                    activeKey: activeQuotasCountKey,
-                    rangeKey: value,
-                  })"
-                  @pick-key="(value) => setQuotasCountPick({
-                    oldRange: quotasCountRange as QuotaRange,
-                    roomTypeID: room.id,
-                    activeKey: activeQuotasCountKey,
-                    pickKey: value,
-                  })"
+                  @range-key="(value: ActiveKey) => {
+                    setQuotasCountRange({
+                      dailyQuota,
+                      roomTypeID: room.id,
+                      activeKey: activeQuotasCountKey,
+                      rangeKey: value,
+                    })
+                  }"
+                  @pick-key="(value: ActiveKey) => {
+                    setQuotasCountPick({
+                      oldRange: quotasCountRange as QuotaRange,
+                      roomTypeID: room.id,
+                      activeKey: activeQuotasCountKey,
+                      pickKey: value,
+                    })
+                  }"
                   @value="value => handleQuotaValue(date, value)"
                   @input="value => handleQuotasCountInput(getActiveCellKey(key, room.id), value)"
                   @context-menu="(element) => {
@@ -299,26 +306,30 @@ const handleReleaseDaysValue: HandleValue<void> = (date, value) => {
                 <editable-cell
                   :active-key="activeReleaseDaysKey"
                   :cell-key="getActiveCellKey(key, room.id)"
-                  :value="
-                    editedReleaseDays === null
-                      ? releaseDays === null ? '' : releaseDays.toString()
-                      : editedReleaseDays.toString()
+                  :value="editedReleaseDays === null
+                    ? releaseDays === null ? '' : releaseDays.toString()
+                    : editedReleaseDays.toString()
                   "
                   :max="99"
-                  :disabled="!editable"
+                  :disabled="!editable || isHotelRoomQuotasUpdateFetching"
                   :in-range="isReleaseDaysCellInRange(getActiveCellKey(key, room.id))"
-                  @active-key="(value) => {
+                  :init-value="releaseDays === null ? '' : releaseDays.toString()"
+                  @reset-edited-value-to-init="(value) => {
+                    setEditedInRangeReleaseDays(key, value)
+                    editedReleaseDays = value
+                  }"
+                  @active-key="(value: ActiveKey) => {
                     activeReleaseDaysKey = value
                     activeQuotasCountKey = null
                   }"
                   @reset="resetActiveKey"
-                  @range-key="(value) => setReleaseDaysRange({
+                  @range-key="(value: ActiveKey) => setReleaseDaysRange({
                     dailyQuota,
                     roomTypeID: room.id,
                     activeKey: activeReleaseDaysKey,
                     rangeKey: value,
                   })"
-                  @pick-key="(value) => setReleaseDaysPick({
+                  @pick-key="(value: ActiveKey) => setReleaseDaysPick({
                     oldRange: releaseDaysRange,
                     roomTypeID: room.id,
                     activeKey: activeReleaseDaysKey,
