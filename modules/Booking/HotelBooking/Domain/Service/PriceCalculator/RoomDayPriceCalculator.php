@@ -45,11 +45,11 @@ class RoomDayPriceCalculator
 
         return new RoomDayPrice(
             date: new Date($date->toIso8601String()),
-            netValue: $netValue,
-            boValue: $boResult->value,
-            hoValue: $hoResult->value,
-            boFormula: $boResult->notes,
-            hoFormula: $hoResult->notes,
+            baseValue: $netValue,
+            grossValue: $boResult->value,
+            netValue: $hoResult->value,
+            grossFormula: $boResult->notes,
+            netFormula: $hoResult->notes,
         );
     }
 

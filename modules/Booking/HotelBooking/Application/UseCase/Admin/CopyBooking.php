@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Module\Booking\HotelBooking\Application\UseCase\Admin;
 
-use Module\Booking\HotelBooking\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\HotelBooking\Domain\Repository\BookingGuestRepositoryInterface;
+use Module\Booking\HotelBooking\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\HotelBooking\Domain\Repository\RoomBookingRepositoryInterface;
+use Module\Booking\Order\Domain\Repository\OrderRepositoryInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
@@ -15,7 +16,8 @@ class CopyBooking implements UseCaseInterface
     public function __construct(
         private readonly BookingRepositoryInterface $repository,
         private readonly RoomBookingRepositoryInterface $roomBookingRepository,
-        private readonly BookingGuestRepositoryInterface $bookingGuestRepository
+        private readonly BookingGuestRepositoryInterface $bookingGuestRepository,
+        private readonly OrderRepositoryInterface $orderRepository,
     ) {}
 
     public function execute(int $id): int
@@ -24,8 +26,13 @@ class CopyBooking implements UseCaseInterface
         if ($booking === null) {
             throw new EntityNotFoundException('Booking not found');
         }
+        $order = $this->orderRepository->find($booking->orderId()->value());
+        if ($order === null) {
+            throw new EntityNotFoundException('Order not found');
+        }
         $newBooking = $this->repository->create(
             $booking->orderId(),
+            $order->currency(),
             $booking->creatorId(),
             $booking->period(),
             $booking->note(),

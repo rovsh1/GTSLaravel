@@ -33,9 +33,9 @@ class BookingCalculator implements BookingCalculatorInterface
         $boSum = 0;
 
         foreach ($booking->roomBookings() as $roomBooking) {
-            $netSum += $roomBooking->price()->netValue();
-            $hoSum += $roomBooking->price()->hoValue();
-            $boSum += $roomBooking->price()->boValue();
+            $netSum += $roomBooking->price()->baseValue();
+            $hoSum += $roomBooking->price()->netValue();
+            $boSum += $roomBooking->price()->grossValue();
         }
 
         return new BookingPrice(

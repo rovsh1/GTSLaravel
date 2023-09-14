@@ -19,7 +19,7 @@ class RoomPriceEditor
 
     public function recalculatePrices(RoomBooking $roomBooking): RoomPrice
     {
-        return $this->calculate($roomBooking, $roomBooking->price()->boDayValue(), $roomBooking->price()->hoDayValue());
+        return $this->calculate($roomBooking, $roomBooking->price()->grossDayValue(), $roomBooking->price()->netDayValue());
     }
 
     public function setCalculatedPrices(RoomBooking $roomBooking): RoomPrice
@@ -34,22 +34,22 @@ class RoomPriceEditor
 
     public function setManuallyBoPrice(RoomBooking $roomBooking, float $manuallyDayPrice): RoomPrice
     {
-        return $this->calculate($roomBooking, $manuallyDayPrice, $roomBooking->price()->hoDayValue());
+        return $this->calculate($roomBooking, $manuallyDayPrice, $roomBooking->price()->netDayValue());
     }
 
     public function setCalculatedBoPrice(RoomBooking $roomBooking): RoomPrice
     {
-        return $this->calculate($roomBooking, null, $roomBooking->price()->hoDayValue());
+        return $this->calculate($roomBooking, null, $roomBooking->price()->netDayValue());
     }
 
     public function setManuallyHoPrice(RoomBooking $roomBooking, float $manuallyDayPrice): RoomPrice
     {
-        return $this->calculate($roomBooking, $roomBooking->price()->boDayValue(), $manuallyDayPrice);
+        return $this->calculate($roomBooking, $roomBooking->price()->grossDayValue(), $manuallyDayPrice);
     }
 
     public function setCalculatedHoPrice(RoomBooking $roomBooking): RoomPrice
     {
-        return $this->calculate($roomBooking, $roomBooking->price()->boDayValue(), null);
+        return $this->calculate($roomBooking, $roomBooking->price()->grossDayValue(), null);
     }
 
     private function calculate(
@@ -90,8 +90,8 @@ class RoomPriceEditor
         }
 
         return new RoomPrice(
-            boDayValue: $boDayPrice,
-            hoDayValue: $hoDayPrice,
+            grossDayValue: $boDayPrice,
+            netDayValue: $hoDayPrice,
             dayPrices: new RoomDayPriceCollection($items)
         );
     }

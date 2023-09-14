@@ -17,10 +17,12 @@ use Module\Booking\Airport\Infrastructure\Models\Booking as Model;
 use Module\Booking\Airport\Infrastructure\Models\BookingDetails;
 use Module\Booking\Common\Domain\ValueObject\BookingId;
 use Module\Booking\Common\Domain\ValueObject\BookingPrice;
+use Module\Booking\Common\Domain\ValueObject\BookingPriceNew;
 use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\Common\Infrastructure\Repository\AbstractBookingRepository as BaseRepository;
 use Module\Booking\Order\Domain\ValueObject\GuestIdsCollection;
 use Module\Shared\Domain\ValueObject\Id;
+use Module\Shared\Enum\CurrencyEnum;
 
 class BookingRepository extends BaseRepository implements BookingRepositoryInterface
 {
@@ -47,6 +49,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
 
     public function create(
         OrderId $orderId,
+        CurrencyEnum $currency,
         int $creatorId,
         int $serviceId,
         int $airportId,
@@ -54,8 +57,8 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         ?string $note = null
     ): Entity {
         return \DB::transaction(
-            function () use ($orderId, $creatorId, $serviceId, $airportId, $date, $note) {
-                $bookingModel = $this->createBase($orderId, $creatorId);
+            function () use ($orderId, $currency, $creatorId, $serviceId, $airportId, $date, $note) {
+                $bookingModel = $this->createBase($orderId, $currency, $creatorId);
 
                 $airport = Airport::find($airportId);
                 $service = AirportService::find($serviceId);
@@ -66,7 +69,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
                     status: $bookingModel->status,
                     createdAt: $bookingModel->created_at->toImmutable(),
                     creatorId: new Id($bookingModel->creator_id),
-                    price: BookingPrice::buildEmpty(),
+                    price: BookingPriceNew::fromData($bookingModel->price),
                     note: $note,
                     airportInfo: new AirportInfo(
                         $airport->id,
@@ -121,7 +124,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
             createdAt: $booking->created_at->toImmutable(),
             creatorId: new Id($booking->creator_id),
             note: $detailsData['note'] ?? null,
-            price: BookingPrice::fromData($detailsData['price']),
+            price: BookingPriceNew::fromData($detailsData['price']),
             guestIds: GuestIdsCollection::fromData($booking->guest_ids),
             airportInfo: AirportInfo::fromData($detailsData['airportInfo']),
             serviceInfo: ServiceInfo::fromData($detailsData['serviceInfo']),

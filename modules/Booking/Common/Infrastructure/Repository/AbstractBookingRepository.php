@@ -5,10 +5,12 @@ namespace Module\Booking\Common\Infrastructure\Repository;
 use App\Core\Support\Facades\AppContext;
 use Module\Booking\Common\Domain\Entity\BookingInterface;
 use Module\Booking\Common\Domain\ValueObject\BookingPrice;
+use Module\Booking\Common\Domain\ValueObject\BookingPriceNew;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\Common\Infrastructure\Models\Booking;
 use Module\Booking\Common\Infrastructure\Models\Booking as Model;
+use Module\Shared\Enum\CurrencyEnum;
 
 abstract class AbstractBookingRepository
 {
@@ -27,14 +29,14 @@ abstract class AbstractBookingRepository
         return $model;
     }
 
-    protected function createBase(OrderId $orderId, int $creatorId): Booking
+    protected function createBase(OrderId $orderId, CurrencyEnum $currency, int $creatorId): Booking
     {
         return $this->getModel()::create([
             'order_id' => $orderId->value(),
             'source' => AppContext::source(),
             'status' => BookingStatusEnum::CREATED,
             'creator_id' => $creatorId,
-            'price' => BookingPrice::buildEmpty()->toData(),
+            'price' => BookingPriceNew::createEmpty($currency)->toData(),
         ]);
     }
 

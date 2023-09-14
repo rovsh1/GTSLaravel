@@ -23,11 +23,11 @@ class RoomPriceDto extends AbstractDomainBasedDto
     public static function fromDomain(EntityInterface|ValueObjectInterface|RoomPrice $entity): static
     {
         return new static(
-            $entity->boDayValue(),
-            $entity->hoDayValue(),
+            $entity->grossDayValue(),
+            $entity->netDayValue(),
             RoomDayPriceDto::collectionFromDomain($entity->dayPrices()->all()),
-            $entity->boValue(),
-            $entity->hoValue(),
+            $entity->grossValue(),
+            $entity->netValue(),
         );
     }
 }

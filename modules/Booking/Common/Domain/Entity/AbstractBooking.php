@@ -22,6 +22,7 @@ use Module\Booking\Common\Domain\Service\RequestRules;
 use Module\Booking\Common\Domain\Service\VoucherCreator;
 use Module\Booking\Common\Domain\ValueObject\BookingId;
 use Module\Booking\Common\Domain\ValueObject\BookingPrice;
+use Module\Booking\Common\Domain\ValueObject\BookingPriceNew;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
 use Module\Booking\Common\Domain\ValueObject\OrderId;
@@ -42,7 +43,7 @@ abstract class AbstractBooking extends AbstractAggregateRoot implements
         private BookingStatusEnum $status,
         private readonly CarbonImmutable $createdAt,
         private readonly Id $creatorId,
-        private BookingPrice $price,
+        private BookingPriceNew $price,
     ) {}
 
     public function id(): BookingId
@@ -72,7 +73,7 @@ abstract class AbstractBooking extends AbstractAggregateRoot implements
         return $this->creatorId;
     }
 
-    public function price(): BookingPrice
+    public function price(): BookingPriceNew
     {
         return $this->price;
     }
