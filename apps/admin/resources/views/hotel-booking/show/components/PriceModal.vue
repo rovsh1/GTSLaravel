@@ -38,6 +38,7 @@ const handleSubmit = () => {
   <BaseDialog
     :opened="opened as boolean"
     @close="$emit('close')"
+    @keydown.enter.prevent="handleSubmit"
   >
     <template #title>{{ header }}</template>
 

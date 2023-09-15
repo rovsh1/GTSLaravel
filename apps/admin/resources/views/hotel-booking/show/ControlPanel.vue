@@ -143,6 +143,7 @@ const handleSaveGrossManualPrice = async (value: number | undefined) => {
     grossPrice: value,
   })
   fetchBooking()
+  fetchAvailableActions()
 }
 
 const handleSaveNetManualPrice = async (value: number | undefined) => {
@@ -152,6 +153,7 @@ const handleSaveNetManualPrice = async (value: number | undefined) => {
     netPrice: value,
   })
   fetchBooking()
+  fetchAvailableActions()
 }
 
 const handleSaveGrossPenalty = async (value: number | undefined) => {
@@ -180,7 +182,7 @@ const getDisplayPriceValue = (type: 'gross' | 'net') => {
     return booking.value?.price.grossPrice.manualValue || booking.value?.price.grossPrice.calculatedValue
   }
 
-  return booking.value?.price.grossPrice.manualValue || booking.value?.price.grossPrice.calculatedValue
+  return booking.value?.price.netPrice.manualValue || booking.value?.price.netPrice.calculatedValue
 }
 
 onMounted(() => {
