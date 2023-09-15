@@ -29,11 +29,22 @@ const props = defineProps<{
   monthlyQuotas: MonthlyQuota[]
   editable: boolean
   waitingLoadData: boolean
+  openingDayMenuRoomId: number | null
 }>()
 
 const emit = defineEmits<{
   (event: 'update', roomID: number): void
+  (event: 'open-day-menu-in-another-room', roomID: number | null): void
 }>()
+
+const isOpeningAnotherRoomDayMenu = ref<boolean>(false)
+
+watch(() => props.openingDayMenuRoomId, () => {
+  isOpeningAnotherRoomDayMenu.value = (!((props.openingDayMenuRoomId === null || props.openingDayMenuRoomId === props.room.id)))
+})
+
+const dayMenuElementRef = ref<HTMLElement | null>(null)
+const dayMenuActionCompleted = ref<boolean>(false)
 
 const dayCellClassNameByRoomQuotaStatus: Record<RoomQuotaStatus, string> = {
   opened: 'isOpened',
@@ -85,9 +96,9 @@ const {
 const resetActiveKey = () => {
   activeQuotasCountKey.value = null
   editedQuotasCount.value = null
-
   activeReleaseDaysKey.value = null
   editedReleaseDays.value = null
+  dayMenuActionCompleted.value = false
 }
 
 const {
@@ -105,11 +116,13 @@ const dayMenuDates = computed<Date[] | null>(() => {
   const fromQuotasCount = getDatesFromRange(quotasCountRange.value)
   const fromReleaseDaysRange = getDatesFromRange(releaseDaysRange.value)
   const fromMenuPosition = dayMenuPosition.value === null ? null : [dayMenuPosition.value.date]
+
   return fromQuotasCount || fromReleaseDaysRange || fromMenuPosition
 })
 
 const dayMenuDone = () => {
   closeDayMenu()
+  dayMenuActionCompleted.value = true
   emit('update', props.room.id)
 }
 
@@ -186,6 +199,7 @@ const handleReleaseDaysValue: HandleValue<void> = (date, value) => {
   hotelRoomQuotasUpdateProps.value = getReleaseDaysPayload(date, value)
   executeHotelRoomQuotasUpdate()
 }
+
 </script>
 <template>
   <div>
@@ -238,6 +252,8 @@ const handleReleaseDaysValue: HandleValue<void> = (date, value) => {
                 tabindex="0"
               >
                 <editable-cell
+                  :day-menu-ref="dayMenuElementRef"
+                  :day-menu-action-completed="dayMenuActionCompleted || isOpeningAnotherRoomDayMenu"
                   :active-key="activeQuotasCountKey"
                   :cell-key="getActiveCellKey(key, room.id)"
                   :value="editedQuotasCount === null
@@ -280,6 +296,7 @@ const handleReleaseDaysValue: HandleValue<void> = (date, value) => {
                     openDayMenu({
                       trigger: element, date, dayKey: key, roomTypeID: room.id,
                     })
+                    emit('open-day-menu-in-another-room', room.id)
                   }"
                 >
                   <template v-if="showEditedQuotasCount(getActiveCellKey(key, room.id))">
@@ -304,6 +321,8 @@ const handleReleaseDaysValue: HandleValue<void> = (date, value) => {
                 tabindex="0"
               >
                 <editable-cell
+                  :day-menu-ref="dayMenuElementRef"
+                  :day-menu-action-completed="dayMenuActionCompleted"
                   :active-key="activeReleaseDaysKey"
                   :cell-key="getActiveCellKey(key, room.id)"
                   :value="editedReleaseDays === null
@@ -341,6 +360,7 @@ const handleReleaseDaysValue: HandleValue<void> = (date, value) => {
                     openDayMenu({
                       trigger: element, date, dayKey: key, roomTypeID: room.id,
                     })
+                    emit('open-day-menu-in-another-room', room.id)
                   }"
                 >
                   <template v-if="showEditedReleaseDays(getActiveCellKey(key, room.id))">
@@ -382,8 +402,13 @@ const handleReleaseDaysValue: HandleValue<void> = (date, value) => {
         </table>
       </div>
     </div>
-    <Teleport v-if="editable && dayMenuRef !== null && dayMenuPosition !== null" to="body">
-      <OnClickOutside @trigger="closeDayMenu">
+    <Teleport v-if="editable && dayMenuRef !== null && dayMenuPosition !== null" to="#hotel-quotas-wrapper">
+      <OnClickOutside
+        @trigger="() => {
+          closeDayMenu()
+          emit('open-day-menu-in-another-room', null)
+        }"
+      >
         <day-menu
           :menu-ref="dayMenuRef"
           :menu-day-key="dayMenuPosition ? dayMenuPosition.dayKey : null"
@@ -391,6 +416,7 @@ const handleReleaseDaysValue: HandleValue<void> = (date, value) => {
           :room="room.id"
           :dates="dayMenuDates"
           @done="dayMenuDone"
+          @set-menu-element="value => dayMenuElementRef = value"
         />
       </OnClickOutside>
     </Teleport>

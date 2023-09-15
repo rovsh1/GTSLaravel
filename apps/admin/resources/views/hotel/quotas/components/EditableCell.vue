@@ -31,8 +31,12 @@ const props = withDefaults(defineProps<{
   rangeError?: RangeError
   disabled: boolean
   inRange: boolean
+  dayMenuRef?: HTMLElement | null
+  dayMenuActionCompleted?: boolean
 }>(), {
   rangeError: (min, max) => `Введите от ${min} до ${max}`,
+  dayMenuRef: null,
+  dayMenuActionCompleted: false,
 })
 
 const emit = defineEmits<{
@@ -152,7 +156,12 @@ const handleContextMenu = (event: MouseEvent) => {
   }
 }
 
-onClickOutside(inputRef, () => {
+onClickOutside(inputRef, (event: MouseEvent) => {
+  if (props.dayMenuRef && props.dayMenuRef instanceof Element && event.target) {
+    if (props.dayMenuRef.contains(event.target as Node)) {
+      return
+    }
+  }
   if (!rangeMode.value && !pickMode.value) {
     if (props.inRange || (valueModel.value !== props.initValue && valueModel.value !== '0')) {
       onPressEnter()
@@ -163,6 +172,12 @@ onClickOutside(inputRef, () => {
 })
 
 watch(() => props.disabled, (value) => {
+  if (value === true) {
+    onPressEsc()
+  }
+})
+
+watch(() => props.dayMenuActionCompleted, (value) => {
   if (value === true) {
     onPressEsc()
   }
@@ -229,6 +244,7 @@ onUnmounted(() => {
       class="editableDataCell"
       :class="{ inRange }"
       :disabled="disabled"
+      @mousedown.prevent
       @click="handleButtonClick"
     >
       <slot />
