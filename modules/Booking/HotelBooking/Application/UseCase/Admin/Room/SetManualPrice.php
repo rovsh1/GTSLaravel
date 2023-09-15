@@ -21,17 +21,17 @@ class SetManualPrice implements UseCaseInterface
         private readonly BookingCalculator $bookingCalculator,
     ) {}
 
-    public function execute(int $bookingId, int $roomBookingId, float|null $boPrice, float|null $hoPrice): void
+    public function execute(int $bookingId, int $roomBookingId, float|null $grossPrice, float|null $netPrice): void
     {
         $roomBooking = $this->roomBookingRepository->find($roomBookingId);
-        if ($boPrice === null && $hoPrice === null) {
+        if ($grossPrice === null && $netPrice === null) {
             $roomBooking->setCalculatedPrices($this->roomPriceEditor);
         }
-        if ($hoPrice !== null) {
-            $roomBooking->setHoDayPrice($hoPrice, $this->roomPriceEditor);
+        if ($netPrice !== null) {
+            $roomBooking->setNetDayPrice($netPrice, $this->roomPriceEditor);
         }
-        if ($boPrice !== null) {
-            $roomBooking->setBoDayPrice($boPrice, $this->roomPriceEditor);
+        if ($grossPrice !== null) {
+            $roomBooking->setGrossDayPrice($grossPrice, $this->roomPriceEditor);
         }
         $this->roomBookingRepository->store($roomBooking);
 

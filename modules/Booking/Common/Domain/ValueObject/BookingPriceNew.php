@@ -58,7 +58,7 @@ final class BookingPriceNew implements SerializableDataInterface, CanEquate
      */
     public function isEqual(mixed $b): bool
     {
-        return $this->netPrice->isEqual($b->boPrice)
-            && $this->grossPrice->isEqual($b->hoPrice);
+        return $this->netPrice->isEqual($b->grossPrice)
+            && $this->grossPrice->isEqual($b->netPrice);
     }
 }

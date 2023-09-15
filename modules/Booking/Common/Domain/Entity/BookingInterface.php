@@ -47,4 +47,8 @@ interface BookingInterface extends EntityInterface
 
     public function canSendClientVoucher(): bool;
 
+    public function isManualGrossPrice(): bool;
+
+    public function isManualNetPrice(): bool;
+
 }

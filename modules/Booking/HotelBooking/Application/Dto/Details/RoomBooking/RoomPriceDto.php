@@ -12,12 +12,12 @@ use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 class RoomPriceDto extends AbstractDomainBasedDto
 {
     public function __construct(
-        public readonly ?float $boDayValue,
-        public readonly ?float $hoDayValue,
+        public readonly ?float $grossDayValue,
+        public readonly ?float $netDayValue,
         /** @var RoomDayPriceDto[] $dayPrices */
         public readonly array $dayPrices,
-        public readonly int|float $boValue,
-        public readonly int|float $hoValue,
+        public readonly int|float $grossValue,
+        public readonly int|float $netValue,
     ) {}
 
     public static function fromDomain(EntityInterface|ValueObjectInterface|RoomPrice $entity): static

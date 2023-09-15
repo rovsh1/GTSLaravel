@@ -100,8 +100,8 @@ class RoomController
         HotelPriceAdapter::updateRoomPrice(
             $id,
             $roomBookingId,
-            $request->getBoPrice(),
-            $request->getHoPrice()
+            $request->getGrossPrice(),
+            $request->getNetPrice()
         );
 
         return new AjaxSuccessResponse();

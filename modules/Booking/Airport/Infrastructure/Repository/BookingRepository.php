@@ -16,7 +16,6 @@ use Module\Booking\Airport\Infrastructure\Models\AirportService;
 use Module\Booking\Airport\Infrastructure\Models\Booking as Model;
 use Module\Booking\Airport\Infrastructure\Models\BookingDetails;
 use Module\Booking\Common\Domain\ValueObject\BookingId;
-use Module\Booking\Common\Domain\ValueObject\BookingPrice;
 use Module\Booking\Common\Domain\ValueObject\BookingPriceNew;
 use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\Common\Infrastructure\Repository\AbstractBookingRepository as BaseRepository;

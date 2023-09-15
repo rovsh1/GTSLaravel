@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Module\Booking\Common\Domain\Service;
 
 use Module\Booking\Common\Domain\Entity\BookingInterface;
+use Module\Booking\Common\Domain\ValueObject\PriceItem;
 
 interface BookingCalculatorInterface
 {
-    public function calculateBoPrice(BookingInterface $booking): float;
+    public function calculateGrossPrice(BookingInterface $booking): PriceItem;
 
-    public function calculateHoPrice(BookingInterface $booking): float;
+    public function calculateNetPrice(BookingInterface $booking): PriceItem;
 }

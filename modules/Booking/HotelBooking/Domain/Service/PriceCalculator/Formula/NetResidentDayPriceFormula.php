@@ -4,18 +4,16 @@ namespace Module\Booking\HotelBooking\Domain\Service\PriceCalculator\Formula;
 
 use Module\Booking\HotelBooking\Domain\Service\PriceCalculator\Support\FormulaUtil;
 
-final class BOResidentDayPriceFormula implements DayPriceFormulaInterface
+final class NetResidentDayPriceFormula implements DayPriceFormulaInterface
 {
     /**
      * 2. Формула расчета стоимости номера для резидента за 1 ночь:
-     * Sb = Sn + N + NDS
+     * Sb = Sn + NDS
      *
      * Sn – нетто стоимость номера отеля
-     * N – наценка
      * NDS = (Sn + N) * (процент НДС/100)
      */
     public function __construct(
-        private readonly int|float $clientMarkupPercent,
         private readonly int $ndsPercent
     ) {
     }
@@ -23,7 +21,6 @@ final class BOResidentDayPriceFormula implements DayPriceFormulaInterface
     public function calculate(int|float $netValue): float
     {
         return $netValue
-            + ($N = FormulaUtil::calculatePercent($netValue, $this->clientMarkupPercent))
-            + FormulaUtil::calculatePercent($netValue + $N, $this->ndsPercent);
+            + FormulaUtil::calculatePercent($netValue, $this->ndsPercent);
     }
 }

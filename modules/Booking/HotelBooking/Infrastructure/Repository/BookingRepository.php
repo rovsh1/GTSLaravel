@@ -8,7 +8,6 @@ use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Module\Booking\Common\Domain\ValueObject\BookingId;
-use Module\Booking\Common\Domain\ValueObject\BookingPrice;
 use Module\Booking\Common\Domain\ValueObject\BookingPriceNew;
 use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\Common\Infrastructure\Repository\AbstractBookingRepository as BaseRepository;

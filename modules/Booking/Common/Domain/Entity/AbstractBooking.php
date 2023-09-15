@@ -21,13 +21,12 @@ use Module\Booking\Common\Domain\Service\RequestCreator;
 use Module\Booking\Common\Domain\Service\RequestRules;
 use Module\Booking\Common\Domain\Service\VoucherCreator;
 use Module\Booking\Common\Domain\ValueObject\BookingId;
-use Module\Booking\Common\Domain\ValueObject\BookingPrice;
 use Module\Booking\Common\Domain\ValueObject\BookingPriceNew;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
 use Module\Booking\Common\Domain\ValueObject\OrderId;
+use Module\Booking\Common\Domain\ValueObject\PriceItem;
 use Module\Booking\Common\Domain\ValueObject\RequestTypeEnum;
-use Module\Booking\HotelBooking\Domain\ValueObject\ManualChangablePrice;
 use Module\Shared\Domain\ValueObject\Id;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
@@ -80,87 +79,86 @@ abstract class AbstractBooking extends AbstractAggregateRoot implements
 
     public function recalculatePrices(BookingCalculatorInterface $calculator): void
     {
-        $boPrice = $this->price()->boPrice()->isManual()
-            ? $this->price()->boPrice()
-            : new ManualChangablePrice($calculator->calculateBoPrice($this));
+        $grossPrice = $this->price->grossPrice()->manualValue() !== null
+            ? $this->price->grossPrice()
+            : $calculator->calculateGrossPrice($this);
 
-        $hoPrice = $this->price()->hoPrice()->isManual()
-            ? $this->price()->hoPrice()
-            : new ManualChangablePrice($calculator->calculateHoPrice($this));
+        $netPrice = $this->price->netPrice()->manualValue() !== null
+            ? $this->price->grossPrice()
+            : $calculator->calculateNetPrice($this);
 
         $priceBuilder = new BookingPriceChangeDecorator($this->price);
-        $priceBuilder->setPrices($boPrice, $hoPrice);
+        $priceBuilder->setPrices($netPrice, $grossPrice);
         $this->changePrice($priceBuilder);
     }
 
-    public function setBoPriceManually(float $price): void
+    public function setGrossPriceManually(float $price): void
     {
-        $priceBuilder = new BookingPriceChangeDecorator($this->price);
-        $priceBuilder->setBoPrice(
-            new ManualChangablePrice($price, true)
+        $grossPrice = new PriceItem(
+            currency: $this->price->grossPrice()->currency(),
+            calculatedValue: $this->price->grossPrice()->calculatedValue(),
+            penaltyValue: $this->price->grossPrice()->penaltyValue(),
+            manualValue: $price,
         );
+        $priceBuilder = new BookingPriceChangeDecorator($this->price);
+        $priceBuilder->setGrossPrice($grossPrice);
         $this->changePrice($priceBuilder);
     }
 
-    public function setHoPriceManually(float $price): void
+    public function setNetPriceManually(float $price): void
     {
-        $priceBuilder = new BookingPriceChangeDecorator($this->price);
-        $priceBuilder->setHoPrice(
-            new ManualChangablePrice($price, true)
-
+        $netPrice = new PriceItem(
+            currency: $this->price->netPrice()->currency(),
+            calculatedValue: $this->price->netPrice()->calculatedValue(),
+            penaltyValue: $this->price->netPrice()->penaltyValue(),
+            manualValue: $price,
         );
+        $priceBuilder = new BookingPriceChangeDecorator($this->price);
+        $priceBuilder->setNetPrice($netPrice);
         $this->changePrice($priceBuilder);
     }
 
     public function setCalculatedPrices(BookingCalculatorInterface $calculator): void
     {
         $priceBuilder = new BookingPriceChangeDecorator($this->price);
-        $priceBuilder->setBoPrice(
-            new ManualChangablePrice(
-                $calculator->calculateBoPrice($this)
-            )
+        $priceBuilder->setGrossPrice(
+            $calculator->calculateGrossPrice($this)
         );
-        $priceBuilder->setHoPrice(
-            new ManualChangablePrice(
-                $calculator->calculateHoPrice($this)
-            )
+        $priceBuilder->setNetPrice(
+            $calculator->calculateNetPrice($this)
         );
         $this->changePrice($priceBuilder);
     }
 
-    public function setCalculatedBoPrice(BookingCalculatorInterface $calculator): void
+    public function setCalculatedGrossPrice(BookingCalculatorInterface $calculator): void
     {
         $priceBuilder = new BookingPriceChangeDecorator($this->price);
-        $priceBuilder->setBoPrice(
-            new ManualChangablePrice(
-                $calculator->calculateBoPrice($this)
-            )
+        $priceBuilder->setGrossPrice(
+            $calculator->calculateGrossPrice($this)
         );
         $this->changePrice($priceBuilder);
     }
 
-    public function setCalculatedHoPrice(BookingCalculatorInterface $calculator): void
+    public function setCalculatedNetPrice(BookingCalculatorInterface $calculator): void
     {
         $priceBuilder = new BookingPriceChangeDecorator($this->price);
-        $priceBuilder->setHoPrice(
-            new ManualChangablePrice(
-                $calculator->calculateHoPrice($this)
-            )
+        $priceBuilder->setNetPrice(
+            $calculator->calculateNetPrice($this)
         );
         $this->changePrice($priceBuilder);
     }
 
-    public function setBoPenalty(float|null $amount): void
+    public function setGrossPenalty(float|null $amount): void
     {
         $priceBuilder = new BookingPriceChangeDecorator($this->price);
-        $priceBuilder->setBoPenalty($amount);
+        $priceBuilder->setGrossPenalty($amount);
         $this->changePrice($priceBuilder);
     }
 
-    public function setHoPenalty(float|null $amount): void
+    public function setNetPenalty(float|null $amount): void
     {
         $priceBuilder = new BookingPriceChangeDecorator($this->price);
-        $priceBuilder->setHoPenalty($amount);
+        $priceBuilder->setNetPenalty($amount);
         $this->changePrice($priceBuilder);
     }
 
@@ -206,14 +204,14 @@ abstract class AbstractBooking extends AbstractAggregateRoot implements
         //@todo кинуть ивент
     }
 
-    public function isManualBoPrice(): bool
+    public function isManualGrossPrice(): bool
     {
-        return $this->price()->boPrice()->isManual();
+        return $this->price()->grossPrice()->manualValue() !== null;
     }
 
-    public function isManualHoPrice(): bool
+    public function isManualNetPrice(): bool
     {
-        return $this->price()->hoPrice()->isManual();
+        return $this->price()->netPrice()->manualValue() !== null;
     }
 
     public function canSendClientVoucher(): bool

@@ -6,44 +6,49 @@ namespace Module\Booking\HotelBooking\Domain\Service\PriceCalculator;
 
 use Module\Booking\Common\Domain\Entity\BookingInterface;
 use Module\Booking\Common\Domain\Service\BookingCalculatorInterface;
-use Module\Booking\Common\Domain\ValueObject\BookingPrice;
+use Module\Booking\Common\Domain\ValueObject\BookingPriceNew;
+use Module\Booking\Common\Domain\ValueObject\PriceItem;
 use Module\Booking\HotelBooking\Domain\Entity\Booking;
-use Module\Booking\HotelBooking\Domain\ValueObject\ManualChangablePrice;
+use Module\Shared\Enum\CurrencyEnum;
 
 class BookingCalculator implements BookingCalculatorInterface
 {
-    public function calculateBoPrice(BookingInterface|Booking $booking): float
+    public function calculateGrossPrice(BookingInterface|Booking $booking): PriceItem
     {
         $bookingPrice = $this->buildBookingPrice($booking);
 
-        return $bookingPrice->boPrice()->value();
+        return $bookingPrice->grossPrice();
     }
 
-    public function calculateHoPrice(BookingInterface|Booking $booking): float
+    public function calculateNetPrice(BookingInterface|Booking $booking): PriceItem
     {
         $bookingPrice = $this->buildBookingPrice($booking);
 
-        return $bookingPrice->hoPrice()->value();
+        return $bookingPrice->netPrice();
     }
 
-    private function buildBookingPrice(Booking $booking): BookingPrice
+    private function buildBookingPrice(Booking $booking): BookingPriceNew
     {
-        $netSum = 0;
-        $hoSum = 0;
-        $boSum = 0;
-
+        $netValue = 0;
+        $grossValue = 0;
         foreach ($booking->roomBookings() as $roomBooking) {
-            $netSum += $roomBooking->price()->baseValue();
-            $hoSum += $roomBooking->price()->netValue();
-            $boSum += $roomBooking->price()->grossValue();
+            $netValue += $roomBooking->price()->netValue();
+            $grossValue += $roomBooking->price()->grossValue();
         }
 
-        return new BookingPrice(
-            $netSum,
-            new ManualChangablePrice($hoSum),
-            new ManualChangablePrice($boSum),
-            null,
-            null,
+        $grossPrice = new PriceItem(
+            currency: CurrencyEnum::USD,//@todo взять валюту из заказа
+            calculatedValue: $grossValue,
+            manualValue: null,
+            penaltyValue: null,
         );
+        $netPrice = new PriceItem(
+            currency: CurrencyEnum::UZS,
+            calculatedValue: $netValue,
+            manualValue: null,
+            penaltyValue: null,
+        );
+
+        return new BookingPriceNew($netPrice, $grossPrice);
     }
 }
