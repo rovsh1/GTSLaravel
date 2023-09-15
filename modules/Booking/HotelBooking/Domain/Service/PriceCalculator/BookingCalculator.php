@@ -37,13 +37,13 @@ class BookingCalculator implements BookingCalculatorInterface
         }
 
         $grossPrice = new PriceItem(
-            currency: CurrencyEnum::UZS,//@todo взять валюту из заказа
+            currency: $booking->price()->grossPrice()->currency(),
             calculatedValue: $grossValue,
             manualValue: null,
             penaltyValue: null,
         );
         $netPrice = new PriceItem(
-            currency: CurrencyEnum::UZS,
+            currency: $booking->price()->netPrice()->currency(),
             calculatedValue: $netValue,
             manualValue: null,
             penaltyValue: null,

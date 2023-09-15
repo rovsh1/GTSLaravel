@@ -26,13 +26,10 @@ class CopyBooking implements UseCaseInterface
         if ($booking === null) {
             throw new EntityNotFoundException('Booking not found');
         }
-        $order = $this->orderRepository->find($booking->orderId()->value());
-        if ($order === null) {
-            throw new EntityNotFoundException('Order not found');
-        }
         $newBooking = $this->repository->create(
             $booking->orderId(),
-            $order->currency(),
+            $booking->price()->netPrice()->currency(),
+            $booking->price()->grossPrice()->currency(),
             $booking->creatorId(),
             $booking->period(),
             $booking->note(),

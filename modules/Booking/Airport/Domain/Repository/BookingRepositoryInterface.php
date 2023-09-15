@@ -15,7 +15,16 @@ interface BookingRepositoryInterface extends Base
 
     public function get(): Collection;
 
-    public function create(OrderId $orderId, CurrencyEnum $currency, int $creatorId, int $serviceId, int $airportId, CarbonInterface $date, ?string $note = null): Booking;
+    public function create(
+        OrderId $orderId,
+        CurrencyEnum $netCurrency,
+        CurrencyEnum $grossCurrency,
+        int $creatorId,
+        int $serviceId,
+        int $airportId,
+        CarbonInterface $date,
+        ?string $note = null
+    ): Booking;
 
     public function store(Booking $booking): bool;
 }

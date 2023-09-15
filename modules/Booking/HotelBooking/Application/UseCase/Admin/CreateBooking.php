@@ -43,7 +43,8 @@ class CreateBooking extends AbstractCreateBooking
         }
         $booking = $this->repository->create(
             orderId: $orderId,
-            currency: $currency,
+            grossCurrency: $currency,
+            netCurrency: CurrencyEnum::UZS,//@todo валюта netto
             creatorId: new Id($request->creatorId),
             hotelInfo: HotelInfoFactory::fromDto($hotelDto),
             period: BookingPeriod::fromCarbon($request->period),

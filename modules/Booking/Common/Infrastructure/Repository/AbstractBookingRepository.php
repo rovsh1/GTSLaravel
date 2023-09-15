@@ -28,14 +28,14 @@ abstract class AbstractBookingRepository
         return $model;
     }
 
-    protected function createBase(OrderId $orderId, CurrencyEnum $currency, int $creatorId): Booking
+    protected function createBase(OrderId $orderId, CurrencyEnum $netCurrency, CurrencyEnum $grossCurrency, int $creatorId): Booking
     {
         return $this->getModel()::create([
             'order_id' => $orderId->value(),
             'source' => AppContext::source(),
             'status' => BookingStatusEnum::CREATED,
             'creator_id' => $creatorId,
-            'price' => BookingPrice::createEmpty($currency)->toData(),
+            'price' => BookingPrice::createEmpty($netCurrency, $grossCurrency)->toData(),
         ]);
     }
 

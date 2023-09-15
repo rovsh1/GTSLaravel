@@ -35,7 +35,8 @@ interface BookingRepositoryInterface extends Base
 
     public function create(
         OrderId $orderId,
-        CurrencyEnum $currency,
+        CurrencyEnum $netCurrency,
+        CurrencyEnum $grossCurrency,
         Id $creatorId,
         BookingPeriod $period,
         ?string $note = null,

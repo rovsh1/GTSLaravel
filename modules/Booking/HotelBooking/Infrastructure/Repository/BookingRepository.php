@@ -71,7 +71,8 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
 
     public function create(
         OrderId $orderId,
-        CurrencyEnum $currency,
+        CurrencyEnum $netCurrency,
+        CurrencyEnum $grossCurrency,
         Id $creatorId,
         BookingPeriod $period,
         ?string $note = null,
@@ -82,7 +83,8 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         return \DB::transaction(
             function () use (
                 $orderId,
-                $currency,
+                $netCurrency,
+                $grossCurrency,
                 $creatorId,
                 $period,
                 $note,
@@ -90,7 +92,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
                 $cancelConditions,
                 $quotaProcessingMethod
             ) {
-                $bookingModel = $this->createBase($orderId, $currency, $creatorId->value());
+                $bookingModel = $this->createBase($orderId, $netCurrency, $grossCurrency, $creatorId->value());
                 $booking = new Booking(
                     id: new BookingId($bookingModel->id),
                     orderId: $orderId,

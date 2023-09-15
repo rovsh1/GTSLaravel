@@ -48,7 +48,8 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
 
     public function create(
         OrderId $orderId,
-        CurrencyEnum $currency,
+        CurrencyEnum $netCurrency,
+        CurrencyEnum $grossCurrency,
         int $creatorId,
         int $serviceId,
         int $airportId,
@@ -56,8 +57,8 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         ?string $note = null
     ): Entity {
         return \DB::transaction(
-            function () use ($orderId, $currency, $creatorId, $serviceId, $airportId, $date, $note) {
-                $bookingModel = $this->createBase($orderId, $currency, $creatorId);
+            function () use ($orderId, $netCurrency, $grossCurrency, $creatorId, $serviceId, $airportId, $date, $note) {
+                $bookingModel = $this->createBase($orderId, $netCurrency, $grossCurrency, $creatorId);
 
                 $airport = Airport::find($airportId);
                 $service = AirportService::find($serviceId);

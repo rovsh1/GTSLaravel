@@ -24,13 +24,14 @@ class CreateBooking extends AbstractCreateBooking
         $orderId = $this->getOrderIdFromRequest($request);
         $currency = CurrencyEnum::fromId($request->currencyId);
         $booking = $this->repository->create(
-            $orderId,
-            $currency,
-            $request->creatorId,
-            $request->serviceId,
-            $request->airportId,
-            $request->date,
-            $request->note,
+            orderId: $orderId,
+            grossCurrency: $currency,
+            netCurrency: CurrencyEnum::UZS,//@todo валюта netto
+            creatorId: $request->creatorId,
+            serviceId: $request->serviceId,
+            airportId: $request->airportId,
+            date: $request->date,
+            note: $request->note,
         );
 
         return $booking->id()->value();
