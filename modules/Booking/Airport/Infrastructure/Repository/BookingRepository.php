@@ -16,7 +16,7 @@ use Module\Booking\Airport\Infrastructure\Models\AirportService;
 use Module\Booking\Airport\Infrastructure\Models\Booking as Model;
 use Module\Booking\Airport\Infrastructure\Models\BookingDetails;
 use Module\Booking\Common\Domain\ValueObject\BookingId;
-use Module\Booking\Common\Domain\ValueObject\BookingPriceNew;
+use Module\Booking\Common\Domain\ValueObject\BookingPrice;
 use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\Common\Infrastructure\Repository\AbstractBookingRepository as BaseRepository;
 use Module\Booking\Order\Domain\ValueObject\GuestIdsCollection;
@@ -68,7 +68,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
                     status: $bookingModel->status,
                     createdAt: $bookingModel->created_at->toImmutable(),
                     creatorId: new Id($bookingModel->creator_id),
-                    price: BookingPriceNew::fromData($bookingModel->price),
+                    price: BookingPrice::fromData($bookingModel->price),
                     note: $note,
                     airportInfo: new AirportInfo(
                         $airport->id,
@@ -123,7 +123,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
             createdAt: $booking->created_at->toImmutable(),
             creatorId: new Id($booking->creator_id),
             note: $detailsData['note'] ?? null,
-            price: BookingPriceNew::fromData($detailsData['price']),
+            price: BookingPrice::fromData($detailsData['price']),
             guestIds: GuestIdsCollection::fromData($booking->guest_ids),
             airportInfo: AirportInfo::fromData($detailsData['airportInfo']),
             serviceInfo: ServiceInfo::fromData($detailsData['serviceInfo']),

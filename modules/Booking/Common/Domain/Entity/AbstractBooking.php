@@ -21,7 +21,7 @@ use Module\Booking\Common\Domain\Service\RequestCreator;
 use Module\Booking\Common\Domain\Service\RequestRules;
 use Module\Booking\Common\Domain\Service\VoucherCreator;
 use Module\Booking\Common\Domain\ValueObject\BookingId;
-use Module\Booking\Common\Domain\ValueObject\BookingPriceNew;
+use Module\Booking\Common\Domain\ValueObject\BookingPrice;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
 use Module\Booking\Common\Domain\ValueObject\OrderId;
@@ -42,7 +42,7 @@ abstract class AbstractBooking extends AbstractAggregateRoot implements
         private BookingStatusEnum $status,
         private readonly CarbonImmutable $createdAt,
         private readonly Id $creatorId,
-        private BookingPriceNew $price,
+        private BookingPrice $price,
     ) {}
 
     public function id(): BookingId
@@ -72,7 +72,7 @@ abstract class AbstractBooking extends AbstractAggregateRoot implements
         return $this->creatorId;
     }
 
-    public function price(): BookingPriceNew
+    public function price(): BookingPrice
     {
         return $this->price;
     }
@@ -84,7 +84,7 @@ abstract class AbstractBooking extends AbstractAggregateRoot implements
             : $calculator->calculateGrossPrice($this);
 
         $netPrice = $this->price->netPrice()->manualValue() !== null
-            ? $this->price->grossPrice()
+            ? $this->price->netPrice()
             : $calculator->calculateNetPrice($this);
 
         $priceBuilder = new BookingPriceChangeDecorator($this->price);

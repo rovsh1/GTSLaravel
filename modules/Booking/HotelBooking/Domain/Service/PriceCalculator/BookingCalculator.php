@@ -6,7 +6,7 @@ namespace Module\Booking\HotelBooking\Domain\Service\PriceCalculator;
 
 use Module\Booking\Common\Domain\Entity\BookingInterface;
 use Module\Booking\Common\Domain\Service\BookingCalculatorInterface;
-use Module\Booking\Common\Domain\ValueObject\BookingPriceNew;
+use Module\Booking\Common\Domain\ValueObject\BookingPrice;
 use Module\Booking\Common\Domain\ValueObject\PriceItem;
 use Module\Booking\HotelBooking\Domain\Entity\Booking;
 use Module\Shared\Enum\CurrencyEnum;
@@ -27,7 +27,7 @@ class BookingCalculator implements BookingCalculatorInterface
         return $bookingPrice->netPrice();
     }
 
-    private function buildBookingPrice(Booking $booking): BookingPriceNew
+    private function buildBookingPrice(Booking $booking): BookingPrice
     {
         $netValue = 0;
         $grossValue = 0;
@@ -37,7 +37,7 @@ class BookingCalculator implements BookingCalculatorInterface
         }
 
         $grossPrice = new PriceItem(
-            currency: CurrencyEnum::USD,//@todo взять валюту из заказа
+            currency: CurrencyEnum::UZS,//@todo взять валюту из заказа
             calculatedValue: $grossValue,
             manualValue: null,
             penaltyValue: null,
@@ -49,6 +49,6 @@ class BookingCalculator implements BookingCalculatorInterface
             penaltyValue: null,
         );
 
-        return new BookingPriceNew($netPrice, $grossPrice);
+        return new BookingPrice($netPrice, $grossPrice);
     }
 }

@@ -9,7 +9,7 @@ use Module\Booking\Airport\Domain\ValueObject\Details\AirportInfo;
 use Module\Booking\Airport\Domain\ValueObject\Details\ServiceInfo;
 use Module\Booking\Common\Domain\Entity\AbstractBooking;
 use Module\Booking\Common\Domain\ValueObject\BookingId;
-use Module\Booking\Common\Domain\ValueObject\BookingPriceNew;
+use Module\Booking\Common\Domain\ValueObject\BookingPrice;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
 use Module\Booking\Common\Domain\ValueObject\OrderId;
@@ -24,7 +24,7 @@ class Booking extends AbstractBooking
         BookingStatusEnum $status,
         CarbonImmutable $createdAt,
         Id $creatorId,
-        BookingPriceNew $price,
+        BookingPrice $price,
         private readonly ServiceInfo $serviceInfo,
         private readonly AirportInfo $airportInfo,
         private readonly CarbonImmutable $date,

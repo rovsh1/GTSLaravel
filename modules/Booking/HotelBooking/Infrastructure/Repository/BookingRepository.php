@@ -8,7 +8,7 @@ use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Module\Booking\Common\Domain\ValueObject\BookingId;
-use Module\Booking\Common\Domain\ValueObject\BookingPriceNew;
+use Module\Booking\Common\Domain\ValueObject\BookingPrice;
 use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\Common\Infrastructure\Repository\AbstractBookingRepository as BaseRepository;
 use Module\Booking\HotelBooking\Domain\Entity\Booking;
@@ -103,7 +103,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
                     hotelInfo: $hotelInfo,
                     period: $period,
                     note: $note,
-                    price: BookingPriceNew::fromData($bookingModel->price),
+                    price: BookingPrice::fromData($bookingModel->price),
                     quotaProcessingMethod: $quotaProcessingMethod,
                 );
 
@@ -214,7 +214,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
             additionalInfo: $additionalInfo !== null ? AdditionalInfo::fromData($detailsData['additionalInfo']) : null,
             roomBookings: $roomBookings,
             cancelConditions: CancelConditions::fromData($detailsData['cancelConditions']),
-            price: BookingPriceNew::fromData($booking->price),
+            price: BookingPrice::fromData($booking->price),
             quotaProcessingMethod: $detailsModel->quota_processing_method
         );
     }

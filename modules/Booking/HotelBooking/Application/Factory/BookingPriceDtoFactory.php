@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\HotelBooking\Application\Factory;
 
-use Module\Booking\Common\Domain\ValueObject\BookingPriceNew;
+use Module\Booking\Common\Domain\ValueObject\BookingPrice;
 use Module\Booking\HotelBooking\Application\Dto\BookingPriceDto;
 use Module\Booking\HotelBooking\Application\Dto\PriceItemDto;
 use Module\Shared\Application\Dto\CurrencyDto;
@@ -16,7 +16,7 @@ class BookingPriceDtoFactory
         private readonly TranslatorInterface $translator
     ) {}
 
-    public function createFromEntity(BookingPriceNew $entity): BookingPriceDto
+    public function createFromEntity(BookingPrice $entity): BookingPriceDto
     {
         $grossPrice = new PriceItemDto(
             CurrencyDto::fromEnum($entity->grossPrice()->currency(), $this->translator),

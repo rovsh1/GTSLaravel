@@ -6,7 +6,7 @@ use Module\Shared\Contracts\CanEquate;
 use Module\Shared\Domain\ValueObject\SerializableDataInterface;
 use Module\Shared\Enum\CurrencyEnum;
 
-final class BookingPriceNew implements SerializableDataInterface, CanEquate
+final class BookingPrice implements SerializableDataInterface, CanEquate
 {
     /**
      * @param PriceItem $netPrice Стоимость для GTS (расход)
@@ -18,9 +18,9 @@ final class BookingPriceNew implements SerializableDataInterface, CanEquate
     ) {
     }
 
-    public static function createEmpty(CurrencyEnum $currency): BookingPriceNew
+    public static function createEmpty(CurrencyEnum $currency): BookingPrice
     {
-        return new BookingPriceNew(
+        return new BookingPrice(
             PriceItem::createEmpty($currency),
             PriceItem::createEmpty($currency),
         );
@@ -46,7 +46,7 @@ final class BookingPriceNew implements SerializableDataInterface, CanEquate
 
     public static function fromData(array $data): static
     {
-        return new BookingPriceNew(
+        return new BookingPrice(
             PriceItem::fromData($data['netPrice']),
             PriceItem::fromData($data['grossPrice']),
         );

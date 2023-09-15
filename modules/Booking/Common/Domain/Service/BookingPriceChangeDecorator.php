@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Module\Booking\Common\Domain\Service;
 
-use Module\Booking\Common\Domain\ValueObject\BookingPriceNew;
+use Module\Booking\Common\Domain\ValueObject\BookingPrice;
 use Module\Booking\Common\Domain\ValueObject\PriceItem;
 
 class BookingPriceChangeDecorator
 {
-    private BookingPriceNew $priceAfter;
+    private BookingPrice $priceAfter;
 
-    public function __construct(private readonly BookingPriceNew $price) {}
+    public function __construct(private readonly BookingPrice $price) {}
 
     public function setNetPrice(PriceItem $price): static
     {
-        $this->priceAfter = new BookingPriceNew(
+        $this->priceAfter = new BookingPrice(
             netPrice: $price,
             grossPrice: $this->price->grossPrice(),
         );
@@ -25,7 +25,7 @@ class BookingPriceChangeDecorator
 
     public function setGrossPrice(PriceItem $price): static
     {
-        $this->priceAfter = new BookingPriceNew(
+        $this->priceAfter = new BookingPrice(
             netPrice: $this->price->netPrice(),
             grossPrice: $price,
         );
@@ -35,7 +35,7 @@ class BookingPriceChangeDecorator
 
     public function setPrices(PriceItem $netPrice, PriceItem $grossPrice): static
     {
-        $this->priceAfter = new BookingPriceNew(
+        $this->priceAfter = new BookingPrice(
             grossPrice: $grossPrice,
             netPrice: $netPrice,
         );
@@ -51,7 +51,7 @@ class BookingPriceChangeDecorator
             manualValue: $this->price->netPrice()->manualValue(),
             penaltyValue: $amount
         );
-        $this->priceAfter = new BookingPriceNew(
+        $this->priceAfter = new BookingPrice(
             netPrice: $netPrice,
             grossPrice: $this->price->grossPrice()
         );
@@ -67,7 +67,7 @@ class BookingPriceChangeDecorator
             manualValue: $this->price->grossPrice()->manualValue(),
             penaltyValue: $amount
         );
-        $this->priceAfter = new BookingPriceNew(
+        $this->priceAfter = new BookingPrice(
             netPrice: $this->price->netPrice(),
             grossPrice: $grossPrice,
         );
@@ -75,12 +75,12 @@ class BookingPriceChangeDecorator
         return $this;
     }
 
-    public function getPriceAfter(): BookingPriceNew
+    public function getPriceAfter(): BookingPrice
     {
         return $this->priceAfter;
     }
 
-    public function getPriceBefore(): BookingPriceNew
+    public function getPriceBefore(): BookingPrice
     {
         return $this->price;
     }
