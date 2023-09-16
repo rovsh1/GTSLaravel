@@ -2,14 +2,15 @@
 
 namespace App\Admin\Models\Hotel;
 
-use App\Admin\Files\HotelImage;
 use App\Admin\Models\HasIndexedChildren;
 use App\Admin\Support\Facades\Hotel\MarkupSettingsAdapter;
+use App\Shared\Support\Facades\FileStorage;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Module\Shared\Dto\FileDto;
 use Sdk\Module\Database\Eloquent\HasTranslations;
 use Sdk\Module\Database\Eloquent\Model;
 
@@ -18,7 +19,7 @@ use Sdk\Module\Database\Eloquent\Model;
  * @property HasMany beds
  * @property-read string $name
  * @property-read Image $images
- * @property-read HotelImage|null $main_image
+ * @property-read FileDto|null $main_image
  * @property-read Collection<int, PriceRate> $priceRates
  */
 class Room extends Model
@@ -91,8 +92,8 @@ class Room extends Model
     public function mainImage(): Attribute
     {
         return Attribute::get(
-            fn() => $this->images()->first() !== null
-                ? HotelImage::find($this->images()->first()->file_guid)
+            fn() => ($img = $this->images()->first()) !== null
+                ? FileStorage::find($img->file_guid)
                 : null
         );
     }

@@ -2,16 +2,16 @@
 
 namespace App\Admin\Support\View\Grid\Column;
 
-use App\Core\Contracts\File\FileInterface;
 use Gsdk\Grid\Column\Url;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Collection;
+use Module\Shared\Dto\FileDto;
 use Sdk\Module\Database\Eloquent\Model;
 
 class File extends Url
 {
     /**
-     * @param FileInterface[]|FileInterface|Collection $value
+     * @param FileDto[]|FileDto|Collection $value
      * @param Model $row
      * @return string
      */
@@ -24,9 +24,9 @@ class File extends Url
             return '';
         }
 
-        $this->options['route'] = fn() => $value->url();
+        $this->options['route'] = fn() => $value->url;
 
-        return $value->name();
+        return $value->name;
     }
 
 }

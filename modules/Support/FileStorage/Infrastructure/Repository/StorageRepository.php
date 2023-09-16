@@ -64,23 +64,6 @@ class StorageRepository implements StorageRepositoryInterface
         return unlink($this->pathGenerator->path($file));
     }
 
-    public function fileInfo(File $file, int $part = null): FileInfoDto
-    {
-        $filename = $this->pathGenerator->path($file, $part);
-        //$info->path = $filename;
-        $exists = file_exists($filename);
-        if ($exists) {
-            return new FileInfoDto(
-                true,
-                filesize($filename),
-                finfo_file(finfo_open(FILEINFO_MIME_TYPE), $filename),
-                filemtime($filename)
-            );
-        } else {
-            return new FileInfoDto(false, 0, '', 0);
-        }
-    }
-
     private function chmod($filename, $umask): void
     {
         chmod($filename, $this->config['fileMode']);

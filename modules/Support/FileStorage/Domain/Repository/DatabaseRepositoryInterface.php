@@ -3,18 +3,15 @@
 namespace Module\Support\FileStorage\Domain\Repository;
 
 use Module\Support\FileStorage\Domain\Entity\File;
+use Module\Support\FileStorage\Domain\ValueObject\Guid;
 
 interface DatabaseRepositoryInterface
 {
-    public function find(string $guid): ?File;
+    public function find(Guid $guid): ?File;
 
-    public function getEntityFile(string $fileType, ?int $entityId): ?File;
+    public function create(string $name = null): File;
 
-    public function getEntityFiles(string $fileType, ?int $entityId): array;
-
-    public function create(string $fileType, ?int $entityId, string $name = null): File;
-
-    public function update(File $file, array $attributes): bool;
+    public function store(File $file): bool;
 
     public function delete(File $file): bool;
 

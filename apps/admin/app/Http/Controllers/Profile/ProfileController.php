@@ -2,11 +2,10 @@
 
 namespace App\Admin\Http\Controllers\Profile;
 
-use App\Admin\Files\AdministratorAvatar;
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Layout;
-use App\Core\Support\Facades\FileAdapter;
+use App\Admin\Support\Facades\Profile;
 use App\Core\Support\Http\Responses\AjaxReloadResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,7 +21,7 @@ class ProfileController extends Controller
             ->view('profile.profile.profile', [
                 'title' => $user->presentation,
                 'user' => $user,
-                'avatar' => $user->avatar(),
+                'avatar' => Profile::avatar(),
                 'valueEmpty' => $valueEmpty
             ]);
     }
@@ -50,6 +49,7 @@ class ProfileController extends Controller
             $user = Auth::user();
             $user->fill($data);
             $user->save();
+
             return new AjaxReloadResponse();
         }
 
@@ -64,7 +64,10 @@ class ProfileController extends Controller
     {
         $form = Form::name('data')
             ->password('password', ['label' => 'Новый пароль', 'autocomplete' => 'new-password', 'required' => true])
-            ->password('confirm', ['label' => 'Подтвердите пароль', 'autocomplete' => 'new-password', 'required' => true]);
+            ->password(
+                'confirm',
+                ['label' => 'Подтвердите пароль', 'autocomplete' => 'new-password', 'required' => true]
+            );
 
         if ($request->isMethod('get')) {
         } elseif ($form->submit()) {
@@ -77,6 +80,7 @@ class ProfileController extends Controller
                 $user = Auth::user();
                 $user->password = $data['password'];
                 $user->save();
+
                 return new AjaxReloadResponse();
             }
         }
@@ -94,15 +98,12 @@ class ProfileController extends Controller
         $form = Form::name('data')
             ->file('image', ['accept' => 'image/*']);
 
-        $avatar = $user->avatar();
-
         if ($request->isMethod('get')) {
         } elseif ($form->submit()) {
-            FileAdapter::uploadOrCreate(
-                $avatar,
-                $request->file('data.image'),
-                AdministratorAvatar::class,
-                $user->id
+            $uploadedFile = $request->file('data.image');
+            app(UpdateAvatar::class)->execute(
+                $user->id,
+                UploadedFileDto::fromUploadedFile($uploadedFile)
             );
 
             return new AjaxReloadResponse();
@@ -111,7 +112,7 @@ class ProfileController extends Controller
         return view('profile.photo', [
             'title' => 'Фото профиля',
             'description' => 'По фото профиля другие люди смогут вас узнавать, а вам будет проще определять, в какой аккаунт вы вошли.',
-            'avatar' => $avatar,
+            'avatar' => Profile::avatar(),
             'form' => $form
         ]);
     }

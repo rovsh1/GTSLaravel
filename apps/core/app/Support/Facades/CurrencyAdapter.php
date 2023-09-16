@@ -13,6 +13,6 @@ class CurrencyAdapter extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'currency-adapter';
+        return \App\Core\Support\Adapters\CurrencyAdapter::class;
     }
 }

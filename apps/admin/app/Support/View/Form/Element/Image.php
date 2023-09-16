@@ -3,9 +3,9 @@
 namespace App\Admin\Support\View\Form\Element;
 
 use App\Admin\View\Components\FileImage;
-use App\Core\Contracts\File\FileInterface;
 use Gsdk\Form\Element\File;
 use Illuminate\Http\UploadedFile;
+use Module\Shared\Dto\FileDto;
 
 /**
  * @property string fileType
@@ -18,7 +18,7 @@ class Image extends File
         'deleteRoute' => 'file.delete'
     ];
 
-    private ?FileInterface $file = null;
+    private ?FileDto $file = null;
 
     public function submitValue($value)
     {
@@ -33,7 +33,7 @@ class Image extends File
 
     public function setValue($value)
     {
-        if ($value instanceof FileInterface && $value instanceof $this->fileType) {
+        if ($value instanceof FileDto) {
             $this->file = $value;
         }
         parent::setValue(null);
@@ -46,8 +46,8 @@ class Image extends File
         if ($this->file) {
             $html .= '<div class="thumbs">'
                 . '<div class="thumb">'
-                . ($this->deleteRoute ? '<div data-url="' . route($this->deleteRoute, ['guid' => $this->file->guid()]) . '" title="Удалить файл" class="btn-remove"></div>' : '')
-                . '<a href="' . $this->file->url() . '" target="_blank">' . (new FileImage($this->file))->render() . '</a>'
+                . ($this->deleteRoute ? '<div data-url="' . route($this->deleteRoute, ['guid' => $this->file->guid]) . '" title="Удалить файл" class="btn-remove"></div>' : '')
+                . '<a href="' . $this->file->url . '" target="_blank">' . (new FileImage($this->file))->render() . '</a>'
                 . '</div>'
                 . '</div>';
         }

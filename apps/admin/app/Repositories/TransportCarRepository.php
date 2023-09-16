@@ -2,30 +2,27 @@
 
 namespace App\Admin\Repositories;
 
-use App\Admin\Components\Factory\FactoryRepositoryInterface;
 use App\Admin\Components\Factory\Support\DefaultRepository;
-use App\Admin\Files\TransportImage;
 use App\Admin\Models\Reference\TransportCar;
-use App\Admin\Support\Http\EntityFileUploader;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\UploadedFile;
+use Module\Shared\Contracts\Adapter\FileStorageAdapterInterface;
 
 class TransportCarRepository extends DefaultRepository
 {
-    public function __construct()
-    {
+    public function __construct(
+        private readonly FileStorageAdapterInterface $fileStorageAdapter
+    ) {
         parent::__construct(TransportCar::class);
     }
 
     public function create(array $data): ?Model
     {
-        $model = $this->model::create($data);
-        if (!$model) {
-            return null;
-        }
-
-        (new EntityFileUploader($model, TransportImage::class))
-            ->upload($data['image'] ?? null);
+        $model = new TransportCar();
+        $this->storeImage($model, $data['image'] ?? null);
+        unset($data['image']);
+        $model->fill($data);
+        $model->save();
 
         return $model;
     }
@@ -34,9 +31,26 @@ class TransportCarRepository extends DefaultRepository
     {
         $model = $this->findOrFail($id);
 
-        (new EntityFileUploader($model, TransportImage::class))
-            ->upload($data['image'] ?? null);
+        $this->storeImage($model, $data['image'] ?? null);
+        unset($data['image']);
 
         return $model->update($data);
+    }
+
+    private function storeImage(TransportCar $model, ?UploadedFile $uploadedFile): void
+    {
+        if ($model->image_guid) {
+            $this->fileStorageAdapter->update(
+                $model->image_guid,
+                $uploadedFile->getClientOriginalName(),
+                $uploadedFile->get()
+            );
+        } else {
+            $fileDto = $this->fileStorageAdapter->create(
+                $uploadedFile->getClientOriginalName(),
+                $uploadedFile->get()
+            );
+            $model->image_guid = $fileDto->guid;
+        }
     }
 }

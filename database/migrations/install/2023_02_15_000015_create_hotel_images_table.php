@@ -28,7 +28,7 @@ return new class extends Migration {
             $table->foreign('file_guid')
                 ->references('guid')
                 ->on('files')
-                ->cascadeOnDelete()
+                ->restrictOnDelete()
                 ->cascadeOnUpdate();
         });
     }

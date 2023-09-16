@@ -3,7 +3,6 @@
 namespace App\Admin\Models\Hotel;
 
 use App\Admin\Enums\Hotel\Contract\StatusEnum;
-use App\Admin\Files\ContractDocument;
 use App\Admin\Support\Models\HasPeriod;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
@@ -11,6 +10,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
+use Module\Hotel\Application\UseCase\GetContractDocuments;
 use Sdk\Module\Database\Eloquent\Model;
 
 /**
@@ -24,7 +24,6 @@ use Sdk\Module\Database\Eloquent\Model;
  * @property \Sdk\Module\Support\DateTime $created_at
  * @property \Sdk\Module\Support\DateTime $updated_at
  * @property CarbonPeriod $period
- * @property Collection<ContractDocument>|ContractDocument[] $documents
  * @property-read Collection<Season>|Season[] $seasons
  * @method static \Illuminate\Database\Eloquent\Builder|Contract newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Contract newQuery()
@@ -75,11 +74,11 @@ class Contract extends Model
                 return;
             }
             foreach ($model->savingFiles as $file) {
-                ContractDocument::create(
-                    $model->id,
-                    $file->getClientOriginalName(),
-                    $file->get()
-                );
+//                ContractDocument::create(
+//                    $model->id,
+//                    $file->getClientOriginalName(),
+//                    $file->get()
+//                );
             }
             $model->savingFiles = [];
         });
@@ -93,7 +92,7 @@ class Contract extends Model
     public function documents(): Attribute
     {
         return Attribute::make(
-            get: fn() => ContractDocument::getEntityFiles($this->id),
+            get: fn() => app(GetContractDocuments::class)->execute($this->id),
             set: function (array|Collection|null $files) {
                 if ($files === null) {
                     return [];

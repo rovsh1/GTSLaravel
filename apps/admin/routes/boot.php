@@ -7,13 +7,6 @@ Route::controller(\App\Admin\Http\Controllers\DashboardController::class)
         Route::get('/', 'index')->name('home');
     });
 
-Route::controller(\App\Admin\Http\Controllers\FileController::class)
-    ->prefix('file')
-    ->name('file.')
-    ->group(function () {
-        Route::delete('/{guid}', 'delete')->name('delete');
-    });
-
 Route::group([], __DIR__ . '/auth.php');
 Route::group([], __DIR__ . '/administrator.php');
 Route::group([], __DIR__ . '/mail.php');

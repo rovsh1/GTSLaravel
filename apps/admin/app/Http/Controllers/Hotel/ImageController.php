@@ -14,18 +14,21 @@ use App\Admin\Support\Facades\Layout;
 use App\Admin\Support\Facades\Sidebar;
 use App\Admin\Support\View\Layout as LayoutContract;
 use App\Admin\View\Menus\HotelMenu;
-use App\Api\Repositories\Hotel\ImageRepository;
 use App\Api\Repositories\Hotel\RoomImageRepository;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use App\Core\Support\Http\Responses\AjaxSuccessResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Module\Hotel\Application\RequestDto\AddImageRequestDto;
+use Module\Hotel\Application\UseCase\AddImage;
+use Module\Hotel\Application\UseCase\DeleteImage;
+use Module\Hotel\Application\UseCase\GetImages;
+use Module\Shared\Dto\UploadedFileDto;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ImageController extends Controller
 {
     public function __construct(
-        private readonly ImageRepository $repository,
         private readonly RoomImageRepository $roomImageRepository
     ) {
     }
@@ -49,7 +52,7 @@ class ImageController extends Controller
 
     public function get(Request $request, Hotel $hotel): JsonResponse
     {
-        $files = $this->repository->get($hotel->id);
+        $files = app(GetImages::class)->execute($hotel->id);
 
         return response()->json($files);
     }
@@ -58,7 +61,13 @@ class ImageController extends Controller
     {
         //@todo загружать во временную папку, отдавать путь. А после submit формы, сохранять
         foreach ($request->getFiles() as $file) {
-            $this->repository->create($file, $hotel->id, $request->getRoomId());
+            app(AddImage::class)->execute(
+                new AddImageRequestDto(
+                    $hotel->id,
+                    $request->getRoomId(),
+                    UploadedFileDto::fromUploadedFile($file)
+                )
+            );
         }
 
         return new AjaxSuccessResponse();
@@ -66,7 +75,7 @@ class ImageController extends Controller
 
     public function destroy(Request $request, Hotel $hotel, Image $image): AjaxResponseInterface
     {
-        $this->repository->delete($image);
+        app(DeleteImage::class)->execute($hotel->id, $image->id);
 
         return new AjaxSuccessResponse();
     }

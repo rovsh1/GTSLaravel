@@ -2,7 +2,7 @@
 
 namespace App\Admin\Models\Hotel;
 
-use App\Admin\Files\HotelImage;
+use App\Shared\Support\Facades\FileStorage;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -67,7 +67,7 @@ class RoomImage extends Model
 
     public function file(): Attribute
     {
-        return Attribute::get(fn() => HotelImage::find($this->file_guid));
+        return Attribute::get(fn() => FileStorage::find($this->file_guid));
     }
 
     public static function getNextIndexByRoomId(int $roomId): int

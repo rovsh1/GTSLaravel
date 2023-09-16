@@ -22,6 +22,7 @@ class TransportCar extends Model
         'model',
         'passengers_number',
         'bags_number',
+        'image_guid'
     ];
 
     public static function booted()

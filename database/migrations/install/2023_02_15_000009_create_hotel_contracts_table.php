@@ -8,11 +8,12 @@ return new class extends Migration {
     public function up()
     {
         $this->createContracts();
+        $this->createContractDocuments();
         $this->createSeasons();
         $this->createSeasonPrices();
     }
 
-    private function createContracts()
+    private function createContracts(): void
     {
         Schema::create('hotel_contracts', function (Blueprint $table) {
             $table->increments('id');
@@ -31,7 +32,27 @@ return new class extends Migration {
         });
     }
 
-    private function createSeasons()
+    private function createContractDocuments(): void
+    {
+        Schema::create('hotel_contract_documents', function (Blueprint $table) {
+            $table->char('guid', 32)->primary();
+            $table->unsignedInteger('contract_id');
+
+            $table->foreign('contract_id')
+                ->references('id')
+                ->on('hotel_contracts')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+
+            $table->foreign('guid')
+                ->references('guid')
+                ->on('files')
+                ->restrictOnDelete()
+                ->cascadeOnUpdate();
+        });
+    }
+
+    private function createSeasons(): void
     {
         Schema::create('hotel_seasons', function (Blueprint $table) {
             $table->increments('id');
@@ -49,7 +70,7 @@ return new class extends Migration {
         });
     }
 
-    private function createSeasonPrices()
+    private function createSeasonPrices(): void
     {
         Schema::create('hotel_season_prices', function (Blueprint $table) {
             $table->increments('id');

@@ -2,7 +2,6 @@
 
 namespace App\Admin\Models\Administrator;
 
-use App\Admin\Files\AdministratorAvatar;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -47,6 +46,7 @@ class Administrator extends Authenticatable
         'gender',
         'status',
         'superuser',
+        'avatar_guid',
 
         'groups',
     ];
@@ -91,11 +91,6 @@ class Administrator extends Authenticatable
     public function isActive(): bool
     {
         return (bool)$this->status;
-    }
-
-    public function avatar(): ?AdministratorAvatar
-    {
-        return AdministratorAvatar::findByEntity($this->id);
     }
 
     public function groups(): BelongsToMany
