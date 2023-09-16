@@ -15,6 +15,6 @@ class UpdateAvatar extends AbstractUpdateModelFile implements UseCaseInterface
 
     protected function fileField(): string
     {
-        return 'avatar_guid';
+        return 'avatar';
     }
 }

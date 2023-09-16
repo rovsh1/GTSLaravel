@@ -22,7 +22,7 @@ class RequestFactory extends AbstractEntityFactory
             new RequestId($data['id']),
             new BookingId($data['booking_id']),
             RequestTypeEnum::from($data['type']),
-            new File($data['file_guid']),
+            new File($data['file']),
             new CarbonImmutable($data['created_at']),
         );
     }

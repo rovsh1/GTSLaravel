@@ -19,9 +19,7 @@ class TransportCarRepository extends DefaultRepository
     public function create(array $data): ?Model
     {
         $model = new TransportCar();
-        $this->storeImage($model, $data['image'] ?? null);
-        unset($data['image']);
-        $model->fill($data);
+        $model->fill($this->prepareData($model, $data));
         $model->save();
 
         return $model;
@@ -31,26 +29,25 @@ class TransportCarRepository extends DefaultRepository
     {
         $model = $this->findOrFail($id);
 
-        $this->storeImage($model, $data['image'] ?? null);
-        unset($data['image']);
-
-        return $model->update($data);
+        return $model->update($this->prepareData($model, $data));
     }
 
-    private function storeImage(TransportCar $model, ?UploadedFile $uploadedFile): void
+    private function prepareData(TransportCar $model, array $data): array
     {
-        if ($model->image_guid) {
-            $this->fileStorageAdapter->update(
-                $model->image_guid,
+        /** @var UploadedFile $uploadedFile */
+        $uploadedFile = $data['image'] ?? null;
+
+        if ($uploadedFile) {
+            $fileDto = $this->fileStorageAdapter->updateOrCreate(
+                $model->image?->guid,
                 $uploadedFile->getClientOriginalName(),
                 $uploadedFile->get()
             );
+            $data['image'] = $fileDto?->guid;
         } else {
-            $fileDto = $this->fileStorageAdapter->create(
-                $uploadedFile->getClientOriginalName(),
-                $uploadedFile->get()
-            );
-            $model->image_guid = $fileDto->guid;
+            $data['image'] = null;
         }
+
+        return $data;
     }
 }

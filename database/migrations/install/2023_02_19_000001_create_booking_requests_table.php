@@ -11,7 +11,7 @@ return new class extends Migration {
             $table->id();
             $table->unsignedInteger('booking_id');
             $table->unsignedSmallInteger('type');
-            $table->char('file_guid', 32);
+            $table->char('file', 32);
             $table->boolean('is_archive')->default(false);
             $table->timestamps();
 
@@ -21,7 +21,7 @@ return new class extends Migration {
                 ->restrictOnDelete()
                 ->cascadeOnUpdate();
 
-            $table->foreign('file_guid')
+            $table->foreign('file')
                 ->references('guid')
                 ->on('files')
                 ->restrictOnDelete()

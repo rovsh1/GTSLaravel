@@ -2,6 +2,7 @@
 
 namespace App\Admin\Models\Administrator;
 
+use App\Admin\Support\Models\Casts\FileCast;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -46,7 +47,7 @@ class Administrator extends Authenticatable
         'gender',
         'status',
         'superuser',
-        'avatar_guid',
+        'avatar',
 
         'groups',
     ];
@@ -59,7 +60,8 @@ class Administrator extends Authenticatable
     protected $casts = [
         'post_id' => 'int',
         'superuser' => 'bool',
-        'status' => 'bool'
+        'status' => 'bool',
+        'avatar' => FileCast::class
     ];
 
 //    protected static function booted()

@@ -91,11 +91,7 @@ class Room extends Model
 
     public function mainImage(): Attribute
     {
-        return Attribute::get(
-            fn() => ($img = $this->images()->first()) !== null
-                ? FileStorage::find($img->file_guid)
-                : null
-        );
+        return Attribute::get(fn() => $this->images()->first()?->file);
     }
 
     public function images(): BelongsToMany

@@ -2,13 +2,13 @@
 
 namespace App\Admin\Support\View\Grid\Column;
 
-use Gsdk\Grid\Column\Url;
+use Gsdk\Grid\Column\AbstractColumn;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Collection;
 use Module\Shared\Dto\FileDto;
 use Sdk\Module\Database\Eloquent\Model;
 
-class File extends Url
+class File extends AbstractColumn
 {
     /**
      * @param FileDto[]|FileDto|Collection $value
@@ -18,15 +18,21 @@ class File extends Url
     public function formatValue($value, $row = null)
     {
         if (is_array($value) || $value instanceof Arrayable) {
-            $value = \Arr::first($value);
-        }
-        if (empty($value)) {
+            $a = [];
+            foreach ($value as $file) {
+                $a[] = $this->toLink($file);
+            }
+
+            return implode('<br />', $a);
+        } elseif (empty($value)) {
             return '';
+        } else {
+            return $this->toLink($value);
         }
-
-        $this->options['route'] = fn() => $value->url;
-
-        return $value->name;
     }
 
+    private function toLink(FileDto $value): string
+    {
+        return '<a href="' . $value->url . '" target="_blank">' . $value->name . '</a>';
+    }
 }

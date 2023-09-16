@@ -2,12 +2,12 @@
 
 namespace App\Admin\Models\Hotel;
 
-use App\Shared\Support\Facades\FileStorage;
+use App\Admin\Support\Models\Casts\FileCast;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Module\Shared\Dto\FileDto;
 use Sdk\Module\Support\DateTime;
 
 /**
@@ -15,7 +15,7 @@ use Sdk\Module\Support\DateTime;
  *
  * @property int $id
  * @property int $hotel_id
- * @property string $file_guid
+ * @property FileDto|null $file
  * @property bool $is_main
  * @property int $index
  * @property string|null $title
@@ -41,20 +41,16 @@ class Image extends Model
 
     protected $fillable = [
         'hotel_id',
-        'file_guid',
+        'file',
         'index',
         'title',
         'is_main',
     ];
 
     protected $casts = [
-        'is_main' => 'boolean'
+        'is_main' => 'boolean',
+        'file' => FileCast::class
     ];
-
-    public function file(): Attribute
-    {
-        return Attribute::get(fn() => FileStorage::find($this->file_guid));
-    }
 
     public static function getNextIndexByHotelId(int $hotelId): int
     {

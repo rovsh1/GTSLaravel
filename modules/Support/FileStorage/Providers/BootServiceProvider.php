@@ -22,8 +22,7 @@ class BootServiceProvider extends ServiceProvider
         $config = [
             'disk' => 'files',
             'nesting_level' => 2,
-            'path_name_length' => 2,
-            'url' => env('APP_URL')
+            'path_name_length' => 2
         ];
 
         $this->app->singleton(PathGeneratorInterface::class, function () use ($config) {
@@ -36,7 +35,7 @@ class BootServiceProvider extends ServiceProvider
 
         $this->app->singleton(UrlGeneratorInterface::class, function ($app) use ($config) {
             return new UrlGenerator(
-                $config['url'],
+                $config['disk'],
                 $app->get(PathGeneratorInterface::class)
             );
         });

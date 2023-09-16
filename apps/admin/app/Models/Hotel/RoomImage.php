@@ -8,13 +8,14 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Module\Shared\Dto\FileDto;
 
 /**
  * App\Admin\Models\Hotel\RoomImage
  *
  * @property int $image_id
  * @property int $room_id
- * @property string $file_guid
+ * @property FileDto|null $file
  * @property string $title
  * @property int $hotel_id
  * @property int $index
@@ -49,7 +50,7 @@ class RoomImage extends Model
             $builder
                 ->addSelect('hotel_room_images.*')
                 ->join('hotel_images', 'hotel_images.id', '=', 'hotel_room_images.image_id')
-                ->addSelect('hotel_images.file_guid as file_guid')
+                ->addSelect('hotel_images.file as file_guid')
                 ->addSelect('hotel_images.hotel_id as hotel_id')
                 ->addSelect('hotel_images.title as title');
         });

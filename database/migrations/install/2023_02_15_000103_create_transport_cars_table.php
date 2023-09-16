@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->string('model', 25);
             $table->tinyInteger('passengers_number')->unsigned();
             $table->tinyInteger('bags_number')->unsigned();
-            $table->char('image_guid', 32)->nullable();
+            $table->char('image', 32)->nullable();
 
             $table->foreign('type_id')
                 ->references('id')
@@ -22,7 +22,7 @@ return new class extends Migration {
                 ->restrictOnDelete()
                 ->cascadeOnUpdate();
 
-            $table->foreign('image_guid')
+            $table->foreign('image')
                 ->references('guid')
                 ->on('files')
                 ->restrictOnDelete()

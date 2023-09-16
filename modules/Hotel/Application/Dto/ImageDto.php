@@ -8,7 +8,7 @@ class ImageDto
 {
     public function __construct(
         public readonly int $id,
-        public readonly int $isMain,
+        public readonly bool $isMain,
         public readonly int $index,
         public readonly FileDto $file,
     ) {

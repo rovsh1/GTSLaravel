@@ -15,7 +15,7 @@ class Image extends File
 {
     protected array $options = [
         'inputType' => 'file',
-        'deleteRoute' => 'file.delete'
+        //'deleteRoute' => 'file.delete'
     ];
 
     private ?FileDto $file = null;

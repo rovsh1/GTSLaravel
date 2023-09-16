@@ -17,19 +17,17 @@ class PathGenerator implements PathGeneratorInterface
         $this->rootPath = rtrim($rootPath, '/');
     }
 
-    public function relativePath(File $file, int $part = null): string
+    public function relativePath(File $file): string
     {
         return implode(DIRECTORY_SEPARATOR, $this->guidPaths($file->guid()->value()))
-            . DIRECTORY_SEPARATOR . $file->guid()->value()
-            . DIRECTORY_SEPARATOR . $file->name()
-//            . ($part ? '_' . $part : '')
-//            . $file->extension()
-            ;
+            . DIRECTORY_SEPARATOR . $file->guid()->value();
     }
 
     public function path(File $file, int $part = null): string
     {
-        return $this->rootPath . DIRECTORY_SEPARATOR . $this->relativePath($file, $part);
+        return $this->rootPath
+            . DIRECTORY_SEPARATOR . $this->relativePath($file)
+            . DIRECTORY_SEPARATOR . $file->name();
     }
 
     private function guidPaths(string $guid): array

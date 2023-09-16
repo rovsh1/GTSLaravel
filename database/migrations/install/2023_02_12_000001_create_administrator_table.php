@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->char('password', 60)->nullable();
             $table->string('email', 50)->nullable();
             $table->string('phone', 50)->nullable();
-            $table->char('avatar_guid', 32)->nullable();
+            $table->char('avatar', 32)->nullable();
             $table->string('remember_token', 100)->nullable();
             $table->tinyInteger('status')->unsigned()->default(0);
             $table->tinyInteger('superuser')->unsigned()->default(0);
@@ -30,7 +30,7 @@ return new class extends Migration {
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
 
-            $table->foreign('avatar_guid')
+            $table->foreign('avatar')
                 ->references('guid')
                 ->on('files')
                 ->restrictOnDelete()

@@ -32,7 +32,7 @@ class AddImage implements UseCaseInterface
                 'hotel_id' => $request->hotelId,
                 'title' => $fileDto->name,
                 'index' => $index,
-                'file_guid' => $fileDto->guid,
+                'file' => $fileDto->guid,
             ]);
 
             if ($request->roomId !== null) {

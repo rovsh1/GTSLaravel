@@ -11,31 +11,34 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Module\Hotel\Application\UseCase\GetContractDocuments;
+use Module\Shared\Dto\FileDto;
 use Sdk\Module\Database\Eloquent\Model;
+use Sdk\Module\Support\DateTime;
 
 /**
  * App\Admin\Models\Hotel\Contract
  *
  * @property int $id
  * @property int $hotel_id
- * @property int $status
- * @property \Sdk\Module\Support\DateTime $date_start
- * @property \Sdk\Module\Support\DateTime $date_end
- * @property \Sdk\Module\Support\DateTime $created_at
- * @property \Sdk\Module\Support\DateTime $updated_at
+ * @property StatusEnum $status
+ * @property Collection<FileDto>|FileDto[] $documents
+ * @property DateTime $date_start
+ * @property DateTime $date_end
+ * @property DateTime $created_at
+ * @property DateTime $updated_at
  * @property CarbonPeriod $period
  * @property-read Collection<Season>|Season[] $seasons
- * @method static \Illuminate\Database\Eloquent\Builder|Contract newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Contract newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Contract query()
- * @method static \Illuminate\Database\Eloquent\Builder|Contract whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Contract whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Contract whereDateStart($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Contract whereDateEnd($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Contract whereHotelId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Contract whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Contract whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Contract active()
+ * @method static Builder|Contract newModelQuery()
+ * @method static Builder|Contract newQuery()
+ * @method static Builder|Contract query()
+ * @method static Builder|Contract whereCreatedAt($value)
+ * @method static Builder|Contract whereUpdatedAt($value)
+ * @method static Builder|Contract whereDateStart($value)
+ * @method static Builder|Contract whereDateEnd($value)
+ * @method static Builder|Contract whereHotelId($value)
+ * @method static Builder|Contract whereId($value)
+ * @method static Builder|Contract whereStatus($value)
+ * @method static Builder|Contract active()
  * @mixin \Eloquent
  */
 class Contract extends Model
@@ -49,7 +52,7 @@ class Contract extends Model
         'status',
         'date_start',
         'date_end',
-        'documents'
+//        'documents'
     ];
 
     protected $casts = [
@@ -69,18 +72,6 @@ class Contract extends Model
                     ->whereStatus(StatusEnum::ACTIVE)
                     ->update(['status' => StatusEnum::INACTIVE]);
             }
-
-            if (count($model->savingFiles) === 0) {
-                return;
-            }
-            foreach ($model->savingFiles as $file) {
-//                ContractDocument::create(
-//                    $model->id,
-//                    $file->getClientOriginalName(),
-//                    $file->get()
-//                );
-            }
-            $model->savingFiles = [];
         });
     }
 
@@ -91,16 +82,7 @@ class Contract extends Model
 
     public function documents(): Attribute
     {
-        return Attribute::make(
-            get: fn() => app(GetContractDocuments::class)->execute($this->id),
-            set: function (array|Collection|null $files) {
-                if ($files === null) {
-                    return [];
-                }
-                $this->savingFiles = $files;
-                return [];
-            }
-        );
+        return Attribute::make(get: fn() => app(GetContractDocuments::class)->execute($this->id));
     }
 
     public function seasons(): HasMany

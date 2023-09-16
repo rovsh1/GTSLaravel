@@ -21,9 +21,11 @@ class DeleteImage implements UseCaseInterface
         $image = Image::find($imageId);
 
         DB::transaction(function () use ($image) {
-            $guid = $image->file_guid;
+            $guid = $image->file?->guid;
             $image->delete();
-            $this->fileStorageAdapter->delete($guid);
+            if ($guid) {
+                $this->fileStorageAdapter->delete($guid);
+            }
         });
     }
 }

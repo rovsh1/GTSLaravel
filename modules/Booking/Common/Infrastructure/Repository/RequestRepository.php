@@ -35,7 +35,7 @@ class RequestRepository implements RequestRepositoryInterface
         $model = Model::create([
             'booking_id' => $bookingId->value(),
             'type' => $type,
-            $file->guid()
+            'file' => $file->guid()
         ]);
 
         return $this->factory->createFrom($model);

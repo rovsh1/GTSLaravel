@@ -5,10 +5,11 @@ namespace App\Admin\Http\Controllers\Profile;
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Layout;
-use App\Admin\Support\Facades\Profile;
 use App\Core\Support\Http\Responses\AjaxReloadResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Module\Administrator\Application\UseCase\UpdateAvatar;
+use Module\Shared\Dto\UploadedFileDto;
 
 class ProfileController extends Controller
 {
@@ -21,7 +22,7 @@ class ProfileController extends Controller
             ->view('profile.profile.profile', [
                 'title' => $user->presentation,
                 'user' => $user,
-                'avatar' => Profile::avatar(),
+                'avatar' => $user->avatar,
                 'valueEmpty' => $valueEmpty
             ]);
     }
@@ -112,7 +113,7 @@ class ProfileController extends Controller
         return view('profile.photo', [
             'title' => 'Фото профиля',
             'description' => 'По фото профиля другие люди смогут вас узнавать, а вам будет проще определять, в какой аккаунт вы вошли.',
-            'avatar' => Profile::avatar(),
+            'avatar' => $user->avatar,
             'form' => $form
         ]);
     }
