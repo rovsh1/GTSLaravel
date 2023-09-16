@@ -5,15 +5,13 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('booking_requests', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('booking_id');
             $table->unsignedSmallInteger('type');
+            $table->char('file_guid', 32);
             $table->boolean('is_archive')->default(false);
             $table->timestamps();
 
@@ -22,12 +20,15 @@ return new class extends Migration {
                 ->on('bookings')
                 ->restrictOnDelete()
                 ->cascadeOnUpdate();
+
+            $table->foreign('file_guid')
+                ->references('guid')
+                ->on('files')
+                ->restrictOnDelete()
+                ->cascadeOnUpdate();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('booking_requests');

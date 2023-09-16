@@ -2,23 +2,23 @@
 
 namespace Module\Booking\Common\Domain\Service\DocumentGenerator;
 
-use Module\Booking\Common\Domain\Adapter\FileStorageAdapterInterface;
 use Module\Booking\Common\Domain\Entity\BookingInterface;
+use Module\Shared\Domain\Service\CompanyRequisitesInterface;
 
 abstract class AbstractDocumentGenerator
 {
     public function __construct(
-        protected readonly FileStorageAdapterInterface $fileStorageAdapter
-    ) {}
+        protected readonly CompanyRequisitesInterface $companyRequisites
+    ) {
+    }
 
     protected function getCompanyAttributes(): array
     {
-        //@todo получить реквизиты компании
         return [
-            'company' => 'ООО GotoStans',
-            'phone' => '+99878 120-90-12',
-            'email' => 'info@gotostans.com',
-            'address' => 'Узбекистан, г.Ташкент, 100015, ул. Кичик Бешагач, д. 104А',
+            'company' => $this->companyRequisites->name(),
+            'phone' => $this->companyRequisites->phone(),
+            'email' => $this->companyRequisites->email(),
+            'address' => $this->companyRequisites->legalAddress(),
         ];
     }
 

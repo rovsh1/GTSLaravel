@@ -6,6 +6,7 @@ namespace Module\Booking\Common\Application\Support\UseCase\Admin\Request;
 
 use Module\Booking\Common\Application\Response\RequestDto;
 use Module\Booking\Common\Domain\Repository\RequestRepositoryInterface;
+use Module\Booking\Common\Domain\ValueObject\BookingId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class GetBookingRequests implements UseCaseInterface
@@ -20,7 +21,7 @@ class GetBookingRequests implements UseCaseInterface
      */
     public function execute(int $bookingId): array
     {
-        $requests = $this->repository->findByBookingId($bookingId);
+        $requests = $this->repository->findByBookingId(new BookingId($bookingId));
         return RequestDto::collectionFromDomain($requests);
     }
 }
