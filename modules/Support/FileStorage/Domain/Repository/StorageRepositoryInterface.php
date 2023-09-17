@@ -10,5 +10,5 @@ interface StorageRepositoryInterface
 
     public function put(File $file, string $contents): bool;
 
-    public function delete(File $file): bool;
+    public function delete(File $file): void;
 }

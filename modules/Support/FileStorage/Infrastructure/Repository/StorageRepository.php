@@ -59,9 +59,12 @@ class StorageRepository implements StorageRepositoryInterface
         return true;
     }
 
-    public function delete(File $file): bool
+    public function delete(File $file): void
     {
-        return unlink($this->pathGenerator->path($file));
+        $filename = $this->pathGenerator->path($file);
+        if (file_exists($filename)) {
+            unlink($filename);
+        }
     }
 
     private function chmod($filename, $umask): void

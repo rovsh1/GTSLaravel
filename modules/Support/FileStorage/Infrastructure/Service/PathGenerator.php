@@ -17,6 +17,11 @@ class PathGenerator implements PathGeneratorInterface
         $this->rootPath = rtrim($rootPath, '/');
     }
 
+    public function basePath(): string
+    {
+        return $this->rootPath;
+    }
+
     public function relativePath(File $file): string
     {
         return implode(DIRECTORY_SEPARATOR, $this->guidPaths($file->guid()->value()))
