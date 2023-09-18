@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Booking\Common\Domain\Support;
+namespace Module\Booking\HotelBooking\Domain\Service\PriceCalculator\Model;
 
 class CalculationResult
 {

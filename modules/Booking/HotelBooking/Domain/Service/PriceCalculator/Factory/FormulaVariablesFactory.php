@@ -1,8 +1,10 @@
 <?php
 
-namespace Module\Booking\HotelBooking\Domain\Service\PriceCalculator\Support;
+namespace Module\Booking\HotelBooking\Domain\Service\PriceCalculator\Factory;
 
 use Module\Booking\Common\Domain\Adapter\ClientAdapterInterface;
+use Module\Booking\HotelBooking\Domain\Service\PriceCalculator\Model\FormulaVariables;
+use Module\Booking\HotelBooking\Domain\Service\PriceCalculator\Model\RoomDataHelper;
 use Module\Shared\Domain\Service\ApplicationConstantsInterface;
 use Module\Shared\Enum\Client\LegalTypeEnum;
 
@@ -22,6 +24,8 @@ class FormulaVariablesFactory
             vatPercent: $dataHelper->markupDto->vat,
             clientMarkupPercent: $this->calculateClientMarkupPercent($dataHelper),
             touristTax: $this->calculateTouristTax($dataHelper->markupDto->touristTax),
+            startDate: $dataHelper->startDate(),
+            endDate: $dataHelper->endDate(),
             earlyCheckInPercent: $dataHelper->earlyCheckInPercent(),
             lateCheckOutPercent: $dataHelper->lateCheckOutPercent()
         );

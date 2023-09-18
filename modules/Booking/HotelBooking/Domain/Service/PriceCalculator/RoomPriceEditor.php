@@ -3,9 +3,10 @@
 namespace Module\Booking\HotelBooking\Domain\Service\PriceCalculator;
 
 use Module\Booking\HotelBooking\Domain\Entity\RoomBooking;
-use Module\Booking\HotelBooking\Domain\Service\PriceCalculator\Support\FormulaVariablesFactory;
-use Module\Booking\HotelBooking\Domain\Service\PriceCalculator\Support\NetPriceFetcher;
-use Module\Booking\HotelBooking\Domain\Service\PriceCalculator\Support\RoomDataHelperFactory;
+use Module\Booking\HotelBooking\Domain\Service\PriceCalculator\Factory\FormulaVariablesFactory;
+use Module\Booking\HotelBooking\Domain\Service\PriceCalculator\Factory\RoomDataHelperFactory;
+use Module\Booking\HotelBooking\Domain\Service\PriceCalculator\Formula\RoomDayPriceCalculator;
+use Module\Booking\HotelBooking\Domain\Service\PriceCalculator\Support\BasePriceFetcher;
 use Module\Booking\HotelBooking\Domain\ValueObject\RoomDayPriceCollection;
 use Module\Booking\HotelBooking\Domain\ValueObject\RoomPrice;
 
@@ -14,7 +15,7 @@ class RoomPriceEditor
     public function __construct(
         private readonly RoomDataHelperFactory $dataFactory,
         private readonly FormulaVariablesFactory $variablesFactory,
-        private readonly NetPriceFetcher $netPriceFetcher
+        private readonly BasePriceFetcher $basePriceFetcher
     ) {}
 
     public function recalculatePrices(RoomBooking $roomBooking): RoomPrice
@@ -77,7 +78,7 @@ class RoomPriceEditor
 
         $items = [];
         foreach ($dataHelper->bookingPeriodDates() as $date) {
-            $netPrice = $this->netPriceFetcher->fetch(
+            $basePrice = $this->basePriceFetcher->fetch(
                 roomId: $roomId,
                 rateId: $rateId,
                 isResident: $isResident,
@@ -86,7 +87,7 @@ class RoomPriceEditor
                 hotelCurrency: $hotelCurrency,
                 date: $date
             );
-            $items[] = $priceBuilder->calculate($date, $netPrice);
+            $items[] = $priceBuilder->calculate($date, $basePrice);
         }
 
         return new RoomPrice(
@@ -95,35 +96,4 @@ class RoomPriceEditor
             dayPrices: new RoomDayPriceCollection($items)
         );
     }
-
-//    public function calculateByVariables(DayPriceCollection $dayPrices, Variables $variables): RoomDayPriceCollection
-//    {
-//        $boFormula = new BORoomPriceFormula(
-//            $variables->earlyCheckInPercent,
-//            $variables->lateCheckOutPercent
-//        );
-//        $hoFormula = new HORoomPriceFormula(
-//            $variables->earlyCheckInPercent,
-//            $variables->lateCheckOutPercent
-//        );
-//        //$this->makeBOFormula($calculateVariables);
-//        //$hoFormula = $this->makeHOFormula($calculateVariables);
-//
-//        $items = [];
-//        /** @var DayPrice $dayPrice */
-//        foreach ($dayPrices as $dayPrice) {
-//            $hoResult = $hoFormula->evaluate($dayPrice->price);
-//            $boResult = $boFormula->evaluate($dayPrice->price);
-//            $items[] = new RoomDayPrice(
-//                $dayPrice->date,
-//                $dayPrice->price,
-//                $boResult->value,
-//                $hoResult->value,
-//                $boResult->notes,
-//                $hoResult->notes,
-//            );
-//        }
-//
-//        return new RoomDayPriceCollection($items);
-//    }
 }

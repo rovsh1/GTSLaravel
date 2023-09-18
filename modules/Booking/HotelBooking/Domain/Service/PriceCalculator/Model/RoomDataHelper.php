@@ -1,7 +1,8 @@
 <?php
 
-namespace Module\Booking\HotelBooking\Domain\Service\PriceCalculator\Support;
+namespace Module\Booking\HotelBooking\Domain\Service\PriceCalculator\Model;
 
+use DateTimeImmutable;
 use Module\Booking\HotelBooking\Domain\Entity\Booking;
 use Module\Booking\HotelBooking\Domain\Entity\RoomBooking;
 use Module\Booking\Order\Domain\Entity\Order;
@@ -56,6 +57,16 @@ class RoomDataHelper
     public function hotelCurrency(): CurrencyEnum
     {
         return CurrencyEnum::from($this->hotelDto->currency);
+    }
+
+    public function startDate(): DateTimeImmutable
+    {
+        return $this->hotelBooking->period()->dateFrom();
+    }
+
+    public function endDate(): DateTimeImmutable
+    {
+        return $this->hotelBooking->period()->dateTo();
     }
 
     public function earlyCheckInPercent(): ?int

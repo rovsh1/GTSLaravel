@@ -6,49 +6,38 @@ namespace Module\Booking\HotelBooking\Domain\Service\PriceCalculator;
 
 use Module\Booking\Common\Domain\Entity\BookingInterface;
 use Module\Booking\Common\Domain\Service\BookingCalculatorInterface;
-use Module\Booking\Common\Domain\ValueObject\BookingPrice;
 use Module\Booking\Common\Domain\ValueObject\PriceItem;
 use Module\Booking\HotelBooking\Domain\Entity\Booking;
-use Module\Shared\Enum\CurrencyEnum;
 
 class BookingCalculator implements BookingCalculatorInterface
 {
     public function calculateGrossPrice(BookingInterface|Booking $booking): PriceItem
     {
-        $bookingPrice = $this->buildBookingPrice($booking);
-
-        return $bookingPrice->grossPrice();
+        return new PriceItem(
+            currency: $booking->price()->netPrice()->currency(),
+            calculatedValue: $this->calculateSum($booking, 'grossValue'),
+            manualValue: null,
+            penaltyValue: null,
+        );
     }
 
     public function calculateNetPrice(BookingInterface|Booking $booking): PriceItem
     {
-        $bookingPrice = $this->buildBookingPrice($booking);
-
-        return $bookingPrice->netPrice();
+        return new PriceItem(
+            currency: $booking->price()->grossPrice()->currency(),
+            calculatedValue: $this->calculateSum($booking, 'netValue'),
+            manualValue: null,
+            penaltyValue: null,
+        );
     }
 
-    private function buildBookingPrice(Booking $booking): BookingPrice
+    private function calculateSum(Booking $booking, string $method): float
     {
-        $netValue = 0;
-        $grossValue = 0;
+        $sum = 0;
         foreach ($booking->roomBookings() as $roomBooking) {
-            $netValue += $roomBooking->price()->netValue();
-            $grossValue += $roomBooking->price()->grossValue();
+            $sum += $roomBooking->price()->$method();
         }
 
-        $grossPrice = new PriceItem(
-            currency: $booking->price()->grossPrice()->currency(),
-            calculatedValue: $grossValue,
-            manualValue: null,
-            penaltyValue: null,
-        );
-        $netPrice = new PriceItem(
-            currency: $booking->price()->netPrice()->currency(),
-            calculatedValue: $netValue,
-            manualValue: null,
-            penaltyValue: null,
-        );
-
-        return new BookingPrice($netPrice, $grossPrice);
+        return $sum;
     }
 }

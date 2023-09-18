@@ -1,11 +1,12 @@
 <?php
 
-namespace Module\Booking\HotelBooking\Domain\Service\PriceCalculator\Support;
+namespace Module\Booking\HotelBooking\Domain\Service\PriceCalculator\Factory;
 
 use Module\Booking\HotelBooking\Domain\Adapter\HotelAdapterInterface;
 use Module\Booking\HotelBooking\Domain\Entity\RoomBooking;
 use Module\Booking\HotelBooking\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\HotelBooking\Domain\Repository\RoomBookingRepositoryInterface;
+use Module\Booking\HotelBooking\Domain\Service\PriceCalculator\Model\RoomDataHelper;
 use Module\Booking\Order\Domain\Repository\OrderRepositoryInterface;
 
 class RoomDataHelperFactory

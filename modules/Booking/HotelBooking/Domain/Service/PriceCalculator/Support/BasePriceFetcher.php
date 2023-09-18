@@ -8,7 +8,7 @@ use Module\Booking\HotelBooking\Domain\Exception\NotFoundHotelRoomPrice;
 use Module\Shared\Domain\Adapter\CurrencyRateAdapterInterface;
 use Module\Shared\Enum\CurrencyEnum;
 
-class NetPriceFetcher
+class BasePriceFetcher
 {
     public function __construct(
         private readonly HotelAdapterInterface $hotelAdapter,
