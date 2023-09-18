@@ -113,6 +113,12 @@ const handleButtonClick = (event: MouseEvent) => {
   emit('active-key', props.cellKey)
 }
 
+const forceHandleButtonClick = (event: MouseEvent) => {
+  if (event.button === 0 && buttonRef.value) {
+    buttonRef.value.click()
+  }
+}
+
 const onPressEsc = () => {
   inputRef.value?.blur()
   emit('reset')
@@ -229,6 +235,7 @@ onUnmounted(() => {
       class="editableDataCell"
       :class="{ inRange }"
       :disabled="disabled"
+      @mousedown.prevent="forceHandleButtonClick"
       @click="handleButtonClick"
     >
       <slot />
