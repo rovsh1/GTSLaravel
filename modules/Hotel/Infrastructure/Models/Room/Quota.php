@@ -54,9 +54,6 @@ class Quota extends Model
         'release_days',
         'status',
         'count_total',//Общее кол-во квот которое вводит менеджер
-        'count_available',//остаток после = count_total - count_booked - count_reserved
-        'count_booked',
-        'count_reserved',
     ];
 
     protected $attributes = [
@@ -139,9 +136,9 @@ class Quota extends Model
         );
 
         $countSoldSubQuery = DB::table('booking_quota_reservation')
-                ->selectRaw('SUM(value)')
-                ->whereColumn('hotel_room_quota.id', '=', 'booking_quota_reservation.quota_id')
-                ->whereIn('type', [QuotaChangeTypeEnum::RESERVED, QuotaChangeTypeEnum::BOOKED]);
+            ->selectRaw('COALESCE(SUM(value), 0)')
+            ->whereColumn('hotel_room_quota.id', '=', 'booking_quota_reservation.quota_id')
+            ->whereIn('type', [QuotaChangeTypeEnum::RESERVED, QuotaChangeTypeEnum::BOOKED]);
 
         $builder->addSelect(
             DB::raw("(count_total - ({$countSoldSubQuery->toRawSql()})) as count_available"),
@@ -152,7 +149,7 @@ class Quota extends Model
     {
         return $builder->selectSub(
             DB::table('booking_quota_reservation')
-                ->selectRaw('SUM(value)')
+                ->selectRaw('COALESCE(SUM(value), 0)')
                 ->whereColumn('hotel_room_quota.id', '=', 'booking_quota_reservation.quota_id')
                 ->whereIn('type', $events),
             $alias

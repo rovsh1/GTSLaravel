@@ -4,77 +4,77 @@ namespace Module\Booking\HotelBooking\Domain\Service\PriceCalculator;
 
 use Carbon\CarbonInterface;
 use Module\Booking\Common\Domain\Support\CalculationResult;
-use Module\Booking\HotelBooking\Domain\Service\PriceCalculator\Formula\BONonResidentDayPriceFormula;
-use Module\Booking\HotelBooking\Domain\Service\PriceCalculator\Formula\BOResidentDayPriceFormula;
-use Module\Booking\HotelBooking\Domain\Service\PriceCalculator\Formula\BORoomPriceFormula;
+use Module\Booking\HotelBooking\Domain\Service\PriceCalculator\Formula\GrossNonResidentDayPriceFormula;
+use Module\Booking\HotelBooking\Domain\Service\PriceCalculator\Formula\GrossResidentDayPriceFormula;
+use Module\Booking\HotelBooking\Domain\Service\PriceCalculator\Formula\GrossRoomPriceFormula;
 use Module\Booking\HotelBooking\Domain\Service\PriceCalculator\Formula\DayPriceFormulaInterface;
-use Module\Booking\HotelBooking\Domain\Service\PriceCalculator\Formula\HONonResidentDayPriceFormula;
-use Module\Booking\HotelBooking\Domain\Service\PriceCalculator\Formula\HOResidentDayPriceFormula;
-use Module\Booking\HotelBooking\Domain\Service\PriceCalculator\Formula\HORoomPriceFormula;
+use Module\Booking\HotelBooking\Domain\Service\PriceCalculator\Formula\NetNonResidentDayPriceFormula;
+use Module\Booking\HotelBooking\Domain\Service\PriceCalculator\Formula\NetResidentDayPriceFormula;
+use Module\Booking\HotelBooking\Domain\Service\PriceCalculator\Formula\NetRoomPriceFormula;
 use Module\Booking\HotelBooking\Domain\Service\PriceCalculator\Support\FormulaVariables;
 use Module\Booking\HotelBooking\Domain\ValueObject\RoomDayPrice;
 use Module\Shared\Domain\ValueObject\Date;
 
 class RoomDayPriceCalculator
 {
-    private BORoomPriceFormula $boFormula;
+    private GrossRoomPriceFormula $grossFormula;
 
-    private HORoomPriceFormula $hoFormula;
+    private NetRoomPriceFormula $netFormula;
 
-    private ?float $boDayPrice = null;
+    private ?float $grossDayPrice = null;
 
-    private ?float $hoDayPrice = null;
+    private ?float $netDayPrice = null;
 
-    private DayPriceFormulaInterface $boDayPriceCalculator;
+    private DayPriceFormulaInterface $grossDayPriceCalculator;
 
-    private DayPriceFormulaInterface $hoDayPriceCalculator;
+    private DayPriceFormulaInterface $netDayPriceCalculator;
 
     public function __construct(
         private readonly FormulaVariables $variables
     ) {
-        $this->boFormula = new BORoomPriceFormula($variables->earlyCheckInPercent, $variables->lateCheckOutPercent);
-        $this->hoFormula = new HORoomPriceFormula($variables->earlyCheckInPercent, $variables->lateCheckOutPercent);
-        $this->boDayPriceCalculator = $this->makeBODayPriceCalculator();
-        $this->hoDayPriceCalculator = $this->makeHODayPriceCalculator();
+        $this->grossFormula = new GrossRoomPriceFormula($variables->earlyCheckInPercent, $variables->lateCheckOutPercent);
+        $this->netFormula = new NetRoomPriceFormula($variables->earlyCheckInPercent, $variables->lateCheckOutPercent);
+        $this->grossDayPriceCalculator = $this->makeGrossDayPriceCalculator();
+        $this->netDayPriceCalculator = $this->makeNetDayPriceCalculator();
     }
 
     public function calculate(CarbonInterface $date, float $netValue): RoomDayPrice
     {
-        $boResult = $this->getBoResult($netValue);
-        $hoResult = $this->getHoResult($netValue);
+        $grossResult = $this->getGrossResult($netValue);
+        $netResult = $this->getNetResult($netValue);
 
         return new RoomDayPrice(
             date: new Date($date->toIso8601String()),
-            netValue: $netValue,
-            boValue: $boResult->value,
-            hoValue: $hoResult->value,
-            boFormula: $boResult->notes,
-            hoFormula: $hoResult->notes,
+            baseValue: $netValue,
+            grossValue: $grossResult->value,
+            netValue: $netResult->value,
+            grossFormula: $grossResult->notes,
+            netFormula: $netResult->notes,
         );
     }
 
-    public function setBODayPrice(float $price): static
+    public function setGrossDayPrice(float $price): static
     {
-        $this->boDayPrice = $price;
+        $this->grossDayPrice = $price;
 
         return $this;
     }
 
-    public function setHODayPrice(float $price): static
+    public function setNetDayPrice(float $price): static
     {
-        $this->hoDayPrice = $price;
+        $this->netDayPrice = $price;
 
         return $this;
     }
 
-    private function makeBODayPriceCalculator(): DayPriceFormulaInterface
+    private function makeGrossDayPriceCalculator(): DayPriceFormulaInterface
     {
         return $this->variables->isResident
-            ? new BOResidentDayPriceFormula(
+            ? new GrossResidentDayPriceFormula(
                 clientMarkupPercent: $this->variables->clientMarkupPercent,
                 ndsPercent: $this->variables->vatPercent
             )
-            : new BONonResidentDayPriceFormula(
+            : new GrossNonResidentDayPriceFormula(
                 clientMarkupPercent: $this->variables->clientMarkupPercent,
                 ndsPercent: $this->variables->vatPercent,
                 touristTax: $this->variables->touristTax,
@@ -82,30 +82,30 @@ class RoomDayPriceCalculator
             );
     }
 
-    private function makeHODayPriceCalculator(): DayPriceFormulaInterface
+    private function makeNetDayPriceCalculator(): DayPriceFormulaInterface
     {
         return $this->variables->isResident
-            ? new HOResidentDayPriceFormula(
+            ? new NetResidentDayPriceFormula(
                 ndsPercent: $this->variables->vatPercent
             )
-            : new HONonResidentDayPriceFormula(
+            : new NetNonResidentDayPriceFormula(
                 ndsPercent: $this->variables->vatPercent,
                 touristTax: $this->variables->touristTax,
                 guestsCount: $this->variables->guestsCount
             );
     }
 
-    private function getBoResult(float $value): CalculationResult
+    private function getGrossResult(float $value): CalculationResult
     {
-        return $this->boFormula->evaluate(
-            $this->boDayPrice ?? $this->boDayPriceCalculator->calculate($value)
+        return $this->grossFormula->evaluate(
+            $this->grossDayPrice ?? $this->grossDayPriceCalculator->calculate($value)
         );
     }
 
-    private function getHoResult(float $value): CalculationResult
+    private function getNetResult(float $value): CalculationResult
     {
-        return $this->hoFormula->evaluate(
-            $this->hoDayPrice ?? $this->hoDayPriceCalculator->calculate($value)
+        return $this->netFormula->evaluate(
+            $this->netDayPrice ?? $this->netDayPriceCalculator->calculate($value)
         );
     }
 }

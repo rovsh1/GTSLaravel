@@ -19,7 +19,6 @@ class BootServiceProvider extends ServiceProvider
         $this->app->register(RouteServiceProvider::class);
         $this->app->register(FormatServiceProvider::class);
         $this->app->register(ViewServiceProvider::class);
-        $this->app->register(AdapterServiceProvider::class);
     }
 
     /**

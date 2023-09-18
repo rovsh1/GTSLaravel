@@ -77,6 +77,7 @@ class AdministratorRules extends AbstractRules implements StatusRulesInterface
             BookingStatusEnum::CREATED,
             BookingStatusEnum::PROCESSING,
             BookingStatusEnum::WAITING_PROCESSING,
+            BookingStatusEnum::NOT_CONFIRMED,
         ]);
     }
 

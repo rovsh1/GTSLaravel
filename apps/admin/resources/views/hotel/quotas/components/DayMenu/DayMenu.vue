@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 
 import { flip, useFloating } from '@floating-ui/vue'
 
@@ -26,6 +26,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (event: 'done'): void
+  (event: 'set-menu-element', element: HTMLElement | null): void
 }>()
 
 const reference = computed(() => props.menuRef)
@@ -42,6 +43,7 @@ const updateProps = computed<HotelRoomQuotasStatusUpdateProps | null>(() => {
   const { hotel: hotelID, room: roomID, dates } = props
   const kind = selectedKind.value
   if (dates === null || kind === null) return null
+
   return {
     hotelID,
     roomID,
@@ -95,6 +97,10 @@ const {
   isLoading: isResetLoading,
   isDisabled: isResetDisabled,
 } = useDayMenuButtonStatus({ kind: 'reset', selectedKind, isFetching })
+
+onMounted(() => {
+  emit('set-menu-element', floating.value)
+})
 </script>
 <template>
   <div ref="floating" class="menu-floating" :style="floatingStyles">
@@ -112,6 +118,7 @@ const {
         :loading="isOpenLoading"
         :disabled="isOpenDisabled"
         @click="openDay"
+        @mousedown.prevent
       />
       <BootstrapButton
         size="small"
@@ -120,6 +127,7 @@ const {
         :loading="isCloseLoading"
         :disabled="isCloseDisabled"
         @click="closeDay"
+        @mousedown.prevent
       />
       <BootstrapButton
         size="small"
@@ -128,6 +136,7 @@ const {
         :loading="isResetLoading"
         :disabled="isResetDisabled"
         @click="resetDay"
+        @mousedown.prevent
       />
     </div>
   </div>

@@ -9,6 +9,7 @@ use Module\Booking\Common\Domain\ValueObject\BookingId;
 use Module\Booking\Common\Domain\ValueObject\RequestId;
 use Module\Booking\Common\Domain\ValueObject\RequestTypeEnum;
 use Module\Shared\Domain\Entity\EntityInterface;
+use Module\Shared\ValueObject\File;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
 class Request extends AbstractAggregateRoot implements EntityInterface
@@ -18,8 +19,10 @@ class Request extends AbstractAggregateRoot implements EntityInterface
         private readonly RequestId $id,
         private readonly BookingId $bookingId,
         private readonly RequestTypeEnum $type,
+        private readonly File $file,
         private readonly CarbonImmutable $dateCreate,
-    ) {}
+    ) {
+    }
 
     public function id(): RequestId
     {
@@ -36,17 +39,13 @@ class Request extends AbstractAggregateRoot implements EntityInterface
         return $this->type;
     }
 
+    public function file(): File
+    {
+        return $this->file;
+    }
+
     public function dateCreate(): CarbonImmutable
     {
         return $this->dateCreate;
-    }
-
-    public function getFilename(): string
-    {
-        return match ($this->type) {
-            RequestTypeEnum::BOOKING => "new_booking_{$this->bookingId->value()}",
-            RequestTypeEnum::CHANGE => "change_booking_{$this->bookingId->value()}",
-            RequestTypeEnum::CANCEL => "cancel_booking_{$this->bookingId->value()}",
-        };
     }
 }

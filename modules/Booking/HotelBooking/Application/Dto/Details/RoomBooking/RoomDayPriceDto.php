@@ -14,22 +14,22 @@ class RoomDayPriceDto extends AbstractDomainBasedDto
 {
     public function __construct(
         public readonly CarbonImmutable $date,
+        public readonly int|float $baseValue,
+        public readonly int|float $grossValue,
         public readonly int|float $netValue,
-        public readonly int|float $boValue,
-        public readonly int|float $hoValue,
-        public readonly string $boFormula,
-        public readonly string $hoFormula
+        public readonly string $grossFormula,
+        public readonly string $netFormula
     ) {}
 
     public static function fromDomain(EntityInterface|ValueObjectInterface|RoomDayPrice $entity): static
     {
         return new static(
             new CarbonImmutable($entity->date()),
+            $entity->baseValue(),
+            $entity->grossValue(),
             $entity->netValue(),
-            $entity->boValue(),
-            $entity->hoValue(),
-            $entity->boFormula(),
-            $entity->hoFormula(),
+            $entity->grossFormula(),
+            $entity->netFormula(),
         );
     }
 }

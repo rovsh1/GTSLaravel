@@ -27,6 +27,8 @@ const { hotelID } = injectInitialData(z.object({
   hotelID: z.number(),
 }))
 
+const openingDayMenuRoomId = ref<number | null>(null)
+
 const {
   data: hotelData,
   execute: fetchHotel,
@@ -48,34 +50,59 @@ const rooms = computed<UseHotelRooms>(() => roomsData.value)
 fetchHotelRoomsAPI()
 
 const filtersPayload = ref<FiltersPayload>(defaultFiltersPayload)
+const waitLoadAndRedrawData = ref<boolean>(false)
+const updatedRoomID = ref<number | null>(null)
 
 const {
-  isFetching: isHotelQuotasFetching,
   execute: fetchHotelQuotas,
   data: hotelQuotas,
 } = useHotelQuotasAPI(computed(() => {
-  const { month, year, monthsCount, availability, roomID } = filtersPayload.value
+  const { month, year, monthsCount, availability } = filtersPayload.value
   return {
     hotelID,
     month,
     year,
     interval: intervalByMonthsCount[monthsCount],
-    roomID: roomID ?? undefined,
+    roomID: undefined,
     availability: availability ?? undefined,
   }
 }))
 
-fetchHotelQuotas()
+const fetchHotelQuotasWrapper = async () => {
+  waitLoadAndRedrawData.value = true
+  try {
+    await fetchHotelQuotas()
+    nextTick(() => {
+      waitLoadAndRedrawData.value = false
+      updatedRoomID.value = null
+    })
+  } catch (error) {
+    nextTick(() => {
+      waitLoadAndRedrawData.value = false
+      updatedRoomID.value = null
+    })
+  }
+}
 
-watch(filtersPayload, () => fetchHotelQuotas())
+fetchHotelQuotasWrapper()
+
+watch(filtersPayload, () => fetchHotelQuotasWrapper())
 
 const editable = ref(false)
+
+const activeRoomID = ref<number | null>(null)
 
 const roomsQuotas = computed(() => getRoomQuotas({
   rooms: rooms.value,
   filters: filtersPayload.value,
   quotas: hotelQuotas.value,
 }))
+
+watch(editable, (value) => {
+  if (value === false) {
+    fetchHotelQuotasWrapper()
+  }
+})
 
 const handleFilters = (value: FiltersPayload) => {
   filtersPayload.value = value
@@ -90,46 +117,59 @@ watchEffect(() => {
 })
 </script>
 <template>
-  <BaseLayout :loading="isHotelFetching || isHotelRoomsFetching">
-    <template #title>
-      <div class="title">{{ hotel?.name ?? '' }}</div>
-    </template>
-    <template #header-controls>
-      <BootstrapButton
-        :label="editable ? 'Готово' : 'Редактировать'"
-        :start-icon="editable ? checkIcon : pencilIcon"
-        severity="primary"
-        :disabled="roomsQuotas === null"
-        @click="editable = !editable"
-      />
-    </template>
-    <div class="quotasBody">
-      <QuotasFilters
-        v-if="rooms"
-        :rooms="rooms"
-        :loading="isHotelQuotasFetching"
-        @submit="value => handleFilters(value)"
-      />
-      <LoadingSpinner v-if="isHotelQuotasFetching && roomsQuotas === null" />
-      <div v-else-if="hotel === null">
-        Не удалось найти данные для отеля.
-      </div>
-      <div v-else-if="roomsQuotas === null">
-        Не удалось найти комнаты для этого отеля.
-      </div>
-      <div v-else class="quotasTables">
-        <RoomQuotas
-          v-for="{ room, monthlyQuotas } in roomsQuotas"
-          :key="room.id"
-          :hotel="hotel"
-          :room="room"
-          :monthly-quotas="monthlyQuotas"
-          :editable="editable && !isHotelQuotasFetching"
-          @update="fetchHotelQuotas"
+  <div id="hotel-quotas-wrapper">
+    <BaseLayout :loading="isHotelFetching || isHotelRoomsFetching">
+      <template #title>
+        <div class="title">{{ hotel?.name ?? '' }}</div>
+      </template>
+      <template #header-controls>
+        <BootstrapButton
+          :label="editable ? 'Готово' : 'Редактировать'"
+          :start-icon="editable ? checkIcon : pencilIcon"
+          severity="primary"
+          :disabled="roomsQuotas === null"
+          @click="editable = !editable"
         />
+      </template>
+      <div class="quotasBody">
+        <QuotasFilters
+          v-if="rooms"
+          :rooms="rooms"
+          :loading="waitLoadAndRedrawData"
+          @submit="value => handleFilters(value)"
+          @switch-room="(value: number | null) => activeRoomID = value"
+        />
+        <LoadingSpinner v-if="waitLoadAndRedrawData && roomsQuotas === null" />
+        <div v-else-if="hotel === null">
+          Не удалось найти данные для отеля.
+        </div>
+        <div v-else-if="roomsQuotas === null">
+          Не удалось найти комнаты для этого отеля.
+        </div>
+        <div v-else class="quotasTables">
+          <template v-for="{ room, monthlyQuotas } in roomsQuotas">
+            <RoomQuotas
+              v-if="room.id === activeRoomID || activeRoomID === null"
+              :key="room.id"
+              :hotel="hotel"
+              :room="room"
+              :monthly-quotas="monthlyQuotas"
+              :editable="editable"
+              :waiting-load-data="(updatedRoomID === room.id) ? waitLoadAndRedrawData : false"
+              :opening-day-menu-room-id="openingDayMenuRoomId"
+              @open-day-menu-in-another-room="(value: number | null) => {
+                openingDayMenuRoomId = value
+              }"
+              @update="(updatedRoomIDParam: number) => {
+                updatedRoomID = updatedRoomIDParam
+                fetchHotelQuotasWrapper()
+              }"
+            />
+          </template>
+        </div>
       </div>
-    </div>
-  </BaseLayout>
+    </BaseLayout>
+  </div>
 </template>
 <style lang="scss" scoped>
 @use '~resources/sass/vendor/bootstrap/configuration' as bs;
@@ -144,5 +184,9 @@ watchEffect(() => {
   display: flex;
   flex-flow: column;
   gap: 2em;
+}
+
+#hotel-quotas-wrapper {
+  position: relative;
 }
 </style>

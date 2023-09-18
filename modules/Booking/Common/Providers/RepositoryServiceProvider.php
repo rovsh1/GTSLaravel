@@ -20,9 +20,5 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->singleton(VoucherRepositoryInterface::class, VoucherRepository::class);
         $this->app->singleton(InvoiceRepositoryInterface::class, InvoiceRepository::class);
         $this->app->singleton(BookingChangesLogRepositoryInterface::class, BookingChangesLogRepository::class);
-        $this->app->singleton(RequestRepositoryInterface::class, RequestRepository::class);
-        $this->app->singleton(RequestRepositoryInterface::class, RequestRepository::class);
-        $this->app->singleton(RequestRepositoryInterface::class, RequestRepository::class);
-        $this->app->singleton(RequestRepositoryInterface::class, RequestRepository::class);
     }
 }

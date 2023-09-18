@@ -2,6 +2,7 @@
 
 namespace App\Admin\Models\Reference;
 
+use App\Admin\Support\Models\Casts\FileCast;
 use Illuminate\Database\Eloquent\Builder;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
 use Sdk\Module\Database\Eloquent\Model;
@@ -22,6 +23,12 @@ class TransportCar extends Model
         'model',
         'passengers_number',
         'bags_number',
+        'image'
+    ];
+
+    protected $casts = [
+        'type_id' => 'int',
+        'image' => FileCast::class,
     ];
 
     public static function booted()

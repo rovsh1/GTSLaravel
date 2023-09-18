@@ -168,18 +168,15 @@ class BookingController extends Controller
 
     public function show(int $id): LayoutContract
     {
-        $title = "Бронь №{$id}";
-
         $booking = HotelAdapter::getBooking($id);
         $order = OrderAdapter::findOrder($booking->orderId);
         $hotelId = $booking->hotelInfo->id;
         $client = Client::find($order->clientId);
         $hotel = Hotel::find($hotelId);
 
-//        Breadcrumb::prototype($this->prototype)
-//            ->add($title);
-
-//        $this->prepareShowMenu($this->model);
+        $title = "Бронь №{$id}";
+        Breadcrumb::prototype($this->prototype)
+            ->add($title);
 
         return Layout::title($title)
             ->view($this->prototype->view('show'), [
@@ -313,27 +310,27 @@ class BookingController extends Controller
 
     public function updatePrice(UpdatePriceRequest $request, int $id): AjaxResponseInterface
     {
-        $boPrice = $request->getBoPrice();
-        $hoPrice = $request->getHoPrice();
+        $grossPrice = $request->getGrossPrice();
+        $netPrice = $request->getNetPrice();
 
-        if ($request->isBoPriceExists() && $boPrice === null) {
-            HotelPriceAdapter::setCalculatedBoPrice($id);
+        if ($request->isGrossPriceExists() && $grossPrice === null) {
+            HotelPriceAdapter::setCalculatedGrossPrice($id);
         }
-        if ($request->isHoPriceExists() && $hoPrice === null) {
-            HotelPriceAdapter::setCalculatedHoPrice($id);
+        if ($request->isNetPriceExists() && $netPrice === null) {
+            HotelPriceAdapter::setCalculatedNetPrice($id);
         }
 
-        if ($boPrice !== null) {
-            HotelPriceAdapter::setBoPrice($id, $boPrice);
+        if ($grossPrice !== null) {
+            HotelPriceAdapter::setGrossPrice($id, $grossPrice);
         }
-        if ($hoPrice !== null) {
-            HotelPriceAdapter::setHoPrice($id, $hoPrice);
+        if ($netPrice !== null) {
+            HotelPriceAdapter::setNetPrice($id, $netPrice);
         }
-        if ($request->isBoPenaltyExists()) {
-            HotelPriceAdapter::setBoPenalty($id, $request->getBoPenalty());
+        if ($request->isGrossPenaltyExists()) {
+            HotelPriceAdapter::setGrossPenalty($id, $request->getGrossPenalty());
         }
-        if ($request->isHoPenaltyExists()) {
-            HotelPriceAdapter::setHoPenalty($id, $request->getHoPenalty());
+        if ($request->isNetPenaltyExists()) {
+            HotelPriceAdapter::setNetPenalty($id, $request->getNetPenalty());
         }
 
         return new AjaxSuccessResponse();

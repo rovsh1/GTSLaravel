@@ -5,6 +5,7 @@ import { computed, ref } from 'vue'
 import { MaybeRef } from '@vueuse/core'
 
 import { RoomBookingPrice } from '~api/booking/hotel/details'
+import { Currency } from '~api/models'
 
 import BaseDialog from '~components/BaseDialog.vue'
 
@@ -12,11 +13,13 @@ const props = defineProps<{
   bookingId: number
   opened: MaybeRef<boolean>
   roomPrice?: RoomBookingPrice
+  netCurrency: Currency | undefined
+  grossCurrency: Currency | undefined
 }>()
 
 interface SubmitPayload {
-  boPrice: number | undefined | null
-  hoPrice: number | undefined | null
+  grossPrice: number | undefined | null
+  netPrice: number | undefined | null
 }
 
 const emit = defineEmits<{
@@ -24,29 +27,29 @@ const emit = defineEmits<{
   (event: 'submit', payload: SubmitPayload): void
 }>()
 
-const isBoPriceChanged = ref<boolean>(false)
-const boPrice = ref<number | null>()
-const isHoPriceChanged = ref<boolean>(false)
-const hoPrice = ref<number | null>()
+const isGrossPriceChanged = ref<boolean>(false)
+const grossPrice = ref<number | null>()
+const isNetPriceChanged = ref<boolean>(false)
+const netPrice = ref<number | null>()
 
-const localBoPrice = computed({
-  get: () => (!isBoPriceChanged.value ? props.roomPrice?.boDayValue : boPrice.value),
+const localGrossPrice = computed({
+  get: () => (!isGrossPriceChanged.value ? props.roomPrice?.grossDayValue : grossPrice.value),
   set: (value: number | undefined | null) => {
-    isBoPriceChanged.value = true
-    boPrice.value = value
+    isGrossPriceChanged.value = true
+    grossPrice.value = value
   },
 })
 
-const localHoPrice = computed({
-  get: () => (!isHoPriceChanged.value ? props.roomPrice?.hoDayValue : hoPrice.value),
+const localNetPrice = computed({
+  get: () => (!isNetPriceChanged.value ? props.roomPrice?.netDayValue : netPrice.value),
   set: (value: number | undefined | null) => {
-    isHoPriceChanged.value = true
-    hoPrice.value = value
+    isNetPriceChanged.value = true
+    netPrice.value = value
   },
 })
 
 const submit = () => {
-  emit('submit', { boPrice: localBoPrice.value, hoPrice: localHoPrice.value })
+  emit('submit', { grossPrice: localGrossPrice.value, netPrice: localNetPrice.value })
 }
 
 </script>
@@ -61,13 +64,13 @@ const submit = () => {
 
     <form ref="modalForm" class="row g-3">
       <div class="col-md-12">
-        <label for="room-brutto-price">Цена за номер (брутто) в UZS</label>
-        <input id="room-brutto-price" v-model.number="localBoPrice" type="number" class="form-control">
+        <label for="room-brutto-price">Цена за номер (брутто) в {{ grossCurrency?.code_char }}</label>
+        <input id="room-brutto-price" v-model.number="localGrossPrice" type="number" class="form-control">
       </div>
 
       <div class="col-md-12">
-        <label for="room-netto-price">Цена за номер (нетто) в UZS</label>
-        <input id="room-netto-price" v-model.number="localHoPrice" type="number" class="form-control">
+        <label for="room-netto-price">Цена за номер (нетто) в {{ netCurrency?.code_char }}</label>
+        <input id="room-netto-price" v-model.number="localNetPrice" type="number" class="form-control">
       </div>
     </form>
 

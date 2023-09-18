@@ -71,11 +71,9 @@ export const getRoomQuotas: GetRoomQuotas = (params) => {
 
   if (rooms === null) return null
 
-  const { year, month, monthsCount, roomID } = filters
+  const { year, month, monthsCount } = filters
 
-  const selectedRooms = roomID === null
-    ? rooms
-    : rooms.filter(({ id }) => id === roomID)
+  const selectedRooms = rooms
 
   return selectedRooms.map((room): RoomQuotas => {
     const {

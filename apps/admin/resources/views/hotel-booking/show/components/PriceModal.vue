@@ -38,13 +38,14 @@ const handleSubmit = () => {
   <BaseDialog
     :opened="opened as boolean"
     @close="$emit('close')"
+    @keydown.enter.prevent="handleSubmit"
   >
     <template #title>{{ header }}</template>
 
     <form ref="modalForm" class="row g-3">
       <div class="col-md-12">
-        <label for="brutto-price">{{ label }}</label>
-        <input id="brutto-price" v-model.number="localValue" type="number" class="form-control">
+        <label for="price">{{ label }}</label>
+        <input id="price" v-model.number="localValue" type="number" class="form-control">
       </div>
     </form>
 

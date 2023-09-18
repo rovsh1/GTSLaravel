@@ -76,6 +76,9 @@ $(() => {
         disabledText: 'Выберите клиента',
         parent: $clientIdInput,
         dataIndex: 'client_id',
+        allowEmpty: true,
+        emptyText: false,
+        emptyItem: 'Пусто',
       })
     }
   }

@@ -25,19 +25,19 @@ export interface HotelRoomBookingDetails {
 
 export interface RoomBookingDayPrice {
   date: DateResponse
+  baseValue: number
+  grossValue: number
   netValue: number
-  boValue: number
-  hoValue: number
-  boFormula: string
-  hoFormula: string
+  grossFormula: string
+  netFormula: string
 }
 
 export interface RoomBookingPrice {
   dayPrices: RoomBookingDayPrice[]
-  boValue: number
-  hoValue: number
-  hoDayValue: number | null
-  boDayValue: number | null
+  grossValue: number
+  netValue: number
+  netDayValue: number | null
+  grossDayValue: number | null
 }
 
 export interface HotelRoomBooking {
