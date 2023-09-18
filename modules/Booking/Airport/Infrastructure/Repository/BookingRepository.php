@@ -52,11 +52,12 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         int $serviceId,
         int $airportId,
         CarbonInterface $date,
+        BookingPrice $price,
         ?string $note = null
     ): Entity {
         return \DB::transaction(
-            function () use ($orderId, $creatorId, $serviceId, $airportId, $date, $note) {
-                $bookingModel = $this->createBase($orderId, $creatorId);
+            function () use ($orderId, $creatorId, $serviceId, $airportId, $date, $price, $note) {
+                $bookingModel = $this->createBase($orderId, $price, $creatorId);
 
                 $airport = Airport::find($airportId);
                 $service = AirportService::find($serviceId);
@@ -67,7 +68,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
                     status: $bookingModel->status,
                     createdAt: $bookingModel->created_at->toImmutable(),
                     creatorId: new Id($bookingModel->creator_id),
-                    price: BookingPrice::fromData($bookingModel->price),
+                    price: $price,
                     note: $note,
                     airportInfo: new AirportInfo(
                         $airport->id,

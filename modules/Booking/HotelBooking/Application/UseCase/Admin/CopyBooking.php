@@ -32,6 +32,7 @@ class CopyBooking implements UseCaseInterface
             $booking->note(),
             $booking->hotelInfo(),
             $booking->cancelConditions(),
+            $booking->price(),
             $booking->quotaProcessingMethod(),
         );
 

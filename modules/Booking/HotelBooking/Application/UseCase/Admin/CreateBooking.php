@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\HotelBooking\Application\UseCase\Admin;
 
 use Module\Booking\Common\Application\Support\UseCase\Admin\AbstractCreateBooking;
+use Module\Booking\Common\Domain\ValueObject\BookingPrice;
 use Module\Booking\HotelBooking\Application\Exception\NotFoundHotelCancelPeriod as ApplicationException;
 use Module\Booking\HotelBooking\Application\Factory\CancelConditionsFactory;
 use Module\Booking\HotelBooking\Application\Factory\HotelInfoFactory;
@@ -18,6 +19,7 @@ use Module\Shared\Domain\ValueObject\Id;
 use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Contracts\Bus\CommandBusInterface;
+use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
 class CreateBooking extends AbstractCreateBooking
 {
@@ -34,7 +36,15 @@ class CreateBooking extends AbstractCreateBooking
     {
         $orderId = $this->getOrderIdFromRequest($request);
         $hotelDto = $this->hotelAdapter->findById($request->hotelId);
+        if ($hotelDto === null) {
+            throw new EntityNotFoundException('Hotel not found');
+        }
+        $hotelCurrency = CurrencyEnum::from($hotelDto->currency);
         $markupSettings = $this->hotelAdapter->getMarkupSettings($request->hotelId);
+        $orderCurrency = CurrencyEnum::fromId($request->currencyId);
+        if ($orderCurrency === null) {
+            throw new EntityNotFoundException('Currency not found');
+        }
         try {
             $this->hotelValidator->validateByDto($markupSettings, $request->period);
         } catch (NotFoundHotelCancelPeriod $e) {
@@ -47,6 +57,7 @@ class CreateBooking extends AbstractCreateBooking
             period: BookingPeriod::fromCarbon($request->period),
             note: $request->note,
             cancelConditions: CancelConditionsFactory::fromDto($markupSettings->cancelPeriods, $request->period),
+            price: BookingPrice::createEmpty($hotelCurrency, $orderCurrency),
             quotaProcessingMethod: QuotaProcessingMethodEnum::from($request->quotaProcessingMethod),
         );
 

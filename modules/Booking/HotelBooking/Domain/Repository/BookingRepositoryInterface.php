@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Module\Booking\Common\Domain\Entity\BookingInterface;
 use Module\Booking\Common\Domain\Repository\BookingRepositoryInterface as Base;
 use Module\Booking\Common\Domain\ValueObject\BookingId;
+use Module\Booking\Common\Domain\ValueObject\BookingPrice;
 use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\HotelBooking\Domain\Entity\Booking;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\BookingPeriod;
@@ -40,6 +41,7 @@ interface BookingRepositoryInterface extends Base
         ?string $note = null,
         HotelInfo $hotelInfo,
         CancelConditions $cancelConditions,
+        BookingPrice $price,
         QuotaProcessingMethodEnum $quotaProcessingMethod,
     ): Booking;
 

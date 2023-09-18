@@ -30,20 +30,14 @@ abstract class AbstractBookingRepository
         return $model;
     }
 
-    protected function createBase(OrderId $orderId, int $creatorId): Booking
+    protected function createBase(OrderId $orderId, BookingPrice $price, int $creatorId): Booking
     {
-        $orderModel = Order::find($orderId->value());
-        $orderCurrency = CurrencyEnum::fromId($orderModel->currency_id);
-        if ($orderCurrency === null) {
-            throw new EntityNotFoundException('Currency not found');
-        }
-
         return $this->getModel()::create([
             'order_id' => $orderId->value(),
             'source' => AppContext::source(),
             'status' => BookingStatusEnum::CREATED,
             'creator_id' => $creatorId,
-            'price' => BookingPrice::createEmpty($orderCurrency)->toData(),
+            'price' => $price->toData(),
         ]);
     }
 
