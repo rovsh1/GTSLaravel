@@ -278,7 +278,7 @@ fetchCountries()
               <tr>
                 <th />
                 <th class="text-nowrap">Дата</th>
-                <th class="text-nowrap">Итого</th>
+                <th class="text-nowrap">Цена за ночь</th>
                 <th class="text-nowrap">Подробный расчет</th>
               </tr>
             </thead>
@@ -289,7 +289,7 @@ fetchCountries()
                   {{ formatDate(dayPrice.date) }}
                 </td>
                 <td class="text-nowrap">
-                  {{ formatPrice(dayPrice.grossValue, grossCurrency.sign) }}
+                  {{ formatPrice(dayPrice.netValue, grossCurrency.sign) }}
                 </td>
                 <td class="text-nowrap">{{ dayPrice.grossFormula }}</td>
               </tr>
