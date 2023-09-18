@@ -104,7 +104,7 @@ $.fn.childCombo = function (options) {
       }
 
       if (preparedOptions.emptyItem !== false) {
-        child.append(`<option value="">${preparedOptions.emptyItem}</option>`)
+        child.append(`<option value="" disabled selected>${preparedOptions.emptyItem}</option>`)
       }
 
       for (i = 0; i < l; i++) {
