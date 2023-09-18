@@ -97,12 +97,16 @@ class RoomController
 
     public function updatePrice(UpdatePriceRequest $request, int $id, int $roomBookingId): AjaxResponseInterface
     {
-        HotelPriceAdapter::updateRoomPrice(
-            $id,
-            $roomBookingId,
-            $request->getGrossPrice(),
-            $request->getNetPrice()
-        );
+        try {
+            HotelPriceAdapter::updateRoomPrice(
+                $id,
+                $roomBookingId,
+                $request->getGrossPrice(),
+                $request->getNetPrice()
+            );
+        } catch (ApplicationException $e) {
+            return new AjaxErrorResponse($e->getMessage());
+        }
 
         return new AjaxSuccessResponse();
     }
