@@ -17,8 +17,7 @@ class RoomQuotaRepository implements RoomQuotaRepositoryInterface
 
     public function get(int $hotelId, CarbonPeriod $period, ?int $roomId = null): array
     {
-        $models = $this->getBaseQuotaQuery($hotelId, $period, $roomId)->toRawSql();
-        dd($models);
+        $models = $this->getBaseQuotaQuery($hotelId, $period, $roomId)->get();
 
         return $this->factory->createCollectionFrom($models);
     }
