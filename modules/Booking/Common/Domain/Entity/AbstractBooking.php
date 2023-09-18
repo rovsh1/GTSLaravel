@@ -16,7 +16,6 @@ use Module\Booking\Common\Domain\Exception\NotRequestableEntity;
 use Module\Booking\Common\Domain\Exception\NotRequestableStatus;
 use Module\Booking\Common\Domain\Service\BookingCalculatorInterface;
 use Module\Booking\Common\Domain\Service\BookingPriceChangeDecorator;
-use Module\Booking\Common\Domain\Service\InvoiceCreator;
 use Module\Booking\Common\Domain\Service\RequestCreator;
 use Module\Booking\Common\Domain\Service\RequestRules;
 use Module\Booking\Common\Domain\Service\VoucherCreator;
@@ -195,12 +194,6 @@ abstract class AbstractBooking extends AbstractAggregateRoot implements
     public function generateVoucher(VoucherCreator $voucherCreator): void
     {
         $voucherCreator->create($this);
-        //@todo кинуть ивент
-    }
-
-    public function generateInvoice(InvoiceCreator $invoiceCreator): void
-    {
-        $invoiceCreator->create($this);
         //@todo кинуть ивент
     }
 
