@@ -13,6 +13,7 @@ class ApplicationException extends \RuntimeException
     public const BOOKING_CLOSED_ROOM_DATE_QUOTA = 1002;
     public const BOOKING_NOT_ENOUGH_QUOTA = 1003;
     public const BOOKING_INVALID_ROOM_CLIENT_RESIDENCY = 1004;
+    public const BOOKING_ROOM_TOO_MANY_GUESTS = 1005;
 
     private const DEFAULT_MESSAGE = 'Неизвестная ошибка. Пожалуйста, обратитесь в техническую поддержку.';
 
