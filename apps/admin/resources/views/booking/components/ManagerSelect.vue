@@ -12,7 +12,7 @@ const props = defineProps<{
 }>()
 
 defineEmits<{
-  (event: 'input', value: number): void
+  (event: 'input', value: number | null): void
 }>()
 
 const { data: administrators, execute: fetchAdministrators } = useAdministratorGetAPI()
