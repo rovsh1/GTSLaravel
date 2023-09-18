@@ -22,11 +22,8 @@ class CreateBooking extends AbstractCreateBooking
     public function execute(CreateBookingDto $request): int
     {
         $orderId = $this->getOrderIdFromRequest($request);
-        $currency = CurrencyEnum::fromId($request->currencyId);
         $booking = $this->repository->create(
             orderId: $orderId,
-            grossCurrency: $currency,
-            netCurrency: CurrencyEnum::UZS,//@todo валюта netto
             creatorId: $request->creatorId,
             serviceId: $request->serviceId,
             airportId: $request->airportId,

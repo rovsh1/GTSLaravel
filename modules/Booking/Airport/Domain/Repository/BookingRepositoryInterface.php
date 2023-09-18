@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Collection;
 use Module\Booking\Airport\Domain\Entity\Booking;
 use Module\Booking\Common\Domain\Repository\BookingRepositoryInterface as Base;
 use Module\Booking\Common\Domain\ValueObject\OrderId;
-use Module\Shared\Enum\CurrencyEnum;
 
 interface BookingRepositoryInterface extends Base
 {
@@ -17,8 +16,6 @@ interface BookingRepositoryInterface extends Base
 
     public function create(
         OrderId $orderId,
-        CurrencyEnum $netCurrency,
-        CurrencyEnum $grossCurrency,
         int $creatorId,
         int $serviceId,
         int $airportId,

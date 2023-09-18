@@ -17,7 +17,6 @@ class CopyBooking implements UseCaseInterface
         private readonly BookingRepositoryInterface $repository,
         private readonly RoomBookingRepositoryInterface $roomBookingRepository,
         private readonly BookingGuestRepositoryInterface $bookingGuestRepository,
-        private readonly OrderRepositoryInterface $orderRepository,
     ) {}
 
     public function execute(int $id): int
@@ -28,8 +27,6 @@ class CopyBooking implements UseCaseInterface
         }
         $newBooking = $this->repository->create(
             $booking->orderId(),
-            $booking->price()->netPrice()->currency(),
-            $booking->price()->grossPrice()->currency(),
             $booking->creatorId(),
             $booking->period(),
             $booking->note(),

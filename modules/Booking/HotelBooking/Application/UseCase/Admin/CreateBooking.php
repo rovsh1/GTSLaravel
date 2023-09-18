@@ -35,7 +35,6 @@ class CreateBooking extends AbstractCreateBooking
         $orderId = $this->getOrderIdFromRequest($request);
         $hotelDto = $this->hotelAdapter->findById($request->hotelId);
         $markupSettings = $this->hotelAdapter->getMarkupSettings($request->hotelId);
-        $currency = CurrencyEnum::fromId($request->currencyId);
         try {
             $this->hotelValidator->validateByDto($markupSettings, $request->period);
         } catch (NotFoundHotelCancelPeriod $e) {
@@ -43,8 +42,6 @@ class CreateBooking extends AbstractCreateBooking
         }
         $booking = $this->repository->create(
             orderId: $orderId,
-            grossCurrency: $currency,
-            netCurrency: CurrencyEnum::UZS,//@todo валюта netto
             creatorId: new Id($request->creatorId),
             hotelInfo: HotelInfoFactory::fromDto($hotelDto),
             period: BookingPeriod::fromCarbon($request->period),
