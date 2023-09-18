@@ -8,7 +8,6 @@ use Module\Booking\Common\Application\Factory\AbstractBookingDtoFactory;
 use Module\Booking\Common\Application\Service\StatusStorage;
 use Module\Booking\Common\Domain\Entity\BookingInterface;
 use Module\Booking\HotelBooking\Application\Dto\BookingDto;
-use Module\Booking\HotelBooking\Application\Dto\BookingPriceDto;
 use Module\Booking\HotelBooking\Application\Dto\Details\AdditionalInfoDto;
 use Module\Booking\HotelBooking\Application\Dto\Details\BookingPeriodDto;
 use Module\Booking\HotelBooking\Application\Dto\Details\CancelConditionsDto;
@@ -26,7 +25,8 @@ class BookingDtoFactory extends AbstractBookingDtoFactory
 {
     public function __construct(
         StatusStorage $statusStorage,
-        private readonly GuestRepositoryInterface $guestRepository
+        private readonly GuestRepositoryInterface $guestRepository,
+        private readonly BookingPriceDtoFactory $bookingPriceDtoFactory,
     ) {
         parent::__construct($statusStorage);
     }
@@ -47,7 +47,7 @@ class BookingDtoFactory extends AbstractBookingDtoFactory
             $booking->additionalInfo() !== null ? AdditionalInfoDto::fromDomain($booking->additionalInfo()) : null,
             $this->buildGuests($booking->roomBookings()),
             CancelConditionsDto::fromDomain($booking->cancelConditions()),
-            BookingPriceDto::fromDomain($booking->price()),
+            $this->bookingPriceDtoFactory->createFromEntity($booking->price()),
             $booking->quotaProcessingMethod(),
         );
     }

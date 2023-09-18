@@ -19,7 +19,7 @@ class RoomPriceEditor
 
     public function recalculatePrices(RoomBooking $roomBooking): RoomPrice
     {
-        return $this->calculate($roomBooking, $roomBooking->price()->boDayValue(), $roomBooking->price()->hoDayValue());
+        return $this->calculate($roomBooking, $roomBooking->price()->grossDayValue(), $roomBooking->price()->netDayValue());
     }
 
     public function setCalculatedPrices(RoomBooking $roomBooking): RoomPrice
@@ -32,40 +32,40 @@ class RoomPriceEditor
         return $this->calculate($roomBooking, $boDayPrice, $hoDayPrice);
     }
 
-    public function setManuallyBoPrice(RoomBooking $roomBooking, float $manuallyDayPrice): RoomPrice
+    public function setManuallyGrossPrice(RoomBooking $roomBooking, float $manuallyDayPrice): RoomPrice
     {
-        return $this->calculate($roomBooking, $manuallyDayPrice, $roomBooking->price()->hoDayValue());
+        return $this->calculate($roomBooking, $manuallyDayPrice, $roomBooking->price()->netDayValue());
     }
 
-    public function setCalculatedBoPrice(RoomBooking $roomBooking): RoomPrice
+    public function setCalculatedGrossPrice(RoomBooking $roomBooking): RoomPrice
     {
-        return $this->calculate($roomBooking, null, $roomBooking->price()->hoDayValue());
+        return $this->calculate($roomBooking, null, $roomBooking->price()->netDayValue());
     }
 
-    public function setManuallyHoPrice(RoomBooking $roomBooking, float $manuallyDayPrice): RoomPrice
+    public function setManuallyNetPrice(RoomBooking $roomBooking, float $manuallyDayPrice): RoomPrice
     {
-        return $this->calculate($roomBooking, $roomBooking->price()->boDayValue(), $manuallyDayPrice);
+        return $this->calculate($roomBooking, $roomBooking->price()->grossDayValue(), $manuallyDayPrice);
     }
 
-    public function setCalculatedHoPrice(RoomBooking $roomBooking): RoomPrice
+    public function setCalculatedNetPrice(RoomBooking $roomBooking): RoomPrice
     {
-        return $this->calculate($roomBooking, $roomBooking->price()->boDayValue(), null);
+        return $this->calculate($roomBooking, $roomBooking->price()->grossDayValue(), null);
     }
 
     private function calculate(
         RoomBooking $roomBooking,
-        ?float $boDayPrice,
-        ?float $hoDayPrice,
+        ?float $grossDayPrice,
+        ?float $netDayPrice,
     ): RoomPrice {
         $dataHelper = $this->dataFactory->fromRoomBooking($roomBooking);
         $priceBuilder = new RoomDayPriceCalculator(
             $this->variablesFactory->fromDataHelper($dataHelper)
         );
-        if ($boDayPrice) {
-            $priceBuilder->setBODayPrice($boDayPrice);
+        if ($grossDayPrice) {
+            $priceBuilder->setGrossDayPrice($grossDayPrice);
         }
-        if ($hoDayPrice) {
-            $priceBuilder->setHODayPrice($hoDayPrice);
+        if ($netDayPrice) {
+            $priceBuilder->setNetDayPrice($netDayPrice);
         }
 
         $roomId = $dataHelper->roomId();
@@ -90,8 +90,8 @@ class RoomPriceEditor
         }
 
         return new RoomPrice(
-            boDayValue: $boDayPrice,
-            hoDayValue: $hoDayPrice,
+            grossDayValue: $grossDayPrice,
+            netDayValue: $netDayPrice,
             dayPrices: new RoomDayPriceCollection($items)
         );
     }

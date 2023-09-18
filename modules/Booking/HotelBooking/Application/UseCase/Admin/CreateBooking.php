@@ -16,6 +16,7 @@ use Module\Booking\HotelBooking\Domain\Service\HotelValidator;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\BookingPeriod;
 use Module\Shared\Domain\ValueObject\Id;
 use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
+use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Contracts\Bus\CommandBusInterface;
 
 class CreateBooking extends AbstractCreateBooking

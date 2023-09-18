@@ -2,75 +2,53 @@
 
 namespace Module\Booking\Common\Domain\ValueObject;
 
-use Module\Booking\HotelBooking\Domain\ValueObject\ManualChangablePrice;
 use Module\Shared\Contracts\CanEquate;
 use Module\Shared\Domain\ValueObject\SerializableDataInterface;
+use Module\Shared\Enum\CurrencyEnum;
 
 final class BookingPrice implements SerializableDataInterface, CanEquate
 {
+    /**
+     * @param PriceItem $netPrice Стоимость для GTS (расход)
+     * @param PriceItem $grossPrice Стоимость для клиента (приход)
+     */
     public function __construct(
-        private readonly float $netValue,
-        private readonly ManualChangablePrice $hoPrice,
-        private readonly ManualChangablePrice $boPrice,
-        private readonly ?float $hoPenalty,
-        private readonly ?float $boPenalty,
-    ) {}
+        private readonly PriceItem $netPrice,
+        private readonly PriceItem $grossPrice,
+    ) {
+    }
 
-    public static function buildEmpty(): static
+    public static function createEmpty(CurrencyEnum $currency): BookingPrice
     {
-        return new static(
-            0,
-            new ManualChangablePrice(0),
-            new ManualChangablePrice(0),
-            null,
-            null,
+        return new BookingPrice(
+            PriceItem::createEmpty($currency),
+            PriceItem::createEmpty($currency),
         );
     }
 
-    public function netValue(): float
+    public function netPrice(): PriceItem
     {
-        return $this->netValue;
+        return $this->netPrice;
     }
 
-    public function hoPrice(): ManualChangablePrice
+    public function grossPrice(): PriceItem
     {
-        return $this->hoPrice;
-    }
-
-    public function boPrice(): ManualChangablePrice
-    {
-        return $this->boPrice;
-    }
-
-    public function hoPenalty(): ?float
-    {
-        return $this->hoPenalty;
-    }
-
-    public function boPenalty(): ?float
-    {
-        return $this->boPenalty;
+        return $this->grossPrice;
     }
 
     public function toData(): array
     {
         return [
-            'netValue' => $this->netValue,
-            'hoPrice' => $this->hoPrice->toData(),
-            'boPrice' => $this->boPrice->toData(),
-            'hoPenalty' => $this->hoPenalty,
-            'boPenalty' => $this->boPenalty,
+            'netPrice' => $this->netPrice->toData(),
+            'grossPrice' => $this->grossPrice->toData(),
         ];
     }
 
     public static function fromData(array $data): static
     {
         return new BookingPrice(
-            $data['netValue'],
-            ManualChangablePrice::fromData($data['hoPrice']),
-            ManualChangablePrice::fromData($data['boPrice']),
-            $data['hoPenalty'],
-            $data['boPenalty'],
+            PriceItem::fromData($data['netPrice']),
+            PriceItem::fromData($data['grossPrice']),
         );
     }
 
@@ -80,10 +58,7 @@ final class BookingPrice implements SerializableDataInterface, CanEquate
      */
     public function isEqual(mixed $b): bool
     {
-        return $this->netValue === $b->netValue
-            && $this->boPrice->isEqual($b->boPrice)
-            && $this->hoPrice->isEqual($b->hoPrice)
-            && $this->hoPenalty === $b->hoPenalty
-            && $this->boPenalty === $b->boPenalty;
+        return $this->netPrice->isEqual($b->grossPrice)
+            && $this->grossPrice->isEqual($b->netPrice);
     }
 }

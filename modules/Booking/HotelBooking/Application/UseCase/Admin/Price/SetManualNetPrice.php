@@ -8,7 +8,7 @@ use Module\Booking\Common\Domain\Service\BookingUpdater;
 use Module\Booking\HotelBooking\Infrastructure\Repository\BookingRepository;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
-class SetManualBoPrice implements UseCaseInterface
+class SetManualNetPrice implements UseCaseInterface
 {
     public function __construct(
         private readonly BookingRepository $repository,
@@ -18,7 +18,7 @@ class SetManualBoPrice implements UseCaseInterface
     public function execute(int $bookingId, float $price): void
     {
         $booking = $this->repository->find($bookingId);
-        $booking->setBoPriceManually($price);
+        $booking->setNetPriceManually($price);
         $this->bookingUpdater->storeIfHasEvents($booking);
     }
 }

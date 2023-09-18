@@ -5,6 +5,7 @@ import { computed, ref } from 'vue'
 import { useToggle } from '@vueuse/core'
 import { z } from 'zod'
 
+import { useCurrencyStore } from '~resources/store/currency'
 import EditTableRowButton from '~resources/views/hotel/settings/components/EditTableRowButton.vue'
 import GuestModal from '~resources/views/hotel-booking/show/components/GuestModal.vue'
 import GuestsTable from '~resources/views/hotel-booking/show/components/GuestsTable.vue'
@@ -53,6 +54,7 @@ const { bookingID, hotelID } = requestInitialData(
   }),
 )
 
+const { getCurrencyByCodeChar } = useCurrencyStore()
 const bookingStore = useBookingStore()
 const { fetchBooking, fetchAvailableActions } = bookingStore
 const orderStore = useOrderStore()
@@ -60,10 +62,15 @@ const orderStore = useOrderStore()
 const bookingDetails = computed<HotelBookingDetails | null>(() => bookingStore.booking)
 const markupSettings = computed<MarkupSettings | null>(() => bookingStore.markupSettings)
 const isEditableStatus = computed<boolean>(() => bookingStore.availableActions?.isEditable || false)
-const orderCurrency = computed<Currency | undefined>(() => orderStore.currency)
+const grossCurrency = computed<Currency | undefined>(
+  () => getCurrencyByCodeChar(bookingStore.booking?.price.grossPrice.currency.value),
+)
+const netCurrency = computed<Currency | undefined>(
+  () => getCurrencyByCodeChar(bookingStore.booking?.price.netPrice.currency.value),
+)
 const orderGuests = computed<Guest[]>(() => orderStore.guests || [])
 const isBookingPriceManual = computed(
-  () => bookingStore.booking?.price.boPrice.isManual || bookingStore.booking?.price.hoPrice.isManual,
+  () => bookingStore.booking?.price.grossPrice.isManual || bookingStore.booking?.price.netPrice.isManual,
 )
 const canChangeRoomPrice = computed<boolean>(
   () => (bookingStore.availableActions?.canChangeRoomPrice && !isBookingPriceManual.value) || false,
@@ -149,8 +156,8 @@ const handleUpdateRoomPrice = async (boPrice: number | undefined | null, hoPrice
   await updateRoomBookingPrice({
     bookingID,
     roomBookingId: editRoomBookingId.value as number,
-    boPrice,
-    hoPrice,
+    grossPrice: boPrice,
+    netPrice: hoPrice,
   })
   fetchBooking()
 }
@@ -212,8 +219,10 @@ fetchCountries()
     :booking-id="bookingID"
     :room-price="editableRoomPrice"
     :opened="isShowRoomPriceModal"
+    :gross-currency="grossCurrency"
+    :net-currency="netCurrency"
     @close="toggleRoomPriceModal(false)"
-    @submit="({ boPrice, hoPrice }) => handleUpdateRoomPrice(boPrice, hoPrice)"
+    @submit="({ grossPrice, netPrice }) => handleUpdateRoomPrice(grossPrice, netPrice)"
   />
 
   <div class="mt-3" />
@@ -273,31 +282,24 @@ fetchCountries()
                 <th class="text-nowrap">Подробный расчет</th>
               </tr>
             </thead>
-            <tbody v-if="orderCurrency">
+            <tbody v-if="grossCurrency">
               <tr v-for="dayPrice in room.price.dayPrices" :key="dayPrice.date">
                 <td>Стоимость брутто</td>
                 <td class="text-nowrap">
                   {{ formatDate(dayPrice.date) }}
                 </td>
                 <td class="text-nowrap">
-                  {{ formatPrice(dayPrice.boValue, orderCurrency.sign) }}
+                  {{ formatPrice(dayPrice.grossValue, grossCurrency.sign) }}
                 </td>
-                <td class="text-nowrap">{{ dayPrice.boFormula }}</td>
+                <td class="text-nowrap">{{ dayPrice.grossFormula }}</td>
               </tr>
             </tbody>
           </table>
         </div>
-        <!--          <div v-if="orderCurrency" class="conditions">-->
-        <!--            <span class="condition-item">Ранний заезд  - <code>????</code>-->
-        <!--              <span class="cur">{{ orderCurrency.sign }}</span>-->
-        <!--            </span>-->
-        <!--            <span class="condition-item">Поздний выезд  - <code>????</code>-->
-        <!--              <span class="cur">{{ orderCurrency.sign }}</span>-->
-        <!--            </span>-->
-        <!--          </div>-->
-        <div v-if="orderCurrency" class="d-flex flex-row justify-content-between w-100 mt-2">
+
+        <div v-if="grossCurrency" class="d-flex flex-row justify-content-between w-100 mt-2">
           <strong>
-            Итого: {{ formatPrice(room.price.boValue, orderCurrency.sign) }}
+            Итого: {{ formatPrice(room.price.grossValue, grossCurrency.sign) }}
           </strong>
           <a
             v-if="canChangeRoomPrice"
@@ -307,7 +309,7 @@ fetchCountries()
             Изменить цену номера
           </a>
         </div>
-        <span v-if="room.price.boDayValue" class="text-muted">(цена за номер выставлена вручную)</span>
+        <span v-if="room.price.grossDayValue" class="text-muted">(цена за номер выставлена вручную)</span>
       </InfoBlock>
 
       <InfoBlock>

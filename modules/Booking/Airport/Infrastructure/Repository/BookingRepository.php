@@ -21,6 +21,7 @@ use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\Common\Infrastructure\Repository\AbstractBookingRepository as BaseRepository;
 use Module\Booking\Order\Domain\ValueObject\GuestIdsCollection;
 use Module\Shared\Domain\ValueObject\Id;
+use Module\Shared\Enum\CurrencyEnum;
 
 class BookingRepository extends BaseRepository implements BookingRepositoryInterface
 {
@@ -66,7 +67,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
                     status: $bookingModel->status,
                     createdAt: $bookingModel->created_at->toImmutable(),
                     creatorId: new Id($bookingModel->creator_id),
-                    price: BookingPrice::buildEmpty(),
+                    price: BookingPrice::fromData($bookingModel->price),
                     note: $note,
                     airportInfo: new AirportInfo(
                         $airport->id,

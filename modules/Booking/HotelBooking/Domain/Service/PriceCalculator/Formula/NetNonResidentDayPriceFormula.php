@@ -4,7 +4,7 @@ namespace Module\Booking\HotelBooking\Domain\Service\PriceCalculator\Formula;
 
 use Module\Booking\HotelBooking\Domain\Service\PriceCalculator\Support\FormulaUtil;
 
-final class HONonResidentDayPriceFormula implements DayPriceFormulaInterface
+final class NetNonResidentDayPriceFormula implements DayPriceFormulaInterface
 {
     /**
      * Формула расчета стоимости номера для нерезидента за 1 ночь:
