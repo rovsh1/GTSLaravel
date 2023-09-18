@@ -59,25 +59,11 @@ class StorageRepository implements StorageRepositoryInterface
         return true;
     }
 
-    public function delete(File $file): bool
+    public function delete(File $file): void
     {
-        return unlink($this->pathGenerator->path($file));
-    }
-
-    public function fileInfo(File $file, int $part = null): FileInfoDto
-    {
-        $filename = $this->pathGenerator->path($file, $part);
-        //$info->path = $filename;
-        $exists = file_exists($filename);
-        if ($exists) {
-            return new FileInfoDto(
-                true,
-                filesize($filename),
-                finfo_file(finfo_open(FILEINFO_MIME_TYPE), $filename),
-                filemtime($filename)
-            );
-        } else {
-            return new FileInfoDto(false, 0, '', 0);
+        $filename = $this->pathGenerator->path($file);
+        if (file_exists($filename)) {
+            unlink($filename);
         }
     }
 

@@ -3,56 +3,44 @@
 namespace Module\Support\FileStorage\Infrastructure\Repository;
 
 use Module\Support\FileStorage\Domain\Entity\File;
+use Module\Support\FileStorage\Domain\Exception\FileNotFoundException;
 use Module\Support\FileStorage\Domain\Repository\DatabaseRepositoryInterface;
+use Module\Support\FileStorage\Domain\ValueObject\Guid;
 use Module\Support\FileStorage\Infrastructure\Model\File as Model;
-use Sdk\Module\Foundation\Exception\EntityNotFoundException;
+use Module\Support\FileStorage\Infrastructure\Service\DataMapper;
 
 class DatabaseRepository implements DatabaseRepositoryInterface
 {
-    public function find(string $guid): ?File
+    public function find(Guid $guid): ?File
     {
-        $model = Model::findByGuid($guid);
+        $model = Model::findByGuid($guid->value());
 
         return $model ? DataMapper::modelToFile($model) : null;
     }
 
-    public function getEntityFile(string $fileType, ?int $entityId): ?File
+    public function create(string $name = null): File
     {
-        $model = Model::whereType($fileType)
-            ->whereEntity($entityId)
-            ->first();
-
-        return $model ? DataMapper::modelToFile($model) : null;
-    }
-
-    public function getEntityFiles(string $fileType, ?int $entityId): array
-    {
-        return Model::whereType($fileType)
-            ->whereEntity($entityId)
-            ->get()
-            ->map(fn($r) => DataMapper::modelToFile($r))
-            ->all();
-    }
-
-    public function create(string $fileType, ?int $entityId, string $name = null): File
-    {
-        $model = Model::createFromParent($fileType, $entityId, $name);
+        $model = Model::create([
+            'name' => $name
+        ]);
 
         return DataMapper::modelToFile($model);
     }
 
-    public function update(File $file, array $attributes): bool
+    public function store(File $file): bool
     {
-        $model = $this->tryFindModel($file->guid());
+        $model = $this->tryFindModel($file->guid()->value());
 
-        $model->update($attributes);
+        $model->update([
+            'name' => $file->name()
+        ]);
 
         return true;
     }
 
     public function delete(File $file): bool
     {
-        $model = $this->tryFindModel($file->guid());
+        $model = $this->tryFindModel($file->guid()->value());
 
         $model->delete();
 
@@ -61,7 +49,7 @@ class DatabaseRepository implements DatabaseRepositoryInterface
 
     public function touch(File $file): void
     {
-        $model = $this->tryFindModel($file->guid());
+        $model = $this->tryFindModel($file->guid()->value());
 
         $model->touch();
     }
@@ -70,9 +58,18 @@ class DatabaseRepository implements DatabaseRepositoryInterface
     {
         $model = Model::findByGuid($guid);
         if (!$model) {
-            throw new EntityNotFoundException('File [' . $guid . '] not found');
+            throw new FileNotFoundException('File [' . $guid . '] not found');
         }
 
         return $model;
+    }
+
+    private static function findExtension(?string $name): ?string
+    {
+        if (empty($name) || false === ($pos = strrpos($name, '.'))) {
+            return null;
+        }
+
+        return substr($name, $pos);
     }
 }

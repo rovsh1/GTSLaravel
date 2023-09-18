@@ -14,10 +14,17 @@ return new class extends Migration {
             $table->string('model', 25);
             $table->tinyInteger('passengers_number')->unsigned();
             $table->tinyInteger('bags_number')->unsigned();
+            $table->char('image', 32)->nullable();
 
             $table->foreign('type_id')
                 ->references('id')
                 ->on('r_transport_types')
+                ->restrictOnDelete()
+                ->cascadeOnUpdate();
+
+            $table->foreign('image')
+                ->references('guid')
+                ->on('files')
                 ->restrictOnDelete()
                 ->cascadeOnUpdate();
         });

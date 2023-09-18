@@ -27,6 +27,8 @@ const { hotelID } = injectInitialData(z.object({
   hotelID: z.number(),
 }))
 
+const openingDayMenuRoomId = ref<number | null>(null)
+
 const {
   data: hotelData,
   execute: fetchHotel,
@@ -115,53 +117,59 @@ watchEffect(() => {
 })
 </script>
 <template>
-  <BaseLayout :loading="isHotelFetching || isHotelRoomsFetching">
-    <template #title>
-      <div class="title">{{ hotel?.name ?? '' }}</div>
-    </template>
-    <template #header-controls>
-      <BootstrapButton
-        :label="editable ? 'Готово' : 'Редактировать'"
-        :start-icon="editable ? checkIcon : pencilIcon"
-        severity="primary"
-        :disabled="roomsQuotas === null"
-        @click="editable = !editable"
-      />
-    </template>
-    <div class="quotasBody">
-      <QuotasFilters
-        v-if="rooms"
-        :rooms="rooms"
-        :loading="waitLoadAndRedrawData"
-        @submit="value => handleFilters(value)"
-        @switch-room="(value: number | null) => activeRoomID = value"
-      />
-      <LoadingSpinner v-if="waitLoadAndRedrawData && roomsQuotas === null" />
-      <div v-else-if="hotel === null">
-        Не удалось найти данные для отеля.
+  <div id="hotel-quotas-wrapper">
+    <BaseLayout :loading="isHotelFetching || isHotelRoomsFetching">
+      <template #title>
+        <div class="title">{{ hotel?.name ?? '' }}</div>
+      </template>
+      <template #header-controls>
+        <BootstrapButton
+          :label="editable ? 'Готово' : 'Редактировать'"
+          :start-icon="editable ? checkIcon : pencilIcon"
+          severity="primary"
+          :disabled="roomsQuotas === null"
+          @click="editable = !editable"
+        />
+      </template>
+      <div class="quotasBody">
+        <QuotasFilters
+          v-if="rooms"
+          :rooms="rooms"
+          :loading="waitLoadAndRedrawData"
+          @submit="value => handleFilters(value)"
+          @switch-room="(value: number | null) => activeRoomID = value"
+        />
+        <LoadingSpinner v-if="waitLoadAndRedrawData && roomsQuotas === null" />
+        <div v-else-if="hotel === null">
+          Не удалось найти данные для отеля.
+        </div>
+        <div v-else-if="roomsQuotas === null">
+          Не удалось найти комнаты для этого отеля.
+        </div>
+        <div v-else class="quotasTables">
+          <template v-for="{ room, monthlyQuotas } in roomsQuotas">
+            <RoomQuotas
+              v-if="room.id === activeRoomID || activeRoomID === null"
+              :key="room.id"
+              :hotel="hotel"
+              :room="room"
+              :monthly-quotas="monthlyQuotas"
+              :editable="editable"
+              :waiting-load-data="(updatedRoomID === room.id) ? waitLoadAndRedrawData : false"
+              :opening-day-menu-room-id="openingDayMenuRoomId"
+              @open-day-menu-in-another-room="(value: number | null) => {
+                openingDayMenuRoomId = value
+              }"
+              @update="(updatedRoomIDParam: number) => {
+                updatedRoomID = updatedRoomIDParam
+                fetchHotelQuotasWrapper()
+              }"
+            />
+          </template>
+        </div>
       </div>
-      <div v-else-if="roomsQuotas === null">
-        Не удалось найти комнаты для этого отеля.
-      </div>
-      <div v-else class="quotasTables">
-        <template v-for="{ room, monthlyQuotas } in roomsQuotas">
-          <RoomQuotas
-            v-if="room.id === activeRoomID || activeRoomID === null"
-            :key="room.id"
-            :hotel="hotel"
-            :room="room"
-            :monthly-quotas="monthlyQuotas"
-            :editable="editable"
-            :waiting-load-data="(updatedRoomID === room.id) ? waitLoadAndRedrawData : false"
-            @update="(updatedRoomIDParam: number) => {
-              updatedRoomID = updatedRoomIDParam
-              fetchHotelQuotasWrapper()
-            }"
-          />
-        </template>
-      </div>
-    </div>
-  </BaseLayout>
+    </BaseLayout>
+  </div>
 </template>
 <style lang="scss" scoped>
 @use '~resources/sass/vendor/bootstrap/configuration' as bs;
@@ -176,5 +184,9 @@ watchEffect(() => {
   display: flex;
   flex-flow: column;
   gap: 2em;
+}
+
+#hotel-quotas-wrapper {
+  position: relative;
 }
 </style>

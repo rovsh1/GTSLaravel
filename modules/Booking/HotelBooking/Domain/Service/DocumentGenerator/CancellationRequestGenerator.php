@@ -4,24 +4,24 @@ namespace Module\Booking\HotelBooking\Domain\Service\DocumentGenerator;
 
 use Module\Booking\Common\Application\Service\StatusStorage;
 use Module\Booking\Common\Domain\Adapter\AdministratorAdapterInterface;
-use Module\Booking\Common\Domain\Adapter\FileStorageAdapterInterface;
 use Module\Booking\Common\Domain\Entity\BookingInterface;
 use Module\Booking\Common\Domain\Service\DocumentGenerator\AbstractRequestGenerator;
 use Module\Booking\HotelBooking\Domain\Adapter\HotelAdapterInterface;
 use Module\Booking\HotelBooking\Domain\Entity\Booking;
 use Module\Booking\Order\Domain\Repository\GuestRepositoryInterface;
+use Module\Shared\Domain\Service\CompanyRequisitesInterface;
 use Module\Shared\Enum\ContactTypeEnum;
 
 class CancellationRequestGenerator extends AbstractRequestGenerator
 {
     public function __construct(
-        FileStorageAdapterInterface $fileStorageAdapter,
         private readonly HotelAdapterInterface $hotelAdapter,
         private readonly AdministratorAdapterInterface $administratorAdapter,
         private readonly StatusStorage $statusStorage,
         private readonly GuestRepositoryInterface $guestRepository,
+        CompanyRequisitesInterface $companyRequisites
     ) {
-        parent::__construct($fileStorageAdapter);
+        parent::__construct($companyRequisites);
     }
 
     protected function getTemplateName(): string

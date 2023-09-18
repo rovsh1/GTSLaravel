@@ -4,6 +4,7 @@ namespace App\Admin\Http\Controllers\Hotel;
 
 use App\Admin\Enums\Hotel\Contract\StatusEnum;
 use App\Admin\Exceptions\FormSubmitFailedException;
+use App\Admin\Http\Actions\Hotel\UpdateContractAction;
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Models\Hotel\Contract;
 use App\Admin\Models\Hotel\Hotel;
@@ -18,7 +19,6 @@ use App\Admin\Support\Http\Actions\DefaultDestroyAction;
 use App\Admin\Support\Http\Actions\DefaultFormCreateAction;
 use App\Admin\Support\Http\Actions\DefaultFormEditAction;
 use App\Admin\Support\Http\Actions\DefaultFormStoreAction;
-use App\Admin\Support\Http\Actions\DefaultFormUpdateAction;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Layout as LayoutContract;
@@ -68,8 +68,6 @@ class ContractController extends Controller
     {
         $this->hotel($hotel);
 
-//        dd($contract->documents);
-
         return (new DefaultFormEditAction($this->formFactory($hotel->id)))
             ->deletable()
             ->handle($contract);
@@ -77,7 +75,7 @@ class ContractController extends Controller
 
     public function update(Hotel $hotel, Contract $contract): RedirectResponse
     {
-        return (new DefaultFormUpdateAction($this->formFactory($hotel->id)))
+        return (new UpdateContractAction($this->formFactory($hotel->id)))
             ->handle($contract);
     }
 

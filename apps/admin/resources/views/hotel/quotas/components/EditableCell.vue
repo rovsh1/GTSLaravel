@@ -31,8 +31,12 @@ const props = withDefaults(defineProps<{
   rangeError?: RangeError
   disabled: boolean
   inRange: boolean
+  dayMenuRef?: HTMLElement | null
+  dayMenuActionCompleted?: boolean
 }>(), {
   rangeError: (min, max) => `Введите от ${min} до ${max}`,
+  dayMenuRef: null,
+  dayMenuActionCompleted: false,
 })
 
 const emit = defineEmits<{
@@ -113,12 +117,6 @@ const handleButtonClick = (event: MouseEvent) => {
   emit('active-key', props.cellKey)
 }
 
-const forceHandleButtonClick = (event: MouseEvent) => {
-  if (event.button === 0 && buttonRef.value) {
-    buttonRef.value.click()
-  }
-}
-
 const onPressEsc = () => {
   inputRef.value?.blur()
   emit('reset')
@@ -158,7 +156,12 @@ const handleContextMenu = (event: MouseEvent) => {
   }
 }
 
-onClickOutside(inputRef, () => {
+onClickOutside(inputRef, (event: MouseEvent) => {
+  if (props.dayMenuRef && props.dayMenuRef instanceof Element && event.target) {
+    if (props.dayMenuRef.contains(event.target as Node)) {
+      return
+    }
+  }
   if (!rangeMode.value && !pickMode.value) {
     if (props.inRange || (valueModel.value !== props.initValue && valueModel.value !== '0')) {
       onPressEnter()
@@ -169,6 +172,12 @@ onClickOutside(inputRef, () => {
 })
 
 watch(() => props.disabled, (value) => {
+  if (value === true) {
+    onPressEsc()
+  }
+})
+
+watch(() => props.dayMenuActionCompleted, (value) => {
   if (value === true) {
     onPressEsc()
   }
@@ -235,7 +244,7 @@ onUnmounted(() => {
       class="editableDataCell"
       :class="{ inRange }"
       :disabled="disabled"
-      @mousedown.prevent="forceHandleButtonClick"
+      @mousedown.prevent
       @click="handleButtonClick"
     >
       <slot />
