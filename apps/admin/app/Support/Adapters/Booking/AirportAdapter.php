@@ -15,6 +15,10 @@ use Module\Booking\Airport\Application\UseCase\Admin\GetAvailableActions;
 use Module\Booking\Airport\Application\UseCase\Admin\GetStatuses;
 use Module\Booking\Airport\Application\UseCase\Admin\GetStatusHistory;
 use Module\Booking\Airport\Application\UseCase\Admin\UpdateBookingStatus;
+use Module\Booking\Airport\Application\UseCase\Admin\UpdateNote;
+use Module\Booking\Airport\Application\UseCase\Admin\CopyBooking;
+use Module\Booking\Airport\Application\UseCase\Admin\BulkDeleteBookings;
+use Module\Booking\Airport\Application\UseCase\Admin\DeleteBooking;
 
 class AirportAdapter
 {
@@ -88,5 +92,29 @@ class AirportAdapter
     public function getStatusHistory(int $id): array
     {
         return app(GetStatusHistory::class)->execute($id);
+    }
+
+    public function updateNote(int $bookingId, string|null $note): void
+    {
+        app(UpdateNote::class)->execute($bookingId, $note);
+    }
+
+    public function copyBooking(int $id): int
+    {
+        return app(CopyBooking::class)->execute($id);
+    }
+
+    public function deleteBooking(int $id): void
+    {
+        app(DeleteBooking::class)->execute($id);
+    }
+
+    /**
+     * @param int[] $ids
+     * @return void
+     */
+    public function bulkDeleteBookings(array $ids): void
+    {
+        app(BulkDeleteBookings::class)->execute($ids);
     }
 }

@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\Admin\Http\Controllers\Booking\Airport;
 
 use App\Admin\Http\Controllers\Controller;
+use App\Admin\Http\Requests\Booking\Hotel\BulkDeleteRequest;
+use App\Admin\Http\Requests\Booking\Hotel\UpdateManagerRequest;
+use App\Admin\Http\Requests\Booking\Hotel\UpdateNoteRequest;
 use App\Admin\Http\Requests\Booking\Hotel\UpdateStatusRequest;
 use App\Admin\Models\Administrator\Administrator;
 use App\Admin\Models\Client\Client;
@@ -19,6 +22,8 @@ use App\Admin\Support\Facades\Layout;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Layout as LayoutContract;
+use App\Core\Support\Http\Responses\AjaxResponseInterface;
+use App\Core\Support\Http\Responses\AjaxSuccessResponse;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -171,6 +176,39 @@ class BookingController extends Controller
         );
     }
 
+    public function bulkDelete(BulkDeleteRequest $request): AjaxResponseInterface
+    {
+        AirportAdapter::bulkDeleteBookings($request->getIds());
+
+        return new AjaxSuccessResponse();
+    }
+
+    public function updateNote(int $id, UpdateNoteRequest $request): AjaxResponseInterface
+    {
+        AirportAdapter::updateNote($id, $request->getNote());
+
+        return new AjaxSuccessResponse();
+    }
+
+    public function updateManager(int $id, UpdateManagerRequest $request): AjaxResponseInterface
+    {
+        $this->administratorRepository->update($id, $request->getManagerId());
+
+        return new AjaxSuccessResponse();
+    }
+
+    public function copy(int $id): RedirectResponse
+    {
+        $newBookingId = AirportAdapter::copyBooking($id);
+
+        $administrator = $this->administratorRepository->get($id);
+        $this->administratorRepository->create($newBookingId, $administrator->id);
+
+        return redirect(
+            route('airport-booking.show', $newBookingId)
+        );
+    }
+
     protected function formFactory(bool $isEdit = false): FormContract
     {
         return Form::name('data')
@@ -239,7 +277,8 @@ class BookingController extends Controller
                     return "$idLink / {$orderLink}";
                 }
             ])
-            ->bookingStatus('status', ['text' => 'Статус', 'statuses' => AirportAdapter::getStatuses(), 'order' => true])
+            ->bookingStatus('status', ['text' => 'Статус', 'statuses' => AirportAdapter::getStatuses(), 'order' => true]
+            )
             ->text('client_name', ['text' => 'Клиент'])
             ->text('city_name', ['text' => 'Город'])
             ->text('service_name', ['text' => 'Название услуги'])

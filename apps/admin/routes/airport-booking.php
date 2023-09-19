@@ -5,6 +5,10 @@ use App\Admin\Support\Facades\AclRoute;
 
 AclRoute::for('airport-booking')
     ->get('/{booking}/get', Controllers\Booking\Airport\BookingController::class . '@get', 'read', 'get')
+    ->put('/{booking}/note', Controllers\Booking\Airport\BookingController::class . '@updateNote', 'update', 'note.update')
+    ->put('/{booking}/manager', Controllers\Booking\Airport\BookingController::class . '@updateManager', 'update', 'manager.update')
+    ->post('/{booking}/copy', Controllers\Booking\Airport\BookingController::class . '@copy', 'update', 'copy')
+    ->delete('/bulk', Controllers\Booking\Airport\BookingController::class . '@bulkDelete', 'delete', 'bulk.delete')
 
     ->get('/status/list', Controllers\Booking\Airport\BookingController::class . '@getStatuses', 'read', 'status.list')
     ->put('/{booking}/status/update', Controllers\Booking\Airport\BookingController::class . '@updateStatus', 'update', 'status.update')

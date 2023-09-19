@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\HotelBooking\Application\UseCase\Admin;
+namespace Module\Booking\Airport\Application\UseCase\Admin;
 
+use Module\Booking\Airport\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\Common\Domain\Service\BookingUpdater;
-use Module\Booking\HotelBooking\Domain\Repository\BookingRepositoryInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class UpdateNote implements UseCaseInterface
