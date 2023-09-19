@@ -32,23 +32,8 @@ class BookingDto extends BaseDto
         public readonly array $guestIds,
         public readonly ?CancelConditionsDto $cancelConditions,
         public readonly BookingPriceDto $price,
+        public readonly string $flightNumber,
     ) {
         parent::__construct($id, $status, $orderId, $createdAt, $creatorId);
-    }
-
-    public static function fromDomain(EntityInterface|BookingInterface|ValueObjectInterface|Booking $entity): static
-    {
-        return new static(
-            $entity->id()->value(),
-            $entity->status()->value,
-            $entity->orderId()->value(),
-            $entity->createdAt(),
-            $entity->creatorId()->value(),
-            $entity->note(),
-            AirportInfoDto::fromDomain($entity->airportInfo()),
-            ServiceInfoDto::fromDomain($entity->serviceInfo()),
-            $entity->date(),
-            $entity->guestIds()->all(),
-        );
     }
 }

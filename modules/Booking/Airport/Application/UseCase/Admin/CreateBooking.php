@@ -6,6 +6,7 @@ namespace Module\Booking\Airport\Application\UseCase\Admin;
 
 use Module\Booking\Airport\Application\Request\CreateBookingDto;
 use Module\Booking\Airport\Domain\Repository\BookingRepositoryInterface;
+use Module\Booking\Airport\Domain\ValueObject\Details\AdditionalInfo;
 use Module\Booking\Common\Application\Support\UseCase\Admin\AbstractCreateBooking;
 use Module\Booking\Common\Domain\ValueObject\BookingPrice;
 use Module\Booking\Common\Domain\ValueObject\CreatorId;
@@ -29,12 +30,15 @@ class CreateBooking extends AbstractCreateBooking
         if ($orderCurrency === null) {
             throw new EntityNotFoundException('Currency not found');
         }
+        $cancelConditions = null;//@todo получение условий отмены
         $booking = $this->repository->create(
             orderId: $orderId,
             creatorId: new CreatorId($request->creatorId),
             serviceId: $request->serviceId,
             airportId: $request->airportId,
             date: $request->date,
+            additionalInfo: new AdditionalInfo($request->flightNumber),
+            cancelConditions: $cancelConditions,
             note: $request->note,
             price: BookingPrice::createEmpty(CurrencyEnum::UZS, $orderCurrency),//@todo netto валюта
         );

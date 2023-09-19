@@ -95,6 +95,7 @@ class BookingController extends Controller
             currencyId: $currencyId ?? $client->currency_id,
             airportId: $data['airport_id'],
             serviceId: $data['service_id'],
+            flightNumber: $data['flight_number'],
             date: new Carbon($data['date'] . ' ' . $data['time']),
             creatorId: $creatorId,
             orderId: $data['order_id'] ?? null,
@@ -249,6 +250,7 @@ class BookingController extends Controller
                 'emptyItem' => '',
                 'value' => request()->user()->id,
             ])
+            ->text('flight_number', ['label' => 'Номер рейса', 'required' => true])
             ->date('date', [
                 'label' => 'Дата прилёта/вылета',
                 'required' => true

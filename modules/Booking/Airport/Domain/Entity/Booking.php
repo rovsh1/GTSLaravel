@@ -31,7 +31,7 @@ class Booking extends AbstractBooking
         private readonly AirportInfo $airportInfo,
         private readonly CarbonImmutable $date,
         private ?CancelConditions $cancelConditions,
-        private ?AdditionalInfo $additionalInfo,
+        private AdditionalInfo $additionalInfo,
         private readonly GuestIdsCollection $guestIds,
         private ?string $note
     ) {
@@ -58,7 +58,7 @@ class Booking extends AbstractBooking
         return $this->note;
     }
 
-    public function additionalInfo(): ?AdditionalInfo
+    public function additionalInfo(): AdditionalInfo
     {
         return $this->additionalInfo;
     }

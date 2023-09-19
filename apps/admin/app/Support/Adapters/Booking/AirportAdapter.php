@@ -40,6 +40,7 @@ class AirportAdapter
         int $airportId,
         int $serviceId,
         CarbonInterface $date,
+        string $flightNumber,
         int $creatorId,
         ?int $orderId,
         ?string $note = null
@@ -55,6 +56,7 @@ class AirportAdapter
                 serviceId: $serviceId,
                 orderId: $orderId,
                 date: $date,
+                flightNumber: $flightNumber,
                 note: $note
             )
         );

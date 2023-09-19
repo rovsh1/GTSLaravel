@@ -40,6 +40,7 @@ class BookingDtoFactory extends AbstractBookingDtoFactory
             date: $booking->date(),
             guestIds: $booking->guestIds()->map(fn(GuestId $id) => $id->value()),
             price: $this->bookingPriceDtoFactory->createFromEntity($booking->price()),
+            flightNumber: $booking->additionalInfo()->flightNumber(),
             cancelConditions: $booking->cancelConditions() !== null
                 ? CancelConditionsDto::fromDomain($booking->cancelConditions())
                 : null,

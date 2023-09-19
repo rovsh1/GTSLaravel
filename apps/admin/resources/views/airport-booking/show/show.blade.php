@@ -38,7 +38,8 @@
                             <tr>
                                 <th>Заказ (ID)</th>
                                 <td>
-                                    <a href="{{ route('booking-order.show', $model->orderId) }}" target="_blank">{{ $model->orderId }}</a>
+                                    <a href="{{ route('booking-order.show', $model->orderId) }}"
+                                       target="_blank">{{ $model->orderId }}</a>
                                 </td>
                             </tr>
                             <tr>
@@ -67,7 +68,7 @@
                             </tr>
                             <tr>
                                 <th>Номер рейса</th>
-                                <td>-</td>
+                                <td>{{ $model->flightNumber }}</td>
                             </tr>
                             <tr>
                                 <th>Дата прилёта/вылета</th>

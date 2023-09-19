@@ -54,10 +54,12 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         int $airportId,
         CarbonInterface $date,
         BookingPrice $price,
+        AdditionalInfo $additionalInfo,
+        ?CancelConditions $cancelConditions,
         ?string $note = null
     ): Entity {
         return \DB::transaction(
-            function () use ($orderId, $creatorId, $serviceId, $airportId, $date, $price, $note) {
+            function () use ($orderId, $creatorId, $serviceId, $airportId, $date, $price, $note, $additionalInfo, $cancelConditions) {
                 $bookingModel = $this->createBase($orderId, $price, $creatorId->value());
 
                 $airport = Airport::find($airportId);
@@ -82,8 +84,8 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
                         $service->name,
                         $service->type
                     ),
-                    cancelConditions: null,
-                    additionalInfo: null,
+                    cancelConditions: $cancelConditions,
+                    additionalInfo: $additionalInfo,
                 );
 
                 BookingDetails::create([
@@ -119,7 +121,6 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
     {
         $detailsData = $detailsModel->data;
 
-        $additionalInfo = $detailsData['additionalInfo'] ?? null;
         $cancelConditions = $detailsData['cancelConditions'] ?? null;
 
         return new Entity(
@@ -134,9 +135,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
             airportInfo: AirportInfo::fromData($detailsData['airportInfo']),
             serviceInfo: ServiceInfo::fromData($detailsData['serviceInfo']),
             date: CarbonImmutable::createFromTimestamp($detailsData['date']),
-            additionalInfo: $additionalInfo !== null
-                ? AdditionalInfo::fromData($detailsData['additionalInfo'])
-                : null,
+            additionalInfo: AdditionalInfo::fromData($detailsData['additionalInfo']),
             cancelConditions: $cancelConditions !== null
                 ? CancelConditions::fromData($detailsData['cancelConditions'])
                 : null,
@@ -151,7 +150,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
             'serviceInfo' => $booking->serviceInfo()->toData(),
             'date' => $booking->date()->getTimestamp(),
             'price' => $booking->price()->toData(),
-            'additionalInfo' => $booking->additionalInfo()?->toData(),
+            'additionalInfo' => $booking->additionalInfo()->toData(),
             'cancelConditions' => $booking->cancelConditions()?->toData(),
         ];
     }
