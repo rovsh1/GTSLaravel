@@ -28,8 +28,13 @@ class RoomDayPriceCalculator
 
     public function calculate(CarbonInterface $date, float $netValue): RoomDayPrice
     {
-        $grossResult = $this->calculateDayPrice($this->grossEstimatedPrice, $date, $netValue);
-        $netResult = $this->calculateDayPrice($this->netEstimatedPrice, $date, $netValue);
+        $grossResult = $this->calculateDayPrice(
+            $this->grossEstimatedPrice,
+            $date,
+            $netValue,
+            $this->variables->clientMarkupPercent
+        );
+        $netResult = $this->calculateDayPrice($this->netEstimatedPrice, $date, $netValue, 0);
 
         return new RoomDayPrice(
             date: new Date($date->toIso8601String()),
@@ -55,19 +60,23 @@ class RoomDayPriceCalculator
         return $this;
     }
 
-    private function calculateDayPrice(?float $estimatedPrice, CarbonInterface $date, float $value): CalculationResult
-    {
+    private function calculateDayPrice(
+        ?float $estimatedPrice,
+        CarbonInterface $date,
+        float $value,
+        int $markupPercent
+    ): CalculationResult {
         return $this->dayPriceFormula->evaluate(
-            $estimatedPrice ?? $this->calculateEstimatedValue($value),
+            $estimatedPrice ?? $this->calculateEstimatedValue($value, $markupPercent),
             $this->calculateMarkupValue($date, $value)
         );
     }
 
-    private function calculateEstimatedValue(float $value): float
+    private function calculateEstimatedValue(float $value, int $markupPercent): float
     {
         return $this->estimatedPriceCalculator->calculate(
             basePrice: $value,
-            markupPercent: $this->variables->clientMarkupPercent,
+            markupPercent: $markupPercent,
             ndsPercent: $this->variables->vatPercent,
             touristTax: $this->variables->touristTax,
             guestsCount: $this->variables->guestsCount
