@@ -47,9 +47,11 @@ class FormulaVariablesFactory
             $legal = $this->clientAdapter->findLegal($legalId);
             $legalType = LegalTypeEnum::from($legal->type);
 
-            return $roomMarkups->{$legalType->getKey()} ?? $hotelMarkups->{$legalType->getKey()};
+            return $roomMarkups->{$legalType->getKey()} > 0
+                ? $roomMarkups->{$legalType->getKey()}
+                : $hotelMarkups->{$legalType->getKey()};
         }
 
-        return $roomMarkups->individual ?? $hotelMarkups->individual;
+        return $roomMarkups->individual > 0 ? $roomMarkups->individual : $hotelMarkups->individual;
     }
 }
