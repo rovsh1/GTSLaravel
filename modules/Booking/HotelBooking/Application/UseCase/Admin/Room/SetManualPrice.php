@@ -26,10 +26,6 @@ class SetManualPrice implements UseCaseInterface
 
     public function execute(int $bookingId, int $roomBookingId, float|null $grossPrice, float|null $netPrice): void
     {
-        $booking = $this->bookingRepository->find($bookingId);
-        if ($booking === null) {
-            throw new EntityNotFoundException('Booking not found');
-        }
         $roomBooking = $this->roomBookingRepository->find($roomBookingId);
         if ($roomBooking === null) {
             throw new EntityNotFoundException('Room booking not found');
@@ -40,12 +36,20 @@ class SetManualPrice implements UseCaseInterface
             }
             if ($netPrice !== null) {
                 $roomBooking->setNetDayPrice($netPrice, $this->roomPriceEditor);
+            } else {
+                $roomBooking->setCalculatedNetPrice($this->roomPriceEditor);
             }
             if ($grossPrice !== null) {
                 $roomBooking->setGrossDayPrice($grossPrice, $this->roomPriceEditor);
+            } else {
+                $roomBooking->setCalculatedGrossPrice($this->roomPriceEditor);
             }
             $this->roomBookingRepository->store($roomBooking);
 
+            $booking = $this->bookingRepository->find($bookingId);
+            if ($booking === null) {
+                throw new EntityNotFoundException('Booking not found');
+            }
             $booking->recalculatePrices($this->bookingCalculator);
             $this->bookingUpdater->store($booking);
         } catch (NotFoundHotelRoomPrice $e) {
