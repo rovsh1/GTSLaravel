@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Module\Shared\Domain\Service\ApplicationContextInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
@@ -106,7 +107,7 @@ class Handler extends ExceptionHandler
 
     protected function context(): array
     {
-        if (app()->has('app-context')) {
+        if (app()->has(ApplicationContextInterface::class)) {
             return AppContext::toArray();
         } else {
             return [];

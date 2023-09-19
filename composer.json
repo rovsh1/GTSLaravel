@@ -41,6 +41,7 @@
       "App\\Site\\": "apps/site/app/",
       "App\\Admin\\": "apps/admin/app/",
       "App\\Api\\": "apps/api/app/",
+      "App\\Shared\\": "apps/shared/app/",
       "Module\\": "modules/",
       "Gsdk\\Form\\": "src/Form/",
       "Gsdk\\Grid\\": "src/Grid/",

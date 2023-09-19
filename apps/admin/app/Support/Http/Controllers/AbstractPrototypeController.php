@@ -132,9 +132,9 @@ abstract class AbstractPrototypeController extends Controller
 
         $form = $this->formFactory()
             ->method('put')
-            ->action($this->prototype->route('update', $model->id))
-            ->data($model);
+            ->action($this->prototype->route('update', $model->id));
 
+        $this->formFill($form, $model);
         $this->prepareEditMenu($this->model);
 
         return Layout::title($title)
@@ -189,6 +189,10 @@ abstract class AbstractPrototypeController extends Controller
     protected function formFactory(): Form
     {
         throw new \LogicException('Please implement the formFactory method on your controller.');
+    }
+
+    protected function formFill(Form $form, Model $model):void {
+        $form->data($model);
     }
 
     protected function hasShowAction(): bool

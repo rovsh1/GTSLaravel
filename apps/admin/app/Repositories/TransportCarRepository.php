@@ -2,30 +2,25 @@
 
 namespace App\Admin\Repositories;
 
-use App\Admin\Components\Factory\FactoryRepositoryInterface;
 use App\Admin\Components\Factory\Support\DefaultRepository;
-use App\Admin\Files\TransportImage;
 use App\Admin\Models\Reference\TransportCar;
-use App\Admin\Support\Http\EntityFileUploader;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\UploadedFile;
+use Module\Shared\Contracts\Adapter\FileStorageAdapterInterface;
 
 class TransportCarRepository extends DefaultRepository
 {
-    public function __construct()
-    {
+    public function __construct(
+        private readonly FileStorageAdapterInterface $fileStorageAdapter
+    ) {
         parent::__construct(TransportCar::class);
     }
 
     public function create(array $data): ?Model
     {
-        $model = $this->model::create($data);
-        if (!$model) {
-            return null;
-        }
-
-        (new EntityFileUploader($model, TransportImage::class))
-            ->upload($data['image'] ?? null);
+        $model = new TransportCar();
+        $model->fill($this->prepareData($model, $data));
+        $model->save();
 
         return $model;
     }
@@ -34,9 +29,25 @@ class TransportCarRepository extends DefaultRepository
     {
         $model = $this->findOrFail($id);
 
-        (new EntityFileUploader($model, TransportImage::class))
-            ->upload($data['image'] ?? null);
+        return $model->update($this->prepareData($model, $data));
+    }
 
-        return $model->update($data);
+    private function prepareData(TransportCar $model, array $data): array
+    {
+        /** @var UploadedFile $uploadedFile */
+        $uploadedFile = $data['image'] ?? null;
+
+        if ($uploadedFile) {
+            $fileDto = $this->fileStorageAdapter->updateOrCreate(
+                $model->image?->guid,
+                $uploadedFile->getClientOriginalName(),
+                $uploadedFile->get()
+            );
+            $data['image'] = $fileDto?->guid;
+        } else {
+            $data['image'] = null;
+        }
+
+        return $data;
     }
 }

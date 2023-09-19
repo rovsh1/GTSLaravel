@@ -6,7 +6,6 @@ use App\Core\Support\Facades\AppContext;
 use Module\Booking\Common\Domain\Entity\BookingInterface;
 use Module\Booking\Common\Domain\ValueObject\BookingPrice;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
-use Module\Booking\Common\Domain\ValueObject\CreatorId;
 use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\Common\Infrastructure\Models\Booking;
 use Module\Booking\Common\Infrastructure\Models\Booking as Model;
@@ -28,14 +27,14 @@ abstract class AbstractBookingRepository
         return $model;
     }
 
-    protected function createBase(OrderId $orderId, CreatorId $creatorId): Booking
+    protected function createBase(OrderId $orderId, BookingPrice $price, int $creatorId): Booking
     {
         return $this->getModel()::create([
             'order_id' => $orderId->value(),
             'source' => AppContext::source(),
             'status' => BookingStatusEnum::CREATED,
-            'creator_id' => $creatorId->value(),
-            'price' => BookingPrice::buildEmpty()->toData(),
+            'creator_id' => $creatorId,
+            'price' => $price->toData(),
         ]);
     }
 

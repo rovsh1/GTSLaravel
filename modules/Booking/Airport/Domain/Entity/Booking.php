@@ -58,7 +58,7 @@ class Booking extends AbstractBooking
         return $this->note;
     }
 
-    public function additionalInfo(): AdditionalInfo
+    public function additionalInfo(): ?AdditionalInfo
     {
         return $this->additionalInfo;
     }
@@ -78,12 +78,12 @@ class Booking extends AbstractBooking
         return $this->guestIds;
     }
 
-    public function cancelConditions(): CancelConditions
+    public function cancelConditions(): ?CancelConditions
     {
         return $this->cancelConditions;
     }
 
-    public function setCancelConditions(CancelConditions $cancelConditions): void
+    public function setCancelConditions(?CancelConditions $cancelConditions): void
     {
         $this->cancelConditions = $cancelConditions;
     }

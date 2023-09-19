@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Booking\HotelBooking\Application\UseCase\Admin\Room\Guest;
 
+use Module\Booking\HotelBooking\Application\Exception\TooManyRoomGuestsException;
 use Module\Booking\HotelBooking\Domain\Adapter\HotelRoomAdapterInterface;
 use Module\Booking\HotelBooking\Domain\Event\GuestBinded;
-use Module\Booking\HotelBooking\Domain\Exception\TooManyRoomGuests;
 use Module\Booking\HotelBooking\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\HotelBooking\Domain\Repository\BookingGuestRepositoryInterface;
 use Module\Booking\HotelBooking\Domain\Repository\RoomBookingRepositoryInterface;
@@ -43,9 +43,7 @@ class Bind implements UseCaseInterface
             $expectedGuestCount = $roomBooking->guestIds()->count() + 1;
             //@todo перенести валидацию в сервис
             if ($expectedGuestCount > $hotelRoomSettings->guestsCount) {
-                throw new TooManyRoomGuests(
-                    "Room doesn't support {$expectedGuestCount} guests, max {$hotelRoomSettings->guestsCount} available."
-                );
+                throw new TooManyRoomGuestsException();
             }
 
             $roomId = new RoomBookingId($roomBookingId);

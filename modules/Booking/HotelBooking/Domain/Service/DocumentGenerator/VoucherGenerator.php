@@ -4,13 +4,13 @@ namespace Module\Booking\HotelBooking\Domain\Service\DocumentGenerator;
 
 use Module\Booking\Common\Application\Service\StatusStorage;
 use Module\Booking\Common\Domain\Adapter\AdministratorAdapterInterface;
-use Module\Booking\Common\Domain\Adapter\FileStorageAdapterInterface;
 use Module\Booking\Common\Domain\Entity\BookingInterface;
 use Module\Booking\Common\Domain\Entity\Voucher;
 use Module\Booking\Common\Domain\Service\DocumentGenerator\AbstractVoucherGenerator;
 use Module\Booking\HotelBooking\Domain\Adapter\HotelAdapterInterface;
 use Module\Booking\HotelBooking\Domain\Entity\Booking;
 use Module\Booking\Order\Domain\Repository\GuestRepositoryInterface;
+use Module\Shared\Contracts\Adapter\FileStorageAdapterInterface;
 use Module\Shared\Enum\ContactTypeEnum;
 
 class VoucherGenerator extends AbstractVoucherGenerator

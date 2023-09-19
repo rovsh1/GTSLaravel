@@ -32,8 +32,8 @@ abstract class HotelBookingDtoFactory
             name: $roomDto->roomInfo->name,
             checkinTime: null,
             checkoutTime: null,
-            guestsNames: implode(', ', array_map(fn(GuestDto $g) => $g->fullName, $roomDto->guestIds)),
-            priceNet: $roomDto->price->hoValue,
+            guestsNames: implode(', ', array_map(fn(GuestDto $g) => $g->fullName, $roomDto->guests)),
+            priceNet: $roomDto->price->netValue,
             guestsNumber: count($roomDto->guests),
             note: $roomDto->details->guestNote
         ), $bookingDto->roomBookings);

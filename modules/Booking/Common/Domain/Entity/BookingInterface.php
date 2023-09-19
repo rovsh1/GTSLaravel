@@ -5,7 +5,6 @@ namespace Module\Booking\Common\Domain\Entity;
 use Carbon\CarbonImmutable;
 use Module\Booking\Common\Domain\Exception\NotRequestableEntity;
 use Module\Booking\Common\Domain\Exception\NotRequestableStatus;
-use Module\Booking\Common\Domain\Service\InvoiceCreator;
 use Module\Booking\Common\Domain\Service\RequestCreator;
 use Module\Booking\Common\Domain\Service\RequestRules;
 use Module\Booking\Common\Domain\Service\VoucherCreator;
@@ -43,8 +42,10 @@ interface BookingInterface extends EntityInterface
 
     public function generateVoucher(VoucherCreator $voucherCreator): void;
 
-    public function generateInvoice(InvoiceCreator $invoiceCreator): void;
-
     public function canSendClientVoucher(): bool;
+
+    public function isManualGrossPrice(): bool;
+
+    public function isManualNetPrice(): bool;
 
 }

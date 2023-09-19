@@ -29,6 +29,10 @@ const guests = computed(
   () => props.orderGuests.filter((guest) => props.guestIds && props.guestIds.includes(guest.id)),
 )
 
+const notExistsOrderGuests = computed(
+  () => props.orderGuests.filter((guest) => !props.guestIds?.includes(guest.id)),
+)
+
 </script>
 
 <template>
@@ -57,6 +61,21 @@ const guests = computed(
             @edit="$emit('edit', guest)"
             @delete="$emit('delete', guest)"
           />
+        </td>
+      </tr>
+
+      <tr
+        v-for="guest in notExistsOrderGuests"
+        :key="guest.id"
+        class="table-danger"
+      >
+        <td>-</td>
+        <td>{{ guest.fullName }}</td>
+        <td>{{ getCountryName(guest.countryId) }}</td>
+        <td>{{ getGenderName(guest.gender) }}</td>
+        <td>{{ guest.isAdult ? 'Взрослый' : 'Ребенок' }}</td>
+        <td class="column-edit">
+          -
         </td>
       </tr>
     </tbody>

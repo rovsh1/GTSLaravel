@@ -22,14 +22,13 @@ use Module\Booking\HotelBooking\Domain\ValueObject\Details\HotelInfo;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBookingCollection;
 use Module\Booking\HotelBooking\Infrastructure\Models\Booking as Model;
 use Module\Booking\HotelBooking\Infrastructure\Models\BookingDetails;
-use Module\Shared\Domain\ValueObject\Id;
 use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
 class BookingRepository extends BaseRepository implements BookingRepositoryInterface
 {
     public function __construct(
-        private readonly RoomBookingRepositoryInterface $roomBookingRepository
+        private readonly RoomBookingRepositoryInterface $roomBookingRepository,
     ) {}
 
     protected function getModel(): string
@@ -76,6 +75,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         ?string $note = null,
         HotelInfo $hotelInfo,
         CancelConditions $cancelConditions,
+        BookingPrice $price,
         QuotaProcessingMethodEnum $quotaProcessingMethod,
     ): Booking {
         return \DB::transaction(
@@ -86,9 +86,10 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
                 $note,
                 $hotelInfo,
                 $cancelConditions,
+                $price,
                 $quotaProcessingMethod
             ) {
-                $bookingModel = $this->createBase($orderId, $creatorId);
+                $bookingModel = $this->createBase($orderId, $price, $creatorId->value());
                 $booking = new Booking(
                     id: new BookingId($bookingModel->id),
                     orderId: $orderId,
@@ -101,7 +102,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
                     hotelInfo: $hotelInfo,
                     period: $period,
                     note: $note,
-                    price: BookingPrice::fromData($bookingModel->price),
+                    price: $price,
                     quotaProcessingMethod: $quotaProcessingMethod,
                 );
 
@@ -205,7 +206,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
             orderId: new OrderId($booking->order_id),
             status: $booking->status,
             createdAt: $booking->created_at->toImmutable(),
-            creatorId: new Id($booking->creator_id),
+            creatorId: new CreatorId($booking->creator_id),
             note: $detailsData['note'] ?? null,
             hotelInfo: HotelInfo::fromData($detailsData['hotelInfo']),
             period: BookingPeriod::fromData($detailsData['period']),

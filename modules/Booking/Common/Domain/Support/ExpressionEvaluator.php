@@ -2,6 +2,8 @@
 
 namespace Module\Booking\Common\Domain\Support;
 
+use Module\Booking\HotelBooking\Domain\Service\PriceCalculator\Model\CalculationResult;
+
 class ExpressionEvaluator
 {
     private readonly string $expression;

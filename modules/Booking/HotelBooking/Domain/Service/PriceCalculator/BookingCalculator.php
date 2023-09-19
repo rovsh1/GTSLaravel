@@ -6,44 +6,38 @@ namespace Module\Booking\HotelBooking\Domain\Service\PriceCalculator;
 
 use Module\Booking\Common\Domain\Entity\BookingInterface;
 use Module\Booking\Common\Domain\Service\BookingCalculatorInterface;
-use Module\Booking\Common\Domain\ValueObject\BookingPrice;
+use Module\Booking\Common\Domain\ValueObject\PriceItem;
 use Module\Booking\HotelBooking\Domain\Entity\Booking;
-use Module\Booking\HotelBooking\Domain\ValueObject\ManualChangablePrice;
 
 class BookingCalculator implements BookingCalculatorInterface
 {
-    public function calculateBoPrice(BookingInterface|Booking $booking): float
+    public function calculateGrossPrice(BookingInterface|Booking $booking): PriceItem
     {
-        $bookingPrice = $this->buildBookingPrice($booking);
-
-        return $bookingPrice->boPrice()->value();
+        return new PriceItem(
+            currency: $booking->price()->netPrice()->currency(),
+            calculatedValue: $this->calculateSum($booking, 'grossValue'),
+            manualValue: null,
+            penaltyValue: null,
+        );
     }
 
-    public function calculateHoPrice(BookingInterface|Booking $booking): float
+    public function calculateNetPrice(BookingInterface|Booking $booking): PriceItem
     {
-        $bookingPrice = $this->buildBookingPrice($booking);
-
-        return $bookingPrice->hoPrice()->value();
+        return new PriceItem(
+            currency: $booking->price()->grossPrice()->currency(),
+            calculatedValue: $this->calculateSum($booking, 'netValue'),
+            manualValue: null,
+            penaltyValue: null,
+        );
     }
 
-    private function buildBookingPrice(Booking $booking): BookingPrice
+    private function calculateSum(Booking $booking, string $method): float
     {
-        $netSum = 0;
-        $hoSum = 0;
-        $boSum = 0;
-
+        $sum = 0;
         foreach ($booking->roomBookings() as $roomBooking) {
-            $netSum += $roomBooking->price()->netValue();
-            $hoSum += $roomBooking->price()->hoValue();
-            $boSum += $roomBooking->price()->boValue();
+            $sum += $roomBooking->price()->$method();
         }
 
-        return new BookingPrice(
-            $netSum,
-            new ManualChangablePrice($hoSum),
-            new ManualChangablePrice($boSum),
-            null,
-            null,
-        );
+        return $sum;
     }
 }

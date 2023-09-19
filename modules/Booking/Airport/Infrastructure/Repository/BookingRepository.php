@@ -53,34 +53,28 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         int $serviceId,
         int $airportId,
         CarbonInterface $date,
+        BookingPrice $price,
         ?string $note = null
     ): Entity {
         return \DB::transaction(
-            function () use ($orderId, $creatorId, $serviceId, $airportId, $date, $note) {
-                $bookingModel = $this->createBase($orderId, $creatorId);
+            function () use ($orderId, $creatorId, $serviceId, $airportId, $date, $price, $note) {
+                $bookingModel = $this->createBase($orderId, $price, $creatorId->value());
 
                 $airport = Airport::find($airportId);
                 $service = AirportService::find($serviceId);
-
-                //@todo добавить получение деталей аэроброни
-                $detailsData = [];
 
                 $booking = new Entity(
                     id: new BookingId($bookingModel->id),
                     orderId: new OrderId($bookingModel->order_id),
                     status: $bookingModel->status,
                     createdAt: $bookingModel->created_at->toImmutable(),
-                    creatorId: new CreatorId($bookingModel->creator_id),
-                    price: BookingPrice::buildEmpty(),
+                    creatorId: $creatorId,
+                    price: $price,
                     note: $note,
                     airportInfo: new AirportInfo(
                         $airport->id,
                         $airport->name
                     ),
-//                    cancelConditions: CancelConditions::fromData($detailsData['cancelConditions']),
-//                    additionalInfo: new AdditionalInfo($detailsData['flightNumber']),
-                    cancelConditions: null,
-                    additionalInfo: null,
                     guestIds: new GuestIdsCollection(),
                     date: $date->toImmutable(),
                     serviceInfo: new ServiceInfo(
@@ -88,6 +82,8 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
                         $service->name,
                         $service->type
                     ),
+                    cancelConditions: null,
+                    additionalInfo: null,
                 );
 
                 BookingDetails::create([
@@ -123,6 +119,9 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
     {
         $detailsData = $detailsModel->data;
 
+        $additionalInfo = $detailsData['additionalInfo'] ?? null;
+        $cancelConditions = $detailsData['cancelConditions'] ?? null;
+
         return new Entity(
             id: new BookingId($booking->id),
             orderId: new OrderId($booking->order_id),
@@ -134,9 +133,13 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
             guestIds: GuestIdsCollection::fromData($booking->guest_ids),
             airportInfo: AirportInfo::fromData($detailsData['airportInfo']),
             serviceInfo: ServiceInfo::fromData($detailsData['serviceInfo']),
-            additionalInfo: null,
-            cancelConditions: null,
-            date: CarbonImmutable::createFromTimestamp($detailsData['date'])
+            date: CarbonImmutable::createFromTimestamp($detailsData['date']),
+            additionalInfo: $additionalInfo !== null
+                ? AdditionalInfo::fromData($detailsData['additionalInfo'])
+                : null,
+            cancelConditions: $cancelConditions !== null
+                ? CancelConditions::fromData($detailsData['cancelConditions'])
+                : null,
         );
     }
 
@@ -148,6 +151,8 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
             'serviceInfo' => $booking->serviceInfo()->toData(),
             'date' => $booking->date()->getTimestamp(),
             'price' => $booking->price()->toData(),
+            'additionalInfo' => $booking->additionalInfo()?->toData(),
+            'cancelConditions' => $booking->cancelConditions()?->toData(),
         ];
     }
 }
