@@ -14,7 +14,7 @@ class BookingCalculator implements BookingCalculatorInterface
     public function calculateGrossPrice(BookingInterface|Booking $booking): PriceItem
     {
         return new PriceItem(
-            currency: $booking->price()->netPrice()->currency(),
+            currency: $booking->price()->grossPrice()->currency(),
             calculatedValue: $this->calculateSum($booking, 'grossValue'),
             manualValue: null,
             penaltyValue: null,
@@ -24,7 +24,7 @@ class BookingCalculator implements BookingCalculatorInterface
     public function calculateNetPrice(BookingInterface|Booking $booking): PriceItem
     {
         return new PriceItem(
-            currency: $booking->price()->grossPrice()->currency(),
+            currency: $booking->price()->netPrice()->currency(),
             calculatedValue: $this->calculateSum($booking, 'netValue'),
             manualValue: null,
             penaltyValue: null,
