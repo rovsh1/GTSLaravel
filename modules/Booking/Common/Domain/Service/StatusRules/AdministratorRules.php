@@ -24,24 +24,18 @@ class AdministratorRules extends AbstractRules implements StatusRulesInterface
         //$this->addTransition(BookingStatusEnum::NOT_CONFIRMED, BookingStatusEnum::WAITING_CONFIRMATION);
         $this->addTransition(BookingStatusEnum::NOT_CONFIRMED, BookingStatusEnum::CANCELLED);
 
-        $this->addTransition(BookingStatusEnum::CONFIRMED, BookingStatusEnum::INVOICED);
         $this->addTransition(BookingStatusEnum::CONFIRMED, BookingStatusEnum::WAITING_PROCESSING);
+//        $this->addTransition(BookingStatusEnum::CONFIRMED, BookingStatusEnum::WAITING_CANCELLATION);
         //$this->addTransition(BookingStatusEnum::CONFIRMED, BookingStatusEnum::CANCELLED_FEE);
         //$this->addTransition(BookingStatusEnum::CONFIRMED, BookingStatusEnum::CANCELLED_NO_FEE);
 
         //$this->addTransition(BookingStatusEnum::WAITING_PROCESSING, BookingStatusEnum::WAITING_CONFIRMATION);
 
-        $this->addTransition(BookingStatusEnum::INVOICED, BookingStatusEnum::PAID);
-        $this->addTransition(BookingStatusEnum::INVOICED, BookingStatusEnum::PARTIALLY_PAID);
         //$this->addTransition(BookingStatusEnum::INVOICED, BookingStatusEnum::WAITING_CANCELLATION);
 
         $this->addTransition(BookingStatusEnum::WAITING_CANCELLATION, BookingStatusEnum::CANCELLED);
         $this->addTransition(BookingStatusEnum::WAITING_CANCELLATION, BookingStatusEnum::CANCELLED_FEE);
         $this->addTransition(BookingStatusEnum::WAITING_CANCELLATION, BookingStatusEnum::CANCELLED_NO_FEE);
-
-        $this->addTransition(BookingStatusEnum::CANCELLED_FEE, BookingStatusEnum::REFUND_FEE);
-
-        $this->addTransition(BookingStatusEnum::CANCELLED_NO_FEE, BookingStatusEnum::REFUND_NO_FEE);
     }
 
     public function isEditableStatus(BookingStatusEnum $status): bool
@@ -56,8 +50,6 @@ class AdministratorRules extends AbstractRules implements StatusRulesInterface
             BookingStatusEnum::CANCELLED,
             BookingStatusEnum::CANCELLED_FEE,
             BookingStatusEnum::CANCELLED_NO_FEE,
-            BookingStatusEnum::REFUND_FEE,
-            BookingStatusEnum::REFUND_NO_FEE
         ]);
     }
 
@@ -81,5 +73,15 @@ class AdministratorRules extends AbstractRules implements StatusRulesInterface
         ]);
     }
 
-
+    /**
+     * @return BookingStatusEnum[]
+     */
+    public static function getCompletedStatuses(): array
+    {
+        return [
+            BookingStatusEnum::CONFIRMED,
+            BookingStatusEnum::CANCELLED_FEE,
+            BookingStatusEnum::CANCELLED_NO_FEE
+        ];
+    }
 }

@@ -42,15 +42,6 @@ class UpdateBookingStatus implements UseCaseInterface
                 }
                 $this->statusUpdater->toNotConfirmed($booking, $notConfirmedReason);
                 break;
-            case BookingStatusEnum::INVOICED:
-                $this->statusUpdater->toInvoiced($booking);
-                break;
-            case BookingStatusEnum::PAID:
-                $this->statusUpdater->toPaid($booking);
-                break;
-            case BookingStatusEnum::PARTIALLY_PAID:
-                $this->statusUpdater->toPartiallyPaid($booking);
-                break;
             case BookingStatusEnum::CANCELLED_NO_FEE:
                 $this->statusUpdater->toCancelledNoFee($booking);
                 break;
@@ -59,12 +50,6 @@ class UpdateBookingStatus implements UseCaseInterface
                     return new UpdateStatusResponseDto(isCancelFeeAmountRequired: true);
                 }
                 $this->statusUpdater->toCancelledFee($booking, $cancelFeeAmount);
-                break;
-            case BookingStatusEnum::REFUND_NO_FEE:
-                $this->statusUpdater->toRefundNoFee($booking);
-                break;
-            case BookingStatusEnum::REFUND_FEE:
-                $this->statusUpdater->toRefundFee($booking);
                 break;
             case BookingStatusEnum::WAITING_CONFIRMATION:
                 $this->statusUpdater->toWaitingConfirmation($booking);
