@@ -2,24 +2,29 @@
 
 import { computed, onMounted, ref, unref, watch } from 'vue'
 
-import { MaybeRef } from '@vueuse/core'
+import { MaybeRef, useToggle } from '@vueuse/core'
 import { z } from 'zod'
 
 import GuestModal from '~resources/views/airport-booking/show/components/GuestModal.vue'
 import { useBookingStore } from '~resources/views/airport-booking/show/store/booking'
 import { useEditableModal } from '~resources/views/hotel/settings/composables/editable-modal'
+import AmountBlock from '~resources/views/hotel-booking/show/components/AmountBlock.vue'
 import GuestsTable from '~resources/views/hotel-booking/show/components/GuestsTable.vue'
 import InfoBlock from '~resources/views/hotel-booking/show/components/InfoBlock/InfoBlock.vue'
 import InfoBlockTitle from '~resources/views/hotel-booking/show/components/InfoBlock/InfoBlockTitle.vue'
+import PriceModal from '~resources/views/hotel-booking/show/components/PriceModal.vue'
 import { GuestFormData } from '~resources/views/hotel-booking/show/lib/data-types'
 import { useOrderStore } from '~resources/views/hotel-booking/show/store/order'
 
 import { deleteBookingGuest } from '~api/booking/airport/guests'
+import { updateBookingPrice } from '~api/booking/airport/price'
 import { addOrderGuest, Guest, updateOrderGuest } from '~api/booking/order/guest'
 import { useCountrySearchAPI } from '~api/country'
+import { Currency } from '~api/models'
 
 import { showConfirmDialog } from '~lib/confirm-dialog'
 import { requestInitialData } from '~lib/initial-data'
+import { formatPrice } from '~lib/price'
 
 import Card from '~components/Bootstrap/BootstrapCard/BootstrapCard.vue'
 import CardTitle from '~components/Bootstrap/BootstrapCard/components/BootstrapCardTitle.vue'
@@ -34,10 +39,16 @@ const { bookingID } = requestInitialData('view-initial-data-airport-booking', z.
 
 const bookingStore = useBookingStore()
 const orderStore = useOrderStore()
+const orderCurrency = computed<Currency | undefined>(() => orderStore.currency)
 const orderGuests = computed<Guest[]>(() => orderStore.guests || [])
 const booking = computed(() => bookingStore.booking)
 const isEditableStatus = computed(() => true)
 const { data: countries, execute: fetchCountries } = useCountrySearchAPI()
+
+const [isHoPriceModalOpened, toggleHoPriceModal] = useToggle<boolean>(false)
+const [isBoPriceModalOpened, toggleBoPriceModal] = useToggle<boolean>(false)
+const [isHoPenaltyModalOpened, toggleHoPenaltyModal] = useToggle<boolean>(false)
+const [isBoPenaltyModalOpened, toggleBoPenaltyModal] = useToggle<boolean>(false)
 
 onMounted(() => {
   fetchCountries()
@@ -96,6 +107,42 @@ const handleDeleteGuest = async (guestId: number) => {
   }
 }
 
+const handleSaveBoManualPrice = async (value: number | undefined) => {
+  toggleBoPriceModal(false)
+  await updateBookingPrice({
+    bookingID,
+    boPrice: value,
+  })
+  bookingStore.fetchBooking()
+}
+
+const handleSaveHoManualPrice = async (value: number | undefined) => {
+  toggleHoPriceModal(false)
+  await updateBookingPrice({
+    bookingID,
+    hoPrice: value,
+  })
+  bookingStore.fetchBooking()
+}
+
+const handleSaveBoPenalty = async (value: number | undefined) => {
+  toggleBoPenaltyModal(false)
+  await updateBookingPrice({
+    bookingID,
+    boPenalty: value,
+  })
+  bookingStore.fetchBooking()
+}
+
+const handleSaveHoPenalty = async (value: number | undefined) => {
+  toggleHoPenaltyModal(false)
+  await updateBookingPrice({
+    bookingID,
+    hoPenalty: value,
+  })
+  bookingStore.fetchBooking()
+}
+
 </script>
 
 <template>
@@ -141,6 +188,78 @@ const handleDeleteGuest = async (guestId: number) => {
         <template #header>
           <InfoBlockTitle title="Стоимость брони" />
         </template>
+        <PriceModal
+          header="Общая сумма (нетто)"
+          label="Общая сумма (нетто) в UZS"
+          :value="booking?.price.hoPrice.isManual ? booking?.price.hoPrice.value : undefined"
+          :opened="isHoPriceModalOpened"
+          @close="toggleHoPriceModal(false)"
+          @submit="handleSaveHoManualPrice"
+        />
+
+        <PriceModal
+          header="Общая сумма (брутто)"
+          :label="`Общая сумма (брутто) ${orderCurrency?.code_char}`"
+          :value="booking?.price.boPrice.isManual ? booking?.price.boPrice.value : undefined"
+          :opened="isBoPriceModalOpened"
+          @close="toggleBoPriceModal(false)"
+          @submit="handleSaveBoManualPrice"
+        />
+
+        <PriceModal
+          header="Сумма штрафа для клиента"
+          :label="`Сумма штрафа для клиента в ${orderCurrency?.code_char}`"
+          :value="booking?.price.boPenalty || undefined"
+          :opened="isBoPenaltyModalOpened"
+          @close="toggleBoPenaltyModal(false)"
+          @submit="handleSaveBoPenalty"
+        />
+
+        <PriceModal
+          header="Сумма штрафа от гостиницы"
+          :label="`Сумма штрафа от гостиницы в ${orderCurrency?.code_char}`"
+          :value="booking?.price.hoPenalty || undefined"
+          :opened="isHoPenaltyModalOpened"
+          @close="toggleHoPenaltyModal(false)"
+          @submit="handleSaveHoPenalty"
+        />
+        <div class="d-flex flex-row gap-3">
+          <pre>
+              {{ booking }}
+            </pre>
+
+          <AmountBlock
+            v-if="booking"
+            title="Приход"
+            :currency="orderCurrency"
+            amount-title="Общая сумма (брутто)"
+            :amount-value="booking.price.boPrice.value"
+            penalty-title="Сумма штрафа для клиента"
+            :penalty-value="booking.price.boPenalty"
+            :need-show-penalty="(booking?.price.hoPenalty || 0) > 0"
+            @click-change-price="toggleBoPriceModal(true)"
+            @click-change-penalty="toggleBoPenaltyModal(true)"
+          />
+
+          <AmountBlock
+            v-if="booking"
+            title="Расход"
+            :currency="orderCurrency"
+            amount-title="Общая сумма (нетто)"
+            :amount-value="booking.price.hoPrice.value"
+            penalty-title="Сумма штрафа от гостиницы"
+            :penalty-value="booking.price.hoPenalty"
+            :need-show-penalty="(booking?.price.hoPenalty || 0) > 0"
+            @click-change-price="toggleHoPriceModal(true)"
+            @click-change-penalty="toggleHoPenaltyModal(true)"
+          />
+        </div>
+
+        <div v-if="booking && orderCurrency" class="mt-2">
+          Прибыль = {{ formatPrice(booking.price.boPrice.value, orderCurrency.sign) }} -
+          {{ formatPrice(booking.price.hoPrice.value, orderCurrency.sign) }} =
+          {{ formatPrice((booking.price.boPrice.value - booking.price.hoPrice.value), orderCurrency.sign) }}
+        </div>
       </InfoBlock>
     </div>
   </Card>
