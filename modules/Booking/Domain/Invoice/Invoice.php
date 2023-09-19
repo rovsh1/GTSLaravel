@@ -6,7 +6,7 @@ namespace Module\Booking\Domain\Invoice;
 
 use Module\Booking\Common\Domain\ValueObject\BookingId;
 use Module\Booking\Domain\Invoice\Event\InvoiceStatusChanged;
-use Module\Booking\Domain\Invoice\Service\InvoiceAmountBuilder;
+use Module\Booking\Domain\Invoice\ValueObject\ClientId;
 use Module\Booking\Domain\Invoice\ValueObject\ClientPaymentCollection;
 use Module\Booking\Domain\Invoice\ValueObject\InvoiceAmountCollection;
 use Module\Booking\Domain\Invoice\ValueObject\InvoiceId;
@@ -32,6 +32,7 @@ final class Invoice extends AbstractAggregateRoot
      */
     public function __construct(
         private readonly InvoiceId $id,
+        private readonly ClientId $clientId,
         private readonly OrderIdCollection $orders,
         private StatusEnum $status,
         private InvoiceAmountCollection $clientAmounts,
@@ -44,6 +45,11 @@ final class Invoice extends AbstractAggregateRoot
     public function id(): InvoiceId
     {
         return $this->id;
+    }
+
+    public function clientId(): ClientId
+    {
+        return $this->clientId;
     }
 
     public function orders(): OrderIdCollection
