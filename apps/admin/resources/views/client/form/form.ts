@@ -9,7 +9,10 @@ $(() => {
     }
 
     // @ts-expect-error тут все ок
-    $genderSelect = $('<select />', { class: 'form-select form-control' }).append('<option disabled selected></option>').append('<option value="1">Мужской</option>').append('<option value="2">Женский</option>')
+    $genderSelect = $('<select />', { class: 'form-select form-control' })
+      .append('<option disabled selected></option>')
+      .append('<option value="1">Мужской</option>')
+      .append('<option value="2">Женский</option>')
 
     $genderInput.after($genderSelect)
     $genderSelect.change(() => {
@@ -22,11 +25,13 @@ $(() => {
     if ($legalTypeSelect.val() !== '1') {
       $genderField.hide().toggleClass('field-required', false)
       $genderInput.removeAttr('required')
+      $genderSelect?.removeAttr('required')
       return
     }
     initGenderSelect()
     $genderSelect.val('')
     $genderField.show().toggleClass('field-required', true)
+    $genderSelect.attr('required', 'required')
     $genderInput.attr('required', 'required')
   }
 
