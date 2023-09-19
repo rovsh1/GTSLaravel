@@ -18,7 +18,6 @@ use Module\Booking\HotelBooking\Application\Dto\Details\RoomBooking\RoomPriceDto
 use Module\Booking\HotelBooking\Application\Dto\Details\RoomBookingDto;
 use Module\Booking\HotelBooking\Domain\Entity\Booking;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBookingCollection;
-use Module\Booking\Order\Domain\Repository\GuestRepositoryInterface;
 use Module\Booking\Order\Domain\ValueObject\GuestId;
 
 class BookingDtoFactory extends AbstractBookingDtoFactory

@@ -9,26 +9,40 @@ use Module\Booking\Airport\Application\Dto\Details\AirportInfoDto;
 use Module\Booking\Airport\Application\Dto\Details\ServiceInfoDto;
 use Module\Booking\Airport\Domain\Entity\Booking;
 use Module\Booking\Common\Application\Factory\AbstractBookingDtoFactory;
+use Module\Booking\Common\Application\Service\StatusStorage;
 use Module\Booking\Common\Domain\Entity\BookingInterface;
+use Module\Booking\HotelBooking\Application\Dto\Details\CancelConditionsDto;
+use Module\Booking\HotelBooking\Application\Factory\BookingPriceDtoFactory;
 use Module\Booking\Order\Domain\ValueObject\GuestId;
 
 class BookingDtoFactory extends AbstractBookingDtoFactory
 {
+    public function __construct(
+        StatusStorage $statusStorage,
+        private readonly BookingPriceDtoFactory $bookingPriceDtoFactory,
+    ) {
+        parent::__construct($statusStorage);
+    }
+
     public function createFromEntity(BookingInterface $booking): BookingDto
     {
         assert($booking instanceof Booking);
 
         return new BookingDto(
-            $booking->id()->value(),
-            $this->statusStorage->get($booking->status()),
-            $booking->orderId()->value(),
-            $booking->createdAt(),
-            $booking->creatorId()->value(),
-            $booking->note(),
-            AirportInfoDto::fromDomain($booking->airportInfo()),
-            ServiceInfoDto::fromDomain($booking->serviceInfo()),
-            $booking->date(),
-            $booking->guestIds()->map(fn(GuestId $id) => $id->value())
+            id: $booking->id()->value(),
+            status: $this->statusStorage->get($booking->status()),
+            orderId: $booking->orderId()->value(),
+            createdAt: $booking->createdAt(),
+            creatorId: $booking->creatorId()->value(),
+            note: $booking->note(),
+            airportInfo: AirportInfoDto::fromDomain($booking->airportInfo()),
+            serviceInfo: ServiceInfoDto::fromDomain($booking->serviceInfo()),
+            date: $booking->date(),
+            guestIds: $booking->guestIds()->map(fn(GuestId $id) => $id->value()),
+            price: $this->bookingPriceDtoFactory->createFromEntity($booking->price()),
+            cancelConditions: $booking->cancelConditions() !== null
+                ? CancelConditionsDto::fromDomain($booking->cancelConditions())
+                : null,
         );
     }
 }

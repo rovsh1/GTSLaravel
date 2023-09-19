@@ -9,17 +9,10 @@ import { getNullableRef } from '~lib/vue'
 
 export interface UpdateBookingPricePayload {
   bookingID: number
-  boPrice?: number | null
-  hoPrice?: number | null
-  boPenalty?: number | null
-  hoPenalty?: number | null
-}
-
-export interface UpdateRoomBookingPricePayload {
-  roomBookingId: number
-  bookingID: number
-  boPrice?: number | null
-  hoPrice?: number | null
+  grossPrice?: number | null
+  netPrice?: number | null
+  grossPenalty?: number | null
+  netPenalty?: number | null
 }
 
 export const updateBookingPrice = (props: MaybeRef<UpdateBookingPricePayload>) =>
@@ -32,10 +25,10 @@ export const updateBookingPrice = (props: MaybeRef<UpdateBookingPricePayload>) =
       getNullableRef<UpdateBookingPricePayload, any>(
         props,
         (payload: UpdateBookingPricePayload): any => ({
-          boPrice: payload.boPrice,
-          hoPrice: payload.hoPrice,
-          boPenalty: payload.boPenalty,
-          hoPenalty: payload.hoPenalty,
+          grossPrice: payload.grossPrice,
+          netPrice: payload.netPrice,
+          grossPenalty: payload.grossPenalty,
+          netPenalty: payload.netPenalty,
         }),
       ),
     )), 'application/json')

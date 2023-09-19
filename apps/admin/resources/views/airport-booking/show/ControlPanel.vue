@@ -7,6 +7,7 @@ import { useToggle } from '@vueuse/core'
 import { useBookingStore } from '~resources/views/airport-booking/show/store/booking'
 import { useBookingRequestStore } from '~resources/views/airport-booking/show/store/request'
 import { useBookingStatusHistoryStore } from '~resources/views/airport-booking/show/store/status-history'
+import RequestBlock from '~resources/views/booking/components/RequestBlock.vue'
 import ControlPanelSection from '~resources/views/hotel-booking/show/components/ControlPanelSection.vue'
 import StatusHistoryModal from '~resources/views/hotel-booking/show/components/StatusHistoryModal.vue'
 import StatusSelect from '~resources/views/hotel-booking/show/components/StatusSelect.vue'
@@ -20,7 +21,6 @@ import { BookingStatusResponse } from '~api/booking/models'
 import { formatDate, formatDateTime } from '~lib/date'
 
 const [isHistoryModalOpened, toggleHistoryModal] = useToggle<boolean>(false)
-console.log(isHistoryModalOpened)
 
 const bookingStore = useBookingStore()
 const { fetchBooking, fetchAvailableActions } = bookingStore

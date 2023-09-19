@@ -159,7 +159,7 @@ const handleUpdateRoomPrice = async (boPrice: number | undefined | null, hoPrice
     grossPrice: boPrice,
     netPrice: hoPrice,
   })
-  fetchBooking()
+  await fetchBooking()
 }
 
 const getCheckInTime = (room: HotelRoomBooking) => {
@@ -178,10 +178,15 @@ const getCheckOutTime = (room: HotelRoomBooking) => {
   return `до ${bookingDetails.value?.hotelInfo.checkOutTime}`
 }
 
-const onModalSubmit = () => {
-  toggleRoomModal(false)
+const onGuestModalSubmit = async () => {
   toggleGuestModal(false)
-  fetchBooking()
+  await fetchBooking()
+  await orderStore.fetchGuests()
+}
+
+const onRoomModalSubmit = async () => {
+  toggleRoomModal(false)
+  await fetchBooking()
 }
 
 const onCloseModal = () => {
@@ -201,7 +206,7 @@ fetchCountries()
     :room-booking-id="editRoomBookingId"
     :hotel-markup-settings="markupSettings"
     @close="onCloseModal"
-    @submit="onModalSubmit"
+    @submit="onRoomModalSubmit"
   />
 
   <GuestModal
@@ -212,7 +217,7 @@ fetchCountries()
     :form-data="guestForm"
     :countries="countries as CountryResponse[]"
     @close="toggleGuestModal(false)"
-    @submit="onModalSubmit"
+    @submit="onGuestModalSubmit"
   />
 
   <RoomPriceModal

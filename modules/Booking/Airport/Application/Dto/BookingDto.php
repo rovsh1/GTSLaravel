@@ -12,6 +12,8 @@ use Module\Booking\Airport\Domain\Entity\Booking;
 use Module\Booking\Common\Application\Response\BookingDto as BaseDto;
 use Module\Booking\Common\Application\Response\StatusDto;
 use Module\Booking\Common\Domain\Entity\BookingInterface;
+use Module\Booking\HotelBooking\Application\Dto\BookingPriceDto;
+use Module\Booking\HotelBooking\Application\Dto\Details\CancelConditionsDto;
 use Module\Shared\Domain\Entity\EntityInterface;
 use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 
@@ -28,6 +30,8 @@ class BookingDto extends BaseDto
         public readonly ServiceInfoDto $serviceInfo,
         public readonly CarbonInterface $date,
         public readonly array $guestIds,
+        public readonly ?CancelConditionsDto $cancelConditions,
+        public readonly BookingPriceDto $price,
     ) {
         parent::__construct($id, $status, $orderId, $createdAt, $creatorId);
     }
@@ -44,7 +48,7 @@ class BookingDto extends BaseDto
             AirportInfoDto::fromDomain($entity->airportInfo()),
             ServiceInfoDto::fromDomain($entity->serviceInfo()),
             $entity->date(),
-            $entity->guestIds()->all()
+            $entity->guestIds()->all(),
         );
     }
 }

@@ -6,7 +6,7 @@ namespace Module\Booking\Airport\Application\UseCase\Admin;
 
 use Module\Booking\Common\Application\Support\UseCase\Admin\UpdateBookingStatus as Base;
 use Module\Booking\Common\Domain\Service\StatusUpdater;
-use Module\Booking\HotelBooking\Domain\Repository\BookingRepositoryInterface;
+use Module\Booking\Airport\Domain\Repository\BookingRepositoryInterface;
 
 class UpdateBookingStatus extends Base
 {
