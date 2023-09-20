@@ -14,24 +14,24 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('client_id');
-            $table->smallInteger('country_id')->unsigned();
+            $table->unsignedSmallInteger('country_id');
             $table->string('name')->nullable();
             $table->string('surname')->nullable();
             $table->string('patronymic')->nullable();
             $table->string('presentation');
-            $table->unsignedTinyInteger('gender');
-            $table->string('login');
-            $table->string('password');
+            $table->unsignedTinyInteger('gender')->nullable();
+            $table->string('login')->nullable();
+            $table->string('password')->nullable();
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
-            $table->unsignedSmallInteger('post_id');
+            $table->unsignedSmallInteger('post_id')->nullable();
             $table->string('address')->nullable();
             $table->string('note')->nullable();
             $table->unsignedTinyInteger('status');//@todo был дефолт
             $table->unsignedTinyInteger('role');//@todo был дефолт
-            $table->date('birthday');
-            $table->integer('image');//@todo что тут?
-            $table->string('recovery_hash');//@todo что тут?
+            $table->date('birthday')->nullable();
+            $table->integer('image')->nullable();//@todo что тут?
+            $table->string('recovery_hash')->nullable();//@todo что тут?
             $table->timestamps();
             $table->softDeletes();
 
