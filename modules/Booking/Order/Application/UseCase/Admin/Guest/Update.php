@@ -7,7 +7,7 @@ namespace Module\Booking\Order\Application\UseCase\Admin\Guest;
 use Module\Booking\Order\Application\Request\UpdateGuestDto;
 use Module\Booking\Order\Domain\Repository\GuestRepositoryInterface;
 use Module\Booking\Order\Domain\ValueObject\GuestId;
-use Module\Shared\Domain\ValueObject\GenderEnum;
+use Module\Shared\Enum\GenderEnum;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 

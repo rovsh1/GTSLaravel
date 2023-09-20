@@ -41,7 +41,11 @@ abstract class AbstractElement implements ElementInterface
             $options['default'] = $this->prepareValue($options['default']);
         }
 
-        $this->options = Form::mergeElementOptions($this->options, static::$defaultOptions[static::class] ?? [], $options);
+        $this->options = Form::mergeElementOptions(
+            $this->options,
+            static::$defaultOptions[static::class] ?? [],
+            $options
+        );
 
         $this->setValue($value);
 
@@ -73,6 +77,7 @@ abstract class AbstractElement implements ElementInterface
     public function setParent(ElementsParentInterface $parent): static
     {
         $this->parent = $parent;
+
         return $this;
     }
 
@@ -163,6 +168,7 @@ abstract class AbstractElement implements ElementInterface
         } else {
             $this->errors = [$error];
         }
+
         return $this;
     }
 
@@ -221,6 +227,7 @@ abstract class AbstractElement implements ElementInterface
         $this->value = null;
         $this->error = null;
         $this->rendered = false;
+
         return $this;
     }
 
@@ -301,6 +308,10 @@ abstract class AbstractElement implements ElementInterface
             if (is_float($val)) {
                 return str_replace(',', '.', $val);
             }
+        }
+
+        if ($val instanceof \BackedEnum) {
+            $val = $val->value;
         }
 
         return str_replace('"', '&quot;', $val);

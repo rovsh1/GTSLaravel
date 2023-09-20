@@ -17,8 +17,8 @@ return new class extends Migration {
             $table->unsignedTinyInteger('payment_method');
             $table->string('document_name', 32)->nullable();
             $table->char('document', 32)->nullable();
-            $table->timestamp('issued_at');
-            $table->timestamp('paid_at');
+            $table->timestamp('issued_at')->nullable();
+            $table->timestamp('paid_at')->nullable();
             $table->timestamp('created_at')->nullable();
 
             $table->foreign('invoice_id')
