@@ -10,7 +10,8 @@ class BootServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->app->register(AccountServiceProvider::class);
+        $this->app->register(PaymentServiceProvider::class);
+        $this->app->register(InvoiceServiceProvider::class);
     }
 
     public function boot()
