@@ -50,7 +50,7 @@ class Update
 
     public function isOpened(): bool
     {
-        return $this->closed !== null && !$this->closed;
+        return !$this->isClosed();
     }
 
     public static function fromArray(array $data, HotelRoomCodeGeneratorInterface $codeGenerator): self
