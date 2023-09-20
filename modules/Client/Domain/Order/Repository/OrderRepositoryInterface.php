@@ -7,7 +7,9 @@ use Module\Client\Domain\Order\ValueObject\OrderId;
 
 interface OrderRepositoryInterface
 {
-    public function find(OrderId $id): Order;
+    public function find(OrderId $id): ?Order;
+
+    public function findOrFail(OrderId $id): Order;
 
     public function store(Order $id): void;
 }

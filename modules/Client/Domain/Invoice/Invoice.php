@@ -22,7 +22,8 @@ final class Invoice extends AbstractAggregateRoot
         private readonly OrderIdCollection $orders,
         private readonly File $document,
 //        private readonly Timestamps $timestamps
-    ) {
+    )
+    {
     }
 
     public function id(): InvoiceId
@@ -55,14 +56,19 @@ final class Invoice extends AbstractAggregateRoot
 //        return $this->timestamps;
 //    }
 
+    public function delete(): void
+    {
+        $this->updateStatus(InvoiceStatusEnum::DELETED);
+    }
+
     private function updateStatus(InvoiceStatusEnum $status): void
     {
         if ($status === $this->status) {
-            throw new \Exception('Status ');
+            return;
         }
 
-        $beforeStatus = $this->status;
+//        $beforeStatus = $this->status;
         $this->status = $status;
-        $this->pushEvent(new InvoiceStatusChanged($this, $beforeStatus));
+//        $this->pushEvent(new InvoiceStatusChanged($this, $beforeStatus));
     }
 }

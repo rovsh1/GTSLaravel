@@ -2,8 +2,8 @@
 
 namespace Module\Client\Infrastructure\Repository;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
-use Module\Client\Domain\Invoice\Event\InvoiceCreated;
 use Module\Client\Domain\Invoice\Invoice;
 use Module\Client\Domain\Invoice\Repository\InvoiceRepositoryInterface;
 use Module\Client\Domain\Invoice\ValueObject\InvoiceId;
@@ -13,18 +13,12 @@ use Module\Client\Domain\Order\ValueObject\OrderId;
 use Module\Client\Domain\Shared\ValueObject\ClientId;
 use Module\Client\Infrastructure\Models\Invoice as Model;
 use Module\Shared\ValueObject\File;
-use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 
 class InvoiceRepository implements InvoiceRepositoryInterface
 {
-    public function __construct(
-        private readonly DomainEventDispatcherInterface $domainEventDispatcher,
-    ) {
-    }
-
     public function create(ClientId $clientId, OrderIdCollection $orders, File $document): Invoice
     {
-        $invoice = DB::transaction(function () use ($clientId, $orders, $document) {
+        return DB::transaction(function () use ($clientId, $orders, $document) {
             $model = Model::create([
                 'client_id' => $clientId->value(),
                 'status' => InvoiceStatusEnum::NOT_PAID->value,
@@ -45,10 +39,6 @@ class InvoiceRepository implements InvoiceRepositoryInterface
                 $document,
             );
         });
-
-        $this->domainEventDispatcher->dispatch(new InvoiceCreated($invoice));
-
-        return $invoice;
     }
 
     public function find(InvoiceId $id): ?Invoice
@@ -70,9 +60,18 @@ class InvoiceRepository implements InvoiceRepositoryInterface
             throw new \Exception();
         }
 
-        $model->status = $invoice->status()->value;
         $model->touch();
-        $model->save();
+        if ($invoice->status() === InvoiceStatusEnum::DELETED) {
+            $model->delete();
+        } else {
+            $model->status = $invoice->status()->value;
+            $model->save();
+        }
+    }
+
+    public function query(): Builder
+    {
+        return Model::query();
     }
 
     private function fromModel(Model $model): Invoice
@@ -80,7 +79,9 @@ class InvoiceRepository implements InvoiceRepositoryInterface
         return new Invoice(
             new InvoiceId($model->id),
             new ClientId($model->client_id),
-            InvoiceStatusEnum::from($model->status),
+            $model->trashed()
+                ? InvoiceStatusEnum::DELETED
+                : InvoiceStatusEnum::from($model->status),
             new OrderIdCollection($model->orderIds()->map(fn($id) => new OrderId($id))),
             new File($model->document),
         );
