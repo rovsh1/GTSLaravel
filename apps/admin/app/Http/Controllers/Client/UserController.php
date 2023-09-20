@@ -30,7 +30,7 @@ use Module\Shared\Enum\Client\ResidencyEnum;
 use Module\Shared\Enum\Client\StatusEnum;
 use Module\Shared\Enum\Client\TypeEnum;
 
-class ClientController extends AbstractPrototypeController
+class UserController extends AbstractPrototypeController
 {
     public function __construct(
         private readonly ClientAdministratorRepository $clientAdministratorRepository
@@ -40,7 +40,7 @@ class ClientController extends AbstractPrototypeController
 
     protected function getPrototypeKey(): string
     {
-        return 'client';
+        return 'client-user';
     }
 
     public function store(): RedirectResponse
