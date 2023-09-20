@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('client_id');
-            $table->unsignedSmallInteger('country_id');
+            $table->unsignedInteger('client_id')->nullable();
+            $table->unsignedSmallInteger('country_id')->nullable();
             $table->string('name')->nullable();
             $table->string('surname')->nullable();
             $table->string('patronymic')->nullable();

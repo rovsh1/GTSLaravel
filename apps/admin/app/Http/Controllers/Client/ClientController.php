@@ -7,6 +7,7 @@ namespace App\Admin\Http\Controllers\Client;
 use App\Admin\Http\Requests\Client\CreateClientRequest;
 use App\Admin\Http\Resources\Client as ClientResource;
 use App\Admin\Models\Client\Legal;
+use App\Admin\Models\Client\User;
 use App\Admin\Models\Reference\Country;
 use App\Admin\Repositories\ClientAdministratorRepository;
 use App\Admin\Support\Facades\Acl;
@@ -29,6 +30,8 @@ use Module\Shared\Enum\Client\LegalTypeEnum;
 use Module\Shared\Enum\Client\ResidencyEnum;
 use Module\Shared\Enum\Client\StatusEnum;
 use Module\Shared\Enum\Client\TypeEnum;
+use Module\Shared\Enum\Client\User\RoleEnum;
+use Module\Shared\Enum\Client\User\StatusEnum as UserStatusEnum;
 
 class ClientController extends AbstractPrototypeController
 {
@@ -51,11 +54,17 @@ class ClientController extends AbstractPrototypeController
         $form->trySubmit($this->prototype->route('create'));
 
         $preparedData = $this->saving($form->getData());
-        $gender = $preparedData['gender'] ?? null;
         $this->model = $this->repository->create($preparedData);
-        if ($gender !== null) {
-
+        if ($this->model->type === TypeEnum::PHYSICAL) {
+            $gender = $preparedData['gender'] ?? null;
+            $this->createUser($gender);
         }
+
+        $managerId = $preparedData['administrator_id'] ?? null;
+        if ($managerId === null) {
+            $managerId = request()->user()->id;
+        }
+        $this->clientAdministratorRepository->create($this->model->id, $managerId);
 
         $redirectUrl = $this->prototype->route('index');
         if ($this->hasShowAction()) {
@@ -98,6 +107,11 @@ class ClientController extends AbstractPrototypeController
                 bik: $legalData->bik ?? '',
                 bankName: $legalData->bankName ?? ''
             );
+        }
+
+        if ($this->model->type === TypeEnum::PHYSICAL) {
+            $gender = $data['gender'] ?? null;
+            $this->createUser($gender);
         }
 
         $managerId = $request->user()->id;
@@ -179,6 +193,19 @@ class ClientController extends AbstractPrototypeController
             ->text('rates', 'Тариф')
             ->text('administrator_name', 'Менеджер')
             ->data($this->model);
+    }
+
+    private function createUser(?int $gender): void
+    {
+        User::create([
+            'client_id' => $this->model->id,
+            'country_id' => $this->model->country_id,
+            'gender' => $gender,
+            'name' => $this->model->name,
+            'presentation' => $this->model->name,
+            'role' => RoleEnum::CUSTOMER,
+            'status' => UserStatusEnum::ACTIVE,
+        ]);
     }
 
     protected function gridFactory(): GridContract

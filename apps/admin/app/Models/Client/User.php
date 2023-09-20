@@ -16,6 +16,16 @@ class User extends Model
 
     protected $table = 'users';
 
+    protected array $quicksearch = [
+        'id',
+        'users.name%',
+        'users.surname%',
+        'users.patronymic%',
+        'users.presentation%',
+        'users.login%',
+        'users.email%',
+    ];
+
     protected $fillable = [
         'client_id',
         'country_id',
@@ -47,15 +57,17 @@ class User extends Model
     protected static function booted()
     {
         static::addGlobalScope('default', function (Builder $builder) {
-//            $builder
-//                ->addSelect('clients.*')
-//                ->join('r_cities', 'r_cities.id', '=', 'clients.city_id')
-//                ->joinTranslatable('r_cities', 'name as city_name')
-//                ->join('r_countries', 'r_countries.id', '=', 'r_cities.country_id')
-//                ->joinTranslatable('r_countries', 'name as country_name')
-//                ->leftJoin('r_currencies', 'r_currencies.id', '=', 'clients.currency_id')
-//                ->joinTranslatable('r_currencies', 'name as currency_name');
+            $builder
+                ->addSelect('users.*')
+                ->leftJoin('clients', 'clients.id', '=', 'users.client_id')
+                ->leftJoin('r_cities', 'r_cities.id', '=', 'clients.city_id')
+                ->joinTranslatable('r_cities', 'name as city_name');
         });
+    }
+
+    public function scopeWhereCountryId(Builder $builder, int $countryId): void
+    {
+        $builder->where('users.country_id', $countryId);
     }
 
     public function __toString()
