@@ -11,7 +11,6 @@ use Module\Booking\HotelBooking\Domain\Service\QuotaManager\Exception\ClosedRoom
 use Module\Booking\HotelBooking\Domain\Service\QuotaManager\Exception\NotEnoughRoomDateQuota;
 use Module\Booking\HotelBooking\Domain\Service\QuotaManager\Exception\NotFoundRoomDateQuota;
 use Module\Booking\HotelBooking\Domain\ValueObject\QuotaId;
-use Module\Shared\Domain\Service\ApplicationContextInterface;
 
 class QuotaReservationManager
 {

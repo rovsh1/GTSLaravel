@@ -55,9 +55,14 @@ class DefaultFormUpdateAction
 
         $this->form->trySubmit($failUrl);
 
-        $model->update($this->form->getData());
+        $this->update($model, $this->form->getData());
 
         return redirect($successUrl);
+    }
+
+    protected function update(Model $model, array $data): void
+    {
+        $model->update($data);
     }
 
     private function bootDefaultUrls(): array

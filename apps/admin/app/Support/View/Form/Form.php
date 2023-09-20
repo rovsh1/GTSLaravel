@@ -3,7 +3,6 @@
 namespace App\Admin\Support\View\Form;
 
 use App\Admin\Exceptions\FormSubmitFailedException;
-use App\Admin\Support\View\Form\Element\Image;
 use Gsdk\Form\ElementInterface;
 use Gsdk\Form\Form as Base;
 use Illuminate\Database\Eloquent\Model;
@@ -19,6 +18,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method self email(string $name, array $options = [])
  * @method self phone(string $name, array $options = [])
  * @method self password(string $name, array $options = [])
+ * @method self file(string $name, array $options = [])
  * @method self number(string $name, array $options = [])
  * @method self dateRange(string $name, array $options = [])
  * @method self currency(string $name, array $options = [])
@@ -45,9 +45,7 @@ class Form extends Base
             $data = [];
             /** @var ElementInterface $element */
             foreach ($this->elements as $element) {
-                if ($element instanceof Image) {
-                    $data[$element->name] = ($element->fileType)::findByEntity($model->id);
-                } elseif ($isTranslatable && $model->isTranslatable($element->name)) {
+                if ($isTranslatable && $model->isTranslatable($element->name)) {
                     $data[$element->name] = $model->getTranslations($element->name);
                 } else {
                     $data[$element->name] = $model->{$element->name};

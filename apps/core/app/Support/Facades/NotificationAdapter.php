@@ -13,6 +13,6 @@ class NotificationAdapter extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'notification-adapter';
+        return \App\Core\Support\Adapters\MailAdapter::class;
     }
 }

@@ -12,15 +12,13 @@ use App\Admin\Models\Client\Client;
 use App\Admin\Models\Client\Legal;
 use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\Breadcrumb;
+use App\Admin\Support\Facades\Client\LegalAdapter;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Facades\Layout;
 use App\Admin\Support\Facades\Sidebar;
 use App\Admin\Support\Http\Actions\DefaultDestroyAction;
 use App\Admin\Support\Http\Actions\DefaultFormCreateAction;
-use App\Admin\Support\Http\Actions\DefaultFormEditAction;
-use App\Admin\Support\Http\Actions\DefaultFormStoreAction;
-use App\Admin\Support\Http\Actions\DefaultFormUpdateAction;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Layout as LayoutContract;
@@ -53,7 +51,7 @@ class LegalsController extends Controller
     {
         $this->client($client);
 
-        return (new DefaultFormCreateAction($this->formFactory($client)))
+        return (new DefaultFormCreateAction($this->formFactory()))
             ->handle('Новое юр. лицо')
             ->view('default.form.form');
     }
@@ -63,24 +61,49 @@ class LegalsController extends Controller
      */
     public function store(Request $request, Client $client): RedirectResponse
     {
-        return (new DefaultFormStoreAction($this->formFactory($client)))
-            ->handle(Legal::class);
+        $form = $this->formFactory()->method('post');
+
+        $form->trySubmit(
+            route('client.legals.create', ['client' => $client])
+        );
+
+        $formData = $form->getData();
+        $legal = Legal::create($this->prepareLegalData($client->id, $formData));
+        $this->setBankRequisites($legal, $formData);
+
+        return redirect(route('client.legals.index', $client));
     }
 
     public function edit(Request $request, Client $client, Legal $legal)
     {
         $this->client($client);
 
-        return (new DefaultFormEditAction($this->formFactory($client)))
-            ->deletable()
-            ->handle($legal)
-            ->view('default.form.form');
+        $legalData = LegalAdapter::find($legal->id);
+        $form = $this->formFactory()
+            ->action(route('client.legals.update', ['client' => $client, 'legal' => $legal]))
+            ->method('put')
+            ->data($legalData);
+
+        return Layout::title((string)$legal)
+            ->view('default.form.form', [
+                'form' => $form,
+                'cancelUrl' => route('client.legals.index', $client),
+                'deleteUrl' => route('client.legals.destroy', ['client' => $client, 'legal' => $legal]),
+            ]);
     }
 
     public function update(Client $client, Legal $legal): RedirectResponse
     {
-        return (new DefaultFormUpdateAction($this->formFactory($client)))
-            ->handle($legal);
+        $form = $this->formFactory()->method('put');
+
+        $failUrl = route('client.legals.edit', ['client' => $client, 'legal' => $legal]);
+        $form->trySubmit($failUrl);
+
+        $formData = $form->getData();
+        $legal->update($this->prepareLegalData($client->id, $formData));
+        $this->setBankRequisites($legal, $formData);
+
+        return redirect(route('client.legals.index', $client));
     }
 
     public function destroy(Client $client, Legal $legal): AjaxResponseInterface
@@ -106,22 +129,44 @@ class LegalsController extends Controller
             ->text('address', ['text' => 'Адрес']);
     }
 
-    protected function formFactory(Client $client): FormContract
+    protected function formFactory(): FormContract
     {
-        return Form::text('name', ['label' => 'Наименование'])
-            ->hidden('client_id', ['value' => $client->id])
-            ->select('industry_id', ['label' => 'Индустрия', 'emptyItem' => '', 'items' => Legal\Industry::get()])
+        return Form::text('name', ['label' => 'Наименование', 'required' => true])
+            ->select('industryId', ['label' => 'Индустрия', 'emptyItem' => '', 'items' => Legal\Industry::get()])
             ->enum('type', ['label' => 'Тип', 'emptyItem' => '', 'enum' => LegalTypeEnum::class, 'required' => true])
             ->text('address', ['label' => 'Адрес', 'required' => true])
-            //@todo сейчас реквизиты не сохраняются в json
             ->text('bik', ['label' => 'БИК'])
-            ->city('city_id', ['label' => 'Город банка', 'emptyItem' => ''])
+            ->text('cityName', ['label' => 'Город банка'])
             ->text('inn', ['label' => 'ИНН'])
             ->text('okpo', ['label' => 'Код ОКПО'])
-            ->text('correspondent_account', ['label' => 'Корреспондентский счет'])
+            ->text('correspondentAccount', ['label' => 'Корреспондентский счет'])
             ->text('kpp', ['label' => 'КПП'])
-            ->text('bank_name', ['label' => 'Наименование банка'])
-            ->text('current_account', ['label' => 'Рассчетный счет']);
+            ->text('bankName', ['label' => 'Наименование банка'])
+            ->text('currentAccount', ['label' => 'Рассчетный счет']);
+    }
+
+    private function prepareLegalData(int $clientId, array $data): array
+    {
+        return [
+            ...$data,
+            'industry_id' => $data['industryId'] ?? null,
+            'client_id' => $clientId,
+        ];
+    }
+
+    private function setBankRequisites(Legal $legal, array $data): void
+    {
+        LegalAdapter::setBankRequisites(
+            clientLegalId: $legal->id,
+            cityName: $data['cityName'] ?? '',
+            currentAccount: $data['currentAccount'] ?? '',
+            correspondentAccount: $data['correspondentAccount'] ?? '',
+            kpp: $data['kpp'] ?? '',
+            okpo: $data['okpo'] ?? '',
+            inn: $data['inn'] ?? '',
+            bik: $data['bik'] ?? '',
+            bankName: $data['bankName'] ?? '',
+        );
     }
 
     private function client(Client $hotel): void

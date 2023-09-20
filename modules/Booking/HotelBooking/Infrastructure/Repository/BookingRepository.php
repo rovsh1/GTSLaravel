@@ -23,6 +23,7 @@ use Module\Booking\HotelBooking\Infrastructure\Models\Booking as Model;
 use Module\Booking\HotelBooking\Infrastructure\Models\BookingDetails;
 use Module\Shared\Domain\ValueObject\Id;
 use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
+use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
 class BookingRepository extends BaseRepository implements BookingRepositoryInterface
@@ -75,6 +76,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         ?string $note = null,
         HotelInfo $hotelInfo,
         CancelConditions $cancelConditions,
+        BookingPrice $price,
         QuotaProcessingMethodEnum $quotaProcessingMethod,
     ): Booking {
         return \DB::transaction(
@@ -85,9 +87,10 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
                 $note,
                 $hotelInfo,
                 $cancelConditions,
+                $price,
                 $quotaProcessingMethod
             ) {
-                $bookingModel = $this->createBase($orderId, $creatorId->value());
+                $bookingModel = $this->createBase($orderId, $price, $creatorId->value());
                 $booking = new Booking(
                     id: new BookingId($bookingModel->id),
                     orderId: $orderId,
@@ -100,7 +103,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
                     hotelInfo: $hotelInfo,
                     period: $period,
                     note: $note,
-                    price: BookingPrice::fromData($bookingModel->price),
+                    price: $price,
                     quotaProcessingMethod: $quotaProcessingMethod,
                 );
 

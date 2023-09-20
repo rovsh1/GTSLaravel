@@ -21,6 +21,7 @@ class File extends Input
         if ($this?->multiple) {
             $inputName .= '[]';
         }
+
         return $inputName;
     }
 

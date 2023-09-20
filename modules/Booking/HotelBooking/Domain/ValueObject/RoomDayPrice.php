@@ -12,11 +12,11 @@ final class RoomDayPrice implements ValueObjectInterface, SerializableDataInterf
 {
     public function __construct(
         private readonly Date $date,
+        private readonly int|float $baseValue,
+        private readonly int|float $grossValue,
         private readonly int|float $netValue,
-        private readonly int|float $boValue,
-        private readonly int|float $hoValue,
-        private readonly string $boFormula,
-        private readonly string $hoFormula
+        private readonly string $grossFormula,
+        private readonly string $netFormula
     ) {
     }
 
@@ -25,40 +25,40 @@ final class RoomDayPrice implements ValueObjectInterface, SerializableDataInterf
         return $this->date;
     }
 
+    public function baseValue(): float
+    {
+        return $this->baseValue;
+    }
+
     public function netValue(): float
     {
         return $this->netValue;
     }
 
-    public function hoValue(): float
+    public function grossValue(): float
     {
-        return $this->hoValue;
+        return $this->grossValue;
     }
 
-    public function boValue(): float
+    public function grossFormula(): string
     {
-        return $this->boValue;
+        return $this->grossFormula;
     }
 
-    public function boFormula(): string
+    public function netFormula(): string
     {
-        return $this->boFormula;
-    }
-
-    public function hoFormula(): string
-    {
-        return $this->hoFormula;
+        return $this->netFormula;
     }
 
     public function toData(): array
     {
         return [
             'date' => $this->date->getTimestamp(),
+            'baseValue' => $this->baseValue,
+            'grossValue' => $this->grossValue,
             'netValue' => $this->netValue,
-            'boValue' => $this->boValue,
-            'hoValue' => $this->hoValue,
-            'boFormula' => $this->boFormula,
-            'hoFormula' => $this->hoFormula,
+            'grossFormula' => $this->grossFormula,
+            'netFormula' => $this->netFormula,
         ];
     }
 
@@ -66,11 +66,11 @@ final class RoomDayPrice implements ValueObjectInterface, SerializableDataInterf
     {
         return new RoomDayPrice(
             Date::createFromTimestamp($data['date']),
+            $data['baseValue'],
+            $data['grossValue'],
             $data['netValue'],
-            $data['boValue'],
-            $data['hoValue'],
-            $data['boFormula'],
-            $data['hoFormula']
+            $data['grossFormula'],
+            $data['netFormula']
         );
     }
 }

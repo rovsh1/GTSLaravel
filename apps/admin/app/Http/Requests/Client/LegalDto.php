@@ -9,7 +9,7 @@ use Sdk\Module\Foundation\Support\Dto\Dto;
 class LegalDto extends Dto
 {
     public function __construct(
-        public readonly ?string $name,
+        public readonly string $name,
         public readonly ?int $industry,
         public readonly int $type,
         public readonly string $address,

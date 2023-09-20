@@ -16,30 +16,30 @@ final class RoomPrice implements SerializableDataInterface
     }
 
     public function __construct(
-        private readonly ?float $boDayValue,
-        private readonly ?float $hoDayValue,
+        private readonly ?float $grossDayValue,
+        private readonly ?float $netDayValue,
         private readonly RoomDayPriceCollection $dayPrices,
     ) {
     }
 
-    public function isBoManuallyChanged(): bool
+    public function isGrossManuallyChanged(): bool
     {
-        return (bool)$this->boDayValue;
+        return (bool)$this->grossDayValue;
     }
 
-    public function isHoManuallyChanged(): bool
+    public function isNetManuallyChanged(): bool
     {
-        return (bool)$this->hoDayValue;
+        return (bool)$this->netDayValue;
     }
 
-    public function boDayValue(): ?float
+    public function grossDayValue(): ?float
     {
-        return $this->boDayValue;
+        return $this->grossDayValue;
     }
 
-    public function hoDayValue(): ?float
+    public function netDayValue(): ?float
     {
-        return $this->hoDayValue;
+        return $this->netDayValue;
     }
 
     public function dayPrices(): RoomDayPriceCollection
@@ -47,26 +47,26 @@ final class RoomPrice implements SerializableDataInterface
         return $this->dayPrices;
     }
 
+    public function baseValue(): float
+    {
+        return $this->calculateValueSum('baseValue');
+    }
+
     public function netValue(): float
     {
         return $this->calculateValueSum('netValue');
     }
 
-    public function hoValue(): float
+    public function grossValue(): float
     {
-        return $this->calculateValueSum('hoValue');
-    }
-
-    public function boValue(): float
-    {
-        return $this->calculateValueSum('boValue');
+        return $this->calculateValueSum('grossValue');
     }
 
     public function toData(): array
     {
         return [
-            'boDayValue' => $this->boDayValue,
-            'hoDayValue' => $this->hoDayValue,
+            'grossDayValue' => $this->grossDayValue,
+            'netDayValue' => $this->netDayValue,
             'dayPrices' => $this->dayPrices->toData(),
         ];
     }
@@ -74,8 +74,8 @@ final class RoomPrice implements SerializableDataInterface
     public static function fromData(array $data): static
     {
         return new RoomPrice(
-            boDayValue: $data['boDayValue'],
-            hoDayValue: $data['hoDayValue'],
+            grossDayValue: $data['grossDayValue'],
+            netDayValue: $data['netDayValue'],
             dayPrices: RoomDayPriceCollection::fromData($data['dayPrices']),
         );
     }

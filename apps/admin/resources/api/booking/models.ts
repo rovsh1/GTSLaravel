@@ -10,17 +10,26 @@ export type BookingStatusResponse = {
   color: string
 }
 
-export type ManualChangablePrice = {
-  value: number
+export type CurrencyDto = {
+  id: number
+  value: string
+  name: string
+}
+
+export type PriceItem = {
+  currency: CurrencyDto
+  calculatedValue: number
+  manualValue: number | null
+  penaltyValue: number | null
   isManual: boolean
 }
 
 export type BookingPrice = {
-  boPrice: ManualChangablePrice
-  hoPrice: ManualChangablePrice
+  grossPrice: PriceItem
+  netPrice: PriceItem
   netValue: number
-  hoPenalty: number | null
-  boPenalty: number | null
+  netPenalty: number | null
+  grossPenalty: number | null
 }
 
 export type BaseBooking = {

@@ -9,6 +9,9 @@ use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\Common\Infrastructure\Models\Booking;
 use Module\Booking\Common\Infrastructure\Models\Booking as Model;
+use Module\Booking\Order\Infrastructure\Models\Order;
+use Module\Shared\Enum\CurrencyEnum;
+use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
 abstract class AbstractBookingRepository
 {
@@ -27,14 +30,14 @@ abstract class AbstractBookingRepository
         return $model;
     }
 
-    protected function createBase(OrderId $orderId, int $creatorId): Booking
+    protected function createBase(OrderId $orderId, BookingPrice $price, int $creatorId): Booking
     {
         return $this->getModel()::create([
             'order_id' => $orderId->value(),
             'source' => AppContext::source(),
             'status' => BookingStatusEnum::CREATED,
             'creator_id' => $creatorId,
-            'price' => BookingPrice::buildEmpty()->toData(),
+            'price' => $price->toData(),
         ]);
     }
 

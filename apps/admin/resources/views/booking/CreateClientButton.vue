@@ -65,17 +65,17 @@ const tabsItems = ref<TabItem[]>(tabsItemsSettings)
 const basicData = reactive<BasicFormData>({
   name: '',
   type: 1,
-  cityId: 0,
+  cityId: null,
   status: 1,
-  currency: 0,
+  currency: null,
   managerId: null,
-  residency: 0,
+  residency: null,
 })
 
 const legalEntityData = reactive<LegalEntityFormData>({
   name: null,
   industry: null,
-  type: 0,
+  type: null,
   address: '',
   bik: null,
   bankCity: null,
@@ -121,7 +121,7 @@ const validateBaseDataForm = computed(() => (isDataValid(null, basicData.name)
   && isDataValid(null, basicData.type) && isDataValid(null, basicData.cityId)
   && isDataValid(null, basicData.currency) && isDataValid(null, basicData.residency)))
 
-const validateLegalDataForm = computed(() => (isDataValid(null, legalEntityData.type)
+const validateLegalDataForm = computed(() => (isDataValid(null, legalEntityData.name) && isDataValid(null, legalEntityData.type)
   && isDataValid(null, legalEntityData.address)))
 
 const isFormValid = (): boolean => {
@@ -145,7 +145,7 @@ const switchTab = (currentTab: TabItem) => {
   currentTabDuplicate.isActive = true
 }
 
-const showTabByClientType = (clientType: number, tabType: number | undefined): boolean => {
+const showTabByClientType = (clientType: number | null, tabType: number | undefined): boolean => {
   if (!clientType && tabType && tabType === 1) {
     return true
   }
@@ -160,15 +160,15 @@ const showTabByClientType = (clientType: number, tabType: number | undefined): b
 
 const resetForm = () => {
   basicData.name = ''
-  basicData.type = 0
-  basicData.cityId = 0
+  basicData.type = null
+  basicData.cityId = null
   basicData.status = null
-  basicData.currency = 0
+  basicData.currency = null
   basicData.managerId = null
-  basicData.residency = 0
+  basicData.residency = null
   legalEntityData.name = null
   legalEntityData.industry = null
-  legalEntityData.type = 0
+  legalEntityData.type = null
   legalEntityData.address = ''
   legalEntityData.bik = null
   legalEntityData.bankCity = null
@@ -187,7 +187,7 @@ const resetForm = () => {
   })
 }
 
-const getClientDataByType = (type: number) : any => {
+const getClientDataByType = (type: number | null) : any => {
   if (type === 1) {
     const physicalClientData: any = { ...basicData,
       physical: { ...physicalEntityData } }
@@ -332,7 +332,7 @@ onMounted(() => {
                 ref="clientManagerSelect2"
                 :value="basicData.managerId"
                 parent=".manager-wrapper"
-                @input="(value: any) => basicData.managerId = Number(value)"
+                @input="(value: any) => basicData.managerId = value"
               />
             </div>
           </form>
@@ -340,8 +340,17 @@ onMounted(() => {
         <BootstrapTabsTabContent v-if="basicData.type == 2" tab-name="legal-details" :is-active="tabsItems[2].isActive">
           <form ref="clientLegalForm" class="tab-content">
             <div class="col-md-12 mt-2">
-              <label for="legal-name">Наименование</label>
-              <input id="legal-name" v-model="legalEntityData.name" class="form-control">
+              <div class="field-required">
+                <label for="legal-name">Наименование</label>
+                <input
+                  id="legal-name"
+                  v-model="legalEntityData.name"
+                  class="form-control"
+                  required
+                  @blur="isDataValid($event, legalEntityData.name)"
+                  @input="isDataValid($event, legalEntityData.name)"
+                >
+              </div>
             </div>
 
             <div class="col-md-12 mt-2">
@@ -467,7 +476,7 @@ onMounted(() => {
         :disabled="!validateBaseDataForm"
         class="btn btn-primary"
         type="button"
-        @click="switchTab(tabsItems[basicData.type])"
+        @click="switchTab(tabsItems[basicData.type ? basicData.type : 0])"
       >
         Далее
       </button>

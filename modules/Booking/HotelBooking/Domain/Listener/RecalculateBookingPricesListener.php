@@ -21,8 +21,10 @@ class RecalculateBookingPricesListener implements DomainEventListenerInterface
         private readonly BookingUpdater $bookingUpdater
     ) {}
 
-    public function handle(DomainEventInterface|PriceBecomeDeprecatedEventInterface $event): void
+    public function handle(DomainEventInterface $event): void
     {
+        assert($event instanceof PriceBecomeDeprecatedEventInterface);
+
         $booking = $this->repository->find($event->bookingId());
         foreach ($booking->roomBookings() as $roomBooking) {
             $roomBooking->recalculatePrices($this->roomPriceEditor);

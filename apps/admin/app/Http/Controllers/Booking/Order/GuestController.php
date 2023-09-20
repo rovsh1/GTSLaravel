@@ -10,9 +10,11 @@ use App\Admin\Http\Requests\Order\Guest\UpdateRequest;
 use App\Admin\Support\Facades\Booking\AirportAdapter;
 use App\Admin\Support\Facades\Booking\HotelAdapter;
 use App\Admin\Support\Facades\Booking\OrderAdapter;
+use App\Core\Support\Http\Responses\AjaxErrorResponse;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use App\Core\Support\Http\Responses\AjaxSuccessResponse;
 use Illuminate\Http\JsonResponse;
+use Module\Shared\Application\Exception\ApplicationException;
 
 class GuestController extends Controller
 {
@@ -23,22 +25,26 @@ class GuestController extends Controller
         return response()->json($guests);
     }
 
-    public function addGuest(int $orderId, AddRequest $request): JsonResponse
+    public function addGuest(int $orderId, AddRequest $request): JsonResponse|AjaxResponseInterface
     {
-        $guest = OrderAdapter::addGuest(
-            orderId: $orderId,
-            fullName: $request->getFullName(),
-            countryId: $request->getCountryId(),
-            isAdult: $request->getIsAdult(),
-            gender: $request->getGender(),
-            age: $request->getAge()
-        );
-        if ($request->hotelBookingId() !== null) {
-            HotelAdapter::bindRoomGuest($request->hotelBookingId(), $request->hotelBookingRoomId(), $guest->id);
-        }
+        try {
+            $guest = OrderAdapter::addGuest(
+                orderId: $orderId,
+                fullName: $request->getFullName(),
+                countryId: $request->getCountryId(),
+                isAdult: $request->getIsAdult(),
+                gender: $request->getGender(),
+                age: $request->getAge()
+            );
+            if ($request->hotelBookingId() !== null) {
+                HotelAdapter::bindRoomGuest($request->hotelBookingId(), $request->hotelBookingRoomId(), $guest->id);
+            }
 
-        if ($request->airportBookingId() !== null) {
-            AirportAdapter::bindGuest($request->airportBookingId(), $guest->id);
+            if ($request->airportBookingId() !== null) {
+                AirportAdapter::bindGuest($request->airportBookingId(), $guest->id);
+            }
+        } catch (ApplicationException $e) {
+            return new AjaxErrorResponse($e->getMessage());
         }
 
         return response()->json($guest);

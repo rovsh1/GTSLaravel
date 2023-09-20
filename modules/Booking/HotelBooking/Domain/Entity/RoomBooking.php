@@ -67,14 +67,14 @@ class RoomBooking extends AbstractAggregateRoot implements EntityInterface
         $this->price = $editor->recalculatePrices($this);
     }
 
-    public function setHoDayPrice(float $price, RoomPriceEditor $editor): void
+    public function setNetDayPrice(float $price, RoomPriceEditor $editor): void
     {
-        $this->price = $editor->setManuallyHoPrice($this, $price);
+        $this->price = $editor->setManuallyNetPrice($this, $price);
     }
 
-    public function setBoDayPrice(float $price, RoomPriceEditor $editor): void
+    public function setGrossDayPrice(float $price, RoomPriceEditor $editor): void
     {
-        $this->price = $editor->setManuallyBoPrice($this, $price);
+        $this->price = $editor->setManuallyGrossPrice($this, $price);
     }
 
     public function setCalculatedPrices(RoomPriceEditor $editor): void
@@ -82,14 +82,14 @@ class RoomBooking extends AbstractAggregateRoot implements EntityInterface
         $this->price = $editor->setCalculatedPrices($this);
     }
 
-    public function setCalculatedBoPrice(RoomPriceEditor $editor): void
+    public function setCalculatedGrossPrice(RoomPriceEditor $editor): void
     {
-        $this->price = $editor->setCalculatedBoPrice($this);
+        $this->price = $editor->setCalculatedGrossPrice($this);
     }
 
-    public function setCalculatedHoPrice(RoomPriceEditor $editor): void
+    public function setCalculatedNetPrice(RoomPriceEditor $editor): void
     {
-        $this->price = $editor->setCalculatedHoPrice($this);
+        $this->price = $editor->setCalculatedNetPrice($this);
     }
 
     public function toData(): array

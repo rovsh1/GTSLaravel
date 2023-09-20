@@ -15,6 +15,7 @@ class Request extends Model
     protected $fillable = [
         'booking_id',
         'type',
+        'file',
         'is_archive',
     ];
 

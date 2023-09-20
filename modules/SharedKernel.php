@@ -2,6 +2,7 @@
 
 namespace Module;
 
+use Module\Shared\Contracts\Adapter\FileStorageAdapterInterface;
 use Module\Shared\Domain\Adapter\CurrencyRateAdapterInterface;
 use Module\Shared\Domain\Service\ApplicationConstantsInterface;
 use Module\Shared\Domain\Service\ApplicationContextInterface;
@@ -21,6 +22,7 @@ class SharedKernel extends BaseKernel
         SerializerInterface::class,
         SafeExecutorInterface::class,
         CurrencyRateAdapterInterface::class,
+        FileStorageAdapterInterface::class,
         ApplicationContextInterface::class,
         ApplicationConstantsInterface::class,
         CompanyRequisitesInterface::class,
