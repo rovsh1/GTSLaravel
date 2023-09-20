@@ -20,7 +20,7 @@ class UpdatePriceRequest extends FormRequest
             'rate_id' => ['required', 'int'],
             'guests_count' => ['required', 'numeric'],
             'is_resident' => ['required', 'boolean'],
-            'price' => ['required', 'numeric'],
+            'price' => ['nullable', 'numeric'],
             'date' => ['nullable', 'date']
         ];
     }
@@ -45,7 +45,7 @@ class UpdatePriceRequest extends FormRequest
         return $this->post('is_resident');
     }
 
-    public function getPrice(): float
+    public function getPrice(): ?float
     {
         return $this->post('price');
     }
