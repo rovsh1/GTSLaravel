@@ -10,9 +10,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        $q = DB::connection('mysql_old')
-            ->table('users')
-            ->select('');
+        $q = DB::connection('mysql_old')->table('users');
 
         foreach ($q->cursor() as $user) {
 
