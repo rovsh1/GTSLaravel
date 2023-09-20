@@ -45,6 +45,7 @@ const computedOptions = computed<SelectOption[]>(() => (props.allowDeselect ? [
       :id="id"
       :value="value"
       :options="computedOptions"
+      :show-empty-item="false"
       :disabled="disabled"
       :required="required"
       @input="value => emit('input', value as string | number)"
