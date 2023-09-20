@@ -8,28 +8,25 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up()
     {
-        Schema::create('service_provider_airport_services', function (Blueprint $table) {
+        Schema::create('supplier_seasons', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('provider_id');
-            $table->string('name');
-            $table->unsignedTinyInteger('type');
+            $table->string('number')->nullable();
+            $table->date('date_start');
+            $table->date('date_end');
+            $table->unsignedTinyInteger('status')->default(0);
             $table->timestamps();
 
-            $table->foreign('provider_id')
+            $table->foreign('provider_id', 'fk_supplier_seasons_provider_id')
                 ->references('id')
-                ->on('service_providers')
+                ->on('suppliers')
                 ->restrictOnDelete()
                 ->cascadeOnUpdate();
         });
-
-//        (new TranslationTable('r_transfer_services'))
-//            ->string('name')
-//            ->create();
     }
 
     public function down()
     {
-//        Schema::dropIfExists('r_transfer_services_translation');
-        Schema::dropIfExists('service_provider_airport_services');
+        Schema::dropIfExists('supplier_seasons');
     }
 };

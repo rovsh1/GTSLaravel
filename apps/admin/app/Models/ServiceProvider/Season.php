@@ -13,7 +13,7 @@ class Season extends Model
 
     protected array $quicksearch = ['id', 'number%'];
 
-    protected $table = 'service_provider_seasons';
+    protected $table = 'supplier_seasons';
 
     protected $fillable = [
         'provider_id',

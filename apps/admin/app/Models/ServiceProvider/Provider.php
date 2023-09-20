@@ -16,7 +16,7 @@ class Provider extends Model
 
     protected array $quicksearch = ['id', 'name%'];
 
-    protected $table = 'service_providers';
+    protected $table = 'suppliers';
 
     protected $fillable = [
         'name',
@@ -46,7 +46,7 @@ class Provider extends Model
 
     public function cities(): BelongsToMany
     {
-        return $this->belongsToMany(City::class, 'service_provider_cities', 'provider_id', 'city_id');
+        return $this->belongsToMany(City::class, 'supplier_cities', 'provider_id', 'city_id');
     }
 
     public function cars(): HasMany
@@ -58,7 +58,7 @@ class Provider extends Model
     {
         return $this->belongsToMany(
             Airport::class,
-            'service_provider_airports',
+            'supplier_airports',
             'provider_id',
             'airport_id'
         );

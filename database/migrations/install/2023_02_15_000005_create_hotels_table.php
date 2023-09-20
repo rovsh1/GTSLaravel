@@ -8,8 +8,9 @@ return new class extends Migration {
     public function up()
     {
         Schema::create('hotels', function (Blueprint $table) {
-            $table->integer('id')->unsigned()->autoIncrement();
-            $table->integer('city_id')->unsigned();
+            $table->increments('id');
+            $table->unsignedInteger('supplier_id');
+            $table->unsignedInteger('city_id');
             $table->smallInteger('type_id')->unsigned();
             $table->unsignedSmallInteger('currency_id');
             $table->tinyInteger('status')->unsigned()->default(0);
@@ -25,6 +26,12 @@ return new class extends Migration {
             $table->json('time_settings')->nullable();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('supplier_id')
+                ->references('id')
+                ->on('suppliers')
+                ->restrictOnDelete()
+                ->cascadeOnUpdate();
 
             $table->foreign('city_id')
                 ->references('id')

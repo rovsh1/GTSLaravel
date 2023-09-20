@@ -8,7 +8,7 @@ use Sdk\Module\Database\Eloquent\Model;
 
 class AirportPrice extends Model
 {
-    protected $table = 'service_provider_airport_prices';
+    protected $table = 'supplier_airport_prices';
 
     public $timestamps = false;
 

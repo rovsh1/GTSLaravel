@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up()
     {
-        Schema::create('service_provider_airport_prices', function (Blueprint $table) {
+        Schema::create('supplier_airport_prices', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('service_id');
             $table->unsignedInteger('season_id');
@@ -18,25 +18,25 @@ return new class extends Migration {
 
 //            $table->unique(['car_id', 'city_id', 'service_id', 'currency_id'], 'uid');
 
-            $table->foreign('service_id', 'fk_service_provider_airport_prices_service_id')
+            $table->foreign('service_id', 'fk_supplier_airport_prices_service_id')
                 ->references('id')
-                ->on('service_provider_airport_services')
+                ->on('supplier_airport_services')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
-            $table->foreign('season_id', 'fk_service_provider_airport_prices_season_id')
+            $table->foreign('season_id', 'fk_supplier_airport_prices_season_id')
                 ->references('id')
-                ->on('service_provider_seasons')
+                ->on('supplier_seasons')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
-            $table->foreign('airport_id', 'fk_service_provider_airport_prices_airport_id')
+            $table->foreign('airport_id', 'fk_supplier_airport_prices_airport_id')
                 ->references('id')
                 ->on('r_airports')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
-            $table->foreign('currency_id', 'fk_service_provider_airport_prices_currency_id')
+            $table->foreign('currency_id', 'fk_supplier_airport_prices_currency_id')
                 ->references('id')
                 ->on('r_currencies')
                 ->cascadeOnUpdate()
@@ -46,6 +46,6 @@ return new class extends Migration {
 
     public function down()
     {
-        Schema::dropIfExists('service_provider_airport_prices');
+        Schema::dropIfExists('supplier_airport_prices');
     }
 };

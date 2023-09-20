@@ -8,20 +8,20 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up()
     {
-        Schema::create('service_provider_airports', function (Blueprint $table) {
+        Schema::create('supplier_cars', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('provider_id');
-            $table->unsignedInteger('airport_id');
+            $table->unsignedInteger('car_id');
 
-            $table->foreign('airport_id')
+            $table->foreign('car_id')
                 ->references('id')
-                ->on('r_airports')
+                ->on('r_transport_cars')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
             $table->foreign('provider_id')
                 ->references('id')
-                ->on('service_providers')
+                ->on('suppliers')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
         });
@@ -29,6 +29,6 @@ return new class extends Migration {
 
     public function down()
     {
-        Schema::dropIfExists('service_provider_airports');
+        Schema::dropIfExists('supplier_cars');
     }
 };

@@ -12,6 +12,7 @@ return new class extends Migration {
             $table->tinyInteger('status');
             $table->char('document', 32)->nullable();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('document')
                 ->references('guid')
