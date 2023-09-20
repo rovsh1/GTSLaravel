@@ -129,15 +129,15 @@ const editableSeasonDays = (item: PricesAccumulationData) => {
 }
 
 const changeSeasonPrice = async (item: PricesAccumulationData, newPrice: number | null) => {
-  if (newPrice) {
-    currentSeasonData.value = item
-    currentSeasonNewPrice.value = newPrice
-    toggleModal()
-  }
+  // if (newPrice) {
+  currentSeasonData.value = item
+  currentSeasonNewPrice.value = newPrice
+  toggleModal()
+  // }
 }
 
 const onSubmitChangeData = async () => {
-  if (!currentSeasonData.value || !currentSeasonNewPrice.value) return
+  if (!currentSeasonData.value) return
   const { data: updateStatusResponse } = await updateRoomSeasonPrice({
     ...currentSeasonData.value,
     price: currentSeasonNewPrice.value,
