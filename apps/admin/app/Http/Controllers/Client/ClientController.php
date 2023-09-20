@@ -195,12 +195,12 @@ class ClientController extends AbstractPrototypeController
             ->data($this->model);
     }
 
-    private function createUser(?int $gender): void
+    private function createUser(int|string|null $gender): void
     {
         User::create([
             'client_id' => $this->model->id,
             'country_id' => $this->model->country_id,
-            'gender' => $gender,
+            'gender' => $gender !== null ? (int)$gender : null,
             'name' => $this->model->name,
             'presentation' => $this->model->name,
             'role' => RoleEnum::CUSTOMER,

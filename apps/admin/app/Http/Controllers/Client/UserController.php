@@ -11,14 +11,55 @@ use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Grid\SearchForm;
+use App\Admin\Support\View\Layout as LayoutContract;
+use Gsdk\Format\View\ParamsTable;
+use Illuminate\Http\RedirectResponse;
 use Module\Shared\Enum\Client\User\RoleEnum;
 use Module\Shared\Enum\Client\User\StatusEnum;
+use Module\Shared\Enum\GenderEnum;
 
 class UserController extends AbstractPrototypeController
 {
+    private bool $isEdit = false;
+
     protected function getPrototypeKey(): string
     {
         return 'client-user';
+    }
+
+    protected function getShowViewData(): array
+    {
+        return [
+            'params' => $this->showParams(),
+        ];
+    }
+
+    public function edit(int $id): LayoutContract
+    {
+        $this->isEdit = true;
+        return parent::edit($id);
+    }
+
+    public function update(int $id): RedirectResponse
+    {
+        $this->isEdit = true;
+        return parent::update($id);
+    }
+
+    private function showParams(): ParamsTable
+    {
+        return (new ParamsTable())
+            ->id('id', 'ID')
+            ->text('presentation', 'Имя в системе')
+            ->text('client_id', 'Клиент')
+            ->text('surname', 'Фамилия')
+            ->text('name', 'Имя')
+            ->text('patronymic', 'Отчество')
+            ->enum('gender', 'Пол', GenderEnum::class)
+            ->text('email', 'Email')
+            ->text('phone', 'Телефон')
+            ->date('created_at', 'Создан')
+            ->data($this->model);
     }
 
     protected function gridFactory(): GridContract
@@ -30,8 +71,9 @@ class UserController extends AbstractPrototypeController
                 'name',
                 [
                     'text' => 'ФИО',
-                    'route' => $this->prototype->routeName('edit'),
-                    'renderer' => fn($user) => (string)$user
+                    'route' => $this->prototype->routeName('show'),
+                    'renderer' => fn($user) => (string)$user,
+                    'order' => true
                 ]
             )
             ->text('city_name', ['text' => 'Город / Клиент'])
@@ -48,7 +90,7 @@ class UserController extends AbstractPrototypeController
             ->text('patronymic', ['label' => 'Отчество', 'required' => true])
             ->text('email', ['label' => 'Email', 'required' => true])
             ->text('phone', ['label' => 'Телефон'])
-            ->text('password', ['label' => 'Пароль', 'required' => true])
+            ->password('password', ['label' => 'Пароль', 'required' => !$this->isEdit])
             ->hidden('status', ['value' => StatusEnum::ACTIVE->value])
             ->hidden('role', ['value' => RoleEnum::CUSTOMER->value]);
     }
