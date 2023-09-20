@@ -8,7 +8,7 @@ use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\Order\Domain\Entity\Guest;
 use Module\Booking\Order\Domain\ValueObject\GuestId;
 use Module\Booking\Order\Domain\ValueObject\GuestIdsCollection;
-use Module\Shared\Domain\ValueObject\GenderEnum;
+use Module\Shared\Enum\GenderEnum;
 
 interface GuestRepositoryInterface
 {

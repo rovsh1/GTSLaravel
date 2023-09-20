@@ -9,7 +9,7 @@ use Module\Booking\Order\Application\Request\AddGuestDto;
 use Module\Booking\Order\Application\Response\GuestDto;
 use Module\Booking\Order\Domain\Event\GuestCreated;
 use Module\Booking\Order\Domain\Repository\GuestRepositoryInterface;
-use Module\Shared\Domain\ValueObject\GenderEnum;
+use Module\Shared\Enum\GenderEnum;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 

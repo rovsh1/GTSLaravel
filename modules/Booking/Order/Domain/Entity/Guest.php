@@ -7,7 +7,7 @@ namespace Module\Booking\Order\Domain\Entity;
 use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\Order\Domain\ValueObject\GuestId;
 use Module\Shared\Domain\Entity\EntityInterface;
-use Module\Shared\Domain\ValueObject\GenderEnum;
+use Module\Shared\Enum\GenderEnum;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
 class Guest extends AbstractAggregateRoot implements EntityInterface

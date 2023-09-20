@@ -30,7 +30,7 @@ export type RoomSeasonPrice = {
   rate_id: number
   is_resident: boolean
   guests_count: number
-  price: number
+  price: number | null
   has_date_prices: boolean
 }
 

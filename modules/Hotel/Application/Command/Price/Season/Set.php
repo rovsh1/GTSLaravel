@@ -12,6 +12,6 @@ class Set implements CommandInterface
         public readonly int $rateId,
         public readonly int $guestsCount,
         public readonly bool $isResident,
-        public readonly float $price,
+        public readonly ?float $price,
     ) {}
 }
