@@ -22,4 +22,5 @@ export interface GuestFormData {
   gender?: number
   isAdult?: boolean
   age?: number | null
+  selectedGuestFromOrder?: number | null
 }

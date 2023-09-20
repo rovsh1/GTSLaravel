@@ -5,6 +5,7 @@ import { computed, nextTick, onMounted, reactive, ref } from 'vue'
 import { useToggle } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 
+import { isDataValid } from '~resources/composables/form'
 import { useCityStore } from '~resources/store/city'
 import { useCurrencyStore } from '~resources/store/currency'
 import ManagerSelect from '~resources/views/booking/components/ManagerSelect.vue'
@@ -98,24 +99,6 @@ const getActiveTab = computed(() => {
   }
   return null
 })
-
-const isDataValid = ($event: any, value: any): boolean => {
-  let isValid = false
-  if (Array.isArray(value)) {
-    isValid = value.length > 0
-  } else {
-    isValid = !!value
-  }
-  if (isValid) {
-    if ($event) {
-      $event.target.classList.remove('is-invalid')
-    }
-    return true
-  } if ($event) {
-    $event.target.classList.add('is-invalid')
-  }
-  return false
-}
 
 const validateBaseDataForm = computed(() => (isDataValid(null, basicData.name)
   && isDataValid(null, basicData.type) && isDataValid(null, basicData.cityId)
@@ -272,7 +255,7 @@ onMounted(() => {
                 :value="basicData.type"
                 required
                 @blur="isDataValid($event, basicData.type)"
-                @input="value => basicData.type = Number(value)"
+                @input="(value: any) => basicData.type = Number(value)"
               />
             </div>
 
@@ -288,7 +271,7 @@ onMounted(() => {
                 required
                 :show-empty-item="false"
                 @blur="isDataValid($event, basicData.cityId)"
-                @input="value => basicData.cityId = Number(value)"
+                @input="(value: any) => basicData.cityId = Number(value)"
               />
             </div>
 
@@ -299,7 +282,7 @@ onMounted(() => {
                 :options="statusOptions"
                 :value="basicData.status"
                 :show-empty-item="false"
-                @input="value => basicData.status = Number(value)"
+                @input="(value: any) => basicData.status = Number(value)"
               />
             </div>
 
@@ -311,7 +294,7 @@ onMounted(() => {
                 :value="basicData.currency"
                 required
                 @blur="isDataValid($event, basicData.currency)"
-                @input="value => basicData.currency = Number(value)"
+                @input="(value: any) => basicData.currency = Number(value)"
               />
             </div>
 
@@ -323,7 +306,7 @@ onMounted(() => {
                 :value="basicData.residency"
                 :options="residentTypeOptions"
                 @blur="isDataValid($event, basicData.residency)"
-                @input="value => basicData.residency = Number(value)"
+                @input="(value: any) => basicData.residency = Number(value)"
               />
             </div>
 
@@ -359,7 +342,7 @@ onMounted(() => {
                 label="Индустрия"
                 :options="legalIndustryOptions"
                 :value="legalEntityData.industry"
-                @input="value => legalEntityData.industry = Number(value)"
+                @input="(value: any) => legalEntityData.industry = Number(value)"
               />
             </div>
 
@@ -371,7 +354,7 @@ onMounted(() => {
                 :value="legalEntityData.type"
                 required
                 @blur="isDataValid($event, legalEntityData.type)"
-                @input="value => legalEntityData.type = Number(value)"
+                @input="(value: any) => legalEntityData.type = Number(value)"
               />
             </div>
 
@@ -458,7 +441,7 @@ onMounted(() => {
                 label="Пол"
                 :options="genderOptions"
                 :value="physicalEntityData.gender"
-                @input="value => physicalEntityData.gender = Number(value)"
+                @input="(value: any) => physicalEntityData.gender = Number(value)"
               />
             </div>
           </form>

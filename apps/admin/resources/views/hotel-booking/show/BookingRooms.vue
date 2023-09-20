@@ -210,6 +210,7 @@ fetchCountries()
     :room-booking-id="editRoomBookingId"
     :guest-id="editGuestId"
     :form-data="guestForm"
+    :data-for-select-tab="[]"
     :countries="countries as CountryResponse[]"
     @close="toggleGuestModal(false)"
     @submit="onModalSubmit"
