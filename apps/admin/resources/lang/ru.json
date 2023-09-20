@@ -89,6 +89,9 @@
     "Hotel\\RatingEnum::FOUR": "✯ ✯ ✯ ✯",
     "Hotel\\RatingEnum::FIVE": "✯ ✯ ✯ ✯ ✯",
 
+    "Module\\Shared\\Enum\\GenderEnum::MALE": "Мужской",
+    "Module\\Shared\\Enum\\GenderEnum::FEMALE": "Женский",
+
     "Module\\Shared\\Enum\\ContactTypeEnum::PHONE": "Телефон",
     "Module\\Shared\\Enum\\ContactTypeEnum::EMAIL": "Email",
     "Module\\Shared\\Enum\\ContactTypeEnum::SITE": "Сайт",
