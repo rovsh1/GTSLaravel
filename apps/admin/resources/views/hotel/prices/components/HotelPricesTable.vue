@@ -6,6 +6,7 @@ import { nanoid } from 'nanoid'
 
 import { updateRoomSeasonPrice } from '~resources/api/hotel/prices/seasons'
 import { formatSeasonPeriod } from '~resources/lib/date'
+import { generateHashFromObject } from '~resources/lib/hash'
 
 import BaseDialog from '~components/BaseDialog.vue'
 import { showToast } from '~components/Bootstrap/BootstrapToast'
@@ -71,6 +72,16 @@ watch(() => props.closeAllBut, (value) => {
   }
 })
 
+const setPricesAccumulationData = (obj: PricesAccumulationData): PricesAccumulationData => {
+  const hashID = generateHashFromObject({
+    hotelID: obj.hotelID,
+    roomID: obj.roomID,
+    seasonID: obj.seasonID,
+    isResident: obj.isResident,
+  })
+  return { id: hashID, ...obj }
+}
+
 watchEffect(() => {
   if (!props.isFetching) {
     roomSeasonsPricesData.value = []
@@ -87,8 +98,8 @@ watchEffect(() => {
             rateName: rate.name,
             price: null,
           }
-          roomSeasonsPricesData.value.push({ id: nanoid(), ...accumulationDataObject, isResident: true })
-          roomSeasonsPricesData.value.push({ id: nanoid(), ...accumulationDataObject, isResident: false })
+          roomSeasonsPricesData.value.push(setPricesAccumulationData({ ...accumulationDataObject, isResident: true }))
+          roomSeasonsPricesData.value.push(setPricesAccumulationData({ ...accumulationDataObject, isResident: false }))
         }
       })
     })
@@ -146,13 +157,13 @@ const onSubmitChangeData = async () => {
     if (currentSeasonData.value && currentSeasonData.value.id === editableSeasonData.value.id) {
       currentSeasonData.value.price = editableSeasonNewPrice.value
     }
-    emit('updateData')
     if (editableSeasonNewPrice.value === null && currentSeasonData.value?.id === editableSeasonData.value.id) {
       currentSeasonData.value = null
       currentSeasonPeriod.value = null
       editableSeasonNewPrice.value = null
       isEditSeasonData.value = false
     }
+    emit('updateData')
   } else {
     showToast({ title: 'Не удалось изменить цену' })
   }

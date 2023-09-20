@@ -101,7 +101,7 @@ span {
 }
 
 .value-place-holder {
-  opacity: 0.6;
   color: #000;
+  opacity: 0.6;
 }
 </style>
