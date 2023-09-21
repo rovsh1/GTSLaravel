@@ -6,6 +6,7 @@ import { nanoid } from 'nanoid'
 
 import { updateRoomSeasonPrice } from '~resources/api/hotel/prices/seasons'
 import { formatSeasonPeriod } from '~resources/lib/date'
+import { generateHashFromObject } from '~resources/lib/hash'
 
 import BaseDialog from '~components/BaseDialog.vue'
 import { showToast } from '~components/Bootstrap/BootstrapToast'
@@ -46,8 +47,10 @@ const waitComponentProcess = ref<boolean>(false)
 
 const currentSeasonPeriod = ref<SeasonPeriod | null>(null)
 const currentSeasonData = ref<PricesAccumulationData | null>(null)
-const currentSeasonNewPrice = ref<number | null>(null)
 const currentCellID = ref<string | undefined>()
+
+const editableSeasonData = ref<PricesAccumulationData | null>(null)
+const editableSeasonNewPrice = ref<number | null>(null)
 
 const setIdenticalColumnsWidth = (columnCount: number) => {
   const rowWidth = baseRowWidth.value?.offsetWidth
@@ -69,6 +72,16 @@ watch(() => props.closeAllBut, (value) => {
   }
 })
 
+const setPricesAccumulationData = (obj: PricesAccumulationData): PricesAccumulationData => {
+  const hashID = generateHashFromObject({
+    hotelID: obj.hotelID,
+    roomID: obj.roomID,
+    seasonID: obj.seasonID,
+    isResident: obj.isResident,
+  })
+  return { id: hashID, ...obj }
+}
+
 watchEffect(() => {
   if (!props.isFetching) {
     roomSeasonsPricesData.value = []
@@ -85,8 +98,8 @@ watchEffect(() => {
             rateName: rate.name,
             price: null,
           }
-          roomSeasonsPricesData.value.push({ id: nanoid(), ...accumulationDataObject, isResident: true })
-          roomSeasonsPricesData.value.push({ id: nanoid(), ...accumulationDataObject, isResident: false })
+          roomSeasonsPricesData.value.push(setPricesAccumulationData({ ...accumulationDataObject, isResident: true }))
+          roomSeasonsPricesData.value.push(setPricesAccumulationData({ ...accumulationDataObject, isResident: false }))
         }
       })
     })
@@ -129,21 +142,27 @@ const editableSeasonDays = (item: PricesAccumulationData) => {
 }
 
 const changeSeasonPrice = async (item: PricesAccumulationData, newPrice: number | null) => {
-  if (newPrice) {
-    currentSeasonData.value = item
-    currentSeasonNewPrice.value = newPrice
-    toggleModal()
-  }
+  editableSeasonData.value = item
+  editableSeasonNewPrice.value = newPrice
+  toggleModal()
 }
 
 const onSubmitChangeData = async () => {
-  if (!currentSeasonData.value || !currentSeasonNewPrice.value) return
+  if (!editableSeasonData.value) return
   const { data: updateStatusResponse } = await updateRoomSeasonPrice({
-    ...currentSeasonData.value,
-    price: currentSeasonNewPrice.value,
+    ...editableSeasonData.value,
+    price: editableSeasonNewPrice.value,
   })
   if (updateStatusResponse.value?.success) {
-    currentSeasonData.value.price = currentSeasonNewPrice.value
+    if (currentSeasonData.value && currentSeasonData.value.id === editableSeasonData.value.id) {
+      currentSeasonData.value.price = editableSeasonNewPrice.value
+    }
+    if (editableSeasonNewPrice.value === null && currentSeasonData.value?.id === editableSeasonData.value.id) {
+      currentSeasonData.value = null
+      currentSeasonPeriod.value = null
+      editableSeasonNewPrice.value = null
+      isEditSeasonData.value = false
+    }
     emit('updateData')
   } else {
     showToast({ title: 'Не удалось изменить цену' })
@@ -204,9 +223,9 @@ const handlerUpdateSeasonDaysData = (status :boolean) => {
                 >
                   <EditableCell
                     :value="item.price"
-                    :enable-context-menu="true"
+                    :enable-context-menu="!!item.price"
                     @activated-context-menu="editableSeasonDays(item)"
-                    @change="value => changeSeasonPrice(item, value)"
+                    @change="(value: any) => changeSeasonPrice(item, value)"
                   />
                 </td>
               </template>
@@ -221,9 +240,9 @@ const handlerUpdateSeasonDaysData = (status :boolean) => {
                 >
                   <EditableCell
                     :value="item.price"
-                    :enable-context-menu="true"
+                    :enable-context-menu="!!item.price"
                     @activated-context-menu="editableSeasonDays(item)"
-                    @change="value => changeSeasonPrice(item, value)"
+                    @change="(value: any) => changeSeasonPrice(item, value)"
                   />
                 </td>
               </template>

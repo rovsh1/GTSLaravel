@@ -8,7 +8,7 @@ use Sdk\Module\Database\Eloquent\Model;
 
 class CarPrice extends Model
 {
-    protected $table = 'service_provider_car_prices';
+    protected $table = 'supplier_car_prices';
 
     public $timestamps = false;
 

@@ -13,9 +13,9 @@ class AirportService extends Model
 {
     use HasQuicksearch;
 
-    protected array $quicksearch = ['id', 'service_provider_airport_services.name%'];
+    protected array $quicksearch = ['id', 'supplier_airport_services.name%'];
 
-    protected $table = 'service_provider_airport_services';
+    protected $table = 'supplier_airport_services';
 
     protected $fillable = [
         'provider_id',
@@ -32,14 +32,14 @@ class AirportService extends Model
     {
         static::addGlobalScope('default', function (Builder $builder) {
             $builder->orderBy('name')
-                ->addSelect('service_provider_airport_services.*')
+                ->addSelect('supplier_airport_services.*')
                 ->join(
-                    'service_providers',
-                    'service_providers.id',
+                    'suppliers',
+                    'suppliers.id',
                     '=',
-                    'service_provider_airport_services.provider_id'
+                    'supplier_airport_services.provider_id'
                 )
-                ->addSelect('service_providers.name as provider_name');
+                ->addSelect('suppliers.name as provider_name');
         });
     }
 
@@ -47,8 +47,8 @@ class AirportService extends Model
     {
         $builder->whereExists(function (QueryBuilder $query) use ($cityId) {
             $query->select(DB::raw(1))
-                ->from('service_provider_cities as t')
-                ->whereColumn('t.provider_id', 'service_provider_airport_services.provider_id')
+                ->from('supplier_cities as t')
+                ->whereColumn('t.provider_id', 'supplier_airport_services.provider_id')
                 ->where('city_id', $cityId);
         });
     }

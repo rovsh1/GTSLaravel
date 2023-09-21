@@ -14,7 +14,8 @@ class StatusUpdater
     public function __construct(
         private readonly AdministratorRules $statusRules,
         private readonly BookingUpdater $bookingUpdater,
-    ) {}
+    ) {
+    }
 
     public function toProcessing(BookingInterface $booking): void
     {
@@ -52,33 +53,6 @@ class StatusUpdater
         );
     }
 
-    public function toInvoiced(BookingInterface $booking): void
-    {
-        $this->handleUpdateStatus(
-            $booking,
-            BookingStatusEnum::INVOICED,
-            fn(BookingInterface $booking) => $booking->toInvoiced()
-        );
-    }
-
-    public function toPaid(BookingInterface $booking): void
-    {
-        $this->handleUpdateStatus(
-            $booking,
-            BookingStatusEnum::PAID,
-            fn(BookingInterface $booking) => $booking->toPaid()
-        );
-    }
-
-    public function toPartiallyPaid(BookingInterface $booking): void
-    {
-        $this->handleUpdateStatus(
-            $booking,
-            BookingStatusEnum::PARTIALLY_PAID,
-            fn(BookingInterface $booking) => $booking->toPartiallyPaid()
-        );
-    }
-
     public function toCancelledNoFee(BookingInterface $booking): void
     {
         $this->handleUpdateStatus(
@@ -94,24 +68,6 @@ class StatusUpdater
             $booking,
             BookingStatusEnum::CANCELLED_FEE,
             fn(BookingInterface $booking) => $booking->toCancelledFee($cancelFeeAmount)
-        );
-    }
-
-    public function toRefundNoFee(BookingInterface $booking): void
-    {
-        $this->handleUpdateStatus(
-            $booking,
-            BookingStatusEnum::REFUND_NO_FEE,
-            fn(BookingInterface $booking) => $booking->toRefundNoFee()
-        );
-    }
-
-    public function toRefundFee(BookingInterface $booking): void
-    {
-        $this->handleUpdateStatus(
-            $booking,
-            BookingStatusEnum::REFUND_FEE,
-            fn(BookingInterface $booking) => $booking->toRefundFee()
         );
     }
 

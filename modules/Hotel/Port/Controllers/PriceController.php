@@ -34,7 +34,7 @@ class PriceController
             'rateId' => 'required|int',
             'guestsCount' => 'required|int',
             'isResident' => 'required|boolean',
-            'price' => 'required|numeric',
+            'price' => 'nullable|numeric',
         ]);
         return $this->commandBus->execute(
             new Command\Price\Season\Set(

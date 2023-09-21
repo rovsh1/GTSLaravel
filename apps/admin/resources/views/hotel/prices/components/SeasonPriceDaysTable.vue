@@ -112,7 +112,7 @@ watch(() => props.refreshDaysPrices, async () => {
 })
 
 const changeData = async (item: PricesAccumulationDataForDays, newPrice: number | null) => {
-  if (newPrice) {
+  if (newPrice !== null) {
     emit('updateSeasonDaysData', true)
     const { data: updateStatusResponse } = await updateRoomSeasonPricesByDay({
       ...seasonData.value,
@@ -171,7 +171,12 @@ onMounted(async () => {
               :class="[getStatusClassByPrice(seasonData.price, item.price)]"
               class="priced align-middle text-center"
             >
-              <EditableCell :value="item.price" :enable-context-menu="false" @change="value => changeData(item, value)" />
+              <EditableCell
+                :value="item.price"
+                :value-place-holder="seasonData.price"
+                :enable-context-menu="false"
+                @change="value => changeData(item, value)"
+              />
             </td>
           </tr>
         </tbody>

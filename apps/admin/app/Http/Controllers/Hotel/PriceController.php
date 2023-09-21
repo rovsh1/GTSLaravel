@@ -70,7 +70,8 @@ class PriceController extends Controller
     public function updateDatePrice(UpdatePriceRequest $request, Hotel $hotel, Season $season): AjaxResponseInterface
     {
         $request->validate([
-            'date' => ['required', 'date']
+            'date' => ['required', 'date'],
+            'price' => ['required', 'numeric'],
         ]);
 
         PricesAdapter::setDatePrice(

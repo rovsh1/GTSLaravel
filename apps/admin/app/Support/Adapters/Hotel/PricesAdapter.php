@@ -19,7 +19,7 @@ class PricesAdapter extends AbstractHotelAdapter
         int $rateId,
         int $guestsCount,
         bool $isResident,
-        float $price,
+        ?float $price,
     ): bool {
         return $this->request('setSeasonPrice', [
             'roomId' => $roomId,

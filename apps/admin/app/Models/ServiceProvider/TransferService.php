@@ -13,9 +13,9 @@ class TransferService extends Model
 {
     use HasQuicksearch;
 
-    protected array $quicksearch = ['id', 'service_provider_transfer_services.name%'];
+    protected array $quicksearch = ['id', 'supplier_transfer_services.name%'];
 
-    protected $table = 'service_provider_transfer_services';
+    protected $table = 'supplier_transfer_services';
 
     protected $fillable = [
         'provider_id',
@@ -32,9 +32,9 @@ class TransferService extends Model
     {
         static::addGlobalScope('default', function (Builder $builder) {
             $builder->orderBy('name')
-                ->addSelect('service_provider_transfer_services.*')
-                ->join('service_providers', 'service_providers.id', '=', 'service_provider_transfer_services.provider_id')
-                ->addSelect('service_providers.name as provider_name');
+                ->addSelect('supplier_transfer_services.*')
+                ->join('suppliers', 'suppliers.id', '=', 'supplier_transfer_services.provider_id')
+                ->addSelect('suppliers.name as provider_name');
         });
     }
 
@@ -42,8 +42,8 @@ class TransferService extends Model
     {
         $builder->whereExists(function (QueryBuilder $query) use ($cityId) {
             $query->select(DB::raw(1))
-                ->from('service_provider_cities as t')
-                ->whereColumn('t.provider_id', 'service_provider_transfer_services.provider_id')
+                ->from('supplier_cities as t')
+                ->whereColumn('t.provider_id', 'supplier_transfer_services.provider_id')
                 ->where('city_id', $cityId);
         });
     }

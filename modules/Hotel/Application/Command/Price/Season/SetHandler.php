@@ -45,15 +45,22 @@ class SetHandler implements CommandHandlerInterface
             ]);
         }
 
-        SeasonPrice::updateOrCreate(
-            ['group_id' => $group->id, 'season_id' => $command->seasonId, 'room_id' => $command->roomId],
-            [
-                'group_id' => $group->id,
-                'season_id' => $command->seasonId,
-                'room_id' => $command->roomId,
-                'price' => $command->price,
-            ]
-        );
+        if ($command->price !== null) {
+            SeasonPrice::updateOrCreate(
+                ['group_id' => $group->id, 'season_id' => $command->seasonId, 'room_id' => $command->roomId],
+                [
+                    'group_id' => $group->id,
+                    'season_id' => $command->seasonId,
+                    'room_id' => $command->roomId,
+                    'price' => $command->price,
+                ]
+            );
+        } else {
+            SeasonPrice::whereSeasonId($command->seasonId)
+                ->whereRoomId($command->roomId)
+                ->whereGroupId($group->id)
+                ->delete();
+        }
 
         DatePrice::whereSeasonId($command->seasonId)
             ->whereRoomId($command->roomId)

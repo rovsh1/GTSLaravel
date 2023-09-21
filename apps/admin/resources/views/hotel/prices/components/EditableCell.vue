@@ -8,8 +8,10 @@ import EditableButton from './EditableButton.vue'
 const props = withDefaults(defineProps<{
   value: number | null
   enableContextMenu?: boolean
+  valuePlaceHolder?: any
 }>(), {
   enableContextMenu: false,
+  valuePlaceHolder: '',
 })
 
 // todo формат цен, слить ветку GTS-1980
@@ -37,7 +39,7 @@ const transformInputValue = () => {
   if (inputRef.value instanceof HTMLInputElement) {
     const inputValue = inputRef.value?.value
     const numValue = inputValue?.trim() === '' ? NaN : Number(inputValue)
-    if (!isNaN(numValue)) {
+    if (!isNaN(numValue) && numValue >= 1) {
       localValue.value = numValue
     } else {
       localValue.value = null
@@ -67,7 +69,8 @@ onMounted(() => {
 <template>
   <div :style="{ height: isChanged ? '100%' : 'auto' }" aria-hidden="true" @click.prevent="isChanged = !isChanged">
     <a v-if="!isChanged">
-      <span>{{ value }}</span>
+      <span v-if="value !== null">{{ value }}</span>
+      <span v-else class="value-place-holder">{{ valuePlaceHolder }}</span>
 
       <EditableButton v-if="enableContextMenu" @click.stop="() => { emit('activatedContextMenu') }" />
     </a>
@@ -95,5 +98,10 @@ input {
 
 span {
   padding: 0 5px;
+}
+
+.value-place-holder {
+  color: #000;
+  opacity: 0.6;
 }
 </style>
