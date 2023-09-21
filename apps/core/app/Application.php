@@ -74,12 +74,23 @@ class Application extends \Illuminate\Foundation\Application
         if (!is_string($concrete)) {
             return parent::build($concrete);
         } elseif (is_subclass_of($concrete, ApiInterface::class)) {
-            return $this->instances[SharedKernel::class]->makeApi($concrete);
+            return $this->makeModuleAbstract($concrete);
         } elseif (is_subclass_of($concrete, UseCaseInterface::class)) {
-            return $this->instances[SharedKernel::class]->makeUseCase($concrete);
+            return $this->makeModuleAbstract($concrete);
         } else {
             return parent::build($concrete);
         }
+    }
+
+    private function makeModuleAbstract(string $abstract)
+    {
+        $module = $this->modules()->findByNamespace($abstract);
+        if (!$module) {
+            throw new \LogicException("Module not found by abstract [$abstract]");
+        }
+        $module->boot();
+
+        return $this->instances[SharedKernel::class]->getContainer()->instance($abstract, $module->build($abstract));
     }
 
     private function registerModules(): void
@@ -100,7 +111,7 @@ class Application extends \Illuminate\Foundation\Application
 
     private function registerSharedKernel(): void
     {
-        $kernel = new SharedKernel($this, $this->modules());
+        $kernel = new SharedKernel($this);
         $this->instance(SharedKernel::class, $kernel);
         $this->booting(function () {
             $this->instances[SharedKernel::class]->boot();

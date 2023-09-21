@@ -17,6 +17,7 @@ use Module\Booking\HotelBooking\Domain\Service\QuotaManager\Exception\NotEnoughR
 use Module\Booking\HotelBooking\Domain\Service\QuotaManager\Exception\NotFoundRoomDateQuota;
 use Module\Booking\HotelBooking\Domain\Service\QuotaManager\QuotaManager;
 use Module\Booking\HotelBooking\Domain\Service\RoomUpdater\Validator\ClientResidencyValidator;
+use Module\Booking\HotelBooking\Domain\Service\RoomUpdater\Validator\ExistRoomPriceValidator;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBookingId;
 use Module\Shared\Domain\Service\SafeExecutorInterface;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
@@ -139,7 +140,8 @@ class RoomUpdater
     private function makePipeline(): ValidatorPipeline
     {
         return (new ValidatorPipeline($this->module))
-            ->through(ClientResidencyValidator::class);
+            ->through(ClientResidencyValidator::class)
+            ->through(ExistRoomPriceValidator::class);
     }
 
     private function doAction(\Closure $action): void

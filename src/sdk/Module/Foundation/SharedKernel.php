@@ -4,9 +4,7 @@ namespace Sdk\Module\Foundation;
 
 use Illuminate\Contracts\Foundation\Application;
 use Sdk\Module\Bus\IntegrationEventBus;
-use Sdk\Module\Contracts\Api\ApiInterface;
 use Sdk\Module\Contracts\Bus\IntegrationEventBusInterface;
-use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 use Sdk\Module\Foundation\Support\SharedContainer;
 
 class SharedKernel
@@ -17,7 +15,7 @@ class SharedKernel
 
     protected array $serviceProviders = [];
 
-    public function __construct(Application $app, ModulesManager $modules)
+    public function __construct(Application $app,)
     {
         $this->app = $app;
         $this->sharedContainer = $this->makeSharedContainer();
@@ -64,27 +62,6 @@ class SharedKernel
     public function getContainer(): SharedContainer
     {
         return $this->sharedContainer;
-    }
-
-    public function makeApi(string $abstract): ApiInterface
-    {
-        return $this->makeModuleAbstract($abstract);
-    }
-
-    public function makeUseCase(string $abstract): UseCaseInterface
-    {
-        return $this->makeModuleAbstract($abstract);
-    }
-
-    private function makeModuleAbstract(string $abstract)
-    {
-        $module = $this->modules->findByNamespace($abstract);
-        if (!$module) {
-            throw new \LogicException("Module not found by abstract [$abstract]");
-        }
-        $module->boot();
-
-        return $this->sharedContainer->instance($abstract, $module->build($abstract));
     }
 
     protected function makeSharedContainer(): SharedContainer

@@ -4,9 +4,7 @@ namespace Sdk\Module\Foundation;
 
 use Illuminate\Support\ServiceProvider;
 use Sdk\Module\Container\Container;
-use Sdk\Module\Contracts\Api\ApiInterface;
 use Sdk\Module\Contracts\ModuleInterface;
-use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 use Sdk\Module\Foundation\Support\SharedContainer;
 
 class Module extends Container implements ModuleInterface
@@ -174,10 +172,6 @@ class Module extends Container implements ModuleInterface
             return $this;
         } elseif ($this->sharedContainer->has($abstract)) {
             return $this->sharedContainer->get($abstract);
-        } elseif (is_subclass_of($abstract, ApiInterface::class)) {
-            return $this->sharedContainer->makeApi($abstract);
-        } elseif (is_subclass_of($abstract, UseCaseInterface::class)) {
-            return $this->sharedContainer->makeUseCase($abstract);
         } else {
             return parent::resolve($abstract, $parameters, $raiseEvents);
         }

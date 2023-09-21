@@ -27,9 +27,9 @@ class LocaleDictionarySeeder extends Seeder
 
     private function includeFile(string $path, string $locale, string $prefix = ''): void
     {
-        $filename = "$path/$locale/$this->filename";
+        $filename = base_path("$path/$locale/$this->filename");
         if (file_exists($filename)) {
-            $items = include base_path($filename);
+            $items = include $filename;
             $this->updateItems($items, $locale, $prefix);
         }
     }
