@@ -289,7 +289,7 @@ fetchCountries()
                   {{ formatDate(dayPrice.date) }}
                 </td>
                 <td class="text-nowrap">
-                  {{ formatPrice(dayPrice.netValue, grossCurrency.sign) }}
+                  {{ formatPrice(dayPrice.grossValue, grossCurrency.sign) }}
                 </td>
                 <td class="text-nowrap">{{ dayPrice.grossFormula }}</td>
               </tr>
