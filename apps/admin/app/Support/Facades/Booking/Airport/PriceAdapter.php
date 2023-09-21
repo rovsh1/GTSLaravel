@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Admin\Support\Facades\Booking\Hotel;
+namespace App\Admin\Support\Facades\Booking\Airport;
 
 use Illuminate\Support\Facades\Facade;
 
@@ -13,12 +13,11 @@ use Illuminate\Support\Facades\Facade;
  * @method static void setCalculatedNetPrice(int $bookingId)
  * @method static void setNetPenalty(int $bookingId, float|null $penalty)
  * @method static void setGrossPenalty(int $bookingId, float|null $penalty)
- * @method static void updateRoomPrice(int $bookingId, int $roomBookingId, float|null $grossPrice, float|null $netPrice)
  */
-class HotelPriceAdapter extends Facade
+class PriceAdapter extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return \App\Admin\Support\Adapters\Booking\Hotel\HotelPriceAdapter::class;
+        return \App\Admin\Support\Adapters\Booking\Airport\PriceAdapter::class;
     }
 }

@@ -15,6 +15,7 @@ AclRoute::for('airport-booking')
     ->get('/{booking}/status/history', Controllers\Booking\Airport\BookingController::class . '@getStatusHistory', 'read', 'status.history')
 
     ->get('/{booking}/actions/available', Controllers\Booking\Airport\BookingController::class . '@getAvailableActions', 'read', 'actions.available.get')
+    ->put('/{booking}/price', Controllers\Booking\Airport\BookingController::class . '@updatePrice', 'update', 'price.update')
 
     ->delete('/{booking}/guests', Controllers\Booking\Airport\GuestController::class . '@deleteGuest', 'delete', 'guests.delete')
 

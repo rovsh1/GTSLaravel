@@ -12,7 +12,7 @@ use Module\Booking\HotelBooking\Application\UseCase\Admin\Price\SetManualNetPric
 use Module\Booking\HotelBooking\Application\UseCase\Admin\Price\SetNetPenalty;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\Room\SetManualPrice;
 
-class HotelPriceAdapter
+class PriceAdapter
 {
     public function setGrossPrice(int $bookingId, float $price): void
     {

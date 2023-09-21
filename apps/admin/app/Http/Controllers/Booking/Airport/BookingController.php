@@ -8,12 +8,14 @@ use App\Admin\Http\Controllers\Controller;
 use App\Admin\Http\Requests\Booking\Hotel\BulkDeleteRequest;
 use App\Admin\Http\Requests\Booking\Hotel\UpdateManagerRequest;
 use App\Admin\Http\Requests\Booking\Hotel\UpdateNoteRequest;
+use App\Admin\Http\Requests\Booking\Hotel\UpdatePriceRequest;
 use App\Admin\Http\Requests\Booking\Hotel\UpdateStatusRequest;
 use App\Admin\Models\Administrator\Administrator;
 use App\Admin\Models\Client\Client;
 use App\Admin\Models\Reference\Currency;
 use App\Admin\Repositories\BookingAdministratorRepository;
 use App\Admin\Support\Facades\Booking\AirportAdapter;
+use App\Admin\Support\Facades\Booking\Airport\PriceAdapter;
 use App\Admin\Support\Facades\Booking\OrderAdapter;
 use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Form;
@@ -180,6 +182,34 @@ class BookingController extends Controller
     public function bulkDelete(BulkDeleteRequest $request): AjaxResponseInterface
     {
         AirportAdapter::bulkDeleteBookings($request->getIds());
+
+        return new AjaxSuccessResponse();
+    }
+
+    public function updatePrice(UpdatePriceRequest $request, int $id): AjaxResponseInterface
+    {
+        $grossPrice = $request->getGrossPrice();
+        $netPrice = $request->getNetPrice();
+
+        if ($request->isGrossPriceExists() && $grossPrice === null) {
+            PriceAdapter::setCalculatedGrossPrice($id);
+        }
+        if ($request->isNetPriceExists() && $netPrice === null) {
+            PriceAdapter::setCalculatedNetPrice($id);
+        }
+
+        if ($grossPrice !== null) {
+            PriceAdapter::setGrossPrice($id, $grossPrice);
+        }
+        if ($netPrice !== null) {
+            PriceAdapter::setNetPrice($id, $netPrice);
+        }
+        if ($request->isGrossPenaltyExists()) {
+            PriceAdapter::setGrossPenalty($id, $request->getGrossPenalty());
+        }
+        if ($request->isNetPenaltyExists()) {
+            PriceAdapter::setNetPenalty($id, $request->getNetPenalty());
+        }
 
         return new AjaxSuccessResponse();
     }

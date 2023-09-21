@@ -18,7 +18,7 @@ use App\Admin\Models\Hotel\Room;
 use App\Admin\Models\Reference\Currency;
 use App\Admin\Repositories\BookingAdministratorRepository;
 use App\Admin\Support\Facades\Acl;
-use App\Admin\Support\Facades\Booking\Hotel\HotelPriceAdapter;
+use App\Admin\Support\Facades\Booking\Hotel\PriceAdapter;
 use App\Admin\Support\Facades\Booking\HotelAdapter;
 use App\Admin\Support\Facades\Booking\OrderAdapter;
 use App\Admin\Support\Facades\Breadcrumb;
@@ -286,23 +286,23 @@ class BookingController extends Controller
         $netPrice = $request->getNetPrice();
 
         if ($request->isGrossPriceExists() && $grossPrice === null) {
-            HotelPriceAdapter::setCalculatedGrossPrice($id);
+            PriceAdapter::setCalculatedGrossPrice($id);
         }
         if ($request->isNetPriceExists() && $netPrice === null) {
-            HotelPriceAdapter::setCalculatedNetPrice($id);
+            PriceAdapter::setCalculatedNetPrice($id);
         }
 
         if ($grossPrice !== null) {
-            HotelPriceAdapter::setGrossPrice($id, $grossPrice);
+            PriceAdapter::setGrossPrice($id, $grossPrice);
         }
         if ($netPrice !== null) {
-            HotelPriceAdapter::setNetPrice($id, $netPrice);
+            PriceAdapter::setNetPrice($id, $netPrice);
         }
         if ($request->isGrossPenaltyExists()) {
-            HotelPriceAdapter::setGrossPenalty($id, $request->getGrossPenalty());
+            PriceAdapter::setGrossPenalty($id, $request->getGrossPenalty());
         }
         if ($request->isNetPenaltyExists()) {
-            HotelPriceAdapter::setNetPenalty($id, $request->getNetPenalty());
+            PriceAdapter::setNetPenalty($id, $request->getNetPenalty());
         }
 
         return new AjaxSuccessResponse();

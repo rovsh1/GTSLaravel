@@ -9,7 +9,7 @@ use App\Admin\Http\Requests\Booking\Hotel\Room\DeleteRoomRequest;
 use App\Admin\Http\Requests\Booking\Hotel\Room\Guest\RoomGuestRequest;
 use App\Admin\Http\Requests\Booking\Hotel\Room\UpdateRoomRequest;
 use App\Admin\Http\Requests\Booking\Hotel\UpdatePriceRequest;
-use App\Admin\Support\Facades\Booking\Hotel\HotelPriceAdapter;
+use App\Admin\Support\Facades\Booking\Hotel\PriceAdapter;
 use App\Admin\Support\Facades\Booking\HotelAdapter;
 use App\Core\Support\Http\Responses\AjaxErrorResponse;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
@@ -98,7 +98,7 @@ class RoomController
     public function updatePrice(UpdatePriceRequest $request, int $id, int $roomBookingId): AjaxResponseInterface
     {
         try {
-            HotelPriceAdapter::updateRoomPrice(
+            PriceAdapter::updateRoomPrice(
                 $id,
                 $roomBookingId,
                 $request->getGrossPrice(),
