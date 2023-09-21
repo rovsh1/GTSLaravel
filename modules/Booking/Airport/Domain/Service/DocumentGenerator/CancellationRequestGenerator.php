@@ -31,35 +31,23 @@ class CancellationRequestGenerator extends AbstractRequestGenerator
 
     protected function getBookingAttributes(BookingInterface $booking): array
     {
-        $hotelDto = $this->hotelAdapter->findById($booking->hotelInfo()->id());
-        $phones = collect($hotelDto->contacts)
-            ->map(function (mixed $contactDto) {
-                if ($contactDto->type === ContactTypeEnum::PHONE->value) {
-                    return $contactDto->value;
-                }
-
-                return null;
-            })
-            ->filter()
-            ->implode(', ');
-
         $administrator = $this->administratorAdapter->getManagerByBookingId($booking->id()->value());
 
         return [
             'reservCreatedAt' => $booking->createdAt()->format('d.m.Y H:i:s'),
             'reservCancelledAt' => now()->format('d.m.Y H:i:s'),//@todo правильно ли, что тут now()?
-            'hotelName' => $booking->hotelInfo()->name(),
-            'hotelPhone' => $phones,
-            'cityName' => $hotelDto->cityName,
-            'reservStartDate' => $booking->period()->dateFrom()->format('d.m.Y'),
-            'reservEndDate' => $booking->period()->dateTo()->format('d.m.Y'),
-            'reservNightCount' => $booking->period()->nightsCount(),
+//            'hotelName' => $booking->hotelInfo()->name(),
+//            'hotelPhone' => $phones,
+//            'cityName' => $hotelDto->cityName,
+//            'reservStartDate' => $booking->period()->dateFrom()->format('d.m.Y'),
+//            'reservEndDate' => $booking->period()->dateTo()->format('d.m.Y'),
+//            'reservNightCount' => $booking->period()->nightsCount(),
             'reservNumber' => $booking->id()->value(),
             'reservStatus' => $this->statusStorage->get($booking->status())->name,
-            'rooms' => $booking->roomBookings(),
-            'roomsGuests' => $guests,
-            'hotelDefaultCheckInTime' => $booking->hotelInfo()->checkInTime()->value(),
-            'hotelDefaultCheckOutTime' => $booking->hotelInfo()->checkOutTime()->value(),
+//            'rooms' => $booking->roomBookings(),
+//            'roomsGuests' => $guests,
+//            'hotelDefaultCheckInTime' => $booking->hotelInfo()->checkInTime()->value(),
+//            'hotelDefaultCheckOutTime' => $booking->hotelInfo()->checkOutTime()->value(),
             'managerName' => $administrator?->name ?? $administrator?->presentation,//@todo надо ли?
             'managerPhone' => $administrator?->phone,
             'managerEmail' => $administrator?->email,
