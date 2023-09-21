@@ -12,7 +12,7 @@ class Dictionary extends Model
 
     protected $table = 'r_locale_dictionary';
 
-    private string $valuesTable = 'r_locale_dictionary_values';
+    protected string $valuesTable = 'r_locale_dictionary_values';
 
     protected $fillable = [
         'key'
@@ -34,6 +34,6 @@ class Dictionary extends Model
             ->addSelect('r_locale_dictionary.key')
             ->addSelect('values.value')
             ->leftJoin($this->valuesTable . ' as values', 'values.dictionary_id', '=', 'r_locale_dictionary.id')
-            ->where('values.locale', $locale);
+            ->where('values.language', $locale);
     }
 }

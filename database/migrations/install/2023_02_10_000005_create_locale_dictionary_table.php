@@ -18,7 +18,7 @@ return new class extends Migration {
 
         Schema::create('r_locale_dictionary_values', function (Blueprint $table) {
             $table->unsignedInteger('dictionary_id');
-            $table->char('locale', 2);
+            $table->char('language', 2);
             $table->text('value')->nullable();
 
             $table->foreign('dictionary_id')
@@ -27,7 +27,7 @@ return new class extends Migration {
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
 
-            $table->index(['dictionary_id', 'locale']);
+            $table->index(['dictionary_id', 'language']);
         });
     }
 

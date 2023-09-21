@@ -55,7 +55,7 @@ class LocaleDictionarySeeder extends Seeder
         $raw = Dictionary::create(['key' => $key]);
 
         DB::table('r_locale_dictionary_values')
-            ->updateOrInsert(['dictionary_id' => $raw->id, 'locale' => $locale], ['value' => $value]);
+            ->updateOrInsert(['dictionary_id' => $raw->id, 'language' => $locale], ['value' => $value]);
 
         return $raw;
     }
