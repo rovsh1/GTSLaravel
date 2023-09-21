@@ -61,7 +61,7 @@ class Update
 
 
         $isClosed = $data['closed'] ?? null;
-        if ($isClosed !== null) {
+        if ($isClosed !== null && is_string($isClosed)) {
             $isClosed = $isClosed === 'true';
         }
 
