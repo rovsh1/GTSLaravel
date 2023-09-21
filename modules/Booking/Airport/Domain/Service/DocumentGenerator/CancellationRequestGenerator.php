@@ -15,10 +15,8 @@ use Module\Shared\Enum\ContactTypeEnum;
 class CancellationRequestGenerator extends AbstractRequestGenerator
 {
     public function __construct(
-        private readonly HotelAdapterInterface $hotelAdapter,
         private readonly AdministratorAdapterInterface $administratorAdapter,
         private readonly StatusStorage $statusStorage,
-        private readonly GuestRepositoryInterface $guestRepository,
         CompanyRequisitesInterface $companyRequisites
     ) {
         parent::__construct($companyRequisites);
@@ -44,23 +42,9 @@ class CancellationRequestGenerator extends AbstractRequestGenerator
 //            'reservNightCount' => $booking->period()->nightsCount(),
             'reservNumber' => $booking->id()->value(),
             'reservStatus' => $this->statusStorage->get($booking->status())->name,
-//            'rooms' => $booking->roomBookings(),
-//            'roomsGuests' => $guests,
-//            'hotelDefaultCheckInTime' => $booking->hotelInfo()->checkInTime()->value(),
-//            'hotelDefaultCheckOutTime' => $booking->hotelInfo()->checkOutTime()->value(),
             'managerName' => $administrator?->name ?? $administrator?->presentation,//@todo надо ли?
             'managerPhone' => $administrator?->phone,
             'managerEmail' => $administrator?->email,
         ];
-    }
-
-    public function getGuestsIndexedByRoomBooking(Booking $booking): array
-    {
-        $guests = [];
-        foreach ($booking->roomBookings() as $roomBooking) {
-            $guests[$roomBooking->id()->value()] = $this->guestRepository->get($roomBooking->guestIds());
-        }
-
-        return $guests;
     }
 }
