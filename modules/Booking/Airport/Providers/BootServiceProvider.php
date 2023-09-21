@@ -19,5 +19,10 @@ class BootServiceProvider extends ServiceProvider
             Domain\Repository\BookingGuestRepositoryInterface::class,
             Infrastructure\Repository\BookingGuestRepository::class
         );
+
+        $this->app->singleton(
+            Domain\Repository\CancelConditionsRepositoryInterface::class,
+            Infrastructure\Repository\CancelConditionsRepository::class
+        );
     }
 }

@@ -26,7 +26,7 @@ interface BookingRepositoryInterface extends Base
         CarbonInterface $date,
         BookingPrice $price,
         AdditionalInfo $additionalInfo,
-        ?CancelConditions $cancelConditions,
+        CancelConditions $cancelConditions,
         ?string $note = null
     ): Booking;
 

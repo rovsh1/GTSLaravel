@@ -55,7 +55,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         CarbonInterface $date,
         BookingPrice $price,
         AdditionalInfo $additionalInfo,
-        ?CancelConditions $cancelConditions,
+        CancelConditions $cancelConditions,
         ?string $note = null
     ): Entity {
         return \DB::transaction(

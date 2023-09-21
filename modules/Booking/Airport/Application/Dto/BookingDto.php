@@ -30,7 +30,7 @@ class BookingDto extends BaseDto
         public readonly ServiceInfoDto $serviceInfo,
         public readonly CarbonInterface $date,
         public readonly array $guestIds,
-        public readonly ?CancelConditionsDto $cancelConditions,
+        public readonly CancelConditionsDto $cancelConditions,
         public readonly BookingPriceDto $price,
         public readonly string $flightNumber,
     ) {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Airport\Application\UseCase\Admin;
 
+use Module\Booking\Airport\Application\Factory\CancelConditionsFactory;
 use Module\Booking\Airport\Application\Request\CreateBookingDto;
 use Module\Booking\Airport\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\Airport\Domain\ValueObject\Details\AdditionalInfo;
@@ -19,6 +20,7 @@ class CreateBooking extends AbstractCreateBooking
     public function __construct(
         CommandBusInterface $commandBus,
         BookingRepositoryInterface $repository,
+        private readonly CancelConditionsFactory $cancelConditionsFactory
     ) {
         parent::__construct($commandBus, $repository);
     }
@@ -30,7 +32,7 @@ class CreateBooking extends AbstractCreateBooking
         if ($orderCurrency === null) {
             throw new EntityNotFoundException('Currency not found');
         }
-        $cancelConditions = null;//@todo получение условий отмены
+        $cancelConditions = $this->cancelConditionsFactory->build($request->date);
         $booking = $this->repository->create(
             orderId: $orderId,
             creatorId: new CreatorId($request->creatorId),
