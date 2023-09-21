@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import { computed, nextTick, reactive, ref } from 'vue'
+import { computed, nextTick, ref, unref, watchEffect } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
 import { z } from 'zod'
@@ -8,8 +8,8 @@ import { z } from 'zod'
 import { isDataValid } from '~resources/composables/form'
 import { genderOptions } from '~resources/views/hotel-booking/show/lib/constants'
 import { GuestFormData } from '~resources/views/hotel-booking/show/lib/data-types'
-import { useOrderStore } from '~resources/views/hotel-booking/show/store/order-currency'
 
+import { Guest } from '~api/booking/order/guest'
 import { CountryResponse } from '~api/country'
 
 import { requestInitialData } from '~lib/initial-data'
@@ -24,10 +24,12 @@ import Select2BaseSelect from '~components/Select2BaseSelect.vue'
 
 const props = withDefaults(defineProps<{
   opened: MaybeRef<boolean>
+  isFetching: MaybeRef<boolean>
   roomBookingId: MaybeRef<number>
+  orderId: MaybeRef<number>
   countries: CountryResponse[]
   formData: Partial<GuestFormData>
-  dataForSelectTab?: SelectOption[] | null
+  orderGuests?: Guest[] | null
   titleText?: string
   tabCreateText?: string
   tabSelectText?: string
@@ -39,12 +41,13 @@ const props = withDefaults(defineProps<{
   tabSelectText: 'Выбрать гостя из заказа',
   inputSelectText: 'Гость',
   guestId: undefined,
-  dataForSelectTab: null,
+  orderGuests: null,
 })
 
 const emit = defineEmits<{
   (event: 'close'): void
-  (event: 'submit'): void
+  (event: 'clear'): void
+  (event: 'submit', operationType: string, payload: any): void
 }>()
 
 const { bookingID } = requestInitialData(
@@ -54,14 +57,10 @@ const { bookingID } = requestInitialData(
   }),
 )
 
-/* tabs */
-const tabCreateActive = ref<boolean>(true)
-const tabSelectActive = ref<boolean>(false)
+const tabCreateActive = ref<boolean>(!props.orderGuests)
+const tabSelectActive = ref<boolean>(!!props.orderGuests)
 
 const guestSelect = ref()
-
-const orderStore = useOrderStore()
-const orderId = computed(() => orderStore.order.id)
 
 const ageTypeOptions: SelectOption[] = [
   { value: 0, label: 'Взрослый' },
@@ -82,60 +81,75 @@ const ageType = computed<number>({
   },
 })
 
-const formData = reactive<GuestFormData>({
+const formData = ref<GuestFormData>({
   bookingID,
   id: props.guestId,
   ...props.formData,
 })
 
-const isFetching = ref<boolean>(false)
+watchEffect(() => {
+  formData.value = {
+    bookingID,
+    id: props.guestId,
+    ...props.formData,
+  }
+})
 
-const validateCreateGuestForm = computed(() => (isDataValid(null, formData.countryId)
-&& isDataValid(null, formData.fullName) && isDataValid(null, formData.gender)
-&& (ageType.value === 1 ? isDataValid(null, formData.age) : true)))
+const validateCreateGuestForm = computed(() => (isDataValid(null, formData.value.countryId)
+&& isDataValid(null, formData.value.fullName) && isDataValid(null, formData.value.gender)
+&& (ageType.value === 1 ? isDataValid(null, formData.value.age) : true)))
 
-const validateSelectGuestForm = computed(() => (isDataValid(null, formData.selectedGuestFromOrder)))
+const validateSelectGuestForm = computed(() => (isDataValid(null, formData.value.selectedGuestFromOrder)))
+
+const isFormValid = (): boolean => {
+  if (tabCreateActive.value && validateCreateGuestForm) {
+    return true
+  } if (tabSelectActive.value && validateSelectGuestForm) {
+    return true
+  }
+  return false
+}
 
 const modalForm = ref<HTMLFormElement>()
 const onModalSubmit = async () => {
-  /* if (!validateForm<GuestFormData>(modalForm as Ref<HTMLFormElement>, formData)) {
+  if (!isFormValid()) {
     return
   }
-  isFetching.value = true
   formData.value.roomBookingId = unref<number>(props.roomBookingId)
-  formData.value.orderId = orderId.value
+  formData.value.orderId = unref<number>(props.orderId)
   if (formData.value.id !== undefined) {
     const payload = {
       guestId: formData.value.id,
       ...formData.value,
     }
-    await updateOrderGuest(payload)
+    emit('submit', 'update', payload)
   } else {
     const payload = {
       hotelBookingRoomId: formData.value.roomBookingId,
       hotelBookingId: bookingID,
       ...formData.value,
     }
-    await addOrderGuest(payload)
+    emit('submit', 'add', payload)
     // @todo добавить возможность выбрать из списка туристов заказа,
   }
   localAgeType.value = undefined
-  isFetching.value = false
-  emit('submit') */
 }
 
 const countryOptions = computed<SelectOption[]>(
   () => props.countries?.map((country: CountryResponse) => ({ value: country.id, label: country.name })) || [],
 )
 
+const guestsOptions = computed<SelectOption[]>(
+  () => props.orderGuests?.map((guest: Guest) => ({ value: guest.id, label: guest.fullName })) || [],
+)
+
 const handleChangeAgeType = (type: number): void => {
   ageType.value = type
-  formData.isAdult = type === 0
-  formData.age = null
+  formData.value.isAdult = type === 0
+  formData.value.age = null
 }
 
 const closeModal = () => {
-  modalForm.value?.reset()
   emit('close')
 }
 
@@ -145,11 +159,12 @@ const switchTab = () => {
 }
 
 const resetForm = () => {
-  formData.countryId = undefined
-  formData.fullName = ''
-  formData.gender = undefined
-  formData.age = undefined
-  formData.selectedGuestFromOrder = undefined
+  emit('clear')
+  formData.value.countryId = undefined
+  formData.value.fullName = ''
+  formData.value.gender = undefined
+  formData.value.age = undefined
+  formData.value.selectedGuestFromOrder = undefined
   ageType.value = 0
   handleChangeAgeType(ageType.value)
   guestSelect.value.clearComponentValue()
@@ -168,7 +183,7 @@ const resetForm = () => {
     @keydown.enter="onModalSubmit"
   >
     <template #title>{{ titleText }}</template>
-    <template v-if="!dataForSelectTab">
+    <template v-if="!orderGuests || formData.id !== undefined">
       <form ref="modalForm" class="row g-3">
         <div class="col-md-12">
           <BootstrapSelectBase
@@ -177,13 +192,20 @@ const resetForm = () => {
             label="Гражданство"
             :value="formData.countryId as number"
             required
+            @blur="isDataValid($event, formData.countryId)"
             @input="(value: any) => formData.countryId = value as number"
           />
         </div>
         <div class="col-md-12">
           <div class="field-required">
             <label for="full_name">ФИО</label>
-            <input id="full_name" v-model="formData.fullName" class="form-control" required>
+            <input
+              id="full_name"
+              v-model="formData.fullName"
+              class="form-control"
+              required
+              @blur="isDataValid($event, formData.fullName)"
+            >
           </div>
         </div>
         <div class="col-md-12">
@@ -193,6 +215,7 @@ const resetForm = () => {
             label="Пол"
             :value="formData.gender as number"
             required
+            @blur="isDataValid($event, formData.gender)"
             @input="(value: any) => formData.gender = value as number"
           />
         </div>
@@ -218,6 +241,7 @@ const resetForm = () => {
               required
               min="0"
               max="18"
+              @blur="isDataValid($event, formData.age)"
             >
           </div>
         </div>
@@ -225,15 +249,6 @@ const resetForm = () => {
     </template>
     <BootstrapTabs v-else>
       <template #links>
-        <BootstrapTabsLink
-          tab-name="create-new-guest"
-          :is-active="tabCreateActive"
-          :is-required="true"
-          :is-disabled="false"
-          @click.prevent="switchTab"
-        >
-          {{ tabCreateText }}
-        </BootstrapTabsLink>
         <BootstrapTabsLink
           tab-name="select-exists-guest"
           :is-active="tabSelectActive"
@@ -243,6 +258,15 @@ const resetForm = () => {
         >
           {{ tabSelectText }}
         </BootstrapTabsLink>
+        <BootstrapTabsLink
+          tab-name="create-new-guest"
+          :is-active="tabCreateActive"
+          :is-required="true"
+          :is-disabled="false"
+          @click.prevent="switchTab"
+        >
+          {{ tabCreateText }}
+        </BootstrapTabsLink>
       </template>
       <template #tabs>
         <BootstrapTabsTabContent tab-name="select-exists-guest" :is-active="tabSelectActive">
@@ -251,7 +275,7 @@ const resetForm = () => {
               id="guest-select"
               ref="guestSelect"
               :label="inputSelectText"
-              :options="[]"
+              :options="guestsOptions"
               :value="formData.selectedGuestFromOrder"
               parent=".guest-select-wrapper"
               :enable-tags="false"
@@ -328,7 +352,7 @@ const resetForm = () => {
         </BootstrapTabsTabContent>
       </template>
     </BootstrapTabs>
-    <template #actions-start>
+    <template v-if="formData.id === undefined" #actions-start>
       <button class="btn btn-default" type="button" @click="resetForm">
         Сбросить
       </button>
@@ -337,7 +361,9 @@ const resetForm = () => {
       <button
         class="btn btn-primary"
         type="button"
-        :disabled="(tabCreateActive && !validateCreateGuestForm) || (tabSelectActive && !validateSelectGuestForm)"
+        :disabled="(tabCreateActive && !validateCreateGuestForm && formData.id === undefined)
+          || (tabSelectActive && !validateSelectGuestForm && formData.id === undefined)
+          || (formData.id !== undefined && !validateCreateGuestForm)"
         @click="onModalSubmit"
       >
         Сохранить

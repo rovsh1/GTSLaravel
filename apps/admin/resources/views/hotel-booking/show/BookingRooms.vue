@@ -26,8 +26,8 @@ import {
 } from '~api/booking/hotel/details'
 import { updateRoomBookingPrice } from '~api/booking/hotel/price'
 import { deleteBookingGuest, deleteBookingRoom } from '~api/booking/hotel/rooms'
-import { Guest } from '~api/booking/order/guest'
-import { CountryResponse, useCountrySearchAPI } from '~api/country'
+import { addOrderGuest, AddOrderGuestPayload, Guest, updateOrderGuest, UpdateOrderGuestPayload } from '~api/booking/order/guest'
+import { useCountrySearchAPI } from '~api/country'
 import { MarkupSettings } from '~api/hotel/markup-settings'
 import { HotelRate, useHotelRatesAPI } from '~api/hotel/price-rate'
 import { Currency } from '~api/models'
@@ -68,6 +68,7 @@ const grossCurrency = computed<Currency | undefined>(
 const netCurrency = computed<Currency | undefined>(
   () => getCurrencyByCodeChar(bookingStore.booking?.price.netPrice.currency.value),
 )
+const orderId = computed(() => orderStore.order.id)
 const orderGuests = computed<Guest[]>(() => orderStore.guests || [])
 const isBookingPriceManual = computed(
   () => bookingStore.booking?.price.grossPrice.isManual || bookingStore.booking?.price.netPrice.isManual,
@@ -87,6 +88,8 @@ const getDefaultGuestForm = () => ({ isAdult: true })
 const roomForm = ref<Partial<RoomFormData>>({})
 const guestForm = ref<Partial<GuestFormData>>(getDefaultGuestForm())
 
+const waitingSaveGuestModalData = ref<boolean>(false)
+
 const editRoomBookingId = ref<number>()
 const editGuestId = ref<number>()
 const handleAddRoomGuest = (roomBookingId: number) => {
@@ -99,7 +102,14 @@ const handleAddRoomGuest = (roomBookingId: number) => {
 const handleEditGuest = (roomBookingId: number, guest: HotelBookingGuest): void => {
   editRoomBookingId.value = roomBookingId
   editGuestId.value = guest.id
-  guestForm.value = guest
+  guestForm.value = {
+    id: guest.id,
+    fullName: guest.fullName,
+    countryId: guest.countryId,
+    gender: guest.gender,
+    isAdult: guest.isAdult,
+    age: guest.age,
+  }
   toggleGuestModal(true)
 }
 
@@ -184,9 +194,26 @@ const onModalSubmit = () => {
   fetchBooking()
 }
 
+const onModalGuestsSubmit = async (operationType: string, payload: any) => {
+  console.log(payload)
+  waitingSaveGuestModalData.value = true
+  if (operationType === 'add') {
+    await addOrderGuest(payload as AddOrderGuestPayload)
+  } else if (operationType === 'update') {
+    await updateOrderGuest(payload as UpdateOrderGuestPayload)
+  }
+  fetchBooking()
+  waitingSaveGuestModalData.value = false
+}
+
 const onCloseModal = () => {
   roomForm.value = {}
   toggleRoomModal(false)
+}
+
+const onCloseGuestModal = () => {
+  guestForm.value = getDefaultGuestForm()
+  toggleGuestModal(false)
 }
 
 fetchPriceRates()
@@ -207,13 +234,16 @@ fetchCountries()
   <GuestModal
     v-if="countries && editRoomBookingId !== undefined"
     :opened="isShowGuestModal"
+    :is-fetching="waitingSaveGuestModalData"
     :room-booking-id="editRoomBookingId"
+    :order-id="orderId"
     :guest-id="editGuestId"
     :form-data="guestForm"
-    :data-for-select-tab="[]"
-    :countries="countries as CountryResponse[]"
-    @close="toggleGuestModal(false)"
-    @submit="onModalSubmit"
+    :order-guests="orderGuests"
+    :countries="countries"
+    @close="onCloseGuestModal"
+    @submit="onModalGuestsSubmit"
+    @clear="guestForm = getDefaultGuestForm()"
   />
 
   <RoomPriceModal

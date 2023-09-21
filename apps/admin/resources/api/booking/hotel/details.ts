@@ -7,6 +7,7 @@ export interface HotelBookingGuest {
   countryId: number
   gender: number
   isAdult: boolean
+  age?: number
 }
 
 export interface RoomInfo {
