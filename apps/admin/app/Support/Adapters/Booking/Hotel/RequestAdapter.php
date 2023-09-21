@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Admin\Support\Adapters\Booking;
+namespace App\Admin\Support\Adapters\Booking\Hotel;
 
 use Module\Booking\HotelBooking\Application\UseCase\Admin\Request\GetBookingRequests;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\Request\GetDocumentFileInfo;

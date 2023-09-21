@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Admin\Support\Facades\Booking;
+namespace App\Admin\Support\Facades\Booking\Hotel;
 
 use Illuminate\Support\Facades\Facade;
 
@@ -19,6 +19,6 @@ class HotelPriceAdapter extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return \App\Admin\Support\Adapters\Booking\HotelPriceAdapter::class;
+        return \App\Admin\Support\Adapters\Booking\Hotel\HotelPriceAdapter::class;
     }
 }

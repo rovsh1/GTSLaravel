@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Admin\Support\Adapters\Booking;
+namespace App\Admin\Support\Adapters\Booking\Hotel;
 
-use Module\Booking\HotelBooking\Application\UseCase\Admin\Price\SetGrossPenalty;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\Price\SetCalculatedGrossPrice;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\Price\SetCalculatedNetPrice;
-use Module\Booking\HotelBooking\Application\UseCase\Admin\Price\SetNetPenalty;
+use Module\Booking\HotelBooking\Application\UseCase\Admin\Price\SetGrossPenalty;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\Price\SetManualGrossPrice;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\Price\SetManualNetPrice;
+use Module\Booking\HotelBooking\Application\UseCase\Admin\Price\SetNetPenalty;
 use Module\Booking\HotelBooking\Application\UseCase\Admin\Room\SetManualPrice;
 
 class HotelPriceAdapter

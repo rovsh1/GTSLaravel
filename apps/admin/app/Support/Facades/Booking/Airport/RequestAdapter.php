@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Admin\Support\Facades\Booking;
+namespace App\Admin\Support\Facades\Booking\Airport;
 
 use Illuminate\Support\Facades\Facade;
 
@@ -15,6 +15,6 @@ class RequestAdapter extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return \App\Admin\Support\Adapters\Booking\RequestAdapter::class;
+        return \App\Admin\Support\Adapters\Booking\Airport\RequestAdapter::class;
     }
 }
