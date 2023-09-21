@@ -15,8 +15,7 @@ class Dictionary extends Model
     private string $valuesTable = 'r_locale_dictionary_values';
 
     protected $fillable = [
-        'key',
-        'description'
+        'key'
     ];
 
     public static function findByKey(string $key): ?Dictionary

@@ -43,7 +43,7 @@ class LocaleDictionarySeeder extends Seeder
             } else {
                 $raw = Dictionary::findByKey($itemKey);//$this->findDictionary($itemKey);
                 if (!$raw) {
-                    $raw = $this->insertKey($itemKey, $locale, $value);
+                    $this->insertKey($itemKey, $locale, $value);
                 }
                 $this->actualKeys[] = $itemKey;
             }

@@ -10,7 +10,6 @@ return new class extends Migration {
         Schema::create('r_locale_dictionary', function (Blueprint $table) {
             $table->increments('id');
             $table->string('key');
-            $table->string('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
@@ -25,7 +24,7 @@ return new class extends Migration {
             $table->foreign('dictionary_id')
                 ->references('id')
                 ->on('r_locale_dictionary')
-                ->restrictOnDelete()
+                ->cascadeOnDelete()
                 ->cascadeOnUpdate();
 
             $table->index(['dictionary_id', 'locale']);
