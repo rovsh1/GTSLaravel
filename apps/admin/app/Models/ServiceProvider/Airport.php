@@ -13,7 +13,7 @@ use Sdk\Module\Database\Eloquent\Model;
 
 class Airport extends Model
 {
-    protected $table = 'service_provider_airports';
+    protected $table = 'supplier_airports';
 
     public $timestamps = false;
 
@@ -25,8 +25,8 @@ class Airport extends Model
     public static function booted()
     {
         static::addGlobalScope('default', function (Builder $builder) {
-            $builder->addSelect('service_provider_airports.*')
-                ->join('r_airports', 'r_airports.id', '=', 'service_provider_airports.airport_id')
+            $builder->addSelect('supplier_airports.*')
+                ->join('r_airports', 'r_airports.id', '=', 'supplier_airports.airport_id')
                 ->addSelect('r_airports.name as airport_name')
                 ->join('r_cities', 'r_cities.id', '=', 'r_airports.city_id')
                 ->joinTranslatable('r_cities', 'name as city_name');

@@ -47,8 +47,8 @@ final class BookingPrice implements SerializableDataInterface, CanEquate
     public static function fromData(array $data): static
     {
         return new BookingPrice(
-            PriceItem::fromData($data['netPrice']),
-            PriceItem::fromData($data['grossPrice']),
+            netPrice: PriceItem::fromData($data['netPrice']),
+            grossPrice: PriceItem::fromData($data['grossPrice']),
         );
     }
 

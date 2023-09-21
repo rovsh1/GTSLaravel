@@ -17,7 +17,7 @@ class Car extends Model
 
     protected array $quicksearch = ['id', 'mark%', 'model%'];
 
-    protected $table = 'service_provider_cars';
+    protected $table = 'supplier_cars';
 
     public $timestamps = false;
 
@@ -33,8 +33,8 @@ class Car extends Model
     public static function booted()
     {
         static::addGlobalScope('default', function (Builder $builder) {
-            $builder->addSelect('service_provider_cars.*')
-                ->join('r_transport_cars', 'r_transport_cars.id', '=', 'service_provider_cars.car_id')
+            $builder->addSelect('supplier_cars.*')
+                ->join('r_transport_cars', 'r_transport_cars.id', '=', 'supplier_cars.car_id')
                 ->addSelect('r_transport_cars.mark as mark')
                 ->addSelect('r_transport_cars.model as model');
         });
@@ -54,7 +54,7 @@ class Car extends Model
 
     public function cities(): BelongsToMany
     {
-        return $this->belongsToMany(City::class, 'service_provider_car_cities', 'car_id', 'city_id');
+        return $this->belongsToMany(City::class, 'supplier_car_cities', 'car_id', 'city_id');
     }
 
     public function cityIds(): Attribute

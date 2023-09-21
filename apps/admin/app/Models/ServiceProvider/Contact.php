@@ -7,7 +7,7 @@ use Sdk\Module\Database\Eloquent\Model;
 
 class Contact extends Model
 {
-    protected $table = 'service_provider_contacts';
+    protected $table = 'supplier_contacts';
 
     protected $fillable = [
         'provider_id',

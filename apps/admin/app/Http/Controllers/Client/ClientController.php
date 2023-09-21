@@ -7,6 +7,7 @@ namespace App\Admin\Http\Controllers\Client;
 use App\Admin\Http\Requests\Client\CreateClientRequest;
 use App\Admin\Http\Resources\Client as ClientResource;
 use App\Admin\Models\Client\Legal;
+use App\Admin\Models\Client\User;
 use App\Admin\Models\Reference\Country;
 use App\Admin\Repositories\ClientAdministratorRepository;
 use App\Admin\Support\Facades\Acl;
@@ -24,10 +25,13 @@ use App\Admin\View\Menus\ClientMenu;
 use Gsdk\Format\View\ParamsTable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Module\Shared\Enum\Client\LegalTypeEnum;
 use Module\Shared\Enum\Client\ResidencyEnum;
 use Module\Shared\Enum\Client\StatusEnum;
 use Module\Shared\Enum\Client\TypeEnum;
+use Module\Shared\Enum\Client\User\RoleEnum;
+use Module\Shared\Enum\Client\User\StatusEnum as UserStatusEnum;
 
 class ClientController extends AbstractPrototypeController
 {
@@ -40,6 +44,34 @@ class ClientController extends AbstractPrototypeController
     protected function getPrototypeKey(): string
     {
         return 'client';
+    }
+
+    public function store(): RedirectResponse
+    {
+        $form = $this->formFactory()
+            ->method('post');
+
+        $form->trySubmit($this->prototype->route('create'));
+
+        $preparedData = $this->saving($form->getData());
+        $this->model = $this->repository->create($preparedData);
+        if ($this->model->type === TypeEnum::PHYSICAL) {
+            $gender = $preparedData['gender'] ?? null;
+            $this->createUser($gender);
+        }
+
+        $managerId = $preparedData['administrator_id'] ?? null;
+        if ($managerId === null) {
+            $managerId = request()->user()->id;
+        }
+        $this->clientAdministratorRepository->create($this->model->id, $managerId);
+
+        $redirectUrl = $this->prototype->route('index');
+        if ($this->hasShowAction()) {
+            $redirectUrl = $this->prototype->route('show', $this->model);
+        }
+
+        return redirect($redirectUrl);
     }
 
     public function storeDialog(CreateClientRequest $request): JsonResponse
@@ -75,6 +107,11 @@ class ClientController extends AbstractPrototypeController
                 bik: $legalData->bik ?? '',
                 bankName: $legalData->bankName ?? ''
             );
+        }
+
+        if ($this->model->type === TypeEnum::PHYSICAL) {
+            $gender = $data['gender'] ?? null;
+            $this->createUser($gender);
         }
 
         $managerId = $request->user()->id;
@@ -158,6 +195,19 @@ class ClientController extends AbstractPrototypeController
             ->data($this->model);
     }
 
+    private function createUser(int|string|null $gender): void
+    {
+        User::create([
+            'client_id' => $this->model->id,
+            'country_id' => $this->model->country_id,
+            'gender' => $gender !== null ? (int)$gender : null,
+            'name' => $this->model->name,
+            'presentation' => $this->model->name,
+            'role' => RoleEnum::CUSTOMER,
+            'status' => UserStatusEnum::ACTIVE,
+        ]);
+    }
+
     protected function gridFactory(): GridContract
     {
         return Grid::enableQuicksearch()
@@ -174,6 +224,7 @@ class ClientController extends AbstractPrototypeController
     {
         return Form::text('name', ['label' => 'ФИО или название компании', 'required' => true])
             ->enum('type', ['label' => 'Тип', 'enum' => TypeEnum::class, 'required' => true, 'emptyItem' => ''])
+            ->hidden('gender', ['label' => 'Пол'])
             ->city('city_id', ['label' => 'Город', 'required' => true, 'emptyItem' => ''])
             ->enum('status', ['label' => 'Статус', 'enum' => StatusEnum::class])
             ->currency('currency_id', ['label' => 'Валюта', 'required' => true, 'emptyItem' => ''])

@@ -29,8 +29,8 @@ class AbstractList extends Model
     {
         parent::boot();
 
-        self::creating(function ($model) {
-            $model->group = $model->group;
+        static::creating(function ($model) {
+            $model->attributes['group'] = $model->group;
         });
     }
 

@@ -61,7 +61,7 @@ onMounted(async () => {
       :prices-data="prices"
       :is-fetching="pricesLoad"
       :close-all-but="closeAllButParam"
-      @close-all="but => closeAllButParam = but"
+      @close-all="(but: any) => closeAllButParam = but"
       @update-data="fetchPrices"
     />
   </BootstrapCard>

@@ -9,8 +9,8 @@ use Module\Shared\Domain\Service\SerializerInterface;
 use Module\Shared\Domain\Service\TranslatorInterface;
 use Module\Shared\Infrastructure\Service\JsonSerializer;
 use Module\Shared\Infrastructure\Service\TransactionalExecutor;
-use Module\Shared\Infrastructure\Service\Translator;
 use Module\SharedKernel;
+use Module\Support\LocaleTranslator\Translator;
 
 class ModuleServiceProvider extends ServiceProvider
 {

@@ -10,13 +10,8 @@ use Module\Booking\Common\Domain\Event\Status\BookingCancelled;
 use Module\Booking\Common\Domain\Event\Status\BookingCancelledFee;
 use Module\Booking\Common\Domain\Event\Status\BookingCancelledNoFee;
 use Module\Booking\Common\Domain\Event\Status\BookingConfirmed;
-use Module\Booking\Common\Domain\Event\Status\BookingInvoiced;
 use Module\Booking\Common\Domain\Event\Status\BookingNotConfirmed;
-use Module\Booking\Common\Domain\Event\Status\BookingPaid;
-use Module\Booking\Common\Domain\Event\Status\BookingPartiallyPaid;
 use Module\Booking\Common\Domain\Event\Status\BookingProcessing;
-use Module\Booking\Common\Domain\Event\Status\BookingRefundFee;
-use Module\Booking\Common\Domain\Event\Status\BookingRefundNoFee;
 use Module\Booking\Common\Domain\Event\Status\BookingWaitingCancellation;
 use Module\Booking\Common\Domain\Event\Status\BookingWaitingConfirmation;
 use Module\Booking\Common\Domain\Event\Status\BookingWaitingProcessing;
@@ -61,13 +56,8 @@ class GetStatusHistory implements UseCaseInterface
             BookingCancelled::class => BookingStatusEnum::CANCELLED->value,
             BookingConfirmed::class => BookingStatusEnum::CONFIRMED->value,
             BookingNotConfirmed::class => BookingStatusEnum::NOT_CONFIRMED->value,
-            BookingInvoiced::class => BookingStatusEnum::INVOICED->value,
-            BookingPaid::class => BookingStatusEnum::PAID->value,
-            BookingPartiallyPaid::class => BookingStatusEnum::PARTIALLY_PAID->value,
             BookingCancelledNoFee::class => BookingStatusEnum::CANCELLED_NO_FEE->value,
             BookingCancelledFee::class => BookingStatusEnum::CANCELLED_FEE->value,
-            BookingRefundNoFee::class => BookingStatusEnum::REFUND_NO_FEE->value,
-            BookingRefundFee::class => BookingStatusEnum::REFUND_FEE->value,
             BookingWaitingConfirmation::class => BookingStatusEnum::WAITING_CONFIRMATION->value,
             BookingWaitingCancellation::class => BookingStatusEnum::WAITING_CANCELLATION->value,
             BookingWaitingProcessing::class => BookingStatusEnum::WAITING_PROCESSING->value,

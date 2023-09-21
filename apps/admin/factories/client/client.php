@@ -10,4 +10,7 @@ return Factory::key('client')
         "index" => "Клиенты",
         "create" => "Новый клиент"
     ])
+    ->views([
+        'form' => 'client.form.form'
+    ])
     ->priority(100);
