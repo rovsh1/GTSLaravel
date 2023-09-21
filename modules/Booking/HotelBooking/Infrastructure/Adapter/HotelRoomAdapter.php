@@ -3,20 +3,18 @@
 namespace Module\Booking\HotelBooking\Infrastructure\Adapter;
 
 use Module\Booking\HotelBooking\Domain\Adapter\HotelRoomAdapterInterface;
-use Module\Shared\Infrastructure\Adapter\AbstractModuleAdapter;
+use Module\Hotel\Application\UseCase\GetRooms;
+use Module\Hotel\Application\UseCase\Room\Find;
 
-class HotelRoomAdapter extends AbstractModuleAdapter implements HotelRoomAdapterInterface
+class HotelRoomAdapter implements HotelRoomAdapterInterface
 {
-
     public function findById(int $id): mixed
     {
-        $roomDto = $this->request('getRoom', ['id' => $id]);
-
-        return $roomDto;
+        return app(Find::class)->execute($id);
     }
 
-    protected function getModuleKey(): string
+    public function getByHotelId(int $hotelId): array
     {
-        return 'Hotel';
+        return app(GetRooms::class)->execute($hotelId);
     }
 }
