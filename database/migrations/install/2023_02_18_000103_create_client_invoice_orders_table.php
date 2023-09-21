@@ -13,7 +13,7 @@ return new class extends Migration {
 
             $table->foreign('invoice_id')
                 ->references('id')
-                ->on('order_invoices')
+                ->on('client_invoices')
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
 

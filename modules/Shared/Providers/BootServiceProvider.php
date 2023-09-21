@@ -21,7 +21,6 @@ class BootServiceProvider extends ServiceProvider
 
     public function boot()
     {
-
         $this->app->singleton(ApplicationConstantsInterface::class, ApplicationConstantManager::class);
         $this->app->singleton(CompanyRequisitesInterface::class, CompanyRequisiteManager::class);
     }

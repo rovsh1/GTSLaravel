@@ -3,6 +3,7 @@
 namespace Module;
 
 use Module\Shared\Contracts\Adapter\FileStorageAdapterInterface;
+use Module\Shared\Contracts\Adapter\LocaleDictionaryAdapterInterface;
 use Module\Shared\Domain\Adapter\CurrencyRateAdapterInterface;
 use Module\Shared\Domain\Service\ApplicationConstantsInterface;
 use Module\Shared\Domain\Service\ApplicationContextInterface;
@@ -26,7 +27,10 @@ class SharedKernel extends BaseKernel
         ApplicationContextInterface::class,
         ApplicationConstantsInterface::class,
         CompanyRequisitesInterface::class,
+        LocaleDictionaryAdapterInterface::class,
     ];
 
-    protected function registerSharedBindings(): void {}
+    protected function registerSharedBindings(): void
+    {
+    }
 }
