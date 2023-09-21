@@ -59,13 +59,19 @@ class Update
             ? Price::collectionFromArray($data['prices'], $codeGenerator)
             : null;
 
+
+        $isClosed = $data['closed'] ?? null;
+        if ($isClosed !== null) {
+            $isClosed = $isClosed === 'true';
+        }
+
         return new self(
             new Carbon($data['startDateYmd']),
             new Carbon($data['endDateYmd']),
             $data['roomTypeId'],
             $data['ratePlanId'] ?? null,
             $data['currencyCode'] ?? null,
-            $data['closed'] ?? null,
+            $isClosed,
             $prices,
             $data['quota'] ?? null,
             $data['minimumAdvanceBooking'] ?? null,
