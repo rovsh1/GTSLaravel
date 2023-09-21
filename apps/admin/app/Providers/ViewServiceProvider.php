@@ -9,12 +9,15 @@ use App\Admin\View\Components;
 use Gsdk\Form as FormNamespace;
 use Gsdk\Meta\MetaServiceProvider;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class ViewServiceProvider extends ServiceProvider
 {
     public function register()
     {
+        View::addLocation(package_path('resources/views'));
+
         $this->registerLayout();
         $this->registerGrid();
         $this->registerForm();

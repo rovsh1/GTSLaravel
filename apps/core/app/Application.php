@@ -11,50 +11,52 @@ use Sdk\Module\Foundation\Support\ModulesLoader;
 
 class Application extends \Illuminate\Foundation\Application
 {
-    public function __construct(private string $rootPath)
+    private ?string $packagePath = null;
+
+    public function __construct(string $basePath = null)
     {
-        parent::__construct();
+        parent::__construct($basePath);
 
         $this->registerModules();
         $this->registerSharedKernel();
 
-        $this->useStoragePath($this->rootPath . DIRECTORY_SEPARATOR . 'storage');
-        $this->useDatabasePath($this->rootPath . DIRECTORY_SEPARATOR . 'database');
+//        $this->useStoragePath($this->basePath('storage'));
+//        $this->useDatabasePath($this->basePath('database'));
     }
 
-    public function setNamespace(string $namespace)
+    public function usePackagePath(string $path): void
+    {
+        $this->packagePath = $path;
+        $this->useAppPath($path . DIRECTORY_SEPARATOR . 'app');
+        $this->usePublicPath($path . DIRECTORY_SEPARATOR . 'public');
+        $this->useLangPath($path . DIRECTORY_SEPARATOR . 'resources/lang');
+    }
+
+    public function resourcePath($path = ''): string
+    {
+        return $this->joinPaths($this->packagePath . DIRECTORY_SEPARATOR . 'resources', $path);
+    }
+
+//    public function viewPath($path = ''){}
+
+    public function packagePath($path = ''): string
+    {
+        return $this->joinPaths($this->packagePath, $path);
+    }
+
+    public function setNamespace(string $namespace): void
     {
         $this->namespace = $namespace;
     }
 
-    public function rootPath($path = '')
+    public function corePath($path = ''): string
     {
-        return $this->rootPath . ($path != '' ? DIRECTORY_SEPARATOR . $path : '');
+        return $this->basePath('apps/core' . ($path != '' ? DIRECTORY_SEPARATOR . $path : ''));
     }
 
-    public function bootstrapPath($path = '')
+    public function modulesPath($path = ''): string
     {
-        return $this->rootPath . DIRECTORY_SEPARATOR . 'bootstrap' . ($path != '' ? DIRECTORY_SEPARATOR . $path : '');
-    }
-
-    public function configPath($path = '')
-    {
-        return $this->rootPath . DIRECTORY_SEPARATOR . 'config' . ($path != '' ? DIRECTORY_SEPARATOR . $path : '');
-    }
-
-    public function corePath($path = '')
-    {
-        return $this->rootPath . DIRECTORY_SEPARATOR . 'apps/core' . ($path != '' ? DIRECTORY_SEPARATOR . $path : '');
-    }
-
-    public function modulesPath($path = '')
-    {
-        return $this->rootPath . DIRECTORY_SEPARATOR . 'modules' . ($path != '' ? DIRECTORY_SEPARATOR . $path : '');
-    }
-
-    public function environmentPath()
-    {
-        return $this->rootPath;
+        return $this->basePath('modules' . ($path != '' ? DIRECTORY_SEPARATOR . $path : ''));
     }
 
     public function module(string $name): ?Module
@@ -65,21 +67,6 @@ class Application extends \Illuminate\Foundation\Application
     public function modules(): ModulesManager
     {
         return $this->instances[ModulesManager::class];
-    }
-
-    public function registerModule(Module $module): void
-    {
-        $this->modules->registerModule($module);
-    }
-
-    public function loadModule(string $name): void
-    {
-        $this->modules->loadModule($name);
-    }
-
-    public function moduleLoaded(string $name): bool
-    {
-        return $this->modules->get($name)->isBooted();
     }
 
     public function build($concrete)
@@ -101,7 +88,7 @@ class Application extends \Illuminate\Foundation\Application
             ModulesManager::class,
             new ModulesManager(
                 modulesNamespace: 'Module',
-                modulesPath: $this->rootPath('modules')
+                modulesPath: $this->basePath('modules')
             )
         );
         $this->alias(ModulesManager::class, 'modules');
@@ -134,10 +121,11 @@ class Application extends \Illuminate\Foundation\Application
 
         $this->instance('path.modules', $this->modulesPath());
 
-        $appsPath = $this->rootPath . DIRECTORY_SEPARATOR . 'apps';
+        $appsPath = $this->basePath('apps');
         $this->instance('path.admin', $appsPath . DIRECTORY_SEPARATOR . 'admin');
         $this->instance('path.core', $appsPath . DIRECTORY_SEPARATOR . 'core');
         $this->instance('path.site', $appsPath . DIRECTORY_SEPARATOR . 'site');
         $this->instance('path.api', $appsPath . DIRECTORY_SEPARATOR . 'api');
+//        $this->instance('path.package', $this->packagePath);
     }
 }

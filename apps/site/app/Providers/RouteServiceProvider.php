@@ -25,7 +25,7 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->routes(function () {
             Route::middleware(['web', 'site'])
-                ->group(base_path('routes/files.php'));
+                ->group(package_path('routes/files.php'));
         });
     }
 }

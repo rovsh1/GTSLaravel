@@ -12,7 +12,7 @@ class StatusDto
     ) {
     }
 
-    public static function createFromEnum($enum): StatusDto
+    public static function createFromEnum(\BackedEnum $enum): StatusDto
     {
         return new StatusDto(
             $enum->value,

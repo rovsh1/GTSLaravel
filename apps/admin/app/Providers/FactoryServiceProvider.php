@@ -14,7 +14,7 @@ class FactoryServiceProvider extends ServiceProvider
         $this->app->singleton('factory.prototypes', function () {
             $prototypes = new PrototypesCollection();
 
-            (new PrototypeLoader(base_path('factories'), $prototypes))->load();
+            (new PrototypeLoader(package_path('factories'), $prototypes))->load();
 
             return $prototypes;
         });
