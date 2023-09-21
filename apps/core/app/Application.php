@@ -2,12 +2,12 @@
 
 namespace App\Core;
 
-use App\Core\Providers\ModuleServiceProvider;
 use Module\SharedKernel;
 use Sdk\Module\Contracts\Api\ApiInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 use Sdk\Module\Foundation\Module;
 use Sdk\Module\Foundation\ModulesManager;
+use Sdk\Module\Foundation\Support\ModulesLoader;
 
 class Application extends \Illuminate\Foundation\Application
 {
@@ -15,16 +15,8 @@ class Application extends \Illuminate\Foundation\Application
     {
         parent::__construct();
 
-        $this->instance(
-            ModulesManager::class,
-            new ModulesManager(
-                'Module',
-                $this->rootPath('modules')
-            )
-        );
-        $this->alias(ModulesManager::class, 'modules');
-
-        $this->registerRequiredServiceProviders();
+        $this->registerModules();
+        $this->registerSharedKernel();
 
         $this->useStoragePath($this->rootPath . DIRECTORY_SEPARATOR . 'storage');
         $this->useDatabasePath($this->rootPath . DIRECTORY_SEPARATOR . 'database');
@@ -103,9 +95,37 @@ class Application extends \Illuminate\Foundation\Application
         }
     }
 
-    private function registerRequiredServiceProviders()
+    private function registerModules(): void
     {
-        $this->register(ModuleServiceProvider::class);
+        $this->instance(
+            ModulesManager::class,
+            new ModulesManager(
+                modulesNamespace: 'Module',
+                modulesPath: $this->rootPath('modules')
+            )
+        );
+        $this->alias(ModulesManager::class, 'modules');
+
+        $this->booting(function () {
+            $this->loadModules();
+        });
+    }
+
+    private function registerSharedKernel(): void
+    {
+        $kernel = new SharedKernel($this, $this->modules());
+        $this->instance(SharedKernel::class, $kernel);
+        $this->booting(function () {
+            $this->instances[SharedKernel::class]->boot();
+        });
+    }
+
+    private function loadModules(): void
+    {
+        (new ModulesLoader(
+            $this->modules(),
+            $this->instances[SharedKernel::class]->getContainer()
+        ))->load(config('modules'));
     }
 
     protected function bindPathsInContainer()

@@ -7,36 +7,63 @@ use Sdk\Module\Bus\IntegrationEventBus;
 use Sdk\Module\Contracts\Api\ApiInterface;
 use Sdk\Module\Contracts\Bus\IntegrationEventBusInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
-use Sdk\Module\Foundation\Support\ModulesLoader;
 use Sdk\Module\Foundation\Support\SharedContainer;
 
 class SharedKernel
 {
     protected Application $app;
 
-    protected ModulesManager $modules;
-
     protected SharedContainer $sharedContainer;
 
-    protected array $applicationBindings = [];
+    protected array $serviceProviders = [];
 
     public function __construct(Application $app, ModulesManager $modules)
     {
         $this->app = $app;
-        $this->modules = $modules;
         $this->sharedContainer = $this->makeSharedContainer();
+
+        $this->registerServiceProviders();
+        $this->registerRequiredDependencies();
+    }
+
+    public function register($provider): void
+    {
+        $resolved = new $provider($this);
+
+        if (method_exists($resolved, 'register')) {
+            $resolved->register();
+        }
+
+        if (property_exists($provider, 'singletons')) {
+            foreach ($provider->singletons as $key => $value) {
+                $key = is_int($key) ? $value : $key;
+
+                $this->singleton($key, $value);
+            }
+        }
+
+        $this->serviceProviders[] = $resolved;
     }
 
     public function boot(): void
     {
-        $this->registerRequiredDependencies();
-        $this->registerApplicationBindings();
-        $this->registerSharedBindings();
-        $this->loadModules();
+        foreach ($this->serviceProviders as $provider) {
+            if (method_exists($provider, 'boot')) {
+                $provider->boot();
+            }
+        }
+        unset($this->serviceProviders);
     }
 
-    protected function registerSharedBindings(): void
+    public function singleton($abstract, $concrete = null): void
     {
+        $this->sharedContainer->singleton($abstract, $concrete);
+        $this->app->bind($abstract, fn() => $this->sharedContainer->get($abstract));
+    }
+
+    public function getContainer(): SharedContainer
+    {
+        return $this->sharedContainer;
     }
 
     public function makeApi(string $abstract): ApiInterface
@@ -65,28 +92,12 @@ class SharedKernel
         return new SharedContainer();
     }
 
-    protected function loadModules(): void
-    {
-        (new ModulesLoader(
-            $this->modules,
-            $this->sharedContainer
-        ))->load($this->getModulesConfig());
-    }
-
-    protected function getModulesConfig(): array
-    {
-        return config('modules');
-    }
-
     protected function registerRequiredDependencies(): void
     {
         $this->sharedContainer->instance(IntegrationEventBusInterface::class, new IntegrationEventBus());
     }
 
-    protected function registerApplicationBindings(): void
+    protected function registerServiceProviders(): void
     {
-        foreach ($this->applicationBindings as $abstract) {
-            $this->sharedContainer->bind($abstract, fn() => $this->app->get($abstract));
-        }
     }
 }
