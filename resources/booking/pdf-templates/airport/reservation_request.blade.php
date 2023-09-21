@@ -44,14 +44,62 @@
         .top-table-left {
             width: 250px;
         }
+
+        .services td {
+            padding: 10px;
+        }
+
+        .services td.first {
+            padding-top: 20px;
+        }
+
+        td.last {
+            border-bottom: 2px solid;
+        }
     </style>
 </head>
 <body>
 <table>
     <tbody>
-    @include('hotel._partials.company_requisites_header')
     <tr>
-        <td class="title text-align-center" colspan="2">НОВОЕ БРОНИРОВАНИЕ</td>
+        <td class="text-align-left" style="width: 250px"><img src="var:logo" alt="" width="250"></td>
+        <td style="width: 650px; ">
+            <table class="text-align-right">
+                <tbody>
+                <tr>
+                    <td>{{$company}}</td>
+                </tr>
+                <tr>
+                    <td>Тел: {{$phone}}</td>
+                </tr>
+                <tr>
+                    <td>E-mail: {{$email}}</td>
+                </tr>
+                <tr>
+                    <td>{{$address}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding-top: 15px;" colspan="2" class="text-align-right">Директору</td>
+    </tr>
+    <tr>
+        <td>{{$company}}</td>
+        <td class="text-align-right">{{$airportName}}</td>
+    </tr>
+    <tr>
+        <td>{{$city}}, {{$country}}</td>
+        <td class="text-align-right">{airportDirector}</td>
+    </tr>
+    <tr>
+        <td class="title text-align-center" colspan="2">БРОНЬ НА {{$serviceTypeName}}</td>
+    </tr>
+    <tr>
+        <td class="text-align-center" colspan="2" style="padding-top: 20px;padding-bottom: 20px">Согласно договору №
+            {contractNumber} от {contractDate}, ИНН: {inn}
+        </td>
     </tr>
     <tr>
         <td colspan="2">
@@ -66,29 +114,8 @@
                                     (ID):
                                 </td>
                                 <td style="font-size: 24px; font-weight: bold; color: red">{{$reservNumber}}</td>
-                                <td class="text-align-right" colspan="2"><b>Дата и время
-                                        создания: {{$reservCreatedAt}}</b>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="top-table-left">Гостиница:</td>
-                                <td><b>{{$hotelName}} ({{$cityName}})</b></td>
-                            </tr>
-                            <tr>
-                                <td class="top-table-left">Телефон:</td>
-                                <td><b>{{$hotelPhone}}</b></td>
-                            </tr>
-                            <tr>
-                                <td class="top-table-left">Дата заезда:</td>
-                                <td><b>{{$reservStartDate}}</b></td>
-                            </tr>
-                            <tr>
-                                <td class="top-table-left">Дата выезда:</td>
-                                <td><b>{{$reservEndDate}}</b></td>
-                            </tr>
-                            <tr>
-                                <td class="top-table-left">Количество ночей:</td>
-                                <td><b>{{$reservNightCount}}</b></td>
+                                <td class="text-align-right" colspan="2"><b>Дата и время создания:
+                                        {{$reservCreatedAt}}</b></td>
                             </tr>
                             </tbody>
                         </table>
@@ -99,30 +126,31 @@
         </td>
     </tr>
     <tr>
+        <td colspan="2" class="text-align-center" style="padding-top: 20px;padding-bottom: 20px">Компания ООО
+            "GotoStans" выражает Вам своё почтение и просит Вас организовать <br/> {{$serviceTypeName}} для следующих лиц
+        </td>
+    </tr>
+    <tr>
         <td colspan="2" style="padding-top: 20px;">
 
 
-            <table>
+            <table class="services">
                 <thead>
                 <tr>
                     <th class="text-align-center" style="width: 5%;">№</th>
-                    <th class="text-align-left">Информация о размещении</th>
-                    <th style="width: 33%;"></th>
+                    <th class="text-align-left" colspan="4">Информация об услуге</th>
                 </tr>
                 </thead>
                 <tbody>
-
-                @include('hotel._partials.rooms')
-
                 <tr class="first">
-                    <td colspan="3">
-                        <p style="text-align: justify"><b>Внимание!</b> Компания гарантирует оплату за количество ночей
-                            и услуги указанные в заявке,
-                            в случае раннего заезда / позднего выезда и прочих дополнительных услуг не указанных в
-                            заявке компания не несет ответственности и отель обязуется сам взимать оплату с гостя по
-                            своим расценкам.</p>
-                        <p style="text-align: justify"><b>Информация для отеля!</b> Убедительно, просим Вас в день
-                            выезда гостей, выставить счет-фактуры на сайте https://my.soliq.uz</p>
+                    <td class="text-align-center"><b>1</b></td>
+                    <td class="text-align-left" colspan="4"><b>{{$serviceName}}</b></td>
+                </tr>
+                {serviceOptions}
+                <tr class="first">
+                    <td></td>
+                    <td class="text-align-left" colspan="4">
+                        Оплату перечислением гарантируем!
                     </td>
                 </tr>
                 </tbody>
@@ -135,13 +163,34 @@
                 <tbody>
                 <tr>
                     <td style="width: 500px;">
-                        @include('hotel._partials.manager_requisites')
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td>{{$company}}</td>
+                            </tr>
+                            <tr>
+                                <td>Директор: <b>{{$signer}}</b></td>
+                            </tr>
+                            <tr>
+                                <td> </td>
+                            </tr>
+                            <tr>
+                                <td>Менеджер: <b>{{$managerName}}</b></td>
+                            </tr>
+                            <tr>
+                                <td>E-mail: {{$managerEmail}}</td>
+                            </tr>
+                            <tr>
+                                <td>Мобильный номер: {{$managerPhone}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </td>
                 </tr>
                 </tbody>
             </table>
         </td>
-        <td class="text-align-right" style="width: 250px"><img src="var:stamp" alt="" width="250"></td>
+        <td class="text-align-right" style="width: 250px"><img src="var:stamp_only" alt="" width="250"></td>
 
     </tr>
     </tbody>

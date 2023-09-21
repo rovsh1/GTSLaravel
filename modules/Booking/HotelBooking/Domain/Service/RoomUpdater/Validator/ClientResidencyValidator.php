@@ -16,6 +16,7 @@ class ClientResidencyValidator implements ValidatorInterface
 
     public function validate(UpdateDataHelper $dataHelper): void
     {
+        //@todo тут косяк - получение клиента по id брони?
         $client = $this->clientAdapter->find($dataHelper->booking->id()->value());
         if ($client === null) {
             throw new EntityNotFoundException('Client not found');
