@@ -9,8 +9,8 @@ use Module\Booking\HotelBooking\Domain\Event\RoomAdded;
 use Module\Booking\HotelBooking\Domain\Event\RoomDeleted;
 use Module\Booking\HotelBooking\Domain\Event\RoomEdited;
 use Module\Booking\HotelBooking\Domain\Exception\InvalidRoomResidency;
-use Module\Booking\HotelBooking\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\HotelBooking\Domain\Repository\BookingGuestRepositoryInterface;
+use Module\Booking\HotelBooking\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\HotelBooking\Domain\Repository\RoomBookingRepositoryInterface;
 use Module\Booking\HotelBooking\Domain\Service\QuotaManager\Exception\ClosedRoomDateQuota;
 use Module\Booking\HotelBooking\Domain\Service\QuotaManager\Exception\NotEnoughRoomDateQuota;
@@ -107,6 +107,9 @@ class RoomUpdater
     private function doUpdate(RoomBooking $currentRoomBooking, UpdateDataHelper $dataHelper): void
     {
         $this->makePipeline()->send($dataHelper);
+        if (!$currentRoomBooking->details()->isEqual($dataHelper->details)) {
+            $currentRoomBooking->setDetails($dataHelper->details);
+        }
         $this->roomBookingRepository->store($currentRoomBooking);
         $this->events[] = new RoomEdited($dataHelper->booking, $currentRoomBooking);
     }

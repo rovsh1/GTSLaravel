@@ -57,6 +57,11 @@ class RoomBooking extends AbstractAggregateRoot implements EntityInterface
         return $this->details;
     }
 
+    public function setDetails(RoomBookingDetails $details): void
+    {
+        $this->details = $details;
+    }
+
     public function price(): RoomPrice
     {
         return $this->price;

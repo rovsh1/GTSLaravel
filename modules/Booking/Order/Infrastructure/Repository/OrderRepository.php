@@ -10,6 +10,7 @@ use Module\Booking\Order\Domain\Factory\OrderFactory;
 use Module\Booking\Order\Domain\Repository\OrderRepositoryInterface;
 use Module\Booking\Order\Infrastructure\Models\Order as Model;
 use Module\Booking\Order\Infrastructure\Models\OrderStatusEnum;
+use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
 class OrderRepository implements OrderRepositoryInterface
 {
@@ -38,6 +39,22 @@ class OrderRepository implements OrderRepositoryInterface
 
         return $this->factory->createFrom($model);
     }
+
+    /**
+     * @param int $id
+     * @return Order
+     * @throws EntityNotFoundException
+     */
+    public function findOrFail(int $id): Order
+    {
+        $order = $this->find($id);
+        if ($order === null) {
+            throw new EntityNotFoundException('Order not found');
+        }
+
+        return $order;
+    }
+
 
     /**
      * @return Order[]

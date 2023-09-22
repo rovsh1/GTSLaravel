@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Shared\Domain\ValueObject;
 
-class TimePeriod implements ValueObjectInterface, SerializableDataInterface
+use Module\Shared\Contracts\CanEquate;
+
+class TimePeriod implements ValueObjectInterface, SerializableDataInterface, CanEquate
 {
     private readonly string $from;
     private readonly string $to;
@@ -64,5 +66,12 @@ class TimePeriod implements ValueObjectInterface, SerializableDataInterface
         if (!preg_match('/^([0-1]?[0-9]|2[0-4]):[0-5][0-9]$/m', $value)) {
             throw new \InvalidArgumentException("Invalid time value [{$value}]");
         }
+    }
+
+    public function isEqual(mixed $b): bool
+    {
+        return $b instanceof TimePeriod
+            ? $this->from === $b->from && $this->to === $b->to
+            : $this === $b;
     }
 }
