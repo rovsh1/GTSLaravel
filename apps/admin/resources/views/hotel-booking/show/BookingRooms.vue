@@ -6,8 +6,8 @@ import { useToggle } from '@vueuse/core'
 import { z } from 'zod'
 
 import { useCurrencyStore } from '~resources/store/currency'
+import GuestModal from '~resources/views/booking/components/GuestModal.vue'
 import EditTableRowButton from '~resources/views/hotel/settings/components/EditTableRowButton.vue'
-import GuestModal from '~resources/views/hotel-booking/show/components/GuestModal.vue'
 import GuestsTable from '~resources/views/hotel-booking/show/components/GuestsTable.vue'
 import InfoBlock from '~resources/views/hotel-booking/show/components/InfoBlock/InfoBlock.vue'
 import InfoBlockTitle from '~resources/views/hotel-booking/show/components/InfoBlock/InfoBlockTitle.vue'
@@ -25,7 +25,7 @@ import {
   RoomBookingPrice,
 } from '~api/booking/hotel/details'
 import { updateRoomBookingPrice } from '~api/booking/hotel/price'
-import { deleteBookingGuest, deleteBookingRoom } from '~api/booking/hotel/rooms'
+import { addGuestToBooking, BookingAddRoomGuestPayload, deleteBookingGuest, deleteBookingRoom } from '~api/booking/hotel/rooms'
 import { addOrderGuest, AddOrderGuestPayload, Guest, updateOrderGuest, UpdateOrderGuestPayload } from '~api/booking/order/guest'
 import { useCountrySearchAPI } from '~api/country'
 import { MarkupSettings } from '~api/hotel/markup-settings'
@@ -188,24 +188,6 @@ const getCheckOutTime = (room: HotelRoomBooking) => {
   return `до ${bookingDetails.value?.hotelInfo.checkOutTime}`
 }
 
-const onModalSubmit = () => {
-  toggleRoomModal(false)
-  toggleGuestModal(false)
-  fetchBooking()
-}
-
-const onModalGuestsSubmit = async (operationType: string, payload: any) => {
-  console.log(payload)
-  waitingSaveGuestModalData.value = true
-  if (operationType === 'add') {
-    await addOrderGuest(payload as AddOrderGuestPayload)
-  } else if (operationType === 'update') {
-    await updateOrderGuest(payload as UpdateOrderGuestPayload)
-  }
-  fetchBooking()
-  waitingSaveGuestModalData.value = false
-}
-
 const onCloseModal = () => {
   roomForm.value = {}
   toggleRoomModal(false)
@@ -214,6 +196,27 @@ const onCloseModal = () => {
 const onCloseGuestModal = () => {
   guestForm.value = getDefaultGuestForm()
   toggleGuestModal(false)
+}
+
+const onModalSubmit = () => {
+  toggleRoomModal(false)
+  toggleGuestModal(false)
+  fetchBooking()
+}
+
+const onModalGuestsSubmit = async (operationType: string, payload: any) => {
+  waitingSaveGuestModalData.value = true
+  if (operationType === 'create') {
+    await addOrderGuest(payload as AddOrderGuestPayload)
+  } else if (operationType === 'update') {
+    await updateOrderGuest(payload as UpdateOrderGuestPayload)
+  } else if (operationType === 'add') {
+    await addGuestToBooking(payload as BookingAddRoomGuestPayload)
+  }
+  waitingSaveGuestModalData.value = false
+  fetchBooking()
+  orderStore.fetchTourists()
+  onCloseGuestModal()
 }
 
 fetchPriceRates()
@@ -359,7 +362,6 @@ fetchCountries()
           v-if="countries"
           :can-edit="isEditableStatus"
           :guests="room.guests"
-          :order-guests="orderGuests"
           :countries="countries"
           @edit="(guest) => handleEditGuest(room.id, guest)"
           @delete="(guest) => handleDeleteGuest(room.id, guest.id)"

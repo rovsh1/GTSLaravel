@@ -6,13 +6,11 @@ import EditTableRowButton from '~resources/views/hotel/settings/components/EditT
 import { getGenderName } from '~resources/views/hotel-booking/show/lib/constants'
 
 import { HotelBookingGuest } from '~api/booking/hotel/details'
-import { Guest } from '~api/booking/order/guest'
 import { CountryResponse } from '~api/country'
 
 const props = defineProps<{
   guests: HotelBookingGuest[]
   countries: CountryResponse[]
-  orderGuests: Guest[]
   canEdit: boolean
 }>()
 

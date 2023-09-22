@@ -57,8 +57,10 @@ const { bookingID } = requestInitialData(
   }),
 )
 
-const tabCreateActive = ref<boolean>(!props.orderGuests)
-const tabSelectActive = ref<boolean>(!!props.orderGuests)
+const tabCreateActive = ref<boolean>(false)
+const tabSelectActive = ref<boolean>(false)
+
+const tabsIsSet = ref<boolean>(false)
 
 const guestSelect = ref()
 
@@ -67,6 +69,13 @@ const ageTypeOptions: SelectOption[] = [
   { value: 1, label: 'Ребенок' },
 ]
 
+const formData = ref<GuestFormData>({
+  bookingID,
+  id: props.guestId,
+  ...props.formData,
+  selectedGuestFromOrder: null,
+})
+
 const localAgeType = ref<number>()
 const ageType = computed<number>({
   get: () => {
@@ -74,25 +83,51 @@ const ageType = computed<number>({
       return localAgeType.value
     }
 
-    return props.formData.isAdult ? 0 : 1
+    return formData.value.isAdult ? 0 : 1
   },
   set: (type: number): void => {
     localAgeType.value = type
   },
 })
 
-const formData = ref<GuestFormData>({
-  bookingID,
-  id: props.guestId,
-  ...props.formData,
-})
+const handleChangeAgeType = (type: number): void => {
+  ageType.value = type
+  formData.value.isAdult = type === 0
+  formData.value.age = null
+}
 
 watchEffect(() => {
+  guestSelect.value?.clearComponentValue()
   formData.value = {
     bookingID,
     id: props.guestId,
     ...props.formData,
+    selectedGuestFromOrder: null,
   }
+  localAgeType.value = undefined
+})
+
+watchEffect(() => {
+  if (tabsIsSet.value) {
+    nextTick(() => {
+      $('.is-invalid').removeClass('is-invalid')
+    })
+    return
+  }
+  if (formData.value.id !== undefined) {
+    tabCreateActive.value = false
+    tabSelectActive.value = false
+  } else if (props.orderGuests && props.orderGuests.length > 0) {
+    tabSelectActive.value = true
+    tabCreateActive.value = false
+  } else {
+    tabSelectActive.value = false
+    tabCreateActive.value = true
+  }
+  nextTick(() => {
+    $('.is-invalid').removeClass('is-invalid')
+  })
+  tabsIsSet.value = true
 })
 
 const validateCreateGuestForm = computed(() => (isDataValid(null, formData.value.countryId)
@@ -102,13 +137,17 @@ const validateCreateGuestForm = computed(() => (isDataValid(null, formData.value
 const validateSelectGuestForm = computed(() => (isDataValid(null, formData.value.selectedGuestFromOrder)))
 
 const isFormValid = (): boolean => {
-  if (tabCreateActive.value && validateCreateGuestForm) {
-    return true
-  } if (tabSelectActive.value && validateSelectGuestForm) {
+  if (
+    (tabCreateActive.value && validateCreateGuestForm.value && formData.value.id === undefined)
+        || (tabSelectActive.value && validateSelectGuestForm.value && formData.value.id === undefined)
+        || (formData.value.id !== undefined && validateCreateGuestForm.value)
+  ) {
     return true
   }
   return false
 }
+
+const submitDisable = computed(() => !isFormValid())
 
 const modalForm = ref<HTMLFormElement>()
 const onModalSubmit = async () => {
@@ -123,14 +162,20 @@ const onModalSubmit = async () => {
       ...formData.value,
     }
     emit('submit', 'update', payload)
-  } else {
+  } else if (tabSelectActive.value) {
+    const payload = {
+      bookingID,
+      roomBookingId: formData.value.roomBookingId,
+      guestId: formData.value.selectedGuestFromOrder,
+    }
+    emit('submit', 'add', payload)
+  } else if (tabCreateActive.value) {
     const payload = {
       hotelBookingRoomId: formData.value.roomBookingId,
       hotelBookingId: bookingID,
       ...formData.value,
     }
-    emit('submit', 'add', payload)
-    // @todo добавить возможность выбрать из списка туристов заказа,
+    emit('submit', 'create', payload)
   }
   localAgeType.value = undefined
 }
@@ -143,14 +188,11 @@ const guestsOptions = computed<SelectOption[]>(
   () => props.orderGuests?.map((guest: Guest) => ({ value: guest.id, label: guest.fullName })) || [],
 )
 
-const handleChangeAgeType = (type: number): void => {
-  ageType.value = type
-  formData.value.isAdult = type === 0
-  formData.value.age = null
-}
-
 const closeModal = () => {
+  ageType.value = 0
+  handleChangeAgeType(ageType.value)
   emit('close')
+  tabsIsSet.value = false
 }
 
 const switchTab = () => {
@@ -183,7 +225,7 @@ const resetForm = () => {
     @keydown.enter="onModalSubmit"
   >
     <template #title>{{ titleText }}</template>
-    <template v-if="!orderGuests || formData.id !== undefined">
+    <template v-if="!orderGuests || guestsOptions.length < 1 || formData.id !== undefined">
       <form ref="modalForm" class="row g-3">
         <div class="col-md-12">
           <BootstrapSelectBase
@@ -361,9 +403,7 @@ const resetForm = () => {
       <button
         class="btn btn-primary"
         type="button"
-        :disabled="(tabCreateActive && !validateCreateGuestForm && formData.id === undefined)
-          || (tabSelectActive && !validateSelectGuestForm && formData.id === undefined)
-          || (formData.id !== undefined && !validateCreateGuestForm)"
+        :disabled="submitDisable"
         @click="onModalSubmit"
       >
         Сохранить

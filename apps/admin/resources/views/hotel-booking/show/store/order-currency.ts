@@ -45,5 +45,6 @@ export const useOrderStore = defineStore('booking-order', () => {
     currency,
     order,
     guests,
+    fetchTourists,
   }
 })
