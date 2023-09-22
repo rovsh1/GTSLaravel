@@ -4,6 +4,8 @@ namespace Module\Hotel\Domain\Factory;
 
 use Carbon\CarbonPeriod;
 use Module\Hotel\Domain\Entity\Season;
+use Module\Hotel\Domain\ValueObject\ContractId;
+use Module\Hotel\Domain\ValueObject\HotelId;
 use Module\Hotel\Domain\ValueObject\SeasonId;
 use Sdk\Module\Foundation\Support\EntityFactory\AbstractEntityFactory;
 
@@ -13,20 +15,12 @@ class SeasonFactory extends AbstractEntityFactory
 
     protected function fromArray(array $data): mixed
     {
-        $hotel = array_key_exists('hotel', $data)
-            ? app(HotelFactory::class)->createFrom($data['hotel'])
-            : null;
-
-        $contract = array_key_exists('contract', $data)
-            ? app(ContractFactory::class)->createFrom($data['contract'])
-            : null;
-
         return new $this->entity(
             new SeasonId($data['id']),
             $data['name'],
             new CarbonPeriod($data['date_start'], $data['date_end']),
-            $hotel,
-            $contract
+            new HotelId($data['hotel_id']),
+            new ContractId($data['contract_id'])
         );
     }
 }

@@ -266,7 +266,8 @@ const handlerUpdateSeasonDaysData = (status :boolean) => {
       @update-season-days-data="handlerUpdateSeasonDaysData"
     />
     <BaseDialog :opened="isOpened as boolean" @close="toggleModal(false)">
-      <template #title>Вы уверены что хотите перезаписать цену на весь сезон?</template>
+      <template #title>Подтверждение</template>
+      Вы уверены что хотите перезаписать цену на весь сезон?
       <template #actions-end>
         <button class="btn btn-primary" type="button" @click="onSubmitChangeData">
           ОК

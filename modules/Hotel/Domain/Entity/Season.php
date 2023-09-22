@@ -3,6 +3,8 @@
 namespace Module\Hotel\Domain\Entity;
 
 use Carbon\CarbonPeriod;
+use Module\Hotel\Domain\ValueObject\ContractId;
+use Module\Hotel\Domain\ValueObject\HotelId;
 use Module\Hotel\Domain\ValueObject\SeasonId;
 use Module\Shared\Domain\Entity\EntityInterface;
 
@@ -10,10 +12,10 @@ class Season implements EntityInterface
 {
     public function __construct(
         private readonly SeasonId $id,
-        public readonly string $name,
-        public readonly CarbonPeriod $period,
-        private ?Hotel $hotel,
-        private ?Contract $contract,
+        public string $name,
+        public CarbonPeriod $period,
+        private HotelId $hotelId,
+        private ContractId $contractId,
     ) {}
 
     public function id(): SeasonId
@@ -21,13 +23,13 @@ class Season implements EntityInterface
         return $this->id;
     }
 
-    public function getHotelId(): int
+    public function hotelId(): HotelId
     {
-        return $this->hotel->id()->value();
+        return $this->hotelId;
     }
 
-    public function getContractId(): int
+    public function contractId(): ContractId
     {
-        return $this->contract->id;
+        return $this->contractId;
     }
 }

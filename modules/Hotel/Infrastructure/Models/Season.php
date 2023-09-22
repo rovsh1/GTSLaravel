@@ -31,12 +31,21 @@ class Season extends Model
         return Attribute::get(fn() => new CarbonPeriod($this->date_start, $this->date_end, 'P1D'));
     }
 
+    protected static function booted()
+    {
+        static::addGlobalScope('default', function (Builder $builder){
+            $builder
+                ->addSelect('hotel_seasons.*')
+                ->join('hotel_contracts', 'hotel_contracts.id', '=', 'hotel_seasons.contract_id')
+                ->addSelect('hotel_contracts.hotel_id');
+        });
+    }
+
     public function scopeWhereRoomId(Builder $builder, int $roomId)
     {
         $builder->whereExists(function (QueryBuilder $query) use ($roomId) {
             $query
-                ->join('hotel_contracts', 'hotel_contracts.id', '=', 'hotel_seasons.contract_id')
-                ->select(DB::raw(1))
+                ->selectRaw(1)
                 ->from('hotel_rooms as t')
                 ->whereColumn('t.hotel_id', 'hotel_contracts.hotel_id')
                 ->where('t.id', $roomId);
@@ -47,8 +56,7 @@ class Season extends Model
     {
         $builder->whereExists(function (QueryBuilder $query) use ($hotelId) {
             $query
-                ->join('hotel_contracts', 'hotel_contracts.id', '=', 'hotel_seasons.contract_id')
-                ->select(DB::raw(1))
+                ->selectRaw(1)
                 ->where('hotel_contracts.hotel_id', $hotelId)
                 ->where('hotel_contracts.status', 1);
         });
