@@ -25,6 +25,10 @@ const inputRef = ref<HTMLElement | null>(null)
 const isChanged = ref(false)
 const localValue = ref<number | null>(props.value)
 
+watch(() => props.value, (newValue) => {
+  localValue.value = newValue
+})
+
 watch(isChanged, (newValue) => {
   if (newValue) {
     nextTick(() => {
