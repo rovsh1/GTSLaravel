@@ -174,8 +174,8 @@ const closeModal = () => {
           label="Номер"
           :value="formData.id as number"
           required
-          show-empty-item
-          empty-item-text="Нет доступных квот на заданный период"
+          :disabled="preparedRooms.length === 0"
+          disabled-placeholder="Нет доступных квот на заданный период"
           @input="value => formData.id = value as number"
           @change="handleChangeRoomId"
         />

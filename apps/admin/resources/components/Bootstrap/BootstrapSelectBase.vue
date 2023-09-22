@@ -16,7 +16,6 @@ const props = withDefaults(defineProps<{
   disabled?: MaybeRef<boolean>
   disabledPlaceholder?: string
   showEmptyItem?: boolean
-  emptyItemText?: string
   enableTags?: boolean
 }>(), {
   label: '',
@@ -24,7 +23,6 @@ const props = withDefaults(defineProps<{
   required: false,
   disabledPlaceholder: undefined,
   showEmptyItem: true,
-  emptyItemText: undefined,
   multiple: false,
   enableTags: false,
 })
@@ -65,7 +63,7 @@ const emit = defineEmits<{
       @input="event => emit('input', (event.target as HTMLInputElement).value)"
     >
       <option v-if="disabled && disabledPlaceholder" selected disabled>{{ disabledPlaceholder }}</option>
-      <option v-else-if="showEmptyItem" :value="emptyItemText" />
+      <option v-else-if="showEmptyItem" :value="undefined" />
       <template v-if="!enableTags">
         <option v-for="option in options" :key="option.value" :value="option.value">
           {{ option.label }}
