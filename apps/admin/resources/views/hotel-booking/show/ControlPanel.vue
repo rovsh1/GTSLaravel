@@ -95,7 +95,14 @@ const canSendBookingRequest = computed<boolean>(() => availableActions.value?.ca
 const canSendChangeRequest = computed<boolean>(() => availableActions.value?.canSendChangeRequest || false)
 const canEditExternalNumber = computed<boolean>(() => availableActions.value?.canEditExternalNumber || false)
 const isRoomsAndGuestsFilled = computed<boolean>(() => !bookingStore.isEmptyGuests && !bookingStore.isEmptyRooms)
-const bookingRequests = computed<BookingRequest[] | null>(() => requestStore.requests)
+const bookingRequests = computed<BookingRequest[] | null>(() => {
+  const requests = requestStore.requests?.reduce((rv: Record<number, BookingRequest>, x: BookingRequest) => {
+    // eslint-disable-next-line no-param-reassign
+    rv[x.type] = x
+    return rv
+  }, {})
+  return Object.values(requests || {})
+})
 const lastHistoryItem = computed(() => statusHistoryStore.lastHistoryItem)
 const [isHistoryModalOpened, toggleHistoryModal] = useToggle<boolean>(false)
 const [isNetPriceModalOpened, toggleNetPriceModal] = useToggle<boolean>(false)
