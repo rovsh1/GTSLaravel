@@ -16,9 +16,6 @@ import { requestInitialData } from '~lib/initial-data'
 
 import BaseDialog from '~components/BaseDialog.vue'
 import BootstrapSelectBase from '~components/Bootstrap/BootstrapSelectBase.vue'
-import BootstrapTabs from '~components/Bootstrap/BootstrapTabs/BootstrapTabs.vue'
-import BootstrapTabsLink from '~components/Bootstrap/BootstrapTabs/components/BootstrapTabsLink.vue'
-import BootstrapTabsTabContent from '~components/Bootstrap/BootstrapTabs/components/BootstrapTabsTabContent.vue'
 import { SelectOption } from '~components/Bootstrap/lib'
 import Select2BaseSelect from '~components/Select2BaseSelect.vue'
 
@@ -57,13 +54,6 @@ const { bookingID } = requestInitialData(
   }),
 )
 
-const tabCreateActive = ref<boolean>(false)
-const tabSelectActive = ref<boolean>(false)
-
-const tabsIsSet = ref<boolean>(false)
-
-const guestSelect = ref()
-
 const ageTypeOptions: SelectOption[] = [
   { value: 0, label: 'Взрослый' },
   { value: 1, label: 'Ребенок' },
@@ -73,7 +63,7 @@ const formData = ref<GuestFormData>({
   bookingID,
   id: props.guestId,
   ...props.formData,
-  selectedGuestFromOrder: null,
+  selectedGuestFromOrder: undefined,
 })
 
 const localAgeType = ref<number>()
@@ -97,37 +87,13 @@ const handleChangeAgeType = (type: number): void => {
 }
 
 watchEffect(() => {
-  guestSelect.value?.clearComponentValue()
   formData.value = {
     bookingID,
     id: props.guestId,
     ...props.formData,
-    selectedGuestFromOrder: null,
+    selectedGuestFromOrder: undefined,
   }
   localAgeType.value = undefined
-})
-
-watchEffect(() => {
-  if (tabsIsSet.value) {
-    nextTick(() => {
-      $('.is-invalid').removeClass('is-invalid')
-    })
-    return
-  }
-  if (formData.value.id !== undefined) {
-    tabCreateActive.value = false
-    tabSelectActive.value = false
-  } else if (props.orderGuests && props.orderGuests.length > 0) {
-    tabSelectActive.value = true
-    tabCreateActive.value = false
-  } else {
-    tabSelectActive.value = false
-    tabCreateActive.value = true
-  }
-  nextTick(() => {
-    $('.is-invalid').removeClass('is-invalid')
-  })
-  tabsIsSet.value = true
 })
 
 const validateCreateGuestForm = computed(() => (isDataValid(null, formData.value.countryId)
@@ -138,8 +104,7 @@ const validateSelectGuestForm = computed(() => (isDataValid(null, formData.value
 
 const isFormValid = (): boolean => {
   if (
-    (tabCreateActive.value && validateCreateGuestForm.value && formData.value.id === undefined)
-        || (tabSelectActive.value && validateSelectGuestForm.value && formData.value.id === undefined)
+    ((validateCreateGuestForm.value || validateSelectGuestForm.value) && formData.value.id === undefined)
         || (formData.value.id !== undefined && validateCreateGuestForm.value)
   ) {
     return true
@@ -162,14 +127,14 @@ const onModalSubmit = async () => {
       ...formData.value,
     }
     emit('submit', 'update', payload)
-  } else if (tabSelectActive.value) {
+  } else if (formData.value.selectedGuestFromOrder) {
     const payload = {
       bookingID,
       roomBookingId: formData.value.roomBookingId,
       guestId: formData.value.selectedGuestFromOrder,
     }
     emit('submit', 'add', payload)
-  } else if (tabCreateActive.value) {
+  } else if (!formData.value.selectedGuestFromOrder) {
     const payload = {
       hotelBookingRoomId: formData.value.roomBookingId,
       hotelBookingId: bookingID,
@@ -192,12 +157,6 @@ const closeModal = () => {
   ageType.value = 0
   handleChangeAgeType(ageType.value)
   emit('close')
-  tabsIsSet.value = false
-}
-
-const switchTab = () => {
-  tabCreateActive.value = !tabCreateActive.value
-  tabSelectActive.value = !tabSelectActive.value
 }
 
 const resetForm = () => {
@@ -209,7 +168,6 @@ const resetForm = () => {
   formData.value.selectedGuestFromOrder = undefined
   ageType.value = 0
   handleChangeAgeType(ageType.value)
-  guestSelect.value.clearComponentValue()
   nextTick(() => {
     $('.is-invalid').removeClass('is-invalid')
   })
@@ -225,8 +183,21 @@ const resetForm = () => {
     @keydown.enter="onModalSubmit"
   >
     <template #title>{{ titleText }}</template>
-    <template v-if="!orderGuests || guestsOptions.length < 1 || formData.id !== undefined">
-      <form ref="modalForm" class="row g-3">
+    <form ref="modalForm" class="row g-3">
+      <div v-if="orderGuests && guestsOptions.length > 0 && formData.id === undefined" class="col-md-12 guest-select-wrapper">
+        <Select2BaseSelect
+          id="guest-select"
+          :label="inputSelectText"
+          :options="guestsOptions"
+          :value="formData.selectedGuestFromOrder"
+          parent=".guest-select-wrapper"
+          :enable-tags="false"
+          :show-empty-item="true"
+          empty-item-text="Создать нового гостя"
+          @input="(value: any) => formData.selectedGuestFromOrder = value ? Number(value) : undefined"
+        />
+      </div>
+      <template v-if="!formData.selectedGuestFromOrder">
         <div class="col-md-12">
           <BootstrapSelectBase
             id="nationality_id"
@@ -287,113 +258,8 @@ const resetForm = () => {
             >
           </div>
         </div>
-      </form>
-    </template>
-    <BootstrapTabs v-else>
-      <template #links>
-        <BootstrapTabsLink
-          tab-name="select-exists-guest"
-          :is-active="tabSelectActive"
-          :is-required="true"
-          :is-disabled="false"
-          @click.prevent="switchTab"
-        >
-          {{ tabSelectText }}
-        </BootstrapTabsLink>
-        <BootstrapTabsLink
-          tab-name="create-new-guest"
-          :is-active="tabCreateActive"
-          :is-required="true"
-          :is-disabled="false"
-          @click.prevent="switchTab"
-        >
-          {{ tabCreateText }}
-        </BootstrapTabsLink>
       </template>
-      <template #tabs>
-        <BootstrapTabsTabContent tab-name="select-exists-guest" :is-active="tabSelectActive">
-          <div class="guest-select-wrapper">
-            <Select2BaseSelect
-              id="guest-select"
-              ref="guestSelect"
-              :label="inputSelectText"
-              :options="guestsOptions"
-              :value="formData.selectedGuestFromOrder"
-              parent=".guest-select-wrapper"
-              :enable-tags="false"
-              required
-              :show-empty-item="false"
-              @blur="isDataValid($event, formData.selectedGuestFromOrder)"
-              @input="(value: any) => formData.selectedGuestFromOrder = Number(value)"
-            />
-          </div>
-        </BootstrapTabsTabContent>
-        <BootstrapTabsTabContent tab-name="create-new-guest" :is-active="tabCreateActive">
-          <form ref="modalForm" class="row g-3">
-            <div class="col-md-12">
-              <BootstrapSelectBase
-                id="nationality_id"
-                :options="countryOptions"
-                label="Гражданство"
-                :value="formData.countryId as number"
-                required
-                @blur="isDataValid($event, formData.countryId)"
-                @input="(value: any) => formData.countryId = value as number"
-              />
-            </div>
-            <div class="col-md-12">
-              <div class="field-required">
-                <label for="full_name">ФИО</label>
-                <input
-                  id="full_name"
-                  v-model="formData.fullName"
-                  class="form-control"
-                  required
-                  @blur="isDataValid($event, formData.fullName)"
-                >
-              </div>
-            </div>
-            <div class="col-md-12">
-              <BootstrapSelectBase
-                id="gender"
-                :options="genderOptions"
-                label="Пол"
-                :value="formData.gender as number"
-                required
-                @blur="isDataValid($event, formData.gender)"
-                @input="(value: any) => formData.gender = value as number"
-              />
-            </div>
-            <div class="col-md-12">
-              <BootstrapSelectBase
-                id="age_type"
-                :options="ageTypeOptions"
-                label="Тип"
-                :value="ageType"
-                @input="(value: any) => handleChangeAgeType(Number(value))"
-              />
-            </div>
-
-            <div v-if="!formData.isAdult" class="col-md-12">
-              <div class="field-required">
-                <label for="child_age">Возраст</label>
-                <input
-                  id="child_age"
-                  v-model="formData.age"
-                  type="number"
-                  class="form-control"
-                  autocomplete="off"
-                  required
-                  min="0"
-                  max="18"
-                  @blur="isDataValid($event, formData.age)"
-                >
-              </div>
-            </div>
-          </form>
-        </BootstrapTabsTabContent>
-      </template>
-    </BootstrapTabs>
+    </form>
     <template v-if="formData.id === undefined" #actions-start>
       <button class="btn btn-default" type="button" @click="resetForm">
         Сбросить

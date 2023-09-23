@@ -96,6 +96,7 @@ const handleAddRoomGuest = (roomBookingId: number) => {
   editRoomBookingId.value = roomBookingId
   editGuestId.value = undefined
   guestForm.value = getDefaultGuestForm()
+  guestForm.value.selectedGuestFromOrder = undefined
   toggleGuestModal(true)
 }
 

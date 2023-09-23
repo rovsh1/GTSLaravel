@@ -17,6 +17,7 @@ const props = withDefaults(defineProps<{
   disabledPlaceholder?: string
   showEmptyItem?: boolean
   enableTags?: boolean
+  emptyItemText?: string
 }>(), {
   label: '',
   disabled: false,
@@ -25,6 +26,7 @@ const props = withDefaults(defineProps<{
   showEmptyItem: true,
   multiple: false,
   enableTags: false,
+  emptyItemText: '',
 })
 
 const groupOptions = computed(() => {
@@ -60,9 +62,10 @@ const emit = defineEmits<{
       :multiple="multiple"
       @change="event => emit('blur', event)"
       @blur="event => emit('blur', event)"
-      @input="event => emit('input', (event.target as HTMLInputElement).value)"
+      @input="event => emit('input', ((event.target as HTMLInputElement).value === 'undefined' ? undefined : (event.target as HTMLInputElement).value))"
     >
       <option v-if="disabled && disabledPlaceholder" selected disabled>{{ disabledPlaceholder }}</option>
+      <option v-else-if="showEmptyItem && emptyItemText" value="undefined">{{ emptyItemText }}</option>
       <option v-else-if="showEmptyItem" :value="undefined" />
       <template v-if="!enableTags">
         <option v-for="option in options" :key="option.value" :value="option.value">

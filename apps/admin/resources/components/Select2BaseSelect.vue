@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
 
@@ -19,6 +19,7 @@ const props = withDefaults(defineProps<{
   parent?: string
   enableTags?: boolean
   enableMultiple?: boolean
+  emptyItemText?: string
 }>(), {
   label: '',
   disabled: false,
@@ -28,6 +29,7 @@ const props = withDefaults(defineProps<{
   parent: undefined,
   enableTags: false,
   enableMultiple: false,
+  emptyItemText: '',
 })
 
 const changegValue = ref(props.value)
@@ -40,9 +42,25 @@ const emit = defineEmits<{
 
 const clearComponentValue = () => {
   if (select2) {
-    select2.val(null).trigger('change')
+    select2.val('').trigger('change')
   }
 }
+
+const setValue = (value: any) => {
+  if (select2) {
+    if (value) {
+      select2.val(value).trigger('change')
+    } else if (props.emptyItemText) {
+      select2.val('undefined').trigger('change')
+    } else {
+      select2.val('').trigger('change')
+    }
+  }
+}
+
+watch(() => props.value, (newValue) => {
+  setValue(newValue)
+})
 
 onMounted(() => {
   const options = {
@@ -53,12 +71,14 @@ onMounted(() => {
   select2 = $(`#${props.id}`)
     .select2(options)
 
+  setValue(props.value)
+
   select2.change((val: any) => {
     if (options.multiple) {
       const values = $(`#${props.id}`).val() as string[]
       emit('input', values)
     } else {
-      emit('input', val.target.value)
+      emit('input', val.target.value === 'undefined' ? undefined : val.target.value)
     }
     emit('blur', val)
   })
@@ -84,6 +104,7 @@ defineExpose({
     :disabled="disabled"
     :disabled-placeholder="disabledPlaceholder"
     :show-empty-item="showEmptyItem"
+    :empty-item-text="emptyItemText"
     :enable-tags="enableTags"
   />
 </template>
