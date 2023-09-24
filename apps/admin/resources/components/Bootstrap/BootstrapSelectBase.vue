@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 
-import { computed } from 'vue'
+import { computed, nextTick, ref, watchEffect } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
 
@@ -18,6 +18,7 @@ const props = withDefaults(defineProps<{
   showEmptyItem?: boolean
   enableTags?: boolean
   emptyItemText?: string
+  withSelect2?: boolean
 }>(), {
   label: '',
   disabled: false,
@@ -27,6 +28,7 @@ const props = withDefaults(defineProps<{
   multiple: false,
   enableTags: false,
   emptyItemText: '',
+  withSelect2: false,
 })
 
 const groupOptions = computed(() => {
@@ -42,10 +44,30 @@ const groupOptions = computed(() => {
   return groupedData
 })
 
+const localValue = ref<any>(props.value)
+
+const selectElement = ref()
+
+watchEffect(() => {
+  localValue.value = props.value
+})
+
 const emit = defineEmits<{
   (event: 'input', value: any): void
   (event: 'blur', e: any): void
 }>()
+
+const handleChangeValue = () => {
+  nextTick(() => {
+    emit('input', (localValue.value === 'undefined' ? undefined : localValue.value))
+  })
+}
+
+const handleBlur = (event: any) => {
+  nextTick(() => {
+    emit('blur', event)
+  })
+}
 </script>
 <template>
   <div :class="{ 'field-required': required }">
@@ -55,17 +77,18 @@ const emit = defineEmits<{
     <label v-else-if="label" :for="id" class="form-label">{{ label }}</label>
     <select
       :id="id"
-      :value="value"
+      ref="selectElement"
+      v-model="localValue"
       class="form-select form-control"
       :disabled="disabled as boolean"
       :required="required as boolean"
       :multiple="multiple"
-      @change="event => emit('blur', event)"
-      @blur="event => emit('blur', event)"
-      @input="event => emit('input', ((event.target as HTMLInputElement).value === 'undefined' ? undefined : (event.target as HTMLInputElement).value))"
+      @change="handleBlur"
+      @blur="handleBlur"
+      @input="handleChangeValue"
     >
-      <option v-if="disabled && disabledPlaceholder" selected disabled>{{ disabledPlaceholder }}</option>
-      <option v-else-if="showEmptyItem && emptyItemText" value="undefined">{{ emptyItemText }}</option>
+      <option v-if="disabled && disabledPlaceholder" :value="undefined">{{ disabledPlaceholder }}</option>
+      <option v-else-if="showEmptyItem && emptyItemText !== ''" :value="withSelect2 ? 'undefined' : undefined">{{ emptyItemText }}</option>
       <option v-else-if="showEmptyItem" :value="undefined" />
       <template v-if="!enableTags">
         <option v-for="option in options" :key="option.value" :value="option.value">

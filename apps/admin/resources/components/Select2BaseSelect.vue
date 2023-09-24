@@ -106,6 +106,7 @@ defineExpose({
     :show-empty-item="showEmptyItem"
     :empty-item-text="emptyItemText"
     :enable-tags="enableTags"
+    :with-select2="true"
   />
 </template>
 

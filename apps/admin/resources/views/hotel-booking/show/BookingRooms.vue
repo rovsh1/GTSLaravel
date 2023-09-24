@@ -258,6 +258,7 @@ fetchCountries()
     :net-currency="netCurrency"
     @close="toggleRoomPriceModal(false)"
     @submit="({ grossPrice, netPrice }) => handleUpdateRoomPrice(grossPrice, netPrice)"
+    @clear="guestForm = {}"
   />
 
   <div class="mt-3" />

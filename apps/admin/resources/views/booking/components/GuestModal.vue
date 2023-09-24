@@ -55,12 +55,14 @@ const ageTypeOptions: SelectOption[] = [
   { value: 1, label: 'Ребенок' },
 ]
 
-const formData = ref<GuestFormData>({
+const setFormData = () => ({
   bookingID,
   id: props.guestId,
   ...props.formData,
   selectedGuestFromOrder: undefined,
 })
+
+const formData = ref<GuestFormData>(setFormData())
 
 const localAgeType = ref<number>()
 const ageType = computed<number>({
@@ -83,12 +85,7 @@ const handleChangeAgeType = (type: number): void => {
 }
 
 watchEffect(() => {
-  formData.value = {
-    bookingID,
-    id: props.guestId,
-    ...props.formData,
-    selectedGuestFromOrder: undefined,
-  }
+  formData.value = setFormData()
   localAgeType.value = undefined
 })
 
@@ -110,7 +107,6 @@ const isFormValid = (): boolean => {
 
 const submitDisable = computed(() => !isFormValid())
 
-const modalForm = ref<HTMLFormElement>()
 const onModalSubmit = async () => {
   if (!isFormValid()) {
     return
@@ -180,6 +176,8 @@ const onChangeSelectGuest = (value: any) => {
     formData.value.gender = firstGuest.gender
     formData.value.isAdult = firstGuest.isAdult
     localAgeType.value = undefined
+  } else {
+    resetForm()
   }
 }
 
@@ -193,7 +191,7 @@ const onChangeSelectGuest = (value: any) => {
     @keydown.enter="onModalSubmit"
   >
     <template #title>{{ titleText }}</template>
-    <form ref="modalForm" class="row g-3">
+    <form class="row g-3">
       <div v-if="orderGuests && guestsOptions.length > 0 && formData.id === undefined" class="col-md-12 guest-select-wrapper">
         <Select2BaseSelect
           id="guest-select"

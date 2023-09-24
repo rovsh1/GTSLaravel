@@ -1,11 +1,11 @@
 <script setup lang="ts">
 
-import { computed, Ref, ref, watch } from 'vue'
+import { computed, nextTick, Ref, ref, watch, watchEffect } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
 import { z } from 'zod'
 
-import { validateForm } from '~resources/composables/form'
+import { isDataValid, validateForm } from '~resources/composables/form'
 import {
   getConditionLabel,
   mapEntitiesToSelectOptions,
@@ -33,6 +33,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (event: 'close'): void
+  (event: 'clear'): void
   (event: 'submit'): void
 }>()
 
@@ -60,11 +61,21 @@ const residentTypeOptions = mapEntitiesToSelectOptions([
   { id: 0, name: 'Не резидент' },
 ])
 
-const formData = computed<RoomFormData>(() => ({
+const setFormData = () => ({
   bookingID,
   roomBookingId: props.roomBookingId,
   ...props.formData,
-}))
+})
+
+const formData = ref<RoomFormData>(setFormData())
+
+watchEffect(() => {
+  formData.value = setFormData()
+})
+
+const validateRoomForm = computed(() => (isDataValid(null, formData.value.id)
+&& isDataValid(null, formData.value.rateId)
+&& isDataValid(null, formData.value.residentType)))
 
 const roomRatesPayload = ref<{
   hotelID: number
@@ -91,17 +102,21 @@ const onModalSubmit = async () => {
   emit('submit')
 }
 
-const handleChangeRoomId = () => {
+const handleChangeRoomId = (value: any) => {
+  formData.value.id = value as number
   if (formData.value.id !== undefined) {
     roomRatesPayload.value.roomID = formData.value.id
     fetchRoomRates()
     fetchRoomMarkupSettings()
+  } else {
+    formData.value.rateId = undefined
+    formData.value.discount = undefined
   }
 }
 
 watch(formData, (value: RoomFormData, oldValue: RoomFormData) => {
   if (value.id !== oldValue.id) {
-    handleChangeRoomId()
+    handleChangeRoomId(value.id)
   }
 }, { deep: true })
 
@@ -110,6 +125,7 @@ const mapConditionToSelectOption = (condition: MarkupCondition): SelectOption =>
   label: getConditionLabel(condition),
 })
 const markupSettings = computed<MarkupSettings | null>(() => props.hotelMarkupSettings)
+
 const preparedRooms = computed<SelectOption[]>(
   () => availableRooms.value?.map((room: HotelRoomResponse) => ({ value: room.id, label: room.name })) || [],
 )
@@ -153,8 +169,21 @@ const lateCheckOutValue = computed<string | undefined>({
 })
 
 const closeModal = () => {
-  modalForm.value?.reset()
   emit('close')
+}
+
+const resetForm = () => {
+  emit('clear')
+  formData.value.id = undefined
+  formData.value.discount = undefined
+  formData.value.rateId = undefined
+  formData.value.earlyCheckIn = undefined
+  formData.value.lateCheckOut = undefined
+  formData.value.residentType = undefined
+  formData.value.note = undefined
+  nextTick(() => {
+    $('.is-invalid').removeClass('is-invalid')
+  })
 }
 
 </script>
@@ -176,8 +205,8 @@ const closeModal = () => {
           required
           :disabled="preparedRooms.length === 0"
           disabled-placeholder="Нет доступных квот на заданный период"
-          @input="value => formData.id = value as number"
-          @change="handleChangeRoomId"
+          @blur="isDataValid($event, formData.id)"
+          @input="value => handleChangeRoomId(value)"
         />
       </div>
       <div class="col-md-12">
@@ -188,7 +217,8 @@ const closeModal = () => {
           :value="formData.rateId as number"
           required
           :disabled="!formData.id || isRoomDataFetching"
-          disabled-placeholder="Выберите номер"
+          :disabled-placeholder="!formData.id ? 'Выберите номер' : ''"
+          @blur="isDataValid($event, formData.rateId)"
           @input="value => formData.rateId = value as number"
         />
       </div>
@@ -199,6 +229,7 @@ const closeModal = () => {
           :options="residentTypeOptions"
           :value="formData.residentType as number"
           required
+          @blur="isDataValid($event, formData.residentType)"
           @input="value => formData.residentType = value as number"
         />
       </div>
@@ -209,7 +240,7 @@ const closeModal = () => {
           :options="discounts"
           :value="formData.discount as number"
           :disabled="!formData.id || isRoomDataFetching || discounts.length === 0"
-          disabled-placeholder="Выберите номер"
+          :disabled-placeholder="!formData.id ? 'Выберите номер' : ''"
           @input="value => formData.discount = value as number"
         />
       </div>
@@ -240,9 +271,20 @@ const closeModal = () => {
         />
       </div>
     </form>
-
+    <template v-if="formData.roomBookingId === undefined" #actions-start>
+      <button class="btn btn-default" type="button" @click="resetForm">
+        Сбросить
+      </button>
+    </template>
     <template #actions-end>
-      <button class="btn btn-primary" type="button" @click="onModalSubmit">Сохранить</button>
+      <button
+        class="btn btn-primary"
+        type="button"
+        :disabled="!validateRoomForm"
+        @click="onModalSubmit"
+      >
+        Сохранить
+      </button>
       <button class="btn btn-cancel" type="button" @click="$emit('close')">Отмена</button>
     </template>
   </BaseDialog>
