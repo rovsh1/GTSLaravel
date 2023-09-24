@@ -28,14 +28,10 @@ const props = withDefaults(defineProps<{
   formData: Partial<GuestFormData>
   orderGuests?: Guest[] | null
   titleText?: string
-  tabCreateText?: string
-  tabSelectText?: string
   inputSelectText?: string
   guestId?: number
 }>(), {
   titleText: 'Данные гостя',
-  tabCreateText: 'Создать гостя',
-  tabSelectText: 'Выбрать гостя из заказа',
   inputSelectText: 'Гость',
   guestId: undefined,
   orderGuests: null,
@@ -173,6 +169,20 @@ const resetForm = () => {
   })
 }
 
+const onChangeSelectGuest = (value: any) => {
+  formData.value.selectedGuestFromOrder = value ? Number(value) : undefined
+  const getCurrentGuestData = props.orderGuests?.filter((guest: Guest) => guest.id === formData.value.selectedGuestFromOrder)
+  if (getCurrentGuestData && getCurrentGuestData.length > 0) {
+    const [firstGuest] = getCurrentGuestData
+    formData.value.fullName = firstGuest.fullName
+    formData.value.age = firstGuest.age
+    formData.value.countryId = firstGuest.countryId
+    formData.value.gender = firstGuest.gender
+    formData.value.isAdult = firstGuest.isAdult
+    localAgeType.value = undefined
+  }
+}
+
 </script>
 
 <template>
@@ -194,71 +204,74 @@ const resetForm = () => {
           :enable-tags="false"
           :show-empty-item="true"
           empty-item-text="Создать нового гостя"
-          @input="(value: any) => formData.selectedGuestFromOrder = value ? Number(value) : undefined"
+          @input="onChangeSelectGuest"
         />
       </div>
-      <template v-if="!formData.selectedGuestFromOrder">
-        <div class="col-md-12">
-          <BootstrapSelectBase
-            id="nationality_id"
-            :options="countryOptions"
-            label="Гражданство"
-            :value="formData.countryId as number"
+      <div class="col-md-12">
+        <BootstrapSelectBase
+          id="nationality_id"
+          :options="countryOptions"
+          label="Гражданство"
+          :disabled="!!formData.selectedGuestFromOrder"
+          :value="formData.countryId as number"
+          required
+          @blur="isDataValid($event, formData.countryId)"
+          @input="(value: any) => formData.countryId = value as number"
+        />
+      </div>
+      <div class="col-md-12">
+        <div class="field-required">
+          <label for="full_name">ФИО</label>
+          <input
+            id="full_name"
+            v-model="formData.fullName"
+            :disabled="!!formData.selectedGuestFromOrder"
+            class="form-control"
             required
-            @blur="isDataValid($event, formData.countryId)"
-            @input="(value: any) => formData.countryId = value as number"
-          />
+            @blur="isDataValid($event, formData.fullName)"
+          >
         </div>
-        <div class="col-md-12">
-          <div class="field-required">
-            <label for="full_name">ФИО</label>
-            <input
-              id="full_name"
-              v-model="formData.fullName"
-              class="form-control"
-              required
-              @blur="isDataValid($event, formData.fullName)"
-            >
-          </div>
-        </div>
-        <div class="col-md-12">
-          <BootstrapSelectBase
-            id="gender"
-            :options="genderOptions"
-            label="Пол"
-            :value="formData.gender as number"
-            required
-            @blur="isDataValid($event, formData.gender)"
-            @input="(value: any) => formData.gender = value as number"
-          />
-        </div>
-        <div class="col-md-12">
-          <BootstrapSelectBase
-            id="age_type"
-            :options="ageTypeOptions"
-            label="Тип"
-            :value="ageType"
-            @input="(value: any) => handleChangeAgeType(Number(value))"
-          />
-        </div>
+      </div>
+      <div class="col-md-12">
+        <BootstrapSelectBase
+          id="gender"
+          :options="genderOptions"
+          label="Пол"
+          :disabled="!!formData.selectedGuestFromOrder"
+          :value="formData.gender as number"
+          required
+          @blur="isDataValid($event, formData.gender)"
+          @input="(value: any) => formData.gender = value as number"
+        />
+      </div>
+      <div class="col-md-12">
+        <BootstrapSelectBase
+          id="age_type"
+          :options="ageTypeOptions"
+          label="Тип"
+          :disabled="!!formData.selectedGuestFromOrder"
+          :value="ageType"
+          @input="(value: any) => handleChangeAgeType(Number(value))"
+        />
+      </div>
 
-        <div v-if="!formData.isAdult" class="col-md-12">
-          <div class="field-required">
-            <label for="child_age">Возраст</label>
-            <input
-              id="child_age"
-              v-model="formData.age"
-              type="number"
-              class="form-control"
-              autocomplete="off"
-              required
-              min="0"
-              max="18"
-              @blur="isDataValid($event, formData.age)"
-            >
-          </div>
+      <div class="col-md-12">
+        <div class="field-required">
+          <label for="child_age">Возраст</label>
+          <input
+            id="child_age"
+            v-model="formData.age"
+            :disabled="!!formData.selectedGuestFromOrder || formData.isAdult"
+            type="number"
+            class="form-control"
+            autocomplete="off"
+            required
+            min="0"
+            max="18"
+            @blur="isDataValid($event, formData.age)"
+          >
         </div>
-      </template>
+      </div>
     </form>
     <template v-if="formData.id === undefined" #actions-start>
       <button class="btn btn-default" type="button" @click="resetForm">
