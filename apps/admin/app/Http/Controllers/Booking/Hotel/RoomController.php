@@ -11,13 +11,30 @@ use App\Admin\Http\Requests\Booking\Room\UpdateRoomRequest;
 use App\Admin\Http\Requests\Booking\UpdatePriceRequest;
 use App\Admin\Support\Facades\Booking\HotelAdapter;
 use App\Admin\Support\Facades\Booking\HotelPriceAdapter;
+use App\Admin\Support\Facades\Booking\RoomAdapter;
 use App\Core\Support\Http\Responses\AjaxErrorResponse;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use App\Core\Support\Http\Responses\AjaxSuccessResponse;
+use Illuminate\Http\JsonResponse;
 use Module\Shared\Application\Exception\ApplicationException;
 
 class RoomController
 {
+    public function getAvailable(int $bookingId): JsonResponse
+    {
+        $roomDtos = RoomAdapter::getAvailableRooms($bookingId);
+
+        $roomResources = array_map(fn(mixed $roomDto) => [
+            'id' => $roomDto->id,
+            'hotel_id' => $roomDto->hotelId,
+            'name' => $roomDto->name,
+            'rooms_number' => $roomDto->roomsCount,
+            'guests_count' => $roomDto->guestsCount,
+        ], $roomDtos);
+
+        return response()->json($roomResources);
+    }
+
     public function addRoom(AddRoomRequest $request, int $id): AjaxResponseInterface
     {
         try {

@@ -10,6 +10,10 @@ class TestDataSeeder extends Seeder
 {
     public function run(): void
     {
+        if (app()->environment('prod', 'production') || DB::table('hotel_price_groups')->exists()) {
+            return;
+        }
+
         DB::table('hotel_calculated_price_calendar')->delete();
         DB::table('hotel_season_price_calendar')->delete();
         DB::table('hotel_season_prices')->delete();

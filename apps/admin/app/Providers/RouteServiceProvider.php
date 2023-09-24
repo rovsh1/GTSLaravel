@@ -27,7 +27,7 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->routes(function () {
             $routeRegistrar = Route::middleware(['web', 'admin'])
-                ->group(base_path('routes/boot.php'));
+                ->group(package_path('routes/boot.php'));
 
             $this->registerPrototypesRoutes();
 

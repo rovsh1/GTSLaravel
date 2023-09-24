@@ -6,9 +6,11 @@ namespace Module\Booking\HotelBooking\Application\UseCase\Admin\Room;
 
 use Module\Booking\HotelBooking\Application\Exception\BookingQuotaException;
 use Module\Booking\HotelBooking\Application\Exception\InvalidRoomClientResidencyException;
+use Module\Booking\HotelBooking\Application\Exception\NotFoundHotelRoomPriceException;
 use Module\Booking\HotelBooking\Application\Factory\RoomUpdaterDataHelperFactory;
 use Module\Booking\HotelBooking\Application\Request\UpdateRoomDto;
 use Module\Booking\HotelBooking\Domain\Exception\InvalidRoomResidency;
+use Module\Booking\HotelBooking\Domain\Exception\NotFoundHotelRoomPrice;
 use Module\Booking\HotelBooking\Domain\Repository\RoomBookingRepositoryInterface;
 use Module\Booking\HotelBooking\Domain\Service\QuotaManager\Exception\ClosedRoomDateQuota;
 use Module\Booking\HotelBooking\Domain\Service\QuotaManager\Exception\NotEnoughRoomDateQuota;
@@ -24,8 +26,7 @@ class Update implements UseCaseInterface
         private readonly RoomUpdater $roomUpdater,
         private readonly RoomUpdaterDataHelperFactory $dataHelperFactory,
         private readonly RoomBookingRepositoryInterface $roomBookingRepository
-    ) {
-    }
+    ) {}
 
     public function execute(UpdateRoomDto $request): void
     {
@@ -44,6 +45,8 @@ class Update implements UseCaseInterface
             throw new BookingQuotaException(ApplicationException::BOOKING_CLOSED_ROOM_DATE_QUOTA, $e);
         } catch (NotEnoughRoomDateQuota $e) {
             throw new BookingQuotaException(ApplicationException::BOOKING_NOT_ENOUGH_QUOTA, $e);
+        } catch (NotFoundHotelRoomPrice $e) {
+            throw new NotFoundHotelRoomPriceException($e);
         }
     }
 }

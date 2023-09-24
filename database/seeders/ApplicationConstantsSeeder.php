@@ -10,6 +10,10 @@ class ApplicationConstantsSeeder extends Seeder
 {
     public function run(): void
     {
+        if (DB::table('s_constants')->exists()) {
+            return;
+        }
+
         $constants = app(ApplicationConstantsInterface::class);
         foreach ($constants as $constant) {
             DB::table('s_constants')->insert([

@@ -5,6 +5,7 @@ import { MaybeRef } from '@vueuse/core'
 import { BaseResponse, useAdminAPI } from '~api'
 import { BookingID } from '~api/booking/models'
 import { MarkupCondition } from '~api/hotel/markup-settings'
+import { HotelRoomResponse } from '~api/hotel/room'
 
 import { getNullableRef } from '~lib/vue'
 
@@ -39,6 +40,15 @@ export interface BookingDeleteRoomGuestPayload {
   roomBookingId: number
   guestId: number
 }
+
+export interface GetAvailableRoomsPayload {
+  bookingID: BookingID
+}
+
+export const useGetAvailableRoomsAPI = (props: MaybeRef<GetAvailableRoomsPayload>) =>
+  useAdminAPI(props, ({ bookingID }) => `/hotel-booking/${bookingID}/rooms/available`)
+    .get()
+    .json<HotelRoomResponse[]>()
 
 export const addRoomToBooking = (props: MaybeRef<BookingAddRoomPayload | null>) =>
   useAdminAPI(

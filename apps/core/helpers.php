@@ -7,11 +7,6 @@ function module(string $name): ?Module
     return app('modules')->get($name);
 }
 
-function root_path($path = '')
-{
-    return app()->rootPath($path);
-}
-
 function core_path($path = ''): string
 {
     return app()->corePath($path);
@@ -32,7 +27,12 @@ function api_path($path = ''): string
     return app('path.api') . ($path ? DIRECTORY_SEPARATOR . $path : '');
 }
 
-function modules_path($path = '')
+function modules_path($path = ''): string
 {
     return app()->modulesPath($path);
+}
+
+function package_path($path = ''): string
+{
+    return app()->packagePath($path);
 }

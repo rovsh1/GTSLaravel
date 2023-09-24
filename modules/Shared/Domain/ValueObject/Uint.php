@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Shared\Domain\ValueObject;
 
-class Uint implements ValueObjectInterface
+use Module\Shared\Contracts\CanEquate;
+
+class Uint implements ValueObjectInterface, CanEquate
 {
     protected readonly int $value;
 
@@ -28,6 +30,14 @@ class Uint implements ValueObjectInterface
         if ($value < 0) {
             throw new \InvalidArgumentException("Invalid Uint value [{$value}]");
         }
+
         return $value;
+    }
+
+    public function isEqual(mixed $b): bool
+    {
+        return $b instanceof Uint
+            ? $this->value === $b->value
+            : $this === $b;
     }
 }

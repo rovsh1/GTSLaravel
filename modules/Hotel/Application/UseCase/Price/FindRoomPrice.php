@@ -7,6 +7,7 @@ namespace Module\Hotel\Application\UseCase\Price;
 use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
 use Module\Hotel\Application\Query\Price\Date\Find as Query;
+use Module\Hotel\Application\Query\Price\Season\Find as SeasonPriceQuery;
 use Module\Hotel\Application\Response\PriceDto;
 use Module\Hotel\Domain\Repository\SeasonRepositoryInterface;
 use Sdk\Module\Contracts\Bus\QueryBusInterface;
@@ -36,8 +37,16 @@ class FindRoomPrice implements UseCaseInterface
         }
         $season = current($seasons);
 
-        return $this->queryBus->execute(
+        $datePrice = $this->queryBus->execute(
             new Query($roomId, $season->id()->value(), $rateId, $isResident, $guestsCount, $date)
         );
+        if ($datePrice !== null) {
+            return $datePrice;
+        }
+        $seasonPrice = $this->queryBus->execute(
+            new SeasonPriceQuery($roomId, $season->id()->value(), $rateId, $isResident, $guestsCount)
+        );
+
+        return $seasonPrice;
     }
 }

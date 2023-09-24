@@ -11,6 +11,7 @@ import {
   mapEntitiesToSelectOptions,
 } from '~resources/views/hotel-booking/show/lib/constants'
 import { RoomFormData } from '~resources/views/hotel-booking/show/lib/data-types'
+import { useHotelRoomsStore } from '~resources/views/hotel-booking/show/store/hotel-rooms'
 
 import { addRoomToBooking, updateBookingRoom } from '~api/booking/hotel/rooms'
 import { MarkupCondition, MarkupSettings, useHotelRoomMarkupSettings } from '~api/hotel/markup-settings'
@@ -35,22 +36,24 @@ const emit = defineEmits<{
   (event: 'submit'): void
 }>()
 
-const { bookingID, hotelID, hotelRooms } = requestInitialData(
+const { bookingID, hotelID } = requestInitialData(
   'view-initial-data-hotel-booking',
   z.object({
     bookingID: z.number(),
     hotelID: z.number(),
-    hotelRooms: z.array(
-      z.object({
-        id: z.number(),
-        hotel_id: z.number(),
-        name: z.string(),
-        rooms_number: z.number(),
-        guests_count: z.number(),
-      }),
-    ),
   }),
 )
+
+const hotelRoomsStore = useHotelRoomsStore()
+
+const { fetchAvailableRooms } = hotelRoomsStore
+const hotelRooms = computed(() => hotelRoomsStore.hotelRooms)
+const availableRooms = computed(() => hotelRoomsStore.availableRooms)
+// @todo выводить текст "Нет доступных квот на заданный период"
+//  если бронь по квоте и нет доступных номеров
+
+// @todo при редактировании номера нужно показывать доступные + текущий номер
+console.log(hotelRooms)
 
 const residentTypeOptions = mapEntitiesToSelectOptions([
   { id: 1, name: 'Резидент' },
@@ -83,6 +86,7 @@ const onModalSubmit = async () => {
   } else {
     await addRoomToBooking(formData)
   }
+  fetchAvailableRooms()
   isFetching.value = false
   emit('submit')
 }
@@ -107,7 +111,7 @@ const mapConditionToSelectOption = (condition: MarkupCondition): SelectOption =>
 })
 const markupSettings = computed<MarkupSettings | null>(() => props.hotelMarkupSettings)
 const preparedRooms = computed<SelectOption[]>(
-  () => hotelRooms.map((room: HotelRoomResponse) => ({ value: room.id, label: room.name })),
+  () => availableRooms.value?.map((room: HotelRoomResponse) => ({ value: room.id, label: room.name })) || [],
 )
 const preparedRoomRates = computed<SelectOption[]>(
   () => roomRates.value?.map((rate: HotelRate) => ({ value: rate.id, label: rate.name })) || [],
@@ -170,6 +174,8 @@ const closeModal = () => {
           label="Номер"
           :value="formData.id as number"
           required
+          :disabled="preparedRooms.length === 0"
+          disabled-placeholder="Нет доступных квот на заданный период"
           @input="value => formData.id = value as number"
           @change="handleChangeRoomId"
         />
