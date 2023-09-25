@@ -5,9 +5,9 @@ namespace Module\Booking\Airport\Domain\Service\DocumentGenerator;
 use Module\Booking\Airport\Domain\Entity\Booking;
 use Module\Booking\Common\Application\Service\StatusStorage;
 use Module\Booking\Common\Domain\Adapter\AdministratorAdapterInterface;
-use Module\Booking\Common\Domain\Adapter\ClientAdapterInterface;
 use Module\Booking\Common\Domain\Entity\BookingInterface;
 use Module\Booking\Common\Domain\Service\DocumentGenerator\AbstractRequestGenerator;
+use Module\Booking\Order\Domain\Repository\GuestRepositoryInterface;
 use Module\Shared\Domain\Service\CompanyRequisitesInterface;
 use Module\Shared\Enum\Booking\AirportServiceTypeEnum;
 
@@ -16,7 +16,7 @@ class ReservationRequestGenerator extends AbstractRequestGenerator
     public function __construct(
         private readonly AdministratorAdapterInterface $administratorAdapter,
         private readonly StatusStorage $statusStorage,
-        private readonly ClientAdapterInterface $clientAdapter,
+        private readonly GuestRepositoryInterface $guestRepository,
         CompanyRequisitesInterface $companyRequisites
     ) {
         parent::__construct($companyRequisites);
@@ -30,8 +30,14 @@ class ReservationRequestGenerator extends AbstractRequestGenerator
     protected function getBookingAttributes(BookingInterface|Booking $booking): array
     {
         $administrator = $this->administratorAdapter->getManagerByBookingId($booking->id()->value());
-        //@todo получение клиента
-//        $client = $this->clientAdapter->find();
+
+        //@todo сейчас этого нету
+        $airportDirector = '{airportDirector}';
+        $contractNumber = '{contractNumber}';
+        $contractDate = '{contractDate}';
+        $inn = '{inn}';
+
+        $guests = $this->guestRepository->get($booking->guestIds());
 
         return [
             'serviceName' => $booking->serviceInfo()->name(),
@@ -39,11 +45,17 @@ class ReservationRequestGenerator extends AbstractRequestGenerator
                 ? 'ВСТРЕЧУ'
                 : 'ПРОВОДЫ',
             'airportName' => $booking->airportInfo()->name(),
-//            'reservStartDate' => $booking->period()->dateFrom()->format('d.m.Y'),
-//            'reservEndDate' => $booking->period()->dateTo()->format('d.m.Y'),
-//            'reservNightCount' => $booking->period()->nightsCount(),
+            'airportDirector' => $airportDirector,
+            'contractNumber' => $contractNumber,
+            'contractDate' => $contractDate,
+            'inn' => $inn,
+            'guests' => $guests,
+            'guestsCount' => count($guests),
+            'date' => $booking->date()->format('d.m.Y'),
+            'time' => $booking->date()->format('H:i'),
+            'flightNumber' => $booking->additionalInfo()->flightNumber(),
             'reservNumber' => $booking->id()->value(),
-            'reservCreatedAt' => $booking->createdAt()->format('d.m.Y'),
+            'reservCreatedAt' => $booking->createdAt()->format('d.m.Y H:i'),
             'reservStatus' => $this->statusStorage->get($booking->status())->name,
             'city' => '{city}',
             'country' => '{country}',

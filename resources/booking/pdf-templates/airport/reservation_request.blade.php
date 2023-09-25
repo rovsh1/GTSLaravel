@@ -91,14 +91,14 @@
     </tr>
     <tr>
         <td>{{$city}}, {{$country}}</td>
-        <td class="text-align-right">{airportDirector}</td>
+        <td class="text-align-right">{{$airportDirector}}</td>
     </tr>
     <tr>
         <td class="title text-align-center" colspan="2">БРОНЬ НА {{$serviceTypeName}}</td>
     </tr>
     <tr>
         <td class="text-align-center" colspan="2" style="padding-top: 20px;padding-bottom: 20px">Согласно договору №
-            {contractNumber} от {contractDate}, ИНН: {inn}
+            {{$contractNumber}} от {{$contractDate}}, ИНН: {{$inn}}
         </td>
     </tr>
     <tr>
@@ -127,7 +127,8 @@
     </tr>
     <tr>
         <td colspan="2" class="text-align-center" style="padding-top: 20px;padding-bottom: 20px">Компания ООО
-            "GotoStans" выражает Вам своё почтение и просит Вас организовать <br/> {{$serviceTypeName}} для следующих лиц
+            "GotoStans" выражает Вам своё почтение и просит Вас организовать <br/> {{$serviceTypeName}} для следующих
+            лиц
         </td>
     </tr>
     <tr>
@@ -146,7 +147,33 @@
                     <td class="text-align-center"><b>1</b></td>
                     <td class="text-align-left" colspan="4"><b>{{$serviceName}}</b></td>
                 </tr>
-                {serviceOptions}
+                <tr>
+                    <td></td>
+                    <td>Дата прилёта: {{$date}}</td>
+                    <td colspan="3">Время прилёта: {{$time}}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>Номер рейса: {{$flightNumber}}</td>
+                    <td colspan="2">Аэропорт: {{$airportName}}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>Туристы ({{$guestsCount}})</td>
+                </tr>
+                @foreach($guests as $index => $guest)
+                    <tr class="{{$index === $guestsCount-1 ? 'last' : ''}}">
+                        <td></td>
+                        <td colspan="4">
+                            <span class="red">
+                                {{++$index}}. {{$guest->fullName()}}, {{$guest->gender()->value}}, {{$guest->countryId()}}
+                            </span>
+                        </td>
+                    </tr>
+                @endforeach
                 <tr class="first">
                     <td></td>
                     <td class="text-align-left" colspan="4">
