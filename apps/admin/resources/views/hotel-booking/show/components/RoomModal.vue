@@ -122,8 +122,7 @@ const markupSettings = computed<MarkupSettings | null>(() => props.hotelMarkupSe
 const preparedRooms = ref<SelectOption[]>([])
 
 const setPreparedRooms = () => {
-  const { availableRooms } = hotelRoomsStore
-  const { hotelRooms } = hotelRoomsStore
+  const { availableRooms, hotelRooms } = hotelRoomsStore
   let currentRoom: SelectOption[] = []
   const availableRoomsOptions = availableRooms?.map(
     (room: HotelRoomResponse) => ({ value: room.id, label: room.name }),
@@ -193,8 +192,9 @@ const resetForm = () => {
   })
 }
 
-watch(() => props.opened, (opened) => {
+watch(() => props.opened, async (opened) => {
   if (opened) {
+    await fetchAvailableRooms()
     setPreparedRooms()
   }
 })
@@ -218,8 +218,10 @@ watch(() => props.opened, (opened) => {
           required
           :disabled="preparedRooms.length === 0"
           disabled-placeholder="Нет доступных квот на заданный период"
-          @blur="isDataValid($event, formData.id)"
-          @input="value => handleChangeRoomId(value)"
+          @input="(value, event) => {
+            handleChangeRoomId(value)
+            isDataValid(event, value)
+          }"
         />
       </div>
       <div class="col-md-12">
@@ -231,8 +233,10 @@ watch(() => props.opened, (opened) => {
           required
           :disabled="!formData.id || isRoomDataFetching"
           :disabled-placeholder="!formData.id ? 'Выберите номер' : ''"
-          @blur="isDataValid($event, formData.rateId)"
-          @input="value => formData.rateId = value as number"
+          @input="(value, event) => {
+            formData.rateId = value as number
+            isDataValid(event, value)
+          }"
         />
       </div>
       <div class="col-md-6">
@@ -242,8 +246,10 @@ watch(() => props.opened, (opened) => {
           :options="residentTypeOptions"
           :value="formData.residentType as number"
           required
-          @blur="isDataValid($event, formData.residentType)"
-          @input="value => formData.residentType = value as number"
+          @input="(value, event) => {
+            formData.residentType = value as number
+            isDataValid(event, value)
+          }"
         />
       </div>
       <div class="col-md-6">

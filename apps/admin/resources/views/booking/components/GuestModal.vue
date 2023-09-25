@@ -92,9 +92,12 @@ watchEffect(() => {
   localAgeType.value = undefined
 })
 
+const ageValidate = (): boolean => ((formData.value.age !== undefined && formData.value.age !== null
+&& (formData.value?.age >= 0 && formData.value?.age <= 18)))
+
 const validateCreateGuestForm = computed(() => (isDataValid(null, formData.value.countryId)
 && isDataValid(null, formData.value.fullName) && isDataValid(null, formData.value.gender)
-&& (ageType.value === 1 ? isDataValid(null, formData.value.age) : true)))
+&& (!!(ageType.value === 1 && isDataValid(null, formData.value.age, ageValidate())))))
 
 const validateSelectGuestForm = computed(() => (isDataValid(null, formData.value.selectedGuestFromOrder)))
 
@@ -216,8 +219,10 @@ const onChangeSelectGuest = (value: any) => {
           :disabled="!!formData.selectedGuestFromOrder"
           :value="formData.countryId as number"
           required
-          @blur="isDataValid($event, formData.countryId)"
-          @input="(value: any) => formData.countryId = value as number"
+          @input="(value: any, event: any) => {
+            formData.countryId = value as number
+            isDataValid(event, value)
+          }"
         />
       </div>
       <div class="col-md-12">
@@ -229,8 +234,8 @@ const onChangeSelectGuest = (value: any) => {
             :disabled="!!formData.selectedGuestFromOrder"
             class="form-control"
             required
-            @input="isDataValid($event, formData.fullName)"
-            @blur="isDataValid($event, formData.fullName)"
+            @input="isDataValid($event.target, formData.fullName)"
+            @blur="isDataValid($event.target, formData.fullName)"
           >
         </div>
       </div>
@@ -242,8 +247,10 @@ const onChangeSelectGuest = (value: any) => {
           :disabled="!!formData.selectedGuestFromOrder"
           :value="formData.gender as number"
           required
-          @blur="isDataValid($event, formData.gender)"
-          @input="(value: any) => formData.gender = value as number"
+          @input="(value: any, event: any) => {
+            formData.gender = value as number
+            isDataValid(event, value)
+          }"
         />
       </div>
       <div class="col-md-12">
@@ -253,7 +260,10 @@ const onChangeSelectGuest = (value: any) => {
           label="Тип"
           :disabled="!!formData.selectedGuestFromOrder"
           :value="ageType"
-          @input="(value: any) => handleChangeAgeType(Number(value))"
+          @input="(value: any, event: any) => {
+            handleChangeAgeType(Number(value))
+            isDataValid(event, value)
+          }"
         />
       </div>
 
@@ -270,7 +280,8 @@ const onChangeSelectGuest = (value: any) => {
             :required="formData.isAdult === false"
             min="0"
             max="18"
-            @blur="isDataValid($event, formData.age)"
+            @input="isDataValid($event.target, formData.age, ageValidate())"
+            @blur="isDataValid($event.target, formData.age, ageValidate())"
           >
         </div>
       </div>

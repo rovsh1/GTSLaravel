@@ -46,28 +46,22 @@ const groupOptions = computed(() => {
 
 const localValue = ref<any>(props.value)
 
-const selectElement = ref()
+const selectElement = ref(null)
 
 watchEffect(() => {
   localValue.value = props.value
 })
 
 const emit = defineEmits<{
-  (event: 'input', value: any): void
-  (event: 'blur', e: any): void
+  (event: 'input', value: any, e: any): void
 }>()
 
 const handleChangeValue = () => {
   nextTick(() => {
-    emit('input', (localValue.value === 'undefined' ? undefined : localValue.value))
+    emit('input', (localValue.value === 'undefined' ? undefined : localValue.value), selectElement.value)
   })
 }
 
-const handleBlur = (event: any) => {
-  nextTick(() => {
-    emit('blur', event)
-  })
-}
 </script>
 <template>
   <div :class="{ 'field-required': required }">
@@ -83,9 +77,7 @@ const handleBlur = (event: any) => {
       :disabled="disabled as boolean"
       :required="required as boolean"
       :multiple="multiple"
-      @change="handleBlur"
-      @blur="handleBlur"
-      @input="handleChangeValue"
+      @change="handleChangeValue"
     >
       <option v-if="disabled && disabledPlaceholder" :value="undefined">{{ disabledPlaceholder }}</option>
       <option v-else-if="showEmptyItem && emptyItemText !== ''" :value="withSelect2 ? 'undefined' : undefined">{{ emptyItemText }}</option>
