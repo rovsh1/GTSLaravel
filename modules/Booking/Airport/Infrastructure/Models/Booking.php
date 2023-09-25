@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace Module\Booking\Airport\Infrastructure\Models;
 
+use App\Admin\Support\View\Form\ValueObject\NumRangeValue;
+use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
 use Module\Booking\Common\Infrastructure\Models\Booking as BaseModel;
 
@@ -21,6 +24,10 @@ class Booking extends BaseModel
     protected $attributes = [
         'type' => BookingTypeEnum::AIRPORT,
     ];
+
+    protected array $quicksearch = ['id'];
+
+    private bool $isDetailsJoined = false;
 
     protected static function booted()
     {
@@ -53,8 +60,76 @@ class Booking extends BaseModel
         }
     }
 
+    public function scopeWhereCityId(Builder $builder, int $id): void
+    {
+        $builder->withDetails()->where('r_airports.city_id', $id);
+    }
+
+    public function scopeWhereServiceId(Builder $builder, int $id): void
+    {
+        $builder->withDetails()->where('booking_airport_details.service_id', $id);
+    }
+
+    public function scopeWhereClientId(Builder $builder, int $id): void
+    {
+        $builder->withDetails()->where('orders.client_id', $id);
+    }
+
+    public function scopeWhereStatus(Builder $builder, int $id): void
+    {
+        $builder->where('bookings.status', $id);
+    }
+
+    public function scopeWhereSource(Builder $builder, string $source): void
+    {
+        $builder->where('bookings.source', $source);
+    }
+
+    public function scopeWhereDatePeriod(Builder $builder, CarbonPeriod $period): void
+    {
+        $builder->withDetails()->whereBetween('booking_airport_details.date', [
+            $period->getStartDate()->startOfDay(),
+            $period->getEndDate()->endOfDay(),
+        ]);
+    }
+
+    public function scopeWhereCreatedPeriod(Builder $builder, CarbonPeriod $period): void
+    {
+        $builder->withDetails()->whereBetween('bookings.created_at', [
+            $period->getStartDate()->startOfDay(),
+            $period->getEndDate()->endOfDay(),
+        ]);
+    }
+
+    public function scopeWhereManagerId(Builder $builder, int $id): void
+    {
+        $builder->whereExists(function (QueryBuilder $query) use ($id) {
+            $query->select(\DB::raw(1))
+                ->from('administrator_bookings as adm')
+                ->whereColumn('adm.booking_id', '=', 'bookings.id')
+                ->where('administrator_id', $id);
+        });
+    }
+
+    public function scopeWhereGuestsCount(Builder $builder, ?NumRangeValue $numRange): void
+    {
+        if ($numRange === null) {
+            return;
+        }
+        $builder->whereExists(function (QueryBuilder $query) use ($numRange) {
+            $query->select(\DB::raw(1))
+                ->from('booking_airport_guests as r')
+                ->whereColumn('r.booking_airport_id', '=', 'bookings.id')
+                ->havingRaw("COUNT(`id` between {$numRange->from} and {$numRange->to})");
+        });
+    }
+
     public function scopeWithDetails(Builder $builder): void
     {
+        if ($this->isDetailsJoined) {
+            return;
+        }
+        $this->isDetailsJoined = true;
         $builder->addSelect('bookings.*')
             ->join('orders', 'orders.id', '=', 'bookings.order_id')
             ->join('clients', 'clients.id', '=', 'orders.client_id')

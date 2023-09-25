@@ -11,6 +11,19 @@ import '~resources/views/main'
 
 const pinia = createPinia()
 
+// @todo такие же компоненты для аэро-броней
+// createVueInstance({
+//   rootComponent: CopyButton,
+//   rootContainer: '#booking-copy-button',
+//   plugins: [pinia],
+// })
+//
+// createVueInstance({
+//   rootComponent: ActionsMenu,
+//   rootContainer: '#booking-actions-menu',
+//   plugins: [pinia],
+// })
+
 createVueInstance({
   rootComponent: EditableNote,
   rootContainer: '#booking-editable-note',

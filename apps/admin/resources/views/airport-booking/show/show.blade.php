@@ -22,10 +22,9 @@
 @section('content')
     <div class="content-header">
         <div class="title">{{ $title }}</div>
-        <x-ui.actions-menu :$editUrl :$deleteUrl/>
+        <div id="booking-actions-menu"></div>
+        <div id="booking-copy-button"></div>
         <div class="flex-grow-1"></div>
-
-        {!! Layout::actions() !!}
     </div>
 
     <div class="content-body">

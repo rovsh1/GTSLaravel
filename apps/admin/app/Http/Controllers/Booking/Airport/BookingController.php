@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Admin\Http\Controllers\Booking\Airport;
 
+use App\Admin\Components\Factory\Prototype;
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Http\Requests\Booking\Hotel\BulkDeleteRequest;
 use App\Admin\Http\Requests\Booking\Hotel\UpdateManagerRequest;
@@ -13,16 +14,20 @@ use App\Admin\Http\Requests\Booking\Hotel\UpdateStatusRequest;
 use App\Admin\Models\Administrator\Administrator;
 use App\Admin\Models\Client\Client;
 use App\Admin\Models\Reference\Currency;
+use App\Admin\Models\ServiceProvider\AirportService;
 use App\Admin\Repositories\BookingAdministratorRepository;
-use App\Admin\Support\Facades\Booking\AirportAdapter;
 use App\Admin\Support\Facades\Booking\Airport\PriceAdapter;
+use App\Admin\Support\Facades\Booking\AirportAdapter;
+use App\Admin\Support\Facades\Booking\HotelAdapter;
 use App\Admin\Support\Facades\Booking\OrderAdapter;
 use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Facades\Layout;
+use App\Admin\Support\Facades\Prototypes;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
+use App\Admin\Support\View\Grid\SearchForm;
 use App\Admin\Support\View\Layout as LayoutContract;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use App\Core\Support\Http\Responses\AjaxSuccessResponse;
@@ -32,20 +37,24 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Module\Booking\Common\Domain\Service\RequestRules;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
+use Module\Shared\Enum\SourceEnum;
 
 class BookingController extends Controller
 {
+    protected Prototype $prototype;
+
     public function __construct(
         private readonly BookingAdministratorRepository $administratorRepository
     ) {
+        $this->prototype = Prototypes::get($this->getPrototypeKey());
     }
 
     public function index(): LayoutContract
     {
-        Breadcrumb::add('Бронирование');
-        Breadcrumb::add('Брони услуг аэропорта');
+        Breadcrumb::prototype($this->prototype);
 
-        $requestableStatuses = array_map(fn(BookingStatusEnum $status) => $status->value, RequestRules::getRequestableStatuses());
+        $requestableStatuses = array_map(fn(BookingStatusEnum $status) => $status->value,
+            RequestRules::getRequestableStatuses());
 
         $grid = $this->gridFactory();
         $data = AirportAdapter::getBookingQuery()
@@ -82,8 +91,8 @@ class BookingController extends Controller
 
     public function create(): LayoutContract
     {
-        Breadcrumb::add('Бронирование');
-        Breadcrumb::add('Новая бронь');
+        Breadcrumb::prototype($this->prototype)
+            ->add($this->prototype->title('create') ?? 'Новая запись');
 
         $form = $this->formFactory()
             ->method('post')
@@ -132,6 +141,30 @@ class BookingController extends Controller
         );
     }
 
+    public function edit(int $id): LayoutContract
+    {
+        $breadcrumbs = Breadcrumb::prototype($this->prototype);
+
+        $booking = HotelAdapter::getBooking($id);
+
+        $title = "Бронь №{$id}";
+        $breadcrumbs->addUrl($this->prototype->route('show', $id), $title);
+        $breadcrumbs->add($this->prototype->title('edit') ?? 'Редактирование');
+
+        $form = $this->formFactory(true)
+            ->method('put')
+            ->action($this->prototype->route('update', $id))
+            ->data($this->prepareFormData($booking));
+
+        return Layout::title($title)
+            ->view($this->prototype->view('edit') ?? $this->prototype->view('form') ?? 'default.form.form', [
+                'model' => $booking,
+                'form' => $form,
+                'cancelUrl' => $this->prototype->route('show', $id),
+//                'deleteUrl' => $this->isAllowed('delete') ? $this->prototype->route('destroy', $id) : null
+            ]);
+    }
+
     public function show(int $id): LayoutContract
     {
         $title = "Бронь №{$id}";
@@ -140,10 +173,8 @@ class BookingController extends Controller
         $order = OrderAdapter::findOrder($booking->orderId);
         $client = Client::find($order->clientId);
 
-//        Breadcrumb::prototype($this->prototype)
-//            ->add($title);
-
-//        $this->prepareShowMenu($this->model);
+        Breadcrumb::prototype($this->prototype)
+            ->add($title);
 
         return Layout::title($title)
             ->view('airport-booking.show.show', [
@@ -317,6 +348,7 @@ class BookingController extends Controller
     protected function gridFactory(): GridContract
     {
         return Grid::enableQuicksearch()
+            ->setSearchForm($this->searchForm())
             ->checkbox('checked', ['checkboxClass' => 'js-select-booking', 'dataAttributeName' => 'booking-id'])
             ->id('id', [
                 'text' => '№',
@@ -331,7 +363,8 @@ class BookingController extends Controller
                     return "$idLink / {$orderLink}";
                 }
             ])
-            ->bookingStatus('status', ['text' => 'Статус', 'statuses' => AirportAdapter::getStatuses(), 'order' => true])
+            ->bookingStatus('status', ['text' => 'Статус', 'statuses' => AirportAdapter::getStatuses(), 'order' => true]
+            )
             ->text('client_name', ['text' => 'Клиент'])
             ->text('city_name', ['text' => 'Город'])
             ->text('service_name', ['text' => 'Название услуги'])
@@ -343,6 +376,22 @@ class BookingController extends Controller
             ->date('created_at', ['text' => 'Создан', 'format' => 'datetime', 'order' => true])
             ->orderBy('created_at', 'desc')
             ->paginator(20);
+    }
+
+    private function searchForm()
+    {
+        return (new SearchForm())
+            ->number('order_id', ['label' => '№ Заказа'])
+            ->country('country_id', ['label' => 'Страна', 'default' => '1'])
+            ->city('city_id', ['label' => 'Город', 'emptyItem' => '', 'onlyWithAirports' => true])
+            ->client('client_id', ['label' => 'Клиент', 'emptyItem' => ''])
+            ->numRange('guests_count', ['label' => 'Кол-во гостей'])
+            ->select('service_id', ['label' => 'Услуга', 'emptyItem' => '', 'items' => AirportService::get()])
+            ->select('manager_id', ['label' => 'Менеджер', 'items' => Administrator::all(), 'emptyItem' => ''])
+            ->select('status', ['label' => 'Статус', 'items' => HotelAdapter::getStatuses(), 'emptyItem' => ''])
+            ->enum('source', ['label' => 'Источник', 'enum' => SourceEnum::class, 'emptyItem' => ''])
+            ->dateRange('date_period', ['label' => 'Дата прилета/вылета'])
+            ->dateRange('created_period', ['label' => 'Дата создания']);
     }
 
     private function getActionButtons(mixed $tableRow): string
@@ -361,5 +410,10 @@ class BookingController extends Controller
         }
 
         return "<div class='d-flex flex-row gap-2'>{$buttons}</div>";
+    }
+
+    protected function getPrototypeKey(): string
+    {
+        return 'airport-booking';
     }
 }
