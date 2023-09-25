@@ -67,16 +67,16 @@
             <table class="text-align-right">
                 <tbody>
                 <tr>
-                    <td>{company}</td>
+                    <td>{{$company}}</td>
                 </tr>
                 <tr>
-                    <td>Тел: {phone}</td>
+                    <td>Тел: {{$phone}}</td>
                 </tr>
                 <tr>
-                    <td>E-mail: {email}</td>
+                    <td>E-mail: {{$email}}</td>
                 </tr>
                 <tr>
-                    <td>{address}</td>
+                    <td>{{$address}}</td>
                 </tr>
                 </tbody>
             </table>
@@ -86,19 +86,19 @@
         <td style="padding-top: 15px;" colspan="2" class="text-align-right">Директору</td>
     </tr>
     <tr>
-        <td>{company}</td>
-        <td class="text-align-right">{airportName}</td>
+        <td>{{$company}}</td>
+        <td class="text-align-right">{{$airportName}}</td>
     </tr>
     <tr>
-        <td>{city_country}</td>
-        <td class="text-align-right">{airportDirector}</td>
+        <td>{{$city}}, {{$country}}</td>
+        <td class="text-align-right">{{$airportDirector}}</td>
     </tr>
     <tr>
-        <td class="title text-align-center" colspan="2">ОТМЕНА БРОНИ НА {serviceTypeName}</td>
+        <td class="title text-align-center" colspan="2">ОТМЕНА БРОНИ НА {{$serviceTypeName}}</td>
     </tr>
     <tr>
         <td class="text-align-center" colspan="2" style="padding-top: 20px;padding-bottom: 20px">Согласно договору №
-            {contractNumber} от {contractDate}, ИНН: {inn}
+            {{$contractNumber}} от {{$contractDate}}, ИНН: {{$inn}}
         </td>
     </tr>
     <tr>
@@ -113,15 +113,15 @@
                                 <td class="top-table-left" style="font-size: 24px; font-weight: bold; color: red">Номер
                                     (ID):
                                 </td>
-                                <td style="font-size: 24px; font-weight: bold; color: red">{airportReservNumber}</td>
+                                <td style="font-size: 24px; font-weight: bold; color: red">{{$reservNumber}}</td>
                                 <td class="text-align-right" colspan="2"><b>Дата и время создания:
-                                        {airportReservCreatedAt}</b></td>
+                                        {{$reservCreatedAt}}</b></td>
                             </tr>
                             <tr>
                                 <td class="top-table-left"></td>
                                 <td></td>
-                                <td class="text-align-right" colspan="2"><b>Дата и время отмены:
-                                        {airportReservCancelledAt}</b></td>
+                                <td class="text-align-right" colspan="2"><b>Дата и время изменения:
+                                        {{$reservCancelledAt}}</b></td>
                             </tr>
                             </tbody>
                         </table>
@@ -133,7 +133,8 @@
     </tr>
     <tr>
         <td colspan="2" class="text-align-center" style="padding-top: 20px;padding-bottom: 20px">Компания ООО
-            "GotoStans" выражает Вам своё почтение и просит Вас организовать <br/> {serviceTypeName} для следующих лиц
+            "GotoStans" выражает Вам своё почтение и просит Вас организовать <br/> {{$serviceTypeName}} для следующих
+            лиц
         </td>
     </tr>
     <tr>
@@ -150,9 +151,35 @@
                 <tbody>
                 <tr class="first">
                     <td class="text-align-center"><b>1</b></td>
-                    <td class="text-align-left" colspan="4"><b>{serviceName}</b></td>
+                    <td class="text-align-left" colspan="4"><b>{{$serviceName}}</b></td>
                 </tr>
-                {serviceOptions}
+                <tr>
+                    <td></td>
+                    <td>Дата прилёта: {{$date}}</td>
+                    <td colspan="3">Время прилёта: {{$time}}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>Номер рейса: {{$flightNumber}}</td>
+                    <td colspan="2">Аэропорт: {{$airportName}}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>Туристы ({{$guestsCount}})</td>
+                </tr>
+                @foreach($guests as $index => $guest)
+                    <tr class="{{$index === $guestsCount-1 ? 'last' : ''}}">
+                        <td></td>
+                        <td colspan="4">
+                            <span>
+                                {{++$index}}. {{$guest->fullName()}}, {{$guest->gender()->value}}, {{$guest->countryId()}}
+                            </span>
+                        </td>
+                    </tr>
+                @endforeach
                 <tr class="first">
                     <td></td>
                     <td class="text-align-left" colspan="4">
@@ -172,22 +199,22 @@
                         <table>
                             <tbody>
                             <tr>
-                                <td>{company}</td>
+                                <td>{{$company}}</td>
                             </tr>
                             <tr>
-                                <td>Директор: <b>{signer}</b></td>
+                                <td>Директор: <b>{{$signer}}</b></td>
                             </tr>
                             <tr>
                                 <td> </td>
                             </tr>
                             <tr>
-                                <td>Менеджер: <b>{managerName}</b></td>
+                                <td>Менеджер: <b>{{$managerName}}</b></td>
                             </tr>
                             <tr>
-                                <td>E-mail: {managerEmail}</td>
+                                <td>E-mail: {{$managerEmail}}</td>
                             </tr>
                             <tr>
-                                <td>Мобильный номер: {managerPhone}</td>
+                                <td>Мобильный номер: {{$managerPhone}}</td>
                             </tr>
                             </tbody>
                         </table>
