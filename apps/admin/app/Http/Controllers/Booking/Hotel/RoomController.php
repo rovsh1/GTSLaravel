@@ -4,20 +4,37 @@ declare(strict_types=1);
 
 namespace App\Admin\Http\Controllers\Booking\Hotel;
 
-use App\Admin\Http\Requests\Booking\Hotel\Room\AddRoomRequest;
-use App\Admin\Http\Requests\Booking\Hotel\Room\DeleteRoomRequest;
-use App\Admin\Http\Requests\Booking\Hotel\Room\Guest\RoomGuestRequest;
-use App\Admin\Http\Requests\Booking\Hotel\Room\UpdateRoomRequest;
-use App\Admin\Http\Requests\Booking\Hotel\UpdatePriceRequest;
-use App\Admin\Support\Facades\Booking\Hotel\PriceAdapter;
+use App\Admin\Http\Requests\Booking\Room\AddRoomRequest;
+use App\Admin\Http\Requests\Booking\Room\DeleteRoomRequest;
+use App\Admin\Http\Requests\Booking\Room\Guest\RoomGuestRequest;
+use App\Admin\Http\Requests\Booking\Room\UpdateRoomRequest;
+use App\Admin\Http\Requests\Booking\UpdatePriceRequest;
 use App\Admin\Support\Facades\Booking\HotelAdapter;
+use App\Admin\Support\Facades\Booking\HotelPriceAdapter;
+use App\Admin\Support\Facades\Booking\RoomAdapter;
 use App\Core\Support\Http\Responses\AjaxErrorResponse;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use App\Core\Support\Http\Responses\AjaxSuccessResponse;
+use Illuminate\Http\JsonResponse;
 use Module\Shared\Application\Exception\ApplicationException;
 
 class RoomController
 {
+    public function getAvailable(int $bookingId): JsonResponse
+    {
+        $roomDtos = RoomAdapter::getAvailableRooms($bookingId);
+
+        $roomResources = array_map(fn(mixed $roomDto) => [
+            'id' => $roomDto->id,
+            'hotel_id' => $roomDto->hotelId,
+            'name' => $roomDto->name,
+            'rooms_number' => $roomDto->roomsCount,
+            'guests_count' => $roomDto->guestsCount,
+        ], $roomDtos);
+
+        return response()->json($roomResources);
+    }
+
     public function addRoom(AddRoomRequest $request, int $id): AjaxResponseInterface
     {
         try {
@@ -98,7 +115,7 @@ class RoomController
     public function updatePrice(UpdatePriceRequest $request, int $id, int $roomBookingId): AjaxResponseInterface
     {
         try {
-            PriceAdapter::updateRoomPrice(
+            HotelPriceAdapter::updateRoomPrice(
                 $id,
                 $roomBookingId,
                 $request->getGrossPrice(),

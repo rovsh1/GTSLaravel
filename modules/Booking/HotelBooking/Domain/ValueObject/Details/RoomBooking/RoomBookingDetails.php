@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking;
 
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\Condition;
+use Module\Shared\Contracts\CanEquate;
 use Module\Shared\Domain\ValueObject\Percent;
 use Module\Shared\Domain\ValueObject\SerializableDataInterface;
 use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 
-class   RoomBookingDetails implements ValueObjectInterface, SerializableDataInterface
+class RoomBookingDetails implements ValueObjectInterface, SerializableDataInterface, CanEquate
 {
     public function __construct(
         private int $rateId,
@@ -75,5 +76,32 @@ class   RoomBookingDetails implements ValueObjectInterface, SerializableDataInte
             $data['guestNote'],
             new Percent($data['discount'])
         );
+    }
+
+    public function isEqual(mixed $b): bool
+    {
+        if ($b instanceof RoomBookingDetails) {
+            $isEarlyConditionsEqual = $this->earlyCheckIn === null;
+            if (!$isEarlyConditionsEqual) {
+                return $this->earlyCheckIn->isEqual($b->earlyCheckIn);
+            }
+            $isLateConditionsEqual = $this->lateCheckOut === null;
+            if (!$isLateConditionsEqual) {
+                return $this->lateCheckOut->isEqual($b->lateCheckOut);
+            }
+            $isDiscountEqual = $this->discount === null;
+            if (!$isDiscountEqual) {
+                return $this->discount->isEqual($b->discount);
+            }
+
+            return $this->rateId === $b->rateId
+                && $this->isResident === $b->isResident
+                && $isEarlyConditionsEqual
+                && $isLateConditionsEqual
+                && $this->guestNote === $b->guestNote
+                && $isDiscountEqual;
+        }
+
+        return $this === $b;
     }
 }

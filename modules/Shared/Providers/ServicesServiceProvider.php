@@ -1,30 +1,27 @@
 <?php
 
-namespace App\Core\Providers;
+namespace Module\Shared\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Module\Shared;
+use Module\Shared\Domain\Service\ApplicationConstantsInterface;
+use Module\Shared\Domain\Service\CompanyRequisitesInterface;
 use Module\Shared\Domain\Service\SafeExecutorInterface;
 use Module\Shared\Domain\Service\SerializerInterface;
 use Module\Shared\Domain\Service\TranslatorInterface;
+use Module\Shared\Infrastructure\Service\ApplicationsConstants\ApplicationConstantManager;
+use Module\Shared\Infrastructure\Service\CompanyRequisites\CompanyRequisiteManager;
 use Module\Shared\Infrastructure\Service\JsonSerializer;
 use Module\Shared\Infrastructure\Service\TransactionalExecutor;
-use Module\SharedKernel;
 use Module\Support\LocaleTranslator\Translator;
 
-class ModuleServiceProvider extends ServiceProvider
+class ServicesServiceProvider extends ServiceProvider
 {
-    public function boot()
+    public function boot(): void
     {
         $this->app->singleton(TranslatorInterface::class, Translator::class);
         $this->app->singleton(SerializerInterface::class, JsonSerializer::class);
         $this->app->singleton(SafeExecutorInterface::class, TransactionalExecutor::class);
-
-        //@todo переместить в другое место
-        $this->app->register(Shared\Providers\BootServiceProvider::class);
-
-        $kernel = new SharedKernel($this->app, $this->app->modules());
-        $this->app->instance(SharedKernel::class, $kernel);
-        $kernel->boot();
+        $this->app->singleton(ApplicationConstantsInterface::class, ApplicationConstantManager::class);
+        $this->app->singleton(CompanyRequisitesInterface::class, CompanyRequisiteManager::class);
     }
 }

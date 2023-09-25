@@ -52,7 +52,7 @@ $app->singleton(
     App\Admin\Exceptions\Handler::class
 );
 
-$app->setBasePath(dirname(__DIR__));
+$app->usePackagePath(dirname(__DIR__));
 $app->setNamespace('App\\Admin\\');
 
 $kernel = $app->make(Kernel::class);

@@ -84,7 +84,7 @@ const setPricesAccumulationData = (obj: PricesAccumulationData): PricesAccumulat
 
 watchEffect(() => {
   if (!props.isFetching) {
-    roomSeasonsPricesData.value = []
+    const roomSeasonsPricesDataFilled = [] as PricesAccumulationData[]
     props.roomData.price_rates.forEach((rate) => {
       props.seasonsData.forEach((season) => {
         for (let i = 1; i <= props.roomData.guests_count; i++) {
@@ -98,13 +98,13 @@ watchEffect(() => {
             rateName: rate.name,
             price: null,
           }
-          roomSeasonsPricesData.value.push(setPricesAccumulationData({ ...accumulationDataObject, isResident: true }))
-          roomSeasonsPricesData.value.push(setPricesAccumulationData({ ...accumulationDataObject, isResident: false }))
+          roomSeasonsPricesDataFilled.push(setPricesAccumulationData({ ...accumulationDataObject, isResident: true }))
+          roomSeasonsPricesDataFilled.push(setPricesAccumulationData({ ...accumulationDataObject, isResident: false }))
         }
       })
     })
     props.pricesData?.forEach((seasonPrice) => {
-      roomSeasonsPricesData.value.forEach((roomSeasonPrice) => {
+      roomSeasonsPricesDataFilled.forEach((roomSeasonPrice) => {
         const sourceRoomSeasonPrice = roomSeasonPrice
         if (seasonPrice.room_id === roomSeasonPrice.roomID
           && seasonPrice.season_id === roomSeasonPrice.seasonID
@@ -116,6 +116,7 @@ watchEffect(() => {
         }
       })
     })
+    roomSeasonsPricesData.value = roomSeasonsPricesDataFilled
     nextTick(() => {
       const columnsInRow = props.seasonsData.length * props.roomData.guests_count
       setIdenticalColumnsWidth(columnsInRow)
@@ -266,7 +267,8 @@ const handlerUpdateSeasonDaysData = (status :boolean) => {
       @update-season-days-data="handlerUpdateSeasonDaysData"
     />
     <BaseDialog :opened="isOpened as boolean" @close="toggleModal(false)">
-      <template #title>Вы уверены что хотите перезаписать цену на весь сезон?</template>
+      <template #title>Подтверждение</template>
+      Вы уверены что хотите перезаписать цену на весь сезон?
       <template #actions-end>
         <button class="btn btn-primary" type="button" @click="onSubmitChangeData">
           ОК

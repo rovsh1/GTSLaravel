@@ -6,7 +6,6 @@ use Gsdk\Meta\Meta;
 use Gsdk\Meta\MetaTags;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Vite;
 
 /**
  * @method self title(string $title)

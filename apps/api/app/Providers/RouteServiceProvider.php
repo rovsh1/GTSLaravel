@@ -15,7 +15,7 @@ class RouteServiceProvider extends ServiceProvider
         $this->routes(function () {
             Route::prefix('traveline')
                 ->as('traveline.')
-                ->group(base_path('routes/traveline.php'));
+                ->group(package_path('routes/traveline.php'));
         });
     }
 }

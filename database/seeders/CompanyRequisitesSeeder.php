@@ -10,6 +10,10 @@ class CompanyRequisitesSeeder extends Seeder
 {
     public function run(): void
     {
+        if (DB::table('s_company_requisites')->exists()) {
+            return;
+        }
+
         foreach (app(CompanyRequisitesInterface::class) as $constant) {
             $id = DB::table('s_company_requisites')->insertGetId([
                 'key' => $constant->key()
