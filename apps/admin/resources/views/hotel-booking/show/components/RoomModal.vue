@@ -48,13 +48,6 @@ const { bookingID, hotelID } = requestInitialData(
 const hotelRoomsStore = useHotelRoomsStore()
 
 const { fetchAvailableRooms } = hotelRoomsStore
-const hotelRooms = computed(() => hotelRoomsStore.hotelRooms)
-const availableRooms = computed(() => hotelRoomsStore.availableRooms)
-// @todo выводить текст "Нет доступных квот на заданный период"
-//  если бронь по квоте и нет доступных номеров
-
-// @todo при редактировании номера нужно показывать доступные + текущий номер
-console.log(hotelRooms)
 
 const residentTypeOptions = mapEntitiesToSelectOptions([
   { id: 1, name: 'Резидент' },
@@ -126,9 +119,23 @@ const mapConditionToSelectOption = (condition: MarkupCondition): SelectOption =>
 })
 const markupSettings = computed<MarkupSettings | null>(() => props.hotelMarkupSettings)
 
-const preparedRooms = computed<SelectOption[]>(
-  () => availableRooms.value?.map((room: HotelRoomResponse) => ({ value: room.id, label: room.name })) || [],
-)
+const preparedRooms = ref<SelectOption[]>([])
+
+const setPreparedRooms = () => {
+  const { availableRooms } = hotelRoomsStore
+  const { hotelRooms } = hotelRoomsStore
+  let currentRoom: SelectOption[] = []
+  const availableRoomsOptions = availableRooms?.map(
+    (room: HotelRoomResponse) => ({ value: room.id, label: room.name }),
+  ) || []
+  if (formData.value?.id !== undefined && !availableRooms?.some((room: HotelRoomResponse) => room.id === formData.value?.id)) {
+    currentRoom = hotelRooms.filter((room: HotelRoomResponse) => room.id === formData.value?.id)?.map(
+      (room: HotelRoomResponse) => ({ value: room.id, label: room.name }),
+    ) || []
+  }
+  preparedRooms.value = [...currentRoom, ...availableRoomsOptions]
+}
+
 const preparedRoomRates = computed<SelectOption[]>(
   () => roomRates.value?.map((rate: HotelRate) => ({ value: rate.id, label: rate.name })) || [],
 )
@@ -185,6 +192,12 @@ const resetForm = () => {
     $('.is-invalid').removeClass('is-invalid')
   })
 }
+
+watch(() => props.opened, (opened) => {
+  if (opened) {
+    setPreparedRooms()
+  }
+})
 
 </script>
 

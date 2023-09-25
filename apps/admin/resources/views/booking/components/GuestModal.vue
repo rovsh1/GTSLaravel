@@ -82,6 +82,9 @@ const handleChangeAgeType = (type: number): void => {
   ageType.value = type
   formData.value.isAdult = type === 0
   formData.value.age = null
+  nextTick(() => {
+    $('#child_age').removeClass('is-invalid')
+  })
 }
 
 watchEffect(() => {
@@ -226,6 +229,7 @@ const onChangeSelectGuest = (value: any) => {
             :disabled="!!formData.selectedGuestFromOrder"
             class="form-control"
             required
+            @input="isDataValid($event, formData.fullName)"
             @blur="isDataValid($event, formData.fullName)"
           >
         </div>
@@ -254,16 +258,16 @@ const onChangeSelectGuest = (value: any) => {
       </div>
 
       <div class="col-md-12">
-        <div class="field-required">
+        <div :class="[ageType === 1 ? 'field-required' : '']">
           <label for="child_age">Возраст</label>
           <input
             id="child_age"
             v-model="formData.age"
-            :disabled="!!formData.selectedGuestFromOrder || formData.isAdult"
+            :disabled="!!formData.selectedGuestFromOrder || formData.isAdult || isNaN(ageType)"
             type="number"
             class="form-control"
             autocomplete="off"
-            required
+            :required="formData.isAdult === false"
             min="0"
             max="18"
             @blur="isDataValid($event, formData.age)"

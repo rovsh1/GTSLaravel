@@ -7,7 +7,7 @@ export const isDataValid = ($event: any, value: any): boolean => {
   if (Array.isArray(value)) {
     isValid = value.length > 0
   } else {
-    isValid = !(value === undefined || value === null || value === '' || isNaN(value))
+    isValid = !(value === undefined || value === null || value === '' || (/^\d+$/.test(value) && isNaN(value)))
   }
   if (isValid) {
     if ($event) {
