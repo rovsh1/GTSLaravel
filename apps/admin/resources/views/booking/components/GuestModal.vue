@@ -97,7 +97,7 @@ const ageValidate = (): boolean => ((formData.value.age !== undefined && formDat
 
 const validateCreateGuestForm = computed(() => (isDataValid(null, formData.value.countryId)
 && isDataValid(null, formData.value.fullName) && isDataValid(null, formData.value.gender)
-&& (!!(ageType.value === 1 && isDataValid(null, formData.value.age, ageValidate())))))
+&& (!!(ageType.value === 1 ? isDataValid(null, formData.value.age, ageValidate()) : true))))
 
 const validateSelectGuestForm = computed(() => (isDataValid(null, formData.value.selectedGuestFromOrder)))
 
