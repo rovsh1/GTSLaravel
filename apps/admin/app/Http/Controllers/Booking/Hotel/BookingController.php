@@ -58,8 +58,7 @@ class BookingController extends Controller
     {
         Breadcrumb::prototype($this->prototype);
 
-        $requestableStatuses = array_map(fn(BookingStatusEnum $status) => $status->value,
-            RequestRules::getRequestableStatuses());
+        $requestableStatuses = array_map(fn(BookingStatusEnum $status) => $status->value, RequestRules::getRequestableStatuses());
 
         $grid = $this->gridFactory();
         $query = HotelAdapter::getBookingQuery()

@@ -5,23 +5,30 @@ declare(strict_types=1);
 namespace App\Admin\Support\Adapters\Booking;
 
 use Carbon\CarbonInterface;
+use Illuminate\Database\Eloquent\Builder;
 use Module\Booking\Airport\Application\Request\CreateBookingDto;
+use Module\Booking\Airport\Application\UseCase\Admin\BulkDeleteBookings;
+use Module\Booking\Airport\Application\UseCase\Admin\CopyBooking;
 use Module\Booking\Airport\Application\UseCase\Admin\CreateBooking;
+use Module\Booking\Airport\Application\UseCase\Admin\DeleteBooking;
+use Module\Booking\Airport\Application\UseCase\Admin\GetAvailableActions;
 use Module\Booking\Airport\Application\UseCase\Admin\GetBooking;
 use Module\Booking\Airport\Application\UseCase\Admin\GetBookingsByFilters;
-use Module\Booking\Airport\Application\UseCase\Admin\Guest\Bind;
-use Module\Booking\Airport\Application\UseCase\Admin\Guest\Unbind;
-use Module\Booking\Airport\Application\UseCase\Admin\GetAvailableActions;
 use Module\Booking\Airport\Application\UseCase\Admin\GetStatuses;
 use Module\Booking\Airport\Application\UseCase\Admin\GetStatusHistory;
+use Module\Booking\Airport\Application\UseCase\Admin\Guest\Bind;
+use Module\Booking\Airport\Application\UseCase\Admin\Guest\Unbind;
 use Module\Booking\Airport\Application\UseCase\Admin\UpdateBookingStatus;
 use Module\Booking\Airport\Application\UseCase\Admin\UpdateNote;
-use Module\Booking\Airport\Application\UseCase\Admin\CopyBooking;
-use Module\Booking\Airport\Application\UseCase\Admin\BulkDeleteBookings;
-use Module\Booking\Airport\Application\UseCase\Admin\DeleteBooking;
+use Module\Booking\Airport\Application\UseCase\GetBookingQuery;
 
 class AirportAdapter
 {
+    public function getBookingQuery(): Builder
+    {
+        return app(GetBookingQuery::class)->execute();
+    }
+
     public function getBookings(array $filters = []): mixed
     {
         return app(GetBookingsByFilters::class)->execute($filters);

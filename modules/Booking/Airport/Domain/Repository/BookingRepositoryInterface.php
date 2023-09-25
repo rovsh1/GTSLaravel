@@ -3,6 +3,7 @@
 namespace Module\Booking\Airport\Domain\Repository;
 
 use Carbon\CarbonInterface;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Module\Booking\Airport\Domain\Entity\Booking;
 use Module\Booking\Airport\Domain\ValueObject\Details\AdditionalInfo;
@@ -31,4 +32,6 @@ interface BookingRepositoryInterface extends Base
     ): Booking;
 
     public function store(Booking $booking): bool;
+
+    public function query(): Builder;
 }

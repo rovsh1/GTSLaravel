@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\Admin\Support\Facades\Booking;
 
 use Carbon\CarbonInterface;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static array getBookings(array $filters = [])
+ * @method static Builder getBookingQuery()
  * @method static mixed getBooking(int $id)
  * @method static array getAvailableActions(int $id)
  * @method static int createBooking(int $cityId, int $clientId, int|null $legalId, int $currencyId, int $airportId, int $serviceId, CarbonInterface $date, string $flightNumber, int $creatorId, ?int $orderId, ?string $note = null)

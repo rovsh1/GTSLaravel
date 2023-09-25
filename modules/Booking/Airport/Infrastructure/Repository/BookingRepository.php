@@ -6,6 +6,7 @@ namespace Module\Booking\Airport\Infrastructure\Repository;
 
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Module\Booking\Airport\Domain\Entity\Booking as Entity;
 use Module\Booking\Airport\Domain\Repository\BookingRepositoryInterface;
@@ -115,6 +116,11 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
 
             return $base && $details;
         });
+    }
+
+    public function query(): Builder
+    {
+        return $this->getModel()::query()->withDetails();
     }
 
     private function buildEntityFromModel(Model $booking, BookingDetails $detailsModel): Entity

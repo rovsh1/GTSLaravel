@@ -29,6 +29,9 @@ use App\Core\Support\Http\Responses\AjaxSuccessResponse;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
+use Module\Booking\Common\Domain\Service\RequestRules;
+use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 
 class BookingController extends Controller
 {
@@ -42,10 +45,29 @@ class BookingController extends Controller
         Breadcrumb::add('Бронирование');
         Breadcrumb::add('Брони услуг аэропорта');
 
+        $requestableStatuses = array_map(fn(BookingStatusEnum $status) => $status->value, RequestRules::getRequestableStatuses());
+
         $grid = $this->gridFactory();
-//        $query = $this->repository->queryWithCriteria($grid->getSearchCriteria());
-//        $this->prepareGridQuery($query);
-        $data = AirportAdapter::getBookings();
+        $data = AirportAdapter::getBookingQuery()
+            ->applyCriteria($grid->getSearchCriteria())
+            ->join('administrator_bookings', 'administrator_bookings.booking_id', '=', 'bookings.id')
+            ->join('administrators', 'administrators.id', '=', 'administrator_bookings.administrator_id')
+            ->addSelect('administrators.presentation as manager_name')
+            ->selectSub(
+                DB::table('booking_airport_guests')
+                    ->selectRaw('count(id)')
+                    ->whereColumn('booking_airport_guests.booking_airport_id', 'bookings.id'),
+                'guests_count'
+            )
+            ->addSelect(
+                DB::raw('(SELECT bookings.status IN (' . implode(',', $requestableStatuses) . ')) as is_requestable'),
+            )
+            ->addSelect(
+                DB::raw(
+                    'EXISTS(SELECT 1 FROM booking_requests WHERE bookings.id = booking_requests.booking_id AND is_archive = 0) as has_downloadable_request'
+                ),
+            );
+
         $grid->data($data);
 
         return Layout::title('Брони услуг аэропорта')
@@ -309,15 +331,35 @@ class BookingController extends Controller
                     return "$idLink / {$orderLink}";
                 }
             ])
-            ->bookingStatus('status', ['text' => 'Статус', 'statuses' => AirportAdapter::getStatuses(), 'order' => true]
-            )
+            ->bookingStatus('status', ['text' => 'Статус', 'statuses' => AirportAdapter::getStatuses(), 'order' => true])
             ->text('client_name', ['text' => 'Клиент'])
             ->text('city_name', ['text' => 'Город'])
             ->text('service_name', ['text' => 'Название услуги'])
-//            ->date('date', ['text' => 'Дата прилёта/вылета'])
+            ->date('date', ['text' => 'Дата прилёта/вылета'])
             ->text('flight_number', ['text' => 'Номер рейса'])
-            ->number('tourist_count', ['text' => 'Кол-во туристов'])
+            ->text('guests_count', ['text' => 'Гостей'])
+            ->text('source', ['text' => 'Источник', 'order' => true])
+            ->text('actions', ['renderer' => fn($row, $val) => $this->getActionButtons($row)])
             ->date('created_at', ['text' => 'Создан', 'format' => 'datetime', 'order' => true])
+            ->orderBy('created_at', 'desc')
             ->paginator(20);
+    }
+
+    private function getActionButtons(mixed $tableRow): string
+    {
+        $buttons = '';
+        $isRequestable = $tableRow['is_requestable'] ?? false;
+        $hasDownloadableRequest = $tableRow['has_downloadable_request'] ?? false;
+        if ($isRequestable) {
+            $buttons .= '<a href="#" class="btn-request-send"><i class="icon">mail</i></a>';
+        }
+        if ($hasDownloadableRequest) {
+            $buttons .= '<a href="#" class="btn-request-download"><i class="icon">download</i></a>';
+        }
+        if (strlen($buttons) === 0) {
+            return '';
+        }
+
+        return "<div class='d-flex flex-row gap-2'>{$buttons}</div>";
     }
 }

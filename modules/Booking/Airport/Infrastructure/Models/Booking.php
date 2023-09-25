@@ -34,20 +34,39 @@ class Booking extends BaseModel
         $builder->where($this->getTable() . '.type', $type);
     }
 
+    public function scopeApplyCriteria(Builder $query, array $criteria): void
+    {
+        if (isset($criteria['quicksearch'])) {
+            $query->quicksearch($criteria['quicksearch']);
+            unset($criteria['quicksearch']);
+        }
+
+        foreach ($criteria as $k => $v) {
+            $scopeName = \Str::camel($k);
+            $scopeMethod = 'where' . ucfirst($scopeName);
+            $hasScope = $this->hasNamedScope($scopeMethod);
+            if ($hasScope) {
+                $query->$scopeMethod($v);
+                continue;
+            }
+            $query->where($k, $v);
+        }
+    }
+
     public function scopeWithDetails(Builder $builder): void
     {
-//        $builder->addSelect('bookings.*')
-//            ->join('orders', 'orders.id', '=', 'bookings.order_id')
-//            ->join('clients', 'clients.id', '=', 'orders.client_id')
-//            ->addSelect('clients.name as client_name')
-//            ->join('booking_hotel_details', 'bookings.id', '=', 'booking_hotel_details.booking_id')
-//            ->addSelect('booking_hotel_details.date_start as date_start')
-//            ->addSelect('booking_hotel_details.date_end as date_end')
-//            ->addSelect('booking_hotel_details.hotel_id as hotel_id')
-//            ->join('hotels', 'hotels.id', '=', 'booking_hotel_details.hotel_id')
-//            ->addSelect('hotels.name as hotel_name')
-//            ->join('r_cities', 'r_cities.id', '=', 'hotels.city_id')
-//            ->joinTranslatable('r_cities', 'name as city_name');
+        $builder->addSelect('bookings.*')
+            ->join('orders', 'orders.id', '=', 'bookings.order_id')
+            ->join('clients', 'clients.id', '=', 'orders.client_id')
+            ->addSelect('clients.name as client_name')
+            ->join('booking_airport_details', 'bookings.id', '=', 'booking_airport_details.booking_id')
+            ->addSelect('booking_airport_details.date as date')
+            ->join('r_airports', 'r_airports.id', '=', 'booking_airport_details.airport_id')
+            ->addSelect('r_airports.name as airport_name')
+            ->join('r_cities', 'r_cities.id', '=', 'r_airports.city_id')
+            ->joinTranslatable('r_cities', 'name as city_name')
+            ->join('supplier_airport_services', 'supplier_airport_services.id', '=','booking_airport_details.service_id')
+            ->addSelect('supplier_airport_services.name as service_name');
     }
 
     public function guestIds(): Attribute
