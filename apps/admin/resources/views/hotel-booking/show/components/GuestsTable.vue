@@ -6,29 +6,23 @@ import EditTableRowButton from '~resources/views/hotel/settings/components/EditT
 import { getGenderName } from '~resources/views/hotel-booking/show/lib/constants'
 
 import { HotelBookingGuest } from '~api/booking/hotel/details'
-import { Guest } from '~api/booking/order/guest'
 import { CountryResponse } from '~api/country'
 
 const props = defineProps<{
   guests: HotelBookingGuest[]
   countries: CountryResponse[]
-  orderGuests: Guest[]
   canEdit: boolean
 }>()
 
 defineEmits<{
-  (event: 'edit', guest: Guest): void
-  (event: 'delete', guest: Guest): void
+  (event: 'edit', guest: HotelBookingGuest): void
+  (event: 'delete', guest: HotelBookingGuest): void
 }>()
 
 const countries = computed(() => props.countries)
 
 const getCountryName = (id: number): string | undefined =>
   countries.value?.find((country: CountryResponse) => country.id === id)?.name
-
-const notExistsOrderGuests = computed(
-  () => props.orderGuests.filter((guest) => !props.guests.map((t) => t.id).includes(guest.id)),
-)
 
 </script>
 
@@ -58,21 +52,6 @@ const notExistsOrderGuests = computed(
             @edit="$emit('edit', guest)"
             @delete="$emit('delete', guest)"
           />
-        </td>
-      </tr>
-
-      <tr
-        v-for="guest in notExistsOrderGuests"
-        :key="guest.id"
-        class="table-danger"
-      >
-        <td>-</td>
-        <td>{{ guest.fullName }}</td>
-        <td>{{ getCountryName(guest.countryId) }}</td>
-        <td>{{ getGenderName(guest.gender) }}</td>
-        <td>{{ guest.isAdult ? 'Взрослый' : 'Ребенок' }}</td>
-        <td class="column-edit">
-          -
         </td>
       </tr>
     </tbody>

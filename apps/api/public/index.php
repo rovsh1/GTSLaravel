@@ -47,7 +47,7 @@ require APP_ROOT . '/vendor/autoload.php';
 
 $app = require_once APP_ROOT . '/bootstrap/app.php';
 
-$app->setBasePath(dirname(__DIR__));
+$app->usePackagePath(dirname(__DIR__));
 $app->setNamespace('App\\Api\\');
 
 $kernel = $app->make(Kernel::class);

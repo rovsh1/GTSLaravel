@@ -12,6 +12,7 @@ return new class extends Migration {
         'room-type' => 1,
         'hotel-type' => 5,
         'administrator-post' => 11,
+        'payment-method' => 22,
 //        'client-legal-requisite' => 7,
         'client-legal-industry' => 10,
         'hotel-usability-group' => 19
@@ -29,7 +30,11 @@ return new class extends Migration {
 
             $q = DB::connection('mysql_old')->table('r_enums')
                 ->addSelect('r_enums.*')
-                ->addSelect(DB::raw('(SELECT name FROM r_enums_translation WHERE translatable_id=r_enums.id AND language="ru") as name'))
+                ->addSelect(
+                    DB::raw(
+                        '(SELECT name FROM r_enums_translation WHERE translatable_id=r_enums.id AND language="ru") as name'
+                    )
+                )
                 ->where('group_id', $id);
             foreach ($q->cursor() as $r) {
                 Db::table('r_enums')

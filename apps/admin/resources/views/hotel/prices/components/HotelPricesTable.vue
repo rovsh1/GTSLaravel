@@ -6,6 +6,7 @@ import { nanoid } from 'nanoid'
 
 import { updateRoomSeasonPrice } from '~resources/api/hotel/prices/seasons'
 import { formatSeasonPeriod } from '~resources/lib/date'
+import { generateHashFromObject } from '~resources/lib/hash'
 
 import BaseDialog from '~components/BaseDialog.vue'
 import { showToast } from '~components/Bootstrap/BootstrapToast'
@@ -46,8 +47,10 @@ const waitComponentProcess = ref<boolean>(false)
 
 const currentSeasonPeriod = ref<SeasonPeriod | null>(null)
 const currentSeasonData = ref<PricesAccumulationData | null>(null)
-const currentSeasonNewPrice = ref<number | null>(null)
 const currentCellID = ref<string | undefined>()
+
+const editableSeasonData = ref<PricesAccumulationData | null>(null)
+const editableSeasonNewPrice = ref<number | null>(null)
 
 const setIdenticalColumnsWidth = (columnCount: number) => {
   const rowWidth = baseRowWidth.value?.offsetWidth
@@ -69,9 +72,19 @@ watch(() => props.closeAllBut, (value) => {
   }
 })
 
+const setPricesAccumulationData = (obj: PricesAccumulationData): PricesAccumulationData => {
+  const hashID = generateHashFromObject({
+    hotelID: obj.hotelID,
+    roomID: obj.roomID,
+    seasonID: obj.seasonID,
+    isResident: obj.isResident,
+  })
+  return { id: hashID, ...obj }
+}
+
 watchEffect(() => {
   if (!props.isFetching) {
-    roomSeasonsPricesData.value = []
+    const roomSeasonsPricesDataFilled = [] as PricesAccumulationData[]
     props.roomData.price_rates.forEach((rate) => {
       props.seasonsData.forEach((season) => {
         for (let i = 1; i <= props.roomData.guests_count; i++) {
@@ -85,13 +98,13 @@ watchEffect(() => {
             rateName: rate.name,
             price: null,
           }
-          roomSeasonsPricesData.value.push({ id: nanoid(), ...accumulationDataObject, isResident: true })
-          roomSeasonsPricesData.value.push({ id: nanoid(), ...accumulationDataObject, isResident: false })
+          roomSeasonsPricesDataFilled.push(setPricesAccumulationData({ ...accumulationDataObject, isResident: true }))
+          roomSeasonsPricesDataFilled.push(setPricesAccumulationData({ ...accumulationDataObject, isResident: false }))
         }
       })
     })
     props.pricesData?.forEach((seasonPrice) => {
-      roomSeasonsPricesData.value.forEach((roomSeasonPrice) => {
+      roomSeasonsPricesDataFilled.forEach((roomSeasonPrice) => {
         const sourceRoomSeasonPrice = roomSeasonPrice
         if (seasonPrice.room_id === roomSeasonPrice.roomID
           && seasonPrice.season_id === roomSeasonPrice.seasonID
@@ -103,6 +116,7 @@ watchEffect(() => {
         }
       })
     })
+    roomSeasonsPricesData.value = roomSeasonsPricesDataFilled
     nextTick(() => {
       const columnsInRow = props.seasonsData.length * props.roomData.guests_count
       setIdenticalColumnsWidth(columnsInRow)
@@ -129,21 +143,27 @@ const editableSeasonDays = (item: PricesAccumulationData) => {
 }
 
 const changeSeasonPrice = async (item: PricesAccumulationData, newPrice: number | null) => {
-  if (newPrice) {
-    currentSeasonData.value = item
-    currentSeasonNewPrice.value = newPrice
-    toggleModal()
-  }
+  editableSeasonData.value = item
+  editableSeasonNewPrice.value = newPrice
+  toggleModal()
 }
 
 const onSubmitChangeData = async () => {
-  if (!currentSeasonData.value || !currentSeasonNewPrice.value) return
+  if (!editableSeasonData.value) return
   const { data: updateStatusResponse } = await updateRoomSeasonPrice({
-    ...currentSeasonData.value,
-    price: currentSeasonNewPrice.value,
+    ...editableSeasonData.value,
+    price: editableSeasonNewPrice.value,
   })
   if (updateStatusResponse.value?.success) {
-    currentSeasonData.value.price = currentSeasonNewPrice.value
+    if (currentSeasonData.value && currentSeasonData.value.id === editableSeasonData.value.id) {
+      currentSeasonData.value.price = editableSeasonNewPrice.value
+    }
+    if (editableSeasonNewPrice.value === null && currentSeasonData.value?.id === editableSeasonData.value.id) {
+      currentSeasonData.value = null
+      currentSeasonPeriod.value = null
+      editableSeasonNewPrice.value = null
+      isEditSeasonData.value = false
+    }
     emit('updateData')
   } else {
     showToast({ title: 'Не удалось изменить цену' })
@@ -204,9 +224,9 @@ const handlerUpdateSeasonDaysData = (status :boolean) => {
                 >
                   <EditableCell
                     :value="item.price"
-                    :enable-context-menu="true"
+                    :enable-context-menu="!!item.price"
                     @activated-context-menu="editableSeasonDays(item)"
-                    @change="value => changeSeasonPrice(item, value)"
+                    @change="(value: any) => changeSeasonPrice(item, value)"
                   />
                 </td>
               </template>
@@ -221,9 +241,9 @@ const handlerUpdateSeasonDaysData = (status :boolean) => {
                 >
                   <EditableCell
                     :value="item.price"
-                    :enable-context-menu="true"
+                    :enable-context-menu="!!item.price"
                     @activated-context-menu="editableSeasonDays(item)"
-                    @change="value => changeSeasonPrice(item, value)"
+                    @change="(value: any) => changeSeasonPrice(item, value)"
                   />
                 </td>
               </template>
@@ -247,7 +267,8 @@ const handlerUpdateSeasonDaysData = (status :boolean) => {
       @update-season-days-data="handlerUpdateSeasonDaysData"
     />
     <BaseDialog :opened="isOpened as boolean" @close="toggleModal(false)">
-      <template #title>Вы уверены что хотите перезаписать цену на весь сезон?</template>
+      <template #title>Подтверждение</template>
+      Вы уверены что хотите перезаписать цену на весь сезон?
       <template #actions-end>
         <button class="btn btn-primary" type="button" @click="onSubmitChangeData">
           ОК

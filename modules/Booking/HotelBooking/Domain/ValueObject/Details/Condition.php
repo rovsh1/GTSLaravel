@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\HotelBooking\Domain\ValueObject\Details;
 
+use Module\Shared\Contracts\CanEquate;
 use Module\Shared\Domain\ValueObject\Percent;
 use Module\Shared\Domain\ValueObject\SerializableDataInterface;
 use Module\Shared\Domain\ValueObject\TimePeriod;
@@ -12,7 +13,7 @@ use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 /**
  * @see \Module\Hotel\Domain\ValueObject\MarkupSettings\Condition
  */
-final class Condition implements ValueObjectInterface, SerializableDataInterface
+final class Condition implements ValueObjectInterface, SerializableDataInterface, CanEquate
 {
     public function __construct(
         private TimePeriod $timePeriod,
@@ -53,5 +54,12 @@ final class Condition implements ValueObjectInterface, SerializableDataInterface
             TimePeriod::fromData($data['timePeriod']),
             new Percent($data['priceMarkup'])
         );
+    }
+
+    public function isEqual(mixed $b): bool
+    {
+        return $b instanceof Condition
+            ? $this->priceMarkup->isEqual($b->priceMarkup) && $this->timePeriod->isEqual($b->timePeriod)
+            : $this === $b;
     }
 }

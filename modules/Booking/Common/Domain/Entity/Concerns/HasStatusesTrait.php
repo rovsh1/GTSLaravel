@@ -8,13 +8,8 @@ use Module\Booking\Common\Domain\Event\Status\BookingCancelled;
 use Module\Booking\Common\Domain\Event\Status\BookingCancelledFee;
 use Module\Booking\Common\Domain\Event\Status\BookingCancelledNoFee;
 use Module\Booking\Common\Domain\Event\Status\BookingConfirmed;
-use Module\Booking\Common\Domain\Event\Status\BookingInvoiced;
 use Module\Booking\Common\Domain\Event\Status\BookingNotConfirmed;
-use Module\Booking\Common\Domain\Event\Status\BookingPaid;
-use Module\Booking\Common\Domain\Event\Status\BookingPartiallyPaid;
 use Module\Booking\Common\Domain\Event\Status\BookingProcessing;
-use Module\Booking\Common\Domain\Event\Status\BookingRefundFee;
-use Module\Booking\Common\Domain\Event\Status\BookingRefundNoFee;
 use Module\Booking\Common\Domain\Event\Status\BookingWaitingCancellation;
 use Module\Booking\Common\Domain\Event\Status\BookingWaitingConfirmation;
 use Module\Booking\Common\Domain\Event\Status\BookingWaitingProcessing;
@@ -54,24 +49,6 @@ trait HasStatusesTrait
         $this->pushEvent(new BookingNotConfirmed($this, $reason));
     }
 
-    public function toInvoiced(): void
-    {
-        $this->setStatus(BookingStatusEnum::INVOICED);
-        $this->pushEvent(new BookingInvoiced($this));
-    }
-
-    public function toPaid(): void
-    {
-        $this->setStatus(BookingStatusEnum::PAID);
-        $this->pushEvent(new BookingPaid($this));
-    }
-
-    public function toPartiallyPaid(): void
-    {
-        $this->setStatus(BookingStatusEnum::PARTIALLY_PAID);
-        $this->pushEvent(new BookingPartiallyPaid($this));
-    }
-
     public function toCancelledNoFee(): void
     {
         $this->setStatus(BookingStatusEnum::CANCELLED_NO_FEE);
@@ -91,18 +68,6 @@ trait HasStatusesTrait
         $this->setStatus(BookingStatusEnum::CANCELLED_FEE);
         $this->setNetPenalty($cancelFeeAmount);
         $this->pushEvent(new BookingCancelledFee($this, $cancelFeeAmount));
-    }
-
-    public function toRefundNoFee(): void
-    {
-        $this->setStatus(BookingStatusEnum::REFUND_NO_FEE);
-        $this->pushEvent(new BookingRefundNoFee($this));
-    }
-
-    public function toRefundFee(): void
-    {
-        $this->setStatus(BookingStatusEnum::REFUND_FEE);
-        $this->pushEvent(new BookingRefundFee($this));
     }
 
     public function toWaitingConfirmation(): void

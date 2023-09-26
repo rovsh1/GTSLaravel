@@ -12,7 +12,7 @@ return [
     ],
     'Booking' => [
         'path' => modules_path('Booking'),
-        'templates_path' => root_path('resources/booking/pdf-templates'),
+        'templates_path' => base_path('resources/booking/pdf-templates'),
     ],
     'CurrencyRate' => [
         'path' => modules_path('Generic/CurrencyRate'),

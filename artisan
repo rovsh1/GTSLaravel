@@ -19,7 +19,7 @@ require __DIR__ . '/vendor/autoload.php';
 
 /** @var \App\Core\Application $app */
 $app = require_once __DIR__ . '/bootstrap/app.php';
-$app->setBasePath($app->corePath());
+//$app->setBasePath($app->corePath());
 $app->setNamespace('App\\Core\\');
 
 /*

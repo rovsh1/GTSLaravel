@@ -9,6 +9,10 @@ class ReferencesSeeder extends Seeder
 {
     public function run(): void
     {
+        if (DB::table('r_countries')->exists()) {
+            return;
+        }
+
         $this->execute('data_currencies');
         $this->execute('data_countries');
         $this->execute('data_cities');

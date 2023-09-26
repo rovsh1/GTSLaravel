@@ -44,6 +44,7 @@ class CancellationRequestGenerator extends AbstractRequestGenerator
             ->implode(', ');
 
         $administrator = $this->administratorAdapter->getManagerByBookingId($booking->id()->value());
+        $guests = $this->getGuestsIndexedByRoomBooking($booking);
 
         return [
             'reservCreatedAt' => $booking->createdAt()->format('d.m.Y H:i:s'),

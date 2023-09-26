@@ -6,6 +6,9 @@ use Sdk\Module\Contracts\PortGateway\PortGatewayInterface;
 use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
 use Sdk\Module\PortGateway\Client\Client as PortGateway;
 
+/**
+ * @deprecated
+ */
 class PortGatewayServiceProvider extends ServiceProvider
 {
     public function register()

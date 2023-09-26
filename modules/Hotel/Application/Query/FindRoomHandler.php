@@ -19,6 +19,6 @@ class FindRoomHandler implements QueryHandlerInterface
         if ($room === null) {
             return null;
         }
-        return RoomDto::from($room);
+        return RoomDto::fromDomain($room);
     }
 }

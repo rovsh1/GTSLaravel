@@ -28,6 +28,3 @@ Route::register('resetRoomQuota', [RoomQuotaController::class, 'resetRoomQuota']
 Route::register('getSeasonsPrices', [PriceController::class, 'getSeasonsPrices']);
 Route::register('setSeasonPrice', [PriceController::class, 'setSeasonPrice']);
 Route::register('setDatePrice', [PriceController::class, 'setDatePrice']);
-
-//номера
-Route::register('getRoom', [RoomController::class, 'getRoom']);
