@@ -10,7 +10,7 @@ class Contact extends Model
     protected $table = 'supplier_contacts';
 
     protected $fillable = [
-        'provider_id',
+        'supplier_id',
         'type',
         'value',
         'description',
@@ -18,7 +18,7 @@ class Contact extends Model
     ];
 
     protected $casts = [
-        'provider_id' => 'int',
+        'supplier_id' => 'int',
         'type' => ContactTypeEnum::class,
         'main' => 'bool',
     ];

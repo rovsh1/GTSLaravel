@@ -22,7 +22,7 @@ class Car extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'provider_id',
+        'supplier_id',
         'car_id',
 
         'city_ids',

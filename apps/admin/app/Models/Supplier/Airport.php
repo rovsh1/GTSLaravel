@@ -18,7 +18,7 @@ class Airport extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'provider_id',
+        'supplier_id',
         'airport_id',
     ];
 

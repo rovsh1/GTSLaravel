@@ -7,6 +7,10 @@ AclRoute::for('supplier')
     ->resource('contacts', Supplier\ContactController::class, [
         'except' => ['show', 'index']
     ])
+    ->resource('contracts', Supplier\ContractController::class, [
+        'slug' => 'provider',
+        'except' => ['show']
+    ])
     ->resource('seasons', Supplier\SeasonController::class, [
         'slug' => 'provider',
         'except' => ['show']

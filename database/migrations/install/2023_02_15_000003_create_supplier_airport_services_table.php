@@ -10,12 +10,12 @@ return new class extends Migration {
     {
         Schema::create('supplier_airport_services', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('provider_id');
+            $table->unsignedInteger('supplier_id');
             $table->string('name');
             $table->unsignedTinyInteger('type');
             $table->timestamps();
 
-            $table->foreign('provider_id')
+            $table->foreign('supplier_id')
                 ->references('id')
                 ->on('suppliers')
                 ->restrictOnDelete()

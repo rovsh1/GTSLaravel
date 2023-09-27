@@ -18,13 +18,13 @@ class TransferService extends Model
     protected $table = 'supplier_transfer_services';
 
     protected $fillable = [
-        'provider_id',
+        'supplier_id',
         'name',
         'type',
     ];
 
     protected $casts = [
-        'provider_id' => 'int',
+        'supplier_id' => 'int',
         'type' => TransferServiceTypeEnum::class,
     ];
 
@@ -33,7 +33,7 @@ class TransferService extends Model
         static::addGlobalScope('default', function (Builder $builder) {
             $builder->orderBy('name')
                 ->addSelect('supplier_transfer_services.*')
-                ->join('suppliers', 'suppliers.id', '=', 'supplier_transfer_services.provider_id')
+                ->join('suppliers', 'suppliers.id', '=', 'supplier_transfer_services.supplier_id')
                 ->addSelect('suppliers.name as provider_name');
         });
     }
@@ -43,7 +43,7 @@ class TransferService extends Model
         $builder->whereExists(function (QueryBuilder $query) use ($cityId) {
             $query->select(DB::raw(1))
                 ->from('supplier_cities as t')
-                ->whereColumn('t.provider_id', 'supplier_transfer_services.provider_id')
+                ->whereColumn('t.supplier_id', 'supplier_transfer_services.supplier_id')
                 ->where('city_id', $cityId);
         });
     }

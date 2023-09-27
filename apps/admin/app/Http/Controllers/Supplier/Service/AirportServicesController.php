@@ -43,7 +43,7 @@ class AirportServicesController extends Controller
     {
         $this->provider($provider);
 
-        $query = AirportService::where('provider_id', $provider->id);
+        $query = AirportService::where('supplier_id', $provider->id);
         if ($request->has('quicksearch')) {
             $query->quicksearch($request->get('quicksearch'));
         }
@@ -105,7 +105,7 @@ class AirportServicesController extends Controller
     protected function formFactory(int $providerId): FormContract
     {
         return Form::name('data')
-            ->hidden('provider_id', ['value' => $providerId])
+            ->hidden('supplier_id', ['value' => $providerId])
             ->text('name', ['label' => 'Название', 'required' => true])
             ->enum('type', [
                 'label' => 'Тип услуги',

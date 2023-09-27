@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Admin\Http\Controllers\Supplier\Service;
+namespace App\Admin\Http\Controllers\Supplier;
 
 use App\Admin\Components\Factory\Prototype;
 use App\Admin\Http\Controllers\Controller;
-use App\Admin\Http\Requests\ServiceProvider\SearchServicesRequest;
-use App\Admin\Http\Resources\Service as ServiceResource;
 use App\Admin\Models\Supplier\Provider;
-use App\Admin\Models\Supplier\TransferService;
+use App\Admin\Models\Supplier\Season;
 use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Form;
@@ -25,12 +23,10 @@ use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Layout as LayoutContract;
 use App\Admin\View\Menus\SupplierMenu;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Module\Shared\Enum\Booking\TransferServiceTypeEnum;
 
-class TransferServicesController extends Controller
+class ContractController extends Controller
 {
     private Prototype $prototype;
 
@@ -43,18 +39,15 @@ class TransferServicesController extends Controller
     {
         $this->provider($provider);
 
-        $query = TransferService::where('supplier_id', $provider->id);
-        if ($request->has('quicksearch')) {
-            $query->quicksearch($request->get('quicksearch'));
-        }
+        $query = Season::where('supplier_id', $provider->id);
         $grid = $this->gridFactory($provider)->data($query);
 
-        return Layout::title('Услуги транспорт')
+        return Layout::title('Договора')
             ->view('default.grid.grid', [
                 'quicksearch' => $grid->getQuicksearch(),
                 'grid' => $grid,
                 'createUrl' => Acl::isUpdateAllowed($this->prototype->key)
-                    ? $this->prototype->route('services-transfer.create', $provider)
+                    ? $this->prototype->route('contracts.create', $provider)
                     : null,
             ]);
     }
@@ -64,64 +57,50 @@ class TransferServicesController extends Controller
         $this->provider($provider);
 
         return (new DefaultFormCreateAction($this->formFactory($provider->id)))
-            ->handle('Новая услуга');
+            ->handle('Новый договор');
     }
 
     public function store(Request $request, Provider $provider): RedirectResponse
     {
         return (new DefaultFormStoreAction($this->formFactory($provider->id)))
-            ->handle(TransferService::class);
+            ->handle(Season::class);
     }
 
-    public function edit(Request $request, Provider $provider, TransferService $servicesTransfer): LayoutContract
+    public function edit(Request $request, Provider $provider, Season $season): LayoutContract
     {
         $this->provider($provider);
 
         return (new DefaultFormEditAction($this->formFactory($provider->id)))
             ->deletable()
-            ->handle($servicesTransfer);
+            ->handle($season);
     }
 
-    public function update(Provider $provider, TransferService $servicesTransfer): RedirectResponse
+    public function update(Provider $provider, Season $season): RedirectResponse
     {
         return (new DefaultFormUpdateAction($this->formFactory($provider->id)))
-            ->handle($servicesTransfer);
+            ->handle($season);
     }
 
-    public function destroy(Provider $provider, TransferService $servicesTransfer): AjaxResponseInterface
+    public function destroy(Provider $provider, Season $season): AjaxResponseInterface
     {
-        return (new DefaultDestroyAction())->handle($servicesTransfer);
-    }
-
-    public function search(SearchServicesRequest $request): JsonResponse
-    {
-        $services = TransferService::whereCity($request->getCityId())->get();
-
-        return response()->json(
-            ServiceResource::collection($services)
-        );
+        return (new DefaultDestroyAction())->handle($season);
     }
 
     protected function formFactory(int $providerId): FormContract
     {
         return Form::name('data')
             ->hidden('supplier_id', ['value' => $providerId])
-            ->text('name', ['label' => 'Название', 'required' => true])
-            ->enum('type', [
-                'label' => 'Тип услуги',
-                'emptyItem' => '',
-                'required' => true,
-                'enum' => TransferServiceTypeEnum::class
-            ]);
+            ->text('number', ['label' => 'Название', 'required' => true])
+            ->dateRange('period', ['label' => 'Период', 'required' => true])
+            ->checkbox('status', ['label' => 'Статус']);
     }
 
     protected function gridFactory(Provider $provider): GridContract
     {
         return Grid::paginator(16)
-            ->enableQuicksearch()
-            ->edit(fn($r) => $this->prototype->route('services-transfer.edit', [$provider, $r->id]))
-            ->text('name', ['text' => 'Название', 'order' => true])
-            ->enum('type', ['text' => 'Тип', 'enum' => TransferServiceTypeEnum::class]);
+            ->edit(fn($r) => $this->prototype->route('contracts.edit', [$provider, $r->id]))
+            ->text('number', ['text' => 'Название', 'order' => true])
+            ->datePeriod('period', ['text' => 'Период']);
     }
 
     private function provider(Provider $provider): void
@@ -131,8 +110,8 @@ class TransferServicesController extends Controller
                 $this->prototype->route('show', $provider),
                 (string)$provider
             )
-            ->addUrl($this->prototype->route('services-transfer.index', $provider), 'Услуги');
+            ->addUrl($this->prototype->route('contracts.index', $provider), 'Договора');
 
-        Sidebar::submenu(new SupplierMenu($provider, 'services-transfer'));
+        Sidebar::submenu(new SupplierMenu($provider, 'contracts'));
     }
 }

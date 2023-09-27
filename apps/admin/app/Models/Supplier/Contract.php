@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
 use Sdk\Module\Database\Eloquent\Model;
 
-class Season extends Model
+class Contract extends Model
 {
     use HasQuicksearch;
 

@@ -121,7 +121,7 @@ abstract class AbstractContactController extends Controller
 
     protected function getParentIdFieldName(): string
     {
-        return 'provider_id';
+        return 'supplier_id';
     }
 
     abstract protected function getContactModel(): string;

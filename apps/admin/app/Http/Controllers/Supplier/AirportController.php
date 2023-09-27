@@ -40,7 +40,7 @@ class AirportController extends Controller
     {
         $this->provider($provider);
 
-        $query = Airport::where('provider_id', $provider->id);
+        $query = Airport::where('supplier_id', $provider->id);
         $grid = $this->gridFactory($provider)->data($query);
 
         return Layout::title('Аэропорты')
@@ -90,7 +90,7 @@ class AirportController extends Controller
     protected function formFactory(Provider $provider): FormContract
     {
         return Form::name('data')
-            ->hidden('provider_id', ['value' => $provider->id])
+            ->hidden('supplier_id', ['value' => $provider->id])
             ->select('airport_id', [
                 'label' => 'Аэропорт',
                 'required' => true,

@@ -46,7 +46,7 @@ class Provider extends Model
 
     public function cities(): BelongsToMany
     {
-        return $this->belongsToMany(City::class, 'supplier_cities', 'provider_id', 'city_id');
+        return $this->belongsToMany(City::class, 'supplier_cities', 'supplier_id', 'city_id');
     }
 
     public function cars(): HasMany
@@ -59,7 +59,7 @@ class Provider extends Model
         return $this->belongsToMany(
             Airport::class,
             'supplier_airports',
-            'provider_id',
+            'supplier_id',
             'airport_id'
         );
     }
@@ -91,7 +91,7 @@ class Provider extends Model
 
     public function getForeignKey()
     {
-        return 'provider_id';
+        return 'supplier_id';
     }
 
     public function contacts(): HasMany

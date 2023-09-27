@@ -18,13 +18,13 @@ class AirportService extends Model
     protected $table = 'supplier_airport_services';
 
     protected $fillable = [
-        'provider_id',
+        'supplier_id',
         'name',
         'type',
     ];
 
     protected $casts = [
-        'provider_id' => 'int',
+        'supplier_id' => 'int',
         'type' => AirportServiceTypeEnum::class,
     ];
 
@@ -37,7 +37,7 @@ class AirportService extends Model
                     'suppliers',
                     'suppliers.id',
                     '=',
-                    'supplier_airport_services.provider_id'
+                    'supplier_airport_services.supplier_id'
                 )
                 ->addSelect('suppliers.name as provider_name');
         });
@@ -48,7 +48,7 @@ class AirportService extends Model
         $builder->whereExists(function (QueryBuilder $query) use ($cityId) {
             $query->select(DB::raw(1))
                 ->from('supplier_cities as t')
-                ->whereColumn('t.provider_id', 'supplier_airport_services.provider_id')
+                ->whereColumn('t.supplier_id', 'supplier_airport_services.supplier_id')
                 ->where('city_id', $cityId);
         });
     }

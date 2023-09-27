@@ -18,13 +18,13 @@ const { seasons, services, cars, providerId, currencies } = requestInitialData('
   seasons: z.array(z.object({
     id: z.number(),
     number: z.string(),
-    provider_id: z.number(),
+    supplier_id: z.number(),
     date_start: z.string(),
     date_end: z.string(),
   })),
   services: z.array(z.object({
     id: z.number(),
-    provider_id: z.number(),
+    supplier_id: z.number(),
     name: z.string(),
     type: z.number(),
   })),

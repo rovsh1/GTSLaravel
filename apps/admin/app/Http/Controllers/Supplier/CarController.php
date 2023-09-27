@@ -41,7 +41,7 @@ class CarController extends Controller
     {
         $this->provider($provider);
 
-        $query = Car::where('provider_id', $provider->id);
+        $query = Car::where('supplier_id', $provider->id);
         $grid = $this->gridFactory($provider)->data($query);
 
         return Layout::title('Автомобили')
@@ -91,7 +91,7 @@ class CarController extends Controller
     protected function formFactory(Provider $provider): FormContract
     {
         return Form::name('data')
-            ->hidden('provider_id', ['value' => $provider->id])
+            ->hidden('supplier_id', ['value' => $provider->id])
             ->select('car_id', [
                 'label' => 'Автомобиль',
                 'required' => true,

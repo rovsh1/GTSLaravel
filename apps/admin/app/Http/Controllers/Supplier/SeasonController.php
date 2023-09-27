@@ -39,7 +39,7 @@ class SeasonController extends Controller
     {
         $this->provider($provider);
 
-        $query = Season::where('provider_id', $provider->id);
+        $query = Season::where('supplier_id', $provider->id);
         $grid = $this->gridFactory($provider)->data($query);
 
         return Layout::title('Сезоны')
@@ -89,7 +89,7 @@ class SeasonController extends Controller
     protected function formFactory(int $providerId): FormContract
     {
         return Form::name('data')
-            ->hidden('provider_id', ['value' => $providerId])
+            ->hidden('supplier_id', ['value' => $providerId])
             ->text('number', ['label' => 'Название', 'required' => true])
             ->dateRange('period', ['label' => 'Период', 'required' => true])
             ->checkbox('status', ['label' => 'Статус']);
