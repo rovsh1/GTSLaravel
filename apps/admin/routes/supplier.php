@@ -11,6 +11,10 @@ AclRoute::for('supplier')
         'slug' => 'provider',
         'except' => ['show']
     ])
+    ->resource('requisites', Supplier\RequisiteController::class, [
+        'slug' => 'provider',
+        'except' => ['show']
+    ])
     ->resource('seasons', Supplier\SeasonController::class, [
         'slug' => 'provider',
         'except' => ['show']

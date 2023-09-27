@@ -2,61 +2,51 @@
 
 namespace App\Admin\Models\Supplier;
 
-use Carbon\CarbonPeriod;
-use Illuminate\Database\Eloquent\Builder;
+use App\Admin\Enums\Hotel\Contract\StatusEnum;
+use App\Admin\Support\Models\HasPeriod;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
 use Sdk\Module\Database\Eloquent\Model;
 
 class Contract extends Model
 {
-    use HasQuicksearch;
+    use HasQuicksearch, HasPeriod;
 
-    protected array $quicksearch = ['id', 'number%'];
+    protected array $quicksearch = ['id'];
 
-    protected $table = 'supplier_seasons';
+    protected $table = 'supplier_contracts';
 
     protected $fillable = [
         'supplier_id',
-        'number',
         'date_start',
         'date_end',
         'status',
-
-        'period'
     ];
 
     protected $casts = [
         'supplier_id' => 'int',
         'date_start' => 'date',
         'date_end' => 'date',
-        'status' => 'bool',
+        'status' => StatusEnum::class
     ];
 
     public static function booted()
     {
-        static::addGlobalScope('default', function (Builder $builder) {
-            $builder->orderBy('date_end', 'desc');
+        static::saved(function (self $model): void {
+            if ($model->isActive()) {
+                static::where('id', '!=', $model->id)
+                    ->whereStatus(StatusEnum::ACTIVE)
+                    ->update(['status' => StatusEnum::INACTIVE]);
+            }
         });
     }
 
-    public function setPeriodAttribute(CarbonPeriod $period): void
+    public function isActive(): bool
     {
-        $this->date_start = $period->getStartDate();
-        $this->date_end = $period->getEndDate();
-    }
-
-    public function getPeriodAttribute(): CarbonPeriod
-    {
-        return new CarbonPeriod($this->date_start, $this->date_end);
-    }
-
-    public function getForeignKey()
-    {
-        return 'season_id';
+        return $this->status === StatusEnum::ACTIVE;
     }
 
     public function __toString()
     {
-        return (string)$this->number;
+        return 'Договор №' . str_pad($this->id, 6, '0', STR_PAD_LEFT);
     }
 }

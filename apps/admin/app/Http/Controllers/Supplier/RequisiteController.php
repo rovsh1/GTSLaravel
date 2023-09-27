@@ -3,14 +3,12 @@
 namespace App\Admin\Http\Controllers\Supplier;
 
 use App\Admin\Components\Factory\Prototype;
-use App\Admin\Enums\Hotel\Contract\StatusEnum;
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Models\Supplier\Provider;
-use App\Admin\Models\Supplier\Contract;
+use App\Admin\Models\Supplier\Requisite;
 use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Form;
-use App\Admin\Support\Facades\Format;
 use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Facades\Layout;
 use App\Admin\Support\Facades\Prototypes;
@@ -28,7 +26,7 @@ use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
-class ContractController extends Controller
+class RequisiteController extends Controller
 {
     private Prototype $prototype;
 
@@ -41,15 +39,15 @@ class ContractController extends Controller
     {
         $this->provider($provider);
 
-        $query = Contract::where('supplier_id', $provider->id);
+        $query = Requisite::where('supplier_id', $provider->id);
         $grid = $this->gridFactory($provider)->data($query);
 
-        return Layout::title('Договора')
+        return Layout::title('Реквизиты')
             ->view('default.grid.grid', [
                 'quicksearch' => $grid->getQuicksearch(),
                 'grid' => $grid,
                 'createUrl' => Acl::isUpdateAllowed($this->prototype->key)
-                    ? $this->prototype->route('contracts.create', $provider)
+                    ? $this->prototype->route('requisites.create', $provider)
                     : null,
             ]);
     }
@@ -59,56 +57,49 @@ class ContractController extends Controller
         $this->provider($provider);
 
         return (new DefaultFormCreateAction($this->formFactory($provider->id)))
-            ->handle('Новый договор');
+            ->handle('Новые реквизиты');
     }
 
     public function store(Request $request, Provider $provider): RedirectResponse
     {
         return (new DefaultFormStoreAction($this->formFactory($provider->id)))
-            ->handle(Contract::class);
+            ->handle(Requisite::class);
     }
 
-    public function edit(Request $request, Provider $provider, Contract $contract): LayoutContract
+    public function edit(Request $request, Provider $provider, Requisite $requisite): LayoutContract
     {
         $this->provider($provider);
 
         return (new DefaultFormEditAction($this->formFactory($provider->id)))
             ->deletable()
-            ->handle($contract);
+            ->handle($requisite);
     }
 
-    public function update(Provider $provider, Contract $contract): RedirectResponse
+    public function update(Provider $provider, Requisite $requisite): RedirectResponse
     {
         return (new DefaultFormUpdateAction($this->formFactory($provider->id)))
-            ->handle($contract);
+            ->handle($requisite);
     }
 
-    public function destroy(Provider $provider, Contract $contract): AjaxResponseInterface
+    public function destroy(Provider $provider, Requisite $requisite): AjaxResponseInterface
     {
-        return (new DefaultDestroyAction())->handle($contract);
+        return (new DefaultDestroyAction())->handle($requisite);
     }
 
     protected function formFactory(int $supplierId): FormContract
     {
         return Form::name('data')
-            ->setOption('enctype', 'multipart/form-data')
             ->hidden('supplier_id', ['value' => $supplierId])
-            ->dateRange('period', ['label' => 'Период', 'required' => true])
-            ->enum('status', ['label' => 'Статус', 'emptyItem' => '', 'enum' => StatusEnum::class, 'required' => true])
-            ->file('documents', ['label' => 'Документы', 'multiple' => true]);
+            ->text('inn', ['label' => 'ИНН', 'required' => true])
+            ->text('director_full_name', ['label' => 'Ф.И.О. директора', 'required' => true]);
     }
 
     protected function gridFactory(Provider $provider): GridContract
     {
         return Grid::paginator(16)
-            ->edit(fn($r) => $this->prototype->route('contracts.edit', [$provider, $r->id]))
-            ->text(
-                'contract_number',
-                ['text' => 'Номер', 'order' => true, 'renderer' => fn($r, $t) => (string)$r]
-            )
-            ->text('period', ['text' => 'Период', 'renderer' => fn($r, $t) => Format::period($t)])
-            ->enum('status', ['text' => 'Статус', 'enum' => StatusEnum::class, 'order' => true])
-            ->file('documents', ['text' => 'Документы']);
+            ->edit(fn($r) => $this->prototype->route('requisites.edit', [$provider, $r->id]))
+            ->text('inn', ['text' => 'ИНН'])
+            ->text('director_full_name', ['text' => 'Ф.И.О. директора']);
     }
 
     private function provider(Provider $provider): void
@@ -118,8 +109,8 @@ class ContractController extends Controller
                 $this->prototype->route('show', $provider),
                 (string)$provider
             )
-            ->addUrl($this->prototype->route('contracts.index', $provider), 'Договора');
+            ->addUrl($this->prototype->route('requisites.index', $provider), 'Реквизиты');
 
-        Sidebar::submenu(new SupplierMenu($provider, 'contracts'));
+        Sidebar::submenu(new SupplierMenu($provider, 'requisites'));
     }
 }
