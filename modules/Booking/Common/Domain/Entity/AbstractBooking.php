@@ -191,12 +191,6 @@ abstract class AbstractBooking extends AbstractAggregateRoot implements
         $this->pushEvent($event);
     }
 
-    public function generateVoucher(VoucherCreator $voucherCreator): void
-    {
-        $voucherCreator->create($this);
-        //@todo кинуть ивент
-    }
-
     public function isManualGrossPrice(): bool
     {
         return $this->price()->grossPrice()->manualValue() !== null;
@@ -205,11 +199,6 @@ abstract class AbstractBooking extends AbstractAggregateRoot implements
     public function isManualNetPrice(): bool
     {
         return $this->price()->netPrice()->manualValue() !== null;
-    }
-
-    public function canSendClientVoucher(): bool
-    {
-        return $this->status === BookingStatusEnum::CONFIRMED;
     }
 
     public function delete(): void

@@ -10,7 +10,6 @@ export interface BookingAvailableActionsResponse {
   canSendBookingRequest: boolean
   canSendCancellationRequest: boolean
   canSendChangeRequest: boolean
-  canSendVoucher: boolean
   canEditExternalNumber: boolean
   canChangeRoomPrice: boolean
   canCopy: boolean

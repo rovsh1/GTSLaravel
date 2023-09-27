@@ -40,10 +40,6 @@ interface BookingInterface extends EntityInterface
      */
     public function generateRequest(RequestRules $requestRules, RequestCreator $requestCreator): void;
 
-    public function generateVoucher(VoucherCreator $voucherCreator): void;
-
-    public function canSendClientVoucher(): bool;
-
     public function isManualGrossPrice(): bool;
 
     public function isManualNetPrice(): bool;
