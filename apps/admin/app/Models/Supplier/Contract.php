@@ -75,18 +75,11 @@ class Contract extends Model
 
     public function serviceName(): Attribute
     {
-        return Attribute::get(function () {
-            if ($this->service_type === ContractServiceTypeEnum::HOTEL) {
-                return "Отель {$this->hotel_name}";
-            }
-            if ($this->service_type === ContractServiceTypeEnum::AIRPORT) {
-                return $this->airport_service_name;
-            }
-            if ($this->service_type === ContractServiceTypeEnum::TRANSFER) {
-                return $this->transfer_service_name;
-            }
-
-            return null;
+        return Attribute::get(fn() => match ($this->service_type) {
+            ContractServiceTypeEnum::HOTEL => "Отель {$this->hotel_name}",
+            ContractServiceTypeEnum::AIRPORT => $this->airport_service_name,
+            ContractServiceTypeEnum::TRANSFER => $this->transfer_service_name,
+            default => null
         });
     }
 
