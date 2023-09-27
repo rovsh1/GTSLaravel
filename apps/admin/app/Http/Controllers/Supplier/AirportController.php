@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Admin\Http\Controllers\ServiceProvider;
+namespace App\Admin\Http\Controllers\Supplier;
 
 use App\Admin\Components\Factory\Prototype;
 use App\Admin\Http\Controllers\Controller;
-use App\Admin\Models\Reference\City;
-use App\Admin\Models\Reference\TransportCar;
-use App\Admin\Models\ServiceProvider\Car;
-use App\Admin\Models\ServiceProvider\Provider;
+use App\Admin\Models\Reference\Airport as AirportReference;
+use App\Admin\Models\Supplier\Airport;
+use App\Admin\Models\Supplier\Provider;
 use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Form;
@@ -23,12 +22,12 @@ use App\Admin\Support\Http\Actions\DefaultFormUpdateAction;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Layout as LayoutContract;
-use App\Admin\View\Menus\ServiceProviderMenu;
+use App\Admin\View\Menus\SupplierMenu;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
-class CarController extends Controller
+class AirportController extends Controller
 {
     private Prototype $prototype;
 
@@ -41,15 +40,15 @@ class CarController extends Controller
     {
         $this->provider($provider);
 
-        $query = Car::where('provider_id', $provider->id);
+        $query = Airport::where('provider_id', $provider->id);
         $grid = $this->gridFactory($provider)->data($query);
 
-        return Layout::title('Автомобили')
+        return Layout::title('Аэропорты')
             ->view('default.grid.grid', [
                 'quicksearch' => $grid->getQuicksearch(),
                 'grid' => $grid,
                 'createUrl' => Acl::isUpdateAllowed($this->prototype->key)
-                    ? $this->prototype->route('cars.create', $provider)
+                    ? $this->prototype->route('airports.create', $provider)
                     : null,
             ]);
     }
@@ -59,64 +58,58 @@ class CarController extends Controller
         $this->provider($provider);
 
         return (new DefaultFormCreateAction($this->formFactory($provider)))
-            ->handle('Новый автомобиль');
+            ->handle('Добавить аэропорт');
     }
 
     public function store(Request $request, Provider $provider): RedirectResponse
     {
         return (new DefaultFormStoreAction($this->formFactory($provider)))
-            ->handle(Car::class);
+            ->handle(Airport::class);
     }
 
-    public function edit(Request $request, Provider $provider, Car $car): LayoutContract
+    public function edit(Request $request, Provider $provider, Airport $airport): LayoutContract
     {
         $this->provider($provider);
 
         return (new DefaultFormEditAction($this->formFactory($provider)))
             ->deletable()
-            ->handle($car);
+            ->handle($airport);
     }
 
-    public function update(Provider $provider, Car $car): RedirectResponse
+    public function update(Provider $provider, Airport $airport): RedirectResponse
     {
         return (new DefaultFormUpdateAction($this->formFactory($provider)))
-            ->handle($car);
+            ->handle($airport);
     }
 
-    public function destroy(Provider $provider, Car $car): AjaxResponseInterface
+    public function destroy(Provider $provider, Airport $airport): AjaxResponseInterface
     {
-        return (new DefaultDestroyAction())->handle($car);
+        return (new DefaultDestroyAction())->handle($airport);
     }
 
     protected function formFactory(Provider $provider): FormContract
     {
         return Form::name('data')
             ->hidden('provider_id', ['value' => $provider->id])
-            ->select('car_id', [
-                'label' => 'Автомобиль',
+            ->select('airport_id', [
+                'label' => 'Аэропорт',
                 'required' => true,
                 'emptyItem' => '',
-                'items' => TransportCar::get()->map(fn($r) => [
-                    'value' => $r->id,
-                    'text' => (string)$r
-                ])
-            ])
-            ->select('city_ids', [
-                'label' => 'Город',
-                'multiple' => true,
-                'items' => $provider->cities()->get()
+                'items' => AirportReference::whereIn('r_airports.id', $provider->cities)
+                    ->get()
+                    ->map(fn($r) => [
+                        'value' => $r->id,
+                        'text' => (string)$r
+                    ])
             ]);
     }
 
     protected function gridFactory(Provider $provider): GridContract
     {
         return Grid::paginator(16)
-            ->edit(fn($r) => $this->prototype->route('cars.edit', [$provider, $r->id]))
-            ->text('car', ['text' => 'Автомобиль', 'renderer' => fn($v) => (string)$v])
-            ->text('cities', [
-                'text' => 'Город',
-                'renderer' => fn($v) => $v->cities()->get()->map->name->implode(', ')
-            ]);
+            ->edit(fn($r) => $this->prototype->route('airports.edit', [$provider, $r->id]))
+            ->text('airport_name', ['text' => 'Аэропорт'])
+            ->text('city_name', ['text' => 'Город']);
     }
 
     private function provider(Provider $provider): void
@@ -126,8 +119,8 @@ class CarController extends Controller
                 $this->prototype->route('show', $provider),
                 (string)$provider
             )
-            ->addUrl($this->prototype->route('cars.index', $provider), 'Автомобили');
+            ->addUrl($this->prototype->route('airports.index', $provider), 'Аэропорты');
 
-        Sidebar::submenu(new ServiceProviderMenu($provider, 'cars'));
+        Sidebar::submenu(new SupplierMenu($provider, 'airports'));
     }
 }

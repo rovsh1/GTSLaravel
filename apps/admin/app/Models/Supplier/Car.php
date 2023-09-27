@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Models\ServiceProvider;
+namespace App\Admin\Models\Supplier;
 
 use App\Admin\Models\Reference\City;
 use App\Admin\Models\Reference\TransportCar;

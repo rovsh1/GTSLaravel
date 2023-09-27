@@ -5,7 +5,7 @@ namespace App\Admin\View\Menus;
 use App\Admin\Support\View\Sidebar\AbstractSubmenu;
 use App\Admin\Support\View\Sidebar\Menu\Group;
 
-class ServiceProviderMenu extends AbstractSubmenu
+class SupplierMenu extends AbstractSubmenu
 {
     public function __construct(private $model, string $current = 'info')
     {

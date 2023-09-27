@@ -5,7 +5,7 @@ namespace App\Admin\Http\Controllers\Data;
 use App\Admin\Http\Requests\Airport\SearchAirportRequest;
 use App\Admin\Http\Resources\Airport as AirportResource;
 use App\Admin\Models\Reference\Airport;
-use App\Admin\Models\ServiceProvider\AirportPrice;
+use App\Admin\Models\Supplier\AirportPrice;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;

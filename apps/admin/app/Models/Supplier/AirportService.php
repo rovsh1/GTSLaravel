@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Admin\Models\ServiceProvider;
+namespace App\Admin\Models\Supplier;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Facades\DB;
-use Module\Shared\Enum\Booking\TransferServiceTypeEnum;
+use Module\Shared\Enum\Booking\AirportServiceTypeEnum;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
 use Sdk\Module\Database\Eloquent\Model;
 
-class TransferService extends Model
+class AirportService extends Model
 {
     use HasQuicksearch;
 
-    protected array $quicksearch = ['id', 'supplier_transfer_services.name%'];
+    protected array $quicksearch = ['id', 'supplier_airport_services.name%'];
 
-    protected $table = 'supplier_transfer_services';
+    protected $table = 'supplier_airport_services';
 
     protected $fillable = [
         'provider_id',
@@ -25,15 +25,20 @@ class TransferService extends Model
 
     protected $casts = [
         'provider_id' => 'int',
-        'type' => TransferServiceTypeEnum::class,
+        'type' => AirportServiceTypeEnum::class,
     ];
 
     public static function booted()
     {
         static::addGlobalScope('default', function (Builder $builder) {
             $builder->orderBy('name')
-                ->addSelect('supplier_transfer_services.*')
-                ->join('suppliers', 'suppliers.id', '=', 'supplier_transfer_services.provider_id')
+                ->addSelect('supplier_airport_services.*')
+                ->join(
+                    'suppliers',
+                    'suppliers.id',
+                    '=',
+                    'supplier_airport_services.provider_id'
+                )
                 ->addSelect('suppliers.name as provider_name');
         });
     }
@@ -43,7 +48,7 @@ class TransferService extends Model
         $builder->whereExists(function (QueryBuilder $query) use ($cityId) {
             $query->select(DB::raw(1))
                 ->from('supplier_cities as t')
-                ->whereColumn('t.provider_id', 'supplier_transfer_services.provider_id')
+                ->whereColumn('t.provider_id', 'supplier_airport_services.provider_id')
                 ->where('city_id', $cityId);
         });
     }

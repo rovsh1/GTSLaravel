@@ -1,43 +1,43 @@
 <?php
 
-namespace App\Admin\Http\Controllers\ServiceProvider\Service\Price;
+namespace App\Admin\Http\Controllers\Supplier\Service\Price;
 
-use App\Admin\Http\Requests\ServiceProvider\UpdateAirportPriceRequest;
+use App\Admin\Http\Requests\ServiceProvider\UpdateTransferPriceRequest;
 use App\Admin\Models\Reference\Currency;
-use App\Admin\Models\ServiceProvider\AirportPrice;
-use App\Admin\Models\ServiceProvider\AirportService;
-use App\Admin\Models\ServiceProvider\Provider;
+use App\Admin\Models\Supplier\CarPrice;
+use App\Admin\Models\Supplier\Provider;
+use App\Admin\Models\Supplier\TransferService;
 use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Facades\Layout;
 use App\Admin\Support\View\Layout as LayoutContract;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class AirportPricesController extends AbstractPricesController
+class TransferPricesController extends AbstractPricesController
 {
     public function index(Request $request, Provider $provider): LayoutContract
     {
         $this->provider($provider);
 
         return Layout::title('Цены')
-            ->view('supplier.service.price.airport.index', [
+            ->view('supplier.service.price.transfer.index', [
                 'provider' => $provider,
-                'airports' => $provider->airports,
+                'cars' => $provider->cars()->with(['cities'])->get(),
                 'seasons' => $provider->seasons,
-                'services' => $provider->airportServices,
+                'services' => $provider->transferServices,
                 'currencies' => Currency::all(),
                 'quicksearch' => Grid::enableQuicksearch()->getQuicksearch()
             ]);
     }
 
-    public function getPrices(Request $request, Provider $provider, AirportService $service): JsonResponse
+    public function getPrices(Request $request, Provider $provider, TransferService $service): JsonResponse
     {
         return response()->json(
-            AirportPrice::whereServiceId($service->id)->get()
+            CarPrice::whereServiceId($service->id)->get()
         );
     }
 
-    public function update(UpdateAirportPriceRequest $request, Provider $provider, AirportService $service): JsonResponse {
+    public function update(UpdateTransferPriceRequest $request, Provider $provider, TransferService $service): JsonResponse {
         $data = ['currency_id' => $request->getCurrencyId()];
         if ($request->getPriceNet() !== null) {
             $data['price_net'] = $request->getPriceNet();
@@ -46,8 +46,8 @@ class AirportPricesController extends AbstractPricesController
             $data['prices_gross'] = $request->getPricesGross();
         }
 
-        AirportPrice::updateOrCreate(
-            ['service_id' => $service->id, 'airport_id' => $request->getAirportId(), 'season_id' => $request->getSeasonId()],
+        CarPrice::updateOrCreate(
+            ['service_id' => $service->id, 'car_id' => $request->getCarId(), 'season_id' => $request->getSeasonId()],
             $data
         );
 

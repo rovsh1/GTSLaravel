@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Http\Controllers\ServiceProvider;
+namespace App\Admin\Http\Controllers\Supplier;
 
 use App\Admin\Models\Reference\City;
 use App\Admin\Models\Reference\TransportCar;
@@ -12,7 +12,7 @@ use App\Admin\Support\Facades\Sidebar;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
-use App\Admin\View\Menus\ServiceProviderMenu;
+use App\Admin\View\Menus\SupplierMenu;
 use Illuminate\Database\Eloquent\Model;
 
 class ProviderController extends AbstractPrototypeController
@@ -60,12 +60,12 @@ class ProviderController extends AbstractPrototypeController
             ]);
         }
 
-        Sidebar::submenu(new ServiceProviderMenu($model, 'info'));
+        Sidebar::submenu(new SupplierMenu($model, 'info'));
     }
 
     protected function prepareEditMenu(Model $model)
     {
-        Sidebar::submenu(new ServiceProviderMenu($model, 'info'));
+        Sidebar::submenu(new SupplierMenu($model, 'info'));
     }
 
     protected function getShowViewData(): array

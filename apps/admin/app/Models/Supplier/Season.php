@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Models\ServiceProvider;
+namespace App\Admin\Models\Supplier;
 
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;

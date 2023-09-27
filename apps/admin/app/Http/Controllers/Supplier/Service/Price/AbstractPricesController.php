@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Admin\Http\Controllers\ServiceProvider\Service\Price;
+namespace App\Admin\Http\Controllers\Supplier\Service\Price;
 
 use App\Admin\Components\Factory\Prototype;
 use App\Admin\Http\Controllers\Controller;
-use App\Admin\Models\ServiceProvider\Provider;
+use App\Admin\Models\Supplier\Provider;
 use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Prototypes;
 use App\Admin\Support\Facades\Sidebar;
-use App\Admin\View\Menus\ServiceProviderMenu;
+use App\Admin\View\Menus\SupplierMenu;
 
 class AbstractPricesController extends Controller
 {
@@ -30,7 +30,7 @@ class AbstractPricesController extends Controller
             );
         Breadcrumb::add('Цены');
 
-        Sidebar::submenu(new ServiceProviderMenu($provider, 'prices'));
+        Sidebar::submenu(new SupplierMenu($provider, 'prices'));
     }
 
 }

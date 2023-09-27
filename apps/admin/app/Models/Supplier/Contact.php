@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Models\ServiceProvider;
+namespace App\Admin\Models\Supplier;
 
 use Module\Shared\Enum\ContactTypeEnum;
 use Sdk\Module\Database\Eloquent\Model;
