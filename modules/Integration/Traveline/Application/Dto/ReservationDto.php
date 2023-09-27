@@ -45,7 +45,7 @@ class ReservationDto extends Dto
         public readonly ?string           $currencyCode = null,
 
         #[WithCast(EnumCast::class)]
-        public readonly PaymentMethodEnum $paymentMethod = PaymentMethodEnum::Credit,
+        public readonly PaymentMethodEnum $paymentMethod = PaymentMethodEnum::Prepay,
         public readonly ?string           $paymentMethodComment = null,
     ) {}
 }
