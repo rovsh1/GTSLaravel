@@ -8,12 +8,12 @@ import { Money } from '~api/models'
 import { getNullableRef } from '~lib/vue'
 
 export interface GetAirportPricesPayload {
-  providerId: number
+  supplierId: number
   serviceId: number
 }
 
 export interface UpdateAirportPricePayload {
-  providerId: number
+  supplierId: number
   seasonId: number
   serviceId: number
   airportId: number
@@ -35,7 +35,7 @@ export interface ServicePriceResponse {
 export const updateAirportPrice = (props: MaybeRef<UpdateAirportPricePayload>) =>
   useAdminAPI(
     props,
-    ({ providerId, serviceId }) => `/supplier/${providerId}/service-airport/${serviceId}/price`,
+    ({ supplierId, serviceId }) => `/supplier/${supplierId}/service-airport/${serviceId}/price`,
     { immediate: true },
   )
     .put(computed<string>(() => JSON.stringify(
@@ -53,6 +53,6 @@ export const updateAirportPrice = (props: MaybeRef<UpdateAirportPricePayload>) =
     .json<BaseResponse>()
 
 export const useServiceProviderAirportPricesAPI = (props: MaybeRef<GetAirportPricesPayload>) =>
-  useAdminAPI(props, ({ providerId, serviceId }) => `/supplier/${providerId}/service-airport/${serviceId}/prices/get`)
+  useAdminAPI(props, ({ supplierId, serviceId }) => `/supplier/${supplierId}/service-airport/${serviceId}/prices/get`)
     .get()
     .json<ServicePriceResponse[]>()

@@ -31,15 +31,15 @@ abstract class AbstractContactController extends Controller
         return parent::callAction($method, $parameters);
     }
 
-    public function create(int $providerId): View
+    public function create(int $supplierId): View
     {
         return view('default.dialog-form', [
             'form' => $this->formFactory()
-                ->action($this->route('store', $providerId))
+                ->action($this->route('store', $supplierId))
         ]);
     }
 
-    public function store(int $providerId): AjaxErrorResponse|AjaxReloadResponse
+    public function store(int $supplierId): AjaxErrorResponse|AjaxReloadResponse
     {
         $form = $this->formFactory()
             ->method('post');
@@ -52,20 +52,20 @@ abstract class AbstractContactController extends Controller
         }
 
         $data = $form->getData();
-        $data[$this->getParentIdFieldName()] = $providerId;
+        $data[$this->getParentIdFieldName()] = $supplierId;
         $contact = ($this->getContactModel())::create($data);
 
         return new AjaxReloadResponse();
     }
 
-    public function edit(int $providerId, int $id): View
+    public function edit(int $supplierId, int $id): View
     {
         $contact = $this->findContact($id);
 
         return view('default.dialog-form', [
             'form' => $this->formFactory()
                 ->method('put')
-                ->action($this->route('update', [$providerId, $id]))
+                ->action($this->route('update', [$supplierId, $id]))
                 ->data($contact)
         ]);
     }

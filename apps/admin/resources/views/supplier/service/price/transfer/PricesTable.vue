@@ -16,14 +16,14 @@ import { formatPeriod } from '~lib/date'
 
 const props = defineProps<{
   header: string
-  providerId: number
+  supplierId: number
   serviceId: number
   seasons: Season[]
   cars: Car[]
 }>()
 
 const { data: servicePrices, execute: fetchPrices } = useServiceProviderTransferPricesAPI({
-  providerId: props.providerId,
+  supplierId: props.supplierId,
   serviceId: props.serviceId,
 })
 
@@ -41,7 +41,7 @@ const handleChangePrice = async (priceNet?: number, pricesGross?: Money[]): Prom
     seasonId: editableServicePrice.value?.season_id as number,
     carId: editableServicePrice.value?.car_id as number,
     serviceId: props.serviceId,
-    providerId: props.providerId,
+    supplierId: props.supplierId,
     priceNet,
     pricesGross,
     currencyId: 1, // @todo валюта поставщика,

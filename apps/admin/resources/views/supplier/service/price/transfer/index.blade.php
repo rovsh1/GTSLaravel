@@ -7,7 +7,7 @@
 @section('head-end')
     <script>
       window['view-initial-data-supplier'] = {{ Js::from([
-            'providerId' => $provider->id,
+            'supplierId' => $provider->id,
             'services' => $services,
             'cars' => $cars,
             'seasons' => $seasons,

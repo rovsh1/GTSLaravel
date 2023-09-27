@@ -102,10 +102,10 @@ class TransferServicesController extends Controller
         );
     }
 
-    protected function formFactory(int $providerId): FormContract
+    protected function formFactory(int $supplierId): FormContract
     {
         return Form::name('data')
-            ->hidden('supplier_id', ['value' => $providerId])
+            ->hidden('supplier_id', ['value' => $supplierId])
             ->text('name', ['label' => 'Название', 'required' => true])
             ->enum('type', [
                 'label' => 'Тип услуги',

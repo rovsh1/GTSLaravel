@@ -86,10 +86,10 @@ class SeasonController extends Controller
         return (new DefaultDestroyAction())->handle($season);
     }
 
-    protected function formFactory(int $providerId): FormContract
+    protected function formFactory(int $supplierId): FormContract
     {
         return Form::name('data')
-            ->hidden('supplier_id', ['value' => $providerId])
+            ->hidden('supplier_id', ['value' => $supplierId])
             ->text('number', ['label' => 'Название', 'required' => true])
             ->dateRange('period', ['label' => 'Период', 'required' => true])
             ->checkbox('status', ['label' => 'Статус']);

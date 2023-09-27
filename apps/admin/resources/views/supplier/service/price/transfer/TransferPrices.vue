@@ -13,8 +13,8 @@ import { requestInitialData } from '~lib/initial-data'
 
 import PricesTable from './PricesTable.vue'
 
-const { seasons, services, cars, providerId, currencies } = requestInitialData('view-initial-data-supplier', z.object({
-  providerId: z.number(),
+const { seasons, services, cars, supplierId, currencies } = requestInitialData('view-initial-data-supplier', z.object({
+  supplierId: z.number(),
   seasons: z.array(z.object({
     id: z.number(),
     number: z.string(),
@@ -66,7 +66,7 @@ const filteredServices = computed(() => {
     :header="service.name"
     :cars="cars as Car[]"
     :seasons="seasons as Season[]"
-    :provider-id="providerId as number"
+    :supplier-id="supplierId as number"
     :service-id="service.id"
   />
 </template>
