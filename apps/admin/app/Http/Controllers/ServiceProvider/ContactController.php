@@ -9,7 +9,7 @@ class ContactController extends AbstractContactController
 {
     protected function getPrototypeKey(): string
     {
-        return 'service-provider';
+        return 'supplier';
     }
 
     protected function getContactModel(): string

@@ -19,7 +19,7 @@ class ProviderController extends AbstractPrototypeController
 {
     protected function getPrototypeKey(): string
     {
-        return 'service-provider';
+        return 'supplier';
     }
 
     protected function formFactory(): FormContract

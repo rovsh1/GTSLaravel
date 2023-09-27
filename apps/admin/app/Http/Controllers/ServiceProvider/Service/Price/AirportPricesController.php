@@ -20,7 +20,7 @@ class AirportPricesController extends AbstractPricesController
         $this->provider($provider);
 
         return Layout::title('Цены')
-            ->view('service-provider.service.price.airport.index', [
+            ->view('supplier.service.price.airport.index', [
                 'provider' => $provider,
                 'airports' => $provider->airports,
                 'seasons' => $provider->seasons,

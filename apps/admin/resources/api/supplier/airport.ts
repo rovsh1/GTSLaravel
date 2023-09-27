@@ -7,16 +7,16 @@ import { Money } from '~api/models'
 
 import { getNullableRef } from '~lib/vue'
 
-export interface GetTransferPricesPayload {
+export interface GetAirportPricesPayload {
   providerId: number
   serviceId: number
 }
 
-export interface UpdateCarPricePayload {
+export interface UpdateAirportPricePayload {
   providerId: number
   seasonId: number
   serviceId: number
-  carId: number
+  airportId: number
   currencyId: number
   priceNet?: number
   pricesGross?: Money[]
@@ -24,7 +24,7 @@ export interface UpdateCarPricePayload {
 
 export interface ServicePriceResponse {
   id: number
-  car_id: number
+  airport_id: number
   currency_id: number
   prices_gross: Money[]
   price_net: number
@@ -32,18 +32,18 @@ export interface ServicePriceResponse {
   service_id: number
 }
 
-export const updateCarPrice = (props: MaybeRef<UpdateCarPricePayload>) =>
+export const updateAirportPrice = (props: MaybeRef<UpdateAirportPricePayload>) =>
   useAdminAPI(
     props,
-    ({ providerId, serviceId }) => `/service-provider/${providerId}/service-transfer/${serviceId}/price`,
+    ({ providerId, serviceId }) => `/supplier/${providerId}/service-airport/${serviceId}/price`,
     { immediate: true },
   )
     .put(computed<string>(() => JSON.stringify(
-      getNullableRef<UpdateCarPricePayload, any>(
+      getNullableRef<UpdateAirportPricePayload, any>(
         props,
-        (payload: UpdateCarPricePayload): any => ({
+        (payload: UpdateAirportPricePayload): any => ({
           season_id: payload.seasonId,
-          car_id: payload.carId,
+          airport_id: payload.airportId,
           prices_gross: payload.pricesGross,
           price_net: payload.priceNet,
           currency_id: payload.currencyId,
@@ -52,7 +52,7 @@ export const updateCarPrice = (props: MaybeRef<UpdateCarPricePayload>) =>
     )), 'application/json')
     .json<BaseResponse>()
 
-export const useServiceProviderTransferPricesAPI = (props: MaybeRef<GetTransferPricesPayload>) =>
-  useAdminAPI(props, ({ providerId, serviceId }) => `/service-provider/${providerId}/service-transfer/${serviceId}/prices/get`)
+export const useServiceProviderAirportPricesAPI = (props: MaybeRef<GetAirportPricesPayload>) =>
+  useAdminAPI(props, ({ providerId, serviceId }) => `/supplier/${providerId}/service-airport/${serviceId}/prices/get`)
     .get()
     .json<ServicePriceResponse[]>()

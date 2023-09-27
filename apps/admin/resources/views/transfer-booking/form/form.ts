@@ -10,7 +10,7 @@ $(() => {
   const serviceSearchPayload: ServiceSearchPayload = { city_id: null }
 
   $('#form_data_service_id').childCombo({
-    url: '/service-provider/services-transfer/search',
+    url: '/supplier/services-transfer/search',
     value: window.get_url_parameter('city_id'),
     disabledText: 'Выберите город',
     parent: $('#form_data_city_id'),

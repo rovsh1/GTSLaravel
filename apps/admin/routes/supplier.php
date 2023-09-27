@@ -3,7 +3,7 @@
 use App\Admin\Http\Controllers\ServiceProvider;
 use App\Admin\Support\Facades\AclRoute;
 
-AclRoute::for('service-provider')
+AclRoute::for('supplier')
     ->resource('contacts', ServiceProvider\ContactController::class, [
         'except' => ['show', 'index']
     ])

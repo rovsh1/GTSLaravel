@@ -1,12 +1,12 @@
-@extends('service-provider.service.price._partials.layout')
+@extends('supplier.service.price._partials.layout')
 
 @section('scripts')
-    @vite('resources/views/service-provider/service/price/airport/index.ts')
+    @vite('resources/views/supplier/service/price/airport/index.ts')
 @endsection
 
 @section('head-end')
     <script>
-      window['view-initial-data-service-provider'] = {{ Js::from([
+      window['view-initial-data-supplier'] = {{ Js::from([
             'providerId' => $provider->id,
             'airports' => $airports,
             'services' => $services,

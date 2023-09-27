@@ -97,7 +97,7 @@ $(() => {
   $('#form_data_manager_id').select2()
   const $cityIdSelect = $('#form_data_city_id').select2()
   const $serviceIdSelect = $('#form_data_service_id').childCombo({
-    url: '/service-provider/services-airport/search',
+    url: '/supplier/services-airport/search',
     disabledText: 'Выберите город',
     parent: $cityIdSelect,
     dataIndex: 'city_id',

@@ -1,11 +1,11 @@
 @extends('layouts.main')
 
 @section('styles')
-    @vite('resources/views/service-provider/show.scss')
+    @vite('resources/views/supplier/show.scss')
 @endsection
 
 @section('scripts')
-    @vite('resources/views/service-provider/show.js')
+    @vite('resources/views/supplier/show.js')
 @endsection
 
 @section('content')

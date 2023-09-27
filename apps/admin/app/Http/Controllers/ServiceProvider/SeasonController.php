@@ -32,7 +32,7 @@ class SeasonController extends Controller
 
     public function __construct()
     {
-        $this->prototype = Prototypes::get('service-provider');
+        $this->prototype = Prototypes::get('supplier');
     }
 
     public function index(Request $request, Provider $provider): LayoutContract

@@ -20,7 +20,7 @@ class TransferPricesController extends AbstractPricesController
         $this->provider($provider);
 
         return Layout::title('Цены')
-            ->view('service-provider.service.price.transfer.index', [
+            ->view('supplier.service.price.transfer.index', [
                 'provider' => $provider,
                 'cars' => $provider->cars()->with(['cities'])->get(),
                 'seasons' => $provider->seasons,

@@ -10,16 +10,16 @@
         <ul class="nav nav-pills" style="margin-left: 1rem;">
             <li class="nav-item">
                 <a
-                  class="nav-link {{ request()->routeIs('service-provider.service.transfer.prices.index') ? 'active' : '' }}"
-                  href="{{ route('service-provider.service.transfer.prices.index', $provider) }}"
+                  class="nav-link {{ request()->routeIs('supplier.service.transfer.prices.index') ? 'active' : '' }}"
+                  href="{{ route('supplier.service.transfer.prices.index', $provider) }}"
                 >
                     Транспорт
                 </a>
             </li>
             <li class="nav-item">
                 <a
-                  class="nav-link {{ request()->routeIs('service-provider.service.airport.prices.index') ? 'active' : '' }}"
-                  href="{{ route('service-provider.service.airport.prices.index', $provider) }}"
+                  class="nav-link {{ request()->routeIs('supplier.service.airport.prices.index') ? 'active' : '' }}"
+                  href="{{ route('supplier.service.airport.prices.index', $provider) }}"
                 >
                     Аэропорт
                 </a>

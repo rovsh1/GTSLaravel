@@ -5,7 +5,7 @@ import { computed } from 'vue'
 import { z } from 'zod'
 
 import { useQuickSearch } from '~resources/composables/quick-search'
-import { useCurrenciesStore } from '~resources/views/service-provider/service/price/composables/currency'
+import { useCurrenciesStore } from '~resources/views/supplier/service/price/composables/currency'
 
 import { Airport, Season } from '~api/models'
 
@@ -13,7 +13,7 @@ import { requestInitialData } from '~lib/initial-data'
 
 import PricesTable from './PricesTable.vue'
 
-const { seasons, services, airports, providerId, currencies } = requestInitialData('view-initial-data-service-provider', z.object({
+const { seasons, services, airports, providerId, currencies } = requestInitialData('view-initial-data-supplier', z.object({
   providerId: z.number(),
   seasons: z.array(z.object({
     id: z.number(),

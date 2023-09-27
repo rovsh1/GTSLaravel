@@ -5,12 +5,11 @@ import { onMounted, ref } from 'vue'
 import { useToggle } from '@vueuse/core'
 
 import CollapsableBlock from '~resources/views/hotel/settings/components/CollapsableBlock.vue'
-import PricesModal from '~resources/views/service-provider/service/price/ components/PricesModal.vue'
-import { useCurrenciesStore } from '~resources/views/service-provider/service/price/composables/currency'
+import PricesModal from '~resources/views/supplier/service/price/ components/PricesModal.vue'
+import { useCurrenciesStore } from '~resources/views/supplier/service/price/composables/currency'
 
-import { CityResponse } from '~api/city'
-import { Car, Money, Season } from '~api/models'
-import { ServicePriceResponse, updateCarPrice, useServiceProviderTransferPricesAPI } from '~api/service-provider/transfer'
+import { Airport, Money, Season } from '~api/models'
+import { ServicePriceResponse, updateAirportPrice, useServiceProviderAirportPricesAPI } from '~api/supplier/airport'
 
 import { formatPeriod } from '~lib/date'
 
@@ -19,10 +18,10 @@ const props = defineProps<{
   providerId: number
   serviceId: number
   seasons: Season[]
-  cars: Car[]
+  airports: Airport[]
 }>()
 
-const { data: servicePrices, execute: fetchPrices } = useServiceProviderTransferPricesAPI({
+const { data: servicePrices, execute: fetchPrices } = useServiceProviderAirportPricesAPI({
   providerId: props.providerId,
   serviceId: props.serviceId,
 })
@@ -37,32 +36,25 @@ const handleChangePrice = async (priceNet?: number, pricesGross?: Money[]): Prom
     return
   }
   isModalLoading.value = true
-  await updateCarPrice({
+  await updateAirportPrice({
     seasonId: editableServicePrice.value?.season_id as number,
-    carId: editableServicePrice.value?.car_id as number,
+    airportId: editableServicePrice.value?.airport_id as number,
     serviceId: props.serviceId,
     providerId: props.providerId,
     priceNet,
     pricesGross,
-    currencyId: 1, // @todo валюта поставщика,
+    currencyId: 1,
   })
   fetchPrices()
   isModalLoading.value = false
   toggleModal()
 }
 
-const getDisplayCarCities = (cities?: CityResponse[]): string => {
-  if (!cities || cities.length === 0) {
-    return 'Все города'
-  }
-  return cities.map((city) => city.name).join(', ')
-}
+const getServicePrice = (seasonId: number, airportId: number): ServicePriceResponse | undefined =>
+  servicePrices.value?.find((servicePrice) => servicePrice.airport_id === airportId && servicePrice.season_id === seasonId)
 
-const getServicePrice = (seasonId: number, carId: number): ServicePriceResponse | undefined =>
-  servicePrices.value?.find((servicePrice) => servicePrice.car_id === carId && servicePrice.season_id === seasonId)
-
-const getPriceButtonText = (seasonId: number, carId: number): string => {
-  const servicePrice = getServicePrice(seasonId, carId)
+const getPriceButtonText = (seasonId: number, airportId: number): string => {
+  const servicePrice = getServicePrice(seasonId, airportId)
   if (!servicePrice) {
     return 'Не установлена'
   }
@@ -70,14 +62,14 @@ const getPriceButtonText = (seasonId: number, carId: number): string => {
   return `${servicePrice.price_net} ${getCurrencyChar(servicePrice.currency_id)}`
 }
 
-const handleEditServicePrice = (seasonId: number, carId: number) => {
-  const servicePrice = getServicePrice(seasonId, carId)
+const handleEditServicePrice = (seasonId: number, airportId: number) => {
+  const servicePrice = getServicePrice(seasonId, airportId)
   if (servicePrice) {
     editableServicePrice.value = servicePrice
   } else {
     editableServicePrice.value = {
       season_id: seasonId,
-      car_id: carId,
+      airport_id: airportId,
       service_id: props.serviceId,
     } as unknown as ServicePriceResponse
   }
@@ -103,24 +95,24 @@ onMounted(() => {
     <table class="table table-striped">
       <thead>
         <tr>
-          <th scope="col">Автомобиль</th>
+          <th scope="col">Аэропорт</th>
           <th scope="col">Город</th>
-          <th v-for="season in seasons" :key="season.id" scope="col">
+          <th v-for="season in seasons" :key="season.id" scope="col" colspan="2">
             {{ season.number }} ({{ formatPeriod(season) }})
           </th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="car in cars" :key="car.id">
+        <tr v-for="airport in airports" :key="airport.id">
           <td>
-            {{ car.mark }} {{ car.model }}
+            {{ airport.name }}
           </td>
-          <td>{{ getDisplayCarCities(car.cities) }}</td>
+          <td>{{ airport.city_name }}</td>
 
           <template v-for="season in seasons" :key="season.id">
             <td>
-              <a href="#" @click.prevent="handleEditServicePrice(season.id, car.id)">
-                {{ getPriceButtonText(season.id, car.id) }}
+              <a href="#" @click.prevent="handleEditServicePrice(season.id, airport.id)">
+                {{ getPriceButtonText(season.id, airport.id) }}
               </a>
             </td>
           </template>
