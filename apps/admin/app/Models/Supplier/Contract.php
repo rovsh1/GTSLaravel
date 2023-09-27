@@ -66,8 +66,9 @@ class Contract extends Model
         static::saved(function (self $model): void {
             if ($model->isActive()) {
                 static::where('id', '!=', $model->id)
+                    ->whereServiceType($model->service_type)
+                    ->whereServiceId($model->service_id)
                     ->whereStatus(StatusEnum::ACTIVE)
-                    ->whereServiceType($model->type)
                     ->update(['status' => StatusEnum::INACTIVE]);
             }
         });

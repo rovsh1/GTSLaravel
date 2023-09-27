@@ -34,7 +34,7 @@ class SupplierMenu extends AbstractSubmenu
 
         $group = (new Group('settings'))
             ->addUrl('contracts', route('supplier.contracts.index', $this->model), 'Договора', ['icon' => 'pending_actions'])
-            ->addUrl('requisites', route('supplier.requisites.index', $this->model), 'Реквизиты', ['icon' => 'pending_actions'])
+            ->addUrl('requisites', route('supplier.requisites.index', $this->model), 'Реквизиты', ['icon' => 'gavel'])
             ->addUrl('seasons', route('supplier.seasons.index', $this->model), 'Сезоны', ['icon' => 'trending_up'])
             ->addUrl('cars', route('supplier.cars.index', $this->model),'Автомобили', ['icon' => 'airport_shuttle'])
             ->addUrl('airports', route('supplier.airports.index', $this->model),'Аэропорты', ['icon' => 'flight_land'])
