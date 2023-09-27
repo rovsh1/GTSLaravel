@@ -210,6 +210,7 @@ const handleReleaseDaysValue: HandleValue<void> = (date, value) => {
       <OverlayLoading v-if="isHotelRoomQuotasUpdateFetching || waitingLoadData" />
       <div
         v-for="{ dailyQuota, monthKey, monthName, days, quotasCount } in monthlyQuotas"
+
         :key="monthKey"
         class="quotasTable card"
         @scroll="closeDayMenu"
@@ -244,158 +245,154 @@ const handleReleaseDaysValue: HandleValue<void> = (date, value) => {
           </thead>
           <tbody>
             <tr class="roomTypeHeadingRow">
-              <th class="headingCell">Квоты</th>
+              <th class="headingCell">
+                <div>
+                  Квоты
+                </div>
+                <div>
+                  Релиз-дни
+                </div>
+                <div>
+                  Продано / Резерв
+                </div>
+              </th>
               <td
-                v-for="{ key, quota, status, date } in dailyQuota"
+                v-for="{ key, quota, status, date, releaseDays, sold, reserve } in dailyQuota"
                 :key="key"
                 :class="dayQuotaCellClassName(status)"
                 tabindex="0"
               >
-                <editable-cell
-                  :day-menu-ref="dayMenuElementRef"
-                  :day-menu-action-completed="dayMenuActionCompleted || isOpeningAnotherRoomDayMenu"
-                  :active-key="activeQuotasCountKey"
-                  :cell-key="getActiveCellKey(key, room.id)"
-                  :value="editedQuotasCount === null
-                    ? (quota === null ? '' : quota.toString())
-                    : editedQuotasCount.toString()
-                  "
-                  :max="room.count"
-                  :range-error="(min, max) => `Есть только ${max} таких комнат`"
-                  :disabled="!editable || isHotelRoomQuotasUpdateFetching"
-                  :in-range="isQuotasCountCellInRange(getActiveCellKey(key, room.id))"
-                  :init-value="quota === null ? '' : quota.toString()"
-                  @reset-edited-value-to-init="(value) => {
-                    setEditedInRangeQuotasCount(key, value)
-                    editedQuotasCount = value
-                  }"
-                  @active-key="(value: ActiveKey) => {
-                    activeQuotasCountKey = value
-                    activeReleaseDaysKey = null
-                  }"
-                  @reset="resetActiveKey"
-                  @range-key="(value: ActiveKey) => {
-                    setQuotasCountRange({
+                <div>
+                  <editable-cell
+                    :day-menu-ref="dayMenuElementRef"
+                    :day-menu-action-completed="dayMenuActionCompleted || isOpeningAnotherRoomDayMenu"
+                    :active-key="activeQuotasCountKey"
+                    :cell-key="getActiveCellKey(key, room.id)"
+                    :value="editedQuotasCount === null
+                      ? (quota === null ? '' : quota.toString())
+                      : editedQuotasCount.toString()
+                    "
+                    :max="room.count"
+                    :range-error="(min, max) => `Есть только ${max} таких комнат`"
+                    :disabled="!editable || isHotelRoomQuotasUpdateFetching"
+                    :in-range="isQuotasCountCellInRange(getActiveCellKey(key, room.id))"
+                    :init-value="quota === null ? '' : quota.toString()"
+                    @reset-edited-value-to-init="(value) => {
+                      setEditedInRangeQuotasCount(key, value)
+                      editedQuotasCount = value
+                    }"
+                    @active-key="(value: ActiveKey) => {
+                      activeQuotasCountKey = value
+                      activeReleaseDaysKey = null
+                    }"
+                    @reset="resetActiveKey"
+                    @range-key="(value: ActiveKey) => {
+                      setQuotasCountRange({
+                        dailyQuota,
+                        roomTypeID: room.id,
+                        activeKey: activeQuotasCountKey,
+                        rangeKey: value,
+                      })
+                    }"
+                    @pick-key="(value: ActiveKey) => {
+                      setQuotasCountPick({
+                        oldRange: quotasCountRange as QuotaRange,
+                        roomTypeID: room.id,
+                        activeKey: activeQuotasCountKey,
+                        pickKey: value,
+                      })
+                    }"
+                    @value="value => handleQuotaValue(date, value)"
+                    @input="value => handleQuotasCountInput(getActiveCellKey(key, room.id), value)"
+                    @context-menu="(element) => {
+                      openDayMenu({
+                        trigger: element, date, dayKey: key, roomTypeID: room.id,
+                      })
+                      emit('open-day-menu-in-another-room', room.id)
+                    }"
+                  >
+                    <template v-if="showEditedQuotasCount(getActiveCellKey(key, room.id))">
+                      {{ editedQuotasCountInRange?.value }}
+                    </template>
+                    <template v-else-if="quota === null">
+                      <template v-if="editable">—</template>
+                      <template v-else>&nbsp;</template>
+                    </template>
+                    <template v-else>
+                      {{ quota }}
+                    </template>
+                  </editable-cell>
+                </div>
+                <div>
+                  <editable-cell
+                    :day-menu-ref="dayMenuElementRef"
+                    :day-menu-action-completed="dayMenuActionCompleted"
+                    :active-key="activeReleaseDaysKey"
+                    :cell-key="getActiveCellKey(key, room.id)"
+                    :value="editedReleaseDays === null
+                      ? releaseDays === null ? '' : releaseDays.toString()
+                      : editedReleaseDays.toString()
+                    "
+                    :max="99"
+                    :disabled="!editable || isHotelRoomQuotasUpdateFetching"
+                    :in-range="isReleaseDaysCellInRange(getActiveCellKey(key, room.id))"
+                    :init-value="releaseDays === null ? '' : releaseDays.toString()"
+                    @reset-edited-value-to-init="(value) => {
+                      setEditedInRangeReleaseDays(key, value)
+                      editedReleaseDays = value
+                    }"
+                    @active-key="(value: ActiveKey) => {
+                      activeReleaseDaysKey = value
+                      activeQuotasCountKey = null
+                    }"
+                    @reset="resetActiveKey"
+                    @range-key="(value: ActiveKey) => setReleaseDaysRange({
                       dailyQuota,
                       roomTypeID: room.id,
-                      activeKey: activeQuotasCountKey,
+                      activeKey: activeReleaseDaysKey,
                       rangeKey: value,
-                    })
-                  }"
-                  @pick-key="(value: ActiveKey) => {
-                    setQuotasCountPick({
-                      oldRange: quotasCountRange as QuotaRange,
+                    })"
+                    @pick-key="(value: ActiveKey) => setReleaseDaysPick({
+                      oldRange: releaseDaysRange,
                       roomTypeID: room.id,
-                      activeKey: activeQuotasCountKey,
+                      activeKey: activeReleaseDaysKey,
                       pickKey: value,
-                    })
-                  }"
-                  @value="value => handleQuotaValue(date, value)"
-                  @input="value => handleQuotasCountInput(getActiveCellKey(key, room.id), value)"
-                  @context-menu="(element) => {
-                    openDayMenu({
-                      trigger: element, date, dayKey: key, roomTypeID: room.id,
-                    })
-                    emit('open-day-menu-in-another-room', room.id)
-                  }"
-                >
-                  <template v-if="showEditedQuotasCount(getActiveCellKey(key, room.id))">
-                    {{ editedQuotasCountInRange?.value }}
-                  </template>
-                  <template v-else-if="quota === null">
-                    <template v-if="editable">—</template>
-                    <template v-else>&nbsp;</template>
-                  </template>
-                  <template v-else>
-                    {{ quota }}
-                  </template>
-                </editable-cell>
-              </td>
-            </tr>
-            <tr>
-              <th class="headingCell">Релиз-дни</th>
-              <td
-                v-for="{ key, releaseDays, status, date } in dailyQuota"
-                :key="key"
-                :class="dayQuotaCellClassName(status)"
-                tabindex="0"
-              >
-                <editable-cell
-                  :day-menu-ref="dayMenuElementRef"
-                  :day-menu-action-completed="dayMenuActionCompleted"
-                  :active-key="activeReleaseDaysKey"
-                  :cell-key="getActiveCellKey(key, room.id)"
-                  :value="editedReleaseDays === null
-                    ? releaseDays === null ? '' : releaseDays.toString()
-                    : editedReleaseDays.toString()
-                  "
-                  :max="99"
-                  :disabled="!editable || isHotelRoomQuotasUpdateFetching"
-                  :in-range="isReleaseDaysCellInRange(getActiveCellKey(key, room.id))"
-                  :init-value="releaseDays === null ? '' : releaseDays.toString()"
-                  @reset-edited-value-to-init="(value) => {
-                    setEditedInRangeReleaseDays(key, value)
-                    editedReleaseDays = value
-                  }"
-                  @active-key="(value: ActiveKey) => {
-                    activeReleaseDaysKey = value
-                    activeQuotasCountKey = null
-                  }"
-                  @reset="resetActiveKey"
-                  @range-key="(value: ActiveKey) => setReleaseDaysRange({
-                    dailyQuota,
-                    roomTypeID: room.id,
-                    activeKey: activeReleaseDaysKey,
-                    rangeKey: value,
-                  })"
-                  @pick-key="(value: ActiveKey) => setReleaseDaysPick({
-                    oldRange: releaseDaysRange,
-                    roomTypeID: room.id,
-                    activeKey: activeReleaseDaysKey,
-                    pickKey: value,
-                  })"
-                  @value="value => handleReleaseDaysValue(date, value)"
-                  @input="value => handleReleaseDaysInput(getActiveCellKey(key, room.id), value)"
-                  @context-menu="(element) => {
-                    openDayMenu({
-                      trigger: element, date, dayKey: key, roomTypeID: room.id,
-                    })
-                    emit('open-day-menu-in-another-room', room.id)
-                  }"
-                >
-                  <template v-if="showEditedReleaseDays(getActiveCellKey(key, room.id))">
-                    {{ editedReleaseDaysInRange?.value }}
-                  </template>
-                  <template v-else-if="releaseDays === null">
-                    <template v-if="editable">—</template>
-                    <template v-else>&nbsp;</template>
-                  </template>
-                  <template v-else>
-                    {{ releaseDays }}
-                  </template>
-                </editable-cell>
-              </td>
-            </tr>
-            <tr>
-              <th class="headingCell">Продано / Резерв</th>
-              <td
-                v-for="{ key, sold, reserve, status } in dailyQuota"
-                :key="key"
-                class="staticDataCell"
-                :class="dayQuotaCellClassName(status)"
-              >
-                <template v-if="sold === null && reserve === null">
+                    })"
+                    @value="value => handleReleaseDaysValue(date, value)"
+                    @input="value => handleReleaseDaysInput(getActiveCellKey(key, room.id), value)"
+                    @context-menu="(element) => {
+                      openDayMenu({
+                        trigger: element, date, dayKey: key, roomTypeID: room.id,
+                      })
+                      emit('open-day-menu-in-another-room', room.id)
+                    }"
+                  >
+                    <template v-if="showEditedReleaseDays(getActiveCellKey(key, room.id))">
+                      {{ editedReleaseDaysInRange?.value }}
+                    </template>
+                    <template v-else-if="releaseDays === null">
+                      <template v-if="editable">—</template>
+                      <template v-else>&nbsp;</template>
+                    </template>
+                    <template v-else>
+                      {{ releaseDays }}
+                    </template>
+                  </editable-cell>
+                </div>
+                <div>
+                  <template v-if="sold === null && reserve === null">
                   &nbsp;
-                </template>
-                <template v-else-if="sold === null">
-                  0 / {{ reserve }}
-                </template>
-                <template v-else-if="reserve === null">
-                  {{ sold }} / 0
-                </template>
-                <template v-else>
-                  {{ sold }} / {{ reserve }}
-                </template>
+                  </template>
+                  <template v-else-if="sold === null">
+                    0 / {{ reserve }}
+                  </template>
+                  <template v-else-if="reserve === null">
+                    {{ sold }} / 0
+                  </template>
+                  <template v-else>
+                    {{ sold }} / {{ reserve }}
+                  </template>
+                </div>
               </td>
             </tr>
           </tbody>

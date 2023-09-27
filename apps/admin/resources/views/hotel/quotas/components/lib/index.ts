@@ -1,4 +1,4 @@
-import { DateTime, Interval } from 'luxon'
+import { DateTime } from 'luxon'
 
 import { FiltersPayload } from '~resources/views/hotel/quotas/components/QuotasFilters/lib'
 
@@ -30,7 +30,7 @@ export type RoomQuota = {
   releaseDays: number | null
 }
 
-export const quotaStatusMap: Record<QuotaStatus, RoomQuota['status']> = {
+const quotaStatusMap: Record<QuotaStatus, RoomQuotaStatus | undefined> = {
   0: 'closed',
   1: 'opened',
 }
@@ -38,7 +38,6 @@ export const quotaStatusMap: Record<QuotaStatus, RoomQuota['status']> = {
 const getMonthKey = (year: string | number, month: string | number): string => `${year}-${month}`
 
 const monthKeyFormat = 'yyyy-M'
-
 const quotaDateFormat = 'yyyy-MM-dd'
 
 export type RoomRender = {
@@ -66,16 +65,13 @@ type GetRoomQuotas = (params: {
   filters: FiltersPayload
   quotas: UseHotelQuota
 }) => RoomQuotas[] | null
-export const getRoomQuotas: GetRoomQuotas = (params) => {
-  const { rooms, filters, quotas } = params
 
-  if (rooms === null) return null
+export const getRoomQuotas: GetRoomQuotas = ({ rooms, filters, quotas }) => {
+  if (!rooms) return null
 
   const { year, month, monthsCount } = filters
 
-  const selectedRooms = rooms
-
-  return selectedRooms.map((room): RoomQuotas => {
+  return rooms.map((room) => {
     const {
       id,
       name: label,
@@ -84,88 +80,73 @@ export const getRoomQuotas: GetRoomQuotas = (params) => {
     } = room
 
     const startDate = DateTime.fromFormat(getMonthKey(year, month), monthKeyFormat)
+    const endDate = startDate.plus({ months: monthsCount })
 
-    const roomQuotas = quotas === null
-      ? []
-      : quotas.filter((hotelQuota) => hotelQuota.roomID === id)
+    const roomQuotasMap = new Map<string, RoomQuota>()
+
+    if (quotas) {
+      quotas
+        .filter((hotelQuota) => hotelQuota.roomID === id)
+        .forEach((hotelQuota) => {
+          const key = DateTime.fromFormat(hotelQuota.date, quotaDateFormat)
+            .toJSDate()
+            .getTime()
+            .toString()
+          roomQuotasMap.set(key, {
+            key,
+            id: hotelQuota.id,
+            roomID: id,
+            date: new Date(key),
+            status: quotaStatusMap[hotelQuota.status] || null,
+            quota: hotelQuota.count_available,
+            sold: hotelQuota.count_booked,
+            reserve: hotelQuota.count_reserved,
+            releaseDays: hotelQuota.release_days,
+          })
+        })
+    }
+
+    const monthlyQuotas: MonthlyQuota[] = []
+
+    let currentDate = startDate
+    while (currentDate < endDate) {
+      const monthDate = currentDate.toJSDate()
+      const days = getEachDayInMonth(monthDate).map((date) => {
+        const dt = DateTime.fromJSDate(date)
+        return {
+          key: date.getTime().toString(),
+          date,
+          dayOfWeek: dt.toFormat('EEE'),
+          dayOfMonth: dt.toFormat('d'),
+          isHoliday: !isBusinessDay(date),
+        }
+      })
+
+      monthlyQuotas.push({
+        monthKey: currentDate.toFormat(monthKeyFormat),
+        dailyQuota: days.map(({ key }) => roomQuotasMap.get(key) || ({
+          key,
+          id: null,
+          roomID: id,
+          date: new Date(parseInt(key, 10)),
+          status: null,
+          quota: null,
+          sold: null,
+          reserve: null,
+          releaseDays: null,
+        })),
+        days,
+        monthName: currentDate.toFormat('LLLL yyyy'),
+        quotasCount: days.filter(({ date }) => roomQuotasMap.has(date.getTime().toString())).length,
+      })
+
+      currentDate = currentDate.plus({ months: 1 })
+    }
 
     return {
+      id,
       room: { id, label, guests, count },
-      monthlyQuotas: Interval
-        .fromDateTimes(startDate, startDate.plus({ months: monthsCount }))
-        .splitBy({ months: 1 })
-        .map((interval) => {
-          if (interval.isValid) return interval.start
-          throw new Error('Interval is invalid')
-        })
-        .filter((dateTime): dateTime is DateTime => dateTime !== null)
-        .map((dateTime): MonthlyQuota => {
-          const monthDate = dateTime.toJSDate()
-          const days = getEachDayInMonth(monthDate)
-            .map((date): Day => {
-              const dt = DateTime.fromJSDate(date)
-              return ({
-                key: date.getTime().toString(),
-                date,
-                dayOfWeek: dt.toFormat('EEE'),
-                dayOfMonth: dt.toFormat('d'),
-                isHoliday: !isBusinessDay(date),
-              })
-            })
-
-          return {
-            monthKey: dateTime.toFormat(monthKeyFormat),
-            dailyQuota: days.map(({ date }): RoomQuota => {
-              const foundQuota = roomQuotas
-                .find((quota) => DateTime
-                  .fromFormat(quota.date, quotaDateFormat)
-                  .equals(DateTime.fromJSDate(date)))
-              const key = date.getTime().toString()
-              const common = {
-                key,
-                date,
-                roomID: id,
-              }
-              if (foundQuota === undefined) {
-                return {
-                  ...common,
-                  id: null,
-                  status: null,
-                  quota: null,
-                  sold: null,
-                  reserve: null,
-                  releaseDays: null,
-                }
-              }
-              const {
-                id: quotaID,
-                status,
-                release_days: releaseDays,
-                count_available: countAvailable,
-                // count_total: countTotal,
-                count_booked: countBooked,
-                count_reserved: countReserved,
-              } = foundQuota
-              return {
-                ...common,
-                id: quotaID,
-                status: quotaStatusMap[status],
-                quota: countAvailable, // countTotal
-                sold: countBooked,
-                reserve: countReserved,
-                releaseDays,
-              }
-            }),
-            days,
-            // TODO dynamic year display
-            monthName: DateTime.fromJSDate(monthDate).toFormat('LLLL yyyy'),
-            quotasCount: roomQuotas.filter(({ date }) => days
-              .find((day) => DateTime
-                .fromJSDate(day.date)
-                .equals(DateTime.fromFormat(date, quotaDateFormat))))
-              .length,
-          }
-        }),
+      monthlyQuotas,
     }
   })
 }
