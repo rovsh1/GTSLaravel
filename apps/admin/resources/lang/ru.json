@@ -116,6 +116,10 @@
     "Module\\Shared\\Enum\\Client\\ResidencyEnum::RESIDENT": "Резидент",
     "Module\\Shared\\Enum\\Client\\ResidencyEnum::NONRESIDENT": "Не резидент",
 
+    "Module\\Shared\\Enum\\Supplier\\ContractServiceTypeEnum::HOTEL": "Отель",
+    "Module\\Shared\\Enum\\Supplier\\ContractServiceTypeEnum::AIRPORT": "Аэропорт",
+    "Module\\Shared\\Enum\\Supplier\\ContractServiceTypeEnum::TRANSFER": "Трансфер",
+
     "Module\\Booking\\Common\\Domain\\Event\\Status\\BookingCreated": "Новая",
     "Module\\Booking\\Common\\Domain\\Event\\Status\\BookingProcessing": "В работе",
     "Module\\Booking\\Common\\Domain\\Event\\Status\\BookingCancelled": "Отменена",

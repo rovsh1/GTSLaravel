@@ -36,7 +36,7 @@ class DefaultFormEditAction
     /**
      * @throws FormSubmitFailedException
      */
-    public function handle(Model $model): LayoutContract
+    public function handle(Model $model, string $view = 'default.form.form'): LayoutContract
     {
         Breadcrumb::add((string)$model);
 
@@ -46,7 +46,7 @@ class DefaultFormEditAction
 
 
         return Layout::title((string)$model)
-            ->view('default.form.form', [
+            ->view($view, [
                 'form' => $this->form,
                 'cancelUrl' => $this->options['cancelUrl'] ?? $this->getDefaultCancelUrl(),
                 'deleteUrl' => $this->options['deleteUrl'],

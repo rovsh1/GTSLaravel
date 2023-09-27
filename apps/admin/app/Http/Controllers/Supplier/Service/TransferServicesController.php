@@ -6,7 +6,7 @@ use App\Admin\Components\Factory\Prototype;
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Http\Requests\ServiceProvider\SearchServicesRequest;
 use App\Admin\Http\Resources\Service as ServiceResource;
-use App\Admin\Models\Supplier\Provider;
+use App\Admin\Models\Supplier\Supplier;
 use App\Admin\Models\Supplier\TransferService;
 use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\Breadcrumb;
@@ -39,7 +39,7 @@ class TransferServicesController extends Controller
         $this->prototype = Prototypes::get('supplier');
     }
 
-    public function index(Request $request, Provider $provider): LayoutContract
+    public function index(Request $request, Supplier $provider): LayoutContract
     {
         $this->provider($provider);
 
@@ -59,7 +59,7 @@ class TransferServicesController extends Controller
             ]);
     }
 
-    public function create(Request $request, Provider $provider): LayoutContract
+    public function create(Request $request, Supplier $provider): LayoutContract
     {
         $this->provider($provider);
 
@@ -67,13 +67,13 @@ class TransferServicesController extends Controller
             ->handle('Новая услуга');
     }
 
-    public function store(Request $request, Provider $provider): RedirectResponse
+    public function store(Request $request, Supplier $provider): RedirectResponse
     {
         return (new DefaultFormStoreAction($this->formFactory($provider->id)))
             ->handle(TransferService::class);
     }
 
-    public function edit(Request $request, Provider $provider, TransferService $servicesTransfer): LayoutContract
+    public function edit(Request $request, Supplier $provider, TransferService $servicesTransfer): LayoutContract
     {
         $this->provider($provider);
 
@@ -82,13 +82,13 @@ class TransferServicesController extends Controller
             ->handle($servicesTransfer);
     }
 
-    public function update(Provider $provider, TransferService $servicesTransfer): RedirectResponse
+    public function update(Supplier $provider, TransferService $servicesTransfer): RedirectResponse
     {
         return (new DefaultFormUpdateAction($this->formFactory($provider->id)))
             ->handle($servicesTransfer);
     }
 
-    public function destroy(Provider $provider, TransferService $servicesTransfer): AjaxResponseInterface
+    public function destroy(Supplier $provider, TransferService $servicesTransfer): AjaxResponseInterface
     {
         return (new DefaultDestroyAction())->handle($servicesTransfer);
     }
@@ -115,7 +115,7 @@ class TransferServicesController extends Controller
             ]);
     }
 
-    protected function gridFactory(Provider $provider): GridContract
+    protected function gridFactory(Supplier $provider): GridContract
     {
         return Grid::paginator(16)
             ->enableQuicksearch()
@@ -124,7 +124,7 @@ class TransferServicesController extends Controller
             ->enum('type', ['text' => 'Тип', 'enum' => TransferServiceTypeEnum::class]);
     }
 
-    private function provider(Provider $provider): void
+    private function provider(Supplier $provider): void
     {
         Breadcrumb::prototype($this->prototype)
             ->addUrl(

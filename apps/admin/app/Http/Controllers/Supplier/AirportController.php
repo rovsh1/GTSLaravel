@@ -6,7 +6,7 @@ use App\Admin\Components\Factory\Prototype;
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Models\Reference\Airport as AirportReference;
 use App\Admin\Models\Supplier\Airport;
-use App\Admin\Models\Supplier\Provider;
+use App\Admin\Models\Supplier\Supplier;
 use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Form;
@@ -36,7 +36,7 @@ class AirportController extends Controller
         $this->prototype = Prototypes::get('supplier');
     }
 
-    public function index(Request $request, Provider $provider): LayoutContract
+    public function index(Request $request, Supplier $provider): LayoutContract
     {
         $this->provider($provider);
 
@@ -53,7 +53,7 @@ class AirportController extends Controller
             ]);
     }
 
-    public function create(Request $request, Provider $provider): LayoutContract
+    public function create(Request $request, Supplier $provider): LayoutContract
     {
         $this->provider($provider);
 
@@ -61,13 +61,13 @@ class AirportController extends Controller
             ->handle('Добавить аэропорт');
     }
 
-    public function store(Request $request, Provider $provider): RedirectResponse
+    public function store(Request $request, Supplier $provider): RedirectResponse
     {
         return (new DefaultFormStoreAction($this->formFactory($provider)))
             ->handle(Airport::class);
     }
 
-    public function edit(Request $request, Provider $provider, Airport $airport): LayoutContract
+    public function edit(Request $request, Supplier $provider, Airport $airport): LayoutContract
     {
         $this->provider($provider);
 
@@ -76,18 +76,18 @@ class AirportController extends Controller
             ->handle($airport);
     }
 
-    public function update(Provider $provider, Airport $airport): RedirectResponse
+    public function update(Supplier $provider, Airport $airport): RedirectResponse
     {
         return (new DefaultFormUpdateAction($this->formFactory($provider)))
             ->handle($airport);
     }
 
-    public function destroy(Provider $provider, Airport $airport): AjaxResponseInterface
+    public function destroy(Supplier $provider, Airport $airport): AjaxResponseInterface
     {
         return (new DefaultDestroyAction())->handle($airport);
     }
 
-    protected function formFactory(Provider $provider): FormContract
+    protected function formFactory(Supplier $provider): FormContract
     {
         return Form::name('data')
             ->hidden('supplier_id', ['value' => $provider->id])
@@ -104,7 +104,7 @@ class AirportController extends Controller
             ]);
     }
 
-    protected function gridFactory(Provider $provider): GridContract
+    protected function gridFactory(Supplier $provider): GridContract
     {
         return Grid::paginator(16)
             ->edit(fn($r) => $this->prototype->route('airports.edit', [$provider, $r->id]))
@@ -112,7 +112,7 @@ class AirportController extends Controller
             ->text('city_name', ['text' => 'Город']);
     }
 
-    private function provider(Provider $provider): void
+    private function provider(Supplier $provider): void
     {
         Breadcrumb::prototype($this->prototype)
             ->addUrl(

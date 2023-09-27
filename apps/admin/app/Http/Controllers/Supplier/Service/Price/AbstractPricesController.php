@@ -6,7 +6,7 @@ namespace App\Admin\Http\Controllers\Supplier\Service\Price;
 
 use App\Admin\Components\Factory\Prototype;
 use App\Admin\Http\Controllers\Controller;
-use App\Admin\Models\Supplier\Provider;
+use App\Admin\Models\Supplier\Supplier;
 use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Prototypes;
 use App\Admin\Support\Facades\Sidebar;
@@ -21,7 +21,7 @@ class AbstractPricesController extends Controller
         $this->prototype = Prototypes::get('supplier');
     }
 
-    protected function provider(Provider $provider): void
+    protected function provider(Supplier $provider): void
     {
         Breadcrumb::prototype($this->prototype)
             ->addUrl(

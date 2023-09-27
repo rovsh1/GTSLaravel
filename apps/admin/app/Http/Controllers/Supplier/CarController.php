@@ -7,7 +7,7 @@ use App\Admin\Http\Controllers\Controller;
 use App\Admin\Models\Reference\City;
 use App\Admin\Models\Reference\TransportCar;
 use App\Admin\Models\Supplier\Car;
-use App\Admin\Models\Supplier\Provider;
+use App\Admin\Models\Supplier\Supplier;
 use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Form;
@@ -37,7 +37,7 @@ class CarController extends Controller
         $this->prototype = Prototypes::get('supplier');
     }
 
-    public function index(Request $request, Provider $provider): LayoutContract
+    public function index(Request $request, Supplier $provider): LayoutContract
     {
         $this->provider($provider);
 
@@ -54,7 +54,7 @@ class CarController extends Controller
             ]);
     }
 
-    public function create(Request $request, Provider $provider): LayoutContract
+    public function create(Request $request, Supplier $provider): LayoutContract
     {
         $this->provider($provider);
 
@@ -62,13 +62,13 @@ class CarController extends Controller
             ->handle('Новый автомобиль');
     }
 
-    public function store(Request $request, Provider $provider): RedirectResponse
+    public function store(Request $request, Supplier $provider): RedirectResponse
     {
         return (new DefaultFormStoreAction($this->formFactory($provider)))
             ->handle(Car::class);
     }
 
-    public function edit(Request $request, Provider $provider, Car $car): LayoutContract
+    public function edit(Request $request, Supplier $provider, Car $car): LayoutContract
     {
         $this->provider($provider);
 
@@ -77,18 +77,18 @@ class CarController extends Controller
             ->handle($car);
     }
 
-    public function update(Provider $provider, Car $car): RedirectResponse
+    public function update(Supplier $provider, Car $car): RedirectResponse
     {
         return (new DefaultFormUpdateAction($this->formFactory($provider)))
             ->handle($car);
     }
 
-    public function destroy(Provider $provider, Car $car): AjaxResponseInterface
+    public function destroy(Supplier $provider, Car $car): AjaxResponseInterface
     {
         return (new DefaultDestroyAction())->handle($car);
     }
 
-    protected function formFactory(Provider $provider): FormContract
+    protected function formFactory(Supplier $provider): FormContract
     {
         return Form::name('data')
             ->hidden('supplier_id', ['value' => $provider->id])
@@ -108,7 +108,7 @@ class CarController extends Controller
             ]);
     }
 
-    protected function gridFactory(Provider $provider): GridContract
+    protected function gridFactory(Supplier $provider): GridContract
     {
         return Grid::paginator(16)
             ->edit(fn($r) => $this->prototype->route('cars.edit', [$provider, $r->id]))
@@ -119,7 +119,7 @@ class CarController extends Controller
             ]);
     }
 
-    private function provider(Provider $provider): void
+    private function provider(Supplier $provider): void
     {
         Breadcrumb::prototype($this->prototype)
             ->addUrl(

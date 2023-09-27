@@ -15,7 +15,7 @@ use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\View\Menus\SupplierMenu;
 use Illuminate\Database\Eloquent\Model;
 
-class ProviderController extends AbstractPrototypeController
+class SupplierController extends AbstractPrototypeController
 {
     protected function getPrototypeKey(): string
     {

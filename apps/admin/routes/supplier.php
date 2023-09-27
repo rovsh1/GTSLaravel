@@ -58,6 +58,12 @@ AclRoute::for('supplier')
         'service.airport.search'
     )
     ->get(
+        '/{supplier}/services-airport/list',
+        Supplier\Service\AirportServicesController::class . '@list',
+        'read',
+        'service.airport.list'
+    )
+    ->get(
         '/{provider}/service-airport/prices',
         Supplier\Service\Price\AirportPricesController::class . '@index',
         'read',

@@ -4,8 +4,8 @@ use App\Admin\Components\Factory\Factory;
 
 return Factory::key('supplier')
     ->category(Factory::CATEGORY_CLIENT)
-    ->model(\App\Admin\Models\Supplier\Provider::class)
-    ->controller(\App\Admin\Http\Controllers\Supplier\ProviderController::class)
+    ->model(\App\Admin\Models\Supplier\Supplier::class)
+    ->controller(\App\Admin\Http\Controllers\Supplier\SupplierController::class)
     ->titles([
         "index" => "Поставщики услуг",
         "create" => "Новый поставщик"

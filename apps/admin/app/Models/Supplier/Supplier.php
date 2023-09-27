@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
 use Sdk\Module\Database\Eloquent\Model;
 
-class Provider extends Model
+class Supplier extends Model
 {
     use HasQuicksearch;
 

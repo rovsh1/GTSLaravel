@@ -4,7 +4,7 @@ namespace App\Admin\Http\Controllers\Supplier;
 
 use App\Admin\Components\Factory\Prototype;
 use App\Admin\Http\Controllers\Controller;
-use App\Admin\Models\Supplier\Provider;
+use App\Admin\Models\Supplier\Supplier;
 use App\Admin\Models\Supplier\Requisite;
 use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\Breadcrumb;
@@ -35,7 +35,7 @@ class RequisiteController extends Controller
         $this->prototype = Prototypes::get('supplier');
     }
 
-    public function index(Request $request, Provider $provider): LayoutContract
+    public function index(Request $request, Supplier $provider): LayoutContract
     {
         $this->provider($provider);
 
@@ -52,7 +52,7 @@ class RequisiteController extends Controller
             ]);
     }
 
-    public function create(Request $request, Provider $provider): LayoutContract
+    public function create(Request $request, Supplier $provider): LayoutContract
     {
         $this->provider($provider);
 
@@ -60,13 +60,13 @@ class RequisiteController extends Controller
             ->handle('Новые реквизиты');
     }
 
-    public function store(Request $request, Provider $provider): RedirectResponse
+    public function store(Request $request, Supplier $provider): RedirectResponse
     {
         return (new DefaultFormStoreAction($this->formFactory($provider->id)))
             ->handle(Requisite::class);
     }
 
-    public function edit(Request $request, Provider $provider, Requisite $requisite): LayoutContract
+    public function edit(Request $request, Supplier $provider, Requisite $requisite): LayoutContract
     {
         $this->provider($provider);
 
@@ -75,13 +75,13 @@ class RequisiteController extends Controller
             ->handle($requisite);
     }
 
-    public function update(Provider $provider, Requisite $requisite): RedirectResponse
+    public function update(Supplier $provider, Requisite $requisite): RedirectResponse
     {
         return (new DefaultFormUpdateAction($this->formFactory($provider->id)))
             ->handle($requisite);
     }
 
-    public function destroy(Provider $provider, Requisite $requisite): AjaxResponseInterface
+    public function destroy(Supplier $provider, Requisite $requisite): AjaxResponseInterface
     {
         return (new DefaultDestroyAction())->handle($requisite);
     }
@@ -94,7 +94,7 @@ class RequisiteController extends Controller
             ->text('director_full_name', ['label' => 'Ф.И.О. директора', 'required' => true]);
     }
 
-    protected function gridFactory(Provider $provider): GridContract
+    protected function gridFactory(Supplier $provider): GridContract
     {
         return Grid::paginator(16)
             ->edit(fn($r) => $this->prototype->route('requisites.edit', [$provider, $r->id]))
@@ -102,7 +102,7 @@ class RequisiteController extends Controller
             ->text('director_full_name', ['text' => 'Ф.И.О. директора']);
     }
 
-    private function provider(Provider $provider): void
+    private function provider(Supplier $provider): void
     {
         Breadcrumb::prototype($this->prototype)
             ->addUrl(

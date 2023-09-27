@@ -7,7 +7,7 @@ use App\Admin\Http\Controllers\Controller;
 use App\Admin\Http\Requests\ServiceProvider\SearchServicesRequest;
 use App\Admin\Http\Resources\Service as ServiceResource;
 use App\Admin\Models\Supplier\AirportService;
-use App\Admin\Models\Supplier\Provider;
+use App\Admin\Models\Supplier\Supplier;
 use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Form;
@@ -39,7 +39,7 @@ class AirportServicesController extends Controller
         $this->prototype = Prototypes::get('supplier');
     }
 
-    public function index(Request $request, Provider $provider): LayoutContract
+    public function index(Request $request, Supplier $provider): LayoutContract
     {
         $this->provider($provider);
 
@@ -59,7 +59,7 @@ class AirportServicesController extends Controller
             ]);
     }
 
-    public function create(Request $request, Provider $provider): LayoutContract
+    public function create(Request $request, Supplier $provider): LayoutContract
     {
         $this->provider($provider);
 
@@ -67,13 +67,13 @@ class AirportServicesController extends Controller
             ->handle('Новая услуга');
     }
 
-    public function store(Request $request, Provider $provider): RedirectResponse
+    public function store(Request $request, Supplier $provider): RedirectResponse
     {
         return (new DefaultFormStoreAction($this->formFactory($provider->id)))
             ->handle(AirportService::class);
     }
 
-    public function edit(Request $request, Provider $provider, AirportService $servicesAirport): LayoutContract
+    public function edit(Request $request, Supplier $provider, AirportService $servicesAirport): LayoutContract
     {
         $this->provider($provider);
 
@@ -82,13 +82,13 @@ class AirportServicesController extends Controller
             ->handle($servicesAirport);
     }
 
-    public function update(Provider $provider, AirportService $servicesAirport): RedirectResponse
+    public function update(Supplier $provider, AirportService $servicesAirport): RedirectResponse
     {
         return (new DefaultFormUpdateAction($this->formFactory($provider->id)))
             ->handle($servicesAirport);
     }
 
-    public function destroy(Provider $provider, AirportService $servicesAirport): AjaxResponseInterface
+    public function destroy(Supplier $provider, AirportService $servicesAirport): AjaxResponseInterface
     {
         return (new DefaultDestroyAction())->handle($servicesAirport);
     }
@@ -96,6 +96,15 @@ class AirportServicesController extends Controller
     public function search(SearchServicesRequest $request): JsonResponse
     {
         $services = AirportService::whereCity($request->getCityId())->get();
+
+        return response()->json(
+            ServiceResource::collection($services)
+        );
+    }
+
+    public function list(Supplier $supplier): JsonResponse
+    {
+        $services = AirportService::whereSupplierId($supplier->id)->get();
 
         return response()->json(
             ServiceResource::collection($services)
@@ -115,7 +124,7 @@ class AirportServicesController extends Controller
             ]);
     }
 
-    protected function gridFactory(Provider $provider): GridContract
+    protected function gridFactory(Supplier $provider): GridContract
     {
         return Grid::paginator(16)
             ->enableQuicksearch()
@@ -124,7 +133,7 @@ class AirportServicesController extends Controller
             ->enum('type', ['text' => 'Тип', 'enum' => AirportServiceTypeEnum::class]);
     }
 
-    private function provider(Provider $provider): void
+    private function provider(Supplier $provider): void
     {
         Breadcrumb::prototype($this->prototype)
             ->addUrl(

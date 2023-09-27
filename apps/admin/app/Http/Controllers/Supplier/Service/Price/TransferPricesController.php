@@ -5,7 +5,7 @@ namespace App\Admin\Http\Controllers\Supplier\Service\Price;
 use App\Admin\Http\Requests\ServiceProvider\UpdateTransferPriceRequest;
 use App\Admin\Models\Reference\Currency;
 use App\Admin\Models\Supplier\CarPrice;
-use App\Admin\Models\Supplier\Provider;
+use App\Admin\Models\Supplier\Supplier;
 use App\Admin\Models\Supplier\TransferService;
 use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Facades\Layout;
@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 
 class TransferPricesController extends AbstractPricesController
 {
-    public function index(Request $request, Provider $provider): LayoutContract
+    public function index(Request $request, Supplier $provider): LayoutContract
     {
         $this->provider($provider);
 
@@ -30,14 +30,14 @@ class TransferPricesController extends AbstractPricesController
             ]);
     }
 
-    public function getPrices(Request $request, Provider $provider, TransferService $service): JsonResponse
+    public function getPrices(Request $request, Supplier $provider, TransferService $service): JsonResponse
     {
         return response()->json(
             CarPrice::whereServiceId($service->id)->get()
         );
     }
 
-    public function update(UpdateTransferPriceRequest $request, Provider $provider, TransferService $service): JsonResponse {
+    public function update(UpdateTransferPriceRequest $request, Supplier $provider, TransferService $service): JsonResponse {
         $data = ['currency_id' => $request->getCurrencyId()];
         if ($request->getPriceNet() !== null) {
             $data['price_net'] = $request->getPriceNet();

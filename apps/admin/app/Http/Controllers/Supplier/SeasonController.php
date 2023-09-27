@@ -4,7 +4,7 @@ namespace App\Admin\Http\Controllers\Supplier;
 
 use App\Admin\Components\Factory\Prototype;
 use App\Admin\Http\Controllers\Controller;
-use App\Admin\Models\Supplier\Provider;
+use App\Admin\Models\Supplier\Supplier;
 use App\Admin\Models\Supplier\Season;
 use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\Breadcrumb;
@@ -35,7 +35,7 @@ class SeasonController extends Controller
         $this->prototype = Prototypes::get('supplier');
     }
 
-    public function index(Request $request, Provider $provider): LayoutContract
+    public function index(Request $request, Supplier $provider): LayoutContract
     {
         $this->provider($provider);
 
@@ -52,7 +52,7 @@ class SeasonController extends Controller
             ]);
     }
 
-    public function create(Request $request, Provider $provider): LayoutContract
+    public function create(Request $request, Supplier $provider): LayoutContract
     {
         $this->provider($provider);
 
@@ -60,13 +60,13 @@ class SeasonController extends Controller
             ->handle('Новый сезон');
     }
 
-    public function store(Request $request, Provider $provider): RedirectResponse
+    public function store(Request $request, Supplier $provider): RedirectResponse
     {
         return (new DefaultFormStoreAction($this->formFactory($provider->id)))
             ->handle(Season::class);
     }
 
-    public function edit(Request $request, Provider $provider, Season $season): LayoutContract
+    public function edit(Request $request, Supplier $provider, Season $season): LayoutContract
     {
         $this->provider($provider);
 
@@ -75,13 +75,13 @@ class SeasonController extends Controller
             ->handle($season);
     }
 
-    public function update(Provider $provider, Season $season): RedirectResponse
+    public function update(Supplier $provider, Season $season): RedirectResponse
     {
         return (new DefaultFormUpdateAction($this->formFactory($provider->id)))
             ->handle($season);
     }
 
-    public function destroy(Provider $provider, Season $season): AjaxResponseInterface
+    public function destroy(Supplier $provider, Season $season): AjaxResponseInterface
     {
         return (new DefaultDestroyAction())->handle($season);
     }
@@ -95,7 +95,7 @@ class SeasonController extends Controller
             ->checkbox('status', ['label' => 'Статус']);
     }
 
-    protected function gridFactory(Provider $provider): GridContract
+    protected function gridFactory(Supplier $provider): GridContract
     {
         return Grid::paginator(16)
             ->edit(fn($r) => $this->prototype->route('seasons.edit', [$provider, $r->id]))
@@ -103,7 +103,7 @@ class SeasonController extends Controller
             ->datePeriod('period', ['text' => 'Период']);
     }
 
-    private function provider(Provider $provider): void
+    private function provider(Supplier $provider): void
     {
         Breadcrumb::prototype($this->prototype)
             ->addUrl(
