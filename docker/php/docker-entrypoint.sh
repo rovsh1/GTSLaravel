@@ -56,4 +56,6 @@ elif [ -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini ]; then
   rm -rf /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 fi
 
+chmod -R 777 /var/www/html/storage
+
 exec "$@"

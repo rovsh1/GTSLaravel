@@ -5,19 +5,19 @@ import { computed } from 'vue'
 import EditTableRowButton from '~resources/views/hotel/settings/components/EditTableRowButton.vue'
 import { getGenderName } from '~resources/views/hotel-booking/show/lib/constants'
 
-import { Guest } from '~api/booking/order/guest'
+import { HotelBookingGuest } from '~api/booking/hotel/details'
 import { CountryResponse } from '~api/country'
 
 const props = defineProps<{
   guestIds?: number[]
   countries: CountryResponse[]
-  orderGuests: Guest[]
+  orderGuests: HotelBookingGuest[]
   canEdit: boolean
 }>()
 
 defineEmits<{
-  (event: 'edit', guest: Guest): void
-  (event: 'delete', guest: Guest): void
+  (event: 'edit', guest: HotelBookingGuest): void
+  (event: 'delete', guest: HotelBookingGuest): void
 }>()
 
 const countries = computed(() => props.countries)
@@ -27,10 +27,6 @@ const getCountryName = (id: number): string | undefined =>
 
 const guests = computed(
   () => props.orderGuests.filter((guest) => props.guestIds && props.guestIds.includes(guest.id)),
-)
-
-const notExistsOrderGuests = computed(
-  () => props.orderGuests.filter((guest) => !props.guestIds?.includes(guest.id)),
 )
 
 </script>
@@ -61,21 +57,6 @@ const notExistsOrderGuests = computed(
             @edit="$emit('edit', guest)"
             @delete="$emit('delete', guest)"
           />
-        </td>
-      </tr>
-
-      <tr
-        v-for="guest in notExistsOrderGuests"
-        :key="guest.id"
-        class="table-danger"
-      >
-        <td>-</td>
-        <td>{{ guest.fullName }}</td>
-        <td>{{ getCountryName(guest.countryId) }}</td>
-        <td>{{ getGenderName(guest.gender) }}</td>
-        <td>{{ guest.isAdult ? 'Взрослый' : 'Ребенок' }}</td>
-        <td class="column-edit">
-          -
         </td>
       </tr>
     </tbody>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 import { useToggle } from '@vueuse/core'
 import { z } from 'zod'
@@ -25,9 +25,9 @@ import {
   RoomBookingPrice,
 } from '~api/booking/hotel/details'
 import { updateRoomBookingPrice } from '~api/booking/hotel/price'
-import { deleteBookingGuest, deleteBookingRoom } from '~api/booking/hotel/rooms'
-import { Guest } from '~api/booking/order/guest'
-import { CountryResponse, useCountrySearchAPI } from '~api/country'
+import { addGuestToBooking, BookingAddRoomGuestPayload, deleteBookingGuest, deleteBookingRoom } from '~api/booking/hotel/rooms'
+import { addOrderGuest, AddOrderGuestPayload, Guest, updateOrderGuest, UpdateOrderGuestPayload } from '~api/booking/order/guest'
+import { useCountrySearchAPI } from '~api/country'
 import { MarkupSettings } from '~api/hotel/markup-settings'
 import { HotelRate, useHotelRatesAPI } from '~api/hotel/price-rate'
 import { Currency } from '~api/models'
@@ -68,6 +68,7 @@ const grossCurrency = computed<Currency | undefined>(
 const netCurrency = computed<Currency | undefined>(
   () => getCurrencyByCodeChar(bookingStore.booking?.price.netPrice.currency.value),
 )
+const orderId = computed(() => orderStore.order.id)
 const orderGuests = computed<Guest[]>(() => orderStore.guests || [])
 const isBookingPriceManual = computed(
   () => bookingStore.booking?.price.grossPrice.isManual || bookingStore.booking?.price.netPrice.isManual,
@@ -87,19 +88,29 @@ const getDefaultGuestForm = () => ({ isAdult: true })
 const roomForm = ref<Partial<RoomFormData>>({})
 const guestForm = ref<Partial<GuestFormData>>(getDefaultGuestForm())
 
+const waitingSaveGuestModalData = ref<boolean>(false)
+
 const editRoomBookingId = ref<number>()
 const editGuestId = ref<number>()
 const handleAddRoomGuest = (roomBookingId: number) => {
   editRoomBookingId.value = roomBookingId
   editGuestId.value = undefined
   guestForm.value = getDefaultGuestForm()
+  guestForm.value.selectedGuestFromOrder = undefined
   toggleGuestModal(true)
 }
 
 const handleEditGuest = (roomBookingId: number, guest: HotelBookingGuest): void => {
   editRoomBookingId.value = roomBookingId
   editGuestId.value = guest.id
-  guestForm.value = guest
+  guestForm.value = {
+    id: guest.id,
+    fullName: guest.fullName,
+    countryId: guest.countryId,
+    gender: guest.gender,
+    isAdult: guest.isAdult,
+    age: guest.age,
+  }
   toggleGuestModal(true)
 }
 
@@ -178,10 +189,14 @@ const getCheckOutTime = (room: HotelRoomBooking) => {
   return `до ${bookingDetails.value?.hotelInfo.checkOutTime}`
 }
 
-const onGuestModalSubmit = async () => {
+const onCloseModal = () => {
+  roomForm.value = {}
+  toggleRoomModal(false)
+}
+
+const onCloseGuestModal = () => {
+  guestForm.value = getDefaultGuestForm()
   toggleGuestModal(false)
-  await fetchBooking()
-  await orderStore.fetchGuests()
 }
 
 const onRoomModalSubmit = async () => {
@@ -189,13 +204,25 @@ const onRoomModalSubmit = async () => {
   await fetchBooking()
 }
 
-const onCloseModal = () => {
-  roomForm.value = {}
-  toggleRoomModal(false)
+const onModalGuestsSubmit = async (operationType: string, payload: any) => {
+  waitingSaveGuestModalData.value = true
+  if (operationType === 'create') {
+    await addOrderGuest(payload as AddOrderGuestPayload)
+  } else if (operationType === 'update') {
+    await updateOrderGuest(payload as UpdateOrderGuestPayload)
+  } else if (operationType === 'add') {
+    await addGuestToBooking(payload as BookingAddRoomGuestPayload)
+  }
+  waitingSaveGuestModalData.value = false
+  await fetchBooking()
+  await orderStore.fetchGuests()
+  onCloseGuestModal()
 }
 
-fetchPriceRates()
-fetchCountries()
+onMounted(() => {
+  fetchPriceRates()
+  fetchCountries()
+})
 
 </script>
 
@@ -212,12 +239,16 @@ fetchCountries()
   <GuestModal
     v-if="countries && editRoomBookingId !== undefined"
     :opened="isShowGuestModal"
+    :is-fetching="waitingSaveGuestModalData"
     :room-booking-id="editRoomBookingId"
+    :order-id="orderId"
     :guest-id="editGuestId"
     :form-data="guestForm"
-    :countries="countries as CountryResponse[]"
-    @close="toggleGuestModal(false)"
-    @submit="onGuestModalSubmit"
+    :order-guests="orderGuests"
+    :countries="countries"
+    @close="onCloseGuestModal"
+    @submit="onModalGuestsSubmit"
+    @clear="guestForm = getDefaultGuestForm()"
   />
 
   <RoomPriceModal
@@ -228,6 +259,7 @@ fetchCountries()
     :net-currency="netCurrency"
     @close="toggleRoomPriceModal(false)"
     @submit="({ grossPrice, netPrice }) => handleUpdateRoomPrice(grossPrice, netPrice)"
+    @clear="guestForm = {}"
   />
 
   <div class="mt-3" />
