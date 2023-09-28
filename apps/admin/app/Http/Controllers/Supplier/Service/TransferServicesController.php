@@ -102,6 +102,15 @@ class TransferServicesController extends Controller
         );
     }
 
+    public function list(Supplier $supplier): JsonResponse
+    {
+        $services = TransferService::whereSupplierId($supplier->id)->get();
+
+        return response()->json(
+            ServiceResource::collection($services)
+        );
+    }
+
     protected function formFactory(int $supplierId): FormContract
     {
         return Form::name('data')

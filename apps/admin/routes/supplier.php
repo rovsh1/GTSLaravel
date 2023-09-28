@@ -27,7 +27,13 @@ AclRoute::for('supplier')
         '/services-transfer/search',
         Supplier\Service\TransferServicesController::class . '@search',
         'read',
-        'service.airport.search'
+        'service.transfer.search'
+    )
+    ->get(
+        '/{supplier}/services-transfer/list',
+        Supplier\Service\TransferServicesController::class . '@list',
+        'read',
+        'service.transfer.list'
     )
     ->get(
         '/{provider}/service-transfer/prices',

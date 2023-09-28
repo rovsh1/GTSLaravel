@@ -11,7 +11,7 @@ $(() => {
       if (Number(type) === 2) {
         return `/supplier/${supplierId}/services-airport/list`
       }
-      return '/supplier/services-transfer/search'
+      return `/supplier/${supplierId}/services-transfer/list`
     },
     disabledText: 'Выберите тип услуги',
     parent: $('#form_data_service_type'),
