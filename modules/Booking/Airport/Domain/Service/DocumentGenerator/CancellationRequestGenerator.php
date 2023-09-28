@@ -2,6 +2,7 @@
 
 namespace Module\Booking\Airport\Domain\Service\DocumentGenerator;
 
+use Module\Booking\Airport\Domain\Repository\ContractRepositoryInterface;
 use Module\Booking\Common\Application\Service\StatusStorage;
 use Module\Booking\Common\Domain\Adapter\AdministratorAdapterInterface;
 use Module\Booking\Common\Domain\Entity\BookingInterface;
@@ -16,6 +17,7 @@ class CancellationRequestGenerator extends AbstractRequestGenerator
         private readonly AdministratorAdapterInterface $administratorAdapter,
         private readonly StatusStorage $statusStorage,
         private readonly GuestRepositoryInterface $guestRepository,
+        private readonly ContractRepositoryInterface $contractRepository,
         CompanyRequisitesInterface $companyRequisites
     ) {
         parent::__construct($companyRequisites);
@@ -30,10 +32,12 @@ class CancellationRequestGenerator extends AbstractRequestGenerator
     {
         $administrator = $this->administratorAdapter->getManagerByBookingId($booking->id()->value());
 
+        $contract = $this->contractRepository->find($booking->serviceInfo()->id());
+        $contractNumber = $contract?->id()->value();
+        $contractDate = $contract !== null ? (string)$contract->dateStart() : null;
+
         //@todo сейчас этого нету
         $airportDirector = '{airportDirector}';
-        $contractNumber = '{contractNumber}';
-        $contractDate = '{contractDate}';
         $inn = '{inn}';
         $reservationChanges = '{reservationChanges}';
 
