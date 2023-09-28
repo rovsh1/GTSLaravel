@@ -17,9 +17,11 @@
     </div>
 
     <div class="content-body">
-        <x-ui.card header="Основные данные">
-            {!! $params !!}
-        </x-ui.card>
+        <div class="card card-form mt-3">
+            <div class="card-body">
+                {!! $params !!}
+            </div>
+        </div>
 
         <div class="mt-3">
             @include('_partials.components.contacts-card')
