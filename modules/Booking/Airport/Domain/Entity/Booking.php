@@ -29,6 +29,7 @@ class Booking extends AbstractBooking
         BookingPrice $price,
         private readonly ServiceInfo $serviceInfo,
         private readonly AirportInfo $airportInfo,
+        //@todo заменить на Date
         private readonly CarbonImmutable $date,
         private ?CancelConditions $cancelConditions,
         private AdditionalInfo $additionalInfo,
