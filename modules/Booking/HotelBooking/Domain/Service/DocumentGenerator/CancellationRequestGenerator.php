@@ -4,6 +4,7 @@ namespace Module\Booking\HotelBooking\Domain\Service\DocumentGenerator;
 
 use Module\Booking\Common\Application\Service\StatusStorage;
 use Module\Booking\Common\Domain\Adapter\AdministratorAdapterInterface;
+use Module\Booking\Common\Domain\Adapter\CountryAdapterInterface;
 use Module\Booking\Common\Domain\Entity\BookingInterface;
 use Module\Booking\Common\Domain\Service\DocumentGenerator\AbstractRequestGenerator;
 use Module\Booking\HotelBooking\Domain\Adapter\HotelAdapterInterface;
@@ -19,6 +20,7 @@ class CancellationRequestGenerator extends AbstractRequestGenerator
         private readonly AdministratorAdapterInterface $administratorAdapter,
         private readonly StatusStorage $statusStorage,
         private readonly GuestRepositoryInterface $guestRepository,
+        private readonly CountryAdapterInterface $countryAdapter,
         CompanyRequisitesInterface $companyRequisites
     ) {
         parent::__construct($companyRequisites);
@@ -45,6 +47,8 @@ class CancellationRequestGenerator extends AbstractRequestGenerator
 
         $administrator = $this->administratorAdapter->getManagerByBookingId($booking->id()->value());
         $guests = $this->getGuestsIndexedByRoomBooking($booking);
+        $countries = $this->countryAdapter->get();
+        $countries = collect($countries)->keyBy('id')->map->name;
 
         return [
             'reservCreatedAt' => $booking->createdAt()->format('d.m.Y H:i:s'),
@@ -59,6 +63,7 @@ class CancellationRequestGenerator extends AbstractRequestGenerator
             'reservStatus' => $this->statusStorage->get($booking->status())->name,
             'rooms' => $booking->roomBookings(),
             'roomsGuests' => $guests,
+            'countryNamesById' => $countries,
             'hotelDefaultCheckInTime' => $booking->hotelInfo()->checkInTime()->value(),
             'hotelDefaultCheckOutTime' => $booking->hotelInfo()->checkOutTime()->value(),
             'managerName' => $administrator?->name ?? $administrator?->presentation,//@todo надо ли?
