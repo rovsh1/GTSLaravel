@@ -14,7 +14,7 @@ use App\Admin\Http\Requests\Booking\Hotel\UpdateStatusRequest;
 use App\Admin\Models\Administrator\Administrator;
 use App\Admin\Models\Client\Client;
 use App\Admin\Models\Reference\Currency;
-use App\Admin\Models\ServiceProvider\AirportService;
+use App\Admin\Models\Supplier\AirportService;
 use App\Admin\Repositories\BookingAdministratorRepository;
 use App\Admin\Support\Facades\Booking\Airport\PriceAdapter;
 use App\Admin\Support\Facades\Booking\AirportAdapter;
