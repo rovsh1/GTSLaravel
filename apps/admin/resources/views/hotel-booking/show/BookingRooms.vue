@@ -6,8 +6,8 @@ import { useToggle } from '@vueuse/core'
 import { z } from 'zod'
 
 import { useCurrencyStore } from '~resources/store/currency'
+import GuestModal from '~resources/views/booking/components/GuestModal.vue'
 import EditTableRowButton from '~resources/views/hotel/settings/components/EditTableRowButton.vue'
-import GuestModal from '~resources/views/hotel-booking/show/components/GuestModal.vue'
 import GuestsTable from '~resources/views/hotel-booking/show/components/GuestsTable.vue'
 import InfoBlock from '~resources/views/hotel-booking/show/components/InfoBlock/InfoBlock.vue'
 import InfoBlockTitle from '~resources/views/hotel-booking/show/components/InfoBlock/InfoBlockTitle.vue'
@@ -20,7 +20,6 @@ import { useOrderStore } from '~resources/views/hotel-booking/show/store/order'
 
 import {
   HotelBookingDetails,
-  HotelBookingGuest,
   HotelRoomBooking,
   RoomBookingPrice,
 } from '~api/booking/hotel/details'
@@ -73,6 +72,7 @@ const orderGuests = computed<Guest[]>(() => orderStore.guests || [])
 const isBookingPriceManual = computed(
   () => bookingStore.booking?.price.grossPrice.isManual || bookingStore.booking?.price.netPrice.isManual,
 )
+
 const canChangeRoomPrice = computed<boolean>(
   () => (bookingStore.availableActions?.canChangeRoomPrice && !isBookingPriceManual.value) || false,
 )
@@ -100,7 +100,7 @@ const handleAddRoomGuest = (roomBookingId: number) => {
   toggleGuestModal(true)
 }
 
-const handleEditGuest = (roomBookingId: number, guest: HotelBookingGuest): void => {
+const handleEditGuest = (roomBookingId: number, guest: Guest): void => {
   editRoomBookingId.value = roomBookingId
   editGuestId.value = guest.id
   guestForm.value = {

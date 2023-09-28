@@ -5,19 +5,19 @@ import { computed } from 'vue'
 import EditTableRowButton from '~resources/views/hotel/settings/components/EditTableRowButton.vue'
 import { getGenderName } from '~resources/views/hotel-booking/show/lib/constants'
 
-import { HotelBookingGuest } from '~api/booking/hotel/details'
+import { Guest } from '~api/booking/order/guest'
 import { CountryResponse } from '~api/country'
 
 const props = defineProps<{
   guestIds?: number[]
   countries: CountryResponse[]
-  orderGuests: HotelBookingGuest[]
+  orderGuests: Guest[]
   canEdit: boolean
 }>()
 
 defineEmits<{
-  (event: 'edit', guest: HotelBookingGuest): void
-  (event: 'delete', guest: HotelBookingGuest): void
+  (event: 'edit', guest: Guest): void
+  (event: 'delete', guest: Guest): void
 }>()
 
 const countries = computed(() => props.countries)

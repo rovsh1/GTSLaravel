@@ -261,8 +261,7 @@ const onChangeSelectGuest = (value: any) => {
           :disabled="!!formData.selectedGuestFromOrder"
           :value="ageType"
           @input="(value: any, event: any) => {
-            handleChangeAgeType(Number(value))
-            isDataValid(event, value)
+            handleChangeAgeType(value as number)
           }"
         />
       </div>
