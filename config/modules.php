@@ -14,6 +14,9 @@ return [
         'path' => modules_path('Booking'),
         'templates_path' => base_path('resources/booking/pdf-templates'),
     ],
+    'Supplier' => [
+        'path' => modules_path('Supplier'),
+    ],
     'CurrencyRate' => [
         'path' => modules_path('Generic/CurrencyRate'),
     ],

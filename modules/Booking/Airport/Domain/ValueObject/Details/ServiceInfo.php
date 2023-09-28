@@ -13,7 +13,8 @@ class ServiceInfo implements ValueObjectInterface, SerializableDataInterface
     public function __construct(
         private readonly int $id,
         private readonly string $name,
-        private readonly AirportServiceTypeEnum $type
+        private readonly AirportServiceTypeEnum $type,
+        private readonly int $supplierId,
     ) {}
 
     public function id(): int
@@ -31,12 +32,18 @@ class ServiceInfo implements ValueObjectInterface, SerializableDataInterface
         return $this->type;
     }
 
+    public function supplierId(): int
+    {
+        return $this->supplierId;
+    }
+
     public function toData(): array
     {
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'type' => $this->type->value
+            'type' => $this->type->value,
+            'supplierId' => $this->supplierId
         ];
     }
 
@@ -46,6 +53,7 @@ class ServiceInfo implements ValueObjectInterface, SerializableDataInterface
             $data['id'],
             $data['name'],
             AirportServiceTypeEnum::from($data['type']),
+            $data['supplierId'],
         );
     }
 }

@@ -83,7 +83,8 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
                     serviceInfo: new ServiceInfo(
                         $service->id,
                         $service->name,
-                        $service->type
+                        $service->type,
+                        $service->supplier_id,
                     ),
                     cancelConditions: $cancelConditions,
                     additionalInfo: $additionalInfo,

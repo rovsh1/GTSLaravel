@@ -2,10 +2,12 @@
 
 namespace Module\Booking\Airport\Domain\Service\DocumentGenerator;
 
+use Module\Booking\Airport\Domain\Adapter\SupplierAdapterInterface;
 use Module\Booking\Airport\Domain\Entity\Booking;
 use Module\Booking\Airport\Domain\Repository\ContractRepositoryInterface;
 use Module\Booking\Common\Application\Service\StatusStorage;
 use Module\Booking\Common\Domain\Adapter\AdministratorAdapterInterface;
+use Module\Booking\Common\Domain\Adapter\CountryAdapterInterface;
 use Module\Booking\Common\Domain\Entity\BookingInterface;
 use Module\Booking\Common\Domain\Service\DocumentGenerator\AbstractRequestGenerator;
 use Module\Booking\Order\Domain\Repository\GuestRepositoryInterface;
@@ -19,6 +21,8 @@ class ReservationRequestGenerator extends AbstractRequestGenerator
         private readonly StatusStorage $statusStorage,
         private readonly GuestRepositoryInterface $guestRepository,
         private readonly ContractRepositoryInterface $contractRepository,
+        private readonly SupplierAdapterInterface $supplierAdapter,
+        private readonly CountryAdapterInterface $countryAdapter,
         CompanyRequisitesInterface $companyRequisites
     ) {
         parent::__construct($companyRequisites);
@@ -36,10 +40,14 @@ class ReservationRequestGenerator extends AbstractRequestGenerator
         $contract = $this->contractRepository->find($booking->serviceInfo()->id());
         $contractNumber = $contract?->id()->value();
         $contractDate = $contract !== null ? (string)$contract->dateStart() : null;
-        $airportDirector = '{airportDirector}';
-        $inn = '{inn}';
+
+        $supplier = $this->supplierAdapter->find($booking->serviceInfo()->supplierId());
+        $airportDirector = $supplier->directorFullName;
+        $inn = $supplier->inn;
 
         $guests = $this->guestRepository->get($booking->guestIds());
+        $countries = $this->countryAdapter->get();
+        $countries = collect($countries)->keyBy('id')->map->name;
 
         return [
             'serviceName' => $booking->serviceInfo()->name(),
@@ -53,6 +61,7 @@ class ReservationRequestGenerator extends AbstractRequestGenerator
             'inn' => $inn,
             'guests' => $guests,
             'guestsCount' => count($guests),
+            'countryNamesById' => $countries,
             'date' => $booking->date()->format('d.m.Y'),
             'time' => $booking->date()->format('H:i'),
             'flightNumber' => $booking->additionalInfo()->flightNumber(),

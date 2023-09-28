@@ -2,9 +2,12 @@
 
 namespace Module\Booking\Airport\Domain\Service\DocumentGenerator;
 
+use Module\Booking\Airport\Domain\Adapter\SupplierAdapterInterface;
+use Module\Booking\Airport\Domain\Entity\Booking;
 use Module\Booking\Airport\Domain\Repository\ContractRepositoryInterface;
 use Module\Booking\Common\Application\Service\StatusStorage;
 use Module\Booking\Common\Domain\Adapter\AdministratorAdapterInterface;
+use Module\Booking\Common\Domain\Adapter\CountryAdapterInterface;
 use Module\Booking\Common\Domain\Entity\BookingInterface;
 use Module\Booking\Common\Domain\Service\DocumentGenerator\AbstractRequestGenerator;
 use Module\Booking\Order\Domain\Repository\GuestRepositoryInterface;
@@ -18,6 +21,8 @@ class ChangeRequestGenerator extends AbstractRequestGenerator
         private readonly StatusStorage $statusStorage,
         private readonly GuestRepositoryInterface $guestRepository,
         private readonly ContractRepositoryInterface $contractRepository,
+        private readonly SupplierAdapterInterface $supplierAdapter,
+        private readonly CountryAdapterInterface $countryAdapter,
         CompanyRequisitesInterface $companyRequisites
     ) {
         parent::__construct($companyRequisites);
@@ -28,7 +33,7 @@ class ChangeRequestGenerator extends AbstractRequestGenerator
         return 'airport.change_request';
     }
 
-    protected function getBookingAttributes(BookingInterface $booking): array
+    protected function getBookingAttributes(BookingInterface|Booking $booking): array
     {
         $administrator = $this->administratorAdapter->getManagerByBookingId($booking->id()->value());
 
@@ -36,12 +41,14 @@ class ChangeRequestGenerator extends AbstractRequestGenerator
         $contractNumber = $contract?->id()->value();
         $contractDate = $contract !== null ? (string)$contract->dateStart() : null;
 
-        //@todo сейчас этого нету
-        $airportDirector = '{airportDirector}';
-        $inn = '{inn}';
+        $supplier = $this->supplierAdapter->find($booking->serviceInfo()->supplierId());
+        $airportDirector = $supplier->directorFullName;
+        $inn = $supplier->inn;
         $reservationChanges = '{reservationChanges}';
 
         $guests = $this->guestRepository->get($booking->guestIds());
+        $countries = $this->countryAdapter->get();
+        $countries = collect($countries)->keyBy('id')->map->name;
 
         return [
             'serviceName' => $booking->serviceInfo()->name(),
@@ -55,6 +62,7 @@ class ChangeRequestGenerator extends AbstractRequestGenerator
             'inn' => $inn,
             'guests' => $guests,
             'guestsCount' => count($guests),
+            'countryNamesById' => $countries,
             'date' => $booking->date()->format('d.m.Y'),
             'time' => $booking->date()->format('H:i'),
             'flightNumber' => $booking->additionalInfo()->flightNumber(),
