@@ -17,7 +17,6 @@ use Module\Booking\Common\Domain\ValueObject\CancelConditions;
 use Module\Booking\Common\Domain\ValueObject\CreatorId;
 use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\Order\Domain\ValueObject\GuestIdsCollection;
-use Module\Shared\Domain\ValueObject\Date;
 
 class Booking extends AbstractBooking
 {
@@ -30,7 +29,7 @@ class Booking extends AbstractBooking
         BookingPrice $price,
         private readonly ServiceInfo $serviceInfo,
         private readonly AirportInfo $airportInfo,
-        private readonly Date $date,
+        private readonly CarbonImmutable $date,
         private ?CancelConditions $cancelConditions,
         private AdditionalInfo $additionalInfo,
         private readonly GuestIdsCollection $guestIds,
@@ -49,7 +48,7 @@ class Booking extends AbstractBooking
         return $this->airportInfo;
     }
 
-    public function date(): Date
+    public function date(): CarbonImmutable
     {
         return $this->date;
     }
