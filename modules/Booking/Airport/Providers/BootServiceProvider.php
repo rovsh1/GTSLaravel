@@ -24,5 +24,10 @@ class BootServiceProvider extends ServiceProvider
             Domain\Repository\CancelConditionsRepositoryInterface::class,
             Infrastructure\Repository\CancelConditionsRepository::class
         );
+
+        $this->app->singleton(
+            Domain\Repository\ContractRepositoryInterface::class,
+            Infrastructure\Repository\ContractRepository::class
+        );
     }
 }

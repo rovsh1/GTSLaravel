@@ -2,7 +2,7 @@
 
 namespace App\Admin\Http\Controllers\Hotel;
 
-use App\Admin\Enums\Hotel\Contract\StatusEnum;
+use App\Admin\Enums\Contract\StatusEnum;
 use App\Admin\Exceptions\FormSubmitFailedException;
 use App\Admin\Http\Actions\Hotel\UpdateContractAction;
 use App\Admin\Http\Controllers\Controller;

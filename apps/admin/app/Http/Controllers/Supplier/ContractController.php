@@ -3,7 +3,7 @@
 namespace App\Admin\Http\Controllers\Supplier;
 
 use App\Admin\Components\Factory\Prototype;
-use App\Admin\Enums\Hotel\Contract\StatusEnum;
+use App\Admin\Enums\Contract\StatusEnum;
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Models\Supplier\Contract;
 use App\Admin\Models\Supplier\Supplier;

@@ -2,7 +2,7 @@
 
 namespace App\Admin\Models\Supplier;
 
-use App\Admin\Enums\Hotel\Contract\StatusEnum;
+use App\Admin\Enums\Contract\StatusEnum;
 use App\Admin\Support\Models\HasPeriod;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;

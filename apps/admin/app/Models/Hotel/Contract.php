@@ -2,7 +2,7 @@
 
 namespace App\Admin\Models\Hotel;
 
-use App\Admin\Enums\Hotel\Contract\StatusEnum;
+use App\Admin\Enums\Contract\StatusEnum;
 use App\Admin\Support\Models\HasPeriod;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
