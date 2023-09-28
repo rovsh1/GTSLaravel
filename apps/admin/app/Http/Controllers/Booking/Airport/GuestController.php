@@ -14,6 +14,17 @@ use Module\Shared\Application\Exception\ApplicationException;
 
 class GuestController extends Controller
 {
+    public function addGuest(int $bookingId, GuestRequest $request): AjaxResponseInterface
+    {
+        try {
+            AirportAdapter::bindGuest($bookingId, $request->getGuestId());
+        } catch (ApplicationException $e) {
+            return new AjaxErrorResponse($e->getMessage());
+        }
+
+        return new AjaxSuccessResponse();
+    }
+
     public function deleteGuest(int $bookingId, GuestRequest $request): AjaxResponseInterface
     {
         try {
