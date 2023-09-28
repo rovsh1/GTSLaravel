@@ -2,7 +2,7 @@
 
 import { computed, onMounted } from 'vue'
 
-import { useBookingStore } from '~resources/views/hotel-booking/show/store/booking'
+import { useBookingStore } from '~resources/views/airport-booking/show/store/booking'
 
 import { useAdministratorGetAPI } from '~api/administrator'
 

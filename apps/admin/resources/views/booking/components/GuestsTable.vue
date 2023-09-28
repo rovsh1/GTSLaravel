@@ -2,8 +2,8 @@
 
 import { computed } from 'vue'
 
+import { getGenderName } from '~resources/views/booking/lib/constants'
 import EditTableRowButton from '~resources/views/hotel/settings/components/EditTableRowButton.vue'
-import { getGenderName } from '~resources/views/hotel-booking/show/lib/constants'
 
 import { Guest } from '~api/booking/order/guest'
 import { CountryResponse } from '~api/country'
@@ -40,25 +40,30 @@ const guests = computed(
         <th class="column-text">Пол</th>
         <th class="column-text">Гражданство</th>
         <th class="column-text">Тип</th>
-        <th class="column-text" />
-        <th />
+        <th v-if="canEdit" />
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(guest, idx) in guests" :key="guest.id">
-        <td>{{ idx + 1 }}</td>
-        <td>{{ guest.fullName }}</td>
-        <td>{{ getCountryName(guest.countryId) }}</td>
-        <td>{{ getGenderName(guest.gender) }}</td>
-        <td>{{ guest.isAdult ? 'Взрослый' : 'Ребенок' }}</td>
-        <td class="column-edit">
-          <EditTableRowButton
-            v-if="canEdit"
-            @edit="$emit('edit', guest)"
-            @delete="$emit('delete', guest)"
-          />
-        </td>
-      </tr>
+      <template v-if="guests.length > 0">
+        <tr v-for="(guest, idx) in guests" :key="guest.id">
+          <td>{{ idx + 1 }}</td>
+          <td>{{ guest.fullName }}</td>
+          <td>{{ getCountryName(guest.countryId) }}</td>
+          <td>{{ getGenderName(guest.gender) }}</td>
+          <td>{{ guest.isAdult ? 'Взрослый' : 'Ребенок' }}</td>
+          <td v-if="canEdit" class="column-edit">
+            <EditTableRowButton
+              @edit="$emit('edit', guest)"
+              @delete="$emit('delete', guest)"
+            />
+          </td>
+        </tr>
+      </template>
+      <template v-else>
+        <tr>
+          <td colspan="6" class="text-center">Гости не добавлены</td>
+        </tr>
+      </template>
     </tbody>
   </table>
 </template>

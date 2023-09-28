@@ -6,18 +6,18 @@ import { MaybeRef, useToggle } from '@vueuse/core'
 import { z } from 'zod'
 
 import { useCurrencyStore } from '~resources/store/currency'
-import GuestModal from '~resources/views/airport-booking/show/components/GuestModal.vue'
 import { useBookingStore } from '~resources/views/airport-booking/show/store/booking'
+import AmountBlock from '~resources/views/booking/components/AmountBlock.vue'
+import GuestModal from '~resources/views/booking/components/GuestModal.vue'
+import GuestsTable from '~resources/views/booking/components/GuestsTable.vue'
+import InfoBlock from '~resources/views/booking/components/InfoBlock/InfoBlock.vue'
+import InfoBlockTitle from '~resources/views/booking/components/InfoBlock/InfoBlockTitle.vue'
+import PriceModal from '~resources/views/booking/components/PriceModal.vue'
+import { GuestFormData } from '~resources/views/booking/lib/data-types'
+import { useOrderStore } from '~resources/views/booking/store/order'
 import { useEditableModal } from '~resources/views/hotel/settings/composables/editable-modal'
-import AmountBlock from '~resources/views/hotel-booking/show/components/AmountBlock.vue'
-import GuestsTable from '~resources/views/hotel-booking/show/components/GuestsTable.vue'
-import InfoBlock from '~resources/views/hotel-booking/show/components/InfoBlock/InfoBlock.vue'
-import InfoBlockTitle from '~resources/views/hotel-booking/show/components/InfoBlock/InfoBlockTitle.vue'
-import PriceModal from '~resources/views/hotel-booking/show/components/PriceModal.vue'
-import { GuestFormData } from '~resources/views/hotel-booking/show/lib/data-types'
-import { useOrderStore } from '~resources/views/hotel-booking/show/store/order'
 
-import { deleteBookingGuest } from '~api/booking/airport/guests'
+import { addBookingGuest, deleteBookingGuest } from '~api/booking/airport/guests'
 import { updateBookingPrice } from '~api/booking/airport/price'
 import { addOrderGuest, Guest, updateOrderGuest } from '~api/booking/order/guest'
 import { useCountrySearchAPI } from '~api/country'
@@ -40,8 +40,9 @@ const { bookingID } = requestInitialData('view-initial-data-airport-booking', z.
 
 const bookingStore = useBookingStore()
 const orderStore = useOrderStore()
+const orderId = computed(() => orderStore.order.id)
 const { getCurrencyByCodeChar } = useCurrencyStore()
-const orderCurrency = computed<Currency | undefined>(() => orderStore.currency)
+// const orderCurrency = computed<Currency | undefined>(() => orderStore.currency)
 const orderGuests = computed<Guest[]>(() => orderStore.guests || [])
 const booking = computed(() => bookingStore.booking)
 const grossCurrency = computed<Currency | undefined>(
@@ -50,7 +51,8 @@ const grossCurrency = computed<Currency | undefined>(
 const netCurrency = computed<Currency | undefined>(
   () => getCurrencyByCodeChar(bookingStore.booking?.price.netPrice.currency.value),
 )
-const isEditableStatus = computed(() => true)
+const isEditableStatus = computed<boolean>(() => bookingStore.availableActions?.isEditable || false)
+
 const { data: countries, execute: fetchCountries } = useCountrySearchAPI()
 
 const [isNetPriceModalOpened, toggleNetPriceModal] = useToggle<boolean>(false)
@@ -64,17 +66,24 @@ onMounted(() => {
 
 const modalSettings = {
   add: {
-    title: 'Добавление туриста',
+    title: 'Добавление гостя',
     handler: async (request: MaybeRef<Required<GuestFormData>>) => {
       const preparedRequest = unref(request)
-      const payload = { airportBookingId: bookingID, ...preparedRequest }
-      await addOrderGuest(payload)
+      console.log(preparedRequest)
+      if (preparedRequest && preparedRequest.id !== undefined) {
+        const payload = { bookingID, guestId: preparedRequest.id }
+        await addBookingGuest(payload)
+      } else {
+        const payload = { airportBookingId: bookingID, ...preparedRequest }
+        payload.orderId = orderId.value
+        await addOrderGuest(payload)
+      }
       await bookingStore.fetchBooking()
       await orderStore.fetchGuests()
     },
   },
   edit: {
-    title: 'Изменение туриста',
+    title: 'Редактирование гостя',
     handler: async (request: MaybeRef<Required<GuestFormData>>) => {
       const preparedRequest = unref(request)
       const payload = { guestId: preparedRequest.id, ...preparedRequest }
@@ -97,9 +106,11 @@ const {
 
 const getDefaultGuestForm = () => ({ isAdult: true })
 const guestForm = ref<Partial<GuestFormData>>(getDefaultGuestForm())
+
 watch(editableGuest, (value) => {
   if (!value) {
     guestForm.value = getDefaultGuestForm()
+    guestForm.value.selectedGuestFromOrder = undefined
     return
   }
   guestForm.value = value
@@ -167,28 +178,25 @@ const getDisplayPriceValue = (type: 'gross' | 'net') => {
 <template>
   <GuestModal
     v-if="countries"
+    :title-text="guestModalTitle"
     :opened="isGuestModalOpened"
-    :loading="isGuestModalLoading"
-    :title="guestModalTitle"
-    :countries="countries"
+    :is-fetching="isGuestModalLoading"
     :form-data="guestForm"
+    :order-guests="orderGuests"
+    :countries="countries"
     @close="closeGuestModal"
     @submit="submitGuestModal"
+    @clear="guestForm = getDefaultGuestForm()"
   />
 
   <Card>
     <CardTitle class="mr-4" title="Информация о брони" />
-
     <div class="d-flex gap-4">
       <InfoBlock>
         <template #header>
           <div class="d-flex gap-1">
             <InfoBlockTitle title="Гости" />
-            <IconButton
-              v-if="isEditableStatus"
-              icon="add"
-              @click="openAddGuestModal"
-            />
+            <IconButton v-if="isEditableStatus" icon="add" @click="openAddGuestModal" />
           </div>
         </template>
 
@@ -205,7 +213,16 @@ const getDisplayPriceValue = (type: 'gross' | 'net') => {
 
       <InfoBlock>
         <template #header>
-          <InfoBlockTitle title="Стоимость брони" />
+          <div class="d-flex justify-content-between align-items-center">
+            <InfoBlockTitle title="Стоимость брони" />
+            <div v-if="booking && grossCurrency" class="float-end total-sum">
+              Общая сумма:
+              <strong>
+                {{ formatPrice(getDisplayPriceValue('gross'), grossCurrency.sign) }}
+              </strong>
+              <span v-if="booking.price.grossPrice.isManual" class="text-muted"> (выставлена вручную)</span>
+            </div>
+          </div>
         </template>
         <PriceModal
           header="Общая сумма (нетто)"
@@ -271,7 +288,8 @@ const getDisplayPriceValue = (type: 'gross' | 'net') => {
         </div>
 
         <div v-if="booking && grossCurrency && netCurrency" class="mt-2">
-          Прибыль = {{ formatPrice(getDisplayPriceValue('gross'), grossCurrency.sign) }} - {{ formatPrice(getDisplayPriceValue('net'), netCurrency.sign) }} =
+          Прибыль = {{ formatPrice(getDisplayPriceValue('gross'), grossCurrency.sign) }} - {{
+            formatPrice(getDisplayPriceValue('net'), netCurrency.sign) }} =
           {{
             formatPrice((getDisplayPriceValue('gross') - getDisplayPriceValue('net')), grossCurrency.sign)
           }}
@@ -280,3 +298,9 @@ const getDisplayPriceValue = (type: 'gross' | 'net') => {
     </div>
   </Card>
 </template>
+
+<style lang="scss" scoped>
+.total-sum {
+  margin-bottom: 0.5rem;
+}
+</style>

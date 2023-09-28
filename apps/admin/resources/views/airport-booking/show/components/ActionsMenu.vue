@@ -4,12 +4,12 @@ import { computed } from 'vue'
 
 import { z } from 'zod'
 
-import { useBookingStore } from '~resources/views/hotel-booking/show/store/booking'
+import { useBookingStore } from '~resources/views/airport-booking/show/store/booking'
 
 import { useDeleteWithConfirm } from '~lib/delete-dialog'
 import { requestInitialData } from '~lib/initial-data'
 
-const { editUrl, deleteUrl } = requestInitialData('view-initial-data-hotel-booking', z.object({
+const { editUrl, deleteUrl } = requestInitialData('view-initial-data-airport-booking', z.object({
   editUrl: z.string().nullable(),
   deleteUrl: z.string().nullable(),
 }))
@@ -39,11 +39,7 @@ const handleDelete = () => {
       <i class="icon">more_vert</i>
     </div>
 
-    <ul
-      class="dropdown-menu"
-      aria-labelledby="menu-actions"
-      data-popper-placement="bottom-start"
-    >
+    <ul class="dropdown-menu" aria-labelledby="menu-actions" data-popper-placement="bottom-start">
       <li v-if="editUrl">
         <a class="dropdown-item" :href="editUrl">
           <i class="icon">edit</i>

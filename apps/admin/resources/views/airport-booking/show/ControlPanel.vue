@@ -7,11 +7,11 @@ import { useToggle } from '@vueuse/core'
 import { useBookingStore } from '~resources/views/airport-booking/show/store/booking'
 import { useBookingRequestStore } from '~resources/views/airport-booking/show/store/request'
 import { useBookingStatusHistoryStore } from '~resources/views/airport-booking/show/store/status-history'
+import ControlPanelSection from '~resources/views/booking/components/ControlPanelSection.vue'
 import RequestBlock from '~resources/views/booking/components/RequestBlock.vue'
-import ControlPanelSection from '~resources/views/hotel-booking/show/components/ControlPanelSection.vue'
-import StatusHistoryModal from '~resources/views/hotel-booking/show/components/StatusHistoryModal.vue'
-import StatusSelect from '~resources/views/hotel-booking/show/components/StatusSelect.vue'
-import { getCancelPeriodTypeName, getHumanRequestType } from '~resources/views/hotel-booking/show/lib/constants'
+import StatusHistoryModal from '~resources/views/booking/components/StatusHistoryModal.vue'
+import StatusSelect from '~resources/views/booking/components/StatusSelect.vue'
+import { getCancelPeriodTypeName, getHumanRequestType } from '~resources/views/booking/lib/constants'
 
 import { CancelConditions } from '~api/booking/hotel/details'
 import { BookingRequest } from '~api/booking/hotel/request'
@@ -28,9 +28,6 @@ const booking = computed(() => bookingStore.booking)
 const statuses = computed<BookingStatusResponse[] | null>(() => bookingStore.statuses)
 const availableActions = computed<BookingAvailableActionsResponse | null>(() => bookingStore.availableActions)
 
-// const cancelConditions = computed<CancelConditions | null>(
-// () => bookingStore.booking?.cancelConditions || null)
-
 const statusHistoryStore = useBookingStatusHistoryStore()
 const { fetchStatusHistory } = statusHistoryStore
 
@@ -39,10 +36,8 @@ const bookingRequests = computed<BookingRequest[] | null>(() => requestStore.req
 
 const cancelConditions = computed<CancelConditions | null>(() => bookingStore.booking?.cancelConditions || null)
 
-// flags
-// const isRoomsAndGuestsFilled = computed<boolean>(() =>
-//! bookingStore.isEmptyGuests && !bookingStore.isEmptyRooms)
-const isRoomsAndGuestsFilled = computed<boolean>(() => true)
+const isGuestsFilled = computed<boolean>(() => !bookingStore.isEmptyGuests)
+
 const isRequestableStatus = computed<boolean>(() => availableActions.value?.isRequestable || false)
 const isAvailableActionsFetching = computed<boolean>(() => bookingStore.isAvailableActionsFetching)
 const isStatusUpdateFetching = computed(() => bookingStore.isStatusUpdateFetching)
@@ -77,7 +72,7 @@ const handleRequestSend = async () => {
     @refresh="fetchStatusHistory"
   />
 
-  <div class="d-flex flex-wrap flex-grow-1 gap-2">
+  <div class="d-flex flex-wrap flex-grow-1 gap-2 align-items-center">
     <StatusSelect
       v-if="booking && statuses"
       v-model="booking.status"
@@ -113,7 +108,7 @@ const handleRequestSend = async () => {
     </div>
 
     <div v-if="isRequestableStatus">
-      <div v-if="isRoomsAndGuestsFilled">
+      <div v-if="isGuestsFilled">
         <RequestBlock
           v-if="canSendBookingRequest"
           text="Запрос на бронирование еще не отправлен"
@@ -140,7 +135,7 @@ const handleRequestSend = async () => {
       <RequestBlock
         v-else
         :show-button="false"
-        text="Для отправки запроса необходимо заполнить информацию по номерам и гостям"
+        text="Для отправки запроса необходимо заполнить информацию о гостях"
       />
     </div>
   </ControlPanelSection>

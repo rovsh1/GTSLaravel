@@ -3,17 +3,17 @@ import { createPinia } from 'pinia'
 import { createVueInstance } from '~lib/vue'
 
 import ActionsMenu from '../../booking/ActionsMenu.vue'
-import CopyButton from '../../booking/CopyButton.vue'
-import EditableManager from '../../booking/EditableManager.vue'
-import EditableNote from '../../booking/EditableNote.vue'
-import BookingRooms from './BookingRooms.vue'
-import ControlPanel from './ControlPanel.vue'
 
+// import CopyButton from '../../booking/CopyButton.vue'
+// import EditableManager from '../../booking/EditableManager.vue'
+// import EditableNote from '../../booking/EditableNote.vue'
+// import BookingRooms from './BookingRooms.vue'
+// import ControlPanel from './ControlPanel.vue'
 import '~resources/views/main'
 
 const pinia = createPinia()
 
-createVueInstance({
+/* createVueInstance({
   rootComponent: BookingRooms,
   rootContainer: '#booking-rooms',
   plugins: [pinia],
@@ -29,7 +29,7 @@ createVueInstance({
   rootComponent: CopyButton,
   rootContainer: '#booking-copy-button',
   plugins: [pinia],
-})
+}) */
 
 createVueInstance({
   rootComponent: ActionsMenu,
@@ -37,14 +37,14 @@ createVueInstance({
   plugins: [pinia],
 })
 
-createVueInstance({
+/* createVueInstance({
   rootComponent: EditableNote,
   rootContainer: '#booking-editable-note',
   plugins: [pinia],
-})
+}) */
 
-createVueInstance({
+/* createVueInstance({
   rootComponent: EditableManager,
   rootContainer: '#booking-editable-manager',
   plugins: [pinia],
-})
+}) */

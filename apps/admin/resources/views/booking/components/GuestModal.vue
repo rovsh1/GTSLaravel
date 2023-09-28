@@ -1,18 +1,15 @@
 <script setup lang="ts">
 
-import { computed, nextTick, ref, unref, watchEffect } from 'vue'
+import { computed, nextTick, ref, watchEffect } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
-import { z } from 'zod'
 
 import { isDataValid } from '~resources/composables/form'
-import { genderOptions } from '~resources/views/hotel-booking/show/lib/constants'
-import { GuestFormData } from '~resources/views/hotel-booking/show/lib/data-types'
+import { genderOptions } from '~resources/views/booking/lib/constants'
+import { GuestFormData } from '~resources/views/booking/lib/data-types'
 
 import { Guest } from '~api/booking/order/guest'
 import { CountryResponse } from '~api/country'
-
-import { requestInitialData } from '~lib/initial-data'
 
 import BaseDialog from '~components/BaseDialog.vue'
 import BootstrapSelectBase from '~components/Bootstrap/BootstrapSelectBase.vue'
@@ -22,33 +19,22 @@ import Select2BaseSelect from '~components/Select2BaseSelect.vue'
 const props = withDefaults(defineProps<{
   opened: MaybeRef<boolean>
   isFetching: MaybeRef<boolean>
-  roomBookingId: MaybeRef<number>
-  orderId: MaybeRef<number>
   countries: CountryResponse[]
   formData: Partial<GuestFormData>
   orderGuests?: Guest[] | null
   titleText?: string
   inputSelectText?: string
-  guestId?: number
 }>(), {
   titleText: 'Данные гостя',
   inputSelectText: 'Гость',
-  guestId: undefined,
   orderGuests: null,
 })
 
 const emit = defineEmits<{
   (event: 'close'): void
   (event: 'clear'): void
-  (event: 'submit', operationType: string, payload: any): void
+  (event: 'submit', payload: any): void
 }>()
-
-const { bookingID } = requestInitialData(
-  'view-initial-data-hotel-booking',
-  z.object({
-    bookingID: z.number(),
-  }),
-)
 
 const ageTypeOptions: SelectOption[] = [
   { value: 0, label: 'Взрослый' },
@@ -56,13 +42,12 @@ const ageTypeOptions: SelectOption[] = [
 ]
 
 const setFormData = () => ({
-  bookingID,
-  id: props.guestId,
+  id: props.formData.id,
   ...props.formData,
   selectedGuestFromOrder: undefined,
 })
 
-const formData = ref<GuestFormData>(setFormData())
+const formData = ref<Partial<GuestFormData>>(setFormData())
 
 const localAgeType = ref<number>()
 const ageType = computed<number>({
@@ -79,9 +64,11 @@ const ageType = computed<number>({
 })
 
 const handleChangeAgeType = (type: number): void => {
-  ageType.value = type
-  formData.value.isAdult = type === 0
-  formData.value.age = null
+  if (!isNaN(type)) {
+    ageType.value = type
+    formData.value.isAdult = type === 0
+    formData.value.age = null
+  }
   nextTick(() => {
     $('#child_age').removeClass('is-invalid')
   })
@@ -117,28 +104,22 @@ const onModalSubmit = async () => {
   if (!isFormValid()) {
     return
   }
-  formData.value.roomBookingId = unref<number>(props.roomBookingId)
-  formData.value.orderId = unref<number>(props.orderId)
   if (formData.value.id !== undefined) {
     const payload = {
       guestId: formData.value.id,
       ...formData.value,
     }
-    emit('submit', 'update', payload)
-  } else if (formData.value.selectedGuestFromOrder) {
+    emit('submit', payload)
+  } else if (formData.value.selectedGuestFromOrder !== undefined) {
     const payload = {
-      bookingID,
-      roomBookingId: formData.value.roomBookingId,
-      guestId: formData.value.selectedGuestFromOrder,
+      id: formData.value.selectedGuestFromOrder,
     }
-    emit('submit', 'add', payload)
-  } else if (!formData.value.selectedGuestFromOrder) {
+    emit('submit', payload)
+  } else if (formData.value.selectedGuestFromOrder === undefined) {
     const payload = {
-      hotelBookingRoomId: formData.value.roomBookingId,
-      hotelBookingId: bookingID,
       ...formData.value,
     }
-    emit('submit', 'create', payload)
+    emit('submit', payload)
   }
   localAgeType.value = undefined
 }
@@ -150,12 +131,6 @@ const countryOptions = computed<SelectOption[]>(
 const guestsOptions = computed<SelectOption[]>(
   () => props.orderGuests?.map((guest: Guest) => ({ value: guest.id, label: guest.fullName })) || [],
 )
-
-const closeModal = () => {
-  ageType.value = 0
-  handleChangeAgeType(ageType.value)
-  emit('close')
-}
 
 const resetForm = () => {
   emit('clear')
@@ -169,6 +144,14 @@ const resetForm = () => {
   nextTick(() => {
     $('.is-invalid').removeClass('is-invalid')
   })
+}
+
+const closeModal = () => {
+  ageType.value = 0
+  handleChangeAgeType(ageType.value)
+  resetForm()
+  emit('close')
+  emit('clear')
 }
 
 const onChangeSelectGuest = (value: any) => {
@@ -260,8 +243,10 @@ const onChangeSelectGuest = (value: any) => {
           label="Тип"
           :disabled="!!formData.selectedGuestFromOrder"
           :value="ageType"
+          :show-empty-item="false"
           @input="(value: any, event: any) => {
-            handleChangeAgeType(value as number)
+            handleChangeAgeType(Number(value))
+            isDataValid(event, value)
           }"
         />
       </div>

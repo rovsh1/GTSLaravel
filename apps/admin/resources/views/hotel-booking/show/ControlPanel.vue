@@ -6,13 +6,14 @@ import { useToggle } from '@vueuse/core'
 import { z } from 'zod'
 
 import { useCurrencyStore } from '~resources/store/currency'
+import AmountBlock from '~resources/views/booking/components/AmountBlock.vue'
+import ControlPanelSection from '~resources/views/booking/components/ControlPanelSection.vue'
+import PriceModal from '~resources/views/booking/components/PriceModal.vue'
 import RequestBlock from '~resources/views/booking/components/RequestBlock.vue'
-import AmountBlock from '~resources/views/hotel-booking/show/components/AmountBlock.vue'
-import ControlPanelSection from '~resources/views/hotel-booking/show/components/ControlPanelSection.vue'
-import PriceModal from '~resources/views/hotel-booking/show/components/PriceModal.vue'
-import StatusHistoryModal from '~resources/views/hotel-booking/show/components/StatusHistoryModal.vue'
+import StatusHistoryModal from '~resources/views/booking/components/StatusHistoryModal.vue'
+import StatusSelect from '~resources/views/booking/components/StatusSelect.vue'
+import { externalNumberTypeOptions, getCancelPeriodTypeName, getHumanRequestType } from '~resources/views/booking/lib/constants'
 import { useExternalNumber } from '~resources/views/hotel-booking/show/composables/external-number'
-import { externalNumberTypeOptions, getCancelPeriodTypeName, getHumanRequestType } from '~resources/views/hotel-booking/show/lib/constants'
 import { useBookingStore } from '~resources/views/hotel-booking/show/store/booking'
 import { useBookingRequestStore } from '~resources/views/hotel-booking/show/store/request'
 import { useBookingStatusHistoryStore } from '~resources/views/hotel-booking/show/store/status-history'
@@ -31,8 +32,6 @@ import { requestInitialData } from '~lib/initial-data'
 import { formatPrice } from '~lib/price'
 
 import BootstrapSelectBase from '~components/Bootstrap/BootstrapSelectBase.vue'
-
-import StatusSelect from './components/StatusSelect.vue'
 
 const { bookingID } = requestInitialData(
   'view-initial-data-hotel-booking',
@@ -258,7 +257,7 @@ onMounted(() => {
       <strong>
         {{ formatPrice(getDisplayPriceValue('gross'), grossCurrency.sign) }}
       </strong>
-      <span v-if="booking.price.grossPrice.isManual" class="text-muted">(выставлена вручную)</span>
+      <span v-if="booking.price.grossPrice.isManual" class="text-muted"> (выставлена вручную)</span>
     </div>
   </div>
 

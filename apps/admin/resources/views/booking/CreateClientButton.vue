@@ -9,14 +9,14 @@ import { isDataValid } from '~resources/composables/form'
 import { useCityStore } from '~resources/store/city'
 import { useCurrencyStore } from '~resources/store/currency'
 import ManagerSelect from '~resources/views/booking/components/ManagerSelect.vue'
-import { tabsItemsSettings } from '~resources/views/hotel-booking/form/lib/composables'
-import { statusOptions } from '~resources/views/hotel-booking/form/lib/constants'
-import { BasicFormData, LegalEntityFormData, PhysicalEntityFormData } from '~resources/views/hotel-booking/form/lib/types'
 import {
   clientTypeOptions,
   genderOptions,
   mapEntitiesToSelectOptions, residentTypeOptions,
-} from '~resources/views/hotel-booking/show/lib/constants'
+} from '~resources/views/booking/lib/constants'
+import { tabsItemsSettings } from '~resources/views/hotel-booking/form/lib/composables'
+import { statusOptions } from '~resources/views/hotel-booking/form/lib/constants'
+import { BasicFormData, LegalEntityFormData, PhysicalEntityFormData } from '~resources/views/hotel-booking/form/lib/types'
 
 import { createClient, useIndustryListAPI } from '~api/client'
 

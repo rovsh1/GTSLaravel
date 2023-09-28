@@ -22,3 +22,14 @@ export const deleteBookingGuest = (props: MaybeRef<BookingDeleteGuestPayload | n
       getNullableRef<BookingDeleteGuestPayload, any>(props, (payload: BookingDeleteGuestPayload): any => ({ guest_id: payload.guestId })),
     )), 'application/json')
     .json<BaseResponse>()
+
+export const addBookingGuest = (props: MaybeRef<BookingDeleteGuestPayload | null>) =>
+  useAdminAPI(
+    props,
+    ({ bookingID }) => `/airport-booking/${bookingID}/guests/add`,
+    { immediate: true },
+  )
+    .post(computed<string>(() => JSON.stringify(
+      getNullableRef<BookingDeleteGuestPayload, any>(props, (payload: BookingDeleteGuestPayload): any => ({ guest_id: payload.guestId })),
+    )), 'application/json')
+    .json<BaseResponse>()

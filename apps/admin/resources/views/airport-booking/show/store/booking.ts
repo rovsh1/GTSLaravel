@@ -1,4 +1,4 @@
-import { onMounted, reactive, ref } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 
 import { defineStore } from 'pinia'
 import { z } from 'zod'
@@ -29,8 +29,8 @@ export const useBookingStore = defineStore('booking', () => {
   const { data: availableActions, execute: fetchAvailableActions, isFetching: isAvailableActionsFetching } = useBookingAvailableActionsAPI({ bookingID })
   const { data: statuses, execute: fetchStatuses } = useBookingStatusesAPI()
 
-  // const isEmptyGuests = computed<boolean>(() => Boolean(booking.value?.roomBookings.find((room: HotelRoomBooking) => room.guests.length === 0)))
-  // const isEmptyRooms = computed<boolean>(() => booking.value?.roomBookings.length === 0)
+  const isEmptyGuests = computed<boolean>(() => (!(booking.value && booking.value?.guestIds.length > 0)))
+
   const isStatusUpdateFetching = ref(false)
   const bookingManagerId = ref(manager.id)
 
@@ -90,7 +90,7 @@ export const useBookingStore = defineStore('booking', () => {
     booking,
     bookingManagerId,
     fetchBooking,
-    // isEmptyGuests,
+    isEmptyGuests,
     availableActions,
     fetchAvailableActions,
     isAvailableActionsFetching,

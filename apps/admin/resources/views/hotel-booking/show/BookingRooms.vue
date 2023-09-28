@@ -7,16 +7,16 @@ import { z } from 'zod'
 
 import { useCurrencyStore } from '~resources/store/currency'
 import GuestModal from '~resources/views/booking/components/GuestModal.vue'
+import GuestsTable from '~resources/views/booking/components/GuestsTable.vue'
+import InfoBlock from '~resources/views/booking/components/InfoBlock/InfoBlock.vue'
+import InfoBlockTitle from '~resources/views/booking/components/InfoBlock/InfoBlockTitle.vue'
+import { getConditionLabel } from '~resources/views/booking/lib/constants'
+import { GuestFormData, RoomFormData } from '~resources/views/booking/lib/data-types'
+import { useOrderStore } from '~resources/views/booking/store/order'
 import EditTableRowButton from '~resources/views/hotel/settings/components/EditTableRowButton.vue'
-import GuestsTable from '~resources/views/hotel-booking/show/components/GuestsTable.vue'
-import InfoBlock from '~resources/views/hotel-booking/show/components/InfoBlock/InfoBlock.vue'
-import InfoBlockTitle from '~resources/views/hotel-booking/show/components/InfoBlock/InfoBlockTitle.vue'
 import RoomModal from '~resources/views/hotel-booking/show/components/RoomModal.vue'
 import RoomPriceModal from '~resources/views/hotel-booking/show/components/RoomPriceModal.vue'
-import { getConditionLabel } from '~resources/views/hotel-booking/show/lib/constants'
-import { GuestFormData, RoomFormData } from '~resources/views/hotel-booking/show/lib/data-types'
 import { useBookingStore } from '~resources/views/hotel-booking/show/store/booking'
-import { useOrderStore } from '~resources/views/hotel-booking/show/store/order'
 
 import {
   HotelBookingDetails,
@@ -24,8 +24,8 @@ import {
   RoomBookingPrice,
 } from '~api/booking/hotel/details'
 import { updateRoomBookingPrice } from '~api/booking/hotel/price'
-import { addGuestToBooking, BookingAddRoomGuestPayload, deleteBookingGuest, deleteBookingRoom } from '~api/booking/hotel/rooms'
-import { addOrderGuest, AddOrderGuestPayload, Guest, updateOrderGuest, UpdateOrderGuestPayload } from '~api/booking/order/guest'
+import { deleteBookingGuest, deleteBookingRoom } from '~api/booking/hotel/rooms'
+import { Guest } from '~api/booking/order/guest'
 import { useCountrySearchAPI } from '~api/country'
 import { MarkupSettings } from '~api/hotel/markup-settings'
 import { HotelRate, useHotelRatesAPI } from '~api/hotel/price-rate'
@@ -204,15 +204,15 @@ const onRoomModalSubmit = async () => {
   await fetchBooking()
 }
 
-const onModalGuestsSubmit = async (operationType: string, payload: any) => {
+const onModalGuestsSubmit = async (payload: any) => {
   waitingSaveGuestModalData.value = true
-  if (operationType === 'create') {
+  /* if (operationType === 'create') {
     await addOrderGuest(payload as AddOrderGuestPayload)
   } else if (operationType === 'update') {
     await updateOrderGuest(payload as UpdateOrderGuestPayload)
   } else if (operationType === 'add') {
     await addGuestToBooking(payload as BookingAddRoomGuestPayload)
-  }
+  } */
   waitingSaveGuestModalData.value = false
   await fetchBooking()
   await orderStore.fetchGuests()
@@ -263,10 +263,7 @@ onMounted(() => {
   />
 
   <div class="mt-3" />
-  <BootstrapCard
-    v-for="room in bookingDetails?.roomBookings"
-    :key="room.id"
-  >
+  <BootstrapCard v-for="room in bookingDetails?.roomBookings" :key="room.id">
     <div class="d-flex">
       <BootstrapCardTitle class="mr-4" :title="room.roomInfo.name" />
       <EditTableRowButton
@@ -338,11 +335,7 @@ onMounted(() => {
           <strong>
             Итого: {{ formatPrice(room.price.grossValue, grossCurrency.sign) }}
           </strong>
-          <a
-            v-if="canChangeRoomPrice"
-            href="#"
-            @click.prevent="handleEditRoomPrice(room.id, room.price)"
-          >
+          <a v-if="canChangeRoomPrice" href="#" @click.prevent="handleEditRoomPrice(room.id, room.price)">
             Изменить цену номера
           </a>
         </div>
@@ -353,11 +346,7 @@ onMounted(() => {
         <template #header>
           <div class="d-flex gap-1">
             <InfoBlockTitle title="Список гостей" />
-            <IconButton
-              v-if="isEditableStatus"
-              icon="add"
-              @click="handleAddRoomGuest(room.id)"
-            />
+            <IconButton v-if="isEditableStatus" icon="add" @click="handleAddRoomGuest(room.id)" />
           </div>
         </template>
 
@@ -375,10 +364,6 @@ onMounted(() => {
   </BootstrapCard>
 
   <div>
-    <BootstrapButton
-      v-if="isEditableStatus"
-      label="Добавить номер"
-      @click="handleAddRoom"
-    />
+    <BootstrapButton v-if="isEditableStatus" label="Добавить номер" @click="handleAddRoom" />
   </div>
 </template>
