@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Admin\Http\Controllers\Booking\Hotel;
 
-use App\Admin\Http\Requests\Booking\Room\AddRoomRequest;
-use App\Admin\Http\Requests\Booking\Room\DeleteRoomRequest;
-use App\Admin\Http\Requests\Booking\Room\Guest\RoomGuestRequest;
-use App\Admin\Http\Requests\Booking\Room\UpdateRoomRequest;
-use App\Admin\Http\Requests\Booking\UpdatePriceRequest;
+use App\Admin\Http\Requests\Booking\Hotel\Room\AddRoomRequest;
+use App\Admin\Http\Requests\Booking\Hotel\Room\DeleteRoomRequest;
+use App\Admin\Http\Requests\Booking\Hotel\Room\Guest\RoomGuestRequest;
+use App\Admin\Http\Requests\Booking\Hotel\Room\UpdateRoomRequest;
+use App\Admin\Http\Requests\Booking\Hotel\UpdatePriceRequest;
 use App\Admin\Support\Facades\Booking\HotelAdapter;
-use App\Admin\Support\Facades\Booking\HotelPriceAdapter;
+use App\Admin\Support\Facades\Booking\Hotel\PriceAdapter;
 use App\Admin\Support\Facades\Booking\RoomAdapter;
 use App\Core\Support\Http\Responses\AjaxErrorResponse;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
@@ -115,7 +115,7 @@ class RoomController
     public function updatePrice(UpdatePriceRequest $request, int $id, int $roomBookingId): AjaxResponseInterface
     {
         try {
-            HotelPriceAdapter::updateRoomPrice(
+            PriceAdapter::updateRoomPrice(
                 $id,
                 $roomBookingId,
                 $request->getGrossPrice(),
