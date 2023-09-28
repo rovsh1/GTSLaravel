@@ -47,6 +47,7 @@ class SeasonPrice extends Model
                     ->whereColumn('hotel_season_price_calendar.season_id', '=', 'hotel_season_prices.season_id')
                     ->whereColumn('hotel_season_price_calendar.group_id', '=', 'hotel_season_prices.group_id')
                     ->whereColumn('hotel_season_price_calendar.room_id', '=', 'hotel_season_prices.room_id')
+                    ->whereColumn('hotel_season_price_calendar.price', '!=', 'hotel_season_prices.price')
                     ->limit(1),
                 'has_date_prices'
             );

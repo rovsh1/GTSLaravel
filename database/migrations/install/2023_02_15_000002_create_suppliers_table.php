@@ -21,14 +21,14 @@ return new class extends Migration {
     {
         Schema::create('supplier_contacts', function (Blueprint $table) {
             $table->integer('id')->unsigned()->autoIncrement();
-            $table->integer('provider_id')->unsigned();
+            $table->integer('supplier_id')->unsigned();
             $table->tinyInteger('type')->unsigned();
             $table->string('value');
             $table->string('description')->nullable();
             $table->boolean('main')->default(false);
             $table->timestamps();
 
-            $table->foreign('provider_id', 'fk_supplier_contacts_provider_id')
+            $table->foreign('supplier_id', 'fk_supplier_contacts_supplier_id')
                 ->references('id')
                 ->on('suppliers')
                 ->restrictOnDelete()
