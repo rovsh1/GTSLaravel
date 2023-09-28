@@ -3,7 +3,7 @@
 namespace App\Admin\Http\Controllers\Supplier;
 
 use App\Admin\Models\Reference\City;
-use App\Admin\Models\Reference\TransportCar;
+use App\Admin\Models\Supplier\Supplier;
 use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\ActionsMenu;
 use App\Admin\Support\Facades\Form;
@@ -13,6 +13,7 @@ use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\View\Menus\SupplierMenu;
+use Gsdk\Format\View\ParamsTable;
 use Illuminate\Database\Eloquent\Model;
 
 class SupplierController extends AbstractPrototypeController
@@ -20,6 +21,15 @@ class SupplierController extends AbstractPrototypeController
     protected function getPrototypeKey(): string
     {
         return 'supplier';
+    }
+
+    protected function supplierParams(Supplier $model): ParamsTable
+    {
+        return (new ParamsTable())
+            ->id('id', 'ID')
+            ->text('name', 'Наименование')
+            ->custom('cities', 'Города', fn($v, $o) => $o->cities()->get()->map(fn(City $city) => $city->name)->join(', '))
+            ->data($model);
     }
 
     protected function formFactory(): FormContract
@@ -71,6 +81,7 @@ class SupplierController extends AbstractPrototypeController
     protected function getShowViewData(): array
     {
         return [
+            'params' => $this->supplierParams($this->model),
             'contactsUrl' => $this->prototype->route('show', $this->model->id) . '/contacts',
             'contactsEditable' => Acl::isUpdateAllowed($this->getPrototypeKey()),
             'contacts' => $this->model->contacts

@@ -17,12 +17,12 @@
     </div>
 
     <div class="content-body">
-        @include('_partials.components.contacts-card')
+        <x-ui.card header="Основные данные">
+            {!! $params !!}
+        </x-ui.card>
 
         <div class="mt-3">
-            <x-ui.card :collapsable="true" header="Основные данные">
-
-            </x-ui.card>
+            @include('_partials.components.contacts-card')
         </div>
     </div>
 @endsection
