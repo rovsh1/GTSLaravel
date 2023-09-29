@@ -67,6 +67,7 @@ const grossCurrency = computed<Currency | undefined>(
 const netCurrency = computed<Currency | undefined>(
   () => getCurrencyByCodeChar(bookingStore.booking?.price.netPrice.currency.value),
 )
+const profit = computed<number>(() => bookingStore.booking?.price.profit.calculatedValue || 0)
 const statuses = computed<BookingStatusResponse[] | null>(() => bookingStore.statuses)
 const availableActions = computed<BookingAvailableActionsResponse | null>(() => bookingStore.availableActions)
 
@@ -242,7 +243,7 @@ onMounted(() => {
     @submit="handleSaveNetPenalty"
   />
 
-  <div class="d-flex flex-wrap flex-grow-1 gap-2">
+  <div class="d-flex flex-wrap flex-grow-1 gap-2 align-items-center">
     <StatusSelect
       v-if="booking && statuses"
       v-model="booking.status"
@@ -305,8 +306,8 @@ onMounted(() => {
         amount-title="Общая сумма (брутто)"
         :amount-value="getDisplayPriceValue('gross')"
         penalty-title="Сумма штрафа для клиента"
-        :penalty-value="booking.price.grossPenalty"
-        :need-show-penalty="(booking?.price.netPenalty || 0) > 0"
+        :penalty-value="booking.price.grossPrice.penaltyValue"
+        :need-show-penalty="(booking?.price.netPrice.penaltyValue || 0) > 0"
         @click-change-price="toggleGrossPriceModal(true)"
         @click-change-penalty="toggleGrossPenaltyModal(true)"
       />
@@ -318,8 +319,8 @@ onMounted(() => {
         amount-title="Общая сумма (нетто)"
         :amount-value="getDisplayPriceValue('net')"
         penalty-title="Сумма штрафа от гостиницы"
-        :penalty-value="booking.price.netPenalty"
-        :need-show-penalty="(booking?.price.netPenalty || 0) > 0"
+        :penalty-value="booking.price.netPrice.penaltyValue"
+        :need-show-penalty="(booking?.price.netPrice.penaltyValue || 0) > 0"
         @click-change-price="toggleNetPriceModal(true)"
         @click-change-penalty="toggleNetPenaltyModal(true)"
       />
@@ -328,7 +329,7 @@ onMounted(() => {
     <div v-if="booking && grossCurrency && netCurrency" class="mt-2">
       Прибыль = {{ formatPrice(getDisplayPriceValue('gross'), grossCurrency.sign) }} - {{ formatPrice(getDisplayPriceValue('net'), netCurrency.sign) }} =
       {{
-        formatPrice((getDisplayPriceValue('gross') - getDisplayPriceValue('net')), grossCurrency.sign)
+        formatPrice(profit, grossCurrency.sign)
       }}
     </div>
 

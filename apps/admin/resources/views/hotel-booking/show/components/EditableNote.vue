@@ -2,13 +2,12 @@
 
 import { computed } from 'vue'
 
-import { useBookingStore } from '~resources/views/airport-booking/show/store/booking'
+import { useBookingStore } from '~resources/views/hotel-booking/show/store/booking'
 
 import EditableTextarea from '~components/Editable/EditableTextarea.vue'
 
 const bookingStore = useBookingStore()
 
-const canEdit = computed(() => Boolean(bookingStore.availableActions?.isEditable))
 const note = computed(() => bookingStore.booking?.note || undefined)
 
 </script>
@@ -16,7 +15,7 @@ const note = computed(() => bookingStore.booking?.note || undefined)
 <template>
   <EditableTextarea
     :value="note"
-    :can-edit="canEdit"
+    :can-edit="true"
     empty-value="<Пусто>"
     @change="bookingStore.updateNote"
   />

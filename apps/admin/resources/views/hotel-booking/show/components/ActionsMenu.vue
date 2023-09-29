@@ -4,12 +4,12 @@ import { computed } from 'vue'
 
 import { z } from 'zod'
 
-import { useBookingStore } from '~resources/views/airport-booking/show/store/booking'
+import { useBookingStore } from '~resources/views/hotel-booking/show/store/booking'
 
 import { useDeleteWithConfirm } from '~lib/delete-dialog'
 import { requestInitialData } from '~lib/initial-data'
 
-const { editUrl, deleteUrl } = requestInitialData('view-initial-data-airport-booking', z.object({
+const { editUrl, deleteUrl } = requestInitialData('view-initial-data-hotel-booking', z.object({
   editUrl: z.string().nullable(),
   deleteUrl: z.string().nullable(),
 }))

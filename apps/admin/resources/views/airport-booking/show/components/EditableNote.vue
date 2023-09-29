@@ -8,7 +8,6 @@ import EditableTextarea from '~components/Editable/EditableTextarea.vue'
 
 const bookingStore = useBookingStore()
 
-const canEdit = computed(() => Boolean(bookingStore.availableActions?.isEditable))
 const note = computed(() => bookingStore.booking?.note || undefined)
 
 </script>
@@ -16,7 +15,7 @@ const note = computed(() => bookingStore.booking?.note || undefined)
 <template>
   <EditableTextarea
     :value="note"
-    :can-edit="canEdit"
+    :can-edit="true"
     empty-value="<Пусто>"
     @change="bookingStore.updateNote"
   />

@@ -32,7 +32,7 @@
     </div>
 
     <div class="content-body">
-        <div class="card card-form mt-3">
+        <div class="card card-form mt-3 pt-3">
             <div class="card-body">
                 <div class="d-flex flex-row gap-4">
                     <div class="w-100 rounded shadow-lg p-4">

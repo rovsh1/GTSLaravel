@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import { computed, onMounted, ref } from 'vue'
+import { computed, MaybeRef, onMounted, ref, unref, watch } from 'vue'
 
 import { useToggle } from '@vueuse/core'
 import { z } from 'zod'
@@ -14,6 +14,7 @@ import { getConditionLabel } from '~resources/views/booking/lib/constants'
 import { GuestFormData, RoomFormData } from '~resources/views/booking/lib/data-types'
 import { useOrderStore } from '~resources/views/booking/store/order'
 import EditTableRowButton from '~resources/views/hotel/settings/components/EditTableRowButton.vue'
+import { useEditableModal } from '~resources/views/hotel/settings/composables/editable-modal'
 import RoomModal from '~resources/views/hotel-booking/show/components/RoomModal.vue'
 import RoomPriceModal from '~resources/views/hotel-booking/show/components/RoomPriceModal.vue'
 import { useBookingStore } from '~resources/views/hotel-booking/show/store/booking'
@@ -24,8 +25,8 @@ import {
   RoomBookingPrice,
 } from '~api/booking/hotel/details'
 import { updateRoomBookingPrice } from '~api/booking/hotel/price'
-import { deleteBookingGuest, deleteBookingRoom } from '~api/booking/hotel/rooms'
-import { Guest } from '~api/booking/order/guest'
+import { addGuestToBooking, deleteBookingGuest, deleteBookingRoom } from '~api/booking/hotel/rooms'
+import { addOrderGuest, Guest, updateOrderGuest } from '~api/booking/order/guest'
 import { useCountrySearchAPI } from '~api/country'
 import { MarkupSettings } from '~api/hotel/markup-settings'
 import { HotelRate, useHotelRatesAPI } from '~api/hotel/price-rate'
@@ -42,7 +43,6 @@ import BootstrapCardTitle from '~components/Bootstrap/BootstrapCard/components/B
 import IconButton from '~components/IconButton.vue'
 
 const [isShowRoomModal, toggleRoomModal] = useToggle()
-const [isShowGuestModal, toggleGuestModal] = useToggle()
 const [isShowRoomPriceModal, toggleRoomPriceModal] = useToggle()
 
 const { bookingID, hotelID } = requestInitialData(
@@ -85,34 +85,60 @@ const getPriceRateName = (id: number): string | undefined =>
 
 const getDefaultGuestForm = () => ({ isAdult: true })
 
+const editRoomBookingId = ref<number>()
+
+const modalSettings = {
+  add: {
+    title: 'Добавление гостя',
+    handler: async (request: MaybeRef<Required<GuestFormData>>) => {
+      if (!editRoomBookingId.value) return
+      const preparedRequest = unref(request)
+      if (preparedRequest && preparedRequest.id !== undefined) {
+        const payload = { bookingID, roomBookingId: editRoomBookingId.value, guestId: preparedRequest.id }
+        await addGuestToBooking(payload)
+      } else {
+        const payload = { hotelBookingId: bookingID, hotelBookingRoomId: editRoomBookingId.value, ...preparedRequest }
+        payload.orderId = orderId.value
+        await addOrderGuest(payload)
+      }
+      await bookingStore.fetchBooking()
+      await orderStore.fetchGuests()
+    },
+  },
+  edit: {
+    title: 'Редактирование гостя',
+    handler: async (request: MaybeRef<Required<GuestFormData>>) => {
+      const preparedRequest = unref(request)
+      const payload = { guestId: preparedRequest.id, ...preparedRequest }
+      payload.orderId = orderId.value
+      await updateOrderGuest(payload)
+      await orderStore.fetchGuests()
+    },
+  },
+}
+
+const {
+  isOpened: isGuestModalOpened,
+  isLoading: isGuestModalLoading,
+  title: guestModalTitle,
+  openAdd: openAddGuestModal,
+  openEdit: openEditGuestModal,
+  editableObject: editableGuest,
+  close: closeGuestModal,
+  submit: submitGuestModal,
+} = useEditableModal<Required<GuestFormData>, Required<GuestFormData>, Partial<GuestFormData>>(modalSettings)
+
 const roomForm = ref<Partial<RoomFormData>>({})
 const guestForm = ref<Partial<GuestFormData>>(getDefaultGuestForm())
 
-const waitingSaveGuestModalData = ref<boolean>(false)
-
-const editRoomBookingId = ref<number>()
-const editGuestId = ref<number>()
-const handleAddRoomGuest = (roomBookingId: number) => {
-  editRoomBookingId.value = roomBookingId
-  editGuestId.value = undefined
-  guestForm.value = getDefaultGuestForm()
-  guestForm.value.selectedGuestFromOrder = undefined
-  toggleGuestModal(true)
-}
-
-const handleEditGuest = (roomBookingId: number, guest: Guest): void => {
-  editRoomBookingId.value = roomBookingId
-  editGuestId.value = guest.id
-  guestForm.value = {
-    id: guest.id,
-    fullName: guest.fullName,
-    countryId: guest.countryId,
-    gender: guest.gender,
-    isAdult: guest.isAdult,
-    age: guest.age,
+watch(editableGuest, (value) => {
+  if (!value) {
+    guestForm.value = getDefaultGuestForm()
+    guestForm.value.selectedGuestFromOrder = undefined
+    return
   }
-  toggleGuestModal(true)
-}
+  guestForm.value = value
+})
 
 const handleDeleteGuest = async (roomBookingId: number, guestId: number): Promise<void> => {
   const { result: isConfirmed, toggleLoading, toggleClose } = await showConfirmDialog('Удалить гостя?', 'btn-danger')
@@ -194,29 +220,9 @@ const onCloseModal = () => {
   toggleRoomModal(false)
 }
 
-const onCloseGuestModal = () => {
-  guestForm.value = getDefaultGuestForm()
-  toggleGuestModal(false)
-}
-
 const onRoomModalSubmit = async () => {
   toggleRoomModal(false)
   await fetchBooking()
-}
-
-const onModalGuestsSubmit = async (payload: any) => {
-  waitingSaveGuestModalData.value = true
-  /* if (operationType === 'create') {
-    await addOrderGuest(payload as AddOrderGuestPayload)
-  } else if (operationType === 'update') {
-    await updateOrderGuest(payload as UpdateOrderGuestPayload)
-  } else if (operationType === 'add') {
-    await addGuestToBooking(payload as BookingAddRoomGuestPayload)
-  } */
-  waitingSaveGuestModalData.value = false
-  await fetchBooking()
-  await orderStore.fetchGuests()
-  onCloseGuestModal()
 }
 
 onMounted(() => {
@@ -237,17 +243,18 @@ onMounted(() => {
   />
 
   <GuestModal
-    v-if="countries && editRoomBookingId !== undefined"
-    :opened="isShowGuestModal"
-    :is-fetching="waitingSaveGuestModalData"
-    :room-booking-id="editRoomBookingId"
-    :order-id="orderId"
-    :guest-id="editGuestId"
+    v-if="countries"
+    :title-text="guestModalTitle"
+    :opened="isGuestModalOpened"
+    :is-fetching="isGuestModalLoading"
     :form-data="guestForm"
     :order-guests="orderGuests"
     :countries="countries"
-    @close="onCloseGuestModal"
-    @submit="onModalGuestsSubmit"
+    @close="() => {
+      editRoomBookingId = undefined
+      closeGuestModal()
+    }"
+    @submit="submitGuestModal"
     @clear="guestForm = getDefaultGuestForm()"
   />
 
@@ -264,13 +271,15 @@ onMounted(() => {
 
   <div class="mt-3" />
   <BootstrapCard v-for="room in bookingDetails?.roomBookings" :key="room.id">
-    <div class="d-flex">
+    <div class="d-flex align-items-center">
       <BootstrapCardTitle class="mr-4" :title="room.roomInfo.name" />
-      <EditTableRowButton
-        v-if="isEditableStatus"
-        @edit="handleEditRoom(room.id, room)"
-        @delete="handleDeleteRoom(room.id)"
-      />
+      <div class="pt-card-title">
+        <EditTableRowButton
+          v-if="isEditableStatus"
+          @edit="handleEditRoom(room.id, room)"
+          @delete="handleDeleteRoom(room.id)"
+        />
+      </div>
     </div>
     <div class="d-flex flex-row gap-4">
       <InfoBlock>
@@ -346,7 +355,14 @@ onMounted(() => {
         <template #header>
           <div class="d-flex gap-1">
             <InfoBlockTitle title="Список гостей" />
-            <IconButton v-if="isEditableStatus" icon="add" @click="handleAddRoomGuest(room.id)" />
+            <IconButton
+              v-if="isEditableStatus"
+              icon="add"
+              @click="() => {
+                editRoomBookingId = room.id
+                openAddGuestModal()
+              }"
+            />
           </div>
         </template>
 
@@ -356,7 +372,10 @@ onMounted(() => {
           :guest-ids="room.guestIds"
           :order-guests="orderGuests"
           :countries="countries"
-          @edit="(guest) => handleEditGuest(room.id, guest)"
+          @edit="(guest) => {
+            editRoomBookingId = room.id
+            openEditGuestModal(guest.id, guest)
+          }"
           @delete="(guest) => handleDeleteGuest(room.id, guest.id)"
         />
       </InfoBlock>
@@ -367,3 +386,9 @@ onMounted(() => {
     <BootstrapButton v-if="isEditableStatus" label="Добавить номер" @click="handleAddRoom" />
   </div>
 </template>
+
+<style lang="scss" scope>
+.pt-card-title {
+  padding-top: 13px;
+}
+</style>
