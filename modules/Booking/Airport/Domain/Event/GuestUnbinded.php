@@ -1,11 +1,10 @@
 <?php
 
-namespace Module\Booking\HotelBooking\Domain\Event;
+namespace Module\Booking\Airport\Domain\Event;
 
 use Module\Booking\Common\Domain\Event\BookingEventInterface;
 use Module\Booking\Common\Domain\ValueObject\BookingId;
 use Module\Booking\Common\Domain\ValueObject\OrderId;
-use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBookingId;
 use Module\Booking\Order\Domain\ValueObject\GuestId;
 
 class GuestUnbinded implements BookingEventInterface, PriceBecomeDeprecatedEventInterface
@@ -13,7 +12,6 @@ class GuestUnbinded implements BookingEventInterface, PriceBecomeDeprecatedEvent
     public function __construct(
         public readonly BookingId $bookingId,
         public readonly OrderId $orderId,
-        public readonly RoomBookingId $roomBookingId,
         public readonly GuestId $guestId,
     ) {
     }

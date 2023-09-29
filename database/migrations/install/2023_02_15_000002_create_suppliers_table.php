@@ -11,6 +11,7 @@ return new class extends Migration {
         Schema::create('suppliers', function (Blueprint $table) {
             $table->integer('id')->unsigned()->autoIncrement();
             $table->string('name');
+            $table->unsignedSmallInteger('currency_id');
             $table->timestamps();
         });
 

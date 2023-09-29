@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Supplier\Infrastructure\Supplier\Repository;
 
+use Module\Shared\Enum\CurrencyEnum;
 use Module\Supplier\Domain\Supplier\Repository\SupplierRepositoryInterface;
 use Module\Supplier\Domain\Supplier\Supplier;
 use Module\Supplier\Domain\Supplier\ValueObject\Requisites;
@@ -29,6 +30,7 @@ class SupplierRepository implements SupplierRepositoryInterface
         return new Supplier(
             id: new SupplierId($supplier->id),
             name: $supplier->name,
+            currency: CurrencyEnum::fromId($supplier->currency_id),
             requisites: $requisites
                 ? new Requisites(
                     inn: $requisites->inn,

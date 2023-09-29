@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Airport\Application\UseCase\Admin\Guest;
 
+use Module\Booking\Airport\Domain\Event\GuestUnbinded;
 use Module\Booking\Airport\Domain\Repository\BookingGuestRepositoryInterface;
 use Module\Booking\Airport\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\Order\Domain\ValueObject\GuestId;
@@ -19,13 +20,20 @@ class Unbind implements UseCaseInterface
         private readonly DomainEventDispatcherInterface $eventDispatcher
     ) {}
 
-    public function execute(int $bookingId, int $guestId): void {
+    public function execute(int $bookingId, int $guestId): void
+    {
         $booking = $this->bookingRepository->find($bookingId);
         if ($booking === null) {
             throw new EntityNotFoundException('Booking not found');
         }
         $newGuestId = new GuestId($guestId);
         $this->bookingGuestRepository->unbind($booking->id(), $newGuestId);
-        //@todo кинуть ивент
+        $this->eventDispatcher->dispatch(
+            new GuestUnbinded(
+                $booking->id(),
+                $booking->orderId(),
+                $newGuestId,
+            )
+        );
     }
 }

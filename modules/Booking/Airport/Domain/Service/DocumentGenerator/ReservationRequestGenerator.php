@@ -68,8 +68,6 @@ class ReservationRequestGenerator extends AbstractRequestGenerator
             'reservNumber' => $booking->id()->value(),
             'reservCreatedAt' => $booking->createdAt()->format('d.m.Y H:i'),
             'reservStatus' => $this->statusStorage->get($booking->status())->name,
-            'city' => '{city}',
-            'country' => '{country}',
             'managerName' => $administrator?->name ?? $administrator?->presentation,//@todo надо ли?
             'managerPhone' => $administrator?->phone,
             'managerEmail' => $administrator?->email,

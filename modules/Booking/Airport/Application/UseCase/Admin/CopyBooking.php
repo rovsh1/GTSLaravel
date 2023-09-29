@@ -30,6 +30,8 @@ class CopyBooking implements UseCaseInterface
             note: $booking->note(),
             serviceId: $booking->serviceInfo()->id(),
             airportId: $booking->airportInfo()->id(),
+            additionalInfo: $booking->additionalInfo(),
+            cancelConditions: $booking->cancelConditions(),
         );
 
         foreach ($booking->guestIds() as $guestId) {

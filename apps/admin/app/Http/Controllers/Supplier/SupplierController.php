@@ -29,6 +29,7 @@ class SupplierController extends AbstractPrototypeController
             ->id('id', 'ID')
             ->text('name', 'Наименование')
             ->custom('cities', 'Города', fn($v, $o) => $o->cities()->get()->map(fn(City $city) => $city->name)->join(', '))
+            ->currency('currency_name', 'Валюта')
             ->data($model);
     }
 
@@ -36,6 +37,7 @@ class SupplierController extends AbstractPrototypeController
     {
         return Form::name('data')
             ->text('name', ['label' => 'Наименование', 'required' => true])
+            ->currency('currency_id', ['label' => 'Валюта', 'required' => true, 'emptyItem' => ''])
             ->select('cities', [
                 'label' => 'Города',
                 'multiple' => true,

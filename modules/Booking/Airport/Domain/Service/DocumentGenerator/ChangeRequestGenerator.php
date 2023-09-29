@@ -71,8 +71,6 @@ class ChangeRequestGenerator extends AbstractRequestGenerator
             'reservUpdatedAt' => now()->format('d.m.Y H:i'),
             'reservStatus' => $this->statusStorage->get($booking->status())->name,
             'reservationChanges' => $reservationChanges,
-            'city' => '{city}',
-            'country' => '{country}',
             'managerName' => $administrator?->name ?? $administrator?->presentation,//@todo надо ли?
             'managerPhone' => $administrator?->phone,
             'managerEmail' => $administrator?->email,

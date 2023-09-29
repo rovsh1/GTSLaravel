@@ -3,7 +3,6 @@
 namespace Module\Booking\HotelBooking\Domain\Event;
 
 use Module\Booking\Common\Domain\Event\BookingEventInterface;
-use Module\Booking\Common\Domain\Event\Contracts\PriceBecomeDeprecatedEventInterface;
 use Module\Booking\Common\Domain\ValueObject\BookingId;
 use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBooking\RoomBookingId;

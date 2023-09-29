@@ -90,7 +90,7 @@
         <td class="text-align-right">{{$airportName}}</td>
     </tr>
     <tr>
-        <td>{{$city}}, {{$country}}</td>
+        <td>{{$cityAndCountry}}</td>
         <td class="text-align-right">{{$airportDirector}}</td>
     </tr>
     <tr>

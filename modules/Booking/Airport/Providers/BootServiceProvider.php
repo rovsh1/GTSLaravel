@@ -10,6 +10,8 @@ class BootServiceProvider extends ServiceProvider
 {
     public function register()
     {
+        $this->app->register(EventServiceProvider::class);
+
         $this->app->singleton(
             Domain\Repository\BookingRepositoryInterface::class,
             Infrastructure\Repository\BookingRepository::class

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Module\Supplier\Application\Supplier\UseCase;
+namespace Module\Supplier\Application\UseCase;
 
-use Module\Supplier\Application\Supplier\Response\SupplierDto;
+use Module\Supplier\Application\Response\SupplierDto;
 use Module\Supplier\Domain\Supplier\Repository\SupplierRepositoryInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 

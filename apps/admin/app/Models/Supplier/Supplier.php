@@ -20,6 +20,7 @@ class Supplier extends Model
 
     protected $fillable = [
         'name',
+        'currency_id',
 
         'cities',
     ];
@@ -35,7 +36,10 @@ class Supplier extends Model
             }
         });
         static::addGlobalScope('default', function (Builder $builder) {
-            $builder->orderBy('name');
+            $builder->orderBy('name')
+                ->addSelect('suppliers.*')
+                ->leftJoin('r_currencies', 'r_currencies.id', '=', 'suppliers.currency_id')
+                ->joinTranslatable('r_currencies', 'name as currency_name');
         });
     }
 
