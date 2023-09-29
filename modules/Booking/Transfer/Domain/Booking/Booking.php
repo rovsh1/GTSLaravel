@@ -13,6 +13,7 @@ use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
 use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\Transfer\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Booking\Transfer\Domain\Booking\ValueObject\TransportInfo;
+use Module\Shared\Domain\ValueObject\Date;
 use Module\Shared\Domain\ValueObject\Id;
 
 class Booking extends AbstractBooking
@@ -26,7 +27,7 @@ class Booking extends AbstractBooking
         BookingPrice $price,
         private readonly ServiceInfo $serviceInfo,
         private readonly TransportInfo $transportInfo,
-        private readonly CarbonImmutable $date,
+        private readonly Date $date,
         private ?string $note
     ) {
         parent::__construct($id, $orderId, $status, $createdAt, $creatorId, $price);
@@ -42,7 +43,7 @@ class Booking extends AbstractBooking
         return $this->transportInfo;
     }
 
-    public function date(): CarbonImmutable
+    public function date(): Date
     {
         return $this->date;
     }
