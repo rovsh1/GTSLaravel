@@ -16,6 +16,7 @@ use App\Admin\Models\Client\Client;
 use App\Admin\Models\Reference\Currency;
 use App\Admin\Models\Supplier\AirportService;
 use App\Admin\Repositories\BookingAdministratorRepository;
+use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\Booking\Airport\PriceAdapter;
 use App\Admin\Support\Facades\Booking\AirportAdapter;
 use App\Admin\Support\Facades\Booking\HotelAdapter;
@@ -161,7 +162,8 @@ class BookingController extends Controller
                 'model' => $booking,
                 'form' => $form,
                 'cancelUrl' => $this->prototype->route('show', $id),
-//                'deleteUrl' => $this->isAllowed('delete') ? $this->prototype->route('destroy', $id) : null
+                'editUrl' => $this->isAllowed('update') ? $this->prototype->route('edit', $id) : null,
+                'deleteUrl' => $this->isAllowed('delete') ? $this->prototype->route('destroy', $id) : null,
             ]);
     }
 
@@ -410,6 +412,11 @@ class BookingController extends Controller
         }
 
         return "<div class='d-flex flex-row gap-2'>{$buttons}</div>";
+    }
+
+    protected function isAllowed(string $permission): bool
+    {
+        return $this->prototype->hasPermission($permission) && Acl::isAllowed($this->prototype->key, $permission);
     }
 
     protected function getPrototypeKey(): string
