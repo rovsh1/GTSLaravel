@@ -9,10 +9,10 @@ use Module\Booking\Airport\Application\Dto\Details\AirportInfoDto;
 use Module\Booking\Airport\Application\Dto\Details\ServiceInfoDto;
 use Module\Booking\Airport\Domain\Entity\Booking;
 use Module\Booking\Common\Application\Factory\AbstractBookingDtoFactory;
+use Module\Booking\Common\Application\Factory\BookingPriceDtoFactory;
 use Module\Booking\Common\Application\Service\StatusStorage;
 use Module\Booking\Common\Domain\Entity\BookingInterface;
 use Module\Booking\HotelBooking\Application\Dto\Details\CancelConditionsDto;
-use Module\Booking\HotelBooking\Application\Factory\BookingPriceDtoFactory;
 use Module\Booking\Order\Domain\ValueObject\GuestId;
 
 class BookingDtoFactory extends AbstractBookingDtoFactory

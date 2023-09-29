@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\HotelBooking\Application\Factory;
 
 use Module\Booking\Common\Application\Factory\AbstractBookingDtoFactory;
+use Module\Booking\Common\Application\Factory\BookingPriceDtoFactory;
 use Module\Booking\Common\Application\Service\StatusStorage;
 use Module\Booking\Common\Domain\Entity\BookingInterface;
 use Module\Booking\HotelBooking\Application\Dto\BookingDto;

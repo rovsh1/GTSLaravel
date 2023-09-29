@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\HotelBooking\Application\Dto;
+namespace Module\Booking\Common\Application\Response;
 
 use Module\Shared\Application\Dto\CurrencyDto;
 use Sdk\Module\Foundation\Support\Dto\Dto;
