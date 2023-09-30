@@ -13,6 +13,7 @@ use App\Admin\Http\Requests\Booking\Hotel\UpdatePriceRequest;
 use App\Admin\Http\Requests\Booking\Hotel\UpdateStatusRequest;
 use App\Admin\Models\Administrator\Administrator;
 use App\Admin\Models\Client\Client;
+use App\Admin\Models\Reference\Airport;
 use App\Admin\Models\Reference\Currency;
 use App\Admin\Models\Supplier\AirportService;
 use App\Admin\Repositories\BookingAdministratorRepository;
@@ -146,7 +147,7 @@ class BookingController extends Controller
     {
         $breadcrumbs = Breadcrumb::prototype($this->prototype);
 
-        $booking = HotelAdapter::getBooking($id);
+        $booking = AirportAdapter::getBooking($id);
 
         $title = "Бронь №{$id}";
         $breadcrumbs->addUrl($this->prototype->route('show', $id), $title);
@@ -392,6 +393,28 @@ class BookingController extends Controller
             ->enum('source', ['label' => 'Источник', 'enum' => SourceEnum::class, 'emptyItem' => ''])
             ->dateRange('date_period', ['label' => 'Дата прилета/вылета'])
             ->dateRange('created_period', ['label' => 'Дата создания']);
+    }
+
+    private function prepareFormData(object $booking): array
+    {
+        $airport = Airport::find($booking->airportInfo->id);
+        $order = OrderAdapter::findOrder($booking->orderId);
+        $manager = $this->administratorRepository->get($booking->id);
+
+        return [
+            'manager_id' => $manager->id,
+            'order_id' => $booking->orderId,
+            'currency_id' => $order->currency->id,
+            'airport_id' => $airport->id,
+            'city_id' => $airport->city_id,
+            'service_id' => $booking->serviceInfo->id,
+            'flight_number' => $booking->flightNumber,
+            'client_id' => $order->clientId,
+            'legal_id' => $order->legalId,
+            'date' => $booking->date->format('Y-m-d'),
+            'time' => $booking->date->format('H:i'),
+            'note' => $booking->note,
+        ];
     }
 
     private function getActionButtons(mixed $tableRow): string
