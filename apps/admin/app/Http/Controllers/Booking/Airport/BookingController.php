@@ -31,6 +31,7 @@ use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Grid\SearchForm;
 use App\Admin\Support\View\Layout as LayoutContract;
+use App\Core\Support\Http\Responses\AjaxRedirectResponse;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use App\Core\Support\Http\Responses\AjaxSuccessResponse;
 use Carbon\Carbon;
@@ -230,6 +231,13 @@ class BookingController extends Controller
         return response()->json(
             AirportAdapter::getStatusHistory($id)
         );
+    }
+
+    public function destroy(int $id): AjaxResponseInterface
+    {
+        AirportAdapter::deleteBooking($id);
+
+        return new AjaxRedirectResponse($this->prototype->route());
     }
 
     public function bulkDelete(BulkDeleteRequest $request): AjaxResponseInterface

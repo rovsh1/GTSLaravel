@@ -24,6 +24,7 @@ use Module\Booking\Common\Domain\ValueObject\CreatorId;
 use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\Common\Infrastructure\Repository\AbstractBookingRepository as BaseRepository;
 use Module\Booking\Order\Domain\ValueObject\GuestIdsCollection;
+use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
 class BookingRepository extends BaseRepository implements BookingRepositoryInterface
 {
@@ -43,6 +44,16 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         return $this->buildEntityFromModel($booking, $detailsModel);
     }
 
+    public function findOrFail(BookingId $id): Entity
+    {
+        $entity = $this->find($id->value());
+        if ($entity === null) {
+            throw new EntityNotFoundException('Booking not found');
+        }
+
+        return $entity;
+    }
+
     public function get(): Collection
     {
         return $this->getModel()::query()->withDetails()->get();
@@ -60,7 +71,17 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         ?string $note = null
     ): Entity {
         return \DB::transaction(
-            function () use ($orderId, $creatorId, $serviceId, $airportId, $date, $price, $note, $additionalInfo, $cancelConditions) {
+            function () use (
+                $orderId,
+                $creatorId,
+                $serviceId,
+                $airportId,
+                $date,
+                $price,
+                $note,
+                $additionalInfo,
+                $cancelConditions
+            ) {
                 $bookingModel = $this->createBase($orderId, $price, $creatorId->value());
 
                 $airport = Airport::find($airportId);
@@ -117,6 +138,14 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
 
             return $base && $details;
         });
+    }
+
+    public function delete(Entity $booking): void
+    {
+        $this->getModel()::query()->whereId($booking->id()->value())->update([
+            'status' => $booking->status(),
+            'deleted_at' => now()
+        ]);
     }
 
     public function query(): Builder

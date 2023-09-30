@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Module\Booking\Airport\Domain\Entity\Booking;
 use Module\Booking\Airport\Domain\ValueObject\Details\AdditionalInfo;
 use Module\Booking\Common\Domain\Repository\BookingRepositoryInterface as Base;
+use Module\Booking\Common\Domain\ValueObject\BookingId;
 use Module\Booking\Common\Domain\ValueObject\BookingPrice;
 use Module\Booking\Common\Domain\ValueObject\CancelConditions;
 use Module\Booking\Common\Domain\ValueObject\CreatorId;
@@ -16,6 +17,8 @@ use Module\Booking\Common\Domain\ValueObject\OrderId;
 interface BookingRepositoryInterface extends Base
 {
     public function find(int $id): ?Booking;
+
+    public function findOrFail(BookingId $id): Booking;
 
     public function get(): Collection;
 
@@ -32,6 +35,8 @@ interface BookingRepositoryInterface extends Base
     ): Booking;
 
     public function store(Booking $booking): bool;
+
+    public function delete(Booking $booking): void;
 
     public function query(): Builder;
 }
