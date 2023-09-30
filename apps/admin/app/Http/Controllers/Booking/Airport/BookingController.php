@@ -218,10 +218,10 @@ class BookingController extends Controller
     {
         return response()->json(
             AirportAdapter::updateStatus(
-                $id,
-                $request->getStatus(),
-                $request->getNotConfirmedReason(),
-                $request->getCancelFeeAmount()
+                id: $id,
+                status: $request->getStatus(),
+                notConfirmedReason: $request->getNotConfirmedReason() ?? '',
+                cancelFeeAmount: $request->getCancelFeeAmount()
             )
         );
     }
