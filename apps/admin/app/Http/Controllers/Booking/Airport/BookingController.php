@@ -187,10 +187,8 @@ class BookingController extends Controller
                 'currencies' => Currency::get(),
                 'manager' => $this->administratorRepository->get($id),
                 'creator' => Administrator::find($booking->creatorId),
-//                'editUrl' => $this->isAllowed('update') ? $this->route('edit', $id) : null,
-//                'deleteUrl' => $this->isAllowed('delete') ? $this->route('destroy', $id) : null,
-                'editUrl' => null,
-                'deleteUrl' => null,
+                'editUrl' => $this->isAllowed('update') ? $this->prototype->route('edit', $id) : null,
+                'deleteUrl' => $this->isAllowed('delete') ? $this->prototype->route('destroy', $id) : null,
             ]);
     }
 
