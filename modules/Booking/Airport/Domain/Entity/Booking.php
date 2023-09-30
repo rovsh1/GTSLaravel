@@ -29,8 +29,7 @@ class Booking extends AbstractBooking
         BookingPrice $price,
         private readonly ServiceInfo $serviceInfo,
         private readonly AirportInfo $airportInfo,
-        //@todo заменить на Date
-        private readonly CarbonImmutable $date,
+        private CarbonImmutable $date,
         private ?CancelConditions $cancelConditions,
         private AdditionalInfo $additionalInfo,
         private readonly GuestIdsCollection $guestIds,
@@ -52,6 +51,11 @@ class Booking extends AbstractBooking
     public function date(): CarbonImmutable
     {
         return $this->date;
+    }
+
+    public function setDate(CarbonImmutable $date): void
+    {
+        $this->date = $date;
     }
 
     public function note(): ?string

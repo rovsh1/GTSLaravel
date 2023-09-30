@@ -24,10 +24,9 @@ class UpdateBooking implements UseCaseInterface
         /** @var Booking $booking */
         $booking = $this->repository->find($request->id);
         if (!$booking->date()->eq($request->date)) {
-            //@todo должна ли быть такая возможность?
-//            $booking->setDate();
-//            $cancelConditions = $this->cancelConditionsFactory->build($request->date);
-//            $booking->setCancelConditions($cancelConditions);
+            $booking->setDate($request->date->toImmutable());
+            $cancelConditions = $this->cancelConditionsFactory->build($request->date);
+            $booking->setCancelConditions($cancelConditions);
         }
 
         if ($booking->note() !== $request->note) {

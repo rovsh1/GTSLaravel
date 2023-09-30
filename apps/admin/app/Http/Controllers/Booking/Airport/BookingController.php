@@ -182,7 +182,7 @@ class BookingController extends Controller
         try {
             AirportAdapter::updateBooking(
                 id: $id,
-                date: new CarbonImmutable($data['date']),
+                date: new Carbon($data['date'] . ' ' . $data['time']),
                 note: $data['note'] ?? null
             );
             $this->administratorRepository->update($id, $data['manager_id'] ?? request()->user()->id);
