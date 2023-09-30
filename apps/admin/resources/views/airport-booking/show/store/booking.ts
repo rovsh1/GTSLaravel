@@ -34,17 +34,11 @@ export const useBookingStore = defineStore('booking', () => {
   const isStatusUpdateFetching = ref(false)
   const bookingManagerId = ref(manager.id)
 
-  const updateStatusPayload = reactive<UpdateBookingStatusPayload>({ bookingID } as UpdateBookingStatusPayload)
+  const updateStatusPayload = reactive<UpdateBookingStatusPayload>({ bookingID, notConfirmedReason: '' } as UpdateBookingStatusPayload)
   const changeStatus = async (status: number) => {
     isStatusUpdateFetching.value = true
     updateStatusPayload.status = status
     const { data: updateStatusResponse } = await updateBookingStatus(updateStatusPayload)
-    if (updateStatusResponse.value?.isNotConfirmedReasonRequired) {
-      updateStatusPayload.notConfirmedReason = ''
-      await changeStatus(status)
-      updateStatusPayload.notConfirmedReason = undefined
-      return
-    }
     if (updateStatusResponse.value?.isCancelFeeAmountRequired) {
       const { result: isConfirmed, cancelFeeAmount, toggleClose } = await showCancelFeeDialog()
       if (isConfirmed) {
