@@ -7,6 +7,7 @@ namespace App\Admin\Support\Adapters\Booking;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Module\Booking\Airport\Application\Request\CreateBookingDto;
+use Module\Booking\Airport\Application\Request\UpdateBookingDto;
 use Module\Booking\Airport\Application\UseCase\Admin\BulkDeleteBookings;
 use Module\Booking\Airport\Application\UseCase\Admin\CopyBooking;
 use Module\Booking\Airport\Application\UseCase\Admin\CreateBooking;
@@ -18,6 +19,7 @@ use Module\Booking\Airport\Application\UseCase\Admin\GetStatuses;
 use Module\Booking\Airport\Application\UseCase\Admin\GetStatusHistory;
 use Module\Booking\Airport\Application\UseCase\Admin\Guest\Bind;
 use Module\Booking\Airport\Application\UseCase\Admin\Guest\Unbind;
+use Module\Booking\Airport\Application\UseCase\Admin\UpdateBooking;
 use Module\Booking\Airport\Application\UseCase\Admin\UpdateBookingStatus;
 use Module\Booking\Airport\Application\UseCase\Admin\UpdateNote;
 use Module\Booking\Airport\Application\UseCase\GetBookingQuery;
@@ -87,6 +89,17 @@ class AirportAdapter
     public function getStatuses(): array
     {
         return app(GetStatuses::class)->execute();
+    }
+
+    public function updateBooking(int $id, CarbonInterface $date, string|null $note = null): void
+    {
+        app(UpdateBooking::class)->execute(
+            new UpdateBookingDto(
+                id: $id,
+                date: $date,
+                note: $note
+            )
+        );
     }
 
     public function updateStatus(

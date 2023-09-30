@@ -35,11 +35,13 @@ use App\Core\Support\Http\Responses\AjaxRedirectResponse;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use App\Core\Support\Http\Responses\AjaxSuccessResponse;
 use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Module\Booking\Common\Domain\Service\RequestRules;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
+use Module\Shared\Application\Exception\ApplicationException;
 use Module\Shared\Enum\SourceEnum;
 
 class BookingController extends Controller
@@ -166,6 +168,29 @@ class BookingController extends Controller
                 'cancelUrl' => $this->prototype->route('show', $id),
                 'deleteUrl' => $this->isAllowed('delete') ? $this->prototype->route('destroy', $id) : null,
             ]);
+    }
+
+    public function update(int $id): RedirectResponse
+    {
+        $form = $this->formFactory(true)
+            ->method('put')
+            ->failUrl($this->prototype->route('edit', $id));
+
+        $form->trySubmit();
+
+        $data = $form->getData();
+        try {
+            AirportAdapter::updateBooking(
+                id: $id,
+                date: new CarbonImmutable($data['date']),
+                note: $data['note'] ?? null
+            );
+            $this->administratorRepository->update($id, $data['manager_id'] ?? request()->user()->id);
+        } catch (ApplicationException $e) {
+            $form->throwException($e);
+        }
+
+        return redirect($this->prototype->route('show', $id));
     }
 
     public function show(int $id): LayoutContract
