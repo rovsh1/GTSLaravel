@@ -9,9 +9,11 @@ use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
 use Module\Booking\Common\Infrastructure\Models\Booking as BaseModel;
+use Sdk\Module\Database\Eloquent\HasQuicksearch;
 
 /**
  * Module\Booking\Airport\Infrastructure\Models\Booking
@@ -21,6 +23,8 @@ use Module\Booking\Common\Infrastructure\Models\Booking as BaseModel;
  */
 class Booking extends BaseModel
 {
+    use HasQuicksearch, SoftDeletes;
+
     protected $attributes = [
         'type' => BookingTypeEnum::AIRPORT,
     ];
