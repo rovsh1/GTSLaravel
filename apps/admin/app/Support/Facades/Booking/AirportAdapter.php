@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static int copyBooking(int $id)
  * @method static void deleteBooking(int $id)
  * @method static void bulkDeleteBookings(int[] $id)
- * @method static void updateBooking(int $id, CarbonInterface $date, string|null $note = null)
+ * @method static void updateBooking(int $id, CarbonInterface $date, string $flightNumber, string|null $note = null)
  **/
 class AirportAdapter extends Facade
 {

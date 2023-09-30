@@ -63,14 +63,19 @@ class Booking extends AbstractBooking
         return $this->note;
     }
 
+    public function setNote(string|null $note): void
+    {
+        $this->note = $note;
+    }
+
     public function additionalInfo(): AdditionalInfo
     {
         return $this->additionalInfo;
     }
 
-    public function setNote(string|null $note): void
+    public function setAdditionalInfo(AdditionalInfo $additionalInfo): void
     {
-        $this->note = $note;
+        $this->additionalInfo = $additionalInfo;
     }
 
     public function type(): BookingTypeEnum

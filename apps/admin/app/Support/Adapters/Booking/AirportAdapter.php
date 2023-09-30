@@ -91,13 +91,14 @@ class AirportAdapter
         return app(GetStatuses::class)->execute();
     }
 
-    public function updateBooking(int $id, CarbonInterface $date, string|null $note = null): void
+    public function updateBooking(int $id, CarbonInterface $date, string $flightNumber, string|null $note = null): void
     {
         app(UpdateBooking::class)->execute(
             new UpdateBookingDto(
                 id: $id,
                 date: $date,
-                note: $note
+                note: $note,
+                flightNumber: $flightNumber
             )
         );
     }

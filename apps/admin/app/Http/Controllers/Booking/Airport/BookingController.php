@@ -183,7 +183,8 @@ class BookingController extends Controller
             AirportAdapter::updateBooking(
                 id: $id,
                 date: new Carbon($data['date'] . ' ' . $data['time']),
-                note: $data['note'] ?? null
+                note: $data['note'] ?? null,
+                flightNumber: $data['flight_number']
             );
             $this->administratorRepository->update($id, $data['manager_id'] ?? request()->user()->id);
         } catch (ApplicationException $e) {

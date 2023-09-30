@@ -11,6 +11,7 @@ class UpdateBookingDto
     public function __construct(
         public readonly int $id,
         public readonly CarbonInterface $date,
+        public readonly string $flightNumber,
         public readonly ?string $note = null
     ) {}
 }

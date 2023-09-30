@@ -8,6 +8,7 @@ use Module\Booking\Airport\Application\Factory\CancelConditionsFactory;
 use Module\Booking\Airport\Application\Request\UpdateBookingDto;
 use Module\Booking\Airport\Domain\Entity\Booking;
 use Module\Booking\Airport\Domain\Repository\BookingRepositoryInterface;
+use Module\Booking\Airport\Domain\ValueObject\Details\AdditionalInfo;
 use Module\Booking\Common\Domain\Service\BookingUpdater;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
@@ -27,6 +28,12 @@ class UpdateBooking implements UseCaseInterface
             $booking->setDate($request->date->toImmutable());
             $cancelConditions = $this->cancelConditionsFactory->build($request->date);
             $booking->setCancelConditions($cancelConditions);
+        }
+
+        if ($booking->additionalInfo()->flightNumber() !== $request->flightNumber) {
+            $booking->setAdditionalInfo(
+                new AdditionalInfo($request->flightNumber)
+            );
         }
 
         if ($booking->note() !== $request->note) {
