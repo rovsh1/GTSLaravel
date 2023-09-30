@@ -166,7 +166,7 @@ class BookingController extends Controller
                 'model' => $booking,
                 'form' => $form,
                 'cancelUrl' => $this->prototype->route('show', $id),
-                'deleteUrl' => $this->isAllowed('delete') ? $this->prototype->route('destroy', $id) : null,
+//                'deleteUrl' => $this->isAllowed('delete') ? $this->prototype->route('destroy', $id) : null,
             ]);
     }
 
