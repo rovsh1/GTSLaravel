@@ -101,7 +101,7 @@ class BookingController extends Controller
             ->action(route('airport-booking.store'));
 
         return Layout::title('Новая бронь')
-            ->view('airport-booking.form.form', [
+            ->view($this->prototype->view('form'), [
                 'form' => $form,
                 'cancelUrl' => route('airport-booking.index')
             ]);
@@ -159,11 +159,10 @@ class BookingController extends Controller
             ->data($this->prepareFormData($booking));
 
         return Layout::title($title)
-            ->view($this->prototype->view('edit') ?? $this->prototype->view('form') ?? 'default.form.form', [
+            ->view($this->prototype->view('form'), [
                 'model' => $booking,
                 'form' => $form,
                 'cancelUrl' => $this->prototype->route('show', $id),
-                'editUrl' => $this->isAllowed('update') ? $this->prototype->route('edit', $id) : null,
                 'deleteUrl' => $this->isAllowed('delete') ? $this->prototype->route('destroy', $id) : null,
             ]);
     }
