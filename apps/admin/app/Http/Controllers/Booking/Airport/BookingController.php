@@ -35,7 +35,6 @@ use App\Core\Support\Http\Responses\AjaxRedirectResponse;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use App\Core\Support\Http\Responses\AjaxSuccessResponse;
 use Carbon\Carbon;
-use Carbon\CarbonImmutable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
@@ -85,7 +84,7 @@ class BookingController extends Controller
         $grid->data($data);
 
         return Layout::title('Брони услуг аэропорта')
-            ->view('default.grid.grid', [
+            ->view($this->prototype->view('index'), [
                 'quicksearch' => $grid->getQuicksearch(),
                 'searchForm' => $grid->getSearchForm(),
                 'grid' => $grid,
@@ -206,7 +205,7 @@ class BookingController extends Controller
             ->add($title);
 
         return Layout::title($title)
-            ->view('airport-booking.show.show', [
+            ->view($this->prototype->view('show'), [
                 'bookingId' => $id,
                 'model' => $booking,
                 'client' => $client,
