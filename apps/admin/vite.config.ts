@@ -68,6 +68,7 @@ export default defineConfig(({ command }) => ({
         'resources/views/airport-booking/form/form.ts',
         'resources/views/airport-booking/show/show.ts',
         'resources/views/airport-booking/show/show.scss',
+        'resources/views/airport-booking/main/main.ts',
         'resources/views/transfer-booking/form/form.ts',
         'resources/views/transfer-booking/show/show.ts',
         'resources/views/transfer-booking/show/show.scss',
