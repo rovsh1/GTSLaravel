@@ -1,9 +1,9 @@
 import axios from '~resources/js/app/api'
 import { getHumanRequestType } from '~resources/views/booking/lib/constants'
 
-import { downloadDocument } from '~api/booking/hotel/document'
-import { BookingRequest } from '~api/booking/hotel/request'
-import { BookingAvailableActionsResponse } from '~api/booking/hotel/status'
+import { downloadDocument } from '~api/booking/airport/document'
+import { BookingRequest } from '~api/booking/airport/request'
+import { BookingAvailableActionsResponse } from '~api/booking/airport/status'
 
 import { showConfirmDialog } from '~lib/confirm-dialog'
 import { formatDateTime } from '~lib/date'
@@ -38,7 +38,7 @@ $(() => {
     const { result: isConfirmed, toggleLoading } = await showConfirmDialog('Удалить запись?', 'btn-danger')
     if (isConfirmed) {
       toggleLoading()
-      await axios.delete('/hotel-booking/bulk', { data: { ids: selectedBookings } })
+      await axios.delete('/airport-booking/bulk', { data: { ids: selectedBookings } })
       location.reload()
     }
   })
@@ -67,7 +67,7 @@ $(() => {
     e.preventDefault()
     const bookingId = $(e.currentTarget).parent().parent().parent()
       .data('id')
-    const { data: requests } = await axios.get<BookingRequest[]>(`/hotel-booking/${bookingId}/request/list`)
+    const { data: requests } = await axios.get<BookingRequest[]>(`/airport-booking/${bookingId}/request/list`)
     const popoverContentDownload: Array<PopoverItem> = []
     const groupedRequests: { [type: string]: BookingRequest[] } = requests.reduce((result, request) => {
       const resultItem = result
@@ -113,7 +113,7 @@ $(() => {
     e.preventDefault()
     const bookingId = $(e.currentTarget).parent().parent().parent()
       .data('id')
-    const { data: availableActions } = await axios.get<BookingAvailableActionsResponse>(`/hotel-booking/${bookingId}/actions/available`)
+    const { data: availableActions } = await axios.get<BookingAvailableActionsResponse>(`/airport-booking/${bookingId}/actions/available`)
     const popoverContentSend: Array<PopoverItem> = []
     let requestText
     if (availableActions.canSendBookingRequest) {
@@ -130,7 +130,7 @@ $(() => {
         text: requestText,
         buttonText: 'Отправить',
         callback: async () => {
-          await axios.post(`/hotel-booking/${bookingId}/request`)
+          await axios.post(`/airport-booking/${bookingId}/request`)
           location.reload()
         },
       }
