@@ -12,6 +12,8 @@ return Factory::key('airport-booking')
         "create" => "Новая бронь"
     ])
     ->views([
+        'index' => 'airport-booking.main.main',
+        'show' => 'airport-booking.show.show',
         'form' => 'airport-booking.form.form'
     ])
     ->priority(208);
