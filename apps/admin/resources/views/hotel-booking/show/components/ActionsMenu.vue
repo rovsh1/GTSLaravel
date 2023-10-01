@@ -30,7 +30,7 @@ const handleDelete = () => {
     <div
       v-if="canEdit"
       id="menu-actions"
-      class="btn btn-menu dropdown-toggle"
+      class="btn btn-menu"
       href="#"
       role="button"
       data-bs-toggle="dropdown"

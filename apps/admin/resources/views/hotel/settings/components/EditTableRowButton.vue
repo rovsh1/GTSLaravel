@@ -26,7 +26,7 @@ defineEmits<{
 
 <template>
   <div class="dropdown menu-actions-wrapper">
-    <a href="#" class="dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <a href="#" class="" role="button" data-bs-toggle="dropdown" aria-expanded="false">
       <i class="icon">more_vert</i>
     </a>
 

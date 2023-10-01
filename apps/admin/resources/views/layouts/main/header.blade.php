@@ -12,7 +12,7 @@
         <div class="header-content">
             <div class="spacer"></div>
             <div class="dropdown text-end">
-                <a href="#" class="btn-avatar dropdown-toggle" aria-label="Open user menu" data-bs-toggle="dropdown" aria-expanded="false">
+                <a href="#" class="btn-avatar" aria-label="Open user menu" data-bs-toggle="dropdown" aria-expanded="false">
                     <x-user-avatar :file="Auth::user()->avatar" alt="User avatar"/>
                 </a>
                 <ul class="dropdown-menu text-small">

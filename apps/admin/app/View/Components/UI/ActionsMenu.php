@@ -45,7 +45,7 @@ class ActionsMenu extends Component
         $elementId = $this->id ?? 'menu-actions';
         return fn($data) => <<<HTML
             <div class="dropdown menu-actions-wrapper">
-                <div class="btn btn-menu dropdown-toggle" href="#" role="button" id="{$elementId}" data-bs-toggle="dropdown" aria-expanded="false">
+                <div class="btn btn-menu" href="#" role="button" id="{$elementId}" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="icon">more_vert</i>
                 </div>
 

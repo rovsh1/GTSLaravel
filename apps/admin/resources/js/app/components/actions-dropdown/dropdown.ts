@@ -6,7 +6,7 @@ export default class Dropdown {
   constructor(options: any) {
     this.#options = options
     this.#el = $('<div class="dropdown actions-dropdown">'
-            + '<a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="true"></a>'
+            + '<a href="#" class="" data-bs-toggle="dropdown" aria-expanded="true"></a>'
             + '<ul class="dropdown-menu" data-popper-placement="bottom-end"></ul>'
             + '</div>')
   }

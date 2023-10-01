@@ -49,7 +49,9 @@
                             </tr>
                             <tr>
                                 <th>Клиент</th>
-                                <td>{{ $client->name }}</td>
+                                <td>
+                                    <a href="{{ route('client.show', $client->id) }}" target="_blank">{{ $client->name }}</a>
+                                </td>
                             </tr>
                             <tr>
                                 <th>Тип карты оплаты</th>

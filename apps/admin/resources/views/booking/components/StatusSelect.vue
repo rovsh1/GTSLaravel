@@ -27,6 +27,8 @@ const statusClass = computed<string>(() => (props.modelValue.color ? `text-bg-${
 
 const availableStatuses = computed<BookingStatusResponse[] | null>(() => unref(props.availableStatuses))
 
+const existStatuses = computed<string>(() => (availableStatuses.value && availableStatuses.value?.length > 0 ? 'dropdown-toggle' : ''))
+
 const isLoading = computed<boolean>(() => Boolean(unref(props.isLoading)))
 
 const handleChangeStatus = (value: number): void => {
@@ -42,7 +44,7 @@ const handleChangeStatus = (value: number): void => {
 <template>
   <div class="dropdown">
     <button
-      :class="`btn btn-secondary dropdown-toggle w-25 align-left border-0 ${statusClass}`"
+      :class="`btn btn-secondary ${existStatuses} w-25 align-left border-0 ${statusClass}`"
       type="button"
       :disabled="availableStatuses?.length === 0 || isLoading"
       data-bs-toggle="dropdown"
@@ -50,7 +52,7 @@ const handleChangeStatus = (value: number): void => {
       {{ label }}
       <ButtonLoadingSpinner :show="isLoading" />
     </button>
-    <ul class="dropdown-menu">
+    <ul class="dropdown-menu w-100">
       <li v-for="status in availableStatuses" :key="status.id">
         <a
           class="dropdown-item BOOKING_STATUS"
@@ -66,6 +68,16 @@ const handleChangeStatus = (value: number): void => {
 
 <style scoped lang="scss">
 .dropdown {
+  .dropdown-toggle::after {
+    position: absolute;
+    top: 50%;
+    right: 0.5em;
+    border-top: 0.33em solid;
+    border-right: 0.33em solid transparent;
+    border-left: 0.33em solid transparent;
+    transform: translateY(-50%);
+  }
+
   button {
     min-width: 12.5rem;
     font-weight: bold;
