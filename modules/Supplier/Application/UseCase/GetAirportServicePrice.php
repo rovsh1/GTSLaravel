@@ -9,7 +9,7 @@ use Module\Shared\Enum\CurrencyEnum;
 use Module\Supplier\Application\Response\PriceDto;
 use Module\Supplier\Application\Response\ServicePriceDto;
 use Module\Supplier\Domain\Supplier\Repository\SupplierRepositoryInterface;
-use Module\Supplier\Infrastructure\Supplier\Models\AirportServicePrice as Model;
+use Module\Supplier\Infrastructure\Models\AirportServicePrice as Model;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 

@@ -19,7 +19,7 @@ class BootServiceProvider extends ServiceProvider
     {
         $this->app->singleton(
             Domain\Supplier\Repository\SupplierRepositoryInterface::class,
-            Infrastructure\Supplier\Repository\SupplierRepository::class
+            Infrastructure\Repository\SupplierRepository::class
         );
     }
 }

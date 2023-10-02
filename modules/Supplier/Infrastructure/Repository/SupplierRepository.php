@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Module\Supplier\Infrastructure\Supplier\Repository;
+namespace Module\Supplier\Infrastructure\Repository;
 
 use Module\Shared\Enum\CurrencyEnum;
 use Module\Supplier\Domain\Supplier\Repository\SupplierRepositoryInterface;
 use Module\Supplier\Domain\Supplier\Supplier;
 use Module\Supplier\Domain\Supplier\ValueObject\Requisites;
 use Module\Supplier\Domain\Supplier\ValueObject\SupplierId;
-use Module\Supplier\Infrastructure\Supplier\Models\Supplier as Model;
+use Module\Supplier\Infrastructure\Models\Supplier as Model;
 
 class SupplierRepository implements SupplierRepositoryInterface
 {

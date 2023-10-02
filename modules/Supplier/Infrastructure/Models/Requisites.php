@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Supplier\Infrastructure\Supplier\Models;
+namespace Module\Supplier\Infrastructure\Models;
 
 use Sdk\Module\Database\Eloquent\Model;
 

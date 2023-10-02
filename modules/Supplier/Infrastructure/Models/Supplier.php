@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Supplier\Infrastructure\Supplier\Models;
+namespace Module\Supplier\Infrastructure\Models;
 
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Sdk\Module\Database\Eloquent\Model;
