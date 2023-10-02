@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Module\Booking\Airport\Application\UseCase\Admin;
 
+use Module\Booking\Airport\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Common\Application\Service\StatusStorage;
 use Module\Booking\Common\Application\Support\UseCase\Admin\GetAvailableActions as Base;
 use Module\Booking\Common\Domain\Service\RequestRules;
 use Module\Booking\Common\Domain\Service\StatusRules\AdministratorRules;
-use Module\Booking\Airport\Domain\Repository\BookingRepositoryInterface;
 
 class GetAvailableActions extends Base
 {

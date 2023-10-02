@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Airport\Application\Factory;
 
 use Carbon\CarbonInterface;
-use Module\Booking\Airport\Domain\Adapter\SupplierAdapterInterface;
+use Module\Booking\Airport\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Common\Domain\ValueObject\CancelCondition\CancelMarkupOption;
 use Module\Booking\Common\Domain\ValueObject\CancelCondition\CancelPeriodTypeEnum;
 use Module\Booking\Common\Domain\ValueObject\CancelCondition\DailyMarkupCollection;
@@ -13,7 +13,6 @@ use Module\Booking\Common\Domain\ValueObject\CancelCondition\DailyMarkupOption;
 use Module\Booking\Common\Domain\ValueObject\CancelConditions;
 use Module\Shared\Domain\ValueObject\Percent;
 use Module\Supplier\Application\Response\DailyMarkupDto;
-use Module\Supplier\Domain\Supplier\Repository\CancelConditionsRepositoryInterface;
 
 class CancelConditionsFactory
 {

@@ -6,8 +6,8 @@ namespace Module\Booking\Airport\Application\UseCase\Admin;
 
 use Module\Booking\Airport\Application\Factory\CancelConditionsFactory;
 use Module\Booking\Airport\Application\Request\CreateBookingDto;
-use Module\Booking\Airport\Domain\Repository\BookingRepositoryInterface;
-use Module\Booking\Airport\Domain\ValueObject\Details\AdditionalInfo;
+use Module\Booking\Airport\Domain\Booking\Repository\BookingRepositoryInterface;
+use Module\Booking\Airport\Domain\Booking\ValueObject\Details\AdditionalInfo;
 use Module\Booking\Common\Application\Support\UseCase\Admin\AbstractCreateBooking;
 use Module\Booking\Common\Domain\ValueObject\BookingPrice;
 use Module\Booking\Common\Domain\ValueObject\CreatorId;

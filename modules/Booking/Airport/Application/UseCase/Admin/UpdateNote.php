@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Airport\Application\UseCase\Admin;
 
-use Module\Booking\Airport\Domain\Repository\BookingRepositoryInterface;
+use Module\Booking\Airport\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Common\Domain\Service\BookingUpdater;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 

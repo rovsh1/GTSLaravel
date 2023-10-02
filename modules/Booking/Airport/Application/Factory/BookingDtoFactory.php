@@ -7,7 +7,7 @@ namespace Module\Booking\Airport\Application\Factory;
 use Module\Booking\Airport\Application\Dto\BookingDto;
 use Module\Booking\Airport\Application\Dto\Details\AirportInfoDto;
 use Module\Booking\Airport\Application\Dto\Details\ServiceInfoDto;
-use Module\Booking\Airport\Domain\Entity\Booking;
+use Module\Booking\Airport\Domain\Booking\Booking;
 use Module\Booking\Common\Application\Factory\AbstractBookingDtoFactory;
 use Module\Booking\Common\Application\Factory\BookingPriceDtoFactory;
 use Module\Booking\Common\Application\Service\StatusStorage;

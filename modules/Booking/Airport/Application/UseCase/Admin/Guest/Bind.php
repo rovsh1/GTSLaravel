@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Booking\Airport\Application\UseCase\Admin\Guest;
 
-use Module\Booking\Airport\Domain\Event\GuestBinded;
-use Module\Booking\Airport\Domain\Repository\BookingGuestRepositoryInterface;
-use Module\Booking\Airport\Domain\Repository\BookingRepositoryInterface;
+use Module\Booking\Airport\Domain\Booking\Event\GuestBinded;
+use Module\Booking\Airport\Domain\Booking\Repository\BookingGuestRepositoryInterface;
+use Module\Booking\Airport\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Order\Domain\ValueObject\GuestId;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Booking\Airport\Application\UseCase\Admin\Price;
 
-use Module\Booking\Common\Domain\Service\BookingUpdater;
-use Module\Booking\Airport\Domain\Service\PriceCalculator\BookingCalculator;
+use Module\Booking\Airport\Domain\Booking\Service\PriceCalculator\BookingCalculator;
 use Module\Booking\Airport\Infrastructure\Repository\BookingRepository;
+use Module\Booking\Common\Domain\Service\BookingUpdater;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class SetCalculatedNetPrice implements UseCaseInterface

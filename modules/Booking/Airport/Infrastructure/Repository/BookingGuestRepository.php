@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Airport\Infrastructure\Repository;
 
 use Illuminate\Support\Facades\DB;
-use Module\Booking\Airport\Domain\Repository\BookingGuestRepositoryInterface;
+use Module\Booking\Airport\Domain\Booking\Repository\BookingGuestRepositoryInterface;
 use Module\Booking\Common\Domain\ValueObject\BookingId;
 use Module\Booking\Order\Domain\ValueObject\GuestId;
 

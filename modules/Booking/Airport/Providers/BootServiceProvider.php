@@ -13,17 +13,17 @@ class BootServiceProvider extends ServiceProvider
         $this->app->register(EventServiceProvider::class);
 
         $this->app->singleton(
-            Domain\Repository\BookingRepositoryInterface::class,
+            Domain\Booking\Repository\BookingRepositoryInterface::class,
             Infrastructure\Repository\BookingRepository::class
         );
 
         $this->app->singleton(
-            Domain\Repository\BookingGuestRepositoryInterface::class,
+            Domain\Booking\Repository\BookingGuestRepositoryInterface::class,
             Infrastructure\Repository\BookingGuestRepository::class
         );
 
         $this->app->singleton(
-            Domain\Adapter\SupplierAdapterInterface::class,
+            Domain\Booking\Adapter\SupplierAdapterInterface::class,
             Infrastructure\Adapter\SupplierAdapter::class
         );
     }
