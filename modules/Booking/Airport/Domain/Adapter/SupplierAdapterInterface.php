@@ -6,11 +6,14 @@ namespace Module\Booking\Airport\Domain\Adapter;
 
 use Carbon\CarbonInterface;
 use Module\Shared\Enum\CurrencyEnum;
+use Module\Supplier\Application\Response\ServiceContractDto;
 use Module\Supplier\Application\Response\ServicePriceDto;
 use Module\Supplier\Application\Response\SupplierDto;
 
 interface SupplierAdapterInterface
 {
+    public function find(int $id): SupplierDto;
+
     public function getAirportServicePrice(
         int $supplierId,
         int $serviceId,
@@ -20,5 +23,5 @@ interface SupplierAdapterInterface
         CarbonInterface $date
     ): ?ServicePriceDto;
 
-    public function find(int $id): SupplierDto;
+    public function findAirportServiceContract(int $serviceId): ?ServiceContractDto;
 }

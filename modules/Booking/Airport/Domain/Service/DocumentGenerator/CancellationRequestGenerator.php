@@ -3,7 +3,6 @@
 namespace Module\Booking\Airport\Domain\Service\DocumentGenerator;
 
 use Module\Booking\Airport\Domain\Adapter\SupplierAdapterInterface;
-use Module\Booking\Airport\Domain\Repository\ContractRepositoryInterface;
 use Module\Booking\Common\Application\Service\StatusStorage;
 use Module\Booking\Common\Domain\Adapter\AdministratorAdapterInterface;
 use Module\Booking\Common\Domain\Adapter\CountryAdapterInterface;
@@ -19,7 +18,6 @@ class CancellationRequestGenerator extends AbstractRequestGenerator
         private readonly AdministratorAdapterInterface $administratorAdapter,
         private readonly StatusStorage $statusStorage,
         private readonly GuestRepositoryInterface $guestRepository,
-        private readonly ContractRepositoryInterface $contractRepository,
         private readonly SupplierAdapterInterface $supplierAdapter,
         private readonly CountryAdapterInterface $countryAdapter,
         CompanyRequisitesInterface $companyRequisites
@@ -36,9 +34,9 @@ class CancellationRequestGenerator extends AbstractRequestGenerator
     {
         $administrator = $this->administratorAdapter->getManagerByBookingId($booking->id()->value());
 
-        $contract = $this->contractRepository->find($booking->serviceInfo()->id());
-        $contractNumber = $contract?->id()->value();
-        $contractDate = $contract !== null ? (string)$contract->dateStart() : null;
+        $contract = $this->supplierAdapter->findAirportServiceContract($booking->serviceInfo()->id());
+        $contractNumber = $contract?->id;
+        $contractDate = $contract !== null ? $contract->dateStart : null;
 
         $supplier = $this->supplierAdapter->find($booking->serviceInfo()->supplierId());
         $airportDirector = $supplier->directorFullName;

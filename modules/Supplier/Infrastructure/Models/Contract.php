@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Booking\Airport\Infrastructure\Models;
+namespace Module\Supplier\Infrastructure\Models;
 
 use App\Admin\Enums\Contract\StatusEnum;
 use Illuminate\Database\Eloquent\Builder;
@@ -20,12 +20,9 @@ class Contract extends Model
         'service_id',
     ];
 
-    public static function booted()
-    {
-        static::addGlobalScope('default', function (Builder $builder) {
-            $builder->whereServiceType(ContractServiceTypeEnum::AIRPORT);
-        });
-    }
+    protected $casts = [
+        'service_type' => ContractServiceTypeEnum::class
+    ];
 
     public function scopeWhereActive(Builder $builder): void
     {
