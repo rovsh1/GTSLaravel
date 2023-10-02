@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Airport\Domain\Repository;
+namespace Module\Supplier\Domain\Supplier\Repository;
 
-use Module\Booking\Common\Domain\ValueObject\CancelConditions;
+use Module\Supplier\Domain\Supplier\ValueObject\CancelConditions;
 
 interface CancelConditionsRepositoryInterface
 {

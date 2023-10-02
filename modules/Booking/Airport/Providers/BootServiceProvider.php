@@ -23,11 +23,6 @@ class BootServiceProvider extends ServiceProvider
         );
 
         $this->app->singleton(
-            Domain\Repository\CancelConditionsRepositoryInterface::class,
-            Infrastructure\Repository\CancelConditionsRepository::class
-        );
-
-        $this->app->singleton(
             Domain\Adapter\SupplierAdapterInterface::class,
             Infrastructure\Adapter\SupplierAdapter::class
         );
