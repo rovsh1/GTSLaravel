@@ -1,8 +1,5 @@
 <template>
   <div class="card">
-    <div class="card-title">
-      <slot name="title" />
-    </div>
     <div class="card-body unselectable">
       <slot />
     </div>

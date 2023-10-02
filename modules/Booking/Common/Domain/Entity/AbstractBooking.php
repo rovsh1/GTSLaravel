@@ -23,10 +23,10 @@ use Module\Booking\Common\Domain\ValueObject\BookingId;
 use Module\Booking\Common\Domain\ValueObject\BookingPrice;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
+use Module\Booking\Common\Domain\ValueObject\CreatorId;
 use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\Common\Domain\ValueObject\PriceItem;
 use Module\Booking\Common\Domain\ValueObject\RequestTypeEnum;
-use Module\Shared\Domain\ValueObject\Id;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
 abstract class AbstractBooking extends AbstractAggregateRoot implements
@@ -40,7 +40,7 @@ abstract class AbstractBooking extends AbstractAggregateRoot implements
         private readonly OrderId $orderId,
         private BookingStatusEnum $status,
         private readonly CarbonImmutable $createdAt,
-        private readonly Id $creatorId,
+        private readonly CreatorId $creatorId,
         private BookingPrice $price,
     ) {}
 
@@ -66,7 +66,7 @@ abstract class AbstractBooking extends AbstractAggregateRoot implements
         return $this->createdAt;
     }
 
-    public function creatorId(): Id
+    public function creatorId(): CreatorId
     {
         return $this->creatorId;
     }
@@ -191,12 +191,6 @@ abstract class AbstractBooking extends AbstractAggregateRoot implements
         $this->pushEvent($event);
     }
 
-    public function generateVoucher(VoucherCreator $voucherCreator): void
-    {
-        $voucherCreator->create($this);
-        //@todo кинуть ивент
-    }
-
     public function isManualGrossPrice(): bool
     {
         return $this->price()->grossPrice()->manualValue() !== null;
@@ -205,11 +199,6 @@ abstract class AbstractBooking extends AbstractAggregateRoot implements
     public function isManualNetPrice(): bool
     {
         return $this->price()->netPrice()->manualValue() !== null;
-    }
-
-    public function canSendClientVoucher(): bool
-    {
-        return $this->status === BookingStatusEnum::CONFIRMED;
     }
 
     public function delete(): void

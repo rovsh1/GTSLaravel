@@ -42,7 +42,8 @@ return new class extends Migration {
         foreach ($q->cursor() as $r) {
             $hotelId = $r->id;
             $supplierId = DB::table('suppliers')->insertGetId([
-                'name' => $r->name
+                'name' => $r->name,
+                'currency_id' => CurrencyEnum::UZS->id()
             ]);
 
             $conditionsIndexedByType = DB::connection('mysql_old')

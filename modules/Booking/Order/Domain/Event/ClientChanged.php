@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Booking\Order\Domain\Event;
 
-use Module\Booking\Common\Domain\Event\Contracts\PriceBecomeDeprecatedEventInterface;
 use Module\Booking\Common\Domain\Event\OrderEventInterface;
+use Module\Booking\HotelBooking\Domain\Event\PriceBecomeDeprecatedEventInterface;
 use Module\Booking\Order\Domain\Entity\Order;
 
 class ClientChanged implements OrderEventInterface, PriceBecomeDeprecatedEventInterface

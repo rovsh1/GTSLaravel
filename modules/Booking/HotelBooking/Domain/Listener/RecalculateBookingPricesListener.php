@@ -2,8 +2,8 @@
 
 namespace Module\Booking\HotelBooking\Domain\Listener;
 
-use Module\Booking\Common\Domain\Event\Contracts\PriceBecomeDeprecatedEventInterface;
 use Module\Booking\Common\Domain\Service\BookingUpdater;
+use Module\Booking\HotelBooking\Domain\Event\PriceBecomeDeprecatedEventInterface;
 use Module\Booking\HotelBooking\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\HotelBooking\Domain\Repository\RoomBookingRepositoryInterface;
 use Module\Booking\HotelBooking\Domain\Service\PriceCalculator\BookingCalculator;

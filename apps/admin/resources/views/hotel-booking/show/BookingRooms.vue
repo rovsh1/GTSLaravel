@@ -1,32 +1,32 @@
 <script setup lang="ts">
 
-import { computed, ref } from 'vue'
+import { computed, MaybeRef, onMounted, ref, unref, watch } from 'vue'
 
 import { useToggle } from '@vueuse/core'
 import { z } from 'zod'
 
 import { useCurrencyStore } from '~resources/store/currency'
 import GuestModal from '~resources/views/booking/components/GuestModal.vue'
+import GuestsTable from '~resources/views/booking/components/GuestsTable.vue'
+import InfoBlock from '~resources/views/booking/components/InfoBlock/InfoBlock.vue'
+import InfoBlockTitle from '~resources/views/booking/components/InfoBlock/InfoBlockTitle.vue'
+import { getConditionLabel } from '~resources/views/booking/lib/constants'
+import { GuestFormData, RoomFormData } from '~resources/views/booking/lib/data-types'
+import { useOrderStore } from '~resources/views/booking/store/order'
 import EditTableRowButton from '~resources/views/hotel/settings/components/EditTableRowButton.vue'
-import GuestsTable from '~resources/views/hotel-booking/show/components/GuestsTable.vue'
-import InfoBlock from '~resources/views/hotel-booking/show/components/InfoBlock/InfoBlock.vue'
-import InfoBlockTitle from '~resources/views/hotel-booking/show/components/InfoBlock/InfoBlockTitle.vue'
+import { useEditableModal } from '~resources/views/hotel/settings/composables/editable-modal'
 import RoomModal from '~resources/views/hotel-booking/show/components/RoomModal.vue'
 import RoomPriceModal from '~resources/views/hotel-booking/show/components/RoomPriceModal.vue'
-import { getConditionLabel } from '~resources/views/hotel-booking/show/lib/constants'
-import { GuestFormData, RoomFormData } from '~resources/views/hotel-booking/show/lib/data-types'
 import { useBookingStore } from '~resources/views/hotel-booking/show/store/booking'
-import { useOrderStore } from '~resources/views/hotel-booking/show/store/order-currency'
 
 import {
   HotelBookingDetails,
-  HotelBookingGuest,
   HotelRoomBooking,
   RoomBookingPrice,
 } from '~api/booking/hotel/details'
 import { updateRoomBookingPrice } from '~api/booking/hotel/price'
-import { addGuestToBooking, BookingAddRoomGuestPayload, deleteBookingGuest, deleteBookingRoom } from '~api/booking/hotel/rooms'
-import { addOrderGuest, AddOrderGuestPayload, Guest, updateOrderGuest, UpdateOrderGuestPayload } from '~api/booking/order/guest'
+import { addGuestToBooking, deleteBookingGuest, deleteBookingRoom } from '~api/booking/hotel/rooms'
+import { addOrderGuest, Guest, updateOrderGuest } from '~api/booking/order/guest'
 import { useCountrySearchAPI } from '~api/country'
 import { MarkupSettings } from '~api/hotel/markup-settings'
 import { HotelRate, useHotelRatesAPI } from '~api/hotel/price-rate'
@@ -43,7 +43,6 @@ import BootstrapCardTitle from '~components/Bootstrap/BootstrapCard/components/B
 import IconButton from '~components/IconButton.vue'
 
 const [isShowRoomModal, toggleRoomModal] = useToggle()
-const [isShowGuestModal, toggleGuestModal] = useToggle()
 const [isShowRoomPriceModal, toggleRoomPriceModal] = useToggle()
 
 const { bookingID, hotelID } = requestInitialData(
@@ -73,6 +72,7 @@ const orderGuests = computed<Guest[]>(() => orderStore.guests || [])
 const isBookingPriceManual = computed(
   () => bookingStore.booking?.price.grossPrice.isManual || bookingStore.booking?.price.netPrice.isManual,
 )
+
 const canChangeRoomPrice = computed<boolean>(
   () => (bookingStore.availableActions?.canChangeRoomPrice && !isBookingPriceManual.value) || false,
 )
@@ -85,34 +85,60 @@ const getPriceRateName = (id: number): string | undefined =>
 
 const getDefaultGuestForm = () => ({ isAdult: true })
 
+const editRoomBookingId = ref<number>()
+
+const modalSettings = {
+  add: {
+    title: 'Добавление гостя',
+    handler: async (request: MaybeRef<Required<GuestFormData>>) => {
+      if (!editRoomBookingId.value) return
+      const preparedRequest = unref(request)
+      if (preparedRequest && preparedRequest.id !== undefined) {
+        const payload = { bookingID, roomBookingId: editRoomBookingId.value, guestId: preparedRequest.id }
+        await addGuestToBooking(payload)
+      } else {
+        const payload = { hotelBookingId: bookingID, hotelBookingRoomId: editRoomBookingId.value, ...preparedRequest }
+        payload.orderId = orderId.value
+        await addOrderGuest(payload)
+      }
+      await bookingStore.fetchBooking()
+      await orderStore.fetchGuests()
+    },
+  },
+  edit: {
+    title: 'Редактирование гостя',
+    handler: async (request: MaybeRef<Required<GuestFormData>>) => {
+      const preparedRequest = unref(request)
+      const payload = { guestId: preparedRequest.id, ...preparedRequest }
+      payload.orderId = orderId.value
+      await updateOrderGuest(payload)
+      await orderStore.fetchGuests()
+    },
+  },
+}
+
+const {
+  isOpened: isGuestModalOpened,
+  isLoading: isGuestModalLoading,
+  title: guestModalTitle,
+  openAdd: openAddGuestModal,
+  openEdit: openEditGuestModal,
+  editableObject: editableGuest,
+  close: closeGuestModal,
+  submit: submitGuestModal,
+} = useEditableModal<Required<GuestFormData>, Required<GuestFormData>, Partial<GuestFormData>>(modalSettings)
+
 const roomForm = ref<Partial<RoomFormData>>({})
 const guestForm = ref<Partial<GuestFormData>>(getDefaultGuestForm())
 
-const waitingSaveGuestModalData = ref<boolean>(false)
-
-const editRoomBookingId = ref<number>()
-const editGuestId = ref<number>()
-const handleAddRoomGuest = (roomBookingId: number) => {
-  editRoomBookingId.value = roomBookingId
-  editGuestId.value = undefined
-  guestForm.value = getDefaultGuestForm()
-  guestForm.value.selectedGuestFromOrder = undefined
-  toggleGuestModal(true)
-}
-
-const handleEditGuest = (roomBookingId: number, guest: HotelBookingGuest): void => {
-  editRoomBookingId.value = roomBookingId
-  editGuestId.value = guest.id
-  guestForm.value = {
-    id: guest.id,
-    fullName: guest.fullName,
-    countryId: guest.countryId,
-    gender: guest.gender,
-    isAdult: guest.isAdult,
-    age: guest.age,
+watch(editableGuest, (value) => {
+  if (!value) {
+    guestForm.value = getDefaultGuestForm()
+    guestForm.value.selectedGuestFromOrder = undefined
+    return
   }
-  toggleGuestModal(true)
-}
+  guestForm.value = value
+})
 
 const handleDeleteGuest = async (roomBookingId: number, guestId: number): Promise<void> => {
   const { result: isConfirmed, toggleLoading, toggleClose } = await showConfirmDialog('Удалить гостя?', 'btn-danger')
@@ -170,7 +196,7 @@ const handleUpdateRoomPrice = async (boPrice: number | undefined | null, hoPrice
     grossPrice: boPrice,
     netPrice: hoPrice,
   })
-  fetchBooking()
+  await fetchBooking()
 }
 
 const getCheckInTime = (room: HotelRoomBooking) => {
@@ -194,34 +220,15 @@ const onCloseModal = () => {
   toggleRoomModal(false)
 }
 
-const onCloseGuestModal = () => {
-  guestForm.value = getDefaultGuestForm()
-  toggleGuestModal(false)
-}
-
-const onModalSubmit = () => {
+const onRoomModalSubmit = async () => {
   toggleRoomModal(false)
-  toggleGuestModal(false)
-  fetchBooking()
+  await fetchBooking()
 }
 
-const onModalGuestsSubmit = async (operationType: string, payload: any) => {
-  waitingSaveGuestModalData.value = true
-  if (operationType === 'create') {
-    await addOrderGuest(payload as AddOrderGuestPayload)
-  } else if (operationType === 'update') {
-    await updateOrderGuest(payload as UpdateOrderGuestPayload)
-  } else if (operationType === 'add') {
-    await addGuestToBooking(payload as BookingAddRoomGuestPayload)
-  }
-  waitingSaveGuestModalData.value = false
-  fetchBooking()
-  orderStore.fetchTourists()
-  onCloseGuestModal()
-}
-
-fetchPriceRates()
-fetchCountries()
+onMounted(() => {
+  fetchPriceRates()
+  fetchCountries()
+})
 
 </script>
 
@@ -232,21 +239,22 @@ fetchCountries()
     :room-booking-id="editRoomBookingId"
     :hotel-markup-settings="markupSettings"
     @close="onCloseModal"
-    @submit="onModalSubmit"
+    @submit="onRoomModalSubmit"
   />
 
   <GuestModal
-    v-if="countries && editRoomBookingId !== undefined"
-    :opened="isShowGuestModal"
-    :is-fetching="waitingSaveGuestModalData"
-    :room-booking-id="editRoomBookingId"
-    :order-id="orderId"
-    :guest-id="editGuestId"
+    v-if="countries"
+    :title-text="guestModalTitle"
+    :opened="isGuestModalOpened"
+    :is-fetching="isGuestModalLoading"
     :form-data="guestForm"
     :order-guests="orderGuests"
     :countries="countries"
-    @close="onCloseGuestModal"
-    @submit="onModalGuestsSubmit"
+    @close="() => {
+      editRoomBookingId = undefined
+      closeGuestModal()
+    }"
+    @submit="submitGuestModal"
     @clear="guestForm = getDefaultGuestForm()"
   />
 
@@ -262,17 +270,16 @@ fetchCountries()
   />
 
   <div class="mt-3" />
-  <BootstrapCard
-    v-for="room in bookingDetails?.roomBookings"
-    :key="room.id"
-  >
-    <div class="d-flex">
+  <BootstrapCard v-for="room in bookingDetails?.roomBookings" :key="room.id">
+    <div class="d-flex align-items-center">
       <BootstrapCardTitle class="mr-4" :title="room.roomInfo.name" />
-      <EditTableRowButton
-        v-if="isEditableStatus"
-        @edit="handleEditRoom(room.id, room)"
-        @delete="handleDeleteRoom(room.id)"
-      />
+      <div class="pt-card-title">
+        <EditTableRowButton
+          v-if="isEditableStatus"
+          @edit="handleEditRoom(room.id, room)"
+          @delete="handleDeleteRoom(room.id)"
+        />
+      </div>
     </div>
     <div class="d-flex flex-row gap-4">
       <InfoBlock>
@@ -337,11 +344,7 @@ fetchCountries()
           <strong>
             Итого: {{ formatPrice(room.price.grossValue, grossCurrency.sign) }}
           </strong>
-          <a
-            v-if="canChangeRoomPrice"
-            href="#"
-            @click.prevent="handleEditRoomPrice(room.id, room.price)"
-          >
+          <a v-if="canChangeRoomPrice" href="#" @click.prevent="handleEditRoomPrice(room.id, room.price)">
             Изменить цену номера
           </a>
         </div>
@@ -355,7 +358,10 @@ fetchCountries()
             <IconButton
               v-if="isEditableStatus"
               icon="add"
-              @click="handleAddRoomGuest(room.id)"
+              @click="() => {
+                editRoomBookingId = room.id
+                openAddGuestModal()
+              }"
             />
           </div>
         </template>
@@ -363,9 +369,13 @@ fetchCountries()
         <GuestsTable
           v-if="countries"
           :can-edit="isEditableStatus"
-          :guests="room.guests"
+          :guest-ids="room.guestIds"
+          :order-guests="orderGuests"
           :countries="countries"
-          @edit="(guest) => handleEditGuest(room.id, guest)"
+          @edit="(guest) => {
+            editRoomBookingId = room.id
+            openEditGuestModal(guest.id, guest)
+          }"
           @delete="(guest) => handleDeleteGuest(room.id, guest.id)"
         />
       </InfoBlock>
@@ -373,10 +383,12 @@ fetchCountries()
   </BootstrapCard>
 
   <div>
-    <BootstrapButton
-      v-if="isEditableStatus"
-      label="Добавить номер"
-      @click="handleAddRoom"
-    />
+    <BootstrapButton v-if="isEditableStatus" label="Добавить номер" @click="handleAddRoom" />
   </div>
 </template>
+
+<style lang="scss" scope>
+.pt-card-title {
+  padding-top: 13px;
+}
+</style>

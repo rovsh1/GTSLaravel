@@ -38,7 +38,7 @@ class GridActions
         }
 
         return '<div class="dropdown text-end">'
-            . '<a href="#" class="btn-avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">'
+            . '<a href="#" class="btn-avatar" data-bs-toggle="dropdown" aria-expanded="false">'
             . '<div class="icon">more_vert</div>'
             . '</a>'
             . '<ul class="dropdown-menu text-small">'

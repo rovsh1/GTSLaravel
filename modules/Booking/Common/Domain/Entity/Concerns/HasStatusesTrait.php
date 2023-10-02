@@ -14,6 +14,7 @@ use Module\Booking\Common\Domain\Event\Status\BookingWaitingCancellation;
 use Module\Booking\Common\Domain\Event\Status\BookingWaitingConfirmation;
 use Module\Booking\Common\Domain\Event\Status\BookingWaitingProcessing;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
+use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
 
 trait HasStatusesTrait
 {
@@ -42,7 +43,7 @@ trait HasStatusesTrait
      */
     public function toNotConfirmed(string $reason): void
     {
-        if (empty($reason)) {
+        if ($this->type() === BookingTypeEnum::HOTEL && empty($reason)) {
             throw new \InvalidArgumentException('Not confirmed reason can\'t be empty');
         }
         $this->setStatus(BookingStatusEnum::NOT_CONFIRMED);

@@ -6,13 +6,14 @@ import { useToggle } from '@vueuse/core'
 import { z } from 'zod'
 
 import { useCurrencyStore } from '~resources/store/currency'
-import AmountBlock from '~resources/views/hotel-booking/show/components/AmountBlock.vue'
-import ControlPanelSection from '~resources/views/hotel-booking/show/components/ControlPanelSection.vue'
-import PriceModal from '~resources/views/hotel-booking/show/components/PriceModal.vue'
-import RequestBlock from '~resources/views/hotel-booking/show/components/RequestBlock.vue'
-import StatusHistoryModal from '~resources/views/hotel-booking/show/components/StatusHistoryModal.vue'
+import AmountBlock from '~resources/views/booking/components/AmountBlock.vue'
+import ControlPanelSection from '~resources/views/booking/components/ControlPanelSection.vue'
+import PriceModal from '~resources/views/booking/components/PriceModal.vue'
+import RequestBlock from '~resources/views/booking/components/RequestBlock.vue'
+import StatusHistoryModal from '~resources/views/booking/components/StatusHistoryModal.vue'
+import StatusSelect from '~resources/views/booking/components/StatusSelect.vue'
+import { externalNumberTypeOptions, getCancelPeriodTypeName, getHumanRequestType } from '~resources/views/booking/lib/constants'
 import { useExternalNumber } from '~resources/views/hotel-booking/show/composables/external-number'
-import { externalNumberTypeOptions, getCancelPeriodTypeName, getHumanRequestType } from '~resources/views/hotel-booking/show/lib/constants'
 import { useBookingStore } from '~resources/views/hotel-booking/show/store/booking'
 import { useBookingRequestStore } from '~resources/views/hotel-booking/show/store/request'
 import { useBookingStatusHistoryStore } from '~resources/views/hotel-booking/show/store/status-history'
@@ -31,8 +32,6 @@ import { requestInitialData } from '~lib/initial-data'
 import { formatPrice } from '~lib/price'
 
 import BootstrapSelectBase from '~components/Bootstrap/BootstrapSelectBase.vue'
-
-import StatusSelect from './components/StatusSelect.vue'
 
 const { bookingID } = requestInitialData(
   'view-initial-data-hotel-booking',
@@ -68,6 +67,7 @@ const grossCurrency = computed<Currency | undefined>(
 const netCurrency = computed<Currency | undefined>(
   () => getCurrencyByCodeChar(bookingStore.booking?.price.netPrice.currency.value),
 )
+const profit = computed<number>(() => bookingStore.booking?.price.profit.calculatedValue || 0)
 const statuses = computed<BookingStatusResponse[] | null>(() => bookingStore.statuses)
 const availableActions = computed<BookingAvailableActionsResponse | null>(() => bookingStore.availableActions)
 
@@ -201,7 +201,10 @@ onMounted(() => {
 <template>
   <StatusHistoryModal
     :opened="isHistoryModalOpened"
+    :is-fetching="statusHistoryStore.isFetching"
+    :status-history-events="statusHistoryStore.statusHistoryEvents"
     @close="toggleHistoryModal(false)"
+    @refresh="fetchStatusHistory"
   />
 
   <PriceModal
@@ -240,7 +243,7 @@ onMounted(() => {
     @submit="handleSaveNetPenalty"
   />
 
-  <div class="d-flex flex-wrap flex-grow-1 gap-2">
+  <div class="d-flex flex-wrap flex-grow-1 gap-2 align-items-center">
     <StatusSelect
       v-if="booking && statuses"
       v-model="booking.status"
@@ -255,7 +258,7 @@ onMounted(() => {
       <strong>
         {{ formatPrice(getDisplayPriceValue('gross'), grossCurrency.sign) }}
       </strong>
-      <span v-if="booking.price.grossPrice.isManual" class="text-muted">(выставлена вручную)</span>
+      <span v-if="booking.price.grossPrice.isManual" class="text-muted"> (выставлена вручную)</span>
     </div>
   </div>
 
@@ -303,8 +306,8 @@ onMounted(() => {
         amount-title="Общая сумма (брутто)"
         :amount-value="getDisplayPriceValue('gross')"
         penalty-title="Сумма штрафа для клиента"
-        :penalty-value="booking.price.grossPenalty"
-        :need-show-penalty="(booking?.price.netPenalty || 0) > 0"
+        :penalty-value="booking.price.grossPrice.penaltyValue"
+        :need-show-penalty="(booking?.price.netPrice.penaltyValue || 0) > 0"
         @click-change-price="toggleGrossPriceModal(true)"
         @click-change-penalty="toggleGrossPenaltyModal(true)"
       />
@@ -316,8 +319,8 @@ onMounted(() => {
         amount-title="Общая сумма (нетто)"
         :amount-value="getDisplayPriceValue('net')"
         penalty-title="Сумма штрафа от гостиницы"
-        :penalty-value="booking.price.netPenalty"
-        :need-show-penalty="(booking?.price.netPenalty || 0) > 0"
+        :penalty-value="booking.price.netPrice.penaltyValue"
+        :need-show-penalty="(booking?.price.netPrice.penaltyValue || 0) > 0"
         @click-change-price="toggleNetPriceModal(true)"
         @click-change-penalty="toggleNetPenaltyModal(true)"
       />
@@ -326,7 +329,7 @@ onMounted(() => {
     <div v-if="booking && grossCurrency && netCurrency" class="mt-2">
       Прибыль = {{ formatPrice(getDisplayPriceValue('gross'), grossCurrency.sign) }} - {{ formatPrice(getDisplayPriceValue('net'), netCurrency.sign) }} =
       {{
-        formatPrice((getDisplayPriceValue('gross') - getDisplayPriceValue('net')), grossCurrency.sign)
+        formatPrice(profit, grossCurrency.sign)
       }}
     </div>
 

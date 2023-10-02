@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { MaybeRef } from '@vueuse/core'
 
+import { getCancelPeriodTypeName } from '~resources/views/booking/lib/constants'
 import EditTableRowButton from '~resources/views/hotel/settings/components/EditTableRowButton.vue'
 
 import { CancelPeriod, DailyMarkup } from '~api/hotel/markup-settings'
 
 import EditableCell from '~components/Editable/EditableNumberInput.vue'
-
-import { getCancelPeriodTypeName } from '../../../hotel-booking/show/lib/constants'
 
 withDefaults(defineProps<{
   cancelPeriod: CancelPeriod

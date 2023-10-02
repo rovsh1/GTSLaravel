@@ -97,9 +97,9 @@
     "Module\\Shared\\Enum\\ContactTypeEnum::SITE": "Сайт",
     "Module\\Shared\\Enum\\ContactTypeEnum::ADDRESS": "Адрес",
 
-    "Hotel\\Contract\\StatusEnum::ACTIVE": "Активный",
-    "Hotel\\Contract\\StatusEnum::INACTIVE": "Неактивный",
-    "Hotel\\Contract\\StatusEnum::ARCHIVE": "Архив",
+    "Contract\\StatusEnum::ACTIVE": "Активный",
+    "Contract\\StatusEnum::INACTIVE": "Неактивный",
+    "Contract\\StatusEnum::ARCHIVE": "Архив",
 
     "Module\\Shared\\Enum\\Client\\TypeEnum::PHYSICAL": "Физическое лицо",
     "Module\\Shared\\Enum\\Client\\TypeEnum::LEGAL_ENTITY": "Юридическое лицо",
@@ -115,6 +115,10 @@
     "Module\\Shared\\Enum\\Client\\ResidencyEnum::ALL": "Все",
     "Module\\Shared\\Enum\\Client\\ResidencyEnum::RESIDENT": "Резидент",
     "Module\\Shared\\Enum\\Client\\ResidencyEnum::NONRESIDENT": "Не резидент",
+
+    "Module\\Shared\\Enum\\Supplier\\ContractServiceTypeEnum::HOTEL": "Отель",
+    "Module\\Shared\\Enum\\Supplier\\ContractServiceTypeEnum::AIRPORT": "Аэропорт",
+    "Module\\Shared\\Enum\\Supplier\\ContractServiceTypeEnum::TRANSFER": "Трансфер",
 
     "Module\\Booking\\Common\\Domain\\Event\\Status\\BookingCreated": "Новая",
     "Module\\Booking\\Common\\Domain\\Event\\Status\\BookingProcessing": "В работе",

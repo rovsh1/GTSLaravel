@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Module\Booking\HotelBooking\Application\UseCase\Admin;
 
 use Module\Booking\Common\Domain\Service\BookingUpdater;
-use Module\Booking\HotelBooking\Infrastructure\Repository\BookingRepository;
+use Module\Booking\HotelBooking\Domain\Repository\BookingRepositoryInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class UpdateNote implements UseCaseInterface
 {
     public function __construct(
-        private readonly BookingRepository $repository,
+        private readonly BookingRepositoryInterface $repository,
         private readonly BookingUpdater $bookingUpdater,
     ) {}
 

@@ -142,7 +142,8 @@ class HotelController extends AbstractPrototypeController
             ->paginator(self::GRID_LIMIT)
             ->text('name', [
                 'text' => 'Наименование',
-                'route' => $this->prototype->routeName('show')
+                'route' => $this->prototype->routeName('show'),
+                'order' => true
             ])
             ->text('city_name', ['text' => 'Город', 'order' => true])
             ->text('type_name', ['text' => 'Тип', 'order' => true])

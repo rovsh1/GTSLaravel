@@ -27,6 +27,7 @@ export type PriceItem = {
 export type BookingPrice = {
   grossPrice: PriceItem
   netPrice: PriceItem
+  profit: PriceItem
   netValue: number
   netPenalty: number | null
   grossPenalty: number | null

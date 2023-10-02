@@ -13,8 +13,8 @@ class RoomBookingDto extends Dto
     public function __construct(
         public readonly int $id,
         public readonly RoomInfoDto $roomInfo,
-        /** @var GuestDto[] $guests */
-        public readonly array $guests,
+        /** @var int[] $guestIds */
+        public readonly array $guestIds,
         public readonly RoomBookingDetailsDto $details,
         public readonly RoomPriceDto $price
     ) {}

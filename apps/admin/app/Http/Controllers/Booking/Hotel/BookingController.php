@@ -4,12 +4,12 @@ namespace App\Admin\Http\Controllers\Booking\Hotel;
 
 use App\Admin\Components\Factory\Prototype;
 use App\Admin\Http\Controllers\Controller;
-use App\Admin\Http\Requests\Booking\BulkDeleteRequest;
-use App\Admin\Http\Requests\Booking\UpdateExternalNumberRequest;
-use App\Admin\Http\Requests\Booking\UpdateManagerRequest;
-use App\Admin\Http\Requests\Booking\UpdateNoteRequest;
-use App\Admin\Http\Requests\Booking\UpdatePriceRequest;
-use App\Admin\Http\Requests\Booking\UpdateStatusRequest;
+use App\Admin\Http\Requests\Booking\Hotel\BulkDeleteRequest;
+use App\Admin\Http\Requests\Booking\Hotel\UpdateExternalNumberRequest;
+use App\Admin\Http\Requests\Booking\Hotel\UpdateManagerRequest;
+use App\Admin\Http\Requests\Booking\Hotel\UpdateNoteRequest;
+use App\Admin\Http\Requests\Booking\Hotel\UpdatePriceRequest;
+use App\Admin\Http\Requests\Booking\Hotel\UpdateStatusRequest;
 use App\Admin\Http\Resources\Room as RoomResource;
 use App\Admin\Models\Administrator\Administrator;
 use App\Admin\Models\Client\Client;
@@ -18,11 +18,9 @@ use App\Admin\Models\Hotel\Room;
 use App\Admin\Models\Reference\Currency;
 use App\Admin\Repositories\BookingAdministratorRepository;
 use App\Admin\Support\Facades\Acl;
-use App\Admin\Support\Facades\Booking\BookingAdapter;
+use App\Admin\Support\Facades\Booking\Hotel\PriceAdapter;
 use App\Admin\Support\Facades\Booking\HotelAdapter;
-use App\Admin\Support\Facades\Booking\HotelPriceAdapter;
 use App\Admin\Support\Facades\Booking\OrderAdapter;
-use App\Admin\Support\Facades\Booking\StatusAdapter;
 use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Grid;
@@ -60,8 +58,7 @@ class BookingController extends Controller
     {
         Breadcrumb::prototype($this->prototype);
 
-        $requestableStatuses = array_map(fn(BookingStatusEnum $status) => $status->value,
-            RequestRules::getRequestableStatuses());
+        $requestableStatuses = array_map(fn(BookingStatusEnum $status) => $status->value, RequestRules::getRequestableStatuses());
 
         $grid = $this->gridFactory();
         $query = HotelAdapter::getBookingQuery()
@@ -268,36 +265,10 @@ class BookingController extends Controller
         );
     }
 
-    public function getStatuses(): JsonResponse
-    {
-        return response()->json(
-            StatusAdapter::getStatuses()
-        );
-    }
-
     public function getAvailableActions(int $id): JsonResponse
     {
         return response()->json(
-            BookingAdapter::getAvailableActions($id)
-        );
-    }
-
-    public function updateStatus(UpdateStatusRequest $request, int $id): JsonResponse
-    {
-        return response()->json(
-            StatusAdapter::updateStatus(
-                $id,
-                $request->getStatus(),
-                $request->getNotConfirmedReason(),
-                $request->getCancelFeeAmount()
-            )
-        );
-    }
-
-    public function getStatusHistory(int $id): JsonResponse
-    {
-        return response()->json(
-            StatusAdapter::getStatusHistory($id)
+            HotelAdapter::getAvailableActions($id)
         );
     }
 
@@ -314,23 +285,23 @@ class BookingController extends Controller
         $netPrice = $request->getNetPrice();
 
         if ($request->isGrossPriceExists() && $grossPrice === null) {
-            HotelPriceAdapter::setCalculatedGrossPrice($id);
+            PriceAdapter::setCalculatedGrossPrice($id);
         }
         if ($request->isNetPriceExists() && $netPrice === null) {
-            HotelPriceAdapter::setCalculatedNetPrice($id);
+            PriceAdapter::setCalculatedNetPrice($id);
         }
 
         if ($grossPrice !== null) {
-            HotelPriceAdapter::setGrossPrice($id, $grossPrice);
+            PriceAdapter::setGrossPrice($id, $grossPrice);
         }
         if ($netPrice !== null) {
-            HotelPriceAdapter::setNetPrice($id, $netPrice);
+            PriceAdapter::setNetPrice($id, $netPrice);
         }
         if ($request->isGrossPenaltyExists()) {
-            HotelPriceAdapter::setGrossPenalty($id, $request->getGrossPenalty());
+            PriceAdapter::setGrossPenalty($id, $request->getGrossPenalty());
         }
         if ($request->isNetPenaltyExists()) {
-            HotelPriceAdapter::setNetPenalty($id, $request->getNetPenalty());
+            PriceAdapter::setNetPenalty($id, $request->getNetPenalty());
         }
 
         return new AjaxSuccessResponse();
@@ -357,6 +328,32 @@ class BookingController extends Controller
         return new AjaxSuccessResponse();
     }
 
+    public function getStatuses(): JsonResponse
+    {
+        return response()->json(
+            HotelAdapter::getStatuses()
+        );
+    }
+
+    public function updateStatus(UpdateStatusRequest $request, int $id): JsonResponse
+    {
+        return response()->json(
+            HotelAdapter::updateStatus(
+                $id,
+                $request->getStatus(),
+                $request->getNotConfirmedReason(),
+                $request->getCancelFeeAmount()
+            )
+        );
+    }
+
+    public function getStatusHistory(int $id): JsonResponse
+    {
+        return response()->json(
+            HotelAdapter::getStatusHistory($id)
+        );
+    }
+
     protected function gridFactory(): GridContract
     {
         return Grid::enableQuicksearch()
@@ -375,7 +372,7 @@ class BookingController extends Controller
                     return "$idLink / {$orderLink}";
                 }
             ])
-            ->bookingStatus('status', ['text' => 'Статус', 'statuses' => StatusAdapter::getStatuses(), 'order' => true])
+            ->bookingStatus('status', ['text' => 'Статус', 'statuses' => HotelAdapter::getStatuses(), 'order' => true])
             ->text('client_name', ['text' => 'Клиент'])
             ->text('manager_name', ['text' => 'Менеджер'])
             ->text(
@@ -444,7 +441,7 @@ class BookingController extends Controller
             ->hidden('hotel_room_id', ['label' => 'Тип номера'])
             ->client('client_id', ['label' => 'Клиент', 'emptyItem' => ''])
             ->select('manager_id', ['label' => 'Менеджер', 'items' => Administrator::all(), 'emptyItem' => ''])
-            ->select('status', ['label' => 'Статус', 'items' => StatusAdapter::getStatuses(), 'emptyItem' => ''])
+            ->select('status', ['label' => 'Статус', 'items' => HotelAdapter::getStatuses(), 'emptyItem' => ''])
             ->enum('source', ['label' => 'Источник', 'enum' => SourceEnum::class, 'emptyItem' => ''])
             ->numRange('guests_count', ['label' => 'Кол-во гостей'])
             ->dateRange('start_period', ['label' => 'Дата заезда'])

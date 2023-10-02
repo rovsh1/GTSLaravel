@@ -9,8 +9,8 @@ import { isDataValid, validateForm } from '~resources/composables/form'
 import {
   getConditionLabel,
   mapEntitiesToSelectOptions,
-} from '~resources/views/hotel-booking/show/lib/constants'
-import { RoomFormData } from '~resources/views/hotel-booking/show/lib/data-types'
+} from '~resources/views/booking/lib/constants'
+import { RoomFormData } from '~resources/views/booking/lib/data-types'
 import { useHotelRoomsStore } from '~resources/views/hotel-booking/show/store/hotel-rooms'
 
 import { addRoomToBooking, updateBookingRoom } from '~api/booking/hotel/rooms'

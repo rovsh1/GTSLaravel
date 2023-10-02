@@ -6,9 +6,11 @@ namespace Module\Booking\Airport\Infrastructure\Repository;
 
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Module\Booking\Airport\Domain\Entity\Booking as Entity;
 use Module\Booking\Airport\Domain\Repository\BookingRepositoryInterface;
+use Module\Booking\Airport\Domain\ValueObject\Details\AdditionalInfo;
 use Module\Booking\Airport\Domain\ValueObject\Details\AirportInfo;
 use Module\Booking\Airport\Domain\ValueObject\Details\ServiceInfo;
 use Module\Booking\Airport\Infrastructure\Models\Airport;
@@ -17,11 +19,12 @@ use Module\Booking\Airport\Infrastructure\Models\Booking as Model;
 use Module\Booking\Airport\Infrastructure\Models\BookingDetails;
 use Module\Booking\Common\Domain\ValueObject\BookingId;
 use Module\Booking\Common\Domain\ValueObject\BookingPrice;
+use Module\Booking\Common\Domain\ValueObject\CancelConditions;
+use Module\Booking\Common\Domain\ValueObject\CreatorId;
 use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\Common\Infrastructure\Repository\AbstractBookingRepository as BaseRepository;
 use Module\Booking\Order\Domain\ValueObject\GuestIdsCollection;
-use Module\Shared\Domain\ValueObject\Id;
-use Module\Shared\Enum\CurrencyEnum;
+use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
 class BookingRepository extends BaseRepository implements BookingRepositoryInterface
 {
@@ -41,6 +44,16 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         return $this->buildEntityFromModel($booking, $detailsModel);
     }
 
+    public function findOrFail(BookingId $id): Entity
+    {
+        $entity = $this->find($id->value());
+        if ($entity === null) {
+            throw new EntityNotFoundException('Booking not found');
+        }
+
+        return $entity;
+    }
+
     public function get(): Collection
     {
         return $this->getModel()::query()->withDetails()->get();
@@ -48,16 +61,28 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
 
     public function create(
         OrderId $orderId,
-        int $creatorId,
+        CreatorId $creatorId,
         int $serviceId,
         int $airportId,
         CarbonInterface $date,
         BookingPrice $price,
+        AdditionalInfo $additionalInfo,
+        CancelConditions $cancelConditions,
         ?string $note = null
     ): Entity {
         return \DB::transaction(
-            function () use ($orderId, $creatorId, $serviceId, $airportId, $date, $price, $note) {
-                $bookingModel = $this->createBase($orderId, $price, $creatorId);
+            function () use (
+                $orderId,
+                $creatorId,
+                $serviceId,
+                $airportId,
+                $date,
+                $price,
+                $note,
+                $additionalInfo,
+                $cancelConditions
+            ) {
+                $bookingModel = $this->createBase($orderId, $price, $creatorId->value());
 
                 $airport = Airport::find($airportId);
                 $service = AirportService::find($serviceId);
@@ -67,7 +92,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
                     orderId: new OrderId($bookingModel->order_id),
                     status: $bookingModel->status,
                     createdAt: $bookingModel->created_at->toImmutable(),
-                    creatorId: new Id($bookingModel->creator_id),
+                    creatorId: $creatorId,
                     price: $price,
                     note: $note,
                     airportInfo: new AirportInfo(
@@ -79,8 +104,11 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
                     serviceInfo: new ServiceInfo(
                         $service->id,
                         $service->name,
-                        $service->type
+                        $service->type,
+                        $service->supplier_id,
                     ),
+                    cancelConditions: $cancelConditions,
+                    additionalInfo: $additionalInfo,
                 );
 
                 BookingDetails::create([
@@ -112,22 +140,41 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         });
     }
 
+    public function delete(Entity $booking): void
+    {
+        $this->getModel()::query()->whereId($booking->id()->value())->update([
+            'status' => $booking->status(),
+            'deleted_at' => now()
+        ]);
+    }
+
+    public function query(): Builder
+    {
+        return $this->getModel()::query()->withDetails();
+    }
+
     private function buildEntityFromModel(Model $booking, BookingDetails $detailsModel): Entity
     {
         $detailsData = $detailsModel->data;
+
+        $cancelConditions = $detailsData['cancelConditions'] ?? null;
 
         return new Entity(
             id: new BookingId($booking->id),
             orderId: new OrderId($booking->order_id),
             status: $booking->status,
             createdAt: $booking->created_at->toImmutable(),
-            creatorId: new Id($booking->creator_id),
+            creatorId: new CreatorId($booking->creator_id),
             note: $detailsData['note'] ?? null,
             price: BookingPrice::fromData($detailsData['price']),
             guestIds: GuestIdsCollection::fromData($booking->guest_ids),
             airportInfo: AirportInfo::fromData($detailsData['airportInfo']),
             serviceInfo: ServiceInfo::fromData($detailsData['serviceInfo']),
-            date: CarbonImmutable::createFromTimestamp($detailsData['date'])
+            date: CarbonImmutable::createFromTimestamp($detailsData['date']),
+            additionalInfo: AdditionalInfo::fromData($detailsData['additionalInfo']),
+            cancelConditions: $cancelConditions !== null
+                ? CancelConditions::fromData($detailsData['cancelConditions'])
+                : null,
         );
     }
 
@@ -139,6 +186,8 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
             'serviceInfo' => $booking->serviceInfo()->toData(),
             'date' => $booking->date()->getTimestamp(),
             'price' => $booking->price()->toData(),
+            'additionalInfo' => $booking->additionalInfo()->toData(),
+            'cancelConditions' => $booking->cancelConditions()?->toData(),
         ];
     }
 }

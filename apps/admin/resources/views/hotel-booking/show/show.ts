@@ -2,11 +2,11 @@ import { createPinia } from 'pinia'
 
 import { createVueInstance } from '~lib/vue'
 
-import ActionsMenu from '../../booking/ActionsMenu.vue'
-import CopyButton from '../../booking/CopyButton.vue'
-import EditableManager from '../../booking/EditableManager.vue'
-import EditableNote from '../../booking/EditableNote.vue'
 import BookingRooms from './BookingRooms.vue'
+import ActionsMenu from './components/ActionsMenu.vue'
+import CopyButton from './components/CopyButton.vue'
+import EditableManager from './components/EditableManager.vue'
+import EditableNote from './components/EditableNote.vue'
 import ControlPanel from './ControlPanel.vue'
 
 import '~resources/views/main'

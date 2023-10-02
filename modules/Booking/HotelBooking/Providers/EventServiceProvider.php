@@ -5,7 +5,7 @@ namespace Module\Booking\HotelBooking\Providers;
 use Module\Booking\Common\Domain\Event\BookingDeleted;
 use Module\Booking\Common\Domain\Event\BookingEventInterface;
 use Module\Booking\Common\Domain\Event\BookingStatusEventInterface;
-use Module\Booking\Common\Domain\Event\Contracts\PriceBecomeDeprecatedEventInterface;
+use Module\Booking\HotelBooking\Domain\Event\PriceBecomeDeprecatedEventInterface;
 use Module\Booking\HotelBooking\Domain\Listener\BookingChangesListener;
 use Module\Booking\HotelBooking\Domain\Listener\BookingQuotaUpdaterListener;
 use Module\Booking\HotelBooking\Domain\Listener\RecalculateBookingPricesListener;

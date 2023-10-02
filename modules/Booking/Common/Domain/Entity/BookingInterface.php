@@ -12,9 +12,9 @@ use Module\Booking\Common\Domain\ValueObject\BookingId;
 use Module\Booking\Common\Domain\ValueObject\BookingPrice;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
+use Module\Booking\Common\Domain\ValueObject\CreatorId;
 use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Shared\Domain\Entity\EntityInterface;
-use Module\Shared\Domain\ValueObject\Id;
 
 interface BookingInterface extends EntityInterface
 {
@@ -28,7 +28,7 @@ interface BookingInterface extends EntityInterface
 
     public function createdAt(): CarbonImmutable;
 
-    public function creatorId(): Id;
+    public function creatorId(): CreatorId;
 
     public function price(): BookingPrice;
 
@@ -39,10 +39,6 @@ interface BookingInterface extends EntityInterface
      * @throws NotRequestableEntity
      */
     public function generateRequest(RequestRules $requestRules, RequestCreator $requestCreator): void;
-
-    public function generateVoucher(VoucherCreator $voucherCreator): void;
-
-    public function canSendClientVoucher(): bool;
 
     public function isManualGrossPrice(): bool;
 

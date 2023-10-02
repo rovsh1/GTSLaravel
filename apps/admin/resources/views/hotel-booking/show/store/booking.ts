@@ -33,7 +33,7 @@ export const useBookingStore = defineStore('booking', () => {
   const { data: availableActions, execute: fetchAvailableActions, isFetching: isAvailableActionsFetching } = useBookingAvailableActionsAPI({ bookingID })
   const { data: statuses, execute: fetchStatuses } = useBookingStatusesAPI()
 
-  const isEmptyGuests = computed<boolean>(() => Boolean(booking.value?.roomBookings.find((room: HotelRoomBooking) => room.guests.length === 0)))
+  const isEmptyGuests = computed<boolean>(() => Boolean(booking.value?.roomBookings.find((room: HotelRoomBooking) => room.guestIds.length === 0)))
   const isEmptyRooms = computed<boolean>(() => booking.value?.roomBookings.length === 0)
   const isStatusUpdateFetching = ref(false)
   const bookingManagerId = ref(manager.id)

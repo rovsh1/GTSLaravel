@@ -1,5 +1,5 @@
 import { Client } from '~resources/api/client'
-import { mapEntitiesToSelectOptions } from '~resources/views/hotel-booking/show/lib/constants'
+import { mapEntitiesToSelectOptions } from '~resources/views/booking/lib/constants'
 
 import { SelectOption } from '~components/Bootstrap/lib'
 

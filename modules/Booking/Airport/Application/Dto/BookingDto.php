@@ -8,12 +8,10 @@ use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Module\Booking\Airport\Application\Dto\Details\AirportInfoDto;
 use Module\Booking\Airport\Application\Dto\Details\ServiceInfoDto;
-use Module\Booking\Airport\Domain\Entity\Booking;
 use Module\Booking\Common\Application\Response\BookingDto as BaseDto;
+use Module\Booking\Common\Application\Response\BookingPriceDto;
 use Module\Booking\Common\Application\Response\StatusDto;
-use Module\Booking\Common\Domain\Entity\BookingInterface;
-use Module\Shared\Domain\Entity\EntityInterface;
-use Module\Shared\Domain\ValueObject\ValueObjectInterface;
+use Module\Booking\HotelBooking\Application\Dto\Details\CancelConditionsDto;
 
 class BookingDto extends BaseDto
 {
@@ -27,22 +25,11 @@ class BookingDto extends BaseDto
         public readonly AirportInfoDto $airportInfo,
         public readonly ServiceInfoDto $serviceInfo,
         public readonly CarbonInterface $date,
+        public readonly array $guestIds,
+        public readonly CancelConditionsDto $cancelConditions,
+        public readonly BookingPriceDto $price,
+        public readonly string $flightNumber,
     ) {
         parent::__construct($id, $status, $orderId, $createdAt, $creatorId);
-    }
-
-    public static function fromDomain(EntityInterface|BookingInterface|ValueObjectInterface|Booking $entity): static
-    {
-        return new static(
-            $entity->id()->value(),
-            $entity->status()->value,
-            $entity->orderId()->value(),
-            $entity->createdAt(),
-            $entity->creatorId()->value(),
-            $entity->note(),
-            AirportInfoDto::fromDomain($entity->airportInfo()),
-            ServiceInfoDto::fromDomain($entity->serviceInfo()),
-            $entity->date(),
-        );
     }
 }

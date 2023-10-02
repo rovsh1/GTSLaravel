@@ -32,7 +32,7 @@
     </div>
 
     <div class="content-body">
-        <div class="card card-form mt-3">
+        <div class="card card-form mt-3 pt-3">
             <div class="card-body">
                 <div class="d-flex flex-row gap-4">
                     <div class="w-100 rounded shadow-lg p-4">
@@ -66,11 +66,15 @@
                             </tr>
                             <tr>
                                 <th>Клиент</th>
-                                <td>{{ $client->name }}</td>
+                                <td>
+                                    <a href="{{ route('client.show', $client->id) }}" target="_blank">{{ $client->name }}</a>
+                                </td>
                             </tr>
                             <tr>
                                 <th>Отель</th>
-                                <td>{{ $hotel->name }}</td>
+                                <td>
+                                    <a href="{{ route('hotels.show', $hotel->id) }}" target="_blank">{{ $hotel->name }}</a>
+                                </td>
                             </tr>
                             <tr>
                                 <th>Транспортная бронь (ID)</th>

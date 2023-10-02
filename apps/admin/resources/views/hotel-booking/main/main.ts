@@ -1,5 +1,5 @@
 import axios from '~resources/js/app/api'
-import { getHumanRequestType } from '~resources/views/hotel-booking/show/lib/constants'
+import { getHumanRequestType } from '~resources/views/booking/lib/constants'
 
 import { downloadDocument } from '~api/booking/hotel/document'
 import { BookingRequest } from '~api/booking/hotel/request'

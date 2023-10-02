@@ -154,7 +154,7 @@
                             <tr>
                                 <td></td>
                                 <td>
-                                    {{++$index}}. {{$guest->fullName()}}, {{$guest->gender()->value}}, {{$guest->countryId()}}
+                                    {{++$index}}. {{$guest->fullName()}}, {{$guest->gender() === \Module\Shared\Enum\GenderEnum::MALE ? 'Мужской' : 'Женский' }}, {{$countryNamesById[$guest->countryId()] ?? ''}}
                                 </td>
                                 <td></td>
                             </tr>

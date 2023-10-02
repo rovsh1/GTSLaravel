@@ -5,6 +5,10 @@ export const getStatusClassByPrice = (seasonPrice: number | null, currentDayPric
     }
     return 'isUnActive'
   }
+  if (seasonPrice !== null) {
+    return 'isActive'
+  }
+
   return ''
 }
 

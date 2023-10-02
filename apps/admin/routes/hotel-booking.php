@@ -13,7 +13,7 @@ AclRoute::for('hotel-booking')
     ->post('/{booking}/copy', Controllers\Booking\Hotel\BookingController::class . '@copy', 'update', 'copy')
     ->put('/{booking}/status/update', Controllers\Booking\Hotel\BookingController::class . '@updateStatus', 'update', 'status.update')
     ->get('/{booking}/status/history', Controllers\Booking\Hotel\BookingController::class . '@getStatusHistory', 'read', 'status.history')
-    ->get('/{booking}/actions/available', Controllers\Booking\Hotel\BookingController::class . '@getAvailableActions', 'read', 'status.get')
+    ->get('/{booking}/actions/available', Controllers\Booking\Hotel\BookingController::class . '@getAvailableActions', 'read', 'actions.available.get')
     ->put('/{booking}/external/number', Controllers\Booking\Hotel\BookingController::class . '@updateExternalNumber', 'update', 'external.number.update')
     ->put('/{booking}/price', Controllers\Booking\Hotel\BookingController::class . '@updatePrice', 'update', 'price.update')
 

@@ -19,6 +19,8 @@ abstract class AbstractDocumentGenerator
             'phone' => $this->companyRequisites->phone(),
             'email' => $this->companyRequisites->email(),
             'address' => $this->companyRequisites->legalAddress(),
+            'signer' => $this->companyRequisites->signer(),
+            'cityAndCountry' => $this->companyRequisites->region(),
         ];
     }
 

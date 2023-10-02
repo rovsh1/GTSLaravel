@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Module\Booking\Common\Domain\ValueObject\BookingId;
 use Module\Booking\Common\Domain\ValueObject\BookingPrice;
+use Module\Booking\Common\Domain\ValueObject\CancelConditions;
+use Module\Booking\Common\Domain\ValueObject\CreatorId;
 use Module\Booking\Common\Domain\ValueObject\OrderId;
 use Module\Booking\Common\Infrastructure\Repository\AbstractBookingRepository as BaseRepository;
 use Module\Booking\HotelBooking\Domain\Entity\Booking;
@@ -16,20 +18,17 @@ use Module\Booking\HotelBooking\Domain\Repository\BookingRepositoryInterface;
 use Module\Booking\HotelBooking\Domain\Repository\RoomBookingRepositoryInterface;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\AdditionalInfo;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\BookingPeriod;
-use Module\Booking\HotelBooking\Domain\ValueObject\Details\CancelConditions;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\HotelInfo;
 use Module\Booking\HotelBooking\Domain\ValueObject\Details\RoomBookingCollection;
 use Module\Booking\HotelBooking\Infrastructure\Models\Booking as Model;
 use Module\Booking\HotelBooking\Infrastructure\Models\BookingDetails;
-use Module\Shared\Domain\ValueObject\Id;
 use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
-use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
 class BookingRepository extends BaseRepository implements BookingRepositoryInterface
 {
     public function __construct(
-        private readonly RoomBookingRepositoryInterface $roomBookingRepository
+        private readonly RoomBookingRepositoryInterface $roomBookingRepository,
     ) {}
 
     protected function getModel(): string
@@ -71,7 +70,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
 
     public function create(
         OrderId $orderId,
-        Id $creatorId,
+        CreatorId $creatorId,
         BookingPeriod $period,
         ?string $note = null,
         HotelInfo $hotelInfo,
@@ -207,7 +206,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
             orderId: new OrderId($booking->order_id),
             status: $booking->status,
             createdAt: $booking->created_at->toImmutable(),
-            creatorId: new Id($booking->creator_id),
+            creatorId: new CreatorId($booking->creator_id),
             note: $detailsData['note'] ?? null,
             hotelInfo: HotelInfo::fromData($detailsData['hotelInfo']),
             period: BookingPeriod::fromData($detailsData['period']),

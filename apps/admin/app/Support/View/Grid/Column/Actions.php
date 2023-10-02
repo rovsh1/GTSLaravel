@@ -17,7 +17,7 @@ class Actions extends AbstractColumn
         }
 
         $html = '<div class="dropdown">';
-        $html .= '<button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown"><i class="icon-dropdown-menu"></i></button>';
+        $html .= '<button type="button" class="btn" data-bs-toggle="dropdown"><i class="icon-dropdown-menu"></i></button>';
         $html .= '<div class="dropdown-menu">';
 
         foreach ($this->options['actions'] as $action) {

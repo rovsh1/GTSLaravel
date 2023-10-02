@@ -6,6 +6,7 @@ namespace Module\Booking\HotelBooking\Application\Dto;
 
 use Carbon\CarbonImmutable;
 use Module\Booking\Common\Application\Response\BookingDto as BaseDto;
+use Module\Booking\Common\Application\Response\BookingPriceDto;
 use Module\Booking\Common\Application\Response\StatusDto;
 use Module\Booking\Common\Domain\Entity\BookingInterface;
 use Module\Booking\HotelBooking\Application\Dto\Details\AdditionalInfoDto;

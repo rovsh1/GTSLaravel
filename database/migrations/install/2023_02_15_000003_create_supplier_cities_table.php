@@ -10,9 +10,9 @@ return new class extends Migration {
     {
         Schema::create('supplier_cities', function (Blueprint $table) {
             $table->unsignedInteger('city_id');
-            $table->unsignedInteger('provider_id');
+            $table->unsignedInteger('supplier_id');
 
-            $table->unique(['city_id', 'provider_id',], 'supplier_cities_uid');
+            $table->unique(['city_id', 'supplier_id',], 'supplier_cities_uid');
 
             $table->foreign('city_id', 'fk_supplier_cities_city_id')
                 ->references('id')
@@ -20,7 +20,7 @@ return new class extends Migration {
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
-            $table->foreign('provider_id', 'fk_supplier_cities_provider_id')
+            $table->foreign('supplier_id', 'fk_supplier_cities_supplier_id')
                 ->references('id')
                 ->on('suppliers')
                 ->cascadeOnUpdate()

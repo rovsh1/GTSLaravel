@@ -3,6 +3,9 @@ import { computed, unref } from 'vue'
 import { MaybeRef } from '@vueuse/core'
 
 import { BaseResponse, useAdminAPI } from '~api'
+import {
+  CancelConditions,
+} from '~api/booking/hotel/details'
 import { BaseBooking, BookingID } from '~api/booking/models'
 
 import { getNullableRef } from '~lib/vue'
@@ -21,6 +24,8 @@ export type AirportInfo = {
 export type Booking = {
   serviceInfo: ServiceInfo
   airportInfo: AirportInfo
+  cancelConditions: CancelConditions
+  guestIds: number[]
 } & BaseBooking
 
 export interface GetBookingPayload {

@@ -18,17 +18,20 @@ class DefaultFormCreateAction
     /**
      * @throws FormSubmitFailedException
      */
-    public function handle(string $title, array $viewData = []): LayoutContract
+    public function handle(string $title, string $view = 'default.form.form', array $viewData = []): LayoutContract
     {
         Breadcrumb::add($title);
 
         $this->form->action($this->getDefaultStoreUrl());
 
         return Layout::title($title)
-            ->view('default.form.form', [
-                'form' => $this->form,
-                'cancelUrl' => $this->getDefaultCancelUrl()
-            ]);
+            ->view(
+                $view,
+                array_merge([
+                    'form' => $this->form,
+                    'cancelUrl' => $this->getDefaultCancelUrl()
+                ], $viewData)
+            );
     }
 
     private function getDefaultStoreUrl(): string

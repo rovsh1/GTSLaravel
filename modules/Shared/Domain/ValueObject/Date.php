@@ -21,6 +21,6 @@ final class Date extends DateTimeImmutable
 
     public function __toString()
     {
-        return $this->format('Y-m-d');
+        return $this->format('d.m.Y');
     }
 }
