@@ -12,7 +12,9 @@ use Module\Supplier\Application\Response\ServiceContractDto;
 use Module\Supplier\Application\Response\ServicePriceDto;
 use Module\Supplier\Application\Response\SupplierDto;
 use Module\Supplier\Application\UseCase\Find;
+use Module\Supplier\Application\UseCase\FindTransferServiceContract;
 use Module\Supplier\Application\UseCase\GetTransferCancelConditions;
+use Module\Supplier\Application\UseCase\GetTransferServicePrice;
 
 class SupplierAdapter implements SupplierAdapterInterface
 {
@@ -29,12 +31,19 @@ class SupplierAdapter implements SupplierAdapterInterface
         CurrencyEnum $grossCurrency,
         CarbonInterface $date
     ): ?ServicePriceDto {
-        // TODO: Implement getTransferServicePrice() method.
+        return app(GetTransferServicePrice::class)->execute(
+            $supplierId,
+            $serviceId,
+            $carId,
+            $netCurrency,
+            $grossCurrency,
+            $date
+        );
     }
 
     public function findTransferServiceContract(int $serviceId): ?ServiceContractDto
     {
-        // TODO: Implement findTransferServiceContract() method.
+        return app(FindTransferServiceContract::class)->execute($serviceId);
     }
 
     public function getTransferCancelConditions(): CancelConditionsDto
