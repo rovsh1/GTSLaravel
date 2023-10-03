@@ -17,5 +17,4 @@ class BootServiceProvider extends ServiceProvider
         $this->app->register(HotelBootProvider::class);
         $this->app->register(AirportBootProvider::class);
     }
-
 }
