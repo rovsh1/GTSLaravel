@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Airport\Application\UseCase;
+namespace Module\Booking\Airport\Application\UseCase\Admin;
 
 use Illuminate\Database\Eloquent\Builder;
 use Module\Booking\Airport\Domain\Booking\Repository\BookingRepositoryInterface;
