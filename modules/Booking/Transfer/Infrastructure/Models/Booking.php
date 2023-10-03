@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace Module\Booking\Transfer\Infrastructure\Models;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
-use Module\Booking\Common\Infrastructure\Models\Booking as BaseModel;
+use Module\Booking\Domain\Shared\ValueObject\BookingTypeEnum;
+use Module\Booking\Infrastructure\Shared\Models\Booking as BaseModel;
 
 /**
  * Module\Booking\Transfer\Infrastructure\Models\Booking

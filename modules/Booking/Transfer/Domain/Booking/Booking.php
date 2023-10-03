@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Module\Booking\Transfer\Domain\Booking;
 
 use Carbon\CarbonImmutable;
-use Module\Booking\Common\Domain\Entity\AbstractBooking;
-use Module\Booking\Common\Domain\ValueObject\BookingId;
-use Module\Booking\Common\Domain\ValueObject\BookingPrice;
-use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
-use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
-use Module\Booking\Common\Domain\ValueObject\OrderId;
+use Module\Booking\Domain\Shared\Entity\AbstractBooking;
+use Module\Booking\Domain\Shared\ValueObject\BookingId;
+use Module\Booking\Domain\Shared\ValueObject\BookingPrice;
+use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
+use Module\Booking\Domain\Shared\ValueObject\BookingTypeEnum;
+use Module\Booking\Domain\Shared\ValueObject\OrderId;
 use Module\Booking\Transfer\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Booking\Transfer\Domain\Booking\ValueObject\TransportInfo;
 use Module\Shared\Domain\ValueObject\Date;

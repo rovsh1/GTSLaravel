@@ -2,7 +2,7 @@
 
 namespace Module\Support\MailManager\Domain\Adapter;
 
-use Module\Booking\HotelBooking\Application\Dto\BookingDto;
+use Module\Booking\Application\HotelBooking\Dto\BookingDto;
 
 interface HotelBookingAdapterInterface
 {

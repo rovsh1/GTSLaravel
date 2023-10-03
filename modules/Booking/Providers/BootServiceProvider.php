@@ -2,10 +2,10 @@
 
 namespace Module\Booking\Providers;
 
-use Module\Booking\Airport\Providers\BootServiceProvider as AirportBootProvider;
-use Module\Booking\Common\Providers\BootServiceProvider as CommonBootProvider;
-use Module\Booking\HotelBooking\Providers\BootServiceProvider as HotelBootProvider;
-use Module\Booking\Order\Providers\BootServiceProvider as OrderBootProvider;
+use Module\Booking\Providers\AirportBooking\BootServiceProvider as AirportBootProvider;
+use Module\Booking\Providers\HotelBooking\BootServiceProvider as HotelBootProvider;
+use Module\Booking\Providers\Order\BootServiceProvider as OrderBootProvider;
+use Module\Booking\Providers\Shared\BootServiceProvider as CommonBootProvider;
 use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider

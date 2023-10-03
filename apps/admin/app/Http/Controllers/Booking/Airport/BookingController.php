@@ -38,8 +38,8 @@ use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
-use Module\Booking\Common\Domain\Service\RequestRules;
-use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
+use Module\Booking\Domain\Shared\Service\RequestRules;
+use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
 use Module\Shared\Application\Exception\ApplicationException;
 use Module\Shared\Enum\SourceEnum;
 

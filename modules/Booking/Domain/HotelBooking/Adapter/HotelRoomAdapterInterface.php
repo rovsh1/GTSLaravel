@@ -1,0 +1,16 @@
+<?php
+
+namespace Module\Booking\Domain\HotelBooking\Adapter;
+
+use Module\Hotel\Application\Response\RoomDto;
+
+interface HotelRoomAdapterInterface
+{
+    public function findById(int $id): mixed;
+
+    /**
+     * @param int $hotelId
+     * @return array<int, RoomDto>
+     */
+    public function getByHotelId(int $hotelId): array;
+}
