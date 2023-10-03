@@ -14,7 +14,7 @@ class Supplier extends Model
 {
     use HasQuicksearch;
 
-    protected array $quicksearch = ['id', 'suppliers.name%'];
+    protected array $quicksearch = ['id', '%suppliers.name%'];
 
     protected $table = 'suppliers';
 
