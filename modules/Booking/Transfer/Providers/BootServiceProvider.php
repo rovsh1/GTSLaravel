@@ -2,14 +2,9 @@
 
 namespace Module\Booking\Transfer\Providers;
 
-use Module\Booking\HotelBooking\Infrastructure\Repository\BookingGuestRepository;
-use Module\Booking\HotelBooking\Domain\Repository\BookingQuotaRepositoryInterface;
-use Module\Booking\HotelBooking\Domain\Repository\BookingRepositoryInterface;
-use Module\Booking\HotelBooking\Domain\Repository\BookingGuestRepositoryInterface;
-use Module\Booking\HotelBooking\Domain\Repository\RoomBookingRepositoryInterface;
-use Module\Booking\HotelBooking\Infrastructure\Repository\BookingQuotaRepository;
-use Module\Booking\HotelBooking\Infrastructure\Repository\BookingRepository;
-use Module\Booking\HotelBooking\Infrastructure\Repository\RoomBookingRepository;
+
+use Module\Booking\Transfer\Domain;
+use Module\Booking\Transfer\Infrastructure;
 use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
@@ -17,5 +12,15 @@ class BootServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(EventServiceProvider::class);
+
+        $this->app->singleton(
+            Domain\Booking\Repository\BookingRepositoryInterface::class,
+            Infrastructure\Repository\BookingRepository::class
+        );
+
+        $this->app->singleton(
+            Domain\Booking\Adapter\SupplierAdapterInterface::class,
+            Infrastructure\Adapter\SupplierAdapter::class
+        );
     }
 }

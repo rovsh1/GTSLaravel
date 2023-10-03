@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Airport\Application\Dto\Details;
+namespace Module\Booking\Airport\Application\Response\Details;
 
 use Module\Booking\Airport\Domain\Booking\ValueObject\Details\AirportInfo;
 use Module\Shared\Application\Dto\AbstractDomainBasedDto;

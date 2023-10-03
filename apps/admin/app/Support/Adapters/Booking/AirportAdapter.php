@@ -14,6 +14,7 @@ use Module\Booking\Airport\Application\UseCase\Admin\CreateBooking;
 use Module\Booking\Airport\Application\UseCase\Admin\DeleteBooking;
 use Module\Booking\Airport\Application\UseCase\Admin\GetAvailableActions;
 use Module\Booking\Airport\Application\UseCase\Admin\GetBooking;
+use Module\Booking\Airport\Application\UseCase\Admin\GetBookingQuery;
 use Module\Booking\Airport\Application\UseCase\Admin\GetBookingsByFilters;
 use Module\Booking\Airport\Application\UseCase\Admin\GetStatuses;
 use Module\Booking\Airport\Application\UseCase\Admin\GetStatusHistory;
@@ -22,7 +23,6 @@ use Module\Booking\Airport\Application\UseCase\Admin\Guest\Unbind;
 use Module\Booking\Airport\Application\UseCase\Admin\UpdateBooking;
 use Module\Booking\Airport\Application\UseCase\Admin\UpdateBookingStatus;
 use Module\Booking\Airport\Application\UseCase\Admin\UpdateNote;
-use Module\Booking\Airport\Application\UseCase\GetBookingQuery;
 
 class AirportAdapter
 {

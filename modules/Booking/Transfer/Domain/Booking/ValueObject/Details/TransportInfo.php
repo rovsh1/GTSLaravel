@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Transfer\Domain\Booking\ValueObject;
+namespace Module\Booking\Transfer\Domain\Booking\ValueObject\Details;
 
 use Module\Shared\Domain\ValueObject\SerializableDataInterface;
 use Module\Shared\Domain\ValueObject\ValueObjectInterface;

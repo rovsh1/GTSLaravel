@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Airport\Application\Dto\Details;
+namespace Module\Booking\Transfer\Application\Response;
 
-use Module\Booking\Airport\Domain\Booking\ValueObject\Details\ServiceInfo;
+use Module\Booking\Transfer\Domain\Booking\ValueObject\Details\ServiceInfo;
 use Module\Shared\Application\Dto\AbstractDomainBasedDto;
 use Module\Shared\Domain\Entity\EntityInterface;
 use Module\Shared\Domain\ValueObject\ValueObjectInterface;
@@ -15,6 +15,7 @@ class ServiceInfoDto extends AbstractDomainBasedDto
         public readonly int $id,
         public readonly string $name,
         public readonly int $type,
+        public readonly int $cityId,
     ) {}
 
     public static function fromDomain(EntityInterface|ValueObjectInterface|ServiceInfo $entity): static
@@ -22,7 +23,8 @@ class ServiceInfoDto extends AbstractDomainBasedDto
         return new static(
             $entity->id(),
             $entity->name(),
-            $entity->type()->value
+            $entity->type()->value,
+            $entity->cityId()
         );
     }
 }

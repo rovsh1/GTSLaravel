@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Booking\Airport\Application\Factory;
 
-use Module\Booking\Airport\Application\Dto\BookingDto;
-use Module\Booking\Airport\Application\Dto\Details\AirportInfoDto;
-use Module\Booking\Airport\Application\Dto\Details\ServiceInfoDto;
+use Module\Booking\Airport\Application\Response\BookingDto;
+use Module\Booking\Airport\Application\Response\Details\AirportInfoDto;
+use Module\Booking\Airport\Application\Response\Details\ServiceInfoDto;
 use Module\Booking\Airport\Domain\Booking\Booking;
 use Module\Booking\Common\Application\Factory\AbstractBookingDtoFactory;
 use Module\Booking\Common\Application\Factory\BookingPriceDtoFactory;

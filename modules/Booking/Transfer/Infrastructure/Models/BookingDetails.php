@@ -14,6 +14,7 @@ class BookingDetails extends Model
         'booking_id',
         'car_id',
         'service_id',
+        'city_id',
         'date',
         'data',
     ];

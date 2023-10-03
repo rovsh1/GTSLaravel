@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Airport\Infrastructure\Models;
+namespace Module\Booking\Transfer\Infrastructure\Models;
 
 use Module\Shared\Enum\Booking\TransferServiceTypeEnum;
 use Sdk\Module\Database\Eloquent\Model;

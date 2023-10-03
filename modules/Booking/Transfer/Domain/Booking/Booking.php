@@ -10,11 +10,10 @@ use Module\Booking\Common\Domain\ValueObject\BookingId;
 use Module\Booking\Common\Domain\ValueObject\BookingPrice;
 use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
 use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
+use Module\Booking\Common\Domain\ValueObject\CancelConditions;
+use Module\Booking\Common\Domain\ValueObject\CreatorId;
 use Module\Booking\Common\Domain\ValueObject\OrderId;
-use Module\Booking\Transfer\Domain\Booking\ValueObject\ServiceInfo;
-use Module\Booking\Transfer\Domain\Booking\ValueObject\TransportInfo;
-use Module\Shared\Domain\ValueObject\Date;
-use Module\Shared\Domain\ValueObject\Id;
+use Module\Booking\Transfer\Domain\Booking\ValueObject\Details\ServiceInfo;
 
 class Booking extends AbstractBooking
 {
@@ -23,11 +22,10 @@ class Booking extends AbstractBooking
         OrderId $orderId,
         BookingStatusEnum $status,
         CarbonImmutable $createdAt,
-        Id $creatorId,
+        CreatorId $creatorId,
         BookingPrice $price,
         private readonly ServiceInfo $serviceInfo,
-        private readonly TransportInfo $transportInfo,
-        private readonly Date $date,
+        private ?CancelConditions $cancelConditions,
         private ?string $note
     ) {
         parent::__construct($id, $orderId, $status, $createdAt, $creatorId, $price);
@@ -38,16 +36,6 @@ class Booking extends AbstractBooking
         return $this->serviceInfo;
     }
 
-    public function transportInfo(): TransportInfo
-    {
-        return $this->transportInfo;
-    }
-
-    public function date(): Date
-    {
-        return $this->date;
-    }
-
     public function note(): ?string
     {
         return $this->note;
@@ -56,6 +44,16 @@ class Booking extends AbstractBooking
     public function setNote(string|null $note): void
     {
         $this->note = $note;
+    }
+
+    public function cancelConditions(): ?CancelConditions
+    {
+        return $this->cancelConditions;
+    }
+
+    public function setCancelConditions(?CancelConditions $cancelConditions): void
+    {
+        $this->cancelConditions = $cancelConditions;
     }
 
     public function type(): BookingTypeEnum
