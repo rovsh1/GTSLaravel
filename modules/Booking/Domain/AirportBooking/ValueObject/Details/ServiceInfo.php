@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Airport\Domain\Booking\ValueObject\Details;
+namespace Module\Booking\Domain\AirportBooking\ValueObject\Details;
 
 use Module\Booking\Domain\Shared\ValueObject\ServiceInfoInterface;
 use Module\Shared\Domain\ValueObject\SerializableDataInterface;

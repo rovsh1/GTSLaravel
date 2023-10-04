@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Airport\Application\UseCase\Admin;
+namespace Module\Booking\Application\AirportBooking\UseCase\Admin;
 
-use Module\Booking\Airport\Domain\Booking\Repository\BookingGuestRepositoryInterface;
-use Module\Booking\Airport\Domain\Booking\Repository\BookingRepositoryInterface;
+use Module\Booking\Domain\AirportBooking\Repository\BookingGuestRepositoryInterface;
+use Module\Booking\Domain\AirportBooking\Repository\BookingRepositoryInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
@@ -25,13 +25,13 @@ class CopyBooking implements UseCaseInterface
         $newBooking = $this->repository->create(
             orderId: $booking->orderId(),
             creatorId: $booking->creatorId(),
-            price: $booking->price(),
-            date: $booking->date(),
-            note: $booking->note(),
             serviceId: $booking->serviceInfo()->id(),
             airportId: $booking->airportInfo()->id(),
+            date: $booking->date(),
+            price: $booking->price(),
             additionalInfo: $booking->additionalInfo(),
             cancelConditions: $booking->cancelConditions(),
+            note: $booking->note(),
         );
 
         foreach ($booking->guestIds() as $guestId) {

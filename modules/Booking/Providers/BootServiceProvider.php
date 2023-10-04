@@ -6,6 +6,7 @@ use Module\Booking\Providers\AirportBooking\BootServiceProvider as AirportBootPr
 use Module\Booking\Providers\HotelBooking\BootServiceProvider as HotelBootProvider;
 use Module\Booking\Providers\Order\BootServiceProvider as OrderBootProvider;
 use Module\Booking\Providers\Shared\BootServiceProvider as CommonBootProvider;
+use Module\Booking\Providers\TransferBooking\BootServiceProvider as TransferBootProvider;
 use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
@@ -16,5 +17,6 @@ class BootServiceProvider extends ServiceProvider
         $this->app->register(OrderBootProvider::class);
         $this->app->register(HotelBootProvider::class);
         $this->app->register(AirportBootProvider::class);
+        $this->app->register(TransferBootProvider::class);
     }
 }

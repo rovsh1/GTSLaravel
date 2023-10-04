@@ -96,13 +96,13 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
                     status: $bookingModel->status,
                     createdAt: $bookingModel->created_at->toImmutable(),
                     creatorId: $creatorId,
-                    roomBookings: new RoomBookingCollection(),
-                    cancelConditions: $cancelConditions,
-                    additionalInfo: null,
+                    price: $price,
+                    note: $note,
                     hotelInfo: $hotelInfo,
                     period: $period,
-                    note: $note,
-                    price: $price,
+                    additionalInfo: null,
+                    roomBookings: new RoomBookingCollection(),
+                    cancelConditions: $cancelConditions,
                     quotaProcessingMethod: $quotaProcessingMethod,
                 );
 
@@ -207,13 +207,13 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
             status: $booking->status,
             createdAt: $booking->created_at->toImmutable(),
             creatorId: new CreatorId($booking->creator_id),
+            price: BookingPrice::fromData($booking->price),
             note: $detailsData['note'] ?? null,
             hotelInfo: HotelInfo::fromData($detailsData['hotelInfo']),
             period: BookingPeriod::fromData($detailsData['period']),
             additionalInfo: $additionalInfo !== null ? AdditionalInfo::fromData($detailsData['additionalInfo']) : null,
             roomBookings: $roomBookings,
             cancelConditions: CancelConditions::fromData($detailsData['cancelConditions']),
-            price: BookingPrice::fromData($booking->price),
             quotaProcessingMethod: $detailsModel->quota_processing_method
         );
     }

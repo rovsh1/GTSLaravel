@@ -37,6 +37,7 @@ return new class extends Migration {
 
         $this->upBookingHotel();
         $this->upBookingAirport();
+        $this->upBookingTransfer();
         $this->upAdministratorBookings();
     }
 
@@ -93,6 +94,37 @@ return new class extends Migration {
                 ->on('supplier_airport_services')
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
+        });
+    }
+
+    private function upBookingTransfer(): void
+    {
+        Schema::create('booking_transfer_details', function (Blueprint $table) {
+            $table->unsignedInteger('booking_id')->primary();
+            $table->unsignedInteger('service_id');
+            $table->unsignedInteger('city_id');
+            $table->date('date_start')->nullable();
+            $table->date('date_end')->nullable();
+            $table->json('data');
+            $table->timestamps();
+
+            $table->foreign('booking_id')
+                ->references('id')
+                ->on('bookings')
+                ->restrictOnDelete()
+                ->cascadeOnUpdate();
+
+            $table->foreign('service_id')
+                ->references('id')
+                ->on('supplier_transfer_services')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+
+            $table->foreign('city_id')
+                ->references('id')
+                ->on('r_cities')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
         });
     }
 

@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Airport\Infrastructure\Repository;
+namespace Module\Booking\Infrastructure\AirportBooking\Repository;
 
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Module\Booking\Airport\Domain\Booking\AirportBooking as Entity;
-use Module\Booking\Airport\Domain\Booking\Repository\BookingRepositoryInterface;
-use Module\Booking\Airport\Domain\Booking\ValueObject\Details\AdditionalInfo;
-use Module\Booking\Airport\Domain\Booking\ValueObject\Details\AirportInfo;
-use Module\Booking\Airport\Domain\Booking\ValueObject\Details\ServiceInfo;
-use Module\Booking\Airport\Infrastructure\Models\Airport;
-use Module\Booking\Airport\Infrastructure\Models\AirportService;
-use Module\Booking\Airport\Infrastructure\Models\Booking as Model;
-use Module\Booking\Airport\Infrastructure\Models\BookingDetails;
+use Module\Booking\Domain\AirportBooking\AirportBooking as Entity;
+use Module\Booking\Domain\AirportBooking\Repository\BookingRepositoryInterface;
+use Module\Booking\Domain\AirportBooking\ValueObject\Details\AdditionalInfo;
+use Module\Booking\Domain\AirportBooking\ValueObject\Details\AirportInfo;
+use Module\Booking\Domain\AirportBooking\ValueObject\Details\ServiceInfo;
+use Module\Booking\Infrastructure\AirportBooking\Models\Airport;
+use Module\Booking\Infrastructure\AirportBooking\Models\AirportService;
+use Module\Booking\Infrastructure\AirportBooking\Models\Booking as Model;
+use Module\Booking\Infrastructure\AirportBooking\Models\BookingDetails;
 use Module\Booking\Domain\Order\ValueObject\GuestIdsCollection;
 use Module\Booking\Domain\Shared\ValueObject\BookingId;
 use Module\Booking\Domain\Shared\ValueObject\BookingPrice;
@@ -94,21 +94,21 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
                     createdAt: $bookingModel->created_at->toImmutable(),
                     creatorId: $creatorId,
                     price: $price,
-                    note: $note,
-                    airportInfo: new AirportInfo(
-                        $airport->id,
-                        $airport->name
-                    ),
-                    guestIds: new GuestIdsCollection(),
-                    date: $date->toImmutable(),
                     serviceInfo: new ServiceInfo(
                         $service->id,
                         $service->name,
                         $service->type,
                         $service->supplier_id,
                     ),
+                    airportInfo: new AirportInfo(
+                        $airport->id,
+                        $airport->name
+                    ),
+                    date: $date->toImmutable(),
                     cancelConditions: $cancelConditions,
                     additionalInfo: $additionalInfo,
+                    guestIds: new GuestIdsCollection(),
+                    note: $note,
                 );
 
                 BookingDetails::create([
@@ -165,16 +165,16 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
             status: $booking->status,
             createdAt: $booking->created_at->toImmutable(),
             creatorId: new CreatorId($booking->creator_id),
-            note: $detailsData['note'] ?? null,
             price: BookingPrice::fromData($detailsData['price']),
-            guestIds: GuestIdsCollection::fromData($booking->guest_ids),
-            airportInfo: AirportInfo::fromData($detailsData['airportInfo']),
             serviceInfo: ServiceInfo::fromData($detailsData['serviceInfo']),
+            airportInfo: AirportInfo::fromData($detailsData['airportInfo']),
             date: CarbonImmutable::createFromTimestamp($detailsData['date']),
-            additionalInfo: AdditionalInfo::fromData($detailsData['additionalInfo']),
             cancelConditions: $cancelConditions !== null
                 ? CancelConditions::fromData($detailsData['cancelConditions'])
                 : null,
+            additionalInfo: AdditionalInfo::fromData($detailsData['additionalInfo']),
+            guestIds: GuestIdsCollection::fromData($booking->guest_ids),
+            note: $detailsData['note'] ?? null,
         );
     }
 

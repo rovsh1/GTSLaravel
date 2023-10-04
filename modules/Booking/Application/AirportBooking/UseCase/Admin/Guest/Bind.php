@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Airport\Application\UseCase\Admin\Guest;
+namespace Module\Booking\Application\AirportBooking\UseCase\Admin\Guest;
 
 use Module\Booking\Airport\Domain\Booking\Event\GuestBinded;
 use Module\Booking\Airport\Domain\Booking\Repository\BookingGuestRepositoryInterface;

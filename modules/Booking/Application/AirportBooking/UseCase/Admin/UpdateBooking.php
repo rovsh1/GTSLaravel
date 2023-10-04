@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Airport\Application\UseCase\Admin;
+namespace Module\Booking\Application\AirportBooking\UseCase\Admin;
 
-use Module\Booking\Airport\Application\Factory\CancelConditionsFactory;
-use Module\Booking\Airport\Application\Request\UpdateBookingDto;
-use Module\Booking\Airport\Domain\Booking\AirportBooking;
-use Module\Booking\Airport\Domain\Booking\Repository\BookingRepositoryInterface;
-use Module\Booking\Airport\Domain\Booking\ValueObject\Details\AdditionalInfo;
+use Module\Booking\Application\AirportBooking\Factory\CancelConditionsFactory;
+use Module\Booking\Application\AirportBooking\Request\UpdateBookingDto;
+use Module\Booking\Domain\AirportBooking\AirportBooking;
+use Module\Booking\Domain\AirportBooking\Repository\BookingRepositoryInterface;
+use Module\Booking\Domain\AirportBooking\ValueObject\Details\AdditionalInfo;
 use Module\Booking\Domain\Shared\Service\BookingUpdater;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 

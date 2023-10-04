@@ -96,8 +96,8 @@ class QuotaValidator
             foreach ($roomsCount as $roomId => $count) {
                 $roomsCountByDate[] = new RoomDateQuotaReservation(
                     roomId: $roomId,
-                    date: $date,
-                    count: $count
+                    count: $count,
+                    date: $date
                 );
             }
         }

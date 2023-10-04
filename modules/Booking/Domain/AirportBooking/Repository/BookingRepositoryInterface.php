@@ -1,12 +1,12 @@
 <?php
 
-namespace Module\Booking\Airport\Domain\Booking\Repository;
+namespace Module\Booking\Domain\AirportBooking\Repository;
 
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Module\Booking\Airport\Domain\Booking\AirportBooking;
-use Module\Booking\Airport\Domain\Booking\ValueObject\Details\AdditionalInfo;
+use Module\Booking\Domain\AirportBooking\AirportBooking;
+use Module\Booking\Domain\AirportBooking\ValueObject\Details\AdditionalInfo;
 use Module\Booking\Domain\Shared\Repository\BookingRepositoryInterface as Base;
 use Module\Booking\Domain\Shared\ValueObject\BookingId;
 use Module\Booking\Domain\Shared\ValueObject\BookingPrice;

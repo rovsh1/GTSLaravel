@@ -14,11 +14,11 @@ enum BookingTypeEnum: int
     {
         if ($booking instanceof \Module\Booking\Domain\HotelBooking\HotelBooking)
             return self::HOTEL;
-        elseif ($booking instanceof \Module\Booking\Common\Domain\Entity\TransferReservation\Transfer)
+        elseif ($booking instanceof \Module\Booking\Domain\Entity\TransferReservation\Transfer)
             return self::TRANSFER;
-        elseif ($booking instanceof \Module\Booking\Common\Domain\Entity\AirportReservation\Airport)
+        elseif ($booking instanceof \Module\Booking\Domain\Entity\AirportReservation\Airport)
             return self::AIRPORT;
-        elseif ($booking instanceof \Module\Booking\Common\Domain\Entity\AdditionalReservation\AdditionalReservation)
+        elseif ($booking instanceof \Module\Booking\Domain\Entity\AdditionalReservation\AdditionalReservation)
             return self::ADDITIONAL;
         else
             throw new \DomainException('Reservation type undefined');

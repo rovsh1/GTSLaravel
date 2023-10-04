@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Airport\Application\Factory;
+namespace Module\Booking\Application\AirportBooking\Factory;
 
 use Carbon\CarbonInterface;
 use Module\Booking\Airport\Domain\Booking\Adapter\SupplierAdapterInterface;
@@ -31,8 +31,8 @@ class CancelConditionsFactory
             $dailyMarkupOptions = collect($baseCancelConditions->dailyMarkups)->map(
                 fn(DailyMarkupDto $dailyMarkupDto) => new DailyMarkupOption(
                     percent: new Percent($dailyMarkupDto->percent),
-                    daysCount: $dailyMarkupDto->daysCount,
-                    cancelPeriodType: CancelPeriodTypeEnum::FULL_PERIOD
+                    cancelPeriodType: CancelPeriodTypeEnum::FULL_PERIOD,
+                    daysCount: $dailyMarkupDto->daysCount
                 )
             );
         }

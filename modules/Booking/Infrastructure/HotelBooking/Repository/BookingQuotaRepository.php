@@ -39,8 +39,8 @@ class BookingQuotaRepository implements BookingQuotaRepositoryInterface
                 roomId: $roomQuota->room_id,
                 date: $roomQuota->date->toImmutable(),
                 status: $roomQuota->status,
-                countAvailable: $roomQuota->count_available,
-                countTotal: $roomQuota->count_total
+                countTotal: $roomQuota->count_total,
+                countAvailable: $roomQuota->count_available
             )
         )->all();
     }

@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Airport\Application\UseCase\Admin;
+namespace Module\Booking\Application\AirportBooking\UseCase\Admin;
 
-use Module\Booking\Airport\Infrastructure\Repository\BookingRepository;
+use Module\Booking\Domain\AirportBooking\Repository\BookingRepositoryInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class GetBookingsByFilters implements UseCaseInterface
 {
     public function __construct(
-        private readonly BookingRepository $repository
+        private readonly BookingRepositoryInterface $repository
     ) {}
 
     public function execute(array $filters = []): mixed

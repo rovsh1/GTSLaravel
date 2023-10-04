@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Airport\Domain\Booking\Adapter;
+namespace Module\Booking\Domain\AirportBooking\Adapter;
 
 use Carbon\CarbonInterface;
 use Module\Shared\Enum\CurrencyEnum;

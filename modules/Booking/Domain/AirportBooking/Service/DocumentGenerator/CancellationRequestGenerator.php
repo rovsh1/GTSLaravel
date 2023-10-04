@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Booking\Airport\Domain\Booking\Service\DocumentGenerator;
+namespace Module\Booking\Domain\AirportBooking\Service\DocumentGenerator;
 
 use Module\Booking\Airport\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Application\Shared\Service\StatusStorage;
@@ -36,7 +36,7 @@ class CancellationRequestGenerator extends AbstractRequestGenerator
 
         $contract = $this->supplierAdapter->findAirportServiceContract($booking->serviceInfo()->id());
         $contractNumber = $contract?->id;
-        $contractDate = $contract !== null ? $contract->dateStart : null;
+        $contractDate = $contract?->dateStart;
 
         $supplier = $this->supplierAdapter->find($booking->serviceInfo()->supplierId());
         $airportDirector = $supplier->directorFullName;

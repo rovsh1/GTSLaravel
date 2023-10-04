@@ -113,8 +113,8 @@ class RoomBooking extends AbstractAggregateRoot implements EntityInterface
     {
         return new static(
             id: new RoomBookingId($data['id']),
-            orderId: new OrderId($data['orderId']),
             bookingId: new BookingId($data['bookingId']),
+            orderId: new OrderId($data['orderId']),
             roomInfo: RoomInfo::fromData($data['roomInfo']),
             guestsIds: GuestIdsCollection::fromData($data['guestIds']),
             details: RoomBookingDetails::fromData($data['details']),

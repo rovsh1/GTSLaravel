@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Airport\Domain\Booking\ValueObject;
+namespace Module\Booking\Domain\AirportBooking\ValueObject;
 
 use Module\Shared\Domain\ValueObject\AbstractIntId;
 

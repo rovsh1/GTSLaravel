@@ -24,7 +24,7 @@ abstract class AbstractGetBooking implements UseCaseInterface
         /** @var BookingInterface $booking */
         $booking = $this->repository->find($id);
         if ($booking === null) {
-            throw new EntityNotFoundException("Booking not found [{$id}]");
+            throw new EntityNotFoundException("Booking not found [$id]");
         }
 
         return $this->factory->createFromEntity($booking);

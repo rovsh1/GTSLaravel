@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Airport\Domain\Booking\Service\PriceCalculator;
+namespace Module\Booking\Domain\AirportBooking\Service\PriceCalculator;
 
 use Module\Booking\Airport\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Airport\Domain\Booking\AirportBooking;

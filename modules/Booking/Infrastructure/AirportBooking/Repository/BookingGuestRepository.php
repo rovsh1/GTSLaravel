@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Airport\Infrastructure\Repository;
+namespace Module\Booking\Infrastructure\AirportBooking\Repository;
 
 use Illuminate\Support\Facades\DB;
 use Module\Booking\Airport\Domain\Booking\Repository\BookingGuestRepositoryInterface;

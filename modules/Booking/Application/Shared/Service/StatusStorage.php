@@ -37,7 +37,7 @@ class StatusStorage
 
     private function getNameByLocale(StatusSettings $model, ?string $locale = null): ?string
     {
-        $preparedLocale = $locale !== null ? $locale : 'ru';
+        $preparedLocale = $locale ?? 'ru';
         $property = "name_{$preparedLocale}";
 
         return $model->$property;

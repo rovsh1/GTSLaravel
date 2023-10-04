@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Airport\Application\UseCase\Admin\Request;
+namespace Module\Booking\Application\AirportBooking\UseCase\Admin\Request;
 
-use Module\Booking\Airport\Domain\Booking\Repository\BookingRepositoryInterface;
+use Module\Booking\Domain\AirportBooking\Repository\BookingRepositoryInterface;
 use Module\Booking\Application\Shared\Support\UseCase\Admin\Request\SendRequest as Base;
 use Module\Booking\Domain\Shared\Service\BookingUpdater;
 use Module\Booking\Domain\Shared\Service\RequestCreator;

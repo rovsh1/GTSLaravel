@@ -36,8 +36,8 @@ class BookingPriceChangeDecorator
     public function setPrices(PriceItem $netPrice, PriceItem $grossPrice): static
     {
         $this->priceAfter = new BookingPrice(
-            grossPrice: $grossPrice,
             netPrice: $netPrice,
+            grossPrice: $grossPrice,
         );
 
         return $this;

@@ -53,9 +53,9 @@ class RoomUpdaterDataHelperFactory
             details: new RoomBookingDetails(
                 rateId: $request->rateId,
                 isResident: $request->isResident,
-                guestNote: $request->note,
                 earlyCheckIn: $earlyCheckIn,
                 lateCheckOut: $lateCheckOut,
+                guestNote: $request->note,
                 discount: new Percent($request->discount ?? 0),
             ),
             price: $price

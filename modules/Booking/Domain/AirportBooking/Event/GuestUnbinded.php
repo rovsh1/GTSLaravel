@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Booking\Airport\Domain\Booking\Event;
+namespace Module\Booking\Domain\AirportBooking\Event;
 
 use Module\Booking\Domain\Order\ValueObject\GuestId;
 use Module\Booking\Domain\Shared\Event\BookingEventInterface;

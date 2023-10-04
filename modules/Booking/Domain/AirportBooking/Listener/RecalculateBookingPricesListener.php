@@ -1,10 +1,10 @@
 <?php
 
-namespace Module\Booking\Airport\Domain\Booking\Listener;
+namespace Module\Booking\Domain\AirportBooking\Listener;
 
-use Module\Booking\Airport\Domain\Booking\Event\PriceBecomeDeprecatedEventInterface;
-use Module\Booking\Airport\Domain\Booking\Repository\BookingRepositoryInterface;
-use Module\Booking\Airport\Domain\Booking\Service\PriceCalculator\BookingCalculator;
+use Module\Booking\Domain\AirportBooking\Event\PriceBecomeDeprecatedEventInterface;
+use Module\Booking\Domain\AirportBooking\Repository\BookingRepositoryInterface;
+use Module\Booking\Domain\AirportBooking\Service\PriceCalculator\BookingCalculator;
 use Module\Booking\Domain\Shared\Service\BookingUpdater;
 use Sdk\Module\Contracts\Event\DomainEventInterface;
 use Sdk\Module\Contracts\Event\DomainEventListenerInterface;

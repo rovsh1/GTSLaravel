@@ -1,11 +1,11 @@
 <?php
 
-namespace Module\Booking\Airport\Domain\Booking\Service\PriceCalculator\Support;
+namespace Module\Booking\Domain\AirportBooking\Service\PriceCalculator\Support;
 
 use Carbon\CarbonInterface;
-use Module\Booking\Airport\Domain\Booking\Adapter\SupplierAdapterInterface;
-use Module\Booking\Airport\Domain\Booking\Exception\NotFoundAirportServicePrice;
-use Module\Booking\Airport\Domain\Booking\Service\PriceCalculator\Model\ServicePrice;
+use Module\Booking\Domain\AirportBooking\Adapter\SupplierAdapterInterface;
+use Module\Booking\Domain\AirportBooking\Exception\NotFoundAirportServicePrice;
+use Module\Booking\Domain\AirportBooking\Service\PriceCalculator\Model\ServicePrice;
 use Module\Shared\Enum\CurrencyEnum;
 
 class ServicePriceFetcher

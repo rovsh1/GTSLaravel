@@ -8,6 +8,14 @@
     @vite('resources/views/transfer-booking/form/form.ts')
 @endsection
 
+@section('head-end')
+    <script>
+      window['view-initial-data-transfer-booking'] = {{ Js::from([
+            'bookingID' => $model->id ?? null,
+        ]) }}
+    </script>
+@endsection
+
 @section('content')
     {!! ContentTitle::default() !!}
 
