@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Supplier\Infrastructure\Repository;
 
-use Module\Booking\Airport\Domain\Booking\ValueObject\ContractId;
+use Module\Booking\Domain\AirportBooking\ValueObject\ContractId;
 use Module\Shared\Domain\ValueObject\Date;
 use Module\Shared\Enum\Supplier\ContractServiceTypeEnum;
 use Module\Supplier\Domain\Supplier\Entity\Contract;

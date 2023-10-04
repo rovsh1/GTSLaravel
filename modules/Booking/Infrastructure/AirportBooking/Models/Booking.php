@@ -16,7 +16,7 @@ use Module\Booking\Infrastructure\Shared\Models\Booking as BaseModel;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
 
 /**
- * Module\Booking\Airport\Infrastructure\Models\Booking
+ * Module\Booking\Infrastructure\AirportBooking\Models\Booking
  *
  * @property int $id
  * @property-read int[] $guest_ids
