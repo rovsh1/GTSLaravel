@@ -38,7 +38,7 @@ class GetAirportServicePrice implements UseCaseInterface
             ->whereDate($date)
             ->first();
         if ($price === null) {
-            throw new EntityNotFoundException('Service Price not found');
+            return null;
         }
 
         return $this->buildDtoFromModel($price, $grossCurrency);
