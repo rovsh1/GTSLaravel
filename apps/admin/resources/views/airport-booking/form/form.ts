@@ -2,7 +2,12 @@ import { isEmpty } from 'lodash'
 import { createPinia } from 'pinia'
 import { z } from 'zod'
 
+import axios from '~resources/js/app/api'
 import CreateClientButton from '~resources/views/booking/CreateClientButton.vue'
+import { mapClientsToSelect2Options } from '~resources/views/hotel-booking/form/lib/constants'
+import { Select2Option } from '~resources/views/hotel-booking/form/lib/types'
+
+import { Client } from '~api/client'
 
 import { formatDate } from '~lib/date'
 import { useApplicationEventBus } from '~lib/event-bus'
@@ -11,19 +16,18 @@ import { createVueInstance } from '~lib/vue'
 
 import '~resources/views/main'
 
-interface ServiceSearchPayload {
-  city_id: null | number
-}
-
 const { bookingID } = requestInitialData('view-initial-data-airport-booking', z.object({
   bookingID: z.number().nullable(),
 }))
 
+interface ServiceSearchPayload {
+  city_id: null | number
+}
+
 const pinia = createPinia()
 
-const clients: any[] = [
-  { id: 14, name: 'test', currency_id: 1 },
-]
+let clients = [] as Client[]
+
 const serviceSearchPayload: ServiceSearchPayload = { city_id: null }
 
 $(() => {
@@ -63,7 +67,7 @@ $(() => {
         $('#form_data_order_id').attr('disabled', 'disabled')
       } else {
         $('#form_data_order_id').removeAttr('disabled')
-        toggleCurrencyIdField(!client.currency_id)
+        toggleCurrencyIdField(client.currency_id === null)
       }
     }
 
@@ -77,6 +81,9 @@ $(() => {
         disabledText: 'Выберите клиента',
         parent: $clientIdInput,
         dataIndex: 'client_id',
+        allowEmpty: true,
+        emptyText: false,
+        emptyItem: 'Пусто',
       })
     }
   }
@@ -131,6 +138,15 @@ $(() => {
     childChange: toggleOrderFields,
   })
 
+  const reloadClientsSelect = async (): Promise<void> => {
+    const clientsList = await axios.get('/client/list')
+    const clientsListData = clientsList && clientsList.data ? clientsList.data : []
+    clients = clientsListData
+    const clientsSelectOptions: Select2Option[] = mapClientsToSelect2Options(clientsListData)
+    $clientIdSelect.select2('destroy').empty().select2({ data: clientsSelectOptions }).val('')
+      .trigger('change')
+  }
+
   if (bookingID === null) {
     const $clientIdSelectWrapper = $clientIdSelect.parent()
     $clientIdSelectWrapper.removeClass('col-sm-7')
@@ -148,8 +164,12 @@ $(() => {
     })
 
     const eventBus = useApplicationEventBus()
-    eventBus.on('client-created', (event: { clientId: number }) => {
+    eventBus.on('client-created', async (event: { clientId: number }) => {
+      await reloadClientsSelect()
       $clientIdSelect.val(event.clientId).trigger('change')
+      handleChangeClientId(event.clientId)
     })
+
+    reloadClientsSelect()
   }
 })
