@@ -13,7 +13,7 @@ use Module\Supplier\Application\Response\SupplierDto;
 
 interface SupplierAdapterInterface
 {
-    public function find(int $id): SupplierDto;
+    public function find(int $id): ?SupplierDto;
 
     public function getAirportServicePrice(
         int $supplierId,

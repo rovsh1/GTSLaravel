@@ -18,7 +18,7 @@ use Module\Supplier\Application\UseCase\GetAirportServicePrice;
 
 class SupplierAdapter implements SupplierAdapterInterface
 {
-    public function find(int $id): SupplierDto
+    public function find(int $id): ?SupplierDto
     {
         return app(Find::class)->execute($id);
     }
