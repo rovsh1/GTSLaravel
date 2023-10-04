@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Domain\Shared\Service;
+namespace Module\Booking\Domain\BookingRequest\Service;
 
-use Module\Booking\Domain\Shared\Entity\Request;
+use Module\Booking\Domain\BookingRequest\BookingRequest;
+use Module\Booking\Domain\BookingRequest\Repository\RequestRepositoryInterface;
+use Module\Booking\Domain\BookingRequest\ValueObject\RequestTypeEnum;
 use Module\Booking\Domain\Shared\Event\Contracts\BookingRequestableInterface;
 use Module\Booking\Domain\Shared\Factory\DocumentGeneratorFactory;
-use Module\Booking\Domain\Shared\Repository\RequestRepositoryInterface;
+use Module\Booking\Domain\Shared\Service\RequestRules;
 use Module\Booking\Domain\Shared\ValueObject\BookingTypeEnum;
-use Module\Booking\Domain\Shared\ValueObject\RequestTypeEnum;
 use Module\Shared\Contracts\Adapter\FileStorageAdapterInterface;
 use Module\Shared\ValueObject\File;
 
@@ -21,7 +22,7 @@ class RequestCreator
         private readonly FileStorageAdapterInterface $fileStorageAdapter,
     ) {}
 
-    public function create(BookingRequestableInterface $booking, RequestRules $rules): Request
+    public function create(BookingRequestableInterface $booking, RequestRules $rules): BookingRequest
     {
         $requestType = $rules->getRequestTypeByStatus($booking->status());
 

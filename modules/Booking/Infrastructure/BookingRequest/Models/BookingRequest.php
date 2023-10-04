@@ -1,12 +1,12 @@
 <?php
 
-namespace Module\Booking\Infrastructure\Shared\Models;
+namespace Module\Booking\Infrastructure\BookingRequest\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Module\Booking\Domain\Shared\ValueObject\RequestTypeEnum;
+use Module\Booking\Domain\BookingRequest\ValueObject\RequestTypeEnum;
 
-class Request extends Model
+class BookingRequest extends Model
 {
     use HasFactory;
 

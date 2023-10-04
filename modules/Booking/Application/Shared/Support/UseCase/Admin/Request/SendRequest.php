@@ -6,7 +6,7 @@ namespace Module\Booking\Application\Shared\Support\UseCase\Admin\Request;
 
 use Module\Booking\Domain\Shared\Repository\BookingRepositoryInterface;
 use Module\Booking\Domain\Shared\Service\BookingUpdater;
-use Module\Booking\Domain\Shared\Service\RequestCreator;
+use Module\Booking\Domain\BookingRequest\Service\RequestCreator;
 use Module\Booking\Domain\Shared\Service\RequestRules;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 

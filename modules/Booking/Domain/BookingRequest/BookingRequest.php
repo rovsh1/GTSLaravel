@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Domain\Shared\Entity;
+namespace Module\Booking\Domain\BookingRequest;
 
 use Carbon\CarbonImmutable;
 use Module\Booking\Domain\Shared\ValueObject\BookingId;
-use Module\Booking\Domain\Shared\ValueObject\RequestId;
-use Module\Booking\Domain\Shared\ValueObject\RequestTypeEnum;
+use Module\Booking\Domain\BookingRequest\ValueObject\RequestId;
+use Module\Booking\Domain\BookingRequest\ValueObject\RequestTypeEnum;
 use Module\Shared\Domain\Entity\EntityInterface;
 use Module\Shared\ValueObject\File;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
-class Request extends AbstractAggregateRoot implements EntityInterface
+class BookingRequest extends AbstractAggregateRoot implements EntityInterface
 {
     //@todo нужен статус вместо флага + кнопка сформировать запрос, после этого появляются 2 кнопки: отправить в отель и переформировать
     public function __construct(

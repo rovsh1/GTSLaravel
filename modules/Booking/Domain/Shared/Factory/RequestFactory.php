@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace Module\Booking\Domain\Shared\Factory;
 
 use Carbon\CarbonImmutable;
-use Module\Booking\Domain\Shared\Entity\Request;
+use Module\Booking\Domain\BookingRequest\BookingRequest;
 use Module\Booking\Domain\Shared\ValueObject\BookingId;
-use Module\Booking\Domain\Shared\ValueObject\RequestId;
-use Module\Booking\Domain\Shared\ValueObject\RequestTypeEnum;
+use Module\Booking\Domain\BookingRequest\ValueObject\RequestId;
+use Module\Booking\Domain\BookingRequest\ValueObject\RequestTypeEnum;
 use Module\Shared\ValueObject\File;
 use Sdk\Module\Foundation\Support\EntityFactory\AbstractEntityFactory;
 
 class RequestFactory extends AbstractEntityFactory
 {
-    protected string $entity = Request::class;
+    protected string $entity = BookingRequest::class;
 
-    protected function fromArray(array $data): Request
+    protected function fromArray(array $data): BookingRequest
     {
         return new $this->entity(
             new RequestId($data['id']),

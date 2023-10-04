@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Domain\Shared\Entity;
 
 use Carbon\CarbonImmutable;
+use Module\Booking\Domain\BookingRequest\ValueObject\RequestTypeEnum;
 use Module\Booking\Domain\Shared\Entity\Concerns\HasStatusesTrait;
 use Module\Booking\Domain\Shared\Event\BookingDeleted;
 use Module\Booking\Domain\Shared\Event\BookingPriceChanged;
@@ -16,7 +17,7 @@ use Module\Booking\Domain\Shared\Exception\NotRequestableEntity;
 use Module\Booking\Domain\Shared\Exception\NotRequestableStatus;
 use Module\Booking\Domain\Shared\Service\BookingCalculatorInterface;
 use Module\Booking\Domain\Shared\Service\BookingPriceChangeDecorator;
-use Module\Booking\Domain\Shared\Service\RequestCreator;
+use Module\Booking\Domain\BookingRequest\Service\RequestCreator;
 use Module\Booking\Domain\Shared\Service\RequestRules;
 use Module\Booking\Domain\Shared\ValueObject\BookingId;
 use Module\Booking\Domain\Shared\ValueObject\BookingPrice;
@@ -25,7 +26,6 @@ use Module\Booking\Domain\Shared\ValueObject\BookingTypeEnum;
 use Module\Booking\Domain\Shared\ValueObject\CreatorId;
 use Module\Booking\Domain\Shared\ValueObject\OrderId;
 use Module\Booking\Domain\Shared\ValueObject\PriceItem;
-use Module\Booking\Domain\Shared\ValueObject\RequestTypeEnum;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
 abstract class AbstractBooking extends AbstractAggregateRoot implements

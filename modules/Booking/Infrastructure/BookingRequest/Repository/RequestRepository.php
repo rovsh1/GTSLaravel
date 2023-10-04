@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Infrastructure\Shared\Repository;
+namespace Module\Booking\Infrastructure\BookingRequest\Repository;
 
-use Module\Booking\Domain\Shared\Entity\Request as Entity;
+use Module\Booking\Domain\BookingRequest\BookingRequest as Entity;
 use Module\Booking\Domain\Shared\Factory\RequestFactory;
-use Module\Booking\Domain\Shared\Repository\RequestRepositoryInterface;
+use Module\Booking\Domain\BookingRequest\Repository\RequestRepositoryInterface;
 use Module\Booking\Domain\Shared\ValueObject\BookingId;
-use Module\Booking\Domain\Shared\ValueObject\RequestId;
-use Module\Booking\Domain\Shared\ValueObject\RequestTypeEnum;
-use Module\Booking\Infrastructure\Shared\Models\Request as Model;
+use Module\Booking\Domain\BookingRequest\ValueObject\RequestId;
+use Module\Booking\Domain\BookingRequest\ValueObject\RequestTypeEnum;
+use Module\Booking\Infrastructure\BookingRequest\Models\BookingRequest as Model;
 use Module\Shared\ValueObject\File;
 
 class RequestRepository implements RequestRepositoryInterface

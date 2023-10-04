@@ -7,6 +7,7 @@ namespace Module\Booking\Domain\Shared\Factory;
 use Module\Booking\Domain\AirportBooking\Service\DocumentGenerator\CancellationRequestGenerator as AirportCancellationRequestGenerator;
 use Module\Booking\Domain\AirportBooking\Service\DocumentGenerator\ChangeRequestGenerator as AirportChangeRequestGenerator;
 use Module\Booking\Domain\AirportBooking\Service\DocumentGenerator\ReservationRequestGenerator as AirportReservationRequestGenerator;
+use Module\Booking\Domain\BookingRequest\ValueObject\RequestTypeEnum;
 use Module\Booking\Domain\HotelBooking\Service\DocumentGenerator\CancellationRequestGenerator;
 use Module\Booking\Domain\HotelBooking\Service\DocumentGenerator\ChangeRequestGenerator;
 use Module\Booking\Domain\HotelBooking\Service\DocumentGenerator\ReservationRequestGenerator;
@@ -14,7 +15,6 @@ use Module\Booking\Domain\Shared\Event\Contracts\BookingRequestableInterface;
 use Module\Booking\Domain\Shared\Exception\BookingTypeDoesntHaveDocumentGenerator;
 use Module\Booking\Domain\Shared\Service\DocumentGenerator\RequestGeneratorInterface;
 use Module\Booking\Domain\Shared\ValueObject\BookingTypeEnum;
-use Module\Booking\Domain\Shared\ValueObject\RequestTypeEnum;
 use Sdk\Module\Contracts\ModuleInterface;
 
 class DocumentGeneratorFactory

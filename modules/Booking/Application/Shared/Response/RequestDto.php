@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Application\Shared\Response;
 
 use Carbon\CarbonImmutable;
-use Module\Booking\Domain\Shared\Entity\Request;
+use Module\Booking\Domain\BookingRequest\BookingRequest;
 use Module\Shared\Application\Dto\AbstractDomainBasedDto;
 use Module\Shared\Domain\Entity\EntityInterface;
 use Module\Shared\Domain\ValueObject\ValueObjectInterface;
@@ -18,7 +18,7 @@ class RequestDto extends AbstractDomainBasedDto
         public readonly CarbonImmutable $dateCreate
     ) {}
 
-    public static function fromDomain(EntityInterface|ValueObjectInterface|Request $entity): static
+    public static function fromDomain(EntityInterface|ValueObjectInterface|BookingRequest $entity): static
     {
         return new static(
             $entity->id()->value(),

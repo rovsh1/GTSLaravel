@@ -7,7 +7,7 @@ namespace Module\Booking\Application\AirportBooking\UseCase\Admin\Request;
 use Module\Booking\Domain\AirportBooking\Repository\BookingRepositoryInterface;
 use Module\Booking\Application\Shared\Support\UseCase\Admin\Request\SendRequest as Base;
 use Module\Booking\Domain\Shared\Service\BookingUpdater;
-use Module\Booking\Domain\Shared\Service\RequestCreator;
+use Module\Booking\Domain\BookingRequest\Service\RequestCreator;
 
 class SendRequest extends Base
 {

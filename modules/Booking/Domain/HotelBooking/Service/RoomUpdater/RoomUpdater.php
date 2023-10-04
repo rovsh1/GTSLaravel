@@ -99,6 +99,7 @@ class RoomUpdater
             $dataHelper->price
         );
         $this->processQuota($dataHelper->booking);
+        //@todo заменить processQuota на ивент RoomAdding (который процессит по листенеру)
         $this->events[] = new RoomAdded($dataHelper->booking, $roomBooking);
 
         return $roomBooking;

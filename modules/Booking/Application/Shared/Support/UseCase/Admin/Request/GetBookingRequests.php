@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Application\Shared\Support\UseCase\Admin\Request;
 
 use Module\Booking\Application\Shared\Response\RequestDto;
-use Module\Booking\Domain\Shared\Repository\RequestRepositoryInterface;
+use Module\Booking\Domain\BookingRequest\Repository\RequestRepositoryInterface;
 use Module\Booking\Domain\Shared\ValueObject\BookingId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 

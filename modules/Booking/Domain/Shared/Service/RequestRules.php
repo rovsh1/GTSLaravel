@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Domain\Shared\Service;
 
 use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
-use Module\Booking\Domain\Shared\ValueObject\RequestTypeEnum;
+use Module\Booking\Domain\BookingRequest\ValueObject\RequestTypeEnum;
 
 final class RequestRules
 {
