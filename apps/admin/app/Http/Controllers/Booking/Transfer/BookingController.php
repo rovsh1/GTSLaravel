@@ -379,7 +379,7 @@ class BookingController extends Controller
             ->text('client_name', ['text' => 'Клиент'])
             ->text('city_name', ['text' => 'Город'])
             ->text('service_name', ['text' => 'Название услуги'])
-            ->date('date', ['text' => 'Дата прилёта/вылета'])
+//            ->date('date', ['text' => 'Дата прилёта/вылета'])
             ->text('source', ['text' => 'Источник', 'order' => true])
             ->date('created_at', ['text' => 'Создан', 'format' => 'datetime', 'order' => true])
             ->text('actions', ['renderer' => fn($row, $val) => $this->getActionButtons($row)])

@@ -64,10 +64,12 @@ class Booking extends BaseModel
             ->join('clients', 'clients.id', '=', 'orders.client_id')
             ->addSelect('clients.name as client_name')
             ->join('booking_transfer_details', 'bookings.id', '=', 'booking_transfer_details.booking_id')
-            ->addSelect('booking_transfer_details.date as date')
             ->join('r_cities', 'r_cities.id', '=', 'booking_transfer_details.city_id')
+            ->join('r_countries', 'r_countries.id', '=', 'r_cities.country_id')
+            ->joinTranslatable('r_countries', 'name as country_name')
             ->joinTranslatable('r_cities', 'name as city_name')
             ->join('supplier_transfer_services', 'supplier_transfer_services.id', '=','booking_transfer_details.service_id')
-            ->addSelect('supplier_transfer_services.name as service_name');
+            ->addSelect('supplier_transfer_services.name as service_name')
+;
     }
 }

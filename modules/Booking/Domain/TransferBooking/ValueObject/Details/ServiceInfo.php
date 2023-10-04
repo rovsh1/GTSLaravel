@@ -60,7 +60,8 @@ class ServiceInfo implements ValueObjectInterface, SerializableDataInterface
             $data['id'],
             $data['name'],
             TransferServiceTypeEnum::from($data['type']),
-            $data['supplierId']
+            $data['supplierId'],
+            $data['cityId']
         );
     }
 }
