@@ -33,7 +33,8 @@ class GetAirportServicePrice implements UseCaseInterface
         $price = Model::whereSupplierId($supplierId)
             ->whereServiceId($serviceId)
             ->whereAirportId($airportId)
-            ->whereCurrencyId($supplier->currency()->id())
+//            ->whereCurrencyId($supplier->currency()->id())
+            ->whereCurrencyId(CurrencyEnum::UZS->id())//@hack т.к. сейчас нетто цены только в UZS
             ->whereDate($date)
             ->first();
         if ($price === null) {
