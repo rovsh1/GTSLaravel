@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Airport\Application\UseCase\Admin;
+namespace Module\Booking\Application\AirportBooking\UseCase\Admin;
 
-use Module\Booking\Airport\Application\Factory\CancelConditionsFactory;
-use Module\Booking\Airport\Application\Request\CreateBookingDto;
-use Module\Booking\Airport\Domain\Booking\Repository\BookingRepositoryInterface;
-use Module\Booking\Airport\Domain\Booking\ValueObject\Details\AdditionalInfo;
+use Module\Booking\Application\AirportBooking\Factory\CancelConditionsFactory;
+use Module\Booking\Application\AirportBooking\Request\CreateBookingDto;
+use Module\Booking\Domain\AirportBooking\Repository\BookingRepositoryInterface;
+use Module\Booking\Domain\AirportBooking\ValueObject\Details\AdditionalInfo;
 use Module\Booking\Application\Shared\Support\UseCase\Admin\AbstractCreateBooking;
 use Module\Booking\Domain\Shared\ValueObject\BookingPrice;
 use Module\Booking\Domain\Shared\ValueObject\CreatorId;

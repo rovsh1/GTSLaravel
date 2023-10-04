@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Airport\Domain\Booking\Event;
+namespace Module\Booking\Domain\AirportBooking\Event;
 
 interface PriceBecomeDeprecatedEventInterface
 {

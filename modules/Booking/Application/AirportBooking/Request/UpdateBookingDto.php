@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Airport\Application\Request;
+namespace Module\Booking\Application\AirportBooking\Request;
 
 use Carbon\CarbonInterface;
 

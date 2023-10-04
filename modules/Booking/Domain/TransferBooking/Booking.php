@@ -11,11 +11,9 @@ use Module\Booking\Domain\Shared\ValueObject\BookingPrice;
 use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
 use Module\Booking\Domain\Shared\ValueObject\BookingTypeEnum;
 use Module\Booking\Domain\Shared\ValueObject\CancelConditions;
+use Module\Booking\Domain\Shared\ValueObject\CreatorId;
 use Module\Booking\Domain\Shared\ValueObject\OrderId;
 use Module\Booking\Domain\TransferBooking\ValueObject\Details\ServiceInfo;
-use Module\Booking\Domain\TransferBooking\ValueObject\Details\TransportInfo;
-use Module\Shared\Domain\ValueObject\Date;
-use Module\Shared\Domain\ValueObject\Id;
 
 class Booking extends AbstractBooking
 {
@@ -24,11 +22,9 @@ class Booking extends AbstractBooking
         OrderId $orderId,
         BookingStatusEnum $status,
         CarbonImmutable $createdAt,
-        Id $creatorId,
+        CreatorId $creatorId,
         BookingPrice $price,
         private readonly ServiceInfo $serviceInfo,
-        private readonly TransportInfo $transportInfo,
-        private readonly Date $date,
         private ?string $note,
         private CancelConditions $cancelConditions,
     ) {
@@ -38,16 +34,6 @@ class Booking extends AbstractBooking
     public function serviceInfo(): ServiceInfo
     {
         return $this->serviceInfo;
-    }
-
-    public function transportInfo(): TransportInfo
-    {
-        return $this->transportInfo;
-    }
-
-    public function date(): Date
-    {
-        return $this->date;
     }
 
     public function cancelConditions(): CancelConditions

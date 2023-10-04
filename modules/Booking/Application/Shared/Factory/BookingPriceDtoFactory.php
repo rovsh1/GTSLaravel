@@ -62,6 +62,6 @@ class BookingPriceDtoFactory
 
     private function getPriceValue(PriceItem $price): float
     {
-        return $price->manualValue() !== null ? $price->manualValue() : $price->calculatedValue();
+        return $price->manualValue() ?? $price->calculatedValue();
     }
 }

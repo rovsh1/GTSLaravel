@@ -31,8 +31,8 @@ class CancelConditionsFactory
             $dailyMarkupOptions = collect($baseCancelConditions->dailyMarkups)->map(
                 fn(DailyMarkupDto $dailyMarkupDto) => new DailyMarkupOption(
                     percent: new Percent($dailyMarkupDto->percent),
-                    daysCount: $dailyMarkupDto->daysCount,
-                    cancelPeriodType: CancelPeriodTypeEnum::FULL_PERIOD
+                    cancelPeriodType: CancelPeriodTypeEnum::FULL_PERIOD,
+                    daysCount: $dailyMarkupDto->daysCount
                 )
             );
         }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Airport\Infrastructure\Models;
+namespace Module\Booking\Infrastructure\AirportBooking\Models;
 
 use App\Admin\Support\View\Form\ValueObject\NumRangeValue;
 use Carbon\CarbonPeriod;

@@ -17,7 +17,7 @@ use Module\Booking\Domain\TransferBooking\Repository\BookingRepositoryInterface;
 use Module\Booking\Domain\TransferBooking\ValueObject\Details\ServiceInfo;
 use Module\Booking\Infrastructure\TransferBooking\Models\Booking as Model;
 use Module\Booking\Infrastructure\TransferBooking\Models\BookingDetails;
-use Module\Booking\Transfer\Infrastructure\Models\TransferService;
+use Module\Booking\Infrastructure\TransferBooking\Models\TransferService;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
 class BookingRepository extends BaseRepository implements BookingRepositoryInterface
@@ -83,7 +83,6 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
                     createdAt: $bookingModel->created_at->toImmutable(),
                     creatorId: $creatorId,
                     price: $price,
-                    note: $note,
                     serviceInfo: new ServiceInfo(
                         $service->id,
                         $service->name,
@@ -91,7 +90,8 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
                         $service->supplier_id,
                         $cityId,
                     ),
-                    cancelConditions: $cancelConditions
+                    note: $note,
+                    cancelConditions: $cancelConditions,
                 );
 
                 BookingDetails::create([
@@ -152,9 +152,9 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
             status: $booking->status,
             createdAt: $booking->created_at->toImmutable(),
             creatorId: new CreatorId($booking->creator_id),
-            note: $detailsData['note'] ?? null,
             price: BookingPrice::fromData($detailsData['price']),
             serviceInfo: ServiceInfo::fromData($detailsData['serviceInfo']),
+            note: $detailsData['note'] ?? null,
             cancelConditions: $cancelConditions !== null
                 ? CancelConditions::fromData($detailsData['cancelConditions'])
                 : null,

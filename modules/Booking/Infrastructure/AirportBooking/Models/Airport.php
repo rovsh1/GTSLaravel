@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Booking\Airport\Infrastructure\Models;
+namespace Module\Booking\Infrastructure\AirportBooking\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Sdk\Module\Database\Eloquent\Model;
@@ -21,7 +21,7 @@ class Airport extends Model
         'city_id' => 'int',
     ];
 
-    public static function booted()
+    public static function booted(): void
     {
         static::addGlobalScope('default', function (Builder $builder) {
             $builder

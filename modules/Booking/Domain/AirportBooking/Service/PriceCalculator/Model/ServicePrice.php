@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Airport\Domain\Booking\Service\PriceCalculator\Model;
+namespace Module\Booking\Domain\AirportBooking\Service\PriceCalculator\Model;
 
 class ServicePrice
 {

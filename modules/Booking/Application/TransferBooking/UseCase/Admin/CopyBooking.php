@@ -23,11 +23,11 @@ class CopyBooking implements UseCaseInterface
         $newBooking = $this->repository->create(
             orderId: $booking->orderId(),
             creatorId: $booking->creatorId(),
-            price: $booking->price(),
-            note: $booking->note(),
-            cityId: $booking->serviceInfo()->cityId(),
             serviceId: $booking->serviceInfo()->id(),
+            cityId: $booking->serviceInfo()->cityId(),
+            price: $booking->price(),
             cancelConditions: $booking->cancelConditions(),
+            note: $booking->note(),
         );
 
         return $newBooking->id()->value();

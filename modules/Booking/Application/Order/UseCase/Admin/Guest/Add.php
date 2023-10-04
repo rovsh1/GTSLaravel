@@ -25,8 +25,8 @@ class Add implements UseCaseInterface
         $guest = $this->guestRepository->create(
             orderId: new OrderId($request->orderId),
             fullName: $request->fullName,
-            gender: GenderEnum::from($request->gender),
             countryId: $request->countryId,
+            gender: GenderEnum::from($request->gender),
             isAdult: $request->isAdult,
             age: $request->age
         );

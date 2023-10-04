@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Airport\Domain\Booking\Repository;
+namespace Module\Booking\Domain\AirportBooking\Repository;
 
 use Module\Booking\Domain\Order\ValueObject\GuestId;
 use Module\Booking\Domain\Shared\ValueObject\BookingId;

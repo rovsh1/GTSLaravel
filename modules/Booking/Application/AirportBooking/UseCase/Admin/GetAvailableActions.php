@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Airport\Application\UseCase\Admin;
+namespace Module\Booking\Application\AirportBooking\UseCase\Admin;
 
-use Module\Booking\Airport\Domain\Booking\Repository\BookingRepositoryInterface;
+use Module\Booking\Domain\AirportBooking\Repository\BookingRepositoryInterface;
 use Module\Booking\Application\Shared\Service\StatusStorage;
 use Module\Booking\Application\Shared\Support\UseCase\Admin\GetAvailableActions as Base;
 use Module\Booking\Domain\Shared\Service\RequestRules;

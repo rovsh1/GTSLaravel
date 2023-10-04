@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Airport\Domain\Booking;
+namespace Module\Booking\Domain\AirportBooking;
 
 use Carbon\CarbonImmutable;
-use Module\Booking\Airport\Domain\Booking\ValueObject\Details\AdditionalInfo;
-use Module\Booking\Airport\Domain\Booking\ValueObject\Details\AirportInfo;
-use Module\Booking\Airport\Domain\Booking\ValueObject\Details\ServiceInfo;
+use Module\Booking\Domain\AirportBooking\ValueObject\Details\AdditionalInfo;
+use Module\Booking\Domain\AirportBooking\ValueObject\Details\AirportInfo;
+use Module\Booking\Domain\AirportBooking\ValueObject\Details\ServiceInfo;
 use Module\Booking\Domain\Order\ValueObject\GuestIdsCollection;
 use Module\Booking\Domain\Shared\Entity\AbstractBooking;
 use Module\Booking\Domain\Shared\ValueObject\BookingId;

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Airport\Application\UseCase\Admin\Guest;
+namespace Module\Booking\Application\AirportBooking\UseCase\Admin\Guest;
 
-use Module\Booking\Airport\Domain\Booking\Event\GuestUnbinded;
-use Module\Booking\Airport\Domain\Booking\Repository\BookingGuestRepositoryInterface;
-use Module\Booking\Airport\Domain\Booking\Repository\BookingRepositoryInterface;
+use Module\Booking\Domain\AirportBooking\Event\GuestUnbinded;
+use Module\Booking\Domain\AirportBooking\Repository\BookingGuestRepositoryInterface;
+use Module\Booking\Domain\AirportBooking\Repository\BookingRepositoryInterface;
 use Module\Booking\Domain\Order\ValueObject\GuestId;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;

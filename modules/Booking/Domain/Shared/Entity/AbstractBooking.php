@@ -95,8 +95,8 @@ abstract class AbstractBooking extends AbstractAggregateRoot implements
         $grossPrice = new PriceItem(
             currency: $this->price->grossPrice()->currency(),
             calculatedValue: $this->price->grossPrice()->calculatedValue(),
-            penaltyValue: $this->price->grossPrice()->penaltyValue(),
             manualValue: $price,
+            penaltyValue: $this->price->grossPrice()->penaltyValue(),
         );
         $priceBuilder = new BookingPriceChangeDecorator($this->price);
         $priceBuilder->setGrossPrice($grossPrice);
@@ -108,8 +108,8 @@ abstract class AbstractBooking extends AbstractAggregateRoot implements
         $netPrice = new PriceItem(
             currency: $this->price->netPrice()->currency(),
             calculatedValue: $this->price->netPrice()->calculatedValue(),
-            penaltyValue: $this->price->netPrice()->penaltyValue(),
             manualValue: $price,
+            penaltyValue: $this->price->netPrice()->penaltyValue(),
         );
         $priceBuilder = new BookingPriceChangeDecorator($this->price);
         $priceBuilder->setNetPrice($netPrice);
