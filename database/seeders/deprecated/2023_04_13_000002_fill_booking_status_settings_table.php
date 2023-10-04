@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Module\Booking\Common\Domain\ValueObject\BookingStatusEnum;
+use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
 
 return new class extends Migration {
     /**

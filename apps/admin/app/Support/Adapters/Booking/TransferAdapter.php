@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace App\Admin\Support\Adapters\Booking;
 
 use Illuminate\Database\Eloquent\Builder;
-use Module\Booking\Transfer\Application\Request\CreateBookingDto;
-use Module\Booking\Transfer\Application\UseCase\Admin\BulkDeleteBookings;
-use Module\Booking\Transfer\Application\UseCase\Admin\CopyBooking;
-use Module\Booking\Transfer\Application\UseCase\Admin\CreateBooking;
-use Module\Booking\Transfer\Application\UseCase\Admin\DeleteBooking;
-use Module\Booking\Transfer\Application\UseCase\Admin\GetAvailableActions;
-use Module\Booking\Transfer\Application\UseCase\Admin\GetBooking;
-use Module\Booking\Transfer\Application\UseCase\Admin\GetBookingQuery;
-use Module\Booking\Transfer\Application\UseCase\Admin\GetStatuses;
-use Module\Booking\Transfer\Application\UseCase\Admin\GetStatusHistory;
-use Module\Booking\Transfer\Application\UseCase\Admin\UpdateBookingStatus;
-use Module\Booking\Transfer\Application\UseCase\Admin\UpdateNote;
+use Module\Booking\Application\TransferBooking\Request\CreateBookingDto;
+use Module\Booking\Application\TransferBooking\UseCase\Admin\BulkDeleteBookings;
+use Module\Booking\Application\TransferBooking\UseCase\Admin\CopyBooking;
+use Module\Booking\Application\TransferBooking\UseCase\Admin\CreateBooking;
+use Module\Booking\Application\TransferBooking\UseCase\Admin\DeleteBooking;
+use Module\Booking\Application\TransferBooking\UseCase\Admin\GetAvailableActions;
+use Module\Booking\Application\TransferBooking\UseCase\Admin\GetBooking;
+use Module\Booking\Application\TransferBooking\UseCase\Admin\GetBookingQuery;
+use Module\Booking\Application\TransferBooking\UseCase\Admin\GetStatuses;
+use Module\Booking\Application\TransferBooking\UseCase\Admin\GetStatusHistory;
+use Module\Booking\Application\TransferBooking\UseCase\Admin\UpdateBookingStatus;
+use Module\Booking\Application\TransferBooking\UseCase\Admin\UpdateNote;
 
 class TransferAdapter
 {

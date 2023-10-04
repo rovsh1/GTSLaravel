@@ -6,11 +6,8 @@ namespace Module\Client\Infrastructure\Models;
 
 use DateTime;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Module\Booking\Order\Infrastructure\Models\Order;
-use Module\Client\Domain\Invoice\ValueObject\InvoiceStatusEnum;
 use Sdk\Module\Database\Eloquent\Model;
 
 /**
