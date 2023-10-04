@@ -20,13 +20,11 @@ class ServicePriceFetcher
         int $airportId,
         CarbonInterface $date,
         CurrencyEnum $orderCurrency,
-        CurrencyEnum $supplierCurrency,
     ): ServicePrice {
         $price = $this->supplierAdapter->getAirportServicePrice(
             $supplierId,
             $serviceId,
             $airportId,
-            $supplierCurrency,
             $orderCurrency,
             $date
         );

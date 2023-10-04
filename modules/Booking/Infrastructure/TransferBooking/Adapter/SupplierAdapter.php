@@ -27,7 +27,6 @@ class SupplierAdapter implements SupplierAdapterInterface
         int $supplierId,
         int $serviceId,
         int $carId,
-        CurrencyEnum $netCurrency,
         CurrencyEnum $grossCurrency,
         CarbonInterface $date
     ): ?ServicePriceDto {
@@ -35,7 +34,6 @@ class SupplierAdapter implements SupplierAdapterInterface
             $supplierId,
             $serviceId,
             $carId,
-            $netCurrency,
             $grossCurrency,
             $date
         );

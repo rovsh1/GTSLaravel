@@ -19,7 +19,6 @@ interface SupplierAdapterInterface
         int $supplierId,
         int $serviceId,
         int $airportId,
-        CurrencyEnum $netCurrency,
         CurrencyEnum $grossCurrency,
         CarbonInterface $date
     ): ?ServicePriceDto;

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Booking\Domain\AirportBooking\Service\PriceCalculator;
 
-use Module\Booking\Domain\AirportBooking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Domain\AirportBooking\AirportBooking;
 use Module\Booking\Domain\AirportBooking\Service\PriceCalculator\Support\ServicePriceFetcher;
 use Module\Booking\Domain\Order\Repository\OrderRepositoryInterface;
@@ -18,7 +17,6 @@ class BookingCalculator implements BookingCalculatorInterface
     public function __construct(
         private readonly ServicePriceFetcher $priceFetcher,
         private readonly OrderRepositoryInterface $orderRepository,
-        private readonly SupplierAdapterInterface $supplierAdapter,
     ) {}
 
     public function calculateGrossPrice(BookingInterface|AirportBooking $booking): PriceItem
@@ -47,10 +45,6 @@ class BookingCalculator implements BookingCalculatorInterface
         if ($order === null) {
             throw new EntityNotFoundException('Order not found');
         }
-        $supplier = $this->supplierAdapter->find($booking->serviceInfo()->supplierId());
-        if ($supplier === null) {
-            throw new EntityNotFoundException('Suppler not found');
-        }
 
         $price = $this->priceFetcher->fetch(
             $booking->serviceInfo()->supplierId(),
@@ -58,7 +52,6 @@ class BookingCalculator implements BookingCalculatorInterface
             $booking->airportInfo()->id(),
             $booking->date(),
             $order->currency(),
-            $supplier->currency
         );
 
         return $price->$priceType * $booking->guestIds()->count();

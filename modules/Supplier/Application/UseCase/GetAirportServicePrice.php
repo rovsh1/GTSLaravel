@@ -23,7 +23,6 @@ class GetAirportServicePrice implements UseCaseInterface
         int $supplierId,
         int $serviceId,
         int $airportId,
-        CurrencyEnum $netCurrency,
         CurrencyEnum $grossCurrency,
         CarbonInterface $date
     ): ?ServicePriceDto {
@@ -34,7 +33,7 @@ class GetAirportServicePrice implements UseCaseInterface
         $price = Model::whereSupplierId($supplierId)
             ->whereServiceId($serviceId)
             ->whereAirportId($airportId)
-            ->whereCurrencyId($netCurrency->id())
+            ->whereCurrencyId($supplier->currency()->id())
             ->whereDate($date)
             ->first();
         if ($price === null) {

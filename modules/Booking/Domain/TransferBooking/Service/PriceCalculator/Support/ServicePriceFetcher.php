@@ -20,13 +20,11 @@ class ServicePriceFetcher
         int $carId,
         CarbonInterface $date,
         CurrencyEnum $orderCurrency,
-        CurrencyEnum $supplierCurrency,
     ): ServicePrice {
         $price = $this->supplierAdapter->getTransferServicePrice(
             $supplierId,
             $serviceId,
             $carId,
-            $supplierCurrency,
             $orderCurrency,
             $date
         );

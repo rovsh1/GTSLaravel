@@ -23,7 +23,6 @@ class GetTransferServicePrice implements UseCaseInterface
         int $supplierId,
         int $serviceId,
         int $carId,
-        CurrencyEnum $netCurrency,
         CurrencyEnum $grossCurrency,
         CarbonInterface $date
     ): ?ServicePriceDto {
@@ -34,7 +33,7 @@ class GetTransferServicePrice implements UseCaseInterface
         $price = Model::whereSupplierId($supplierId)
             ->whereServiceId($serviceId)
             ->whereCarId($carId)
-            ->whereCurrencyId($netCurrency->id())
+            ->whereCurrencyId($supplier->currency()->id())
             ->whereDate($date)
             ->first();
         if ($price === null) {

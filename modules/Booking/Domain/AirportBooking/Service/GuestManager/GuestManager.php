@@ -80,7 +80,6 @@ class GuestManager
             $supplier->id,
             $booking->serviceInfo()->id(),
             $booking->airportInfo()->id(),
-            $booking->price()->netPrice()->currency(),
             $booking->price()->grossPrice()->currency(),
             $booking->date()
         );
