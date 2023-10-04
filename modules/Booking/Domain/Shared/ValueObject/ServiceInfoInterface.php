@@ -11,5 +11,5 @@ interface ServiceInfoInterface
     public function name(): string;
 
     //цена + валюта
-    public function basePrice(): mixed;
+//    public function basePrice(): mixed;
 }

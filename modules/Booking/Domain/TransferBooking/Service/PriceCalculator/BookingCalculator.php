@@ -8,7 +8,7 @@ use Module\Booking\Domain\Shared\Entity\BookingInterface;
 use Module\Booking\Domain\Shared\Service\BookingCalculatorInterface;
 use Module\Booking\Domain\Shared\ValueObject\PriceItem;
 use Module\Booking\Domain\TransferBooking\Adapter\SupplierAdapterInterface;
-use Module\Booking\Domain\TransferBooking\Booking;
+use Module\Booking\Domain\TransferBooking\TransferBooking;
 use Module\Booking\Domain\TransferBooking\Service\PriceCalculator\Support\ServicePriceFetcher;
 use Module\Booking\Domain\Order\Repository\OrderRepositoryInterface;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
@@ -21,7 +21,7 @@ class BookingCalculator implements BookingCalculatorInterface
         private readonly SupplierAdapterInterface $supplierAdapter,
     ) {}
 
-    public function calculateGrossPrice(BookingInterface|Booking $booking): PriceItem
+    public function calculateGrossPrice(BookingInterface|TransferBooking $booking): PriceItem
     {
         return new PriceItem(
             currency: $booking->price()->grossPrice()->currency(),
@@ -31,7 +31,7 @@ class BookingCalculator implements BookingCalculatorInterface
         );
     }
 
-    public function calculateNetPrice(BookingInterface|Booking $booking): PriceItem
+    public function calculateNetPrice(BookingInterface|TransferBooking $booking): PriceItem
     {
         return new PriceItem(
             currency: $booking->price()->netPrice()->currency(),
@@ -41,7 +41,7 @@ class BookingCalculator implements BookingCalculatorInterface
         );
     }
 
-    private function calculate(Booking $booking, string $priceType): float
+    private function calculate(TransferBooking $booking, string $priceType): float
     {
         $order = $this->orderRepository->find($booking->orderId()->value());
         if ($order === null) {

@@ -10,13 +10,13 @@ use Module\Booking\Domain\Shared\ValueObject\BookingPrice;
 use Module\Booking\Domain\Shared\ValueObject\CancelConditions;
 use Module\Booking\Domain\Shared\ValueObject\CreatorId;
 use Module\Booking\Domain\Shared\ValueObject\OrderId;
-use Module\Booking\Domain\TransferBooking\Booking;
+use Module\Booking\Domain\TransferBooking\TransferBooking;
 
 interface BookingRepositoryInterface extends Base
 {
-    public function find(int $id): ?Booking;
+    public function find(int $id): ?TransferBooking;
 
-    public function findOrFail(BookingId $id): Booking;
+    public function findOrFail(BookingId $id): TransferBooking;
 
     public function get(): Collection;
 
@@ -28,11 +28,11 @@ interface BookingRepositoryInterface extends Base
         BookingPrice $price,
         CancelConditions $cancelConditions,
         ?string $note = null
-    ): Booking;
+    ): TransferBooking;
 
-    public function store(Booking $booking): bool;
+    public function store(TransferBooking $booking): bool;
 
-    public function delete(Booking $booking): void;
+    public function delete(TransferBooking $booking): void;
 
     public function query(): Builder;
 

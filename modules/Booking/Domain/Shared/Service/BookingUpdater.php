@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Module\Booking\Domain\Shared\Service;
 
-use Module\Booking\Airport\Domain\Booking\AirportBooking as AirportBooking;
-use Module\Booking\Airport\Infrastructure\Repository\BookingRepository as AirportBookingRepository;
-use Module\Booking\Domain\HotelBooking\HotelBooking as HotelBooking;
+use Module\Booking\Domain\AirportBooking\AirportBooking;
+use Module\Booking\Domain\HotelBooking\HotelBooking;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
 use Module\Booking\Domain\Shared\ValueObject\BookingTypeEnum;
+use Module\Booking\Domain\TransferBooking\TransferBooking;
+use Module\Booking\Infrastructure\AirportBooking\Repository\BookingRepository as AirportBookingRepository;
 use Module\Booking\Infrastructure\HotelBooking\Repository\BookingRepository as HotelBookingRepository;
+use Module\Booking\Infrastructure\TransferBooking\Repository\BookingRepository as TransferBookingRepository;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\ModuleInterface;
 
@@ -20,7 +22,7 @@ class BookingUpdater
         private readonly ModuleInterface $module
     ) {}
 
-    public function store(HotelBooking|AirportBooking $booking): bool
+    public function store(HotelBooking|AirportBooking|TransferBooking $booking): bool
     {
         $success = $this->repository($booking)->store($booking);
         $this->eventDispatcher->dispatch(...$booking->pullEvents());
@@ -33,7 +35,7 @@ class BookingUpdater
      * @return bool
      * @todo подумать как точно провернить, что были изменения в броне
      */
-    public function storeIfHasEvents(HotelBooking|AirportBooking $booking): bool
+    public function storeIfHasEvents(HotelBooking|AirportBooking|TransferBooking $booking): bool
     {
         $events = $booking->pullEvents();
         if (count($events) === 0) {
@@ -45,11 +47,12 @@ class BookingUpdater
         return $success;
     }
 
-    private function repository(BookingInterface $booking): HotelBookingRepository|AirportBookingRepository
+    private function repository(BookingInterface $booking): HotelBookingRepository|AirportBookingRepository|TransferBookingRepository
     {
         return match ($booking->type()) {
             BookingTypeEnum::HOTEL => $this->module->get(HotelBookingRepository::class),
             BookingTypeEnum::AIRPORT => $this->module->get(AirportBookingRepository::class),
+            BookingTypeEnum::TRANSFER => $this->module->get(TransferBookingRepository::class),
             default => throw new \DomainException('Unknown booking type')
         };
     }

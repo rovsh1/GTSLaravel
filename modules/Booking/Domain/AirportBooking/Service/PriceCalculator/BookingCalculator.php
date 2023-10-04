@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Booking\Domain\AirportBooking\Service\PriceCalculator;
 
-use Module\Booking\Airport\Domain\Booking\Adapter\SupplierAdapterInterface;
-use Module\Booking\Airport\Domain\Booking\AirportBooking;
-use Module\Booking\Airport\Domain\Booking\Service\PriceCalculator\Support\ServicePriceFetcher;
+use Module\Booking\Domain\AirportBooking\Adapter\SupplierAdapterInterface;
+use Module\Booking\Domain\AirportBooking\AirportBooking;
+use Module\Booking\Domain\AirportBooking\Service\PriceCalculator\Support\ServicePriceFetcher;
 use Module\Booking\Domain\Order\Repository\OrderRepositoryInterface;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
 use Module\Booking\Domain\Shared\Service\BookingCalculatorInterface;

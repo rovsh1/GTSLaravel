@@ -2,7 +2,7 @@
 
 namespace Module\Booking\Domain\AirportBooking\Service\DocumentGenerator;
 
-use Module\Booking\Airport\Domain\Booking\Adapter\SupplierAdapterInterface;
+use Module\Booking\Domain\AirportBooking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Application\Shared\Service\StatusStorage;
 use Module\Booking\Domain\Order\Repository\GuestRepositoryInterface;
 use Module\Booking\Domain\Shared\Adapter\AdministratorAdapterInterface;

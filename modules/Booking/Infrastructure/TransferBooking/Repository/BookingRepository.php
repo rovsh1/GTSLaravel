@@ -12,7 +12,7 @@ use Module\Booking\Domain\Shared\ValueObject\CancelConditions;
 use Module\Booking\Domain\Shared\ValueObject\CreatorId;
 use Module\Booking\Domain\Shared\ValueObject\OrderId;
 use Module\Booking\Infrastructure\Shared\Repository\AbstractBookingRepository as BaseRepository;
-use Module\Booking\Domain\TransferBooking\Booking as Entity;
+use Module\Booking\Domain\TransferBooking\TransferBooking as Entity;
 use Module\Booking\Domain\TransferBooking\Repository\BookingRepositoryInterface;
 use Module\Booking\Domain\TransferBooking\ValueObject\Details\ServiceInfo;
 use Module\Booking\Infrastructure\TransferBooking\Models\Booking as Model;

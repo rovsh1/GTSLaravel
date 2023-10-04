@@ -11,7 +11,7 @@ use Module\Booking\Application\Shared\Service\StatusStorage;
 use Module\Booking\Application\TransferBooking\Response\BookingDto;
 use Module\Booking\Application\TransferBooking\Response\ServiceInfoDto;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
-use Module\Booking\Domain\TransferBooking\Booking;
+use Module\Booking\Domain\TransferBooking\TransferBooking;
 
 class BookingDtoFactory extends AbstractBookingDtoFactory
 {
@@ -24,7 +24,7 @@ class BookingDtoFactory extends AbstractBookingDtoFactory
 
     public function createFromEntity(BookingInterface $booking): BookingDto
     {
-        assert($booking instanceof Booking);
+        assert($booking instanceof TransferBooking);
 
         return new BookingDto(
             id: $booking->id()->value(),

@@ -15,7 +15,7 @@ use Module\Booking\Domain\Shared\ValueObject\CreatorId;
 use Module\Booking\Domain\Shared\ValueObject\OrderId;
 use Module\Booking\Domain\TransferBooking\ValueObject\Details\ServiceInfo;
 
-class Booking extends AbstractBooking
+class TransferBooking extends AbstractBooking
 {
     public function __construct(
         BookingId $id,

@@ -6,8 +6,8 @@ namespace Module\Booking\Application\AirportBooking\Response;
 
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
-use Module\Booking\Airport\Application\Response\Details\AirportInfoDto;
-use Module\Booking\Airport\Application\Response\Details\ServiceInfoDto;
+use Module\Booking\Application\AirportBooking\Response\Details\AirportInfoDto;
+use Module\Booking\Application\AirportBooking\Response\Details\ServiceInfoDto;
 use Module\Booking\Application\Shared\Response\BookingDto as BaseDto;
 use Module\Booking\Application\Shared\Response\BookingPriceDto;
 use Module\Booking\Application\Shared\Response\StatusDto;
