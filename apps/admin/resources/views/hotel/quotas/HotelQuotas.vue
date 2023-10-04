@@ -18,15 +18,14 @@ import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButt
 import LoadingSpinner from '~components/LoadingSpinner.vue'
 
 import QuotasFilters from './components/QuotasFilters/QuotasFilters.vue'
-import RoomQuotas from './components/RoomQuotas.vue'
+import RoomQuotasComponent from './components/RoomQuotas.vue'
 
-import { getRoomQuotas } from './components/lib'
+import { getRoomQuotas, RoomQuotas } from './components/lib'
 import { defaultFiltersPayload, FiltersPayload, intervalByMonthsCount } from './components/QuotasFilters/lib'
 
 const { hotelID } = injectInitialData(z.object({
   hotelID: z.number(),
 }))
-
 const openingDayMenuRoomId = ref<number | null>(null)
 
 const {
@@ -68,10 +67,17 @@ const {
   }
 }))
 
+const roomsQuotas = ref<RoomQuotas[] | null>(null)
+
 const fetchHotelQuotasWrapper = async () => {
   waitLoadAndRedrawData.value = true
   try {
     await fetchHotelQuotas()
+    roomsQuotas.value = getRoomQuotas({
+      rooms: rooms.value,
+      filters: filtersPayload.value,
+      quotas: hotelQuotas.value,
+    })
     nextTick(() => {
       waitLoadAndRedrawData.value = false
       updatedRoomID.value = null
@@ -91,12 +97,6 @@ watch(filtersPayload, () => fetchHotelQuotasWrapper())
 const editable = ref(false)
 
 const activeRoomID = ref<number | null>(null)
-
-const roomsQuotas = computed(() => getRoomQuotas({
-  rooms: rooms.value,
-  filters: filtersPayload.value,
-  quotas: hotelQuotas.value,
-}))
 
 watch(editable, (value) => {
   if (value === false) {
@@ -148,7 +148,7 @@ watchEffect(() => {
         </div>
         <div v-else class="quotasTables">
           <template v-for="{ room, monthlyQuotas } in roomsQuotas">
-            <RoomQuotas
+            <RoomQuotasComponent
               v-if="room.id === activeRoomID || activeRoomID === null"
               :key="room.id"
               :hotel="hotel"

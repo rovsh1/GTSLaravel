@@ -68,8 +68,11 @@ type GetRoomQuotas = (params: {
 
 export const getRoomQuotas: GetRoomQuotas = ({ rooms, filters, quotas }) => {
   if (!rooms) return null
-
+  console.log('start kurwa')
   const { year, month, monthsCount } = filters
+
+  let startDate = DateTime.fromFormat(getMonthKey(year, month), monthKeyFormat)
+  const eachDays = getEachDayInMonth(startDate.toJSDate())
 
   return rooms.map((room) => {
     const {
@@ -79,7 +82,7 @@ export const getRoomQuotas: GetRoomQuotas = ({ rooms, filters, quotas }) => {
       roomsNumber: count,
     } = room
 
-    const startDate = DateTime.fromFormat(getMonthKey(year, month), monthKeyFormat)
+    startDate = DateTime.fromFormat(getMonthKey(year, month), monthKeyFormat)
     const endDate = startDate.plus({ months: monthsCount })
 
     const roomQuotasMap = new Map<string, RoomQuota>()
@@ -91,7 +94,7 @@ export const getRoomQuotas: GetRoomQuotas = ({ rooms, filters, quotas }) => {
           const key = DateTime.fromFormat(hotelQuota.date, quotaDateFormat)
             .toJSDate()
             .getTime()
-            .toString()
+            .toString() + hotelQuota.roomID
           roomQuotasMap.set(key, {
             key,
             id: hotelQuota.id,
@@ -110,8 +113,7 @@ export const getRoomQuotas: GetRoomQuotas = ({ rooms, filters, quotas }) => {
 
     let currentDate = startDate
     while (currentDate < endDate) {
-      const monthDate = currentDate.toJSDate()
-      const days = getEachDayInMonth(monthDate).map((date) => {
+      const days = [...eachDays].map((date) => {
         const dt = DateTime.fromJSDate(date)
         return {
           key: date.getTime().toString(),
@@ -142,7 +144,7 @@ export const getRoomQuotas: GetRoomQuotas = ({ rooms, filters, quotas }) => {
 
       currentDate = currentDate.plus({ months: 1 })
     }
-
+    console.log('end kurwa')
     return {
       id,
       room: { id, label, guests, count },
