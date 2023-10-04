@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Module\Booking\Infrastructure\TransferBooking\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Module\Booking\Domain\Shared\ValueObject\BookingTypeEnum;
 use Module\Booking\Infrastructure\Shared\Models\Booking as BaseModel;
+use Sdk\Module\Database\Eloquent\HasQuicksearch;
 
 /**
  * Module\Booking\Transfer\Infrastructure\Models\Booking
@@ -16,6 +18,8 @@ use Module\Booking\Infrastructure\Shared\Models\Booking as BaseModel;
  */
 class Booking extends BaseModel
 {
+    use HasQuicksearch, SoftDeletes;
+
     protected $attributes = [
         'type' => BookingTypeEnum::TRANSFER,
     ];
