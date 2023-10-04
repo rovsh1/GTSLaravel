@@ -2,8 +2,8 @@
 
 namespace Module\Booking\Providers\AirportBooking;
 
-use Module\Booking\Airport\Domain;
-use Module\Booking\Airport\Infrastructure;
+use Module\Booking\Domain\AirportBooking as Domain;
+use Module\Booking\Infrastructure\AirportBooking as Infrastructure;
 use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
@@ -13,17 +13,17 @@ class BootServiceProvider extends ServiceProvider
         $this->app->register(EventServiceProvider::class);
 
         $this->app->singleton(
-            Domain\Booking\Repository\BookingRepositoryInterface::class,
+            Domain\Repository\BookingRepositoryInterface::class,
             Infrastructure\Repository\BookingRepository::class
         );
 
         $this->app->singleton(
-            Domain\Booking\Repository\BookingGuestRepositoryInterface::class,
+            Domain\Repository\BookingGuestRepositoryInterface::class,
             Infrastructure\Repository\BookingGuestRepository::class
         );
 
         $this->app->singleton(
-            Domain\Booking\Adapter\SupplierAdapterInterface::class,
+            Domain\Adapter\SupplierAdapterInterface::class,
             Infrastructure\Adapter\SupplierAdapter::class
         );
     }
