@@ -26,7 +26,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static void updateExternalNumber(int $bookingId, int $type, string|null $number)
  * @method static void updateNote(int $bookingId, string|null $note)
  * @method static array getStatuses()
- * @method static mixed updateStatus(int $id, int $status, string|null $notConfirmedReason = null, float|null $cancelFeeAmount = null)
+ * @method static mixed updateStatus(int $id, int $status, string|null $notConfirmedReason = null, float|null $netPenalty = null)
  * @method static array getStatusHistory(int $id)
  **/
 class HotelAdapter extends Facade

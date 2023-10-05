@@ -62,12 +62,12 @@ class StatusUpdater
         );
     }
 
-    public function toCancelledFee(BookingInterface $booking, float $cancelFeeAmount): void
+    public function toCancelledFee(BookingInterface $booking, float $netPenalty, float|null $grossPenalty = null): void
     {
         $this->handleUpdateStatus(
             $booking,
             BookingStatusEnum::CANCELLED_FEE,
-            fn(BookingInterface $booking) => $booking->toCancelledFee($cancelFeeAmount)
+            fn(BookingInterface $booking) => $booking->toCancelledFee($netPenalty, $grossPenalty)
         );
     }
 

@@ -342,7 +342,7 @@ class BookingController extends Controller
                 $id,
                 $request->getStatus(),
                 $request->getNotConfirmedReason(),
-                $request->getCancelFeeAmount()
+                $request->getNetPenalty()
             )
         );
     }
