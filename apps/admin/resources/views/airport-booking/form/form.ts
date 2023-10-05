@@ -61,13 +61,12 @@ $(() => {
     const $clientIdInput = $('#form_data_client_id')
     const clientId = $clientIdInput.val()
     const client = clients.find((cl) => cl.id === Number(clientId))
-
     if (bookingID === null) {
       if (!client) {
         $('#form_data_order_id').attr('disabled', 'disabled')
       } else {
         $('#form_data_order_id').removeAttr('disabled')
-        toggleCurrencyIdField(client.currency_id === null)
+        toggleCurrencyIdField((client.currency_id === null || client.currency_id === undefined))
       }
     }
 
