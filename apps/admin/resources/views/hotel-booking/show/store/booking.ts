@@ -3,7 +3,7 @@ import { computed, onMounted, reactive, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { z } from 'zod'
 
-import { showCancelFeeDialog, showNotConfirmedReasonDialog } from '~resources/views/hotel-booking/show/lib/modals'
+import { showCancelFeeDialog, showNotConfirmedReasonDialog } from '~resources/views/booking/lib/modals'
 
 import {
   copyBooking,
