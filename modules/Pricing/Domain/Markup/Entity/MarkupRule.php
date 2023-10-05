@@ -4,23 +4,23 @@ declare(strict_types=1);
 
 namespace Module\Pricing\Domain\Markup\Entity;
 
-use Module\Pricing\Domain\Markup\ValueObject\ClientMarkupId;
+use Module\Pricing\Domain\Markup\ValueObject\MarkupGroupId;
 use Module\Pricing\Domain\Markup\ValueObject\MarkupValue;
-use Module\Shared\Domain\Entity\EntityInterface;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
-class ClientMarkup extends AbstractAggregateRoot implements EntityInterface
+class MarkupRule extends AbstractAggregateRoot
 {
     public function __construct(
-        private readonly ClientMarkupId $id,
+        private readonly MarkupGroupId $groupId,
+        //@todo может сделать hotelValue, hotelRoomValue, baseValue?
         private readonly ?int $hotelId,
         private readonly ?int $hotelRoomId,
         private MarkupValue $value
     ) {}
 
-    public function id(): ClientMarkupId
+    public function groupId(): MarkupGroupId
     {
-        return $this->id;
+        return $this->groupId;
     }
 
     public function hotelId(): int

@@ -6,7 +6,7 @@ namespace Module\Pricing\Domain\Markup\ValueObject;
 
 use Module\Shared\Domain\ValueObject\AbstractIntId;
 
-class ClientMarkupId extends AbstractIntId
+class MarkupId extends AbstractIntId
 {
 
 }

@@ -17,6 +17,9 @@ return [
     'Supplier' => [
         'path' => modules_path('Supplier'),
     ],
+    'Pricing' => [
+        'path' => modules_path('Pricing'),
+    ],
     'CurrencyRate' => [
         'path' => modules_path('Generic/CurrencyRate'),
     ],
