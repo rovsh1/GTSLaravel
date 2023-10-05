@@ -2,6 +2,8 @@
 
 namespace App\Admin\Http\Controllers\Pricing;
 
+use App\Admin\Http\Resources\Pricing\MarkupGroup as MarkupGroupResource;
+use App\Admin\Models\Pricing\MarkupGroup;
 use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\ActionsMenu;
 use App\Admin\Support\Facades\Form;
@@ -12,6 +14,7 @@ use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\View\Menus\MarkupGroupMenu;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\JsonResponse;
 use Module\Shared\Enum\Pricing\MarkupValueTypeEnum;
 
 class MarkupGroupController extends AbstractPrototypeController
@@ -19,6 +22,15 @@ class MarkupGroupController extends AbstractPrototypeController
     protected function getPrototypeKey(): string
     {
         return 'markup-group';
+    }
+
+    public function list(): JsonResponse
+    {
+        $groups = MarkupGroup::get();
+
+        return response()->json(
+            MarkupGroupResource::collection($groups)
+        );
     }
 
     protected function formFactory(): FormContract
