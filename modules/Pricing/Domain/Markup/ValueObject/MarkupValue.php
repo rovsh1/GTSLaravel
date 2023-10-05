@@ -7,6 +7,7 @@ namespace Module\Pricing\Domain\Markup\ValueObject;
 use Module\Shared\Contracts\CanEquate;
 use Module\Shared\Domain\ValueObject\Uint;
 use Module\Shared\Domain\ValueObject\ValueObjectInterface;
+use Module\Shared\Enum\Pricing\MarkupValueTypeEnum;
 
 class MarkupValue implements ValueObjectInterface, CanEquate
 {

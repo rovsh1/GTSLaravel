@@ -74,6 +74,7 @@ export default defineConfig(({ command }) => ({
         'resources/views/transfer-booking/show/show.ts',
         'resources/views/transfer-booking/show/show.scss',
         'resources/views/transfer-booking/main/main.ts',
+        'resources/views/markup-group/rules/form/form.ts',
         'resources/views/main.scss',
         'resources/views/main.ts',
       ],

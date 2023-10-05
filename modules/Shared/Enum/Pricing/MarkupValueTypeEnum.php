@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Pricing\Domain\Markup\ValueObject;
+namespace Module\Shared\Enum\Pricing;
 
 enum MarkupValueTypeEnum: int
 {
