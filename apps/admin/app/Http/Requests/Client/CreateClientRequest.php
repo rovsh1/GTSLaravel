@@ -21,6 +21,7 @@ class CreateClientRequest extends FormRequest
             'type' => ['required', 'numeric'],
             'cityId' => ['required', 'numeric'],
             'currency' => ['required', 'numeric'],
+            'markupGroupId' => ['required', 'numeric'],
             'residency' => ['required', new Enum(ResidencyEnum::class)],
             'status' => ['nullable', 'numeric'],
             'managerId' => ['nullable', 'numeric'],
@@ -67,6 +68,11 @@ class CreateClientRequest extends FormRequest
     public function getResidency(): int
     {
         return $this->post('residency');
+    }
+
+    public function getMarkupGroupId(): int
+    {
+        return $this->post('markupGroupId');
     }
 
     public function getStatus(): ?int

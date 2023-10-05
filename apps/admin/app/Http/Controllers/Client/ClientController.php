@@ -84,6 +84,7 @@ class ClientController extends AbstractPrototypeController
             'name' => $request->getName(),
             'status' => $request->getStatus() ?? StatusEnum::ACTIVE,
             'residency' => $request->getResidency(),
+            'markup_group_id' => $request->getMarkupGroupId(),
         ]);
         $this->model = $this->repository->create($data);
         $legalData = $request->getLegal();
