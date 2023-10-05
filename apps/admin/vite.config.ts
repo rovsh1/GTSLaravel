@@ -49,6 +49,7 @@ export default defineConfig(({ command }) => ({
         'resources/views/hotel/rooms/rooms.scss',
         'resources/views/hotel/show/show.ts',
         'resources/views/hotel/show/show.scss',
+        'resources/views/client/show.ts',
         'resources/views/hotel/images/images.ts',
         'resources/views/hotel/settings/settings.ts',
         'resources/views/hotel/settings/settings.scss',
