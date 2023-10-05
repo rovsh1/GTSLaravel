@@ -8,6 +8,7 @@ import { storeToRefs } from 'pinia'
 import { isDataValid } from '~resources/composables/form'
 import { useCityStore } from '~resources/store/city'
 import { useCurrencyStore } from '~resources/store/currency'
+import { useMarkupGroupStore } from '~resources/store/markup-group'
 import ManagerSelect from '~resources/views/booking/components/ManagerSelect.vue'
 import {
   clientTypeOptions,
@@ -51,6 +52,14 @@ const cityOptions = computed(() => {
   ) as SelectOption[]
 })
 
+const { markupGroup } = storeToRefs(useMarkupGroupStore())
+const markupGroupOptions = computed(() => {
+  const markupGroupsOptions: any[] | null = markupGroup.value ? markupGroup.value : []
+  return markupGroupsOptions.map(
+    (entity) => ({ value: entity.id, label: entity.name }),
+  ) as SelectOption[]
+})
+
 const { currencies } = storeToRefs(useCurrencyStore())
 const currencyOptions = computed(() => (currencies.value ? mapEntitiesToSelectOptions(currencies.value) : []))
 
@@ -71,6 +80,7 @@ const basicData = reactive<BasicFormData>({
   currency: null,
   managerId: null,
   residency: null,
+  markupGroupId: null,
 })
 
 const legalEntityData = reactive<LegalEntityFormData>({
@@ -102,7 +112,8 @@ const getActiveTab = computed(() => {
 
 const validateBaseDataForm = computed(() => (isDataValid(null, basicData.name)
   && isDataValid(null, basicData.type) && isDataValid(null, basicData.cityId)
-  && isDataValid(null, basicData.currency) && isDataValid(null, basicData.residency)))
+  && isDataValid(null, basicData.currency) && isDataValid(null, basicData.residency)
+  && isDataValid(null, basicData.markupGroupId)))
 
 const validateLegalDataForm = computed(() => (isDataValid(null, legalEntityData.name) && isDataValid(null, legalEntityData.type)
   && isDataValid(null, legalEntityData.address)))
@@ -149,6 +160,7 @@ const resetForm = () => {
   basicData.currency = null
   basicData.managerId = null
   basicData.residency = null
+  basicData.markupGroupId = null
   legalEntityData.name = null
   legalEntityData.industry = null
   legalEntityData.type = null
@@ -311,6 +323,20 @@ onMounted(() => {
                 :options="residentTypeOptions"
                 @input="(value: any, event: any) => {
                   basicData.residency = value as number
+                  isDataValid(event, value)
+                }"
+              />
+            </div>
+
+            <div class="col-md-12 mt-2">
+              <BootstrapSelectBase
+                id="type"
+                label="Группа наценки"
+                :options="markupGroupOptions"
+                :value="basicData.markupGroupId"
+                required
+                @input="(value: any, event: any) => {
+                  basicData.markupGroupId = value as number
                   isDataValid(event, value)
                 }"
               />

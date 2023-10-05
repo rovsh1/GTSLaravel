@@ -25,6 +25,7 @@ export interface BasicFormData {
   currency: number | null
   managerId: number | null
   residency: number | null
+  markupGroupId: number | null
 }
 
 export interface CreatePhysicalClient extends BasicFormData {

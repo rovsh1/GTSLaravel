@@ -27,6 +27,7 @@ interface CreateClientPayload {
   priceTypes: string[]
   status?: number
   managerId?: number
+  markupGroupId: number
 }
 
 interface CreatePhysicalClientPayload extends CreateClientPayload {
