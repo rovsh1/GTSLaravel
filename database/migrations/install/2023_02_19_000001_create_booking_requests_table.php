@@ -8,7 +8,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('booking_requests', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->unsignedInteger('booking_id');
             $table->unsignedSmallInteger('type');
             $table->char('file', 32);

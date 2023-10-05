@@ -13,6 +13,7 @@ use Module\Booking\Domain\AirportBooking\Repository\BookingRepositoryInterface;
 use Module\Booking\Domain\AirportBooking\ValueObject\Details\AdditionalInfo;
 use Module\Booking\Domain\AirportBooking\ValueObject\Details\AirportInfo;
 use Module\Booking\Domain\AirportBooking\ValueObject\Details\ServiceInfo;
+use Module\Booking\Domain\Shared\Entity\BookingInterface;
 use Module\Booking\Infrastructure\AirportBooking\Models\Airport;
 use Module\Booking\Infrastructure\AirportBooking\Models\AirportService;
 use Module\Booking\Infrastructure\AirportBooking\Models\Booking as Model;
@@ -140,12 +141,17 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         });
     }
 
-    public function delete(Entity $booking): void
+    public function delete(BookingInterface|Entity $booking): void
     {
         $this->getModel()::query()->whereId($booking->id()->value())->update([
             'status' => $booking->status(),
             'deleted_at' => now()
         ]);
+    }
+
+    public function bulkDelete(array $ids): void
+    {
+        $this->getModel()::query()->whereIn('id', $ids)->delete();
     }
 
     public function query(): Builder

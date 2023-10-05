@@ -14,6 +14,7 @@ use Module\Booking\Domain\HotelBooking\ValueObject\Details\AdditionalInfo;
 use Module\Booking\Domain\HotelBooking\ValueObject\Details\BookingPeriod;
 use Module\Booking\Domain\HotelBooking\ValueObject\Details\HotelInfo;
 use Module\Booking\Domain\HotelBooking\ValueObject\Details\RoomBookingCollection;
+use Module\Booking\Domain\Shared\Entity\BookingInterface;
 use Module\Booking\Domain\Shared\ValueObject\BookingId;
 use Module\Booking\Domain\Shared\ValueObject\BookingPrice;
 use Module\Booking\Domain\Shared\ValueObject\CancelConditions;
@@ -175,7 +176,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         return app(BookingFactory::class)->createCollectionFrom($models);
     }
 
-    public function delete(HotelBooking $booking): void
+    public function delete(BookingInterface|HotelBooking $booking): void
     {
         $this->getModel()::query()->whereId($booking->id()->value())->update([
             'status' => $booking->status(),

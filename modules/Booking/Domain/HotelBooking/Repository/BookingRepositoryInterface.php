@@ -31,8 +31,6 @@ interface BookingRepositoryInterface extends Base
 
     public function get(): Collection;
 
-    public function query(): Builder;
-
     public function create(
         OrderId $orderId,
         CreatorId $creatorId,
@@ -59,11 +57,5 @@ interface BookingRepositoryInterface extends Base
      */
     public function searchActive(?int $hotelId): array;
 
-    public function delete(HotelBooking $booking): void;
-
-    /**
-     * @param int[] $ids
-     * @return void
-     */
-    public function bulkDelete(array $ids): void;
+    public function delete(BookingInterface|HotelBooking $booking): void;
 }

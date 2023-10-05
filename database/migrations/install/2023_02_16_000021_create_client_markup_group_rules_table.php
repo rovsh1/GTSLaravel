@@ -10,18 +10,18 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('client_hotel_markups', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedInteger('client_id');
+        Schema::create('client_markup_group_rules', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('group_id');
             $table->unsignedInteger('hotel_id');
-            $table->unsignedInteger('hotel_room_id');
-            $table->integer('value');
+            $table->unsignedInteger('hotel_room_id')->nullable();
             $table->unsignedTinyInteger('type');
+            $table->integer('value');
             $table->timestamps();
 
-            $table->foreign('client_id')
+            $table->foreign('group_id')
                 ->references('id')
-                ->on('clients')
+                ->on('client_markup_groups')
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
 
@@ -44,6 +44,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('client_hotel_markups');
+        Schema::dropIfExists('client_markup_group_rules');
     }
 };

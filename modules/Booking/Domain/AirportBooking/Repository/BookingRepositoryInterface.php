@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Module\Booking\Domain\AirportBooking\AirportBooking;
 use Module\Booking\Domain\AirportBooking\ValueObject\Details\AdditionalInfo;
+use Module\Booking\Domain\Shared\Entity\BookingInterface;
 use Module\Booking\Domain\Shared\Repository\BookingRepositoryInterface as Base;
 use Module\Booking\Domain\Shared\ValueObject\BookingId;
 use Module\Booking\Domain\Shared\ValueObject\BookingPrice;
@@ -36,7 +37,5 @@ interface BookingRepositoryInterface extends Base
 
     public function store(AirportBooking $booking): bool;
 
-    public function delete(AirportBooking $booking): void;
-
-    public function query(): Builder;
+    public function delete(BookingInterface|AirportBooking $booking): void;
 }

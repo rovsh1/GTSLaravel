@@ -20,11 +20,6 @@ class ApplicationConstantManager implements ApplicationConstantsInterface
         return $this->findByClass(Constant\BasicCalculatedValue::class)->value();
     }
 
-    public function baseLegalMarkup(): int
-    {
-        return $this->findByClass(Constant\BaseLegalMarkup::class)->value();
-    }
-
     public function count(): int
     {
         return count($this->items);

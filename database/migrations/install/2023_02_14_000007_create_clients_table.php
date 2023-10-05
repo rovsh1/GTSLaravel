@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->string('name', 50);
             $table->mediumText('description')->nullable();
             $table->boolean('is_b2b');
-            $table->integer('markup');
+            $table->unsignedInteger('markup_group_id');
             $table->timestamps();
             $table->softDeletes();
 
@@ -31,6 +31,12 @@ return new class extends Migration {
             $table->foreign('currency_id')
                 ->references('id')
                 ->on('r_currencies')
+                ->restrictOnDelete()
+                ->cascadeOnUpdate();
+
+            $table->foreign('markup_group_id')
+                ->references('id')
+                ->on('client_markup_groups')
                 ->restrictOnDelete()
                 ->cascadeOnUpdate();
         });
