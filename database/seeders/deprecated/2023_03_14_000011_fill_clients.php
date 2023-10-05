@@ -7,6 +7,9 @@ use Module\Shared\Enum\Client\ResidencyEnum;
 return new class extends Migration {
     public function up()
     {
+        /** @var \Module\Shared\Domain\Service\ApplicationConstantsInterface $constants */
+        $constants = app(\Module\Shared\Domain\Service\ApplicationConstantsInterface::class);
+
         $q = DB::connection('mysql_old')
             ->table('clients')
             ->select(
@@ -42,6 +45,7 @@ return new class extends Migration {
                         'description' => $r->description,
                         'status' => $r->status,
                         'is_b2b' => (bool)$r->is_b2b,
+                        'markup' => $constants->baseLegalMarkup(),
                         'created_at' => $r->created,
                         'updated_at' => $r->updated
                     ]);

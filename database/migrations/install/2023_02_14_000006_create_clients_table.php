@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->string('name', 50);
             $table->mediumText('description')->nullable();
             $table->boolean('is_b2b');
+            $table->integer('markup');
             $table->timestamps();
             $table->softDeletes();
 

@@ -28,7 +28,8 @@ class Client extends Model
         'type',
         'status',
         'residency',
-        'description'
+        'description',
+        'markup'
     ];
 
     protected $casts = [
