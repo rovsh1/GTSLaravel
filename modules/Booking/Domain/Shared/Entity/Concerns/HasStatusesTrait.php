@@ -57,18 +57,20 @@ trait HasStatusesTrait
     }
 
     /**
-     * @param float $cancelFeeAmount
+     * @param float $netPenalty
+     * @param float|null $grossPenalty
      * @return void
      * @throws \InvalidArgumentException
      */
-    public function toCancelledFee(float $cancelFeeAmount): void
+    public function toCancelledFee(float $netPenalty, ?float $grossPenalty = null): void
     {
-        if ($cancelFeeAmount <= 0) {
+        if ($netPenalty <= 0) {
             throw new \InvalidArgumentException('Cancel fee amount can\'t be below zero');
         }
         $this->setStatus(BookingStatusEnum::CANCELLED_FEE);
-        $this->setNetPenalty($cancelFeeAmount);
-        $this->pushEvent(new BookingCancelledFee($this, $cancelFeeAmount));
+        $this->setNetPenalty($netPenalty);
+        $this->setGrossPenalty($grossPenalty);
+        $this->pushEvent(new BookingCancelledFee($this, $netPenalty));
     }
 
     public function toWaitingConfirmation(): void

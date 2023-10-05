@@ -68,9 +68,9 @@ class TransferAdapter
         int $id,
         int $status,
         string|null $notConfirmedReason = null,
-        float|null $cancelFeeAmount = null
+        float|null $netPenalty = null
     ): mixed {
-        return app(UpdateBookingStatus::class)->execute($id, $status, $notConfirmedReason, $cancelFeeAmount);
+        return app(UpdateBookingStatus::class)->execute($id, $status, $notConfirmedReason, $netPenalty);
     }
 
     public function getStatusHistory(int $id): array

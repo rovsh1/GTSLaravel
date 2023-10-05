@@ -107,9 +107,10 @@ class AirportAdapter
         int $id,
         int $status,
         ?string $notConfirmedReason = null,
-        ?float $cancelFeeAmount = null
+        ?float $netPenalty = null,
+        ?float $grossPenalty = null
     ): mixed {
-        return app(UpdateBookingStatus::class)->execute($id, $status, $notConfirmedReason, $cancelFeeAmount);
+        return app(UpdateBookingStatus::class)->execute($id, $status, $notConfirmedReason, $netPenalty, $grossPenalty);
     }
 
     public function getStatusHistory(int $id): array

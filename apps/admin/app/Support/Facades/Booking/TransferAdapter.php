@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static mixed getBooking(int $id)
  * @method static int createBooking(int $cityId, int $clientId, int|null $legalId, int $currencyId, int $serviceId, int $creatorId, ?int $orderId, ?string $note = null)
  * @method static array getAvailableActions(int $id)
- * @method static mixed updateStatus(int $id, int $status, string|null $notConfirmedReason = null, float|null $cancelFeeAmount = null)
+ * @method static mixed updateStatus(int $id, int $status, string|null $notConfirmedReason = null, float|null $netPenalty = null)
  * @method static array getStatusHistory(int $id)
  * @method static void updateNote(int $bookingId, string|null $note)
  * @method static int copyBooking(int $id)

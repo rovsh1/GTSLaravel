@@ -11,7 +11,8 @@ class UpdateStatusRequest extends FormRequest
         return [
             'status' => ['required', 'numeric'],
             'not_confirmed_reason' => ['nullable', 'string'],
-            'cancel_fee_amount' => ['nullable', 'numeric'],
+            'net_penalty' => ['nullable', 'numeric'],
+            'gross_penalty' => ['nullable', 'numeric'],
         ];
     }
 
@@ -25,8 +26,13 @@ class UpdateStatusRequest extends FormRequest
         return $this->post('not_confirmed_reason');
     }
 
-    public function getCancelFeeAmount(): ?string
+    public function getNetPenalty(): ?string
     {
-        return $this->post('cancel_fee_amount');
+        return $this->post('net_penalty');
+    }
+
+    public function getGrossPenalty(): ?string
+    {
+        return $this->post('gross_penalty');
     }
 }
