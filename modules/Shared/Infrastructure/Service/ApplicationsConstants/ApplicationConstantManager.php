@@ -6,7 +6,7 @@ use Module\Shared\Domain\Service\ApplicationConstantsInterface;
 use Module\Shared\Infrastructure\Service\ApplicationsConstants\Constant\ConstantInterface;
 use Sdk\Module\Support\ItemCollectionIteratorTrait;
 
-class ApplicationConstantManager implements ApplicationConstantsInterface, \Iterator, \Countable
+class ApplicationConstantManager implements ApplicationConstantsInterface
 {
     use ItemCollectionIteratorTrait;
 
@@ -18,6 +18,11 @@ class ApplicationConstantManager implements ApplicationConstantsInterface, \Iter
     public function basicCalculatedValue(): float
     {
         return $this->findByClass(Constant\BasicCalculatedValue::class)->value();
+    }
+
+    public function baseLegalMarkup(): int
+    {
+        return $this->findByClass(Constant\BaseLegalMarkup::class)->value();
     }
 
     public function count(): int

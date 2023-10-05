@@ -37,6 +37,7 @@ export interface UpdateBookingStatusPayload {
   status: number
   notConfirmedReason?: string
   cancelFeeAmount?: number
+  clientCancelFeeAmount?: number
 }
 
 export interface UpdateExternalNumberPayload {
@@ -81,7 +82,8 @@ export const updateBookingStatus = (props: MaybeRef<UpdateBookingStatusPayload>)
         (payload: UpdateBookingStatusPayload): any => ({
           status: payload.status,
           not_confirmed_reason: payload.notConfirmedReason,
-          cancel_fee_amount: payload.cancelFeeAmount,
+          net_penalty: payload.cancelFeeAmount,
+          gross_penalty: payload.clientCancelFeeAmount,
         }),
       ),
     )), 'application/json')
