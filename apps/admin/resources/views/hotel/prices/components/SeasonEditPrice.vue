@@ -106,26 +106,26 @@ const onSubmitUpdateData = async () => {
   margin-top: 1rem;
 
   .form-button {
-    line-height: 21px;
+    line-height: 1.313rem;
   }
 
   .form-field {
-    margin-right: 16px;
-    margin-bottom: 16px;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
 
     label {
       margin-bottom: 0;
-      font-size: 10px;
+      font-size: 0.625rem;
     }
 
     input,
     .label {
-      font-size: 11px;
+      font-size: 0.688rem;
     }
   }
 
   .field-period {
-    width: 180px;
+    width: 11.25rem;
 
     input {
       text-align: right;
@@ -133,11 +133,11 @@ const onSubmitUpdateData = async () => {
   }
 
   .field-days {
-    width: 260px;
+    width: 16.25rem;
   }
 
   .field-price {
-    width: 90px;
+    width: 5.625rem;
 
     input {
       text-align: right;

@@ -1,11 +1,11 @@
 @use "~resources/views/main";
 
-.card h5 > a {
+.card h5>a {
   display: inline-block;
-  margin-left: 16px;
+  margin-left: 1rem;
   color: var(--text);
   font-weight: normal;
-  font-size: 12px;
+  font-size: 0.75rem;
   text-decoration: underline;
 
   &:hover {
@@ -14,7 +14,7 @@
 }
 
 .flex-basis-200 {
-  flex-basis: 200px;
+  flex-basis: 12.5rem;
 }
 
 ul.hotel-services {
@@ -22,14 +22,14 @@ ul.hotel-services {
   // stylelint-disable-next-line declaration-no-important
   padding-left: 0 !important;
   color: #0ab21b;
-  font-size: 12px;
-  line-height: 20px;
+  font-size: 0.75rem;
+  line-height: 1.25rem;
 }
 
 ul.hotel-services li {
   display: inline-block;
   vertical-align: top;
-  margin-right: 16px;
+  margin-right: 1rem;
 }
 
 ul.hotel-services li::before {
@@ -38,8 +38,8 @@ ul.hotel-services li::before {
   float: left;
   width: 4px;
   height: 4px;
-  margin-top: 8px;
-  margin-right: 5px;
+  margin-top: 0.5rem;
+  margin-right: 0.313rem;
   border-radius: 50%;
   background: #0ab21b;
 }
@@ -52,19 +52,19 @@ div.hotel-usabilities li {
   position: relative;
 }
 
-div.hotel-usabilities li > input {
-  margin-right: 5px;
+div.hotel-usabilities li>input {
+  margin-right: 0.313rem;
 }
 
 div.hotel-usabilities div.radio-wrapper {
   position: absolute;
-  top: 12px;
-  right: 16px;
-  font-size: 11px;
+  top: 0.75rem;
+  right: 1rem;
+  font-size: 0.688rem;
 }
 
 div.hotel-usabilities div.radio-wrapper input {
-  margin-right: 5px;
+  margin-right: 0.313rem;
 }
 
 div.hotel-usabilities div.radio-wrapper div.radio {
@@ -73,31 +73,31 @@ div.hotel-usabilities div.radio-wrapper div.radio {
 }
 
 div.hotel-usabilities div.radio-wrapper div.radio:first-child {
-  margin-right: 9px;
+  margin-right: 0.563rem;
 }
 
 div.hotel-usabilities div.rooms-wrapper {
-  margin-top: 9px;
-  font-size: 11px;
+  margin-top: 0.563rem;
+  font-size: 0.688rem;
   text-align: right;
 }
 
 div.hotel-usabilities div.rooms-wrapper input {
-  margin-left: 5px;
+  margin-left: 0.313rem;
 }
 
 div.accordion-list {
   border-right: 1px solid var(--border);
   border-left: 1px solid var(--border);
-  line-height: 20px;
+  line-height: 1.25rem;
 }
 
 div.accordion-list h2 {
   position: relative;
   margin: 0;
-  padding: 6px 16px 6px 32px;
+  padding: 0.375rem 1rem 0.375rem 2rem;
   border-bottom: 1px solid var(--border);
-  font-size: 13px;
+  font-size: 0.813rem;
   cursor: pointer;
 }
 
@@ -111,21 +111,21 @@ div.accordion-list section:first-child h2 {
 
 div.accordion-list h2 span {
   position: absolute;
-  top: 6px;
-  right: 16px;
+  top: 0.375rem;
+  right: 1rem;
   font-weight: normal;
-  font-size: 11px;
+  font-size: 0.688rem;
 }
 
 div.accordion-list h2::before {
   content: '';
   position: absolute;
   top: 50%;
-  left: 16px;
+  left: 1rem;
   display: inline-block;
   vertical-align: middle;
-  margin-top: -4px;
-  margin-right: 9px;
+  margin-top: -0.25rem;
+  margin-right: 0.563rem;
   border-top: 4px solid transparent;
   border-bottom: 4px solid transparent;
   border-left: 5px solid #000;
@@ -133,7 +133,7 @@ div.accordion-list h2::before {
 
 div.accordion-list .section-body {
   overflow: auto;
-  max-height: 400px;
+  max-height: 25rem;
   margin-top: 0;
   margin-bottom: 0;
   // stylelint-disable-next-line declaration-no-important
@@ -147,7 +147,7 @@ div.accordion-list section.expanded h2 {
 }
 
 div.accordion-list section.expanded h2::before {
-  margin-top: -3px;
+  margin-top: -0.188rem;
   border-top: 5px solid #000;
   border-right: 4px solid transparent;
   border-left: 4px solid transparent;
@@ -158,7 +158,7 @@ div.accordion-list section.expanded .section-body {
 }
 
 div.accordion-list li {
-  padding: 12px 16px;
+  padding: 0.75rem 1rem;
   border-bottom: 1px solid #dadce0;
   background: #f8fafb;
 }

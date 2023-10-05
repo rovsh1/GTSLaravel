@@ -38,8 +38,8 @@ defineEmits<{
   position: relative;
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
-  padding: 7px 140px 7px 16px;
+  margin-bottom: 0.625rem;
+  padding: 0.438rem 8.75rem 0.438rem 1rem;
   border-radius: 4px;
   color: black;
 
@@ -49,7 +49,7 @@ defineEmits<{
     display: inline-block;
     vertical-align: middle;
     height: 100%;
-    padding: 0 8px;
+    padding: 0 0.5rem;
     border-radius: 0 4px 4px 0;
     color: black;
     transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;

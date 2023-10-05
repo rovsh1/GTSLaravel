@@ -72,7 +72,7 @@ defineEmits<{
 <style scoped lang="scss">
 a i {
   font-weight: bold;
-  font-size: 18px;
+  font-size: 1.125rem;
 }
 
 ul {

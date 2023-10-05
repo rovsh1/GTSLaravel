@@ -9,6 +9,6 @@
 
 <style scoped lang="scss">
 ul.nav {
-  margin-bottom: 25px;
+  margin-bottom: 1.563rem;
 }
 </style>

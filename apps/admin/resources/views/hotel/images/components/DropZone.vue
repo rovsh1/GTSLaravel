@@ -140,7 +140,7 @@ const remove = (idToRemove: string) => {
   object-fit: cover;
   object-position: center;
   max-width: 100%;
-  height: 140px;
+  height: 8.75rem;
   border-radius: 0.75em;
   aspect-ratio: 1/1;
 }

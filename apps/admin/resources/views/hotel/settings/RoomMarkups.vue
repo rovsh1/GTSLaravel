@@ -7,6 +7,5 @@ import CollapsableBlock from '~resources/views/hotel/settings/components/Collaps
 <template>
   <CollapsableBlock id="room-markups" title="Номера">
     Номера наценки скидки
-    @todo в итоге должно быть сделано через EditableCell
   </CollapsableBlock>
 </template>

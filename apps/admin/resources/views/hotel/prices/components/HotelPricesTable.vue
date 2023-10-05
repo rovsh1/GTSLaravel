@@ -285,6 +285,6 @@ const handlerUpdateSeasonDaysData = (status :boolean) => {
 }
 
 .priced {
-  height: 32px;
+  height: 2rem;
 }
 </style>
