@@ -13,7 +13,7 @@ return new class extends Migration {
     public function up()
     {
         Schema::create('traveline_hotels', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->bigInteger('hotel_id');
         });
     }

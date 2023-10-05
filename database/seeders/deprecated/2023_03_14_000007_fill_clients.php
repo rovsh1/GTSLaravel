@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\DB;
 use Module\Shared\Enum\Client\ResidencyEnum;
 
 return new class extends Migration {
+    private const BASE_MARKUP_GROUP_ID = 1;
+
     public function up()
     {
         $q = DB::connection('mysql_old')
@@ -42,6 +44,7 @@ return new class extends Migration {
                         'description' => $r->description,
                         'status' => $r->status,
                         'is_b2b' => (bool)$r->is_b2b,
+                        'markup_group_id' => self::BASE_MARKUP_GROUP_ID,
                         'created_at' => $r->created,
                         'updated_at' => $r->updated
                     ]);

@@ -4,6 +4,7 @@ namespace Module\Booking\Domain\TransferBooking\Repository;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Module\Booking\Domain\Shared\Entity\BookingInterface;
 use Module\Booking\Domain\Shared\Repository\BookingRepositoryInterface as Base;
 use Module\Booking\Domain\Shared\ValueObject\BookingId;
 use Module\Booking\Domain\Shared\ValueObject\BookingPrice;
@@ -32,13 +33,5 @@ interface BookingRepositoryInterface extends Base
 
     public function store(TransferBooking $booking): bool;
 
-    public function delete(TransferBooking $booking): void;
-
-    public function query(): Builder;
-
-    /**
-     * @param int[] $ids
-     * @return void
-     */
-    public function bulkDelete(array $ids): void;
+    public function delete(BookingInterface|TransferBooking $booking): void;
 }

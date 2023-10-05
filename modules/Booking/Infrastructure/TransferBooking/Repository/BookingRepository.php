@@ -6,15 +6,16 @@ namespace Module\Booking\Infrastructure\TransferBooking\Repository;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Module\Booking\Domain\Shared\Entity\BookingInterface;
 use Module\Booking\Domain\Shared\ValueObject\BookingId;
 use Module\Booking\Domain\Shared\ValueObject\BookingPrice;
 use Module\Booking\Domain\Shared\ValueObject\CancelConditions;
 use Module\Booking\Domain\Shared\ValueObject\CreatorId;
 use Module\Booking\Domain\Shared\ValueObject\OrderId;
-use Module\Booking\Infrastructure\Shared\Repository\AbstractBookingRepository as BaseRepository;
-use Module\Booking\Domain\TransferBooking\TransferBooking as Entity;
 use Module\Booking\Domain\TransferBooking\Repository\BookingRepositoryInterface;
+use Module\Booking\Domain\TransferBooking\TransferBooking as Entity;
 use Module\Booking\Domain\TransferBooking\ValueObject\Details\ServiceInfo;
+use Module\Booking\Infrastructure\Shared\Repository\AbstractBookingRepository as BaseRepository;
 use Module\Booking\Infrastructure\TransferBooking\Models\Booking as Model;
 use Module\Booking\Infrastructure\TransferBooking\Models\BookingDetails;
 use Module\Booking\Infrastructure\TransferBooking\Models\TransferService;
@@ -122,7 +123,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         });
     }
 
-    public function delete(Entity $booking): void
+    public function delete(BookingInterface|Entity $booking): void
     {
         $this->getModel()::query()->whereId($booking->id()->value())->update([
             'status' => $booking->status(),

@@ -23,3 +23,4 @@ Route::group([], __DIR__ . '/transfer-booking.php');
 Route::group([], __DIR__ . '/booking-order.php');
 Route::group([], __DIR__ . '/currency.php');
 Route::group([], __DIR__ . '/locale-dictionary.php');
+Route::group([], __DIR__ . '/markup-group.php');

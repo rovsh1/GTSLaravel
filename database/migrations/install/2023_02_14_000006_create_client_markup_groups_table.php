@@ -10,16 +10,12 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('order_vouchers', function (Blueprint $table) {
+        Schema::create('client_markup_groups', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('order_id');
+            $table->string('name');
+            $table->unsignedTinyInteger('type');
+            $table->integer('value');
             $table->timestamps();
-
-            $table->foreign('order_id')
-                ->references('id')
-                ->on('orders')
-                ->restrictOnDelete()
-                ->cascadeOnUpdate();
         });
     }
 
@@ -28,6 +24,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('order_vouchers');
+        Schema::dropIfExists('client_markup_groups');
     }
 };

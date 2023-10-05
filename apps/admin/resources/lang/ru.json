@@ -120,6 +120,9 @@
     "Module\\Shared\\Enum\\Supplier\\ContractServiceTypeEnum::AIRPORT": "Аэропорт",
     "Module\\Shared\\Enum\\Supplier\\ContractServiceTypeEnum::TRANSFER": "Трансфер",
 
+    "Module\\Shared\\Enum\\Pricing\\MarkupValueTypeEnum::PERCENT": "Процент",
+    "Module\\Shared\\Enum\\Pricing\\MarkupValueTypeEnum::ABSOLUTE": "Значение",
+
     "Module\\Booking\\Domain\\Shared\\Event\\Status\\BookingCreated": "Новая",
     "Module\\Booking\\Domain\\Shared\\Event\\Status\\BookingProcessing": "В работе",
     "Module\\Booking\\Domain\\Shared\\Event\\Status\\BookingCancelled": "Отменена",
