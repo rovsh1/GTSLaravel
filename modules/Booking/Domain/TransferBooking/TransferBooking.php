@@ -55,9 +55,4 @@ class TransferBooking extends AbstractBooking
     {
         $this->note = $note;
     }
-
-    public function type(): BookingTypeEnum
-    {
-        return BookingTypeEnum::TRANSFER;
-    }
 }

@@ -75,11 +75,6 @@ final class HotelBooking extends AbstractBooking
         return $this->roomBookings;
     }
 
-    public function type(): BookingTypeEnum
-    {
-        return BookingTypeEnum::HOTEL;
-    }
-
     public function quotaProcessingMethod(): QuotaProcessingMethodEnum
     {
         return $this->quotaProcessingMethod;

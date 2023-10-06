@@ -11,7 +11,7 @@ use Module\Booking\Domain\HotelBooking\Repository\BookingGuestRepositoryInterfac
 use Module\Booking\Domain\HotelBooking\Repository\BookingRepositoryInterface;
 use Module\Booking\Domain\HotelBooking\Repository\RoomBookingRepositoryInterface;
 use Module\Booking\Domain\HotelBooking\ValueObject\Details\RoomBooking\RoomBookingId;
-use Module\Booking\Domain\Order\ValueObject\GuestId;
+use Module\Booking\Domain\Shared\ValueObject\GuestId;
 use Module\Shared\Application\Exception\ApplicationException;
 use Module\Shared\Domain\Exception\DomainEntityExceptionInterface;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;

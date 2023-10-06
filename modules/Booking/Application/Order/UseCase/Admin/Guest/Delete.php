@@ -6,7 +6,7 @@ namespace Module\Booking\Application\Order\UseCase\Admin\Guest;
 
 use Module\Booking\Domain\Order\Event\GuestDeleted;
 use Module\Booking\Domain\Order\Repository\GuestRepositoryInterface;
-use Module\Booking\Domain\Order\ValueObject\GuestId;
+use Module\Booking\Domain\Shared\ValueObject\GuestId;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 

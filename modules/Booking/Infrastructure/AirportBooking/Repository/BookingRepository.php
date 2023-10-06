@@ -14,16 +14,16 @@ use Module\Booking\Domain\AirportBooking\ValueObject\Details\AdditionalInfo;
 use Module\Booking\Domain\AirportBooking\ValueObject\Details\AirportInfo;
 use Module\Booking\Domain\AirportBooking\ValueObject\Details\ServiceInfo;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
-use Module\Booking\Infrastructure\AirportBooking\Models\Airport;
-use Module\Booking\Infrastructure\AirportBooking\Models\AirportService;
-use Module\Booking\Infrastructure\AirportBooking\Models\Booking as Model;
-use Module\Booking\Infrastructure\AirportBooking\Models\BookingDetails;
-use Module\Booking\Domain\Order\ValueObject\GuestIdsCollection;
 use Module\Booking\Domain\Shared\ValueObject\BookingId;
 use Module\Booking\Domain\Shared\ValueObject\BookingPrice;
 use Module\Booking\Domain\Shared\ValueObject\CancelConditions;
 use Module\Booking\Domain\Shared\ValueObject\CreatorId;
+use Module\Booking\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Booking\Domain\Shared\ValueObject\OrderId;
+use Module\Booking\Infrastructure\AirportBooking\Models\Airport;
+use Module\Booking\Infrastructure\AirportBooking\Models\AirportService;
+use Module\Booking\Infrastructure\AirportBooking\Models\Booking as Model;
+use Module\Booking\Infrastructure\AirportBooking\Models\BookingDetails;
 use Module\Booking\Infrastructure\Shared\Repository\AbstractBookingRepository as BaseRepository;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
@@ -108,7 +108,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
                     date: $date->toImmutable(),
                     cancelConditions: $cancelConditions,
                     additionalInfo: $additionalInfo,
-                    guestIds: new GuestIdsCollection(),
+                    guestIds: new GuestIdCollection(),
                     note: $note,
                 );
 
@@ -179,7 +179,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
                 ? CancelConditions::fromData($detailsData['cancelConditions'])
                 : null,
             additionalInfo: AdditionalInfo::fromData($detailsData['additionalInfo']),
-            guestIds: GuestIdsCollection::fromData($booking->guest_ids),
+            guestIds: GuestIdCollection::fromData($booking->guest_ids),
             note: $detailsData['note'] ?? null,
         );
     }

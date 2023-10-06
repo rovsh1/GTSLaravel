@@ -18,8 +18,8 @@ use Module\Booking\Application\Shared\Factory\BookingPriceDtoFactory;
 use Module\Booking\Application\Shared\Service\StatusStorage;
 use Module\Booking\Domain\HotelBooking\HotelBooking;
 use Module\Booking\Domain\HotelBooking\ValueObject\Details\RoomBookingCollection;
-use Module\Booking\Domain\Order\ValueObject\GuestId;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
+use Module\Booking\Domain\Shared\ValueObject\GuestId;
 
 class BookingDtoFactory extends AbstractBookingDtoFactory
 {

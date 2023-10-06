@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Domain\HotelBooking\Repository;
 
 use Module\Booking\Domain\HotelBooking\ValueObject\Details\RoomBooking\RoomBookingId;
-use Module\Booking\Domain\Order\ValueObject\GuestId;
+use Module\Booking\Domain\Shared\ValueObject\GuestId;
 
 interface BookingGuestRepositoryInterface
 {

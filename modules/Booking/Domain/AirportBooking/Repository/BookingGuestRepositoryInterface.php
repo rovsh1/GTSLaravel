@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Booking\Domain\AirportBooking\Repository;
 
-use Module\Booking\Domain\Order\ValueObject\GuestId;
 use Module\Booking\Domain\Shared\ValueObject\BookingId;
+use Module\Booking\Domain\Shared\ValueObject\GuestId;
 
 interface BookingGuestRepositoryInterface
 {

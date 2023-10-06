@@ -7,13 +7,13 @@ namespace Module\Booking\Application\AirportBooking\Factory;
 use Module\Booking\Application\AirportBooking\Response\BookingDto;
 use Module\Booking\Application\AirportBooking\Response\Details\AirportInfoDto;
 use Module\Booking\Application\AirportBooking\Response\Details\ServiceInfoDto;
-use Module\Booking\Domain\AirportBooking\AirportBooking;
 use Module\Booking\Application\HotelBooking\Dto\Details\CancelConditionsDto;
 use Module\Booking\Application\Shared\Factory\AbstractBookingDtoFactory;
 use Module\Booking\Application\Shared\Factory\BookingPriceDtoFactory;
 use Module\Booking\Application\Shared\Service\StatusStorage;
-use Module\Booking\Domain\Order\ValueObject\GuestId;
+use Module\Booking\Domain\AirportBooking\AirportBooking;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
+use Module\Booking\Domain\Shared\ValueObject\GuestId;
 
 class BookingDtoFactory extends AbstractBookingDtoFactory
 {
