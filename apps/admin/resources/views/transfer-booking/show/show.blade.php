@@ -8,6 +8,9 @@
     <script>
       window['view-initial-data-transfer-booking'] = {{ Js::from([
             'bookingID' => $bookingId,
+            'manager' => $manager,
+            'order' => $order,
+            'currencies' => $currencies,
         ]) }}
     </script>
 @endsection
@@ -20,13 +23,13 @@
     <div class="content-header">
         <div class="title">{{ $title }}</div>
         <x-ui.actions-menu :$editUrl :$deleteUrl/>
+        <div id="booking-copy-button"></div>
         <div class="flex-grow-1"></div>
-
         {!! Layout::actions() !!}
     </div>
 
     <div class="content-body">
-        <div class="card card-form mt-3">
+        <div class="card card-form mt-3 pt-3">
             <div class="card-body">
                 <div class="d-flex flex-row gap-4">
                     <div class="w-100 rounded shadow-lg p-4">
@@ -48,7 +51,9 @@
                             </tr>
                             <tr>
                                 <th>Клиент</th>
-                                <td>{{ $client->name }}</td>
+                                <td>
+                                    <a href="{{ route('client.show', $client->id) }}" target="_blank">{{ $client->name }}</a>
+                                </td>
                             </tr>
                             <tr>
                                 <th>Тип карты оплаты</th>
@@ -64,7 +69,9 @@
                             </tr>
                             <tr>
                                 <th>Менеджер</th>
-                                <td> {{ $manager->presentation }}</td>
+                                <td>
+                                    <div id="booking-editable-manager"></div>
+                                </td>
                             </tr>
                             <tr>
                                 <th>Автор</th>
@@ -75,7 +82,7 @@
                                 <td>{{ $model->createdAt }}</td>
                             </tr>
                             <tr>
-                                <th>ФИО клиента и место подачи/отправки авто</th>
+                                <th>ФИО клиента и место <br>подачи/отправки авто</th>
                                 <td>{{ $model->note }}</td>
                             </tr>
                             </tbody>
@@ -87,5 +94,7 @@
                 </div>
             </div>
         </div>
+
+        <div id="booking-details"></div>
     </div>
 @endsection

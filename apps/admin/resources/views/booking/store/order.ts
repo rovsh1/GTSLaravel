@@ -11,6 +11,8 @@ import { isInitialDataExists, requestInitialData, ViewInitialDataKey } from '~li
 let initialDataKey: ViewInitialDataKey = 'view-initial-data-hotel-booking'
 if (isInitialDataExists('view-initial-data-airport-booking')) {
   initialDataKey = 'view-initial-data-airport-booking'
+} else if (isInitialDataExists('view-initial-data-transfer-booking')) {
+  initialDataKey = 'view-initial-data-transfer-booking'
 }
 
 const { order, currencies } = requestInitialData(
