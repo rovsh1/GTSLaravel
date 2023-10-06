@@ -28,7 +28,8 @@ class Client extends Model
         'type',
         'status',
         'residency',
-        'description'
+        'description',
+        'markup_group_id'
     ];
 
     protected $casts = [
@@ -50,7 +51,9 @@ class Client extends Model
                 ->leftJoin('r_currencies', 'r_currencies.id', '=', 'clients.currency_id')
                 ->joinTranslatable('r_currencies', 'name as currency_name')
                 ->leftJoin('administrator_clients', 'administrator_clients.client_id', 'clients.id')
-                ->addSelect('administrator_clients.administrator_id');
+                ->addSelect('administrator_clients.administrator_id')
+                ->join('client_markup_groups', 'client_markup_groups.id', '=', 'clients.markup_group_id')
+                ->addSelect('client_markup_groups.name as markup_group_name');
         });
     }
 

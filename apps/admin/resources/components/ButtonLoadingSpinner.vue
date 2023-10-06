@@ -24,6 +24,6 @@ withDefaults(defineProps<{
 .button-spinner {
   width: 11px;
   height: 12px;
-  margin-left: 2px;
+  margin-left: 0.125rem;
 }
 </style>

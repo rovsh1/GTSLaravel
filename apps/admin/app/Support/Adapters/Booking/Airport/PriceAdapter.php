@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Adapters\Booking\Airport;
 
-use Module\Booking\Airport\Application\UseCase\Admin\Price\SetCalculatedGrossPrice;
-use Module\Booking\Airport\Application\UseCase\Admin\Price\SetCalculatedNetPrice;
-use Module\Booking\Airport\Application\UseCase\Admin\Price\SetGrossPenalty;
-use Module\Booking\Airport\Application\UseCase\Admin\Price\SetManualGrossPrice;
-use Module\Booking\Airport\Application\UseCase\Admin\Price\SetManualNetPrice;
-use Module\Booking\Airport\Application\UseCase\Admin\Price\SetNetPenalty;
+use Module\Booking\Application\AirportBooking\UseCase\Admin\Price\SetCalculatedGrossPrice;
+use Module\Booking\Application\AirportBooking\UseCase\Admin\Price\SetCalculatedNetPrice;
+use Module\Booking\Application\AirportBooking\UseCase\Admin\Price\SetGrossPenalty;
+use Module\Booking\Application\AirportBooking\UseCase\Admin\Price\SetManualGrossPrice;
+use Module\Booking\Application\AirportBooking\UseCase\Admin\Price\SetManualNetPrice;
+use Module\Booking\Application\AirportBooking\UseCase\Admin\Price\SetNetPenalty;
 
 class PriceAdapter
 {

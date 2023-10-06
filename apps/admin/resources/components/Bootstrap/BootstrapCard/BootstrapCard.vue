@@ -7,26 +7,26 @@
 </template>
 <style lang="scss">
 .card {
-  margin-bottom: 16px;
+  margin-bottom: 1rem;
 
   .card-title {
-    padding: 16px 16px 0;
+    padding: 1rem 1rem 0;
 
     h2 {
       position: relative;
       margin-top: 0;
       margin-bottom: 0;
-      padding: 0 9px 16px;
+      padding: 0 0.563rem 1rem;
       border-bottom: 1px solid #f2f2f2;
-      font-size: 16px;
+      font-size: 1rem;
 
       &::before {
         content: '';
         position: absolute;
         bottom: 0;
         left: 0;
-        width: 32px;
-        height: 3px;
+        width: 2rem;
+        height: 0.188rem;
         background: #2584FA;
       }
     }

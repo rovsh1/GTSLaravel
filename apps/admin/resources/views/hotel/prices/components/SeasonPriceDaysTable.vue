@@ -187,12 +187,12 @@ onMounted(async () => {
 
 <style lang="scss">
 .table-wrapper {
-  padding: 5px 0;
+  padding: 0.313rem 0;
 
   &:first-child {
     table {
-      width: 200px;
-      min-width: 200px;
+      width: 12.5rem;
+      min-width: 12.5rem;
     }
   }
 
@@ -207,7 +207,7 @@ onMounted(async () => {
 }
 
 .priced {
-  min-width: 55px;
-  padding: 0 5px;
+  min-width: 3.438rem;
+  padding: 0 0.313rem;
 }
 </style>

@@ -11,4 +11,9 @@ return Factory::key('transfer-booking')
         "index" => "Брони транспортных услуг",
         "create" => "Новая бронь"
     ])
+    ->views([
+        'index' => 'transfer-booking.main.main',
+        'show' => 'transfer-booking.show.show',
+        'form' => 'transfer-booking.form.form'
+    ])
     ->priority(207);

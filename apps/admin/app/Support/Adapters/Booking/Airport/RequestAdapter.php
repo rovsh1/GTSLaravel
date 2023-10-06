@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Adapters\Booking\Airport;
 
-use Module\Booking\Airport\Application\UseCase\Admin\Request\GetBookingRequests;
-use Module\Booking\Airport\Application\UseCase\Admin\Request\GetDocumentFileInfo;
-use Module\Booking\Airport\Application\UseCase\Admin\Request\SendRequest;
+use Module\Booking\Application\AirportBooking\UseCase\Admin\Request\GetBookingRequests;
+use Module\Booking\Application\AirportBooking\UseCase\Admin\Request\GetDocumentFileInfo;
+use Module\Booking\Application\AirportBooking\UseCase\Admin\Request\SendRequest;
 
 class RequestAdapter
 {

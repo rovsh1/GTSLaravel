@@ -62,7 +62,7 @@ $(() => {
         $('#form_data_order_id').attr('disabled', 'disabled')
       } else {
         $('#form_data_order_id').removeAttr('disabled')
-        toggleCurrencyIdField(client.currency_id === null)
+        toggleCurrencyIdField((client.currency_id === null || client.currency_id === undefined))
       }
     }
 

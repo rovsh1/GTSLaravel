@@ -3,21 +3,21 @@
 .rooms-cards {
   display: flex;
   flex-flow: column wrap;
-  gap: 32px;
+  gap: 2rem;
 }
 
 .hotel-prices {
-  font-size: 11px;
+  font-size: 0.688rem;
 
   tr {
     th.rate-name {
-      width: 180px;
-      min-width: 180px;
+      width: 11.25rem;
+      min-width: 11.25rem;
     }
 
     th.type-name {
-      width: 120px;
-      min-width: 120px;
+      width: 7.5rem;
+      min-width: 7.5rem;
     }
 
     &:hover td {
@@ -50,7 +50,7 @@
 
       &.priced {
         padding: 0;
-        line-height: 32px;
+        line-height: 2rem;
         text-align: right;
       }
 
@@ -79,7 +79,7 @@
 
     tr,
     td {
-      height: 45px;
+      height: 2.813rem;
     }
   }
 
@@ -100,7 +100,7 @@
   padding-bottom: 0.5rem;
   color: var(--bs-secondary-color);
   font-weight: bold;
-  font-size: 11px;
+  font-size: 0.688rem;
   text-align: left;
 }
 

@@ -450,15 +450,15 @@ onMounted(() => {
 }
 
 .reservation-requests {
-  line-height: 18px;
+  line-height: 1.125rem;
 
   span.date {
     color: #b5b5c3;
-    font-size: 11px;
+    font-size: 0.688rem;
   }
 
   .btn-download {
-    font-size: 11px;
+    font-size: 0.688rem;
   }
 }
 
@@ -466,8 +466,8 @@ onMounted(() => {
   position: relative;
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
-  padding: 7px 140px 7px 16px;
+  margin-bottom: 0.625rem;
+  padding: 0.438rem 8.75rem 0.438rem 1rem;
   border-radius: 4px;
   color: black;
 

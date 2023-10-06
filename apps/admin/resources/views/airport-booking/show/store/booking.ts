@@ -3,7 +3,7 @@ import { computed, onMounted, reactive, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { z } from 'zod'
 
-import { showCancelFeeDialog } from '~resources/views/hotel-booking/show/lib/modals'
+import { showCancelFeeDialog } from '~resources/views/booking/lib/modals'
 
 import {
   copyBooking,
@@ -40,12 +40,14 @@ export const useBookingStore = defineStore('booking', () => {
     updateStatusPayload.status = status
     const { data: updateStatusResponse } = await updateBookingStatus(updateStatusPayload)
     if (updateStatusResponse.value?.isCancelFeeAmountRequired) {
-      const { result: isConfirmed, cancelFeeAmount, toggleClose } = await showCancelFeeDialog()
+      const { result: isConfirmed, clientCancelFeeAmount, cancelFeeAmount, toggleClose } = await showCancelFeeDialog(true)
       if (isConfirmed) {
         updateStatusPayload.cancelFeeAmount = cancelFeeAmount
+        updateStatusPayload.clientCancelFeeAmount = clientCancelFeeAmount
         toggleClose()
         await changeStatus(status)
         updateStatusPayload.cancelFeeAmount = undefined
+        updateStatusPayload.clientCancelFeeAmount = undefined
         return
       }
     }

@@ -9,4 +9,4 @@ return Factory::key('invoice')
     ->titles([
         "index" => "Инвойсы"
     ])
-    ->priority(10);
+    ->priority(20);

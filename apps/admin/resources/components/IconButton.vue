@@ -21,8 +21,8 @@ defineEmits<{
 <style scoped lang="scss">
 a i {
   vertical-align: top;
-  margin-left: 5px;
+  margin-left: 0.313rem;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 1.125rem;
 }
 </style>

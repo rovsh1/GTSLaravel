@@ -8,6 +8,7 @@ use App\Admin\Http\Requests\Client\CreateClientRequest;
 use App\Admin\Http\Resources\Client as ClientResource;
 use App\Admin\Models\Client\Legal;
 use App\Admin\Models\Client\User;
+use App\Admin\Models\Pricing\MarkupGroup;
 use App\Admin\Models\Reference\Country;
 use App\Admin\Repositories\ClientAdministratorRepository;
 use App\Admin\Support\Facades\Acl;
@@ -83,6 +84,7 @@ class ClientController extends AbstractPrototypeController
             'name' => $request->getName(),
             'status' => $request->getStatus() ?? StatusEnum::ACTIVE,
             'residency' => $request->getResidency(),
+            'markup_group_id' => $request->getMarkupGroupId(),
         ]);
         $this->model = $this->repository->create($data);
         $legalData = $request->getLegal();
@@ -190,6 +192,7 @@ class ClientController extends AbstractPrototypeController
             ->enum('type', 'Тип', TypeEnum::class)
             ->text('city_name', 'Город')
             ->text('currency_name', 'Валюта')
+            ->text('markup_group_name', 'Группа наценки')
             ->text('rates', 'Тариф')
             ->text('administrator_name', 'Менеджер')
             ->data($this->model);
@@ -232,6 +235,12 @@ class ClientController extends AbstractPrototypeController
                 'residency',
                 ['label' => 'Тип цены', 'enum' => ResidencyEnum::class, 'required' => true, 'emptyItem' => '']
             )
+            ->select('markup_group_id', [
+                'label' => 'Группа наценки',
+                'required' => true,
+                'emptyItem' => '',
+                'items' => MarkupGroup::get()
+            ])
             ->manager('administrator_id', ['label' => 'Менеджер', 'emptyItem' => '']);
     }
 

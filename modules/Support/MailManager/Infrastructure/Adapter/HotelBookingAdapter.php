@@ -2,8 +2,8 @@
 
 namespace Module\Support\MailManager\Infrastructure\Adapter;
 
-use Module\Booking\HotelBooking\Application\Dto\BookingDto;
-use Module\Booking\HotelBooking\Application\UseCase\Admin\GetBooking;
+use Module\Booking\Application\HotelBooking\Dto\BookingDto;
+use Module\Booking\Application\HotelBooking\UseCase\Admin\GetBooking;
 use Module\Support\MailManager\Domain\Adapter\HotelBookingAdapterInterface;
 
 class HotelBookingAdapter implements HotelBookingAdapterInterface

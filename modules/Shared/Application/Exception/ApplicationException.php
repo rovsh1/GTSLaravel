@@ -15,6 +15,7 @@ class ApplicationException extends \RuntimeException
     public const BOOKING_INVALID_ROOM_CLIENT_RESIDENCY = 1004;
     public const BOOKING_ROOM_TOO_MANY_GUESTS = 1005;
     public const BOOKING_HOTEL_ROOM_PRICE_NOT_FOUND = 1006;
+    public const BOOKING_AIRPORT_SERVICE_PRICE_NOT_FOUND = 1007;
 
     private const DEFAULT_MESSAGE = 'Неизвестная ошибка. Пожалуйста, обратитесь в техническую поддержку.';
 

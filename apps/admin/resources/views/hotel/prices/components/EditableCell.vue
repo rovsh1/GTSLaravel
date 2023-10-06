@@ -14,8 +14,6 @@ const props = withDefaults(defineProps<{
   valuePlaceHolder: '',
 })
 
-// todo формат цен, слить ветку GTS-1980
-
 const emit = defineEmits<{
   (event: 'change', value: number | null): void
   (event: 'activatedContextMenu'): void
@@ -95,13 +93,13 @@ onMounted(() => {
 input {
   height: 100%;
   border-radius: 0;
-  font-size: 11px;
-  line-height: 32px;
+  font-size: 0.688rem;
+  line-height: 2rem;
   text-align: center;
 }
 
 span {
-  padding: 0 5px;
+  padding: 0 0.313rem;
 }
 
 .value-place-holder {

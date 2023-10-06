@@ -3,7 +3,7 @@
 namespace Module\Support\MailManager\Infrastructure\Service\DataBuilder;
 
 use Illuminate\Support\Facades\DB;
-use Module\Booking\Common\Domain\ValueObject\BookingTypeEnum;
+use Module\Booking\Domain\Shared\ValueObject\BookingTypeEnum;
 use Module\Support\MailManager\Domain\Service\DataBuilder\Data\DataInterface;
 use Module\Support\MailManager\Domain\Service\DataBuilder\Dto\BookingDataDtoInterface;
 use Module\Support\MailManager\Domain\Service\RecipientsFinder\Recipient\RecipientInterface;

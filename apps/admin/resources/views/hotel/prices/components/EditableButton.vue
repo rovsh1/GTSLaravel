@@ -33,8 +33,8 @@ div {
     z-index: 25;
     display: none;
     overflow: hidden;
-    min-width: 160px;
-    padding: 6px 10px;
+    min-width: 10rem;
+    padding: 0.375rem 0.625rem;
     border-radius: 3px;
     background: #fff;
     box-shadow: 0 2px 10px rgba(0,0,0,20%);

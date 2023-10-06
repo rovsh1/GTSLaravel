@@ -23,7 +23,6 @@ class GetAirportServicePrice implements UseCaseInterface
         int $supplierId,
         int $serviceId,
         int $airportId,
-        CurrencyEnum $netCurrency,
         CurrencyEnum $grossCurrency,
         CarbonInterface $date
     ): ?ServicePriceDto {
@@ -34,11 +33,12 @@ class GetAirportServicePrice implements UseCaseInterface
         $price = Model::whereSupplierId($supplierId)
             ->whereServiceId($serviceId)
             ->whereAirportId($airportId)
-            ->whereCurrencyId($netCurrency->id())
+//            ->whereCurrencyId($supplier->currency()->id())
+            ->whereCurrencyId(CurrencyEnum::UZS->id())//@hack т.к. сейчас нетто цены только в UZS
             ->whereDate($date)
             ->first();
         if ($price === null) {
-            throw new EntityNotFoundException('Service Price not found');
+            return null;
         }
 
         return $this->buildDtoFromModel($price, $grossCurrency);

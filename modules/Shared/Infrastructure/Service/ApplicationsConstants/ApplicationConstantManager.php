@@ -6,7 +6,7 @@ use Module\Shared\Domain\Service\ApplicationConstantsInterface;
 use Module\Shared\Infrastructure\Service\ApplicationsConstants\Constant\ConstantInterface;
 use Sdk\Module\Support\ItemCollectionIteratorTrait;
 
-class ApplicationConstantManager implements ApplicationConstantsInterface, \Iterator, \Countable
+class ApplicationConstantManager implements ApplicationConstantsInterface
 {
     use ItemCollectionIteratorTrait;
 

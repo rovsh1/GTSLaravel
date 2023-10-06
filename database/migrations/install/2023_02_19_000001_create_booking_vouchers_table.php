@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('order_vouchers', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->unsignedInteger('order_id');
             $table->timestamps();
 

@@ -6,7 +6,7 @@
 
 @section('head-end')
     <script>
-      window['view-initial-data-airport-booking'] = {{ Js::from([
+      window['view-initial-data-transfer-booking'] = {{ Js::from([
             'bookingID' => $bookingId,
         ]) }}
     </script>
@@ -55,24 +55,12 @@
                                 <td>-</td>
                             </tr>
                             <tr>
-                                <th>Дата прилёта/вылета</th>
-                                <td>{{ $model->date }}</td>
-                            </tr>
-                            <tr>
                                 <th>Город</th>
                                 <td>-</td>
                             </tr>
                             <tr>
                                 <th>Услуга</th>
                                 <td>{{ $model->serviceInfo->name }}</td>
-                            </tr>
-                            <tr>
-                                <th>Аэропорт</th>
-                                <td>{{ $model->airportInfo->name }}</td>
-                            </tr>
-                            <tr>
-                                <th>Номер рейса</th>
-                                <td>-</td>
                             </tr>
                             <tr>
                                 <th>Менеджер</th>
@@ -87,7 +75,7 @@
                                 <td>{{ $model->createdAt }}</td>
                             </tr>
                             <tr>
-                                <th>Примечание</th>
+                                <th>ФИО клиента и место подачи/отправки авто</th>
                                 <td>{{ $model->note }}</td>
                             </tr>
                             </tbody>
@@ -99,7 +87,5 @@
                 </div>
             </div>
         </div>
-
-        <div id="booking-rooms"></div>
     </div>
 @endsection

@@ -5,7 +5,7 @@
 @endsection
 
 @section('scripts')
-    @vite('resources/views/hotel/show/show.ts')
+    @vite('resources/views/client/show.ts')
 @endsection
 
 @section('content')

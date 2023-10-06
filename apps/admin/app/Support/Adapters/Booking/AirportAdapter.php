@@ -6,23 +6,23 @@ namespace App\Admin\Support\Adapters\Booking;
 
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
-use Module\Booking\Airport\Application\Request\CreateBookingDto;
-use Module\Booking\Airport\Application\Request\UpdateBookingDto;
-use Module\Booking\Airport\Application\UseCase\Admin\BulkDeleteBookings;
-use Module\Booking\Airport\Application\UseCase\Admin\CopyBooking;
-use Module\Booking\Airport\Application\UseCase\Admin\CreateBooking;
-use Module\Booking\Airport\Application\UseCase\Admin\DeleteBooking;
-use Module\Booking\Airport\Application\UseCase\Admin\GetAvailableActions;
-use Module\Booking\Airport\Application\UseCase\Admin\GetBooking;
-use Module\Booking\Airport\Application\UseCase\Admin\GetBookingsByFilters;
-use Module\Booking\Airport\Application\UseCase\Admin\GetStatuses;
-use Module\Booking\Airport\Application\UseCase\Admin\GetStatusHistory;
-use Module\Booking\Airport\Application\UseCase\Admin\Guest\Bind;
-use Module\Booking\Airport\Application\UseCase\Admin\Guest\Unbind;
-use Module\Booking\Airport\Application\UseCase\Admin\UpdateBooking;
-use Module\Booking\Airport\Application\UseCase\Admin\UpdateBookingStatus;
-use Module\Booking\Airport\Application\UseCase\Admin\UpdateNote;
-use Module\Booking\Airport\Application\UseCase\GetBookingQuery;
+use Module\Booking\Application\AirportBooking\Request\CreateBookingDto;
+use Module\Booking\Application\AirportBooking\Request\UpdateBookingDto;
+use Module\Booking\Application\AirportBooking\UseCase\Admin\BulkDeleteBookings;
+use Module\Booking\Application\AirportBooking\UseCase\Admin\CopyBooking;
+use Module\Booking\Application\AirportBooking\UseCase\Admin\CreateBooking;
+use Module\Booking\Application\AirportBooking\UseCase\Admin\DeleteBooking;
+use Module\Booking\Application\AirportBooking\UseCase\Admin\GetAvailableActions;
+use Module\Booking\Application\AirportBooking\UseCase\Admin\GetBooking;
+use Module\Booking\Application\AirportBooking\UseCase\Admin\GetBookingQuery;
+use Module\Booking\Application\AirportBooking\UseCase\Admin\GetBookingsByFilters;
+use Module\Booking\Application\AirportBooking\UseCase\Admin\GetStatuses;
+use Module\Booking\Application\AirportBooking\UseCase\Admin\GetStatusHistory;
+use Module\Booking\Application\AirportBooking\UseCase\Admin\Guest\Bind;
+use Module\Booking\Application\AirportBooking\UseCase\Admin\Guest\Unbind;
+use Module\Booking\Application\AirportBooking\UseCase\Admin\UpdateBooking;
+use Module\Booking\Application\AirportBooking\UseCase\Admin\UpdateBookingStatus;
+use Module\Booking\Application\AirportBooking\UseCase\Admin\UpdateNote;
 
 class AirportAdapter
 {
@@ -107,9 +107,10 @@ class AirportAdapter
         int $id,
         int $status,
         ?string $notConfirmedReason = null,
-        ?float $cancelFeeAmount = null
+        ?float $netPenalty = null,
+        ?float $grossPenalty = null
     ): mixed {
-        return app(UpdateBookingStatus::class)->execute($id, $status, $notConfirmedReason, $cancelFeeAmount);
+        return app(UpdateBookingStatus::class)->execute($id, $status, $notConfirmedReason, $netPenalty, $grossPenalty);
     }
 
     public function getStatusHistory(int $id): array
