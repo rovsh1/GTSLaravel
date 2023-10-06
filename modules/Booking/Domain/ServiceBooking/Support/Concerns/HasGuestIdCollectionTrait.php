@@ -2,6 +2,7 @@
 
 namespace Module\Booking\Domain\ServiceBooking\Support\Concerns;
 
+use Module\Booking\Domain\ServiceBooking\Exception\GuestAlreadyExists;
 use Module\Booking\Domain\Shared\ValueObject\GuestId;
 use Module\Booking\Domain\Shared\ValueObject\GuestIdCollection;
 
@@ -15,7 +16,7 @@ trait HasGuestIdCollectionTrait
     public function addGuest(GuestId $id): void
     {
         if ($this->guestIds->has($id)) {
-            throw new \Exception('Guest already exists');
+            throw new GuestAlreadyExists('Guest already exists');
         }
         $this->guestIds = new GuestIdCollection([
             ...$this->guestIds->all(),
