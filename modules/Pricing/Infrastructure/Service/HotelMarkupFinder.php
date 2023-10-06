@@ -4,8 +4,8 @@ namespace Module\Pricing\Infrastructure\Service;
 
 use Module\Pricing\Domain\Hotel\ValueObject\RoomId;
 use Module\Pricing\Domain\Markup\Service\HotelMarkupFinderInterface;
-use Module\Pricing\Domain\Markup\ValueObject\ClientId;
 use Module\Pricing\Domain\Markup\ValueObject\MarkupValue;
+use Module\Pricing\Domain\Shared\ValueObject\ClientId;
 use Module\Pricing\Infrastructure\Models\MarkupGroup;
 use Module\Pricing\Infrastructure\Models\MarkupGroupRule;
 

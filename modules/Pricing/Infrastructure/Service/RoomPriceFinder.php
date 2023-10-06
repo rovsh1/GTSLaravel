@@ -6,27 +6,29 @@ use DateTimeInterface;
 use Module\Hotel\Infrastructure\Models\DatePrice;
 use Module\Hotel\Infrastructure\Models\SeasonPrice;
 use Module\Pricing\Domain\Hotel\Service\RoomPriceFinderInterface;
+use Module\Pricing\Domain\Hotel\ValueObject\RoomId;
+use Module\Pricing\Domain\Hotel\ValueObject\SeasonId;
 
 class RoomPriceFinder implements RoomPriceFinderInterface
 {
     public function findForDate(
-        int $roomId,
-        int $seasonId,
+        RoomId $roomId,
+        SeasonId $seasonId,
         int $rateId,
         bool $isResident,
         int $guestsCount,
         DateTimeInterface $date,
     ): ?float {
         return $this->getDateValue(
-            $roomId,
-            $seasonId,
+            $roomId->value(),
+            $seasonId->value(),
             $rateId,
             $isResident,
             $guestsCount,
             $date
         ) ?? $this->getSeasonValue(
-            $roomId,
-            $seasonId,
+            $roomId->value(),
+            $seasonId->value(),
             $rateId,
             $isResident,
             $guestsCount

@@ -1,14 +1,14 @@
 <?php
 
-namespace Module\Booking\Domain\Shared\Event;
+namespace Module\Pricing\Domain\HotelBooking\Event;
 
-use Module\Booking\Domain\Shared\Entity\BookingInterface;
-use Module\Booking\Domain\Shared\ValueObject\BookingPrice;
+use Module\Pricing\Domain\HotelBooking\Booking;
+use Module\Pricing\Domain\HotelBooking\ValueObject\BookingPrice;
 
 class BookingPriceChanged extends AbstractBookingEvent
 {
     public function __construct(
-        BookingInterface $booking,
+        Booking $booking,
         public readonly BookingPrice $priceBefore,
     ) {
         parent::__construct($booking);

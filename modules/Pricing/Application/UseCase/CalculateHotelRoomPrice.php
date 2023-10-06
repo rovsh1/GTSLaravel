@@ -12,7 +12,7 @@ use Module\Pricing\Domain\Hotel\Service\HotelRoomPriceFinder;
 use Module\Pricing\Domain\Hotel\UseCase\CalculateRoomDayPrice;
 use Module\Pricing\Domain\Hotel\ValueObject\RoomId;
 use Module\Pricing\Domain\Markup\UseCase\CalculateHotelRoomMarkup;
-use Module\Pricing\Domain\Markup\ValueObject\ClientId;
+use Module\Pricing\Domain\Shared\ValueObject\ClientId;
 use Module\Shared\Domain\Adapter\CurrencyRateAdapterInterface;
 use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
