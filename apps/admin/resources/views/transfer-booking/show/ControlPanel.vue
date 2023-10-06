@@ -175,8 +175,8 @@ const getDisplayPriceValue = (type: 'gross' | 'net') => {
   />
 
   <PriceModal
-    header="Сумма штрафа от поставщика"
-    :label="`Сумма штрафа от поставщика в ${netCurrency?.code_char}`"
+    header="Сумма штрафа"
+    :label="`Сумма штрафа в ${netCurrency?.code_char}`"
     :value="booking?.price.netPrice.penaltyValue || undefined"
     :opened="isNetPenaltyModalOpened"
     @close="toggleNetPenaltyModal(false)"
@@ -223,7 +223,7 @@ const getDisplayPriceValue = (type: 'gross' | 'net') => {
         :currency="netCurrency"
         amount-title="Общая сумма (нетто)"
         :amount-value="getDisplayPriceValue('net')"
-        penalty-title="Сумма штрафа от поставщика"
+        penalty-title="Сумма штрафа"
         :penalty-value="booking.price.netPrice.penaltyValue"
         :need-show-penalty="(booking?.price.netPrice.penaltyValue || 0) > 0"
         @click-change-price="toggleNetPriceModal(true)"

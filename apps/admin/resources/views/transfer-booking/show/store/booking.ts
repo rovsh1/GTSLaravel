@@ -40,14 +40,12 @@ export const useBookingStore = defineStore('booking', () => {
     updateStatusPayload.status = status
     const { data: updateStatusResponse } = await updateBookingStatus(updateStatusPayload)
     if (updateStatusResponse.value?.isCancelFeeAmountRequired) {
-      const { result: isConfirmed, clientCancelFeeAmount, cancelFeeAmount, toggleClose } = await showCancelFeeDialog(true)
+      const { result: isConfirmed, cancelFeeAmount, toggleClose } = await showCancelFeeDialog()
       if (isConfirmed) {
         updateStatusPayload.cancelFeeAmount = cancelFeeAmount
-        updateStatusPayload.clientCancelFeeAmount = clientCancelFeeAmount
         toggleClose()
         await changeStatus(status)
         updateStatusPayload.cancelFeeAmount = undefined
-        updateStatusPayload.clientCancelFeeAmount = undefined
         return
       }
     }

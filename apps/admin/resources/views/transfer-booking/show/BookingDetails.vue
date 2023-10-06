@@ -1,29 +1,27 @@
 <script setup lang="ts">
 
-import { computed, onMounted, ref, unref, watch } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
-import { MaybeRef } from '@vueuse/core'
+import { useToggle } from '@vueuse/core'
 import { z } from 'zod'
 
-import GuestModal from '~resources/views/booking/components/GuestModal.vue'
-import GuestsTable from '~resources/views/booking/components/GuestsTable.vue'
 import InfoBlock from '~resources/views/booking/components/InfoBlock/InfoBlock.vue'
 import InfoBlockTitle from '~resources/views/booking/components/InfoBlock/InfoBlockTitle.vue'
-import { GuestFormData } from '~resources/views/booking/lib/data-types'
+import { TransferFormData } from '~resources/views/booking/lib/data-types'
 import { useOrderStore } from '~resources/views/booking/store/order'
-import { useEditableModal } from '~resources/views/hotel/settings/composables/editable-modal'
+import TransferModal from '~resources/views/transfer-booking/show/components/TransferModal.vue'
 import { useBookingStore } from '~resources/views/transfer-booking/show/store/booking'
 
-import { addOrderGuest, Guest, updateOrderGuest } from '~api/booking/order/guest'
-import { addBookingGuest, deleteBookingGuest } from '~api/booking/transfer/guests'
+import { Guest } from '~api/booking/order/guest'
 import { useCountrySearchAPI } from '~api/country'
 
-import { showConfirmDialog } from '~lib/confirm-dialog'
 import { requestInitialData } from '~lib/initial-data'
 
+import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 import Card from '~components/Bootstrap/BootstrapCard/BootstrapCard.vue'
 import CardTitle from '~components/Bootstrap/BootstrapCard/components/BootstrapCardTitle.vue'
-import IconButton from '~components/IconButton.vue'
+
+const [isShowTransferModal, toggleTransferModal] = useToggle()
 
 const { bookingID } = requestInitialData('view-initial-data-transfer-booking', z.object({
   bookingID: z.number(),
@@ -39,107 +37,88 @@ const isEditableStatus = computed<boolean>(() => bookingStore.availableActions?.
 
 const { data: countries, execute: fetchCountries } = useCountrySearchAPI()
 
+const transferForm = ref<Partial<TransferFormData>>({})
+
 onMounted(() => {
   fetchCountries()
 })
 
-const modalSettings = {
-  add: {
-    title: 'Добавление гостя',
-    handler: async (request: MaybeRef<Required<GuestFormData>>) => {
-      const preparedRequest = unref(request)
-      if (preparedRequest && preparedRequest.id !== undefined) {
-        const payload = { bookingID, guestId: preparedRequest.id }
-        await addBookingGuest(payload)
-      } else {
-        const payload = { airportBookingId: bookingID, ...preparedRequest }
-        payload.orderId = orderId.value
-        await addOrderGuest(payload)
-      }
-      await bookingStore.fetchBooking()
-      await orderStore.fetchGuests()
-    },
-  },
-  edit: {
-    title: 'Редактирование гостя',
-    handler: async (request: MaybeRef<Required<GuestFormData>>) => {
-      const preparedRequest = unref(request)
-      const payload = { guestId: preparedRequest.id, ...preparedRequest }
-      payload.orderId = orderId.value
-      await updateOrderGuest(payload)
-      await orderStore.fetchGuests()
-    },
-  },
+const onCloseModal = () => {
+  transferForm.value = {}
+  toggleTransferModal(false)
 }
 
-const {
-  isOpened: isGuestModalOpened,
-  isLoading: isGuestModalLoading,
-  title: guestModalTitle,
-  openAdd: openAddGuestModal,
-  openEdit: openEditGuestModal,
-  editableObject: editableGuest,
-  close: closeGuestModal,
-  submit: submitGuestModal,
-} = useEditableModal<Required<GuestFormData>, Required<GuestFormData>, Partial<GuestFormData>>(modalSettings)
-
-const getDefaultGuestForm = () => ({ isAdult: true })
-const guestForm = ref<Partial<GuestFormData>>(getDefaultGuestForm())
-
-watch(editableGuest, (value) => {
-  if (!value) {
-    guestForm.value = getDefaultGuestForm()
-    guestForm.value.selectedGuestFromOrder = undefined
-    return
-  }
-  guestForm.value = value
-})
-
-const handleDeleteGuest = async (guestId: number) => {
-  const { result: isConfirmed, toggleLoading, toggleClose } = await showConfirmDialog('Удалить гостя?', 'btn-danger')
-  if (isConfirmed) {
-    toggleLoading()
-    await deleteBookingGuest({ bookingID, guestId })
-    await bookingStore.fetchBooking()
-    toggleClose()
-  }
+const onRoomModalSubmit = async () => {
+  toggleTransferModal(false)
+  // await fetchBooking()
 }
+
 </script>
 
 <template>
-  <GuestModal
-    v-if="countries"
-    :title-text="guestModalTitle"
-    :opened="isGuestModalOpened"
-    :is-fetching="isGuestModalLoading"
-    :form-data="guestForm"
-    :order-guests="orderGuests"
-    :countries="countries"
-    @close="closeGuestModal"
-    @submit="submitGuestModal"
-    @clear="guestForm = getDefaultGuestForm()"
+  <TransferModal
+    :opened="isShowTransferModal"
+    :form-data="transferForm"
+    @close="onCloseModal"
+    @submit="onRoomModalSubmit"
   />
-
   <Card>
     <CardTitle class="mr-4" title="Информация о брони" />
-    <div class="d-flex gap-4">
+    <div class="d-flex flex-row gap-4">
       <InfoBlock>
-        <template #header>
-          <div class="d-flex gap-1">
-            <InfoBlockTitle title="Гости" />
-            <IconButton v-if="isEditableStatus" icon="add" @click="openAddGuestModal" />
-          </div>
-        </template>
+        <table class="table-params mb-3 mt-2">
+          <tbody>
+            <tr>
+              <th>Номер поезда</th>
+              <td>1234</td>
+            </tr>
+            <tr>
+              <th>Дата прибытия</th>
+              <td>2023-10-06</td>
+            </tr>
+            <tr>
+              <th>Время прибытия</th>
+              <td>12:00</td>
+            </tr>
+            <tr>
+              <th>Город прибытия</th>
+              <td>Ташкент</td>
+            </tr>
+            <tr>
+              <th>Табличка для встречи</th>
+              <td>Табличка</td>
+            </tr>
+          </tbody>
+        </table>
+        <InfoBlockTitle title="Список автомобилей" />
+        <div class="mt-2">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>№</th>
+                <th class="text-nowrap">Модель</th>
+                <th class="text-nowrap">Кол-во авто</th>
+                <th class="text-nowrap">Кол-во пассажиров</th>
+                <th class="text-nowrap">Кол-во багажа</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td class="text-nowrap">
+                  Шевроле Кобальт
+                </td>
+                <td class="text-nowrap">1</td>
+                <td class="text-nowrap">2</td>
+                <td class="text-nowrap">1</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-        <GuestsTable
-          v-if="countries"
-          :can-edit="isEditableStatus"
-          :guest-ids="booking?.guestIds"
-          :order-guests="orderGuests"
-          :countries="countries"
-          @edit="guest => openEditGuestModal(guest.id, guest)"
-          @delete="(guest) => handleDeleteGuest(guest.id)"
-        />
+        <div class="d-flex flex-row justify-content-end w-100 mt-2">
+          <BootstrapButton v-if="isEditableStatus" label="Изменить" @click="toggleTransferModal(true)" />
+        </div>
       </InfoBlock>
     </div>
   </Card>

@@ -1,5 +1,10 @@
 import { MarkupCondition } from '~api/hotel/markup-settings'
 
+export interface TransferFormData {
+  bookingID: number
+  id?: number
+}
+
 export interface RoomFormData {
   bookingID: number
   id?: number
