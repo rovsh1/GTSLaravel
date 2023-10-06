@@ -4,7 +4,7 @@ namespace Module\Hotel\Infrastructure\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Module\HotelOld\Infrastructure\Models\Room;
+use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Database\Eloquent\Model;
 
 class Hotel extends Model
@@ -14,7 +14,7 @@ class Hotel extends Model
     protected $fillable = [
         'city_id',
         'type_id',
-        'currency_id',
+        'currency',
         'status',
         'visibility',
         'rating',
@@ -26,6 +26,12 @@ class Hotel extends Model
         'city_distance',
         'markup_settings',
         'time_settings',
+    ];
+
+    protected $casts = [
+        'city_id' => 'int',
+        'type_id' => 'int',
+        'currency' => CurrencyEnum::class,
     ];
 
     protected static function booted()

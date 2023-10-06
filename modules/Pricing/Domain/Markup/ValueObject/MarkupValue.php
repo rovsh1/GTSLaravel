@@ -5,18 +5,23 @@ declare(strict_types=1);
 namespace Module\Pricing\Domain\Markup\ValueObject;
 
 use Module\Shared\Contracts\CanEquate;
-use Module\Shared\Domain\ValueObject\Uint;
 use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 use Module\Shared\Enum\Pricing\MarkupValueTypeEnum;
 
-class MarkupValue implements ValueObjectInterface, CanEquate
+final class MarkupValue implements ValueObjectInterface, CanEquate
 {
     public function __construct(
-        private readonly Uint $value,
+        private readonly int $value,
         private readonly MarkupValueTypeEnum $type
-    ) {}
+    ) {
+    }
 
-    public function value(): Uint
+    public static function createZero(): MarkupValue
+    {
+        return new MarkupValue(0, MarkupValueTypeEnum::ABSOLUTE);
+    }
+
+    public function value(): int
     {
         return $this->value;
     }
@@ -26,10 +31,20 @@ class MarkupValue implements ValueObjectInterface, CanEquate
         return $this->type;
     }
 
+    public function calculate(int|float $price): float|int
+    {
+        switch ($this->type) {
+            case MarkupValueTypeEnum::ABSOLUTE:
+                return $this->value;
+            case MarkupValueTypeEnum::PERCENT:
+                return $price * $this->value / 100;
+        }
+    }
+
     public function isEqual(mixed $b): bool
     {
         return $b instanceof MarkupValue
-            ? $this->value->isEqual($b->value) && $this->type === $b->type
+            ? $this->value === $b->value && $this->type === $b->type
             : $this === $b;
     }
 }

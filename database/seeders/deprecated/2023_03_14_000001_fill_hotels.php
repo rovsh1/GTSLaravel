@@ -203,7 +203,7 @@ return new class extends Migration {
                     'supplier_id' => $supplierId,
                     'city_id' => $r->city_id,
                     'type_id' => $r->type_id,
-                    'currency_id' => CurrencyEnum::UZS->id(),
+                    'currency' => CurrencyEnum::UZS->value,
                     'rating' => $r->rating,
                     'name' => $r->name,
                     'address' => $r->address,

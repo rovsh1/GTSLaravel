@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
 use Sdk\Module\Database\Eloquent\Model;
 
@@ -51,7 +52,7 @@ class Hotel extends Model
     protected $fillable = [
         'city_id',
         'type_id',
-        'currency_id',
+        'currency',
         'name',
         'rating',
         'address',
@@ -68,6 +69,7 @@ class Hotel extends Model
     protected $casts = [
         'city_id' => 'int',
         'type_id' => 'int',
+        'currency' => CurrencyEnum::class,
         'rating' => RatingEnum::class,
         'status' => StatusEnum::class,
         'visibility' => VisibilityEnum::class

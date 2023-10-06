@@ -4,8 +4,9 @@ namespace Module\Hotel\Providers;
 
 use Module\Hotel\Domain;
 use Module\Hotel\Infrastructure;
+use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
 
-class BootServiceProvider extends \Sdk\Module\Foundation\Support\Providers\ServiceProvider
+class BootServiceProvider extends ServiceProvider
 {
     public function register()
     {
@@ -38,13 +39,11 @@ class BootServiceProvider extends \Sdk\Module\Foundation\Support\Providers\Servi
             Domain\Repository\MarkupSettingsRepositoryInterface::class,
             Infrastructure\Repository\MarkupSettingsRepository::class
         );
+
+        //@todo remove it
         $this->app->singleton(
             Domain\Repository\RoomMarkupSettingsRepositoryInterface::class,
             Infrastructure\Repository\RoomMarkupSettingsRepository::class
-        );
-        $this->app->singleton(
-            Domain\Repository\SeasonRepositoryInterface::class,
-            Infrastructure\Repository\SeasonRepository::class
         );
     }
 }

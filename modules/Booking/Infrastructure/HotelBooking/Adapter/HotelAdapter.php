@@ -10,7 +10,7 @@ use Module\Hotel\Application\Response\RoomMarkupsDto;
 use Module\Hotel\Application\UseCase\FindHotelById;
 use Module\Hotel\Application\UseCase\GetMarkupSettings;
 use Module\Hotel\Application\UseCase\GetRoomMarkups;
-use Module\Hotel\Application\UseCase\Price\FindRoomPrice;
+use Module\Pricing\Application\UseCase\HotelRoomBasePriceExists;
 
 class HotelAdapter implements HotelAdapterInterface
 {
@@ -26,7 +26,7 @@ class HotelAdapter implements HotelAdapterInterface
         int $guestsCount,
         CarbonInterface $date
     ): ?float {
-        $roomPriceDto = app(FindRoomPrice::class)->execute($roomId, $rateId, $isResident, $guestsCount, $date);
+        $roomPriceDto = app(HotelRoomBasePriceExists::class)->execute($roomId, $rateId, $isResident, $guestsCount, $date);
 
         return $roomPriceDto?->price;
     }

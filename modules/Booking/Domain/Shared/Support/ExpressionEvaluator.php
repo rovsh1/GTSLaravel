@@ -2,7 +2,7 @@
 
 namespace Module\Booking\Domain\Shared\Support;
 
-use Module\Booking\Domain\HotelBooking\Service\PriceCalculator\Model\CalculationResult;
+use Module\Booking\Domain\HotelBooking\Service\PriceCalculator\CalculationResult;
 
 class ExpressionEvaluator
 {

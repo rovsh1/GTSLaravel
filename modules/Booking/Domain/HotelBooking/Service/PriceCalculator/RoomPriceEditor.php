@@ -2,25 +2,31 @@
 
 namespace Module\Booking\Domain\HotelBooking\Service\PriceCalculator;
 
+use Carbon\CarbonInterface;
+use DateTimeInterface;
+use Module\Booking\Domain\HotelBooking\Adapter\RoomPriceCalculatorAdapterInterface;
 use Module\Booking\Domain\HotelBooking\Entity\RoomBooking;
-use Module\Booking\Domain\HotelBooking\Service\PriceCalculator\Factory\FormulaVariablesFactory;
-use Module\Booking\Domain\HotelBooking\Service\PriceCalculator\Factory\RoomDataHelperFactory;
-use Module\Booking\Domain\HotelBooking\Service\PriceCalculator\Formula\RoomDayPriceCalculator;
-use Module\Booking\Domain\HotelBooking\Service\PriceCalculator\Support\BasePriceFetcher;
+use Module\Booking\Domain\HotelBooking\ValueObject\RoomDayPrice;
 use Module\Booking\Domain\HotelBooking\ValueObject\RoomDayPriceCollection;
 use Module\Booking\Domain\HotelBooking\ValueObject\RoomPrice;
+use Module\Pricing\Domain\Hotel\Support\FormulaUtil;
+use Module\Shared\Domain\ValueObject\Date;
 
 class RoomPriceEditor
 {
     public function __construct(
         private readonly RoomDataHelperFactory $dataFactory,
-        private readonly FormulaVariablesFactory $variablesFactory,
-        private readonly BasePriceFetcher $basePriceFetcher
-    ) {}
+        private readonly RoomPriceCalculatorAdapterInterface $roomPriceCalculatorAdapter,
+    ) {
+    }
 
     public function recalculatePrices(RoomBooking $roomBooking): RoomPrice
     {
-        return $this->calculate($roomBooking, $roomBooking->price()->grossDayValue(), $roomBooking->price()->netDayValue());
+        return $this->calculate(
+            $roomBooking,
+            $roomBooking->price()->grossDayValue(),
+            $roomBooking->price()->netDayValue()
+        );
     }
 
     public function setCalculatedPrices(RoomBooking $roomBooking): RoomPrice
@@ -59,35 +65,14 @@ class RoomPriceEditor
         ?float $netDayPrice,
     ): RoomPrice {
         $dataHelper = $this->dataFactory->fromRoomBooking($roomBooking);
-        $priceBuilder = new RoomDayPriceCalculator(
-            $this->variablesFactory->fromDataHelper($dataHelper)
-        );
-        if ($grossDayPrice) {
-            $priceBuilder->setGrossDayPrice($grossDayPrice);
-        }
-        if ($netDayPrice) {
-            $priceBuilder->setNetDayPrice($netDayPrice);
-        }
-
-        $roomId = $dataHelper->roomId();
-        $rateId = $dataHelper->rateId();
-        $isResident = $dataHelper->isResident();
-        $guestsCount = $dataHelper->guestsCount();
-        $orderCurrency = $dataHelper->orderCurrency();
-        $hotelCurrency = $dataHelper->hotelCurrency();
 
         $items = [];
         foreach ($dataHelper->bookingPeriodDates() as $date) {
-            $basePrice = $this->basePriceFetcher->fetch(
-                roomId: $roomId,
-                rateId: $rateId,
-                isResident: $isResident,
-                guestsCount: $guestsCount,
-                orderCurrency: $orderCurrency,
-                hotelCurrency: $hotelCurrency,
-                date: $date
+            $items[] = $this->buildRoomDayPrice(
+                $grossDayPrice ?? $this->calculateGross($dataHelper, $date),
+                $netDayPrice ?? $this->calculateNet($dataHelper, $date),
+                $date
             );
-            $items[] = $priceBuilder->calculate($date, $basePrice);
         }
 
         return new RoomPrice(
@@ -95,5 +80,61 @@ class RoomPriceEditor
             netDayValue: $netDayPrice,
             dayPrices: new RoomDayPriceCollection($items)
         );
+    }
+
+    private function calculateGross(RoomDataHelper $dataHelper, DateTimeInterface $date): RoomDayPriceCollection
+    {
+        return $this->roomPriceCalculatorAdapter->calculateGross(
+            clientId: $dataHelper->clientId(),
+            roomId: $dataHelper->roomId(),
+            rateId: $dataHelper->rateId(),
+            isResident: $dataHelper->isResident(),
+            guestsCount: $dataHelper->guestsCount(),
+            outCurrency: $dataHelper->orderCurrency(),
+            date: $date,
+        );
+    }
+
+    private function calculateNet(RoomDataHelper $dataHelper, DateTimeInterface $date): RoomDayPriceCollection
+    {
+        return $this->roomPriceCalculatorAdapter->calculateNet(
+            clientId: $dataHelper->clientId(),
+            roomId: $dataHelper->roomId(),
+            rateId: $dataHelper->rateId(),
+            isResident: $dataHelper->isResident(),
+            guestsCount: $dataHelper->guestsCount(),
+            outCurrency: $dataHelper->orderCurrency(),
+            date: $date,
+        );
+    }
+
+    private function buildRoomDayPrice(float $grossPrice, float $netPrice, DateTimeInterface $date): RoomDayPrice
+    {
+        //@todo добавить наценки на ранний/поздний заезд
+        return new RoomDayPrice(
+            date: new Date($date),
+            baseValue: 0,
+            grossValue: $grossPrice,
+            netValue: $netPrice,
+            grossFormula: '',
+            netFormula: ''
+        );
+    }
+
+    private function calculateMarkupValue(CarbonInterface $date, float $value): float
+    {
+        $markupValue = 0.0;
+
+        if ($this->variables->earlyCheckInPercent
+            && $this->variables->startDate->format('Y-m-d') === $date->format('Y-m-d')) {
+            $markupValue += FormulaUtil::calculatePercent($value, $this->variables->earlyCheckInPercent);
+        }
+
+        if ($this->variables->lateCheckOutPercent
+            && $this->variables->endDate->format('Y-m-d') === $date->format('Y-m-d')) {
+            $markupValue += FormulaUtil::calculatePercent($value, $this->variables->lateCheckOutPercent);
+        }
+
+        return $markupValue;
     }
 }

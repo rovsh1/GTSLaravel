@@ -30,4 +30,9 @@ abstract class AbstractIntId implements CanEquate, ValueObjectInterface
             ? $this->id === $b->value()
             : $this->id === $b;
     }
+
+    public function __toString(): string
+    {
+        return (string)$this->id;
+    }
 }

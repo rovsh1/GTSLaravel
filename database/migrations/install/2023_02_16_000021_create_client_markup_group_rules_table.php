@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->increments('id');
             $table->unsignedInteger('group_id');
             $table->unsignedInteger('hotel_id');
-            $table->unsignedInteger('hotel_room_id')->nullable();
+            $table->unsignedInteger('room_id')->nullable();
             $table->unsignedTinyInteger('type');
             $table->integer('value');
             $table->timestamps();
@@ -31,7 +31,7 @@ return new class extends Migration {
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
 
-            $table->foreign('hotel_room_id')
+            $table->foreign('room_id')
                 ->references('id')
                 ->on('hotel_rooms')
                 ->cascadeOnDelete()

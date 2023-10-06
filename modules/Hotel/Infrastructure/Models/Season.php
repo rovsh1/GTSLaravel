@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Query\Builder as QueryBuilder;
-use Illuminate\Support\Facades\DB;
 use Sdk\Module\Database\Eloquent\Model;
 
 class Season extends Model
@@ -22,6 +21,8 @@ class Season extends Model
     ];
 
     protected $casts = [
+        'contract_id' => 'int',
+        'hotel_id' => 'int',
         'date_start' => 'date',
         'date_end' => 'date',
     ];
@@ -33,7 +34,7 @@ class Season extends Model
 
     protected static function booted()
     {
-        static::addGlobalScope('default', function (Builder $builder){
+        static::addGlobalScope('default', function (Builder $builder) {
             $builder
                 ->addSelect('hotel_seasons.*')
                 ->join('hotel_contracts', 'hotel_contracts.id', '=', 'hotel_seasons.contract_id')
@@ -41,7 +42,7 @@ class Season extends Model
         });
     }
 
-    public function scopeWhereRoomId(Builder $builder, int $roomId)
+    public function scopeWhereRoomId(Builder $builder, int $roomId): void
     {
         $builder->whereExists(function (QueryBuilder $query) use ($roomId) {
             $query
@@ -52,14 +53,11 @@ class Season extends Model
         });
     }
 
-    public function scopeWhereHotelId(Builder $builder, int $hotelId)
+    public function scopeWhereHotelId(Builder $builder, int $hotelId): void
     {
-        $builder->whereExists(function (QueryBuilder $query) use ($hotelId) {
-            $query
-                ->selectRaw(1)
-                ->where('hotel_contracts.hotel_id', $hotelId)
-                ->where('hotel_contracts.status', 1);
-        });
+        $builder
+            ->where('hotel_contracts.hotel_id', $hotelId)
+            ->where('hotel_contracts.status', 1);
     }
 
     public function contract(): BelongsTo
