@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Pricing\Application\Markup\Response;
+namespace Module\Pricing\Application\Dto;
 
 use Module\Pricing\Domain\Markup\ValueObject\MarkupValue;
 use Module\Shared\Application\Dto\AbstractDomainBasedDto;

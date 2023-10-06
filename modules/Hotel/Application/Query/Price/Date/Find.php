@@ -3,7 +3,6 @@
 namespace Module\Hotel\Application\Query\Price\Date;
 
 use Carbon\CarbonInterface;
-use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Contracts\Bus\QueryInterface;
 
 class Find implements QueryInterface

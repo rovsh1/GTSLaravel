@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Booking\Domain\HotelBooking\Service\PriceCalculator\Support;
+namespace Module\Pricing\Domain\HotelPricing\Service\PriceCalculator\Support;
 
 abstract class FormulaUtil
 {

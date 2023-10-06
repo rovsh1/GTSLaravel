@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Booking\Domain\HotelBooking\Service\PriceCalculator\Support;
+namespace Module\Pricing\Domain\HotelPricing\Service\PriceCalculator\Support;
 
 use Carbon\CarbonInterface;
 use Module\Booking\Domain\HotelBooking\Adapter\HotelAdapterInterface;
@@ -36,7 +36,6 @@ class BasePriceFetcher
         CarbonInterface $date
     ): float {
         if ($guestsCount === 0) {
-            //@todo спросить у Сергея точно ли в этом месте
             return 0;
         }
         $roomPrice = $this->hotelAdapter->getRoomPrice(

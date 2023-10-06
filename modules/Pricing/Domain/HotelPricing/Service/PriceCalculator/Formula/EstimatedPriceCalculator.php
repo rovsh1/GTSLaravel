@@ -1,8 +1,8 @@
 <?php
 
-namespace Module\Booking\Domain\HotelBooking\Service\PriceCalculator\Formula;
+namespace Module\Pricing\Domain\HotelPricing\Service\PriceCalculator\Formula;
 
-use Module\Booking\Domain\HotelBooking\Service\PriceCalculator\Support\FormulaUtil;
+use Module\Pricing\Domain\HotelPricing\Service\PriceCalculator\Support\FormulaUtil;
 
 final class EstimatedPriceCalculator
 {

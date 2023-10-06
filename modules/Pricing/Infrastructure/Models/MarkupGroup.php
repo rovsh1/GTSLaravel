@@ -2,19 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Module\Pricing\Infrastructure\Markup\Models;
+namespace Module\Pricing\Infrastructure\Models;
 
 use Module\Shared\Enum\Pricing\MarkupValueTypeEnum;
 use Sdk\Module\Database\Eloquent\Model;
 
-class MarkupGroupRule extends Model
+class MarkupGroup extends Model
 {
-    protected $table = 'client_markup_group_rules';
+    protected $table = 'client_markup_groups';
 
     protected $fillable = [
-        'group_id',
-        'hotel_id',
-        'hotel_room_id',
+        'id',
+        'name',
         'value',
         'type'
     ];

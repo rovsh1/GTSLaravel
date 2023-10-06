@@ -1,8 +1,8 @@
 <?php
 
-namespace Module\Booking\Domain\HotelBooking\Service\PriceCalculator\Formula;
+namespace Module\Pricing\Domain\HotelPricing\Service\PriceCalculator\Formula;
 
-use Module\Booking\Domain\HotelBooking\Service\PriceCalculator\Model\CalculationResult;
+use Module\Pricing\Domain\HotelPricing\Service\PriceCalculator\Model\CalculationResult;
 
 final class DayPriceFormula
 {
