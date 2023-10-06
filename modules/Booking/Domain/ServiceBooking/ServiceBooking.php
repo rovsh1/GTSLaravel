@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace Module\Booking\Domain\ServiceBooking;
 
 use Carbon\CarbonImmutable;
-use Module\Booking\Domain\AirportBooking\ValueObject\Details\ServiceInfo;
 use Module\Booking\Domain\ServiceBooking\Entity\ServiceDetailsInterface;
 use Module\Booking\Domain\Shared\Entity\AbstractBooking;
 use Module\Booking\Domain\Shared\ValueObject\BookingId;
 use Module\Booking\Domain\Shared\ValueObject\BookingPrice;
 use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
-use Module\Booking\Domain\Shared\ValueObject\BookingTypeEnum;
 use Module\Booking\Domain\Shared\ValueObject\CancelConditions;
 use Module\Booking\Domain\Shared\ValueObject\CreatorId;
 use Module\Booking\Domain\Shared\ValueObject\OrderId;
