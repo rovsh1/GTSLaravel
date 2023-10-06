@@ -13,7 +13,7 @@ use Module\Booking\Domain\HotelBooking\ValueObject\Details\RoomBooking\RoomInfo;
 use Module\Booking\Domain\HotelBooking\ValueObject\Details\RoomBookingCollection;
 use Module\Booking\Domain\HotelBooking\ValueObject\RoomPrice;
 use Module\Booking\Domain\Shared\ValueObject\BookingId;
-use Module\Booking\Domain\Shared\ValueObject\GuestIdsCollection;
+use Module\Booking\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Booking\Domain\Shared\ValueObject\OrderId;
 use Module\Booking\Infrastructure\HotelBooking\Models\RoomBooking as Model;
 
@@ -100,7 +100,7 @@ class RoomBookingRepository implements RoomBookingRepositoryInterface
             bookingId: new BookingId($model->booking_id),
             orderId: new OrderId($model->booking_order_id),
             roomInfo: RoomInfo::fromData($data['roomInfo']),
-            guestsIds: GuestIdsCollection::fromData($model->guest_ids),
+            guestsIds: GuestIdCollection::fromData($model->guest_ids),
             details: RoomBookingDetails::fromData($data['details']),
             price: RoomPrice::fromData($data['price'])
         );

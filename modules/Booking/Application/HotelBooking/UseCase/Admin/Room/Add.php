@@ -16,7 +16,7 @@ use Module\Booking\Domain\HotelBooking\Service\QuotaManager\Exception\NotEnoughR
 use Module\Booking\Domain\HotelBooking\Service\QuotaManager\Exception\NotFoundRoomDateQuota;
 use Module\Booking\Domain\HotelBooking\Service\RoomUpdater\RoomUpdater;
 use Module\Booking\Domain\HotelBooking\ValueObject\RoomPrice;
-use Module\Booking\Domain\Shared\ValueObject\GuestIdsCollection;
+use Module\Booking\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Shared\Application\Exception\ApplicationException;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
@@ -30,7 +30,7 @@ class Add implements UseCaseInterface
     public function execute(AddRoomDto $request): void
     {
         try {
-            $addRoomDto = $this->dataHelperFactory->build($request, new GuestIdsCollection(), RoomPrice::buildEmpty());
+            $addRoomDto = $this->dataHelperFactory->build($request, new GuestIdCollection(), RoomPrice::buildEmpty());
             $this->roomUpdater->add($addRoomDto);
         } catch (InvalidRoomResidency $e) {
             throw new InvalidRoomClientResidencyException($e);

@@ -11,7 +11,7 @@ use Module\Booking\Domain\AirportBooking\ValueObject\Details\AirportInfo;
 use Module\Booking\Domain\AirportBooking\ValueObject\Details\ServiceInfo;
 use Module\Booking\Domain\Shared\Entity\ReservedServiceInterface;
 use Module\Booking\Domain\Shared\ValueObject\BookingPrice;
-use Module\Booking\Domain\Shared\ValueObject\GuestIdsCollection;
+use Module\Booking\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Booking\Domain\Shared\ValueObject\ServiceInfoInterface;
 
 class AirportReservedService implements ReservedServiceInterface
@@ -21,7 +21,7 @@ class AirportReservedService implements ReservedServiceInterface
         private readonly ServiceInfo $serviceInfo,
         private readonly AirportInfo $airportInfo,
         private readonly AdditionalInfo $additionalInfo,
-        private readonly GuestIdsCollection $guestIds,
+        private readonly GuestIdCollection $guestIds,
         private readonly CarbonImmutable $date,
         private ?string $note
     ) {}
@@ -51,7 +51,7 @@ class AirportReservedService implements ReservedServiceInterface
         return $this->additionalInfo;
     }
 
-    public function guestIds(): GuestIdsCollection
+    public function guestIds(): GuestIdCollection
     {
         return $this->guestIds;
     }

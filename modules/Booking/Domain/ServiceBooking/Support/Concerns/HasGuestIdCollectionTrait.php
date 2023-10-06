@@ -3,11 +3,11 @@
 namespace Module\Booking\Domain\ServiceBooking\Support\Concerns;
 
 use Module\Booking\Domain\Shared\ValueObject\GuestId;
-use Module\Booking\Domain\Shared\ValueObject\GuestIdsCollection;
+use Module\Booking\Domain\Shared\ValueObject\GuestIdCollection;
 
 trait HasGuestIdCollectionTrait
 {
-    public function guestIds(): GuestIdsCollection
+    public function guestIds(): GuestIdCollection
     {
         return $this->guestIds;
     }
@@ -17,7 +17,7 @@ trait HasGuestIdCollectionTrait
         if ($this->guestIds->has($id)) {
             throw new \Exception('Guest already exists');
         }
-        $this->guestIds = new GuestIdsCollection([
+        $this->guestIds = new GuestIdCollection([
             ...$this->guestIds->all(),
             $id
         ]);
@@ -32,6 +32,6 @@ trait HasGuestIdCollectionTrait
             }
             $newGuestIds[] = $guestId;
         }
-        $this->guestIds = new GuestIdsCollection($newGuestIds);
+        $this->guestIds = new GuestIdCollection($newGuestIds);
     }
 }

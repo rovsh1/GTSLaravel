@@ -6,6 +6,7 @@ use DateTimeInterface;
 use Module\Booking\Domain\ServiceBooking\Support\Concerns;
 use Module\Booking\Domain\ServiceBooking\ValueObject\AirportId;
 use Module\Booking\Domain\ServiceBooking\ValueObject\DetailsId;
+use Module\Booking\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Shared\Enum\ServiceTypeEnum;
 
 class CIPRoomInAirport implements ServiceDetailsInterface
@@ -18,6 +19,7 @@ class CIPRoomInAirport implements ServiceDetailsInterface
         private readonly AirportId $airportId,
         protected string $flightNumber,
         protected DateTimeInterface $serviceDate,
+        private GuestIdCollection $guestIds,
     ) {
     }
 

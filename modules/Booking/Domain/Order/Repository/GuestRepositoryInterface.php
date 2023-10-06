@@ -6,7 +6,7 @@ namespace Module\Booking\Domain\Order\Repository;
 
 use Module\Booking\Domain\Order\Entity\Guest;
 use Module\Booking\Domain\Shared\ValueObject\GuestId;
-use Module\Booking\Domain\Shared\ValueObject\GuestIdsCollection;
+use Module\Booking\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Booking\Domain\Shared\ValueObject\OrderId;
 use Module\Shared\Enum\GenderEnum;
 
@@ -24,10 +24,10 @@ interface GuestRepositoryInterface
     public function find(GuestId $id): ?Guest;
 
     /**
-     * @param GuestIdsCollection $ids
+     * @param GuestIdCollection $ids
      * @return array<int, Guest>
      */
-    public function get(GuestIdsCollection $ids): array;
+    public function get(GuestIdCollection $ids): array;
 
     public function store(Guest $guest): bool;
 

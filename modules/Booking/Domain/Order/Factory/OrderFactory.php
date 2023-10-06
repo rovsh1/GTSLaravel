@@ -9,7 +9,7 @@ use Module\Booking\Domain\Order\Order;
 use Module\Booking\Domain\Order\ValueObject\ClientId;
 use Module\Booking\Domain\Order\ValueObject\LegalId;
 use Module\Booking\Domain\Shared\ValueObject\GuestId;
-use Module\Booking\Domain\Shared\ValueObject\GuestIdsCollection;
+use Module\Booking\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Booking\Domain\Shared\ValueObject\OrderId;
 use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Foundation\Support\EntityFactory\AbstractEntityFactory;
@@ -29,7 +29,7 @@ class OrderFactory extends AbstractEntityFactory
             new ClientId($data['client_id']),
             $legalId !== null ? new LegalId($legalId) : null,
             new CarbonImmutable($data['created_at']),
-            new GuestIdsCollection($guestIds)
+            new GuestIdCollection($guestIds)
         );
     }
 }

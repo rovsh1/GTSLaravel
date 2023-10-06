@@ -11,7 +11,7 @@ use Sdk\Module\Support\AbstractValueObjectCollection;
 /**
  * @extends AbstractValueObjectCollection<int, GuestId>
  */
-class GuestIdsCollection extends AbstractValueObjectCollection implements SerializableDataInterface
+class GuestIdCollection extends AbstractValueObjectCollection implements SerializableDataInterface
 {
     protected function validateItem(mixed $item): void
     {

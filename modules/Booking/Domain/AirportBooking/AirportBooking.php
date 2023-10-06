@@ -14,7 +14,7 @@ use Module\Booking\Domain\Shared\ValueObject\BookingPrice;
 use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
 use Module\Booking\Domain\Shared\ValueObject\CancelConditions;
 use Module\Booking\Domain\Shared\ValueObject\CreatorId;
-use Module\Booking\Domain\Shared\ValueObject\GuestIdsCollection;
+use Module\Booking\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Booking\Domain\Shared\ValueObject\OrderId;
 
 class AirportBooking extends AbstractBooking
@@ -31,7 +31,7 @@ class AirportBooking extends AbstractBooking
         private CarbonImmutable $date,
         private ?CancelConditions $cancelConditions,
         private AdditionalInfo $additionalInfo,
-        private readonly GuestIdsCollection $guestIds,
+        private readonly GuestIdCollection $guestIds,
         private ?string $note
     ) {
         parent::__construct($id, $orderId, $status, $createdAt, $creatorId, $price);
@@ -77,7 +77,7 @@ class AirportBooking extends AbstractBooking
         $this->additionalInfo = $additionalInfo;
     }
 
-    public function guestIds(): GuestIdsCollection
+    public function guestIds(): GuestIdCollection
     {
         return $this->guestIds;
     }
