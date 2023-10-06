@@ -59,7 +59,7 @@ class TransferAdapter
         );
     }
 
-    public function getAvailableActions(int $id): array
+    public function getAvailableActions(int $id): mixed
     {
         return app(GetAvailableActions::class)->execute($id);
     }
