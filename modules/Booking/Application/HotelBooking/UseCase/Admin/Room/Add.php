@@ -16,7 +16,7 @@ use Module\Booking\Domain\HotelBooking\Service\QuotaManager\Exception\NotEnoughR
 use Module\Booking\Domain\HotelBooking\Service\QuotaManager\Exception\NotFoundRoomDateQuota;
 use Module\Booking\Domain\HotelBooking\Service\RoomUpdater\RoomUpdater;
 use Module\Booking\Domain\HotelBooking\ValueObject\RoomPrice;
-use Module\Booking\Domain\Order\ValueObject\GuestIdsCollection;
+use Module\Booking\Domain\Shared\ValueObject\GuestIdsCollection;
 use Module\Shared\Application\Exception\ApplicationException;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 

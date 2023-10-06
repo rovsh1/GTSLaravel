@@ -11,8 +11,8 @@ use Module\Booking\Domain\AirportBooking\Event\GuestUnbinded;
 use Module\Booking\Domain\AirportBooking\Exception\NotFoundAirportServicePrice;
 use Module\Booking\Domain\AirportBooking\Repository\BookingGuestRepositoryInterface;
 use Module\Booking\Domain\AirportBooking\Repository\BookingRepositoryInterface;
-use Module\Booking\Domain\Order\ValueObject\GuestId;
 use Module\Booking\Domain\Shared\ValueObject\BookingId;
+use Module\Booking\Domain\Shared\ValueObject\GuestId;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 

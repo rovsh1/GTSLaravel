@@ -6,7 +6,7 @@ use Module\Booking\Domain\HotelBooking\HotelBooking;
 use Module\Booking\Domain\HotelBooking\ValueObject\Details\RoomBooking\RoomBookingDetails;
 use Module\Booking\Domain\HotelBooking\ValueObject\Details\RoomBooking\RoomInfo;
 use Module\Booking\Domain\HotelBooking\ValueObject\RoomPrice;
-use Module\Booking\Domain\Order\ValueObject\GuestIdsCollection;
+use Module\Booking\Domain\Shared\ValueObject\GuestIdsCollection;
 
 final class UpdateDataHelper
 {

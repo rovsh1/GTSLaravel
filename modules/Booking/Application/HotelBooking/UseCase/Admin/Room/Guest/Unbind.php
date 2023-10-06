@@ -8,7 +8,7 @@ use Module\Booking\Domain\HotelBooking\Event\GuestUnbinded;
 use Module\Booking\Domain\HotelBooking\Repository\BookingGuestRepositoryInterface;
 use Module\Booking\Domain\HotelBooking\Repository\BookingRepositoryInterface;
 use Module\Booking\Domain\HotelBooking\ValueObject\Details\RoomBooking\RoomBookingId;
-use Module\Booking\Domain\Order\ValueObject\GuestId;
+use Module\Booking\Domain\Shared\ValueObject\GuestId;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;

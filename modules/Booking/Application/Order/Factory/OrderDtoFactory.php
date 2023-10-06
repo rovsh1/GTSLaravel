@@ -6,7 +6,7 @@ namespace Module\Booking\Application\Order\Factory;
 
 use Module\Booking\Application\Order\Response\OrderDto;
 use Module\Booking\Domain\Order\Order;
-use Module\Booking\Domain\Order\ValueObject\GuestId;
+use Module\Booking\Domain\Shared\ValueObject\GuestId;
 use Module\Shared\Application\Dto\CurrencyDto;
 use Module\Shared\Domain\Service\TranslatorInterface;
 

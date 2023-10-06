@@ -21,8 +21,6 @@ interface BookingInterface extends EntityInterface
 
     public function orderId(): OrderId;
 
-    public function type(): BookingTypeEnum;
-
     public function status(): BookingStatusEnum;
 
     public function createdAt(): CarbonImmutable;

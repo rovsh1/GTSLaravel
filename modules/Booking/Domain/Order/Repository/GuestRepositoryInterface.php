@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Module\Booking\Domain\Order\Repository;
 
 use Module\Booking\Domain\Order\Entity\Guest;
-use Module\Booking\Domain\Order\ValueObject\GuestId;
-use Module\Booking\Domain\Order\ValueObject\GuestIdsCollection;
+use Module\Booking\Domain\Shared\ValueObject\GuestId;
+use Module\Booking\Domain\Shared\ValueObject\GuestIdsCollection;
 use Module\Booking\Domain\Shared\ValueObject\OrderId;
 use Module\Shared\Enum\GenderEnum;
 

@@ -6,8 +6,8 @@ namespace Module\Booking\Infrastructure\Order\Repository;
 
 use Module\Booking\Domain\Order\Entity\Guest;
 use Module\Booking\Domain\Order\Repository\GuestRepositoryInterface;
-use Module\Booking\Domain\Order\ValueObject\GuestId;
-use Module\Booking\Domain\Order\ValueObject\GuestIdsCollection;
+use Module\Booking\Domain\Shared\ValueObject\GuestId;
+use Module\Booking\Domain\Shared\ValueObject\GuestIdsCollection;
 use Module\Booking\Domain\Shared\ValueObject\OrderId;
 use Module\Booking\Infrastructure\Order\Models\Guest as Model;
 use Module\Shared\Enum\GenderEnum;

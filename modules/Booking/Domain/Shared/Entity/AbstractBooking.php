@@ -58,8 +58,6 @@ abstract class AbstractBooking extends AbstractAggregateRoot implements
         return $this->status;
     }
 
-    abstract public function type(): BookingTypeEnum;
-
     public function createdAt(): CarbonImmutable
     {
         return $this->createdAt;

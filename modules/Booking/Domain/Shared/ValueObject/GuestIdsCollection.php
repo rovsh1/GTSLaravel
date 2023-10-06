@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Domain\Order\ValueObject;
+namespace Module\Booking\Domain\Shared\ValueObject;
 
 
 use Module\Shared\Domain\ValueObject\SerializableDataInterface;
@@ -20,6 +20,17 @@ class GuestIdsCollection extends AbstractValueObjectCollection implements Serial
         }
     }
 
+    public function has(GuestId $id): bool
+    {
+        foreach ($this->items as $guestId) {
+            if ($guestId->isEqual($id)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function toData(): array
     {
         return $this->map(fn(GuestId $id) => $id->value());
@@ -28,6 +39,7 @@ class GuestIdsCollection extends AbstractValueObjectCollection implements Serial
     public static function fromData(array $data): static
     {
         $ids = array_map(fn(int $id) => new GuestId($id), $data);
+
         return (new static($ids));
     }
 }

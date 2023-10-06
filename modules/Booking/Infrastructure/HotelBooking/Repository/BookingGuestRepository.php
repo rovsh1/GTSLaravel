@@ -7,7 +7,7 @@ namespace Module\Booking\Infrastructure\HotelBooking\Repository;
 use Illuminate\Support\Facades\DB;
 use Module\Booking\Domain\HotelBooking\Repository\BookingGuestRepositoryInterface;
 use Module\Booking\Domain\HotelBooking\ValueObject\Details\RoomBooking\RoomBookingId;
-use Module\Booking\Domain\Order\ValueObject\GuestId;
+use Module\Booking\Domain\Shared\ValueObject\GuestId;
 
 class BookingGuestRepository implements BookingGuestRepositoryInterface
 {

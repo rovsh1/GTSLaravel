@@ -2,18 +2,36 @@
 
 namespace Module\Booking\Domain\ServiceBooking\Support\Concerns;
 
-use Module\Booking\Domain\ServiceBooking\ValueObject\CarBid;
-use Module\Booking\Domain\ServiceBooking\ValueObject\CarBidCollection;
+use Module\Booking\Domain\Shared\ValueObject\GuestId;
+use Module\Booking\Domain\Shared\ValueObject\GuestIdsCollection;
 
 trait HasGuestIdCollectionTrait
 {
-    public function carBids(): CarBidCollection
+    public function guestIds(): GuestIdsCollection
     {
-        return $this->carBids;
+        return $this->guestIds;
     }
 
-    public function addCarBid(CarBid $carBid): void
+    public function addGuest(GuestId $id): void
     {
-        $this->carBids = $carBids;
+        if ($this->guestIds->has($id)) {
+            throw new \Exception('Guest already exists');
+        }
+        $this->guestIds = new GuestIdsCollection([
+            ...$this->guestIds->all(),
+            $id
+        ]);
+    }
+
+    public function removeGuest(GuestId $id): void
+    {
+        $newGuestIds = [];
+        foreach ($this->guestIds as $guestId) {
+            if ($guestId->isEqual($id)) {
+                continue;
+            }
+            $newGuestIds[] = $guestId;
+        }
+        $this->guestIds = new GuestIdsCollection($newGuestIds);
     }
 }

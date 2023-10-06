@@ -13,7 +13,7 @@ use Module\Booking\Domain\HotelBooking\ValueObject\Details\Condition;
 use Module\Booking\Domain\HotelBooking\ValueObject\Details\RoomBooking\RoomBookingDetails;
 use Module\Booking\Domain\HotelBooking\ValueObject\Details\RoomBooking\RoomInfo;
 use Module\Booking\Domain\HotelBooking\ValueObject\RoomPrice;
-use Module\Booking\Domain\Order\ValueObject\GuestIdsCollection;
+use Module\Booking\Domain\Shared\ValueObject\GuestIdsCollection;
 use Module\Shared\Domain\ValueObject\Percent;
 use Module\Shared\Domain\ValueObject\TimePeriod;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;

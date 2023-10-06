@@ -9,8 +9,8 @@ use Module\Booking\Domain\HotelBooking\ValueObject\Details\RoomBooking\RoomBooki
 use Module\Booking\Domain\HotelBooking\ValueObject\Details\RoomBooking\RoomBookingId;
 use Module\Booking\Domain\HotelBooking\ValueObject\Details\RoomBooking\RoomInfo;
 use Module\Booking\Domain\HotelBooking\ValueObject\RoomPrice;
-use Module\Booking\Domain\Order\ValueObject\GuestIdsCollection;
 use Module\Booking\Domain\Shared\ValueObject\BookingId;
+use Module\Booking\Domain\Shared\ValueObject\GuestIdsCollection;
 use Module\Booking\Domain\Shared\ValueObject\OrderId;
 use Module\Shared\Domain\Entity\EntityInterface;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;

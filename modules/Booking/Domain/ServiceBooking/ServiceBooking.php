@@ -11,6 +11,7 @@ use Module\Booking\Domain\Shared\Entity\AbstractBooking;
 use Module\Booking\Domain\Shared\ValueObject\BookingId;
 use Module\Booking\Domain\Shared\ValueObject\BookingPrice;
 use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
+use Module\Booking\Domain\Shared\ValueObject\BookingTypeEnum;
 use Module\Booking\Domain\Shared\ValueObject\CancelConditions;
 use Module\Booking\Domain\Shared\ValueObject\CreatorId;
 use Module\Booking\Domain\Shared\ValueObject\OrderId;
@@ -31,9 +32,9 @@ class ServiceBooking extends AbstractBooking
         parent::__construct($id, $orderId, $status, $createdAt, $creatorId, $price);
     }
 
-    public function serviceInfo(): ServiceInfo
+    public function serviceDetails(): ServiceDetailsInterface
     {
-        return $this->serviceInfo;
+        return $this->serviceDetails;
     }
 
     public function note(): ?string

@@ -9,9 +9,9 @@ use Carbon\CarbonInterface;
 use Module\Booking\Domain\AirportBooking\ValueObject\Details\AdditionalInfo;
 use Module\Booking\Domain\AirportBooking\ValueObject\Details\AirportInfo;
 use Module\Booking\Domain\AirportBooking\ValueObject\Details\ServiceInfo;
-use Module\Booking\Domain\Order\ValueObject\GuestIdsCollection;
 use Module\Booking\Domain\Shared\Entity\ReservedServiceInterface;
 use Module\Booking\Domain\Shared\ValueObject\BookingPrice;
+use Module\Booking\Domain\Shared\ValueObject\GuestIdsCollection;
 use Module\Booking\Domain\Shared\ValueObject\ServiceInfoInterface;
 
 class AirportReservedService implements ReservedServiceInterface
