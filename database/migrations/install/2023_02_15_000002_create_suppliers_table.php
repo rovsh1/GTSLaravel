@@ -11,8 +11,14 @@ return new class extends Migration {
         Schema::create('suppliers', function (Blueprint $table) {
             $table->integer('id')->unsigned()->autoIncrement();
             $table->string('name');
-            $table->unsignedSmallInteger('currency_id');
+            $table->char('currency', 3);
             $table->timestamps();
+
+            $table->foreign('currency')
+                ->references('code_char')
+                ->on('r_currencies')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
         });
 
         $this->createContactsTable();

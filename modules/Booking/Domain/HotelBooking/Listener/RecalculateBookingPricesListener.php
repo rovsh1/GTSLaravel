@@ -14,15 +14,16 @@ use Sdk\Module\Contracts\Event\DomainEventListenerInterface;
 class RecalculateBookingPricesListener implements DomainEventListenerInterface
 {
     public function __construct(
-        private readonly BookingRepositoryInterface $repository,
-        private readonly RoomBookingRepositoryInterface $roomBookingRepository,
-        private readonly BookingCalculator $bookingCalculator,
-        private readonly RoomPriceEditor $roomPriceEditor,
-        private readonly BookingUpdater $bookingUpdater
+//        private readonly BookingRepositoryInterface $repository,
+//        private readonly RoomBookingRepositoryInterface $roomBookingRepository,
+//        private readonly BookingCalculator $bookingCalculator,
+//        private readonly RoomPriceEditor $roomPriceEditor,
+//        private readonly BookingUpdater $bookingUpdater
     ) {}
 
     public function handle(DomainEventInterface $event): void
     {
+        return;
         assert($event instanceof PriceBecomeDeprecatedEventInterface);
 
         $booking = $this->repository->find($event->bookingId());

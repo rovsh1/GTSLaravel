@@ -43,7 +43,7 @@ return new class extends Migration {
             $hotelId = $r->id;
             $supplierId = DB::table('suppliers')->insertGetId([
                 'name' => $r->name,
-                'currency_id' => CurrencyEnum::UZS->id()
+                'currency' => CurrencyEnum::UZS->value
             ]);
 
             $conditionsIndexedByType = DB::connection('mysql_old')
@@ -83,16 +83,16 @@ return new class extends Migration {
             $margins = DB::connection('mysql_old')
                 ->table('hotel_margins')
                 ->select([
-                    \DB::raw(
+                    DB::raw(
                         "(SELECT `value` FROM hotel_margins WHERE hotel_id = {$hotelId} AND room_id IS NULL AND client_model = " . self::OTA . ') as `OTA`'
                     ),
-                    \DB::raw(
+                    DB::raw(
                         "(SELECT `value` FROM hotel_margins WHERE hotel_id = {$hotelId} AND room_id IS NULL AND client_model = " . self::TA . ') as `TA`'
                     ),
-                    \DB::raw(
+                    DB::raw(
                         "(SELECT `value` FROM hotel_margins WHERE hotel_id = {$hotelId} AND room_id IS NULL AND client_model = " . self::TO . ') as `TO`'
                     ),
-                    \DB::raw(
+                    DB::raw(
                         "(SELECT `value` FROM hotel_margins WHERE hotel_id = {$hotelId} AND room_id IS NULL AND client_model = " . self::INDIVIDUAL . ') as `individual`'
                     ),
                 ])
@@ -108,19 +108,19 @@ return new class extends Migration {
             $options = DB::connection('mysql_old')
                 ->table('hotel_options')
                 ->select([
-                    \DB::raw(
+                    DB::raw(
                         "(SELECT `value` FROM `hotel_options` WHERE `hotel_id` = {$hotelId} AND `option` = " . self::VAT . ') as vat'
                     ),
-                    \DB::raw(
+                    DB::raw(
                         "(SELECT `value` FROM `hotel_options` WHERE `hotel_id` = {$hotelId} AND `option` = " . self::TOUR_FEE . ') as touristTax'
                     ),
-                    \DB::raw(
+                    DB::raw(
                         "(SELECT `value` FROM `hotel_options` WHERE `hotel_id` = {$hotelId} AND `option` = " . self::CHECKIN_START_PRESET . ') as checkInTime'
                     ),
-                    \DB::raw(
+                    DB::raw(
                         "(SELECT `value` FROM `hotel_options` WHERE `hotel_id` = {$hotelId} AND `option` = " . self::CHECKOUT_END_PRESET . ') as checkOutTime'
                     ),
-                    \DB::raw(
+                    DB::raw(
                         "(SELECT `value` FROM `hotel_options` WHERE `hotel_id` = {$hotelId} AND `option` = " . self::BREAKFAST_TIME . ') as breakfastTime'
                     ),
                 ])

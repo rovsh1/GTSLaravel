@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\DB;
+use Module\Shared\Enum\CurrencyEnum;
 use Module\Shared\Infrastructure\Models\Model;
 
 class SeasonPrice extends Model
@@ -21,10 +22,11 @@ class SeasonPrice extends Model
         'group_id',
         'room_id',
         'price',
-        'currency_id',
+        'currency',
     ];
 
     protected $appends = [
+        'currency' => CurrencyEnum::class,
         'has_date_prices'
     ];
 

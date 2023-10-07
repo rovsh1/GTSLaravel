@@ -132,8 +132,8 @@ class BookingController extends Controller
             currencyId: $currencyId ?? $client->currency_id,
             airportId: $data['airport_id'],
             serviceId: $data['service_id'],
-            flightNumber: $data['flight_number'],
             date: new Carbon($data['date'] . ' ' . $data['time']),
+            flightNumber: $data['flight_number'],
             creatorId: $creatorId,
             orderId: $data['order_id'] ?? null,
             note: $data['note'] ?? null

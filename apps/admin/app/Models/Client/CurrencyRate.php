@@ -8,6 +8,7 @@ use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
 use Sdk\Module\Database\Eloquent\Model;
 
@@ -16,7 +17,7 @@ use Sdk\Module\Database\Eloquent\Model;
  *
  * @property int $id
  * @property int $client_id
- * @property int $currency_id
+ * @property CurrencyEnum $currency
  * @property \Sdk\Module\Support\DateTime $date_start
  * @property \Sdk\Module\Support\DateTime $date_end
  * @property float $rate
@@ -33,7 +34,7 @@ use Sdk\Module\Database\Eloquent\Model;
  * @method static Builder|CurrencyRate quicksearch($term)
  * @method static Builder|CurrencyRate whereClientId($value)
  * @method static Builder|CurrencyRate whereCreatedAt($value)
- * @method static Builder|CurrencyRate whereCurrencyId($value)
+ * @method static Builder|CurrencyRate whereCurrency($value)
  * @method static Builder|CurrencyRate whereDateEnd($value)
  * @method static Builder|CurrencyRate whereDateStart($value)
  * @method static Builder|CurrencyRate whereId($value)
@@ -51,7 +52,7 @@ class CurrencyRate extends Model
 
     protected $fillable = [
         'client_id',
-        'currency_id',
+        'currency',
         'date_start',
         'date_end',
         'rate',
@@ -59,6 +60,7 @@ class CurrencyRate extends Model
     ];
 
     protected $casts = [
+        'currency' => CurrencyEnum::class,
         'date_start' => 'date',
         'date_end' => 'date',
     ];
@@ -71,7 +73,7 @@ class CurrencyRate extends Model
             $builder
                 ->addSelect('client_currency_rates.*')
                 ->join('clients', 'clients.id', '=', 'client_currency_rates.client_id')
-                ->join('r_currencies', 'r_currencies.id', '=', 'client_currency_rates.currency_id')
+                ->join('r_currencies', 'r_currencies.code_char', '=', 'client_currency_rates.currency')
                 ->addSelect('clients.name as client_name')
                 ->addSelect('r_currencies.code_char as currency_code_char')
                 ->joinTranslatable('r_currencies', 'name as currency_name');
@@ -95,9 +97,9 @@ class CurrencyRate extends Model
         $builder->whereBetween('date_end', [$period->getStartDate(), $period->getEndDate()]);
     }
 
-    public function scopeWhereCurrencyId(Builder $builder, int $id): void
+    public function scopeWhereCurrency(Builder $builder, int $id): void
     {
-        $builder->where('client_currency_rates.currency_id', $id);
+        $builder->where('client_currency_rates.currency', $id);
     }
 
     public function hotels(): BelongsToMany

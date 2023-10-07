@@ -16,7 +16,10 @@ class ExistRoomPriceValidator implements ValidatorInterface
 
     public function validate(UpdateDataHelper $dataHelper): void
     {
+        return;
+
         foreach ($dataHelper->booking->period()->dates() as $date) {
+
             $price = $this->hotelAdapter->getRoomPrice(
                 roomId: $dataHelper->roomInfo->id(),
                 rateId: $dataHelper->details->rateId(),

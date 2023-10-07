@@ -41,7 +41,7 @@ class CreateBooking extends AbstractCreateBooking
         }
         $hotelCurrency = CurrencyEnum::from($hotelDto->currency);
         $markupSettings = $this->hotelAdapter->getMarkupSettings($request->hotelId);
-        $orderCurrency = CurrencyEnum::fromId($request->currencyId);
+        $orderCurrency = $request->currency;
         if ($orderCurrency === null) {
             throw new EntityNotFoundException('Currency not found');
         }

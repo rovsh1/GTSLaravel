@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Domain\HotelBooking\Adapter;
+namespace Module\Pricing\Domain\HotelBooking\Adapter;
 
 use DateTimeInterface;
 use Module\Shared\Enum\CurrencyEnum;
 
 interface RoomPriceCalculatorAdapterInterface
 {
-    public function calculateGross(
+    public function calculateSupplierPrice(
         int $clientId,
         int $roomId,
         int $rateId,
@@ -19,7 +19,7 @@ interface RoomPriceCalculatorAdapterInterface
         DateTimeInterface $date
     );
 
-    public function calculateNet(
+    public function calculateClientPrice(
         int $clientId,
         int $roomId,
         int $rateId,

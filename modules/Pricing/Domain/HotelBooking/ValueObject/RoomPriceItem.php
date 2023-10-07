@@ -10,8 +10,8 @@ use Module\Shared\Domain\ValueObject\SerializableDataInterface;
 final class RoomPriceItem implements SerializableDataInterface, CanEquate
 {
     public function __construct(
-        private readonly RoomPriceDayPartCollection $priceParts,
-        private readonly ?float $dayValue,
+        private readonly RoomPriceDayPartCollection $dayParts,
+        private readonly ?float $manualDayValue,
     ) {
     }
 
@@ -23,36 +23,36 @@ final class RoomPriceItem implements SerializableDataInterface, CanEquate
     public function value(): float
     {
         $sum = 0.0;
-        foreach ($this->priceParts as $item) {
+        foreach ($this->dayParts as $item) {
             $sum += $item->value();
         }
 
         return $sum;
     }
 
-    public function dayValue(): ?float
+    public function manualDayValue(): ?float
     {
-        return $this->dayValue;
+        return $this->manualDayValue;
     }
 
-    public function priceParts(): RoomPriceDayPartCollection
+    public function dayParts(): RoomPriceDayPartCollection
     {
-        return $this->priceParts;
+        return $this->dayParts;
     }
 
     public function toData(): array
     {
         return [
-            'priceParts' => $this->priceParts->toData(),
-            'dayValue' => $this->dayValue
+            'dayParts' => $this->dayParts->toData(),
+            'manualDayValue' => $this->manualDayValue
         ];
     }
 
     public static function fromData(array $data): static
     {
         return new RoomPriceItem(
-            priceParts: RoomPriceDayPartCollection::fromData($data['priceParts']),
-            dayValue: $data['dayValue'],
+            dayParts: RoomPriceDayPartCollection::fromData($data['dayParts']),
+            manualDayValue: $data['manualDayValue'],
         );
     }
 

@@ -7,6 +7,7 @@ namespace Module\Booking\Infrastructure\HotelBooking\Repository;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 use Module\Booking\Domain\HotelBooking\HotelBooking;
 use Module\Booking\Domain\HotelBooking\Repository\BookingRepositoryInterface;
 use Module\Booking\Domain\HotelBooking\Repository\RoomBookingRepositoryInterface;
@@ -79,7 +80,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         BookingPrice $price,
         QuotaProcessingMethodEnum $quotaProcessingMethod,
     ): HotelBooking {
-        return \DB::transaction(
+        return DB::transaction(
             function () use (
                 $orderId,
                 $creatorId,
@@ -124,7 +125,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
 
     public function store(HotelBooking $booking): bool
     {
-        return \DB::transaction(function () use ($booking) {
+        return DB::transaction(function () use ($booking) {
             $base = $this->storeBase($booking);
 
             foreach ($booking->roomBookings() as $roomBooking) {

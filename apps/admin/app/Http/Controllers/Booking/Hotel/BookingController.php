@@ -42,6 +42,7 @@ use Module\Booking\Domain\Shared\Service\RequestRules;
 use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
 use Module\Shared\Application\Exception\ApplicationException;
 use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
+use Module\Shared\Enum\CurrencyEnum;
 use Module\Shared\Enum\SourceEnum;
 
 class BookingController extends Controller
@@ -134,10 +135,10 @@ class BookingController extends Controller
 
         $data = $form->getData();
         $orderId = $data['order_id'] ?? null;
-        $currencyId = $data['currency_id'] ?? null;
-        if ($orderId !== null && $currencyId === null) {
+        $currency = isset($data['currency']) ? CurrencyEnum::from($data['currency']) : null;
+        if ($orderId !== null && $currency === null) {
             $order = OrderAdapter::findOrder($orderId);
-            $currencyId = $order->currency->id;
+            $currency = $order->currency;
         }
         $client = Client::find($data['client_id']);
         try {
@@ -145,13 +146,13 @@ class BookingController extends Controller
                 cityId: $data['city_id'],
                 clientId: $data['client_id'],
                 legalId: $data['legal_id'],
-                currencyId: $currencyId ?? $client->currency_id,
+                currency: $currency ?? $client->currency,
                 hotelId: $data['hotel_id'],
                 period: $data['period'],
                 creatorId: $creatorId,
+                quotaProcessingMethod: $data['quota_processing_method'],
                 orderId: $data['order_id'] ?? null,
                 note: $data['note'] ?? null,
-                quotaProcessingMethod: $data['quota_processing_method'],
             );
             $this->administratorRepository->create($bookingId, $data['manager_id'] ?? $creatorId);
         } catch (ApplicationException $e) {
@@ -460,7 +461,7 @@ class BookingController extends Controller
             'quota_processing_method' => $booking->quotaProcessingMethod->value,
             'manager_id' => $manager->id,
             'order_id' => $booking->orderId,
-            'currency_id' => $order->currency->id,
+            'currency' => $order->currency,
             'hotel_id' => $hotelId,
             'city_id' => $cityId,
             'client_id' => $order->clientId,
@@ -497,7 +498,7 @@ class BookingController extends Controller
             ->hidden('legal_id', [
                 'label' => 'Юр. лицо',
             ])
-            ->currency('currency_id', [
+            ->currency('currency', [
                 'label' => 'Валюта',
                 'emptyItem' => '',
             ])

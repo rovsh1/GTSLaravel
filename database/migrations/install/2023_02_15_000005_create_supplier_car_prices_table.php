@@ -13,11 +13,11 @@ return new class extends Migration {
             $table->unsignedInteger('season_id');
             $table->unsignedInteger('service_id');
             $table->unsignedInteger('car_id');
-            $table->unsignedSmallInteger('currency_id');
+            $table->char('currency', 3);
             $table->unsignedDecimal('price_net');
             $table->json('prices_gross');
 
-//            $table->unique(['car_id', 'city_id', 'service_id', 'currency_id'], 'uid');
+//            $table->unique(['car_id', 'city_id', 'service_id', 'currency'], 'uid');
 
             $table->foreign('season_id')
                 ->references('id')
@@ -31,8 +31,8 @@ return new class extends Migration {
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
-            $table->foreign('currency_id')
-                ->references('id')
+            $table->foreign('currency')
+                ->references('code_char')
                 ->on('r_currencies')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();

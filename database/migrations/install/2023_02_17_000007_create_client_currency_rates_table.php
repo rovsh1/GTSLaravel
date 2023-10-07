@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('client_currency_rates', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('client_id');
-            $table->unsignedSmallInteger('currency_id');
+            $table->char('currency', 3);
             $table->date('date_start');
             $table->date('date_end');
             $table->unsignedFloat('rate');
@@ -25,8 +25,8 @@ return new class extends Migration {
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
 
-            $table->foreign('currency_id')
-                ->references('id')
+            $table->foreign('currency')
+                ->references('code_char')
                 ->on('r_currencies')
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();

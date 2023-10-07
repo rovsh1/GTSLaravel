@@ -25,7 +25,7 @@ class OrderFactory extends AbstractEntityFactory
 
         return new $this->entity(
             new OrderId($data['id']),
-            CurrencyEnum::fromId($data['currency_id']),
+            CurrencyEnum::from($data['currency']),
             new ClientId($data['client_id']),
             $legalId !== null ? new LegalId($legalId) : null,
             new CarbonImmutable($data['created_at']),

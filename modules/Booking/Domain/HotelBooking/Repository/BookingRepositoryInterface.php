@@ -9,7 +9,6 @@ use Module\Booking\Domain\HotelBooking\HotelBooking;
 use Module\Booking\Domain\HotelBooking\ValueObject\Details\BookingPeriod;
 use Module\Booking\Domain\HotelBooking\ValueObject\Details\HotelInfo;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
-use Module\Booking\Domain\Shared\Repository\BookingRepositoryInterface as Base;
 use Module\Booking\Domain\Shared\ValueObject\BookingId;
 use Module\Booking\Domain\Shared\ValueObject\BookingPrice;
 use Module\Booking\Domain\Shared\ValueObject\CancelConditions;
@@ -18,7 +17,7 @@ use Module\Booking\Domain\Shared\ValueObject\OrderId;
 use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
-interface BookingRepositoryInterface extends Base
+interface BookingRepositoryInterface
 {
     public function find(int $id): ?HotelBooking;
 

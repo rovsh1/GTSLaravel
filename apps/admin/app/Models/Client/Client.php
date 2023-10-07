@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Module\Shared\Enum\Client\ResidencyEnum;
 use Module\Shared\Enum\Client\StatusEnum;
 use Module\Shared\Enum\Client\TypeEnum;
+use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
 use Sdk\Module\Database\Eloquent\Model;
 
@@ -23,7 +24,7 @@ class Client extends Model
     protected $fillable = [
         'name',
         'city_id',
-        'currency_id',
+        'currency',
         'is_b2b',
         'type',
         'status',
@@ -33,6 +34,7 @@ class Client extends Model
     ];
 
     protected $casts = [
+        'currency' => CurrencyEnum::class,
         'status' => StatusEnum::class,
         'type' => TypeEnum::class,
         'residency' => ResidencyEnum::class,
@@ -48,7 +50,7 @@ class Client extends Model
                 ->joinTranslatable('r_cities', 'name as city_name')
                 ->join('r_countries', 'r_countries.id', '=', 'r_cities.country_id')
                 ->joinTranslatable('r_countries', 'name as country_name')
-                ->leftJoin('r_currencies', 'r_currencies.id', '=', 'clients.currency_id')
+                ->leftJoin('r_currencies', 'r_currencies.code_char', '=', 'clients.currency')
                 ->joinTranslatable('r_currencies', 'name as currency_name')
                 ->leftJoin('administrator_clients', 'administrator_clients.client_id', 'clients.id')
                 ->addSelect('administrator_clients.administrator_id')

@@ -19,7 +19,7 @@ class GetAvailableActions implements UseCaseInterface
     public function __construct(
         private readonly StatusRulesInterface $statusRules,
         private readonly RequestRules $requestRules,
-        private readonly BookingRepositoryInterface $repository,
+        private $repository,
         private readonly StatusStorage $statusStorage,
     ) {}
 

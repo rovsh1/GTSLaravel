@@ -14,7 +14,7 @@ use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 abstract class AbstractGetBooking implements UseCaseInterface
 {
     public function __construct(
-        private readonly BookingRepositoryInterface $repository,
+        private  $repository,
         private readonly BookingDtoFactoryInterface $factory,
     ) {
     }

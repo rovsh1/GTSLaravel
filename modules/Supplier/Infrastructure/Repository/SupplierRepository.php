@@ -30,7 +30,7 @@ class SupplierRepository implements SupplierRepositoryInterface
         return new Supplier(
             id: new SupplierId($supplier->id),
             name: $supplier->name,
-            currency: CurrencyEnum::fromId($supplier->currency_id),
+            currency: CurrencyEnum::from($supplier->currency),
             requisites: $requisites
                 ? new Requisites(
                     inn: $requisites->inn,

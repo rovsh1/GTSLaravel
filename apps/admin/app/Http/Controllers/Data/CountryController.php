@@ -33,7 +33,7 @@ class CountryController extends AbstractPrototypeController
             ->text('code', ['label' => 'Код страны', 'maxlength' => 2, 'required' => true])
             ->language('language', ['label' => 'Язык по-умолчанию', 'required' => true, 'emptyItem' => ''])
             ->text('phone_code', ['label' => 'Код телефона', 'maxlength' => 8, 'required' => true])
-            ->currency('currency_id', ['label' => 'Валюта', 'required' => true, 'emptyItem' => ''])
+            ->currency('currency', ['label' => 'Валюта', 'required' => true, 'emptyItem' => ''])
             ->checkbox('default', ['label' => 'По умолчанию']);
     }
 

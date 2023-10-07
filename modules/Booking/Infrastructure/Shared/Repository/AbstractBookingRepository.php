@@ -8,6 +8,7 @@ use Module\Booking\Domain\Shared\ValueObject\BookingPrice;
 use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
 use Module\Booking\Domain\Shared\ValueObject\OrderId;
 use Module\Booking\Infrastructure\Shared\Models\Booking as Model;
+use Module\Shared\Enum\ServiceTypeEnum;
 
 abstract class AbstractBookingRepository
 {
@@ -34,6 +35,7 @@ abstract class AbstractBookingRepository
             'status' => BookingStatusEnum::CREATED,
             'creator_id' => $creatorId,
             'price' => $price->toData(),
+            'service_type' => ServiceTypeEnum::HOTEL_BOOKING->value //TODO refactor
         ]);
     }
 

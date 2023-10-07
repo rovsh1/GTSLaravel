@@ -4,12 +4,12 @@ namespace Module\Pricing\Domain\HotelBooking\Service;
 
 use Carbon\CarbonInterface;
 use DateTimeInterface;
-use Module\Booking\Domain\HotelBooking\Adapter\RoomPriceCalculatorAdapterInterface;
 use Module\Booking\Domain\HotelBooking\Entity\RoomBooking;
 use Module\Booking\Domain\HotelBooking\ValueObject\RoomDayPrice;
 use Module\Booking\Domain\HotelBooking\ValueObject\RoomDayPriceCollection;
 use Module\Booking\Domain\HotelBooking\ValueObject\RoomPrice;
 use Module\Pricing\Domain\Hotel\Support\FormulaUtil;
+use Module\Pricing\Domain\HotelBooking\Adapter\RoomPriceCalculatorAdapterInterface;
 use Module\Shared\Domain\ValueObject\Date;
 
 class RoomPriceDescriptor

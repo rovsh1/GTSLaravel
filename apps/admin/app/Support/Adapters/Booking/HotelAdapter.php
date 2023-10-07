@@ -28,6 +28,7 @@ use Module\Booking\Application\HotelBooking\UseCase\Admin\UpdateBooking;
 use Module\Booking\Application\HotelBooking\UseCase\Admin\UpdateBookingStatus;
 use Module\Booking\Application\HotelBooking\UseCase\Admin\UpdateExternalNumber;
 use Module\Booking\Application\HotelBooking\UseCase\Admin\UpdateNote;
+use Module\Shared\Enum\CurrencyEnum;
 
 class HotelAdapter
 {
@@ -69,7 +70,7 @@ class HotelAdapter
         int $cityId,
         int $clientId,
         ?int $legalId,
-        int $currencyId,
+        CurrencyEnum $currency,
         int $hotelId,
         CarbonPeriod $period,
         int $creatorId,
@@ -80,15 +81,15 @@ class HotelAdapter
         return app(CreateBooking::class)->execute(
             new CreateBookingDto(
                 cityId: $cityId,
-                creatorId: $creatorId,
                 clientId: $clientId,
                 legalId: $legalId,
-                currencyId: $currencyId,
+                currency: $currency,
                 hotelId: $hotelId,
-                orderId: $orderId,
                 period: $period,
-                note: $note,
+                creatorId: $creatorId,
                 quotaProcessingMethod: $quotaProcessingMethod,
+                orderId: $orderId,
+                note: $note,
             )
         );
     }

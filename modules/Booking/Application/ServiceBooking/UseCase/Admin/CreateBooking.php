@@ -27,7 +27,7 @@ class CreateBooking extends AbstractCreateBooking
     public function execute(CreateBookingDto $request): int
     {
         $orderId = $this->getOrderIdFromRequest($request);
-        $orderCurrency = CurrencyEnum::fromId($request->currencyId);
+        $orderCurrency = $request->currency;
         if ($orderCurrency === null) {
             throw new EntityNotFoundException('Currency not found');
         }

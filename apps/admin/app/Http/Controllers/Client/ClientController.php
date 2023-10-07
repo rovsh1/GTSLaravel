@@ -79,7 +79,7 @@ class ClientController extends AbstractPrototypeController
     {
         $data = $this->saving([
             'city_id' => $request->getCityId(),
-            'currency_id' => $request->getCurrencyId(),
+            'currency' => $request->getCurrency(),
             'type' => $request->getType(),
             'name' => $request->getName(),
             'status' => $request->getStatus() ?? StatusEnum::ACTIVE,
@@ -100,14 +100,14 @@ class ClientController extends AbstractPrototypeController
 
             LegalAdapter::setBankRequisites(
                 clientLegalId: $legal->id,
-                cityName: $legalData->bankCity ?? '',
-                currentAccount: $legalData->currentAccount ?? '',
+                bik: $legalData->bik ?? '',
+                inn: $legalData->inn ?? '',
+                okpo: $legalData->okpoCode ?? '',
                 correspondentAccount: $legalData->corrAccount ?? '',
                 kpp: $legalData->kpp ?? '',
-                okpo: $legalData->okpoCode ?? '',
-                inn: $legalData->inn ?? '',
-                bik: $legalData->bik ?? '',
-                bankName: $legalData->bankName ?? ''
+                bankName: $legalData->bankName ?? '',
+                currentAccount: $legalData->currentAccount ?? '',
+                cityName: $legalData->bankCity ?? ''
             );
         }
 
@@ -230,7 +230,7 @@ class ClientController extends AbstractPrototypeController
             ->hidden('gender', ['label' => 'Пол'])
             ->city('city_id', ['label' => 'Город', 'required' => true, 'emptyItem' => ''])
             ->enum('status', ['label' => 'Статус', 'enum' => StatusEnum::class])
-            ->currency('currency_id', ['label' => 'Валюта', 'required' => true, 'emptyItem' => ''])
+            ->currency('currency', ['label' => 'Валюта', 'required' => true, 'emptyItem' => ''])
             ->enum(
                 'residency',
                 ['label' => 'Тип цены', 'enum' => ResidencyEnum::class, 'required' => true, 'emptyItem' => '']

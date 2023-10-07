@@ -37,7 +37,7 @@ class SupplierController extends AbstractPrototypeController
     {
         return Form::name('data')
             ->text('name', ['label' => 'Наименование', 'required' => true])
-            ->currency('currency_id', ['label' => 'Валюта', 'required' => true, 'emptyItem' => ''])
+            ->currency('currency', ['label' => 'Валюта', 'required' => true, 'emptyItem' => ''])
             ->select('cities', [
                 'label' => 'Города',
                 'multiple' => true,

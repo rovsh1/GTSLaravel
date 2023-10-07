@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Module\Booking\Domain\Order\Repository;
 
 use Module\Booking\Domain\Order\Order;
+use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
 interface OrderRepositoryInterface
 {
-    public function create(int $clientId, int $currencyId, ?int $legalId = null): Order;
+    public function create(int $clientId, CurrencyEnum $currency, ?int $legalId = null): Order;
 
     public function find(int $id): ?Order;
 
