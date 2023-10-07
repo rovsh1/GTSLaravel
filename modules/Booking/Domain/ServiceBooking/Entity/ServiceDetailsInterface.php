@@ -7,7 +7,7 @@ use Module\Shared\Enum\ServiceTypeEnum;
 
 interface ServiceDetailsInterface
 {
-    public function serviceType(): ServiceTypeEnum;
-
     public function id(): DetailsId;
+
+    public function serviceType(): ServiceTypeEnum;
 }

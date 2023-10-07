@@ -7,49 +7,16 @@ namespace Module\Booking\Infrastructure\HotelBooking\Models;
 use App\Admin\Support\View\Form\ValueObject\NumRangeValue;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder as QueryBuilder;
-use Module\Booking\Domain\Shared\ValueObject\BookingTypeEnum;
 use Module\Booking\Infrastructure\Shared\Models\Booking as BaseModel;
-use Sdk\Module\Database\Eloquent\HasQuicksearch;
 
 class Booking extends BaseModel
 {
-    use HasQuicksearch, SoftDeletes;
-
     protected array $quicksearch = ['id', 'hotels.name%'];
 
     private bool $isDetailsJoined = false;
 
-    protected $attributes = [
-        'type' => BookingTypeEnum::HOTEL,
-    ];
-
-    protected static function booted()
-    {
-        static::addGlobalScope('default', function (Builder $builder) {
-            $builder->whereType(BookingTypeEnum::HOTEL);
-        });
-    }
-
-    public function scopeApplyCriteria(Builder $query, array $criteria): void
-    {
-        if (isset($criteria['quicksearch'])) {
-            $query->quicksearch($criteria['quicksearch']);
-            unset($criteria['quicksearch']);
-        }
-
-        foreach ($criteria as $k => $v) {
-            $scopeName = \Str::camel($k);
-            $scopeMethod = 'where' . ucfirst($scopeName);
-            $hasScope = $this->hasNamedScope($scopeMethod);
-            if ($hasScope) {
-                $query->$scopeMethod($v);
-                continue;
-            }
-            $query->where($k, $v);
-        }
-    }
+    protected static function booted() {}
 
     public function scopeWhereCityId(Builder $builder, int $id): void
     {
@@ -131,11 +98,6 @@ class Booking extends BaseModel
                 ->whereColumn('r.booking_id', '=', 'bookings.id')
                 ->havingRaw("SUM(`guests_count` between {$numRange->from} and {$numRange->to})");
         });
-    }
-
-    public function scopeWhereType(Builder $builder, BookingTypeEnum $type): void
-    {
-        $builder->where($this->getTable() . '.type', $type);
     }
 
     public function scopeWithDetails(Builder $builder): void

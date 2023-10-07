@@ -17,8 +17,8 @@ class CIPRoomInAirport implements ServiceDetailsInterface
     public function __construct(
         private readonly DetailsId $id,
         private readonly AirportId $airportId,
-        protected string $flightNumber,
-        protected DateTimeInterface $serviceDate,
+        private string $flightNumber,
+        private DateTimeInterface $serviceDate,
         private GuestIdCollection $guestIds,
     ) {
     }

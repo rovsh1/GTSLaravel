@@ -14,11 +14,13 @@ return new class extends Migration {
         Schema::create('bookings', function (Blueprint $table) {
             $table->increments('id')->from(100);
             $table->unsignedInteger('order_id');
-            $table->tinyInteger('type');
-            $table->tinyInteger('status');
+            $table->unsignedTinyInteger('service_type');
+            $table->unsignedTinyInteger('status');
             $table->string('source');
             $table->unsignedInteger('creator_id');
             $table->json('price');
+            $table->json('cancel_conditions')->nullable();
+            $table->string('note')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
