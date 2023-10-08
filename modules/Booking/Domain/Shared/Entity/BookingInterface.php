@@ -35,9 +35,4 @@ interface BookingInterface extends EntityInterface
      * @throws NotRequestableEntity
      */
     public function generateRequest(RequestRules $requestRules, RequestCreator $requestCreator): void;
-
-    public function isManualGrossPrice(): bool;
-
-    public function isManualNetPrice(): bool;
-
 }

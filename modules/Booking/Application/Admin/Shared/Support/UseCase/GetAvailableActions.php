@@ -36,7 +36,7 @@ class GetAvailableActions implements UseCaseInterface
             $this->requestRules->canSendChangeRequest($booking->status()),
             $this->statusRules->canEditExternalNumber($booking->status()),
             //@todo прописать логику для этого флага (у отеля и админки она разная)
-            $this->statusRules->canChangeRoomPrice($booking->status()) && !$booking->isManualGrossPrice(),
+            $this->statusRules->canChangeRoomPrice($booking->status()) && !$booking->price()->clientPrice()->manualValue(),
             $this->statusRules->isCancelledStatus($booking->status()),
         );
     }

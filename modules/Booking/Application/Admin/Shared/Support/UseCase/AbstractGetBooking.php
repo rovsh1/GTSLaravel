@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Booking\Application\Admin\Shared\Support\UseCase;
 
-use Module\Booking\Application\Admin\HotelBooking\UseCase\CalculatePrice;
 use Module\Booking\Application\Admin\Shared\Factory\BookingDtoFactoryInterface;
 use Module\Booking\Application\Admin\Shared\Response\BookingDto;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
@@ -21,7 +20,6 @@ abstract class AbstractGetBooking implements UseCaseInterface
 
     public function execute(int $id): ?BookingDto
     {
-        app(CalculatePrice::class)->execute($id);
         /** @var BookingInterface $booking */
         $booking = $this->repository->find($id);
         if ($booking === null) {
