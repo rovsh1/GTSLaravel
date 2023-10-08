@@ -3,11 +3,11 @@
 namespace Module\Shared\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Module\Shared\Domain\Service\ApplicationConstantsInterface;
-use Module\Shared\Domain\Service\CompanyRequisitesInterface;
-use Module\Shared\Domain\Service\SafeExecutorInterface;
-use Module\Shared\Domain\Service\SerializerInterface;
-use Module\Shared\Domain\Service\TranslatorInterface;
+use Module\Shared\Contracts\Service\ApplicationConstantsInterface;
+use Module\Shared\Contracts\Service\CompanyRequisitesInterface;
+use Module\Shared\Contracts\Service\SafeExecutorInterface;
+use Module\Shared\Contracts\Service\SerializerInterface;
+use Module\Shared\Contracts\Service\TranslatorInterface;
 use Module\Shared\Infrastructure\Service\ApplicationsConstants\ApplicationConstantManager;
 use Module\Shared\Infrastructure\Service\CompanyRequisites\CompanyRequisiteManager;
 use Module\Shared\Infrastructure\Service\JsonSerializer;

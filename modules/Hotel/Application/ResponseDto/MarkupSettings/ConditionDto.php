@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Module\Hotel\Application\ResponseDto\MarkupSettings;
 
 use Module\Hotel\Domain\ValueObject\MarkupSettings\Condition;
-use Module\Shared\Application\Dto\AbstractDomainBasedDto;
-use Module\Shared\Domain\Entity\EntityInterface;
-use Module\Shared\Domain\ValueObject\ValueObjectInterface;
+use Module\Shared\Contracts\Domain\EntityInterface;
+use Module\Shared\Contracts\Domain\ValueObjectInterface;
+use Module\Shared\Support\Dto\AbstractDomainBasedDto;
 
 class ConditionDto extends AbstractDomainBasedDto
 {

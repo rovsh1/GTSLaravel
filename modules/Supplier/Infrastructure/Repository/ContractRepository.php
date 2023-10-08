@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Module\Supplier\Infrastructure\Repository;
 
 use Module\Booking\Domain\AirportBooking\ValueObject\ContractId;
-use Module\Shared\Domain\ValueObject\Date;
 use Module\Shared\Enum\Supplier\ContractServiceTypeEnum;
+use Module\Shared\ValueObject\Date;
 use Module\Supplier\Domain\Supplier\Entity\Contract;
 use Module\Supplier\Domain\Supplier\Repository\ContractRepositoryInterface;
 use Module\Supplier\Domain\Supplier\ValueObject\ServiceId;

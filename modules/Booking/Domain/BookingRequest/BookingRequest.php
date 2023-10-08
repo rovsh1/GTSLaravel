@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Module\Booking\Domain\BookingRequest;
 
 use Carbon\CarbonImmutable;
-use Module\Booking\Domain\Shared\ValueObject\BookingId;
 use Module\Booking\Domain\BookingRequest\ValueObject\RequestId;
 use Module\Booking\Domain\BookingRequest\ValueObject\RequestTypeEnum;
-use Module\Shared\Domain\Entity\EntityInterface;
+use Module\Booking\Domain\Shared\ValueObject\BookingId;
+use Module\Shared\Contracts\Domain\EntityInterface;
 use Module\Shared\ValueObject\File;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 

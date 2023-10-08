@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Module\Supplier\Application\Response;
 
-use Module\Shared\Application\Dto\AbstractDomainBasedDto;
-use Module\Shared\Domain\Entity\EntityInterface;
-use Module\Shared\Domain\ValueObject\ValueObjectInterface;
+use Module\Shared\Contracts\Domain\EntityInterface;
+use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Module\Shared\Enum\CurrencyEnum;
+use Module\Shared\Support\Dto\AbstractDomainBasedDto;
 use Module\Supplier\Domain\Supplier\Supplier;
 
 class SupplierDto extends AbstractDomainBasedDto

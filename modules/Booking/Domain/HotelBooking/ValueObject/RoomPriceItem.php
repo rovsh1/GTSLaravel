@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Domain\HotelBooking\ValueObject;
 
 use Module\Shared\Contracts\CanEquate;
-use Module\Shared\Domain\ValueObject\SerializableDataInterface;
+use Module\Shared\Contracts\Support\SerializableDataInterface;
 
 final class RoomPriceItem implements SerializableDataInterface, CanEquate
 {

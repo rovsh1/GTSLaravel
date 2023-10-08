@@ -12,7 +12,7 @@ use Module\Booking\Domain\HotelBooking\ValueObject\QuotaId;
 use Module\Booking\Domain\Shared\ValueObject\BookingId;
 use Module\Booking\Infrastructure\HotelBooking\Models\Hotel\RoomQuota as Model;
 use Module\Hotel\Infrastructure\Models\Room\QuotaReservation;
-use Module\Shared\Domain\Service\ApplicationContextInterface;
+use Module\Shared\Contracts\Service\ApplicationContextInterface;
 use Module\Shared\Enum\Booking\QuotaChangeTypeEnum;
 
 class BookingQuotaRepository implements BookingQuotaRepositoryInterface

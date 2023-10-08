@@ -6,9 +6,9 @@ namespace Module\Booking\Application\Admin\Shared\Response;
 
 use Carbon\CarbonImmutable;
 use Module\Booking\Domain\BookingRequest\BookingRequest;
-use Module\Shared\Application\Dto\AbstractDomainBasedDto;
-use Module\Shared\Domain\Entity\EntityInterface;
-use Module\Shared\Domain\ValueObject\ValueObjectInterface;
+use Module\Shared\Contracts\Domain\EntityInterface;
+use Module\Shared\Contracts\Domain\ValueObjectInterface;
+use Module\Shared\Support\Dto\AbstractDomainBasedDto;
 
 class RequestDto extends AbstractDomainBasedDto
 {

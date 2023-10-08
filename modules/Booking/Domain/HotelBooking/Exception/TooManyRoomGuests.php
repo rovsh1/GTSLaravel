@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Booking\Domain\HotelBooking\Exception;
 
-use Module\Shared\Domain\Exception\DomainEntityExceptionInterface;
-use Module\Shared\Domain\Exception\ErrorCodeEnum;
+use Module\Shared\Contracts\Domain\DomainEntityExceptionInterface;
+use Module\Shared\Enum\ErrorCodeEnum;
 
 class TooManyRoomGuests extends \RuntimeException implements DomainEntityExceptionInterface
 {

@@ -5,7 +5,7 @@ namespace Module\Booking\Domain\Shared\Entity;
 use Module\Booking\Domain\Shared\ValueObject\Creator;
 use Module\Booking\Domain\Shared\ValueObject\DocumentStatus;
 use Module\Booking\Domain\Shared\ValueObject\DocumentTypeEnum;
-use Module\Shared\Domain\Entity\FileInterface;
+use Module\Shared\Contracts\Entity\FileInterface;
 
 abstract class AbstractDocument implements DocumentInterface
 {

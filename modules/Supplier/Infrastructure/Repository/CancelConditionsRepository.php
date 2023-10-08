@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Supplier\Infrastructure\Repository;
 
-use Module\Shared\Domain\ValueObject\Percent;
+use Module\Shared\ValueObject\Percent;
 use Module\Supplier\Domain\Supplier\Repository\CancelConditionsRepositoryInterface;
 use Module\Supplier\Domain\Supplier\ValueObject\CancelConditions;
 use Module\Supplier\Domain\Supplier\ValueObject\CancelMarkupOption;

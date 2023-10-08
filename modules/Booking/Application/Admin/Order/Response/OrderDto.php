@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Application\Admin\Order\Response;
 
 use Carbon\CarbonImmutable;
-use Module\Shared\Application\Dto\CurrencyDto;
+use Module\Shared\Dto\CurrencyDto;
 use Sdk\Module\Foundation\Support\Dto\Dto;
 
 class OrderDto extends Dto

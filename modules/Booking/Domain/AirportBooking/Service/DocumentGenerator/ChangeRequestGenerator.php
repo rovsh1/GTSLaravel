@@ -10,7 +10,7 @@ use Module\Booking\Domain\Shared\Adapter\AdministratorAdapterInterface;
 use Module\Booking\Domain\Shared\Adapter\CountryAdapterInterface;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
 use Module\Booking\Domain\Shared\Service\DocumentGenerator\AbstractRequestGenerator;
-use Module\Shared\Domain\Service\CompanyRequisitesInterface;
+use Module\Shared\Contracts\Service\CompanyRequisitesInterface;
 use Module\Shared\Enum\Booking\AirportServiceTypeEnum;
 
 class ChangeRequestGenerator extends AbstractRequestGenerator

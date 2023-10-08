@@ -8,7 +8,7 @@ use Module\Client\Domain\Entity\Legal;
 use Module\Client\Domain\ValueObject\BankRequisites;
 use Module\Client\Domain\ValueObject\IndustryId;
 use Module\Client\Domain\ValueObject\LegalId;
-use Module\Shared\Domain\Service\SerializerInterface;
+use Module\Shared\Contracts\Service\SerializerInterface;
 use Module\Shared\Enum\Client\LegalTypeEnum;
 use Sdk\Module\Foundation\Support\EntityFactory\AbstractEntityFactory;
 

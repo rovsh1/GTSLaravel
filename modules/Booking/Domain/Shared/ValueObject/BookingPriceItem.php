@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Domain\Shared\ValueObject;
 
 use Module\Shared\Contracts\CanEquate;
-use Module\Shared\Domain\ValueObject\SerializableDataInterface;
+use Module\Shared\Contracts\Support\SerializableDataInterface;
 use Module\Shared\Enum\CurrencyEnum;
 
 final class BookingPriceItem implements SerializableDataInterface, CanEquate

@@ -3,7 +3,7 @@
 namespace Module\Support\MailManager\Infrastructure\Repository;
 
 use Illuminate\Support\Facades\DB;
-use Module\Shared\Domain\Service\ApplicationContextInterface;
+use Module\Shared\Contracts\Service\ApplicationContextInterface;
 use Module\Support\MailManager\Domain\Entity\Mail;
 use Module\Support\MailManager\Domain\Repository\QueueRepositoryInterface;
 use Module\Support\MailManager\Domain\ValueObject\MailId;

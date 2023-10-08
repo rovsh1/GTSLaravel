@@ -17,7 +17,7 @@ use Module\Pricing\Domain\Hotel\ValueObject\HotelId;
 use Module\Pricing\Domain\Hotel\ValueObject\RoomId;
 use Module\Pricing\Domain\Markup\Service\HotelMarkupFinderInterface;
 use Module\Pricing\Domain\Shared\ValueObject\ClientId;
-use Module\Shared\Domain\Adapter\CurrencyRateAdapterInterface;
+use Module\Shared\Contracts\Adapter\CurrencyRateAdapterInterface;
 use Module\Shared\Enum\CurrencyEnum;
 use Module\Shared\ValueObject\MarkupValue;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;

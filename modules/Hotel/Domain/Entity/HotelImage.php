@@ -2,6 +2,6 @@
 
 namespace Module\Hotel\Domain\Entity;
 
-use Module\Shared\Domain\Entity\FileInterface;
+use Module\Shared\Contracts\Entity\FileInterface;
 
 class HotelImage implements FileInterface { }

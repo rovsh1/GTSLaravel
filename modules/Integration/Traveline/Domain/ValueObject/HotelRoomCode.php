@@ -2,7 +2,7 @@
 
 namespace Module\Integration\Traveline\Domain\ValueObject;
 
-use Module\Shared\Domain\ValueObject\ValueObjectInterface;
+use Module\Shared\Contracts\Domain\ValueObjectInterface;
 
 class HotelRoomCode implements ValueObjectInterface
 {

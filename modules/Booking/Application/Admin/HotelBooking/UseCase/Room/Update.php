@@ -16,7 +16,7 @@ use Module\Booking\Domain\HotelBooking\Service\QuotaManager\Exception\ClosedRoom
 use Module\Booking\Domain\HotelBooking\Service\QuotaManager\Exception\NotEnoughRoomDateQuota;
 use Module\Booking\Domain\HotelBooking\Service\QuotaManager\Exception\NotFoundRoomDateQuota;
 use Module\Booking\Domain\HotelBooking\Service\RoomUpdater\RoomUpdater;
-use Module\Shared\Application\Exception\ApplicationException;
+use Module\Shared\Exception\ApplicationException;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 

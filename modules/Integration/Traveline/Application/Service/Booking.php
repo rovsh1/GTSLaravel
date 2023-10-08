@@ -6,8 +6,8 @@ use Module\Integration\Traveline\Domain\Adapter\ReservationAdapterInterface;
 use Module\Integration\Traveline\Domain\Api\Request\Reservation;
 use Module\Integration\Traveline\Domain\Api\Response\Error\ReservationNotFound;
 use Module\Integration\Traveline\Domain\Api\Response\Error\TravelineResponseErrorInterface;
-use Module\Shared\Domain\Exception\DomainEntityExceptionInterface;
-use Module\Shared\Domain\Exception\ErrorCodeEnum;
+use Module\Shared\Contracts\Domain\DomainEntityExceptionInterface;
+use Module\Shared\Enum\ErrorCodeEnum;
 
 class Booking
 {

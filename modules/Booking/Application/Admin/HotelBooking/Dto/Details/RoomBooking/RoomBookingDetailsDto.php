@@ -6,9 +6,9 @@ namespace Module\Booking\Application\Admin\HotelBooking\Dto\Details\RoomBooking;
 
 use Module\Booking\Application\Admin\HotelBooking\Dto\Details\ConditionDto;
 use Module\Booking\Domain\HotelBooking\ValueObject\Details\RoomBooking\RoomBookingDetails;
-use Module\Shared\Application\Dto\AbstractDomainBasedDto;
-use Module\Shared\Domain\Entity\EntityInterface;
-use Module\Shared\Domain\ValueObject\ValueObjectInterface;
+use Module\Shared\Contracts\Domain\EntityInterface;
+use Module\Shared\Contracts\Domain\ValueObjectInterface;
+use Module\Shared\Support\Dto\AbstractDomainBasedDto;
 
 class RoomBookingDetailsDto extends AbstractDomainBasedDto
 {

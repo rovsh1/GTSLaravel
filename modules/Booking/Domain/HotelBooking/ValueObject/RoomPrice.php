@@ -2,7 +2,7 @@
 
 namespace Module\Booking\Domain\HotelBooking\ValueObject;
 
-use Module\Shared\Domain\ValueObject\SerializableDataInterface;
+use Module\Shared\Contracts\Support\SerializableDataInterface;
 
 final class RoomPrice implements SerializableDataInterface
 {

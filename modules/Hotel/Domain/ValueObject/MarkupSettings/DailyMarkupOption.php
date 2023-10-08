@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Hotel\Domain\ValueObject\MarkupSettings;
 
-use Module\Shared\Domain\ValueObject\Percent;
-use Module\Shared\Domain\ValueObject\SerializableDataInterface;
-use Module\Shared\Domain\ValueObject\ValueObjectInterface;
+use Module\Shared\Contracts\Domain\ValueObjectInterface;
+use Module\Shared\Contracts\Support\SerializableDataInterface;
+use Module\Shared\ValueObject\Percent;
 
 final class DailyMarkupOption implements ValueObjectInterface, SerializableDataInterface
 {

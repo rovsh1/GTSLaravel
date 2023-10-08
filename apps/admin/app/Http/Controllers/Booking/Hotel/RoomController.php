@@ -9,14 +9,14 @@ use App\Admin\Http\Requests\Booking\Hotel\Room\DeleteRoomRequest;
 use App\Admin\Http\Requests\Booking\Hotel\Room\Guest\RoomGuestRequest;
 use App\Admin\Http\Requests\Booking\Hotel\Room\UpdateRoomRequest;
 use App\Admin\Http\Requests\Booking\Hotel\UpdatePriceRequest;
-use App\Admin\Support\Facades\Booking\HotelAdapter;
 use App\Admin\Support\Facades\Booking\Hotel\PriceAdapter;
+use App\Admin\Support\Facades\Booking\HotelAdapter;
 use App\Admin\Support\Facades\Booking\RoomAdapter;
 use App\Core\Support\Http\Responses\AjaxErrorResponse;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use App\Core\Support\Http\Responses\AjaxSuccessResponse;
 use Illuminate\Http\JsonResponse;
-use Module\Shared\Application\Exception\ApplicationException;
+use Module\Shared\Exception\ApplicationException;
 
 class RoomController
 {

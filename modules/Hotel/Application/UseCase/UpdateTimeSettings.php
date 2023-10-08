@@ -6,7 +6,7 @@ namespace Module\Hotel\Application\UseCase;
 
 use Module\Hotel\Domain\Repository\HotelRepositoryInterface;
 use Module\Hotel\Domain\ValueObject\TimeSettings;
-use Module\Shared\Domain\ValueObject\Time;
+use Module\Shared\ValueObject\Time;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class UpdateTimeSettings implements UseCaseInterface

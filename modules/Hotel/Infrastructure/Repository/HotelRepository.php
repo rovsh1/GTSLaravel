@@ -6,7 +6,7 @@ use Module\Hotel\Domain\Entity\Hotel;
 use Module\Hotel\Domain\Factory\HotelFactory;
 use Module\Hotel\Domain\Repository\HotelRepositoryInterface;
 use Module\Hotel\Infrastructure\Models\Hotel as HotelEloquent;
-use Module\Shared\Domain\Service\SerializerInterface;
+use Module\Shared\Contracts\Service\SerializerInterface;
 
 class HotelRepository implements HotelRepositoryInterface
 {

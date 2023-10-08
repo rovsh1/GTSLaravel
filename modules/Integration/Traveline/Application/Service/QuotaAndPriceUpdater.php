@@ -14,8 +14,8 @@ use Module\Integration\Traveline\Domain\Exception\HotelNotConnectedException;
 use Module\Integration\Traveline\Domain\Exception\InvalidHotelRoomCode;
 use Module\Integration\Traveline\Domain\Repository\HotelRepositoryInterface;
 use Module\Integration\Traveline\Domain\Service\HotelRoomCodeGeneratorInterface;
-use Module\Shared\Domain\Exception\DomainEntityExceptionInterface;
-use Module\Shared\Domain\Exception\ErrorCodeEnum;
+use Module\Shared\Contracts\Domain\DomainEntityExceptionInterface;
+use Module\Shared\Enum\ErrorCodeEnum;
 
 class QuotaAndPriceUpdater
 {

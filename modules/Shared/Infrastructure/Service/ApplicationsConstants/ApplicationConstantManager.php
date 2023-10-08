@@ -2,7 +2,7 @@
 
 namespace Module\Shared\Infrastructure\Service\ApplicationsConstants;
 
-use Module\Shared\Domain\Service\ApplicationConstantsInterface;
+use Module\Shared\Contracts\Service\ApplicationConstantsInterface;
 use Module\Shared\Infrastructure\Service\ApplicationsConstants\Constant\ConstantInterface;
 use Sdk\Module\Support\ItemCollectionIteratorTrait;
 
@@ -17,7 +17,8 @@ class ApplicationConstantManager implements ApplicationConstantsInterface
 
     public function basicCalculatedValue(): float
     {
-        return $this->findByClass(Constant\BasicCalculatedValue::class)->value();
+        return $this->findByClass(
+            \Module\Shared\Infrastructure\Service\ApplicationsConstants\Constant\BasicCalculatedValue::class)->value();
     }
 
     public function count(): int

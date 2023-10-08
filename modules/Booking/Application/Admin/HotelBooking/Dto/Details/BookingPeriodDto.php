@@ -6,9 +6,9 @@ namespace Module\Booking\Application\Admin\HotelBooking\Dto\Details;
 
 use Carbon\Carbon;
 use Module\Booking\Domain\HotelBooking\ValueObject\Details\BookingPeriod;
-use Module\Shared\Application\Dto\AbstractDomainBasedDto;
-use Module\Shared\Domain\Entity\EntityInterface;
-use Module\Shared\Domain\ValueObject\ValueObjectInterface;
+use Module\Shared\Contracts\Domain\EntityInterface;
+use Module\Shared\Contracts\Domain\ValueObjectInterface;
+use Module\Shared\Support\Dto\AbstractDomainBasedDto;
 
 class BookingPeriodDto extends AbstractDomainBasedDto
 {

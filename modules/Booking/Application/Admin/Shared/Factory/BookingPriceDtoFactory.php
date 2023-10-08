@@ -8,9 +8,9 @@ use Module\Booking\Application\Admin\Shared\Response\BookingPriceDto;
 use Module\Booking\Application\Admin\Shared\Response\PriceItemDto;
 use Module\Booking\Domain\Shared\ValueObject\BookingPrice;
 use Module\Booking\Domain\Shared\ValueObject\BookingPriceItem;
-use Module\Shared\Application\Dto\CurrencyDto;
-use Module\Shared\Domain\Adapter\CurrencyRateAdapterInterface;
-use Module\Shared\Domain\Service\TranslatorInterface;
+use Module\Shared\Contracts\Adapter\CurrencyRateAdapterInterface;
+use Module\Shared\Contracts\Service\TranslatorInterface;
+use Module\Shared\Dto\CurrencyDto;
 
 class BookingPriceDtoFactory
 {

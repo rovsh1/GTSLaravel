@@ -3,7 +3,7 @@
 namespace App\Core\Support\Facades;
 
 use Illuminate\Support\Facades\Facade;
-use Module\Shared\Domain\Service\ApplicationContextInterface;
+use Module\Shared\Contracts\Service\ApplicationContextInterface;
 use Module\Shared\Enum\Context\ContextChannelEnum;
 use Module\Shared\Enum\SourceEnum;
 

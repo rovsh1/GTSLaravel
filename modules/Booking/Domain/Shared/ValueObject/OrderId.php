@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Domain\Shared\ValueObject;
 
-final class OrderId extends \Module\Shared\Domain\ValueObject\AbstractIntId
+final class OrderId extends \Module\Shared\Support\ValueObject\AbstractIntId
 {
 
 }

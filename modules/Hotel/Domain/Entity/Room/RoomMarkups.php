@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Module\Hotel\Domain\Entity\Room;
 
 use Module\Hotel\Domain\ValueObject\RoomId;
-use Module\Shared\Domain\Entity\EntityInterface;
-use Module\Shared\Domain\ValueObject\Percent;
-use Module\Shared\Domain\ValueObject\SerializableDataInterface;
+use Module\Shared\Contracts\Domain\EntityInterface;
+use Module\Shared\Contracts\Support\SerializableDataInterface;
+use Module\Shared\ValueObject\Percent;
 
 //@todo Нужен рефакторинг, настройки должны быть частью какого-то агрегата настроек отеля/комнат
 final class RoomMarkups implements EntityInterface, SerializableDataInterface

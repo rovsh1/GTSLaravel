@@ -7,7 +7,7 @@ namespace Module\Hotel\Infrastructure\Repository;
 use Module\Hotel\Domain\Entity\MarkupSettings;
 use Module\Hotel\Domain\Repository\MarkupSettingsRepositoryInterface;
 use Module\Hotel\Infrastructure\Models\Hotel;
-use Module\Shared\Domain\Service\SerializerInterface;
+use Module\Shared\Contracts\Service\SerializerInterface;
 
 class MarkupSettingsRepository implements MarkupSettingsRepositoryInterface
 {

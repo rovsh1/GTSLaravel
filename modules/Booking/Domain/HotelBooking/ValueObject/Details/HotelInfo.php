@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Booking\Domain\HotelBooking\ValueObject\Details;
 
-use Module\Shared\Domain\ValueObject\SerializableDataInterface;
-use Module\Shared\Domain\ValueObject\Time;
-use Module\Shared\Domain\ValueObject\ValueObjectInterface;
+use Module\Shared\Contracts\Domain\ValueObjectInterface;
+use Module\Shared\Contracts\Support\SerializableDataInterface;
+use Module\Shared\ValueObject\Time;
 
 class HotelInfo implements ValueObjectInterface, SerializableDataInterface
 {

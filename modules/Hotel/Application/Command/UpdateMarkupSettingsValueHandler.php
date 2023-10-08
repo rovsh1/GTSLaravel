@@ -16,10 +16,10 @@ use Module\Hotel\Domain\ValueObject\MarkupSettings\DailyMarkupCollection;
 use Module\Hotel\Domain\ValueObject\MarkupSettings\DailyMarkupOption;
 use Module\Hotel\Domain\ValueObject\MarkupSettings\EarlyCheckInCollection;
 use Module\Hotel\Domain\ValueObject\MarkupSettings\LateCheckOutCollection;
-use Module\Shared\Domain\Entity\EntityInterface;
-use Module\Shared\Domain\ValueObject\Percent;
-use Module\Shared\Domain\ValueObject\TimePeriod;
-use Module\Shared\Domain\ValueObject\ValueObjectInterface;
+use Module\Shared\Contracts\Domain\EntityInterface;
+use Module\Shared\Contracts\Domain\ValueObjectInterface;
+use Module\Shared\ValueObject\Percent;
+use Module\Shared\ValueObject\TimePeriod;
 use Sdk\Module\Contracts\Bus\CommandHandlerInterface;
 use Sdk\Module\Contracts\Bus\CommandInterface;
 

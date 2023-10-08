@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Administrator\Domain\Entity;
 
 use Module\Administrator\Domain\ValueObject\AdministratorId;
-use Module\Shared\Domain\Entity\EntityInterface;
+use Module\Shared\Contracts\Domain\EntityInterface;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
 class Administrator extends AbstractAggregateRoot implements EntityInterface

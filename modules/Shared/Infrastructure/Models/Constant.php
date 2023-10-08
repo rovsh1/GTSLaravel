@@ -2,9 +2,6 @@
 
 namespace Module\Shared\Infrastructure\Models;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
-
 class Constant extends Model
 {
     public $timestamps = false;

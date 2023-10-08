@@ -6,9 +6,9 @@ namespace Module\Booking\Domain\HotelBooking\ValueObject\Details\RoomBooking;
 
 use Module\Booking\Domain\HotelBooking\ValueObject\Details\Condition;
 use Module\Shared\Contracts\CanEquate;
-use Module\Shared\Domain\ValueObject\Percent;
-use Module\Shared\Domain\ValueObject\SerializableDataInterface;
-use Module\Shared\Domain\ValueObject\ValueObjectInterface;
+use Module\Shared\Contracts\Domain\ValueObjectInterface;
+use Module\Shared\Contracts\Support\SerializableDataInterface;
+use Module\Shared\ValueObject\Percent;
 
 class RoomBookingDetails implements ValueObjectInterface, SerializableDataInterface, CanEquate
 {

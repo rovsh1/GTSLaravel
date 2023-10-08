@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Module\Hotel\Domain\ValueObject;
 
 use Module\Hotel\Domain\ValueObject\TimeSettings\BreakfastPeriod;
-use Module\Shared\Domain\ValueObject\SerializableDataInterface;
-use Module\Shared\Domain\ValueObject\Time;
-use Module\Shared\Domain\ValueObject\ValueObjectInterface;
+use Module\Shared\Contracts\Domain\ValueObjectInterface;
+use Module\Shared\Contracts\Support\SerializableDataInterface;
+use Module\Shared\ValueObject\Time;
 
 class TimeSettings implements ValueObjectInterface, SerializableDataInterface
 {

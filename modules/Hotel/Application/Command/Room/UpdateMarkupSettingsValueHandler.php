@@ -5,7 +5,7 @@ namespace Module\Hotel\Application\Command\Room;
 use Module\Hotel\Domain\Entity\Room\RoomMarkups;
 use Module\Hotel\Domain\Repository\RoomMarkupSettingsRepositoryInterface;
 use Module\Hotel\Domain\ValueObject\RoomId;
-use Module\Shared\Domain\ValueObject\Percent;
+use Module\Shared\ValueObject\Percent;
 use Sdk\Module\Contracts\Bus\CommandHandlerInterface;
 use Sdk\Module\Contracts\Bus\CommandInterface;
 

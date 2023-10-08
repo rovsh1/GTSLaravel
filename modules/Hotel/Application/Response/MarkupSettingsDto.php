@@ -8,9 +8,9 @@ use Module\Hotel\Application\ResponseDto\MarkupSettings\CancelPeriodDto;
 use Module\Hotel\Application\ResponseDto\MarkupSettings\ClientMarkupsDto;
 use Module\Hotel\Application\ResponseDto\MarkupSettings\ConditionDto;
 use Module\Hotel\Domain\Entity\MarkupSettings;
-use Module\Shared\Application\Dto\AbstractDomainBasedDto;
-use Module\Shared\Domain\Entity\EntityInterface;
-use Module\Shared\Domain\ValueObject\ValueObjectInterface;
+use Module\Shared\Contracts\Domain\EntityInterface;
+use Module\Shared\Contracts\Domain\ValueObjectInterface;
+use Module\Shared\Support\Dto\AbstractDomainBasedDto;
 
 class MarkupSettingsDto extends AbstractDomainBasedDto
 {

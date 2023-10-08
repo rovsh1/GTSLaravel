@@ -4,9 +4,9 @@ namespace Module\Hotel\Application\Response;
 
 use Module\Hotel\Application\ResponseDto\PriceRateDto;
 use Module\Hotel\Domain\Entity\Room;
-use Module\Shared\Application\Dto\AbstractDomainBasedDto;
-use Module\Shared\Domain\Entity\EntityInterface;
-use Module\Shared\Domain\ValueObject\ValueObjectInterface;
+use Module\Shared\Contracts\Domain\EntityInterface;
+use Module\Shared\Contracts\Domain\ValueObjectInterface;
+use Module\Shared\Support\Dto\AbstractDomainBasedDto;
 use Sdk\Module\Foundation\Support\Dto\DtoCollection;
 use Sdk\Module\Foundation\Support\Dto\DtoCollectionOf;
 

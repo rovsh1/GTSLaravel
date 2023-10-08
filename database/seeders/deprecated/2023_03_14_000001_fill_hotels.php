@@ -15,10 +15,10 @@ use Module\Hotel\Domain\ValueObject\MarkupSettings\DailyMarkupOption;
 use Module\Hotel\Domain\ValueObject\MarkupSettings\EarlyCheckInCollection;
 use Module\Hotel\Domain\ValueObject\MarkupSettings\LateCheckOutCollection;
 use Module\Hotel\Domain\ValueObject\TimeSettings;
-use Module\Shared\Domain\ValueObject\Percent;
-use Module\Shared\Domain\ValueObject\Time;
-use Module\Shared\Domain\ValueObject\TimePeriod;
 use Module\Shared\Enum\CurrencyEnum;
+use Module\Shared\ValueObject\Percent;
+use Module\Shared\ValueObject\Time;
+use Module\Shared\ValueObject\TimePeriod;
 
 return new class extends Migration {
 

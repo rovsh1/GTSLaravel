@@ -14,8 +14,8 @@ use Module\Booking\Domain\HotelBooking\ValueObject\Details\RoomBooking\RoomBooki
 use Module\Booking\Domain\HotelBooking\ValueObject\Details\RoomBooking\RoomInfo;
 use Module\Booking\Domain\HotelBooking\ValueObject\RoomPrice;
 use Module\Booking\Domain\Shared\ValueObject\GuestIdCollection;
-use Module\Shared\Domain\ValueObject\Percent;
-use Module\Shared\Domain\ValueObject\TimePeriod;
+use Module\Shared\ValueObject\Percent;
+use Module\Shared\ValueObject\TimePeriod;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
 class RoomUpdaterDataHelperFactory

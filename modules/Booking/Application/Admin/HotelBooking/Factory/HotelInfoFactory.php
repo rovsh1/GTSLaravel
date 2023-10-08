@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Application\Admin\HotelBooking\Factory;
 
 use Module\Booking\Domain\HotelBooking\ValueObject\Details\HotelInfo;
-use Module\Shared\Domain\ValueObject\Time;
+use Module\Shared\ValueObject\Time;
 
 class HotelInfoFactory
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Shared\Infrastructure\Services\PhoneDecorator\Format;
+namespace Module\Shared\Infrastructure\Service\PhoneDecorator\Format;
 
 class RU extends DefaultFormat
 {

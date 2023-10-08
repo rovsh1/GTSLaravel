@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Module\Hotel\Application\Response;
 
 use Module\Hotel\Domain\Entity\Room\RoomMarkups;
-use Module\Shared\Application\Dto\AbstractDomainBasedDto;
-use Module\Shared\Domain\Entity\EntityInterface;
-use Module\Shared\Domain\ValueObject\ValueObjectInterface;
+use Module\Shared\Contracts\Domain\EntityInterface;
+use Module\Shared\Contracts\Domain\ValueObjectInterface;
+use Module\Shared\Support\Dto\AbstractDomainBasedDto;
 
 class RoomMarkupsDto extends AbstractDomainBasedDto
 {

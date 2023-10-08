@@ -11,7 +11,7 @@ use Module\Booking\Domain\Shared\ValueObject\CancelCondition\DailyMarkupCollecti
 use Module\Booking\Domain\Shared\ValueObject\CancelCondition\DailyMarkupOption;
 use Module\Booking\Domain\Shared\ValueObject\CancelConditions;
 use Module\Hotel\Application\ResponseDto\MarkupSettings\CancelPeriodDto;
-use Module\Shared\Domain\ValueObject\Percent;
+use Module\Shared\ValueObject\Percent;
 
 class CancelConditionsFactory
 {

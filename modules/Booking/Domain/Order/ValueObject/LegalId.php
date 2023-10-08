@@ -2,7 +2,7 @@
 
 namespace Module\Booking\Domain\Order\ValueObject;
 
-use Module\Shared\Domain\ValueObject\AbstractIntId;
+use Module\Shared\Support\ValueObject\AbstractIntId;
 
 class LegalId extends AbstractIntId
 {

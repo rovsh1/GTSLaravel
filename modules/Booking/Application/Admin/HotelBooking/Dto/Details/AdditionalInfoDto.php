@@ -6,9 +6,9 @@ namespace Module\Booking\Application\Admin\HotelBooking\Dto\Details;
 
 use Module\Booking\Application\Admin\HotelBooking\Dto\Details\AdditionalInfo\ExternalNumberDto;
 use Module\Booking\Domain\Shared\Entity\Details\AdditionalInfoInterface;
-use Module\Shared\Application\Dto\AbstractDomainBasedDto;
-use Module\Shared\Domain\Entity\EntityInterface;
-use Module\Shared\Domain\ValueObject\ValueObjectInterface;
+use Module\Shared\Contracts\Domain\EntityInterface;
+use Module\Shared\Contracts\Domain\ValueObjectInterface;
+use Module\Shared\Support\Dto\AbstractDomainBasedDto;
 
 class AdditionalInfoDto extends AbstractDomainBasedDto
 {

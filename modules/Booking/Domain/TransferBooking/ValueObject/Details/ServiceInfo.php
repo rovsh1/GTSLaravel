@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Booking\Domain\TransferBooking\ValueObject\Details;
 
-use Module\Shared\Domain\ValueObject\SerializableDataInterface;
-use Module\Shared\Domain\ValueObject\ValueObjectInterface;
+use Module\Shared\Contracts\Domain\ValueObjectInterface;
+use Module\Shared\Contracts\Support\SerializableDataInterface;
 use Module\Shared\Enum\Booking\TransferServiceTypeEnum;
 
 class ServiceInfo implements ValueObjectInterface, SerializableDataInterface

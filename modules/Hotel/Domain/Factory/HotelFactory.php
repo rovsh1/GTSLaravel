@@ -8,7 +8,7 @@ use Module\Hotel\Domain\ValueObject\Contact;
 use Module\Hotel\Domain\ValueObject\ContactCollection;
 use Module\Hotel\Domain\ValueObject\HotelId;
 use Module\Hotel\Domain\ValueObject\TimeSettings;
-use Module\Shared\Domain\Service\SerializerInterface;
+use Module\Shared\Contracts\Service\SerializerInterface;
 use Module\Shared\Enum\ContactTypeEnum;
 use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Foundation\Support\EntityFactory\AbstractEntityFactory;

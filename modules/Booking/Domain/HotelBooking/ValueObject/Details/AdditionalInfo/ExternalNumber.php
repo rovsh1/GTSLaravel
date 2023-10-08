@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Booking\Domain\HotelBooking\ValueObject\Details\AdditionalInfo;
 
-use Module\Shared\Domain\ValueObject\SerializableDataInterface;
-use Module\Shared\Domain\ValueObject\ValueObjectInterface;
+use Module\Shared\Contracts\Domain\ValueObjectInterface;
+use Module\Shared\Contracts\Support\SerializableDataInterface;
 
 final class ExternalNumber implements ValueObjectInterface, SerializableDataInterface
 {

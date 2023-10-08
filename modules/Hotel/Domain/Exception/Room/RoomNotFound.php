@@ -2,8 +2,8 @@
 
 namespace Module\Hotel\Domain\Exception\Room;
 
-use Module\Shared\Domain\Exception\DomainEntityExceptionInterface;
-use Module\Shared\Domain\Exception\ErrorCodeEnum;
+use Module\Shared\Contracts\Domain\DomainEntityExceptionInterface;
+use Module\Shared\Enum\ErrorCodeEnum;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
 class RoomNotFound extends EntityNotFoundException implements DomainEntityExceptionInterface

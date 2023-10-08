@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Module\Pricing\Infrastructure\Repository;
 
 use DateTimeInterface;
-use Module\Pricing\Infrastructure\Models\Season;
-use Module\Pricing\Infrastructure\Models\Hotel as Model;
 use Module\Pricing\Domain\Hotel\Hotel;
 use Module\Pricing\Domain\Hotel\Repository\HotelRepositoryInterface;
 use Module\Pricing\Domain\Hotel\ValueObject\HotelId;
 use Module\Pricing\Domain\Hotel\ValueObject\RoomId;
 use Module\Pricing\Domain\Hotel\ValueObject\SeasonId;
-use Module\Shared\Domain\ValueObject\Percent;
+use Module\Pricing\Infrastructure\Models\Hotel as Model;
+use Module\Pricing\Infrastructure\Models\Season;
+use Module\Shared\ValueObject\Percent;
 
 class HotelRepository implements HotelRepositoryInterface
 {

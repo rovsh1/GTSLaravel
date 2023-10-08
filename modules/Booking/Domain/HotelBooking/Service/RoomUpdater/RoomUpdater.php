@@ -19,7 +19,7 @@ use Module\Booking\Domain\HotelBooking\Service\QuotaManager\QuotaManager;
 use Module\Booking\Domain\HotelBooking\Service\RoomUpdater\Validator\ClientResidencyValidator;
 use Module\Booking\Domain\HotelBooking\Service\RoomUpdater\Validator\ExistRoomPriceValidator;
 use Module\Booking\Domain\HotelBooking\ValueObject\Details\RoomBooking\RoomBookingId;
-use Module\Shared\Domain\Service\SafeExecutorInterface;
+use Module\Shared\Contracts\Service\SafeExecutorInterface;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\Event\DomainEventInterface;
 use Sdk\Module\Contracts\ModuleInterface;

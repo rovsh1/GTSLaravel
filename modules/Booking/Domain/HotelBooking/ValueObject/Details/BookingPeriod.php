@@ -7,8 +7,8 @@ use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
 use Carbon\CarbonPeriodImmutable;
 use Module\Shared\Contracts\CanEquate;
-use Module\Shared\Domain\ValueObject\SerializableDataInterface;
-use Module\Shared\Domain\ValueObject\ValueObjectInterface;
+use Module\Shared\Contracts\Domain\ValueObjectInterface;
+use Module\Shared\Contracts\Support\SerializableDataInterface;
 
 final class BookingPeriod implements ValueObjectInterface, SerializableDataInterface, CanEquate
 {

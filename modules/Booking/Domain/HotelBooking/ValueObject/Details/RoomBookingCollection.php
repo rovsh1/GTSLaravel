@@ -6,7 +6,7 @@ namespace Module\Booking\Domain\HotelBooking\ValueObject\Details;
 
 use Illuminate\Support\Collection;
 use Module\Booking\Domain\HotelBooking\Entity\RoomBooking;
-use Module\Shared\Domain\ValueObject\SerializableDataInterface;
+use Module\Shared\Contracts\Support\SerializableDataInterface;
 
 /**
  * @extends Collection<int, RoomBooking>

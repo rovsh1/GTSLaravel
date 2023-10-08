@@ -7,7 +7,7 @@ namespace Module\Booking\Domain\Shared\Entity;
 use Carbon\CarbonImmutable;
 use Module\Booking\Domain\Shared\ValueObject\BookingId;
 use Module\Booking\Domain\Shared\ValueObject\VoucherId;
-use Module\Shared\Domain\Entity\EntityInterface;
+use Module\Shared\Contracts\Domain\EntityInterface;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
 class Voucher extends AbstractAggregateRoot implements EntityInterface

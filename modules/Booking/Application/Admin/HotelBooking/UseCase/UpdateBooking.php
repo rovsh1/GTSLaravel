@@ -19,7 +19,7 @@ use Module\Booking\Domain\HotelBooking\Service\QuotaManager\Exception\NotFoundRo
 use Module\Booking\Domain\HotelBooking\Service\QuotaManager\QuotaManager;
 use Module\Booking\Domain\HotelBooking\ValueObject\Details\BookingPeriod;
 use Module\Booking\Domain\Shared\Service\BookingUpdater;
-use Module\Shared\Application\Exception\ApplicationException;
+use Module\Shared\Exception\ApplicationException;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class UpdateBooking implements UseCaseInterface

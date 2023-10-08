@@ -2,8 +2,8 @@
 
 namespace Module\Hotel\Domain\Exception\Room;
 
-use Module\Shared\Domain\Exception\DomainEntityExceptionInterface;
-use Module\Shared\Domain\Exception\ErrorCodeEnum;
+use Module\Shared\Contracts\Domain\DomainEntityExceptionInterface;
+use Module\Shared\Enum\ErrorCodeEnum;
 
 class UnsupportedRoomGuestsNumber extends \RuntimeException implements DomainEntityExceptionInterface
 {

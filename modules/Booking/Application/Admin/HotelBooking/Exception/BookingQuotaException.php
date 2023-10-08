@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Application\Admin\HotelBooking\Exception;
 
-use Module\Shared\Application\Exception\ApplicationException;
+use Module\Shared\Exception\ApplicationException;
 
 class BookingQuotaException extends ApplicationException
 {

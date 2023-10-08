@@ -11,7 +11,7 @@ use Module\Booking\Domain\Shared\Event\BookingStatusEventInterface;
 use Module\Booking\Domain\Shared\Repository\BookingChangesLogRepositoryInterface;
 use Module\Booking\Infrastructure\Shared\Models\BookingChangesLog;
 use Module\Booking\Infrastructure\Shared\Models\EventTypeEnum;
-use Module\Shared\Domain\Service\ApplicationContextInterface;
+use Module\Shared\Contracts\Service\ApplicationContextInterface;
 
 class BookingChangesLogRepository implements
     BookingChangesLogRepositoryInterface

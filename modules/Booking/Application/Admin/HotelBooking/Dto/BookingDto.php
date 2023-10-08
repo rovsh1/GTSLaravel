@@ -15,8 +15,8 @@ use Module\Booking\Application\Admin\Shared\Response\BookingPriceDto;
 use Module\Booking\Application\Admin\Shared\Response\StatusDto;
 use Module\Booking\Domain\HotelBooking\HotelBooking;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
-use Module\Shared\Domain\Entity\EntityInterface;
-use Module\Shared\Domain\ValueObject\ValueObjectInterface;
+use Module\Shared\Contracts\Domain\EntityInterface;
+use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 
 class BookingDto extends BaseDto

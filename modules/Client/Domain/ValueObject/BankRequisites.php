@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Client\Domain\ValueObject;
 
-use Module\Shared\Domain\ValueObject\SerializableDataInterface;
-use Module\Shared\Domain\ValueObject\ValueObjectInterface;
+use Module\Shared\Contracts\Domain\ValueObjectInterface;
+use Module\Shared\Contracts\Support\SerializableDataInterface;
 
 class BankRequisites implements ValueObjectInterface, SerializableDataInterface
 {

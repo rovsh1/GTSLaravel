@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Shared\ValueObject;
 
 use Module\Shared\Contracts\CanEquate;
-use Module\Shared\Domain\ValueObject\ValueObjectInterface;
+use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Module\Shared\Enum\Pricing\MarkupValueTypeEnum;
 
 final class MarkupValue implements ValueObjectInterface, CanEquate

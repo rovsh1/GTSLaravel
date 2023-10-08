@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Module\Booking\Domain\HotelBooking\ValueObject\Details;
 
 use Module\Shared\Contracts\CanEquate;
-use Module\Shared\Domain\ValueObject\Percent;
-use Module\Shared\Domain\ValueObject\SerializableDataInterface;
-use Module\Shared\Domain\ValueObject\TimePeriod;
-use Module\Shared\Domain\ValueObject\ValueObjectInterface;
+use Module\Shared\Contracts\Domain\ValueObjectInterface;
+use Module\Shared\Contracts\Support\SerializableDataInterface;
+use Module\Shared\ValueObject\Percent;
+use Module\Shared\ValueObject\TimePeriod;
 
 /**
  * @see \Module\Hotel\Domain\ValueObject\MarkupSettings\Condition

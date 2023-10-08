@@ -2,7 +2,7 @@
 
 namespace Sdk\Module\Foundation\Support\Dto;
 
-use Module\Shared\Infrastructure\Facade\DomainModelNormalizer;
+use Module\Shared\Support\Facade\DomainModelNormalizer;
 use Sdk\Module\Foundation\Support\Dto\DataPipes\DefaultValuesDataPipe;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\DataPipeline;

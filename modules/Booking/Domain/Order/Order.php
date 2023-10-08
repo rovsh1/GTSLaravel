@@ -10,7 +10,7 @@ use Module\Booking\Domain\Order\ValueObject\ClientId;
 use Module\Booking\Domain\Order\ValueObject\LegalId;
 use Module\Booking\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Booking\Domain\Shared\ValueObject\OrderId;
-use Module\Shared\Domain\Entity\EntityInterface;
+use Module\Shared\Contracts\Domain\EntityInterface;
 use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 

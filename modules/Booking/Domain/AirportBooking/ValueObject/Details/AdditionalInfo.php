@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Domain\AirportBooking\ValueObject\Details;
 
-use Module\Shared\Domain\ValueObject\SerializableDataInterface;
+use Module\Shared\Contracts\Support\SerializableDataInterface;
 
 class AdditionalInfo implements SerializableDataInterface
 {
