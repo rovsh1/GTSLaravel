@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Application\Admin\Shared\Support\UseCase;
 
 use Module\Booking\Application\Admin\Order\Command\CreateOrder;
-use Module\Booking\Domain\Shared\ValueObject\OrderId;
+use Module\Booking\Domain\Order\ValueObject\OrderId;
 use Sdk\Module\Contracts\Bus\CommandBusInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 

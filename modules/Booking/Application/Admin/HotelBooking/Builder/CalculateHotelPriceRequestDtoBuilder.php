@@ -6,7 +6,7 @@ use Carbon\CarbonPeriod;
 use Illuminate\Support\Facades\DB;
 use Module\Booking\Domain\HotelBooking\HotelBooking;
 use Module\Booking\Domain\HotelBooking\Repository\BookingRepositoryInterface;
-use Module\Booking\Domain\Shared\ValueObject\BookingId;
+use Module\Booking\Domain\ServiceBooking\ValueObject\BookingId;
 use Module\Pricing\Application\RequestDto\CalculateHotelRoomsPriceRequestDto;
 use Module\Shared\Enum\CurrencyEnum;
 

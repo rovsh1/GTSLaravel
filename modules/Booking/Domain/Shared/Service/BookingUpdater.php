@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Module\Booking\Domain\Shared\Service;
 
-use Module\Booking\Domain\AirportBooking\AirportBooking;
+use Module\Booking\Deprecated\AirportBooking\AirportBooking;
+use Module\Booking\Deprecated\TransferBooking\TransferBooking;
 use Module\Booking\Domain\HotelBooking\HotelBooking;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
 use Module\Booking\Domain\Shared\ValueObject\BookingTypeEnum;
-use Module\Booking\Domain\TransferBooking\TransferBooking;
 use Module\Booking\Infrastructure\AirportBooking\Repository\BookingRepository as AirportBookingRepository;
 use Module\Booking\Infrastructure\HotelBooking\Repository\BookingRepository as HotelBookingRepository;
 use Module\Booking\Infrastructure\TransferBooking\Repository\BookingRepository as TransferBookingRepository;

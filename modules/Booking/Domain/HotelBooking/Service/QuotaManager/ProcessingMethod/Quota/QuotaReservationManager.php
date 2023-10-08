@@ -10,7 +10,7 @@ use Module\Booking\Domain\HotelBooking\Service\QuotaManager\Exception\ClosedRoom
 use Module\Booking\Domain\HotelBooking\Service\QuotaManager\Exception\NotEnoughRoomDateQuota;
 use Module\Booking\Domain\HotelBooking\Service\QuotaManager\Exception\NotFoundRoomDateQuota;
 use Module\Booking\Domain\HotelBooking\ValueObject\QuotaId;
-use Module\Booking\Domain\Shared\ValueObject\BookingId;
+use Module\Booking\Domain\ServiceBooking\ValueObject\BookingId;
 
 class QuotaReservationManager
 {

@@ -11,7 +11,7 @@ use Module\Booking\Application\Admin\Shared\Service\StatusStorage;
 use Module\Booking\Application\AirportBooking\Response\BookingDto;
 use Module\Booking\Application\AirportBooking\Response\Details\AirportInfoDto;
 use Module\Booking\Application\AirportBooking\Response\Details\ServiceInfoDto;
-use Module\Booking\Domain\AirportBooking\AirportBooking;
+use Module\Booking\Deprecated\AirportBooking\AirportBooking;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
 use Module\Booking\Domain\Shared\ValueObject\GuestId;
 

@@ -6,7 +6,7 @@ namespace Module\Booking\Application\Admin\Shared\Support\UseCase\Request;
 
 use Module\Booking\Application\Admin\Shared\Response\RequestDto;
 use Module\Booking\Domain\BookingRequest\Repository\RequestRepositoryInterface;
-use Module\Booking\Domain\Shared\ValueObject\BookingId;
+use Module\Booking\Domain\ServiceBooking\ValueObject\BookingId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class GetBookingRequests implements UseCaseInterface

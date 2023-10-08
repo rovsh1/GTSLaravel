@@ -3,17 +3,16 @@
 namespace Module\Booking\Domain\HotelBooking\Repository;
 
 use Carbon\CarbonInterface;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Module\Booking\Domain\HotelBooking\HotelBooking;
 use Module\Booking\Domain\HotelBooking\ValueObject\Details\BookingPeriod;
 use Module\Booking\Domain\HotelBooking\ValueObject\Details\HotelInfo;
+use Module\Booking\Domain\Order\ValueObject\OrderId;
+use Module\Booking\Domain\ServiceBooking\ValueObject\BookingId;
+use Module\Booking\Domain\ServiceBooking\ValueObject\BookingPrice;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
-use Module\Booking\Domain\Shared\ValueObject\BookingId;
-use Module\Booking\Domain\Shared\ValueObject\BookingPrice;
 use Module\Booking\Domain\Shared\ValueObject\CancelConditions;
 use Module\Booking\Domain\Shared\ValueObject\CreatorId;
-use Module\Booking\Domain\Shared\ValueObject\OrderId;
 use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 

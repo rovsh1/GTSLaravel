@@ -3,10 +3,10 @@
 namespace Module\Booking\Infrastructure\Shared\Repository;
 
 use App\Core\Support\Facades\AppContext;
+use Module\Booking\Domain\Order\ValueObject\OrderId;
+use Module\Booking\Domain\ServiceBooking\ValueObject\BookingPrice;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
-use Module\Booking\Domain\Shared\ValueObject\BookingPrice;
 use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
-use Module\Booking\Domain\Shared\ValueObject\OrderId;
 use Module\Booking\Infrastructure\Shared\Models\Booking as Model;
 use Module\Shared\Enum\ServiceTypeEnum;
 

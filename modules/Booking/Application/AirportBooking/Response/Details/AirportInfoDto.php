@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Application\AirportBooking\Response\Details;
 
-use Module\Booking\Domain\AirportBooking\ValueObject\Details\AirportInfo;
+use Module\Booking\Deprecated\AirportBooking\ValueObject\Details\AirportInfo;
 use Module\Shared\Contracts\Domain\EntityInterface;
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Module\Shared\Support\Dto\AbstractDomainBasedDto;

@@ -12,9 +12,9 @@ use Module\Booking\Domain\HotelBooking\ValueObject\Details\RoomBooking\RoomBooki
 use Module\Booking\Domain\HotelBooking\ValueObject\Details\RoomBooking\RoomInfo;
 use Module\Booking\Domain\HotelBooking\ValueObject\Details\RoomBookingCollection;
 use Module\Booking\Domain\HotelBooking\ValueObject\RoomPrice;
-use Module\Booking\Domain\Shared\ValueObject\BookingId;
+use Module\Booking\Domain\Order\ValueObject\OrderId;
+use Module\Booking\Domain\ServiceBooking\ValueObject\BookingId;
 use Module\Booking\Domain\Shared\ValueObject\GuestIdCollection;
-use Module\Booking\Domain\Shared\ValueObject\OrderId;
 use Module\Booking\Infrastructure\HotelBooking\Models\RoomBooking as Model;
 
 class RoomBookingRepository implements RoomBookingRepositoryInterface

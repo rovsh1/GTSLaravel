@@ -14,7 +14,7 @@ use Module\Booking\Domain\HotelBooking\Exception\NotFoundHotelCancelPeriod;
 use Module\Booking\Domain\HotelBooking\Repository\BookingRepositoryInterface;
 use Module\Booking\Domain\HotelBooking\Service\HotelValidator;
 use Module\Booking\Domain\HotelBooking\ValueObject\Details\BookingPeriod;
-use Module\Booking\Domain\Shared\ValueObject\BookingPrice;
+use Module\Booking\Domain\ServiceBooking\ValueObject\BookingPrice;
 use Module\Booking\Domain\Shared\ValueObject\CreatorId;
 use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 use Module\Shared\Enum\CurrencyEnum;

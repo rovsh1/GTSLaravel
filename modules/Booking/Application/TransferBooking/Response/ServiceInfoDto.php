@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Application\TransferBooking\Response;
 
-use Module\Booking\Domain\TransferBooking\ValueObject\Details\ServiceInfo;
+use Module\Booking\Deprecated\TransferBooking\ValueObject\Details\ServiceInfo;
 use Module\Shared\Contracts\Domain\EntityInterface;
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Module\Shared\Support\Dto\AbstractDomainBasedDto;

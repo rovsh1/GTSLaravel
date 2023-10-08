@@ -6,7 +6,7 @@ namespace Module\Booking\Application\AirportBooking\UseCase\Admin;
 
 use Module\Booking\Application\Admin\Shared\Service\StatusStorage;
 use Module\Booking\Application\Admin\Shared\Support\UseCase\GetAvailableActions as Base;
-use Module\Booking\Domain\AirportBooking\Repository\BookingRepositoryInterface;
+use Module\Booking\Deprecated\AirportBooking\Repository\BookingRepositoryInterface;
 use Module\Booking\Domain\Shared\Service\RequestRules;
 use Module\Booking\Domain\Shared\Service\StatusRules\AdministratorRules;
 

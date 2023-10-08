@@ -3,10 +3,10 @@
 namespace Module\Booking\Domain\HotelBooking\Event;
 
 use Module\Booking\Domain\HotelBooking\ValueObject\Details\RoomBooking\RoomBookingId;
+use Module\Booking\Domain\Order\ValueObject\OrderId;
+use Module\Booking\Domain\ServiceBooking\ValueObject\BookingId;
 use Module\Booking\Domain\Shared\Event\BookingEventInterface;
-use Module\Booking\Domain\Shared\ValueObject\BookingId;
 use Module\Booking\Domain\Shared\ValueObject\GuestId;
-use Module\Booking\Domain\Shared\ValueObject\OrderId;
 
 class GuestUnbinded implements BookingEventInterface, PriceBecomeDeprecatedEventInterface
 {

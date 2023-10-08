@@ -10,8 +10,8 @@ use Module\Booking\Application\Admin\Shared\Factory\BookingPriceDtoFactory;
 use Module\Booking\Application\Admin\Shared\Service\StatusStorage;
 use Module\Booking\Application\TransferBooking\Response\BookingDto;
 use Module\Booking\Application\TransferBooking\Response\ServiceInfoDto;
+use Module\Booking\Deprecated\TransferBooking\TransferBooking;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
-use Module\Booking\Domain\TransferBooking\TransferBooking;
 
 class BookingDtoFactory extends AbstractBookingDtoFactory
 {

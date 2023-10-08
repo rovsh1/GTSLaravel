@@ -4,7 +4,7 @@ namespace Module\Booking\Domain\HotelBooking\Listener;
 
 use Module\Booking\Domain\HotelBooking\Event\PriceBecomeDeprecatedEventInterface;
 use Module\Booking\Domain\HotelBooking\Service\PriceCalculator;
-use Module\Booking\Domain\Shared\ValueObject\BookingId;
+use Module\Booking\Domain\ServiceBooking\ValueObject\BookingId;
 use Sdk\Module\Contracts\Event\DomainEventInterface;
 use Sdk\Module\Contracts\Event\DomainEventListenerInterface;
 

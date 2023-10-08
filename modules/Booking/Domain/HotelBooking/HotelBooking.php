@@ -14,14 +14,13 @@ use Module\Booking\Domain\HotelBooking\ValueObject\Details\AdditionalInfo;
 use Module\Booking\Domain\HotelBooking\ValueObject\Details\BookingPeriod;
 use Module\Booking\Domain\HotelBooking\ValueObject\Details\HotelInfo;
 use Module\Booking\Domain\HotelBooking\ValueObject\Details\RoomBookingCollection;
+use Module\Booking\Domain\Order\ValueObject\OrderId;
+use Module\Booking\Domain\ServiceBooking\ValueObject\BookingId;
+use Module\Booking\Domain\ServiceBooking\ValueObject\BookingPrice;
 use Module\Booking\Domain\Shared\Entity\AbstractBooking;
-use Module\Booking\Domain\Shared\ValueObject\BookingId;
-use Module\Booking\Domain\Shared\ValueObject\BookingPrice;
 use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
-use Module\Booking\Domain\Shared\ValueObject\BookingTypeEnum;
 use Module\Booking\Domain\Shared\ValueObject\CancelConditions;
 use Module\Booking\Domain\Shared\ValueObject\CreatorId;
-use Module\Booking\Domain\Shared\ValueObject\OrderId;
 use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 
 final class HotelBooking extends AbstractBooking

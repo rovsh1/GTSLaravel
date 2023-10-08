@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Booking\Domain\Shared\Factory;
 
-use Module\Booking\Domain\AirportBooking\Service\DocumentGenerator\CancellationRequestGenerator as AirportCancellationRequestGenerator;
-use Module\Booking\Domain\AirportBooking\Service\DocumentGenerator\ChangeRequestGenerator as AirportChangeRequestGenerator;
-use Module\Booking\Domain\AirportBooking\Service\DocumentGenerator\ReservationRequestGenerator as AirportReservationRequestGenerator;
+use Module\Booking\Deprecated\AirportBooking\Service\DocumentGenerator\CancellationRequestGenerator as AirportCancellationRequestGenerator;
+use Module\Booking\Deprecated\AirportBooking\Service\DocumentGenerator\ChangeRequestGenerator as AirportChangeRequestGenerator;
+use Module\Booking\Deprecated\AirportBooking\Service\DocumentGenerator\ReservationRequestGenerator as AirportReservationRequestGenerator;
 use Module\Booking\Domain\BookingRequest\ValueObject\RequestTypeEnum;
 use Module\Booking\Domain\HotelBooking\Service\DocumentGenerator\CancellationRequestGenerator;
 use Module\Booking\Domain\HotelBooking\Service\DocumentGenerator\ChangeRequestGenerator;

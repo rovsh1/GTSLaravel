@@ -9,7 +9,7 @@ use Module\Booking\Domain\HotelBooking\ValueObject\Details\RoomBooking\RoomBooki
 use Module\Booking\Domain\HotelBooking\ValueObject\Details\RoomBooking\RoomInfo;
 use Module\Booking\Domain\HotelBooking\ValueObject\Details\RoomBookingCollection;
 use Module\Booking\Domain\HotelBooking\ValueObject\RoomPrice;
-use Module\Booking\Domain\Shared\ValueObject\BookingId;
+use Module\Booking\Domain\ServiceBooking\ValueObject\BookingId;
 
 interface RoomBookingRepositoryInterface
 {

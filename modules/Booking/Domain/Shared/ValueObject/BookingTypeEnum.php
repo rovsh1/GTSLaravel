@@ -2,7 +2,9 @@
 
 namespace Module\Booking\Domain\Shared\ValueObject;
 
-
+/**
+ * @deprecated 
+ */
 enum BookingTypeEnum: int
 {
     case HOTEL = 1;

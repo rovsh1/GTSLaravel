@@ -9,7 +9,7 @@ use Module\Booking\Domain\HotelBooking\Entity\RoomQuota as Entity;
 use Module\Booking\Domain\HotelBooking\Repository\BookingQuotaRepositoryInterface;
 use Module\Booking\Domain\HotelBooking\ValueObject\Details\BookingPeriod;
 use Module\Booking\Domain\HotelBooking\ValueObject\QuotaId;
-use Module\Booking\Domain\Shared\ValueObject\BookingId;
+use Module\Booking\Domain\ServiceBooking\ValueObject\BookingId;
 use Module\Booking\Infrastructure\HotelBooking\Models\Hotel\RoomQuota as Model;
 use Module\Catalog\Infrastructure\Models\Room\QuotaReservation;
 use Module\Shared\Contracts\Service\ApplicationContextInterface;

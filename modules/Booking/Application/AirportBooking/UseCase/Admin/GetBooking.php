@@ -6,7 +6,7 @@ namespace Module\Booking\Application\AirportBooking\UseCase\Admin;
 
 use Module\Booking\Application\Admin\Shared\Support\UseCase\AbstractGetBooking as Base;
 use Module\Booking\Application\AirportBooking\Factory\BookingDtoFactory;
-use Module\Booking\Domain\AirportBooking\Repository\BookingRepositoryInterface;
+use Module\Booking\Deprecated\AirportBooking\Repository\BookingRepositoryInterface;
 
 class GetBooking extends Base
 {
