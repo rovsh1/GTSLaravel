@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Module\Booking\Application\TransferBooking\Response;
 
 use Carbon\CarbonImmutable;
-use Module\Booking\Application\Shared\Response\BookingDto as BaseDto;
-use Module\Booking\Application\Shared\Response\BookingPriceDto;
-use Module\Booking\Application\Shared\Response\StatusDto;
-use Module\Booking\Application\HotelBooking\Dto\Details\CancelConditionsDto;
+use Module\Booking\Application\Admin\HotelBooking\Dto\Details\CancelConditionsDto;
+use Module\Booking\Application\Admin\Shared\Response\BookingDto as BaseDto;
+use Module\Booking\Application\Admin\Shared\Response\BookingPriceDto;
+use Module\Booking\Application\Admin\Shared\Response\StatusDto;
 
 class BookingDto extends BaseDto
 {

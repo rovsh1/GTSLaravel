@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Booking\Domain\HotelBooking\Entity;
 
-use Module\Booking\Domain\HotelBooking\Service\PriceCalculator\RoomPriceEditor;
 use Module\Booking\Domain\HotelBooking\ValueObject\Details\RoomBooking\RoomBookingDetails;
 use Module\Booking\Domain\HotelBooking\ValueObject\Details\RoomBooking\RoomBookingId;
 use Module\Booking\Domain\HotelBooking\ValueObject\Details\RoomBooking\RoomInfo;
@@ -24,8 +23,9 @@ class RoomBooking extends AbstractAggregateRoot implements EntityInterface
         private RoomInfo $roomInfo,
         private GuestIdCollection $guestsIds,
         private RoomBookingDetails $details,
-        private RoomPrice $price,
-    ) {}
+        private readonly RoomPrice $price,
+    ) {
+    }
 
     public function id(): RoomBookingId
     {
@@ -47,6 +47,11 @@ class RoomBooking extends AbstractAggregateRoot implements EntityInterface
         return $this->guestsIds;
     }
 
+    public function guestsCount(): int
+    {
+        return count($this->guestsIds);
+    }
+
     public function roomInfo(): RoomInfo
     {
         return $this->roomInfo;
@@ -65,36 +70,6 @@ class RoomBooking extends AbstractAggregateRoot implements EntityInterface
     public function price(): RoomPrice
     {
         return $this->price;
-    }
-
-    public function recalculatePrices(RoomPriceEditor $editor): void
-    {
-        $this->price = $editor->recalculatePrices($this);
-    }
-
-    public function setNetDayPrice(float $price, RoomPriceEditor $editor): void
-    {
-        $this->price = $editor->setManuallyNetPrice($this, $price);
-    }
-
-    public function setGrossDayPrice(float $price, RoomPriceEditor $editor): void
-    {
-        $this->price = $editor->setManuallyGrossPrice($this, $price);
-    }
-
-    public function setCalculatedPrices(RoomPriceEditor $editor): void
-    {
-        $this->price = $editor->setCalculatedPrices($this);
-    }
-
-    public function setCalculatedGrossPrice(RoomPriceEditor $editor): void
-    {
-        $this->price = $editor->setCalculatedGrossPrice($this);
-    }
-
-    public function setCalculatedNetPrice(RoomPriceEditor $editor): void
-    {
-        $this->price = $editor->setCalculatedNetPrice($this);
     }
 
     public function toData(): array

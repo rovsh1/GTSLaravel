@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Module\Pricing\Application\Dto;
 
-use Module\Pricing\Domain\Markup\ValueObject\MarkupValue;
 use Module\Shared\Application\Dto\AbstractDomainBasedDto;
 use Module\Shared\Domain\Entity\EntityInterface;
 use Module\Shared\Domain\ValueObject\ValueObjectInterface;
 use Module\Shared\Enum\Pricing\MarkupValueTypeEnum;
+use Module\Shared\ValueObject\MarkupValue;
 
 class MarkupValueDto extends AbstractDomainBasedDto
 {

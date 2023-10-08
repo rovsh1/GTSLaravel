@@ -10,6 +10,8 @@ use Module\Pricing\Domain\Hotel\ValueObject\SeasonId;
 
 interface HotelRepositoryInterface
 {
+    public function findOrFail(HotelId $hotelId): Hotel;
+
     public function findByRoomId(RoomId $roomId): ?Hotel;
 
     public function findActiveSeasonId(HotelId $hotelId, DateTimeInterface $date): ?SeasonId;

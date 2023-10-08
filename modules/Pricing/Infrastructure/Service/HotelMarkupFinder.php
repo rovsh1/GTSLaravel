@@ -4,10 +4,10 @@ namespace Module\Pricing\Infrastructure\Service;
 
 use Module\Pricing\Domain\Hotel\ValueObject\RoomId;
 use Module\Pricing\Domain\Markup\Service\HotelMarkupFinderInterface;
-use Module\Pricing\Domain\Markup\ValueObject\MarkupValue;
 use Module\Pricing\Domain\Shared\ValueObject\ClientId;
 use Module\Pricing\Infrastructure\Models\MarkupGroup;
 use Module\Pricing\Infrastructure\Models\MarkupGroupRule;
+use Module\Shared\ValueObject\MarkupValue;
 
 class HotelMarkupFinder implements HotelMarkupFinderInterface
 {
@@ -26,6 +26,7 @@ class HotelMarkupFinder implements HotelMarkupFinderInterface
             throw new \Exception("Client[$clientId] markup undefined");
         }
 
-        return self::$cached[$roomId] = new MarkupValue($raw->value, $raw->type);
+        return self::$cached[$roomId] = MarkupValue::createPercent($raw->value);
+//        return self::$cached[$roomId] = new MarkupValue($raw->value, $raw->type);
     }
 }

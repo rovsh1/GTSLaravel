@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Module\Booking\Application\TransferBooking\Factory;
 
-use Module\Booking\Application\HotelBooking\Dto\Details\CancelConditionsDto;
-use Module\Booking\Application\Shared\Factory\AbstractBookingDtoFactory;
-use Module\Booking\Application\Shared\Factory\BookingPriceDtoFactory;
-use Module\Booking\Application\Shared\Service\StatusStorage;
+use Module\Booking\Application\Admin\HotelBooking\Dto\Details\CancelConditionsDto;
+use Module\Booking\Application\Admin\Shared\Factory\AbstractBookingDtoFactory;
+use Module\Booking\Application\Admin\Shared\Factory\BookingPriceDtoFactory;
+use Module\Booking\Application\Admin\Shared\Service\StatusStorage;
 use Module\Booking\Application\TransferBooking\Response\BookingDto;
 use Module\Booking\Application\TransferBooking\Response\ServiceInfoDto;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;

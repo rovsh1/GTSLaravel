@@ -9,84 +9,40 @@ final class RoomPrice implements SerializableDataInterface
     public static function buildEmpty(): RoomPrice
     {
         return new RoomPrice(
-            null,
-            null,
-            new RoomDayPriceCollection()
+            RoomPriceItem::createEmpty(),
+            RoomPriceItem::createEmpty(),
         );
     }
 
     public function __construct(
-        private readonly ?float $grossDayValue,
-        private readonly ?float $netDayValue,
-        private readonly RoomDayPriceCollection $dayPrices,
+        private readonly RoomPriceItem $supplierPrice,
+        private readonly RoomPriceItem $clientPrice,
     ) {
     }
 
-    public function isGrossManuallyChanged(): bool
+    public function supplierPrice(): RoomPriceItem
     {
-        return (bool)$this->grossDayValue;
+        return $this->supplierPrice;
     }
 
-    public function isNetManuallyChanged(): bool
+    public function clientPrice(): RoomPriceItem
     {
-        return (bool)$this->netDayValue;
-    }
-
-    public function grossDayValue(): ?float
-    {
-        return $this->grossDayValue;
-    }
-
-    public function netDayValue(): ?float
-    {
-        return $this->netDayValue;
-    }
-
-    public function dayPrices(): RoomDayPriceCollection
-    {
-        return $this->dayPrices;
-    }
-
-    public function baseValue(): float
-    {
-        return $this->calculateValueSum('baseValue');
-    }
-
-    public function netValue(): float
-    {
-        return $this->calculateValueSum('netValue');
-    }
-
-    public function grossValue(): float
-    {
-        return $this->calculateValueSum('grossValue');
+        return $this->clientPrice;
     }
 
     public function toData(): array
     {
         return [
-            'grossDayValue' => $this->grossDayValue,
-            'netDayValue' => $this->netDayValue,
-            'dayPrices' => $this->dayPrices->toData(),
+            'supplierPrice' => $this->supplierPrice->toData(),
+            'clientPrice' => $this->clientPrice->toData(),
         ];
     }
 
     public static function fromData(array $data): static
     {
         return new RoomPrice(
-            grossDayValue: $data['grossDayValue'],
-            netDayValue: $data['netDayValue'],
-            dayPrices: RoomDayPriceCollection::fromData($data['dayPrices']),
+            supplierPrice: RoomPriceItem::fromData($data['supplierPrice']),
+            clientPrice: RoomPriceItem::fromData($data['clientPrice']),
         );
-    }
-
-    private function calculateValueSum(string $key): float
-    {
-        $netValue = 0.0;
-        foreach ($this->dayPrices as $dayPrice) {
-            $netValue += $dayPrice->$key();
-        }
-
-        return $netValue;
     }
 }

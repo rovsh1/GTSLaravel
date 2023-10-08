@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Booking\Application\TransferBooking\UseCase\Admin\Request;
 
-use Module\Booking\Application\Shared\Support\UseCase\Admin\Request\SendRequest as Base;
-use Module\Booking\Domain\Shared\Service\BookingUpdater;
+use Module\Booking\Application\Admin\Shared\Support\UseCase\Request\SendRequest as Base;
 use Module\Booking\Domain\BookingRequest\Service\RequestCreator;
+use Module\Booking\Domain\Shared\Service\BookingUpdater;
 use Module\Booking\Domain\TransferBooking\Repository\BookingRepositoryInterface;
 
 class SendRequest extends Base

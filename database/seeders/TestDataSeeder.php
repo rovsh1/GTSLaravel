@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Module\Booking\Application\HotelBooking\UseCase\System\FillCalculatedPriceCalendar;
+use Module\Booking\Application\Admin\HotelBooking\UseCase\System\FillCalculatedPriceCalendar;
 
 class TestDataSeeder extends Seeder
 {

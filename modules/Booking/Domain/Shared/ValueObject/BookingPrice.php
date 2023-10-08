@@ -8,47 +8,43 @@ use Module\Shared\Enum\CurrencyEnum;
 
 final class BookingPrice implements SerializableDataInterface, CanEquate
 {
-    /**
-     * @param PriceItem $netPrice Стоимость для GTS (расход)
-     * @param PriceItem $grossPrice Стоимость для клиента (приход)
-     */
     public function __construct(
-        private readonly PriceItem $netPrice,
-        private readonly PriceItem $grossPrice,
+        private readonly BookingPriceItem $supplierPrice,
+        private readonly BookingPriceItem $clientPrice,
     ) {
     }
 
     public static function createEmpty(CurrencyEnum $netCurrency, CurrencyEnum $grossCurrency): BookingPrice
     {
         return new BookingPrice(
-            PriceItem::createEmpty($netCurrency),
-            PriceItem::createEmpty($grossCurrency),
+            BookingPriceItem::createEmpty($netCurrency),
+            BookingPriceItem::createEmpty($grossCurrency),
         );
     }
 
-    public function netPrice(): PriceItem
+    public function supplierPrice(): BookingPriceItem
     {
-        return $this->netPrice;
+        return $this->supplierPrice;
     }
 
-    public function grossPrice(): PriceItem
+    public function clientPrice(): BookingPriceItem
     {
-        return $this->grossPrice;
+        return $this->clientPrice;
     }
 
     public function toData(): array
     {
         return [
-            'netPrice' => $this->netPrice->toData(),
-            'grossPrice' => $this->grossPrice->toData(),
+            'supplierPrice' => $this->supplierPrice->toData(),
+            'clientPrice' => $this->clientPrice->toData(),
         ];
     }
 
     public static function fromData(array $data): static
     {
         return new BookingPrice(
-            netPrice: PriceItem::fromData($data['netPrice']),
-            grossPrice: PriceItem::fromData($data['grossPrice']),
+            supplierPrice: BookingPriceItem::fromData($data['supplierPrice']),
+            clientPrice: BookingPriceItem::fromData($data['clientPrice']),
         );
     }
 
@@ -58,7 +54,7 @@ final class BookingPrice implements SerializableDataInterface, CanEquate
      */
     public function isEqual(mixed $b): bool
     {
-        return $this->netPrice->isEqual($b->grossPrice)
-            && $this->grossPrice->isEqual($b->netPrice);
+        return $this->supplierPrice->isEqual($b->supplierPrice)
+            && $this->clientPrice->isEqual($b->clientPrice);
     }
 }

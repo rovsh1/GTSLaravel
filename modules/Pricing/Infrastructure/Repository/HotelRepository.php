@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Module\Pricing\Infrastructure\Repository;
 
 use DateTimeInterface;
-use Module\Hotel\Infrastructure\Models\Season;
-use Module\Hotel\Infrastructure\Models\Hotel as Model;
+use Module\Pricing\Infrastructure\Models\Season;
+use Module\Pricing\Infrastructure\Models\Hotel as Model;
 use Module\Pricing\Domain\Hotel\Hotel;
 use Module\Pricing\Domain\Hotel\Repository\HotelRepositoryInterface;
 use Module\Pricing\Domain\Hotel\ValueObject\HotelId;
@@ -24,24 +24,35 @@ class HotelRepository implements HotelRepositoryInterface
             return self::$cached[$roomId->value()];
         }
 
-        $model = Model::findByRoomId($roomId);
+        $model = Model::findByRoomId($roomId->value());
 
-        return self::$cached[$roomId->value()] = new Hotel(
-            id: new HotelId($model->id),
-            currency: $model->currency,
-            vat: new Percent(0),
-            touristTax: new Percent(0)
-        );
+        return self::$cached[$roomId->value()] = $this->fromModel($model);
     }
 
     public function findActiveSeasonId(HotelId $hotelId, DateTimeInterface $date): ?SeasonId
     {
         $model = Season::query()
-            ->whereHotelId($hotelId)
-            ->where('hotel_seasons.date_start', '<=', $date->format('Y-m-d 00:00:00'))
-            ->where('hotel_seasons.date_end', '>=', $date->format('Y-m-d 23:59:59'))
+            ->whereHotelId($hotelId->value())
+            ->whereDateIncluded($date)
             ->first();
 
         return $model ? new SeasonId($model->id) : null;
+    }
+
+    public function findOrFail(HotelId $hotelId): Hotel
+    {
+        $model = Model::find($hotelId->value());
+
+        return $this->fromModel($model);
+    }
+
+    private function fromModel($model): Hotel
+    {
+        return new Hotel(
+            id: new HotelId($model->id),
+            currency: $model->currency,
+            vat: new Percent($model->markup_settings['vat']),
+            touristTax: new Percent($model->markup_settings['touristTax'])
+        );
     }
 }

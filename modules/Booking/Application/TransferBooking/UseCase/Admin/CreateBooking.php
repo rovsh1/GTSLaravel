@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Application\TransferBooking\UseCase\Admin;
 
-use Module\Booking\Application\Shared\Support\UseCase\Admin\AbstractCreateBooking;
+use Module\Booking\Application\Admin\Shared\Support\UseCase\AbstractCreateBooking;
 use Module\Booking\Application\TransferBooking\Factory\CancelConditionsFactory;
 use Module\Booking\Application\TransferBooking\Request\CreateBookingDto;
 use Module\Booking\Domain\Shared\ValueObject\BookingPrice;

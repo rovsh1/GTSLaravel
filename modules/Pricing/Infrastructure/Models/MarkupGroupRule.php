@@ -27,14 +27,15 @@ class MarkupGroupRule extends Model
     {
         return static::query()
             ->join('client_markup_groups', 'client_markup_group_rules.id', '=', 'client_markup_group_rules.group_id')
-            ->where('client_markup_group_rules.client_id', $clientId)
+            ->join('clients', 'clients.markup_group_id', '=', 'client_markup_groups.id')
+            ->where('clients.id', $clientId)
             ->whereRaw(
-                'client_markup_group_rules.room_id=:room_id'
+                'client_markup_group_rules.room_id=?'
                 . ' OR (client_markup_group_rules.room_id IS NULL'
                 . ' AND EXISTS(SELECT 1 FROM hotel_rooms as t'
-                . ' WHERE t.hotel_id=client_markup_group_rules.hotel_id AND t.id=:room_id)'
+                . ' WHERE t.hotel_id=client_markup_group_rules.hotel_id AND t.id=?)'
                 . ')',
-                ['room_id' => $roomId]
+                [$roomId, $roomId]
             )
             ->orderBy('client_markup_group_rules.room_id', 'DESC')
             ->first();

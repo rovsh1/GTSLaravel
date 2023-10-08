@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Adapters\Booking\Hotel;
 
-use Module\Booking\Application\HotelBooking\UseCase\Admin\Price\SetCalculatedGrossPrice;
-use Module\Booking\Application\HotelBooking\UseCase\Admin\Price\SetCalculatedNetPrice;
-use Module\Booking\Application\HotelBooking\UseCase\Admin\Price\SetGrossPenalty;
-use Module\Booking\Application\HotelBooking\UseCase\Admin\Price\SetManualGrossPrice;
-use Module\Booking\Application\HotelBooking\UseCase\Admin\Price\SetManualNetPrice;
-use Module\Booking\Application\HotelBooking\UseCase\Admin\Price\SetNetPenalty;
-use Module\Booking\Application\HotelBooking\UseCase\Admin\Room\SetManualPrice;
+use Module\Booking\Application\Admin\HotelBooking\UseCase\Room\SetManualPrice;
+use Module\Booking\Application\Admin\ServiceBooking\UseCase\Price\SetCalculatedGrossPrice;
+use Module\Booking\Application\Admin\ServiceBooking\UseCase\Price\SetCalculatedNetPrice;
+use Module\Booking\Application\Admin\ServiceBooking\UseCase\Price\SetGrossPenalty;
+use Module\Booking\Application\Admin\ServiceBooking\UseCase\Price\SetManualGrossPrice;
+use Module\Booking\Application\Admin\ServiceBooking\UseCase\Price\SetManualNetPrice;
+use Module\Booking\Application\Admin\ServiceBooking\UseCase\Price\SetNetPenalty;
 
 class PriceAdapter
 {

@@ -284,7 +284,7 @@ class BookingController extends Controller
     {
         $grossPrice = $request->getGrossPrice();
         $netPrice = $request->getNetPrice();
-
+//TODO refactor
         if ($request->isGrossPriceExists() && $grossPrice === null) {
             PriceAdapter::setCalculatedGrossPrice($id);
         }

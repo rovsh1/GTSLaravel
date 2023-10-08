@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Module\Booking\Application\AirportBooking\UseCase\Admin;
 
+use Module\Booking\Application\Admin\Shared\Support\UseCase\AbstractCreateBooking;
 use Module\Booking\Application\AirportBooking\Factory\CancelConditionsFactory;
 use Module\Booking\Application\AirportBooking\Request\CreateBookingDto;
 use Module\Booking\Domain\AirportBooking\Repository\BookingRepositoryInterface;
 use Module\Booking\Domain\AirportBooking\ValueObject\Details\AdditionalInfo;
-use Module\Booking\Application\Shared\Support\UseCase\Admin\AbstractCreateBooking;
 use Module\Booking\Domain\Shared\ValueObject\BookingPrice;
 use Module\Booking\Domain\Shared\ValueObject\CreatorId;
 use Module\Shared\Enum\CurrencyEnum;

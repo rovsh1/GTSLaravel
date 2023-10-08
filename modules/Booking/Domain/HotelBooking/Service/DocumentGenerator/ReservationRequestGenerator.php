@@ -2,7 +2,7 @@
 
 namespace Module\Booking\Domain\HotelBooking\Service\DocumentGenerator;
 
-use Module\Booking\Application\Shared\Service\StatusStorage;
+use Module\Booking\Application\Admin\Shared\Service\StatusStorage;
 use Module\Booking\Domain\HotelBooking\Adapter\HotelAdapterInterface;
 use Module\Booking\Domain\HotelBooking\HotelBooking;
 use Module\Booking\Domain\Order\Repository\GuestRepositoryInterface;
