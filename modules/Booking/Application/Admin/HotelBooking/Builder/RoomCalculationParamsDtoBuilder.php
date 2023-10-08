@@ -26,6 +26,7 @@ class RoomCalculationParamsDtoBuilder
         $details = $roomBooking->details();
 
         return new RoomCalculationParamsDto(
+            accommodationId: $roomBooking->id()->value(),
             roomId: $roomBooking->roomInfo()->id(),
             rateId: $details->rateId(),
             isResident: $details->isResident(),

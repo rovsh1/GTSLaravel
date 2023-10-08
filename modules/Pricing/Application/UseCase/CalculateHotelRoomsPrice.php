@@ -11,12 +11,12 @@ use Module\Pricing\Application\RequestDto\CalculateHotelRoomsPriceRequestDto;
 use Module\Pricing\Application\ResponseDto\CalculateHotelRoomsPriceResponseDto;
 use Module\Pricing\Domain\Hotel\Hotel;
 use Module\Pricing\Domain\Hotel\Repository\HotelRepositoryInterface;
-use Module\Pricing\Domain\Hotel\Service\BaseDayValueFinder;
 use Module\Pricing\Domain\Hotel\Service\RoomDayPriceCalculatorFormula;
 use Module\Pricing\Domain\Hotel\ValueObject\HotelId;
 use Module\Pricing\Domain\Hotel\ValueObject\RoomId;
 use Module\Pricing\Domain\Markup\Service\HotelMarkupFinderInterface;
 use Module\Pricing\Domain\Shared\ValueObject\ClientId;
+use Module\Pricing\Infrastructure\Service\HotelRoomBaseDayValueFinder;
 use Module\Shared\Contracts\Adapter\CurrencyRateAdapterInterface;
 use Module\Shared\Enum\CurrencyEnum;
 use Module\Shared\ValueObject\MarkupValue;
@@ -27,7 +27,7 @@ class CalculateHotelRoomsPrice implements UseCaseInterface
     public function __construct(
         private readonly HotelRepositoryInterface $hotelRepository,
         private readonly HotelMarkupFinderInterface $hotelMarkupFinder,
-        private readonly BaseDayValueFinder $hotelRoomPriceFinder,
+        private readonly HotelRoomBaseDayValueFinder $hotelRoomPriceFinder,
         private readonly CurrencyRateAdapterInterface $currencyRateAdapter
     ) {
     }
@@ -95,7 +95,6 @@ class CalculateHotelRoomsPrice implements UseCaseInterface
             }
 
             $dto = $calculation->result();
-            dump($dto->formula);
             $total += $dto->value;
             $dayResults[] = new RoomDayCalculationResultDto(
                 date: $date,
@@ -104,7 +103,7 @@ class CalculateHotelRoomsPrice implements UseCaseInterface
             );
         }
 
-        return new RoomCalculationResultDto($room->roomId, $total, $dayResults);
+        return new RoomCalculationResultDto($room->accommodationId, $total, $dayResults);
     }
 
     private function getPreparedBaseValue(

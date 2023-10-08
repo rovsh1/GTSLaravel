@@ -2,15 +2,16 @@
 
 namespace Module\Booking\Domain\HotelBooking\Listener;
 
-use Module\Booking\Domain\HotelBooking\Adapter\PriceCalculatorAdapterInterface;
 use Module\Booking\Domain\HotelBooking\Event\PriceBecomeDeprecatedEventInterface;
+use Module\Booking\Domain\HotelBooking\Service\PriceCalculator;
+use Module\Booking\Domain\Shared\ValueObject\BookingId;
 use Sdk\Module\Contracts\Event\DomainEventInterface;
 use Sdk\Module\Contracts\Event\DomainEventListenerInterface;
 
 class RecalculateBookingPricesListener implements DomainEventListenerInterface
 {
     public function __construct(
-        private readonly PriceCalculatorAdapterInterface $priceCalculatorAdapter,
+        private readonly PriceCalculator $priceCalculator,
     ) {
     }
 
@@ -18,7 +19,6 @@ class RecalculateBookingPricesListener implements DomainEventListenerInterface
     {
         assert($event instanceof PriceBecomeDeprecatedEventInterface);
 
-        dd($event);
-        $this->priceCalculatorAdapter->recalculate($event->bookingId());
+        $this->priceCalculator->calculate(new BookingId($event->bookingId()));
     }
 }

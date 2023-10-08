@@ -13,7 +13,9 @@ class DomainEventDispatcher implements DomainEventDispatcherInterface
     public function __construct(
         private readonly Module $module,
 //        private readonly DomainEventHandlerInterface $domainEventHandler
-    ) {}
+    )
+    {
+    }
 
     public function listen(string $eventClass, string $listenerClass)
     {
@@ -60,6 +62,7 @@ class DomainEventDispatcher implements DomainEventDispatcherInterface
     {
         foreach ($listeners as $listenerClass) {
             $listener = $this->module->get($listenerClass);
+
             $listener->handle($event);
         }
     }

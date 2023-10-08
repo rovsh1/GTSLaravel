@@ -11,7 +11,7 @@ use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 class HotelRoomBasePriceExists implements UseCaseInterface
 {
     public function __construct(
-        private readonly \Module\Pricing\Domain\Hotel\Service\BaseDayValueFinder $domainUseCase
+        private readonly \Module\Pricing\Infrastructure\Service\HotelRoomBaseDayValueFinder $domainUseCase
     ) {
     }
 

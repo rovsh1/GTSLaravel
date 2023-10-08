@@ -10,6 +10,7 @@ use Module\Booking\Application\Admin\HotelBooking\Dto\Details\BookingPeriodDto;
 use Module\Booking\Application\Admin\HotelBooking\Dto\Details\CancelConditionsDto;
 use Module\Booking\Application\Admin\HotelBooking\Dto\Details\HotelInfoDto;
 use Module\Booking\Application\Admin\HotelBooking\Dto\Details\RoomBooking\RoomBookingDetailsDto;
+use Module\Booking\Application\Admin\HotelBooking\Dto\Details\RoomBooking\RoomDayPriceDto;
 use Module\Booking\Application\Admin\HotelBooking\Dto\Details\RoomBooking\RoomInfoDto;
 use Module\Booking\Application\Admin\HotelBooking\Dto\Details\RoomBooking\RoomPriceDto;
 use Module\Booking\Application\Admin\HotelBooking\Dto\Details\RoomBookingDto;
@@ -18,6 +19,8 @@ use Module\Booking\Application\Admin\Shared\Factory\BookingPriceDtoFactory;
 use Module\Booking\Application\Admin\Shared\Service\StatusStorage;
 use Module\Booking\Domain\HotelBooking\HotelBooking;
 use Module\Booking\Domain\HotelBooking\ValueObject\Details\RoomBookingCollection;
+use Module\Booking\Domain\HotelBooking\ValueObject\RoomPrice;
+use Module\Booking\Domain\HotelBooking\ValueObject\RoomPriceDayPart;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
 use Module\Booking\Domain\Shared\ValueObject\GuestId;
 
@@ -64,10 +67,33 @@ class BookingDtoFactory extends AbstractBookingDtoFactory
                 roomInfo: RoomInfoDto::fromDomain($roomBooking->roomInfo()),
                 guestIds: $roomBooking->guestIds()->map(fn(GuestId $id) => $id->value()),
                 details: RoomBookingDetailsDto::fromDomain($roomBooking->details()),
-                price: RoomPriceDto::fromDomain($roomBooking->price())
+                price: $this->buildPriceDto($roomBooking->price())
             );
         }
 
         return $dtos;
+    }
+
+    private function buildPriceDto(RoomPrice $price): RoomPriceDto
+    {
+        return new RoomPriceDto(
+            $price->clientPrice()->manualDayValue(),
+            $price->supplierPrice()->manualDayValue(),
+            array_map(fn($r) => $this->buildRoomDayPriceDto($r), $price->clientPrice()->dayParts()->all()),
+            $price->clientPrice()->value(),
+            $price->supplierPrice()->value()
+        );
+    }
+
+    private function buildRoomDayPriceDto(RoomPriceDayPart $r): RoomDayPriceDto
+    {
+        return new RoomDayPriceDto(
+            date: $r->date(),
+            baseValue: 1,
+            grossValue: $r->value(),
+            netValue: $r->value(),
+            grossFormula: $r->formula(),
+            netFormula: $r->formula()
+        );
     }
 }

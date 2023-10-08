@@ -12,7 +12,7 @@ final class RoomCalculationResultDto
      * @param RoomDayCalculationResultDto[] $dates
      */
     public function __construct(
-        public readonly int $roomId,
+        public readonly int $accommodationId,
         public readonly float $price,
         public readonly array $dates,
     ) {

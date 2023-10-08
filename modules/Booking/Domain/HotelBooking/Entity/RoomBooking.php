@@ -23,7 +23,7 @@ class RoomBooking extends AbstractAggregateRoot implements EntityInterface
         private RoomInfo $roomInfo,
         private GuestIdCollection $guestsIds,
         private RoomBookingDetails $details,
-        private readonly RoomPrice $price,
+        private RoomPrice $price,
     ) {
     }
 
@@ -70,6 +70,11 @@ class RoomBooking extends AbstractAggregateRoot implements EntityInterface
     public function price(): RoomPrice
     {
         return $this->price;
+    }
+
+    public function updatePrice(RoomPrice $price): void
+    {
+        $this->price = $price;
     }
 
     public function toData(): array

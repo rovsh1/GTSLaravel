@@ -7,6 +7,7 @@ namespace Module\Pricing\Application\Dto;
 final class RoomCalculationParamsDto
 {
     public function __construct(
+        public readonly int $accommodationId,
         public readonly int $roomId,
         public readonly int $rateId,
         public readonly bool $isResident,

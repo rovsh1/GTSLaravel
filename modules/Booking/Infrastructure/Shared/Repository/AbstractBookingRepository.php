@@ -42,10 +42,10 @@ abstract class AbstractBookingRepository
     protected function storeBase(BookingInterface $booking): bool
     {
         return (bool)$this->getModel()::whereId($booking->id()->value())->update([
-            'order_id' => $booking->orderId()->value(),
-            'type' => $booking->type(),
+//            'order_id' => $booking->orderId()->value(),
+//            'type' => ServiceTypeEnum::HOTEL_BOOKING,//$booking->type(),//TODO refactor
             'status' => $booking->status(),
-            'creator_id' => $booking->creatorId()->value(),
+//            'creator_id' => $booking->creatorId()->value(),
             'price' => $booking->price()->toData(),
         ]);
     }
