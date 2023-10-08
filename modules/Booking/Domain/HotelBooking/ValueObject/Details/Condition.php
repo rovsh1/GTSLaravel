@@ -11,7 +11,7 @@ use Module\Shared\ValueObject\Percent;
 use Module\Shared\ValueObject\TimePeriod;
 
 /**
- * @see \Module\Hotel\Domain\ValueObject\MarkupSettings\Condition
+ * @see \Module\Catalog\Domain\Hotel\ValueObject\MarkupSettings\Condition
  */
 final class Condition implements ValueObjectInterface, SerializableDataInterface, CanEquate
 {

@@ -10,7 +10,7 @@ use Module\Booking\Domain\Shared\ValueObject\CancelCondition\CancelPeriodTypeEnu
 use Module\Booking\Domain\Shared\ValueObject\CancelCondition\DailyMarkupCollection;
 use Module\Booking\Domain\Shared\ValueObject\CancelCondition\DailyMarkupOption;
 use Module\Booking\Domain\Shared\ValueObject\CancelConditions;
-use Module\Hotel\Application\ResponseDto\MarkupSettings\CancelPeriodDto;
+use Module\Catalog\Application\Admin\ResponseDto\MarkupSettings\CancelPeriodDto;
 use Module\Shared\ValueObject\Percent;
 
 class CancelConditionsFactory

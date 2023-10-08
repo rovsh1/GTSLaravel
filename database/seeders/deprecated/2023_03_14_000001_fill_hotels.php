@@ -3,18 +3,18 @@
 use App\Admin\Enums\Hotel\VisibilityEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
-use Module\Hotel\Domain\Entity\MarkupSettings;
-use Module\Hotel\Domain\ValueObject\MarkupSettings\CancelMarkupOption;
-use Module\Hotel\Domain\ValueObject\MarkupSettings\CancelPeriod;
-use Module\Hotel\Domain\ValueObject\MarkupSettings\CancelPeriodCollection;
-use Module\Hotel\Domain\ValueObject\MarkupSettings\CancelPeriodTypeEnum;
-use Module\Hotel\Domain\ValueObject\MarkupSettings\ClientMarkups;
-use Module\Hotel\Domain\ValueObject\MarkupSettings\Condition;
-use Module\Hotel\Domain\ValueObject\MarkupSettings\DailyMarkupCollection;
-use Module\Hotel\Domain\ValueObject\MarkupSettings\DailyMarkupOption;
-use Module\Hotel\Domain\ValueObject\MarkupSettings\EarlyCheckInCollection;
-use Module\Hotel\Domain\ValueObject\MarkupSettings\LateCheckOutCollection;
-use Module\Hotel\Domain\ValueObject\TimeSettings;
+use Module\Catalog\Domain\Hotel\Entity\MarkupSettings;
+use Module\Catalog\Domain\Hotel\ValueObject\MarkupSettings\CancelMarkupOption;
+use Module\Catalog\Domain\Hotel\ValueObject\MarkupSettings\CancelPeriod;
+use Module\Catalog\Domain\Hotel\ValueObject\MarkupSettings\CancelPeriodCollection;
+use Module\Catalog\Domain\Hotel\ValueObject\MarkupSettings\CancelPeriodTypeEnum;
+use Module\Catalog\Domain\Hotel\ValueObject\MarkupSettings\ClientMarkups;
+use Module\Catalog\Domain\Hotel\ValueObject\MarkupSettings\Condition;
+use Module\Catalog\Domain\Hotel\ValueObject\MarkupSettings\DailyMarkupCollection;
+use Module\Catalog\Domain\Hotel\ValueObject\MarkupSettings\DailyMarkupOption;
+use Module\Catalog\Domain\Hotel\ValueObject\MarkupSettings\EarlyCheckInCollection;
+use Module\Catalog\Domain\Hotel\ValueObject\MarkupSettings\LateCheckOutCollection;
+use Module\Catalog\Domain\Hotel\ValueObject\TimeSettings;
 use Module\Shared\Enum\CurrencyEnum;
 use Module\Shared\ValueObject\Percent;
 use Module\Shared\ValueObject\Time;
@@ -188,7 +188,7 @@ return new class extends Migration {
             $cancelPeriodCollection = new CancelPeriodCollection($cancelPeriods->all());
 
             $markupSettings = new MarkupSettings(
-                new \Module\Hotel\Domain\ValueObject\HotelId($hotelId),
+                new \Module\Catalog\Domain\Hotel\ValueObject\HotelId($hotelId),
                 $vatPercent,
                 $touristTaxPercent,
                 $clientMarkups,

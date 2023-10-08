@@ -4,9 +4,6 @@ namespace App\Admin\Http\Actions\Hotel;
 
 use App\Admin\Support\Http\Actions\DefaultFormUpdateAction;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\UploadedFile;
-use Module\Hotel\Application\UseCase\UploadContractDocuments;
-use Module\Shared\Dto\UploadedFileDto;
 
 class UpdateContractAction extends DefaultFormUpdateAction
 {

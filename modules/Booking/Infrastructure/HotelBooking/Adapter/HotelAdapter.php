@@ -4,12 +4,12 @@ namespace Module\Booking\Infrastructure\HotelBooking\Adapter;
 
 use Carbon\CarbonInterface;
 use Module\Booking\Domain\HotelBooking\Adapter\HotelAdapterInterface;
-use Module\Hotel\Application\Response\HotelDto;
-use Module\Hotel\Application\Response\MarkupSettingsDto;
-use Module\Hotel\Application\Response\RoomMarkupsDto;
-use Module\Hotel\Application\UseCase\FindHotelById;
-use Module\Hotel\Application\UseCase\GetMarkupSettings;
-use Module\Hotel\Application\UseCase\GetRoomMarkups;
+use Module\Catalog\Application\Admin\Response\HotelDto;
+use Module\Catalog\Application\Admin\Response\MarkupSettingsDto;
+use Module\Catalog\Application\Admin\Response\RoomMarkupsDto;
+use Module\Catalog\Application\Admin\UseCase\FindHotelById;
+use Module\Catalog\Application\Admin\UseCase\GetMarkupSettings;
+use Module\Catalog\Application\Admin\UseCase\GetRoomMarkups;
 use Module\Pricing\Application\UseCase\HotelRoomBasePriceExists;
 
 class HotelAdapter implements HotelAdapterInterface

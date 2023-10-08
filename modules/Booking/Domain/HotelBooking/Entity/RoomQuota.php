@@ -7,7 +7,7 @@ namespace Module\Booking\Domain\HotelBooking\Entity;
 use Carbon\CarbonImmutable;
 use Module\Booking\Domain\HotelBooking\Service\QuotaManager\Model\QuotaInterface;
 use Module\Booking\Domain\HotelBooking\ValueObject\QuotaId;
-use Module\Hotel\Infrastructure\Models\Room\QuotaStatusEnum;
+use Module\Catalog\Infrastructure\Models\Room\QuotaStatusEnum;
 use Module\Shared\Contracts\Domain\EntityInterface;
 
 class RoomQuota implements EntityInterface, QuotaInterface

@@ -3,8 +3,8 @@
 namespace Module\Pricing\Infrastructure\Service;
 
 use DateTimeInterface;
-use Module\Hotel\Infrastructure\Models\DatePrice;
-use Module\Hotel\Infrastructure\Models\SeasonPrice;
+use Module\Catalog\Infrastructure\Models\DatePrice;
+use Module\Catalog\Infrastructure\Models\SeasonPrice;
 use Module\Pricing\Domain\Hotel\Service\RoomPriceFinderInterface;
 use Module\Pricing\Domain\Hotel\ValueObject\RoomId;
 use Module\Pricing\Domain\Hotel\ValueObject\SeasonId;

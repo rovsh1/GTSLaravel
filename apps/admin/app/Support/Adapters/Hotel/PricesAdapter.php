@@ -4,7 +4,7 @@ namespace App\Admin\Support\Adapters\Hotel;
 
 use App\Core\Support\Adapters\AbstractHotelAdapter;
 use Carbon\CarbonInterface;
-use Module\Hotel\Application\UseCase\Price\GetRoomPrices;
+use Module\Catalog\Application\Admin\Price\GetRoomPrices;
 
 class PricesAdapter extends AbstractHotelAdapter
 {

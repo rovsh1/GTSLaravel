@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Application\Admin\HotelBooking\UseCase\System;
 
-use Module\Hotel\Infrastructure\Models\SeasonPrice;
+use Module\Catalog\Infrastructure\Models\SeasonPrice;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class FillCalculatedPriceCalendar implements UseCaseInterface

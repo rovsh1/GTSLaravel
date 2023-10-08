@@ -12,7 +12,7 @@ use Module\Booking\Domain\HotelBooking\Service\QuotaManager\Exception\NotEnoughR
 use Module\Booking\Domain\HotelBooking\Service\QuotaManager\Exception\NotFoundRoomDateQuota;
 use Module\Booking\Domain\HotelBooking\Service\QuotaManager\Model\QuotaInterface;
 use Module\Booking\Domain\HotelBooking\Service\QuotaManager\Model\RoomDateQuotaReservation;
-use Module\Hotel\Infrastructure\Models\Room\QuotaStatusEnum;
+use Module\Catalog\Infrastructure\Models\Room\QuotaStatusEnum;
 
 class QuotaValidator
 {

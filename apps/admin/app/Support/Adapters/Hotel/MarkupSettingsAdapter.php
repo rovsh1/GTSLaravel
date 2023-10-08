@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Admin\Support\Adapters\Hotel;
 
 use App\Core\Support\Adapters\AbstractHotelAdapter;
-use Module\Hotel\Application\UseCase\GetMarkupSettings;
-use Module\Hotel\Application\UseCase\GetRoomMarkups;
+use Module\Catalog\Application\Admin\UseCase\GetMarkupSettings;
+use Module\Catalog\Application\Admin\UseCase\GetRoomMarkups;
 
 class MarkupSettingsAdapter extends AbstractHotelAdapter
 {

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Admin\Support\Adapters\Hotel;
 
 use App\Core\Support\Adapters\AbstractHotelAdapter;
-use Module\Hotel\Application\Response\HotelDto;
-use Module\Hotel\Application\UseCase\FindHotelById;
-use Module\Hotel\Application\UseCase\UpdateTimeSettings;
+use Module\Catalog\Application\Admin\Response\HotelDto;
+use Module\Catalog\Application\Admin\UseCase\FindHotelById;
+use Module\Catalog\Application\Admin\UseCase\UpdateTimeSettings;
 
 class SettingsAdapter extends AbstractHotelAdapter
 {

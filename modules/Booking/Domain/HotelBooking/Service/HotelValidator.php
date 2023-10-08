@@ -7,8 +7,8 @@ namespace Module\Booking\Domain\HotelBooking\Service;
 use Carbon\CarbonPeriod;
 use Module\Booking\Domain\HotelBooking\Adapter\HotelAdapterInterface;
 use Module\Booking\Domain\HotelBooking\Exception\NotFoundHotelCancelPeriod;
-use Module\Hotel\Application\Response\MarkupSettingsDto;
-use Module\Hotel\Application\ResponseDto\MarkupSettings\CancelPeriodDto;
+use Module\Catalog\Application\Admin\Response\MarkupSettingsDto;
+use Module\Catalog\Application\Admin\ResponseDto\MarkupSettings\CancelPeriodDto;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
 class HotelValidator

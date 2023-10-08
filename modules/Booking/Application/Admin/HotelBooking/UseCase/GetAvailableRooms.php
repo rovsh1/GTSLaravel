@@ -9,7 +9,7 @@ use Module\Booking\Domain\HotelBooking\Adapter\HotelRoomAdapterInterface;
 use Module\Booking\Domain\HotelBooking\Adapter\HotelRoomQuotaAdapterInterface;
 use Module\Booking\Domain\HotelBooking\Repository\BookingRepositoryInterface;
 use Module\Booking\Domain\Shared\ValueObject\BookingId;
-use Module\Hotel\Application\Response\RoomDto;
+use Module\Catalog\Application\Admin\Response\RoomDto;
 use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Domain\Shared\ValueObject\CancelCondition;
 
 /**
- * @see \Module\Hotel\Domain\ValueObject\MarkupSettings\CancelPeriodTypeEnum
+ * @see \Module\Catalog\Domain\Hotel\ValueObject\MarkupSettings\CancelPeriodTypeEnum
  */
 enum CancelPeriodTypeEnum: int
 {
