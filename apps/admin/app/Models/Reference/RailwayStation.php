@@ -4,13 +4,17 @@ namespace App\Admin\Models\Reference;
 
 use Illuminate\Database\Eloquent\Builder;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
+use Sdk\Module\Database\Eloquent\HasTranslations;
 use Sdk\Module\Database\Eloquent\Model;
 
 class RailwayStation extends Model
 {
     use HasQuicksearch;
+    use HasTranslations;
 
     protected array $quicksearch = ['id', 'name%'];
+
+    protected array $translatable = ['name'];
 
     public $timestamps = false;
 
@@ -30,6 +34,7 @@ class RailwayStation extends Model
         static::addGlobalScope('default', function (Builder $builder) {
             $builder
                 ->addSelect('r_railway_stations.*')
+                ->joinTranslations()
                 ->join('r_cities', 'r_cities.id', '=', 'r_railway_stations.city_id')
                 //->joinTranslations($builder->getModel()->translatable)
                 ->joinTranslatable('r_cities', 'name as city_name');

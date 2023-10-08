@@ -28,7 +28,8 @@ class Country extends Model
         'default',
         'phone_code',
         'language',
-        'currency'
+        'currency',
+        'priority'
     ];
 
     protected $casts = [
@@ -42,8 +43,7 @@ class Country extends Model
             $builder
                 ->addSelect('r_countries.*')
                 ->joinTranslations()
-                //TODO add priority column
-                //->orderBy('priority', 'desc')
+                ->orderBy('priority', 'desc')
                 ->orderBy('name', 'asc');
         });
     }

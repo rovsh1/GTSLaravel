@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->string('datetime_format', 20)->nullable();
             $table->string('date_format', 20)->nullable();
             $table->string('time_format', 20)->nullable();
+            $table->unsignedTinyInteger('priority')->default(0);
 //            $table->softDeletes();
 
             $table->foreign('currency')

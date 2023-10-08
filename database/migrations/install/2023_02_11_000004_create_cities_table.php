@@ -13,6 +13,7 @@ return new class extends Migration {
             $table->smallInteger('country_id')->unsigned();
             $table->double('center_lat', 11, 8)->nullable();
             $table->double('center_lon', 11, 8)->nullable();
+            $table->unsignedTinyInteger('priority')->default(0);
 
             $table->foreign('country_id')
                 ->references('id')

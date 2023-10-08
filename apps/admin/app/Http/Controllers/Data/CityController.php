@@ -49,7 +49,8 @@ class CityController extends AbstractPrototypeController
         return Form::name('data')
             ->country('country_id', ['label' => 'Страна', 'required' => true])
             ->localeText('name', ['label' => 'Наименование', 'required' => true])
-            ->coordinates('coordinates', ['label' => 'Координаты', 'required' => true, 'value' => $coordinates]);
+            ->coordinates('coordinates', ['label' => 'Координаты', 'required' => true, 'value' => $coordinates])
+            ->number('priority', ['label' => 'Приоритет', 'min' => 0, 'max' => 255]);
     }
 
     protected function gridFactory(): GridContract
@@ -63,8 +64,6 @@ class CityController extends AbstractPrototypeController
             ->edit($this->prototype)
             //->id('id', ['text' => 'ID', 'order' =
             ->text('name', ['text' => 'Наименование', 'order' => true])
-            ->text('country_name', ['text' => 'Страна'])
-            //->actions('actions', ['route' => $this->prototype->route('index')])
-            ->orderBy('name', 'asc');
+            ->text('country_name', ['text' => 'Страна']);
     }
 }
