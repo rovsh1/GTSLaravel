@@ -2,9 +2,14 @@
 
 namespace Database\Seeders;
 
+use App\Admin\Enums\Contract\StatusEnum;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Module\Booking\Application\Admin\HotelBooking\UseCase\System\FillCalculatedPriceCalendar;
+use Module\Shared\Enum\Booking\AirportServiceTypeEnum;
+use Module\Shared\Enum\Booking\TransferServiceTypeEnum;
+use Module\Shared\Enum\CurrencyEnum;
+use Module\Shared\Enum\Supplier\ContractServiceTypeEnum;
 
 class TestDataSeeder extends Seeder
 {
@@ -45,5 +50,194 @@ class TestDataSeeder extends Seeder
             ]);
 
         app(FillCalculatedPriceCalendar::class)->execute(61);
+
+        $testSupplierId = DB::table('suppliers')->insertGetId([
+            'name' => 'Sixt',
+            'currency' => CurrencyEnum::UZS,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        $supplierSeasonId = DB::table('supplier_seasons')->insertGetId([
+            'supplier_id' => $testSupplierId,
+            'number' => '2023',
+            'date_start' => '2023-01-01',
+            'date_end' => '2023-12-31',
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        DB::table('supplier_cities')->insert([
+            [
+                'supplier_id' => $testSupplierId,
+                'city_id' => 1,
+            ],
+            [
+                'supplier_id' => $testSupplierId,
+                'city_id' => 4,
+            ],
+        ]);
+
+        DB::table('supplier_requisites')->insert([
+            ['supplier_id' => $testSupplierId, 'inn' => '12345678', 'director_full_name' => 'John Doe']
+        ]);
+
+        $this->seedTransferSupplierData($testSupplierId, $supplierSeasonId);
+        $this->seedAirportSupplierData($testSupplierId, $supplierSeasonId);
+    }
+
+    private function seedTransferSupplierData(int $supplierId, int $seasonId): void
+    {
+        $carId = DB::table('supplier_cars')->insertGetId([
+            'supplier_id' => $supplierId,
+            'car_id' => 1,
+        ]);
+
+        $service1Id = DB::table('supplier_transfer_services')->insertGetId([
+            'supplier_id' => $supplierId,
+            'name' => 'Трансфер из аэропорта',
+            'type' => TransferServiceTypeEnum::TRANSFER_FROM_AIRPORT,
+        ]);
+
+        $service2Id = DB::table('supplier_transfer_services')->insertGetId([
+            'supplier_id' => $supplierId,
+            'name' => 'Трансфер в аэропорт',
+            'type' => TransferServiceTypeEnum::TRANSFER_TO_AIRPORT,
+        ]);
+
+        $service3Id = DB::table('supplier_transfer_services')->insertGetId([
+            'supplier_id' => $supplierId,
+            'name' => 'Аренда авто',
+            'type' => TransferServiceTypeEnum::CAR_RENT,
+        ]);
+
+        DB::table('supplier_contracts')->insert([
+            [
+                'supplier_id' => $supplierId,
+                'status' => StatusEnum::ACTIVE,
+                'service_type' => ContractServiceTypeEnum::TRANSFER,
+                'service_id' => $service1Id,
+                'date_start' => '2023-01-01',
+                'date_end' => '2023-12-31',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'supplier_id' => $supplierId,
+                'status' => StatusEnum::ACTIVE,
+                'service_type' => ContractServiceTypeEnum::TRANSFER,
+                'service_id' => $service2Id,
+                'date_start' => '2023-01-01',
+                'date_end' => '2023-12-31',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'supplier_id' => $supplierId,
+                'status' => StatusEnum::ACTIVE,
+                'service_type' => ContractServiceTypeEnum::TRANSFER,
+                'service_id' => $service3Id,
+                'date_start' => '2023-01-01',
+                'date_end' => '2023-12-31',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        ]);
+
+        DB::table('supplier_car_prices')->insert([
+            [
+                'service_id' => $service1Id,
+                'season_id' => $seasonId,
+                'car_id' => $carId,
+                'currency' => CurrencyEnum::UZS,
+                'price_net' => 20000,
+                'prices_gross' => '[ { "amount": 30000, "currency_id": 1 }, { "amount": 25, "currency_id": 3 } ]'
+            ],
+            [
+                'service_id' => $service2Id,
+                'season_id' => $seasonId,
+                'car_id' => $carId,
+
+                'currency' => CurrencyEnum::UZS,
+                'price_net' => 20000,
+                'prices_gross' => '[ { "amount": 30000, "currency_id": 1 }, { "amount": 25, "currency_id": 3 } ]'
+            ],
+            [
+                'service_id' => $service3Id,
+                'season_id' => $seasonId,
+                'car_id' => $carId,
+                'currency' => CurrencyEnum::UZS,
+                'price_net' => 50000,
+                'prices_gross' => '[ { "amount": 100000, "currency_id": 1 }, { "amount": 50, "currency_id": 3 } ]'
+            ]
+        ]);
+    }
+
+    private function seedAirportSupplierData(int $supplierId, int $seasonId): void
+    {
+        DB::table('supplier_airports')->insert([
+            [
+                'supplier_id' => $supplierId,
+                'airport_id' => 1,
+            ],
+            [
+                'supplier_id' => $supplierId,
+                'airport_id' => 4,
+            ],
+        ]);
+
+        $service1Id = DB::table('supplier_airport_services')->insertGetId([
+            'supplier_id' => $supplierId,
+            'name' => 'CIP Встреча',
+            'type' => AirportServiceTypeEnum::MEETING_IN_AIRPORT,
+        ]);
+
+        $service2Id = DB::table('supplier_airport_services')->insertGetId([
+            'supplier_id' => $supplierId,
+            'name' => 'CIP Проводы',
+            'type' => AirportServiceTypeEnum::SEEING_IN_AIRPORT,
+        ]);
+
+        DB::table('supplier_contracts')->insert([
+            [
+                'supplier_id' => $supplierId,
+                'status' => StatusEnum::ACTIVE,
+                'service_type' => ContractServiceTypeEnum::AIRPORT,
+                'service_id' => $service1Id,
+                'date_start' => '2023-01-01',
+                'date_end' => '2023-12-31',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'supplier_id' => $supplierId,
+                'status' => StatusEnum::ACTIVE,
+                'service_type' => ContractServiceTypeEnum::AIRPORT,
+                'service_id' => $service2Id,
+                'date_start' => '2023-01-01',
+                'date_end' => '2023-12-31',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        ]);
+
+        DB::table('supplier_airport_prices')->insert([
+            [
+                'service_id' => $service1Id,
+                'season_id' => $seasonId,
+                'airport_id' => 4,
+                'currency' => CurrencyEnum::UZS,
+                'price_net' => 50000,
+                'prices_gross' => '[ { "amount": 100000, "currency_id": 1 }, { "amount": 25, "currency_id": 3 } ]'
+            ],
+            [
+                'service_id' => $service2Id,
+                'season_id' => $seasonId,
+                'airport_id' => 4,
+                'currency' => CurrencyEnum::UZS,
+                'price_net' => 20000,
+                'prices_gross' => '[ { "amount": 70000, "currency_id": 1 }, { "amount": 10, "currency_id": 3 } ]'
+            ]
+        ]);
     }
 }
