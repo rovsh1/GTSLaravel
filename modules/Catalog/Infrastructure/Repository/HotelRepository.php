@@ -2,8 +2,8 @@
 
 namespace Module\Catalog\Infrastructure\Repository;
 
-use Module\Catalog\Domain\Hotel\Entity\Hotel;
 use Module\Catalog\Domain\Hotel\Factory\HotelFactory;
+use Module\Catalog\Domain\Hotel\Hotel;
 use Module\Catalog\Domain\Hotel\Repository\HotelRepositoryInterface;
 use Module\Catalog\Infrastructure\Models\Hotel as HotelEloquent;
 use Module\Shared\Contracts\Service\SerializerInterface;

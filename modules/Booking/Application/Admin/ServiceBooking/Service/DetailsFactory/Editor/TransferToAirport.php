@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Module\Booking\Application\Admin\ServiceBooking\Service\DetailsFactory\Editor;
 
 use Module\Booking\Application\Admin\ServiceBooking\Service\DetailsFactory\EditorInterface;
-use Module\Booking\Domain\ServiceBooking\Entity\TransferToAirport as Entity;
-use Module\Booking\Domain\ServiceBooking\Repository\Details\TransferToAirportRepositoryInterface;
-use Module\Booking\Domain\ServiceBooking\ValueObject\BookingId;
-use Module\Booking\Domain\ServiceBooking\ValueObject\ServiceId;
-use Module\Booking\Domain\ServiceBooking\ValueObject\ServiceInfo;
+use Module\Booking\Domain\Booking\Entity\TransferToAirport as Entity;
+use Module\Booking\Domain\Booking\Repository\Details\TransferToAirportRepositoryInterface;
+use Module\Booking\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Domain\Booking\ValueObject\ServiceId;
+use Module\Booking\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Supplier\Infrastructure\Models\Service as InfrastructureSupplierService;
 
 class TransferToAirport implements EditorInterface

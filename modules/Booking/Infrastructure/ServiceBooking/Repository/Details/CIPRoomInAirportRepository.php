@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Module\Booking\Infrastructure\ServiceBooking\Repository\Details;
 
 use DateTimeInterface;
-use Module\Booking\Domain\ServiceBooking\Entity\CIPRoomInAirport;
-use Module\Booking\Domain\ServiceBooking\Repository\Details\CIPRoomInAirportRepositoryInterface;
-use Module\Booking\Domain\ServiceBooking\ValueObject\BookingId;
-use Module\Booking\Domain\ServiceBooking\ValueObject\ServiceInfo;
+use Module\Booking\Domain\Booking\Entity\CIPRoomInAirport;
+use Module\Booking\Domain\Booking\Repository\Details\CIPRoomInAirportRepositoryInterface;
+use Module\Booking\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Booking\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Booking\Infrastructure\ServiceBooking\Models\Booking;
 use Module\Booking\Infrastructure\ServiceBooking\Models\Details\Airport;

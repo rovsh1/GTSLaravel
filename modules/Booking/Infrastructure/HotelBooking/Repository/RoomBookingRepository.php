@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace Module\Booking\Infrastructure\HotelBooking\Repository;
 
 use Illuminate\Database\Eloquent\Collection;
-use Module\Booking\Domain\HotelBooking\Entity\RoomBooking;
-use Module\Booking\Domain\HotelBooking\Repository\RoomBookingRepositoryInterface;
-use Module\Booking\Domain\HotelBooking\ValueObject\Details\RoomBooking\RoomBookingDetails;
-use Module\Booking\Domain\HotelBooking\ValueObject\Details\RoomBooking\RoomBookingId;
-use Module\Booking\Domain\HotelBooking\ValueObject\Details\RoomBooking\RoomInfo;
-use Module\Booking\Domain\HotelBooking\ValueObject\Details\RoomBookingCollection;
-use Module\Booking\Domain\HotelBooking\ValueObject\RoomPrice;
+use Module\Booking\Deprecated\HotelBooking\Entity\RoomBooking;
+use Module\Booking\Deprecated\HotelBooking\ValueObject\Details\RoomBookingCollection;
+use Module\Booking\Domain\Booking\Repository\RoomBookingRepositoryInterface;
+use Module\Booking\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomBookingDetails;
+use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomBookingId;
+use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomInfo;
+use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomPrices;
 use Module\Booking\Domain\Order\ValueObject\OrderId;
-use Module\Booking\Domain\ServiceBooking\ValueObject\BookingId;
 use Module\Booking\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Booking\Infrastructure\HotelBooking\Models\RoomBooking as Model;
 
@@ -41,7 +41,7 @@ class RoomBookingRepository implements RoomBookingRepositoryInterface
         BookingId $bookingId,
         RoomInfo $roomInfo,
         RoomBookingDetails $details,
-        RoomPrice $price
+        RoomPrices $price
     ): RoomBooking {
         $model = Model::create([
             'booking_id' => $bookingId->value(),
@@ -82,7 +82,7 @@ class RoomBookingRepository implements RoomBookingRepositoryInterface
     private function serializeData(
         RoomInfo $roomInfo,
         RoomBookingDetails $details,
-        RoomPrice $price
+        RoomPrices $price
     ): array {
         return [
             'roomInfo' => $roomInfo->toData(),
@@ -102,7 +102,7 @@ class RoomBookingRepository implements RoomBookingRepositoryInterface
             roomInfo: RoomInfo::fromData($data['roomInfo']),
             guestsIds: GuestIdCollection::fromData($model->guest_ids),
             details: RoomBookingDetails::fromData($data['details']),
-            price: RoomPrice::fromData($data['price'])
+            price: RoomPrices::fromData($data['price'])
         );
     }
 }

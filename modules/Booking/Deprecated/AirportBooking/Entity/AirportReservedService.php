@@ -11,7 +11,7 @@ use Module\Booking\Deprecated\AirportBooking\ValueObject\Details\AirportInfo;
 use Module\Booking\Deprecated\AirportBooking\ValueObject\Details\ServiceInfo;
 use Module\Booking\Deprecated\ReservedServiceInterface;
 use Module\Booking\Deprecated\ServiceInfoInterface;
-use Module\Booking\Domain\ServiceBooking\ValueObject\BookingPrice;
+use Module\Booking\Domain\Booking\ValueObject\BookingPrices;
 use Module\Booking\Domain\Shared\ValueObject\GuestIdCollection;
 
 class AirportReservedService implements ReservedServiceInterface
@@ -71,7 +71,7 @@ class AirportReservedService implements ReservedServiceInterface
         return $this->note;
     }
 
-    public function price(): BookingPrice
+    public function price(): BookingPrices
     {
         // TODO: Implement price() method.
     }

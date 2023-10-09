@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Application\Admin\HotelBooking\Dto\Details\AdditionalInfo;
 
-use Module\Booking\Domain\HotelBooking\ValueObject\Details\AdditionalInfo\ExternalNumber;
+use Module\Booking\Domain\Booking\ValueObject\HotelBooking\ExternalNumber;
 use Module\Shared\Contracts\Domain\EntityInterface;
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Module\Shared\Support\Dto\AbstractDomainBasedDto;

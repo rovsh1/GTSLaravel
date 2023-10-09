@@ -17,10 +17,10 @@ use Module\Booking\Application\Admin\HotelBooking\Dto\Details\RoomBookingDto;
 use Module\Booking\Application\Admin\Shared\Factory\AbstractBookingDtoFactory;
 use Module\Booking\Application\Admin\Shared\Factory\BookingPriceDtoFactory;
 use Module\Booking\Application\Admin\Shared\Service\StatusStorage;
-use Module\Booking\Domain\HotelBooking\HotelBooking;
-use Module\Booking\Domain\HotelBooking\ValueObject\Details\RoomBookingCollection;
-use Module\Booking\Domain\HotelBooking\ValueObject\RoomPrice;
-use Module\Booking\Domain\HotelBooking\ValueObject\RoomPriceDayPart;
+use Module\Booking\Deprecated\HotelBooking\HotelBooking;
+use Module\Booking\Deprecated\HotelBooking\ValueObject\Details\RoomBookingCollection;
+use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomPrices;
+use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomPriceDayPart;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
 use Module\Booking\Domain\Shared\ValueObject\GuestId;
 
@@ -74,7 +74,7 @@ class BookingDtoFactory extends AbstractBookingDtoFactory
         return $dtos;
     }
 
-    private function buildPriceDto(RoomPrice $price): RoomPriceDto
+    private function buildPriceDto(RoomPrices $price): RoomPriceDto
     {
         return new RoomPriceDto(
             $price->clientPrice()->manualDayValue(),

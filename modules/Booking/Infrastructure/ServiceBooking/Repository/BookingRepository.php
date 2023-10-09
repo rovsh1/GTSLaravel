@@ -6,17 +6,18 @@ namespace Module\Booking\Infrastructure\ServiceBooking\Repository;
 
 use App\Core\Support\Facades\AppContext;
 use Illuminate\Database\Eloquent\Builder;
+use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
+use Module\Booking\Domain\Booking\Booking as Entity;
+use Module\Booking\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Domain\Booking\ValueObject\BookingPrices;
 use Module\Booking\Domain\Order\ValueObject\OrderId;
-use Module\Booking\Domain\ServiceBooking\Repository\BookingRepositoryInterface;
-use Module\Booking\Domain\ServiceBooking\ServiceBooking as Entity;
-use Module\Booking\Domain\ServiceBooking\ValueObject\BookingId;
-use Module\Booking\Domain\ServiceBooking\ValueObject\BookingPrice;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
 use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
 use Module\Booking\Domain\Shared\ValueObject\CancelConditions;
 use Module\Booking\Domain\Shared\ValueObject\CreatorId;
 use Module\Booking\Infrastructure\ServiceBooking\Models\Booking as Model;
 use Module\Shared\Enum\ServiceTypeEnum;
+use Module\Shared\ValueObject\Timestamps;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
 class BookingRepository implements BookingRepositoryInterface
@@ -26,7 +27,7 @@ class BookingRepository implements BookingRepositoryInterface
         return Model::class;
     }
 
-    public function find(int $id): ?Entity
+    public function find(BookingId $id): ?Entity
     {
         $model = $this->getModel()::find($id);
         if ($model === null) {
@@ -34,6 +35,11 @@ class BookingRepository implements BookingRepositoryInterface
         }
 
         return $this->buildEntityFromModel($model);
+    }
+
+    public function findOrFail(BookingId $id): Entity
+    {
+        return $this->find($id) ?? throw new EntityNotFoundException("Booking[$id] not found");
     }
 
     public function query(): Builder
@@ -51,7 +57,7 @@ class BookingRepository implements BookingRepositoryInterface
         return (bool)$this->getModel()::whereId($booking->id()->value())->update([
             'status' => $booking->status(),
             'note' => $booking->note(),
-            'price' => $booking->price()->toData(),
+            'price' => $booking->prices()->toData(),
             'cancel_conditions' => $booking->cancelConditions()->toData()
         ]);
     }
@@ -59,7 +65,7 @@ class BookingRepository implements BookingRepositoryInterface
     public function create(
         OrderId $orderId,
         CreatorId $creatorId,
-        BookingPrice $price,
+        BookingPrices $price,
         CancelConditions $cancelConditions,
         ServiceTypeEnum $serviceType,
         ?string $note = null
@@ -91,15 +97,18 @@ class BookingRepository implements BookingRepositoryInterface
         return new Entity(
             id: new BookingId($booking->id),
             orderId: new OrderId($booking->order_id),
+            serviceType: $booking->service_type,
             status: $booking->status,
-            createdAt: $booking->created_at->toImmutable(),
-            creatorId: new CreatorId($booking->creator_id),
-            price: BookingPrice::fromData($booking->price),
+            price: BookingPrices::fromData($booking->price),
             cancelConditions: $booking->cancel_conditions !== null
                 ? CancelConditions::fromData($booking->cancel_conditions)
                 : null,
             note: $booking->note,
-            serviceType: $booking->service_type,
+            creatorId: new CreatorId($booking->creator_id),
+            timestamps: new Timestamps(
+                $booking->created_at->toImmutable(),
+                $booking->updated_at->toImmutable(),
+            ),
         );
     }
 }

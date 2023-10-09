@@ -7,8 +7,8 @@ namespace Module\Pricing\Application\Dto;
 final class RoomCalculationResultDto
 {
     /**
+     * @param int $accommodationId
      * @param float $price
-     * @param int $roomId
      * @param RoomDayCalculationResultDto[] $dates
      */
     public function __construct(

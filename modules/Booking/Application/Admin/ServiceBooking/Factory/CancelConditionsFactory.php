@@ -6,7 +6,7 @@ namespace Module\Booking\Application\Admin\ServiceBooking\Factory;
 
 use Carbon\CarbonInterface;
 use Illuminate\Support\Arr;
-use Module\Booking\Domain\ServiceBooking\Adapter\SupplierAdapterInterface;
+use Module\Booking\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Domain\Shared\ValueObject\CancelCondition\CancelMarkupOption;
 use Module\Booking\Domain\Shared\ValueObject\CancelCondition\CancelPeriodTypeEnum;
 use Module\Booking\Domain\Shared\ValueObject\CancelCondition\DailyMarkupCollection;

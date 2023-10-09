@@ -6,7 +6,7 @@ namespace Module\Catalog\Application\Admin\Response;
 
 use Module\Catalog\Application\Admin\ResponseDto\ContactDto;
 use Module\Catalog\Application\Admin\ResponseDto\TimeSettingsDto;
-use Module\Catalog\Domain\Hotel\Entity\Hotel;
+use Module\Catalog\Domain\Hotel\Hotel;
 use Module\Shared\Contracts\Domain\EntityInterface;
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Module\Shared\Support\Dto\AbstractDomainBasedDto;

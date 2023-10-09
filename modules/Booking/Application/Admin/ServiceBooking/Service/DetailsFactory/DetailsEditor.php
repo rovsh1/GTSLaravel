@@ -7,10 +7,10 @@ namespace Module\Booking\Application\Admin\ServiceBooking\Service\DetailsFactory
 use Module\Booking\Application\Admin\ServiceBooking\Service\DetailsFactory\Editor\CIPRoomInAirport;
 use Module\Booking\Application\Admin\ServiceBooking\Service\DetailsFactory\Editor\TransferFromAirport;
 use Module\Booking\Application\Admin\ServiceBooking\Service\DetailsFactory\Editor\TransferToAirport;
-use Module\Booking\Domain\ServiceBooking\Entity\ServiceDetailsInterface;
-use Module\Booking\Domain\ServiceBooking\Repository\BookingRepositoryInterface;
-use Module\Booking\Domain\ServiceBooking\ValueObject\BookingId;
-use Module\Booking\Domain\ServiceBooking\ValueObject\ServiceId;
+use Module\Booking\Domain\Booking\Entity\ServiceDetailsInterface;
+use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
+use Module\Booking\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Domain\Booking\ValueObject\ServiceId;
 use Module\Shared\Enum\ServiceTypeEnum;
 use Sdk\Module\Contracts\ModuleInterface;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;

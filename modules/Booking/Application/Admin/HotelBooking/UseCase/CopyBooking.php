@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Booking\Application\Admin\HotelBooking\UseCase;
 
-use Module\Booking\Domain\HotelBooking\Repository\BookingGuestRepositoryInterface;
-use Module\Booking\Domain\HotelBooking\Repository\BookingRepositoryInterface;
-use Module\Booking\Domain\HotelBooking\Repository\RoomBookingRepositoryInterface;
+use Module\Booking\Deprecated\HotelBooking\Repository\BookingGuestRepositoryInterface;
+use Module\Booking\Deprecated\HotelBooking\Repository\BookingRepositoryInterface;
+use Module\Booking\Domain\Booking\Repository\RoomBookingRepositoryInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 

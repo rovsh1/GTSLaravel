@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Module\Booking\Application\Admin\HotelBooking\UseCase\Room\Guest;
 
 use Module\Booking\Application\Admin\HotelBooking\Exception\TooManyRoomGuestsException;
-use Module\Booking\Domain\HotelBooking\Adapter\HotelRoomAdapterInterface;
-use Module\Booking\Domain\HotelBooking\Event\GuestBinded;
-use Module\Booking\Domain\HotelBooking\Repository\BookingGuestRepositoryInterface;
-use Module\Booking\Domain\HotelBooking\Repository\BookingRepositoryInterface;
-use Module\Booking\Domain\HotelBooking\Repository\RoomBookingRepositoryInterface;
-use Module\Booking\Domain\HotelBooking\ValueObject\Details\RoomBooking\RoomBookingId;
+use Module\Booking\Deprecated\HotelBooking\Adapter\HotelRoomAdapterInterface;
+use Module\Booking\Deprecated\HotelBooking\Event\GuestBinded;
+use Module\Booking\Deprecated\HotelBooking\Repository\BookingGuestRepositoryInterface;
+use Module\Booking\Deprecated\HotelBooking\Repository\BookingRepositoryInterface;
+use Module\Booking\Domain\Booking\Repository\RoomBookingRepositoryInterface;
+use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomBookingId;
 use Module\Booking\Domain\Shared\ValueObject\GuestId;
 use Module\Shared\Contracts\Domain\DomainEntityExceptionInterface;
 use Module\Shared\Exception\ApplicationException;

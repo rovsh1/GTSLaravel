@@ -8,7 +8,7 @@ use Module\Booking\Application\Admin\Shared\Support\UseCase\AbstractCreateBookin
 use Module\Booking\Application\TransferBooking\Factory\CancelConditionsFactory;
 use Module\Booking\Application\TransferBooking\Request\CreateBookingDto;
 use Module\Booking\Deprecated\TransferBooking\Repository\BookingRepositoryInterface;
-use Module\Booking\Domain\ServiceBooking\ValueObject\BookingPrice;
+use Module\Booking\Domain\Booking\ValueObject\BookingPrices;
 use Module\Booking\Domain\Shared\ValueObject\CreatorId;
 use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Contracts\Bus\CommandBusInterface;
@@ -39,7 +39,7 @@ class CreateBooking extends AbstractCreateBooking
             cityId: $request->cityId,
             cancelConditions: $cancelConditions,
             note: $request->note,
-            price: BookingPrice::createEmpty(CurrencyEnum::UZS, $orderCurrency),//@todo netto валюта
+            price: BookingPrices::createEmpty(CurrencyEnum::UZS, $orderCurrency),//@todo netto валюта
         );
 
         return $booking->id()->value();

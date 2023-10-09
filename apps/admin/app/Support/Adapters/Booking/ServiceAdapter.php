@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Admin\Support\Adapters\Booking;
 
 use Illuminate\Database\Eloquent\Builder;
-use Module\Booking\Application\Admin\ServiceBooking\Request\CreateBookingDto;
+use Module\Booking\Application\Admin\Booking\Request\CreateBookingRequestDto;
+use Module\Booking\Application\Admin\Booking\UseCase\CreateBooking;
 use Module\Booking\Application\Admin\ServiceBooking\UseCase\BulkDeleteBookings;
 use Module\Booking\Application\Admin\ServiceBooking\UseCase\Car\Update;
 use Module\Booking\Application\Admin\ServiceBooking\UseCase\CopyBooking;
-use Module\Booking\Application\Admin\ServiceBooking\UseCase\CreateBooking;
 use Module\Booking\Application\Admin\ServiceBooking\UseCase\DeleteBooking;
 use Module\Booking\Application\Admin\ServiceBooking\UseCase\GetAvailableActions;
 use Module\Booking\Application\Admin\ServiceBooking\UseCase\GetBooking;
@@ -51,7 +51,7 @@ class ServiceAdapter
         ?string $note = null
     ) {
         return app(CreateBooking::class)->execute(
-            new CreateBookingDto(
+            new CreateBookingRequestDto(
                 creatorId: $creatorId,
                 clientId: $clientId,
                 legalId: $legalId,

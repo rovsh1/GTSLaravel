@@ -13,9 +13,9 @@ use Module\Booking\Deprecated\AirportBooking\Repository\BookingRepositoryInterfa
 use Module\Booking\Deprecated\AirportBooking\ValueObject\Details\AdditionalInfo;
 use Module\Booking\Deprecated\AirportBooking\ValueObject\Details\AirportInfo;
 use Module\Booking\Deprecated\AirportBooking\ValueObject\Details\ServiceInfo;
+use Module\Booking\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Domain\Booking\ValueObject\BookingPrices;
 use Module\Booking\Domain\Order\ValueObject\OrderId;
-use Module\Booking\Domain\ServiceBooking\ValueObject\BookingId;
-use Module\Booking\Domain\ServiceBooking\ValueObject\BookingPrice;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
 use Module\Booking\Domain\Shared\ValueObject\CancelConditions;
 use Module\Booking\Domain\Shared\ValueObject\CreatorId;
@@ -66,7 +66,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         int $serviceId,
         int $airportId,
         CarbonInterface $date,
-        BookingPrice $price,
+        BookingPrices $price,
         AdditionalInfo $additionalInfo,
         CancelConditions $cancelConditions,
         ?string $note = null
@@ -171,7 +171,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
             status: $booking->status,
             createdAt: $booking->created_at->toImmutable(),
             creatorId: new CreatorId($booking->creator_id),
-            price: BookingPrice::fromData($detailsData['price']),
+            price: BookingPrices::fromData($detailsData['price']),
             serviceInfo: ServiceInfo::fromData($detailsData['serviceInfo']),
             airportInfo: AirportInfo::fromData($detailsData['airportInfo']),
             date: CarbonImmutable::createFromTimestamp($detailsData['date']),

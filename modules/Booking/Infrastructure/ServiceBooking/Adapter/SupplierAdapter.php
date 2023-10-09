@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Infrastructure\ServiceBooking\Adapter;
 
 use Carbon\CarbonInterface;
-use Module\Booking\Domain\ServiceBooking\Adapter\SupplierAdapterInterface;
+use Module\Booking\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Shared\Enum\CurrencyEnum;
 use Module\Supplier\Application\Response\CancelConditionsDto;
 use Module\Supplier\Application\Response\ServiceContractDto;

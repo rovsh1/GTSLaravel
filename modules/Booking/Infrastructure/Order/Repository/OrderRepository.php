@@ -48,12 +48,7 @@ class OrderRepository implements OrderRepositoryInterface
      */
     public function findOrFail(int $id): Order
     {
-        $order = $this->find($id);
-        if ($order === null) {
-            throw new EntityNotFoundException('Order not found');
-        }
-
-        return $order;
+        return $this->find($id) ?? throw new EntityNotFoundException("Order[$id] not found");
     }
 
 

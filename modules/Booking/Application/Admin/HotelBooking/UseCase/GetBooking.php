@@ -6,7 +6,7 @@ namespace Module\Booking\Application\Admin\HotelBooking\UseCase;
 
 use Module\Booking\Application\Admin\HotelBooking\Factory\BookingDtoFactory;
 use Module\Booking\Application\Admin\Shared\Support\UseCase\AbstractGetBooking as Base;
-use Module\Booking\Domain\HotelBooking\Repository\BookingRepositoryInterface;
+use Module\Booking\Deprecated\HotelBooking\Repository\BookingRepositoryInterface;
 
 class GetBooking extends Base
 {

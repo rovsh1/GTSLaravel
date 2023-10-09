@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Booking\Application\Admin\HotelBooking\UseCase;
 
-use Module\Booking\Domain\HotelBooking\Repository\BookingRepositoryInterface;
-use Module\Booking\Domain\ServiceBooking\ValueObject\BookingId;
+use Module\Booking\Deprecated\HotelBooking\Repository\BookingRepositoryInterface;
+use Module\Booking\Domain\Booking\ValueObject\BookingId;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 

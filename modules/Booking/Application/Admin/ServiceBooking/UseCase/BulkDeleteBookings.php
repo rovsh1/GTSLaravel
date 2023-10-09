@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Application\Admin\ServiceBooking\UseCase;
 
-use Module\Booking\Domain\ServiceBooking\Repository\BookingRepositoryInterface;
+use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class BulkDeleteBookings implements UseCaseInterface

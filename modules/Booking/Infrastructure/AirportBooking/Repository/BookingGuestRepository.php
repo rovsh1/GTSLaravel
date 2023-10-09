@@ -6,7 +6,7 @@ namespace Module\Booking\Infrastructure\AirportBooking\Repository;
 
 use Illuminate\Support\Facades\DB;
 use Module\Booking\Deprecated\AirportBooking\Repository\BookingGuestRepositoryInterface;
-use Module\Booking\Domain\ServiceBooking\ValueObject\BookingId;
+use Module\Booking\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Domain\Shared\ValueObject\GuestId;
 
 class BookingGuestRepository implements BookingGuestRepositoryInterface

@@ -3,10 +3,10 @@
 namespace Module\Booking\Domain\Shared\Entity;
 
 use Carbon\CarbonImmutable;
+use Module\Booking\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Domain\Booking\ValueObject\BookingPrices;
 use Module\Booking\Domain\BookingRequest\Service\RequestCreator;
 use Module\Booking\Domain\Order\ValueObject\OrderId;
-use Module\Booking\Domain\ServiceBooking\ValueObject\BookingId;
-use Module\Booking\Domain\ServiceBooking\ValueObject\BookingPrice;
 use Module\Booking\Domain\Shared\Exception\NotRequestableEntity;
 use Module\Booking\Domain\Shared\Exception\NotRequestableStatus;
 use Module\Booking\Domain\Shared\Service\RequestRules;
@@ -27,7 +27,7 @@ interface BookingInterface extends EntityInterface
 
     public function creatorId(): CreatorId;
 
-    public function price(): BookingPrice;
+    public function price(): BookingPrices;
 
     public function serviceType(): ServiceTypeEnum;
 

@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Module\Booking\Infrastructure\ServiceBooking\Factory;
 
-use Module\Booking\Domain\ServiceBooking\Entity\CIPRoomInAirport;
-use Module\Booking\Domain\ServiceBooking\Entity\OtherService;
-use Module\Booking\Domain\ServiceBooking\Entity\ServiceDetailsInterface;
-use Module\Booking\Domain\ServiceBooking\Entity\TransferFromAirport;
-use Module\Booking\Domain\ServiceBooking\Entity\TransferToAirport;
-use Module\Booking\Domain\ServiceBooking\ValueObject\AirportId;
-use Module\Booking\Domain\ServiceBooking\ValueObject\BookingId;
-use Module\Booking\Domain\ServiceBooking\ValueObject\CarBidCollection;
-use Module\Booking\Domain\ServiceBooking\ValueObject\DetailsId;
-use Module\Booking\Domain\ServiceBooking\ValueObject\ServiceId;
-use Module\Booking\Domain\ServiceBooking\ValueObject\ServiceInfo;
+use Module\Booking\Domain\Booking\Entity\CIPRoomInAirport;
+use Module\Booking\Domain\Booking\Entity\OtherService;
+use Module\Booking\Domain\Booking\Entity\ServiceDetailsInterface;
+use Module\Booking\Domain\Booking\Entity\TransferFromAirport;
+use Module\Booking\Domain\Booking\Entity\TransferToAirport;
+use Module\Booking\Domain\Booking\ValueObject\AirportId;
+use Module\Booking\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Domain\Booking\ValueObject\CarBidCollection;
+use Module\Booking\Domain\Booking\ValueObject\DetailsId;
+use Module\Booking\Domain\Booking\ValueObject\ServiceId;
+use Module\Booking\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Booking\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Booking\Infrastructure\ServiceBooking\Models\Booking;
 use Module\Booking\Infrastructure\ServiceBooking\Models\Details\Airport;

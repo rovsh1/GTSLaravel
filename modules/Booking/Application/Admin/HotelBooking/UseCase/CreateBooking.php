@@ -9,12 +9,12 @@ use Module\Booking\Application\Admin\HotelBooking\Factory\CancelConditionsFactor
 use Module\Booking\Application\Admin\HotelBooking\Factory\HotelInfoFactory;
 use Module\Booking\Application\Admin\HotelBooking\Request\CreateBookingDto;
 use Module\Booking\Application\Admin\Shared\Support\UseCase\AbstractCreateBooking;
-use Module\Booking\Domain\HotelBooking\Adapter\HotelAdapterInterface;
-use Module\Booking\Domain\HotelBooking\Exception\NotFoundHotelCancelPeriod;
-use Module\Booking\Domain\HotelBooking\Repository\BookingRepositoryInterface;
-use Module\Booking\Domain\HotelBooking\Service\HotelValidator;
-use Module\Booking\Domain\HotelBooking\ValueObject\Details\BookingPeriod;
-use Module\Booking\Domain\ServiceBooking\ValueObject\BookingPrice;
+use Module\Booking\Deprecated\HotelBooking\Adapter\HotelAdapterInterface;
+use Module\Booking\Deprecated\HotelBooking\Exception\NotFoundHotelCancelPeriod;
+use Module\Booking\Deprecated\HotelBooking\Repository\BookingRepositoryInterface;
+use Module\Booking\Deprecated\HotelBooking\Service\HotelValidator;
+use Module\Booking\Domain\Booking\ValueObject\BookingPeriod;
+use Module\Booking\Domain\Booking\ValueObject\BookingPrices;
 use Module\Booking\Domain\Shared\ValueObject\CreatorId;
 use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 use Module\Shared\Enum\CurrencyEnum;
@@ -57,7 +57,7 @@ class CreateBooking extends AbstractCreateBooking
             period: BookingPeriod::fromCarbon($request->period),
             note: $request->note,
             cancelConditions: CancelConditionsFactory::fromDto($markupSettings->cancelPeriods, $request->period),
-            price: BookingPrice::createEmpty($hotelCurrency, $orderCurrency),
+            price: BookingPrices::createEmpty($hotelCurrency, $orderCurrency),
             quotaProcessingMethod: QuotaProcessingMethodEnum::from($request->quotaProcessingMethod),
         );
 

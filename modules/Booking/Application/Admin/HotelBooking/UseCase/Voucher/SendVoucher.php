@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Application\Admin\HotelBooking\UseCase\Voucher;
 
-use Module\Booking\Domain\HotelBooking\Repository\BookingRepositoryInterface;
+use Module\Booking\Deprecated\HotelBooking\Repository\BookingRepositoryInterface;
 use Module\Booking\Domain\Shared\Service\BookingUpdater;
 use Module\Booking\Domain\Shared\Service\VoucherCreator;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;

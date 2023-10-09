@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Domain\Order\Event;
 
-use Module\Booking\Domain\HotelBooking\Event\PriceBecomeDeprecatedEventInterface;
+use Module\Booking\Deprecated\HotelBooking\Event\PriceBecomeDeprecatedEventInterface;
 use Module\Booking\Domain\Order\Order;
 use Module\Booking\Domain\Shared\Event\OrderEventInterface;
 

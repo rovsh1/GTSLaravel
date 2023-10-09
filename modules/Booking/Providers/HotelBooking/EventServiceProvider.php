@@ -2,10 +2,10 @@
 
 namespace Module\Booking\Providers\HotelBooking;
 
-use Module\Booking\Domain\HotelBooking\Event\PriceBecomeDeprecatedEventInterface;
-use Module\Booking\Domain\HotelBooking\Listener\BookingChangesListener;
-use Module\Booking\Domain\HotelBooking\Listener\BookingQuotaUpdaterListener;
-use Module\Booking\Domain\HotelBooking\Listener\RecalculateBookingPricesListener;
+use Module\Booking\Deprecated\HotelBooking\Event\PriceBecomeDeprecatedEventInterface;
+use Module\Booking\Deprecated\HotelBooking\Listener\BookingChangesListener;
+use Module\Booking\Deprecated\HotelBooking\Listener\BookingQuotaUpdaterListener;
+use Module\Booking\Deprecated\HotelBooking\Listener\RecalculateBookingPricesListener;
 use Module\Booking\Domain\Shared\Event\BookingDeleted;
 use Module\Booking\Domain\Shared\Event\BookingEventInterface;
 use Module\Booking\Domain\Shared\Event\BookingStatusEventInterface;

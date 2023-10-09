@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Application\Admin\HotelBooking\Dto\Details\RoomBooking;
 
 use Module\Booking\Application\Admin\HotelBooking\Dto\Details\ConditionDto;
-use Module\Booking\Domain\HotelBooking\ValueObject\Details\RoomBooking\RoomBookingDetails;
+use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomBookingDetails;
 use Module\Shared\Contracts\Domain\EntityInterface;
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Module\Shared\Support\Dto\AbstractDomainBasedDto;

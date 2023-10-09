@@ -2,7 +2,7 @@
 
 namespace Module\Catalog\Domain\Hotel\Repository;
 
-use Module\Catalog\Domain\Hotel\Entity\Hotel;
+use Module\Catalog\Domain\Hotel\Hotel;
 
 interface HotelRepositoryInterface
 {

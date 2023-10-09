@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Booking\Application\Admin\ServiceBooking\Service\DetailsFactory;
 
-use Module\Booking\Domain\ServiceBooking\Entity\ServiceDetailsInterface;
-use Module\Booking\Domain\ServiceBooking\ValueObject\BookingId;
-use Module\Booking\Domain\ServiceBooking\ValueObject\ServiceId;
+use Module\Booking\Domain\Booking\Entity\ServiceDetailsInterface;
+use Module\Booking\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Domain\Booking\ValueObject\ServiceId;
 
 interface EditorInterface
 {

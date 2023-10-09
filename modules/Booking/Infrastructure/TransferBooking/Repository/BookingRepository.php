@@ -9,9 +9,9 @@ use Illuminate\Database\Eloquent\Collection;
 use Module\Booking\Deprecated\TransferBooking\Repository\BookingRepositoryInterface;
 use Module\Booking\Deprecated\TransferBooking\TransferBooking as Entity;
 use Module\Booking\Deprecated\TransferBooking\ValueObject\Details\ServiceInfo;
+use Module\Booking\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Domain\Booking\ValueObject\BookingPrices;
 use Module\Booking\Domain\Order\ValueObject\OrderId;
-use Module\Booking\Domain\ServiceBooking\ValueObject\BookingId;
-use Module\Booking\Domain\ServiceBooking\ValueObject\BookingPrice;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
 use Module\Booking\Domain\Shared\ValueObject\CancelConditions;
 use Module\Booking\Domain\Shared\ValueObject\CreatorId;
@@ -59,7 +59,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         CreatorId $creatorId,
         int $serviceId,
         int $cityId,
-        BookingPrice $price,
+        BookingPrices $price,
         CancelConditions $cancelConditions,
         ?string $note = null
     ): Entity {
@@ -153,7 +153,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
             status: $booking->status,
             createdAt: $booking->created_at->toImmutable(),
             creatorId: new CreatorId($booking->creator_id),
-            price: BookingPrice::fromData($detailsData['price']),
+            price: BookingPrices::fromData($detailsData['price']),
             serviceInfo: ServiceInfo::fromData($detailsData['serviceInfo']),
             note: $detailsData['note'] ?? null,
             cancelConditions: $cancelConditions !== null

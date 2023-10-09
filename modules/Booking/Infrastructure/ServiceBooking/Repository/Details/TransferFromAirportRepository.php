@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Module\Booking\Infrastructure\ServiceBooking\Repository\Details;
 
 use DateTimeInterface;
-use Module\Booking\Domain\ServiceBooking\Entity\TransferFromAirport;
-use Module\Booking\Domain\ServiceBooking\Repository\Details\TransferFromAirportRepositoryInterface;
-use Module\Booking\Domain\ServiceBooking\ValueObject\BookingId;
-use Module\Booking\Domain\ServiceBooking\ValueObject\ServiceInfo;
+use Module\Booking\Domain\Booking\Entity\TransferFromAirport;
+use Module\Booking\Domain\Booking\Repository\Details\TransferFromAirportRepositoryInterface;
+use Module\Booking\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Booking\Infrastructure\ServiceBooking\Models\Booking;
 use Module\Booking\Infrastructure\ServiceBooking\Models\Details\Transfer;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;

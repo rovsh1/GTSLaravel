@@ -36,7 +36,9 @@ class RoomDayPriceCalculatorFormula
 
     public function applyClientMarkup(MarkupValue $markup): void
     {
-        $this->calculationBuilder->plus($markup->calculate($this->priceForMarkup), "$markup Наценка");
+        $markupValue = $markup->calculate($this->priceForMarkup);
+        $this->calculationBuilder->plus($markupValue, "$markup Наценка");
+        $this->priceForMarkup += $markupValue;
     }
 
     public function applyEarlyCheckinMarkup(MarkupValue $markup): void

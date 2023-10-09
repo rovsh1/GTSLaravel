@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Infrastructure\ServiceBooking\Repository\Details;
 
-use Module\Booking\Domain\ServiceBooking\ValueObject\ServiceInfo;
+use Module\Booking\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Booking\Infrastructure\ServiceBooking\Factory\DetailsFactory;
 
 abstract class AbstractDetailsRepository

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Application\Admin\HotelBooking\Dto\Details;
 
 use Carbon\Carbon;
-use Module\Booking\Domain\HotelBooking\ValueObject\Details\BookingPeriod;
+use Module\Booking\Domain\Booking\ValueObject\BookingPeriod;
 use Module\Shared\Contracts\Domain\EntityInterface;
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Module\Shared\Support\Dto\AbstractDomainBasedDto;

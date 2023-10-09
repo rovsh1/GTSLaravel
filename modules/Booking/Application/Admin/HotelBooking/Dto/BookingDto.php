@@ -13,7 +13,7 @@ use Module\Booking\Application\Admin\HotelBooking\Dto\Details\RoomBookingDto;
 use Module\Booking\Application\Admin\Shared\Response\BookingDto as BaseDto;
 use Module\Booking\Application\Admin\Shared\Response\BookingPriceDto;
 use Module\Booking\Application\Admin\Shared\Response\StatusDto;
-use Module\Booking\Domain\HotelBooking\HotelBooking;
+use Module\Booking\Deprecated\HotelBooking\HotelBooking;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
 use Module\Shared\Contracts\Domain\EntityInterface;
 use Module\Shared\Contracts\Domain\ValueObjectInterface;

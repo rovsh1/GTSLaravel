@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Module\Booking\Domain\Shared\Entity;
 
 use Carbon\CarbonImmutable;
+use Module\Booking\Domain\Booking\Support\Concerns\HasStatusesTrait;
+use Module\Booking\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Domain\Booking\ValueObject\BookingPrices;
 use Module\Booking\Domain\BookingRequest\Service\RequestCreator;
 use Module\Booking\Domain\BookingRequest\ValueObject\RequestTypeEnum;
 use Module\Booking\Domain\Order\ValueObject\OrderId;
-use Module\Booking\Domain\ServiceBooking\ValueObject\BookingId;
-use Module\Booking\Domain\ServiceBooking\ValueObject\BookingPrice;
-use Module\Booking\Domain\Shared\Entity\Concerns\HasStatusesTrait;
 use Module\Booking\Domain\Shared\Event\BookingDeleted;
 use Module\Booking\Domain\Shared\Event\Contracts\BookingRequestableInterface;
 use Module\Booking\Domain\Shared\Event\Request\BookingRequestSent;
@@ -35,7 +35,7 @@ abstract class AbstractBooking extends AbstractAggregateRoot implements
         private BookingStatusEnum $status,
         private readonly CarbonImmutable $createdAt,
         private readonly CreatorId $creatorId,
-        private BookingPrice $price,
+        private BookingPrices $price,
     ) {
     }
 
@@ -64,7 +64,7 @@ abstract class AbstractBooking extends AbstractAggregateRoot implements
         return $this->creatorId;
     }
 
-    public function price(): BookingPrice
+    public function price(): BookingPrices
     {
         return $this->price;
     }
@@ -107,7 +107,7 @@ abstract class AbstractBooking extends AbstractAggregateRoot implements
         );
     }
 
-    public function updatePrice(BookingPrice $price): void
+    public function updatePrice(BookingPrices $price): void
     {
         if (!$price->isEqual($this->price)) {
             return;

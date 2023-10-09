@@ -2,11 +2,11 @@
 
 namespace Module\Booking\Providers\ServiceBooking;
 
-use Module\Booking\Domain\ServiceBooking\Adapter\SupplierAdapterInterface;
-use Module\Booking\Domain\ServiceBooking\Repository\BookingRepositoryInterface;
-use Module\Booking\Domain\ServiceBooking\Repository\Details\CIPRoomInAirportRepositoryInterface;
-use Module\Booking\Domain\ServiceBooking\Repository\Details\TransferFromAirportRepositoryInterface;
-use Module\Booking\Domain\ServiceBooking\Repository\Details\TransferToAirportRepositoryInterface;
+use Module\Booking\Domain\Booking\Adapter\SupplierAdapterInterface;
+use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
+use Module\Booking\Domain\Booking\Repository\Details\CIPRoomInAirportRepositoryInterface;
+use Module\Booking\Domain\Booking\Repository\Details\TransferFromAirportRepositoryInterface;
+use Module\Booking\Domain\Booking\Repository\Details\TransferToAirportRepositoryInterface;
 use Module\Booking\Infrastructure\ServiceBooking\Adapter\SupplierAdapter;
 use Module\Booking\Infrastructure\ServiceBooking\Repository\BookingRepository;
 use Module\Booking\Infrastructure\ServiceBooking\Repository\Details as Infrastructure;

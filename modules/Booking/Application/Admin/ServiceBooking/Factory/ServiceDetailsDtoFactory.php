@@ -8,10 +8,10 @@ use Module\Booking\Application\Admin\ServiceBooking\Dto\CIPRoomInAirportDto;
 use Module\Booking\Application\Admin\ServiceBooking\Dto\ServiceDetailsDtoInterface;
 use Module\Booking\Application\Admin\ServiceBooking\Dto\TransferFromAirportDto;
 use Module\Booking\Application\Admin\ServiceBooking\Dto\TransferToAirportDto;
-use Module\Booking\Domain\ServiceBooking\Entity\CIPRoomInAirport;
-use Module\Booking\Domain\ServiceBooking\Entity\ServiceDetailsInterface;
-use Module\Booking\Domain\ServiceBooking\Entity\TransferFromAirport;
-use Module\Booking\Domain\ServiceBooking\Entity\TransferToAirport;
+use Module\Booking\Domain\Booking\Entity\CIPRoomInAirport;
+use Module\Booking\Domain\Booking\Entity\ServiceDetailsInterface;
+use Module\Booking\Domain\Booking\Entity\TransferFromAirport;
+use Module\Booking\Domain\Booking\Entity\TransferToAirport;
 
 class ServiceDetailsDtoFactory
 {

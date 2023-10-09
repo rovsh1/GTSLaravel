@@ -3,7 +3,7 @@
 namespace Module\Booking\Infrastructure\HotelBooking\Adapter;
 
 use Carbon\CarbonInterface;
-use Module\Booking\Domain\HotelBooking\Adapter\HotelAdapterInterface;
+use Module\Booking\Deprecated\HotelBooking\Adapter\HotelAdapterInterface;
 use Module\Catalog\Application\Admin\Response\HotelDto;
 use Module\Catalog\Application\Admin\Response\MarkupSettingsDto;
 use Module\Catalog\Application\Admin\Response\RoomMarkupsDto;

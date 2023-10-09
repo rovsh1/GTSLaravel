@@ -6,8 +6,8 @@ namespace Module\Booking\Application\Admin\Shared\Factory;
 
 use Module\Booking\Application\Admin\Shared\Response\BookingPriceDto;
 use Module\Booking\Application\Admin\Shared\Response\PriceItemDto;
-use Module\Booking\Domain\ServiceBooking\ValueObject\BookingPrice;
-use Module\Booking\Domain\ServiceBooking\ValueObject\BookingPriceItem;
+use Module\Booking\Domain\Booking\ValueObject\BookingPrices;
+use Module\Booking\Domain\Booking\ValueObject\BookingPriceItem;
 use Module\Shared\Contracts\Adapter\CurrencyRateAdapterInterface;
 use Module\Shared\Contracts\Service\TranslatorInterface;
 use Module\Shared\Dto\CurrencyDto;
@@ -20,7 +20,7 @@ class BookingPriceDtoFactory
         private readonly CurrencyRateAdapterInterface $currencyRateAdapter,
     ) {}
 
-    public function createFromEntity(BookingPrice $entity): BookingPriceDto
+    public function createFromEntity(BookingPrices $entity): BookingPriceDto
     {
         $clientPriceItem = $entity->clientPrice();
         $supplierPriceItem = $entity->supplierPrice();

@@ -6,9 +6,9 @@ use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Module\Booking\Deprecated\AirportBooking\AirportBooking;
 use Module\Booking\Deprecated\AirportBooking\ValueObject\Details\AdditionalInfo;
+use Module\Booking\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Domain\Booking\ValueObject\BookingPrices;
 use Module\Booking\Domain\Order\ValueObject\OrderId;
-use Module\Booking\Domain\ServiceBooking\ValueObject\BookingId;
-use Module\Booking\Domain\ServiceBooking\ValueObject\BookingPrice;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
 use Module\Booking\Domain\Shared\Repository\BookingRepositoryInterface as Base;
 use Module\Booking\Domain\Shared\ValueObject\CancelConditions;
@@ -28,7 +28,7 @@ interface BookingRepositoryInterface extends Base
         int $serviceId,
         int $airportId,
         CarbonInterface $date,
-        BookingPrice $price,
+        BookingPrices $price,
         AdditionalInfo $additionalInfo,
         CancelConditions $cancelConditions,
         ?string $note = null

@@ -9,13 +9,13 @@ use Module\Booking\Application\Admin\HotelBooking\Exception\InvalidRoomClientRes
 use Module\Booking\Application\Admin\HotelBooking\Exception\NotFoundHotelRoomPriceException;
 use Module\Booking\Application\Admin\HotelBooking\Factory\RoomUpdaterDataHelperFactory;
 use Module\Booking\Application\Admin\HotelBooking\Request\AddRoomDto;
-use Module\Booking\Domain\HotelBooking\Exception\InvalidRoomResidency;
-use Module\Booking\Domain\HotelBooking\Exception\NotFoundHotelRoomPrice;
-use Module\Booking\Domain\HotelBooking\Service\QuotaManager\Exception\ClosedRoomDateQuota;
-use Module\Booking\Domain\HotelBooking\Service\QuotaManager\Exception\NotEnoughRoomDateQuota;
-use Module\Booking\Domain\HotelBooking\Service\QuotaManager\Exception\NotFoundRoomDateQuota;
-use Module\Booking\Domain\HotelBooking\Service\RoomUpdater\RoomUpdater;
-use Module\Booking\Domain\HotelBooking\ValueObject\RoomPrice;
+use Module\Booking\Deprecated\HotelBooking\Exception\InvalidRoomResidency;
+use Module\Booking\Deprecated\HotelBooking\Exception\NotFoundHotelRoomPrice;
+use Module\Booking\Deprecated\HotelBooking\Service\QuotaManager\Exception\ClosedRoomDateQuota;
+use Module\Booking\Deprecated\HotelBooking\Service\QuotaManager\Exception\NotEnoughRoomDateQuota;
+use Module\Booking\Deprecated\HotelBooking\Service\QuotaManager\Exception\NotFoundRoomDateQuota;
+use Module\Booking\Deprecated\HotelBooking\Service\RoomUpdater\RoomUpdater;
+use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomPrices;
 use Module\Booking\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Shared\Exception\ApplicationException;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
@@ -30,7 +30,7 @@ class Add implements UseCaseInterface
     public function execute(AddRoomDto $request): void
     {
         try {
-            $addRoomDto = $this->dataHelperFactory->build($request, new GuestIdCollection(), RoomPrice::buildEmpty());
+            $addRoomDto = $this->dataHelperFactory->build($request, new GuestIdCollection(), RoomPrices::buildEmpty());
             $this->roomUpdater->add($addRoomDto);
         } catch (InvalidRoomResidency $e) {
             throw new InvalidRoomClientResidencyException($e);

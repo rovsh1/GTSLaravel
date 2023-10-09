@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Booking\Application\Admin\HotelBooking\UseCase;
 
-use Module\Booking\Domain\HotelBooking\ValueObject\Details\AdditionalInfo;
-use Module\Booking\Domain\HotelBooking\ValueObject\Details\AdditionalInfo\ExternalNumber;
-use Module\Booking\Domain\HotelBooking\ValueObject\Details\AdditionalInfo\ExternalNumberTypeEnum;
+use Module\Booking\Deprecated\HotelBooking\ValueObject\Details\AdditionalInfo;
+use Module\Booking\Domain\Booking\ValueObject\HotelBooking\ExternalNumber;
+use Module\Booking\Domain\Booking\ValueObject\HotelBooking\ExternalNumberTypeEnum;
 use Module\Booking\Domain\Shared\Service\BookingUpdater;
 use Module\Booking\Infrastructure\HotelBooking\Repository\BookingRepository;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;

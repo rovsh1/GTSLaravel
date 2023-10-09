@@ -10,10 +10,10 @@ use Module\Booking\Application\Admin\ServiceBooking\Dto\ServiceTypeDto;
 use Module\Booking\Application\Admin\Shared\Factory\AbstractBookingDtoFactory;
 use Module\Booking\Application\Admin\Shared\Factory\BookingPriceDtoFactory;
 use Module\Booking\Application\Admin\Shared\Service\StatusStorage;
-use Module\Booking\Domain\ServiceBooking\Repository\Details\CIPRoomInAirportRepositoryInterface;
-use Module\Booking\Domain\ServiceBooking\Repository\Details\TransferFromAirportRepositoryInterface;
-use Module\Booking\Domain\ServiceBooking\Repository\Details\TransferToAirportRepositoryInterface;
-use Module\Booking\Domain\ServiceBooking\ServiceBooking;
+use Module\Booking\Domain\Booking\Repository\Details\CIPRoomInAirportRepositoryInterface;
+use Module\Booking\Domain\Booking\Repository\Details\TransferFromAirportRepositoryInterface;
+use Module\Booking\Domain\Booking\Repository\Details\TransferToAirportRepositoryInterface;
+use Module\Booking\Domain\Booking\Booking;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
 use Module\Shared\Contracts\Service\TranslatorInterface;
 use Module\Shared\Enum\ServiceTypeEnum;
@@ -33,7 +33,7 @@ class BookingDtoFactory extends AbstractBookingDtoFactory
 
     public function createFromEntity(BookingInterface $booking): BookingDto
     {
-        assert($booking instanceof ServiceBooking);
+        assert($booking instanceof Booking);
 
         $details = $this->getDetailsRepository($booking->serviceType())->find($booking->id());
 
@@ -41,9 +41,9 @@ class BookingDtoFactory extends AbstractBookingDtoFactory
             id: $booking->id()->value(),
             status: $this->statusStorage->get($booking->status()),
             orderId: $booking->orderId()->value(),
-            createdAt: $booking->createdAt(),
+            createdAt: $booking->timestamps()->createdDate(),
             creatorId: $booking->creatorId()->value(),
-            price: $this->bookingPriceDtoFactory->createFromEntity($booking->price()),
+            price: $this->bookingPriceDtoFactory->createFromEntity($booking->prices()),
             cancelConditions: $booking->cancelConditions() !== null
                 ? CancelConditionsDto::fromDomain($booking->cancelConditions())
                 : null,

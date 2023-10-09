@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Application\Admin\HotelBooking\Dto\Details;
 
-use Module\Booking\Domain\HotelBooking\ValueObject\Details\Condition;
+use Module\Booking\Deprecated\HotelBooking\ValueObject\Details\Condition;
 use Module\Shared\Contracts\Domain\EntityInterface;
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Module\Shared\Support\Dto\AbstractDomainBasedDto;

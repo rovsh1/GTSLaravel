@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Module\Booking\Domain\Shared\Service;
 
 use Module\Booking\Deprecated\AirportBooking\AirportBooking;
-use Module\Booking\Domain\HotelBooking\HotelBooking;
-use Module\Booking\Domain\ServiceBooking\Repository\BookingRepositoryInterface;
+use Module\Booking\Deprecated\HotelBooking\HotelBooking;
+use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
 use Module\Booking\Infrastructure\HotelBooking\Repository\BookingRepository as HotelBookingRepository;
 use Module\Shared\Enum\ServiceTypeEnum;

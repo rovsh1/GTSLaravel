@@ -2,7 +2,7 @@
 
 namespace Module\Booking\Infrastructure\HotelBooking\Adapter;
 
-use Module\Booking\Domain\HotelBooking\Adapter\HotelRoomAdapterInterface;
+use Module\Booking\Deprecated\HotelBooking\Adapter\HotelRoomAdapterInterface;
 use Module\Catalog\Application\Admin\Room\Find;
 use Module\Catalog\Application\Admin\UseCase\GetRooms;
 

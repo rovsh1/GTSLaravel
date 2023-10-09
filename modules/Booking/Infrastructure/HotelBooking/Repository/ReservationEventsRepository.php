@@ -2,7 +2,7 @@
 
 namespace Module\Booking\Infrastructure\HotelBooking\Repository;
 
-use Module\Booking\Domain\HotelBooking\Repository\ReservationEventsRepositoryInterface;
+use Module\Booking\Deprecated\HotelBooking\Repository\ReservationEventsRepositoryInterface;
 use Module\Booking\Domain\Shared\ValueObject\BookingTypeEnum;
 use Module\Booking\Infrastructure\HotelBooking\Models\Event;
 

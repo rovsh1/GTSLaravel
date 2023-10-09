@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Deprecated;
 
 use Carbon\CarbonInterface;
-use Module\Booking\Domain\ServiceBooking\ValueObject\BookingPrice;
+use Module\Booking\Domain\Booking\ValueObject\BookingPrices;
 
 interface ReservedServiceInterface
 {
@@ -26,5 +26,5 @@ interface ReservedServiceInterface
     public function note(): ?string;
 
     //тут должна быть цена за услугу, итоговая цена и расчет (все цены гросс)
-    public function price(): BookingPrice;
+    public function price(): BookingPrices;
 }

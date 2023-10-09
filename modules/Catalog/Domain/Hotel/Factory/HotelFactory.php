@@ -2,7 +2,7 @@
 
 namespace Module\Catalog\Domain\Hotel\Factory;
 
-use Module\Catalog\Domain\Hotel\Entity\Hotel;
+use Module\Catalog\Domain\Hotel\Hotel;
 use Module\Catalog\Domain\Hotel\ValueObject\Address;
 use Module\Catalog\Domain\Hotel\ValueObject\Contact;
 use Module\Catalog\Domain\Hotel\ValueObject\ContactCollection;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Domain\Shared\Service;
 
-use Module\Booking\Domain\HotelBooking\Service\DocumentGenerator\VoucherGenerator;
+use Module\Booking\Deprecated\HotelBooking\Service\DocumentGenerator\VoucherGenerator;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
 use Module\Booking\Domain\Shared\Entity\Voucher;
 use Module\Booking\Domain\Shared\Repository\VoucherRepositoryInterface;

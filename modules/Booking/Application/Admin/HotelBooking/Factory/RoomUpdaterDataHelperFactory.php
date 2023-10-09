@@ -6,13 +6,13 @@ namespace Module\Booking\Application\Admin\HotelBooking\Factory;
 
 use Module\Booking\Application\Admin\HotelBooking\Request\AddRoomDto;
 use Module\Booking\Application\Admin\HotelBooking\Request\UpdateRoomDto;
-use Module\Booking\Domain\HotelBooking\Adapter\HotelRoomAdapterInterface;
-use Module\Booking\Domain\HotelBooking\Repository\BookingRepositoryInterface;
-use Module\Booking\Domain\HotelBooking\Service\RoomUpdater\UpdateDataHelper;
-use Module\Booking\Domain\HotelBooking\ValueObject\Details\Condition;
-use Module\Booking\Domain\HotelBooking\ValueObject\Details\RoomBooking\RoomBookingDetails;
-use Module\Booking\Domain\HotelBooking\ValueObject\Details\RoomBooking\RoomInfo;
-use Module\Booking\Domain\HotelBooking\ValueObject\RoomPrice;
+use Module\Booking\Deprecated\HotelBooking\Adapter\HotelRoomAdapterInterface;
+use Module\Booking\Deprecated\HotelBooking\Repository\BookingRepositoryInterface;
+use Module\Booking\Deprecated\HotelBooking\Service\RoomUpdater\UpdateDataHelper;
+use Module\Booking\Deprecated\HotelBooking\ValueObject\Details\Condition;
+use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomBookingDetails;
+use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomInfo;
+use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomPrices;
 use Module\Booking\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Shared\ValueObject\Percent;
 use Module\Shared\ValueObject\TimePeriod;
@@ -28,7 +28,7 @@ class RoomUpdaterDataHelperFactory
     public function build(
         AddRoomDto|UpdateRoomDto $request,
         GuestIdCollection $guestIds,
-        RoomPrice $price
+        RoomPrices $price
     ): UpdateDataHelper {
         $booking = $this->bookingRepository->find($request->bookingId);
         if ($booking === null) {

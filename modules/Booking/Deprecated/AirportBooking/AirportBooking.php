@@ -8,9 +8,9 @@ use Carbon\CarbonImmutable;
 use Module\Booking\Deprecated\AirportBooking\ValueObject\Details\AdditionalInfo;
 use Module\Booking\Deprecated\AirportBooking\ValueObject\Details\AirportInfo;
 use Module\Booking\Deprecated\AirportBooking\ValueObject\Details\ServiceInfo;
+use Module\Booking\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Domain\Booking\ValueObject\BookingPrices;
 use Module\Booking\Domain\Order\ValueObject\OrderId;
-use Module\Booking\Domain\ServiceBooking\ValueObject\BookingId;
-use Module\Booking\Domain\ServiceBooking\ValueObject\BookingPrice;
 use Module\Booking\Domain\Shared\Entity\AbstractBooking;
 use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
 use Module\Booking\Domain\Shared\ValueObject\CancelConditions;
@@ -25,7 +25,7 @@ class AirportBooking extends AbstractBooking
         BookingStatusEnum $status,
         CarbonImmutable $createdAt,
         CreatorId $creatorId,
-        BookingPrice $price,
+        BookingPrices $price,
         private readonly ServiceInfo $serviceInfo,
         private readonly AirportInfo $airportInfo,
         private CarbonImmutable $date,

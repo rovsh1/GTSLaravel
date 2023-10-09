@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Application\Admin\HotelBooking\UseCase;
 
 use Illuminate\Database\Eloquent\Builder;
-use Module\Booking\Domain\HotelBooking\Repository\BookingRepositoryInterface;
+use Module\Booking\Deprecated\HotelBooking\Repository\BookingRepositoryInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class BulkDeleteBookings implements UseCaseInterface
