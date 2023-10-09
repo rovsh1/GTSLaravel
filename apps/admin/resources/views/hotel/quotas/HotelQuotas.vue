@@ -15,12 +15,11 @@ import { injectInitialData } from '~lib/vue'
 
 import BaseLayout from '~components/BaseLayout.vue'
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
-import LoadingSpinner from '~components/LoadingSpinner.vue'
 
 import QuotasFilters from './components/QuotasFilters/QuotasFilters.vue'
 import RoomQuotasComponent from './components/RoomQuotas.vue'
 
-import { getRoomQuotas, RoomQuotas } from './components/lib'
+import { Day, getRoomQuotas, Month, RoomQuota } from './components/lib'
 import { defaultFiltersPayload, FiltersPayload, intervalByMonthsCount } from './components/QuotasFilters/lib'
 
 const { hotelID } = injectInitialData(z.object({
@@ -67,17 +66,22 @@ const {
   }
 }))
 
-const roomsQuotas = ref<RoomQuotas[] | null>(null)
+const quotasPeriod = ref<Day[]>([])
+const quotasPeriodMonths = ref<Month[]>([])
+const allQuotas = ref<Map<string, RoomQuota>>(new Map<string, RoomQuota>([]))
 
 const fetchHotelQuotasWrapper = async () => {
   waitLoadAndRedrawData.value = true
   try {
     await fetchHotelQuotas()
-    roomsQuotas.value = getRoomQuotas({
-      rooms: rooms.value,
+    const roomsQuotasAccumalationData = getRoomQuotas({
       filters: filtersPayload.value,
       quotas: hotelQuotas.value,
     })
+    const { period, months, quotas } = roomsQuotasAccumalationData
+    quotasPeriod.value = period
+    quotasPeriodMonths.value = months
+    allQuotas.value = quotas
     nextTick(() => {
       waitLoadAndRedrawData.value = false
       updatedRoomID.value = null
@@ -127,7 +131,7 @@ watchEffect(() => {
           :label="editable ? 'Готово' : 'Редактировать'"
           :start-icon="editable ? checkIcon : pencilIcon"
           severity="primary"
-          :disabled="roomsQuotas === null"
+          :disabled="rooms === null"
           @click="editable = !editable"
         />
       </template>
@@ -139,23 +143,24 @@ watchEffect(() => {
           @submit="value => handleFilters(value)"
           @switch-room="(value: number | null) => activeRoomID = value"
         />
-        <LoadingSpinner v-if="waitLoadAndRedrawData && roomsQuotas === null" />
-        <div v-else-if="hotel === null">
+
+        <div v-if="hotel === null">
           Не удалось найти данные для отеля.
         </div>
-        <div v-else-if="roomsQuotas === null">
+        <div v-else-if="rooms === null">
           Не удалось найти комнаты для этого отеля.
         </div>
         <div v-else class="quotasTables">
-          <template v-for="{ room, monthlyQuotas } in roomsQuotas">
+          <template v-for="room in rooms" :key="room.id">
             <RoomQuotasComponent
               v-if="room.id === activeRoomID || activeRoomID === null"
-              :key="room.id"
               :hotel="hotel"
               :room="room"
-              :monthly-quotas="monthlyQuotas"
+              :days="quotasPeriod"
+              :months="quotasPeriodMonths"
+              :all-quotas="allQuotas"
               :editable="editable"
-              :waiting-load-data="(updatedRoomID === room.id) ? waitLoadAndRedrawData : false"
+              :waiting-load-data="waitLoadAndRedrawData"
               :opening-day-menu-room-id="openingDayMenuRoomId"
               @open-day-menu-in-another-room="(value: number | null) => {
                 openingDayMenuRoomId = value

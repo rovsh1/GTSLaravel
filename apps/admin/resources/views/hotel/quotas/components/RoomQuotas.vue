@@ -5,28 +5,29 @@ import { OnClickOutside } from '@vueuse/components'
 
 import { HotelResponse } from '~api/hotel/get'
 import {
-  HotelRoomQuotasCountUpdateProps,
-  HotelRoomQuotasUpdateProps, HotelRoomReleaseDaysUpdateProps,
+  HotelRoomQuotasUpdateProps,
   useHotelRoomQuotasUpdate,
 } from '~api/hotel/quotas/update'
+import { HotelRoom } from '~api/hotel/room'
 
-import { formatDateToAPIDate } from '~lib/date'
-import { plural } from '~lib/plural'
-
+// import { formatDateToAPIDate } from '~lib/date'
 import OverlayLoading from '~components/OverlayLoading.vue'
 
 import DayMenu from './DayMenu/DayMenu.vue'
 import EditableCell from './EditableCell.vue'
 import RoomHeader from './RoomHeader.vue'
 
-import { useDayMenu } from './DayMenu/use-day-menu'
-import { ActiveKey, getActiveCellKey, MonthlyQuota, RoomQuota, RoomQuotaStatus, RoomRender } from './lib'
-import { EditedQuota, QuotaRange, useQuotasTableRange } from './lib/use-range'
+import { MenuParams, useDayMenu } from './DayMenu/use-day-menu'
+import { Day, Month, RoomQuota, RoomQuotaStatus } from './lib'
+import { QuotaRange } from './lib/use-range'
+// import { EditedQuota, QuotaRange, useQuotasTableRange } from './lib/use-range'
 
 const props = defineProps<{
   hotel: HotelResponse
-  room: RoomRender
-  monthlyQuotas: MonthlyQuota[]
+  room: HotelRoom
+  days: Day[]
+  months: Month[]
+  allQuotas: Map<string, RoomQuota>
   editable: boolean
   waitingLoadData: boolean
   openingDayMenuRoomId: number | null
@@ -54,13 +55,9 @@ const dayCellClassNameByRoomQuotaStatus: Record<RoomQuotaStatus, string> = {
 const dayQuotaCellClassName = (status: RoomQuota['status']) =>
   ['dayQuotaCell', status !== null && dayCellClassNameByRoomQuotaStatus[status]]
 
-const allMonthsDailyQuotas = computed(() =>
-  props.monthlyQuotas.map(({ dailyQuota }) => dailyQuota).flat())
-
-const editedQuotasCount = ref<number | null>(null)
-const activeQuotasCountKey = ref<ActiveKey>(null)
-const editedQuotasCountInRange = ref<EditedQuota | null>(null)
-const {
+// const allMonthsDailyQuotas = computed(() =>
+// props.monthlyQuotas.map(({ dailyQuota }) => dailyQuota).flat())
+/* const {
   rangeRef: quotasCountRange,
   setRange: setQuotasCountRange,
   setPick: setQuotasCountPick,
@@ -73,35 +70,22 @@ const {
   editedRef: editedQuotasCount,
   activeKey: activeQuotasCountKey,
   editedInRange: editedQuotasCountInRange,
-})
+}) */
 
-const goEditQuotas = ref<boolean>(false)
-
-const editedReleaseDays = ref<number | null>(null)
-const activeReleaseDaysKey = ref<ActiveKey>(null)
-const editedReleaseDaysInRange = ref<EditedQuota | null>(null)
-const {
+/* const {
   rangeRef: releaseDaysRange,
-  // setRange: setReleaseDaysRange,
-  // setPick: setReleaseDaysPick,
-  // isCellInRange: isReleaseDaysCellInRange,
-  // handleInput: handleReleaseDaysInput,
-  // showEdited: showEditedReleaseDays,
-  // setEdited: setEditedInRangeReleaseDays,
+  setRange: setReleaseDaysRange,
+  setPick: setReleaseDaysPick,
+  isCellInRange: isReleaseDaysCellInRange,
+  handleInput: handleReleaseDaysInput,
+  showEdited: showEditedReleaseDays,
+  setEdited: setEditedInRangeReleaseDays,
 } = useQuotasTableRange({
   roomQuotas: allMonthsDailyQuotas,
   editedRef: editedReleaseDays,
   activeKey: activeReleaseDaysKey,
   editedInRange: editedReleaseDaysInRange,
-})
-
-const resetActiveKey = () => {
-  activeQuotasCountKey.value = null
-  editedQuotasCount.value = null
-  activeReleaseDaysKey.value = null
-  editedReleaseDays.value = null
-  dayMenuActionCompleted.value = false
-}
+}) */
 
 const {
   dayMenuRef,
@@ -114,13 +98,12 @@ const getDatesFromRange = (range: QuotaRange): Date[] | null => (range === null
   ? null
   : range.quotas.map(({ date }) => date))
 
-const dayMenuDates = computed<Date[] | null>(() => {
-  const fromQuotasCount = getDatesFromRange(quotasCountRange.value)
-  const fromReleaseDaysRange = getDatesFromRange(releaseDaysRange.value)
-  const fromMenuPosition = dayMenuPosition.value === null ? null : [dayMenuPosition.value.date]
+const dayMenuDates = computed<Date[] | null>(() =>
+// const fromQuotasCount = getDatesFromRange(quotasCountRange.value)
+// const fromReleaseDaysRange = getDatesFromRange(releaseDaysRange.value)
+// const fromMenuPosition = dayMenuPosition.value === null ? null : [dayMenuPosition.value.date]
 
-  return fromQuotasCount || fromReleaseDaysRange || fromMenuPosition
-})
+  [])
 
 const dayMenuDone = () => {
   closeDayMenu()
@@ -142,10 +125,11 @@ watch(hotelRoomQuotasUpdateData, (value) => {
   if (value === null || !value.success) return
   hotelRoomQuotasUpdateProps.value = null
   emit('update', props.room.id)
-  activeQuotasCountKey.value = null
-  activeReleaseDaysKey.value = null
+  // activeQuotasCountKey.value = null
+  // activeReleaseDaysKey.value = null
 })
 
+/*
 type GetQuotasCountPayload = HandleValue<HotelRoomQuotasCountUpdateProps>
 const getQuotasCountPayload: GetQuotasCountPayload = (date, value) => {
   const common = {
@@ -164,7 +148,7 @@ const getQuotasCountPayload: GetQuotasCountPayload = (date, value) => {
   const { quotas } = range
   return {
     ...common,
-    dates: quotas.map((quota) => formatDateToAPIDate(quota.date)),
+    dates: quotas.map((quota: any) => formatDateToAPIDate(quota.date)),
     count: value,
   }
 }
@@ -192,7 +176,7 @@ const getReleaseDaysPayload: GetReleaseDaysPayload = (date, value) => {
   const { quotas } = range
   return {
     ...common,
-    dates: quotas.map((quota) => formatDateToAPIDate(quota.date)),
+    dates: quotas.map((quota: any) => formatDateToAPIDate(quota.date)),
     releaseDays: value,
   }
 }
@@ -200,20 +184,118 @@ const getReleaseDaysPayload: GetReleaseDaysPayload = (date, value) => {
 const handleReleaseDaysValue: HandleValue<void> = (date, value) => {
   hotelRoomQuotasUpdateProps.value = getReleaseDaysPayload(date, value)
   executeHotelRoomQuotasUpdate()
+} */
+
+const editedQuotasCount = ref<number | null>(null)
+const activeQuotasCountKey = ref<string | null>(null)
+
+const editedReleaseDays = ref<number | null>(null)
+const activeReleaseDaysKey = ref<string | null>(null)
+
+const activeCellType = ref<string | null>(null)
+
+const months = computed<Month[]>(() => props.months)
+
+const allQuotas = computed<Map<string, RoomQuota>>(() => props.allQuotas)
+
+const daysLocal = computed<Day[]>(() => props.days)
+
+const quotasRange = ref<string[]>([])
+const releaseDaysRange = ref<string[]>([])
+
+const getDayDataByPropertyName = (key: string, roomID: number, property: keyof RoomQuota): any => {
+  const genKey = `${key}-${roomID}`
+  let value: RoomQuota | undefined | null = null
+  if (allQuotas.value.has(genKey)) {
+    value = allQuotas.value.get(genKey)
+    if (value) {
+      return value[property] !== null && value[property] !== undefined ? value[property] : null
+    }
+  }
+  return null
+}
+
+const inQuotasRange = (key: string | null): boolean => {
+  if (!key) return false
+  if (quotasRange.value.includes(key)) {
+    return true
+  }
+  return false
+}
+
+const inReleaseDaysRange = (key: string | null): boolean => {
+  if (!key) return false
+  if (releaseDaysRange.value.includes(key)) {
+    return true
+  }
+  return false
+}
+
+const addRangeToRangeReleaseDays = (key: string | null) => {
+  const index1 = daysLocal.value.findIndex((item) => `${item.key}-${props.room.id}` === activeReleaseDaysKey.value)
+  const index2 = daysLocal.value.findIndex((item) => `${item.key}-${props.room.id}` === key)
+  if (index1 === -1 || index2 === -1) {
+    return
+  }
+  const start = Math.min(index1, index2)
+  const end = Math.max(index1, index2) + 1
+  const subArray = daysLocal.value.slice(start, end)
+  releaseDaysRange.value = subArray.map((dayItem) => `${dayItem.key}-${props.room.id}`)
+}
+
+const addRangeToRangeQuotas = (key: string | null) => {
+  const index1 = daysLocal.value.findIndex((item) => `${item.key}-${props.room.id}` === activeQuotasCountKey.value)
+  const index2 = daysLocal.value.findIndex((item) => `${item.key}-${props.room.id}` === key)
+  if (index1 === -1 || index2 === -1) {
+    return
+  }
+  const start = Math.min(index1, index2)
+  const end = Math.max(index1, index2) + 1
+  const subArray = daysLocal.value.slice(start, end)
+  quotasRange.value = subArray.map((dayItem) => `${dayItem.key}-${props.room.id}`)
+}
+
+const addPickToRangeReleaseDays = (key: string | null) => {
+  if (!key || !activeReleaseDaysKey.value) return
+  if (inReleaseDaysRange(key)) {
+    const index = releaseDaysRange.value.indexOf(key)
+    if (index !== -1) {
+      releaseDaysRange.value.splice(index, 1)
+    }
+  } else {
+    releaseDaysRange.value.push(key)
+  }
+}
+
+const addPickToRangeQuotas = (key: string | null) => {
+  if (!key || !activeQuotasCountKey.value) return
+  if (inQuotasRange(key)) {
+    const index = quotasRange.value.indexOf(key)
+    if (index !== -1) {
+      quotasRange.value.splice(index, 1)
+    }
+  } else {
+    quotasRange.value.push(key)
+  }
+}
+
+const resetActiveKey = () => {
+  activeQuotasCountKey.value = null
+  editedQuotasCount.value = null
+  quotasRange.value = []
+  releaseDaysRange.value = []
+  dayMenuActionCompleted.value = false
 }
 
 </script>
 <template>
   <div>
     <div class="roomHeader">
-      <room-header :label="room.label" :guests="room.guests" :count="room.count" />
+      <room-header :label="room.name" :guests="room.guestsCount" :count="room.roomsNumber" />
     </div>
     <div class="quotasTables">
       <OverlayLoading v-if="isHotelRoomQuotasUpdateFetching || waitingLoadData" />
-      <div
-        class="quotasTable card"
-        @scroll="closeDayMenu"
-      >
+      <div class="quotasTable card" @scroll="closeDayMenu">
         <table class="card-body">
           <thead>
             <tr>
@@ -221,22 +303,14 @@ const handleReleaseDaysValue: HandleValue<void> = (date, value) => {
                 Месяц
               </th>
               <td
-                v-for="{ monthKey, monthName, days, quotasCount } in monthlyQuotas"
-                :key="monthKey + '-month'"
-                :colspan="days.length"
+                v-for="{ monthKey, daysCount, monthName } in months"
+                :key="monthKey + '-' + room.id"
+                :colspan="daysCount"
                 class="headingCell"
-                :class="[monthlyQuotas.length > 1 ? 'month-splitter' : '']"
+                :class="[months.length > 1 ? 'month-splitter' : '']"
               >
                 <div class="monthName">
-                  {{ monthName }}
-                  <strong>
-                    <template v-if="quotasCount > 0">
-                      ({{ plural(quotasCount, ['день', 'дня', 'дней']) }} из {{ days.length }})
-                    </template>
-                    <template v-else>
-                      (Пусто)
-                    </template>
-                  </strong>
+                  <b>{{ monthName }}</b>
                 </div>
               </td>
             </tr>
@@ -244,20 +318,14 @@ const handleReleaseDaysValue: HandleValue<void> = (date, value) => {
               <th class="headingCell">
                 День / Число
               </th>
-              <template v-for="{ monthKey, days } in monthlyQuotas" :key="monthKey.key + '-days'">
-                <template
-                  v-for="(day, index) in days"
-                  :key="day.key + '-day'"
-                >
-                  <td
-                    class="dayCell"
-                    :class="{ isHoliday: day.isHoliday, 'month-splitter': monthlyQuotas.length > 1 && index === days.length - 1 }"
-                    tabindex="0"
-                  >
-                    <div class="dayOfWeek">{{ day.dayOfWeek }}</div>
-                    <div class="dayOfMonth"><strong>{{ day.dayOfMonth }}</strong></div>
-                  </td>
-                </template>
+              <template
+                v-for="{ key, isHoliday, dayOfWeek, dayOfMonth, isLastDayInMonth } in daysLocal"
+                :key="key + '-' + room.id"
+              >
+                <td class="dayCell" :class="{ isHoliday: isHoliday, 'month-splitter': isLastDayInMonth }" tabindex="0">
+                  <div class="dayOfWeek">{{ dayOfWeek }}</div>
+                  <div class="dayOfMonth"><strong>{{ dayOfMonth }}</strong></div>
+                </td>
               </template>
             </tr>
           </thead>
@@ -274,103 +342,92 @@ const handleReleaseDaysValue: HandleValue<void> = (date, value) => {
                   Продано / Резерв
                 </div>
               </th>
-              <template v-for="{ monthKey, dailyQuota } in monthlyQuotas" :key="monthKey.key + '-days'">
+              <template v-for="{ key, isLastDayInMonth } in daysLocal" :key="key">
                 <td
-                  v-for="{ key, quota, status, date, releaseDays, sold, reserve } in dailyQuota"
-                  :key="key"
-                  :class="dayQuotaCellClassName(status)"
-                  tabindex="0"
+                  :class="[dayQuotaCellClassName(getDayDataByPropertyName(key, room.id, 'status')), isLastDayInMonth ? 'month-splitter' : '']"
+                  tabindex="-1"
                 >
-                  <div class="content-height">
-                    <button
-                      v-if="!goEditQuotas"
-                      type="button"
-                      @click="goEditQuotas = true"
-                    >
-                      {{ editedQuotasCount === null
-                        ? (quota === null ? '' : quota.toString())
-                        : editedQuotasCount.toString() }}
-                    </button>
-                    <editable-cell
-                      v-else
+                  <div tabindex="-1" class="content-height">
+                    <EditableCell
                       :day-menu-ref="dayMenuElementRef"
                       :day-menu-action-completed="dayMenuActionCompleted || isOpeningAnotherRoomDayMenu"
-                      :active-key="activeQuotasCountKey"
-                      :cell-key="getActiveCellKey(key, room.id)"
-                      :value="editedQuotasCount === null
-                        ? (quota === null ? '' : quota.toString())
-                        : editedQuotasCount.toString()
+                      :value="editedQuotasCount !== null && inQuotasRange(`${key}-${room.id}`) ? editedQuotasCount : getDayDataByPropertyName(key, room.id, 'quota')
                       "
-                      :max="room.count"
-                      :range-error="(min, max) => `Есть только ${max} таких комнат`"
-                      :disabled="!editable || isHotelRoomQuotasUpdateFetching"
-                      :in-range="isQuotasCountCellInRange(getActiveCellKey(key, room.id))"
-                      :init-value="quota === null ? '' : quota.toString()"
-                      @reset-edited-value-to-init="(value) => {
-                        setEditedInRangeQuotasCount(key, value)
-                        editedQuotasCount = value
-                      }"
-                      @active-key="(value: ActiveKey) => {
+                      cell-type="quota"
+                      :active-cell-type="activeCellType"
+                      :cell-key="`${key}-${room.id}`"
+                      :active-key="activeQuotasCountKey"
+                      :room-i-d="room.id"
+                      :editable="editable"
+                      :in-range="inQuotasRange(`${key}-${room.id}`)"
+                      :range-exist="quotasRange && quotasRange.length > 0"
+                      @change="console.log('send')"
+                      @input="value => editedQuotasCount = value"
+                      @pick-key="value => addPickToRangeQuotas(value)"
+                      @range-key="value => addRangeToRangeQuotas(value)"
+                      @active-key="(value, type) => {
                         activeQuotasCountKey = value
+                        activeCellType = type
                         activeReleaseDaysKey = null
+                        editedQuotasCount = getDayDataByPropertyName(key, room.id, 'quota')
                       }"
-                      @reset="resetActiveKey"
-                      @range-key="(value: ActiveKey) => {
-                        setQuotasCountRange({
-                          dailyQuota,
-                          roomTypeID: room.id,
-                          activeKey: activeQuotasCountKey,
-                          rangeKey: value,
-                        })
-                      }"
-                      @pick-key="(value: ActiveKey) => {
-                        setQuotasCountPick({
-                          oldRange: quotasCountRange as QuotaRange,
-                          roomTypeID: room.id,
-                          activeKey: activeQuotasCountKey,
-                          pickKey: value,
-                        })
-                      }"
-                      @value="value => handleQuotaValue(date, value)"
-                      @input="value => handleQuotasCountInput(getActiveCellKey(key, room.id), value)"
                       @context-menu="(element) => {
+                        const dateCustom = getDayDataByPropertyName(key, room.id, 'date') as Date
                         openDayMenu({
-                          trigger: element, date, dayKey: key, roomTypeID: room.id,
-                        })
+                          trigger: element, dayKey: key, roomTypeID: room.id,
+                        } as MenuParams)
                         emit('open-day-menu-in-another-room', room.id)
                       }"
+                      @reset="resetActiveKey"
+                    />
+                  </div>
+                  <div class="content-height">
+                    <EditableCell
+                      :value="editedReleaseDays !== null && inReleaseDaysRange(`${key}-${room.id}`) ? editedReleaseDays : getDayDataByPropertyName(key, room.id, 'releaseDays')
+                      "
+                      cell-type="releaseDay"
+                      :active-cell-type="activeCellType"
+                      :cell-key="`${key}-${room.id}`"
+                      :active-key="activeReleaseDaysKey"
+                      :room-i-d="room.id"
+                      :editable="editable"
+                      :in-range="inReleaseDaysRange(`${key}-${room.id}`)"
+                      :range-exist="releaseDaysRange && releaseDaysRange.length > 0"
+                      @change="console.log('send')"
+                      @input="value => editedQuotasCount = value"
+                      @pick-key="value => addPickToRangeReleaseDays(value)"
+                      @range-key="value => addRangeToRangeReleaseDays(value)"
+                      @active-key="(value, type) => {
+                        activeQuotasCountKey = null
+                        activeCellType = type
+                        activeReleaseDaysKey = value
+                        editedReleaseDays = getDayDataByPropertyName(key, room.id, 'releaseDays')
+                      }"
+                      @context-menu="(element) => {
+                        const dateCustom = getDayDataByPropertyName(key, room.id, 'date') as Date
+                        openDayMenu({
+                          trigger: element, dayKey: key, roomTypeID: room.id,
+                        } as MenuParams)
+                        emit('open-day-menu-in-another-room', room.id)
+                      }"
+                      @reset="resetActiveKey"
+                    />
+                  </div>
+                  <div class="content-height">
+                    <template
+                      v-if="getDayDataByPropertyName(key, room.id, 'sold') === null && getDayDataByPropertyName(key, room.id, 'reserve') === null"
                     >
-                      <template v-if="showEditedQuotasCount(getActiveCellKey(key, room.id))">
-                        {{ editedQuotasCountInRange?.value }}
-                      </template>
-                      <template v-else-if="quota === null">
-                        <template v-if="editable">—</template>
-                        <template v-else>&nbsp;</template>
-                      </template>
-                      <template v-else>
-                        {{ quota }}
-                      </template>
-                    </editable-cell>
-                  </div>
-                  <div class="content-height">
-                    <span v-if="true">
-                      {{ editedReleaseDays === null
-                        ? releaseDays === null ? '' : releaseDays.toString()
-                        : editedReleaseDays.toString() }}
-                    </span>
-                  </div>
-                  <div class="content-height">
-                    <template v-if="sold === null && reserve === null">
-                  &nbsp;
+                      &nbsp;
                     </template>
-                    <template v-else-if="sold === null">
-                      0 / {{ reserve }}
+                    <template v-else-if="getDayDataByPropertyName(key, room.id, 'sold') === null">
+                      0 / {{ getDayDataByPropertyName(key, room.id, 'reserve') }}
                     </template>
-                    <template v-else-if="reserve === null">
-                      {{ sold }} / 0
+                    <template v-else-if="getDayDataByPropertyName(key, room.id, 'reserve') === null">
+                      {{ getDayDataByPropertyName(key, room.id, 'sold') }} / 0
                     </template>
                     <template v-else>
-                      {{ sold }} / {{ reserve }}
+                      {{ getDayDataByPropertyName(key, room.id, 'sold') }} /
+                      {{ getDayDataByPropertyName(key, room.id, 'reserve') }}
                     </template>
                   </div>
                 </td>
@@ -512,7 +569,7 @@ th {
 }
 
 .month-splitter {
-  border-right: 1px solid #000;
+  border-right: 1px solid var(--bs-card-border-color);
 }
 
 tr td:last-child {
@@ -520,6 +577,9 @@ tr td:last-child {
 }
 
 .content-height {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 36px;
 }
 </style>

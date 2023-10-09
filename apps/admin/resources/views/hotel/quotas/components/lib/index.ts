@@ -4,17 +4,8 @@ import { FiltersPayload } from '~resources/views/hotel/quotas/components/QuotasF
 
 import { HotelRoomID } from '~api/hotel'
 import { HotelQuotaID, QuotaStatus, UseHotelQuota } from '~api/hotel/quotas/list'
-import { UseHotelRooms } from '~api/hotel/rooms'
 
 import { getEachDayInMonth, isBusinessDay } from '~lib/date'
-
-export type Day = {
-  key: string
-  date: Date
-  dayOfWeek: string
-  dayOfMonth: string
-  isHoliday: boolean
-}
 
 export type RoomQuotaStatus = 'opened' | 'closed'
 
@@ -28,6 +19,24 @@ export type RoomQuota = {
   sold: number | null
   reserve: number | null
   releaseDays: number | null
+}
+
+export type Day = {
+  key: string
+  date: Date
+  dayOfWeek: string
+  dayOfMonth: string
+  isHoliday: boolean
+  monthKey: string
+  monthName: string
+  isLastDayInMonth: boolean
+  dayQuota: RoomQuota | null
+}
+
+export type Month = {
+  monthKey: string
+  monthName: string
+  daysCount: number
 }
 
 const quotaStatusMap: Record<QuotaStatus, RoomQuotaStatus | undefined> = {
@@ -47,110 +56,80 @@ export type RoomRender = {
   count: number
 }
 
-export type MonthlyQuota = {
-  monthKey: string
-  dailyQuota: RoomQuota[]
-  monthName: string
-  days: Day[]
-  quotasCount: number
-}
-
-export type RoomQuotas = {
-  room: RoomRender
-  monthlyQuotas: MonthlyQuota[]
+export type QuotasAccumalationData = {
+  period: Day[]
+  months: Month[]
+  quotas: Map<string, RoomQuota>
 }
 
 type GetRoomQuotas = (params: {
-  rooms: UseHotelRooms
   filters: FiltersPayload
   quotas: UseHotelQuota
-}) => RoomQuotas[] | null
+}) => QuotasAccumalationData
 
-export const getRoomQuotas: GetRoomQuotas = ({ rooms, filters, quotas }) => {
-  if (!rooms) return null
-  console.log('start kurwa')
+export const getRoomQuotas: GetRoomQuotas = ({ filters, quotas }) => {
   const { year, month, monthsCount } = filters
 
-  let startDate = DateTime.fromFormat(getMonthKey(year, month), monthKeyFormat)
-  const eachDays = getEachDayInMonth(startDate.toJSDate())
+  const roomQuotasMap = new Map<string, RoomQuota>()
 
-  return rooms.map((room) => {
-    const {
-      id,
-      name: label,
-      guestsCount: guests,
-      roomsNumber: count,
-    } = room
-
-    startDate = DateTime.fromFormat(getMonthKey(year, month), monthKeyFormat)
-    const endDate = startDate.plus({ months: monthsCount })
-
-    const roomQuotasMap = new Map<string, RoomQuota>()
-
-    if (quotas) {
-      quotas
-        .filter((hotelQuota) => hotelQuota.roomID === id)
-        .forEach((hotelQuota) => {
-          const key = DateTime.fromFormat(hotelQuota.date, quotaDateFormat)
-            .toJSDate()
-            .getTime()
-            .toString() + hotelQuota.roomID
-          roomQuotasMap.set(key, {
-            key,
-            id: hotelQuota.id,
-            roomID: id,
-            date: new Date(key),
-            status: quotaStatusMap[hotelQuota.status] || null,
-            quota: hotelQuota.count_available,
-            sold: hotelQuota.count_booked,
-            reserve: hotelQuota.count_reserved,
-            releaseDays: hotelQuota.release_days,
-          })
+  if (quotas) {
+    quotas
+      .forEach((hotelQuota) => {
+        const key = DateTime.fromFormat(hotelQuota.date, quotaDateFormat)
+          .toJSDate()
+          .getTime()
+          .toString()
+        roomQuotasMap.set(`${key}-${hotelQuota.roomID}`, {
+          key: `${key}-${hotelQuota.roomID}`,
+          id: hotelQuota.id,
+          roomID: hotelQuota.roomID,
+          date: new Date(key),
+          status: quotaStatusMap[hotelQuota.status] || null,
+          quota: hotelQuota.count_available,
+          sold: hotelQuota.count_booked,
+          reserve: hotelQuota.count_reserved,
+          releaseDays: hotelQuota.release_days,
         })
-    }
-
-    const monthlyQuotas: MonthlyQuota[] = []
-
-    let currentDate = startDate
-    while (currentDate < endDate) {
-      const days = [...eachDays].map((date) => {
-        const dt = DateTime.fromJSDate(date)
-        return {
-          key: date.getTime().toString(),
-          date,
-          dayOfWeek: dt.toFormat('EEE'),
-          dayOfMonth: dt.toFormat('d'),
-          isHoliday: !isBusinessDay(date),
-        }
       })
+  }
 
-      monthlyQuotas.push({
-        monthKey: currentDate.toFormat(monthKeyFormat),
-        dailyQuota: days.map(({ key }) => roomQuotasMap.get(key) || ({
-          key,
-          id: null,
-          roomID: id,
-          date: new Date(parseInt(key, 10)),
-          status: null,
-          quota: null,
-          sold: null,
-          reserve: null,
-          releaseDays: null,
-        })),
-        days,
-        monthName: currentDate.toFormat('LLLL yyyy'),
-        quotasCount: days.filter(({ date }) => roomQuotasMap.has(date.getTime().toString())).length,
-      })
+  const startDate = DateTime.fromFormat(getMonthKey(year, month), monthKeyFormat)
+  const endDate = startDate.plus({ months: monthsCount })
+  let eachDays: Day[] = []
+  const eachMonth: Month[] = []
+  let currentDate = startDate
+  while (currentDate < endDate) {
+    const monthKey = currentDate.toFormat(monthKeyFormat)
+    const monthName = currentDate.toFormat('LLLL yyyy')
+    const eachDaysList = getEachDayInMonth(currentDate.toJSDate())
+    const days = eachDaysList.map((date, index) => {
+      const dt = DateTime.fromJSDate(date)
+      return {
+        key: date.getTime().toString(),
+        date,
+        dayOfWeek: dt.toFormat('EEE'),
+        dayOfMonth: dt.toFormat('d'),
+        isHoliday: !isBusinessDay(date),
+        isLastDayInMonth: (eachDaysList.length === index + 1),
+        monthKey,
+        monthName,
+        dayQuota: null,
+      }
+    })
+    eachDays = [...eachDays, ...days]
+    eachMonth.push({
+      monthKey,
+      monthName,
+      daysCount: days.length,
+    })
+    currentDate = currentDate.plus({ months: 1 })
+  }
 
-      currentDate = currentDate.plus({ months: 1 })
-    }
-    console.log('end kurwa')
-    return {
-      id,
-      room: { id, label, guests, count },
-      monthlyQuotas,
-    }
-  })
+  return {
+    period: eachDays || [],
+    months: eachMonth || [],
+    quotas: roomQuotasMap,
+  }
 }
 
 export type ActiveKey = string | null
