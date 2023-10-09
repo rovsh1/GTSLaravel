@@ -96,11 +96,13 @@ class ContractController extends Controller
             ->hidden('supplier_id', ['value' => $supplierId])
             ->dateRange('period', ['label' => 'Период', 'required' => true])
             ->enum('status', ['label' => 'Статус', 'emptyItem' => '', 'enum' => StatusEnum::class, 'required' => true])
-            ->enum(
-                'service_type',
-                ['label' => 'Тип услуги', 'enum' => ContractServiceTypeEnum::class, 'required' => true, 'emptyItem' => '']
-            )
-            ->hidden('service_id', ['label' => 'Услуга'])
+            ->enum('service_type', [
+                'label' => 'Тип услуги',
+                'enum' => ContractServiceTypeEnum::class,
+                'required' => true,
+                'emptyItem' => ''
+            ])
+            ->hidden('service_id', ['label' => 'Услуга', 'required' => true])
             ->file('documents', ['label' => 'Документы', 'multiple' => true]);
     }
 
@@ -115,7 +117,7 @@ class ContractController extends Controller
             ->text('period', ['text' => 'Период', 'renderer' => fn($r, $t) => Format::period($t)])
             ->enum('status', ['text' => 'Статус', 'enum' => StatusEnum::class, 'order' => true])
             ->enum('service_type', ['text' => 'Тип услуги', 'enum' => ContractServiceTypeEnum::class])
-            ->text('service_name', ['text' => 'Услуга', 'renderer'=>fn($row, $val) => $row->service_name])
+            ->text('service_name', ['text' => 'Услуга', 'renderer' => fn($row, $val) => $row->service_name])
             ->file('documents', ['text' => 'Документы']);
     }
 
