@@ -43,13 +43,13 @@ class BookingDtoFactory extends AbstractBookingDtoFactory
             $booking->orderId()->value(),
             $booking->createdAt(),
             $booking->creatorId()->value(),
+            $this->bookingPriceDtoFactory->createFromEntity($booking->price()),
+            CancelConditionsDto::fromDomain($booking->cancelConditions()),
             $booking->note(),
             HotelInfoDto::fromDomain($booking->hotelInfo()),
             BookingPeriodDto::fromDomain($booking->period()),
             $booking->additionalInfo() !== null ? AdditionalInfoDto::fromDomain($booking->additionalInfo()) : null,
             $this->buildGuests($booking->roomBookings()),
-            CancelConditionsDto::fromDomain($booking->cancelConditions()),
-            $this->bookingPriceDtoFactory->createFromEntity($booking->price()),
             $booking->quotaProcessingMethod(),
         );
     }

@@ -107,7 +107,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         );
     }
 
-    public function store(Entity $booking): bool
+    public function store(BookingInterface|Entity $booking): bool
     {
         return \DB::transaction(function () use ($booking) {
             $base = $this->storeBase($booking);

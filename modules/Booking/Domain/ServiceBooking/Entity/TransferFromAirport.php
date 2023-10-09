@@ -19,12 +19,11 @@ class TransferFromAirport implements ServiceDetailsInterface
     public function __construct(
         private readonly DetailsId $id,
         private readonly AirportId $airportId,
-        protected string $flightNumber,
-        protected DateTimeInterface $arrivalDate,
-        protected string $meetingTablet,
-        protected CarBidCollection $carBids
-    ) {
-    }
+        private string $flightNumber,
+        private DateTimeInterface $arrivalDate,
+        private string $meetingTablet,
+        private CarBidCollection $carBids
+    ) {}
 
     public function serviceType(): ServiceTypeEnum
     {

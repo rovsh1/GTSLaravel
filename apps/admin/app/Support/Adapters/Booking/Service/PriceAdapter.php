@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Admin\Support\Adapters\Booking\Transfer;
+namespace App\Admin\Support\Adapters\Booking\Service;
 
-use Module\Booking\Application\TransferBooking\UseCase\Admin\Price\SetCalculatedGrossPrice;
-use Module\Booking\Application\TransferBooking\UseCase\Admin\Price\SetCalculatedNetPrice;
-use Module\Booking\Application\TransferBooking\UseCase\Admin\Price\SetGrossPenalty;
-use Module\Booking\Application\TransferBooking\UseCase\Admin\Price\SetManualGrossPrice;
-use Module\Booking\Application\TransferBooking\UseCase\Admin\Price\SetManualNetPrice;
-use Module\Booking\Application\TransferBooking\UseCase\Admin\Price\SetNetPenalty;
+use Module\Booking\Application\Admin\ServiceBooking\UseCase\Price\SetCalculatedGrossPrice;
+use Module\Booking\Application\Admin\ServiceBooking\UseCase\Price\SetCalculatedNetPrice;
+use Module\Booking\Application\Admin\ServiceBooking\UseCase\Price\SetGrossPenalty;
+use Module\Booking\Application\Admin\ServiceBooking\UseCase\Price\SetManualGrossPrice;
+use Module\Booking\Application\Admin\ServiceBooking\UseCase\Price\SetManualNetPrice;
+use Module\Booking\Application\Admin\ServiceBooking\UseCase\Price\SetNetPenalty;
 
 class PriceAdapter
 {

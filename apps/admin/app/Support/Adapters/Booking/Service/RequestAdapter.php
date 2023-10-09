@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Admin\Support\Adapters\Booking\Airport;
+namespace App\Admin\Support\Adapters\Booking\Service;
 
-use Module\Booking\Application\AirportBooking\UseCase\Admin\Request\GetBookingRequests;
-use Module\Booking\Application\AirportBooking\UseCase\Admin\Request\GetDocumentFileInfo;
-use Module\Booking\Application\AirportBooking\UseCase\Admin\Request\SendRequest;
+use Module\Booking\Application\Admin\ServiceBooking\UseCase\Request\GetBookingRequests;
+use Module\Booking\Application\Admin\ServiceBooking\UseCase\Request\GetDocumentFileInfo;
+use Module\Booking\Application\Admin\ServiceBooking\UseCase\Request\SendRequest;
 
 class RequestAdapter
 {

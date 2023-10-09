@@ -4,11 +4,36 @@ namespace Module\Booking\Domain\ServiceBooking\ValueObject;
 
 class CarBid
 {
-    private int $carId;
+    public function __construct(
+        private readonly CarId $carId,
+        private readonly int $carsCount,
+        private readonly int $passengersCount,
+        private readonly int $baggageCount,
+        private readonly int $babyCount,
+    ) {}
 
-    private int $passengersNumber;
+    public function carId(): CarId
+    {
+        return $this->carId;
+    }
 
-    private int $baggageCount;
+    public function carsCount(): int
+    {
+        return $this->carsCount;
+    }
 
-    private int $babyCount;
+    public function passengersCount(): int
+    {
+        return $this->passengersCount;
+    }
+
+    public function baggageCount(): int
+    {
+        return $this->baggageCount;
+    }
+
+    public function babyCount(): int
+    {
+        return $this->babyCount;
+    }
 }

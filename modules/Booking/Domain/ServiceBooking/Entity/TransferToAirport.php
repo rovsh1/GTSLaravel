@@ -18,9 +18,9 @@ class TransferToAirport implements ServiceDetailsInterface
     public function __construct(
         private readonly DetailsId $id,
         private readonly AirportId $airportId,
-        protected string $flightNumber,
-        protected DateTimeInterface $departureDate,
-        protected CarBidCollection $carBids
+        private string $flightNumber,
+        private DateTimeInterface $departureDate,
+        private CarBidCollection $carBids
     ) {
     }
 

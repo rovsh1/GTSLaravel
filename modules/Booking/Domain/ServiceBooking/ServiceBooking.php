@@ -6,13 +6,13 @@ namespace Module\Booking\Domain\ServiceBooking;
 
 use Carbon\CarbonImmutable;
 use Module\Booking\Domain\Order\ValueObject\OrderId;
-use Module\Booking\Domain\ServiceBooking\Entity\ServiceDetailsInterface;
 use Module\Booking\Domain\ServiceBooking\ValueObject\BookingId;
 use Module\Booking\Domain\ServiceBooking\ValueObject\BookingPrice;
 use Module\Booking\Domain\Shared\Entity\AbstractBooking;
 use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
 use Module\Booking\Domain\Shared\ValueObject\CancelConditions;
 use Module\Booking\Domain\Shared\ValueObject\CreatorId;
+use Module\Shared\Enum\ServiceTypeEnum;
 
 class ServiceBooking extends AbstractBooking
 {
@@ -23,16 +23,16 @@ class ServiceBooking extends AbstractBooking
         CarbonImmutable $createdAt,
         CreatorId $creatorId,
         BookingPrice $price,
-        private readonly ServiceDetailsInterface $serviceDetails,
         private ?CancelConditions $cancelConditions,
-        private ?string $note
+        private ?string $note,
+        private readonly ServiceTypeEnum $serviceType,
     ) {
         parent::__construct($id, $orderId, $status, $createdAt, $creatorId, $price);
     }
 
-    public function serviceDetails(): ServiceDetailsInterface
+    public function serviceType(): ServiceTypeEnum
     {
-        return $this->serviceDetails;
+        return $this->serviceType;
     }
 
     public function note(): ?string

@@ -34,7 +34,7 @@ interface BookingRepositoryInterface extends Base
         ?string $note = null
     ): AirportBooking;
 
-    public function store(AirportBooking $booking): bool;
+    public function store(BookingInterface|AirportBooking $booking): bool;
 
     public function delete(BookingInterface|AirportBooking $booking): void;
 }

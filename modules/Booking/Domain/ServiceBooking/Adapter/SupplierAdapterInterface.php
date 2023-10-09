@@ -26,4 +26,16 @@ interface SupplierAdapterInterface
     public function findTransferServiceContract(int $serviceId): ?ServiceContractDto;
 
     public function getTransferCancelConditions(): CancelConditionsDto;
+
+    public function getAirportServicePrice(
+        int $supplierId,
+        int $serviceId,
+        int $airportId,
+        CurrencyEnum $grossCurrency,
+        CarbonInterface $date
+    ): ?ServicePriceDto;
+
+    public function findAirportServiceContract(int $serviceId): ?ServiceContractDto;
+
+    public function getAirportCancelConditions(): CancelConditionsDto;
 }

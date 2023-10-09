@@ -5,13 +5,16 @@ declare(strict_types=1);
 namespace Module\Booking\Application\Admin\ServiceBooking\Factory;
 
 use Carbon\CarbonInterface;
+use Illuminate\Support\Arr;
 use Module\Booking\Domain\ServiceBooking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Domain\Shared\ValueObject\CancelCondition\CancelMarkupOption;
 use Module\Booking\Domain\Shared\ValueObject\CancelCondition\CancelPeriodTypeEnum;
 use Module\Booking\Domain\Shared\ValueObject\CancelCondition\DailyMarkupCollection;
 use Module\Booking\Domain\Shared\ValueObject\CancelCondition\DailyMarkupOption;
 use Module\Booking\Domain\Shared\ValueObject\CancelConditions;
+use Module\Shared\Enum\ServiceTypeEnum;
 use Module\Shared\ValueObject\Percent;
+use Module\Supplier\Application\Response\CancelConditionsDto;
 use Module\Supplier\Application\Response\DailyMarkupDto;
 
 class CancelConditionsFactory
@@ -20,12 +23,12 @@ class CancelConditionsFactory
         private readonly SupplierAdapterInterface $supplierAdapter
     ) {}
 
-    public function build(CarbonInterface|null $bookingDate = null): CancelConditions
+    public function build(ServiceTypeEnum $serviceType, CarbonInterface|null $bookingDate = null): CancelConditions
     {
-        $baseCancelConditions = $this->supplierAdapter->getTransferCancelConditions();
+        $baseCancelConditions = $this->getSupplierCancelConditions($serviceType);
         $cancelNoFeeDate = null;
         $dailyMarkupOptions = [];
-        $maxDaysCount = \Arr::first($baseCancelConditions->dailyMarkups)?->daysCount;
+        $maxDaysCount = Arr::first($baseCancelConditions->dailyMarkups)?->daysCount;
         if ($maxDaysCount !== null && $bookingDate !== null) {
             $cancelNoFeeDate = $bookingDate->clone()->subDays($maxDaysCount)->toImmutable();
             $dailyMarkupOptions = collect($baseCancelConditions->dailyMarkups)->map(
@@ -45,5 +48,18 @@ class CancelConditionsFactory
             dailyMarkups: new DailyMarkupCollection($dailyMarkupOptions),
             cancelNoFeeDate: $cancelNoFeeDate
         );
+    }
+
+    private function getSupplierCancelConditions(ServiceTypeEnum $serviceType): CancelConditionsDto
+    {
+        return match ($serviceType) {
+            ServiceTypeEnum::CIP_IN_AIRPORT => $this->supplierAdapter->getAirportCancelConditions(),
+            ServiceTypeEnum::CAR_RENT,
+            ServiceTypeEnum::TRANSFER_TO_RAILWAY,
+            ServiceTypeEnum::TRANSFER_FROM_RAILWAY,
+            ServiceTypeEnum::TRANSFER_TO_AIRPORT,
+            ServiceTypeEnum::TRANSFER_FROM_AIRPORT => $this->supplierAdapter->getAirportCancelConditions(),
+            default => throw new \Exception('Service type cancel conditions not implement')
+        };
     }
 }

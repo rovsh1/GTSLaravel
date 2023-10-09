@@ -9,8 +9,8 @@ import { Currency } from '~api/models'
 import { isInitialDataExists, requestInitialData, ViewInitialDataKey } from '~lib/initial-data'
 
 let initialDataKey: ViewInitialDataKey = 'view-initial-data-hotel-booking'
-if (isInitialDataExists('view-initial-data-airport-booking')) {
-  initialDataKey = 'view-initial-data-airport-booking'
+if (isInitialDataExists('view-initial-data-service-booking')) {
+  initialDataKey = 'view-initial-data-service-booking'
 }
 
 const { order, currencies } = requestInitialData(

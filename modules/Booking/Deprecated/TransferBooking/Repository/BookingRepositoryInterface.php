@@ -30,7 +30,7 @@ interface BookingRepositoryInterface extends Base
         ?string $note = null
     ): TransferBooking;
 
-    public function store(TransferBooking $booking): bool;
+    public function store(BookingInterface|TransferBooking $booking): bool;
 
     public function delete(BookingInterface|TransferBooking $booking): void;
 }

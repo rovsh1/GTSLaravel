@@ -1,4 +1,5 @@
 import { DateResponse } from '~api'
+import { CancelConditions } from '~api/booking/hotel/details'
 
 export type StatusID = number
 export type BookingID = number
@@ -38,6 +39,7 @@ export type BaseBooking = {
   source: number
   creatorId: number
   createdAt: DateResponse
-  note: string | null
   price: BookingPrice
+  cancelConditions: CancelConditions
+  note: string | null
 }

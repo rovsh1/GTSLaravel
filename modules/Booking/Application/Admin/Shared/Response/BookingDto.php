@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Application\Admin\Shared\Response;
 
 use Carbon\CarbonImmutable;
+use Module\Booking\Application\Admin\HotelBooking\Dto\Details\CancelConditionsDto;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
 use Module\Shared\Contracts\Domain\EntityInterface;
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
@@ -18,6 +19,9 @@ abstract class BookingDto extends AbstractDomainBasedDto
         public readonly int $orderId,
         public readonly CarbonImmutable $createdAt,
         public readonly int $creatorId,
+        public readonly BookingPriceDto $price,
+        public readonly CancelConditionsDto $cancelConditions,
+        public readonly ?string $note,
     ) {}
 
     public static function fromDomain(EntityInterface|ValueObjectInterface|BookingInterface $entity): static

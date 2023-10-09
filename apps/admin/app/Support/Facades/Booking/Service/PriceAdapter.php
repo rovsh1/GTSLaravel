@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Admin\Support\Facades\Booking\Transfer;
+namespace App\Admin\Support\Facades\Booking\Service;
 
 use Illuminate\Support\Facades\Facade;
 
@@ -18,6 +18,6 @@ class PriceAdapter extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return \App\Admin\Support\Adapters\Booking\Transfer\PriceAdapter::class;
+        return \App\Admin\Support\Adapters\Booking\Service\PriceAdapter::class;
     }
 }

@@ -72,7 +72,8 @@ return new class extends Migration {
     private function upBookingAirport(): void
     {
         Schema::create('booking_airport_details', function (Blueprint $table) {
-            $table->unsignedInteger('booking_id')->primary();
+            $table->increments('id');
+            $table->unsignedInteger('booking_id')->unique();
             $table->unsignedInteger('airport_id');
             $table->unsignedInteger('service_id');
             $table->date('date');
@@ -102,10 +103,11 @@ return new class extends Migration {
     private function upBookingTransfer(): void
     {
         Schema::create('booking_transfer_details', function (Blueprint $table) {
-            $table->unsignedInteger('booking_id')->primary();
+            $table->increments('id');
+            $table->unsignedInteger('booking_id')->unique();
             $table->unsignedInteger('service_id');
             $table->unsignedInteger('city_id');
-            $table->date('date_start')->nullable();
+            $table->date('date_start');
             $table->date('date_end')->nullable();
             $table->json('data');
             $table->timestamps();

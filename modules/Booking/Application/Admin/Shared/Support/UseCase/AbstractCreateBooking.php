@@ -17,7 +17,7 @@ abstract class AbstractCreateBooking implements UseCaseInterface
     ) {}
 
     //CreateHotelBookingDto|CreateAirportBooking|CreateTransferBooking
-    protected function getOrderIdFromRequest( $request): OrderId
+    protected function getOrderIdFromRequest($request): OrderId
     {
         $orderId = $request->orderId;
         if ($orderId === null) {

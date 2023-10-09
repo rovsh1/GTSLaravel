@@ -31,17 +31,16 @@ class CreateBooking extends AbstractCreateBooking
         if ($orderCurrency === null) {
             throw new EntityNotFoundException('Currency not found');
         }
-        $cancelConditions = $this->cancelConditionsFactory->build();
-        $booking = $this->repository->create(
+        $cancelConditions = $this->cancelConditionsFactory->build($request->serviceType);
+        $bookingId = $this->repository->create(
             orderId: $orderId,
             creatorId: new CreatorId($request->creatorId),
-            serviceId: $request->serviceId,
-            cityId: $request->cityId,
             cancelConditions: $cancelConditions,
             note: $request->note,
+            serviceType: $request->serviceType,
             price: BookingPrice::createEmpty(CurrencyEnum::UZS, $orderCurrency),//@todo netto валюта
         );
 
-        return $booking->id()->value();
+        return $bookingId->value();
     }
 }

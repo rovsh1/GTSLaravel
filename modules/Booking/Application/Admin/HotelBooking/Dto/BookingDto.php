@@ -27,34 +27,34 @@ class BookingDto extends BaseDto
         int $orderId,
         CarbonImmutable $createdAt,
         int $creatorId,
-        public readonly ?string $note,
+        BookingPriceDto $price,
+        CancelConditionsDto $cancelConditions,
+        ?string $note,
         public readonly HotelInfoDto $hotelInfo,
         public readonly BookingPeriodDto $period,
         public readonly ?AdditionalInfoDto $additionalInfo,
         /** @var RoomBookingDto[] $rooms */
         public readonly array $roomBookings,
-        public readonly CancelConditionsDto $cancelConditions,
-        public readonly BookingPriceDto $price,
         public readonly QuotaProcessingMethodEnum $quotaProcessingMethod,
     ) {
-        parent::__construct($id, $status, $orderId, $createdAt, $creatorId);
+        parent::__construct($id, $status, $orderId, $createdAt, $creatorId, $price, $cancelConditions, $note);
     }
 
-    public static function fromDomain(EntityInterface|BookingInterface|ValueObjectInterface|HotelBooking $entity): static
-    {
+    public static function fromDomain(EntityInterface|BookingInterface|ValueObjectInterface|HotelBooking $entity
+    ): static {
         return new static(
             $entity->id()->value(),
             $entity->status()->value,
             $entity->orderId()->value(),
             $entity->createdAt(),
             $entity->creatorId()->value(),
+            BookingPriceDto::fromDomain($entity->price()),
+            CancelConditionsDto::fromDomain($entity->cancelConditions()),
             $entity->note(),
             HotelInfoDto::fromDomain($entity->hotelInfo()),
             BookingPeriodDto::fromDomain($entity->period()),
             $entity->additionalInfo() !== null ? AdditionalInfoDto::fromDomain($entity->additionalInfo()) : null,
             RoomBookingDto::collectionFromDomain($entity->roomBookings()->all()),
-            CancelConditionsDto::fromDomain($entity->cancelConditions()),
-            BookingPriceDto::fromDomain($entity->price()),
             $entity->quotaProcessingMethod()
         );
     }

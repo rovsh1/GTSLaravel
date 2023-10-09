@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Module\Booking\Domain\Shared\Service;
 
 use Module\Booking\Deprecated\AirportBooking\AirportBooking;
-use Module\Booking\Deprecated\TransferBooking\TransferBooking;
 use Module\Booking\Domain\HotelBooking\HotelBooking;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
 use Module\Booking\Domain\Shared\ValueObject\BookingTypeEnum;
@@ -22,7 +21,7 @@ class BookingUpdater
         private readonly ModuleInterface $module
     ) {}
 
-    public function store(HotelBooking|AirportBooking|TransferBooking $booking): bool
+    public function store(BookingInterface $booking): bool
     {
         $success = $this->repository($booking)->store($booking);
         $this->eventDispatcher->dispatch(...$booking->pullEvents());
@@ -35,7 +34,7 @@ class BookingUpdater
      * @return bool
      * @todo подумать как точно провернить, что были изменения в броне
      */
-    public function storeIfHasEvents(HotelBooking|AirportBooking|TransferBooking $booking): bool
+    public function storeIfHasEvents(BookingInterface $booking): bool
     {
         $events = $booking->pullEvents();
         if (count($events) === 0) {
@@ -47,8 +46,8 @@ class BookingUpdater
         return $success;
     }
 
-    private function repository(BookingInterface $booking): HotelBookingRepository|AirportBookingRepository|TransferBookingRepository
-    {
+    private function repository(BookingInterface $booking
+    ): HotelBookingRepository|AirportBookingRepository|TransferBookingRepository {
         return match ($booking->type()) {
             BookingTypeEnum::HOTEL => $this->module->get(HotelBookingRepository::class),
             BookingTypeEnum::AIRPORT => $this->module->get(AirportBookingRepository::class),

@@ -386,7 +386,7 @@ onMounted(() => {
   </div>
 </template>
 
-<style lang="scss" scope>
+<style lang="scss" scoped>
 .pt-card-title {
   padding-top: 0.813rem;
 }
