@@ -33,7 +33,6 @@ import { HotelRate, useHotelRatesAPI } from '~api/hotel/price-rate'
 import { Currency } from '~api/models'
 
 import { showConfirmDialog } from '~lib/confirm-dialog'
-import { formatDate } from '~lib/date'
 import { requestInitialData } from '~lib/initial-data'
 import { formatPrice } from '~lib/price'
 
@@ -329,7 +328,7 @@ onMounted(() => {
               <tr v-for="dayPrice in room.price.dayPrices" :key="dayPrice.date">
                 <td>Стоимость брутто</td>
                 <td class="text-nowrap">
-                  {{ formatDate(dayPrice.date) }}
+                  {{ dayPrice.date }}
                 </td>
                 <td class="text-nowrap">
                   {{ formatPrice(dayPrice.grossValue, grossCurrency.sign) }}

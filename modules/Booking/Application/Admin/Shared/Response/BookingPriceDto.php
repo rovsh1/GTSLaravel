@@ -12,5 +12,6 @@ class BookingPriceDto extends Dto
         public readonly PriceItemDto $netPrice,
         public readonly PriceItemDto $grossPrice,
         public readonly PriceItemDto $profit,
+        public readonly ?PriceItemDto $convertedNetPrice = null
     ) {}
 }

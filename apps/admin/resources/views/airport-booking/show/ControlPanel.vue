@@ -50,6 +50,7 @@ const netCurrency = computed<Currency | undefined>(
 )
 
 const profit = computed<number>(() => bookingStore.booking?.price.profit.calculatedValue || 0)
+const convertedNetValue = computed<number>(() => bookingStore.booking?.price.convertedNetPrice?.calculatedValue || 0)
 
 const statusHistoryStore = useBookingStatusHistoryStore()
 const { fetchStatusHistory } = statusHistoryStore
@@ -233,7 +234,7 @@ const getDisplayPriceValue = (type: 'gross' | 'net') => {
 
     <div v-if="booking && grossCurrency && netCurrency" class="mt-2">
       Прибыль = {{ formatPrice(getDisplayPriceValue('gross'), grossCurrency.sign) }} - {{
-        formatPrice(getDisplayPriceValue('net'), netCurrency.sign) }} =
+        formatPrice(convertedNetValue, grossCurrency.sign) }} =
       {{
         formatPrice(profit, grossCurrency.sign)
       }}

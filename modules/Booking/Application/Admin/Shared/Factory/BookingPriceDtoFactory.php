@@ -11,14 +11,14 @@ use Module\Booking\Domain\ServiceBooking\ValueObject\BookingPriceItem;
 use Module\Shared\Contracts\Adapter\CurrencyRateAdapterInterface;
 use Module\Shared\Contracts\Service\TranslatorInterface;
 use Module\Shared\Dto\CurrencyDto;
+use Module\Shared\Enum\CurrencyEnum;
 
 class BookingPriceDtoFactory
 {
     public function __construct(
         private readonly TranslatorInterface $translator,
         private readonly CurrencyRateAdapterInterface $currencyRateAdapter,
-    ) {
-    }
+    ) {}
 
     public function createFromEntity(BookingPrice $entity): BookingPriceDto
     {
@@ -27,16 +27,19 @@ class BookingPriceDtoFactory
 
         $grossPriceDto = $this->makePriceItemDto($clientPriceItem);
         $netPriceDto = $this->makePriceItemDto($supplierPriceItem);
+        $convertedNetPriceDto = $this->getConvertedNetPrice($supplierPriceItem, $clientPriceItem->currency());
+        $convertedNetPriceValue = $convertedNetPriceDto?->calculatedValue ?? $netPriceDto->manualValue ?? $netPriceDto->calculatedValue;
 
         $profit = new PriceItemDto(
             CurrencyDto::fromEnum($clientPriceItem->currency(), $this->translator),
-            $this->calculateProfitValue($supplierPriceItem, $clientPriceItem),
+            $this->calculateProfitValue($supplierPriceItem, $convertedNetPriceValue),
             null,
             null,
             false
         );
 
-        return new BookingPriceDto($netPriceDto, $grossPriceDto, $profit);
+
+        return new BookingPriceDto($netPriceDto, $grossPriceDto, $profit, $convertedNetPriceDto);
     }
 
     private function makePriceItemDto(BookingPriceItem $priceItem): PriceItemDto
@@ -50,21 +53,32 @@ class BookingPriceDtoFactory
         );
     }
 
-    private function calculateProfitValue(BookingPriceItem $supplierPriceItem, BookingPriceItem $clientPriceItem): float
+    private function getConvertedNetPrice(BookingPriceItem $supplierPriceItem, CurrencyEnum $outCurrency): ?PriceItemDto
     {
         $netPriceValue = $supplierPriceItem->manualValue() ?? $supplierPriceItem->calculatedValue();
-        $grossPriceValue = $clientPriceItem->manualValue() ?? $clientPriceItem->calculatedValue();
-
-        if ($clientPriceItem->currency() === $supplierPriceItem->currency()) {
-            return $grossPriceValue - $netPriceValue;
+        if ($supplierPriceItem->currency() === $outCurrency) {
+            return null;
         }
 
         $netConvertedValue = $this->currencyRateAdapter->convertNetRate(
             $netPriceValue,
             $supplierPriceItem->currency(),
-            $clientPriceItem->currency(),
+            $outCurrency,
             'UZ'
         );
+
+        return new PriceItemDto(
+            currency: CurrencyDto::fromEnum($outCurrency, $this->translator),
+            calculatedValue: $netConvertedValue,
+            manualValue: null,
+            penaltyValue: null,
+            isManual: false,
+        );
+    }
+
+    private function calculateProfitValue(BookingPriceItem $clientPriceItem, float $netConvertedValue): float
+    {
+        $grossPriceValue = $clientPriceItem->manualValue() ?? $clientPriceItem->calculatedValue();
 
         return $grossPriceValue - $netConvertedValue;
     }

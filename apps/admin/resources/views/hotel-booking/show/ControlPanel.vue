@@ -68,6 +68,7 @@ const netCurrency = computed<Currency | undefined>(
   () => getCurrencyByCodeChar(bookingStore.booking?.price.netPrice.currency.value),
 )
 const profit = computed<number>(() => bookingStore.booking?.price.profit.calculatedValue || 0)
+const convertedNetValue = computed<number>(() => bookingStore.booking?.price.convertedNetPrice?.calculatedValue || 0)
 const statuses = computed<BookingStatusResponse[] | null>(() => bookingStore.statuses)
 const availableActions = computed<BookingAvailableActionsResponse | null>(() => bookingStore.availableActions)
 
@@ -327,7 +328,7 @@ onMounted(() => {
     </div>
 
     <div v-if="booking && grossCurrency && netCurrency" class="mt-2">
-      Прибыль = {{ formatPrice(getDisplayPriceValue('gross'), grossCurrency.sign) }} - {{ formatPrice(getDisplayPriceValue('net'), netCurrency.sign) }} =
+      Прибыль = {{ formatPrice(getDisplayPriceValue('gross'), grossCurrency.sign) }} - {{ formatPrice(convertedNetValue, grossCurrency.sign) }} =
       {{
         formatPrice(profit, grossCurrency.sign)
       }}

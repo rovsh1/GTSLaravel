@@ -88,7 +88,7 @@ class BookingDtoFactory extends AbstractBookingDtoFactory
     private function buildRoomDayPriceDto(RoomPriceDayPart $r): RoomDayPriceDto
     {
         return new RoomDayPriceDto(
-            date: $r->date(),
+            date: (string)$r->date(),
             baseValue: 1,
             grossValue: $r->value(),
             netValue: $r->value(),
