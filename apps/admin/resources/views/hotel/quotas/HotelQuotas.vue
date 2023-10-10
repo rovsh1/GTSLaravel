@@ -50,7 +50,6 @@ fetchHotelRoomsAPI()
 
 const filtersPayload = ref<FiltersPayload>(defaultFiltersPayload)
 const waitLoadAndRedrawData = ref<boolean>(false)
-const waitLoadAndRedrawAllData = ref<boolean>(true)
 const updatedRoomID = ref<number | null>(null)
 
 const {
@@ -74,7 +73,6 @@ const allQuotas = ref<Map<string, RoomQuota>>(new Map<string, RoomQuota>([]))
 
 const fetchHotelQuotasWrapper = async () => {
   waitLoadAndRedrawData.value = true
-  waitLoadAndRedrawAllData.value = true
   try {
     await fetchHotelQuotas()
     const roomsQuotasAccumalationData = getRoomQuotas({
@@ -87,13 +85,11 @@ const fetchHotelQuotasWrapper = async () => {
     allQuotas.value = quotas
     nextTick(() => {
       waitLoadAndRedrawData.value = false
-      waitLoadAndRedrawAllData.value = false
       updatedRoomID.value = null
     })
   } catch (error) {
     nextTick(() => {
       waitLoadAndRedrawData.value = false
-      waitLoadAndRedrawAllData.value = false
       updatedRoomID.value = null
     })
   }
@@ -103,7 +99,6 @@ fetchHotelQuotasWrapper()
 
 watch(filtersPayload, () => {
   updatedRoomID.value = null
-  console.log('tyt')
   fetchHotelQuotasWrapper()
 })
 

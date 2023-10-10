@@ -2,12 +2,21 @@
 import { onMounted, onUnmounted, ref, watch } from 'vue'
 
 import { onClickOutside } from '@vueuse/core'
+import { Tooltip } from 'floating-vue'
+
+type RangeError = (min: number, max: number) => string
+
+const defaultRangeError: RangeError = (min, max) => `Введите от ${min} до ${max}`
 
 const props = withDefaults(defineProps<{
+  initValue: number | null
   value: number | null
+  min: number
+  max: number
+  rangeError?: RangeError
   editable: boolean
   cellKey: string | null
-  activeKey: string | null
+  activeCellKey: string | null
   cellType: string | null
   activeCellType: string | null
   inRange: boolean | null
@@ -16,6 +25,7 @@ const props = withDefaults(defineProps<{
   dayMenuRef?: HTMLElement | null
   dayMenuActionCompleted?: boolean
 }>(), {
+  rangeError: (min, max) => `Введите от ${min} до ${max}`,
   dayMenuRef: null,
   dayMenuActionCompleted: false,
 })
@@ -32,11 +42,14 @@ const emit = defineEmits<{
 
 const buttonRef = ref<HTMLButtonElement | null>(null)
 const inputRef = ref<HTMLInputElement | null>(null)
+const wrapperRef = ref<HTMLInputElement | null>(null)
 const isChanged = ref(false)
 const localValue = ref<number | null>(props.value)
 
 const rangeMode = ref(false)
 const pickMode = ref(false)
+
+const errorMessage = ref<string | null>(null)
 
 watch(() => props.value, (newValue) => {
   localValue.value = newValue
@@ -56,7 +69,7 @@ watch(inputRef, (element: HTMLInputElement | null) => {
 })
 
 watch(() => props.dayMenuActionCompleted, (value) => {
-  if (value === true) {
+  if (value === true && props.activeCellKey === props.cellKey) {
     isChanged.value = false
     emit('reset')
     emit('active-key', null, null)
@@ -68,36 +81,52 @@ watch(() => props.dayMenuActionCompleted, (value) => {
 })
 
 const transformInputValue = () => {
+  const { min, max, rangeError } = props
   if (inputRef.value instanceof HTMLInputElement) {
     const inputValue = inputRef.value?.value
     const numValue = inputValue?.trim() === '' ? NaN : Number(inputValue)
-    if (!isNaN(numValue) && numValue >= 1) {
-      localValue.value = numValue
+    if (!isNaN(numValue)) {
+      if (numValue >= min && numValue <= max) {
+        errorMessage.value = null
+        localValue.value = numValue
+      } else {
+        errorMessage.value = rangeError(min, max)
+        localValue.value = numValue
+      }
     } else {
+      errorMessage.value = defaultRangeError(min, max)
       localValue.value = null
     }
   } else {
+    errorMessage.value = defaultRangeError(min, max)
     localValue.value = null
   }
   emit('input', localValue.value)
 }
 
 const applyEditable = () => {
-  if (props.value !== localValue.value || props.rangeExist) {
+  const { min, max } = props
+  if (localValue.value !== null && (localValue.value >= min && localValue.value <= max)
+  && (props.initValue !== localValue.value || props.rangeExist)) {
     emit('change', localValue.value)
   }
 }
 
-const hideEditable = () => {
+const reset = () => {
+  isChanged.value = false
+  emit('reset')
+  emit('active-key', null, null)
+  emit('range-key', null)
+  emit('pick-key', null)
+  pickMode.value = false
+  rangeMode.value = false
+  errorMessage.value = null
+}
+
+const applyAndHideEditable = () => {
   if (!rangeMode.value && !pickMode.value) {
     applyEditable()
-    isChanged.value = false
-    emit('reset')
-    emit('active-key', null, null)
-    emit('range-key', null)
-    emit('pick-key', null)
-    pickMode.value = false
-    rangeMode.value = false
+    reset()
   }
 }
 
@@ -143,7 +172,7 @@ onClickOutside(inputRef, (event: MouseEvent) => {
       return
     }
   }
-  hideEditable()
+  applyAndHideEditable()
 })
 
 onMounted(() => {
@@ -178,20 +207,35 @@ onUnmounted(() => {
     :style="{ height: isChanged ? '100%' : '100%' }"
     aria-hidden="true"
   >
-    <input
-      v-if="activeKey === cellKey"
-      :ref="(element) => inputRef = element as HTMLInputElement"
-      :value="value"
-      class="form-control"
-      type="number"
-      @blur="(event) => {
-        event.preventDefault()
-        inputRef?.focus()
-      }"
-      @keydown.esc="hideEditable"
-      @keydown.enter="hideEditable"
-      @input="transformInputValue"
-    />
+    <Tooltip
+      v-if="activeCellKey === cellKey && editable"
+      ref="wrapperRef"
+      :theme="errorMessage === null ? 'tooltip' : 'danger-tooltip'"
+      handle-resize
+    >
+      <input
+        v-if="activeCellKey === cellKey"
+        :ref="(element) => inputRef = element as HTMLInputElement"
+        :value="value"
+        class="form-control"
+        @blur="(event) => {
+          event.preventDefault()
+          inputRef?.focus()
+        }"
+        @keydown.esc="reset"
+        @keydown.enter="applyAndHideEditable"
+        @input="transformInputValue"
+      />
+      <template #popper>
+        <div v-if="errorMessage">{{ errorMessage }}</div>
+        <template v-else>
+          <div>Нажмите Enter, чтобы подтвердить изменения</div>
+          <div>
+            Нажмите Esc чтобы отменить изменения и сбросить выделение
+          </div>
+        </template>
+      </template>
+    </Tooltip>
     <button
       v-else
       :ref="(element) => buttonRef = element as HTMLButtonElement"

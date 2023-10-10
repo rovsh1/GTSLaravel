@@ -7,7 +7,7 @@ import { HotelQuotaID, QuotaStatus, UseHotelQuota } from '~api/hotel/quotas/list
 
 import { getEachDayInMonth, isBusinessDay } from '~lib/date'
 
-export type RoomQuotaStatus = 'opened' | 'closed'
+export type RoomQuotaStatus = 'opened' | 'closed' | 'warning'
 
 export type RoomQuota = {
   key: string
