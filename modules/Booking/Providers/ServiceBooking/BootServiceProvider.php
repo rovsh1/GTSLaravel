@@ -4,10 +4,12 @@ namespace Module\Booking\Providers\ServiceBooking;
 
 use Module\Booking\Domain\ServiceBooking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Domain\ServiceBooking\Repository\BookingRepositoryInterface;
-use Module\Booking\Domain\ServiceBooking\Repository\DetailsRepositoryInterface;
+use Module\Booking\Domain\ServiceBooking\Repository\Details\CIPRoomInAirportRepositoryInterface;
+use Module\Booking\Domain\ServiceBooking\Repository\Details\TransferFromAirportRepositoryInterface;
+use Module\Booking\Domain\ServiceBooking\Repository\Details\TransferToAirportRepositoryInterface;
 use Module\Booking\Infrastructure\ServiceBooking\Adapter\SupplierAdapter;
 use Module\Booking\Infrastructure\ServiceBooking\Repository\BookingRepository;
-use Module\Booking\Infrastructure\ServiceBooking\Repository\DetailsRepository;
+use Module\Booking\Infrastructure\ServiceBooking\Repository\Details as Infrastructure;
 use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
@@ -22,8 +24,16 @@ class BootServiceProvider extends ServiceProvider
         );
 
         $this->app->singleton(
-            DetailsRepositoryInterface::class,
-            DetailsRepository::class
+            CIPRoomInAirportRepositoryInterface::class,
+            Infrastructure\CIPRoomInAirportRepository::class
+        );
+        $this->app->singleton(
+            TransferToAirportRepositoryInterface::class,
+            Infrastructure\TransferToAirportRepository::class
+        );
+        $this->app->singleton(
+            TransferFromAirportRepositoryInterface::class,
+            Infrastructure\TransferFromAirportRepository::class
         );
 
         $this->app->singleton(

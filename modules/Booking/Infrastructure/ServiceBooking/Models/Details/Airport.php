@@ -15,6 +15,7 @@ class Airport extends Model implements DetailsModelInterface
 
     protected $fillable = [
         'booking_id',
+        'service_id',
         'date',
         'data',
     ];
@@ -29,12 +30,12 @@ class Airport extends Model implements DetailsModelInterface
         static::addGlobalScope('default', function (Builder $builder) {
             $builder->addSelect('booking_airport_details.*')
                 ->join(
-                    'supplier_airport_services',
-                    'supplier_airport_services.id',
+                    'supplier_services',
+                    'supplier_services.id',
                     '=',
                     'booking_airport_details.service_id'
                 )
-                ->addSelect('supplier_airport_services.type as service_type');
+                ->addSelect('supplier_services.type as service_type');
         });
     }
 

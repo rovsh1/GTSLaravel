@@ -21,12 +21,12 @@ class CreateBooking extends AbstractCreateBooking
 {
     public function __construct(
         CommandBusInterface $commandBus,
-        BookingRepositoryInterface $repository,
+        private readonly BookingRepositoryInterface $repository,
         private readonly SupplierAdapterInterface $supplierAdapter,
         private readonly CancelConditionsFactory $cancelConditionsFactory,
         private readonly DetailsCreator $detailsCreator,
     ) {
-        parent::__construct($commandBus, $repository);
+        parent::__construct($commandBus);
     }
 
     public function execute(CreateBookingDto $request): int
@@ -46,10 +46,15 @@ class CreateBooking extends AbstractCreateBooking
             creatorId: new CreatorId($request->creatorId),
             cancelConditions: $cancelConditions,
             note: $request->note,
-            serviceId: new ServiceId($request->serviceId),
+            serviceType: $service->type,
             price: BookingPrice::createEmpty(CurrencyEnum::UZS, $orderCurrency),//@todo netto валюта
         );
-        $this->detailsCreator->create($booking->id(), $service, $request->detailsData);
+        $this->detailsCreator->create(
+            $booking->id(),
+            $service->type,
+            new ServiceId($request->serviceId),
+            $request->detailsData
+        );
 
         return $booking->id()->value();
     }

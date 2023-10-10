@@ -25,11 +25,11 @@ class CreateBooking extends AbstractCreateBooking
 {
     public function __construct(
         CommandBusInterface $commandBus,
-        BookingRepositoryInterface $repository,
+        private readonly BookingRepositoryInterface $repository,
         private readonly HotelValidator $hotelValidator,
         private readonly HotelAdapterInterface $hotelAdapter,
     ) {
-        parent::__construct($commandBus, $repository);
+        parent::__construct($commandBus);
     }
 
     public function execute(CreateBookingDto $request): int

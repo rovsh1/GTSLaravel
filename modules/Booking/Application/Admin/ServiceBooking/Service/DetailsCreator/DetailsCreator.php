@@ -9,8 +9,8 @@ use Module\Booking\Application\Admin\ServiceBooking\Service\DetailsCreator\Proce
 use Module\Booking\Application\Admin\ServiceBooking\Service\DetailsCreator\Processor\TransferToAirport;
 use Module\Booking\Domain\ServiceBooking\Entity\ServiceDetailsInterface;
 use Module\Booking\Domain\ServiceBooking\ValueObject\BookingId;
+use Module\Booking\Domain\ServiceBooking\ValueObject\ServiceId;
 use Module\Shared\Enum\ServiceTypeEnum;
-use Module\Supplier\Application\Response\ServiceDto;
 use Sdk\Module\Contracts\ModuleInterface;
 
 class DetailsCreator
@@ -21,12 +21,13 @@ class DetailsCreator
 
     public function create(
         BookingId $bookingId,
-        ServiceDto $service,
+        ServiceTypeEnum $serviceType,
+        ServiceId $serviceId,
         array $detailsData
     ): ServiceDetailsInterface {
-        $processor = $this->getProcessor($service->type);
+        $processor = $this->getProcessor($serviceType);
 
-        return $processor->process($bookingId, $service, $detailsData);
+        return $processor->process($bookingId, $serviceId, $detailsData);
     }
 
     private function getProcessor(ServiceTypeEnum $serviceType): ProcessorInterface

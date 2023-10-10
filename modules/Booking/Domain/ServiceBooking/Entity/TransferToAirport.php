@@ -8,6 +8,7 @@ use Module\Booking\Domain\ServiceBooking\ValueObject\AirportId;
 use Module\Booking\Domain\ServiceBooking\ValueObject\BookingId;
 use Module\Booking\Domain\ServiceBooking\ValueObject\CarBidCollection;
 use Module\Booking\Domain\ServiceBooking\ValueObject\DetailsId;
+use Module\Booking\Domain\ServiceBooking\ValueObject\ServiceInfo;
 use Module\Shared\Enum\ServiceTypeEnum;
 
 class TransferToAirport implements ServiceDetailsInterface
@@ -19,21 +20,16 @@ class TransferToAirport implements ServiceDetailsInterface
     public function __construct(
         private readonly DetailsId $id,
         private readonly BookingId $bookingId,
-        private readonly string $serviceTitle,
+        private readonly ServiceInfo $serviceInfo,
         private readonly AirportId $airportId,
         private ?string $flightNumber,
         private ?DateTimeInterface $departureDate,
         private CarBidCollection $carBids
     ) {}
 
-    public function serviceTitle(): string
+    public function serviceInfo(): ServiceInfo
     {
-        return $this->serviceTitle;
-    }
-
-    public function serviceType(): ServiceTypeEnum
-    {
-        return ServiceTypeEnum::TRANSFER_TO_AIRPORT;
+        return $this->serviceInfo;
     }
 
     public function id(): DetailsId

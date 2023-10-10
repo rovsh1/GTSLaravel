@@ -9,6 +9,7 @@ use Module\Booking\Application\Admin\HotelBooking\UseCase\System\FillCalculatedP
 use Module\Shared\Enum\Booking\AirportServiceTypeEnum;
 use Module\Shared\Enum\Booking\TransferServiceTypeEnum;
 use Module\Shared\Enum\CurrencyEnum;
+use Module\Shared\Enum\ServiceTypeEnum;
 use Module\Shared\Enum\Supplier\ContractServiceTypeEnum;
 
 class TestDataSeeder extends Seeder
@@ -82,8 +83,39 @@ class TestDataSeeder extends Seeder
             ['supplier_id' => $testSupplierId, 'inn' => '12345678', 'director_full_name' => 'John Doe']
         ]);
 
+        $this->seedSupplierServicesData($testSupplierId, $supplierSeasonId);
         $this->seedTransferSupplierData($testSupplierId, $supplierSeasonId);
         $this->seedAirportSupplierData($testSupplierId, $supplierSeasonId);
+    }
+
+    private function seedSupplierServicesData(int $supplierId, int $seasonId): void
+    {
+        DB::table('supplier_services')->insert([
+            [
+                'supplier_id' => $supplierId,
+                'title' => 'Трансфер из аэропорта Ташкента',
+                'type' => ServiceTypeEnum::TRANSFER_FROM_AIRPORT,
+                'data' => json_encode(['airportId' => 1])
+            ],
+            [
+                'supplier_id' => $supplierId,
+                'title' => 'Трансфер в аэропорта Ташкента',
+                'type' => ServiceTypeEnum::TRANSFER_TO_AIRPORT,
+                'data' => json_encode(['airportId' => 1])
+            ],
+            [
+                'supplier_id' => $supplierId,
+                'title' => 'CIP Встреча',
+                'type' => ServiceTypeEnum::CIP_IN_AIRPORT,
+                'data' => json_encode(['airportId' => 1])
+            ],
+            [
+                'supplier_id' => $supplierId,
+                'title' => 'CIP Проводы',
+                'type' => ServiceTypeEnum::CIP_IN_AIRPORT,
+                'data' => json_encode(['airportId' => 1])
+            ]
+        ]);
     }
 
     private function seedTransferSupplierData(int $supplierId, int $seasonId): void

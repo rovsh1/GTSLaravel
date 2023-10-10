@@ -36,7 +36,7 @@ abstract class Booking extends Model
 
     protected $fillable = [
         'order_id',
-        'service_id',
+        'service_type',
         'status',
         'source',
         'creator_id',

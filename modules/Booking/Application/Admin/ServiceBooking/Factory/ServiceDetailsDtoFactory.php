@@ -18,7 +18,7 @@ class ServiceDetailsDtoFactory
 {
     public function createFromEntity(ServiceDetailsInterface $details): ServiceDetailsDtoInterface
     {
-        return match ($details->serviceType()) {
+        return match ($details->serviceInfo()->type()) {
             ServiceTypeEnum::TRANSFER_TO_AIRPORT => $this->buildTransferToAirport($details),
             ServiceTypeEnum::TRANSFER_FROM_AIRPORT => $this->buildTransferFromAirport($details),
             ServiceTypeEnum::TRANSFER_TO_RAILWAY => $this->buildTransferToRailway($details),
@@ -33,7 +33,7 @@ class ServiceDetailsDtoFactory
     {
         return new TransferToAirportDto(
             $details->id()->value(),
-            $details->serviceTitle(),
+            $details->serviceInfo()->title(),
             $details->airportId()->value(),
             $details->flightNumber(),
             $details->departureDate()?->format(DATE_ATOM),

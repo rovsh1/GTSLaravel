@@ -13,6 +13,8 @@ use Module\Booking\Domain\ServiceBooking\ValueObject\AirportId;
 use Module\Booking\Domain\ServiceBooking\ValueObject\BookingId;
 use Module\Booking\Domain\ServiceBooking\ValueObject\CarBidCollection;
 use Module\Booking\Domain\ServiceBooking\ValueObject\DetailsId;
+use Module\Booking\Domain\ServiceBooking\ValueObject\ServiceId;
+use Module\Booking\Domain\ServiceBooking\ValueObject\ServiceInfo;
 use Module\Booking\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Booking\Infrastructure\ServiceBooking\Models\Booking;
 use Module\Booking\Infrastructure\ServiceBooking\Models\Details\Airport;
@@ -57,7 +59,7 @@ class DetailsFactory
         return new CIPRoomInAirport(
             id: new DetailsId($details->id),
             bookingId: new BookingId($details->bookingId()),
-            serviceTitle: $detailsData['serviceTitle'],
+            serviceInfo: $this->buildServiceInfo($detailsData['serviceInfo']),
             airportId: new AirportId($details->airport_id),
             flightNumber: $details->data['flightNumber'],
             serviceDate: $details->date,
@@ -72,7 +74,7 @@ class DetailsFactory
         return new TransferToAirport(
             id: new DetailsId($details->id),
             bookingId: new BookingId($details->bookingId()),
-            serviceTitle: $detailsData['serviceTitle'],
+            serviceInfo: $this->buildServiceInfo($detailsData['serviceInfo']),
             airportId: new AirportId($detailsData['airportId']),
             flightNumber: $detailsData['flightNumber'],
             departureDate: $details->date,
@@ -87,7 +89,7 @@ class DetailsFactory
         return new TransferFromAirport(
             id: new DetailsId($details->id),
             bookingId: new BookingId($details->bookingId()),
-            serviceTitle: $detailsData['serviceTitle'],
+            serviceInfo: $this->buildServiceInfo($detailsData['serviceInfo']),
             airportId: new AirportId($detailsData['airportId']),
             flightNumber: $detailsData['flightNumber'],
             meetingTablet: $detailsData['meetingTablet'],
@@ -116,9 +118,17 @@ class DetailsFactory
         return new OtherService(
             id: new DetailsId($details->id),
             bookingId: new BookingId($details->bookingId()),
-            serviceTitle: $details->data['serviceTitle'],
+            serviceInfo: $this->buildServiceInfo($details->data['serviceInfo']),
             description: $details->data['description']
         );
     }
 
+    private function buildServiceInfo(array $data): ServiceInfo
+    {
+        return new ServiceInfo(
+            new ServiceId($data['serviceId']),
+            $data['title'],
+            ServiceTypeEnum::from($data['type'])
+        );
+    }
 }

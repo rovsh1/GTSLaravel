@@ -14,7 +14,7 @@ return new class extends Migration {
         Schema::create('bookings', function (Blueprint $table) {
             $table->increments('id')->from(100);
             $table->unsignedInteger('order_id');
-            $table->unsignedInteger('service_id');
+            $table->unsignedTinyInteger('service_type');
             $table->unsignedTinyInteger('status');
             $table->string('source');
             $table->unsignedInteger('creator_id');
@@ -74,6 +74,7 @@ return new class extends Migration {
         Schema::create('booking_airport_details', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('booking_id')->unique();
+            $table->unsignedInteger('service_id');
             $table->date('date');
             $table->json('data');
             $table->timestamps();
@@ -81,6 +82,12 @@ return new class extends Migration {
             $table->foreign('booking_id')
                 ->references('id')
                 ->on('bookings')
+                ->restrictOnDelete()
+                ->cascadeOnUpdate();
+
+            $table->foreign('service_id')
+                ->references('id')
+                ->on('supplier_services')
                 ->restrictOnDelete()
                 ->cascadeOnUpdate();
         });
@@ -91,6 +98,7 @@ return new class extends Migration {
         Schema::create('booking_transfer_details', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('booking_id')->unique();
+            $table->unsignedInteger('service_id');
             $table->date('date_start')->nullable();
             $table->date('date_end')->nullable();
             $table->json('data');
@@ -99,6 +107,12 @@ return new class extends Migration {
             $table->foreign('booking_id')
                 ->references('id')
                 ->on('bookings')
+                ->restrictOnDelete()
+                ->cascadeOnUpdate();
+
+            $table->foreign('service_id')
+                ->references('id')
+                ->on('supplier_services')
                 ->restrictOnDelete()
                 ->cascadeOnUpdate();
         });

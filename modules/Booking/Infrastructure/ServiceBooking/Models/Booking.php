@@ -24,11 +24,7 @@ class Booking extends BaseModel
             $builder->addSelect('bookings.*')
                 ->join('orders', 'orders.id', '=', 'bookings.order_id')
                 ->join('clients', 'clients.id', '=', 'orders.client_id')
-                ->addSelect('clients.name as client_name')
-            //@todo приджоинить service_type из услуг поставщика
-//                ->join('supplier_services')
-                ->join('supplier_transfer_services', 'supplier_transfer_services.id', '=', 'bookings.service_id')
-                ->addSelect('supplier_transfer_services.type as service_type');
+                ->addSelect('clients.name as client_name');
         });
     }
 

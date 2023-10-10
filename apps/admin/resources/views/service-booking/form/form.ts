@@ -102,10 +102,10 @@ $(() => {
     })
 
   $('#form_data_service_id').childCombo({
-    urlGetter: () => `/supplier/services-transfer/search?city_id=${serviceSearchPayload.city_id}`,
+    urlGetter: () => `/supplier/services/search?city_id=${serviceSearchPayload.city_id}`,
     disabledText: 'Выберите тип услуги',
     parent: $('#form_data_service_type'),
-    dataIndex: 'service_type',
+    dataIndex: 'type',
     useSelect2: true,
   })
 

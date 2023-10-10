@@ -24,6 +24,12 @@ AclRoute::for('supplier')
         'except' => ['show']
     ])
     ->get(
+        '/services/search',
+        Supplier\Service\ServicesController::class . '@search',
+        'read',
+        'service.search'
+    )
+    ->get(
         '/services-transfer/search',
         Supplier\Service\TransferServicesController::class . '@search',
         'read',

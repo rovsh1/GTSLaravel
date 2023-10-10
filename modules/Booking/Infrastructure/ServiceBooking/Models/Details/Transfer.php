@@ -15,6 +15,7 @@ class Transfer extends Model implements DetailsModelInterface
 
     protected $fillable = [
         'booking_id',
+        'service_id',
         'date_start',
         'date_end',
         'data',
@@ -29,9 +30,8 @@ class Transfer extends Model implements DetailsModelInterface
     {
         static::addGlobalScope('default', function (Builder $builder) {
             $builder->addSelect('booking_transfer_details.*')
-                ->join('bookings', 'bookings.id', '=', 'booking_transfer_details.booking_id')
-                ->join('supplier_transfer_services', 'supplier_transfer_services.id', '=', 'bookings.service_id')
-                ->addSelect('supplier_transfer_services.type as service_type');
+                ->join('supplier_services', 'supplier_services.id', '=', 'booking_transfer_details.service_id')
+                ->addSelect('supplier_services.type as service_type');
         });
     }
 

@@ -4,9 +4,9 @@ namespace App\Admin\Http\Controllers\Supplier\Service;
 
 use App\Admin\Components\Factory\Prototype;
 use App\Admin\Http\Controllers\Controller;
-use App\Admin\Http\Requests\ServiceProvider\DeprecatedSearchServicesRequest;
-use App\Admin\Http\Resources\DeprecatedService as ServiceResource;
-use App\Admin\Models\Supplier\AirportService;
+use App\Admin\Http\Requests\ServiceProvider\SearchServicesRequest;
+use App\Admin\Http\Resources\Service as ServiceResource;
+use App\Admin\Models\Supplier\Service;
 use App\Admin\Models\Supplier\Supplier;
 use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\Breadcrumb;
@@ -28,9 +28,9 @@ use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Module\Shared\Enum\Booking\AirportServiceTypeEnum;
+use Module\Shared\Enum\ServiceTypeEnum;
 
-class AirportServicesController extends Controller
+class ServicesController extends Controller
 {
     private Prototype $prototype;
 
@@ -43,18 +43,18 @@ class AirportServicesController extends Controller
     {
         $this->provider($provider);
 
-        $query = AirportService::where('supplier_id', $provider->id);
+        $query = Service::where('supplier_id', $provider->id);
         if ($request->has('quicksearch')) {
             $query->quicksearch($request->get('quicksearch'));
         }
         $grid = $this->gridFactory($provider)->data($query);
 
-        return Layout::title('Услуги аэропорт')
+        return Layout::title('Услуги транспорт')
             ->view('default.grid.grid', [
                 'quicksearch' => $grid->getQuicksearch(),
                 'grid' => $grid,
                 'createUrl' => Acl::isUpdateAllowed($this->prototype->key)
-                    ? $this->prototype->route('services-airport.create', $provider)
+                    ? $this->prototype->route('services-transfer.create', $provider)
                     : null,
             ]);
     }
@@ -70,32 +70,32 @@ class AirportServicesController extends Controller
     public function store(Request $request, Supplier $provider): RedirectResponse
     {
         return (new DefaultFormStoreAction($this->formFactory($provider->id)))
-            ->handle(AirportService::class);
+            ->handle(Service::class);
     }
 
-    public function edit(Request $request, Supplier $provider, AirportService $servicesAirport): LayoutContract
+    public function edit(Request $request, Supplier $provider, Service $servicesTransfer): LayoutContract
     {
         $this->provider($provider);
 
         return (new DefaultFormEditAction($this->formFactory($provider->id)))
             ->deletable()
-            ->handle($servicesAirport);
+            ->handle($servicesTransfer);
     }
 
-    public function update(Supplier $provider, AirportService $servicesAirport): RedirectResponse
+    public function update(Supplier $provider, Service $servicesTransfer): RedirectResponse
     {
         return (new DefaultFormUpdateAction($this->formFactory($provider->id)))
-            ->handle($servicesAirport);
+            ->handle($servicesTransfer);
     }
 
-    public function destroy(Supplier $provider, AirportService $servicesAirport): AjaxResponseInterface
+    public function destroy(Supplier $provider, Service $servicesTransfer): AjaxResponseInterface
     {
-        return (new DefaultDestroyAction())->handle($servicesAirport);
+        return (new DefaultDestroyAction())->handle($servicesTransfer);
     }
 
-    public function search(DeprecatedSearchServicesRequest $request): JsonResponse
+    public function search(SearchServicesRequest $request): JsonResponse
     {
-        $services = AirportService::whereCity($request->getCityId())->get();
+        $services = Service::whereType($request->getType())->get();
 
         return response()->json(
             ServiceResource::collection($services)
@@ -104,7 +104,7 @@ class AirportServicesController extends Controller
 
     public function list(Supplier $supplier): JsonResponse
     {
-        $services = AirportService::whereSupplierId($supplier->id)->get();
+        $services = Service::whereSupplierId($supplier->id)->get();
 
         return response()->json(
             ServiceResource::collection($services)
@@ -120,7 +120,7 @@ class AirportServicesController extends Controller
                 'label' => 'Тип услуги',
                 'emptyItem' => '',
                 'required' => true,
-                'enum' => AirportServiceTypeEnum::class
+                'enum' => ServiceTypeEnum::class
             ]);
     }
 
@@ -128,9 +128,9 @@ class AirportServicesController extends Controller
     {
         return Grid::paginator(16)
             ->enableQuicksearch()
-            ->edit(fn($r) => $this->prototype->route('services-airport.edit', [$provider, $r->id]))
+            ->edit(fn($r) => $this->prototype->route('services-transfer.edit', [$provider, $r->id]))
             ->text('name', ['text' => 'Название', 'order' => true])
-            ->enum('type', ['text' => 'Тип', 'enum' => AirportServiceTypeEnum::class]);
+            ->enum('type', ['text' => 'Тип', 'enum' => ServiceTypeEnum::class]);
     }
 
     private function provider(Supplier $provider): void
@@ -140,8 +140,8 @@ class AirportServicesController extends Controller
                 $this->prototype->route('show', $provider),
                 (string)$provider
             )
-            ->addUrl($this->prototype->route('services-airport.index', $provider), 'Услуги');
+            ->addUrl($this->prototype->route('services-transfer.index', $provider), 'Услуги');
 
-        Sidebar::submenu(new SupplierMenu($provider, 'services-airport'));
+        Sidebar::submenu(new SupplierMenu($provider, 'services-transfer'));
     }
 }

@@ -13,7 +13,6 @@ abstract class AbstractCreateBooking implements UseCaseInterface
 {
     public function __construct(
         protected readonly CommandBusInterface $commandBus,
-        protected $repository
     ) {}
 
     //CreateHotelBookingDto|CreateAirportBooking|CreateTransferBooking

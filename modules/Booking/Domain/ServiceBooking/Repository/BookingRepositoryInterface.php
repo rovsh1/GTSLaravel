@@ -7,7 +7,6 @@ namespace Module\Booking\Domain\ServiceBooking\Repository;
 use Module\Booking\Domain\Order\ValueObject\OrderId;
 use Module\Booking\Domain\ServiceBooking\ServiceBooking;
 use Module\Booking\Domain\ServiceBooking\ValueObject\BookingPrice;
-use Module\Booking\Domain\ServiceBooking\ValueObject\ServiceId;
 use Module\Booking\Domain\Shared\Repository\BookingRepositoryInterface as Base;
 use Module\Booking\Domain\Shared\ValueObject\CancelConditions;
 use Module\Booking\Domain\Shared\ValueObject\CreatorId;
@@ -20,7 +19,7 @@ interface BookingRepositoryInterface extends Base
         CreatorId $creatorId,
         BookingPrice $price,
         CancelConditions $cancelConditions,
-        ServiceId $serviceId,
+        ServiceTypeEnum $serviceType,
         ?string $note = null
     ): ServiceBooking;
 }

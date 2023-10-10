@@ -5,7 +5,7 @@ namespace App\Admin\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class Service extends JsonResource
+class DeprecatedService extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,7 +16,7 @@ class Service extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => "{$this->provider_name} | {$this->title}",
+            'name' => "{$this->provider_name} | {$this->name}",
         ];
     }
 }

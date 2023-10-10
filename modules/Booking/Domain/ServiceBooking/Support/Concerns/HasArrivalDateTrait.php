@@ -6,12 +6,12 @@ use DateTimeInterface;
 
 trait HasArrivalDateTrait
 {
-    public function arrivalDate(): DateTimeInterface
+    public function arrivalDate(): ?DateTimeInterface
     {
         return $this->arrivalDate;
     }
 
-    public function setArrivalDate(DateTimeInterface $arrivalDate): void
+    public function setArrivalDate(?DateTimeInterface $arrivalDate): void
     {
         $this->arrivalDate = $arrivalDate;
     }

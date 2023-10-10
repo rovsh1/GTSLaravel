@@ -10,10 +10,14 @@ use Module\Booking\Application\Admin\ServiceBooking\Dto\ServiceTypeDto;
 use Module\Booking\Application\Admin\Shared\Factory\AbstractBookingDtoFactory;
 use Module\Booking\Application\Admin\Shared\Factory\BookingPriceDtoFactory;
 use Module\Booking\Application\Admin\Shared\Service\StatusStorage;
-use Module\Booking\Domain\ServiceBooking\Repository\DetailsRepositoryInterface;
+use Module\Booking\Domain\ServiceBooking\Repository\Details\CIPRoomInAirportRepositoryInterface;
+use Module\Booking\Domain\ServiceBooking\Repository\Details\TransferFromAirportRepositoryInterface;
+use Module\Booking\Domain\ServiceBooking\Repository\Details\TransferToAirportRepositoryInterface;
 use Module\Booking\Domain\ServiceBooking\ServiceBooking;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
 use Module\Shared\Contracts\Service\TranslatorInterface;
+use Module\Shared\Enum\ServiceTypeEnum;
+use Sdk\Module\Contracts\ModuleInterface;
 
 class BookingDtoFactory extends AbstractBookingDtoFactory
 {
@@ -21,8 +25,8 @@ class BookingDtoFactory extends AbstractBookingDtoFactory
         StatusStorage $statusStorage,
         private readonly BookingPriceDtoFactory $bookingPriceDtoFactory,
         private readonly ServiceDetailsDtoFactory $detailsDtoFactory,
-        private readonly DetailsRepositoryInterface $detailsRepository,
-        private readonly TranslatorInterface $translator
+        private readonly TranslatorInterface $translator,
+        private readonly ModuleInterface $module,
     ) {
         parent::__construct($statusStorage);
     }
@@ -31,7 +35,7 @@ class BookingDtoFactory extends AbstractBookingDtoFactory
     {
         assert($booking instanceof ServiceBooking);
 
-        $details = $this->detailsRepository->find($booking->id());
+        $details = $this->getDetailsRepository($booking->serviceType())->find($booking->id());
 
         return new BookingDto(
             id: $booking->id()->value(),
@@ -52,5 +56,15 @@ class BookingDtoFactory extends AbstractBookingDtoFactory
                 ? $this->detailsDtoFactory->createFromEntity($details)
                 : null,
         );
+    }
+
+    private function getDetailsRepository(ServiceTypeEnum $serviceType)
+    {
+        return match ($serviceType) {
+            ServiceTypeEnum::TRANSFER_TO_AIRPORT => $this->module->make(TransferToAirportRepositoryInterface::class),
+            ServiceTypeEnum::TRANSFER_FROM_AIRPORT => $this->module->make(TransferFromAirportRepositoryInterface::class),
+            ServiceTypeEnum::CIP_IN_AIRPORT => $this->module->make(CIPRoomInAirportRepositoryInterface::class),
+            default => throw new \RuntimeException('Service type not impelemented'),
+        };
     }
 }

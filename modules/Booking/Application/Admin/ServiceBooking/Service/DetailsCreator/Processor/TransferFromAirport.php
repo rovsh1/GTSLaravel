@@ -6,22 +6,33 @@ namespace Module\Booking\Application\Admin\ServiceBooking\Service\DetailsCreator
 
 use Module\Booking\Application\Admin\ServiceBooking\Service\DetailsCreator\ProcessorInterface;
 use Module\Booking\Domain\ServiceBooking\Entity\TransferFromAirport as Entity;
-use Module\Booking\Domain\ServiceBooking\Repository\DetailsRepositoryInterface;
+use Module\Booking\Domain\ServiceBooking\Repository\Details\TransferFromAirportRepositoryInterface;
 use Module\Booking\Domain\ServiceBooking\ValueObject\BookingId;
-use Module\Supplier\Application\Response\ServiceDto;
+use Module\Booking\Domain\ServiceBooking\ValueObject\ServiceId;
+use Module\Booking\Domain\ServiceBooking\ValueObject\ServiceInfo;
+use Module\Shared\Enum\ServiceTypeEnum;
+use Module\Supplier\Infrastructure\Models\Service as InfrastructureSupplierService;
 
 class TransferFromAirport implements ProcessorInterface
 {
     public function __construct(
-        private readonly DetailsRepositoryInterface $detailsRepository,
+        private readonly TransferFromAirportRepositoryInterface $detailsRepository,
     ) {}
 
-    public function process(BookingId $bookingId, ServiceDto $service, array $detailsData): Entity
+    public function process(BookingId $bookingId, ServiceId $serviceId, array $detailsData): Entity
     {
-        return $this->detailsRepository->createTransferFromAirport(
+        $supplierService = InfrastructureSupplierService::find($serviceId->value());
+
+        $serviceInfo = new ServiceInfo(
+            $serviceId,
+            $supplierService->title,
+            ServiceTypeEnum::TRANSFER_FROM_AIRPORT
+        );
+
+        return $this->detailsRepository->create(
             $bookingId,
-            $service->title,
-            $service->details->airportId,
+            $serviceInfo,
+            $supplierService->data['airportId'],
             $detailsData['flightNumber'] ?? null,
             $detailsData['arrivalDate'] ?? null,
             $detailsData['meetingTablet'] ?? null,
