@@ -15,6 +15,7 @@ import { injectInitialData } from '~lib/vue'
 
 import BaseLayout from '~components/BaseLayout.vue'
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
+import OverlayLoading from '~components/OverlayLoading.vue'
 
 import QuotasFilters from './components/QuotasFilters/QuotasFilters.vue'
 import RoomQuotasComponent from './components/RoomQuotas.vue'
@@ -49,6 +50,7 @@ fetchHotelRoomsAPI()
 
 const filtersPayload = ref<FiltersPayload>(defaultFiltersPayload)
 const waitLoadAndRedrawData = ref<boolean>(false)
+const waitLoadAndRedrawAllData = ref<boolean>(true)
 const updatedRoomID = ref<number | null>(null)
 
 const {
@@ -72,6 +74,7 @@ const allQuotas = ref<Map<string, RoomQuota>>(new Map<string, RoomQuota>([]))
 
 const fetchHotelQuotasWrapper = async () => {
   waitLoadAndRedrawData.value = true
+  waitLoadAndRedrawAllData.value = true
   try {
     await fetchHotelQuotas()
     const roomsQuotasAccumalationData = getRoomQuotas({
@@ -84,11 +87,13 @@ const fetchHotelQuotasWrapper = async () => {
     allQuotas.value = quotas
     nextTick(() => {
       waitLoadAndRedrawData.value = false
+      waitLoadAndRedrawAllData.value = false
       updatedRoomID.value = null
     })
   } catch (error) {
     nextTick(() => {
       waitLoadAndRedrawData.value = false
+      waitLoadAndRedrawAllData.value = false
       updatedRoomID.value = null
     })
   }
@@ -96,7 +101,11 @@ const fetchHotelQuotasWrapper = async () => {
 
 fetchHotelQuotasWrapper()
 
-watch(filtersPayload, () => fetchHotelQuotasWrapper())
+watch(filtersPayload, () => {
+  updatedRoomID.value = null
+  console.log('tyt')
+  fetchHotelQuotasWrapper()
+})
 
 const editable = ref(false)
 
@@ -151,7 +160,8 @@ watchEffect(() => {
           Не удалось найти комнаты для этого отеля.
         </div>
         <div v-else class="quotasTables">
-          <template v-for="room in rooms" :key="room.id">
+          <div v-for="room in rooms" :key="room.id" style="position: relative;">
+            <OverlayLoading v-if="(updatedRoomID === null) ? waitLoadAndRedrawData : false" />
             <RoomQuotasComponent
               v-if="room.id === activeRoomID || activeRoomID === null"
               :hotel="hotel"
@@ -160,7 +170,7 @@ watchEffect(() => {
               :months="quotasPeriodMonths"
               :all-quotas="allQuotas"
               :editable="editable"
-              :waiting-load-data="waitLoadAndRedrawData"
+              :reload-active-room="(updatedRoomID === room.id) ? waitLoadAndRedrawData : false"
               :opening-day-menu-room-id="openingDayMenuRoomId"
               @open-day-menu-in-another-room="(value: number | null) => {
                 openingDayMenuRoomId = value
@@ -170,7 +180,7 @@ watchEffect(() => {
                 fetchHotelQuotasWrapper()
               }"
             />
-          </template>
+          </div>
         </div>
       </div>
     </BaseLayout>

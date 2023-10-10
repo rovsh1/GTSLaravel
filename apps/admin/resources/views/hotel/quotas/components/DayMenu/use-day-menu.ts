@@ -1,7 +1,6 @@
 import { onMounted, onUnmounted, ref } from 'vue'
 
 export type MenuPosition = {
-  // date: Date
   dayKey: string
   roomTypeID: number
 }

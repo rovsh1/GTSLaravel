@@ -10,8 +10,6 @@ import {
   HotelRoomQuotasStatusUpdateProps, useHotelRoomQuotasStatusUpdate,
 } from '~api/hotel/quotas/status'
 
-import { formatDateToAPIDate } from '~lib/date'
-
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 
 import { useDayMenuButtonStatus } from './use-day-menu-button-status'
@@ -21,7 +19,7 @@ const props = defineProps<{
   menuDayKey: string | null
   hotel: HotelID
   room: HotelRoomID
-  dates: Date[] | null
+  dates: string[] | null
 }>()
 
 const emit = defineEmits<{
@@ -48,7 +46,7 @@ const updateProps = computed<HotelRoomQuotasStatusUpdateProps | null>(() => {
     hotelID,
     roomID,
     kind,
-    dates: dates.map((date) => formatDateToAPIDate(date)),
+    dates,
   }
 })
 

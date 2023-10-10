@@ -5,12 +5,13 @@ import { OnClickOutside } from '@vueuse/components'
 
 import { HotelResponse } from '~api/hotel/get'
 import {
+  HotelRoomQuotasCountUpdateProps,
   HotelRoomQuotasUpdateProps,
+  HotelRoomReleaseDaysUpdateProps,
   useHotelRoomQuotasUpdate,
 } from '~api/hotel/quotas/update'
 import { HotelRoom } from '~api/hotel/room'
 
-// import { formatDateToAPIDate } from '~lib/date'
 import OverlayLoading from '~components/OverlayLoading.vue'
 
 import DayMenu from './DayMenu/DayMenu.vue'
@@ -19,7 +20,6 @@ import RoomHeader from './RoomHeader.vue'
 
 import { MenuParams, useDayMenu } from './DayMenu/use-day-menu'
 import { Day, Month, RoomQuota, RoomQuotaStatus } from './lib'
-import { QuotaRange } from './lib/use-range'
 // import { EditedQuota, QuotaRange, useQuotasTableRange } from './lib/use-range'
 
 const props = defineProps<{
@@ -29,7 +29,7 @@ const props = defineProps<{
   months: Month[]
   allQuotas: Map<string, RoomQuota>
   editable: boolean
-  waitingLoadData: boolean
+  reloadActiveRoom: boolean
   openingDayMenuRoomId: number | null
 }>()
 
@@ -46,6 +46,23 @@ watch(() => props.openingDayMenuRoomId, () => {
 
 const dayMenuElementRef = ref<HTMLElement | null>(null)
 const dayMenuActionCompleted = ref<boolean>(false)
+
+const editedQuotasCount = ref<number | null>(null)
+const activeQuotasCountKey = ref<string | null>(null)
+
+const editedReleaseDays = ref<number | null>(null)
+const activeReleaseDaysKey = ref<string | null>(null)
+
+const activeCellType = ref<string | null>(null)
+
+const months = computed<Month[]>(() => props.months)
+
+const allQuotas = computed<Map<string, RoomQuota>>(() => props.allQuotas)
+
+const daysLocal = computed<Day[]>(() => props.days)
+
+const quotasRange = ref<string[]>([])
+const releaseDaysRange = ref<string[]>([])
 
 const dayCellClassNameByRoomQuotaStatus: Record<RoomQuotaStatus, string> = {
   opened: 'isOpened',
@@ -94,16 +111,27 @@ const {
   closeDayMenu,
 } = useDayMenu()
 
-const getDatesFromRange = (range: QuotaRange): Date[] | null => (range === null
-  ? null
-  : range.quotas.map(({ date }) => date))
+const getDatesFromRange = (range: string[]): string[] => {
+  if (range && range.length) {
+    const getDaysKeysFromRange = range.map((dayInRange: string) => dayInRange.split('-')[0])
+    const datesFromLocalsDays = daysLocal.value.filter(
+      (obj) => getDaysKeysFromRange.includes(obj.key),
+    ).map((day) => day.date)
+    return datesFromLocalsDays
+  }
+  return []
+}
 
-const dayMenuDates = computed<Date[] | null>(() =>
-// const fromQuotasCount = getDatesFromRange(quotasCountRange.value)
-// const fromReleaseDaysRange = getDatesFromRange(releaseDaysRange.value)
-// const fromMenuPosition = dayMenuPosition.value === null ? null : [dayMenuPosition.value.date]
-
-  [])
+const dayMenuDates = computed<string[] | null>(() => {
+  const fromQuotasRange = getDatesFromRange(quotasRange.value)
+  const fromReleaseDaysRange = getDatesFromRange(releaseDaysRange.value)
+  const fromMenuPosition = dayMenuPosition.value !== null
+    ? daysLocal.value.filter((obj) => obj.key === dayMenuPosition.value?.dayKey).map((obj) => obj.date)
+    : null
+  if (fromQuotasRange.length) return fromQuotasRange
+  if (fromReleaseDaysRange.length) return fromReleaseDaysRange
+  return fromMenuPosition
+})
 
 const dayMenuDone = () => {
   closeDayMenu()
@@ -111,7 +139,7 @@ const dayMenuDone = () => {
   emit('update', props.room.id)
 }
 
-type HandleValue<R> = (date: Date, value: number) => R
+type HandleValue<R> = (date: string, value: number) => R
 
 const hotelRoomQuotasUpdateProps = ref<HotelRoomQuotasUpdateProps | null>(null)
 
@@ -125,83 +153,63 @@ watch(hotelRoomQuotasUpdateData, (value) => {
   if (value === null || !value.success) return
   hotelRoomQuotasUpdateProps.value = null
   emit('update', props.room.id)
-  // activeQuotasCountKey.value = null
-  // activeReleaseDaysKey.value = null
+  activeQuotasCountKey.value = null
+  activeReleaseDaysKey.value = null
 })
 
-/*
 type GetQuotasCountPayload = HandleValue<HotelRoomQuotasCountUpdateProps>
-const getQuotasCountPayload: GetQuotasCountPayload = (date, value) => {
+const getQuotasCountPayload: GetQuotasCountPayload = (dateKey, value) => {
   const common = {
     kind: 'count' as const,
     hotelID: props.hotel.id,
     roomID: props.room.id,
   }
-  const range = quotasCountRange.value
-  if (range === null) {
+  const range = quotasRange.value
+  if (range && range.length) {
     return {
       ...common,
-      dates: [formatDateToAPIDate(date)],
+      dates: getDatesFromRange(range),
       count: value,
     }
   }
-  const { quotas } = range
   return {
     ...common,
-    dates: quotas.map((quota: any) => formatDateToAPIDate(quota.date)),
+    dates: daysLocal.value.filter((obj) => obj.key === dateKey).map((obj) => obj.date),
     count: value,
   }
 }
 
-const handleQuotaValue: HandleValue<void> = (date, value) => {
-  hotelRoomQuotasUpdateProps.value = getQuotasCountPayload(date, value)
+const handleQuotaValue: HandleValue<void> = (dateKey, value) => {
+  hotelRoomQuotasUpdateProps.value = getQuotasCountPayload(dateKey, value)
   executeHotelRoomQuotasUpdate()
 }
 
 type GetReleaseDaysPayload = HandleValue<HotelRoomReleaseDaysUpdateProps>
-const getReleaseDaysPayload: GetReleaseDaysPayload = (date, value) => {
+const getReleaseDaysPayload: GetReleaseDaysPayload = (dateKey, value) => {
   const common = {
     kind: 'releaseDays' as const,
     hotelID: props.hotel.id,
     roomID: props.room.id,
   }
   const range = releaseDaysRange.value
-  if (range === null) {
+  if (range && range.length) {
     return {
       ...common,
-      dates: [formatDateToAPIDate(date)],
+      dates: getDatesFromRange(range),
       releaseDays: value,
     }
   }
-  const { quotas } = range
   return {
     ...common,
-    dates: quotas.map((quota: any) => formatDateToAPIDate(quota.date)),
+    dates: daysLocal.value.filter((obj) => obj.key === dateKey).map((obj) => obj.date),
     releaseDays: value,
   }
 }
 
-const handleReleaseDaysValue: HandleValue<void> = (date, value) => {
-  hotelRoomQuotasUpdateProps.value = getReleaseDaysPayload(date, value)
+const handleReleaseDaysValue: HandleValue<void> = (dateKey, value) => {
+  hotelRoomQuotasUpdateProps.value = getReleaseDaysPayload(dateKey, value)
   executeHotelRoomQuotasUpdate()
-} */
-
-const editedQuotasCount = ref<number | null>(null)
-const activeQuotasCountKey = ref<string | null>(null)
-
-const editedReleaseDays = ref<number | null>(null)
-const activeReleaseDaysKey = ref<string | null>(null)
-
-const activeCellType = ref<string | null>(null)
-
-const months = computed<Month[]>(() => props.months)
-
-const allQuotas = computed<Map<string, RoomQuota>>(() => props.allQuotas)
-
-const daysLocal = computed<Day[]>(() => props.days)
-
-const quotasRange = ref<string[]>([])
-const releaseDaysRange = ref<string[]>([])
+}
 
 const getDayDataByPropertyName = (key: string, roomID: number, property: keyof RoomQuota): any => {
   const genKey = `${key}-${roomID}`
@@ -213,6 +221,16 @@ const getDayDataByPropertyName = (key: string, roomID: number, property: keyof R
     }
   }
   return null
+}
+
+const quotasSend = (key: string, roomID: number, value: number | null) => {
+  if (value === null) return
+  handleQuotaValue(key, value)
+}
+
+const releaseDaySend = (key: string, roomID: number, value: number | null) => {
+  if (value === null) return
+  handleReleaseDaysValue(key, value)
 }
 
 const inQuotasRange = (key: string | null): boolean => {
@@ -286,7 +304,6 @@ const resetActiveKey = () => {
   releaseDaysRange.value = []
   dayMenuActionCompleted.value = false
 }
-
 </script>
 <template>
   <div>
@@ -294,7 +311,7 @@ const resetActiveKey = () => {
       <room-header :label="room.name" :guests="room.guestsCount" :count="room.roomsNumber" />
     </div>
     <div class="quotasTables">
-      <OverlayLoading v-if="isHotelRoomQuotasUpdateFetching || waitingLoadData" />
+      <OverlayLoading v-if="isHotelRoomQuotasUpdateFetching || reloadActiveRoom" />
       <div class="quotasTable card" @scroll="closeDayMenu">
         <table class="card-body">
           <thead>
@@ -361,7 +378,7 @@ const resetActiveKey = () => {
                       :editable="editable"
                       :in-range="inQuotasRange(`${key}-${room.id}`)"
                       :range-exist="quotasRange && quotasRange.length > 0"
-                      @change="console.log('send')"
+                      @change="value => quotasSend(key, room.id, value)"
                       @input="value => editedQuotasCount = value"
                       @pick-key="value => addPickToRangeQuotas(value)"
                       @range-key="value => addRangeToRangeQuotas(value)"
@@ -372,7 +389,6 @@ const resetActiveKey = () => {
                         editedQuotasCount = getDayDataByPropertyName(key, room.id, 'quota')
                       }"
                       @context-menu="(element) => {
-                        const dateCustom = getDayDataByPropertyName(key, room.id, 'date') as Date
                         openDayMenu({
                           trigger: element, dayKey: key, roomTypeID: room.id,
                         } as MenuParams)
@@ -393,8 +409,8 @@ const resetActiveKey = () => {
                       :editable="editable"
                       :in-range="inReleaseDaysRange(`${key}-${room.id}`)"
                       :range-exist="releaseDaysRange && releaseDaysRange.length > 0"
-                      @change="console.log('send')"
-                      @input="value => editedQuotasCount = value"
+                      @change="value => releaseDaySend(key, room.id, value)"
+                      @input="value => editedReleaseDays = value"
                       @pick-key="value => addPickToRangeReleaseDays(value)"
                       @range-key="value => addRangeToRangeReleaseDays(value)"
                       @active-key="(value, type) => {
@@ -404,7 +420,6 @@ const resetActiveKey = () => {
                         editedReleaseDays = getDayDataByPropertyName(key, room.id, 'releaseDays')
                       }"
                       @context-menu="(element) => {
-                        const dateCustom = getDayDataByPropertyName(key, room.id, 'date') as Date
                         openDayMenu({
                           trigger: element, dayKey: key, roomTypeID: room.id,
                         } as MenuParams)

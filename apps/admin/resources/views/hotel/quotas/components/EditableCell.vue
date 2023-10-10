@@ -83,8 +83,6 @@ const transformInputValue = () => {
 }
 
 const applyEditable = () => {
-  console.log('props.value', props.value)
-  console.log('localValue.value', localValue.value)
   if (props.value !== localValue.value || props.rangeExist) {
     emit('change', localValue.value)
   }

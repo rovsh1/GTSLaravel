@@ -13,7 +13,7 @@ export type RoomQuota = {
   key: string
   id: HotelQuotaID | null
   roomID: HotelRoomID
-  date: Date
+  date: string
   status: RoomQuotaStatus | null
   quota: number | null
   sold: number | null
@@ -23,7 +23,7 @@ export type RoomQuota = {
 
 export type Day = {
   key: string
-  date: Date
+  date: string
   dayOfWeek: string
   dayOfMonth: string
   isHoliday: boolean
@@ -83,7 +83,7 @@ export const getRoomQuotas: GetRoomQuotas = ({ filters, quotas }) => {
           key: `${key}-${hotelQuota.roomID}`,
           id: hotelQuota.id,
           roomID: hotelQuota.roomID,
-          date: new Date(key),
+          date: hotelQuota.date,
           status: quotaStatusMap[hotelQuota.status] || null,
           quota: hotelQuota.count_available,
           sold: hotelQuota.count_booked,
@@ -106,7 +106,7 @@ export const getRoomQuotas: GetRoomQuotas = ({ filters, quotas }) => {
       const dt = DateTime.fromJSDate(date)
       return {
         key: date.getTime().toString(),
-        date,
+        date: dt.toFormat(quotaDateFormat),
         dayOfWeek: dt.toFormat('EEE'),
         dayOfMonth: dt.toFormat('d'),
         isHoliday: !isBusinessDay(date),
