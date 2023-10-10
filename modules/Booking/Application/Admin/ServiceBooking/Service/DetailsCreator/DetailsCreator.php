@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Domain\ServiceBooking\Service\DetailsCreator;
+namespace Module\Booking\Application\Admin\ServiceBooking\Service\DetailsCreator;
 
+use Module\Booking\Application\Admin\ServiceBooking\Service\DetailsCreator\Processor\CIPRoomInAirport;
+use Module\Booking\Application\Admin\ServiceBooking\Service\DetailsCreator\Processor\TransferFromAirport;
+use Module\Booking\Application\Admin\ServiceBooking\Service\DetailsCreator\Processor\TransferToAirport;
 use Module\Booking\Domain\ServiceBooking\Entity\ServiceDetailsInterface;
-use Module\Booking\Domain\ServiceBooking\Service\DetailsCreator\Processor\CIPRoomInAirport;
-use Module\Booking\Domain\ServiceBooking\Service\DetailsCreator\Processor\TransferFromAirport;
-use Module\Booking\Domain\ServiceBooking\Service\DetailsCreator\Processor\TransferToAirport;
 use Module\Booking\Domain\ServiceBooking\ValueObject\BookingId;
 use Module\Shared\Enum\ServiceTypeEnum;
 use Module\Supplier\Application\Response\ServiceDto;

@@ -6,10 +6,10 @@ namespace Module\Booking\Application\Admin\ServiceBooking\UseCase;
 
 use Module\Booking\Application\Admin\ServiceBooking\Factory\CancelConditionsFactory;
 use Module\Booking\Application\Admin\ServiceBooking\Request\CreateBookingDto;
+use Module\Booking\Application\Admin\ServiceBooking\Service\DetailsCreator\DetailsCreator;
 use Module\Booking\Application\Admin\Shared\Support\UseCase\AbstractCreateBooking;
 use Module\Booking\Domain\ServiceBooking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Domain\ServiceBooking\Repository\BookingRepositoryInterface;
-use Module\Booking\Domain\ServiceBooking\Service\DetailsCreator\DetailsCreator;
 use Module\Booking\Domain\ServiceBooking\ValueObject\BookingPrice;
 use Module\Booking\Domain\ServiceBooking\ValueObject\ServiceId;
 use Module\Booking\Domain\Shared\ValueObject\CreatorId;
