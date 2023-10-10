@@ -45,4 +45,9 @@ class TransferToAirportRepository extends AbstractDetailsRepository implements T
 
         return $this->detailsFactory->build(Transfer::find($model->id));
     }
+
+    public function store(TransferToAirport $details): bool
+    {
+        // TODO: Implement store() method.
+    }
 }

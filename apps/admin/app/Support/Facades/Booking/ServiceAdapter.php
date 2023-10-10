@@ -21,6 +21,11 @@ use Module\Shared\Enum\ServiceTypeEnum;
  * @method static int copyBooking(int $id)
  * @method static void deleteBooking(int $id)
  * @method static void bulkDeleteBookings(int[] $id)
+ * @method static void updateDetails(int $bookingId, array $data)
+ *
+ * @method static void bindGuest(int $bookingId, int $guestId)
+ * @method static void unbindGuest(int $bookingId, int $guestId)
+ * @method static void updateCars(int $bookingId, array $carsData)
  **/
 class ServiceAdapter extends Facade
 {

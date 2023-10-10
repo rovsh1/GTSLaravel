@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Application\Admin\ServiceBooking\Service\DetailsFactory\Creator;
+namespace Module\Booking\Application\Admin\ServiceBooking\Service\DetailsFactory\Editor;
 
-use Module\Booking\Application\Admin\ServiceBooking\Service\DetailsFactory\CreatorInterface;
+use Module\Booking\Application\Admin\ServiceBooking\Service\DetailsFactory\EditorInterface;
 use Module\Booking\Domain\ServiceBooking\Entity\TransferToAirport as Entity;
 use Module\Booking\Domain\ServiceBooking\Repository\Details\TransferToAirportRepositoryInterface;
 use Module\Booking\Domain\ServiceBooking\ValueObject\BookingId;
@@ -12,13 +12,13 @@ use Module\Booking\Domain\ServiceBooking\ValueObject\ServiceId;
 use Module\Booking\Domain\ServiceBooking\ValueObject\ServiceInfo;
 use Module\Supplier\Infrastructure\Models\Service as InfrastructureSupplierService;
 
-class TransferToAirport implements CreatorInterface
+class TransferToAirport implements EditorInterface
 {
     public function __construct(
         private readonly TransferToAirportRepositoryInterface $detailsRepository,
     ) {}
 
-    public function process(BookingId $bookingId, ServiceId $serviceId, array $detailsData): Entity
+    public function create(BookingId $bookingId, ServiceId $serviceId, array $detailsData): Entity
     {
         $supplierService = InfrastructureSupplierService::find($serviceId->value());
 
@@ -31,5 +31,12 @@ class TransferToAirport implements CreatorInterface
             $detailsData['flightNumber'] ?? null,
             $detailsData['departureDate'] ?? null,
         );
+    }
+
+    public function update(BookingId $bookingId, array $detailsData): void
+    {
+        $details = $this->detailsRepository->find($bookingId);
+        //@todo проверка полей на изменение и заполнение
+        $this->detailsRepository->store($details);
     }
 }

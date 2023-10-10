@@ -21,4 +21,6 @@ interface TransferFromAirportRepositoryInterface
         ?DateTimeInterface $arrivalDate,
         ?string $meetingTablet
     ): TransferFromAirport;
+
+    public function store(TransferFromAirport $details): bool;
 }

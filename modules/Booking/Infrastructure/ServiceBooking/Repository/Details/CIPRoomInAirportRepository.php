@@ -48,4 +48,9 @@ class CIPRoomInAirportRepository extends AbstractDetailsRepository implements CI
 
         return $this->detailsFactory->build(Airport::find($model->id));
     }
+
+    public function store(CIPRoomInAirport $details): bool
+    {
+        // TODO: Implement store() method.
+    }
 }

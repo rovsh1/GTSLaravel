@@ -7,6 +7,7 @@ namespace App\Admin\Support\Adapters\Booking;
 use Illuminate\Database\Eloquent\Builder;
 use Module\Booking\Application\Admin\ServiceBooking\Request\CreateBookingDto;
 use Module\Booking\Application\Admin\ServiceBooking\UseCase\BulkDeleteBookings;
+use Module\Booking\Application\Admin\ServiceBooking\UseCase\Car\Update;
 use Module\Booking\Application\Admin\ServiceBooking\UseCase\CopyBooking;
 use Module\Booking\Application\Admin\ServiceBooking\UseCase\CreateBooking;
 use Module\Booking\Application\Admin\ServiceBooking\UseCase\DeleteBooking;
@@ -15,10 +16,12 @@ use Module\Booking\Application\Admin\ServiceBooking\UseCase\GetBooking;
 use Module\Booking\Application\Admin\ServiceBooking\UseCase\GetBookingQuery;
 use Module\Booking\Application\Admin\ServiceBooking\UseCase\GetStatuses;
 use Module\Booking\Application\Admin\ServiceBooking\UseCase\GetStatusHistory;
+use Module\Booking\Application\Admin\ServiceBooking\UseCase\Guest\Bind;
 use Module\Booking\Application\Admin\ServiceBooking\UseCase\UpdateBookingStatus;
+use Module\Booking\Application\Admin\ServiceBooking\UseCase\UpdateDetails;
 use Module\Booking\Application\Admin\ServiceBooking\UseCase\UpdateNote;
+use Module\Booking\Application\AirportBooking\UseCase\Admin\Guest\Unbind;
 use Module\Shared\Enum\CurrencyEnum;
-use Module\Shared\Enum\ServiceTypeEnum;
 
 class ServiceAdapter
 {
@@ -98,5 +101,25 @@ class ServiceAdapter
     public function bulkDeleteBookings(array $ids): void
     {
         app(BulkDeleteBookings::class)->execute($ids);
+    }
+
+    public function updateDetails(int $bookingId, array $data): void
+    {
+        app(UpdateDetails::class)->execute($bookingId, $data);
+    }
+
+    public function bindGuest(int $bookingId, int $guestId): void
+    {
+        app(Bind::class)->execute($bookingId, $guestId);
+    }
+
+    public function unbindGuest(int $bookingId, int $guestId): void
+    {
+        app(Unbind::class)->execute($bookingId, $guestId);
+    }
+
+    public function updateCars(int $bookingId, array $carsData): void
+    {
+        app(Update::class)->execute($bookingId, $carsData);
     }
 }

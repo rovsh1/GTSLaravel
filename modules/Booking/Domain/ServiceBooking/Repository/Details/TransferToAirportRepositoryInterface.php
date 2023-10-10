@@ -20,4 +20,6 @@ interface TransferToAirportRepositoryInterface
         ?string $flightNumber,
         ?DateTimeInterface $departureDate,
     ): TransferToAirport;
+
+    public function store(TransferToAirport $details): bool;
 }

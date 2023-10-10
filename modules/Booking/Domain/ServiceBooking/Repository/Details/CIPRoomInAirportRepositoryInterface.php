@@ -22,4 +22,6 @@ interface CIPRoomInAirportRepositoryInterface
         ?DateTimeInterface $serviceDate,
         GuestIdCollection $guestIds,
     ): CIPRoomInAirport;
+
+    public function store(CIPRoomInAirport $details): bool;
 }
