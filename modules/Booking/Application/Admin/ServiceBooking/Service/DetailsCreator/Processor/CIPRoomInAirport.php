@@ -23,10 +23,7 @@ class CIPRoomInAirport implements ProcessorInterface
     {
         $supplierService = InfrastructureSupplierService::find($serviceId->value());
 
-        $serviceInfo = new ServiceInfo(
-            $serviceId,
-            $supplierService->title,
-        );
+        $serviceInfo = new ServiceInfo($serviceId, $supplierService->title);
 
         return $this->detailsRepository->create(
             $bookingId,
