@@ -22,6 +22,7 @@ use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
 use Module\Booking\Domain\Shared\ValueObject\CancelConditions;
 use Module\Booking\Domain\Shared\ValueObject\CreatorId;
 use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
+use Module\Shared\Enum\ServiceTypeEnum;
 
 final class HotelBooking extends AbstractBooking
 {
@@ -41,6 +42,11 @@ final class HotelBooking extends AbstractBooking
         private readonly QuotaProcessingMethodEnum $quotaProcessingMethod,
     ) {
         parent::__construct($id, $orderId, $status, $createdAt, $creatorId, $price);
+    }
+
+    public function serviceType(): ServiceTypeEnum
+    {
+        return ServiceTypeEnum::HOTEL_BOOKING;
     }
 
     public function hotelInfo(): HotelInfo

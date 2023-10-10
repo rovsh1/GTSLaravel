@@ -6,11 +6,10 @@ namespace Module\Booking\Domain\Shared\Service;
 
 use Module\Booking\Deprecated\AirportBooking\AirportBooking;
 use Module\Booking\Domain\HotelBooking\HotelBooking;
+use Module\Booking\Domain\ServiceBooking\Repository\BookingRepositoryInterface;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
-use Module\Booking\Domain\Shared\ValueObject\BookingTypeEnum;
-use Module\Booking\Infrastructure\AirportBooking\Repository\BookingRepository as AirportBookingRepository;
 use Module\Booking\Infrastructure\HotelBooking\Repository\BookingRepository as HotelBookingRepository;
-use Module\Booking\Infrastructure\TransferBooking\Repository\BookingRepository as TransferBookingRepository;
+use Module\Shared\Enum\ServiceTypeEnum;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\ModuleInterface;
 
@@ -46,12 +45,16 @@ class BookingUpdater
         return $success;
     }
 
-    private function repository(BookingInterface $booking
-    ): HotelBookingRepository|AirportBookingRepository|TransferBookingRepository {
-        return match ($booking->type()) {
-            BookingTypeEnum::HOTEL => $this->module->get(HotelBookingRepository::class),
-            BookingTypeEnum::AIRPORT => $this->module->get(AirportBookingRepository::class),
-            BookingTypeEnum::TRANSFER => $this->module->get(TransferBookingRepository::class),
+    private function repository(BookingInterface $booking): HotelBookingRepository|BookingRepositoryInterface
+    {
+        return match ($booking->serviceType()) {
+            ServiceTypeEnum::HOTEL_BOOKING => $this->module->get(HotelBookingRepository::class),
+            ServiceTypeEnum::CIP_IN_AIRPORT,
+            ServiceTypeEnum::CAR_RENT,
+            ServiceTypeEnum::TRANSFER_TO_RAILWAY,
+            ServiceTypeEnum::TRANSFER_FROM_RAILWAY,
+            ServiceTypeEnum::TRANSFER_FROM_AIRPORT,
+            ServiceTypeEnum::TRANSFER_TO_AIRPORT => $this->module->get(BookingRepositoryInterface::class),
             default => throw new \DomainException('Unknown booking type')
         };
     }

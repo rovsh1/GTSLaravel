@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Booking\Infrastructure\ServiceBooking\Models;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Module\Booking\Infrastructure\Shared\Models\Booking as BaseModel;
 
@@ -18,15 +17,7 @@ use Module\Booking\Infrastructure\Shared\Models\Booking as BaseModel;
  */
 class Booking extends BaseModel
 {
-    protected static function booted()
-    {
-        static::addGlobalScope('default', function (Builder $builder) {
-            $builder->addSelect('bookings.*')
-                ->join('orders', 'orders.id', '=', 'bookings.order_id')
-                ->join('clients', 'clients.id', '=', 'orders.client_id')
-                ->addSelect('clients.name as client_name');
-        });
-    }
+    protected static function booted() {}
 
     public function airportDetails(): HasOne
     {

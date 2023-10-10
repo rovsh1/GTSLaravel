@@ -13,6 +13,7 @@ use Module\Booking\Domain\Shared\Service\RequestRules;
 use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
 use Module\Booking\Domain\Shared\ValueObject\CreatorId;
 use Module\Shared\Contracts\Domain\EntityInterface;
+use Module\Shared\Enum\ServiceTypeEnum;
 
 interface BookingInterface extends EntityInterface
 {
@@ -27,6 +28,8 @@ interface BookingInterface extends EntityInterface
     public function creatorId(): CreatorId;
 
     public function price(): BookingPrice;
+
+    public function serviceType(): ServiceTypeEnum;
 
     /**
      * @param RequestRules $requestRules
