@@ -30,6 +30,10 @@ class DomainEventDispatcher implements DomainEventDispatcherInterface
         foreach ($events as $event) {
             $this->dispatchEvent($event);
         }
+
+        foreach ($events as $event) {
+            $this->dispatchEvent($event);
+        }
     }
 
     private function dispatchEvent(DomainEventInterface $event): void

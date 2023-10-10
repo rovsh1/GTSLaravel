@@ -3,8 +3,8 @@
 namespace Module\Integration\Traveline\Application\Event;
 
 use Module\Integration\Traveline\Domain\Adapter\TravelineAdapterInterface;
-use Sdk\Module\Contracts\Event\IntegrationEventInterface;
-use Sdk\Module\Contracts\Event\IntegrationEventListenerInterface;
+use Module\Shared\Contracts\Event\IntegrationEventInterface;
+use Module\Shared\Contracts\Event\IntegrationEventListenerInterface;
 
 class SendReservationNotificationListener implements IntegrationEventListenerInterface
 {

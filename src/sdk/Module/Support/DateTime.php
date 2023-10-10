@@ -3,9 +3,8 @@
 namespace Sdk\Module\Support;
 
 use Carbon\Carbon;
-use Sdk\Module\Support\Facades\DateTimeInterface;
 
-class DateTime extends Carbon implements DateTimeInterface
+class DateTime extends Carbon
 {
     private static array $formats = [
         'date' => 'd.m.Y',

@@ -3,9 +3,9 @@
 //FIXME TEST
 namespace Module\Catalog\Domain\Hotel\Event;
 
-use Sdk\Module\Contracts\Event\IntegrationEventInterface;
+use Module\Shared\Contracts\Event\IntegrationEventInterface;
 
-class ReservationCancelledListener implements \Sdk\Module\Contracts\Event\IntegrationEventListenerInterface
+class ReservationCancelledListener implements \Module\Shared\Contracts\Event\IntegrationEventListenerInterface
 {
     public function handle(IntegrationEventInterface $event)
     {

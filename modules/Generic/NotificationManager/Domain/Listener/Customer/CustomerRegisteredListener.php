@@ -5,8 +5,8 @@ namespace Module\Generic\NotificationManager\Domain\Listener\Customer;
 use Module\Generic\NotificationManager\Domain\Notification\Customer\CustomerRegistered;
 use Module\Generic\NotificationManager\Domain\Support\Listener\AdministratorsNotificationTrait;
 use Module\Generic\NotificationManager\Domain\Support\Listener\CustomerNotificationTrait;
-use Sdk\Module\Contracts\Event\IntegrationEventInterface;
-use Sdk\Module\Contracts\Event\IntegrationEventListenerInterface;
+use Module\Shared\Contracts\Event\IntegrationEventInterface;
+use Module\Shared\Contracts\Event\IntegrationEventListenerInterface;
 
 class CustomerRegisteredListener implements IntegrationEventListenerInterface
 {

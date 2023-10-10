@@ -1,6 +1,6 @@
 <?php
 
-namespace Sdk\Module\Foundation\Providers;
+namespace Module\Shared\Providers;
 
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Event\DomainEventDispatcher;

@@ -2,7 +2,7 @@
 
 namespace Module\Catalog\Domain\Hotel\Entity;
 
-use Sdk\Module\Support\Facades\DateTimeInterface;
+use DateTimeInterface;
 
 class RoomQuota
 {
