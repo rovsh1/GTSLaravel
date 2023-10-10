@@ -9,6 +9,7 @@ use Module\Booking\Domain\ServiceBooking\ValueObject\BookingId;
 use Module\Booking\Domain\ServiceBooking\ValueObject\CarBidCollection;
 use Module\Booking\Domain\ServiceBooking\ValueObject\DetailsId;
 use Module\Booking\Domain\ServiceBooking\ValueObject\ServiceInfo;
+use Module\Shared\Enum\ServiceTypeEnum;
 
 class TransferFromAirport implements ServiceDetailsInterface
 {
@@ -27,6 +28,11 @@ class TransferFromAirport implements ServiceDetailsInterface
         private ?string $meetingTablet,
         private CarBidCollection $carBids
     ) {}
+
+    public function serviceType(): ServiceTypeEnum
+    {
+        return ServiceTypeEnum::TRANSFER_FROM_AIRPORT;
+    }
 
     public function serviceInfo(): ServiceInfo
     {

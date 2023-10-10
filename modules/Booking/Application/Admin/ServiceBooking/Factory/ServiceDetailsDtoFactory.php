@@ -12,21 +12,20 @@ use Module\Booking\Domain\ServiceBooking\Entity\CIPRoomInAirport;
 use Module\Booking\Domain\ServiceBooking\Entity\ServiceDetailsInterface;
 use Module\Booking\Domain\ServiceBooking\Entity\TransferFromAirport;
 use Module\Booking\Domain\ServiceBooking\Entity\TransferToAirport;
-use Module\Shared\Enum\ServiceTypeEnum;
 
 class ServiceDetailsDtoFactory
 {
     public function createFromEntity(ServiceDetailsInterface $details): ServiceDetailsDtoInterface
     {
-        return match ($details->serviceInfo()->type()) {
-            ServiceTypeEnum::TRANSFER_TO_AIRPORT => $this->buildTransferToAirport($details),
-            ServiceTypeEnum::TRANSFER_FROM_AIRPORT => $this->buildTransferFromAirport($details),
-            ServiceTypeEnum::TRANSFER_TO_RAILWAY => $this->buildTransferToRailway($details),
-            ServiceTypeEnum::TRANSFER_FROM_RAILWAY => $this->buildTransferFromRailway($details),
-            ServiceTypeEnum::CAR_RENT => $this->buildCarRent($details),
-            ServiceTypeEnum::CIP_IN_AIRPORT => $this->buildCIPRoomInAirport($details),
-            default => throw new \Exception('Service details dto not implemented')
-        };
+        if ($details instanceof TransferToAirport) {
+            return $this->buildTransferToAirport($details);
+        } elseif ($details instanceof TransferFromAirport) {
+            return $this->buildTransferFromAirport($details);
+        } elseif ($details instanceof CIPRoomInAirport) {
+            return $this->buildCIPRoomInAirport($details);
+        } else {
+            throw new \Exception('Service details dto not implemented');
+        }
     }
 
     private function buildTransferToAirport(TransferToAirport $details): TransferToAirportDto

@@ -11,7 +11,6 @@ use Module\Booking\Domain\ServiceBooking\ValueObject\BookingId;
 use Module\Booking\Domain\ServiceBooking\ValueObject\ServiceId;
 use Module\Booking\Domain\ServiceBooking\ValueObject\ServiceInfo;
 use Module\Booking\Domain\Shared\ValueObject\GuestIdCollection;
-use Module\Shared\Enum\ServiceTypeEnum;
 use Module\Supplier\Infrastructure\Models\Service as InfrastructureSupplierService;
 
 class CIPRoomInAirport implements ProcessorInterface
@@ -27,14 +26,13 @@ class CIPRoomInAirport implements ProcessorInterface
         $serviceInfo = new ServiceInfo(
             $serviceId,
             $supplierService->title,
-            ServiceTypeEnum::CIP_IN_AIRPORT
         );
 
         return $this->detailsRepository->create(
             $bookingId,
             $serviceInfo,
             $supplierService->data['airportId'],
-        $detailsData['flightNumber'] ?? null,
+            $detailsData['flightNumber'] ?? null,
             $detailsData['serviceDate'] ?? null,
             new GuestIdCollection([])
         );

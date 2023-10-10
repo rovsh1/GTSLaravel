@@ -128,7 +128,6 @@ class DetailsFactory
         return new ServiceInfo(
             new ServiceId($data['serviceId']),
             $data['title'],
-            ServiceTypeEnum::from($data['type'])
         );
     }
 }

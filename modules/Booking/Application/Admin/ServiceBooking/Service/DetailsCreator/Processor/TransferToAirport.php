@@ -10,7 +10,6 @@ use Module\Booking\Domain\ServiceBooking\Repository\Details\TransferToAirportRep
 use Module\Booking\Domain\ServiceBooking\ValueObject\BookingId;
 use Module\Booking\Domain\ServiceBooking\ValueObject\ServiceId;
 use Module\Booking\Domain\ServiceBooking\ValueObject\ServiceInfo;
-use Module\Shared\Enum\ServiceTypeEnum;
 use Module\Supplier\Infrastructure\Models\Service as InfrastructureSupplierService;
 
 class TransferToAirport implements ProcessorInterface
@@ -26,7 +25,6 @@ class TransferToAirport implements ProcessorInterface
         $serviceInfo = new ServiceInfo(
             $serviceId,
             $supplierService->title,
-            ServiceTypeEnum::TRANSFER_TO_AIRPORT
         );
 
         return $this->detailsRepository->create(

@@ -7,7 +7,6 @@ use Module\Booking\Domain\ServiceBooking\Support\Concerns;
 use Module\Booking\Domain\ServiceBooking\ValueObject\AirportId;
 use Module\Booking\Domain\ServiceBooking\ValueObject\BookingId;
 use Module\Booking\Domain\ServiceBooking\ValueObject\DetailsId;
-use Module\Booking\Domain\ServiceBooking\ValueObject\ServiceId;
 use Module\Booking\Domain\ServiceBooking\ValueObject\ServiceInfo;
 use Module\Booking\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Shared\Enum\ServiceTypeEnum;
@@ -25,7 +24,11 @@ class CIPRoomInAirport implements ServiceDetailsInterface
         private string $flightNumber,
         private DateTimeInterface $serviceDate,
         private GuestIdCollection $guestIds,
-    ) {
+    ) {}
+
+    public function serviceType(): ServiceTypeEnum
+    {
+        return ServiceTypeEnum::CIP_IN_AIRPORT;
     }
 
     public function serviceInfo(): ServiceInfo

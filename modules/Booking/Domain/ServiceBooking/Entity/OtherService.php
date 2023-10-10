@@ -21,6 +21,11 @@ class OtherService implements ServiceDetailsInterface
         return $this->bookingId;
     }
 
+    public function serviceType(): ServiceTypeEnum
+    {
+        return ServiceTypeEnum::OTHER;
+    }
+
     public function serviceInfo(): ServiceInfo
     {
         return $this->serviceInfo;

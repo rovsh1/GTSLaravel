@@ -18,7 +18,6 @@ abstract class AbstractDetailsRepository
         return [
             'serviceId' => $serviceInfo->id()->value(),
             'title' => $serviceInfo->title(),
-            'type' => $serviceInfo->type()->value
         ];
     }
 }

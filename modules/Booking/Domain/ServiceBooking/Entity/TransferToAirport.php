@@ -27,6 +27,11 @@ class TransferToAirport implements ServiceDetailsInterface
         private CarBidCollection $carBids
     ) {}
 
+    public function serviceType(): ServiceTypeEnum
+    {
+        return ServiceTypeEnum::TRANSFER_TO_AIRPORT;
+    }
+
     public function serviceInfo(): ServiceInfo
     {
         return $this->serviceInfo;
