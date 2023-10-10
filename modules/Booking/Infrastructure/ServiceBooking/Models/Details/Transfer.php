@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Infrastructure\ServiceBooking\Models\Details;
 
 use Illuminate\Database\Eloquent\Builder;
+use Module\Booking\Infrastructure\ServiceBooking\Factory\DetailsModelInterface;
 use Module\Shared\Enum\ServiceTypeEnum;
 use Sdk\Module\Database\Eloquent\Model;
 

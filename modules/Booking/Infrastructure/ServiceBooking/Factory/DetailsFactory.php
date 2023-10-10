@@ -16,7 +16,6 @@ use Module\Booking\Domain\ServiceBooking\ValueObject\DetailsId;
 use Module\Booking\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Booking\Infrastructure\ServiceBooking\Models\Booking;
 use Module\Booking\Infrastructure\ServiceBooking\Models\Details\Airport;
-use Module\Booking\Infrastructure\ServiceBooking\Models\Details\DetailsModelInterface;
 use Module\Booking\Infrastructure\ServiceBooking\Models\Details\Other;
 use Module\Booking\Infrastructure\ServiceBooking\Models\Details\Transfer;
 use Module\Shared\Enum\ServiceTypeEnum;

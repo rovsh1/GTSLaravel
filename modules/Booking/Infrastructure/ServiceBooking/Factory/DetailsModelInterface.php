@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Infrastructure\ServiceBooking\Models\Details;
+namespace Module\Booking\Infrastructure\ServiceBooking\Factory;
 
 use Module\Shared\Enum\ServiceTypeEnum;
 
