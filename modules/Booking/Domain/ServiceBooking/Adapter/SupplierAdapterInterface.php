@@ -8,12 +8,15 @@ use Carbon\CarbonInterface;
 use Module\Shared\Enum\CurrencyEnum;
 use Module\Supplier\Application\Response\CancelConditionsDto;
 use Module\Supplier\Application\Response\ServiceContractDto;
+use Module\Supplier\Application\Response\ServiceDto;
 use Module\Supplier\Application\Response\ServicePriceDto;
 use Module\Supplier\Application\Response\SupplierDto;
 
 interface SupplierAdapterInterface
 {
     public function find(int $id): SupplierDto;
+
+    public function findService(int $id): ?ServiceDto;
 
     public function getTransferServicePrice(
         int $supplierId,

@@ -111,10 +111,11 @@ class BookingController extends Controller
             clientId: $data['client_id'],
             legalId: $data['legal_id'],
             currency: $currency,
-            serviceType: ServiceTypeEnum::from($data['service_type']),
+            serviceId: $data['service_id'],
             creatorId: $creatorId,
             orderId: $data['order_id'] ?? null,
-            note: $data['note'] ?? null
+            detailsData: $data,
+            note: $data['note'] ?? null,
         );
         $this->administratorRepository->create($bookingId, $creatorId);
 
@@ -330,6 +331,7 @@ class BookingController extends Controller
                 'enum' => ServiceTypeEnum::class,
                 'required' => true
             ])
+            ->hidden('service_id', ['label' => 'Услуга', 'required' => true])
             ->manager('manager_id', [
                 'label' => 'Менеджер',
                 'emptyItem' => '',

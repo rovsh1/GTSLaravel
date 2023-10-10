@@ -9,5 +9,7 @@ interface ServiceDetailsInterface
 {
     public function id(): DetailsId;
 
+    public function serviceTitle(): string;
+
     public function serviceType(): ServiceTypeEnum;
 }

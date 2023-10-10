@@ -22,7 +22,4 @@ AclRoute::for('service-booking')
     ->post('/{booking}/request', Controllers\Booking\RequestController::class . '@sendRequest', 'update', 'request.send')
     ->get('/{booking}/request/{request}/file', Controllers\Booking\RequestController::class . '@getFileInfo', 'read', 'request.download')
 
-    ->post("/{booking}/details/{serviceType}/create", Controllers\Booking\Service\DetailsController::class . '@create', 'create', 'details.create')
-
-    ->post('/{booking}/details/transfer-to-airport/create', Controllers\Booking\Service\DetailsController::class . '@createTransferToAirport', 'create', 'details.createTransferToAirport')
-    ->post('/{booking}/details/transfer-from-airport/create', Controllers\Booking\Service\DetailsController::class . '@createTransferFromAirport', 'create', 'details.createTransferFromAirport');
+    ->post("/{booking}/details/{serviceId}/create", Controllers\Booking\Service\DetailsController::class . '@create', 'create', 'details.create');

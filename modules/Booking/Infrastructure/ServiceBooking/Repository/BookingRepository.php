@@ -11,6 +11,7 @@ use Module\Booking\Domain\ServiceBooking\Repository\BookingRepositoryInterface;
 use Module\Booking\Domain\ServiceBooking\ServiceBooking as Entity;
 use Module\Booking\Domain\ServiceBooking\ValueObject\BookingId;
 use Module\Booking\Domain\ServiceBooking\ValueObject\BookingPrice;
+use Module\Booking\Domain\ServiceBooking\ValueObject\ServiceId;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
 use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
 use Module\Booking\Domain\Shared\ValueObject\CancelConditions;
@@ -61,12 +62,12 @@ class BookingRepository implements BookingRepositoryInterface
         CreatorId $creatorId,
         BookingPrice $price,
         CancelConditions $cancelConditions,
-        ServiceTypeEnum $serviceType,
+        ServiceId $serviceId,
         ?string $note = null
-    ): BookingId {
+    ): Entity {
         $model = $this->getModel()::create([
             'order_id' => $orderId->value(),
-            'service_type' => $serviceType,
+            'service_id' => $serviceId->value(),
             'status' => BookingStatusEnum::CREATED,
             'source' => AppContext::source(),
             'creator_id' => $creatorId->value(),
@@ -75,7 +76,7 @@ class BookingRepository implements BookingRepositoryInterface
             'note' => $note
         ]);
 
-        return new BookingId($model->id);
+        return $this->buildEntityFromModel($model);
     }
 
     /**
@@ -99,7 +100,8 @@ class BookingRepository implements BookingRepositoryInterface
                 ? CancelConditions::fromData($booking->cancel_conditions)
                 : null,
             note: $booking->note,
-            serviceType: $booking->service_type,
+            serviceId: new ServiceId($booking->service_id),
+            serviceType: $booking->service_type ?? ServiceTypeEnum::TRANSFER_TO_AIRPORT,//@todo убрать hack
         );
     }
 }

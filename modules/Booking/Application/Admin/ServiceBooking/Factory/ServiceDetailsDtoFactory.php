@@ -31,7 +31,14 @@ class ServiceDetailsDtoFactory
 
     private function buildTransferToAirport(TransferToAirport $details): TransferToAirportDto
     {
-        return new TransferToAirportDto();
+        return new TransferToAirportDto(
+            $details->id()->value(),
+            $details->serviceTitle(),
+            $details->airportId()->value(),
+            $details->flightNumber(),
+            $details->departureDate()?->format(DATE_ATOM),
+            $details->carBids()->all()
+        );
     }
 
     private function buildTransferFromAirport(TransferFromAirport $details): TransferFromAirportDto

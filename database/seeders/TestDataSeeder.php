@@ -151,7 +151,7 @@ class TestDataSeeder extends Seeder
                 'car_id' => $carId,
                 'currency' => CurrencyEnum::UZS,
                 'price_net' => 20000,
-                'prices_gross' => '[ { "amount": 30000, "currency_id": 1 }, { "amount": 25, "currency_id": 3 } ]'
+                'prices_gross' => '[ { "amount": 30000, "currency": "UZS" }, { "amount": 25, "currency": "USD" } ]'
             ],
             [
                 'service_id' => $service2Id,
@@ -160,7 +160,7 @@ class TestDataSeeder extends Seeder
 
                 'currency' => CurrencyEnum::UZS,
                 'price_net' => 20000,
-                'prices_gross' => '[ { "amount": 30000, "currency_id": 1 }, { "amount": 25, "currency_id": 3 } ]'
+                'prices_gross' => '[ { "amount": 30000, "currency": "UZS" }, { "amount": 25, "currency": "USD" } ]'
             ],
             [
                 'service_id' => $service3Id,
@@ -168,7 +168,7 @@ class TestDataSeeder extends Seeder
                 'car_id' => $carId,
                 'currency' => CurrencyEnum::UZS,
                 'price_net' => 50000,
-                'prices_gross' => '[ { "amount": 100000, "currency_id": 1 }, { "amount": 50, "currency_id": 3 } ]'
+                'prices_gross' => '[ { "amount": 100000, "currency": "UZS" }, { "amount": 50, "currency": "USD" } ]'
             ]
         ]);
     }
@@ -228,7 +228,7 @@ class TestDataSeeder extends Seeder
                 'airport_id' => 4,
                 'currency' => CurrencyEnum::UZS,
                 'price_net' => 50000,
-                'prices_gross' => '[ { "amount": 100000, "currency_id": 1 }, { "amount": 25, "currency_id": 3 } ]'
+                'prices_gross' => '[ { "amount": 100000, "currency": "UZS" }, { "amount": 25, "currency": "USD" } ]'
             ],
             [
                 'service_id' => $service2Id,
@@ -236,7 +236,7 @@ class TestDataSeeder extends Seeder
                 'airport_id' => 4,
                 'currency' => CurrencyEnum::UZS,
                 'price_net' => 20000,
-                'prices_gross' => '[ { "amount": 70000, "currency_id": 1 }, { "amount": 10, "currency_id": 3 } ]'
+                'prices_gross' => '[ { "amount": 70000, "currency": "UZS" }, { "amount": 10, "currency": "USD"} ]'
             ]
         ]);
     }

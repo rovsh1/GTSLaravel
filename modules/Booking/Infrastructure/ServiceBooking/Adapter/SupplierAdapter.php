@@ -9,10 +9,12 @@ use Module\Booking\Domain\ServiceBooking\Adapter\SupplierAdapterInterface;
 use Module\Shared\Enum\CurrencyEnum;
 use Module\Supplier\Application\Response\CancelConditionsDto;
 use Module\Supplier\Application\Response\ServiceContractDto;
+use Module\Supplier\Application\Response\ServiceDto;
 use Module\Supplier\Application\Response\ServicePriceDto;
 use Module\Supplier\Application\Response\SupplierDto;
 use Module\Supplier\Application\UseCase\Find;
 use Module\Supplier\Application\UseCase\FindAirportServiceContract;
+use Module\Supplier\Application\UseCase\FindService;
 use Module\Supplier\Application\UseCase\FindTransferServiceContract;
 use Module\Supplier\Application\UseCase\GetAirportCancelConditions;
 use Module\Supplier\Application\UseCase\GetAirportServicePrice;
@@ -24,6 +26,11 @@ class SupplierAdapter implements SupplierAdapterInterface
     public function find(int $id): SupplierDto
     {
         return app(Find::class)->execute($id);
+    }
+
+    public function findService(int $id): ?ServiceDto
+    {
+        return app(FindService::class)->execute($id);
     }
 
     public function getTransferServicePrice(

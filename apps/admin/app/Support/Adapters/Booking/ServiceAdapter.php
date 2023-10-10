@@ -41,9 +41,10 @@ class ServiceAdapter
         int $clientId,
         int|null $legalId,
         CurrencyEnum $currency,
-        ServiceTypeEnum $serviceType,
+        int $serviceId,
         int $creatorId,
         ?int $orderId,
+        ?array $detailsData,
         ?string $note = null
     ) {
         return app(CreateBooking::class)->execute(
@@ -52,8 +53,9 @@ class ServiceAdapter
                 clientId: $clientId,
                 legalId: $legalId,
                 currency: $currency,
-                serviceType: $serviceType,
+                serviceId: $serviceId,
                 orderId: $orderId,
+                detailsData: $detailsData,
                 note: $note
             )
         );

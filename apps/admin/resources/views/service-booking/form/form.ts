@@ -24,7 +24,7 @@ const pinia = createPinia()
 const clients: any[] = [
   { id: 14, name: 'test', currency_id: 1 },
 ]
-// const serviceSearchPayload: ServiceSearchPayload = { city_id: null }
+const serviceSearchPayload: ServiceSearchPayload = { city_id: null }
 
 $(() => {
   const toggleLegalIdInput = (required: boolean = true): void => {
@@ -97,15 +97,17 @@ $(() => {
   $('#form_data_manager_id').select2()
   $<HTMLSelectElement>('#form_data_city_id')
     .select2()
-    // .change((e) => serviceSearchPayload.city_id = Number(e.target.value))
+    .change((e) => {
+      serviceSearchPayload.city_id = Number(e.target.value)
+    })
 
-  // $('#form_data_service_id').childCombo({
-  //   urlGetter: (type: number) =>'/supplier/services-transfer/search',
-  //   disabledText: 'Выберите тип услуги',
-  //   parent: $('#form_data_service_type'),
-  //   dataIndex: 'service_type',
-  //   useSelect2: true,
-  // })
+  $('#form_data_service_id').childCombo({
+    urlGetter: () => `/supplier/services-transfer/search?city_id=${serviceSearchPayload.city_id}`,
+    disabledText: 'Выберите тип услуги',
+    parent: $('#form_data_service_type'),
+    dataIndex: 'service_type',
+    useSelect2: true,
+  })
 
   const $clientIdSelect = $('#form_data_client_id').select2()
     .change(() => handleChangeClientId(undefined))

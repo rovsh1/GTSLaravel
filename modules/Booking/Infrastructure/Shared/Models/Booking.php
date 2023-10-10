@@ -17,6 +17,7 @@ use Sdk\Module\Database\Eloquent\Model;
  *
  * @property int $id
  * @property int $order_id
+ * @property int $service_id
  * @property ServiceTypeEnum $service_type
  * @property BookingStatusEnum $status
  * @property string $source
@@ -35,7 +36,7 @@ abstract class Booking extends Model
 
     protected $fillable = [
         'order_id',
-        'service_type',
+        'service_id',
         'status',
         'source',
         'creator_id',

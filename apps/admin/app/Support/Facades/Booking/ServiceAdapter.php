@@ -13,7 +13,7 @@ use Module\Shared\Enum\ServiceTypeEnum;
  * @method static Builder getBookingQuery()
  * @method static array getStatuses()
  * @method static mixed getBooking(int $id)
- * @method static int createBooking(int $clientId, int|null $legalId, CurrencyEnum $currency, ServiceTypeEnum $serviceType, int $creatorId, ?int $orderId, ?string $note = null)
+ * @method static int createBooking(int $clientId, int|null $legalId, CurrencyEnum $currency, int $serviceId, int $creatorId, ?int $orderId, array|null $detailsData, string|null $note = null)
  * @method static array getAvailableActions(int $id)
  * @method static mixed updateStatus(int $id, int $status, string|null $notConfirmedReason = null, float|null $netPenalty = null)
  * @method static array getStatusHistory(int $id)
