@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Application\Admin\ServiceBooking\Service\DetailsCreator;
+namespace Module\Booking\Application\Admin\ServiceBooking\Service\DetailsFactory;
 
-use Module\Booking\Application\Admin\ServiceBooking\Service\DetailsCreator\Processor\CIPRoomInAirport;
-use Module\Booking\Application\Admin\ServiceBooking\Service\DetailsCreator\Processor\TransferFromAirport;
-use Module\Booking\Application\Admin\ServiceBooking\Service\DetailsCreator\Processor\TransferToAirport;
+use Module\Booking\Application\Admin\ServiceBooking\Service\DetailsFactory\Creator\CIPRoomInAirport;
+use Module\Booking\Application\Admin\ServiceBooking\Service\DetailsFactory\Creator\TransferFromAirport;
+use Module\Booking\Application\Admin\ServiceBooking\Service\DetailsFactory\Creator\TransferToAirport;
 use Module\Booking\Domain\ServiceBooking\Entity\ServiceDetailsInterface;
 use Module\Booking\Domain\ServiceBooking\ValueObject\BookingId;
 use Module\Booking\Domain\ServiceBooking\ValueObject\ServiceId;
 use Module\Shared\Enum\ServiceTypeEnum;
 use Sdk\Module\Contracts\ModuleInterface;
 
-class DetailsCreator
+class DetailsFactory
 {
     public function __construct(
         private readonly ModuleInterface $module
@@ -25,12 +25,12 @@ class DetailsCreator
         ServiceId $serviceId,
         array $detailsData
     ): ServiceDetailsInterface {
-        $processor = $this->getProcessor($serviceType);
+        $processor = $this->getCreator($serviceType);
 
         return $processor->process($bookingId, $serviceId, $detailsData);
     }
 
-    private function getProcessor(ServiceTypeEnum $serviceType): ProcessorInterface
+    private function getCreator(ServiceTypeEnum $serviceType): CreatorInterface
     {
         return match ($serviceType) {
             ServiceTypeEnum::TRANSFER_TO_AIRPORT => $this->module->make(TransferToAirport::class),

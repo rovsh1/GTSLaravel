@@ -2,21 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Application\Admin\ServiceBooking\Service\DetailsCreator\Processor;
+namespace Module\Booking\Application\Admin\ServiceBooking\Service\DetailsFactory\Creator;
 
-use Module\Booking\Application\Admin\ServiceBooking\Service\DetailsCreator\ProcessorInterface;
-use Module\Booking\Domain\ServiceBooking\Entity\CIPRoomInAirport as Entity;
-use Module\Booking\Domain\ServiceBooking\Repository\Details\CIPRoomInAirportRepositoryInterface;
+use Module\Booking\Application\Admin\ServiceBooking\Service\DetailsFactory\CreatorInterface;
+use Module\Booking\Domain\ServiceBooking\Entity\TransferToAirport as Entity;
+use Module\Booking\Domain\ServiceBooking\Repository\Details\TransferToAirportRepositoryInterface;
 use Module\Booking\Domain\ServiceBooking\ValueObject\BookingId;
 use Module\Booking\Domain\ServiceBooking\ValueObject\ServiceId;
 use Module\Booking\Domain\ServiceBooking\ValueObject\ServiceInfo;
-use Module\Booking\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Supplier\Infrastructure\Models\Service as InfrastructureSupplierService;
 
-class CIPRoomInAirport implements ProcessorInterface
+class TransferToAirport implements CreatorInterface
 {
     public function __construct(
-        private readonly CIPRoomInAirportRepositoryInterface $detailsRepository,
+        private readonly TransferToAirportRepositoryInterface $detailsRepository,
     ) {}
 
     public function process(BookingId $bookingId, ServiceId $serviceId, array $detailsData): Entity
@@ -30,8 +29,7 @@ class CIPRoomInAirport implements ProcessorInterface
             $serviceInfo,
             $supplierService->data['airportId'],
             $detailsData['flightNumber'] ?? null,
-            $detailsData['serviceDate'] ?? null,
-            new GuestIdCollection([])
+            $detailsData['departureDate'] ?? null,
         );
     }
 }

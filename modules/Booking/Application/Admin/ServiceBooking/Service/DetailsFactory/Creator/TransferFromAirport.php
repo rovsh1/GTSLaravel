@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Application\Admin\ServiceBooking\Service\DetailsCreator\Processor;
+namespace Module\Booking\Application\Admin\ServiceBooking\Service\DetailsFactory\Creator;
 
-use Module\Booking\Application\Admin\ServiceBooking\Service\DetailsCreator\ProcessorInterface;
+use Module\Booking\Application\Admin\ServiceBooking\Service\DetailsFactory\CreatorInterface;
 use Module\Booking\Domain\ServiceBooking\Entity\TransferFromAirport as Entity;
 use Module\Booking\Domain\ServiceBooking\Repository\Details\TransferFromAirportRepositoryInterface;
 use Module\Booking\Domain\ServiceBooking\ValueObject\BookingId;
@@ -12,7 +12,7 @@ use Module\Booking\Domain\ServiceBooking\ValueObject\ServiceId;
 use Module\Booking\Domain\ServiceBooking\ValueObject\ServiceInfo;
 use Module\Supplier\Infrastructure\Models\Service as InfrastructureSupplierService;
 
-class TransferFromAirport implements ProcessorInterface
+class TransferFromAirport implements CreatorInterface
 {
     public function __construct(
         private readonly TransferFromAirportRepositoryInterface $detailsRepository,
