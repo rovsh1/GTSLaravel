@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Domain\Shared\Service;
 
-use Module\Booking\Domain\Shared\Entity\BookingInterface;
+use Module\Booking\Domain\Booking\Booking;
 use Module\Booking\Domain\Shared\Exception\InvalidStatusTransition;
 use Module\Booking\Domain\Shared\Service\StatusRules\AdministratorRules;
 use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
@@ -14,98 +14,97 @@ class StatusUpdater
     public function __construct(
         private readonly AdministratorRules $statusRules,
         private readonly BookingUpdater $bookingUpdater,
-    ) {
-    }
+    ) {}
 
-    public function toProcessing(BookingInterface $booking): void
+    public function toProcessing(Booking $booking): void
     {
         $this->handleUpdateStatus(
             $booking,
             BookingStatusEnum::PROCESSING,
-            fn(BookingInterface $booking) => $booking->toProcessing()
+            fn(Booking $booking) => $booking->toProcessing()
         );
     }
 
-    public function cancel(BookingInterface $booking): void
+    public function cancel(Booking $booking): void
     {
         $this->handleUpdateStatus(
             $booking,
             BookingStatusEnum::CANCELLED,
-            fn(BookingInterface $booking) => $booking->cancel()
+            fn(Booking $booking) => $booking->cancel()
         );
     }
 
-    public function confirm(BookingInterface $booking): void
+    public function confirm(Booking $booking): void
     {
         $this->handleUpdateStatus(
             $booking,
             BookingStatusEnum::CONFIRMED,
-            fn(BookingInterface $booking) => $booking->confirm()
+            fn(Booking $booking) => $booking->confirm()
         );
     }
 
-    public function toNotConfirmed(BookingInterface $booking, string $reason): void
+    public function toNotConfirmed(Booking $booking, string $reason): void
     {
         $this->handleUpdateStatus(
             $booking,
             BookingStatusEnum::NOT_CONFIRMED,
-            fn(BookingInterface $booking) => $booking->toNotConfirmed($reason)
+            fn(Booking $booking) => $booking->toNotConfirmed($reason)
         );
     }
 
-    public function toCancelledNoFee(BookingInterface $booking): void
+    public function toCancelledNoFee(Booking $booking): void
     {
         $this->handleUpdateStatus(
             $booking,
             BookingStatusEnum::CANCELLED_NO_FEE,
-            fn(BookingInterface $booking) => $booking->toCancelledNoFee()
+            fn(Booking $booking) => $booking->toCancelledNoFee()
         );
     }
 
-    public function toCancelledFee(BookingInterface $booking, float $netPenalty, float|null $grossPenalty = null): void
+    public function toCancelledFee(Booking $booking, float $netPenalty, float|null $grossPenalty = null): void
     {
         $this->handleUpdateStatus(
             $booking,
             BookingStatusEnum::CANCELLED_FEE,
-            fn(BookingInterface $booking) => $booking->toCancelledFee($netPenalty, $grossPenalty)
+            fn(Booking $booking) => $booking->toCancelledFee($netPenalty, $grossPenalty)
         );
     }
 
-    public function toWaitingConfirmation(BookingInterface $booking): void
+    public function toWaitingConfirmation(Booking $booking): void
     {
         $this->handleUpdateStatus(
             $booking,
             BookingStatusEnum::WAITING_CONFIRMATION,
-            fn(BookingInterface $booking) => $booking->toWaitingConfirmation()
+            fn(Booking $booking) => $booking->toWaitingConfirmation()
         );
     }
 
-    public function toWaitingCancellation(BookingInterface $booking): void
+    public function toWaitingCancellation(Booking $booking): void
     {
         $this->handleUpdateStatus(
             $booking,
             BookingStatusEnum::WAITING_CANCELLATION,
-            fn(BookingInterface $booking) => $booking->toWaitingCancellation()
+            fn(Booking $booking) => $booking->toWaitingCancellation()
         );
     }
 
-    public function toWaitingProcessing(BookingInterface $booking): void
+    public function toWaitingProcessing(Booking $booking): void
     {
         $this->handleUpdateStatus(
             $booking,
             BookingStatusEnum::WAITING_PROCESSING,
-            fn(BookingInterface $booking) => $booking->toWaitingProcessing()
+            fn(Booking $booking) => $booking->toWaitingProcessing()
         );
     }
 
     /**
-     * @param BookingInterface $booking
+     * @param Booking $booking
      * @param BookingStatusEnum $status
      * @param callable $callback
      * @return void
      * @throws InvalidStatusTransition
      */
-    public function handleUpdateStatus(BookingInterface $booking, BookingStatusEnum $status, callable $callback): void
+    public function handleUpdateStatus(Booking $booking, BookingStatusEnum $status, callable $callback): void
     {
         $this->checkCanTransitToStatus($booking, $status);
         $callback($booking);
@@ -113,12 +112,12 @@ class StatusUpdater
     }
 
     /**
-     * @param BookingInterface $booking
+     * @param Booking $booking
      * @param BookingStatusEnum $status
      * @return void
      * @throws InvalidStatusTransition
      */
-    private function checkCanTransitToStatus(BookingInterface $booking, BookingStatusEnum $status): void
+    private function checkCanTransitToStatus(Booking $booking, BookingStatusEnum $status): void
     {
         if (!$this->statusRules->canTransit($booking->status(), $status)) {
             throw new InvalidStatusTransition("Can't change status for booking [{$booking->id()->value()}]]");

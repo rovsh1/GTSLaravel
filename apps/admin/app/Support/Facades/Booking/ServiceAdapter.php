@@ -10,7 +10,6 @@ use Module\Shared\Enum\CurrencyEnum;
 use Module\Shared\Enum\ServiceTypeEnum;
 
 /**
- * @method static Builder getBookingQuery()
  * @method static array getStatuses()
  * @method static mixed getBooking(int $id)
  * @method static int createBooking(int $clientId, int|null $legalId, CurrencyEnum $currency, int $serviceId, int $creatorId, ?int $orderId, array|null $detailsData, string|null $note = null)

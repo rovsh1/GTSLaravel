@@ -47,7 +47,7 @@ class CreateBooking extends AbstractCreateBooking
             cancelConditions: $cancelConditions,
             note: $request->note,
             serviceType: $service->type,
-            price: BookingPrices::createEmpty(CurrencyEnum::UZS, $orderCurrency),//@todo netto валюта
+            prices: BookingPrices::createEmpty(CurrencyEnum::UZS, $orderCurrency),//@todo netto валюта
         );
         $editor = $this->detailsEditorFactory->build($booking);
         $editor->create($booking->id(), new ServiceId($request->serviceId), $request->detailsData);

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Admin\Support\Adapters\Booking;
 
 use App\Admin\Http\Requests\Order\Guest\AddRequest;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Module\Booking\Application\Admin\Booking\Request\CreateBookingRequestDto;
 use Module\Booking\Application\Admin\Booking\UseCase\CreateBooking;
@@ -17,7 +16,6 @@ use Module\Booking\Application\Admin\ServiceBooking\UseCase\CopyBooking;
 use Module\Booking\Application\Admin\ServiceBooking\UseCase\DeleteBooking;
 use Module\Booking\Application\Admin\ServiceBooking\UseCase\GetAvailableActions;
 use Module\Booking\Application\Admin\ServiceBooking\UseCase\GetBooking;
-use Module\Booking\Application\Admin\ServiceBooking\UseCase\GetBookingQuery;
 use Module\Booking\Application\Admin\ServiceBooking\UseCase\GetStatuses;
 use Module\Booking\Application\Admin\ServiceBooking\UseCase\GetStatusHistory;
 use Module\Booking\Application\Admin\ServiceBooking\UseCase\Guest\Bind;
@@ -32,11 +30,6 @@ class ServiceAdapter
     public function getBooking(int $id): mixed
     {
         return app(GetBooking::class)->execute($id);
-    }
-
-    public function getBookingQuery(): Builder
-    {
-        return app(GetBookingQuery::class)->execute();
     }
 
     public function getStatuses(): array

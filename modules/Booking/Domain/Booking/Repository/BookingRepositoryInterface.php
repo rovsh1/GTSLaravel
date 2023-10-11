@@ -17,7 +17,7 @@ interface BookingRepositoryInterface
     public function create(
         OrderId $orderId,
         CreatorId $creatorId,
-        BookingPrices $price,
+        BookingPrices $prices,
         CancelConditions $cancelConditions,
         ServiceTypeEnum $serviceType,
         ?string $note = null

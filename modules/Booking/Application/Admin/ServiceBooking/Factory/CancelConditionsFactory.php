@@ -58,7 +58,7 @@ class CancelConditionsFactory
             ServiceTypeEnum::TRANSFER_TO_RAILWAY,
             ServiceTypeEnum::TRANSFER_FROM_RAILWAY,
             ServiceTypeEnum::TRANSFER_TO_AIRPORT,
-            ServiceTypeEnum::TRANSFER_FROM_AIRPORT => $this->supplierAdapter->getAirportCancelConditions(),
+            ServiceTypeEnum::TRANSFER_FROM_AIRPORT => $this->supplierAdapter->getTransferCancelConditions(),
             default => throw new \Exception('Service type cancel conditions not implement')
         };
     }
