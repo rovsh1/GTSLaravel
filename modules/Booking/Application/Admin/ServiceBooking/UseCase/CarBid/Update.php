@@ -15,7 +15,8 @@ class Update extends AbstractCarBidUseCase implements UseCaseInterface
     public function execute(int $bookingId, string $carBidId, CarBidDataDto $carData): void
     {
         $details = $this->getBookingDetails(new BookingId($bookingId));
-        $carBid = CarBid::create(
+        $carBid = new CarBid(
+            $carBidId,
             new CarId($carData->carId),
             $carData->carsCount,
             $carData->passengersCount,

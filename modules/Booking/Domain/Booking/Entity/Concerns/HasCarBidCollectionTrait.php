@@ -41,14 +41,8 @@ trait HasCarBidCollectionTrait
         $newCarBids = [];
         foreach ($this->carBids as $bid) {
             if ($bid->id() === $carBidId) {
-                $newCarBids[] = new CarBid(
-                    $bid->id(),
-                    $carBid->carId(),
-                    $carBid->carsCount(),
-                    $carBid->passengersCount(),
-                    $carBid->baggageCount(),
-                    $carBid->babyCount()
-                );
+                $newCarBids[] = $carBid;
+                continue;
             }
             $newCarBids[] = $bid;
         }
