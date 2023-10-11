@@ -10,7 +10,7 @@ use App\Admin\Support\Facades\Booking\AirportAdapter;
 use App\Core\Support\Http\Responses\AjaxErrorResponse;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use App\Core\Support\Http\Responses\AjaxSuccessResponse;
-use Module\Shared\Application\Exception\ApplicationException;
+use Module\Shared\Exception\ApplicationException;
 
 class GuestController extends Controller
 {

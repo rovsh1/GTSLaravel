@@ -17,9 +17,10 @@ use App\Admin\Models\Reference\Currency;
 use App\Admin\Models\Supplier\TransferService;
 use App\Admin\Repositories\BookingAdministratorRepository;
 use App\Admin\Support\Facades\Acl;
-use App\Admin\Support\Facades\Booking\HotelAdapter;
+use App\Admin\Support\Facades\Booking\Hotel\DetailsAdapter;
 use App\Admin\Support\Facades\Booking\OrderAdapter;
-use App\Admin\Support\Facades\Booking\Transfer\PriceAdapter;
+use App\Admin\Support\Facades\Booking\PriceAdapter;
+use App\Admin\Support\Facades\Booking\BookingAdapter;
 use App\Admin\Support\Facades\Booking\TransferAdapter;
 use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Form;
@@ -34,13 +35,14 @@ use App\Core\Support\Http\Responses\AjaxRedirectResponse;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use App\Core\Support\Http\Responses\AjaxSuccessResponse;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Module\Booking\Domain\Shared\Service\RequestRules;
 use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
-use Module\Shared\Application\Exception\ApplicationException;
 use Module\Shared\Enum\SourceEnum;
+use Module\Shared\Exception\ApplicationException;
 
 class BookingController extends Controller
 {
@@ -56,24 +58,8 @@ class BookingController extends Controller
     {
         Breadcrumb::prototype($this->prototype);
 
-        $requestableStatuses = array_map(fn(BookingStatusEnum $status) => $status->value,
-            RequestRules::getRequestableStatuses());
-
         $grid = $this->gridFactory();
-        $data = TransferAdapter::getBookingQuery()
-            ->applyCriteria($grid->getSearchCriteria())
-            ->join('administrator_bookings', 'administrator_bookings.booking_id', '=', 'bookings.id')
-            ->join('administrators', 'administrators.id', '=', 'administrator_bookings.administrator_id')
-            ->addSelect('administrators.presentation as manager_name')
-            ->addSelect(
-                DB::raw('(SELECT bookings.status IN (' . implode(',', $requestableStatuses) . ')) as is_requestable'),
-            )
-            ->addSelect(
-                DB::raw(
-                    'EXISTS(SELECT 1 FROM booking_requests WHERE bookings.id = booking_requests.booking_id AND is_archive = 0) as has_downloadable_request'
-                ),
-            );
-
+        $data = $this->prepareGridQuery(BookingAdapter::getBookingQuery(), $grid->getSearchCriteria());
         $grid->data($data);
 
         return Layout::title('Брони транспортных услуг')
@@ -396,7 +382,7 @@ class BookingController extends Controller
             ->client('client_id', ['label' => 'Клиент', 'emptyItem' => ''])
             ->select('service_id', ['label' => 'Услуга', 'emptyItem' => '', 'items' => TransferService::get()])
             ->select('manager_id', ['label' => 'Менеджер', 'items' => Administrator::all(), 'emptyItem' => ''])
-            ->select('status', ['label' => 'Статус', 'items' => HotelAdapter::getStatuses(), 'emptyItem' => ''])
+            ->select('status', ['label' => 'Статус', 'items' => BookingAdapter::getStatuses(), 'emptyItem' => ''])
             ->enum('source', ['label' => 'Источник', 'enum' => SourceEnum::class, 'emptyItem' => ''])
             ->dateRange('date_period', ['label' => 'Дата прилета/вылета'])
             ->dateRange('created_period', ['label' => 'Дата создания']);
@@ -446,5 +432,37 @@ class BookingController extends Controller
     protected function getPrototypeKey(): string
     {
         return 'transfer-booking';
+    }
+
+    private function prepareGridQuery(Builder $query, array $searchCriteria): Builder
+    {
+        $requestableStatuses = array_map(fn(BookingStatusEnum $status) => $status->value,
+            RequestRules::getRequestableStatuses());
+
+        return $query
+            ->applyCriteria($searchCriteria)
+            ->join('booking_transfer_details', 'bookings.id', '=', 'booking_transfer_details.booking_id')
+            ->join('r_cities', 'r_cities.id', '=', 'booking_transfer_details.city_id')
+            ->join('r_countries', 'r_countries.id', '=', 'r_cities.country_id')
+            ->joinTranslatable('r_countries', 'name as country_name')
+            ->joinTranslatable('r_cities', 'name as city_name')
+            ->join(
+                'supplier_transfer_services',
+                'supplier_transfer_services.id',
+                '=',
+                'booking_transfer_details.service_id'
+            )
+            ->addSelect('supplier_transfer_services.name as service_name')
+            ->join('administrator_bookings', 'administrator_bookings.booking_id', '=', 'bookings.id')
+            ->join('administrators', 'administrators.id', '=', 'administrator_bookings.administrator_id')
+            ->addSelect('administrators.presentation as manager_name')
+            ->addSelect(
+                DB::raw('(SELECT bookings.status IN (' . implode(',', $requestableStatuses) . ')) as is_requestable'),
+            )
+            ->addSelect(
+                DB::raw(
+                    'EXISTS(SELECT 1 FROM booking_requests WHERE bookings.id = booking_requests.booking_id AND is_archive = 0) as has_downloadable_request'
+                ),
+            );
     }
 }

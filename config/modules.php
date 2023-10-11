@@ -4,8 +4,8 @@ return [
     'Administrator' => [
         'path' => modules_path('Administrator')
     ],
-    'Hotel' => [
-        'path' => modules_path('Hotel')
+    'Catalog' => [
+        'path' => modules_path('Catalog')
     ],
     'Client' => [
         'path' => modules_path('Client')

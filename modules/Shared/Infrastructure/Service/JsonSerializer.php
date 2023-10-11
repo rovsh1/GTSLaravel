@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Shared\Infrastructure\Service;
 
-use Module\Shared\Domain\Service\SerializerInterface;
-use Module\Shared\Domain\ValueObject\SerializableDataInterface;
+use Module\Shared\Contracts\Service\SerializerInterface;
+use Module\Shared\Contracts\Support\SerializableDataInterface;
 
 class JsonSerializer implements SerializerInterface
 {

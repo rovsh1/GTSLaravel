@@ -10,6 +10,7 @@ use Module\Booking\Domain\Order\Order;
 use Module\Booking\Domain\Order\Repository\OrderRepositoryInterface;
 use Module\Booking\Infrastructure\Order\Models\Order as Model;
 use Module\Booking\Infrastructure\Order\Models\OrderStatusEnum;
+use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
 class OrderRepository implements OrderRepositoryInterface
@@ -18,13 +19,13 @@ class OrderRepository implements OrderRepositoryInterface
         private readonly OrderFactory $factory
     ) {}
 
-    public function create(int $clientId, int $currencyId, ?int $legalId = null): Order
+    public function create(int $clientId, CurrencyEnum $currency, ?int $legalId = null): Order
     {
         $model = Model::create([
             'status' => OrderStatusEnum::NEW,
             'client_id' => $clientId,
             'legal_id' => $legalId,
-            'currency_id' => $currencyId,
+            'currency' => $currency,
         ]);
 
         return $this->factory->createFrom($model);
@@ -47,12 +48,7 @@ class OrderRepository implements OrderRepositoryInterface
      */
     public function findOrFail(int $id): Order
     {
-        $order = $this->find($id);
-        if ($order === null) {
-            throw new EntityNotFoundException('Order not found');
-        }
-
-        return $order;
+        return $this->find($id) ?? throw new EntityNotFoundException("Order[$id] not found");
     }
 
 
@@ -79,7 +75,7 @@ class OrderRepository implements OrderRepositoryInterface
 //            'status' => $order,//@todo тут пока непонятно что
             'client_id' => $order->clientId()->value(),
             'legal_id' => $order->legalId()?->value(),
-            'currency_id' => $order->currency()->id(),
+            'currency' => $order->currency(),
         ]);
     }
 }

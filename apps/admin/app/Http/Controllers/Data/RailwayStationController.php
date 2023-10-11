@@ -19,7 +19,7 @@ class RailwayStationController extends AbstractPrototypeController
     {
         return Form::name('data')
             ->city('city_id', ['label' => 'Город', 'emptyItem' => '', 'required' => true])
-            ->text('name', ['label' => 'Наименование', 'required' => true]);
+            ->localeText('name', ['label' => 'Наименование', 'required' => true]);
     }
 
     protected function gridFactory(): GridContract

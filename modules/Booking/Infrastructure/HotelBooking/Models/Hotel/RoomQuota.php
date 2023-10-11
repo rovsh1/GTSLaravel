@@ -6,7 +6,7 @@ use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Facades\DB;
-use Module\Hotel\Infrastructure\Models\Room\QuotaStatusEnum;
+use Module\Catalog\Infrastructure\Models\Room\QuotaStatusEnum;
 use Sdk\Module\Database\Eloquent\Model;
 
 /**

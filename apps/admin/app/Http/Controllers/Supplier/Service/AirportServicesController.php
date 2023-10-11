@@ -4,8 +4,8 @@ namespace App\Admin\Http\Controllers\Supplier\Service;
 
 use App\Admin\Components\Factory\Prototype;
 use App\Admin\Http\Controllers\Controller;
-use App\Admin\Http\Requests\ServiceProvider\SearchServicesRequest;
-use App\Admin\Http\Resources\Service as ServiceResource;
+use App\Admin\Http\Requests\ServiceProvider\DeprecatedSearchServicesRequest;
+use App\Admin\Http\Resources\DeprecatedService as ServiceResource;
 use App\Admin\Models\Supplier\AirportService;
 use App\Admin\Models\Supplier\Supplier;
 use App\Admin\Support\Facades\Acl;
@@ -93,7 +93,7 @@ class AirportServicesController extends Controller
         return (new DefaultDestroyAction())->handle($servicesAirport);
     }
 
-    public function search(SearchServicesRequest $request): JsonResponse
+    public function search(DeprecatedSearchServicesRequest $request): JsonResponse
     {
         $services = AirportService::whereCity($request->getCityId())->get();
 

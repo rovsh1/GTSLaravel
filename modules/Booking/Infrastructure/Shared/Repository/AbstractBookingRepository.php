@@ -3,11 +3,12 @@
 namespace Module\Booking\Infrastructure\Shared\Repository;
 
 use App\Core\Support\Facades\AppContext;
+use Module\Booking\Domain\Booking\ValueObject\BookingPrices;
+use Module\Booking\Domain\Order\ValueObject\OrderId;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
-use Module\Booking\Domain\Shared\ValueObject\BookingPrice;
 use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
-use Module\Booking\Domain\Shared\ValueObject\OrderId;
 use Module\Booking\Infrastructure\Shared\Models\Booking as Model;
+use Module\Shared\Enum\ServiceTypeEnum;
 
 abstract class AbstractBookingRepository
 {
@@ -26,7 +27,7 @@ abstract class AbstractBookingRepository
         return $model;
     }
 
-    protected function createBase(OrderId $orderId, BookingPrice $price, int $creatorId): Model
+    protected function createBase(OrderId $orderId, BookingPrices $price, int $creatorId): Model
     {
         return $this->getModel()::create([
             'order_id' => $orderId->value(),
@@ -34,16 +35,17 @@ abstract class AbstractBookingRepository
             'status' => BookingStatusEnum::CREATED,
             'creator_id' => $creatorId,
             'price' => $price->toData(),
+            'service_type' => ServiceTypeEnum::HOTEL_BOOKING->value //TODO refactor
         ]);
     }
 
     protected function storeBase(BookingInterface $booking): bool
     {
         return (bool)$this->getModel()::whereId($booking->id()->value())->update([
-            'order_id' => $booking->orderId()->value(),
-            'type' => $booking->type(),
+//            'order_id' => $booking->orderId()->value(),
+//            'type' => ServiceTypeEnum::HOTEL_BOOKING,//$booking->type(),//TODO refactor
             'status' => $booking->status(),
-            'creator_id' => $booking->creatorId()->value(),
+//            'creator_id' => $booking->creatorId()->value(),
             'price' => $booking->price()->toData(),
         ]);
     }

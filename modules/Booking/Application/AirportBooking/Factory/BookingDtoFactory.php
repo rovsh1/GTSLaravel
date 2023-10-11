@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Module\Booking\Application\AirportBooking\Factory;
 
+use Module\Booking\Application\Admin\HotelBooking\Dto\Details\CancelConditionsDto;
+use Module\Booking\Application\Admin\Shared\Factory\AbstractBookingDtoFactory;
+use Module\Booking\Application\Admin\Shared\Factory\BookingPriceDtoFactory;
+use Module\Booking\Application\Admin\Shared\Service\StatusStorage;
 use Module\Booking\Application\AirportBooking\Response\BookingDto;
 use Module\Booking\Application\AirportBooking\Response\Details\AirportInfoDto;
 use Module\Booking\Application\AirportBooking\Response\Details\ServiceInfoDto;
-use Module\Booking\Application\HotelBooking\Dto\Details\CancelConditionsDto;
-use Module\Booking\Application\Shared\Factory\AbstractBookingDtoFactory;
-use Module\Booking\Application\Shared\Factory\BookingPriceDtoFactory;
-use Module\Booking\Application\Shared\Service\StatusStorage;
-use Module\Booking\Domain\AirportBooking\AirportBooking;
+use Module\Booking\Deprecated\AirportBooking\AirportBooking;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
 use Module\Booking\Domain\Shared\ValueObject\GuestId;
 
@@ -42,7 +42,7 @@ class BookingDtoFactory extends AbstractBookingDtoFactory
             cancelConditions: $booking->cancelConditions() !== null
                 ? CancelConditionsDto::fromDomain($booking->cancelConditions())
                 : null,
-            price: $this->bookingPriceDtoFactory->createFromEntity($booking->price()),
+            prices: $this->bookingPriceDtoFactory->createFromEntity($booking->price()),
             flightNumber: $booking->additionalInfo()->flightNumber(),
         );
     }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Domain\Shared\ValueObject;
 
 
-use Module\Shared\Domain\ValueObject\SerializableDataInterface;
+use Module\Shared\Contracts\Support\SerializableDataInterface;
 use Sdk\Module\Support\AbstractValueObjectCollection;
 
 /**

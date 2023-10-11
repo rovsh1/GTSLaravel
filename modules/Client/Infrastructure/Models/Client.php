@@ -4,6 +4,7 @@ namespace Module\Client\Infrastructure\Models;
 
 use Module\Shared\Enum\Client\ResidencyEnum;
 use Module\Shared\Enum\Client\TypeEnum;
+use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Database\Eloquent\Model;
 
 class Client extends Model
@@ -12,7 +13,7 @@ class Client extends Model
 
     protected $fillable = [
         'city_id',
-        'currency_id',
+        'currency',
         'type',
         'residency',
         'status',
@@ -22,6 +23,7 @@ class Client extends Model
     ];
 
     protected $casts = [
+        'currency' => CurrencyEnum::class,
         'type' => TypeEnum::class,
         'residency' => ResidencyEnum::class,
         'is_b2b' => 'boolean',

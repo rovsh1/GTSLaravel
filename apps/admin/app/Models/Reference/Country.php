@@ -5,6 +5,7 @@ namespace App\Admin\Models\Reference;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Facades\DB;
+use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
 use Sdk\Module\Database\Eloquent\HasTranslations;
 use Sdk\Module\Database\Eloquent\Model;
@@ -27,10 +28,12 @@ class Country extends Model
         'default',
         'phone_code',
         'language',
-        'currency_id'
+        'currency',
+        'priority'
     ];
 
     protected $casts = [
+        'currency' => CurrencyEnum::class,
         'default' => 'bool'
     ];
 
@@ -40,8 +43,7 @@ class Country extends Model
             $builder
                 ->addSelect('r_countries.*')
                 ->joinTranslations()
-                //TODO add priority column
-                //->orderBy('priority', 'desc')
+                ->orderBy('priority', 'desc')
                 ->orderBy('name', 'asc');
         });
     }

@@ -19,10 +19,10 @@ use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use App\Core\Support\Http\Responses\AjaxSuccessResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Module\Hotel\Application\RequestDto\AddImageRequestDto;
-use Module\Hotel\Application\UseCase\AddImage;
-use Module\Hotel\Application\UseCase\DeleteImage;
-use Module\Hotel\Application\UseCase\GetImages;
+use Module\Catalog\Application\Admin\RequestDto\AddImageRequestDto;
+use Module\Catalog\Application\Admin\UseCase\AddImage;
+use Module\Catalog\Application\Admin\UseCase\DeleteImage;
+use Module\Catalog\Application\Admin\UseCase\GetImages;
 use Module\Shared\Dto\UploadedFileDto;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 

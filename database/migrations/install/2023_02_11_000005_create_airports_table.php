@@ -9,7 +9,7 @@ return new class extends Migration {
     {
         Schema::create('r_airports', function (Blueprint $table) {
             $table->integer('id')->unsigned()->autoIncrement();
-            $table->integer('city_id')->unsigned();
+            $table->unsignedInteger('city_id');
             $table->string('code', 10);
             $table->string('name');
 

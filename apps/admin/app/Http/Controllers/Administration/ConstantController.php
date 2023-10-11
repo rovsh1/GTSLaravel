@@ -7,7 +7,7 @@ use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
-use Module\Shared\Domain\Service\ApplicationConstantsInterface;
+use Module\Shared\Contracts\Service\ApplicationConstantsInterface;
 
 class ConstantController extends AbstractPrototypeController
 {

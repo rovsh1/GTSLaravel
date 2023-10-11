@@ -20,8 +20,9 @@ use App\Admin\Repositories\BookingAdministratorRepository;
 use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\Booking\Airport\PriceAdapter;
 use App\Admin\Support\Facades\Booking\AirportAdapter;
-use App\Admin\Support\Facades\Booking\HotelAdapter;
+use App\Admin\Support\Facades\Booking\Hotel\DetailsAdapter;
 use App\Admin\Support\Facades\Booking\OrderAdapter;
+use App\Admin\Support\Facades\Booking\BookingAdapter;
 use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Grid;
@@ -35,13 +36,14 @@ use App\Core\Support\Http\Responses\AjaxRedirectResponse;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use App\Core\Support\Http\Responses\AjaxSuccessResponse;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Module\Booking\Domain\Shared\Service\RequestRules;
 use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
-use Module\Shared\Application\Exception\ApplicationException;
 use Module\Shared\Enum\SourceEnum;
+use Module\Shared\Exception\ApplicationException;
 
 class BookingController extends Controller
 {
@@ -57,30 +59,8 @@ class BookingController extends Controller
     {
         Breadcrumb::prototype($this->prototype);
 
-        $requestableStatuses = array_map(fn(BookingStatusEnum $status) => $status->value,
-            RequestRules::getRequestableStatuses());
-
         $grid = $this->gridFactory();
-        $data = AirportAdapter::getBookingQuery()
-            ->applyCriteria($grid->getSearchCriteria())
-            ->join('administrator_bookings', 'administrator_bookings.booking_id', '=', 'bookings.id')
-            ->join('administrators', 'administrators.id', '=', 'administrator_bookings.administrator_id')
-            ->addSelect('administrators.presentation as manager_name')
-            ->selectSub(
-                DB::table('booking_airport_guests')
-                    ->selectRaw('count(id)')
-                    ->whereColumn('booking_airport_guests.booking_airport_id', 'bookings.id'),
-                'guests_count'
-            )
-            ->addSelect(
-                DB::raw('(SELECT bookings.status IN (' . implode(',', $requestableStatuses) . ')) as is_requestable'),
-            )
-            ->addSelect(
-                DB::raw(
-                    'EXISTS(SELECT 1 FROM booking_requests WHERE bookings.id = booking_requests.booking_id AND is_archive = 0) as has_downloadable_request'
-                ),
-            );
-
+        $data = $this->prepareGridQuery(BookingAdapter::getBookingQuery(), $grid->getSearchCriteria());
         $grid->data($data);
 
         return Layout::title('Брони услуг аэропорта')
@@ -132,8 +112,8 @@ class BookingController extends Controller
             currencyId: $currencyId ?? $client->currency_id,
             airportId: $data['airport_id'],
             serviceId: $data['service_id'],
-            flightNumber: $data['flight_number'],
             date: new Carbon($data['date'] . ' ' . $data['time']),
+            flightNumber: $data['flight_number'],
             creatorId: $creatorId,
             orderId: $data['order_id'] ?? null,
             note: $data['note'] ?? null
@@ -422,7 +402,7 @@ class BookingController extends Controller
             ->numRange('guests_count', ['label' => 'Кол-во гостей'])
             ->select('service_id', ['label' => 'Услуга', 'emptyItem' => '', 'items' => AirportService::get()])
             ->select('manager_id', ['label' => 'Менеджер', 'items' => Administrator::all(), 'emptyItem' => ''])
-            ->select('status', ['label' => 'Статус', 'items' => HotelAdapter::getStatuses(), 'emptyItem' => ''])
+            ->select('status', ['label' => 'Статус', 'items' => BookingAdapter::getStatuses(), 'emptyItem' => ''])
             ->enum('source', ['label' => 'Источник', 'enum' => SourceEnum::class, 'emptyItem' => ''])
             ->dateRange('date_period', ['label' => 'Дата прилета/вылета'])
             ->dateRange('created_period', ['label' => 'Дата создания']);
@@ -476,5 +456,43 @@ class BookingController extends Controller
     protected function getPrototypeKey(): string
     {
         return 'airport-booking';
+    }
+
+    private function prepareGridQuery(Builder $query, array $searchCriteria = []): Builder
+    {
+        $requestableStatuses = array_map(fn(BookingStatusEnum $status) => $status->value,
+            RequestRules::getRequestableStatuses());
+
+        return $query
+            ->applyCriteria($searchCriteria)
+            ->join('booking_airport_details', 'bookings.id', '=', 'booking_airport_details.booking_id')
+            ->addSelect('booking_airport_details.date as date')
+            ->join('r_airports', 'r_airports.id', '=', 'booking_airport_details.airport_id')
+            ->addSelect('r_airports.name as airport_name')
+            ->join('r_cities', 'r_cities.id', '=', 'r_airports.city_id')
+            ->joinTranslatable('r_cities', 'name as city_name')
+            ->join(
+                'supplier_airport_services',
+                'supplier_airport_services.id',
+                '=',
+                'booking_airport_details.service_id'
+            )
+            ->join('administrator_bookings', 'administrator_bookings.booking_id', '=', 'bookings.id')
+            ->join('administrators', 'administrators.id', '=', 'administrator_bookings.administrator_id')
+            ->addSelect('administrators.presentation as manager_name')
+            ->selectSub(
+                DB::table('booking_airport_guests')
+                    ->selectRaw('count(id)')
+                    ->whereColumn('booking_airport_guests.booking_airport_id', 'bookings.id'),
+                'guests_count'
+            )
+            ->addSelect(
+                DB::raw('(SELECT bookings.status IN (' . implode(',', $requestableStatuses) . ')) as is_requestable'),
+            )
+            ->addSelect(
+                DB::raw(
+                    'EXISTS(SELECT 1 FROM booking_requests WHERE bookings.id = booking_requests.booking_id AND is_archive = 0) as has_downloadable_request'
+                ),
+            );
     }
 }

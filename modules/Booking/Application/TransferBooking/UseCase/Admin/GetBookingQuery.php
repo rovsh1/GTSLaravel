@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Application\TransferBooking\UseCase\Admin;
 
 use Illuminate\Database\Eloquent\Builder;
-use Module\Booking\Domain\TransferBooking\Repository\BookingRepositoryInterface;
+use Module\Booking\Deprecated\TransferBooking\Repository\BookingRepositoryInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class GetBookingQuery implements UseCaseInterface

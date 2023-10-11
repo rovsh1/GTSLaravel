@@ -14,11 +14,13 @@ return new class extends Migration {
         Schema::create('bookings', function (Blueprint $table) {
             $table->increments('id')->from(100);
             $table->unsignedInteger('order_id');
-            $table->tinyInteger('type');
-            $table->tinyInteger('status');
+            $table->unsignedTinyInteger('service_type');
+            $table->unsignedTinyInteger('status');
             $table->string('source');
             $table->unsignedInteger('creator_id');
-            $table->json('price');
+            $table->json('prices');
+            $table->json('cancel_conditions')->nullable();
+            $table->string('note')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
@@ -70,8 +72,8 @@ return new class extends Migration {
     private function upBookingAirport(): void
     {
         Schema::create('booking_airport_details', function (Blueprint $table) {
-            $table->unsignedInteger('booking_id')->primary();
-            $table->unsignedInteger('airport_id');
+            $table->increments('id');
+            $table->unsignedInteger('booking_id')->unique();
             $table->unsignedInteger('service_id');
             $table->date('date');
             $table->json('data');
@@ -83,16 +85,10 @@ return new class extends Migration {
                 ->restrictOnDelete()
                 ->cascadeOnUpdate();
 
-            $table->foreign('airport_id')
-                ->references('id')
-                ->on('r_airports')
-                ->cascadeOnDelete()
-                ->cascadeOnUpdate();
-
             $table->foreign('service_id')
                 ->references('id')
-                ->on('supplier_airport_services')
-                ->cascadeOnDelete()
+                ->on('supplier_services')
+                ->restrictOnDelete()
                 ->cascadeOnUpdate();
         });
     }
@@ -100,9 +96,9 @@ return new class extends Migration {
     private function upBookingTransfer(): void
     {
         Schema::create('booking_transfer_details', function (Blueprint $table) {
-            $table->unsignedInteger('booking_id')->primary();
+            $table->increments('id');
+            $table->unsignedInteger('booking_id')->unique();
             $table->unsignedInteger('service_id');
-            $table->unsignedInteger('city_id');
             $table->date('date_start')->nullable();
             $table->date('date_end')->nullable();
             $table->json('data');
@@ -116,15 +112,9 @@ return new class extends Migration {
 
             $table->foreign('service_id')
                 ->references('id')
-                ->on('supplier_transfer_services')
-                ->cascadeOnDelete()
+                ->on('supplier_services')
+                ->restrictOnDelete()
                 ->cascadeOnUpdate();
-
-            $table->foreign('city_id')
-                ->references('id')
-                ->on('r_cities')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
         });
     }
 

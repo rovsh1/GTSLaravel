@@ -8,7 +8,7 @@ use Module\Client\Domain\Entity\Legal;
 use Module\Client\Domain\Factory\LegalFactory;
 use Module\Client\Domain\Repository\LegalRepositoryInterface;
 use Module\Client\Infrastructure\Models\Legal as Model;
-use Module\Shared\Domain\Service\SerializerInterface;
+use Module\Shared\Contracts\Service\SerializerInterface;
 
 class LegalRepository implements LegalRepositoryInterface
 {

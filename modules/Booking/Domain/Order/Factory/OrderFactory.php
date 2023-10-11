@@ -8,9 +8,9 @@ use Carbon\CarbonImmutable;
 use Module\Booking\Domain\Order\Order;
 use Module\Booking\Domain\Order\ValueObject\ClientId;
 use Module\Booking\Domain\Order\ValueObject\LegalId;
+use Module\Booking\Domain\Order\ValueObject\OrderId;
 use Module\Booking\Domain\Shared\ValueObject\GuestId;
 use Module\Booking\Domain\Shared\ValueObject\GuestIdCollection;
-use Module\Booking\Domain\Shared\ValueObject\OrderId;
 use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Foundation\Support\EntityFactory\AbstractEntityFactory;
 
@@ -25,7 +25,7 @@ class OrderFactory extends AbstractEntityFactory
 
         return new $this->entity(
             new OrderId($data['id']),
-            CurrencyEnum::fromId($data['currency_id']),
+            CurrencyEnum::from($data['currency']),
             new ClientId($data['client_id']),
             $legalId !== null ? new LegalId($legalId) : null,
             new CarbonImmutable($data['created_at']),

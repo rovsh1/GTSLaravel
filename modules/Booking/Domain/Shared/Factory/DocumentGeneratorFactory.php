@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Module\Booking\Domain\Shared\Factory;
 
-use Module\Booking\Domain\AirportBooking\Service\DocumentGenerator\CancellationRequestGenerator as AirportCancellationRequestGenerator;
-use Module\Booking\Domain\AirportBooking\Service\DocumentGenerator\ChangeRequestGenerator as AirportChangeRequestGenerator;
-use Module\Booking\Domain\AirportBooking\Service\DocumentGenerator\ReservationRequestGenerator as AirportReservationRequestGenerator;
+use Module\Booking\Deprecated\AirportBooking\Service\DocumentGenerator\CancellationRequestGenerator as AirportCancellationRequestGenerator;
+use Module\Booking\Deprecated\AirportBooking\Service\DocumentGenerator\ChangeRequestGenerator as AirportChangeRequestGenerator;
+use Module\Booking\Deprecated\AirportBooking\Service\DocumentGenerator\ReservationRequestGenerator as AirportReservationRequestGenerator;
+use Module\Booking\Deprecated\HotelBooking\Service\DocumentGenerator\CancellationRequestGenerator;
+use Module\Booking\Deprecated\HotelBooking\Service\DocumentGenerator\ChangeRequestGenerator;
+use Module\Booking\Deprecated\HotelBooking\Service\DocumentGenerator\ReservationRequestGenerator;
 use Module\Booking\Domain\BookingRequest\ValueObject\RequestTypeEnum;
-use Module\Booking\Domain\HotelBooking\Service\DocumentGenerator\CancellationRequestGenerator;
-use Module\Booking\Domain\HotelBooking\Service\DocumentGenerator\ChangeRequestGenerator;
-use Module\Booking\Domain\HotelBooking\Service\DocumentGenerator\ReservationRequestGenerator;
 use Module\Booking\Domain\Shared\Event\Contracts\BookingRequestableInterface;
 use Module\Booking\Domain\Shared\Exception\BookingTypeDoesntHaveDocumentGenerator;
 use Module\Booking\Domain\Shared\Service\DocumentGenerator\RequestGeneratorInterface;

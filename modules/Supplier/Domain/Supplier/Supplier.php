@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Supplier\Domain\Supplier;
 
-use Module\Shared\Domain\Entity\EntityInterface;
+use Module\Shared\Contracts\Domain\EntityInterface;
 use Module\Shared\Enum\CurrencyEnum;
 use Module\Supplier\Domain\Supplier\ValueObject\Requisites;
 use Module\Supplier\Domain\Supplier\ValueObject\SupplierId;

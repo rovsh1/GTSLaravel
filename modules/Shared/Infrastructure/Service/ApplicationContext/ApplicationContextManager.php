@@ -3,7 +3,7 @@
 namespace Module\Shared\Infrastructure\Service\ApplicationContext;
 
 use Illuminate\Support\Str;
-use Module\Shared\Domain\Service\ApplicationContextInterface;
+use Module\Shared\Contracts\Service\ApplicationContextInterface;
 
 class ApplicationContextManager implements ApplicationContextInterface
 {

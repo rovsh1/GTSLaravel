@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Module\Booking\Application\AirportBooking\UseCase\Admin;
 
+use Module\Booking\Application\Admin\Shared\Support\UseCase\AbstractCreateBooking;
 use Module\Booking\Application\AirportBooking\Factory\CancelConditionsFactory;
 use Module\Booking\Application\AirportBooking\Request\CreateBookingDto;
-use Module\Booking\Domain\AirportBooking\Repository\BookingRepositoryInterface;
-use Module\Booking\Domain\AirportBooking\ValueObject\Details\AdditionalInfo;
-use Module\Booking\Application\Shared\Support\UseCase\Admin\AbstractCreateBooking;
-use Module\Booking\Domain\Shared\ValueObject\BookingPrice;
+use Module\Booking\Deprecated\AirportBooking\Repository\BookingRepositoryInterface;
+use Module\Booking\Deprecated\AirportBooking\ValueObject\Details\AdditionalInfo;
+use Module\Booking\Domain\Booking\ValueObject\BookingPrices;
 use Module\Booking\Domain\Shared\ValueObject\CreatorId;
 use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Contracts\Bus\CommandBusInterface;
@@ -19,10 +19,10 @@ class CreateBooking extends AbstractCreateBooking
 {
     public function __construct(
         CommandBusInterface $commandBus,
-        BookingRepositoryInterface $repository,
+        private readonly BookingRepositoryInterface $repository,
         private readonly CancelConditionsFactory $cancelConditionsFactory
     ) {
-        parent::__construct($commandBus, $repository);
+        parent::__construct($commandBus);
     }
 
     public function execute(CreateBookingDto $request): int
@@ -42,7 +42,7 @@ class CreateBooking extends AbstractCreateBooking
             additionalInfo: new AdditionalInfo($request->flightNumber),
             cancelConditions: $cancelConditions,
             note: $request->note,
-            price: BookingPrice::createEmpty(CurrencyEnum::UZS, $orderCurrency),//@todo netto валюта
+            price: BookingPrices::createEmpty(CurrencyEnum::UZS, $orderCurrency),//@todo netto валюта
         );
 
         return $booking->id()->value();

@@ -13,6 +13,8 @@ return new class extends Migration {
             $table->smallInteger('code_num')->unsigned();
             $table->char('code_char', 3);
             $table->string('sign', 8);
+
+            $table->unique('code_char');
         });
 
         (new TranslationTable('r_currencies'))

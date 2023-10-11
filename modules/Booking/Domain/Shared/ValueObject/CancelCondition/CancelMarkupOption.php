@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Module\Booking\Domain\Shared\ValueObject\CancelCondition;
 
-use Module\Shared\Domain\ValueObject\Percent;
-use Module\Shared\Domain\ValueObject\SerializableDataInterface;
-use Module\Shared\Domain\ValueObject\ValueObjectInterface;
+use Module\Shared\Contracts\Domain\ValueObjectInterface;
+use Module\Shared\Contracts\Support\SerializableDataInterface;
+use Module\Shared\ValueObject\Percent;
 
 /**
- * @see \Module\Hotel\Domain\ValueObject\MarkupSettings\CancelMarkupOption
+ * @see \Module\Catalog\Domain\Hotel\ValueObject\MarkupSettings\CancelMarkupOption
  */
 final class CancelMarkupOption implements ValueObjectInterface, SerializableDataInterface
 {

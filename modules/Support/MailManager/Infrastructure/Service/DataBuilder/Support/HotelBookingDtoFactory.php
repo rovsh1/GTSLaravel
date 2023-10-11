@@ -2,8 +2,8 @@
 
 namespace Module\Support\MailManager\Infrastructure\Service\DataBuilder\Support;
 
-use Module\Booking\Application\HotelBooking\Dto\BookingDto;
-use Module\Booking\Application\HotelBooking\Dto\Details\RoomBookingDto;
+use Module\Booking\Application\Admin\HotelBooking\Dto\BookingDto;
+use Module\Booking\Application\Admin\HotelBooking\Dto\Details\RoomBookingDto;
 use Module\Booking\HotelBooking\Application\Dto\Details\RoomBooking\GuestDto;
 use Module\Support\MailManager\Domain\Service\DataBuilder\DataDto\HotelBooking\BookingInfoDto;
 use Module\Support\MailManager\Domain\Service\DataBuilder\DataDto\HotelBooking\BookingRoomDto;
@@ -18,7 +18,7 @@ abstract class HotelBookingDtoFactory
             dateCheckin: $bookingDto->period->dateFrom,
             dateCheckout: $bookingDto->period->dateTo,
             nightsNumber: $bookingDto->period->nightsCount,
-            priceNet: $bookingDto->price->netValue,
+            priceNet: $bookingDto->prices->netValue,
             status: $bookingDto->status->name,
             note: $bookingDto->note,
             createdAt: $bookingDto->createdAt

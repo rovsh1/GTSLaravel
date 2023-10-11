@@ -12,7 +12,7 @@ return new class extends Migration {
             $table->unsignedInteger('supplier_id');
             $table->unsignedInteger('city_id');
             $table->smallInteger('type_id')->unsigned();
-            $table->unsignedSmallInteger('currency_id');
+            $table->char('currency', 3);
             $table->tinyInteger('status')->unsigned()->default(0);
             $table->tinyInteger('visibility')->unsigned()->default(0);
             $table->tinyInteger('rating')->unsigned()->nullable();
@@ -45,8 +45,8 @@ return new class extends Migration {
                 ->restrictOnDelete()
                 ->cascadeOnUpdate();
 
-            $table->foreign('currency_id')
-                ->references('id')
+            $table->foreign('currency')
+                ->references('code_char')
                 ->on('r_currencies')
                 ->restrictOnDelete()
                 ->cascadeOnUpdate();

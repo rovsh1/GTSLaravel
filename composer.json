@@ -43,6 +43,7 @@
       "App\\Api\\": "apps/api/app/",
       "App\\Shared\\": "apps/shared/app/",
       "Module\\": "modules/",
+      "Service\\": "src/services/",
       "Gsdk\\Form\\": "src/Form/",
       "Gsdk\\Grid\\": "src/Grid/",
       "Gsdk\\Navigation\\": "src/Navigation/",

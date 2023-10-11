@@ -2,7 +2,7 @@
 
 namespace Module\Booking\Tests\Unit;
 
-use Module\Booking\Domain\HotelBooking\ValueObject\Details\BookingPeriod;
+use Module\Booking\Domain\Booking\ValueObject\BookingPeriod;
 use Module\Booking\PriceCalculator\Domain\Adapter\HotelAdapterInterface;
 use Module\Booking\PriceCalculator\Domain\Service\HotelBooking\CalculateVariables;
 use Module\Booking\PriceCalculator\Domain\Service\HotelBooking\Formula\BORoomPriceFormula;
@@ -10,7 +10,7 @@ use Module\Booking\PriceCalculator\Domain\Service\HotelBooking\Formula\MarkupVar
 use Module\Booking\PriceCalculator\Domain\Service\HotelBooking\Formula\RoomVariables;
 use Module\Booking\PriceCalculator\Domain\Service\HotelBooking\RoomCalculator;
 use Module\Booking\PriceCalculator\Domain\Service\HotelBooking\VariablesBuilder;
-use Module\Shared\Testing\TestCase;
+use Module\Shared\Support\Testing\TestCase;
 
 class BookingCalculatorTest extends TestCase
 {

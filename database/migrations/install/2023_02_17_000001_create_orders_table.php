@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->increments('id')->from(100);
             $table->unsignedInteger('client_id');
             $table->unsignedInteger('legal_id')->nullable();
-            $table->unsignedSmallInteger('currency_id');
+            $table->char('currency', 3);
             $table->tinyInteger('status');
             $table->timestamps();
 
@@ -24,8 +24,8 @@ return new class extends Migration {
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
 
-            $table->foreign('currency_id')
-                ->references('id')
+            $table->foreign('currency')
+                ->references('code_char')
                 ->on('r_currencies')
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();

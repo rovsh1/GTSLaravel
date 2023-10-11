@@ -71,7 +71,7 @@ class CurrencyRateController extends AbstractPrototypeController
             ->paginator(self::GRID_LIMIT)
             ->edit($this->prototype)
             ->text('client_id', ['text' => 'Клиент', 'renderer' => fn($r, $v) => $r['client_name']])
-            ->text('currency_id', ['text' => 'Валюта', 'renderer' => fn($r, $v) => $r['currency_name']])
+            ->text('currency', ['text' => 'Валюта', 'renderer' => fn($r, $v) => $r['currency_name']])
             ->number('rate', ['text' => 'Курс', 'format' => 'number'])
             ->text('period', ['text' => 'Период', 'renderer' => fn($r, $t) => Format::period($t)]);
     }
@@ -88,7 +88,7 @@ class CurrencyRateController extends AbstractPrototypeController
             'items' => Hotel::all()
         ])
             ->client('client_id', ['label' => 'Клиент', 'emptyItem' => '', 'required' => true])
-            ->currency('currency_id', ['label' => 'Валюта', 'required' => true, 'emptyItem' => ''])
+            ->currency('currency', ['label' => 'Валюта', 'required' => true, 'emptyItem' => ''])
             ->number('rate', ['label' => 'Курс', 'required' => true])
             ->dateRange('period', ['label' => 'Период действия', 'required' => true]);
     }
@@ -96,7 +96,7 @@ class CurrencyRateController extends AbstractPrototypeController
     private function searchForm()
     {
         return (new SearchForm())
-            ->currency('currency_id', ['label' => __('label.currency'), 'emptyItem' => ''])
+            ->currency('currency', ['label' => __('label.currency'), 'emptyItem' => ''])
             ->dateRange('start_period', ['label' => 'Дата начала'])
             ->dateRange('end_period', ['label' => 'Дата завершения']);
     }
@@ -110,7 +110,6 @@ class CurrencyRateController extends AbstractPrototypeController
      */
     private function validatePeriodIntersections(FormRequest $form, string $redirectUrl, ?int $toSkipCurrencyRateId = null): void {
         $clientId = $form->getData()['client_id'];
-        $currencyId = $form->getData()['currency_id'];
         $clientRates = CurrencyRate::whereClientId($clientId)->get();
 
         /** @var CarbonPeriod $period */

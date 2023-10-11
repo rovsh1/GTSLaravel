@@ -3,7 +3,7 @@
 namespace Module\Booking\Tests\Unit;
 
 use Carbon\CarbonImmutable;
-use Module\Booking\Domain\HotelBooking\ValueObject\Details\BookingPeriod;
+use Module\Booking\Domain\Booking\ValueObject\BookingPeriod;
 use PHPUnit\Framework\TestCase;
 
 class BookingPeriodTest extends TestCase

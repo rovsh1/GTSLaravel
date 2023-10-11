@@ -9,11 +9,8 @@ use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder as QueryBuilder;
-use Module\Booking\Domain\Shared\ValueObject\BookingTypeEnum;
 use Module\Booking\Infrastructure\Shared\Models\Booking as BaseModel;
-use Sdk\Module\Database\Eloquent\HasQuicksearch;
 
 /**
  * Module\Booking\Infrastructure\AirportBooking\Models\Booking
@@ -23,46 +20,11 @@ use Sdk\Module\Database\Eloquent\HasQuicksearch;
  */
 class Booking extends BaseModel
 {
-    use HasQuicksearch, SoftDeletes;
-
-    protected $attributes = [
-        'type' => BookingTypeEnum::AIRPORT,
-    ];
-
     protected array $quicksearch = ['id'];
 
     private bool $isDetailsJoined = false;
 
-    protected static function booted()
-    {
-        static::addGlobalScope('default', function (Builder $builder) {
-            $builder->whereType(BookingTypeEnum::AIRPORT);
-        });
-    }
-
-    public function scopeWhereType(Builder $builder, BookingTypeEnum $type): void
-    {
-        $builder->where($this->getTable() . '.type', $type);
-    }
-
-    public function scopeApplyCriteria(Builder $query, array $criteria): void
-    {
-        if (isset($criteria['quicksearch'])) {
-            $query->quicksearch($criteria['quicksearch']);
-            unset($criteria['quicksearch']);
-        }
-
-        foreach ($criteria as $k => $v) {
-            $scopeName = \Str::camel($k);
-            $scopeMethod = 'where' . ucfirst($scopeName);
-            $hasScope = $this->hasNamedScope($scopeMethod);
-            if ($hasScope) {
-                $query->$scopeMethod($v);
-                continue;
-            }
-            $query->where($k, $v);
-        }
-    }
+    protected static function booted() {}
 
     public function scopeWhereCityId(Builder $builder, int $id): void
     {
@@ -144,7 +106,12 @@ class Booking extends BaseModel
             ->addSelect('r_airports.name as airport_name')
             ->join('r_cities', 'r_cities.id', '=', 'r_airports.city_id')
             ->joinTranslatable('r_cities', 'name as city_name')
-            ->join('supplier_airport_services', 'supplier_airport_services.id', '=','booking_airport_details.service_id')
+            ->join(
+                'supplier_airport_services',
+                'supplier_airport_services.id',
+                '=',
+                'booking_airport_details.service_id'
+            )
             ->addSelect('supplier_airport_services.name as service_name');
     }
 

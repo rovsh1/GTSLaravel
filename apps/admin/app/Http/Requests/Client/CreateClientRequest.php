@@ -60,7 +60,7 @@ class CreateClientRequest extends FormRequest
         return $this->post('cityId');
     }
 
-    public function getCurrencyId(): int
+    public function getCurrency(): string
     {
         return $this->post('currency');
     }

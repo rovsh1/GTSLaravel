@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Shared\Infrastructure\Service;
 
 use Illuminate\Support\Facades\DB;
-use Module\Shared\Domain\Service\SafeExecutorInterface;
+use Module\Shared\Contracts\Service\SafeExecutorInterface;
 
 class TransactionalExecutor implements SafeExecutorInterface
 {

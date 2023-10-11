@@ -2,7 +2,7 @@
 
 namespace Module\Shared\Tests\Domain\ValueObject;
 
-use Module\Shared\Domain\ValueObject\Percent;
+use Module\Shared\ValueObject\Percent;
 use PHPUnit\Framework\TestCase;
 
 class PercentTest extends TestCase

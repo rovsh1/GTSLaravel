@@ -38,7 +38,7 @@ class AirportPricesController extends AbstractPricesController
     }
 
     public function update(UpdateAirportPriceRequest $request, Supplier $provider, AirportService $service): JsonResponse {
-        $data = ['currency_id' => $request->getCurrencyId()];
+        $data = ['currency' => $request->getCurrency()];
         if ($request->getPriceNet() !== null) {
             $data['price_net'] = $request->getPriceNet();
         }

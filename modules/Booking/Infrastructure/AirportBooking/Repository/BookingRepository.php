@@ -8,18 +8,18 @@ use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Module\Booking\Domain\AirportBooking\AirportBooking as Entity;
-use Module\Booking\Domain\AirportBooking\Repository\BookingRepositoryInterface;
-use Module\Booking\Domain\AirportBooking\ValueObject\Details\AdditionalInfo;
-use Module\Booking\Domain\AirportBooking\ValueObject\Details\AirportInfo;
-use Module\Booking\Domain\AirportBooking\ValueObject\Details\ServiceInfo;
+use Module\Booking\Deprecated\AirportBooking\AirportBooking as Entity;
+use Module\Booking\Deprecated\AirportBooking\Repository\BookingRepositoryInterface;
+use Module\Booking\Deprecated\AirportBooking\ValueObject\Details\AdditionalInfo;
+use Module\Booking\Deprecated\AirportBooking\ValueObject\Details\AirportInfo;
+use Module\Booking\Deprecated\AirportBooking\ValueObject\Details\ServiceInfo;
+use Module\Booking\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Domain\Booking\ValueObject\BookingPrices;
+use Module\Booking\Domain\Order\ValueObject\OrderId;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
-use Module\Booking\Domain\Shared\ValueObject\BookingId;
-use Module\Booking\Domain\Shared\ValueObject\BookingPrice;
 use Module\Booking\Domain\Shared\ValueObject\CancelConditions;
 use Module\Booking\Domain\Shared\ValueObject\CreatorId;
 use Module\Booking\Domain\Shared\ValueObject\GuestIdCollection;
-use Module\Booking\Domain\Shared\ValueObject\OrderId;
 use Module\Booking\Infrastructure\AirportBooking\Models\Airport;
 use Module\Booking\Infrastructure\AirportBooking\Models\AirportService;
 use Module\Booking\Infrastructure\AirportBooking\Models\Booking as Model;
@@ -66,7 +66,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         int $serviceId,
         int $airportId,
         CarbonInterface $date,
-        BookingPrice $price,
+        BookingPrices $price,
         AdditionalInfo $additionalInfo,
         CancelConditions $cancelConditions,
         ?string $note = null
@@ -125,7 +125,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         );
     }
 
-    public function store(Entity $booking): bool
+    public function store(BookingInterface|Entity $booking): bool
     {
         return \DB::transaction(function () use ($booking) {
             $base = $this->storeBase($booking);
@@ -171,7 +171,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
             status: $booking->status,
             createdAt: $booking->created_at->toImmutable(),
             creatorId: new CreatorId($booking->creator_id),
-            price: BookingPrice::fromData($detailsData['price']),
+            price: BookingPrices::fromData($detailsData['price']),
             serviceInfo: ServiceInfo::fromData($detailsData['serviceInfo']),
             airportInfo: AirportInfo::fromData($detailsData['airportInfo']),
             date: CarbonImmutable::createFromTimestamp($detailsData['date']),

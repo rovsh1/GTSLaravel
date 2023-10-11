@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Supplier\Domain\Payment;
 
-use Module\Booking\Domain\Shared\ValueObject\BookingId;
+use Module\Booking\Domain\Booking\ValueObject\BookingId;
 use Module\Client\Domain\Invoice\ValueObject\InvoiceId;
 use Module\Client\Domain\Invoice\ValueObject\PaymentMethodEnum;
 use Module\Client\Domain\Payment\ValueObject\InvoiceNumber;

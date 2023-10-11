@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Support\LocaleTranslator;
 
-use Module\Shared\Domain\Service\TranslatorInterface;
+use Module\Shared\Contracts\Service\TranslatorInterface;
 
 class Translator implements TranslatorInterface
 {

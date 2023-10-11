@@ -6,9 +6,9 @@ namespace Module\Booking\Application\AirportBooking\UseCase\Admin;
 
 use Module\Booking\Application\AirportBooking\Factory\CancelConditionsFactory;
 use Module\Booking\Application\AirportBooking\Request\UpdateBookingDto;
-use Module\Booking\Domain\AirportBooking\AirportBooking;
-use Module\Booking\Domain\AirportBooking\Repository\BookingRepositoryInterface;
-use Module\Booking\Domain\AirportBooking\ValueObject\Details\AdditionalInfo;
+use Module\Booking\Deprecated\AirportBooking\AirportBooking;
+use Module\Booking\Deprecated\AirportBooking\Repository\BookingRepositoryInterface;
+use Module\Booking\Deprecated\AirportBooking\ValueObject\Details\AdditionalInfo;
 use Module\Booking\Domain\Shared\Service\BookingUpdater;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 

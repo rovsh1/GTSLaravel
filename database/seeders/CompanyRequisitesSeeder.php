@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Module\Shared\Domain\Service\CompanyRequisitesInterface;
+use Module\Shared\Contracts\Service\CompanyRequisitesInterface;
 
 class CompanyRequisitesSeeder extends Seeder
 {

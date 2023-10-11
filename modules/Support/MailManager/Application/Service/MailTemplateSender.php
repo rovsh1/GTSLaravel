@@ -2,7 +2,7 @@
 
 namespace Module\Support\MailManager\Application\Service;
 
-use Module\Shared\Domain\Service\CompanyRequisitesInterface;
+use Module\Shared\Contracts\Service\CompanyRequisitesInterface;
 use Module\Support\MailManager\Domain\Entity\Mail;
 use Module\Support\MailManager\Domain\Service\DataBuilder\DataBuilderInterface;
 use Module\Support\MailManager\Domain\Service\DataBuilder\DataDto\RecipientDataDto;

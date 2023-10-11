@@ -17,6 +17,6 @@ AclRoute::for('transfer-booking')
     ->get('/{booking}/actions/available', Controllers\Booking\Transfer\BookingController::class . '@getAvailableActions', 'read', 'actions.available.get')
     ->put('/{booking}/price', Controllers\Booking\Transfer\BookingController::class . '@updatePrice', 'update', 'price.update')
 
-    ->get('/{booking}/request/list', Controllers\Booking\Transfer\RequestController::class . '@getBookingRequests', 'read', 'request.list')
-    ->post('/{booking}/request', Controllers\Booking\Transfer\RequestController::class . '@sendRequest', 'update', 'request.send')
-    ->get('/{booking}/request/{request}/file', Controllers\Booking\Transfer\RequestController::class . '@getFileInfo', 'read', 'request.download');
+    ->get('/{booking}/request/list', Controllers\Booking\RequestController::class . '@getBookingRequests', 'read', 'request.list')
+    ->post('/{booking}/request', Controllers\Booking\RequestController::class . '@sendRequest', 'update', 'request.send')
+    ->get('/{booking}/request/{request}/file', Controllers\Booking\RequestController::class . '@getFileInfo', 'read', 'request.download');

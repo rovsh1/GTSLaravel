@@ -33,7 +33,6 @@ import { HotelRate, useHotelRatesAPI } from '~api/hotel/price-rate'
 import { Currency } from '~api/models'
 
 import { showConfirmDialog } from '~lib/confirm-dialog'
-import { formatDate } from '~lib/date'
 import { requestInitialData } from '~lib/initial-data'
 import { formatPrice } from '~lib/price'
 
@@ -62,15 +61,15 @@ const bookingDetails = computed<HotelBookingDetails | null>(() => bookingStore.b
 const markupSettings = computed<MarkupSettings | null>(() => bookingStore.markupSettings)
 const isEditableStatus = computed<boolean>(() => bookingStore.availableActions?.isEditable || false)
 const grossCurrency = computed<Currency | undefined>(
-  () => getCurrencyByCodeChar(bookingStore.booking?.price.grossPrice.currency.value),
+  () => getCurrencyByCodeChar(bookingStore.booking?.prices.grossPrice.currency.value),
 )
 const netCurrency = computed<Currency | undefined>(
-  () => getCurrencyByCodeChar(bookingStore.booking?.price.netPrice.currency.value),
+  () => getCurrencyByCodeChar(bookingStore.booking?.prices.netPrice.currency.value),
 )
 const orderId = computed(() => orderStore.order.id)
 const orderGuests = computed<Guest[]>(() => orderStore.guests || [])
 const isBookingPriceManual = computed(
-  () => bookingStore.booking?.price.grossPrice.isManual || bookingStore.booking?.price.netPrice.isManual,
+  () => bookingStore.booking?.prices.grossPrice.isManual || bookingStore.booking?.prices.netPrice.isManual,
 )
 
 const canChangeRoomPrice = computed<boolean>(
@@ -329,7 +328,7 @@ onMounted(() => {
               <tr v-for="dayPrice in room.price.dayPrices" :key="dayPrice.date">
                 <td>Стоимость брутто</td>
                 <td class="text-nowrap">
-                  {{ formatDate(dayPrice.date) }}
+                  {{ dayPrice.date }}
                 </td>
                 <td class="text-nowrap">
                   {{ formatPrice(dayPrice.grossValue, grossCurrency.sign) }}
@@ -387,7 +386,7 @@ onMounted(() => {
   </div>
 </template>
 
-<style lang="scss" scope>
+<style lang="scss" scoped>
 .pt-card-title {
   padding-top: 0.813rem;
 }

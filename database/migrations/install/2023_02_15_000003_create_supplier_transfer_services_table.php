@@ -1,6 +1,5 @@
 <?php
 
-use Custom\Illuminate\Database\Schema\TranslationTable;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -21,6 +20,22 @@ return new class extends Migration {
                 ->restrictOnDelete()
                 ->cascadeOnUpdate();
         });
+
+        Schema::create('supplier_services', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('supplier_id');
+            $table->string('title');
+            $table->unsignedTinyInteger('type');
+            $table->json('data');
+            $table->timestamps();
+
+            $table->foreign('supplier_id')
+                ->references('id')
+                ->on('suppliers')
+                ->restrictOnDelete()
+                ->cascadeOnUpdate();
+        });
+
 
 //        (new TranslationTable('r_transfer_services'))
 //            ->string('name')

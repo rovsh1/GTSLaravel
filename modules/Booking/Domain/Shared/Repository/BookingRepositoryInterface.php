@@ -13,6 +13,8 @@ interface BookingRepositoryInterface
 
     public function delete(BookingInterface $booking): void;
 
+    public function store(BookingInterface $booking): bool;
+
     /**
      * @param int[] $ids
      * @return void

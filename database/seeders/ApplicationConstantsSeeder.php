@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Module\Shared\Domain\Service\ApplicationConstantsInterface;
+use Module\Shared\Contracts\Service\ApplicationConstantsInterface;
 
 class ApplicationConstantsSeeder extends Seeder
 {

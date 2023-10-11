@@ -7,8 +7,8 @@ namespace Module\Booking\Domain\Shared\ValueObject;
 use Carbon\CarbonImmutable;
 use Module\Booking\Domain\Shared\ValueObject\CancelCondition\CancelMarkupOption;
 use Module\Booking\Domain\Shared\ValueObject\CancelCondition\DailyMarkupCollection;
-use Module\Shared\Domain\ValueObject\SerializableDataInterface;
-use Module\Shared\Domain\ValueObject\ValueObjectInterface;
+use Module\Shared\Contracts\Domain\ValueObjectInterface;
+use Module\Shared\Contracts\Support\SerializableDataInterface;
 
 class CancelConditions implements ValueObjectInterface, SerializableDataInterface
 {

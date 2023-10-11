@@ -18,6 +18,7 @@ class ModulesCollection implements \Iterator
                 return true;
             }
         }
+
         return false;
     }
 
@@ -29,6 +30,7 @@ class ModulesCollection implements \Iterator
                 return $module;
             }
         }
+
         return null;
     }
 

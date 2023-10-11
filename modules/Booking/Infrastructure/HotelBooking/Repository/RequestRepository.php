@@ -2,8 +2,8 @@
 
 namespace Module\Booking\Infrastructure\HotelBooking\Repository;
 
+use Module\Booking\Deprecated\HotelBooking\Repository\ReservationEventsRepositoryInterface;
 use Module\Booking\Infrastructure\BookingRequest\Repository\ReservationRequest;
-use Module\Booking\Domain\HotelBooking\Repository\ReservationEventsRepositoryInterface;
 
 class RequestRepository implements ReservationEventsRepositoryInterface
 {

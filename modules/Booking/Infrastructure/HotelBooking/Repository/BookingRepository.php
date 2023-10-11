@@ -7,19 +7,20 @@ namespace Module\Booking\Infrastructure\HotelBooking\Repository;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Module\Booking\Domain\HotelBooking\HotelBooking;
-use Module\Booking\Domain\HotelBooking\Repository\BookingRepositoryInterface;
-use Module\Booking\Domain\HotelBooking\Repository\RoomBookingRepositoryInterface;
-use Module\Booking\Domain\HotelBooking\ValueObject\Details\AdditionalInfo;
-use Module\Booking\Domain\HotelBooking\ValueObject\Details\BookingPeriod;
-use Module\Booking\Domain\HotelBooking\ValueObject\Details\HotelInfo;
-use Module\Booking\Domain\HotelBooking\ValueObject\Details\RoomBookingCollection;
+use Illuminate\Support\Facades\DB;
+use Module\Booking\Deprecated\HotelBooking\HotelBooking;
+use Module\Booking\Deprecated\HotelBooking\Repository\BookingRepositoryInterface;
+use Module\Booking\Deprecated\HotelBooking\ValueObject\Details\AdditionalInfo;
+use Module\Booking\Deprecated\HotelBooking\ValueObject\Details\RoomBookingCollection;
+use Module\Booking\Domain\Booking\Repository\RoomBookingRepositoryInterface;
+use Module\Booking\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Domain\Booking\ValueObject\BookingPeriod;
+use Module\Booking\Domain\Booking\ValueObject\BookingPrices;
+use Module\Booking\Domain\Booking\ValueObject\HotelBooking\HotelInfo;
+use Module\Booking\Domain\Order\ValueObject\OrderId;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
-use Module\Booking\Domain\Shared\ValueObject\BookingId;
-use Module\Booking\Domain\Shared\ValueObject\BookingPrice;
 use Module\Booking\Domain\Shared\ValueObject\CancelConditions;
 use Module\Booking\Domain\Shared\ValueObject\CreatorId;
-use Module\Booking\Domain\Shared\ValueObject\OrderId;
 use Module\Booking\Infrastructure\HotelBooking\Models\Booking as Model;
 use Module\Booking\Infrastructure\HotelBooking\Models\BookingDetails;
 use Module\Booking\Infrastructure\Shared\Repository\AbstractBookingRepository as BaseRepository;
@@ -51,12 +52,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
 
     public function findOrFail(BookingId $id): HotelBooking
     {
-        $booking = $this->find($id->value());
-        if ($booking === null) {
-            throw new EntityNotFoundException('Booking not found');
-        }
-
-        return $booking;
+        return $this->find($id->value()) ?? throw new EntityNotFoundException('Booking not found');
     }
 
     public function get(): Collection
@@ -76,10 +72,10 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
         ?string $note = null,
         HotelInfo $hotelInfo,
         CancelConditions $cancelConditions,
-        BookingPrice $price,
+        BookingPrices $price,
         QuotaProcessingMethodEnum $quotaProcessingMethod,
     ): HotelBooking {
-        return \DB::transaction(
+        return DB::transaction(
             function () use (
                 $orderId,
                 $creatorId,
@@ -124,7 +120,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
 
     public function store(HotelBooking $booking): bool
     {
-        return \DB::transaction(function () use ($booking) {
+        return DB::transaction(function () use ($booking) {
             $base = $this->storeBase($booking);
 
             foreach ($booking->roomBookings() as $roomBooking) {
@@ -208,7 +204,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
             status: $booking->status,
             createdAt: $booking->created_at->toImmutable(),
             creatorId: new CreatorId($booking->creator_id),
-            price: BookingPrice::fromData($booking->price),
+            price: BookingPrices::fromData($booking->prices),
             note: $detailsData['note'] ?? null,
             hotelInfo: HotelInfo::fromData($detailsData['hotelInfo']),
             period: BookingPeriod::fromData($detailsData['period']),

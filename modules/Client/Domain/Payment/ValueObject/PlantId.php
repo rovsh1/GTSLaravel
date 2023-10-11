@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Client\Domain\Payment\ValueObject;
 
-use Module\Shared\Domain\ValueObject\AbstractIntId;
+use Module\Shared\Support\ValueObject\AbstractIntId;
 
 final class PlantId extends AbstractIntId
 {

@@ -3,7 +3,6 @@
 namespace Sdk\Module\Foundation\Support\Providers;
 
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
-use Sdk\Module\Contracts\Event\IntegrationEventDispatcherInterface;
 
 class EventServiceProvider extends ServiceProvider
 {

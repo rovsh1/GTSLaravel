@@ -2,7 +2,9 @@
 
 namespace Module\Booking\Domain\Shared\ValueObject;
 
-
+/**
+ * @deprecated 
+ */
 enum BookingTypeEnum: int
 {
     case HOTEL = 1;
@@ -12,7 +14,7 @@ enum BookingTypeEnum: int
 
     public static function fromEntity(\Module\Booking\Domain\Shared\Entity\BookingInterface $booking): self
     {
-        if ($booking instanceof \Module\Booking\Domain\HotelBooking\HotelBooking)
+        if ($booking instanceof \Module\Booking\Deprecated\HotelBooking\HotelBooking)
             return self::HOTEL;
         elseif ($booking instanceof \Module\Booking\Domain\Entity\TransferReservation\Transfer)
             return self::TRANSFER;

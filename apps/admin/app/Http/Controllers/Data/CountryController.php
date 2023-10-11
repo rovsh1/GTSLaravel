@@ -21,6 +21,7 @@ class CountryController extends AbstractPrototypeController
     public function search(Request $request): JsonResponse
     {
         $countries = $this->prototype->makeRepository()->query()->get();
+
         return response()->json(
             CountryResource::collection($countries)
         );
@@ -33,8 +34,9 @@ class CountryController extends AbstractPrototypeController
             ->text('code', ['label' => 'Код страны', 'maxlength' => 2, 'required' => true])
             ->language('language', ['label' => 'Язык по-умолчанию', 'required' => true, 'emptyItem' => ''])
             ->text('phone_code', ['label' => 'Код телефона', 'maxlength' => 8, 'required' => true])
-            ->currency('currency_id', ['label' => 'Валюта', 'required' => true, 'emptyItem' => ''])
-            ->checkbox('default', ['label' => 'По умолчанию']);
+            ->currency('currency', ['label' => 'Валюта', 'required' => true, 'emptyItem' => ''])
+            ->checkbox('default', ['label' => 'По умолчанию'])
+            ->number('priority', ['label' => 'Приоритет', 'min' => 0, 'max' => 255]);
     }
 
     protected function gridFactory(): GridContract
@@ -48,8 +50,6 @@ class CountryController extends AbstractPrototypeController
             ->text('default', [
                 'text' => 'Основная',
                 'renderer' => fn($row) => $row->default ? 'Да' : 'Нет'
-            ])
-            //->actions(['route' => $this->prototype->route('index')])
-            ->orderBy('name', 'asc');
+            ]);
     }
 }

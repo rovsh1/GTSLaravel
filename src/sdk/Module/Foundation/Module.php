@@ -177,14 +177,12 @@ class Module extends Container implements ModuleInterface
         }
     }
 
-    protected function registerBaseBindings()
-    {
-    }
+    protected function registerBaseBindings() {}
 
     protected function registerBaseServiceProviders()
     {
-        $this->register(\Sdk\Module\Foundation\Providers\EventServiceProvider::class);
         $this->register(\Sdk\Module\Foundation\Providers\BusServiceProvider::class);
+        $this->register(\Sdk\Module\Foundation\Providers\EventServiceProvider::class);
         $this->register(\Sdk\Module\Foundation\Providers\RouteServiceProvider::class);
     }
 

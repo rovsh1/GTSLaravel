@@ -7,6 +7,7 @@ use App\Admin\Models\Reference\City;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
 use Sdk\Module\Database\Eloquent\Model;
 
@@ -20,9 +21,13 @@ class Supplier extends Model
 
     protected $fillable = [
         'name',
-        'currency_id',
+        'currency',
 
         'cities',
+    ];
+
+    protected $casts = [
+        'currency' => CurrencyEnum::class
     ];
 
     private array $savingCities;
@@ -38,7 +43,7 @@ class Supplier extends Model
         static::addGlobalScope('default', function (Builder $builder) {
             $builder->orderBy('name')
                 ->addSelect('suppliers.*')
-                ->leftJoin('r_currencies', 'r_currencies.id', '=', 'suppliers.currency_id')
+                ->leftJoin('r_currencies', 'r_currencies.code_char', '=', 'suppliers.currency')
                 ->joinTranslatable('r_currencies', 'name as currency_name');
         });
     }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Application\AirportBooking\Exception;
 
-use Module\Shared\Application\Exception\ApplicationException;
+use Module\Shared\Exception\ApplicationException;
 
 class NotFoundServicePriceException extends ApplicationException
 {

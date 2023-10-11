@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Client\Domain\Entity;
 
 use Module\Client\Domain\ValueObject\ClientId;
-use Module\Shared\Domain\Entity\EntityInterface;
+use Module\Shared\Contracts\Domain\EntityInterface;
 use Module\Shared\Enum\Client\ResidencyEnum;
 use Module\Shared\Enum\Client\TypeEnum;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;

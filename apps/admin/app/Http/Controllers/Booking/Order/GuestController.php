@@ -8,13 +8,13 @@ use App\Admin\Http\Controllers\Controller;
 use App\Admin\Http\Requests\Order\Guest\AddRequest;
 use App\Admin\Http\Requests\Order\Guest\UpdateRequest;
 use App\Admin\Support\Facades\Booking\AirportAdapter;
-use App\Admin\Support\Facades\Booking\HotelAdapter;
+use App\Admin\Support\Facades\Booking\Hotel\DetailsAdapter;
 use App\Admin\Support\Facades\Booking\OrderAdapter;
 use App\Core\Support\Http\Responses\AjaxErrorResponse;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use App\Core\Support\Http\Responses\AjaxSuccessResponse;
 use Illuminate\Http\JsonResponse;
-use Module\Shared\Application\Exception\ApplicationException;
+use Module\Shared\Exception\ApplicationException;
 
 class GuestController extends Controller
 {
@@ -37,7 +37,7 @@ class GuestController extends Controller
                 age: $request->getAge()
             );
             if ($request->hotelBookingId() !== null) {
-                HotelAdapter::bindRoomGuest($request->hotelBookingId(), $request->hotelBookingRoomId(), $guest->id);
+                DetailsAdapter::bindRoomGuest($request->hotelBookingId(), $request->hotelBookingRoomId(), $guest->id);
             }
 
             if ($request->airportBookingId() !== null) {

@@ -3,10 +3,10 @@
 namespace Module\Shared\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Module\Shared\Contracts\Adapter\CurrencyRateAdapterInterface;
 use Module\Shared\Contracts\Adapter\FileStorageAdapterInterface;
-use Module\Shared\Domain\Adapter\CurrencyRateAdapterInterface;
 use Module\Shared\Infrastructure\Adapter\CurrencyRateAdapter;
-use Module\Shared\Support\Adapter\FileStorageAdapter;
+use Module\Shared\Infrastructure\Adapter\FileStorageAdapter;
 
 class AdapterServiceProvider extends ServiceProvider
 {

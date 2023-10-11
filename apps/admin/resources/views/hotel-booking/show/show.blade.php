@@ -77,14 +77,6 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>Транспортная бронь (ID)</th>
-                                <td>-</td>
-                            </tr>
-                            <tr>
-                                <th>Услуга в аэропорту (ID)</th>
-                                <td>-</td>
-                            </tr>
-                            <tr>
                                 <th>Менеджер</th>
                                 <td>
                                     <div id="booking-editable-manager"></div>

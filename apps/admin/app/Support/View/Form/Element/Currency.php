@@ -9,9 +9,14 @@ class Currency extends Select
 {
     public function __construct(string $name, array $options = [])
     {
+        $options['items'] = Model::orderBy('name')->get();
+
+        if (!str_contains($name, '_id')) {
+            $options['valueIndex'] = 'code_char';
+        }
+
         parent::__construct($name, $options);
 
-        $this->setItems(Model::orderBy('name')->get());
         $this->setValue($options['value'] ?? $options['default'] ?? null);
     }
 }

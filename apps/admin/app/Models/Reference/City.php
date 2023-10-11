@@ -50,6 +50,7 @@ class City extends Model
         //'text'
         'center_lat',
         'center_lon',
+        'priority'
     ];
 
     public static function booted()
@@ -63,6 +64,7 @@ class City extends Model
                 ->joinTranslations()
                 //TODO add priority column
                 //->orderBy('priority', 'desc')
+                ->orderBy('priority', 'desc')
                 ->orderBy('name', 'asc');
         });
     }

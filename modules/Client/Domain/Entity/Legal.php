@@ -7,7 +7,7 @@ namespace Module\Client\Domain\Entity;
 use Module\Client\Domain\ValueObject\BankRequisites;
 use Module\Client\Domain\ValueObject\IndustryId;
 use Module\Client\Domain\ValueObject\LegalId;
-use Module\Shared\Domain\Entity\EntityInterface;
+use Module\Shared\Contracts\Domain\EntityInterface;
 use Module\Shared\Enum\Client\LegalTypeEnum;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 

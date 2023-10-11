@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Admin\Models\Supplier;
 
+use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Database\Eloquent\Model;
 
 class AirportPrice extends Model
@@ -16,12 +17,13 @@ class AirportPrice extends Model
         'service_id',
         'season_id',
         'airport_id',
-        'currency_id',
+        'currency',
         'price_net',
         'prices_gross',
     ];
 
     protected $casts = [
+        'currency' => CurrencyEnum::class,
         'price_net' => 'float',
         'prices_gross' => 'array',
     ];

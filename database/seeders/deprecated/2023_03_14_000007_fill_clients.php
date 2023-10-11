@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 use Module\Shared\Enum\Client\ResidencyEnum;
+use Module\Shared\Enum\CurrencyEnum;
 
 return new class extends Migration {
     private const BASE_MARKUP_GROUP_ID = 1;
@@ -37,7 +38,7 @@ return new class extends Migration {
                     ->insert([
                         'id' => $r->id,
                         'city_id' => $r->city_id,
-                        'currency_id' => $r->currency_id,
+                        'currency' => CurrencyEnum::fromId($r->currency_id)->value,
                         'type' => $r->type,
                         'residency' => $residency,
                         'name' => $r->name,

@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Module\Booking\Application\AirportBooking\Factory;
 
 use Carbon\CarbonInterface;
-use Module\Booking\Domain\AirportBooking\Adapter\SupplierAdapterInterface;
+use Module\Booking\Deprecated\AirportBooking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Domain\Shared\ValueObject\CancelCondition\CancelMarkupOption;
 use Module\Booking\Domain\Shared\ValueObject\CancelCondition\CancelPeriodTypeEnum;
 use Module\Booking\Domain\Shared\ValueObject\CancelCondition\DailyMarkupCollection;
 use Module\Booking\Domain\Shared\ValueObject\CancelCondition\DailyMarkupOption;
 use Module\Booking\Domain\Shared\ValueObject\CancelConditions;
-use Module\Shared\Domain\ValueObject\Percent;
+use Module\Shared\ValueObject\Percent;
 use Module\Supplier\Application\Response\DailyMarkupDto;
 
 class CancelConditionsFactory

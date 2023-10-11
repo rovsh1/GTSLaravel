@@ -12,14 +12,16 @@ use App\Admin\Http\Requests\Booking\Hotel\UpdatePriceRequest;
 use App\Admin\Http\Requests\Booking\Hotel\UpdateStatusRequest;
 use App\Admin\Http\Resources\Room as RoomResource;
 use App\Admin\Models\Administrator\Administrator;
+use App\Admin\Models\Booking\Booking;
 use App\Admin\Models\Client\Client;
 use App\Admin\Models\Hotel\Hotel;
 use App\Admin\Models\Hotel\Room;
 use App\Admin\Models\Reference\Currency;
 use App\Admin\Repositories\BookingAdministratorRepository;
 use App\Admin\Support\Facades\Acl;
+use App\Admin\Support\Facades\Booking\BookingAdapter;
+use App\Admin\Support\Facades\Booking\Hotel\DetailsAdapter;
 use App\Admin\Support\Facades\Booking\Hotel\PriceAdapter;
-use App\Admin\Support\Facades\Booking\HotelAdapter;
 use App\Admin\Support\Facades\Booking\OrderAdapter;
 use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Form;
@@ -34,15 +36,17 @@ use App\Core\Support\Http\Responses\AjaxRedirectResponse;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use App\Core\Support\Http\Responses\AjaxSuccessResponse;
 use Carbon\CarbonPeriod;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Module\Booking\Domain\Shared\Service\RequestRules;
 use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
-use Module\Shared\Application\Exception\ApplicationException;
 use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
+use Module\Shared\Enum\CurrencyEnum;
 use Module\Shared\Enum\SourceEnum;
+use Module\Shared\Exception\ApplicationException;
 
 class BookingController extends Controller
 {
@@ -58,42 +62,8 @@ class BookingController extends Controller
     {
         Breadcrumb::prototype($this->prototype);
 
-        $requestableStatuses = array_map(fn(BookingStatusEnum $status) => $status->value, RequestRules::getRequestableStatuses());
-
         $grid = $this->gridFactory();
-        $query = HotelAdapter::getBookingQuery()
-            ->applyCriteria($grid->getSearchCriteria())
-            ->join('administrator_bookings', 'administrator_bookings.booking_id', '=', 'bookings.id')
-            ->join('administrators', 'administrators.id', '=', 'administrator_bookings.administrator_id')
-            ->addSelect('administrators.presentation as manager_name')
-            ->selectSub(
-                DB::table('booking_hotel_room_guests')
-                    ->selectRaw('count(id)')
-                    ->whereExists(function ($query) {
-                        $query->selectRaw(1)
-                            ->from('booking_hotel_rooms')
-                            ->whereColumn('booking_hotel_rooms.booking_id', 'bookings.id')
-                            ->whereColumn('booking_hotel_room_guests.booking_hotel_room_id', 'booking_hotel_rooms.id');
-                    }),
-                'guests_count'
-            )
-            ->addSelect(
-                DB::raw(
-                    '(SELECT GROUP_CONCAT(room_name) FROM booking_hotel_rooms WHERE booking_id=bookings.id) as room_names'
-                )
-            )
-            ->addSelect(
-                DB::raw('(SELECT COUNT(id) FROM booking_hotel_rooms WHERE booking_id=bookings.id) as rooms_count')
-            )
-            ->addSelect(
-                DB::raw('(SELECT bookings.status IN (' . implode(',', $requestableStatuses) . ')) as is_requestable'),
-            )
-            ->addSelect(
-                DB::raw(
-                    'EXISTS(SELECT 1 FROM booking_requests WHERE bookings.id = booking_requests.booking_id AND is_archive = 0) as has_downloadable_request'
-                ),
-            );
-
+        $query = $this->prepareGridQuery(Booking::query(), $grid->getSearchCriteria());
         $grid->data($query);
 
         return Layout::title($this->prototype->title('index'))
@@ -134,24 +104,22 @@ class BookingController extends Controller
 
         $data = $form->getData();
         $orderId = $data['order_id'] ?? null;
-        $currencyId = $data['currency_id'] ?? null;
-        if ($orderId !== null && $currencyId === null) {
+        $currency = isset($data['currency']) ? CurrencyEnum::from($data['currency']) : null;
+        if ($orderId !== null && $currency === null) {
             $order = OrderAdapter::findOrder($orderId);
-            $currencyId = $order->currency->id;
+            $currency = $order->currency;
         }
         $client = Client::find($data['client_id']);
         try {
-            $bookingId = HotelAdapter::createBooking(
-                cityId: $data['city_id'],
+            $bookingId = BookingAdapter::createHotelBooking(
                 clientId: $data['client_id'],
                 legalId: $data['legal_id'],
-                currencyId: $currencyId ?? $client->currency_id,
+                currency: $currency ?? $client->currency,
                 hotelId: $data['hotel_id'],
-                period: $data['period'],
                 creatorId: $creatorId,
                 orderId: $data['order_id'] ?? null,
+                detailsData: $data,
                 note: $data['note'] ?? null,
-                quotaProcessingMethod: $data['quota_processing_method'],
             );
             $this->administratorRepository->create($bookingId, $data['manager_id'] ?? $creatorId);
         } catch (ApplicationException $e) {
@@ -165,7 +133,7 @@ class BookingController extends Controller
 
     public function show(int $id): LayoutContract
     {
-        $booking = HotelAdapter::getBooking($id);
+        $booking = DetailsAdapter::getBooking($id);
         $order = OrderAdapter::findOrder($booking->orderId);
         $hotelId = $booking->hotelInfo->id;
         $client = Client::find($order->clientId);
@@ -196,7 +164,7 @@ class BookingController extends Controller
     {
         $breadcrumbs = Breadcrumb::prototype($this->prototype);
 
-        $booking = HotelAdapter::getBooking($id);
+        $booking = DetailsAdapter::getBooking($id);
 
         $title = "Бронь №{$id}";
         $breadcrumbs->addUrl($this->prototype->route('show', $id), $title);
@@ -226,7 +194,7 @@ class BookingController extends Controller
 
         $data = $form->getData();
         try {
-            HotelAdapter::updateBooking(
+            DetailsAdapter::updateBooking(
                 id: $id,
                 period: $data['period'],
                 note: $data['note'] ?? null
@@ -241,7 +209,7 @@ class BookingController extends Controller
 
     public function destroy(int $id): AjaxResponseInterface
     {
-        HotelAdapter::deleteBooking($id);
+        DetailsAdapter::deleteBooking($id);
 
         return new AjaxRedirectResponse($this->prototype->route());
     }
@@ -249,13 +217,13 @@ class BookingController extends Controller
     public function get(int $id): JsonResponse
     {
         return response()->json(
-            HotelAdapter::getBooking($id)
+            DetailsAdapter::getBooking($id)
         );
     }
 
     public function copy(int $id): RedirectResponse
     {
-        $newBookingId = HotelAdapter::copyBooking($id);
+        $newBookingId = DetailsAdapter::copyBooking($id);
 
         $administrator = $this->administratorRepository->get($id);
         $this->administratorRepository->create($newBookingId, $administrator->id);
@@ -268,13 +236,13 @@ class BookingController extends Controller
     public function getAvailableActions(int $id): JsonResponse
     {
         return response()->json(
-            HotelAdapter::getAvailableActions($id)
+            DetailsAdapter::getAvailableActions($id)
         );
     }
 
     public function updateExternalNumber(UpdateExternalNumberRequest $request, int $id): AjaxResponseInterface
     {
-        HotelAdapter::updateExternalNumber($id, $request->getType(), $request->getNumber());
+        DetailsAdapter::updateExternalNumber($id, $request->getType(), $request->getNumber());
 
         return new AjaxSuccessResponse();
     }
@@ -283,7 +251,7 @@ class BookingController extends Controller
     {
         $grossPrice = $request->getGrossPrice();
         $netPrice = $request->getNetPrice();
-
+//TODO refactor
         if ($request->isGrossPriceExists() && $grossPrice === null) {
             PriceAdapter::setCalculatedGrossPrice($id);
         }
@@ -309,14 +277,14 @@ class BookingController extends Controller
 
     public function bulkDelete(BulkDeleteRequest $request): AjaxResponseInterface
     {
-        HotelAdapter::bulkDeleteBookings($request->getIds());
+        DetailsAdapter::bulkDeleteBookings($request->getIds());
 
         return new AjaxSuccessResponse();
     }
 
     public function updateNote(int $id, UpdateNoteRequest $request): AjaxResponseInterface
     {
-        HotelAdapter::updateNote($id, $request->getNote());
+        DetailsAdapter::updateNote($id, $request->getNote());
 
         return new AjaxSuccessResponse();
     }
@@ -331,14 +299,14 @@ class BookingController extends Controller
     public function getStatuses(): JsonResponse
     {
         return response()->json(
-            HotelAdapter::getStatuses()
+            BookingAdapter::getStatuses()
         );
     }
 
     public function updateStatus(UpdateStatusRequest $request, int $id): JsonResponse
     {
         return response()->json(
-            HotelAdapter::updateStatus(
+            DetailsAdapter::updateStatus(
                 $id,
                 $request->getStatus(),
                 $request->getNotConfirmedReason(),
@@ -350,7 +318,7 @@ class BookingController extends Controller
     public function getStatusHistory(int $id): JsonResponse
     {
         return response()->json(
-            HotelAdapter::getStatusHistory($id)
+            DetailsAdapter::getStatusHistory($id)
         );
     }
 
@@ -372,7 +340,8 @@ class BookingController extends Controller
                     return "$idLink / {$orderLink}";
                 }
             ])
-            ->bookingStatus('status', ['text' => 'Статус', 'statuses' => HotelAdapter::getStatuses(), 'order' => true])
+            ->bookingStatus('status', ['text' => 'Статус', 'statuses' => BookingAdapter::getStatuses(), 'order' => true]
+            )
             ->text('client_name', ['text' => 'Клиент'])
             ->text('manager_name', ['text' => 'Менеджер'])
             ->text(
@@ -441,7 +410,7 @@ class BookingController extends Controller
             ->hidden('hotel_room_id', ['label' => 'Тип номера'])
             ->client('client_id', ['label' => 'Клиент', 'emptyItem' => ''])
             ->select('manager_id', ['label' => 'Менеджер', 'items' => Administrator::all(), 'emptyItem' => ''])
-            ->select('status', ['label' => 'Статус', 'items' => HotelAdapter::getStatuses(), 'emptyItem' => ''])
+            ->select('status', ['label' => 'Статус', 'items' => BookingAdapter::getStatuses(), 'emptyItem' => ''])
             ->enum('source', ['label' => 'Источник', 'enum' => SourceEnum::class, 'emptyItem' => ''])
             ->numRange('guests_count', ['label' => 'Кол-во гостей'])
             ->dateRange('start_period', ['label' => 'Дата заезда'])
@@ -460,7 +429,7 @@ class BookingController extends Controller
             'quota_processing_method' => $booking->quotaProcessingMethod->value,
             'manager_id' => $manager->id,
             'order_id' => $booking->orderId,
-            'currency_id' => $order->currency->id,
+            'currency' => $order->currency,
             'hotel_id' => $hotelId,
             'city_id' => $cityId,
             'client_id' => $order->clientId,
@@ -497,7 +466,7 @@ class BookingController extends Controller
             ->hidden('legal_id', [
                 'label' => 'Юр. лицо',
             ])
-            ->currency('currency_id', [
+            ->currency('currency', [
                 'label' => 'Валюта',
                 'emptyItem' => '',
             ])
@@ -539,5 +508,56 @@ class BookingController extends Controller
     protected function route(string $name, mixed $parameters = []): string
     {
         return route("hotel-booking.{$name}", $parameters);
+    }
+
+    private function prepareGridQuery(Builder $query, array $searchCriteria): Builder
+    {
+        $requestableStatuses = array_map(fn(BookingStatusEnum $status) => $status->value,
+            RequestRules::getRequestableStatuses());
+
+        return $query
+            ->applyCriteria($searchCriteria)
+            ->addSelect('bookings.*')
+            ->join('orders', 'orders.id', '=', 'bookings.order_id')
+            ->join('clients', 'clients.id', '=', 'orders.client_id')
+            ->addSelect('clients.name as client_name')
+            ->join('booking_hotel_details', 'bookings.id', '=', 'booking_hotel_details.booking_id')
+            ->addSelect('booking_hotel_details.date_start as date_start')
+            ->addSelect('booking_hotel_details.date_end as date_end')
+            ->addSelect('booking_hotel_details.hotel_id as hotel_id')
+            ->join('hotels', 'hotels.id', '=', 'booking_hotel_details.hotel_id')
+            ->addSelect('hotels.name as hotel_name')
+            ->join('r_cities', 'r_cities.id', '=', 'hotels.city_id')
+            ->joinTranslatable('r_cities', 'name as city_name')
+            ->join('administrator_bookings', 'administrator_bookings.booking_id', '=', 'bookings.id')
+            ->join('administrators', 'administrators.id', '=', 'administrator_bookings.administrator_id')
+            ->addSelect('administrators.presentation as manager_name')
+            ->selectSub(
+                DB::table('booking_hotel_room_guests')
+                    ->selectRaw('count(id)')
+                    ->whereExists(function ($query) {
+                        $query->selectRaw(1)
+                            ->from('booking_hotel_rooms')
+                            ->whereColumn('booking_hotel_rooms.booking_id', 'bookings.id')
+                            ->whereColumn('booking_hotel_room_guests.booking_hotel_room_id', 'booking_hotel_rooms.id');
+                    }),
+                'guests_count'
+            )
+            ->addSelect(
+                DB::raw(
+                    '(SELECT GROUP_CONCAT(room_name) FROM booking_hotel_rooms WHERE booking_id=bookings.id) as room_names'
+                )
+            )
+            ->addSelect(
+                DB::raw('(SELECT COUNT(id) FROM booking_hotel_rooms WHERE booking_id=bookings.id) as rooms_count')
+            )
+            ->addSelect(
+                DB::raw('(SELECT bookings.status IN (' . implode(',', $requestableStatuses) . ')) as is_requestable'),
+            )
+            ->addSelect(
+                DB::raw(
+                    'EXISTS(SELECT 1 FROM booking_requests WHERE bookings.id = booking_requests.booking_id AND is_archive = 0) as has_downloadable_request'
+                ),
+            );
     }
 }

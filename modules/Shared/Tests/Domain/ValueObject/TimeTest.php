@@ -2,7 +2,7 @@
 
 namespace Module\Shared\Tests\Domain\ValueObject;
 
-use Module\Shared\Domain\ValueObject\Time;
+use Module\Shared\ValueObject\Time;
 use PHPUnit\Framework\TestCase;
 
 class TimeTest extends TestCase

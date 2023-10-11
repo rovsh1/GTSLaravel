@@ -3,22 +3,22 @@
 use App\Admin\Enums\Hotel\VisibilityEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
-use Module\Hotel\Domain\Entity\MarkupSettings;
-use Module\Hotel\Domain\ValueObject\MarkupSettings\CancelMarkupOption;
-use Module\Hotel\Domain\ValueObject\MarkupSettings\CancelPeriod;
-use Module\Hotel\Domain\ValueObject\MarkupSettings\CancelPeriodCollection;
-use Module\Hotel\Domain\ValueObject\MarkupSettings\CancelPeriodTypeEnum;
-use Module\Hotel\Domain\ValueObject\MarkupSettings\ClientMarkups;
-use Module\Hotel\Domain\ValueObject\MarkupSettings\Condition;
-use Module\Hotel\Domain\ValueObject\MarkupSettings\DailyMarkupCollection;
-use Module\Hotel\Domain\ValueObject\MarkupSettings\DailyMarkupOption;
-use Module\Hotel\Domain\ValueObject\MarkupSettings\EarlyCheckInCollection;
-use Module\Hotel\Domain\ValueObject\MarkupSettings\LateCheckOutCollection;
-use Module\Hotel\Domain\ValueObject\TimeSettings;
-use Module\Shared\Domain\ValueObject\Percent;
-use Module\Shared\Domain\ValueObject\Time;
-use Module\Shared\Domain\ValueObject\TimePeriod;
+use Module\Catalog\Domain\Hotel\Entity\MarkupSettings;
+use Module\Catalog\Domain\Hotel\ValueObject\MarkupSettings\CancelMarkupOption;
+use Module\Catalog\Domain\Hotel\ValueObject\MarkupSettings\CancelPeriod;
+use Module\Catalog\Domain\Hotel\ValueObject\MarkupSettings\CancelPeriodCollection;
+use Module\Catalog\Domain\Hotel\ValueObject\MarkupSettings\CancelPeriodTypeEnum;
+use Module\Catalog\Domain\Hotel\ValueObject\MarkupSettings\ClientMarkups;
+use Module\Catalog\Domain\Hotel\ValueObject\MarkupSettings\Condition;
+use Module\Catalog\Domain\Hotel\ValueObject\MarkupSettings\DailyMarkupCollection;
+use Module\Catalog\Domain\Hotel\ValueObject\MarkupSettings\DailyMarkupOption;
+use Module\Catalog\Domain\Hotel\ValueObject\MarkupSettings\EarlyCheckInCollection;
+use Module\Catalog\Domain\Hotel\ValueObject\MarkupSettings\LateCheckOutCollection;
+use Module\Catalog\Domain\Hotel\ValueObject\TimeSettings;
 use Module\Shared\Enum\CurrencyEnum;
+use Module\Shared\ValueObject\Percent;
+use Module\Shared\ValueObject\Time;
+use Module\Shared\ValueObject\TimePeriod;
 
 return new class extends Migration {
 
@@ -43,7 +43,7 @@ return new class extends Migration {
             $hotelId = $r->id;
             $supplierId = DB::table('suppliers')->insertGetId([
                 'name' => $r->name,
-                'currency_id' => CurrencyEnum::UZS->id()
+                'currency' => CurrencyEnum::UZS->value
             ]);
 
             $conditionsIndexedByType = DB::connection('mysql_old')
@@ -83,16 +83,16 @@ return new class extends Migration {
             $margins = DB::connection('mysql_old')
                 ->table('hotel_margins')
                 ->select([
-                    \DB::raw(
+                    DB::raw(
                         "(SELECT `value` FROM hotel_margins WHERE hotel_id = {$hotelId} AND room_id IS NULL AND client_model = " . self::OTA . ') as `OTA`'
                     ),
-                    \DB::raw(
+                    DB::raw(
                         "(SELECT `value` FROM hotel_margins WHERE hotel_id = {$hotelId} AND room_id IS NULL AND client_model = " . self::TA . ') as `TA`'
                     ),
-                    \DB::raw(
+                    DB::raw(
                         "(SELECT `value` FROM hotel_margins WHERE hotel_id = {$hotelId} AND room_id IS NULL AND client_model = " . self::TO . ') as `TO`'
                     ),
-                    \DB::raw(
+                    DB::raw(
                         "(SELECT `value` FROM hotel_margins WHERE hotel_id = {$hotelId} AND room_id IS NULL AND client_model = " . self::INDIVIDUAL . ') as `individual`'
                     ),
                 ])
@@ -108,19 +108,19 @@ return new class extends Migration {
             $options = DB::connection('mysql_old')
                 ->table('hotel_options')
                 ->select([
-                    \DB::raw(
+                    DB::raw(
                         "(SELECT `value` FROM `hotel_options` WHERE `hotel_id` = {$hotelId} AND `option` = " . self::VAT . ') as vat'
                     ),
-                    \DB::raw(
+                    DB::raw(
                         "(SELECT `value` FROM `hotel_options` WHERE `hotel_id` = {$hotelId} AND `option` = " . self::TOUR_FEE . ') as touristTax'
                     ),
-                    \DB::raw(
+                    DB::raw(
                         "(SELECT `value` FROM `hotel_options` WHERE `hotel_id` = {$hotelId} AND `option` = " . self::CHECKIN_START_PRESET . ') as checkInTime'
                     ),
-                    \DB::raw(
+                    DB::raw(
                         "(SELECT `value` FROM `hotel_options` WHERE `hotel_id` = {$hotelId} AND `option` = " . self::CHECKOUT_END_PRESET . ') as checkOutTime'
                     ),
-                    \DB::raw(
+                    DB::raw(
                         "(SELECT `value` FROM `hotel_options` WHERE `hotel_id` = {$hotelId} AND `option` = " . self::BREAKFAST_TIME . ') as breakfastTime'
                     ),
                 ])
@@ -188,7 +188,7 @@ return new class extends Migration {
             $cancelPeriodCollection = new CancelPeriodCollection($cancelPeriods->all());
 
             $markupSettings = new MarkupSettings(
-                new \Module\Hotel\Domain\ValueObject\HotelId($hotelId),
+                new \Module\Catalog\Domain\Hotel\ValueObject\HotelId($hotelId),
                 $vatPercent,
                 $touristTaxPercent,
                 $clientMarkups,
@@ -203,7 +203,7 @@ return new class extends Migration {
                     'supplier_id' => $supplierId,
                     'city_id' => $r->city_id,
                     'type_id' => $r->type_id,
-                    'currency_id' => CurrencyEnum::UZS->id(),
+                    'currency' => CurrencyEnum::UZS->value,
                     'rating' => $r->rating,
                     'name' => $r->name,
                     'address' => $r->address,

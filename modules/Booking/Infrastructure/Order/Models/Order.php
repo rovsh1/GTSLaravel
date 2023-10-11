@@ -6,6 +6,7 @@ namespace Module\Booking\Infrastructure\Order\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Database\Eloquent\Model;
 
 class Order extends Model
@@ -15,11 +16,12 @@ class Order extends Model
     protected $fillable = [
         'client_id',
         'legal_id',
-        'currency_id',
+        'currency',
         'status',
     ];
 
     protected $casts = [
+        'currency' => CurrencyEnum::class,
         'status' => OrderStatusEnum::class,
     ];
 

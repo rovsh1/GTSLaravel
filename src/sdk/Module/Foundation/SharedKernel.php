@@ -3,8 +3,6 @@
 namespace Sdk\Module\Foundation;
 
 use Illuminate\Contracts\Foundation\Application;
-use Sdk\Module\Bus\IntegrationEventBus;
-use Sdk\Module\Contracts\Bus\IntegrationEventBusInterface;
 use Sdk\Module\Foundation\Support\SharedContainer;
 
 class SharedKernel
@@ -15,7 +13,7 @@ class SharedKernel
 
     protected array $serviceProviders = [];
 
-    public function __construct(Application $app,)
+    public function __construct(Application $app)
     {
         $this->app = $app;
         $this->sharedContainer = $this->makeSharedContainer();
@@ -71,7 +69,7 @@ class SharedKernel
 
     protected function registerRequiredDependencies(): void
     {
-        $this->sharedContainer->instance(IntegrationEventBusInterface::class, new IntegrationEventBus());
+
     }
 
     protected function registerServiceProviders(): void

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Booking\Domain\BookingRequest\Repository;
 
+use Module\Booking\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Domain\BookingRequest\BookingRequest;
-use Module\Booking\Domain\Shared\ValueObject\BookingId;
 use Module\Booking\Domain\BookingRequest\ValueObject\RequestId;
 use Module\Booking\Domain\BookingRequest\ValueObject\RequestTypeEnum;
 use Module\Shared\ValueObject\File;

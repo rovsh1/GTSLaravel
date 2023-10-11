@@ -3,7 +3,7 @@
 namespace Module\Booking\Domain\Shared\Service\DocumentGenerator;
 
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
-use Module\Shared\Domain\Service\CompanyRequisitesInterface;
+use Module\Shared\Contracts\Service\CompanyRequisitesInterface;
 
 abstract class AbstractDocumentGenerator
 {

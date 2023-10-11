@@ -124,7 +124,7 @@ class HotelController extends AbstractPrototypeController
 
         return Form::city('city_id', ['label' => 'Город', 'required' => true, 'emptyItem' => ''])
             ->select('type_id', ['label' => 'Тип отеля', 'required' => true, 'emptyItem' => '', 'items' => Type::get()])
-            ->currency('currency_id', ['label' => 'Валюта', 'required' => true, 'emptyItem' => ''])
+            ->currency('currency', ['label' => 'Валюта', 'required' => true, 'emptyItem' => ''])
             ->enum('visibility', ['label' => __('label.visibility'), 'emptyItem' => '', 'enum' => VisibilityEnum::class]
             )
             ->text('name', ['label' => 'Наименование', 'required' => true])

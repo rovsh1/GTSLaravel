@@ -10,7 +10,7 @@ return new class extends Migration {
     {
         Schema::create('r_countries', function (Blueprint $table) {
             $table->smallInteger('id')->unsigned()->autoIncrement();
-            $table->smallInteger('currency_id')->unsigned()->nullable();
+            $table->char('currency', 3)->nullable();
             $table->char('code', 2);
             $table->boolean('default')->default(false);
             $table->char('language', 2);
@@ -18,10 +18,11 @@ return new class extends Migration {
             $table->string('datetime_format', 20)->nullable();
             $table->string('date_format', 20)->nullable();
             $table->string('time_format', 20)->nullable();
+            $table->unsignedTinyInteger('priority')->default(0);
 //            $table->softDeletes();
 
-            $table->foreign('currency_id')
-                ->references('id')
+            $table->foreign('currency')
+                ->references('code_char')
                 ->on('r_currencies')
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();

@@ -16,7 +16,7 @@ class Service extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => "{$this->provider_name} | {$this->name}",
+            'name' => "{$this->provider_name} | {$this->title}",
         ];
     }
 }

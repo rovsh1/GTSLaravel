@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
+use Module\Shared\Enum\CurrencyEnum;
 
 return new class extends Migration {
     /**
@@ -14,7 +15,7 @@ return new class extends Migration {
                 ->insert([
                     'id' => $r->id,
                     'client_id' => $r->client_id,
-                    'currency_id' => $r->currency_id,
+                    'currency' => CurrencyEnum::fromId($r->currency_id)->value,
                     'rate' => $r->rate,
                     'date_start' => $r->date_from,
                     'date_end' => $r->date_to,

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Supplier\Domain\Supplier\ValueObject;
 
-use Module\Shared\Domain\ValueObject\SerializableDataInterface;
-use Module\Shared\Domain\ValueObject\ValueObjectInterface;
+use Module\Shared\Contracts\Domain\ValueObjectInterface;
+use Module\Shared\Contracts\Support\SerializableDataInterface;
 
 class CancelConditions implements ValueObjectInterface, SerializableDataInterface
 {

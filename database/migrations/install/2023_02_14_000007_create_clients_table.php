@@ -11,7 +11,7 @@ return new class extends Migration {
         Schema::create('clients', function (Blueprint $table) {
             $table->integer('id')->unsigned()->autoIncrement();
             $table->integer('city_id')->unsigned();
-            $table->unsignedSmallInteger('currency_id')->nullable();
+            $table->char('currency', 3)->nullable();
             $table->tinyInteger('type')->unsigned();
             $table->tinyInteger('status')->unsigned();
             $table->tinyInteger('residency')->unsigned();
@@ -28,8 +28,8 @@ return new class extends Migration {
                 ->restrictOnDelete()
                 ->cascadeOnUpdate();
 
-            $table->foreign('currency_id')
-                ->references('id')
+            $table->foreign('currency')
+                ->references('code_char')
                 ->on('r_currencies')
                 ->restrictOnDelete()
                 ->cascadeOnUpdate();
