@@ -25,7 +25,10 @@ use Module\Shared\Enum\ServiceTypeEnum;
  *
  * @method static void bindGuest(int $bookingId, int $guestId)
  * @method static void unbindGuest(int $bookingId, int $guestId)
- * @method static void updateCars(int $bookingId, array $carsData)
+ *
+ * @method static void addCarBid(int $bookingId, array $carData)
+ * @method static void updateCarBid(int $bookingId, array $carData)
+ * @method static void removeCarBid(int $bookingId, array $carData)
  **/
 class ServiceAdapter extends Facade
 {

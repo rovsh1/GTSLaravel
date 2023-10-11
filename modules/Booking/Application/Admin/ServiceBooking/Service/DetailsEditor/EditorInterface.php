@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Application\Admin\ServiceBooking\Service\DetailsFactory;
+namespace Module\Booking\Application\Admin\ServiceBooking\Service\DetailsEditor;
 
 use Module\Booking\Domain\Booking\Entity\ServiceDetailsInterface;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;

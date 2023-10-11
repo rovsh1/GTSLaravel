@@ -7,6 +7,8 @@ namespace Module\Booking\Application\Admin\Shared\Support\UseCase;
 use Module\Booking\Application\Admin\Shared\Response\AvailableActionsDto;
 use Module\Booking\Application\Admin\Shared\Response\StatusDto;
 use Module\Booking\Application\Admin\Shared\Service\StatusStorage;
+use Module\Booking\Domain\Booking\Booking;
+use Module\Booking\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Domain\Shared\Entity\AbstractBooking;
 use Module\Booking\Domain\Shared\Service\RequestRules;
 use Module\Booking\Domain\Shared\Service\StatusRules\StatusRulesInterface;
@@ -24,7 +26,7 @@ class GetAvailableActions implements UseCaseInterface
 
     public function execute(int $bookingId): AvailableActionsDto
     {
-        $booking = $this->repository->find($bookingId);
+        $booking = $this->repository->find(new BookingId($bookingId));
         $statuses = $this->getAvailableStatuses($booking);
 
         return new AvailableActionsDto(
@@ -36,16 +38,16 @@ class GetAvailableActions implements UseCaseInterface
             $this->requestRules->canSendChangeRequest($booking->status()),
             $this->statusRules->canEditExternalNumber($booking->status()),
             //@todo прописать логику для этого флага (у отеля и админки она разная)
-            $this->statusRules->canChangeRoomPrice($booking->status()) && !$booking->price()->clientPrice()->manualValue(),
+            $this->statusRules->canChangeRoomPrice($booking->status()) && !$booking->prices()->clientPrice()->manualValue(),
             $this->statusRules->isCancelledStatus($booking->status()),
         );
     }
 
     /**
-     * @param AbstractBooking $booking
+     * @param Booking $booking
      * @return StatusDto[]
      */
-    private function getAvailableStatuses(AbstractBooking $booking): array
+    private function getAvailableStatuses(Booking $booking): array
     {
         $statuses = $this->statusRules->getStatusTransitions($booking->status());
         $statusIds = array_flip(array_map(fn(BookingStatusEnum $status) => $status->value, $statuses));

@@ -6,7 +6,7 @@ namespace Module\Booking\Application\Admin\Booking\UseCase;
 
 use Module\Booking\Application\Admin\Booking\Request\CreateBookingRequestDto;
 use Module\Booking\Application\Admin\ServiceBooking\Factory\CancelConditionsFactory;
-use Module\Booking\Application\Admin\ServiceBooking\Service\DetailsFactory\DetailsEditor;
+use Module\Booking\Application\Admin\ServiceBooking\Service\DetailsEditor\DetailsEditorFactory;
 use Module\Booking\Application\Admin\Shared\Support\UseCase\AbstractCreateBooking;
 use Module\Booking\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
@@ -24,7 +24,7 @@ class CreateBooking extends AbstractCreateBooking
         private readonly BookingRepositoryInterface $repository,
         private readonly SupplierAdapterInterface $supplierAdapter,
         private readonly CancelConditionsFactory $cancelConditionsFactory,
-        private readonly DetailsEditor $detailsEditor,
+        private readonly DetailsEditorFactory $detailsEditorFactory,
     ) {
         parent::__construct($commandBus);
     }
@@ -49,12 +49,8 @@ class CreateBooking extends AbstractCreateBooking
             serviceType: $service->type,
             price: BookingPrices::createEmpty(CurrencyEnum::UZS, $orderCurrency),//@todo netto валюта
         );
-        $this->detailsEditor->create(
-            $booking->id(),
-            $service->type,
-            new ServiceId($request->serviceId),
-            $request->detailsData
-        );
+        $editor = $this->detailsEditorFactory->build($booking);
+        $editor->create($booking->id(), new ServiceId($request->serviceId), $request->detailsData);
 
         return $booking->id()->value();
     }

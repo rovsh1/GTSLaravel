@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Adapters\Booking;
 
+use App\Admin\Http\Requests\Order\Guest\AddRequest;
 use Illuminate\Database\Eloquent\Builder;
 use Module\Booking\Application\Admin\Booking\Request\CreateBookingRequestDto;
 use Module\Booking\Application\Admin\Booking\UseCase\CreateBooking;
 use Module\Booking\Application\Admin\ServiceBooking\UseCase\BulkDeleteBookings;
-use Module\Booking\Application\Admin\ServiceBooking\UseCase\Car\Update;
+use Module\Booking\Application\Admin\ServiceBooking\UseCase\CarBid\Remove;
+use Module\Booking\Application\Admin\ServiceBooking\UseCase\CarBid\Update;
 use Module\Booking\Application\Admin\ServiceBooking\UseCase\CopyBooking;
 use Module\Booking\Application\Admin\ServiceBooking\UseCase\DeleteBooking;
 use Module\Booking\Application\Admin\ServiceBooking\UseCase\GetAvailableActions;
@@ -18,7 +20,7 @@ use Module\Booking\Application\Admin\ServiceBooking\UseCase\GetStatuses;
 use Module\Booking\Application\Admin\ServiceBooking\UseCase\GetStatusHistory;
 use Module\Booking\Application\Admin\ServiceBooking\UseCase\Guest\Bind;
 use Module\Booking\Application\Admin\ServiceBooking\UseCase\UpdateBookingStatus;
-use Module\Booking\Application\Admin\ServiceBooking\UseCase\UpdateDetails;
+use Module\Booking\Application\Admin\ServiceBooking\UseCase\UpdateDetailsField;
 use Module\Booking\Application\Admin\ServiceBooking\UseCase\UpdateNote;
 use Module\Booking\Application\AirportBooking\UseCase\Admin\Guest\Unbind;
 use Module\Shared\Enum\CurrencyEnum;
@@ -103,9 +105,9 @@ class ServiceAdapter
         app(BulkDeleteBookings::class)->execute($ids);
     }
 
-    public function updateDetails(int $bookingId, array $data): void
+    public function updateDetails(int $bookingId, string $field, mixed $value): void
     {
-        app(UpdateDetails::class)->execute($bookingId, $data);
+        app(UpdateDetailsField::class)->execute($bookingId, $field, $value);
     }
 
     public function bindGuest(int $bookingId, int $guestId): void
@@ -118,8 +120,20 @@ class ServiceAdapter
         app(Unbind::class)->execute($bookingId, $guestId);
     }
 
-    public function updateCars(int $bookingId, array $carsData): void
+    public function addCarBid(int $bookingId, array $carData): void
     {
-        app(Update::class)->execute($bookingId, $carsData);
+        //@todo собрать DTO
+        app(AddRequest::class)->execute($bookingId, $carData);
+    }
+
+    public function updateCarBid(int $bookingId, string $carBidId, array $carData): void
+    {
+        //@todo собрать DTO
+        app(Update::class)->execute($bookingId, $carBidId, $carData);
+    }
+
+    public function removeCarBid(int $bookingId, string $carBidId): void
+    {
+        app(Remove::class)->execute($bookingId, $carBidId);
     }
 }

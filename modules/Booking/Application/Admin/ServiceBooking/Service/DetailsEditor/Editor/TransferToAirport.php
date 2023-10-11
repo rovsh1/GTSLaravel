@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Application\Admin\ServiceBooking\Service\DetailsFactory\Editor;
+namespace Module\Booking\Application\Admin\ServiceBooking\Service\DetailsEditor\Editor;
 
-use Module\Booking\Application\Admin\ServiceBooking\Service\DetailsFactory\EditorInterface;
-use Module\Booking\Domain\Booking\Entity\TransferFromAirport as Entity;
-use Module\Booking\Domain\Booking\Repository\Details\TransferFromAirportRepositoryInterface;
+use Module\Booking\Application\Admin\ServiceBooking\Service\DetailsEditor\EditorInterface;
+use Module\Booking\Domain\Booking\Entity\TransferToAirport as Entity;
+use Module\Booking\Domain\Booking\Repository\Details\TransferToAirportRepositoryInterface;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Domain\Booking\ValueObject\ServiceId;
 use Module\Booking\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Supplier\Infrastructure\Models\Service as InfrastructureSupplierService;
 
-class TransferFromAirport implements EditorInterface
+class TransferToAirport implements EditorInterface
 {
     public function __construct(
-        private readonly TransferFromAirportRepositoryInterface $detailsRepository,
+        private readonly TransferToAirportRepositoryInterface $detailsRepository,
     ) {}
 
     public function create(BookingId $bookingId, ServiceId $serviceId, array $detailsData): Entity
@@ -29,8 +29,7 @@ class TransferFromAirport implements EditorInterface
             $serviceInfo,
             $supplierService->data['airportId'],
             $detailsData['flightNumber'] ?? null,
-            $detailsData['arrivalDate'] ?? null,
-            $detailsData['meetingTablet'] ?? null,
+            $detailsData['departureDate'] ?? null,
         );
     }
 

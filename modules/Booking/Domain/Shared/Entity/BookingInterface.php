@@ -23,19 +23,7 @@ interface BookingInterface extends EntityInterface
 
     public function status(): BookingStatusEnum;
 
-    public function createdAt(): CarbonImmutable;
-
     public function creatorId(): CreatorId;
 
-    public function price(): BookingPrices;
-
     public function serviceType(): ServiceTypeEnum;
-
-    /**
-     * @param RequestRules $requestRules
-     * @return void
-     * @throws NotRequestableStatus
-     * @throws NotRequestableEntity
-     */
-    public function generateRequest(RequestRules $requestRules, RequestCreator $requestCreator): void;
 }

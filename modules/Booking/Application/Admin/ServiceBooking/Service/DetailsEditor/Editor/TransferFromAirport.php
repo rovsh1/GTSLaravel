@@ -2,21 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Application\Admin\ServiceBooking\Service\DetailsFactory\Editor;
+namespace Module\Booking\Application\Admin\ServiceBooking\Service\DetailsEditor\Editor;
 
-use Module\Booking\Application\Admin\ServiceBooking\Service\DetailsFactory\EditorInterface;
-use Module\Booking\Domain\Booking\Entity\CIPRoomInAirport as Entity;
-use Module\Booking\Domain\Booking\Repository\Details\CIPRoomInAirportRepositoryInterface;
+use Module\Booking\Application\Admin\ServiceBooking\Service\DetailsEditor\EditorInterface;
+use Module\Booking\Domain\Booking\Entity\TransferFromAirport as Entity;
+use Module\Booking\Domain\Booking\Repository\Details\TransferFromAirportRepositoryInterface;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Domain\Booking\ValueObject\ServiceId;
 use Module\Booking\Domain\Booking\ValueObject\ServiceInfo;
-use Module\Booking\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Supplier\Infrastructure\Models\Service as InfrastructureSupplierService;
 
-class CIPRoomInAirport implements EditorInterface
+class TransferFromAirport implements EditorInterface
 {
     public function __construct(
-        private readonly CIPRoomInAirportRepositoryInterface $detailsRepository,
+        private readonly TransferFromAirportRepositoryInterface $detailsRepository,
     ) {}
 
     public function create(BookingId $bookingId, ServiceId $serviceId, array $detailsData): Entity
@@ -30,8 +29,8 @@ class CIPRoomInAirport implements EditorInterface
             $serviceInfo,
             $supplierService->data['airportId'],
             $detailsData['flightNumber'] ?? null,
-            $detailsData['serviceDate'] ?? null,
-            new GuestIdCollection([])
+            $detailsData['arrivalDate'] ?? null,
+            $detailsData['meetingTablet'] ?? null,
         );
     }
 

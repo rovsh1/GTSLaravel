@@ -12,6 +12,7 @@ use App\Admin\Http\Requests\Booking\Hotel\UpdatePriceRequest;
 use App\Admin\Http\Requests\Booking\Hotel\UpdateStatusRequest;
 use App\Admin\Http\Resources\Room as RoomResource;
 use App\Admin\Models\Administrator\Administrator;
+use App\Admin\Models\Booking\Booking;
 use App\Admin\Models\Client\Client;
 use App\Admin\Models\Hotel\Hotel;
 use App\Admin\Models\Hotel\Room;
@@ -62,38 +63,38 @@ class BookingController extends Controller
         $requestableStatuses = array_map(fn(BookingStatusEnum $status) => $status->value, RequestRules::getRequestableStatuses());
 
         $grid = $this->gridFactory();
-        $query = HotelAdapter::getBookingQuery()
-            ->applyCriteria($grid->getSearchCriteria())
-            ->join('administrator_bookings', 'administrator_bookings.booking_id', '=', 'bookings.id')
-            ->join('administrators', 'administrators.id', '=', 'administrator_bookings.administrator_id')
-            ->addSelect('administrators.presentation as manager_name')
-            ->selectSub(
-                DB::table('booking_hotel_room_guests')
-                    ->selectRaw('count(id)')
-                    ->whereExists(function ($query) {
-                        $query->selectRaw(1)
-                            ->from('booking_hotel_rooms')
-                            ->whereColumn('booking_hotel_rooms.booking_id', 'bookings.id')
-                            ->whereColumn('booking_hotel_room_guests.booking_hotel_room_id', 'booking_hotel_rooms.id');
-                    }),
-                'guests_count'
-            )
-            ->addSelect(
-                DB::raw(
-                    '(SELECT GROUP_CONCAT(room_name) FROM booking_hotel_rooms WHERE booking_id=bookings.id) as room_names'
-                )
-            )
-            ->addSelect(
-                DB::raw('(SELECT COUNT(id) FROM booking_hotel_rooms WHERE booking_id=bookings.id) as rooms_count')
-            )
-            ->addSelect(
-                DB::raw('(SELECT bookings.status IN (' . implode(',', $requestableStatuses) . ')) as is_requestable'),
-            )
-            ->addSelect(
-                DB::raw(
-                    'EXISTS(SELECT 1 FROM booking_requests WHERE bookings.id = booking_requests.booking_id AND is_archive = 0) as has_downloadable_request'
-                ),
-            );
+        $query = Booking::query()
+            ->applyCriteria($grid->getSearchCriteria());
+//            ->join('administrator_bookings', 'administrator_bookings.booking_id', '=', 'bookings.id')
+//            ->join('administrators', 'administrators.id', '=', 'administrator_bookings.administrator_id')
+//            ->addSelect('administrators.presentation as manager_name')
+//            ->selectSub(
+//                DB::table('booking_hotel_room_guests')
+//                    ->selectRaw('count(id)')
+//                    ->whereExists(function ($query) {
+//                        $query->selectRaw(1)
+//                            ->from('booking_hotel_rooms')
+//                            ->whereColumn('booking_hotel_rooms.booking_id', 'bookings.id')
+//                            ->whereColumn('booking_hotel_room_guests.booking_hotel_room_id', 'booking_hotel_rooms.id');
+//                    }),
+//                'guests_count'
+//            )
+//            ->addSelect(
+//                DB::raw(
+//                    '(SELECT GROUP_CONCAT(room_name) FROM booking_hotel_rooms WHERE booking_id=bookings.id) as room_names'
+//                )
+//            )
+//            ->addSelect(
+//                DB::raw('(SELECT COUNT(id) FROM booking_hotel_rooms WHERE booking_id=bookings.id) as rooms_count')
+//            )
+//            ->addSelect(
+//                DB::raw('(SELECT bookings.status IN (' . implode(',', $requestableStatuses) . ')) as is_requestable'),
+//            )
+//            ->addSelect(
+//                DB::raw(
+//                    'EXISTS(SELECT 1 FROM booking_requests WHERE bookings.id = booking_requests.booking_id AND is_archive = 0) as has_downloadable_request'
+//                ),
+//            );
 
         $grid->data($query);
 

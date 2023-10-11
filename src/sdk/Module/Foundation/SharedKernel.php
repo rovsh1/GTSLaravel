@@ -13,7 +13,7 @@ class SharedKernel
 
     protected array $serviceProviders = [];
 
-    public function __construct(Application $app,)
+    public function __construct(Application $app)
     {
         $this->app = $app;
         $this->sharedContainer = $this->makeSharedContainer();

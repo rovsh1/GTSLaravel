@@ -8,6 +8,7 @@ use Module\Booking\Domain\Booking\Support\Concerns\HasStatusesTrait;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Domain\Booking\ValueObject\BookingPrices;
 use Module\Booking\Domain\Order\ValueObject\OrderId;
+use Module\Booking\Domain\Shared\Entity\BookingInterface;
 use Module\Booking\Domain\Shared\Event\BookingDeleted;
 use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
 use Module\Booking\Domain\Shared\ValueObject\CancelConditions;
@@ -16,7 +17,7 @@ use Module\Shared\Enum\ServiceTypeEnum;
 use Module\Shared\ValueObject\Timestamps;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
-class Booking extends AbstractAggregateRoot
+class Booking extends AbstractAggregateRoot implements BookingInterface
 {
     use HasStatusesTrait;
 
