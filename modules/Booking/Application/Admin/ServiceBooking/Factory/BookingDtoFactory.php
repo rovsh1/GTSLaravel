@@ -10,14 +10,10 @@ use Module\Booking\Application\Admin\ServiceBooking\Dto\ServiceTypeDto;
 use Module\Booking\Application\Admin\Shared\Factory\AbstractBookingDtoFactory;
 use Module\Booking\Application\Admin\Shared\Factory\BookingPriceDtoFactory;
 use Module\Booking\Application\Admin\Shared\Service\StatusStorage;
-use Module\Booking\Domain\Booking\Repository\Details\CIPRoomInAirportRepositoryInterface;
-use Module\Booking\Domain\Booking\Repository\Details\TransferFromAirportRepositoryInterface;
-use Module\Booking\Domain\Booking\Repository\Details\TransferToAirportRepositoryInterface;
 use Module\Booking\Domain\Booking\Booking;
+use Module\Booking\Domain\Booking\Factory\DetailsRepositoryFactory;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
 use Module\Shared\Contracts\Service\TranslatorInterface;
-use Module\Shared\Enum\ServiceTypeEnum;
-use Sdk\Module\Contracts\ModuleInterface;
 
 class BookingDtoFactory extends AbstractBookingDtoFactory
 {
@@ -35,7 +31,7 @@ class BookingDtoFactory extends AbstractBookingDtoFactory
     {
         assert($booking instanceof Booking);
 
-        $details = $this->detailsRepositoryFactory->build($booking->serviceType())->find($booking->id());
+        $details = $this->detailsRepositoryFactory->build($booking)->find($booking->id());
 
         return new BookingDto(
             id: $booking->id()->value(),
