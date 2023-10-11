@@ -26,7 +26,7 @@ class BookingDtoFactory extends AbstractBookingDtoFactory
         private readonly BookingPriceDtoFactory $bookingPriceDtoFactory,
         private readonly ServiceDetailsDtoFactory $detailsDtoFactory,
         private readonly TranslatorInterface $translator,
-        private readonly ModuleInterface $module,
+        private readonly DetailsRepositoryFactory $detailsRepositoryFactory,
     ) {
         parent::__construct($statusStorage);
     }
@@ -35,7 +35,7 @@ class BookingDtoFactory extends AbstractBookingDtoFactory
     {
         assert($booking instanceof Booking);
 
-        $details = $this->getDetailsRepository($booking->serviceType())->find($booking->id());
+        $details = $this->detailsRepositoryFactory->build($booking->serviceType())->find($booking->id());
 
         return new BookingDto(
             id: $booking->id()->value(),
@@ -56,15 +56,5 @@ class BookingDtoFactory extends AbstractBookingDtoFactory
                 ? $this->detailsDtoFactory->createFromEntity($details)
                 : null,
         );
-    }
-
-    private function getDetailsRepository(ServiceTypeEnum $serviceType)
-    {
-        return match ($serviceType) {
-            ServiceTypeEnum::TRANSFER_TO_AIRPORT => $this->module->make(TransferToAirportRepositoryInterface::class),
-            ServiceTypeEnum::TRANSFER_FROM_AIRPORT => $this->module->make(TransferFromAirportRepositoryInterface::class),
-            ServiceTypeEnum::CIP_IN_AIRPORT => $this->module->make(CIPRoomInAirportRepositoryInterface::class),
-            default => throw new \RuntimeException('Service type not impelemented'),
-        };
     }
 }

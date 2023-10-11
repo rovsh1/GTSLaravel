@@ -105,7 +105,7 @@ class ServiceAdapter
         app(BulkDeleteBookings::class)->execute($ids);
     }
 
-    public function updateDetails(int $bookingId, string $field, mixed $value): void
+    public function updateDetailsField(int $bookingId, string $field, mixed $value): void
     {
         app(UpdateDetailsField::class)->execute($bookingId, $field, $value);
     }

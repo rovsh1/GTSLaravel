@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Admin\Http\Controllers\Booking\Service;
 
 use App\Admin\Http\Requests\Booking\Airport\GuestRequest;
+use App\Admin\Http\Requests\Booking\UpdateDetailsFieldRequest;
 use App\Admin\Support\Facades\Booking\ServiceAdapter;
 use App\Core\Support\Http\Responses\AjaxErrorResponse;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
@@ -14,8 +15,14 @@ use Module\Shared\Exception\ApplicationException;
 
 class DetailsController
 {
-    public function update(int $bookingId, Request $request): AjaxResponseInterface
+    public function updateField(int $bookingId, UpdateDetailsFieldRequest $request): AjaxResponseInterface
     {
+        try {
+            ServiceAdapter::updateDetailsField($bookingId, $request->getField(), $request->getValue());
+        } catch (ApplicationException $e) {
+            return new AjaxErrorResponse($e->getMessage());
+        }
+
         return new AjaxSuccessResponse();
     }
 

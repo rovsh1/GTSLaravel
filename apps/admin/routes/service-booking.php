@@ -22,7 +22,7 @@ AclRoute::for('service-booking')
     ->post('/{booking}/request', Controllers\Booking\RequestController::class . '@sendRequest', 'update', 'request.send')
     ->get('/{booking}/request/{request}/file', Controllers\Booking\RequestController::class . '@getFileInfo', 'read', 'request.download')
 
-    ->put('/{booking}/details', Controllers\Booking\Service\DetailsController::class . '@update', 'create', 'details.update')
+    ->put('/{booking}/details', Controllers\Booking\Service\DetailsController::class . '@updateField', 'create', 'details.field.update')
     ->post('/{booking}/guests/add', Controllers\Booking\Service\DetailsController::class . '@addGuest', 'delete', 'guests.add')
     ->delete('/{booking}/guests', Controllers\Booking\Service\DetailsController::class . '@deleteGuest', 'delete', 'guests.delete')
 

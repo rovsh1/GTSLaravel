@@ -24,12 +24,31 @@ trait HasCarBidCollectionTrait
         ]);
     }
 
-    public function removeCarBid(CarBid $carBid): void
+    public function removeCarBid(string $carBidId): void
     {
         $newCarBids = [];
         foreach ($this->carBids as $bid) {
-            if ($bid->carId()->isEqual($carBid->carId())) {
+            if ($bid->id() === $carBidId) {
                 continue;
+            }
+            $newCarBids[] = $bid;
+        }
+        $this->carBids = new CarBidCollection($newCarBids);
+    }
+
+    public function replaceCarBid(string $carBidId, CarBid $carBid): void
+    {
+        $newCarBids = [];
+        foreach ($this->carBids as $bid) {
+            if ($bid->id() === $carBidId) {
+                $newCarBids[] = new CarBid(
+                    $bid->id(),
+                    $carBid->carId(),
+                    $carBid->carsCount(),
+                    $carBid->passengersCount(),
+                    $carBid->baggageCount(),
+                    $carBid->babyCount()
+                );
             }
             $newCarBids[] = $bid;
         }

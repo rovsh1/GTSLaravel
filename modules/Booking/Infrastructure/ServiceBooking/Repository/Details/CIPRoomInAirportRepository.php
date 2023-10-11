@@ -51,6 +51,13 @@ class CIPRoomInAirportRepository extends AbstractDetailsRepository implements CI
 
     public function store(CIPRoomInAirport $details): bool
     {
-        // TODO: Implement store() method.
+        return (bool)Airport::whereId($details->id()->value())->update([
+            'data' => [
+                'serviceInfo' => $this->serializeServiceInfo($details->serviceInfo()),
+                'airportId' => $details->airportId(),
+                'flightNumber' => $details->flightNumber(),
+                'guestIds' => $details->guestIds()->toData(),
+            ]
+        ]);
     }
 }

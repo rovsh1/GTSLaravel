@@ -13,7 +13,7 @@ use Module\Booking\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Booking\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Supplier\Infrastructure\Models\Service as InfrastructureSupplierService;
 
-class CIPRoomInAirport implements EditorInterface
+class CIPRoomInAirport extends AbstractEditor implements EditorInterface
 {
     public function __construct(
         private readonly CIPRoomInAirportRepositoryInterface $detailsRepository,
@@ -38,7 +38,9 @@ class CIPRoomInAirport implements EditorInterface
     public function update(BookingId $bookingId, array $detailsData): void
     {
         $details = $this->detailsRepository->find($bookingId);
-        //@todo проверка полей на изменение и заполнение
+        foreach ($detailsData as $field => $value) {
+            $this->setField($details, $field, $value);
+        }
         $this->detailsRepository->store($details);
     }
 }

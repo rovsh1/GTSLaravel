@@ -48,6 +48,12 @@ class TransferToAirportRepository extends AbstractDetailsRepository implements T
 
     public function store(TransferToAirport $details): bool
     {
-        // TODO: Implement store() method.
+        return (bool)Transfer::whereId($details->id()->value())->update([
+            'data' => [
+                'serviceInfo' => $this->serializeServiceInfo($details->serviceInfo()),
+                'airportId' => $details->airportId(),
+                'flightNumber' => $details->flightNumber()
+            ]
+        ]);
     }
 }
