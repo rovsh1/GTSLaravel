@@ -83,6 +83,16 @@ class QuotaAndPriceUpdater
 
         if ($updateRequest->hasPrices()) {
             $isSupportedCurrency = $updateRequest->currencyCode === env('DEFAULT_CURRENCY_CODE');
+            $isUsd = $updateRequest->currencyCode === 'USD';
+            if ($isUsd) {
+                \Log::debug('USD BUG',
+                    [
+                        'update' => $updateRequest,
+                        'env' => env('DEFAULT_CURRENCY_CODE'),
+                        '$isSupportedCurrency' => $isSupportedCurrency
+                    ]
+                );
+            }
             if ($isSupportedCurrency) {
                 $this->updatePrices($updateRequest);
             } else {
