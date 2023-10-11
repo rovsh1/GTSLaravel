@@ -5,7 +5,7 @@ defineProps<{
 </script>
 
 <template>
-  <h5 class="card-title">
-    {{ title }}
-  </h5>
+  <div class="card-title">
+    <h2>{{ title }}</h2>
+  </div>
 </template>

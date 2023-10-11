@@ -9,6 +9,7 @@ import { useRoomSeasonsPricesListAPI } from '~resources/api/hotel/prices/seasons
 import { requestInitialData } from '~lib/initial-data'
 
 import BootstrapCard from '~components/Bootstrap/BootstrapCard/BootstrapCard.vue'
+import BootstrapCardTitle from '~components/Bootstrap/BootstrapCard/components/BootstrapCardTitle.vue'
 
 import HotelPricesTable from './components/HotelPricesTable.vue'
 
@@ -51,9 +52,7 @@ onMounted(async () => {
 </script>
 <template>
   <BootstrapCard v-for="room in rooms" :key="room.id">
-    <template #title>
-      <h2>{{ room.name }} ({{ room.type_name }})</h2>
-    </template>
+    <BootstrapCardTitle :title="`${room.name} (${room.type_name})`" />
     <HotelPricesTable
       :hotel-id="hotelID"
       :room-data="room"
