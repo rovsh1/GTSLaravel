@@ -3,8 +3,8 @@
 namespace Module\Booking\Deprecated\HotelBooking\Service\DocumentGenerator;
 
 use Module\Booking\Application\Admin\Shared\Service\StatusStorage;
-use Module\Booking\Deprecated\HotelBooking\Adapter\HotelAdapterInterface;
 use Module\Booking\Deprecated\HotelBooking\HotelBooking;
+use Module\Booking\Domain\Booking\Adapter\HotelAdapterInterface;
 use Module\Booking\Domain\Order\Repository\GuestRepositoryInterface;
 use Module\Booking\Domain\Shared\Adapter\AdministratorAdapterInterface;
 use Module\Booking\Domain\Shared\Adapter\CountryAdapterInterface;

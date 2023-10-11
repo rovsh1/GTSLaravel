@@ -15,6 +15,7 @@ use Module\Booking\Application\Admin\Booking\UseCase\GetStatuses;
 use Module\Booking\Application\Admin\Booking\UseCase\GetStatusHistory;
 use Module\Booking\Application\Admin\Booking\UseCase\UpdateBookingStatus;
 use Module\Booking\Application\Admin\Booking\UseCase\UpdateNote;
+use Module\Booking\Application\Admin\HotelBooking\UseCase\CreateBooking as CreateHotelBooking;
 use Module\Shared\Enum\CurrencyEnum;
 
 class BookingAdapter
@@ -46,6 +47,30 @@ class BookingAdapter
                 legalId: $legalId,
                 currency: $currency,
                 serviceId: $serviceId,
+                orderId: $orderId,
+                detailsData: $detailsData,
+                note: $note
+            )
+        );
+    }
+
+    public function createHotelBooking(
+        int $clientId,
+        int|null $legalId,
+        CurrencyEnum $currency,
+        int $hotelId,
+        int $creatorId,
+        ?int $orderId,
+        ?array $detailsData,
+        ?string $note = null
+    ) {
+        return app(CreateHotelBooking::class)->execute(
+            new CreateBookingRequestDto(
+                creatorId: $creatorId,
+                clientId: $clientId,
+                legalId: $legalId,
+                currency: $currency,
+                serviceId: $hotelId,
                 orderId: $orderId,
                 detailsData: $detailsData,
                 note: $note

@@ -2,9 +2,9 @@
 
 namespace Module\Booking\Providers;
 
-use Module\Booking\Deprecated\HotelBooking\Adapter\HotelAdapterInterface;
 use Module\Booking\Deprecated\HotelBooking\Adapter\HotelRoomAdapterInterface;
 use Module\Booking\Deprecated\HotelBooking\Adapter\HotelRoomQuotaAdapterInterface;
+use Module\Booking\Domain\Booking\Adapter\HotelAdapterInterface;
 use Module\Booking\Domain\Booking\Adapter\HotelPricingAdapterInterface;
 use Module\Booking\Domain\Booking\Repository\RoomBookingRepositoryInterface;
 use Module\Booking\Infrastructure\Adapter\HotelPricingAdapter;

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Module\Booking\Deprecated\HotelBooking\Service;
 
 use Carbon\CarbonPeriod;
-use Module\Booking\Deprecated\HotelBooking\Adapter\HotelAdapterInterface;
 use Module\Booking\Deprecated\HotelBooking\Exception\NotFoundHotelCancelPeriod;
+use Module\Booking\Domain\Booking\Adapter\HotelAdapterInterface;
 use Module\Catalog\Application\Admin\Response\MarkupSettingsDto;
 use Module\Catalog\Application\Admin\ResponseDto\MarkupSettings\CancelPeriodDto;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;

@@ -448,6 +448,7 @@ class BookingController extends Controller
 
         return $query
             ->applyCriteria($searchCriteria)
+            ->addSelect('bookings.*')
             ->join('administrator_bookings', 'administrator_bookings.booking_id', '=', 'bookings.id')
             ->join('administrators', 'administrators.id', '=', 'administrator_bookings.administrator_id')
             ->addSelect('administrators.presentation as manager_name')

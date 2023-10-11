@@ -111,11 +111,11 @@ class BookingController extends Controller
         }
         $client = Client::find($data['client_id']);
         try {
-            $bookingId = BookingAdapter::createBooking(
+            $bookingId = BookingAdapter::createHotelBooking(
                 clientId: $data['client_id'],
                 legalId: $data['legal_id'],
                 currency: $currency ?? $client->currency,
-                serviceId: $data['hotel_id'],
+                hotelId: $data['hotel_id'],
                 creatorId: $creatorId,
                 orderId: $data['order_id'] ?? null,
                 detailsData: $data,

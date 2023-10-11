@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Booking\Deprecated\HotelBooking\Service\RoomUpdater\Validator;
 
-use Module\Booking\Deprecated\HotelBooking\Adapter\HotelAdapterInterface;
 use Module\Booking\Deprecated\HotelBooking\Exception\NotFoundHotelRoomPrice;
 use Module\Booking\Deprecated\HotelBooking\Service\RoomUpdater\UpdateDataHelper;
+use Module\Booking\Domain\Booking\Adapter\HotelAdapterInterface;
 
 class ExistRoomPriceValidator implements ValidatorInterface
 {

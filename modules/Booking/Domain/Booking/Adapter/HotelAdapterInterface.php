@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Booking\Deprecated\HotelBooking\Adapter;
+namespace Module\Booking\Domain\Booking\Adapter;
 
 use Carbon\CarbonInterface;
 use Module\Catalog\Application\Admin\Response\HotelDto;
