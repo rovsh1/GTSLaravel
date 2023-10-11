@@ -24,7 +24,7 @@ abstract class AbstractCarBidUseCase
         $repository = $this->getRepository($bookingId);
 
         $details = $repository->find($bookingId);
-        if (!in_array(HasCarBidCollectionTrait::class, class_uses($details::class))) {
+        if (!in_array(HasCarBidCollectionTrait::class, class_uses($details::class), true)) {
             throw new \RuntimeException('Details doesn\'t has car bids');
         }
 

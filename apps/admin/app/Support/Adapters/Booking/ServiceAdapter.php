@@ -6,8 +6,10 @@ namespace App\Admin\Support\Adapters\Booking;
 
 use App\Admin\Http\Requests\Order\Guest\AddRequest;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Arr;
 use Module\Booking\Application\Admin\Booking\Request\CreateBookingRequestDto;
 use Module\Booking\Application\Admin\Booking\UseCase\CreateBooking;
+use Module\Booking\Application\Admin\ServiceBooking\Dto\CarBidDataDto;
 use Module\Booking\Application\Admin\ServiceBooking\UseCase\BulkDeleteBookings;
 use Module\Booking\Application\Admin\ServiceBooking\UseCase\CarBid\Remove;
 use Module\Booking\Application\Admin\ServiceBooking\UseCase\CarBid\Update;
@@ -122,18 +124,38 @@ class ServiceAdapter
 
     public function addCarBid(int $bookingId, array $carData): void
     {
-        //@todo собрать DTO
-        app(AddRequest::class)->execute($bookingId, $carData);
+        app(AddRequest::class)->execute(
+            $bookingId,
+            $this->buildCarBidDto($carData)
+        );
     }
 
     public function updateCarBid(int $bookingId, string $carBidId, array $carData): void
     {
-        //@todo собрать DTO
-        app(Update::class)->execute($bookingId, $carBidId, $carData);
+        app(Update::class)->execute(
+            $bookingId,
+            $carBidId,
+            $this->buildCarBidDto($carData)
+        );
     }
 
     public function removeCarBid(int $bookingId, string $carBidId): void
     {
         app(Remove::class)->execute($bookingId, $carBidId);
+    }
+
+    private function buildCarBidDto(array $data): CarBidDataDto
+    {
+        if (!Arr::has($data, ['carId', 'carsCount', 'passengersCount', 'baggageCount', 'babyCount'])) {
+            throw new \InvalidArgumentException('Invalid car bid');
+        }
+
+        return new CarBidDataDto(
+            $data['carId'],
+            $data['carsCount'],
+            $data['passengersCount'],
+            $data['baggageCount'],
+            $data['babyCount'],
+        );
     }
 }
