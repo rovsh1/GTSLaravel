@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted } from 'vue'
 
 import { Litepicker } from 'litepicker'
 import { DateTime, Interval } from 'luxon'
@@ -13,6 +13,9 @@ import { useDateRangePicker } from '~lib/date-picker/date-picker'
 const props = withDefaults(defineProps<{
   id: string
   label?: string
+  isError?: boolean
+  errorText?: string
+  labelOutline?: boolean
   required?: boolean
   disabled?: boolean
   value?: [Date, Date]
@@ -29,6 +32,9 @@ const props = withDefaults(defineProps<{
   editableId: undefined,
   minDate: undefined,
   maxDate: undefined,
+  labelOutline: true,
+  isError: false,
+  errorText: '',
 })
 
 const emit = defineEmits<{
@@ -77,19 +83,19 @@ const lockDaysFilter = (inputDate: any) => {
 let picker: Litepicker
 
 onMounted(() => {
-  const periodInput = document.getElementById(props.id) as HTMLInputElement
-  picker = useDateRangePicker(periodInput, { lockDaysFilter })
-
-  picker.on('before:show', () => {
-    if (localValue.value) {
-      picker.setDateRange(localValue.value[0], localValue.value[1])
-    } else {
-      picker.clearSelection()
-    }
-  })
-
-  picker.on('selected', (date1: any, date2: any) => {
-    emit('input', [date1.dateInstance, date2.dateInstance])
+  nextTick(() => {
+    const periodInput = document.getElementById(props.id) as HTMLInputElement
+    picker = useDateRangePicker(periodInput, { lockDaysFilter })
+    picker.on('before:show', () => {
+      if (localValue.value) {
+        picker.setDateRange(localValue.value[0], localValue.value[1])
+      } else {
+        picker.clearSelection()
+      }
+    })
+    picker.on('selected', (date1: any, date2: any) => {
+      emit('input', [date1.dateInstance, date2.dateInstance])
+    })
   })
 })
 
@@ -101,8 +107,45 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div :class="{ 'field-required': required }">
-    <label v-if="label" :for="id">{{ label }}</label>
+  <div :class="{ 'field-required': required }" style="position: relative;">
+    <label v-if="label" :class="{ 'label-inline': !labelOutline }" :for="id">{{ label }}</label>
     <input :id="id" class="form-control" :required="required" :disabled="disabled" :value="displayValue">
+    <div v-if="isError" class="invalid-feedback">{{ errorText }}</div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+@use '~resources/sass/vendor/bootstrap/configuration' as bs;
+
+.compactSelect {
+  position: relative;
+}
+
+.label-inline {
+  --padding-block: 0.1em;
+  --padding-inline: 0.5em;
+  --left: calc(#{bs.$form-select-padding-x} - var(--padding-inline) + 0.1em);
+
+  position: absolute;
+  top: calc(-0.9em - var(--padding-block));
+  left: var(--left);
+  z-index: 1;
+  overflow: hidden;
+  max-width: calc(100% - var(--left));
+  padding: var(--padding-block) var(--padding-inline);
+  border-radius: 0.5em;
+  background-color: bs.$body-bg;
+  font-size: 0.8em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.invalid-feedback {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  display: block;
+  margin-top: 0;
+  margin-left: 0.75rem;
+}
+</style>

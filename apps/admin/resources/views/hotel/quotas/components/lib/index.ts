@@ -5,7 +5,7 @@ import { FiltersPayload } from '~resources/views/hotel/quotas/components/QuotasF
 import { HotelRoomID } from '~api/hotel'
 import { HotelQuotaID, QuotaStatus, UseHotelQuota } from '~api/hotel/quotas/list'
 
-import { getEachDayInMonth, isBusinessDay } from '~lib/date'
+import { isBusinessDay } from '~lib/date'
 
 export type RoomQuotaStatus = 'opened' | 'closed' | 'warning'
 
@@ -68,7 +68,7 @@ type GetRoomQuotas = (params: {
 }) => QuotasAccumalationData
 
 export const getRoomQuotas: GetRoomQuotas = ({ filters, quotas }) => {
-  const { year, month, monthsCount } = filters
+  const { dateFrom, dateTo } = filters
 
   const roomQuotasMap = new Map<string, RoomQuota>()
 
@@ -93,37 +93,44 @@ export const getRoomQuotas: GetRoomQuotas = ({ filters, quotas }) => {
       })
   }
 
-  const startDate = DateTime.fromFormat(getMonthKey(year, month), monthKeyFormat)
-  const endDate = startDate.plus({ months: monthsCount })
-  let eachDays: Day[] = []
+  const startDate = DateTime.fromJSDate(dateFrom)
+  const endDate = DateTime.fromJSDate(dateTo)
   const eachMonth: Month[] = []
+  const eachDays: Day[] = []
   let currentDate = startDate
-  while (currentDate < endDate) {
+  while (currentDate <= endDate) {
     const monthKey = currentDate.toFormat(monthKeyFormat)
     const monthName = currentDate.toFormat('LLLL yyyy')
-    const eachDaysList = getEachDayInMonth(currentDate.toJSDate())
-    const days = eachDaysList.map((date, index) => {
-      const dt = DateTime.fromJSDate(date)
-      return {
-        key: date.getTime().toString(),
-        date: dt.toFormat(quotaDateFormat),
-        dayOfWeek: dt.toFormat('EEE'),
-        dayOfMonth: dt.toFormat('d'),
-        isHoliday: !isBusinessDay(date),
-        isLastDayInMonth: (eachDaysList.length === index + 1),
+
+    const isMonthInArray = eachMonth.some((item) => item.monthKey === monthKey)
+    if (!isMonthInArray) {
+      eachMonth.push({
         monthKey,
         monthName,
-        dayQuota: null,
-      }
-    })
-    eachDays = [...eachDays, ...days]
-    eachMonth.push({
+        daysCount: 0,
+      })
+    }
+
+    const date = currentDate.toJSDate()
+    eachDays.push({
+      key: date.getTime().toString(),
+      date: currentDate.toFormat(quotaDateFormat),
+      dayOfWeek: currentDate.toFormat('EEE'),
+      dayOfMonth: currentDate.toFormat('d'),
+      isHoliday: !isBusinessDay(date),
+      isLastDayInMonth: currentDate.endOf('month').toISODate() === currentDate.toISODate(),
       monthKey,
       monthName,
-      daysCount: days.length,
+      dayQuota: null,
     })
-    currentDate = currentDate.plus({ months: 1 })
+
+    currentDate = currentDate.plus({ days: 1 })
   }
+
+  eachMonth.forEach((month) => {
+    const source = month
+    source.daysCount = eachDays.filter((days) => source.monthKey === days.monthKey).length
+  })
 
   return {
     period: eachDays || [],

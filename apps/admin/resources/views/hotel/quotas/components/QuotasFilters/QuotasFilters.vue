@@ -5,24 +5,20 @@ import filterRemoveIcon from '@mdi/svg/svg/filter-remove.svg'
 import { MaybeRef } from '@vueuse/core'
 import { isEqual } from 'lodash'
 import { DateTime } from 'luxon'
+import { nanoid } from 'nanoid'
 
-import { HotelRoomID } from '~api/hotel'
-import { MonthNumber } from '~api/hotel/quotas/list'
+import { compareJSDate } from '~resources/lib/date'
+
 import { HotelRoom } from '~api/hotel/room'
-
-import { getEachMonthInYear } from '~lib/date'
 
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 import CompactSelect from '~components/Bootstrap/CompactSelect.vue'
+import DateRangePicker from '~components/DateRangePicker.vue'
+import MultiSelect from '~components/MultiSelect.vue'
 
 import {
   AvailabilityValue,
-  createYear,
-  defaultFiltersPayload,
   FiltersPayload,
-  Month,
-  MonthsCount,
-  Year,
 } from './lib'
 
 const props = withDefaults(defineProps<{
@@ -34,50 +30,22 @@ const props = withDefaults(defineProps<{
 
 const emit = defineEmits<{
   (event: 'submit', value: FiltersPayload): void
-  (event: 'switchRoom', value: number | null): void
+  (event: 'switchRoom', value: number[]): void
+  (event: 'waitSwitchRoom'): void
 }>()
 
 const defaultState = {
-  year: defaultFiltersPayload.year,
-  month: defaultFiltersPayload.month,
-  monthsCount: defaultFiltersPayload.monthsCount,
+  dateFrom: DateTime.now().startOf('month').toJSDate(),
+  dateTo: DateTime.now().endOf('month').toJSDate(),
   availability: '' as const,
 }
 
-const selectedYear = ref<Year['value']>(defaultState.year)
+const periodError = ref<boolean>(false)
 
-const yearsAddToCurrent = 5
+const periodElementID = `${nanoid()}_period`
+const roomsElementID = `${nanoid()}_rooms`
 
-const years = computed<Year[]>(() => [
-  ...Array.from({ length: yearsAddToCurrent })
-    .map((item, index) => createYear(defaultState.year - index)).reverse(),
-  ...Array.from({ length: yearsAddToCurrent - 1 })
-    .map((item, index) => createYear(defaultState.year + 1 + index)),
-])
-
-const months = computed<Month[]>(() => {
-  const year = DateTime.fromFormat(selectedYear.value.toString(), 'yyyy').toJSDate()
-  return getEachMonthInYear(year).map((month) => ({
-    label: month.toFormat('LLLL'),
-    value: Number(month.toFormat('L')) as MonthNumber,
-  }))
-})
-
-const selectedMonth = ref<Month['value']>(defaultState.month)
-
-type MonthsCountOption = {
-  label: string
-  value: MonthsCount
-}
-
-const monthsCountOptions: MonthsCountOption[] = [
-  { value: 1, label: '1 месяцу' },
-  { value: 3, label: 'Кварталу' },
-  { value: 6, label: '6 месяцев' },
-  { value: 12, label: 'Году' },
-]
-
-const selectedMonthsCount = ref<MonthsCountOption['value']>(defaultState.monthsCount)
+const selectedPeriod = ref<[Date, Date]>([defaultState.dateFrom, defaultState.dateTo])
 
 type AvailabilityOption = {
   value: AvailabilityValue
@@ -97,21 +65,17 @@ const rooms = computed(() => props.rooms.map(({ id, name }) => ({
   label: name,
 })))
 
-const selectedRoomID = ref<HotelRoomID | ''>('')
+const setDefaultRooms = () => rooms.value.map((day) => day.value.toString()) as string[]
 
-const handleRoomInput = (value: string | number) => {
-  const numericValue = Number(value)
-  if (value === '' || Number.isNaN(numericValue)) {
-    selectedRoomID.value = ''
-  } else {
-    selectedRoomID.value = numericValue
-  }
+const selectedRoomID = ref<string[]>(setDefaultRooms())
+
+const handleRoomInput = (value: string[]) => {
+  selectedRoomID.value = value
 }
 
 const payload = computed<FiltersPayload>(() => ({
-  year: selectedYear.value,
-  month: selectedMonth.value,
-  monthsCount: selectedMonthsCount.value,
+  dateFrom: selectedPeriod.value[0],
+  dateTo: selectedPeriod.value[1],
   availability: selectedAvailabilityOption.value === ''
     ? null : selectedAvailabilityOption.value,
 }))
@@ -123,51 +87,60 @@ const submit = () => {
 }
 
 watch(payload, () => {
-  submit()
+  if (!periodError.value) {
+    submit()
+  }
+})
+
+watch(rooms, () => {
+  setDefaultRooms()
 })
 
 watch(selectedRoomID, () => {
-  emit('switchRoom', selectedRoomID.value === '' ? null : selectedRoomID.value)
+  emit('waitSwitchRoom')
+  setTimeout(() => {
+    emit('switchRoom', selectedRoomID.value.length ? selectedRoomID.value.map((str) => parseInt(str, 10)) : [])
+  }, 100)
 })
 
+const handlePeriodChanges = (dates: [Date, Date]) => {
+  if (!dates[0] || !dates[1]
+    || (compareJSDate(selectedPeriod.value[0], dates[0])
+      && compareJSDate(selectedPeriod.value[1], dates[1]))) return
+  const diffInYears = DateTime.fromJSDate(dates[1]).diff(DateTime.fromJSDate(dates[0]), 'years').years
+  if (diffInYears > 1) {
+    periodError.value = true
+  } else {
+    periodError.value = false
+  }
+  selectedPeriod.value = dates
+}
+
 const reset = () => {
-  selectedYear.value = defaultState.year
-  selectedMonth.value = defaultState.month
-  selectedMonthsCount.value = defaultState.monthsCount
+  selectedPeriod.value = [defaultState.dateFrom, defaultState.dateTo]
   selectedAvailabilityOption.value = defaultState.availability
-  selectedRoomID.value = ''
+  selectedRoomID.value = setDefaultRooms()
+  periodError.value = false
   submit()
 }
 
 const isStateChanged = computed<boolean>(() =>
-  !isEqual({ ...payload.value, roomID: selectedRoomID.value }, { ...lastSubmittedPayload.value, roomID: '' }))
+  !isEqual(
+    { ...payload.value, roomID: selectedRoomID.value.length },
+    { ...lastSubmittedPayload.value, roomID: rooms.value.length },
+  ))
 </script>
 <template>
   <div class="quotasFilters">
-    <CompactSelect
-      :value="selectedYear"
-      :options="years"
-      label="Год"
-      :disabled="loading"
-      required
-      @input="(value) => selectedYear = Number(value)"
-    />
-    <CompactSelect
-      :options="months"
-      label="Месяц"
-      :value="selectedMonth"
-      class="month"
-      :disabled="loading"
-      required
-      @input="(value) => selectedMonth = Number(value) as unknown as MonthNumber"
-    />
-    <CompactSelect
-      :options="monthsCountOptions"
-      label="Выводить по"
-      :value="selectedMonthsCount"
-      :disabled="loading"
-      required
-      @input="(value) => selectedMonthsCount = Number(value) as unknown as MonthsCount"
+    <DateRangePicker
+      :id="periodElementID"
+      label="Период"
+      :is-error="periodError"
+      error-text="Период превышает 1 год"
+      :label-outline="false"
+      :value="selectedPeriod"
+      :disabled="(loading as boolean)"
+      @input="(dates) => handlePeriodChanges(dates)"
     />
     <CompactSelect
       :options="availabilityOptions"
@@ -179,14 +152,19 @@ const isStateChanged = computed<boolean>(() =>
         selectedAvailabilityOption = value.toString() as unknown as AvailabilityValue
       }"
     />
-    <CompactSelect
-      :options="rooms"
-      label="Номер"
-      :value="selectedRoomID"
-      allow-deselect
-      :disabled="loading"
-      @input="handleRoomInput"
-    />
+    <div class="quotasFilters-rooms">
+      <MultiSelect
+        :id="roomsElementID"
+        label="Выберите номер(а)"
+        :label-outline="false"
+        :disabled="(loading as boolean)"
+        :label-margin="false"
+        :value="selectedRoomID"
+        :options="rooms"
+        :close-after-click-select-all="true"
+        @input="handleRoomInput"
+      />
+    </div>
     <div class="actions">
       <BootstrapButton
         label="Сбросить"
@@ -210,6 +188,10 @@ const isStateChanged = computed<boolean>(() =>
 
   flex-wrap: wrap;
   align-items: flex-end;
+
+  .quotasFilters-rooms {
+    width: 245px
+  }
 }
 
 .actions {

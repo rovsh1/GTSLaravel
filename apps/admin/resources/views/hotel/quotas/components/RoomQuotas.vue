@@ -249,7 +249,6 @@ const resetActiveKey = () => {
                 v-for="{ monthKey, daysCount, monthName } in months"
                 :key="getCurrentCellKey(monthKey)"
                 :colspan="daysCount"
-                class="headingCell"
                 :class="[months.length > 1 ? 'month-splitter' : '']"
               >
                 <div class="monthName">
@@ -474,6 +473,9 @@ th {
 
 .headingCell {
   @extend %heading-cell;
+
+  width: 142px;
+  max-width: 142px;
 }
 
 %cell-title-line {

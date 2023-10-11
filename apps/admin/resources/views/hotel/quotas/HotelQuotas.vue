@@ -5,6 +5,7 @@ import checkIcon from '@mdi/svg/svg/check.svg'
 import pencilIcon from '@mdi/svg/svg/pencil.svg'
 import { z } from 'zod'
 
+import { formatDateToAPIDate } from '~resources/lib/date'
 import { createHotelSwitcher } from '~resources/lib/hotel-switcher/hotel-switcher'
 
 import { HotelResponse, useHotelGetAPI } from '~api/hotel/get'
@@ -21,7 +22,7 @@ import QuotasFilters from './components/QuotasFilters/QuotasFilters.vue'
 import RoomQuotasComponent from './components/RoomQuotas.vue'
 
 import { Day, getRoomQuotas, Month, RoomQuota } from './components/lib'
-import { defaultFiltersPayload, FiltersPayload, intervalByMonthsCount } from './components/QuotasFilters/lib'
+import { defaultFiltersPayload, FiltersPayload } from './components/QuotasFilters/lib'
 
 const { hotelID } = injectInitialData(z.object({
   hotelID: z.number(),
@@ -50,18 +51,18 @@ fetchHotelRoomsAPI()
 
 const filtersPayload = ref<FiltersPayload>(defaultFiltersPayload)
 const waitLoadAndRedrawData = ref<boolean>(false)
+const waitSwitchRooms = ref<boolean>(false)
 const updatedRoomID = ref<number | null>(null)
 
 const {
   execute: fetchHotelQuotas,
   data: hotelQuotas,
 } = useHotelQuotasAPI(computed(() => {
-  const { month, year, monthsCount, availability } = filtersPayload.value
+  const { dateFrom, dateTo, availability } = filtersPayload.value
   return {
     hotelID,
-    month,
-    year,
-    interval: intervalByMonthsCount[monthsCount],
+    dateFrom: formatDateToAPIDate(dateFrom),
+    dateTo: formatDateToAPIDate(dateTo),
     roomID: undefined,
     availability: availability ?? undefined,
   }
@@ -104,7 +105,7 @@ watch(filtersPayload, () => {
 
 const editable = ref(false)
 
-const activeRoomID = ref<number | null>(null)
+const activeRoomIDs = ref<number[]>([])
 
 watch(editable, (value) => {
   if (value === false) {
@@ -123,6 +124,13 @@ watchEffect(() => {
     })
   }
 })
+
+const switchRooms = (value: number[]) => {
+  activeRoomIDs.value = value
+  nextTick(() => {
+    waitSwitchRooms.value = false
+  })
+}
 </script>
 <template>
   <div id="hotel-quotas-wrapper">
@@ -135,7 +143,7 @@ watchEffect(() => {
           :label="editable ? 'Готово' : 'Редактировать'"
           :start-icon="editable ? checkIcon : pencilIcon"
           severity="primary"
-          :disabled="rooms === null"
+          :disabled="rooms === null || waitLoadAndRedrawData || waitSwitchRooms"
           @click="editable = !editable"
         />
       </template>
@@ -143,11 +151,11 @@ watchEffect(() => {
         <QuotasFilters
           v-if="rooms"
           :rooms="rooms"
-          :loading="waitLoadAndRedrawData"
+          :loading="waitLoadAndRedrawData || waitSwitchRooms"
           @submit="value => handleFilters(value)"
-          @switch-room="(value: number | null) => activeRoomID = value"
+          @switch-room="(value) => switchRooms(value)"
+          @wait-switch-room="waitSwitchRooms = true"
         />
-
         <div v-if="hotel === null">
           Не удалось найти данные для отеля.
         </div>
@@ -155,27 +163,29 @@ watchEffect(() => {
           Не удалось найти комнаты для этого отеля.
         </div>
         <div v-else class="quotasTables">
-          <div v-for="room in rooms" :key="room.id" style="position: relative;">
-            <OverlayLoading v-if="(updatedRoomID === null) ? waitLoadAndRedrawData : false" />
-            <RoomQuotasComponent
-              v-if="room.id === activeRoomID || activeRoomID === null"
-              :hotel="hotel"
-              :room="room"
-              :days="quotasPeriod"
-              :months="quotasPeriodMonths"
-              :all-quotas="allQuotas"
-              :editable="editable"
-              :reload-active-room="(updatedRoomID === room.id) ? waitLoadAndRedrawData : false"
-              :opening-day-menu-room-id="openingDayMenuRoomId"
-              @open-day-menu-in-another-room="(value: number | null) => {
-                openingDayMenuRoomId = value
-              }"
-              @update="(updatedRoomIDParam: number) => {
-                updatedRoomID = updatedRoomIDParam
-                fetchHotelQuotasWrapper()
-              }"
-            />
-          </div>
+          <OverlayLoading v-if="waitSwitchRooms" />
+          <template v-for="room in rooms" :key="room.id">
+            <div v-if="activeRoomIDs.includes(room.id)" style="position: relative;">
+              <OverlayLoading v-if="(updatedRoomID === null) ? waitLoadAndRedrawData : false" />
+              <RoomQuotasComponent
+                :hotel="hotel"
+                :room="room"
+                :days="quotasPeriod"
+                :months="quotasPeriodMonths"
+                :all-quotas="allQuotas"
+                :editable="editable"
+                :reload-active-room="(updatedRoomID === room.id) ? waitLoadAndRedrawData : false"
+                :opening-day-menu-room-id="openingDayMenuRoomId"
+                @open-day-menu-in-another-room="(value: number | null) => {
+                  openingDayMenuRoomId = value
+                }"
+                @update="(updatedRoomIDParam: number) => {
+                  updatedRoomID = updatedRoomIDParam
+                  fetchHotelQuotasWrapper()
+                }"
+              />
+            </div>
+          </template>
         </div>
       </div>
     </BaseLayout>
@@ -191,6 +201,7 @@ watchEffect(() => {
 }
 
 .quotasTables {
+  position: relative;
   display: flex;
   flex-flow: column;
   gap: 2em;
