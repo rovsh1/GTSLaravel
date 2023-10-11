@@ -36,9 +36,11 @@ use App\Core\Support\Http\Responses\AjaxRedirectResponse;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use App\Core\Support\Http\Responses\AjaxSuccessResponse;
 use Carbon\CarbonPeriod;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Module\Booking\Domain\Shared\Service\RequestRules;
 use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
 use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
@@ -60,42 +62,8 @@ class BookingController extends Controller
     {
         Breadcrumb::prototype($this->prototype);
 
-        $requestableStatuses = array_map(fn(BookingStatusEnum $status) => $status->value, RequestRules::getRequestableStatuses());
-
         $grid = $this->gridFactory();
-        $query = Booking::query()
-            ->applyCriteria($grid->getSearchCriteria());
-//            ->join('administrator_bookings', 'administrator_bookings.booking_id', '=', 'bookings.id')
-//            ->join('administrators', 'administrators.id', '=', 'administrator_bookings.administrator_id')
-//            ->addSelect('administrators.presentation as manager_name')
-//            ->selectSub(
-//                DB::table('booking_hotel_room_guests')
-//                    ->selectRaw('count(id)')
-//                    ->whereExists(function ($query) {
-//                        $query->selectRaw(1)
-//                            ->from('booking_hotel_rooms')
-//                            ->whereColumn('booking_hotel_rooms.booking_id', 'bookings.id')
-//                            ->whereColumn('booking_hotel_room_guests.booking_hotel_room_id', 'booking_hotel_rooms.id');
-//                    }),
-//                'guests_count'
-//            )
-//            ->addSelect(
-//                DB::raw(
-//                    '(SELECT GROUP_CONCAT(room_name) FROM booking_hotel_rooms WHERE booking_id=bookings.id) as room_names'
-//                )
-//            )
-//            ->addSelect(
-//                DB::raw('(SELECT COUNT(id) FROM booking_hotel_rooms WHERE booking_id=bookings.id) as rooms_count')
-//            )
-//            ->addSelect(
-//                DB::raw('(SELECT bookings.status IN (' . implode(',', $requestableStatuses) . ')) as is_requestable'),
-//            )
-//            ->addSelect(
-//                DB::raw(
-//                    'EXISTS(SELECT 1 FROM booking_requests WHERE bookings.id = booking_requests.booking_id AND is_archive = 0) as has_downloadable_request'
-//                ),
-//            );
-
+        $query = $this->prepareGridQuery(Booking::query(), $grid->getSearchCriteria());
         $grid->data($query);
 
         return Layout::title($this->prototype->title('index'))
@@ -143,16 +111,14 @@ class BookingController extends Controller
         }
         $client = Client::find($data['client_id']);
         try {
-            $bookingId = DetailsAdapter::createBooking(
-                cityId: $data['city_id'],
+            $bookingId = BookingAdapter::createBooking(
                 clientId: $data['client_id'],
                 legalId: $data['legal_id'],
                 currency: $currency ?? $client->currency,
-                hotelId: $data['hotel_id'],
-                period: $data['period'],
+                serviceId: $data['hotel_id'],
                 creatorId: $creatorId,
-                quotaProcessingMethod: $data['quota_processing_method'],
                 orderId: $data['order_id'] ?? null,
+                detailsData: $data,
                 note: $data['note'] ?? null,
             );
             $this->administratorRepository->create($bookingId, $data['manager_id'] ?? $creatorId);
@@ -374,7 +340,8 @@ class BookingController extends Controller
                     return "$idLink / {$orderLink}";
                 }
             ])
-            ->bookingStatus('status', ['text' => 'Статус', 'statuses' => BookingAdapter::getStatuses(), 'order' => true])
+            ->bookingStatus('status', ['text' => 'Статус', 'statuses' => BookingAdapter::getStatuses(), 'order' => true]
+            )
             ->text('client_name', ['text' => 'Клиент'])
             ->text('manager_name', ['text' => 'Менеджер'])
             ->text(
@@ -541,5 +508,56 @@ class BookingController extends Controller
     protected function route(string $name, mixed $parameters = []): string
     {
         return route("hotel-booking.{$name}", $parameters);
+    }
+
+    private function prepareGridQuery(Builder $query, array $searchCriteria): Builder
+    {
+        $requestableStatuses = array_map(fn(BookingStatusEnum $status) => $status->value,
+            RequestRules::getRequestableStatuses());
+
+        return $query
+            ->applyCriteria($searchCriteria)
+            ->addSelect('bookings.*')
+            ->join('orders', 'orders.id', '=', 'bookings.order_id')
+            ->join('clients', 'clients.id', '=', 'orders.client_id')
+            ->addSelect('clients.name as client_name')
+            ->join('booking_hotel_details', 'bookings.id', '=', 'booking_hotel_details.booking_id')
+            ->addSelect('booking_hotel_details.date_start as date_start')
+            ->addSelect('booking_hotel_details.date_end as date_end')
+            ->addSelect('booking_hotel_details.hotel_id as hotel_id')
+            ->join('hotels', 'hotels.id', '=', 'booking_hotel_details.hotel_id')
+            ->addSelect('hotels.name as hotel_name')
+            ->join('r_cities', 'r_cities.id', '=', 'hotels.city_id')
+            ->joinTranslatable('r_cities', 'name as city_name')
+            ->join('administrator_bookings', 'administrator_bookings.booking_id', '=', 'bookings.id')
+            ->join('administrators', 'administrators.id', '=', 'administrator_bookings.administrator_id')
+            ->addSelect('administrators.presentation as manager_name')
+            ->selectSub(
+                DB::table('booking_hotel_room_guests')
+                    ->selectRaw('count(id)')
+                    ->whereExists(function ($query) {
+                        $query->selectRaw(1)
+                            ->from('booking_hotel_rooms')
+                            ->whereColumn('booking_hotel_rooms.booking_id', 'bookings.id')
+                            ->whereColumn('booking_hotel_room_guests.booking_hotel_room_id', 'booking_hotel_rooms.id');
+                    }),
+                'guests_count'
+            )
+            ->addSelect(
+                DB::raw(
+                    '(SELECT GROUP_CONCAT(room_name) FROM booking_hotel_rooms WHERE booking_id=bookings.id) as room_names'
+                )
+            )
+            ->addSelect(
+                DB::raw('(SELECT COUNT(id) FROM booking_hotel_rooms WHERE booking_id=bookings.id) as rooms_count')
+            )
+            ->addSelect(
+                DB::raw('(SELECT bookings.status IN (' . implode(',', $requestableStatuses) . ')) as is_requestable'),
+            )
+            ->addSelect(
+                DB::raw(
+                    'EXISTS(SELECT 1 FROM booking_requests WHERE bookings.id = booking_requests.booking_id AND is_archive = 0) as has_downloadable_request'
+                ),
+            );
     }
 }
