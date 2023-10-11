@@ -6,7 +6,7 @@ namespace App\Admin\Http\Controllers\Booking\Service;
 
 use App\Admin\Http\Requests\Booking\Airport\GuestRequest;
 use App\Admin\Http\Requests\Booking\UpdateDetailsFieldRequest;
-use App\Admin\Support\Facades\Booking\ServiceAdapter;
+use App\Admin\Support\Facades\Booking\BookingAdapter;
 use App\Core\Support\Http\Responses\AjaxErrorResponse;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use App\Core\Support\Http\Responses\AjaxSuccessResponse;
@@ -18,7 +18,7 @@ class DetailsController
     public function updateField(int $bookingId, UpdateDetailsFieldRequest $request): AjaxResponseInterface
     {
         try {
-            ServiceAdapter::updateDetailsField($bookingId, $request->getField(), $request->getValue());
+            BookingAdapter::updateDetailsField($bookingId, $request->getField(), $request->getValue());
         } catch (ApplicationException $e) {
             return new AjaxErrorResponse($e->getMessage());
         }
@@ -29,7 +29,7 @@ class DetailsController
     public function addGuest(int $bookingId, GuestRequest $request): AjaxResponseInterface
     {
         try {
-            ServiceAdapter::bindGuest($bookingId, $request->getGuestId());
+            BookingAdapter::bindGuest($bookingId, $request->getGuestId());
         } catch (ApplicationException $e) {
             return new AjaxErrorResponse($e->getMessage());
         }
@@ -40,7 +40,7 @@ class DetailsController
     public function deleteGuest(int $bookingId, GuestRequest $request): AjaxResponseInterface
     {
         try {
-            ServiceAdapter::unbindGuest($bookingId, $request->getGuestId());
+            BookingAdapter::unbindGuest($bookingId, $request->getGuestId());
         } catch (ApplicationException $e) {
             return new AjaxErrorResponse($e->getMessage());
         }
@@ -51,7 +51,7 @@ class DetailsController
     public function updateCars(int $bookingId, Request $request): AjaxResponseInterface
     {
         try {
-            ServiceAdapter::updateCars($bookingId, $request->toArray());
+            BookingAdapter::updateCars($bookingId, $request->toArray());
         } catch (ApplicationException $e) {
             return new AjaxErrorResponse($e->getMessage());
         }

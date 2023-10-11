@@ -26,7 +26,7 @@ class Booking extends AbstractAggregateRoot implements BookingInterface
         private readonly OrderId $orderId,
         private readonly ServiceTypeEnum $serviceType,
         private BookingStatusEnum $status,
-        private BookingPrices $price,
+        private BookingPrices $prices,
         private ?CancelConditions $cancelConditions,
         private ?string $note,
         private readonly CreatorId $creatorId,
@@ -51,17 +51,17 @@ class Booking extends AbstractAggregateRoot implements BookingInterface
 
     public function prices(): BookingPrices
     {
-        return $this->price;
+        return $this->prices;
     }
 
     public function updatePrice(BookingPrices $price): void
     {
-        if (!$price->isEqual($this->price)) {
+        if (!$price->isEqual($this->prices)) {
             return;
         }
 
-        $priceBefore = $this->price;
-        $this->price = $price;
+        $priceBefore = $this->prices;
+        $this->prices = $price;
         $this->pushEvent(new BookingPriceChanged($this, $priceBefore));
     }
 

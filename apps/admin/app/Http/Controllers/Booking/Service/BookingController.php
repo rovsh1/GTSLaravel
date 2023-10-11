@@ -12,14 +12,15 @@ use App\Admin\Http\Requests\Booking\Hotel\UpdateNoteRequest;
 use App\Admin\Http\Requests\Booking\Hotel\UpdatePriceRequest;
 use App\Admin\Http\Requests\Booking\Hotel\UpdateStatusRequest;
 use App\Admin\Models\Administrator\Administrator;
+use App\Admin\Models\Booking\Booking;
 use App\Admin\Models\Client\Client;
 use App\Admin\Models\Reference\Currency;
 use App\Admin\Repositories\BookingAdministratorRepository;
 use App\Admin\Support\Facades\Acl;
-use App\Admin\Support\Facades\Booking\HotelAdapter;
+use App\Admin\Support\Facades\Booking\Hotel\DetailsAdapter;
 use App\Admin\Support\Facades\Booking\OrderAdapter;
-use App\Admin\Support\Facades\Booking\Service\PriceAdapter;
-use App\Admin\Support\Facades\Booking\ServiceAdapter;
+use App\Admin\Support\Facades\Booking\PriceAdapter;
+use App\Admin\Support\Facades\Booking\BookingAdapter;
 use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Grid;
@@ -54,8 +55,7 @@ class BookingController extends Controller
         Breadcrumb::prototype($this->prototype);
 
         $grid = $this->gridFactory();
-        $data = ServiceAdapter::getBookingQuery()
-            ->applyCriteria($grid->getSearchCriteria());
+        $data = Booking::query()->applyCriteria($grid->getSearchCriteria());
         $grid->data($data);
 
         return Layout::title('Брони услуг')
@@ -107,7 +107,7 @@ class BookingController extends Controller
             $client = Client::find($data['client_id']);
             $currency = $client->currency;
         }
-        $bookingId = ServiceAdapter::createBooking(
+        $bookingId = BookingAdapter::createBooking(
             clientId: $data['client_id'],
             legalId: $data['legal_id'],
             currency: $currency,
@@ -128,7 +128,7 @@ class BookingController extends Controller
     {
         $breadcrumbs = Breadcrumb::prototype($this->prototype);
 
-        $booking = ServiceAdapter::getBooking($id);
+        $booking = BookingAdapter::getBooking($id);
 
         $title = "Бронь №{$id}";
         $breadcrumbs->addUrl($this->prototype->route('show', $id), $title);
@@ -158,7 +158,7 @@ class BookingController extends Controller
 
         $data = $form->getData();
         try {
-            ServiceAdapter::updateBooking(
+            BookingAdapter::updateBooking(
                 id: $id,
                 date: new Carbon($data['date'] . ' ' . $data['time']),
                 note: $data['note'] ?? null,
@@ -176,7 +176,7 @@ class BookingController extends Controller
     {
         $title = "Бронь №{$id}";
 
-        $booking = ServiceAdapter::getBooking($id);
+        $booking = BookingAdapter::getBooking($id);
         $order = OrderAdapter::findOrder($booking->orderId);
         $client = Client::find($order->clientId);
 
@@ -200,28 +200,28 @@ class BookingController extends Controller
     public function get(int $id): JsonResponse
     {
         return response()->json(
-            ServiceAdapter::getBooking($id)
+            BookingAdapter::getBooking($id)
         );
     }
 
     public function getAvailableActions(int $id): JsonResponse
     {
         return response()->json(
-            ServiceAdapter::getAvailableActions($id)
+            BookingAdapter::getAvailableActions($id)
         );
     }
 
     public function getStatuses(): JsonResponse
     {
         return response()->json(
-            ServiceAdapter::getStatuses()
+            BookingAdapter::getStatuses()
         );
     }
 
     public function updateStatus(UpdateStatusRequest $request, int $id): JsonResponse
     {
         return response()->json(
-            ServiceAdapter::updateStatus(
+            BookingAdapter::updateStatus(
                 id: $id,
                 status: $request->getStatus(),
                 notConfirmedReason: $request->getNotConfirmedReason() ?? '',
@@ -233,13 +233,13 @@ class BookingController extends Controller
     public function getStatusHistory(int $id): JsonResponse
     {
         return response()->json(
-            ServiceAdapter::getStatusHistory($id)
+            BookingAdapter::getStatusHistory($id)
         );
     }
 
     public function bulkDelete(BulkDeleteRequest $request): AjaxResponseInterface
     {
-        ServiceAdapter::bulkDeleteBookings($request->getIds());
+        BookingAdapter::bulkDeleteBookings($request->getIds());
 
         return new AjaxSuccessResponse();
     }
@@ -274,7 +274,7 @@ class BookingController extends Controller
 
     public function updateNote(int $id, UpdateNoteRequest $request): AjaxResponseInterface
     {
-        ServiceAdapter::updateNote($id, $request->getNote());
+        BookingAdapter::updateNote($id, $request->getNote());
 
         return new AjaxSuccessResponse();
     }
@@ -288,7 +288,7 @@ class BookingController extends Controller
 
     public function copy(int $id): RedirectResponse
     {
-        $newBookingId = ServiceAdapter::copyBooking($id);
+        $newBookingId = BookingAdapter::copyBooking($id);
 
         $administrator = $this->administratorRepository->get($id);
         $this->administratorRepository->create($newBookingId, $administrator->id);
@@ -360,7 +360,7 @@ class BookingController extends Controller
             ])
             ->bookingStatus(
                 'status',
-                ['text' => 'Статус', 'statuses' => ServiceAdapter::getStatuses(), 'order' => true]
+                ['text' => 'Статус', 'statuses' => BookingAdapter::getStatuses(), 'order' => true]
             )
             ->text('client_name', ['text' => 'Клиент'])
             ->text('city_name', ['text' => 'Город'])
@@ -385,7 +385,7 @@ class BookingController extends Controller
                 ['label' => 'Услуга', 'emptyItem' => '', 'enum' => ServiceTypeEnum::class, 'required' => true]
             )
             ->select('manager_id', ['label' => 'Менеджер', 'items' => Administrator::all(), 'emptyItem' => ''])
-            ->select('status', ['label' => 'Статус', 'items' => HotelAdapter::getStatuses(), 'emptyItem' => ''])
+            ->select('status', ['label' => 'Статус', 'items' => BookingAdapter::getStatuses(), 'emptyItem' => ''])
             ->enum('source', ['label' => 'Источник', 'enum' => SourceEnum::class, 'emptyItem' => ''])
             ->dateRange('date_period', ['label' => 'Дата прилета/вылета'])
             ->dateRange('created_period', ['label' => 'Дата создания']);

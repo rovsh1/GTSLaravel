@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->unsignedTinyInteger('status');
             $table->string('source');
             $table->unsignedInteger('creator_id');
-            $table->json('price');
+            $table->json('prices');
             $table->json('cancel_conditions')->nullable();
             $table->string('note')->nullable();
             $table->timestamps();

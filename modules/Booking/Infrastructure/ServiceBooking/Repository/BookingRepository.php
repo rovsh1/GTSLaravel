@@ -65,7 +65,7 @@ class BookingRepository implements BookingRepositoryInterface
     public function create(
         OrderId $orderId,
         CreatorId $creatorId,
-        BookingPrices $price,
+        BookingPrices $prices,
         CancelConditions $cancelConditions,
         ServiceTypeEnum $serviceType,
         ?string $note = null
@@ -76,7 +76,7 @@ class BookingRepository implements BookingRepositoryInterface
             'status' => BookingStatusEnum::CREATED,
             'source' => AppContext::source(),
             'creator_id' => $creatorId->value(),
-            'price' => $price->toData(),
+            'prices' => $prices->toData(),
             'cancel_conditions' => $cancelConditions->toData(),
             'note' => $note
         ]);
@@ -99,7 +99,7 @@ class BookingRepository implements BookingRepositoryInterface
             orderId: new OrderId($booking->order_id),
             serviceType: $booking->service_type,
             status: $booking->status,
-            price: BookingPrices::fromData($booking->price),
+            prices: BookingPrices::fromData($booking->prices),
             cancelConditions: $booking->cancel_conditions !== null
                 ? CancelConditions::fromData($booking->cancel_conditions)
                 : null,

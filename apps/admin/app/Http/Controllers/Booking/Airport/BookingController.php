@@ -20,9 +20,9 @@ use App\Admin\Repositories\BookingAdministratorRepository;
 use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\Booking\Airport\PriceAdapter;
 use App\Admin\Support\Facades\Booking\AirportAdapter;
-use App\Admin\Support\Facades\Booking\HotelAdapter;
+use App\Admin\Support\Facades\Booking\Hotel\DetailsAdapter;
 use App\Admin\Support\Facades\Booking\OrderAdapter;
-use App\Admin\Support\Facades\Booking\ServiceAdapter;
+use App\Admin\Support\Facades\Booking\BookingAdapter;
 use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Grid;
@@ -60,7 +60,7 @@ class BookingController extends Controller
         Breadcrumb::prototype($this->prototype);
 
         $grid = $this->gridFactory();
-        $data = $this->prepareGridQuery(ServiceAdapter::getBookingQuery(), $grid->getSearchCriteria());
+        $data = $this->prepareGridQuery(BookingAdapter::getBookingQuery(), $grid->getSearchCriteria());
         $grid->data($data);
 
         return Layout::title('Брони услуг аэропорта')
@@ -402,7 +402,7 @@ class BookingController extends Controller
             ->numRange('guests_count', ['label' => 'Кол-во гостей'])
             ->select('service_id', ['label' => 'Услуга', 'emptyItem' => '', 'items' => AirportService::get()])
             ->select('manager_id', ['label' => 'Менеджер', 'items' => Administrator::all(), 'emptyItem' => ''])
-            ->select('status', ['label' => 'Статус', 'items' => HotelAdapter::getStatuses(), 'emptyItem' => ''])
+            ->select('status', ['label' => 'Статус', 'items' => BookingAdapter::getStatuses(), 'emptyItem' => ''])
             ->enum('source', ['label' => 'Источник', 'enum' => SourceEnum::class, 'emptyItem' => ''])
             ->dateRange('date_period', ['label' => 'Дата прилета/вылета'])
             ->dateRange('created_period', ['label' => 'Дата создания']);

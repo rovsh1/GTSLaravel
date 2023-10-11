@@ -19,8 +19,9 @@ use App\Admin\Models\Hotel\Room;
 use App\Admin\Models\Reference\Currency;
 use App\Admin\Repositories\BookingAdministratorRepository;
 use App\Admin\Support\Facades\Acl;
+use App\Admin\Support\Facades\Booking\BookingAdapter;
+use App\Admin\Support\Facades\Booking\Hotel\DetailsAdapter;
 use App\Admin\Support\Facades\Booking\Hotel\PriceAdapter;
-use App\Admin\Support\Facades\Booking\HotelAdapter;
 use App\Admin\Support\Facades\Booking\OrderAdapter;
 use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Form;
@@ -38,7 +39,6 @@ use Carbon\CarbonPeriod;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 use Module\Booking\Domain\Shared\Service\RequestRules;
 use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
 use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
@@ -143,7 +143,7 @@ class BookingController extends Controller
         }
         $client = Client::find($data['client_id']);
         try {
-            $bookingId = HotelAdapter::createBooking(
+            $bookingId = DetailsAdapter::createBooking(
                 cityId: $data['city_id'],
                 clientId: $data['client_id'],
                 legalId: $data['legal_id'],
@@ -167,7 +167,7 @@ class BookingController extends Controller
 
     public function show(int $id): LayoutContract
     {
-        $booking = HotelAdapter::getBooking($id);
+        $booking = DetailsAdapter::getBooking($id);
         $order = OrderAdapter::findOrder($booking->orderId);
         $hotelId = $booking->hotelInfo->id;
         $client = Client::find($order->clientId);
@@ -198,7 +198,7 @@ class BookingController extends Controller
     {
         $breadcrumbs = Breadcrumb::prototype($this->prototype);
 
-        $booking = HotelAdapter::getBooking($id);
+        $booking = DetailsAdapter::getBooking($id);
 
         $title = "Бронь №{$id}";
         $breadcrumbs->addUrl($this->prototype->route('show', $id), $title);
@@ -228,7 +228,7 @@ class BookingController extends Controller
 
         $data = $form->getData();
         try {
-            HotelAdapter::updateBooking(
+            DetailsAdapter::updateBooking(
                 id: $id,
                 period: $data['period'],
                 note: $data['note'] ?? null
@@ -243,7 +243,7 @@ class BookingController extends Controller
 
     public function destroy(int $id): AjaxResponseInterface
     {
-        HotelAdapter::deleteBooking($id);
+        DetailsAdapter::deleteBooking($id);
 
         return new AjaxRedirectResponse($this->prototype->route());
     }
@@ -251,13 +251,13 @@ class BookingController extends Controller
     public function get(int $id): JsonResponse
     {
         return response()->json(
-            HotelAdapter::getBooking($id)
+            DetailsAdapter::getBooking($id)
         );
     }
 
     public function copy(int $id): RedirectResponse
     {
-        $newBookingId = HotelAdapter::copyBooking($id);
+        $newBookingId = DetailsAdapter::copyBooking($id);
 
         $administrator = $this->administratorRepository->get($id);
         $this->administratorRepository->create($newBookingId, $administrator->id);
@@ -270,13 +270,13 @@ class BookingController extends Controller
     public function getAvailableActions(int $id): JsonResponse
     {
         return response()->json(
-            HotelAdapter::getAvailableActions($id)
+            DetailsAdapter::getAvailableActions($id)
         );
     }
 
     public function updateExternalNumber(UpdateExternalNumberRequest $request, int $id): AjaxResponseInterface
     {
-        HotelAdapter::updateExternalNumber($id, $request->getType(), $request->getNumber());
+        DetailsAdapter::updateExternalNumber($id, $request->getType(), $request->getNumber());
 
         return new AjaxSuccessResponse();
     }
@@ -311,14 +311,14 @@ class BookingController extends Controller
 
     public function bulkDelete(BulkDeleteRequest $request): AjaxResponseInterface
     {
-        HotelAdapter::bulkDeleteBookings($request->getIds());
+        DetailsAdapter::bulkDeleteBookings($request->getIds());
 
         return new AjaxSuccessResponse();
     }
 
     public function updateNote(int $id, UpdateNoteRequest $request): AjaxResponseInterface
     {
-        HotelAdapter::updateNote($id, $request->getNote());
+        DetailsAdapter::updateNote($id, $request->getNote());
 
         return new AjaxSuccessResponse();
     }
@@ -333,14 +333,14 @@ class BookingController extends Controller
     public function getStatuses(): JsonResponse
     {
         return response()->json(
-            HotelAdapter::getStatuses()
+            BookingAdapter::getStatuses()
         );
     }
 
     public function updateStatus(UpdateStatusRequest $request, int $id): JsonResponse
     {
         return response()->json(
-            HotelAdapter::updateStatus(
+            DetailsAdapter::updateStatus(
                 $id,
                 $request->getStatus(),
                 $request->getNotConfirmedReason(),
@@ -352,7 +352,7 @@ class BookingController extends Controller
     public function getStatusHistory(int $id): JsonResponse
     {
         return response()->json(
-            HotelAdapter::getStatusHistory($id)
+            DetailsAdapter::getStatusHistory($id)
         );
     }
 
@@ -374,7 +374,7 @@ class BookingController extends Controller
                     return "$idLink / {$orderLink}";
                 }
             ])
-            ->bookingStatus('status', ['text' => 'Статус', 'statuses' => HotelAdapter::getStatuses(), 'order' => true])
+            ->bookingStatus('status', ['text' => 'Статус', 'statuses' => BookingAdapter::getStatuses(), 'order' => true])
             ->text('client_name', ['text' => 'Клиент'])
             ->text('manager_name', ['text' => 'Менеджер'])
             ->text(
@@ -443,7 +443,7 @@ class BookingController extends Controller
             ->hidden('hotel_room_id', ['label' => 'Тип номера'])
             ->client('client_id', ['label' => 'Клиент', 'emptyItem' => ''])
             ->select('manager_id', ['label' => 'Менеджер', 'items' => Administrator::all(), 'emptyItem' => ''])
-            ->select('status', ['label' => 'Статус', 'items' => HotelAdapter::getStatuses(), 'emptyItem' => ''])
+            ->select('status', ['label' => 'Статус', 'items' => BookingAdapter::getStatuses(), 'emptyItem' => ''])
             ->enum('source', ['label' => 'Источник', 'enum' => SourceEnum::class, 'emptyItem' => ''])
             ->numRange('guests_count', ['label' => 'Кол-во гостей'])
             ->dateRange('start_period', ['label' => 'Дата заезда'])

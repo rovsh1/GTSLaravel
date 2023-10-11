@@ -204,7 +204,7 @@ class BookingRepository extends BaseRepository implements BookingRepositoryInter
             status: $booking->status,
             createdAt: $booking->created_at->toImmutable(),
             creatorId: new CreatorId($booking->creator_id),
-            price: BookingPrices::fromData($booking->price),
+            price: BookingPrices::fromData($booking->prices),
             note: $detailsData['note'] ?? null,
             hotelInfo: HotelInfo::fromData($detailsData['hotelInfo']),
             period: BookingPeriod::fromData($detailsData['period']),

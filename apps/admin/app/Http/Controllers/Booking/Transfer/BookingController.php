@@ -17,10 +17,10 @@ use App\Admin\Models\Reference\Currency;
 use App\Admin\Models\Supplier\TransferService;
 use App\Admin\Repositories\BookingAdministratorRepository;
 use App\Admin\Support\Facades\Acl;
-use App\Admin\Support\Facades\Booking\HotelAdapter;
+use App\Admin\Support\Facades\Booking\Hotel\DetailsAdapter;
 use App\Admin\Support\Facades\Booking\OrderAdapter;
-use App\Admin\Support\Facades\Booking\ServiceAdapter;
-use App\Admin\Support\Facades\Booking\Service\PriceAdapter;
+use App\Admin\Support\Facades\Booking\PriceAdapter;
+use App\Admin\Support\Facades\Booking\BookingAdapter;
 use App\Admin\Support\Facades\Booking\TransferAdapter;
 use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Form;
@@ -59,7 +59,7 @@ class BookingController extends Controller
         Breadcrumb::prototype($this->prototype);
 
         $grid = $this->gridFactory();
-        $data = $this->prepareGridQuery(ServiceAdapter::getBookingQuery(), $grid->getSearchCriteria());
+        $data = $this->prepareGridQuery(BookingAdapter::getBookingQuery(), $grid->getSearchCriteria());
         $grid->data($data);
 
         return Layout::title('Брони транспортных услуг')
@@ -382,7 +382,7 @@ class BookingController extends Controller
             ->client('client_id', ['label' => 'Клиент', 'emptyItem' => ''])
             ->select('service_id', ['label' => 'Услуга', 'emptyItem' => '', 'items' => TransferService::get()])
             ->select('manager_id', ['label' => 'Менеджер', 'items' => Administrator::all(), 'emptyItem' => ''])
-            ->select('status', ['label' => 'Статус', 'items' => HotelAdapter::getStatuses(), 'emptyItem' => ''])
+            ->select('status', ['label' => 'Статус', 'items' => BookingAdapter::getStatuses(), 'emptyItem' => ''])
             ->enum('source', ['label' => 'Источник', 'enum' => SourceEnum::class, 'emptyItem' => ''])
             ->dateRange('date_period', ['label' => 'Дата прилета/вылета'])
             ->dateRange('created_period', ['label' => 'Дата создания']);

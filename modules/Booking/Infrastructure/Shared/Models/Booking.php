@@ -22,7 +22,7 @@ use Sdk\Module\Database\Eloquent\Model;
  * @property BookingStatusEnum $status
  * @property string $source
  * @property int $creator_id
- * @property array $price
+ * @property array $prices
  * @property array $cancel_conditions
  * @property string|null $note
  * @property CarbonInterface $created_at
@@ -40,7 +40,7 @@ abstract class Booking extends Model
         'status',
         'source',
         'creator_id',
-        'price',
+        'prices',
         'cancel_conditions',
         'note',
     ];
@@ -48,7 +48,7 @@ abstract class Booking extends Model
     protected $casts = [
         'status' => BookingStatusEnum::class,
         'service_type' => ServiceTypeEnum::class,
-        'price' => 'array',
+        'prices' => 'array',
         'cancel_conditions' => 'array',
     ];
 

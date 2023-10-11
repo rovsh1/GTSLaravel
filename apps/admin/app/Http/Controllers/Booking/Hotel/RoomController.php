@@ -9,9 +9,9 @@ use App\Admin\Http\Requests\Booking\Hotel\Room\DeleteRoomRequest;
 use App\Admin\Http\Requests\Booking\Hotel\Room\Guest\RoomGuestRequest;
 use App\Admin\Http\Requests\Booking\Hotel\Room\UpdateRoomRequest;
 use App\Admin\Http\Requests\Booking\Hotel\UpdatePriceRequest;
+use App\Admin\Support\Facades\Booking\Hotel\DetailsAdapter;
 use App\Admin\Support\Facades\Booking\Hotel\PriceAdapter;
-use App\Admin\Support\Facades\Booking\HotelAdapter;
-use App\Admin\Support\Facades\Booking\RoomAdapter;
+use App\Admin\Support\Facades\Booking\Hotel\RoomAdapter;
 use App\Core\Support\Http\Responses\AjaxErrorResponse;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use App\Core\Support\Http\Responses\AjaxSuccessResponse;
@@ -38,7 +38,7 @@ class RoomController
     public function addRoom(AddRoomRequest $request, int $id): AjaxResponseInterface
     {
         try {
-            HotelAdapter::addRoom(
+            DetailsAdapter::addRoom(
                 bookingId: $id,
                 roomId: $request->getRoomId(),
                 rateId: $request->getRateId(),
@@ -58,7 +58,7 @@ class RoomController
     public function updateRoom(UpdateRoomRequest $request, int $id): AjaxResponseInterface
     {
         try {
-            HotelAdapter::updateRoom(
+            DetailsAdapter::updateRoom(
                 bookingId: $id,
                 roomBookingId: $request->getRoomBookingId(),
                 roomId: $request->getRoomId(),
@@ -79,7 +79,7 @@ class RoomController
     public function deleteRoom(DeleteRoomRequest $request, int $id): AjaxResponseInterface
     {
         try {
-            HotelAdapter::deleteRoom($id, $request->getRoomBookingId());
+            DetailsAdapter::deleteRoom($id, $request->getRoomBookingId());
         } catch (\Throwable $e) {
             //@todo отлов доменных эксепшнов
             dd($e);
@@ -91,7 +91,7 @@ class RoomController
     public function addRoomGuest(RoomGuestRequest $request, int $id): AjaxResponseInterface
     {
         try {
-            HotelAdapter::bindRoomGuest($id, $request->getRoomBookingId(), $request->getGuestId());
+            DetailsAdapter::bindRoomGuest($id, $request->getRoomBookingId(), $request->getGuestId());
         } catch (\Throwable $e) {
             //@todo отлов доменных эксепшнов
             return new AjaxErrorResponse($e->getMessage());
@@ -103,7 +103,7 @@ class RoomController
     public function deleteRoomGuest(RoomGuestRequest $request, int $id): AjaxResponseInterface
     {
         try {
-            HotelAdapter::unbindRoomGuest($id, $request->getRoomBookingId(), $request->getGuestId(),);
+            DetailsAdapter::unbindRoomGuest($id, $request->getRoomBookingId(), $request->getGuestId(),);
         } catch (\Throwable $e) {
             //@todo отлов доменных эксепшнов
             return new AjaxErrorResponse($e->getMessage());
