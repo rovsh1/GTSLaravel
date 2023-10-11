@@ -19,7 +19,7 @@ abstract class BookingDto extends AbstractDomainBasedDto
         public readonly int $orderId,
         public readonly CarbonImmutable $createdAt,
         public readonly int $creatorId,
-        public readonly BookingPriceDto $price,
+        public readonly BookingPriceDto $prices,
         public readonly CancelConditionsDto $cancelConditions,
         public readonly ?string $note,
     ) {}

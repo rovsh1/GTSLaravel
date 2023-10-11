@@ -27,7 +27,7 @@ class BookingDto extends BaseDto
         public readonly CarbonInterface $date,
         public readonly array $guestIds,
         public readonly CancelConditionsDto $cancelConditions,
-        public readonly BookingPriceDto $price,
+        public readonly BookingPriceDto $prices,
         public readonly string $flightNumber,
     ) {
         parent::__construct($id, $status, $orderId, $createdAt, $creatorId);

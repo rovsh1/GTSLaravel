@@ -42,7 +42,7 @@ class BookingDtoFactory extends AbstractBookingDtoFactory
             cancelConditions: $booking->cancelConditions() !== null
                 ? CancelConditionsDto::fromDomain($booking->cancelConditions())
                 : null,
-            price: $this->bookingPriceDtoFactory->createFromEntity($booking->price()),
+            prices: $this->bookingPriceDtoFactory->createFromEntity($booking->price()),
             flightNumber: $booking->additionalInfo()->flightNumber(),
         );
     }

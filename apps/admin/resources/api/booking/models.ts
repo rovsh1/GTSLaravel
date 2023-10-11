@@ -39,7 +39,7 @@ export type BaseBooking = {
   source: number
   creatorId: number
   createdAt: DateResponse
-  price: BookingPrice
+  prices: BookingPrice
   cancelConditions: CancelConditions
   note: string | null
 }

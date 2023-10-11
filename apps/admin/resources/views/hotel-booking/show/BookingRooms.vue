@@ -61,15 +61,15 @@ const bookingDetails = computed<HotelBookingDetails | null>(() => bookingStore.b
 const markupSettings = computed<MarkupSettings | null>(() => bookingStore.markupSettings)
 const isEditableStatus = computed<boolean>(() => bookingStore.availableActions?.isEditable || false)
 const grossCurrency = computed<Currency | undefined>(
-  () => getCurrencyByCodeChar(bookingStore.booking?.price.grossPrice.currency.value),
+  () => getCurrencyByCodeChar(bookingStore.booking?.prices.grossPrice.currency.value),
 )
 const netCurrency = computed<Currency | undefined>(
-  () => getCurrencyByCodeChar(bookingStore.booking?.price.netPrice.currency.value),
+  () => getCurrencyByCodeChar(bookingStore.booking?.prices.netPrice.currency.value),
 )
 const orderId = computed(() => orderStore.order.id)
 const orderGuests = computed<Guest[]>(() => orderStore.guests || [])
 const isBookingPriceManual = computed(
-  () => bookingStore.booking?.price.grossPrice.isManual || bookingStore.booking?.price.netPrice.isManual,
+  () => bookingStore.booking?.prices.grossPrice.isManual || bookingStore.booking?.prices.netPrice.isManual,
 )
 
 const canChangeRoomPrice = computed<boolean>(

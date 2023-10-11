@@ -21,7 +21,7 @@ class BookingDto extends BaseDto
         public readonly ?string $note,
         public readonly ServiceInfoDto $serviceInfo,
         public readonly CancelConditionsDto $cancelConditions,
-        public readonly BookingPriceDto $price,
+        public readonly BookingPriceDto $prices,
     ) {
         parent::__construct($id, $status, $orderId, $createdAt, $creatorId);
     }

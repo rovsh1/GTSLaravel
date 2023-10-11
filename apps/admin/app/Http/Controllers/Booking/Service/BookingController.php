@@ -17,10 +17,9 @@ use App\Admin\Models\Client\Client;
 use App\Admin\Models\Reference\Currency;
 use App\Admin\Repositories\BookingAdministratorRepository;
 use App\Admin\Support\Facades\Acl;
-use App\Admin\Support\Facades\Booking\Hotel\DetailsAdapter;
+use App\Admin\Support\Facades\Booking\BookingAdapter;
 use App\Admin\Support\Facades\Booking\OrderAdapter;
 use App\Admin\Support\Facades\Booking\PriceAdapter;
-use App\Admin\Support\Facades\Booking\BookingAdapter;
 use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Grid;
@@ -33,8 +32,12 @@ use App\Admin\Support\View\Layout as LayoutContract;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use App\Core\Support\Http\Responses\AjaxSuccessResponse;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
+use Module\Booking\Domain\Shared\Service\RequestRules;
+use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
 use Module\Shared\Enum\CurrencyEnum;
 use Module\Shared\Enum\ServiceTypeEnum;
 use Module\Shared\Enum\SourceEnum;
@@ -55,7 +58,7 @@ class BookingController extends Controller
         Breadcrumb::prototype($this->prototype);
 
         $grid = $this->gridFactory();
-        $data = Booking::query()->applyCriteria($grid->getSearchCriteria());
+        $data = $this->prepareGridQuery(Booking::query(), $grid->getSearchCriteria());
         $grid->data($data);
 
         return Layout::title('Брони услуг')
@@ -369,7 +372,7 @@ class BookingController extends Controller
             ->text('source', ['text' => 'Источник', 'order' => true])
             ->date('created_at', ['text' => 'Создан', 'format' => 'datetime', 'order' => true])
             ->text('actions', ['renderer' => fn($row, $val) => $this->getActionButtons($row)])
-            ->orderBy('created_at', 'desc')
+            ->orderBy('bookings.created_at', 'desc')
             ->paginator(20);
     }
 
@@ -438,4 +441,23 @@ class BookingController extends Controller
         return 'service-booking';
     }
 
+    private function prepareGridQuery(Builder $query, array $searchCriteria): Builder
+    {
+        $requestableStatuses = array_map(fn(BookingStatusEnum $status) => $status->value,
+            RequestRules::getRequestableStatuses());
+
+        return $query
+            ->applyCriteria($searchCriteria)
+            ->join('administrator_bookings', 'administrator_bookings.booking_id', '=', 'bookings.id')
+            ->join('administrators', 'administrators.id', '=', 'administrator_bookings.administrator_id')
+            ->addSelect('administrators.presentation as manager_name')
+            ->addSelect(
+                DB::raw('(SELECT bookings.status IN (' . implode(',', $requestableStatuses) . ')) as is_requestable'),
+            )
+            ->addSelect(
+                DB::raw(
+                    'EXISTS(SELECT 1 FROM booking_requests WHERE bookings.id = booking_requests.booking_id AND is_archive = 0) as has_downloadable_request'
+                ),
+            );
+    }
 }

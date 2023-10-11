@@ -42,15 +42,15 @@ const statuses = computed<BookingStatusResponse[] | null>(() => bookingStore.sta
 const availableActions = computed<BookingAvailableActionsResponse | null>(() => bookingStore.availableActions)
 
 const grossCurrency = computed<Currency | undefined>(
-  () => getCurrencyByCodeChar(bookingStore.booking?.price.grossPrice.currency.value),
+  () => getCurrencyByCodeChar(bookingStore.booking?.prices.grossPrice.currency.value),
 )
 
 const netCurrency = computed<Currency | undefined>(
-  () => getCurrencyByCodeChar(bookingStore.booking?.price.netPrice.currency.value),
+  () => getCurrencyByCodeChar(bookingStore.booking?.prices.netPrice.currency.value),
 )
 
-const profit = computed<number>(() => bookingStore.booking?.price.profit.calculatedValue || 0)
-const convertedNetValue = computed<number>(() => bookingStore.booking?.price.convertedNetPrice?.calculatedValue || 0)
+const profit = computed<number>(() => bookingStore.booking?.prices.profit.calculatedValue || 0)
+const convertedNetValue = computed<number>(() => bookingStore.booking?.prices.convertedNetPrice?.calculatedValue || 0)
 
 const statusHistoryStore = useBookingStatusHistoryStore()
 const { fetchStatusHistory } = statusHistoryStore
@@ -131,10 +131,10 @@ const getDisplayPriceValue = (type: 'gross' | 'net') => {
     return 0
   }
   if (type === 'gross') {
-    return booking.value?.price.grossPrice.manualValue || booking.value?.price.grossPrice.calculatedValue
+    return booking.value?.prices.grossPrice.manualValue || booking.value?.prices.grossPrice.calculatedValue
   }
 
-  return booking.value?.price.netPrice.manualValue || booking.value?.price.netPrice.calculatedValue
+  return booking.value?.prices.netPrice.manualValue || booking.value?.prices.netPrice.calculatedValue
 }
 
 </script>
@@ -151,7 +151,7 @@ const getDisplayPriceValue = (type: 'gross' | 'net') => {
   <PriceModal
     header="Общая сумма (нетто)"
     :label="`Общая сумма (нетто) в ${netCurrency?.code_char}`"
-    :value="booking?.price.netPrice.manualValue || undefined"
+    :value="booking?.prices.netPrice.manualValue || undefined"
     :opened="isNetPriceModalOpened"
     @close="toggleNetPriceModal(false)"
     @submit="handleSaveNetManualPrice"
@@ -160,7 +160,7 @@ const getDisplayPriceValue = (type: 'gross' | 'net') => {
   <PriceModal
     header="Общая сумма (брутто)"
     :label="`Общая сумма (брутто) ${grossCurrency?.code_char}`"
-    :value="booking?.price.grossPrice.manualValue || undefined"
+    :value="booking?.prices.grossPrice.manualValue || undefined"
     :opened="isGrossPriceModalOpened"
     @close="toggleGrossPriceModal(false)"
     @submit="handleSaveGrossManualPrice"
@@ -169,7 +169,7 @@ const getDisplayPriceValue = (type: 'gross' | 'net') => {
   <PriceModal
     header="Сумма штрафа для клиента"
     :label="`Сумма штрафа для клиента в ${grossCurrency?.code_char}`"
-    :value="booking?.price.grossPrice.penaltyValue || undefined"
+    :value="booking?.prices.grossPrice.penaltyValue || undefined"
     :opened="isGrossPenaltyModalOpened"
     @close="toggleGrossPenaltyModal(false)"
     @submit="handleSaveBoPenalty"
@@ -178,7 +178,7 @@ const getDisplayPriceValue = (type: 'gross' | 'net') => {
   <PriceModal
     header="Сумма штрафа от поставщика"
     :label="`Сумма штрафа от поставщика в ${netCurrency?.code_char}`"
-    :value="booking?.price.netPrice.penaltyValue || undefined"
+    :value="booking?.prices.netPrice.penaltyValue || undefined"
     :opened="isNetPenaltyModalOpened"
     @close="toggleNetPenaltyModal(false)"
     @submit="handleSaveHoPenalty"
@@ -199,7 +199,7 @@ const getDisplayPriceValue = (type: 'gross' | 'net') => {
       <strong>
         {{ formatPrice(getDisplayPriceValue('gross'), grossCurrency.sign) }}
       </strong>
-      <span v-if="booking.price.grossPrice.isManual" class="text-muted"> (выставлена вручную)</span>
+      <span v-if="booking.prices.grossPrice.isManual" class="text-muted"> (выставлена вручную)</span>
     </div>
   </div>
 
@@ -212,8 +212,8 @@ const getDisplayPriceValue = (type: 'gross' | 'net') => {
         amount-title="Общая сумма (брутто)"
         :amount-value="getDisplayPriceValue('gross')"
         penalty-title="Сумма штрафа для клиента"
-        :penalty-value="booking.price.grossPrice.penaltyValue"
-        :need-show-penalty="(booking?.price.netPrice.penaltyValue || 0) > 0"
+        :penalty-value="booking.prices.grossPrice.penaltyValue"
+        :need-show-penalty="(booking?.prices.netPrice.penaltyValue || 0) > 0"
         @click-change-price="toggleGrossPriceModal(true)"
         @click-change-penalty="toggleGrossPenaltyModal(true)"
       />
@@ -225,8 +225,8 @@ const getDisplayPriceValue = (type: 'gross' | 'net') => {
         amount-title="Общая сумма (нетто)"
         :amount-value="getDisplayPriceValue('net')"
         penalty-title="Сумма штрафа от поставщика"
-        :penalty-value="booking.price.netPrice.penaltyValue"
-        :need-show-penalty="(booking?.price.netPrice.penaltyValue || 0) > 0"
+        :penalty-value="booking.prices.netPrice.penaltyValue"
+        :need-show-penalty="(booking?.prices.netPrice.penaltyValue || 0) > 0"
         @click-change-price="toggleNetPriceModal(true)"
         @click-change-penalty="toggleNetPenaltyModal(true)"
       />

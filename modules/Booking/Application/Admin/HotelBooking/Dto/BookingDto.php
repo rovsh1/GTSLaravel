@@ -27,7 +27,7 @@ class BookingDto extends BaseDto
         int $orderId,
         CarbonImmutable $createdAt,
         int $creatorId,
-        BookingPriceDto $price,
+        BookingPriceDto $prices,
         CancelConditionsDto $cancelConditions,
         ?string $note,
         public readonly HotelInfoDto $hotelInfo,
@@ -37,7 +37,7 @@ class BookingDto extends BaseDto
         public readonly array $roomBookings,
         public readonly QuotaProcessingMethodEnum $quotaProcessingMethod,
     ) {
-        parent::__construct($id, $status, $orderId, $createdAt, $creatorId, $price, $cancelConditions, $note);
+        parent::__construct($id, $status, $orderId, $createdAt, $creatorId, $prices, $cancelConditions, $note);
     }
 
     public static function fromDomain(EntityInterface|BookingInterface|ValueObjectInterface|HotelBooking $entity

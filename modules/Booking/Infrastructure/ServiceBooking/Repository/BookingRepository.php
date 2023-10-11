@@ -57,7 +57,7 @@ class BookingRepository implements BookingRepositoryInterface
         return (bool)$this->getModel()::whereId($booking->id()->value())->update([
             'status' => $booking->status(),
             'note' => $booking->note(),
-            'price' => $booking->prices()->toData(),
+            'prices' => $booking->prices()->toData(),
             'cancel_conditions' => $booking->cancelConditions()->toData()
         ]);
     }

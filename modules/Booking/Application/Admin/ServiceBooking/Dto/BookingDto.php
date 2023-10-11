@@ -18,12 +18,12 @@ class BookingDto extends BaseDto
         int $orderId,
         CarbonImmutable $createdAt,
         int $creatorId,
-        BookingPriceDto $price,
+        BookingPriceDto $prices,
         CancelConditionsDto $cancelConditions,
         ?string $note,
         public readonly ServiceTypeDto $serviceType,
         public readonly ?ServiceDetailsDtoInterface $details,
     ) {
-        parent::__construct($id, $status, $orderId, $createdAt, $creatorId, $price, $cancelConditions, $note);
+        parent::__construct($id, $status, $orderId, $createdAt, $creatorId, $prices, $cancelConditions, $note);
     }
 }

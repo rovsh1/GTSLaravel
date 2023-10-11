@@ -18,7 +18,7 @@ abstract class HotelBookingDtoFactory
             dateCheckin: $bookingDto->period->dateFrom,
             dateCheckout: $bookingDto->period->dateTo,
             nightsNumber: $bookingDto->period->nightsCount,
-            priceNet: $bookingDto->price->netValue,
+            priceNet: $bookingDto->prices->netValue,
             status: $bookingDto->status->name,
             note: $bookingDto->note,
             createdAt: $bookingDto->createdAt
