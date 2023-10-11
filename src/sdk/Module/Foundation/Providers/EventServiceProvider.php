@@ -10,6 +10,11 @@ class EventServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $this->app->singleton(DomainEventDispatcherInterface::class, DomainEventDispatcher::class);
+        $this->app->singleton(DomainEventDispatcherInterface::class, function ($module) {
+            return new DomainEventDispatcher(
+                $module,
+//                $module->get(DomainEventHandlerInterface::class)
+            );
+        });
     }
 }

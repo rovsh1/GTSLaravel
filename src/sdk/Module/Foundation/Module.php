@@ -166,15 +166,20 @@ class Module extends Container implements ModuleInterface
 
     protected function resolve($abstract, $parameters = [], $raiseEvents = true)
     {
+        try {
         if (!is_string($abstract)) {
             return parent::resolve($abstract, $parameters, $raiseEvents);
         } elseif ($abstract === ModuleInterface::class) {
             return $this;
         } elseif ($this->sharedContainer->has($abstract)) {
-            return $this->sharedContainer->get($abstract);
+                return $this->sharedContainer->get($abstract);
+
         } else {
             return parent::resolve($abstract, $parameters, $raiseEvents);
         }
+    }catch (\Throwable  $e) {
+dd($abstract);
+}
     }
 
     protected function registerBaseBindings()
