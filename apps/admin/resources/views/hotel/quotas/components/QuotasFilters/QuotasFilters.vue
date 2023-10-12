@@ -191,8 +191,8 @@ const isStateChanged = computed<boolean>(() =>
   align-items: flex-end;
 
   .quotasFilters-rooms {
-    width: 245px;
     position: relative;
+    width: 245px;
   }
 }
 
@@ -212,8 +212,8 @@ const isStateChanged = computed<boolean>(() =>
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: var(--bs-secondary-bg);
   border-radius: var(--bs-border-radius);
+  background-color: var(--bs-secondary-bg);
   opacity: 0.4;
 }
 </style>

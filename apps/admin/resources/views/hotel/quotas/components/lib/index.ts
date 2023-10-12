@@ -44,8 +44,6 @@ const quotaStatusMap: Record<QuotaStatus, RoomQuotaStatus | undefined> = {
   1: 'opened',
 }
 
-const getMonthKey = (year: string | number, month: string | number): string => `${year}-${month}`
-
 const monthKeyFormat = 'yyyy-M'
 const quotaDateFormat = 'yyyy-MM-dd'
 
