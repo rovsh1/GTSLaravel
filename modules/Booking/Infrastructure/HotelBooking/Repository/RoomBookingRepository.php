@@ -79,7 +79,7 @@ class RoomBookingRepository implements RoomBookingRepositoryInterface
 
     public function delete(RoomBookingId $id): bool
     {
-        return (bool)Model::whereId($id)->delete();
+        return (bool)Model::whereId($id->value())->delete();
     }
 
     private function serializeEntity(HotelRoomBooking $booking): array
