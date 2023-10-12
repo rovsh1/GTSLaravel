@@ -9,13 +9,14 @@ use Module\Booking\Application\Admin\HotelBooking\Exception\InvalidRoomClientRes
 use Module\Booking\Application\Admin\HotelBooking\Exception\NotFoundHotelRoomPriceException;
 use Module\Booking\Application\Admin\HotelBooking\Factory\RoomUpdaterDataHelperFactory;
 use Module\Booking\Application\Admin\HotelBooking\Request\UpdateRoomDto;
-use Module\Booking\Deprecated\HotelBooking\Exception\InvalidRoomResidency;
-use Module\Booking\Deprecated\HotelBooking\Exception\NotFoundHotelRoomPrice;
-use Module\Booking\Deprecated\HotelBooking\Service\QuotaManager\Exception\ClosedRoomDateQuota;
-use Module\Booking\Deprecated\HotelBooking\Service\QuotaManager\Exception\NotEnoughRoomDateQuota;
-use Module\Booking\Deprecated\HotelBooking\Service\QuotaManager\Exception\NotFoundRoomDateQuota;
-use Module\Booking\Deprecated\HotelBooking\Service\RoomUpdater\RoomUpdater;
+use Module\Booking\Domain\Booking\Exception\HotelBooking\InvalidRoomResidency;
+use Module\Booking\Domain\Booking\Exception\HotelBooking\NotFoundHotelRoomPrice;
 use Module\Booking\Domain\Booking\Repository\RoomBookingRepositoryInterface;
+use Module\Booking\Domain\Booking\Service\HotelBooking\QuotaManager\Exception\ClosedRoomDateQuota;
+use Module\Booking\Domain\Booking\Service\HotelBooking\QuotaManager\Exception\NotEnoughRoomDateQuota;
+use Module\Booking\Domain\Booking\Service\HotelBooking\QuotaManager\Exception\NotFoundRoomDateQuota;
+use Module\Booking\Domain\Booking\Service\HotelBooking\RoomUpdater\RoomUpdater;
+use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomBookingId;
 use Module\Shared\Exception\ApplicationException;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
@@ -30,12 +31,12 @@ class Update implements UseCaseInterface
 
     public function execute(UpdateRoomDto $request): void
     {
-        $roomBooking = $this->roomBookingRepository->find($request->roomBookingId);
+        $roomBooking = $this->roomBookingRepository->find(new RoomBookingId($request->roomBookingId));
         if ($roomBooking === null) {
             throw new EntityNotFoundException('Room booking not found');
         }
         try {
-            $updateRoomDto = $this->dataHelperFactory->build($request, $roomBooking->guestIds(), $roomBooking->price());
+            $updateRoomDto = $this->dataHelperFactory->build($request, $roomBooking->guestIds(), $roomBooking->prices());
             $this->roomUpdater->update($roomBooking->id(), $updateRoomDto);
         } catch (InvalidRoomResidency $e) {
             throw new InvalidRoomClientResidencyException($e);

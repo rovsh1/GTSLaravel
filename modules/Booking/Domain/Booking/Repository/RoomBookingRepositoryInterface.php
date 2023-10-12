@@ -6,8 +6,10 @@ namespace Module\Booking\Domain\Booking\Repository;
 
 use Module\Booking\Domain\Booking\Entity\HotelRoomBooking;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomBookingCollection;
 use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomBookingDetails;
 use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomBookingId;
+use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomBookingIdCollection;
 use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomInfo;
 use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomPrices;
 
@@ -16,6 +18,8 @@ interface RoomBookingRepositoryInterface
     public function find(RoomBookingId $id): ?HotelRoomBooking;
 
     public function findOrFail(RoomBookingId $id): HotelRoomBooking;
+
+    public function get(RoomBookingIdCollection $roomBookingIds): RoomBookingCollection;
 
     public function store(HotelRoomBooking $booking): bool;
 

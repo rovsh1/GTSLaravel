@@ -33,6 +33,6 @@ trait HasGuestIdCollectionTrait
 
     public function guestsCount(): int
     {
-        return count($this->guestsIds);
+        return count($this->guestIds);
     }
 }

@@ -26,4 +26,16 @@ class CarBidCollection extends AbstractValueObjectCollection
 
         return false;
     }
+
+    public function toData(): array
+    {
+        return $this->map(fn(CarBid $carBid) => $carBid->toData());
+    }
+
+    public static function fromData(array $data): static
+    {
+        $carBids = array_map(fn(array $item) => CarBid::fromData($item), $data);
+
+        return (new static($carBids));
+    }
 }

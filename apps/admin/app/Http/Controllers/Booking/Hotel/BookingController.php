@@ -21,8 +21,8 @@ use App\Admin\Repositories\BookingAdministratorRepository;
 use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\Booking\BookingAdapter;
 use App\Admin\Support\Facades\Booking\Hotel\DetailsAdapter;
-use App\Admin\Support\Facades\Booking\Hotel\PriceAdapter;
 use App\Admin\Support\Facades\Booking\OrderAdapter;
+use App\Admin\Support\Facades\Booking\PriceAdapter;
 use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Grid;
@@ -133,9 +133,9 @@ class BookingController extends Controller
 
     public function show(int $id): LayoutContract
     {
-        $booking = DetailsAdapter::getBooking($id);
+        $booking = BookingAdapter::getBooking($id);
         $order = OrderAdapter::findOrder($booking->orderId);
-        $hotelId = $booking->hotelInfo->id;
+        $hotelId = $booking->details->hotelInfo->id;
         $client = Client::find($order->clientId);
         $hotel = Hotel::find($hotelId);
 
@@ -164,7 +164,7 @@ class BookingController extends Controller
     {
         $breadcrumbs = Breadcrumb::prototype($this->prototype);
 
-        $booking = DetailsAdapter::getBooking($id);
+        $booking = BookingAdapter::getBooking($id);
 
         $title = "Бронь №{$id}";
         $breadcrumbs->addUrl($this->prototype->route('show', $id), $title);
@@ -194,7 +194,7 @@ class BookingController extends Controller
 
         $data = $form->getData();
         try {
-            DetailsAdapter::updateBooking(
+            BookingAdapter::updateBooking(
                 id: $id,
                 period: $data['period'],
                 note: $data['note'] ?? null
@@ -209,7 +209,7 @@ class BookingController extends Controller
 
     public function destroy(int $id): AjaxResponseInterface
     {
-        DetailsAdapter::deleteBooking($id);
+        BookingAdapter::deleteBooking($id);
 
         return new AjaxRedirectResponse($this->prototype->route());
     }
@@ -217,13 +217,13 @@ class BookingController extends Controller
     public function get(int $id): JsonResponse
     {
         return response()->json(
-            DetailsAdapter::getBooking($id)
+            BookingAdapter::getBooking($id)
         );
     }
 
     public function copy(int $id): RedirectResponse
     {
-        $newBookingId = DetailsAdapter::copyBooking($id);
+        $newBookingId = BookingAdapter::copyBooking($id);
 
         $administrator = $this->administratorRepository->get($id);
         $this->administratorRepository->create($newBookingId, $administrator->id);
@@ -236,7 +236,7 @@ class BookingController extends Controller
     public function getAvailableActions(int $id): JsonResponse
     {
         return response()->json(
-            DetailsAdapter::getAvailableActions($id)
+            BookingAdapter::getAvailableActions($id)
         );
     }
 
@@ -277,14 +277,14 @@ class BookingController extends Controller
 
     public function bulkDelete(BulkDeleteRequest $request): AjaxResponseInterface
     {
-        DetailsAdapter::bulkDeleteBookings($request->getIds());
+        BookingAdapter::bulkDeleteBookings($request->getIds());
 
         return new AjaxSuccessResponse();
     }
 
     public function updateNote(int $id, UpdateNoteRequest $request): AjaxResponseInterface
     {
-        DetailsAdapter::updateNote($id, $request->getNote());
+        BookingAdapter::updateNote($id, $request->getNote());
 
         return new AjaxSuccessResponse();
     }
@@ -306,7 +306,7 @@ class BookingController extends Controller
     public function updateStatus(UpdateStatusRequest $request, int $id): JsonResponse
     {
         return response()->json(
-            DetailsAdapter::updateStatus(
+            BookingAdapter::updateStatus(
                 $id,
                 $request->getStatus(),
                 $request->getNotConfirmedReason(),
@@ -318,7 +318,7 @@ class BookingController extends Controller
     public function getStatusHistory(int $id): JsonResponse
     {
         return response()->json(
-            DetailsAdapter::getStatusHistory($id)
+            BookingAdapter::getStatusHistory($id)
         );
     }
 
@@ -420,7 +420,7 @@ class BookingController extends Controller
 
     private function prepareFormData(object $booking): array
     {
-        $hotelId = $booking->hotelInfo->id;
+        $hotelId = $booking->details->hotelInfo->id;
         $cityId = Hotel::find($hotelId)->city_id;
         $order = OrderAdapter::findOrder($booking->orderId);
         $manager = $this->administratorRepository->get($booking->id);

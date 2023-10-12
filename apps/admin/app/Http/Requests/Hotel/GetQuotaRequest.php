@@ -23,9 +23,8 @@ class GetQuotaRequest extends FormRequest
     {
         return [
             'room_id' => ['nullable', 'numeric'],
-            'month' => ['required', 'numeric', 'between:1,12'],
-            'year' => ['required', 'date_format:Y'],
-            'interval' => ['required', new DateIntervalRule],
+            'dateFrom' => ['required', 'date'],
+            'dateTo' => ['required', 'date'],
             'availability' => ['nullable', 'in:sold,stopped,available']
         ];
     }
@@ -42,23 +41,8 @@ class GetQuotaRequest extends FormRequest
 
     public function getPeriod(): CarbonPeriod
     {
-        $dateFrom = Carbon::create($this->getYear(), $this->getMonth());
-        $dateTo = $dateFrom->clone()->add($this->getInterval());
+        $dateFrom = $this->date('dateFrom');
+        $dateTo = $this->date('dateTo');
         return new CarbonPeriod($dateFrom, $dateTo);
-    }
-
-    private function getMonth(): int
-    {
-        return $this->get('month');
-    }
-
-    private function getYear(): int
-    {
-        return $this->get('year');
-    }
-
-    private function getInterval(): CarbonInterval
-    {
-        return new CarbonInterval($this->get('interval'));
     }
 }

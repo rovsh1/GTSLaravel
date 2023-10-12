@@ -7,6 +7,7 @@ namespace Module\Booking\Domain\Booking\Factory;
 use Module\Booking\Domain\Booking\Booking;
 use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Domain\Booking\Repository\Details\CIPRoomInAirportRepositoryInterface;
+use Module\Booking\Domain\Booking\Repository\Details\HotelBookingRepositoryInterface;
 use Module\Booking\Domain\Booking\Repository\Details\TransferFromAirportRepositoryInterface;
 use Module\Booking\Domain\Booking\Repository\Details\TransferToAirportRepositoryInterface;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
@@ -30,6 +31,7 @@ class DetailsRepositoryFactory
     public function build(Booking $booking): mixed
     {
         return match ($booking->serviceType()) {
+            ServiceTypeEnum::HOTEL_BOOKING => $this->module->make(HotelBookingRepositoryInterface::class),
             ServiceTypeEnum::TRANSFER_TO_AIRPORT => $this->module->make(TransferToAirportRepositoryInterface::class),
             ServiceTypeEnum::TRANSFER_FROM_AIRPORT => $this->module->make(TransferFromAirportRepositoryInterface::class),
             ServiceTypeEnum::CIP_IN_AIRPORT => $this->module->make(CIPRoomInAirportRepositoryInterface::class),

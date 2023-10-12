@@ -3,7 +3,7 @@
 namespace Module\Booking\Infrastructure\HotelBooking\Adapter;
 
 use Carbon\CarbonPeriod;
-use Module\Booking\Deprecated\HotelBooking\Adapter\HotelRoomQuotaAdapterInterface;
+use Module\Booking\Domain\Booking\Adapter\HotelRoomQuotaAdapterInterface;
 use Module\Catalog\Application\Admin\Quota\GetAvailable;
 use Module\Catalog\Application\Admin\Response\RoomDto;
 

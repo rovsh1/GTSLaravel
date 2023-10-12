@@ -8,6 +8,7 @@ use DateTimeInterface;
 use Module\Booking\Domain\Booking\Entity\TransferFromAirport;
 use Module\Booking\Domain\Booking\Repository\Details\TransferFromAirportRepositoryInterface;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Domain\Booking\ValueObject\CarBidCollection;
 use Module\Booking\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Booking\Infrastructure\ServiceBooking\Models\Booking;
 use Module\Booking\Infrastructure\ServiceBooking\Models\Details\Transfer;
@@ -29,6 +30,7 @@ class TransferFromAirportRepository extends AbstractDetailsRepository implements
         BookingId $bookingId,
         ServiceInfo $serviceInfo,
         int $airportId,
+        CarBidCollection $carBids,
         ?string $flightNumber,
         ?DateTimeInterface $arrivalDate,
         ?string $meetingTablet
@@ -36,12 +38,13 @@ class TransferFromAirportRepository extends AbstractDetailsRepository implements
         $model = Transfer::create([
             'booking_id' => $bookingId->value(),
             'date_start' => $arrivalDate,
-            'service_id' => $serviceInfo->id()->value(),
+            'service_id' => $serviceInfo->id(),
             'data' => [
                 'serviceInfo' => $this->serializeServiceInfo($serviceInfo),
                 'airportId' => $airportId,
                 'flightNumber' => $flightNumber,
                 'meetingTablet' => $meetingTablet,
+                'carBids' => $carBids->toData(),
             ]
         ]);
 
@@ -55,7 +58,8 @@ class TransferFromAirportRepository extends AbstractDetailsRepository implements
                 'serviceInfo' => $this->serializeServiceInfo($details->serviceInfo()),
                 'airportId' => $details->airportId(),
                 'flightNumber' => $details->flightNumber(),
-                'meetingTablet' => $details->meetingTablet()
+                'meetingTablet' => $details->meetingTablet(),
+                'carBids' => $details->carBids()->toData(),
             ]
         ]);
     }

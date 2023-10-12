@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Module\Booking\Domain\Booking\Repository\Details;
 
-use DateTimeInterface;
 use Module\Booking\Domain\Booking\Entity\HotelBooking;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Domain\Booking\ValueObject\ServiceInfo;
-use Module\Booking\Domain\Shared\ValueObject\GuestIdCollection;
+use Module\Booking\Domain\Booking\ValueObject\BookingPeriod;
+use Module\Booking\Domain\Booking\ValueObject\HotelBooking\HotelInfo;
+use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomBookingIdCollection;
+use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 
 interface HotelBookingRepositoryInterface
 {
@@ -18,11 +19,10 @@ interface HotelBookingRepositoryInterface
 
     public function create(
         BookingId $bookingId,
-        ServiceInfo $serviceInfo,
-        int $airportId,
-        ?string $flightNumber,
-        ?DateTimeInterface $serviceDate,
-        GuestIdCollection $guestIds,
+        HotelInfo $hotelInfo,
+        BookingPeriod $bookingPeriod,
+        RoomBookingIdCollection $roomBookings,
+        QuotaProcessingMethodEnum $quotaProcessingMethod,
     ): HotelBooking;
 
     public function store(HotelBooking $details): bool;

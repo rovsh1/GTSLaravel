@@ -3,23 +3,13 @@ import { computed, unref } from 'vue'
 import { MaybeRef } from '@vueuse/core'
 
 import { BaseResponse, useAdminAPI } from '~api'
-import {
-  AdditionalInfo,
-  BookingPeriod,
-  CancelConditions,
-  HotelInfo,
-  HotelRoomBooking,
-} from '~api/booking/hotel/details'
+import { HotelBookingDetails } from '~api/booking/hotel/details'
 import { BaseBooking, BookingID } from '~api/booking/models'
 
 import { getNullableRef } from '~lib/vue'
 
 export type Booking = {
-  hotelInfo: HotelInfo
-  period: BookingPeriod
-  roomBookings: HotelRoomBooking[]
-  additionalInfo: AdditionalInfo | null
-  cancelConditions: CancelConditions
+  details: HotelBookingDetails
 } & BaseBooking
 
 export interface GetBookingPayload {

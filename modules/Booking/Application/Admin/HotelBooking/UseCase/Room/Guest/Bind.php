@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Module\Booking\Application\Admin\HotelBooking\UseCase\Room\Guest;
 
 use Module\Booking\Application\Admin\HotelBooking\Exception\TooManyRoomGuestsException;
-use Module\Booking\Deprecated\HotelBooking\Adapter\HotelRoomAdapterInterface;
 use Module\Booking\Deprecated\HotelBooking\Event\GuestBinded;
-use Module\Booking\Deprecated\HotelBooking\Repository\BookingGuestRepositoryInterface;
-use Module\Booking\Deprecated\HotelBooking\Repository\BookingRepositoryInterface;
+use Module\Booking\Domain\Booking\Adapter\HotelRoomAdapterInterface;
+use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
+use Module\Booking\Domain\Booking\Repository\HotelBooking\BookingGuestRepositoryInterface;
 use Module\Booking\Domain\Booking\Repository\RoomBookingRepositoryInterface;
+use Module\Booking\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomBookingId;
 use Module\Booking\Domain\Shared\ValueObject\GuestId;
 use Module\Shared\Contracts\Domain\DomainEntityExceptionInterface;
@@ -31,11 +32,11 @@ class Bind implements UseCaseInterface
     public function execute(int $bookingId, int $roomBookingId, int $guestId): void
     {
         try {
-            $booking = $this->bookingRepository->find($bookingId);
+            $booking = $this->bookingRepository->find(new BookingId($bookingId));
             if ($booking === null) {
                 throw new EntityNotFoundException('Booking not found');
             }
-            $roomBooking = $this->roomBookingRepository->find($roomBookingId);
+            $roomBooking = $this->roomBookingRepository->find(new RoomBookingId($roomBookingId));
             if ($roomBooking === null) {
                 throw new EntityNotFoundException('Room booking not found');
             }
@@ -49,6 +50,8 @@ class Bind implements UseCaseInterface
             $roomId = new RoomBookingId($roomBookingId);
             $newGuestId = new GuestId($guestId);
             $this->bookingGuestRepository->bind($roomId, $newGuestId);
+            $roomBooking->addGuest($newGuestId);
+            $this->roomBookingRepository->store($roomBooking);
             $this->eventDispatcher->dispatch(
                 new GuestBinded(
                     $booking->id(),

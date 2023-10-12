@@ -1,25 +1,30 @@
 import { onMounted, onUnmounted, ref } from 'vue'
 
 export type MenuPosition = {
-  date: Date
   dayKey: string
   roomTypeID: number
 }
+
+export type ElementTrigger = {
+  trigger: HTMLElement
+}
+
+export type MenuParams = ElementTrigger & MenuPosition
 
 export const useDayMenu = () => {
   const dayMenuRef = ref<HTMLElement | null>(null)
   const dayMenuPosition = ref<MenuPosition | null>(null)
 
-  const openDayMenu = (params: { trigger: HTMLElement } & MenuPosition) => {
+  const openDayMenu = (params: MenuParams) => {
     const {
       trigger,
-      date,
+      // date,
       dayKey,
       roomTypeID,
-    } = params
+    } = params as MenuPosition & ElementTrigger
     dayMenuRef.value = trigger
     dayMenuPosition.value = {
-      date,
+      // date,
       dayKey,
       roomTypeID,
     }

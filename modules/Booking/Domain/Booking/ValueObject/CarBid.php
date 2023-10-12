@@ -3,8 +3,9 @@
 namespace Module\Booking\Domain\Booking\ValueObject;
 
 use Illuminate\Support\Str;
+use Module\Shared\Contracts\Support\SerializableDataInterface;
 
-final class CarBid
+final class CarBid implements SerializableDataInterface
 {
     public function __construct(
         private readonly string $id,
@@ -60,5 +61,29 @@ final class CarBid
     public function babyCount(): int
     {
         return $this->babyCount;
+    }
+
+    public function toData(): array
+    {
+        return [
+            'id' => $this->id,
+            'carId' => $this->carId->value(),
+            'carsCount' => $this->carsCount,
+            'passengersCount' => $this->passengersCount,
+            'baggageCount' => $this->baggageCount,
+            'babyCount' => $this->babyCount,
+        ];
+    }
+
+    public static function fromData(array $data): static
+    {
+        return new static(
+            $data['id'],
+            new CarId($data['carId']),
+            $data['carsCount'],
+            $data['passengersCount'],
+            $data['baggageCount'],
+            $data['babyCount'],
+        );
     }
 }

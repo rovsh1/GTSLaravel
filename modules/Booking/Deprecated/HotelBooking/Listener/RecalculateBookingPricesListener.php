@@ -3,7 +3,7 @@
 namespace Module\Booking\Deprecated\HotelBooking\Listener;
 
 use Module\Booking\Deprecated\HotelBooking\Event\PriceBecomeDeprecatedEventInterface;
-use Module\Booking\Domain\Booking\Service\HotelBookingPriceCalculator\PriceCalculator;
+use Module\Booking\Domain\Booking\Service\HotelBooking\PriceCalculator\PriceCalculator;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
 use Sdk\Module\Contracts\Event\DomainEventInterface;
 use Sdk\Module\Contracts\Event\DomainEventListenerInterface;

@@ -19,7 +19,7 @@ final class HotelRoomBooking
         private readonly RoomBookingId $id,
         private readonly BookingId $bookingId,
         private readonly RoomInfo $roomInfo,
-        private GuestIdCollection $guestsIds,
+        private GuestIdCollection $guestIds,
         private RoomBookingDetails $details,
         private RoomPrices $prices,
     ) {

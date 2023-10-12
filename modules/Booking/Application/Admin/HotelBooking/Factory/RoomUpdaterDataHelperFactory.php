@@ -6,10 +6,12 @@ namespace Module\Booking\Application\Admin\HotelBooking\Factory;
 
 use Module\Booking\Application\Admin\HotelBooking\Request\AddRoomDto;
 use Module\Booking\Application\Admin\HotelBooking\Request\UpdateRoomDto;
-use Module\Booking\Deprecated\HotelBooking\Adapter\HotelRoomAdapterInterface;
-use Module\Booking\Deprecated\HotelBooking\Repository\BookingRepositoryInterface;
-use Module\Booking\Deprecated\HotelBooking\Service\RoomUpdater\UpdateDataHelper;
-use Module\Booking\Deprecated\HotelBooking\ValueObject\Details\Condition;
+use Module\Booking\Domain\Booking\Adapter\HotelRoomAdapterInterface;
+use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
+use Module\Booking\Domain\Booking\Repository\Details\HotelBookingRepositoryInterface;
+use Module\Booking\Domain\Booking\Service\HotelBooking\RoomUpdater\UpdateDataHelper;
+use Module\Booking\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Domain\Booking\ValueObject\HotelBooking\Condition;
 use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomBookingDetails;
 use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomInfo;
 use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomPrices;
@@ -23,6 +25,7 @@ class RoomUpdaterDataHelperFactory
     public function __construct(
         private readonly HotelRoomAdapterInterface $hotelRoomAdapter,
         private readonly BookingRepositoryInterface $bookingRepository,
+        private readonly HotelBookingRepositoryInterface $detailsRepository,
     ) {}
 
     public function build(
@@ -30,10 +33,11 @@ class RoomUpdaterDataHelperFactory
         GuestIdCollection $guestIds,
         RoomPrices $price
     ): UpdateDataHelper {
-        $booking = $this->bookingRepository->find($request->bookingId);
+        $booking = $this->bookingRepository->find(new BookingId($request->bookingId));
         if ($booking === null) {
             throw new EntityNotFoundException('Booking not found');
         }
+        $bookingDetails = $this->detailsRepository->find($booking->id());
 
         $hotelRoomDto = $this->hotelRoomAdapter->findById($request->roomId);
         if ($hotelRoomDto === null) {
@@ -45,12 +49,13 @@ class RoomUpdaterDataHelperFactory
 
         return new UpdateDataHelper(
             booking: $booking,
+            bookingDetails: $bookingDetails,
             roomInfo: new RoomInfo(
                 $hotelRoomDto->id,
                 $hotelRoomDto->name,
             ),
             guestIds: $guestIds,
-            details: new RoomBookingDetails(
+            roomDetails: new RoomBookingDetails(
                 rateId: $request->rateId,
                 isResident: $request->isResident,
                 earlyCheckIn: $earlyCheckIn,

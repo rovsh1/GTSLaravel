@@ -1,157 +1,53 @@
-import { Ref, ref, watch } from 'vue'
+import { Ref, ref } from 'vue'
 
-import { HotelRoomID } from '~api/hotel'
+import { ActiveKey, Day } from './index'
 
-import { ActiveKey, getActiveCellKey, RoomQuota } from '.'
-
-export type QuotaRange = {
-  roomID: HotelRoomID
-  quotas: RoomQuota[]
-} | null
-
-export type EditedQuota = {
-  key: ActiveKey
-  value: number
-}
-
-const addRoomIDToRoomQuotaKey = (roomTypeID: HotelRoomID) => (roomQuota: RoomQuota): RoomQuota => ({
-  ...roomQuota,
-  key: getActiveCellKey(roomQuota.key, roomTypeID),
-})
-
-type SetRangeParams = {
-  dailyQuota: RoomQuota[]
-  roomTypeID: HotelRoomID
-  activeKey: ActiveKey
-  rangeKey: ActiveKey
-}
-const setQuotaRange = (params: SetRangeParams) =>
-  (roomQuotas: RoomQuota[], done: (newRange: QuotaRange) => void) => {
-    const {
-      roomTypeID,
-      activeKey,
-      rangeKey,
-    } = params
-    const indexes: [number, number] = [-1, -1]
-    roomQuotas.forEach(({ key }, index) => {
-      if (getActiveCellKey(key, roomTypeID) === activeKey) indexes[0] = index
-      if (getActiveCellKey(key, roomTypeID) === rangeKey) indexes[1] = index
-    })
-    const [firstIndex, lastIndex] = indexes
-    if (firstIndex === -1 || lastIndex === -1) {
-      return done(null)
-    }
-    if (firstIndex > lastIndex) indexes.reverse()
-    const [from, to] = indexes
-    const range = roomQuotas
-      .slice(from, to + 1)
-      .map(addRoomIDToRoomQuotaKey(roomTypeID))
-    return done({
-      roomID: roomTypeID,
-      quotas: range,
-    })
+const inRange = (key: string | null, range: string[]): boolean => {
+  if (!key) return false
+  if (range.includes(key)) {
+    return true
   }
-
-type SetPickParams = {
-  oldRange: QuotaRange
-  roomTypeID: HotelRoomID
-  activeKey: ActiveKey
-  pickKey: ActiveKey
+  return false
 }
-const setQuotaPick = (params: SetPickParams) =>
-  (roomQuotas: RoomQuota[], done: (newRange: QuotaRange) => void) => {
-    const {
-      oldRange,
-      roomTypeID: roomID,
-      activeKey,
-      pickKey,
-    } = params
-    const find = (keyToFind: ActiveKey) => {
-      const found = roomQuotas
-        .find(({ key }) => getActiveCellKey(key, roomID) === keyToFind)
-      if (found === undefined) return undefined
-      return addRoomIDToRoomQuotaKey(roomID)(found)
-    }
-
-    const picked = find(pickKey)
-    if (picked === undefined) return done(null)
-    if (oldRange === null) {
-      const active = find(activeKey)
-      if (active === undefined) return done(null)
-      // Create new range from active and picked
-      return done({ roomID, quotas: [active, picked] })
-    }
-    const { quotas } = oldRange
-    const pickedQuotaInRange = quotas
-      .find(({ key }) => key === picked.key)
-    if (pickedQuotaInRange === undefined) {
-    // Add picked quota to range
-      return done({ roomID, quotas: [...quotas, picked] })
-    }
-    // Remove picked quota from range
-    return done({
-      roomID,
-      quotas: quotas.filter(({ key }) => key !== pickedQuotaInRange.key),
-    })
-  }
 
 type UseQuotasTableRangeParams = {
-  roomQuotas: Ref<RoomQuota[]>
-  editedRef: Ref<number | null>
+  days: Ref<Day[]>
   activeKey: Ref<ActiveKey>
-  editedInRange: Ref<EditedQuota | null>
+  roomID: number
 }
-export const useQuotasTableRange = (params: UseQuotasTableRangeParams) => {
+export const useTableRange = (params: UseQuotasTableRangeParams) => {
   const {
-    roomQuotas,
-    editedRef,
     activeKey,
-    editedInRange,
+    roomID,
+    days,
   } = params
 
-  const rangeRef = ref<QuotaRange>(null)
-
-  watch(activeKey, (value) => {
-    if (value === null) rangeRef.value = null
-  })
+  const rangeRef = ref<string[]>([])
 
   return {
     rangeRef,
-    isCellInRange: (cellKey: ActiveKey): boolean => {
-      if (rangeRef.value === null) return false
-      const found = rangeRef.value.quotas.find(({ key }) => key === cellKey)
-      return found !== undefined
-    },
-    setPick: (setPickParams: SetPickParams) => {
-      setQuotaPick(setPickParams)(roomQuotas.value, ((newRange) => {
-        rangeRef.value = newRange
-      }))
-      if (editedInRange.value && editedRef.value) {
-        editedInRange.value.value = editedRef.value
+    isCellInRange: (key: string | null): boolean => inRange(key, rangeRef.value),
+    addItemsToRange: (key: string | null) => {
+      const rangeStartPositionIndex = days.value.findIndex((item) => `${item.key}-${roomID}` === activeKey.value)
+      const rangeEndPositionIndex = days.value.findIndex((item) => `${item.key}-${roomID}` === key)
+      if (rangeStartPositionIndex === -1 || rangeEndPositionIndex === -1) {
+        return
       }
+      const start = Math.min(rangeStartPositionIndex, rangeEndPositionIndex)
+      const end = Math.max(rangeStartPositionIndex, rangeEndPositionIndex) + 1
+      const subArray = days.value.slice(start, end)
+      rangeRef.value = subArray.map((dayItem) => `${dayItem.key}-${roomID}`)
     },
-    setRange: (setRangeParams: SetRangeParams) => {
-      setQuotaRange(setRangeParams)(roomQuotas.value, ((newRange) => {
-        rangeRef.value = newRange
-      }))
-      if (editedInRange.value && editedRef.value) {
-        editedInRange.value.value = editedRef.value
+    addItemToRange: (key: string | null) => {
+      if (!key || !activeKey.value) return
+      if (inRange(key, rangeRef.value)) {
+        const index = rangeRef.value.indexOf(key)
+        if (index !== -1) {
+          rangeRef.value.splice(index, 1)
+        }
+      } else {
+        rangeRef.value.push(key)
       }
-    },
-    setEdited: (key: ActiveKey, value: number) => {
-      editedInRange.value = { key, value }
-    },
-    handleInput: (key: ActiveKey, value: number) => {
-      editedRef.value = value
-      if (editedInRange.value) {
-        editedInRange.value.value = value
-      }
-    },
-    showEdited: (key: ActiveKey): boolean => {
-      if (editedInRange.value === null) return false
-      if (rangeRef.value === null) return false
-      return rangeRef.value.quotas
-        .find((quota) => quota.key === key) !== undefined
     },
   }
 }

@@ -8,6 +8,7 @@ use Module\Booking\Application\Admin\ServiceBooking\Service\DetailsEditor\Editor
 use Module\Booking\Domain\Booking\Entity\TransferFromAirport as Entity;
 use Module\Booking\Domain\Booking\Repository\Details\TransferFromAirportRepositoryInterface;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Domain\Booking\ValueObject\CarBidCollection;
 use Module\Booking\Domain\Booking\ValueObject\ServiceId;
 use Module\Booking\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Supplier\Infrastructure\Models\Service as InfrastructureSupplierService;
@@ -22,12 +23,13 @@ class TransferFromAirport extends AbstractEditor implements EditorInterface
     {
         $supplierService = InfrastructureSupplierService::find($serviceId->value());
 
-        $serviceInfo = new ServiceInfo($serviceId, $supplierService->title);
+        $serviceInfo = new ServiceInfo($serviceId->value(), $supplierService->title);
 
         return $this->detailsRepository->create(
             $bookingId,
             $serviceInfo,
             $supplierService->data['airportId'],
+            new CarBidCollection([]),
             $detailsData['flightNumber'] ?? null,
             $detailsData['arrivalDate'] ?? null,
             $detailsData['meetingTablet'] ?? null,

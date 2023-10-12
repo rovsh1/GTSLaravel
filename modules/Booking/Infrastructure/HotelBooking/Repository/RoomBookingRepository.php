@@ -5,21 +5,22 @@ declare(strict_types=1);
 namespace Module\Booking\Infrastructure\HotelBooking\Repository;
 
 use Illuminate\Database\Eloquent\Collection;
-use Module\Booking\Deprecated\HotelBooking\Entity\RoomBooking;
-use Module\Booking\Deprecated\HotelBooking\ValueObject\Details\RoomBookingCollection;
+use Module\Booking\Domain\Booking\Entity\HotelRoomBooking;
 use Module\Booking\Domain\Booking\Repository\RoomBookingRepositoryInterface;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomBookingCollection;
 use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomBookingDetails;
 use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomBookingId;
+use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomBookingIdCollection;
 use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomInfo;
 use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomPrices;
-use Module\Booking\Domain\Order\ValueObject\OrderId;
 use Module\Booking\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Booking\Infrastructure\HotelBooking\Models\RoomBooking as Model;
+use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
 class RoomBookingRepository implements RoomBookingRepositoryInterface
 {
-    public function find(int $id): ?RoomBooking
+    public function find(RoomBookingId $id): ?HotelRoomBooking
     {
         $model = Model::find($id);
         if ($model === null) {
@@ -29,10 +30,21 @@ class RoomBookingRepository implements RoomBookingRepositoryInterface
         return $this->buildEntityFromModel($model);
     }
 
-    public function get(int $bookingId): RoomBookingCollection
+    public function findOrFail(RoomBookingId $id): HotelRoomBooking
     {
+        $entity = $this->find($id);
+        if ($entity === null) {
+            throw new EntityNotFoundException('Room booking not found');
+        }
+
+        return $entity;
+    }
+
+    public function get(RoomBookingIdCollection $roomBookingIds): RoomBookingCollection
+    {
+        $ids = $roomBookingIds->map(fn(RoomBookingId $id) => $id->value());
         /** @var Collection<int, Model> $models */
-        $models = Model::whereBookingId($bookingId)->get();
+        $models = Model::whereIn('booking_hotel_rooms.id', $ids)->get();
 
         return new RoomBookingCollection($models->map(fn(Model $model) => $this->buildEntityFromModel($model))->all());
     }
@@ -42,7 +54,7 @@ class RoomBookingRepository implements RoomBookingRepositoryInterface
         RoomInfo $roomInfo,
         RoomBookingDetails $details,
         RoomPrices $price
-    ): RoomBooking {
+    ): HotelRoomBooking {
         $model = Model::create([
             'booking_id' => $bookingId->value(),
             'hotel_room_id' => $roomInfo->id(),
@@ -55,7 +67,7 @@ class RoomBookingRepository implements RoomBookingRepositoryInterface
         return $this->buildEntityFromModel($model);
     }
 
-    public function store(RoomBooking $booking): bool
+    public function store(HotelRoomBooking $booking): bool
     {
         return (bool)Model::whereId($booking->id()->value())
             ->update([
@@ -65,17 +77,17 @@ class RoomBookingRepository implements RoomBookingRepositoryInterface
             ]);
     }
 
-    public function delete(int $id): bool
+    public function delete(RoomBookingId $id): bool
     {
-        return (bool)Model::whereId($id)->delete();
+        return (bool)Model::whereId($id->value())->delete();
     }
 
-    private function serializeEntity(RoomBooking $booking): array
+    private function serializeEntity(HotelRoomBooking $booking): array
     {
         return $this->serializeData(
             roomInfo: $booking->roomInfo(),
             details: $booking->details(),
-            price: $booking->price(),
+            price: $booking->prices(),
         );
     }
 
@@ -91,18 +103,17 @@ class RoomBookingRepository implements RoomBookingRepositoryInterface
         ];
     }
 
-    private function buildEntityFromModel(Model $model): RoomBooking
+    private function buildEntityFromModel(Model $model): HotelRoomBooking
     {
         $data = $model->data;
 
-        return new RoomBooking(
+        return new HotelRoomBooking(
             id: new RoomBookingId($model->id),
             bookingId: new BookingId($model->booking_id),
-            orderId: new OrderId($model->booking_order_id),
             roomInfo: RoomInfo::fromData($data['roomInfo']),
-            guestsIds: GuestIdCollection::fromData($model->guest_ids),
+            guestIds: GuestIdCollection::fromData($model->guest_ids),
             details: RoomBookingDetails::fromData($data['details']),
-            price: RoomPrices::fromData($data['price'])
+            prices: RoomPrices::fromData($data['price'])
         );
     }
 }

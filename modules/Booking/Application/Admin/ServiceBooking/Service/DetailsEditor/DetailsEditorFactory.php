@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Application\Admin\ServiceBooking\Service\DetailsEditor;
 
 use Module\Booking\Application\Admin\ServiceBooking\Service\DetailsEditor\Editor\CIPRoomInAirport;
+use Module\Booking\Application\Admin\ServiceBooking\Service\DetailsEditor\Editor\HotelBooking;
 use Module\Booking\Application\Admin\ServiceBooking\Service\DetailsEditor\Editor\TransferFromAirport;
 use Module\Booking\Application\Admin\ServiceBooking\Service\DetailsEditor\Editor\TransferToAirport;
 use Module\Booking\Domain\Booking\Booking;
@@ -23,6 +24,7 @@ class DetailsEditorFactory
             ServiceTypeEnum::TRANSFER_TO_AIRPORT => $this->module->make(TransferToAirport::class),
             ServiceTypeEnum::TRANSFER_FROM_AIRPORT => $this->module->make(TransferFromAirport::class),
             ServiceTypeEnum::CIP_IN_AIRPORT => $this->module->make(CIPRoomInAirport::class),
+            ServiceTypeEnum::HOTEL_BOOKING => $this->module->make(HotelBooking::class),
             default => throw new \Exception('Unknown service details')
         };
     }

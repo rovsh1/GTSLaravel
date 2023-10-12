@@ -15,6 +15,13 @@ export const formatDate = (date: DateResponse) => parseAPIDate(date).toLocaleStr
 
 export const formatDateTime = (date: DateResponse) => parseAPIDate(date).toLocaleString(DateTime.DATETIME_SHORT)
 
+export const compareJSDate = (firstDate: Date, secondDate: Date): boolean => {
+  if (firstDate.getTime() === secondDate.getTime()) {
+    return true
+  }
+  return false
+}
+
 export interface PeriodInterface {
   date_start: DateResponse
   date_end: DateResponse

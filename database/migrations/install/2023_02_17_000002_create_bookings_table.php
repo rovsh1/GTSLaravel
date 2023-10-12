@@ -46,7 +46,8 @@ return new class extends Migration {
     private function upBookingHotel(): void
     {
         Schema::create('booking_hotel_details', function (Blueprint $table) {
-            $table->unsignedInteger('booking_id')->primary();
+            $table->increments('id');
+            $table->unsignedInteger('booking_id')->unique();
             $table->unsignedInteger('hotel_id');
             $table->date('date_start');
             $table->date('date_end');

@@ -9,7 +9,6 @@ import { getRef } from '~lib/vue'
 
 export type HotelQuotaID = number
 
-// @example 0 = closed, 1 = opened
 export type QuotaStatus = 0 | 1
 
 export type HotelQuotaResponse = {
@@ -24,20 +23,10 @@ export type HotelQuotaResponse = {
   count_reserved: number
 }
 
-export type MonthNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
-
-// https://www.php.net/manual/en/dateinterval.format.php
-export type QueryInterval =
-  | 'P1M' // 1 month
-  | 'P3M' // 3 months
-  | 'P6M' // 6 months
-  | 'P1Y' // 1 year
-
 type HotelRoomQuotaProps = {
   hotelID: number
-  month: MonthNumber
-  year: number
-  interval: QueryInterval
+  dateFrom: string
+  dateTo: string
   roomID?: number
   availability?: 'sold' | 'stopped' | 'available'
 }
@@ -65,15 +54,13 @@ export const useHotelQuotasAPI = (props: MaybeRef<HotelRoomQuotaProps>) =>
   })
     .post(computed<HotelRoomQuotaPayload>(() => getRef(props, ({
       roomID,
-      month,
-      year,
-      interval,
+      dateFrom,
+      dateTo,
       availability,
     }) => ({
       room_id: roomID,
-      month,
-      year,
-      interval,
+      dateFrom,
+      dateTo,
       availability,
     }))))
     .json<UseHotelQuota>()
