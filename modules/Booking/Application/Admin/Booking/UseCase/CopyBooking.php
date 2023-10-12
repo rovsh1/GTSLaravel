@@ -8,6 +8,7 @@ use Module\Booking\Application\Admin\ServiceBooking\Service\DetailsEditor\Detail
 use Module\Booking\Domain\Booking\Factory\DetailsRepositoryFactory;
 use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Domain\Booking\ValueObject\ServiceId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
@@ -36,7 +37,8 @@ class CopyBooking implements UseCaseInterface
         $details = $this->detailsRepositoryFactory->build($booking)->find($booking->id());
 
         $editor = $this->detailsEditorFactory->build($newBooking);
-        $editor->create($newBooking->id(), $details->serviceInfo()->id(), []);
+        //@todo сейчас не работает копирование отельных броней
+        $editor->create($newBooking->id(), new ServiceId($details->serviceInfo()->id()), []);
 
         return $newBooking->id()->value();
     }

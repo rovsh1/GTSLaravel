@@ -18,9 +18,9 @@ use Module\Booking\Application\Admin\Shared\Factory\AbstractBookingDtoFactory;
 use Module\Booking\Application\Admin\Shared\Factory\BookingPriceDtoFactory;
 use Module\Booking\Application\Admin\Shared\Service\StatusStorage;
 use Module\Booking\Deprecated\HotelBooking\HotelBooking;
-use Module\Booking\Deprecated\HotelBooking\ValueObject\Details\RoomBookingCollection;
-use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomPrices;
+use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomBookingCollection;
 use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomPriceDayPart;
+use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomPrices;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
 use Module\Booking\Domain\Shared\ValueObject\GuestId;
 

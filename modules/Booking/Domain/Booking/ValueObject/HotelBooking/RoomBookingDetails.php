@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Booking\Domain\Booking\ValueObject\HotelBooking;
 
-use Module\Booking\Deprecated\HotelBooking\ValueObject\Details\Condition;
 use Module\Shared\Contracts\CanEquate;
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Module\Shared\Contracts\Support\SerializableDataInterface;

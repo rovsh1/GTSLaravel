@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Module\Booking\Application\Admin\HotelBooking\UseCase\Room;
 
 use Module\Booking\Application\Admin\HotelBooking\Exception\NotFoundHotelRoomPriceException;
-use Module\Booking\Deprecated\HotelBooking\Exception\NotFoundHotelRoomPrice;
 use Module\Booking\Deprecated\HotelBooking\Repository\BookingRepositoryInterface;
+use Module\Booking\Domain\Booking\Exception\HotelBooking\NotFoundHotelRoomPrice;
 use Module\Booking\Domain\Booking\Repository\RoomBookingRepositoryInterface;
 use Module\Booking\Domain\HotelBooking\Service\PriceCalculator\BookingCalculator;
 use Module\Booking\Domain\HotelBooking\Service\PriceCalculator\RoomPriceEditor;

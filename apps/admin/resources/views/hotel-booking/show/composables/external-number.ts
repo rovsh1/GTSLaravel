@@ -22,7 +22,7 @@ export const useExternalNumber = (bookingID: number) => {
       if (isExternalNumberChanged.value) {
         return externalNumberData.value.type
       }
-      return bookingStore.booking?.additionalInfo?.externalNumber?.type || ExternalNumberTypeEnum.HotelBookingNumber
+      return bookingStore.booking?.details?.externalNumber?.type || ExternalNumberTypeEnum.HotelBookingNumber
     },
     set: (value: ExternalNumberType) => {
       isExternalNumberChanged.value = true
@@ -36,7 +36,7 @@ export const useExternalNumber = (bookingID: number) => {
       if (isExternalNumberChanged.value) {
         return externalNumberData.value.number
       }
-      return bookingStore.booking?.additionalInfo?.externalNumber?.number || null
+      return bookingStore.booking?.details?.externalNumber?.number || null
     },
     set: (value: string | null): void => {
       isExternalNumberChanged.value = true

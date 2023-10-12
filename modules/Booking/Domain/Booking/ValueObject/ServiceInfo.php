@@ -7,11 +7,11 @@ namespace Module\Booking\Domain\Booking\ValueObject;
 class ServiceInfo
 {
     public function __construct(
-        private readonly ServiceId $id,
+        private readonly int $id,
         private readonly string $title,
     ) {}
 
-    public function id(): ServiceId
+    public function id(): int
     {
         return $this->id;
     }

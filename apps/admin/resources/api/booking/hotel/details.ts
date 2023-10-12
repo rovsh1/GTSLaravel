@@ -68,10 +68,6 @@ export interface ExternalNumber {
   number: string | null
 }
 
-export interface AdditionalInfo {
-  externalNumber: ExternalNumber | null
-}
-
 export interface CancelConditions {
   cancelNoFeeDate: DateResponse | null
   noCheckInMarkup: NoCheckInMarkup
@@ -96,6 +92,6 @@ export interface HotelBookingDetails {
   hotelInfo: HotelInfo
   period: BookingPeriod
   roomBookings: HotelRoomBooking[]
-  additionalInfo: AdditionalInfo | null
-  cancelConditions: CancelConditions
+  externalNumber: ExternalNumber | null
+  quotaProcessingMethod: number
 }

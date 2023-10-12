@@ -8,13 +8,21 @@ use Module\Booking\Application\Admin\ServiceBooking\Dto\CIPRoomInAirportDto;
 use Module\Booking\Application\Admin\ServiceBooking\Dto\ServiceDetailsDtoInterface;
 use Module\Booking\Application\Admin\ServiceBooking\Dto\TransferFromAirportDto;
 use Module\Booking\Application\Admin\ServiceBooking\Dto\TransferToAirportDto;
+use Module\Booking\Application\Admin\ServiceBooking\Factory\HotelBooking\DetailsDtoFactory as HotelDetailsDtoFactory;
 use Module\Booking\Domain\Booking\Entity\CIPRoomInAirport;
+use Module\Booking\Domain\Booking\Entity\HotelBooking;
 use Module\Booking\Domain\Booking\Entity\ServiceDetailsInterface;
 use Module\Booking\Domain\Booking\Entity\TransferFromAirport;
 use Module\Booking\Domain\Booking\Entity\TransferToAirport;
 
 class ServiceDetailsDtoFactory
 {
+    public function __construct(
+        private readonly HotelDetailsDtoFactory $hotelFactory
+    )
+    {
+    }
+
     public function createFromEntity(ServiceDetailsInterface $details): ServiceDetailsDtoInterface
     {
         if ($details instanceof TransferToAirport) {
@@ -23,6 +31,8 @@ class ServiceDetailsDtoFactory
             return $this->buildTransferFromAirport($details);
         } elseif ($details instanceof CIPRoomInAirport) {
             return $this->buildCIPRoomInAirport($details);
+        } elseif ($details instanceof HotelBooking) {
+            return $this->hotelFactory->build($details);
         } else {
             throw new \Exception('Service details dto not implemented');
         }

@@ -16,7 +16,7 @@ abstract class AbstractDetailsRepository
     protected function serializeServiceInfo(ServiceInfo $serviceInfo): array
     {
         return [
-            'serviceId' => $serviceInfo->id()->value(),
+            'serviceId' => $serviceInfo->id(),
             'title' => $serviceInfo->title(),
         ];
     }

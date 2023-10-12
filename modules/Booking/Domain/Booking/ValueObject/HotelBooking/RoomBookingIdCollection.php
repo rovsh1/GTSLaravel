@@ -29,4 +29,16 @@ class RoomBookingIdCollection extends AbstractValueObjectCollection
 
         return false;
     }
+
+    public function toData(): array
+    {
+        return $this->map(fn(RoomBookingId $id) => $id->value());
+    }
+
+    public static function fromData(array $data): static
+    {
+        $ids = array_map(fn(int $id) => new RoomBookingId($id), $data);
+
+        return (new static($ids));
+    }
 }
