@@ -2,6 +2,7 @@
 
 namespace Module\Booking\Domain\Shared\Service\DocumentGenerator;
 
+use Module\Booking\Domain\BookingRequest\Service\TemplateBuilder;
 use Module\Booking\Domain\Shared\Entity\AbstractBooking;
 use Module\Booking\Domain\Shared\Event\Contracts\BookingRequestableInterface;
 

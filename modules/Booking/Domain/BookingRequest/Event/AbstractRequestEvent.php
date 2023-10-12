@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Domain\Shared\Event\Request;
+namespace Module\Booking\Domain\BookingRequest\Event;
 
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
 use Module\Booking\Domain\Shared\Event\AbstractBookingEvent;

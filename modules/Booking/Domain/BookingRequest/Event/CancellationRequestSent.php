@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Booking\Domain\Shared\Event\Request;
+namespace Module\Booking\Domain\BookingRequest\Event;
 
 class CancellationRequestSent extends AbstractRequestEvent
 {

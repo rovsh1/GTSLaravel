@@ -1,10 +1,10 @@
 <?php
 
-namespace Module\Booking\Providers\Order;
+namespace Module\Booking\Providers;
 
 use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
 
-class BootServiceProvider extends ServiceProvider
+class OrderServiceProvider extends ServiceProvider
 {
     public function register()
     {
