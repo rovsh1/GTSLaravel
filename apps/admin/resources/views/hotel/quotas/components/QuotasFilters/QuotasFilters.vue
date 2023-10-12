@@ -157,7 +157,7 @@ const isStateChanged = computed<boolean>(() =>
         :id="roomsElementID"
         label="Выберите номер(а)"
         :label-outline="false"
-        :disabled="(loading as boolean)"
+        :disabled="false"
         :label-margin="false"
         :value="selectedRoomID"
         :options="rooms"
