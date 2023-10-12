@@ -164,6 +164,7 @@ const isStateChanged = computed<boolean>(() =>
         :close-after-click-select-all="true"
         @input="handleRoomInput"
       />
+      <div v-if="loading" class="quotasFilters-rooms-disable" />
     </div>
     <div class="actions">
       <BootstrapButton
@@ -190,7 +191,8 @@ const isStateChanged = computed<boolean>(() =>
   align-items: flex-end;
 
   .quotasFilters-rooms {
-    width: 245px
+    width: 245px;
+    position: relative;
   }
 }
 
@@ -202,5 +204,16 @@ const isStateChanged = computed<boolean>(() =>
   :deep(select) {
     text-transform: capitalize;
   }
+}
+
+.quotasFilters-rooms-disable {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--bs-secondary-bg);
+  border-radius: var(--bs-border-radius);
+  opacity: 0.4;
 }
 </style>
