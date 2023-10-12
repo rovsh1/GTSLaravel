@@ -2,15 +2,19 @@
 
 namespace Module\Booking\Providers;
 
-use Module\Booking\Deprecated\HotelBooking\Adapter\HotelRoomAdapterInterface;
-use Module\Booking\Deprecated\HotelBooking\Adapter\HotelRoomQuotaAdapterInterface;
 use Module\Booking\Domain\Booking\Adapter\HotelAdapterInterface;
 use Module\Booking\Domain\Booking\Adapter\HotelPricingAdapterInterface;
+use Module\Booking\Domain\Booking\Adapter\HotelRoomAdapterInterface;
+use Module\Booking\Domain\Booking\Adapter\HotelRoomQuotaAdapterInterface;
+use Module\Booking\Domain\Booking\Repository\HotelBooking\BookingGuestRepositoryInterface;
+use Module\Booking\Domain\Booking\Repository\HotelBooking\BookingQuotaRepositoryInterface;
 use Module\Booking\Domain\Booking\Repository\RoomBookingRepositoryInterface;
 use Module\Booking\Infrastructure\Adapter\HotelPricingAdapter;
 use Module\Booking\Infrastructure\HotelBooking\Adapter\HotelAdapter;
 use Module\Booking\Infrastructure\HotelBooking\Adapter\HotelRoomAdapter;
 use Module\Booking\Infrastructure\HotelBooking\Adapter\HotelRoomQuotaAdapter;
+use Module\Booking\Infrastructure\HotelBooking\Repository\BookingGuestRepository;
+use Module\Booking\Infrastructure\HotelBooking\Repository\BookingQuotaRepository;
 use Module\Booking\Infrastructure\HotelBooking\Repository\RoomBookingRepository;
 use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
 
@@ -28,6 +32,8 @@ class HotelBookingServiceProvider extends ServiceProvider
         $this->app->singleton(HotelPricingAdapterInterface::class, HotelPricingAdapter::class);
 
         $this->app->singleton(RoomBookingRepositoryInterface::class, RoomBookingRepository::class);
+        $this->app->singleton(BookingGuestRepositoryInterface::class, BookingGuestRepository::class);
+        $this->app->singleton(BookingQuotaRepositoryInterface::class, BookingQuotaRepository::class);
 //        $this->app->singleton(BookingQuotaRepositoryInterface::class, BookingQuotaRepository::class);
 //        $this->app->singleton(BookingGuestRepositoryInterface::class, BookingGuestRepository::class);
 //        $this->app->singleton(

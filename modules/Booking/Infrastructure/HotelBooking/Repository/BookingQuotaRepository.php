@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Module\Booking\Infrastructure\HotelBooking\Repository;
 
 use Carbon\CarbonPeriodImmutable;
-use Module\Booking\Deprecated\HotelBooking\Entity\RoomQuota as Entity;
-use Module\Booking\Deprecated\HotelBooking\Repository\BookingQuotaRepositoryInterface;
-use Module\Booking\Deprecated\HotelBooking\ValueObject\QuotaId;
+use Module\Booking\Domain\Booking\Entity\HotelBooking\RoomQuota as Entity;
+use Module\Booking\Domain\Booking\Repository\HotelBooking\BookingQuotaRepositoryInterface;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Domain\Booking\ValueObject\BookingPeriod;
+use Module\Booking\Domain\Booking\ValueObject\HotelBooking\QuotaId;
 use Module\Booking\Infrastructure\HotelBooking\Models\Hotel\RoomQuota as Model;
 use Module\Catalog\Infrastructure\Models\Room\QuotaReservation;
 use Module\Shared\Contracts\Service\ApplicationContextInterface;

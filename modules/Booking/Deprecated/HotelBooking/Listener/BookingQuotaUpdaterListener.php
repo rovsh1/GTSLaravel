@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Deprecated\HotelBooking\Listener;
 
 use Module\Booking\Deprecated\HotelBooking\HotelBooking;
-use Module\Booking\Deprecated\HotelBooking\Service\QuotaManager\QuotaManager;
+use Module\Booking\Domain\Booking\Service\HotelBooking\QuotaManager\QuotaManager;
 use Module\Booking\Domain\Shared\Event\BookingDeleted;
 use Module\Booking\Domain\Shared\Event\BookingStatusEventInterface;
 use Sdk\Module\Contracts\Event\DomainEventInterface;

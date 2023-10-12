@@ -10,9 +10,9 @@ use Module\Booking\Application\Admin\HotelBooking\Exception\NotFoundHotelCancelP
 use Module\Booking\Application\Admin\HotelBooking\Factory\CancelConditionsFactory;
 use Module\Booking\Application\Admin\ServiceBooking\Service\DetailsEditor\DetailsEditorFactory;
 use Module\Booking\Application\Admin\Shared\Support\UseCase\AbstractCreateBooking;
-use Module\Booking\Deprecated\HotelBooking\Service\HotelValidator;
 use Module\Booking\Domain\Booking\Adapter\HotelAdapterInterface;
 use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
+use Module\Booking\Domain\Booking\Service\HotelBooking\HotelValidator;
 use Module\Booking\Domain\Booking\ValueObject\BookingPrices;
 use Module\Booking\Domain\Booking\ValueObject\ServiceId;
 use Module\Booking\Domain\Shared\ValueObject\CreatorId;

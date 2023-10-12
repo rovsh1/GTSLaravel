@@ -4,14 +4,11 @@ declare(strict_types=1);
 
 namespace Module\Booking\Application\Admin\ServiceBooking\Factory;
 
-use Module\Booking\Application\Admin\HotelBooking\Dto\Details\AdditionalInfo\ExternalNumberDto;
-use Module\Booking\Application\Admin\HotelBooking\Dto\Details\BookingPeriodDto;
-use Module\Booking\Application\Admin\HotelBooking\Dto\Details\HotelInfoDto;
 use Module\Booking\Application\Admin\ServiceBooking\Dto\CIPRoomInAirportDto;
-use Module\Booking\Application\Admin\ServiceBooking\Dto\HotelBookingDto;
 use Module\Booking\Application\Admin\ServiceBooking\Dto\ServiceDetailsDtoInterface;
 use Module\Booking\Application\Admin\ServiceBooking\Dto\TransferFromAirportDto;
 use Module\Booking\Application\Admin\ServiceBooking\Dto\TransferToAirportDto;
+use Module\Booking\Application\Admin\ServiceBooking\Factory\HotelBooking\DetailsDtoFactory as HotelDetailsDtoFactory;
 use Module\Booking\Domain\Booking\Entity\CIPRoomInAirport;
 use Module\Booking\Domain\Booking\Entity\HotelBooking;
 use Module\Booking\Domain\Booking\Entity\ServiceDetailsInterface;
@@ -20,6 +17,12 @@ use Module\Booking\Domain\Booking\Entity\TransferToAirport;
 
 class ServiceDetailsDtoFactory
 {
+    public function __construct(
+        private readonly HotelDetailsDtoFactory $hotelFactory
+    )
+    {
+    }
+
     public function createFromEntity(ServiceDetailsInterface $details): ServiceDetailsDtoInterface
     {
         if ($details instanceof TransferToAirport) {
@@ -29,24 +32,10 @@ class ServiceDetailsDtoFactory
         } elseif ($details instanceof CIPRoomInAirport) {
             return $this->buildCIPRoomInAirport($details);
         } elseif ($details instanceof HotelBooking) {
-            return $this->buildHotelBooking($details);
+            return $this->hotelFactory->build($details);
         } else {
             throw new \Exception('Service details dto not implemented');
         }
-    }
-
-    private function buildHotelBooking(HotelBooking $details): HotelBookingDto
-    {
-        return new HotelBookingDto(
-            $details->id()->value(),
-            HotelInfoDto::fromDomain($details->hotelInfo()),
-            BookingPeriodDto::fromDomain($details->bookingPeriod()),
-            $details->roomBookings()->all(),
-            $details->externalNumber()
-                ? ExternalNumberDto::fromDomain($details->externalNumber())
-                : null,
-            $details->quotaProcessingMethod()
-        );
     }
 
     private function buildTransferToAirport(TransferToAirport $details): TransferToAirportDto

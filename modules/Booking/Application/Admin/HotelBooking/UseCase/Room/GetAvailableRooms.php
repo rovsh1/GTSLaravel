@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Module\Booking\Application\Admin\HotelBooking\UseCase\Room;
 
 use Carbon\CarbonPeriod;
-use Module\Booking\Deprecated\HotelBooking\Adapter\HotelRoomAdapterInterface;
-use Module\Booking\Deprecated\HotelBooking\Adapter\HotelRoomQuotaAdapterInterface;
-use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
+use Module\Booking\Domain\Booking\Adapter\HotelRoomAdapterInterface;
+use Module\Booking\Domain\Booking\Adapter\HotelRoomQuotaAdapterInterface;
 use Module\Booking\Domain\Booking\Repository\Details\HotelBookingRepositoryInterface;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
 use Module\Catalog\Application\Admin\Response\RoomDto;
@@ -35,7 +34,7 @@ class GetAvailableRooms implements UseCaseInterface
             return $rooms;
         }
         $availableRooms = [];
-        $period = CarbonPeriod::create($details->period()->dateFrom(), $details->period()->dateTo(), 'P1D');
+        $period = CarbonPeriod::create($details->bookingPeriod()->dateFrom(), $details->bookingPeriod()->dateTo(), 'P1D');
         $countDays = $period->excludeEndDate()->count();
         foreach ($rooms as $room) {
             $quotas = $this->roomQuotaAdapter->getAvailable($hotelId, $period, $room->id);

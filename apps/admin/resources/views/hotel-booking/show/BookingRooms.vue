@@ -57,7 +57,7 @@ const bookingStore = useBookingStore()
 const { fetchBooking, fetchAvailableActions } = bookingStore
 const orderStore = useOrderStore()
 
-const bookingDetails = computed<HotelBookingDetails | null>(() => bookingStore.booking)
+const bookingDetails = computed<HotelBookingDetails | undefined>(() => bookingStore.booking?.details)
 const markupSettings = computed<MarkupSettings | null>(() => bookingStore.markupSettings)
 const isEditableStatus = computed<boolean>(() => bookingStore.availableActions?.isEditable || false)
 const grossCurrency = computed<Currency | undefined>(
