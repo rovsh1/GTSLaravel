@@ -46,7 +46,7 @@
                             </tr>
                             <tr>
                                 <th>Дата заезда и выезда</th>
-                                <td>{{ Format::period(new \Carbon\CarbonPeriod($model->period->dateFrom, $model->period->dateTo)) }}</td>
+                                <td>{{ Format::period(new \Carbon\CarbonPeriod($model->details->period->dateFrom, $model->details->period->dateTo)) }}</td>
                             </tr>
                             <tr>
                                 <th>Источник</th>
@@ -54,7 +54,7 @@
                             </tr>
                             <tr>
                                 <th>Тип брони</th>
-                                <td>{{$model->quotaProcessingMethod === \Module\Shared\Enum\Booking\QuotaProcessingMethodEnum::REQUEST ? 'По запросу' : 'По квоте'}}</td>
+                                <td>{{$model->details->quotaProcessingMethod === \Module\Shared\Enum\Booking\QuotaProcessingMethodEnum::REQUEST ? 'По запросу' : 'По квоте'}}</td>
                             </tr>
                             <tr>
                                 <th>Тип карты оплаты</th>

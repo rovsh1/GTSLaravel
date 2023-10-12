@@ -5,19 +5,24 @@ declare(strict_types=1);
 namespace Module\Booking\Infrastructure\ServiceBooking\Factory;
 
 use Module\Booking\Domain\Booking\Entity\CIPRoomInAirport;
+use Module\Booking\Domain\Booking\Entity\HotelBooking;
 use Module\Booking\Domain\Booking\Entity\OtherService;
 use Module\Booking\Domain\Booking\Entity\ServiceDetailsInterface;
 use Module\Booking\Domain\Booking\Entity\TransferFromAirport;
 use Module\Booking\Domain\Booking\Entity\TransferToAirport;
 use Module\Booking\Domain\Booking\ValueObject\AirportId;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Domain\Booking\ValueObject\BookingPeriod;
 use Module\Booking\Domain\Booking\ValueObject\CarBidCollection;
 use Module\Booking\Domain\Booking\ValueObject\DetailsId;
-use Module\Booking\Domain\Booking\ValueObject\ServiceId;
+use Module\Booking\Domain\Booking\ValueObject\HotelBooking\ExternalNumber;
+use Module\Booking\Domain\Booking\ValueObject\HotelBooking\HotelInfo;
+use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomBookingIdCollection;
 use Module\Booking\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Booking\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Booking\Infrastructure\ServiceBooking\Models\Booking;
 use Module\Booking\Infrastructure\ServiceBooking\Models\Details\Airport;
+use Module\Booking\Infrastructure\ServiceBooking\Models\Details\Hotel;
 use Module\Booking\Infrastructure\ServiceBooking\Models\Details\Other;
 use Module\Booking\Infrastructure\ServiceBooking\Models\Details\Transfer;
 use Module\Shared\Enum\ServiceTypeEnum;
@@ -27,6 +32,7 @@ class DetailsFactory
     public function buildByBooking(Booking $booking): ServiceDetailsInterface
     {
         return match ($booking->service_type) {
+            ServiceTypeEnum::HOTEL_BOOKING => $this->buildHotelBookingDetails($booking->hotelDetails),
             ServiceTypeEnum::CIP_IN_AIRPORT => $this->buildAirportDetails($booking->airportDetails),
             ServiceTypeEnum::CAR_RENT => $this->buildCarRentDetails($booking->transferDetails),
             ServiceTypeEnum::TRANSFER_TO_AIRPORT => $this->buildTransferToAirportDetails($booking->transferDetails),
@@ -41,6 +47,7 @@ class DetailsFactory
     public function build(DetailsModelInterface $model): ServiceDetailsInterface
     {
         return match ($model->serviceType()) {
+            ServiceTypeEnum::HOTEL_BOOKING => $this->buildHotelBookingDetails($model),
             ServiceTypeEnum::CIP_IN_AIRPORT => $this->buildAirportDetails($model),
             ServiceTypeEnum::CAR_RENT => $this->buildCarRentDetails($model),
             ServiceTypeEnum::TRANSFER_TO_AIRPORT => $this->buildTransferToAirportDetails($model),
@@ -50,6 +57,23 @@ class DetailsFactory
             ServiceTypeEnum::OTHER => $this->buildOtherDetails($model),
             default => throw new \Exception('Unknown Booking service type')
         };
+    }
+
+    private function buildHotelBookingDetails(Hotel $details): HotelBooking
+    {
+        $detailsData = $details->data;
+
+        $externalNumberData = $detailsData['externalNumber'] ?? null;
+
+        return new HotelBooking(
+            id: new DetailsId($details->id),
+            bookingId: new BookingId($details->bookingId()),
+            hotelInfo: HotelInfo::fromData($detailsData['hotelInfo']),
+            bookingPeriod: BookingPeriod::fromData($detailsData['period']),
+            roomBookings: RoomBookingIdCollection::fromData($detailsData['room_booking_ids']),
+            externalNumber: $externalNumberData ? ExternalNumber::fromData($externalNumberData) : null,
+            quotaProcessingMethod: $details->quota_processing_method,
+        );
     }
 
     private function buildAirportDetails(Airport $details): CIPRoomInAirport
@@ -78,7 +102,7 @@ class DetailsFactory
             airportId: new AirportId($detailsData['airportId']),
             flightNumber: $detailsData['flightNumber'],
             departureDate: $details->date,
-            carBids: new CarBidCollection()
+            carBids: CarBidCollection::fromData($detailsData['carBids'])
         );
     }
 
@@ -94,7 +118,7 @@ class DetailsFactory
             flightNumber: $detailsData['flightNumber'],
             meetingTablet: $detailsData['meetingTablet'],
             arrivalDate: $details->date,
-            carBids: new CarBidCollection()
+            carBids: CarBidCollection::fromData($detailsData['carBids'])
         );
     }
 
@@ -126,7 +150,7 @@ class DetailsFactory
     private function buildServiceInfo(array $data): ServiceInfo
     {
         return new ServiceInfo(
-            new ServiceId($data['serviceId']),
+            $data['serviceId'],
             $data['title'],
         );
     }

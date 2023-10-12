@@ -14,6 +14,7 @@ use Module\Booking\Infrastructure\Shared\Models\Booking as BaseModel;
  * @property-read Details\Airport|null $airportDetails
  * @property-read Details\Transfer|null $transferDetails
  * @property-read Details\Other|null $otherDetails
+ * @property-read Details\Hotel|null $hotelDetails
  */
 class Booking extends BaseModel
 {
@@ -32,5 +33,10 @@ class Booking extends BaseModel
     public function otherDetails(): HasOne
     {
         return $this->hasOne(Details\Other::class, 'booking_id');
+    }
+
+    public function hotelDetails(): HasOne
+    {
+        return $this->hasOne(Details\Hotel::class, 'booking_id');
     }
 }

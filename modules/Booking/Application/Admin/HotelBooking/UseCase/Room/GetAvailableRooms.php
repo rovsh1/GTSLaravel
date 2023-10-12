@@ -7,7 +7,8 @@ namespace Module\Booking\Application\Admin\HotelBooking\UseCase\Room;
 use Carbon\CarbonPeriod;
 use Module\Booking\Deprecated\HotelBooking\Adapter\HotelRoomAdapterInterface;
 use Module\Booking\Deprecated\HotelBooking\Adapter\HotelRoomQuotaAdapterInterface;
-use Module\Booking\Deprecated\HotelBooking\Repository\BookingRepositoryInterface;
+use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
+use Module\Booking\Domain\Booking\Repository\Details\HotelBookingRepositoryInterface;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
 use Module\Catalog\Application\Admin\Response\RoomDto;
 use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
@@ -16,7 +17,7 @@ use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 class GetAvailableRooms implements UseCaseInterface
 {
     public function __construct(
-        private readonly BookingRepositoryInterface $bookingRepository,
+        private readonly HotelBookingRepositoryInterface $detailsRepository,
         private readonly HotelRoomAdapterInterface $hotelRoomAdapter,
         private readonly HotelRoomQuotaAdapterInterface $roomQuotaAdapter
     ) {}
@@ -27,14 +28,14 @@ class GetAvailableRooms implements UseCaseInterface
      */
     public function execute(int $bookingId): array
     {
-        $booking = $this->bookingRepository->findOrFail(new BookingId($bookingId));
-        $hotelId = $booking->hotelInfo()->id();
+        $details = $this->detailsRepository->findOrFail(new BookingId($bookingId));
+        $hotelId = $details->hotelInfo()->id();
         $rooms = $this->hotelRoomAdapter->getByHotelId($hotelId);
-        if ($booking->quotaProcessingMethod() !== QuotaProcessingMethodEnum::QUOTA) {
+        if ($details->quotaProcessingMethod() !== QuotaProcessingMethodEnum::QUOTA) {
             return $rooms;
         }
         $availableRooms = [];
-        $period = CarbonPeriod::create($booking->period()->dateFrom(), $booking->period()->dateTo(), 'P1D');
+        $period = CarbonPeriod::create($details->period()->dateFrom(), $details->period()->dateTo(), 'P1D');
         $countDays = $period->excludeEndDate()->count();
         foreach ($rooms as $room) {
             $quotas = $this->roomQuotaAdapter->getAvailable($hotelId, $period, $room->id);

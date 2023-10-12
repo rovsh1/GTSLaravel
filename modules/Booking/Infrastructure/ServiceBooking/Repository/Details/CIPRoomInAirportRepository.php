@@ -37,7 +37,7 @@ class CIPRoomInAirportRepository extends AbstractDetailsRepository implements CI
         $model = Airport::create([
             'booking_id' => $bookingId->value(),
             'date' => $serviceDate,
-            'service_id' => $serviceInfo->id()->value(),
+            'service_id' => $serviceInfo->id(),
             'data' => [
                 'serviceInfo' => $this->serializeServiceInfo($serviceInfo),
                 'airportId' => $airportId,

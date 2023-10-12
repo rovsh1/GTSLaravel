@@ -5,6 +5,7 @@ namespace Module\Booking\Providers\ServiceBooking;
 use Module\Booking\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Domain\Booking\Repository\Details\CIPRoomInAirportRepositoryInterface;
+use Module\Booking\Domain\Booking\Repository\Details\HotelBookingRepositoryInterface;
 use Module\Booking\Domain\Booking\Repository\Details\TransferFromAirportRepositoryInterface;
 use Module\Booking\Domain\Booking\Repository\Details\TransferToAirportRepositoryInterface;
 use Module\Booking\Infrastructure\ServiceBooking\Adapter\SupplierAdapter;
@@ -34,6 +35,10 @@ class BootServiceProvider extends ServiceProvider
         $this->app->singleton(
             TransferFromAirportRepositoryInterface::class,
             Infrastructure\TransferFromAirportRepository::class
+        );
+        $this->app->singleton(
+            HotelBookingRepositoryInterface::class,
+            Infrastructure\HotelBookingRepository::class
         );
 
         $this->app->singleton(

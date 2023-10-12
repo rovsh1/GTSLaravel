@@ -7,6 +7,7 @@ namespace Module\Booking\Domain\Booking\Repository\Details;
 use DateTimeInterface;
 use Module\Booking\Domain\Booking\Entity\TransferToAirport;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Domain\Booking\ValueObject\CarBidCollection;
 use Module\Booking\Domain\Booking\ValueObject\ServiceInfo;
 
 interface TransferToAirportRepositoryInterface
@@ -17,6 +18,7 @@ interface TransferToAirportRepositoryInterface
         BookingId $bookingId,
         ServiceInfo $serviceInfo,
         int $airportId,
+        CarBidCollection $carBids,
         ?string $flightNumber,
         ?DateTimeInterface $departureDate,
     ): TransferToAirport;
