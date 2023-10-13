@@ -2,7 +2,7 @@
 
 namespace Sdk\Module\Event;
 
-use Module\Shared\Contracts\Event\IntegrationEventInterface;
+use Sdk\Module\Contracts\Event\IntegrationEventInterface;
 use Sdk\Module\Contracts\Event\IntegrationEventSubscriberInterface;
 use Sdk\Module\Contracts\ModuleInterface;
 
