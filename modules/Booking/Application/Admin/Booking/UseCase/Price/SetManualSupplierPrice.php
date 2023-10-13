@@ -8,17 +8,17 @@ use Module\Booking\Domain\Shared\Service\BookingUpdater;
 use Module\Booking\Infrastructure\HotelBooking\Repository\BookingRepository;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
-class SetGrossPenalty implements UseCaseInterface
+class SetManualSupplierPrice implements UseCaseInterface
 {
     public function __construct(
         private readonly BookingRepository $repository,
         private readonly BookingUpdater $bookingUpdater,
     ) {}
 
-    public function execute(int $bookingId, float|int|null $penalty): void
+    public function execute(int $bookingId, float $price): void
     {
         $booking = $this->repository->find($bookingId);
-        $booking->setGrossPenalty($penalty === null ? null : (float)$penalty);
+        $booking->setNetPriceManually($price);
         $this->bookingUpdater->storeIfHasEvents($booking);
     }
 }

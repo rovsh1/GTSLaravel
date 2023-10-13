@@ -7,12 +7,10 @@ namespace App\Admin\Support\Facades\Booking;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static void setGrossPrice(int $bookingId, float $price)
- * @method static void setNetPrice(int $bookingId, float $price)
- * @method static void setCalculatedGrossPrice(int $bookingId)
- * @method static void setCalculatedNetPrice(int $bookingId)
- * @method static void setNetPenalty(int $bookingId, float|null $penalty)
- * @method static void setGrossPenalty(int $bookingId, float|null $penalty)
+ * @method static void setManualClientPrice(int $bookingId, float|null $price)
+ * @method static void setManualSupplierPrice(int $bookingId, float|null $price)
+ * @method static void setSupplierPenalty(int $bookingId, float|null $penalty)
+ * @method static void setClientPenalty(int $bookingId, float|null $penalty)
  */
 class PriceAdapter extends Facade
 {
