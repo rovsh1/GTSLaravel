@@ -2,19 +2,14 @@
 
 namespace Module\Catalog\Providers;
 
-use Sdk\Module\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Sdk\Module\Support\Providers\DomainEventServiceProvider;
 
-class EventServiceProvider extends ServiceProvider
+class EventServiceProvider extends DomainEventServiceProvider
 {
-    protected $listen = [
+    protected array $listen = [
         //FIXME TEST
         'HotelReservation\ReservationCancelled' => [
 
         ]
     ];
-
-    public function registerListeners($eventDispatcher)
-    {
-        parent::registerListeners($eventDispatcher);
-    }
 }

@@ -10,7 +10,7 @@ use Module\Support\MailManager\Infrastructure\Service\DataBuilder\CommonDataBuil
 use Module\Support\MailManager\Infrastructure\Service\MailTemplateRenderer;
 use Module\Support\MailManager\Infrastructure\Service\RecipientsFinder\AddressResolver;
 use Module\Support\MailManager\Infrastructure\Service\RecipientsFinder\RecipientsFinder;
-use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
+use Sdk\Module\Support\ServiceProvider;
 
 class TemplateServiceProvider extends ServiceProvider
 {

@@ -2,7 +2,7 @@
 
 namespace Module\Booking\Providers;
 
-use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
+use Sdk\Module\Support\ServiceProvider;
 
 class OrderServiceProvider extends ServiceProvider
 {

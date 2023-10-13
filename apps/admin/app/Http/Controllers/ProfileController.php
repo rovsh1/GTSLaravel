@@ -1,20 +1,21 @@
 <?php
 
-namespace App\Admin\Http\Controllers\Profile;
+namespace App\Admin\Http\Controllers;
 
-use App\Admin\Http\Controllers\Controller;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Layout;
 use App\Core\Support\Http\Responses\AjaxReloadResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Module\Administrator\Application\UseCase\UpdateAvatar;
+use Module\Booking\Application\Admin\Booking\UseCase\TestUseCase;
 use Module\Shared\Dto\UploadedFileDto;
 
 class ProfileController extends Controller
 {
     public function index()
     {
+        app(TestUseCase::class)->execute();
         $user = Auth::user();
         $valueEmpty = '<i class="value-empty">Не указано</i>';
 

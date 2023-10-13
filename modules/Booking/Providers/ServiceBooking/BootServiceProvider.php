@@ -11,7 +11,7 @@ use Module\Booking\Domain\Booking\Repository\Details\TransferToAirportRepository
 use Module\Booking\Infrastructure\ServiceBooking\Adapter\SupplierAdapter;
 use Module\Booking\Infrastructure\ServiceBooking\Repository\BookingRepository;
 use Module\Booking\Infrastructure\ServiceBooking\Repository\Details as Infrastructure;
-use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
+use Sdk\Module\Support\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {

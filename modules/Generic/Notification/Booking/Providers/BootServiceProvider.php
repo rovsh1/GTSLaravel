@@ -3,7 +3,7 @@
 namespace Module\Generic\Notification\Booking\Providers;
 
 use Module\Generic\NotificationManager\Providers\EventServiceProvider;
-use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
+use Sdk\Module\Support\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {

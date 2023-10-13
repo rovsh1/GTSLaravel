@@ -4,8 +4,7 @@ namespace Module\Shared\Providers;
 
 use Module\Shared\Contracts\Service\ApplicationContextInterface;
 use Module\Shared\Infrastructure\Service\ApplicationContext\ApplicationContextManager;
-use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
-use Service\IntegrationEventGateway\IntegrationEventGatewayServiceProvider;
+use Sdk\Module\Support\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {

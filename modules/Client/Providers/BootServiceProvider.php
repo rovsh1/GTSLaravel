@@ -4,7 +4,7 @@ namespace Module\Client\Providers;
 
 use Module\Client\Domain;
 use Module\Client\Infrastructure;
-use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
+use Sdk\Module\Support\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {

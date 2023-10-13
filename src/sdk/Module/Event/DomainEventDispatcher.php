@@ -4,20 +4,20 @@ namespace Sdk\Module\Event;
 
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\Event\DomainEventInterface;
-use Sdk\Module\Foundation\Module;
+use Sdk\Module\Contracts\Event\DomainEventPublisherInterface;
+use Sdk\Module\Contracts\ModuleInterface;
 
 class DomainEventDispatcher implements DomainEventDispatcherInterface
 {
     private array $listeners = [];
 
     public function __construct(
-        private readonly Module $module,
-//        private readonly DomainEventHandlerInterface $domainEventHandler
-    )
-    {
+        private readonly ModuleInterface $module,
+        private readonly DomainEventPublisherInterface $domainEventPublisher
+    ) {
     }
 
-    public function listen(string $eventClass, string $listenerClass)
+    public function listen(string $eventClass, string $listenerClass): void
     {
         if (!isset($this->listeners[$eventClass])) {
             $this->listeners[$eventClass] = [];
@@ -30,6 +30,8 @@ class DomainEventDispatcher implements DomainEventDispatcherInterface
         foreach ($events as $event) {
             $this->dispatchEvent($event);
         }
+
+        $this->domainEventPublisher->publish(...$events);
     }
 
     private function dispatchEvent(DomainEventInterface $event): void
@@ -49,7 +51,7 @@ class DomainEventDispatcher implements DomainEventDispatcherInterface
 //        $this->domainEventHandler->handle($event);
     }
 
-    private function dispatchGlobalListeners(DomainEventInterface $event)
+    private function dispatchGlobalListeners(DomainEventInterface $event): void
     {
         if (!isset($this->listeners['*'])) {
             return;
@@ -58,7 +60,7 @@ class DomainEventDispatcher implements DomainEventDispatcherInterface
         $this->dispatchListeners($event, $this->listeners['*']);
     }
 
-    private function dispatchListeners(DomainEventInterface $event, array $listeners)
+    private function dispatchListeners(DomainEventInterface $event, array $listeners): void
     {
         foreach ($listeners as $listenerClass) {
             $listener = $this->module->get($listenerClass);

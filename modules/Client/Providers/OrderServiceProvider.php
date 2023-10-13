@@ -4,7 +4,7 @@ namespace Module\Client\Providers;
 
 use Module\Client\Domain\Order\Repository\OrderRepositoryInterface;
 use Module\Client\Infrastructure\Repository\OrderRepository;
-use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
+use Sdk\Module\Support\ServiceProvider;
 
 class OrderServiceProvider extends ServiceProvider
 {

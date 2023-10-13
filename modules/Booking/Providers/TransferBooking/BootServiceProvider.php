@@ -6,7 +6,7 @@ use Module\Booking\Deprecated\TransferBooking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Deprecated\TransferBooking\Repository\BookingRepositoryInterface;
 use Module\Booking\Infrastructure\TransferBooking\Adapter\SupplierAdapter;
 use Module\Booking\Infrastructure\TransferBooking\Repository\BookingRepository;
-use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
+use Sdk\Module\Support\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {

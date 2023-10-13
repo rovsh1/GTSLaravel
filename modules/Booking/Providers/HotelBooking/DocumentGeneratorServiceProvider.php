@@ -2,14 +2,15 @@
 
 namespace Module\Booking\Providers\HotelBooking;
 
+use Illuminate\Support\Facades\View;
 use Module\Booking\Domain\Shared\Factory\DocumentGeneratorFactory;
-use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
+use Sdk\Module\Support\ServiceProvider;
 
 class DocumentGeneratorServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        \View::addLocation($this->app->config('templates_path'));
+        View::addLocation($this->app->config('templates_path'));
 
         $this->app->singleton(
             DocumentGeneratorFactory::class

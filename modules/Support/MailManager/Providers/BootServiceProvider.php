@@ -8,7 +8,7 @@ use Module\Support\MailManager\Domain\Service\QueueManager;
 use Module\Support\MailManager\Domain\Service\QueueManagerInterface;
 use Module\Support\MailManager\Infrastructure\Repository\QueueRepository;
 use Module\Support\MailManager\Infrastructure\Service\Mailer;
-use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
+use Sdk\Module\Support\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {

@@ -10,7 +10,7 @@ use Module\Booking\Infrastructure\Shared\Adapter\AdministratorAdapter;
 use Module\Booking\Infrastructure\Shared\Adapter\ClientAdapter;
 use Module\Booking\Infrastructure\Shared\Adapter\CountryAdapter;
 use Module\Booking\Infrastructure\Shared\Repository\BookingChangesLogRepository;
-use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
+use Sdk\Module\Support\ServiceProvider;
 
 class SharedServiceProvider extends ServiceProvider
 {

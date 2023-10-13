@@ -16,7 +16,7 @@ use Module\Booking\Infrastructure\HotelBooking\Adapter\HotelRoomQuotaAdapter;
 use Module\Booking\Infrastructure\HotelBooking\Repository\BookingGuestRepository;
 use Module\Booking\Infrastructure\HotelBooking\Repository\BookingQuotaRepository;
 use Module\Booking\Infrastructure\HotelBooking\Repository\RoomBookingRepository;
-use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
+use Sdk\Module\Support\ServiceProvider;
 
 class HotelBookingServiceProvider extends ServiceProvider
 {

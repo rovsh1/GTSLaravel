@@ -1,5 +1,5 @@
 <?php
 
-namespace Sdk\Module\Foundation\Support\Providers;
+namespace Sdk\Module\Support;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider { }

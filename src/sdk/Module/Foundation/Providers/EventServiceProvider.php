@@ -3,18 +3,19 @@
 namespace Sdk\Module\Foundation\Providers;
 
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
+use Sdk\Module\Contracts\Event\DomainEventPublisherInterface;
+use Sdk\Module\Contracts\Event\IntegrationEventSubscriberInterface;
 use Sdk\Module\Event\DomainEventDispatcher;
-use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
+use Sdk\Module\Event\DomainEventPublisher;
+use Sdk\Module\Event\IntegrationEventSubscriber;
+use Sdk\Module\Support\ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
 {
-    public function register(): void
+    public function boot(): void
     {
-        $this->app->singleton(DomainEventDispatcherInterface::class, function ($module) {
-            return new DomainEventDispatcher(
-                $module,
-//                $module->get(DomainEventHandlerInterface::class)
-            );
-        });
+        $this->app->singleton(DomainEventDispatcherInterface::class, DomainEventDispatcher::class);
+        $this->app->singleton(DomainEventPublisherInterface::class, DomainEventPublisher::class);
+        $this->app->singleton(IntegrationEventSubscriberInterface::class, IntegrationEventSubscriber::class);
     }
 }
