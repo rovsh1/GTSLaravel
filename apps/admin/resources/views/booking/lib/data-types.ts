@@ -24,3 +24,14 @@ export interface GuestFormData {
   age?: number | null
   selectedGuestFromOrder?: number | null
 }
+
+export interface CarFormData {
+  bookingID: number
+  orderId?: number
+  id?: number
+  carModelId: number
+  carCount: number
+  passengerCount: number
+  baggageCount: number
+  selectedCarFromOrder?: number | null
+}

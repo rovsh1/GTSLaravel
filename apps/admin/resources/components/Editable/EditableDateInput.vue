@@ -125,11 +125,11 @@ const onClickOutsideHandler = () => {
         />
       </div>
       <template #popper>
-        <div>
+        <div class="exist-svg">
           Нажмите
           <InlineSVG :src="enterIcon" /> Enter, чтобы подтвердить изменения
         </div>
-        <div>
+        <div class="exist-svg">
           Нажмите
           <template v-if="isMacOS">⎋ Esc</template>
           <template v-else>
@@ -142,8 +142,8 @@ const onClickOutsideHandler = () => {
   </div>
 </template>
 
-<style lang="scss" scoped>
-svg {
+<style lang="scss">
+.exist-svg svg {
   width: auto;
   height: 1em;
   fill: currentcolor;
@@ -152,4 +152,11 @@ svg {
 .editable-input {
   width: 5rem;
 }
+
+/* stylelint-disable declaration-no-important */
+.litepicker {
+  top: 100% !important;
+  left: 0 !important;
+}
+/* stylelint-enable declaration-no-important */
 </style>

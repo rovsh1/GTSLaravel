@@ -1,10 +1,13 @@
 <script setup lang="ts">
 
-import { computed } from 'vue'
+import { computed, MaybeRef, ref, unref } from 'vue'
 
+import CarModal from '~resources/views/booking/components/CarModal.vue'
 import CarsTable from '~resources/views/booking/components/CarsTable.vue'
 import InfoBlock from '~resources/views/booking/components/InfoBlock/InfoBlock.vue'
 import InfoBlockTitle from '~resources/views/booking/components/InfoBlock/InfoBlockTitle.vue'
+import { CarFormData } from '~resources/views/booking/lib/data-types'
+import { useEditableModal } from '~resources/views/hotel/settings/composables/editable-modal'
 import { useBookingStore } from '~resources/views/service-booking/show/store/booking'
 
 import { useAdminAPI } from '~api'
@@ -17,6 +20,49 @@ import IconButton from '~components/IconButton.vue'
 const bookingStore = useBookingStore()
 
 const isEditableStatus = computed<boolean>(() => bookingStore.availableActions?.isEditable || false)
+
+const getDefaultCarForm = () => ({ })
+const carForm = ref<Partial<CarFormData>>(getDefaultCarForm())
+
+const modalSettings = {
+  add: {
+    title: 'Добавление автомобиля',
+    handler: async (request: MaybeRef<Required<CarFormData>>) => {
+      const preparedRequest = unref(request)
+      if (preparedRequest && preparedRequest.id !== undefined) {
+        // const payload = { bookingID, guestId: preparedRequest.id }
+        // await addBookingGuest(payload)
+      } else {
+        /// /const payload = { airportBookingId: bookingID, ...preparedRequest }
+        // payload.orderId = orderId.value
+        // await addOrderGuest(payload)
+      }
+      // await bookingStore.fetchBooking()
+      // await orderStore.fetchGuests()
+    },
+  },
+  edit: {
+    title: 'Редактирование автомобиля',
+    handler: async (request: MaybeRef<Required<CarFormData>>) => {
+      const preparedRequest = unref(request)
+      const payload = { guestId: preparedRequest.id, ...preparedRequest }
+      // payload.orderId = orderId.value
+      // await updateOrderGuest(payload)
+      // await orderStore.fetchGuests()
+    },
+  },
+}
+
+const {
+  isOpened: isCarModalOpened,
+  isLoading: isCarModalLoading,
+  title: carModalTitle,
+  openAdd: openAddCarModal,
+  openEdit: openEditCarModal,
+  editableObject: editableCar,
+  close: closeCarModal,
+  submit: submitCarModal,
+} = useEditableModal<Required<CarFormData>, Required<CarFormData>, Partial<CarFormData>>(modalSettings)
 
 const handleCreateDetails = () => {
   useAdminAPI(
@@ -80,7 +126,7 @@ const handleCreateDetails = () => {
       <template #header>
         <div class="d-flex gap-1">
           <InfoBlockTitle title="Список автомобилей" />
-          <IconButton v-if="isEditableStatus" icon="add" @click="() => { }" />
+          <IconButton v-if="isEditableStatus" icon="add" @click="openAddCarModal" />
         </div>
       </template>
       <CarsTable
@@ -89,6 +135,17 @@ const handleCreateDetails = () => {
         :order-cars="[]"
         @edit="(car) => { }"
         @delete="(car) => { }"
+      />
+      <CarModal
+        :title-text="carModalTitle"
+        :opened="isCarModalOpened"
+        :is-fetching="isCarModalLoading"
+        :form-data="carForm"
+        :order-cars="[]"
+        :cars="[]"
+        @close="closeCarModal"
+        @submit="submitCarModal"
+        @clear="carForm = getDefaultCarForm()"
       />
     </InfoBlock>
   </div>

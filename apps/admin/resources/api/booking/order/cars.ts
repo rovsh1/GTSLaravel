@@ -9,7 +9,7 @@ import { getNullableRef } from '~lib/vue'
 export type Car = {
   id: number
   orderId: number
-  carModel: string
+  carModel: number
   carCount: number
   passengerCount: number
   baggageCount: number

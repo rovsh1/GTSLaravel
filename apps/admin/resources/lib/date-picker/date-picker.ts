@@ -72,6 +72,7 @@ export const useDatePicker = (element: HTMLInputElement, options?: Options) => {
   if (options?.singleMode) {
     picker = new Litepicker({
       element,
+      parentEl: element.parentNode as HTMLElement,
       lang: 'ru-RU',
       singleMode: true,
       showTooltip: false,
