@@ -67,20 +67,34 @@ export const useDatePicker = (element: HTMLInputElement, options?: Options) => {
     ],
   }
 
-  const picker = new Litepicker({
-    element,
-    lang: 'ru-RU',
-    showTooltip: false,
-    format: stringifyFormat,
-    delimiter: dateRangeDelimiter,
-    plugins: ['ranges'],
-    ranges: {
-      customRanges: {
-        ...ranges,
+  let picker: any = null
+
+  if (options?.singleMode) {
+    picker = new Litepicker({
+      element,
+      lang: 'ru-RU',
+      singleMode: true,
+      showTooltip: false,
+      format: stringifyFormat,
+      ...options,
+    })
+  } else {
+    picker = new Litepicker({
+      element,
+      lang: 'ru-RU',
+      singleMode: true,
+      showTooltip: false,
+      format: stringifyFormat,
+      delimiter: dateRangeDelimiter,
+      plugins: ['ranges'],
+      ranges: {
+        customRanges: {
+          ...ranges,
+        },
       },
-    },
-    ...options,
-  })
+      ...options,
+    })
+  }
 
   picker.on('render', (ui: HTMLDivElement) => {
     const container = ui.querySelector('.container__main')
@@ -104,9 +118,15 @@ export const useDatePicker = (element: HTMLInputElement, options?: Options) => {
   return picker
 }
 
+export const useSingleDatePicker = (element: HTMLInputElement, options?: Options) =>
+  useDatePicker(element, {
+    numberOfMonths: 1,
+    numberOfColumns: 1,
+    ...options,
+  })
+
 export const useDateRangePicker = (element: HTMLInputElement, options?: Options) =>
   useDatePicker(element, {
-    singleMode: false,
     numberOfMonths: 2,
     numberOfColumns: 2,
     ...options,

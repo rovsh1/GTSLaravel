@@ -107,7 +107,7 @@ const onModalSubmit = async () => {
         :min-date="minDate"
         :max-date="maxDate"
         :value="period"
-        @input="(dates) => period = dates"
+        @input="(dates) => period = dates as [Date, Date]"
       />
 
       <div class="field-required">

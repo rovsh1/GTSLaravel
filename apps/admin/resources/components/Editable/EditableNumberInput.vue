@@ -50,7 +50,7 @@ const localValue = computed<number>({
 
 const displayValue = computed(() => {
   if (!localValue.value) {
-    return props.emptyValue || 'Не установлена'
+    return props.emptyValue || 'Не установлено'
   }
   const dimensionText = props.dimension && localValue ? props.dimension : ''
 

@@ -39,7 +39,7 @@ const localValue = computed(() => props.value)
 
 const displayValue = computed(() => {
   if (!localValue.value) {
-    return props.emptyValue || 'Не установлена'
+    return props.emptyValue || 'Не установлено'
   }
 
   return (props.items.find(({ value }) => localValue.value === value))?.label

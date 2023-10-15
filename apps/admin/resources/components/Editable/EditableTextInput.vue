@@ -10,15 +10,17 @@ import { Tooltip } from 'floating-vue'
 
 import { usePlatformDetect } from '~lib/platform'
 
+type TextInputType = 'text' | 'time'
+
 const props = withDefaults(defineProps<{
   value: string | undefined
+  type: TextInputType
   placeholder?: string
   dimension?: string
   emptyValue?: string
   hideClickOutside?: boolean
   saveClickOutside?: boolean
   required?: boolean
-  rows?: number
   canEdit?: boolean
 }>(), {
   placeholder: undefined,
@@ -27,7 +29,6 @@ const props = withDefaults(defineProps<{
   hideClickOutside: false,
   saveClickOutside: true,
   required: false,
-  rows: 2,
   canEdit: true,
 })
 
@@ -38,7 +39,7 @@ const emit = defineEmits<{
 const [isEditable, toggleEditable] = useToggle()
 const { isMacOS } = usePlatformDetect()
 
-const inputRef = ref<HTMLTextAreaElement | null>(null)
+const inputRef = ref<HTMLInputElement | null>(null)
 const editedValue = ref<string>()
 const isChanged = ref(false)
 
@@ -56,7 +57,7 @@ const displayValue = computed(() => {
   }
   const dimensionText = props.dimension && localValue ? props.dimension : ''
 
-  return `${localValue.value} ${dimensionText}`
+  return `${localValue.value}${dimensionText}`
 })
 
 watch(inputRef, (element) => {
@@ -77,6 +78,7 @@ const applyEditable = () => {
   if (props.required && isEmptyValue && !inputRef.value?.reportValidity()) {
     return
   }
+  console.log(localValue.value)
   emit('change', localValue.value)
   toggleEditable(false)
 }
@@ -109,27 +111,28 @@ if (props.saveClickOutside && !props.hideClickOutside) {
       {{ displayValue }}
     </span>
 
-    <Tooltip
-      v-else
-      theme="tooltip"
-      handle-resize
-    >
-      <textarea
+    <Tooltip v-else theme="tooltip" handle-resize>
+      <input
         ref="inputRef"
-        v-model="localValue"
-        class="form-control editable-input"
+        v-model.trim="localValue"
+        class="form-control editable-input w-100"
         :placeholder="placeholder"
         :required="required"
-        :rows="rows"
+        :type="type"
         @keydown.esc="onPressEsc"
         @keydown.enter="onPressEnter"
       />
       <template #popper>
-        <div>Нажмите <InlineSVG :src="enterIcon" /> Enter, чтобы подтвердить изменения</div>
+        <div>
+          Нажмите
+          <InlineSVG :src="enterIcon" /> Enter, чтобы подтвердить изменения
+        </div>
         <div>
           Нажмите
           <template v-if="isMacOS">⎋ Esc</template>
-          <template v-else><InlineSVG :src="escapeIcon" /> Esc</template>,
+          <template v-else>
+            <InlineSVG :src="escapeIcon" /> Esc
+          </template>,
           чтобы отменить изменения и сбросить выделение
         </div>
       </template>
@@ -142,5 +145,9 @@ svg {
   width: auto;
   height: 1em;
   fill: currentcolor;
+}
+
+.editable-input {
+  width: 5rem;
 }
 </style>

@@ -2,13 +2,17 @@
 
 import { computed } from 'vue'
 
+import CarsTable from '~resources/views/booking/components/CarsTable.vue'
 import InfoBlock from '~resources/views/booking/components/InfoBlock/InfoBlock.vue'
 import InfoBlockTitle from '~resources/views/booking/components/InfoBlock/InfoBlockTitle.vue'
 import { useBookingStore } from '~resources/views/service-booking/show/store/booking'
 
 import { useAdminAPI } from '~api'
 
-import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
+import EditableDateInput from '~components/Editable/EditableDateInput.vue'
+import EditableTextarea from '~components/Editable/EditableTextarea.vue'
+import EditableTextInput from '~components/Editable/EditableTextInput.vue'
+import IconButton from '~components/IconButton.vue'
 
 const bookingStore = useBookingStore()
 
@@ -25,7 +29,7 @@ const handleCreateDetails = () => {
 </script>
 
 <template>
-  <div class="flex flex-row gap-4">
+  <div class="d-flex flex-row gap-4">
     <InfoBlock>
       <template #header>
         <InfoBlockTitle title="Параметры размещения" />
@@ -34,60 +38,58 @@ const handleCreateDetails = () => {
         <tbody>
           <tr>
             <th>Дата начала аренды</th>
-            <td>-</td>
+            <td>
+              <EditableDateInput :value="undefined" />
+            </td>
           </tr>
           <tr>
             <th>Дата завершения аренды</th>
-            <td>-</td>
+            <td>
+              <EditableDateInput :value="undefined" />
+            </td>
           </tr>
           <tr>
             <th>Время подачи авто</th>
-            <td>-</td>
+            <td>
+              <EditableTextInput :value="''" type="time" />
+            </td>
           </tr>
           <tr>
             <th>Место подачи авто</th>
-            <td>-</td>
+            <td>
+              <EditableTextInput :value="''" type="text" />
+            </td>
           </tr>
           <tr>
             <th>Табличка для встречи</th>
-            <td>-</td>
+            <td>
+              <EditableTextInput :value="''" type="text" />
+            </td>
           </tr>
           <tr>
             <th>Примечание (запрос в отель, ваучер)</th>
-            <td>-</td>
+            <td>
+              <EditableTextarea :value="''" />
+            </td>
           </tr>
         </tbody>
       </table>
-
-      <div class="mt-2">
-        <BootstrapButton v-if="isEditableStatus" label="Изменить" @click="handleCreateDetails" />
-      </div>
     </InfoBlock>
 
-    <InfoBlock class="mt-3">
+    <InfoBlock>
       <template #header>
-        <InfoBlockTitle title="Список автомобилей" />
+        <div class="d-flex gap-1">
+          <InfoBlockTitle title="Список автомобилей" />
+          <IconButton v-if="isEditableStatus" icon="add" @click="() => { }" />
+        </div>
       </template>
-      <table class="table">
-        <thead>
-          <tr>
-            <th class="text-nowrap">№</th>
-            <th class="text-nowrap">Модель</th>
-            <th class="text-nowrap">Кол-во авто</th>
-            <th class="text-nowrap">Кол-во пассажиров</th>
-            <th class="text-nowrap">Кол-во багажа</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>Мерседес Бенц Спринтер</td>
-            <td>1</td>
-            <td>15</td>
-            <td>Без багажа</td>
-          </tr>
-        </tbody>
-      </table>
+      <CarsTable
+        :can-edit="isEditableStatus"
+        :car-ids="[]"
+        :order-cars="[]"
+        @edit="(car) => { }"
+        @delete="(car) => { }"
+      />
     </InfoBlock>
   </div>
 </template>
