@@ -447,12 +447,12 @@ class BookingController extends Controller
             ->joinTranslatable('r_countries', 'name as country_name')
             ->joinTranslatable('r_cities', 'name as city_name')
             ->join(
-                'supplier_transfer_services',
-                'supplier_transfer_services.id',
+                'supplier_services',
+                'supplier_services.id',
                 '=',
                 'booking_transfer_details.service_id'
             )
-            ->addSelect('supplier_transfer_services.name as service_name')
+            ->addSelect('supplier_services.title as service_name')
             ->join('administrator_bookings', 'administrator_bookings.booking_id', '=', 'bookings.id')
             ->join('administrators', 'administrators.id', '=', 'administrator_bookings.administrator_id')
             ->addSelect('administrators.presentation as manager_name')
