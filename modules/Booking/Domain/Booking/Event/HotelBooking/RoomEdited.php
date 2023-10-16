@@ -1,9 +1,11 @@
 <?php
 
-namespace Module\Booking\Deprecated\HotelBooking\Event;
+namespace Module\Booking\Domain\Booking\Event\HotelBooking;
 
 use Module\Booking\Deprecated\HotelBooking\Entity\RoomBooking;
 use Module\Booking\Deprecated\HotelBooking\HotelBooking;
+use Module\Booking\Domain\Booking\Entity\HotelRoomBooking;
+use Module\Booking\Domain\Booking\Event\PriceBecomeDeprecatedEventInterface;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
 use Module\Booking\Domain\Shared\Event\AbstractBookingEvent;
 
@@ -11,7 +13,7 @@ class RoomEdited extends AbstractBookingEvent implements PriceBecomeDeprecatedEv
 {
     public function __construct(
         BookingInterface|HotelBooking $booking,
-        public readonly RoomBooking $roomBooking,
+        public readonly HotelRoomBooking $roomBooking,
     ) {
         parent::__construct($booking);
     }

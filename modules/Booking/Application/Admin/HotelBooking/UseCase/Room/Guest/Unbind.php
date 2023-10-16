@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Application\Admin\HotelBooking\UseCase\Room\Guest;
 
-use Module\Booking\Deprecated\HotelBooking\Event\GuestUnbinded;
+use Module\Booking\Domain\Booking\Event\HotelBooking\GuestUnbinded;
 use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Domain\Booking\Repository\HotelBooking\BookingGuestRepositoryInterface;
 use Module\Booking\Domain\Booking\Repository\RoomBookingRepositoryInterface;

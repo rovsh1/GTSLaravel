@@ -41,5 +41,5 @@ export interface Currency {
 
 export interface Money {
   amount?: number
-  currency_id?: number
+  currency?: string
 }

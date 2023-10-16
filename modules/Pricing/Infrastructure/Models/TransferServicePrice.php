@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Supplier\Infrastructure\Models;
+namespace Module\Pricing\Infrastructure\Models;
 
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;

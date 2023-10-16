@@ -6,7 +6,6 @@ import { useToggle } from '@vueuse/core'
 
 import CollapsableBlock from '~resources/views/hotel/settings/components/CollapsableBlock.vue'
 import PricesModal from '~resources/views/supplier/service/price/ components/PricesModal.vue'
-import { useCurrenciesStore } from '~resources/views/supplier/service/price/composables/currency'
 
 import { Airport, Money, Season } from '~api/models'
 import { ServicePriceResponse, updateAirportPrice, useServiceProviderAirportPricesAPI } from '~api/supplier/airport'
@@ -26,7 +25,6 @@ const { data: servicePrices, execute: fetchPrices } = useServiceProviderAirportP
   serviceId: props.serviceId,
 })
 
-const { getCurrencyChar } = useCurrenciesStore()
 const editableServicePrice = ref<ServicePriceResponse>()
 const [isOpenedModal, toggleModal] = useToggle()
 const isModalLoading = ref<boolean>(false)
@@ -38,38 +36,36 @@ const handleChangePrice = async (priceNet?: number, pricesGross?: Money[]): Prom
   isModalLoading.value = true
   await updateAirportPrice({
     seasonId: editableServicePrice.value?.season_id as number,
-    airportId: editableServicePrice.value?.airport_id as number,
     serviceId: props.serviceId,
     supplierId: props.supplierId,
     priceNet,
     pricesGross,
-    currencyId: 1,
+    currency: 'UZS',
   })
   fetchPrices()
   isModalLoading.value = false
   toggleModal()
 }
 
-const getServicePrice = (seasonId: number, airportId: number): ServicePriceResponse | undefined =>
-  servicePrices.value?.find((servicePrice) => servicePrice.airport_id === airportId && servicePrice.season_id === seasonId)
+const getServicePrice = (seasonId: number): ServicePriceResponse | undefined =>
+  servicePrices.value?.find((servicePrice) => servicePrice.season_id === seasonId)
 
-const getPriceButtonText = (seasonId: number, airportId: number): string => {
-  const servicePrice = getServicePrice(seasonId, airportId)
+const getPriceButtonText = (seasonId: number): string => {
+  const servicePrice = getServicePrice(seasonId)
   if (!servicePrice) {
     return 'Не установлена'
   }
 
-  return `${servicePrice.price_net} ${getCurrencyChar(servicePrice.currency_id)}`
+  return `${servicePrice.price_net} ${servicePrice.currency}`
 }
 
-const handleEditServicePrice = (seasonId: number, airportId: number) => {
-  const servicePrice = getServicePrice(seasonId, airportId)
+const handleEditServicePrice = (seasonId: number) => {
+  const servicePrice = getServicePrice(seasonId)
   if (servicePrice) {
     editableServicePrice.value = servicePrice
   } else {
     editableServicePrice.value = {
       season_id: seasonId,
-      airport_id: airportId,
       service_id: props.serviceId,
     } as unknown as ServicePriceResponse
   }
@@ -95,24 +91,17 @@ onMounted(() => {
     <table class="table table-striped">
       <thead>
         <tr>
-          <th scope="col">Аэропорт</th>
-          <th scope="col">Город</th>
           <th v-for="season in seasons" :key="season.id" scope="col" colspan="2">
             {{ season.number }} ({{ formatPeriod(season) }})
           </th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="airport in airports" :key="airport.id">
-          <td>
-            {{ airport.name }}
-          </td>
-          <td>{{ airport.city_name }}</td>
-
+        <tr>
           <template v-for="season in seasons" :key="season.id">
             <td>
-              <a href="#" @click.prevent="handleEditServicePrice(season.id, airport.id)">
-                {{ getPriceButtonText(season.id, airport.id) }}
+              <a href="#" @click.prevent="handleEditServicePrice(season.id)">
+                {{ getPriceButtonText(season.id) }}
               </a>
             </td>
           </template>

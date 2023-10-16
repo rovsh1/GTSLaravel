@@ -10,7 +10,7 @@ class UpdateDetailsFieldRequest extends FormRequest
     {
         return [
             'field' => ['required', 'string'],
-            'value' => ['required']
+            'value' => ['nullable']
         ];
     }
 

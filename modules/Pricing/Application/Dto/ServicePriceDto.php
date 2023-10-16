@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Supplier\Application\Response;
+namespace Module\Pricing\Application\Dto;
 
 use Sdk\Module\Foundation\Support\Dto\Dto;
 

@@ -116,8 +116,8 @@ class RoomController
             RoomAdapter::updateRoomPrice(
                 $id,
                 $roomBookingId,
-                $request->getGrossPrice(),
-                $request->getNetPrice()
+                $request->getSupplierPrice(),
+                $request->getClientPrice(),
             );
         } catch (ApplicationException $e) {
             return new AjaxErrorResponse($e->getMessage());

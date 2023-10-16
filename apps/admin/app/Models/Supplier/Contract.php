@@ -7,7 +7,7 @@ use App\Admin\Support\Models\HasPeriod;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Facades\DB;
-use Module\Shared\Enum\Supplier\ContractServiceTypeEnum;
+use Module\Shared\Enum\ServiceTypeEnum;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
 use Sdk\Module\Database\Eloquent\Model;
 
@@ -24,7 +24,6 @@ class Contract extends Model
         'date_start',
         'date_end',
         'status',
-        'service_type',
         'service_id',
     ];
 
@@ -32,35 +31,27 @@ class Contract extends Model
         'date_start' => 'date',
         'date_end' => 'date',
         'status' => StatusEnum::class,
-        'service_type' => ContractServiceTypeEnum::class,
     ];
 
     public static function booted()
     {
         static::addGlobalScope('default', function (Builder $builder) {
-            $builder->addSelect('supplier_contracts.*');
+            $builder->addSelect('supplier_contracts.*')
+                ->join('supplier_services', 'supplier_services.id', '=', 'supplier_contracts.service_id');
             $builder->selectSub(
                 DB::table('hotels')
                     ->select('name')
                     ->whereColumn('hotels.id', 'supplier_contracts.service_id')
-                    ->where('supplier_contracts.service_type', ContractServiceTypeEnum::HOTEL),
+                    ->where('supplier_services.type', ServiceTypeEnum::HOTEL_BOOKING),
                 'hotel_name',
             );
             $builder->selectSub(
-                DB::table('supplier_airport_services')
-                    ->select('name')
-                    ->whereColumn('supplier_airport_services.id', 'supplier_contracts.service_id')
-                    ->whereColumn('supplier_airport_services.supplier_id', 'supplier_contracts.supplier_id')
-                    ->where('supplier_contracts.service_type', ContractServiceTypeEnum::AIRPORT),
-                'airport_service_name',
-            );
-            $builder->selectSub(
-                DB::table('supplier_transfer_services')
-                    ->select('name')
-                    ->whereColumn('supplier_transfer_services.id', 'supplier_contracts.service_id')
-                    ->whereColumn('supplier_transfer_services.supplier_id', 'supplier_contracts.supplier_id')
-                    ->where('supplier_contracts.service_type', ContractServiceTypeEnum::TRANSFER),
-                'transfer_service_name',
+                DB::table('supplier_services')
+                    ->select('title')
+                    ->whereColumn('supplier_services.id', 'supplier_contracts.service_id')
+                    ->whereColumn('supplier_services.supplier_id', 'supplier_contracts.supplier_id')
+                    ->where('supplier_services.type', '!=', ServiceTypeEnum::HOTEL_BOOKING),
+                'service_name',
             );
         });
         static::saved(function (self $model): void {
@@ -76,12 +67,12 @@ class Contract extends Model
 
     public function serviceName(): Attribute
     {
-        return Attribute::get(fn() => match ($this->service_type) {
-            ContractServiceTypeEnum::HOTEL => $this->hotel_name,
-            ContractServiceTypeEnum::AIRPORT => $this->airport_service_name,
-            ContractServiceTypeEnum::TRANSFER => $this->transfer_service_name,
-            default => null
-        });
+        return Attribute::get(fn() => $this->service_name ?? $this->hotel_name);
+    }
+
+    public function scopeWhereSupplierId(Builder $builder, int $id): void
+    {
+        $builder->where('supplier_contracts.supplier_id', $id);
     }
 
     public function isActive(): bool

@@ -62,7 +62,8 @@ class Booking extends AbstractAggregateRoot implements BookingInterface
 
         $priceBefore = $this->prices;
         $this->prices = $price;
-        $this->pushEvent(new BookingPriceChanged($this, $priceBefore));
+        //@todo нужен ли ивент?
+//        $this->pushEvent(new BookingPriceChanged($this, $priceBefore));
     }
 
     public function creatorId(): CreatorId

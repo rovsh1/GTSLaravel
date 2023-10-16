@@ -15,7 +15,6 @@ return new class extends Migration
             $table->increments('id');
             $table->unsignedInteger('supplier_id');
             $table->unsignedTinyInteger('status');
-            $table->unsignedTinyInteger('service_type');
             $table->unsignedInteger('service_id');
             $table->date('date_start');
             $table->date('date_end');
@@ -25,6 +24,12 @@ return new class extends Migration
             $table->foreign('supplier_id')
                 ->references('id')
                 ->on('suppliers')
+                ->restrictOnDelete()
+                ->cascadeOnUpdate();
+
+            $table->foreign('service_id')
+                ->references('id')
+                ->on('supplier_services')
                 ->restrictOnDelete()
                 ->cascadeOnUpdate();
         });

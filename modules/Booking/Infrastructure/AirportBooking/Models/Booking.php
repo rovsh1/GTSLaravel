@@ -107,12 +107,12 @@ class Booking extends BaseModel
             ->join('r_cities', 'r_cities.id', '=', 'r_airports.city_id')
             ->joinTranslatable('r_cities', 'name as city_name')
             ->join(
-                'supplier_airport_services',
-                'supplier_airport_services.id',
+                'supplier_services',
+                'supplier_services.id',
                 '=',
                 'booking_airport_details.service_id'
             )
-            ->addSelect('supplier_airport_services.name as service_name');
+            ->addSelect('supplier_services.title as service_name');
     }
 
     public function guestIds(): Attribute

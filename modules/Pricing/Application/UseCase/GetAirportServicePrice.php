@@ -2,23 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Module\Supplier\Application\UseCase;
+namespace Module\Pricing\Application\UseCase;
 
 use Carbon\CarbonInterface;
+use Module\Pricing\Application\Dto\PriceDto;
+use Module\Pricing\Application\Dto\ServicePriceDto;
+use Module\Pricing\Infrastructure\Models\AirportServicePrice as Model;
 use Module\Shared\Enum\CurrencyEnum;
-use Module\Supplier\Application\Response\PriceDto;
-use Module\Supplier\Application\Response\ServicePriceDto;
-use Module\Supplier\Domain\Supplier\Repository\SupplierRepositoryInterface;
-use Module\Supplier\Infrastructure\Models\AirportServicePrice as Model;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
-use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
 class GetAirportServicePrice implements UseCaseInterface
 {
-    public function __construct(
-        private readonly SupplierRepositoryInterface $supplierRepository,
-    ) {}
-
     public function execute(
         int $supplierId,
         int $serviceId,
@@ -26,10 +20,6 @@ class GetAirportServicePrice implements UseCaseInterface
         CurrencyEnum $grossCurrency,
         CarbonInterface $date
     ): ?ServicePriceDto {
-        $supplier = $this->supplierRepository->find($supplierId);
-        if ($supplier === null) {
-            throw new EntityNotFoundException('Supplier not found');
-        }
         $price = Model::whereSupplierId($supplierId)
             ->whereServiceId($serviceId)
             ->whereAirportId($airportId)

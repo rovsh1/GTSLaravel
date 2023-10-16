@@ -11,7 +11,6 @@ class UpdateAirportPriceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'airport_id' => ['required', 'numeric'],
             'season_id' => ['required', 'numeric'],
             'currency' => ['required', 'string'],
             'price_net' => ['required', 'numeric'],
@@ -19,11 +18,6 @@ class UpdateAirportPriceRequest extends FormRequest
             'prices_gross.*.amount' => ['required', 'numeric'],
             'prices_gross.*.currency' => ['required', 'string'],
         ];
-    }
-
-    public function getAirportId(): int
-    {
-        return (int)$this->post('airport_id');
     }
 
     public function getCurrency(): string

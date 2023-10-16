@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static void deleteRoom(int $bookingId, int $roomBookingId)
  * @method static void bindRoomGuest(int $bookingId, int $roomBookingId, int $guestId)
  * @method static void unbindRoomGuest(int $bookingId, int $roomBookingId, int $guestId)
- * @method static void updateRoomPrice(int $bookingId, int $roomBookingId, float|null $grossPrice, float|null $netPrice)
+ * @method static void updateRoomPrice(int $bookingId, int $roomBookingId, float|null $supplierDayPrice, float|null $clientDayPrice)
  */
 class RoomAdapter extends Facade
 {

@@ -7,6 +7,7 @@ namespace App\Admin\Http\Controllers\Booking\Service;
 use App\Admin\Http\Requests\Booking\Airport\GuestRequest;
 use App\Admin\Http\Requests\Booking\UpdateDetailsFieldRequest;
 use App\Admin\Support\Facades\Booking\BookingAdapter;
+use App\Admin\Support\Facades\Booking\Service\DetailsAdapter;
 use App\Core\Support\Http\Responses\AjaxErrorResponse;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use App\Core\Support\Http\Responses\AjaxSuccessResponse;
@@ -18,7 +19,7 @@ class DetailsController
     public function updateField(int $bookingId, UpdateDetailsFieldRequest $request): AjaxResponseInterface
     {
         try {
-            BookingAdapter::updateDetailsField($bookingId, $request->getField(), $request->getValue());
+            DetailsAdapter::updateDetailsField($bookingId, $request->getField(), $request->getValue());
         } catch (ApplicationException $e) {
             return new AjaxErrorResponse($e->getMessage());
         }

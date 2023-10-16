@@ -16,7 +16,6 @@ class AirportPrice extends Model
     protected $fillable = [
         'service_id',
         'season_id',
-        'airport_id',
         'currency',
         'price_net',
         'prices_gross',

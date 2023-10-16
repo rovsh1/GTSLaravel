@@ -27,7 +27,7 @@ return new class extends Migration {
 
             $table->foreign('service_id')
                 ->references('id')
-                ->on('supplier_transfer_services')
+                ->on('supplier_services')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
