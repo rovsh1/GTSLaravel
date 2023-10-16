@@ -40,7 +40,7 @@ class UpdatePriceRequest extends FormRequest
 
     public function getClientPrice(): ?float
     {
-        if ($this->isGrossPriceExists()) {
+        if ($this->exists('grossPrice')) {
             $value = (float)$this->post('grossPrice');
 
             return $value <= 0 ? null : $value;
@@ -51,7 +51,7 @@ class UpdatePriceRequest extends FormRequest
 
     public function getSupplierPrice(): ?float
     {
-        if ($this->isNetPriceExists()) {
+        if ($this->exists('netPrice')) {
             $value = (float)$this->post('netPrice');
 
             return $value <= 0 ? null : $value;
@@ -62,7 +62,7 @@ class UpdatePriceRequest extends FormRequest
 
     public function getNetPenalty(): ?float
     {
-        if ($this->isNetPenaltyExists()) {
+        if ($this->exists('netPenalty')) {
             $value = (float)$this->post('netPenalty');
 
             return $value <= 0 ? null : $value;
@@ -73,7 +73,7 @@ class UpdatePriceRequest extends FormRequest
 
     public function getGrossPenalty(): ?float
     {
-        if ($this->isGrossPenaltyExists()) {
+        if ($this->exists('grossPenalty')) {
             $value = (float)$this->post('grossPenalty');
 
             return $value <= 0 ? null : $value;

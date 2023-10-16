@@ -5,19 +5,20 @@ declare(strict_types=1);
 namespace Module\Booking\Application\Admin\HotelBooking\UseCase\Room;
 
 use Module\Booking\Application\Admin\HotelBooking\Exception\NotFoundHotelRoomPriceException;
-use Module\Booking\Deprecated\HotelBooking\Repository\BookingRepositoryInterface;
 use Module\Booking\Domain\Booking\Exception\HotelBooking\NotFoundHotelRoomPrice;
+use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Domain\Booking\Repository\RoomBookingRepositoryInterface;
+use Module\Booking\Domain\Booking\Service\HotelBooking\PriceCalculator\PriceCalculator;
+use Module\Booking\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomBookingId;
-use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomPriceDayPartCollection;
 use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomPriceItem;
 use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomPrices;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
-use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
 class SetManualPrice implements UseCaseInterface
 {
     public function __construct(
+        private readonly PriceCalculator $bookingPriceCalculator,
         private readonly RoomBookingRepositoryInterface $roomBookingRepository,
     ) {}
 
@@ -27,30 +28,19 @@ class SetManualPrice implements UseCaseInterface
         float|null $supplierDayPrice,
         float|null $clientDayPrice,
     ): void {
-        $roomBooking = $this->roomBookingRepository->find(new RoomBookingId($roomBookingId));
-        if ($roomBooking === null) {
-            throw new EntityNotFoundException('Room booking not found');
-        }
-        $prices = new RoomPrices(
+        $roomBooking = $this->roomBookingRepository->findOrFail(new RoomBookingId($roomBookingId));
+        $newPrices = new RoomPrices(
             supplierPrice: new RoomPriceItem(
-                //@todo как тут собрать объект?
-                new RoomPriceDayPartCollection(),
+                $roomBooking->prices()->supplierPrice()->dayParts(),
                 $supplierDayPrice,
             ),
             clientPrice: new RoomPriceItem(
-                new RoomPriceDayPartCollection(),
+                $roomBooking->prices()->clientPrice()->dayParts(),
                 $clientDayPrice,
-            )
+            ),
         );
-        $roomBooking->updatePrices($prices);
+        $roomBooking->updatePrices($newPrices);
         $this->roomBookingRepository->store($roomBooking);
-        //@todo кинуть ивент на пересчет цен
-
-
-        try {
-            //@todo где загружается цена сейчас? что должно происходить если её нет?
-        } catch (NotFoundHotelRoomPrice $e) {
-            throw new NotFoundHotelRoomPriceException($e);
-        }
+        $this->bookingPriceCalculator->calculate(new BookingId($bookingId));
     }
 }

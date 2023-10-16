@@ -32,6 +32,6 @@ class SetManualClientPrice implements UseCaseInterface
             clientPrice: $clientPrice
         );
         $booking->updatePrice($newPrices);
-        $this->bookingUpdater->storeIfHasEvents($booking);
+        $this->bookingUpdater->store($booking);
     }
 }
