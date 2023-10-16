@@ -11,15 +11,21 @@ import { useEditableModal } from '~resources/views/hotel/settings/composables/ed
 import { useBookingStore } from '~resources/views/service-booking/show/store/booking'
 
 import { useAdminAPI } from '~api'
+import {
+  BookingDetails,
+} from '~api/booking/service'
+
+import { parseAPIDateToJSDate } from '~lib/date'
 
 import EditableDateInput from '~components/Editable/EditableDateInput.vue'
-import EditableTextarea from '~components/Editable/EditableTextarea.vue'
 import EditableTextInput from '~components/Editable/EditableTextInput.vue'
 import IconButton from '~components/IconButton.vue'
 
 const bookingStore = useBookingStore()
 
 const isEditableStatus = computed<boolean>(() => bookingStore.availableActions?.isEditable || false)
+
+const bookingDetails = computed<BookingDetails | null>(() => bookingStore.booking?.details || null)
 
 const getDefaultCarForm = () => ({ })
 const carForm = ref<Partial<CarFormData>>(getDefaultCarForm())
@@ -83,25 +89,28 @@ const handleCreateDetails = () => {
       <table class="table-params">
         <tbody>
           <tr>
-            <th>Дата начала аренды</th>
+            <th>Номер рейса</th>
             <td>
-              <EditableDateInput :value="undefined" />
+              <EditableTextInput :value="bookingDetails?.flightNumber" type="text" />
             </td>
           </tr>
           <tr>
-            <th>Дата завершения аренды</th>
+            <th>Дата вылета</th>
             <td>
-              <EditableDateInput :value="undefined" />
+              <EditableDateInput
+                :value="bookingDetails?.departureDate
+                  ? parseAPIDateToJSDate(bookingDetails?.departureDate) : undefined"
+              />
             </td>
           </tr>
           <tr>
-            <th>Время подачи авто</th>
+            <th>Время вылета</th>
             <td>
               <EditableTextInput :value="''" type="time" />
             </td>
           </tr>
           <tr>
-            <th>Место подачи авто</th>
+            <th>Город вылета</th>
             <td>
               <EditableTextInput :value="''" type="text" />
             </td>
@@ -110,12 +119,6 @@ const handleCreateDetails = () => {
             <th>Табличка для встречи</th>
             <td>
               <EditableTextInput :value="''" type="text" />
-            </td>
-          </tr>
-          <tr>
-            <th>Примечание (запрос в отель, ваучер)</th>
-            <td>
-              <EditableTextarea :value="''" />
             </td>
           </tr>
         </tbody>

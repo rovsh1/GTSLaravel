@@ -52,7 +52,7 @@ const localValue = computed<string>({
 
 const displayValue = computed(() => {
   if (!localValue.value) {
-    return props.emptyValue || 'Не установлено'
+    return props.emptyValue || 'Не заполнено'
   }
   const dimensionText = props.dimension && localValue ? props.dimension : ''
 

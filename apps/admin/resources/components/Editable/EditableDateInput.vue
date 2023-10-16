@@ -50,7 +50,7 @@ const localValue = computed<Date | undefined>({
 
 const displayValue = computed(() => {
   if (!localValue.value) {
-    return props.emptyValue || 'Не установлено'
+    return props.emptyValue || 'Не заполнено'
   }
   const displayDate = DateTime.fromJSDate(localValue.value)
 

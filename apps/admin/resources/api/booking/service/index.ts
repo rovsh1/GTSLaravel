@@ -18,7 +18,12 @@ export type AirportInfo = {
 }
 
 export interface BookingDetails {
-
+  id: number
+  serviceTitle: string
+  airportId: number
+  flightNumber: string
+  departureDate: string
+  carBids: number[]
 }
 
 export type Booking = {
