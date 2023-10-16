@@ -48,7 +48,7 @@ class HotelRoomBaseDayValueFinder implements BaseDayValueFinderInterface
             rateId: $rateId,
             isResident: $isResident,
             guestsCount: $guestsCount,
-        ) ?? 6;
+        );
     }
 
     public function findOrFail(
