@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Module\Supplier\Infrastructure\Repository;
 
 use Module\Booking\Deprecated\AirportBooking\ValueObject\ContractId;
-use Module\Shared\Enum\Supplier\ContractServiceTypeEnum;
 use Module\Shared\ValueObject\Date;
 use Module\Supplier\Domain\Supplier\Entity\Contract;
 use Module\Supplier\Domain\Supplier\Repository\ContractRepositoryInterface;
@@ -15,10 +14,9 @@ use Module\Supplier\Infrastructure\Models\Contract as Model;
 
 class ContractRepository implements ContractRepositoryInterface
 {
-    public function find(int $serviceId, ContractServiceTypeEnum $serviceType): ?Contract
+    public function find(int $serviceId): ?Contract
     {
         $model = Model::whereServiceId($serviceId)
-            ->whereServiceType($serviceType)
             ->whereActive()
             ->first();
 
@@ -35,7 +33,6 @@ class ContractRepository implements ContractRepositoryInterface
             new ContractId($contract->id),
             new SupplierId($contract->supplier_id),
             new ServiceId($contract->service_id),
-            $contract->service_type,
             new Date($contract->date_start),
             new Date($contract->date_end),
         );

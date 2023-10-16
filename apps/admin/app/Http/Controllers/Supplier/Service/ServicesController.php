@@ -49,12 +49,12 @@ class ServicesController extends Controller
         }
         $grid = $this->gridFactory($provider)->data($query);
 
-        return Layout::title('Услуги транспорт')
+        return Layout::title('Услуги')
             ->view('default.grid.grid', [
                 'quicksearch' => $grid->getQuicksearch(),
                 'grid' => $grid,
                 'createUrl' => Acl::isUpdateAllowed($this->prototype->key)
-                    ? $this->prototype->route('services-transfer.create', $provider)
+                    ? $this->prototype->route('services.create', $provider)
                     : null,
             ]);
     }
@@ -115,7 +115,7 @@ class ServicesController extends Controller
     {
         return Form::name('data')
             ->hidden('supplier_id', ['value' => $supplierId])
-            ->text('name', ['label' => 'Название', 'required' => true])
+            ->text('title', ['label' => 'Название', 'required' => true])
             ->enum('type', [
                 'label' => 'Тип услуги',
                 'emptyItem' => '',
@@ -128,8 +128,8 @@ class ServicesController extends Controller
     {
         return Grid::paginator(16)
             ->enableQuicksearch()
-            ->edit(fn($r) => $this->prototype->route('services-transfer.edit', [$provider, $r->id]))
-            ->text('name', ['text' => 'Название', 'order' => true])
+            ->edit(fn($r) => $this->prototype->route('services.edit', [$provider, $r->id]))
+            ->text('title', ['text' => 'Название', 'order' => true])
             ->enum('type', ['text' => 'Тип', 'enum' => ServiceTypeEnum::class]);
     }
 
@@ -140,8 +140,8 @@ class ServicesController extends Controller
                 $this->prototype->route('show', $provider),
                 (string)$provider
             )
-            ->addUrl($this->prototype->route('services-transfer.index', $provider), 'Услуги');
+            ->addUrl($this->prototype->route('services.index', $provider), 'Услуги');
 
-        Sidebar::submenu(new SupplierMenu($provider, 'services-transfer'));
+        Sidebar::submenu(new SupplierMenu($provider, 'services'));
     }
 }

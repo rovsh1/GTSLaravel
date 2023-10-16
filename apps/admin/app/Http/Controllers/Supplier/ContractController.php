@@ -27,7 +27,7 @@ use App\Admin\View\Menus\SupplierMenu;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Module\Shared\Enum\Supplier\ContractServiceTypeEnum;
+use Module\Shared\Enum\ServiceTypeEnum;
 
 class ContractController extends Controller
 {
@@ -42,7 +42,7 @@ class ContractController extends Controller
     {
         $this->provider($provider);
 
-        $query = Contract::where('supplier_id', $provider->id);
+        $query = Contract::whereSupplierId($provider->id);
         $grid = $this->gridFactory($provider)->data($query);
 
         return Layout::title('Договора')
@@ -98,7 +98,7 @@ class ContractController extends Controller
             ->enum('status', ['label' => 'Статус', 'emptyItem' => '', 'enum' => StatusEnum::class, 'required' => true])
             ->enum('service_type', [
                 'label' => 'Тип услуги',
-                'enum' => ContractServiceTypeEnum::class,
+                'enum' => ServiceTypeEnum::class,
                 'required' => true,
                 'emptyItem' => ''
             ])
@@ -116,7 +116,6 @@ class ContractController extends Controller
             )
             ->text('period', ['text' => 'Период', 'renderer' => fn($r, $t) => Format::period($t)])
             ->enum('status', ['text' => 'Статус', 'enum' => StatusEnum::class, 'order' => true])
-            ->enum('service_type', ['text' => 'Тип услуги', 'enum' => ContractServiceTypeEnum::class])
             ->text('service_name', ['text' => 'Услуга', 'renderer' => fn($row, $val) => $row->service_name])
             ->file('documents', ['text' => 'Документы']);
     }

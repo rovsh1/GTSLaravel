@@ -11,7 +11,6 @@ return new class extends Migration {
             $table->increments('id');
             $table->unsignedInteger('service_id');
             $table->unsignedInteger('season_id');
-            $table->unsignedInteger('airport_id');
             $table->char('currency', 3);
             $table->unsignedDecimal('price_net');
             $table->json('prices_gross');
@@ -20,19 +19,13 @@ return new class extends Migration {
 
             $table->foreign('service_id', 'fk_supplier_airport_prices_service_id')
                 ->references('id')
-                ->on('supplier_airport_services')
+                ->on('supplier_services')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
             $table->foreign('season_id', 'fk_supplier_airport_prices_season_id')
                 ->references('id')
                 ->on('supplier_seasons')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
-
-            $table->foreign('airport_id', 'fk_supplier_airport_prices_airport_id')
-                ->references('id')
-                ->on('r_airports')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 

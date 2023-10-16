@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Admin\Http\Requests\ServiceProvider;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateTransferPriceRequest extends FormRequest

@@ -1,6 +1,5 @@
 <?php
 
-use Custom\Illuminate\Database\Schema\TranslationTable;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -8,11 +7,12 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up()
     {
-        Schema::create('supplier_airport_services', function (Blueprint $table) {
+        Schema::create('supplier_services', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('supplier_id');
-            $table->string('name');
+            $table->string('title');
             $table->unsignedTinyInteger('type');
+            $table->json('data')->nullable();
             $table->timestamps();
 
             $table->foreign('supplier_id')
@@ -22,6 +22,7 @@ return new class extends Migration {
                 ->cascadeOnUpdate();
         });
 
+
 //        (new TranslationTable('r_transfer_services'))
 //            ->string('name')
 //            ->create();
@@ -29,7 +30,6 @@ return new class extends Migration {
 
     public function down()
     {
-//        Schema::dropIfExists('r_transfer_services_translation');
-        Schema::dropIfExists('supplier_airport_services');
+        Schema::dropIfExists('supplier_services');
     }
 };

@@ -112,11 +112,6 @@ class CarController extends Controller
                     'value' => $r->id,
                     'text' => (string)$r
                 ])
-            ])
-            ->select('city_ids', [
-                'label' => 'Город',
-                'multiple' => true,
-                'items' => $provider->cities()->get()
             ]);
     }
 
@@ -124,11 +119,7 @@ class CarController extends Controller
     {
         return Grid::paginator(16)
             ->edit(fn($r) => $this->prototype->route('cars.edit', [$provider, $r->id]))
-            ->text('car', ['text' => 'Автомобиль', 'renderer' => fn($v) => (string)$v])
-            ->text('cities', [
-                'text' => 'Город',
-                'renderer' => fn($v) => $v->cities()->get()->map->name->implode(', ')
-            ]);
+            ->text('car', ['text' => 'Автомобиль', 'renderer' => fn($v) => (string)$v]);
     }
 
     private function provider(Supplier $provider): void

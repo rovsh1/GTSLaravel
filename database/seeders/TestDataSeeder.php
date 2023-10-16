@@ -6,11 +6,8 @@ use App\Admin\Enums\Contract\StatusEnum;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Module\Booking\Application\Admin\HotelBooking\UseCase\System\FillCalculatedPriceCalendar;
-use Module\Shared\Enum\Booking\AirportServiceTypeEnum;
-use Module\Shared\Enum\Booking\TransferServiceTypeEnum;
 use Module\Shared\Enum\CurrencyEnum;
 use Module\Shared\Enum\ServiceTypeEnum;
-use Module\Shared\Enum\Supplier\ContractServiceTypeEnum;
 
 class TestDataSeeder extends Seeder
 {
@@ -83,39 +80,8 @@ class TestDataSeeder extends Seeder
             ['supplier_id' => $testSupplierId, 'inn' => '12345678', 'director_full_name' => 'John Doe']
         ]);
 
-        $this->seedSupplierServicesData($testSupplierId, $supplierSeasonId);
         $this->seedTransferSupplierData($testSupplierId, $supplierSeasonId);
         $this->seedAirportSupplierData($testSupplierId, $supplierSeasonId);
-    }
-
-    private function seedSupplierServicesData(int $supplierId, int $seasonId): void
-    {
-        DB::table('supplier_services')->insert([
-            [
-                'supplier_id' => $supplierId,
-                'title' => 'Трансфер из аэропорта Ташкента',
-                'type' => ServiceTypeEnum::TRANSFER_FROM_AIRPORT,
-                'data' => json_encode(['airportId' => 1])
-            ],
-            [
-                'supplier_id' => $supplierId,
-                'title' => 'Трансфер в аэропорта Ташкента',
-                'type' => ServiceTypeEnum::TRANSFER_TO_AIRPORT,
-                'data' => json_encode(['airportId' => 1])
-            ],
-            [
-                'supplier_id' => $supplierId,
-                'title' => 'CIP Встреча',
-                'type' => ServiceTypeEnum::CIP_IN_AIRPORT,
-                'data' => json_encode(['airportId' => 1])
-            ],
-            [
-                'supplier_id' => $supplierId,
-                'title' => 'CIP Проводы',
-                'type' => ServiceTypeEnum::CIP_IN_AIRPORT,
-                'data' => json_encode(['airportId' => 1])
-            ]
-        ]);
     }
 
     private function seedTransferSupplierData(int $supplierId, int $seasonId): void
@@ -125,29 +91,31 @@ class TestDataSeeder extends Seeder
             'car_id' => 1,
         ]);
 
-        $service1Id = DB::table('supplier_transfer_services')->insertGetId([
+        $service1Id = DB::table('supplier_services')->insertGetId([
             'supplier_id' => $supplierId,
-            'name' => 'Трансфер из аэропорта',
-            'type' => TransferServiceTypeEnum::TRANSFER_FROM_AIRPORT,
+            'title' => 'Трансфер из аэропорта Ташкента',
+            'type' => ServiceTypeEnum::TRANSFER_FROM_AIRPORT,
+            'data' => json_encode(['airportId' => 1])
         ]);
 
-        $service2Id = DB::table('supplier_transfer_services')->insertGetId([
+        $service2Id = DB::table('supplier_services')->insertGetId([
             'supplier_id' => $supplierId,
-            'name' => 'Трансфер в аэропорт',
-            'type' => TransferServiceTypeEnum::TRANSFER_TO_AIRPORT,
+            'title' => 'Трансфер в аэропорта Ташкента',
+            'type' => ServiceTypeEnum::TRANSFER_TO_AIRPORT,
+            'data' => json_encode(['airportId' => 1])
         ]);
 
-        $service3Id = DB::table('supplier_transfer_services')->insertGetId([
+        $service3Id = DB::table('supplier_services')->insertGetId([
             'supplier_id' => $supplierId,
-            'name' => 'Аренда авто',
-            'type' => TransferServiceTypeEnum::CAR_RENT,
+            'title' => 'Аренда авто',
+            'type' => ServiceTypeEnum::CAR_RENT,
+            'data' => null,
         ]);
 
         DB::table('supplier_contracts')->insert([
             [
                 'supplier_id' => $supplierId,
                 'status' => StatusEnum::ACTIVE,
-                'service_type' => ContractServiceTypeEnum::TRANSFER,
                 'service_id' => $service1Id,
                 'date_start' => '2023-01-01',
                 'date_end' => '2023-12-31',
@@ -157,7 +125,6 @@ class TestDataSeeder extends Seeder
             [
                 'supplier_id' => $supplierId,
                 'status' => StatusEnum::ACTIVE,
-                'service_type' => ContractServiceTypeEnum::TRANSFER,
                 'service_id' => $service2Id,
                 'date_start' => '2023-01-01',
                 'date_end' => '2023-12-31',
@@ -167,7 +134,6 @@ class TestDataSeeder extends Seeder
             [
                 'supplier_id' => $supplierId,
                 'status' => StatusEnum::ACTIVE,
-                'service_type' => ContractServiceTypeEnum::TRANSFER,
                 'service_id' => $service3Id,
                 'date_start' => '2023-01-01',
                 'date_end' => '2023-12-31',
@@ -218,23 +184,24 @@ class TestDataSeeder extends Seeder
             ],
         ]);
 
-        $service1Id = DB::table('supplier_airport_services')->insertGetId([
+        $service1Id = DB::table('supplier_services')->insertGetId([
             'supplier_id' => $supplierId,
-            'name' => 'CIP Встреча',
-            'type' => AirportServiceTypeEnum::MEETING_IN_AIRPORT,
+            'title' => 'CIP Встреча',
+            'type' => ServiceTypeEnum::CIP_IN_AIRPORT,
+            'data' => json_encode(['airportId' => 1])
         ]);
 
-        $service2Id = DB::table('supplier_airport_services')->insertGetId([
+        $service2Id = DB::table('supplier_services')->insertGetId([
             'supplier_id' => $supplierId,
-            'name' => 'CIP Проводы',
-            'type' => AirportServiceTypeEnum::SEEING_IN_AIRPORT,
+            'title' => 'CIP Проводы',
+            'type' => ServiceTypeEnum::CIP_IN_AIRPORT,
+            'data' => json_encode(['airportId' => 1])
         ]);
 
         DB::table('supplier_contracts')->insert([
             [
                 'supplier_id' => $supplierId,
                 'status' => StatusEnum::ACTIVE,
-                'service_type' => ContractServiceTypeEnum::AIRPORT,
                 'service_id' => $service1Id,
                 'date_start' => '2023-01-01',
                 'date_end' => '2023-12-31',
@@ -244,7 +211,6 @@ class TestDataSeeder extends Seeder
             [
                 'supplier_id' => $supplierId,
                 'status' => StatusEnum::ACTIVE,
-                'service_type' => ContractServiceTypeEnum::AIRPORT,
                 'service_id' => $service2Id,
                 'date_start' => '2023-01-01',
                 'date_end' => '2023-12-31',
@@ -257,7 +223,6 @@ class TestDataSeeder extends Seeder
             [
                 'service_id' => $service1Id,
                 'season_id' => $seasonId,
-                'airport_id' => 4,
                 'currency' => CurrencyEnum::UZS,
                 'price_net' => 50000,
                 'prices_gross' => '[ { "amount": 100000, "currency": "UZS" }, { "amount": 25, "currency": "USD" } ]'
@@ -265,7 +230,6 @@ class TestDataSeeder extends Seeder
             [
                 'service_id' => $service2Id,
                 'season_id' => $seasonId,
-                'airport_id' => 4,
                 'currency' => CurrencyEnum::UZS,
                 'price_net' => 20000,
                 'prices_gross' => '[ { "amount": 70000, "currency": "UZS" }, { "amount": 10, "currency": "USD"} ]'

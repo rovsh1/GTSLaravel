@@ -6,15 +6,15 @@ namespace Module\Booking\Infrastructure\AirportBooking\Adapter;
 
 use Carbon\CarbonInterface;
 use Module\Booking\Deprecated\AirportBooking\Adapter\SupplierAdapterInterface;
+use Module\Pricing\Application\Dto\ServicePriceDto;
+use Module\Pricing\Application\UseCase\GetAirportServicePrice;
 use Module\Shared\Enum\CurrencyEnum;
 use Module\Supplier\Application\Response\CancelConditionsDto;
 use Module\Supplier\Application\Response\ServiceContractDto;
-use Module\Supplier\Application\Response\ServicePriceDto;
 use Module\Supplier\Application\Response\SupplierDto;
 use Module\Supplier\Application\UseCase\Find;
 use Module\Supplier\Application\UseCase\FindAirportServiceContract;
 use Module\Supplier\Application\UseCase\GetAirportCancelConditions;
-use Module\Supplier\Application\UseCase\GetAirportServicePrice;
 
 class SupplierAdapter implements SupplierAdapterInterface
 {

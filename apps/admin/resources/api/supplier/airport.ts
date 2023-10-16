@@ -16,16 +16,14 @@ export interface UpdateAirportPricePayload {
   supplierId: number
   seasonId: number
   serviceId: number
-  airportId: number
-  currencyId: number
+  currency: string
   priceNet?: number
   pricesGross?: Money[]
 }
 
 export interface ServicePriceResponse {
   id: number
-  airport_id: number
-  currency_id: number
+  currency: string
   prices_gross: Money[]
   price_net: number
   season_id: number
@@ -43,10 +41,9 @@ export const updateAirportPrice = (props: MaybeRef<UpdateAirportPricePayload>) =
         props,
         (payload: UpdateAirportPricePayload): any => ({
           season_id: payload.seasonId,
-          airport_id: payload.airportId,
           prices_gross: payload.pricesGross,
           price_net: payload.priceNet,
-          currency_id: payload.currencyId,
+          currency: payload.currency,
         }),
       ),
     )), 'application/json')

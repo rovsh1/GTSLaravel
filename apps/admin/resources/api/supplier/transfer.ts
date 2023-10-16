@@ -17,7 +17,7 @@ export interface UpdateCarPricePayload {
   seasonId: number
   serviceId: number
   carId: number
-  currencyId: number
+  currency: string
   priceNet?: number
   pricesGross?: Money[]
 }
@@ -25,7 +25,7 @@ export interface UpdateCarPricePayload {
 export interface ServicePriceResponse {
   id: number
   car_id: number
-  currency_id: number
+  currency: string
   prices_gross: Money[]
   price_net: number
   season_id: number
@@ -46,7 +46,7 @@ export const updateCarPrice = (props: MaybeRef<UpdateCarPricePayload>) =>
           car_id: payload.carId,
           prices_gross: payload.pricesGross,
           price_net: payload.priceNet,
-          currency_id: payload.currencyId,
+          currency: payload.currency,
         }),
       ),
     )), 'application/json')

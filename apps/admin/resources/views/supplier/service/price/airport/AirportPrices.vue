@@ -25,7 +25,7 @@ const { seasons, services, airports, supplierId, currencies } = requestInitialDa
   services: z.array(z.object({
     id: z.number(),
     supplier_id: z.number(),
-    name: z.string(),
+    title: z.string(),
     type: z.number(),
   })),
   airports: z.array(z.object({
@@ -50,7 +50,7 @@ const { quickSearch } = useQuickSearch()
 
 const filteredServices = computed(() => {
   if (quickSearch && quickSearch.trim().length > 0) {
-    return services.filter((service) => service.name.toLowerCase().includes(quickSearch.toLowerCase()))
+    return services.filter((service) => service.title.toLowerCase().includes(quickSearch.toLowerCase()))
   }
   return services
 })
@@ -61,7 +61,7 @@ const filteredServices = computed(() => {
   <PricesTable
     v-for="service in filteredServices"
     :key="service.id"
-    :header="service.name"
+    :header="service.title"
     :airports="airports as Airport[]"
     :seasons="seasons as Season[]"
     :supplier-id="supplierId as number"

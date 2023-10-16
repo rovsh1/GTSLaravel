@@ -19,7 +19,7 @@ AclRoute::for('supplier')
         'slug' => 'provider',
         'except' => ['show']
     ])
-    ->resource('services-transfer', Supplier\Service\TransferServicesController::class, [
+    ->resource('services', Supplier\Service\ServicesController::class, [
         'slug' => 'provider',
         'except' => ['show']
     ])
@@ -28,18 +28,6 @@ AclRoute::for('supplier')
         Supplier\Service\ServicesController::class . '@search',
         'read',
         'service.search'
-    )
-    ->get(
-        '/services-transfer/search',
-        Supplier\Service\TransferServicesController::class . '@search',
-        'read',
-        'service.transfer.search'
-    )
-    ->get(
-        '/{supplier}/services-transfer/list',
-        Supplier\Service\TransferServicesController::class . '@list',
-        'read',
-        'service.transfer.list'
     )
     ->get(
         '/{provider}/service-transfer/prices',
@@ -58,22 +46,6 @@ AclRoute::for('supplier')
         Supplier\Service\Price\TransferPricesController::class . '@update',
         'update',
         'service.transfer.price.update'
-    )
-    ->resource('services-airport', Supplier\Service\AirportServicesController::class, [
-        'slug' => 'provider',
-        'except' => ['show']
-    ])
-    ->get(
-        '/services-airport/search',
-        Supplier\Service\AirportServicesController::class . '@search',
-        'read',
-        'service.airport.search'
-    )
-    ->get(
-        '/{supplier}/services-airport/list',
-        Supplier\Service\AirportServicesController::class . '@list',
-        'read',
-        'service.airport.list'
     )
     ->get(
         '/{provider}/service-airport/prices',

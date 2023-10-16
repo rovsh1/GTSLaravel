@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Module\Shared\Enum\CurrencyEnum;
+use Module\Shared\Enum\ServiceTypeEnum;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
 use Sdk\Module\Database\Eloquent\Model;
 
@@ -80,12 +81,14 @@ class Supplier extends Model
 
     public function transferServices(): HasMany
     {
-        return $this->hasMany(TransferService::class);
+        return $this->hasMany(Service::class)
+            ->whereIn('type', ServiceTypeEnum::getTransferCases());
     }
 
     public function airportServices(): HasMany
     {
-        return $this->hasMany(AirportService::class);
+        return $this->hasMany(Service::class)
+            ->whereIn('type', ServiceTypeEnum::getAirportCases());
     }
 
     public function getCitiesAttribute(): array
