@@ -6,7 +6,9 @@ use Module\Booking\Domain\Booking\Adapter\HotelRoomAdapterInterface;
 use Module\Booking\Domain\Booking\Booking;
 use Module\Booking\Domain\Booking\Entity\HotelBooking;
 use Module\Booking\Domain\Booking\Entity\HotelRoomBooking;
+use Module\Booking\Domain\Booking\Event\HotelBooking\RoomAdded;
 use Module\Booking\Domain\Booking\Event\HotelBooking\RoomDeleted;
+use Module\Booking\Domain\Booking\Event\HotelBooking\RoomEdited;
 use Module\Booking\Domain\Booking\Exception\HotelBooking\InvalidRoomResidency;
 use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Domain\Booking\Repository\Details\HotelBookingRepositoryInterface;
@@ -104,8 +106,7 @@ class RoomUpdater
         $dataHelper->bookingDetails->addRoomBooking($roomBooking->id());
         $this->detailsRepository->store($dataHelper->bookingDetails);
         $this->processQuota($dataHelper->booking, $dataHelper->bookingDetails);
-        //@todo заменить processQuota на ивент RoomAdding (который процессит по листенеру)
-//        $this->events[] = new RoomAdded($dataHelper->booking, $roomBooking);
+        $this->events[] = new RoomAdded($dataHelper->booking, $roomBooking);
 
         return $roomBooking;
     }
@@ -117,7 +118,7 @@ class RoomUpdater
             $currentRoomBooking->updateDetails($dataHelper->roomDetails);
         }
         $this->roomBookingRepository->store($currentRoomBooking);
-//        $this->events[] = new RoomEdited($dataHelper->booking, $currentRoomBooking);
+        $this->events[] = new RoomEdited($dataHelper->booking, $currentRoomBooking);
     }
 
     private function doReplace(HotelRoomBooking $currentRoomBooking, UpdateDataHelper $dataHelper): void
