@@ -100,7 +100,7 @@ class TestDataSeeder extends Seeder
 
         $service2Id = DB::table('supplier_services')->insertGetId([
             'supplier_id' => $supplierId,
-            'title' => 'Трансфер в аэропорта Ташкента',
+            'title' => 'Трансфер в аэропорт Ташкента',
             'type' => ServiceTypeEnum::TRANSFER_TO_AIRPORT,
             'data' => json_encode(['airportId' => 1])
         ]);
@@ -186,14 +186,14 @@ class TestDataSeeder extends Seeder
 
         $service1Id = DB::table('supplier_services')->insertGetId([
             'supplier_id' => $supplierId,
-            'title' => 'CIP Встреча',
+            'title' => 'CIP Встреча Аэропорт Ташкент',
             'type' => ServiceTypeEnum::CIP_IN_AIRPORT,
             'data' => json_encode(['airportId' => 1])
         ]);
 
         $service2Id = DB::table('supplier_services')->insertGetId([
             'supplier_id' => $supplierId,
-            'title' => 'CIP Проводы',
+            'title' => 'CIP Проводы Аэропорт Ташкент',
             'type' => ServiceTypeEnum::CIP_IN_AIRPORT,
             'data' => json_encode(['airportId' => 1])
         ]);
