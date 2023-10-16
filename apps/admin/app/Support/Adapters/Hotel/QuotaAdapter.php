@@ -89,7 +89,7 @@ class QuotaAdapter extends AbstractHotelAdapter
     private function getPeriodByDate(CarbonInterface $date): array
     {
         return [
-            'date_from' => $date,
+            'date_from' => $date->clone()->startOfDay(),
             'date_to' => $date->clone()->endOfDay(),
         ];
     }

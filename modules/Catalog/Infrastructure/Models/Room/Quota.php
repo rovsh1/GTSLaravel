@@ -94,7 +94,7 @@ class Quota extends Model
     public function scopeWherePeriod(Builder $builder, CarbonPeriod $period): void
     {
         $builder->where('date', '>=', $period->getStartDate())
-            ->where('date', '<', $period->getEndDate());
+            ->where('date', '<=', $period->getEndDate());
     }
 
     public function scopeWhereHotelId(Builder $builder, int $hotelId): void
