@@ -152,6 +152,7 @@ class DetailsFactory
         return new ServiceInfo(
             $data['serviceId'],
             $data['title'],
+            $data['supplierId'],
         );
     }
 }

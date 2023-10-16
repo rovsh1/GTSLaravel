@@ -97,6 +97,7 @@ AclRoute::for('supplier')
         'slug' => 'provider',
         'except' => ['show']
     ])
+    ->get('/{supplier}/cars/list', Supplier\CarController::class . '@list', 'read', 'cars.get')
     ->resource('airports', Supplier\AirportController::class, [
         'slug' => 'provider',
         'except' => ['show']

@@ -23,7 +23,7 @@ class CIPRoomInAirport extends AbstractEditor implements EditorInterface
     {
         $supplierService = InfrastructureSupplierService::find($serviceId->value());
 
-        $serviceInfo = new ServiceInfo($serviceId->value(), $supplierService->title);
+        $serviceInfo = new ServiceInfo($serviceId->value(), $supplierService->title, $supplierService->supplier_id);
 
         return $this->detailsRepository->create(
             $bookingId,

@@ -6,6 +6,7 @@ namespace Module\Booking\Application\Admin\ServiceBooking\Factory;
 
 use Module\Booking\Application\Admin\ServiceBooking\Dto\CIPRoomInAirportDto;
 use Module\Booking\Application\Admin\ServiceBooking\Dto\ServiceDetailsDtoInterface;
+use Module\Booking\Application\Admin\ServiceBooking\Dto\ServiceInfoDto;
 use Module\Booking\Application\Admin\ServiceBooking\Dto\TransferFromAirportDto;
 use Module\Booking\Application\Admin\ServiceBooking\Dto\TransferToAirportDto;
 use Module\Booking\Application\Admin\ServiceBooking\Factory\HotelBooking\DetailsDtoFactory as HotelDetailsDtoFactory;
@@ -14,14 +15,13 @@ use Module\Booking\Domain\Booking\Entity\HotelBooking;
 use Module\Booking\Domain\Booking\Entity\ServiceDetailsInterface;
 use Module\Booking\Domain\Booking\Entity\TransferFromAirport;
 use Module\Booking\Domain\Booking\Entity\TransferToAirport;
+use Module\Booking\Domain\Booking\ValueObject\ServiceInfo;
 
 class ServiceDetailsDtoFactory
 {
     public function __construct(
         private readonly HotelDetailsDtoFactory $hotelFactory
-    )
-    {
-    }
+    ) {}
 
     public function createFromEntity(ServiceDetailsInterface $details): ServiceDetailsDtoInterface
     {
@@ -42,7 +42,7 @@ class ServiceDetailsDtoFactory
     {
         return new TransferToAirportDto(
             $details->id()->value(),
-            $details->serviceInfo()->title(),
+            $this->buildServiceInfoDto($details->serviceInfo()),
             $details->airportId()->value(),
             $details->flightNumber(),
             $details->departureDate()?->format(DATE_ATOM),
@@ -73,5 +73,14 @@ class ServiceDetailsDtoFactory
     private function buildCarRent(mixed $details): mixed
     {
         throw new \Exception('Service details dto not implemented');
+    }
+
+    private function buildServiceInfoDto(ServiceInfo $serviceInfo): ServiceInfoDto
+    {
+        return new ServiceInfoDto(
+            $serviceInfo->id(),
+            $serviceInfo->title(),
+            $serviceInfo->supplierId(),
+        );
     }
 }
