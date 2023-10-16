@@ -255,8 +255,8 @@ class BookingController extends Controller
 
     public function updatePrice(UpdatePriceRequest $request, int $id): AjaxResponseInterface
     {
-        $grossPrice = $request->getGrossPrice();
-        $netPrice = $request->getNetPrice();
+        $grossPrice = $request->getClientPrice();
+        $netPrice = $request->getSupplierPrice();
 
         if ($request->isGrossPriceExists() && $grossPrice === null) {
             PriceAdapter::setCalculatedGrossPrice($id);

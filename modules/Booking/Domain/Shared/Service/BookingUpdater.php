@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Domain\Shared\Service;
 
-use Module\Booking\Deprecated\AirportBooking\AirportBooking;
-use Module\Booking\Deprecated\HotelBooking\HotelBooking;
+use Module\Booking\Domain\Booking\Booking;
 use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
@@ -26,7 +25,7 @@ class BookingUpdater
     }
 
     /**
-     * @param HotelBooking|AirportBooking $booking
+     * @param Booking $booking
      * @return bool
      * @todo подумать как точно провернить, что были изменения в броне
      */

@@ -251,10 +251,10 @@ class BookingController extends Controller
     {
         switch ($request->getAction()) {
             case UpdatePriceRequest::CLIENT_PRICE_ACTION:
-                PriceAdapter::setManualClientPrice($id, $request->getGrossPrice());
+                PriceAdapter::setManualClientPrice($id, $request->getClientPrice());
                 break;
             case UpdatePriceRequest::SUPPLIER_PRICE_ACTION:
-                PriceAdapter::setManualSupplierPrice($id, $request->getNetPrice());
+                PriceAdapter::setManualSupplierPrice($id, $request->getSupplierPrice());
                 break;
             case UpdatePriceRequest::CLIENT_PENALTY_ACTION:
                 PriceAdapter::setClientPenalty($id, $request->getGrossPenalty());

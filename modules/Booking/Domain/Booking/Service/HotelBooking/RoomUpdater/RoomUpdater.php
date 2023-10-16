@@ -2,11 +2,11 @@
 
 namespace Module\Booking\Domain\Booking\Service\HotelBooking\RoomUpdater;
 
-use Module\Booking\Deprecated\HotelBooking\Event\RoomDeleted;
 use Module\Booking\Domain\Booking\Adapter\HotelRoomAdapterInterface;
 use Module\Booking\Domain\Booking\Booking;
 use Module\Booking\Domain\Booking\Entity\HotelBooking;
 use Module\Booking\Domain\Booking\Entity\HotelRoomBooking;
+use Module\Booking\Domain\Booking\Event\HotelBooking\RoomDeleted;
 use Module\Booking\Domain\Booking\Exception\HotelBooking\InvalidRoomResidency;
 use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Domain\Booking\Repository\Details\HotelBookingRepositoryInterface;

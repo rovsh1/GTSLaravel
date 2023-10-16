@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Booking\Deprecated\HotelBooking\Listener;
+namespace Module\Booking\Domain\Booking\Listener;
 
 use Module\Booking\Domain\Booking\Event\PriceBecomeDeprecatedEventInterface;
 use Module\Booking\Domain\Booking\Service\HotelBooking\PriceCalculator\PriceCalculator;
@@ -12,8 +12,7 @@ class RecalculateBookingPricesListener implements DomainEventListenerInterface
 {
     public function __construct(
         private readonly PriceCalculator $priceCalculator,
-    ) {
-    }
+    ) {}
 
     public function handle(DomainEventInterface $event): void
     {

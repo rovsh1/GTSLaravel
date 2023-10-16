@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace Module\Booking\Application\Admin\Booking\UseCase\Price;
 
+use Module\Booking\Domain\Booking\Service\HotelBooking\PriceCalculator\PriceCalculator;
+use Module\Booking\Domain\Booking\ValueObject\BookingId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class RecalculatePrices implements UseCaseInterface
 {
-    public function __construct() {}
+    public function __construct(
+        private readonly PriceCalculator $priceCalculator
+    ) {}
 
-    public function execute(int $bookingId): void {
-        //@todo на фронте должна быть кнопка "пересчитать", она дергает пересчет
-        //@todo все кейсы set - просто устанавливают цену и не пересчитывают
-        //@todo есть 1 листенер который вызывает пересчет
-
-        //@todo изменение цен в комнатах вызывает пересчет
+    public function execute(int $bookingId): void
+    {
+        $this->priceCalculator->calculate(new BookingId($bookingId));
     }
 }

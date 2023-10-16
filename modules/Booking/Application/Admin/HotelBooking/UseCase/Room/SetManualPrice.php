@@ -8,50 +8,47 @@ use Module\Booking\Application\Admin\HotelBooking\Exception\NotFoundHotelRoomPri
 use Module\Booking\Deprecated\HotelBooking\Repository\BookingRepositoryInterface;
 use Module\Booking\Domain\Booking\Exception\HotelBooking\NotFoundHotelRoomPrice;
 use Module\Booking\Domain\Booking\Repository\RoomBookingRepositoryInterface;
-use Module\Booking\Domain\HotelBooking\Service\PriceCalculator\BookingCalculator;
-use Module\Booking\Domain\HotelBooking\Service\PriceCalculator\RoomPriceEditor;
-use Module\Booking\Domain\Shared\Service\BookingUpdater;
+use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomBookingId;
+use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomPriceDayPartCollection;
+use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomPriceItem;
+use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomPrices;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
 class SetManualPrice implements UseCaseInterface
 {
     public function __construct(
-        private readonly BookingRepositoryInterface $bookingRepository,
         private readonly RoomBookingRepositoryInterface $roomBookingRepository,
-        private readonly RoomPriceEditor $roomPriceEditor,
-        private readonly BookingUpdater $bookingUpdater,
-        private readonly BookingCalculator $bookingCalculator,
     ) {}
 
-    public function execute(int $bookingId, int $roomBookingId, float|null $grossPrice, float|null $netPrice): void
-    {
-        $roomBooking = $this->roomBookingRepository->find($roomBookingId);
+    public function execute(
+        int $bookingId,
+        int $roomBookingId,
+        float|null $supplierDayPrice,
+        float|null $clientDayPrice,
+    ): void {
+        $roomBooking = $this->roomBookingRepository->find(new RoomBookingId($roomBookingId));
         if ($roomBooking === null) {
             throw new EntityNotFoundException('Room booking not found');
         }
-        try {
-            if ($grossPrice === null && $netPrice === null) {
-                $roomBooking->setCalculatedPrices($this->roomPriceEditor);
-            }
-            if ($netPrice !== null) {
-                $roomBooking->setNetDayPrice($netPrice, $this->roomPriceEditor);
-            } else {
-                $roomBooking->setCalculatedNetPrice($this->roomPriceEditor);
-            }
-            if ($grossPrice !== null) {
-                $roomBooking->setGrossDayPrice($grossPrice, $this->roomPriceEditor);
-            } else {
-                $roomBooking->setCalculatedGrossPrice($this->roomPriceEditor);
-            }
-            $this->roomBookingRepository->store($roomBooking);
+        $prices = new RoomPrices(
+            supplierPrice: new RoomPriceItem(
+                //@todo как тут собрать объект?
+                new RoomPriceDayPartCollection(),
+                $supplierDayPrice,
+            ),
+            clientPrice: new RoomPriceItem(
+                new RoomPriceDayPartCollection(),
+                $clientDayPrice,
+            )
+        );
+        $roomBooking->updatePrices($prices);
+        $this->roomBookingRepository->store($roomBooking);
+        //@todo кинуть ивент на пересчет цен
 
-            $booking = $this->bookingRepository->find($bookingId);
-            if ($booking === null) {
-                throw new EntityNotFoundException('Booking not found');
-            }
-            $booking->recalculatePrices($this->bookingCalculator);
-            $this->bookingUpdater->store($booking);
+
+        try {
+            //@todo где загружается цена сейчас? что должно происходить если её нет?
         } catch (NotFoundHotelRoomPrice $e) {
             throw new NotFoundHotelRoomPriceException($e);
         }

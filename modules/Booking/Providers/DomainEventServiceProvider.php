@@ -8,4 +8,6 @@ use Sdk\Module\Support\Providers\DomainEventServiceProvider as ServiceProvider;
 class DomainEventServiceProvider extends ServiceProvider
 {
     protected string $integrationEventMapper = IntegrationEventMapper::class;
+
+    //@todo привязка ивента к листенеру
 }

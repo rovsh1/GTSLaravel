@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Adapters\Booking;
 
+use Module\Booking\Application\Admin\Booking\UseCase\Price\RecalculatePrices;
 use Module\Booking\Application\Admin\Booking\UseCase\Price\SetClientPenalty;
 use Module\Booking\Application\Admin\Booking\UseCase\Price\SetManualClientPrice;
 use Module\Booking\Application\Admin\Booking\UseCase\Price\SetManualSupplierPrice;
@@ -11,6 +12,11 @@ use Module\Booking\Application\Admin\Booking\UseCase\Price\SetSupplierPenalty;
 
 class PriceAdapter
 {
+    public function recalculatePrices(int $bookingId): void
+    {
+        app(RecalculatePrices::class)->execute($bookingId);
+    }
+
     public function setManualClientPrice(int $bookingId, ?float $price): void
     {
         app(SetManualClientPrice::class)->execute($bookingId, $price);

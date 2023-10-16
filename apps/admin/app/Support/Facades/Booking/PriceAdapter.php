@@ -7,6 +7,7 @@ namespace App\Admin\Support\Facades\Booking;
 use Illuminate\Support\Facades\Facade;
 
 /**
+ * @method static void recalculatePrices(int $bookingId)
  * @method static void setManualClientPrice(int $bookingId, float|null $price)
  * @method static void setManualSupplierPrice(int $bookingId, float|null $price)
  * @method static void setSupplierPenalty(int $bookingId, float|null $penalty)

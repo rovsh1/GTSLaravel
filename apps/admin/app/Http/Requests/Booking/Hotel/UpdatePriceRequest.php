@@ -38,7 +38,7 @@ class UpdatePriceRequest extends FormRequest
         throw new \RuntimeException('Unknown price update request');
     }
 
-    public function getGrossPrice(): ?float
+    public function getClientPrice(): ?float
     {
         if ($this->isGrossPriceExists()) {
             $value = (float)$this->post('grossPrice');
@@ -49,7 +49,7 @@ class UpdatePriceRequest extends FormRequest
         return null;
     }
 
-    public function getNetPrice(): ?float
+    public function getSupplierPrice(): ?float
     {
         if ($this->isNetPriceExists()) {
             $value = (float)$this->post('netPrice');
