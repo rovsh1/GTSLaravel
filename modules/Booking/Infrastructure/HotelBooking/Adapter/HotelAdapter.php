@@ -26,9 +26,7 @@ class HotelAdapter implements HotelAdapterInterface
         int $guestsCount,
         CarbonInterface $date
     ): ?float {
-        $roomPriceDto = app(GetHotelRoomBasePrice::class)->execute($roomId, $rateId, $isResident, $guestsCount, $date);
-
-        return $roomPriceDto?->price;
+        return app(GetHotelRoomBasePrice::class)->execute($roomId, $rateId, $isResident, $guestsCount, $date);
     }
 
     public function getMarkupSettings(int $hotelId): MarkupSettingsDto
