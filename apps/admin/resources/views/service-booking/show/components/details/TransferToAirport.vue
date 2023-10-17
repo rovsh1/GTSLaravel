@@ -10,12 +10,9 @@ import { CarFormData } from '~resources/views/booking/lib/data-types'
 import { useEditableModal } from '~resources/views/hotel/settings/composables/editable-modal'
 import { useBookingStore } from '~resources/views/service-booking/show/store/booking'
 
-import { useAdminAPI } from '~api'
-import {
-  BookingDetails,
-} from '~api/booking/service'
+import { BookingDetails } from '~api/booking/service'
 
-import { parseAPIDateToJSDate } from '~lib/date'
+import { formatDateToAPIDate, parseAPIDateToJSDate } from '~lib/date'
 
 import EditableDateInput from '~components/Editable/EditableDateInput.vue'
 import EditableTextInput from '~components/Editable/EditableTextInput.vue'
@@ -70,14 +67,10 @@ const {
   submit: submitCarModal,
 } = useEditableModal<Required<CarFormData>, Required<CarFormData>, Partial<CarFormData>>(modalSettings)
 
-const handleCreateDetails = () => {
-  useAdminAPI(
-    {},
-    () => `/service-booking/${bookingStore.booking?.id}/details/${bookingStore.booking?.serviceType.id}/create`,
-  ).post({
-    test: 123,
-  }).execute()
+const handleChangeDetails = async (field: string, value: any) => {
+  await bookingStore.updateDetails(field, value)
 }
+
 </script>
 
 <template>
@@ -100,13 +93,17 @@ const handleCreateDetails = () => {
               <EditableDateInput
                 :value="bookingDetails?.departureDate
                   ? parseAPIDateToJSDate(bookingDetails?.departureDate) : undefined"
+                @change="value => handleChangeDetails('departure_date', value ? formatDateToAPIDate(value) : null)"
               />
             </td>
           </tr>
           <tr>
             <th>Время вылета</th>
             <td>
-              <EditableTextInput :value="''" type="time" />
+              <EditableTextInput
+                :value="''"
+                type="time"
+              />
             </td>
           </tr>
           <tr>

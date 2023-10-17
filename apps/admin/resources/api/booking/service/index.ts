@@ -70,7 +70,7 @@ export interface CopyBookingPayload {
 
 export interface UpdateBookingDetailsPayload {
   bookingID: BookingID
-  field: number
+  field: string
   value: any
 }
 
