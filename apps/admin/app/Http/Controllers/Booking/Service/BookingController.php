@@ -97,14 +97,10 @@ class BookingController extends Controller
         $data = $form->getData();
         $creatorId = request()->user()->id;
         $orderId = $data['order_id'] ?? null;
-        $currency = null;
-        $currencyId = $data['currency_id'] ?? null;
-        if ($orderId !== null && $currencyId === null) {
+        $currency = $data['currency'] ? CurrencyEnum::from($data['currency']) : null;
+        if ($orderId !== null && $currency === null) {
             $order = OrderAdapter::findOrder($orderId);
-            $currencyId = $order->currency->id;
-        }
-        if ($currencyId !== null) {
-            $currency = CurrencyEnum::fromId($currencyId);
+            $currency = $order->currency;
         }
         if ($currency === null) {
             $client = Client::find($data['client_id']);
@@ -319,7 +315,7 @@ class BookingController extends Controller
             ->hidden('legal_id', [
                 'label' => 'Юр. лицо',
             ])
-            ->currency('currency_id', [
+            ->currency('currency', [
                 'label' => 'Валюта',
                 'emptyItem' => '',
             ])
@@ -396,7 +392,7 @@ class BookingController extends Controller
         return [
             'manager_id' => $manager->id,
             'order_id' => $booking->orderId,
-            'currency_id' => $order->currency->id,
+            'currency' => $order->currency,
             'service_id' => $booking->serviceInfo->id,
             'client_id' => $order->clientId,
             'legal_id' => $order->legalId,

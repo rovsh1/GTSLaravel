@@ -23,6 +23,11 @@ enum CurrencyEnum: string
         return self::ID_MAP[$this->value];
     }
 
+    /**
+     * @param int $id
+     * @return CurrencyEnum|null
+     * @deprecated
+     */
     public static function fromId(int $id): ?CurrencyEnum
     {
         return false === ($key = array_search($id, self::ID_MAP))
