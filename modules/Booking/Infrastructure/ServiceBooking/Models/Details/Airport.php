@@ -23,6 +23,7 @@ class Airport extends Model implements DetailsModelInterface
     protected $casts = [
         'data' => 'array',
         'service_type' => ServiceTypeEnum::class,
+        'date' => 'datetime',
     ];
 
     protected static function booted()

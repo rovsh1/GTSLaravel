@@ -24,6 +24,8 @@ class Transfer extends Model implements DetailsModelInterface
     protected $casts = [
         'data' => 'array',
         'service_type' => ServiceTypeEnum::class,
+        'date_start' => 'datetime',
+        'date_end' => 'datetime',
     ];
 
     protected static function booted()
