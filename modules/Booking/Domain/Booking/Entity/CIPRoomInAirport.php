@@ -49,4 +49,9 @@ class CIPRoomInAirport implements ServiceDetailsInterface
     {
         return $this->airportId;
     }
+
+    public function serviceDate(): DateTimeInterface
+    {
+        return $this->serviceDate;
+    }
 }
