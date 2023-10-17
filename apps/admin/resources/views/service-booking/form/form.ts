@@ -18,7 +18,7 @@ const { bookingID } = requestInitialData('view-initial-data-service-booking', z.
 const pinia = createPinia()
 
 const clients: any[] = [
-  { id: 14, name: 'test', currency_id: 'UZS' },
+  { id: 14, name: 'test', currency: 'UZS' },
 ]
 
 $(() => {
