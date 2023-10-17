@@ -51,6 +51,9 @@ class HotelRoomBaseDayValueFinder implements BaseDayValueFinderInterface
             isResident: $isResident,
             guestsCount: $guestsCount,
         );
+        if($seasonPrice === null){
+            dd($seasonId, $rateId, $isResident, $guestsCount);
+        }
 
         return $dayPrice ?? $seasonPrice;
     }

@@ -101,7 +101,7 @@ class DetailsFactory
             serviceInfo: $this->buildServiceInfo($detailsData['serviceInfo']),
             airportId: new AirportId($detailsData['airportId']),
             flightNumber: $detailsData['flightNumber'],
-            departureDate: $details->date,
+            departureDate: $details->date_start,
             carBids: CarBidCollection::fromData($detailsData['carBids'])
         );
     }
@@ -117,7 +117,7 @@ class DetailsFactory
             airportId: new AirportId($detailsData['airportId']),
             flightNumber: $detailsData['flightNumber'],
             meetingTablet: $detailsData['meetingTablet'],
-            arrivalDate: $details->date,
+            arrivalDate: $details->date_start,
             carBids: CarBidCollection::fromData($detailsData['carBids'])
         );
     }
