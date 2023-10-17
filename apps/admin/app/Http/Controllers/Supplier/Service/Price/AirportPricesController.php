@@ -2,7 +2,7 @@
 
 namespace App\Admin\Http\Controllers\Supplier\Service\Price;
 
-use App\Admin\Http\Requests\ServiceProvider\UpdateAirportPriceRequest;
+use App\Admin\Http\Requests\Supplier\UpdateAirportPriceRequest;
 use App\Admin\Models\Reference\Currency;
 use App\Admin\Models\Supplier\AirportPrice;
 use App\Admin\Models\Supplier\Service;

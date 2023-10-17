@@ -4,7 +4,7 @@ namespace App\Admin\Http\Controllers\Supplier\Service;
 
 use App\Admin\Components\Factory\Prototype;
 use App\Admin\Http\Controllers\Controller;
-use App\Admin\Http\Requests\ServiceProvider\SearchServicesRequest;
+use App\Admin\Http\Requests\Supplier\SearchServicesRequest;
 use App\Admin\Http\Resources\Service as ServiceResource;
 use App\Admin\Models\Supplier\Service;
 use App\Admin\Models\Supplier\Supplier;
@@ -28,6 +28,8 @@ use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\Enum;
 use Module\Shared\Enum\ServiceTypeEnum;
 
 class ServicesController extends Controller
@@ -106,9 +108,14 @@ class ServicesController extends Controller
         );
     }
 
-    public function list(Supplier $supplier): JsonResponse
+    public function list(int $serviceType): JsonResponse
     {
-        $services = Service::whereSupplierId($supplier->id)->get();
+        Validator::make(
+            ['service_type' => $serviceType],
+            ['service_type' => new Enum(ServiceTypeEnum::class)]
+        )->validate();
+
+        $services = Service::whereType($serviceType)->get();
 
         return response()->json(
             ServiceResource::collection($services)

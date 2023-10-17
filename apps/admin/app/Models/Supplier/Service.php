@@ -14,13 +14,8 @@ class Service extends \Module\Supplier\Infrastructure\Models\Service
 
     protected array $quicksearch = ['id', 'supplier_services.title%'];
 
-    protected $fillable = [
-        'supplier_id',
-        'title',
-        'type',
-    ];
-
     protected $casts = [
+        'data' => 'array',
         'supplier_id' => 'int',
         'type' => ServiceTypeEnum::class,
     ];

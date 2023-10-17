@@ -2,15 +2,17 @@
 
 declare(strict_types=1);
 
-namespace App\Admin\Http\Requests\ServiceProvider;
+namespace App\Admin\Http\Requests\Supplier;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateAirportPriceRequest extends FormRequest
+class UpdateTransferPriceRequest extends FormRequest
 {
     public function rules(): array
     {
         return [
+            'car_id' => ['required', 'numeric'],
             'season_id' => ['required', 'numeric'],
             'currency' => ['required', 'string'],
             'price_net' => ['required', 'numeric'],
@@ -18,6 +20,11 @@ class UpdateAirportPriceRequest extends FormRequest
             'prices_gross.*.amount' => ['required', 'numeric'],
             'prices_gross.*.currency' => ['required', 'string'],
         ];
+    }
+
+    public function getCarId(): int
+    {
+        return (int)$this->post('car_id');
     }
 
     public function getCurrency(): string
