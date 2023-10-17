@@ -89,6 +89,7 @@ class RoomUpdater
         $this->doAction(function () use ($booking, $details, $roomBookingId) {
             $this->roomBookingRepository->delete($roomBookingId);
             $details->removeRoomBooking($roomBookingId);
+            $this->detailsRepository->store($details);
             $this->processQuota($booking, $details);
             $this->events[] = new RoomDeleted($booking, $roomBookingId);
         });

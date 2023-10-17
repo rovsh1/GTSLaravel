@@ -54,7 +54,7 @@ class TransferToAirportRepository extends AbstractDetailsRepository implements T
         return (bool)Transfer::whereId($details->id()->value())->update([
             'booking_transfer_details.data' => [
                 'serviceInfo' => $this->serializeServiceInfo($details->serviceInfo()),
-                'airportId' => $details->airportId(),
+                'airportId' => $details->airportId()->value(),
                 'flightNumber' => $details->flightNumber(),
                 'carBids' => $details->carBids()->toData(),
             ]
