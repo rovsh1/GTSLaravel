@@ -28,7 +28,7 @@ class CIPRoomInAirport extends AbstractEditor implements EditorInterface
         return $this->detailsRepository->create(
             $bookingId,
             $serviceInfo,
-            $supplierService->data['airportId'],
+            (int)$supplierService->data['airportId'],
             $detailsData['flightNumber'] ?? null,
             $detailsData['serviceDate'] ?? null,
             new GuestIdCollection([])
