@@ -50,6 +50,7 @@ class Hotel extends Model
     protected $table = 'hotels';
 
     protected $fillable = [
+        'supplier_id',
         'city_id',
         'type_id',
         'currency',

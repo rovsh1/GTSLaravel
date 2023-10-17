@@ -14,6 +14,7 @@ use App\Admin\Models\Hotel\Hotel;
 use App\Admin\Models\Hotel\Reference\Type;
 use App\Admin\Models\Hotel\User;
 use App\Admin\Models\Reference\City;
+use App\Admin\Models\Supplier\Supplier;
 use App\Admin\Support\Distance\Calculator;
 use App\Admin\Support\Distance\Point;
 use App\Admin\Support\Facades\Acl;
@@ -63,7 +64,7 @@ class HotelController extends AbstractPrototypeController
     public function edit(int $id): LayoutContract
     {
         return parent::edit($id)
-            ->view('hotel.edit.edit')
+            ->view($this->prototype->view('form'))
             ->data([
                 'cancelUrl' => $this->prototype->route('show', $id),
             ]);
@@ -71,7 +72,7 @@ class HotelController extends AbstractPrototypeController
 
     public function create(): LayoutContract
     {
-        return parent::create()->view('hotel.edit.edit');
+        return parent::create()->view($this->prototype->view('form'));
     }
 
     public function get(Request $request, Hotel $hotel): JsonResponse
@@ -122,7 +123,8 @@ class HotelController extends AbstractPrototypeController
     {
         $coordinates = isset($this->model) ? $this->model->coordinates : null;
 
-        return Form::city('city_id', ['label' => 'Город', 'required' => true, 'emptyItem' => ''])
+        return Form::select('supplier_id', ['label' => 'Поставщик', 'required' => true, 'emptyItem' => '', 'items' => Supplier::get()])
+            ->city('city_id', ['label' => 'Город', 'required' => true, 'emptyItem' => ''])
             ->select('type_id', ['label' => 'Тип отеля', 'required' => true, 'emptyItem' => '', 'items' => Type::get()])
             ->currency('currency', ['label' => 'Валюта', 'required' => true, 'emptyItem' => ''])
             ->enum('visibility', ['label' => __('label.visibility'), 'emptyItem' => '', 'enum' => VisibilityEnum::class]
