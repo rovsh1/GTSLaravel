@@ -24,7 +24,7 @@ AclRoute::for('supplier')
         'except' => ['show']
     ])
     ->get(
-        '/services/search',
+        '/{supplier}/services/search',
         Supplier\Service\ServicesController::class . '@search',
         'read',
         'service.search'

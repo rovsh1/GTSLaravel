@@ -15,7 +15,7 @@ return new class extends Migration
             $table->increments('id');
             $table->unsignedInteger('supplier_id');
             $table->unsignedTinyInteger('status');
-            $table->unsignedInteger('service_id');
+            $table->unsignedTinyInteger('service_type');
             $table->date('date_start');
             $table->date('date_end');
             $table->timestamps();
@@ -24,6 +24,18 @@ return new class extends Migration
             $table->foreign('supplier_id')
                 ->references('id')
                 ->on('suppliers')
+                ->restrictOnDelete()
+                ->cascadeOnUpdate();
+        });
+
+        Schema::create('supplier_service_contracts', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('service_id');
+            $table->unsignedInteger('contract_id');
+
+            $table->foreign('contract_id')
+                ->references('id')
+                ->on('supplier_contracts')
                 ->restrictOnDelete()
                 ->cascadeOnUpdate();
 
@@ -40,6 +52,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('supplier_service_contracts');
         Schema::dropIfExists('supplier_contracts');
     }
 };

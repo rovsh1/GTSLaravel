@@ -108,38 +108,42 @@ class TestDataSeeder extends Seeder
         $service3Id = DB::table('supplier_services')->insertGetId([
             'supplier_id' => $supplierId,
             'title' => 'Аренда авто',
-            'type' => ServiceTypeEnum::CAR_RENT,
+            'type' => ServiceTypeEnum::CAR_RENT_WITH_DRIVER,
             'data' => null,
         ]);
 
-        DB::table('supplier_contracts')->insert([
-            [
-                'supplier_id' => $supplierId,
-                'status' => StatusEnum::ACTIVE,
-                'service_id' => $service1Id,
-                'date_start' => '2023-01-01',
-                'date_end' => '2023-12-31',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'supplier_id' => $supplierId,
-                'status' => StatusEnum::ACTIVE,
-                'service_id' => $service2Id,
-                'date_start' => '2023-01-01',
-                'date_end' => '2023-12-31',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'supplier_id' => $supplierId,
-                'status' => StatusEnum::ACTIVE,
-                'service_id' => $service3Id,
-                'date_start' => '2023-01-01',
-                'date_end' => '2023-12-31',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]
+        $contract1Id = DB::table('supplier_contracts')->insertGetId([
+            'supplier_id' => $supplierId,
+            'status' => StatusEnum::ACTIVE,
+            'service_type' => ServiceTypeEnum::TRANSFER_FROM_AIRPORT,
+            'date_start' => '2023-01-01',
+            'date_end' => '2023-12-31',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        $contract2Id = DB::table('supplier_contracts')->insertGetId([
+            'supplier_id' => $supplierId,
+            'status' => StatusEnum::ACTIVE,
+            'service_type' => ServiceTypeEnum::TRANSFER_TO_AIRPORT,
+            'date_start' => '2023-01-01',
+            'date_end' => '2023-12-31',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        $contract3Id = DB::table('supplier_contracts')->insertGetId([
+            'supplier_id' => $supplierId,
+            'status' => StatusEnum::ACTIVE,
+            'service_type' => ServiceTypeEnum::CAR_RENT_WITH_DRIVER,
+            'date_start' => '2023-01-01',
+            'date_end' => '2023-12-31',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        DB::table('supplier_service_contracts')->insert([
+            ['contract_id' => $contract1Id, 'service_id' => $service1Id],
+            ['contract_id' => $contract2Id, 'service_id' => $service2Id],
+            ['contract_id' => $contract3Id, 'service_id' => $service3Id],
         ]);
 
         DB::table('supplier_car_prices')->insert([
@@ -198,25 +202,19 @@ class TestDataSeeder extends Seeder
             'data' => json_encode(['airportId' => 1])
         ]);
 
-        DB::table('supplier_contracts')->insert([
-            [
-                'supplier_id' => $supplierId,
-                'status' => StatusEnum::ACTIVE,
-                'service_id' => $service1Id,
-                'date_start' => '2023-01-01',
-                'date_end' => '2023-12-31',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'supplier_id' => $supplierId,
-                'status' => StatusEnum::ACTIVE,
-                'service_id' => $service2Id,
-                'date_start' => '2023-01-01',
-                'date_end' => '2023-12-31',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]
+        $contractId = DB::table('supplier_contracts')->insertGetId([
+            'supplier_id' => $supplierId,
+            'status' => StatusEnum::ACTIVE,
+            'service_type' => ServiceTypeEnum::CIP_IN_AIRPORT,
+            'date_start' => '2023-01-01',
+            'date_end' => '2023-12-31',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        DB::table('supplier_service_contracts')->insert([
+            ['contract_id' => $contractId, 'service_id' => $service1Id],
+            ['contract_id' => $contractId, 'service_id' => $service2Id],
         ]);
 
         DB::table('supplier_airport_prices')->insert([

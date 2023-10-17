@@ -64,7 +64,8 @@ class ServicesController extends Controller
         $this->provider($provider);
 
         return (new DefaultFormCreateAction($this->formFactory($provider->id)))
-            ->handle('Новая услуга');
+            ->handle('Новая услуга')
+            ->view('supplier.service.form.form');
     }
 
     public function store(Request $request, Supplier $provider): RedirectResponse
@@ -73,29 +74,32 @@ class ServicesController extends Controller
             ->handle(Service::class);
     }
 
-    public function edit(Request $request, Supplier $provider, Service $servicesTransfer): LayoutContract
+    public function edit(Request $request, Supplier $provider, Service $service): LayoutContract
     {
         $this->provider($provider);
 
         return (new DefaultFormEditAction($this->formFactory($provider->id)))
             ->deletable()
-            ->handle($servicesTransfer);
+            ->handle($service)
+            ->view('supplier.service.form.form');
     }
 
-    public function update(Supplier $provider, Service $servicesTransfer): RedirectResponse
+    public function update(Supplier $provider, Service $service): RedirectResponse
     {
         return (new DefaultFormUpdateAction($this->formFactory($provider->id)))
-            ->handle($servicesTransfer);
+            ->handle($service);
     }
 
-    public function destroy(Supplier $provider, Service $servicesTransfer): AjaxResponseInterface
+    public function destroy(Supplier $provider, Service $service): AjaxResponseInterface
     {
-        return (new DefaultDestroyAction())->handle($servicesTransfer);
+        return (new DefaultDestroyAction())->handle($service);
     }
 
-    public function search(SearchServicesRequest $request): JsonResponse
+    public function search(Supplier $supplier, SearchServicesRequest $request): JsonResponse
     {
-        $services = Service::whereType($request->getType())->get();
+        $services = Service::whereType($request->getType())
+            ->whereSupplierId($supplier->id)
+            ->get();
 
         return response()->json(
             ServiceResource::collection($services)

@@ -1,7 +1,7 @@
 @extends('default.form.form')
 
 @section('scripts')
-    @vite('resources/views/hotel/edit/edit.ts')
+    @vite('resources/views/hotel/form/form.ts')
 @endsection
 
 @section('content')

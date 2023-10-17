@@ -3,6 +3,7 @@
 namespace App\Admin\Http\Controllers\Hotel;
 
 use App\Admin\Http\Controllers\Controller;
+use App\Admin\Http\Requests\Hotel\BatchUpdateQuotaRequest;
 use App\Admin\Http\Requests\Hotel\GetQuotaRequest;
 use App\Admin\Http\Requests\Hotel\UpdateQuotaRequest;
 use App\Admin\Http\Requests\Hotel\UpdateQuotaStatusRequest;
@@ -33,11 +34,24 @@ class QuotaController extends Controller
     public function get(GetQuotaRequest $request, Hotel $hotel): JsonResponse
     {
         $quotas = match ($request->getAvailability()) {
-            $request::AVAILABILITY_SOLD => QuotaAdapter::getSoldQuotas($hotel->id, $request->getPeriod(), $request->getRoomId()),
-            $request::AVAILABILITY_STOPPED => QuotaAdapter::getStoppedQuotas($hotel->id, $request->getPeriod(), $request->getRoomId()),
-            $request::AVAILABILITY_AVAILABLE => QuotaAdapter::getAvailableQuotas($hotel->id, $request->getPeriod(), $request->getRoomId()),
+            $request::AVAILABILITY_SOLD => QuotaAdapter::getSoldQuotas(
+                $hotel->id,
+                $request->getPeriod(),
+                $request->getRoomId()
+            ),
+            $request::AVAILABILITY_STOPPED => QuotaAdapter::getStoppedQuotas(
+                $hotel->id,
+                $request->getPeriod(),
+                $request->getRoomId()
+            ),
+            $request::AVAILABILITY_AVAILABLE => QuotaAdapter::getAvailableQuotas(
+                $hotel->id,
+                $request->getPeriod(),
+                $request->getRoomId()
+            ),
             default => QuotaAdapter::getQuotas($hotel->id, $request->getPeriod(), $request->getRoomId()),
         };
+
         return response()->json(RoomQuota::collection($quotas));
     }
 
@@ -46,6 +60,7 @@ class QuotaController extends Controller
         foreach ($request->getDates() as $date) {
             QuotaAdapter::updateRoomQuota($room->id, $date, $request->getCount(), $request->getReleaseDays());
         }
+
         return new AjaxSuccessResponse();
     }
 
@@ -54,6 +69,7 @@ class QuotaController extends Controller
         foreach ($request->getDates() as $date) {
             QuotaAdapter::openRoomQuota($room->id, $date);
         }
+
         return new AjaxSuccessResponse();
     }
 
@@ -62,6 +78,7 @@ class QuotaController extends Controller
         foreach ($request->getDates() as $date) {
             QuotaAdapter::closeRoomQuota($room->id, $date);
         }
+
         return new AjaxSuccessResponse();
     }
 
@@ -70,6 +87,37 @@ class QuotaController extends Controller
         foreach ($request->getDates() as $date) {
             QuotaAdapter::resetRoomQuota($room->id, $date);
         }
+
+        return new AjaxSuccessResponse();
+    }
+
+    public function batchUpdateDateQuota(
+        BatchUpdateQuotaRequest $request,
+        Hotel $hotel,
+    ): AjaxResponseInterface {
+        foreach ($request->getPeriod() as $date) {
+            //@todo переделать на норм запрос
+            $isNeedUpdate = in_array($date->dayOfWeekIso, $request->getWeekDays());
+            if (!$isNeedUpdate) {
+                continue;
+            }
+            $action = $request->getAction();
+
+            foreach ($request->getRoomIds() as $roomId) {
+                if ($action === BatchUpdateQuotaRequest::OPEN) {
+                    QuotaAdapter::openRoomQuota(
+                        roomId: $roomId,
+                        date: $date,
+                    );
+                } elseif ($action === BatchUpdateQuotaRequest::CLOSE) {
+                    QuotaAdapter::closeRoomQuota(
+                        roomId: $roomId,
+                        date: $date
+                    );
+                }
+            }
+        }
+
         return new AjaxSuccessResponse();
     }
 

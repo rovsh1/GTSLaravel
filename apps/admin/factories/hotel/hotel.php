@@ -12,7 +12,7 @@ return Factory::key('hotel')
         'create' => 'Новый отель'
     ])
     ->views([
-        'form' => 'hotel.edit.edit',
+        'form' => 'hotel.form.form',
         'show' => 'hotel.show.show'
     ])
     ->priority(100);

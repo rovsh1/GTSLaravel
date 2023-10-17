@@ -29,7 +29,7 @@ class CarRentWithDriver implements ServiceDetailsInterface
 
     public function serviceType(): ServiceTypeEnum
     {
-        return ServiceTypeEnum::TRANSFER_TO_AIRPORT;
+        return ServiceTypeEnum::CAR_RENT_WITH_DRIVER;
     }
 
     public function id(): DetailsId

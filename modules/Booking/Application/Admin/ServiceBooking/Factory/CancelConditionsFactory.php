@@ -54,7 +54,7 @@ class CancelConditionsFactory
     {
         return match ($serviceType) {
             ServiceTypeEnum::CIP_IN_AIRPORT => $this->supplierAdapter->getAirportCancelConditions(),
-            ServiceTypeEnum::CAR_RENT,
+            ServiceTypeEnum::CAR_RENT_WITH_DRIVER,
             ServiceTypeEnum::TRANSFER_TO_RAILWAY,
             ServiceTypeEnum::TRANSFER_FROM_RAILWAY,
             ServiceTypeEnum::TRANSFER_TO_AIRPORT,
