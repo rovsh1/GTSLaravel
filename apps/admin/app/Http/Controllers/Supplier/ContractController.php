@@ -102,7 +102,7 @@ class ContractController extends Controller
                 'required' => true,
                 'emptyItem' => ''
             ])
-            ->hidden('service_id', ['label' => 'Услуга', 'required' => true])
+            ->hidden('service_ids', ['label' => 'Услуги', 'required' => true])
             ->file('documents', ['label' => 'Документы', 'multiple' => true]);
     }
 
@@ -116,7 +116,7 @@ class ContractController extends Controller
             )
             ->text('period', ['text' => 'Период', 'renderer' => fn($r, $t) => Format::period($t)])
             ->enum('status', ['text' => 'Статус', 'enum' => StatusEnum::class, 'order' => true])
-            ->text('service_name', ['text' => 'Услуга', 'renderer' => fn($row, $val) => $row->service_name])
+            ->text('service_names', ['text' => 'Услуги', 'renderer' => fn($r, $val) => implode(', ', $val)])
             ->file('documents', ['text' => 'Документы']);
     }
 

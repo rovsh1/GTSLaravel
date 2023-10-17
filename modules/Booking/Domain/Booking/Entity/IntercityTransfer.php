@@ -25,7 +25,7 @@ class IntercityTransfer implements ServiceDetailsInterface
 
     public function serviceType(): ServiceTypeEnum
     {
-        return ServiceTypeEnum::TRANSFER_TO_AIRPORT;
+        return ServiceTypeEnum::INTERCITY_TRANSFER;
     }
 
     public function id(): DetailsId

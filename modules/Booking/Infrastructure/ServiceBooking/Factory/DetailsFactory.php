@@ -34,7 +34,7 @@ class DetailsFactory
         return match ($booking->service_type) {
             ServiceTypeEnum::HOTEL_BOOKING => $this->buildHotelBookingDetails($booking->hotelDetails),
             ServiceTypeEnum::CIP_IN_AIRPORT => $this->buildAirportDetails($booking->airportDetails),
-            ServiceTypeEnum::CAR_RENT => $this->buildCarRentDetails($booking->transferDetails),
+            ServiceTypeEnum::CAR_RENT_WITH_DRIVER => $this->buildCarRentDetails($booking->transferDetails),
             ServiceTypeEnum::TRANSFER_TO_AIRPORT => $this->buildTransferToAirportDetails($booking->transferDetails),
             ServiceTypeEnum::TRANSFER_FROM_AIRPORT => $this->buildTransferFromAirportDetails($booking->transferDetails),
             ServiceTypeEnum::TRANSFER_TO_RAILWAY => $this->buildTransferToRailwayDetails($booking->transferDetails),
@@ -49,7 +49,7 @@ class DetailsFactory
         return match ($model->serviceType()) {
             ServiceTypeEnum::HOTEL_BOOKING => $this->buildHotelBookingDetails($model),
             ServiceTypeEnum::CIP_IN_AIRPORT => $this->buildAirportDetails($model),
-            ServiceTypeEnum::CAR_RENT => $this->buildCarRentDetails($model),
+            ServiceTypeEnum::CAR_RENT_WITH_DRIVER => $this->buildCarRentDetails($model),
             ServiceTypeEnum::TRANSFER_TO_AIRPORT => $this->buildTransferToAirportDetails($model),
             ServiceTypeEnum::TRANSFER_FROM_AIRPORT => $this->buildTransferFromAirportDetails($model),
             ServiceTypeEnum::TRANSFER_TO_RAILWAY => $this->buildTransferToRailwayDetails($model),
