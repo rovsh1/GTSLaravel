@@ -35,6 +35,11 @@ class Transfer extends Model implements DetailsModelInterface
         });
     }
 
+    public function scopeWhereId(Builder $builder, int $id): void
+    {
+        $builder->where('booking_transfer_details.id', $id);
+    }
+
     public function bookingId(): int
     {
         return $this->booking_id;
