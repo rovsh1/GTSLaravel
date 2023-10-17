@@ -93,7 +93,7 @@ const handleChangeDetails = async (field: string, value: any) => {
               <EditableDateInput
                 :value="bookingDetails?.departureDate
                   ? parseAPIDateToJSDate(bookingDetails?.departureDate) : undefined"
-                @change="value => handleChangeDetails('departure_date', value ? formatDateToAPIDate(value) : null)"
+                @change="value => handleChangeDetails('departureDate', value ? formatDateToAPIDate(value) : null)"
               />
             </td>
           </tr>
