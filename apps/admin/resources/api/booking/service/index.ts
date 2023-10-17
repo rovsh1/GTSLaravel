@@ -68,6 +68,12 @@ export interface CopyBookingPayload {
   bookingID: BookingID
 }
 
+export interface UpdateBookingDetailsPayload {
+  bookingID: BookingID
+  field: number
+  value: any
+}
+
 export const useGetBookingAPI = (props: MaybeRef<GetBookingPayload>) =>
   useAdminAPI(props, ({ bookingID }) => `/service-booking/${bookingID}/get`)
     .get()
@@ -149,3 +155,20 @@ export const copyBooking = (props: MaybeRef<CopyBookingPayload>) => {
   form.action = `/service-booking/${payload.bookingID}/copy`
   form.submit()
 }
+
+export const updateBookingDetails = (props: MaybeRef<UpdateBookingDetailsPayload>) =>
+  useAdminAPI(
+    props,
+    ({ bookingID }) => `/service-booking/${bookingID}/details`,
+    { immediate: true },
+  )
+    .put(computed<string>(() => JSON.stringify(
+      getNullableRef<UpdateBookingDetailsPayload, any>(
+        props,
+        (payload: UpdateBookingDetailsPayload): any => ({
+          field: payload.field,
+          value: payload.value,
+        }),
+      ),
+    )), 'application/json')
+    .json<UpdateBookingStatusResponse>()
