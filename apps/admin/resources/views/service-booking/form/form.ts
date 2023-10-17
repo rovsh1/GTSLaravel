@@ -11,10 +11,6 @@ import { createVueInstance } from '~lib/vue'
 
 import '~resources/views/main'
 
-interface ServiceSearchPayload {
-  city_id: null | number
-}
-
 const { bookingID } = requestInitialData('view-initial-data-service-booking', z.object({
   bookingID: z.number().nullable(),
 }))
@@ -24,7 +20,6 @@ const pinia = createPinia()
 const clients: any[] = [
   { id: 14, name: 'test', currency_id: 1 },
 ]
-const serviceSearchPayload: ServiceSearchPayload = { city_id: null }
 
 $(() => {
   const toggleLegalIdInput = (required: boolean = true): void => {
@@ -95,14 +90,9 @@ $(() => {
   }
 
   $('#form_data_manager_id').select2()
-  $<HTMLSelectElement>('#form_data_city_id')
-    .select2()
-    .change((e) => {
-      serviceSearchPayload.city_id = Number(e.target.value)
-    })
 
   $('#form_data_service_id').childCombo({
-    urlGetter: () => `/supplier/services/search?city_id=${serviceSearchPayload.city_id}`,
+    urlGetter: (type: number) => `/supplier/services/${type}/list`,
     disabledText: 'Выберите тип услуги',
     parent: $('#form_data_service_type'),
     dataIndex: 'type',

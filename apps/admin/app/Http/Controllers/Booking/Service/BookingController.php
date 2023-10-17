@@ -323,11 +323,6 @@ class BookingController extends Controller
                 'label' => 'Валюта',
                 'emptyItem' => '',
             ])
-            ->city('city_id', [
-                'label' => __('label.city'),
-                'emptyItem' => '',
-                'required' => true,
-            ])
             ->enum('service_type', [
                 'label' => 'Тип услуги',
                 'emptyItem' => '',
@@ -381,7 +376,6 @@ class BookingController extends Controller
         return (new SearchForm())
             ->number('order_id', ['label' => '№ Заказа'])
 //            ->country('country_id', ['label' => 'Страна', 'default' => '1'])
-            ->city('city_id', ['label' => 'Город', 'emptyItem' => ''])
             ->client('client_id', ['label' => 'Клиент', 'emptyItem' => ''])
             ->enum(
                 'service_type',

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Admin\Http\Requests\ServiceProvider;
+namespace App\Admin\Http\Requests\Supplier;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
