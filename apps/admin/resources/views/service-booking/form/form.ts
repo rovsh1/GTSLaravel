@@ -18,7 +18,7 @@ const { bookingID } = requestInitialData('view-initial-data-service-booking', z.
 const pinia = createPinia()
 
 const clients: any[] = [
-  { id: 14, name: 'test', currency_id: 1 },
+  { id: 14, name: 'test', currency: 'UZS' },
 ]
 
 $(() => {
@@ -37,8 +37,8 @@ $(() => {
   }
 
   const toggleCurrencyIdField = (state?: boolean) => {
-    const $currencyField = $('div.field-currency_id')
-    const $currencyInput = $('#form_data_currency_id')
+    const $currencyField = $('div.field-currency')
+    const $currencyInput = $('#form_data_currency')
     if (state) {
       $currencyField.show().toggleClass('field-required', true)
       $currencyInput.attr('required', 'required')
@@ -58,7 +58,7 @@ $(() => {
         $('#form_data_order_id').attr('disabled', 'disabled')
       } else {
         $('#form_data_order_id').removeAttr('disabled')
-        toggleCurrencyIdField(!client.currency_id)
+        toggleCurrencyIdField(!client.currency)
       }
     }
 
