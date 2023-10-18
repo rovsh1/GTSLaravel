@@ -9,7 +9,7 @@ class TransferToAirportDto implements ServiceDetailsDtoInterface
     public function __construct(
         public readonly int $id,
         public readonly ServiceInfoDto $serviceInfo,
-        public readonly int $airportId,
+        public readonly AirportInfoDto $airportInfo,
         public ?string $flightNumber,
         public ?string $departureDate,
         public ?string $meetingTablet,
