@@ -44,6 +44,7 @@ const modalSettings = {
     title: 'Добавление автомобиля',
     handler: async (request: MaybeRef<Required<CarFormData>>) => {
       const preparedRequest = unref(request)
+      preparedRequest.baggageCount = preparedRequest.baggageCount || 0
       const payload = { bookingID, ...preparedRequest, babyCount: 0 }
       await addBookingCar(payload)
       await bookingStore.fetchBooking()
@@ -53,6 +54,7 @@ const modalSettings = {
     title: 'Редактирование автомобиля',
     handler: async (request: MaybeRef<Required<CarFormData>>) => {
       const preparedRequest = unref(request)
+      preparedRequest.baggageCount = preparedRequest.baggageCount || 0
       const payload = { bookingID, ...preparedRequest, babyCount: 0 }
       await updateBookingCar(payload)
       await bookingStore.fetchBooking()
