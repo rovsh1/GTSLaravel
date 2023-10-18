@@ -2,16 +2,16 @@
 
 import EditTableRowButton from '~resources/views/hotel/settings/components/EditTableRowButton.vue'
 
-import { Car } from '~api/supplier/cars'
+import { CarBid } from '~api/booking/service'
 
 const props = defineProps<{
-  bookingCars: Car[]
+  bookingCars: CarBid[]
   canEdit: boolean
 }>()
 
 defineEmits<{
-  (event: 'edit', car: Car): void
-  (event: 'delete', car: Car): void
+  (event: 'edit', car: CarBid): void
+  (event: 'delete', car: CarBid): void
 }>()
 
 </script>
@@ -32,10 +32,10 @@ defineEmits<{
       <template v-if="bookingCars.length > 0">
         <tr v-for="(car, idx) in bookingCars" :key="car.id">
           <td>{{ idx + 1 }}</td>
-          <td>{{ `${car.mark} ${car.model}` }}</td>
-          <td>{{ car.id }}</td>
-          <td>{{ car.passengersNumber }}</td>
-          <td>{{ car.bagsNumber }}</td>
+          <td>{{ `${car.babyCount}` }}</td>
+          <td>{{ car.carsCount }}</td>
+          <td>{{ car.passengersCount }}</td>
+          <td>{{ car.baggageCount }}</td>
           <td v-if="canEdit" class="column-edit">
             <EditTableRowButton
               @edit="$emit('edit', car)"

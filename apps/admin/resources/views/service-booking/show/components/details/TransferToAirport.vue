@@ -2,6 +2,8 @@
 
 import { computed, MaybeRef, onMounted, ref, unref, watch } from 'vue'
 
+import { z } from 'zod'
+
 import CarModal from '~resources/views/booking/components/CarModal.vue'
 import CarsTable from '~resources/views/booking/components/CarsTable.vue'
 import InfoBlock from '~resources/views/booking/components/InfoBlock/InfoBlock.vue'
@@ -11,13 +13,19 @@ import { useEditableModal } from '~resources/views/hotel/settings/composables/ed
 import { useBookingStore } from '~resources/views/service-booking/show/store/booking'
 
 import { BookingDetails } from '~api/booking/service'
+import { addBookingCar, updateBookingCar } from '~api/booking/service/cars'
 import { Car, useGetSupplierCarsAPI } from '~api/supplier/cars'
 
 import { formatDateToAPIDate, parseAPIDateToJSDate } from '~lib/date'
+import { requestInitialData } from '~lib/initial-data'
 
 import EditableDateInput from '~components/Editable/EditableDateInput.vue'
 import EditableTextInput from '~components/Editable/EditableTextInput.vue'
 import IconButton from '~components/IconButton.vue'
+
+const { bookingID } = requestInitialData('view-initial-data-service-booking', z.object({
+  bookingID: z.number(),
+}))
 
 const bookingStore = useBookingStore()
 
@@ -27,7 +35,7 @@ const bookingDetails = computed<BookingDetails | null>(() => bookingStore.bookin
 
 const availableCars = ref<Car[]>([])
 
-const getDefaultCarForm = () => ({ })
+const getDefaultCarForm = () => ({})
 const carForm = ref<Partial<CarFormData>>(getDefaultCarForm())
 
 const modalSettings = {
@@ -35,26 +43,18 @@ const modalSettings = {
     title: 'Добавление автомобиля',
     handler: async (request: MaybeRef<Required<CarFormData>>) => {
       const preparedRequest = unref(request)
-      if (preparedRequest && preparedRequest.id !== undefined) {
-        // const payload = { bookingID, guestId: preparedRequest.id }
-        // await addBookingGuest(payload)
-      } else {
-        /// /const payload = { airportBookingId: bookingID, ...preparedRequest }
-        // payload.orderId = orderId.value
-        // await addOrderGuest(payload)
-      }
-      // await bookingStore.fetchBooking()
-      // await orderStore.fetchGuests()
+      const payload = { bookingID, ...preparedRequest, babyCount: 0 }
+      await addBookingCar(payload)
+      await bookingStore.fetchBooking()
     },
   },
   edit: {
     title: 'Редактирование автомобиля',
     handler: async (request: MaybeRef<Required<CarFormData>>) => {
       const preparedRequest = unref(request)
-      const payload = { guestId: preparedRequest.id, ...preparedRequest }
-      // payload.orderId = orderId.value
-      // await updateOrderGuest(payload)
-      // await orderStore.fetchGuests()
+      const payload = { bookingID, ...preparedRequest, babyCount: 0 }
+      await updateBookingCar(payload)
+      await bookingStore.fetchBooking()
     },
   },
 }
@@ -172,7 +172,7 @@ onMounted(async () => {
       </template>
       <CarsTable
         :can-edit="isEditableStatus"
-        :booking-cars="[]"
+        :booking-cars="bookingDetails?.carBids || []"
         @edit="(car) => { }"
         @delete="(car) => { }"
       />

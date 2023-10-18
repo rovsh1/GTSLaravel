@@ -21,13 +21,22 @@ export type ServiceInfo = ServiceType & {
   supplierId: number
 }
 
+export type CarBid = {
+  id: number
+  carId: number
+  carsCount: number
+  passengersCount: number
+  baggageCount: number
+  babyCount: number
+}
+
 export interface BookingDetails {
   id: number
   serviceInfo: ServiceInfo
   airportId: number
   flightNumber: string
   departureDate: string
-  carBids: number[]
+  carBids: CarBid[]
 }
 
 export type Booking = {

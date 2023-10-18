@@ -18,13 +18,11 @@ const props = withDefaults(defineProps<{
   isFetching: MaybeRef<boolean>
   availableCars: Car[]
   formData: Partial<CarFormData>
-  orderCars?: Car[] | null
   titleText?: string
   inputSelectText?: string
 }>(), {
   titleText: 'Данные автомобиля',
   inputSelectText: 'Автомобиль',
-  orderCars: null,
 })
 
 const emit = defineEmits<{
@@ -36,70 +34,66 @@ const emit = defineEmits<{
 const setFormData = () => ({
   id: props.formData.id,
   ...props.formData,
-  selectedCarFromOrder: undefined,
 })
 
 const formData = ref<Partial<CarFormData>>(setFormData())
+
+const selectedCar = ref<Car>()
+
+const setSelectedCar = (carId: number | undefined) => {
+  if (carId !== undefined) {
+    selectedCar.value = props.availableCars.find((car) => car.id === carId)
+    formData.value.carsCount = 1
+  } else {
+    selectedCar.value = undefined
+    formData.value.carsCount = undefined
+  }
+  formData.value.baggageCount = undefined
+  formData.value.passengersCount = undefined
+}
 
 watchEffect(() => {
   formData.value = setFormData()
 })
 
-const carsCountValidate = (): boolean => ((formData.value.carCount !== undefined && formData.value.carCount !== null
-&& formData.value?.carCount > 0))
+const carsCountValidate = (): boolean => ((formData.value.carsCount !== undefined && formData.value.carsCount !== null
+&& formData.value?.carsCount > 0))
 
-const validateCreateCarForm = computed(() => (isDataValid(null, formData.value.carModelId)
-&& isDataValid(null, formData.value.passengerCount) && isDataValid(null, formData.value.carCount, carsCountValidate())
-&& isDataValid(null, formData.value.baggageCount)))
+const validateCreateCarForm = computed(() => (isDataValid(null, formData.value.carId)
+&& isDataValid(null, formData.value.passengersCount) && isDataValid(null, formData.value.carsCount, carsCountValidate())))
 
-const validateSelectCarForm = computed(() => (isDataValid(null, formData.value.selectedCarFromOrder)))
-
-const isFormValid = (): boolean => {
-  if (
-    ((validateCreateCarForm.value || validateSelectCarForm.value) && formData.value.id === undefined)
-        || (formData.value.id !== undefined && validateCreateCarForm.value)
-  ) {
-    return true
-  }
-  return false
-}
-
-const submitDisable = computed(() => !isFormValid())
+const submitDisable = computed(() => !validateCreateCarForm.value)
 
 const onModalSubmit = async () => {
-  if (!isFormValid()) {
+  if (!validateCreateCarForm.value) {
     return
   }
-  if (formData.value.id !== undefined) {
-    const payload = {
-      guestId: formData.value.id,
-      ...formData.value,
-    }
-    emit('submit', payload)
-  } else if (formData.value.selectedCarFromOrder !== undefined) {
-    const payload = {
-      id: formData.value.selectedCarFromOrder,
-    }
-    emit('submit', payload)
-  } else if (formData.value.selectedCarFromOrder === undefined) {
-    const payload = {
-      ...formData.value,
-    }
-    emit('submit', payload)
+  const payload = {
+    ...formData.value,
   }
+  emit('submit', payload)
 }
 
 const carsOptions = computed<SelectOption[]>(
   () => props.availableCars?.map((car: Car) => ({ value: car.id, label: `${car.mark} ${car.model}` })) || [],
 )
 
+const passengersOptions = computed<SelectOption[]>(
+  () => Array.from({ length: (selectedCar.value?.passengersNumber || 0) }, (_, index) => index + 1)
+    .map((value) => ({ value, label: value.toString() })) || [],
+)
+
+const baggageOptions = computed<SelectOption[]>(
+  () => Array.from({ length: (selectedCar.value?.bagsNumber || 0) }, (_, index) => index + 1)
+    .map((value) => ({ value, label: value.toString() })) || [],
+)
+
 const resetForm = () => {
   emit('clear')
-  formData.value.carModelId = undefined
-  formData.value.carCount = undefined
-  formData.value.passengerCount = undefined
+  formData.value.carId = undefined
+  formData.value.carsCount = undefined
+  formData.value.passengersCount = undefined
   formData.value.baggageCount = undefined
-  formData.value.selectedCarFromOrder = undefined
   nextTick(() => {
     $('.is-invalid').removeClass('is-invalid')
   })
@@ -109,20 +103,6 @@ const closeModal = () => {
   resetForm()
   emit('close')
   emit('clear')
-}
-
-const onChangeSelectGuest = (value: any) => {
-  formData.value.selectedCarFromOrder = value ? Number(value) : undefined
-  const getCurrentCarData = props.orderCars?.filter((car: Car) => car.id === formData.value.selectedCarFromOrder)
-  if (getCurrentCarData && getCurrentCarData.length > 0) {
-    const [firstCar] = getCurrentCarData
-    // formData.value.carModelId = firstCar.carModel
-    // formData.value.carCount = firstCar.carCount
-    // formData.value.passengerCount = firstCar.passengerCount
-    // formData.value.baggageCount = firstCar.baggageCount
-  } else {
-    resetForm()
-  }
 }
 
 </script>
@@ -141,12 +121,12 @@ const onChangeSelectGuest = (value: any) => {
           id="car_id"
           :options="carsOptions"
           label="Модель автомобиля"
-          :disabled="!!formData.selectedCarFromOrder"
-          :value="formData.carModelId as number"
+          :value="formData.carId as number"
           required
           @input="(value: any, event: any) => {
-            formData.carModelId = value as number
+            formData.carId = value as number
             isDataValid(event, value)
+            setSelectedCar(value)
           }"
         />
       </div>
@@ -155,26 +135,26 @@ const onChangeSelectGuest = (value: any) => {
           <label for="cars_count">Количествово автомобилей</label>
           <input
             id="cars_count"
-            v-model="formData.carCount"
-            :disabled="!!formData.selectedCarFromOrder"
+            v-model="formData.carsCount"
+            :disabled="!formData.carId"
             class="form-control"
             type="number"
             required
-            @input="isDataValid($event.target, formData.carCount, carsCountValidate())"
-            @blur="isDataValid($event.target, formData.carCount, carsCountValidate())"
+            @input="isDataValid($event.target, formData.carsCount, carsCountValidate())"
+            @blur="isDataValid($event.target, formData.carsCount, carsCountValidate())"
           >
         </div>
       </div>
       <div class="col-md-12">
         <BootstrapSelectBase
           id="passenger_count"
-          :options="[]"
+          :options="passengersOptions"
           label="Количествово пассажиров"
-          :disabled="!!formData.selectedCarFromOrder"
-          :value="formData.passengerCount as number"
+          :disabled="!formData.carId"
+          :value="formData.passengersCount as number"
           required
           @input="(value: any, event: any) => {
-            formData.passengerCount = value as number
+            formData.passengersCount = value as number
             isDataValid(event, value)
           }"
         />
@@ -182,14 +162,14 @@ const onChangeSelectGuest = (value: any) => {
       <div class="col-md-12">
         <BootstrapSelectBase
           id="baggage_count"
-          :options="[]"
+          :options="baggageOptions"
           label="Количествово багажа"
-          :disabled="!!formData.selectedCarFromOrder"
+          :disabled="!formData.carId"
           :value="formData.baggageCount as number"
-          :show-empty-item="false"
+          :show-empty-item="true"
+          empty-item-text="Нет"
           @input="(value: any, event: any) => {
             formData.baggageCount = value as number
-            isDataValid(event, value)
           }"
         />
       </div>
