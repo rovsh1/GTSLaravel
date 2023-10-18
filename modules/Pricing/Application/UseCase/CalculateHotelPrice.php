@@ -89,12 +89,11 @@ class CalculateHotelPrice implements UseCaseInterface
                 $calculation->applyClientMarkup($clientMarkup);
             }
 
-            //@todo добавить проверку последний/первый день
-            if ($room->earlyCheckinPercent) {
+            if ($room->earlyCheckinPercent && $request->period->getStartDate()->equalTo($date)) {
                 $calculation->applyEarlyCheckinMarkup(MarkupValue::createPercent($room->earlyCheckinPercent));
             }
 
-            if ($room->lateCheckoutPercent) {
+            if ($room->lateCheckoutPercent && $request->period->getEndDate()->equalTo($date)) {
                 $calculation->applyLateCheckoutMarkup(MarkupValue::createPercent($room->lateCheckoutPercent));
             }
 
