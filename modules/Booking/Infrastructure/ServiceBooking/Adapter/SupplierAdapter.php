@@ -10,6 +10,7 @@ use Module\Pricing\Application\Dto\ServicePriceDto;
 use Module\Pricing\Application\UseCase\GetAirportServicePrice;
 use Module\Pricing\Application\UseCase\GetTransferServicePrice;
 use Module\Shared\Enum\CurrencyEnum;
+use Module\Supplier\Application\Dto\CarDto;
 use Module\Supplier\Application\Response\CancelConditionsDto;
 use Module\Supplier\Application\Response\ServiceContractDto;
 use Module\Supplier\Application\Response\ServiceDto;
@@ -19,6 +20,7 @@ use Module\Supplier\Application\UseCase\FindAirportServiceContract;
 use Module\Supplier\Application\UseCase\FindService;
 use Module\Supplier\Application\UseCase\FindTransferServiceContract;
 use Module\Supplier\Application\UseCase\GetAirportCancelConditions;
+use Module\Supplier\Application\UseCase\GetCars;
 use Module\Supplier\Application\UseCase\GetTransferCancelConditions;
 
 class SupplierAdapter implements SupplierAdapterInterface
@@ -83,5 +85,14 @@ class SupplierAdapter implements SupplierAdapterInterface
     public function getAirportCancelConditions(): CancelConditionsDto
     {
         return app(GetAirportCancelConditions::class)->execute();
+    }
+
+    /**
+     * @param int $supplierId
+     * @return CarDto[]
+     */
+    public function getCars(int $supplierId): array
+    {
+        return app(GetCars::class)->execute($supplierId);
     }
 }

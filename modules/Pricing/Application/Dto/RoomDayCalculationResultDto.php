@@ -12,6 +12,14 @@ final class RoomDayCalculationResultDto
         public readonly DateTimeInterface $date,
         public readonly float $value,
         public readonly string $formula,
-    ) {
+    ) {}
+
+    public static function createZeroValue(DateTimeInterface $date): static
+    {
+        return new static(
+            $date,
+            0,
+            '0'
+        );
     }
 }

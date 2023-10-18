@@ -20,7 +20,8 @@ use Module\Booking\Domain\Booking\ValueObject\ServiceInfo;
 class ServiceDetailsDtoFactory
 {
     public function __construct(
-        private readonly HotelDetailsDtoFactory $hotelFactory
+        private readonly HotelDetailsDtoFactory $hotelFactory,
+        private readonly CarBidDtoFactory $carBidFactory,
     ) {}
 
     public function createFromEntity(ServiceDetailsInterface $details): ServiceDetailsDtoInterface
@@ -46,7 +47,7 @@ class ServiceDetailsDtoFactory
             $details->airportId()->value(),
             $details->flightNumber(),
             $details->departureDate()?->format(DATE_ATOM),
-            $details->carBids()->all()
+            $this->carBidFactory->build($details->serviceInfo()->supplierId(), $details->carBids())
         );
     }
 
