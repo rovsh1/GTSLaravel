@@ -6,7 +6,6 @@ namespace App\Admin\Http\Controllers\Booking\Service;
 
 use App\Admin\Http\Requests\Booking\Airport\GuestRequest;
 use App\Admin\Http\Requests\Booking\UpdateDetailsFieldRequest;
-use App\Admin\Support\Facades\Booking\BookingAdapter;
 use App\Admin\Support\Facades\Booking\Service\DetailsAdapter;
 use App\Core\Support\Http\Responses\AjaxErrorResponse;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
@@ -30,7 +29,7 @@ class DetailsController
     public function addGuest(int $bookingId, GuestRequest $request): AjaxResponseInterface
     {
         try {
-            BookingAdapter::bindGuest($bookingId, $request->getGuestId());
+            DetailsAdapter::bindGuest($bookingId, $request->getGuestId());
         } catch (ApplicationException $e) {
             return new AjaxErrorResponse($e->getMessage());
         }
@@ -41,7 +40,7 @@ class DetailsController
     public function deleteGuest(int $bookingId, GuestRequest $request): AjaxResponseInterface
     {
         try {
-            BookingAdapter::unbindGuest($bookingId, $request->getGuestId());
+            DetailsAdapter::unbindGuest($bookingId, $request->getGuestId());
         } catch (ApplicationException $e) {
             return new AjaxErrorResponse($e->getMessage());
         }
@@ -49,10 +48,32 @@ class DetailsController
         return new AjaxSuccessResponse();
     }
 
-    public function updateCars(int $bookingId, Request $request): AjaxResponseInterface
+    public function addCarBid(int $bookingId, Request $request): AjaxResponseInterface
     {
         try {
-            BookingAdapter::updateCars($bookingId, $request->toArray());
+            DetailsAdapter::addCarBid($bookingId, $request->toArray());
+        } catch (ApplicationException $e) {
+            return new AjaxErrorResponse($e->getMessage());
+        }
+
+        return new AjaxSuccessResponse();
+    }
+
+    public function updateCarBid(int $bookingId, string $carBidId, Request $request): AjaxResponseInterface
+    {
+        try {
+            DetailsAdapter::updateCarBid($bookingId, $carBidId, $request->toArray());
+        } catch (ApplicationException $e) {
+            return new AjaxErrorResponse($e->getMessage());
+        }
+
+        return new AjaxSuccessResponse();
+    }
+
+    public function removeCarBid(int $bookingId, string $carBidId): AjaxResponseInterface
+    {
+        try {
+            DetailsAdapter::removeCarBid($bookingId, $carBidId);
         } catch (ApplicationException $e) {
             return new AjaxErrorResponse($e->getMessage());
         }

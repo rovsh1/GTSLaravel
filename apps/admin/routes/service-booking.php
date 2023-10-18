@@ -27,4 +27,6 @@ AclRoute::for('service-booking')
     ->post('/{booking}/guests/add', Controllers\Booking\Service\DetailsController::class . '@addGuest', 'delete', 'guests.add')
     ->delete('/{booking}/guests', Controllers\Booking\Service\DetailsController::class . '@deleteGuest', 'delete', 'guests.delete')
 
-    ->post('/{booking}/cars', Controllers\Booking\Service\DetailsController::class . '@updateCars', 'create', 'cars.update');
+    ->post('/{booking}/cars/add', Controllers\Booking\Service\DetailsController::class . '@addCarBid', 'create', 'cars.add')
+    ->put('/{booking}/cars/{carBidId}', Controllers\Booking\Service\DetailsController::class . '@updateCarBid', 'update', 'cars.update')
+    ->delete('/{booking}/cars/{carBidId}', Controllers\Booking\Service\DetailsController::class . '@removeCarBid', 'delete', 'cars.delete');
