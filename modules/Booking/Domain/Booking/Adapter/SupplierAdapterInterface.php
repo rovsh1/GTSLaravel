@@ -48,4 +48,6 @@ interface SupplierAdapterInterface
      * @return CarDto[]
      */
     public function getCars(int $supplierId): array;
+
+    public function findCar(int $carId): ?CarDto;
 }

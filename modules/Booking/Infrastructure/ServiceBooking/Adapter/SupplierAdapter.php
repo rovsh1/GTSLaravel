@@ -17,6 +17,7 @@ use Module\Supplier\Application\Response\ServiceDto;
 use Module\Supplier\Application\Response\SupplierDto;
 use Module\Supplier\Application\UseCase\Find;
 use Module\Supplier\Application\UseCase\FindAirportServiceContract;
+use Module\Supplier\Application\UseCase\FindCar;
 use Module\Supplier\Application\UseCase\FindService;
 use Module\Supplier\Application\UseCase\FindTransferServiceContract;
 use Module\Supplier\Application\UseCase\GetAirportCancelConditions;
@@ -94,5 +95,10 @@ class SupplierAdapter implements SupplierAdapterInterface
     public function getCars(int $supplierId): array
     {
         return app(GetCars::class)->execute($supplierId);
+    }
+
+    public function findCar(int $carId): ?CarDto
+    {
+        return app(FindCar::class)->execute($carId);
     }
 }
