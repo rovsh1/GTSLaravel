@@ -5,12 +5,16 @@ declare(strict_types=1);
 namespace Module\Supplier\Application\UseCase;
 
 use Illuminate\Database\Eloquent\Collection;
-use Module\Supplier\Application\Dto\CarDto;
+use Module\Supplier\Application\Factory\CarDtoFactory;
 use Module\Supplier\Infrastructure\Models\Car;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class GetCars implements UseCaseInterface
 {
+    public function __construct(
+        private readonly CarDtoFactory $factory
+    ) {}
+
     public function execute(int $supplierId): array
     {
         $cars = Car::whereSupplierId($supplierId)->get();
@@ -20,13 +24,6 @@ class GetCars implements UseCaseInterface
 
     private function buildDTOs(Collection $cars): array
     {
-        return $cars->map(fn(Car $car) => new CarDto(
-            id: $car->id,
-            typeId: $car->type_id,
-            mark: $car->mark,
-            model: $car->model,
-            passengersNumber: $car->passengers_number,
-            bagsNumber: $car->bags_number,
-        ))->all();
+        return $cars->map(fn(Car $car) => $this->factory->build($car))->all();
     }
 }

@@ -26,7 +26,7 @@ class CarBidDtoFactory
 
         return $carBids->map(fn(CarBid $carBid) => new CarBidDto(
             id: $carBid->id(),
-            carInfo: $carsIndexedById[$carBid->carId()],
+            carInfo: $carsIndexedById[$carBid->carId()->value()],
             carsCount: $carBid->carsCount(),
             passengersCount: $carBid->passengersCount(),
             baggageCount: $carBid->baggageCount(),
