@@ -34,7 +34,8 @@ export type CarBid = {
 export interface BookingDetails {
   id: number
   serviceInfo: ServiceInfo
-  airportId: number
+  airportInfo: AirportInfo
+  meetingTablet: string
   flightNumber: string
   departureDate: string
   carBids: CarBid[]

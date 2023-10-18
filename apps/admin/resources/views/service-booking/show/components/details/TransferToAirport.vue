@@ -181,10 +181,9 @@ const handleEditCarModal = async (id: number, object: CarBid) => {
             <th>Аэропорт вылета</th>
             <td>
               <EditableTextInput
-                :value="''"
+                :value="bookingDetails?.airportInfo.name"
                 :can-edit="false"
                 type="text"
-                @change="value => handleChangeDetails('', value)"
               />
             </td>
           </tr>
@@ -192,10 +191,10 @@ const handleEditCarModal = async (id: number, object: CarBid) => {
             <th>Табличка для встречи</th>
             <td>
               <EditableTextInput
-                :value="''"
+                :value="bookingDetails?.meetingTablet"
                 :can-edit="isEditableStatus"
                 type="text"
-                @change="value => handleChangeDetails('', value)"
+                @change="value => handleChangeDetails('meetingTablet', value)"
               />
             </td>
           </tr>
