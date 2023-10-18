@@ -101,6 +101,7 @@ class DetailsFactory
             serviceInfo: $this->buildServiceInfo($detailsData['serviceInfo']),
             airportId: new AirportId($detailsData['airportId']),
             flightNumber: $detailsData['flightNumber'],
+            meetingTablet: $detailsData['meetingTablet'],
             departureDate: $details->date_start,
             carBids: CarBidCollection::fromData($detailsData['carBids'])
         );

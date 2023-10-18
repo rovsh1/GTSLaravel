@@ -20,6 +20,7 @@ interface TransferToAirportRepositoryInterface
         int $airportId,
         CarBidCollection $carBids,
         ?string $flightNumber,
+        ?string $meetingTablet,
         ?DateTimeInterface $departureDate,
     ): TransferToAirport;
 

@@ -46,6 +46,7 @@ class ServiceDetailsDtoFactory
             $this->buildServiceInfoDto($details->serviceInfo()),
             $details->airportId()->value(),
             $details->flightNumber(),
+            $details->meetingTablet(),
             $details->departureDate()?->format(DATE_ATOM),
             $this->carBidFactory->build($details->serviceInfo()->supplierId(), $details->carBids())
         );
