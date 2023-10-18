@@ -6,15 +6,25 @@ namespace App\Admin\Http\Controllers\Booking\Service;
 
 use App\Admin\Http\Requests\Booking\Airport\GuestRequest;
 use App\Admin\Http\Requests\Booking\UpdateDetailsFieldRequest;
+use App\Admin\Http\Resources\Booking\ServiceType;
 use App\Admin\Support\Facades\Booking\Service\DetailsAdapter;
 use App\Core\Support\Http\Responses\AjaxErrorResponse;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use App\Core\Support\Http\Responses\AjaxSuccessResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Module\Shared\Enum\ServiceTypeEnum;
 use Module\Shared\Exception\ApplicationException;
 
 class DetailsController
 {
+    public function getTypes(Request $request): JsonResponse
+    {
+        return response()->json(
+            ServiceType::collection(ServiceTypeEnum::cases())
+        );
+    }
+
     public function updateField(int $bookingId, UpdateDetailsFieldRequest $request): AjaxResponseInterface
     {
         try {

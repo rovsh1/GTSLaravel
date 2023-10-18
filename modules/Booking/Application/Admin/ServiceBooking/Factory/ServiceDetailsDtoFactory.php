@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Application\Admin\ServiceBooking\Factory;
 
+use Module\Booking\Application\Admin\ServiceBooking\Dto\AirportInfoDto;
 use Module\Booking\Application\Admin\ServiceBooking\Dto\CIPRoomInAirportDto;
 use Module\Booking\Application\Admin\ServiceBooking\Dto\ServiceDetailsDtoInterface;
 use Module\Booking\Application\Admin\ServiceBooking\Dto\ServiceInfoDto;
@@ -16,6 +17,7 @@ use Module\Booking\Domain\Booking\Entity\ServiceDetailsInterface;
 use Module\Booking\Domain\Booking\Entity\TransferFromAirport;
 use Module\Booking\Domain\Booking\Entity\TransferToAirport;
 use Module\Booking\Domain\Booking\ValueObject\ServiceInfo;
+use Module\Booking\Infrastructure\AirportBooking\Models\Airport;
 
 class ServiceDetailsDtoFactory
 {
@@ -44,8 +46,9 @@ class ServiceDetailsDtoFactory
         return new TransferToAirportDto(
             $details->id()->value(),
             $this->buildServiceInfoDto($details->serviceInfo()),
-            $details->airportId()->value(),
+            $this->buildAirportInfo($details->airportId()->value()),
             $details->flightNumber(),
+            $details->meetingTablet(),
             $details->departureDate()?->format(DATE_ATOM),
             $this->carBidFactory->build($details->serviceInfo()->supplierId(), $details->carBids())
         );
@@ -82,6 +85,16 @@ class ServiceDetailsDtoFactory
             $serviceInfo->id(),
             $serviceInfo->title(),
             $serviceInfo->supplierId(),
+        );
+    }
+
+    private function buildAirportInfo(int $airportId): AirportInfoDto
+    {
+        $airport = Airport::find($airportId);
+
+        return new AirportInfoDto(
+            $airport->id,
+            $airport->name,
         );
     }
 }

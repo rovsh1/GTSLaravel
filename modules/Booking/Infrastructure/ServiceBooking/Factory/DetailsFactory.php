@@ -100,7 +100,8 @@ class DetailsFactory
             bookingId: new BookingId($details->bookingId()),
             serviceInfo: $this->buildServiceInfo($detailsData['serviceInfo']),
             airportId: new AirportId($detailsData['airportId']),
-            flightNumber: $detailsData['flightNumber'],
+            flightNumber: $detailsData['flightNumber'] ?? null,
+            meetingTablet: $detailsData['meetingTablet'] ?? null,
             departureDate: $details->date_start,
             carBids: CarBidCollection::fromData($detailsData['carBids'])
         );
