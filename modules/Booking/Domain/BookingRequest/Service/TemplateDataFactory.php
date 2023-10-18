@@ -2,11 +2,34 @@
 
 namespace Module\Booking\Domain\BookingRequest\Service;
 
-use Module\Booking\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Domain\Booking\Booking;
+use Module\Booking\Domain\BookingRequest\Service\TemplateData\HotelBookingDataFactory;
+use Module\Booking\Domain\BookingRequest\ValueObject\RequestTypeEnum;
+use Module\Shared\Enum\ServiceTypeEnum;
+use Sdk\Module\Contracts\ModuleInterface;
 
 class TemplateDataFactory
 {
-    public function build(BookingId $bookingId): TemplateDataInterface
+    public function __construct(
+        private readonly ModuleInterface $module,
+    ) {
+    }
+
+    public function build(Booking $booking, RequestTypeEnum $requestType): TemplateDataInterface
     {
+        $serviceFactory = $this->getServiceFactoryClass($booking->serviceType());
+
+        return $this->module->make($serviceFactory)->build($booking, $requestType);
+    }
+
+    private function getServiceFactoryClass(ServiceTypeEnum $serviceType): string
+    {
+        if ($serviceType === ServiceTypeEnum::HOTEL_BOOKING) {
+            return HotelBookingDataFactory::class;
+        } elseif ($serviceType->isTransferService()) {
+            throw new \Exception('Not implemented');
+        } else {
+            throw new \Exception('Not implemented');
+        }
     }
 }
