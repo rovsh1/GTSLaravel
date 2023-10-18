@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import { computed, MaybeRef, onMounted, ref, unref, watch } from 'vue'
+import { computed, MaybeRef, ref, unref, watch } from 'vue'
 
 import { z } from 'zod'
 
@@ -12,7 +12,7 @@ import { CarFormData } from '~resources/views/booking/lib/data-types'
 import { useEditableModal } from '~resources/views/hotel/settings/composables/editable-modal'
 import { useBookingStore } from '~resources/views/service-booking/show/store/booking'
 
-import { BookingDetails } from '~api/booking/service'
+import { BookingDetails, CarBid } from '~api/booking/service'
 import { addBookingCar, deleteBookingCar, updateBookingCar } from '~api/booking/service/cars'
 import { Car, useGetSupplierCarsAPI } from '~api/supplier/cars'
 
@@ -71,28 +71,46 @@ const {
   editableObject: editableCar,
   close: closeCarModal,
   submit: submitCarModal,
-} = useEditableModal<Required<CarFormData>, Required<CarFormData>, Partial<CarFormData>>(modalSettings)
+} = useEditableModal<Required<CarFormData>, Required<CarFormData>, CarBid>(modalSettings)
 
 watch(editableCar, (value) => {
   if (!value) {
     carForm.value = getDefaultCarForm()
     return
   }
-  carForm.value = value
+  carForm.value = {
+    id: value.id,
+    carId: value.carInfo.id,
+    carsCount: value.carsCount,
+    passengersCount: value.passengersCount,
+    baggageCount: value.baggageCount,
+    babyCount: value.babyCount,
+  }
 })
 
 const handleChangeDetails = async (field: string, value: any) => {
   await bookingStore.updateDetails(field, value)
 }
 
-const getAvailableCars = async () => {
+const getAvailableCars = async (filtered?: boolean) => {
   const supplierId = bookingStore.booking?.details?.serviceInfo.supplierId
+  const carsInBooking = bookingStore.booking?.details?.carBids
   if (!supplierId) {
     availableCars.value = []
   } else {
     const { data: supplierCars, execute: fetchSupplierCars } = useGetSupplierCarsAPI({ supplierId })
     await fetchSupplierCars()
-    availableCars.value = supplierCars.value || []
+    if (supplierCars.value) {
+      if (filtered) {
+        const carsInBookingIds = carsInBooking?.map((car) => car.carInfo.id) || []
+        const filteredAvailableCars = supplierCars.value.filter((supplierCar) => !carsInBookingIds.includes(supplierCar.id))
+        availableCars.value = filteredAvailableCars
+      } else {
+        availableCars.value = supplierCars.value
+      }
+    } else {
+      availableCars.value = []
+    }
   }
 }
 
@@ -106,13 +124,15 @@ const handleDeleteCar = async (carId: number) => {
   }
 }
 
-watch(bookingDetails, async () => {
-  await getAvailableCars()
-})
+const handleOpenCarModal = async () => {
+  await getAvailableCars(true)
+  openAddCarModal()
+}
 
-onMounted(async () => {
+const handleEditCarModal = async (id: number, object: CarBid) => {
   await getAvailableCars()
-})
+  openEditCarModal(id, object)
+}
 
 </script>
 
@@ -158,11 +178,11 @@ onMounted(async () => {
             </td>
           </tr>
           <tr>
-            <th>Город вылета</th>
+            <th>Аэропорт вылета</th>
             <td>
               <EditableTextInput
                 :value="''"
-                :can-edit="isEditableStatus"
+                :can-edit="false"
                 type="text"
                 @change="value => handleChangeDetails('', value)"
               />
@@ -187,13 +207,13 @@ onMounted(async () => {
       <template #header>
         <div class="d-flex gap-1">
           <InfoBlockTitle title="Список автомобилей" />
-          <IconButton v-if="isEditableStatus" icon="add" @click="openAddCarModal" />
+          <IconButton v-if="isEditableStatus" icon="add" @click="handleOpenCarModal" />
         </div>
       </template>
       <CarsTable
         :can-edit="isEditableStatus"
         :booking-cars="bookingDetails?.carBids || []"
-        @edit="(car) => openEditCarModal(car.id, car)"
+        @edit="(car) => handleEditCarModal(car.id, car)"
         @delete="(car) => handleDeleteCar(car.id)"
       />
       <CarModal

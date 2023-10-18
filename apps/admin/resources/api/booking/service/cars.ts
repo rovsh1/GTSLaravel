@@ -49,7 +49,7 @@ export const addBookingCar = (props: MaybeRef<BookingCarPayload | null>) =>
 export const updateBookingCar = (props: MaybeRef<BookingCarPayload | null>) =>
   useAdminAPI(
     props,
-    ({ bookingID, id }) => `/booking-order/${bookingID}/cars/${id}`,
+    ({ bookingID, id }) => `/service-booking/${bookingID}/cars/${id}`,
     { immediate: true },
   )
     .put(computed<string>(() => JSON.stringify(

@@ -53,6 +53,7 @@ const setSelectedCar = (carId: number | undefined) => {
 }
 
 watchEffect(() => {
+  setSelectedCar(props.formData.carId)
   formData.value = setFormData()
 })
 
@@ -165,7 +166,7 @@ const closeModal = () => {
           :options="baggageOptions"
           label="Количествово багажа"
           :disabled="!formData.carId"
-          :value="formData.baggageCount as number"
+          :value="formData.baggageCount as number || undefined"
           :show-empty-item="true"
           empty-item-text="Нет"
           @input="(value: any, event: any) => {

@@ -35,7 +35,7 @@ defineEmits<{
           <td>{{ `${car.carInfo.mark} ${car.carInfo.model}` }}</td>
           <td>{{ car.carsCount }}</td>
           <td>{{ car.passengersCount }}</td>
-          <td>{{ car.baggageCount }}</td>
+          <td>{{ car.baggageCount || 'Нет' }}</td>
           <td v-if="canEdit" class="column-edit">
             <EditTableRowButton
               @edit="$emit('edit', car)"
