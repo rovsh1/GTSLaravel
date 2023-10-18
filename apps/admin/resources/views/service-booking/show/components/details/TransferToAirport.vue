@@ -17,7 +17,7 @@ import { addBookingCar, deleteBookingCar, updateBookingCar } from '~api/booking/
 import { Car, useGetSupplierCarsAPI } from '~api/supplier/cars'
 
 import { showConfirmDialog } from '~lib/confirm-dialog'
-import { formatDateToAPIDate, parseAPIDateToJSDate } from '~lib/date'
+import { parseAPIDateToJSDate } from '~lib/date'
 import { requestInitialData } from '~lib/initial-data'
 
 import EditableDateInput from '~components/Editable/EditableDateInput.vue'
@@ -162,7 +162,7 @@ const handleEditCarModal = async (id: number, object: CarBid) => {
                 :value="bookingDetails?.departureDate
                   ? parseAPIDateToJSDate(bookingDetails?.departureDate) : undefined"
                 :can-edit="isEditableStatus"
-                @change="value => handleChangeDetails('departureDate', value ? formatDateToAPIDate(value) : null)"
+                @change="value => handleChangeDetails('departureDate', value)"
               />
             </td>
           </tr>
@@ -181,7 +181,7 @@ const handleEditCarModal = async (id: number, object: CarBid) => {
             <th>Аэропорт вылета</th>
             <td>
               <EditableTextInput
-                :value="bookingDetails?.airportInfo.name"
+                :value="bookingDetails?.airportInfo?.name"
                 :can-edit="false"
                 type="text"
               />

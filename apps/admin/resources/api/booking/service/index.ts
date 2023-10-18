@@ -31,14 +31,20 @@ export type CarBid = {
   babyCount: number
 }
 
+export interface BookingDetailsType {
+  id: number
+  name: string
+}
+
 export interface BookingDetails {
   id: number
   serviceInfo: ServiceInfo
-  airportInfo: AirportInfo
-  meetingTablet: string
-  flightNumber: string
-  departureDate: string
-  carBids: CarBid[]
+  airportInfo?: AirportInfo
+  meetingTablet?: string
+  flightNumber?: string
+  departureDate?: string
+  arrivalDate?: string
+  carBids?: CarBid[]
 }
 
 export type Booking = {
@@ -187,3 +193,8 @@ export const updateBookingDetails = (props: MaybeRef<UpdateBookingDetailsPayload
       ),
     )), 'application/json')
     .json<UpdateBookingStatusResponse>()
+
+export const useGetBookingDetailsTypesAPI = (props?: any) =>
+  useAdminAPI(props, () => '/service-booking/details/types')
+    .get()
+    .json<BookingDetailsType[]>()
