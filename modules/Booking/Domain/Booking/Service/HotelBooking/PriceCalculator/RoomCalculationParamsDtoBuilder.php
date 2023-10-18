@@ -11,14 +11,22 @@ class RoomCalculationParamsDtoBuilder
 {
     private HotelRoomBooking $roomBooking;
 
+    private bool $isClientCalculation = false;
+
     public function __construct(
         private readonly RoomBookingRepositoryInterface $roomBookingRepository
-    ) {
-    }
+    ) {}
 
     public function room(RoomBookingId $roomBookingId): static
     {
         $this->roomBooking = $this->roomBookingRepository->findOrFail($roomBookingId);
+
+        return $this;
+    }
+
+    public function withClientMarkups(): static
+    {
+        $this->isClientCalculation = true;
 
         return $this;
     }
@@ -28,13 +36,18 @@ class RoomCalculationParamsDtoBuilder
         $roomBooking = $this->roomBooking;
         $details = $roomBooking->details();
 
+        $manualDayPrice = $roomBooking->prices()->supplierPrice()->manualDayValue();
+        if ($this->isClientCalculation) {
+            $manualDayPrice = $roomBooking->prices()->clientPrice()->manualDayValue();
+        }
+
         return new RoomCalculationParamsDto(
             accommodationId: $roomBooking->id()->value(),
             roomId: $roomBooking->roomInfo()->id(),
             rateId: $details->rateId(),
             isResident: $details->isResident(),
             guestsCount: $roomBooking->guestsCount(),
-            manualDayPrice: null,
+            manualDayPrice: $manualDayPrice,
             earlyCheckinPercent: $details->earlyCheckIn()?->priceMarkup()->value(),
             lateCheckoutPercent: $details->lateCheckOut()?->priceMarkup()->value()
         );

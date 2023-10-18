@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Application\Admin\ServiceBooking\UseCase\CarBid;
 
-use Module\Booking\Application\Admin\ServiceBooking\Dto\CarBidDataDto;
+use Module\Booking\Application\Admin\ServiceBooking\Request\CarBidDataDto;
 use Module\Booking\Domain\Booking\Factory\DetailsRepositoryFactory;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Domain\Booking\ValueObject\CarBid;
