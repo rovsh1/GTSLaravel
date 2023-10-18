@@ -54,7 +54,7 @@ const displayValue = computed(() => {
   }
   const displayDate = DateTime.fromJSDate(localValue.value)
 
-  return `${displayDate.toFormat('dd-LL-yyyy')}`
+  return `${displayDate.toFormat('dd.LL.yyyy')}`
 })
 
 watch(inputRef, (element) => {
@@ -117,6 +117,7 @@ const onClickOutsideHandler = () => {
           :set-input-focus="true"
           @input="(date) => {
             localValue = date as Date
+            console.log(localValue)
             onPressEnter()
           }"
           @click-outside="onClickOutsideHandler"

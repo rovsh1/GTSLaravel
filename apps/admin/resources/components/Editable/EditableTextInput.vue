@@ -33,7 +33,7 @@ const props = withDefaults(defineProps<{
 })
 
 const emit = defineEmits<{
-  (event: 'change', value: string): void
+  (event: 'change', value: string | null): void
 }>()
 
 const [isEditable, toggleEditable] = useToggle()
@@ -78,8 +78,12 @@ const applyEditable = () => {
   if (props.required && isEmptyValue && !inputRef.value?.reportValidity()) {
     return
   }
-  console.log(localValue.value)
-  emit('change', localValue.value)
+  if (isEmptyValue) {
+    emit('change', null)
+  } else {
+    emit('change', localValue.value)
+  }
+
   toggleEditable(false)
 }
 

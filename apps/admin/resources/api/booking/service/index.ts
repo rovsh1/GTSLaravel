@@ -17,9 +17,13 @@ export type AirportInfo = {
   name: string
 }
 
+export type ServiceInfo = ServiceType & {
+  supplierId: number
+}
+
 export interface BookingDetails {
   id: number
-  serviceTitle: string
+  serviceInfo: ServiceInfo
   airportId: number
   flightNumber: string
   departureDate: string

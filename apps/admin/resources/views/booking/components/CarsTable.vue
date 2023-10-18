@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 
 import EditTableRowButton from '~resources/views/hotel/settings/components/EditTableRowButton.vue'
 
-import { Car } from '~api/booking/order/cars'
+import { Car } from '~api/supplier/cars'
 
 const props = defineProps<{
-  carIds?: number[]
-  orderCars: Car[]
+  bookingCars: Car[]
   canEdit: boolean
 }>()
 
@@ -15,10 +13,6 @@ defineEmits<{
   (event: 'edit', car: Car): void
   (event: 'delete', car: Car): void
 }>()
-
-const cars = computed(
-  () => props.orderCars.filter((car) => props.carIds && props.carIds.includes(car.id)),
-)
 
 </script>
 
@@ -35,13 +29,13 @@ const cars = computed(
       </tr>
     </thead>
     <tbody>
-      <template v-if="cars.length > 0">
-        <tr v-for="(car, idx) in cars" :key="car.id">
+      <template v-if="bookingCars.length > 0">
+        <tr v-for="(car, idx) in bookingCars" :key="car.id">
           <td>{{ idx + 1 }}</td>
-          <td>{{ car.carModel }}</td>
-          <td>{{ car.carCount }}</td>
-          <td>{{ car.passengerCount }}</td>
-          <td>{{ car.baggageCount }}</td>
+          <td>{{ `${car.mark} ${car.model}` }}</td>
+          <td>{{ car.id }}</td>
+          <td>{{ car.passengersNumber }}</td>
+          <td>{{ car.bagsNumber }}</td>
           <td v-if="canEdit" class="column-edit">
             <EditTableRowButton
               @edit="$emit('edit', car)"

@@ -7,18 +7,16 @@ import { MaybeRef } from '@vueuse/core'
 import { isDataValid } from '~resources/composables/form'
 import { CarFormData } from '~resources/views/booking/lib/data-types'
 
-import { Car } from '~api/booking/order/cars'
-import { CarResponse } from '~api/cars'
+import { Car } from '~api/supplier/cars'
 
 import BaseDialog from '~components/BaseDialog.vue'
 import BootstrapSelectBase from '~components/Bootstrap/BootstrapSelectBase.vue'
 import { SelectOption } from '~components/Bootstrap/lib'
-import Select2BaseSelect from '~components/Select2BaseSelect.vue'
 
 const props = withDefaults(defineProps<{
   opened: MaybeRef<boolean>
   isFetching: MaybeRef<boolean>
-  cars: CarResponse[]
+  availableCars: Car[]
   formData: Partial<CarFormData>
   orderCars?: Car[] | null
   titleText?: string
@@ -92,11 +90,7 @@ const onModalSubmit = async () => {
 }
 
 const carsOptions = computed<SelectOption[]>(
-  () => props.cars?.map((car: CarResponse) => ({ value: car.id, label: car.name })) || [],
-)
-
-const orderCarsOptions = computed<SelectOption[]>(
-  () => props.orderCars?.map((car: Car) => ({ value: car.id, label: car.carModel.toString() })) || [],
+  () => props.availableCars?.map((car: Car) => ({ value: car.id, label: `${car.mark} ${car.model}` })) || [],
 )
 
 const resetForm = () => {
@@ -122,10 +116,10 @@ const onChangeSelectGuest = (value: any) => {
   const getCurrentCarData = props.orderCars?.filter((car: Car) => car.id === formData.value.selectedCarFromOrder)
   if (getCurrentCarData && getCurrentCarData.length > 0) {
     const [firstCar] = getCurrentCarData
-    formData.value.carModelId = firstCar.carModel
-    formData.value.carCount = firstCar.carCount
-    formData.value.passengerCount = firstCar.passengerCount
-    formData.value.baggageCount = firstCar.baggageCount
+    // formData.value.carModelId = firstCar.carModel
+    // formData.value.carCount = firstCar.carCount
+    // formData.value.passengerCount = firstCar.passengerCount
+    // formData.value.baggageCount = firstCar.baggageCount
   } else {
     resetForm()
   }
@@ -142,19 +136,6 @@ const onChangeSelectGuest = (value: any) => {
   >
     <template #title>{{ titleText }}</template>
     <form class="row g-3">
-      <div v-if="orderCars && orderCars.length > 0 && formData.id === undefined" class="col-md-12 car-select-wrapper">
-        <Select2BaseSelect
-          id="car-select"
-          :label="inputSelectText"
-          :options="orderCarsOptions"
-          :value="formData.selectedCarFromOrder"
-          parent=".car-select-wrapper"
-          :enable-tags="false"
-          :show-empty-item="true"
-          empty-item-text="Добавить новый автомобиль"
-          @input="onChangeSelectGuest"
-        />
-      </div>
       <div class="col-md-12">
         <BootstrapSelectBase
           id="car_id"

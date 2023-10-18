@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import { computed, MaybeRef, ref, unref } from 'vue'
+import { computed, MaybeRef, onMounted, ref, unref, watch } from 'vue'
 
 import CarModal from '~resources/views/booking/components/CarModal.vue'
 import CarsTable from '~resources/views/booking/components/CarsTable.vue'
@@ -11,6 +11,7 @@ import { useEditableModal } from '~resources/views/hotel/settings/composables/ed
 import { useBookingStore } from '~resources/views/service-booking/show/store/booking'
 
 import { BookingDetails } from '~api/booking/service'
+import { Car, useGetSupplierCarsAPI } from '~api/supplier/cars'
 
 import { formatDateToAPIDate, parseAPIDateToJSDate } from '~lib/date'
 
@@ -23,6 +24,8 @@ const bookingStore = useBookingStore()
 const isEditableStatus = computed<boolean>(() => bookingStore.availableActions?.isEditable || false)
 
 const bookingDetails = computed<BookingDetails | null>(() => bookingStore.booking?.details || null)
+
+const availableCars = ref<Car[]>([])
 
 const getDefaultCarForm = () => ({ })
 const carForm = ref<Partial<CarFormData>>(getDefaultCarForm())
@@ -71,9 +74,29 @@ const handleChangeDetails = async (field: string, value: any) => {
   await bookingStore.updateDetails(field, value)
 }
 
+const getAvailableCars = async () => {
+  const supplierId = bookingStore.booking?.details?.serviceInfo.supplierId
+  if (!supplierId) {
+    availableCars.value = []
+  } else {
+    const { data: supplierCars, execute: fetchSupplierCars } = useGetSupplierCarsAPI({ supplierId })
+    await fetchSupplierCars()
+    availableCars.value = supplierCars.value || []
+  }
+}
+
+watch(bookingDetails, async () => {
+  await getAvailableCars()
+})
+
+onMounted(async () => {
+  await getAvailableCars()
+})
+
 </script>
 
 <template>
+  {{ availableCars }}
   <div class="d-flex flex-row gap-4">
     <InfoBlock>
       <template #header>
@@ -84,7 +107,12 @@ const handleChangeDetails = async (field: string, value: any) => {
           <tr>
             <th>Номер рейса</th>
             <td>
-              <EditableTextInput :value="bookingDetails?.flightNumber" type="text" />
+              <EditableTextInput
+                :value="bookingDetails?.flightNumber"
+                :can-edit="isEditableStatus"
+                type="text"
+                @change="value => handleChangeDetails('flightNumber', value)"
+              />
             </td>
           </tr>
           <tr>
@@ -93,6 +121,7 @@ const handleChangeDetails = async (field: string, value: any) => {
               <EditableDateInput
                 :value="bookingDetails?.departureDate
                   ? parseAPIDateToJSDate(bookingDetails?.departureDate) : undefined"
+                :can-edit="isEditableStatus"
                 @change="value => handleChangeDetails('departureDate', value ? formatDateToAPIDate(value) : null)"
               />
             </td>
@@ -102,20 +131,32 @@ const handleChangeDetails = async (field: string, value: any) => {
             <td>
               <EditableTextInput
                 :value="''"
+                :can-edit="isEditableStatus"
                 type="time"
+                @change="value => handleChangeDetails('', value)"
               />
             </td>
           </tr>
           <tr>
             <th>Город вылета</th>
             <td>
-              <EditableTextInput :value="''" type="text" />
+              <EditableTextInput
+                :value="''"
+                :can-edit="isEditableStatus"
+                type="text"
+                @change="value => handleChangeDetails('', value)"
+              />
             </td>
           </tr>
           <tr>
             <th>Табличка для встречи</th>
             <td>
-              <EditableTextInput :value="''" type="text" />
+              <EditableTextInput
+                :value="''"
+                :can-edit="isEditableStatus"
+                type="text"
+                @change="value => handleChangeDetails('', value)"
+              />
             </td>
           </tr>
         </tbody>
@@ -131,8 +172,7 @@ const handleChangeDetails = async (field: string, value: any) => {
       </template>
       <CarsTable
         :can-edit="isEditableStatus"
-        :car-ids="[]"
-        :order-cars="[]"
+        :booking-cars="[]"
         @edit="(car) => { }"
         @delete="(car) => { }"
       />
@@ -141,8 +181,7 @@ const handleChangeDetails = async (field: string, value: any) => {
         :opened="isCarModalOpened"
         :is-fetching="isCarModalLoading"
         :form-data="carForm"
-        :order-cars="[]"
-        :cars="[]"
+        :available-cars="availableCars"
         @close="closeCarModal"
         @submit="submitCarModal"
         @clear="carForm = getDefaultCarForm()"

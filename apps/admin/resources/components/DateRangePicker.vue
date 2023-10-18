@@ -131,6 +131,7 @@ onMounted(() => {
     })
     if (props.setInputFocus) {
       periodInput.focus()
+      periodInput.click()
     }
   })
 })
