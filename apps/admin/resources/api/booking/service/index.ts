@@ -4,6 +4,7 @@ import { MaybeRef } from '@vueuse/core'
 
 import { BaseResponse, useAdminAPI } from '~api'
 import { BaseBooking, BookingID } from '~api/booking/models'
+import { Car } from '~api/supplier/cars'
 
 import { getNullableRef } from '~lib/vue'
 
@@ -23,7 +24,7 @@ export type ServiceInfo = ServiceType & {
 
 export type CarBid = {
   id: number
-  carId: number
+  carInfo: Car
   carsCount: number
   passengersCount: number
   baggageCount: number

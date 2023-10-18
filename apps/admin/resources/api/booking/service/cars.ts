@@ -7,9 +7,12 @@ import { BookingID } from '~api/booking/models'
 
 import { getNullableRef } from '~lib/vue'
 
-export interface BookingCarPayload {
+export type DeleteBookingCarPayload = {
   bookingID: BookingID
   id: number
+}
+
+export type BookingCarPayload = DeleteBookingCarPayload & {
   carId: number
   carsCount: number
   passengersCount: number
@@ -17,7 +20,7 @@ export interface BookingCarPayload {
   babyCount: number
 }
 
-export const deleteBookingCar = (props: MaybeRef<BookingCarPayload | null>) =>
+export const deleteBookingCar = (props: MaybeRef<DeleteBookingCarPayload | null>) =>
   useAdminAPI(
     props,
     ({ bookingID, id }) => `/service-booking/${bookingID}/cars/${id}`,

@@ -32,7 +32,7 @@ defineEmits<{
       <template v-if="bookingCars.length > 0">
         <tr v-for="(car, idx) in bookingCars" :key="car.id">
           <td>{{ idx + 1 }}</td>
-          <td>{{ `${car.babyCount}` }}</td>
+          <td>{{ `${car.carInfo.mark} ${car.carInfo.model}` }}</td>
           <td>{{ car.carsCount }}</td>
           <td>{{ car.passengersCount }}</td>
           <td>{{ car.baggageCount }}</td>

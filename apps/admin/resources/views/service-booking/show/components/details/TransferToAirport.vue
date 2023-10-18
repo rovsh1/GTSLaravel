@@ -13,9 +13,10 @@ import { useEditableModal } from '~resources/views/hotel/settings/composables/ed
 import { useBookingStore } from '~resources/views/service-booking/show/store/booking'
 
 import { BookingDetails } from '~api/booking/service'
-import { addBookingCar, updateBookingCar } from '~api/booking/service/cars'
+import { addBookingCar, deleteBookingCar, updateBookingCar } from '~api/booking/service/cars'
 import { Car, useGetSupplierCarsAPI } from '~api/supplier/cars'
 
+import { showConfirmDialog } from '~lib/confirm-dialog'
 import { formatDateToAPIDate, parseAPIDateToJSDate } from '~lib/date'
 import { requestInitialData } from '~lib/initial-data'
 
@@ -70,6 +71,14 @@ const {
   submit: submitCarModal,
 } = useEditableModal<Required<CarFormData>, Required<CarFormData>, Partial<CarFormData>>(modalSettings)
 
+watch(editableCar, (value) => {
+  if (!value) {
+    carForm.value = getDefaultCarForm()
+    return
+  }
+  carForm.value = value
+})
+
 const handleChangeDetails = async (field: string, value: any) => {
   await bookingStore.updateDetails(field, value)
 }
@@ -85,6 +94,16 @@ const getAvailableCars = async () => {
   }
 }
 
+const handleDeleteCar = async (carId: number) => {
+  const { result: isConfirmed, toggleLoading, toggleClose } = await showConfirmDialog('Удалить автомобиль?', 'btn-danger')
+  if (isConfirmed) {
+    toggleLoading()
+    await deleteBookingCar({ bookingID, id: carId })
+    await bookingStore.fetchBooking()
+    toggleClose()
+  }
+}
+
 watch(bookingDetails, async () => {
   await getAvailableCars()
 })
@@ -96,7 +115,6 @@ onMounted(async () => {
 </script>
 
 <template>
-  {{ availableCars }}
   <div class="d-flex flex-row gap-4">
     <InfoBlock>
       <template #header>
@@ -173,8 +191,8 @@ onMounted(async () => {
       <CarsTable
         :can-edit="isEditableStatus"
         :booking-cars="bookingDetails?.carBids || []"
-        @edit="(car) => { }"
-        @delete="(car) => { }"
+        @edit="(car) => openEditCarModal(car.id, car)"
+        @delete="(car) => handleDeleteCar(car.id)"
       />
       <CarModal
         :title-text="carModalTitle"

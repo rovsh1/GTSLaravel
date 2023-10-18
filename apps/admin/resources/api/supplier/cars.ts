@@ -2,8 +2,8 @@ import { useAdminAPI } from '~api'
 
 export type Car = {
   id: number
-  mark: number
-  model: number
+  mark: string
+  model: string
   typeId: number
   passengersNumber: number
   bagsNumber: number
