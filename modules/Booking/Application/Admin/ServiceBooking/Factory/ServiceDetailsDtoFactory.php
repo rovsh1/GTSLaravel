@@ -17,6 +17,7 @@ use Module\Booking\Domain\Booking\Entity\ServiceDetailsInterface;
 use Module\Booking\Domain\Booking\Entity\TransferFromAirport;
 use Module\Booking\Domain\Booking\Entity\TransferToAirport;
 use Module\Booking\Domain\Booking\ValueObject\ServiceInfo;
+use Module\Booking\Domain\Shared\ValueObject\GuestId;
 use Module\Booking\Infrastructure\AirportBooking\Models\Airport;
 
 class ServiceDetailsDtoFactory
@@ -56,12 +57,27 @@ class ServiceDetailsDtoFactory
 
     private function buildTransferFromAirport(TransferFromAirport $details): TransferFromAirportDto
     {
-        return new TransferFromAirportDto();
+        return new TransferFromAirportDto(
+            $details->id()->value(),
+            $this->buildServiceInfoDto($details->serviceInfo()),
+            $this->buildAirportInfo($details->airportId()->value()),
+            $details->flightNumber(),
+            $details->meetingTablet(),
+            $details->arrivalDate()?->format(DATE_ATOM),
+            $this->carBidFactory->build($details->serviceInfo()->supplierId(), $details->carBids())
+        );
     }
 
     private function buildCIPRoomInAirport(CIPRoomInAirport $details): CIPRoomInAirportDto
     {
-        return new CIPRoomInAirportDto();
+        return new CIPRoomInAirportDto(
+            $details->id()->value(),
+            $this->buildServiceInfoDto($details->serviceInfo()),
+            $this->buildAirportInfo($details->airportId()->value()),
+            $details->flightNumber(),
+            $details->serviceDate()?->format(DATE_ATOM),
+            $details->guestIds()->map(fn(GuestId $id) => $id->value()),
+        );
     }
 
     private function buildTransferToRailway(mixed $details): mixed
