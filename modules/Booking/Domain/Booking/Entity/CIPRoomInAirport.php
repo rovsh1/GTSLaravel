@@ -50,6 +50,11 @@ class CIPRoomInAirport implements ServiceDetailsInterface
         return $this->airportId;
     }
 
+    public function setServiceDate(?DateTimeInterface $serviceDate): void
+    {
+        $this->serviceDate = $serviceDate;
+    }
+
     public function serviceDate(): ?DateTimeInterface
     {
         return $this->serviceDate;
