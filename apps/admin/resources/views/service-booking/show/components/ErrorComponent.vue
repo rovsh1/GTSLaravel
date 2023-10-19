@@ -6,7 +6,7 @@
 
 <style lang="scss" scoped>
 .error {
-  text-align: center;
   font-size: 0.9rem;
+  text-align: center;
 }
 </style>
