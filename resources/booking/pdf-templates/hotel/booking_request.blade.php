@@ -73,28 +73,28 @@
                             <tr>
                                 <td class="top-table-left">Гостиница:</td>
                                 <td>
-                                    <b>{{ $booking->hotel->name }} ({{ $booking->hotel->city }})</b>
+                                    <b>{{ $hotel->name }} ({{ $hotel->city }})</b>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="top-table-left">Телефон:</td>
                                 <td>
-                                    <b>{{ $booking->hotel->phone }}</b>
+                                    <b>{{ $hotel->phone }}</b>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="top-table-left">Дата заезда:</td>
                                 <td>
-                                    <b>{{ $booking->period->startDate }}</b>
+                                    <b>{{ $bookingPeriod->startDate }}</b>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="top-table-left">Дата выезда:</td>
-                                <td><b>{{ $booking->period->endDate }}</b></td>
+                                <td><b>{{ $bookingPeriod->endDate }}</b></td>
                             </tr>
                             <tr>
                                 <td class="top-table-left">Количество ночей:</td>
-                                <td><b>{{ $booking->period->nightsCount }}</b></td>
+                                <td><b>{{ $bookingPeriod->nightsCount }}</b></td>
                             </tr>
                             </tbody>
                         </table>

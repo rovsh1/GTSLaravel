@@ -24,7 +24,7 @@ class TemplateDataFactory
 
     public function buildCommon(Booking $booking): TemplateDataInterface
     {
-        return $this->module->make(CommonData::class, ['bookingId' => $booking->id()]);
+        return $this->module->make(CommonData::class, ['booking' => $booking]);
     }
 
     private function getServiceFactoryClass(ServiceTypeEnum $serviceType): string
