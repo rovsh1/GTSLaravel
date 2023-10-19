@@ -5,7 +5,6 @@ import { computed, onMounted, ref, unref, watch } from 'vue'
 import { MaybeRef } from '@vueuse/core'
 import { z } from 'zod'
 
-import { useBookingStore } from '~resources/views/airport-booking/show/store/booking'
 import GuestModal from '~resources/views/booking/components/GuestModal.vue'
 import GuestsTable from '~resources/views/booking/components/GuestsTable.vue'
 import InfoBlock from '~resources/views/booking/components/InfoBlock/InfoBlock.vue'
@@ -13,6 +12,8 @@ import InfoBlockTitle from '~resources/views/booking/components/InfoBlock/InfoBl
 import { GuestFormData } from '~resources/views/booking/lib/data-types'
 import { useOrderStore } from '~resources/views/booking/store/order'
 import { useEditableModal } from '~resources/views/hotel/settings/composables/editable-modal'
+import { BookingCipInAirportDetails } from '~resources/views/service-booking/show/components/details/lib/types'
+import { useBookingStore } from '~resources/views/service-booking/show/store/booking'
 
 import { addBookingGuest, deleteBookingGuest } from '~api/booking/airport/guests'
 import { addOrderGuest, Guest, updateOrderGuest } from '~api/booking/order/guest'
@@ -21,8 +22,8 @@ import { useCountrySearchAPI } from '~api/country'
 import { showConfirmDialog } from '~lib/confirm-dialog'
 import { requestInitialData } from '~lib/initial-data'
 
-import Card from '~components/Bootstrap/BootstrapCard/BootstrapCard.vue'
-import CardTitle from '~components/Bootstrap/BootstrapCard/components/BootstrapCardTitle.vue'
+import EditableDateInput from '~components/Editable/EditableDateInput.vue'
+import EditableTextInput from '~components/Editable/EditableTextInput.vue'
 import IconButton from '~components/IconButton.vue'
 
 const { bookingID } = requestInitialData('view-initial-data-service-booking', z.object({
@@ -33,7 +34,8 @@ const bookingStore = useBookingStore()
 const orderStore = useOrderStore()
 const orderId = computed(() => orderStore.order.id)
 const orderGuests = computed<Guest[]>(() => orderStore.guests || [])
-const booking = computed(() => bookingStore.booking)
+
+const bookingDetails = computed<BookingCipInAirportDetails | null>(() => bookingStore.booking?.details || null)
 
 const isEditableStatus = computed<boolean>(() => bookingStore.availableActions?.isEditable || false)
 
@@ -104,45 +106,72 @@ const handleDeleteGuest = async (guestId: number) => {
     toggleClose()
   }
 }
+
+const handleChangeDetails = async (field: string, value: any) => {
+  await bookingStore.updateDetails(field, value)
+}
 </script>
 
 <template>
-  <GuestModal
-    v-if="countries"
-    :title-text="guestModalTitle"
-    :opened="isGuestModalOpened"
-    :is-fetching="isGuestModalLoading"
-    :form-data="guestForm"
-    :order-guests="orderGuests"
-    :countries="countries"
-    @close="closeGuestModal"
-    @submit="submitGuestModal"
-    @clear="guestForm = getDefaultGuestForm()"
-  />
+  <div class="d-flex flex-row gap-4">
+    <InfoBlock>
+      <table class="table-params">
+        <tbody>
+          <tr>
+            <th>Номер рейса</th>
+            <td>
+              <EditableTextInput
+                :value="bookingDetails?.flightNumber"
+                :can-edit="isEditableStatus"
+                type="text"
+                @change="value => handleChangeDetails('flightNumber', value)"
+              />
+            </td>
+          </tr>
+          <tr>
+            <th>Дата</th>
+            <td>
+              <EditableDateInput
+                :value="bookingDetails?.serviceDate"
+                :can-edit="isEditableStatus"
+                @change="value => handleChangeDetails('serviceDate', value)"
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </InfoBlock>
 
-  <Card>
-    <CardTitle class="mr-4" title="Информация о брони" />
-    <div class="d-flex gap-4">
-      <InfoBlock>
-        <template #header>
-          <div class="d-flex gap-1">
-            <InfoBlockTitle title="Гости" />
-            <IconButton v-if="isEditableStatus" icon="add" @click="openAddGuestModal" />
-          </div>
-        </template>
-
-        <GuestsTable
-          v-if="countries"
-          :can-edit="isEditableStatus"
-          :guest-ids="booking?.guestIds"
-          :order-guests="orderGuests"
-          :countries="countries"
-          @edit="guest => openEditGuestModal(guest.id, guest)"
-          @delete="(guest) => handleDeleteGuest(guest.id)"
-        />
-      </InfoBlock>
-    </div>
-  </Card>
+    <InfoBlock>
+      <template #header>
+        <div class="d-flex gap-1">
+          <InfoBlockTitle title="Список гостей" />
+          <IconButton v-if="isEditableStatus" icon="add" @click="openAddGuestModal" />
+        </div>
+      </template>
+      <GuestsTable
+        v-if="countries"
+        :can-edit="isEditableStatus"
+        :guest-ids="bookingDetails?.guestIds"
+        :order-guests="orderGuests"
+        :countries="countries"
+        @edit="guest => openEditGuestModal(guest.id, guest)"
+        @delete="(guest) => handleDeleteGuest(guest.id)"
+      />
+      <GuestModal
+        v-if="countries"
+        :title-text="guestModalTitle"
+        :opened="isGuestModalOpened"
+        :is-fetching="isGuestModalLoading"
+        :form-data="guestForm"
+        :order-guests="orderGuests"
+        :countries="countries"
+        @close="closeGuestModal"
+        @submit="submitGuestModal"
+        @clear="guestForm = getDefaultGuestForm()"
+      />
+    </InfoBlock>
+  </div>
 </template>
 
 <style lang="scss" scoped>

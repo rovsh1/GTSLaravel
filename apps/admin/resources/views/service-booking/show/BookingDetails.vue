@@ -1,7 +1,8 @@
 <script setup lang="ts">
 
-import { computed, defineAsyncComponent, nextTick, onMounted, shallowRef } from 'vue'
+import { computed, defineAsyncComponent, nextTick, shallowRef } from 'vue'
 
+import { watchOnce } from '@vueuse/core'
 import { camelCase } from 'lodash'
 
 import { useBookingStore } from '~resources/views/service-booking/show/store/booking'
@@ -33,14 +34,13 @@ const setDetailsComponentByServiceType = (typeId: number | undefined) => {
       loader: () => import(`./components/details/${ComponentName}.vue`),
       errorComponent: ErrorComponent,
     })
-    console.log(ComponentName)
     detailsComponent.value = DetailsComponent
   } else {
     detailsComponent.value = ErrorComponent
   }
 }
 
-onMounted(async () => {
+watchOnce(booking, async () => {
   await fetchBookingDetailsTypes()
   nextTick(() => {
     setDetailsComponentByServiceType(booking.value?.serviceType.id)

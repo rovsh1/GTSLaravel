@@ -10,7 +10,7 @@ import InfoBlock from '~resources/views/booking/components/InfoBlock/InfoBlock.v
 import InfoBlockTitle from '~resources/views/booking/components/InfoBlock/InfoBlockTitle.vue'
 import { CarFormData } from '~resources/views/booking/lib/data-types'
 import { useEditableModal } from '~resources/views/hotel/settings/composables/editable-modal'
-import { BookingTransferFromAirportDetails } from '~resources/views/service-booking/show/components/details/lib/types'
+import { BookingTransferFromRailwayDetails } from '~resources/views/service-booking/show/components/details/lib/types'
 import { useBookingStore } from '~resources/views/service-booking/show/store/booking'
 
 import { CarBid } from '~api/booking/service'
@@ -33,7 +33,7 @@ const bookingStore = useBookingStore()
 
 const isEditableStatus = computed<boolean>(() => bookingStore.availableActions?.isEditable || false)
 
-const bookingDetails = computed<BookingTransferFromAirportDetails | null>(() => bookingStore.booking?.details || null)
+const bookingDetails = computed<BookingTransferFromRailwayDetails | null>(() => bookingStore.booking?.details || null)
 
 const availableCars = ref<Car[]>([])
 
@@ -143,7 +143,7 @@ const handleEditCarModal = async (id: number, object: CarBid) => {
       <table class="table-params">
         <tbody>
           <tr>
-            <th>Номер рейса</th>
+            <th>Номер поезда</th>
             <td>
               <EditableTextInput
                 :value="bookingDetails?.flightNumber"
@@ -154,7 +154,7 @@ const handleEditCarModal = async (id: number, object: CarBid) => {
             </td>
           </tr>
           <tr>
-            <th>Дата прилёта</th>
+            <th>Дата прибытия</th>
             <td>
               <EditableDateInput
                 :value="bookingDetails?.arrivalDate"
@@ -164,7 +164,7 @@ const handleEditCarModal = async (id: number, object: CarBid) => {
             </td>
           </tr>
           <tr>
-            <th>Время прилёта</th>
+            <th>Время прибытия</th>
             <td>
               <EditableTimeInput
                 :value="bookingDetails?.arrivalDate"
@@ -175,10 +175,10 @@ const handleEditCarModal = async (id: number, object: CarBid) => {
             </td>
           </tr>
           <tr>
-            <th>Аэропорт прилёта</th>
+            <th>Станция прибытия</th>
             <td>
               <EditableTextInput
-                :value="bookingDetails?.airportInfo?.name"
+                :value="bookingDetails?.railwayInfo?.name"
                 :can-edit="false"
                 type="text"
               />

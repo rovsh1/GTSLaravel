@@ -5,66 +5,66 @@ import InlineSVG from 'vue-inline-svg'
 
 import escapeIcon from '@mdi/svg/svg/keyboard-esc.svg'
 import enterIcon from '@mdi/svg/svg/keyboard-return.svg'
-import { useToggle } from '@vueuse/core'
+import { onClickOutside, useToggle } from '@vueuse/core'
 import { Tooltip } from 'floating-vue'
 import { DateTime } from 'luxon'
-import { nanoid } from 'nanoid'
 
-import { formatDateToAPIDate } from '~lib/date'
 import { usePlatformDetect } from '~lib/platform'
-
-import DateRangePicker from '~components/DateRangePicker.vue'
 
 const props = withDefaults(defineProps<{
   value: string | undefined
+  placeholder?: string
+  dimension?: string
   emptyValue?: string
   hideClickOutside?: boolean
   saveClickOutside?: boolean
+  required?: boolean
   canEdit?: boolean
 }>(), {
+  placeholder: undefined,
   emptyValue: undefined,
+  dimension: undefined,
   hideClickOutside: false,
   saveClickOutside: true,
+  required: false,
   canEdit: true,
 })
 
 const emit = defineEmits<{
-  (event: 'change', value: string): void
+  (event: 'change', value: string | null): void
 }>()
 
 const [isEditable, toggleEditable] = useToggle()
 const { isMacOS } = usePlatformDetect()
 
-const dateElementID = `${nanoid()}_date`
-
 const inputRef = ref<HTMLInputElement | null>(null)
-const editedValue = ref<Date>()
+const editedValue = ref<string>()
 const isChanged = ref(false)
 
-const localValue = computed<Date | undefined>({
+const localValue = computed<string>({
   get: () => {
     if (isChanged.value) {
-      return editedValue.value
+      return editedValue.value || ''
     }
-    return props.value
-      ? DateTime.fromISO(props.value, { zone: 'utc' }).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }).toJSDate()
-      : undefined
+    return props.value ? DateTime.fromISO(props.value, { zone: 'utc' }).toFormat('HH:mm') : ''
   },
-  set: (value: Date | undefined) => {
+  set: (value: string) => {
     editedValue.value = value
     isChanged.value = true
   },
 })
 
-const localTime = computed<string | undefined>(() => (props.value ? DateTime.fromISO(props.value, { zone: 'utc' }).toFormat('HH:mm') : '00:00'))
+const localDate = computed<string>(() => (props.value
+  ? DateTime.fromISO(props.value, { zone: 'utc' })
+    .set({ hour: 0, minute: 0, second: 0, millisecond: 0 }).toFormat('yyyy-LL-dd') : ''))
 
 const displayValue = computed(() => {
   if (!localValue.value) {
     return props.emptyValue || 'Не заполнено'
   }
-  const displayDate = DateTime.fromJSDate(localValue.value)
+  const dimensionText = props.dimension && localValue ? props.dimension : ''
 
-  return `${displayDate.toFormat('dd.LL.yyyy')}`
+  return `${localValue.value}${dimensionText}`
 })
 
 watch(inputRef, (element) => {
@@ -81,11 +81,16 @@ const hideEditable = () => {
 }
 
 const applyEditable = () => {
-  if (!localValue.value) {
-    toggleEditable(false)
+  const isEmptyValue = String(localValue.value).trim().length === 0
+  if (props.required && isEmptyValue && !inputRef.value?.reportValidity()) {
     return
   }
-  emit('change', `${formatDateToAPIDate(localValue.value)} ${localTime.value}`)
+  if (isEmptyValue) {
+    emit('change', localDate.value)
+  } else {
+    emit('change', `${localDate.value} ${localValue.value}`)
+  }
+
   toggleEditable(false)
 }
 
@@ -97,19 +102,18 @@ const onPressEsc = () => {
   hideEditable()
 }
 
-const onClickOutsideHandler = () => {
-  if (props.hideClickOutside && !props.saveClickOutside) {
-    hideEditable()
-  }
-  if (props.saveClickOutside && !props.hideClickOutside) {
-    applyEditable()
-  }
+if (props.hideClickOutside && !props.saveClickOutside) {
+  onClickOutside(inputRef, hideEditable)
+}
+
+if (props.saveClickOutside && !props.hideClickOutside) {
+  onClickOutside(inputRef, applyEditable)
 }
 
 </script>
 
 <template>
-  <div style="position: relative;">
+  <div>
     <a v-if="!isEditable && canEdit" href="#" @click.prevent="toggleEditable(true)">
       {{ displayValue }}
     </a>
@@ -119,27 +123,22 @@ const onClickOutsideHandler = () => {
     </span>
 
     <Tooltip v-else theme="tooltip" handle-resize>
-      <div>
-        <DateRangePicker
-          :id="dateElementID"
-          :value="localValue"
-          :single-mode="true"
-          :set-input-focus="true"
-          @input="(date) => {
-            localValue = date as Date
-            onPressEnter()
-          }"
-          @click-outside="onClickOutsideHandler"
-          @press-esc="onPressEsc"
-          @press-enter="onPressEnter"
-        />
-      </div>
+      <input
+        ref="inputRef"
+        v-model.trim="localValue"
+        class="form-control editable-input w-100"
+        :placeholder="placeholder"
+        :required="required"
+        type="time"
+        @keydown.esc="onPressEsc"
+        @keydown.enter="onPressEnter"
+      />
       <template #popper>
-        <div class="exist-svg">
+        <div>
           Нажмите
           <InlineSVG :src="enterIcon" /> Enter, чтобы подтвердить изменения
         </div>
-        <div class="exist-svg">
+        <div>
           Нажмите
           <template v-if="isMacOS">⎋ Esc</template>
           <template v-else>
@@ -152,8 +151,8 @@ const onClickOutsideHandler = () => {
   </div>
 </template>
 
-<style lang="scss">
-.exist-svg svg {
+<style lang="scss" scoped>
+svg {
   width: auto;
   height: 1em;
   fill: currentcolor;
@@ -162,11 +161,4 @@ const onClickOutsideHandler = () => {
 .editable-input {
   width: 5rem;
 }
-
-/* stylelint-disable declaration-no-important */
-.litepicker {
-  top: 100% !important;
-  left: 0 !important;
-}
-/* stylelint-enable declaration-no-important */
 </style>

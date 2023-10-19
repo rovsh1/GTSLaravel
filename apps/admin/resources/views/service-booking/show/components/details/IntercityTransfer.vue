@@ -10,7 +10,7 @@ import InfoBlock from '~resources/views/booking/components/InfoBlock/InfoBlock.v
 import InfoBlockTitle from '~resources/views/booking/components/InfoBlock/InfoBlockTitle.vue'
 import { CarFormData } from '~resources/views/booking/lib/data-types'
 import { useEditableModal } from '~resources/views/hotel/settings/composables/editable-modal'
-import { BookingTransferFromAirportDetails } from '~resources/views/service-booking/show/components/details/lib/types'
+import { BookingIntercityTransferDetails } from '~resources/views/service-booking/show/components/details/lib/types'
 import { useBookingStore } from '~resources/views/service-booking/show/store/booking'
 
 import { CarBid } from '~api/booking/service'
@@ -21,8 +21,6 @@ import { showConfirmDialog } from '~lib/confirm-dialog'
 import { requestInitialData } from '~lib/initial-data'
 
 import EditableDateInput from '~components/Editable/EditableDateInput.vue'
-import EditableTextInput from '~components/Editable/EditableTextInput.vue'
-import EditableTimeInput from '~components/Editable/EditableTimeInput.vue'
 import IconButton from '~components/IconButton.vue'
 
 const { bookingID } = requestInitialData('view-initial-data-service-booking', z.object({
@@ -33,7 +31,7 @@ const bookingStore = useBookingStore()
 
 const isEditableStatus = computed<boolean>(() => bookingStore.availableActions?.isEditable || false)
 
-const bookingDetails = computed<BookingTransferFromAirportDetails | null>(() => bookingStore.booking?.details || null)
+const bookingDetails = computed<BookingIntercityTransferDetails | null>(() => bookingStore.booking?.details || null)
 
 const availableCars = ref<Car[]>([])
 
@@ -143,55 +141,12 @@ const handleEditCarModal = async (id: number, object: CarBid) => {
       <table class="table-params">
         <tbody>
           <tr>
-            <th>Номер рейса</th>
-            <td>
-              <EditableTextInput
-                :value="bookingDetails?.flightNumber"
-                :can-edit="isEditableStatus"
-                type="text"
-                @change="value => handleChangeDetails('flightNumber', value)"
-              />
-            </td>
-          </tr>
-          <tr>
-            <th>Дата прилёта</th>
+            <th>Дата</th>
             <td>
               <EditableDateInput
-                :value="bookingDetails?.arrivalDate"
+                :value="bookingDetails?.departureDate"
                 :can-edit="isEditableStatus"
-                @change="value => handleChangeDetails('arrivalDate', value)"
-              />
-            </td>
-          </tr>
-          <tr>
-            <th>Время прилёта</th>
-            <td>
-              <EditableTimeInput
-                :value="bookingDetails?.arrivalDate"
-                :can-edit="isEditableStatus && !!bookingDetails?.arrivalDate"
-                type="time"
-                @change="value => handleChangeDetails('arrivalDate', value)"
-              />
-            </td>
-          </tr>
-          <tr>
-            <th>Аэропорт прилёта</th>
-            <td>
-              <EditableTextInput
-                :value="bookingDetails?.airportInfo?.name"
-                :can-edit="false"
-                type="text"
-              />
-            </td>
-          </tr>
-          <tr>
-            <th>Табличка для встречи</th>
-            <td>
-              <EditableTextInput
-                :value="bookingDetails?.meetingTablet"
-                :can-edit="isEditableStatus"
-                type="text"
-                @change="value => handleChangeDetails('meetingTablet', value)"
+                @change="value => handleChangeDetails('departureDate', value)"
               />
             </td>
           </tr>

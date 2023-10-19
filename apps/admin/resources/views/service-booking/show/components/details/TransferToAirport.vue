@@ -10,18 +10,19 @@ import InfoBlock from '~resources/views/booking/components/InfoBlock/InfoBlock.v
 import InfoBlockTitle from '~resources/views/booking/components/InfoBlock/InfoBlockTitle.vue'
 import { CarFormData } from '~resources/views/booking/lib/data-types'
 import { useEditableModal } from '~resources/views/hotel/settings/composables/editable-modal'
+import { BookingTransferToAirportDetails } from '~resources/views/service-booking/show/components/details/lib/types'
 import { useBookingStore } from '~resources/views/service-booking/show/store/booking'
 
-import { BookingDetails, CarBid } from '~api/booking/service'
+import { CarBid } from '~api/booking/service'
 import { addBookingCar, deleteBookingCar, updateBookingCar } from '~api/booking/service/cars'
 import { Car, useGetSupplierCarsAPI } from '~api/supplier/cars'
 
 import { showConfirmDialog } from '~lib/confirm-dialog'
-import { parseAPIDateToJSDate } from '~lib/date'
 import { requestInitialData } from '~lib/initial-data'
 
 import EditableDateInput from '~components/Editable/EditableDateInput.vue'
 import EditableTextInput from '~components/Editable/EditableTextInput.vue'
+import EditableTimeInput from '~components/Editable/EditableTimeInput.vue'
 import IconButton from '~components/IconButton.vue'
 
 const { bookingID } = requestInitialData('view-initial-data-service-booking', z.object({
@@ -32,7 +33,7 @@ const bookingStore = useBookingStore()
 
 const isEditableStatus = computed<boolean>(() => bookingStore.availableActions?.isEditable || false)
 
-const bookingDetails = computed<BookingDetails | null>(() => bookingStore.booking?.details || null)
+const bookingDetails = computed<BookingTransferToAirportDetails | null>(() => bookingStore.booking?.details || null)
 
 const availableCars = ref<Car[]>([])
 
@@ -93,8 +94,8 @@ const handleChangeDetails = async (field: string, value: any) => {
 }
 
 const getAvailableCars = async (filtered?: boolean) => {
-  const supplierId = bookingStore.booking?.details?.serviceInfo.supplierId
-  const carsInBooking = bookingStore.booking?.details?.carBids
+  const supplierId = bookingDetails.value?.serviceInfo.supplierId
+  const carsInBooking = bookingDetails.value?.carBids
   if (!supplierId) {
     availableCars.value = []
   } else {
@@ -139,9 +140,6 @@ const handleEditCarModal = async (id: number, object: CarBid) => {
 <template>
   <div class="d-flex flex-row gap-4">
     <InfoBlock>
-      <template #header>
-        <InfoBlockTitle title="Параметры размещения" />
-      </template>
       <table class="table-params">
         <tbody>
           <tr>
@@ -159,8 +157,7 @@ const handleEditCarModal = async (id: number, object: CarBid) => {
             <th>Дата вылета</th>
             <td>
               <EditableDateInput
-                :value="bookingDetails?.departureDate
-                  ? parseAPIDateToJSDate(bookingDetails?.departureDate) : undefined"
+                :value="bookingDetails?.departureDate"
                 :can-edit="isEditableStatus"
                 @change="value => handleChangeDetails('departureDate', value)"
               />
@@ -169,11 +166,11 @@ const handleEditCarModal = async (id: number, object: CarBid) => {
           <tr>
             <th>Время вылета</th>
             <td>
-              <EditableTextInput
-                :value="''"
-                :can-edit="isEditableStatus"
+              <EditableTimeInput
+                :value="bookingDetails?.departureDate"
+                :can-edit="isEditableStatus && !!bookingDetails?.departureDate"
                 type="time"
-                @change="value => handleChangeDetails('', value)"
+                @change="value => handleChangeDetails('departureDate', value)"
               />
             </td>
           </tr>

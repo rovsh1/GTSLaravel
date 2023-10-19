@@ -18,6 +18,11 @@ export type AirportInfo = {
   name: string
 }
 
+export type RailwayInfo = {
+  id: number
+  name: string
+}
+
 export type ServiceInfo = ServiceType & {
   supplierId: number
 }
@@ -36,19 +41,8 @@ export interface BookingDetailsType {
   name: string
 }
 
-export interface BookingDetails {
-  id: number
-  serviceInfo: ServiceInfo
-  airportInfo?: AirportInfo
-  meetingTablet?: string
-  flightNumber?: string
-  departureDate?: string
-  arrivalDate?: string
-  carBids?: CarBid[]
-}
-
 export type Booking = {
-  details?: BookingDetails
+  details?: any
   serviceType: ServiceType
 } & BaseBooking
 
