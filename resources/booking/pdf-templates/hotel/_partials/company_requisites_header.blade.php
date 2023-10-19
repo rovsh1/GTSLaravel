@@ -6,16 +6,16 @@
         <table class="text-align-right">
             <tbody>
             <tr>
-                <td>{{$company}}</td>
+                <td>{{$company->name}}</td>
             </tr>
             <tr>
-                <td>Тел: {{$phone}}</td>
+                <td>Тел: {{$company->phone}}</td>
             </tr>
             <tr>
-                <td>E-mail: {{$email}}</td>
+                <td>E-mail: {{$company->email}}</td>
             </tr>
             <tr>
-                <td>{{$address}}</td>
+                <td>{{$company->legalAddress}}</td>
             </tr>
             </tbody>
         </table>

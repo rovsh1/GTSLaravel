@@ -4,26 +4,27 @@ namespace Module\Booking\Domain\BookingRequest\Factory;
 
 use Module\Booking\Domain\Booking\Booking;
 use Module\Booking\Domain\BookingRequest\BookingRequest;
+use Module\Booking\Domain\BookingRequest\Event\BookingRequestSent;
+use Module\Booking\Domain\BookingRequest\Event\CancelRequestSent;
+use Module\Booking\Domain\BookingRequest\Event\ChangeRequestSent;
 use Module\Booking\Domain\BookingRequest\Repository\RequestRepositoryInterface;
-use Module\Booking\Domain\BookingRequest\Service\Dto\CompanyRequisitesDto;
 use Module\Booking\Domain\BookingRequest\Service\TemplateCompilerInterface;
 use Module\Booking\Domain\BookingRequest\Service\TemplateDataFactory;
 use Module\Booking\Domain\BookingRequest\ValueObject\RequestTypeEnum;
 use Module\Shared\Contracts\Adapter\FileStorageAdapterInterface;
-use Module\Shared\Contracts\Service\CompanyRequisitesInterface;
 use Module\Shared\Enum\ServiceTypeEnum;
 use Module\Shared\ValueObject\File;
+use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 
 class RequestFactory
 {
     public function __construct(
-        protected readonly CompanyRequisitesInterface $companyRequisites,
-        protected readonly TemplateCompilerInterface $templateCompiler,
-        protected readonly TemplateDataFactory $templateDataFactory,
+        private readonly TemplateCompilerInterface $templateCompiler,
+        private readonly TemplateDataFactory $templateDataFactory,
         private readonly RequestRepositoryInterface $requestRepository,
         private readonly FileStorageAdapterInterface $fileStorageAdapter,
-    ) {
-    }
+        private readonly DomainEventDispatcherInterface $eventDispatcher,
+    ) {}
 
     public function generate(Booking $booking, RequestTypeEnum $requestType): BookingRequest
     {
@@ -34,21 +35,33 @@ class RequestFactory
             $this->generateContent($booking, $requestType)
         );
 
-        return $this->requestRepository->create($booking->id(), $requestType, new File($fileDto->guid));
+        $request = $this->requestRepository->create($booking->id(), $requestType, new File($fileDto->guid));
+        $this->dispatchEvent($request, $booking);
+
+        return $request;
+    }
+
+    private function dispatchEvent(BookingRequest $request, Booking $booking): void
+    {
+        $event = match ($request->type()) {
+            RequestTypeEnum::BOOKING => new BookingRequestSent($booking, $request->id()),
+            RequestTypeEnum::CHANGE => new ChangeRequestSent($booking, $request->id()),
+            RequestTypeEnum::CANCEL => new CancelRequestSent($booking, $request->id()),
+        };
+        $this->eventDispatcher->dispatch($event);
     }
 
     private function generateContent(Booking $booking, RequestTypeEnum $requestType): string
     {
+        $commonData = $this->templateDataFactory->buildCommon($booking);
         $templateData = $this->templateDataFactory->build($booking, $requestType);
-
-        $bookingDto = null;
 
         return $this->templateCompiler->compile(
             $this->getTemplateName($booking->serviceType(), $requestType),
-            array_merge([
-                'company' => $this->getCompanyRequisites(),
-                'booking' => $bookingDto
-            ], $templateData->toArray())
+            [
+                ...$commonData->toArray(),
+                ...$templateData->toArray(),
+            ]
         );
     }
 
@@ -69,25 +82,14 @@ class RequestFactory
             $name = 'other';
         }
 
-        $name .= '-';
+        $name .= '.';
         $name .= match ($requestType) {
             RequestTypeEnum::BOOKING => 'booking',
             RequestTypeEnum::CHANGE => 'change',
             RequestTypeEnum::CANCEL => 'cancel'
         };
+        $name .= '_request';
 
         return $name;
-    }
-
-    private function getCompanyRequisites(): CompanyRequisitesDto
-    {
-        return new CompanyRequisitesDto(
-            name: $this->companyRequisites->name(),
-            phone: $this->companyRequisites->phone(),
-            email: $this->companyRequisites->email(),
-            legalAddress: $this->companyRequisites->legalAddress(),
-            signer: $this->companyRequisites->signer(),
-            region: $this->companyRequisites->region(),
-        );
     }
 }

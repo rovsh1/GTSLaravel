@@ -2,6 +2,7 @@
 
 namespace Module\Booking\Providers;
 
+use Illuminate\Support\Facades\View;
 use Module\Booking\Domain\BookingRequest\Factory\RequestFactory;
 use Module\Booking\Domain\BookingRequest\Repository\RequestRepositoryInterface;
 use Module\Booking\Domain\BookingRequest\Service\TemplateCompilerInterface;
@@ -13,6 +14,8 @@ class RequestServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
+        View::addLocation(base_path('resources/booking'));
+
         $this->app->singleton(RequestFactory::class);
         $this->app->singleton(RequestRepositoryInterface::class, RequestRepository::class);
         $this->app->singleton(TemplateCompilerInterface::class, RequestTemplateCompiler::class);

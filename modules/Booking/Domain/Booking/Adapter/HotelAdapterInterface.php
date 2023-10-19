@@ -22,4 +22,6 @@ interface HotelAdapterInterface
     public function getMarkupSettings(int $hotelId): MarkupSettingsDto;
 
     public function getRoomMarkupSettings(int $roomId): ?RoomMarkupsDto;
+
+    public function getHotelRates(int $hotelId): array;
 }

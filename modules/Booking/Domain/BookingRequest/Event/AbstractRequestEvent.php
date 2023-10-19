@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Domain\BookingRequest\Event;
 
+use Module\Booking\Domain\BookingRequest\ValueObject\RequestId;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
 use Module\Booking\Domain\Shared\Event\AbstractBookingEvent;
 use Module\Booking\Domain\Shared\Event\BookingRequestEventInterface;
@@ -12,7 +13,7 @@ abstract class AbstractRequestEvent extends AbstractBookingEvent implements Book
 {
     public function __construct(
         BookingInterface $booking,
-        public readonly int $requestId,
+        public readonly RequestId $requestId,
     ) {
         parent::__construct($booking);
     }

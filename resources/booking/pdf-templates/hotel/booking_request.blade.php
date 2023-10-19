@@ -49,7 +49,7 @@
 <body>
 <table>
     <tbody>
-    @include('hotel._partials.company_requisites_header')
+    @include('pdf-templates.hotel._partials.company_requisites_header')
     <tr>
         <td class="title text-align-center" colspan="2">НОВОЕ БРОНИРОВАНИЕ</td>
     </tr>
@@ -65,30 +65,36 @@
                                 <td class="top-table-left" style="font-size: 24px; font-weight: bold; color: red">Номер
                                     (ID):
                                 </td>
-                                <td style="font-size: 24px; font-weight: bold; color: red">{{$reservNumber}}</td>
+                                <td style="font-size: 24px; font-weight: bold; color: red">{{ $booking->number }}</td>
                                 <td class="text-align-right" colspan="2"><b>Дата и время
-                                        создания: {{$reservCreatedAt}}</b>
+                                        создания: {{ $booking->createdAt }}</b>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="top-table-left">Гостиница:</td>
-                                <td><b>{{$hotelName}} ({{$cityName}})</b></td>
+                                <td>
+                                    <b>{{ $booking->hotel->name }} ({{ $booking->hotel->city }})</b>
+                                </td>
                             </tr>
                             <tr>
                                 <td class="top-table-left">Телефон:</td>
-                                <td><b>{{$hotelPhone}}</b></td>
+                                <td>
+                                    <b>{{ $booking->hotel->phone }}</b>
+                                </td>
                             </tr>
                             <tr>
                                 <td class="top-table-left">Дата заезда:</td>
-                                <td><b>{{$reservStartDate}}</b></td>
+                                <td>
+                                    <b>{{ $booking->period->startDate }}</b>
+                                </td>
                             </tr>
                             <tr>
                                 <td class="top-table-left">Дата выезда:</td>
-                                <td><b>{{$reservEndDate}}</b></td>
+                                <td><b>{{ $booking->period->endDate }}</b></td>
                             </tr>
                             <tr>
                                 <td class="top-table-left">Количество ночей:</td>
-                                <td><b>{{$reservNightCount}}</b></td>
+                                <td><b>{{ $booking->period->nightsCount }}</b></td>
                             </tr>
                             </tbody>
                         </table>
@@ -112,7 +118,7 @@
                 </thead>
                 <tbody>
 
-                @include('hotel._partials.rooms')
+                @include('pdf-templates.hotel._partials.rooms')
 
                 <tr class="first">
                     <td colspan="3">
@@ -135,7 +141,7 @@
                 <tbody>
                 <tr>
                     <td style="width: 500px;">
-                        @include('hotel._partials.manager_requisites')
+                        @include('pdf-templates.hotel._partials.manager_requisites')
                     </td>
                 </tr>
                 </tbody>

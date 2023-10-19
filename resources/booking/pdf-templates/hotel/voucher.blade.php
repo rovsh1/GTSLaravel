@@ -40,7 +40,7 @@
 <table>
     <tbody>
 
-    @include('hotel._partials.company_requisites_header')
+    @include('pdf-templates.hotel._partials.company_requisites_header')
 
     <tr>
         <td class="title text-align-center" colspan="2">ВАУЧЕР № {{$number}}</td>
@@ -218,7 +218,7 @@
                 <tbody>
                 <tr>
                     <td style="width: 500px;">
-                        @include('hotel._partials.manager_requisites')
+                        @include('pdf-templates.hotel._partials.manager_requisites')
                     </td>
                 </tr>
                 </tbody>

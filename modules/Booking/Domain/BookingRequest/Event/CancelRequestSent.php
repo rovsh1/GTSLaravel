@@ -2,6 +2,6 @@
 
 namespace Module\Booking\Domain\BookingRequest\Event;
 
-class CancellationRequestSent extends AbstractRequestEvent
+class CancelRequestSent extends AbstractRequestEvent
 {
 }

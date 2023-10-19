@@ -9,7 +9,7 @@ use Module\Booking\Domain\Booking\Support\Concerns\HasStatusesTrait;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Domain\Booking\ValueObject\BookingPrices;
 use Module\Booking\Domain\BookingRequest\Event\BookingRequestSent;
-use Module\Booking\Domain\BookingRequest\Event\CancellationRequestSent;
+use Module\Booking\Domain\BookingRequest\Event\CancelRequestSent;
 use Module\Booking\Domain\BookingRequest\Event\ChangeRequestSent;
 use Module\Booking\Domain\BookingRequest\Service\RequestCreator;
 use Module\Booking\Domain\BookingRequest\ValueObject\RequestTypeEnum;
@@ -92,7 +92,7 @@ abstract class AbstractBooking extends AbstractAggregateRoot implements
                 $this->toWaitingConfirmation();
                 break;
             case RequestTypeEnum::CANCEL:
-                $event = new CancellationRequestSent($this, $request->id()->value());
+                $event = new CancelRequestSent($this, $request->id()->value());
                 $this->toWaitingCancellation();
                 break;
         }

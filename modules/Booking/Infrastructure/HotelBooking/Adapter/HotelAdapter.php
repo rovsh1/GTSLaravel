@@ -7,8 +7,10 @@ use Module\Booking\Domain\Booking\Adapter\HotelAdapterInterface;
 use Module\Catalog\Application\Admin\Response\HotelDto;
 use Module\Catalog\Application\Admin\Response\MarkupSettingsDto;
 use Module\Catalog\Application\Admin\Response\RoomMarkupsDto;
+use Module\Catalog\Application\Admin\ResponseDto\PriceRateDto;
 use Module\Catalog\Application\Admin\UseCase\FindHotelById;
 use Module\Catalog\Application\Admin\UseCase\GetMarkupSettings;
+use Module\Catalog\Application\Admin\UseCase\GetPriceRates;
 use Module\Catalog\Application\Admin\UseCase\GetRoomMarkups;
 use Module\Pricing\Application\UseCase\GetHotelRoomBasePrice;
 
@@ -37,5 +39,14 @@ class HotelAdapter implements HotelAdapterInterface
     public function getRoomMarkupSettings(int $roomId): ?RoomMarkupsDto
     {
         return app(GetRoomMarkups::class)->execute($roomId);
+    }
+
+    /**
+     * @param int $hotelId
+     * @return PriceRateDto[]
+     */
+    public function getHotelRates(int $hotelId): array
+    {
+        return app(GetPriceRates::class)->execute($hotelId);
     }
 }

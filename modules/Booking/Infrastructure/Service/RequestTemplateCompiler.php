@@ -56,6 +56,6 @@ class RequestTemplateCompiler implements TemplateCompilerInterface
 
     private function getTemplateView(string $template, array $attributes): View
     {
-        return view($template, $attributes);
+        return view('pdf-templates.' . $template, $attributes);
     }
 }

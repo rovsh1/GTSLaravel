@@ -3,38 +3,38 @@
         <tr class="first">
     @else
         <tr>
-            @endif
+    @endif
             <td>
-                <b>{{++$roomIndex}}</b>
+                <b>{{ ++$roomIndex }}</b>
             </td>
             <td>
-                <b>{{$room->roomInfo()->name()}}</b>
+                <b>{{ $room->name }}</b>
             </td>
             <td>
-                Время заезда: {{$room->details()->earlyCheckIn()?->timePeriod()->from() ?? $hotelDefaultCheckInTime}}
-            </td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-                Питание: без завтрака
-            </td>
-            <td>
-                Время выезда: {{$room->details()->lateCheckOut()?->timePeriod()->to() ?? $hotelDefaultCheckOutTime}}
+                Время заезда: {{ $room->checkInTime }}
             </td>
         </tr>
         <tr>
             <td></td>
             <td>
-                Туристы ({{$room->guestIds()->count()}}):
+                Тариф: без завтрака
+            </td>
+            <td>
+                Время выезда: {{ $room->checkOutTime }}
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                Туристы ({{ count($room->guests) }}):
             </td>
             <td></td>
         </tr>
-        @foreach($roomsGuests[$room->id()->value()] as $index => $guest)
+        @foreach($room->guests as $index => $guest)
             <tr>
                 <td></td>
                 <td>
-                    {{++$index}}. {{$guest->fullName()}}, {{$guest->gender() === \Module\Shared\Enum\GenderEnum::MALE ? 'Мужской' : 'Женский' }}, {{$countryNamesById[$guest->countryId()] ?? ''}}
+                    {{++$index}}. {{ $guest->fullName }}, {{ $guest->gender }}, {{ $guest->countryName }}
                 </td>
                 <td></td>
             </tr>
@@ -42,9 +42,9 @@
         <tr>
             <td></td>
             <td>
-                Примечание (запрос в отель, ваучер):
+                Примечание (запрос в отель, ваучер): {{$room->note}}
             </td>
             <td></td>
         </tr>
 
-@endforeach
+        @endforeach

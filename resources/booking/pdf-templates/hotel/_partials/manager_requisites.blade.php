@@ -4,13 +4,13 @@
         <td>&ensp;</td>
     </tr>
     <tr>
-        <td>Менеджер: {{$managerName}}</td>
+        <td>Менеджер: {{ $manager->fullName }}</td>
     </tr>
     <tr>
-        <td>E-mail: {{$managerEmail}}</td>
+        <td>E-mail: {{ $manager->email }}</td>
     </tr>
     <tr>
-        <td>Мобильный номер: {{$managerPhone}}</td>
+        <td>Мобильный номер: {{ $manager->phone }}</td>
     </tr>
     </tbody>
 </table>
