@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Domain\BookingRequest\Service\TemplateData;
+namespace Module\Booking\Domain\BookingRequest\Service\Factory;
 
 use Module\Booking\Domain\Booking\Booking;
 use Module\Booking\Domain\Booking\Service\StatusTranslator;
 use Module\Booking\Domain\BookingRequest\Service\Dto\BookingDto;
 use Module\Booking\Domain\BookingRequest\Service\Dto\CompanyRequisitesDto;
 use Module\Booking\Domain\BookingRequest\Service\Dto\ManagerDto;
+use Module\Booking\Domain\BookingRequest\Service\TemplateData\CommonData;
 use Module\Booking\Domain\BookingRequest\Service\TemplateDataInterface;
 use Module\Booking\Domain\Shared\Adapter\AdministratorAdapterInterface;
 use Module\Shared\Contracts\Service\CompanyRequisitesInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Booking\Domain\BookingRequest\Service\TemplateData;
+namespace Module\Booking\Domain\BookingRequest\Service\Factory;
 
 use Module\Booking\Domain\Booking\Adapter\HotelAdapterInterface;
 use Module\Booking\Domain\Booking\Booking;
@@ -13,6 +13,7 @@ use Module\Booking\Domain\BookingRequest\Service\Dto\HotelBooking\BookingPeriodD
 use Module\Booking\Domain\BookingRequest\Service\Dto\HotelBooking\GuestDto;
 use Module\Booking\Domain\BookingRequest\Service\Dto\HotelBooking\HotelInfoDto;
 use Module\Booking\Domain\BookingRequest\Service\Dto\HotelBooking\RoomDto;
+use Module\Booking\Domain\BookingRequest\Service\TemplateData\HotelBooking;
 use Module\Booking\Domain\BookingRequest\Service\TemplateDataInterface;
 use Module\Booking\Domain\BookingRequest\ValueObject\RequestTypeEnum;
 use Module\Booking\Domain\Order\Entity\Guest;
@@ -44,36 +45,35 @@ class HotelBookingDataFactory
         $bookingDetails = $this->hotelBookingRepository->findOrFail($booking->id());
         $rooms = $this->roomBookingRepository->get($bookingDetails->roomBookings());
         $roomsDto = $this->buildRoomsDto($rooms, $bookingDetails);
-        $detailsData = $this->buildDetailsData($booking, $bookingDetails);
-        $detailsData = [
-            'rooms' => $roomsDto,
-            ...$detailsData
-        ];
+        $hotelInfoDto = $this->buildHotelInfo($bookingDetails);
+        $bookingPeriodDto = $this->buildPeriodDto($bookingDetails);
 
         return match ($requestType) {
-            RequestTypeEnum::BOOKING => new HotelBooking\BookingRequest($detailsData),
-            RequestTypeEnum::CHANGE => new HotelBooking\BookingRequest($detailsData),
-            RequestTypeEnum::CANCEL => new HotelBooking\BookingRequest($detailsData),
+            RequestTypeEnum::BOOKING => new HotelBooking\BookingRequest($roomsDto, $hotelInfoDto, $bookingPeriodDto),
+            RequestTypeEnum::CHANGE => new HotelBooking\BookingRequest($roomsDto, $hotelInfoDto, $bookingPeriodDto),
+            RequestTypeEnum::CANCEL => new HotelBooking\BookingRequest($roomsDto, $hotelInfoDto, $bookingPeriodDto),
         };
     }
 
-    private function buildDetailsData(Booking $booking, DetailsEntity $bookingDetails): array
+    private function buildHotelInfo(DetailsEntity $bookingDetails): HotelInfoDto
     {
         $hotelDto = $this->hotelAdapter->findById($bookingDetails->hotelInfo()->id());
 
-        return [
-            'hotel' => new HotelInfoDto(
-                $bookingDetails->hotelInfo()->id(),
-                $bookingDetails->hotelInfo()->name(),
-                $this->buildHotelPhones($hotelDto->contacts),
-                $hotelDto->cityName,
-            ),
-            'bookingPeriod' => new BookingPeriodDto(
-                $bookingDetails->bookingPeriod()->dateFrom()->format('d.m.Y H:i:s'),
-                $bookingDetails->bookingPeriod()->dateTo()->format('d.m.Y H:i:s'),
-                $bookingDetails->bookingPeriod()->nightsCount()
-            ),
-        ];
+        return new HotelInfoDto(
+            $bookingDetails->hotelInfo()->id(),
+            $bookingDetails->hotelInfo()->name(),
+            $this->buildHotelPhones($hotelDto->contacts),
+            $hotelDto->cityName,
+        );
+    }
+
+    private function buildPeriodDto(DetailsEntity $bookingDetails): BookingPeriodDto
+    {
+        return new BookingPeriodDto(
+            $bookingDetails->bookingPeriod()->dateFrom()->format('d.m.Y H:i:s'),
+            $bookingDetails->bookingPeriod()->dateTo()->format('d.m.Y H:i:s'),
+            $bookingDetails->bookingPeriod()->nightsCount()
+        );
     }
 
     private function buildHotelPhones(array $contacts): string

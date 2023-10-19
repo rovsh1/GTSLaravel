@@ -49,7 +49,7 @@
 <body>
 <table>
     <tbody>
-    @include('pdf-templates.hotel._partials.company_requisites_header')
+    @include('pdf-templates._partials.company_requisites_header')
     <tr>
         <td class="title text-align-center" colspan="2">НОВОЕ БРОНИРОВАНИЕ</td>
     </tr>
@@ -62,9 +62,7 @@
                         <table>
                             <tbody>
                             <tr>
-                                <td class="top-table-left" style="font-size: 24px; font-weight: bold; color: red">Номер
-                                    (ID):
-                                </td>
+                                <td class="top-table-left" style="font-size: 24px; font-weight: bold; color: red">Номер (ID):</td>
                                 <td style="font-size: 24px; font-weight: bold; color: red">{{ $booking->number }}</td>
                                 <td class="text-align-right" colspan="2"><b>Дата и время
                                         создания: {{ $booking->createdAt }}</b>
@@ -106,8 +104,6 @@
     </tr>
     <tr>
         <td colspan="2" style="padding-top: 20px;">
-
-
             <table>
                 <thead>
                 <tr>
@@ -148,7 +144,6 @@
             </table>
         </td>
         <td class="text-align-right" style="width: 250px"><img src="var:stamp" alt="" width="250"></td>
-
     </tr>
     </tbody>
 </table>

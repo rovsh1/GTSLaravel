@@ -3,8 +3,10 @@
 namespace Module\Booking\Domain\BookingRequest\Service;
 
 use Module\Booking\Domain\Booking\Booking;
-use Module\Booking\Domain\BookingRequest\Service\TemplateData\CommonDataFactory;
-use Module\Booking\Domain\BookingRequest\Service\TemplateData\HotelBookingDataFactory;
+use Module\Booking\Domain\BookingRequest\Service\Factory\AirportBookingDataFactory;
+use Module\Booking\Domain\BookingRequest\Service\Factory\CommonDataFactory;
+use Module\Booking\Domain\BookingRequest\Service\Factory\HotelBookingDataFactory;
+use Module\Booking\Domain\BookingRequest\Service\Factory\TransferBookingDataFactory;
 use Module\Booking\Domain\BookingRequest\ValueObject\RequestTypeEnum;
 use Module\Shared\Enum\ServiceTypeEnum;
 use Sdk\Module\Contracts\ModuleInterface;
@@ -32,7 +34,9 @@ class TemplateDataFactory
         if ($serviceType === ServiceTypeEnum::HOTEL_BOOKING) {
             return HotelBookingDataFactory::class;
         } elseif ($serviceType->isTransferService()) {
-            throw new \Exception('Not implemented');
+            return TransferBookingDataFactory::class;
+        } elseif ($serviceType->isAirportService()) {
+            return AirportBookingDataFactory::class;
         } else {
             throw new \Exception('Not implemented');
         }

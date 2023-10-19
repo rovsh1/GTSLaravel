@@ -57,7 +57,7 @@
             <td class="text-align-right">{{$airportDirector}}</td>
         </tr>
         <tr>
-            <td class="title text-align-center" colspan="2">ИЗМЕНЕНИЕ БРОНИ НА {{$serviceTypeName}}</td>
+            <td class="title text-align-center" colspan="2">ОТМЕНА БРОНИ НА {{$serviceTypeName}}</td>
         </tr>
         <tr>
             <td class="text-align-center" colspan="2" style="padding-top: 20px;padding-bottom: 20px">Согласно договору №
@@ -85,7 +85,7 @@
                                     <td class="top-table-left"></td>
                                     <td></td>
                                     <td class="text-align-right" colspan="2"><b>Дата и время изменения:
-                                            {{$reservUpdatedAt}}</b></td>
+                                            {{$reservCancelledAt}}</b></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -145,20 +145,6 @@
                             </td>
                         </tr>
                     @endforeach
-                    <tr>
-                        <td></td>
-                        <td class="text-align-left" colspan="4" style="padding-top: 0"></td>
-                    </tr>
-                    <tr>
-                        <td colspan="5">
-                            <table>
-                                <tr style="padding-top: 0">
-                                    <td style="width: 500px;vertical-align: top;"><b>Детали изменения услуги:</b></td>
-                                    <td>{{$reservationChanges}}</td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
                     <tr class="first">
                         <td></td>
                         <td class="text-align-left" colspan="4">
@@ -208,4 +194,3 @@
         </tbody>
     </table>
 @endsection
-

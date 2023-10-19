@@ -24,32 +24,12 @@
 @section('content')
     <table>
         <tbody>
-        <tr>
-            <td class="text-align-left" style="width: 250px"><img src="var:logo" alt="" width="250"></td>
-            <td style="width: 650px; ">
-                <table class="text-align-right">
-                    <tbody>
-                    <tr>
-                        <td>{{$company}}</td>
-                    </tr>
-                    <tr>
-                        <td>Тел: {{$phone}}</td>
-                    </tr>
-                    <tr>
-                        <td>E-mail: {{$email}}</td>
-                    </tr>
-                    <tr>
-                        <td>{{$address}}</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </td>
-        </tr>
+        @include('pdf-templates._partials.company_requisites_header')
         <tr>
             <td style="padding-top: 15px;" colspan="2" class="text-align-right">Директору</td>
         </tr>
         <tr>
-            <td>{{$company}}</td>
+            <td>{{$company->name}}</td>
             <td class="text-align-right">{{$airportName}}</td>
         </tr>
         <tr>
@@ -57,10 +37,10 @@
             <td class="text-align-right">{{$airportDirector}}</td>
         </tr>
         <tr>
-            <td class="title text-align-center" colspan="2">ИЗМЕНЕНИЕ БРОНИ НА {{$serviceTypeName}}</td>
+            <td class="title text-align-center" colspan="2">БРОНЬ НА {{$serviceTypeName}}</td>
         </tr>
         <tr>
-            <td class="text-align-center" colspan="2" style="padding-top: 20px;padding-bottom: 20px">Согласно договору №
+            <td class="text-align-center" colspan="2" style="padding-top: 20px; padding-bottom: 20px">Согласно договору №
                 {{$contractNumber}} от {{$contractDate}}, ИНН: {{$inn}}
             </td>
         </tr>
@@ -74,18 +54,12 @@
                                 <tbody>
                                 <tr>
                                     <td class="top-table-left" style="font-size: 24px; font-weight: bold; color: red">
-                                        Номер
-                                        (ID):
+                                        Номер (ID):
                                     </td>
                                     <td style="font-size: 24px; font-weight: bold; color: red">{{$reservNumber}}</td>
-                                    <td class="text-align-right" colspan="2"><b>Дата и время создания:
-                                            {{$reservCreatedAt}}</b></td>
-                                </tr>
-                                <tr>
-                                    <td class="top-table-left"></td>
-                                    <td></td>
-                                    <td class="text-align-right" colspan="2"><b>Дата и время изменения:
-                                            {{$reservUpdatedAt}}</b></td>
+                                    <td class="text-align-right" colspan="2">
+                                        <b>Дата и время создания: {{$reservCreatedAt}}</b>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -139,26 +113,12 @@
                         <tr class="{{$index === $guestsCount-1 ? 'last' : ''}}">
                             <td></td>
                             <td colspan="4">
-                            <span>
-                                {{++$index}}. {{$guest->fullName()}}, {{$guest->gender() === \Module\Shared\Enum\GenderEnum::MALE ? 'Мужской' : 'Женский' }}, {{$countryNamesById[$guest->countryId()] ?? ''}}
+                            <span class="red">
+                                {{++$index}}. {{ $guest->fullName }}, {{ $guest->gender }}, {{ $guest->countryName }}
                             </span>
                             </td>
                         </tr>
                     @endforeach
-                    <tr>
-                        <td></td>
-                        <td class="text-align-left" colspan="4" style="padding-top: 0"></td>
-                    </tr>
-                    <tr>
-                        <td colspan="5">
-                            <table>
-                                <tr style="padding-top: 0">
-                                    <td style="width: 500px;vertical-align: top;"><b>Детали изменения услуги:</b></td>
-                                    <td>{{$reservationChanges}}</td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
                     <tr class="first">
                         <td></td>
                         <td class="text-align-left" colspan="4">
@@ -208,4 +168,3 @@
         </tbody>
     </table>
 @endsection
-

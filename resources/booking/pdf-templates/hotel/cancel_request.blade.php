@@ -44,7 +44,7 @@
 </style>
 <table>
     <tbody>
-    @include('pdf-templates.hotel._partials.company_requisites_header')
+    @include('pdf-templates._partials.company_requisites_header')
     <tr>
         <td class="title text-align-center" colspan="2">ОТМЕНА БРОНИРОВАНИЯ</td>
     </tr>
