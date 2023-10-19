@@ -3,7 +3,7 @@
 namespace Module\Booking\Domain\BookingRequest\Service;
 
 use Module\Booking\Domain\Booking\Booking;
-use Module\Booking\Domain\BookingRequest\Service\TemplateData\CommonData;
+use Module\Booking\Domain\BookingRequest\Service\TemplateData\CommonDataFactory;
 use Module\Booking\Domain\BookingRequest\Service\TemplateData\HotelBookingDataFactory;
 use Module\Booking\Domain\BookingRequest\ValueObject\RequestTypeEnum;
 use Module\Shared\Enum\ServiceTypeEnum;
@@ -24,7 +24,7 @@ class TemplateDataFactory
 
     public function buildCommon(Booking $booking): TemplateDataInterface
     {
-        return $this->module->make(CommonData::class, ['booking' => $booking]);
+        return $this->module->make(CommonDataFactory::class)->build($booking);
     }
 
     private function getServiceFactoryClass(ServiceTypeEnum $serviceType): string
