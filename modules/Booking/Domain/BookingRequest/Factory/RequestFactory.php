@@ -27,9 +27,7 @@ class RequestFactory
 
     public function generate(Booking $booking, RequestTypeEnum $requestType): BookingRequest
     {
-        //Может быть только один актуальный запрос
-        //TODO зачем тип?
-        $this->requestRepository->archiveByBooking($booking->id(), $requestType);
+        $this->requestRepository->archiveByBooking($booking->id());
 
         $fileDto = $this->fileStorageAdapter->create(
             $this->getFilename($booking, $requestType),
