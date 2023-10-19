@@ -20,8 +20,8 @@ class CIPRoomInAirport implements ServiceDetailsInterface
         private readonly BookingId $bookingId,
         private readonly ServiceInfo $serviceInfo,
         private readonly AirportId $airportId,
-        private string $flightNumber,
-        private DateTimeInterface $serviceDate,
+        private ?string $flightNumber,
+        private ?DateTimeInterface $serviceDate,
         private GuestIdCollection $guestIds,
     ) {}
 
@@ -50,7 +50,7 @@ class CIPRoomInAirport implements ServiceDetailsInterface
         return $this->airportId;
     }
 
-    public function serviceDate(): DateTimeInterface
+    public function serviceDate(): ?DateTimeInterface
     {
         return $this->serviceDate;
     }
