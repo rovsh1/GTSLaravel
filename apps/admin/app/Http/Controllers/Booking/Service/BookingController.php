@@ -376,7 +376,7 @@ class BookingController extends Controller
             ->client('client_id', ['label' => 'Клиент', 'emptyItem' => ''])
             ->enum(
                 'service_type',
-                ['label' => 'Услуга', 'emptyItem' => '', 'enum' => ServiceTypeEnum::class, 'required' => true]
+                ['label' => 'Услуга', 'emptyItem' => '', 'enum' => ServiceTypeEnum::class]
             )
             ->select('manager_id', ['label' => 'Менеджер', 'items' => Administrator::all(), 'emptyItem' => ''])
             ->select('status', ['label' => 'Статус', 'items' => BookingAdapter::getStatuses(), 'emptyItem' => ''])
