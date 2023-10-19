@@ -357,8 +357,9 @@ class BookingController extends Controller
                 ['text' => 'Статус', 'statuses' => BookingAdapter::getStatuses(), 'order' => true]
             )
             ->text('client_name', ['text' => 'Клиент'])
-            ->text('city_name', ['text' => 'Город'])
-            ->text('service_name', ['text' => 'Название услуги'])
+//            ->text('city_name', ['text' => 'Город'])
+            ->enum('service_type', ['text' => 'Тип услуги'])
+//            ->text('service_name', ['text' => 'Название услуги'])
 //            ->date('date', ['text' => 'Дата прилёта/вылета'])
             ->text('source', ['text' => 'Источник', 'order' => true])
             ->date('created_at', ['text' => 'Создан', 'format' => 'datetime', 'order' => true])
@@ -439,6 +440,9 @@ class BookingController extends Controller
         return $query
             ->applyCriteria($searchCriteria)
             ->addSelect('bookings.*')
+            ->join('orders', 'orders.id', '=', 'bookings.order_id')
+            ->join('clients', 'clients.id', '=', 'orders.client_id')
+            ->addSelect('clients.name as client_name')
             ->join('administrator_bookings', 'administrator_bookings.booking_id', '=', 'bookings.id')
             ->join('administrators', 'administrators.id', '=', 'administrator_bookings.administrator_id')
             ->addSelect('administrators.presentation as manager_name')
