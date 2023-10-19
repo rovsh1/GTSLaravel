@@ -9,7 +9,6 @@ final class BookingRequest implements TemplateDataInterface
     public function toArray(): array
     {
         return [
-            'booking' => $bookingDto,
             'rooms' => $roomsDto,
             'manager' => $managerDto
 //            'reservCreatedAt' => $booking->createdAt()->format('d.m.Y H:i:s'),

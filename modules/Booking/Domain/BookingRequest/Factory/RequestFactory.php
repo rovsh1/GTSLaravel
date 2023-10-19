@@ -32,7 +32,7 @@ class RequestFactory
         $this->requestRepository->archiveByBooking($booking->id(), $requestType);
 
         $fileDto = $this->fileStorageAdapter->create(
-            $this->buildFilename($booking, $requestType),
+            $this->getFilename($booking, $requestType),
             $this->generateContent($booking, $requestType)
         );
 
@@ -43,21 +43,23 @@ class RequestFactory
     {
         $templateData = $this->templateDataFactory->build($booking, $requestType);
 
+        $bookingDto = null;
+
         return $this->templateCompiler->compile(
-            $this->getTemplateFromType($booking->serviceType(), $requestType),
-            array_merge(
-                ['company' => $this->getCompanyRequisites()],
-                $templateData->toArray(),
-            )
+            $this->getTemplateName($booking->serviceType(), $requestType),
+            array_merge([
+                'company' => $this->getCompanyRequisites(),
+                'booking' => $bookingDto
+            ], $templateData->toArray())
         );
     }
 
-    private function buildFilename(Booking $booking, RequestTypeEnum $requestType): string
+    private function getFilename(Booking $booking, RequestTypeEnum $requestType): string
     {
         return $booking->id() . '-' . strtolower($requestType->name) . '-' . date('Ymd') . '.pdf';
     }
 
-    private function getTemplateFromType(ServiceTypeEnum $serviceType, RequestTypeEnum $requestType): string
+    private function getTemplateName(ServiceTypeEnum $serviceType, RequestTypeEnum $requestType): string
     {
         if ($serviceType === ServiceTypeEnum::HOTEL_BOOKING) {
             $name = 'hotel';
