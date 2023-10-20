@@ -33,8 +33,8 @@ class ServicePriceFetcher
         }
 
         return new ServicePrice(
-            netPrice: $price->netPrice->amount,
-            grossPrice: $price->grossPrice->amount,
+            netPrice: $price->supplierPrice->amount,
+            grossPrice: $price->clientPrice->amount,
         );
     }
 }
