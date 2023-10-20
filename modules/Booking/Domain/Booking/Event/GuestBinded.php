@@ -2,14 +2,12 @@
 
 namespace Module\Booking\Domain\Booking\Event;
 
-use Module\Booking\Domain\Booking\Event\PriceBecomeDeprecatedEventInterface;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomBookingId;
 use Module\Booking\Domain\Order\ValueObject\OrderId;
 use Module\Booking\Domain\Shared\Event\BookingEventInterface;
 use Module\Booking\Domain\Shared\ValueObject\GuestId;
 
-class GuestBinded implements BookingEventInterface
+class GuestBinded implements BookingEventInterface, PriceBecomeDeprecatedEventInterface
 {
     public function __construct(
         public readonly BookingId $bookingId,
