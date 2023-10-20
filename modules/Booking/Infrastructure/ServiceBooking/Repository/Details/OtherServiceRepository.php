@@ -10,7 +10,6 @@ use Module\Booking\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Booking\Infrastructure\ServiceBooking\Models\Booking;
 use Module\Booking\Infrastructure\ServiceBooking\Models\Details\Other;
-use Module\Booking\Infrastructure\ServiceBooking\Models\Details\Transfer;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
 class OtherServiceRepository extends AbstractDetailsRepository implements OtherServiceRepositoryInterface
@@ -39,7 +38,7 @@ class OtherServiceRepository extends AbstractDetailsRepository implements OtherS
             ]
         ]);
 
-        return $this->detailsFactory->build(Transfer::find($model->id));
+        return $this->detailsFactory->build(Other::find($model->id));
     }
 
     public function store(OtherService $details): bool
