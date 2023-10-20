@@ -6,6 +6,7 @@ use Module\Booking\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Domain\Booking\Booking;
 use Module\Booking\Domain\Booking\Factory\DetailsRepositoryFactory;
 use Module\Booking\Domain\Booking\ValueObject\CarBid;
+use Module\Booking\Domain\Booking\ValueObject\CarBidCollection;
 use Module\Booking\Domain\BookingRequest\Service\Dto\ServiceDto;
 use Module\Booking\Domain\BookingRequest\Service\Dto\TransferBooking\CarDto;
 use Module\Booking\Domain\BookingRequest\Service\TemplateData\TransferBooking;
@@ -32,29 +33,30 @@ class TransferBookingDataFactory
             $bookingDetails->serviceType()
         );
 
-        $cars = [];
-        /** @var CarBid $carBid */
-        foreach ($bookingDetails->carBids() as $carBid) {
-            $car = $this->supplierAdapter->findCar($carBid->carId()->value());
-            $cars[] = new CarDto(
-                $car->mark,
-                $car->model,
-                $carBid->carsCount(),
-                $carBid->passengersCount(),
-                $carBid->baggageCount(),
-                $carBid->babyCount(),
-            );
-        }
-
         return match ($requestType) {
             RequestTypeEnum::BOOKING,
             RequestTypeEnum::CHANGE,
             RequestTypeEnum::CANCEL => new TransferBooking\BookingRequest(
                 $serviceDto,
-                $cars,
+                $this->buildCars($bookingDetails->carBids(), $bookingDetails->serviceInfo()->supplierId()),
                 $bookingDetails->meetingTablet(),
                 '{место подачи авто}'
             ),
         };
+    }
+
+    private function buildCars(CarBidCollection $carBids, int $supplierId): array
+    {
+        $cars = $this->supplierAdapter->getSupplierCars($supplierId);
+        $carsIndexedById = collect($cars)->keyBy('id');
+
+        return $carBids->map(fn(CarBid $carBid) => new CarDto(
+            $carsIndexedById[$carBid->carId()->value()]->mark,
+            $carsIndexedById[$carBid->carId()->value()]->model,
+            $carBid->carsCount(),
+            $carBid->passengersCount(),
+            $carBid->baggageCount(),
+            $carBid->babyCount(),
+        ));
     }
 }
