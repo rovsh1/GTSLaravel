@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace Module\Booking\Deprecated\AirportBooking\Service\GuestManager;
 
-use Module\Booking\Deprecated\AirportBooking\Adapter\SupplierAdapterInterface;
-use Module\Booking\Deprecated\AirportBooking\AirportBooking;
-use Module\Booking\Deprecated\AirportBooking\Event\GuestBinded;
-use Module\Booking\Deprecated\AirportBooking\Event\GuestUnbinded;
-use Module\Booking\Deprecated\AirportBooking\Exception\NotFoundAirportServicePrice;
-use Module\Booking\Deprecated\AirportBooking\Repository\BookingGuestRepositoryInterface;
-use Module\Booking\Deprecated\AirportBooking\Repository\BookingRepositoryInterface;
+use Carbon\Carbon;
+use Module\Booking\Domain\Booking\Adapter\SupplierAdapterInterface;
+use Module\Booking\Domain\Booking\Booking;
+use Module\Booking\Domain\Booking\Entity\CIPRoomInAirport;
+use Module\Booking\Domain\Booking\Event\GuestBinded;
+use Module\Booking\Domain\Booking\Event\GuestUnbinded;
+use Module\Booking\Domain\Booking\Exception\NotFoundAirportServicePrice;
+use Module\Booking\Domain\Booking\Repository\BookingGuestRepositoryInterface;
+use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
+use Module\Booking\Domain\Booking\Repository\Details\CIPRoomInAirportRepositoryInterface;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Domain\Shared\ValueObject\GuestId;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
@@ -20,6 +23,7 @@ class GuestManager
 {
     public function __construct(
         private readonly BookingRepositoryInterface $bookingRepository,
+        private readonly CIPRoomInAirportRepositoryInterface $detailsRepository,
         private readonly BookingGuestRepositoryInterface $bookingGuestRepository,
         private readonly SupplierAdapterInterface $supplierAdapter,
         private readonly DomainEventDispatcherInterface $eventDispatcher
@@ -35,9 +39,12 @@ class GuestManager
     public function bind(BookingId $bookingId, GuestId $guestId): void
     {
         $booking = $this->bookingRepository->findOrFail($bookingId);
-        $this->validateSupplier($booking);
+        $details = $this->detailsRepository->find($bookingId);
+        $this->validateSupplier($booking, $details);
 
         $this->bookingGuestRepository->bind($bookingId, $guestId);
+        $details->addGuest($guestId);
+        $this->detailsRepository->store($details);
         $this->eventDispatcher->dispatch(
             new GuestBinded(
                 $booking->id(),
@@ -50,7 +57,10 @@ class GuestManager
     public function unbind(BookingId $bookingId, GuestId $guestId): void
     {
         $booking = $this->bookingRepository->findOrFail($bookingId);
+        $details = $this->detailsRepository->find($bookingId);
         $this->bookingGuestRepository->unbind($bookingId, $guestId);
+        $details->removeGuest($guestId);
+        $this->detailsRepository->store($details);
         $this->eventDispatcher->dispatch(
             new GuestUnbinded(
                 $booking->id(),
@@ -61,14 +71,15 @@ class GuestManager
     }
 
     /**
-     * @param AirportBooking $booking
+     * @param Booking $booking
+     * @param CIPRoomInAirport $details
      * @return void
      * @throws EntityNotFoundException
      * @throws NotFoundAirportServicePrice
      */
-    public function validateSupplier(AirportBooking $booking): void
+    public function validateSupplier(Booking $booking, CIPRoomInAirport $details): void
     {
-        $supplier = $this->supplierAdapter->find($booking->serviceInfo()->supplierId());
+        $supplier = $this->supplierAdapter->find($details->serviceInfo()->supplierId());
         if ($supplier === null) {
             throw new EntityNotFoundException('Supplier not found');
         }
@@ -78,10 +89,9 @@ class GuestManager
 //        }
         $price = $this->supplierAdapter->getAirportServicePrice(
             $supplier->id,
-            $booking->serviceInfo()->id(),
-            $booking->airportInfo()->id(),
-            $booking->price()->grossPrice()->currency(),
-            $booking->date()
+            $details->serviceInfo()->id(),
+            $booking->prices()->clientPrice()->currency(),
+            new Carbon($details->serviceDate())
         );
         if ($price === null) {
             throw new NotFoundAirportServicePrice();

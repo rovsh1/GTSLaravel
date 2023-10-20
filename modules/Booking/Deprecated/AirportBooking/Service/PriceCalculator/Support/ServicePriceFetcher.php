@@ -4,8 +4,8 @@ namespace Module\Booking\Deprecated\AirportBooking\Service\PriceCalculator\Suppo
 
 use Carbon\CarbonInterface;
 use Module\Booking\Deprecated\AirportBooking\Adapter\SupplierAdapterInterface;
-use Module\Booking\Deprecated\AirportBooking\Exception\NotFoundAirportServicePrice;
 use Module\Booking\Deprecated\AirportBooking\Service\PriceCalculator\Model\ServicePrice;
+use Module\Booking\Domain\Booking\Exception\NotFoundAirportServicePrice;
 use Module\Shared\Enum\CurrencyEnum;
 
 class ServicePriceFetcher

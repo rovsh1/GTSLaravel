@@ -9,7 +9,7 @@ use Module\Booking\Domain\Order\ValueObject\OrderId;
 use Module\Booking\Domain\Shared\Event\BookingEventInterface;
 use Module\Booking\Domain\Shared\ValueObject\GuestId;
 
-class GuestBinded implements BookingEventInterface, PriceBecomeDeprecatedEventInterface
+class GuestBinded implements BookingEventInterface
 {
     public function __construct(
         public readonly BookingId $bookingId,

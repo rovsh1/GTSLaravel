@@ -34,7 +34,6 @@ interface SupplierAdapterInterface
     public function getAirportServicePrice(
         int $supplierId,
         int $serviceId,
-        int $airportId,
         CurrencyEnum $grossCurrency,
         CarbonInterface $date
     ): ?ServicePriceDto;

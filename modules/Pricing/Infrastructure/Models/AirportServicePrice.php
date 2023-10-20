@@ -22,7 +22,7 @@ class AirportServicePrice extends Model
     public function scopeWhereDate(Builder $builder, CarbonInterface $date): void
     {
         $builder->join('supplier_seasons', 'supplier_seasons.id', 'supplier_airport_prices.season_id')
-            ->where('supplier_seasons.date_start', '<=', $date)
-            ->where('supplier_seasons.date_end', '>=', $date);
+            ->where('supplier_seasons.date_start', '<=', $date->clone()->startOfDay())
+            ->where('supplier_seasons.date_end', '>=', $date->clone()->endOfDay());
     }
 }

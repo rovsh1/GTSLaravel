@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Deprecated\AirportBooking\Exception;
+namespace Module\Booking\Domain\Booking\Exception;
 
 class NotFoundAirportServicePrice extends \RuntimeException
 {

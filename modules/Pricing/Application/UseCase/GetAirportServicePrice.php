@@ -16,13 +16,11 @@ class GetAirportServicePrice implements UseCaseInterface
     public function execute(
         int $supplierId,
         int $serviceId,
-        int $airportId,
         CurrencyEnum $grossCurrency,
         CarbonInterface $date
     ): ?ServicePriceDto {
         $price = Model::whereSupplierId($supplierId)
             ->whereServiceId($serviceId)
-            ->whereAirportId($airportId)
 //            ->whereCurrency($supplier->currency()->id())
             ->whereCurrency(CurrencyEnum::UZS)//@hack т.к. сейчас нетто цены только в UZS
             ->whereDate($date)
@@ -37,7 +35,7 @@ class GetAirportServicePrice implements UseCaseInterface
     private function buildDtoFromModel(Model $servicePrice, CurrencyEnum $grossCurrency): ?ServicePriceDto
     {
         $grossPrice = collect($servicePrice->prices_gross)->first(
-            fn(array $priceData) => $priceData['currency'] === $grossCurrency
+            fn(array $priceData) => $priceData['currency'] === $grossCurrency->name
         );
         if ($grossPrice === null) {
             return null;

@@ -15,8 +15,8 @@ import { useEditableModal } from '~resources/views/hotel/settings/composables/ed
 import { BookingCipInAirportDetails } from '~resources/views/service-booking/show/components/details/lib/types'
 import { useBookingStore } from '~resources/views/service-booking/show/store/booking'
 
-import { addBookingGuest, deleteBookingGuest } from '~api/booking/airport/guests'
 import { addOrderGuest, Guest, updateOrderGuest } from '~api/booking/order/guest'
+import { addBookingGuest, deleteBookingGuest } from '~api/booking/service/guests'
 import { useCountrySearchAPI } from '~api/country'
 
 import { showConfirmDialog } from '~lib/confirm-dialog'
