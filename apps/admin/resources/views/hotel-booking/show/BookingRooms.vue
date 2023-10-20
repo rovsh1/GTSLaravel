@@ -249,10 +249,7 @@ onMounted(() => {
     :form-data="guestForm"
     :order-guests="orderGuests"
     :countries="countries"
-    @close="() => {
-      editRoomBookingId = undefined
-      closeGuestModal()
-    }"
+    @close="closeGuestModal()"
     @submit="submitGuestModal"
     @clear="guestForm = getDefaultGuestForm()"
   />
