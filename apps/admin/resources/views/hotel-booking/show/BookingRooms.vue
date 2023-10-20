@@ -69,10 +69,12 @@ const netCurrency = computed<Currency | undefined>(
 const orderId = computed(() => orderStore.order.id)
 const orderGuests = computed<Guest[]>(() => orderStore.guests || [])
 
-const bookingCurrentRoomGuestsIds = ref<number[]>([])
+const bookingRoomsGuestsIds = computed<number[]>(() => bookingDetails.value?.roomBookings.flatMap(
+  (roomBooking) => roomBooking.guestIds || [],
+) || [])
 
 const filteredOrderGuests = computed<Guest[]>(() => orderGuests.value.filter((guest) =>
-  !bookingCurrentRoomGuestsIds.value.includes(guest.id)))
+  !bookingRoomsGuestsIds.value.includes(guest.id)))
 
 const isBookingPriceManual = computed(
   () => bookingStore.booking?.prices.grossPrice.isManual || bookingStore.booking?.prices.netPrice.isManual,
@@ -358,11 +360,10 @@ onMounted(() => {
           <div class="d-flex gap-1">
             <InfoBlockTitle title="Список гостей" />
             <IconButton
-              v-if="isEditableStatus"
+              v-if="isEditableStatus && (room.roomInfo.guestsCount && room.guestIds.length < room.roomInfo.guestsCount)"
               icon="add"
               @click="() => {
                 editRoomBookingId = room.id
-                bookingCurrentRoomGuestsIds = room.guestIds
                 openAddGuestModal()
               }"
             />
