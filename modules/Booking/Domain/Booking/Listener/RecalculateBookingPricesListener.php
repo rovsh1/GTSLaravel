@@ -70,6 +70,7 @@ class RecalculateBookingPricesListener implements DomainEventListenerInterface
         );
 
         $booking->updatePrice($bookingPrice);
+        //@todo сейчас не кидается ивент, в будущем заменить на storeIfHasEvents
         $this->bookingUpdater->store($booking);
     }
 }
