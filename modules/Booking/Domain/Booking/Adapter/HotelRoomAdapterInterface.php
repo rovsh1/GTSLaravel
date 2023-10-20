@@ -6,7 +6,7 @@ use Module\Catalog\Application\Admin\Response\RoomDto;
 
 interface HotelRoomAdapterInterface
 {
-    public function findById(int $id): RoomDto;
+    public function findById(int $id): ?RoomDto;
 
     /**
      * @param int $hotelId
