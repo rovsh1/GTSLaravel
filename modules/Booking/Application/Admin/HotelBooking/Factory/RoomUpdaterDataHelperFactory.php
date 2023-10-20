@@ -53,6 +53,7 @@ class RoomUpdaterDataHelperFactory
             roomInfo: new RoomInfo(
                 $hotelRoomDto->id,
                 $hotelRoomDto->name,
+                $hotelRoomDto->guestsCount,
             ),
             guestIds: $guestIds,
             roomDetails: new RoomBookingDetails(

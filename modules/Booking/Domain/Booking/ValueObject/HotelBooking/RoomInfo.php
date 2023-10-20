@@ -12,6 +12,7 @@ class RoomInfo implements ValueObjectInterface, SerializableDataInterface
     public function __construct(
         private readonly int $id,
         private readonly string $name,
+        private readonly int $guestsCount,
     ) {}
 
     public function id(): int
@@ -24,11 +25,17 @@ class RoomInfo implements ValueObjectInterface, SerializableDataInterface
         return $this->name;
     }
 
+    public function guestsCount(): int
+    {
+        return $this->guestsCount;
+    }
+
     public function toData(): array
     {
         return [
             'id' => $this->id,
-            'name' => $this->name
+            'name' => $this->name,
+            'guestsCount' => $this->guestsCount,
         ];
     }
 
@@ -37,6 +44,7 @@ class RoomInfo implements ValueObjectInterface, SerializableDataInterface
         return new static(
             $data['id'],
             $data['name'],
+            $data['guestsCount'],
         );
     }
 }

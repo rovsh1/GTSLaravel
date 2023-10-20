@@ -14,6 +14,7 @@ class RoomInfoDto extends AbstractDomainBasedDto
     public function __construct(
         public readonly int $id,
         public readonly string $name,
+        public readonly int $guestsCount,
     ) {}
 
     public static function fromDomain(EntityInterface|ValueObjectInterface|RoomInfo $entity): static
@@ -21,6 +22,7 @@ class RoomInfoDto extends AbstractDomainBasedDto
         return new static(
             $entity->id(),
             $entity->name(),
+            $entity->guestsCount(),
         );
     }
 }
