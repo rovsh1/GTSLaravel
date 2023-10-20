@@ -41,8 +41,8 @@ $(() => {
   }
 
   const toggleCurrencyIdField = (state?: boolean) => {
-    const $currencyField = $('div.field-currency_id')
-    const $currencyInput = $('#form_data_currency_id')
+    const $currencyField = $('div.field-currency')
+    const $currencyInput = $('#form_data_currency')
     if (state) {
       $currencyField.show().toggleClass('field-required', true)
       $currencyInput.attr('required', 'required')
@@ -56,13 +56,12 @@ $(() => {
     const $clientIdInput = $('#form_data_client_id')
     const clientId = $clientIdInput.val()
     const client = clients.find((cl) => cl.id === Number(clientId))
-
     if (bookingID === null) {
       if (!client) {
         $('#form_data_order_id').attr('disabled', 'disabled')
       } else {
         $('#form_data_order_id').removeAttr('disabled')
-        toggleCurrencyIdField((client.currency_id === null || client.currency_id === undefined))
+        toggleCurrencyIdField((client.currency === null || client.currency === undefined))
       }
     }
 
@@ -85,7 +84,6 @@ $(() => {
 
   const toggleOrderFields = (event: any): void => {
     const orderId: string = $(event.target).val() as string
-
     const isOrderIdEmpty = isEmpty(orderId)
     toggleCurrencyIdField(isOrderIdEmpty)
     if (isOrderIdEmpty) {
