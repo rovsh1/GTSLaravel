@@ -34,7 +34,7 @@ class DetailsRepositoryFactory
             ServiceTypeEnum::HOTEL_BOOKING => $this->module->make(HotelBookingRepositoryInterface::class),
             ServiceTypeEnum::TRANSFER_TO_AIRPORT => $this->module->make(TransferToAirportRepositoryInterface::class),
             ServiceTypeEnum::TRANSFER_FROM_AIRPORT => $this->module->make(TransferFromAirportRepositoryInterface::class),
-            ServiceTypeEnum::CIP_IN_AIRPORT => $this->module->make(CIPRoomInAirportRepositoryInterface::class),
+            ServiceTypeEnum::CIP_ROOM_IN_AIRPORT => $this->module->make(CIPRoomInAirportRepositoryInterface::class),
             default => throw new \RuntimeException('Service type repository not implemented'),
         };
     }

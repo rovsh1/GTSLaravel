@@ -191,21 +191,21 @@ class TestDataSeeder extends Seeder
         $service1Id = DB::table('supplier_services')->insertGetId([
             'supplier_id' => $supplierId,
             'title' => 'CIP Встреча Аэропорт Ташкент',
-            'type' => ServiceTypeEnum::CIP_IN_AIRPORT,
+            'type' => ServiceTypeEnum::CIP_ROOM_IN_AIRPORT,
             'data' => json_encode(['airportId' => 1])
         ]);
 
         $service2Id = DB::table('supplier_services')->insertGetId([
             'supplier_id' => $supplierId,
             'title' => 'CIP Проводы Аэропорт Ташкент',
-            'type' => ServiceTypeEnum::CIP_IN_AIRPORT,
+            'type' => ServiceTypeEnum::CIP_ROOM_IN_AIRPORT,
             'data' => json_encode(['airportId' => 1])
         ]);
 
         $contractId = DB::table('supplier_contracts')->insertGetId([
             'supplier_id' => $supplierId,
             'status' => StatusEnum::ACTIVE,
-            'service_type' => ServiceTypeEnum::CIP_IN_AIRPORT,
+            'service_type' => ServiceTypeEnum::CIP_ROOM_IN_AIRPORT,
             'date_start' => '2023-01-01',
             'date_end' => '2023-12-31',
             'created_at' => now(),

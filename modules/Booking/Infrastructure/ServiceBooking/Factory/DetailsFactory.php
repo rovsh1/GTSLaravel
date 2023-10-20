@@ -33,13 +33,13 @@ class DetailsFactory
     {
         return match ($booking->service_type) {
             ServiceTypeEnum::HOTEL_BOOKING => $this->buildHotelBookingDetails($booking->hotelDetails),
-            ServiceTypeEnum::CIP_IN_AIRPORT => $this->buildAirportDetails($booking->airportDetails),
+            ServiceTypeEnum::CIP_ROOM_IN_AIRPORT => $this->buildAirportDetails($booking->airportDetails),
             ServiceTypeEnum::CAR_RENT_WITH_DRIVER => $this->buildCarRentDetails($booking->transferDetails),
             ServiceTypeEnum::TRANSFER_TO_AIRPORT => $this->buildTransferToAirportDetails($booking->transferDetails),
             ServiceTypeEnum::TRANSFER_FROM_AIRPORT => $this->buildTransferFromAirportDetails($booking->transferDetails),
             ServiceTypeEnum::TRANSFER_TO_RAILWAY => $this->buildTransferToRailwayDetails($booking->transferDetails),
             ServiceTypeEnum::TRANSFER_FROM_RAILWAY => $this->buildTransferFromRailwayDetails($booking->transferDetails),
-            ServiceTypeEnum::OTHER => $this->buildOtherDetails($booking->otherDetails),
+            ServiceTypeEnum::OTHER_SERVICE => $this->buildOtherDetails($booking->otherDetails),
             default => throw new \Exception('Unknown Booking service type')
         };
     }
@@ -48,13 +48,13 @@ class DetailsFactory
     {
         return match ($model->serviceType()) {
             ServiceTypeEnum::HOTEL_BOOKING => $this->buildHotelBookingDetails($model),
-            ServiceTypeEnum::CIP_IN_AIRPORT => $this->buildAirportDetails($model),
+            ServiceTypeEnum::CIP_ROOM_IN_AIRPORT => $this->buildAirportDetails($model),
             ServiceTypeEnum::CAR_RENT_WITH_DRIVER => $this->buildCarRentDetails($model),
             ServiceTypeEnum::TRANSFER_TO_AIRPORT => $this->buildTransferToAirportDetails($model),
             ServiceTypeEnum::TRANSFER_FROM_AIRPORT => $this->buildTransferFromAirportDetails($model),
             ServiceTypeEnum::TRANSFER_TO_RAILWAY => $this->buildTransferToRailwayDetails($model),
             ServiceTypeEnum::TRANSFER_FROM_RAILWAY => $this->buildTransferFromRailwayDetails($model),
-            ServiceTypeEnum::OTHER => $this->buildOtherDetails($model),
+            ServiceTypeEnum::OTHER_SERVICE => $this->buildOtherDetails($model),
             default => throw new \Exception('Unknown Booking service type')
         };
     }

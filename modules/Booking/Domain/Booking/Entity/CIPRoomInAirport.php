@@ -27,7 +27,7 @@ class CIPRoomInAirport implements ServiceDetailsInterface
 
     public function serviceType(): ServiceTypeEnum
     {
-        return ServiceTypeEnum::CIP_IN_AIRPORT;
+        return ServiceTypeEnum::CIP_ROOM_IN_AIRPORT;
     }
 
     public function serviceInfo(): ServiceInfo

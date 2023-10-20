@@ -23,7 +23,7 @@ class DetailsEditorFactory
         return match ($booking->serviceType()) {
             ServiceTypeEnum::TRANSFER_TO_AIRPORT => $this->module->make(TransferToAirport::class),
             ServiceTypeEnum::TRANSFER_FROM_AIRPORT => $this->module->make(TransferFromAirport::class),
-            ServiceTypeEnum::CIP_IN_AIRPORT => $this->module->make(CIPRoomInAirport::class),
+            ServiceTypeEnum::CIP_ROOM_IN_AIRPORT => $this->module->make(CIPRoomInAirport::class),
             ServiceTypeEnum::HOTEL_BOOKING => $this->module->make(HotelBooking::class),
             default => throw new \Exception('Unknown service details')
         };
