@@ -3,18 +3,18 @@
         <td class="text-align-center"><b>{{ ++$index }}</b></td>
         <td><b>{{ $car->model }}: </b></td>
         <td class="text-align-center last">{{ $car->countCars }}</td>
-        <td class="text-align-center last">{{ $car->supplierPrice }}</td>
-        <td class="text-align-center last">{{ $car->totalSupplierPrice }}</td>
+        <td class="text-align-center last">-</td>
+        <td class="text-align-center last">-</td>
     </tr>
     <tr>
         <td></td>
         <td>Количество пассажиров: {{ $car->countPassengers }}</td>
         <td colspan="3">
-            <i>Подробный расчет: {{ $supplierPrice }} * {{ $car->countCars }}
-                @if('car_rent')
-                    {{ $countDays }} {{ trans_choice('день|дня|дней', $countDays) }}
+            <i>Подробный расчет: - * {{ $car->countCars }}
+                @if($service->typeId === \Module\Shared\Enum\ServiceTypeEnum::CAR_RENT_WITH_DRIVER)
+                    {{ $period->countDays }} {{ trans_choice('день|дня|дней', $period->countDays) }}
                 @endif
-                = {{ $totalSupplierPrice }} UZS</i>
+                = - UZS</i>
         </td>
     </tr>
     <tr>

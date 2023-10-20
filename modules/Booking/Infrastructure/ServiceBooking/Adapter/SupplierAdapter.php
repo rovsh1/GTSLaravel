@@ -94,7 +94,7 @@ class SupplierAdapter implements SupplierAdapterInterface
      * @param int $supplierId
      * @return CarDto[]
      */
-    public function getCars(int $supplierId): array
+    public function getSupplierCars(int $supplierId): array
     {
         return app(GetCars::class)->execute($supplierId);
     }

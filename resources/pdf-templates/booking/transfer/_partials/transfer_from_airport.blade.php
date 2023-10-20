@@ -1,12 +1,12 @@
 <tr>
     <td></td>
-    <td>Дата начала аренды: {{ $date }}</td>
-    <td colspan="3">Дата завершения аренды:: {{ $time }}</td>
+    <td>Дата прилёта: {{ $date }}</td>
+    <td colspan="3">Время прилёта: {{ $time }}</td>
 </tr>
 <tr>
     <td></td>
-    <td>Время подачи авто: {{ $flightNumber }}</td>
-    <td colspan="2">Место подачи авто: {{ $airport->name }}</td>
+    <td>Номер рейса: {{ $flightNumber }}</td>
+    <td colspan="2">Город прилёта: {{ $city }}</td>
 </tr>
 <tr>
     <td></td>

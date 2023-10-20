@@ -9,6 +9,9 @@ final class BookingRequest implements TemplateDataInterface
 {
     public function __construct(
         private readonly ServiceDto $serviceDto,
+        private readonly array $cars,
+        private readonly ?string $meetingTablet,
+        private readonly ?string $address,
     ) {}
 
     public function toArray(): array
@@ -16,8 +19,9 @@ final class BookingRequest implements TemplateDataInterface
         return [
             'service' => $this->serviceDto,
             'guestsCount' => '',//посчитать всех людей в машине,
-            'meetingTablet'=>'',
-            'meetingTablet'=>'',
+            'meetingTablet' => $this->meetingTablet,
+            'address' => $this->address,
+            'cars' => $this->cars,
         ];
     }
 }

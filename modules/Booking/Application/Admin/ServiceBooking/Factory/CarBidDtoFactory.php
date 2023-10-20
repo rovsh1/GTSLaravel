@@ -21,7 +21,7 @@ class CarBidDtoFactory
      */
     public function build(int $supplierId, CarBidCollection $carBids): array
     {
-        $cars = $this->supplierAdapter->getCars($supplierId);
+        $cars = $this->supplierAdapter->getSupplierCars($supplierId);
         $carsIndexedById = collect($cars)->keyBy('id');
 
         return $carBids->map(fn(CarBid $carBid) => new CarBidDto(
