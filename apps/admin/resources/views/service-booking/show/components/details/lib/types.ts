@@ -61,5 +61,6 @@ export type BookingDayCarTripDetails = BaseBookingDetails & {
 export type BookingCipInAirportDetails = BaseBookingDetails & {
   flightNumber?: string
   serviceDate?: string
+  airportInfo?: AirportInfo
   guestIds?: number[]
 }

@@ -24,6 +24,7 @@ import { requestInitialData } from '~lib/initial-data'
 
 import EditableDateInput from '~components/Editable/EditableDateInput.vue'
 import EditableTextInput from '~components/Editable/EditableTextInput.vue'
+import EditableTimeInput from '~components/Editable/EditableTimeInput.vue'
 import IconButton from '~components/IconButton.vue'
 
 const { bookingID } = requestInitialData('view-initial-data-service-booking', z.object({
@@ -36,6 +37,11 @@ const orderId = computed(() => orderStore.order.id)
 const orderGuests = computed<Guest[]>(() => orderStore.guests || [])
 
 const bookingDetails = computed<BookingCipInAirportDetails | null>(() => bookingStore.booking?.details || null)
+
+const bookingGuestsIds = computed<number[]>(() => bookingDetails.value?.guestIds || [])
+
+const filteredOrderGuests = computed<Guest[]>(() => orderGuests.value.filter((guest) =>
+  !bookingGuestsIds.value.includes(guest.id)))
 
 const isEditableStatus = computed<boolean>(() => bookingStore.availableActions?.isEditable || false)
 
@@ -118,6 +124,16 @@ const handleChangeDetails = async (field: string, value: any) => {
       <table class="table-params">
         <tbody>
           <tr>
+            <th>Аэропорт</th>
+            <td>
+              <EditableTextInput
+                :value="bookingDetails?.airportInfo?.name"
+                :can-edit="false"
+                type="text"
+              />
+            </td>
+          </tr>
+          <tr>
             <th>Номер рейса</th>
             <td>
               <EditableTextInput
@@ -138,6 +154,17 @@ const handleChangeDetails = async (field: string, value: any) => {
               />
             </td>
           </tr>
+          <tr>
+            <th>Время вылета</th>
+            <td>
+              <EditableTimeInput
+                :value="bookingDetails?.serviceDate"
+                :can-edit="isEditableStatus && !!bookingDetails?.serviceDate"
+                type="time"
+                @change="value => handleChangeDetails('serviceDate', value)"
+              />
+            </td>
+          </tr>
         </tbody>
       </table>
     </InfoBlock>
@@ -152,7 +179,7 @@ const handleChangeDetails = async (field: string, value: any) => {
       <GuestsTable
         v-if="countries"
         :can-edit="isEditableStatus"
-        :guest-ids="bookingDetails?.guestIds"
+        :guest-ids="bookingGuestsIds"
         :order-guests="orderGuests"
         :countries="countries"
         @edit="guest => openEditGuestModal(guest.id, guest)"
@@ -164,7 +191,7 @@ const handleChangeDetails = async (field: string, value: any) => {
         :opened="isGuestModalOpened"
         :is-fetching="isGuestModalLoading"
         :form-data="guestForm"
-        :order-guests="orderGuests"
+        :order-guests="filteredOrderGuests"
         :countries="countries"
         @close="closeGuestModal"
         @submit="submitGuestModal"
