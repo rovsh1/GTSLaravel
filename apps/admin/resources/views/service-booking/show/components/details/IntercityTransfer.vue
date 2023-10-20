@@ -21,6 +21,7 @@ import { showConfirmDialog } from '~lib/confirm-dialog'
 import { requestInitialData } from '~lib/initial-data'
 
 import EditableDateInput from '~components/Editable/EditableDateInput.vue'
+import EditableTimeInput from '~components/Editable/EditableTimeInput.vue'
 import IconButton from '~components/IconButton.vue'
 
 const { bookingID } = requestInitialData('view-initial-data-service-booking', z.object({
@@ -146,6 +147,17 @@ const handleEditCarModal = async (id: number, object: CarBid) => {
               <EditableDateInput
                 :value="bookingDetails?.departureDate"
                 :can-edit="isEditableStatus"
+                @change="value => handleChangeDetails('departureDate', value)"
+              />
+            </td>
+          </tr>
+          <tr>
+            <th>Время</th>
+            <td>
+              <EditableTimeInput
+                :value="bookingDetails?.departureDate"
+                :can-edit="isEditableStatus && !!bookingDetails?.departureDate"
+                type="time"
                 @change="value => handleChangeDetails('departureDate', value)"
               />
             </td>
