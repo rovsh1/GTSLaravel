@@ -6,8 +6,8 @@ namespace Module\Booking\Application\Admin\Shared\Factory;
 
 use Module\Booking\Application\Admin\Shared\Response\BookingPriceDto;
 use Module\Booking\Application\Admin\Shared\Response\PriceItemDto;
-use Module\Booking\Domain\Booking\ValueObject\BookingPrices;
 use Module\Booking\Domain\Booking\ValueObject\BookingPriceItem;
+use Module\Booking\Domain\Booking\ValueObject\BookingPrices;
 use Module\Shared\Contracts\Adapter\CurrencyRateAdapterInterface;
 use Module\Shared\Contracts\Service\TranslatorInterface;
 use Module\Shared\Dto\CurrencyDto;
@@ -27,19 +27,19 @@ class BookingPriceDtoFactory
 
         $clientPriceDto = $this->makePriceItemDto($clientPriceItem);
         $supplierPriceDto = $this->makePriceItemDto($supplierPriceItem);
-        $convertedSupplierPriceDto = $this->getConvertedNetPrice($supplierPriceItem, $clientPriceItem->currency());
-        $convertedSupplierPriceValue = $convertedSupplierPriceDto?->calculatedValue ?? $supplierPriceDto->manualValue ?? $supplierPriceDto->calculatedValue;
+        $convertedNetPriceDto = $this->getConvertedNetPrice($supplierPriceItem, $clientPriceItem->currency());
+        $convertedNetPriceValue = $convertedNetPriceDto?->calculatedValue ?? $supplierPriceDto->manualValue ?? $supplierPriceDto->calculatedValue;
 
         $profit = new PriceItemDto(
             CurrencyDto::fromEnum($clientPriceItem->currency(), $this->translator),
-            $this->calculateProfitValue($clientPriceItem, $convertedSupplierPriceValue),
+            $this->calculateProfitValue($clientPriceItem, $convertedNetPriceValue),
             null,
             null,
             false
         );
 
 
-        return new BookingPriceDto($supplierPriceDto, $clientPriceDto, $profit, $convertedSupplierPriceDto);
+        return new BookingPriceDto($supplierPriceDto, $clientPriceDto, $profit, $convertedNetPriceDto);
     }
 
     private function makePriceItemDto(BookingPriceItem $priceItem): PriceItemDto
@@ -57,7 +57,13 @@ class BookingPriceDtoFactory
     {
         $netPriceValue = $supplierPriceItem->manualValue() ?? $supplierPriceItem->calculatedValue();
         if ($supplierPriceItem->currency() === $outCurrency) {
-            return null;
+            return new PriceItemDto(
+                currency: CurrencyDto::fromEnum($outCurrency, $this->translator),
+                calculatedValue: $supplierPriceItem->calculatedValue(),
+                manualValue: null,
+                penaltyValue: null,
+                isManual: false,
+            );
         }
 
         $netConvertedValue = $this->currencyRateAdapter->convertNetRate(
