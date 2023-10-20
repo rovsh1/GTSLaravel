@@ -11,5 +11,7 @@ class BookingDto
         public readonly string $status,
         public readonly string $createdAt,
         public readonly string $updatedAt,
+        public readonly BookingPriceDto $clientPrice,
+        public readonly BookingPriceDto $supplierPrice,
     ) {}
 }

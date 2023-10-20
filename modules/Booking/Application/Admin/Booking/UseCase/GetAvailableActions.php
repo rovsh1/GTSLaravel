@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Booking\Application\Admin\Booking\UseCase;
 
+use Module\Booking\Application\Admin\Shared\Factory\StatusDtoFactory;
 use Module\Booking\Application\Admin\Shared\Response\AvailableActionsDto;
 use Module\Booking\Application\Admin\Shared\Response\StatusDto;
-use Module\Booking\Application\Admin\Shared\Service\StatusStorage;
 use Module\Booking\Domain\Booking\Booking;
 use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
@@ -21,7 +21,7 @@ class GetAvailableActions implements UseCaseInterface
         private readonly AdministratorRules $statusRules,
         private readonly RequestRules $requestRules,
         private BookingRepositoryInterface $repository,
-        private readonly StatusStorage $statusStorage,
+        private readonly StatusDtoFactory $statusDtoFactory,
     ) {}
 
     public function execute(int $bookingId): AvailableActionsDto
@@ -52,7 +52,7 @@ class GetAvailableActions implements UseCaseInterface
     {
         $statuses = $this->statusRules->getStatusTransitions($booking->status());
         $statusIds = array_flip(array_map(fn(BookingStatusEnum $status) => $status->value, $statuses));
-        $statusSettings = $this->statusStorage->statuses();
+        $statusSettings = $this->statusDtoFactory->statuses();
 
         return array_values(
             array_filter($statusSettings, fn(StatusDto $statusDto) => array_key_exists($statusDto->id, $statusIds))

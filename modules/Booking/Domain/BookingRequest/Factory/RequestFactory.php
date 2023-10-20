@@ -72,14 +72,15 @@ class RequestFactory
 
     private function getTemplateName(ServiceTypeEnum $serviceType, RequestTypeEnum $requestType): string
     {
+        $name = 'booking.';
         if ($serviceType === ServiceTypeEnum::HOTEL_BOOKING) {
-            $name = 'hotel';
+            $name .= 'hotel';
         } elseif ($serviceType->isAirportService()) {
-            $name = 'airport';
+            $name .= 'airport';
         } elseif ($serviceType->isTransferService()) {
-            $name = 'transfer';
+            $name .= 'transfer';
         } else {
-            $name = 'other';
+            $name .= 'other';
         }
 
         $name .= '.';

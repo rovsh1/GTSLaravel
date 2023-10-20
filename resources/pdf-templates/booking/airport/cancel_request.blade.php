@@ -1,25 +1,5 @@
 @extends('pdf-templates.layout.layout')
-
-@push('css')
-    <style>
-        .services td {
-            padding: 10px;
-        }
-
-        .services td.first {
-            padding-top: 20px;
-        }
-
-        td.last {
-            border-bottom: 2px solid;
-        }
-
-        span.red {
-            font-weight: bold;
-            color: red;
-        }
-    </style>
-@endpush
+@props(['guests' => []])
 
 @section('content')
     <table>

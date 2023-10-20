@@ -2,7 +2,7 @@
 
 namespace Module\Booking\Deprecated\AirportBooking\Service\DocumentGenerator;
 
-use Module\Booking\Application\Admin\Shared\Service\StatusStorage;
+use Module\Booking\Application\Admin\Shared\Factory\StatusDtoFactory;
 use Module\Booking\Deprecated\AirportBooking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Domain\Order\Repository\GuestRepositoryInterface;
 use Module\Booking\Domain\Shared\Adapter\AdministratorAdapterInterface;
@@ -16,7 +16,7 @@ class CancellationRequestGenerator extends AbstractRequestGenerator
 {
     public function __construct(
         private readonly AdministratorAdapterInterface $administratorAdapter,
-        private readonly StatusStorage $statusStorage,
+        private readonly StatusDtoFactory $statusStorage,
         private readonly GuestRepositoryInterface $guestRepository,
         private readonly SupplierAdapterInterface $supplierAdapter,
         private readonly CountryAdapterInterface $countryAdapter,

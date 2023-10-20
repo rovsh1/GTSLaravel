@@ -5,8 +5,8 @@ namespace Module\Booking\Domain\BookingRequest\Service\TemplateData\AirportBooki
 use DateTimeInterface;
 use Module\Booking\Domain\BookingRequest\Service\Dto\AirportBooking\AirportDto;
 use Module\Booking\Domain\BookingRequest\Service\Dto\AirportBooking\ContractDto;
-use Module\Booking\Domain\BookingRequest\Service\Dto\AirportBooking\ServiceDto;
 use Module\Booking\Domain\BookingRequest\Service\Dto\GuestDto;
+use Module\Booking\Domain\BookingRequest\Service\Dto\ServiceDto;
 use Module\Booking\Domain\BookingRequest\Service\TemplateDataInterface;
 
 final class BookingRequest implements TemplateDataInterface

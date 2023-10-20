@@ -14,6 +14,8 @@ interface TransferToAirportRepositoryInterface
 {
     public function find(BookingId $bookingId): ?TransferToAirport;
 
+    public function findOrFail(BookingId $bookingId): TransferToAirport;
+
     public function create(
         BookingId $bookingId,
         ServiceInfo $serviceInfo,

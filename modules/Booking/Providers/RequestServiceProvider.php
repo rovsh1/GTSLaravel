@@ -14,7 +14,7 @@ class RequestServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
-        View::addLocation(base_path('resources/booking'));
+        View::addLocation(base_path('resources/pdf-templates'));
 
         $this->app->singleton(RequestFactory::class);
         $this->app->singleton(RequestRepositoryInterface::class, RequestRepository::class);

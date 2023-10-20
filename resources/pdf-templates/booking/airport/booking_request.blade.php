@@ -1,25 +1,5 @@
 @extends('pdf-templates.layout.layout')
-
-@push('css')
-    <style>
-        .services td {
-            padding: 10px;
-        }
-
-        .services td.first {
-            padding-top: 20px;
-        }
-
-        td.last {
-            border-bottom: 2px solid;
-        }
-
-        span.red {
-            font-weight: bold;
-            color: red;
-        }
-    </style>
-@endpush
+@props(['guests' => []])
 
 @section('content')
     <table>
@@ -37,7 +17,7 @@
             <td class="text-align-right">{{ $airport->director }}</td>
         </tr>
         <tr>
-            <td class="title text-align-center" colspan="2">БРОНЬ НА {{ $service->type }}</td>
+            <td class="title text-align-center" colspan="2">БРОНЬ НА {{ $service->typeName }}</td>
         </tr>
         <tr>
             <td class="text-align-center" colspan="2" style="padding-top: 20px; padding-bottom: 20px">Согласно договору №{{ $contract->number }} от {{ $contract->date }}, ИНН: {{ $contract->inn }}
@@ -69,13 +49,11 @@
             </td>
         </tr>
         <tr>
-            <td colspan="2" class="text-align-center" style="padding-top: 20px;padding-bottom: 20px">Компания ООО "GotoStans" выражает Вам своё почтение и просит Вас организовать <br/> {{ $service->type }} для следующих лиц
+            <td colspan="2" class="text-align-center" style="padding-top: 20px;padding-bottom: 20px">Компания ООО "GotoStans" выражает Вам своё почтение и просит Вас организовать <br/> {{ $service->typeName }} для следующих лиц
             </td>
         </tr>
         <tr>
             <td colspan="2" style="padding-top: 20px;">
-
-
                 <table class="services">
                     <thead>
                     <tr>

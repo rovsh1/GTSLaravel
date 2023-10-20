@@ -2,7 +2,7 @@
 
 namespace Module\Booking\Deprecated\HotelBooking\Service\DocumentGenerator;
 
-use Module\Booking\Application\Admin\Shared\Service\StatusStorage;
+use Module\Booking\Application\Admin\Shared\Factory\StatusDtoFactory;
 use Module\Booking\Deprecated\HotelBooking\HotelBooking;
 use Module\Booking\Domain\Booking\Adapter\HotelAdapterInterface;
 use Module\Booking\Domain\Order\Repository\GuestRepositoryInterface;
@@ -20,7 +20,7 @@ class VoucherGenerator extends AbstractVoucherGenerator
         FileStorageAdapterInterface $fileStorageAdapter,
         private readonly HotelAdapterInterface $hotelAdapter,
         private readonly AdministratorAdapterInterface $administratorAdapter,
-        private readonly StatusStorage $statusStorage,
+        private readonly StatusDtoFactory $statusStorage,
         private readonly GuestRepositoryInterface $guestRepository,
     ) {
         parent::__construct($templatesPath, $fileStorageAdapter);

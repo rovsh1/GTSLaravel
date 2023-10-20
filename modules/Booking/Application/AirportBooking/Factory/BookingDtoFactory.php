@@ -7,7 +7,7 @@ namespace Module\Booking\Application\AirportBooking\Factory;
 use Module\Booking\Application\Admin\HotelBooking\Dto\Details\CancelConditionsDto;
 use Module\Booking\Application\Admin\Shared\Factory\AbstractBookingDtoFactory;
 use Module\Booking\Application\Admin\Shared\Factory\BookingPriceDtoFactory;
-use Module\Booking\Application\Admin\Shared\Service\StatusStorage;
+use Module\Booking\Application\Admin\Shared\Factory\StatusDtoFactory;
 use Module\Booking\Application\AirportBooking\Response\BookingDto;
 use Module\Booking\Application\AirportBooking\Response\Details\AirportInfoDto;
 use Module\Booking\Application\AirportBooking\Response\Details\ServiceInfoDto;
@@ -18,7 +18,7 @@ use Module\Booking\Domain\Shared\ValueObject\GuestId;
 class BookingDtoFactory extends AbstractBookingDtoFactory
 {
     public function __construct(
-        StatusStorage $statusStorage,
+        StatusDtoFactory $statusStorage,
         private readonly BookingPriceDtoFactory $bookingPriceDtoFactory,
     ) {
         parent::__construct($statusStorage);
@@ -30,7 +30,7 @@ class BookingDtoFactory extends AbstractBookingDtoFactory
 
         return new BookingDto(
             id: $booking->id()->value(),
-            status: $this->statusStorage->get($booking->status()),
+            status: $this->statusDtoFactory->get($booking->status()),
             orderId: $booking->orderId()->value(),
             createdAt: $booking->createdAt(),
             creatorId: $booking->creatorId()->value(),

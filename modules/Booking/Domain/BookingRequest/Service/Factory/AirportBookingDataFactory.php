@@ -7,8 +7,8 @@ use Module\Booking\Domain\Booking\Booking;
 use Module\Booking\Domain\Booking\Repository\Details\CIPRoomInAirportRepositoryInterface;
 use Module\Booking\Domain\BookingRequest\Service\Dto\AirportBooking\AirportDto;
 use Module\Booking\Domain\BookingRequest\Service\Dto\AirportBooking\ContractDto;
-use Module\Booking\Domain\BookingRequest\Service\Dto\AirportBooking\ServiceDto;
 use Module\Booking\Domain\BookingRequest\Service\Dto\GuestDto;
+use Module\Booking\Domain\BookingRequest\Service\Dto\ServiceDto;
 use Module\Booking\Domain\BookingRequest\Service\TemplateData\AirportBooking;
 use Module\Booking\Domain\BookingRequest\Service\TemplateDataInterface;
 use Module\Booking\Domain\BookingRequest\ValueObject\RequestTypeEnum;
@@ -57,7 +57,8 @@ class AirportBookingDataFactory
 
         $serviceDto = new ServiceDto(
             $bookingDetails->serviceInfo()->title(),
-            $this->translator->translateEnum($bookingDetails->serviceType())
+            $this->translator->translateEnum($bookingDetails->serviceType()),
+            $bookingDetails->serviceType()
         );
 
         return match ($requestType) {
