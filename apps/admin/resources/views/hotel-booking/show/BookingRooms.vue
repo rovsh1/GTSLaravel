@@ -68,6 +68,12 @@ const netCurrency = computed<Currency | undefined>(
 )
 const orderId = computed(() => orderStore.order.id)
 const orderGuests = computed<Guest[]>(() => orderStore.guests || [])
+
+const bookingCurrentRoomGuestsIds = ref<number[]>([])
+
+const filteredOrderGuests = computed<Guest[]>(() => orderGuests.value.filter((guest) =>
+  !bookingCurrentRoomGuestsIds.value.includes(guest.id)))
+
 const isBookingPriceManual = computed(
   () => bookingStore.booking?.prices.grossPrice.isManual || bookingStore.booking?.prices.netPrice.isManual,
 )
@@ -247,7 +253,7 @@ onMounted(() => {
     :opened="isGuestModalOpened"
     :is-fetching="isGuestModalLoading"
     :form-data="guestForm"
-    :order-guests="orderGuests"
+    :order-guests="filteredOrderGuests"
     :countries="countries"
     @close="closeGuestModal()"
     @submit="submitGuestModal"
@@ -356,6 +362,7 @@ onMounted(() => {
               icon="add"
               @click="() => {
                 editRoomBookingId = room.id
+                bookingCurrentRoomGuestsIds = room.guestIds
                 openAddGuestModal()
               }"
             />
