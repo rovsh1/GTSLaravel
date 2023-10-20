@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace Module\Booking\Application\Admin\ServiceBooking\Dto;
 
-class TransferToAirportDto implements ServiceDetailsDtoInterface
+class CarRentWithDriverDto implements ServiceDetailsDtoInterface
 {
     public function __construct(
         public readonly int $id,
         public readonly ServiceInfoDto $serviceInfo,
-        public readonly AirportInfoDto $airportInfo,
-        public readonly ?string $flightNumber,
-        public readonly ?string $meetingTablet,
-        public readonly ?string $departureDate,
+        public readonly CityInfoDto $city,
+        public readonly ?int $hoursLimit,
+        public readonly ?string $date,
         /** @var CarBidDto[] $carBids */
         public readonly array $carBids
     ) {}

@@ -6,8 +6,11 @@ namespace Module\Booking\Domain\Booking\Factory;
 
 use Module\Booking\Domain\Booking\Booking;
 use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
+use Module\Booking\Domain\Booking\Repository\Details\CarRentWithDriverRepositoryInterface;
 use Module\Booking\Domain\Booking\Repository\Details\CIPRoomInAirportRepositoryInterface;
 use Module\Booking\Domain\Booking\Repository\Details\HotelBookingRepositoryInterface;
+use Module\Booking\Domain\Booking\Repository\Details\IntercityTransferRepositoryInterface;
+use Module\Booking\Domain\Booking\Repository\Details\OtherServiceRepositoryInterface;
 use Module\Booking\Domain\Booking\Repository\Details\TransferFromAirportRepositoryInterface;
 use Module\Booking\Domain\Booking\Repository\Details\TransferToAirportRepositoryInterface;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
@@ -35,6 +38,9 @@ class DetailsRepositoryFactory
             ServiceTypeEnum::TRANSFER_TO_AIRPORT => $this->module->make(TransferToAirportRepositoryInterface::class),
             ServiceTypeEnum::TRANSFER_FROM_AIRPORT => $this->module->make(TransferFromAirportRepositoryInterface::class),
             ServiceTypeEnum::CIP_ROOM_IN_AIRPORT => $this->module->make(CIPRoomInAirportRepositoryInterface::class),
+            ServiceTypeEnum::INTERCITY_TRANSFER => $this->module->make(IntercityTransferRepositoryInterface::class),
+            ServiceTypeEnum::CAR_RENT_WITH_DRIVER => $this->module->make(CarRentWithDriverRepositoryInterface::class),
+            ServiceTypeEnum::OTHER_SERVICE => $this->module->make(OtherServiceRepositoryInterface::class),
             default => throw new \RuntimeException('Service type repository not implemented'),
         };
     }

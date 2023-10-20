@@ -10,10 +10,10 @@ class TransferFromAirportDto implements ServiceDetailsDtoInterface
         public readonly int $id,
         public readonly ServiceInfoDto $serviceInfo,
         public readonly AirportInfoDto $airportInfo,
-        public ?string $flightNumber,
-        public ?string $meetingTablet,
-        public ?string $arrivalDate,
+        public readonly ?string $flightNumber,
+        public readonly ?string $meetingTablet,
+        public readonly ?string $arrivalDate,
         /** @var CarBidDto[] $carBids */
-        public array $carBids
+        public readonly array $carBids
     ) {}
 }

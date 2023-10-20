@@ -10,8 +10,8 @@ class CIPRoomInAirportDto implements ServiceDetailsDtoInterface
         public readonly int $id,
         public readonly ServiceInfoDto $serviceInfo,
         public readonly AirportInfoDto $airportInfo,
-        public ?string $flightNumber,
-        public ?string $serviceDate,
-        public array $guestIds,
+        public readonly ?string $flightNumber,
+        public readonly ?string $serviceDate,
+        public readonly array $guestIds,
     ) {}
 }

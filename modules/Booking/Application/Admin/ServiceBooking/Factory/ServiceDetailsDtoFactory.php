@@ -4,15 +4,23 @@ declare(strict_types=1);
 
 namespace Module\Booking\Application\Admin\ServiceBooking\Factory;
 
+use App\Admin\Models\Reference\City;
 use Module\Booking\Application\Admin\ServiceBooking\Dto\AirportInfoDto;
+use Module\Booking\Application\Admin\ServiceBooking\Dto\CarRentWithDriverDto;
 use Module\Booking\Application\Admin\ServiceBooking\Dto\CIPRoomInAirportDto;
+use Module\Booking\Application\Admin\ServiceBooking\Dto\CityInfoDto;
+use Module\Booking\Application\Admin\ServiceBooking\Dto\IntercityTransferDto;
+use Module\Booking\Application\Admin\ServiceBooking\Dto\OtherServiceDto;
 use Module\Booking\Application\Admin\ServiceBooking\Dto\ServiceDetailsDtoInterface;
 use Module\Booking\Application\Admin\ServiceBooking\Dto\ServiceInfoDto;
 use Module\Booking\Application\Admin\ServiceBooking\Dto\TransferFromAirportDto;
 use Module\Booking\Application\Admin\ServiceBooking\Dto\TransferToAirportDto;
 use Module\Booking\Application\Admin\ServiceBooking\Factory\HotelBooking\DetailsDtoFactory as HotelDetailsDtoFactory;
+use Module\Booking\Domain\Booking\Entity\CarRentWithDriver;
 use Module\Booking\Domain\Booking\Entity\CIPRoomInAirport;
 use Module\Booking\Domain\Booking\Entity\HotelBooking;
+use Module\Booking\Domain\Booking\Entity\IntercityTransfer;
+use Module\Booking\Domain\Booking\Entity\OtherService;
 use Module\Booking\Domain\Booking\Entity\ServiceDetailsInterface;
 use Module\Booking\Domain\Booking\Entity\TransferFromAirport;
 use Module\Booking\Domain\Booking\Entity\TransferToAirport;
@@ -37,6 +45,12 @@ class ServiceDetailsDtoFactory
             return $this->buildCIPRoomInAirport($details);
         } elseif ($details instanceof HotelBooking) {
             return $this->hotelFactory->build($details);
+        } elseif ($details instanceof CarRentWithDriver) {
+            return $this->buildCarRentWithDriver($details);
+        } elseif ($details instanceof IntercityTransfer) {
+            return $this->buildIntercityTransfer($details);
+        } elseif ($details instanceof OtherService) {
+            return $this->buildOtherService($details);
         } else {
             throw new \Exception('Service details dto not implemented');
         }
@@ -90,9 +104,38 @@ class ServiceDetailsDtoFactory
         throw new \Exception('Service details dto not implemented');
     }
 
-    private function buildCarRent(mixed $details): mixed
+    private function buildCarRentWithDriver(CarRentWithDriver $details): mixed
     {
-        throw new \Exception('Service details dto not implemented');
+        return new CarRentWithDriverDto(
+            $details->id()->value(),
+            $this->buildServiceInfoDto($details->serviceInfo()),
+            $this->buildCityInfo($details->cityId()->value()),
+            $details->hoursLimit(),
+            $details->date()->format(DATE_ATOM),
+            $this->carBidFactory->build($details->serviceInfo()->supplierId(), $details->carBids())
+        );
+    }
+
+    private function buildIntercityTransfer(IntercityTransfer $details): mixed
+    {
+        return new IntercityTransferDto(
+            $details->id()->value(),
+            $this->buildServiceInfoDto($details->serviceInfo()),
+            $this->buildCityInfo($details->fromCityId()->value()),
+            $this->buildCityInfo($details->toCityId()->value()),
+            $details->isReturnTripIncluded(),
+            $details->departureDate()?->format(DATE_ATOM),
+            $this->carBidFactory->build($details->serviceInfo()->supplierId(), $details->carBids())
+        );
+    }
+
+    private function buildOtherService(OtherService $details): mixed
+    {
+        return new OtherServiceDto(
+            $details->id()->value(),
+            $this->buildServiceInfoDto($details->serviceInfo()),
+            $details->description()
+        );
     }
 
     private function buildServiceInfoDto(ServiceInfo $serviceInfo): ServiceInfoDto
@@ -111,6 +154,16 @@ class ServiceDetailsDtoFactory
         return new AirportInfoDto(
             $airport->id,
             $airport->name,
+        );
+    }
+
+    private function buildCityInfo(int $cityId): CityInfoDto
+    {
+        $city = City::find($cityId);
+
+        return new CityInfoDto(
+            $city->id,
+            $city->name,
         );
     }
 }
