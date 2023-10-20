@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Booking\Domain\BookingRequest\Service\Dto\HotelBooking;
 
+use Module\Booking\Domain\BookingRequest\Service\Dto\GuestDto;
+
 class RoomDto
 {
     public function __construct(

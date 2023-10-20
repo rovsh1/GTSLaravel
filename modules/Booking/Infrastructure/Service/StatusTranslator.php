@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Domain\Booking\Service;
+namespace Module\Booking\Infrastructure\Service;
 
+use Module\Booking\Domain\Booking\Service\StatusTranslatorInterface;
 use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
 use Module\Booking\Infrastructure\Shared\Models\StatusSettings;
 
-class StatusTranslator
+class StatusTranslator implements StatusTranslatorInterface
 {
     public function getName(BookingStatusEnum $status): string
     {

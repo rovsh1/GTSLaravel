@@ -84,10 +84,10 @@ class DetailsFactory
             id: new DetailsId($details->id),
             bookingId: new BookingId($details->bookingId()),
             serviceInfo: $this->buildServiceInfo($detailsData['serviceInfo']),
-            airportId: new AirportId($details->airport_id),
-            flightNumber: $details->data['flightNumber'],
+            airportId: new AirportId($detailsData['airportId']),
+            flightNumber: $detailsData['flightNumber'],
             serviceDate: $details->date,
-            guestIds: GuestIdCollection::fromData($detailsData['guest_ids']),
+            guestIds: GuestIdCollection::fromData($detailsData['guestIds']),
         );
     }
 

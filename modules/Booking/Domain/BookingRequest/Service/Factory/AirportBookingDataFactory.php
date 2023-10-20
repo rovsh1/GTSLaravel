@@ -2,14 +2,13 @@
 
 namespace Module\Booking\Domain\BookingRequest\Service\Factory;
 
-use Module\Booking\Domain\Booking\Adapter\HotelAdapterInterface;
+use Module\Booking\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Domain\Booking\Booking;
-use Module\Booking\Domain\Booking\Entity\HotelBooking as DetailsEntity;
-use Module\Booking\Domain\Booking\Repository\Details\HotelBookingRepositoryInterface;
-use Module\Booking\Domain\Booking\Repository\RoomBookingRepositoryInterface;
-use Module\Booking\Domain\BookingRequest\Service\Dto\HotelBooking\BookingPeriodDto;
-use Module\Booking\Domain\BookingRequest\Service\Dto\HotelBooking\GuestDto;
-use Module\Booking\Domain\BookingRequest\Service\Dto\HotelBooking\HotelInfoDto;
+use Module\Booking\Domain\Booking\Repository\Details\CIPRoomInAirportRepositoryInterface;
+use Module\Booking\Domain\BookingRequest\Service\Dto\AirportBooking\AirportDto;
+use Module\Booking\Domain\BookingRequest\Service\Dto\AirportBooking\ContractDto;
+use Module\Booking\Domain\BookingRequest\Service\Dto\AirportBooking\ServiceDto;
+use Module\Booking\Domain\BookingRequest\Service\Dto\GuestDto;
 use Module\Booking\Domain\BookingRequest\Service\TemplateData\AirportBooking;
 use Module\Booking\Domain\BookingRequest\Service\TemplateDataInterface;
 use Module\Booking\Domain\BookingRequest\ValueObject\RequestTypeEnum;
@@ -17,18 +16,20 @@ use Module\Booking\Domain\Order\Entity\Guest;
 use Module\Booking\Domain\Order\Repository\GuestRepositoryInterface;
 use Module\Booking\Domain\Shared\Adapter\CountryAdapterInterface;
 use Module\Booking\Domain\Shared\ValueObject\GuestIdCollection;
+use Module\Shared\Contracts\Service\TranslatorInterface;
 use Module\Shared\Enum\GenderEnum;
 
 class AirportBookingDataFactory
 {
 
+    /** @var array<int, string> $countryNamesIndexedId */
     private array $countryNamesIndexedId;
 
     public function __construct(
-        private readonly HotelBookingRepositoryInterface $hotelBookingRepository,
-        private readonly RoomBookingRepositoryInterface $roomBookingRepository,
-        private readonly HotelAdapterInterface $hotelAdapter,
+        private readonly CIPRoomInAirportRepositoryInterface $detailsRepository,
         private readonly GuestRepositoryInterface $guestRepository,
+        private readonly SupplierAdapterInterface $supplierAdapter,
+        private readonly TranslatorInterface $translator,
         CountryAdapterInterface $countryAdapter,
     ) {
         $countries = $countryAdapter->get();
@@ -37,39 +38,40 @@ class AirportBookingDataFactory
 
     public function build(Booking $booking, RequestTypeEnum $requestType): TemplateDataInterface
     {
-        $bookingDetails = $this->hotelBookingRepository->findOrFail($booking->id());
-        $rooms = $this->roomBookingRepository->get($bookingDetails->roomBookings());
-        $roomsDto = $this->buildRoomsDto($rooms, $bookingDetails);
-        $detailsData = $this->buildDetailsData($booking, $bookingDetails);
-        $detailsData = [
-            'rooms' => $roomsDto,
-            ...$detailsData
-        ];
+        $bookingDetails = $this->detailsRepository->findOrFail($booking->id());
+        $guests = $this->buildGuests($bookingDetails->guestIds());
+
+        $supplier = $this->supplierAdapter->find($bookingDetails->serviceInfo()->supplierId());
+        $contract = $this->supplierAdapter->findAirportServiceContract($bookingDetails->serviceInfo()->id());
+        $contractDto = new ContractDto(
+            $contract->id,
+            $contract?->dateStart,
+            $supplier->inn,
+        );
+
+        $airport = $this->supplierAdapter->findAirport($bookingDetails->airportId()->value());
+        $airportDto = new AirportDto(
+            $airport->name,
+            $supplier->directorFullName,
+        );
+
+        $serviceDto = new ServiceDto(
+            $bookingDetails->serviceInfo()->title(),
+            $this->translator->translateEnum($bookingDetails->serviceType())
+        );
 
         return match ($requestType) {
-            RequestTypeEnum::BOOKING => new AirportBooking\BookingRequest($detailsData),
-            RequestTypeEnum::CHANGE => new AirportBooking\BookingRequest($detailsData),
-            RequestTypeEnum::CANCEL => new AirportBooking\BookingRequest($detailsData),
+            RequestTypeEnum::BOOKING,
+            RequestTypeEnum::CHANGE,
+            RequestTypeEnum::CANCEL => new AirportBooking\BookingRequest(
+                $airportDto,
+                $contractDto,
+                $serviceDto,
+                $guests,
+                $bookingDetails->flightNumber(),
+                $bookingDetails->serviceDate()
+            ),
         };
-    }
-
-    private function buildDetailsData(Booking $booking, DetailsEntity $bookingDetails): array
-    {
-        $hotelDto = $this->hotelAdapter->findById($bookingDetails->hotelInfo()->id());
-
-        return [
-            'hotel' => new HotelInfoDto(
-                $bookingDetails->hotelInfo()->id(),
-                $bookingDetails->hotelInfo()->name(),
-                $this->buildHotelPhones($hotelDto->contacts),
-                $hotelDto->cityName,
-            ),
-            'bookingPeriod' => new BookingPeriodDto(
-                $bookingDetails->bookingPeriod()->dateFrom()->format('d.m.Y H:i:s'),
-                $bookingDetails->bookingPeriod()->dateTo()->format('d.m.Y H:i:s'),
-                $bookingDetails->bookingPeriod()->nightsCount()
-            ),
-        ];
     }
 
     /**

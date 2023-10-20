@@ -18,9 +18,6 @@ class Contract extends Model
         'service_id',
     ];
 
-    protected $casts = [
-    ];
-
     public function scopeWhereActive(Builder $builder): void
     {
         $builder->whereStatus(StatusEnum::ACTIVE);

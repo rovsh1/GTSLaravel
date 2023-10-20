@@ -10,12 +10,14 @@ use Module\Pricing\Application\Dto\ServicePriceDto;
 use Module\Pricing\Application\UseCase\GetAirportServicePrice;
 use Module\Pricing\Application\UseCase\GetTransferServicePrice;
 use Module\Shared\Enum\CurrencyEnum;
+use Module\Supplier\Application\Dto\AirportDto;
 use Module\Supplier\Application\Dto\CarDto;
 use Module\Supplier\Application\Response\CancelConditionsDto;
 use Module\Supplier\Application\Response\ServiceContractDto;
 use Module\Supplier\Application\Response\ServiceDto;
 use Module\Supplier\Application\Response\SupplierDto;
 use Module\Supplier\Application\UseCase\Find;
+use Module\Supplier\Application\UseCase\FindAirport;
 use Module\Supplier\Application\UseCase\FindAirportServiceContract;
 use Module\Supplier\Application\UseCase\FindCar;
 use Module\Supplier\Application\UseCase\FindService;
@@ -100,5 +102,10 @@ class SupplierAdapter implements SupplierAdapterInterface
     public function findCar(int $carId): ?CarDto
     {
         return app(FindCar::class)->execute($carId);
+    }
+
+    public function findAirport(int $airportId): ?AirportDto
+    {
+        return app(FindAirport::class)->execute($airportId);
     }
 }

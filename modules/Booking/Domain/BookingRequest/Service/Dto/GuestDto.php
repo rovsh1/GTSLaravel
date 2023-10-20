@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Domain\BookingRequest\Service\Dto\HotelBooking;
+namespace Module\Booking\Domain\BookingRequest\Service\Dto;
 
 class GuestDto
 {

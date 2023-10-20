@@ -7,6 +7,7 @@ namespace Module\Booking\Domain\Booking\Adapter;
 use Carbon\CarbonInterface;
 use Module\Pricing\Application\Dto\ServicePriceDto;
 use Module\Shared\Enum\CurrencyEnum;
+use Module\Supplier\Application\Dto\AirportDto;
 use Module\Supplier\Application\Dto\CarDto;
 use Module\Supplier\Application\Response\CancelConditionsDto;
 use Module\Supplier\Application\Response\ServiceContractDto;
@@ -50,4 +51,6 @@ interface SupplierAdapterInterface
     public function getCars(int $supplierId): array;
 
     public function findCar(int $carId): ?CarDto;
+
+    public function findAirport(int $airportId): ?AirportDto;
 }

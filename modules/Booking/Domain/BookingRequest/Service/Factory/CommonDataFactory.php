@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Domain\BookingRequest\Service\Factory;
 
 use Module\Booking\Domain\Booking\Booking;
-use Module\Booking\Domain\Booking\Service\StatusTranslator;
+use Module\Booking\Domain\Booking\Service\StatusTranslatorInterface;
 use Module\Booking\Domain\BookingRequest\Service\Dto\BookingDto;
 use Module\Booking\Domain\BookingRequest\Service\Dto\CompanyRequisitesDto;
 use Module\Booking\Domain\BookingRequest\Service\Dto\ManagerDto;
@@ -19,7 +19,7 @@ class CommonDataFactory
     public function __construct(
         private readonly CompanyRequisitesInterface $companyRequisites,
         private readonly AdministratorAdapterInterface $administratorAdapter,
-        private readonly StatusTranslator $statusTranslator
+        private readonly StatusTranslatorInterface $statusTranslator
     ) {}
 
 

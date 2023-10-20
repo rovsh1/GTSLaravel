@@ -137,7 +137,7 @@
                 <tbody>
                 <tr>
                     <td style="width: 500px;">
-                        @include('pdf-templates.hotel._partials.manager_requisites')
+                        @include('pdf-templates._partials.manager_requisites')
                     </td>
                 </tr>
                 </tbody>

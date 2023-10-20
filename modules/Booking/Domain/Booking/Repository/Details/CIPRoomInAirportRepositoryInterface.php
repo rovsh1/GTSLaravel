@@ -14,6 +14,8 @@ interface CIPRoomInAirportRepositoryInterface
 {
     public function find(BookingId $bookingId): ?CIPRoomInAirport;
 
+    public function findOrFail(BookingId $bookingId): CIPRoomInAirport;
+
     public function create(
         BookingId $bookingId,
         ServiceInfo $serviceInfo,
