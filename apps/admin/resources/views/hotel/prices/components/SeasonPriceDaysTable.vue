@@ -6,12 +6,13 @@ import { nanoid } from 'nanoid'
 import { updateRoomSeasonPricesByDay, useRoomSeasonsDaysPricesListAPI } from '~resources/api/hotel/prices/seasons'
 import { formatDateTimeToAPIDate, formatSeasonPeriod, parseAPIDate } from '~resources/lib/date'
 
+import { daysOfWeek } from '~lib/constants'
+
 import { showToast } from '~components/Bootstrap/BootstrapToast'
 import OverlayLoading from '~components/OverlayLoading.vue'
 
 import EditableCell from './EditableCell.vue'
 
-import { daysOfWeek } from '../lib/constants'
 import { getStatusClassByPrice } from '../lib/status'
 import { PricesAccumulationData, PricesAccumulationDataForDays, SeasonPeriod } from '../lib/types'
 
