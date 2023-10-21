@@ -9,7 +9,7 @@ use Sdk\Module\Bus\QueryBus;
 use Sdk\Module\Contracts\Bus\CommandBusInterface;
 use Sdk\Module\Contracts\Bus\JobDispatcherInterface;
 use Sdk\Module\Contracts\Bus\QueryBusInterface;
-use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
+use Sdk\Module\Support\ServiceProvider;
 
 class BusServiceProvider extends ServiceProvider
 {

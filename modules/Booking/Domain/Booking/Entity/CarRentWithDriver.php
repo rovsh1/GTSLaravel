@@ -29,7 +29,7 @@ class CarRentWithDriver implements ServiceDetailsInterface
 
     public function serviceType(): ServiceTypeEnum
     {
-        return ServiceTypeEnum::TRANSFER_TO_AIRPORT;
+        return ServiceTypeEnum::CAR_RENT_WITH_DRIVER;
     }
 
     public function id(): DetailsId
@@ -40,5 +40,20 @@ class CarRentWithDriver implements ServiceDetailsInterface
     public function cityId(): CityId
     {
         return $this->cityId;
+    }
+
+    public function getHoursLimit(): ?int
+    {
+        return $this->hoursLimit;
+    }
+
+    public function setHoursLimit(?int $hoursLimit): void
+    {
+        $this->hoursLimit = $hoursLimit;
+    }
+
+    public function serviceInfo(): ServiceInfo
+    {
+        return $this->serviceInfo;
     }
 }

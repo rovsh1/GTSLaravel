@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Adapters\Booking\Service;
 
-use App\Admin\Http\Requests\Order\Guest\AddRequest;
 use Illuminate\Support\Arr;
-use Module\Booking\Application\Admin\ServiceBooking\Dto\CarBidDataDto;
+use Module\Booking\Application\Admin\ServiceBooking\Request\CarBidDataDto;
+use Module\Booking\Application\Admin\ServiceBooking\UseCase\CarBid\Add;
 use Module\Booking\Application\Admin\ServiceBooking\UseCase\CarBid\Remove;
 use Module\Booking\Application\Admin\ServiceBooking\UseCase\CarBid\Update;
 use Module\Booking\Application\Admin\ServiceBooking\UseCase\Guest\Bind;
-use Module\Booking\Application\Admin\ServiceBooking\UseCase\UpdateDetailsField;
 use Module\Booking\Application\Admin\ServiceBooking\UseCase\Guest\Unbind;
+use Module\Booking\Application\Admin\ServiceBooking\UseCase\UpdateDetailsField;
 
 class DetailsAdapter
 {
@@ -32,7 +32,7 @@ class DetailsAdapter
 
     public function addCarBid(int $bookingId, array $carData): void
     {
-        app(AddRequest::class)->execute(
+        app(Add::class)->execute(
             $bookingId,
             $this->buildCarBidDto($carData)
         );

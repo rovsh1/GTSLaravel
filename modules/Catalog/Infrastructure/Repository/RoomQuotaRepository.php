@@ -59,7 +59,6 @@ class RoomQuotaRepository implements RoomQuotaRepositoryInterface
             $updateData['release_days'] = $releaseDays;
         }
         EloquentQuota::whereRoomId($roomId)
-            ->wherePeriod($period)
             ->updateOrCreate(['date' => $period->getStartDate(), 'room_id' => $roomId], $updateData);
     }
 

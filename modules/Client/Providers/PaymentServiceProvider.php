@@ -6,7 +6,7 @@ use Module\Client\Domain\Payment\Repository\PaymentRepositoryInterface;
 use Module\Client\Domain\Payment\Repository\PlantRepositoryInterface;
 use Module\Client\Infrastructure\Repository\PaymentRepository;
 use Module\Client\Infrastructure\Repository\PlantRepository;
-use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
+use Sdk\Module\Support\ServiceProvider;
 
 class PaymentServiceProvider extends ServiceProvider
 {

@@ -6,6 +6,8 @@ Settings.defaultLocale = 'ru'
 
 export const parseAPIDate = (date: DateResponse): DateTime => DateTime.fromISO(date)
 
+export const parseAPIDateToJSDate = (date: DateResponse): Date => DateTime.fromISO(date).toJSDate()
+
 export const formatDateToAPIDate = (date: Date): APIDate => DateTime
   .fromJSDate(date).toFormat('yyyy-LL-dd')
 

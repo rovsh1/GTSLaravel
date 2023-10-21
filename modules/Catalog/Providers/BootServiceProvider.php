@@ -2,9 +2,7 @@
 
 namespace Module\Catalog\Providers;
 
-use Module\Hotel\Domain;
-use Module\Hotel\Infrastructure;
-use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
+use Sdk\Module\Support\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {

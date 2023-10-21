@@ -1,7 +1,7 @@
 <?php
 
 use App\Admin\Http\Controllers\AuthController;
-use App\Admin\Http\Controllers\Profile\ProfileController;
+use App\Admin\Http\Controllers\ProfileController;
 use App\Admin\Http\Middleware\Authenticate;
 use Illuminate\Support\Facades\Route;
 

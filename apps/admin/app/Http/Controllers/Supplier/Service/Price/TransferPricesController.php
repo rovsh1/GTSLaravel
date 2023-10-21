@@ -2,11 +2,11 @@
 
 namespace App\Admin\Http\Controllers\Supplier\Service\Price;
 
-use App\Admin\Http\Requests\ServiceProvider\UpdateTransferPriceRequest;
+use App\Admin\Http\Requests\Supplier\UpdateTransferPriceRequest;
 use App\Admin\Models\Reference\Currency;
 use App\Admin\Models\Supplier\CarPrice;
 use App\Admin\Models\Supplier\Supplier;
-use App\Admin\Models\Supplier\TransferService;
+use App\Admin\Models\Supplier\Service;
 use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Facades\Layout;
 use App\Admin\Support\View\Layout as LayoutContract;
@@ -22,7 +22,7 @@ class TransferPricesController extends AbstractPricesController
         return Layout::title('Цены')
             ->view('supplier.service.price.transfer.index', [
                 'provider' => $provider,
-                'cars' => $provider->cars()->with(['cities'])->get(),
+                'cars' => $provider->cars()->get(),
                 'seasons' => $provider->seasons,
                 'services' => $provider->transferServices,
                 'currencies' => Currency::all(),
@@ -30,14 +30,14 @@ class TransferPricesController extends AbstractPricesController
             ]);
     }
 
-    public function getPrices(Request $request, Supplier $provider, TransferService $service): JsonResponse
+    public function getPrices(Request $request, Supplier $provider, Service $service): JsonResponse
     {
         return response()->json(
             CarPrice::whereServiceId($service->id)->get()
         );
     }
 
-    public function update(UpdateTransferPriceRequest $request, Supplier $provider, TransferService $service): JsonResponse {
+    public function update(UpdateTransferPriceRequest $request, Supplier $provider, Service $service): JsonResponse {
         $data = ['currency' => $request->getCurrency()];
         if ($request->getPriceNet() !== null) {
             $data['price_net'] = $request->getPriceNet();

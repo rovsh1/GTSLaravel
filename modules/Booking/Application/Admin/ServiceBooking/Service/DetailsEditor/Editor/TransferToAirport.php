@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Booking\Application\Admin\ServiceBooking\Service\DetailsEditor\Editor;
 
-use Illuminate\Support\Str;
 use Module\Booking\Application\Admin\ServiceBooking\Service\DetailsEditor\EditorInterface;
 use Module\Booking\Domain\Booking\Entity\TransferToAirport as Entity;
 use Module\Booking\Domain\Booking\Repository\Details\TransferToAirportRepositoryInterface;
@@ -24,14 +23,15 @@ class TransferToAirport extends AbstractEditor implements EditorInterface
     {
         $supplierService = InfrastructureSupplierService::find($serviceId->value());
 
-        $serviceInfo = new ServiceInfo($serviceId->value(), $supplierService->title);
+        $serviceInfo = new ServiceInfo($serviceId->value(), $supplierService->title, $supplierService->supplier_id);
 
         return $this->detailsRepository->create(
             $bookingId,
             $serviceInfo,
-            $supplierService->data['airportId'],
+            (int)$supplierService->data['airportId'],
             new CarBidCollection([]),
             $detailsData['flightNumber'] ?? null,
+            $detailsData['meetingTablet'] ?? null,
             $detailsData['departureDate'] ?? null,
         );
     }

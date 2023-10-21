@@ -2,7 +2,7 @@
 
 namespace Sdk\Module\Database\Eloquent;
 
-use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
+use Sdk\Module\Support\ServiceProvider;
 
 class MacrosServiceProvider extends ServiceProvider
 {

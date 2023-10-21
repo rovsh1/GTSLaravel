@@ -4,7 +4,7 @@ namespace App\Admin\Http\Controllers\Supplier\Service;
 
 use App\Admin\Components\Factory\Prototype;
 use App\Admin\Http\Controllers\Controller;
-use App\Admin\Http\Requests\ServiceProvider\SearchServicesRequest;
+use App\Admin\Http\Requests\Supplier\SearchServicesRequest;
 use App\Admin\Http\Resources\Service as ServiceResource;
 use App\Admin\Models\Supplier\Service;
 use App\Admin\Models\Supplier\Supplier;
@@ -28,6 +28,8 @@ use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\Enum;
 use Module\Shared\Enum\ServiceTypeEnum;
 
 class ServicesController extends Controller
@@ -49,12 +51,12 @@ class ServicesController extends Controller
         }
         $grid = $this->gridFactory($provider)->data($query);
 
-        return Layout::title('Услуги транспорт')
+        return Layout::title('Услуги')
             ->view('default.grid.grid', [
                 'quicksearch' => $grid->getQuicksearch(),
                 'grid' => $grid,
                 'createUrl' => Acl::isUpdateAllowed($this->prototype->key)
-                    ? $this->prototype->route('services-transfer.create', $provider)
+                    ? $this->prototype->route('services.create', $provider)
                     : null,
             ]);
     }
@@ -64,7 +66,8 @@ class ServicesController extends Controller
         $this->provider($provider);
 
         return (new DefaultFormCreateAction($this->formFactory($provider->id)))
-            ->handle('Новая услуга');
+            ->handle('Новая услуга')
+            ->view('supplier.service.form.form');
     }
 
     public function store(Request $request, Supplier $provider): RedirectResponse
@@ -73,38 +76,46 @@ class ServicesController extends Controller
             ->handle(Service::class);
     }
 
-    public function edit(Request $request, Supplier $provider, Service $servicesTransfer): LayoutContract
+    public function edit(Request $request, Supplier $provider, Service $service): LayoutContract
     {
         $this->provider($provider);
 
         return (new DefaultFormEditAction($this->formFactory($provider->id)))
             ->deletable()
-            ->handle($servicesTransfer);
+            ->handle($service)
+            ->view('supplier.service.form.form');
     }
 
-    public function update(Supplier $provider, Service $servicesTransfer): RedirectResponse
+    public function update(Supplier $provider, Service $service): RedirectResponse
     {
         return (new DefaultFormUpdateAction($this->formFactory($provider->id)))
-            ->handle($servicesTransfer);
+            ->handle($service);
     }
 
-    public function destroy(Supplier $provider, Service $servicesTransfer): AjaxResponseInterface
+    public function destroy(Supplier $provider, Service $service): AjaxResponseInterface
     {
-        return (new DefaultDestroyAction())->handle($servicesTransfer);
+        return (new DefaultDestroyAction())->handle($service);
     }
 
-    public function search(SearchServicesRequest $request): JsonResponse
+    public function search(Supplier $supplier, SearchServicesRequest $request): JsonResponse
     {
-        $services = Service::whereType($request->getType())->get();
+        $services = Service::whereType($request->getType())
+            ->whereSupplierId($supplier->id)
+            ->get();
 
         return response()->json(
             ServiceResource::collection($services)
         );
     }
 
-    public function list(Supplier $supplier): JsonResponse
+    public function list(int $serviceType): JsonResponse
     {
-        $services = Service::whereSupplierId($supplier->id)->get();
+        Validator::make(
+            ['service_type' => $serviceType],
+            ['service_type' => new Enum(ServiceTypeEnum::class)]
+        )->validate();
+
+        $services = Service::whereType($serviceType)->get();
 
         return response()->json(
             ServiceResource::collection($services)
@@ -115,7 +126,7 @@ class ServicesController extends Controller
     {
         return Form::name('data')
             ->hidden('supplier_id', ['value' => $supplierId])
-            ->text('name', ['label' => 'Название', 'required' => true])
+            ->text('title', ['label' => 'Название', 'required' => true])
             ->enum('type', [
                 'label' => 'Тип услуги',
                 'emptyItem' => '',
@@ -128,8 +139,8 @@ class ServicesController extends Controller
     {
         return Grid::paginator(16)
             ->enableQuicksearch()
-            ->edit(fn($r) => $this->prototype->route('services-transfer.edit', [$provider, $r->id]))
-            ->text('name', ['text' => 'Название', 'order' => true])
+            ->edit(fn($r) => $this->prototype->route('services.edit', [$provider, $r->id]))
+            ->text('title', ['text' => 'Название', 'order' => true])
             ->enum('type', ['text' => 'Тип', 'enum' => ServiceTypeEnum::class]);
     }
 
@@ -140,8 +151,8 @@ class ServicesController extends Controller
                 $this->prototype->route('show', $provider),
                 (string)$provider
             )
-            ->addUrl($this->prototype->route('services-transfer.index', $provider), 'Услуги');
+            ->addUrl($this->prototype->route('services.index', $provider), 'Услуги');
 
-        Sidebar::submenu(new SupplierMenu($provider, 'services-transfer'));
+        Sidebar::submenu(new SupplierMenu($provider, 'services'));
     }
 }

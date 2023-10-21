@@ -4,7 +4,6 @@ namespace Module\Supplier\Infrastructure\Models;
 
 use App\Admin\Enums\Contract\StatusEnum;
 use Illuminate\Database\Eloquent\Builder;
-use Module\Shared\Enum\Supplier\ContractServiceTypeEnum;
 use Sdk\Module\Database\Eloquent\Model;
 
 class Contract extends Model
@@ -16,12 +15,10 @@ class Contract extends Model
         'date_start',
         'date_end',
         'status',
-        'service_type',
         'service_id',
     ];
 
     protected $casts = [
-        'service_type' => ContractServiceTypeEnum::class
     ];
 
     public function scopeWhereActive(Builder $builder): void

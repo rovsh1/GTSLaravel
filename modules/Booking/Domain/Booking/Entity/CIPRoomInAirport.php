@@ -20,14 +20,14 @@ class CIPRoomInAirport implements ServiceDetailsInterface
         private readonly BookingId $bookingId,
         private readonly ServiceInfo $serviceInfo,
         private readonly AirportId $airportId,
-        private string $flightNumber,
-        private DateTimeInterface $serviceDate,
+        private ?string $flightNumber,
+        private ?DateTimeInterface $serviceDate,
         private GuestIdCollection $guestIds,
     ) {}
 
     public function serviceType(): ServiceTypeEnum
     {
-        return ServiceTypeEnum::CIP_IN_AIRPORT;
+        return ServiceTypeEnum::CIP_ROOM_IN_AIRPORT;
     }
 
     public function serviceInfo(): ServiceInfo
@@ -48,5 +48,15 @@ class CIPRoomInAirport implements ServiceDetailsInterface
     public function airportId(): AirportId
     {
         return $this->airportId;
+    }
+
+    public function setServiceDate(?DateTimeInterface $serviceDate): void
+    {
+        $this->serviceDate = $serviceDate;
+    }
+
+    public function serviceDate(): ?DateTimeInterface
+    {
+        return $this->serviceDate;
     }
 }

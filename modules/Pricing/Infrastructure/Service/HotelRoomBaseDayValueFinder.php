@@ -10,13 +10,13 @@ use Module\Catalog\Infrastructure\Models\SeasonPrice;
 use Module\Pricing\Domain\Hotel\Repository\HotelRepositoryInterface;
 use Module\Pricing\Domain\Hotel\Service\BaseDayValueFinderInterface;
 use Module\Pricing\Domain\Hotel\ValueObject\RoomId;
+use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
 class HotelRoomBaseDayValueFinder implements BaseDayValueFinderInterface
 {
     public function __construct(
         private readonly HotelRepositoryInterface $hotelRepository,
-    ) {
-    }
+    ) {}
 
     public function find(
         RoomId $roomId,
@@ -27,28 +27,32 @@ class HotelRoomBaseDayValueFinder implements BaseDayValueFinderInterface
     ): ?float {
         $hotel = $this->hotelRepository->findByRoomId($roomId);
         if (null === $hotel) {
-            throw new \Exception('Hotel not found');
+            throw new EntityNotFoundException('Hotel not found');
         }
 
         $seasonId = $this->hotelRepository->findActiveSeasonId($hotel->id(), $date);
         if (null === $seasonId) {
-            throw new \Exception("Price season for hotel[{$hotel->id()}] undefined");
+            throw new EntityNotFoundException("Price season for hotel[{$hotel->id()}] undefined");
         }
 
-        return $this->getDateValue(
+        $dayPrice = $this->getDateValue(
             roomId: $roomId->value(),
             seasonId: $seasonId->value(),
             rateId: $rateId,
             isResident: $isResident,
             guestsCount: $guestsCount,
             date: $date
-        ) ?? $this->getSeasonValue(
+        );
+
+        $seasonPrice = $this->getSeasonValue(
             roomId: $roomId->value(),
             seasonId: $seasonId->value(),
             rateId: $rateId,
             isResident: $isResident,
             guestsCount: $guestsCount,
-        ) ?? 6;
+        );
+
+        return $dayPrice ?? $seasonPrice;
     }
 
     public function findOrFail(
@@ -60,7 +64,7 @@ class HotelRoomBaseDayValueFinder implements BaseDayValueFinderInterface
     ): float {
         $value = $this->find($roomId, $rateId, $isResident, $guestsCount, $date);
         if (null === $value) {
-            throw new \Exception();
+            throw new EntityNotFoundException('Hotel room base day price not found');
         }
 
         return $value;

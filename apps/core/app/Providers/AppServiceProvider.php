@@ -4,7 +4,7 @@ namespace App\Core\Providers;
 
 use App\Core\Components\Locale\Languages;
 use Sdk\Module\Database\Eloquent\MacrosServiceProvider;
-use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
+use Sdk\Module\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {

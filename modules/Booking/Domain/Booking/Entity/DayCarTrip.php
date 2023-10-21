@@ -24,7 +24,7 @@ class DayCarTrip implements ServiceDetailsInterface
 
     public function serviceType(): ServiceTypeEnum
     {
-        return ServiceTypeEnum::TRANSFER_TO_AIRPORT;
+        return ServiceTypeEnum::DAY_CAR_TRIP;
     }
 
     public function id(): DetailsId

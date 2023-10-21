@@ -23,12 +23,12 @@ class TransferFromAirport extends AbstractEditor implements EditorInterface
     {
         $supplierService = InfrastructureSupplierService::find($serviceId->value());
 
-        $serviceInfo = new ServiceInfo($serviceId->value(), $supplierService->title);
+        $serviceInfo = new ServiceInfo($serviceId->value(), $supplierService->title, $supplierService->supplier_id);
 
         return $this->detailsRepository->create(
             $bookingId,
             $serviceInfo,
-            $supplierService->data['airportId'],
+            (int)$supplierService->data['airportId'],
             new CarBidCollection([]),
             $detailsData['flightNumber'] ?? null,
             $detailsData['arrivalDate'] ?? null,

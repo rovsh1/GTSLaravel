@@ -5,7 +5,7 @@ namespace Sdk\Module\Foundation\Providers;
 use Sdk\Module\Routing\RouteLoader;
 use Sdk\Module\Routing\Router;
 
-class RouteServiceProvider extends \Sdk\Module\Foundation\Support\Providers\ServiceProvider
+class RouteServiceProvider extends \Sdk\Module\Support\ServiceProvider
 {
     public function register()
     {

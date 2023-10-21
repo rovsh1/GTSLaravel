@@ -32,6 +32,7 @@ class TransferToAirportRepository extends AbstractDetailsRepository implements T
         int $airportId,
         CarBidCollection $carBids,
         ?string $flightNumber,
+        ?string $meetingTablet,
         ?DateTimeInterface $departureDate,
     ): TransferToAirport {
         $model = Transfer::create([
@@ -42,6 +43,7 @@ class TransferToAirportRepository extends AbstractDetailsRepository implements T
                 'serviceInfo' => $this->serializeServiceInfo($serviceInfo),
                 'airportId' => $airportId,
                 'flightNumber' => $flightNumber,
+                'meetingTablet'=> $meetingTablet,
                 'carBids' => $carBids->toData(),
             ]
         ]);
@@ -52,10 +54,12 @@ class TransferToAirportRepository extends AbstractDetailsRepository implements T
     public function store(TransferToAirport $details): bool
     {
         return (bool)Transfer::whereId($details->id()->value())->update([
-            'data' => [
+            'date_start' => $details->departureDate(),
+            'booking_transfer_details.data' => [
                 'serviceInfo' => $this->serializeServiceInfo($details->serviceInfo()),
-                'airportId' => $details->airportId(),
+                'airportId' => $details->airportId()->value(),
                 'flightNumber' => $details->flightNumber(),
+                'meetingTablet'=> $details->meetingTablet(),
                 'carBids' => $details->carBids()->toData(),
             ]
         ]);

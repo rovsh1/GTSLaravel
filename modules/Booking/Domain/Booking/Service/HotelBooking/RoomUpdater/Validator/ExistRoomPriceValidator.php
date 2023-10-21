@@ -16,14 +16,12 @@ class ExistRoomPriceValidator implements ValidatorInterface
 
     public function validate(UpdateDataHelper $dataHelper): void
     {
-        return;
-
-        foreach ($dataHelper->booking->period()->dates() as $date) {
+        foreach ($dataHelper->bookingDetails->bookingPeriod()->dates() as $date) {
 
             $price = $this->hotelAdapter->getRoomPrice(
                 roomId: $dataHelper->roomInfo->id(),
-                rateId: $dataHelper->details->rateId(),
-                isResident: $dataHelper->details->isResident(),
+                rateId: $dataHelper->roomDetails->rateId(),
+                isResident: $dataHelper->roomDetails->isResident(),
                 guestsCount: 1,//@todo как тут правильно?
                 date: $date
             );

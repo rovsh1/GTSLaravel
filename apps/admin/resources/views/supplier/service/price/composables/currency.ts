@@ -7,7 +7,7 @@ import { mapEntitiesToSelectOptions } from '~resources/views/booking/lib/constan
 import { Currency } from '~api/models'
 
 export const useCurrenciesStore = defineStore('currencies', () => {
-  const defaultCurrencyId = 1
+  const defaultCurrency = 'UZS'
   const currencies = ref<Currency[]>([])
   const currencySelectOptions = computed(() => mapEntitiesToSelectOptions(currencies.value))
 
@@ -17,10 +17,10 @@ export const useCurrenciesStore = defineStore('currencies', () => {
     currencies.value = data
   }
 
-  const isDefaultCurrency = (currencyId: number) => currencyId === defaultCurrencyId
+  const isDefaultCurrency = (currency: string) => currency === defaultCurrency
 
   return {
-    defaultCurrencyId,
+    defaultCurrency,
     currencies,
     currencySelectOptions,
     getCurrencyChar,

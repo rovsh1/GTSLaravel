@@ -11,10 +11,6 @@ import { createVueInstance } from '~lib/vue'
 
 import '~resources/views/main'
 
-interface ServiceSearchPayload {
-  city_id: null | number
-}
-
 const { bookingID } = requestInitialData('view-initial-data-service-booking', z.object({
   bookingID: z.number().nullable(),
 }))
@@ -22,9 +18,8 @@ const { bookingID } = requestInitialData('view-initial-data-service-booking', z.
 const pinia = createPinia()
 
 const clients: any[] = [
-  { id: 14, name: 'test', currency_id: 1 },
+  { id: 14, name: 'test', currency: 'UZS' },
 ]
-const serviceSearchPayload: ServiceSearchPayload = { city_id: null }
 
 $(() => {
   const toggleLegalIdInput = (required: boolean = true): void => {
@@ -42,8 +37,8 @@ $(() => {
   }
 
   const toggleCurrencyIdField = (state?: boolean) => {
-    const $currencyField = $('div.field-currency_id')
-    const $currencyInput = $('#form_data_currency_id')
+    const $currencyField = $('div.field-currency')
+    const $currencyInput = $('#form_data_currency')
     if (state) {
       $currencyField.show().toggleClass('field-required', true)
       $currencyInput.attr('required', 'required')
@@ -63,7 +58,7 @@ $(() => {
         $('#form_data_order_id').attr('disabled', 'disabled')
       } else {
         $('#form_data_order_id').removeAttr('disabled')
-        toggleCurrencyIdField(!client.currency_id)
+        toggleCurrencyIdField(!client.currency)
       }
     }
 
@@ -95,14 +90,9 @@ $(() => {
   }
 
   $('#form_data_manager_id').select2()
-  $<HTMLSelectElement>('#form_data_city_id')
-    .select2()
-    .change((e) => {
-      serviceSearchPayload.city_id = Number(e.target.value)
-    })
 
   $('#form_data_service_id').childCombo({
-    urlGetter: () => `/supplier/services/search?city_id=${serviceSearchPayload.city_id}`,
+    urlGetter: (type: number) => `/supplier/services/${type}/list`,
     disabledText: 'Выберите тип услуги',
     parent: $('#form_data_service_type'),
     dataIndex: 'type',

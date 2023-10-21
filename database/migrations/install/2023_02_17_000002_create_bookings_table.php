@@ -40,6 +40,7 @@ return new class extends Migration {
         $this->upBookingHotel();
         $this->upBookingAirport();
         $this->upBookingTransfer();
+        $this->upBookingOther();
         $this->upAdministratorBookings();
     }
 
@@ -76,7 +77,7 @@ return new class extends Migration {
             $table->increments('id');
             $table->unsignedInteger('booking_id')->unique();
             $table->unsignedInteger('service_id');
-            $table->date('date');
+            $table->timestamp('date')->nullable();
             $table->json('data');
             $table->timestamps();
 
@@ -100,8 +101,31 @@ return new class extends Migration {
             $table->increments('id');
             $table->unsignedInteger('booking_id')->unique();
             $table->unsignedInteger('service_id');
-            $table->date('date_start')->nullable();
-            $table->date('date_end')->nullable();
+            $table->timestamp('date_start')->nullable();
+            $table->timestamp('date_end')->nullable();
+            $table->json('data');
+            $table->timestamps();
+
+            $table->foreign('booking_id')
+                ->references('id')
+                ->on('bookings')
+                ->restrictOnDelete()
+                ->cascadeOnUpdate();
+
+            $table->foreign('service_id')
+                ->references('id')
+                ->on('supplier_services')
+                ->restrictOnDelete()
+                ->cascadeOnUpdate();
+        });
+    }
+
+    private function upBookingOther(): void
+    {
+        Schema::create('booking_other_details', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('booking_id')->unique();
+            $table->unsignedInteger('service_id');
             $table->json('data');
             $table->timestamps();
 

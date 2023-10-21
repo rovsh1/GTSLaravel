@@ -6,11 +6,11 @@ namespace Module\Booking\Deprecated\HotelBooking;
 
 use Carbon\CarbonImmutable;
 use Module\Booking\Deprecated\HotelBooking\Entity\RoomBooking;
-use Module\Booking\Deprecated\HotelBooking\Event\BookingPeriodChanged;
-use Module\Booking\Deprecated\HotelBooking\Event\RoomAdded;
-use Module\Booking\Deprecated\HotelBooking\Event\RoomDeleted;
-use Module\Booking\Deprecated\HotelBooking\Event\RoomEdited;
 use Module\Booking\Deprecated\HotelBooking\ValueObject\Details\AdditionalInfo;
+use Module\Booking\Domain\Booking\Event\HotelBooking\BookingPeriodChanged;
+use Module\Booking\Domain\Booking\Event\HotelBooking\RoomAdded;
+use Module\Booking\Domain\Booking\Event\HotelBooking\RoomDeleted;
+use Module\Booking\Domain\Booking\Event\HotelBooking\RoomEdited;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Domain\Booking\ValueObject\BookingPeriod;
 use Module\Booking\Domain\Booking\ValueObject\BookingPrices;

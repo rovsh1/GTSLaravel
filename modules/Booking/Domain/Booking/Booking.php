@@ -56,13 +56,14 @@ class Booking extends AbstractAggregateRoot implements BookingInterface
 
     public function updatePrice(BookingPrices $price): void
     {
-        if (!$price->isEqual($this->prices)) {
+        if ($price->isEqual($this->prices)) {
             return;
         }
 
         $priceBefore = $this->prices;
         $this->prices = $price;
-        $this->pushEvent(new BookingPriceChanged($this, $priceBefore));
+        //@todo нужен ли ивент?
+//        $this->pushEvent(new BookingPriceChanged($this, $priceBefore));
     }
 
     public function creatorId(): CreatorId

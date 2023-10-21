@@ -53,8 +53,8 @@ class CancelConditionsFactory
     private function getSupplierCancelConditions(ServiceTypeEnum $serviceType): CancelConditionsDto
     {
         return match ($serviceType) {
-            ServiceTypeEnum::CIP_IN_AIRPORT => $this->supplierAdapter->getAirportCancelConditions(),
-            ServiceTypeEnum::CAR_RENT,
+            ServiceTypeEnum::CIP_ROOM_IN_AIRPORT => $this->supplierAdapter->getAirportCancelConditions(),
+            ServiceTypeEnum::CAR_RENT_WITH_DRIVER,
             ServiceTypeEnum::TRANSFER_TO_RAILWAY,
             ServiceTypeEnum::TRANSFER_FROM_RAILWAY,
             ServiceTypeEnum::TRANSFER_TO_AIRPORT,

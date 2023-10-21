@@ -10,7 +10,7 @@ use Module\Generic\CurrencyRate\Infrastructure\Adapter\LoggerAdapter;
 use Module\Generic\CurrencyRate\Infrastructure\Repository\ApiRepository;
 use Module\Generic\CurrencyRate\Infrastructure\Repository\CacheRepository;
 use Module\Generic\CurrencyRate\Infrastructure\Repository\DatabaseRepository;
-use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
+use Sdk\Module\Support\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {

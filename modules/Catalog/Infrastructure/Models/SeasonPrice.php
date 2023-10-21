@@ -25,8 +25,12 @@ class SeasonPrice extends Model
         'currency',
     ];
 
-    protected $appends = [
+    protected $casts = [
+        'price' => 'float',
         'currency' => CurrencyEnum::class,
+    ];
+
+    protected $appends = [
         'has_date_prices'
     ];
 

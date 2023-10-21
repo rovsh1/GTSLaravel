@@ -9,12 +9,14 @@ use Module\Booking\Domain\Booking\ValueObject\CarBidCollection;
 use Module\Booking\Domain\Booking\ValueObject\DetailsId;
 use Module\Booking\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Shared\Enum\ServiceTypeEnum;
+use Module\Shared\ValueObject\Time;
 
 class TransferToAirport implements ServiceDetailsInterface
 {
     use Concerns\HasFlightNumberTrait;
     use Concerns\HasDepartureDateTrait;
     use Concerns\HasCarBidCollectionTrait;
+    use Concerns\HasMeetingTabletTrait;
 
     public function __construct(
         private readonly DetailsId $id,
@@ -22,6 +24,7 @@ class TransferToAirport implements ServiceDetailsInterface
         private readonly ServiceInfo $serviceInfo,
         private readonly AirportId $airportId,
         private ?string $flightNumber,
+        private ?string $meetingTablet,
         private ?DateTimeInterface $departureDate,
         private CarBidCollection $carBids
     ) {}

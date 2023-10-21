@@ -23,6 +23,7 @@ class Airport extends Model implements DetailsModelInterface
     protected $casts = [
         'data' => 'array',
         'service_type' => ServiceTypeEnum::class,
+        'date' => 'datetime',
     ];
 
     protected static function booted()
@@ -37,6 +38,11 @@ class Airport extends Model implements DetailsModelInterface
                 )
                 ->addSelect('supplier_services.type as service_type');
         });
+    }
+
+    public function scopeWhereId(Builder $builder, int $id): void
+    {
+        $builder->where('booking_airport_details.id', $id);
     }
 
     public function bookingId(): int

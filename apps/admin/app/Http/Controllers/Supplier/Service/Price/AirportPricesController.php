@@ -2,10 +2,10 @@
 
 namespace App\Admin\Http\Controllers\Supplier\Service\Price;
 
-use App\Admin\Http\Requests\ServiceProvider\UpdateAirportPriceRequest;
+use App\Admin\Http\Requests\Supplier\UpdateAirportPriceRequest;
 use App\Admin\Models\Reference\Currency;
 use App\Admin\Models\Supplier\AirportPrice;
-use App\Admin\Models\Supplier\AirportService;
+use App\Admin\Models\Supplier\Service;
 use App\Admin\Models\Supplier\Supplier;
 use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Facades\Layout;
@@ -30,14 +30,14 @@ class AirportPricesController extends AbstractPricesController
             ]);
     }
 
-    public function getPrices(Request $request, Supplier $provider, AirportService $service): JsonResponse
+    public function getPrices(Request $request, Supplier $provider, Service $service): JsonResponse
     {
         return response()->json(
             AirportPrice::whereServiceId($service->id)->get()
         );
     }
 
-    public function update(UpdateAirportPriceRequest $request, Supplier $provider, AirportService $service): JsonResponse {
+    public function update(UpdateAirportPriceRequest $request, Supplier $provider, Service $service): JsonResponse {
         $data = ['currency' => $request->getCurrency()];
         if ($request->getPriceNet() !== null) {
             $data['price_net'] = $request->getPriceNet();
@@ -47,7 +47,7 @@ class AirportPricesController extends AbstractPricesController
         }
 
         AirportPrice::updateOrCreate(
-            ['service_id' => $service->id, 'airport_id' => $request->getAirportId(), 'season_id' => $request->getSeasonId()],
+            ['service_id' => $service->id, 'season_id' => $request->getSeasonId()],
             $data
         );
 

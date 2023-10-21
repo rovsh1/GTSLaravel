@@ -2,7 +2,7 @@
 
 namespace Module\Booking\Domain\Shared\Listener;
 
-use Module\Booking\Domain\Shared\Event\Request\BookingRequestSent;
+use Module\Booking\Domain\BookingRequest\Event\BookingRequestSent;
 use Sdk\Module\Contracts\Event\DomainEventInterface;
 use Sdk\Module\Contracts\Event\DomainEventListenerInterface;
 

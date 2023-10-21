@@ -99,8 +99,12 @@ class RoomAdapter extends AbstractHotelAdapter
         );
     }
 
-    public function updateRoomPrice(int $bookingId, int $roomBookingId, float|null $grossPrice, float|null $netPrice): void
-    {
-        app(SetManualPrice::class)->execute($bookingId, $roomBookingId, $grossPrice, $netPrice);
+    public function updateRoomPrice(
+        int $bookingId,
+        int $roomBookingId,
+        float|null $supplierDayPrice,
+        float|null $clientDayPrice
+    ): void {
+        app(SetManualPrice::class)->execute($bookingId, $roomBookingId, $supplierDayPrice, $clientDayPrice);
     }
 }

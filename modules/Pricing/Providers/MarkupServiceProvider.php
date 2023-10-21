@@ -4,7 +4,7 @@ namespace Module\Pricing\Providers;
 
 use Module\Pricing\Domain\Markup\Service\HotelMarkupFinderInterface;
 use Module\Pricing\Infrastructure\Service\HotelMarkupFinder;
-use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
+use Sdk\Module\Support\ServiceProvider;
 
 class MarkupServiceProvider extends ServiceProvider
 {

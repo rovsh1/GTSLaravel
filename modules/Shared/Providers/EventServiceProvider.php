@@ -2,9 +2,7 @@
 
 namespace Module\Shared\Providers;
 
-use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
-use Sdk\Module\Event\DomainEventDispatcher;
-use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
+use Sdk\Module\Support\ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
 {

@@ -22,8 +22,7 @@ class PriceCalculator
         private readonly RoomBookingPriceStorage $roomPricesStorage,
         private readonly CalculateHotelPriceRequestDtoBuilder $calculateHotelPriceRequestDtoBuilder,
         private readonly DomainEventDispatcherInterface $domainEventDispatcher,
-    ) {
-    }
+    ) {}
 
     public function calculate(BookingId $bookingId): void
     {
@@ -38,7 +37,7 @@ class PriceCalculator
         $clientPriceDto = $this->hotelPricingAdapter->calculate(
             $this->calculateHotelPriceRequestDtoBuilder
                 ->booking($booking, $details)
-//                ->clientId($booking->clientId())
+                ->withClientMarkups()
                 ->build()
         );
 

@@ -24,6 +24,8 @@ class Transfer extends Model implements DetailsModelInterface
     protected $casts = [
         'data' => 'array',
         'service_type' => ServiceTypeEnum::class,
+        'date_start' => 'datetime',
+        'date_end' => 'datetime',
     ];
 
     protected static function booted()
@@ -33,6 +35,11 @@ class Transfer extends Model implements DetailsModelInterface
                 ->join('supplier_services', 'supplier_services.id', '=', 'booking_transfer_details.service_id')
                 ->addSelect('supplier_services.type as service_type');
         });
+    }
+
+    public function scopeWhereId(Builder $builder, int $id): void
+    {
+        $builder->where('booking_transfer_details.id', $id);
     }
 
     public function bookingId(): int

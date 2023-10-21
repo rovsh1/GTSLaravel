@@ -249,27 +249,19 @@ class BookingController extends Controller
 
     public function updatePrice(UpdatePriceRequest $request, int $id): AjaxResponseInterface
     {
-        $grossPrice = $request->getGrossPrice();
-        $netPrice = $request->getNetPrice();
-//TODO refactor
-        if ($request->isGrossPriceExists() && $grossPrice === null) {
-            PriceAdapter::setCalculatedGrossPrice($id);
-        }
-        if ($request->isNetPriceExists() && $netPrice === null) {
-            PriceAdapter::setCalculatedNetPrice($id);
-        }
-
-        if ($grossPrice !== null) {
-            PriceAdapter::setGrossPrice($id, $grossPrice);
-        }
-        if ($netPrice !== null) {
-            PriceAdapter::setNetPrice($id, $netPrice);
-        }
-        if ($request->isGrossPenaltyExists()) {
-            PriceAdapter::setGrossPenalty($id, $request->getGrossPenalty());
-        }
-        if ($request->isNetPenaltyExists()) {
-            PriceAdapter::setNetPenalty($id, $request->getNetPenalty());
+        switch ($request->getAction()) {
+            case UpdatePriceRequest::CLIENT_PRICE_ACTION:
+                PriceAdapter::setManualClientPrice($id, $request->getClientPrice());
+                break;
+            case UpdatePriceRequest::SUPPLIER_PRICE_ACTION:
+                PriceAdapter::setManualSupplierPrice($id, $request->getSupplierPrice());
+                break;
+            case UpdatePriceRequest::CLIENT_PENALTY_ACTION:
+                PriceAdapter::setClientPenalty($id, $request->getGrossPenalty());
+                break;
+            case UpdatePriceRequest::SUPPLIER_PENALTY_ACTION:
+                PriceAdapter::setSupplierPenalty($id, $request->getNetPenalty());
+                break;
         }
 
         return new AjaxSuccessResponse();

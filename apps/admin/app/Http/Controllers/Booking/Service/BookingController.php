@@ -58,7 +58,7 @@ class BookingController extends Controller
         Breadcrumb::prototype($this->prototype);
 
         $grid = $this->gridFactory();
-        $data = $this->prepareGridQuery(Booking::query(), $grid->getSearchCriteria());
+        $data = $this->prepareGridQuery(Booking::withoutHotelBooking(), $grid->getSearchCriteria());
         $grid->data($data);
 
         return Layout::title('Брони услуг')
@@ -97,14 +97,10 @@ class BookingController extends Controller
         $data = $form->getData();
         $creatorId = request()->user()->id;
         $orderId = $data['order_id'] ?? null;
-        $currency = null;
-        $currencyId = $data['currency_id'] ?? null;
-        if ($orderId !== null && $currencyId === null) {
+        $currency = $data['currency'] ? CurrencyEnum::from($data['currency']) : null;
+        if ($orderId !== null && $currency === null) {
             $order = OrderAdapter::findOrder($orderId);
-            $currencyId = $order->currency->id;
-        }
-        if ($currencyId !== null) {
-            $currency = CurrencyEnum::fromId($currencyId);
+            $currency = $order->currency;
         }
         if ($currency === null) {
             $client = Client::find($data['client_id']);
@@ -249,27 +245,19 @@ class BookingController extends Controller
 
     public function updatePrice(UpdatePriceRequest $request, int $id): AjaxResponseInterface
     {
-        $grossPrice = $request->getGrossPrice();
-        $netPrice = $request->getNetPrice();
-
-        if ($request->isGrossPriceExists() && $grossPrice === null) {
-            PriceAdapter::setCalculatedGrossPrice($id);
-        }
-        if ($request->isNetPriceExists() && $netPrice === null) {
-            PriceAdapter::setCalculatedNetPrice($id);
-        }
-
-        if ($grossPrice !== null) {
-            PriceAdapter::setGrossPrice($id, $grossPrice);
-        }
-        if ($netPrice !== null) {
-            PriceAdapter::setNetPrice($id, $netPrice);
-        }
-        if ($request->isGrossPenaltyExists()) {
-            PriceAdapter::setGrossPenalty($id, $request->getGrossPenalty());
-        }
-        if ($request->isNetPenaltyExists()) {
-            PriceAdapter::setNetPenalty($id, $request->getNetPenalty());
+        switch ($request->getAction()) {
+            case UpdatePriceRequest::CLIENT_PRICE_ACTION:
+                PriceAdapter::setManualClientPrice($id, $request->getClientPrice());
+                break;
+            case UpdatePriceRequest::SUPPLIER_PRICE_ACTION:
+                PriceAdapter::setManualSupplierPrice($id, $request->getSupplierPrice());
+                break;
+            case UpdatePriceRequest::CLIENT_PENALTY_ACTION:
+                PriceAdapter::setClientPenalty($id, $request->getGrossPenalty());
+                break;
+            case UpdatePriceRequest::SUPPLIER_PENALTY_ACTION:
+                PriceAdapter::setSupplierPenalty($id, $request->getNetPenalty());
+                break;
         }
 
         return new AjaxSuccessResponse();
@@ -319,14 +307,9 @@ class BookingController extends Controller
             ->hidden('legal_id', [
                 'label' => 'Юр. лицо',
             ])
-            ->currency('currency_id', [
+            ->currency('currency', [
                 'label' => 'Валюта',
                 'emptyItem' => '',
-            ])
-            ->city('city_id', [
-                'label' => __('label.city'),
-                'emptyItem' => '',
-                'required' => true,
             ])
             ->enum('service_type', [
                 'label' => 'Тип услуги',
@@ -366,8 +349,9 @@ class BookingController extends Controller
                 ['text' => 'Статус', 'statuses' => BookingAdapter::getStatuses(), 'order' => true]
             )
             ->text('client_name', ['text' => 'Клиент'])
-            ->text('city_name', ['text' => 'Город'])
-            ->text('service_name', ['text' => 'Название услуги'])
+//            ->text('city_name', ['text' => 'Город'])
+            ->enum('service_type', ['text' => 'Тип услуги'])
+//            ->text('service_name', ['text' => 'Название услуги'])
 //            ->date('date', ['text' => 'Дата прилёта/вылета'])
             ->text('source', ['text' => 'Источник', 'order' => true])
             ->date('created_at', ['text' => 'Создан', 'format' => 'datetime', 'order' => true])
@@ -381,11 +365,10 @@ class BookingController extends Controller
         return (new SearchForm())
             ->number('order_id', ['label' => '№ Заказа'])
 //            ->country('country_id', ['label' => 'Страна', 'default' => '1'])
-            ->city('city_id', ['label' => 'Город', 'emptyItem' => ''])
             ->client('client_id', ['label' => 'Клиент', 'emptyItem' => ''])
             ->enum(
                 'service_type',
-                ['label' => 'Услуга', 'emptyItem' => '', 'enum' => ServiceTypeEnum::class, 'required' => true]
+                ['label' => 'Услуга', 'emptyItem' => '', 'enum' => ServiceTypeEnum::class]
             )
             ->select('manager_id', ['label' => 'Менеджер', 'items' => Administrator::all(), 'emptyItem' => ''])
             ->select('status', ['label' => 'Статус', 'items' => BookingAdapter::getStatuses(), 'emptyItem' => ''])
@@ -402,7 +385,7 @@ class BookingController extends Controller
         return [
             'manager_id' => $manager->id,
             'order_id' => $booking->orderId,
-            'currency_id' => $order->currency->id,
+            'currency' => $order->currency,
             'service_id' => $booking->serviceInfo->id,
             'client_id' => $order->clientId,
             'legal_id' => $order->legalId,
@@ -449,6 +432,9 @@ class BookingController extends Controller
         return $query
             ->applyCriteria($searchCriteria)
             ->addSelect('bookings.*')
+            ->join('orders', 'orders.id', '=', 'bookings.order_id')
+            ->join('clients', 'clients.id', '=', 'orders.client_id')
+            ->addSelect('clients.name as client_name')
             ->join('administrator_bookings', 'administrator_bookings.booking_id', '=', 'bookings.id')
             ->join('administrators', 'administrators.id', '=', 'administrator_bookings.administrator_id')
             ->addSelect('administrators.presentation as manager_name')

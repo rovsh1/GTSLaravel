@@ -140,7 +140,7 @@ const isStateChanged = computed<boolean>(() =>
       :label-outline="false"
       :value="selectedPeriod"
       :disabled="(loading as boolean)"
-      @input="(dates) => handlePeriodChanges(dates)"
+      @input="(dates) => handlePeriodChanges(dates as [Date, Date])"
     />
     <CompactSelect
       :options="availabilityOptions"
@@ -164,6 +164,7 @@ const isStateChanged = computed<boolean>(() =>
         :close-after-click-select-all="true"
         @input="handleRoomInput"
       />
+      <div v-if="loading" class="quotasFilters-rooms-disable" />
     </div>
     <div class="actions">
       <BootstrapButton
@@ -190,7 +191,8 @@ const isStateChanged = computed<boolean>(() =>
   align-items: flex-end;
 
   .quotasFilters-rooms {
-    width: 245px
+    position: relative;
+    width: 245px;
   }
 }
 
@@ -202,5 +204,16 @@ const isStateChanged = computed<boolean>(() =>
   :deep(select) {
     text-transform: capitalize;
   }
+}
+
+.quotasFilters-rooms-disable {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--bs-border-radius);
+  background-color: var(--bs-secondary-bg);
+  opacity: 0.4;
 }
 </style>

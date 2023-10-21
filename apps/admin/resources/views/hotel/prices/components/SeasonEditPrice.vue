@@ -73,7 +73,7 @@ const onSubmitUpdateData = async () => {
         :min-date="seasonPeriod.from"
         :max-date="seasonPeriod.to"
         :value="seasonFormData.period"
-        @input="(dates) => seasonFormData.period = dates"
+        @input="(dates) => seasonFormData.period = dates as [Date, Date]"
       />
     </div>
     <div class="form-field field-select field-days field-required">

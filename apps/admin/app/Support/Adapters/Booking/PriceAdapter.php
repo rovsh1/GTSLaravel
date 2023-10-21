@@ -4,42 +4,36 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Adapters\Booking;
 
-use Module\Booking\Application\Admin\Booking\UseCase\Price\SetCalculatedGrossPrice;
-use Module\Booking\Application\Admin\Booking\UseCase\Price\SetCalculatedNetPrice;
-use Module\Booking\Application\Admin\Booking\UseCase\Price\SetGrossPenalty;
-use Module\Booking\Application\Admin\Booking\UseCase\Price\SetManualGrossPrice;
-use Module\Booking\Application\Admin\Booking\UseCase\Price\SetManualNetPrice;
-use Module\Booking\Application\Admin\Booking\UseCase\Price\SetNetPenalty;
+use Module\Booking\Application\Admin\Booking\UseCase\Price\RecalculatePrices;
+use Module\Booking\Application\Admin\Booking\UseCase\Price\SetClientPenalty;
+use Module\Booking\Application\Admin\Booking\UseCase\Price\SetManualClientPrice;
+use Module\Booking\Application\Admin\Booking\UseCase\Price\SetManualSupplierPrice;
+use Module\Booking\Application\Admin\Booking\UseCase\Price\SetSupplierPenalty;
 
 class PriceAdapter
 {
-    public function setGrossPrice(int $bookingId, float $price): void
+    public function recalculatePrices(int $bookingId): void
     {
-        app(SetManualGrossPrice::class)->execute($bookingId, $price);
+        app(RecalculatePrices::class)->execute($bookingId);
     }
 
-    public function setNetPrice(int $bookingId, float $price): void
+    public function setManualClientPrice(int $bookingId, ?float $price): void
     {
-        app(SetManualNetPrice::class)->execute($bookingId, $price);
+        app(SetManualClientPrice::class)->execute($bookingId, $price);
     }
 
-    public function setCalculatedGrossPrice(int $bookingId): void
+    public function setManualSupplierPrice(int $bookingId, ?float $price): void
     {
-        app(SetCalculatedGrossPrice::class)->execute($bookingId);
+        app(SetManualSupplierPrice::class)->execute($bookingId, $price);
     }
 
-    public function setCalculatedNetPrice(int $bookingId): void
+    public function setSupplierPenalty(int $bookingId, float|null $penalty): void
     {
-        app(SetCalculatedNetPrice::class)->execute($bookingId);
+        app(SetSupplierPenalty::class)->execute($bookingId, $penalty);
     }
 
-    public function setNetPenalty(int $bookingId, float|null $penalty): void
+    public function setClientPenalty(int $bookingId, float|null $penalty): void
     {
-        app(SetNetPenalty::class)->execute($bookingId, $penalty);
-    }
-
-    public function setGrossPenalty(int $bookingId, float|null $penalty): void
-    {
-        app(SetGrossPenalty::class)->execute($bookingId, $penalty);
+        app(SetClientPenalty::class)->execute($bookingId, $penalty);
     }
 }

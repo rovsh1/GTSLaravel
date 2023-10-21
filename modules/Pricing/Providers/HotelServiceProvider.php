@@ -6,7 +6,7 @@ use Module\Pricing\Domain\Hotel\Repository\HotelRepositoryInterface;
 use Module\Pricing\Domain\Hotel\Service\BaseDayValueFinderInterface;
 use Module\Pricing\Infrastructure\Repository\HotelRepository;
 use Module\Pricing\Infrastructure\Service\HotelRoomBaseDayValueFinder;
-use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
+use Sdk\Module\Support\ServiceProvider;
 
 class HotelServiceProvider extends ServiceProvider
 {

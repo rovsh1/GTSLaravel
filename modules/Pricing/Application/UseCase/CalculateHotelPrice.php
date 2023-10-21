@@ -29,8 +29,7 @@ class CalculateHotelPrice implements UseCaseInterface
         private readonly HotelMarkupFinderInterface $hotelMarkupFinder,
         private readonly HotelRoomBaseDayValueFinder $hotelRoomPriceFinder,
         private readonly CurrencyRateAdapterInterface $currencyRateAdapter
-    ) {
-    }
+    ) {}
 
     public function execute(CalculateHotelPriceRequestDto $request): CalculatedHotelRoomsPricesDto
     {
@@ -51,6 +50,10 @@ class CalculateHotelPrice implements UseCaseInterface
         RoomCalculationParamsDto $room,
         CalculateHotelPriceRequestDto $request
     ): RoomCalculationResultDto {
+        if ($room->guestsCount === 0) {
+            return RoomCalculationResultDto::createZero($room->accommodationId, $request->period);
+        }
+
         $roomId = new RoomId($room->roomId);
         $clientMarkup = $request->clientId ? $this->hotelMarkupFinder->findByRoomId(
             clientId: new ClientId($request->clientId),
@@ -86,11 +89,11 @@ class CalculateHotelPrice implements UseCaseInterface
                 $calculation->applyClientMarkup($clientMarkup);
             }
 
-            if ($room->earlyCheckinPercent) {
+            if ($room->earlyCheckinPercent && $request->period->getStartDate()->equalTo($date)) {
                 $calculation->applyEarlyCheckinMarkup(MarkupValue::createPercent($room->earlyCheckinPercent));
             }
 
-            if ($room->lateCheckoutPercent) {
+            if ($room->lateCheckoutPercent && $request->period->getEndDate()->equalTo($date)) {
                 $calculation->applyLateCheckoutMarkup(MarkupValue::createPercent($room->lateCheckoutPercent));
             }
 

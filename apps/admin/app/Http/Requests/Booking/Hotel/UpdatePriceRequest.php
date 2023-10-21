@@ -8,6 +8,11 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UpdatePriceRequest extends FormRequest
 {
+    public const CLIENT_PRICE_ACTION = 1;
+    public const SUPPLIER_PRICE_ACTION = 2;
+    public const CLIENT_PENALTY_ACTION = 3;
+    public const SUPPLIER_PENALTY_ACTION = 4;
+
     public function rules(): array
     {
         return [
@@ -18,14 +23,24 @@ class UpdatePriceRequest extends FormRequest
         ];
     }
 
-    public function isGrossPriceExists(): bool
+    public function getAction(): int
     {
-        return $this->exists('grossPrice');
+        if ($this->exists('grossPrice')) {
+            return self::CLIENT_PRICE_ACTION;
+        } elseif ($this->exists('netPrice')) {
+            return self::SUPPLIER_PRICE_ACTION;
+        } elseif ($this->exists('grossPenalty')) {
+            return self::CLIENT_PENALTY_ACTION;
+        } elseif ($this->exists('netPenalty')) {
+            return self::SUPPLIER_PENALTY_ACTION;
+        }
+
+        throw new \RuntimeException('Unknown price update request');
     }
 
-    public function getGrossPrice(): ?float
+    public function getClientPrice(): ?float
     {
-        if ($this->isGrossPriceExists()) {
+        if ($this->exists('grossPrice')) {
             $value = (float)$this->post('grossPrice');
 
             return $value <= 0 ? null : $value;
@@ -34,14 +49,9 @@ class UpdatePriceRequest extends FormRequest
         return null;
     }
 
-    public function isNetPriceExists(): bool
+    public function getSupplierPrice(): ?float
     {
-        return $this->exists('netPrice');
-    }
-
-    public function getNetPrice(): ?float
-    {
-        if ($this->isNetPriceExists()) {
+        if ($this->exists('netPrice')) {
             $value = (float)$this->post('netPrice');
 
             return $value <= 0 ? null : $value;
@@ -50,14 +60,9 @@ class UpdatePriceRequest extends FormRequest
         return null;
     }
 
-    public function isNetPenaltyExists(): bool
-    {
-        return $this->exists('netPenalty');
-    }
-
     public function getNetPenalty(): ?float
     {
-        if ($this->isNetPenaltyExists()) {
+        if ($this->exists('netPenalty')) {
             $value = (float)$this->post('netPenalty');
 
             return $value <= 0 ? null : $value;
@@ -66,14 +71,9 @@ class UpdatePriceRequest extends FormRequest
         return null;
     }
 
-    public function isGrossPenaltyExists(): bool
-    {
-        return $this->exists('grossPenalty');
-    }
-
     public function getGrossPenalty(): ?float
     {
-        if ($this->isGrossPenaltyExists()) {
+        if ($this->exists('grossPenalty')) {
             $value = (float)$this->post('grossPenalty');
 
             return $value <= 0 ? null : $value;

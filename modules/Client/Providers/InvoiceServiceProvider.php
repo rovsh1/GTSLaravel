@@ -4,7 +4,7 @@ namespace Module\Client\Providers;
 
 use Module\Client\Domain\Invoice\Repository\InvoiceRepositoryInterface;
 use Module\Client\Infrastructure\Repository\InvoiceRepository;
-use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
+use Sdk\Module\Support\ServiceProvider;
 
 class InvoiceServiceProvider extends ServiceProvider
 {

@@ -14,13 +14,8 @@ class Service extends \Module\Supplier\Infrastructure\Models\Service
 
     protected array $quicksearch = ['id', 'supplier_services.title%'];
 
-    protected $fillable = [
-        'supplier_id',
-        'title',
-        'type',
-    ];
-
     protected $casts = [
+        'data' => 'array',
         'supplier_id' => 'int',
         'type' => ServiceTypeEnum::class,
     ];
@@ -40,7 +35,7 @@ class Service extends \Module\Supplier\Infrastructure\Models\Service
         $builder->whereExists(function (QueryBuilder $query) use ($cityId) {
             $query->select(DB::raw(1))
                 ->from('supplier_cities as t')
-                ->whereColumn('t.supplier_id', 'supplier_transfer_services.supplier_id')
+                ->whereColumn('t.supplier_id', 'supplier_services.supplier_id')
                 ->where('city_id', $cityId);
         });
     }

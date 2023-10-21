@@ -25,7 +25,7 @@ const emit = defineEmits<{
 }>()
 
 const currenciesStore = useCurrenciesStore()
-const { getCurrencyChar, isDefaultCurrency, defaultCurrencyId } = currenciesStore
+const { getCurrencyChar, isDefaultCurrency, defaultCurrency } = currenciesStore
 const currencies = computed(() => currenciesStore.currencies)
 
 const netPrice = ref<number>()
@@ -47,7 +47,7 @@ watchEffect(() => {
   }
 
   netPrice.value = undefined
-  grossPrices.value = [{ amount: undefined, currency_id: defaultCurrencyId }]
+  grossPrices.value = [{ amount: undefined, currency: defaultCurrency }]
 })
 
 const getGrossPriceLabel = (currencyId?: number): string => {
@@ -61,18 +61,18 @@ const getGrossPriceLabel = (currencyId?: number): string => {
   return `Брутто (${currencyChar})`
 }
 
-const handleChangeGrossPrice = (currencyId: number, event: any) => {
+const handleChangeGrossPrice = (currency: string, event: any) => {
   const amount = Number(event.target.value)
-  const grossPrice = grossPrices.value.find((price) => price.currency_id === currencyId)
+  const grossPrice = grossPrices.value.find((price) => price.currency === currency)
   if (grossPrice) {
     grossPrice.amount = amount
     return
   }
-  grossPrices.value.push({ amount, currency_id: currencyId })
+  grossPrices.value.push({ amount, currency })
 }
 
-const getGrossPriceAmountByCurrency = (currencyId: number) => (
-  grossPrices.value.find((price) => price.currency_id === currencyId)?.amount
+const getGrossPriceAmountByCurrency = (currency: string) => (
+  grossPrices.value.find((price) => price.currency === currency)?.amount
 )
 
 </script>
@@ -93,7 +93,7 @@ const getGrossPriceAmountByCurrency = (currencyId: number) => (
       </div>
 
       <template v-for="currency in currencies" :key="currency.id">
-        <div class="col-md-12" :class="{ 'field-required': isDefaultCurrency(currency.id) }">
+        <div class="col-md-12" :class="{ 'field-required': isDefaultCurrency(currency.code_char) }">
           <label :for="`brutto-price-${currency.id}`">
             {{ getGrossPriceLabel(currency.id) }}
           </label>
@@ -101,9 +101,9 @@ const getGrossPriceAmountByCurrency = (currencyId: number) => (
             :id="`brutto-price-${currency.id}`"
             type="number"
             class="form-control"
-            :required="isDefaultCurrency(currency.id)"
-            :value="getGrossPriceAmountByCurrency(currency.id)"
-            @input="handleChangeGrossPrice(currency.id, $event)"
+            :required="isDefaultCurrency(currency.code_char)"
+            :value="getGrossPriceAmountByCurrency(currency.code_char)"
+            @input="handleChangeGrossPrice(currency.code_char, $event)"
           >
         </div>
       </template>

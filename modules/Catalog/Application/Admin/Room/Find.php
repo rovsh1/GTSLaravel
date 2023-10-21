@@ -15,7 +15,7 @@ class Find implements UseCaseInterface
         private readonly QueryBusInterface $queryBus
     ) {}
 
-    public function execute(int $id): RoomDto
+    public function execute(int $id): ?RoomDto
     {
         return $this->queryBus->execute(new FindRoom($id));
     }

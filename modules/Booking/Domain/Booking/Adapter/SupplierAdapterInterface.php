@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Module\Booking\Domain\Booking\Adapter;
 
 use Carbon\CarbonInterface;
+use Module\Pricing\Application\Dto\ServicePriceDto;
 use Module\Shared\Enum\CurrencyEnum;
+use Module\Supplier\Application\Dto\CarDto;
 use Module\Supplier\Application\Response\CancelConditionsDto;
 use Module\Supplier\Application\Response\ServiceContractDto;
 use Module\Supplier\Application\Response\ServiceDto;
-use Module\Supplier\Application\Response\ServicePriceDto;
 use Module\Supplier\Application\Response\SupplierDto;
 
 interface SupplierAdapterInterface
@@ -33,7 +34,6 @@ interface SupplierAdapterInterface
     public function getAirportServicePrice(
         int $supplierId,
         int $serviceId,
-        int $airportId,
         CurrencyEnum $grossCurrency,
         CarbonInterface $date
     ): ?ServicePriceDto;
@@ -41,4 +41,12 @@ interface SupplierAdapterInterface
     public function findAirportServiceContract(int $serviceId): ?ServiceContractDto;
 
     public function getAirportCancelConditions(): CancelConditionsDto;
+
+    /**
+     * @param int $supplierId
+     * @return CarDto[]
+     */
+    public function getCars(int $supplierId): array;
+
+    public function findCar(int $carId): ?CarDto;
 }

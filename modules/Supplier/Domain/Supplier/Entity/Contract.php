@@ -6,7 +6,6 @@ namespace Module\Supplier\Domain\Supplier\Entity;
 
 use Module\Booking\Deprecated\AirportBooking\ValueObject\ContractId;
 use Module\Shared\Contracts\Domain\EntityInterface;
-use Module\Shared\Enum\Supplier\ContractServiceTypeEnum;
 use Module\Shared\ValueObject\Date;
 use Module\Supplier\Domain\Supplier\ValueObject\ServiceId;
 use Module\Supplier\Domain\Supplier\ValueObject\SupplierId;
@@ -17,7 +16,6 @@ class Contract implements EntityInterface
         private readonly ContractId $id,
         private readonly SupplierId $supplierId,
         private readonly ServiceId $serviceId,
-        private readonly ContractServiceTypeEnum $serviceType,
         private readonly Date $dateStart,
         private readonly Date $dateEnd,
     ) {}
@@ -35,11 +33,6 @@ class Contract implements EntityInterface
     public function serviceId(): ServiceId
     {
         return $this->serviceId;
-    }
-
-    public function serviceType(): ContractServiceTypeEnum
-    {
-        return $this->serviceType;
     }
 
     public function dateStart(): Date

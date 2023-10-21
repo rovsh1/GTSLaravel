@@ -3,8 +3,8 @@
 namespace App\Core\Providers;
 
 use Sdk\Module\Contracts\PortGateway\PortGatewayInterface;
-use Sdk\Module\Foundation\Support\Providers\ServiceProvider;
 use Sdk\Module\PortGateway\Client\Client as PortGateway;
+use Sdk\Module\Support\ServiceProvider;
 
 /**
  * @deprecated

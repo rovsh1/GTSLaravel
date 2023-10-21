@@ -4,9 +4,9 @@ namespace App\Admin\Http\Controllers\Supplier;
 
 use App\Admin\Components\Factory\Prototype;
 use App\Admin\Http\Controllers\Controller;
-use App\Admin\Models\Reference\City;
 use App\Admin\Models\Reference\TransportCar;
 use App\Admin\Models\Supplier\Car;
+use App\Admin\Models\Supplier\Service;
 use App\Admin\Models\Supplier\Supplier;
 use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\Breadcrumb;
@@ -15,6 +15,7 @@ use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Facades\Layout;
 use App\Admin\Support\Facades\Prototypes;
 use App\Admin\Support\Facades\Sidebar;
+use App\Admin\Support\Facades\Supplier\CarsAdapter;
 use App\Admin\Support\Http\Actions\DefaultDestroyAction;
 use App\Admin\Support\Http\Actions\DefaultFormCreateAction;
 use App\Admin\Support\Http\Actions\DefaultFormEditAction;
@@ -25,8 +26,10 @@ use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Layout as LayoutContract;
 use App\Admin\View\Menus\SupplierMenu;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use App\Admin\Http\Resources\Supplier\Car as CarResource;
 
 class CarController extends Controller
 {
@@ -88,6 +91,15 @@ class CarController extends Controller
         return (new DefaultDestroyAction())->handle($car);
     }
 
+    public function list(Supplier $supplier): JsonResponse
+    {
+        $cars = CarsAdapter::getCars($supplier->id);
+
+        return response()->json(
+            CarResource::collection($cars)
+        );
+    }
+
     protected function formFactory(Supplier $provider): FormContract
     {
         return Form::name('data')
@@ -100,11 +112,6 @@ class CarController extends Controller
                     'value' => $r->id,
                     'text' => (string)$r
                 ])
-            ])
-            ->select('city_ids', [
-                'label' => 'Город',
-                'multiple' => true,
-                'items' => $provider->cities()->get()
             ]);
     }
 
@@ -112,11 +119,7 @@ class CarController extends Controller
     {
         return Grid::paginator(16)
             ->edit(fn($r) => $this->prototype->route('cars.edit', [$provider, $r->id]))
-            ->text('car', ['text' => 'Автомобиль', 'renderer' => fn($v) => (string)$v])
-            ->text('cities', [
-                'text' => 'Город',
-                'renderer' => fn($v) => $v->cities()->get()->map->name->implode(', ')
-            ]);
+            ->text('car', ['text' => 'Автомобиль', 'renderer' => fn($v) => (string)$v]);
     }
 
     private function provider(Supplier $provider): void

@@ -6,7 +6,6 @@ namespace Module\Supplier\Application\Response;
 
 use Module\Shared\Contracts\Domain\EntityInterface;
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
-use Module\Shared\Enum\Supplier\ContractServiceTypeEnum;
 use Module\Shared\Support\Dto\AbstractDomainBasedDto;
 use Module\Supplier\Domain\Supplier\Entity\Contract;
 
@@ -16,7 +15,7 @@ class ServiceContractDto extends AbstractDomainBasedDto
         public readonly int $id,
         public readonly int $supplierId,
         public readonly int $serviceId,
-        public readonly ContractServiceTypeEnum $serviceType,
+//        public readonly ContractServiceTypeEnum $serviceType,
         public readonly string $dateStart,
         public readonly string $dateEnd,
     ) {}
@@ -29,7 +28,7 @@ class ServiceContractDto extends AbstractDomainBasedDto
             $entity->id()->value(),
             $entity->supplierId()->value(),
             $entity->serviceId()->value(),
-            $entity->serviceType(),
+//            $entity->serviceType(),
             (string)$entity->dateStart(),
             (string)$entity->dateEnd(),
         );
