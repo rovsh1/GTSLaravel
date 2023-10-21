@@ -14,6 +14,7 @@ const emit = defineEmits<{
 
 const props = withDefaults(defineProps<{
   opened: boolean
+  autoWidth?: boolean
   disabled?: MaybeRef<boolean>
   loading?: MaybeRef<boolean>
   clickOutsideIgnore?: (MaybeElementRef | string)[]
@@ -21,6 +22,7 @@ const props = withDefaults(defineProps<{
   disabled: false,
   loading: false,
   clickOutsideIgnore: undefined,
+  autoWidth: false,
 })
 
 const close = () => {
@@ -44,7 +46,7 @@ watch(() => props.opened, (value) => {
 </script>
 <template>
   <Teleport to="body">
-    <BodyScrollLock :value="opened" class="dialog" :class="{ opened }" v-bind="$attrs">
+    <BodyScrollLock :value="opened" class="dialog" :class="{ opened, 'auto-width': autoWidth }" v-bind="$attrs">
       <div class="inner">
         <OnClickOutside class="body" :options="clickOutsideOptions" @trigger="close">
           <template v-if="$slots['title']">
@@ -109,6 +111,10 @@ watch(() => props.opened, (value) => {
       transform: translateY(0);
     }
   }
+}
+
+.auto-width {
+  --dialog-width: auto;
 }
 
 .inner {
