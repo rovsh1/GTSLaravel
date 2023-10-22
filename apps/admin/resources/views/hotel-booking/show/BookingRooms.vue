@@ -475,6 +475,6 @@ onMounted(() => {
 }
 
 .pt-card-title {
-  padding-top: 0.813rem;
+  padding-top: 0;
 }
 </style>
