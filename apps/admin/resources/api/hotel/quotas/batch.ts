@@ -15,9 +15,9 @@ type UpdateHotelRoomQuotasBatchPayload = {
   action: string
 }
 
-export const updateHotelRoomQuotasBatch = (props: MaybeRef<UpdateHotelRoomQuotasBatchPayload | null>) =>
+export const useUpdateHotelRoomQuotasBatch = (props: MaybeRef<UpdateHotelRoomQuotasBatchPayload | null>) =>
   useAdminAPI(props, ({ hotelID }) =>
-    `/hotels/${hotelID}/quotas/date/batch`, { immediate: true })
+    `/hotels/${hotelID}/quotas/date/batch`)
     .put(computed<string>(() => JSON.stringify(
       getNullableRef<UpdateHotelRoomQuotasBatchPayload, any>(
         props,

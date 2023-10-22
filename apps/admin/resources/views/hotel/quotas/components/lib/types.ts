@@ -13,7 +13,7 @@ export type QuotasStatusUpdatePayload = {
   action: Action
 }
 
-export type Action = 'OPEN' | 'CLOSE'
+export type Action = 'open' | 'close'
 
 export type ActionsOption = {
   value: Action

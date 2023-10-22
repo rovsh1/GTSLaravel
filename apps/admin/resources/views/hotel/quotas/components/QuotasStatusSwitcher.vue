@@ -10,6 +10,7 @@ import { daysOfWeekOptions } from '~lib/constants'
 import CompactSelect from '~components/Bootstrap/CompactSelect.vue'
 import DateRangePicker from '~components/DateRangePicker.vue'
 import MultiSelect from '~components/MultiSelect.vue'
+import OverlayLoading from '~components/OverlayLoading.vue'
 
 import { Action, ActionsOption, QuotasStatusUpdateFormData, QuotasStatusUpdatePayload } from './lib/types'
 
@@ -29,8 +30,8 @@ const emit = defineEmits<{
 }>()
 
 const actionsOptions: ActionsOption[] = [
-  { value: 'OPEN', label: 'Открыть' },
-  { value: 'CLOSE', label: 'Закрыть' },
+  { value: 'open', label: 'Открыть' },
+  { value: 'close', label: 'Закрыть' },
 ]
 
 const periodElementID = `${nanoid()}_period`
@@ -80,7 +81,8 @@ watch(() => props.reInitForm, (newValue) => {
 
 <template>
   <div class="form-labels">
-    <div class="form-field field-daterange field-period field-required mb-4">
+    <OverlayLoading v-if="disabled" />
+    <div class="form-field field-daterange field-required mb-4">
       <DateRangePicker
         :id="periodElementID"
         label="Период"
@@ -91,7 +93,7 @@ watch(() => props.reInitForm, (newValue) => {
         @input="(dates) => updateQuotasFormData.period = dates as [Date, Date]"
       />
     </div>
-    <div class="form-field field-select field-days field-required mb-4">
+    <div class="form-field field-select field-required mb-4">
       <MultiSelect
         :id="priceTypesElementID"
         label="Выберите дни недели"
@@ -105,7 +107,7 @@ watch(() => props.reInitForm, (newValue) => {
         @input="value => updateQuotasFormData.daysWeekSelected = value"
       />
     </div>
-    <div class="form-field field-select field-days field-required mb-4">
+    <div class="form-field field-select field-required mb-4">
       <MultiSelect
         :id="roomsElementID"
         label="Выберите номер(а)"
@@ -119,7 +121,7 @@ watch(() => props.reInitForm, (newValue) => {
         @input="value => updateQuotasFormData.selectedRoomsID = value"
       />
     </div>
-    <div class="form-field field-select field-days field-required">
+    <div class="form-field field-select field-required">
       <CompactSelect
         :options="actionsOptions"
         label="Действие"
@@ -159,26 +161,6 @@ watch(() => props.reInitForm, (newValue) => {
     input,
     .label {
       font-size: 0.688rem;
-    }
-  }
-
-  .field-period {
-    width: 11.25rem;
-
-    input {
-      text-align: right;
-    }
-  }
-
-  .field-days {
-    width: 16.25rem;
-  }
-
-  .field-price {
-    width: 5.625rem;
-
-    input {
-      text-align: right;
     }
   }
 }

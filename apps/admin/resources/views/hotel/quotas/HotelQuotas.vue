@@ -6,7 +6,7 @@ import pencilIcon from '@mdi/svg/svg/pencil.svg'
 import { useToggle } from '@vueuse/core'
 import { z } from 'zod'
 
-import { updateHotelRoomQuotasBatch } from '~resources/api/hotel/quotas/batch'
+import { useUpdateHotelRoomQuotasBatch } from '~resources/api/hotel/quotas/batch'
 import { formatDateToAPIDate } from '~resources/lib/date'
 import { createHotelSwitcher } from '~resources/lib/hotel-switcher/hotel-switcher'
 
@@ -19,7 +19,6 @@ import { injectInitialData } from '~lib/vue'
 import BaseDialog from '~components/BaseDialog.vue'
 import BaseLayout from '~components/BaseLayout.vue'
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
-import { showToast } from '~components/Bootstrap/BootstrapToast'
 import OverlayLoading from '~components/OverlayLoading.vue'
 
 import QuotasFilters from './components/QuotasFilters/QuotasFilters.vue'
@@ -61,7 +60,6 @@ const filtersQuotasStatusBatchPayload = ref<QuotasStatusUpdatePayload | null>(nu
 const filtersPayload = ref<FiltersPayload>(defaultFiltersPayload)
 const waitLoadAndRedrawData = ref<boolean>(false)
 const waitSwitchRooms = ref<boolean>(false)
-const waitUpdateQuotasStatusBatch = ref<boolean>(false)
 const updatedRoomID = ref<number | null>(null)
 
 const {
@@ -75,6 +73,22 @@ const {
     dateTo: formatDateToAPIDate(dateTo),
     roomID: undefined,
     availability: availability ?? undefined,
+  }
+}))
+
+const {
+  execute: executeUpdateHotelRoomQuotasBatch,
+  isFetching: isUpdateHotelRoomQuotasBatch,
+} = useUpdateHotelRoomQuotasBatch(computed(() => {
+  if (!filtersQuotasStatusBatchPayload.value) return null
+  const { dateFrom, dateTo, selectedRoomsID, daysWeekSelected, action } = filtersQuotasStatusBatchPayload.value
+  return {
+    hotelID,
+    dateFrom: formatDateToAPIDate(dateFrom),
+    dateTo: formatDateToAPIDate(dateTo),
+    weekDays: daysWeekSelected,
+    roomIds: selectedRoomsID,
+    action,
   }
 }))
 
@@ -143,23 +157,9 @@ const switchRooms = (value: number[]) => {
 }
 
 const handleUpdateQuotasBatch = async () => {
-  if (!filtersQuotasStatusBatchPayload.value) return
-  waitUpdateQuotasStatusBatch.value = true
-  const { data: updateStatusResponse } = await updateHotelRoomQuotasBatch({
-    hotelID,
-    dateFrom: formatDateToAPIDate(filtersQuotasStatusBatchPayload.value.dateFrom),
-    dateTo: formatDateToAPIDate(filtersQuotasStatusBatchPayload.value.dateTo),
-    weekDays: filtersQuotasStatusBatchPayload.value.daysWeekSelected,
-    roomIds: filtersQuotasStatusBatchPayload.value.selectedRoomsID,
-    action: filtersQuotasStatusBatchPayload.value.action,
-  })
-  if (updateStatusResponse.value?.success) {
-    showToast({ title: 'Статус квот успешно обновлён' }, {
-      type: 'success',
-    })
-  }
-  waitUpdateQuotasStatusBatch.value = false
+  await executeUpdateHotelRoomQuotasBatch()
   fetchHotelQuotasWrapper()
+  toggleModalOpenCloseQuotas(false)
 }
 
 </script>
@@ -240,19 +240,19 @@ const handleUpdateQuotasBatch = async () => {
         :initial-period="[filtersPayload.dateFrom, filtersPayload.dateTo]"
         :re-init-form="isOpenedOpenCloseQuotasModal"
         :rooms="rooms"
-        :disabled="waitUpdateQuotasStatusBatch"
+        :disabled="isUpdateHotelRoomQuotasBatch"
         @submit="value => filtersQuotasStatusBatchPayload = value"
       />
       <template #actions-end>
         <button
           class="btn btn-primary"
           type="button"
-          :disabled="!filtersQuotasStatusBatchPayload || waitUpdateQuotasStatusBatch"
+          :disabled="!filtersQuotasStatusBatchPayload || isUpdateHotelRoomQuotasBatch"
           @click="handleUpdateQuotasBatch"
         >
           Применить
         </button>
-        <button :disabled="waitUpdateQuotasStatusBatch" class="btn btn-cancel" type="button" @click="toggleModalOpenCloseQuotas(false)">Скрыть</button>
+        <button :disabled="isUpdateHotelRoomQuotasBatch" class="btn btn-cancel" type="button" @click="toggleModalOpenCloseQuotas(false)">Скрыть</button>
       </template>
     </BaseDialog>
   </div>
