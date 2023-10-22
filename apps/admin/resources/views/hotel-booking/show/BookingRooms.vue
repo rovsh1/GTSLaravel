@@ -3,6 +3,7 @@
 import { computed, MaybeRef, onMounted, reactive, ref, unref, watch } from 'vue'
 import InlineSVG from 'vue-inline-svg'
 
+import touchIcon from '@mdi/svg/svg/gesture-tap.svg'
 import informationIcon from '@mdi/svg/svg/information.svg'
 import { useToggle } from '@vueuse/core'
 import { z } from 'zod'
@@ -343,8 +344,12 @@ onMounted(() => {
         </table>
         <div v-if="grossCurrency" class="d-flex flex-row justify-content-between w-100 mt-2">
           <span class="prices-information">
+            <strong>
+              Итого: {{ formatPrice(room.price.grossValue, grossCurrency.sign) }}
+            </strong>
+            <br>
             <strong class="prices-information-details">
-              Цена за ночь:
+              <span>Цена за ночь: </span>
               <span v-if="getMinDayPrices(room.price.dayPrices) === getMaxDayPrices(room.price.dayPrices)">
                 {{ formatPrice(getMinDayPrices(room.price.dayPrices) as number, grossCurrency.sign) }}
               </span>
@@ -364,17 +369,15 @@ onMounted(() => {
               >
                 <InlineSVG :src="informationIcon" class="informationIcon" />
               </button>
-            </strong>
-            <br>
-            <strong>
-              Итого: {{ formatPrice(room.price.grossValue, grossCurrency.sign) }}
+              <span v-if="room.price.grossDayValue" v-tooltip="'Цена за номер выставлена вручную'" class="prices-information-details-info">
+                <InlineSVG :src="touchIcon" class="informationIcon" />
+              </span>
             </strong>
           </span>
           <a v-if="canChangeRoomPrice" href="#" @click.prevent="handleEditRoomPrice(room.id, room.price)">
             Изменить цену номера
           </a>
         </div>
-        <span v-if="room.price.grossDayValue" class="text-muted">(цена за номер выставлена вручную)</span>
       </InfoBlock>
 
       <InfoBlock>
@@ -445,6 +448,9 @@ onMounted(() => {
 <style lang="scss" scoped>
 .prices-information {
   .prices-information-details {
+    font-weight: 400;
+    font-style: italic;
+
     & > * {
       vertical-align: middle
     }
@@ -460,6 +466,10 @@ onMounted(() => {
       background-color: transparent;
       outline: none;
       cursor: pointer;
+    }
+
+    .prices-information-details-info {
+      padding-bottom: 0.313rem;
     }
   }
 }
