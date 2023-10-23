@@ -17,8 +17,8 @@
             'DAY_CAR_TRIP' => \Module\Shared\Enum\ServiceTypeEnum::DAY_CAR_TRIP,
             'TRANSFER_FROM_RAILWAY' => \Module\Shared\Enum\ServiceTypeEnum::TRANSFER_FROM_RAILWAY,
             'TRANSFER_TO_RAILWAY' => \Module\Shared\Enum\ServiceTypeEnum::TRANSFER_TO_RAILWAY,
-            'CIP_IN_AIRPORT' => \Module\Shared\Enum\ServiceTypeEnum::CIP_IN_AIRPORT,
-            'OTHER' => \Module\Shared\Enum\ServiceTypeEnum::OTHER,
+            'CIP_ROOM_IN_AIRPORT' => \Module\Shared\Enum\ServiceTypeEnum::CIP_ROOM_IN_AIRPORT,
+            'OTHER_SERVICE' => \Module\Shared\Enum\ServiceTypeEnum::OTHER_SERVICE,
             'INTERCITY_TRANSFER' => \Module\Shared\Enum\ServiceTypeEnum::INTERCITY_TRANSFER,
         ]) }}
     </script>
@@ -30,7 +30,8 @@
     <div class="content-body">
         <div class="card card-form">
             <div class="card-body">
-                <form action="{{ $form->action }}" method="{{ strtoupper($form->method) === 'GET' ? 'GET' : 'POST' }}" enctype="multipart/form-data">
+                <form action="{{ $form->action }}" method="{{ strtoupper($form->method) === 'GET' ? 'GET' : 'POST' }}"
+                      enctype="multipart/form-data">
                     <div class="form-group">{!! $form !!}</div>
 
                     <div class="form-buttons">

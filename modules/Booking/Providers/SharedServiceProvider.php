@@ -2,12 +2,12 @@
 
 namespace Module\Booking\Providers;
 
-use Module\Booking\Domain\Booking\Service\StatusStorageInterface;
+use Module\Booking\Domain\Booking\Repository\BookingGuestRepositoryInterface;
 use Module\Booking\Domain\Shared\Adapter\AdministratorAdapterInterface;
 use Module\Booking\Domain\Shared\Adapter\ClientAdapterInterface;
 use Module\Booking\Domain\Shared\Adapter\CountryAdapterInterface;
 use Module\Booking\Domain\Shared\Repository\BookingChangesLogRepositoryInterface;
-use Module\Booking\Infrastructure\Service\StatusStorage;
+use Module\Booking\Infrastructure\AirportBooking\Repository\BookingGuestRepository;
 use Module\Booking\Infrastructure\Shared\Adapter\AdministratorAdapter;
 use Module\Booking\Infrastructure\Shared\Adapter\ClientAdapter;
 use Module\Booking\Infrastructure\Shared\Adapter\CountryAdapter;
@@ -24,6 +24,6 @@ class SharedServiceProvider extends ServiceProvider
 
         $this->app->singleton(BookingChangesLogRepositoryInterface::class, BookingChangesLogRepository::class);
 
-        $this->app->singleton(StatusStorageInterface::class, StatusStorage::class);
+        $this->app->singleton(BookingGuestRepositoryInterface::class, BookingGuestRepository::class);
     }
 }

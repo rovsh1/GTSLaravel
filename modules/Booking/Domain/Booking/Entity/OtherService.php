@@ -23,7 +23,7 @@ class OtherService implements ServiceDetailsInterface
 
     public function serviceType(): ServiceTypeEnum
     {
-        return ServiceTypeEnum::OTHER;
+        return ServiceTypeEnum::OTHER_SERVICE;
     }
 
     public function serviceInfo(): ServiceInfo

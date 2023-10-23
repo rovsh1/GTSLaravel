@@ -6,12 +6,13 @@ import { nanoid } from 'nanoid'
 import { updateRoomSeasonPricesBatch } from '~resources/api/hotel/prices/seasons'
 import { formatDateToAPIDate } from '~resources/lib/date'
 
+import { daysOfWeekOptions } from '~lib/constants'
+
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 import { showToast } from '~components/Bootstrap/BootstrapToast'
 import DateRangePicker from '~components/DateRangePicker.vue'
 import MultiSelect from '~components/MultiSelect.vue'
 
-import { daysOfWeekOptions } from '../lib/constants'
 import { stringToNumber } from '../lib/convert'
 import { PricesAccumulationData, SeasonPeriod, SeasonUpdateFormData } from '../lib/types'
 
@@ -73,7 +74,7 @@ const onSubmitUpdateData = async () => {
         :min-date="seasonPeriod.from"
         :max-date="seasonPeriod.to"
         :value="seasonFormData.period"
-        @input="(dates) => seasonFormData.period = dates"
+        @input="(dates) => seasonFormData.period = dates as [Date, Date]"
       />
     </div>
     <div class="form-field field-select field-days field-required">

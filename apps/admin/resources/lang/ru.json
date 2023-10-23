@@ -62,7 +62,7 @@
     "Module\\Shared\\Enum\\SourceEnum::API": "API",
     "Module\\Shared\\Enum\\SourceEnum::CONSOLE": "Крон",
 
-    "Module\\Shared\\Enum\\ServiceTypeEnum::DAY_CAR_TRIP": "DAY_CAR_TRIP (translation)",
+    "Module\\Shared\\Enum\\ServiceTypeEnum::DAY_CAR_TRIP": "Однодневная поездка",
     "Module\\Shared\\Enum\\ServiceTypeEnum::INTERCITY_TRANSFER": "Междугородный трансфер",
     "Module\\Shared\\Enum\\ServiceTypeEnum::CAR_RENT_WITH_DRIVER": "Аренда авто с водителем",
     "Module\\Shared\\Enum\\ServiceTypeEnum::TRANSFER_TO_RAILWAY": "Трансфер до ж/д вокзала",
@@ -71,8 +71,8 @@
     "Module\\Shared\\Enum\\ServiceTypeEnum::TRANSFER_FROM_AIRPORT": "Трансфер от аэропорта",
     "Module\\Shared\\Enum\\ServiceTypeEnum::MEETING_IN_AIRPORT": "Встреча аэропорту",
     "Module\\Shared\\Enum\\ServiceTypeEnum::SEEING_IN_AIRPORT": "Проводы в аэропорт",
-    "Module\\Shared\\Enum\\ServiceTypeEnum::CIP_IN_AIRPORT": "CIP услуга в аэропорту",
-    "Module\\Shared\\Enum\\ServiceTypeEnum::OTHER": "Доп. услуга",
+    "Module\\Shared\\Enum\\ServiceTypeEnum::CIP_ROOM_IN_AIRPORT": "CIP услуга в аэропорту",
+    "Module\\Shared\\Enum\\ServiceTypeEnum::OTHER_SERVICE": "Доп. услуга",
 
     "Hotel\\StatusEnum::DRAFT": "Черновик",
     "Hotel\\StatusEnum::PUBLISHED": "Опубликован",

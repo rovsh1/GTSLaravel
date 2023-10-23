@@ -28,6 +28,6 @@ class Other extends Model implements DetailsModelInterface
 
     public function serviceType(): ServiceTypeEnum
     {
-        return ServiceTypeEnum::OTHER;
+        return ServiceTypeEnum::OTHER_SERVICE;
     }
 }

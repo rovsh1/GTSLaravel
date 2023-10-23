@@ -63,7 +63,7 @@ class CIPRoomInAirportRepository extends AbstractDetailsRepository implements CI
     {
         return (bool)Airport::whereId($details->id()->value())->update([
             'date' => $details->serviceDate(),
-            'data' => [
+            'booking_airport_details.data' => [
                 'serviceInfo' => $this->serializeServiceInfo($details->serviceInfo()),
                 'airportId' => $details->airportId()->value(),
                 'flightNumber' => $details->flightNumber(),

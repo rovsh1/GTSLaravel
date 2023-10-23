@@ -41,4 +41,19 @@ class CarRentWithDriver implements ServiceDetailsInterface
     {
         return $this->cityId;
     }
+
+    public function getHoursLimit(): ?int
+    {
+        return $this->hoursLimit;
+    }
+
+    public function setHoursLimit(?int $hoursLimit): void
+    {
+        $this->hoursLimit = $hoursLimit;
+    }
+
+    public function serviceInfo(): ServiceInfo
+    {
+        return $this->serviceInfo;
+    }
 }

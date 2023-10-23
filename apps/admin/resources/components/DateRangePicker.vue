@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import { computed, nextTick, onMounted, onUnmounted } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref } from 'vue'
 
+import { onClickOutside } from '@vueuse/core'
 import { Litepicker } from 'litepicker'
 import { DateTime, Interval } from 'luxon'
 
 import { DateResponse } from '~api'
 import { DatePeriod } from '~api/hotel/markup-settings'
 
-import { formatPeriod, parseAPIDate } from '~lib/date'
-import { useDateRangePicker } from '~lib/date-picker/date-picker'
+import { compareJSDate, formatPeriod, parseAPIDate } from '~lib/date'
+import { useDateRangePicker, useSingleDatePicker } from '~lib/date-picker/date-picker'
 
 const props = withDefaults(defineProps<{
   id: string
@@ -18,11 +19,13 @@ const props = withDefaults(defineProps<{
   labelOutline?: boolean
   required?: boolean
   disabled?: boolean
-  value?: [Date, Date]
+  value?: [Date, Date] | Date
   lockPeriods?: DatePeriod[]
   editableId?: number
   minDate?: DateResponse
   maxDate?: DateResponse
+  singleMode?: boolean
+  setInputFocus?: boolean
 }>(), {
   required: false,
   label: undefined,
@@ -35,15 +38,22 @@ const props = withDefaults(defineProps<{
   labelOutline: true,
   isError: false,
   errorText: '',
+  singleMode: false,
+  setInputFocus: false,
 })
 
 const emit = defineEmits<{
-  (event: 'input', value: [Date, Date]): void
+  (event: 'input', value: [Date, Date] | Date): void
+  (event: 'pressEnter'): void
+  (event: 'pressEsc'): void
+  (event: 'clickOutside'): void
 }>()
 
+const inputRef = ref<HTMLInputElement | null>(null)
 const localValue = computed(() => props.value)
 const displayValue = computed(() => {
   if (props.value) {
+    if (!Array.isArray(props.value)) return ''
     const period = {
       date_start: props.value[0].toISOString(),
       date_end: props.value[1].toISOString(),
@@ -80,22 +90,49 @@ const lockDaysFilter = (inputDate: any) => {
   }) !== undefined
 }
 
+onClickOutside(inputRef, (event: MouseEvent) => {
+  const dropDownLitepickerElement = document.querySelector('.litepicker')
+  if (!dropDownLitepickerElement?.contains(event.target as Node)) {
+    emit('clickOutside')
+  }
+})
+
 let picker: Litepicker
 
 onMounted(() => {
   nextTick(() => {
     const periodInput = document.getElementById(props.id) as HTMLInputElement
-    picker = useDateRangePicker(periodInput, { lockDaysFilter })
+    if (props.singleMode) {
+      picker = useSingleDatePicker(periodInput, { lockDaysFilter, singleMode: props.singleMode })
+    } else {
+      picker = useDateRangePicker(periodInput, { lockDaysFilter, singleMode: props.singleMode })
+    }
     picker.on('before:show', () => {
       if (localValue.value) {
-        picker.setDateRange(localValue.value[0], localValue.value[1])
+        if (Array.isArray(localValue.value)) {
+          picker.setDateRange(localValue.value[0], localValue.value[1])
+        } else {
+          picker.setDate(localValue.value)
+        }
       } else {
         picker.clearSelection()
       }
     })
     picker.on('selected', (date1: any, date2: any) => {
-      emit('input', [date1.dateInstance, date2.dateInstance])
+      if (props.singleMode) {
+        if (!Array.isArray(localValue.value) && localValue.value && !compareJSDate(localValue.value, date1.dateInstance)) {
+          emit('input', date1.dateInstance)
+        } else if (!localValue.value) {
+          emit('input', date1.dateInstance)
+        }
+      } else {
+        emit('input', [date1.dateInstance, date2.dateInstance])
+      }
     })
+    if (props.setInputFocus) {
+      periodInput.focus()
+      periodInput.click()
+    }
   })
 })
 
@@ -109,7 +146,16 @@ onUnmounted(() => {
 <template>
   <div :class="{ 'field-required': required }" style="position: relative;">
     <label v-if="label" :class="{ 'label-inline': !labelOutline }" :for="id">{{ label }}</label>
-    <input :id="id" class="form-control" :required="required" :disabled="disabled" :value="displayValue">
+    <input
+      :id="id"
+      ref="inputRef"
+      class="form-control"
+      :required="required"
+      :disabled="disabled"
+      :value="displayValue"
+      @keydown.esc="emit('pressEsc')"
+      @keydown.enter="emit('pressEnter')"
+    >
     <div v-if="isError" class="invalid-feedback">{{ errorText }}</div>
   </div>
 </template>

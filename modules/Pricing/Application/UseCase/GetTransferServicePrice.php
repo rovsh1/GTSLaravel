@@ -44,11 +44,11 @@ class GetTransferServicePrice implements UseCaseInterface
         }
 
         return new ServicePriceDto(
-            netPrice: new PriceDto(
+            supplierPrice: new PriceDto(
                 amount: $servicePrice->price_net,
                 currency: $servicePrice->currency
             ),
-            grossPrice: new PriceDto(
+            clientPrice: new PriceDto(
                 amount: (float)$grossPrice['amount'],
                 currency: $grossCurrency
             ),

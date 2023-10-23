@@ -12,6 +12,7 @@ export interface Client {
   type: number
   is_legal: boolean
   currency_id: number
+  currency?: string
 }
 
 export interface Industry {

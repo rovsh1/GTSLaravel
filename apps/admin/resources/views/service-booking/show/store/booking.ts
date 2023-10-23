@@ -7,6 +7,7 @@ import { showCancelFeeDialog } from '~resources/views/booking/lib/modals'
 
 import {
   copyBooking,
+  updateBookingDetails as executeUpdateDetails,
   updateBookingStatus,
   UpdateBookingStatusPayload,
   updateManager as executeUpdateManager,
@@ -70,6 +71,11 @@ export const useBookingStore = defineStore('booking', () => {
     bookingManagerId.value = Number(managerId)
   }
 
+  const updateDetails = async (field: string, value: any) => {
+    await executeUpdateDetails({ bookingID, field, value })
+    fetchBooking()
+  }
+
   onMounted(() => {
     fetchStatuses()
     fetchBooking()
@@ -90,5 +96,6 @@ export const useBookingStore = defineStore('booking', () => {
     copy,
     updateNote,
     updateManager,
+    updateDetails,
   }
 })

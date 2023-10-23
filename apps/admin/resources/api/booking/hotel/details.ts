@@ -13,6 +13,7 @@ export interface HotelBookingGuest {
 export interface RoomInfo {
   id: number
   name: string
+  guestsCount?: number
 }
 
 export interface HotelRoomBookingDetails {

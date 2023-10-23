@@ -140,7 +140,7 @@ const isStateChanged = computed<boolean>(() =>
       :label-outline="false"
       :value="selectedPeriod"
       :disabled="(loading as boolean)"
-      @input="(dates) => handlePeriodChanges(dates)"
+      @input="(dates) => handlePeriodChanges(dates as [Date, Date])"
     />
     <CompactSelect
       :options="availabilityOptions"

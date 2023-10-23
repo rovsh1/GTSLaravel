@@ -4,6 +4,7 @@ import { MaybeRef } from '@vueuse/core'
 
 import { BaseResponse, useAdminAPI } from '~api'
 import { BaseBooking, BookingID } from '~api/booking/models'
+import { Car } from '~api/supplier/cars'
 
 import { getNullableRef } from '~lib/vue'
 
@@ -17,12 +18,31 @@ export type AirportInfo = {
   name: string
 }
 
-export interface BookingDetails {
+export type RailwayStationInfo = {
+  id: number
+  name: string
+}
 
+export type ServiceInfo = ServiceType & {
+  supplierId: number
+}
+
+export type CarBid = {
+  id: number
+  carInfo: Car
+  carsCount: number
+  passengersCount: number
+  baggageCount: number
+  babyCount: number
+}
+
+export interface BookingDetailsType {
+  id: number
+  name: string
 }
 
 export type Booking = {
-  details?: BookingDetails
+  details?: any
   serviceType: ServiceType
 } & BaseBooking
 
@@ -61,6 +81,12 @@ export interface UpdateBookingStatusResponse {
 
 export interface CopyBookingPayload {
   bookingID: BookingID
+}
+
+export interface UpdateBookingDetailsPayload {
+  bookingID: BookingID
+  field: string
+  value: any
 }
 
 export const useGetBookingAPI = (props: MaybeRef<GetBookingPayload>) =>
@@ -144,3 +170,25 @@ export const copyBooking = (props: MaybeRef<CopyBookingPayload>) => {
   form.action = `/service-booking/${payload.bookingID}/copy`
   form.submit()
 }
+
+export const updateBookingDetails = (props: MaybeRef<UpdateBookingDetailsPayload>) =>
+  useAdminAPI(
+    props,
+    ({ bookingID }) => `/service-booking/${bookingID}/details`,
+    { immediate: true },
+  )
+    .put(computed<string>(() => JSON.stringify(
+      getNullableRef<UpdateBookingDetailsPayload, any>(
+        props,
+        (payload: UpdateBookingDetailsPayload): any => ({
+          field: payload.field,
+          value: payload.value,
+        }),
+      ),
+    )), 'application/json')
+    .json<UpdateBookingStatusResponse>()
+
+export const useGetBookingDetailsTypesAPI = (props?: any) =>
+  useAdminAPI(props, () => '/service-booking/details/types')
+    .get()
+    .json<BookingDetailsType[]>()

@@ -18,8 +18,7 @@ class RoomBookingDetails implements ValueObjectInterface, SerializableDataInterf
         private readonly Condition|null $lateCheckOut = null,
         private readonly string|null $guestNote = null,
         private readonly Percent $discount = new Percent(0),
-    ) {
-    }
+    ) {}
 
     public function rateId(): int
     {
@@ -81,17 +80,17 @@ class RoomBookingDetails implements ValueObjectInterface, SerializableDataInterf
     public function isEqual(mixed $b): bool
     {
         if ($b instanceof RoomBookingDetails) {
-            $isEarlyConditionsEqual = $this->earlyCheckIn === null;
-            if (!$isEarlyConditionsEqual) {
-                return $this->earlyCheckIn->isEqual($b->earlyCheckIn);
+            $isEarlyConditionsEqual = $this->earlyCheckIn === $b->earlyCheckIn;
+            if ($this->earlyCheckIn !== null) {
+                $isEarlyConditionsEqual = $this->earlyCheckIn->isEqual($b->earlyCheckIn);
             }
-            $isLateConditionsEqual = $this->lateCheckOut === null;
-            if (!$isLateConditionsEqual) {
-                return $this->lateCheckOut->isEqual($b->lateCheckOut);
+            $isLateConditionsEqual = $this->lateCheckOut === $b->lateCheckOut;
+            if ($this->lateCheckOut !== null) {
+                $isLateConditionsEqual = $this->lateCheckOut->isEqual($b->lateCheckOut);
             }
-            $isDiscountEqual = $this->discount === null;
-            if (!$isDiscountEqual) {
-                return $this->discount->isEqual($b->discount);
+            $isDiscountEqual = $this->discount === $b->discount;
+            if ($this->discount !== null) {
+                $isDiscountEqual = $this->discount->isEqual($b->discount);
             }
 
             return $this->rateId === $b->rateId

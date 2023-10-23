@@ -67,14 +67,12 @@ class SupplierAdapter implements SupplierAdapterInterface
     public function getAirportServicePrice(
         int $supplierId,
         int $serviceId,
-        int $airportId,
         CurrencyEnum $grossCurrency,
         CarbonInterface $date
     ): ?ServicePriceDto {
         return app(GetAirportServicePrice::class)->execute(
             $supplierId,
             $serviceId,
-            $airportId,
             $grossCurrency,
             $date
         );
