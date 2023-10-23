@@ -25,7 +25,6 @@ enum ServiceTypeEnum: int
             self::TRANSFER_FROM_RAILWAY,
             self::TRANSFER_TO_RAILWAY,
             self::DAY_CAR_TRIP,
-            self::INTERCITY_TRANSFER,
         ];
     }
 
