@@ -311,10 +311,10 @@ class BookingController extends Controller
                 'label' => 'Валюта',
                 'emptyItem' => '',
             ])
-            ->enum('service_type', [
+            ->bookingServiceType('service_type', [
                 'label' => 'Тип услуги',
                 'emptyItem' => '',
-                'enum' => ServiceTypeEnum::class,
+                'withoutHotel' => true,
                 'required' => true
             ])
             ->hidden('service_id', ['label' => 'Услуга', 'required' => true])

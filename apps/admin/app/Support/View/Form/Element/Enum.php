@@ -34,7 +34,7 @@ class Enum extends Select
         return parent::prepareValue($value);
     }
 
-    private function getItems(): array
+    protected function getItems(): array
     {
         return array_map(function ($case): array {
             return [

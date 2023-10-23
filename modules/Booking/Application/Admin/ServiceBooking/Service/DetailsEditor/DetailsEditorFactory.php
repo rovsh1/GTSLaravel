@@ -22,8 +22,11 @@ class DetailsEditorFactory
             ServiceTypeEnum::TRANSFER_FROM_AIRPORT => $this->module->make(Editor\TransferFromAirport::class),
             ServiceTypeEnum::CIP_ROOM_IN_AIRPORT => $this->module->make(Editor\CIPRoomInAirport::class),
             ServiceTypeEnum::HOTEL_BOOKING => $this->module->make(Editor\HotelBooking::class),
-            ServiceTypeEnum::OTHER_SERVICE => $this->module->make(Editor\OtherService::class),
             ServiceTypeEnum::INTERCITY_TRANSFER => $this->module->make(Editor\IntercityTransfer::class),
+            ServiceTypeEnum::DAY_CAR_TRIP => $this->module->make(Editor\DayCarTrip::class),
+            ServiceTypeEnum::TRANSFER_FROM_RAILWAY => $this->module->make(Editor\TransferFromRailway::class),
+            ServiceTypeEnum::TRANSFER_TO_RAILWAY => $this->module->make(Editor\TransferToRailway::class),
+            ServiceTypeEnum::OTHER_SERVICE => $this->module->make(Editor\OtherService::class),
             default => throw new \Exception('Unknown service details')
         };
     }

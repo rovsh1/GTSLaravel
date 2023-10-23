@@ -8,11 +8,14 @@ use Module\Booking\Domain\Booking\Booking;
 use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Domain\Booking\Repository\Details\CarRentWithDriverRepositoryInterface;
 use Module\Booking\Domain\Booking\Repository\Details\CIPRoomInAirportRepositoryInterface;
+use Module\Booking\Domain\Booking\Repository\Details\DayCarTripRepositoryInterface;
 use Module\Booking\Domain\Booking\Repository\Details\HotelBookingRepositoryInterface;
 use Module\Booking\Domain\Booking\Repository\Details\IntercityTransferRepositoryInterface;
 use Module\Booking\Domain\Booking\Repository\Details\OtherServiceRepositoryInterface;
 use Module\Booking\Domain\Booking\Repository\Details\TransferFromAirportRepositoryInterface;
+use Module\Booking\Domain\Booking\Repository\Details\TransferFromRailwayRepositoryInterface;
 use Module\Booking\Domain\Booking\Repository\Details\TransferToAirportRepositoryInterface;
+use Module\Booking\Domain\Booking\Repository\Details\TransferToRailwayRepositoryInterface;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
 use Module\Shared\Enum\ServiceTypeEnum;
 use Sdk\Module\Contracts\ModuleInterface;
@@ -40,6 +43,9 @@ class DetailsRepositoryFactory
             ServiceTypeEnum::CIP_ROOM_IN_AIRPORT => $this->module->make(CIPRoomInAirportRepositoryInterface::class),
             ServiceTypeEnum::INTERCITY_TRANSFER => $this->module->make(IntercityTransferRepositoryInterface::class),
             ServiceTypeEnum::CAR_RENT_WITH_DRIVER => $this->module->make(CarRentWithDriverRepositoryInterface::class),
+            ServiceTypeEnum::DAY_CAR_TRIP => $this->module->make(DayCarTripRepositoryInterface::class),
+            ServiceTypeEnum::TRANSFER_TO_RAILWAY => $this->module->make(TransferToRailwayRepositoryInterface::class),
+            ServiceTypeEnum::TRANSFER_FROM_RAILWAY => $this->module->make(TransferFromRailwayRepositoryInterface::class),
             ServiceTypeEnum::OTHER_SERVICE => $this->module->make(OtherServiceRepositoryInterface::class),
             default => throw new \RuntimeException('Service type repository not implemented'),
         };

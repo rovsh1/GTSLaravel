@@ -6,12 +6,15 @@ namespace Module\Booking\Infrastructure\ServiceBooking\Factory;
 
 use Module\Booking\Domain\Booking\Entity\CarRentWithDriver;
 use Module\Booking\Domain\Booking\Entity\CIPRoomInAirport;
+use Module\Booking\Domain\Booking\Entity\DayCarTrip;
 use Module\Booking\Domain\Booking\Entity\HotelBooking;
 use Module\Booking\Domain\Booking\Entity\IntercityTransfer;
 use Module\Booking\Domain\Booking\Entity\OtherService;
 use Module\Booking\Domain\Booking\Entity\ServiceDetailsInterface;
 use Module\Booking\Domain\Booking\Entity\TransferFromAirport;
+use Module\Booking\Domain\Booking\Entity\TransferFromRailway;
 use Module\Booking\Domain\Booking\Entity\TransferToAirport;
+use Module\Booking\Domain\Booking\Entity\TransferToRailway;
 use Module\Booking\Domain\Booking\ValueObject\AirportId;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Domain\Booking\ValueObject\BookingPeriod;
@@ -21,6 +24,7 @@ use Module\Booking\Domain\Booking\ValueObject\DetailsId;
 use Module\Booking\Domain\Booking\ValueObject\HotelBooking\ExternalNumber;
 use Module\Booking\Domain\Booking\ValueObject\HotelBooking\HotelInfo;
 use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomBookingIdCollection;
+use Module\Booking\Domain\Booking\ValueObject\RailwayStationId;
 use Module\Booking\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Booking\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Booking\Infrastructure\ServiceBooking\Models\Booking;
@@ -54,6 +58,7 @@ class DetailsFactory
             ServiceTypeEnum::TRANSFER_FROM_AIRPORT => $this->buildTransferFromAirportDetails($model),
             ServiceTypeEnum::TRANSFER_TO_RAILWAY => $this->buildTransferToRailwayDetails($model),
             ServiceTypeEnum::TRANSFER_FROM_RAILWAY => $this->buildTransferFromRailwayDetails($model),
+            ServiceTypeEnum::DAY_CAR_TRIP => $this->buildDayCarTripDetails($model),
             ServiceTypeEnum::INTERCITY_TRANSFER => $this->buildIntercityTransferDetails($model),
             ServiceTypeEnum::OTHER_SERVICE => $this->buildOtherDetails($model),
             default => throw new \Exception('Unknown Booking service type')
@@ -126,12 +131,49 @@ class DetailsFactory
 
     private function buildTransferToRailwayDetails(Transfer $details): mixed
     {
-        throw new \Exception('Not implemented');
+        $detailsData = $details->data;
+
+        return new TransferToRailway(
+            id: new DetailsId($details->id),
+            bookingId: new BookingId($details->bookingId()),
+            serviceInfo: $this->buildServiceInfo($detailsData['serviceInfo']),
+            railwayStationId: new RailwayStationId($detailsData['cityId']),
+            departureDate: $details->date_start,
+            meetingTablet: $detailsData['meetingTablet'],
+            trainNumber: $detailsData['trainNumber'],
+            carBids: CarBidCollection::fromData($detailsData['carBids'])
+        );
     }
 
     private function buildTransferFromRailwayDetails(Transfer $details): mixed
     {
-        throw new \Exception('Not implemented');
+        $detailsData = $details->data;
+
+        return new TransferFromRailway(
+            id: new DetailsId($details->id),
+            bookingId: new BookingId($details->bookingId()),
+            serviceInfo: $this->buildServiceInfo($detailsData['serviceInfo']),
+            railwayStationId: new RailwayStationId($detailsData['cityId']),
+            arrivalDate: $details->date_start,
+            meetingTablet: $detailsData['meetingTablet'],
+            trainNumber: $detailsData['trainNumber'],
+            carBids: CarBidCollection::fromData($detailsData['carBids'])
+        );
+    }
+
+    private function buildDayCarTripDetails(Transfer $details): mixed
+    {
+        $detailsData = $details->data;
+
+        return new DayCarTrip(
+            id: new DetailsId($details->id),
+            bookingId: new BookingId($details->bookingId()),
+            serviceInfo: $this->buildServiceInfo($detailsData['serviceInfo']),
+            cityId: $detailsData['cityId'],
+            destinationsDescription: $detailsData['destinationsDescription'],
+            date: $details->date_start,
+            carBids: CarBidCollection::fromData($detailsData['carBids'])
+        );
     }
 
     private function buildCarRentWithDriverDetails(Transfer $details): mixed

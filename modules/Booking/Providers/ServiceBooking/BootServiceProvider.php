@@ -6,11 +6,14 @@ use Module\Booking\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Domain\Booking\Repository\Details\CarRentWithDriverRepositoryInterface;
 use Module\Booking\Domain\Booking\Repository\Details\CIPRoomInAirportRepositoryInterface;
+use Module\Booking\Domain\Booking\Repository\Details\DayCarTripRepositoryInterface;
 use Module\Booking\Domain\Booking\Repository\Details\HotelBookingRepositoryInterface;
 use Module\Booking\Domain\Booking\Repository\Details\IntercityTransferRepositoryInterface;
 use Module\Booking\Domain\Booking\Repository\Details\OtherServiceRepositoryInterface;
 use Module\Booking\Domain\Booking\Repository\Details\TransferFromAirportRepositoryInterface;
+use Module\Booking\Domain\Booking\Repository\Details\TransferFromRailwayRepositoryInterface;
 use Module\Booking\Domain\Booking\Repository\Details\TransferToAirportRepositoryInterface;
+use Module\Booking\Domain\Booking\Repository\Details\TransferToRailwayRepositoryInterface;
 use Module\Booking\Infrastructure\ServiceBooking\Adapter\SupplierAdapter;
 use Module\Booking\Infrastructure\ServiceBooking\Repository\BookingRepository;
 use Module\Booking\Infrastructure\ServiceBooking\Repository\Details as Infrastructure;
@@ -40,6 +43,14 @@ class BootServiceProvider extends ServiceProvider
             Infrastructure\TransferFromAirportRepository::class
         );
         $this->app->singleton(
+            TransferToRailwayRepositoryInterface::class,
+            Infrastructure\TransferToRailwayRepository::class
+        );
+        $this->app->singleton(
+            TransferFromRailwayRepositoryInterface::class,
+            Infrastructure\TransferFromRailwayRepository::class
+        );
+        $this->app->singleton(
             HotelBookingRepositoryInterface::class,
             Infrastructure\HotelBookingRepository::class
         );
@@ -50,6 +61,10 @@ class BootServiceProvider extends ServiceProvider
         $this->app->singleton(
             IntercityTransferRepositoryInterface::class,
             Infrastructure\IntercityTransferRepository::class
+        );
+        $this->app->singleton(
+            DayCarTripRepositoryInterface::class,
+            Infrastructure\DayCarTripRepository::class
         );
         $this->app->singleton(
             OtherServiceRepositoryInterface::class,
