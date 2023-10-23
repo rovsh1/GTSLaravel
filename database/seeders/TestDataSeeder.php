@@ -116,7 +116,7 @@ class TestDataSeeder extends Seeder
             'city_id' => 1,
         ]);
 
-        DB::table('r_railway_stations')->insert([
+        DB::table('r_railway_stations_translation')->insert([
             'translatable_id' => $railwayStationId,
             'language' => 'ru',
             'name' => 'Ж/Д Вокзал г. Ташкент',
