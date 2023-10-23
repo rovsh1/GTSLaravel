@@ -3,8 +3,10 @@ import { computed, nextTick, ref, watch, watchEffect } from 'vue'
 
 import checkIcon from '@mdi/svg/svg/check.svg'
 import pencilIcon from '@mdi/svg/svg/pencil.svg'
+import { useToggle } from '@vueuse/core'
 import { z } from 'zod'
 
+import { useUpdateHotelRoomQuotasBatch } from '~resources/api/hotel/quotas/batch'
 import { formatDateToAPIDate } from '~resources/lib/date'
 import { createHotelSwitcher } from '~resources/lib/hotel-switcher/hotel-switcher'
 
@@ -14,20 +16,25 @@ import { UseHotelRooms, useHotelRoomsListAPI } from '~api/hotel/rooms'
 
 import { injectInitialData } from '~lib/vue'
 
+import BaseDialog from '~components/BaseDialog.vue'
 import BaseLayout from '~components/BaseLayout.vue'
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 import OverlayLoading from '~components/OverlayLoading.vue'
 
 import QuotasFilters from './components/QuotasFilters/QuotasFilters.vue'
+import QuotasStatusSwitcher from './components/QuotasStatusSwitcher.vue'
 import RoomQuotasComponent from './components/RoomQuotas.vue'
 
 import { Day, getRoomQuotas, Month, RoomQuota } from './components/lib'
+import { QuotasStatusUpdatePayload } from './components/lib/types'
 import { defaultFiltersPayload, FiltersPayload } from './components/QuotasFilters/lib'
 
 const { hotelID } = injectInitialData(z.object({
   hotelID: z.number(),
 }))
 const openingDayMenuRoomId = ref<number | null>(null)
+
+const [isOpenedOpenCloseQuotasModal, toggleModalOpenCloseQuotas] = useToggle()
 
 const {
   data: hotelData,
@@ -49,6 +56,7 @@ const rooms = computed<UseHotelRooms>(() => roomsData.value)
 
 fetchHotelRoomsAPI()
 
+const filtersQuotasStatusBatchPayload = ref<QuotasStatusUpdatePayload | null>(null)
 const filtersPayload = ref<FiltersPayload>(defaultFiltersPayload)
 const waitLoadAndRedrawData = ref<boolean>(false)
 const waitSwitchRooms = ref<boolean>(false)
@@ -65,6 +73,22 @@ const {
     dateTo: formatDateToAPIDate(dateTo),
     roomID: undefined,
     availability: availability ?? undefined,
+  }
+}))
+
+const {
+  execute: executeUpdateHotelRoomQuotasBatch,
+  isFetching: isUpdateHotelRoomQuotasBatch,
+} = useUpdateHotelRoomQuotasBatch(computed(() => {
+  if (!filtersQuotasStatusBatchPayload.value) return null
+  const { dateFrom, dateTo, selectedRoomsID, daysWeekSelected, action } = filtersQuotasStatusBatchPayload.value
+  return {
+    hotelID,
+    dateFrom: formatDateToAPIDate(dateFrom),
+    dateTo: formatDateToAPIDate(dateTo),
+    weekDays: daysWeekSelected,
+    roomIds: selectedRoomsID,
+    action,
   }
 }))
 
@@ -131,6 +155,13 @@ const switchRooms = (value: number[]) => {
     waitSwitchRooms.value = false
   })
 }
+
+const handleUpdateQuotasBatch = async () => {
+  await executeUpdateHotelRoomQuotasBatch()
+  fetchHotelQuotasWrapper()
+  toggleModalOpenCloseQuotas(false)
+}
+
 </script>
 <template>
   <div id="hotel-quotas-wrapper">
@@ -145,6 +176,12 @@ const switchRooms = (value: number[]) => {
           severity="primary"
           :disabled="rooms === null || waitLoadAndRedrawData || waitSwitchRooms"
           @click="editable = !editable"
+        />
+        <BootstrapButton
+          label="Открыть/закрыть квоты"
+          severity="link"
+          :disabled="rooms === null || waitLoadAndRedrawData || waitSwitchRooms"
+          @click="toggleModalOpenCloseQuotas()"
         />
       </template>
       <div class="quotasBody">
@@ -189,6 +226,35 @@ const switchRooms = (value: number[]) => {
         </div>
       </div>
     </BaseLayout>
+    <BaseDialog
+      :opened="isOpenedOpenCloseQuotasModal as boolean"
+      :auto-width="true"
+      :click-outside-ignore="['.litepicker']"
+      @close="toggleModalOpenCloseQuotas(false)"
+    >
+      <template #title>
+        Открытие/закрытие квот
+      </template>
+      <QuotasStatusSwitcher
+        v-if="rooms"
+        :initial-period="[filtersPayload.dateFrom, filtersPayload.dateTo]"
+        :re-init-form="isOpenedOpenCloseQuotasModal"
+        :rooms="rooms"
+        :disabled="isUpdateHotelRoomQuotasBatch"
+        @submit="value => filtersQuotasStatusBatchPayload = value"
+      />
+      <template #actions-end>
+        <button
+          class="btn btn-primary"
+          type="button"
+          :disabled="!filtersQuotasStatusBatchPayload || isUpdateHotelRoomQuotasBatch"
+          @click="handleUpdateQuotasBatch"
+        >
+          Применить
+        </button>
+        <button :disabled="isUpdateHotelRoomQuotasBatch" class="btn btn-cancel" type="button" @click="toggleModalOpenCloseQuotas(false)">Скрыть</button>
+      </template>
+    </BaseDialog>
   </div>
 </template>
 <style lang="scss" scoped>

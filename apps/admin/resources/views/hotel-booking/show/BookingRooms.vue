@@ -1,7 +1,10 @@
 <script setup lang="ts">
 
-import { computed, MaybeRef, onMounted, ref, unref, watch } from 'vue'
+import { computed, MaybeRef, onMounted, reactive, ref, unref, watch } from 'vue'
+import InlineSVG from 'vue-inline-svg'
 
+import touchIcon from '@mdi/svg/svg/gesture-tap.svg'
+import informationIcon from '@mdi/svg/svg/information.svg'
 import { useToggle } from '@vueuse/core'
 import { z } from 'zod'
 
@@ -22,7 +25,9 @@ import { useBookingStore } from '~resources/views/hotel-booking/show/store/booki
 import {
   HotelBookingDetails,
   HotelRoomBooking,
+  RoomBookingDayPrice,
   RoomBookingPrice,
+  RoomInfo,
 } from '~api/booking/hotel/details'
 import { updateRoomBookingPrice } from '~api/booking/hotel/price'
 import { addGuestToBooking, deleteBookingGuest, deleteBookingRoom } from '~api/booking/hotel/rooms'
@@ -36,11 +41,13 @@ import { showConfirmDialog } from '~lib/confirm-dialog'
 import { requestInitialData } from '~lib/initial-data'
 import { formatPrice } from '~lib/price'
 
+import BaseDialog from '~components/BaseDialog.vue'
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 import BootstrapCard from '~components/Bootstrap/BootstrapCard/BootstrapCard.vue'
 import BootstrapCardTitle from '~components/Bootstrap/BootstrapCard/components/BootstrapCardTitle.vue'
 import IconButton from '~components/IconButton.vue'
 
+const [isOpenedPriceDetailsModal, toggleModalPriceDetails] = useToggle()
 const [isShowRoomModal, toggleRoomModal] = useToggle()
 const [isShowRoomPriceModal, toggleRoomPriceModal] = useToggle()
 
@@ -69,10 +76,12 @@ const netCurrency = computed<Currency | undefined>(
 const orderId = computed(() => orderStore.order.id)
 const orderGuests = computed<Guest[]>(() => orderStore.guests || [])
 
-const bookingCurrentRoomGuestsIds = ref<number[]>([])
+const bookingRoomsGuestsIds = computed<number[]>(() => bookingDetails.value?.roomBookings.flatMap(
+  (roomBooking) => roomBooking.guestIds || [],
+) || [])
 
 const filteredOrderGuests = computed<Guest[]>(() => orderGuests.value.filter((guest) =>
-  !bookingCurrentRoomGuestsIds.value.includes(guest.id)))
+  !bookingRoomsGuestsIds.value.includes(guest.id)))
 
 const isBookingPriceManual = computed(
   () => bookingStore.booking?.prices.grossPrice.isManual || bookingStore.booking?.prices.netPrice.isManual,
@@ -81,6 +90,11 @@ const isBookingPriceManual = computed(
 const canChangeRoomPrice = computed<boolean>(
   () => (bookingStore.availableActions?.canChangeRoomPrice && !isBookingPriceManual.value) || false,
 )
+
+const selectedRoomDetails = reactive({
+  roomDayPrices: <RoomBookingDayPrice[]> [],
+  roomInfo: <RoomInfo | null> null,
+})
 
 const { execute: fetchPriceRates, data: priceRates } = useHotelRatesAPI({ hotelID })
 const { data: countries, execute: fetchCountries } = useCountrySearchAPI()
@@ -230,6 +244,18 @@ const onRoomModalSubmit = async () => {
   await fetchBooking()
 }
 
+const getMinDayPrices = (dayPrices: RoomBookingDayPrice[]): number | null => {
+  const minPrice = dayPrices.length > 0 ? dayPrices.reduce((min, dayPrice) =>
+    ((dayPrice.grossValue < min) ? dayPrice.grossValue : min), dayPrices[0].grossValue) : null
+  return minPrice
+}
+
+const getMaxDayPrices = (dayPrices: RoomBookingDayPrice[]): number | null => {
+  const maxPrice = dayPrices.length > 0 ? dayPrices.reduce((max, dayPrice) =>
+    ((dayPrice.grossValue > max) ? dayPrice.grossValue : max), dayPrices[0].grossValue) : null
+  return maxPrice
+}
+
 onMounted(() => {
   fetchPriceRates()
   fetchCountries()
@@ -316,41 +342,42 @@ onMounted(() => {
             </tr>
           </tbody>
         </table>
-
-        <div class="mt-2">
-          <table class="table">
-            <thead>
-              <tr>
-                <th />
-                <th class="text-nowrap">Дата</th>
-                <th class="text-nowrap">Цена за ночь</th>
-                <th class="text-nowrap">Подробный расчет</th>
-              </tr>
-            </thead>
-            <tbody v-if="grossCurrency">
-              <tr v-for="dayPrice in room.price.dayPrices" :key="dayPrice.date">
-                <td>Стоимость брутто</td>
-                <td class="text-nowrap">
-                  {{ dayPrice.date }}
-                </td>
-                <td class="text-nowrap">
-                  {{ formatPrice(dayPrice.grossValue, grossCurrency.sign) }}
-                </td>
-                <td class="text-nowrap">{{ dayPrice.grossFormula }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
         <div v-if="grossCurrency" class="d-flex flex-row justify-content-between w-100 mt-2">
-          <strong>
-            Итого: {{ formatPrice(room.price.grossValue, grossCurrency.sign) }}
-          </strong>
+          <span class="prices-information">
+            <strong>
+              Итого: {{ formatPrice(room.price.grossValue, grossCurrency.sign) }}
+            </strong>
+            <br>
+            <strong class="prices-information-details">
+              <span>Цена за ночь: </span>
+              <span v-if="getMinDayPrices(room.price.dayPrices) === getMaxDayPrices(room.price.dayPrices)">
+                {{ formatPrice(getMinDayPrices(room.price.dayPrices) as number, grossCurrency.sign) }}
+              </span>
+              <span v-else>
+                от {{ formatPrice(getMinDayPrices(room.price.dayPrices) as number, grossCurrency.sign) }}
+                до {{ formatPrice(getMaxDayPrices(room.price.dayPrices) as number, grossCurrency.sign) }}
+              </span>
+              <button
+                v-tooltip="'Подробнее'"
+                type="button"
+                class="prices-information-details-button"
+                @click="() => {
+                  selectedRoomDetails.roomInfo = room.roomInfo
+                  selectedRoomDetails.roomDayPrices = room.price.dayPrices
+                  toggleModalPriceDetails()
+                }"
+              >
+                <InlineSVG :src="informationIcon" class="informationIcon" />
+              </button>
+              <span v-if="room.price.grossDayValue" v-tooltip="'Цена за номер выставлена вручную'" class="prices-information-details-info">
+                <InlineSVG :src="touchIcon" class="informationIcon" />
+              </span>
+            </strong>
+          </span>
           <a v-if="canChangeRoomPrice" href="#" @click.prevent="handleEditRoomPrice(room.id, room.price)">
             Изменить цену номера
           </a>
         </div>
-        <span v-if="room.price.grossDayValue" class="text-muted">(цена за номер выставлена вручную)</span>
       </InfoBlock>
 
       <InfoBlock>
@@ -358,11 +385,10 @@ onMounted(() => {
           <div class="d-flex gap-1">
             <InfoBlockTitle title="Список гостей" />
             <IconButton
-              v-if="isEditableStatus"
+              v-if="isEditableStatus && (room.roomInfo.guestsCount && room.guestIds.length < room.roomInfo.guestsCount)"
               icon="add"
               @click="() => {
                 editRoomBookingId = room.id
-                bookingCurrentRoomGuestsIds = room.guestIds
                 openAddGuestModal()
               }"
             />
@@ -388,9 +414,66 @@ onMounted(() => {
   <div>
     <BootstrapButton v-if="isEditableStatus" label="Добавить номер" @click="handleAddRoom" />
   </div>
+  <BaseDialog :opened="isOpenedPriceDetailsModal as boolean" :auto-width="true" @close="toggleModalPriceDetails(false)">
+    <template #title>
+      Подробный расчет по номеру
+      ({{ selectedRoomDetails.roomInfo ? selectedRoomDetails.roomInfo.name : '---' }})
+    </template>
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="text-nowrap">Дата</th>
+          <th class="text-nowrap">Цена за ночь</th>
+          <th class="text-nowrap">Подробный расчет</th>
+        </tr>
+      </thead>
+      <tbody v-if="grossCurrency">
+        <tr v-for="dayPrice in selectedRoomDetails.roomDayPrices" :key="dayPrice.date">
+          <td class="text-nowrap">
+            {{ dayPrice.date }}
+          </td>
+          <td class="text-nowrap">
+            {{ formatPrice(dayPrice.grossValue, grossCurrency.sign) }}
+          </td>
+          <td class="text-nowrap">{{ dayPrice.grossFormula }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <template #actions-end>
+      <button class="btn btn-cancel" type="button" @click="toggleModalPriceDetails(false)">Отмена</button>
+    </template>
+  </BaseDialog>
 </template>
 
 <style lang="scss" scoped>
+.prices-information {
+  .prices-information-details {
+    font-weight: 400;
+    font-style: italic;
+
+    & > * {
+      vertical-align: middle
+    }
+
+    .informationIcon {
+      width: auto;
+      height: 1.4em;
+    }
+
+    .prices-information-details-button {
+      margin-left: 0.4rem;
+      border: none;
+      background-color: transparent;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .prices-information-details-info {
+      padding-bottom: 0.313rem;
+    }
+  }
+}
+
 .pt-card-title {
   padding-top: 0.813rem;
 }
