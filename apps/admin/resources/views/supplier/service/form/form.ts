@@ -48,6 +48,7 @@ $(() => {
 
   $('#form_data_data').remove()
 
+  // eslint-disable-next-line unused-imports/no-unused-vars
   const handleShowTransferToAirport = () => {
     const $input = $('<input />', {
       name: 'data[data][airportId]',
@@ -57,34 +58,42 @@ $(() => {
     $serviceTypeSelect.parent().parent().after(getFieldWrapper('Аэропорт', $input))
   }
 
+  // eslint-disable-next-line unused-imports/no-unused-vars
   const handleShowTransferFromAirport = () => {
 
   }
 
+  // eslint-disable-next-line unused-imports/no-unused-vars
   const handleShowTransferToRailway = () => {
 
   }
 
+  // eslint-disable-next-line unused-imports/no-unused-vars
   const handleShowTransferFromRailway = () => {
 
   }
 
+  // eslint-disable-next-line unused-imports/no-unused-vars
   const handleShowCarRentWithDriver = () => {
 
   }
 
+  // eslint-disable-next-line unused-imports/no-unused-vars
   const handleShowIntercityTransfer = () => {
 
   }
 
+  // eslint-disable-next-line unused-imports/no-unused-vars
   const handleShowDayCarTrip = () => {
 
   }
 
+  // eslint-disable-next-line unused-imports/no-unused-vars
   const handleShowOther = () => {
 
   }
 
+  // eslint-disable-next-line unused-imports/no-unused-vars
   const handleShowCipInAirport = () => {
 
   }
@@ -104,36 +113,5 @@ $(() => {
 
     // eslint-disable-next-line no-eval
     eval(`${handler}()`)
-
-    // // eslint-disable-next-line default-case
-    // switch (value) {
-    //   case TRANSFER_TO_AIRPORT:
-    //     handleShowTransferToAirport()
-    //     break
-    //   case TRANSFER_FROM_AIRPORT:
-    //     handleShowTransferFromAirport()
-    //     break
-    //   case CAR_RENT_WITH_DRIVER:
-    //     handleShowCarRentWithDriver()
-    //     break
-    //   case DAY_CAR_TRIP:
-    //     handleShowDayCarTrip()
-    //     break
-    //   case TRANSFER_FROM_RAILWAY:
-    //     handleShowTransferFromRailway()
-    //     break
-    //   case TRANSFER_TO_RAILWAY:
-    //     handleShowTransferToRailway()
-    //     break
-    //   case CIP_IN_AIRPORT:
-    //     handleShowCipInAirport()
-    //     break
-    //   case OTHER:
-    //     handleShowOther()
-    //     break
-    //   case INTERCITY_TRANSFER:
-    //     handleShowIntercityTransfer()
-    //     break
-    // }
   })
 })
