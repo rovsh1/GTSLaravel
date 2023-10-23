@@ -59,7 +59,7 @@ class BookingPriceDtoFactory
         if ($supplierPriceItem->currency() === $outCurrency) {
             return new PriceItemDto(
                 currency: CurrencyDto::fromEnum($outCurrency, $this->translator),
-                calculatedValue: $supplierPriceItem->manualValue() ?? $supplierPriceItem->calculatedValue(),
+                calculatedValue: $netPriceValue,
                 manualValue: null,
                 penaltyValue: null,
                 isManual: false,
