@@ -27,8 +27,8 @@ class BookingPriceDtoFactory
 
         $clientPriceDto = $this->makePriceItemDto($clientPriceItem);
         $supplierPriceDto = $this->makePriceItemDto($supplierPriceItem);
-        $convertedNetPriceDto = $this->getConvertedNetPrice($supplierPriceItem, $clientPriceItem->currency());
-        $convertedNetPriceValue = $convertedNetPriceDto?->calculatedValue ?? $supplierPriceDto->manualValue ?? $supplierPriceDto->calculatedValue;
+        $convertedSupplierPriceDto = $this->getConvertedNetPrice($supplierPriceItem, $clientPriceItem->currency());
+        $convertedNetPriceValue = $convertedSupplierPriceDto?->calculatedValue ?? $supplierPriceDto->manualValue ?? $supplierPriceDto->calculatedValue;
 
         $profit = new PriceItemDto(
             CurrencyDto::fromEnum($clientPriceItem->currency(), $this->translator),
@@ -39,7 +39,7 @@ class BookingPriceDtoFactory
         );
 
 
-        return new BookingPriceDto($supplierPriceDto, $clientPriceDto, $profit, $convertedNetPriceDto);
+        return new BookingPriceDto($supplierPriceDto, $clientPriceDto, $profit, $convertedSupplierPriceDto);
     }
 
     private function makePriceItemDto(BookingPriceItem $priceItem): PriceItemDto
@@ -59,7 +59,7 @@ class BookingPriceDtoFactory
         if ($supplierPriceItem->currency() === $outCurrency) {
             return new PriceItemDto(
                 currency: CurrencyDto::fromEnum($outCurrency, $this->translator),
-                calculatedValue: $supplierPriceItem->calculatedValue(),
+                calculatedValue: $supplierPriceItem->manualValue() ?? $supplierPriceItem->calculatedValue(),
                 manualValue: null,
                 penaltyValue: null,
                 isManual: false,
