@@ -89,7 +89,7 @@ $(() => {
   }
 
   // eslint-disable-next-line unused-imports/no-unused-vars
-  const handleShowOther = () => {
+  const handleShowOtherService = () => {
 
   }
 
