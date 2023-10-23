@@ -32,6 +32,7 @@ class TransferToRailwayRepository extends AbstractDetailsRepository implements T
         BookingId $bookingId,
         ServiceInfo $serviceInfo,
         int $railwayStationId,
+        int $cityId,
         CarBidCollection $carBids,
         ?string $trainNumber,
         ?string $meetingTablet,
@@ -44,6 +45,7 @@ class TransferToRailwayRepository extends AbstractDetailsRepository implements T
             'data' => [
                 'serviceInfo' => $this->serializeServiceInfo($serviceInfo),
                 'railwayStationId' => $railwayStationId,
+                'cityId' => $cityId,
                 'trainNumber' => $trainNumber,
                 'meetingTablet'=> $meetingTablet,
                 'carBids' => $carBids->toData(),

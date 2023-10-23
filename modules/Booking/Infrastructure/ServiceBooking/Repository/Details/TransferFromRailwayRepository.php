@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Infrastructure\ServiceBooking\Repository\Details;
 
 use DateTimeInterface;
-use Module\Booking\Domain\Booking\Entity\TransferFromAirport;
 use Module\Booking\Domain\Booking\Entity\TransferFromRailway;
-use Module\Booking\Domain\Booking\Repository\Details\TransferFromAirportRepositoryInterface;
 use Module\Booking\Domain\Booking\Repository\Details\TransferFromRailwayRepositoryInterface;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Domain\Booking\ValueObject\CarBidCollection;
@@ -32,6 +30,7 @@ class TransferFromRailwayRepository extends AbstractDetailsRepository implements
         BookingId $bookingId,
         ServiceInfo $serviceInfo,
         int $railwayStationId,
+        int $cityId,
         CarBidCollection $carBids,
         ?string $trainNumber,
         ?DateTimeInterface $arrivalDate,
@@ -44,6 +43,7 @@ class TransferFromRailwayRepository extends AbstractDetailsRepository implements
             'data' => [
                 'serviceInfo' => $this->serializeServiceInfo($serviceInfo),
                 'railwayStationId' => $railwayStationId,
+                'cityId' => $cityId,
                 'trainNumber' => $trainNumber,
                 'meetingTablet' => $meetingTablet,
                 'carBids' => $carBids->toData(),

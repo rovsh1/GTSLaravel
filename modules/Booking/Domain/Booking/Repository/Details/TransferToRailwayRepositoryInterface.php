@@ -19,6 +19,7 @@ interface TransferToRailwayRepositoryInterface
         BookingId $bookingId,
         ServiceInfo $serviceInfo,
         int $railwayStationId,
+        int $cityId,
         CarBidCollection $carBids,
         ?string $trainNumber,
         ?string $meetingTablet,
