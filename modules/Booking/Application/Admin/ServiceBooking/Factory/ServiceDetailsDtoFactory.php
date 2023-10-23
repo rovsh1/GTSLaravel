@@ -201,11 +201,12 @@ class ServiceDetailsDtoFactory
 
     private function buildRailwayStationInfo(int $airportId): RailwayStationInfoDto
     {
-        $airport = RailwayStation::find($airportId);
+        $railwayStation = RailwayStation::find($airportId);
 
         return new RailwayStationInfoDto(
-            $airport->id,
-            $airport->name,
+            $railwayStation->id,
+            $railwayStation->city_id,
+            $railwayStation->name,
         );
     }
 
