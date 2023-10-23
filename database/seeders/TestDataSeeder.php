@@ -140,7 +140,7 @@ class TestDataSeeder extends Seeder
             'supplier_id' => $supplierId,
             'title' => 'Трасфер Ташкент-Самарканд',
             'type' => ServiceTypeEnum::INTERCITY_TRANSFER,
-            'data' => json_encode(['fromCityId' => 1, 'toCityId' => 4]),
+            'data' => json_encode(['fromCityId' => 1, 'toCityId' => 4, 'returnTripIncluded' => true]),
         ]);
 
         $service7Id = DB::table('supplier_services')->insertGetId([
