@@ -32,13 +32,12 @@ class RecalculateBookingPricesListener implements DomainEventListenerInterface
     {
         assert($event instanceof PriceBecomeDeprecatedEventInterface);
 
-        $bookingId = new BookingId($event->bookingId());
         if ($event instanceof GuestBinded || $event instanceof GuestUnbinded) {
-            $this->processAirportBooking($bookingId);
+            $this->processAirportBooking($event->bookingId());
 
             return;
         }
-        $this->hotelBookingPriceCalculator->calculate($bookingId);
+        $this->hotelBookingPriceCalculator->calculate($event->bookingId());
     }
 
     private function processAirportBooking(BookingId $bookingId): void

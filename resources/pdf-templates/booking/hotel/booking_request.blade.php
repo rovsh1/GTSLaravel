@@ -49,7 +49,7 @@
 <body>
 <table>
     <tbody>
-    @include('pdf-templates._partials.company_requisites_header')
+    @include('booking._partials.company_requisites_header')
     <tr>
         <td class="title text-align-center" colspan="2">НОВОЕ БРОНИРОВАНИЕ</td>
     </tr>
@@ -114,7 +114,7 @@
                 </thead>
                 <tbody>
 
-                @include('pdf-templates.hotel._partials.rooms')
+                @include('hotel._partials.rooms')
 
                 <tr class="first">
                     <td colspan="3">
@@ -137,7 +137,7 @@
                 <tbody>
                 <tr>
                     <td style="width: 500px;">
-                        @include('pdf-templates._partials.manager_requisites')
+                        @include('booking._partials.manager_requisites')
                     </td>
                 </tr>
                 </tbody>

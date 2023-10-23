@@ -41,7 +41,7 @@ class StatusStorage implements StatusStorageInterface
     public function statuses(): array
     {
         if (!isset(self::$statuses)) {
-            return self::$statuses = StatusSettings::get()->keyBy('id')->all();
+            return self::$statuses = StatusSettings::get()->keyBy('value')->all();
         }
 
         return self::$statuses;

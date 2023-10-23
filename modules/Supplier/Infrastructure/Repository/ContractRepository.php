@@ -9,6 +9,7 @@ use Module\Shared\ValueObject\Date;
 use Module\Supplier\Domain\Supplier\Entity\Contract;
 use Module\Supplier\Domain\Supplier\Repository\ContractRepositoryInterface;
 use Module\Supplier\Domain\Supplier\ValueObject\ServiceId;
+use Module\Supplier\Domain\Supplier\ValueObject\ServiceIdCollection;
 use Module\Supplier\Domain\Supplier\ValueObject\SupplierId;
 use Module\Supplier\Infrastructure\Models\Contract as Model;
 
@@ -32,7 +33,7 @@ class ContractRepository implements ContractRepositoryInterface
         return new Contract(
             new ContractId($contract->id),
             new SupplierId($contract->supplier_id),
-            new ServiceId($contract->service_id),
+            ServiceIdCollection::fromData($contract->service_ids),
             new Date($contract->date_start),
             new Date($contract->date_end),
         );

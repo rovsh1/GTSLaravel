@@ -8,13 +8,14 @@ use Module\Shared\Contracts\Domain\EntityInterface;
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Module\Shared\Support\Dto\AbstractDomainBasedDto;
 use Module\Supplier\Domain\Supplier\Entity\Contract;
+use Module\Supplier\Domain\Supplier\ValueObject\ServiceId;
 
 class ServiceContractDto extends AbstractDomainBasedDto
 {
     public function __construct(
         public readonly int $id,
         public readonly int $supplierId,
-        public readonly int $serviceId,
+        public readonly array $serviceIds,
 //        public readonly ContractServiceTypeEnum $serviceType,
         public readonly string $dateStart,
         public readonly string $dateEnd,
@@ -27,7 +28,7 @@ class ServiceContractDto extends AbstractDomainBasedDto
         return new static(
             $entity->id()->value(),
             $entity->supplierId()->value(),
-            $entity->serviceId()->value(),
+            $entity->serviceIds()->map(fn(ServiceId $serviceId) => $serviceId->value()),
 //            $entity->serviceType(),
             (string)$entity->dateStart(),
             (string)$entity->dateEnd(),

@@ -40,7 +40,10 @@ class TransferBookingDataFactory
                 $serviceDto,
                 $this->buildCars($bookingDetails->carBids(), $bookingDetails->serviceInfo()->supplierId()),
                 $bookingDetails->meetingTablet(),
-                '{место подачи авто}'
+                '{место подачи авто}',
+                '{date}',
+                '{city}',
+                '{flightNumber}',
             ),
         };
     }

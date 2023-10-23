@@ -98,6 +98,14 @@ return new class extends Migration {
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'value' => BookingStatusEnum::DELETED->value,
+                'name_ru' => 'Удалена',
+                'name_en' => 'Deleted',
+                'color' => 'secondary',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 

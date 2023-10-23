@@ -77,7 +77,8 @@ class CommonDataFactory
             supplierPrice: new BookingPriceDto(
                 $supplierPriceAmount,
                 $booking->prices()->supplierPrice()->currency()->name,
-            )
+            ),
+            note: $booking->note(),
         );
     }
 

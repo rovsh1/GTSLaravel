@@ -13,5 +13,6 @@ class BookingDto
         public readonly string $updatedAt,
         public readonly BookingPriceDto $clientPrice,
         public readonly BookingPriceDto $supplierPrice,
+        public readonly ?string $note,
     ) {}
 }

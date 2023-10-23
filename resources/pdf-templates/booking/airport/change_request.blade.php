@@ -1,4 +1,4 @@
-@extends('pdf-templates.layout.layout')
+@extends('booking.layout.layout')
 @props(['guests' => []])
 
 @section('content')

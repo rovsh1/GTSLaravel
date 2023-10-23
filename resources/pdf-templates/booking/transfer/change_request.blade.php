@@ -1,9 +1,9 @@
-@extends('pdf-templates.layout.layout')
+@extends('booking.layout.layout')
 
 @section('content')
     <table>
         <tbody>
-        @include('pdf-templates._partials.company_requisites_header')
+        @include('booking._partials.company_requisites_header')
         <tr>
             <td class="title text-align-center" colspan="2">ИЗМЕНЕНИЕ БРОНИ НА ТРАНСПОРТ</td>
         </tr>
@@ -64,8 +64,8 @@
                         <td class="text-align-left" colspan="4"><b>{{ $service->title }}</b></td>
                     </tr>
 
-                    @include('pdf-templates.transfer._partials.cars')
-                    @include('pdf-templates.booking.transfer._partials.details')
+                    @include('booking.transfer._partials.cars')
+                    @include('booking.transfer._partials.details')
 
                     </tbody>
                 </table>
@@ -80,7 +80,7 @@
                     <tbody>
                     <tr>
                         <td style="width: 500px;">
-                            @include('pdf-templates.hotel._partials.manager_requisites')
+                            @include('hotel._partials.manager_requisites')
                         </td>
                     </tr>
                     </tbody>

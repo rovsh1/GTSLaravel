@@ -26,6 +26,16 @@ class TransferToAirportRepository extends AbstractDetailsRepository implements T
         return $this->detailsFactory->buildByBooking($booking);
     }
 
+    public function findOrFail(BookingId $bookingId): TransferToAirport
+    {
+        $entity = $this->find($bookingId);
+        if ($entity === null) {
+            throw new EntityNotFoundException('Booking details not found');
+        }
+
+        return $entity;
+    }
+
     public function create(
         BookingId $bookingId,
         ServiceInfo $serviceInfo,
@@ -43,7 +53,7 @@ class TransferToAirportRepository extends AbstractDetailsRepository implements T
                 'serviceInfo' => $this->serializeServiceInfo($serviceInfo),
                 'airportId' => $airportId,
                 'flightNumber' => $flightNumber,
-                'meetingTablet'=> $meetingTablet,
+                'meetingTablet' => $meetingTablet,
                 'carBids' => $carBids->toData(),
             ]
         ]);
@@ -59,7 +69,7 @@ class TransferToAirportRepository extends AbstractDetailsRepository implements T
                 'serviceInfo' => $this->serializeServiceInfo($details->serviceInfo()),
                 'airportId' => $details->airportId()->value(),
                 'flightNumber' => $details->flightNumber(),
-                'meetingTablet'=> $details->meetingTablet(),
+                'meetingTablet' => $details->meetingTablet(),
                 'carBids' => $details->carBids()->toData(),
             ]
         ]);

@@ -1,10 +1,10 @@
-@extends('pdf-templates.layout.layout')
+@extends('booking.layout.layout')
 @props(['guests' => []])
 
 @section('content')
     <table>
         <tbody>
-        @include('pdf-templates._partials.company_requisites_header')
+        @include('booking._partials.company_requisites_header')
         <tr>
             <td style="padding-top: 15px;" colspan="2" class="text-align-right">Директору</td>
         </tr>
