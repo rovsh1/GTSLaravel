@@ -19,7 +19,7 @@ final class BookingRequest implements TemplateDataInterface
         return [
             'rooms' => $this->rooms,
             'hotel' => $this->hotelInfo,
-            'period' => $this->bookingPeriod,
+            'bookingPeriod' => $this->bookingPeriod,
         ];
     }
 }

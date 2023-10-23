@@ -115,7 +115,7 @@
                 </thead>
                 <tbody>
 
-                @include('hotel._partials.rooms')
+                @include('booking.hotel._partials.rooms')
 
                 {reservationDetails}
                 <tr class="first">
