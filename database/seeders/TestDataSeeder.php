@@ -126,14 +126,14 @@ class TestDataSeeder extends Seeder
             'supplier_id' => $supplierId,
             'title' => 'Трансфер в ЖД вокзала Ташкент',
             'type' => ServiceTypeEnum::TRANSFER_TO_RAILWAY,
-            'data' => json_encode(['railwayStationId' => $railwayStationId]),
+            'data' => json_encode(['railwayStationId' => $railwayStationId, 'cityId' => 1]),
         ]);
 
         $service5Id = DB::table('supplier_services')->insertGetId([
             'supplier_id' => $supplierId,
             'title' => 'Трансфер из ЖД вокзала Ташкент',
             'type' => ServiceTypeEnum::TRANSFER_FROM_RAILWAY,
-            'data' => json_encode(['railwayStationId' => $railwayStationId]),
+            'data' => json_encode(['railwayStationId' => $railwayStationId, 'cityId' => 1]),
         ]);
 
         $service6Id = DB::table('supplier_services')->insertGetId([
