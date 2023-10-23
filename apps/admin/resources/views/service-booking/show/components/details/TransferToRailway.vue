@@ -143,13 +143,23 @@ const handleEditCarModal = async (id: number, object: CarBid) => {
       <table class="table-params">
         <tbody>
           <tr>
+            <th>Станция прибытия</th>
+            <td>
+              <EditableTextInput
+                :value="bookingDetails?.railwayInfo?.name"
+                :can-edit="false"
+                type="text"
+              />
+            </td>
+          </tr>
+          <tr>
             <th>Номер поезда</th>
             <td>
               <EditableTextInput
-                :value="bookingDetails?.flightNumber"
+                :value="bookingDetails?.trainNumber"
                 :can-edit="isEditableStatus"
                 type="text"
-                @change="value => handleChangeDetails('flightNumber', value)"
+                @change="value => handleChangeDetails('trainNumber', value)"
               />
             </td>
           </tr>
@@ -157,9 +167,9 @@ const handleEditCarModal = async (id: number, object: CarBid) => {
             <th>Дата прибытия</th>
             <td>
               <EditableDateInput
-                :value="bookingDetails?.arrivalDate"
+                :value="bookingDetails?.departureDate"
                 :can-edit="isEditableStatus"
-                @change="value => handleChangeDetails('arrivalDate', value)"
+                @change="value => handleChangeDetails('departureDate', value)"
               />
             </td>
           </tr>
@@ -167,20 +177,10 @@ const handleEditCarModal = async (id: number, object: CarBid) => {
             <th>Время прибытия</th>
             <td>
               <EditableTimeInput
-                :value="bookingDetails?.arrivalDate"
-                :can-edit="isEditableStatus && !!bookingDetails?.arrivalDate"
+                :value="bookingDetails?.departureDate"
+                :can-edit="isEditableStatus && !!bookingDetails?.departureDate"
                 type="time"
-                @change="value => handleChangeDetails('arrivalDate', value)"
-              />
-            </td>
-          </tr>
-          <tr>
-            <th>Станция прибытия</th>
-            <td>
-              <EditableTextInput
-                :value="bookingDetails?.railwayInfo?.name"
-                :can-edit="false"
-                type="text"
+                @change="value => handleChangeDetails('departureDate', value)"
               />
             </td>
           </tr>

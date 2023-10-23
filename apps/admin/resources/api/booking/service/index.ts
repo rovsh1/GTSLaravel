@@ -18,7 +18,7 @@ export type AirportInfo = {
   name: string
 }
 
-export type RailwayInfo = {
+export type RailwayStationInfo = {
   id: number
   name: string
 }

@@ -155,7 +155,7 @@ const handleChangeDetails = async (field: string, value: any) => {
             </td>
           </tr>
           <tr>
-            <th>Время вылета</th>
+            <th>Время</th>
             <td>
               <EditableTimeInput
                 :value="bookingDetails?.serviceDate"

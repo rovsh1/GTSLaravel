@@ -22,6 +22,7 @@ import { requestInitialData } from '~lib/initial-data'
 
 import EditableDateInput from '~components/Editable/EditableDateInput.vue'
 import EditableTextarea from '~components/Editable/EditableTextarea.vue'
+import EditableTimeInput from '~components/Editable/EditableTimeInput.vue'
 import IconButton from '~components/IconButton.vue'
 
 const { bookingID } = requestInitialData('view-initial-data-service-booking', z.object({
@@ -142,22 +143,33 @@ const handleEditCarModal = async (id: number, object: CarBid) => {
       <table class="table-params">
         <tbody>
           <tr>
-            <th>Описание направлений</th>
-            <td>
-              <EditableTextarea
-                :value="bookingDetails?.destinationsDescription"
-                :can-edit="isEditableStatus"
-                @change="value => handleChangeDetails('destinationsDescription', value)"
-              />
-            </td>
-          </tr>
-          <tr>
             <th>Дата</th>
             <td>
               <EditableDateInput
                 :value="bookingDetails?.date"
                 :can-edit="isEditableStatus"
                 @change="value => handleChangeDetails('date', value)"
+              />
+            </td>
+          </tr>
+          <tr>
+            <th>Время</th>
+            <td>
+              <EditableTimeInput
+                :value="bookingDetails?.date"
+                :can-edit="isEditableStatus && !!bookingDetails?.date"
+                type="time"
+                @change="value => handleChangeDetails('date', value)"
+              />
+            </td>
+          </tr>
+          <tr>
+            <th>Примечание</th>
+            <td>
+              <EditableTextarea
+                :value="bookingDetails?.destinationsDescription"
+                :can-edit="isEditableStatus"
+                @change="value => handleChangeDetails('destinationsDescription', value)"
               />
             </td>
           </tr>

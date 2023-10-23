@@ -1,4 +1,4 @@
-import { AirportInfo, CarBid, RailwayInfo, ServiceInfo } from '~api/booking/service'
+import { AirportInfo, CarBid, RailwayStationInfo, ServiceInfo } from '~api/booking/service'
 
 type BaseBookingDetails = {
   id: number
@@ -22,18 +22,18 @@ export type BookingTransferFromAirportDetails = BaseBookingDetails & {
 }
 
 export type BookingTransferFromRailwayDetails = BaseBookingDetails & {
-  railwayInfo?: RailwayInfo
+  railwayInfo?: RailwayStationInfo
   meetingTablet?: string
-  flightNumber?: string
+  trainNumber?: string
   arrivalDate?: string
   carBids?: CarBid[]
 }
 
 export type BookingTransferToRailwayDetails = BaseBookingDetails & {
-  railwayInfo?: RailwayInfo
+  railwayInfo?: RailwayStationInfo
   meetingTablet?: string
-  flightNumber?: string
-  arrivalDate?: string
+  trainNumber?: string
+  departureDate?: string
   carBids?: CarBid[]
 }
 
