@@ -3,8 +3,8 @@
 import { computed, defineAsyncComponent, nextTick, shallowRef } from 'vue'
 
 import { watchOnce } from '@vueuse/core'
-import { camelCase } from 'lodash'
 
+import { toPascalCase } from '~resources/js/libs/strings'
 import { useBookingStore } from '~resources/views/service-booking/show/store/booking'
 
 import { useGetBookingDetailsTypesAPI } from '~api/booking/service'
@@ -21,23 +21,17 @@ const detailsComponent = shallowRef()
 
 const { data: BookingDetailsTypes, execute: fetchBookingDetailsTypes } = useGetBookingDetailsTypesAPI()
 
-const toPascalCase = (str: string): string => {
-  const camelCasedStr = camelCase(str)
-  return camelCasedStr.charAt(0).toUpperCase() + camelCasedStr.slice(1)
-}
-
 const setDetailsComponentByServiceType = (typeId: number | undefined) => {
   const currentServiceType = BookingDetailsTypes.value?.find((type) => type.id === typeId)
-  if (currentServiceType) {
-    const ComponentName = toPascalCase(currentServiceType.name)
-    const DetailsComponent = defineAsyncComponent({
-      loader: () => import(`./components/details/${ComponentName}.vue`),
-      errorComponent: ErrorComponent,
-    })
-    detailsComponent.value = DetailsComponent
-  } else {
+  if (!currentServiceType) {
     detailsComponent.value = ErrorComponent
+    return
   }
+  const ComponentName = toPascalCase(currentServiceType.name)
+  detailsComponent.value = defineAsyncComponent({
+    loader: () => import(`./components/details/${ComponentName}.vue`),
+    errorComponent: ErrorComponent,
+  })
 }
 
 watchOnce(booking, async () => {
