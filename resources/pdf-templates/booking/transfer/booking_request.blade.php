@@ -57,19 +57,9 @@
                         <td class="text-align-center"><b>#</b></td>
                         <td class="text-align-left" colspan="4"><b>{{ $service->title }}</b></td>
                     </tr>
-                    @include('pdf-templates.transfer._partials.cars')
 
-                    @switch($service->typeId)
-                        @case(\Module\Shared\Enum\ServiceTypeEnum::CAR_RENT_WITH_DRIVER)
-                            @include('pdf-templates.transfer._partials.service.car_rent')
-                            @break
-                        @case(\Module\Shared\Enum\ServiceTypeEnum::TRANSFER_TO_AIRPORT)
-                            @include('pdf-templates.transfer._partials.service.transfer_to_airport')
-                            @break
-                        @case(\Module\Shared\Enum\ServiceTypeEnum::TRANSFER_FROM_AIRPORT)
-                            @include('pdf-templates.transfer._partials.service.transfer_from_airport')
-                            @break
-                    @endswitch
+                    @include('pdf-templates.transfer._partials.cars')
+                    @include('pdf-templates.booking.transfer._partials.details')
 
                     <tr class="padding-bottom">
                         <td></td>

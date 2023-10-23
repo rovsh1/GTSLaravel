@@ -1,0 +1,11 @@
+@switch($service->typeId)
+    @case(\Module\Shared\Enum\ServiceTypeEnum::CAR_RENT_WITH_DRIVER)
+        @include('pdf-templates.booking.transfer._partials.details.car_rent')
+        @break
+    @case(\Module\Shared\Enum\ServiceTypeEnum::TRANSFER_TO_AIRPORT)
+        @include('pdf-templates.booking.transfer._partials.details.transfer_to_airport')
+        @break
+    @case(\Module\Shared\Enum\ServiceTypeEnum::TRANSFER_FROM_AIRPORT)
+        @include('pdf-templates.booking.transfer._partials.details.transfer_from_airport')
+        @break
+@endswitch
