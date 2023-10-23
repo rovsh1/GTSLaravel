@@ -107,9 +107,37 @@ class TestDataSeeder extends Seeder
 
         $service3Id = DB::table('supplier_services')->insertGetId([
             'supplier_id' => $supplierId,
-            'title' => 'Аренда авто',
+            'title' => 'Аренда авто на пол дня в Ташкенте',
             'type' => ServiceTypeEnum::CAR_RENT_WITH_DRIVER,
-            'data' => null,
+            'data' => json_encode(['cityId' => 1]),
+        ]);
+
+        $service4Id = DB::table('supplier_services')->insertGetId([
+            'supplier_id' => $supplierId,
+            'title' => 'Трансфер в ЖД вокзала Ташкент',
+            'type' => ServiceTypeEnum::TRANSFER_TO_RAILWAY,
+            'data' => json_encode(['cityId' => 1]),
+        ]);
+
+        $service5Id = DB::table('supplier_services')->insertGetId([
+            'supplier_id' => $supplierId,
+            'title' => 'Трансфер из ЖД вокзала Ташкент',
+            'type' => ServiceTypeEnum::TRANSFER_FROM_RAILWAY,
+            'data' => json_encode(['cityId' => 1]),
+        ]);
+
+        $service6Id = DB::table('supplier_services')->insertGetId([
+            'supplier_id' => $supplierId,
+            'title' => 'Трасфер Ташкент-Самарканд',
+            'type' => ServiceTypeEnum::INTERCITY_TRANSFER,
+            'data' => json_encode(['fromCityId' => 1, 'toCityId' => 4]),
+        ]);
+
+        $service7Id = DB::table('supplier_services')->insertGetId([
+            'supplier_id' => $supplierId,
+            'title' => 'Однодневная поездка в горы',
+            'type' => ServiceTypeEnum::DAY_CAR_TRIP,
+            'data' => json_encode(['cityId' => 1]),
         ]);
 
         $contract1Id = DB::table('supplier_contracts')->insertGetId([
@@ -139,11 +167,51 @@ class TestDataSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+        $contract4Id = DB::table('supplier_contracts')->insertGetId([
+            'supplier_id' => $supplierId,
+            'status' => StatusEnum::ACTIVE,
+            'service_type' => ServiceTypeEnum::TRANSFER_TO_RAILWAY,
+            'date_start' => '2023-01-01',
+            'date_end' => '2023-12-31',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        $contract5Id = DB::table('supplier_contracts')->insertGetId([
+            'supplier_id' => $supplierId,
+            'status' => StatusEnum::ACTIVE,
+            'service_type' => ServiceTypeEnum::TRANSFER_FROM_RAILWAY,
+            'date_start' => '2023-01-01',
+            'date_end' => '2023-12-31',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        $contract6Id = DB::table('supplier_contracts')->insertGetId([
+            'supplier_id' => $supplierId,
+            'status' => StatusEnum::ACTIVE,
+            'service_type' => ServiceTypeEnum::INTERCITY_TRANSFER,
+            'date_start' => '2023-01-01',
+            'date_end' => '2023-12-31',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        $contract7Id = DB::table('supplier_contracts')->insertGetId([
+            'supplier_id' => $supplierId,
+            'status' => StatusEnum::ACTIVE,
+            'service_type' => ServiceTypeEnum::DAY_CAR_TRIP,
+            'date_start' => '2023-01-01',
+            'date_end' => '2023-12-31',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
 
         DB::table('supplier_service_contracts')->insert([
             ['contract_id' => $contract1Id, 'service_id' => $service1Id],
             ['contract_id' => $contract2Id, 'service_id' => $service2Id],
             ['contract_id' => $contract3Id, 'service_id' => $service3Id],
+            ['contract_id' => $contract4Id, 'service_id' => $service4Id],
+            ['contract_id' => $contract5Id, 'service_id' => $service5Id],
+            ['contract_id' => $contract6Id, 'service_id' => $service6Id],
+            ['contract_id' => $contract7Id, 'service_id' => $service7Id],
         ]);
 
         DB::table('supplier_car_prices')->insert([
