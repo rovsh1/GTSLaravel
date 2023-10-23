@@ -146,7 +146,7 @@ class ServiceDetailsDtoFactory
         );
     }
 
-    private function buildIntercityTransfer(IntercityTransfer $details): mixed
+    private function buildIntercityTransfer(IntercityTransfer $details): IntercityTransferDto
     {
         return new IntercityTransferDto(
             $details->id()->value(),
