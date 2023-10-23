@@ -29,6 +29,7 @@ class TransferToRailway extends AbstractEditor implements EditorInterface
             $bookingId,
             $serviceInfo,
             (int)$supplierService->data['railwayStationId'],
+            (int)$supplierService->data['cityId'],
             new CarBidCollection([]),
             $detailsData['trainNumber'] ?? null,
             $detailsData['meetingTablet'] ?? null,
