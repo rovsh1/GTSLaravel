@@ -278,10 +278,10 @@ class SyncTravelineReservations implements ShouldQueue
     ): ?string {
         $comment = '';
         if ($roomCheckInCondition !== null) {
-            $comment .= "Ранний заезд с {$roomCheckInCondition->start}.";
+            $comment .= "Фактическое время заезда (ранний заезд) {$roomCheckInCondition->start}.";
         }
         if ($roomCheckOutCondition !== null) {
-            $comment .= "Поздний выезд до {$roomCheckOutCondition->end}";
+            $comment .= "Фактическое время выезда (поздний выезд) {$roomCheckOutCondition->end}";
         }
 
         return empty($comment) ? null : $comment;
