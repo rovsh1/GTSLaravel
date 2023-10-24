@@ -322,11 +322,7 @@ class SyncTravelineReservationsDebug implements ShouldQueue
          *  - если поздний заезд - включаем последний день периода
          */
         $preparedPeriod = $this->getPeriodByCheckInCondition($period, $hotelDefaultCheckInStart, $roomCheckInCondition);
-        $preparedPeriod = $this->getPeriodByCheckOutCondition(
-            $preparedPeriod,
-            $hotelDefaultCheckOutEnd,
-            $roomCheckOutCondition
-        );
+        $preparedPeriod = $this->getPeriodByCheckOutCondition($preparedPeriod, $hotelDefaultCheckOutEnd, $roomCheckOutCondition);
         dd($preparedPeriod);
 
         $countDays = $preparedPeriod->count();
@@ -353,7 +349,7 @@ class SyncTravelineReservationsDebug implements ShouldQueue
         if ($roomCheckInCondition === null) {
             return $period;
         }
-        $startDate = $period->getStartDate();
+        $startDate = $period->getStartDate()->clone();
         $defaultCheckInTime = new Carbon($hotelDefaultCheckInStart->value);
         $expectedCheckInTime = new Carbon($roomCheckInCondition->start);
         if ($expectedCheckInTime < $defaultCheckInTime) {
@@ -375,9 +371,9 @@ class SyncTravelineReservationsDebug implements ShouldQueue
             return $period;
         }
         if ($roomCheckOutCondition === null) {
-            return new CarbonPeriod($period->getStartDate(), $period->getEndDate()->subDay());
+            return new CarbonPeriod($period->getStartDate(), $period->getEndDate()->clone()->subDay());
         }
-        $endDate = $period->getEndDate();
+        $endDate = $period->getEndDate()->clone();
         $defaultCheckInTime = new Carbon($hotelDefaultCheckOutEnd->value);
         $expectedCheckInTime = new Carbon($roomCheckOutCondition->end);
         if ($expectedCheckInTime > $defaultCheckInTime) {

@@ -8,5 +8,5 @@ Route::controller(TravelineController::class)
     ->middleware([Authorize::class, 'api'])
     ->group(function () {
         Route::post('/', 'index')->name('index');
-        Route::get('/debug', 'debug')->name('debug');
+        Route::post('/debug', 'debug')->name('debug');
     });
