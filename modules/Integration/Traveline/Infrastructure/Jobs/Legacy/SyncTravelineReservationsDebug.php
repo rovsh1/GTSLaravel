@@ -343,10 +343,10 @@ class SyncTravelineReservationsDebug implements ShouldQueue
             //@todo что тут делать?
             \Log::warning('У отеля отсутствует дефолтное время заезда');
 
-            return $period;
+            return $period->getStartDate();
         }
         if ($roomCheckInCondition === null) {
-            return $period;
+            return $period->getStartDate();
         }
         $startDate = $period->getStartDate()->clone();
         $defaultCheckInTime = new Carbon($hotelDefaultCheckInStart->value);
@@ -367,10 +367,10 @@ class SyncTravelineReservationsDebug implements ShouldQueue
             //@todo что тут делать?
             \Log::warning('У отеля отсутствует дефолтное время выезда');
 
-            return $period;
+            return $period->getEndDate();
         }
         if ($roomCheckOutCondition === null) {
-            return new CarbonPeriod($period->getStartDate(), $period->getEndDate()->clone()->subDay());
+            return $period->getEndDate();
         }
         $endDate = $period->getEndDate()->clone();
         $defaultCheckInTime = new Carbon($hotelDefaultCheckOutEnd->value);
