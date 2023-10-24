@@ -127,11 +127,11 @@ class ServicesController extends Controller
         return Form::name('data')
             ->hidden('supplier_id', ['value' => $supplierId])
             ->text('title', ['label' => 'Название', 'required' => true])
-            ->enum('type', [
+            ->bookingServiceType('type', [
                 'label' => 'Тип услуги',
                 'emptyItem' => '',
                 'required' => true,
-                'enum' => ServiceTypeEnum::class
+                'withoutHotel' => true
             ]);
     }
 
