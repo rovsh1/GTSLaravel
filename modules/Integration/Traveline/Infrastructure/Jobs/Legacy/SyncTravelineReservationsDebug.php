@@ -349,8 +349,6 @@ class SyncTravelineReservationsDebug implements ShouldQueue
             return $period->getStartDate();
         }
         $startDate = $period->getStartDate()->clone();
-        $defaultCheckInTime = new Carbon($hotelDefaultCheckInStart->value);
-        $expectedCheckInTime = new Carbon($roomCheckInCondition->start);
         if ($roomCheckInCondition->start < $hotelDefaultCheckInStart->value) {
             $startDate->subDay();
         }
@@ -373,8 +371,6 @@ class SyncTravelineReservationsDebug implements ShouldQueue
             return $period->getEndDate();
         }
         $endDate = $period->getEndDate()->clone();
-        $defaultCheckInTime = new Carbon($hotelDefaultCheckOutEnd->value);
-        $expectedCheckInTime = new Carbon($roomCheckOutCondition->end);
         if ($roomCheckOutCondition->end > $hotelDefaultCheckOutEnd->value) {
             $endDate->addDay();
         }

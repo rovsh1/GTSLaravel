@@ -3,6 +3,7 @@
 namespace Module\Integration\Traveline\Infrastructure\Jobs\Legacy;
 
 use Carbon\Carbon;
+use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -328,8 +329,9 @@ class SyncTravelineReservations implements ShouldQueue
          *  - если ранний заезд - включаем день перед началом периода
          *  - если поздний заезд - включаем последний день периода
          */
-        $preparedPeriod = $this->getPeriodByCheckInCondition($period, $hotelDefaultCheckInStart, $roomCheckInCondition);
-        $preparedPeriod = $this->getPeriodByCheckOutCondition($preparedPeriod, $hotelDefaultCheckOutEnd, $roomCheckOutCondition);
+        $startDate = $this->getPeriodStartDateByCheckInCondition($period, $hotelDefaultCheckInStart, $roomCheckInCondition);
+        $endDate = $this->getPeriodEndDateByCheckOutCondition($period, $hotelDefaultCheckOutEnd, $roomCheckOutCondition);
+        $preparedPeriod = new CarbonPeriod($startDate, $endDate, 'P1D');
 
         $countDays = $preparedPeriod->count();
         $dailyPrice = $allDaysPrice / $countDays;
@@ -341,52 +343,48 @@ class SyncTravelineReservations implements ShouldQueue
         return $prices;
     }
 
-    private function getPeriodByCheckInCondition(
+    private function getPeriodStartDateByCheckInCondition(
         CarbonPeriod $period,
         ?Option $hotelDefaultCheckInStart,
         ?Room\CheckInOutConditions $roomCheckInCondition
-    ): CarbonPeriod {
+    ): CarbonInterface {
         if ($hotelDefaultCheckInStart === null) {
             //@todo что тут делать?
             \Log::warning('У отеля отсутствует дефолтное время заезда');
 
-            return $period;
+            return $period->getStartDate();
         }
         if ($roomCheckInCondition === null) {
-            return $period;
+            return $period->getStartDate();
         }
-        $startDate = $period->getStartDate();
-        $defaultCheckInTime = new Carbon($hotelDefaultCheckInStart->value);
-        $expectedCheckInTime = new Carbon($roomCheckInCondition->start);
-        if ($expectedCheckInTime < $defaultCheckInTime) {
+        $startDate = $period->getStartDate()->clone();
+        if ($roomCheckInCondition->start < $hotelDefaultCheckInStart->value) {
             $startDate->subDay();
         }
 
-        return new CarbonPeriod($startDate, $period->getEndDate());
+        return $startDate;
     }
 
-    private function getPeriodByCheckOutCondition(
+    private function getPeriodEndDateByCheckOutCondition(
         CarbonPeriod $period,
         ?Option $hotelDefaultCheckOutEnd,
         ?Room\CheckInOutConditions $roomCheckOutCondition
-    ): CarbonPeriod {
+    ): CarbonInterface {
         if ($hotelDefaultCheckOutEnd === null) {
             //@todo что тут делать?
             \Log::warning('У отеля отсутствует дефолтное время выезда');
 
-            return $period;
+            return $period->getEndDate();
         }
         if ($roomCheckOutCondition === null) {
-            return new CarbonPeriod($period->getStartDate(), $period->getEndDate()->subDay());
+            return $period->getEndDate();
         }
-        $endDate = $period->getEndDate();
-        $defaultCheckInTime = new Carbon($hotelDefaultCheckOutEnd->value);
-        $expectedCheckInTime = new Carbon($roomCheckOutCondition->end);
-        if ($expectedCheckInTime > $defaultCheckInTime) {
+        $endDate = $period->getEndDate()->clone();
+        if ($roomCheckOutCondition->end > $hotelDefaultCheckOutEnd->value) {
             $endDate->addDay();
         }
 
-        return new CarbonPeriod($period->getStartDate(), $endDate);
+        return $endDate;
     }
 
     private function isCancelledHotelReservationStatus(ReservationStatusEnum $status): bool
