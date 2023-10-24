@@ -12,4 +12,9 @@ class TravelineController extends Controller
     {
         return (new IndexAction())->handle($request);
     }
+
+    public function debug(){
+        $job = app(\Module\Integration\Traveline\Infrastructure\Jobs\Legacy\SyncTravelineReservationsDebug::class);
+        $job->handle();
+    }
 }
