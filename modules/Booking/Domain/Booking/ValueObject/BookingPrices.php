@@ -14,11 +14,11 @@ final class BookingPrices implements SerializableDataInterface, CanEquate
     ) {
     }
 
-    public static function createEmpty(CurrencyEnum $netCurrency, CurrencyEnum $grossCurrency): BookingPrices
+    public static function createEmpty(CurrencyEnum $supplierCurrency, CurrencyEnum $clientCurrency): BookingPrices
     {
         return new BookingPrices(
-            BookingPriceItem::createEmpty($netCurrency),
-            BookingPriceItem::createEmpty($grossCurrency),
+            BookingPriceItem::createEmpty($supplierCurrency),
+            BookingPriceItem::createEmpty($clientCurrency),
         );
     }
 

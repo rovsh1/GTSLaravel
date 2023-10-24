@@ -416,17 +416,18 @@ class BookingController extends Controller
         $cityId = Hotel::find($hotelId)->city_id;
         $order = OrderAdapter::findOrder($booking->orderId);
         $manager = $this->administratorRepository->get($booking->id);
+        $details = $booking->details;
 
         return [
-            'quota_processing_method' => $booking->quotaProcessingMethod->value,
+            'quota_processing_method' => $details->quotaProcessingMethod->value,
             'manager_id' => $manager->id,
             'order_id' => $booking->orderId,
-            'currency' => $order->currency,
+            'currency' => $order->currency->value,
             'hotel_id' => $hotelId,
             'city_id' => $cityId,
             'client_id' => $order->clientId,
             'legal_id' => $order->legalId,
-            'period' => new CarbonPeriod($booking->period->dateFrom, $booking->period->dateTo),
+            'period' => new CarbonPeriod($details->period->dateFrom, $details->period->dateTo),
             'note' => $booking->note,
         ];
     }

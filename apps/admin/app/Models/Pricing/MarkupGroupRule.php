@@ -15,7 +15,7 @@ class MarkupGroupRule extends Model
     protected $fillable = [
         'group_id',
         'hotel_id',
-        'hotel_room_id',
+        'room_id',
         'value',
         'type'
     ];
@@ -30,7 +30,7 @@ class MarkupGroupRule extends Model
             ->addSelect('client_markup_group_rules.*')
             ->join('hotels', 'hotels.id', '=', 'client_markup_group_rules.hotel_id')
             ->addSelect('hotels.name as hotel_name')
-            ->leftJoin('hotel_rooms', 'hotel_rooms.id', '=', 'client_markup_group_rules.hotel_room_id')
+            ->leftJoin('hotel_rooms', 'hotel_rooms.id', '=', 'client_markup_group_rules.room_id')
             ->joinTranslatable('hotel_rooms', 'name as hotel_room_name');
     }
 

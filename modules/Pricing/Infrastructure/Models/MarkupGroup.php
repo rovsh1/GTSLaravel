@@ -25,6 +25,7 @@ class MarkupGroup extends Model
     public static function findByClientId(int $clientId)
     {
         return static::query()
+            ->addSelect('client_markup_groups.*')
             ->join('clients', 'clients.markup_group_id', '=', 'client_markup_groups.id')
             ->where('clients.id', $clientId)
             ->first();
