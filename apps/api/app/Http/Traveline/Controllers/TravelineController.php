@@ -13,8 +13,9 @@ class TravelineController extends Controller
         return (new IndexAction())->handle($request);
     }
 
-    public function debug(){
+    public function debug(Request $request)
+    {
         $job = app(\Module\Integration\Traveline\Infrastructure\Jobs\Legacy\SyncTravelineReservationsDebug::class);
-        $job->handle();
+        $job->handle($request->get('booking_id'));
     }
 }

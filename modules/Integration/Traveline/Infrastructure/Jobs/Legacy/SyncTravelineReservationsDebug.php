@@ -28,10 +28,10 @@ class SyncTravelineReservationsDebug implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function handle()
+    public function handle(int $bookingId)
     {
         $this->addNewReservations();
-        $this->updateExistsReservations();
+        $this->updateExistsReservations($bookingId);
     }
 
     private function addNewReservations(): void
@@ -49,10 +49,10 @@ class SyncTravelineReservationsDebug implements ShouldQueue
 //        $this->createTravelineReservations($q->get());
     }
 
-    private function updateExistsReservations(): void
+    private function updateExistsReservations(int $bookingId): void
     {
         $q = $this->getReservationQuery()
-            ->where('reservation.id', 8497)
+            ->where('reservation.id', $bookingId)
             ->join($this->getTravelineReservationsTable(), function ($join) {
                 $hotelReservationsTable = with(new Reservation)->getTable();
                 $join->on(
