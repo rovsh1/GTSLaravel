@@ -102,6 +102,7 @@ class SyncTravelineReservationsDebug implements ShouldQueue
 
         $oldHash = md5($reservation->data);
         $newDto = $this->convertHotelReservationToDto($reservation, $travelineReservationStatus->value);
+        dd($newDto);
         $newHash = md5(json_encode($newDto));
         if ($oldHash === $newHash) {
             return null;
@@ -125,10 +126,7 @@ class SyncTravelineReservationsDebug implements ShouldQueue
     private function createTravelineReservations(Collection $hotelReservations): void
     {
         $preparedReservations = $hotelReservations->map(function (Reservation $reservation) {
-            $reservationDto = $this->convertHotelReservationToDto(
-                $reservation,
-                TravelineReservationStatusEnum::New->value
-            );
+            $reservationDto = $this->convertHotelReservationToDto($reservation, TravelineReservationStatusEnum::New->value);
             if ($reservationDto->roomStays->count() === 0) {
                 return null;
             }
@@ -323,7 +321,6 @@ class SyncTravelineReservationsDebug implements ShouldQueue
          */
         $preparedPeriod = $this->getPeriodByCheckInCondition($period, $hotelDefaultCheckInStart, $roomCheckInCondition);
         $preparedPeriod = $this->getPeriodByCheckOutCondition($preparedPeriod, $hotelDefaultCheckOutEnd, $roomCheckOutCondition);
-        dd($preparedPeriod);
 
         $countDays = $preparedPeriod->count();
         $dailyPrice = $allDaysPrice / $countDays;
