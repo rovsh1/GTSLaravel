@@ -237,7 +237,7 @@ class SyncTravelineReservationsDebug implements ShouldQueue
                         ),
                         Dto\Reservation\Room\TotalDto::from(['amountAfterTaxes' => $preparedPrice]),
                         $room->note,
-                        $this->buildAdditionalInfo($room->checkInCondition, $room->checkOutCondition)
+                        $this->buildAdditionalInfo($period, $room->checkInCondition, $room->checkOutCondition)
                     );
                 }
 
@@ -258,13 +258,14 @@ class SyncTravelineReservationsDebug implements ShouldQueue
                     ),
                     Dto\Reservation\Room\TotalDto::from(['amountAfterTaxes' => $preparedPrice]),
                     $room->note,
-                    $this->buildAdditionalInfo($room->checkInCondition, $room->checkOutCondition)
+                    $this->buildAdditionalInfo($period, $room->checkInCondition, $room->checkOutCondition)
                 );
             }
         )->filter()->merge($fakeRooms)->all();
     }
 
     private function buildAdditionalInfo(
+        CarbonPeriod $period,
         ?Room\CheckInOutConditions $roomCheckInCondition,
         ?Room\CheckInOutConditions $roomCheckOutCondition
     ): ?string {
@@ -361,6 +362,7 @@ class SyncTravelineReservationsDebug implements ShouldQueue
         ?Option $hotelDefaultCheckOutEnd,
         ?Room\CheckInOutConditions $roomCheckOutCondition
     ): CarbonInterface {
+        //кол-во ночей считается на 1 день меньше периода
         $endDate = $period->getEndDate()->clone()->subDay();
         if ($hotelDefaultCheckOutEnd === null) {
             //@todo что тут делать?

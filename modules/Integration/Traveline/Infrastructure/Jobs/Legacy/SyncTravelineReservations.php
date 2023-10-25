@@ -370,16 +370,17 @@ class SyncTravelineReservations implements ShouldQueue
         ?Option $hotelDefaultCheckOutEnd,
         ?Room\CheckInOutConditions $roomCheckOutCondition
     ): CarbonInterface {
+        //кол-во ночей считается на 1 день меньше периода
+        $endDate = $period->getEndDate()->clone()->subDay();
         if ($hotelDefaultCheckOutEnd === null) {
             //@todo что тут делать?
             \Log::warning('У отеля отсутствует дефолтное время выезда');
 
-            return $period->getEndDate();
+            return $endDate;
         }
         if ($roomCheckOutCondition === null) {
-            return $period->getEndDate();
+            return $endDate;
         }
-        $endDate = $period->getEndDate()->clone();
         if ($roomCheckOutCondition->end > $hotelDefaultCheckOutEnd->value) {
             $endDate->addDay();
         }
