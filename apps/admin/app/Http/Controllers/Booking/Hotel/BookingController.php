@@ -32,6 +32,7 @@ use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Grid\SearchForm;
 use App\Admin\Support\View\Layout as LayoutContract;
+use App\Core\Support\Http\Responses\AjaxErrorResponse;
 use App\Core\Support\Http\Responses\AjaxRedirectResponse;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use App\Core\Support\Http\Responses\AjaxSuccessResponse;
@@ -262,6 +263,17 @@ class BookingController extends Controller
             case UpdatePriceRequest::SUPPLIER_PENALTY_ACTION:
                 PriceAdapter::setSupplierPenalty($id, $request->getNetPenalty());
                 break;
+        }
+
+        return new AjaxSuccessResponse();
+    }
+
+    public function recalculatePrices(int $id): AjaxResponseInterface
+    {
+        try {
+            PriceAdapter::recalculatePrices($id);
+        } catch (ApplicationException $e) {
+            return new AjaxErrorResponse($e->getMessage());
         }
 
         return new AjaxSuccessResponse();

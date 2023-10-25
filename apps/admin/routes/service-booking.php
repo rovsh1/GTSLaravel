@@ -17,6 +17,7 @@ AclRoute::for('service-booking')
 
     ->get('/{booking}/actions/available', Controllers\Booking\Service\BookingController::class . '@getAvailableActions', 'read', 'actions.available.get')
     ->put('/{booking}/price', Controllers\Booking\Service\BookingController::class . '@updatePrice', 'update', 'price.update')
+    ->post('/{booking}/price/recalculate', Controllers\Booking\Service\BookingController::class . '@recalculatePrices', 'update', 'price.recalculate')
 
     ->get('/{booking}/request/list', Controllers\Booking\RequestController::class . '@getBookingRequests', 'read', 'request.list')
     ->post('/{booking}/request', Controllers\Booking\RequestController::class . '@sendRequest', 'update', 'request.send')
