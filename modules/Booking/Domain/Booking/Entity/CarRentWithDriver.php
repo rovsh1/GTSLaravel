@@ -24,8 +24,7 @@ class CarRentWithDriver implements ServiceDetailsInterface
         private ?int $hoursLimit,
         protected ?DateTimeInterface $date,
         protected CarBidCollection $carBids
-    ) {
-    }
+    ) {}
 
     public function serviceType(): ServiceTypeEnum
     {

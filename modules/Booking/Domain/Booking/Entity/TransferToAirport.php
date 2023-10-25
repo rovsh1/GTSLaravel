@@ -9,7 +9,6 @@ use Module\Booking\Domain\Booking\ValueObject\CarBidCollection;
 use Module\Booking\Domain\Booking\ValueObject\DetailsId;
 use Module\Booking\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Shared\Enum\ServiceTypeEnum;
-use Module\Shared\ValueObject\Time;
 
 class TransferToAirport implements ServiceDetailsInterface
 {

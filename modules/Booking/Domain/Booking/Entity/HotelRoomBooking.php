@@ -22,8 +22,7 @@ final class HotelRoomBooking
         private GuestIdCollection $guestIds,
         private RoomBookingDetails $details,
         private RoomPrices $prices,
-    ) {
-    }
+    ) {}
 
     public function id(): RoomBookingId
     {

@@ -37,7 +37,7 @@ class GetTransferServicePrice implements UseCaseInterface
     private function buildDtoFromModel(Model $servicePrice, CurrencyEnum $grossCurrency): ?ServicePriceDto
     {
         $grossPrice = collect($servicePrice->prices_gross)->first(
-            fn(array $priceData) => $priceData['currency'] === $grossCurrency->id()
+            fn(array $priceData) => CurrencyEnum::from($priceData['currency']) === $grossCurrency
         );
         if ($grossPrice === null) {
             return null;

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Domain\Booking\Factory;
 
 use Module\Booking\Domain\Booking\Booking;
+use Module\Booking\Domain\Booking\Entity\ServiceDetailsInterface;
 use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Domain\Booking\Repository\Details\CarRentWithDriverRepositoryInterface;
 use Module\Booking\Domain\Booking\Repository\Details\CIPRoomInAirportRepositoryInterface;

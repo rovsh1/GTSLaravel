@@ -23,8 +23,7 @@ class DayCarTrip implements ServiceDetailsInterface
         private ?string $destinationsDescription,
         protected ?DateTimeInterface $date,
         protected CarBidCollection $carBids
-    ) {
-    }
+    ) {}
 
     public function serviceType(): ServiceTypeEnum
     {

@@ -5,6 +5,10 @@ namespace Module\Booking\Domain\Booking\Listener;
 use Carbon\Carbon;
 use Module\Booking\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Domain\Booking\Entity\CIPRoomInAirport;
+use Module\Booking\Domain\Booking\Entity\ServiceDetailsInterface;
+use Module\Booking\Domain\Booking\Event\CarBidAdded;
+use Module\Booking\Domain\Booking\Event\CarBidRemoved;
+use Module\Booking\Domain\Booking\Event\CarBidUpdated;
 use Module\Booking\Domain\Booking\Event\GuestBinded;
 use Module\Booking\Domain\Booking\Event\GuestUnbinded;
 use Module\Booking\Domain\Booking\Event\PriceBecomeDeprecatedEventInterface;
@@ -14,6 +18,7 @@ use Module\Booking\Domain\Booking\Service\HotelBooking\PriceCalculator\PriceCalc
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Domain\Booking\ValueObject\BookingPriceItem;
 use Module\Booking\Domain\Booking\ValueObject\BookingPrices;
+use Module\Booking\Domain\Booking\ValueObject\CarBid;
 use Module\Booking\Domain\Shared\Service\BookingUpdater;
 use Sdk\Module\Contracts\Event\DomainEventInterface;
 use Sdk\Module\Contracts\Event\DomainEventListenerInterface;
@@ -37,7 +42,51 @@ class RecalculateBookingPricesListener implements DomainEventListenerInterface
 
             return;
         }
+
+        if ($event instanceof CarBidAdded || $event instanceof CarBidUpdated || $event instanceof CarBidRemoved) {
+            $this->processTransferBooking($event->bookingId());
+
+            return;
+        }
+
+
         $this->hotelBookingPriceCalculator->calculate($event->bookingId());
+    }
+
+    private function processTransferBooking(BookingId $bookingId): void
+    {
+        $booking = $this->bookingRepository->findOrFail($bookingId);
+        $repository = $this->detailsRepositoryFactory->buildByBookingId($bookingId);
+        /** @var ServiceDetailsInterface $details */
+        $details = $repository->find($bookingId);
+
+        $reducer = function (array $data, CarBid $carBid) {
+            $data['clientPriceAmount'] += $carBid->prices()->clientPrice()->calculatedValue() * $carBid->carsCount();
+            $data['supplierPriceAmount'] += $carBid->prices()->supplierPrice()->calculatedValue() * $carBid->carsCount();
+
+            return $data;
+        };
+        ['clientPriceAmount' => $clientPriceAmount, 'supplierPriceAmount' => $supplierPriceAmount] = collect($details->carBids()->all())
+            ->reduce($reducer, ['clientPriceAmount' => 0, 'supplierPriceAmount' => 0]);
+
+        $bookingPrice = new BookingPrices(
+            new BookingPriceItem(
+                currency: $booking->prices()->supplierPrice()->currency(),
+                calculatedValue: $supplierPriceAmount,
+                manualValue: $booking->prices()->supplierPrice()->manualValue(),
+                penaltyValue: $booking->prices()->supplierPrice()->penaltyValue()
+            ),
+            new BookingPriceItem(
+                currency: $booking->prices()->clientPrice()->currency(),
+                calculatedValue: $clientPriceAmount,
+                manualValue: $booking->prices()->clientPrice()->manualValue(),
+                penaltyValue: $booking->prices()->clientPrice()->penaltyValue()
+            )
+        );
+
+        $booking->updatePrice($bookingPrice);
+        //@todo сейчас не кидается ивент, в будущем заменить на storeIfHasEvents
+        $this->bookingUpdater->store($booking);
     }
 
     private function processAirportBooking(BookingId $bookingId): void

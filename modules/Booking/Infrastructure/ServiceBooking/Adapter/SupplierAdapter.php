@@ -42,14 +42,14 @@ class SupplierAdapter implements SupplierAdapterInterface
         int $supplierId,
         int $serviceId,
         int $carId,
-        CurrencyEnum $grossCurrency,
+        CurrencyEnum $clientCurrency,
         CarbonInterface $date
     ): ?ServicePriceDto {
         return app(GetTransferServicePrice::class)->execute(
             $supplierId,
             $serviceId,
             $carId,
-            $grossCurrency,
+            $clientCurrency,
             $date
         );
     }
@@ -67,13 +67,13 @@ class SupplierAdapter implements SupplierAdapterInterface
     public function getAirportServicePrice(
         int $supplierId,
         int $serviceId,
-        CurrencyEnum $grossCurrency,
+        CurrencyEnum $clientCurrency,
         CarbonInterface $date
     ): ?ServicePriceDto {
         return app(GetAirportServicePrice::class)->execute(
             $supplierId,
             $serviceId,
-            $grossCurrency,
+            $clientCurrency,
             $date
         );
     }
