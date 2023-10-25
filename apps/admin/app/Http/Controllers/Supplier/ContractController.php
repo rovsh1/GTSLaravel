@@ -102,7 +102,7 @@ class ContractController extends Controller
                 'required' => true,
                 'emptyItem' => ''
             ])
-            ->hidden('service_ids', ['label' => 'Услуги', 'required' => true])
+            ->hiddenMultiSelect('service_ids', ['label' => 'Услуги', 'required' => true])
             ->file('documents', ['label' => 'Документы', 'multiple' => true]);
     }
 

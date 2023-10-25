@@ -35,6 +35,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method self numRange(string $name, array $options = [])
  * @method self image(string $name, array $options = [])
  * @method self bookingServiceType(string $name, array $options = [])
+ * @method self hiddenMultiSelect(string $name, array $options = [])
  */
 class Form extends Base
 {
