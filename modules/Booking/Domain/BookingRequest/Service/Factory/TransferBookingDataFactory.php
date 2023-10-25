@@ -24,6 +24,7 @@ class TransferBookingDataFactory
 
     public function build(Booking $booking, RequestTypeEnum $requestType): TemplateDataInterface
     {
+        //@todo добавить билдер параметров трансферных броней, который будет собирать DTO (param,label,value)
         $repository = $this->detailsRepositoryFactory->build($booking);
         $bookingDetails = $repository->findOrFail($booking->id());
 
