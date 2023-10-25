@@ -4,7 +4,7 @@ import EditTableRowButton from '~resources/views/hotel/settings/components/EditT
 
 import { CarBid } from '~api/booking/service'
 
-const props = defineProps<{
+defineProps<{
   bookingCars: CarBid[]
   canEdit: boolean
 }>()

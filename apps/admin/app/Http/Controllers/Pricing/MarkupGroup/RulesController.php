@@ -122,7 +122,7 @@ class RulesController extends Controller
     {
         return Form::hidden('group_id', ['value' => $markupGroup->id])
             ->hotel('hotel_id', ['label' => 'Отель', 'emptyItem' => '', 'required' => true])
-            ->hidden('hotel_room_id', ['label' => 'Номер'])
+            ->hidden('room_id', ['label' => 'Номер'])
             ->enum(
                 'type',
                 ['label' => 'Тип значения', 'emptyItem' => '', 'enum' => MarkupValueTypeEnum::class, 'required' => true]

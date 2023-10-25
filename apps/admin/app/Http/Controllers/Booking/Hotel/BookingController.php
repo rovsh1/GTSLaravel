@@ -32,6 +32,7 @@ use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Grid\SearchForm;
 use App\Admin\Support\View\Layout as LayoutContract;
+use App\Core\Support\Http\Responses\AjaxErrorResponse;
 use App\Core\Support\Http\Responses\AjaxRedirectResponse;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use App\Core\Support\Http\Responses\AjaxSuccessResponse;
@@ -270,6 +271,17 @@ class BookingController extends Controller
         return new AjaxSuccessResponse();
     }
 
+    public function recalculatePrices(int $id): AjaxResponseInterface
+    {
+        try {
+            PriceAdapter::recalculatePrices($id);
+        } catch (ApplicationException $e) {
+            return new AjaxErrorResponse($e->getMessage());
+        }
+
+        return new AjaxSuccessResponse();
+    }
+
     public function bulkDelete(BulkDeleteRequest $request): AjaxResponseInterface
     {
         BookingAdapter::bulkDeleteBookings($request->getIds());
@@ -419,17 +431,18 @@ class BookingController extends Controller
         $cityId = Hotel::find($hotelId)->city_id;
         $order = OrderAdapter::findOrder($booking->orderId);
         $manager = $this->administratorRepository->get($booking->id);
+        $details = $booking->details;
 
         return [
-            'quota_processing_method' => $booking->quotaProcessingMethod->value,
+            'quota_processing_method' => $details->quotaProcessingMethod->value,
             'manager_id' => $manager->id,
             'order_id' => $booking->orderId,
-            'currency' => $order->currency,
+            'currency' => $order->currency->value,
             'hotel_id' => $hotelId,
             'city_id' => $cityId,
             'client_id' => $order->clientId,
             'legal_id' => $order->legalId,
-            'period' => new CarbonPeriod($booking->period->dateFrom, $booking->period->dateTo),
+            'period' => new CarbonPeriod($details->period->dateFrom, $details->period->dateTo),
             'note' => $booking->note,
         ];
     }

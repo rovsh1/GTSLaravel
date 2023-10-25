@@ -26,7 +26,6 @@ class HotelMarkupFinder implements HotelMarkupFinderInterface
             throw new \Exception("Client[$clientId] markup undefined");
         }
 
-        return self::$cached[$roomId] = MarkupValue::createPercent($raw->value);
-//        return self::$cached[$roomId] = new MarkupValue($raw->value, $raw->type);
+        return self::$cached[$roomId] = new MarkupValue($raw->value, $raw->type);
     }
 }

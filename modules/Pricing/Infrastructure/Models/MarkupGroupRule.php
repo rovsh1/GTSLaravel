@@ -26,8 +26,8 @@ class MarkupGroupRule extends Model
     public static function findByRoomId(int $clientId, int $roomId)
     {
         return static::query()
-            ->join('client_markup_groups', 'client_markup_group_rules.id', '=', 'client_markup_group_rules.group_id')
-            ->join('clients', 'clients.markup_group_id', '=', 'client_markup_groups.id')
+            ->addSelect('client_markup_group_rules.*')
+            ->join('clients', 'clients.markup_group_id', '=', 'client_markup_group_rules.group_id')
             ->where('clients.id', $clientId)
             ->whereRaw(
                 'client_markup_group_rules.room_id=?'

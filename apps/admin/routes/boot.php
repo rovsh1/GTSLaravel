@@ -18,8 +18,6 @@ Route::group([], __DIR__ . '/client.php');
 Route::group([], __DIR__ . '/country.php');
 Route::group([], __DIR__ . '/airport.php');
 Route::group([], __DIR__ . '/hotel-booking.php');
-Route::group([], __DIR__ . '/airport-booking.php');
-Route::group([], __DIR__ . '/transfer-booking.php');
 Route::group([], __DIR__ . '/service-booking.php');
 Route::group([], __DIR__ . '/booking-order.php');
 Route::group([], __DIR__ . '/currency.php');
