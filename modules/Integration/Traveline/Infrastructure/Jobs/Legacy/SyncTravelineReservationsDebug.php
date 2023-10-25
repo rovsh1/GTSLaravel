@@ -365,15 +365,15 @@ class SyncTravelineReservationsDebug implements ShouldQueue
             //@todo что тут делать?
             \Log::warning('У отеля отсутствует дефолтное время выезда');
 
-            return $period->getEndDate();
+            return $period->excludeEndDate()->getEndDate();
         }
         if ($roomCheckOutCondition === null) {
-            return $period->getEndDate();
+            return $period->excludeEndDate()->getEndDate();
         }
-        $endDate = $period->getEndDate()->clone();
-        if ($roomCheckOutCondition->end > $hotelDefaultCheckOutEnd->value) {
-            $endDate->addDay();
-        }
+        $endDate = $period->excludeEndDate(false)->getEndDate();
+//        if ($roomCheckOutCondition->end > $hotelDefaultCheckOutEnd->value) {
+//            $endDate->addDay();
+//        }
 
         return $endDate;
     }
