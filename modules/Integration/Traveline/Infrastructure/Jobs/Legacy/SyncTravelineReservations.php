@@ -246,7 +246,7 @@ class SyncTravelineReservations implements ShouldQueue
                         ),
                         Dto\Reservation\Room\TotalDto::from(['amountAfterTaxes' => $preparedPrice]),
                         $room->note,
-                        $this->buildAdditionalInfo($room->checkInCondition, $room->checkOutCondition)
+                        $this->buildAdditionalInfo($period, $room->checkInCondition, $room->checkOutCondition)
                     );
                 }
 
@@ -267,22 +267,25 @@ class SyncTravelineReservations implements ShouldQueue
                     ),
                     Dto\Reservation\Room\TotalDto::from(['amountAfterTaxes' => $preparedPrice]),
                     $room->note,
-                    $this->buildAdditionalInfo($room->checkInCondition, $room->checkOutCondition)
+                    $this->buildAdditionalInfo($period, $room->checkInCondition, $room->checkOutCondition)
                 );
             }
         )->filter()->merge($fakeRooms)->all();
     }
 
     private function buildAdditionalInfo(
+        CarbonPeriod $period,
         ?Room\CheckInOutConditions $roomCheckInCondition,
         ?Room\CheckInOutConditions $roomCheckOutCondition
     ): ?string {
         $comment = '';
         if ($roomCheckInCondition !== null) {
-            $comment .= "Фактическое время заезда (ранний заезд) с {$roomCheckInCondition->start}.";
+            $checkInDate = $period->getStartDate()->format('d.m.Y');
+            $comment .= "Фактическое время заезда (ранний заезд) с {$roomCheckInCondition->start} {$checkInDate}.";
         }
         if ($roomCheckOutCondition !== null) {
-            $comment .= "Фактическое время выезда (поздний выезд) до {$roomCheckOutCondition->end}";
+            $checkOutDate = $period->getEndDate()->format('d.m.Y');
+            $comment .= "Фактическое время выезда (поздний выезд) до {$roomCheckOutCondition->end} {$checkOutDate}";
         }
 
         return empty($comment) ? null : $comment;
