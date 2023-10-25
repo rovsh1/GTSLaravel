@@ -5,6 +5,7 @@
 
 @use 'select2/dist/css/select2.min.css' as select2base;
 @use '@ttskch/select2-bootstrap4-theme/dist/select2-bootstrap4.min.css' as select2bootstrap;
+@use 'partials/plugins/multiselect-select2.scss' as select2Multiselect;
 
 @use "layout/layout";
 
