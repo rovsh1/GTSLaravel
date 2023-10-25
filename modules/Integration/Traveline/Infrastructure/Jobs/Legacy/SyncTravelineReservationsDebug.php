@@ -271,10 +271,12 @@ class SyncTravelineReservationsDebug implements ShouldQueue
     ): ?string {
         $comment = '';
         if ($roomCheckInCondition !== null) {
-            $comment .= "Фактическое время заезда (ранний заезд) с {$roomCheckInCondition->start}.";
+            $checkInDate = $period->getStartDate()->format('d.m.Y');
+            $comment .= "Фактическое время заезда (ранний заезд) с {$roomCheckInCondition->start} {$checkInDate}.";
         }
         if ($roomCheckOutCondition !== null) {
-            $comment .= "Фактическое время выезда (поздний выезд) до {$roomCheckOutCondition->end}";
+            $checkOutDate = $period->getEndDate()->format('d.m.Y');
+            $comment .= "Фактическое время выезда (поздний выезд) до {$roomCheckOutCondition->end} {$checkOutDate}";
         }
 
         return empty($comment) ? null : $comment;
