@@ -9,12 +9,14 @@ use Module\Booking\Application\AirportBooking\Exception\NotFoundServicePriceExce
 use Module\Booking\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Domain\Booking\Booking;
 use Module\Booking\Domain\Booking\Entity\CIPRoomInAirport;
+use Module\Booking\Domain\Booking\Entity\ServiceDetailsInterface;
 use Module\Booking\Domain\Booking\Factory\DetailsRepositoryFactory;
 use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Domain\Booking\Service\HotelBooking\PriceCalculator\PriceCalculator as HotelBookingPriceCalculator;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Domain\Booking\ValueObject\BookingPriceItem;
 use Module\Booking\Domain\Booking\ValueObject\BookingPrices;
+use Module\Booking\Domain\Booking\ValueObject\CarBid;
 use Module\Booking\Domain\Shared\Service\BookingUpdater;
 use Module\Shared\Enum\ServiceTypeEnum;
 
@@ -75,5 +77,41 @@ class PriceCalculator
         $this->bookingUpdater->store($booking);
     }
 
-    private function processTransferBooking(Booking $booking): void {}
+    private function processTransferBooking(Booking $booking): void {
+        $repository = $this->detailsRepositoryFactory->buildByBookingId($booking->id());
+        /** @var ServiceDetailsInterface $details */
+        $details = $repository->find($booking->id());
+
+        //@todo перенести реализацию из ветки 2075
+        $supplierPriceAmount = 0;
+        $clientPriceAmount = 0;
+
+//        $reducer = function (array $data, CarBid $carBid) {
+//            $data['clientPriceAmount'] += $carBid->prices()->clientPrice()->totalAmount();
+//            $data['supplierPriceAmount'] += $carBid->prices()->supplierPrice()->totalAmount();
+//
+//            return $data;
+//        };
+//        ['clientPriceAmount' => $clientPriceAmount, 'supplierPriceAmount' => $supplierPriceAmount] = collect($details->carBids()->all())
+//            ->reduce($reducer, ['clientPriceAmount' => 0, 'supplierPriceAmount' => 0]);
+
+        $bookingPrice = new BookingPrices(
+            new BookingPriceItem(
+                currency: $booking->prices()->supplierPrice()->currency(),
+                calculatedValue: $supplierPriceAmount,
+                manualValue: $booking->prices()->supplierPrice()->manualValue(),
+                penaltyValue: $booking->prices()->supplierPrice()->penaltyValue()
+            ),
+            new BookingPriceItem(
+                currency: $booking->prices()->clientPrice()->currency(),
+                calculatedValue: $clientPriceAmount,
+                manualValue: $booking->prices()->clientPrice()->manualValue(),
+                penaltyValue: $booking->prices()->clientPrice()->penaltyValue()
+            )
+        );
+
+        $booking->updatePrice($bookingPrice);
+        //@todo сейчас не кидается ивент, в будущем заменить на storeIfHasEvents
+        $this->bookingUpdater->store($booking);
+    }
 }
