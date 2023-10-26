@@ -186,7 +186,6 @@ const handlerUpdateSeasonDaysData = (status :boolean) => {
     <OverlayLoading v-if="isFetching || waitComponentProcess" />
     <div class="table-wrapper-overflow">
       <table :id="tableElementID" ref="containerElement" class="hotel-prices table table-bordered table-sm table-light">
-        <caption>Стоимость</caption>
         <thead>
           <tr ref="baseRowWidth">
             <th ref="baseColumnsWidth" class="text-center align-middle" :colspan="2">Сезон</th>
