@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { computed, watch } from 'vue'
 
-import closeIcon from '@mdi/svg/svg/close.svg'
 import { OnClickOutside } from '@vueuse/components'
 import { MaybeElementRef, MaybeRef, OnClickOutsideOptions } from '@vueuse/core'
 
@@ -56,7 +55,7 @@ watch(() => props.opened, (value) => {
               </div>
               <BootstrapButton
                 label="Закрыть (Esc)"
-                :only-icon="closeIcon"
+                only-icon="close"
                 size="small"
                 severity="link"
                 variant="outline"

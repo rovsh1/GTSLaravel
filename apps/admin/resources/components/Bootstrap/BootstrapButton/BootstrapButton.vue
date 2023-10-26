@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import { computed, unref } from 'vue'
-import InlineSVG from 'vue-inline-svg'
 
 import { MaybeRef } from '@vueuse/core'
 
 import { BootstrapSeverity } from '~components/Bootstrap/lib'
+import InlineIcon from '~components/InlineIcon.vue'
 import LoadingSpinner from '~components/LoadingSpinner.vue'
 
 import { ButtonSeverity, ButtonSize, ButtonType, ButtonVariant } from './lib'
@@ -121,16 +121,16 @@ const buttonType = computed(() => {
     </div>
     <slot name="start" />
     <template v-if="startIcon">
-      <InlineSVG :src="startIcon" class="buttonIcon" />
+      <InlineIcon :icon="startIcon" class="buttonIcon" />
     </template>
     <template v-if="onlyIcon">
-      <InlineSVG :src="onlyIcon" class="buttonOnlyIcon" />
+      <InlineIcon :icon="onlyIcon" class="buttonOnlyIcon" />
     </template>
     <span v-else class="buttonLabel">
       {{ label }}
     </span>
     <template v-if="endIcon">
-      <InlineSVG :src="endIcon" class="buttonIcon" />
+      <InlineIcon :icon="endIcon" class="buttonIcon" />
     </template>
     <slot name="end" />
   </component>
@@ -239,20 +239,16 @@ a.btn {
   --bs-spinner-border-width: 0.15em;
 }
 
-%button-icon {
-  width: var(--button-icon-size);
-  fill: currentcolor;
-  aspect-ratio: 1/1;
-}
-
 .buttonIcon {
-  @extend %button-icon;
   @extend %loading-button-icon;
+
+  font-size: 1.25rem;
 }
 
 .buttonOnlyIcon {
-  @extend %button-icon;
   @extend %loading-button-icon;
+
+  font-size: 1.25rem;
 }
 
 .buttonLabel {

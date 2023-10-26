@@ -1,13 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, ref, watch, watchEffect } from 'vue'
 import { VueDraggable } from 'vue-draggable-plus'
-import InlineSVG from 'vue-inline-svg'
 
-import dragIcon from '@mdi/svg/svg/drag.svg'
-import linkIcon from '@mdi/svg/svg/link.svg'
-import linkOffIcon from '@mdi/svg/svg/link-off.svg'
-import plusIcon from '@mdi/svg/svg/plus.svg'
-import trashIcon from '@mdi/svg/svg/trash-can-outline.svg'
 import { useUrlSearchParams } from '@vueuse/core'
 import { z } from 'zod'
 
@@ -37,6 +31,7 @@ import BaseLayout from '~components/BaseLayout.vue'
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 import { showToast } from '~components/Bootstrap/BootstrapToast'
 import ImageZoom from '~components/ImageZoom.vue'
+import InlineIcon from '~components/InlineIcon.vue'
 import LoadingSpinner from '~components/LoadingSpinner.vue'
 import OverlayLoading from '~components/OverlayLoading.vue'
 
@@ -327,7 +322,7 @@ watchEffect(() => {
     <template #header-controls>
       <BootstrapButton
         label="Добавить фотографии"
-        :start-icon="plusIcon"
+        start-icon="add"
         severity="primary"
         @click="isUploadDialogOpened = true"
       />
@@ -363,7 +358,7 @@ watchEffect(() => {
               class="imageDragHandle"
               label="Потяните, чтобы изменить порядок фотографий"
               severity="dark"
-              :only-icon="dragIcon"
+              only-icon="drag_indicator"
               :loading="isHotelImagesReorderFetching || isHotelRoomImagesReorderFetching"
             />
             <div
@@ -373,7 +368,7 @@ watchEffect(() => {
               "
               class="pictureOverlay"
             >
-              <InlineSVG :src="linkOffIcon" class="pictureOverlayIcon" />
+              <InlineIcon icon="link_off" class="pictureOverlayIcon" />
               Фото не привязано к номеру
             </div>
             <ImageZoom
@@ -397,14 +392,14 @@ watchEffect(() => {
                     severity="primary"
                     variant="outline"
                     label="Привязать к номеру"
-                    :start-icon="linkIcon"
+                    start-icon="link"
                     @click="attachImageToRoom(id)"
                   />
                   <BootstrapButton
                     v-else
                     severity="warning"
                     label="Отвязать от номера"
-                    :start-icon="linkOffIcon"
+                    start-icon="link_off"
                     @click="deleteRoomImage(id)"
                   />
                 </template>
@@ -413,7 +408,7 @@ watchEffect(() => {
                     severity="primary"
                     variant="outline"
                     label="Привязать к номерам"
-                    :start-icon="linkIcon"
+                    start-icon="link"
                     @click="openAttachmentDialog({ id, url, name, isMain: !!isMain })"
                     @mouseover="attachmentDialogImage = { id, src: url, alt: name, isMain: !!isMain }"
                     @focusin="attachmentDialogImage = { id, src: url, alt: name, isMain: !!isMain }"
@@ -430,7 +425,7 @@ watchEffect(() => {
                   "
                   label="Удалить"
                   severity="danger"
-                  :only-icon="trashIcon"
+                  only-icon="delete"
                   :loading="isImageRemoveFetching && imageIDToRemove === id"
                   @click="removeImage(id)"
                 />
@@ -465,7 +460,7 @@ watchEffect(() => {
         variant="outline"
         severity="danger"
         :loading="isImageRemoveFetching"
-        :start-icon="trashIcon"
+        start-icon="delete"
         @click="executeRemoveImage"
       />
       <BootstrapButton label="Отмена" severity="light" :disabled="isImageRemoveFetching" @click="cancelRemoveImage" />
@@ -538,6 +533,7 @@ watchEffect(() => {
 
 .actions {
   display: flex;
+  align-items: center;
 }
 
 .actionsStart {

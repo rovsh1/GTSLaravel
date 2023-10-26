@@ -10,8 +10,12 @@ export function createHotelSwitcher(container: Element | HTMLElement, withMatgin
   dropdownContainer.setAttribute('id', 'hotel-switcher')
 
   const toggleButton = document.createElement('button')
+  const toggleButtonIcon = document.createElement('i')
+  toggleButtonIcon.classList.add('icon')
+  toggleButtonIcon.innerHTML = 'grid_view'
   toggleButton.classList.add('hotel-switcher-toggle-button')
   toggleButton.style.marginRight = withMatgins ? '1rem' : '0'
+  toggleButton.appendChild(toggleButtonIcon)
 
   const menuListContainer = document.createElement('div')
   menuListContainer.classList.add('hotel-switcher-menu-list-container')

@@ -1,10 +1,7 @@
 <script setup lang="ts">
 
 import { computed, MaybeRef, onMounted, reactive, ref, unref, watch } from 'vue'
-import InlineSVG from 'vue-inline-svg'
 
-import touchIcon from '@mdi/svg/svg/gesture-tap.svg'
-import informationIcon from '@mdi/svg/svg/information.svg'
 import { useToggle } from '@vueuse/core'
 import { z } from 'zod'
 
@@ -46,6 +43,7 @@ import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButt
 import BootstrapCard from '~components/Bootstrap/BootstrapCard/BootstrapCard.vue'
 import BootstrapCardTitle from '~components/Bootstrap/BootstrapCard/components/BootstrapCardTitle.vue'
 import IconButton from '~components/IconButton.vue'
+import InlineIcon from '~components/InlineIcon.vue'
 
 const [isOpenedPriceDetailsModal, toggleModalPriceDetails] = useToggle()
 const [isShowRoomModal, toggleRoomModal] = useToggle()
@@ -367,10 +365,10 @@ onMounted(() => {
                   toggleModalPriceDetails()
                 }"
               >
-                <InlineSVG :src="informationIcon" class="informationIcon" />
+                <InlineIcon icon="info" class="prices-information-details-button-icon" />
               </button>
               <span v-if="room.price.grossDayValue" v-tooltip="'Цена за номер выставлена вручную'" class="prices-information-details-info">
-                <InlineSVG :src="touchIcon" class="informationIcon" />
+                <InlineIcon icon="touch_app" class="prices-information-details-info-icon" />
               </span>
             </strong>
           </span>
@@ -469,7 +467,16 @@ onMounted(() => {
     }
 
     .prices-information-details-info {
-      padding-bottom: 0.313rem;
+      display: inline-block;
+
+      .prices-information-details-info-icon {
+        opacity: 0.5;
+      }
+    }
+
+    .prices-information-details-button-icon,
+    .prices-information-details-info-icon {
+      font-size: 1.25rem;
     }
   }
 }

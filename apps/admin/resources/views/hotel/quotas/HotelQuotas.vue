@@ -1,8 +1,6 @@
 <script lang="ts" setup>
 import { computed, nextTick, ref, watch, watchEffect } from 'vue'
 
-import checkIcon from '@mdi/svg/svg/check.svg'
-import pencilIcon from '@mdi/svg/svg/pencil.svg'
 import { useToggle } from '@vueuse/core'
 import { z } from 'zod'
 
@@ -172,7 +170,7 @@ const handleUpdateQuotasBatch = async () => {
       <template #header-controls>
         <BootstrapButton
           :label="editable ? 'Готово' : 'Редактировать'"
-          :start-icon="editable ? checkIcon : pencilIcon"
+          :start-icon="editable ? 'done' : 'edit'"
           severity="primary"
           :disabled="rooms === null || waitLoadAndRedrawData || waitSwitchRooms"
           @click="editable = !editable"

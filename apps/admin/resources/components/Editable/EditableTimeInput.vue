@@ -1,15 +1,14 @@
 <script setup lang="ts">
 
 import { computed, ref, watch } from 'vue'
-import InlineSVG from 'vue-inline-svg'
 
-import escapeIcon from '@mdi/svg/svg/keyboard-esc.svg'
-import enterIcon from '@mdi/svg/svg/keyboard-return.svg'
 import { onClickOutside, useToggle } from '@vueuse/core'
 import { Tooltip } from 'floating-vue'
 import { DateTime } from 'luxon'
 
 import { usePlatformDetect } from '~lib/platform'
+
+import InlineIcon from '~components/InlineIcon.vue'
 
 const props = withDefaults(defineProps<{
   value: string | undefined
@@ -134,15 +133,15 @@ if (props.saveClickOutside && !props.hideClickOutside) {
         @keydown.enter="onPressEnter"
       />
       <template #popper>
-        <div>
+        <div class="exist-inline-icon">
           Нажмите
-          <InlineSVG :src="enterIcon" /> Enter, чтобы подтвердить изменения
+          <InlineIcon icon="subdirectory_arrow_left" /> Enter, чтобы подтвердить изменения
         </div>
-        <div>
+        <div class="exist-inline-icon">
           Нажмите
           <template v-if="isMacOS">⎋ Esc</template>
           <template v-else>
-            <InlineSVG :src="escapeIcon" /> Esc
+            Esc
           </template>,
           чтобы отменить изменения и сбросить выделение
         </div>
