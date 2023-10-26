@@ -13,8 +13,8 @@ use Module\Booking\Deprecated\HotelBooking\Repository\BookingRepositoryInterface
 use Module\Booking\Deprecated\HotelBooking\ValueObject\Details\AdditionalInfo;
 use Module\Booking\Domain\Booking\Repository\RoomBookingRepositoryInterface;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Domain\Booking\ValueObject\BookingPeriod;
 use Module\Booking\Domain\Booking\ValueObject\BookingPrices;
+use Module\Booking\Domain\Booking\ValueObject\HotelBooking\BookingPeriod;
 use Module\Booking\Domain\Booking\ValueObject\HotelBooking\HotelInfo;
 use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomBookingCollection;
 use Module\Booking\Domain\Order\ValueObject\OrderId;

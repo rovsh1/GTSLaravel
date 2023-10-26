@@ -8,6 +8,7 @@ use DateTimeInterface;
 use Module\Booking\Domain\Booking\Entity\CarRentWithDriver;
 use Module\Booking\Domain\Booking\Repository\Details\CarRentWithDriverRepositoryInterface;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Domain\Booking\ValueObject\BookingPeriod;
 use Module\Booking\Domain\Booking\ValueObject\CarBidCollection;
 use Module\Booking\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Booking\Infrastructure\ServiceBooking\Models\Booking;
@@ -32,11 +33,12 @@ class CarRentWithDriverRepository extends AbstractDetailsRepository implements C
         int $cityId,
         ?bool $hoursLimit,
         CarBidCollection $carBids,
-        ?DateTimeInterface $date,
+        ?BookingPeriod $bookingPeriod,
     ): CarRentWithDriver {
         $model = Transfer::create([
             'booking_id' => $bookingId->value(),
-            'date_start' => $date,
+            'date_start' => $bookingPeriod?->dateFrom(),
+            'date_end' => $bookingPeriod?->dateTo(),
             'service_id' => $serviceInfo->id(),
             'data' => [
                 'serviceInfo' => $this->serializeServiceInfo($serviceInfo),

@@ -21,6 +21,7 @@ use Module\Booking\Domain\Booking\ValueObject\BookingPeriod;
 use Module\Booking\Domain\Booking\ValueObject\CarBidCollection;
 use Module\Booking\Domain\Booking\ValueObject\CityId;
 use Module\Booking\Domain\Booking\ValueObject\DetailsId;
+use Module\Booking\Domain\Booking\ValueObject\HotelBooking\BookingPeriod as HotelBookingPeriod;
 use Module\Booking\Domain\Booking\ValueObject\HotelBooking\ExternalNumber;
 use Module\Booking\Domain\Booking\ValueObject\HotelBooking\HotelInfo;
 use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomBookingIdCollection;
@@ -75,7 +76,7 @@ class DetailsFactory
             id: new DetailsId($details->id),
             bookingId: new BookingId($details->bookingId()),
             hotelInfo: HotelInfo::fromData($detailsData['hotelInfo']),
-            bookingPeriod: BookingPeriod::fromData($detailsData['period']),
+            bookingPeriod: HotelBookingPeriod::fromData($detailsData['period']),
             roomBookings: RoomBookingIdCollection::fromData($detailsData['room_booking_ids']),
             externalNumber: $externalNumberData ? ExternalNumber::fromData($externalNumberData) : null,
             quotaProcessingMethod: $details->quota_processing_method,
@@ -188,7 +189,9 @@ class DetailsFactory
             meetingAddress: $detailsData['meetingAddress'] ?? null,
             meetingTablet: $detailsData['meetingTablet'] ?? null,
             hoursLimit: $detailsData['hoursLimit'] ?? null,
-            date: $details->date_start,
+            bookingPeriod: $details->date_start !== null && $details->date_end !== null
+                ? new BookingPeriod($details->date_start, $details->date_end)
+                : null,
             carBids: CarBidCollection::fromData($detailsData['carBids'])
         );
     }

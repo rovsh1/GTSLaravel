@@ -4,6 +4,7 @@ namespace Module\Booking\Domain\Booking\Entity;
 
 use DateTimeInterface;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Domain\Booking\ValueObject\BookingPeriod;
 use Module\Booking\Domain\Booking\ValueObject\CarBidCollection;
 use Module\Booking\Domain\Booking\ValueObject\CityId;
 use Module\Booking\Domain\Booking\ValueObject\DetailsId;
@@ -12,7 +13,7 @@ use Module\Shared\Enum\ServiceTypeEnum;
 
 class CarRentWithDriver implements ServiceDetailsInterface
 {
-    use Concerns\HasDateTrait;
+    use Concerns\HasBookingPeriodTrait;
     use Concerns\HasHoursLimitTrait;
     use Concerns\HasCarBidCollectionTrait;
     use Concerns\HasMeetingTabletTrait;
@@ -26,7 +27,7 @@ class CarRentWithDriver implements ServiceDetailsInterface
         private ?string $meetingAddress,
         private ?string $meetingTablet,
         private ?int $hoursLimit,
-        protected ?DateTimeInterface $date,
+        protected ?BookingPeriod $bookingPeriod,
         protected CarBidCollection $carBids
     ) {}
 

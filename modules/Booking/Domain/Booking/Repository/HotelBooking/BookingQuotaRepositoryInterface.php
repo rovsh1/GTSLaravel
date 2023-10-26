@@ -6,7 +6,7 @@ namespace Module\Booking\Domain\Booking\Repository\HotelBooking;
 
 use Module\Booking\Domain\Booking\Entity\HotelBooking\RoomQuota;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Domain\Booking\ValueObject\BookingPeriod;
+use Module\Booking\Domain\Booking\ValueObject\HotelBooking\BookingPeriod;
 use Module\Booking\Domain\Booking\ValueObject\HotelBooking\QuotaId;
 
 interface BookingQuotaRepositoryInterface

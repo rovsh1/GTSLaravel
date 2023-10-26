@@ -82,18 +82,14 @@ class PriceCalculator
         /** @var ServiceDetailsInterface $details */
         $details = $repository->find($booking->id());
 
-        //@todo перенести реализацию из ветки 2075
-        $supplierPriceAmount = 0;
-        $clientPriceAmount = 0;
+        $reducer = function (array $data, CarBid $carBid) {
+            $data['clientPriceAmount'] += $carBid->prices()->clientPrice()->totalAmount();
+            $data['supplierPriceAmount'] += $carBid->prices()->supplierPrice()->totalAmount();
 
-//        $reducer = function (array $data, CarBid $carBid) {
-//            $data['clientPriceAmount'] += $carBid->prices()->clientPrice()->totalAmount();
-//            $data['supplierPriceAmount'] += $carBid->prices()->supplierPrice()->totalAmount();
-//
-//            return $data;
-//        };
-//        ['clientPriceAmount' => $clientPriceAmount, 'supplierPriceAmount' => $supplierPriceAmount] = collect($details->carBids()->all())
-//            ->reduce($reducer, ['clientPriceAmount' => 0, 'supplierPriceAmount' => 0]);
+            return $data;
+        };
+        ['clientPriceAmount' => $clientPriceAmount, 'supplierPriceAmount' => $supplierPriceAmount] = collect($details->carBids()->all())
+            ->reduce($reducer, ['clientPriceAmount' => 0, 'supplierPriceAmount' => 0]);
 
         $bookingPrice = new BookingPrices(
             new BookingPriceItem(

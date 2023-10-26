@@ -107,8 +107,8 @@ class DetailOptionsDataFactory
     private function buildDayCarTrip(DayCarTrip $details): Collection
     {
         return collect([
-            new DetailOptionDto('Дата выезда', $details->date()?->format('d.m.Y')),
-            new DetailOptionDto('Время выезда', $details->date()?->format('H:i')),
+            new DetailOptionDto('Дата выезда', $details->departureDate()?->format('d.m.Y')),
+            new DetailOptionDto('Время выезда', $details->departureDate()?->format('H:i')),
         ]);
     }
 

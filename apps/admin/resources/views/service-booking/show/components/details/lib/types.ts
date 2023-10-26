@@ -54,7 +54,7 @@ export type BookingIntercityTransferDetails = BaseBookingDetails & {
 
 export type BookingDayCarTripDetails = BaseBookingDetails & {
   destinationsDescription?: string
-  date?: string
+  departureDate?: string
   carBids?: CarBid[]
 }
 
