@@ -14,6 +14,5 @@ $(() => {
     parent: $('#form_data_service_type'),
     dataIndex: 'type',
     useSelect2: true,
-    // @todo сделать этот селект multiple (Важно, чтобы значение передавалось как массив)
   })
 })

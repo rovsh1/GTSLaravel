@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Application\Admin\Booking\UseCase\Price;
 
-use Module\Booking\Domain\Booking\Service\HotelBooking\PriceCalculator\PriceCalculator;
+use Module\Booking\Domain\Booking\Service\PriceCalculator;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 

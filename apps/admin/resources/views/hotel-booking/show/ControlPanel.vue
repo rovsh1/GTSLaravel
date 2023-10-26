@@ -21,7 +21,7 @@ import { useBookingStatusHistoryStore } from '~resources/views/hotel-booking/sho
 // import { useBookingVoucherStore } from '~resources/views/hotel-booking/show/store/voucher'
 import { Booking } from '~api/booking/hotel'
 import { CancelConditions, ExternalNumberType, ExternalNumberTypeEnum } from '~api/booking/hotel/details'
-import { updateBookingPrice } from '~api/booking/hotel/price'
+import { updateBookingPrice, useRecalculateBookingPriceAPI } from '~api/booking/hotel/price'
 import { BookingRequest } from '~api/booking/hotel/request'
 import { BookingAvailableActionsResponse } from '~api/booking/hotel/status'
 import { BookingStatusResponse } from '~api/booking/models'
@@ -31,7 +31,9 @@ import { formatDate, formatDateTime } from '~lib/date'
 import { requestInitialData } from '~lib/initial-data'
 import { formatPrice } from '~lib/price'
 
+import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 import BootstrapSelectBase from '~components/Bootstrap/BootstrapSelectBase.vue'
+import OverlayLoading from '~components/OverlayLoading.vue'
 
 const { bookingID } = requestInitialData(
   'view-initial-data-hotel-booking',
@@ -58,6 +60,8 @@ const {
   updateExternalNumber,
   hideValidation,
 } = useExternalNumber(bookingID)
+
+const { isFetching: isRecalculateBookingPrice, execute: recalculateBookingPrice } = useRecalculateBookingPriceAPI({ bookingID })
 
 const booking = computed<Booking | null>(() => bookingStore.booking)
 const cancelConditions = computed<CancelConditions | null>(() => bookingStore.booking?.cancelConditions || null)
@@ -182,6 +186,11 @@ const handleSaveNetPenalty = async (value: number | undefined) => {
   fetchBooking()
 }
 
+const handleRecalculatePrice = async () => {
+  await recalculateBookingPrice()
+  fetchBooking()
+}
+
 const getDisplayPriceValue = (type: 'gross' | 'net') => {
   if (!booking.value) {
     return 0
@@ -299,6 +308,17 @@ onMounted(() => {
   </ControlPanelSection>
 
   <ControlPanelSection title="Финансовая стоимость брони" class="mt-4">
+    <OverlayLoading v-if="isRecalculateBookingPrice" />
+    <template #actions>
+      <BootstrapButton
+        label="Пересчитать"
+        size="small"
+        severity="secondary"
+        variant="outline"
+        :disabled="isRecalculateBookingPrice"
+        @click="handleRecalculatePrice"
+      />
+    </template>
     <div class="d-flex flex-row gap-3">
       <AmountBlock
         v-if="booking"

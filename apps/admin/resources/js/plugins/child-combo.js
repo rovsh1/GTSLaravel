@@ -24,18 +24,30 @@ $.fn.childCombo = function (options) {
   const value = preparedOptions.value || child.val()
   let valTemp = []
   if (value) {
-    valTemp = isMultiple ? value : [value]
+    valTemp = isMultiple ? (value ? value.split(',') : []) : [value]
   }
 
   const childDisabled = child.prop("disabled")
   if (child.is('input[type="hidden"]')) {
     preparedOptions.hidden = true
-    const c = $(`<select />`, {
-      class: 'form-select',
-      id: child.attr('id'),
-      name: child.attr('name'),
-      disabled: childDisabled
-    })
+    let c = null
+    if (isMultiple) {
+      c = $(`<select />`, {
+        class: 'form-select',
+        id: child.attr('id'),
+        name: child.attr('name'),
+        multiple: 'multiple',
+        disabled: childDisabled
+      })
+    } else {
+      c = $(`<select />`, {
+        class: 'form-select',
+        id: child.attr('id'),
+        name: child.attr('name'),
+        disabled: childDisabled
+      })
+    }
+
     child.after(c)
     child.remove()
     child = c
@@ -48,9 +60,24 @@ $.fn.childCombo = function (options) {
     preparedOptions[fn].call(child, arg)
   }
 
-  child.on('change', (e) => trigger('childChange', e))
+  child.on('change', (e) => {
+    trigger('childChange', e)
+  })
+
+  const setSelect2MultiplePlaceholderWidth = function () {
+    child.parent().find('.select2 > .selection').css('display', 'flex')
+    child.next().find(".select2-search__field").attr('style', 'width: auto;')
+  }
+
+  const setSelect2MultiplePlaceholderValue = function (value) {
+    child.next().find(".select2-search__field").attr('placeholder', value)
+  }
 
   const onchange = function () {
+    if (preparedOptions.useSelect2 && isMultiple) {
+      setSelect2MultiplePlaceholderWidth()
+    }
+
     if (preparedOptions.dateRange && parent.val().length < 14) {
       return
     }
@@ -60,7 +87,14 @@ $.fn.childCombo = function (options) {
     child.prop('disabled', true)
     const isEmpty = parent.val() === null || parent.val() === ''
     if (!preparedOptions.allowEmpty && isEmpty) {
-      child.html(`<option value="">${preparedOptions.disabledText}</option>`)
+      if (preparedOptions.useSelect2 && isMultiple) {
+        child.val([])
+        child.change()
+        setSelect2MultiplePlaceholderWidth()
+        setSelect2MultiplePlaceholderValue(preparedOptions.disabledText)
+      } else {
+        child.html(`<option value="">${preparedOptions.disabledText}</option>`)
+      }
       if (preparedOptions.hideEmpty) {
         child.parent().hide()
       }
@@ -74,9 +108,12 @@ $.fn.childCombo = function (options) {
     if (!isEmpty) {
       data[preparedOptions.dataIndex] = parent.val()
     }
-    // delete preparedOptions.value;
 
-    child.html("<option value=''>Загрузка</option>")
+    if (preparedOptions.useSelect2 && isMultiple) {
+      setSelect2MultiplePlaceholderValue('Загрузка')
+    } else {
+      child.html("<option value=''>Загрузка</option>")
+    }
 
     let url = preparedOptions.url
     if (preparedOptions.urlGetter) {
@@ -85,49 +122,65 @@ $.fn.childCombo = function (options) {
 
     axios.get(url, { params: data }).then((result) => {
       child.html('')
+      if (preparedOptions.useSelect2 && isMultiple) {
+        child.select2()
+        setSelect2MultiplePlaceholderWidth()
+        setSelect2MultiplePlaceholderValue('')
+      }
       const items = result[preparedOptions.resultIndex]
       const val = [];
       let i;
       const l = items.length
       if (l === 0) {
         if (preparedOptions.emptyText !== false) {
-          child.append(`<option value="">${preparedOptions.emptyText}</option>`)
+          if (preparedOptions.useSelect2 && isMultiple) {
+            setSelect2MultiplePlaceholderValue(preparedOptions.emptyText)
+          } else {
+            child.append(`<option value="">${preparedOptions.emptyText}</option>`)
+          }
         }
         if (preparedOptions.hideEmpty) {
           child.parent().hide()
         }
         trigger('load', items)
 
-        if(!preparedOptions.allowEmpty){
+        if (!preparedOptions.allowEmpty) {
           return
         }
       }
 
       if (preparedOptions.emptyItem !== false) {
-        child.append(`<option value="" disabled selected>${preparedOptions.emptyItem}</option>`)
+        if (preparedOptions.useSelect2 && isMultiple) {
+          setSelect2MultiplePlaceholderValue(preparedOptions.emptyItem)
+        } else {
+          child.append(`<option value="" disabled selected>${preparedOptions.emptyItem}</option>`)
+        }
       }
-
       for (i = 0; i < l; i++) {
         if (in_array(`${items[i].id}`, valTemp)) {
           val[val.length] = items[i].id
         }
 
         let name = items[i].name
-        if(preparedOptions.labelGetter){
+        if (preparedOptions.labelGetter) {
           name = preparedOptions.labelGetter(items[i])
         }
 
         child.append(`<option value='${items[i].id}'>${name}</option>`)
       }
 
-      if(!childDisabled) {
+      if (!childDisabled) {
         child.prop('disabled', false)
       }
 
+
       if (val.length) {
         child.val(isMultiple ? val : val[0])
+      } else {
+        if (preparedOptions.useSelect2 && isMultiple) {
+          child.val([])
+        }
       }
-
       child.change()
       trigger('load', items)
     })
@@ -137,8 +190,9 @@ $.fn.childCombo = function (options) {
 
   onchange()
 
-  if(preparedOptions.useSelect2) {
-    return child.select2()
+  if (preparedOptions.useSelect2) {
+    child.select2()
+    setSelect2MultiplePlaceholderWidth()
   }
   return child
 }

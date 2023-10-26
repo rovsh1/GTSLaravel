@@ -2,7 +2,7 @@ import { computed } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
 
-import { useAdminAPI } from '~api'
+import { BaseResponse, useAdminAPI } from '~api'
 import { UpdateBookingStatusResponse } from '~api/booking/hotel/index'
 
 import { getNullableRef } from '~lib/vue'
@@ -33,3 +33,9 @@ export const updateBookingPrice = (props: MaybeRef<UpdateBookingPricePayload>) =
       ),
     )), 'application/json')
     .json<UpdateBookingStatusResponse>()
+
+export const useRecalculateBookingPriceAPI = (props: MaybeRef<UpdateBookingPricePayload | null>) =>
+  useAdminAPI(props, ({ bookingID }) =>
+    `/service-booking/${bookingID}/price/recalculate`)
+    .post()
+    .json<BaseResponse>()
