@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Booking\Domain\Booking\Service\TransferBooking;
 
-use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use Module\Booking\Application\Admin\ServiceBooking\Request\CarBidDataDto;
 use Module\Booking\Domain\Booking\Adapter\SupplierAdapterInterface;
@@ -20,6 +19,7 @@ use Module\Booking\Domain\Booking\Event\CarBidAdded;
 use Module\Booking\Domain\Booking\Event\CarBidRemoved;
 use Module\Booking\Domain\Booking\Event\CarBidUpdated;
 use Module\Booking\Domain\Booking\Exception\NotFoundTransferServicePrice;
+use Module\Booking\Domain\Booking\Exception\ServiceDateUndefined;
 use Module\Booking\Domain\Booking\Factory\DetailsRepositoryFactory;
 use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
@@ -51,12 +51,17 @@ class CarBidUpdater
         /** @var ServiceDetailsInterface $details */
         $details = $repository->find($bookingId);
 
+        $serviceDate = $this->getServiceDate($details);
+        if ($serviceDate === null) {
+            throw new ServiceDateUndefined();
+        }
+
         $carBidPrices = $this->buildCarBidPrices(
             $details->serviceInfo()->supplierId(),
             $details->serviceInfo()->id(),
             $carData->carId,
             $booking->prices()->clientPrice()->currency(),
-            $this->getServiceDate($details)
+            $serviceDate
         );
         $carBid = CarBid::create(
             new CarId($carData->carId),
@@ -81,12 +86,17 @@ class CarBidUpdater
         $repository = $this->detailsRepositoryFactory->buildByBookingId($bookingId);
         $details = $repository->find($bookingId);
 
+        $serviceDate = $this->getServiceDate($details);
+        if ($serviceDate === null) {
+            throw new ServiceDateUndefined();
+        }
+
         $carBidPrices = $this->buildCarBidPrices(
             $details->serviceInfo()->supplierId(),
             $details->serviceInfo()->id(),
             $carData->carId,
             $booking->prices()->clientPrice()->currency(),
-            $this->getServiceDate($details)
+            $serviceDate,
         );
         $carBid = new CarBid(
             $carBidId,

@@ -15,6 +15,8 @@ interface CarRentWithDriverRepositoryInterface
 {
     public function find(BookingId $bookingId): ?CarRentWithDriver;
 
+    public function findOrFail(BookingId $bookingId): CarRentWithDriver;
+
     public function create(
         BookingId $bookingId,
         ServiceInfo $serviceInfo,

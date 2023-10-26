@@ -18,7 +18,6 @@ class RecalculateBookingPricesListener implements DomainEventListenerInterface
     {
         assert($event instanceof PriceBecomeDeprecatedEventInterface);
 
-        $bookingId = new BookingId($event->bookingId());
-        $this->priceCalculator->calculate($bookingId);
+         $this->priceCalculator->calculate($event->bookingId());
     }
 }

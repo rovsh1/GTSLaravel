@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Application\AirportBooking\Exception;
+namespace Module\Booking\Application\Admin\ServiceBooking\Exception;
 
 use Module\Shared\Exception\ApplicationException;
 

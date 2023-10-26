@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Domain\Booking\Service;
 
 use Carbon\Carbon;
-use Module\Booking\Application\AirportBooking\Exception\NotFoundServicePriceException;
+use Module\Booking\Application\Admin\ServiceBooking\Exception\NotFoundServicePriceException;
 use Module\Booking\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Domain\Booking\Booking;
 use Module\Booking\Domain\Booking\Entity\CarRentWithDriver;

@@ -26,6 +26,16 @@ class CarRentWithDriverRepository extends AbstractDetailsRepository implements C
         return $this->detailsFactory->buildByBooking($booking);
     }
 
+    public function findOrFail(BookingId $bookingId): CarRentWithDriver
+    {
+        $entity = $this->find($bookingId);
+        if ($entity === null) {
+            throw new EntityNotFoundException('Booking details not found');
+        }
+
+        return $entity;
+    }
+
     public function create(
         BookingId $bookingId,
         ServiceInfo $serviceInfo,

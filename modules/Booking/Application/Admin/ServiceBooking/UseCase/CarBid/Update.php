@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Module\Booking\Application\Admin\ServiceBooking\UseCase\CarBid;
 
+use Module\Booking\Application\Admin\ServiceBooking\Exception\NotFoundServicePriceException as NotFoundApplicationException;
+use Module\Booking\Application\Admin\ServiceBooking\Exception\ServiceDateUndefinedException;
 use Module\Booking\Application\Admin\ServiceBooking\Request\CarBidDataDto;
-use Module\Booking\Application\AirportBooking\Exception\NotFoundServicePriceException as ApplicationException;
 use Module\Booking\Domain\Booking\Exception\NotFoundTransferServicePrice;
+use Module\Booking\Domain\Booking\Exception\ServiceDateUndefined;
 use Module\Booking\Domain\Booking\Service\TransferBooking\CarBidUpdater;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
@@ -22,7 +24,9 @@ class Update implements UseCaseInterface
         try {
             $this->carBidUpdater->update(new BookingId($bookingId), $carBidId, $carData);
         } catch (NotFoundTransferServicePrice $e) {
-            throw new ApplicationException($e, ApplicationException::BOOKING_TRANSFER_SERVICE_PRICE_NOT_FOUND);
+            throw new NotFoundApplicationException($e, NotFoundApplicationException::BOOKING_TRANSFER_SERVICE_PRICE_NOT_FOUND);
+        } catch (ServiceDateUndefined $e) {
+            throw new ServiceDateUndefinedException($e);
         }
     }
 }

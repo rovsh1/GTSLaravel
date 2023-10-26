@@ -46,7 +46,13 @@ export type BookingPeriod = {
   dateTo: string
 }
 
+export type CityInfo = {
+  id: number
+  name: string
+}
+
 export type BookingCarRentWithDriverDetails = BaseBookingDetails & {
+  cityInfo: CityInfo
   bookingPeriod?: BookingPeriod
   meetingTablet?: string
   meetingAddress?: string

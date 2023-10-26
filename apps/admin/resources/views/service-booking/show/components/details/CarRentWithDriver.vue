@@ -143,6 +143,16 @@ const handleEditCarModal = async (id: number, object: CarBid) => {
       <table class="table-params">
         <tbody>
           <tr>
+            <th>Город</th>
+            <td>
+              <EditableTextInput
+                :value="bookingDetails?.cityInfo?.name"
+                :can-edit="false"
+                type="text"
+              />
+            </td>
+          </tr>
+          <tr>
             <th>Период бронирования</th>
             <td>
               <EditableDateInput

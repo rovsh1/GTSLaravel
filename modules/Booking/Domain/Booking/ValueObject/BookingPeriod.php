@@ -2,9 +2,10 @@
 
 namespace Module\Booking\Domain\Booking\ValueObject;
 
-use Carbon\CarbonImmutable;
 use Carbon\CarbonPeriod;
 use Carbon\CarbonPeriodImmutable;
+use DateTimeInterface;
+use DateTimeImmutable;
 use Module\Shared\Contracts\CanEquate;
 
 final class BookingPeriod implements CanEquate
@@ -12,10 +13,13 @@ final class BookingPeriod implements CanEquate
     private int $daysCount;
 
     public function __construct(
-        private readonly CarbonImmutable $dateFrom,
-        private readonly CarbonImmutable $dateTo,
+        private readonly DateTimeInterface $dateFrom,
+        private readonly DateTimeInterface $dateTo,
     ) {
         $calculatedDaysCount = CarbonPeriod::create($dateFrom, $dateTo, 'P1D')->count();
+        if ($calculatedDaysCount > 1) {
+            $calculatedDaysCount--;
+        }
 
         $this->daysCount = $calculatedDaysCount;
     }
@@ -23,17 +27,17 @@ final class BookingPeriod implements CanEquate
     public static function fromCarbon(CarbonPeriod|CarbonPeriodImmutable $period): static
     {
         return new static(
-            $period->getStartDate()->toImmutable(),
-            $period->getEndDate()->toImmutable(),
+            DateTimeImmutable::createFromFormat('U', $period->getStartDate()->getTimestamp()),
+            DateTimeImmutable::createFromFormat('U', $period->getEndDate()->getTimestamp()),
         );
     }
 
-    public function dateFrom(): CarbonImmutable
+    public function dateFrom(): DateTimeInterface
     {
         return $this->dateFrom;
     }
 
-    public function dateTo(): CarbonImmutable
+    public function dateTo(): DateTimeInterface
     {
         return $this->dateTo;
     }
@@ -53,8 +57,8 @@ final class BookingPeriod implements CanEquate
             return $b === $this;
         }
 
-        return $this->dateFrom->eq($b->dateFrom)
-            && $this->dateTo->eq($b->dateTo)
+        return $this->dateFrom->getTimestamp() === $b->dateFrom->getTimestamp()
+            && $this->dateTo->getTimestamp() === $b->dateTo->getTimestamp()
             && $this->daysCount === $b->daysCount;
     }
 }
