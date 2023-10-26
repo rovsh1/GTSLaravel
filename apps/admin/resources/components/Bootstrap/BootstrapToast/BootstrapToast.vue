@@ -17,7 +17,7 @@ const emit = defineEmits<{
       <!-- TODO Failed to resolve directive: tooltip -->
       <BootstrapButton
         label="Закрыть"
-        only-icon="closeIcon"
+        only-icon="close"
         variant="outline"
         severity="link"
         size="small"
