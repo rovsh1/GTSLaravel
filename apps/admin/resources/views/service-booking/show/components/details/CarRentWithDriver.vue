@@ -21,7 +21,7 @@ import { showConfirmDialog } from '~lib/confirm-dialog'
 import { requestInitialData } from '~lib/initial-data'
 
 import EditableDateInput from '~components/Editable/EditableDateInput.vue'
-import EditableNumberInput from '~components/Editable/EditableNumberInput.vue'
+import EditableTextInput from '~components/Editable/EditableTextInput.vue'
 import EditableTimeInput from '~components/Editable/EditableTimeInput.vue'
 import IconButton from '~components/IconButton.vue'
 
@@ -143,34 +143,45 @@ const handleEditCarModal = async (id: number, object: CarBid) => {
       <table class="table-params">
         <tbody>
           <tr>
-            <th>Дата</th>
+            <th>Период бронирования</th>
             <td>
               <EditableDateInput
-                :value="bookingDetails?.date"
+                :value="bookingDetails?.bookingPeriod?.dateFrom"
                 :can-edit="isEditableStatus"
                 @change="value => handleChangeDetails('date', value)"
               />
             </td>
           </tr>
           <tr>
-            <th>Время</th>
+            <th>Время подачи авто</th>
             <td>
               <EditableTimeInput
-                :value="bookingDetails?.date"
-                :can-edit="isEditableStatus && !!bookingDetails?.date"
+                :value="bookingDetails?.bookingPeriod?.dateFrom"
+                :can-edit="isEditableStatus && !!bookingDetails?.bookingPeriod"
                 type="time"
-                @change="value => handleChangeDetails('date', value)"
+                @change="value => handleChangeDetails('bookingPeriod.dateFrom', value)"
               />
             </td>
           </tr>
           <tr>
-            <th>Количество часов</th>
+            <th>Место подачи авто</th>
             <td>
-              <EditableNumberInput
-                :value="bookingDetails?.hoursLimit"
+              <EditableTextInput
+                :value="bookingDetails?.meetingAddress"
                 :can-edit="isEditableStatus"
                 type="text"
-                @change="value => handleChangeDetails('hoursLimit', value)"
+                @change="value => handleChangeDetails('meetingAddress', value)"
+              />
+            </td>
+          </tr>
+          <tr>
+            <th>Табличка для встречи</th>
+            <td>
+              <EditableTextInput
+                :value="bookingDetails?.meetingTablet"
+                :can-edit="isEditableStatus"
+                type="text"
+                @change="value => handleChangeDetails('meetingTablet', value)"
               />
             </td>
           </tr>

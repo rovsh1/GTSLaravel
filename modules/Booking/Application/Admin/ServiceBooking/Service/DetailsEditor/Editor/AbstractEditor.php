@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Module\Booking\Application\Admin\ServiceBooking\Service\DetailsEditor\Editor;
 
+use Carbon\CarbonPeriod;
 use DateTime;
 use DateTimeInterface;
 use Illuminate\Support\Str;
 use Module\Booking\Domain\Booking\Entity\ServiceDetailsInterface;
+use Module\Booking\Domain\Booking\ValueObject\BookingPeriod;
 
 abstract class AbstractEditor
 {
@@ -26,6 +28,9 @@ abstract class AbstractEditor
             } catch (\Throwable $e) {
                 throw new \InvalidArgumentException('Invalid datetime value');
             }
+        }
+        if ($valueType === BookingPeriod::class && $value !== null) {
+            $preparedValue = BookingPeriod::fromCarbon(new CarbonPeriod($value));
         }
         $details->$setterMethod($preparedValue);
     }

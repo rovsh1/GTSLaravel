@@ -19,7 +19,6 @@ interface CarRentWithDriverRepositoryInterface
         BookingId $bookingId,
         ServiceInfo $serviceInfo,
         int $cityId,
-        ?bool $hoursLimit,
         CarBidCollection $carBids,
         ?BookingPeriod $bookingPeriod,
     ): CarRentWithDriver;

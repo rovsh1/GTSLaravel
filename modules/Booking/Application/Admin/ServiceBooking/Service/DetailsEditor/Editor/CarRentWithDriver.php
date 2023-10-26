@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Booking\Application\Admin\ServiceBooking\Service\DetailsEditor\Editor;
 
-use Module\Booking\Application\Admin\ServiceBooking\Service\DetailsEditor\Editor\AbstractEditor;
 use Module\Booking\Application\Admin\ServiceBooking\Service\DetailsEditor\EditorInterface;
 use Module\Booking\Domain\Booking\Entity\ServiceDetailsInterface;
 use Module\Booking\Domain\Booking\Repository\Details\CarRentWithDriverRepositoryInterface;
@@ -26,15 +25,12 @@ class CarRentWithDriver extends AbstractEditor implements EditorInterface
 
         $serviceInfo = new ServiceInfo($serviceId->value(), $supplierService->title, $supplierService->supplier_id);
 
-        $hoursLimit = $supplierService->data['hoursLimit'] ?? null;
-
         return $this->detailsRepository->create(
             $bookingId,
             $serviceInfo,
             (int)$supplierService->data['cityId'],
-            $hoursLimit ? (int)$hoursLimit : null,
             new CarBidCollection([]),
-            $detailsData['date'] ?? null,
+            null,
         );
     }
 

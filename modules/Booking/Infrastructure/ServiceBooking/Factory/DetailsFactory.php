@@ -188,7 +188,6 @@ class DetailsFactory
             cityId: new CityId($detailsData['cityId']),
             meetingAddress: $detailsData['meetingAddress'] ?? null,
             meetingTablet: $detailsData['meetingTablet'] ?? null,
-            hoursLimit: $detailsData['hoursLimit'] ?? null,
             bookingPeriod: $details->date_start !== null && $details->date_end !== null
                 ? new BookingPeriod($details->date_start, $details->date_end)
                 : null,

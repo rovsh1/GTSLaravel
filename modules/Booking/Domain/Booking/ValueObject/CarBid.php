@@ -72,6 +72,16 @@ final class CarBid implements SerializableDataInterface
         return $this->prices;
     }
 
+    public function supplierPriceValue(): float
+    {
+        return $this->prices->supplierPrice()->valuePerCar() * $this->carsCount;
+    }
+
+    public function clientPriceValue(): float
+    {
+        return $this->prices->clientPrice()->valuePerCar() * $this->carsCount;
+    }
+
     public function toData(): array
     {
         return [

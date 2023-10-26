@@ -4,10 +4,13 @@ namespace Module\Booking\Domain\BookingRequest\Service\Factory;
 
 use Module\Booking\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Domain\Booking\Booking;
+use Module\Booking\Domain\Booking\Entity\CarRentWithDriver;
 use Module\Booking\Domain\Booking\Factory\DetailsRepositoryFactory;
+use Module\Booking\Domain\Booking\ValueObject\BookingPeriod;
 use Module\Booking\Domain\Booking\ValueObject\CarBid;
 use Module\Booking\Domain\Booking\ValueObject\CarBidCollection;
 use Module\Booking\Domain\BookingRequest\Service\Dto\ServiceDto;
+use Module\Booking\Domain\BookingRequest\Service\Dto\TransferBooking\BookingPeriodDto;
 use Module\Booking\Domain\BookingRequest\Service\Dto\TransferBooking\CarDto;
 use Module\Booking\Domain\BookingRequest\Service\Dto\TransferBooking\CarPriceDto;
 use Module\Booking\Domain\BookingRequest\Service\Factory\TransferBooking\DetailOptionsDataFactory;
@@ -37,7 +40,11 @@ class TransferBookingDataFactory
         );
 
         $detailOptions = $this->detailOptionsFactory->build($bookingDetails);
-        //@todo вопрос про период бронирования транспорта
+        $bookingPeriodDto = null;
+        if ($bookingDetails instanceof CarRentWithDriver && $bookingDetails->bookingPeriod() !== null) {
+            $bookingPeriodDto = $this->buildBookingPeriod($bookingDetails->bookingPeriod());
+        }
+
         return match ($requestType) {
             RequestTypeEnum::BOOKING,
             RequestTypeEnum::CHANGE,
@@ -45,7 +52,7 @@ class TransferBookingDataFactory
                 $serviceDto,
                 $this->buildCars($bookingDetails->carBids(), $bookingDetails->serviceInfo()->supplierId()),
                 $detailOptions,
-                null,
+                $bookingPeriodDto,
             ),
         };
     }
@@ -63,9 +70,20 @@ class TransferBookingDataFactory
             $carBid->baggageCount(),
             $carBid->babyCount(),
             new CarPriceDto(
-                $carBid->prices()->supplierPrice()->pricePerCar(),
-                $carBid->prices()->supplierPrice()->totalAmount(),
+                $carBid->prices()->supplierPrice()->valuePerCar(),
+                $carBid->supplierPriceValue(),
             )
         ));
+    }
+
+    private function buildBookingPeriod(BookingPeriod $bookingPeriod): BookingPeriodDto
+    {
+        return new BookingPeriodDto(
+            $bookingPeriod->dateFrom()->format('d.m.Y'),
+            $bookingPeriod->dateFrom()->format('H:i'),
+            $bookingPeriod->dateTo()->format('d.m.Y'),
+            $bookingPeriod->dateTo()->format('H:i'),
+            $bookingPeriod->daysCount(),
+        );
     }
 }

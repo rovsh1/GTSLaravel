@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Module\Booking\Application\AirportBooking\Exception\NotFoundServicePriceException;
 use Module\Booking\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Domain\Booking\Booking;
+use Module\Booking\Domain\Booking\Entity\CarRentWithDriver;
 use Module\Booking\Domain\Booking\Entity\CIPRoomInAirport;
 use Module\Booking\Domain\Booking\Entity\ServiceDetailsInterface;
 use Module\Booking\Domain\Booking\Factory\DetailsRepositoryFactory;
@@ -82,9 +83,13 @@ class PriceCalculator
         /** @var ServiceDetailsInterface $details */
         $details = $repository->find($booking->id());
 
-        $reducer = function (array $data, CarBid $carBid) {
-            $data['clientPriceAmount'] += $carBid->prices()->clientPrice()->totalAmount();
-            $data['supplierPriceAmount'] += $carBid->prices()->supplierPrice()->totalAmount();
+        $reducer = function (array $data, CarBid $carBid) use ($details) {
+            $data['clientPriceAmount'] += $carBid->clientPriceValue();
+            $data['supplierPriceAmount'] += $carBid->supplierPriceValue();
+            if ($details instanceof CarRentWithDriver) {
+                $data['clientPriceAmount'] *= $details->bookingPeriod()?->daysCount() ?? 1;
+                $data['supplierPriceAmount'] *= $details->bookingPeriod()?->daysCount() ?? 1;
+            }
 
             return $data;
         };

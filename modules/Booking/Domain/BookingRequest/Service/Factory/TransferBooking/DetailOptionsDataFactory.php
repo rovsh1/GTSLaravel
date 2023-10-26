@@ -37,6 +37,8 @@ class DetailOptionsDataFactory
         throw new \RuntimeException('Unknown details type');
     }
 
+    //@todo перенести форматирование в шаблон blade
+
     /**
      * @param CarRentWithDriver $details
      * @return Collection<int, DetailOptionDto>
@@ -44,9 +46,9 @@ class DetailOptionsDataFactory
     private function buildCarRentWithDriver(CarRentWithDriver $details): Collection
     {
         return collect([
-            new DetailOptionDto('Дата начала аренды', $details->date()->format('d.m.Y')),
-            new DetailOptionDto('Дата завершения аренды', $details->date()->format('d.m.Y')),
-            new DetailOptionDto('Время подачи авто', $details->date()->format('H:i')),
+            new DetailOptionDto('Дата начала аренды', $details->bookingPeriod()?->dateFrom()->format('d.m.Y')),
+            new DetailOptionDto('Дата завершения аренды', $details->bookingPeriod()?->dateTo()->format('d.m.Y')),
+            new DetailOptionDto('Время подачи авто', $details->bookingPeriod()?->dateFrom()->format('H:i')),
             new DetailOptionDto('Место подачи авто', $details->meetingAddress()),
             new DetailOptionDto('Табличка для встречи', $details->meetingTablet()),
         ]);

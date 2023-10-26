@@ -7,6 +7,7 @@ namespace Module\Booking\Application\Admin\ServiceBooking\Factory;
 use App\Admin\Models\Reference\City;
 use App\Admin\Models\Reference\RailwayStation;
 use Module\Booking\Application\Admin\ServiceBooking\Dto\AirportInfoDto;
+use Module\Booking\Application\Admin\ServiceBooking\Dto\CarRentWithDriver\BookingPeriodDto;
 use Module\Booking\Application\Admin\ServiceBooking\Dto\CarRentWithDriverDto;
 use Module\Booking\Application\Admin\ServiceBooking\Dto\CIPRoomInAirportDto;
 use Module\Booking\Application\Admin\ServiceBooking\Dto\CityInfoDto;
@@ -136,14 +137,21 @@ class ServiceDetailsDtoFactory
 
     private function buildCarRentWithDriver(CarRentWithDriver $details): CarRentWithDriverDto
     {
+        $bookingPeriod = null;
+        if ($details->bookingPeriod() !== null) {
+            $bookingPeriod = new BookingPeriodDto(
+                $details->bookingPeriod()->dateFrom()->format(DATE_ATOM),
+                $details->bookingPeriod()->dateTo()->format(DATE_ATOM),
+            );
+        }
+
         return new CarRentWithDriverDto(
             $details->id()->value(),
             $this->buildServiceInfoDto($details->serviceInfo()),
             $this->buildCityInfo($details->cityId()->value()),
             $details->meetingAddress(),
             $details->meetingTablet(),
-            $details->hoursLimit(),
-            $details->date()?->format(DATE_ATOM),
+            $bookingPeriod,
             $this->carBidFactory->build($details->serviceInfo()->supplierId(), $details->carBids())
         );
     }

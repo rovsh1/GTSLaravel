@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Booking\Infrastructure\ServiceBooking\Repository\Details;
 
-use DateTimeInterface;
 use Module\Booking\Domain\Booking\Entity\CarRentWithDriver;
 use Module\Booking\Domain\Booking\Repository\Details\CarRentWithDriverRepositoryInterface;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
@@ -31,7 +30,6 @@ class CarRentWithDriverRepository extends AbstractDetailsRepository implements C
         BookingId $bookingId,
         ServiceInfo $serviceInfo,
         int $cityId,
-        ?bool $hoursLimit,
         CarBidCollection $carBids,
         ?BookingPeriod $bookingPeriod,
     ): CarRentWithDriver {
@@ -43,7 +41,6 @@ class CarRentWithDriverRepository extends AbstractDetailsRepository implements C
             'data' => [
                 'serviceInfo' => $this->serializeServiceInfo($serviceInfo),
                 'cityId' => $cityId,
-                'hoursLimit' => $hoursLimit,
                 'carBids' => $carBids->toData(),
             ]
         ]);
@@ -54,11 +51,11 @@ class CarRentWithDriverRepository extends AbstractDetailsRepository implements C
     public function store(CarRentWithDriver $details): bool
     {
         return (bool)Transfer::whereId($details->id()->value())->update([
-            'date_start' => $details->date(),
+            'date_start' => $details->bookingPeriod()?->dateFrom(),
+            'date_end' => $details->bookingPeriod()?->dateTo(),
             'booking_transfer_details.data' => [
                 'serviceInfo' => $this->serializeServiceInfo($details->serviceInfo()),
                 'cityId' => $details->cityId()->value(),
-                'hoursLimit' => $details->hoursLimit(),
                 'carBids' => $details->carBids()->toData(),
                 'meetingTablet' => $details->meetingTablet(),
                 'meetingAddress' => $details->meetingAddress(),

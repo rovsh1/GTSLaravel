@@ -8,7 +8,14 @@ use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use Module\Booking\Application\Admin\ServiceBooking\Request\CarBidDataDto;
 use Module\Booking\Domain\Booking\Adapter\SupplierAdapterInterface;
+use Module\Booking\Domain\Booking\Entity\CarRentWithDriver;
+use Module\Booking\Domain\Booking\Entity\DayCarTrip;
+use Module\Booking\Domain\Booking\Entity\IntercityTransfer;
 use Module\Booking\Domain\Booking\Entity\ServiceDetailsInterface;
+use Module\Booking\Domain\Booking\Entity\TransferFromAirport;
+use Module\Booking\Domain\Booking\Entity\TransferFromRailway;
+use Module\Booking\Domain\Booking\Entity\TransferToAirport;
+use Module\Booking\Domain\Booking\Entity\TransferToRailway;
 use Module\Booking\Domain\Booking\Event\CarBidAdded;
 use Module\Booking\Domain\Booking\Event\CarBidRemoved;
 use Module\Booking\Domain\Booking\Event\CarBidUpdated;
@@ -48,9 +55,8 @@ class CarBidUpdater
             $details->serviceInfo()->supplierId(),
             $details->serviceInfo()->id(),
             $carData->carId,
-            $carData->carsCount,
             $booking->prices()->clientPrice()->currency(),
-            new Carbon()
+            $this->getServiceDate($details)
         );
         $carBid = CarBid::create(
             new CarId($carData->carId),
@@ -79,9 +85,8 @@ class CarBidUpdater
             $details->serviceInfo()->supplierId(),
             $details->serviceInfo()->id(),
             $carData->carId,
-            $carData->carsCount,
             $booking->prices()->clientPrice()->currency(),
-            now()
+            $this->getServiceDate($details)
         );
         $carBid = new CarBid(
             $carBidId,
@@ -111,7 +116,6 @@ class CarBidUpdater
         int $supplierId,
         int $serviceId,
         int $carId,
-        int $carsCount,
         CurrencyEnum $clientCurrency,
         CarbonInterface $date
     ): CarBidPrices {
@@ -128,9 +132,30 @@ class CarBidUpdater
 
         $supplierPrice = $price->supplierPrice;
         $clientPrice = $price->clientPrice;
+
         return new CarBidPrices(
-            supplierPrice: new CarBidPriceItem($supplierPrice->currency, $supplierPrice->amount, $supplierPrice->amount * $carsCount),
-            clientPrice: new CarBidPriceItem($clientPrice->currency, $clientPrice->amount,$clientPrice->amount * $carsCount)
+            supplierPrice: new CarBidPriceItem($supplierPrice->currency, $supplierPrice->amount),
+            clientPrice: new CarBidPriceItem($clientPrice->currency, $clientPrice->amount)
         );
+    }
+
+    private function getServiceDate(ServiceDetailsInterface $details): ?CarbonInterface
+    {
+        if ($details instanceof CarRentWithDriver) {
+            return $details->bookingPeriod()?->dateFrom();
+        } elseif ($details instanceof TransferToAirport) {
+            return $details->departureDate();
+        } elseif ($details instanceof TransferFromAirport) {
+            return $details->arrivalDate();
+        } elseif ($details instanceof TransferToRailway) {
+            return $details->departureDate();
+        } elseif ($details instanceof TransferFromRailway) {
+            return $details->arrivalDate();
+        } elseif ($details instanceof IntercityTransfer) {
+            return $details->departureDate();
+        } elseif ($details instanceof DayCarTrip) {
+            return $details->departureDate();
+        }
+        throw new \RuntimeException('Unknown transfer type');
     }
 }

@@ -14,7 +14,6 @@ use Module\Shared\Enum\ServiceTypeEnum;
 class CarRentWithDriver implements ServiceDetailsInterface
 {
     use Concerns\HasBookingPeriodTrait;
-    use Concerns\HasHoursLimitTrait;
     use Concerns\HasCarBidCollectionTrait;
     use Concerns\HasMeetingTabletTrait;
     use Concerns\HasMeetingAddressTrait;
@@ -26,7 +25,6 @@ class CarRentWithDriver implements ServiceDetailsInterface
         private readonly CityId $cityId,
         private ?string $meetingAddress,
         private ?string $meetingTablet,
-        private ?int $hoursLimit,
         protected ?BookingPeriod $bookingPeriod,
         protected CarBidCollection $carBids
     ) {}
@@ -44,16 +42,6 @@ class CarRentWithDriver implements ServiceDetailsInterface
     public function cityId(): CityId
     {
         return $this->cityId;
-    }
-
-    public function getHoursLimit(): ?int
-    {
-        return $this->hoursLimit;
-    }
-
-    public function setHoursLimit(?int $hoursLimit): void
-    {
-        $this->hoursLimit = $hoursLimit;
     }
 
     public function serviceInfo(): ServiceInfo
