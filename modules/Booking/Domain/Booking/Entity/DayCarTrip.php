@@ -12,7 +12,7 @@ use Module\Shared\Enum\ServiceTypeEnum;
 
 class DayCarTrip implements ServiceDetailsInterface
 {
-    use Concerns\HasDateTrait;
+    use Concerns\HasDepartureDateTrait;
     use Concerns\HasCarBidCollectionTrait;
 
     public function __construct(
@@ -21,7 +21,7 @@ class DayCarTrip implements ServiceDetailsInterface
         private readonly ServiceInfo $serviceInfo,
         private readonly CityId $cityId,
         private ?string $destinationsDescription,
-        protected ?DateTimeInterface $date,
+        protected ?DateTimeInterface $departureDate,
         protected CarBidCollection $carBids
     ) {}
 

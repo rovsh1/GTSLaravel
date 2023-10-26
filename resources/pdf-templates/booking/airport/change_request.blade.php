@@ -100,7 +100,7 @@
                     </tr>
                     <tr>
                         <td></td>
-                        <td>Дата прилёта: {{$date}}</td>
+                        <td>Дата прилёта: {{$departureDate}}</td>
                         <td colspan="3">Время прилёта: {{$time}}</td>
                     </tr>
                     <tr>

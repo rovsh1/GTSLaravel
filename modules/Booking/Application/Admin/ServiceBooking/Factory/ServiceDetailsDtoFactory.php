@@ -167,7 +167,7 @@ class ServiceDetailsDtoFactory
             $details->id()->value(),
             $this->buildServiceInfoDto($details->serviceInfo()),
             $this->buildCityInfo($details->cityId()->value()),
-            $details->date()?->format(DATE_ATOM),
+            $details->departureDate()?->format(DATE_ATOM),
             $details->destinationsDescription(),
             $this->carBidFactory->build($details->serviceInfo()->supplierId(), $details->carBids())
         );

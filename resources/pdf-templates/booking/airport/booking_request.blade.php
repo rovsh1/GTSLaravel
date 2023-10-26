@@ -20,7 +20,8 @@
             <td class="title text-align-center" colspan="2">БРОНЬ НА {{ $service->typeName }}</td>
         </tr>
         <tr>
-            <td class="text-align-center" colspan="2" style="padding-top: 20px; padding-bottom: 20px">Согласно договору №{{ $contract->number }} от {{ $contract->date }}, ИНН: {{ $contract->inn }}
+            <td class="text-align-center" colspan="2" style="padding-top: 20px; padding-bottom: 20px">Согласно договору
+                №{{ $contract->number }} от {{ $contract->date }}, ИНН: {{ $contract->inn }}
             </td>
         </tr>
         <tr>
@@ -49,7 +50,9 @@
             </td>
         </tr>
         <tr>
-            <td colspan="2" class="text-align-center" style="padding-top: 20px;padding-bottom: 20px">Компания ООО "GotoStans" выражает Вам своё почтение и просит Вас организовать <br/> {{ $service->typeName }} для следующих лиц
+            <td colspan="2" class="text-align-center" style="padding-top: 20px;padding-bottom: 20px">Компания ООО
+                "GotoStans" выражает Вам своё почтение и просит Вас организовать <br/> {{ $service->typeName }} для
+                следующих лиц
             </td>
         </tr>
         <tr>
@@ -68,7 +71,7 @@
                     </tr>
                     <tr>
                         <td></td>
-                        <td>Дата прилёта: {{ $date }}</td>
+                        <td>Дата прилёта: {{ $departureDate }}</td>
                         <td colspan="3">Время прилёта: {{ $time }}</td>
                     </tr>
                     <tr>

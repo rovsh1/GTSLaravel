@@ -171,7 +171,7 @@ class DetailsFactory
             serviceInfo: $this->buildServiceInfo($detailsData['serviceInfo']),
             cityId: new CityId($detailsData['cityId']),
             destinationsDescription: $detailsData['destinationsDescription'],
-            date: $details->date_start,
+            departureDate: $details->date_start,
             carBids: CarBidCollection::fromData($detailsData['carBids'])
         );
     }

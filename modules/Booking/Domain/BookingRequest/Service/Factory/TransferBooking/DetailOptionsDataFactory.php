@@ -66,7 +66,11 @@ class DetailOptionsDataFactory
     private function buildTransferFromAirport(TransferFromAirport $details): Collection
     {
         return collect([
-            new DetailOptionDto('Дата прилета', $details->arrivalDate()?->format('d.m.Y')),
+            new DetailOptionDto('Дата прилёта', $details->arrivalDate()?->format('d.m.Y')),
+            new DetailOptionDto('Время прилёта', $details->arrivalDate()?->format('H:i')),
+            new DetailOptionDto('Номер рейса', $details->flightNumber()),
+            new DetailOptionDto('Город прилёта', '{получить город вылета}'),
+            new DetailOptionDto('Табличка для встречи', $details->meetingTablet()),
         ]);
     }
 
@@ -74,6 +78,10 @@ class DetailOptionsDataFactory
     {
         return collect([
             new DetailOptionDto('Дата отправления', $details->departureDate()?->format('d.m.Y')),
+            new DetailOptionDto('Время отправления', $details->departureDate()?->format('H:i')),
+            new DetailOptionDto('Номер поезда', $details->trainNumber()),
+            new DetailOptionDto('Город отправления', $details->railwayStationId()),
+            new DetailOptionDto('Табличка для встречи', $details->meetingTablet()),
         ]);
     }
 
@@ -81,6 +89,10 @@ class DetailOptionsDataFactory
     {
         return collect([
             new DetailOptionDto('Дата прибытия', $details->arrivalDate()?->format('d.m.Y')),
+            new DetailOptionDto('Время прибытия',  $details->arrivalDate()?->format('H:i')),
+            new DetailOptionDto('Номер поезда', $details->trainNumber()),
+            new DetailOptionDto('Город прибытия', $details),
+            new DetailOptionDto('Табличка для встречи', $details->meetingTablet()),
         ]);
     }
 
@@ -88,6 +100,7 @@ class DetailOptionsDataFactory
     {
         return collect([
             new DetailOptionDto('Дата выезда', $details->departureDate()?->format('d.m.Y')),
+            new DetailOptionDto('Время выезда', $details->departureDate()?->format('H:i')),
         ]);
     }
 
@@ -95,6 +108,7 @@ class DetailOptionsDataFactory
     {
         return collect([
             new DetailOptionDto('Дата выезда', $details->date()?->format('d.m.Y')),
+            new DetailOptionDto('Время выезда', $details->date()?->format('H:i')),
         ]);
     }
 
