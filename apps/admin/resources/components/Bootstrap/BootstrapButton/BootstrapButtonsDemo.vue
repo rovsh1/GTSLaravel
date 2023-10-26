@@ -1,8 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 
-import plusIcon from '@mdi/svg/svg/plus.svg'
-
 import BootstrapButton from './BootstrapButton.vue'
 
 import {
@@ -15,6 +13,7 @@ import {
 const buttonTypes = Object.values(buttonType)
 const selectedType = ref(buttonTypes[0])
 
+const plusIcon = ref<string>('add')
 const startIcon = ref<string>()
 const endIcon = ref<string>()
 const onlyIcon = ref<string>()

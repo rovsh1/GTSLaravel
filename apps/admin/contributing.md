@@ -86,8 +86,4 @@ For tooltips, dropdowns and other popup-like UI elements, [`floating-vue`](https
 
 # Icons
 
-For icons, [`@mdi/svg`](https://github.com/Templarian/MaterialDesign/issues) is used.
-
-To use raw SVG icons in Vue, [`vue-inline-svg`](https://github.com/shrpne/vue-inline-svg) is used.
-
-TODO: replace Google Material Symbols font with inline SVG or SVG sprite.
+For icons, [`Google Material Symbols`](https://fonts.google.com/icons) is used.

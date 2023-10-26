@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { computed, ref, unref } from 'vue'
 
-import closeIcon from '@mdi/svg/svg/close.svg'
 import { MaybeRef } from '@vueuse/core'
 
 import { AttachmentDialogImageProp } from '~resources/views/hotel/images/components/lib'
@@ -148,7 +147,7 @@ const isCheckboxDisabled = computed<boolean>(() =>
         <BootstrapButton
           class="closeButton"
           label="Закрыть (Esc)"
-          :only-icon="closeIcon"
+          only-icon="close"
           size="small"
           severity="dark"
           variant="filled"

@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import closeIcon from '@mdi/svg/svg/close.svg'
-
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 
 defineProps<{
@@ -19,7 +17,7 @@ const emit = defineEmits<{
       <!-- TODO Failed to resolve directive: tooltip -->
       <BootstrapButton
         label="Закрыть"
-        :only-icon="closeIcon"
+        only-icon="closeIcon"
         variant="outline"
         severity="link"
         size="small"

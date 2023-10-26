@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import icon from '@mdi/svg/svg/menu.svg'
+
+import InlineIcon from '~components/InlineIcon.vue'
 
 defineProps<{
   visible: boolean
@@ -21,7 +22,7 @@ const handleClick = (target: EventTarget | null) => {
     :class="{ visible }"
     @click="(event) => handleClick(event.currentTarget)"
   >
-    <img :src="icon" alt="" class="menuButtonIcon" />
+    <InlineIcon icon="menu" class="menuButtonIcon" />
   </button>
 </template>
 <style lang="scss" scoped>

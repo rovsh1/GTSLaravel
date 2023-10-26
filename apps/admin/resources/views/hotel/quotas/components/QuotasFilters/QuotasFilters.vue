@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue'
 
-import filterRemoveIcon from '@mdi/svg/svg/filter-remove.svg'
 import { MaybeRef } from '@vueuse/core'
 import { isEqual } from 'lodash'
 import { DateTime } from 'luxon'
@@ -169,7 +168,7 @@ const isStateChanged = computed<boolean>(() =>
     <div class="actions">
       <BootstrapButton
         label="Сбросить"
-        :only-icon="filterRemoveIcon"
+        only-icon="filter_alt_off"
         variant="outline"
         severity="link"
         :disabled="loading || !isStateChanged"

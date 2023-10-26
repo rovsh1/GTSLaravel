@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 
-import crossIcon from '@mdi/svg/svg/close.svg'
 import { MaybeRef, useDropZone } from '@vueuse/core'
 
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
@@ -63,7 +62,7 @@ const remove = (idToRemove: string) => {
           <div class="image">
             <BootstrapButton
               label="Убрать"
-              :only-icon="crossIcon"
+              only-icon="close"
               severity="danger"
               variant="filled"
               size="small"

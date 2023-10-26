@@ -1,15 +1,18 @@
 <script lang="ts" setup>
-import InlineSVG from 'vue-inline-svg'
 
-import dotsVerticalIcon from '@mdi/svg/svg/dots-vertical.svg'
-import pencilIcon from '@mdi/svg/svg/square-edit-outline.svg'
+import InlineIcon from '~components/InlineIcon.vue'
 </script>
 
 <template>
   <div>
-    <button type="button"><InlineSVG :src="dotsVerticalIcon" class="buttonIcon" /></button>
+    <button type="button">
+      <InlineIcon icon="more_vert" class="buttonIcon" />
+    </button>
     <div>
-      <a><InlineSVG :src="pencilIcon" class="buttonIcon" /> <span>Изменить цену</span></a>
+      <a class="d-flex align-items-center">
+        <InlineIcon icon="edit_square" class="buttonIcon buttonIconEdit" />
+        <span>Изменить цену</span>
+      </a>
     </div>
   </div>
 </template>
@@ -18,6 +21,14 @@ import pencilIcon from '@mdi/svg/svg/square-edit-outline.svg'
 div {
   position: relative;
   display: inline-block;
+
+  .buttonIcon {
+    font-size: 1.25rem;
+  }
+
+  .buttonIconEdit {
+    font-size: 1rem;
+  }
 
   button {
     padding: 0;
@@ -45,6 +56,7 @@ div {
       justify-content: space-between;
       align-items: center;
       width: 100%;
+      color: #000;
 
       span {
         text-align: right;
