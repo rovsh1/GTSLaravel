@@ -24,9 +24,8 @@ class PriceCalculator
         private readonly DomainEventDispatcherInterface $domainEventDispatcher,
     ) {}
 
-    public function calculate(BookingId $bookingId): void
+    public function calculate(Booking $booking): void
     {
-        $booking = $this->bookingRepository->findOrFail($bookingId);
         $details = $this->bookingDetailsRepository->findOrFail($booking->id());
         $supplierPriceDto = $this->hotelPricingAdapter->calculate(
             $this->calculateHotelPriceRequestDtoBuilder
@@ -50,6 +49,12 @@ class PriceCalculator
         });
 
         $this->domainEventDispatcher->dispatch(...$booking->pullEvents());
+    }
+
+    public function calculateByBookingId(BookingId $bookingId): void
+    {
+        $booking = $this->bookingRepository->findOrFail($bookingId);
+        $this->calculate($booking);
     }
 
     private function buildBookingPrice(
