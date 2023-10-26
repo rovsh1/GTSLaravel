@@ -1,11 +1,12 @@
-@switch($service->typeId)
-    @case(\Module\Shared\Enum\ServiceTypeEnum::CAR_RENT_WITH_DRIVER)
-        @include('booking.transfer._partials.details.car_rent')
-        @break
-    @case(\Module\Shared\Enum\ServiceTypeEnum::TRANSFER_TO_AIRPORT)
-        @include('booking.transfer._partials.details.transfer_to_airport')
-        @break
-    @case(\Module\Shared\Enum\ServiceTypeEnum::TRANSFER_FROM_AIRPORT)
-        @include('booking.transfer._partials.details.transfer_from_airport')
-        @break
-@endswitch
+@foreach($detailOptions->chunk(2) as $detailOptionsChunk)
+    <tr>
+        <td></td>
+        @foreach($detailOptionsChunk as $index => $detailOption)
+            @if($index === 0)
+                <td>{{ $detailOption->label }}: {{ $detailOption->value }}</td>
+            @else
+                <td colspan="2">{{ $detailOption->label }}: {{ $detailOption->value }}</td>
+            @endif
+        @endforeach
+    </tr>
+@endforeach

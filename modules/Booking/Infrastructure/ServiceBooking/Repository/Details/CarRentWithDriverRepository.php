@@ -6,9 +6,7 @@ namespace Module\Booking\Infrastructure\ServiceBooking\Repository\Details;
 
 use DateTimeInterface;
 use Module\Booking\Domain\Booking\Entity\CarRentWithDriver;
-use Module\Booking\Domain\Booking\Entity\TransferFromAirport;
 use Module\Booking\Domain\Booking\Repository\Details\CarRentWithDriverRepositoryInterface;
-use Module\Booking\Domain\Booking\Repository\Details\TransferFromAirportRepositoryInterface;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Domain\Booking\ValueObject\CarBidCollection;
 use Module\Booking\Domain\Booking\ValueObject\ServiceInfo;
@@ -60,6 +58,8 @@ class CarRentWithDriverRepository extends AbstractDetailsRepository implements C
                 'cityId' => $details->cityId()->value(),
                 'hoursLimit' => $details->hoursLimit(),
                 'carBids' => $details->carBids()->toData(),
+                'meetingTablet' => $details->meetingTablet(),
+                'meetingAddress' => $details->meetingAddress(),
             ]
         ]);
     }

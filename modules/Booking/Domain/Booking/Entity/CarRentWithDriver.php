@@ -15,12 +15,16 @@ class CarRentWithDriver implements ServiceDetailsInterface
     use Concerns\HasDateTrait;
     use Concerns\HasHoursLimitTrait;
     use Concerns\HasCarBidCollectionTrait;
+    use Concerns\HasMeetingTabletTrait;
+    use Concerns\HasMeetingAddressTrait;
 
     public function __construct(
         private readonly DetailsId $id,
         private readonly BookingId $bookingId,
         private readonly ServiceInfo $serviceInfo,
         private readonly CityId $cityId,
+        private ?string $meetingAddress,
+        private ?string $meetingTablet,
         private ?int $hoursLimit,
         protected ?DateTimeInterface $date,
         protected CarBidCollection $carBids

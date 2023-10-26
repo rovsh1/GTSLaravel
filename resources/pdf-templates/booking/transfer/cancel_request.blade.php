@@ -79,7 +79,7 @@
                     <tbody>
                     <tr>
                         <td style="width: 500px;">
-                            @include('hotel._partials.manager_requisites')
+                            @include('booking._partials.manager_requisites')
                         </td>
                     </tr>
                     </tbody>

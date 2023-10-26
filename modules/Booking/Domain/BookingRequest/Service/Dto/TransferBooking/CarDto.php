@@ -13,5 +13,6 @@ class CarDto
         public readonly int $passengersCount,
         public readonly int $baggageCount,
         public readonly int $babyCount,
+        public readonly CarPriceDto $supplierPrice,
     ) {}
 }

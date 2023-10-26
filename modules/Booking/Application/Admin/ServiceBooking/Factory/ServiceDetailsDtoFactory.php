@@ -140,6 +140,8 @@ class ServiceDetailsDtoFactory
             $details->id()->value(),
             $this->buildServiceInfoDto($details->serviceInfo()),
             $this->buildCityInfo($details->cityId()->value()),
+            $details->meetingAddress(),
+            $details->meetingTablet(),
             $details->hoursLimit(),
             $details->date()?->format(DATE_ATOM),
             $this->carBidFactory->build($details->serviceInfo()->supplierId(), $details->carBids())

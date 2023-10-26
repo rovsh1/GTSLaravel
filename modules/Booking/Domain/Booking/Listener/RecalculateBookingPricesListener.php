@@ -61,8 +61,8 @@ class RecalculateBookingPricesListener implements DomainEventListenerInterface
         $details = $repository->find($bookingId);
 
         $reducer = function (array $data, CarBid $carBid) {
-            $data['clientPriceAmount'] += $carBid->prices()->clientPrice()->calculatedValue() * $carBid->carsCount();
-            $data['supplierPriceAmount'] += $carBid->prices()->supplierPrice()->calculatedValue() * $carBid->carsCount();
+            $data['clientPriceAmount'] += $carBid->prices()->clientPrice()->totalAmount();
+            $data['supplierPriceAmount'] += $carBid->prices()->supplierPrice()->totalAmount();
 
             return $data;
         };

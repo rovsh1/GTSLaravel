@@ -185,6 +185,8 @@ class DetailsFactory
             bookingId: new BookingId($details->bookingId()),
             serviceInfo: $this->buildServiceInfo($detailsData['serviceInfo']),
             cityId: new CityId($detailsData['cityId']),
+            meetingAddress: $detailsData['meetingAddress'] ?? null,
+            meetingTablet: $detailsData['meetingTablet'] ?? null,
             hoursLimit: $detailsData['hoursLimit'] ?? null,
             date: $details->date_start,
             carBids: CarBidCollection::fromData($detailsData['carBids'])

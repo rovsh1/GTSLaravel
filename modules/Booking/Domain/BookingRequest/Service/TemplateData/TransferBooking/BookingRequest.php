@@ -2,7 +2,10 @@
 
 namespace Module\Booking\Domain\BookingRequest\Service\TemplateData\TransferBooking;
 
+use Illuminate\Support\Collection;
 use Module\Booking\Domain\BookingRequest\Service\Dto\ServiceDto;
+use Module\Booking\Domain\BookingRequest\Service\Dto\TransferBooking\BookingPeriodDto;
+use Module\Booking\Domain\BookingRequest\Service\Dto\TransferBooking\CarDto;
 use Module\Booking\Domain\BookingRequest\Service\TemplateDataInterface;
 
 final class BookingRequest implements TemplateDataInterface
@@ -10,25 +13,23 @@ final class BookingRequest implements TemplateDataInterface
     public function __construct(
         private readonly ServiceDto $serviceDto,
         private readonly array $cars,
-        private readonly ?string $meetingTablet,
-        private readonly ?string $address,
-        private readonly ?string $date,
-        private readonly ?string $city,
-        private readonly ?string $flightNumber,
+        private readonly Collection $detailOptions,
+        private readonly ?BookingPeriodDto $period,
     ) {}
 
     public function toArray(): array
     {
+        $guestCount = collect($this->cars)->reduce(
+            fn(int $value, CarDto $carDto) => $value + $carDto->passengersCount + $carDto->babyCount,
+            0
+        );
+
         return [
-            'service' => $this->serviceDto,
-            'guestsCount' => '',//посчитать всех людей в машине,
-            'meetingTablet' => $this->meetingTablet,
-            'address' => $this->address,
             'cars' => $this->cars,
-            'date' => $this->date,
-            'time' => $this->date,
-            'city' => $this->city,
-            'flightNumber' => $this->flightNumber,
+            'service' => $this->serviceDto,
+            'guestsCount' => $guestCount,
+            'detailOptions' => $this->detailOptions,
+            'period' => $this->period,
         ];
     }
 }

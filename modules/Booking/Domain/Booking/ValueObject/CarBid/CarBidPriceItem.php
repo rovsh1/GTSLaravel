@@ -12,12 +12,13 @@ class CarBidPriceItem implements SerializableDataInterface, CanEquate
 {
     public function __construct(
         private readonly CurrencyEnum $currency,
-        private readonly float $calculatedValue,
+        public readonly float $pricePerCar,
+        public readonly float $totalAmount,
     ) {}
 
     public static function createEmpty(CurrencyEnum $currency): static
     {
-        return new static($currency, 0);
+        return new static($currency, 0, 0);
     }
 
     public function currency(): CurrencyEnum
@@ -25,15 +26,21 @@ class CarBidPriceItem implements SerializableDataInterface, CanEquate
         return $this->currency;
     }
 
-    public function calculatedValue(): float
+    public function totalAmount(): float
     {
-        return $this->calculatedValue;
+        return $this->totalAmount;
+    }
+
+    public function pricePerCar(): float
+    {
+        return $this->pricePerCar;
     }
 
     public function toData(): array
     {
         return [
-            'calculatedValue' => $this->calculatedValue,
+            'totalAmount' => $this->totalAmount,
+            'pricePerCar' => $this->pricePerCar,
             'currency' => $this->currency->value,
         ];
     }
@@ -42,7 +49,8 @@ class CarBidPriceItem implements SerializableDataInterface, CanEquate
     {
         return new static(
             CurrencyEnum::from($data['currency']),
-            $data['calculatedValue'],
+            $data['pricePerCar'],
+            $data['totalAmount'],
         );
     }
 

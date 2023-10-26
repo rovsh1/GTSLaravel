@@ -48,6 +48,7 @@ class CarBidUpdater
             $details->serviceInfo()->supplierId(),
             $details->serviceInfo()->id(),
             $carData->carId,
+            $carData->carsCount,
             $booking->prices()->clientPrice()->currency(),
             new Carbon()
         );
@@ -78,6 +79,7 @@ class CarBidUpdater
             $details->serviceInfo()->supplierId(),
             $details->serviceInfo()->id(),
             $carData->carId,
+            $carData->carsCount,
             $booking->prices()->clientPrice()->currency(),
             now()
         );
@@ -109,6 +111,7 @@ class CarBidUpdater
         int $supplierId,
         int $serviceId,
         int $carId,
+        int $carsCount,
         CurrencyEnum $clientCurrency,
         CarbonInterface $date
     ): CarBidPrices {
@@ -126,8 +129,8 @@ class CarBidUpdater
         $supplierPrice = $price->supplierPrice;
         $clientPrice = $price->clientPrice;
         return new CarBidPrices(
-            supplierPrice: new CarBidPriceItem($supplierPrice->currency, $supplierPrice->amount),
-            clientPrice: new CarBidPriceItem($clientPrice->currency, $clientPrice->amount)
+            supplierPrice: new CarBidPriceItem($supplierPrice->currency, $supplierPrice->amount, $supplierPrice->amount * $carsCount),
+            clientPrice: new CarBidPriceItem($clientPrice->currency, $clientPrice->amount,$clientPrice->amount * $carsCount)
         );
     }
 }
