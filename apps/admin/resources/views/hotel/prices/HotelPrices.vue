@@ -51,19 +51,27 @@ onMounted(async () => {
 })
 </script>
 <template>
-  <BootstrapCard v-for="room in rooms" :key="room.id">
-    <BootstrapCardTitle :title="`${room.name} (${room.type_name})`" />
-    <HotelPricesTable
-      :hotel-id="hotelID"
-      :room-data="room"
-      :seasons-data="seasons"
-      :prices-data="prices"
-      :is-fetching="pricesLoad"
-      :close-all-but="closeAllButParam"
-      @close-all="(but: any) => closeAllButParam = but"
-      @update-data="fetchPrices"
-    />
-  </BootstrapCard>
+  <template v-if="!rooms || !rooms.length">
+    У отеля отсутствуют номер. <a :href="`/hotels/${hotelID}/rooms/create`">Добавить номер</a>
+  </template>
+  <template v-else-if="!seasons || !seasons.length">
+    Отсутствуют актуальные сезоны. <a :href="`/hotels/${hotelID}/seasons/create`">Добавить сезон</a>
+  </template>
+  <template v-else>
+    <BootstrapCard v-for="room in rooms" :key="room.id">
+      <BootstrapCardTitle :title="`${room.name} (${room.type_name})`" />
+      <HotelPricesTable
+        :hotel-id="hotelID"
+        :room-data="room"
+        :seasons-data="seasons"
+        :prices-data="prices"
+        :is-fetching="pricesLoad"
+        :close-all-but="closeAllButParam"
+        @close-all="(but: any) => closeAllButParam = but"
+        @update-data="fetchPrices"
+      />
+    </BootstrapCard>
+  </template>
 </template>
 
 <style lang="scss" scoped>

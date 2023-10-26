@@ -195,7 +195,7 @@ const handleUpdateQuotasBatch = async () => {
           Не удалось найти данные для отеля.
         </div>
         <div v-else-if="rooms === null">
-          Не удалось найти комнаты для этого отеля.
+          Не удалось найти номера для этого отеля.
         </div>
         <div v-else class="quotasTables">
           <OverlayLoading v-if="waitSwitchRooms" />
