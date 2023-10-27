@@ -21,14 +21,14 @@
                                     </td>
                                     <td style="font-size: 24px; font-weight: bold; color: red">{{ $booking->number }}</td>
                                     <td class="text-align-right" colspan="2">
-                                        <b>Дата и время отмены:{{ $booking->updatedAt }}</b>
+                                        <b>Дата и время отмены: {{ $booking->updatedAt }}</b>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="top-table-left">Клиент:</td>
                                     <td><b>{{ $client->name }}</b></td>
                                     <td class="text-align-right" colspan="2">
-                                        <b>Дата и время создания:{{ $booking->createdAt }}</b>
+                                        <b>Дата и время создания: {{ $booking->createdAt }}</b>
                                     </td>
                                 </tr>
                                 <tr>

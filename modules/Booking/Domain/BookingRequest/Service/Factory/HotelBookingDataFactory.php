@@ -49,8 +49,8 @@ class HotelBookingDataFactory
         $bookingPeriodDto = $this->buildPeriodDto($bookingDetails);
 
         return match ($requestType) {
-            RequestTypeEnum::BOOKING => new HotelBooking\BookingRequest($roomsDto, $hotelInfoDto, $bookingPeriodDto),
-            RequestTypeEnum::CHANGE => new HotelBooking\BookingRequest($roomsDto, $hotelInfoDto, $bookingPeriodDto),
+            RequestTypeEnum::BOOKING,
+            RequestTypeEnum::CHANGE,
             RequestTypeEnum::CANCEL => new HotelBooking\BookingRequest($roomsDto, $hotelInfoDto, $bookingPeriodDto),
         };
     }
@@ -70,8 +70,8 @@ class HotelBookingDataFactory
     private function buildPeriodDto(DetailsEntity $bookingDetails): BookingPeriodDto
     {
         return new BookingPeriodDto(
-            $bookingDetails->bookingPeriod()->dateFrom()->format('d.m.Y H:i:s'),
-            $bookingDetails->bookingPeriod()->dateTo()->format('d.m.Y H:i:s'),
+            $bookingDetails->bookingPeriod()->dateFrom()->format('d.m.Y'),
+            $bookingDetails->bookingPeriod()->dateTo()->format('d.m.Y'),
             $bookingDetails->bookingPeriod()->nightsCount()
         );
     }

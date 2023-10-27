@@ -4,7 +4,7 @@
         <td><b>{{ $car->mark }} {{ $car->model }}: </b></td>
         <td class="text-align-center last">{{ $car->carsCount }}</td>
         <td class="text-align-center last">{{ $car->supplierPrice->pricePerCar }}</td>
-        <td class="text-align-center last">{{ $car->supplierPrice->totalAmount }}</td>
+        <td class="text-align-center last">{{ $car->supplierPrice->allCarsAmount }}</td>
     </tr>
     <tr>
         <td></td>

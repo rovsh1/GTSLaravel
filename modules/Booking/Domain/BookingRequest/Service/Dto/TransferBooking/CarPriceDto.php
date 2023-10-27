@@ -8,6 +8,7 @@ class CarPriceDto
 {
     public function __construct(
         public readonly float $pricePerCar,
+        public readonly float $allCarsAmount,
         public readonly float $totalAmount,
     ) {}
 }

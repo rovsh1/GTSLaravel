@@ -50,14 +50,18 @@ class TransferBookingDataFactory
             RequestTypeEnum::CHANGE,
             RequestTypeEnum::CANCEL => new TransferBooking\BookingRequest(
                 $serviceDto,
-                $this->buildCars($bookingDetails->carBids(), $bookingDetails->serviceInfo()->supplierId()),
+                $this->buildCars(
+                    $bookingDetails->carBids(),
+                    $bookingDetails->serviceInfo()->supplierId(),
+                    $bookingPeriodDto?->countDays
+                ),
                 $detailOptions,
                 $bookingPeriodDto,
             ),
         };
     }
 
-    private function buildCars(CarBidCollection $carBids, int $supplierId): array
+    private function buildCars(CarBidCollection $carBids, int $supplierId, ?int $daysCount): array
     {
         $cars = $this->supplierAdapter->getSupplierCars($supplierId);
         $carsIndexedById = collect($cars)->keyBy('id');
@@ -72,6 +76,9 @@ class TransferBookingDataFactory
             new CarPriceDto(
                 $carBid->prices()->supplierPrice()->valuePerCar(),
                 $carBid->supplierPriceValue(),
+                $daysCount === null
+                    ? $carBid->supplierPriceValue()
+                    : $carBid->supplierPriceValue() * $daysCount
             )
         ));
     }

@@ -58,14 +58,16 @@
                                         (ID):
                                     </td>
                                     <td style="font-size: 24px; font-weight: bold; color: red">{{$reservNumber}}</td>
-                                    <td class="text-align-right" colspan="2"><b>Дата и время создания:
-                                            {{$reservCreatedAt}}</b></td>
+                                    <td class="text-align-right" colspan="2">
+                                        <b>Дата и время создания: {{$reservCreatedAt}}</b>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td class="top-table-left"></td>
                                     <td></td>
-                                    <td class="text-align-right" colspan="2"><b>Дата и время изменения:
-                                            {{$reservUpdatedAt}}</b></td>
+                                    <td class="text-align-right" colspan="2">
+                                        <b>Дата и время изменения: {{$reservUpdatedAt}}</b>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
