@@ -74,6 +74,16 @@ export function createHotelSwitcher(container: Element | HTMLElement, withMatgin
     })
   }
 
+  const searchInputContainer = document.createElement('div')
+  searchInputContainer.classList.add('hotel-switcher-search-container')
+  const searchInput = document.createElement('input')
+  searchInput.classList.add('form-control')
+  searchInput.placeholder = 'Поиск'
+  searchInput.addEventListener('input', (event) => {
+    const query = (event.target as HTMLInputElement).value
+    searchMenuItems(query)
+  })
+
   toggleButton.addEventListener('click', () => {
     if (isFirstOpen) {
       populateMenu()
@@ -83,17 +93,8 @@ export function createHotelSwitcher(container: Element | HTMLElement, withMatgin
       menuListContainer.style.display = 'none'
     } else {
       menuListContainer.style.display = 'block'
+      searchInputContainer.querySelector('input')?.focus()
     }
-  })
-
-  const searchInputContainer = document.createElement('div')
-  searchInputContainer.classList.add('hotel-switcher-search-container')
-  const searchInput = document.createElement('input')
-  searchInput.classList.add('form-control')
-  searchInput.placeholder = 'Поиск'
-  searchInput.addEventListener('input', (event) => {
-    const query = (event.target as HTMLInputElement).value
-    searchMenuItems(query)
   })
 
   searchInputContainer.appendChild(searchInput)
