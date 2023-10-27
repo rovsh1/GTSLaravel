@@ -72,7 +72,7 @@
     "Module\\Shared\\Enum\\ServiceTypeEnum::MEETING_IN_AIRPORT": "Встреча аэропорту",
     "Module\\Shared\\Enum\\ServiceTypeEnum::SEEING_IN_AIRPORT": "Проводы в аэропорт",
     "Module\\Shared\\Enum\\ServiceTypeEnum::CIP_ROOM_IN_AIRPORT": "CIP услуга в аэропорту",
-    "Module\\Shared\\Enum\\ServiceTypeEnum::OTHER_SERVICE": "Доп. услуга",
+    "Module\\Shared\\Enum\\ServiceTypeEnum::OTHER_SERVICE": "Прочая услуга",
 
     "Hotel\\StatusEnum::DRAFT": "Черновик",
     "Hotel\\StatusEnum::PUBLISHED": "Опубликован",
