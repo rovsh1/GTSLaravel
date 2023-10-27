@@ -283,6 +283,10 @@ const handlerUpdateSeasonDaysData = (status :boolean) => {
   position: relative;
 }
 
+.table-wrapper-overflow > table{
+  margin: 0;
+}
+
 .priced {
   height: 2rem;
 }
