@@ -2,6 +2,9 @@
 
 namespace App\Admin\Models\Supplier;
 
+use App\Admin\Models\Reference\Airport as AirportReference;
+use App\Admin\Models\Reference\City;
+use App\Admin\Models\Reference\RailwayStation;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Facades\DB;
@@ -62,23 +65,23 @@ class Service extends \Module\Supplier\Infrastructure\Models\Service
     private function buildRailwaySettings(): array
     {
         return [
-            ServiceSettingsField::createSelect('cityId', $this->data['cityId'] ?? null),
-            ServiceSettingsField::createSelect('railwayStationId', $this->data['railwayStationId'] ?? null),
+            ServiceSettingsField::createSelect('cityId', $this->data['cityId'] ?? null, City::get()),
+            ServiceSettingsField::createSelect('railwayStationId', $this->data['railwayStationId'] ?? null, RailwayStation::get()),
         ];
     }
 
     private function buildAirportSettings(): array
     {
         return [
-            ServiceSettingsField::createSelect('airportId', $this->data['airportId'] ?? null),
+            ServiceSettingsField::createSelect('airportId', $this->data['airportId'] ?? null, AirportReference::get()),
         ];
     }
 
     private function buildIntercityTransferSettings(): array
     {
         return [
-            ServiceSettingsField::createSelect('fromCityId', $this->data['fromCityId'] ?? null),
-            ServiceSettingsField::createSelect('toCityId', $this->data['toCityId'] ?? null),
+            ServiceSettingsField::createSelect('fromCityId', $this->data['fromCityId'] ?? null, City::get()),
+            ServiceSettingsField::createSelect('toCityId', $this->data['toCityId'] ?? null, City::get()),
             ServiceSettingsField::createBool('returnTripIncluded', $this->data['returnTripIncluded'] ?? null),
         ];
     }
@@ -86,21 +89,21 @@ class Service extends \Module\Supplier\Infrastructure\Models\Service
     private function buildDayCarTripSettings(): array
     {
         return [
-            ServiceSettingsField::createSelect('cityId', $this->data['cityId'] ?? null),
+            ServiceSettingsField::createSelect('cityId', $this->data['cityId'] ?? null, City::get()),
         ];
     }
 
     private function buildCarRentWithDriverSettings(): array
     {
         return [
-            ServiceSettingsField::createSelect('cityId', $this->data['cityId'] ?? null),
+            ServiceSettingsField::createSelect('cityId', $this->data['cityId'] ?? null, City::get()),
         ];
     }
 
     private function buildCIPRoomInAirportSettings(): array
     {
         return [
-            ServiceSettingsField::createSelect('airportId', $this->data['airportId'] ?? null),
+            ServiceSettingsField::createSelect('airportId', $this->data['airportId'] ?? null, AirportReference::get()),
         ];
     }
 
