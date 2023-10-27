@@ -48,8 +48,8 @@ class DetailOptionDto
     public function getHumanValue(): ?string
     {
         return match ($this->type) {
-            self::DATE_TYPE => Format::date($this->value),
-            self::TIME_TYPE => Format::time($this->value),
+            self::DATE_TYPE => Format::date($this->value, 'd.m.Y'),
+            self::TIME_TYPE => Format::time($this->value, 'H:i'),
             self::PRICE_TYPE => Format::price($this->value),
             self::NUMBER_TYPE => Format::number($this->value),
             default => $this->value
