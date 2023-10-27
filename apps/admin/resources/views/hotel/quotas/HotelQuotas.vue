@@ -17,6 +17,7 @@ import { injectInitialData } from '~lib/vue'
 import BaseDialog from '~components/BaseDialog.vue'
 import BaseLayout from '~components/BaseLayout.vue'
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
+import EmptyData from '~components/EmptyData.vue'
 import OverlayLoading from '~components/OverlayLoading.vue'
 
 import QuotasFilters from './components/QuotasFilters/QuotasFilters.vue'
@@ -192,10 +193,14 @@ const handleUpdateQuotasBatch = async () => {
           @wait-switch-room="waitSwitchRooms = true"
         />
         <div v-if="hotel === null">
-          Не удалось найти данные для отеля.
+          <EmptyData>
+            Не удалось найти данные для отеля.
+          </EmptyData>
         </div>
         <div v-else-if="rooms === null">
-          Не удалось найти номера для этого отеля.
+          <EmptyData>
+            Не удалось найти номера для этого отеля. <a :href="`/hotels/${hotelID}/rooms/create`">Добавить номер</a>
+          </EmptyData>
         </div>
         <div v-else class="quotasTables">
           <OverlayLoading v-if="waitSwitchRooms" />
