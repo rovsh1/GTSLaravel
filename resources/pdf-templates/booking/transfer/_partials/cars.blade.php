@@ -12,7 +12,7 @@
         <td colspan="3">
             <i>Подробный расчет: {{ Format::number($car->supplierPrice->pricePerCar) }} * {{ $car->carsCount }}
                 @if($service->typeId === \Module\Shared\Enum\ServiceTypeEnum::CAR_RENT_WITH_DRIVER)
-                   * {{ $period->countDays }} {{ trans_choice('день|дня|дней', $period->countDays) }}
+                   * {{ $period->countDays }} {{ trans_choice('[1] день|[2,4] дня|[5,*] дней', $period->countDays) }}
                 @endif
                 = {{ Format::number($car->supplierPrice->totalAmount) }} UZS</i>
         </td>

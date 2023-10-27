@@ -45,7 +45,7 @@ class DetailOptionDto
         return new static($label, self::TEXT_TYPE, $value);
     }
 
-    public function getHumanValue(): string
+    public function getHumanValue(): ?string
     {
         return match ($this->type) {
             self::DATE_TYPE => Format::date($this->value),

@@ -30,7 +30,7 @@ abstract class AbstractEditor
             }
         }
         if ($valueType === BookingPeriod::class && $value !== null) {
-            $preparedValue = BookingPeriod::fromCarbon(new CarbonPeriod($value));
+            $preparedValue = BookingPeriod::fromCarbon(new CarbonPeriod($value['dateFrom'], $value['dateTo']));
         }
         $details->$setterMethod($preparedValue);
     }
