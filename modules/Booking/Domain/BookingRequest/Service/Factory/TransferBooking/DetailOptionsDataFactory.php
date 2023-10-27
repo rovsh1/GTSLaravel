@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Domain\BookingRequest\Service\Factory\TransferBooking;
 
+use Format;
 use Illuminate\Support\Collection;
 use Module\Booking\Domain\Booking\Entity\CarRentWithDriver;
 use Module\Booking\Domain\Booking\Entity\DayCarTrip;
@@ -13,10 +14,21 @@ use Module\Booking\Domain\Booking\Entity\TransferFromAirport;
 use Module\Booking\Domain\Booking\Entity\TransferFromRailway;
 use Module\Booking\Domain\Booking\Entity\TransferToAirport;
 use Module\Booking\Domain\Booking\Entity\TransferToRailway;
+use Module\Booking\Domain\Booking\ValueObject\AirportId;
+use Module\Booking\Domain\Booking\ValueObject\RailwayStationId;
+use Module\Booking\Domain\BookingRequest\Adapter\AirportAdapterInterface;
+use Module\Booking\Domain\BookingRequest\Adapter\CityAdapterInterface;
+use Module\Booking\Domain\BookingRequest\Adapter\RailwayStationAdapterInterface;
 use Module\Booking\Domain\BookingRequest\Service\Dto\TransferBooking\DetailOptionDto;
 
 class DetailOptionsDataFactory
 {
+    public function __construct(
+        private readonly AirportAdapterInterface $airportAdapter,
+        private readonly RailwayStationAdapterInterface $railwayStationAdapter,
+        private readonly CityAdapterInterface $cityAdapter,
+    ) {}
+
     public function build(ServiceDetailsInterface $details): Collection
     {
         if ($details instanceof CarRentWithDriver) {
@@ -46,72 +58,101 @@ class DetailOptionsDataFactory
     private function buildCarRentWithDriver(CarRentWithDriver $details): Collection
     {
         return collect([
-            new DetailOptionDto('Дата начала аренды', $details->bookingPeriod()?->dateFrom()->format('d.m.Y')),
-            new DetailOptionDto('Дата завершения аренды', $details->bookingPeriod()?->dateTo()->format('d.m.Y')),
-            new DetailOptionDto('Время подачи авто', $details->bookingPeriod()?->dateFrom()->format('H:i')),
-            new DetailOptionDto('Место подачи авто', $details->meetingAddress()),
-            new DetailOptionDto('Табличка для встречи', $details->meetingTablet()),
+            DetailOptionDto::createDate('Дата начала аренды', $details->bookingPeriod()?->dateFrom()),
+            DetailOptionDto::createDate('Дата завершения аренды', $details->bookingPeriod()?->dateTo()),
+            DetailOptionDto::createTime('Время подачи авто', $details->bookingPeriod()?->dateFrom()),
+            DetailOptionDto::createText('Место подачи авто', $details->meetingAddress()),
+            DetailOptionDto::createText('Табличка для встречи', $details->meetingTablet()),
         ]);
     }
 
     private function buildTransferToAirport(TransferToAirport $details): Collection
     {
+        $cityName = $this->getAirportCityName($details->airportId());
+
         return collect([
-            new DetailOptionDto('Дата вылета', $details->departureDate()?->format('d.m.Y')),
-            new DetailOptionDto('Время вылета', $details->departureDate()?->format('H:i')),
-            new DetailOptionDto('Номер рейса', $details->flightNumber()),
-            new DetailOptionDto('Город вылета', '{получить город вылета}'),
-            new DetailOptionDto('Табличка для встречи', $details->meetingTablet()),
+            DetailOptionDto::createDate('Дата вылета', Format::date($details->departureDate())),
+            DetailOptionDto::createTime('Время вылета', $details->departureDate()?->format('H:i')),
+            DetailOptionDto::createText('Номер рейса', $details->flightNumber()),
+            DetailOptionDto::createText('Город вылета', $cityName),
+            DetailOptionDto::createText('Табличка для встречи', $details->meetingTablet()),
         ]);
     }
 
     private function buildTransferFromAirport(TransferFromAirport $details): Collection
     {
+        $cityName = $this->getAirportCityName($details->airportId());
+
         return collect([
-            new DetailOptionDto('Дата прилёта', $details->arrivalDate()?->format('d.m.Y')),
-            new DetailOptionDto('Время прилёта', $details->arrivalDate()?->format('H:i')),
-            new DetailOptionDto('Номер рейса', $details->flightNumber()),
-            new DetailOptionDto('Город прилёта', '{получить город вылета}'),
-            new DetailOptionDto('Табличка для встречи', $details->meetingTablet()),
+            DetailOptionDto::createDate('Дата прилёта', $details->arrivalDate()?->format('d.m.Y')),
+            DetailOptionDto::createTime('Время прилёта', $details->arrivalDate()?->format('H:i')),
+            DetailOptionDto::createText('Номер рейса', $details->flightNumber()),
+            DetailOptionDto::createText('Город прилёта', $cityName),
+            DetailOptionDto::createText('Табличка для встречи', $details->meetingTablet()),
         ]);
     }
 
     private function buildTransferToRailway(TransferToRailway $details): Collection
     {
+        $cityName = $this->getRailwayStationCityName($details->railwayStationId());
+
         return collect([
-            new DetailOptionDto('Дата отправления', $details->departureDate()?->format('d.m.Y')),
-            new DetailOptionDto('Время отправления', $details->departureDate()?->format('H:i')),
-            new DetailOptionDto('Номер поезда', $details->trainNumber()),
-            new DetailOptionDto('Город отправления', $details->railwayStationId()),
-            new DetailOptionDto('Табличка для встречи', $details->meetingTablet()),
+            DetailOptionDto::createDate('Дата отправления', $details->departureDate()?->format('d.m.Y')),
+            DetailOptionDto::createTime('Время отправления', $details->departureDate()?->format('H:i')),
+            DetailOptionDto::createText('Номер поезда', $details->trainNumber()),
+            DetailOptionDto::createText('Город отправления', $cityName),
+            DetailOptionDto::createText('Табличка для встречи', $details->meetingTablet()),
         ]);
     }
 
     private function buildTransferFromRailway(TransferFromRailway $details): Collection
     {
+        $cityName = $this->getRailwayStationCityName($details->railwayStationId());
+
         return collect([
-            new DetailOptionDto('Дата прибытия', $details->arrivalDate()?->format('d.m.Y')),
-            new DetailOptionDto('Время прибытия',  $details->arrivalDate()?->format('H:i')),
-            new DetailOptionDto('Номер поезда', $details->trainNumber()),
-            new DetailOptionDto('Город прибытия', $details),
-            new DetailOptionDto('Табличка для встречи', $details->meetingTablet()),
+            DetailOptionDto::createDate('Дата прибытия', $details->arrivalDate()?->format('d.m.Y')),
+            DetailOptionDto::createTime('Время прибытия', $details->arrivalDate()?->format('H:i')),
+            DetailOptionDto::createText('Номер поезда', $details->trainNumber()),
+            DetailOptionDto::createText('Город прибытия', $cityName),
+            DetailOptionDto::createText('Табличка для встречи', $details->meetingTablet()),
         ]);
     }
 
     private function buildIntercityTransfer(IntercityTransfer $details): Collection
     {
         return collect([
-            new DetailOptionDto('Дата выезда', $details->departureDate()?->format('d.m.Y')),
-            new DetailOptionDto('Время выезда', $details->departureDate()?->format('H:i')),
+            DetailOptionDto::createDate('Дата выезда', $details->departureDate()?->format('d.m.Y')),
+            DetailOptionDto::createTime('Время выезда', $details->departureDate()?->format('H:i')),
         ]);
     }
 
     private function buildDayCarTrip(DayCarTrip $details): Collection
     {
         return collect([
-            new DetailOptionDto('Дата выезда', $details->departureDate()?->format('d.m.Y')),
-            new DetailOptionDto('Время выезда', $details->departureDate()?->format('H:i')),
+            DetailOptionDto::createDate('Дата выезда', $details->departureDate()?->format('d.m.Y')),
+            DetailOptionDto::createTime('Время выезда', $details->departureDate()?->format('H:i')),
         ]);
     }
 
+    private function getAirportCityName(AirportId $airportId): ?string
+    {
+        $airport = $this->airportAdapter->find($airportId->value());
+        if ($airport === null) {
+            return null;
+        }
+        $city = $this->cityAdapter->find($airport->cityId);
+
+        return $city?->name;
+    }
+
+    private function getRailwayStationCityName(RailwayStationId $stationId): ?string
+    {
+        $railwayStation = $this->railwayStationAdapter->find($stationId->value());
+        if ($railwayStation === null) {
+            return null;
+        }
+        $city = $this->cityAdapter->find($railwayStation->cityId);
+
+        return $city?->name;
+    }
 }

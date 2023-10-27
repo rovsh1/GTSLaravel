@@ -72,7 +72,7 @@
             </td>
         </tr>
         <tr class="first">
-            <td colspan="2" class="text-align-right"><b>Стоимость брони: {{ $booking->supplierPrice->amount }}</b></td>
+            <td colspan="2" class="text-align-right"><b>Стоимость брони: {{ Format::number($booking->supplierPrice->amount) }}</b></td>
         </tr>
         <tr>
             <td>
