@@ -6,28 +6,6 @@ import { BookingDetailsType } from '~api/booking/service'
 
 import '~resources/views/main'
 
-// const {
-//   TRANSFER_TO_AIRPORT,
-//   TRANSFER_FROM_AIRPORT,
-//   CAR_RENT_WITH_DRIVER,
-//   DAY_CAR_TRIP,
-//   TRANSFER_FROM_RAILWAY,
-//   TRANSFER_TO_RAILWAY,
-//   CIP_IN_AIRPORT,
-//   OTHER,
-//   INTERCITY_TRANSFER,
-// } = requestInitialData('view-initial-data-supplier-service-form', z.object({
-//   TRANSFER_TO_AIRPORT: z.number(),
-//   TRANSFER_FROM_AIRPORT: z.number(),
-//   CAR_RENT_WITH_DRIVER: z.number(),
-//   DAY_CAR_TRIP: z.number(),
-//   TRANSFER_FROM_RAILWAY: z.number(),
-//   TRANSFER_TO_RAILWAY: z.number(),
-//   CIP_IN_AIRPORT: z.number(),
-//   OTHER: z.number(),
-//   INTERCITY_TRANSFER: z.number(),
-// }))
-
 const getFieldWrapper = (label: string, child: any) => {
   const $label = $(`<label for="form_data_type" class="col-sm-5 col-form-label">${label}</label>`)
   const $inputWrapper = $('<div />', { class: 'col-sm-7 d-flex align-items-center' }).append(child)

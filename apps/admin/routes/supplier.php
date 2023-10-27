@@ -30,6 +30,18 @@ AclRoute::for('supplier')
         'service.type.list'
     )
     ->get(
+        '/services/{type}/settings',
+        Supplier\Service\ServicesController::class . '@settings',
+        'read',
+        'service.type.settings'
+    )
+    ->get(
+        '/services/{type}/settings/{serviceId}',
+        Supplier\Service\ServicesController::class . '@settings',
+        'read',
+        'service.settings'
+    )
+    ->get(
         '/{supplier}/services/search',
         Supplier\Service\ServicesController::class . '@search',
         'read',
