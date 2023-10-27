@@ -18,6 +18,7 @@ use Module\Pricing\Domain\Markup\Service\HotelMarkupFinderInterface;
 use Module\Pricing\Domain\Shared\ValueObject\ClientId;
 use Module\Pricing\Infrastructure\Service\HotelRoomBaseDayValueFinder;
 use Module\Shared\Contracts\Adapter\CurrencyRateAdapterInterface;
+use Module\Shared\Contracts\Service\ApplicationConstantsInterface;
 use Module\Shared\Enum\CurrencyEnum;
 use Module\Shared\ValueObject\MarkupValue;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
@@ -28,7 +29,8 @@ class CalculateHotelPrice implements UseCaseInterface
         private readonly HotelRepositoryInterface $hotelRepository,
         private readonly HotelMarkupFinderInterface $hotelMarkupFinder,
         private readonly HotelRoomBaseDayValueFinder $hotelRoomPriceFinder,
-        private readonly CurrencyRateAdapterInterface $currencyRateAdapter
+        private readonly CurrencyRateAdapterInterface $currencyRateAdapter,
+        private readonly ApplicationConstantsInterface $constants,
     ) {}
 
     public function execute(CalculateHotelPriceRequestDto $request): CalculatedHotelRoomsPricesDto
@@ -77,8 +79,10 @@ class CalculateHotelPrice implements UseCaseInterface
                     date: $date,
                     outCurrency: $request->outCurrency
                 );
+
                 $calculation->calculateBase(
-                    baseValue: $baseValue,
+                    basicCalculatedValue: $this->getPreparedBasicCalculatedValue($hotel, $date, $request->outCurrency),
+                    baseRoomValue: $baseValue,
                     vat: $hotel->vat()->value(),
                     touristTax: $hotel->touristTax($room->isResident)->value(),
                     guestCount: $room->guestsCount
@@ -107,6 +111,16 @@ class CalculateHotelPrice implements UseCaseInterface
         }
 
         return new RoomCalculationResultDto($room->accommodationId, $total, $dayResults);
+    }
+
+    private function getPreparedBasicCalculatedValue(Hotel $hotel, \DateTimeInterface $date, CurrencyEnum $outCurrency): float {
+        return $this->currencyRateAdapter->convertNetRate(
+            price: $this->constants->basicCalculatedValue(),
+            currencyFrom: CurrencyEnum::UZS,
+            currencyTo: $outCurrency,
+            country: $hotel->countryCode(),
+            date: $date
+        );
     }
 
     private function getPreparedBaseValue(

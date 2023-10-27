@@ -8,11 +8,6 @@ use Module\Shared\ValueObject\Percent;
 
 return new class extends Migration {
 
-    private const OTA = 1;
-    private const TA = 2;
-    private const TO = 3;
-    private const INDIVIDUAL = 4;
-
     private const ROOM_NAME_ENUM_GROUP_ID = 2;
 
     /**
@@ -39,31 +34,8 @@ return new class extends Migration {
             );
 
         foreach ($q->cursor() as $r) {
-            $margins = DB::connection('mysql_old')
-                ->table('hotel_margins')
-                ->where('room_id', $r->id)
-                ->select([
-                    DB::raw(
-                        "(SELECT `value` FROM hotel_margins WHERE hotel_id = {$r->hotel_id} AND room_id = {$r->id} AND client_model = " . self::OTA . ') as `OTA`'
-                    ),
-                    DB::raw(
-                        "(SELECT `value` FROM hotel_margins WHERE hotel_id = {$r->hotel_id} AND room_id = {$r->id} AND client_model = " . self::TA . ') as `TA`'
-                    ),
-                    DB::raw(
-                        "(SELECT `value` FROM hotel_margins WHERE hotel_id = {$r->hotel_id} AND room_id = {$r->id} AND client_model = " . self::TO . ') as `TO`'
-                    ),
-                    DB::raw(
-                        "(SELECT `value` FROM hotel_margins WHERE hotel_id = {$r->hotel_id} AND room_id = {$r->id} AND client_model = " . self::INDIVIDUAL . ') as `individual`'
-                    ),
-                ])
-                ->first();
-
             $roomMarkup = new RoomMarkups(
                 new RoomId($r->id),
-                new Percent($margins->individual ?? 0),
-                new Percent($margins->TA ?? 0),
-                new Percent($margins->OTA ?? 0),
-                new Percent($margins->TO ?? 0),
                 new Percent($room->price_discount ?? 0),
             );
 

@@ -27,7 +27,6 @@ class UpdateMarkupSettingsValueHandler implements CommandHandlerInterface
 {
     private array $dtoKeyPatterns = [
         'settings' => '/^(vat|touristTax)$/',
-        'clientMarkups' => '/^clientMarkups\.(TA|OTA|TO|individual)$/',
         'earlyCheckIn' => '/^earlyCheckIn\.(\d+)(?:\.(from|to|percent))?$/',
         'earlyCheckIns' => '/^earlyCheckIn$/',
         'lateCheckOut' => '/^lateCheckOut\.(\d+)(?:\.(from|to|percent))?$/',
@@ -55,7 +54,6 @@ class UpdateMarkupSettingsValueHandler implements CommandHandlerInterface
             $keyToUpdate = \Arr::last($keyParts);
             $object = match ($domainKey) {
                 'settings' => $settings,
-                'clientMarkups' => $settings->clientMarkups(),
                 'earlyCheckIn' => $settings->earlyCheckIn()->get($keyParts[1]),
                 'earlyCheckIns' => $settings->earlyCheckIn(),
                 'lateCheckOut' => $settings->lateCheckOut()->get($keyParts[1]),

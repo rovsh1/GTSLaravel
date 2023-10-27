@@ -21,14 +21,7 @@ export interface DatePeriod {
   to: DateTime
 }
 
-export type ClientMarkups = {
-  individual: Percent
-  TA: Percent
-  OTA: Percent
-  TO: Percent
-}
-
-export interface RoomMarkupSettings extends ClientMarkups {
+export interface RoomMarkupSettings {
   discount: Percent
 }
 
@@ -59,7 +52,6 @@ export type CancelPeriod = {
 export type MarkupSettings = {
   vat: Percent
   touristTax: Percent
-  clientMarkups: ClientMarkups
   earlyCheckIn: MarkupCondition[]
   lateCheckOut: MarkupCondition[]
   cancelPeriods: CancelPeriod[]

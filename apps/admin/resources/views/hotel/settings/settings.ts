@@ -31,11 +31,6 @@ createVueInstance({
   plugins: [pinia],
 })
 
-// createVueInstance({
-//   rootComponent: RoomMarkups,
-//   rootContainer: '#room-markups',
-// })
-
 $((): void => {
   $('#btn-rules-add').click(function (e: any) {
     e.preventDefault()

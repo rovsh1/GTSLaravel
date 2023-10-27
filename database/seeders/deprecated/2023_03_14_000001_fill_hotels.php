@@ -1,14 +1,15 @@
 <?php
 
 use App\Admin\Enums\Hotel\VisibilityEnum;
+use Carbon\CarbonPeriodImmutable;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 use Module\Catalog\Domain\Hotel\Entity\MarkupSettings;
+use Module\Catalog\Domain\Hotel\ValueObject\HotelId;
 use Module\Catalog\Domain\Hotel\ValueObject\MarkupSettings\CancelMarkupOption;
 use Module\Catalog\Domain\Hotel\ValueObject\MarkupSettings\CancelPeriod;
 use Module\Catalog\Domain\Hotel\ValueObject\MarkupSettings\CancelPeriodCollection;
 use Module\Catalog\Domain\Hotel\ValueObject\MarkupSettings\CancelPeriodTypeEnum;
-use Module\Catalog\Domain\Hotel\ValueObject\MarkupSettings\ClientMarkups;
 use Module\Catalog\Domain\Hotel\ValueObject\MarkupSettings\Condition;
 use Module\Catalog\Domain\Hotel\ValueObject\MarkupSettings\DailyMarkupCollection;
 use Module\Catalog\Domain\Hotel\ValueObject\MarkupSettings\DailyMarkupOption;
@@ -30,11 +31,6 @@ return new class extends Migration {
 
     private const CONDITION_CHECK_IN = 1;
     private const CONDITION_CHECK_OUT = 2;
-
-    private const OTA = 1;
-    private const TA = 2;
-    private const TO = 3;
-    private const INDIVIDUAL = 4;
 
     public function up()
     {
@@ -78,31 +74,6 @@ return new class extends Migration {
                 ));
             $lateCheckOut = new LateCheckOutCollection(
                 $lateCheckOutConditions !== null ? $lateCheckOutConditions->all() : []
-            );
-
-            $margins = DB::connection('mysql_old')
-                ->table('hotel_margins')
-                ->select([
-                    DB::raw(
-                        "(SELECT `value` FROM hotel_margins WHERE hotel_id = {$hotelId} AND room_id IS NULL AND client_model = " . self::OTA . ') as `OTA`'
-                    ),
-                    DB::raw(
-                        "(SELECT `value` FROM hotel_margins WHERE hotel_id = {$hotelId} AND room_id IS NULL AND client_model = " . self::TA . ') as `TA`'
-                    ),
-                    DB::raw(
-                        "(SELECT `value` FROM hotel_margins WHERE hotel_id = {$hotelId} AND room_id IS NULL AND client_model = " . self::TO . ') as `TO`'
-                    ),
-                    DB::raw(
-                        "(SELECT `value` FROM hotel_margins WHERE hotel_id = {$hotelId} AND room_id IS NULL AND client_model = " . self::INDIVIDUAL . ') as `individual`'
-                    ),
-                ])
-                ->first();
-
-            $clientMarkups = new ClientMarkups(
-                new Percent($margins->individual ?? 0),
-                new Percent($margins->TA ?? 0),
-                new Percent($margins->OTA ?? 0),
-                new Percent($margins->TO ?? 0),
             );
 
             $options = DB::connection('mysql_old')
@@ -177,7 +148,7 @@ return new class extends Migration {
                 );
 
                 return new CancelPeriod(
-                    new \Carbon\CarbonPeriodImmutable($cancelPeriod->date_from, $cancelPeriod->date_to),
+                    new CarbonPeriodImmutable($cancelPeriod->date_from, $cancelPeriod->date_to),
                     new CancelMarkupOption(
                         new Percent($cancelPeriod->price_markup),
                         CancelPeriodTypeEnum::from($cancelPeriod->period_type)
@@ -188,10 +159,9 @@ return new class extends Migration {
             $cancelPeriodCollection = new CancelPeriodCollection($cancelPeriods->all());
 
             $markupSettings = new MarkupSettings(
-                new \Module\Catalog\Domain\Hotel\ValueObject\HotelId($hotelId),
+                new HotelId($hotelId),
                 $vatPercent,
                 $touristTaxPercent,
-                $clientMarkups,
                 $earlyCheckIn,
                 $lateCheckOut,
                 $cancelPeriodCollection,

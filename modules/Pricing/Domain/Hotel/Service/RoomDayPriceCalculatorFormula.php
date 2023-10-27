@@ -17,12 +17,12 @@ class RoomDayPriceCalculatorFormula
         $this->calculationBuilder = new CalculationBuilder();
     }
 
-    public function calculateBase(float $baseValue, int $vat, int $touristTax, int $guestCount): void
+    public function calculateBase(float $basicCalculatedValue, float $baseRoomValue, int $vat, int $touristTax, int $guestCount): void
     {
         $this->calculationBuilder
-            ->base($baseValue, 'Базовое')
-            ->plus(self::percent($baseValue, $vat), "$vat% НДС")
-            ->plus(self::percent($baseValue, $touristTax), "$touristTax% Турсбор")
+            ->base($baseRoomValue, 'Базовое')
+            ->plus(self::percent($baseRoomValue, $vat), "$vat% НДС")
+            ->plus(self::percent($basicCalculatedValue, $touristTax), "$touristTax% Турсбор")
             ->multiply($guestCount, 'Гостей');
 
         $this->priceForMarkup = $this->calculationBuilder->resultValue();

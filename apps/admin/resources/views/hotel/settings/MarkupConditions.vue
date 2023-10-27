@@ -39,10 +39,6 @@ const handleUpdateMarkupSettings = async (key: string, value: number | string): 
         <tr>
           <th scope="col">Тур сбор</th>
           <th scope="col">НДС</th>
-          <th scope="col">Физическое лицо</th>
-          <th scope="col">OTA</th>
-          <th scope="col">TA</th>
-          <th scope="col">TO</th>
         </tr>
       </thead>
       <tbody :class="{ loading: isFetching }">
@@ -61,38 +57,6 @@ const handleUpdateMarkupSettings = async (key: string, value: number | string): 
               dimension="%"
               placeholder="НДС"
               @change="value => handleUpdateMarkupSettings('vat', value)"
-            />
-          </td>
-          <td>
-            <EditableCell
-              :value="markupSettings.clientMarkups.individual"
-              dimension="%"
-              placeholder="Физическое лицо"
-              @change="value => handleUpdateMarkupSettings('clientMarkups.individual', value)"
-            />
-          </td>
-          <td>
-            <EditableCell
-              :value="markupSettings.clientMarkups.OTA"
-              dimension="%"
-              placeholder="OTA"
-              @change="value => handleUpdateMarkupSettings('clientMarkups.OTA', value)"
-            />
-          </td>
-          <td>
-            <EditableCell
-              :value="markupSettings.clientMarkups.TA"
-              dimension="%"
-              placeholder="TA"
-              @change="value => handleUpdateMarkupSettings('clientMarkups.TA', value)"
-            />
-          </td>
-          <td>
-            <EditableCell
-              :value="markupSettings.clientMarkups.TO"
-              dimension="%"
-              placeholder="TO"
-              @change="value => handleUpdateMarkupSettings('clientMarkups.TO', value)"
             />
           </td>
         </tr>
