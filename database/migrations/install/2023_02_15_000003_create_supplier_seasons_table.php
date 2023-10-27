@@ -14,7 +14,6 @@ return new class extends Migration {
             $table->string('number')->nullable();
             $table->date('date_start');
             $table->date('date_end');
-            $table->unsignedTinyInteger('status')->default(0);
             $table->timestamps();
 
             $table->foreign('supplier_id', 'fk_supplier_seasons_supplier_id')

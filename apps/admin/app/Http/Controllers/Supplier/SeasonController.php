@@ -91,8 +91,7 @@ class SeasonController extends Controller
         return Form::name('data')
             ->hidden('supplier_id', ['value' => $supplierId])
             ->text('number', ['label' => 'Название', 'required' => true])
-            ->dateRange('period', ['label' => 'Период', 'required' => true])
-            ->checkbox('status', ['label' => 'Статус']);
+            ->dateRange('period', ['label' => 'Период', 'required' => true]);
     }
 
     protected function gridFactory(Supplier $provider): GridContract

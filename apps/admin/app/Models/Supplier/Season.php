@@ -20,7 +20,6 @@ class Season extends Model
         'number',
         'date_start',
         'date_end',
-        'status',
 
         'period'
     ];
@@ -29,7 +28,6 @@ class Season extends Model
         'supplier_id' => 'int',
         'date_start' => 'date',
         'date_end' => 'date',
-        'status' => 'bool',
     ];
 
     public static function booted()
