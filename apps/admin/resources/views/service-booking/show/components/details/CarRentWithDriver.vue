@@ -20,7 +20,7 @@ import { Car, useGetSupplierCarsAPI } from '~api/supplier/cars'
 import { showConfirmDialog } from '~lib/confirm-dialog'
 import { requestInitialData } from '~lib/initial-data'
 
-import EditableDateInput from '~components/Editable/EditableDateInput.vue'
+import EditableDateRangeInput from '~components/Editable/EditableDateRangeInput.vue'
 import EditableTextInput from '~components/Editable/EditableTextInput.vue'
 import EditableTimeInput from '~components/Editable/EditableTimeInput.vue'
 import IconButton from '~components/IconButton.vue'
@@ -155,10 +155,10 @@ const handleEditCarModal = async (id: number, object: CarBid) => {
           <tr>
             <th>Период бронирования</th>
             <td>
-              <EditableDateInput
-                :value="bookingDetails?.bookingPeriod?.dateFrom"
+              <EditableDateRangeInput
+                :value="bookingDetails?.bookingPeriod"
                 :can-edit="isEditableStatus"
-                @change="value => handleChangeDetails('date', value)"
+                @change="value => handleChangeDetails('bookingPeriod', value)"
               />
             </td>
           </tr>
