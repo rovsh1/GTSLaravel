@@ -132,7 +132,7 @@ class ServicesController extends Controller
         if ($serviceId !== null) {
             $service = Service::find($serviceId);
         } else {
-            $service = new Service();
+            $service = new Service(['type' => ServiceTypeEnum::from($serviceType)]);
         }
         $settings = $service->getSettingsFields();
 
