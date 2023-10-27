@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Booking\Domain\BookingRequest\Service\Factory\TransferBooking;
 
-use Format;
 use Illuminate\Support\Collection;
 use Module\Booking\Domain\Booking\Entity\CarRentWithDriver;
 use Module\Booking\Domain\Booking\Entity\DayCarTrip;
@@ -49,8 +48,6 @@ class DetailOptionsDataFactory
         throw new \RuntimeException('Unknown details type');
     }
 
-    //@todo перенести форматирование в шаблон blade
-
     /**
      * @param CarRentWithDriver $details
      * @return Collection<int, DetailOptionDto>
@@ -71,7 +68,7 @@ class DetailOptionsDataFactory
         $cityName = $this->getAirportCityName($details->airportId());
 
         return collect([
-            DetailOptionDto::createDate('Дата вылета', Format::date($details->departureDate())),
+            DetailOptionDto::createDate('Дата вылета', $details->departureDate()),
             DetailOptionDto::createTime('Время вылета', $details->departureDate()),
             DetailOptionDto::createText('Номер рейса', $details->flightNumber()),
             DetailOptionDto::createText('Город вылета', $cityName),

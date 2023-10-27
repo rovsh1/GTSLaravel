@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Booking\Domain\BookingRequest\Service\Dto\TransferBooking;
 
+use Format;
+
 class DetailOptionDto
 {
     private const DATE_TYPE = 'date';
@@ -46,10 +48,10 @@ class DetailOptionDto
     public function getHumanValue(): ?string
     {
         return match ($this->type) {
-            self::DATE_TYPE => \Format::date($this->value, 'd.m.Y'),
-            self::TIME_TYPE => \Format::time($this->value),
-            self::PRICE_TYPE => \Format::price($this->value),
-            self::NUMBER_TYPE => \Format::number($this->value),
+            self::DATE_TYPE => Format::date($this->value, 'd.m.Y'),
+            self::TIME_TYPE => Format::time($this->value),
+            self::PRICE_TYPE => Format::price($this->value),
+            self::NUMBER_TYPE => Format::number($this->value),
             default => $this->value
         };
     }
