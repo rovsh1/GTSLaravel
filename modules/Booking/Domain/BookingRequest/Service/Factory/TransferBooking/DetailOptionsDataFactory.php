@@ -72,7 +72,7 @@ class DetailOptionsDataFactory
 
         return collect([
             DetailOptionDto::createDate('Дата вылета', Format::date($details->departureDate())),
-            DetailOptionDto::createTime('Время вылета', $details->departureDate()?->format('H:i')),
+            DetailOptionDto::createTime('Время вылета', $details->departureDate()),
             DetailOptionDto::createText('Номер рейса', $details->flightNumber()),
             DetailOptionDto::createText('Город вылета', $cityName),
             DetailOptionDto::createText('Табличка для встречи', $details->meetingTablet()),
@@ -84,8 +84,8 @@ class DetailOptionsDataFactory
         $cityName = $this->getAirportCityName($details->airportId());
 
         return collect([
-            DetailOptionDto::createDate('Дата прилёта', $details->arrivalDate()?->format('d.m.Y')),
-            DetailOptionDto::createTime('Время прилёта', $details->arrivalDate()?->format('H:i')),
+            DetailOptionDto::createDate('Дата прилёта', $details->arrivalDate()),
+            DetailOptionDto::createTime('Время прилёта', $details->arrivalDate()),
             DetailOptionDto::createText('Номер рейса', $details->flightNumber()),
             DetailOptionDto::createText('Город прилёта', $cityName),
             DetailOptionDto::createText('Табличка для встречи', $details->meetingTablet()),
@@ -97,8 +97,8 @@ class DetailOptionsDataFactory
         $cityName = $this->getRailwayStationCityName($details->railwayStationId());
 
         return collect([
-            DetailOptionDto::createDate('Дата отправления', $details->departureDate()?->format('d.m.Y')),
-            DetailOptionDto::createTime('Время отправления', $details->departureDate()?->format('H:i')),
+            DetailOptionDto::createDate('Дата отправления', $details->departureDate()),
+            DetailOptionDto::createTime('Время отправления', $details->departureDate()),
             DetailOptionDto::createText('Номер поезда', $details->trainNumber()),
             DetailOptionDto::createText('Город отправления', $cityName),
             DetailOptionDto::createText('Табличка для встречи', $details->meetingTablet()),
@@ -110,8 +110,8 @@ class DetailOptionsDataFactory
         $cityName = $this->getRailwayStationCityName($details->railwayStationId());
 
         return collect([
-            DetailOptionDto::createDate('Дата прибытия', $details->arrivalDate()?->format('d.m.Y')),
-            DetailOptionDto::createTime('Время прибытия', $details->arrivalDate()?->format('H:i')),
+            DetailOptionDto::createDate('Дата прибытия', $details->arrivalDate()),
+            DetailOptionDto::createTime('Время прибытия', $details->arrivalDate()),
             DetailOptionDto::createText('Номер поезда', $details->trainNumber()),
             DetailOptionDto::createText('Город прибытия', $cityName),
             DetailOptionDto::createText('Табличка для встречи', $details->meetingTablet()),
@@ -121,16 +121,16 @@ class DetailOptionsDataFactory
     private function buildIntercityTransfer(IntercityTransfer $details): Collection
     {
         return collect([
-            DetailOptionDto::createDate('Дата выезда', $details->departureDate()?->format('d.m.Y')),
-            DetailOptionDto::createTime('Время выезда', $details->departureDate()?->format('H:i')),
+            DetailOptionDto::createDate('Дата выезда', $details->departureDate()),
+            DetailOptionDto::createTime('Время выезда', $details->departureDate()),
         ]);
     }
 
     private function buildDayCarTrip(DayCarTrip $details): Collection
     {
         return collect([
-            DetailOptionDto::createDate('Дата выезда', $details->departureDate()?->format('d.m.Y')),
-            DetailOptionDto::createTime('Время выезда', $details->departureDate()?->format('H:i')),
+            DetailOptionDto::createDate('Дата выезда', $details->departureDate()),
+            DetailOptionDto::createTime('Время выезда', $details->departureDate()),
         ]);
     }
 
