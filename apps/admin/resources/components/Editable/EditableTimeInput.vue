@@ -6,12 +6,14 @@ import { onClickOutside, useToggle } from '@vueuse/core'
 import { Tooltip } from 'floating-vue'
 import { DateTime } from 'luxon'
 
+import { parseAPIDateAndSetDefaultTime } from '~lib/date'
 import { usePlatformDetect } from '~lib/platform'
 
 import InlineIcon from '~components/InlineIcon.vue'
 
 const props = withDefaults(defineProps<{
   value: string | undefined
+  returnOnlyTime?: boolean
   placeholder?: string
   dimension?: string
   emptyValue?: string
@@ -27,6 +29,7 @@ const props = withDefaults(defineProps<{
   saveClickOutside: true,
   required: false,
   canEdit: true,
+  returnOnlyTime: false,
 })
 
 const emit = defineEmits<{
@@ -54,8 +57,7 @@ const localValue = computed<string>({
 })
 
 const localDate = computed<string>(() => (props.value
-  ? DateTime.fromISO(props.value, { zone: 'utc' })
-    .set({ hour: 0, minute: 0, second: 0, millisecond: 0 }).toFormat('yyyy-LL-dd') : ''))
+  ? parseAPIDateAndSetDefaultTime(props.value).toFormat('yyyy-LL-dd') : ''))
 
 const displayValue = computed(() => {
   if (!localValue.value) {
@@ -85,9 +87,9 @@ const applyEditable = () => {
     return
   }
   if (isEmptyValue) {
-    emit('change', localDate.value)
+    emit('change', props.returnOnlyTime ? '00:00' : localDate.value)
   } else {
-    emit('change', `${localDate.value} ${localValue.value}`)
+    emit('change', props.returnOnlyTime ? localValue.value : `${localDate.value} ${localValue.value}`)
   }
 
   toggleEditable(false)

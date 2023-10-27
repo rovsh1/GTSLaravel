@@ -18,6 +18,7 @@ import { addBookingCar, deleteBookingCar, updateBookingCar } from '~api/booking/
 import { Car, useGetSupplierCarsAPI } from '~api/supplier/cars'
 
 import { showConfirmDialog } from '~lib/confirm-dialog'
+import { parseAPIDateAndSetDefaultTime } from '~lib/date'
 import { requestInitialData } from '~lib/initial-data'
 
 import EditableDateRangeInput from '~components/Editable/EditableDateRangeInput.vue'
@@ -91,6 +92,14 @@ watch(editableCar, (value) => {
 
 const handleChangeDetails = async (field: string, value: any) => {
   await bookingStore.updateDetails(field, value)
+}
+
+const handleChangeTimeForPeriod = async (field: string, value: any) => {
+  if (!bookingDetails.value?.bookingPeriod?.dateFrom || !bookingDetails.value?.bookingPeriod?.dateTo) return
+  await bookingStore.updateDetails(field, {
+    dateFrom: `${parseAPIDateAndSetDefaultTime(bookingDetails.value.bookingPeriod.dateFrom).toFormat('yyyy-LL-dd')} ${value}`,
+    dateTo: `${parseAPIDateAndSetDefaultTime(bookingDetails.value.bookingPeriod.dateTo).toFormat('yyyy-LL-dd')} ${value}`,
+  })
 }
 
 const getAvailableCars = async (filtered?: boolean) => {
@@ -168,8 +177,8 @@ const handleEditCarModal = async (id: number, object: CarBid) => {
               <EditableTimeInput
                 :value="bookingDetails?.bookingPeriod?.dateFrom"
                 :can-edit="isEditableStatus && !!bookingDetails?.bookingPeriod"
-                type="time"
-                @change="value => handleChangeDetails('bookingPeriod.dateFrom', value)"
+                :return-only-time="true"
+                @change="value => handleChangeTimeForPeriod('bookingPeriod', value)"
               />
             </td>
           </tr>

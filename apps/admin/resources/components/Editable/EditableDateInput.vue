@@ -7,7 +7,7 @@ import { Tooltip } from 'floating-vue'
 import { DateTime } from 'luxon'
 import { nanoid } from 'nanoid'
 
-import { formatDateToAPIDate } from '~lib/date'
+import { formatDateToAPIDate, parseAPIDateAndSetDefaultTime } from '~lib/date'
 import { usePlatformDetect } from '~lib/platform'
 
 import DateRangePicker from '~components/DateRangePicker.vue'
@@ -15,6 +15,7 @@ import InlineIcon from '~components/InlineIcon.vue'
 
 const props = withDefaults(defineProps<{
   value: string | undefined
+  returnOnlyDate?: boolean
   emptyValue?: string
   hideClickOutside?: boolean
   saveClickOutside?: boolean
@@ -24,6 +25,7 @@ const props = withDefaults(defineProps<{
   hideClickOutside: false,
   saveClickOutside: true,
   canEdit: true,
+  returnOnlyDate: false,
 })
 
 const emit = defineEmits<{
@@ -45,7 +47,7 @@ const localValue = computed<Date | undefined>({
       return editedValue.value
     }
     return props.value
-      ? DateTime.fromISO(props.value, { zone: 'utc' }).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }).toJSDate()
+      ? parseAPIDateAndSetDefaultTime(props.value).toJSDate()
       : undefined
   },
   set: (value: Date | undefined) => {
@@ -54,7 +56,8 @@ const localValue = computed<Date | undefined>({
   },
 })
 
-const localTime = computed<string | undefined>(() => (props.value ? DateTime.fromISO(props.value, { zone: 'utc' }).toFormat('HH:mm') : '00:00'))
+const localTime = computed<string | undefined>(() =>
+  (props.value ? DateTime.fromISO(props.value, { zone: 'utc' }).toFormat('HH:mm') : '00:00'))
 
 const displayValue = computed(() => {
   if (!localValue.value) {
@@ -83,7 +86,8 @@ const applyEditable = () => {
     toggleEditable(false)
     return
   }
-  emit('change', `${formatDateToAPIDate(localValue.value)} ${localTime.value}`)
+  emit('change', props.returnOnlyDate ? formatDateToAPIDate(localValue.value)
+    : `${formatDateToAPIDate(localValue.value)} ${localTime.value}`)
   toggleEditable(false)
 }
 

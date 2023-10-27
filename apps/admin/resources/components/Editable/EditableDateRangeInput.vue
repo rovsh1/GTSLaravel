@@ -7,7 +7,7 @@ import { Tooltip } from 'floating-vue'
 import { DateTime } from 'luxon'
 import { nanoid } from 'nanoid'
 
-import { formatDateToAPIDate } from '~lib/date'
+import { formatDateToAPIDate, parseAPIDateAndSetDefaultTime } from '~lib/date'
 import { usePlatformDetect } from '~lib/platform'
 
 import DateRangePicker from '~components/DateRangePicker.vue'
@@ -20,6 +20,7 @@ type DatePeriod = {
 
 const props = withDefaults(defineProps<{
   value: DatePeriod | undefined
+  returnOnlyDate?: boolean
   emptyValue?: string
   hideClickOutside?: boolean
   saveClickOutside?: boolean
@@ -29,6 +30,7 @@ const props = withDefaults(defineProps<{
   hideClickOutside: false,
   saveClickOutside: true,
   canEdit: true,
+  returnOnlyDate: false,
 })
 
 const emit = defineEmits<{
@@ -50,8 +52,8 @@ const localValue = computed<[Date, Date] | undefined>({
       return editedValue.value
     }
     return props.value
-      ? [DateTime.fromISO(props.value.dateFrom, { zone: 'utc' }).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }).toJSDate(),
-        DateTime.fromISO(props.value.dateTo, { zone: 'utc' }).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }).toJSDate()] as [Date, Date]
+      ? [parseAPIDateAndSetDefaultTime(props.value.dateFrom).toJSDate(),
+        parseAPIDateAndSetDefaultTime(props.value.dateTo).toJSDate()] as [Date, Date]
       : undefined
   },
   set: (value: [Date, Date] | undefined) => {
@@ -91,8 +93,8 @@ const applyEditable = () => {
     return
   }
   emit('change', {
-    dateFrom: `${formatDateToAPIDate(localValue.value[0])} ${localTime.value}`,
-    dateTo: `${formatDateToAPIDate(localValue.value[1])} ${localTime.value}`,
+    dateFrom: props.returnOnlyDate ? formatDateToAPIDate(localValue.value[0]) : `${formatDateToAPIDate(localValue.value[0])} ${localTime.value}`,
+    dateTo: props.returnOnlyDate ? formatDateToAPIDate(localValue.value[1]) : `${formatDateToAPIDate(localValue.value[1])} ${localTime.value}`,
   })
   toggleEditable(false)
 }
