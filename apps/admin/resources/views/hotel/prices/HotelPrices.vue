@@ -10,6 +10,7 @@ import { requestInitialData } from '~lib/initial-data'
 
 import BootstrapCard from '~components/Bootstrap/BootstrapCard/BootstrapCard.vue'
 import BootstrapCardTitle from '~components/Bootstrap/BootstrapCard/components/BootstrapCardTitle.vue'
+import EmptyData from '~components/EmptyData.vue'
 
 import HotelPricesTable from './components/HotelPricesTable.vue'
 
@@ -52,10 +53,14 @@ onMounted(async () => {
 </script>
 <template>
   <template v-if="!rooms || !rooms.length">
-    У отеля отсутствуют номер. <a :href="`/hotels/${hotelID}/rooms/create`">Добавить номер</a>
+    <EmptyData>
+      У отеля отсутствуют номера. <a :href="`/hotels/${hotelID}/rooms/create`">Добавить номер</a>
+    </EmptyData>
   </template>
   <template v-else-if="!seasons || !seasons.length">
-    Отсутствуют актуальные сезоны. <a :href="`/hotels/${hotelID}/seasons/create`">Добавить сезон</a>
+    <EmptyData>
+      Отсутствуют актуальные сезоны. <a :href="`/hotels/${hotelID}/seasons/create`">Добавить сезон</a>
+    </EmptyData>
   </template>
   <template v-else>
     <BootstrapCard v-for="room in rooms" :key="room.id">
