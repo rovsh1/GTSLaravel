@@ -198,8 +198,8 @@ class BookingController extends Controller
 
         $data = $form->getData();
         try {
-            BookingAdapter::updateBooking(
-                id: $id,
+            DetailsAdapter::update(
+                bookingId: $id,
                 period: $data['period'],
                 note: $data['note'] ?? null
             );

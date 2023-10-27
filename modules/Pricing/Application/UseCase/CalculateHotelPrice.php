@@ -64,7 +64,8 @@ class CalculateHotelPrice implements UseCaseInterface
 
         $total = 0.0;
         $dayResults = [];
-        foreach ($request->period as $date) {
+        //@hack т.к. ночей всегда на 1 меньше, не включаем в стоимость последний день периода
+        foreach ($request->period->excludeEndDate() as $date) {
             $calculation = new RoomDayPriceCalculatorFormula();
 
             if ($room->manualDayPrice) {
@@ -97,7 +98,8 @@ class CalculateHotelPrice implements UseCaseInterface
                 $calculation->applyEarlyCheckinMarkup(MarkupValue::createPercent($room->earlyCheckinPercent));
             }
 
-            if ($room->lateCheckoutPercent && $request->period->getEndDate()->equalTo($date)) {
+            //@hack т.к. ночей всегда на 1 меньше, применяем поздний выезд к предпоследнему дню периода
+            if ($room->lateCheckoutPercent && $request->period->getEndDate()->subDay()->equalTo($date)) {
                 $calculation->applyLateCheckoutMarkup(MarkupValue::createPercent($room->lateCheckoutPercent));
             }
 
