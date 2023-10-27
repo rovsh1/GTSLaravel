@@ -26,12 +26,12 @@ class UpdateStatusRequest extends FormRequest
         return $this->post('not_confirmed_reason');
     }
 
-    public function getNetPenalty(): ?string
+    public function getSupplierPenalty(): ?string
     {
         return $this->post('net_penalty');
     }
 
-    public function getGrossPenalty(): ?string
+    public function getClientPenalty(): ?string
     {
         return $this->post('gross_penalty');
     }

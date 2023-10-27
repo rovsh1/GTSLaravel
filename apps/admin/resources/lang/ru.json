@@ -127,6 +127,9 @@
     "Module\\Shared\\Enum\\Pricing\\MarkupValueTypeEnum::PERCENT": "Процент",
     "Module\\Shared\\Enum\\Pricing\\MarkupValueTypeEnum::ABSOLUTE": "Значение",
 
+    "Module\\Shared\\Enum\\Hotel\\ReviewStatusEnum::NOT_PUBLIC": "Не опубликовано",
+    "Module\\Shared\\Enum\\Hotel\\ReviewStatusEnum::PUBLIC": "Опубликовано",
+
     "Module\\Booking\\Domain\\Shared\\Event\\Status\\BookingCreated": "Новая",
     "Module\\Booking\\Domain\\Shared\\Event\\Status\\BookingProcessing": "В работе",
     "Module\\Booking\\Domain\\Shared\\Event\\Status\\BookingCancelled": "Отменена",

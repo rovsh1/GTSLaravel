@@ -22,8 +22,8 @@ class UpdateBookingStatus implements UseCaseInterface
         int $bookingId,
         int $statusId,
         ?string $notConfirmedReason = null,
-        ?float $netPenalty = null,
-        ?float $grossPenalty = null
+        ?float $supplierPenalty = null,
+        ?float $clientPenalty = null
     ): UpdateStatusResponseDto {
         $booking = $this->repository->findOrFail(new BookingId($bookingId));
         $statusEnum = BookingStatusEnum::from($statusId);
@@ -48,10 +48,10 @@ class UpdateBookingStatus implements UseCaseInterface
                 $this->statusUpdater->toCancelledNoFee($booking);
                 break;
             case BookingStatusEnum::CANCELLED_FEE:
-                if ($netPenalty === null) {
+                if ($supplierPenalty === null) {
                     return new UpdateStatusResponseDto(isCancelFeeAmountRequired: true);
                 }
-                $this->statusUpdater->toCancelledFee($booking, $netPenalty, $grossPenalty);
+                $this->statusUpdater->toCancelledFee($booking, $supplierPenalty, $clientPenalty);
                 break;
             case BookingStatusEnum::WAITING_CONFIRMATION:
                 $this->statusUpdater->toWaitingConfirmation($booking);

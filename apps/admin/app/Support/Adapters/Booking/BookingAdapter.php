@@ -87,9 +87,9 @@ class BookingAdapter
         int $id,
         int $status,
         string|null $notConfirmedReason = null,
-        float|null $netPenalty = null
+        float|null $supplierPenalty = null
     ): mixed {
-        return app(UpdateBookingStatus::class)->execute($id, $status, $notConfirmedReason, $netPenalty);
+        return app(UpdateBookingStatus::class)->execute($id, $status, $notConfirmedReason, $supplierPenalty);
     }
 
     public function getStatusHistory(int $id): array

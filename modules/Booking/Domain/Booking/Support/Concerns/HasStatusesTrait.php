@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Booking\Domain\Booking\Support\Concerns;
 
+use Module\Booking\Domain\Booking\ValueObject\BookingPriceItem;
+use Module\Booking\Domain\Booking\ValueObject\BookingPrices;
 use Module\Booking\Domain\Shared\Event\Status\BookingCancelled;
 use Module\Booking\Domain\Shared\Event\Status\BookingCancelledFee;
 use Module\Booking\Domain\Shared\Event\Status\BookingCancelledNoFee;
@@ -63,20 +65,33 @@ trait HasStatusesTrait
     }
 
     /**
-     * @param float $netPenalty
-     * @param float|null $grossPenalty
+     * @param float $supplierPenalty
+     * @param float|null $clientPenalty
      * @return void
      * @throws \InvalidArgumentException
      */
-    public function toCancelledFee(float $netPenalty, ?float $grossPenalty = null): void
+    public function toCancelledFee(float $supplierPenalty, ?float $clientPenalty = null): void
     {
-        if ($netPenalty <= 0) {
+        if ($supplierPenalty <= 0) {
             throw new \InvalidArgumentException('Cancel fee amount can\'t be below zero');
         }
         $this->setStatus(BookingStatusEnum::CANCELLED_FEE);
-        $this->setNetPenalty($netPenalty);
-        $this->setGrossPenalty($grossPenalty);
-        $this->pushEvent(new BookingCancelledFee($this, $netPenalty));
+
+        $newSupplierPrice = new BookingPriceItem(
+            $this->prices()->supplierPrice()->currency(),
+            $this->prices()->supplierPrice()->calculatedValue(),
+            $this->prices()->supplierPrice()->manualValue(),
+            $supplierPenalty,
+        );
+        $newClientPrice = new BookingPriceItem(
+            $this->prices()->clientPrice()->currency(),
+            $this->prices()->clientPrice()->calculatedValue(),
+            $this->prices()->clientPrice()->manualValue(),
+            $clientPenalty,
+        );
+
+        $this->updatePrice(new BookingPrices($newSupplierPrice, $newClientPrice));
+        $this->pushEvent(new BookingCancelledFee($this, $supplierPenalty));
     }
 
     public function toWaitingConfirmation(): void

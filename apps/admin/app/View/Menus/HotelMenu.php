@@ -39,7 +39,7 @@ class HotelMenu extends AbstractSubmenu
         $this->addGroup($group);
 
         $group = (new Group('additional'))
-            ->addUrl('reviews', route('hotels.rooms.index', $this->model->id), 'Отзывы', ['icon' => 'comment'])
+            ->addUrl('reviews', route('hotels.reviews.index', $this->model->id), 'Отзывы', ['icon' => 'comment'])
             ->addUrl('journal', route('hotels.rooms.index', $this->model->id), 'Журнал', ['icon' => 'history']);
         $this->addGroup($group);
     }

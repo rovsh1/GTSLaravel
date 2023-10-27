@@ -317,7 +317,7 @@ class BookingController extends Controller
                 $id,
                 $request->getStatus(),
                 $request->getNotConfirmedReason(),
-                $request->getNetPenalty()
+                $request->getSupplierPenalty()
             )
         );
     }

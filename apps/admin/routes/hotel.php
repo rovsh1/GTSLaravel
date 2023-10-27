@@ -78,4 +78,11 @@ AclRoute::for('hotel')
     ->put('/{hotel}/settings/markup', Controllers\Hotel\MarkupSettingsController::class . '@update','update', 'settings.markup.update')
     ->post('/{hotel}/settings/markup/condition', Controllers\Hotel\MarkupSettingsController::class . '@addCondition','update', 'settings.markup.condition.add')
     ->delete('/{hotel}/settings/markup/condition', Controllers\Hotel\MarkupSettingsController::class . '@deleteCondition','update', 'settings.markup.condition.delete')
+
+    ->resource('reviews', Controllers\Hotel\ReviewController::class, [
+        'parameters' => [
+            'reviews' => 'review',
+        ],
+        'except' => ['show']
+    ])
     ;
