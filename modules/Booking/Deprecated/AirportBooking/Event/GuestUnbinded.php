@@ -16,14 +16,14 @@ class GuestUnbinded implements BookingEventInterface, PriceBecomeDeprecatedEvent
     ) {
     }
 
-    public function bookingId(): int
+    public function bookingId(): BookingId
     {
-        return $this->bookingId->value();
+        return $this->bookingId;
     }
 
-    public function orderId(): int
+    public function orderId(): OrderId
     {
-        return $this->orderId->value();
+        return $this->orderId;
     }
 
     public function payload(): ?array

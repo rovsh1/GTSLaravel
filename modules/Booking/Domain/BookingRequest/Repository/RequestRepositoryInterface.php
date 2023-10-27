@@ -24,5 +24,5 @@ interface RequestRepositoryInterface
      */
     public function findByBookingId(BookingId $bookingId): array;
 
-    public function archiveByBooking(BookingId $bookingId, RequestTypeEnum $type): void;
+    public function archiveByBooking(BookingId $bookingId): void;
 }

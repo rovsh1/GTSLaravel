@@ -146,9 +146,9 @@ const handleEditCarModal = async (id: number, object: CarBid) => {
             <th>Дата</th>
             <td>
               <EditableDateInput
-                :value="bookingDetails?.date"
+                :value="bookingDetails?.departureDate"
                 :can-edit="isEditableStatus"
-                @change="value => handleChangeDetails('date', value)"
+                @change="value => handleChangeDetails('departureDate', value)"
               />
             </td>
           </tr>
@@ -156,10 +156,10 @@ const handleEditCarModal = async (id: number, object: CarBid) => {
             <th>Время</th>
             <td>
               <EditableTimeInput
-                :value="bookingDetails?.date"
-                :can-edit="isEditableStatus && !!bookingDetails?.date"
+                :value="bookingDetails?.departureDate"
+                :can-edit="isEditableStatus && !!bookingDetails?.departureDate"
                 type="time"
-                @change="value => handleChangeDetails('date', value)"
+                @change="value => handleChangeDetails('departureDate', value)"
               />
             </td>
           </tr>

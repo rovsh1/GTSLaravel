@@ -10,12 +10,14 @@ use Module\Pricing\Application\Dto\ServicePriceDto;
 use Module\Pricing\Application\UseCase\GetAirportServicePrice;
 use Module\Pricing\Application\UseCase\GetTransferServicePrice;
 use Module\Shared\Enum\CurrencyEnum;
+use Module\Supplier\Application\Dto\AirportDto;
 use Module\Supplier\Application\Dto\CarDto;
 use Module\Supplier\Application\Response\CancelConditionsDto;
 use Module\Supplier\Application\Response\ServiceContractDto;
 use Module\Supplier\Application\Response\ServiceDto;
 use Module\Supplier\Application\Response\SupplierDto;
 use Module\Supplier\Application\UseCase\Find;
+use Module\Supplier\Application\UseCase\FindAirport;
 use Module\Supplier\Application\UseCase\FindAirportServiceContract;
 use Module\Supplier\Application\UseCase\FindCar;
 use Module\Supplier\Application\UseCase\FindService;
@@ -40,14 +42,14 @@ class SupplierAdapter implements SupplierAdapterInterface
         int $supplierId,
         int $serviceId,
         int $carId,
-        CurrencyEnum $grossCurrency,
+        CurrencyEnum $clientCurrency,
         CarbonInterface $date
     ): ?ServicePriceDto {
         return app(GetTransferServicePrice::class)->execute(
             $supplierId,
             $serviceId,
             $carId,
-            $grossCurrency,
+            $clientCurrency,
             $date
         );
     }
@@ -65,13 +67,13 @@ class SupplierAdapter implements SupplierAdapterInterface
     public function getAirportServicePrice(
         int $supplierId,
         int $serviceId,
-        CurrencyEnum $grossCurrency,
+        CurrencyEnum $clientCurrency,
         CarbonInterface $date
     ): ?ServicePriceDto {
         return app(GetAirportServicePrice::class)->execute(
             $supplierId,
             $serviceId,
-            $grossCurrency,
+            $clientCurrency,
             $date
         );
     }
@@ -90,7 +92,7 @@ class SupplierAdapter implements SupplierAdapterInterface
      * @param int $supplierId
      * @return CarDto[]
      */
-    public function getCars(int $supplierId): array
+    public function getSupplierCars(int $supplierId): array
     {
         return app(GetCars::class)->execute($supplierId);
     }
@@ -98,5 +100,10 @@ class SupplierAdapter implements SupplierAdapterInterface
     public function findCar(int $carId): ?CarDto
     {
         return app(FindCar::class)->execute($carId);
+    }
+
+    public function findAirport(int $airportId): ?AirportDto
+    {
+        return app(FindAirport::class)->execute($airportId);
     }
 }

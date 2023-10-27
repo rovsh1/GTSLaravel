@@ -48,9 +48,10 @@ trait HasStatusesTrait
      */
     public function toNotConfirmed(string $reason): void
     {
-        if ($this->type() === BookingTypeEnum::HOTEL && empty($reason)) {
-            throw new \InvalidArgumentException('Not confirmed reason can\'t be empty');
-        }
+        //@todo тут нужно исправление
+//        if ($this->type() === BookingTypeEnum::HOTEL && empty($reason)) {
+//            throw new \InvalidArgumentException('Not confirmed reason can\'t be empty');
+//        }
         $this->setStatus(BookingStatusEnum::NOT_CONFIRMED);
         $this->pushEvent(new BookingNotConfirmed($this, $reason));
     }

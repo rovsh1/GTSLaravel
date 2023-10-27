@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Application\Admin\Booking\UseCase;
 
 use Module\Booking\Application\Admin\HotelBooking\Dto\StatusEventDto;
-use Module\Booking\Application\Admin\Shared\Service\StatusStorage;
+use Module\Booking\Application\Admin\Shared\Factory\StatusDtoFactory;
 use Module\Booking\Domain\Shared\Event\BookingCreated;
 use Module\Booking\Domain\Shared\Event\Status\BookingCancelled;
 use Module\Booking\Domain\Shared\Event\Status\BookingCancelledFee;
@@ -25,7 +25,7 @@ class GetStatusHistory implements UseCaseInterface
 {
     public function __construct(
         private readonly BookingChangesLogRepositoryInterface $changesLogRepository,
-        private readonly StatusStorage $statusStorage
+        private readonly StatusDtoFactory $statusDtoFactory
     ) {}
 
     /**
@@ -35,7 +35,7 @@ class GetStatusHistory implements UseCaseInterface
     public function execute(int $id): array
     {
         $statusEvents = $this->changesLogRepository->getStatusHistory($id);
-        $statusesSettings = $this->statusStorage->statuses();
+        $statusesSettings = $this->statusDtoFactory->statuses();
         $statusColorsIndexedByStatusId = collect($statusesSettings)->keyBy('id')->map->color;
 
         return $statusEvents->map(fn(BookingChangesLog $changesLog) => new StatusEventDto(

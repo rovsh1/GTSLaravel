@@ -4,6 +4,7 @@ namespace Module\Booking\Domain\Booking\Entity;
 
 use DateTimeInterface;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Domain\Booking\ValueObject\BookingPeriod;
 use Module\Booking\Domain\Booking\ValueObject\CarBidCollection;
 use Module\Booking\Domain\Booking\ValueObject\CityId;
 use Module\Booking\Domain\Booking\ValueObject\DetailsId;
@@ -12,20 +13,21 @@ use Module\Shared\Enum\ServiceTypeEnum;
 
 class CarRentWithDriver implements ServiceDetailsInterface
 {
-    use Concerns\HasDateTrait;
-    use Concerns\HasHoursLimitTrait;
+    use Concerns\HasBookingPeriodTrait;
     use Concerns\HasCarBidCollectionTrait;
+    use Concerns\HasMeetingTabletTrait;
+    use Concerns\HasMeetingAddressTrait;
 
     public function __construct(
         private readonly DetailsId $id,
         private readonly BookingId $bookingId,
         private readonly ServiceInfo $serviceInfo,
         private readonly CityId $cityId,
-        private ?int $hoursLimit,
-        protected ?DateTimeInterface $date,
+        private ?string $meetingAddress,
+        private ?string $meetingTablet,
+        protected ?BookingPeriod $bookingPeriod,
         protected CarBidCollection $carBids
-    ) {
-    }
+    ) {}
 
     public function serviceType(): ServiceTypeEnum
     {
@@ -40,16 +42,6 @@ class CarRentWithDriver implements ServiceDetailsInterface
     public function cityId(): CityId
     {
         return $this->cityId;
-    }
-
-    public function getHoursLimit(): ?int
-    {
-        return $this->hoursLimit;
-    }
-
-    public function setHoursLimit(?int $hoursLimit): void
-    {
-        $this->hoursLimit = $hoursLimit;
     }
 
     public function serviceInfo(): ServiceInfo

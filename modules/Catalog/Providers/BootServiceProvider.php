@@ -37,6 +37,10 @@ class BootServiceProvider extends ServiceProvider
             \Module\Catalog\Domain\Hotel\Repository\MarkupSettingsRepositoryInterface::class,
             \Module\Catalog\Infrastructure\Repository\MarkupSettingsRepository::class
         );
+        $this->app->singleton(
+            \Module\Catalog\Domain\Hotel\Repository\PriceRateRepositoryInterface::class,
+            \Module\Catalog\Infrastructure\Repository\PriceRateRepository::class
+        );
 
         //@todo remove it
         $this->app->singleton(

@@ -34,4 +34,14 @@ enum ServiceTypeEnum: int
             self::CIP_ROOM_IN_AIRPORT
         ];
     }
+
+    public function isAirportService(): bool
+    {
+        return in_array($this, self::getAirportCases(), true);
+    }
+
+    public function isTransferService(): bool
+    {
+        return in_array($this, self::getTransferCases(), true);
+    }
 }

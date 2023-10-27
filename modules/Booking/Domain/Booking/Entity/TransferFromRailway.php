@@ -3,7 +3,6 @@
 namespace Module\Booking\Domain\Booking\Entity;
 
 use DateTimeInterface;
-use Module\Booking\Domain\Booking\ValueObject\AirportId;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Domain\Booking\ValueObject\CarBidCollection;
 use Module\Booking\Domain\Booking\ValueObject\DetailsId;

@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Module\Booking\Infrastructure\ServiceBooking\Repository\Details;
 
-use DateTimeInterface;
 use Module\Booking\Domain\Booking\Entity\CarRentWithDriver;
-use Module\Booking\Domain\Booking\Entity\TransferFromAirport;
 use Module\Booking\Domain\Booking\Repository\Details\CarRentWithDriverRepositoryInterface;
-use Module\Booking\Domain\Booking\Repository\Details\TransferFromAirportRepositoryInterface;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Domain\Booking\ValueObject\BookingPeriod;
 use Module\Booking\Domain\Booking\ValueObject\CarBidCollection;
 use Module\Booking\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Booking\Infrastructure\ServiceBooking\Models\Booking;
@@ -28,22 +26,31 @@ class CarRentWithDriverRepository extends AbstractDetailsRepository implements C
         return $this->detailsFactory->buildByBooking($booking);
     }
 
+    public function findOrFail(BookingId $bookingId): CarRentWithDriver
+    {
+        $entity = $this->find($bookingId);
+        if ($entity === null) {
+            throw new EntityNotFoundException('Booking details not found');
+        }
+
+        return $entity;
+    }
+
     public function create(
         BookingId $bookingId,
         ServiceInfo $serviceInfo,
         int $cityId,
-        ?bool $hoursLimit,
         CarBidCollection $carBids,
-        ?DateTimeInterface $date,
+        ?BookingPeriod $bookingPeriod,
     ): CarRentWithDriver {
         $model = Transfer::create([
             'booking_id' => $bookingId->value(),
-            'date_start' => $date,
+            'date_start' => $bookingPeriod?->dateFrom(),
+            'date_end' => $bookingPeriod?->dateTo(),
             'service_id' => $serviceInfo->id(),
             'data' => [
                 'serviceInfo' => $this->serializeServiceInfo($serviceInfo),
                 'cityId' => $cityId,
-                'hoursLimit' => $hoursLimit,
                 'carBids' => $carBids->toData(),
             ]
         ]);
@@ -54,12 +61,14 @@ class CarRentWithDriverRepository extends AbstractDetailsRepository implements C
     public function store(CarRentWithDriver $details): bool
     {
         return (bool)Transfer::whereId($details->id()->value())->update([
-            'date_start' => $details->date(),
+            'date_start' => $details->bookingPeriod()?->dateFrom(),
+            'date_end' => $details->bookingPeriod()?->dateTo(),
             'booking_transfer_details.data' => [
                 'serviceInfo' => $this->serializeServiceInfo($details->serviceInfo()),
                 'cityId' => $details->cityId()->value(),
-                'hoursLimit' => $details->hoursLimit(),
                 'carBids' => $details->carBids()->toData(),
+                'meetingTablet' => $details->meetingTablet(),
+                'meetingAddress' => $details->meetingAddress(),
             ]
         ]);
     }

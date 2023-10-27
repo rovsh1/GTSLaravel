@@ -21,7 +21,7 @@ interface DayCarTripRepositoryInterface
         int $cityId,
         CarBidCollection $carBids,
         ?string $destinationsDescription,
-        ?DateTimeInterface $date,
+        ?DateTimeInterface $departureDate,
     ): DayCarTrip;
 
     public function store(DayCarTrip $details): bool;

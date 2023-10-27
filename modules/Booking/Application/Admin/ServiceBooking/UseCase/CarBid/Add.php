@@ -4,39 +4,29 @@ declare(strict_types=1);
 
 namespace Module\Booking\Application\Admin\ServiceBooking\UseCase\CarBid;
 
+use Module\Booking\Application\Admin\ServiceBooking\Exception\NotFoundServicePriceException as NotFoundApplicationException;
+use Module\Booking\Application\Admin\ServiceBooking\Exception\ServiceDateUndefinedException;
 use Module\Booking\Application\Admin\ServiceBooking\Request\CarBidDataDto;
-use Module\Booking\Domain\Booking\Adapter\SupplierAdapterInterface;
-use Module\Booking\Domain\Booking\Factory\DetailsRepositoryFactory;
+use Module\Booking\Domain\Booking\Exception\NotFoundTransferServicePrice;
+use Module\Booking\Domain\Booking\Exception\ServiceDateUndefined;
+use Module\Booking\Domain\Booking\Service\TransferBooking\CarBidUpdater;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Domain\Booking\ValueObject\CarBid;
-use Module\Booking\Domain\Booking\ValueObject\CarId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
-use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
 class Add implements UseCaseInterface
 {
     public function __construct(
-        private readonly DetailsRepositoryFactory $detailsRepositoryFactory,
-        private readonly SupplierAdapterInterface $supplierAdapter,
+        private readonly CarBidUpdater $carBidUpdater,
     ) {}
 
     public function execute(int $bookingId, CarBidDataDto $carData): void
     {
-        $car = $this->supplierAdapter->findCar($carData->carId);
-        if ($car === null) {
-            throw new EntityNotFoundException('Car not found');
+        try {
+            $this->carBidUpdater->add(new BookingId($bookingId), $carData);
+        } catch (NotFoundTransferServicePrice $e) {
+            throw new NotFoundApplicationException($e, NotFoundApplicationException::BOOKING_TRANSFER_SERVICE_PRICE_NOT_FOUND);
+        } catch (ServiceDateUndefined $e) {
+            throw new ServiceDateUndefinedException($e);
         }
-        $id = new BookingId($bookingId);
-        $repository = $this->detailsRepositoryFactory->buildByBookingId($id);
-        $details = $repository->find($id);
-        $carBid = CarBid::create(
-            new CarId($carData->carId),
-            $carData->carsCount,
-            $carData->passengersCount,
-            $carData->baggageCount,
-            $carData->babyCount
-        );
-        $details->addCarBid($carBid);
-        $repository->store($details);
     }
 }

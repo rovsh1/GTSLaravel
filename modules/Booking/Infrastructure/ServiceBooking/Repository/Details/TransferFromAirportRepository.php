@@ -26,6 +26,16 @@ class TransferFromAirportRepository extends AbstractDetailsRepository implements
         return $this->detailsFactory->buildByBooking($booking);
     }
 
+    public function findOrFail(BookingId $bookingId): TransferFromAirport
+    {
+        $entity = $this->find($bookingId);
+        if ($entity === null) {
+            throw new EntityNotFoundException('Booking details not found');
+        }
+
+        return $entity;
+    }
+
     public function create(
         BookingId $bookingId,
         ServiceInfo $serviceInfo,

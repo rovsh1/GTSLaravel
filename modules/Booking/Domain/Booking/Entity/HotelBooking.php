@@ -2,9 +2,10 @@
 
 namespace Module\Booking\Domain\Booking\Entity;
 
+use Exception;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Domain\Booking\ValueObject\BookingPeriod;
 use Module\Booking\Domain\Booking\ValueObject\DetailsId;
+use Module\Booking\Domain\Booking\ValueObject\HotelBooking\BookingPeriod;
 use Module\Booking\Domain\Booking\ValueObject\HotelBooking\ExternalNumber;
 use Module\Booking\Domain\Booking\ValueObject\HotelBooking\HotelInfo;
 use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomBookingId;
@@ -22,8 +23,7 @@ final class HotelBooking implements ServiceDetailsInterface
         private RoomBookingIdCollection $roomBookings,
         private ?ExternalNumber $externalNumber,
         private readonly QuotaProcessingMethodEnum $quotaProcessingMethod,
-    ) {
-    }
+    ) {}
 
     public function serviceType(): ServiceTypeEnum
     {
@@ -63,7 +63,7 @@ final class HotelBooking implements ServiceDetailsInterface
     public function addRoomBooking(RoomBookingId $id): void
     {
         if ($this->roomBookings->has($id)) {
-            throw new \Exception('Guest already exists');
+            throw new Exception('Guest already exists');
         }
         $this->roomBookings = new RoomBookingIdCollection([...$this->roomBookings->all(), $id]);
     }
@@ -71,7 +71,7 @@ final class HotelBooking implements ServiceDetailsInterface
     public function removeRoomBooking(RoomBookingId $roomBookingId): void
     {
         if (!$this->roomBookings->has($roomBookingId)) {
-            throw new \Exception('RoomBooking not found');
+            throw new Exception('RoomBooking not found');
         }
         $this->roomBookings = new RoomBookingIdCollection(
             array_filter($this->roomBookings->all(), fn($id) => !$roomBookingId->isEqual($id))

@@ -14,7 +14,7 @@ class GetManagerByBookingId implements UseCaseInterface
         private readonly AdministratorRepositoryInterface $repository,
     ) {}
 
-    public function execute(int $id): mixed
+    public function execute(int $id): ?AdministratorDto
     {
         $administrator = $this->repository->findByBookingId($id);
         if ($administrator === null) {

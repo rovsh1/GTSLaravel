@@ -32,11 +32,11 @@ class DayCarTripRepository extends AbstractDetailsRepository implements DayCarTr
         int $cityId,
         CarBidCollection $carBids,
         ?string $destinationsDescription,
-        ?DateTimeInterface $date,
+        ?DateTimeInterface $departureDate,
     ): DayCarTrip {
         $model = Transfer::create([
             'booking_id' => $bookingId->value(),
-            'date_start' => $date,
+            'date_start' => $departureDate,
             'service_id' => $serviceInfo->id(),
             'data' => [
                 'serviceInfo' => $this->serializeServiceInfo($serviceInfo),
@@ -52,7 +52,7 @@ class DayCarTripRepository extends AbstractDetailsRepository implements DayCarTr
     public function store(DayCarTrip $details): bool
     {
         return (bool)Transfer::whereId($details->id()->value())->update([
-            'date_start' => $details->date(),
+            'date_start' => $details->departureDate(),
             'booking_transfer_details.data' => [
                 'serviceInfo' => $this->serializeServiceInfo($details->serviceInfo()),
                 'cityId' => $details->cityId()->value(),

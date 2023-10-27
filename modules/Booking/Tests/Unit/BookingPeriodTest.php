@@ -2,32 +2,32 @@
 
 namespace Module\Booking\Tests\Unit;
 
-use Carbon\CarbonImmutable;
 use Module\Booking\Domain\Booking\ValueObject\BookingPeriod;
 use PHPUnit\Framework\TestCase;
 
 class BookingPeriodTest extends TestCase
 {
     /**
-     * @dataProvider calculateNigthsCountProvider
+     * @dataProvider calculateDaysCountProvider
      * @param string $dateFrom
      * @param string $dateTo
      * @return void
      */
-    public function testCalculateNigthsCount(string $dateFrom, string $dateTo, int $nightsCount)
+    public function testCalculateNigthsCount(string $dateFrom, string $dateTo, int $daysCount)
     {
         $period = new BookingPeriod(
-            new CarbonImmutable($dateFrom),
-            new CarbonImmutable($dateTo),
+            new \DateTimeImmutable($dateFrom),
+            new \DateTimeImmutable($dateTo),
         );
-        $this->assertEquals($period->nightsCount(), $nightsCount);
+        $this->assertEquals($period->daysCount(), $daysCount);
     }
 
-    public static function calculateNigthsCountProvider()
+    public static function calculateDaysCountProvider()
     {
         return [
             ['2023-06-01', '2023-06-02', 1],
-            ['2023-06-01', '2023-06-30', 29],
+            ['2023-06-01', '2023-06-04', 3],
+            ['2023-06-17', '2023-06-23', 6],
         ];
     }
 }

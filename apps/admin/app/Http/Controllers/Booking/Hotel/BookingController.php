@@ -105,12 +105,15 @@ class BookingController extends Controller
 
         $data = $form->getData();
         $orderId = $data['order_id'] ?? null;
-        $currency = isset($data['currency']) ? CurrencyEnum::from($data['currency']) : null;
+        $currency = $data['currency'] ? CurrencyEnum::from($data['currency']) : null;
         if ($orderId !== null && $currency === null) {
             $order = OrderAdapter::findOrder($orderId);
-            $currency = $order->currency;
+            $currency = CurrencyEnum::from($order->currency->value);
         }
-        $client = Client::find($data['client_id']);
+        if ($currency === null) {
+            $client = Client::find($data['client_id']);
+            $currency = $client->currency;
+        }
         try {
             $bookingId = BookingAdapter::createHotelBooking(
                 clientId: $data['client_id'],

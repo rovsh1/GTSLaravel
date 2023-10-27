@@ -120,13 +120,13 @@ onMounted(() => {
     })
     picker.on('selected', (date1: any, date2: any) => {
       if (props.singleMode) {
-        if (!Array.isArray(localValue.value) && localValue.value && !compareJSDate(localValue.value, date1.dateInstance)) {
-          emit('input', date1.dateInstance)
-        } else if (!localValue.value) {
+        if (!localValue.value || (!Array.isArray(localValue.value) && !compareJSDate(localValue.value, date1.dateInstance))) {
           emit('input', date1.dateInstance)
         }
-      } else {
-        emit('input', [date1.dateInstance, date2.dateInstance])
+      } else if (!localValue.value || (Array.isArray(localValue.value) && (
+        !compareJSDate(localValue.value[0], date1.dateInstance) || !compareJSDate(localValue.value[1], date2.dateInstance)
+      ))) {
+        emit('input', props.singleMode ? date1.dateInstance : [date1.dateInstance, date2.dateInstance])
       }
     })
     if (props.setInputFocus) {

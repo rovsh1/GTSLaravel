@@ -7,6 +7,7 @@ namespace Module\Booking\Application\Admin\ServiceBooking\Factory;
 use App\Admin\Models\Reference\City;
 use App\Admin\Models\Reference\RailwayStation;
 use Module\Booking\Application\Admin\ServiceBooking\Dto\AirportInfoDto;
+use Module\Booking\Application\Admin\ServiceBooking\Dto\CarRentWithDriver\BookingPeriodDto;
 use Module\Booking\Application\Admin\ServiceBooking\Dto\CarRentWithDriverDto;
 use Module\Booking\Application\Admin\ServiceBooking\Dto\CIPRoomInAirportDto;
 use Module\Booking\Application\Admin\ServiceBooking\Dto\CityInfoDto;
@@ -33,6 +34,9 @@ use Module\Booking\Domain\Booking\Entity\TransferFromRailway;
 use Module\Booking\Domain\Booking\Entity\TransferToAirport;
 use Module\Booking\Domain\Booking\Entity\TransferToRailway;
 use Module\Booking\Domain\Booking\ValueObject\ServiceInfo;
+use Module\Booking\Domain\BookingRequest\Adapter\AirportAdapterInterface;
+use Module\Booking\Domain\BookingRequest\Adapter\CityAdapterInterface;
+use Module\Booking\Domain\BookingRequest\Adapter\RailwayStationAdapterInterface;
 use Module\Booking\Domain\Shared\ValueObject\GuestId;
 use Module\Booking\Infrastructure\AirportBooking\Models\Airport;
 
@@ -41,6 +45,9 @@ class ServiceDetailsDtoFactory
     public function __construct(
         private readonly HotelDetailsDtoFactory $hotelFactory,
         private readonly CarBidDtoFactory $carBidFactory,
+        private readonly AirportAdapterInterface $airportAdapter,
+        private readonly RailwayStationAdapterInterface $railwayStationAdapter,
+        private readonly CityAdapterInterface $cityAdapter,
     ) {}
 
     public function createFromEntity(ServiceDetailsInterface $details): ServiceDetailsDtoInterface
@@ -136,12 +143,21 @@ class ServiceDetailsDtoFactory
 
     private function buildCarRentWithDriver(CarRentWithDriver $details): CarRentWithDriverDto
     {
+        $bookingPeriod = null;
+        if ($details->bookingPeriod() !== null) {
+            $bookingPeriod = new BookingPeriodDto(
+                $details->bookingPeriod()->dateFrom()->format(DATE_ATOM),
+                $details->bookingPeriod()->dateTo()->format(DATE_ATOM),
+            );
+        }
+
         return new CarRentWithDriverDto(
             $details->id()->value(),
             $this->buildServiceInfoDto($details->serviceInfo()),
             $this->buildCityInfo($details->cityId()->value()),
-            $details->hoursLimit(),
-            $details->date()?->format(DATE_ATOM),
+            $details->meetingAddress(),
+            $details->meetingTablet(),
+            $bookingPeriod,
             $this->carBidFactory->build($details->serviceInfo()->supplierId(), $details->carBids())
         );
     }
@@ -165,7 +181,7 @@ class ServiceDetailsDtoFactory
             $details->id()->value(),
             $this->buildServiceInfoDto($details->serviceInfo()),
             $this->buildCityInfo($details->cityId()->value()),
-            $details->date()?->format(DATE_ATOM),
+            $details->departureDate()?->format(DATE_ATOM),
             $details->destinationsDescription(),
             $this->carBidFactory->build($details->serviceInfo()->supplierId(), $details->carBids())
         );
@@ -191,32 +207,16 @@ class ServiceDetailsDtoFactory
 
     private function buildAirportInfo(int $airportId): AirportInfoDto
     {
-        $airport = Airport::find($airportId);
-
-        return new AirportInfoDto(
-            $airport->id,
-            $airport->name,
-        );
+        return $this->airportAdapter->find($airportId);
     }
 
-    private function buildRailwayStationInfo(int $airportId): RailwayStationInfoDto
+    private function buildRailwayStationInfo(int $stationId): RailwayStationInfoDto
     {
-        $railwayStation = RailwayStation::find($airportId);
-
-        return new RailwayStationInfoDto(
-            $railwayStation->id,
-            $railwayStation->city_id,
-            $railwayStation->name,
-        );
+        return $this->railwayStationAdapter->find($stationId);
     }
 
     private function buildCityInfo(int $cityId): CityInfoDto
     {
-        $city = City::find($cityId);
-
-        return new CityInfoDto(
-            $city->id,
-            $city->name,
-        );
+        return $this->cityAdapter->find($cityId);
     }
 }

@@ -9,7 +9,7 @@ use Module\Booking\Domain\Booking\Adapter\HotelAdapterInterface;
 use Module\Booking\Domain\Booking\Entity\HotelBooking as Entity;
 use Module\Booking\Domain\Booking\Repository\Details\HotelBookingRepositoryInterface;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Domain\Booking\ValueObject\BookingPeriod;
+use Module\Booking\Domain\Booking\ValueObject\HotelBooking\BookingPeriod;
 use Module\Booking\Domain\Booking\ValueObject\HotelBooking\HotelInfo;
 use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomBookingIdCollection;
 use Module\Booking\Domain\Booking\ValueObject\ServiceId;

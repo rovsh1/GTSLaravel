@@ -31,7 +31,7 @@ class DayCarTrip extends AbstractEditor implements EditorInterface
             (int)$supplierService->data['cityId'],
             new CarBidCollection([]),
             $detailsData['destinationsDescription'] ?? null,
-            $detailsData['date'] ?? null,
+            $detailsData['departureDate'] ?? null,
         );
     }
 

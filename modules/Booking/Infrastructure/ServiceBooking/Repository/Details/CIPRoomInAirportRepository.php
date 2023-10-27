@@ -26,6 +26,16 @@ class CIPRoomInAirportRepository extends AbstractDetailsRepository implements CI
         return $this->detailsFactory->buildByBooking($booking);
     }
 
+    public function findOrFail(BookingId $bookingId): CIPRoomInAirport
+    {
+        $entity = $this->find($bookingId);
+        if ($entity === null) {
+            throw new EntityNotFoundException('Not found booking details');
+        }
+
+        return $entity;
+    }
+
     public function create(
         BookingId $bookingId,
         ServiceInfo $serviceInfo,

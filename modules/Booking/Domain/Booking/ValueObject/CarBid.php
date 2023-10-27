@@ -3,6 +3,7 @@
 namespace Module\Booking\Domain\Booking\ValueObject;
 
 use Illuminate\Support\Str;
+use Module\Booking\Domain\Booking\ValueObject\CarBid\CarBidPrices;
 use Module\Shared\Contracts\Support\SerializableDataInterface;
 
 final class CarBid implements SerializableDataInterface
@@ -14,6 +15,7 @@ final class CarBid implements SerializableDataInterface
         private readonly int $passengersCount,
         private readonly int $baggageCount,
         private readonly int $babyCount,
+        private readonly CarBidPrices $prices,
     ) {}
 
     public static function create(
@@ -21,7 +23,8 @@ final class CarBid implements SerializableDataInterface
         int $carsCount,
         int $passengersCount,
         int $baggageCount,
-        int $babyCount
+        int $babyCount,
+        CarBidPrices $prices,
     ): static {
         return new static(
             Str::random(6),
@@ -29,7 +32,8 @@ final class CarBid implements SerializableDataInterface
             $carsCount,
             $passengersCount,
             $baggageCount,
-            $babyCount
+            $babyCount,
+            $prices
         );
     }
 
@@ -63,6 +67,21 @@ final class CarBid implements SerializableDataInterface
         return $this->babyCount;
     }
 
+    public function prices(): CarBidPrices
+    {
+        return $this->prices;
+    }
+
+    public function supplierPriceValue(): float
+    {
+        return $this->prices->supplierPrice()->valuePerCar() * $this->carsCount;
+    }
+
+    public function clientPriceValue(): float
+    {
+        return $this->prices->clientPrice()->valuePerCar() * $this->carsCount;
+    }
+
     public function toData(): array
     {
         return [
@@ -72,6 +91,7 @@ final class CarBid implements SerializableDataInterface
             'passengersCount' => $this->passengersCount,
             'baggageCount' => $this->baggageCount,
             'babyCount' => $this->babyCount,
+            'prices' => $this->prices->toData(),
         ];
     }
 
@@ -84,6 +104,7 @@ final class CarBid implements SerializableDataInterface
             $data['passengersCount'],
             $data['baggageCount'],
             $data['babyCount'],
+            CarBidPrices::fromData($data['prices'])
         );
     }
 }

@@ -28,8 +28,8 @@ class BookingChangesLogRepository implements
             'event' => $event::class,
             'event_type' => $eventType,
             'payload' => $event->payload(),
-            'order_id' => $event->orderId(),
-            'booking_id' => $event->bookingId(),
+            'order_id' => $event->orderId()->value(),
+            'booking_id' => $event->bookingId()->value(),
             'context' => $this->contextService->toArray($context),
         ]);
     }

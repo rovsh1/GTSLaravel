@@ -2,7 +2,7 @@
 
 namespace Module\Booking\Tests\Unit;
 
-use Module\Booking\Domain\Booking\ValueObject\BookingPeriod;
+use Module\Booking\Domain\Booking\ValueObject\HotelBooking\BookingPeriod;
 use Module\Booking\PriceCalculator\Domain\Adapter\HotelAdapterInterface;
 use Module\Booking\PriceCalculator\Domain\Service\HotelBooking\CalculateVariables;
 use Module\Booking\PriceCalculator\Domain\Service\HotelBooking\Formula\BORoomPriceFormula;

@@ -8,6 +8,7 @@ use Module\Booking\Deprecated\AirportBooking\ValueObject\ContractId;
 use Module\Shared\Contracts\Domain\EntityInterface;
 use Module\Shared\ValueObject\Date;
 use Module\Supplier\Domain\Supplier\ValueObject\ServiceId;
+use Module\Supplier\Domain\Supplier\ValueObject\ServiceIdCollection;
 use Module\Supplier\Domain\Supplier\ValueObject\SupplierId;
 
 class Contract implements EntityInterface
@@ -15,7 +16,7 @@ class Contract implements EntityInterface
     public function __construct(
         private readonly ContractId $id,
         private readonly SupplierId $supplierId,
-        private readonly ServiceId $serviceId,
+        private readonly ServiceIdCollection $serviceIds,
         private readonly Date $dateStart,
         private readonly Date $dateEnd,
     ) {}
@@ -30,9 +31,9 @@ class Contract implements EntityInterface
         return $this->supplierId;
     }
 
-    public function serviceId(): ServiceId
+    public function serviceIds(): ServiceIdCollection
     {
-        return $this->serviceId;
+        return $this->serviceIds;
     }
 
     public function dateStart(): Date

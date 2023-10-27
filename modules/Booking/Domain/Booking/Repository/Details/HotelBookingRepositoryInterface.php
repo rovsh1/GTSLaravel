@@ -6,7 +6,7 @@ namespace Module\Booking\Domain\Booking\Repository\Details;
 
 use Module\Booking\Domain\Booking\Entity\HotelBooking;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Domain\Booking\ValueObject\BookingPeriod;
+use Module\Booking\Domain\Booking\ValueObject\HotelBooking\BookingPeriod;
 use Module\Booking\Domain\Booking\ValueObject\HotelBooking\HotelInfo;
 use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomBookingIdCollection;
 use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
