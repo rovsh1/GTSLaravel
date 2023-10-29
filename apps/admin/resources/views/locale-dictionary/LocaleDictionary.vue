@@ -21,6 +21,8 @@ type LocaleDictionaryForm = LocaleDictionary & {
 
 const [isOpened, toggleModal] = useToggle()
 
+const searchInput = ref<HTMLElement | null>(null)
+
 const searchQuery = ref<string>('')
 
 const editableLocale = reactive<LocaleDictionaryForm>({
@@ -92,6 +94,7 @@ onMounted(async () => {
     setUrlHash(hash)
   }
   searchQuery.value = hash
+  searchInput.value?.focus()
   await fetchLocales()
 })
 </script>
@@ -100,6 +103,7 @@ onMounted(async () => {
     <div>
       <div class="quicksearch-wrapper mt-3">
         <input
+          ref="searchInput"
           type="search"
           class="form-control"
           placeholder="Поиск"
