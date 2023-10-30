@@ -171,6 +171,11 @@ class ReviewController extends Controller
 
     protected function formFactory(Hotel $hotel): FormContract
     {
+        $form = Form::name('data')
+            ->hidden('hotel_id', ['value' => $hotel->id])
+            ->text('name', ['label' => 'Имя', 'required' => true])
+            ->textarea('text', ['label' => 'Текст отзыва', 'required' => true]);
+
         $ratingFieldSettingsGetter = fn(ReviewRatingTypeEnum $enum) => [
             'rating_' . $enum->value,
             [
@@ -179,19 +184,11 @@ class ReviewController extends Controller
                 'label' => $this->translator->translateEnum($enum)
             ]
         ];
+        foreach (ReviewRatingTypeEnum::cases() as $ratingType) {
+            $form->radio(...$ratingFieldSettingsGetter($ratingType));
+        }
 
-        return Form::name('data')
-            ->hidden('hotel_id', ['value' => $hotel->id])
-            ->text('name', ['label' => 'Имя', 'required' => true])
-            ->textarea('text', ['label' => 'Текст отзыва', 'required' => true])
-            ->radio(...$ratingFieldSettingsGetter(ReviewRatingTypeEnum::STAFF))
-            ->radio(...$ratingFieldSettingsGetter(ReviewRatingTypeEnum::FACILITIES))
-            ->radio(...$ratingFieldSettingsGetter(ReviewRatingTypeEnum::CLEANNESS))
-            ->radio(...$ratingFieldSettingsGetter(ReviewRatingTypeEnum::COMFORT))
-            ->radio(...$ratingFieldSettingsGetter(ReviewRatingTypeEnum::PRICE_QUALITY))
-            ->radio(...$ratingFieldSettingsGetter(ReviewRatingTypeEnum::LOCATION))
-            ->radio(...$ratingFieldSettingsGetter(ReviewRatingTypeEnum::WIFI))
-            ->enum('status', ['label' => 'Статус', 'required' => true, 'enum' => ReviewStatusEnum::class]);
+        return $form->enum('status', ['label' => 'Статус', 'required' => true, 'enum' => ReviewStatusEnum::class]);
     }
 
     protected function gridFactory(Hotel $hotel): GridContract
