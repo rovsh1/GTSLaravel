@@ -88,10 +88,6 @@ class MarkupGroupController extends AbstractPrototypeController
 
     protected function getShowViewData(): array
     {
-        return [
-//            'contactsUrl' => $this->prototype->route('show', $this->model->id) . '/contacts',
-//            'contactsEditable' => Acl::isUpdateAllowed($this->getPrototypeKey()),
-//            'contacts' => $this->model->contacts
-        ];
+        return [];
     }
 }

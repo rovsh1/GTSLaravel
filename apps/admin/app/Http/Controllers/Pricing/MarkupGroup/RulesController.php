@@ -68,7 +68,20 @@ class RulesController extends Controller
         $form = $this->formFactory($markupGroup)
             ->method('post');
 
-        $form->trySubmit($this->prototype->route('rules.create', $markupGroup));
+        $fallbackUrl = $this->prototype->route('rules.create', $markupGroup);
+        $form->trySubmit($fallbackUrl);
+
+        $data = $form->getData();
+        $hotelId = $data['hotel_id'] ?? null;
+        $roomId = $data['room_id'] ?? null;
+        $existRuleQuery = MarkupGroupRule::whereHotelId($hotelId);
+        if ($roomId !== null) {
+            $existRuleQuery->whereRoomId($roomId);
+        }
+        if ($existRuleQuery->exists()) {
+            $form->throwException(new \RuntimeException('Наценка уже существует. Обновите её вместо создания новой.'), $fallbackUrl);
+        }
+
         $this->model = MarkupGroupRule::create($form->getData());
         $redirectUrl = $this->prototype->route('rules.index', $markupGroup);
 
