@@ -20,7 +20,7 @@ class LocaleText extends AbstractElement
         }
 
         $valueArray = [];
-        /** @var \App\Core\Components\Locale\Language $language */
+        /** @var \App\Shared\Components\Locale\Language $language */
         foreach (Languages::all() as $language) {
             $valueArray[$language->code] = $value[$language->code] ?? null;
         }
@@ -43,7 +43,7 @@ class LocaleText extends AbstractElement
         $html = '';
         $value = $this->getValue();
 
-        /** @var \App\Core\Components\Locale\Language $language */
+        /** @var \App\Shared\Components\Locale\Language $language */
         $html .= '<div class="field-locale-inputs-wrapper">';
         foreach (Languages::all() as $language) {
             $html .= '<div class="field-locale-input-wrapper">';
@@ -76,7 +76,7 @@ class LocaleText extends AbstractElement
     {
         $valueRules = parent::rules();
         $rules = [];
-        /** @var \App\Core\Components\Locale\Language $language */
+        /** @var \App\Shared\Components\Locale\Language $language */
         foreach (Languages::all() as $language) {
             $rules[$this->name . '.' . $language->code] = $valueRules;
         }

@@ -9,8 +9,8 @@ use App\Admin\Models\Hotel\Reference\Usability;
 use App\Admin\Repositories\Hotel\UsabilitiesRepository;
 use App\Admin\Support\Facades\Prototypes;
 use App\Admin\Support\Repository\RepositoryInterface;
-use App\Core\Support\Http\Responses\AjaxReloadResponse;
-use App\Core\Support\Http\Responses\AjaxResponseInterface;
+use App\Shared\Http\Responses\AjaxReloadResponse;
+use App\Shared\Http\Responses\AjaxResponseInterface;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 

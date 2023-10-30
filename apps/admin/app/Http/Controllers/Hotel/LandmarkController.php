@@ -13,9 +13,9 @@ use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Layout;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Layout as LayoutContract;
-use App\Core\Support\Http\Responses\AjaxErrorResponse;
-use App\Core\Support\Http\Responses\AjaxReloadResponse;
-use App\Core\Support\Http\Responses\AjaxResponseInterface;
+use App\Shared\Http\Responses\AjaxErrorResponse;
+use App\Shared\Http\Responses\AjaxReloadResponse;
+use App\Shared\Http\Responses\AjaxResponseInterface;
 use Illuminate\Http\Request;
 
 class LandmarkController extends Controller

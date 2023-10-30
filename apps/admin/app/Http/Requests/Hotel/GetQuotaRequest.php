@@ -2,7 +2,7 @@
 
 namespace App\Admin\Http\Requests\Hotel;
 
-use App\Core\Validation\Rules\DateIntervalRule;
+use App\Shared\Validation\Rules\DateIntervalRule;
 use Carbon\Carbon;
 use Carbon\CarbonInterval;
 use Carbon\CarbonPeriod;

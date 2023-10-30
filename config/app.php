@@ -189,7 +189,7 @@ return [
         /*
          * Application Service Providers...
          */
-        \App\Core\Providers\AppServiceProvider::class,
+        \App\Shared\Providers\AppServiceProvider::class,
     ],
 
     /*

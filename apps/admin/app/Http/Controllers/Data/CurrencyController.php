@@ -9,7 +9,7 @@ use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
-use App\Core\Support\Facades\CurrencyAdapter;
+use App\Shared\Support\Facades\CurrencyAdapter;
 use Illuminate\Http\JsonResponse;
 
 class CurrencyController extends AbstractPrototypeController

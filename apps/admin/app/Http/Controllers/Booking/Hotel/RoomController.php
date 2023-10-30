@@ -10,9 +10,9 @@ use App\Admin\Http\Requests\Booking\Hotel\Room\Guest\RoomGuestRequest;
 use App\Admin\Http\Requests\Booking\Hotel\Room\UpdateRoomRequest;
 use App\Admin\Http\Requests\Booking\Hotel\UpdatePriceRequest;
 use App\Admin\Support\Facades\Booking\Hotel\RoomAdapter;
-use App\Core\Support\Http\Responses\AjaxErrorResponse;
-use App\Core\Support\Http\Responses\AjaxResponseInterface;
-use App\Core\Support\Http\Responses\AjaxSuccessResponse;
+use App\Shared\Http\Responses\AjaxErrorResponse;
+use App\Shared\Http\Responses\AjaxResponseInterface;
+use App\Shared\Http\Responses\AjaxSuccessResponse;
 use Illuminate\Http\JsonResponse;
 use Module\Shared\Exception\ApplicationException;
 

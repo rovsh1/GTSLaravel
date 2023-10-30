@@ -5,9 +5,9 @@ namespace App\Admin\Http\Controllers\Hotel;
 use App\Admin\Models\Hotel\Contact;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\View\Form\Form as FormContract;
-use App\Core\Support\Http\Responses\AjaxErrorResponse;
-use App\Core\Support\Http\Responses\AjaxRedirectResponse;
-use App\Core\Support\Http\Responses\AjaxResponseInterface;
+use App\Shared\Http\Responses\AjaxErrorResponse;
+use App\Shared\Http\Responses\AjaxRedirectResponse;
+use App\Shared\Http\Responses\AjaxResponseInterface;
 use Illuminate\Contracts\View\View;
 use Module\Shared\Enum\ContactTypeEnum;
 

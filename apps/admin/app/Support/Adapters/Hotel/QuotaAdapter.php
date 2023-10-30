@@ -2,7 +2,7 @@
 
 namespace App\Admin\Support\Adapters\Hotel;
 
-use App\Core\Support\Adapters\AbstractHotelAdapter;
+use App\Shared\Support\Adapters\AbstractHotelAdapter;
 use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
 

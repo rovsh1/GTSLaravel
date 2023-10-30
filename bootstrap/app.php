@@ -27,17 +27,17 @@ $app = new \App\Shared\Application(
 
 $app->singleton(
     Illuminate\Contracts\Http\Kernel::class,
-    App\Core\Http\Kernel::class
+    \App\Shared\Http\Kernel::class
 );
 
 $app->singleton(
     Illuminate\Contracts\Console\Kernel::class,
-    App\Core\Console\Kernel::class
+    \App\Console\Console\Kernel::class
 );
 
 $app->singleton(
     Illuminate\Contracts\Debug\ExceptionHandler::class,
-    App\Core\Exceptions\Handler::class
+    \App\Shared\Exceptions\Handler::class
 );
 
 /*

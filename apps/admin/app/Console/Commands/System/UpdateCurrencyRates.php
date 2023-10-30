@@ -2,7 +2,7 @@
 
 namespace App\Admin\Console\Commands\System;
 
-use App\Core\Support\Adapters\CurrencyAdapter;
+use App\Shared\Support\Adapters\CurrencyAdapter;
 use Illuminate\Console\Command;
 
 class UpdateCurrencyRates extends Command

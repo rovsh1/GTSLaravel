@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Adapters\Booking\Hotel;
 
-use App\Core\Support\Adapters\AbstractHotelAdapter;
+use App\Shared\Support\Adapters\AbstractHotelAdapter;
 use Module\Booking\Application\Admin\HotelBooking\Request\AddRoomDto;
 use Module\Booking\Application\Admin\HotelBooking\Request\UpdateRoomDto;
 use Module\Booking\Application\Admin\HotelBooking\UseCase\Room\Add;

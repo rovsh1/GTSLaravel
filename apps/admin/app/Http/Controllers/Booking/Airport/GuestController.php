@@ -7,9 +7,9 @@ namespace App\Admin\Http\Controllers\Booking\Airport;
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Http\Requests\Booking\Airport\GuestRequest;
 use App\Admin\Support\Facades\Booking\AirportAdapter;
-use App\Core\Support\Http\Responses\AjaxErrorResponse;
-use App\Core\Support\Http\Responses\AjaxResponseInterface;
-use App\Core\Support\Http\Responses\AjaxSuccessResponse;
+use App\Shared\Http\Responses\AjaxErrorResponse;
+use App\Shared\Http\Responses\AjaxResponseInterface;
+use App\Shared\Http\Responses\AjaxSuccessResponse;
 use Module\Shared\Exception\ApplicationException;
 
 class GuestController extends Controller

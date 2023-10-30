@@ -15,8 +15,8 @@ use App\Admin\Support\Facades\Hotel\PricesAdapter;
 use App\Admin\Support\Facades\Layout;
 use App\Admin\Support\Facades\Sidebar;
 use App\Admin\View\Menus\HotelMenu;
-use App\Core\Support\Http\Responses\AjaxResponseInterface;
-use App\Core\Support\Http\Responses\AjaxSuccessResponse;
+use App\Shared\Http\Responses\AjaxResponseInterface;
+use App\Shared\Http\Responses\AjaxSuccessResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 

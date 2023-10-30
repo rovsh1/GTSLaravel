@@ -24,7 +24,7 @@ use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Layout as LayoutContract;
 use App\Admin\View\Menus\HotelMenu;
-use App\Core\Support\Http\Responses\AjaxResponseInterface;
+use App\Shared\Http\Responses\AjaxResponseInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;

@@ -2,9 +2,7 @@
 
 namespace App\Admin\Http\Middleware;
 
-use App\Admin\Models\Administrator\AccessRule;
 use App\Admin\Support\Facades\Acl;
-use App\Core\Support\Facades\AppContext;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 

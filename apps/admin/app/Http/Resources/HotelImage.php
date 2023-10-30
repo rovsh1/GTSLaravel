@@ -2,7 +2,6 @@
 
 namespace App\Admin\Http\Resources;
 
-use App\Core\Support\Facades\FileAdapter;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 

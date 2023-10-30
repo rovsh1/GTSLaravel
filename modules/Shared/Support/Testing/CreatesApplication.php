@@ -14,7 +14,7 @@ trait CreatesApplication
 
         $kernel = $app->make(Kernel::class);
         $app->setBasePath(APP_ROOT);
-        $app->setNamespace('App\\Core\\');
+        $app->setNamespace('App\\Console\\');
 
         $kernel->bootstrap();
 

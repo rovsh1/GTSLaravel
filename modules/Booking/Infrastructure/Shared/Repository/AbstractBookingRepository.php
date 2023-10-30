@@ -2,7 +2,7 @@
 
 namespace Module\Booking\Infrastructure\Shared\Repository;
 
-use App\Core\Support\Facades\AppContext;
+use App\Shared\Support\Facades\AppContext;
 use Module\Booking\Domain\Booking\ValueObject\BookingPrices;
 use Module\Booking\Domain\Order\ValueObject\OrderId;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;

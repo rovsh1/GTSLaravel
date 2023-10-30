@@ -2,9 +2,9 @@
 
 namespace App\Admin\Support\Http\Actions;
 
-use App\Core\Support\Http\Responses\AjaxErrorResponse;
-use App\Core\Support\Http\Responses\AjaxRedirectResponse;
-use App\Core\Support\Http\Responses\AjaxResponseInterface;
+use App\Shared\Http\Responses\AjaxErrorResponse;
+use App\Shared\Http\Responses\AjaxRedirectResponse;
+use App\Shared\Http\Responses\AjaxResponseInterface;
 use Illuminate\Database\Eloquent\Model;
 
 class DefaultDestroyAction

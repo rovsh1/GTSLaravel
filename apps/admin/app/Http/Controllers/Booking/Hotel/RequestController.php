@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Admin\Http\Controllers\Booking\Hotel;
 
 use App\Admin\Support\Facades\Booking\RequestAdapter;
-use App\Core\Support\Http\Responses\AjaxResponseInterface;
-use App\Core\Support\Http\Responses\AjaxSuccessResponse;
+use App\Shared\Http\Responses\AjaxResponseInterface;
+use App\Shared\Http\Responses\AjaxSuccessResponse;
 use Illuminate\Http\JsonResponse;
 
 class RequestController

@@ -8,8 +8,8 @@ use App\Admin\Http\Requests\Hotel\DeleteMarkupSettingsConditionsRequest;
 use App\Admin\Http\Requests\Hotel\UpdateMarkupSettingsRequest;
 use App\Admin\Models\Hotel\Hotel;
 use App\Admin\Support\Facades\Hotel\MarkupSettingsAdapter;
-use App\Core\Support\Http\Responses\AjaxResponseInterface;
-use App\Core\Support\Http\Responses\AjaxSuccessResponse;
+use App\Shared\Http\Responses\AjaxResponseInterface;
+use App\Shared\Http\Responses\AjaxSuccessResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 

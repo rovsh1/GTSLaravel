@@ -3,7 +3,7 @@
 namespace App\Api\Http\Traveline\Controllers;
 
 use App\Api\Http\Traveline\Actions\IndexAction;
-use App\Core\Http\Controllers\Controller;
+use App\Shared\Support\Http\Controller;
 use Illuminate\Http\Request;
 
 class TravelineController extends Controller

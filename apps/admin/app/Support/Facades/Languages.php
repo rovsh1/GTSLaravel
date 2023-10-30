@@ -2,7 +2,7 @@
 
 namespace App\Admin\Support\Facades;
 
-use App\Core\Components\Locale\Language;
+use App\Shared\Components\Locale\Language;
 use Illuminate\Support\Facades\Facade;
 
 /**
@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static Language get(string $code)
  * @method static bool has(string $code)
  *
- * @see \App\Core\Components\Locale\Languages
+ * @see \App\Shared\Components\Locale\Languages
  */
 class Languages extends Facade
 {

@@ -4,7 +4,6 @@ namespace App\Shared;
 
 use App\Shared\Contracts\Module\ModuleAdapterInterface;
 use App\Shared\Support\Module\ModulesManager;
-use App\Shared\Support\Module\Monolith\SharedKernel;
 use App\Shared\Support\Module\Monolith\UseCaseWrapper;
 use Sdk\Module\Contracts\Api\ApiInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
@@ -91,7 +90,6 @@ class Application extends \Illuminate\Foundation\Application
 
         $appsPath = $this->basePath('apps');
         $this->instance('path.admin', $appsPath . DIRECTORY_SEPARATOR . 'admin');
-        $this->instance('path.core', $appsPath . DIRECTORY_SEPARATOR . 'core');
         $this->instance('path.site', $appsPath . DIRECTORY_SEPARATOR . 'site');
         $this->instance('path.api', $appsPath . DIRECTORY_SEPARATOR . 'api');
     }

@@ -4,7 +4,7 @@ namespace App\Admin\Http\Controllers;
 
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Layout;
-use App\Core\Support\Http\Responses\AjaxReloadResponse;
+use App\Shared\Http\Responses\AjaxReloadResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Module\Administrator\Application\UseCase\UpdateAvatar;
