@@ -2,6 +2,7 @@
 
 namespace App\Core\Console;
 
+use App\Core\Console\Commands\System\HotelRating\RefreshHotelsRating;
 use Illuminate\Console\Application as Artisan;
 use Illuminate\Console\Command;
 use Illuminate\Console\Scheduling\Schedule;
@@ -24,6 +25,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+//        $schedule->command(RefreshHotelsRating::class)->everySixHours();
     }
 
     /**
