@@ -1,6 +1,6 @@
 <?php
 
-namespace Custom\Illuminate\Database\Schema;
+namespace App\Shared\Support\Database\Schema;
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Schema\Builder;
