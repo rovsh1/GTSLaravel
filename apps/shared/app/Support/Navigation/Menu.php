@@ -1,6 +1,6 @@
 <?php
 
-namespace Gsdk\Navigation;
+namespace App\Shared\Support\Navigation;
 
 class Menu
 {

@@ -2,7 +2,7 @@
 
 namespace App\Admin\Support\View\Navigation;
 
-class ActionsMenu extends \Gsdk\Navigation\Menu
+class ActionsMenu extends \App\Shared\Support\Navigation\Menu
 {
     protected array $options = [
         'view' => 'layouts.ui.actions-menu'

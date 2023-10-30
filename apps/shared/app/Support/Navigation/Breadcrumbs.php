@@ -1,10 +1,9 @@
 <?php
 
-namespace Gsdk\Navigation;
+namespace App\Shared\Support\Navigation;
 
 class Breadcrumbs
 {
-
     protected array $items = [];
 
     protected $homeItem;
@@ -21,6 +20,7 @@ class Breadcrumbs
     public function view($view): static
     {
         $this->view = $view;
+
         return $this;
     }
 
@@ -36,6 +36,7 @@ class Breadcrumbs
         }
 
         $this->items[] = $this->itemFactory($params);
+
         return $this;
     }
 
@@ -90,6 +91,7 @@ class Breadcrumbs
                 $items[] = $this->homeItem;
             }
             $items = array_merge($items, $this->items);
+
             return (string)view($this->view, [
                 'breadcrumbs' => $this,
                 'items' => $items
@@ -106,7 +108,9 @@ class Breadcrumbs
         return $this->render();
     }
 
-    protected function build() {}
+    protected function build()
+    {
+    }
 
     protected function itemFactory($params): \stdClass
     {
@@ -150,5 +154,4 @@ class Breadcrumbs
 
         return $html;
     }
-
 }

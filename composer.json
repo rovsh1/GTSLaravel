@@ -45,7 +45,6 @@
       "App\\Console\\": "apps/console/app/",
       "App\\Shared\\": "apps/shared/app/",
       "Module\\": "modules/",
-      "Gsdk\\Navigation\\": "src/Navigation/",
       "Gsdk\\Meta\\": "src/Meta/",
       "Sdk\\": "src/sdk",
       "Custom\\Illuminate\\": "src/Illuminate",

@@ -5,7 +5,7 @@ namespace App\Admin\Support\View\Navigation;
 use App\Admin\Components\Factory\Prototype;
 use App\Admin\Support\Facades\Prototypes;
 
-class Breadcrumbs extends \Gsdk\Navigation\Breadcrumbs
+class Breadcrumbs extends \App\Shared\Support\Navigation\Breadcrumbs
 {
     private ?string $currentCategory = null;
 
