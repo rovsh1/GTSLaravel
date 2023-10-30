@@ -2,29 +2,32 @@
 
 return [
     'Administrator' => [
-        'path' => modules_path('Administrator')
+        'path' => 'Administrator'
     ],
     'Catalog' => [
-        'path' => modules_path('Catalog')
+        'path' => 'Catalog'
     ],
     'Client' => [
-        'path' => modules_path('Client')
+        'path' => 'Client'
     ],
     'Booking' => [
-        'path' => modules_path('Booking'),
+        'path' => 'Booking',
         'templates_path' => base_path('resources/booking/pdf-templates'),
     ],
     'Supplier' => [
-        'path' => modules_path('Supplier'),
+        'path' => 'Supplier',
     ],
     'Pricing' => [
-        'path' => modules_path('Pricing'),
+        'path' => 'Pricing',
+    ],
+    'Logging' => [
+        'path' => 'Generic/Logging',
     ],
     'CurrencyRate' => [
-        'path' => modules_path('Generic/CurrencyRate'),
+        'path' => 'Generic/CurrencyRate',
     ],
     'FileStorage' => [
-        'path' => modules_path('Support/FileStorage'),
+        'path' => 'Support/FileStorage',
         'alias' => 'files',
         'disk' => 'files',
         'url' => env('APP_URL'),
@@ -32,15 +35,19 @@ return [
         'path_name_length' => 2
     ],
     'MailManager' => [
-        'path' => modules_path('Support/MailManager'),
+        'path' => 'Support/MailManager',
         'alias' => 'mail',
     ],
+    'IntegrationEventBus' => [
+        'path' => 'Support/IntegrationEventBus',
+        'alias' => 'events',
+    ],
     'Scheduler' => [
-        'path' => modules_path('Support/Scheduler')
+        'path' => 'Support/Scheduler'
     ],
     'Traveline' => [
         'enabled' => env('TRAVELINE_ENABLED', true),
-        'path' => modules_path('Integration/Traveline'),
+        'path' => 'Integration/Traveline',
         'auth' => [
             'username' => env('TRAVELINE_USERNAME'),
             'password' => env('TRAVELINE_PASSWORD'),

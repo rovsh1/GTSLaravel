@@ -16,6 +16,6 @@ class BootServiceProvider extends ServiceProvider
 
         $this->app->register(AdapterServiceProvider::class);
         $this->app->register(ServicesServiceProvider::class);
-//        $this->app->register(EventServiceProvider::class);
+        $this->app->register(EventServiceProvider::class);
     }
 }

@@ -1,18 +1,21 @@
 <?php
 
-namespace Sdk\Module\Foundation\Support;
+namespace App\Shared\Support\Module;
 
-use Sdk\Module\Contracts\ModuleInterface;
+use App\Shared\Contracts\Module\ModuleAdapterInterface;
 
-class ModulesCollection implements \Iterator
+trait ModulesCollectionTrait
 {
-    private array $modules = [];
+    /**
+     * @var ModuleAdapterInterface[]
+     */
+    protected array $modules = [];
 
     private int $position = 0;
 
     public function has(string $name): bool
     {
-        /** @var ModuleInterface $module */
+        /** @var ModuleAdapterInterface $module */
         foreach ($this->modules as $module) {
             if ($module->is($name)) {
                 return true;
@@ -22,9 +25,9 @@ class ModulesCollection implements \Iterator
         return false;
     }
 
-    public function get(string $name): ?ModuleInterface
+    public function get(string $name): ?ModuleAdapterInterface
     {
-        /** @var ModuleInterface $module */
+        /** @var ModuleAdapterInterface $module */
         foreach ($this->modules as $module) {
             if ($module->is($name)) {
                 return $module;
@@ -34,17 +37,12 @@ class ModulesCollection implements \Iterator
         return null;
     }
 
-    public function add(ModuleInterface $module): void
-    {
-        $this->modules[] = $module;
-    }
-
     public function all(): array
     {
         return $this->modules;
     }
 
-    public function current(): ModuleInterface
+    public function current(): ModuleAdapterInterface
     {
         return $this->modules[$this->position];
     }

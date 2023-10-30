@@ -40,12 +40,12 @@ class Kernel extends ConsoleKernel
 //        $this->loadNamespacePath('App\\Site\\Console\\Commands', site_path('app/Console/Commands'));
 //        $this->loadNamespacePath('App\\Api\\Console\\Commands', api_path('app/Console/Commands'));
 
-        foreach (app('modules')->modules() as $module) {
-            $commandsPath = $module->path('Console/Commands');
-            if (is_dir($commandsPath)) {
-                $this->loadNamespacePath($module->namespace('Console\\Commands'), $commandsPath);
-                //$loadPaths[] = $commandsPath;
-            }
+        foreach (app('modules') as $module) {
+//            $commandsPath = $module->path('Console/Commands');
+//            if (is_dir($commandsPath)) {
+//                $this->loadNamespacePath($module->namespace('Console\\Commands'), $commandsPath);
+//                //$loadPaths[] = $commandsPath;
+//            }
         }
 
         //$this->load(__DIR__ . '/Commands');

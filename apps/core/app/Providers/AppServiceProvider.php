@@ -3,6 +3,7 @@
 namespace App\Core\Providers;
 
 use App\Core\Components\Locale\Languages;
+use App\Shared\Providers\ModuleServiceProvider;
 use Sdk\Module\Database\Eloquent\MacrosServiceProvider;
 use Sdk\Module\Support\ServiceProvider;
 
@@ -17,6 +18,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(MacrosServiceProvider::class);
         $this->app->register(PortGatewayServiceProvider::class);
         $this->app->register(QueueServiceProvider::class);
+        $this->app->register(ModuleServiceProvider::class);
 
         $this->registerApp();
 

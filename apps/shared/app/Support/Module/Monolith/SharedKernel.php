@@ -1,8 +1,9 @@
 <?php
 
-namespace Sdk\Module\Foundation;
+namespace App\Shared\Support\Module\Monolith;
 
 use Illuminate\Contracts\Foundation\Application;
+use Module\Shared\Providers\BootServiceProvider;
 use Sdk\Module\Foundation\Support\SharedContainer;
 
 class SharedKernel
@@ -19,7 +20,6 @@ class SharedKernel
         $this->sharedContainer = $this->makeSharedContainer();
 
         $this->registerServiceProviders();
-        $this->registerRequiredDependencies();
     }
 
     public function register($provider): void
@@ -67,12 +67,8 @@ class SharedKernel
         return new SharedContainer();
     }
 
-    protected function registerRequiredDependencies(): void
-    {
-
-    }
-
     protected function registerServiceProviders(): void
     {
+        $this->register(BootServiceProvider::class);
     }
 }

@@ -1,15 +1,10 @@
 <?php
 
-use Sdk\Module\Foundation\Module;
+use App\Shared\Contracts\Module\ModuleAdapterInterface;
 
-function module(string $name): ?Module
+function module(string $name): ?ModuleAdapterInterface
 {
     return app('modules')->get($name);
-}
-
-function core_path($path = ''): string
-{
-    return app()->corePath($path);
 }
 
 function admin_path($path = ''): string

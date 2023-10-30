@@ -13,7 +13,7 @@ class DomainEventDispatcher implements DomainEventDispatcherInterface
 
     public function __construct(
         private readonly ContainerInterface $container,
-        private readonly DomainEventPublisherInterface $domainEventPublisher
+        private readonly DomainEventPublisherInterface $domainEventPublisher,
     ) {
     }
 

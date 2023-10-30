@@ -8,6 +8,6 @@ class EventServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-//        $this->app->singleton(DomainEventDispatcherInterface::class, DomainEventDispatcher::class);
+//        $this->app->singleton(DomainEventPublisherInterface::class, DomainEventPublisher::class);
     }
 }
