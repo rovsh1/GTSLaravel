@@ -17,6 +17,7 @@
     "gsdk/form": "^1.0",
     "gsdk/format": "^1.0",
     "gsdk/grid": "^1.0",
+    "gsdk/meta": "^2.0",
     "guzzlehttp/guzzle": "^7.2",
     "laravel/framework": "^10.0",
     "laravel/sanctum": "^3.2",
@@ -45,7 +46,6 @@
       "App\\Console\\": "apps/console/app/",
       "App\\Shared\\": "apps/shared/app/",
       "Module\\": "src/modules/",
-      "Gsdk\\Meta\\": "src/Meta/",
       "Sdk\\": "src/sdk",
       "Database\\Factories\\": "database/factories/",
       "Database\\Seeders\\": "database/seeders/"

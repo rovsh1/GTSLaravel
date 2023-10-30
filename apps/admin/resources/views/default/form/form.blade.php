@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    {!! ContentTitle::default() !!}
+    <x-ui.content-title/>
 
     <div class="content-body">
         <div class="card card-form">

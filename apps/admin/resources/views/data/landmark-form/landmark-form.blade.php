@@ -1,14 +1,12 @@
 @extends('layouts.main')
 
 @section('scripts')
-    @vite('resources/views/administration/landmark-form/landmark-form.ts')
+    @vite('resources/views/data/landmark-form/landmark-form.ts')
 @endsection
 
 @section('content')
     <div class="content-header">
         <div class="title">{{ $title }}</div>
-
-        {!! Layout::actions() !!}
     </div>
 
     <div class="content-body">

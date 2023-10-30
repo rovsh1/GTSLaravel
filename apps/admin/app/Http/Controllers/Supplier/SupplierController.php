@@ -5,7 +5,6 @@ namespace App\Admin\Http\Controllers\Supplier;
 use App\Admin\Models\Reference\City;
 use App\Admin\Models\Supplier\Supplier;
 use App\Admin\Support\Facades\Acl;
-use App\Admin\Support\Facades\ActionsMenu;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Facades\Sidebar;
@@ -55,23 +54,6 @@ class SupplierController extends AbstractPrototypeController
 
     protected function prepareShowMenu(Model $model)
     {
-        $menu = ActionsMenu::getFacadeRoot();
-        if (Acl::isUpdateAllowed($this->getPrototypeKey())) {
-            $menu->addUrl($this->prototype->route('edit', $model), [
-                'icon' => 'edit',
-                'cls' => 'btn-edit',
-                'text' => 'Редактировать'
-            ]);
-        }
-
-        if (Acl::isUpdateAllowed($this->getPrototypeKey())) {
-            $menu->addUrl($this->prototype->route('destroy', $model), [
-                'icon' => 'delete',
-                'cls' => 'btn-delete',
-                'text' => 'Удалить'
-            ]);
-        }
-
         Sidebar::submenu(new SupplierMenu($model, 'info'));
     }
 

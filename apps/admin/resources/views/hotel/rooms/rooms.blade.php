@@ -9,7 +9,7 @@
 @endsection
 
 @section('content')
-    {!! ContentTitle::withAddLink($createUrl, 'Добавить номер') !!}
+    <x-ui.content-title :addBtnUrl="$createUrl" addBtnText="Добавить номер"/>
 
     <div class="content-body rooms-cards" id="hotel-rooms">
         @foreach($rooms as $room)

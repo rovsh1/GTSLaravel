@@ -7,7 +7,6 @@ use App\Admin\Support\View as ViewNamespace;
 use App\Admin\Support\View\Grid as GridNamespace;
 use App\Admin\View\Components;
 use Gsdk\Form as FormNamespace;
-use Gsdk\Meta\MetaServiceProvider;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -22,7 +21,6 @@ class ViewServiceProvider extends ServiceProvider
         $this->registerGrid();
         $this->registerForm();
         $this->registerUi();
-        $this->registerHelpers();
         $this->registerComponents();
     }
 
@@ -66,9 +64,6 @@ class ViewServiceProvider extends ServiceProvider
 
     private function registerLayout(): void
     {
-        $this->app->register(MetaServiceProvider::class);
-
-        $this->app->singleton('layout', ViewNamespace\Layout::class);
         class_alias(Helpers\Layout::class, 'Layout');
 
         $this->app->singleton('sitemap', ViewNamespace\Sitemap\Sitemap::class);
@@ -87,13 +82,6 @@ class ViewServiceProvider extends ServiceProvider
             'nextText' => 'Вперед',
             'view' => 'layouts.ui.paginator'
         ]);
-
-        $this->app->singleton('menu.actions', ViewNamespace\Navigation\ActionsMenu::class);
-    }
-
-    private function registerHelpers(): void
-    {
-        class_alias(Helpers\ContentTitle::class, 'ContentTitle');
     }
 
     private function registerComponents(): void
@@ -103,6 +91,7 @@ class ViewServiceProvider extends ServiceProvider
         Blade::component('ui.add-button', Components\UI\AddButton::class);
         Blade::component('ui.actions-menu', Components\UI\ActionsMenu::class);
         Blade::component('ui.card', Components\UI\Card::class);
+        Blade::component('ui.content-title', Components\UI\ContentTitle::class);
         Blade::component('file-image', Components\FileImage::class);
         Blade::component('user-avatar', Components\UserAvatar::class);
         Blade::component('form.delete-button', Components\Form\DeleteButton::class);

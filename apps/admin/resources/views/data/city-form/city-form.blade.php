@@ -1,14 +1,12 @@
 @extends('layouts.main')
 
 @section('scripts')
-    @vite('resources/views/administration/city-form/city-form.ts')
+    @vite('resources/views/data/city-form/city-form.ts')
 @endsection
 
 @section('content')
     <div class="content-header">
         <div class="title">{{ $title }}</div>
-
-        {!! Layout::actions() !!}
     </div>
 
     <div class="content-body">

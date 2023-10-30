@@ -5,13 +5,13 @@ namespace App\Admin\Helpers;
 use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Sidebar;
 use App\Admin\Support\Facades\Sitemap;
-use Gsdk\Meta\Meta;
+use App\Admin\Support\Facades\Layout as LayoutFacade;
 
 class Layout
 {
     public static function meta(): string
     {
-        return Meta::render();
+        return LayoutFacade::renderMeta();
     }
 
     public static function breadcrumbs(): string
@@ -28,30 +28,13 @@ class Layout
     {
         $cls = [];
         $cls[] = Sidebar::isExpanded() ? 'sitemap-disable-animation sitemap-expanded' : '';
+
         return implode(' ', $cls);
     }
 
     public static function sidebar(): string
     {
         return Sidebar::render();
-    }
-
-    public static function actions()
-    {
-        if (app()->resolved('menu.actions')) {
-            return app('menu.actions')->render();
-        }
-
-        return '';
-    }
-
-    public static function title(): string
-    {
-        $html = '<div class="title-wrapper">';
-        $html .= '<div class="title">' . Meta::getTitle() . '</div>';
-        $html .= self::actions();
-        $html .= '</div>';
-        return $html;
     }
 
     public static function buttonBack()

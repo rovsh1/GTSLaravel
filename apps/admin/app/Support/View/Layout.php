@@ -3,16 +3,13 @@
 namespace App\Admin\Support\View;
 
 use Gsdk\Meta\Meta;
-use Gsdk\Meta\MetaTags;
+use Gsdk\Meta\MetaCollection;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\App;
 
-/**
- * @method self title(string $title)
- */
 class Layout
 {
-    private MetaTags $meta;
+    private MetaCollection $meta;
 
     private string $view;
 
@@ -24,12 +21,13 @@ class Layout
 
     public function __construct()
     {
-        $this->meta = Meta::getFacadeRoot();
+        $this->meta = Meta::collect();
     }
 
     public function __call(string $name, array $arguments)
     {
         $this->meta->$name(...$arguments);
+
         return $this;
     }
 
@@ -46,13 +44,25 @@ class Layout
     public function data(array $data): static
     {
         $this->viewData = array_merge($this->viewData, $data);
+
         return $this;
     }
 
     public function addMetaVariable(string $name, mixed $value): static
     {
-        $this->meta->addMetaName($name, htmlspecialchars(json_encode($value)));
+        $this->meta->add(Meta::metaName($name, htmlspecialchars(is_string($value) ? $value : json_encode($value))));
+
         return $this;
+    }
+
+    public function title(string $title): static
+    {
+        return $this->setOption('title', $title);
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->options['title'] ?? null;
     }
 
     public function h1(string $h1): static
@@ -74,6 +84,11 @@ class Layout
         return view($this->view, $this->getViewData());
     }
 
+    public function renderMeta(): string
+    {
+        return $this->meta->toHtml();
+    }
+
     public function configure(): void
     {
         if ($this->configured) {
@@ -88,6 +103,7 @@ class Layout
     private function setOption(string $name, $value): static
     {
         $this->options[$name] = $value;
+
         return $this;
     }
 
@@ -95,7 +111,7 @@ class Layout
     {
         $data = array_merge($this->viewData, $this->options);
         $data['layout'] = $this;
-        $data['title'] = $this->options['h1'] ?? $this->meta->getTitle();
+        $data['title'] ??= $this->options['h1'];// ?? $this->meta->getTitle();
 
         return $data;
     }
@@ -103,12 +119,11 @@ class Layout
     private function addDefaultMeta(): void
     {
         $this->meta
-            ->addLinkRel('icon', '/favicon.ico')
-            ->addMetaHttpEquiv('Content-Type', 'text/html; charset=utf-8')
-            ->addMetaHttpEquiv('X-UA-Compatible', 'IE=edge,chrome=1')
-            ->addMetaHttpEquiv('Content-language', App::currentLocale())
-            ->addMetaName('viewport', 'width=device-width, initial-scale=1')//->addMetaName('csrf-token', csrf_token())
-            ->addMetaName('google-maps-key', env('GOOGLE_MAPS_API_KEY'))
-        ;
+            ->icon('/favicon.ico')
+            ->contentType('text/html; charset=utf-8')
+            ->xUACompatible('IE=edge,chrome=1')
+            ->contentLanguage(App::currentLocale())
+            ->viewport('width=device-width, initial-scale=1')
+            ->add(Meta::metaName('google-maps-key', env('GOOGLE_MAPS_API_KEY')));
     }
 }

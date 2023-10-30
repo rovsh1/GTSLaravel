@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    {!! ContentTitle::withAddButton($createUrl, 'Добавить контакт') !!}
+    <x-ui.content-title :addBtnUrl="$createUrl" addBtnText="Добавить контакт"/>
 
     <div class="content-body">
         <div class="card card-form">

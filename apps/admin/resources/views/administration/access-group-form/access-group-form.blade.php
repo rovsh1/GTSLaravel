@@ -11,8 +11,6 @@
 @section('content')
     <div class="content-header">
         <div class="title">{{ $title }}</div>
-
-        {!! Layout::actions() !!}
     </div>
 
     <div class="content-body">

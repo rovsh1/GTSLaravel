@@ -30,13 +30,13 @@ class LandmarkController extends AbstractPrototypeController
     public function edit(int $id): LayoutContract
     {
         return parent::edit($id)
-            ->view('administration.landmark-form.landmark-form');
+            ->view('data.landmark-form.landmark-form');
     }
 
     public function create(): LayoutContract
     {
         return parent::create()
-            ->view('administration.landmark-form.landmark-form');
+            ->view('data.landmark-form.landmark-form');
     }
 
     protected function formFactory(): FormContract

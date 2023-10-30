@@ -58,7 +58,7 @@ class HotelController extends AbstractPrototypeController
     public function show(int $id): LayoutContract
     {
         return parent::show($id)
-            ->addMetaName('hotel-landmark-base-route', route('hotels.landmark.store', $this->model));
+            ->addMetaVariable('hotel-landmark-base-route', route('hotels.landmark.store', $this->model));
     }
 
     public function edit(int $id): LayoutContract

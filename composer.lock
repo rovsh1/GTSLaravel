@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6a64cce6c004535f82b565a24169b272",
+    "content-hash": "f93daa14be3cd62da581018c4cca033a",
     "packages": [
         {
             "name": "brick/math",
@@ -772,6 +772,46 @@
                 "meta"
             ],
             "time": "2023-10-30T17:10:02+00:00"
+        },
+        {
+            "name": "gsdk/meta",
+            "version": "2.0.4",
+            "source": {
+                "type": "git",
+                "url": "git@gitlab.com:gsdk/meta.git",
+                "reference": "5e48aba15c4fb0c64ef1dc9bc8863b22c6619d85"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://gitlab.com/api/v4/projects/gsdk%2Fmeta/repository/archive.zip?sha=5e48aba15c4fb0c64ef1dc9bc8863b22c6619d85",
+                "reference": "5e48aba15c4fb0c64ef1dc9bc8863b22c6619d85",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Gsdk\\Meta\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sergey Guryanov",
+                    "email": "s16121986@yandex.ru"
+                }
+            ],
+            "description": "Allows detect client timezone from cookies",
+            "keywords": [
+                "gsdk",
+                "meta"
+            ],
+            "time": "2023-10-25T22:36:11+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
