@@ -1,6 +1,8 @@
 <?php
 
-namespace Gsdk\Grid\Column;
+namespace App\Admin\Support\View\Grid\Column;
+
+use Gsdk\Grid\Support\AbstractColumn;
 
 class TextWithTooltip extends AbstractColumn
 {

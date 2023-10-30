@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "07dd3ab2d5eae3503bab5ec0c4c64940",
+    "content-hash": "6a64cce6c004535f82b565a24169b272",
     "packages": [
         {
             "name": "brick/math",
@@ -654,6 +654,46 @@
             "time": "2023-10-15T22:24:12+00:00"
         },
         {
+            "name": "gsdk/form",
+            "version": "1.0.10",
+            "source": {
+                "type": "git",
+                "url": "git@gitlab.com:gsdk/form.git",
+                "reference": "1a173dc0c1bfb9253ffbb3859588bf175283ae7a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://gitlab.com/api/v4/projects/gsdk%2Fform/repository/archive.zip?sha=1a173dc0c1bfb9253ffbb3859588bf175283ae7a",
+                "reference": "1a173dc0c1bfb9253ffbb3859588bf175283ae7a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Gsdk\\Form\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sergey Guryanov",
+                    "email": "s16121986@yandex.ru"
+                }
+            ],
+            "description": "Allows detect client timezone from cookies",
+            "keywords": [
+                "gsdk",
+                "meta"
+            ],
+            "time": "2023-10-30T16:33:40+00:00"
+        },
+        {
             "name": "gsdk/format",
             "version": "1.0.7",
             "source": {
@@ -692,6 +732,46 @@
                 "gsdk"
             ],
             "time": "2023-10-19T11:50:37+00:00"
+        },
+        {
+            "name": "gsdk/grid",
+            "version": "1.0.11",
+            "source": {
+                "type": "git",
+                "url": "git@gitlab.com:gsdk/grid.git",
+                "reference": "84f1cad43e4fc2a72578816ebc12dbb6bb1c3c0d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://gitlab.com/api/v4/projects/gsdk%2Fgrid/repository/archive.zip?sha=84f1cad43e4fc2a72578816ebc12dbb6bb1c3c0d",
+                "reference": "84f1cad43e4fc2a72578816ebc12dbb6bb1c3c0d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Gsdk\\Grid\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sergey Guryanov",
+                    "email": "s16121986@yandex.ru"
+                }
+            ],
+            "description": "Allows detect client timezone from cookies",
+            "keywords": [
+                "gsdk",
+                "meta"
+            ],
+            "time": "2023-10-30T17:10:02+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",

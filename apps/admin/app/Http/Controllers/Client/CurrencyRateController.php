@@ -14,7 +14,7 @@ use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Grid\SearchForm;
 use Carbon\CarbonPeriod;
-use Gsdk\Form\Form as FormRequest;
+use Gsdk\Form\FormBuilder as FormRequest;
 use Illuminate\Http\RedirectResponse;
 
 class CurrencyRateController extends AbstractPrototypeController

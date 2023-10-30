@@ -4,7 +4,7 @@ namespace App\Admin\Support\View\Grid\Data;
 
 use Gsdk\Grid\Data\DataInterface;
 use Gsdk\Grid\Support\Sorting;
-use Gsdk\Navigation\Paginator;
+use Gsdk\Grid\Paginator;
 
 class Repository implements DataInterface
 {

@@ -3,7 +3,7 @@
 namespace App\Admin\Support\View\Grid\Column;
 
 use App\Admin\Support\Facades\Languages;
-use Gsdk\Grid\Column\AbstractColumn;
+use Gsdk\Grid\Support\AbstractColumn;
 
 class Language extends AbstractColumn
 {

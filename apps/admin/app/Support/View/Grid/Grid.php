@@ -4,8 +4,8 @@ namespace App\Admin\Support\View\Grid;
 
 use App\Admin\Components\Factory\Prototype;
 use App\Admin\Support\View\Form\Form;
-use Gsdk\Grid\Grid as Base;
-use Gsdk\Navigation\Paginator;
+use Gsdk\Grid\GridBuilder as Base;
+use Gsdk\Grid\Paginator;
 
 /**
  * @method static data(mixed $data)

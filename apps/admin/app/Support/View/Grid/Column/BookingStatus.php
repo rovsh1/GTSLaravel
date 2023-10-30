@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\View\Grid\Column;
 
-use Gsdk\Grid\Column\AbstractColumn;
+use Gsdk\Grid\Support\AbstractColumn;
 
 class BookingStatus extends AbstractColumn
 {

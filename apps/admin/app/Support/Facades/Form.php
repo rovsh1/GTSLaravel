@@ -45,6 +45,6 @@ class Form extends Facade
 
     protected static function getFacadeAccessor()
     {
-        return 'form';
+        return \App\Admin\Support\View\Form\Form::class;
     }
 }

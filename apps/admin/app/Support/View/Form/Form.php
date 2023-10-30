@@ -4,7 +4,7 @@ namespace App\Admin\Support\View\Form;
 
 use App\Admin\Exceptions\FormSubmitFailedException;
 use Gsdk\Form\ElementInterface;
-use Gsdk\Form\Form as Base;
+use Gsdk\Form\FormBuilder as Base;
 use Illuminate\Database\Eloquent\Model;
 
 /**

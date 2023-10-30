@@ -2,7 +2,7 @@
 
 namespace App\Admin\Support\View\Grid\Column;
 
-use Gsdk\Grid\Column\AbstractColumn;
+use Gsdk\Grid\Support\AbstractColumn;
 
 class Actions extends AbstractColumn
 {

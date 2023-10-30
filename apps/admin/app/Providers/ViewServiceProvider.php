@@ -14,7 +14,7 @@ use Illuminate\Support\ServiceProvider;
 
 class ViewServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function boot(): void
     {
         View::addLocation(package_path('resources/views'));
 
@@ -26,22 +26,17 @@ class ViewServiceProvider extends ServiceProvider
         $this->registerComponents();
     }
 
-    public function boot() {}
-
-    private function registerGrid()
+    private function registerGrid(): void
     {
-        $this->app->bind('grid', fn($app) => new GridNamespace\Grid());
-
         GridNamespace\Grid::registerNamespace(GridNamespace::class . '\\Column');
         GridNamespace\Grid::setDefaults([
             'emptyText' => 'Записи отсутствуют'
         ]);
     }
 
-    private function registerForm()
+    private function registerForm(): void
     {
-        $this->app->bind('form', fn($app) => new ViewNamespace\Form\Form('data'));
-
+        FormNamespace\Form::setDefaults(['name' => 'data']);
         FormNamespace\Form::registerNamespace('App\Admin\Support\View\Form\Element');
         FormNamespace\Form::setElementDefaults([
             //'view' => 'layouts.ui.form.field'
@@ -69,7 +64,7 @@ class ViewServiceProvider extends ServiceProvider
         ]);
     }
 
-    private function registerLayout()
+    private function registerLayout(): void
     {
         $this->app->register(MetaServiceProvider::class);
 
@@ -83,7 +78,7 @@ class ViewServiceProvider extends ServiceProvider
         $this->app->singleton('breadcrumbs', ViewNamespace\Navigation\Breadcrumbs::class);
     }
 
-    private function registerUi()
+    private function registerUi(): void
     {
         ViewNamespace\Navigation\Paginator::setDefaults([
             'step' => 20,
@@ -96,12 +91,12 @@ class ViewServiceProvider extends ServiceProvider
         $this->app->singleton('menu.actions', ViewNamespace\Navigation\ActionsMenu::class);
     }
 
-    private function registerHelpers()
+    private function registerHelpers(): void
     {
         class_alias(Helpers\ContentTitle::class, 'ContentTitle');
     }
 
-    private function registerComponents()
+    private function registerComponents(): void
     {
         Blade::component('icon', Components\Icon::class);
         Blade::component('ui.tab', Components\UI\Tab::class);

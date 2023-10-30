@@ -4,7 +4,7 @@ namespace App\Admin\Support\Facades;
 
 use App\Admin\Components\Factory\Prototype;
 use App\Admin\Support\View\Form\Form;
-use Gsdk\Navigation\Paginator;
+use Gsdk\Grid\Paginator;
 use Illuminate\Support\Facades\Facade;
 
 /**
@@ -32,6 +32,6 @@ class Grid extends Facade
 
     protected static function getFacadeAccessor()
     {
-        return 'grid';
+        return \App\Admin\Support\View\Grid\Grid::class;
     }
 }
