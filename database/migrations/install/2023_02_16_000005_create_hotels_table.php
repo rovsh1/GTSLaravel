@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->char('currency', 3);
             $table->tinyInteger('status')->unsigned()->default(0);
             $table->tinyInteger('visibility')->unsigned()->default(0);
-            $table->tinyInteger('rating')->unsigned()->nullable();
+            $table->float('rating')->unsigned()->nullable();
             $table->string('name', 100);
             $table->char('zipcode', 6)->nullable();
             $table->string('address');
