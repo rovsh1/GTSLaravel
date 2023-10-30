@@ -44,10 +44,9 @@
       "App\\Api\\": "apps/api/app/",
       "App\\Console\\": "apps/console/app/",
       "App\\Shared\\": "apps/shared/app/",
-      "Module\\": "modules/",
+      "Module\\": "src/modules/",
       "Gsdk\\Meta\\": "src/Meta/",
       "Sdk\\": "src/sdk",
-      "Custom\\Illuminate\\": "src/Illuminate",
       "Database\\Factories\\": "database/factories/",
       "Database\\Seeders\\": "database/seeders/"
     }
