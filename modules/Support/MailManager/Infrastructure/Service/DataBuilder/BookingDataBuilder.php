@@ -8,13 +8,12 @@ use Module\Support\MailManager\Domain\Service\DataBuilder\Data\DataInterface;
 use Module\Support\MailManager\Domain\Service\DataBuilder\Dto\BookingDataDtoInterface;
 use Module\Support\MailManager\Domain\Service\RecipientsFinder\Recipient\RecipientInterface;
 use Module\Support\MailManager\Domain\Service\TemplateRenderer\Template\TemplateInterface;
-use Module\Support\MailManager\Infrastructure\Model\HotelBooking;
 use Module\Support\MailManager\Infrastructure\Service\DataBuilder\Booking\HotelBookingDataBuilder;
-use Sdk\Module\Contracts\ModuleInterface;
+use Sdk\Module\Contracts\Support\ContainerInterface;
 
 class BookingDataBuilder
 {
-    public function __construct(private readonly ModuleInterface $container)
+    public function __construct(private readonly ContainerInterface $container)
     {
     }
 

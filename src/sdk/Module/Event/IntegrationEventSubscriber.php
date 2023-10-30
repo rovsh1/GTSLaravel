@@ -4,14 +4,14 @@ namespace Sdk\Module\Event;
 
 use Sdk\Module\Contracts\Event\IntegrationEventInterface;
 use Sdk\Module\Contracts\Event\IntegrationEventSubscriberInterface;
-use Sdk\Module\Contracts\ModuleInterface;
+use Sdk\Module\Contracts\Support\ContainerInterface;
 
 class IntegrationEventSubscriber implements IntegrationEventSubscriberInterface
 {
     protected array $listeners = [];
 
     public function __construct(
-        private readonly ModuleInterface $module
+        private readonly ContainerInterface $container
     ) {
     }
 
@@ -35,7 +35,7 @@ class IntegrationEventSubscriber implements IntegrationEventSubscriberInterface
     private function dispatchListeners(IntegrationEventInterface $event, array $listeners): void
     {
         foreach ($listeners as $listenerClass) {
-            $listener = $this->module->get($listenerClass);
+            $listener = $this->container->get($listenerClass);
 
             $listener->handle($event);
         }

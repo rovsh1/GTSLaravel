@@ -3,19 +3,19 @@
 namespace Module\Support\FileStorage\Console\Support;
 
 use Illuminate\Console\Command;
-use Sdk\Module\Contracts\ModuleInterface;
+use Sdk\Module\Contracts\Support\ContainerInterface;
 
 abstract class AbstractCommand extends Command
 {
-    private ModuleInterface $module;
+    private ContainerInterface $container;
 
     protected function make(string $abstract)
     {
-        if (!isset($this->module)) {
-            $this->module = app()->module('FileStorage');
-            $this->module->boot();
+        if (!isset($this->container)) {
+            $this->container = app()->module('FileStorage');
+            $this->container->boot();
         }
 
-        return $this->module->make($abstract);
+        return $this->container->make($abstract);
     }
 }

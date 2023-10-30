@@ -3,7 +3,7 @@
 namespace Module\Booking\Domain\Booking\Service\HotelBooking\RoomUpdater;
 
 use Module\Booking\Domain\Booking\Service\HotelBooking\RoomUpdater\Validator\ValidatorInterface;
-use Sdk\Module\Contracts\ModuleInterface;
+use Sdk\Module\Contracts\Support\ContainerInterface;
 
 class ValidatorPipeline
 {
@@ -11,7 +11,7 @@ class ValidatorPipeline
     private array $validators = [];
 
     public function __construct(
-        private readonly ModuleInterface $module
+        private readonly ContainerInterface $container
     ) {}
 
     public function send(UpdateDataHelper $dataHelper): static
@@ -57,7 +57,7 @@ class ValidatorPipeline
     private function callValidator(string $class, UpdateDataHelper $dataHelper): void
     {
         /** @var ValidatorInterface $validator */
-        $validator = $this->module->make($class);
+        $validator = $this->container->make($class);
         $validator->validate($dataHelper);
     }
 }

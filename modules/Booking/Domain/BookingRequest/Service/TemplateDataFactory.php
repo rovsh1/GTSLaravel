@@ -9,24 +9,24 @@ use Module\Booking\Domain\BookingRequest\Service\Factory\HotelBookingDataFactory
 use Module\Booking\Domain\BookingRequest\Service\Factory\TransferBookingDataFactory;
 use Module\Booking\Domain\BookingRequest\ValueObject\RequestTypeEnum;
 use Module\Shared\Enum\ServiceTypeEnum;
-use Sdk\Module\Contracts\ModuleInterface;
+use Sdk\Module\Contracts\Support\ContainerInterface;
 
 class TemplateDataFactory
 {
     public function __construct(
-        private readonly ModuleInterface $module,
+        private readonly ContainerInterface $container,
     ) {}
 
     public function build(Booking $booking, RequestTypeEnum $requestType): TemplateDataInterface
     {
         $serviceFactory = $this->getServiceFactoryClass($booking->serviceType());
 
-        return $this->module->make($serviceFactory)->build($booking, $requestType);
+        return $this->container->make($serviceFactory)->build($booking, $requestType);
     }
 
     public function buildCommon(Booking $booking): TemplateDataInterface
     {
-        return $this->module->make(CommonDataFactory::class)->build($booking);
+        return $this->container->make(CommonDataFactory::class)->build($booking);
     }
 
     private function getServiceFactoryClass(ServiceTypeEnum $serviceType): string

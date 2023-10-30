@@ -15,12 +15,12 @@ use Module\Booking\Domain\Shared\Event\Contracts\BookingRequestableInterface;
 use Module\Booking\Domain\Shared\Exception\BookingTypeDoesntHaveDocumentGenerator;
 use Module\Booking\Domain\Shared\Service\DocumentGenerator\RequestGeneratorInterface;
 use Module\Booking\Domain\Shared\ValueObject\BookingTypeEnum;
-use Sdk\Module\Contracts\ModuleInterface;
+use Sdk\Module\Contracts\Support\ContainerInterface;
 
 class DocumentGeneratorFactory
 {
     public function __construct(
-        private readonly ModuleInterface $module
+        private readonly ContainerInterface $container
     ) {
     }
 
@@ -40,8 +40,8 @@ class DocumentGeneratorFactory
     {
         return match ($booking->type()) {
             //@todo прокинуть зависимости
-            BookingTypeEnum::HOTEL => $this->module->make(CancellationRequestGenerator::class),
-            BookingTypeEnum::AIRPORT => $this->module->make(AirportCancellationRequestGenerator::class),
+            BookingTypeEnum::HOTEL => $this->container->make(CancellationRequestGenerator::class),
+            BookingTypeEnum::AIRPORT => $this->container->make(AirportCancellationRequestGenerator::class),
 //            BookingTypeEnum::HOTEL => new CancellationRequestGenerator(
 //                $this->module->get(HotelAdapterInterface::class),
 //                $this->module->get(AdministratorAdapterInterface::class),
@@ -55,8 +55,8 @@ class DocumentGeneratorFactory
     private function getChangeDocumentGenerator(BookingRequestableInterface $booking): RequestGeneratorInterface
     {
         return match ($booking->type()) {
-            BookingTypeEnum::HOTEL => $this->module->make(ChangeRequestGenerator::class),
-            BookingTypeEnum::AIRPORT => $this->module->make(AirportChangeRequestGenerator::class),
+            BookingTypeEnum::HOTEL => $this->container->make(ChangeRequestGenerator::class),
+            BookingTypeEnum::AIRPORT => $this->container->make(AirportChangeRequestGenerator::class),
             default => throw new BookingTypeDoesntHaveDocumentGenerator()
         };
     }
@@ -64,8 +64,8 @@ class DocumentGeneratorFactory
     private function getBookingDocumentGenerator(BookingRequestableInterface $booking): RequestGeneratorInterface
     {
         return match ($booking->type()) {
-            BookingTypeEnum::HOTEL => $this->module->make(ReservationRequestGenerator::class),
-            BookingTypeEnum::AIRPORT => $this->module->make(AirportReservationRequestGenerator::class),
+            BookingTypeEnum::HOTEL => $this->container->make(ReservationRequestGenerator::class),
+            BookingTypeEnum::AIRPORT => $this->container->make(AirportReservationRequestGenerator::class),
             default => throw new BookingTypeDoesntHaveDocumentGenerator()
         };
     }

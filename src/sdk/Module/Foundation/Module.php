@@ -5,9 +5,10 @@ namespace Sdk\Module\Foundation;
 use Illuminate\Support\ServiceProvider;
 use Sdk\Module\Container\Container;
 use Sdk\Module\Contracts\ModuleInterface;
+use Sdk\Module\Contracts\Support\ContainerInterface;
 use Sdk\Module\Foundation\Support\SharedContainer;
 
-class Module extends Container implements ModuleInterface
+class Module extends Container implements ModuleInterface, ContainerInterface
 {
     private bool $booted = false;
 
@@ -20,6 +21,8 @@ class Module extends Container implements ModuleInterface
         private readonly array $config,
         private readonly SharedContainer $sharedContainer
     ) {
+        $this->instance(ModuleInterface::class, $this);
+        $this->instance(ContainerInterface::class, $this);
         $this->registerBaseBindings();
         $this->registerBaseServiceProviders();
         $this->register($this->namespace('Providers\BootServiceProvider'));
@@ -168,8 +171,6 @@ class Module extends Container implements ModuleInterface
     {
         if (!is_string($abstract)) {
             return parent::resolve($abstract, $parameters, $raiseEvents);
-        } elseif ($abstract === ModuleInterface::class) {
-            return $this;
         } elseif ($this->sharedContainer->has($abstract)) {
             return $this->sharedContainer->get($abstract);
         } else {
@@ -177,7 +178,9 @@ class Module extends Container implements ModuleInterface
         }
     }
 
-    protected function registerBaseBindings() {}
+    protected function registerBaseBindings()
+    {
+    }
 
     protected function registerBaseServiceProviders()
     {

@@ -24,7 +24,7 @@ use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomBookingId;
 use Module\Shared\Contracts\Service\SafeExecutorInterface;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\Event\DomainEventInterface;
-use Sdk\Module\Contracts\ModuleInterface;
+use Sdk\Module\Contracts\Support\ContainerInterface;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
 class RoomUpdater
@@ -33,7 +33,7 @@ class RoomUpdater
     private array $events = [];
 
     public function __construct(
-        private readonly ModuleInterface $module,
+        private readonly ContainerInterface $container,
         private readonly RoomBookingRepositoryInterface $roomBookingRepository,
         private readonly HotelRoomAdapterInterface $hotelRoomAdapter,
         private readonly DomainEventDispatcherInterface $eventDispatcher,
@@ -152,7 +152,7 @@ class RoomUpdater
 
     private function makePipeline(): ValidatorPipeline
     {
-        return (new ValidatorPipeline($this->module))
+        return (new ValidatorPipeline($this->container))
             ->through(ClientResidencyValidator::class)
             ->through(ExistRoomPriceValidator::class);
     }

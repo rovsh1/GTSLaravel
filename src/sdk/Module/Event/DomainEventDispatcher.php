@@ -5,14 +5,14 @@ namespace Sdk\Module\Event;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\Event\DomainEventInterface;
 use Sdk\Module\Contracts\Event\DomainEventPublisherInterface;
-use Sdk\Module\Contracts\ModuleInterface;
+use Sdk\Module\Contracts\Support\ContainerInterface;
 
 class DomainEventDispatcher implements DomainEventDispatcherInterface
 {
     private array $listeners = [];
 
     public function __construct(
-        private readonly ModuleInterface $module,
+        private readonly ContainerInterface $container,
         private readonly DomainEventPublisherInterface $domainEventPublisher
     ) {
     }
@@ -63,7 +63,7 @@ class DomainEventDispatcher implements DomainEventDispatcherInterface
     private function dispatchListeners(DomainEventInterface $event, array $listeners): void
     {
         foreach ($listeners as $listenerClass) {
-            $listener = $this->module->get($listenerClass);
+            $listener = $this->container->get($listenerClass);
 
             $listener->handle($event);
         }
