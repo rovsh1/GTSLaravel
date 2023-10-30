@@ -43,7 +43,7 @@ return new class extends Migration {
             $table->increments('id');
             $table->unsignedInteger('review_id');
             $table->unsignedTinyInteger('type');
-            $table->float('value');
+            $table->unsignedTinyInteger('value');
             $table->timestamps();
 
             $table->foreign('review_id')

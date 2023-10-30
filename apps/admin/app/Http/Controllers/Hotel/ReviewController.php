@@ -16,8 +16,6 @@ use App\Admin\Support\Facades\Prototypes;
 use App\Admin\Support\Facades\Sidebar;
 use App\Admin\Support\Http\Actions\DefaultDestroyAction;
 use App\Admin\Support\Http\Actions\DefaultFormCreateAction;
-use App\Admin\Support\Http\Actions\DefaultFormEditAction;
-use App\Admin\Support\Http\Actions\DefaultFormUpdateAction;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Layout as LayoutContract;
@@ -72,7 +70,7 @@ class ReviewController extends Controller
         $form->trySubmit($this->prototype->route('reviews.create', $hotel));
 
         $data = $form->getData();
-        $ratingFields = array_filter($data, fn(string $key) => strpos($key, 'rating_') !== false, ARRAY_FILTER_USE_KEY);
+        $ratingFields = $this->getOnlyRatingFields($data);
         $avgRating = $this->getCalculatedReviewRating($ratingFields);
         $review = Review::create([
             ...$data,
@@ -89,20 +87,54 @@ class ReviewController extends Controller
     {
         $this->hotel($hotel);
 
-        return (new DefaultFormEditAction($this->formFactory($hotel)))
-            ->deletable()
-            ->handle($review);
+        $reviewRatings = $review->ratings->mapWithKeys(
+            fn(ReviewRating $rating) => ['rating_' . $rating->type->value => $rating->value]
+        )->all();
+        $preparedReviewData = [
+            ...$review->toArray(),
+            ...$reviewRatings
+        ];
+        $form = $this->formFactory($hotel)
+            ->method('put')
+            ->action($this->prototype->route('reviews.update', [$hotel, $review]))
+            ->data($preparedReviewData);
+
+        return Layout::title((string)$review)
+            ->view('default.form.form', [
+                'form' => $form,
+                'cancelUrl' => $this->prototype->route('reviews.index', $hotel),
+                'deleteUrl' => $this->prototype->route('reviews.destroy', [$hotel, $review]),
+            ]);
     }
 
     public function update(Hotel $hotel, Review $review): RedirectResponse
     {
-        return (new DefaultFormUpdateAction($this->formFactory($hotel)))
-            ->handle($review);
+        $form = $this->formFactory($hotel)->method('put');
+
+        $form->trySubmit($this->prototype->route('reviews.update', [$hotel, $review]));
+
+        $data = $form->getData();
+        $ratingFields = $this->getOnlyRatingFields($data);
+        $avgRating = $this->getCalculatedReviewRating($ratingFields);
+        $review->update([
+            ...$data,
+            'rating' => $avgRating
+        ]);
+        $this->createReviewRatings($review->id, $ratingFields);
+
+        return redirect(
+            $this->prototype->route('reviews.index', $hotel)
+        );
     }
 
     public function destroy(Hotel $hotel, Review $review): AjaxResponseInterface
     {
         return (new DefaultDestroyAction())->handle($review);
+    }
+
+    private function getOnlyRatingFields(array $data): array
+    {
+        return array_filter($data, fn(string $key) => strpos($key, 'rating_') !== false, ARRAY_FILTER_USE_KEY);
     }
 
     private function getCalculatedReviewRating(array $ratingData): float
@@ -125,7 +157,7 @@ class ReviewController extends Controller
             ReviewRating::create([
                 'review_id' => $reviewId,
                 'type' => $ratingTypeEnum,
-                'value' => $ratingTypeEnum->calculateValue($value),
+                'value' => $value,
             ]);
         }
     }
