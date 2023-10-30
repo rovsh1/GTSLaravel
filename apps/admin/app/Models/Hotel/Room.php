@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\DB;
 use Module\Shared\Dto\FileDto;
 use Sdk\Module\Database\Eloquent\HasTranslations;
 use Sdk\Module\Database\Eloquent\Model;
@@ -52,6 +53,17 @@ class Room extends Model
         'square' => 'int',
         'position' => 'int',
     ];
+
+    public static function getRoomNames(string $lang): array
+    {
+        return DB::table('hotel_rooms_translation')
+            ->where('language', $lang)
+            ->select('name')
+            ->distinct()
+            ->get()
+            ->pluck('name')
+            ->toArray();
+    }
 
     public static function booted()
     {
