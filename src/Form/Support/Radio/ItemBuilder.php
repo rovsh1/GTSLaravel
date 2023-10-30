@@ -23,9 +23,10 @@ class ItemBuilder
             $item = new \stdClass();
             $item->originalValue = $r;
             $item->value = (string)($r->value ?? $r->name);
-            $item->text = __('enum.' . strtolower($r->name));
+            $item->text = __($r::class . '::' . $r->name);
             $items[] = $item;
         }
+
         return $items;
     }
 
@@ -86,6 +87,7 @@ class ItemBuilder
                     return $this->data->$k;
                 }
             }
+
             return null;
         }
     }

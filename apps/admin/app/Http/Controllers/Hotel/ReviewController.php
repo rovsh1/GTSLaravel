@@ -6,6 +6,7 @@ use App\Admin\Components\Factory\Prototype;
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Models\Hotel\Hotel;
 use App\Admin\Models\Hotel\Review;
+use App\Admin\Models\Hotel\ReviewRating;
 use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Form;
@@ -16,7 +17,6 @@ use App\Admin\Support\Facades\Sidebar;
 use App\Admin\Support\Http\Actions\DefaultDestroyAction;
 use App\Admin\Support\Http\Actions\DefaultFormCreateAction;
 use App\Admin\Support\Http\Actions\DefaultFormEditAction;
-use App\Admin\Support\Http\Actions\DefaultFormStoreAction;
 use App\Admin\Support\Http\Actions\DefaultFormUpdateAction;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
@@ -25,14 +25,18 @@ use App\Admin\View\Menus\HotelMenu;
 use App\Core\Support\Http\Responses\AjaxResponseInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Module\Shared\Contracts\Service\TranslatorInterface;
+use Module\Shared\Enum\Hotel\ReviewRatingTypeEnum;
 use Module\Shared\Enum\Hotel\ReviewStatusEnum;
 
 class ReviewController extends Controller
 {
     private Prototype $prototype;
 
-    public function __construct()
-    {
+    public function __construct(
+        private readonly TranslatorInterface $translator
+    ) {
         $this->prototype = Prototypes::get('hotel');
     }
 
@@ -63,8 +67,22 @@ class ReviewController extends Controller
 
     public function store(Request $request, Hotel $hotel): RedirectResponse
     {
-        return (new DefaultFormStoreAction($this->formFactory($hotel)))
-            ->handle(Review::class);
+        $form = $this->formFactory($hotel);
+
+        $form->trySubmit($this->prototype->route('reviews.create', $hotel));
+
+        $data = $form->getData();
+        $ratingFields = array_filter($data, fn(string $key) => strpos($key, 'rating_') !== false, ARRAY_FILTER_USE_KEY);
+        $avgRating = $this->getCalculatedReviewRating($ratingFields);
+        $review = Review::create([
+            ...$data,
+            'rating' => $avgRating
+        ]);
+        $this->createReviewRatings($review->id, $ratingFields);
+
+        return redirect(
+            $this->prototype->route('reviews.index', $hotel)
+        );
     }
 
     public function edit(Request $request, Hotel $hotel, Review $review): LayoutContract
@@ -87,14 +105,61 @@ class ReviewController extends Controller
         return (new DefaultDestroyAction())->handle($review);
     }
 
+    private function getCalculatedReviewRating(array $ratingData): float
+    {
+        $reviewRating = 0;
+        foreach ($ratingData as $rating => $value) {
+            $ratingTypeEnum = $this->getRatingTypeEnumFromFieldName($rating);
+            $calculatedRating = $ratingTypeEnum->calculateValue($value);
+            $reviewRating += $calculatedRating;
+        }
+
+        return $reviewRating;
+    }
+
+    private function createReviewRatings(int $reviewId, array $ratingData): void
+    {
+        ReviewRating::whereReviewId($reviewId)->delete();
+        foreach ($ratingData as $rating => $value) {
+            $ratingTypeEnum = $this->getRatingTypeEnumFromFieldName($rating);
+            ReviewRating::create([
+                'review_id' => $reviewId,
+                'type' => $ratingTypeEnum,
+                'value' => $ratingTypeEnum->calculateValue($value),
+            ]);
+        }
+    }
+
+    private function getRatingTypeEnumFromFieldName(string $name): ReviewRatingTypeEnum
+    {
+        $ratingType = Str::afterLast($name, 'rating_');
+
+        return ReviewRatingTypeEnum::from($ratingType);
+    }
+
     protected function formFactory(Hotel $hotel): FormContract
     {
+        $ratingFieldSettingsGetter = fn(ReviewRatingTypeEnum $enum) => [
+            'rating_' . $enum->value,
+            [
+                'items' => [['value' => 1], ['value' => 2], ['value' => 3], ['value' => 4], ['value' => 5]],
+                'required' => true,
+                'label' => $this->translator->translateEnum($enum)
+            ]
+        ];
+
         return Form::name('data')
             ->hidden('hotel_id', ['value' => $hotel->id])
             ->text('name', ['label' => 'Имя', 'required' => true])
             ->textarea('text', ['label' => 'Текст отзыва', 'required' => true])
-            ->enum('status', ['label' => 'Статус', 'required' => true, 'enum' => ReviewStatusEnum::class])
-            ->hidden('rating', ['value' => 0]);
+            ->radio(...$ratingFieldSettingsGetter(ReviewRatingTypeEnum::STAFF))
+            ->radio(...$ratingFieldSettingsGetter(ReviewRatingTypeEnum::FACILITIES))
+            ->radio(...$ratingFieldSettingsGetter(ReviewRatingTypeEnum::CLEANNESS))
+            ->radio(...$ratingFieldSettingsGetter(ReviewRatingTypeEnum::COMFORT))
+            ->radio(...$ratingFieldSettingsGetter(ReviewRatingTypeEnum::PRICE_QUALITY))
+            ->radio(...$ratingFieldSettingsGetter(ReviewRatingTypeEnum::LOCATION))
+            ->radio(...$ratingFieldSettingsGetter(ReviewRatingTypeEnum::WIFI))
+            ->enum('status', ['label' => 'Статус', 'required' => true, 'enum' => ReviewStatusEnum::class]);
     }
 
     protected function gridFactory(Hotel $hotel): GridContract

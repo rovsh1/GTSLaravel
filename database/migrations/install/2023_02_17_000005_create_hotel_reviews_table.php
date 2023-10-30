@@ -33,6 +33,25 @@ return new class extends Migration {
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
         });
+
+        $this->upReviewRatings();
+    }
+
+    private function upReviewRatings(): void
+    {
+        Schema::create('hotel_review_ratings', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('review_id');
+            $table->unsignedTinyInteger('type');
+            $table->float('value');
+            $table->timestamps();
+
+            $table->foreign('review_id')
+                ->references('id')
+                ->on('hotel_reviews')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+        });
     }
 
     /**
@@ -41,5 +60,6 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::dropIfExists('reviews');
+        Schema::dropIfExists('hotel_review_ratings');
     }
 };

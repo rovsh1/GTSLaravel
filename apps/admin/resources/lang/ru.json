@@ -127,6 +127,14 @@
     "Module\\Shared\\Enum\\Pricing\\MarkupValueTypeEnum::PERCENT": "Процент",
     "Module\\Shared\\Enum\\Pricing\\MarkupValueTypeEnum::ABSOLUTE": "Значение",
 
+    "Module\\Shared\\Enum\\Hotel\\ReviewRatingTypeEnum::STAFF": "Персонал",
+    "Module\\Shared\\Enum\\Hotel\\ReviewRatingTypeEnum::FACILITIES": "Удобства",
+    "Module\\Shared\\Enum\\Hotel\\ReviewRatingTypeEnum::CLEANNESS": "Чистота",
+    "Module\\Shared\\Enum\\Hotel\\ReviewRatingTypeEnum::COMFORT": "Комфорт",
+    "Module\\Shared\\Enum\\Hotel\\ReviewRatingTypeEnum::PRICE_QUALITY": "Соотношение цена/качество",
+    "Module\\Shared\\Enum\\Hotel\\ReviewRatingTypeEnum::LOCATION": "Расположение",
+    "Module\\Shared\\Enum\\Hotel\\ReviewRatingTypeEnum::WIFI": "Бесплатный Wi-Fi",
+
     "Module\\Shared\\Enum\\Hotel\\ReviewStatusEnum::NOT_PUBLIC": "Не опубликовано",
     "Module\\Shared\\Enum\\Hotel\\ReviewStatusEnum::PUBLIC": "Опубликовано",
 
