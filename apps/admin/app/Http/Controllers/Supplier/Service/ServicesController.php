@@ -133,23 +133,6 @@ class ServicesController extends Controller
         );
     }
 
-    public function settings(int $serviceType, ?int $serviceId = null): JsonResponse
-    {
-        Validator::make(
-            ['service_type' => $serviceType],
-            ['service_type' => new Enum(ServiceTypeEnum::class)]
-        )->validate();
-
-        if ($serviceId !== null) {
-            $service = Service::find($serviceId);
-        } else {
-            $service = new Service(['type' => ServiceTypeEnum::from($serviceType)]);
-        }
-        $settings = $service->getSettingsFields();
-
-        return response()->json($settings);
-    }
-
     protected function formFactory(int $supplierId): FormContract
     {
         return Form::name('data')
