@@ -3,8 +3,6 @@
 namespace App\Admin\Models\Client;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Casts\Attribute;
-use Module\Shared\Enum\Client\LegalTypeEnum;
 use Sdk\Module\Database\Eloquent\Model;
 
 class Legal extends Model
@@ -16,13 +14,11 @@ class Legal extends Model
         'client_id',
         'city_id',
         'industry_id',
-        'type',
         'address',
         'requisites',
     ];
 
     protected $casts = [
-        'type' => LegalTypeEnum::class,
         'requisites' => 'array'
     ];
 

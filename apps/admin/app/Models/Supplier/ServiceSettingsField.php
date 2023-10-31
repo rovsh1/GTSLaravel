@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Admin\Models\Supplier;
 
-use Illuminate\Contracts\Support\Arrayable;
-
 class ServiceSettingsField
 {
     private const SELECT_TYPE = 'select';
@@ -15,13 +13,12 @@ class ServiceSettingsField
         public readonly string $name,
         public readonly string $type,
         public readonly mixed $value,
-        public readonly array|Arrayable|null $items = null
     ) {
     }
 
-    public static function createSelect(string $name, mixed $value, array|Arrayable $items): static
+    public static function createSelect(string $name, mixed $value): static
     {
-        return new static($name, self::SELECT_TYPE, $value, $items);
+        return new static($name, self::SELECT_TYPE, $value);
     }
 
     public static function createBool(string $name, mixed $value): static

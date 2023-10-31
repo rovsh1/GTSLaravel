@@ -26,7 +26,6 @@ use Gsdk\Format\View\ParamsTable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Module\Shared\Enum\Client\LegalTypeEnum;
 use Module\Shared\Enum\Client\ResidencyEnum;
 use Module\Shared\Enum\Client\StatusEnum;
 use Module\Shared\Enum\Client\TypeEnum;
@@ -92,7 +91,6 @@ class ClientController extends AbstractPrototypeController
                 'client_id' => $this->model->id,
                 'city_id' => $request->getCityId(),
                 'industry_id' => $legalData->industry,
-                'type' => $legalData->type,
                 'name' => $legalData->name,
                 'address' => $legalData->address,
             ]);
@@ -232,7 +230,6 @@ class ClientController extends AbstractPrototypeController
             ->select('country_id', ['label' => 'Страна', 'emptyItem' => '', 'items' => Country::get()])
             ->city('city_id', ['label' => 'Город', 'emptyItem' => ''])
             ->enum('type', ['label' => 'Тип', 'enum' => TypeEnum::class, 'emptyItem' => ''])
-            ->enum('legal_entity_type', ['label' => 'Тип юр. лица', 'enum' => LegalTypeEnum::class, 'multiple' => true])
             ->enum('status', ['label' => 'Источник', 'enum' => StatusEnum::class, 'emptyItem' => '']);
     }
 }

@@ -11,18 +11,22 @@ class SearchAirportRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'service_id' => ['required', 'numeric'],
-            'city_id' => ['required', 'numeric'],
+            'service_id' => ['nullable', 'numeric'],
+            'city_id' => ['nullable', 'numeric'],
         ];
     }
 
-    public function getServiceId(): int
+    public function getServiceId(): ?int
     {
-        return (int)$this->get('service_id');
+        $value = $this->get('service_id');
+
+        return $value !== null ? (int)$value : null;
     }
 
-    public function getCityId(): int
+    public function getCityId(): ?int
     {
-        return (int)$this->get('city_id');
+        $value = $this->get('city_id');
+
+        return $value !== null ? (int)$value : null;
     }
 }

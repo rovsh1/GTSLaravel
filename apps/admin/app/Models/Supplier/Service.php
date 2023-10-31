@@ -65,23 +65,23 @@ class Service extends \Module\Supplier\Infrastructure\Models\Service
     private function buildRailwaySettings(): array
     {
         return [
-            ServiceSettingsField::createSelect('cityId', $this->data['cityId'] ?? null, City::get()),
-            ServiceSettingsField::createSelect('railwayStationId', $this->data['railwayStationId'] ?? null, RailwayStation::get()),
+            ServiceSettingsField::createSelect('cityId', $this->data['cityId'] ?? null),
+            ServiceSettingsField::createSelect('railwayStationId', $this->data['railwayStationId'] ?? null),
         ];
     }
 
     private function buildAirportSettings(): array
     {
         return [
-            ServiceSettingsField::createSelect('airportId', $this->data['airportId'] ?? null, AirportReference::get()),
+            ServiceSettingsField::createSelect('airportId', $this->data['airportId'] ?? null),
         ];
     }
 
     private function buildIntercityTransferSettings(): array
     {
         return [
-            ServiceSettingsField::createSelect('fromCityId', $this->data['fromCityId'] ?? null, City::get()),
-            ServiceSettingsField::createSelect('toCityId', $this->data['toCityId'] ?? null, City::get()),
+            ServiceSettingsField::createSelect('fromCityId', $this->data['fromCityId'] ?? null),
+            ServiceSettingsField::createSelect('toCityId', $this->data['toCityId'] ?? null),
             ServiceSettingsField::createBool('returnTripIncluded', $this->data['returnTripIncluded'] ?? null),
         ];
     }
@@ -89,21 +89,21 @@ class Service extends \Module\Supplier\Infrastructure\Models\Service
     private function buildDayCarTripSettings(): array
     {
         return [
-            ServiceSettingsField::createSelect('cityId', $this->data['cityId'] ?? null, City::get()),
+            ServiceSettingsField::createSelect('cityId', $this->data['cityId'] ?? null),
         ];
     }
 
     private function buildCarRentWithDriverSettings(): array
     {
         return [
-            ServiceSettingsField::createSelect('cityId', $this->data['cityId'] ?? null, City::get()),
+            ServiceSettingsField::createSelect('cityId', $this->data['cityId'] ?? null),
         ];
     }
 
     private function buildCIPRoomInAirportSettings(): array
     {
         return [
-            ServiceSettingsField::createSelect('airportId', $this->data['airportId'] ?? null, AirportReference::get()),
+            ServiceSettingsField::createSelect('airportId', $this->data['airportId'] ?? null),
         ];
     }
 

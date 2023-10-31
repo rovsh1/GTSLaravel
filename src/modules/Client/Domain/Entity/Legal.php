@@ -8,7 +8,6 @@ use Module\Client\Domain\ValueObject\BankRequisites;
 use Module\Client\Domain\ValueObject\IndustryId;
 use Module\Client\Domain\ValueObject\LegalId;
 use Module\Shared\Contracts\Domain\EntityInterface;
-use Module\Shared\Enum\Client\LegalTypeEnum;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
 class Legal extends AbstractAggregateRoot implements EntityInterface
@@ -18,7 +17,6 @@ class Legal extends AbstractAggregateRoot implements EntityInterface
         private string $name,
         private ?IndustryId $industryId,
         private ?string $address,
-        private readonly LegalTypeEnum $type,
         private ?BankRequisites $requisites,
     ) {}
 
@@ -35,11 +33,6 @@ class Legal extends AbstractAggregateRoot implements EntityInterface
     public function setName(string $name): void
     {
         $this->name = $name;
-    }
-
-    public function type(): LegalTypeEnum
-    {
-        return $this->type;
     }
 
     public function industryId(): ?IndustryId

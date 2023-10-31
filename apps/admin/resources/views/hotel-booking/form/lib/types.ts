@@ -1,7 +1,6 @@
 export interface LegalEntityFormData {
   name: string | null
   industry: number | null
-  type: number | null
   address: string
   bik: string | null
   bankCity: string | null
@@ -22,7 +21,7 @@ export interface BasicFormData {
   type: number | null
   cityId: number | null
   status: number | null
-  currency: number | null
+  currency: string | null
   managerId: number | null
   residency: number | null
   markupGroupId: number | null

@@ -22,18 +22,23 @@ class AirportController extends AbstractPrototypeController
 
     public function search(SearchAirportRequest $request): JsonResponse
     {
-        $serviceAirportIds = AirportPrice::whereServiceId($request->getServiceId())
-            ->get()
-            ->pluck('airport_id')
-            ->unique()
-            ->toArray();
+        $airportsQuery = Airport::query();
+        if ($request->getServiceId() !== null) {
+            $serviceAirportIds = AirportPrice::whereServiceId($request->getServiceId())
+                ->get()
+                ->pluck('airport_id')
+                ->unique()
+                ->toArray();
 
-        $airports = Airport::whereIn('r_airports.id', $serviceAirportIds)
-            ->whereCityId($request->getCityId())
-            ->get();
+            $airportsQuery->whereIn('r_airports.id', $serviceAirportIds);
+        }
+
+        if ($request->getCityId() !== null) {
+            $airportsQuery->whereCityId($request->getCityId());
+        }
 
         return response()->json(
-            AirportResource::collection($airports)
+            AirportResource::collection($airportsQuery->get())
         );
     }
 

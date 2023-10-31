@@ -41,7 +41,6 @@ interface CreateLegalClientPayload extends CreateClientPayload {
   legal: {
     name?: string
     industry?: number
-    type: number
     address: string
     bik?: string
     bankCity?: string

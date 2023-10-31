@@ -14,7 +14,6 @@ final class LegalDto extends AbstractDomainBasedDto
     public function __construct(
         public readonly int $id,
         public readonly string $name,
-        public readonly int $type,
         public readonly ?int $industryId,
         public readonly ?string $address,
         public readonly ?string $bik,
@@ -32,7 +31,6 @@ final class LegalDto extends AbstractDomainBasedDto
         return new static(
             $entity->id()->value(),
             $entity->name(),
-            $entity->type()->value,
             $entity->industryId()?->value(),
             $entity->address(),
             $entity->requisites()?->bik,

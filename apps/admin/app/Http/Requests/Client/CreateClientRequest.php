@@ -5,6 +5,7 @@ namespace App\Admin\Http\Requests\Client;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
 use Module\Shared\Enum\Client\ResidencyEnum;
+use Module\Shared\Enum\CurrencyEnum;
 
 class CreateClientRequest extends FormRequest
 {
@@ -20,7 +21,7 @@ class CreateClientRequest extends FormRequest
             'name' => ['required', 'string'],
             'type' => ['required', 'numeric'],
             'cityId' => ['required', 'numeric'],
-            'currency' => ['required', 'numeric'],
+            'currency' => ['required', new Enum(CurrencyEnum::class)],
             'markupGroupId' => ['required', 'numeric'],
             'residency' => ['required', new Enum(ResidencyEnum::class)],
             'status' => ['nullable', 'numeric'],
@@ -32,7 +33,6 @@ class CreateClientRequest extends FormRequest
             'legal' => ['required_without:physical', 'array'],
             'legal.name' => ['required_with:legal', 'string'],
             'legal.industry' => ['nullable', 'numeric'],
-            'legal.type' => ['required_with:legal', 'numeric'],
             'legal.address' => ['required_with:legal', 'string'],
             'legal.bik' => ['nullable', 'string'],
             'legal.bankCity' => ['nullable', 'string'],

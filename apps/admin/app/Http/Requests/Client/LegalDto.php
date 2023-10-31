@@ -11,7 +11,6 @@ class LegalDto extends Dto
     public function __construct(
         public readonly string $name,
         public readonly ?int $industry,
-        public readonly int $type,
         public readonly string $address,
         public readonly ?string $bik,
         public readonly ?string $bankCity,
