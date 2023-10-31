@@ -5,7 +5,10 @@ namespace App\Admin\Http\Controllers\Supplier\Service;
 use App\Admin\Components\Factory\Prototype;
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Http\Requests\Supplier\SearchServicesRequest;
+use App\Admin\Http\Resources\Airport;
+use App\Admin\Http\Resources\City;
 use App\Admin\Http\Resources\Service as ServiceResource;
+use App\Admin\Http\Resources\Supplier as SupplierResource;
 use App\Admin\Models\Supplier\Service;
 use App\Admin\Models\Supplier\Supplier;
 use App\Admin\Support\Facades\Acl;
@@ -67,7 +70,11 @@ class ServicesController extends Controller
 
         return (new DefaultFormCreateAction($this->formFactory($provider->id)))
             ->handle('Новая услуга')
-            ->view('supplier.service.form.form');
+            ->view('supplier.service.form.form', [
+                'supplier' => SupplierResource::make($provider),
+                'airports' => Airport::collection($provider->airports()->get()),
+                'cities' => City::collection($provider->cities()->get())
+            ]);
     }
 
     public function store(Request $request, Supplier $provider): RedirectResponse
@@ -83,7 +90,11 @@ class ServicesController extends Controller
         return (new DefaultFormEditAction($this->formFactory($provider->id)))
             ->deletable()
             ->handle($service)
-            ->view('supplier.service.form.form');
+            ->view('supplier.service.form.form', [
+                'supplier' => SupplierResource::make($provider),
+                'airports' => Airport::collection($provider->airports()->get()),
+                'cities' => City::collection($provider->cities()->get())
+            ]);
     }
 
     public function update(Supplier $provider, Service $service): RedirectResponse
