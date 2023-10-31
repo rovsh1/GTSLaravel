@@ -6,9 +6,14 @@ namespace App\Admin\Models\Booking;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Builder as Query;
+use Sdk\Module\Database\Eloquent\HasQuicksearch;
 
 class Booking extends \Module\Booking\Infrastructure\ServiceBooking\Models\Booking
 {
+    use HasQuicksearch;
+
+    protected array $quicksearch = ['id'];
+
     public function scopeWithoutHotelBooking(Builder $builder): void
     {
         $builder->whereNotExists(function (Query $query) {

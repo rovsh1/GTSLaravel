@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
 use Module\Shared\Enum\ServiceTypeEnum;
 use Module\Shared\Infrastructure\Models\Model;
-use Sdk\Module\Database\Eloquent\HasQuicksearch;
 
 /**
  * Module\Booking\Transfer\Infrastructure\Models\Booking
@@ -23,7 +22,7 @@ use Sdk\Module\Database\Eloquent\HasQuicksearch;
  */
 class Booking extends Model
 {
-    use HasQuicksearch, SoftDeletes;
+    use SoftDeletes;
 
     protected $table = 'bookings';
 
