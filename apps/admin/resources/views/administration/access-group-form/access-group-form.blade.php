@@ -27,11 +27,11 @@
                     action="{{ $form->action }}"
                     method="{{ strtoupper($form->method) === 'GET' ? 'GET' : 'POST' }}"
                     enctype="multipart/form-data">
-                    <div id="main" role="tabpanel" class="tab-pane fade show active" aria-labelledby="main-tab">
+                    <div id="main" role="tabpanel" class="tab-pane show active" aria-labelledby="main-tab">
                         <div class="form-group">{!! $form !!}</div>
                     </div>
 
-                    <div id="rules" role="tabpanel" class="tab-pane fade" aria-labelledby="rules-tab">
+                    <div id="rules" role="tabpanel" class="tab-pane" aria-labelledby="rules-tab">
                         <div class="d-flex align-items-start">
                             <div class="nav flex-column nav-pills me-3" id="permissions-tabs" aria-orientation="vertical">
                                 @foreach($categories as $category)
