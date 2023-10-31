@@ -7,6 +7,7 @@ namespace App\Admin\Models\Booking;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Builder as Query;
+use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
 
 class Booking extends \Module\Booking\Infrastructure\ServiceBooking\Models\Booking
@@ -21,6 +22,16 @@ class Booking extends \Module\Booking\Infrastructure\ServiceBooking\Models\Booki
             'bookings.created_at',
             [$period->getStartDate()->clone()->startOfDay(), $period->getEndDate()->clone()->endOfDay()]
         );
+    }
+
+    public function scopeWhereStatus(Builder $builder, BookingStatusEnum|int $status): void
+    {
+        $builder->where('bookings.status', $status);
+    }
+
+    public function scopeWhereManagerId(Builder $builder, int $managerId): void
+    {
+        $builder->where('administrator_bookings.administrator_id', $managerId);
     }
 
     public function scopeWithoutHotelBooking(Builder $builder): void
