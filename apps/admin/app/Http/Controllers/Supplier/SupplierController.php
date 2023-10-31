@@ -2,6 +2,7 @@
 
 namespace App\Admin\Http\Controllers\Supplier;
 
+use App\Admin\Http\Resources\Supplier as Resource;
 use App\Admin\Models\Reference\City;
 use App\Admin\Models\Supplier\Supplier;
 use App\Admin\Support\Facades\Acl;
@@ -14,6 +15,8 @@ use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\View\Menus\SupplierMenu;
 use Gsdk\Format\View\ParamsTable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class SupplierController extends AbstractPrototypeController
 {
@@ -22,12 +25,23 @@ class SupplierController extends AbstractPrototypeController
         return 'supplier';
     }
 
+    public function search(Request $request): JsonResponse
+    {
+        return response()->json(
+            Resource::collection(Supplier::get())
+        );
+    }
+
     protected function supplierParams(Supplier $model): ParamsTable
     {
         return (new ParamsTable())
             ->id('id', 'ID')
             ->text('name', 'Наименование')
-            ->custom('cities', 'Города', fn($v, $o) => $o->cities()->get()->map(fn(City $city) => $city->name)->join(', '))
+            ->custom(
+                'cities',
+                'Города',
+                fn($v, $o) => $o->cities()->get()->map(fn(City $city) => $city->name)->join(', ')
+            )
             ->currency('currency_name', 'Валюта')
             ->data($model);
     }

@@ -4,6 +4,7 @@ use App\Admin\Http\Controllers\Supplier;
 use App\Admin\Support\Facades\AclRoute;
 
 AclRoute::for('supplier')
+    ->get('/search', Supplier\SupplierController::class . '@search', 'read', 'search')
     ->resource('contacts', Supplier\ContactController::class, [
         'except' => ['show', 'index']
     ])

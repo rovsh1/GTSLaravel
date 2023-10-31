@@ -15,6 +15,7 @@ use App\Admin\Models\Administrator\Administrator;
 use App\Admin\Models\Booking\Booking;
 use App\Admin\Models\Client\Client;
 use App\Admin\Models\Reference\Currency;
+use App\Admin\Models\Supplier\Supplier;
 use App\Admin\Repositories\BookingAdministratorRepository;
 use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\Booking\BookingAdapter;
@@ -329,6 +330,10 @@ class BookingController extends Controller
                 'withoutHotel' => true,
                 'required' => true
             ])
+            ->select(
+                'supplier_id',
+                ['label' => 'Поставщик', 'required' => true, 'items' => Supplier::get(), 'emptyItem' => '']
+            )
             ->hidden('service_id', ['label' => 'Услуга', 'required' => true])
             ->manager('manager_id', [
                 'label' => 'Менеджер',
