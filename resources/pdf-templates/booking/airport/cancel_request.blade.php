@@ -4,44 +4,24 @@
 @section('content')
     <table>
         <tbody>
-        <tr>
-            <td class="text-align-left" style="width: 250px"><img src="var:logo" alt="" width="250"></td>
-            <td style="width: 650px; ">
-                <table class="text-align-right">
-                    <tbody>
-                    <tr>
-                        <td>{{$company}}</td>
-                    </tr>
-                    <tr>
-                        <td>Тел: {{$phone}}</td>
-                    </tr>
-                    <tr>
-                        <td>E-mail: {{$email}}</td>
-                    </tr>
-                    <tr>
-                        <td>{{$address}}</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </td>
-        </tr>
+        @include('booking._partials.company_requisites_header')
         <tr>
             <td style="padding-top: 15px;" colspan="2" class="text-align-right">Директору</td>
         </tr>
         <tr>
-            <td>{{$company}}</td>
-            <td class="text-align-right">{{$airportName}}</td>
+            <td>{{ $company->name }}</td>
+            <td class="text-align-right">{{ $airport->name }}</td>
         </tr>
         <tr>
-            <td>{{$cityAndCountry}}</td>
-            <td class="text-align-right">{{$airportDirector}}</td>
+            <td>{{ $company->region }}</td>
+            <td class="text-align-right">{{ $airport->director }}</td>
         </tr>
         <tr>
-            <td class="title text-align-center" colspan="2">ОТМЕНА БРОНИ НА {{$serviceTypeName}}</td>
+            <td class="title text-align-center" colspan="2">ОТМЕНА БРОНИ НА {{ strtoupper($service->typeName) }}</td>
         </tr>
         <tr>
-            <td class="text-align-center" colspan="2" style="padding-top: 20px;padding-bottom: 20px">Согласно договору №
-                {{$contractNumber}} от {{$contractDate}}, ИНН: {{$inn}}
+            <td class="text-align-center" colspan="2" style="padding-top: 20px; padding-bottom: 20px">Согласно договору
+                №{{ $contract->number }} от {{ $contract->date }}, ИНН: {{ $contract->inn }}
             </td>
         </tr>
         <tr>
@@ -57,16 +37,16 @@
                                         Номер
                                         (ID):
                                     </td>
-                                    <td style="font-size: 24px; font-weight: bold; color: red">{{$reservNumber}}</td>
+                                    <td style="font-size: 24px; font-weight: bold; color: red">{{ $booking->number }}</td>
                                     <td class="text-align-right" colspan="2">
-                                        <b>Дата и время создания: {{$reservCreatedAt}}</b>
+                                        <b>Дата и время создания: {{ $booking->createdAt }}</b>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="top-table-left"></td>
                                     <td></td>
                                     <td class="text-align-right" colspan="2">
-                                        <b>Дата и время изменения: {{$reservCancelledAt}}</b>
+                                        <b>Дата и время изменения: {{ $booking->updatedAt }}</b>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -79,15 +59,13 @@
         </tr>
         <tr>
             <td colspan="2" class="text-align-center" style="padding-top: 20px;padding-bottom: 20px">Компания ООО
-                "GotoStans" выражает Вам своё почтение и просит Вас организовать <br/> {{$serviceTypeName}} для
+                "GotoStans" выражает Вам своё почтение и просит Вас организовать <br/> {{ $service->typeName }} для
                 следующих
                 лиц
             </td>
         </tr>
         <tr>
             <td colspan="2" style="padding-top: 20px;">
-
-
                 <table class="services">
                     <thead>
                     <tr>
@@ -98,31 +76,34 @@
                     <tbody>
                     <tr class="first">
                         <td class="text-align-center"><b>1</b></td>
-                        <td class="text-align-left" colspan="4"><b>{{$serviceName}}</b></td>
+                        <td class="text-align-left" colspan="4"><b>{{ $service->title }}</b></td>
                     </tr>
                     <tr>
                         <td></td>
-                        <td>Дата прилёта: {{$departureDate}}</td>
+                        <td>Дата прилёта: {{ $date }}</td>
                         <td colspan="3">Время прилёта: {{$time}}</td>
                     </tr>
                     <tr>
                         <td></td>
-                        <td>Номер рейса: {{$flightNumber}}</td>
-                        <td colspan="2">Аэропорт: {{$airportName}}</td>
+                        <td>Номер рейса: {{ $flightNumber }}</td>
+                        <td colspan="2">Аэропорт: {{ $airport->name }}</td>
                     </tr>
                     <tr>
                         <td></td>
                     </tr>
+                    @php
+                        $guestsCount = count($guests);
+                    @endphp
                     <tr>
                         <td></td>
-                        <td>Туристы ({{$guestsCount}})</td>
+                        <td>Туристы ({{ $guestsCount }})</td>
                     </tr>
                     @foreach($guests as $index => $guest)
                         <tr class="{{$index === $guestsCount-1 ? 'last' : ''}}">
                             <td></td>
                             <td colspan="4">
-                            <span>
-                                {{++$index}}. {{$guest->fullName()}}, {{$guest->gender() === \Module\Shared\Enum\GenderEnum::MALE ? 'Мужской' : 'Женский' }}, {{$countryNamesById[$guest->countryId()] ?? ''}}
+                            <span class="red">
+                                {{++$index}}. {{ $guest->fullName }}, {{ $guest->gender }}, {{ $guest->countryName }}
                             </span>
                             </td>
                         </tr>
@@ -135,6 +116,7 @@
                     </tr>
                     </tbody>
                 </table>
+
             </td>
         </tr>
         <tr>
@@ -146,22 +128,30 @@
                             <table>
                                 <tbody>
                                 <tr>
-                                    <td>{{$company}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Директор: <b>{{$signer}}</b></td>
-                                </tr>
-                                <tr>
-                                    <td> </td>
-                                </tr>
-                                <tr>
-                                    <td>Менеджер: <b>{{$managerName}}</b></td>
-                                </tr>
-                                <tr>
-                                    <td>E-mail: {{$managerEmail}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Мобильный номер: {{$managerPhone}}</td>
+                                    <td style="width: 500px;">
+                                        <table>
+                                            <tbody>
+                                            <tr>
+                                                <td>{{ $company->name }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Директор: <b>{{ $company->signer }}</b></td>
+                                            </tr>
+                                            <tr>
+                                                <td> </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Менеджер: <b>{{ $manager->fullName }}</b></td>
+                                            </tr>
+                                            <tr>
+                                                <td>E-mail: {{ $manager->email }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Мобильный номер: {{ $manager->phone }}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>

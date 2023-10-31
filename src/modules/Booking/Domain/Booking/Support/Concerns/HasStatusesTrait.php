@@ -16,7 +16,6 @@ use Module\Booking\Domain\Shared\Event\Status\BookingWaitingCancellation;
 use Module\Booking\Domain\Shared\Event\Status\BookingWaitingConfirmation;
 use Module\Booking\Domain\Shared\Event\Status\BookingWaitingProcessing;
 use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
-use Module\Booking\Domain\Shared\ValueObject\BookingTypeEnum;
 
 trait HasStatusesTrait
 {

@@ -76,7 +76,7 @@ $(() => {
 
   }
 
-  const serviceTypeToHandler = (serviceType: BookingDetailsType) => camelCase(`handleShow${serviceType.name}`)
+  const serviceTypeToHandler = (serviceType: BookingDetailsType) => camelCase(`handleShow${serviceType.system_name}`)
 
   $serviceTypeSelect.change((e) => {
     const value = Number(e.target.value)

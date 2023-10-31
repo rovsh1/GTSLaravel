@@ -27,7 +27,7 @@ const setDetailsComponentByServiceType = (typeId: number | undefined) => {
     detailsComponent.value = ErrorComponent
     return
   }
-  const ComponentName = toPascalCase(currentServiceType.name)
+  const ComponentName = toPascalCase(currentServiceType.system_name)
   detailsComponent.value = defineAsyncComponent({
     loader: () => import(`./components/details/${ComponentName}.vue`),
     errorComponent: ErrorComponent,

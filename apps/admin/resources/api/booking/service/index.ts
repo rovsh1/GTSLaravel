@@ -38,7 +38,8 @@ export type CarBid = {
 
 export interface BookingDetailsType {
   id: number
-  name: string
+  system_name: string
+  display_name: string
 }
 
 export type Booking = {

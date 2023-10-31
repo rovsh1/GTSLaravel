@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Booking\Application\Admin\ServiceBooking\Factory;
 
-use App\Admin\Models\Reference\City;
-use App\Admin\Models\Reference\RailwayStation;
 use Module\Booking\Application\Admin\ServiceBooking\Dto\AirportInfoDto;
 use Module\Booking\Application\Admin\ServiceBooking\Dto\CarRentWithDriver\BookingPeriodDto;
 use Module\Booking\Application\Admin\ServiceBooking\Dto\CarRentWithDriverDto;
@@ -38,7 +36,6 @@ use Module\Booking\Domain\BookingRequest\Adapter\AirportAdapterInterface;
 use Module\Booking\Domain\BookingRequest\Adapter\CityAdapterInterface;
 use Module\Booking\Domain\BookingRequest\Adapter\RailwayStationAdapterInterface;
 use Module\Booking\Domain\Shared\ValueObject\GuestId;
-use Module\Booking\Infrastructure\AirportBooking\Models\Airport;
 
 class ServiceDetailsDtoFactory
 {

@@ -11,6 +11,7 @@ use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\JsonResponse;
 
 class AirportController extends AbstractPrototypeController
@@ -35,6 +36,16 @@ class AirportController extends AbstractPrototypeController
 
         if ($request->getCityId() !== null) {
             $airportsQuery->whereCityId($request->getCityId());
+        }
+
+        $supplierId = $request->getSupplierId();
+        if ($supplierId !== null) {
+            $airportsQuery->whereExists(function (Builder $query) use ($supplierId) {
+                $query->selectRaw(1)
+                    ->from('supplier_airports')
+                    ->whereColumn('supplier_airports.airport_id', '=', 'r_airports.id')
+                    ->where('supplier_airports.supplier_id', $supplierId);
+            });
         }
 
         return response()->json(

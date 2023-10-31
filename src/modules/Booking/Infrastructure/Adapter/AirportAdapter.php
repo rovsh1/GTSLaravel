@@ -6,7 +6,7 @@ namespace Module\Booking\Infrastructure\Adapter;
 
 use Module\Booking\Application\Admin\ServiceBooking\Dto\AirportInfoDto;
 use Module\Booking\Domain\BookingRequest\Adapter\AirportAdapterInterface;
-use Module\Booking\Infrastructure\AirportBooking\Models\Airport;
+use Module\Booking\Infrastructure\Shared\Models\Airport;
 
 class AirportAdapter implements AirportAdapterInterface
 {
