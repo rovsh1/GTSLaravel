@@ -390,7 +390,7 @@ class BookingController extends Controller
             ->select('manager_id', ['label' => 'Менеджер', 'items' => Administrator::all(), 'emptyItem' => ''])
             ->select('status', ['label' => 'Статус', 'items' => BookingAdapter::getStatuses(), 'emptyItem' => ''])
             ->enum('source', ['label' => 'Источник', 'enum' => SourceEnum::class, 'emptyItem' => ''])
-            ->dateRange('date_period', ['label' => 'Дата прилета/вылета'])
+//            ->dateRange('date_period', ['label' => 'Дата прилета/вылета'])
             ->dateRange('created_period', ['label' => 'Дата создания']);
     }
 
