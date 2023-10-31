@@ -16,10 +16,7 @@ class BookingServiceType extends Enum
     {
         $cases = $this->enum::cases();
         if ($this->options['withoutHotel']) {
-            $cases = array_filter(
-                $cases,
-                fn(ServiceTypeEnum $serviceType) => $serviceType !== ServiceTypeEnum::HOTEL_BOOKING
-            );
+            $cases = $this->enum::getWithoutHotel();
         }
 
         return array_map(function ($case): array {

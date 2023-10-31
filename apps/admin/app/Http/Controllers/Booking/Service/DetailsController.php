@@ -21,7 +21,7 @@ class DetailsController
     public function getTypes(Request $request): JsonResponse
     {
         return response()->json(
-            ServiceType::collection(ServiceTypeEnum::cases())
+            ServiceType::collection(ServiceTypeEnum::getWithoutHotel())
         );
     }
 

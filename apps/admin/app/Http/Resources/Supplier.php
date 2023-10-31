@@ -4,8 +4,9 @@ namespace App\Admin\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Module\Shared\Enum\Client\TypeEnum;
 
-class Service extends JsonResource
+class Supplier extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,7 +17,7 @@ class Service extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->title,
+            'name' => $this->name,
         ];
     }
 }

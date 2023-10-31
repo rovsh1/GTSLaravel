@@ -91,11 +91,19 @@ $(() => {
 
   $('#form_data_manager_id').select2()
 
-  $('#form_data_service_id').childCombo({
-    urlGetter: (type: number) => `/supplier/services/${type}/list`,
+  const $serviceTypeField = $('#form_data_service_type')
+  const $supplierField = $('#form_data_supplier_id').childCombo({
+    url: '/supplier/search',
     disabledText: 'Выберите тип услуги',
-    parent: $('#form_data_service_type'),
-    dataIndex: 'type',
+    parent: $serviceTypeField,
+    dataIndex: 'service_type',
+    useSelect2: true,
+  })
+
+  $('#form_data_service_id').childCombo({
+    urlGetter: (supplierId: number) => `/supplier/${supplierId}/services/search?type=${$serviceTypeField.val()}`,
+    disabledText: 'Выберите поставщика',
+    parent: $supplierField,
     useSelect2: true,
   })
 

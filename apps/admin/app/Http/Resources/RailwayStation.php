@@ -5,7 +5,7 @@ namespace App\Admin\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class Service extends JsonResource
+class RailwayStation extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,7 +16,8 @@ class Service extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->title,
+            'name' => $this->name,
+            'city_id' => $this->city_id,
         ];
     }
 }
