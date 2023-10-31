@@ -95,3 +95,9 @@ const handleChangeValue = () => {
     </select>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.field-required {
+  width: 100%;
+}
+</style>

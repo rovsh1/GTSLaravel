@@ -5,14 +5,13 @@ import { computed, defineAsyncComponent, nextTick, shallowRef } from 'vue'
 import { watchOnce } from '@vueuse/core'
 
 import { toPascalCase } from '~resources/js/libs/strings'
+import ErrorComponent from '~resources/views/booking/components/ErrorComponent.vue'
 import { useBookingStore } from '~resources/views/service-booking/show/store/booking'
 
 import { useGetBookingDetailsTypesAPI } from '~api/booking/service'
 
 import Card from '~components/Bootstrap/BootstrapCard/BootstrapCard.vue'
 import CardTitle from '~components/Bootstrap/BootstrapCard/components/BootstrapCardTitle.vue'
-
-import ErrorComponent from './components/ErrorComponent.vue'
 
 const bookingStore = useBookingStore()
 const booking = computed(() => bookingStore.booking)
