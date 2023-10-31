@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { defineAsyncComponent, onMounted, reactive, ref, shallowRef } from 'vue'
+import { computed, defineAsyncComponent, onMounted, reactive, ref, shallowRef } from 'vue'
 
 import { toPascalCase } from '~resources/js/libs/strings'
-import ErrorComponent from '~resources/views/booking/components/ErrorComponent.vue'
 import { mapEntitiesToSelectOptions } from '~resources/views/booking/lib/constants'
 
 import { useGetBookingDetailsTypesAPI } from '~api/booking/service'
@@ -19,24 +18,21 @@ const serviceTypesOptions = ref<SelectOption[]>([])
 const serviceFormData = reactive<any>({
   name: '',
   type: 1,
-  cityId: null,
-  status: 1,
-  currency: null,
-  managerId: null,
-  residency: null,
-  markupGroupId: null,
+  details: null,
 })
+
+const isValidForm = computed(() => !!serviceFormData.name && !!serviceFormData.type && !!serviceFormData.details)
 
 const setDetailsComponentByServiceType = (typeId: number | undefined) => {
   const currentServiceType = BookingDetailsTypes.value?.find((type) => type.id === typeId)
   if (!currentServiceType) {
-    detailsComponent.value = ErrorComponent
+    detailsComponent.value = undefined
     return
   }
   const ComponentName = toPascalCase(currentServiceType.system_name)
   detailsComponent.value = defineAsyncComponent({
     loader: () => import(`./components/details/${ComponentName}.vue`),
-    errorComponent: ErrorComponent,
+    errorComponent: undefined,
   })
 }
 
@@ -55,7 +51,7 @@ onMounted(async () => {
     <div class="row form-field field-text field-title field-required">
       <label for="form_data_title" class="col-sm-5 col-form-label">Название</label>
       <div class="col-sm-7 d-flex align-items-center">
-        <input id="form_data_title" type="text" class="form-control" required>
+        <input id="form_data_title" v-model="serviceFormData.name" type="text" class="form-control" required>
       </div>
     </div>
     <div class="row form-field field-bookingservicetype field-type field-required">
@@ -67,11 +63,23 @@ onMounted(async () => {
           :value="serviceFormData.type"
           required
           @input="(value: any, event: any) => {
+            serviceFormData.details = null
             setDetailsComponentByServiceType(value as number)
           }"
         />
       </div>
     </div>
-    <component :is="detailsComponent" v-if="detailsComponent" />
+    <component
+      :is="detailsComponent"
+      v-if="detailsComponent"
+      @get-details-form-data="(value: any) => {
+        serviceFormData.details = value
+      }"
+    />
+    <div class="form-buttons">
+      <button type="button" class="btn btn-primary" :disabled="!isValidForm">Сохранить</button>
+      <a href="#" class="btn btn-cancel">Отмена</a>
+      <div class="spacer" />
+    </div>
   </div>
 </template>

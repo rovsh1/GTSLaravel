@@ -1,24 +1,24 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-
-import { mapEntitiesToSelectOptions } from '~resources/views/booking/lib/constants'
-
-import { useAirportSearchAPI } from '~api/airport'
-
-import { SelectOption } from '~components/Bootstrap/lib'
+import { computed, ref, watch } from 'vue'
 
 import SelectableAirport from '../SelectableAirport.vue'
 
-const { data: airPorts, execute: fetchAirPorts } = useAirportSearchAPI({})
+import { DetailsFormData } from './lib/types'
 
-const airPortsOptions = ref<SelectOption[]>([])
+const emit = defineEmits<{
+  (event: 'getDetailsFormData', value: any): void
+}>()
 
-onMounted(async () => {
-  await fetchAirPorts()
-  airPortsOptions.value = mapEntitiesToSelectOptions(airPorts.value?.map((airPort) => ({
-    id: airPort.id,
-    name: airPort.name,
-  })) || [])
+const formData = ref<DetailsFormData>({
+  airportID: undefined,
+})
+
+const isValidForm = computed(() => !!formData.value.airportID)
+
+watch(formData.value, () => {
+  if (isValidForm.value) {
+    emit('getDetailsFormData', formData.value)
+  }
 })
 
 </script>
@@ -29,6 +29,9 @@ onMounted(async () => {
     <div class="col-sm-7 d-flex align-items-center selected-airport-wrapper">
       <SelectableAirport
         parent-element-class=".selected-airport-wrapper"
+        @change="(value: any) => {
+          formData.airportID = value
+        }"
       />
     </div>
   </div>

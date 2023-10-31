@@ -12,12 +12,13 @@ import Select2BaseSelect from '~components/Select2BaseSelect.vue'
 
 const id = `selected-airport-${nanoid()}`
 
-const selectedAirportID = ref<number | undefined>()
+const selectedCityID = ref<number | undefined>()
 
-const { airports } = requestInitialData('view-initial-data-supplier', z.object({
-  airports: z.array(z.object({
+const { cities } = requestInitialData('view-initial-data-supplier', z.object({
+  cities: z.array(z.object({
     id: z.number(),
     name: z.string(),
+    country_id: z.number(),
   })),
 }))
 
@@ -30,7 +31,7 @@ withDefaults(defineProps<{
   disabled: false,
 })
 
-const airPortsOptions = mapEntitiesToSelectOptions(airports)
+const citiesOptions = mapEntitiesToSelectOptions(cities)
 
 defineEmits<{
   (event: 'change', value: number | undefined): void
@@ -41,8 +42,8 @@ defineEmits<{
 <template>
   <Select2BaseSelect
     :id="id"
-    :options="airPortsOptions"
-    :value="selectedAirportID"
+    :options="citiesOptions"
+    :value="selectedCityID"
     :parent="parentElementClass"
     :enable-tags="true"
     required

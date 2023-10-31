@@ -3,5 +3,5 @@
 </script>
 
 <template>
-  OtherService
+  <div style="display: none;" />
 </template>
