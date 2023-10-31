@@ -402,12 +402,12 @@ class BookingController extends Controller
         return [
             'manager_id' => $manager->id,
             'order_id' => $booking->orderId,
-            'currency' => $order->currency,
-            'service_id' => $booking->serviceInfo->id,
+            'currency' => $order->currency->value,
+            'supplier_id' => $booking->details->serviceInfo->supplierId,
+            'service_id' => $booking->details->serviceInfo->id,
+            'service_type' => $booking->serviceType->id,
             'client_id' => $order->clientId,
             'legal_id' => $order->legalId,
-            'date' => $booking->date->format('Y-m-d'),
-            'time' => $booking->date->format('H:i'),
             'note' => $booking->note,
         ];
     }

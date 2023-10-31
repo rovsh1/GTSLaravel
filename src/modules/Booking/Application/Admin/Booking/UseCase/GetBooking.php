@@ -4,14 +4,29 @@ declare(strict_types=1);
 
 namespace Module\Booking\Application\Admin\Booking\UseCase;
 
+use Module\Booking\Application\Admin\ServiceBooking\Dto\BookingDto;
 use Module\Booking\Application\Admin\ServiceBooking\Factory\BookingDtoFactory;
-use Module\Booking\Application\Admin\Shared\Support\UseCase\AbstractGetBooking as Base;
 use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
+use Module\Booking\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Domain\Shared\Entity\BookingInterface;
+use Sdk\Module\Contracts\UseCase\UseCaseInterface;
+use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
-class GetBooking extends Base
+class GetBooking implements UseCaseInterface
 {
-    public function __construct(BookingRepositoryInterface $repository, BookingDtoFactory $factory)
+    public function __construct(
+        private BookingRepositoryInterface $repository,
+        private readonly BookingDtoFactory $factory,
+    ) {}
+
+    public function execute(int $id): ?BookingDto
     {
-        parent::__construct($repository, $factory);
+        /** @var BookingInterface $booking */
+        $booking = $this->repository->find(new BookingId($id));
+        if ($booking === null) {
+            throw new EntityNotFoundException("Booking not found [$id]");
+        }
+
+        return $this->factory->createFromEntity($booking);
     }
 }
