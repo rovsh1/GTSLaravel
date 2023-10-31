@@ -2,12 +2,12 @@
 
 namespace Module\Shared\Infrastructure\Adapter;
 
+use App\Shared\Contracts\Module\ModuleAdapterInterface;
 use Sdk\Module\Contracts\PortGateway\PortGatewayInterface;
-use Sdk\Module\Foundation\Module;
 
 abstract class AbstractModuleAdapter
 {
-    protected Module $module;
+    protected ModuleAdapterInterface $module;
 
     abstract protected function getModuleKey(): string;
 

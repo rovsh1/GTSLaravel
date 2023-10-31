@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Module\Supplier\Infrastructure\Repository;
 
-use Module\Booking\Deprecated\AirportBooking\ValueObject\ContractId;
+use Module\Booking\Domain\Shared\ValueObject\ContractId;
 use Module\Shared\ValueObject\Date;
 use Module\Supplier\Domain\Supplier\Entity\Contract;
 use Module\Supplier\Domain\Supplier\Repository\ContractRepositoryInterface;
-use Module\Supplier\Domain\Supplier\ValueObject\ServiceId;
 use Module\Supplier\Domain\Supplier\ValueObject\ServiceIdCollection;
 use Module\Supplier\Domain\Supplier\ValueObject\SupplierId;
 use Module\Supplier\Infrastructure\Models\Contract as Model;

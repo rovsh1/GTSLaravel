@@ -383,14 +383,14 @@ class BookingController extends Controller
             ->number('order_id', ['label' => '№ Заказа'])
 //            ->country('country_id', ['label' => 'Страна', 'default' => '1'])
             ->client('client_id', ['label' => 'Клиент', 'emptyItem' => ''])
-            ->enum(
+            ->bookingServiceType(
                 'service_type',
-                ['label' => 'Услуга', 'emptyItem' => '', 'enum' => ServiceTypeEnum::class]
+                ['label' => 'Услуга', 'emptyItem' => '', 'enum' => ServiceTypeEnum::class, 'withoutHotel' => true]
             )
             ->select('manager_id', ['label' => 'Менеджер', 'items' => Administrator::all(), 'emptyItem' => ''])
             ->select('status', ['label' => 'Статус', 'items' => BookingAdapter::getStatuses(), 'emptyItem' => ''])
             ->enum('source', ['label' => 'Источник', 'enum' => SourceEnum::class, 'emptyItem' => ''])
-            ->dateRange('date_period', ['label' => 'Дата прилета/вылета'])
+//            ->dateRange('date_period', ['label' => 'Дата прилета/вылета'])
             ->dateRange('created_period', ['label' => 'Дата создания']);
     }
 
@@ -402,12 +402,12 @@ class BookingController extends Controller
         return [
             'manager_id' => $manager->id,
             'order_id' => $booking->orderId,
-            'currency' => $order->currency,
-            'service_id' => $booking->serviceInfo->id,
+            'currency' => $order->currency->value,
+            'supplier_id' => $booking->details->serviceInfo->supplierId,
+            'service_id' => $booking->details->serviceInfo->id,
+            'service_type' => $booking->serviceType->id,
             'client_id' => $order->clientId,
             'legal_id' => $order->legalId,
-            'date' => $booking->date->format('Y-m-d'),
-            'time' => $booking->date->format('H:i'),
             'note' => $booking->note,
         ];
     }

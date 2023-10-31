@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Adapters\Booking;
 
-use Module\Booking\Application\Admin\HotelBooking\UseCase\Voucher\GetBookingVouchers;
-use Module\Booking\Application\Admin\HotelBooking\UseCase\Voucher\GetDocumentFileInfo;
-use Module\Booking\Application\Admin\HotelBooking\UseCase\Voucher\SendVoucher;
+use Module\Booking\Application\Admin\Order\UseCase\Voucher\GetVouchers;
+use Module\Booking\Application\Admin\Order\UseCase\Voucher\GetDocumentFileInfo;
+use Module\Booking\Application\Admin\Order\UseCase\Voucher\SendVoucher;
 
 class VoucherAdapter
 {
@@ -17,7 +17,7 @@ class VoucherAdapter
 
     public function getBookingVouchers(int $bookingId): array
     {
-        return app(GetBookingVouchers::class)->execute($bookingId);
+        return app(GetVouchers::class)->execute($bookingId);
     }
 
     public function getDocumentFileInfo(int $voucherId): mixed

@@ -17,7 +17,7 @@
             <td class="text-align-right">{{ $airport->director }}</td>
         </tr>
         <tr>
-            <td class="title text-align-center" colspan="2">БРОНЬ НА {{ $service->typeName }}</td>
+            <td class="title text-align-center" colspan="2">БРОНЬ НА {{ strtoupper($service->typeName) }}</td>
         </tr>
         <tr>
             <td class="text-align-center" colspan="2" style="padding-top: 20px; padding-bottom: 20px">Согласно договору
@@ -71,8 +71,8 @@
                     </tr>
                     <tr>
                         <td></td>
-                        <td>Дата прилёта: {{ $departureDate }}</td>
-                        <td colspan="3">Время прилёта: {{ $time }}</td>
+                        <td>Дата прилёта: {{ $date }}</td>
+                        <td colspan="3">Время прилёта: {{$time}}</td>
                     </tr>
                     <tr>
                         <td></td>

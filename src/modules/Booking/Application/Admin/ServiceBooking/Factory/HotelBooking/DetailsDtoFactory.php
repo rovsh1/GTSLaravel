@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Booking\Application\Admin\ServiceBooking\Factory\HotelBooking;
 
-use Module\Booking\Application\Admin\HotelBooking\Dto\Details\AdditionalInfo\ExternalNumberDto;
 use Module\Booking\Application\Admin\HotelBooking\Dto\Details\BookingPeriodDto;
+use Module\Booking\Application\Admin\HotelBooking\Dto\Details\ExternalNumberDto;
 use Module\Booking\Application\Admin\HotelBooking\Dto\Details\HotelInfoDto;
 use Module\Booking\Application\Admin\HotelBooking\Dto\Details\RoomBooking\RoomBookingDetailsDto;
 use Module\Booking\Application\Admin\HotelBooking\Dto\Details\RoomBooking\RoomDayPriceDto;

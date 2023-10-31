@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Module\Booking\Application\Admin\ServiceBooking\UseCase\Guest;
 
 use Module\Booking\Application\Admin\ServiceBooking\Exception\NotFoundServicePriceException;
-use Module\Booking\Deprecated\AirportBooking\Service\GuestManager\GuestManager;
 use Module\Booking\Domain\Booking\Exception\NotFoundAirportServicePrice;
+use Module\Booking\Domain\Booking\Service\AirportBooking\GuestManager;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Domain\Shared\ValueObject\GuestId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;

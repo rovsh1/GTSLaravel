@@ -2,9 +2,6 @@
 
 namespace App\Admin\Models\Supplier;
 
-use App\Admin\Models\Reference\Airport as AirportReference;
-use App\Admin\Models\Reference\City;
-use App\Admin\Models\Reference\RailwayStation;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Facades\DB;
@@ -41,70 +38,6 @@ class Service extends \Module\Supplier\Infrastructure\Models\Service
                 ->whereColumn('t.supplier_id', 'supplier_services.supplier_id')
                 ->where('city_id', $cityId);
         });
-    }
-
-    /**
-     * @return array<int, ServiceSettingsField>
-     */
-    public function getSettingsFields(): array
-    {
-        return match ($this->type) {
-            ServiceTypeEnum::TRANSFER_FROM_RAILWAY => $this->buildRailwaySettings(),
-            ServiceTypeEnum::TRANSFER_TO_RAILWAY => $this->buildRailwaySettings(),
-            ServiceTypeEnum::TRANSFER_FROM_AIRPORT => $this->buildAirportSettings(),
-            ServiceTypeEnum::TRANSFER_TO_AIRPORT => $this->buildAirportSettings(),
-            ServiceTypeEnum::INTERCITY_TRANSFER => $this->buildIntercityTransferSettings(),
-            ServiceTypeEnum::DAY_CAR_TRIP => $this->buildDayCarTripSettings(),
-            ServiceTypeEnum::CIP_ROOM_IN_AIRPORT => $this->buildCIPRoomInAirportSettings(),
-            ServiceTypeEnum::CAR_RENT_WITH_DRIVER => $this->buildCarRentWithDriverSettings(),
-            ServiceTypeEnum::OTHER_SERVICE => [],
-            default => throw new \RuntimeException('Unknown service type')
-        };
-    }
-
-    private function buildRailwaySettings(): array
-    {
-        return [
-            ServiceSettingsField::createSelect('cityId', $this->data['cityId'] ?? null),
-            ServiceSettingsField::createSelect('railwayStationId', $this->data['railwayStationId'] ?? null),
-        ];
-    }
-
-    private function buildAirportSettings(): array
-    {
-        return [
-            ServiceSettingsField::createSelect('airportId', $this->data['airportId'] ?? null),
-        ];
-    }
-
-    private function buildIntercityTransferSettings(): array
-    {
-        return [
-            ServiceSettingsField::createSelect('fromCityId', $this->data['fromCityId'] ?? null),
-            ServiceSettingsField::createSelect('toCityId', $this->data['toCityId'] ?? null),
-            ServiceSettingsField::createBool('returnTripIncluded', $this->data['returnTripIncluded'] ?? null),
-        ];
-    }
-
-    private function buildDayCarTripSettings(): array
-    {
-        return [
-            ServiceSettingsField::createSelect('cityId', $this->data['cityId'] ?? null),
-        ];
-    }
-
-    private function buildCarRentWithDriverSettings(): array
-    {
-        return [
-            ServiceSettingsField::createSelect('cityId', $this->data['cityId'] ?? null),
-        ];
-    }
-
-    private function buildCIPRoomInAirportSettings(): array
-    {
-        return [
-            ServiceSettingsField::createSelect('airportId', $this->data['airportId'] ?? null),
-        ];
     }
 
     public function __toString()

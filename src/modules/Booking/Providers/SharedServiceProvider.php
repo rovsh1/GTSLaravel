@@ -2,7 +2,7 @@
 
 namespace Module\Booking\Providers;
 
-use Module\Booking\Domain\Booking\Repository\BookingGuestRepositoryInterface;
+use Module\Booking\Domain\Booking\Repository\AirportBookingGuestRepositoryInterface;
 use Module\Booking\Domain\Booking\Service\StatusStorageInterface;
 use Module\Booking\Domain\BookingRequest\Adapter\AirportAdapterInterface;
 use Module\Booking\Domain\BookingRequest\Adapter\CityAdapterInterface;
@@ -14,8 +14,8 @@ use Module\Booking\Domain\Shared\Repository\BookingChangesLogRepositoryInterface
 use Module\Booking\Infrastructure\Adapter\AirportAdapter;
 use Module\Booking\Infrastructure\Adapter\CityAdapter;
 use Module\Booking\Infrastructure\Adapter\RailwayStationAdapter;
-use Module\Booking\Infrastructure\AirportBooking\Repository\BookingGuestRepository;
 use Module\Booking\Infrastructure\Service\StatusStorage;
+use Module\Booking\Infrastructure\ServiceBooking\Repository\AirportAirportBookingGuestRepository;
 use Module\Booking\Infrastructure\Shared\Adapter\AdministratorAdapter;
 use Module\Booking\Infrastructure\Shared\Adapter\ClientAdapter;
 use Module\Booking\Infrastructure\Shared\Adapter\CountryAdapter;
@@ -33,7 +33,7 @@ class SharedServiceProvider extends ServiceProvider
 
         $this->app->singleton(BookingChangesLogRepositoryInterface::class, BookingChangesLogRepository::class);
 
-        $this->app->singleton(BookingGuestRepositoryInterface::class, BookingGuestRepository::class);
+        $this->app->singleton(AirportBookingGuestRepositoryInterface::class, AirportAirportBookingGuestRepository::class);
         $this->app->singleton(AirportAdapterInterface::class, AirportAdapter::class);
         $this->app->singleton(RailwayStationAdapterInterface::class, RailwayStationAdapter::class);
         $this->app->singleton(CityAdapterInterface::class, CityAdapter::class);
