@@ -2,20 +2,14 @@ import { MaybeRef } from '@vueuse/core'
 
 import { useAdminAPI } from '~api'
 
-export type CityID = number
-
 export type AirportID = number
 
 export type AirportResponse = {
   id: AirportID
   name: string
-  country_id: CityID
-  country_name?: string
-  center_lat: number
-  center_lon: number
 }
 
-export const useCitySearchAPI = (props: MaybeRef<{ cityID?: number }>) =>
-  useAdminAPI(props, () => '/cities/search')
+export const useAirportSearchAPI = (props: MaybeRef<{ cityID?: number }>) =>
+  useAdminAPI(props, ({ cityID }) => (cityID ? `/airports/search?city_id=${cityID}` : '/airports/search'))
     .get()
     .json<AirportResponse[]>()
