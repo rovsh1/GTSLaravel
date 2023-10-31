@@ -27,7 +27,6 @@ use App\Shared\Http\Responses\AjaxResponseInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Module\Shared\Enum\Client\LegalTypeEnum;
 
 class LegalsController extends Controller
 {
@@ -125,7 +124,6 @@ class LegalsController extends Controller
         return Grid::edit(fn(Legal $legal) => route('client.legals.edit', [$legal->client_id, $legal]))
             ->text('name', ['text' => 'Наименование'])
             ->text('industry_name', ['text' => 'Индустрия'])
-            ->enum('type', ['text' => 'Тип', 'enum' => LegalTypeEnum::class])
             ->text('address', ['text' => 'Адрес']);
     }
 
@@ -133,7 +131,6 @@ class LegalsController extends Controller
     {
         return Form::text('name', ['label' => 'Наименование', 'required' => true])
             ->select('industryId', ['label' => 'Индустрия', 'emptyItem' => '', 'items' => Legal\Industry::get()])
-            ->enum('type', ['label' => 'Тип', 'emptyItem' => '', 'enum' => LegalTypeEnum::class, 'required' => true])
             ->text('address', ['label' => 'Адрес', 'required' => true])
             ->text('bik', ['label' => 'БИК'])
             ->text('cityName', ['label' => 'Город банка'])

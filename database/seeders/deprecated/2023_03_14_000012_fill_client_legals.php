@@ -17,11 +17,6 @@ return new class extends Migration {
 
     public function up(): void
     {
-        $cityIdIndexedByName = DB::table('r_cities')
-            ->join('r_cities_translation', 'r_cities_translation.translatable_id', '=', 'r_cities.id')
-            ->get()
-            ->keyBy('name')->map->id;
-
         $q = DB::connection('mysql_old')->table('client_legal_entities');
         foreach ($q->cursor() as $r) {
             $requisites = DB::connection('mysql_old')
@@ -53,7 +48,6 @@ return new class extends Migration {
                         'city_id' => $r->city_id,
                         'industry_id' => $r->industry_id,
                         'name' => $r->name,
-                        'type' => $r->type,
                         'address' => $r->address,
                         'requisites' => json_encode($bankRequisites->toData()),
                         'created_at' => now(),

@@ -16,7 +16,6 @@ return new class extends Migration
             $table->unsignedInteger('client_id');
             $table->unsignedInteger('city_id')->nullable();
             $table->unsignedInteger('industry_id')->nullable();
-            $table->tinyInteger('type');
             $table->string('name');
             $table->string('address');
             $table->json('requisites')->nullable();

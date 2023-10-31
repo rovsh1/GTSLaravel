@@ -35,12 +35,6 @@ import IconButton from '~components/IconButton.vue'
 import OverlayLoading from '~components/OverlayLoading.vue'
 import Select2BaseSelect from '~components/Select2BaseSelect.vue'
 
-const legalTypeOptions = mapEntitiesToSelectOptions([
-  { id: 1, name: 'OTA' },
-  { id: 2, name: 'TA' },
-  { id: 3, name: 'TO' },
-])
-
 const clientCitySelect2 = ref()
 const clientManagerSelect2 = ref()
 
@@ -61,7 +55,12 @@ const markupGroupOptions = computed(() => {
 })
 
 const { currencies } = storeToRefs(useCurrencyStore())
-const currencyOptions = computed(() => (currencies.value ? mapEntitiesToSelectOptions(currencies.value) : []))
+const currencyOptions = computed<SelectOption[]>(() => {
+  if (!currencies.value) {
+    return []
+  }
+  return currencies.value.map((currency) => ({ value: currency.code_char, label: currency.name }))
+})
 
 const { data: industries, execute: fetchIndustries } = useIndustryListAPI()
 const legalIndustryOptions = computed(() => (industries.value ? mapEntitiesToSelectOptions(industries.value) : []))
@@ -86,7 +85,6 @@ const basicData = reactive<BasicFormData>({
 const legalEntityData = reactive<LegalEntityFormData>({
   name: null,
   industry: null,
-  type: null,
   address: '',
   bik: null,
   bankCity: null,
@@ -115,7 +113,7 @@ const validateBaseDataForm = computed(() => (isDataValid(null, basicData.name)
   && isDataValid(null, basicData.currency) && isDataValid(null, basicData.residency)
   && isDataValid(null, basicData.markupGroupId)))
 
-const validateLegalDataForm = computed(() => (isDataValid(null, legalEntityData.name) && isDataValid(null, legalEntityData.type)
+const validateLegalDataForm = computed(() => (isDataValid(null, legalEntityData.name)
   && isDataValid(null, legalEntityData.address)))
 
 const isFormValid = (): boolean => {
@@ -163,7 +161,6 @@ const resetForm = () => {
   basicData.markupGroupId = null
   legalEntityData.name = null
   legalEntityData.industry = null
-  legalEntityData.type = null
   legalEntityData.address = ''
   legalEntityData.bik = null
   legalEntityData.bankCity = null
@@ -308,7 +305,7 @@ onMounted(() => {
                 :value="basicData.currency"
                 required
                 @input="(value: any, event: any) => {
-                  basicData.currency = value as number
+                  basicData.currency = value as string
                   isDataValid(event, value)
                 }"
               />
@@ -375,20 +372,6 @@ onMounted(() => {
                 :options="legalIndustryOptions"
                 :value="legalEntityData.industry"
                 @input="(value: any) => legalEntityData.industry = value as number"
-              />
-            </div>
-
-            <div class="col-md-12 mt-2">
-              <BootstrapSelectBase
-                id="legal-type"
-                label="Тип"
-                :options="legalTypeOptions"
-                :value="legalEntityData.type"
-                required
-                @input="(value: any, event: any) => {
-                  legalEntityData.type = value as number
-                  isDataValid(event, value)
-                }"
               />
             </div>
 

@@ -9,7 +9,6 @@ use Module\Client\Domain\ValueObject\BankRequisites;
 use Module\Client\Domain\ValueObject\IndustryId;
 use Module\Client\Domain\ValueObject\LegalId;
 use Module\Shared\Contracts\Service\SerializerInterface;
-use Module\Shared\Enum\Client\LegalTypeEnum;
 use Sdk\Module\Foundation\Support\EntityFactory\AbstractEntityFactory;
 
 class LegalFactory extends AbstractEntityFactory
@@ -35,7 +34,6 @@ class LegalFactory extends AbstractEntityFactory
             $data['name'],
             $industryId !== null ? new IndustryId($industryId) : null,
             $data['address'],
-            LegalTypeEnum::from($data['type']),
             $bankRequisites
         );
     }
