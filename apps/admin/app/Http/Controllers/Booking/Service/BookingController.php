@@ -383,9 +383,9 @@ class BookingController extends Controller
             ->number('order_id', ['label' => '№ Заказа'])
 //            ->country('country_id', ['label' => 'Страна', 'default' => '1'])
             ->client('client_id', ['label' => 'Клиент', 'emptyItem' => ''])
-            ->enum(
+            ->bookingServiceType(
                 'service_type',
-                ['label' => 'Услуга', 'emptyItem' => '', 'enum' => ServiceTypeEnum::class]
+                ['label' => 'Услуга', 'emptyItem' => '', 'enum' => ServiceTypeEnum::class, 'withoutHotel' => true]
             )
             ->select('manager_id', ['label' => 'Менеджер', 'items' => Administrator::all(), 'emptyItem' => ''])
             ->select('status', ['label' => 'Статус', 'items' => BookingAdapter::getStatuses(), 'emptyItem' => ''])
