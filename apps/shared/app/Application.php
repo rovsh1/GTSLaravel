@@ -49,7 +49,7 @@ class Application extends \Illuminate\Foundation\Application
 
     public function modulesPath($path = ''): string
     {
-        return $this->basePath('modules' . ($path != '' ? DIRECTORY_SEPARATOR . $path : ''));
+        return $this->basePath('src/modules' . ($path != '' ? DIRECTORY_SEPARATOR . $path : ''));
     }
 
     public function module(string $name): ?ModuleAdapterInterface
