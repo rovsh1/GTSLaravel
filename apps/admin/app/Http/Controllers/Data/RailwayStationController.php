@@ -2,17 +2,33 @@
 
 namespace App\Admin\Http\Controllers\Data;
 
+use App\Admin\Http\Requests\RailwayStation\SearchRequest;
+use App\Admin\Http\Resources\RailwayStation as Resource;
+use App\Admin\Models\Reference\RailwayStation;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
+use Illuminate\Http\JsonResponse;
 
 class RailwayStationController extends AbstractPrototypeController
 {
     protected function getPrototypeKey(): string
     {
         return 'railway-station';
+    }
+
+    public function search(SearchRequest $request): JsonResponse
+    {
+        $query = RailwayStation::query();
+        if ($request->getCityId() !== null) {
+            $query->whereCityId($request->getCityId());
+        }
+
+        return response()->json(
+            Resource::collection($query->get())
+        );
     }
 
     protected function formFactory(): FormContract

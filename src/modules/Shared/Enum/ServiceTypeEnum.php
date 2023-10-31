@@ -35,6 +35,14 @@ enum ServiceTypeEnum: int
         ];
     }
 
+    public static function getWithoutHotel(): array
+    {
+        return array_filter(
+            self::cases(),
+            fn(ServiceTypeEnum $serviceType) => $serviceType !== ServiceTypeEnum::HOTEL_BOOKING
+        );
+    }
+
     public function isAirportService(): bool
     {
         return in_array($this, self::getAirportCases(), true);
