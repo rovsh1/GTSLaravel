@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Client\Application\Request;
+namespace Module\Client\Application\Admin\Request;
 
 class SetLegalBankRequisitesDto
 {

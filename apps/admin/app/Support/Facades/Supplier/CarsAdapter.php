@@ -3,7 +3,6 @@
 namespace App\Admin\Support\Facades\Supplier;
 
 use Illuminate\Support\Facades\Facade;
-use Module\Client\Application\Dto\LegalDto;
 use Module\Supplier\Application\Dto\CarDto;
 
 /**

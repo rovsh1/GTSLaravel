@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Client\Application\UseCase;
+namespace Module\Client\Application\Admin\UseCase;
 
 use Module\Client\Domain\Invoice\Repository\InvoiceRepositoryInterface;
 use Module\Client\Domain\Order\Repository\OrderRepositoryInterface;

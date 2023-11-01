@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Module\Client\Application\UseCase;
+namespace Module\Client\Application\Admin\UseCase;
 
-use Module\Client\Application\Request\PantPaymentRequestDto;
+use Module\Client\Application\Admin\Request\PantPaymentRequestDto;
 use Module\Client\Domain\Invoice\Repository\InvoiceRepositoryInterface;
 use Module\Client\Domain\Invoice\ValueObject\InvoiceId;
 use Module\Client\Domain\Order\ValueObject\OrderId;

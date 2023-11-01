@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Module\Client\Application\UseCase;
+namespace Module\Client\Application\Admin\UseCase;
 
-use Module\Client\Application\Request\SetLegalBankRequisitesDto;
+use Module\Client\Application\Admin\Request\SetLegalBankRequisitesDto;
 use Module\Client\Domain\Repository\LegalRepositoryInterface;
 use Module\Client\Domain\ValueObject\BankRequisites;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;

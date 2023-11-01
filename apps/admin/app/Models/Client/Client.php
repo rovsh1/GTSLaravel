@@ -17,7 +17,7 @@ class Client extends Model
 
     public $timestamps = false;
 
-    protected array $quicksearch = ['id', 'clients.name%'];
+    protected array $quicksearch = ['id', 'clients.%name%'];
 
     protected $table = 'clients';
 
@@ -78,6 +78,11 @@ class Client extends Model
     public function legals(): HasMany
     {
         return $this->hasMany(Legal::class);
+    }
+
+    public function users(): HasMany
+    {
+        return $this->hasMany(User::class);
     }
 
     public function __toString()

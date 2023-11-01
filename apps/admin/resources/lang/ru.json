@@ -56,6 +56,9 @@
     "group.notification": "Уведомления",
     "group.services": "Услуги",
 
+    "App\\Admin\\Models\\Client\\DocumentTypeEnum::CONTRACT": "Договор",
+    "App\\Admin\\Models\\Client\\DocumentTypeEnum::OTHER": "Другие документы",
+
     "Module\\Shared\\Enum\\SourceEnum::SITE": "Сайт",
     "Module\\Shared\\Enum\\SourceEnum::ADMIN": "Панель администратора",
     "Module\\Shared\\Enum\\SourceEnum::HOTEL": "Панель гостиницы",
