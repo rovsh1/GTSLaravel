@@ -118,7 +118,7 @@ class ClientUserController extends Controller
     {
         return Form::select(
             'user_id',
-            ['label' => 'Пользователь', 'emptyItem' => '', 'items' => User::whereNull('client_id')->get()]
+            ['label' => 'Пользователь', 'emptyItem' => '', 'items' => []]
         );
     }
 
