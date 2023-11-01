@@ -59,6 +59,7 @@ class Handler extends ExceptionHandler
                 Layout::configure();
             }
 
+            dd($e);
             return parent::render($request, $e);
         }
     }

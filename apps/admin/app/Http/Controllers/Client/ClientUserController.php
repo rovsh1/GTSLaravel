@@ -58,13 +58,9 @@ class ClientUserController extends Controller
 
     public function create(Request $request, Client $client): View
     {
-        try {
-            return view('default.dialog-form', [
-                'form' => $this->formFactory()->action(route('client.users.store', $client))
-            ]);
-        } catch (\Throwable $e) {
-            dd($e);
-        }
+        return view('default.dialog-form', [
+            'form' => $this->formFactory()->action(route('client.users.store', $client))
+        ]);
     }
 
     public function store(Client $client): AjaxResponseInterface
