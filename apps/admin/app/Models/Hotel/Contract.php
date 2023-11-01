@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
-use Module\Catalog\Application\Admin\UseCase\GetDocumentFiles;
+use Module\Catalog\Application\Admin\UseCase\GetContractDocuments;
 use Module\Shared\Dto\FileDto;
 use Sdk\Module\Database\Eloquent\Model;
 use Sdk\Module\Support\DateTime;
@@ -82,7 +82,7 @@ class Contract extends Model
 
     public function documents(): Attribute
     {
-        return Attribute::make(get: fn() => app(GetDocumentFiles::class)->execute($this->id));
+        return Attribute::make(get: fn() => app(GetContractDocuments::class)->execute($this->id));
     }
 
     public function seasons(): HasMany
