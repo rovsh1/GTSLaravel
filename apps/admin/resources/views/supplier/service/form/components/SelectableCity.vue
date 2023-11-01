@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import { nanoid } from 'nanoid'
 import { z } from 'zod'
 
 import { mapEntitiesToSelectOptions } from '~resources/views/booking/lib/constants'
@@ -10,11 +9,9 @@ import { requestInitialData } from '~lib/initial-data'
 
 import Select2BaseSelect from '~components/Select2BaseSelect.vue'
 
-const id = `selected-airport-${nanoid()}`
-
 const selectedCityID = ref<number | undefined>()
 
-const { cities } = requestInitialData('view-initial-data-supplier', z.object({
+const { cities } = requestInitialData('view-initial-data-supplier-service', z.object({
   cities: z.array(z.object({
     id: z.number(),
     name: z.string(),
@@ -23,6 +20,7 @@ const { cities } = requestInitialData('view-initial-data-supplier', z.object({
 }))
 
 withDefaults(defineProps<{
+  id: string
   parentElementClass: string
   value?: number
   disabled?: boolean

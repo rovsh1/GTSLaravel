@@ -6,15 +6,15 @@ withDefaults(defineProps<{
   value: boolean
   label: string
   disabled?: MaybeRef<boolean>
+  id?: string
 }>(), {
   disabled: false,
+  id: `checkbox-${nanoid()}`,
 })
 
 const emit = defineEmits<{
   (event: 'input', value: boolean): void
 }>()
-
-const id = `checkbox-${nanoid()}`
 
 const handleChange = (event: Event) => {
   const target = event.target as HTMLInputElement

@@ -6,7 +6,7 @@ import SelectableCity from '../SelectableCity.vue'
 import { DetailsFormData } from './lib/types'
 
 const emit = defineEmits<{
-  (event: 'getDetailsFormData', value: any): void
+  (event: 'formCompleted', value: DetailsFormData): void
 }>()
 
 const formData = ref<DetailsFormData>({
@@ -17,7 +17,7 @@ const isValidForm = computed(() => !!formData.value.cityID)
 
 watch(formData.value, () => {
   if (isValidForm.value) {
-    emit('getDetailsFormData', formData.value)
+    emit('formCompleted', formData.value)
   }
 })
 
@@ -25,11 +25,12 @@ watch(formData.value, () => {
 
 <template>
   <div class="row form-field field-bookingservicetype field-type field-required">
-    <label for="form_data_type" class="col-sm-5 col-form-label">Город</label>
+    <label for="form_data_airport" class="col-sm-5 col-form-label">Город</label>
     <div class="col-sm-7 d-flex align-items-center selected-city-wrapper">
       <SelectableCity
+        id="form_data_airport"
         parent-element-class=".selected-city-wrapper"
-        @change="(value: any) => {
+        @change="(value: number | undefined) => {
           formData.cityID = value
         }"
       />

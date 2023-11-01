@@ -12,7 +12,7 @@ import SelectableCity from '../SelectableCity.vue'
 import { DetailsFormData } from './lib/types'
 
 const emit = defineEmits<{
-  (event: 'getDetailsFormData', value: any): void
+  (event: 'formCompleted', value: DetailsFormData): void
 }>()
 
 const formData = ref<DetailsFormData>({
@@ -35,7 +35,7 @@ const isValidForm = computed(() => !!formData.value.cityID && !!formData.value.r
 
 watch(formData.value, () => {
   if (isValidForm.value) {
-    emit('getDetailsFormData', formData.value)
+    emit('formCompleted', formData.value)
   }
 })
 
@@ -43,11 +43,12 @@ watch(formData.value, () => {
 
 <template>
   <div class="row form-field field-bookingservicetype field-type field-required">
-    <label for="form_data_type" class="col-sm-5 col-form-label">Город</label>
+    <label for="form_data_city" class="col-sm-5 col-form-label">Город</label>
     <div class="col-sm-7 d-flex align-items-center selected-city-wrapper">
       <SelectableCity
+        id="form_data_city"
         parent-element-class=".selected-city-wrapper"
-        @change="(value: any) => {
+        @change="(value: number | undefined) => {
           formData.cityID = value
           fetchRailwayStation()
         }"
@@ -55,13 +56,13 @@ watch(formData.value, () => {
     </div>
   </div>
   <div class="row form-field field-bookingservicetype field-type field-required">
-    <label for="form_data_type" class="col-sm-5 col-form-label">Жд станция</label>
-    <div class="col-sm-7 d-flex align-items-center selected-railway-wrapper">
+    <label for="form_data_railway_station" class="col-sm-5 col-form-label">Жд станция</label>
+    <div class="col-sm-7 d-flex align-items-center selected-railway-station-wrapper">
       <Select2BaseSelect
-        id="selected-railway"
+        id="form_data_railway_station"
         :options="railwayStationOptions"
         :value="formData.railwayStationId"
-        parent=".selected-railway-wrapper"
+        parent=".selected-railway-station-wrapper"
         :enable-tags="true"
         required
         :disabled="!formData.cityID || isFetchingRailwayStation"
