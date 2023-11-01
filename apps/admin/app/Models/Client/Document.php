@@ -99,7 +99,7 @@ class Document extends Model
         return Attribute::make(
             get: fn() => app(GetDocumentFiles::class)->execute($this->id),
             set: function ($files) {
-                $this->savingFiles = $files;
+                $this->savingFiles = $files ?? [];
 
                 return [];
             }
