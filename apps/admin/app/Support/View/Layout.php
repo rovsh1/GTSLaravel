@@ -57,6 +57,8 @@ class Layout
 
     public function title(string $title): static
     {
+        $this->meta->title($title);
+
         return $this->setOption('title', $title);
     }
 

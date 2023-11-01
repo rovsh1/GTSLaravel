@@ -2,10 +2,10 @@
 
 namespace App\Admin\Support\Adapters\Client;
 
-use Module\Client\Application\Dto\LegalDto;
-use Module\Client\Application\Request\SetLegalBankRequisitesDto;
-use Module\Client\Application\UseCase\FindLegal;
-use Module\Client\Application\UseCase\SetLegalBankRequisites;
+use Module\Client\Application\Admin\Dto\LegalDto;
+use Module\Client\Application\Admin\Request\SetLegalBankRequisitesDto;
+use Module\Client\Application\Admin\UseCase\FindLegal;
+use Module\Client\Application\Admin\UseCase\SetLegalBankRequisites;
 
 class LegalAdapter
 {

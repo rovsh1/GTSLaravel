@@ -37,12 +37,14 @@ class UserController extends AbstractPrototypeController
     public function edit(int $id): LayoutContract
     {
         $this->isEdit = true;
+
         return parent::edit($id);
     }
 
     public function update(int $id): RedirectResponse
     {
         $this->isEdit = true;
+
         return parent::update($id);
     }
 
@@ -51,7 +53,7 @@ class UserController extends AbstractPrototypeController
         return (new ParamsTable())
             ->id('id', 'ID')
             ->text('presentation', 'Имя в системе')
-            ->text('client_id', 'Клиент')
+            ->text('client_name', 'Клиент')
             ->text('surname', 'Фамилия')
             ->text('name', 'Имя')
             ->text('patronymic', 'Отчество')
@@ -76,7 +78,24 @@ class UserController extends AbstractPrototypeController
                     'order' => true
                 ]
             )
-            ->text('city_name', ['text' => 'Город / Клиент'])
+            ->text(
+                'city_name',
+                [
+                    'text' => 'Город / Клиент',
+                    'renderer' => function ($row, $city) {
+                        $clientName = $row['client_name'] ?? null;
+                        if ($city && $clientName) {
+                            return $city . ' / ' . $clientName;
+                        } elseif ($city && !$clientName) {
+                            return $city;
+                        } elseif (!$city && $clientName) {
+                            return $clientName;
+                        }
+
+                        return '';
+                    }
+                ]
+            )
             ->text('email', ['text' => 'Email'])
             ->text('phone', ['text' => 'Телефон']);
     }

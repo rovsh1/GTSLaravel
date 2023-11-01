@@ -1,6 +1,6 @@
 @use "~resources/views/main";
 
-.card h5 > a {
+.card h5>a {
   display: inline-block;
   margin-left: 1rem;
   color: var(--text);
@@ -52,20 +52,24 @@ div.hotel-usabilities li {
   position: relative;
 }
 
-div.hotel-usabilities li > input {
-  vertical-align: top;
-  margin-top: 3px;
+div.hotel-usabilities li>input {
+  vertical-align: middle;
   margin-right: 0.313rem;
+}
+
+div.hotel-usabilities li>label {
+  vertical-align: middle;
 }
 
 div.hotel-usabilities div.radio-wrapper {
   position: absolute;
-  top: 0.75rem;
+  top: 50%;
   right: 1rem;
   display: flex;
   gap: 0.5rem;
   align-items: center;
   font-size: 0.688rem;
+  transform: translateY(-50%);
 
   input {
     margin-right: 0.313rem;
@@ -168,4 +172,14 @@ div.accordion-list li {
 
 div.accordion-list section:last-child li:last-child {
   border-bottom: none;
+}
+
+#hotel-services table tr td {
+  &>* {
+    vertical-align: middle;
+  }
+
+  &>input {
+    margin-right: 0.313rem;
+  }
 }

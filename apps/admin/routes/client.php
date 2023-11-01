@@ -9,6 +9,18 @@ AclRoute::for('client')
     ->resource('legals', Controllers\Client\LegalsController::class, [
         'except' => ['show']
     ])
+    ->resource('users', Controllers\Client\ClientUserController::class, [
+        'except' => ['show', 'edit', 'update', 'destroy']
+    ])
+    ->delete(
+        '/{client}/users/bulk',
+        Controllers\Client\ClientUserController::class . '@bulkDelete',
+        'delete',
+        'delete.bulk'
+    )
+    ->resource('documents', Controllers\Client\DocumentController::class, [
+        'except' => ['show']
+    ])
     ->get('/legals/search', Controllers\Client\LegalsController::class . '@search', 'read', 'legals.search')
     ->get('/industry/list', Controllers\Client\IndustryController::class . '@list', 'read', 'industry.list')
     ->get('/list', Controllers\Client\ClientController::class . '@list', 'read', 'list')

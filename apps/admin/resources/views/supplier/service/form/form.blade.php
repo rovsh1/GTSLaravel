@@ -10,10 +10,13 @@
 
 @section('head-end')
     <script>
-      window['view-initial-data-supplier'] = {{ Js::from([
+      window['view-initial-data-supplier-service'] = {{ Js::from([
             'supplier' => $supplier,
             'airports' => $airports,
             'cities' => $cities,
+            'cancelUrl' => $cancelUrl,
+            'createUrl' => $createUrl,
+            'service' => $service,
         ]) }}
     </script>
 @endsection

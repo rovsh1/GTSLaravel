@@ -51,8 +51,6 @@ export const showNotConfirmedReasonDialog = (): Promise<ShowNotConfirmedReasonDi
       return false
     },
     close: () => {
-      // @todo click outside не вызывает событие close, из-за этого интерфейс зависает
-
       resolve({ result: false, reason: reasonDescription, toggleLoading: () => {}, toggleClose: () => {} })
     },
   })

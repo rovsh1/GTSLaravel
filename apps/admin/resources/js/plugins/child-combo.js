@@ -86,6 +86,7 @@ $.fn.childCombo = function (options) {
 
     child.prop('disabled', true)
     const isEmpty = parent.val() === null || parent.val() === ''
+
     if (!preparedOptions.allowEmpty && isEmpty) {
       if (preparedOptions.useSelect2 && isMultiple) {
         child.val([])
@@ -107,6 +108,8 @@ $.fn.childCombo = function (options) {
     const data = { ...preparedOptions.data }
     if (!isEmpty) {
       data[preparedOptions.dataIndex] = parent.val()
+    } else {
+      return
     }
 
     if (preparedOptions.useSelect2 && isMultiple) {

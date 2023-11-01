@@ -17,13 +17,13 @@ class User extends Model
     protected $table = 'users';
 
     protected array $quicksearch = [
-        'id',
-        'users.name%',
-        'users.surname%',
-        'users.patronymic%',
-        'users.presentation%',
-        'users.login%',
-        'users.email%',
+        'users.id',
+        'users.%name%',
+        'users.%surname%',
+        'users.%patronymic%',
+        'users.%presentation%',
+        'users.%login%',
+        'users.%email%',
     ];
 
     protected $fillable = [
@@ -60,6 +60,7 @@ class User extends Model
             $builder
                 ->addSelect('users.*')
                 ->leftJoin('clients', 'clients.id', '=', 'users.client_id')
+                ->addSelect('clients.name as client_name')
                 ->leftJoin('r_cities', 'r_cities.id', '=', 'clients.city_id')
                 ->joinTranslatable('r_cities', 'name as city_name');
         });

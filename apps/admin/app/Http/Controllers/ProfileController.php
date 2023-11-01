@@ -2,14 +2,15 @@
 
 namespace App\Admin\Http\Controllers;
 
+use App\Admin\Models\Administrator\Administrator;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Layout;
 use App\Shared\Http\Responses\AjaxReloadResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
-use Module\Administrator\Application\UseCase\UpdateAvatar;
 use Module\Booking\Application\Admin\Booking\UseCase\TestUseCase;
-use Module\Shared\Dto\UploadedFileDto;
+use Module\Shared\Contracts\Adapter\FileStorageAdapterInterface;
 
 class ProfileController extends Controller
 {
@@ -103,10 +104,7 @@ class ProfileController extends Controller
         if ($request->isMethod('get')) {
         } elseif ($form->submit()) {
             $uploadedFile = $request->file('data.image');
-            app(UpdateAvatar::class)->execute(
-                $user->id,
-                UploadedFileDto::fromUploadedFile($uploadedFile)
-            );
+            $this->updateAvatar($user, $uploadedFile);
 
             return new AjaxReloadResponse();
         }
@@ -117,5 +115,18 @@ class ProfileController extends Controller
             'avatar' => $user->avatar,
             'form' => $form
         ]);
+    }
+
+    private function updateAvatar(Administrator $model, UploadedFile $uploadedFile): void
+    {
+        $fileStorageAdapter = app(FileStorageAdapterInterface::class);
+        $fileDto = $fileStorageAdapter->updateOrCreate(
+            $model->avatar,
+            $uploadedFile->getClientOriginalName(),
+            $uploadedFile->get()
+        );
+        if ($fileDto) {
+            $model->update(['avatar' => $fileDto->guid]);
+        }
     }
 }
