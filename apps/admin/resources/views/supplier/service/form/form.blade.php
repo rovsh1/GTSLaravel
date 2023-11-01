@@ -16,7 +16,7 @@
             'cities' => $cities,
             'cancelUrl' => $cancelUrl,
             'createUrl' => $createUrl,
-            'service' => $service,
+            'service' => $service ?? null,
         ]) }}
     </script>
 @endsection
