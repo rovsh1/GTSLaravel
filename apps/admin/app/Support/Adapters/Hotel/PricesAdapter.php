@@ -5,12 +5,15 @@ namespace App\Admin\Support\Adapters\Hotel;
 use App\Shared\Support\Adapters\AbstractHotelAdapter;
 use Carbon\CarbonInterface;
 use Module\Catalog\Application\Admin\Price\GetRoomPrices;
+use Module\Catalog\Application\Admin\UseCase\Price\GetSeasonsPrices;
+use Module\Catalog\Application\Admin\UseCase\Price\SetDatePrice;
+use Module\Catalog\Application\Admin\UseCase\Price\SetSeasonsPrice;
 
 class PricesAdapter extends AbstractHotelAdapter
 {
     public function getSeasonsPrices(int $hotelId): array
     {
-        return $this->request('getSeasonsPrices', ['hotelId' => $hotelId]);
+        return app(GetSeasonsPrices::class)->execute($hotelId);
     }
 
     public function setSeasonPrice(
@@ -20,15 +23,8 @@ class PricesAdapter extends AbstractHotelAdapter
         int $guestsCount,
         bool $isResident,
         ?float $price,
-    ): bool {
-        return $this->request('setSeasonPrice', [
-            'roomId' => $roomId,
-            'seasonId' => $seasonId,
-            'rateId' => $rateId,
-            'guestsCount' => $guestsCount,
-            'isResident' => $isResident,
-            'price' => $price,
-        ]);
+    ): void {
+        app(SetSeasonsPrice::class)->execute($seasonId, $roomId, $rateId, $guestsCount, $isResident, $price);
     }
 
     public function getDatePrices(int $seasonId): array
@@ -44,15 +40,7 @@ class PricesAdapter extends AbstractHotelAdapter
         int $guestsCount,
         bool $isResident,
         float $price,
-    ): bool {
-        return $this->request('setDatePrice', [
-            'date' => $date,
-            'roomId' => $roomId,
-            'seasonId' => $seasonId,
-            'rateId' => $rateId,
-            'guestsCount' => $guestsCount,
-            'isResident' => $isResident,
-            'price' => $price,
-        ]);
+    ): void {
+        app(SetDatePrice::class)->execute($date, $seasonId, $roomId, $rateId, $guestsCount, $isResident, $price);
     }
 }

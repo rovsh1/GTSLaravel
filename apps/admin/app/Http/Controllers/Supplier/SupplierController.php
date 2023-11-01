@@ -2,6 +2,7 @@
 
 namespace App\Admin\Http\Controllers\Supplier;
 
+use App\Admin\Http\Requests\Supplier\SearchRequest;
 use App\Admin\Http\Resources\Supplier as Resource;
 use App\Admin\Models\Reference\City;
 use App\Admin\Models\Supplier\Supplier;
@@ -15,8 +16,8 @@ use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\View\Menus\SupplierMenu;
 use Gsdk\Format\View\ParamsTable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class SupplierController extends AbstractPrototypeController
 {
@@ -25,10 +26,20 @@ class SupplierController extends AbstractPrototypeController
         return 'supplier';
     }
 
-    public function search(Request $request): JsonResponse
+    public function search(SearchRequest $request): JsonResponse
     {
+        $supplierQuery = Supplier::query();
+        if ($request->getServiceType() !== null) {
+            $supplierQuery->whereExists(function (Builder $query) use ($request) {
+                $query->selectRaw(1)
+                    ->from('supplier_services')
+                    ->whereColumn('suppliers.id', 'supplier_services.supplier_id')
+                    ->where('supplier_services.type', $request->getServiceType());
+            });
+        }
+
         return response()->json(
-            Resource::collection(Supplier::get())
+            Resource::collection($supplierQuery->get())
         );
     }
 

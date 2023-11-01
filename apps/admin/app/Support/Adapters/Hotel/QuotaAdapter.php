@@ -5,92 +5,59 @@ namespace App\Admin\Support\Adapters\Hotel;
 use App\Shared\Support\Adapters\AbstractHotelAdapter;
 use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
+use Module\Catalog\Application\Admin\UseCase\RoomQuota\CloseRoomQuota;
+use Module\Catalog\Application\Admin\UseCase\RoomQuota\GetAvailableQuotas;
+use Module\Catalog\Application\Admin\UseCase\RoomQuota\GetQuotas;
+use Module\Catalog\Application\Admin\UseCase\RoomQuota\GetSoldQuotas;
+use Module\Catalog\Application\Admin\UseCase\RoomQuota\GetStoppedQuotas;
+use Module\Catalog\Application\Admin\UseCase\RoomQuota\OpenRoomQuota;
+use Module\Catalog\Application\Admin\UseCase\RoomQuota\ResetRoomQuota;
+use Module\Catalog\Application\Admin\UseCase\RoomQuota\UpdateRoomQuota;
 
 class QuotaAdapter extends AbstractHotelAdapter
 {
     public function getQuotas(int $hotelId, CarbonPeriod $period, ?int $roomId = null): array
     {
-        return $this->request('getQuotas', [
-            'hotel_id' => $hotelId,
-            'room_id' => $roomId,
-            'date_from' => $period->getStartDate(),
-            'date_to' => $period->getEndDate(),
-        ]);
+        return app(GetQuotas::class)->execute($hotelId, $period, $roomId);
     }
 
     public function getAvailableQuotas(int $hotelId, CarbonPeriod $period, ?int $roomId = null): array
     {
-        return $this->request('getAvailableQuotas', [
-            'hotel_id' => $hotelId,
-            'room_id' => $roomId,
-            'date_from' => $period->getStartDate(),
-            'date_to' => $period->getEndDate(),
-        ]);
+        return app(GetAvailableQuotas::class)->execute($hotelId, $period, $roomId);
     }
 
     public function getSoldQuotas(int $hotelId, CarbonPeriod $period, ?int $roomId = null): array
     {
-        return $this->request('getSoldQuotas', [
-            'hotel_id' => $hotelId,
-            'room_id' => $roomId,
-            'date_from' => $period->getStartDate(),
-            'date_to' => $period->getEndDate(),
-        ]);
+        return app(GetSoldQuotas::class)->execute($hotelId, $period, $roomId);
     }
 
     public function getStoppedQuotas(int $hotelId, CarbonPeriod $period, ?int $roomId = null): array
     {
-        return $this->request('getStoppedQuotas', [
-            'hotel_id' => $hotelId,
-            'room_id' => $roomId,
-            'date_from' => $period->getStartDate(),
-            'date_to' => $period->getEndDate(),
-        ]);
+        return app(GetStoppedQuotas::class)->execute($hotelId, $period, $roomId);
     }
 
     public function updateRoomQuota(int $roomId, CarbonInterface $date, ?int $count, ?int $releaseDays = null): void
     {
-        $this->request('updateRoomQuota', [
-            'room_id' => $roomId,
-            'quota' => $count,
-            'release_days' => $releaseDays,
-            ...$this->getPeriodByDate($date)
-        ]);
+        app(UpdateRoomQuota::class)->execute($roomId, $this->getPeriodByDate($date), $count, $releaseDays);
     }
 
     public function openRoomQuota(int $roomId, CarbonInterface $date): void
     {
-        $this->request('openRoomQuota', [
-            'room_id' => $roomId,
-            ...$this->getPeriodByDate($date)
-        ]);
+        app(OpenRoomQuota::class)->execute($roomId, $this->getPeriodByDate($date));
     }
 
     public function closeRoomQuota(int $roomId, CarbonInterface $date): void
     {
-        $this->request('closeRoomQuota', [
-            'room_id' => $roomId,
-            ...$this->getPeriodByDate($date)
-        ]);
+        app(CloseRoomQuota::class)->execute($roomId, $this->getPeriodByDate($date));
     }
 
     public function resetRoomQuota(int $roomId, CarbonInterface $date): void
     {
-        $this->request('resetRoomQuota', [
-            'room_id' => $roomId,
-            ...$this->getPeriodByDate($date)
-        ]);
+        app(ResetRoomQuota::class)->execute($roomId, $this->getPeriodByDate($date));
     }
 
-    /**
-     * @param CarbonInterface $date
-     * @return array<string, CarbonInterface>
-     */
-    private function getPeriodByDate(CarbonInterface $date): array
+    private function getPeriodByDate(CarbonInterface $date): CarbonPeriod
     {
-        return [
-            'date_from' => $date->clone()->startOfDay(),
-            'date_to' => $date->clone()->endOfDay(),
-        ];
+        return new CarbonPeriod($date->clone()->startOfDay(), $date->clone()->endOfDay());
     }
 }

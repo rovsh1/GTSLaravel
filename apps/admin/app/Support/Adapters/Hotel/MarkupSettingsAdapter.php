@@ -5,53 +5,58 @@ declare(strict_types=1);
 namespace App\Admin\Support\Adapters\Hotel;
 
 use App\Shared\Support\Adapters\AbstractHotelAdapter;
+use Module\Catalog\Application\Admin\Enums\UpdateMarkupSettingsActionEnum;
+use Module\Catalog\Application\Admin\Response\MarkupSettingsDto;
+use Module\Catalog\Application\Admin\Response\RoomMarkupsDto;
 use Module\Catalog\Application\Admin\UseCase\GetMarkupSettings;
 use Module\Catalog\Application\Admin\UseCase\GetRoomMarkups;
+use Module\Catalog\Application\Admin\UseCase\MarkupSettings\UpdateMarkupSettingsValue;
+use Module\Catalog\Application\Admin\UseCase\MarkupSettings\UpdateRoomMarkupSettings;
 
 class MarkupSettingsAdapter extends AbstractHotelAdapter
 {
-    public function getHotelMarkupSettings(int $hotelId): mixed
+    public function getHotelMarkupSettings(int $hotelId): MarkupSettingsDto
     {
         return app(GetMarkupSettings::class)->execute($hotelId);
     }
 
-    public function updateMarkupSettings(int $hotelId, string $key, mixed $value): mixed
+    public function updateMarkupSettings(int $hotelId, string $key, mixed $value): void
     {
-        return $this->request('updateMarkupSettingsValue', [
-            'hotel_id' => $hotelId,
-            'key' => $key,
-            'value' => $value,
-            'action' => 'update'
-        ]);
+        app(UpdateMarkupSettingsValue::class)->execute(
+            $hotelId,
+            $key,
+            $value,
+            UpdateMarkupSettingsActionEnum::UPDATE
+        );
     }
 
-    public function addMarkupSettingsCondition(int $hotelId, string $key, mixed $value): mixed
+    public function addMarkupSettingsCondition(int $hotelId, string $key, mixed $value): void
     {
-        return $this->request('updateMarkupSettingsValue', [
-            'hotel_id' => $hotelId,
-            'key' => $key,
-            'value' => $value,
-            'action' => 'addToCollection'
-        ]);
+        app(UpdateMarkupSettingsValue::class)->execute(
+            $hotelId,
+            $key,
+            $value,
+            UpdateMarkupSettingsActionEnum::ADD_TO_COLLECTION
+        );
     }
 
-    public function deleteMarkupSettingsCondition(int $hotelId, string $key, int $index): mixed
+    public function deleteMarkupSettingsCondition(int $hotelId, string $key, int $index): void
     {
-        return $this->request('updateMarkupSettingsValue', [
-            'hotel_id' => $hotelId,
-            'key' => $key,
-            'value' => $index,
-            'action' => 'deleteFromCollection'
-        ]);
+        app(UpdateMarkupSettingsValue::class)->execute(
+            $hotelId,
+            $key,
+            $index,
+            UpdateMarkupSettingsActionEnum::DELETE_FROM_COLLECTION
+        );
     }
 
-    public function getRoomMarkupSettings(int $hotelId, int $roomId): mixed
+    public function getRoomMarkupSettings(int $hotelId, int $roomId): ?RoomMarkupsDto
     {
         return app(GetRoomMarkups::class)->execute($roomId);
     }
 
-    public function updateRoomMarkupSettings(int $roomId, string $key, int $value): mixed
+    public function updateRoomMarkupSettings(int $roomId, string $key, int $value): void
     {
-        return $this->request('updateRoomMarkupSettings', ['room_id' => $roomId, 'key' => $key, 'value' => $value]);
+        app(UpdateRoomMarkupSettings::class)->execute($roomId, $key, $value);
     }
 }
