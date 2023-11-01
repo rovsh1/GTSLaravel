@@ -14,7 +14,7 @@ use Sdk\Module\Support\ServiceProvider;
 
 class TemplateServiceProvider extends ServiceProvider
 {
-    public function boot()
+    public function boot(): void
     {
         $this->app->singleton(TemplateRendererInterface::class, MailTemplateRenderer::class);
         $this->app->singleton(RecipientsFinderInterface::class, RecipientsFinder::class);
