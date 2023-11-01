@@ -16,16 +16,25 @@ import BootstrapSelectBase from '~components/Bootstrap/BootstrapSelectBase.vue'
 import { SelectOption } from '~components/Bootstrap/lib'
 import OverlayLoading from '~components/OverlayLoading.vue'
 
-const { supplier, cancelUrl } = requestInitialData('view-initial-data-supplier-service', z.object({
-  supplier: z.object({
+const { service, cancelUrl } = requestInitialData('view-initial-data-supplier-service', z.object({
+  service: z.object({
     id: z.number(),
-    name: z.string(),
-  }),
+    title: z.string(),
+    type: z.number(),
+    data: z.object({
+      airportId: z.number().optional(),
+      cityId: z.number().optional(),
+      fromCityId: z.number().optional(),
+      toCityId: z.number().optional(),
+      returnTripIncluded: z.boolean().optional(),
+      railwayStationId: z.number().optional(),
+    }),
+  }).nullable(),
   cancelUrl: z.string(),
 }))
 
 type ServiceFormData = {
-  name: string
+  title: string
   type: number | undefined
   details: DetailsFormData | undefined
 }
@@ -37,12 +46,12 @@ const { data: BookingDetailsTypes, execute: fetchBookingDetailsTypes } = useGetB
 const serviceTypesOptions = ref<SelectOption[]>([])
 
 const serviceFormData = reactive<ServiceFormData>({
-  name: '',
+  title: '',
   type: undefined,
   details: undefined,
 })
 
-const isValidForm = computed(() => !!serviceFormData.name && !!serviceFormData.type && !!serviceFormData.details)
+const isValidForm = computed(() => !!serviceFormData.title && !!serviceFormData.type && !!serviceFormData.details)
 
 const setDetailsComponentByServiceType = (typeId: number | undefined) => {
   serviceFormData.type = typeId
@@ -60,11 +69,18 @@ const setDetailsComponentByServiceType = (typeId: number | undefined) => {
 }
 
 onMounted(async () => {
+  console.log(window['view-initial-data-supplier-service'])
   await fetchBookingDetailsTypes()
   serviceTypesOptions.value = mapEntitiesToSelectOptions(BookingDetailsTypes.value?.map((type) => ({
     id: type.id,
     name: type.display_name,
   })) || [])
+  if (service) {
+    serviceFormData.title = service.title
+    serviceFormData.type = service.type
+    serviceFormData.details = service.data
+    setDetailsComponentByServiceType(service.type)
+  }
 })
 
 </script>
@@ -74,7 +90,7 @@ onMounted(async () => {
     <div class="row form-field field-text field-title field-required">
       <label for="form_data_title" class="col-sm-5 col-form-label">Название</label>
       <div class="col-sm-7 d-flex align-items-center">
-        <input id="form_data_title" v-model="serviceFormData.name" type="text" class="form-control" required>
+        <input id="form_data_title" v-model="serviceFormData.title" type="text" class="form-control" required>
       </div>
     </div>
     <div class="row form-field field-bookingservicetype field-type field-required">
@@ -96,7 +112,8 @@ onMounted(async () => {
       <component
         :is="detailsComponent"
         v-if="detailsComponent"
-        @form-completed="(value: DetailsFormData) => {
+        :value="service && service.type === serviceFormData.type ? service.data : undefined"
+        @form-completed="(value: DetailsFormData | undefined) => {
           serviceFormData.details = value
         }"
       />

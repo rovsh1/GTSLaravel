@@ -9,8 +9,6 @@ import { requestInitialData } from '~lib/initial-data'
 
 import Select2BaseSelect from '~components/Select2BaseSelect.vue'
 
-const selectedAirportID = ref<number | undefined>()
-
 const { airports } = requestInitialData('view-initial-data-supplier-service', z.object({
   airports: z.array(z.object({
     id: z.number(),
@@ -18,7 +16,7 @@ const { airports } = requestInitialData('view-initial-data-supplier-service', z.
   })),
 }))
 
-withDefaults(defineProps<{
+const props = withDefaults(defineProps<{
   id: string
   parentElementClass: string
   value?: number
@@ -27,6 +25,8 @@ withDefaults(defineProps<{
   value: undefined,
   disabled: false,
 })
+
+const selectedAirportID = ref<number | undefined>(props.value)
 
 const airPortsOptions = mapEntitiesToSelectOptions(airports)
 

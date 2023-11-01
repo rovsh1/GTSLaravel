@@ -4,7 +4,7 @@ import { onMounted } from 'vue'
 import { DetailsFormData } from './lib/types'
 
 const emit = defineEmits<{
-  (event: 'formCompleted', value: DetailsFormData): void
+  (event: 'formCompleted', value: DetailsFormData | undefined): void
 }>()
 
 onMounted(() => {

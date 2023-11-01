@@ -1,6 +1,6 @@
 export type DetailsFormData = {
-  airportID?: number
-  cityID?: number
+  airportId?: number
+  cityId?: number
   fromCityId?: number
   toCityId?: number
   returnTripIncluded?: boolean

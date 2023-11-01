@@ -1,24 +1,38 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 
 import SelectableAirport from '../SelectableAirport.vue'
 
 import { DetailsFormData } from './lib/types'
 
-const emit = defineEmits<{
-  (event: 'formCompleted', value: DetailsFormData): void
+const props = defineProps<{
+  value: DetailsFormData | undefined
 }>()
 
-const formData = ref<DetailsFormData>({
-  airportID: undefined,
+const emit = defineEmits<{
+  (event: 'formCompleted', value: DetailsFormData | undefined): void
+}>()
+
+const formData = ref<DetailsFormData>(props.value || {
+  airportId: undefined,
 })
 
-const isValidForm = computed(() => !!formData.value.airportID)
+const isValidForm = computed(() => !!formData.value.airportId)
 
-watch(formData.value, () => {
+const handleFormCompleted = () => {
   if (isValidForm.value) {
     emit('formCompleted', formData.value)
+  } else {
+    emit('formCompleted', undefined)
   }
+}
+
+watch(formData.value, () => {
+  handleFormCompleted()
+})
+
+onMounted(() => {
+  handleFormCompleted()
 })
 
 </script>
@@ -29,9 +43,10 @@ watch(formData.value, () => {
     <div class="col-sm-7 d-flex align-items-center selected-airport-wrapper">
       <SelectableAirport
         id="form_data_airport"
+        :value="formData.airportId"
         parent-element-class=".selected-airport-wrapper"
         @change="(value: number | undefined) => {
-          formData.airportID = value
+          formData.airportId = value
         }"
       />
     </div>
