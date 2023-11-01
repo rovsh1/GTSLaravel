@@ -24,6 +24,9 @@ $(() => {
       url: $(this).attr('href'),
       title: 'Добавить пользователя',
       buttons: ['submit', 'cancel', { text: 'Новый пользователь', cls: 'btn', handler: createNewUserHandler }],
+      update: () => {
+        $('#form_data_user_id').select2({ dropdownParent: $('.modal-dialog .modal-body') })
+      },
     })
   })
 

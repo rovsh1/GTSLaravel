@@ -116,6 +116,7 @@ class ClientUserController extends Controller
 
     protected function formFactory(): FormContract
     {
+        //@todo hack видимо на серваке ограничение по памяти (если выгружать всех - падает с фаталом)
         $users = User::whereNull('client_id')->limit(100)->get();
         return Form::select(
             'user_id',
