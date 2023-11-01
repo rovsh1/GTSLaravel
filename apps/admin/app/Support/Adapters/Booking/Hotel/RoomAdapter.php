@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Adapters\Booking\Hotel;
 
-use App\Shared\Support\Adapters\AbstractHotelAdapter;
 use Module\Booking\Application\Admin\HotelBooking\Request\AddRoomDto;
 use Module\Booking\Application\Admin\HotelBooking\Request\UpdateRoomDto;
 use Module\Booking\Application\Admin\HotelBooking\UseCase\Room\Add;
@@ -15,7 +14,7 @@ use Module\Booking\Application\Admin\HotelBooking\UseCase\Room\Guest\Unbind;
 use Module\Booking\Application\Admin\HotelBooking\UseCase\Room\SetManualPrice;
 use Module\Booking\Application\Admin\HotelBooking\UseCase\Room\Update;
 
-class RoomAdapter extends AbstractHotelAdapter
+class RoomAdapter
 {
     public function getAvailableRooms(int $bookingId): array
     {

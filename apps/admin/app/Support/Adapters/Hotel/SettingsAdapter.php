@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Adapters\Hotel;
 
-use App\Shared\Support\Adapters\AbstractHotelAdapter;
 use Module\Catalog\Application\Admin\Response\HotelDto;
 use Module\Catalog\Application\Admin\UseCase\FindHotelById;
 use Module\Catalog\Application\Admin\UseCase\UpdateTimeSettings;
 
-class SettingsAdapter extends AbstractHotelAdapter
+class SettingsAdapter
 {
     public function getHotelSettings(int $hotelId): ?HotelDto
     {

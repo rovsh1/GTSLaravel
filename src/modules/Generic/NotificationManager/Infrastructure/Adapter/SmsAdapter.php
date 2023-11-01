@@ -2,9 +2,7 @@
 
 namespace Module\Generic\NotificationManager\Infrastructure\Adapter;
 
-use Module\Shared\Infrastructure\Adapter\AbstractModuleAdapter;
-
-class SmsAdapter extends AbstractModuleAdapter
+class SmsAdapter
 {
     public function sendText(string $phone, string $text): void
     {
