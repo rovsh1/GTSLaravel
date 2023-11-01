@@ -58,9 +58,12 @@ class ClientUserController extends Controller
 
     public function create(Request $request, Client $client): View
     {
+        $form = $this->formFactory()
+            ->method('post')
+            ->action(route('client.users.store', $client));
+
         return view('default.dialog-form', [
-//            'form' => $this->formFactory()->action(route('client.users.store', $client))
-            'form' => ''
+            'form' => $form
         ]);
     }
 
