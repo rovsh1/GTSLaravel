@@ -11,79 +11,78 @@ use Module\Shared\Enum\ServiceTypeEnum;
 
 class TestDataSeeder extends Seeder
 {
+    private const TEST_SUPPLIER_ID = 299;
+
     public function run(): void
     {
         if (app()->environment('prod', 'production') || DB::table('hotel_price_groups')->exists()) {
             return;
         }
 
-        DB::unprepared(file_get_contents(__DIR__ . "/sql/test_supplier.sql"));
-        DB::unprepared(file_get_contents(__DIR__ . "/sql/test_clients.sql"));
+        DB::unprepared(file_get_contents(__DIR__ . '/sql/test_supplier.sql'));
+        DB::unprepared(file_get_contents(__DIR__ . '/sql/test_clients.sql'));
         DB::unprepared(file_get_contents(__DIR__ . '/sql/test_hotels.sql'));
+        app(FillCalculatedPriceCalendar::class)->execute(75);
 
-        DB::table('hotel_calculated_price_calendar')->delete();
-        DB::table('hotel_season_price_calendar')->delete();
-        DB::table('hotel_season_prices')->delete();
-        DB::table('hotel_price_groups')->delete();
+//        DB::table('hotel_calculated_price_calendar')->delete();
+//        DB::table('hotel_season_price_calendar')->delete();
+//        DB::table('hotel_season_prices')->delete();
+//        DB::table('hotel_price_groups')->delete();
+//
+//        DB::table('hotel_price_groups')
+//            ->insert([
+//                ['id' => 1, 'rate_id' => 251, 'guests_count' => 1, 'is_resident' => 1],
+//                ['id' => 2, 'rate_id' => 251, 'guests_count' => 1, 'is_resident' => 0],
+//                ['id' => 3, 'rate_id' => 251, 'guests_count' => 2, 'is_resident' => 1],
+//                ['id' => 4, 'rate_id' => 251, 'guests_count' => 2, 'is_resident' => 0],
+//                ['id' => 5, 'rate_id' => 251, 'guests_count' => 3, 'is_resident' => 1],
+//                ['id' => 6, 'rate_id' => 251, 'guests_count' => 3, 'is_resident' => 0],
+//            ]);
+//
+//        DB::table('hotel_season_prices')
+//            ->insert([
+//                ['season_id' => 1197, 'group_id' => 1, 'room_id' => 233, 'price' => 500000],
+//                ['season_id' => 1197, 'group_id' => 2, 'room_id' => 233, 'price' => 600000],
+//                ['season_id' => 1197, 'group_id' => 3, 'room_id' => 233, 'price' => 650000],
+//                ['season_id' => 1197, 'group_id' => 4, 'room_id' => 233, 'price' => 700000],
+//
+//                ['season_id' => 1197, 'group_id' => 1, 'room_id' => 238, 'price' => 1000000],
+//                ['season_id' => 1197, 'group_id' => 2, 'room_id' => 238, 'price' => 2000000],
+//                ['season_id' => 1197, 'group_id' => 3, 'room_id' => 238, 'price' => 1000000],
+//                ['season_id' => 1197, 'group_id' => 4, 'room_id' => 238, 'price' => 2000000],
+//                ['season_id' => 1197, 'group_id' => 5, 'room_id' => 238, 'price' => 1000000],
+//                ['season_id' => 1197, 'group_id' => 6, 'room_id' => 238, 'price' => 2000000],
+//            ]);
 
-        DB::table('hotel_price_groups')
-            ->insert([
-                ['id' => 1, 'rate_id' => 251, 'guests_count' => 1, 'is_resident' => 1],
-                ['id' => 2, 'rate_id' => 251, 'guests_count' => 1, 'is_resident' => 0],
-                ['id' => 3, 'rate_id' => 251, 'guests_count' => 2, 'is_resident' => 1],
-                ['id' => 4, 'rate_id' => 251, 'guests_count' => 2, 'is_resident' => 0],
-                ['id' => 5, 'rate_id' => 251, 'guests_count' => 3, 'is_resident' => 1],
-                ['id' => 6, 'rate_id' => 251, 'guests_count' => 3, 'is_resident' => 0],
-            ]);
+//        app(FillCalculatedPriceCalendar::class)->execute(61);
+//
+        $testSupplierId = self::TEST_SUPPLIER_ID;
+        $supplierSeasonId = 1;
 
-        DB::table('hotel_season_prices')
-            ->insert([
-                ['season_id' => 1197, 'group_id' => 1, 'room_id' => 233, 'price' => 500000],
-                ['season_id' => 1197, 'group_id' => 2, 'room_id' => 233, 'price' => 600000],
-                ['season_id' => 1197, 'group_id' => 3, 'room_id' => 233, 'price' => 650000],
-                ['season_id' => 1197, 'group_id' => 4, 'room_id' => 233, 'price' => 700000],
-
-                ['season_id' => 1197, 'group_id' => 1, 'room_id' => 238, 'price' => 1000000],
-                ['season_id' => 1197, 'group_id' => 2, 'room_id' => 238, 'price' => 2000000],
-                ['season_id' => 1197, 'group_id' => 3, 'room_id' => 238, 'price' => 1000000],
-                ['season_id' => 1197, 'group_id' => 4, 'room_id' => 238, 'price' => 2000000],
-                ['season_id' => 1197, 'group_id' => 5, 'room_id' => 238, 'price' => 1000000],
-                ['season_id' => 1197, 'group_id' => 6, 'room_id' => 238, 'price' => 2000000],
-            ]);
-
-        app(FillCalculatedPriceCalendar::class)->execute(61);
-
-        $testSupplierId = DB::table('suppliers')->insertGetId([
-            'name' => 'Sixt',
-            'currency' => CurrencyEnum::UZS,
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-
-        $supplierSeasonId = DB::table('supplier_seasons')->insertGetId([
-            'supplier_id' => $testSupplierId,
-            'number' => '2023',
-            'date_start' => '2023-01-01',
-            'date_end' => '2023-12-31',
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-
-        DB::table('supplier_cities')->insert([
-            [
-                'supplier_id' => $testSupplierId,
-                'city_id' => 1,
-            ],
-            [
-                'supplier_id' => $testSupplierId,
-                'city_id' => 4,
-            ],
-        ]);
-
-        DB::table('supplier_requisites')->insert([
-            ['supplier_id' => $testSupplierId, 'inn' => '12345678', 'director_full_name' => 'John Doe']
-        ]);
-
+//        $supplierSeasonId = DB::table('supplier_seasons')->insertGetId([
+//            'supplier_id' => $testSupplierId,
+//            'number' => '2023',
+//            'date_start' => '2023-01-01',
+//            'date_end' => '2023-12-31',
+//            'created_at' => now(),
+//            'updated_at' => now()
+//        ]);
+//
+//        DB::table('supplier_cities')->insert([
+//            [
+//                'supplier_id' => $testSupplierId,
+//                'city_id' => 1,
+//            ],
+//            [
+//                'supplier_id' => $testSupplierId,
+//                'city_id' => 4,
+//            ],
+//        ]);
+//
+//        DB::table('supplier_requisites')->insert([
+//            ['supplier_id' => $testSupplierId, 'inn' => '12345678', 'director_full_name' => 'John Doe']
+//        ]);
+//
         $this->seedTransferSupplierData($testSupplierId, $supplierSeasonId);
         $this->seedAirportSupplierData($testSupplierId, $supplierSeasonId);
     }
