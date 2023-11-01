@@ -17,6 +17,10 @@ class TestDataSeeder extends Seeder
             return;
         }
 
+        DB::unprepared(file_get_contents(__DIR__ . "/sql/test_supplier.sql"));
+        DB::unprepared(file_get_contents(__DIR__ . "/sql/test_clients.sql"));
+        DB::unprepared(file_get_contents(__DIR__ . '/sql/test_hotels.sql'));
+
         DB::table('hotel_calculated_price_calendar')->delete();
         DB::table('hotel_season_price_calendar')->delete();
         DB::table('hotel_season_prices')->delete();
