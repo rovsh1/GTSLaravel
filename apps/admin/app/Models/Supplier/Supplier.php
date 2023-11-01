@@ -79,16 +79,19 @@ class Supplier extends Model
         return $this->hasMany(Season::class);
     }
 
+    public function services(): HasMany
+    {
+        return $this->hasMany(Service::class);
+    }
+
     public function transferServices(): HasMany
     {
-        return $this->hasMany(Service::class)
-            ->whereIn('type', ServiceTypeEnum::getTransferCases());
+        return $this->services()->whereIn('type', ServiceTypeEnum::getTransferCases());
     }
 
     public function airportServices(): HasMany
     {
-        return $this->hasMany(Service::class)
-            ->whereIn('type', ServiceTypeEnum::getAirportCases());
+        return $this->services()->whereIn('type', ServiceTypeEnum::getAirportCases());
     }
 
     public function getCitiesAttribute(): array
