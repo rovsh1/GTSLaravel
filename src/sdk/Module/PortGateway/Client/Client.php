@@ -25,7 +25,7 @@ class Client implements PortGatewayInterface
         $module->boot();
 
         try {
-            return $module->get('router')->request($request->path(), $request->attributes());
+            return $module->make('router')->request($request->path(), $request->attributes());
         } catch (\Throwable $e) {
             throw new BasePortGatewayException($e->getMessage(), (int)$e->getCode(), $e);
         }

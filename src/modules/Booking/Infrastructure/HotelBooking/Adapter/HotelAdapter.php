@@ -10,8 +10,8 @@ use Module\Catalog\Application\Admin\Response\RoomMarkupsDto;
 use Module\Catalog\Application\Admin\ResponseDto\PriceRateDto;
 use Module\Catalog\Application\Admin\UseCase\FindHotelById;
 use Module\Catalog\Application\Admin\UseCase\GetMarkupSettings;
-use Module\Catalog\Application\Admin\UseCase\GetPriceRates;
 use Module\Catalog\Application\Admin\UseCase\GetRoomMarkups;
+use Module\Catalog\Application\Admin\UseCase\Price\GetPriceRates;
 use Module\Pricing\Application\UseCase\GetHotelRoomBasePrice;
 
 class HotelAdapter implements HotelAdapterInterface

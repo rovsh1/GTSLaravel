@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Catalog\Application\Admin\UseCase;
+namespace Module\Catalog\Application\Admin\UseCase\Price;
 
 use Module\Catalog\Application\Admin\ResponseDto\PriceRateDto;
 use Module\Catalog\Domain\Hotel\Entity\PriceRate;
