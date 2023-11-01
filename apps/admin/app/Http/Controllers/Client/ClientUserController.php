@@ -116,9 +116,10 @@ class ClientUserController extends Controller
 
     protected function formFactory(): FormContract
     {
+        $users = User::whereNull('users.client_id')->get();
         return Form::select(
             'user_id',
-            ['label' => 'Пользователь', 'emptyItem' => '', 'items' => []]
+            ['label' => 'Пользователь', 'emptyItem' => '', 'items' => $users]
         );
     }
 
