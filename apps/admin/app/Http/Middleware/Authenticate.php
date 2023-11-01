@@ -5,6 +5,7 @@ namespace App\Admin\Http\Middleware;
 use App\Admin\Models\Administrator\Administrator;
 use App\Shared\Support\Facades\AppContext;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
+use Illuminate\Http\Request;
 
 class Authenticate extends Middleware
 {
@@ -17,21 +18,24 @@ class Authenticate extends Middleware
         if (!$administrator->isActive() && !$administrator->isSuperuser()) {
             $administrator->setRememberToken(null);
             $this->unauthenticated($request, ['admin']);
+        } else {
+            AppContext::setAdministrator($administrator->id, $administrator->presentation);
         }
-
-        AppContext::setAdministrator($administrator->id, $administrator->presentation);
     }
 
     /**
-     * Get the path the user should be redirected to when they are not authenticated.
-     *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      * @return string|null
      */
     protected function redirectTo($request)
     {
         if (!$request->expectsJson()) {
-            return route('auth.login');
+            $query = ($q = $request->query())
+                ? '?' . http_build_query($q) : '';
+
+            return route('auth.login', [
+                'url' => "/{$request->path()}$query"
+            ]);
         }
     }
 }
