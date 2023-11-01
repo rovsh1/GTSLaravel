@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Client\Application\Dto;
+namespace Module\Client\Application\Admin\Dto;
 
 use Module\Client\Domain\Entity\Legal;
 use Module\Shared\Contracts\Domain\EntityInterface;

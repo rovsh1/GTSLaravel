@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Module\Booking\Infrastructure\Shared\Adapter;
 
 use Module\Booking\Domain\Shared\Adapter\ClientAdapterInterface;
-use Module\Client\Application\Dto\ClientDto;
-use Module\Client\Application\Dto\LegalDto;
-use Module\Client\Application\UseCase\FindClient;
-use Module\Client\Application\UseCase\FindLegal;
+use Module\Client\Application\Admin\Dto\ClientDto;
+use Module\Client\Application\Admin\Dto\LegalDto;
+use Module\Client\Application\Admin\UseCase\FindClient;
+use Module\Client\Application\Admin\UseCase\FindLegal;
 
 class ClientAdapter implements ClientAdapterInterface
 {

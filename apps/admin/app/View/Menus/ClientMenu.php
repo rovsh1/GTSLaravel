@@ -29,7 +29,7 @@ class ClientMenu extends AbstractSubmenu
             $this->addUrl('legals', route('client.legals.index', $this->model), 'Юр. лица', ['icon' => 'gavel']);
         }
 
-        $this->addUrl('documents', route('client.show', $this->model), 'Документы', ['icon' => 'pending_actions'])
-            ->addUrl('users', route('client.show', $this->model), 'Пользователи', ['icon' => 'person']);
+        $this->addUrl('documents', route('client.documents.index', $this->model), 'Документы', ['icon' => 'pending_actions'])
+            ->addUrl('users', route('client.users.index', $this->model), 'Пользователи', ['icon' => 'person']);
     }
 }

@@ -200,7 +200,8 @@ class ClientController extends AbstractPrototypeController
             ->enum('type', ['text' => 'Тип', 'enum' => TypeEnum::class])
             ->text('country_name', ['text' => 'Страна'])
             ->text('city_name', ['text' => 'Город'])
-            ->enum('status', ['text' => 'Статус', 'enum' => StatusEnum::class]);
+            ->enum('status', ['text' => 'Статус', 'enum' => StatusEnum::class])
+            ->orderBy('name', 'asc');
     }
 
     protected function formFactory(): FormContract

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Module\Client\Application\UseCase;
+namespace Module\Client\Application\Admin\UseCase;
 
-use Module\Client\Application\Dto\LegalDto;
+use Module\Client\Application\Admin\Dto\LegalDto;
 use Module\Client\Domain\Repository\LegalRepositoryInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 

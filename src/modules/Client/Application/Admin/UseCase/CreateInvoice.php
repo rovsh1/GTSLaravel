@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Module\Client\Application\UseCase;
+namespace Module\Client\Application\Admin\UseCase;
 
-use Module\Client\Application\Dto\InvoiceDto;
-use Module\Client\Application\Request\CreateInvoiceRequestDto;
+use Module\Client\Application\Admin\Dto\InvoiceDto;
+use Module\Client\Application\Admin\Request\CreateInvoiceRequestDto;
 use Module\Client\Domain\Invoice\Invoice;
 use Module\Client\Domain\Invoice\Repository\InvoiceRepositoryInterface;
 use Module\Client\Domain\Invoice\ValueObject\OrderIdCollection;
