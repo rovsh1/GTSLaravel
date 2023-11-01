@@ -12,6 +12,7 @@ import { useGetBookingDetailsTypesAPI } from '~api/booking/service'
 
 import { requestInitialData } from '~lib/initial-data'
 
+import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 import BootstrapSelectBase from '~components/Bootstrap/BootstrapSelectBase.vue'
 import { SelectOption } from '~components/Bootstrap/lib'
 import OverlayLoading from '~components/OverlayLoading.vue'
@@ -119,9 +120,22 @@ onMounted(async () => {
       />
     </div>
     <div class="form-buttons">
-      <button type="button" class="btn btn-primary" :disabled="!isValidForm">Сохранить</button>
+      <BootstrapButton
+        label="Сохранить"
+        :disabled="!isValidForm"
+        severity="primary"
+        @click="() => {}"
+      />
       <a :href="cancelUrl" class="btn btn-cancel">Отмена</a>
       <div class="spacer" />
+      <BootstrapButton
+        v-if="!!service"
+        label="Удалить"
+        start-icon="delete"
+        variant="outline"
+        severity="link"
+        @click="() => {}"
+      />
     </div>
   </div>
 </template>
