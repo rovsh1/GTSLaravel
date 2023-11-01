@@ -71,6 +71,8 @@ class ServicesController extends Controller
         return (new DefaultFormCreateAction($this->formFactory($provider->id)))
             ->handle('Новая услуга')
             ->view('supplier.service.form.form', [
+                'cancelUrl' => $this->prototype->route('services.index', $provider),
+                'createUrl' => $this->prototype->route('services.store', $provider),
                 'supplier' => SupplierResource::make($provider),
                 'airports' => Airport::collection($provider->airports()->get()),
                 'cities' => City::collection($provider->cities()->get())
@@ -91,6 +93,7 @@ class ServicesController extends Controller
             ->deletable()
             ->handle($service)
             ->view('supplier.service.form.form', [
+                'service' => $service,
                 'supplier' => SupplierResource::make($provider),
                 'airports' => Airport::collection($provider->airports()->get()),
                 'cities' => City::collection($provider->cities()->get())
