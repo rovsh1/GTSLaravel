@@ -226,7 +226,8 @@ class BookingController extends Controller
                 id: $id,
                 status: $request->getStatus(),
                 notConfirmedReason: $request->getNotConfirmedReason() ?? '',
-                supplierPenalty: $request->getSupplierPenalty()
+                supplierPenalty: $request->getSupplierPenalty(),
+                clientPenalty: $request->getClientPenalty(),
             )
         );
     }
@@ -298,7 +299,6 @@ class BookingController extends Controller
         $this->administratorRepository->create($newBookingId, $administrator->id);
 
         return redirect(
-        //@todo определить тип брони и сделать редирект на правильный роут
             route('service-booking.show', $newBookingId)
         );
     }
