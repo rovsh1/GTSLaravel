@@ -10,7 +10,7 @@
         <div class="content-body">
             <div class="card card-form">
                 <div class="card-body">
-                    <form action="{{route('auth.login')}}" method="POST">
+                    <form method="POST">
                         <h1 class="h3 mb-3 fw-normal">{{ __('auth.login.form.header') }}</h1>
 
                         {!! $form !!}

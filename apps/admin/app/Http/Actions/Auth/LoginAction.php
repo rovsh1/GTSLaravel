@@ -9,7 +9,9 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginAction
 {
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 
     public function handle(Request $request)
     {
@@ -17,7 +19,9 @@ class LoginAction
         if ($form->submit() && $this->login($form->getData())) {
             $request->session()->regenerate();
 
-            return redirect(route('home'));
+            $url = $request->query('url') ?? route('home');
+
+            return redirect($url);
         }
 
         return redirect(route('auth.login'))
@@ -27,13 +31,14 @@ class LoginAction
     private function login($credentials): bool
     {
         if (
-            Auth::guard('admin')->attempt(
-                ['login' => $credentials['login'], 'password' => $credentials['password']],
-                true
-            )
+            Auth::guard('admin')->attempt([
+                'login' => $credentials['login'],
+                'password' => $credentials['password']
+            ], true)
         ) {
             /** @var Administrator $administrator */
             $administrator = Auth::guard('admin')->user();
+
             return $administrator->isSuperuser() || $administrator->isActive();
         }
 

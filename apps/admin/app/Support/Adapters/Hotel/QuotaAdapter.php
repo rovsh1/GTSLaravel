@@ -2,7 +2,6 @@
 
 namespace App\Admin\Support\Adapters\Hotel;
 
-use App\Shared\Support\Adapters\AbstractHotelAdapter;
 use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
 use Module\Catalog\Application\Admin\UseCase\RoomQuota\CloseRoomQuota;
@@ -14,7 +13,7 @@ use Module\Catalog\Application\Admin\UseCase\RoomQuota\OpenRoomQuota;
 use Module\Catalog\Application\Admin\UseCase\RoomQuota\ResetRoomQuota;
 use Module\Catalog\Application\Admin\UseCase\RoomQuota\UpdateRoomQuota;
 
-class QuotaAdapter extends AbstractHotelAdapter
+class QuotaAdapter
 {
     public function getQuotas(int $hotelId, CarbonPeriod $period, ?int $roomId = null): array
     {

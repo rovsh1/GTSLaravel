@@ -2,6 +2,7 @@
 
 namespace App\Admin\Models\Hotel;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Module\Shared\Enum\ContactTypeEnum;
 use Sdk\Module\Database\Eloquent\Model;
@@ -27,5 +28,15 @@ class Contact extends Model
     public function employee(): BelongsTo
     {
         return $this->belongsTo(Employee::class, 'employee_id', 'id');
+    }
+
+    public function scopeWhereIsEmail(Builder $builder): void
+    {
+        $builder->where('type', ContactTypeEnum::EMAIL->value);
+    }
+
+    public function scopeWhereIsPhone(Builder $builder): void
+    {
+        $builder->where('type', ContactTypeEnum::PHONE->value);
     }
 }

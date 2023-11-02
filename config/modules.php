@@ -26,6 +26,9 @@ return [
     'CurrencyRate' => [
         'path' => 'Generic/CurrencyRate',
     ],
+    'Notification' => [
+        'path' => 'Generic/Notification'
+    ],
     'FileStorage' => [
         'path' => 'Support/FileStorage',
         'alias' => 'files',

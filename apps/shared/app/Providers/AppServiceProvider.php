@@ -15,7 +15,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(DatabaseServiceProvider::class);
         $this->app->register(DateServiceProvider::class);
         $this->app->register(MacrosServiceProvider::class);
-        $this->app->register(PortGatewayServiceProvider::class);
         $this->app->register(QueueServiceProvider::class);
         $this->app->register(ModuleServiceProvider::class);
 
