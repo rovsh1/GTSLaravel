@@ -36,7 +36,9 @@ export const createService = (props: MaybeRef<CreateServicePayload>) =>
             supplier_id: payload.supplierId,
             title: payload.title,
             type: payload.type,
-            ...payload.data,
+            data: {
+              ...payload.data,
+            },
           },
         }),
       ),
