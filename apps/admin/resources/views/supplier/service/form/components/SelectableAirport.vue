@@ -19,9 +19,11 @@ const { airports } = requestInitialData('view-initial-data-supplier-service', z.
 const props = withDefaults(defineProps<{
   id: string
   parentElementClass: string
+  name?: string
   value?: number
   disabled?: boolean
 }>(), {
+  name: undefined,
   value: undefined,
   disabled: false,
 })
@@ -39,6 +41,7 @@ defineEmits<{
 <template>
   <Select2BaseSelect
     :id="id"
+    :name="name"
     :options="airPortsOptions"
     :value="selectedAirportID"
     :parent="parentElementClass"

@@ -5,9 +5,11 @@ import { nanoid } from 'nanoid'
 withDefaults(defineProps<{
   value: boolean
   label: string
+  name?: string
   disabled?: MaybeRef<boolean>
   id?: string
 }>(), {
+  name: undefined,
   disabled: false,
   id: `checkbox-${nanoid()}`,
 })
@@ -27,6 +29,7 @@ const handleChange = (event: Event) => {
       :id="id"
       class="form-check-input"
       type="checkbox"
+      :name="name"
       :checked="value"
       :disabled="disabled as boolean"
       @change="event => handleChange(event)"

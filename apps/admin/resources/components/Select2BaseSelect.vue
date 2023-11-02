@@ -11,6 +11,7 @@ const props = withDefaults(defineProps<{
   id: string
   value: any
   options: SelectOption[]
+  name?: string
   label?: string
   required?: boolean
   disabled?: MaybeRef<boolean>
@@ -21,6 +22,7 @@ const props = withDefaults(defineProps<{
   enableMultiple?: boolean
   emptyItemText?: string
 }>(), {
+  name: undefined,
   label: '',
   disabled: false,
   required: false,
@@ -50,7 +52,7 @@ const setValue = (value: any) => {
   if (select2) {
     if (value) {
       select2.val(value).trigger('change')
-    } else if (props.emptyItemText) {
+    } else if (props.emptyItemText || props.disabledPlaceholder) {
       select2.val('undefined').trigger('change')
     } else {
       select2.val('').trigger('change')
@@ -97,6 +99,7 @@ defineExpose({
   <BootstrapSelectBase
     :id="id"
     :label="label"
+    :name="name"
     :options="options"
     :value="changegValue"
     :multiple="enableMultiple"

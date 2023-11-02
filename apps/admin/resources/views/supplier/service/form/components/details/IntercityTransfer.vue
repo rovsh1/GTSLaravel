@@ -47,6 +47,7 @@ onMounted(() => {
     <div class="col-sm-7 d-flex align-items-center selected-city-from-wrapper">
       <SelectableCity
         id="form_data_city_from"
+        name="data[data][fromCityId]"
         :value="formData.fromCityId"
         parent-element-class=".selected-city-from-wrapper"
         @change="(value: number | undefined) => {
@@ -60,6 +61,7 @@ onMounted(() => {
     <div class="col-sm-7 d-flex align-items-center selected-city-to-wrapper">
       <SelectableCity
         id="form_data_city_to"
+        name="data[data][toCityId]"
         :value="formData.toCityId"
         parent-element-class=".selected-city-to-wrapper"
         @change="(value: number | undefined) => {
@@ -73,6 +75,7 @@ onMounted(() => {
     <div class="col-sm-7 d-flex align-items-center selected-return-trip-wrapper">
       <BootstrapCheckbox
         id="form_data_return_trip"
+        name="data[data][returnTripIncluded]"
         :value="(formData.returnTripIncluded as boolean)"
         :disabled="false"
         label=""

@@ -43,6 +43,7 @@ onMounted(() => {
     <div class="col-sm-7 d-flex align-items-center selected-airport-wrapper">
       <SelectableAirport
         id="form_data_airport"
+        name="data[data][airportId]"
         :value="formData.airportId"
         parent-element-class=".selected-airport-wrapper"
         @change="(value: number | undefined) => {

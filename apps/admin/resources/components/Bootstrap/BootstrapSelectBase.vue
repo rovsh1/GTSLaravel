@@ -12,6 +12,7 @@ const props = withDefaults(defineProps<{
   options: SelectOption[]
   multiple?: boolean
   label?: string
+  name?: string
   required?: boolean
   disabled?: MaybeRef<boolean>
   disabledPlaceholder?: string
@@ -29,6 +30,7 @@ const props = withDefaults(defineProps<{
   enableTags: false,
   emptyItemText: '',
   withSelect2: false,
+  name: undefined,
 })
 
 const groupOptions = computed(() => {
@@ -73,13 +75,14 @@ const handleChangeValue = () => {
       :id="id"
       ref="selectElement"
       v-model="localValue"
+      :name="name"
       class="form-select form-control"
       :disabled="disabled as boolean"
       :required="required as boolean"
       :multiple="multiple"
       @change="handleChangeValue"
     >
-      <option v-if="disabled && disabledPlaceholder" :value="undefined">{{ disabledPlaceholder }}</option>
+      <option v-if="disabled && disabledPlaceholder" :value="withSelect2 ? 'undefined' : undefined">{{ disabledPlaceholder }}</option>
       <option v-else-if="showEmptyItem && emptyItemText !== ''" :value="withSelect2 ? 'undefined' : undefined">{{ emptyItemText }}</option>
       <option v-else-if="showEmptyItem" :value="undefined" />
       <template v-if="!enableTags">

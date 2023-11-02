@@ -20,9 +20,11 @@ const { cities } = requestInitialData('view-initial-data-supplier-service', z.ob
 const props = withDefaults(defineProps<{
   id: string
   parentElementClass: string
+  name?: string
   value?: number
   disabled?: boolean
 }>(), {
+  name: undefined,
   value: undefined,
   disabled: false,
 })
@@ -40,6 +42,7 @@ defineEmits<{
 <template>
   <Select2BaseSelect
     :id="id"
+    :name="name"
     :options="citiesOptions"
     :value="selectedCityID"
     :parent="parentElementClass"

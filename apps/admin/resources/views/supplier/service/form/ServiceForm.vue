@@ -9,14 +9,23 @@ import { mapEntitiesToSelectOptions } from '~resources/views/booking/lib/constan
 import { DetailsFormData } from '~resources/views/supplier/service/form/components/details/lib/types'
 
 import { useGetBookingDetailsTypesAPI } from '~api/booking/service'
-import { createService, updateService } from '~api/supplier/service'
+import { deleteService } from '~api/supplier/service'
 
+import { showConfirmDialog } from '~lib/confirm-dialog'
 import { requestInitialData } from '~lib/initial-data'
 
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 import BootstrapSelectBase from '~components/Bootstrap/BootstrapSelectBase.vue'
 import { SelectOption } from '~components/Bootstrap/lib'
 import OverlayLoading from '~components/OverlayLoading.vue'
+
+function intTransformator(value: any) {
+  return parseInt(value, 10)
+}
+
+function boolTransformator(value: any) {
+  return !!value
+}
 
 const { service, cancelUrl, supplier } = requestInitialData('view-initial-data-supplier-service', z.object({
   supplier: z.object({
@@ -26,15 +35,15 @@ const { service, cancelUrl, supplier } = requestInitialData('view-initial-data-s
   service: z.object({
     id: z.number(),
     title: z.string(),
-    type: z.number(),
+    type: z.number().transform(intTransformator),
     data: z.object({
-      airportId: z.number().optional(),
-      cityId: z.number().optional(),
-      fromCityId: z.number().optional(),
-      toCityId: z.number().optional(),
-      returnTripIncluded: z.boolean().optional(),
-      railwayStationId: z.number().optional(),
-    }),
+      airportId: z.union([z.string().transform(intTransformator), z.number()]).optional(),
+      cityId: z.union([z.string().transform(intTransformator), z.number()]).optional(),
+      fromCityId: z.union([z.string().transform(intTransformator), z.number()]).optional(),
+      toCityId: z.union([z.string().transform(intTransformator), z.number()]).optional(),
+      returnTripIncluded: z.union([z.string().transform(boolTransformator), z.boolean()]).optional(),
+      railwayStationId: z.union([z.string().transform(intTransformator), z.number()]).optional(),
+    }).nullable(),
   }).nullable(),
   cancelUrl: z.string(),
 }))
@@ -76,26 +85,29 @@ const setDetailsComponentByServiceType = (typeId: number | undefined) => {
   })
 }
 
-const handleSubmitForm = async () => {
-  if (!isValidForm.value) return
+const setFormMethod = (): string => (service ? 'put' : 'post')
+
+const setFormAction = (): string => (service ? `/supplier/${supplier.id}/services/${service.id}`
+  : `/supplier/${supplier.id}/services`)
+
+const handleDeleteAction = async () => {
+  if (!service) return
+  const { result: isConfirmed, toggleLoading, toggleClose } = await showConfirmDialog('Удалить услугу?', 'btn-danger')
+  if (!isConfirmed) return
   isSubmittingRequest.value = true
-  const payloadData = {
-    supplierId: supplier.id,
-    title: serviceFormData.title,
-    type: serviceFormData.type as number,
-    data: serviceFormData.details as DetailsFormData,
-  }
-  if (!service) {
-    await createService({
-      ...payloadData,
-    })
-  } else {
-    await updateService({
+  if (isConfirmed) {
+    toggleLoading()
+    const response = await deleteService({
+      supplierId: supplier.id,
       serviceId: service.id,
-      ...payloadData,
     })
+    if (response && response.data.value) {
+      const { url, action } = response.data.value
+      if (action === 'redirect') { window.location.href = url }
+    }
+    isSubmittingRequest.value = false
+    toggleClose()
   }
-  isSubmittingRequest.value = false
 }
 
 onMounted(async () => {
@@ -107,7 +119,7 @@ onMounted(async () => {
   if (service) {
     serviceFormData.title = service.title
     serviceFormData.type = service.type
-    serviceFormData.details = service.data
+    serviceFormData.details = service.data || undefined
     setDetailsComponentByServiceType(service.type)
   }
 })
@@ -115,57 +127,62 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="form-group position-relative">
-    <OverlayLoading v-if="isSubmittingRequest" />
-    <div class="row form-field field-text field-title field-required">
-      <label for="form_data_title" class="col-sm-5 col-form-label">Название</label>
-      <div class="col-sm-7 d-flex align-items-center">
-        <input id="form_data_title" v-model="serviceFormData.title" type="text" class="form-control" required>
+  <form :action="setFormAction()" method="post" enctype="multipart/form-data">
+    <div class="form-group position-relative">
+      <input type="hidden" name="_method" :value="setFormMethod()" />
+      <input type="hidden" name="data[supplier_id]" :value="supplier.id" />
+      <div class="row form-field field-text field-title field-required">
+        <label for="form_data_title" class="col-sm-5 col-form-label">Название</label>
+        <div class="col-sm-7 d-flex align-items-center">
+          <input
+            id="form_data_title"
+            v-model="serviceFormData.title"
+            name="data[title]"
+            type="text"
+            class="form-control"
+            required
+          >
+        </div>
       </div>
-    </div>
-    <div class="row form-field field-bookingservicetype field-type field-required">
-      <label for="form_data_type" class="col-sm-5 col-form-label">Тип услуги</label>
-      <div class="col-sm-7 d-flex align-items-center">
-        <BootstrapSelectBase
-          id="form_data_type"
-          :options="serviceTypesOptions"
-          :value="serviceFormData.type"
-          required
-          @input="(value: any, event: any) => {
-            serviceFormData.details = undefined
-            setDetailsComponentByServiceType(value as number)
+      <div class="row form-field field-bookingservicetype field-type field-required">
+        <label for="form_data_type" class="col-sm-5 col-form-label">Тип услуги</label>
+        <div class="col-sm-7 d-flex align-items-center">
+          <BootstrapSelectBase
+            id="form_data_type"
+            name="data[type]"
+            :options="serviceTypesOptions"
+            :value="serviceFormData.type"
+            required
+            @input="(value: any, event: any) => {
+              serviceFormData.details = undefined
+              setDetailsComponentByServiceType(value as number)
+            }"
+          />
+        </div>
+      </div>
+      <div class="position-relative">
+        <component
+          :is="detailsComponent"
+          v-if="detailsComponent"
+          :value="service && service.type === serviceFormData.type ? service.data : undefined"
+          @form-completed="(value: DetailsFormData | undefined) => {
+            serviceFormData.details = value
           }"
         />
       </div>
+      <div class="form-buttons">
+        <button type="submit" class="btn btn-primary" :disabled="!isValidForm">Сохранить</button>
+        <a :href="cancelUrl" :disabled="isSubmittingRequest" class="btn btn-cancel">Отмена</a>
+        <div class="spacer" />
+        <BootstrapButton
+          v-if="!!service"
+          label="Удалить"
+          start-icon="delete"
+          variant="outline"
+          severity="link"
+          @click="handleDeleteAction"
+        />
+      </div>
     </div>
-    <div class="position-relative">
-      <component
-        :is="detailsComponent"
-        v-if="detailsComponent"
-        :value="service && service.type === serviceFormData.type ? service.data : undefined"
-        @form-completed="(value: DetailsFormData | undefined) => {
-          serviceFormData.details = value
-        }"
-      />
-    </div>
-    <div class="form-buttons">
-      <BootstrapButton
-        label="Сохранить"
-        :disabled="!isValidForm || isSubmittingRequest"
-        severity="primary"
-        @click="handleSubmitForm"
-      />
-      <a :href="cancelUrl" :disabled="isSubmittingRequest" class="btn btn-cancel">Отмена</a>
-      <div class="spacer" />
-      <BootstrapButton
-        v-if="!!service"
-        :disabled="isSubmittingRequest"
-        label="Удалить"
-        start-icon="delete"
-        variant="outline"
-        severity="link"
-        @click="() => {}"
-      />
-    </div>
-  </div>
+  </form>
 </template>

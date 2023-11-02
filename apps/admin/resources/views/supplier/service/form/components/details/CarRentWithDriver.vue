@@ -43,6 +43,7 @@ onMounted(() => {
     <div class="col-sm-7 d-flex align-items-center selected-city-wrapper">
       <SelectableCity
         id="form_data_airport"
+        name="data[data][cityId]"
         :value="formData.cityId"
         parent-element-class=".selected-city-wrapper"
         @change="(value: number | undefined) => {

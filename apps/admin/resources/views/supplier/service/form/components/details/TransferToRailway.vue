@@ -64,6 +64,7 @@ onMounted(async () => {
     <div class="col-sm-7 d-flex align-items-center selected-city-wrapper">
       <SelectableCity
         id="form_data_city"
+        name="data[data][cityId]"
         :value="formData.cityId"
         parent-element-class=".selected-city-wrapper"
         @change="(value: number | undefined) => {
@@ -79,11 +80,12 @@ onMounted(async () => {
     <div class="col-sm-7 d-flex align-items-center selected-railway-station-wrapper">
       <Select2BaseSelect
         id="form_data_railway_station"
+        name="data[data][railwayStationId]"
         :options="railwayStationOptions"
         :value="formData.railwayStationId"
         parent=".selected-railway-station-wrapper"
         required
-        :disabled-placeholder="isFetchingRailwayStation ? 'Загрузка' : ''"
+        :disabled-placeholder="isFetchingRailwayStation ? 'Загрузка' : 'Выберите город'"
         :disabled="!formData.cityId || isFetchingRailwayStation"
         :show-empty-item="false"
         @input="(value: any) => {
