@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Booking\Infrastructure\Adapter;
 
-use Module\Booking\Application\Admin\ServiceBooking\Dto\AirportInfoDto;
+use Module\Booking\Application\Dto\ServiceBooking\AirportInfoDto;
 use Module\Booking\Domain\BookingRequest\Adapter\AirportAdapterInterface;
-use Module\Booking\Infrastructure\Shared\Models\Airport;
+use Module\Booking\Infrastructure\Models\Airport;
 
 class AirportAdapter implements AirportAdapterInterface
 {

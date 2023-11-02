@@ -6,7 +6,7 @@ namespace Module\Booking\Domain\Shared\Repository;
 
 use Illuminate\Database\Eloquent\Collection;
 use Module\Booking\Domain\Shared\Event\BookingEventInterface;
-use Module\Booking\Infrastructure\Shared\Models\BookingChangesLog;
+use Module\Booking\Infrastructure\Models\BookingChangesLog;
 
 interface BookingChangesLogRepositoryInterface
 {

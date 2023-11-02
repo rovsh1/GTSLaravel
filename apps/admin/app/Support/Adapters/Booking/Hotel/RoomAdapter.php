@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Adapters\Booking\Hotel;
 
-use Module\Booking\Application\Admin\HotelBooking\Request\AddRoomDto;
-use Module\Booking\Application\Admin\HotelBooking\Request\UpdateRoomDto;
-use Module\Booking\Application\Admin\HotelBooking\UseCase\Room\Add;
-use Module\Booking\Application\Admin\HotelBooking\UseCase\Room\Delete;
-use Module\Booking\Application\Admin\HotelBooking\UseCase\Room\GetAvailableRooms;
-use Module\Booking\Application\Admin\HotelBooking\UseCase\Room\Guest\Bind;
-use Module\Booking\Application\Admin\HotelBooking\UseCase\Room\Guest\Unbind;
-use Module\Booking\Application\Admin\HotelBooking\UseCase\Room\SetManualPrice;
-use Module\Booking\Application\Admin\HotelBooking\UseCase\Room\Update;
+use Module\Booking\Application\Dto\AddRoomDto;
+use Module\Booking\Application\Dto\UpdateRoomDto;
+use Module\Booking\Application\UseCase\Admin\HotelBooking\Room\Add;
+use Module\Booking\Application\UseCase\Admin\HotelBooking\Room\Delete;
+use Module\Booking\Application\UseCase\Admin\HotelBooking\Room\GetAvailableRooms;
+use Module\Booking\Application\UseCase\Admin\HotelBooking\Room\Guest\Bind;
+use Module\Booking\Application\UseCase\Admin\HotelBooking\Room\Guest\Unbind;
+use Module\Booking\Application\UseCase\Admin\HotelBooking\Room\SetManualPrice;
+use Module\Booking\Application\UseCase\Admin\HotelBooking\Room\Update;
 
 class RoomAdapter
 {

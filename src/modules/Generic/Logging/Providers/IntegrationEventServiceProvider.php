@@ -2,7 +2,7 @@
 
 namespace Module\Generic\Logging\Providers;
 
-use Module\Booking\Application\Admin\Shared\Event\TestEvent;
+use Module\Booking\Application\Event\TestEvent;
 use Module\Generic\Logging\Listener\TestListener;
 use Sdk\Module\Support\Providers\IntegrationEventServiceProvider as ServiceProvider;
 

@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Admin\Enums\Contract\StatusEnum;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Module\Booking\Application\Admin\HotelBooking\UseCase\System\FillCalculatedPriceCalendar;
+use Module\Booking\Application\UseCase\Admin\HotelBooking\System\FillCalculatedPriceCalendar;
 use Module\Shared\Enum\CurrencyEnum;
 use Module\Shared\Enum\ServiceTypeEnum;
 

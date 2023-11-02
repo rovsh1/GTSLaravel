@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Domain\Booking\Service\TransferBooking;
 
 use Carbon\CarbonInterface;
-use Module\Booking\Application\Admin\ServiceBooking\Request\CarBidDataDto;
+use Module\Booking\Application\Dto\CarBidDataDto;
 use Module\Booking\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Domain\Booking\Entity\CarRentWithDriver;
 use Module\Booking\Domain\Booking\Entity\DayCarTrip;

@@ -6,7 +6,7 @@ namespace Module\Booking\Infrastructure\Service;
 
 use Module\Booking\Domain\Booking\Service\StatusStorageInterface;
 use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
-use Module\Booking\Infrastructure\Shared\Models\StatusSettings;
+use Module\Booking\Infrastructure\Models\StatusSettings;
 
 class StatusStorage implements StatusStorageInterface
 {

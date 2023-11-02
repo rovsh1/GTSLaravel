@@ -19,7 +19,7 @@ interface RequestRepositoryInterface
     public function getLastChangeRequest(BookingId $bookingId): ?BookingRequest;
 
     /**
-     * @param int $bookingId
+     * @param BookingId $bookingId
      * @return BookingRequest[]
      */
     public function findByBookingId(BookingId $bookingId): array;

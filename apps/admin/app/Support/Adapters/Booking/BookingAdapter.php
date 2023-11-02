@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Adapters\Booking;
 
-use Module\Booking\Application\Admin\Booking\Request\CreateBookingRequestDto;
-use Module\Booking\Application\Admin\Booking\UseCase\BulkDeleteBookings;
-use Module\Booking\Application\Admin\Booking\UseCase\CopyBooking;
-use Module\Booking\Application\Admin\Booking\UseCase\CreateBooking;
-use Module\Booking\Application\Admin\Booking\UseCase\DeleteBooking;
-use Module\Booking\Application\Admin\Booking\UseCase\GetAvailableActions;
-use Module\Booking\Application\Admin\Booking\UseCase\GetBooking;
-use Module\Booking\Application\Admin\Booking\UseCase\GetStatuses;
-use Module\Booking\Application\Admin\Booking\UseCase\GetStatusHistory;
-use Module\Booking\Application\Admin\Booking\UseCase\UpdateBookingStatus;
-use Module\Booking\Application\Admin\Booking\UseCase\UpdateNote;
-use Module\Booking\Application\Admin\HotelBooking\UseCase\CreateBooking as CreateHotelBooking;
+use Module\Booking\Application\RequestDto\CreateBookingRequestDto;
+use Module\Booking\Application\UseCase\Admin\BulkDeleteBookings;
+use Module\Booking\Application\UseCase\Admin\CopyBooking;
+use Module\Booking\Application\UseCase\Admin\CreateBooking;
+use Module\Booking\Application\UseCase\Admin\DeleteBooking;
+use Module\Booking\Application\UseCase\Admin\GetAvailableActions;
+use Module\Booking\Application\UseCase\Admin\GetBooking;
+use Module\Booking\Application\UseCase\Admin\GetStatuses;
+use Module\Booking\Application\UseCase\Admin\GetStatusHistory;
+use Module\Booking\Application\UseCase\Admin\HotelBooking\CreateBooking as CreateHotelBooking;
+use Module\Booking\Application\UseCase\Admin\UpdateBookingStatus;
+use Module\Booking\Application\UseCase\Admin\UpdateNote;
 use Module\Shared\Enum\CurrencyEnum;
 
 class BookingAdapter

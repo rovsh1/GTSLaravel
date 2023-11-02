@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Infrastructure\Adapter;
 
 use App\Admin\Models\Reference\City;
-use Module\Booking\Application\Admin\ServiceBooking\Dto\CityInfoDto;
+use Module\Booking\Application\Dto\ServiceBooking\CityInfoDto;
 use Module\Booking\Domain\BookingRequest\Adapter\CityAdapterInterface;
 
 class CityAdapter implements CityAdapterInterface

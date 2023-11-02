@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Admin\Support\Adapters\Booking\Hotel;
 
 use Carbon\CarbonPeriod;
-use Module\Booking\Application\Admin\HotelBooking\UseCase\Update;
-use Module\Booking\Application\Admin\HotelBooking\UseCase\UpdateExternalNumber;
+use Module\Booking\Application\UseCase\Admin\HotelBooking\Update;
+use Module\Booking\Application\UseCase\Admin\HotelBooking\UpdateExternalNumber;
 
 class DetailsAdapter
 {

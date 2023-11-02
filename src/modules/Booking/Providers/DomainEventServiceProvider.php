@@ -2,7 +2,7 @@
 
 namespace Module\Booking\Providers;
 
-use Module\Booking\Application\Admin\Shared\Support\IntegrationEventMapper;
+use Module\Booking\Application\Support\IntegrationEventMapper;
 use Module\Booking\Domain\Booking\Event\PriceBecomeDeprecatedEventInterface;
 use Module\Booking\Domain\Booking\Listener\BookingToWaitingCancellationListener;
 use Module\Booking\Domain\Booking\Listener\BookingToWaitingConfirmationListener;

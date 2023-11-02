@@ -11,15 +11,15 @@ use Module\Booking\Domain\Shared\Adapter\AdministratorAdapterInterface;
 use Module\Booking\Domain\Shared\Adapter\ClientAdapterInterface;
 use Module\Booking\Domain\Shared\Adapter\CountryAdapterInterface;
 use Module\Booking\Domain\Shared\Repository\BookingChangesLogRepositoryInterface;
+use Module\Booking\Infrastructure\Adapter\AdministratorAdapter;
 use Module\Booking\Infrastructure\Adapter\AirportAdapter;
 use Module\Booking\Infrastructure\Adapter\CityAdapter;
+use Module\Booking\Infrastructure\Adapter\ClientAdapter;
+use Module\Booking\Infrastructure\Adapter\CountryAdapter;
 use Module\Booking\Infrastructure\Adapter\RailwayStationAdapter;
+use Module\Booking\Infrastructure\Repository\BookingChangesLogRepository;
 use Module\Booking\Infrastructure\Service\StatusStorage;
 use Module\Booking\Infrastructure\ServiceBooking\Repository\AirportAirportBookingGuestRepository;
-use Module\Booking\Infrastructure\Shared\Adapter\AdministratorAdapter;
-use Module\Booking\Infrastructure\Shared\Adapter\ClientAdapter;
-use Module\Booking\Infrastructure\Shared\Adapter\CountryAdapter;
-use Module\Booking\Infrastructure\Shared\Repository\BookingChangesLogRepository;
 use Sdk\Module\Support\ServiceProvider;
 
 class SharedServiceProvider extends ServiceProvider

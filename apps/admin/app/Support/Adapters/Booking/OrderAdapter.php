@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Adapters\Booking;
 
-use Module\Booking\Application\Admin\Order\Request\AddGuestDto;
-use Module\Booking\Application\Admin\Order\Request\UpdateGuestDto;
-use Module\Booking\Application\Admin\Order\Response\GuestDto;
-use Module\Booking\Application\Admin\Order\UseCase\GetActiveOrders;
-use Module\Booking\Application\Admin\Order\UseCase\GetOrder;
-use Module\Booking\Application\Admin\Order\UseCase\Guest\Add;
-use Module\Booking\Application\Admin\Order\UseCase\Guest\Delete;
-use Module\Booking\Application\Admin\Order\UseCase\Guest\Get;
-use Module\Booking\Application\Admin\Order\UseCase\Guest\Update;
+use Module\Booking\Application\Dto\AddGuestDto;
+use Module\Booking\Application\Dto\GuestDto;
+use Module\Booking\Application\Dto\UpdateGuestDto;
+use Module\Booking\Application\UseCase\Admin\Order\GetActiveOrders;
+use Module\Booking\Application\UseCase\Admin\Order\GetOrder;
+use Module\Booking\Application\UseCase\Admin\Order\Guest\Add;
+use Module\Booking\Application\UseCase\Admin\Order\Guest\Delete;
+use Module\Booking\Application\UseCase\Admin\Order\Guest\Get;
+use Module\Booking\Application\UseCase\Admin\Order\Guest\Update;
 
 class OrderAdapter
 {
