@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Module\Booking\Domain\Shared\Event;
 
+use Module\Booking\Domain\Booking\Booking;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Domain\Order\ValueObject\OrderId;
-use Module\Booking\Domain\Shared\Entity\BookingInterface;
 
 abstract class AbstractBookingEvent implements BookingEventInterface
 {
     public function __construct(
-        public readonly BookingInterface $booking,
+        public readonly Booking $booking,
     ) {}
 
-    public function booking(): BookingInterface
+    public function booking(): Booking
     {
         return $this->booking;
     }

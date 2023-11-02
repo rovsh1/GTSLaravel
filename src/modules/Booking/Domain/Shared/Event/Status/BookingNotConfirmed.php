@@ -2,12 +2,12 @@
 
 namespace Module\Booking\Domain\Shared\Event\Status;
 
-use Module\Booking\Domain\Shared\Entity\BookingInterface;
+use Module\Booking\Domain\Booking\Booking;
 
 class BookingNotConfirmed extends AbstractStatusEvent
 {
     public function __construct(
-        BookingInterface $booking,
+        Booking $booking,
         public readonly string $reason
     ) {
         parent::__construct($booking);

@@ -6,7 +6,6 @@ namespace Module\Booking\Domain\Shared\Service;
 
 use Module\Booking\Domain\Booking\Booking;
 use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
-use Module\Booking\Domain\Shared\Entity\BookingInterface;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 
 class BookingUpdater
@@ -16,7 +15,7 @@ class BookingUpdater
         private readonly BookingRepositoryInterface $repository,
     ) {}
 
-    public function store(BookingInterface $booking): bool
+    public function store(Booking $booking): bool
     {
         $success = $this->repository->store($booking);
         $this->eventDispatcher->dispatch(...$booking->pullEvents());
@@ -29,7 +28,7 @@ class BookingUpdater
      * @return bool
      * @todo подумать как точно провернить, что были изменения в броне
      */
-    public function storeIfHasEvents(BookingInterface $booking): bool
+    public function storeIfHasEvents(Booking $booking): bool
     {
         $events = $booking->pullEvents();
         if (count($events) === 0) {

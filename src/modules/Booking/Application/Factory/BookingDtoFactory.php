@@ -9,7 +9,6 @@ use Module\Booking\Application\Dto\ServiceBooking\BookingDto;
 use Module\Booking\Application\Dto\ServiceBooking\ServiceTypeDto;
 use Module\Booking\Domain\Booking\Booking;
 use Module\Booking\Domain\Booking\Factory\DetailsRepositoryFactory;
-use Module\Booking\Domain\Shared\Entity\BookingInterface;
 use Module\Shared\Contracts\Service\TranslatorInterface;
 
 class BookingDtoFactory
@@ -22,7 +21,7 @@ class BookingDtoFactory
         private readonly DetailsRepositoryFactory $detailsRepositoryFactory,
     ) {}
 
-    public function createFromEntity(BookingInterface $booking): BookingDto
+    public function createFromEntity(Booking $booking): BookingDto
     {
         assert($booking instanceof Booking);
 
