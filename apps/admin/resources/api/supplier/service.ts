@@ -22,6 +22,10 @@ export type CreateServicePayload = {
   data: ServiceDetailsPayload
 }
 
+export type UpdateServicePayload = CreateServicePayload & {
+  serviceId: number
+}
+
 export const createService = (props: MaybeRef<CreateServicePayload>) =>
   useAdminAPI(
     props,
@@ -32,6 +36,29 @@ export const createService = (props: MaybeRef<CreateServicePayload>) =>
       getNullableRef<CreateServicePayload, any>(
         props,
         (payload: CreateServicePayload): any => ({
+          data: {
+            supplier_id: payload.supplierId,
+            title: payload.title,
+            type: payload.type,
+            data: {
+              ...payload.data,
+            },
+          },
+        }),
+      ),
+    )), 'application/json')
+    .json<BaseResponse>()
+
+export const updateService = (props: MaybeRef<UpdateServicePayload>) =>
+  useAdminAPI(
+    props,
+    ({ supplierId, serviceId }) => `/supplier/${supplierId}/services/${serviceId}`,
+    { immediate: true },
+  )
+    .post(computed<string>(() => JSON.stringify(
+      getNullableRef<UpdateServicePayload, any>(
+        props,
+        (payload: UpdateServicePayload): any => ({
           data: {
             supplier_id: payload.supplierId,
             title: payload.title,

@@ -9,7 +9,7 @@ import { mapEntitiesToSelectOptions } from '~resources/views/booking/lib/constan
 import { DetailsFormData } from '~resources/views/supplier/service/form/components/details/lib/types'
 
 import { useGetBookingDetailsTypesAPI } from '~api/booking/service'
-import { createService } from '~api/supplier/service'
+import { createService, updateService } from '~api/supplier/service'
 
 import { requestInitialData } from '~lib/initial-data'
 
@@ -79,12 +79,20 @@ const setDetailsComponentByServiceType = (typeId: number | undefined) => {
 const handleSubmitForm = async () => {
   if (!isValidForm.value) return
   isSubmittingRequest.value = true
+  const payloadData = {
+    supplierId: supplier.id,
+    title: serviceFormData.title,
+    type: serviceFormData.type as number,
+    data: serviceFormData.details as DetailsFormData,
+  }
   if (!service) {
     await createService({
-      supplierId: supplier.id,
-      title: serviceFormData.title,
-      type: serviceFormData.type as number,
-      data: serviceFormData.details as DetailsFormData,
+      ...payloadData,
+    })
+  } else {
+    await updateService({
+      serviceId: service.id,
+      ...payloadData,
     })
   }
   isSubmittingRequest.value = false
