@@ -9,6 +9,7 @@ import { mapEntitiesToSelectOptions } from '~resources/views/booking/lib/constan
 import { DetailsFormData } from '~resources/views/supplier/service/form/components/details/lib/types'
 
 import { useGetBookingDetailsTypesAPI } from '~api/booking/service'
+import { createService } from '~api/supplier/service'
 
 import { requestInitialData } from '~lib/initial-data'
 
@@ -17,7 +18,11 @@ import BootstrapSelectBase from '~components/Bootstrap/BootstrapSelectBase.vue'
 import { SelectOption } from '~components/Bootstrap/lib'
 import OverlayLoading from '~components/OverlayLoading.vue'
 
-const { service, cancelUrl } = requestInitialData('view-initial-data-supplier-service', z.object({
+const { service, cancelUrl, supplier } = requestInitialData('view-initial-data-supplier-service', z.object({
+  supplier: z.object({
+    id: z.number(),
+    name: z.string(),
+  }),
   service: z.object({
     id: z.number(),
     title: z.string(),
@@ -41,6 +46,8 @@ type ServiceFormData = {
 }
 
 const detailsComponent = shallowRef()
+
+const isSubmittingRequest = ref<boolean>(false)
 
 const { data: BookingDetailsTypes, execute: fetchBookingDetailsTypes } = useGetBookingDetailsTypesAPI()
 
@@ -69,8 +76,21 @@ const setDetailsComponentByServiceType = (typeId: number | undefined) => {
   })
 }
 
+const handleSubmitForm = async () => {
+  if (!isValidForm.value) return
+  isSubmittingRequest.value = true
+  if (!service) {
+    await createService({
+      supplierId: supplier.id,
+      title: serviceFormData.title,
+      type: serviceFormData.type as number,
+      data: serviceFormData.details as DetailsFormData,
+    })
+  }
+  isSubmittingRequest.value = false
+}
+
 onMounted(async () => {
-  console.log(window['view-initial-data-supplier-service'])
   await fetchBookingDetailsTypes()
   serviceTypesOptions.value = mapEntitiesToSelectOptions(BookingDetailsTypes.value?.map((type) => ({
     id: type.id,
@@ -87,7 +107,8 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="form-group">
+  <div class="form-group position-relative">
+    <OverlayLoading v-if="isSubmittingRequest" />
     <div class="row form-field field-text field-title field-required">
       <label for="form_data_title" class="col-sm-5 col-form-label">Название</label>
       <div class="col-sm-7 d-flex align-items-center">
@@ -122,14 +143,15 @@ onMounted(async () => {
     <div class="form-buttons">
       <BootstrapButton
         label="Сохранить"
-        :disabled="!isValidForm"
+        :disabled="!isValidForm || isSubmittingRequest"
         severity="primary"
-        @click="() => {}"
+        @click="handleSubmitForm"
       />
-      <a :href="cancelUrl" class="btn btn-cancel">Отмена</a>
+      <a :href="cancelUrl" :disabled="isSubmittingRequest" class="btn btn-cancel">Отмена</a>
       <div class="spacer" />
       <BootstrapButton
         v-if="!!service"
+        :disabled="isSubmittingRequest"
         label="Удалить"
         start-icon="delete"
         variant="outline"
