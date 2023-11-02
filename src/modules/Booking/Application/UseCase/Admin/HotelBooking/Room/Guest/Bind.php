@@ -12,7 +12,7 @@ use Module\Booking\Domain\Booking\Repository\HotelBooking\BookingGuestRepository
 use Module\Booking\Domain\Booking\Repository\RoomBookingRepositoryInterface;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomBookingId;
-use Module\Booking\Domain\Shared\ValueObject\GuestId;
+use Module\Booking\Domain\Guest\ValueObject\GuestId;
 use Module\Shared\Contracts\Domain\DomainEntityExceptionInterface;
 use Module\Shared\Exception\ApplicationException;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;

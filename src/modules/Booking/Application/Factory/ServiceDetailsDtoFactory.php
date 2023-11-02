@@ -35,7 +35,7 @@ use Module\Booking\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Booking\Domain\BookingRequest\Adapter\AirportAdapterInterface;
 use Module\Booking\Domain\BookingRequest\Adapter\CityAdapterInterface;
 use Module\Booking\Domain\BookingRequest\Adapter\RailwayStationAdapterInterface;
-use Module\Booking\Domain\Shared\ValueObject\GuestId;
+use Module\Booking\Domain\Guest\ValueObject\GuestId;
 
 class ServiceDetailsDtoFactory
 {

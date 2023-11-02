@@ -6,7 +6,7 @@ namespace Module\Booking\Application\UseCase\Admin\ServiceBooking\Guest;
 
 use Module\Booking\Domain\Booking\Service\AirportBooking\GuestManager;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Domain\Shared\ValueObject\GuestId;
+use Module\Booking\Domain\Guest\ValueObject\GuestId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class Unbind implements UseCaseInterface

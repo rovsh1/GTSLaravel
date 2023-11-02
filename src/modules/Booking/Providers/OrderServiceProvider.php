@@ -14,7 +14,7 @@ class OrderServiceProvider extends ServiceProvider
         );
 
         $this->app->singleton(
-            \Module\Booking\Domain\Order\Repository\GuestRepositoryInterface::class,
+            \Module\Booking\Domain\Guest\Repository\GuestRepositoryInterface::class,
             \Module\Booking\Infrastructure\Order\Repository\GuestRepository::class,
         );
     }

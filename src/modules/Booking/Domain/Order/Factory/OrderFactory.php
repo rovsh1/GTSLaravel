@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Module\Booking\Domain\Order\Factory;
 
 use Carbon\CarbonImmutable;
+use Module\Booking\Domain\Guest\ValueObject\GuestId;
 use Module\Booking\Domain\Order\Order;
 use Module\Booking\Domain\Order\ValueObject\ClientId;
 use Module\Booking\Domain\Order\ValueObject\LegalId;
 use Module\Booking\Domain\Order\ValueObject\OrderId;
-use Module\Booking\Domain\Shared\ValueObject\GuestId;
 use Module\Booking\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Foundation\Support\EntityFactory\AbstractEntityFactory;

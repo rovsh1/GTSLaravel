@@ -3,7 +3,7 @@
 namespace Module\Booking\Domain\Booking\Entity\Concerns;
 
 use Module\Booking\Domain\Booking\Exception\GuestAlreadyExists;
-use Module\Booking\Domain\Shared\ValueObject\GuestId;
+use Module\Booking\Domain\Guest\ValueObject\GuestId;
 use Module\Booking\Domain\Shared\ValueObject\GuestIdCollection;
 
 trait HasGuestIdCollectionTrait

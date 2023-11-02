@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Domain\Order\Entity;
+namespace Module\Booking\Domain\Guest;
 
+use Module\Booking\Domain\Guest\ValueObject\GuestId;
 use Module\Booking\Domain\Order\ValueObject\OrderId;
-use Module\Booking\Domain\Shared\ValueObject\GuestId;
 use Module\Shared\Contracts\Domain\EntityInterface;
 use Module\Shared\Enum\GenderEnum;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;

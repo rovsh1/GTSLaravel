@@ -14,22 +14,22 @@ use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Domain\Booking\Service\HotelBooking\HotelValidator;
 use Module\Booking\Domain\Booking\ValueObject\BookingPrices;
 use Module\Booking\Domain\Booking\ValueObject\ServiceId;
+use Module\Booking\Domain\Order\Repository\OrderRepositoryInterface;
 use Module\Booking\Domain\Shared\ValueObject\CreatorId;
 use Module\Shared\Enum\CurrencyEnum;
 use Module\Shared\Enum\ServiceTypeEnum;
-use Sdk\Module\Contracts\Bus\CommandBusInterface;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
 class CreateBooking extends AbstractCreateBooking
 {
     public function __construct(
-        CommandBusInterface $commandBus,
+        OrderRepositoryInterface $orderRepository,
         private readonly BookingRepositoryInterface $repository,
         private readonly HotelAdapterInterface $hotelAdapter,
         private readonly HotelValidator $hotelValidator,
         private readonly DetailsEditorFactory $detailsEditorFactory,
     ) {
-        parent::__construct($commandBus);
+        parent::__construct($orderRepository);
     }
 
     public function execute(CreateBookingRequestDto $request): int

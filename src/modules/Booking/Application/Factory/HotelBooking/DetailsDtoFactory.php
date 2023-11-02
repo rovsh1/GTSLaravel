@@ -18,7 +18,7 @@ use Module\Booking\Domain\Booking\Repository\RoomBookingRepositoryInterface;
 use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomBookingCollection;
 use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomPriceDayPart;
 use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomPrices;
-use Module\Booking\Domain\Shared\ValueObject\GuestId;
+use Module\Booking\Domain\Guest\ValueObject\GuestId;
 
 class DetailsDtoFactory
 {

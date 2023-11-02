@@ -6,8 +6,8 @@ namespace Module\Booking\Application\UseCase\Admin\Order\Guest;
 
 use Module\Booking\Application\Dto\AddGuestDto;
 use Module\Booking\Application\Dto\GuestDto;
-use Module\Booking\Domain\Order\Event\GuestCreated;
-use Module\Booking\Domain\Order\Repository\GuestRepositoryInterface;
+use Module\Booking\Domain\Guest\Event\GuestCreated;
+use Module\Booking\Domain\Guest\Repository\GuestRepositoryInterface;
 use Module\Booking\Domain\Order\ValueObject\OrderId;
 use Module\Shared\Enum\GenderEnum;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;

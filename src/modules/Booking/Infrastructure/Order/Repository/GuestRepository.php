@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Module\Booking\Infrastructure\Order\Repository;
 
-use Module\Booking\Domain\Order\Entity\Guest;
-use Module\Booking\Domain\Order\Repository\GuestRepositoryInterface;
+use Module\Booking\Domain\Guest\Guest;
+use Module\Booking\Domain\Guest\Repository\GuestRepositoryInterface;
+use Module\Booking\Domain\Guest\ValueObject\GuestId;
 use Module\Booking\Domain\Order\ValueObject\OrderId;
-use Module\Booking\Domain\Shared\ValueObject\GuestId;
 use Module\Booking\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Booking\Infrastructure\Order\Models\Guest as Model;
 use Module\Shared\Enum\GenderEnum;
