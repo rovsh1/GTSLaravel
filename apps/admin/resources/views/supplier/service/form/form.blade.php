@@ -15,7 +15,7 @@
             'airports' => $airports,
             'cities' => $cities,
             'cancelUrl' => $cancelUrl,
-            'createUrl' => $createUrl,
+            'formActionUrl' => $formActionUrl,
             'service' => $service ?? null,
         ]) }}
     </script>
