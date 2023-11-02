@@ -146,7 +146,8 @@ class ServicesController extends Controller
                 'emptyItem' => '',
                 'required' => true,
                 'withoutHotel' => true
-            ]);
+            ])
+            ->hidden('data');
     }
 
     protected function gridFactory(Supplier $provider): GridContract
