@@ -72,7 +72,7 @@ class ServicesController extends Controller
             ->handle('Новая услуга')
             ->view('supplier.service.form.form', [
                 'cancelUrl' => $this->prototype->route('services.index', $provider),
-                'createUrl' => $this->prototype->route('services.store', $provider),
+                'formActionUrl' => $this->prototype->route('services.store', $provider),
                 'supplier' => SupplierResource::make($provider),
                 'airports' => Airport::collection($provider->airports()->get()),
                 'cities' => City::collection($provider->cities()->get())
@@ -93,6 +93,7 @@ class ServicesController extends Controller
             ->deletable()
             ->handle($service)
             ->view('supplier.service.form.form', [
+                'formActionUrl' => $this->prototype->route('services.update', [$provider, $service]),
                 'service' => $service,
                 'supplier' => SupplierResource::make($provider),
                 'airports' => Airport::collection($provider->airports()->get()),
@@ -146,7 +147,8 @@ class ServicesController extends Controller
                 'emptyItem' => '',
                 'required' => true,
                 'withoutHotel' => true
-            ]);
+            ])
+            ->hidden('data');
     }
 
     protected function gridFactory(Supplier $provider): GridContract

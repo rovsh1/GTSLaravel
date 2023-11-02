@@ -166,6 +166,16 @@ class Administrator extends Authenticatable
         $query->where('administrators.status', 1);
     }
 
+    public static function scopeWhereGroup($query, int $groupId): void
+    {
+        $query->whereRaw(
+            'EXISTS(SELECT 1 FROM administrator_access_members as t'
+            . ' WHERE t.group_id=?'
+            . ' AND t.administrator_id=administrators.id)',
+            [$groupId]
+        );
+    }
+
     public static function scopeWhereLogin($query, $login)
     {
         $query->where('login', $login);

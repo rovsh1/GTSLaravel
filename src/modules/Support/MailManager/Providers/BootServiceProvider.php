@@ -12,13 +12,13 @@ use Sdk\Module\Support\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function register(): void
     {
         $this->app->register(TemplateServiceProvider::class);
         $this->app->register(AdapterServiceProvider::class);
     }
 
-    public function boot()
+    public function boot(): void
     {
         $this->app->singleton(QueueManagerInterface::class, QueueManager::class);
         $this->app->singleton(QueueRepositoryInterface::class, QueueRepository::class);

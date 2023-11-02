@@ -8,7 +8,7 @@ use Sdk\Module\Support\ServiceProvider;
 
 class AdapterServiceProvider extends ServiceProvider
 {
-    public function boot()
+    public function boot(): void
     {
         $this->app->singleton(HotelBookingAdapterInterface::class, HotelBookingAdapter::class);
     }

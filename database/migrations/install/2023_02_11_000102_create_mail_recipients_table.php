@@ -9,11 +9,9 @@ return new class extends Migration {
     {
         Schema::create('s_mail_recipients', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('template');
-            $table->string('recipient_type');
-            $table->string('recipient_id')->nullable();
-
-            $table->unique(['template', 'recipient_type', 'recipient_id']);
+            $table->string('notification_type');
+            $table->text('recipient');
+            $table->boolean('disabled')->default(0);
         });
     }
 

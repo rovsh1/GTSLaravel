@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Adapters\Hotel;
 
-use App\Shared\Support\Adapters\AbstractHotelAdapter;
 use Module\Catalog\Application\Admin\Enums\UpdateMarkupSettingsActionEnum;
 use Module\Catalog\Application\Admin\Response\MarkupSettingsDto;
 use Module\Catalog\Application\Admin\Response\RoomMarkupsDto;
@@ -13,7 +12,7 @@ use Module\Catalog\Application\Admin\UseCase\GetRoomMarkups;
 use Module\Catalog\Application\Admin\UseCase\MarkupSettings\UpdateMarkupSettingsValue;
 use Module\Catalog\Application\Admin\UseCase\MarkupSettings\UpdateRoomMarkupSettings;
 
-class MarkupSettingsAdapter extends AbstractHotelAdapter
+class MarkupSettingsAdapter
 {
     public function getHotelMarkupSettings(int $hotelId): MarkupSettingsDto
     {
