@@ -7,6 +7,7 @@ namespace Module\Booking\Domain\Booking;
 use Module\Booking\Domain\Booking\Support\Concerns\HasStatusesTrait;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Domain\Booking\ValueObject\BookingPrices;
+use Module\Booking\Domain\Booking\ValueObject\Context;
 use Module\Booking\Domain\Order\ValueObject\OrderId;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
 use Module\Booking\Domain\Shared\Event\BookingDeleted;
@@ -29,7 +30,7 @@ class Booking extends AbstractAggregateRoot implements BookingInterface
         private BookingPrices $prices,
         private ?CancelConditions $cancelConditions,
         private ?string $note,
-        private readonly CreatorId $creatorId,
+        private readonly Context $context,
         private readonly Timestamps $timestamps,
     ) {
     }
@@ -66,9 +67,9 @@ class Booking extends AbstractAggregateRoot implements BookingInterface
 //        $this->pushEvent(new BookingPriceChanged($this, $priceBefore));
     }
 
-    public function creatorId(): CreatorId
+    public function context(): Context
     {
-        return $this->creatorId;
+        return $this->context;
     }
 
     public function timestamps(): Timestamps

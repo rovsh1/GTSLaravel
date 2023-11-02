@@ -31,7 +31,7 @@ class CopyBooking implements UseCaseInterface
         }
         $newBooking = $this->repository->create(
             orderId: $booking->orderId(),
-            creatorId: $booking->creatorId(),
+            creatorId: $booking->context()->creatorId(),
             prices: BookingPrices::createEmpty(
                 $booking->prices()->supplierPrice()->currency(),
                 $booking->prices()->clientPrice()->currency()

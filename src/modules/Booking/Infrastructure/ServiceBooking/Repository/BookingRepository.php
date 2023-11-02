@@ -10,6 +10,7 @@ use Module\Booking\Domain\Booking\Booking as Entity;
 use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Domain\Booking\ValueObject\BookingPrices;
+use Module\Booking\Domain\Booking\ValueObject\Context;
 use Module\Booking\Domain\Order\ValueObject\OrderId;
 use Module\Booking\Domain\Shared\Entity\BookingInterface;
 use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
@@ -104,7 +105,10 @@ class BookingRepository implements BookingRepositoryInterface
                 ? CancelConditions::fromData($booking->cancel_conditions)
                 : null,
             note: $booking->note,
-            creatorId: new CreatorId($booking->creator_id),
+            context: new Context(
+                source: $booking->source,
+                creatorId: new CreatorId($booking->creator_id),
+            ),
             timestamps: new Timestamps(
                 $booking->created_at->toImmutable(),
                 $booking->updated_at->toImmutable(),

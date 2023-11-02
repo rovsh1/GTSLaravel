@@ -35,7 +35,7 @@ class BookingDtoFactory
             status: $this->statusDtoFactory->get($booking->status()),
             orderId: $booking->orderId()->value(),
             createdAt: $booking->timestamps()->createdDate(),
-            creatorId: $booking->creatorId()->value(),
+            creatorId: $booking->context()->creatorId()->value(),
             prices: $this->bookingPriceDtoFactory->createFromEntity($booking->prices()),
             cancelConditions: $booking->cancelConditions() !== null
                 ? CancelConditionsDto::fromDomain($booking->cancelConditions())
@@ -48,6 +48,7 @@ class BookingDtoFactory
             details: $details !== null
                 ? $this->detailsDtoFactory->createFromEntity($details)
                 : null,
+            source: $booking->context()->source(),
         );
     }
 }
