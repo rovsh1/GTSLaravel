@@ -50,7 +50,7 @@
                             </tr>
                             <tr>
                                 <th>Источник</th>
-                                <td>-</td>
+                                <td>{{ $model->source }}</td>
                             </tr>
                             <tr>
                                 <th>Тип брони</th>

@@ -37,7 +37,7 @@ class Season extends Model
     public function scopeWhereDateIncluded(Builder $builder, DateTimeInterface $date): void
     {
         $builder
-            ->where('hotel_seasons.date_start', '<=', $date->format('Y-m-d 00:00:00'))
-            ->where('hotel_seasons.date_end', '>=', $date->format('Y-m-d 23:59:59'));
+            ->whereDate('hotel_seasons.date_start', '<=', $date)
+            ->whereDate('hotel_seasons.date_end', '>=', $date);
     }
 }

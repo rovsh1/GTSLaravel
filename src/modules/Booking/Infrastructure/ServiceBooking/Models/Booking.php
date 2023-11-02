@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
 use Module\Shared\Enum\ServiceTypeEnum;
+use Module\Shared\Enum\SourceEnum;
 use Module\Shared\Infrastructure\Models\Model;
 
 /**
@@ -40,6 +41,7 @@ class Booking extends Model
     protected $casts = [
         'status' => BookingStatusEnum::class,
         'service_type' => ServiceTypeEnum::class,
+        'source' => SourceEnum::class,
         'prices' => 'array',
         'cancel_conditions' => 'array',
     ];

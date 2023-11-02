@@ -8,6 +8,7 @@ use Carbon\CarbonImmutable;
 use Module\Booking\Application\Admin\HotelBooking\Dto\Details\CancelConditionsDto;
 use Module\Booking\Application\Admin\Shared\Response\BookingPriceDto;
 use Module\Booking\Application\Admin\Shared\Response\StatusDto;
+use Module\Shared\Enum\SourceEnum;
 
 class BookingDto
 {
@@ -22,6 +23,7 @@ class BookingDto
         public readonly ?string $note,
         public readonly ServiceTypeDto $serviceType,
         public readonly ?ServiceDetailsDtoInterface $details,
+        public readonly SourceEnum $source,
     ) {
     }
 }
