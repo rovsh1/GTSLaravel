@@ -368,7 +368,7 @@ class BookingController extends Controller
                 ['text' => 'Номера', 'tooltip' => fn($row, $val) => $this->getRoomNamesTooltip($row)]
             )
             ->text('guests_count', ['text' => 'Гостей'])
-            ->text('source', ['text' => 'Источник', 'order' => true])
+            ->enum('source', ['text' => 'Источник', 'order' => true, 'enum' => SourceEnum::class])
             ->date('created_at', ['text' => 'Создан', 'format' => 'datetime', 'order' => true])
             ->text('actions', ['renderer' => fn($row, $val) => $this->getActionButtons($row)])
             ->orderBy('created_at', 'desc')
