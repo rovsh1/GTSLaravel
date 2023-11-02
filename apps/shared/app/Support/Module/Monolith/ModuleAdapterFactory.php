@@ -15,9 +15,9 @@ class ModuleAdapterFactory
     ) {
     }
 
-    public function build(string $name, array $config): ModuleAdapter
+    public function build(string $name, string $relativePath, array $config): ModuleAdapter
     {
-        $relativePath = $config['path'];
+        $path = $this->modulesPath . DIRECTORY_SEPARATOR . $relativePath;
         $namespace = $this->modulesNamespace . '\\' . str_replace(DIRECTORY_SEPARATOR, '\\', $relativePath);
 
         $bootServiceProvider = $namespace . '\\Providers\\BootServiceProvider';
@@ -25,6 +25,12 @@ class ModuleAdapterFactory
             throw new LogicException('Module boot provider [' . $bootServiceProvider . '] not implemented');
         }
 
+//        $configPath = $path . DIRECTORY_SEPARATOR . 'config.php';
+//        if (!file_exists($configPath)) {
+//            throw new LogicException("Module[$name] config required");
+//        }
+//        $config = include $configPath;
+        $config['path'] = $path;
         $config['namespace'] = $namespace;
 
         $module = new Module($name, $config, $this->sharedContainer);
@@ -32,27 +38,4 @@ class ModuleAdapterFactory
 
         return new ModuleAdapter($name, $module);
     }
-
-//    public function build(string $name, string $relativePath): ModuleAdapter
-//    {
-//        $path = $this->modulesPath . DIRECTORY_SEPARATOR . $relativePath;
-//        $namespace = $this->modulesNamespace . '\\' . str_replace(DIRECTORY_SEPARATOR, '\\', $relativePath);
-//
-//        $bootServiceProvider = $namespace . '\\Providers\\BootServiceProvider';
-//        if (!class_exists($bootServiceProvider)) {
-//            throw new LogicException('Module boot provider [' . $bootServiceProvider . '] not implemented');
-//        }
-//
-//        $configPath = $path . DIRECTORY_SEPARATOR . 'config.php';
-//        if (!file_exists($configPath)) {
-//            throw new LogicException("Module[$name] config required");
-//        }
-//        $config = include $configPath;
-//        $config['namespace'] = $namespace;
-//
-//        $module = new Module($name, $config, $this->sharedContainer);
-//        $module->register($bootServiceProvider);
-//
-//        return new ModuleAdapter($name, $module);
-//    }
 }

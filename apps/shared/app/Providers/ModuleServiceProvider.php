@@ -9,7 +9,20 @@ use Illuminate\Support\ServiceProvider;
 class ModuleServiceProvider extends ServiceProvider
 {
     private array $modules = [
-//        'booking' => 'Booking'
+        'Administrator' => 'Administrator',
+        'Catalog' => 'Catalog',
+        'Client' => 'Client',
+        'Booking' => 'Booking',
+        'Supplier' => 'Supplier',
+        'Pricing' => 'Pricing',
+        'Logging' => 'Generic/Logging',
+        'CurrencyRate' => 'Generic/CurrencyRate',
+        'Notification' => 'Generic/Notification',
+        'FileStorage' => 'Support/FileStorage',
+        'MailManager' => 'Support/MailManager',
+        'IntegrationEventBus' => 'Support/IntegrationEventBus',
+        'Scheduler' => 'Support/Scheduler',
+//        'Traveline' => 'Traveline',
     ];
 
     public function register(): void
@@ -26,14 +39,11 @@ class ModuleServiceProvider extends ServiceProvider
             sharedContainer: $kernel->getContainer()
         );
 
-        foreach (config('modules') as $name => $config) {
-            $adapter = $monolithFactory->build($name, $config);
+        $configs = config('modules');
+        foreach ($this->modules as $name => $path) {
+            $adapter = $monolithFactory->build($name, $path, $configs[$name] ?? []);
             $modules->register($adapter);
         }
-//        foreach ($this->modules as $name => $path) {
-//            $adapter = $monolithFactory->build($name, $path);
-//            $modules->register($adapter);
-//        }
     }
 
     public function boot(): void
