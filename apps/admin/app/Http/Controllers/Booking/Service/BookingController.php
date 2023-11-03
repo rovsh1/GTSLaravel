@@ -33,7 +33,6 @@ use App\Admin\Support\View\Layout as LayoutContract;
 use App\Shared\Http\Responses\AjaxErrorResponse;
 use App\Shared\Http\Responses\AjaxResponseInterface;
 use App\Shared\Http\Responses\AjaxSuccessResponse;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -159,12 +158,7 @@ class BookingController extends Controller
 
         $data = $form->getData();
         try {
-            BookingAdapter::updateBooking(
-                id: $id,
-                date: new Carbon($data['date'] . ' ' . $data['time']),
-                note: $data['note'] ?? null,
-                flightNumber: $data['flight_number']
-            );
+            BookingAdapter::updateNote($id, $data['note'] ?? null);
             $this->administratorRepository->update($id, $data['manager_id'] ?? request()->user()->id);
         } catch (ApplicationException $e) {
             $form->throwException($e);
@@ -328,13 +322,20 @@ class BookingController extends Controller
                 'label' => 'Тип услуги',
                 'emptyItem' => '',
                 'withoutHotel' => true,
-                'required' => true
+                'required' => !$isEdit,
+                'disabled' => $isEdit,
             ])
             ->select(
                 'supplier_id',
-                ['label' => 'Поставщик', 'required' => true, 'items' => Supplier::get(), 'emptyItem' => '']
+                [
+                    'label' => 'Поставщик',
+                    'required' => !$isEdit,
+                    'items' => Supplier::get(),
+                    'emptyItem' => '',
+                    'disabled' => $isEdit
+                ]
             )
-            ->hidden('service_id', ['label' => 'Услуга', 'required' => true])
+            ->hidden('service_id', ['label' => 'Услуга', 'required' => !$isEdit, 'disabled' => $isEdit])
             ->manager('manager_id', [
                 'label' => 'Менеджер',
                 'emptyItem' => '',
@@ -367,7 +368,7 @@ class BookingController extends Controller
             )
             ->text('client_name', ['text' => 'Клиент'])
 //            ->text('city_name', ['text' => 'Город'])
-            ->enum('service_type', ['text' => 'Тип услуги'])
+            ->enum('service_type', ['text' => 'Тип услуги', 'enum' => ServiceTypeEnum::class])
 //            ->text('service_name', ['text' => 'Название услуги'])
 //            ->date('date', ['text' => 'Дата прилёта/вылета'])
             ->enum('source', ['text' => 'Источник', 'order' => true, 'enum' => SourceEnum::class])
