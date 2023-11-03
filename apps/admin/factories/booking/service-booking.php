@@ -12,8 +12,8 @@ return Factory::key('service-booking')
         "create" => "Новая бронь"
     ])
     ->views([
-        'index' => 'service-booking.main.main',
-        'show' => 'service-booking.show.show',
-        'form' => 'service-booking.form.form'
+        'index' => 'booking.services.main.main',
+        'show' => 'booking.services.show.show',
+        'form' => 'booking.services.form.form'
     ])
     ->priority(207);
