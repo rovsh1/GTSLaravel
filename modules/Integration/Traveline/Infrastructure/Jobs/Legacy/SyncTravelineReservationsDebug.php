@@ -284,7 +284,7 @@ class SyncTravelineReservationsDebug implements ShouldQueue
             )
         )->filter();
 
-        return $roomsAdditionalInfo->isEmpty() ? null : $roomsAdditionalInfo->implode("\n");
+        return $roomsAdditionalInfo->isNotEmpty() ? $roomsAdditionalInfo->implode("\n") : null;
     }
 
     private function buildRoomAdditionalInfo(
