@@ -2,7 +2,11 @@ import { isEmpty } from 'lodash'
 import { createPinia } from 'pinia'
 import { z } from 'zod'
 
+import axios from '~resources/js/app/api'
 import CreateClientButton from '~resources/views/booking/shared/CreateClientButton.vue'
+import { mapClientsToSelect2Options, Select2Option } from '~resources/views/booking/shared/lib/constants'
+
+import { Client } from '~api/client'
 
 import { formatDate } from '~lib/date'
 import { useApplicationEventBus } from '~lib/event-bus'
@@ -15,11 +19,9 @@ const { bookingID } = requestInitialData('view-initial-data-service-booking', z.
   bookingID: z.number().nullable(),
 }))
 
-const pinia = createPinia()
+let clients = [] as Client[]
 
-const clients: any[] = [
-  { id: 14, name: 'test', currency: 'UZS' },
-]
+const pinia = createPinia()
 
 $(() => {
   const toggleLegalIdInput = (required: boolean = true): void => {
@@ -111,6 +113,15 @@ $(() => {
     .change(() => handleChangeClientId(undefined))
     .ready(() => handleChangeClientId(undefined))
 
+  const reloadClientsSelect = async (): Promise<void> => {
+    const clientsList = await axios.get('/client/list')
+    const clientsListData = clientsList && clientsList.data ? clientsList.data : []
+    clients = clientsListData
+    const clientsSelectOptions: Select2Option[] = mapClientsToSelect2Options(clientsListData)
+    $clientIdSelect.select2('destroy').empty().select2({ data: clientsSelectOptions }).val('')
+      .trigger('change')
+  }
+
   $('#form_data_order_id').childCombo({
     url: '/booking-order/search',
     disabledText: 'Выберите клиента',
@@ -141,8 +152,12 @@ $(() => {
     })
 
     const eventBus = useApplicationEventBus()
-    eventBus.on('client-created', (event: { clientId: number }) => {
+    eventBus.on('client-created', async (event: { clientId: number }) => {
+      await reloadClientsSelect()
       $clientIdSelect.val(event.clientId).trigger('change')
+      handleChangeClientId(event.clientId)
     })
   }
+
+  reloadClientsSelect()
 })

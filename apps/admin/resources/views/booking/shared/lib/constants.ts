@@ -1,3 +1,5 @@
+import { Client } from '~resources/api/client'
+
 import { ExternalNumberTypeEnum } from '~api/booking/hotel/details'
 import { MarkupCondition } from '~api/hotel/markup-settings'
 
@@ -7,6 +9,11 @@ export interface EntityInterface {
   id: number
   name: string
   group?: string
+}
+
+export type Select2Option = {
+  id: string | number | ''
+  text: string
 }
 
 export const mapEntitiesToSelectOptions = (entities: EntityInterface[]): SelectOption[] => entities.map(
@@ -67,3 +74,7 @@ export const getHumanRequestType = (typeId: number): string | undefined => {
   const preparedType = humanRequestType?.find((type: any) => type.id === typeId)?.name
   return preparedType || 'изменение'
 }
+
+export const mapClientsToSelect2Options = (clients: Client[]): Select2Option[] => clients.map(
+  (client) => ({ id: client.id, text: client.name }),
+)

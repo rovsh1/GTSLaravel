@@ -1,5 +1,5 @@
 import axios from '~resources/js/app/api'
-import { Select2Option } from '~resources/views/booking/hotel/form/lib/types'
+import { Select2Option } from '~resources/views/booking/shared/lib/constants'
 import bootBeds from '~resources/views/hotel/_services/room-editor'
 
 import '~resources/views/main'

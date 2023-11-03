@@ -4,6 +4,7 @@ import { z } from 'zod'
 
 import axios from '~resources/js/app/api'
 import CreateClientButton from '~resources/views/booking/shared/CreateClientButton.vue'
+import { mapClientsToSelect2Options, Select2Option } from '~resources/views/booking/shared/lib/constants'
 
 import { Client } from '~api/client'
 
@@ -13,9 +14,6 @@ import { requestInitialData } from '~lib/initial-data'
 import { createVueInstance } from '~lib/vue'
 
 import '~resources/views/main'
-
-import { mapClientsToSelect2Options } from './lib/constants'
-import { Select2Option } from './lib/types'
 
 const { bookingID } = requestInitialData('view-initial-data-hotel-booking', z.object({
   bookingID: z.number().nullable(),
@@ -56,6 +54,7 @@ $(() => {
     const $clientIdInput = $('#form_data_client_id')
     const clientId = $clientIdInput.val()
     const client = clients.find((cl) => cl.id === Number(clientId))
+
     if (bookingID === null) {
       if (!client) {
         $('#form_data_order_id').attr('disabled', 'disabled')
