@@ -275,14 +275,16 @@ class SyncTravelineReservationsDebug implements ShouldQueue
      */
     private function buildAdditionalInfo(CarbonPeriod $period, Collection $rooms): ?string
     {
-        return $rooms->map(
+        $roomsAdditionalInfo = $rooms->map(
             fn(Room $room) => $this->buildRoomAdditionalInfo(
                 $room->room_name,
                 $period,
                 $room->checkInCondition,
                 $room->checkOutCondition
             )
-        )->implode("\n");
+        )->filter();
+
+        return $roomsAdditionalInfo->isEmpty() ? null : $roomsAdditionalInfo->implode("\n");
     }
 
     private function buildRoomAdditionalInfo(
