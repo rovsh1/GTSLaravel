@@ -370,7 +370,7 @@ class BookingController extends Controller
             ->enum('service_type', ['text' => 'Тип услуги'])
 //            ->text('service_name', ['text' => 'Название услуги'])
 //            ->date('date', ['text' => 'Дата прилёта/вылета'])
-            ->text('source', ['text' => 'Источник', 'order' => true])
+            ->enum('source', ['text' => 'Источник', 'order' => true, 'enum' => SourceEnum::class])
             ->date('created_at', ['text' => 'Создан', 'format' => 'datetime', 'order' => true])
             ->text('actions', ['renderer' => fn($row, $val) => $this->getActionButtons($row)])
             ->orderBy('bookings.created_at', 'desc')
