@@ -291,7 +291,7 @@ class SyncTravelineReservationsDebug implements ShouldQueue
         ?Room\CheckInOutConditions $roomCheckInCondition,
         ?Room\CheckInOutConditions $roomCheckOutCondition
     ): ?string {
-        $comment = $roomName . ': ';
+        $comment = '';
         if ($roomCheckInCondition !== null) {
             $checkInDate = $period->getStartDate()->format('d.m.Y');
             $comment .= "Фактическое время заезда (ранний заезд) с {$roomCheckInCondition->start} {$checkInDate}. ";
@@ -301,7 +301,7 @@ class SyncTravelineReservationsDebug implements ShouldQueue
             $comment .= "Фактическое время выезда (поздний выезд) до {$roomCheckOutCondition->end} {$checkOutDate}";
         }
 
-        return empty($comment) ? null : $comment;
+        return empty($comment) ? null : $roomName . ': ' . $comment;
     }
 
     /**
