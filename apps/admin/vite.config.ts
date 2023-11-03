@@ -64,6 +64,7 @@ export default defineConfig(({ command }) => ({
         'resources/views/supplier/service/price/transfer/index.ts',
         'resources/views/supplier/service/form/form.ts',
         'resources/views/supplier/contract/form/form.ts',
+        'resources/views/supplier/season/form/form.ts',
         'resources/views/hotel-booking/main/main.ts',
         'resources/views/hotel-booking/form/form.ts',
         'resources/views/hotel-booking/show/show.ts',
