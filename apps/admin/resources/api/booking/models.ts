@@ -25,11 +25,17 @@ export type PriceItem = {
   isManual: boolean
 }
 
+export type ProfitItem = {
+  currency: CurrencyDto
+  supplierValue: number
+  clientValue: number
+  profitValue: number
+}
+
 export type BookingPrice = {
-  grossPrice: PriceItem
-  netPrice: PriceItem
-  profit: PriceItem
-  convertedNetPrice: PriceItem | null
+  clientPrice: PriceItem
+  supplierPrice: PriceItem
+  profit: ProfitItem
 }
 
 export type BaseBooking = {

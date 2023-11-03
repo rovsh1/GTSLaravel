@@ -66,10 +66,10 @@ const bookingDetails = computed<HotelBookingDetails | undefined>(() => bookingSt
 const markupSettings = computed<MarkupSettings | null>(() => bookingStore.markupSettings)
 const isEditableStatus = computed<boolean>(() => bookingStore.availableActions?.isEditable || false)
 const grossCurrency = computed<Currency | undefined>(
-  () => getCurrencyByCodeChar(bookingStore.booking?.prices.grossPrice.currency.value),
+  () => getCurrencyByCodeChar(bookingStore.booking?.prices.clientPrice.currency.value),
 )
 const netCurrency = computed<Currency | undefined>(
-  () => getCurrencyByCodeChar(bookingStore.booking?.prices.netPrice.currency.value),
+  () => getCurrencyByCodeChar(bookingStore.booking?.prices.supplierPrice.currency.value),
 )
 const orderId = computed(() => orderStore.order.id)
 const orderGuests = computed<Guest[]>(() => orderStore.guests || [])
@@ -82,7 +82,7 @@ const filteredOrderGuests = computed<Guest[]>(() => orderGuests.value.filter((gu
   !bookingRoomsGuestsIds.value.includes(guest.id)))
 
 const isBookingPriceManual = computed(
-  () => bookingStore.booking?.prices.grossPrice.isManual || bookingStore.booking?.prices.netPrice.isManual,
+  () => bookingStore.booking?.prices.clientPrice.isManual || bookingStore.booking?.prices.supplierPrice.isManual,
 )
 
 const canChangeRoomPrice = computed<boolean>(

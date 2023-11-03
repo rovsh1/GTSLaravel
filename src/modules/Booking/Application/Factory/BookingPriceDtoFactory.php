@@ -6,6 +6,7 @@ namespace Module\Booking\Application\Factory;
 
 use Module\Booking\Application\Dto\BookingPriceDto;
 use Module\Booking\Application\Dto\PriceItemDto;
+use Module\Booking\Application\Dto\ProfitItemDto;
 use Module\Booking\Domain\Booking\ValueObject\BookingPriceItem;
 use Module\Booking\Domain\Booking\ValueObject\BookingPrices;
 use Module\Shared\Contracts\Adapter\CurrencyRateAdapterInterface;
@@ -18,8 +19,7 @@ class BookingPriceDtoFactory
     public function __construct(
         private readonly TranslatorInterface $translator,
         private readonly CurrencyRateAdapterInterface $currencyRateAdapter,
-    ) {
-    }
+    ) {}
 
     public function createFromEntity(BookingPrices $entity): BookingPriceDto
     {
@@ -29,18 +29,18 @@ class BookingPriceDtoFactory
         $clientPriceDto = $this->makePriceItemDto($clientPriceItem);
         $supplierPriceDto = $this->makePriceItemDto($supplierPriceItem);
         $convertedSupplierPriceDto = $this->getConvertedSupplierPrice($supplierPriceItem, $clientPriceItem->currency());
-        $convertedSupplierPriceValue = $convertedSupplierPriceDto?->calculatedValue ?? $supplierPriceDto->manualValue ?? $supplierPriceDto->calculatedValue;
 
-        $profit = new PriceItemDto(
+        $calculatedClientValue = $this->calculateClientValue($clientPriceItem);
+        $calculatedSupplierValue = $this->calculateSupplierValue($convertedSupplierPriceDto->calculatedValue, $convertedSupplierPriceDto->penaltyValue);
+        $profit = new ProfitItemDto(
             CurrencyDto::fromEnum($clientPriceItem->currency(), $this->translator),
-            $this->calculateProfitValue($clientPriceItem, $convertedSupplierPriceValue, $convertedSupplierPriceDto->penaltyValue),
-            null,
-            null,
-            false
+            $calculatedSupplierValue,
+            $calculatedClientValue,
+            $this->calculateProfitValue($calculatedClientValue, $calculatedSupplierValue),
         );
 
 
-        return new BookingPriceDto($supplierPriceDto, $clientPriceDto, $profit, $convertedSupplierPriceDto);
+        return new BookingPriceDto($supplierPriceDto, $clientPriceDto, $profit);
     }
 
     private function makePriceItemDto(BookingPriceItem $priceItem): PriceItemDto
@@ -57,7 +57,7 @@ class BookingPriceDtoFactory
     private function getConvertedSupplierPrice(
         BookingPriceItem $supplierPriceItem,
         CurrencyEnum $outCurrency
-    ): ?PriceItemDto {
+    ): PriceItemDto {
         $netPriceValue = $supplierPriceItem->manualValue() ?? $supplierPriceItem->calculatedValue();
         if ($supplierPriceItem->currency() === $outCurrency) {
             return new PriceItemDto(
@@ -95,13 +95,19 @@ class BookingPriceDtoFactory
         );
     }
 
-    private function calculateProfitValue(
-        BookingPriceItem $clientPriceItem,
-        float $convertedSupplierValue,
-        ?float $convertedSupplierPenaltyValue,
-    ): float {
-        $clientPriceValue = ($clientPriceItem->manualValue() ?? $clientPriceItem->calculatedValue()) - $clientPriceItem->penaltyValue();
+    private function calculateClientValue(BookingPriceItem $clientPriceItem): float
+    {
+        return ($clientPriceItem->manualValue() ?? $clientPriceItem->calculatedValue(
+            )) - $clientPriceItem->penaltyValue();
+    }
 
-        return $clientPriceValue - ($convertedSupplierValue - $convertedSupplierPenaltyValue);
+    private function calculateSupplierValue(float $convertedSupplierValue, ?float $convertedSupplierPenaltyValue): float
+    {
+        return ($convertedSupplierValue - $convertedSupplierPenaltyValue);
+    }
+
+    private function calculateProfitValue(float $calculatedClientValue, float $calculatedSupplierValue,): float
+    {
+        return $calculatedClientValue - $calculatedSupplierValue;
     }
 }

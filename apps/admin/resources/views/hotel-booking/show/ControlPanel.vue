@@ -24,7 +24,7 @@ import { CancelConditions, ExternalNumberType, ExternalNumberTypeEnum } from '~a
 import { updateBookingPrice, useRecalculateBookingPriceAPI } from '~api/booking/hotel/price'
 import { BookingRequest } from '~api/booking/hotel/request'
 import { BookingAvailableActionsResponse } from '~api/booking/hotel/status'
-import { BookingStatusResponse } from '~api/booking/models'
+import { BookingStatusResponse, ProfitItem } from '~api/booking/models'
 import { Currency } from '~api/models'
 
 import { formatDate, formatDateTime } from '~lib/date'
@@ -66,13 +66,12 @@ const { isFetching: isRecalculateBookingPrice, execute: recalculateBookingPrice 
 const booking = computed<Booking | null>(() => bookingStore.booking)
 const cancelConditions = computed<CancelConditions | null>(() => bookingStore.booking?.cancelConditions || null)
 const grossCurrency = computed<Currency | undefined>(
-  () => getCurrencyByCodeChar(bookingStore.booking?.prices.grossPrice.currency.value),
+  () => getCurrencyByCodeChar(bookingStore.booking?.prices.clientPrice.currency.value),
 )
 const netCurrency = computed<Currency | undefined>(
-  () => getCurrencyByCodeChar(bookingStore.booking?.prices.netPrice.currency.value),
+  () => getCurrencyByCodeChar(bookingStore.booking?.prices.supplierPrice.currency.value),
 )
-const profit = computed<number>(() => bookingStore.booking?.prices.profit.calculatedValue || 0)
-const convertedNetValue = computed<number>(() => bookingStore.booking?.prices.convertedNetPrice?.calculatedValue || 0)
+const profit = computed<ProfitItem | undefined>(() => bookingStore.booking?.prices.profit)
 const statuses = computed<BookingStatusResponse[] | null>(() => bookingStore.statuses)
 const availableActions = computed<BookingAvailableActionsResponse | null>(() => bookingStore.availableActions)
 
@@ -191,15 +190,15 @@ const handleRecalculatePrice = async () => {
   fetchBooking()
 }
 
-const getDisplayPriceValue = (type: 'gross' | 'net') => {
+const getDisplayPriceValue = (type: 'client' | 'supplier') => {
   if (!booking.value) {
     return 0
   }
-  if (type === 'gross') {
-    return booking.value?.prices.grossPrice.manualValue || booking.value?.prices.grossPrice.calculatedValue
+  if (type === 'client') {
+    return booking.value?.prices.clientPrice.manualValue || booking.value?.prices.clientPrice.calculatedValue
   }
 
-  return booking.value?.prices.netPrice.manualValue || booking.value?.prices.netPrice.calculatedValue
+  return booking.value?.prices.supplierPrice.manualValue || booking.value?.prices.supplierPrice.calculatedValue
 }
 
 onMounted(() => {
@@ -220,7 +219,7 @@ onMounted(() => {
   <PriceModal
     header="Общая сумма (нетто)"
     :label="`Общая сумма (нетто) в ${netCurrency?.code_char}`"
-    :value="booking?.prices.netPrice.manualValue || undefined"
+    :value="booking?.prices.supplierPrice.manualValue || undefined"
     :opened="isNetPriceModalOpened"
     @close="toggleNetPriceModal(false)"
     @submit="handleSaveNetManualPrice"
@@ -229,7 +228,7 @@ onMounted(() => {
   <PriceModal
     header="Общая сумма (брутто)"
     :label="`Общая сумма (брутто) ${grossCurrency?.code_char}`"
-    :value="booking?.prices.grossPrice.manualValue || undefined"
+    :value="booking?.prices.clientPrice.manualValue || undefined"
     :opened="isGrossPriceModalOpened"
     @close="toggleGrossPriceModal(false)"
     @submit="handleSaveGrossManualPrice"
@@ -238,7 +237,7 @@ onMounted(() => {
   <PriceModal
     header="Сумма штрафа для клиента"
     :label="`Сумма штрафа для клиента в ${grossCurrency?.code_char}`"
-    :value="booking?.prices.grossPrice.penaltyValue || undefined"
+    :value="booking?.prices.clientPrice.penaltyValue || undefined"
     :opened="isGrossPenaltyModalOpened"
     @close="toggleGrossPenaltyModal(false)"
     @submit="handleSaveGrossPenalty"
@@ -247,7 +246,7 @@ onMounted(() => {
   <PriceModal
     header="Сумма штрафа от гостиницы"
     :label="`Сумма штрафа от гостиницы в ${netCurrency?.code_char}`"
-    :value="booking?.prices.netPrice.penaltyValue || undefined"
+    :value="booking?.prices.supplierPrice.penaltyValue || undefined"
     :opened="isNetPenaltyModalOpened"
     @close="toggleNetPenaltyModal(false)"
     @submit="handleSaveNetPenalty"
@@ -266,9 +265,9 @@ onMounted(() => {
     <div v-if="booking && grossCurrency" class="float-end">
       Общая сумма:
       <strong>
-        {{ formatPrice(getDisplayPriceValue('gross'), grossCurrency.sign) }}
+        {{ formatPrice(getDisplayPriceValue('client'), grossCurrency.sign) }}
       </strong>
-      <span v-if="booking.prices.grossPrice.isManual" class="text-muted"> (выставлена вручную)</span>
+      <span v-if="booking.prices.clientPrice.isManual" class="text-muted"> (выставлена вручную)</span>
     </div>
   </div>
 
@@ -325,10 +324,10 @@ onMounted(() => {
         title="Приход"
         :currency="grossCurrency"
         amount-title="Общая сумма (брутто)"
-        :amount-value="getDisplayPriceValue('gross')"
+        :amount-value="getDisplayPriceValue('client')"
         penalty-title="Сумма штрафа для клиента"
-        :penalty-value="booking.prices.grossPrice.penaltyValue"
-        :need-show-penalty="(booking?.prices.netPrice.penaltyValue || 0) > 0"
+        :penalty-value="booking.prices.clientPrice.penaltyValue"
+        :need-show-penalty="(booking?.prices.supplierPrice.penaltyValue || 0) > 0"
         @click-change-price="toggleGrossPriceModal(true)"
         @click-change-penalty="toggleGrossPenaltyModal(true)"
       />
@@ -338,19 +337,19 @@ onMounted(() => {
         title="Расход"
         :currency="netCurrency"
         amount-title="Общая сумма (нетто)"
-        :amount-value="getDisplayPriceValue('net')"
+        :amount-value="getDisplayPriceValue('supplier')"
         penalty-title="Сумма штрафа от гостиницы"
-        :penalty-value="booking.prices.netPrice.penaltyValue"
-        :need-show-penalty="(booking?.prices.netPrice.penaltyValue || 0) > 0"
+        :penalty-value="booking.prices.supplierPrice.penaltyValue"
+        :need-show-penalty="(booking?.prices.supplierPrice.penaltyValue || 0) > 0"
         @click-change-price="toggleNetPriceModal(true)"
         @click-change-penalty="toggleNetPenaltyModal(true)"
       />
     </div>
 
     <div v-if="booking && grossCurrency && netCurrency" class="mt-2">
-      Прибыль = {{ formatPrice(getDisplayPriceValue('gross'), grossCurrency.sign) }} - {{ formatPrice(convertedNetValue, grossCurrency.sign) }} =
+      Прибыль = {{ formatPrice(profit?.clientValue, grossCurrency.sign) }} - {{ formatPrice(profit?.supplierValue, grossCurrency.sign) }} =
       {{
-        formatPrice(profit, grossCurrency.sign)
+        formatPrice(profit?.profitValue, grossCurrency.sign)
       }}
     </div>
 
