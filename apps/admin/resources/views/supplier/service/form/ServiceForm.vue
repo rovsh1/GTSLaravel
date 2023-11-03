@@ -4,8 +4,8 @@ import { computed, defineAsyncComponent, onMounted, reactive, ref, shallowRef } 
 import { z } from 'zod'
 
 import { toPascalCase } from '~resources/js/libs/strings'
-import ErrorComponent from '~resources/views/booking/components/ErrorComponent.vue'
-import { mapEntitiesToSelectOptions } from '~resources/views/booking/lib/constants'
+import ErrorComponent from '~resources/views/booking/shared/components/ErrorComponent.vue'
+import { mapEntitiesToSelectOptions } from '~resources/views/booking/shared/lib/constants'
 import { DetailsFormData } from '~resources/views/supplier/service/form/components/details/lib/types'
 
 import { useGetBookingDetailsTypesAPI } from '~api/booking/service'

@@ -4,7 +4,7 @@ import { computed, ref, watch } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
 
-import { cancelPeriodOptions } from '~resources/views/booking/lib/constants'
+import { cancelPeriodOptions } from '~resources/views/booking/shared/lib/constants'
 
 import { DailyMarkup } from '~api/hotel/markup-settings'
 

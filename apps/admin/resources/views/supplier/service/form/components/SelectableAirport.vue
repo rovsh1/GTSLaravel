@@ -3,7 +3,7 @@ import { ref } from 'vue'
 
 import { z } from 'zod'
 
-import { mapEntitiesToSelectOptions } from '~resources/views/booking/lib/constants'
+import { mapEntitiesToSelectOptions } from '~resources/views/booking/shared/lib/constants'
 
 import { requestInitialData } from '~lib/initial-data'
 

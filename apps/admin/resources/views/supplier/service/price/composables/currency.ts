@@ -2,7 +2,7 @@ import { computed, ref } from 'vue'
 
 import { defineStore } from 'pinia'
 
-import { mapEntitiesToSelectOptions } from '~resources/views/booking/lib/constants'
+import { mapEntitiesToSelectOptions } from '~resources/views/booking/shared/lib/constants'
 
 import { Currency } from '~api/models'
 

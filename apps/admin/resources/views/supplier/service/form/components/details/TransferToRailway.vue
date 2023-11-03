@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
 
-import { mapEntitiesToSelectOptions } from '~resources/views/booking/lib/constants'
+import { mapEntitiesToSelectOptions } from '~resources/views/booking/shared/lib/constants'
 
 import { useRailwayStationSearchAPI } from '~api/railway-station'
 
