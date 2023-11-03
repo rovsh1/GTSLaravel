@@ -12,7 +12,7 @@ class Service extends \Module\Supplier\Infrastructure\Models\Service
 {
     use HasQuicksearch;
 
-    protected array $quicksearch = ['id', 'supplier_services.title%'];
+    protected array $quicksearch = ['id', 'supplier_services.%title%'];
 
     protected $casts = [
         'data' => 'array',
