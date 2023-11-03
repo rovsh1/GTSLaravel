@@ -30,5 +30,9 @@ class BootServiceProvider extends ServiceProvider
             Domain\Repository\LegalRepositoryInterface::class,
             Infrastructure\Repository\LegalRepository::class
         );
+        $this->app->singleton(
+            Domain\Repository\CurrencyRateRepositoryInterface::class,
+            Infrastructure\Repository\CurrencyRateRepository::class
+        );
     }
 }
