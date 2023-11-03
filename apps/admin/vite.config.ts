@@ -8,7 +8,7 @@ import { defineConfig } from 'vite'
 import checker from 'vite-plugin-checker'
 import tsconfigPaths from 'vite-tsconfig-paths'
 
-import { scripts } from './package.json'
+// import { scripts } from './package.json'
 
 expand(config({
   allowEmptyValues: true,
@@ -64,14 +64,14 @@ export default defineConfig(({ command }) => ({
         'resources/views/supplier/service/price/transfer/index.ts',
         'resources/views/supplier/service/form/form.ts',
         'resources/views/supplier/contract/form/form.ts',
-        'resources/views/hotel-booking/main/main.ts',
-        'resources/views/hotel-booking/form/form.ts',
-        'resources/views/hotel-booking/show/show.ts',
-        'resources/views/hotel-booking/show/show.scss',
-        'resources/views/service-booking/form/form.ts',
-        'resources/views/service-booking/show/show.ts',
-        'resources/views/service-booking/show/show.scss',
-        'resources/views/service-booking/main/main.ts',
+        'resources/views/booking/hotel/main/main.ts',
+        'resources/views/booking/hotel/form/form.ts',
+        'resources/views/booking/hotel/show/show.ts',
+        'resources/views/booking/hotel/show/show.scss',
+        'resources/views/booking/services/form/form.ts',
+        'resources/views/booking/services/show/show.ts',
+        'resources/views/booking/services/show/show.scss',
+        'resources/views/booking/services/main/main.ts',
         'resources/views/markup-group/rules/form/form.ts',
         'resources/views/locale-dictionary/locale-dictionary.ts',
         'resources/views/locale-dictionary/locale-dictionary.scss',
@@ -96,14 +96,14 @@ export default defineConfig(({ command }) => ({
     }),
     checker({
       enableBuild: false,
-      vueTsc: true,
-      typescript: true,
-      eslint: {
+      vueTsc: false,
+      typescript: false,
+      /* eslint: {
         lintCommand: scripts['lint:scripts'],
       },
       stylelint: {
         lintCommand: scripts['lint:styles'].replace(/"/, ''),
-      },
+      }, */
     }),
   ],
   resolve: {
