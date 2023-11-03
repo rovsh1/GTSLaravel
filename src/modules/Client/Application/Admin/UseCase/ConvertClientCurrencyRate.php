@@ -25,7 +25,7 @@ class ConvertClientCurrencyRate implements UseCaseInterface
         CurrencyEnum $currencyFrom,
         CurrencyEnum $currencyTo,
         \DateTimeInterface $date,
-        string $country = null,
+        ?string $country = null,
     ): float {
         $clientCurrencyRate = $this->currencyRateRepository->find(new ClientId($clientId), $hotelId, $currencyTo, $date);
         if ($clientCurrencyRate === null) {

@@ -85,7 +85,7 @@ class CalculateHotelPrice implements UseCaseInterface
                 );
 
                 $calculation->calculateBase(
-                    basicCalculatedValue: $this->getPreparedBasicCalculatedValue($hotel, $date, $request->outCurrency),
+                    basicCalculatedValue: $this->getPreparedBasicCalculatedValue($hotel, $request->clientId, $date, $request->outCurrency),
                     baseRoomValue: $baseValue,
                     vat: $hotel->vat()->value(),
                     touristTax: $hotel->touristTax($room->isResident)->value(),
@@ -120,15 +120,18 @@ class CalculateHotelPrice implements UseCaseInterface
 
     private function getPreparedBasicCalculatedValue(
         Hotel $hotel,
+        ?int $clientId,
         \DateTimeInterface $date,
         CurrencyEnum $outCurrency
     ): float {
-        return $this->currencyRateAdapter->convertNetRate(
+        return $this->convertCurrencyRate(
+            hotelId: $hotel->id()->value(),
             price: $this->constants->basicCalculatedValue(),
             currencyFrom: CurrencyEnum::UZS,
             currencyTo: $outCurrency,
-            country: $hotel->countryCode(),
-            date: $date
+            date: $date,
+            clientId: $clientId,
+            country: $hotel->countryCode()
         );
     }
 
@@ -154,24 +157,38 @@ class CalculateHotelPrice implements UseCaseInterface
             return $Po;
         }
 
-        if ($clientId === null) {
-            return $this->currencyRateAdapter->convertNetRate(
-                price: $Po,
-                currencyFrom: $hotel->currency(),
-                currencyTo: $outCurrency,
-                country: $hotel->countryCode(),
-                date: $date
-            );
-        }
-
-        return app(ConvertClientCurrencyRate::class)->execute(
-            clientId: $clientId,
+        return $this->convertCurrencyRate(
             hotelId: $hotel->id()->value(),
             price: $Po,
             currencyFrom: $hotel->currency(),
             currencyTo: $outCurrency,
             date: $date,
+            clientId: $clientId,
             country: $hotel->countryCode(),
+        );
+    }
+
+    private function convertCurrencyRate(
+        int $hotelId,
+        float $price,
+        CurrencyEnum $currencyFrom,
+        CurrencyEnum $currencyTo,
+        \DateTimeInterface $date,
+        ?int $clientId,
+        ?string $country = null
+    ): float {
+        if ($clientId === null) {
+            return $this->currencyRateAdapter->convertNetRate($price, $currencyFrom, $currencyTo, $country, $date);
+        }
+
+        return app(ConvertClientCurrencyRate::class)->execute(
+            clientId: $clientId,
+            hotelId: $hotelId,
+            price: $price,
+            currencyFrom: $currencyFrom,
+            currencyTo: $currencyTo,
+            date: $date,
+            country: $country
         );
     }
 }
