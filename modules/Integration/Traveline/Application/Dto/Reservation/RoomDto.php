@@ -36,8 +36,6 @@ class RoomDto extends Dto
 
         #[MapInputName('guestNote')]
         public readonly ?string       $guestComment = null,
-        #[MapInputName('additionalInfo')]
-        public readonly ?string       $additionalInfo = null,
 
         public readonly int           $children = 0,
         public readonly int           $commission = 0,

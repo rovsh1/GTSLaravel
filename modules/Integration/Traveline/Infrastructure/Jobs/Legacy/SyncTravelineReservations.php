@@ -246,7 +246,6 @@ class SyncTravelineReservations implements ShouldQueue
                         ),
                         Dto\Reservation\Room\TotalDto::from(['amountAfterTaxes' => $preparedPrice]),
                         $room->note,
-                        $this->buildAdditionalInfo($period, $room->checkInCondition, $room->checkOutCondition)
                     );
                 }
 
@@ -267,7 +266,6 @@ class SyncTravelineReservations implements ShouldQueue
                     ),
                     Dto\Reservation\Room\TotalDto::from(['amountAfterTaxes' => $preparedPrice]),
                     $room->note,
-                    $this->buildAdditionalInfo($period, $room->checkInCondition, $room->checkOutCondition)
                 );
             }
         )->filter()->merge($fakeRooms)->all();

@@ -37,6 +37,9 @@ class ReservationDto extends Dto
         #[MapInputName('rooms'), DtoCollectionOf(Reservation\RoomDto::class)]
         public readonly ?DtoCollection    $roomStays = null,
 
+        #[MapInputName('additionalInfo')]
+        public readonly ?string $additionalInfo = null,
+
         #[MapInputName('customer')]
         public readonly ?CustomerDto $customer = null,
 

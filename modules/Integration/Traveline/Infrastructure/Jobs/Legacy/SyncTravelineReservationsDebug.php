@@ -2,7 +2,6 @@
 
 namespace Module\Integration\Traveline\Infrastructure\Jobs\Legacy;
 
-use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
 use Illuminate\Bus\Queueable;
@@ -65,10 +64,11 @@ class SyncTravelineReservationsDebug implements ShouldQueue
             ->addSelect($this->getTravelineReservationsTable() . '.data as data');
 
         $q->chunk(100, function (Collection $collection) {
-            $updateData = $collection->map(fn(Reservation $reservation) => $this->mapReservationsToTravelineUpdateData($reservation))
+            $updateData = $collection->map(
+                fn(Reservation $reservation) => $this->mapReservationsToTravelineUpdateData($reservation)
+            )
                 ->filter()
                 ->all();
-
 //            TravelineReservation::upsert($updateData, 'reservation_id', ['data', 'status', 'updated_at', 'accepted_at']);
         });
     }
@@ -127,7 +127,10 @@ class SyncTravelineReservationsDebug implements ShouldQueue
     private function createTravelineReservations(Collection $hotelReservations): void
     {
         $preparedReservations = $hotelReservations->map(function (Reservation $reservation) {
-            $reservationDto = $this->convertHotelReservationToDto($reservation, TravelineReservationStatusEnum::New->value);
+            $reservationDto = $this->convertHotelReservationToDto(
+                $reservation,
+                TravelineReservationStatusEnum::New->value
+            );
             if ($reservationDto->roomStays->count() === 0) {
                 return null;
             }
@@ -146,6 +149,8 @@ class SyncTravelineReservationsDebug implements ShouldQueue
 
     private function convertHotelReservationToDto(Reservation $reservation, string $status): ReservationDto
     {
+        $period = new CarbonPeriod($reservation->date_checkin, $reservation->date_checkout);
+
         return ReservationDto::from([
                 'number' => $reservation->id,
                 'hotelId' => $reservation->hotel_id,
@@ -154,12 +159,13 @@ class SyncTravelineReservationsDebug implements ShouldQueue
                 'departureTime' => $reservation->hotelDefaultCheckOutEnd?->value,
                 'rooms' => $this->convertHotelReservationsRoomsToDto(
                     $reservation->rooms,
-                    new CarbonPeriod($reservation->date_checkin, $reservation->date_checkout),
+                    $period,
                     $reservation->hotelDefaultCheckInStart,
                     $reservation->hotelDefaultCheckOutEnd,
                 ),
                 'status' => Dto\Reservation\StatusEnum::from($status),
                 'currencyCode' => env('DEFAULT_CURRENCY_CODE'),
+                'additionalInfo' => $this->buildAdditionalInfo($period, $reservation->rooms),
                 'customer' => $this->getDefaultCustomer($reservation->manager_email),
             ]
         );
@@ -237,7 +243,6 @@ class SyncTravelineReservationsDebug implements ShouldQueue
                         ),
                         Dto\Reservation\Room\TotalDto::from(['amountAfterTaxes' => $preparedPrice]),
                         $room->note,
-                        $this->buildAdditionalInfo($period, $room->checkInCondition, $room->checkOutCondition)
                     );
                 }
 
@@ -258,21 +263,38 @@ class SyncTravelineReservationsDebug implements ShouldQueue
                     ),
                     Dto\Reservation\Room\TotalDto::from(['amountAfterTaxes' => $preparedPrice]),
                     $room->note,
-                    $this->buildAdditionalInfo($period, $room->checkInCondition, $room->checkOutCondition)
                 );
             }
         )->filter()->merge($fakeRooms)->all();
     }
 
-    private function buildAdditionalInfo(
+    /**
+     * @param CarbonPeriod $period
+     * @param Collection<int, Room>|Room[] $rooms
+     * @return string|null
+     */
+    private function buildAdditionalInfo(CarbonPeriod $period, Collection $rooms): ?string
+    {
+        return $rooms->map(
+            fn(Room $room) => $this->buildRoomAdditionalInfo(
+                $room->room_name,
+                $period,
+                $room->checkInCondition,
+                $room->checkOutCondition
+            )
+        )->implode("\n");
+    }
+
+    private function buildRoomAdditionalInfo(
+        string $roomName,
         CarbonPeriod $period,
         ?Room\CheckInOutConditions $roomCheckInCondition,
         ?Room\CheckInOutConditions $roomCheckOutCondition
     ): ?string {
-        $comment = '';
+        $comment = $roomName . ': ';
         if ($roomCheckInCondition !== null) {
             $checkInDate = $period->getStartDate()->format('d.m.Y');
-            $comment .= "Фактическое время заезда (ранний заезд) с {$roomCheckInCondition->start} {$checkInDate}.";
+            $comment .= "Фактическое время заезда (ранний заезд) с {$roomCheckInCondition->start} {$checkInDate}. ";
         }
         if ($roomCheckOutCondition !== null) {
             $checkOutDate = $period->getEndDate()->format('d.m.Y');
@@ -323,8 +345,16 @@ class SyncTravelineReservationsDebug implements ShouldQueue
          *  - если ранний заезд - включаем день перед началом периода
          *  - если поздний заезд - включаем последний день периода
          */
-        $startDate = $this->getPeriodStartDateByCheckInCondition($period, $hotelDefaultCheckInStart, $roomCheckInCondition);
-        $endDate = $this->getPeriodEndDateByCheckOutCondition($period, $hotelDefaultCheckOutEnd, $roomCheckOutCondition);
+        $startDate = $this->getPeriodStartDateByCheckInCondition(
+            $period,
+            $hotelDefaultCheckInStart,
+            $roomCheckInCondition
+        );
+        $endDate = $this->getPeriodEndDateByCheckOutCondition(
+            $period,
+            $hotelDefaultCheckOutEnd,
+            $roomCheckOutCondition
+        );
         $preparedPeriod = new CarbonPeriod($startDate, $endDate, 'P1D');
 
         $countDays = $preparedPeriod->count();

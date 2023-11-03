@@ -3,6 +3,7 @@
 namespace Module\Integration\Traveline\Infrastructure\Models\Legacy;
 
 use Custom\Framework\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Module\Integration\Traveline\Infrastructure\Models\Room
@@ -77,6 +78,15 @@ class Room extends Model
         'changed_net',
         'details',
     ];
+
+    protected static function booted()
+    {
+        static::addGlobalScope('default', function (Builder $builder) {
+            $builder->addSelect('reservation_rooms.*')
+                ->join('hotel_rooms', 'hotel_rooms.id', '=', 'reservation_rooms.room_id')
+                ->addSelect('hotel_rooms.custom_name as room_name');
+        });
+    }
 
     public function guests()
     {
