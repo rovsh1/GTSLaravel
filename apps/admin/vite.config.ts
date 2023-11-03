@@ -72,6 +72,7 @@ export default defineConfig(({ command }) => ({
         'resources/views/booking/services/show/show.ts',
         'resources/views/booking/services/show/show.scss',
         'resources/views/booking/services/main/main.ts',
+        'resources/views/supplier/season/form/form.ts',
         'resources/views/markup-group/rules/form/form.ts',
         'resources/views/locale-dictionary/locale-dictionary.ts',
         'resources/views/locale-dictionary/locale-dictionary.scss',

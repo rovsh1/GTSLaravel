@@ -91,7 +91,7 @@ onMounted(() => {
     <table class="table table-striped">
       <thead>
         <tr>
-          <th v-for="season in seasons" :key="season.id" scope="col" colspan="2">
+          <th v-for="season in seasons" :key="season.id" scope="col">
             {{ season.number }} ({{ formatPeriod(season) }})
           </th>
         </tr>

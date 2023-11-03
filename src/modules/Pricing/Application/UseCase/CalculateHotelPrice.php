@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Pricing\Application\UseCase;
 
+use Module\Client\Application\Admin\UseCase\ConvertClientCurrencyRate;
 use Module\Pricing\Application\Dto\CalculatedHotelRoomsPricesDto;
 use Module\Pricing\Application\Dto\RoomCalculationParamsDto;
 use Module\Pricing\Application\Dto\RoomCalculationResultDto;
@@ -31,7 +32,8 @@ class CalculateHotelPrice implements UseCaseInterface
         private readonly HotelRoomBaseDayValueFinder $hotelRoomPriceFinder,
         private readonly CurrencyRateAdapterInterface $currencyRateAdapter,
         private readonly ApplicationConstantsInterface $constants,
-    ) {}
+    ) {
+    }
 
     public function execute(CalculateHotelPriceRequestDto $request): CalculatedHotelRoomsPricesDto
     {
@@ -50,7 +52,7 @@ class CalculateHotelPrice implements UseCaseInterface
     private function calculateRoomPrice(
         Hotel $hotel,
         RoomCalculationParamsDto $room,
-        CalculateHotelPriceRequestDto $request
+        CalculateHotelPriceRequestDto $request,
     ): RoomCalculationResultDto {
         if ($room->guestsCount === 0) {
             return RoomCalculationResultDto::createZero($room->accommodationId, $request->period);
@@ -78,7 +80,8 @@ class CalculateHotelPrice implements UseCaseInterface
                     isResident: $room->isResident,
                     guestsCount: $room->guestsCount,
                     date: $date,
-                    outCurrency: $request->outCurrency
+                    outCurrency: $request->outCurrency,
+                    clientId: $request->clientId,
                 );
 
                 $calculation->calculateBase(
@@ -115,7 +118,11 @@ class CalculateHotelPrice implements UseCaseInterface
         return new RoomCalculationResultDto($room->accommodationId, $total, $dayResults);
     }
 
-    private function getPreparedBasicCalculatedValue(Hotel $hotel, \DateTimeInterface $date, CurrencyEnum $outCurrency): float {
+    private function getPreparedBasicCalculatedValue(
+        Hotel $hotel,
+        \DateTimeInterface $date,
+        CurrencyEnum $outCurrency
+    ): float {
         return $this->currencyRateAdapter->convertNetRate(
             price: $this->constants->basicCalculatedValue(),
             currencyFrom: CurrencyEnum::UZS,
@@ -132,7 +139,8 @@ class CalculateHotelPrice implements UseCaseInterface
         bool $isResident,
         int $guestsCount,
         \DateTimeInterface $date,
-        ?CurrencyEnum $outCurrency = null
+        ?CurrencyEnum $outCurrency = null,
+        ?int $clientId = null
     ): float {
         $Po = $this->hotelRoomPriceFinder->findOrFail(
             roomId: $roomId,
@@ -142,12 +150,28 @@ class CalculateHotelPrice implements UseCaseInterface
             date: $date
         );
 
-        return $outCurrency ? $this->currencyRateAdapter->convertNetRate(
+        if ($outCurrency === null) {
+            return $Po;
+        }
+
+        if ($clientId === null) {
+            return $this->currencyRateAdapter->convertNetRate(
+                price: $Po,
+                currencyFrom: $hotel->currency(),
+                currencyTo: $outCurrency,
+                country: $hotel->countryCode(),
+                date: $date
+            );
+        }
+
+        return app(ConvertClientCurrencyRate::class)->execute(
+            clientId: $clientId,
+            hotelId: $hotel->id()->value(),
             price: $Po,
             currencyFrom: $hotel->currency(),
             currencyTo: $outCurrency,
+            date: $date,
             country: $hotel->countryCode(),
-            date: $date
-        ) : $Po;
+        );
     }
 }

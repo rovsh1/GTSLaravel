@@ -27,10 +27,11 @@ class DefaultFormCreateAction
         return Layout::title($title)
             ->view(
                 $view,
-                array_merge([
+                [
+                    ...$viewData,
                     'form' => $this->form,
                     'cancelUrl' => $this->getDefaultCancelUrl()
-                ], $viewData)
+                ]
             );
     }
 

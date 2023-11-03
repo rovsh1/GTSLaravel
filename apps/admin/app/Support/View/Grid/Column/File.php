@@ -33,6 +33,6 @@ class File extends AbstractColumn
 
     private function toLink(FileDto $value): string
     {
-        return '<a href="' . $value->url . '" target="_blank">' . $value->name . '</a>';
+        return '<a class="download-file" href="' . $value->url . '" target="_blank" download>' . $value->name . '</a>';
     }
 }
