@@ -1,6 +1,12 @@
 INSERT INTO `suppliers` (`id`, `name`, `currency`, `created_at`, `updated_at`)
 VALUES (555, 'Sixt', 'UZS', '2023-10-23 14:05:22', '2023-10-23 14:05:22');
 
+INSERT INTO `supplier_cities` (`city_id`, `supplier_id`)
+VALUES (1, 555), (4, 555);
+
+INSERT INTO `supplier_airports` (`airport_id`, `supplier_id`)
+VALUES (1, 555), (4, 555);
+
 INSERT INTO `supplier_seasons` (`id`, `supplier_id`, `number`, `date_start`, `date_end`, `created_at`, `updated_at`)
 VALUES (1, 555, '2023', '2023-01-01', '2023-12-31', '2023-10-23 14:05:22', '2023-10-23 14:05:22'),
        (2, 555, 'NEW YEAR', '2024-01-01', '2024-03-31', '2023-10-26 07:45:53', '2023-10-26 07:48:58');
