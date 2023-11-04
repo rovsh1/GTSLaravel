@@ -42,6 +42,7 @@ import BaseDialog from '~components/BaseDialog.vue'
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 import BootstrapCard from '~components/Bootstrap/BootstrapCard/BootstrapCard.vue'
 import BootstrapCardTitle from '~components/Bootstrap/BootstrapCard/components/BootstrapCardTitle.vue'
+import EmptyData from '~components/EmptyData.vue'
 import IconButton from '~components/IconButton.vue'
 import InlineIcon from '~components/InlineIcon.vue'
 
@@ -410,7 +411,19 @@ onMounted(() => {
   </BootstrapCard>
 
   <div>
-    <BootstrapButton v-if="isEditableStatus" label="Добавить номер" @click="handleAddRoom" />
+    <BootstrapButton
+      v-if="isEditableStatus && bookingDetails?.roomBookings.length"
+      label="Добавить номер"
+      @click="handleAddRoom"
+    />
+    <div>
+      <EmptyData v-if="!bookingDetails?.roomBookings.length">
+        Забронированные номера отсутствуют
+        <br v-if="isEditableStatus">
+        <br v-if="isEditableStatus">
+        <BootstrapButton v-if="isEditableStatus" label="Добавить номер" @click="handleAddRoom" />
+      </EmptyData>
+    </div>
   </div>
   <BaseDialog :opened="isOpenedPriceDetailsModal as boolean" :auto-width="true" @close="toggleModalPriceDetails(false)">
     <template #title>

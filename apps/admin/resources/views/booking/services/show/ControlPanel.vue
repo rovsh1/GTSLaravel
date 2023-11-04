@@ -312,6 +312,12 @@ const getDisplayPriceValue = (type: 'client' | 'supplier') => {
         :text="`Для отправки запроса необходимо заполнить информацию о ${existCars ? 'автомобилях' : 'гостях'}`"
       />
     </div>
+    <div v-else>
+      <RequestBlock
+        :show-button="false"
+        text="Запросы поставщику не отправлялись"
+      />
+    </div>
   </ControlPanelSection>
 
   <ControlPanelSection title="Условия отмены" class="mt-4">
