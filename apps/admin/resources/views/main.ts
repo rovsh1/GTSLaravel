@@ -1,4 +1,5 @@
 import bootCookies from '~resources/js/app/providers/cookies'
+import bootFilesDownloader from '~resources/js/app/providers/files'
 import bootForms from '~resources/js/app/providers/forms'
 import bootGrid from '~resources/js/app/providers/grids'
 import bootSitemap from '~resources/js/app/providers/sitemap'
@@ -24,6 +25,7 @@ $(() => {
   bootCookies()
   bootForms()
   bootGrid()
+  bootFilesDownloader()
 
   document.body.classList.add('loaded')
 })

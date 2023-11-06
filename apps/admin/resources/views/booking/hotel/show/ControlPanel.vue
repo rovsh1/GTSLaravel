@@ -404,6 +404,12 @@ onMounted(() => {
         text="Для отправки запроса необходимо заполнить информацию по номерам и гостям"
       />
     </div>
+    <div v-else>
+      <RequestBlock
+        :show-button="false"
+        text="Запросы поставщику не отправлялись"
+      />
+    </div>
   </ControlPanelSection>
 
   <!--  <ControlPanelSection title="Файлы, отправленные клиенту" class="mt-4">-->

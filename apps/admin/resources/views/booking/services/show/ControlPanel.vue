@@ -62,7 +62,11 @@ const bookingRequests = computed<BookingRequest[] | null>(() => requestStore.req
 
 const cancelConditions = computed<CancelConditions | null>(() => bookingStore.booking?.cancelConditions || null)
 
-const isGuestsFilled = computed<boolean>(() => true)
+const existGuests = computed<boolean>(() => bookingStore.existGuests)
+const existCars = computed<boolean>(() => bookingStore.existCars)
+
+const isGuestsFilled = computed<boolean>(() => !bookingStore.isEmptyGuests)
+const isCarsFilled = computed<boolean>(() => !bookingStore.isEmptyCars)
 
 const { isFetching: isRecalculateBookingPrice, execute: recalculateBookingPrice } = useRecalculateBookingPriceAPI({ bookingID })
 
@@ -261,10 +265,7 @@ const getDisplayPriceValue = (type: 'client' | 'supplier') => {
     </div>
   </ControlPanelSection>
 
-  <ControlPanelSection
-    title="Запросы на бронирование услуги"
-    class="mt-4"
-  >
+  <ControlPanelSection title="Запросы на бронирование услуги" class="mt-4">
     <div class="reservation-requests mb-2">
       <div
         v-for="bookingRequest in bookingRequests"
@@ -276,16 +277,12 @@ const getDisplayPriceValue = (type: 'client' | 'supplier') => {
           <span class="date align-left ml-1">от
             {{ formatDateTime(bookingRequest.dateCreate) }}</span>
         </div>
-        <a
-          href="#"
-          class="btn-download"
-          @click.prevent="requestStore.downloadDocument(bookingRequest.id)"
-        >Скачать</a>
+        <a href="#" class="btn-download" @click.prevent="requestStore.downloadDocument(bookingRequest.id)">Скачать</a>
       </div>
     </div>
 
     <div v-if="isRequestableStatus">
-      <div v-if="isGuestsFilled">
+      <div v-if="(existCars && isCarsFilled) || (existGuests && isGuestsFilled)">
         <RequestBlock
           v-if="canSendBookingRequest"
           text="Запрос на бронирование еще не отправлен"
@@ -312,7 +309,13 @@ const getDisplayPriceValue = (type: 'client' | 'supplier') => {
       <RequestBlock
         v-else
         :show-button="false"
-        text="Для отправки запроса необходимо заполнить информацию о гостях"
+        :text="`Для отправки запроса необходимо заполнить информацию о ${existCars ? 'автомобилях' : 'гостях'}`"
+      />
+    </div>
+    <div v-else>
+      <RequestBlock
+        :show-button="false"
+        text="Запросы поставщику не отправлялись"
       />
     </div>
   </ControlPanelSection>

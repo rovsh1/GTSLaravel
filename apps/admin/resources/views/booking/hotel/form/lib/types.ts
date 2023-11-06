@@ -34,8 +34,3 @@ export interface CreatePhysicalClient extends BasicFormData {
 export interface CreateLegalClient extends BasicFormData {
   legal: LegalEntityFormData
 }
-
-export type Select2Option = {
-  id: string | number | ''
-  text: string
-}

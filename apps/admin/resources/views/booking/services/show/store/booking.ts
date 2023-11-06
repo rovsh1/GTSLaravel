@@ -1,4 +1,4 @@
-import { onMounted, reactive, ref } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 
 import { defineStore } from 'pinia'
 import { z } from 'zod'
@@ -32,6 +32,12 @@ export const useBookingStore = defineStore('booking', () => {
 
   const isStatusUpdateFetching = ref(false)
   const bookingManagerId = ref(manager.id)
+
+  const existCars = computed<boolean>(() => Boolean(booking.value?.details?.carBids))
+  const isEmptyCars = computed<boolean>(() => Boolean(booking.value?.details?.carBids?.length === 0))
+
+  const existGuests = computed<boolean>(() => Boolean(booking.value?.details?.guestIds))
+  const isEmptyGuests = computed<boolean>(() => Boolean(booking.value?.details?.guestIds.length === 0))
 
   const updateStatusPayload = reactive<UpdateBookingStatusPayload>({ bookingID, notConfirmedReason: '' } as UpdateBookingStatusPayload)
   const changeStatus = async (status: number) => {
@@ -93,6 +99,10 @@ export const useBookingStore = defineStore('booking', () => {
     statuses,
     fetchStatuses,
     changeStatus,
+    existCars,
+    isEmptyCars,
+    existGuests,
+    isEmptyGuests,
     copy,
     updateNote,
     updateManager,
