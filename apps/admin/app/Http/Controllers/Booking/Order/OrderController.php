@@ -13,13 +13,23 @@ use Illuminate\Http\JsonResponse;
 
 class OrderController extends Controller
 {
+    //@todo
+    /**
+     * Юзкейсы
+     * 1. Получить заказ
+     * 2. Получить список броней заказа (без деталей)
+     * 3. Получить статусы заказа
+     * 4. Получить доступные действия с заказом
+     * 5. Получить список ваучеров
+     * 6. Получить список инвоисов
+     */
+
     public function show(int $id): LayoutContract
     {
         $title = "Заказ №{$id}";
 
         return Layout::title($title)
-            ->view($this->getPrototypeKey() . '.show.show', [
-            ]);
+            ->view($this->getPrototypeKey() . '.show.show', []);
     }
 
     public function search(SearchRequest $request): JsonResponse

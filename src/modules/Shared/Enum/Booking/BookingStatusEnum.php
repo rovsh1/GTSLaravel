@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Booking\Domain\Shared\ValueObject;
+namespace Module\Shared\Enum\Booking;
 
 enum BookingStatusEnum: int
 {

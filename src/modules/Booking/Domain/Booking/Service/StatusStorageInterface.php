@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Domain\Booking\Service;
 
-use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
+use Module\Shared\Enum\Booking\BookingStatusEnum;
 
 interface StatusStorageInterface
 {

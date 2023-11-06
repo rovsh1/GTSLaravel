@@ -3,7 +3,7 @@
 namespace Module\Booking\Domain\Shared\Service\StatusRules;
 
 use Module\Booking\Domain\Shared\Service\RequestRules;
-use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
+use Module\Shared\Enum\Booking\BookingStatusEnum;
 
 class AdministratorRules extends AbstractRules implements StatusRulesInterface
 {

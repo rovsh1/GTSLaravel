@@ -7,7 +7,7 @@ use Module\Booking\Domain\Booking\Entity\HotelBooking;
 use Module\Booking\Domain\Booking\Service\HotelBooking\QuotaManager\ProcessingMethod\Quota\QuotaReservationManager;
 use Module\Booking\Domain\Booking\Service\HotelBooking\QuotaManager\QuotaProcessingMethodInterface;
 use Module\Booking\Domain\Shared\Service\StatusRules\AdministratorRules;
-use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
+use Module\Shared\Enum\Booking\BookingStatusEnum;
 
 class Quota implements QuotaProcessingMethodInterface
 {

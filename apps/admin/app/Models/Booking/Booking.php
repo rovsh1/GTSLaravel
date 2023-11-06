@@ -7,7 +7,7 @@ namespace App\Admin\Models\Booking;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Builder as Query;
-use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
+use Module\Shared\Enum\Booking\BookingStatusEnum;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
 
 class Booking extends \Module\Booking\Infrastructure\ServiceBooking\Models\Booking

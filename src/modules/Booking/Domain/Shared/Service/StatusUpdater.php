@@ -7,7 +7,7 @@ namespace Module\Booking\Domain\Shared\Service;
 use Module\Booking\Domain\Booking\Booking;
 use Module\Booking\Domain\Shared\Exception\InvalidStatusTransition;
 use Module\Booking\Domain\Shared\Service\StatusRules\AdministratorRules;
-use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
+use Module\Shared\Enum\Booking\BookingStatusEnum;
 
 class StatusUpdater
 {

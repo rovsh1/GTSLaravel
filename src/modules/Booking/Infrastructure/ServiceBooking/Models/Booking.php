@@ -7,7 +7,7 @@ namespace Module\Booking\Infrastructure\ServiceBooking\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
+use Module\Shared\Enum\Booking\BookingStatusEnum;
 use Module\Shared\Enum\ServiceTypeEnum;
 use Module\Shared\Enum\SourceEnum;
 use Module\Shared\Infrastructure\Models\Model;

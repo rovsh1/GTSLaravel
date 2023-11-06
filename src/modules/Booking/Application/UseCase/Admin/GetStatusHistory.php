@@ -17,8 +17,8 @@ use Module\Booking\Domain\Shared\Event\Status\BookingWaitingCancellation;
 use Module\Booking\Domain\Shared\Event\Status\BookingWaitingConfirmation;
 use Module\Booking\Domain\Shared\Event\Status\BookingWaitingProcessing;
 use Module\Booking\Domain\Shared\Repository\BookingChangesLogRepositoryInterface;
-use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
 use Module\Booking\Infrastructure\Models\BookingChangesLog;
+use Module\Shared\Enum\Booking\BookingStatusEnum;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class GetStatusHistory implements UseCaseInterface
