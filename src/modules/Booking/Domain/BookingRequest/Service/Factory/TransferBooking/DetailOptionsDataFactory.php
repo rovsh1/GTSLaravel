@@ -15,10 +15,10 @@ use Module\Booking\Domain\Booking\Entity\TransferToAirport;
 use Module\Booking\Domain\Booking\Entity\TransferToRailway;
 use Module\Booking\Domain\Booking\ValueObject\AirportId;
 use Module\Booking\Domain\Booking\ValueObject\RailwayStationId;
-use Module\Booking\Domain\BookingRequest\Adapter\AirportAdapterInterface;
-use Module\Booking\Domain\BookingRequest\Adapter\CityAdapterInterface;
-use Module\Booking\Domain\BookingRequest\Adapter\RailwayStationAdapterInterface;
 use Module\Booking\Domain\BookingRequest\Service\Dto\TransferBooking\DetailOptionDto;
+use Module\Shared\Contracts\Adapter\AirportAdapterInterface;
+use Module\Shared\Contracts\Adapter\CityAdapterInterface;
+use Module\Shared\Contracts\Adapter\RailwayStationAdapterInterface;
 
 class DetailOptionsDataFactory
 {

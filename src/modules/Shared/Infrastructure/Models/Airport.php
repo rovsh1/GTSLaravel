@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Booking\Infrastructure\Models;
+namespace Module\Shared\Infrastructure\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Sdk\Module\Database\Eloquent\Model;

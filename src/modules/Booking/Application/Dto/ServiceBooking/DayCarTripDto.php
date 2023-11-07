@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Booking\Application\Dto\ServiceBooking;
 
+use Module\Shared\Dto\CityInfoDto;
+
 class DayCarTripDto implements ServiceDetailsDtoInterface
 {
     public function __construct(

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Infrastructure\Adapter;
+namespace Module\Shared\Infrastructure\Adapter;
 
 use App\Admin\Models\Reference\RailwayStation;
-use Module\Booking\Application\Dto\ServiceBooking\RailwayStationInfoDto;
-use Module\Booking\Domain\BookingRequest\Adapter\RailwayStationAdapterInterface;
+use Module\Shared\Contracts\Adapter\RailwayStationAdapterInterface;
+use Module\Shared\Dto\RailwayStationInfoDto;
 
 class RailwayStationAdapter implements RailwayStationAdapterInterface
 {

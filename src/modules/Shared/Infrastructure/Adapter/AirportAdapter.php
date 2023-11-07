@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Infrastructure\Adapter;
+namespace Module\Shared\Infrastructure\Adapter;
 
-use Module\Booking\Application\Dto\ServiceBooking\AirportInfoDto;
-use Module\Booking\Domain\BookingRequest\Adapter\AirportAdapterInterface;
-use Module\Booking\Infrastructure\Models\Airport;
+use Module\Shared\Contracts\Adapter\AirportAdapterInterface;
+use Module\Shared\Dto\AirportInfoDto;
+use Module\Shared\Infrastructure\Models\Airport;
 
 class AirportAdapter implements AirportAdapterInterface
 {

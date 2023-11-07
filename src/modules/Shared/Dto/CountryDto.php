@@ -2,14 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Application\Dto;
+namespace Module\Shared\Dto;
 
-use Sdk\Module\Foundation\Support\Dto\Dto;
-
-class CountryDto extends Dto
+final class CountryDto
 {
     public function __construct(
         public readonly int $id,
         public readonly string $name,
-    ) {}
+    ) {
+    }
 }

@@ -4,15 +4,12 @@ declare(strict_types=1);
 
 namespace Module\Booking\Application\Factory;
 
-use Module\Booking\Application\Dto\ServiceBooking\AirportInfoDto;
 use Module\Booking\Application\Dto\ServiceBooking\CarRentWithDriver\BookingPeriodDto;
 use Module\Booking\Application\Dto\ServiceBooking\CarRentWithDriverDto;
 use Module\Booking\Application\Dto\ServiceBooking\CIPRoomInAirportDto;
-use Module\Booking\Application\Dto\ServiceBooking\CityInfoDto;
 use Module\Booking\Application\Dto\ServiceBooking\DayCarTripDto;
 use Module\Booking\Application\Dto\ServiceBooking\IntercityTransferDto;
 use Module\Booking\Application\Dto\ServiceBooking\OtherServiceDto;
-use Module\Booking\Application\Dto\ServiceBooking\RailwayStationInfoDto;
 use Module\Booking\Application\Dto\ServiceBooking\ServiceDetailsDtoInterface;
 use Module\Booking\Application\Dto\ServiceBooking\ServiceInfoDto;
 use Module\Booking\Application\Dto\ServiceBooking\TransferFromAirportDto;
@@ -32,10 +29,13 @@ use Module\Booking\Domain\Booking\Entity\TransferFromRailway;
 use Module\Booking\Domain\Booking\Entity\TransferToAirport;
 use Module\Booking\Domain\Booking\Entity\TransferToRailway;
 use Module\Booking\Domain\Booking\ValueObject\ServiceInfo;
-use Module\Booking\Domain\BookingRequest\Adapter\AirportAdapterInterface;
-use Module\Booking\Domain\BookingRequest\Adapter\CityAdapterInterface;
-use Module\Booking\Domain\BookingRequest\Adapter\RailwayStationAdapterInterface;
 use Module\Booking\Domain\Guest\ValueObject\GuestId;
+use Module\Shared\Contracts\Adapter\AirportAdapterInterface;
+use Module\Shared\Contracts\Adapter\CityAdapterInterface;
+use Module\Shared\Contracts\Adapter\RailwayStationAdapterInterface;
+use Module\Shared\Dto\AirportInfoDto;
+use Module\Shared\Dto\CityInfoDto;
+use Module\Shared\Dto\RailwayStationInfoDto;
 
 class ServiceDetailsDtoFactory
 {
