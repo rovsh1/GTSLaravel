@@ -24,7 +24,6 @@ $(() => {
     disabledText: 'Выберите отель',
     parent: $('#form_data_hotel_id'),
     dataIndex: 'hotel_id',
-    allowEmpty: true,
   })
 
   const selectedBookings: string[] = []
