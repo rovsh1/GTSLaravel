@@ -23,6 +23,8 @@ interface BookingRepositoryInterface
         ?string $note = null
     ): Booking;
 
+    public function getByOrderId(OrderId $orderId): array;
+
     public function find(BookingId $id): ?Booking;
 
     public function findOrFail(BookingId $id): Booking;

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Domain\BookingRequest\Service\Factory;
 
 use Module\Booking\Domain\Booking\Booking;
-use Module\Booking\Domain\Booking\Service\StatusStorageInterface;
+use Module\Booking\Domain\Booking\Service\BookingStatusStorageInterface;
 use Module\Booking\Domain\BookingRequest\Service\Dto\BookingDto;
 use Module\Booking\Domain\BookingRequest\Service\Dto\BookingPriceDto;
 use Module\Booking\Domain\BookingRequest\Service\Dto\ClientDto;
@@ -23,7 +23,7 @@ class CommonDataFactory
     public function __construct(
         private readonly CompanyRequisitesInterface $companyRequisites,
         private readonly AdministratorAdapterInterface $administratorAdapter,
-        private readonly StatusStorageInterface $statusStorage,
+        private readonly BookingStatusStorageInterface $statusStorage,
         private readonly ClientAdapterInterface $clientAdapter,
         private readonly OrderRepositoryInterface $orderRepository,
     ) {}
@@ -41,7 +41,7 @@ class CommonDataFactory
 
     private function buildClientDto(Booking $booking): ClientDto
     {
-        $order = $this->orderRepository->find($booking->orderId()->value());
+        $order = $this->orderRepository->findOrFail($booking->orderId());
         $client = $this->clientAdapter->find($order->clientId()->value());
 
         return new ClientDto(

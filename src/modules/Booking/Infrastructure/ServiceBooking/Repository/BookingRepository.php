@@ -37,6 +37,13 @@ class BookingRepository implements BookingRepositoryInterface
         return $this->buildEntityFromModel($model);
     }
 
+    public function getByOrderId(OrderId $orderId): array
+    {
+        $models = $this->getModel()::whereOrderId($orderId->value())->get();
+
+        return $models->map(fn(Model $booking) => $this->buildEntityFromModel($booking))->all();
+    }
+
     public function findOrFail(BookingId $id): Entity
     {
         return $this->find($id) ?? throw new EntityNotFoundException("Booking[$id] not found");

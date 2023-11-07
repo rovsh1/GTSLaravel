@@ -18,7 +18,7 @@ class ClientResidencyValidator implements ValidatorInterface
 
     public function validate(UpdateDataHelper $dataHelper): void
     {
-        $order = $this->orderRepository->findOrFail($dataHelper->booking->orderId()->value());
+        $order = $this->orderRepository->findOrFail($dataHelper->booking->orderId());
         $client = $this->clientAdapter->find($order->clientId()->value());
         if ($client === null) {
             throw new EntityNotFoundException('Client not found');

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Module\Booking\Domain\Order\Factory\OrderFactory;
 use Module\Booking\Domain\Order\Order;
 use Module\Booking\Domain\Order\Repository\OrderRepositoryInterface;
+use Module\Booking\Domain\Order\ValueObject\OrderId;
 use Module\Booking\Infrastructure\Order\Models\Order as Model;
 use Module\Booking\Infrastructure\Order\Models\OrderStatusEnum;
 use Module\Shared\Enum\CurrencyEnum;
@@ -31,9 +32,9 @@ class OrderRepository implements OrderRepositoryInterface
         return $this->factory->createFrom($model);
     }
 
-    public function find(int $id): ?Order
+    public function find(OrderId $id): ?Order
     {
-        $model = Model::find($id);
+        $model = Model::find($id->value());
         if (!$model) {
             return null;
         }
@@ -46,9 +47,9 @@ class OrderRepository implements OrderRepositoryInterface
      * @return Order
      * @throws EntityNotFoundException
      */
-    public function findOrFail(int $id): Order
+    public function findOrFail(OrderId $id): Order
     {
-        return $this->find($id) ?? throw new EntityNotFoundException("Order[$id] not found");
+        return $this->find($id) ?? throw new EntityNotFoundException("Order[{$id->value()}] not found");
     }
 
 

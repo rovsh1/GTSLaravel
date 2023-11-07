@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace Module\Booking\Application\Factory;
 
 use Module\Booking\Application\Dto\StatusDto;
-use Module\Booking\Domain\Booking\Service\StatusStorageInterface;
-use Module\Shared\Enum\Booking\BookingStatusEnum;
+use Module\Booking\Domain\Order\Service\OrderStatusStorageInterface;
+use Module\Shared\Enum\Booking\OrderStatusEnum;
 
-class StatusDtoFactory
+class OrderStatusDtoFactory
 {
     public function __construct(
-        private readonly StatusStorageInterface $statusStorage
+        private readonly OrderStatusStorageInterface $statusStorage
     ) {}
 
-    public function get(BookingStatusEnum $status): StatusDto
+    public function get(OrderStatusEnum $status): StatusDto
     {
         return new StatusDto(
             $status->value,
@@ -28,6 +28,6 @@ class StatusDtoFactory
      */
     public function statuses(): array
     {
-        return array_map(fn(BookingStatusEnum $status) => $this->get($status), BookingStatusEnum::cases());
+        return array_map(fn(OrderStatusEnum $status) => $this->get($status), OrderStatusEnum::cases());
     }
 }

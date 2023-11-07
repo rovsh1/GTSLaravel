@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Application\UseCase\Admin;
 
 use Module\Booking\Application\Dto\StatusEventDto;
-use Module\Booking\Application\Factory\StatusDtoFactory;
+use Module\Booking\Application\Factory\BookingStatusDtoFactory;
 use Module\Booking\Domain\Shared\Event\BookingCreated;
 use Module\Booking\Domain\Shared\Event\Status\BookingCancelled;
 use Module\Booking\Domain\Shared\Event\Status\BookingCancelledFee;
@@ -25,7 +25,7 @@ class GetStatusHistory implements UseCaseInterface
 {
     public function __construct(
         private readonly BookingChangesLogRepositoryInterface $changesLogRepository,
-        private readonly StatusDtoFactory $statusDtoFactory
+        private readonly BookingStatusDtoFactory $statusDtoFactory
     ) {}
 
     /**

@@ -88,7 +88,7 @@ class CalculateHotelPriceRequestDtoBuilder
     private function getOrder(): Order
     {
         if (!isset($this->order)) {
-            $this->order = $this->orderRepository->findOrFail($this->booking->orderId()->value());
+            $this->order = $this->orderRepository->findOrFail($this->booking->orderId());
         }
 
         return $this->order;

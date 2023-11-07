@@ -6,7 +6,7 @@ namespace Module\Booking\Application\UseCase\Admin;
 
 use Module\Booking\Application\Dto\AvailableActionsDto;
 use Module\Booking\Application\Dto\StatusDto;
-use Module\Booking\Application\Factory\StatusDtoFactory;
+use Module\Booking\Application\Factory\BookingStatusDtoFactory;
 use Module\Booking\Domain\Booking\Booking;
 use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
@@ -21,7 +21,7 @@ class GetAvailableActions implements UseCaseInterface
         private readonly AdministratorRules $statusRules,
         private readonly RequestRules $requestRules,
         private BookingRepositoryInterface $repository,
-        private readonly StatusDtoFactory $statusDtoFactory,
+        private readonly BookingStatusDtoFactory $statusDtoFactory,
     ) {}
 
     public function execute(int $bookingId): AvailableActionsDto

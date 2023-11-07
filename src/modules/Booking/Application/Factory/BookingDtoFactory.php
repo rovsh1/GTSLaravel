@@ -14,7 +14,7 @@ use Module\Shared\Contracts\Service\TranslatorInterface;
 class BookingDtoFactory
 {
     public function __construct(
-        private readonly StatusDtoFactory $statusDtoFactory,
+        private readonly BookingStatusDtoFactory $statusDtoFactory,
         private readonly BookingPriceDtoFactory $bookingPriceDtoFactory,
         private readonly ServiceDetailsDtoFactory $detailsDtoFactory,
         private readonly TranslatorInterface $translator,

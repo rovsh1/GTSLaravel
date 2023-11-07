@@ -6,7 +6,7 @@ namespace Module\Booking\Domain\Booking\Service;
 
 use Module\Shared\Enum\Booking\BookingStatusEnum;
 
-interface StatusStorageInterface
+interface BookingStatusStorageInterface
 {
     public function getColor(BookingStatusEnum $status): ?string;
 

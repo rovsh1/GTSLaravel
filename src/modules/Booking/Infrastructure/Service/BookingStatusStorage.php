@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Module\Booking\Infrastructure\Service;
 
-use Module\Booking\Domain\Booking\Service\StatusStorageInterface;
+use Module\Booking\Domain\Booking\Service\BookingStatusStorageInterface;
 use Module\Booking\Infrastructure\Models\StatusSettings;
 use Module\Shared\Enum\Booking\BookingStatusEnum;
 
-class StatusStorage implements StatusStorageInterface
+class BookingStatusStorage implements BookingStatusStorageInterface
 {
     /**
      * @var array<int, StatusSettings> $statuses
