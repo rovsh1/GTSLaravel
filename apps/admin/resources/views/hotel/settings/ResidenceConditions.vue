@@ -25,6 +25,8 @@ import {
 
 import { requestInitialData } from '~lib/initial-data'
 
+import { showToast } from '~components/Bootstrap/BootstrapToast'
+
 const { hotelID } = requestInitialData(
   'view-initial-data-hotel-settings',
   z.object({
@@ -102,9 +104,9 @@ const handleAddConditions = (conditionType: ConditionType) => {
   editableConditionKey.value = `${conditionType}`
   setConditionTimeLimits(conditionType)
   if (freePeriods.value.length === 0) {
-    // @todo сделать нормальное уведомление
-    // eslint-disable-next-line no-alert
-    alert('Все интервалы заняты')
+    showToast({ title: 'Все интервалы заняты' }, {
+      type: 'warning',
+    })
     return
   }
   openAdd()

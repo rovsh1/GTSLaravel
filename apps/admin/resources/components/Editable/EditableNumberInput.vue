@@ -74,7 +74,10 @@ const applyEditable = () => {
   if (props.required && isEmptyValue && !inputRef.value?.reportValidity()) {
     return
   }
-  emit('change', localValue.value)
+  if (isChanged.value) {
+    emit('change', localValue.value)
+    isChanged.value = false
+  }
   toggleEditable(false)
 }
 
@@ -98,11 +101,11 @@ if (props.saveClickOutside && !props.hideClickOutside) {
 
 <template>
   <div>
-    <a v-if="!isEditable && canEdit" href="#" @click.prevent="toggleEditable(true)">
+    <a v-if="!isEditable && canEdit" class="editable-input-value" href="#" @click.prevent="toggleEditable(true)">
       {{ displayValue }}
     </a>
 
-    <span v-else-if="!canEdit">
+    <span v-else-if="!canEdit" class="editable-input-value">
       {{ displayValue }}
     </span>
 
@@ -142,5 +145,9 @@ if (props.saveClickOutside && !props.hideClickOutside) {
 
 .editable-input {
   width: 5rem;
+}
+
+.editable-input-value {
+  line-height: 32px;
 }
 </style>

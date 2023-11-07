@@ -34,8 +34,8 @@ defineEmits<{
 
 <template>
   <div>
-    <div class="d-flex">
-      <h6 style="margin-left: 0.5rem;">{{ title }}</h6>
+    <div class="d-flex align-items-center">
+      <h6 class="mb-0" style="margin-left: 0.5rem;">{{ title }}</h6>
       <EditTableRowButton
         can-add
         :can-edit="canEditBase"
@@ -45,58 +45,61 @@ defineEmits<{
         @delete="$emit('deleteBase')"
       />
     </div>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th scope="col">Кол-во дней</th>
-          <th scope="col">Наценка</th>
-          <th scope="col">Тип</th>
-          <th scope="col" />
-        </tr>
-      </thead>
-      <tbody :class="{ loading: loading }">
-        <tr>
-          <td>Не заезд</td>
-          <td>
-            {{ cancelPeriod.noCheckInMarkup.percent }} %
-          </td>
-          <td>
-            {{ getCancelPeriodTypeName(cancelPeriod.noCheckInMarkup.cancelPeriodType) }}
-          </td>
-          <td />
-        </tr>
-        <tr v-for="(dailyMarkup, idx) in dailyMarkups" :key="idx">
-          <td>
-            <EditableCell
-              :value="dailyMarkup.daysCount"
-              required
-              @change="value => $emit('edit-field', { field: 'daysCount', index: idx, value })"
-            />
-          </td>
-          <td>
-            <div class="text-nowrap">
+    <div class="card-body">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th class="w-25" scope="col">Кол-во дней</th>
+            <th class="w-25" scope="col">Наценка</th>
+            <th class="w-auto" scope="col">Тип</th>
+            <th class="w-auto" scope="col" />
+          </tr>
+        </thead>
+        <tbody :class="{ loading: loading }">
+          <tr>
+            <td>Не заезд</td>
+            <td>
+              {{ cancelPeriod.noCheckInMarkup.percent }} %
+            </td>
+            <td>
+              {{ getCancelPeriodTypeName(cancelPeriod.noCheckInMarkup.cancelPeriodType) }}
+            </td>
+            <td />
+          </tr>
+          <tr v-for="(dailyMarkup, idx) in dailyMarkups" :key="idx">
+            <td>
               <EditableCell
-                :value="dailyMarkup.percent"
+                :value="dailyMarkup.daysCount"
                 required
-                dimension="%"
-                @change="value => $emit('edit-field', { field: 'percent', index: idx, value })"
+                @change="value => $emit('edit-field', { field: 'daysCount', index: idx, value })"
               />
-            </div>
-          </td>
-          <td>{{ getCancelPeriodTypeName(dailyMarkup.cancelPeriodType) }}</td>
-          <td class="column-edit">
-            <EditTableRowButton
-              @edit="$emit('edit', idx)"
-              @delete="$emit('delete', idx)"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table>
+            </td>
+            <td>
+              <div class="text-nowrap">
+                <EditableCell
+                  :value="dailyMarkup.percent"
+                  required
+                  dimension="%"
+                  @change="value => $emit('edit-field', { field: 'percent', index: idx, value })"
+                />
+              </div>
+            </td>
+            <td>{{ getCancelPeriodTypeName(dailyMarkup.cancelPeriodType) }}</td>
+            <td class="column-edit">
+              <EditTableRowButton @edit="$emit('edit', idx)" @delete="$emit('delete', idx)" />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
 <style scoped lang="scss">
+tr td {
+  vertical-align: middle;
+}
+
 a i {
   vertical-align: top;
   margin-left: 0.313rem;

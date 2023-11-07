@@ -206,5 +206,6 @@ const handleDeleteDailyMarkup = async (cancelPeriodIndex: number, dailyMarkupInd
         @delete-base="handleDeletePeriod(idx)"
       />
     </div>
+    <div v-if="!cancelPeriods?.length" class="grid-empty-text">Записи отсутствуют</div>
   </CollapsableBlock>
 </template>
