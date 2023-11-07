@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Booking\Domain\Booking\Adapter;
+namespace Module\Booking\Pricing\Domain\Booking\Adapter;
 
 use Module\Pricing\Application\Dto\CalculatedHotelRoomsPricesDto;
 use Module\Pricing\Application\RequestDto\CalculateHotelPriceRequestDto;

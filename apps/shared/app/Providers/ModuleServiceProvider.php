@@ -12,6 +12,7 @@ class ModuleServiceProvider extends ServiceProvider
         'Administrator' => 'Administrator',
         'Catalog' => 'Catalog',
         'Client' => 'Client',
+        'BookingPricing' => 'Booking/Pricing',
         'BookingRequesting' => 'Booking/Requesting',
         'Booking' => 'Booking',
         'Supplier' => 'Supplier',

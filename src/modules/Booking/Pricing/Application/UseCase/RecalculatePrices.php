@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Application\UseCase\Admin\Price;
+namespace Module\Booking\Pricing\Application\UseCase;
 
-use Module\Booking\Domain\Booking\Service\PriceCalculator;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Pricing\Domain\Booking\Service\PriceCalculator;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class RecalculatePrices implements UseCaseInterface

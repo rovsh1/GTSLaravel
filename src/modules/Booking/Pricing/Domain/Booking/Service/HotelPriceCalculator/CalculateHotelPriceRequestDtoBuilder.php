@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Booking\Domain\Booking\Service\HotelBooking\PriceCalculator;
+namespace Module\Booking\Pricing\Domain\Booking\Service\HotelPriceCalculator;
 
 use Carbon\CarbonPeriod;
 use Module\Booking\Domain\Booking\Adapter\HotelAdapterInterface;

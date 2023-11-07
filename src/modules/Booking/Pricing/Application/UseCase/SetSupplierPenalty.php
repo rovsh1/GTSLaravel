@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Application\UseCase\Admin\Price;
+namespace Module\Booking\Pricing\Application\UseCase;
 
 use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
@@ -11,25 +11,25 @@ use Module\Booking\Domain\Booking\ValueObject\BookingPrices;
 use Module\Booking\Domain\Shared\Service\BookingUpdater;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
-class SetManualClientPrice implements UseCaseInterface
+class SetSupplierPenalty implements UseCaseInterface
 {
     public function __construct(
         private readonly BookingRepositoryInterface $repository,
         private readonly BookingUpdater $bookingUpdater,
     ) {}
 
-    public function execute(int $bookingId, float|int|null $price): void
+    public function execute(int $bookingId, float|int|null $penalty): void
     {
         $booking = $this->repository->findOrFail(new BookingId($bookingId));
-        $clientPrice = new BookingPriceItem(
-            $booking->prices()->clientPrice()->currency(),
-            $booking->prices()->clientPrice()->calculatedValue(),
-            $price,
-            $booking->prices()->clientPrice()->penaltyValue(),
+        $supplierPrice = new BookingPriceItem(
+            $booking->prices()->supplierPrice()->currency(),
+            $booking->prices()->supplierPrice()->calculatedValue(),
+            $booking->prices()->supplierPrice()->manualValue(),
+            $penalty
         );
         $newPrices = new BookingPrices(
-            supplierPrice: $booking->prices()->supplierPrice(),
-            clientPrice: $clientPrice
+            supplierPrice: $supplierPrice,
+            clientPrice: $booking->prices()->clientPrice(),
         );
         $booking->updatePrice($newPrices);
         $this->bookingUpdater->store($booking);

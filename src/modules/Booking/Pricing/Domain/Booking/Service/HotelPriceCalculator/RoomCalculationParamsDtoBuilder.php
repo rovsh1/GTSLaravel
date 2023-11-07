@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Booking\Domain\Booking\Service\HotelBooking\PriceCalculator;
+namespace Module\Booking\Pricing\Domain\Booking\Service\HotelPriceCalculator;
 
 use Module\Booking\Domain\Booking\Entity\HotelRoomBooking;
 use Module\Booking\Domain\Booking\Repository\RoomBookingRepositoryInterface;

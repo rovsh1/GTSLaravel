@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Domain\Booking\Service;
+namespace Module\Booking\Pricing\Domain\Booking\Service;
 
 use Carbon\Carbon;
 use Module\Booking\Application\Exception\NotFoundServicePriceException;
@@ -13,12 +13,12 @@ use Module\Booking\Domain\Booking\Entity\CIPRoomInAirport;
 use Module\Booking\Domain\Booking\Entity\ServiceDetailsInterface;
 use Module\Booking\Domain\Booking\Factory\DetailsRepositoryFactory;
 use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
-use Module\Booking\Domain\Booking\Service\HotelBooking\PriceCalculator\PriceCalculator as HotelBookingPriceCalculator;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Domain\Booking\ValueObject\BookingPriceItem;
 use Module\Booking\Domain\Booking\ValueObject\BookingPrices;
 use Module\Booking\Domain\Booking\ValueObject\CarBid;
 use Module\Booking\Domain\Shared\Service\BookingUpdater;
+use Module\Booking\Pricing\Domain\Booking\Service\HotelPriceCalculator\PriceCalculator as HotelBookingPriceCalculator;
 use Module\Shared\Enum\ServiceTypeEnum;
 
 class PriceCalculator
