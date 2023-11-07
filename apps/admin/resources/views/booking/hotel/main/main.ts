@@ -17,6 +17,7 @@ $(() => {
     disabledText: 'Выберите город',
     parent: $('#form_data_city_id'),
     dataIndex: 'city_id',
+    allowEmpty: true,
   })
 
   $('#form_data_hotel_room_id').childCombo({
@@ -24,6 +25,7 @@ $(() => {
     disabledText: 'Выберите отель',
     parent: $('#form_data_hotel_id'),
     dataIndex: 'hotel_id',
+    allowEmpty: true,
   })
 
   const selectedBookings: string[] = []

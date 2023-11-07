@@ -87,7 +87,7 @@ $.fn.childCombo = function (options) {
     child.prop('disabled', true)
     const isEmpty = parent.val() === null || parent.val() === ''
 
-    if (!preparedOptions.allowEmpty && isEmpty) {
+    if (isEmpty) {
       if (preparedOptions.useSelect2 && isMultiple) {
         child.val([])
         child.change()
@@ -146,19 +146,21 @@ $.fn.childCombo = function (options) {
           child.parent().hide()
         }
         trigger('load', items)
-
-        if (!preparedOptions.allowEmpty) {
-          return
-        }
+        return
       }
 
       if (preparedOptions.emptyItem !== false) {
         if (preparedOptions.useSelect2 && isMultiple) {
           setSelect2MultiplePlaceholderValue(preparedOptions.emptyItem)
         } else {
-          child.append(`<option value="" disabled selected>${preparedOptions.emptyItem}</option>`)
+          child.append(`<option value="" ${!preparedOptions.allowEmpty ? 'disabled' : ''} selected>${preparedOptions.emptyItem}</option>`)
+        }
+      } else {
+        if (preparedOptions.allowEmpty) {
+          child.append(`<option value="" selected></option>`)
         }
       }
+
       for (i = 0; i < l; i++) {
         if (in_array(`${items[i].id}`, valTemp)) {
           val[val.length] = items[i].id
