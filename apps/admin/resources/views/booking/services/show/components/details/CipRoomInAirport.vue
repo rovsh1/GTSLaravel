@@ -124,6 +124,12 @@ const handleChangeDetails = async (field: string, value: any) => {
       <table class="table-params">
         <tbody>
           <tr>
+            <th>Город</th>
+            <td>
+              {{ bookingDetails?.city.name }}
+            </td>
+          </tr>
+          <tr>
             <th>Аэропорт</th>
             <td>
               <EditableTextInput

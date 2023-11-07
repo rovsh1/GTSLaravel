@@ -76,10 +76,13 @@ class ServiceDetailsDtoFactory
 
     private function buildTransferToAirport(TransferToAirport $details): TransferToAirportDto
     {
+        $airportDto = $this->buildAirportInfo($details->airportId()->value());
+
         return new TransferToAirportDto(
             $details->id()->value(),
             $this->buildServiceInfoDto($details->serviceInfo()),
-            $this->buildAirportInfo($details->airportId()->value()),
+            $this->buildCityInfo($airportDto->cityId),
+            $airportDto,
             $details->flightNumber(),
             $details->meetingTablet(),
             $details->departureDate()?->format(DATE_ATOM),
@@ -89,10 +92,13 @@ class ServiceDetailsDtoFactory
 
     private function buildTransferFromAirport(TransferFromAirport $details): TransferFromAirportDto
     {
+        $airportDto = $this->buildAirportInfo($details->airportId()->value());
+
         return new TransferFromAirportDto(
             $details->id()->value(),
             $this->buildServiceInfoDto($details->serviceInfo()),
-            $this->buildAirportInfo($details->airportId()->value()),
+            $this->buildCityInfo($airportDto->cityId),
+            $airportDto,
             $details->flightNumber(),
             $details->meetingTablet(),
             $details->arrivalDate()?->format(DATE_ATOM),
@@ -102,10 +108,13 @@ class ServiceDetailsDtoFactory
 
     private function buildTransferToRailway(TransferToRailway $details): TransferToRailwayDto
     {
+        $railwayStationDto = $this->buildRailwayStationInfo($details->railwayStationId()->value());
+
         return new TransferToRailwayDto(
             $details->id()->value(),
             $this->buildServiceInfoDto($details->serviceInfo()),
-            $this->buildRailwayStationInfo($details->railwayStationId()->value()),
+            $this->buildCityInfo($railwayStationDto->cityId),
+            $railwayStationDto,
             $details->trainNumber(),
             $details->meetingTablet(),
             $details->departureDate()?->format(DATE_ATOM),
@@ -115,10 +124,13 @@ class ServiceDetailsDtoFactory
 
     private function buildTransferFromRailway(TransferFromRailway $details): TransferFromRailwayDto
     {
+        $railwayStationDto = $this->buildRailwayStationInfo($details->railwayStationId()->value());
+
         return new TransferFromRailwayDto(
             $details->id()->value(),
             $this->buildServiceInfoDto($details->serviceInfo()),
-            $this->buildRailwayStationInfo($details->railwayStationId()->value()),
+            $this->buildCityInfo($railwayStationDto->cityId),
+            $railwayStationDto,
             $details->trainNumber(),
             $details->meetingTablet(),
             $details->arrivalDate()?->format(DATE_ATOM),
@@ -128,10 +140,13 @@ class ServiceDetailsDtoFactory
 
     private function buildCIPRoomInAirport(CIPRoomInAirport $details): CIPRoomInAirportDto
     {
+        $airportDto = $this->buildAirportInfo($details->airportId()->value());
+
         return new CIPRoomInAirportDto(
             $details->id()->value(),
             $this->buildServiceInfoDto($details->serviceInfo()),
-            $this->buildAirportInfo($details->airportId()->value()),
+            $this->buildCityInfo($airportDto->cityId),
+            $airportDto,
             $details->flightNumber(),
             $details->serviceDate()?->format(DATE_ATOM),
             $details->guestIds()->map(fn(GuestId $id) => $id->value()),

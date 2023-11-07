@@ -6,7 +6,8 @@ type BaseBookingDetails = {
 }
 
 export type BookingTransferToAirportDetails = BaseBookingDetails & {
-  airportInfo?: AirportInfo
+  city: CityInfo
+  airportInfo: AirportInfo
   meetingTablet?: string
   flightNumber?: string
   departureDate?: string
@@ -14,7 +15,8 @@ export type BookingTransferToAirportDetails = BaseBookingDetails & {
 }
 
 export type BookingTransferFromAirportDetails = BaseBookingDetails & {
-  airportInfo?: AirportInfo
+  city: CityInfo
+  airportInfo: AirportInfo
   meetingTablet?: string
   flightNumber?: string
   arrivalDate?: string
@@ -22,7 +24,8 @@ export type BookingTransferFromAirportDetails = BaseBookingDetails & {
 }
 
 export type BookingTransferFromRailwayDetails = BaseBookingDetails & {
-  railwayInfo?: RailwayStationInfo
+  city: CityInfo
+  railwayInfo: RailwayStationInfo
   meetingTablet?: string
   trainNumber?: string
   arrivalDate?: string
@@ -30,7 +33,8 @@ export type BookingTransferFromRailwayDetails = BaseBookingDetails & {
 }
 
 export type BookingTransferToRailwayDetails = BaseBookingDetails & {
-  railwayInfo?: RailwayStationInfo
+  city: CityInfo
+  railwayInfo: RailwayStationInfo
   meetingTablet?: string
   trainNumber?: string
   departureDate?: string
@@ -52,7 +56,7 @@ export type CityInfo = {
 }
 
 export type BookingCarRentWithDriverDetails = BaseBookingDetails & {
-  cityInfo: CityInfo
+  city: CityInfo
   bookingPeriod?: BookingPeriod
   meetingTablet?: string
   meetingAddress?: string
@@ -60,19 +64,23 @@ export type BookingCarRentWithDriverDetails = BaseBookingDetails & {
 }
 
 export type BookingIntercityTransferDetails = BaseBookingDetails & {
+  fromCity: CityInfo
+  toCity: CityInfo
   departureDate?: string
   carBids?: CarBid[]
 }
 
 export type BookingDayCarTripDetails = BaseBookingDetails & {
+  city: CityInfo
   destinationsDescription?: string
   departureDate?: string
   carBids?: CarBid[]
 }
 
 export type BookingCipInAirportDetails = BaseBookingDetails & {
+  city: CityInfo
+  airportInfo: AirportInfo
   flightNumber?: string
   serviceDate?: string
-  airportInfo?: AirportInfo
   guestIds?: number[]
 }

@@ -58,10 +58,6 @@
                                 <td>-</td>
                             </tr>
                             <tr>
-                                <th>Город</th>
-                                <td>-</td>
-                            </tr>
-                            <tr>
                                 <th>Услуга</th>
                                 <td>{{ $model->serviceType->name }}</td>
                             </tr>

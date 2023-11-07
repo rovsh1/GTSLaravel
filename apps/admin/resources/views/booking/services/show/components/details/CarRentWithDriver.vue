@@ -155,7 +155,7 @@ const handleEditCarModal = async (id: number, object: CarBid) => {
             <th>Город</th>
             <td>
               <EditableTextInput
-                :value="bookingDetails?.cityInfo?.name"
+                :value="bookingDetails?.city?.name"
                 :can-edit="false"
                 type="text"
               />
