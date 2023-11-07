@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Adapters\Booking;
 
-use Module\Booking\Application\UseCase\Admin\Price\RecalculatePrices;
-use Module\Booking\Application\UseCase\Admin\Price\SetClientPenalty;
-use Module\Booking\Application\UseCase\Admin\Price\SetManualClientPrice;
-use Module\Booking\Application\UseCase\Admin\Price\SetManualSupplierPrice;
-use Module\Booking\Application\UseCase\Admin\Price\SetSupplierPenalty;
+use Module\Booking\Pricing\Application\UseCase\RecalculatePrices;
+use Module\Booking\Pricing\Application\UseCase\SetClientPenalty;
+use Module\Booking\Pricing\Application\UseCase\SetManualClientPrice;
+use Module\Booking\Pricing\Application\UseCase\SetManualSupplierPrice;
+use Module\Booking\Pricing\Application\UseCase\SetSupplierPenalty;
 
 class PriceAdapter
 {

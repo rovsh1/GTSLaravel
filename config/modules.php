@@ -1,9 +1,6 @@
 <?php
 
 return [
-    'Booking' => [
-        'templates_path' => base_path('resources/booking/pdf-templates'),
-    ],
     'FileStorage' => [
         'alias' => 'files',
         'disk' => 'files',

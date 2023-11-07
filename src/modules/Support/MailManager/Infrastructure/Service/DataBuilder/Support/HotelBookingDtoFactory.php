@@ -3,8 +3,8 @@
 namespace Module\Support\MailManager\Infrastructure\Service\DataBuilder\Support;
 
 use Module\Booking\Application\Admin\HotelBooking\Dto\BookingDto;
-use Module\Booking\Application\Dto\Details\RoomBookingDto;
 use Module\Booking\HotelBooking\Application\Dto\Details\RoomBooking\GuestDto;
+use Module\Booking\Moderation\Application\Dto\Details\RoomBookingDto;
 use Module\Support\MailManager\Domain\Service\DataBuilder\DataDto\HotelBooking\BookingInfoDto;
 use Module\Support\MailManager\Domain\Service\DataBuilder\DataDto\HotelBooking\BookingRoomDto;
 

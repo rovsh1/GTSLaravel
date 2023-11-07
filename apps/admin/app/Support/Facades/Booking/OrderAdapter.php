@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Admin\Support\Facades\Booking;
 
 use Illuminate\Support\Facades\Facade;
-use Module\Booking\Application\Dto\OrderAvailableActionsDto;
-use Module\Booking\Application\Dto\OrderDto;
-use Module\Booking\Application\Dto\StatusDto;
+use Module\Booking\Moderation\Application\Dto\OrderAvailableActionsDto;
+use Module\Booking\Moderation\Application\Dto\OrderDto;
+use Module\Booking\Moderation\Application\Dto\StatusDto;
 
 /**
  * @method static array getActiveOrders(int|null $clientId = null)

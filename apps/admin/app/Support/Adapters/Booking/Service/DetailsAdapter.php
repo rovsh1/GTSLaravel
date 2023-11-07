@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Admin\Support\Adapters\Booking\Service;
 
 use Illuminate\Support\Arr;
-use Module\Booking\Application\Dto\CarBidDataDto;
-use Module\Booking\Application\UseCase\Admin\ServiceBooking\CarBid\Add;
-use Module\Booking\Application\UseCase\Admin\ServiceBooking\CarBid\Remove;
-use Module\Booking\Application\UseCase\Admin\ServiceBooking\CarBid\Update;
-use Module\Booking\Application\UseCase\Admin\ServiceBooking\Guest\Bind;
-use Module\Booking\Application\UseCase\Admin\ServiceBooking\Guest\Unbind;
-use Module\Booking\Application\UseCase\Admin\ServiceBooking\UpdateDetailsField;
+use Module\Booking\Moderation\Application\Dto\CarBidDataDto;
+use Module\Booking\Moderation\Application\UseCase\ServiceBooking\CarBid\Add;
+use Module\Booking\Moderation\Application\UseCase\ServiceBooking\CarBid\Remove;
+use Module\Booking\Moderation\Application\UseCase\ServiceBooking\CarBid\Update;
+use Module\Booking\Moderation\Application\UseCase\ServiceBooking\Guest\Bind;
+use Module\Booking\Moderation\Application\UseCase\ServiceBooking\Guest\Unbind;
+use Module\Booking\Moderation\Application\UseCase\ServiceBooking\UpdateDetailsField;
 
 class DetailsAdapter
 {
