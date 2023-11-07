@@ -100,6 +100,8 @@ $(() => {
     parent: $serviceTypeField,
     dataIndex: 'service_type',
     useSelect2: true,
+    allowEmpty: true,
+    emptyText: false,
   })
 
   $('#form_data_service_id').childCombo({

@@ -33,7 +33,7 @@ return new class extends Migration {
             $table->foreign('creator_id')
                 ->references('id')
                 ->on('administrators')
-                ->cascadeOnDelete()
+                ->restrictOnDelete()
                 ->cascadeOnUpdate();
         });
 
@@ -60,13 +60,13 @@ return new class extends Migration {
             $table->foreign('booking_id')
                 ->references('id')
                 ->on('bookings')
-                ->restrictOnDelete()
+                ->cascadeOnDelete()
                 ->cascadeOnUpdate();
 
             $table->foreign('hotel_id')
                 ->references('id')
                 ->on('hotels')
-                ->cascadeOnDelete()
+                ->restrictOnDelete()
                 ->cascadeOnUpdate();
         });
     }
@@ -84,7 +84,7 @@ return new class extends Migration {
             $table->foreign('booking_id')
                 ->references('id')
                 ->on('bookings')
-                ->restrictOnDelete()
+                ->cascadeOnDelete()
                 ->cascadeOnUpdate();
 
             $table->foreign('service_id')
@@ -109,7 +109,7 @@ return new class extends Migration {
             $table->foreign('booking_id')
                 ->references('id')
                 ->on('bookings')
-                ->restrictOnDelete()
+                ->cascadeOnDelete()
                 ->cascadeOnUpdate();
 
             $table->foreign('service_id')
@@ -132,7 +132,7 @@ return new class extends Migration {
             $table->foreign('booking_id')
                 ->references('id')
                 ->on('bookings')
-                ->restrictOnDelete()
+                ->cascadeOnDelete()
                 ->cascadeOnUpdate();
 
             $table->foreign('service_id')
@@ -152,13 +152,13 @@ return new class extends Migration {
             $table->foreign('booking_id')
                 ->references('id')
                 ->on('bookings')
-                ->restrictOnDelete()
+                ->cascadeOnDelete()
                 ->cascadeOnUpdate();
 
             $table->foreign('administrator_id')
                 ->references('id')
                 ->on('administrators')
-                ->cascadeOnDelete()
+                ->restrictOnDelete()
                 ->cascadeOnUpdate();
         });
     }
@@ -171,5 +171,8 @@ return new class extends Migration {
         Schema::dropIfExists('bookings');
         Schema::dropIfExists('booking_hotel_details');
         Schema::dropIfExists('administrator_bookings');
+        Schema::dropIfExists('booking_other_details');
+        Schema::dropIfExists('booking_transfer_details');
+        Schema::dropIfExists('booking_airport_details');
     }
 };
