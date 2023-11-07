@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\Service\DetailsEditor\Editor;
 
-use Module\Booking\Domain\Booking\Entity\CIPRoomInAirport as Entity;
-use Module\Booking\Domain\Booking\Repository\Details\CIPRoomInAirportRepositoryInterface;
-use Module\Booking\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Domain\Booking\ValueObject\ServiceId;
-use Module\Booking\Domain\Booking\ValueObject\ServiceInfo;
-use Module\Booking\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Booking\Moderation\Application\Service\DetailsEditor\EditorInterface;
+use Module\Booking\Shared\Domain\Booking\Entity\CIPRoomInAirport as Entity;
+use Module\Booking\Shared\Domain\Booking\Repository\Details\CIPRoomInAirportRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceId;
+use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
+use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Supplier\Infrastructure\Models\Service as InfrastructureSupplierService;
 
 class CIPRoomInAirport extends AbstractEditor implements EditorInterface

@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Application\UseCase\HotelBooking\Room;
 
 use Carbon\CarbonPeriod;
-use Module\Booking\Domain\Booking\Adapter\HotelRoomAdapterInterface;
-use Module\Booking\Domain\Booking\Adapter\HotelRoomQuotaAdapterInterface;
-use Module\Booking\Domain\Booking\Repository\Details\HotelBookingRepositoryInterface;
-use Module\Booking\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Shared\Domain\Booking\Adapter\HotelRoomAdapterInterface;
+use Module\Booking\Shared\Domain\Booking\Adapter\HotelRoomQuotaAdapterInterface;
+use Module\Booking\Shared\Domain\Booking\Repository\Details\HotelBookingRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Catalog\Application\Admin\Response\RoomDto;
 use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;

@@ -2,9 +2,9 @@
 
 namespace Module\Booking\Pricing\Domain\Booking\Service\HotelPriceCalculator;
 
-use Module\Booking\Domain\Booking\Entity\HotelRoomBooking;
-use Module\Booking\Domain\Booking\Repository\RoomBookingRepositoryInterface;
-use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomBookingId;
+use Module\Booking\Shared\Domain\Booking\Entity\HotelRoomBooking;
+use Module\Booking\Shared\Domain\Booking\Repository\RoomBookingRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomBookingId;
 use Module\Pricing\Application\Dto\RoomCalculationParamsDto;
 
 class RoomCalculationParamsDtoBuilder

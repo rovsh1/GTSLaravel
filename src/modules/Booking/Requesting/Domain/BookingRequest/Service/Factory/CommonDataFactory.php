@@ -4,11 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Booking\Requesting\Domain\BookingRequest\Service\Factory;
 
-use Module\Booking\Domain\Booking\Booking;
-use Module\Booking\Domain\Booking\Service\BookingStatusStorageInterface;
-use Module\Booking\Domain\Order\Repository\OrderRepositoryInterface;
-use Module\Booking\Domain\Shared\Adapter\AdministratorAdapterInterface;
-use Module\Booking\Domain\Shared\Adapter\ClientAdapterInterface;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\Dto\BookingDto;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\Dto\BookingPriceDto;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\Dto\ClientDto;
@@ -16,6 +11,11 @@ use Module\Booking\Requesting\Domain\BookingRequest\Service\Dto\CompanyRequisite
 use Module\Booking\Requesting\Domain\BookingRequest\Service\Dto\ManagerDto;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\TemplateData\CommonData;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\TemplateDataInterface;
+use Module\Booking\Shared\Domain\Booking\Booking;
+use Module\Booking\Shared\Domain\Booking\Service\BookingStatusStorageInterface;
+use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
+use Module\Booking\Shared\Domain\Shared\Adapter\AdministratorAdapterInterface;
+use Module\Booking\Shared\Domain\Shared\Adapter\ClientAdapterInterface;
 use Module\Shared\Contracts\Service\CompanyRequisitesInterface;
 
 class CommonDataFactory

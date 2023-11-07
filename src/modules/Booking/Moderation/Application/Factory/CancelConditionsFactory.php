@@ -6,12 +6,12 @@ namespace Module\Booking\Moderation\Application\Factory;
 
 use Carbon\CarbonInterface;
 use Illuminate\Support\Arr;
-use Module\Booking\Domain\Booking\Adapter\SupplierAdapterInterface;
-use Module\Booking\Domain\Shared\ValueObject\CancelCondition\CancelMarkupOption;
-use Module\Booking\Domain\Shared\ValueObject\CancelCondition\CancelPeriodTypeEnum;
-use Module\Booking\Domain\Shared\ValueObject\CancelCondition\DailyMarkupCollection;
-use Module\Booking\Domain\Shared\ValueObject\CancelCondition\DailyMarkupOption;
-use Module\Booking\Domain\Shared\ValueObject\CancelConditions;
+use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
+use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\CancelMarkupOption;
+use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\CancelPeriodTypeEnum;
+use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\DailyMarkupCollection;
+use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\DailyMarkupOption;
+use Module\Booking\Shared\Domain\Shared\ValueObject\CancelConditions;
 use Module\Shared\Enum\ServiceTypeEnum;
 use Module\Shared\ValueObject\Percent;
 use Module\Supplier\Application\Response\CancelConditionsDto;

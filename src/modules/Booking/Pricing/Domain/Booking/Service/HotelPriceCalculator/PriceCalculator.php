@@ -3,13 +3,13 @@
 namespace Module\Booking\Pricing\Domain\Booking\Service\HotelPriceCalculator;
 
 use Illuminate\Support\Facades\DB;
-use Module\Booking\Domain\Booking\Booking;
-use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
-use Module\Booking\Domain\Booking\Repository\Details\HotelBookingRepositoryInterface;
-use Module\Booking\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Domain\Booking\ValueObject\BookingPriceItem;
-use Module\Booking\Domain\Booking\ValueObject\BookingPrices;
 use Module\Booking\Pricing\Domain\Booking\Adapter\HotelPricingAdapterInterface;
+use Module\Booking\Shared\Domain\Booking\Booking;
+use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Repository\Details\HotelBookingRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPriceItem;
+use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPrices;
 use Module\Pricing\Application\Dto\CalculatedHotelRoomsPricesDto;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 

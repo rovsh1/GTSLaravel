@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Application\UseCase\HotelBooking;
 
 use Carbon\CarbonPeriod;
-use Module\Booking\Domain\Booking\Event\HotelBooking\BookingPeriodChanged;
-use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
-use Module\Booking\Domain\Booking\Repository\Details\HotelBookingRepositoryInterface;
-use Module\Booking\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Domain\Booking\ValueObject\HotelBooking\BookingPeriod;
-use Module\Booking\Domain\Shared\Service\BookingUpdater;
+use Module\Booking\Shared\Domain\Booking\Event\HotelBooking\BookingPeriodChanged;
+use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Repository\Details\HotelBookingRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\BookingPeriod;
+use Module\Booking\Shared\Domain\Shared\Service\BookingUpdater;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 

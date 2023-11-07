@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\UseCase\HotelBooking\Room\Guest;
 
-use Module\Booking\Domain\Booking\Event\HotelBooking\GuestUnbinded;
-use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
-use Module\Booking\Domain\Booking\Repository\HotelBooking\BookingGuestRepositoryInterface;
-use Module\Booking\Domain\Booking\Repository\RoomBookingRepositoryInterface;
-use Module\Booking\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomBookingId;
-use Module\Booking\Domain\Guest\ValueObject\GuestId;
+use Module\Booking\Shared\Domain\Booking\Event\HotelBooking\GuestUnbinded;
+use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Repository\HotelBooking\BookingGuestRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Repository\RoomBookingRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomBookingId;
+use Module\Booking\Shared\Domain\Guest\ValueObject\GuestId;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;

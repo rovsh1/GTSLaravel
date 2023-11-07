@@ -13,6 +13,6 @@ class BootServiceProvider extends ServiceProvider
         $this->app->singleton(HotelPricingAdapterInterface::class, HotelPricingAdapter::class);
 
         //TODO временное, убрать в shared
-        $this->app->register(\Module\Booking\Providers\BootServiceProvider::class);
+        $this->app->register(\Module\Booking\Shared\Providers\BootServiceProvider::class);
     }
 }

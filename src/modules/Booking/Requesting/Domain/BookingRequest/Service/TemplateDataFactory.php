@@ -2,12 +2,12 @@
 
 namespace Module\Booking\Requesting\Domain\BookingRequest\Service;
 
-use Module\Booking\Domain\Booking\Booking;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\Factory\AirportBookingDataFactory;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\Factory\CommonDataFactory;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\Factory\HotelBookingDataFactory;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\Factory\TransferBookingDataFactory;
 use Module\Booking\Requesting\Domain\BookingRequest\ValueObject\RequestTypeEnum;
+use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Shared\Enum\ServiceTypeEnum;
 use Sdk\Module\Contracts\Support\ContainerInterface;
 

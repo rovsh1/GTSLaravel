@@ -3,12 +3,12 @@
 namespace Module\Booking\Pricing\Domain\Booking\Service\HotelPriceCalculator;
 
 use Carbon\CarbonPeriod;
-use Module\Booking\Domain\Booking\Adapter\HotelAdapterInterface;
-use Module\Booking\Domain\Booking\Booking;
-use Module\Booking\Domain\Booking\Entity\HotelBooking;
-use Module\Booking\Domain\Order\Order;
-use Module\Booking\Domain\Order\Repository\OrderRepositoryInterface;
-use Module\Booking\Domain\Order\ValueObject\ClientId;
+use Module\Booking\Shared\Domain\Booking\Adapter\HotelAdapterInterface;
+use Module\Booking\Shared\Domain\Booking\Booking;
+use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
+use Module\Booking\Shared\Domain\Order\Order;
+use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
+use Module\Booking\Shared\Domain\Order\ValueObject\ClientId;
 use Module\Pricing\Application\RequestDto\CalculateHotelPriceRequestDto;
 use Module\Shared\Enum\CurrencyEnum;
 

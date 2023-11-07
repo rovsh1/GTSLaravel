@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Application\UseCase;
 
 use Carbon\CarbonPeriod;
-use Module\Booking\Domain\Booking\Entity\HotelBooking;
-use Module\Booking\Domain\Booking\Factory\DetailsRepositoryFactory;
-use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
-use Module\Booking\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Domain\Booking\ValueObject\BookingPrices;
-use Module\Booking\Domain\Booking\ValueObject\ServiceId;
 use Module\Booking\Moderation\Application\Service\DetailsEditor\DetailsEditorFactory;
+use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
+use Module\Booking\Shared\Domain\Booking\Factory\DetailsRepositoryFactory;
+use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPrices;
+use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 

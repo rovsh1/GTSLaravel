@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\UseCase\ServiceBooking\Guest;
 
-use Module\Booking\Domain\Booking\Exception\NotFoundAirportServicePrice;
-use Module\Booking\Domain\Booking\Service\AirportBooking\GuestManager;
-use Module\Booking\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Domain\Guest\ValueObject\GuestId;
 use Module\Booking\Moderation\Application\Exception\NotFoundServicePriceException;
+use Module\Booking\Shared\Domain\Booking\Exception\NotFoundAirportServicePrice;
+use Module\Booking\Shared\Domain\Booking\Service\AirportBooking\GuestManager;
+use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Shared\Domain\Guest\ValueObject\GuestId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class Bind implements UseCaseInterface

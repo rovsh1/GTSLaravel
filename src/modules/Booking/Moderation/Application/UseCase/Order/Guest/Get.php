@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\UseCase\Order\Guest;
 
-use Module\Booking\Domain\Guest\Repository\GuestRepositoryInterface;
-use Module\Booking\Domain\Order\Repository\OrderRepositoryInterface;
-use Module\Booking\Domain\Order\ValueObject\OrderId;
 use Module\Booking\Moderation\Application\Dto\GuestDto;
+use Module\Booking\Shared\Domain\Guest\Repository\GuestRepositoryInterface;
+use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
+use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class Get implements UseCaseInterface

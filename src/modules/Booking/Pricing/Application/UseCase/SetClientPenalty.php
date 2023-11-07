@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Module\Booking\Pricing\Application\UseCase;
 
-use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
-use Module\Booking\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Domain\Booking\ValueObject\BookingPriceItem;
-use Module\Booking\Domain\Booking\ValueObject\BookingPrices;
-use Module\Booking\Domain\Shared\Service\BookingUpdater;
+use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPriceItem;
+use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPrices;
+use Module\Booking\Shared\Domain\Shared\Service\BookingUpdater;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class SetClientPenalty implements UseCaseInterface

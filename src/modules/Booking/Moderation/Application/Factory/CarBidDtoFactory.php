@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\Factory;
 
-use Module\Booking\Domain\Booking\Adapter\SupplierAdapterInterface;
-use Module\Booking\Domain\Booking\ValueObject\CarBid;
-use Module\Booking\Domain\Booking\ValueObject\CarBidCollection;
 use Module\Booking\Moderation\Application\Dto\ServiceBooking\CarBidDto;
+use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
+use Module\Booking\Shared\Domain\Booking\ValueObject\CarBid;
+use Module\Booking\Shared\Domain\Booking\ValueObject\CarBidCollection;
 
 class CarBidDtoFactory
 {

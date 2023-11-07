@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\Factory;
 
-use Module\Booking\Domain\Booking\Booking;
-use Module\Booking\Domain\Booking\Factory\DetailsRepositoryFactory;
 use Module\Booking\Moderation\Application\Dto\Details\CancelConditionsDto;
 use Module\Booking\Moderation\Application\Dto\ServiceBooking\BookingDto;
 use Module\Booking\Moderation\Application\Dto\ServiceBooking\ServiceTypeDto;
+use Module\Booking\Shared\Domain\Booking\Booking;
+use Module\Booking\Shared\Domain\Booking\Factory\DetailsRepositoryFactory;
 use Module\Shared\Contracts\Service\TranslatorInterface;
 
 class BookingDtoFactory

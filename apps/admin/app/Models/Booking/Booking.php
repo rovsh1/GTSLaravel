@@ -10,7 +10,7 @@ use Illuminate\Database\Query\Builder as Query;
 use Module\Shared\Enum\Booking\BookingStatusEnum;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
 
-class Booking extends \Module\Booking\Infrastructure\ServiceBooking\Models\Booking
+class Booking extends \Module\Booking\Shared\Infrastructure\ServiceBooking\Models\Booking
 {
     use HasQuicksearch;
 

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Module\Booking\Requesting\Application\UseCase;
 
-use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
-use Module\Booking\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Requesting\Domain\BookingRequest\Factory\RequestFactory;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\RequestRules;
+use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class SendRequest implements UseCaseInterface

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\UseCase\Order;
 
-use Module\Booking\Domain\Order\Repository\OrderRepositoryInterface;
 use Module\Booking\Moderation\Application\Factory\OrderDtoFactory;
+use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class GetActiveOrders implements UseCaseInterface

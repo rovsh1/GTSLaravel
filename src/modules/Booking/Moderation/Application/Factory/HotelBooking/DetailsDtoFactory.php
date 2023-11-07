@@ -4,12 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\Factory\HotelBooking;
 
-use Module\Booking\Domain\Booking\Entity\HotelBooking;
-use Module\Booking\Domain\Booking\Repository\RoomBookingRepositoryInterface;
-use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomBookingCollection;
-use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomPriceDayPart;
-use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomPrices;
-use Module\Booking\Domain\Guest\ValueObject\GuestId;
 use Module\Booking\Moderation\Application\Dto\Details\BookingPeriodDto;
 use Module\Booking\Moderation\Application\Dto\Details\ExternalNumberDto;
 use Module\Booking\Moderation\Application\Dto\Details\HotelInfoDto;
@@ -19,6 +13,12 @@ use Module\Booking\Moderation\Application\Dto\Details\RoomBooking\RoomInfoDto;
 use Module\Booking\Moderation\Application\Dto\Details\RoomBooking\RoomPriceDto;
 use Module\Booking\Moderation\Application\Dto\Details\RoomBookingDto;
 use Module\Booking\Moderation\Application\Dto\ServiceBooking\HotelBookingDto;
+use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
+use Module\Booking\Shared\Domain\Booking\Repository\RoomBookingRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomBookingCollection;
+use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomPriceDayPart;
+use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomPrices;
+use Module\Booking\Shared\Domain\Guest\ValueObject\GuestId;
 
 class DetailsDtoFactory
 {

@@ -2,13 +2,6 @@
 
 namespace Module\Booking\Requesting\Domain\BookingRequest\Service\Factory;
 
-use Module\Booking\Domain\Booking\Adapter\SupplierAdapterInterface;
-use Module\Booking\Domain\Booking\Booking;
-use Module\Booking\Domain\Booking\Entity\CarRentWithDriver;
-use Module\Booking\Domain\Booking\Factory\DetailsRepositoryFactory;
-use Module\Booking\Domain\Booking\ValueObject\BookingPeriod;
-use Module\Booking\Domain\Booking\ValueObject\CarBid;
-use Module\Booking\Domain\Booking\ValueObject\CarBidCollection;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\Dto\ServiceDto;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\Dto\TransferBooking\BookingPeriodDto;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\Dto\TransferBooking\CarDto;
@@ -16,6 +9,13 @@ use Module\Booking\Requesting\Domain\BookingRequest\Service\Dto\TransferBooking\
 use Module\Booking\Requesting\Domain\BookingRequest\Service\Factory\TransferBooking\DetailOptionsDataFactory;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\TemplateDataInterface;
 use Module\Booking\Requesting\Domain\BookingRequest\ValueObject\RequestTypeEnum;
+use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
+use Module\Booking\Shared\Domain\Booking\Booking;
+use Module\Booking\Shared\Domain\Booking\Entity\CarRentWithDriver;
+use Module\Booking\Shared\Domain\Booking\Factory\DetailsRepositoryFactory;
+use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPeriod;
+use Module\Booking\Shared\Domain\Booking\ValueObject\CarBid;
+use Module\Booking\Shared\Domain\Booking\ValueObject\CarBidCollection;
 use Module\Shared\Contracts\Service\TranslatorInterface;
 
 class TransferBookingDataFactory

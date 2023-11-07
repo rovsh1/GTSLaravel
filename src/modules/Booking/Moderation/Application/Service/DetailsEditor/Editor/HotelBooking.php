@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\Service\DetailsEditor\Editor;
 
-use Module\Booking\Domain\Booking\Adapter\HotelAdapterInterface;
-use Module\Booking\Domain\Booking\Entity\HotelBooking as Entity;
-use Module\Booking\Domain\Booking\Repository\Details\HotelBookingRepositoryInterface;
-use Module\Booking\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Domain\Booking\ValueObject\HotelBooking\BookingPeriod;
-use Module\Booking\Domain\Booking\ValueObject\HotelBooking\HotelInfo;
-use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomBookingIdCollection;
-use Module\Booking\Domain\Booking\ValueObject\ServiceId;
 use Module\Booking\Moderation\Application\Service\DetailsEditor\EditorInterface;
+use Module\Booking\Shared\Domain\Booking\Adapter\HotelAdapterInterface;
+use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking as Entity;
+use Module\Booking\Shared\Domain\Booking\Repository\Details\HotelBookingRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\BookingPeriod;
+use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\HotelInfo;
+use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomBookingIdCollection;
+use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceId;
 use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 use Module\Shared\ValueObject\Time;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;

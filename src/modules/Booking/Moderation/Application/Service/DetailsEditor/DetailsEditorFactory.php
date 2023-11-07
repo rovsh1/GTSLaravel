@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\Service\DetailsEditor;
 
-use Module\Booking\Domain\Booking\Booking;
+use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Shared\Enum\ServiceTypeEnum;
 use Sdk\Module\Contracts\Support\ContainerInterface;
 

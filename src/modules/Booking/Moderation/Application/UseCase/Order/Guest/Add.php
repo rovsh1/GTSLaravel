@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\UseCase\Order\Guest;
 
-use Module\Booking\Domain\Guest\Event\GuestCreated;
-use Module\Booking\Domain\Guest\Repository\GuestRepositoryInterface;
-use Module\Booking\Domain\Order\ValueObject\OrderId;
 use Module\Booking\Moderation\Application\Dto\AddGuestDto;
 use Module\Booking\Moderation\Application\Dto\GuestDto;
+use Module\Booking\Shared\Domain\Guest\Event\GuestCreated;
+use Module\Booking\Shared\Domain\Guest\Repository\GuestRepositoryInterface;
+use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
 use Module\Shared\Enum\GenderEnum;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;

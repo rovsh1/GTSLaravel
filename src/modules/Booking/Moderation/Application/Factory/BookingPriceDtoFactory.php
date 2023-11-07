@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\Factory;
 
-use Module\Booking\Domain\Booking\ValueObject\BookingPriceItem;
-use Module\Booking\Domain\Booking\ValueObject\BookingPrices;
 use Module\Booking\Moderation\Application\Dto\BookingPriceDto;
 use Module\Booking\Moderation\Application\Dto\PriceItemDto;
 use Module\Booking\Moderation\Application\Dto\ProfitItemDto;
+use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPriceItem;
+use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPrices;
 use Module\Shared\Contracts\Adapter\CurrencyRateAdapterInterface;
 use Module\Shared\Contracts\Service\TranslatorInterface;
 use Module\Shared\Dto\CurrencyDto;

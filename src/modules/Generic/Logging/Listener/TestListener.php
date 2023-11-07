@@ -2,7 +2,7 @@
 
 namespace Module\Generic\Logging\Listener;
 
-use Module\Booking\Application\Event\TestEvent;
+use Module\Booking\Shared\Application\Event\TestEvent;
 
 class TestListener
 {

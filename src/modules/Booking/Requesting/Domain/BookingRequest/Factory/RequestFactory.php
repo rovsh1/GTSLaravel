@@ -2,7 +2,6 @@
 
 namespace Module\Booking\Requesting\Domain\BookingRequest\Factory;
 
-use Module\Booking\Domain\Booking\Booking;
 use Module\Booking\Requesting\Domain\BookingRequest\BookingRequest;
 use Module\Booking\Requesting\Domain\BookingRequest\Event\BookingRequestSent;
 use Module\Booking\Requesting\Domain\BookingRequest\Event\CancelRequestSent;
@@ -11,6 +10,7 @@ use Module\Booking\Requesting\Domain\BookingRequest\Repository\RequestRepository
 use Module\Booking\Requesting\Domain\BookingRequest\Service\TemplateCompilerInterface;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\TemplateDataFactory;
 use Module\Booking\Requesting\Domain\BookingRequest\ValueObject\RequestTypeEnum;
+use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Shared\Contracts\Adapter\FileStorageAdapterInterface;
 use Module\Shared\Enum\ServiceTypeEnum;
 use Module\Shared\ValueObject\File;

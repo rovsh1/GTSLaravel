@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Application\UseCase\Order\Voucher;
 
 
-use Module\Booking\Domain\Order\Repository\VoucherRepositoryInterface;
 use Module\Booking\Moderation\Application\Dto\VoucherDto;
+use Module\Booking\Shared\Domain\Order\Repository\VoucherRepositoryInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class GetVouchers implements UseCaseInterface

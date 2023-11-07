@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\UseCase\ServiceBooking;
 
-use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
-use Module\Booking\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Moderation\Application\Service\DetailsEditor\DetailsEditorFactory;
+use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 

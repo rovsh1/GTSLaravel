@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\Dto\Details\CancelConditions;
 
-use Module\Booking\Domain\Shared\ValueObject\CancelCondition\CancelMarkupOption;
+use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\CancelMarkupOption;
 use Module\Shared\Contracts\Domain\EntityInterface;
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Module\Shared\Support\Dto\AbstractDomainBasedDto;

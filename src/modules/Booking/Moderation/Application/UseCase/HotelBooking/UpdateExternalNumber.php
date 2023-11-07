@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\UseCase\HotelBooking;
 
-use Module\Booking\Domain\Booking\Repository\Details\HotelBookingRepositoryInterface;
-use Module\Booking\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Domain\Booking\ValueObject\HotelBooking\ExternalNumber;
-use Module\Booking\Domain\Booking\ValueObject\HotelBooking\ExternalNumberTypeEnum;
+use Module\Booking\Shared\Domain\Booking\Repository\Details\HotelBookingRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\ExternalNumber;
+use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\ExternalNumberTypeEnum;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class UpdateExternalNumber implements UseCaseInterface

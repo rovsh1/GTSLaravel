@@ -2,18 +2,18 @@
 
 namespace Module\Booking\Requesting\Domain\BookingRequest\Service\Factory;
 
-use Module\Booking\Domain\Booking\Adapter\SupplierAdapterInterface;
-use Module\Booking\Domain\Booking\Booking;
-use Module\Booking\Domain\Booking\Repository\Details\CIPRoomInAirportRepositoryInterface;
-use Module\Booking\Domain\Guest\Guest;
-use Module\Booking\Domain\Guest\Repository\GuestRepositoryInterface;
-use Module\Booking\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\Dto\AirportBooking\AirportDto;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\Dto\AirportBooking\ContractDto;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\Dto\GuestDto;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\Dto\ServiceDto;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\TemplateDataInterface;
 use Module\Booking\Requesting\Domain\BookingRequest\ValueObject\RequestTypeEnum;
+use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
+use Module\Booking\Shared\Domain\Booking\Booking;
+use Module\Booking\Shared\Domain\Booking\Repository\Details\CIPRoomInAirportRepositoryInterface;
+use Module\Booking\Shared\Domain\Guest\Guest;
+use Module\Booking\Shared\Domain\Guest\Repository\GuestRepositoryInterface;
+use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Shared\Contracts\Adapter\CountryAdapterInterface;
 use Module\Shared\Contracts\Service\TranslatorInterface;
 use Module\Shared\Enum\GenderEnum;

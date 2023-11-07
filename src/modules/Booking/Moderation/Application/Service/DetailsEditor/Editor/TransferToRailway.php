@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\Service\DetailsEditor\Editor;
 
-use Module\Booking\Domain\Booking\Entity\TransferToRailway as Entity;
-use Module\Booking\Domain\Booking\Repository\Details\TransferToRailwayRepositoryInterface;
-use Module\Booking\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Domain\Booking\ValueObject\CarBidCollection;
-use Module\Booking\Domain\Booking\ValueObject\ServiceId;
-use Module\Booking\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Booking\Moderation\Application\Service\DetailsEditor\EditorInterface;
+use Module\Booking\Shared\Domain\Booking\Entity\TransferToRailway as Entity;
+use Module\Booking\Shared\Domain\Booking\Repository\Details\TransferToRailwayRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Shared\Domain\Booking\ValueObject\CarBidCollection;
+use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceId;
+use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Supplier\Infrastructure\Models\Service as InfrastructureSupplierService;
 
 class TransferToRailway extends AbstractEditor implements EditorInterface

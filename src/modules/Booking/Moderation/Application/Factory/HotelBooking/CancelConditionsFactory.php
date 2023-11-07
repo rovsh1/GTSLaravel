@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Application\Factory\HotelBooking;
 
 use Carbon\CarbonPeriod;
-use Module\Booking\Domain\Shared\ValueObject\CancelCondition\CancelMarkupOption;
-use Module\Booking\Domain\Shared\ValueObject\CancelCondition\CancelPeriodTypeEnum;
-use Module\Booking\Domain\Shared\ValueObject\CancelCondition\DailyMarkupCollection;
-use Module\Booking\Domain\Shared\ValueObject\CancelCondition\DailyMarkupOption;
-use Module\Booking\Domain\Shared\ValueObject\CancelConditions;
+use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\CancelMarkupOption;
+use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\CancelPeriodTypeEnum;
+use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\DailyMarkupCollection;
+use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\DailyMarkupOption;
+use Module\Booking\Shared\Domain\Shared\ValueObject\CancelConditions;
 use Module\Catalog\Application\Admin\ResponseDto\MarkupSettings\CancelPeriodDto;
 use Module\Shared\ValueObject\Percent;
 

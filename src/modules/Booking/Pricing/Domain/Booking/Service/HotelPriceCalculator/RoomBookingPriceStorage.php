@@ -2,14 +2,14 @@
 
 namespace Module\Booking\Pricing\Domain\Booking\Service\HotelPriceCalculator;
 
-use Module\Booking\Domain\Booking\Entity\HotelBooking;
-use Module\Booking\Domain\Booking\Entity\HotelRoomBooking;
-use Module\Booking\Domain\Booking\Repository\RoomBookingRepositoryInterface;
-use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomBookingId;
-use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomPriceDayPart;
-use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomPriceDayPartCollection;
-use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomPriceItem;
-use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomPrices;
+use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
+use Module\Booking\Shared\Domain\Booking\Entity\HotelRoomBooking;
+use Module\Booking\Shared\Domain\Booking\Repository\RoomBookingRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomBookingId;
+use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomPriceDayPart;
+use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomPriceDayPartCollection;
+use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomPriceItem;
+use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomPrices;
 use Module\Pricing\Application\Dto\CalculatedHotelRoomsPricesDto;
 use Module\Pricing\Application\Dto\RoomCalculationResultDto;
 use Module\Shared\ValueObject\Date;

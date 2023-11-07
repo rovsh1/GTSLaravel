@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\Factory;
 
-use Module\Booking\Domain\Guest\ValueObject\GuestId;
-use Module\Booking\Domain\Order\Order;
 use Module\Booking\Moderation\Application\Dto\OrderDto;
+use Module\Booking\Shared\Domain\Guest\ValueObject\GuestId;
+use Module\Booking\Shared\Domain\Order\Order;
 use Module\Shared\Contracts\Service\TranslatorInterface;
 use Module\Shared\Dto\CurrencyDto;
 

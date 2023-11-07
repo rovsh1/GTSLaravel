@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\Factory;
 
-use Module\Booking\Domain\Booking\Adapter\HotelRoomAdapterInterface;
-use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
-use Module\Booking\Domain\Booking\Repository\Details\HotelBookingRepositoryInterface;
-use Module\Booking\Domain\Booking\Service\HotelBooking\RoomUpdater\UpdateDataHelper;
-use Module\Booking\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Domain\Booking\ValueObject\HotelBooking\Condition;
-use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomBookingDetails;
-use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomInfo;
-use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomPrices;
-use Module\Booking\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Booking\Moderation\Application\Dto\AddRoomDto;
 use Module\Booking\Moderation\Application\Dto\UpdateRoomDto;
+use Module\Booking\Shared\Domain\Booking\Adapter\HotelRoomAdapterInterface;
+use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Repository\Details\HotelBookingRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Service\HotelBooking\RoomUpdater\UpdateDataHelper;
+use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\Condition;
+use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomBookingDetails;
+use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomInfo;
+use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomPrices;
+use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Shared\ValueObject\Percent;
 use Module\Shared\ValueObject\TimePeriod;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;

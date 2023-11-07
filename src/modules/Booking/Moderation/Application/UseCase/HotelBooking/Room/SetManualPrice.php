@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\UseCase\HotelBooking\Room;
 
-use Module\Booking\Domain\Booking\Repository\RoomBookingRepositoryInterface;
-use Module\Booking\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomBookingId;
-use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomPriceItem;
-use Module\Booking\Domain\Booking\ValueObject\HotelBooking\RoomPrices;
 use Module\Booking\Pricing\Domain\Booking\Service\HotelPriceCalculator\PriceCalculator;
+use Module\Booking\Shared\Domain\Booking\Repository\RoomBookingRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomBookingId;
+use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomPriceItem;
+use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomPrices;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class SetManualPrice implements UseCaseInterface

@@ -5,20 +5,20 @@ declare(strict_types=1);
 namespace Module\Booking\Pricing\Domain\Booking\Service;
 
 use Carbon\Carbon;
-use Module\Booking\Domain\Booking\Adapter\SupplierAdapterInterface;
-use Module\Booking\Domain\Booking\Booking;
-use Module\Booking\Domain\Booking\Entity\CarRentWithDriver;
-use Module\Booking\Domain\Booking\Entity\CIPRoomInAirport;
-use Module\Booking\Domain\Booking\Entity\ServiceDetailsInterface;
-use Module\Booking\Domain\Booking\Factory\DetailsRepositoryFactory;
-use Module\Booking\Domain\Booking\Repository\BookingRepositoryInterface;
-use Module\Booking\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Domain\Booking\ValueObject\BookingPriceItem;
-use Module\Booking\Domain\Booking\ValueObject\BookingPrices;
-use Module\Booking\Domain\Booking\ValueObject\CarBid;
-use Module\Booking\Domain\Shared\Service\BookingUpdater;
 use Module\Booking\Moderation\Application\Exception\NotFoundServicePriceException;
 use Module\Booking\Pricing\Domain\Booking\Service\HotelPriceCalculator\PriceCalculator as HotelBookingPriceCalculator;
+use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
+use Module\Booking\Shared\Domain\Booking\Booking;
+use Module\Booking\Shared\Domain\Booking\Entity\CarRentWithDriver;
+use Module\Booking\Shared\Domain\Booking\Entity\CIPRoomInAirport;
+use Module\Booking\Shared\Domain\Booking\Entity\ServiceDetailsInterface;
+use Module\Booking\Shared\Domain\Booking\Factory\DetailsRepositoryFactory;
+use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPriceItem;
+use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPrices;
+use Module\Booking\Shared\Domain\Booking\ValueObject\CarBid;
+use Module\Booking\Shared\Domain\Shared\Service\BookingUpdater;
 use Module\Shared\Enum\ServiceTypeEnum;
 
 class PriceCalculator

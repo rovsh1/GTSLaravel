@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\UseCase\Order\Guest;
 
-use Module\Booking\Domain\Guest\Event\GuestDeleted;
-use Module\Booking\Domain\Guest\Repository\GuestRepositoryInterface;
-use Module\Booking\Domain\Guest\ValueObject\GuestId;
+use Module\Booking\Shared\Domain\Guest\Event\GuestDeleted;
+use Module\Booking\Shared\Domain\Guest\Repository\GuestRepositoryInterface;
+use Module\Booking\Shared\Domain\Guest\ValueObject\GuestId;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 

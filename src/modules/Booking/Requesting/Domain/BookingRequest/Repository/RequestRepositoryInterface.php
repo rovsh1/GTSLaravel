@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Module\Booking\Requesting\Domain\BookingRequest\Repository;
 
-use Module\Booking\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Requesting\Domain\BookingRequest\BookingRequest;
 use Module\Booking\Requesting\Domain\BookingRequest\ValueObject\RequestId;
 use Module\Booking\Requesting\Domain\BookingRequest\ValueObject\RequestTypeEnum;
+use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Shared\ValueObject\File;
 
 interface RequestRepositoryInterface

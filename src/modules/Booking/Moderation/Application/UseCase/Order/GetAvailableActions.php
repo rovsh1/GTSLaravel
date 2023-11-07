@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\UseCase\Order;
 
-use Module\Booking\Domain\Booking\Booking;
-use Module\Booking\Domain\Order\Repository\OrderRepositoryInterface;
-use Module\Booking\Domain\Order\ValueObject\OrderId;
-use Module\Booking\Domain\Shared\Service\StatusRules\AdministratorRules;
 use Module\Booking\Moderation\Application\Dto\OrderAvailableActionsDto;
 use Module\Booking\Moderation\Application\Dto\StatusDto;
 use Module\Booking\Moderation\Application\Factory\OrderStatusDtoFactory;
+use Module\Booking\Shared\Domain\Booking\Booking;
+use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
+use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
+use Module\Booking\Shared\Domain\Shared\Service\StatusRules\AdministratorRules;
 use Module\Shared\Enum\Booking\BookingStatusEnum;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
