@@ -252,7 +252,7 @@ onMounted(() => {
     @submit="handleSaveNetPenalty"
   />
 
-  <div class="d-flex flex-wrap flex-grow-1 gap-2 align-items-center">
+  <div class="d-flex flex-wrap flex-grow-1 gap-2 align-items-center rounded shadow-lg p-4">
     <StatusSelect
       v-if="booking && statuses"
       v-model="booking.status"
@@ -271,7 +271,7 @@ onMounted(() => {
     </div>
   </div>
 
-  <ControlPanelSection title="Тип номера подтверждения бронирования" class="mt-4">
+  <ControlPanelSection title="Тип номера подтверждения бронирования" class="mt-3 rounded shadow-lg p-4">
     <div class="d-flex flex-row gap-2" :class="{ loading: isUpdateExternalNumberFetching }">
       <div class="w-50">
         <BootstrapSelectBase
@@ -306,7 +306,7 @@ onMounted(() => {
     </div>
   </ControlPanelSection>
 
-  <ControlPanelSection title="Финансовая стоимость брони" class="mt-4">
+  <ControlPanelSection title="Финансовая стоимость брони" class="mt-3 rounded shadow-lg p-4">
     <OverlayLoading v-if="isRecalculateBookingPrice" />
     <template #actions>
       <BootstrapButton
@@ -358,7 +358,7 @@ onMounted(() => {
     </div>
   </ControlPanelSection>
 
-  <ControlPanelSection title="Запросы в гостиницу" class="mt-4">
+  <ControlPanelSection title="Запросы в гостиницу" class="mt-3 rounded shadow-lg p-4">
     <div class="reservation-requests mb-2">
       <div
         v-for="bookingRequest in bookingRequests"
@@ -445,7 +445,7 @@ onMounted(() => {
   <!--    />-->
   <!--  </ControlPanelSection>-->
 
-  <ControlPanelSection title="Условия отмены" class="mt-4">
+  <ControlPanelSection title="Условия отмены" class="mt-3 rounded shadow-lg p-4">
     <table class="table-params">
       <tbody>
         <tr>
