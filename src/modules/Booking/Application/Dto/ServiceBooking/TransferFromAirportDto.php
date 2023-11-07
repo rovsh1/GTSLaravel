@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Booking\Application\Dto\ServiceBooking;
 
+use Module\Shared\Dto\AirportInfoDto;
+use Module\Shared\Dto\CityInfoDto;
+
 class TransferFromAirportDto implements ServiceDetailsDtoInterface
 {
     public function __construct(

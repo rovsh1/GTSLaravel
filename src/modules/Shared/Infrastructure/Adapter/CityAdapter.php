@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Infrastructure\Adapter;
+namespace Module\Shared\Infrastructure\Adapter;
 
 use App\Admin\Models\Reference\City;
-use Module\Booking\Application\Dto\ServiceBooking\CityInfoDto;
-use Module\Booking\Domain\BookingRequest\Adapter\CityAdapterInterface;
+use Module\Shared\Contracts\Adapter\CityAdapterInterface;
+use Module\Shared\Dto\CityInfoDto;
 
 class CityAdapter implements CityAdapterInterface
 {

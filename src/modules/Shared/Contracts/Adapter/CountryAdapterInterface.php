@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Domain\Shared\Adapter;
+namespace Module\Shared\Contracts\Adapter;
 
-use Module\Booking\Application\Dto\CountryDto;
+use Module\Shared\Dto\CountryDto;
 
 interface CountryAdapterInterface
 {

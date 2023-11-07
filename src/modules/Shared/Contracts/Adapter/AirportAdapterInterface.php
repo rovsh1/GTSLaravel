@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Domain\BookingRequest\Adapter;
+namespace Module\Shared\Contracts\Adapter;
 
-use Module\Booking\Application\Dto\ServiceBooking\AirportInfoDto;
+use Module\Shared\Dto\AirportInfoDto;
 
 interface AirportAdapterInterface
 {

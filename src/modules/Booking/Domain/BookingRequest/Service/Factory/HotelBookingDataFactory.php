@@ -18,9 +18,9 @@ use Module\Booking\Domain\BookingRequest\Service\TemplateDataInterface;
 use Module\Booking\Domain\BookingRequest\ValueObject\RequestTypeEnum;
 use Module\Booking\Domain\Guest\Guest;
 use Module\Booking\Domain\Guest\Repository\GuestRepositoryInterface;
-use Module\Booking\Domain\Shared\Adapter\CountryAdapterInterface;
 use Module\Booking\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Catalog\Application\Admin\ResponseDto\ContactDto;
+use Module\Shared\Contracts\Adapter\CountryAdapterInterface;
 use Module\Shared\Enum\ContactTypeEnum;
 use Module\Shared\Enum\GenderEnum;
 

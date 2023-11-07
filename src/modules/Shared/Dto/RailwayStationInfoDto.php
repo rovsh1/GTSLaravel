@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Application\Dto\ServiceBooking;
+namespace Module\Shared\Dto;
 
-class RailwayStationInfoDto
+final class RailwayStationInfoDto
 {
     public function __construct(
         public readonly int $id,

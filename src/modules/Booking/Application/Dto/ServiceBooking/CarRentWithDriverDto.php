@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Application\Dto\ServiceBooking;
 
 use Module\Booking\Application\Dto\ServiceBooking\CarRentWithDriver\BookingPeriodDto;
+use Module\Shared\Dto\CityInfoDto;
 
 class CarRentWithDriverDto implements ServiceDetailsDtoInterface
 {

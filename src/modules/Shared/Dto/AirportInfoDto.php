@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Application\Dto\ServiceBooking;
+namespace Module\Shared\Dto;
 
-class CityInfoDto
+final class AirportInfoDto
 {
     public function __construct(
         public readonly int $id,
         public readonly string $name,
-    ) {}
+        public readonly int $cityId,
+    ) {
+    }
 }
