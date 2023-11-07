@@ -18,7 +18,7 @@ interface BookingRepositoryInterface
         OrderId $orderId,
         CreatorId $creatorId,
         BookingPrices $prices,
-        CancelConditions $cancelConditions,
+        ?CancelConditions $cancelConditions,
         ServiceTypeEnum $serviceType,
         ?string $note = null
     ): Booking;

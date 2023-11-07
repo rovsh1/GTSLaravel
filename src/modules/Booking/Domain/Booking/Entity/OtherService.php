@@ -13,7 +13,7 @@ class OtherService implements ServiceDetailsInterface
         private readonly DetailsId $id,
         private readonly BookingId $bookingId,
         private readonly ServiceInfo $serviceInfo,
-        private string $description,
+        private ?string $description,
     ) {}
 
     public function bookingId(): BookingId
@@ -36,7 +36,12 @@ class OtherService implements ServiceDetailsInterface
         return $this->id;
     }
 
-    public function description(): string
+    public function setDescription(?string $description): void
+    {
+        $this->description = $description;
+    }
+
+    public function description(): ?string
     {
         return $this->description;
     }

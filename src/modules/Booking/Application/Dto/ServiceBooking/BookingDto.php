@@ -19,7 +19,7 @@ class BookingDto
         public readonly DateTimeInterface $createdAt,
         public readonly int $creatorId,
         public readonly BookingPriceDto $prices,
-        public readonly CancelConditionsDto $cancelConditions,
+        public readonly ?CancelConditionsDto $cancelConditions,
         public readonly ?string $note,
         public readonly ServiceTypeDto $serviceType,
         public readonly ?ServiceDetailsDtoInterface $details,

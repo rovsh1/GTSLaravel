@@ -46,6 +46,6 @@ export type BaseBooking = {
   creatorId: number
   createdAt: DateResponse
   prices: BookingPrice
-  cancelConditions: CancelConditions
+  cancelConditions: CancelConditions | null
   note: string | null
 }

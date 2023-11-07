@@ -23,9 +23,12 @@ class CancelConditionsFactory
         private readonly SupplierAdapterInterface $supplierAdapter
     ) {}
 
-    public function build(ServiceTypeEnum $serviceType, CarbonInterface|null $bookingDate = null): CancelConditions
+    public function build(ServiceTypeEnum $serviceType, CarbonInterface|null $bookingDate = null): ?CancelConditions
     {
         $baseCancelConditions = $this->getSupplierCancelConditions($serviceType);
+        if ($baseCancelConditions === null) {
+            return null;
+        }
         $cancelNoFeeDate = null;
         $dailyMarkupOptions = [];
         $maxDaysCount = Arr::first($baseCancelConditions->dailyMarkups)?->daysCount;
@@ -50,7 +53,7 @@ class CancelConditionsFactory
         );
     }
 
-    private function getSupplierCancelConditions(ServiceTypeEnum $serviceType): CancelConditionsDto
+    private function getSupplierCancelConditions(ServiceTypeEnum $serviceType): ?CancelConditionsDto
     {
         return match ($serviceType) {
             ServiceTypeEnum::CIP_ROOM_IN_AIRPORT => $this->supplierAdapter->getAirportCancelConditions(),
@@ -61,6 +64,7 @@ class CancelConditionsFactory
             ServiceTypeEnum::INTERCITY_TRANSFER,
             ServiceTypeEnum::DAY_CAR_TRIP,
             ServiceTypeEnum::TRANSFER_FROM_AIRPORT => $this->supplierAdapter->getTransferCancelConditions(),
+            ServiceTypeEnum::OTHER_SERVICE => null,
             default => throw new \Exception('Service type cancel conditions not implement')
         };
     }

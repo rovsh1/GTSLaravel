@@ -14,6 +14,7 @@ class Other extends Model implements DetailsModelInterface
 
     protected $fillable = [
         'booking_id',
+        'service_id',
         'data',
     ];
 

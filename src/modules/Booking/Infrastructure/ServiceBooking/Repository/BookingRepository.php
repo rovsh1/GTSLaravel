@@ -66,7 +66,7 @@ class BookingRepository implements BookingRepositoryInterface
         OrderId $orderId,
         CreatorId $creatorId,
         BookingPrices $prices,
-        CancelConditions $cancelConditions,
+        ?CancelConditions $cancelConditions,
         ServiceTypeEnum $serviceType,
         ?string $note = null
     ): Entity {
@@ -77,7 +77,7 @@ class BookingRepository implements BookingRepositoryInterface
             'source' => AppContext::source(),
             'creator_id' => $creatorId->value(),
             'prices' => $prices->toData(),
-            'cancel_conditions' => $cancelConditions->toData(),
+            'cancel_conditions' => $cancelConditions?->toData(),
             'note' => $note
         ]);
 
