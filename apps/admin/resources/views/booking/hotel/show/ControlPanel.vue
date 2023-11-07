@@ -404,7 +404,7 @@ onMounted(() => {
         text="Для отправки запроса необходимо заполнить информацию по номерам и гостям"
       />
     </div>
-    <div v-else>
+    <div v-if="!isRequestableStatus && !bookingRequests?.length">
       <RequestBlock
         :show-button="false"
         text="Запросы поставщику не отправлялись"
