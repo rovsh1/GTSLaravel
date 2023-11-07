@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Domain\Shared\Service;
+namespace Module\Booking\Requesting\Domain\BookingRequest\Service;
 
 use Module\Booking\Requesting\Domain\BookingRequest\ValueObject\RequestTypeEnum;
 use Module\Shared\Enum\Booking\BookingStatusEnum;

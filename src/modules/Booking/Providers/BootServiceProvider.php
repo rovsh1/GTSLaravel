@@ -12,7 +12,6 @@ class BootServiceProvider extends ServiceProvider
         $this->app->register(OrderServiceProvider::class);
         $this->app->register(HotelBookingServiceProvider::class);
         $this->app->register(ServiceBootProvider::class);
-        $this->app->register(RequestServiceProvider::class);
 
         $this->app->register(DomainEventServiceProvider::class);
 

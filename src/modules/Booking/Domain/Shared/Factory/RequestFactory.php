@@ -6,9 +6,9 @@ namespace Module\Booking\Domain\Shared\Factory;
 
 use Carbon\CarbonImmutable;
 use Module\Booking\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Domain\BookingRequest\BookingRequest;
-use Module\Booking\Domain\BookingRequest\ValueObject\RequestId;
-use Module\Booking\Domain\BookingRequest\ValueObject\RequestTypeEnum;
+use Module\Booking\Requesting\Domain\BookingRequest\BookingRequest;
+use Module\Booking\Requesting\Domain\BookingRequest\ValueObject\RequestId;
+use Module\Booking\Requesting\Domain\BookingRequest\ValueObject\RequestTypeEnum;
 use Module\Shared\ValueObject\File;
 use Sdk\Module\Foundation\Support\EntityFactory\AbstractEntityFactory;
 
