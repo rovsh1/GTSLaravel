@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Module\Booking\Pricing\Domain\Booking\Service;
 
 use Carbon\Carbon;
-use Module\Booking\Application\Exception\NotFoundServicePriceException;
 use Module\Booking\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Domain\Booking\Booking;
 use Module\Booking\Domain\Booking\Entity\CarRentWithDriver;
@@ -18,6 +17,7 @@ use Module\Booking\Domain\Booking\ValueObject\BookingPriceItem;
 use Module\Booking\Domain\Booking\ValueObject\BookingPrices;
 use Module\Booking\Domain\Booking\ValueObject\CarBid;
 use Module\Booking\Domain\Shared\Service\BookingUpdater;
+use Module\Booking\Moderation\Application\Exception\NotFoundServicePriceException;
 use Module\Booking\Pricing\Domain\Booking\Service\HotelPriceCalculator\PriceCalculator as HotelBookingPriceCalculator;
 use Module\Shared\Enum\ServiceTypeEnum;
 

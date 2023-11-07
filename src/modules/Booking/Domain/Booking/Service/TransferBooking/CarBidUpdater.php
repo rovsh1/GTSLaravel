@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Module\Booking\Domain\Booking\Service\TransferBooking;
 
 use Carbon\CarbonInterface;
-use Module\Booking\Application\Dto\CarBidDataDto;
 use Module\Booking\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Domain\Booking\Entity\CarRentWithDriver;
 use Module\Booking\Domain\Booking\Entity\DayCarTrip;
@@ -27,6 +26,7 @@ use Module\Booking\Domain\Booking\ValueObject\CarBid;
 use Module\Booking\Domain\Booking\ValueObject\CarBid\CarBidPriceItem;
 use Module\Booking\Domain\Booking\ValueObject\CarBid\CarBidPrices;
 use Module\Booking\Domain\Booking\ValueObject\CarId;
+use Module\Booking\Moderation\Application\Dto\CarBidDataDto;
 use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
