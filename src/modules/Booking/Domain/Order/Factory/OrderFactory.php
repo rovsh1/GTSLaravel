@@ -5,13 +5,16 @@ declare(strict_types=1);
 namespace Module\Booking\Domain\Order\Factory;
 
 use Carbon\CarbonImmutable;
+use Module\Booking\Domain\Booking\ValueObject\Context;
 use Module\Booking\Domain\Guest\ValueObject\GuestId;
 use Module\Booking\Domain\Order\Order;
 use Module\Booking\Domain\Order\ValueObject\ClientId;
 use Module\Booking\Domain\Order\ValueObject\LegalId;
 use Module\Booking\Domain\Order\ValueObject\OrderId;
+use Module\Booking\Domain\Shared\ValueObject\CreatorId;
 use Module\Booking\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Shared\Enum\CurrencyEnum;
+use Module\Shared\Enum\SourceEnum;
 use Sdk\Module\Foundation\Support\EntityFactory\AbstractEntityFactory;
 
 class OrderFactory extends AbstractEntityFactory
@@ -29,7 +32,11 @@ class OrderFactory extends AbstractEntityFactory
             new ClientId($data['client_id']),
             $legalId !== null ? new LegalId($legalId) : null,
             new CarbonImmutable($data['created_at']),
-            new GuestIdCollection($guestIds)
+            new GuestIdCollection($guestIds),
+            new Context(
+                source: SourceEnum::from($data['source']),
+                creatorId: new CreatorId($data['creator_id']),
+            )
         );
     }
 }

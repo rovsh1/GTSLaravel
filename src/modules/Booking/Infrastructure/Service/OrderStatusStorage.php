@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Infrastructure\Service;
 
 use Module\Booking\Domain\Order\Service\OrderStatusStorageInterface;
-use Module\Booking\Infrastructure\Order\Models\StatusSettings;
+use Module\Booking\Infrastructure\Models\StatusSettings;
 use Module\Shared\Enum\Booking\OrderStatusEnum;
 
 class OrderStatusStorage implements OrderStatusStorageInterface
@@ -41,7 +41,10 @@ class OrderStatusStorage implements OrderStatusStorageInterface
     public function statuses(): array
     {
         if (!isset(self::$statuses)) {
-            return self::$statuses = StatusSettings::get()->keyBy('value')->all();
+            return self::$statuses = StatusSettings::onlyOrderStatuses()
+                ->get()
+                ->keyBy('value')
+                ->all();
         }
 
         return self::$statuses;

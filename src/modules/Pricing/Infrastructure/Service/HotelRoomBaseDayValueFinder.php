@@ -43,16 +43,17 @@ class HotelRoomBaseDayValueFinder implements BaseDayValueFinderInterface
             guestsCount: $guestsCount,
             date: $date
         );
+        if ($dayPrice !== null) {
+            return $dayPrice;
+        }
 
-        $seasonPrice = $this->getSeasonValue(
+        return $this->getSeasonValue(
             roomId: $roomId->value(),
             seasonId: $seasonId->value(),
             rateId: $rateId,
             isResident: $isResident,
             guestsCount: $guestsCount,
         );
-
-        return $dayPrice ?? $seasonPrice;
     }
 
     public function findOrFail(

@@ -16,6 +16,8 @@ return new class extends Migration {
             $table->unsignedInteger('legal_id')->nullable();
             $table->char('currency', 3);
             $table->tinyInteger('status');
+            $table->string('source');
+            $table->unsignedInteger('creator_id');
             $table->timestamps();
 
             $table->foreign('client_id')
@@ -34,6 +36,34 @@ return new class extends Migration {
                 ->references('id')
                 ->on('client_legals')
                 ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+
+            $table->foreign('creator_id')
+                ->references('id')
+                ->on('administrators')
+                ->restrictOnDelete()
+                ->cascadeOnUpdate();
+        });
+
+        $this->upAdministratorOrders();
+    }
+
+    private function upAdministratorOrders(): void
+    {
+        Schema::create('administrator_orders', function (Blueprint $table) {
+            $table->unsignedInteger('order_id')->primary();
+            $table->unsignedInteger('administrator_id');
+
+            $table->foreign('order_id')
+                ->references('id')
+                ->on('orders')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+
+            $table->foreign('administrator_id')
+                ->references('id')
+                ->on('administrators')
+                ->restrictOnDelete()
                 ->cascadeOnUpdate();
         });
     }

@@ -7,6 +7,7 @@ namespace Module\Booking\Application\UseCase\Admin\Order;
 use Module\Booking\Application\Dto\OrderAvailableActionsDto;
 use Module\Booking\Application\Dto\StatusDto;
 use Module\Booking\Application\Factory\BookingStatusDtoFactory;
+use Module\Booking\Application\Factory\OrderStatusDtoFactory;
 use Module\Booking\Domain\Booking\Booking;
 use Module\Booking\Domain\Order\Repository\OrderRepositoryInterface;
 use Module\Booking\Domain\Order\ValueObject\OrderId;
@@ -19,7 +20,7 @@ class GetAvailableActions implements UseCaseInterface
     public function __construct(
         private readonly AdministratorRules $statusRules,
         private OrderRepositoryInterface $repository,
-        private readonly BookingStatusDtoFactory $statusDtoFactory,
+        private readonly OrderStatusDtoFactory $statusDtoFactory,
     ) {}
 
     public function execute(int $orderId): OrderAvailableActionsDto

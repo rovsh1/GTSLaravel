@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace Module\Booking\Infrastructure\Order\Repository;
 
+use App\Shared\Support\Facades\AppContext;
 use Illuminate\Database\Eloquent\Builder;
 use Module\Booking\Domain\Order\Factory\OrderFactory;
 use Module\Booking\Domain\Order\Order;
 use Module\Booking\Domain\Order\Repository\OrderRepositoryInterface;
+use Module\Booking\Domain\Order\ValueObject\ClientId;
 use Module\Booking\Domain\Order\ValueObject\OrderId;
+use Module\Booking\Domain\Shared\ValueObject\CreatorId;
 use Module\Booking\Infrastructure\Order\Models\Order as Model;
-use Module\Booking\Infrastructure\Order\Models\OrderStatusEnum;
+use Module\Shared\Enum\Booking\OrderStatusEnum;
 use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
@@ -20,13 +23,15 @@ class OrderRepository implements OrderRepositoryInterface
         private readonly OrderFactory $factory
     ) {}
 
-    public function create(int $clientId, CurrencyEnum $currency, ?int $legalId = null): Order
+    public function create(ClientId $clientId, CurrencyEnum $currency, CreatorId $creatorId, ?int $legalId = null): Order
     {
         $model = Model::create([
-            'status' => OrderStatusEnum::NEW,
-            'client_id' => $clientId,
+            'status' => OrderStatusEnum::IN_PROGRESS,
+            'client_id' => $clientId->value(),
             'legal_id' => $legalId,
             'currency' => $currency,
+            'source' => AppContext::source(),
+            'creator_id' => $creatorId->value(),
         ]);
 
         return $this->factory->createFrom($model);

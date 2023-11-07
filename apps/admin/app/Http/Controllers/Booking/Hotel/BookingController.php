@@ -54,7 +54,7 @@ class BookingController extends Controller
     protected Prototype $prototype;
 
     public function __construct(
-        private readonly BookingAdministratorRepository $administratorRepository
+        private readonly BookingAdministratorRepository $administratorRepository,
     ) {
         $this->prototype = Prototypes::get($this->getPrototypeKey());
     }
@@ -125,7 +125,8 @@ class BookingController extends Controller
                 detailsData: $data,
                 note: $data['note'] ?? null,
             );
-            $this->administratorRepository->create($bookingId, $data['manager_id'] ?? $creatorId);
+            $managerId = $data['manager_id'] ?? $creatorId;
+            $this->administratorRepository->create($bookingId, $managerId);
         } catch (ApplicationException $e) {
             $form->throwException($e);
         }

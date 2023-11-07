@@ -41,7 +41,10 @@ class BookingStatusStorage implements BookingStatusStorageInterface
     public function statuses(): array
     {
         if (!isset(self::$statuses)) {
-            return self::$statuses = StatusSettings::get()->keyBy('value')->all();
+            return self::$statuses = StatusSettings::onlyBookingStatuses()
+                ->get()
+                ->keyBy('value')
+                ->all();
         }
 
         return self::$statuses;

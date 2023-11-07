@@ -7,6 +7,7 @@ namespace App\Admin\Support\Adapters\Booking;
 use Module\Booking\Application\Dto\AddGuestDto;
 use Module\Booking\Application\Dto\GuestDto;
 use Module\Booking\Application\Dto\OrderAvailableActionsDto;
+use Module\Booking\Application\Dto\OrderDto;
 use Module\Booking\Application\Dto\UpdateGuestDto;
 use Module\Booking\Application\UseCase\Admin\Order\GetActiveOrders;
 use Module\Booking\Application\UseCase\Admin\Order\GetAvailableActions;
@@ -25,7 +26,7 @@ class OrderAdapter
         return app(GetActiveOrders::class)->execute($clientId);
     }
 
-    public function findOrder(int $id): mixed
+    public function findOrder(int $id): ?OrderDto
     {
         return app(GetOrder::class)->execute($id);
     }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Domain\Order;
 
 use Carbon\CarbonImmutable;
+use Module\Booking\Domain\Booking\ValueObject\Context;
 use Module\Booking\Domain\Order\Event\ClientChanged;
 use Module\Booking\Domain\Order\ValueObject\ClientId;
 use Module\Booking\Domain\Order\ValueObject\LegalId;
@@ -23,6 +24,7 @@ final class Order extends AbstractAggregateRoot implements EntityInterface
         private ?LegalId $legalId,
         private readonly CarbonImmutable $createdAt,
         private readonly GuestIdCollection $guestIds,
+        private readonly Context $context
     ) {}
 
     public function generateInvoice(): void
@@ -76,5 +78,10 @@ final class Order extends AbstractAggregateRoot implements EntityInterface
     public function guestIds(): GuestIdCollection
     {
         return $this->guestIds;
+    }
+
+    public function context(): Context
+    {
+        return $this->context;
     }
 }

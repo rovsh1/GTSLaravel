@@ -25,6 +25,8 @@ class OrderDtoFactory
             $entity->legalId()?->value(),
             $entity->createdAt(),
             $entity->guestIds()->map(fn(GuestId $id) => $id->value()),
+            $entity->context()->creatorId()->value(),
+            $entity->context()->source()
         );
     }
 
