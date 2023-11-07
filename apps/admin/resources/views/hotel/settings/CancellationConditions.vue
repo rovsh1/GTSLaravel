@@ -44,6 +44,8 @@ const markupSettingsStore = useMarkupSettingsStore()
 const cancelPeriods = computed(() => markupSettingsStore.markupSettings?.cancelPeriods)
 const { fetchMarkupSettings, updateCancelPeriodDailyMarkupField, deleteCancelPeriodDailyMarkup } = markupSettingsStore
 
+const isFetchingMarkupSettings = computed(() => markupSettingsStore.isFetching)
+
 const modalSettings = {
   add: {
     title: 'Добавить новое условие',
@@ -198,6 +200,7 @@ const handleDeleteDailyMarkup = async (cancelPeriodIndex: number, dailyMarkupInd
         :cancel-period="cancelPeriod"
         :daily-markups="cancelPeriod.dailyMarkups"
         :can-edit-base="Boolean(contract)"
+        :loading="isFetchingMarkupSettings"
         @add="handleAddDailyModal(idx)"
         @edit-field="({ index, field, value }) => handleUpdateDailyMarkupField(idx, index, field, value)"
         @edit="index => handleEditDailyModal(idx, index)"
