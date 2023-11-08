@@ -49,11 +49,12 @@ class ClientUserController extends Controller
         $this->client($client);
 
         $grid = $this->gridFactory();
-        $grid->data($client->users);
+        $grid->data($client->users()->applyCriteria($grid->getSearchCriteria()));
 
         return Layout::title('Пользователи')
             ->view('client.user.main.main', [
                 'grid' => $grid,
+                'quicksearch' => $grid->getQuicksearch(),
                 'createUrl' => Acl::isCreateAllowed('client-user') ? route('client.users.create', $client) : null,
                 'createUserUrl' => Acl::isCreateAllowed('client-user') ? $this->prototype->route('create') : null,
                 'searchUserUrl' => route('client.users.search'),
@@ -112,6 +113,7 @@ class ClientUserController extends Controller
     protected function gridFactory(): GridContract
     {
         return Grid::paginator(16)
+            ->enableQuicksearch()
             ->checkbox('checked', ['checkboxClass' => 'js-select-user', 'dataAttributeName' => 'user-id'])
             ->text(
                 'name',

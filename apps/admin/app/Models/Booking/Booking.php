@@ -16,25 +16,6 @@ class Booking extends \Module\Booking\Shared\Infrastructure\ServiceBooking\Model
 
     protected array $quicksearch = ['id'];
 
-    public function scopeApplyCriteria(Builder $query, array $criteria): void
-    {
-        if (isset($criteria['quicksearch'])) {
-            $query->quicksearch($criteria['quicksearch']);
-            unset($criteria['quicksearch']);
-        }
-
-        foreach ($criteria as $k => $v) {
-            $scopeName = \Str::camel($k);
-            $scopeMethod = 'where' . ucfirst($scopeName);
-            $hasScope = $this->hasNamedScope($scopeMethod);
-            if ($hasScope) {
-                $query->$scopeMethod($v);
-                continue;
-            }
-            $query->where($k, $v);
-        }
-    }
-
     public function scopeWhereCreatedPeriod(Builder $builder, CarbonPeriod $period): void
     {
         $builder->whereBetween(
