@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Module\Hotel\Moderation\Application\UseCase\Price;
 
 use Carbon\CarbonInterface;
-use Sdk\Module\Contracts\Bus\CommandBusInterface;
+use Module\Hotel\Moderation\Application\Service\PriceSetterHelper;
+use Module\Hotel\Moderation\Infrastructure\Models\DatePrice;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class SetDatePrice implements UseCaseInterface
 {
     public function __construct(
-        private readonly CommandBusInterface $commandBus
+        private readonly PriceSetterHelper $priceSetterHelper
     ) {
     }
 
@@ -24,16 +25,26 @@ class SetDatePrice implements UseCaseInterface
         bool $isResident,
         ?float $price
     ): void {
-        $this->commandBus->execute(
-            new \Module\Hotel\Moderation\Application\Command\Price\Date\Set(
-                date: $date,
-                seasonId: $seasonId,
-                roomId: $roomId,
-                rateId: $rateId,
-                guestsCount: $guestsCount,
-                isResident: $isResident,
-                price: $price,
-            )
+        $this->priceSetterHelper->ensureRoomExists($roomId);
+        $this->priceSetterHelper->ensureSeasonExists($seasonId);
+        $this->priceSetterHelper->ensureRateExists($rateId);
+
+        $group = $this->priceSetterHelper->groupFactory($rateId, $guestsCount, $isResident);
+
+        DatePrice::updateOrCreate(
+            [
+                'group_id' => $group->id,
+                'season_id' => $seasonId,
+                'room_id' => $roomId,
+                'date' => $date
+            ],
+            [
+                'date' => $date,
+                'group_id' => $group->id,
+                'season_id' => $seasonId,
+                'room_id' => $roomId,
+                'price' => $price,
+            ]
         );
     }
 }

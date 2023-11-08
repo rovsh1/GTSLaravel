@@ -3,8 +3,6 @@
 namespace App\Admin\Models\Hotel;
 
 use App\Admin\Models\HasIndexedChildren;
-use App\Admin\Support\Facades\Hotel\MarkupSettingsAdapter;
-use App\Shared\Support\Facades\FileStorage;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
@@ -94,11 +92,6 @@ class Room extends Model
         foreach ($beds as $bed) {
             RoomBed::create(array_merge($bed, ['room_id' => $this->id]));
         }
-    }
-
-    public function markupSettings(): Attribute
-    {
-        return Attribute::get(fn() => MarkupSettingsAdapter::getRoomMarkupSettings($this->hotel_id, $this->id));
     }
 
     public function mainImage(): Attribute

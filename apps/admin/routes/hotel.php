@@ -19,7 +19,6 @@ AclRoute::for('hotel')
         ],
         'except' => ['show']
     ])
-    ->get('/{hotel}/rooms/{room}/settings/markup', Controllers\Hotel\Room\MarkupSettingsController::class.'@get','read','rooms.settings.get')
 
     ->resource('prices', Controllers\Hotel\PriceController::class, ['except' => ['show']])
     ->get('/{hotel}/seasons/prices',Controllers\Hotel\PriceController::class.'@getSeasonsPrices','read','prices.seasons.get')

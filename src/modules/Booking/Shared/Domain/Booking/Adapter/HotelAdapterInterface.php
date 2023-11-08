@@ -5,7 +5,6 @@ namespace Module\Booking\Shared\Domain\Booking\Adapter;
 use Carbon\CarbonInterface;
 use Module\Hotel\Moderation\Application\Response\HotelDto;
 use Module\Hotel\Moderation\Application\Response\MarkupSettingsDto;
-use Module\Hotel\Moderation\Application\Response\RoomMarkupsDto;
 
 interface HotelAdapterInterface
 {
@@ -20,8 +19,6 @@ interface HotelAdapterInterface
     ): ?float;
 
     public function getMarkupSettings(int $hotelId): MarkupSettingsDto;
-
-    public function getRoomMarkupSettings(int $roomId): ?RoomMarkupsDto;
 
     public function getHotelRates(int $hotelId): array;
 }
