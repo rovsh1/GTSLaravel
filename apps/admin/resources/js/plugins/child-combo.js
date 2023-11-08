@@ -109,6 +109,12 @@ $.fn.childCombo = function (options) {
     if (!isEmpty) {
       data[preparedOptions.dataIndex] = parent.val()
     } else {
+      if (preparedOptions.useSelect2 && isMultiple) {
+        child.val([])
+      } else {
+        child.val('')
+      }
+      child.change()
       return
     }
 
@@ -146,7 +152,10 @@ $.fn.childCombo = function (options) {
           child.parent().hide()
         }
         trigger('load', items)
-        return
+
+        if (!preparedOptions.allowEmpty) {
+          return
+        }
       }
 
       if (preparedOptions.emptyItem !== false) {
@@ -155,12 +164,7 @@ $.fn.childCombo = function (options) {
         } else {
           child.append(`<option value="" ${!preparedOptions.allowEmpty ? 'disabled' : ''} selected>${preparedOptions.emptyItem}</option>`)
         }
-      } else {
-        if (preparedOptions.allowEmpty) {
-          child.append(`<option value="" selected></option>`)
-        }
       }
-
       for (i = 0; i < l; i++) {
         if (in_array(`${items[i].id}`, valTemp)) {
           val[val.length] = items[i].id

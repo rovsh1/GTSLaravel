@@ -18,6 +18,7 @@ $(() => {
     parent: $('#form_data_city_id'),
     dataIndex: 'city_id',
     allowEmpty: true,
+    emptyText: false,
   })
 
   $('#form_data_hotel_room_id').childCombo({
@@ -26,6 +27,7 @@ $(() => {
     parent: $('#form_data_hotel_id'),
     dataIndex: 'hotel_id',
     allowEmpty: true,
+    emptyText: false,
   })
 
   const selectedBookings: string[] = []
