@@ -198,6 +198,7 @@ class ClientController extends AbstractPrototypeController
             ->paginator(self::GRID_LIMIT)
             ->text('name', ['text' => 'ФИО', 'route' => $this->prototype->routeName('show')])
             ->enum('type', ['text' => 'Тип', 'enum' => TypeEnum::class])
+            ->text('markup_group_name', ['text' => 'Наценка'])
             ->text('country_name', ['text' => 'Страна'])
             ->text('city_name', ['text' => 'Город'])
             ->enum('status', ['text' => 'Статус', 'enum' => StatusEnum::class])
@@ -231,6 +232,11 @@ class ClientController extends AbstractPrototypeController
             ->select('country_id', ['label' => 'Страна', 'emptyItem' => '', 'items' => Country::get()])
             ->city('city_id', ['label' => 'Город', 'emptyItem' => ''])
             ->enum('type', ['label' => 'Тип', 'enum' => TypeEnum::class, 'emptyItem' => ''])
-            ->enum('status', ['label' => 'Источник', 'enum' => StatusEnum::class, 'emptyItem' => '']);
+            ->enum('status', ['label' => 'Источник', 'enum' => StatusEnum::class, 'emptyItem' => ''])
+            ->select('markup_group_id', [
+                'label' => 'Группа наценки',
+                'emptyItem' => '',
+                'items' => MarkupGroup::get()
+            ]);
     }
 }
