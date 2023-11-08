@@ -3,9 +3,9 @@
 namespace Module\Booking\Shared\Domain\Booking\Adapter;
 
 use Carbon\CarbonInterface;
-use Module\Hotel\Moderation\Application\Admin\Response\HotelDto;
-use Module\Hotel\Moderation\Application\Admin\Response\MarkupSettingsDto;
-use Module\Hotel\Moderation\Application\Admin\Response\RoomMarkupsDto;
+use Module\Hotel\Moderation\Application\Response\HotelDto;
+use Module\Hotel\Moderation\Application\Response\MarkupSettingsDto;
+use Module\Hotel\Moderation\Application\Response\RoomMarkupsDto;
 
 interface HotelAdapterInterface
 {

@@ -2,50 +2,34 @@
 
 namespace Module\Hotel\Moderation\Providers;
 
+use Module\Hotel\Moderation\Domain\Hotel\Repository\HotelRepositoryInterface;
+use Module\Hotel\Moderation\Domain\Hotel\Repository\MarkupSettingsRepositoryInterface;
+use Module\Hotel\Moderation\Domain\Hotel\Repository\PriceRateRepositoryInterface;
+use Module\Hotel\Moderation\Domain\Hotel\Repository\RoomMarkupSettingsRepositoryInterface;
+use Module\Hotel\Moderation\Domain\Hotel\Repository\RoomRepositoryInterface;
+use Module\Hotel\Moderation\Infrastructure\Repository\HotelRepository;
+use Module\Hotel\Moderation\Infrastructure\Repository\MarkupSettingsRepository;
+use Module\Hotel\Moderation\Infrastructure\Repository\PriceRateRepository;
+use Module\Hotel\Moderation\Infrastructure\Repository\RoomMarkupSettingsRepository;
+use Module\Hotel\Moderation\Infrastructure\Repository\RoomRepository;
 use Sdk\Module\Support\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function register(): void
     {
         $this->app->register(EventServiceProvider::class);
         //$this->app->addDeferredServices([EventServiceProvider::class]);
     }
 
-    public function boot()
+    public function boot(): void
     {
-        $this->registerInterfaces();
-        //$this->loadMigrationsFrom(__DIR__ . '/../Infrastructure/Database/Migrations');
-    }
-
-    private function registerInterfaces()
-    {
-//        $this->app->singleton(Domain\Repository\RoomQuotaRepositoryInterface::class, Infrastructure\Repository\RoomQuotaRepository::class);
-        $this->app->singleton(
-            \Module\Hotel\Moderation\Domain\Hotel\Repository\HotelRepositoryInterface::class,
-            \Module\Hotel\Moderation\Infrastructure\Repository\HotelRepository::class
-        );
-        $this->app->singleton(
-            \Module\Hotel\Moderation\Domain\Hotel\Repository\RoomRepositoryInterface::class,
-            \Module\Hotel\Moderation\Infrastructure\Repository\RoomRepository::class
-        );
-        $this->app->singleton(
-            \Module\Hotel\Moderation\Domain\Hotel\Repository\RoomQuotaRepositoryInterface::class,
-            \Module\Hotel\Moderation\Infrastructure\Repository\RoomQuotaRepository::class
-        );
-        $this->app->singleton(
-            \Module\Hotel\Moderation\Domain\Hotel\Repository\MarkupSettingsRepositoryInterface::class,
-            \Module\Hotel\Moderation\Infrastructure\Repository\MarkupSettingsRepository::class
-        );
-        $this->app->singleton(
-            \Module\Hotel\Moderation\Domain\Hotel\Repository\PriceRateRepositoryInterface::class,
-            \Module\Hotel\Moderation\Infrastructure\Repository\PriceRateRepository::class
-        );
+        $this->app->singleton(HotelRepositoryInterface::class, HotelRepository::class);
+        $this->app->singleton(RoomRepositoryInterface::class, RoomRepository::class);
+        $this->app->singleton(MarkupSettingsRepositoryInterface::class, MarkupSettingsRepository::class);
+        $this->app->singleton(PriceRateRepositoryInterface::class, PriceRateRepository::class);
 
         //@todo remove it
-        $this->app->singleton(
-            \Module\Hotel\Moderation\Domain\Hotel\Repository\RoomMarkupSettingsRepositoryInterface::class,
-            \Module\Hotel\Moderation\Infrastructure\Repository\RoomMarkupSettingsRepository::class
-        );
+        $this->app->singleton(RoomMarkupSettingsRepositoryInterface::class, RoomMarkupSettingsRepository::class);
     }
 }

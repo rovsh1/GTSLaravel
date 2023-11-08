@@ -3,10 +3,10 @@
 namespace App\Admin\Support\Adapters\Hotel;
 
 use Carbon\CarbonInterface;
-use Module\Hotel\Moderation\Application\Admin\Price\GetRoomPrices;
-use Module\Hotel\Moderation\Application\Admin\UseCase\Price\GetSeasonsPrices;
-use Module\Hotel\Moderation\Application\Admin\UseCase\Price\SetDatePrice;
-use Module\Hotel\Moderation\Application\Admin\UseCase\Price\SetSeasonsPrice;
+use Module\Hotel\Moderation\Application\UseCase\GetRoomPrices;
+use Module\Hotel\Moderation\Application\UseCase\Price\GetSeasonsPrices;
+use Module\Hotel\Moderation\Application\UseCase\Price\SetDatePrice;
+use Module\Hotel\Moderation\Application\UseCase\Price\SetSeasonsPrice;
 
 class PricesAdapter
 {
