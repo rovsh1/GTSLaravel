@@ -1,9 +1,9 @@
 <?php
 
-namespace Module\Booking\Shared\Domain\Booking\Service\HotelBooking\RoomUpdater\Validator;
+namespace Module\Booking\Moderation\Domain\Booking\Service\HotelBooking\RoomUpdater\Validator;
 
+use Module\Booking\Moderation\Domain\Booking\Service\HotelBooking\RoomUpdater\UpdateDataHelper;
 use Module\Booking\Shared\Domain\Booking\Exception\HotelBooking\InvalidRoomResidency;
-use Module\Booking\Shared\Domain\Booking\Service\HotelBooking\RoomUpdater\UpdateDataHelper;
 use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
 use Module\Booking\Shared\Domain\Shared\Adapter\ClientAdapterInterface;
 use Module\Shared\Enum\Client\ResidencyEnum;

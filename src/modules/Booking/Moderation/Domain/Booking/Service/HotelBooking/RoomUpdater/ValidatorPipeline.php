@@ -1,8 +1,8 @@
 <?php
 
-namespace Module\Booking\Shared\Domain\Booking\Service\HotelBooking\RoomUpdater;
+namespace Module\Booking\Moderation\Domain\Booking\Service\HotelBooking\RoomUpdater;
 
-use Module\Booking\Shared\Domain\Booking\Service\HotelBooking\RoomUpdater\Validator\ValidatorInterface;
+use Module\Booking\Moderation\Domain\Booking\Service\HotelBooking\RoomUpdater\Validator\ValidatorInterface;
 use Sdk\Module\Contracts\Support\ContainerInterface;
 
 class ValidatorPipeline

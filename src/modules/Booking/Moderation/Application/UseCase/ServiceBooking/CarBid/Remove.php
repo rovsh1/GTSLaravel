@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\UseCase\ServiceBooking\CarBid;
 
-use Module\Booking\Shared\Domain\Booking\Service\TransferBooking\CarBidUpdater;
+use Module\Booking\Moderation\Domain\Booking\Service\TransferBooking\CarBidUpdater;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 

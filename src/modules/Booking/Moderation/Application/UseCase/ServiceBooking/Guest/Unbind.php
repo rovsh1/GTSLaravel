@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\UseCase\ServiceBooking\Guest;
 
-use Module\Booking\Shared\Domain\Booking\Service\AirportBooking\GuestManager;
+use Module\Booking\Moderation\Domain\Booking\Service\AirportBooking\GuestManager;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Guest\ValueObject\GuestId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;

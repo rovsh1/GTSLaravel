@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Shared\Domain\Booking\Service\HotelBooking;
+namespace Module\Booking\Moderation\Domain\Booking\Service\HotelBooking;
 
 use Carbon\CarbonPeriod;
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelAdapterInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Booking\Shared\Domain\Shared\Listener;
+namespace Module\Booking\Requesting\Domain\BookingRequest\Listener;
 
 use Module\Booking\Requesting\Domain\BookingRequest\Event\BookingRequestSent;
 use Sdk\Module\Contracts\Event\DomainEventInterface;

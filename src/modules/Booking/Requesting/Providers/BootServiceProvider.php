@@ -14,6 +14,11 @@ use Sdk\Module\Support\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {
+    public function register(): void
+    {
+        $this->app->register(DomainEventServiceProvider::class);
+    }
+
     public function boot(): void
     {
         View::addLocation(base_path('resources/pdf-templates'));

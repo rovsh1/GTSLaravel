@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Infrastructure\Order\Repository;
 
-use Module\Booking\Shared\Domain\Order\Entity\Voucher as Entity;
-use Module\Booking\Shared\Domain\Order\Factory\VoucherFactory;
-use Module\Booking\Shared\Domain\Order\Repository\VoucherRepositoryInterface;
+use Module\Booking\Shared\Domain\Voucher\Factory\VoucherFactory;
+use Module\Booking\Shared\Domain\Voucher\Repository\VoucherRepositoryInterface;
+use Module\Booking\Shared\Domain\Voucher\Voucher as Entity;
 use Module\Booking\Shared\Infrastructure\Order\Models\Voucher as Model;
 
 class VoucherRepository implements VoucherRepositoryInterface

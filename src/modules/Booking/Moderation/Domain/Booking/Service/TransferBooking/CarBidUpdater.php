@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Shared\Domain\Booking\Service\TransferBooking;
+namespace Module\Booking\Moderation\Domain\Booking\Service\TransferBooking;
 
 use Carbon\CarbonInterface;
 use Module\Booking\Moderation\Application\Dto\CarBidDataDto;

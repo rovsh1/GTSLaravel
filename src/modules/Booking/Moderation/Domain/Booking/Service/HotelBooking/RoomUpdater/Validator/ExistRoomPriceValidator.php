@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Shared\Domain\Booking\Service\HotelBooking\RoomUpdater\Validator;
+namespace Module\Booking\Moderation\Domain\Booking\Service\HotelBooking\RoomUpdater\Validator;
 
+use Module\Booking\Moderation\Domain\Booking\Service\HotelBooking\RoomUpdater\UpdateDataHelper;
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Exception\HotelBooking\NotFoundHotelRoomPrice;
-use Module\Booking\Shared\Domain\Booking\Service\HotelBooking\RoomUpdater\UpdateDataHelper;
 
 class ExistRoomPriceValidator implements ValidatorInterface
 {

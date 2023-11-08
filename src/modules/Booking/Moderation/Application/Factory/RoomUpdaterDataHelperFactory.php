@@ -6,10 +6,10 @@ namespace Module\Booking\Moderation\Application\Factory;
 
 use Module\Booking\Moderation\Application\Dto\AddRoomDto;
 use Module\Booking\Moderation\Application\Dto\UpdateRoomDto;
+use Module\Booking\Moderation\Domain\Booking\Service\HotelBooking\RoomUpdater\UpdateDataHelper;
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelRoomAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\Details\HotelBookingRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\Service\HotelBooking\RoomUpdater\UpdateDataHelper;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\Condition;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomBookingDetails;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Booking\Shared\Domain\Booking\Listener;
+namespace Module\Booking\ChangeHistory\Domain\Listener;
 
 use Module\Booking\ChangeHistory\Domain\Repository\BookingChangesLogRepositoryInterface;
 use Module\Booking\Shared\Domain\Shared\Event\BookingEventInterface;

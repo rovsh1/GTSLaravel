@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Shared\Domain\Order\Repository;
+namespace Module\Booking\Shared\Domain\Voucher\Repository;
 
-use Module\Booking\Shared\Domain\Order\Entity\Voucher;
+use Module\Booking\Shared\Domain\Voucher\Voucher;
 
 interface VoucherRepositoryInterface
 {

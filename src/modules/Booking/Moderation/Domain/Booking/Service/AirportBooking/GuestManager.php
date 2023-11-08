@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Shared\Domain\Booking\Service\AirportBooking;
+namespace Module\Booking\Moderation\Domain\Booking\Service\AirportBooking;
 
 use Carbon\Carbon;
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;

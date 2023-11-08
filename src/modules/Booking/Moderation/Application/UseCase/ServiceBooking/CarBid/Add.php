@@ -7,9 +7,9 @@ namespace Module\Booking\Moderation\Application\UseCase\ServiceBooking\CarBid;
 use Module\Booking\Moderation\Application\Dto\CarBidDataDto;
 use Module\Booking\Moderation\Application\Exception\NotFoundServicePriceException as NotFoundApplicationException;
 use Module\Booking\Moderation\Application\Exception\ServiceDateUndefinedException;
+use Module\Booking\Moderation\Domain\Booking\Service\TransferBooking\CarBidUpdater;
 use Module\Booking\Shared\Domain\Booking\Exception\NotFoundTransferServicePrice;
 use Module\Booking\Shared\Domain\Booking\Exception\ServiceDateUndefined;
-use Module\Booking\Shared\Domain\Booking\Service\TransferBooking\CarBidUpdater;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 

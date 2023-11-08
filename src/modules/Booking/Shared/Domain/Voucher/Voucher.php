@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Shared\Domain\Order\Entity;
+namespace Module\Booking\Shared\Domain\Voucher;
 
 use Carbon\CarbonImmutable;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Shared\Domain\Order\ValueObject\VoucherId;
+use Module\Booking\Shared\Domain\Voucher\ValueObject\VoucherId;
 use Module\Shared\Contracts\Domain\EntityInterface;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 

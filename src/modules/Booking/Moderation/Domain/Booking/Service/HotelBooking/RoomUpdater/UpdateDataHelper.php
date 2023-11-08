@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Booking\Shared\Domain\Booking\Service\HotelBooking\RoomUpdater;
+namespace Module\Booking\Moderation\Domain\Booking\Service\HotelBooking\RoomUpdater;
 
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;

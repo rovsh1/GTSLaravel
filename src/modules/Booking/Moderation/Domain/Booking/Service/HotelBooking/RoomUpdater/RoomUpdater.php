@@ -1,7 +1,9 @@
 <?php
 
-namespace Module\Booking\Shared\Domain\Booking\Service\HotelBooking\RoomUpdater;
+namespace Module\Booking\Moderation\Domain\Booking\Service\HotelBooking\RoomUpdater;
 
+use Module\Booking\Moderation\Domain\Booking\Service\HotelBooking\RoomUpdater\Validator\ClientResidencyValidator;
+use Module\Booking\Moderation\Domain\Booking\Service\HotelBooking\RoomUpdater\Validator\ExistRoomPriceValidator;
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelRoomAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
@@ -18,8 +20,6 @@ use Module\Booking\Shared\Domain\Booking\Service\HotelBooking\QuotaManager\Excep
 use Module\Booking\Shared\Domain\Booking\Service\HotelBooking\QuotaManager\Exception\NotEnoughRoomDateQuota;
 use Module\Booking\Shared\Domain\Booking\Service\HotelBooking\QuotaManager\Exception\NotFoundRoomDateQuota;
 use Module\Booking\Shared\Domain\Booking\Service\HotelBooking\QuotaManager\QuotaManager;
-use Module\Booking\Shared\Domain\Booking\Service\HotelBooking\RoomUpdater\Validator\ClientResidencyValidator;
-use Module\Booking\Shared\Domain\Booking\Service\HotelBooking\RoomUpdater\Validator\ExistRoomPriceValidator;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomBookingId;
 use Module\Shared\Contracts\Service\SafeExecutorInterface;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
