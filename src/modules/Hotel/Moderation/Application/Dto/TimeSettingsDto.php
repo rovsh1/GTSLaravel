@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Hotel\Moderation\Application\ResponseDto;
+namespace Module\Hotel\Moderation\Application\Dto;
 
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\TimeSettings;
 use Module\Shared\Contracts\Domain\EntityInterface;

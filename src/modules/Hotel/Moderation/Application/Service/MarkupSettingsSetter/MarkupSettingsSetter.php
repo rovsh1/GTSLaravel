@@ -5,6 +5,7 @@ namespace Module\Hotel\Moderation\Application\Service\MarkupSettingsSetter;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Module\Hotel\Moderation\Application\Enums\UpdateMarkupSettingsActionEnum;
+use Module\Hotel\Moderation\Domain\Hotel\Entity\MarkupSettings;
 use Module\Hotel\Moderation\Domain\Hotel\Repository\MarkupSettingsRepositoryInterface;
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings\CancelPeriod;
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings\CancelPeriodCollection;
@@ -37,16 +38,7 @@ class MarkupSettingsSetter extends AbstractUpdater
     public function update(int $hotelId, string $key, mixed $value, UpdateMarkupSettingsActionEnum $action): void
     {
         $settings = $this->repository->get($hotelId);
-        $object = null;
-        $keyToUpdate = null;
-        foreach ($this->dtoKeyPatterns as $domainKey => $pattern) {
-            if (!preg_match($pattern, $key, $keyParts)) {
-                continue;
-            }
-            $keyToUpdate = Arr::last($keyParts);
-            $object = $this->objectFromKey($settings, $domainKey, $keyParts);
-            break;
-        }
+        [$object, $keyToUpdate] = $this->findPatternParams($settings, $key);
 
         switch ($action) {
             case UpdateMarkupSettingsActionEnum::UPDATE:
@@ -63,7 +55,23 @@ class MarkupSettingsSetter extends AbstractUpdater
         $this->repository->update($settings);
     }
 
-    private function objectFromKey($settings, string $domainKey, array $keyParts): mixed
+    private function findPatternParams(MarkupSettings $settings, string $key): array
+    {
+        foreach ($this->dtoKeyPatterns as $domainKey => $pattern) {
+            if (!preg_match($pattern, $key, $keyParts)) {
+                continue;
+            }
+
+            $keyToUpdate = Arr::last($keyParts);
+            $object = $this->objectFromKey($settings, $domainKey, $keyParts);
+
+            return [$object, $keyToUpdate];
+        }
+
+        throw new \InvalidArgumentException("Undefined pattern for key [$key]");
+    }
+
+    private function objectFromKey(MarkupSettings $settings, string $domainKey, array $keyParts): mixed
     {
         return match ($domainKey) {
             'settings' => $settings,

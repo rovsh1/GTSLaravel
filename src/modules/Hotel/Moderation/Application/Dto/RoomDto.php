@@ -1,8 +1,6 @@
 <?php
 
-namespace Module\Hotel\Moderation\Application\Response;
-
-use Module\Hotel\Moderation\Application\ResponseDto\PriceRateDto;
+namespace Module\Hotel\Moderation\Application\Dto;
 
 final class RoomDto
 {

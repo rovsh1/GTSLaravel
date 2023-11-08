@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Hotel\Moderation\Application\UseCase;
 
+use Module\Hotel\Moderation\Application\Dto\MarkupSettingsDto;
 use Module\Hotel\Moderation\Application\Factory\MarkupSettingsDtoFactory;
-use Module\Hotel\Moderation\Application\Response\MarkupSettingsDto;
 use Module\Hotel\Moderation\Infrastructure\Repository\MarkupSettingsRepository;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 

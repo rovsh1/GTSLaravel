@@ -3,7 +3,7 @@
 namespace Module\Booking\Shared\Infrastructure\HotelBooking\Adapter;
 
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelRoomAdapterInterface;
-use Module\Hotel\Moderation\Application\Response\RoomDto;
+use Module\Hotel\Moderation\Application\Dto\RoomDto;
 use Module\Hotel\Moderation\Application\UseCase\FindRoom;
 use Module\Hotel\Moderation\Application\UseCase\GetRooms;
 

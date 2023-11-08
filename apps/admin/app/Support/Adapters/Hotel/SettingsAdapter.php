@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Adapters\Hotel;
 
-use Module\Hotel\Moderation\Application\Response\HotelDto;
+use Module\Hotel\Moderation\Application\Dto\HotelDto;
 use Module\Hotel\Moderation\Application\UseCase\FindHotelById;
 use Module\Hotel\Moderation\Application\UseCase\UpdateTimeSettings;
 

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Hotel\Moderation\Application\Factory;
 
-use Module\Hotel\Moderation\Application\Response\RoomDto;
-use Module\Hotel\Moderation\Application\ResponseDto\PriceRateDto;
+use Module\Hotel\Moderation\Application\Dto\PriceRateDto;
+use Module\Hotel\Moderation\Application\Dto\RoomDto;
 use Module\Hotel\Moderation\Domain\Hotel\Entity\Room;
 
 class RoomDtoFactory

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Hotel\Moderation\Application\UseCase;
 
+use Module\Hotel\Moderation\Application\Dto\RoomDto;
 use Module\Hotel\Moderation\Application\Factory\RoomDtoFactory;
-use Module\Hotel\Moderation\Application\Response\RoomDto;
 use Module\Hotel\Moderation\Domain\Hotel\Repository\RoomRepositoryInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Hotel\Moderation\Application\ResponseDto;
+namespace Module\Hotel\Moderation\Application\Dto;
 
 final class PriceRateDto
 {

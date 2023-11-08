@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Module\Hotel\Moderation\Application\Response;
+namespace Module\Hotel\Moderation\Application\Dto;
 
-use Module\Hotel\Moderation\Application\ResponseDto\MarkupSettings\CancelPeriodDto;
-use Module\Hotel\Moderation\Application\ResponseDto\MarkupSettings\ConditionDto;
+use Module\Hotel\Moderation\Application\Dto\MarkupSettings\CancelPeriodDto;
+use Module\Hotel\Moderation\Application\Dto\MarkupSettings\ConditionDto;
 
 final class MarkupSettingsDto
 {

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Module\Hotel\Moderation\Application\Factory;
 
-use Module\Hotel\Moderation\Application\Response\MarkupSettingsDto;
-use Module\Hotel\Moderation\Application\ResponseDto\MarkupSettings\CancelMarkupOptionDto;
-use Module\Hotel\Moderation\Application\ResponseDto\MarkupSettings\CancelPeriodDto;
-use Module\Hotel\Moderation\Application\ResponseDto\MarkupSettings\ConditionDto;
-use Module\Hotel\Moderation\Application\ResponseDto\MarkupSettings\DailyMarkupDto;
+use Module\Hotel\Moderation\Application\Dto\MarkupSettings\CancelMarkupOptionDto;
+use Module\Hotel\Moderation\Application\Dto\MarkupSettings\CancelPeriodDto;
+use Module\Hotel\Moderation\Application\Dto\MarkupSettings\ConditionDto;
+use Module\Hotel\Moderation\Application\Dto\MarkupSettings\DailyMarkupDto;
+use Module\Hotel\Moderation\Application\Dto\MarkupSettingsDto;
 use Module\Hotel\Moderation\Domain\Hotel\Entity\MarkupSettings;
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings\CancelPeriod;
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings\Condition;

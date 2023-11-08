@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Hotel\Moderation\Application\UseCase\MarkupSettings;
+namespace Module\Hotel\Moderation\Application\UseCase;
 
 use Module\Hotel\Moderation\Application\Enums\UpdateMarkupSettingsActionEnum;
 use Module\Hotel\Moderation\Application\Service\MarkupSettingsSetter\MarkupSettingsSetter;

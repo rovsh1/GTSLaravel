@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Hotel\Moderation\Application\UseCase\Price;
 
-use Module\Hotel\Moderation\Application\ResponseDto\PriceRateDto;
+use Module\Hotel\Moderation\Application\Dto\PriceRateDto;
 use Module\Hotel\Moderation\Domain\Hotel\Entity\PriceRate;
 use Module\Hotel\Moderation\Domain\Hotel\Repository\PriceRateRepositoryInterface;
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\HotelId;

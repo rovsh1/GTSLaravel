@@ -2,10 +2,8 @@
 
 declare(strict_types=1);
 
-namespace Module\Hotel\Moderation\Application\Response;
+namespace Module\Hotel\Moderation\Application\Dto;
 
-use Module\Hotel\Moderation\Application\ResponseDto\ContactDto;
-use Module\Hotel\Moderation\Application\ResponseDto\TimeSettingsDto;
 use Module\Hotel\Moderation\Domain\Hotel\Hotel;
 use Module\Shared\Contracts\Domain\EntityInterface;
 use Module\Shared\Contracts\Domain\ValueObjectInterface;

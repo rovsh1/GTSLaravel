@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Adapters\Hotel;
 
+use Module\Hotel\Moderation\Application\Dto\MarkupSettingsDto;
 use Module\Hotel\Moderation\Application\Enums\UpdateMarkupSettingsActionEnum;
-use Module\Hotel\Moderation\Application\Response\MarkupSettingsDto;
 use Module\Hotel\Moderation\Application\UseCase\GetMarkupSettings;
-use Module\Hotel\Moderation\Application\UseCase\MarkupSettings\UpdateMarkupSettingsValue;
+use Module\Hotel\Moderation\Application\UseCase\UpdateMarkupSettingsValue;
 
 class MarkupSettingsAdapter
 {

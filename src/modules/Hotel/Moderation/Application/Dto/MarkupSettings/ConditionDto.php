@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Hotel\Moderation\Application\ResponseDto\MarkupSettings;
+namespace Module\Hotel\Moderation\Application\Dto\MarkupSettings;
 
 final class ConditionDto
 {

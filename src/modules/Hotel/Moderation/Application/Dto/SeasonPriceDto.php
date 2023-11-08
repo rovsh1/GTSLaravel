@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Hotel\Moderation\Application\Response;
+namespace Module\Hotel\Moderation\Application\Dto;
 
 use Sdk\Module\Foundation\Support\Dto\Dto;
 

@@ -3,8 +3,8 @@
 namespace Module\Booking\Shared\Domain\Booking\Adapter;
 
 use Carbon\CarbonInterface;
-use Module\Hotel\Moderation\Application\Response\HotelDto;
-use Module\Hotel\Moderation\Application\Response\MarkupSettingsDto;
+use Module\Hotel\Moderation\Application\Dto\HotelDto;
+use Module\Hotel\Moderation\Application\Dto\MarkupSettingsDto;
 
 interface HotelAdapterInterface
 {
