@@ -22,26 +22,22 @@ class SearchServicesRequest extends FormRequest
 
     public function getType(): ServiceTypeEnum
     {
-        return ServiceTypeEnum::from((int)$this->get('type'));
+        return ServiceTypeEnum::from($this->integer('type'));
     }
 
     public function getCityId(): ?int
     {
-        $value = $this->get('city_id');
-
-        return $value !== null ? (int)$value : null;
+        return $this->integer('city_id', null);
     }
 
     public function getSupplierId(): ?int
     {
-        $value = $this->get('supplier_id');
-
-        return $value !== null ? (int)$value : null;
+        return $this->integer('supplier_id', null);
     }
 
     public function onlyWithContract(): bool
     {
-        $onlyWithContract = $this->get('only_with_contract', false);
+        $onlyWithContract = $this->boolean('only_with_contract');
 
         return is_bool($onlyWithContract) ? $onlyWithContract : (bool)$onlyWithContract;
     }
