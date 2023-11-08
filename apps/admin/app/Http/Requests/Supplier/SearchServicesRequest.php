@@ -37,8 +37,6 @@ class SearchServicesRequest extends FormRequest
 
     public function onlyWithContract(): bool
     {
-        $onlyWithContract = $this->boolean('only_with_contract');
-
-        return is_bool($onlyWithContract) ? $onlyWithContract : (bool)$onlyWithContract;
+        return $this->boolean('only_with_contract');
     }
 }
