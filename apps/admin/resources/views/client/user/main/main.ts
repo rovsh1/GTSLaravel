@@ -31,6 +31,7 @@ $(() => {
       buttons: ['submit', 'cancel', { text: 'Новый пользователь', cls: 'btn', handler: createNewUserHandler }],
       update: () => {
         $('#form_data_user_id').select2({
+          width: '100%',
           dropdownParent: $('.modal-dialog .modal-body'),
           ajax: {
             url: searchUserUrl,
