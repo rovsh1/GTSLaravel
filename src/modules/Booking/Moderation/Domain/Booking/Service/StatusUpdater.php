@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Shared\Domain\Shared\Service;
+namespace Module\Booking\Moderation\Domain\Booking\Service;
 
+use Module\Booking\Moderation\Domain\Booking\Service\StatusRules\AdministratorRules;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Shared\Exception\InvalidStatusTransition;
-use Module\Booking\Shared\Domain\Shared\Service\StatusRules\AdministratorRules;
 use Module\Shared\Enum\Booking\BookingStatusEnum;
 
 class StatusUpdater

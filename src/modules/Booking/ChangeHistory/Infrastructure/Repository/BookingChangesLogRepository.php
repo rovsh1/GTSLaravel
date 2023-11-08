@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Shared\Infrastructure\Repository;
+namespace Module\Booking\ChangeHistory\Infrastructure\Repository;
 
 use Illuminate\Database\Eloquent\Collection;
+use Module\Booking\ChangeHistory\Domain\Repository\BookingChangesLogRepositoryInterface;
+use Module\Booking\ChangeHistory\Infrastructure\Model\BookingChangesLog;
 use Module\Booking\Shared\Domain\Shared\Event\BookingEventInterface;
 use Module\Booking\Shared\Domain\Shared\Event\BookingRequestEventInterface;
 use Module\Booking\Shared\Domain\Shared\Event\BookingStatusEventInterface;
-use Module\Booking\Shared\Domain\Shared\Repository\BookingChangesLogRepositoryInterface;
-use Module\Booking\Shared\Infrastructure\Models\BookingChangesLog;
 use Module\Booking\Shared\Infrastructure\Models\EventTypeEnum;
 use Module\Shared\Contracts\Service\ApplicationContextInterface;
 

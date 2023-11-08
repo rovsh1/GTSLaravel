@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Shared\Domain\Shared\Adapter;
+namespace Module\Booking\Requesting\Domain\BookingRequest\Adapter;
 
 use Module\Administrator\Application\Response\AdministratorDto;
 

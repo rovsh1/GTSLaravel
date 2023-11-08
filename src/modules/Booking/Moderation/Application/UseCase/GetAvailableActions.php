@@ -7,11 +7,11 @@ namespace Module\Booking\Moderation\Application\UseCase;
 use Module\Booking\Moderation\Application\Dto\AvailableActionsDto;
 use Module\Booking\Moderation\Application\Dto\StatusDto;
 use Module\Booking\Moderation\Application\Factory\BookingStatusDtoFactory;
+use Module\Booking\Moderation\Domain\Booking\Service\StatusRules\AdministratorRules;
+use Module\Booking\Requesting\Domain\BookingRequest\Service\RequestRules;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Shared\Domain\Shared\Service\RequestRules;
-use Module\Booking\Shared\Domain\Shared\Service\StatusRules\AdministratorRules;
 use Module\Shared\Enum\Booking\BookingStatusEnum;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Application\UseCase\Order\Voucher;
 
 use Module\Booking\Deprecated\HotelBooking\Repository\BookingRepositoryInterface;
+use Module\Booking\Moderation\Domain\Booking\Service\BookingUpdater;
 use Module\Booking\Shared\Domain\Order\Service\VoucherCreator;
-use Module\Booking\Shared\Domain\Shared\Service\BookingUpdater;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class SendVoucher implements UseCaseInterface

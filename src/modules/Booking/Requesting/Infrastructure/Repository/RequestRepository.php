@@ -8,9 +8,9 @@ use Module\Booking\Requesting\Domain\BookingRequest\BookingRequest as Entity;
 use Module\Booking\Requesting\Domain\BookingRequest\Repository\RequestRepositoryInterface;
 use Module\Booking\Requesting\Domain\BookingRequest\ValueObject\RequestId;
 use Module\Booking\Requesting\Domain\BookingRequest\ValueObject\RequestTypeEnum;
+use Module\Booking\Requesting\Infrastructure\Factory\RequestFactory;
 use Module\Booking\Requesting\Infrastructure\Models\BookingRequest as Model;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Shared\Domain\Shared\Factory\RequestFactory;
 use Module\Shared\ValueObject\File;
 
 class RequestRepository implements RequestRepositoryInterface

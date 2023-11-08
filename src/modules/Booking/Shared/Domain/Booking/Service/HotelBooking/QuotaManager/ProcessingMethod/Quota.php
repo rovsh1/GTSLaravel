@@ -2,11 +2,11 @@
 
 namespace Module\Booking\Shared\Domain\Booking\Service\HotelBooking\QuotaManager\ProcessingMethod;
 
+use Module\Booking\Moderation\Domain\Booking\Service\StatusRules\AdministratorRules;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
 use Module\Booking\Shared\Domain\Booking\Service\HotelBooking\QuotaManager\ProcessingMethod\Quota\QuotaReservationManager;
 use Module\Booking\Shared\Domain\Booking\Service\HotelBooking\QuotaManager\QuotaProcessingMethodInterface;
-use Module\Booking\Shared\Domain\Shared\Service\StatusRules\AdministratorRules;
 use Module\Shared\Enum\Booking\BookingStatusEnum;
 
 class Quota implements QuotaProcessingMethodInterface

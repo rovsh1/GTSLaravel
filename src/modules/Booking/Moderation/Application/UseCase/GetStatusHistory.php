@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\UseCase;
 
+use Module\Booking\ChangeHistory\Domain\Repository\BookingChangesLogRepositoryInterface;
+use Module\Booking\ChangeHistory\Infrastructure\Model\BookingChangesLog;
 use Module\Booking\Moderation\Application\Dto\StatusEventDto;
 use Module\Booking\Moderation\Application\Factory\BookingStatusDtoFactory;
 use Module\Booking\Shared\Domain\Shared\Event\BookingCreated;
@@ -16,8 +18,6 @@ use Module\Booking\Shared\Domain\Shared\Event\Status\BookingProcessing;
 use Module\Booking\Shared\Domain\Shared\Event\Status\BookingWaitingCancellation;
 use Module\Booking\Shared\Domain\Shared\Event\Status\BookingWaitingConfirmation;
 use Module\Booking\Shared\Domain\Shared\Event\Status\BookingWaitingProcessing;
-use Module\Booking\Shared\Domain\Shared\Repository\BookingChangesLogRepositoryInterface;
-use Module\Booking\Shared\Infrastructure\Models\BookingChangesLog;
 use Module\Shared\Enum\Booking\BookingStatusEnum;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 

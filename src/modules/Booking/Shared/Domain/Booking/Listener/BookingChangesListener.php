@@ -2,8 +2,8 @@
 
 namespace Module\Booking\Shared\Domain\Booking\Listener;
 
+use Module\Booking\ChangeHistory\Domain\Repository\BookingChangesLogRepositoryInterface;
 use Module\Booking\Shared\Domain\Shared\Event\BookingEventInterface;
-use Module\Booking\Shared\Domain\Shared\Repository\BookingChangesLogRepositoryInterface;
 use Sdk\Module\Contracts\Event\DomainEventInterface;
 use Sdk\Module\Contracts\Event\DomainEventListenerInterface;
 

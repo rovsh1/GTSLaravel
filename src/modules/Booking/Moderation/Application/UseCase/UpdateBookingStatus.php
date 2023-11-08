@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Application\UseCase;
 
 use Module\Booking\Moderation\Application\Dto\UpdateStatusResponseDto;
+use Module\Booking\Moderation\Domain\Booking\Service\StatusUpdater;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Shared\Domain\Shared\Service\StatusUpdater;
 use Module\Shared\Enum\Booking\BookingStatusEnum;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 

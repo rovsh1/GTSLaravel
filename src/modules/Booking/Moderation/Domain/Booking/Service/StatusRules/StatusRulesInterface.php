@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Shared\Domain\Shared\Service\StatusRules;
+namespace Module\Booking\Moderation\Domain\Booking\Service\StatusRules;
 
 use Module\Shared\Enum\Booking\BookingStatusEnum;
 

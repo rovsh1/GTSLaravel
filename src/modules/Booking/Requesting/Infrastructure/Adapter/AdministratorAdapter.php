@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Shared\Infrastructure\Adapter;
+namespace Module\Booking\Requesting\Infrastructure\Adapter;
 
 use Module\Administrator\Application\Response\AdministratorDto;
 use Module\Administrator\Application\UseCase\GetManagerByBookingId;
-use Module\Booking\Shared\Domain\Shared\Adapter\AdministratorAdapterInterface;
+use Module\Booking\Requesting\Domain\BookingRequest\Adapter\AdministratorAdapterInterface;
 
 class AdministratorAdapter implements AdministratorAdapterInterface
 {

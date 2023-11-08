@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\UseCase;
 
+use Module\Booking\Moderation\Domain\Booking\Service\BookingUpdater;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Shared\Domain\Shared\Service\BookingUpdater;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class UpdateNote implements UseCaseInterface

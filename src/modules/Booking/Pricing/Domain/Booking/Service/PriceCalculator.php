@@ -6,6 +6,7 @@ namespace Module\Booking\Pricing\Domain\Booking\Service;
 
 use Carbon\Carbon;
 use Module\Booking\Moderation\Application\Exception\NotFoundServicePriceException;
+use Module\Booking\Moderation\Domain\Booking\Service\BookingUpdater;
 use Module\Booking\Pricing\Domain\Booking\Service\HotelPriceCalculator\PriceCalculator as HotelBookingPriceCalculator;
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
@@ -18,7 +19,6 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPriceItem;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPrices;
 use Module\Booking\Shared\Domain\Booking\ValueObject\CarBid;
-use Module\Booking\Shared\Domain\Shared\Service\BookingUpdater;
 use Module\Shared\Enum\ServiceTypeEnum;
 
 class PriceCalculator

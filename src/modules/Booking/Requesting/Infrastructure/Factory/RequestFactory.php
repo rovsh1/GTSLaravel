@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Shared\Domain\Shared\Factory;
+namespace Module\Booking\Requesting\Infrastructure\Factory;
 
 use Carbon\CarbonImmutable;
 use Module\Booking\Requesting\Domain\BookingRequest\BookingRequest;

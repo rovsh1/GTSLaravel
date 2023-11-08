@@ -37,7 +37,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
-use Module\Booking\Shared\Domain\Shared\Service\RequestRules;
+use Module\Booking\Requesting\Domain\BookingRequest\Service\RequestRules;
 use Module\Shared\Enum\Booking\BookingStatusEnum;
 use Module\Shared\Enum\CurrencyEnum;
 use Module\Shared\Enum\ServiceTypeEnum;

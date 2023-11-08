@@ -1,8 +1,8 @@
 <?php
 
-namespace Module\Booking\Shared\Domain\Shared\Service\StatusRules;
+namespace Module\Booking\Moderation\Domain\Booking\Service\StatusRules;
 
-use Module\Booking\Shared\Domain\Shared\Service\RequestRules;
+use Module\Booking\Requesting\Domain\BookingRequest\Service\RequestRules;
 use Module\Shared\Enum\Booking\BookingStatusEnum;
 
 class AdministratorRules extends AbstractRules implements StatusRulesInterface

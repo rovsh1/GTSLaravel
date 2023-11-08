@@ -2,9 +2,9 @@
 
 namespace Module\Booking\Shared\Domain\Booking\Listener;
 
+use Module\Booking\Moderation\Domain\Booking\Service\BookingUpdater;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Shared\Event\BookingRequestEventInterface;
-use Module\Booking\Shared\Domain\Shared\Service\BookingUpdater;
 use Sdk\Module\Contracts\Event\DomainEventInterface;
 use Sdk\Module\Contracts\Event\DomainEventListenerInterface;
 
