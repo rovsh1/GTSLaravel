@@ -17,8 +17,7 @@ final class Order extends AbstractAggregateRoot
         private readonly ClientId $clientId,
         private ?InvoiceId $invoiceId,
         private OrderStatusEnum $status,
-    ) {
-    }
+    ) {}
 
     public function id(): OrderId
     {
