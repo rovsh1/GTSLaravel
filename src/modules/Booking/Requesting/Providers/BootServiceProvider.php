@@ -19,8 +19,5 @@ class BootServiceProvider extends ServiceProvider
         $this->app->singleton(RequestFactory::class);
         $this->app->singleton(RequestRepositoryInterface::class, RequestRepository::class);
         $this->app->singleton(TemplateCompilerInterface::class, RequestTemplateCompiler::class);
-
-        //TODO временное, убрать в shared
-        $this->app->register(\Module\Booking\Shared\Providers\BootServiceProvider::class);
     }
 }
