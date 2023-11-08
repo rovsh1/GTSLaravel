@@ -3,7 +3,6 @@
 namespace Sdk\Module\Support\Providers;
 
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
-use Sdk\Module\Contracts\Event\DomainEventPublisherInterface;
 use Sdk\Module\Support\ServiceProvider;
 
 class DomainEventServiceProvider extends ServiceProvider
@@ -16,9 +15,7 @@ class DomainEventServiceProvider extends ServiceProvider
     {
         $this->app->resolving(DomainEventDispatcherInterface::class, function ($domainEventDispatcher) {
             $this->registerListeners($domainEventDispatcher);
-        });
-        $this->app->resolving(DomainEventPublisherInterface::class, function ($domainEventPublisher) {
-            $this->bootPublisher($domainEventPublisher);
+            $this->bootPublisher($domainEventDispatcher);
         });
     }
 
@@ -35,12 +32,12 @@ class DomainEventServiceProvider extends ServiceProvider
         }
     }
 
-    protected function bootPublisher(DomainEventPublisherInterface $domainEventPublisher): void
+    protected function bootPublisher(DomainEventDispatcherInterface $domainEventDispatcher): void
     {
         if (!isset($this->integrationEventMapper)) {
             return;
         }
 
-        $domainEventPublisher->registerMapper($this->app->make($this->integrationEventMapper));
+        $domainEventDispatcher->registerMapper($this->app->make($this->integrationEventMapper));
     }
 }
