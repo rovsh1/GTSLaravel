@@ -11,7 +11,8 @@ use Module\Booking\Pricing\Domain\Booking\Service\HotelPriceCalculator\PriceCalc
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Entity\CarRentWithDriver;
-use Module\Booking\Shared\Domain\Booking\Entity\CIPRoomInAirport;
+use Module\Booking\Shared\Domain\Booking\Entity\CIPMeetingInAirport;
+use Module\Booking\Shared\Domain\Booking\Entity\CIPSendoffInAirport;
 use Module\Booking\Shared\Domain\Booking\Entity\ServiceDetailsInterface;
 use Module\Booking\Shared\Domain\Booking\Factory\DetailsRepositoryFactory;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
@@ -46,13 +47,14 @@ class PriceCalculator
     private function processAirportBooking(Booking $booking): void
     {
         $repository = $this->detailsRepositoryFactory->buildByBookingId($booking->id());
-        /** @var CIPRoomInAirport $details */
+        /** @var CIPMeetingInAirport|CIPSendoffInAirport $details */
         $details = $repository->find($booking->id());
+        $date = $details instanceof CIPSendoffInAirport ? $details->departureDate() : $details->arrivalDate();
         $servicePrice = $this->supplierAdapter->getAirportServicePrice(
             $details->serviceInfo()->supplierId(),
             $details->serviceInfo()->id(),
             $booking->prices()->clientPrice()->currency(),
-            new Carbon($details->serviceDate())
+            new Carbon($date)
         );
         if ($servicePrice === null) {
             throw new NotFoundServicePriceException();

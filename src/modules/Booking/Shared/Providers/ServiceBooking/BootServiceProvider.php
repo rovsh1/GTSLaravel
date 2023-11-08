@@ -5,7 +5,8 @@ namespace Module\Booking\Shared\Providers\ServiceBooking;
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\Details\CarRentWithDriverRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\Repository\Details\CIPRoomInAirportRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Repository\Details\CIPMeetingInAirportRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Repository\Details\CIPSendoffInAirportRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\Details\DayCarTripRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\Details\HotelBookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\Details\IntercityTransferRepositoryInterface;
@@ -17,7 +18,8 @@ use Module\Booking\Shared\Domain\Booking\Repository\Details\TransferToRailwayRep
 use Module\Booking\Shared\Infrastructure\ServiceBooking\Adapter\SupplierAdapter;
 use Module\Booking\Shared\Infrastructure\ServiceBooking\Repository\BookingRepository;
 use Module\Booking\Shared\Infrastructure\ServiceBooking\Repository\Details\CarRentWithDriverRepository;
-use Module\Booking\Shared\Infrastructure\ServiceBooking\Repository\Details\CIPRoomInAirportRepository;
+use Module\Booking\Shared\Infrastructure\ServiceBooking\Repository\Details\CIPMeetingInAirportRepository;
+use Module\Booking\Shared\Infrastructure\ServiceBooking\Repository\Details\CIPSendoffInAirportRepository;
 use Module\Booking\Shared\Infrastructure\ServiceBooking\Repository\Details\DayCarTripRepository;
 use Module\Booking\Shared\Infrastructure\ServiceBooking\Repository\Details\HotelBookingRepository;
 use Module\Booking\Shared\Infrastructure\ServiceBooking\Repository\Details\IntercityTransferRepository;
@@ -38,7 +40,8 @@ class BootServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->app->singleton(BookingRepositoryInterface::class, BookingRepository::class);
-        $this->app->singleton(CIPRoomInAirportRepositoryInterface::class, CIPRoomInAirportRepository::class);
+        $this->app->singleton(CIPMeetingInAirportRepositoryInterface::class, CIPMeetingInAirportRepository::class);
+        $this->app->singleton(CIPSendoffInAirportRepositoryInterface::class, CIPSendoffInAirportRepository::class);
         $this->app->singleton(TransferToAirportRepositoryInterface::class, TransferToAirportRepository::class);
         $this->app->singleton(TransferFromAirportRepositoryInterface::class, TransferFromAirportRepository::class);
         $this->app->singleton(TransferToRailwayRepositoryInterface::class, TransferToRailwayRepository::class);

@@ -3,6 +3,10 @@
 namespace Module\Booking\Shared\Domain\Booking\Entity;
 
 use DateTimeInterface;
+use Module\Booking\Shared\Domain\Booking\Entity\Concerns\HasCarBidCollectionTrait;
+use Module\Booking\Shared\Domain\Booking\Entity\Concerns\HasDepartureDateTrait;
+use Module\Booking\Shared\Domain\Booking\Entity\Concerns\HasMeetingTabletTrait;
+use Module\Booking\Shared\Domain\Booking\Entity\Concerns\HasTrainNumberTrait;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\CarBidCollection;
 use Module\Booking\Shared\Domain\Booking\ValueObject\DetailsId;
@@ -12,10 +16,10 @@ use Module\Shared\Enum\ServiceTypeEnum;
 
 class TransferToRailway implements ServiceDetailsInterface
 {
-    use \Module\Booking\Shared\Domain\Booking\Entity\Concerns\HasTrainNumberTrait;
-    use \Module\Booking\Shared\Domain\Booking\Entity\Concerns\HasDepartureDateTrait;
-    use \Module\Booking\Shared\Domain\Booking\Entity\Concerns\HasCarBidCollectionTrait;
-    use \Module\Booking\Shared\Domain\Booking\Entity\Concerns\HasMeetingTabletTrait;
+    use HasTrainNumberTrait;
+    use HasDepartureDateTrait;
+    use HasCarBidCollectionTrait;
+    use HasMeetingTabletTrait;
 
     public function __construct(
         private readonly DetailsId $id,

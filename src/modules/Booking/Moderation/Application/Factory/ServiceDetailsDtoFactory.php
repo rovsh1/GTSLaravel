@@ -6,7 +6,8 @@ namespace Module\Booking\Moderation\Application\Factory;
 
 use Module\Booking\Moderation\Application\Dto\ServiceBooking\CarRentWithDriver\BookingPeriodDto;
 use Module\Booking\Moderation\Application\Dto\ServiceBooking\CarRentWithDriverDto;
-use Module\Booking\Moderation\Application\Dto\ServiceBooking\CIPRoomInAirportDto;
+use Module\Booking\Moderation\Application\Dto\ServiceBooking\CIPMeetingInAirportDto;
+use Module\Booking\Moderation\Application\Dto\ServiceBooking\CIPSendoffInAirportDto;
 use Module\Booking\Moderation\Application\Dto\ServiceBooking\DayCarTripDto;
 use Module\Booking\Moderation\Application\Dto\ServiceBooking\IntercityTransferDto;
 use Module\Booking\Moderation\Application\Dto\ServiceBooking\OtherServiceDto;
@@ -18,7 +19,8 @@ use Module\Booking\Moderation\Application\Dto\ServiceBooking\TransferToAirportDt
 use Module\Booking\Moderation\Application\Dto\ServiceBooking\TransferToRailwayDto;
 use Module\Booking\Moderation\Application\Factory\HotelBooking\DetailsDtoFactory as HotelDetailsDtoFactory;
 use Module\Booking\Shared\Domain\Booking\Entity\CarRentWithDriver;
-use Module\Booking\Shared\Domain\Booking\Entity\CIPRoomInAirport;
+use Module\Booking\Shared\Domain\Booking\Entity\CIPMeetingInAirport;
+use Module\Booking\Shared\Domain\Booking\Entity\CIPSendoffInAirport;
 use Module\Booking\Shared\Domain\Booking\Entity\DayCarTrip;
 use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
 use Module\Booking\Shared\Domain\Booking\Entity\IntercityTransfer;
@@ -53,8 +55,10 @@ class ServiceDetailsDtoFactory
             return $this->buildTransferToAirport($details);
         } elseif ($details instanceof TransferFromAirport) {
             return $this->buildTransferFromAirport($details);
-        } elseif ($details instanceof CIPRoomInAirport) {
-            return $this->buildCIPRoomInAirport($details);
+        } elseif ($details instanceof CIPMeetingInAirport) {
+            return $this->buildCIPMeetingInAirport($details);
+        } elseif ($details instanceof CIPSendoffInAirport) {
+            return $this->buildCIPSendoffInAirport($details);
         } elseif ($details instanceof HotelBooking) {
             return $this->hotelFactory->build($details);
         } elseif ($details instanceof CarRentWithDriver) {
@@ -138,17 +142,32 @@ class ServiceDetailsDtoFactory
         );
     }
 
-    private function buildCIPRoomInAirport(CIPRoomInAirport $details): CIPRoomInAirportDto
+    private function buildCIPMeetingInAirport(CIPMeetingInAirport $details): CIPMeetingInAirportDto
     {
         $airportDto = $this->buildAirportInfo($details->airportId()->value());
 
-        return new CIPRoomInAirportDto(
+        return new CIPMeetingInAirportDto(
             $details->id()->value(),
             $this->buildServiceInfoDto($details->serviceInfo()),
             $this->buildCityInfo($airportDto->cityId),
             $airportDto,
             $details->flightNumber(),
-            $details->serviceDate()?->format(DATE_ATOM),
+            $details->arrivalDate()?->format(DATE_ATOM),
+            $details->guestIds()->map(fn(GuestId $id) => $id->value()),
+        );
+    }
+
+    private function buildCIPSendoffInAirport(CIPSendoffInAirport $details): CIPSendoffInAirportDto
+    {
+        $airportDto = $this->buildAirportInfo($details->airportId()->value());
+
+        return new CIPSendoffInAirportDto(
+            $details->id()->value(),
+            $this->buildServiceInfoDto($details->serviceInfo()),
+            $this->buildCityInfo($airportDto->cityId),
+            $airportDto,
+            $details->flightNumber(),
+            $details->departureDate()?->format(DATE_ATOM),
             $details->guestIds()->map(fn(GuestId $id) => $id->value()),
         );
     }

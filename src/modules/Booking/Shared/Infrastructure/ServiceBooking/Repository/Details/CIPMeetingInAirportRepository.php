@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Infrastructure\ServiceBooking\Repository\Details;
 
 use DateTimeInterface;
-use Module\Booking\Shared\Domain\Booking\Entity\CIPRoomInAirport;
-use Module\Booking\Shared\Domain\Booking\Repository\Details\CIPRoomInAirportRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Entity\CIPMeetingInAirport;
+use Module\Booking\Shared\Domain\Booking\Repository\Details\CIPMeetingInAirportRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
@@ -14,9 +14,9 @@ use Module\Booking\Shared\Infrastructure\ServiceBooking\Models\Booking;
 use Module\Booking\Shared\Infrastructure\ServiceBooking\Models\Details\Airport;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
-class CIPRoomInAirportRepository extends AbstractDetailsRepository implements CIPRoomInAirportRepositoryInterface
+class CIPMeetingInAirportRepository extends AbstractDetailsRepository implements CIPMeetingInAirportRepositoryInterface
 {
-    public function find(BookingId $bookingId): CIPRoomInAirport
+    public function find(BookingId $bookingId): CIPMeetingInAirport
     {
         $booking = Booking::find($bookingId->value());
         if ($booking === null) {
@@ -26,7 +26,7 @@ class CIPRoomInAirportRepository extends AbstractDetailsRepository implements CI
         return $this->detailsFactory->buildByBooking($booking);
     }
 
-    public function findOrFail(BookingId $bookingId): CIPRoomInAirport
+    public function findOrFail(BookingId $bookingId): CIPMeetingInAirport
     {
         $entity = $this->find($bookingId);
         if ($entity === null) {
@@ -41,12 +41,12 @@ class CIPRoomInAirportRepository extends AbstractDetailsRepository implements CI
         ServiceInfo $serviceInfo,
         int $airportId,
         ?string $flightNumber,
-        ?DateTimeInterface $serviceDate,
+        ?DateTimeInterface $arrivalDate,
         GuestIdCollection $guestIds,
-    ): CIPRoomInAirport {
+    ): CIPMeetingInAirport {
         $model = Airport::create([
             'booking_id' => $bookingId->value(),
-            'date' => $serviceDate,
+            'date' => $arrivalDate,
             'service_id' => $serviceInfo->id(),
             'data' => [
                 'serviceInfo' => $this->serializeServiceInfo($serviceInfo),
@@ -59,10 +59,10 @@ class CIPRoomInAirportRepository extends AbstractDetailsRepository implements CI
         return $this->detailsFactory->build(Airport::find($model->id));
     }
 
-    public function store(CIPRoomInAirport $details): bool
+    public function store(CIPMeetingInAirport $details): bool
     {
         return (bool)Airport::whereId($details->id()->value())->update([
-            'date' => $details->serviceDate(),
+            'date' => $details->arrivalDate(),
             'booking_airport_details.data' => [
                 'serviceInfo' => $this->serializeServiceInfo($details->serviceInfo()),
                 'airportId' => $details->airportId()->value(),

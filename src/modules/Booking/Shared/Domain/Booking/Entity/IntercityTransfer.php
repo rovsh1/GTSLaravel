@@ -3,6 +3,8 @@
 namespace Module\Booking\Shared\Domain\Booking\Entity;
 
 use DateTimeInterface;
+use Module\Booking\Shared\Domain\Booking\Entity\Concerns\HasCarBidCollectionTrait;
+use Module\Booking\Shared\Domain\Booking\Entity\Concerns\HasDepartureDateTrait;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\CarBidCollection;
 use Module\Booking\Shared\Domain\Booking\ValueObject\CityId;
@@ -12,8 +14,8 @@ use Module\Shared\Enum\ServiceTypeEnum;
 
 class IntercityTransfer implements ServiceDetailsInterface
 {
-    use \Module\Booking\Shared\Domain\Booking\Entity\Concerns\HasDepartureDateTrait;
-    use \Module\Booking\Shared\Domain\Booking\Entity\Concerns\HasCarBidCollectionTrait;
+    use HasDepartureDateTrait;
+    use HasCarBidCollectionTrait;
 
     public function __construct(
         private readonly DetailsId $id,

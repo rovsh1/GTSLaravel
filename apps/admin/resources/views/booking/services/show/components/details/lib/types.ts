@@ -77,10 +77,18 @@ export type BookingDayCarTripDetails = BaseBookingDetails & {
   carBids?: CarBid[]
 }
 
-export type BookingCipInAirportDetails = BaseBookingDetails & {
+export type BookingCipMeetingInAirportDetails = BaseBookingDetails & {
   city: CityInfo
   airportInfo: AirportInfo
   flightNumber?: string
-  serviceDate?: string
+  arrivalDate?: string
+  guestIds?: number[]
+}
+
+export type BookingCipSendoffInAirportDetails = BaseBookingDetails & {
+  city: CityInfo
+  airportInfo: AirportInfo
+  flightNumber?: string
+  departureDate?: string
   guestIds?: number[]
 }
