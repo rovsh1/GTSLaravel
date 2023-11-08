@@ -25,6 +25,7 @@ use App\Admin\Support\View\Grid\SearchForm;
 use App\Admin\Support\View\Layout as LayoutContract;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Module\Shared\Enum\SourceEnum;
 
 class OrderController extends Controller
@@ -110,6 +111,34 @@ class OrderController extends Controller
         return response()->json($orders);
     }
 
+    public function bookings(int $orderId): JsonResponse
+    {
+        $bookings = OrderAdapter::getBookings($orderId);
+
+        return response()->json($bookings);
+    }
+
+    public function getAvailableActions(int $orderId): JsonResponse
+    {
+        return response()->json(
+            OrderAdapter::getAvailableActions($orderId)
+        );
+    }
+
+    public function getStatuses(): JsonResponse
+    {
+        return response()->json(
+            OrderAdapter::getStatuses()
+        );
+    }
+
+    public function updateStatus(Request $request, int $id): JsonResponse
+    {
+        OrderAdapter::updateStatus($id, $request->getStatus());
+
+        return response()->json();
+    }
+
     private function prepareGridQuery(Builder $query, array $searchCriteria): Builder
     {
         return $query
@@ -148,7 +177,7 @@ class OrderController extends Controller
                 'label' => __('label.client'),
                 'emptyItem' => '',
                 'items' => Client::orderBy('name')->get(),
-                'required'=> true,
+                'required' => true,
             ])
             ->hidden('legal_id', [
                 'label' => 'Юр. лицо',
