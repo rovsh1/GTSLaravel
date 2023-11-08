@@ -19,6 +19,7 @@ use Module\Booking\Moderation\Application\Dto\StatusDto;
  * @method static StatusDto[] getStatuses()
  * @method static OrderAvailableActionsDto getAvailableActions(int $orderId)
  * @method static array getBookings(int $orderId)
+ * @method static void updateStatus(int $orderId, int $status)
  **/
 class OrderAdapter extends Facade
 {

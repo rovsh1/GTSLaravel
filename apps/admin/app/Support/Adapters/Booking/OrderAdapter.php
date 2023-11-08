@@ -18,6 +18,7 @@ use Module\Booking\Moderation\Application\UseCase\Order\Guest\Add;
 use Module\Booking\Moderation\Application\UseCase\Order\Guest\Delete;
 use Module\Booking\Moderation\Application\UseCase\Order\Guest\Get;
 use Module\Booking\Moderation\Application\UseCase\Order\Guest\Update;
+use Module\Booking\Moderation\Application\UseCase\Order\UpdateStatus;
 
 class OrderAdapter
 {
@@ -94,5 +95,10 @@ class OrderAdapter
     public function getBookings(int $orderId): array
     {
         return app(GetOrderBookings::class)->execute($orderId);
+    }
+
+    public function updateStatus(int $orderId, int $status): void
+    {
+        app(UpdateStatus::class)->execute($orderId, $status);
     }
 }

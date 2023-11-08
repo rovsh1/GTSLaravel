@@ -13,6 +13,7 @@ use Module\Booking\Shared\Domain\Order\ValueObject\LegalId;
 use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
 use Module\Booking\Shared\Domain\Shared\ValueObject\CreatorId;
 use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
+use Module\Shared\Enum\Booking\OrderStatusEnum;
 use Module\Shared\Enum\CurrencyEnum;
 use Module\Shared\Enum\SourceEnum;
 use Sdk\Module\Foundation\Support\EntityFactory\AbstractEntityFactory;
@@ -31,6 +32,7 @@ class OrderFactory extends AbstractEntityFactory
             CurrencyEnum::from($data['currency']),
             new ClientId($data['client_id']),
             $legalId !== null ? new LegalId($legalId) : null,
+            OrderStatusEnum::from($data['status']),
             new CarbonImmutable($data['created_at']),
             new GuestIdCollection($guestIds),
             new Context(

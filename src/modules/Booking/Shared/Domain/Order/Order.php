@@ -12,6 +12,7 @@ use Module\Booking\Shared\Domain\Order\ValueObject\LegalId;
 use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
 use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Shared\Contracts\Domain\EntityInterface;
+use Module\Shared\Enum\Booking\OrderStatusEnum;
 use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
@@ -22,6 +23,7 @@ final class Order extends AbstractAggregateRoot implements EntityInterface
         private CurrencyEnum $currency,
         private ClientId $clientId,
         private ?LegalId $legalId,
+        private OrderStatusEnum $status,
         private readonly CarbonImmutable $createdAt,
         private readonly GuestIdCollection $guestIds,
         private readonly Context $context
@@ -42,6 +44,11 @@ final class Order extends AbstractAggregateRoot implements EntityInterface
     public function clientId(): ClientId
     {
         return $this->clientId;
+    }
+
+    public function status(): OrderStatusEnum
+    {
+        return $this->status;
     }
 
     public function setClientId(ClientId $clientId): void
