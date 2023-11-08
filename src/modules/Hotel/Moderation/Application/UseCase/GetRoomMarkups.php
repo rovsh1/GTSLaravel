@@ -4,19 +4,24 @@ declare(strict_types=1);
 
 namespace Module\Hotel\Moderation\Application\UseCase;
 
-use Module\Hotel\Moderation\Application\Query\GetRoomMarkups as Query;
 use Module\Hotel\Moderation\Application\Response\RoomMarkupsDto;
-use Sdk\Module\Contracts\Bus\QueryBusInterface;
+use Module\Hotel\Moderation\Domain\Hotel\Repository\RoomMarkupSettingsRepositoryInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class GetRoomMarkups implements UseCaseInterface
 {
     public function __construct(
-        private readonly QueryBusInterface $queryBus,
-    ) {}
+        private readonly RoomMarkupSettingsRepositoryInterface $markupSettingsRepository
+    ) {
+    }
 
     public function execute(int $roomId): ?RoomMarkupsDto
     {
-        return $this->queryBus->execute(new Query($roomId));
+        $markup = $this->markupSettingsRepository->get($roomId);
+        if ($markup === null) {
+            return null;
+        }
+
+        return new RoomMarkupsDto($markup->discount()->value());
     }
 }
