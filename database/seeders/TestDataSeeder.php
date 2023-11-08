@@ -272,21 +272,31 @@ class TestDataSeeder extends Seeder
         $service1Id = DB::table('supplier_services')->insertGetId([
             'supplier_id' => $supplierId,
             'title' => 'CIP Встреча Аэропорт Ташкент',
-            'type' => ServiceTypeEnum::CIP_ROOM_IN_AIRPORT,
+            'type' => ServiceTypeEnum::CIP_MEETING_IN_AIRPORT,
             'data' => json_encode(['airportId' => 1])
         ]);
 
         $service2Id = DB::table('supplier_services')->insertGetId([
             'supplier_id' => $supplierId,
             'title' => 'CIP Проводы Аэропорт Ташкент',
-            'type' => ServiceTypeEnum::CIP_ROOM_IN_AIRPORT,
+            'type' => ServiceTypeEnum::CIP_SENDOFF_IN_AIRPORT,
             'data' => json_encode(['airportId' => 1])
         ]);
 
-        $contractId = DB::table('supplier_contracts')->insertGetId([
+        $contract1Id = DB::table('supplier_contracts')->insertGetId([
             'supplier_id' => $supplierId,
             'status' => StatusEnum::ACTIVE,
-            'service_type' => ServiceTypeEnum::CIP_ROOM_IN_AIRPORT,
+            'service_type' => ServiceTypeEnum::CIP_MEETING_IN_AIRPORT,
+            'date_start' => '2023-01-01',
+            'date_end' => '2023-12-31',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        $contract2Id = DB::table('supplier_contracts')->insertGetId([
+            'supplier_id' => $supplierId,
+            'status' => StatusEnum::ACTIVE,
+            'service_type' => ServiceTypeEnum::CIP_SENDOFF_IN_AIRPORT,
             'date_start' => '2023-01-01',
             'date_end' => '2023-12-31',
             'created_at' => now(),
@@ -294,8 +304,8 @@ class TestDataSeeder extends Seeder
         ]);
 
         DB::table('supplier_service_contracts')->insert([
-            ['contract_id' => $contractId, 'service_id' => $service1Id],
-            ['contract_id' => $contractId, 'service_id' => $service2Id],
+            ['contract_id' => $contract1Id, 'service_id' => $service1Id],
+            ['contract_id' => $contract2Id, 'service_id' => $service2Id],
         ]);
 
         DB::table('supplier_airport_prices')->insert([

@@ -7,7 +7,7 @@ namespace Module\Booking\Moderation\Application\Dto\ServiceBooking;
 use Module\Shared\Dto\AirportInfoDto;
 use Module\Shared\Dto\CityInfoDto;
 
-class CIPRoomInAirportDto implements ServiceDetailsDtoInterface
+class CIPMeetingInAirportDto implements ServiceDetailsDtoInterface
 {
     public function __construct(
         public readonly int $id,
@@ -15,7 +15,7 @@ class CIPRoomInAirportDto implements ServiceDetailsDtoInterface
         public readonly CityInfoDto $city,
         public readonly AirportInfoDto $airportInfo,
         public readonly ?string $flightNumber,
-        public readonly ?string $serviceDate,
+        public readonly ?string $arrivalDate,
         public readonly array $guestIds,
     ) {}
 }

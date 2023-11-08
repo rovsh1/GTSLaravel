@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Domain\Booking\Entity;
 
+use Module\Booking\Shared\Domain\Booking\Entity\Concerns\HasGuestIdCollectionTrait;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomBookingDetails;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomBookingId;
@@ -13,7 +14,7 @@ use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
 
 final class HotelRoomBooking
 {
-    use \Module\Booking\Shared\Domain\Booking\Entity\Concerns\HasGuestIdCollectionTrait;
+    use HasGuestIdCollectionTrait;
 
     public function __construct(
         private readonly RoomBookingId $id,

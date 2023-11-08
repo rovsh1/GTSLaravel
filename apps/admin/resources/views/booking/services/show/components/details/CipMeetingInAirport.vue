@@ -5,7 +5,7 @@ import { computed, onMounted, ref, unref, watch } from 'vue'
 import { MaybeRef } from '@vueuse/core'
 import { z } from 'zod'
 
-import { BookingCipInAirportDetails } from '~resources/views/booking/services/show/components/details/lib/types'
+import { BookingCipMeetingInAirportDetails } from '~resources/views/booking/services/show/components/details/lib/types'
 import { useBookingStore } from '~resources/views/booking/services/show/store/booking'
 import GuestModal from '~resources/views/booking/shared/components/GuestModal.vue'
 import GuestsTable from '~resources/views/booking/shared/components/GuestsTable.vue'
@@ -36,7 +36,7 @@ const orderStore = useOrderStore()
 const orderId = computed(() => orderStore.order.id)
 const orderGuests = computed<Guest[]>(() => orderStore.guests || [])
 
-const bookingDetails = computed<BookingCipInAirportDetails | null>(() => bookingStore.booking?.details || null)
+const bookingDetails = computed<BookingCipMeetingInAirportDetails | null>(() => bookingStore.booking?.details || null)
 
 const bookingGuestsIds = computed<number[]>(() => bookingDetails.value?.guestIds || [])
 
@@ -154,9 +154,9 @@ const handleChangeDetails = async (field: string, value: any) => {
             <th>Дата</th>
             <td>
               <EditableDateInput
-                :value="bookingDetails?.serviceDate"
+                :value="bookingDetails?.arrivalDate"
                 :can-edit="isEditableStatus"
-                @change="value => handleChangeDetails('serviceDate', value)"
+                @change="value => handleChangeDetails('arrivalDate', value)"
               />
             </td>
           </tr>
@@ -164,10 +164,10 @@ const handleChangeDetails = async (field: string, value: any) => {
             <th>Время</th>
             <td>
               <EditableTimeInput
-                :value="bookingDetails?.serviceDate"
-                :can-edit="isEditableStatus && !!bookingDetails?.serviceDate"
+                :value="bookingDetails?.arrivalDate"
+                :can-edit="isEditableStatus && !!bookingDetails?.arrivalDate"
                 type="time"
-                @change="value => handleChangeDetails('serviceDate', value)"
+                @change="value => handleChangeDetails('arrivalDate', value)"
               />
             </td>
           </tr>

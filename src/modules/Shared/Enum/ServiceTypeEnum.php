@@ -5,7 +5,8 @@ namespace Module\Shared\Enum;
 enum ServiceTypeEnum: int
 {
     case CAR_RENT_WITH_DRIVER = 3;
-    case CIP_ROOM_IN_AIRPORT = 2;
+    case CIP_MEETING_IN_AIRPORT = 2;
+    case CIP_SENDOFF_IN_AIRPORT = 11;
     case DAY_CAR_TRIP = 10;
     case HOTEL_BOOKING = 1;
     case INTERCITY_TRANSFER = 9;
@@ -31,7 +32,8 @@ enum ServiceTypeEnum: int
     public static function getAirportCases(): array
     {
         return [
-            self::CIP_ROOM_IN_AIRPORT
+            self::CIP_MEETING_IN_AIRPORT,
+            self::CIP_SENDOFF_IN_AIRPORT,
         ];
     }
 

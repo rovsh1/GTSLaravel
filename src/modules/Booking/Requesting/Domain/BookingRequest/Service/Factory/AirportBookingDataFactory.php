@@ -6,11 +6,15 @@ use Module\Booking\Requesting\Domain\BookingRequest\Service\Dto\AirportBooking\A
 use Module\Booking\Requesting\Domain\BookingRequest\Service\Dto\AirportBooking\ContractDto;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\Dto\GuestDto;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\Dto\ServiceDto;
+use Module\Booking\Requesting\Domain\BookingRequest\Service\TemplateData\AirportBooking\BookingRequest;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\TemplateDataInterface;
 use Module\Booking\Requesting\Domain\BookingRequest\ValueObject\RequestTypeEnum;
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
-use Module\Booking\Shared\Domain\Booking\Repository\Details\CIPRoomInAirportRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Entity\CIPMeetingInAirport;
+use Module\Booking\Shared\Domain\Booking\Entity\CIPSendoffInAirport;
+use Module\Booking\Shared\Domain\Booking\Factory\DetailsRepositoryFactory;
+use Module\Booking\Shared\Domain\Booking\Repository\Details\CIPMeetingInAirportRepositoryInterface;
 use Module\Booking\Shared\Domain\Guest\Guest;
 use Module\Booking\Shared\Domain\Guest\Repository\GuestRepositoryInterface;
 use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
@@ -25,7 +29,7 @@ class AirportBookingDataFactory
     private array $countryNamesIndexedId;
 
     public function __construct(
-        private readonly CIPRoomInAirportRepositoryInterface $detailsRepository,
+        private readonly DetailsRepositoryFactory $detailsRepositoryFactory,
         private readonly GuestRepositoryInterface $guestRepository,
         private readonly SupplierAdapterInterface $supplierAdapter,
         private readonly TranslatorInterface $translator,
@@ -37,7 +41,8 @@ class AirportBookingDataFactory
 
     public function build(Booking $booking, RequestTypeEnum $requestType): TemplateDataInterface
     {
-        $bookingDetails = $this->detailsRepository->findOrFail($booking->id());
+        /** @var CIPMeetingInAirport|CIPSendoffInAirport $bookingDetails */
+        $bookingDetails = $this->detailsRepositoryFactory->build($booking)->findOrFail($booking->id());
         $guests = $this->buildGuests($bookingDetails->guestIds());
 
         $supplier = $this->supplierAdapter->find($bookingDetails->serviceInfo()->supplierId());
@@ -60,16 +65,18 @@ class AirportBookingDataFactory
             $bookingDetails->serviceType()
         );
 
+        $date = $bookingDetails instanceof CIPMeetingInAirport ? $bookingDetails->arrivalDate() : $bookingDetails->departureDate();
+
         return match ($requestType) {
             RequestTypeEnum::BOOKING,
             RequestTypeEnum::CHANGE,
-            RequestTypeEnum::CANCEL => new \Module\Booking\Requesting\Domain\BookingRequest\Service\TemplateData\AirportBooking\BookingRequest(
+            RequestTypeEnum::CANCEL => new BookingRequest(
                 $airportDto,
                 $contractDto,
                 $serviceDto,
                 $guests,
                 $bookingDetails->flightNumber(),
-                $bookingDetails->serviceDate()
+                $date
             ),
         };
     }

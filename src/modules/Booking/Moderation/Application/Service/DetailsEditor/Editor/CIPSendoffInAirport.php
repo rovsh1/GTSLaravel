@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Application\Service\DetailsEditor\Editor;
 
 use Module\Booking\Moderation\Application\Service\DetailsEditor\EditorInterface;
-use Module\Booking\Shared\Domain\Booking\Entity\CIPRoomInAirport as Entity;
-use Module\Booking\Shared\Domain\Booking\Repository\Details\CIPRoomInAirportRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Entity\CIPSendoffInAirport as Entity;
+use Module\Booking\Shared\Domain\Booking\Repository\Details\CIPSendoffInAirportRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Supplier\Infrastructure\Models\Service as InfrastructureSupplierService;
 
-class CIPRoomInAirport extends AbstractEditor implements EditorInterface
+class CIPSendoffInAirport extends AbstractEditor implements EditorInterface
 {
     public function __construct(
-        private readonly CIPRoomInAirportRepositoryInterface $detailsRepository,
+        private readonly CIPSendoffInAirportRepositoryInterface $detailsRepository,
     ) {}
 
     public function create(BookingId $bookingId, ServiceId $serviceId, array $detailsData): Entity
@@ -30,7 +30,7 @@ class CIPRoomInAirport extends AbstractEditor implements EditorInterface
             $serviceInfo,
             (int)$supplierService->data['airportId'],
             $detailsData['flightNumber'] ?? null,
-            $detailsData['serviceDate'] ?? null,
+            $detailsData['departureDate'] ?? null,
             new GuestIdCollection([])
         );
     }

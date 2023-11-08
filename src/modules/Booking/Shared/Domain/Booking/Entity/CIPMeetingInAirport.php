@@ -3,6 +3,9 @@
 namespace Module\Booking\Shared\Domain\Booking\Entity;
 
 use DateTimeInterface;
+use Module\Booking\Shared\Domain\Booking\Entity\Concerns\HasArrivalDateTrait;
+use Module\Booking\Shared\Domain\Booking\Entity\Concerns\HasFlightNumberTrait;
+use Module\Booking\Shared\Domain\Booking\Entity\Concerns\HasGuestIdCollectionTrait;
 use Module\Booking\Shared\Domain\Booking\ValueObject\AirportId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\DetailsId;
@@ -10,10 +13,11 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Shared\Enum\ServiceTypeEnum;
 
-class CIPRoomInAirport implements ServiceDetailsInterface
+class CIPMeetingInAirport implements ServiceDetailsInterface
 {
-    use \Module\Booking\Shared\Domain\Booking\Entity\Concerns\HasFlightNumberTrait;
-    use \Module\Booking\Shared\Domain\Booking\Entity\Concerns\HasGuestIdCollectionTrait;
+    use HasFlightNumberTrait;
+    use HasGuestIdCollectionTrait;
+    use HasArrivalDateTrait;
 
     public function __construct(
         private readonly DetailsId $id,
@@ -21,13 +25,13 @@ class CIPRoomInAirport implements ServiceDetailsInterface
         private readonly ServiceInfo $serviceInfo,
         private readonly AirportId $airportId,
         private ?string $flightNumber,
-        private ?DateTimeInterface $serviceDate,
+        private ?DateTimeInterface $arrivalDate,
         private GuestIdCollection $guestIds,
     ) {}
 
     public function serviceType(): ServiceTypeEnum
     {
-        return ServiceTypeEnum::CIP_ROOM_IN_AIRPORT;
+        return ServiceTypeEnum::CIP_MEETING_IN_AIRPORT;
     }
 
     public function serviceInfo(): ServiceInfo
@@ -48,15 +52,5 @@ class CIPRoomInAirport implements ServiceDetailsInterface
     public function airportId(): AirportId
     {
         return $this->airportId;
-    }
-
-    public function setServiceDate(?DateTimeInterface $serviceDate): void
-    {
-        $this->serviceDate = $serviceDate;
-    }
-
-    public function serviceDate(): ?DateTimeInterface
-    {
-        return $this->serviceDate;
     }
 }

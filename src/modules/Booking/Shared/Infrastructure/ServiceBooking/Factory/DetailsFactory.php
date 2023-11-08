@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Infrastructure\ServiceBooking\Factory;
 
 use Module\Booking\Shared\Domain\Booking\Entity\CarRentWithDriver;
-use Module\Booking\Shared\Domain\Booking\Entity\CIPRoomInAirport;
+use Module\Booking\Shared\Domain\Booking\Entity\CIPMeetingInAirport;
+use Module\Booking\Shared\Domain\Booking\Entity\CIPSendoffInAirport;
 use Module\Booking\Shared\Domain\Booking\Entity\DayCarTrip;
 use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
 use Module\Booking\Shared\Domain\Booking\Entity\IntercityTransfer;
@@ -42,7 +43,8 @@ class DetailsFactory
         $model = match ($booking->service_type) {
             ServiceTypeEnum::HOTEL_BOOKING => $booking->hotelDetails,
             ServiceTypeEnum::OTHER_SERVICE => $booking->otherDetails,
-            ServiceTypeEnum::CIP_ROOM_IN_AIRPORT => $booking->airportDetails,
+            ServiceTypeEnum::CIP_MEETING_IN_AIRPORT => $booking->airportDetails,
+            ServiceTypeEnum::CIP_SENDOFF_IN_AIRPORT => $booking->airportDetails,
             default => $booking->transferDetails
         };
 
@@ -53,7 +55,8 @@ class DetailsFactory
     {
         return match ($model->serviceType()) {
             ServiceTypeEnum::HOTEL_BOOKING => $this->buildHotelBookingDetails($model),
-            ServiceTypeEnum::CIP_ROOM_IN_AIRPORT => $this->buildAirportDetails($model),
+            ServiceTypeEnum::CIP_MEETING_IN_AIRPORT => $this->buildCIPMeetingAirportDetails($model),
+            ServiceTypeEnum::CIP_SENDOFF_IN_AIRPORT => $this->buildCIPSendoffAirportDetails($model),
             ServiceTypeEnum::CAR_RENT_WITH_DRIVER => $this->buildCarRentWithDriverDetails($model),
             ServiceTypeEnum::TRANSFER_TO_AIRPORT => $this->buildTransferToAirportDetails($model),
             ServiceTypeEnum::TRANSFER_FROM_AIRPORT => $this->buildTransferFromAirportDetails($model),
@@ -83,17 +86,32 @@ class DetailsFactory
         );
     }
 
-    private function buildAirportDetails(Airport $details): CIPRoomInAirport
+    private function buildCIPMeetingAirportDetails(Airport $details): CIPMeetingInAirport
     {
         $detailsData = $details->data;
 
-        return new CIPRoomInAirport(
+        return new CIPMeetingInAirport(
             id: new DetailsId($details->id),
             bookingId: new BookingId($details->bookingId()),
             serviceInfo: $this->buildServiceInfo($detailsData['serviceInfo']),
             airportId: new AirportId($detailsData['airportId']),
             flightNumber: $detailsData['flightNumber'],
-            serviceDate: $details->date,
+            arrivalDate: $details->date,
+            guestIds: GuestIdCollection::fromData($detailsData['guestIds']),
+        );
+    }
+
+    private function buildCIPSendoffAirportDetails(Airport $details): CIPSendoffInAirport
+    {
+        $detailsData = $details->data;
+
+        return new CIPSendoffInAirport(
+            id: new DetailsId($details->id),
+            bookingId: new BookingId($details->bookingId()),
+            serviceInfo: $this->buildServiceInfo($detailsData['serviceInfo']),
+            airportId: new AirportId($detailsData['airportId']),
+            flightNumber: $detailsData['flightNumber'],
+            departureDate: $details->date,
             guestIds: GuestIdCollection::fromData($detailsData['guestIds']),
         );
     }

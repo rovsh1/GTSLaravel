@@ -2,6 +2,10 @@
 
 namespace Module\Booking\Shared\Domain\Booking\Entity;
 
+use Module\Booking\Shared\Domain\Booking\Entity\Concerns\HasBookingPeriodTrait;
+use Module\Booking\Shared\Domain\Booking\Entity\Concerns\HasCarBidCollectionTrait;
+use Module\Booking\Shared\Domain\Booking\Entity\Concerns\HasMeetingAddressTrait;
+use Module\Booking\Shared\Domain\Booking\Entity\Concerns\HasMeetingTabletTrait;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPeriod;
 use Module\Booking\Shared\Domain\Booking\ValueObject\CarBidCollection;
@@ -12,10 +16,10 @@ use Module\Shared\Enum\ServiceTypeEnum;
 
 class CarRentWithDriver implements ServiceDetailsInterface
 {
-    use \Module\Booking\Shared\Domain\Booking\Entity\Concerns\HasBookingPeriodTrait;
-    use \Module\Booking\Shared\Domain\Booking\Entity\Concerns\HasCarBidCollectionTrait;
-    use \Module\Booking\Shared\Domain\Booking\Entity\Concerns\HasMeetingTabletTrait;
-    use \Module\Booking\Shared\Domain\Booking\Entity\Concerns\HasMeetingAddressTrait;
+    use HasBookingPeriodTrait;
+    use HasCarBidCollectionTrait;
+    use HasMeetingTabletTrait;
+    use HasMeetingAddressTrait;
 
     public function __construct(
         private readonly DetailsId $id,
