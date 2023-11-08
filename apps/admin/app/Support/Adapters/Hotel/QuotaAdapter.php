@@ -4,14 +4,14 @@ namespace App\Admin\Support\Adapters\Hotel;
 
 use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
-use Module\Catalog\Application\Admin\UseCase\RoomQuota\CloseRoomQuota;
-use Module\Catalog\Application\Admin\UseCase\RoomQuota\GetAvailableQuotas;
-use Module\Catalog\Application\Admin\UseCase\RoomQuota\GetQuotas;
-use Module\Catalog\Application\Admin\UseCase\RoomQuota\GetSoldQuotas;
-use Module\Catalog\Application\Admin\UseCase\RoomQuota\GetStoppedQuotas;
-use Module\Catalog\Application\Admin\UseCase\RoomQuota\OpenRoomQuota;
-use Module\Catalog\Application\Admin\UseCase\RoomQuota\ResetRoomQuota;
-use Module\Catalog\Application\Admin\UseCase\RoomQuota\UpdateRoomQuota;
+use Module\Hotel\Moderation\Application\Admin\UseCase\RoomQuota\CloseRoomQuota;
+use Module\Hotel\Moderation\Application\Admin\UseCase\RoomQuota\GetAvailableQuotas;
+use Module\Hotel\Moderation\Application\Admin\UseCase\RoomQuota\GetQuotas;
+use Module\Hotel\Moderation\Application\Admin\UseCase\RoomQuota\GetSoldQuotas;
+use Module\Hotel\Moderation\Application\Admin\UseCase\RoomQuota\GetStoppedQuotas;
+use Module\Hotel\Moderation\Application\Admin\UseCase\RoomQuota\OpenRoomQuota;
+use Module\Hotel\Moderation\Application\Admin\UseCase\RoomQuota\ResetRoomQuota;
+use Module\Hotel\Moderation\Application\Admin\UseCase\RoomQuota\UpdateRoomQuota;
 
 class QuotaAdapter
 {

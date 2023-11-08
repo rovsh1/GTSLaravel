@@ -10,14 +10,15 @@ class ModuleServiceProvider extends ServiceProvider
 {
     private array $modules = [
         'Administrator' => 'Administrator',
-        'Catalog' => 'Catalog',
+        'HotelModeration' => 'Hotel/Moderation',
+//        'HotelQuotation' => 'Hotel/Quotation',
+        'HotelPricing' => 'Hotel/Pricing',
         'Client' => 'Client',
         'BookingModeration' => 'Booking/Moderation',
         'BookingPricing' => 'Booking/Pricing',
         'BookingRequesting' => 'Booking/Requesting',
         'BookingShared' => 'Booking/Shared',
         'Supplier' => 'Supplier',
-        'Pricing' => 'Pricing',
         'Logging' => 'Generic/Logging',
         'CurrencyRate' => 'Generic/CurrencyRate',
         'Notification' => 'Generic/Notification',

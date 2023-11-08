@@ -3,9 +3,9 @@
 namespace Module\Booking\Pricing\Infrastructure\Adapter;
 
 use Module\Booking\Pricing\Domain\Booking\Adapter\HotelPricingAdapterInterface;
-use Module\Pricing\Application\Dto\CalculatedHotelRoomsPricesDto;
-use Module\Pricing\Application\RequestDto\CalculateHotelPriceRequestDto;
-use Module\Pricing\Application\UseCase\CalculateHotelPrice;
+use Module\Hotel\Pricing\Application\Dto\CalculatedHotelRoomsPricesDto;
+use Module\Hotel\Pricing\Application\RequestDto\CalculateHotelPriceRequestDto;
+use Module\Hotel\Pricing\Application\UseCase\CalculateHotelPrice;
 
 class HotelPricingAdapter implements HotelPricingAdapterInterface
 {

@@ -11,7 +11,7 @@ use Module\Shared\Contracts\Support\SerializableDataInterface;
 /**
  * @extends Collection<int, DailyMarkupOption>
  *
- * @see \Module\Catalog\Domain\Hotel\ValueObject\MarkupSettings\DailyMarkupCollection
+ * @see \Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings\DailyMarkupCollection
  */
 final class DailyMarkupCollection extends Collection implements ValueObjectInterface, SerializableDataInterface
 {

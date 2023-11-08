@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Adapters\Hotel;
 
-use Module\Catalog\Application\Admin\Enums\UpdateMarkupSettingsActionEnum;
-use Module\Catalog\Application\Admin\Response\MarkupSettingsDto;
-use Module\Catalog\Application\Admin\Response\RoomMarkupsDto;
-use Module\Catalog\Application\Admin\UseCase\GetMarkupSettings;
-use Module\Catalog\Application\Admin\UseCase\GetRoomMarkups;
-use Module\Catalog\Application\Admin\UseCase\MarkupSettings\UpdateMarkupSettingsValue;
-use Module\Catalog\Application\Admin\UseCase\MarkupSettings\UpdateRoomMarkupSettings;
+use Module\Hotel\Moderation\Application\Admin\Enums\UpdateMarkupSettingsActionEnum;
+use Module\Hotel\Moderation\Application\Admin\Response\MarkupSettingsDto;
+use Module\Hotel\Moderation\Application\Admin\Response\RoomMarkupsDto;
+use Module\Hotel\Moderation\Application\Admin\UseCase\GetMarkupSettings;
+use Module\Hotel\Moderation\Application\Admin\UseCase\GetRoomMarkups;
+use Module\Hotel\Moderation\Application\Admin\UseCase\MarkupSettings\UpdateMarkupSettingsValue;
+use Module\Hotel\Moderation\Application\Admin\UseCase\MarkupSettings\UpdateRoomMarkupSettings;
 
 class MarkupSettingsAdapter
 {

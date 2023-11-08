@@ -10,7 +10,7 @@ use Module\Booking\Shared\Domain\Booking\Repository\Details\HotelBookingReposito
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPriceItem;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPrices;
-use Module\Pricing\Application\Dto\CalculatedHotelRoomsPricesDto;
+use Module\Hotel\Pricing\Application\Dto\CalculatedHotelRoomsPricesDto;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 
 class PriceCalculator

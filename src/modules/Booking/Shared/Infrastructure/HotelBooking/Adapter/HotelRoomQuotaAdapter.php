@@ -4,8 +4,8 @@ namespace Module\Booking\Shared\Infrastructure\HotelBooking\Adapter;
 
 use Carbon\CarbonPeriod;
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelRoomQuotaAdapterInterface;
-use Module\Catalog\Application\Admin\Quota\GetAvailable;
-use Module\Catalog\Application\Admin\Response\RoomDto;
+use Module\Hotel\Moderation\Application\Admin\Quota\GetAvailable;
+use Module\Hotel\Moderation\Application\Admin\Response\RoomDto;
 
 class HotelRoomQuotaAdapter implements HotelRoomQuotaAdapterInterface
 {

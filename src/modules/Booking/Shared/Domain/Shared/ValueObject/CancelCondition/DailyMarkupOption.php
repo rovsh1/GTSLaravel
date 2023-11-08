@@ -9,7 +9,7 @@ use Module\Shared\Contracts\Support\SerializableDataInterface;
 use Module\Shared\ValueObject\Percent;
 
 /**
- * @see \Module\Catalog\Domain\Hotel\ValueObject\MarkupSettings\DailyMarkupOption
+ * @see \Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings\DailyMarkupOption
  */
 final class DailyMarkupOption implements ValueObjectInterface, SerializableDataInterface
 {

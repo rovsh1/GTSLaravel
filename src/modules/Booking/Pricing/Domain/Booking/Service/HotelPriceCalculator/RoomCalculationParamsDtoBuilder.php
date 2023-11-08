@@ -5,7 +5,7 @@ namespace Module\Booking\Pricing\Domain\Booking\Service\HotelPriceCalculator;
 use Module\Booking\Shared\Domain\Booking\Entity\HotelRoomBooking;
 use Module\Booking\Shared\Domain\Booking\Repository\RoomBookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomBookingId;
-use Module\Pricing\Application\Dto\RoomCalculationParamsDto;
+use Module\Hotel\Pricing\Application\Dto\RoomCalculationParamsDto;
 
 class RoomCalculationParamsDtoBuilder
 {

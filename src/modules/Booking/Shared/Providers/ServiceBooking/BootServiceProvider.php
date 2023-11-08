@@ -2,7 +2,6 @@
 
 namespace Module\Booking\Shared\Providers\ServiceBooking;
 
-use Module\Booking\Infrastructure\ServiceBooking\Repository\Details as Infrastructure;
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\Details\CarRentWithDriverRepositoryInterface;
@@ -17,63 +16,38 @@ use Module\Booking\Shared\Domain\Booking\Repository\Details\TransferToAirportRep
 use Module\Booking\Shared\Domain\Booking\Repository\Details\TransferToRailwayRepositoryInterface;
 use Module\Booking\Shared\Infrastructure\ServiceBooking\Adapter\SupplierAdapter;
 use Module\Booking\Shared\Infrastructure\ServiceBooking\Repository\BookingRepository;
+use Module\Booking\Shared\Infrastructure\ServiceBooking\Repository\Details\CarRentWithDriverRepository;
+use Module\Booking\Shared\Infrastructure\ServiceBooking\Repository\Details\CIPRoomInAirportRepository;
+use Module\Booking\Shared\Infrastructure\ServiceBooking\Repository\Details\DayCarTripRepository;
+use Module\Booking\Shared\Infrastructure\ServiceBooking\Repository\Details\HotelBookingRepository;
+use Module\Booking\Shared\Infrastructure\ServiceBooking\Repository\Details\IntercityTransferRepository;
+use Module\Booking\Shared\Infrastructure\ServiceBooking\Repository\Details\OtherServiceRepository;
+use Module\Booking\Shared\Infrastructure\ServiceBooking\Repository\Details\TransferFromAirportRepository;
+use Module\Booking\Shared\Infrastructure\ServiceBooking\Repository\Details\TransferFromRailwayRepository;
+use Module\Booking\Shared\Infrastructure\ServiceBooking\Repository\Details\TransferToAirportRepository;
+use Module\Booking\Shared\Infrastructure\ServiceBooking\Repository\Details\TransferToRailwayRepository;
 use Sdk\Module\Support\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function register(): void
     {
         $this->app->register(EventServiceProvider::class);
+    }
 
-        $this->app->singleton(
-            BookingRepositoryInterface::class,
-            BookingRepository::class
-        );
-
-        $this->app->singleton(
-            CIPRoomInAirportRepositoryInterface::class,
-            \Module\Booking\Shared\Infrastructure\ServiceBooking\Repository\Details\CIPRoomInAirportRepository::class
-        );
-        $this->app->singleton(
-            TransferToAirportRepositoryInterface::class,
-            \Module\Booking\Shared\Infrastructure\ServiceBooking\Repository\Details\TransferToAirportRepository::class
-        );
-        $this->app->singleton(
-            TransferFromAirportRepositoryInterface::class,
-            \Module\Booking\Shared\Infrastructure\ServiceBooking\Repository\Details\TransferFromAirportRepository::class
-        );
-        $this->app->singleton(
-            TransferToRailwayRepositoryInterface::class,
-            \Module\Booking\Shared\Infrastructure\ServiceBooking\Repository\Details\TransferToRailwayRepository::class
-        );
-        $this->app->singleton(
-            TransferFromRailwayRepositoryInterface::class,
-            \Module\Booking\Shared\Infrastructure\ServiceBooking\Repository\Details\TransferFromRailwayRepository::class
-        );
-        $this->app->singleton(
-            HotelBookingRepositoryInterface::class,
-            \Module\Booking\Shared\Infrastructure\ServiceBooking\Repository\Details\HotelBookingRepository::class
-        );
-        $this->app->singleton(
-            CarRentWithDriverRepositoryInterface::class,
-            \Module\Booking\Shared\Infrastructure\ServiceBooking\Repository\Details\CarRentWithDriverRepository::class
-        );
-        $this->app->singleton(
-            IntercityTransferRepositoryInterface::class,
-            \Module\Booking\Shared\Infrastructure\ServiceBooking\Repository\Details\IntercityTransferRepository::class
-        );
-        $this->app->singleton(
-            DayCarTripRepositoryInterface::class,
-            \Module\Booking\Shared\Infrastructure\ServiceBooking\Repository\Details\DayCarTripRepository::class
-        );
-        $this->app->singleton(
-            OtherServiceRepositoryInterface::class,
-            \Module\Booking\Shared\Infrastructure\ServiceBooking\Repository\Details\OtherServiceRepository::class
-        );
-
-        $this->app->singleton(
-            SupplierAdapterInterface::class,
-            SupplierAdapter::class
-        );
+    public function boot(): void
+    {
+        $this->app->singleton(BookingRepositoryInterface::class, BookingRepository::class);
+        $this->app->singleton(CIPRoomInAirportRepositoryInterface::class, CIPRoomInAirportRepository::class);
+        $this->app->singleton(TransferToAirportRepositoryInterface::class, TransferToAirportRepository::class);
+        $this->app->singleton(TransferFromAirportRepositoryInterface::class, TransferFromAirportRepository::class);
+        $this->app->singleton(TransferToRailwayRepositoryInterface::class, TransferToRailwayRepository::class);
+        $this->app->singleton(TransferFromRailwayRepositoryInterface::class, TransferFromRailwayRepository::class);
+        $this->app->singleton(HotelBookingRepositoryInterface::class, HotelBookingRepository::class);
+        $this->app->singleton(CarRentWithDriverRepositoryInterface::class, CarRentWithDriverRepository::class);
+        $this->app->singleton(IntercityTransferRepositoryInterface::class, IntercityTransferRepository::class);
+        $this->app->singleton(DayCarTripRepositoryInterface::class, DayCarTripRepository::class);
+        $this->app->singleton(OtherServiceRepositoryInterface::class, OtherServiceRepository::class);
+        $this->app->singleton(SupplierAdapterInterface::class, SupplierAdapter::class);
     }
 }

@@ -4,15 +4,15 @@ namespace Module\Booking\Shared\Infrastructure\HotelBooking\Adapter;
 
 use Carbon\CarbonInterface;
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelAdapterInterface;
-use Module\Catalog\Application\Admin\Response\HotelDto;
-use Module\Catalog\Application\Admin\Response\MarkupSettingsDto;
-use Module\Catalog\Application\Admin\Response\RoomMarkupsDto;
-use Module\Catalog\Application\Admin\ResponseDto\PriceRateDto;
-use Module\Catalog\Application\Admin\UseCase\FindHotelById;
-use Module\Catalog\Application\Admin\UseCase\GetMarkupSettings;
-use Module\Catalog\Application\Admin\UseCase\GetRoomMarkups;
-use Module\Catalog\Application\Admin\UseCase\Price\GetPriceRates;
-use Module\Pricing\Application\UseCase\GetHotelRoomBasePrice;
+use Module\Hotel\Moderation\Application\Admin\Response\HotelDto;
+use Module\Hotel\Moderation\Application\Admin\Response\MarkupSettingsDto;
+use Module\Hotel\Moderation\Application\Admin\Response\RoomMarkupsDto;
+use Module\Hotel\Moderation\Application\Admin\ResponseDto\PriceRateDto;
+use Module\Hotel\Moderation\Application\Admin\UseCase\FindHotelById;
+use Module\Hotel\Moderation\Application\Admin\UseCase\GetMarkupSettings;
+use Module\Hotel\Moderation\Application\Admin\UseCase\GetRoomMarkups;
+use Module\Hotel\Moderation\Application\Admin\UseCase\Price\GetPriceRates;
+use Module\Hotel\Pricing\Application\UseCase\GetHotelRoomBasePrice;
 
 class HotelAdapter implements HotelAdapterInterface
 {

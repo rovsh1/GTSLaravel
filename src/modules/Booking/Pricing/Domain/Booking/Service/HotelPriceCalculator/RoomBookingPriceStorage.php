@@ -10,8 +10,8 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomPriceDayPa
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomPriceDayPartCollection;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomPriceItem;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomPrices;
-use Module\Pricing\Application\Dto\CalculatedHotelRoomsPricesDto;
-use Module\Pricing\Application\Dto\RoomCalculationResultDto;
+use Module\Hotel\Pricing\Application\Dto\CalculatedHotelRoomsPricesDto;
+use Module\Hotel\Pricing\Application\Dto\RoomCalculationResultDto;
 use Module\Shared\ValueObject\Date;
 
 class RoomBookingPriceStorage

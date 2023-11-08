@@ -9,7 +9,7 @@ use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
 use Module\Booking\Shared\Domain\Order\Order;
 use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
 use Module\Booking\Shared\Domain\Order\ValueObject\ClientId;
-use Module\Pricing\Application\RequestDto\CalculateHotelPriceRequestDto;
+use Module\Hotel\Pricing\Application\RequestDto\CalculateHotelPriceRequestDto;
 use Module\Shared\Enum\CurrencyEnum;
 
 class CalculateHotelPriceRequestDtoBuilder

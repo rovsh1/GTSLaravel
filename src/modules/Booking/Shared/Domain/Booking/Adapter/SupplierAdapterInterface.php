@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Domain\Booking\Adapter;
 
 use Carbon\CarbonInterface;
-use Module\Pricing\Application\Dto\ServicePriceDto;
+use Module\Hotel\Pricing\Application\Dto\ServicePriceDto;
 use Module\Shared\Enum\CurrencyEnum;
 use Module\Supplier\Application\Dto\AirportDto;
 use Module\Supplier\Application\Dto\CarDto;

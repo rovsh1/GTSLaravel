@@ -2,8 +2,8 @@
 
 namespace Module\Booking\Pricing\Domain\Booking\Adapter;
 
-use Module\Pricing\Application\Dto\CalculatedHotelRoomsPricesDto;
-use Module\Pricing\Application\RequestDto\CalculateHotelPriceRequestDto;
+use Module\Hotel\Pricing\Application\Dto\CalculatedHotelRoomsPricesDto;
+use Module\Hotel\Pricing\Application\RequestDto\CalculateHotelPriceRequestDto;
 
 interface HotelPricingAdapterInterface
 {

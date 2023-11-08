@@ -3,9 +3,9 @@
 namespace Module\Booking\Shared\Infrastructure\HotelBooking\Adapter;
 
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelRoomAdapterInterface;
-use Module\Catalog\Application\Admin\Response\RoomDto;
-use Module\Catalog\Application\Admin\Room\Find;
-use Module\Catalog\Application\Admin\UseCase\GetRooms;
+use Module\Hotel\Moderation\Application\Admin\Response\RoomDto;
+use Module\Hotel\Moderation\Application\Admin\Room\Find;
+use Module\Hotel\Moderation\Application\Admin\UseCase\GetRooms;
 
 class HotelRoomAdapter implements HotelRoomAdapterInterface
 {

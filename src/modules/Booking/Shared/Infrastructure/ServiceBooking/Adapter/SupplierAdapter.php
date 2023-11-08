@@ -6,9 +6,9 @@ namespace Module\Booking\Shared\Infrastructure\ServiceBooking\Adapter;
 
 use Carbon\CarbonInterface;
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
-use Module\Pricing\Application\Dto\ServicePriceDto;
-use Module\Pricing\Application\UseCase\GetAirportServicePrice;
-use Module\Pricing\Application\UseCase\GetTransferServicePrice;
+use Module\Hotel\Pricing\Application\Dto\ServicePriceDto;
+use Module\Hotel\Pricing\Application\UseCase\GetAirportServicePrice;
+use Module\Hotel\Pricing\Application\UseCase\GetTransferServicePrice;
 use Module\Shared\Enum\CurrencyEnum;
 use Module\Supplier\Application\Dto\AirportDto;
 use Module\Supplier\Application\Dto\CarDto;

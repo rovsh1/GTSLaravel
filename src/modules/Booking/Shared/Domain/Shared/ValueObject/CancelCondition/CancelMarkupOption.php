@@ -9,7 +9,7 @@ use Module\Shared\Contracts\Support\SerializableDataInterface;
 use Module\Shared\ValueObject\Percent;
 
 /**
- * @see \Module\Catalog\Domain\Hotel\ValueObject\MarkupSettings\CancelMarkupOption
+ * @see \Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings\CancelMarkupOption
  */
 final class CancelMarkupOption implements ValueObjectInterface, SerializableDataInterface
 {

@@ -18,10 +18,6 @@ use Sdk\Module\Support\ServiceProvider;
 
 class HotelBookingServiceProvider extends ServiceProvider
 {
-    public function register()
-    {
-    }
-
     public function boot(): void
     {
         $this->app->singleton(HotelAdapterInterface::class, HotelAdapter::class);
