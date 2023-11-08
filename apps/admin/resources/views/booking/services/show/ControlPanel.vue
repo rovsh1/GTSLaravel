@@ -282,7 +282,7 @@ const getDisplayPriceValue = (type: 'client' | 'supplier') => {
     </div>
 
     <div v-if="isRequestableStatus">
-      <div v-if="(existCars && isCarsFilled) || (existGuests && isGuestsFilled)">
+      <div v-if="(existCars && isCarsFilled) || (existGuests && isGuestsFilled) || (!existGuests && !existCars)">
         <RequestBlock
           v-if="canSendBookingRequest"
           text="Запрос на бронирование еще не отправлен"
@@ -307,12 +307,12 @@ const getDisplayPriceValue = (type: 'client' | 'supplier') => {
         />
       </div>
       <RequestBlock
-        v-else
+        v-else-if="existCars || existGuests"
         :show-button="false"
         :text="`Для отправки запроса необходимо заполнить информацию о ${existCars ? 'автомобилях' : 'гостях'}`"
       />
     </div>
-    <div v-else>
+    <div v-else-if="!bookingRequests?.length">
       <RequestBlock
         :show-button="false"
         text="Запросы поставщику не отправлялись"
