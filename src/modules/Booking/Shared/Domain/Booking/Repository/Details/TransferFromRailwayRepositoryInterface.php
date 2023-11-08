@@ -14,6 +14,8 @@ interface TransferFromRailwayRepositoryInterface
 {
     public function find(BookingId $bookingId): ?TransferFromRailway;
 
+    public function findOrFail(BookingId $bookingId): TransferFromRailway;
+
     public function create(
         BookingId $bookingId,
         ServiceInfo $serviceInfo,

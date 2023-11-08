@@ -14,6 +14,8 @@ interface IntercityTransferRepositoryInterface
 {
     public function find(BookingId $bookingId): ?IntercityTransfer;
 
+    public function findOrFail(BookingId $bookingId): IntercityTransfer;
+
     public function create(
         BookingId $bookingId,
         ServiceInfo $serviceInfo,

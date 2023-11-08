@@ -12,6 +12,8 @@ interface OtherServiceRepositoryInterface
 {
     public function find(BookingId $bookingId): ?OtherService;
 
+    public function findOrFail(BookingId $bookingId): OtherService;
+
     public function create(
         BookingId $bookingId,
         ServiceInfo $serviceInfo,

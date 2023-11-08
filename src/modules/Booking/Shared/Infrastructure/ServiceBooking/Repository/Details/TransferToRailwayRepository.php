@@ -26,6 +26,16 @@ class TransferToRailwayRepository extends AbstractDetailsRepository implements T
         return $this->detailsFactory->buildByBooking($booking);
     }
 
+    public function findOrFail(BookingId $bookingId): TransferToRailway
+    {
+        $model = $this->find($bookingId);
+        if ($model === null) {
+            throw new EntityNotFoundException('Booking details not found');
+        }
+
+        return $model;
+    }
+
     public function create(
         BookingId $bookingId,
         ServiceInfo $serviceInfo,
@@ -45,7 +55,7 @@ class TransferToRailwayRepository extends AbstractDetailsRepository implements T
                 'railwayStationId' => $railwayStationId,
                 'cityId' => $cityId,
                 'trainNumber' => $trainNumber,
-                'meetingTablet'=> $meetingTablet,
+                'meetingTablet' => $meetingTablet,
                 'carBids' => $carBids->toData(),
             ]
         ]);
@@ -61,7 +71,7 @@ class TransferToRailwayRepository extends AbstractDetailsRepository implements T
                 'serviceInfo' => $this->serializeServiceInfo($details->serviceInfo()),
                 'railwayStationId' => $details->railwayStationId()->value(),
                 'trainNumber' => $details->trainNumber(),
-                'meetingTablet'=> $details->meetingTablet(),
+                'meetingTablet' => $details->meetingTablet(),
                 'carBids' => $details->carBids()->toData(),
             ]
         ]);

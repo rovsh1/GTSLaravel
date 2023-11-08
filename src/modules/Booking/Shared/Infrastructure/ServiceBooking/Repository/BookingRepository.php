@@ -65,7 +65,7 @@ class BookingRepository implements BookingRepositoryInterface
             'status' => $booking->status(),
             'note' => $booking->note(),
             'prices' => $booking->prices()->toData(),
-            'cancel_conditions' => $booking->cancelConditions()->toData()
+            'cancel_conditions' => $booking->cancelConditions()?->toData()
         ]);
     }
 
