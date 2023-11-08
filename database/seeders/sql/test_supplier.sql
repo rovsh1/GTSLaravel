@@ -20,7 +20,7 @@ VALUES (1, 555, 'Трансфер из аэропорта Ташкента', 7, 
        (6, 555, 'Трасфер Ташкент-Самарканд', 9, '{\"fromCityId\":1,\"toCityId\":4,\"returnTripIncluded\":true}', NULL, NULL),
        (7, 555, 'Однодневная поездка в горы', 10, '{\"cityId\":1}', NULL, NULL),
        (8, 555, 'CIP Встреча Аэропорт Ташкент', 2, '{\"airportId\":1}', NULL, NULL),
-       (9, 555, 'CIP Проводы Аэропорт Ташкент', 2, '{\"airportId\":1}', NULL, NULL);
+       (9, 555, 'CIP Проводы Аэропорт Ташкент', 11, '{\"airportId\":1}', NULL, NULL);
 
 INSERT INTO `supplier_cars` (`id`, `supplier_id`, `car_id`)
 VALUES (1, 555, 1),

@@ -87,7 +87,7 @@ $.fn.childCombo = function (options) {
     child.prop('disabled', true)
     const isEmpty = parent.val() === null || parent.val() === ''
 
-    if (!preparedOptions.allowEmpty && isEmpty) {
+    if (isEmpty) {
       if (preparedOptions.useSelect2 && isMultiple) {
         child.val([])
         child.change()
@@ -109,6 +109,12 @@ $.fn.childCombo = function (options) {
     if (!isEmpty) {
       data[preparedOptions.dataIndex] = parent.val()
     } else {
+      if (preparedOptions.useSelect2 && isMultiple) {
+        child.val([])
+      } else {
+        child.val('')
+      }
+      child.change()
       return
     }
 
@@ -156,7 +162,7 @@ $.fn.childCombo = function (options) {
         if (preparedOptions.useSelect2 && isMultiple) {
           setSelect2MultiplePlaceholderValue(preparedOptions.emptyItem)
         } else {
-          child.append(`<option value="" disabled selected>${preparedOptions.emptyItem}</option>`)
+          child.append(`<option value="" ${!preparedOptions.allowEmpty ? 'disabled' : ''} selected>${preparedOptions.emptyItem}</option>`)
         }
       }
       for (i = 0; i < l; i++) {

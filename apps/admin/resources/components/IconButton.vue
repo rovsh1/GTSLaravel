@@ -4,15 +4,12 @@ defineProps<{
 }>()
 
 defineEmits<{
-  (event: 'click'):void
+  (event: 'click'): void
 }>()
 </script>
 
 <template>
-  <a
-    href="#"
-    @click.prevent="$emit('click')"
-  >
+  <a href="#" @click.prevent="$emit('click')">
     <i class="icon">add</i>
     <slot />
   </a>

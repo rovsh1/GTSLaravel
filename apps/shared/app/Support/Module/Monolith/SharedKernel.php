@@ -62,6 +62,11 @@ class SharedKernel
         return $this->sharedContainer;
     }
 
+    public function resolving(string $abstract, \Closure $bind): void
+    {
+        $this->sharedContainer->resolving($abstract, $bind);
+    }
+
     protected function makeSharedContainer(): SharedContainer
     {
         return new SharedContainer();

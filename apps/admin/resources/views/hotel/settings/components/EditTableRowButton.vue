@@ -26,8 +26,8 @@ defineEmits<{
 
 <template>
   <div class="dropdown menu-actions-wrapper">
-    <a href="#" class="" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-      <i class="icon">more_vert</i>
+    <a href="#" class="d-inline" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="icon align-middle">more_vert</i>
     </a>
 
     <ul

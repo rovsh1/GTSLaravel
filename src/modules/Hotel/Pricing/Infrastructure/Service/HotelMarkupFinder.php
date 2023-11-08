@@ -1,0 +1,31 @@
+<?php
+
+namespace Module\Hotel\Pricing\Infrastructure\Service;
+
+use Module\Hotel\Pricing\Domain\Hotel\ValueObject\RoomId;
+use Module\Hotel\Pricing\Domain\Markup\Service\HotelMarkupFinderInterface;
+use Module\Hotel\Pricing\Domain\Shared\ValueObject\ClientId;
+use Module\Hotel\Pricing\Infrastructure\Models\MarkupGroup;
+use Module\Hotel\Pricing\Infrastructure\Models\MarkupGroupRule;
+use Module\Shared\ValueObject\MarkupValue;
+
+class HotelMarkupFinder implements HotelMarkupFinderInterface
+{
+    private static array $cached = [];
+
+    public function findByRoomId(ClientId $clientId, RoomId $roomId): MarkupValue
+    {
+        $roomId = $roomId->value();
+        if (array_key_exists($roomId, self::$cached)) {
+            return self::$cached[$roomId];
+        }
+
+        $raw = MarkupGroupRule::findByRoomId($clientId->value(), $roomId)
+            ?? MarkupGroup::findByClientId($clientId->value());
+        if ($raw === null) {
+            throw new \Exception("Client[$clientId] markup undefined");
+        }
+
+        return self::$cached[$roomId] = new MarkupValue($raw->value, $raw->type);
+    }
+}

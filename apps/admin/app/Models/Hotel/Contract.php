@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
-use Module\Catalog\Application\Admin\UseCase\GetContractDocuments;
+use Module\Hotel\Moderation\Application\Admin\UseCase\GetContractDocuments;
 use Module\Shared\Dto\FileDto;
 use Sdk\Module\Database\Eloquent\Model;
 use Sdk\Module\Support\DateTime;

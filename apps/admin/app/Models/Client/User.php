@@ -71,12 +71,17 @@ class User extends Model
         $builder->where('users.country_id', $countryId);
     }
 
-    public function __toString()
+    public function getDisplayName(): string
     {
         if ($this->surname || $this->name || $this->patronymic) {
             return $this->surname . ' ' . $this->name . ' ' . $this->patronymic;
         }
 
         return (string)$this->presentation;
+    }
+
+    public function __toString()
+    {
+        return $this->getDisplayName();
     }
 }

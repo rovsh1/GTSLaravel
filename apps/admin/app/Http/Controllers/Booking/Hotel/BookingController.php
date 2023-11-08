@@ -42,8 +42,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Module\Booking\Domain\Shared\Service\RequestRules;
-use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
+use Module\Booking\Requesting\Domain\BookingRequest\Service\RequestRules;
+use Module\Shared\Enum\Booking\BookingStatusEnum;
 use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 use Module\Shared\Enum\CurrencyEnum;
 use Module\Shared\Enum\SourceEnum;
@@ -54,7 +54,7 @@ class BookingController extends Controller
     protected Prototype $prototype;
 
     public function __construct(
-        private readonly BookingAdministratorRepository $administratorRepository
+        private readonly BookingAdministratorRepository $administratorRepository,
     ) {
         $this->prototype = Prototypes::get($this->getPrototypeKey());
     }
@@ -125,7 +125,8 @@ class BookingController extends Controller
                 detailsData: $data,
                 note: $data['note'] ?? null,
             );
-            $this->administratorRepository->create($bookingId, $data['manager_id'] ?? $creatorId);
+            $managerId = $data['manager_id'] ?? $creatorId;
+            $this->administratorRepository->create($bookingId, $managerId);
         } catch (ApplicationException $e) {
             $form->throwException($e);
         }
@@ -414,7 +415,7 @@ class BookingController extends Controller
             ->number('order_id', ['label' => '№ Заказа'])
             ->country('country_id', ['label' => 'Страна', 'default' => '1'])
             ->city('city_id', ['label' => 'Город', 'emptyItem' => '', 'onlyWithHotels' => true])
-            ->hidden('hotel_id', ['label' => 'Отель'])
+            ->hidden('hotel_id', ['label' => 'Отель', 'emptyItem' => ''])
             ->hidden('hotel_room_id', ['label' => 'Тип номера'])
             ->client('client_id', ['label' => 'Клиент', 'emptyItem' => ''])
             ->select('manager_id', ['label' => 'Менеджер', 'items' => Administrator::all(), 'emptyItem' => ''])

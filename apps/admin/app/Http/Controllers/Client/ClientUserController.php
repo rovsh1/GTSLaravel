@@ -6,6 +6,7 @@ namespace App\Admin\Http\Controllers\Client;
 
 use App\Admin\Components\Factory\Prototype;
 use App\Admin\Http\Controllers\Controller;
+use App\Admin\Http\Requests\Client\SearchUserRequest;
 use App\Admin\Models\Client\Client;
 use App\Admin\Models\Client\User;
 use App\Admin\Support\Facades\Acl;
@@ -24,7 +25,9 @@ use App\Shared\Http\Responses\AjaxReloadResponse;
 use App\Shared\Http\Responses\AjaxResponseInterface;
 use App\Shared\Http\Responses\AjaxSuccessResponse;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use App\Admin\Http\Resources\Client\User as UserResource;
 
 class ClientUserController extends Controller
 {
@@ -46,13 +49,15 @@ class ClientUserController extends Controller
         $this->client($client);
 
         $grid = $this->gridFactory();
-        $grid->data($client->users);
+        $grid->data($client->users()->applyCriteria($grid->getSearchCriteria()));
 
         return Layout::title('Пользователи')
             ->view('client.user.main.main', [
                 'grid' => $grid,
+                'quicksearch' => $grid->getQuicksearch(),
                 'createUrl' => Acl::isCreateAllowed('client-user') ? route('client.users.create', $client) : null,
                 'createUserUrl' => Acl::isCreateAllowed('client-user') ? $this->prototype->route('create') : null,
+                'searchUserUrl' => route('client.users.search'),
             ]);
     }
 
@@ -73,7 +78,7 @@ class ClientUserController extends Controller
             ->method('post');
 
         if (!$form->submit()) {
-            return new AjaxErrorResponse('');
+            return new AjaxErrorResponse('Неизвестная ошибка');
         }
 
         $userId = $form->getData()['user_id'] ?? null;
@@ -96,9 +101,19 @@ class ClientUserController extends Controller
         return new AjaxSuccessResponse();
     }
 
+    public function search(SearchUserRequest $request): JsonResponse
+    {
+        $users = User::whereNull('client_id')->quicksearch($request->getName())->get();
+
+        return response()->json(
+            UserResource::collection($users)
+        );
+    }
+
     protected function gridFactory(): GridContract
     {
         return Grid::paginator(16)
+            ->enableQuicksearch()
             ->checkbox('checked', ['checkboxClass' => 'js-select-user', 'dataAttributeName' => 'user-id'])
             ->text(
                 'name',
@@ -116,13 +131,7 @@ class ClientUserController extends Controller
 
     protected function formFactory(): FormContract
     {
-        $users = User::whereNull('client_id')
-            //@todo hack видимо на серваке ограничение по памяти (если выгружать всех - падает с фаталом)
-            ->limit(100)
-            ->get()
-            ->map(fn(User $user) => ['id' => $user->id, 'name' => (string)$user]);
-
-        return Form::select('user_id', ['label' => 'Пользователь', 'emptyItem' => '', 'items' => $users]);
+        return Form::hidden('user_id', ['label' => 'Пользователь', 'emptyItem' => '']);
     }
 
     private function client(Client $hotel): void

@@ -4,15 +4,21 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Adapters\Booking;
 
-use Module\Booking\Application\Dto\AddGuestDto;
-use Module\Booking\Application\Dto\GuestDto;
-use Module\Booking\Application\Dto\UpdateGuestDto;
-use Module\Booking\Application\UseCase\Admin\Order\GetActiveOrders;
-use Module\Booking\Application\UseCase\Admin\Order\GetOrder;
-use Module\Booking\Application\UseCase\Admin\Order\Guest\Add;
-use Module\Booking\Application\UseCase\Admin\Order\Guest\Delete;
-use Module\Booking\Application\UseCase\Admin\Order\Guest\Get;
-use Module\Booking\Application\UseCase\Admin\Order\Guest\Update;
+use Module\Booking\Moderation\Application\Dto\AddGuestDto;
+use Module\Booking\Moderation\Application\Dto\GuestDto;
+use Module\Booking\Moderation\Application\Dto\OrderAvailableActionsDto;
+use Module\Booking\Moderation\Application\Dto\OrderDto;
+use Module\Booking\Moderation\Application\Dto\UpdateGuestDto;
+use Module\Booking\Moderation\Application\UseCase\Order\GetActiveOrders;
+use Module\Booking\Moderation\Application\UseCase\Order\GetAvailableActions;
+use Module\Booking\Moderation\Application\UseCase\Order\GetOrder;
+use Module\Booking\Moderation\Application\UseCase\Order\GetOrderBookings;
+use Module\Booking\Moderation\Application\UseCase\Order\GetStatuses;
+use Module\Booking\Moderation\Application\UseCase\Order\Guest\Add;
+use Module\Booking\Moderation\Application\UseCase\Order\Guest\Delete;
+use Module\Booking\Moderation\Application\UseCase\Order\Guest\Get;
+use Module\Booking\Moderation\Application\UseCase\Order\Guest\Update;
+use Module\Booking\Moderation\Application\UseCase\Order\UpdateStatus;
 
 class OrderAdapter
 {
@@ -21,7 +27,7 @@ class OrderAdapter
         return app(GetActiveOrders::class)->execute($clientId);
     }
 
-    public function findOrder(int $id): mixed
+    public function findOrder(int $id): ?OrderDto
     {
         return app(GetOrder::class)->execute($id);
     }
@@ -74,5 +80,25 @@ class OrderAdapter
     public function getGuests(int $orderId): array
     {
         return app(Get::class)->execute($orderId);
+    }
+
+    public function getStatuses(): array
+    {
+        return app(GetStatuses::class)->execute();
+    }
+
+    public function getAvailableActions(int $orderId): OrderAvailableActionsDto
+    {
+        return app(GetAvailableActions::class)->execute($orderId);
+    }
+
+    public function getBookings(int $orderId): array
+    {
+        return app(GetOrderBookings::class)->execute($orderId);
+    }
+
+    public function updateStatus(int $orderId, int $status): void
+    {
+        app(UpdateStatus::class)->execute($orderId, $status);
     }
 }

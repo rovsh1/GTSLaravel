@@ -179,14 +179,18 @@ const resetForm = () => {
   })
 }
 
-const getClientDataByType = (type: number | null) : any => {
+const getClientDataByType = (type: number | null): any => {
   if (type === 1) {
-    const physicalClientData: any = { ...basicData,
-      physical: { ...physicalEntityData } }
+    const physicalClientData: any = {
+      ...basicData,
+      physical: { ...physicalEntityData },
+    }
     return physicalClientData
   } if (type === 2) {
-    const legalClientData: any = { ...basicData,
-      legal: { ...legalEntityData } }
+    const legalClientData: any = {
+      ...basicData,
+      legal: { ...legalEntityData },
+    }
     return legalClientData
   }
   return null

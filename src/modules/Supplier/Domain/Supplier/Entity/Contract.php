@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Supplier\Domain\Supplier\Entity;
 
-use Module\Booking\Domain\Shared\ValueObject\ContractId;
+use Module\Booking\Shared\Domain\Shared\ValueObject\ContractId;
 use Module\Shared\Contracts\Domain\EntityInterface;
 use Module\Shared\ValueObject\Date;
 use Module\Supplier\Domain\Supplier\ValueObject\ServiceIdCollection;

@@ -37,7 +37,7 @@ const handleUpdateMarkupSettings = async (key: string, value: number | string): 
     <table class="table table-striped">
       <thead>
         <tr>
-          <th scope="col">Тур сбор</th>
+          <th class="w-50" scope="col">Тур сбор</th>
           <th scope="col">НДС</th>
         </tr>
       </thead>

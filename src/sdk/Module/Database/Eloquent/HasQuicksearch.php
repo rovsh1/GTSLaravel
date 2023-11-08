@@ -2,6 +2,8 @@
 
 namespace Sdk\Module\Database\Eloquent;
 
+use Illuminate\Database\Eloquent\Builder;
+
 trait HasQuicksearch
 {
 
@@ -59,6 +61,25 @@ trait HasQuicksearch
                 $query->orWhere($identifier, 'like', $t);
             }
         });
+    }
+
+    public function scopeApplyCriteria(Builder $query, array $criteria): void
+    {
+        if (isset($criteria['quicksearch'])) {
+            $query->quicksearch($criteria['quicksearch']);
+            unset($criteria['quicksearch']);
+        }
+
+        foreach ($criteria as $k => $v) {
+            $scopeName = \Str::camel($k);
+            $scopeMethod = 'where' . ucfirst($scopeName);
+            $hasScope = $this->hasNamedScope($scopeMethod);
+            if ($hasScope) {
+                $query->$scopeMethod($v);
+                continue;
+            }
+            $query->where($k, $v);
+        }
     }
 
     private function fieldHasTable(string $field): bool

@@ -7,10 +7,10 @@ namespace App\Admin\Models\Booking;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Builder as Query;
-use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
+use Module\Shared\Enum\Booking\BookingStatusEnum;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
 
-class Booking extends \Module\Booking\Infrastructure\ServiceBooking\Models\Booking
+class Booking extends \Module\Booking\Shared\Infrastructure\ServiceBooking\Models\Booking
 {
     use HasQuicksearch;
 
@@ -46,5 +46,15 @@ class Booking extends \Module\Booking\Infrastructure\ServiceBooking\Models\Booki
     public function scopeWhereCityId(Builder $builder, int $cityId): void
     {
         $builder->where('hotels.city_id', $cityId);
+    }
+
+    public function scopeWhereHotelRoomId(Builder $builder, int $roomId): void
+    {
+        $builder->whereExists(function (Query $query) use ($roomId) {
+            $query->selectRaw(1)
+                ->from('booking_hotel_rooms')
+                ->whereColumn('bookings.id', 'booking_hotel_rooms.booking_id')
+                ->where('hotel_room_id', $roomId);
+        });
     }
 }

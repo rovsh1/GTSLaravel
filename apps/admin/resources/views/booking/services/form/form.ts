@@ -100,6 +100,8 @@ $(() => {
     parent: $serviceTypeField,
     dataIndex: 'service_type',
     useSelect2: true,
+    allowEmpty: true,
+    emptyText: false,
   })
 
   $('#form_data_service_id').childCombo({
@@ -118,7 +120,8 @@ $(() => {
     const clientsListData = clientsList && clientsList.data ? clientsList.data : []
     clients = clientsListData
     const clientsSelectOptions: Select2Option[] = mapClientsToSelect2Options(clientsListData)
-    $clientIdSelect.select2('destroy').empty().select2({ data: clientsSelectOptions }).val('')
+    const selectedClientId = $clientIdSelect.val()
+    $clientIdSelect.select2('destroy').empty().select2({ data: clientsSelectOptions }).val(selectedClientId || '')
       .trigger('change')
   }
 

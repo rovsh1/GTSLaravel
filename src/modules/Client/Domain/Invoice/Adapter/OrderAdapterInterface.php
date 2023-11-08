@@ -2,7 +2,7 @@
 
 namespace Module\Client\Domain\Invoice\Adapter;
 
-use Module\Booking\Application\Dto\OrderDto;
+use Module\Booking\Moderation\Application\Dto\OrderDto;
 
 interface OrderAdapterInterface
 {

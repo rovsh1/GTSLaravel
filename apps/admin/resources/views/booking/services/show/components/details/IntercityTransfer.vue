@@ -142,6 +142,12 @@ const handleEditCarModal = async (id: number, object: CarBid) => {
       <table class="table-params">
         <tbody>
           <tr>
+            <th>Маршрут</th>
+            <td>
+              {{ bookingDetails?.fromCity.name }} - {{ bookingDetails?.toCity.name }}
+            </td>
+          </tr>
+          <tr>
             <th>Дата</th>
             <td>
               <EditableDateInput

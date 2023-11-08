@@ -116,7 +116,7 @@ if (props.saveClickOutside && !props.hideClickOutside) {
       <textarea
         ref="inputRef"
         v-model="localValue"
-        class="form-control editable-input"
+        class="form-control editable-input w-100"
         :placeholder="placeholder"
         :required="required"
         :rows="rows"
@@ -144,5 +144,9 @@ if (props.saveClickOutside && !props.hideClickOutside) {
 <style lang="scss" scoped>
 .exist-inline-icon i {
   font-size: inherit;
+}
+
+.editable-input {
+  min-width: 200px;
 }
 </style>

@@ -2,7 +2,7 @@
 
 namespace Module\Shared\IntegrationEvent\Booking;
 
-use Module\Booking\Domain\Shared\ValueObject\BookingStatusEnum;
+use Module\Shared\Enum\Booking\BookingStatusEnum;
 use Module\Shared\Enum\ServiceTypeEnum;
 use Sdk\Module\Contracts\Event\IntegrationEventInterface;
 

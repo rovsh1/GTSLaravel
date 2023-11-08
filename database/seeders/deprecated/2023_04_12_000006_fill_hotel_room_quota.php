@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
-use Module\Catalog\Infrastructure\Models\Room\QuotaStatusEnum;
+use Module\Hotel\Moderation\Infrastructure\Models\Room\QuotaStatusEnum;
 
 return new class extends Migration {
 

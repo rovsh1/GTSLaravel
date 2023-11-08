@@ -11,4 +11,8 @@ return Factory::key('booking-order')
         "index" => "Заказы",
         "create" => "Новый заказ"
     ])
+    ->views([
+        'show' => 'booking-order.show.show',
+        'form' => 'booking-order.form.form',
+    ])
     ->priority(210);

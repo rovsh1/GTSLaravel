@@ -27,11 +27,9 @@ defineEmits<{
 
 <template>
   <div>
-    <div class="d-flex">
-      <h6>{{ title }}</h6>
-      <AddConditionButton
-        @click.prevent="$emit('add')"
-      />
+    <div class="d-flex align-items-center">
+      <h6 class="mb-0">{{ title }}</h6>
+      <AddConditionButton @click="$emit('add')" />
     </div>
     <table class="table">
       <tbody :class="{ loading: loading }">
