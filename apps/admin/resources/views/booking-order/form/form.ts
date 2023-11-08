@@ -70,7 +70,7 @@ $(() => {
     }
   }
 
-  const toggleOrderFields = (event: any): void => {
+  const toggleOrderFields = (): void => {
     const isOrderIdEmpty = isEmpty(orderId)
     toggleCurrencyIdField(isOrderIdEmpty)
     if (isOrderIdEmpty) {

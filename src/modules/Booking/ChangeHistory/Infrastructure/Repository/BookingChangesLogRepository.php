@@ -7,10 +7,10 @@ namespace Module\Booking\ChangeHistory\Infrastructure\Repository;
 use Illuminate\Database\Eloquent\Collection;
 use Module\Booking\ChangeHistory\Domain\Repository\BookingChangesLogRepositoryInterface;
 use Module\Booking\ChangeHistory\Infrastructure\Model\BookingChangesLog;
+use Module\Booking\ChangeHistory\Infrastructure\Model\EventTypeEnum;
 use Module\Booking\Shared\Domain\Shared\Event\BookingEventInterface;
 use Module\Booking\Shared\Domain\Shared\Event\BookingRequestEventInterface;
 use Module\Booking\Shared\Domain\Shared\Event\BookingStatusEventInterface;
-use Module\Booking\Shared\Infrastructure\Models\EventTypeEnum;
 use Module\Shared\Contracts\Service\ApplicationContextInterface;
 
 class BookingChangesLogRepository implements

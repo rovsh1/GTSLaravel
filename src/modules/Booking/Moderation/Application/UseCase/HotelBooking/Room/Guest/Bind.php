@@ -60,7 +60,7 @@ class Bind implements UseCaseInterface
                     $newGuestId,
                 )
             );
-        } catch (DomainEntityExceptionInterface $e) {
+        } catch (\Throwable $e) {
             throw new ApplicationException($e->getMessage(), $e->getCode(), $e);
         }
     }

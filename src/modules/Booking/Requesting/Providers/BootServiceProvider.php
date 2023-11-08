@@ -11,12 +11,14 @@ use Module\Booking\Requesting\Infrastructure\Adapter\AdministratorAdapter;
 use Module\Booking\Requesting\Infrastructure\Repository\RequestRepository;
 use Module\Booking\Requesting\Infrastructure\Service\RequestTemplateCompiler;
 use Sdk\Module\Support\ServiceProvider;
+use Module\Booking\Shared\Providers\BootServiceProvider as SharedBookingServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
         $this->app->register(DomainEventServiceProvider::class);
+        $this->app->register(SharedBookingServiceProvider::class);
     }
 
     public function boot(): void

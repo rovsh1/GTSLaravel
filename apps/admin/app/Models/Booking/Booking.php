@@ -66,4 +66,14 @@ class Booking extends \Module\Booking\Shared\Infrastructure\ServiceBooking\Model
     {
         $builder->where('hotels.city_id', $cityId);
     }
+
+    public function scopeWhereHotelRoomId(Builder $builder, int $roomId): void
+    {
+        $builder->whereExists(function (Query $query) use ($roomId) {
+            $query->selectRaw(1)
+                ->from('booking_hotel_rooms')
+                ->whereColumn('bookings.id', 'booking_hotel_rooms.booking_id')
+                ->where('hotel_room_id', $roomId);
+        });
+    }
 }

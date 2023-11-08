@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Shared\Infrastructure\Models;
+namespace Module\Booking\ChangeHistory\Infrastructure\Model;
 
 enum EventTypeEnum: int
 {
