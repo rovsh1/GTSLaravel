@@ -14,6 +14,8 @@ interface DayCarTripRepositoryInterface
 {
     public function find(BookingId $bookingId): ?DayCarTrip;
 
+    public function findOrFail(BookingId $bookingId): DayCarTrip;
+
     public function create(
         BookingId $bookingId,
         ServiceInfo $serviceInfo,

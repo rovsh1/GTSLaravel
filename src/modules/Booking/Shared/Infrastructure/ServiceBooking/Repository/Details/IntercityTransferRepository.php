@@ -26,6 +26,16 @@ class IntercityTransferRepository extends AbstractDetailsRepository implements I
         return $this->detailsFactory->buildByBooking($booking);
     }
 
+    public function findOrFail(BookingId $bookingId): IntercityTransfer
+    {
+        $model = $this->find($bookingId);
+        if ($model === null) {
+            throw new EntityNotFoundException('Booking details not found');
+        }
+
+        return $model;
+    }
+
     public function create(
         BookingId $bookingId,
         ServiceInfo $serviceInfo,
