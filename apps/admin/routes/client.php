@@ -12,6 +12,7 @@ AclRoute::for('client')
     ->resource('users', Controllers\Client\ClientUserController::class, [
         'except' => ['show', 'edit', 'update', 'destroy']
     ])
+    ->get('/users/search',Controllers\Client\ClientUserController::class . '@search', 'read', 'users.search')
     ->delete(
         '/{client}/users/bulk',
         Controllers\Client\ClientUserController::class . '@bulkDelete',

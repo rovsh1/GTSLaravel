@@ -7,8 +7,9 @@ import { requestInitialData } from '~lib/initial-data'
 
 import '~resources/views/main'
 
-const { createUserUrl } = requestInitialData('view-initial-data-client-user', z.object({
+const { createUserUrl, searchUserUrl } = requestInitialData('view-initial-data-client-user', z.object({
   createUserUrl: z.string(),
+  searchUserUrl: z.string(),
 }))
 
 $(() => {
@@ -18,14 +19,33 @@ $(() => {
     window.location.href = createUserUrl
   }
 
-  $addButton.click(function (e) {
+  $addButton.click((e) => {
     e.preventDefault()
+
+    const $form = $(`<form method="POST" action="${window.location.href}"><input type="hidden" name="_method" value="post"/><div class="row form-field field-select field-user_id field-required">
+    <label for="form_data_user_id" class="col-sm-5 col-form-label">Пользователь</label><div class="col-sm-7 d-flex align-items-center"><select class="form-select form-control" name="user_id" id="form_data_user_id"></select></div></div></form>`)
+
     window.WindowDialog({
-      url: $(this).attr('href'),
+      html: $form,
       title: 'Добавить пользователя',
       buttons: ['submit', 'cancel', { text: 'Новый пользователь', cls: 'btn', handler: createNewUserHandler }],
       update: () => {
-        $('#form_data_user_id').select2({ dropdownParent: $('.modal-dialog .modal-body') })
+        $('#form_data_user_id').select2({
+          dropdownParent: $('.modal-dialog .modal-body'),
+          ajax: {
+            url: searchUserUrl,
+            dataType: 'json',
+            delay: 250,
+            data: (params) => ({
+              name: params.term,
+              type: 'public',
+            }),
+            processResults: (data) => {
+              const results = data.map(({ id, name }: { id: string; name: string }) => ({ id, text: name }))
+              return { results }
+            },
+          },
+        })
       },
     })
   })

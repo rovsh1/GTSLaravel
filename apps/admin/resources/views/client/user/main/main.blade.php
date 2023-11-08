@@ -12,6 +12,7 @@
     <script>
       window['view-initial-data-client-user'] = {{ Js::from([
             'createUserUrl' => $createUserUrl,
+            'searchUserUrl' => $searchUserUrl,
         ]) }}
     </script>
 @endsection
