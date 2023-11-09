@@ -8,7 +8,7 @@ import { defineConfig } from 'vite'
 import checker from 'vite-plugin-checker'
 import tsconfigPaths from 'vite-tsconfig-paths'
 
-// import { scripts } from './package.json'
+import { scripts } from './package.json'
 
 expand(config({
   allowEmptyValues: true,
@@ -101,14 +101,14 @@ export default defineConfig(({ command }) => ({
     }),
     checker({
       enableBuild: false,
-      vueTsc: false,
-      typescript: false,
-      /* eslint: {
+      vueTsc: true,
+      typescript: true,
+      eslint: {
         lintCommand: scripts['lint:scripts'],
       },
       stylelint: {
         lintCommand: scripts['lint:styles'].replace(/"/, ''),
-      }, */
+      },
     }),
   ],
   resolve: {
