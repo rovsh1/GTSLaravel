@@ -11,8 +11,8 @@ use Module\Booking\Moderation\Application\UseCase\HotelBooking\Room\Delete;
 use Module\Booking\Moderation\Application\UseCase\HotelBooking\Room\GetAvailableRooms;
 use Module\Booking\Moderation\Application\UseCase\HotelBooking\Room\Guest\Bind;
 use Module\Booking\Moderation\Application\UseCase\HotelBooking\Room\Guest\Unbind;
-use Module\Booking\Moderation\Application\UseCase\HotelBooking\Room\SetManualPrice;
 use Module\Booking\Moderation\Application\UseCase\HotelBooking\Room\Update;
+use Module\Booking\Pricing\Application\UseCase\HotelBooking\SetRoomManualPrice;
 
 class RoomAdapter
 {
@@ -104,6 +104,6 @@ class RoomAdapter
         float|null $supplierDayPrice,
         float|null $clientDayPrice
     ): void {
-        app(SetManualPrice::class)->execute($bookingId, $roomBookingId, $supplierDayPrice, $clientDayPrice);
+        app(SetRoomManualPrice::class)->execute($bookingId, $roomBookingId, $supplierDayPrice, $clientDayPrice);
     }
 }

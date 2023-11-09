@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Moderation\Application\UseCase\HotelBooking\Room;
+namespace Module\Booking\Pricing\Application\UseCase\HotelBooking;
 
 use Module\Booking\Pricing\Domain\Booking\Service\HotelPriceCalculator\PriceCalculator;
 use Module\Booking\Shared\Domain\Booking\Repository\RoomBookingRepositoryInterface;
@@ -12,7 +12,7 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomPriceItem;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomPrices;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
-class SetManualPrice implements UseCaseInterface
+class SetRoomManualPrice implements UseCaseInterface
 {
     public function __construct(
         private readonly PriceCalculator $bookingPriceCalculator,
