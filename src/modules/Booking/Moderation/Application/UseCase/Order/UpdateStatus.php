@@ -6,7 +6,7 @@ namespace Module\Booking\Moderation\Application\UseCase\Order;
 
 use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
 use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
-use Module\Shared\Enum\Booking\OrderStatusEnum;
+use Module\Shared\Enum\Order\OrderStatusEnum;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class UpdateStatus implements UseCaseInterface

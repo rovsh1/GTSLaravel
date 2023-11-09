@@ -12,7 +12,7 @@ use Module\Booking\Shared\Domain\Booking\Service\HotelBooking\QuotaManager\Excep
 use Module\Booking\Shared\Domain\Booking\Service\HotelBooking\QuotaManager\Exception\NotFoundRoomDateQuota;
 use Module\Booking\Shared\Domain\Booking\Service\HotelBooking\QuotaManager\Model\QuotaInterface;
 use Module\Booking\Shared\Domain\Booking\Service\HotelBooking\QuotaManager\Model\RoomDateQuotaReservation;
-use Module\Hotel\Moderation\Infrastructure\Models\Room\QuotaStatusEnum;
+use Module\Shared\Enum\Hotel\QuotaStatusEnum;
 
 class QuotaValidator
 {

@@ -4,8 +4,8 @@ namespace Module\Booking\Shared\Infrastructure\HotelBooking\Adapter;
 
 use Carbon\CarbonPeriod;
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelRoomQuotaAdapterInterface;
-use Module\Hotel\Moderation\Application\Admin\Quota\GetAvailable;
-use Module\Hotel\Moderation\Application\Admin\Response\RoomDto;
+use Module\Hotel\Moderation\Application\Dto\RoomDto;
+use Module\Hotel\Quotation\Application\UseCase\GetAvailableQuotas;
 
 class HotelRoomQuotaAdapter implements HotelRoomQuotaAdapterInterface
 {
@@ -17,7 +17,7 @@ class HotelRoomQuotaAdapter implements HotelRoomQuotaAdapterInterface
      */
     public function getAvailable(int $hotelId, CarbonPeriod $period, ?int $roomId = null): array
     {
-        return app(GetAvailable::class)->execute($hotelId, $period, $roomId);
+        return app(GetAvailableQuotas::class)->execute($hotelId, $period, $roomId);
     }
 
 }

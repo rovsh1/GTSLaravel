@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Module\Shared\Enum\Booking\BookingStatusEnum;
-use Module\Shared\Enum\Booking\OrderStatusEnum;
+use Module\Shared\Enum\Order\OrderStatusEnum;
 
 return new class extends Migration {
     /**
@@ -163,6 +163,33 @@ return new class extends Migration {
                 'name_ru' => 'Оплачен',
                 'name_en' => null,
                 'color' => 'success',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'value' => OrderStatusEnum::CANCELLED,
+                'type' => OrderStatusEnum::class,
+                'name_ru' => 'Отменен без оплаты',
+                'name_en' => null,
+                'color' => 'secondary',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'value' => OrderStatusEnum::REFUND_FEE,
+                'type' => OrderStatusEnum::class,
+                'name_ru' => 'Возврат со штрафом',
+                'name_en' => null,
+                'color' => 'secondary',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'value' => OrderStatusEnum::REFUND_NO_FEE,
+                'type' => OrderStatusEnum::class,
+                'name_ru' => 'Возврат без штрафа',
+                'name_en' => null,
+                'color' => 'secondary',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

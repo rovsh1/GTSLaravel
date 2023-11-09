@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Adapters\Hotel;
 
-use Module\Hotel\Moderation\Application\Admin\Enums\UpdateMarkupSettingsActionEnum;
-use Module\Hotel\Moderation\Application\Admin\Response\MarkupSettingsDto;
-use Module\Hotel\Moderation\Application\Admin\Response\RoomMarkupsDto;
-use Module\Hotel\Moderation\Application\Admin\UseCase\GetMarkupSettings;
-use Module\Hotel\Moderation\Application\Admin\UseCase\GetRoomMarkups;
-use Module\Hotel\Moderation\Application\Admin\UseCase\MarkupSettings\UpdateMarkupSettingsValue;
-use Module\Hotel\Moderation\Application\Admin\UseCase\MarkupSettings\UpdateRoomMarkupSettings;
+use Module\Hotel\Moderation\Application\Dto\MarkupSettingsDto;
+use Module\Hotel\Moderation\Application\Enums\UpdateMarkupSettingsActionEnum;
+use Module\Hotel\Moderation\Application\UseCase\GetMarkupSettings;
+use Module\Hotel\Moderation\Application\UseCase\UpdateMarkupSettingsValue;
 
 class MarkupSettingsAdapter
 {
@@ -47,15 +44,5 @@ class MarkupSettingsAdapter
             $index,
             UpdateMarkupSettingsActionEnum::DELETE_FROM_COLLECTION
         );
-    }
-
-    public function getRoomMarkupSettings(int $hotelId, int $roomId): ?RoomMarkupsDto
-    {
-        return app(GetRoomMarkups::class)->execute($roomId);
-    }
-
-    public function updateRoomMarkupSettings(int $roomId, string $key, int $value): void
-    {
-        app(UpdateRoomMarkupSettings::class)->execute($roomId, $key, $value);
     }
 }

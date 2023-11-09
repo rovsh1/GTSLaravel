@@ -10,7 +10,7 @@ use Module\Booking\Moderation\Application\Dto\OrderDto;
 use Module\Booking\Moderation\Application\Dto\StatusDto;
 
 /**
- * @method static array getActiveOrders(int|null $clientId = null)
+ * @method static array getActiveOrders(int|null $clientId = null, boolean $isOnlyWaitingInvoice = false)
  * @method static OrderDto|null findOrder(int $id)
  * @method static mixed getGuests(int $orderId)
  * @method static mixed addGuest(int $orderId, string $fullName, int $countryId, int $gender, bool $isAdult, int|null $age)

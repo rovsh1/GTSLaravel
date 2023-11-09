@@ -1,17 +1,18 @@
-import { z } from 'zod'
-
-import { requestInitialData } from '~lib/initial-data'
-
 import '~resources/views/main'
 
-const { seasons } = requestInitialData('view-initial-data-supplier-seasons', z.object({
-  seasons: z.array(z.object({
-    id: z.number(),
-    date_start: z.string(),
-    date_end: z.string(),
-  })),
-}))
-
 $(() => {
-  console.log(seasons)
+  const supplierId = $('#form_data_supplier_id').val()
+
+  $('#form_data_service_ids').childCombo({
+    urlGetter: (type: number) => {
+      if (Number(type) === 1) {
+        return '/hotels/search'
+      }
+      return `/supplier/${supplierId}/services/search`
+    },
+    disabledText: 'Выберите тип услуги',
+    parent: $('#form_data_service_type'),
+    dataIndex: 'type',
+    useSelect2: true,
+  })
 })

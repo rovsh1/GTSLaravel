@@ -35,6 +35,7 @@ class BookingAdapter
         int|null $legalId,
         CurrencyEnum $currency,
         int $serviceId,
+        int $managerId,
         int $creatorId,
         ?int $orderId,
         ?array $detailsData,
@@ -42,11 +43,12 @@ class BookingAdapter
     ) {
         return app(CreateBooking::class)->execute(
             new CreateBookingRequestDto(
-                creatorId: $creatorId,
                 clientId: $clientId,
                 legalId: $legalId,
                 currency: $currency,
                 serviceId: $serviceId,
+                administratorId: $managerId,
+                creatorId: $creatorId,
                 orderId: $orderId,
                 detailsData: $detailsData,
                 note: $note
@@ -59,6 +61,7 @@ class BookingAdapter
         int|null $legalId,
         CurrencyEnum $currency,
         int $hotelId,
+        int $managerId,
         int $creatorId,
         ?int $orderId,
         ?array $detailsData,
@@ -66,11 +69,12 @@ class BookingAdapter
     ) {
         return app(CreateHotelBooking::class)->execute(
             new CreateBookingRequestDto(
-                creatorId: $creatorId,
                 clientId: $clientId,
                 legalId: $legalId,
                 currency: $currency,
                 serviceId: $hotelId,
+                administratorId: $managerId,
+                creatorId: $creatorId,
                 orderId: $orderId,
                 detailsData: $detailsData,
                 note: $note

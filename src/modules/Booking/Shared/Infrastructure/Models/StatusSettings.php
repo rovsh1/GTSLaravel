@@ -6,7 +6,7 @@ namespace Module\Booking\Shared\Infrastructure\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Module\Shared\Enum\Booking\BookingStatusEnum;
-use Module\Shared\Enum\Booking\OrderStatusEnum;
+use Module\Shared\Enum\Order\OrderStatusEnum;
 use Sdk\Module\Database\Eloquent\Model;
 
 class StatusSettings extends Model

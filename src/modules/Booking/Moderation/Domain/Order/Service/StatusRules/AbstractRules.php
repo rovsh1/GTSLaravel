@@ -3,7 +3,7 @@
 namespace Module\Booking\Moderation\Domain\Order\Service\StatusRules;
 
 
-use Module\Shared\Enum\Booking\OrderStatusEnum;
+use Module\Shared\Enum\Order\OrderStatusEnum;
 
 class AbstractRules
 {

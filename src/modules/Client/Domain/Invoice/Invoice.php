@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace Module\Client\Domain\Invoice;
 
-use Module\Client\Domain\Invoice\Event\InvoiceStatusChanged;
 use Module\Client\Domain\Invoice\ValueObject\InvoiceId;
-use Module\Client\Domain\Invoice\ValueObject\OrderIdCollection;
 use Module\Client\Domain\Invoice\ValueObject\InvoiceStatusEnum;
+use Module\Client\Domain\Invoice\ValueObject\OrderIdCollection;
 use Module\Client\Domain\Shared\ValueObject\ClientId;
 use Module\Shared\ValueObject\File;
-use Module\Shared\ValueObject\Timestamps;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
 final class Invoice extends AbstractAggregateRoot

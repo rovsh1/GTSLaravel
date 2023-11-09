@@ -96,11 +96,11 @@ class ContractController extends Controller
             ->hidden('supplier_id', ['value' => $supplierId])
             ->dateRange('period', ['label' => 'Период', 'required' => true])
             ->enum('status', ['label' => 'Статус', 'emptyItem' => '', 'enum' => StatusEnum::class, 'required' => true])
-            ->enum('service_type', [
+            ->bookingServiceType('service_type', [
                 'label' => 'Тип услуги',
-                'enum' => ServiceTypeEnum::class,
                 'required' => true,
-                'emptyItem' => ''
+                'emptyItem' => '',
+                'withoutHotel' => true
             ])
             ->hiddenMultiSelect('service_ids', ['label' => 'Услуги', 'required' => true])
             ->file('documents', ['label' => 'Документы', 'multiple' => true]);

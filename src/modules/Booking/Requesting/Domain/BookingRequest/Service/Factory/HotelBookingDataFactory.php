@@ -18,7 +18,7 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomBookingCol
 use Module\Booking\Shared\Domain\Guest\Guest;
 use Module\Booking\Shared\Domain\Guest\Repository\GuestRepositoryInterface;
 use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
-use Module\Hotel\Moderation\Application\Admin\ResponseDto\ContactDto;
+use Module\Hotel\Moderation\Application\Dto\ContactDto;
 use Module\Shared\Contracts\Adapter\CountryAdapterInterface;
 use Module\Shared\Enum\ContactTypeEnum;
 use Module\Shared\Enum\GenderEnum;

@@ -114,12 +114,13 @@ class ServicesController extends Controller
 
     public function search(Supplier $supplier, SearchServicesRequest $request): JsonResponse
     {
-        $services = Service::whereType($request->getType())
-            ->whereSupplierId($supplier->id)
-            ->get();
+        $servicesQuery = Service::whereType($request->getType())->whereSupplierId($supplier->id);
+        if ($request->onlyWithContract()) {
+            $servicesQuery->whereHasActiveContract();
+        }
 
         return response()->json(
-            ServiceResource::collection($services)
+            ServiceResource::collection($servicesQuery->get())
         );
     }
 

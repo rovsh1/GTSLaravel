@@ -11,7 +11,7 @@ class ModuleServiceProvider extends ServiceProvider
     private array $modules = [
         'Administrator' => 'Administrator',
         'HotelModeration' => 'Hotel/Moderation',
-//        'HotelQuotation' => 'Hotel/Quotation',
+        'HotelQuotation' => 'Hotel/Quotation',
         'HotelPricing' => 'Hotel/Pricing',
         'Client' => 'Client',
         'BookingModeration' => 'Booking/Moderation',

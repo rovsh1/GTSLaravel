@@ -109,6 +109,9 @@ $(() => {
     disabledText: 'Выберите поставщика',
     parent: $supplierField,
     useSelect2: true,
+    data: {
+      only_with_contract: 1,
+    },
   })
 
   const $clientIdSelect = $('#form_data_client_id').select2()

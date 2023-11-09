@@ -22,6 +22,28 @@ VALUES (1, 555, 'Трансфер из аэропорта Ташкента', 7, 
        (8, 555, 'CIP Встреча Аэропорт Ташкент', 2, '{\"airportId\":1}', NULL, NULL),
        (9, 555, 'CIP Проводы Аэропорт Ташкент', 11, '{\"airportId\":1}', NULL, NULL);
 
+INSERT INTO `supplier_contracts` (`id`, `supplier_id`, `service_type`, `status`, `date_start`, `date_end`, `created_at`, `updated_at`)
+VALUES (1, 555, 7, 1,'2023-01-01', '2023-12-31', null, null),
+       (2, 555, 6, 1, '2023-01-01', '2023-12-31',null, null),
+       (3, 555, 3, 1,'2023-01-01', '2023-12-31', null, null),
+       (4, 555, 4, 1, '2023-01-01', '2023-12-31',null, null),
+       (5, 555, 5, 1,'2023-01-01', '2023-12-31', null, null),
+       (6, 555, 9, 1,'2023-01-01', '2023-12-31', null, null),
+       (7, 555, 10, 1,'2023-01-01', '2023-12-31', null, null),
+       (8, 555, 2, 1,'2023-01-01', '2023-12-31', null, null),
+       (9, 555, 11, 1,'2023-01-01', '2023-12-31', null, null);
+
+INSERT INTO `supplier_service_contracts` (`service_id`, `contract_id`)
+VALUES (1, 1),
+       (2, 2),
+       (3, 3),
+       (4, 4),
+       (5, 5),
+       (6, 6),
+       (7, 7),
+       (8, 8),
+       (9, 9);
+
 INSERT INTO `supplier_cars` (`id`, `supplier_id`, `car_id`)
 VALUES (1, 555, 1),
        (2, 555, 2);

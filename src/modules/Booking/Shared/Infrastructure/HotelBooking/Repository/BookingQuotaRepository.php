@@ -11,7 +11,7 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\BookingPeriod;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\QuotaId;
 use Module\Booking\Shared\Infrastructure\HotelBooking\Models\Hotel\RoomQuota as Model;
-use Module\Hotel\Moderation\Infrastructure\Models\Room\QuotaReservation;
+use Module\Booking\Shared\Infrastructure\HotelBooking\Models\QuotaReservation;
 use Module\Shared\Contracts\Service\ApplicationContextInterface;
 use Module\Shared\Enum\Booking\QuotaChangeTypeEnum;
 

@@ -15,9 +15,9 @@ class GetActiveOrders implements UseCaseInterface
         private readonly OrderDtoFactory $factory,
     ) {}
 
-    public function execute(int|null $clientId): array
+    public function execute(int|null $clientId, bool $isOnlyWaitingInvoice = false): array
     {
-        $orders = $this->repository->getActiveOrders($clientId);
+        $orders = $this->repository->getActiveOrders($clientId, $isOnlyWaitingInvoice);
 
         return $this->factory->createCollection($orders);
     }

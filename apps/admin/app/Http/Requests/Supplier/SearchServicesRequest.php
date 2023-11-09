@@ -16,25 +16,27 @@ class SearchServicesRequest extends FormRequest
             'type' => ['required', new Enum(ServiceTypeEnum::class)],
             'city_id' => ['nullable', 'numeric'],
             'supplier_id' => ['nullable', 'numeric'],
+            'only_with_contract' => ['nullable', 'boolean']
         ];
     }
 
     public function getType(): ServiceTypeEnum
     {
-        return ServiceTypeEnum::from((int)$this->get('type'));
+        return ServiceTypeEnum::from($this->integer('type'));
     }
 
     public function getCityId(): ?int
     {
-        $value = $this->get('city_id');
-
-        return $value !== null ? (int)$value : null;
+        return $this->integer('city_id', null);
     }
 
     public function getSupplierId(): ?int
     {
-        $value = $this->get('supplier_id');
+        return $this->integer('supplier_id', null);
+    }
 
-        return $value !== null ? (int)$value : null;
+    public function onlyWithContract(): bool
+    {
+        return $this->boolean('only_with_contract');
     }
 }

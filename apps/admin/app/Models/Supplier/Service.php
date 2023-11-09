@@ -2,7 +2,9 @@
 
 namespace App\Admin\Models\Supplier;
 
+use App\Admin\Enums\Contract\StatusEnum;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Facades\DB;
 use Module\Shared\Enum\ServiceTypeEnum;
@@ -38,6 +40,23 @@ class Service extends \Module\Supplier\Infrastructure\Models\Service
                 ->whereColumn('t.supplier_id', 'supplier_services.supplier_id')
                 ->where('city_id', $cityId);
         });
+    }
+
+    public function scopeWhereHasActiveContract(Builder $builder): void
+    {
+        $builder->whereHas('contracts', function (Builder $query) {
+            $query->where('status', StatusEnum::ACTIVE);
+        });
+    }
+
+    public function contracts(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Contract::class,
+            'supplier_service_contracts',
+            'service_id',
+            'contract_id'
+        );
     }
 
     public function __toString()

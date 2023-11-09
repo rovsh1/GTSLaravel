@@ -7,7 +7,7 @@ namespace Module\Client\Domain\Order;
 use Module\Client\Domain\Invoice\ValueObject\InvoiceId;
 use Module\Client\Domain\Order\ValueObject\OrderId;
 use Module\Client\Domain\Shared\ValueObject\ClientId;
-use Module\Shared\Enum\Booking\OrderStatusEnum;
+use Module\Shared\Enum\Order\OrderStatusEnum;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
 final class Order extends AbstractAggregateRoot
@@ -17,8 +17,7 @@ final class Order extends AbstractAggregateRoot
         private readonly ClientId $clientId,
         private ?InvoiceId $invoiceId,
         private OrderStatusEnum $status,
-    ) {
-    }
+    ) {}
 
     public function id(): OrderId
     {

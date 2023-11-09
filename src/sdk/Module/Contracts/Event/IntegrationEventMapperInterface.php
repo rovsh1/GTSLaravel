@@ -4,5 +4,9 @@ namespace Sdk\Module\Contracts\Event;
 
 interface IntegrationEventMapperInterface
 {
-    public function map(DomainEventInterface $domainEvent): ?IntegrationEventInterface;
+    /**
+     * @param DomainEventInterface $domainEvent
+     * @return IntegrationEventInterface[]
+     */
+    public function map(DomainEventInterface $domainEvent): array;
 }

@@ -4,14 +4,12 @@ namespace Module\Booking\Shared\Infrastructure\HotelBooking\Adapter;
 
 use Carbon\CarbonInterface;
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelAdapterInterface;
-use Module\Hotel\Moderation\Application\Admin\Response\HotelDto;
-use Module\Hotel\Moderation\Application\Admin\Response\MarkupSettingsDto;
-use Module\Hotel\Moderation\Application\Admin\Response\RoomMarkupsDto;
-use Module\Hotel\Moderation\Application\Admin\ResponseDto\PriceRateDto;
-use Module\Hotel\Moderation\Application\Admin\UseCase\FindHotelById;
-use Module\Hotel\Moderation\Application\Admin\UseCase\GetMarkupSettings;
-use Module\Hotel\Moderation\Application\Admin\UseCase\GetRoomMarkups;
-use Module\Hotel\Moderation\Application\Admin\UseCase\Price\GetPriceRates;
+use Module\Hotel\Moderation\Application\Dto\HotelDto;
+use Module\Hotel\Moderation\Application\Dto\MarkupSettingsDto;
+use Module\Hotel\Moderation\Application\Dto\PriceRateDto;
+use Module\Hotel\Moderation\Application\UseCase\FindHotelById;
+use Module\Hotel\Moderation\Application\UseCase\GetMarkupSettings;
+use Module\Hotel\Moderation\Application\UseCase\Price\GetPriceRates;
 use Module\Hotel\Pricing\Application\UseCase\GetHotelRoomBasePrice;
 
 class HotelAdapter implements HotelAdapterInterface
@@ -34,11 +32,6 @@ class HotelAdapter implements HotelAdapterInterface
     public function getMarkupSettings(int $hotelId): MarkupSettingsDto
     {
         return app(GetMarkupSettings::class)->execute($hotelId);
-    }
-
-    public function getRoomMarkupSettings(int $roomId): ?RoomMarkupsDto
-    {
-        return app(GetRoomMarkups::class)->execute($roomId);
     }
 
     /**

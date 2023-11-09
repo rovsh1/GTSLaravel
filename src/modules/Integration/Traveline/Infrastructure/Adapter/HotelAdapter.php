@@ -3,7 +3,7 @@
 namespace Module\Integration\Traveline\Infrastructure\Adapter;
 
 use Carbon\CarbonPeriod;
-use Module\Hotel\Moderation\Application\Admin\UseCase\RoomQuota\UpdateRoomQuota;
+use Module\Hotel\Quotation\Application\UseCase\UpdateRoomQuota;
 use Module\Integration\Traveline\Domain\Adapter\HotelAdapterInterface;
 use Module\Shared\Infrastructure\Adapter\AbstractModuleAdapter;
 
