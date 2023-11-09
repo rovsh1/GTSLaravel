@@ -7,9 +7,14 @@ import { downloadDocument as downloadDocumentRequest } from '~api/booking/servic
 import { sendBookingRequest, useBookingRequestListAPI } from '~api/booking/service/request'
 
 import { showConfirmDialog } from '~lib/confirm-dialog'
-import { requestInitialData } from '~lib/initial-data'
+import { isInitialDataExists, requestInitialData, ViewInitialDataKey } from '~lib/initial-data'
 
-const { bookingID } = requestInitialData('view-initial-data-service-booking', z.object({
+let initialDataKey: ViewInitialDataKey = 'view-initial-data-hotel-booking'
+if (isInitialDataExists('view-initial-data-service-booking')) {
+  initialDataKey = 'view-initial-data-service-booking'
+}
+
+const { bookingID } = requestInitialData(initialDataKey, z.object({
   bookingID: z.number(),
 }))
 

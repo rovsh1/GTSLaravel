@@ -3,8 +3,9 @@ import { computed, onMounted, reactive, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { z } from 'zod'
 
-import { showCancelFeeDialog } from '~resources/views/booking/shared/lib/modals'
+import { showCancelFeeDialog, showNotConfirmedReasonDialog } from '~resources/views/booking/shared/lib/modals'
 
+import { HotelRoomBooking } from '~api/booking/hotel/details'
 import {
   copyBooking,
   updateBookingDetails as executeUpdateDetails,
@@ -14,11 +15,21 @@ import {
   updateNote as executeUpdateNote,
   useGetBookingAPI,
 } from '~api/booking/service'
+import { useRecalculateBookingPriceAPI } from '~api/booking/service/price'
 import { useBookingAvailableActionsAPI, useBookingStatusesAPI } from '~api/booking/service/status'
+import { useHotelMarkupSettingsAPI } from '~api/hotel/markup-settings'
 
-import { requestInitialData } from '~lib/initial-data'
+import { isInitialDataExists, requestInitialData, ViewInitialDataKey } from '~lib/initial-data'
 
-const { bookingID, manager } = requestInitialData('view-initial-data-service-booking', z.object({
+let isHotelBooking = true
+let initialDataKey: ViewInitialDataKey = 'view-initial-data-hotel-booking'
+if (isInitialDataExists('view-initial-data-service-booking')) {
+  isHotelBooking = false
+  initialDataKey = 'view-initial-data-service-booking'
+}
+
+const { bookingID, manager, hotelID } = requestInitialData(initialDataKey, z.object({
+  hotelID: z.number().optional(),
   bookingID: z.number(),
   manager: z.object({
     id: z.number(),
@@ -27,11 +38,19 @@ const { bookingID, manager } = requestInitialData('view-initial-data-service-boo
 
 export const useBookingStore = defineStore('booking', () => {
   const { data: booking, execute: fetchBooking } = useGetBookingAPI({ bookingID })
+  const { data: markupSettings, execute: fetchMarkupSettings } = useHotelMarkupSettingsAPI(hotelID ? { hotelID } : null)
   const { data: availableActions, execute: fetchAvailableActions, isFetching: isAvailableActionsFetching } = useBookingAvailableActionsAPI({ bookingID })
   const { data: statuses, execute: fetchStatuses } = useBookingStatusesAPI()
+  const { isFetching: isRecalculatePrice, execute: recalculateBookingPrice } = useRecalculateBookingPriceAPI({ bookingID })
 
   const isStatusUpdateFetching = ref(false)
   const bookingManagerId = ref(manager.id)
+
+  const isRecalculateBookingPrice = computed<boolean>(() => isRecalculatePrice.value)
+
+  const existRooms = computed<boolean>(() => Boolean(booking.value?.details?.roomBookings))
+  const isEmptyRoomsGuests = computed<boolean>(() => Boolean(booking.value?.details?.roomBookings.find((room: HotelRoomBooking) => room.guestIds.length === 0)))
+  const isEmptyRooms = computed<boolean>(() => booking.value?.details?.roomBookings.length === 0)
 
   const existCars = computed<boolean>(() => Boolean(booking.value?.details?.carBids))
   const isEmptyCars = computed<boolean>(() => Boolean(booking.value?.details?.carBids?.length === 0))
@@ -44,6 +63,16 @@ export const useBookingStore = defineStore('booking', () => {
     isStatusUpdateFetching.value = true
     updateStatusPayload.status = status
     const { data: updateStatusResponse } = await updateBookingStatus(updateStatusPayload)
+    if (updateStatusResponse.value?.isNotConfirmedReasonRequired && isHotelBooking) {
+      const { result: isConfirmed, reason, toggleClose } = await showNotConfirmedReasonDialog()
+      if (isConfirmed) {
+        updateStatusPayload.notConfirmedReason = reason
+        toggleClose()
+        await changeStatus(status)
+        updateStatusPayload.notConfirmedReason = undefined
+        return
+      }
+    }
     if (updateStatusResponse.value?.isCancelFeeAmountRequired) {
       const { result: isConfirmed, clientCancelFeeAmount, cancelFeeAmount, toggleClose } = await showCancelFeeDialog(true)
       if (isConfirmed) {
@@ -61,6 +90,11 @@ export const useBookingStore = defineStore('booking', () => {
       fetchAvailableActions(),
     ])
     isStatusUpdateFetching.value = false
+  }
+
+  const recalculatePrice = async () => {
+    await recalculateBookingPrice()
+    fetchBooking()
   }
 
   const copy = async () => {
@@ -83,6 +117,7 @@ export const useBookingStore = defineStore('booking', () => {
   }
 
   onMounted(() => {
+    fetchMarkupSettings()
     fetchStatuses()
     fetchBooking()
     fetchAvailableActions()
@@ -92,6 +127,7 @@ export const useBookingStore = defineStore('booking', () => {
     booking,
     bookingManagerId,
     fetchBooking,
+    markupSettings,
     availableActions,
     fetchAvailableActions,
     isAvailableActionsFetching,
@@ -103,6 +139,11 @@ export const useBookingStore = defineStore('booking', () => {
     isEmptyCars,
     existGuests,
     isEmptyGuests,
+    existRooms,
+    isEmptyRoomsGuests,
+    isEmptyRooms,
+    isRecalculateBookingPrice,
+    recalculatePrice,
     copy,
     updateNote,
     updateManager,

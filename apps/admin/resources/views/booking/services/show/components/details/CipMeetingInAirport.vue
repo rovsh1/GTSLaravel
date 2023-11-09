@@ -6,12 +6,12 @@ import { MaybeRef } from '@vueuse/core'
 import { z } from 'zod'
 
 import { BookingCipMeetingInAirportDetails } from '~resources/views/booking/services/show/components/details/lib/types'
-import { useBookingStore } from '~resources/views/booking/services/show/store/booking'
 import GuestModal from '~resources/views/booking/shared/components/GuestModal.vue'
 import GuestsTable from '~resources/views/booking/shared/components/GuestsTable.vue'
 import InfoBlock from '~resources/views/booking/shared/components/InfoBlock/InfoBlock.vue'
 import InfoBlockTitle from '~resources/views/booking/shared/components/InfoBlock/InfoBlockTitle.vue'
 import { GuestFormData } from '~resources/views/booking/shared/lib/data-types'
+import { useBookingStore } from '~resources/views/booking/shared/store/booking'
 import { useOrderStore } from '~resources/views/booking/shared/store/order'
 import { useEditableModal } from '~resources/views/hotel/settings/composables/editable-modal'
 

@@ -5,12 +5,12 @@ import { computed, MaybeRef, ref, unref, watch } from 'vue'
 import { z } from 'zod'
 
 import { BookingDayCarTripDetails } from '~resources/views/booking/services/show/components/details/lib/types'
-import { useBookingStore } from '~resources/views/booking/services/show/store/booking'
 import CarModal from '~resources/views/booking/shared/components/CarModal.vue'
 import CarsTable from '~resources/views/booking/shared/components/CarsTable.vue'
 import InfoBlock from '~resources/views/booking/shared/components/InfoBlock/InfoBlock.vue'
 import InfoBlockTitle from '~resources/views/booking/shared/components/InfoBlock/InfoBlockTitle.vue'
 import { CarFormData } from '~resources/views/booking/shared/lib/data-types'
+import { useBookingStore } from '~resources/views/booking/shared/store/booking'
 import { useEditableModal } from '~resources/views/hotel/settings/composables/editable-modal'
 
 import { CarBid } from '~api/booking/service'

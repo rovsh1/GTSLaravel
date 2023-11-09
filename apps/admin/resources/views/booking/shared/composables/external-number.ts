@@ -1,6 +1,6 @@
 import { computed, ref } from 'vue'
 
-import { useBookingStore } from '~resources/views/booking/hotel/show/store/booking'
+import { useBookingStore } from '~resources/views/booking/shared/store/booking'
 
 import { updateExternalNumber as updateExternalNumberRequest } from '~api/booking/hotel'
 import { ExternalNumber, ExternalNumberType, ExternalNumberTypeEnum } from '~api/booking/hotel/details'

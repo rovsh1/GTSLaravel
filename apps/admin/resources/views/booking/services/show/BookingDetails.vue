@@ -5,8 +5,8 @@ import { computed, defineAsyncComponent, nextTick, shallowRef } from 'vue'
 import { watchOnce } from '@vueuse/core'
 
 import { toPascalCase } from '~resources/js/libs/strings'
-import { useBookingStore } from '~resources/views/booking/services/show/store/booking'
 import ErrorComponent from '~resources/views/booking/shared/components/ErrorComponent.vue'
+import { useBookingStore } from '~resources/views/booking/shared/store/booking'
 
 import { useGetBookingDetailsTypesAPI } from '~api/booking/service'
 

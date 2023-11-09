@@ -3,8 +3,8 @@
 import { computed } from 'vue'
 
 import { BookingOtherDetails } from '~resources/views/booking/services/show/components/details/lib/types'
-import { useBookingStore } from '~resources/views/booking/services/show/store/booking'
 import InfoBlock from '~resources/views/booking/shared/components/InfoBlock/InfoBlock.vue'
+import { useBookingStore } from '~resources/views/booking/shared/store/booking'
 
 import EditableTextInput from '~components/Editable/EditableTextInput.vue'
 
