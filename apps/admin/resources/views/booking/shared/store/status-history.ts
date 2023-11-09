@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import { defineStore } from 'pinia'
 import { z } from 'zod'
 
-import { BookingStatusHistoryResponse, useBookingStatusHistoryAPI } from '~api/booking/service/status'
+import { BookingStatusHistoryResponse, useBookingStatusHistoryAPI } from '~api/booking/status'
 
 import { isInitialDataExists, requestInitialData, ViewInitialDataKey } from '~lib/initial-data'
 

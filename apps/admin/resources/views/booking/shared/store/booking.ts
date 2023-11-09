@@ -16,7 +16,7 @@ import {
   useGetBookingAPI,
 } from '~api/booking/service'
 import { useRecalculateBookingPriceAPI } from '~api/booking/service/price'
-import { useBookingAvailableActionsAPI, useBookingStatusesAPI } from '~api/booking/service/status'
+import { useBookingAvailableActionsAPI, useBookingStatusesAPI } from '~api/booking/status'
 import { useHotelMarkupSettingsAPI } from '~api/hotel/markup-settings'
 
 import { isInitialDataExists, requestInitialData, ViewInitialDataKey } from '~lib/initial-data'

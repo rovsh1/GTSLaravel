@@ -8,7 +8,7 @@ import { externalNumberTypeOptions } from '~resources/views/booking/shared/lib/c
 import { useBookingStore } from '~resources/views/booking/shared/store/booking'
 
 import { ExternalNumberType, ExternalNumberTypeEnum } from '~api/booking/hotel/details'
-import { BookingAvailableActionsResponse } from '~api/booking/hotel/status'
+import { BookingAvailableActionsResponse } from '~api/booking/status'
 
 import { requestInitialData } from '~lib/initial-data'
 

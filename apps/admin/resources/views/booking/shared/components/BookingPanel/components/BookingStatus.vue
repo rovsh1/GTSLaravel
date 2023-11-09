@@ -8,8 +8,8 @@ import { useExternalNumber } from '~resources/views/booking/shared/composables/e
 import { useBookingStore } from '~resources/views/booking/shared/store/booking'
 import { useBookingStatusHistoryStore } from '~resources/views/booking/shared/store/status-history'
 
-import { BookingAvailableActionsResponse } from '~api/booking/hotel/status'
 import { BookingStatusResponse } from '~api/booking/models'
+import { BookingAvailableActionsResponse } from '~api/booking/status'
 
 import { isInitialDataExists, requestInitialData, ViewInitialDataKey } from '~lib/initial-data'
 

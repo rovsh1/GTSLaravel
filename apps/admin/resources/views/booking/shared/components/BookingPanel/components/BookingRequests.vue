@@ -10,8 +10,8 @@ import { useBookingStore } from '~resources/views/booking/shared/store/booking'
 import { useBookingRequestStore } from '~resources/views/booking/shared/store/request'
 import { useBookingStatusHistoryStore } from '~resources/views/booking/shared/store/status-history'
 
-import { BookingRequest } from '~api/booking/hotel/request'
-import { BookingAvailableActionsResponse } from '~api/booking/hotel/status'
+import { BookingRequest } from '~api/booking/request'
+import { BookingAvailableActionsResponse } from '~api/booking/status'
 
 import { formatDateTime } from '~lib/date'
 import { isInitialDataExists, requestInitialData, ViewInitialDataKey } from '~lib/initial-data'

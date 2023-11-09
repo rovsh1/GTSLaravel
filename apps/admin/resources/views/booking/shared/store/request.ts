@@ -3,8 +3,8 @@ import { onMounted, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { z } from 'zod'
 
-import { downloadDocument as downloadDocumentRequest } from '~api/booking/service/document'
-import { sendBookingRequest, useBookingRequestListAPI } from '~api/booking/service/request'
+import { downloadDocument as downloadDocumentRequest } from '~api/booking/document'
+import { sendBookingRequest, useBookingRequestListAPI } from '~api/booking/request'
 
 import { showConfirmDialog } from '~lib/confirm-dialog'
 import { isInitialDataExists, requestInitialData, ViewInitialDataKey } from '~lib/initial-data'
