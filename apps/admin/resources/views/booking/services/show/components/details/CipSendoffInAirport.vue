@@ -177,7 +177,7 @@ const handleChangeDetails = async (field: string, value: any) => {
 
     <InfoBlock>
       <template #header>
-        <div class="d-flex gap-1">
+        <div class="d-flex gap-1 align-items-center">
           <InfoBlockTitle title="Список гостей" />
           <IconButton v-if="isEditableStatus" icon="add" @click="openAddGuestModal" />
         </div>

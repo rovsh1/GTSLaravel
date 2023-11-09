@@ -298,7 +298,7 @@ onMounted(() => {
 
   <div class="mt-3" />
   <BootstrapCard v-for="room in bookingDetails?.roomBookings" :key="room.id">
-    <div class="d-flex align-items-center">
+    <div class="d-flex align-items-start">
       <BootstrapCardTitle class="mr-4" :title="room.roomInfo.name" />
       <div class="pt-card-title">
         <EditTableRowButton
@@ -381,7 +381,7 @@ onMounted(() => {
 
       <InfoBlock>
         <template #header>
-          <div class="d-flex gap-1">
+          <div class="d-flex gap-1 align-items-center">
             <InfoBlockTitle title="Список гостей" />
             <IconButton
               v-if="isEditableStatus && (room.roomInfo.guestsCount && room.guestIds.length < room.roomInfo.guestsCount)"
@@ -495,6 +495,7 @@ onMounted(() => {
 }
 
 .pt-card-title {
+  margin-top: 0.85rem;
   padding-top: 0;
 }
 </style>
