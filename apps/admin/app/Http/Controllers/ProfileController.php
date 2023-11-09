@@ -9,14 +9,12 @@ use App\Shared\Http\Responses\AjaxReloadResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
-use Module\Booking\Application\Admin\Booking\UseCase\TestUseCase;
 use Module\Shared\Contracts\Adapter\FileStorageAdapterInterface;
 
 class ProfileController extends Controller
 {
     public function index()
     {
-        app(TestUseCase::class)->execute();
         $user = Auth::user();
         $valueEmpty = '<i class="value-empty">Не указано</i>';
 

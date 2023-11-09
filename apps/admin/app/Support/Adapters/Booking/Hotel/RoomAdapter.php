@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Adapters\Booking\Hotel;
 
-use Module\Booking\Moderation\Application\Dto\AddRoomDto;
-use Module\Booking\Moderation\Application\Dto\UpdateRoomDto;
+use Module\Booking\Moderation\Application\RequestDto\AddRoomRequestDto;
+use Module\Booking\Moderation\Application\RequestDto\UpdateRoomRequestDto;
 use Module\Booking\Moderation\Application\UseCase\HotelBooking\Room\Add;
 use Module\Booking\Moderation\Application\UseCase\HotelBooking\Room\Delete;
 use Module\Booking\Moderation\Application\UseCase\HotelBooking\Room\GetAvailableRooms;
@@ -33,7 +33,7 @@ class RoomAdapter
     ): void {
         //TODO use AddRoom name
         app(Add::class)->execute(
-            new AddRoomDto(
+            new AddRoomRequestDto(
                 bookingId: $bookingId,
                 roomId: $roomId,
                 rateId: $rateId,
@@ -58,7 +58,7 @@ class RoomAdapter
         ?int $discount = null
     ): void {
         app(Update::class)->execute(
-            new UpdateRoomDto(
+            new UpdateRoomRequestDto(
                 bookingId: $bookingId,
                 roomBookingId: $roomBookingId,
                 roomId: $roomId,

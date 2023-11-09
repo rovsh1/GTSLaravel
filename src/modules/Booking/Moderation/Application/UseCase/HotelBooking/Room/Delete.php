@@ -4,34 +4,33 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\UseCase\HotelBooking\Room;
 
-use Module\Booking\Moderation\Domain\Booking\Service\HotelBooking\RoomUpdater\RoomUpdater;
+use Module\Booking\Shared\Domain\Booking\Event\HotelBooking\RoomDeleted;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\Repository\Details\HotelBookingRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Repository\RoomBookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomBookingId;
+use Module\Shared\Contracts\Service\SafeExecutorInterface;
+use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
-use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
-class Delete implements UseCaseInterface
+final class Delete implements UseCaseInterface
 {
     public function __construct(
-        private readonly RoomUpdater $roomUpdater,
         private readonly BookingRepositoryInterface $bookingRepository,
-        private readonly HotelBookingRepositoryInterface $detailsRepository,
+        private readonly RoomBookingRepositoryInterface $roomBookingRepository,
+        private readonly DomainEventDispatcherInterface $eventDispatcher,
+        private readonly SafeExecutorInterface $executor,
     ) {
     }
 
     public function execute(int $bookingId, int $roomBookingId): void
     {
-        $booking = $this->bookingRepository->find(new BookingId($bookingId));
-        if ($booking === null) {
-            throw new EntityNotFoundException('Booking not found');
-        }
-        $details = $this->detailsRepository->find($booking->id());
-        $this->roomUpdater->delete(
-            $booking,
-            $details,
-            new RoomBookingId($roomBookingId)
-        );
+        $booking = $this->bookingRepository->findOrFail(new BookingId($bookingId));
+
+        $this->executor->execute(function () use ($booking, $roomBookingId) {
+            $roomBookingId = new RoomBookingId($roomBookingId);
+            $this->roomBookingRepository->delete($roomBookingId);
+            $this->eventDispatcher->dispatch(new RoomDeleted($booking, $roomBookingId));
+        });
     }
 }

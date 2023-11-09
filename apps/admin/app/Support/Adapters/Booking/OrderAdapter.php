@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Adapters\Booking;
 
-use Module\Booking\Moderation\Application\Dto\AddGuestDto;
 use Module\Booking\Moderation\Application\Dto\GuestDto;
 use Module\Booking\Moderation\Application\Dto\OrderAvailableActionsDto;
 use Module\Booking\Moderation\Application\Dto\OrderDto;
 use Module\Booking\Moderation\Application\Dto\UpdateGuestDto;
+use Module\Booking\Moderation\Application\RequestDto\AddGuestRequestDto;
 use Module\Booking\Moderation\Application\UseCase\Order\GetActiveOrders;
 use Module\Booking\Moderation\Application\UseCase\Order\GetAvailableActions;
 use Module\Booking\Moderation\Application\UseCase\Order\GetOrder;
@@ -41,7 +41,7 @@ class OrderAdapter
         int|null $age
     ): GuestDto {
         return app(Add::class)->execute(
-            new AddGuestDto(
+            new AddGuestRequestDto(
                 orderId: $orderId,
                 fullName: $fullName,
                 countryId: $countryId,

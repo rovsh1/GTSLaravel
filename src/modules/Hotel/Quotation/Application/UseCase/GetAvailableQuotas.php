@@ -6,14 +6,13 @@ namespace Module\Hotel\Quotation\Application\UseCase;
 
 use Carbon\CarbonPeriod;
 use Module\Hotel\Quotation\Application\Dto\QuotaDto;
-use Module\Hotel\Quotation\Application\Service\RoomQuotaMapper;
-use Module\Hotel\Quotation\Domain\Repository\RoomQuotaRepositoryInterface;
+use Module\Hotel\Quotation\Application\Service\QuotaFetcher;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class GetAvailableQuotas implements UseCaseInterface
 {
     public function __construct(
-        private readonly RoomQuotaRepositoryInterface $quotaRepository
+        private readonly QuotaFetcher $quotaFetcher
     ) {
     }
 
@@ -25,8 +24,6 @@ class GetAvailableQuotas implements UseCaseInterface
      */
     public function execute(int $hotelId, CarbonPeriod $period, ?int $roomId): array
     {
-        $quotas = $this->quotaRepository->getAvailable($hotelId, $period, $roomId);
-
-        return (new RoomQuotaMapper())->collectionToDto($quotas);
+        return $this->quotaFetcher->getAvailable($hotelId, $period, $roomId);
     }
 }

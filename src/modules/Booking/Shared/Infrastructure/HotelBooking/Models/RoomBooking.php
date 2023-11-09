@@ -7,7 +7,7 @@ namespace Module\Booking\Shared\Infrastructure\HotelBooking\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Module\Booking\Shared\Infrastructure\HotelBooking\Models\Room\Guest;
+use Module\Booking\Shared\Infrastructure\Order\Models\Guest;
 use Sdk\Module\Database\Eloquent\Model;
 
 class RoomBooking extends Model

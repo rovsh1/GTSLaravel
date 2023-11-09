@@ -6,7 +6,7 @@ namespace Module\Hotel\Pricing\Application\Dto;
 
 use Module\Shared\Enum\CurrencyEnum;
 
-class CalculatedHotelRoomsPricesDto
+final class CalculatedHotelRoomsPricesDto
 {
     /**
      * @param RoomCalculationResultDto[] $rooms

@@ -34,7 +34,7 @@ class RoomBookingRepository implements RoomBookingRepositoryInterface
     {
         $entity = $this->find($id);
         if ($entity === null) {
-            throw new EntityNotFoundException('Room booking not found');
+            throw new EntityNotFoundException("Room booking [$id] not found");
         }
 
         return $entity;

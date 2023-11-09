@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\UseCase\Order\Guest;
 
-use Module\Booking\Moderation\Application\Dto\AddGuestDto;
 use Module\Booking\Moderation\Application\Dto\GuestDto;
+use Module\Booking\Moderation\Application\RequestDto\AddGuestRequestDto;
 use Module\Booking\Shared\Domain\Guest\Event\GuestCreated;
 use Module\Booking\Shared\Domain\Guest\Repository\GuestRepositoryInterface;
 use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
@@ -20,7 +20,7 @@ class Add implements UseCaseInterface
         private readonly DomainEventDispatcherInterface $eventDispatcher,
     ) {}
 
-    public function execute(AddGuestDto $request): GuestDto
+    public function execute(AddGuestRequestDto $request): GuestDto
     {
         $guest = $this->guestRepository->create(
             orderId: new OrderId($request->orderId),

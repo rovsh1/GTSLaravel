@@ -3,7 +3,7 @@
 namespace Module\Integration\Traveline\Infrastructure\Adapter;
 
 use Carbon\CarbonPeriod;
-use Module\Hotel\Quotation\Application\UseCase\UpdateRoomQuota;
+use Module\Hotel\Quotation\Application\UseCase\UpdateQuota;
 use Module\Integration\Traveline\Domain\Adapter\HotelAdapterInterface;
 use Module\Shared\Infrastructure\Adapter\AbstractModuleAdapter;
 
@@ -21,7 +21,7 @@ class HotelAdapter extends AbstractModuleAdapter implements HotelAdapterInterfac
 
     public function updateRoomQuota(CarbonPeriod $period, int $roomId, int $quota)
     {
-        return app(UpdateRoomQuota::class)->execute($roomId, $period, $quota);
+        return app(UpdateQuota::class)->execute($roomId, $period, $quota);
     }
 
     public function updateRoomPrice(

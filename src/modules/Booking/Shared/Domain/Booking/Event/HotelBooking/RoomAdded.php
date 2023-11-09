@@ -7,7 +7,7 @@ use Module\Booking\Shared\Domain\Booking\Entity\HotelRoomBooking;
 use Module\Booking\Shared\Domain\Booking\Event\PriceBecomeDeprecatedEventInterface;
 use Module\Booking\Shared\Domain\Shared\Event\AbstractBookingEvent;
 
-class RoomAdded extends AbstractBookingEvent implements PriceBecomeDeprecatedEventInterface
+class RoomAdded extends AbstractBookingEvent implements PriceBecomeDeprecatedEventInterface, QuotaChangedEventInterface
 {
     public function __construct(
         Booking $booking,

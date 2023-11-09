@@ -4,14 +4,14 @@ namespace App\Admin\Support\Adapters\Hotel;
 
 use Carbon\CarbonInterface;
 use Carbon\CarbonPeriod;
-use Module\Hotel\Quotation\Application\UseCase\CloseRoomQuota;
+use Module\Hotel\Quotation\Application\UseCase\CloseQuota;
 use Module\Hotel\Quotation\Application\UseCase\GetAvailableQuotas;
 use Module\Hotel\Quotation\Application\UseCase\GetQuotas;
 use Module\Hotel\Quotation\Application\UseCase\GetSoldQuotas;
-use Module\Hotel\Quotation\Application\UseCase\GetStoppedQuotas;
-use Module\Hotel\Quotation\Application\UseCase\OpenRoomQuota;
-use Module\Hotel\Quotation\Application\UseCase\ResetRoomQuota;
-use Module\Hotel\Quotation\Application\UseCase\UpdateRoomQuota;
+use Module\Hotel\Quotation\Application\UseCase\GetClosedQuotas;
+use Module\Hotel\Quotation\Application\UseCase\OpenQuota;
+use Module\Hotel\Quotation\Application\UseCase\ResetQuota;
+use Module\Hotel\Quotation\Application\UseCase\UpdateQuota;
 
 class QuotaAdapter
 {
@@ -32,27 +32,27 @@ class QuotaAdapter
 
     public function getStoppedQuotas(int $hotelId, CarbonPeriod $period, ?int $roomId = null): array
     {
-        return app(GetStoppedQuotas::class)->execute($hotelId, $period, $roomId);
+        return app(GetClosedQuotas::class)->execute($hotelId, $period, $roomId);
     }
 
     public function updateRoomQuota(int $roomId, CarbonInterface $date, ?int $count, ?int $releaseDays = null): void
     {
-        app(UpdateRoomQuota::class)->execute($roomId, $this->getPeriodByDate($date), $count, $releaseDays);
+        app(UpdateQuota::class)->execute($roomId, $this->getPeriodByDate($date), $count, $releaseDays);
     }
 
     public function openRoomQuota(int $roomId, CarbonInterface $date): void
     {
-        app(OpenRoomQuota::class)->execute($roomId, $this->getPeriodByDate($date));
+        app(OpenQuota::class)->execute($roomId, $this->getPeriodByDate($date));
     }
 
     public function closeRoomQuota(int $roomId, CarbonInterface $date): void
     {
-        app(CloseRoomQuota::class)->execute($roomId, $this->getPeriodByDate($date));
+        app(CloseQuota::class)->execute($roomId, $this->getPeriodByDate($date));
     }
 
     public function resetRoomQuota(int $roomId, CarbonInterface $date): void
     {
-        app(ResetRoomQuota::class)->execute($roomId, $this->getPeriodByDate($date));
+        app(ResetQuota::class)->execute($roomId, $this->getPeriodByDate($date));
     }
 
     private function getPeriodByDate(CarbonInterface $date): CarbonPeriod

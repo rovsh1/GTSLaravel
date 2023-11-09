@@ -4,50 +4,82 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\UseCase\HotelBooking\Room;
 
-use Module\Booking\Moderation\Application\Dto\UpdateRoomDto;
-use Module\Booking\Moderation\Application\Exception\BookingQuotaException;
-use Module\Booking\Moderation\Application\Exception\InvalidRoomClientResidencyException;
-use Module\Booking\Moderation\Application\Exception\NotFoundHotelRoomPriceException;
-use Module\Booking\Moderation\Application\Factory\RoomUpdaterDataHelperFactory;
-use Module\Booking\Moderation\Domain\Booking\Service\HotelBooking\RoomUpdater\RoomUpdater;
-use Module\Booking\Shared\Domain\Booking\Exception\HotelBooking\InvalidRoomResidency;
-use Module\Booking\Shared\Domain\Booking\Exception\HotelBooking\NotFoundHotelRoomPrice;
+use Module\Booking\Moderation\Application\RequestDto\UpdateRoomRequestDto;
+use Module\Booking\Moderation\Application\Service\AccommodationChecker;
+use Module\Booking\Moderation\Application\Service\RoomBookingFactory;
+use Module\Booking\Shared\Domain\Booking\Entity\HotelRoomBooking;
+use Module\Booking\Shared\Domain\Booking\Event\HotelBooking\RoomEdited;
+use Module\Booking\Shared\Domain\Booking\Event\HotelBooking\RoomReplaced;
+use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Repository\HotelBooking\BookingGuestRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\RoomBookingRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\Service\HotelBooking\QuotaManager\Exception\ClosedRoomDateQuota;
-use Module\Booking\Shared\Domain\Booking\Service\HotelBooking\QuotaManager\Exception\NotEnoughRoomDateQuota;
-use Module\Booking\Shared\Domain\Booking\Service\HotelBooking\QuotaManager\Exception\NotFoundRoomDateQuota;
+use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomBookingId;
-use Module\Shared\Exception\ApplicationException;
+use Module\Shared\Contracts\Service\SafeExecutorInterface;
+use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
-use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
-class Update implements UseCaseInterface
+final class Update implements UseCaseInterface
 {
     public function __construct(
-        private readonly RoomUpdater $roomUpdater,
-        private readonly RoomUpdaterDataHelperFactory $dataHelperFactory,
-        private readonly RoomBookingRepositoryInterface $roomBookingRepository
-    ) {}
+        private readonly BookingRepositoryInterface $bookingRepository,
+        private readonly RoomBookingFactory $roomBookingFactory,
+        private readonly AccommodationChecker $accommodationChecker,
+        private readonly RoomBookingRepositoryInterface $roomBookingRepository,
+        private readonly BookingGuestRepositoryInterface $bookingGuestRepository,
+        private readonly DomainEventDispatcherInterface $eventDispatcher,
+        private readonly SafeExecutorInterface $executor,
+    ) {
+    }
 
-    public function execute(UpdateRoomDto $request): void
+    public function execute(UpdateRoomRequestDto $requestDto): void
     {
-        $roomBooking = $this->roomBookingRepository->find(new RoomBookingId($request->roomBookingId));
-        if ($roomBooking === null) {
-            throw new EntityNotFoundException('Room booking not found');
+        $booking = $this->bookingRepository->findOrFail(new BookingId($requestDto->bookingId));
+        $currentRoomBooking = $this->roomBookingRepository->findOrFail(new RoomBookingId($requestDto->roomBookingId));
+
+        $this->accommodationChecker->validate(
+            orderId: $booking->orderId()->value(),
+            roomId: $requestDto->roomId,
+            rateId: $requestDto->rateId,
+            isResident: $requestDto->isResident,
+            guestsCount: $currentRoomBooking->guestIds()->count()
+        );
+
+        $this->roomBookingFactory->fromRequest($requestDto);
+
+        if ($currentRoomBooking->roomInfo()->id() === $requestDto->roomId) {
+            $this->doUpdate($booking, $currentRoomBooking);
+        } else {
+            $this->doReplace($booking, $currentRoomBooking);
         }
-        try {
-            $updateRoomDto = $this->dataHelperFactory->build($request, $roomBooking->guestIds(), $roomBooking->prices());
-            $this->roomUpdater->update($roomBooking->id(), $updateRoomDto);
-        } catch (InvalidRoomResidency $e) {
-            throw new InvalidRoomClientResidencyException($e);
-        } catch (NotFoundRoomDateQuota $e) {
-            throw new BookingQuotaException(ApplicationException::BOOKING_NOT_FOUND_ROOM_DATE_QUOTA, $e);
-        } catch (ClosedRoomDateQuota $e) {
-            throw new BookingQuotaException(ApplicationException::BOOKING_CLOSED_ROOM_DATE_QUOTA, $e);
-        } catch (NotEnoughRoomDateQuota $e) {
-            throw new BookingQuotaException(ApplicationException::BOOKING_NOT_ENOUGH_QUOTA, $e);
-        } catch (NotFoundHotelRoomPrice $e) {
-            throw new NotFoundHotelRoomPriceException($e);
+    }
+
+    private function doUpdate($booking, HotelRoomBooking $currentRoomBooking): void
+    {
+        $roomDetails = $this->roomBookingFactory->buildDetails();
+        if ($currentRoomBooking->details()->isEqual($roomDetails)) {
+            return;
         }
+
+        $currentRoomBooking->updateDetails($roomDetails);
+
+        $this->eventDispatcher->dispatch(new RoomEdited($booking, $currentRoomBooking));
+    }
+
+    private function doReplace($booking, HotelRoomBooking $beforeBoomBooking): void
+    {
+        $this->executor->execute(function () use ($booking, $beforeBoomBooking) {
+            $this->roomBookingRepository->delete($beforeBoomBooking->id());
+            $newRoomBooking = $this->roomBookingFactory->create($booking->id());
+            $maxGuestCount = $newRoomBooking->roomInfo()->guestsCount();
+            foreach ($beforeBoomBooking->guestIds() as $index => $guestId) {
+                if ($index + 1 > $maxGuestCount) {
+                    break;
+                }
+                $this->bookingGuestRepository->bind($newRoomBooking->id(), $guestId);
+            }
+
+            $this->eventDispatcher->dispatch(new RoomReplaced($booking, $newRoomBooking, $beforeBoomBooking));
+        });
     }
 }

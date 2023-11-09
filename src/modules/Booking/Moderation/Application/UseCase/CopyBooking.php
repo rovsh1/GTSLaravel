@@ -6,7 +6,7 @@ namespace Module\Booking\Moderation\Application\UseCase;
 
 use Carbon\CarbonPeriod;
 use Module\Booking\Moderation\Application\Service\DetailsEditor\DetailsEditorFactory;
-use Module\Booking\Shared\Domain\Adapter\AdministratorAdapterInterface;
+use Module\Booking\Moderation\Domain\Adapter\AdministratorAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
 use Module\Booking\Shared\Domain\Booking\Entity\ServiceDetailsInterface;
 use Module\Booking\Shared\Domain\Booking\Factory\DetailsRepositoryFactory;

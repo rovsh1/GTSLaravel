@@ -13,11 +13,9 @@ use Module\Booking\Shared\Domain\Booking\Repository\RoomBookingRepositoryInterfa
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomBookingId;
 use Module\Booking\Shared\Domain\Guest\ValueObject\GuestId;
-use Module\Shared\Contracts\Domain\DomainEntityExceptionInterface;
 use Module\Shared\Exception\ApplicationException;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
-use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
 class Bind implements UseCaseInterface
 {
@@ -27,19 +25,14 @@ class Bind implements UseCaseInterface
         private readonly RoomBookingRepositoryInterface $roomBookingRepository,
         private readonly HotelRoomAdapterInterface $hotelRoomAdapter,
         private readonly DomainEventDispatcherInterface $eventDispatcher
-    ) {}
+    ) {
+    }
 
     public function execute(int $bookingId, int $roomBookingId, int $guestId): void
     {
         try {
-            $booking = $this->bookingRepository->find(new BookingId($bookingId));
-            if ($booking === null) {
-                throw new EntityNotFoundException('Booking not found');
-            }
-            $roomBooking = $this->roomBookingRepository->find(new RoomBookingId($roomBookingId));
-            if ($roomBooking === null) {
-                throw new EntityNotFoundException('Room booking not found');
-            }
+            $booking = $this->bookingRepository->findOrFail(new BookingId($bookingId));
+            $roomBooking = $this->roomBookingRepository->findOrFail(new RoomBookingId($roomBookingId));
             $hotelRoomSettings = $this->hotelRoomAdapter->findById($roomBooking->roomInfo()->id());
             $expectedGuestCount = $roomBooking->guestIds()->count() + 1;
             //@todo перенести валидацию в сервис

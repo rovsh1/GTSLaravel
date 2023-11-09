@@ -22,7 +22,8 @@ class PriceCalculator
         private readonly RoomBookingPriceStorage $roomPricesStorage,
         private readonly CalculateHotelPriceRequestDtoBuilder $calculateHotelPriceRequestDtoBuilder,
         private readonly DomainEventDispatcherInterface $domainEventDispatcher,
-    ) {}
+    ) {
+    }
 
     public function calculate(Booking $booking): void
     {

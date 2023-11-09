@@ -25,10 +25,12 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\DetailsId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\BookingPeriod as HotelBookingPeriod;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\ExternalNumber;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\HotelInfo;
+use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomBookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomBookingIdCollection;
 use Module\Booking\Shared\Domain\Booking\ValueObject\RailwayStationId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
+use Module\Booking\Shared\Infrastructure\HotelBooking\Models\RoomBooking;
 use Module\Booking\Shared\Infrastructure\ServiceBooking\Models\Booking;
 use Module\Booking\Shared\Infrastructure\ServiceBooking\Models\Details\Airport;
 use Module\Booking\Shared\Infrastructure\ServiceBooking\Models\Details\Hotel;
@@ -75,12 +77,16 @@ class DetailsFactory
 
         $externalNumberData = $detailsData['externalNumber'] ?? null;
 
+        $roomIds = RoomBooking::where('booking_id', $details->bookingId())
+            ->pluck('id')
+            ->all();
+
         return new HotelBooking(
             id: new DetailsId($details->id),
             bookingId: new BookingId($details->bookingId()),
             hotelInfo: HotelInfo::fromData($detailsData['hotelInfo']),
             bookingPeriod: HotelBookingPeriod::fromData($detailsData['period']),
-            roomBookings: RoomBookingIdCollection::fromData($detailsData['room_booking_ids']),
+            roomBookings: new RoomBookingIdCollection(array_map(fn($id) => new RoomBookingId($id), $roomIds)),
             externalNumber: $externalNumberData ? ExternalNumber::fromData($externalNumberData) : null,
             quotaProcessingMethod: $details->quota_processing_method,
         );

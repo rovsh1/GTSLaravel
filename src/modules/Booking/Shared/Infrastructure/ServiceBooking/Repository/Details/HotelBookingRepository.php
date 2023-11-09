@@ -52,7 +52,6 @@ class HotelBookingRepository extends AbstractDetailsRepository implements HotelB
             'nights_count' => $bookingPeriod->nightsCount(),
             'quota_processing_method' => $quotaProcessingMethod,
             'data' => [
-                'room_booking_ids' => $roomBookings->toData(),
                 'hotelInfo' => $hotelInfo->toData(),
                 'period' => $bookingPeriod->toData(),
             ]
@@ -68,7 +67,6 @@ class HotelBookingRepository extends AbstractDetailsRepository implements HotelB
             'date_end' => $details->bookingPeriod()->dateTo(),
             'nights_count' => $details->bookingPeriod()->nightsCount(),
             'data' => [
-                'room_booking_ids' => $details->roomBookings()->toData(),
                 'hotelInfo' => $details->hotelInfo()->toData(),
                 'period' => $details->bookingPeriod()->toData(),
                 'externalNumber' => $details->externalNumber()?->toData(),

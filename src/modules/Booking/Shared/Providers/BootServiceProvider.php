@@ -2,9 +2,7 @@
 
 namespace Module\Booking\Shared\Providers;
 
-use Module\Booking\Shared\Domain\Adapter\AdministratorAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Adapter\PricingAdapterInterface;
-use Module\Booking\Shared\Infrastructure\Adapter\AdministratorAdapter;
 use Module\Booking\Shared\Infrastructure\Adapter\PricingAdapter;
 use Module\Booking\Shared\Providers\ServiceBooking\BootServiceProvider as ServiceBootProvider;
 use Sdk\Module\Support\ServiceProvider;
@@ -25,6 +23,5 @@ class BootServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->app->singleton(PricingAdapterInterface::class, PricingAdapter::class);
-        $this->app->singleton(AdministratorAdapterInterface::class, AdministratorAdapter::class);
     }
 }

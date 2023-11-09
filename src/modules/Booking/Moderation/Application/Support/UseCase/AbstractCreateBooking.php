@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Application\Support\UseCase;
 
 use Module\Booking\Moderation\Application\RequestDto\CreateBookingRequestDto;
-use Module\Booking\Shared\Domain\Adapter\AdministratorAdapterInterface;
+use Module\Booking\Moderation\Domain\Adapter\AdministratorAdapterInterface;
 use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
 use Module\Booking\Shared\Domain\Order\ValueObject\ClientId;
 use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;

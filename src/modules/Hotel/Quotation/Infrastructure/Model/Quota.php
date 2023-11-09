@@ -6,6 +6,7 @@ use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Module\Hotel\Moderation\Infrastructure\Models\Room;
 use Module\Shared\Enum\Booking\QuotaChangeTypeEnum;
@@ -17,7 +18,7 @@ use Sdk\Module\Database\Eloquent\Model;
  *
  * @property int $id
  * @property int $room_id
- * @property \Illuminate\Support\Carbon $date
+ * @property Carbon $date
  * @property int $release_days
  * @property QuotaStatusEnum $status
  * @property int $count_total
@@ -25,23 +26,22 @@ use Sdk\Module\Database\Eloquent\Model;
  * @property int $count_reserved
  * @property int $count_available
  * @property-read Room|null $room
- * @method static \Illuminate\Database\Eloquent\Builder|Quota newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Quota newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Quota query()
- * @method static \Illuminate\Database\Eloquent\Builder|Quota whereCountTotal($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Quota whereCountReserved($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Quota whereCountAvailable($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Quota whereCountBooked($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Quota whereDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Quota whereRoomId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Quota whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Quota whereHotelId(int $hotelId)
- * @method static \Illuminate\Database\Eloquent\Builder|Quota whereSold()
- * @method static \Illuminate\Database\Eloquent\Builder|Quota whereStopped()
- * @method static \Illuminate\Database\Eloquent\Builder|Quota whereAvailable()
- * @method static \Illuminate\Database\Eloquent\Builder|Quota wherePeriod(CarbonPeriod $period)
- * @method static \Illuminate\Database\Eloquent\Builder|Quota withCountColumns()
- * @mixin \Eloquent
+ * @method static Builder|Quota newModelQuery()
+ * @method static Builder|Quota newQuery()
+ * @method static Builder|Quota query()
+ * @method static Builder|Quota whereCountTotal($value)
+ * @method static Builder|Quota whereCountReserved($value)
+ * @method static Builder|Quota whereCountAvailable($value)
+ * @method static Builder|Quota whereCountBooked($value)
+ * @method static Builder|Quota whereDate($value)
+ * @method static Builder|Quota whereRoomId($value)
+ * @method static Builder|Quota whereHotelId(int $hotelId, int $roomId = null)
+ * @method static Builder|Quota whereSold()
+ * @method static Builder|Quota whereClosed()
+ * @method static Builder|Quota whereHasAvailable(int $count = 0)
+ * @method static Builder|Quota wherePeriod(CarbonPeriod $period)
+ * @method static Builder|Quota withCountColumns()
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class Quota extends Model
 {
@@ -57,39 +57,36 @@ class Quota extends Model
         'count_total',//Общее кол-во квот которое вводит менеджер
     ];
 
+    protected $appends = [
+        'count_reserved',
+        'count_booked',
+        'count_available',
+    ];
+
     protected $attributes = [
         'status' => QuotaStatusEnum::OPEN,
     ];
 
-    protected $appends = [
-        'count_available',
-        'count_booked',
-        'count_reserved',
-    ];
-
     protected $casts = [
         'date' => 'date',
-        'status' => QuotaStatusEnum::class
+        'status' => QuotaStatusEnum::class,
+        'room_id' => 'int',
+        'release_days' => 'int',
+        'count_total' => 'int',
+        'count_reserved' => 'int',
+        'count_booked' => 'int',
+        'count_available' => 'int',
     ];
 
-    public function countAvailable(): Attribute
+    public static function batchUpdateStatus(int $roomId, CarbonPeriod $period, QuotaStatusEnum $status): void
     {
-        return Attribute::get(fn(int|null $val, array $attributes) => (int)($attributes['count_available'] ?? 0));
-    }
+        $updateData = array_map(fn($date) => [
+            'room_id' => $roomId,
+            'date' => $date,
+            'status' => $status
+        ], $period->toArray());
 
-    public function countBooked(): Attribute
-    {
-        return Attribute::get(fn(int|null $val, array $attributes) => (int)($attributes['count_booked'] ?? 0));
-    }
-
-    public function countReserved(): Attribute
-    {
-        return Attribute::get(fn(int|null $val, array $attributes) => (int)($attributes['count_reserved'] ?? 0));
-    }
-
-    public function room(): BelongsTo
-    {
-        return $this->belongsTo(Room::class);
+        Quota::upsert($updateData, ['date', 'room_id'], ['status']);
     }
 
     public function scopeWherePeriod(Builder $builder, CarbonPeriod $period): void
@@ -98,62 +95,98 @@ class Quota extends Model
             ->where('date', '<=', $period->getEndDate());
     }
 
-    public function scopeWhereHotelId(Builder $builder, int $hotelId): void
+    public function scopeWhereHotelId(Builder $builder, int $hotelId, int $roomId = null): void
     {
-        $builder->whereHas('room', function (Builder $query) use ($hotelId) {
-            $query->whereHotelId($hotelId);
-        });
+        if ($roomId) {
+            $builder->where('room_id', $roomId);
+        } else {
+            $builder->whereHas('room', function (Builder $query) use ($hotelId) {
+                $query->whereHotelId($hotelId);
+            });
+        }
     }
 
     public function scopeWhereSold(Builder $builder): void
     {
-        $builder->having('count_available', 0)
-            ->where('count_total', '>', 0);
+        $builder
+            ->where('count_total', '>', 0)
+            ->whereRaw('count_total <= (' . self::buildCountQuery() . ')');
     }
 
-    public function scopeWhereStopped(Builder $builder): void
+    public function scopeWhereOpened(Builder $builder): void
+    {
+        $builder->whereStatus(QuotaStatusEnum::OPEN);
+    }
+
+    public function scopeWhereClosed(Builder $builder): void
     {
         $builder->whereStatus(QuotaStatusEnum::CLOSE);
     }
 
-    public function scopeWhereAvailable(Builder $builder): void
+    public function scopeWhereHasAvailable(Builder $builder, int $count = 0): void
     {
-        $builder->whereStatus(QuotaStatusEnum::OPEN)
-            ->having('count_available', '>', 0);
+        $builder->whereRaw('(count_total - (' . self::buildCountQuery() . ') >= ?)', [$count]);
     }
 
     public function scopeWithCountColumns(Builder $builder): void
     {
-        $builder->addSelect('hotel_room_quota.*');
-        $this->addCountColumnsQuery(
-            $builder,
-            [QuotaChangeTypeEnum::RESERVED],
-            'count_reserved'
-        );
-        $this->addCountColumnsQuery(
-            $builder,
-            [QuotaChangeTypeEnum::BOOKED],
-            'count_booked'
-        );
-
-        $countSoldSubQuery = DB::table('booking_quota_reservation')
-            ->selectRaw('COALESCE(SUM(value), 0)')
-            ->whereColumn('hotel_room_quota.id', '=', 'booking_quota_reservation.quota_id')
-            ->whereIn('type', [QuotaChangeTypeEnum::RESERVED, QuotaChangeTypeEnum::BOOKED]);
-
-        $builder->addSelect(
-            DB::raw("(count_total - ({$countSoldSubQuery->toRawSql()})) as count_available"),
-        );
+        self::selectCountColumn($builder, QuotaChangeTypeEnum::RESERVED);
+        self::selectCountColumn($builder, QuotaChangeTypeEnum::BOOKED);
+        $builder->selectRaw('(hotel_room_quota.count_total - (' . self::buildCountQuery() . ')) as count_available');
     }
 
-    private function addCountColumnsQuery(Builder $builder, array $events, string $alias): Builder
+    private static function selectCountColumn(Builder $builder, QuotaChangeTypeEnum $type): void
     {
-        return $builder->selectSub(
-            DB::table('booking_quota_reservation')
-                ->selectRaw('COALESCE(SUM(value), 0)')
-                ->whereColumn('hotel_room_quota.id', '=', 'booking_quota_reservation.quota_id')
-                ->whereIn('type', $events),
-            $alias
+        $builder->selectRaw(
+            '(' . self::buildCountQuery(true) . ') as count_' . strtolower($type->name),
+            [QuotaChangeTypeEnum::RESERVED]
         );
     }
+
+    private static function buildCountQuery(bool $typeWhere = false): string
+    {
+        return 'SELECT COALESCE(SUM(value), 0)'
+            . ' FROM hotel_room_quota_booking'
+            . ' WHERE quota_id=hotel_room_quota.id'
+            . ($typeWhere ? ' AND type=?' : '');
+    }
+
+    public function room(): BelongsTo
+    {
+        return $this->belongsTo(Room::class);
+    }
+
+//    public function countAvailable(): Attribute
+//    {
+//        return Attribute::get(fn(int|null $val, array $attributes) => (int)($attributes['count_available'] ?? 0));
+//    }
+//
+//    public function countBooked(): Attribute
+//    {
+//        return Attribute::get(fn(int|null $val, array $attributes) => (int)($attributes['count_booked'] ?? 0));
+//    }
+//
+//    public function countReserved(): Attribute
+//    {
+//        return Attribute::get(fn(int|null $val, array $attributes) => (int)($attributes['count_reserved'] ?? 0));
+//    }
+
+//    public function recalculateCountColumns(): void
+//    {
+//        $this->update([
+//            'count_available' => $this->count_total
+//                - $this->calculateCount([QuotaChangeTypeEnum::RESERVED, QuotaChangeTypeEnum::BOOKED]),
+//            'count_reserved' => $this->calculateCount([QuotaChangeTypeEnum::RESERVED]),
+//            'count_booked' => $this->calculateCount([QuotaChangeTypeEnum::BOOKED]),
+//        ]);
+//    }
+//
+//    private function calculateCount(array $types): int
+//    {
+//        return DB::table('booking_quota_reservation')
+//            ->selectRaw('COALESCE(SUM(value), 0) as c')
+//            ->whereColumn('hotel_room_quota.id', '=', 'booking_quota_reservation.quota_id')
+//            ->whereIn('type', $types)
+//            ->value('c');
+//    }
 }
