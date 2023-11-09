@@ -6,7 +6,7 @@ namespace Module\Booking\Moderation\Application\Factory;
 
 use Module\Booking\Moderation\Application\Dto\StatusDto;
 use Module\Booking\Shared\Domain\Order\Service\OrderStatusStorageInterface;
-use Module\Shared\Enum\Booking\OrderStatusEnum;
+use Module\Shared\Enum\Order\OrderStatusEnum;
 
 class OrderStatusDtoFactory
 {

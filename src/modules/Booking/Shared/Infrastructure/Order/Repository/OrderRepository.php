@@ -13,8 +13,8 @@ use Module\Booking\Shared\Domain\Order\ValueObject\ClientId;
 use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
 use Module\Booking\Shared\Domain\Shared\ValueObject\CreatorId;
 use Module\Booking\Shared\Infrastructure\Order\Models\Order as Model;
-use Module\Shared\Enum\Booking\OrderStatusEnum;
 use Module\Shared\Enum\CurrencyEnum;
+use Module\Shared\Enum\Order\OrderStatusEnum;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
 class OrderRepository implements OrderRepositoryInterface
@@ -23,8 +23,12 @@ class OrderRepository implements OrderRepositoryInterface
         private readonly OrderFactory $factory
     ) {}
 
-    public function create(ClientId $clientId, CurrencyEnum $currency, CreatorId $creatorId, ?int $legalId = null): Order
-    {
+    public function create(
+        ClientId $clientId,
+        CurrencyEnum $currency,
+        CreatorId $creatorId,
+        ?int $legalId = null
+    ): Order {
         $model = Model::create([
             'status' => OrderStatusEnum::IN_PROGRESS,
             'client_id' => $clientId->value(),
@@ -61,12 +65,15 @@ class OrderRepository implements OrderRepositoryInterface
     /**
      * @return Order[]
      */
-    public function getActiveOrders(int|null $clientId): array
+    public function getActiveOrders(int|null $clientId, bool $isOnlyWaitingInvoice = false): array
     {
         $models = Model::query()
-            ->where(function (Builder $builder) use ($clientId) {
+            ->where(function (Builder $builder) use ($clientId, $isOnlyWaitingInvoice) {
                 if ($clientId !== null) {
                     $builder->whereClientId($clientId);
+                }
+                if ($isOnlyWaitingInvoice) {
+                    $builder->whereStatus(OrderStatusEnum::WAITING_INVOICE);
                 }
             })
             ->get()

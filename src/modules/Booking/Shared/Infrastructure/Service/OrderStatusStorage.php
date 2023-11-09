@@ -6,7 +6,7 @@ namespace Module\Booking\Shared\Infrastructure\Service;
 
 use Module\Booking\Shared\Domain\Order\Service\OrderStatusStorageInterface;
 use Module\Booking\Shared\Infrastructure\Models\StatusSettings;
-use Module\Shared\Enum\Booking\OrderStatusEnum;
+use Module\Shared\Enum\Order\OrderStatusEnum;
 
 class OrderStatusStorage implements OrderStatusStorageInterface
 {

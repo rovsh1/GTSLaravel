@@ -13,8 +13,8 @@ use Module\Booking\Shared\Domain\Order\ValueObject\LegalId;
 use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
 use Module\Booking\Shared\Domain\Shared\ValueObject\CreatorId;
 use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
-use Module\Shared\Enum\Booking\OrderStatusEnum;
 use Module\Shared\Enum\CurrencyEnum;
+use Module\Shared\Enum\Order\OrderStatusEnum;
 use Module\Shared\Enum\SourceEnum;
 use Sdk\Module\Foundation\Support\EntityFactory\AbstractEntityFactory;
 

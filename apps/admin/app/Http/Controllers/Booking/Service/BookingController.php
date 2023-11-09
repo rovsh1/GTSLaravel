@@ -97,6 +97,7 @@ class BookingController extends Controller
 
         $data = $form->getData();
         $creatorId = request()->user()->id;
+        $managerId = $data['manager_id'] ?? $creatorId;
         $orderId = $data['order_id'] ?? null;
         $currency = $data['currency'] ? CurrencyEnum::from($data['currency']) : null;
         if ($orderId !== null && $currency === null) {
@@ -112,12 +113,12 @@ class BookingController extends Controller
             legalId: $data['legal_id'],
             currency: $currency,
             serviceId: $data['service_id'],
+            managerId: $managerId,
             creatorId: $creatorId,
             orderId: $data['order_id'] ?? null,
             detailsData: $data,
             note: $data['note'] ?? null,
         );
-        $this->administratorRepository->create($bookingId, $creatorId);
 
         return redirect(
             route('service-booking.show', $bookingId)
@@ -159,7 +160,6 @@ class BookingController extends Controller
         $data = $form->getData();
         try {
             BookingAdapter::updateNote($id, $data['note'] ?? null);
-            $this->administratorRepository->update($id, $data['manager_id'] ?? request()->user()->id);
         } catch (ApplicationException $e) {
             $form->throwException($e);
         }

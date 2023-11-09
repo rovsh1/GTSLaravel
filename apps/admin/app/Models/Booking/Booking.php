@@ -8,6 +8,7 @@ use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Builder as Query;
 use Module\Shared\Enum\Booking\BookingStatusEnum;
+use Module\Shared\Enum\SourceEnum;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
 
 class Booking extends \Module\Booking\Shared\Infrastructure\ServiceBooking\Models\Booking
@@ -56,5 +57,10 @@ class Booking extends \Module\Booking\Shared\Infrastructure\ServiceBooking\Model
                 ->whereColumn('bookings.id', 'booking_hotel_rooms.booking_id')
                 ->where('hotel_room_id', $roomId);
         });
+    }
+
+    public function scopeWhereSource(Builder $builder, string|SourceEnum $source): void
+    {
+        $builder->where('bookings.source', $source);
     }
 }

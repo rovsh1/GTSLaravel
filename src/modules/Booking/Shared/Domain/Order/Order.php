@@ -12,8 +12,8 @@ use Module\Booking\Shared\Domain\Order\ValueObject\LegalId;
 use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
 use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Shared\Contracts\Domain\EntityInterface;
-use Module\Shared\Enum\Booking\OrderStatusEnum;
 use Module\Shared\Enum\CurrencyEnum;
+use Module\Shared\Enum\Order\OrderStatusEnum;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
 final class Order extends AbstractAggregateRoot implements EntityInterface

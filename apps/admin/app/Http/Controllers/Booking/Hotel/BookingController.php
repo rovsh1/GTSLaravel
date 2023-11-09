@@ -95,8 +95,6 @@ class BookingController extends Controller
 
     public function store(): RedirectResponse
     {
-        $creatorId = request()->user()->id;
-
         $form = $this->formFactory()
             ->method('post')
             ->failUrl($this->prototype->route('create'));
@@ -104,6 +102,8 @@ class BookingController extends Controller
         $form->trySubmit();
 
         $data = $form->getData();
+        $creatorId = request()->user()->id;
+        $managerId = $data['manager_id'] ?? $creatorId;
         $orderId = $data['order_id'] ?? null;
         $currency = $data['currency'] ? CurrencyEnum::from($data['currency']) : null;
         if ($orderId !== null && $currency === null) {
@@ -120,13 +120,12 @@ class BookingController extends Controller
                 legalId: $data['legal_id'],
                 currency: $currency ?? $client->currency,
                 hotelId: $data['hotel_id'],
+                managerId: $managerId,
                 creatorId: $creatorId,
                 orderId: $data['order_id'] ?? null,
                 detailsData: $data,
                 note: $data['note'] ?? null,
             );
-            $managerId = $data['manager_id'] ?? $creatorId;
-            $this->administratorRepository->create($bookingId, $managerId);
         } catch (ApplicationException $e) {
             $form->throwException($e);
         }

@@ -8,22 +8,6 @@ use App\Admin\Models\Administrator\Administrator;
 
 class BookingAdministratorRepository
 {
-    public function create(int $bookingId, int $administratorId): void
-    {
-        \DB::table('administrator_bookings')->insert([
-            'booking_id' => $bookingId,
-            'administrator_id' => $administratorId
-        ]);
-    }
-
-    public function update(int $bookingId, int $administratorId): void
-    {
-        \DB::table('administrator_bookings')->updateOrInsert(
-            ['booking_id' => $bookingId],
-            ['booking_id' => $bookingId, 'administrator_id' => $administratorId],
-        );
-    }
-
     public function get(int $bookingId): ?Administrator
     {
         return Administrator::query()

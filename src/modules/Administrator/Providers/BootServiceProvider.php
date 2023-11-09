@@ -10,6 +10,8 @@ class BootServiceProvider extends ServiceProvider
 {
     public $singletons = [
         Domain\Repository\AdministratorRepositoryInterface::class => Infrastructure\Repository\AdministratorRepository::class,
+        Domain\Repository\BookingAdministratorRepositoryInterface::class => Infrastructure\Repository\BookingAdministratorRepository::class,
+        Domain\Repository\OrderAdministratorRepositoryInterface::class => Infrastructure\Repository\OrderAdministratorRepository::class,
     ];
 
     public function boot()

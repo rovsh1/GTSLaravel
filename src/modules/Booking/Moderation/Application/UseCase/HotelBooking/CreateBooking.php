@@ -10,6 +10,7 @@ use Module\Booking\Moderation\Application\RequestDto\CreateBookingRequestDto;
 use Module\Booking\Moderation\Application\Service\DetailsEditor\DetailsEditorFactory;
 use Module\Booking\Moderation\Application\Support\UseCase\AbstractCreateBooking;
 use Module\Booking\Moderation\Domain\Booking\Service\HotelBooking\HotelValidator;
+use Module\Booking\Shared\Domain\Adapter\AdministratorAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPrices;
@@ -24,12 +25,13 @@ class CreateBooking extends AbstractCreateBooking
 {
     public function __construct(
         OrderRepositoryInterface $orderRepository,
+        AdministratorAdapterInterface $administratorAdapter,
         private readonly BookingRepositoryInterface $repository,
         private readonly HotelAdapterInterface $hotelAdapter,
         private readonly HotelValidator $hotelValidator,
         private readonly DetailsEditorFactory $detailsEditorFactory,
     ) {
-        parent::__construct($orderRepository);
+        parent::__construct($orderRepository, $administratorAdapter);
     }
 
     public function execute(CreateBookingRequestDto $request): int
@@ -59,6 +61,7 @@ class CreateBooking extends AbstractCreateBooking
         );
         $editor = $this->detailsEditorFactory->build($booking);
         $editor->create($booking->id(), new ServiceId($request->serviceId), $request->detailsData);
+        $this->administratorAdapter->setBookingAdministrator($booking->id(), $request->administratorId);
 
         return $booking->id()->value();
     }

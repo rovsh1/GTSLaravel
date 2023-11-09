@@ -8,6 +8,7 @@ use DateTime;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Module\Client\Domain\Invoice\ValueObject\InvoiceStatusEnum;
 use Sdk\Module\Database\Eloquent\Model;
 
 /**
@@ -22,6 +23,10 @@ class Invoice extends Model
 {
     protected $table = 'client_invoices';
 
+    protected $attributes = [
+        'status' => InvoiceStatusEnum::NOT_PAID,
+    ];
+
     protected $fillable = [
         'client_id',
         'status',
@@ -30,7 +35,7 @@ class Invoice extends Model
 
     protected $casts = [
         'client_id' => 'int',
-        'status' => 'int',
+        'status' => InvoiceStatusEnum::class,
     ];
 
     public function orderIds(): Collection

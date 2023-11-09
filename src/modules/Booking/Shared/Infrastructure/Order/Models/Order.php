@@ -6,8 +6,8 @@ namespace Module\Booking\Shared\Infrastructure\Order\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Module\Shared\Enum\Booking\OrderStatusEnum;
 use Module\Shared\Enum\CurrencyEnum;
+use Module\Shared\Enum\Order\OrderStatusEnum;
 use Module\Shared\Enum\SourceEnum;
 use Sdk\Module\Database\Eloquent\Model;
 
