@@ -4,7 +4,7 @@ import { computed, watch } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
 
-import { BookingStatusHistoryResponse } from '~api/booking/hotel/status'
+import { BookingStatusHistoryResponse } from '~api/booking/status'
 
 import { formatDateTime } from '~lib/date'
 

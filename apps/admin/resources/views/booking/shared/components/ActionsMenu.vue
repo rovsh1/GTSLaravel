@@ -4,12 +4,17 @@ import { computed } from 'vue'
 
 import { z } from 'zod'
 
-import { useBookingStore } from '~resources/views/booking/hotel/show/store/booking'
+import { useBookingStore } from '~resources/views/booking/shared/store/booking'
 
 import { useDeleteWithConfirm } from '~lib/delete-dialog'
-import { requestInitialData } from '~lib/initial-data'
+import { isInitialDataExists, requestInitialData, ViewInitialDataKey } from '~lib/initial-data'
 
-const { editUrl, deleteUrl } = requestInitialData('view-initial-data-hotel-booking', z.object({
+let initialDataKey: ViewInitialDataKey = 'view-initial-data-hotel-booking'
+if (isInitialDataExists('view-initial-data-service-booking')) {
+  initialDataKey = 'view-initial-data-service-booking'
+}
+
+const { editUrl, deleteUrl } = requestInitialData(initialDataKey, z.object({
   editUrl: z.string().nullable(),
   deleteUrl: z.string().nullable(),
 }))

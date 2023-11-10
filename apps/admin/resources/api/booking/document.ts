@@ -15,7 +15,7 @@ export interface DownloadDocumentRequest {
 const getDocumentFileInfo = (props: MaybeRef<DownloadDocumentRequest>) =>
   useAdminAPI(
     props,
-    ({ bookingID, documentID, documentType }) => `/hotel-booking/${bookingID}/${documentType}/${documentID}/file`,
+    ({ bookingID, documentID, documentType }) => `/service-booking/${bookingID}/${documentType}/${documentID}/file`,
     { immediate: true },
   )
     .get()

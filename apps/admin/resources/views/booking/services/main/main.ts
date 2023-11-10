@@ -1,9 +1,9 @@
 import axios from '~resources/js/app/api'
 import { getHumanRequestType } from '~resources/views/booking/shared/lib/constants'
 
-import { downloadDocument } from '~api/booking/service/document'
-import { BookingRequest } from '~api/booking/service/request'
-import { BookingAvailableActionsResponse } from '~api/booking/service/status'
+import { downloadDocument } from '~api/booking/document'
+import { BookingRequest } from '~api/booking/request'
+import { BookingAvailableActionsResponse } from '~api/booking/status'
 
 import { showConfirmDialog } from '~lib/confirm-dialog'
 import { formatDateTime } from '~lib/date'

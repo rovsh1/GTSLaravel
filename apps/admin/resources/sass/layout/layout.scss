@@ -75,3 +75,13 @@ main {
     font-size: 16px;
   }
 }
+
+.disable-border {
+  border: none;
+
+  .card-body {
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+  }
+}

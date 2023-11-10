@@ -38,7 +38,7 @@ defineEmits<{
   position: relative;
   display: flex;
   align-items: center;
-  margin-bottom: 0.625rem;
+  margin-bottom: 0;
   padding: 0.438rem 8.75rem 0.438rem 1rem;
   border-radius: 4px;
   color: black;

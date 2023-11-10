@@ -3,11 +3,16 @@ import { computed } from 'vue'
 import { defineStore } from 'pinia'
 import { z } from 'zod'
 
-import { BookingStatusHistoryResponse, useBookingStatusHistoryAPI } from '~api/booking/hotel/status'
+import { BookingStatusHistoryResponse, useBookingStatusHistoryAPI } from '~api/booking/status'
 
-import { requestInitialData } from '~lib/initial-data'
+import { isInitialDataExists, requestInitialData, ViewInitialDataKey } from '~lib/initial-data'
 
-const { bookingID } = requestInitialData('view-initial-data-hotel-booking', z.object({
+let initialDataKey: ViewInitialDataKey = 'view-initial-data-hotel-booking'
+if (isInitialDataExists('view-initial-data-service-booking')) {
+  initialDataKey = 'view-initial-data-service-booking'
+}
+
+const { bookingID } = requestInitialData(initialDataKey, z.object({
   bookingID: z.number(),
 }))
 
