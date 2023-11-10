@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Client\Invoicing\Application\UseCase\Document;
+namespace Module\Client\Moderation\Application\Admin\UseCase\Document;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
