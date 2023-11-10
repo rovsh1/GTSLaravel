@@ -54,28 +54,33 @@ onMounted(() => {
 const modalSettings = {
   add: {
     title: 'Добавление гостя',
-    handler: async (request: MaybeRef<Required<GuestFormData>>) => {
+    handler: async (request: MaybeRef<Required<GuestFormData>>): Promise<boolean> => {
+      let isSuccessesRequest = false
       const preparedRequest = unref(request)
       if (preparedRequest && preparedRequest.id !== undefined) {
         const payload = { bookingID, guestId: preparedRequest.id }
-        await addBookingGuest(payload)
+        const response = await addBookingGuest(payload)
+        isSuccessesRequest = response.data.value?.success || false
       } else {
         const payload = { airportBookingId: bookingID, ...preparedRequest }
         payload.orderId = orderId.value
-        await addOrderGuest(payload)
+        const response = await addOrderGuest(payload)
+        isSuccessesRequest = !!response.data.value?.id || false
       }
       await bookingStore.fetchBooking()
       await orderStore.fetchGuests()
+      return isSuccessesRequest
     },
   },
   edit: {
     title: 'Редактирование гостя',
-    handler: async (request: MaybeRef<Required<GuestFormData>>) => {
+    handler: async (request: MaybeRef<Required<GuestFormData>>): Promise<boolean> => {
       const preparedRequest = unref(request)
       const payload = { guestId: preparedRequest.id, ...preparedRequest }
       payload.orderId = orderId.value
-      await updateOrderGuest(payload)
+      const response = await updateOrderGuest(payload)
       await orderStore.fetchGuests()
+      return response.data.value?.success || false
     },
   },
 }

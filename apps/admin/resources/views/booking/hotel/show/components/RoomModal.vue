@@ -105,7 +105,7 @@ const handleChangeRoomId = (value: any) => {
   if (formData.value.id !== undefined) {
     roomRatesPayload.value.roomID = formData.value.id
     fetchRoomRates()
-    fetchRoomMarkupSettings()
+    // fetchRoomMarkupSettings()
   } else {
     formData.value.rateId = undefined
     formData.value.discount = undefined

@@ -53,14 +53,16 @@ type EditPayload = HotelMarkupSettingsUpdateProps
 const modalSettings = {
   add: {
     title: 'Добавить новое условие',
-    handler: async (request: MaybeRef<AddPayload>) => {
-      await addConditionHotelMarkupSettings(request)
+    handler: async (request: MaybeRef<AddPayload>): Promise<boolean> => {
+      const response = await addConditionHotelMarkupSettings(request)
+      return response.data.value?.success || false
     },
   },
   edit: {
     title: 'Изменение условия',
-    handler: async (request: MaybeRef<EditPayload>) => {
-      await updateConditionHotelMarkupSettings(request)
+    handler: async (request: MaybeRef<EditPayload>): Promise<boolean> => {
+      const response = await updateConditionHotelMarkupSettings(request)
+      return response.data.value?.success || false
     },
   },
 }

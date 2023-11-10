@@ -1,4 +1,4 @@
-import { computed, onMounted, reactive, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 import { defineStore } from 'pinia'
 import { z } from 'zod'
@@ -58,8 +58,8 @@ export const useBookingStore = defineStore('booking', () => {
   const existGuests = computed<boolean>(() => Boolean(booking.value?.details?.guestIds))
   const isEmptyGuests = computed<boolean>(() => Boolean(booking.value?.details?.guestIds.length === 0))
 
-  const updateStatusPayload = reactive<UpdateBookingStatusPayload>({ bookingID, notConfirmedReason: '' } as UpdateBookingStatusPayload)
   const changeStatus = async (status: number) => {
+    const updateStatusPayload = { bookingID, notConfirmedReason: '' } as UpdateBookingStatusPayload
     isStatusUpdateFetching.value = true
     updateStatusPayload.status = status
     const { data: updateStatusResponse } = await updateBookingStatus(updateStatusPayload)
@@ -68,8 +68,7 @@ export const useBookingStore = defineStore('booking', () => {
       if (isConfirmed) {
         updateStatusPayload.notConfirmedReason = reason
         toggleClose()
-        await changeStatus(status)
-        updateStatusPayload.notConfirmedReason = undefined
+        await updateBookingStatus(updateStatusPayload)
         return
       }
     }
@@ -79,9 +78,7 @@ export const useBookingStore = defineStore('booking', () => {
         updateStatusPayload.cancelFeeAmount = cancelFeeAmount
         updateStatusPayload.clientCancelFeeAmount = clientCancelFeeAmount
         toggleClose()
-        await changeStatus(status)
-        updateStatusPayload.cancelFeeAmount = undefined
-        updateStatusPayload.clientCancelFeeAmount = undefined
+        await updateBookingStatus(updateStatusPayload)
         return
       }
     }
