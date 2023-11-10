@@ -10,15 +10,8 @@ import BookingTotalAmount from '~resources/views/booking/shared/components/Booki
 import ControlPanelSection from '~resources/views/booking/shared/components/ControlPanelSection.vue'
 import { useBookingStore } from '~resources/views/booking/shared/store/booking'
 
-import { isInitialDataExists } from '~lib/initial-data'
-
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 import OverlayLoading from '~components/OverlayLoading.vue'
-
-let isHotelBooking = true
-if (isInitialDataExists('view-initial-data-service-booking')) {
-  isHotelBooking = false
-}
 
 const bookingStore = useBookingStore()
 const { recalculatePrice } = bookingStore
@@ -32,11 +25,14 @@ const { recalculatePrice } = bookingStore
     <BookingTotalAmount />
   </div>
 
-  <ControlPanelSection v-if="isHotelBooking" title="Тип номера подтверждения бронирования" class="mt-3 rounded shadow-lg p-4">
+  <ControlPanelSection
+    v-if="bookingStore.isHotelBooking"
+    title="Тип номера подтверждения бронирования"
+  >
     <BookingExternalNumberType />
   </ControlPanelSection>
 
-  <ControlPanelSection title="Финансовая стоимость брони" class="mt-3 rounded shadow-lg p-4">
+  <ControlPanelSection title="Финансовая стоимость брони">
     <OverlayLoading v-if="bookingStore.isRecalculateBookingPrice" />
     <template #actions>
       <BootstrapButton
@@ -51,11 +47,11 @@ const { recalculatePrice } = bookingStore
     <BookingFinancialCost />
   </ControlPanelSection>
 
-  <ControlPanelSection title="Запросы на бронирование услуги" class="mt-3 rounded shadow-lg p-4">
+  <ControlPanelSection title="Запросы на бронирование услуги">
     <BookingRequests />
   </ControlPanelSection>
 
-  <ControlPanelSection title="Условия отмены" class="mt-3 rounded shadow-lg p-4">
+  <ControlPanelSection title="Условия отмены">
     <BookingCancelConditions />
   </ControlPanelSection>
 </template>

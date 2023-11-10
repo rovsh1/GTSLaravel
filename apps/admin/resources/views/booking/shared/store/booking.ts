@@ -15,7 +15,7 @@ import {
   updateNote as executeUpdateNote,
   useGetBookingAPI,
 } from '~api/booking/service'
-import { useRecalculateBookingPriceAPI } from '~api/booking/service/price'
+import { UpdateBookingPrice, updateBookingPrice, useRecalculateBookingPriceAPI } from '~api/booking/service/price'
 import { useBookingAvailableActionsAPI, useBookingStatusesAPI } from '~api/booking/status'
 import { useHotelMarkupSettingsAPI } from '~api/hotel/markup-settings'
 
@@ -116,6 +116,14 @@ export const useBookingStore = defineStore('booking', () => {
     fetchBooking()
   }
 
+  const updatePrice = async (value: UpdateBookingPrice) => {
+    await updateBookingPrice({
+      bookingID,
+      ...value,
+    })
+    fetchBooking()
+  }
+
   onMounted(() => {
     fetchMarkupSettings()
     fetchStatuses()
@@ -125,6 +133,7 @@ export const useBookingStore = defineStore('booking', () => {
 
   return {
     booking,
+    isHotelBooking,
     bookingManagerId,
     fetchBooking,
     markupSettings,
@@ -144,6 +153,7 @@ export const useBookingStore = defineStore('booking', () => {
     isEmptyRooms,
     isRecalculateBookingPrice,
     recalculatePrice,
+    updatePrice,
     copy,
     updateNote,
     updateManager,

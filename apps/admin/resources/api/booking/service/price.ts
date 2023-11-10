@@ -7,12 +7,15 @@ import { UpdateBookingStatusResponse } from '~api/booking/hotel/index'
 
 import { getNullableRef } from '~lib/vue'
 
-export interface UpdateBookingPricePayload {
-  bookingID: number
+export type UpdateBookingPrice = {
   grossPrice?: number | null
   netPrice?: number | null
   grossPenalty?: number | null
   netPenalty?: number | null
+}
+
+export type UpdateBookingPricePayload = UpdateBookingPrice & {
+  bookingID: number
 }
 
 export const updateBookingPrice = (props: MaybeRef<UpdateBookingPricePayload>) =>

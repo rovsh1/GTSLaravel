@@ -5,7 +5,7 @@ defineProps<{
 </script>
 
 <template>
-  <div v-bind="$attrs" class="position-relative">
+  <div v-bind="$attrs" class="position-relative mt-3 rounded shadow-lg p-4">
     <div class="control-panel-section-title">
       <span>
         <h6>{{ title }}</h6>

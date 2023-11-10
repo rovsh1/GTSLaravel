@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { z } from 'zod'
-
 import StatusSelect from '~resources/views/booking/shared/components/StatusSelect.vue'
 import { useExternalNumber } from '~resources/views/booking/shared/composables/external-number'
 import { useBookingStore } from '~resources/views/booking/shared/store/booking'
@@ -10,19 +8,6 @@ import { useBookingStatusHistoryStore } from '~resources/views/booking/shared/st
 
 import { BookingStatusResponse } from '~api/booking/models'
 import { BookingAvailableActionsResponse } from '~api/booking/status'
-
-import { isInitialDataExists, requestInitialData, ViewInitialDataKey } from '~lib/initial-data'
-
-let isHotelBooking = true
-let initialDataKey: ViewInitialDataKey = 'view-initial-data-hotel-booking'
-if (isInitialDataExists('view-initial-data-service-booking')) {
-  isHotelBooking = false
-  initialDataKey = 'view-initial-data-service-booking'
-}
-
-const { bookingID } = requestInitialData(initialDataKey, z.object({
-  bookingID: z.number(),
-}))
 
 const statusHistoryStore = useBookingStatusHistoryStore()
 const { fetchStatusHistory } = statusHistoryStore
@@ -35,8 +20,8 @@ const isAvailableActionsFetching = computed<boolean>(() => bookingStore.isAvaila
 const isStatusUpdateFetching = computed(() => bookingStore.isStatusUpdateFetching)
 
 const handleStatusChange = async (value: number) => {
-  if (isHotelBooking) {
-    const { hideValidation } = useExternalNumber(bookingID)
+  if (bookingStore.isHotelBooking && bookingStore.booking) {
+    const { hideValidation } = useExternalNumber(bookingStore.booking.id)
     hideValidation()
   }
   await bookingStore.changeStatus(value)

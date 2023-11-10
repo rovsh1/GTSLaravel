@@ -2,7 +2,6 @@
 import { computed } from 'vue'
 
 import { useToggle } from '@vueuse/core'
-import { z } from 'zod'
 
 import { useCurrencyStore } from '~resources/store/currency'
 import AmountBlock from '~resources/views/booking/shared/components/AmountBlock.vue'
@@ -11,20 +10,9 @@ import { useBookingStore } from '~resources/views/booking/shared/store/booking'
 import { useBookingStatusHistoryStore } from '~resources/views/booking/shared/store/status-history'
 
 import { ProfitItem } from '~api/booking/models'
-import { updateBookingPrice } from '~api/booking/service/price'
 import { Currency } from '~api/models'
 
-import { isInitialDataExists, requestInitialData, ViewInitialDataKey } from '~lib/initial-data'
 import { formatPrice } from '~lib/price'
-
-let initialDataKey: ViewInitialDataKey = 'view-initial-data-hotel-booking'
-if (isInitialDataExists('view-initial-data-service-booking')) {
-  initialDataKey = 'view-initial-data-service-booking'
-}
-
-const { bookingID } = requestInitialData(initialDataKey, z.object({
-  bookingID: z.number(),
-}))
 
 const statusHistoryStore = useBookingStatusHistoryStore()
 
@@ -61,38 +49,30 @@ const getDisplayPriceValue = (type: 'client' | 'supplier') => {
 
 const handleSaveGrossManualPrice = async (value: number | undefined) => {
   toggleGrossPriceModal(false)
-  await updateBookingPrice({
-    bookingID,
+  await bookingStore.updatePrice({
     grossPrice: value,
   })
-  bookingStore.fetchBooking()
 }
 
 const handleSaveNetManualPrice = async (value: number | undefined) => {
   toggleNetPriceModal(false)
-  await updateBookingPrice({
-    bookingID,
+  await bookingStore.updatePrice({
     netPrice: value,
   })
-  bookingStore.fetchBooking()
 }
 
 const handleSaveBoPenalty = async (value: number | undefined) => {
   toggleGrossPenaltyModal(false)
-  await updateBookingPrice({
-    bookingID,
+  await bookingStore.updatePrice({
     grossPenalty: value,
   })
-  bookingStore.fetchBooking()
 }
 
 const handleSaveHoPenalty = async (value: number | undefined) => {
   toggleNetPenaltyModal(false)
-  await updateBookingPrice({
-    bookingID,
+  await bookingStore.updatePrice({
     netPenalty: value,
   })
-  bookingStore.fetchBooking()
 }
 </script>
 

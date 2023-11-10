@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { z } from 'zod'
-
 import RequestBlock from '~resources/views/booking/shared/components/RequestBlock.vue'
 import { useExternalNumber } from '~resources/views/booking/shared/composables/external-number'
 import { getHumanRequestType } from '~resources/views/booking/shared/lib/constants'
@@ -14,18 +12,6 @@ import { BookingRequest } from '~api/booking/request'
 import { BookingAvailableActionsResponse } from '~api/booking/status'
 
 import { formatDateTime } from '~lib/date'
-import { isInitialDataExists, requestInitialData, ViewInitialDataKey } from '~lib/initial-data'
-
-let isHotelBooking = true
-let initialDataKey: ViewInitialDataKey = 'view-initial-data-hotel-booking'
-if (isInitialDataExists('view-initial-data-service-booking')) {
-  isHotelBooking = false
-  initialDataKey = 'view-initial-data-service-booking'
-}
-
-const { bookingID } = requestInitialData(initialDataKey, z.object({
-  bookingID: z.number(),
-}))
 
 const statusHistoryStore = useBookingStatusHistoryStore()
 const { fetchStatusHistory } = statusHistoryStore
@@ -70,8 +56,8 @@ const requestableDataText = computed(() => {
 })
 
 const handleRequestSend = async () => {
-  if (isHotelBooking) {
-    const { hideValidation } = useExternalNumber(bookingID)
+  if (bookingStore.isHotelBooking && bookingStore.booking) {
+    const { hideValidation } = useExternalNumber(bookingStore.booking.id)
     hideValidation()
   }
   await requestStore.sendRequest()
