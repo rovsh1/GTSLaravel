@@ -6,26 +6,26 @@ namespace Module\Booking\Shared\Domain\Booking\Entity;
 
 use Module\Booking\Shared\Domain\Booking\Entity\Concerns\HasGuestIdCollectionTrait;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomBookingDetails;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomBookingId;
+use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationDetails;
+use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomInfo;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomPrices;
 use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
 
-final class HotelRoomBooking
+final class HotelAccommodation
 {
     use HasGuestIdCollectionTrait;
 
     public function __construct(
-        private readonly RoomBookingId $id,
+        private readonly AccommodationId $id,
         private readonly BookingId $bookingId,
         private readonly RoomInfo $roomInfo,
         private GuestIdCollection $guestIds,
-        private RoomBookingDetails $details,
+        private AccommodationDetails $details,
         private RoomPrices $prices,
     ) {}
 
-    public function id(): RoomBookingId
+    public function id(): AccommodationId
     {
         return $this->id;
     }
@@ -40,12 +40,12 @@ final class HotelRoomBooking
         return $this->roomInfo;
     }
 
-    public function details(): RoomBookingDetails
+    public function details(): AccommodationDetails
     {
         return $this->details;
     }
 
-    public function updateDetails(RoomBookingDetails $details): void
+    public function updateDetails(AccommodationDetails $details): void
     {
         $this->details = $details;
     }

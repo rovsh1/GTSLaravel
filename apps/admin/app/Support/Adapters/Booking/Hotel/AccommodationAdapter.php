@@ -4,24 +4,24 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Adapters\Booking\Hotel;
 
-use Module\Booking\Moderation\Application\RequestDto\AddRoomRequestDto;
+use Module\Booking\Moderation\Application\RequestDto\AddAccommodationRequestDto;
 use Module\Booking\Moderation\Application\RequestDto\UpdateRoomRequestDto;
-use Module\Booking\Moderation\Application\UseCase\HotelBooking\Room\Add;
-use Module\Booking\Moderation\Application\UseCase\HotelBooking\Room\Delete;
-use Module\Booking\Moderation\Application\UseCase\HotelBooking\Room\GetAvailableRooms;
-use Module\Booking\Moderation\Application\UseCase\HotelBooking\Room\Guest\Bind;
-use Module\Booking\Moderation\Application\UseCase\HotelBooking\Room\Guest\Unbind;
-use Module\Booking\Moderation\Application\UseCase\HotelBooking\Room\Update;
+use Module\Booking\Moderation\Application\UseCase\HotelBooking\Accommodation\Add;
+use Module\Booking\Moderation\Application\UseCase\HotelBooking\Accommodation\BindGuest;
+use Module\Booking\Moderation\Application\UseCase\HotelBooking\Accommodation\Delete;
+use Module\Booking\Moderation\Application\UseCase\HotelBooking\Accommodation\GetAvailableRooms;
+use Module\Booking\Moderation\Application\UseCase\HotelBooking\Accommodation\UnbindGuest;
+use Module\Booking\Moderation\Application\UseCase\HotelBooking\Accommodation\Update;
 use Module\Booking\Pricing\Application\UseCase\HotelBooking\SetRoomManualPrice;
 
-class RoomAdapter
+class AccommodationAdapter
 {
     public function getAvailableRooms(int $bookingId): array
     {
         return app(GetAvailableRooms::class)->execute($bookingId);
     }
 
-    public function addRoom(
+    public function add(
         int $bookingId,
         int $roomId,
         int $rateId,
@@ -33,7 +33,7 @@ class RoomAdapter
     ): void {
         //TODO use AddRoom name
         app(Add::class)->execute(
-            new AddRoomRequestDto(
+            new AddAccommodationRequestDto(
                 bookingId: $bookingId,
                 roomId: $roomId,
                 rateId: $rateId,
@@ -46,9 +46,9 @@ class RoomAdapter
         );
     }
 
-    public function updateRoom(
+    public function update(
         int $bookingId,
-        int $roomBookingId,
+        int $accommodationId,
         int $roomId,
         int $rateId,
         bool $isResident,
@@ -60,7 +60,7 @@ class RoomAdapter
         app(Update::class)->execute(
             new UpdateRoomRequestDto(
                 bookingId: $bookingId,
-                roomBookingId: $roomBookingId,
+                accommodationId: $accommodationId,
                 roomId: $roomId,
                 rateId: $rateId,
                 isResident: $isResident,
@@ -72,38 +72,38 @@ class RoomAdapter
         );
     }
 
-    public function deleteRoom(int $bookingId, int $roomBookingId): void
+    public function delete(int $bookingId, int $accommodationId): void
     {
         app(Delete::class)->execute(
             $bookingId,
-            $roomBookingId
+            $accommodationId
         );
     }
 
-    public function bindRoomGuest(int $bookingId, int $roomBookingId, int $guestId): void
+    public function bindGuest(int $bookingId, int $accommodationId, int $guestId): void
     {
-        app(Bind::class)->execute(
+        app(BindGuest::class)->execute(
             bookingId: $bookingId,
-            roomBookingId: $roomBookingId,
+            accommodationId: $accommodationId,
             guestId: $guestId
         );
     }
 
-    public function unbindRoomGuest(int $bookingId, int $roomBookingId, int $guestId): void
+    public function unbindGuest(int $bookingId, int $accommodationId, int $guestId): void
     {
-        app(Unbind::class)->execute(
+        app(UnbindGuest::class)->execute(
             bookingId: $bookingId,
-            roomBookingId: $roomBookingId,
+            accommodationId: $accommodationId,
             guestId: $guestId
         );
     }
 
-    public function updateRoomPrice(
+    public function updatePrice(
         int $bookingId,
-        int $roomBookingId,
+        int $accommodationId,
         float|null $supplierDayPrice,
         float|null $clientDayPrice
     ): void {
-        app(SetRoomManualPrice::class)->execute($bookingId, $roomBookingId, $supplierDayPrice, $clientDayPrice);
+        app(SetRoomManualPrice::class)->execute($bookingId, $accommodationId, $supplierDayPrice, $clientDayPrice);
     }
 }

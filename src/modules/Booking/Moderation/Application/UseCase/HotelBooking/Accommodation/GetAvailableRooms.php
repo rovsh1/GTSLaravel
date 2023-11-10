@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Moderation\Application\UseCase\HotelBooking\Room;
+namespace Module\Booking\Moderation\Application\UseCase\HotelBooking\Accommodation;
 
 use Carbon\CarbonPeriod;
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelRoomAdapterInterface;
@@ -33,6 +33,12 @@ class GetAvailableRooms implements UseCaseInterface
         if ($details->quotaProcessingMethod() !== QuotaProcessingMethodEnum::QUOTA) {
             return $rooms;
         }
+
+//        $alreadyBooked = [];
+//        foreach ($details->roomBookings() as $roomBooking) {
+//            $alreadyBooked[$roomBooking->] = 1;
+//        }
+
         $availableRooms = [];
         $period = CarbonPeriod::create($details->bookingPeriod()->dateFrom(), $details->bookingPeriod()->dateTo(), 'P1D');
         $countDays = $period->excludeEndDate()->count();

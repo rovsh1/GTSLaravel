@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\RequestDto;
 
-class AddRoomRequestDto
+class AddAccommodationRequestDto
 {
     public function __construct(
         public readonly int $bookingId,

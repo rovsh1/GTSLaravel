@@ -4,7 +4,7 @@ namespace Module\Support\MailManager\Infrastructure\Service\DataBuilder\Support;
 
 use Module\Booking\Application\Admin\HotelBooking\Dto\BookingDto;
 use Module\Booking\HotelBooking\Application\Dto\Details\RoomBooking\GuestDto;
-use Module\Booking\Moderation\Application\Dto\Details\RoomBookingDto;
+use Module\Booking\Moderation\Application\Dto\Details\AccommodationDto;
 use Module\Support\MailManager\Domain\Service\DataBuilder\DataDto\HotelBooking\BookingInfoDto;
 use Module\Support\MailManager\Domain\Service\DataBuilder\DataDto\HotelBooking\BookingRoomDto;
 
@@ -27,7 +27,7 @@ abstract class HotelBookingDtoFactory
 
     public static function makeRoomsArray(BookingDto $bookingDto): array
     {
-        return array_map(fn(RoomBookingDto $roomDto) => new BookingRoomDto(
+        return array_map(fn(AccommodationDto $roomDto) => new BookingRoomDto(
             roomId: $roomDto->roomInfo->id,
             name: $roomDto->roomInfo->name,
             checkinTime: null,

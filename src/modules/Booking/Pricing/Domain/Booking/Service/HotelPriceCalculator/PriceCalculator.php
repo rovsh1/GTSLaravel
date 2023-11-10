@@ -19,7 +19,7 @@ class PriceCalculator
         private readonly HotelPricingAdapterInterface $hotelPricingAdapter,
         private readonly BookingRepositoryInterface $bookingRepository,
         private readonly HotelBookingRepositoryInterface $bookingDetailsRepository,
-        private readonly RoomBookingPriceStorage $roomPricesStorage,
+        private readonly AccommodationPriceStorage $roomPricesStorage,
         private readonly CalculateHotelPriceRequestDtoBuilder $calculateHotelPriceRequestDtoBuilder,
         private readonly DomainEventDispatcherInterface $domainEventDispatcher,
     ) {

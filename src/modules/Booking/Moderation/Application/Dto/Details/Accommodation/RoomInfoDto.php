@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Moderation\Application\Dto\Details\RoomBooking;
+namespace Module\Booking\Moderation\Application\Dto\Details\Accommodation;
 
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomInfo;
 use Module\Shared\Contracts\Domain\EntityInterface;

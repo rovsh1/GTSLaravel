@@ -9,7 +9,7 @@ use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Module\Shared\Contracts\Support\SerializableDataInterface;
 use Module\Shared\ValueObject\Percent;
 
-class RoomBookingDetails implements ValueObjectInterface, SerializableDataInterface, CanEquate
+class AccommodationDetails implements ValueObjectInterface, SerializableDataInterface, CanEquate
 {
     public function __construct(
         private readonly int $rateId,
@@ -79,7 +79,7 @@ class RoomBookingDetails implements ValueObjectInterface, SerializableDataInterf
 
     public function isEqual(mixed $b): bool
     {
-        if ($b instanceof RoomBookingDetails) {
+        if ($b instanceof AccommodationDetails) {
             $isEarlyConditionsEqual = $this->earlyCheckIn === $b->earlyCheckIn;
             if ($this->earlyCheckIn !== null) {
                 $isEarlyConditionsEqual = $this->earlyCheckIn->isEqual($b->earlyCheckIn);

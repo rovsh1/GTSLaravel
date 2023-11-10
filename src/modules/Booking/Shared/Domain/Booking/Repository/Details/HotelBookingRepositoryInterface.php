@@ -8,7 +8,7 @@ use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\BookingPeriod;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\HotelInfo;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomBookingIdCollection;
+use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationIdCollection;
 use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 
 interface HotelBookingRepositoryInterface
@@ -21,7 +21,7 @@ interface HotelBookingRepositoryInterface
         BookingId $bookingId,
         HotelInfo $hotelInfo,
         BookingPeriod $bookingPeriod,
-        RoomBookingIdCollection $roomBookings,
+        AccommodationIdCollection $accommodations,
         QuotaProcessingMethodEnum $quotaProcessingMethod,
     ): HotelBooking;
 

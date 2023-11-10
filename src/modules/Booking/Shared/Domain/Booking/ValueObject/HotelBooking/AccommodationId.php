@@ -6,6 +6,6 @@ namespace Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking;
 
 use Module\Shared\Support\ValueObject\AbstractIntId;
 
-class RoomBookingId extends AbstractIntId {
+class AccommodationId extends AbstractIntId {
 
 }

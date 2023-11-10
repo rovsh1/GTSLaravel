@@ -70,8 +70,8 @@ class Quota implements QuotaProcessingMethodInterface
     private function buildRequestRooms(HotelBooking $details): array
     {
         $roomsCount = [];
-        foreach ($details->roomBookings() as $roomBooking) {
-            $hotelRoomId = $roomBooking->roomInfo()->id();
+        foreach ($details->accommodations() as $accommodation) {
+            $hotelRoomId = $accommodation->roomInfo()->id();
             if (array_key_exists($hotelRoomId, $roomsCount)) {
                 $roomsCount[$hotelRoomId]++;
             } else {

@@ -9,7 +9,7 @@ use Module\Booking\Shared\Domain\Booking\Repository\Details\HotelBookingReposito
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\BookingPeriod;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\HotelInfo;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomBookingIdCollection;
+use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationIdCollection;
 use Module\Booking\Shared\Infrastructure\ServiceBooking\Models\Booking;
 use Module\Booking\Shared\Infrastructure\ServiceBooking\Models\Details\Hotel;
 use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
@@ -41,7 +41,7 @@ class HotelBookingRepository extends AbstractDetailsRepository implements HotelB
         BookingId $bookingId,
         HotelInfo $hotelInfo,
         BookingPeriod $bookingPeriod,
-        RoomBookingIdCollection $roomBookings,
+        AccommodationIdCollection $accommodations,
         QuotaProcessingMethodEnum $quotaProcessingMethod,
     ): HotelBooking {
         $model = Hotel::create([

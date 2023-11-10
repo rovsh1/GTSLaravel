@@ -8,8 +8,8 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\DetailsId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\BookingPeriod;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\ExternalNumber;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\HotelInfo;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomBookingId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomBookingIdCollection;
+use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationId;
+use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationIdCollection;
 use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 use Module\Shared\Enum\ServiceTypeEnum;
 
@@ -20,7 +20,7 @@ final class HotelBooking implements ServiceDetailsInterface
         private readonly BookingId $bookingId,
         private readonly HotelInfo $hotelInfo,
         private BookingPeriod $bookingPeriod,
-        private RoomBookingIdCollection $roomBookings,
+        private AccommodationIdCollection $accommodations,
         private ?ExternalNumber $externalNumber,
         private readonly QuotaProcessingMethodEnum $quotaProcessingMethod,
     ) {}
@@ -55,26 +55,26 @@ final class HotelBooking implements ServiceDetailsInterface
         $this->bookingPeriod = $period;
     }
 
-    public function roomBookings(): RoomBookingIdCollection
+    public function accommodations(): AccommodationIdCollection
     {
-        return $this->roomBookings;
+        return $this->accommodations;
     }
 
-    public function addRoomBooking(RoomBookingId $id): void
+    public function addRoomBooking(AccommodationId $id): void
     {
-        if ($this->roomBookings->has($id)) {
+        if ($this->accommodations->has($id)) {
             throw new Exception('Guest already exists');
         }
-        $this->roomBookings = new RoomBookingIdCollection([...$this->roomBookings->all(), $id]);
+        $this->accommodations = new AccommodationIdCollection([...$this->accommodations->all(), $id]);
     }
 
-    public function removeRoomBooking(RoomBookingId $roomBookingId): void
+    public function removeRoomBooking(AccommodationId $accommodationId): void
     {
-        if (!$this->roomBookings->has($roomBookingId)) {
-            throw new Exception('RoomBooking not found');
+        if (!$this->accommodations->has($accommodationId)) {
+            throw new Exception('Accommodation not found');
         }
-        $this->roomBookings = new RoomBookingIdCollection(
-            array_filter($this->roomBookings->all(), fn($id) => !$roomBookingId->isEqual($id))
+        $this->accommodations = new AccommodationIdCollection(
+            array_filter($this->accommodations->all(), fn($id) => !$accommodationId->isEqual($id))
         );
     }
 

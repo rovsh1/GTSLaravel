@@ -8,7 +8,7 @@ class UpdateRoomRequestDto
 {
     public function __construct(
         public readonly int $bookingId,
-        public readonly int $roomBookingId,
+        public readonly int $accommodationId,
         public readonly int $roomId,
         public readonly int $rateId,
         public readonly bool $isResident,

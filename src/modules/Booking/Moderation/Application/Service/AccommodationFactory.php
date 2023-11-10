@@ -2,43 +2,43 @@
 
 namespace Module\Booking\Moderation\Application\Service;
 
-use Module\Booking\Moderation\Application\RequestDto\AddRoomRequestDto;
+use Module\Booking\Moderation\Application\RequestDto\AddAccommodationRequestDto;
 use Module\Booking\Moderation\Application\RequestDto\UpdateRoomRequestDto;
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelRoomAdapterInterface;
-use Module\Booking\Shared\Domain\Booking\Entity\HotelRoomBooking;
-use Module\Booking\Shared\Domain\Booking\Repository\RoomBookingRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Entity\HotelAccommodation;
+use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\Condition;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomBookingDetails;
+use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationDetails;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomInfo;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomPrices;
 use Module\Shared\ValueObject\Percent;
 use Module\Shared\ValueObject\TimePeriod;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
-class RoomBookingFactory
+class AccommodationFactory
 {
     private $data;
 
     public function __construct(
         private readonly HotelRoomAdapterInterface $hotelRoomAdapter,
-        private readonly RoomBookingRepositoryInterface $roomBookingRepository,
+        private readonly AccommodationRepositoryInterface $accommodationRepository,
     ) {
     }
 
-    public function fromRequest(AddRoomRequestDto|UpdateRoomRequestDto $requestDto): void
+    public function fromRequest(AddAccommodationRequestDto|UpdateRoomRequestDto $requestDto): void
     {
         $this->data = $requestDto;
     }
 
-    public function buildDetails(): RoomBookingDetails
+    public function buildDetails(): AccommodationDetails
     {
         $earlyCheckIn = $this->data->earlyCheckIn !== null
             ? $this->buildMarkupCondition($this->data->earlyCheckIn) : null;
         $lateCheckOut = $this->data->lateCheckOut !== null
             ? $this->buildMarkupCondition($this->data->lateCheckOut) : null;
 
-        return new RoomBookingDetails(
+        return new AccommodationDetails(
             rateId: $this->data->rateId,
             isResident: $this->data->isResident,
             earlyCheckIn: $earlyCheckIn,
@@ -48,9 +48,9 @@ class RoomBookingFactory
         );
     }
 
-    public function create(BookingId $bookingId): HotelRoomBooking
+    public function create(BookingId $bookingId): HotelAccommodation
     {
-        return $this->roomBookingRepository->create(
+        return $this->accommodationRepository->create(
             $bookingId,
             $this->buildRoomInfo(),
             $this->buildDetails(),

@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\Factory\HotelBooking;
 
+use Module\Booking\Moderation\Application\Dto\Details\Accommodation\AccommodationDetailsDto;
+use Module\Booking\Moderation\Application\Dto\Details\Accommodation\RoomDayPriceDto;
+use Module\Booking\Moderation\Application\Dto\Details\Accommodation\RoomInfoDto;
+use Module\Booking\Moderation\Application\Dto\Details\Accommodation\RoomPriceDto;
+use Module\Booking\Moderation\Application\Dto\Details\AccommodationDto;
 use Module\Booking\Moderation\Application\Dto\Details\BookingPeriodDto;
 use Module\Booking\Moderation\Application\Dto\Details\ExternalNumberDto;
 use Module\Booking\Moderation\Application\Dto\Details\HotelInfoDto;
-use Module\Booking\Moderation\Application\Dto\Details\RoomBooking\RoomBookingDetailsDto;
-use Module\Booking\Moderation\Application\Dto\Details\RoomBooking\RoomDayPriceDto;
-use Module\Booking\Moderation\Application\Dto\Details\RoomBooking\RoomInfoDto;
-use Module\Booking\Moderation\Application\Dto\Details\RoomBooking\RoomPriceDto;
-use Module\Booking\Moderation\Application\Dto\Details\RoomBookingDto;
 use Module\Booking\Moderation\Application\Dto\ServiceBooking\HotelBookingDto;
 use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
-use Module\Booking\Shared\Domain\Booking\Repository\RoomBookingRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomBookingCollection;
+use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationCollection;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomPriceDayPart;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomPrices;
 use Module\Booking\Shared\Domain\Guest\ValueObject\GuestId;
@@ -23,14 +23,14 @@ use Module\Booking\Shared\Domain\Guest\ValueObject\GuestId;
 class DetailsDtoFactory
 {
     public function __construct(
-        private readonly RoomBookingRepositoryInterface $roomBookingRepository
+        private readonly AccommodationRepositoryInterface $accommodationRepository
     ) {
     }
 
     public function build(HotelBooking $details): HotelBookingDto
     {
-        $roomBookings = $this->roomBookingRepository->get($details->roomBookings());
-        $roomDtos = $this->buildHotelRooms($roomBookings);
+        $accommodations = $this->accommodationRepository->get($details->accommodations());
+        $roomDtos = $this->buildHotelRooms($accommodations);
 
         return new HotelBookingDto(
             $details->id()->value(),
@@ -45,19 +45,19 @@ class DetailsDtoFactory
     }
 
     /**
-     * @param RoomBookingCollection $roomBookings
-     * @return array<int, RoomBookingDto>
+     * @param AccommodationCollection $accommodations
+     * @return array<int, AccommodationDto>
      */
-    private function buildHotelRooms(RoomBookingCollection $roomBookings): array
+    private function buildHotelRooms(AccommodationCollection $accommodations): array
     {
         $dtos = [];
-        foreach ($roomBookings as $roomBooking) {
-            $dtos[] = new RoomBookingDto(
-                id: $roomBooking->id()->value(),
-                roomInfo: RoomInfoDto::fromDomain($roomBooking->roomInfo()),
-                guestIds: $roomBooking->guestIds()->map(fn(GuestId $id) => $id->value()),
-                details: RoomBookingDetailsDto::fromDomain($roomBooking->details()),
-                price: $this->buildHotelRoomPriceDto($roomBooking->prices())
+        foreach ($accommodations as $accommodation) {
+            $dtos[] = new AccommodationDto(
+                id: $accommodation->id()->value(),
+                roomInfo: RoomInfoDto::fromDomain($accommodation->roomInfo()),
+                guestIds: $accommodation->guestIds()->map(fn(GuestId $id) => $id->value()),
+                details: AccommodationDetailsDto::fromDomain($accommodation->details()),
+                price: $this->buildHotelRoomPriceDto($accommodation->prices())
             );
         }
 

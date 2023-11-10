@@ -63,7 +63,7 @@ class CalculateHotelPriceRequestDtoBuilder
     private function buildRooms(): array
     {
         $rooms = [];
-        foreach ($this->details->roomBookings() as $roomId) {
+        foreach ($this->details->accommodations() as $roomId) {
             $room = $this->roomCalculationParamsDtoBuilder->room($roomId);
             if (isset($this->clientId)) {
                 $room->withClientMarkups();

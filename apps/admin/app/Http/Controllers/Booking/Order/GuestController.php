@@ -7,7 +7,7 @@ namespace App\Admin\Http\Controllers\Booking\Order;
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Http\Requests\Order\Guest\AddRequest;
 use App\Admin\Http\Requests\Order\Guest\UpdateRequest;
-use App\Admin\Support\Facades\Booking\Hotel\RoomAdapter;
+use App\Admin\Support\Facades\Booking\Hotel\AccommodationAdapter;
 use App\Admin\Support\Facades\Booking\OrderAdapter;
 use App\Admin\Support\Facades\Booking\Service\DetailsAdapter;
 use App\Shared\Http\Responses\AjaxErrorResponse;
@@ -37,7 +37,7 @@ class GuestController extends Controller
                 age: $request->getAge()
             );
             if ($request->hotelBookingId() !== null) {
-                RoomAdapter::bindRoomGuest($request->hotelBookingId(), $request->hotelBookingRoomId(), $guest->id);
+                AccommodationAdapter::bindGuest($request->hotelBookingId(), $request->hotelBookingRoomId(), $guest->id);
             }
 
             if ($request->airportBookingId() !== null) {

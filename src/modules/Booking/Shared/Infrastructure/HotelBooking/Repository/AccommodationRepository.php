@@ -5,22 +5,22 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Infrastructure\HotelBooking\Repository;
 
 use Illuminate\Database\Eloquent\Collection;
-use Module\Booking\Shared\Domain\Booking\Entity\HotelRoomBooking;
-use Module\Booking\Shared\Domain\Booking\Repository\RoomBookingRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Entity\HotelAccommodation;
+use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomBookingCollection;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomBookingDetails;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomBookingId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomBookingIdCollection;
+use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationCollection;
+use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationDetails;
+use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationId;
+use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationIdCollection;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomInfo;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomPrices;
 use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
-use Module\Booking\Shared\Infrastructure\HotelBooking\Models\RoomBooking as Model;
+use Module\Booking\Shared\Infrastructure\HotelBooking\Models\Accommodation as Model;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
-class RoomBookingRepository implements RoomBookingRepositoryInterface
+class AccommodationRepository implements AccommodationRepositoryInterface
 {
-    public function find(RoomBookingId $id): ?HotelRoomBooking
+    public function find(AccommodationId $id): ?HotelAccommodation
     {
         $model = Model::find($id);
         if ($model === null) {
@@ -30,7 +30,7 @@ class RoomBookingRepository implements RoomBookingRepositoryInterface
         return $this->buildEntityFromModel($model);
     }
 
-    public function findOrFail(RoomBookingId $id): HotelRoomBooking
+    public function findOrFail(AccommodationId $id): HotelAccommodation
     {
         $entity = $this->find($id);
         if ($entity === null) {
@@ -40,21 +40,21 @@ class RoomBookingRepository implements RoomBookingRepositoryInterface
         return $entity;
     }
 
-    public function get(RoomBookingIdCollection $roomBookingIds): RoomBookingCollection
+    public function get(AccommodationIdCollection $accommodationIds): AccommodationCollection
     {
-        $ids = $roomBookingIds->map(fn(RoomBookingId $id) => $id->value());
+        $ids = $accommodationIds->map(fn(AccommodationId $id) => $id->value());
         /** @var Collection<int, Model> $models */
         $models = Model::whereIn('booking_hotel_rooms.id', $ids)->get();
 
-        return new RoomBookingCollection($models->map(fn(Model $model) => $this->buildEntityFromModel($model))->all());
+        return new AccommodationCollection($models->map(fn(Model $model) => $this->buildEntityFromModel($model))->all());
     }
 
     public function create(
         BookingId $bookingId,
         RoomInfo $roomInfo,
-        RoomBookingDetails $details,
+        AccommodationDetails $details,
         RoomPrices $price
-    ): HotelRoomBooking {
+    ): HotelAccommodation {
         $model = Model::create([
             'booking_id' => $bookingId->value(),
             'hotel_room_id' => $roomInfo->id(),
@@ -67,7 +67,7 @@ class RoomBookingRepository implements RoomBookingRepositoryInterface
         return $this->buildEntityFromModel($model);
     }
 
-    public function store(HotelRoomBooking $booking): bool
+    public function store(HotelAccommodation $booking): bool
     {
         return (bool)Model::whereId($booking->id()->value())
             ->update([
@@ -77,12 +77,12 @@ class RoomBookingRepository implements RoomBookingRepositoryInterface
             ]);
     }
 
-    public function delete(RoomBookingId $id): bool
+    public function delete(AccommodationId $id): bool
     {
         return (bool)Model::whereId($id->value())->delete();
     }
 
-    private function serializeEntity(HotelRoomBooking $booking): array
+    private function serializeEntity(HotelAccommodation $booking): array
     {
         return $this->serializeData(
             roomInfo: $booking->roomInfo(),
@@ -93,7 +93,7 @@ class RoomBookingRepository implements RoomBookingRepositoryInterface
 
     private function serializeData(
         RoomInfo $roomInfo,
-        RoomBookingDetails $details,
+        AccommodationDetails $details,
         RoomPrices $price
     ): array {
         return [
@@ -103,16 +103,16 @@ class RoomBookingRepository implements RoomBookingRepositoryInterface
         ];
     }
 
-    private function buildEntityFromModel(Model $model): HotelRoomBooking
+    private function buildEntityFromModel(Model $model): HotelAccommodation
     {
         $data = $model->data;
 
-        return new HotelRoomBooking(
-            id: new RoomBookingId($model->id),
+        return new HotelAccommodation(
+            id: new AccommodationId($model->id),
             bookingId: new BookingId($model->booking_id),
             roomInfo: RoomInfo::fromData($data['roomInfo']),
             guestIds: GuestIdCollection::fromData($model->guest_ids),
-            details: RoomBookingDetails::fromData($data['details']),
+            details: AccommodationDetails::fromData($data['details']),
             prices: RoomPrices::fromData($data['price'])
         );
     }

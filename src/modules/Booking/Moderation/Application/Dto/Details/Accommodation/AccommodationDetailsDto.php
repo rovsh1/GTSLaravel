@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Moderation\Application\Dto\Details\RoomBooking;
+namespace Module\Booking\Moderation\Application\Dto\Details\Accommodation;
 
 use Module\Booking\Moderation\Application\Dto\Details\ConditionDto;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomBookingDetails;
+use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationDetails;
 use Module\Shared\Contracts\Domain\EntityInterface;
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Module\Shared\Support\Dto\AbstractDomainBasedDto;
 
-class RoomBookingDetailsDto extends AbstractDomainBasedDto
+class AccommodationDetailsDto extends AbstractDomainBasedDto
 {
     public function __construct(
         public readonly int $rateId,
@@ -21,7 +21,7 @@ class RoomBookingDetailsDto extends AbstractDomainBasedDto
         public readonly int $discount,
     ) {}
 
-    public static function fromDomain(EntityInterface|ValueObjectInterface|RoomBookingDetails $entity): static
+    public static function fromDomain(EntityInterface|ValueObjectInterface|AccommodationDetails $entity): static
     {
         return new static(
             $entity->rateId(),

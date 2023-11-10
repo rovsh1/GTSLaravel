@@ -2,24 +2,24 @@
 
 namespace Module\Booking\Pricing\Domain\Booking\Service\HotelPriceCalculator;
 
-use Module\Booking\Shared\Domain\Booking\Entity\HotelRoomBooking;
-use Module\Booking\Shared\Domain\Booking\Repository\RoomBookingRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomBookingId;
+use Module\Booking\Shared\Domain\Booking\Entity\HotelAccommodation;
+use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationId;
 use Module\Hotel\Pricing\Application\Dto\RoomCalculationParamsDto;
 
 class RoomCalculationParamsDtoBuilder
 {
-    private HotelRoomBooking $roomBooking;
+    private HotelAccommodation $accommodation;
 
     private bool $isClientCalculation = false;
 
     public function __construct(
-        private readonly RoomBookingRepositoryInterface $roomBookingRepository
+        private readonly AccommodationRepositoryInterface $accommodationRepository
     ) {}
 
-    public function room(RoomBookingId $roomBookingId): static
+    public function room(AccommodationId $accommodationId): static
     {
-        $this->roomBooking = $this->roomBookingRepository->findOrFail($roomBookingId);
+        $this->accommodation = $this->accommodationRepository->findOrFail($accommodationId);
 
         return $this;
     }
@@ -33,20 +33,20 @@ class RoomCalculationParamsDtoBuilder
 
     public function build(): RoomCalculationParamsDto
     {
-        $roomBooking = $this->roomBooking;
-        $details = $roomBooking->details();
+        $accommodation = $this->accommodation;
+        $details = $accommodation->details();
 
-        $manualDayPrice = $roomBooking->prices()->supplierPrice()->manualDayValue();
+        $manualDayPrice = $accommodation->prices()->supplierPrice()->manualDayValue();
         if ($this->isClientCalculation) {
-            $manualDayPrice = $roomBooking->prices()->clientPrice()->manualDayValue();
+            $manualDayPrice = $accommodation->prices()->clientPrice()->manualDayValue();
         }
 
         return new RoomCalculationParamsDto(
-            accommodationId: $roomBooking->id()->value(),
-            roomId: $roomBooking->roomInfo()->id(),
+            accommodationId: $accommodation->id()->value(),
+            roomId: $accommodation->roomInfo()->id(),
             rateId: $details->rateId(),
             isResident: $details->isResident(),
-            guestsCount: $roomBooking->guestsCount(),
+            guestsCount: $accommodation->guestsCount(),
             manualDayPrice: $manualDayPrice,
             earlyCheckinPercent: $details->earlyCheckIn()?->priceMarkup()->value(),
             lateCheckoutPercent: $details->lateCheckOut()?->priceMarkup()->value()

@@ -3,9 +3,9 @@
 namespace Module\Booking\Pricing\Domain\Booking\Service\HotelPriceCalculator;
 
 use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
-use Module\Booking\Shared\Domain\Booking\Entity\HotelRoomBooking;
-use Module\Booking\Shared\Domain\Booking\Repository\RoomBookingRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomBookingId;
+use Module\Booking\Shared\Domain\Booking\Entity\HotelAccommodation;
+use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomPriceDayPart;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomPriceDayPartCollection;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomPriceItem;
@@ -14,10 +14,10 @@ use Module\Hotel\Pricing\Application\Dto\CalculatedHotelRoomsPricesDto;
 use Module\Hotel\Pricing\Application\Dto\RoomCalculationResultDto;
 use Module\Shared\ValueObject\Date;
 
-class RoomBookingPriceStorage
+class AccommodationPriceStorage
 {
     public function __construct(
-        private readonly RoomBookingRepositoryInterface $roomRepository,
+        private readonly AccommodationRepositoryInterface $accommodationRepository,
     ) {
     }
 
@@ -26,22 +26,22 @@ class RoomBookingPriceStorage
         CalculatedHotelRoomsPricesDto $supplierPriceDto,
         CalculatedHotelRoomsPricesDto $clientPriceDto
     ): void {
-        foreach ($bookingDetails->roomBookings() as $roomBookingId) {
-            $roomBooking = $this->roomRepository->findOrFail($roomBookingId);
+        foreach ($bookingDetails->accommodations() as $accommodationId) {
+            $accommodation = $this->accommodationRepository->findOrFail($accommodationId);
 
-            $roomPrices = $this->buildRoomPrices($roomBooking, $supplierPriceDto, $clientPriceDto);
-            $roomBooking->updatePrices($roomPrices);
+            $roomPrices = $this->buildRoomPrices($accommodation, $supplierPriceDto, $clientPriceDto);
+            $accommodation->updatePrices($roomPrices);
 
-            $this->roomRepository->store($roomBooking);
+            $this->accommodationRepository->store($accommodation);
         }
     }
 
     private function findRoomCalculationResultDto(
-        RoomBookingId $roomBookingId,
+        AccommodationId $accommodationId,
         CalculatedHotelRoomsPricesDto $roomPriceDto
     ): RoomCalculationResultDto {
         foreach ($roomPriceDto->rooms as $room) {
-            if ($room->accommodationId === $roomBookingId->value()) {
+            if ($room->accommodationId === $accommodationId->value()) {
                 return $room;
             }
         }
@@ -49,18 +49,18 @@ class RoomBookingPriceStorage
     }
 
     private function buildRoomPrices(
-        HotelRoomBooking $roomBooking,
+        HotelAccommodation $accommodation,
         CalculatedHotelRoomsPricesDto $supplierPriceDto,
         CalculatedHotelRoomsPricesDto $clientPriceDto
     ): RoomPrices {
         return new RoomPrices(
             $this->buildRoomPriceItem(
-                $this->findRoomCalculationResultDto($roomBooking->id(), $supplierPriceDto),
-                $roomBooking->prices()->supplierPrice()->manualDayValue()
+                $this->findRoomCalculationResultDto($accommodation->id(), $supplierPriceDto),
+                $accommodation->prices()->supplierPrice()->manualDayValue()
             ),
             $this->buildRoomPriceItem(
-                $this->findRoomCalculationResultDto($roomBooking->id(), $clientPriceDto),
-                $roomBooking->prices()->clientPrice()->manualDayValue()
+                $this->findRoomCalculationResultDto($accommodation->id(), $clientPriceDto),
+                $accommodation->prices()->clientPrice()->manualDayValue()
             )
         );
     }

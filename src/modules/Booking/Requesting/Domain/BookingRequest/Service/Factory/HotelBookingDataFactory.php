@@ -11,10 +11,10 @@ use Module\Booking\Requesting\Domain\BookingRequest\ValueObject\RequestTypeEnum;
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking as DetailsEntity;
-use Module\Booking\Shared\Domain\Booking\Entity\HotelRoomBooking;
+use Module\Booking\Shared\Domain\Booking\Entity\HotelAccommodation;
 use Module\Booking\Shared\Domain\Booking\Repository\Details\HotelBookingRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\Repository\RoomBookingRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomBookingCollection;
+use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationCollection;
 use Module\Booking\Shared\Domain\Guest\Guest;
 use Module\Booking\Shared\Domain\Guest\Repository\GuestRepositoryInterface;
 use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
@@ -30,7 +30,7 @@ class HotelBookingDataFactory
 
     public function __construct(
         private readonly HotelBookingRepositoryInterface $hotelBookingRepository,
-        private readonly RoomBookingRepositoryInterface $roomBookingRepository,
+        private readonly AccommodationRepositoryInterface $accommodationRepository,
         private readonly HotelAdapterInterface $hotelAdapter,
         private readonly GuestRepositoryInterface $guestRepository,
         CountryAdapterInterface $countryAdapter,
@@ -42,7 +42,7 @@ class HotelBookingDataFactory
     public function build(Booking $booking, RequestTypeEnum $requestType): TemplateDataInterface
     {
         $bookingDetails = $this->hotelBookingRepository->findOrFail($booking->id());
-        $rooms = $this->roomBookingRepository->get($bookingDetails->roomBookings());
+        $rooms = $this->accommodationRepository->get($bookingDetails->accommodations());
         $roomsDto = $this->buildRoomsDto($rooms, $bookingDetails);
         $hotelInfoDto = $this->buildHotelInfo($bookingDetails);
         $bookingPeriodDto = $this->buildPeriodDto($bookingDetails);
@@ -90,36 +90,36 @@ class HotelBookingDataFactory
     }
 
     /**
-     * @param RoomBookingCollection $roomBookings
+     * @param AccommodationCollection $accommodations
      * @param DetailsEntity $bookingDetails
      * @return RoomDto[]
      */
-    private function buildRoomsDto(RoomBookingCollection $roomBookings, DetailsEntity $bookingDetails): array
+    private function buildRoomsDto(AccommodationCollection $accommodations, DetailsEntity $bookingDetails): array
     {
-        if ($roomBookings->count() === 0) {
+        if ($accommodations->count() === 0) {
             return [];
         }
         $hotelPriceRates = $this->hotelAdapter->getHotelRates($bookingDetails->hotelInfo()->id());
         $hotelPriceRatesIndexedId = collect($hotelPriceRates)->keyBy('id');
 
-        return $roomBookings->map(
-            function (HotelRoomBooking $roomBooking) use ($bookingDetails, $hotelPriceRatesIndexedId) {
+        return $accommodations->map(
+            function (HotelAccommodation $accommodation) use ($bookingDetails, $hotelPriceRatesIndexedId) {
                 $checkInTime = $bookingDetails->hotelInfo()->checkInTime()->value();
-                if ($roomBooking->details()->earlyCheckIn() !== null) {
-                    $checkInTime = $roomBooking->details()->earlyCheckIn()->timePeriod()->from();
+                if ($accommodation->details()->earlyCheckIn() !== null) {
+                    $checkInTime = $accommodation->details()->earlyCheckIn()->timePeriod()->from();
                 }
                 $checkOutTime = $bookingDetails->hotelInfo()->checkOutTime()->value();
-                if ($roomBooking->details()->lateCheckOut() !== null) {
-                    $checkOutTime = $roomBooking->details()->lateCheckOut()->timePeriod()->to();
+                if ($accommodation->details()->lateCheckOut() !== null) {
+                    $checkOutTime = $accommodation->details()->lateCheckOut()->timePeriod()->to();
                 }
 
                 return new RoomDto(
-                    $roomBooking->roomInfo()->name(),
-                    $hotelPriceRatesIndexedId[$roomBooking->details()->rateId()]->name,
+                    $accommodation->roomInfo()->name(),
+                    $hotelPriceRatesIndexedId[$accommodation->details()->rateId()]->name,
                     $checkInTime,
                     $checkOutTime,
-                    $this->buildGuests($roomBooking->guestIds()),
-                    $roomBooking->details()->guestNote(),
+                    $this->buildGuests($accommodation->guestIds()),
+                    $accommodation->details()->guestNote(),
                 );
             }
         );

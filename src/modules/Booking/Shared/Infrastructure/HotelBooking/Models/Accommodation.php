@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Module\Booking\Shared\Infrastructure\Order\Models\Guest;
 use Sdk\Module\Database\Eloquent\Model;
 
-class RoomBooking extends Model
+class Accommodation extends Model
 {
     protected $table = 'booking_hotel_rooms';
 
