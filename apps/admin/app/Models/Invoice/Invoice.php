@@ -6,9 +6,9 @@ namespace App\Admin\Models\Invoice;
 
 use App\Admin\Models\Order\Order;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Invoice extends \Module\Client\Infrastructure\Models\Invoice
+class Invoice extends \Module\Client\Invoicing\Infrastructure\Models\Invoice
 {
     private array $savingOrderIds;
 
@@ -46,14 +46,9 @@ class Invoice extends \Module\Client\Infrastructure\Models\Invoice
         return $this->orders()->pluck('id')->toArray();
     }
 
-    public function orders(): BelongsToMany
+    public function orders(): HasMany
     {
-        return $this->belongsToMany(
-            Order::class,
-            'client_invoice_orders',
-            'invoice_id',
-            'order_id'
-        );
+        return $this->hasMany(Order::class);
     }
 
     public function __toString()

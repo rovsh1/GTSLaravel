@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->increments('id')->from(100);
             $table->unsignedInteger('client_id');
             $table->unsignedInteger('legal_id')->nullable();
+            $table->unsignedInteger('invoice_id')->nullable();
             $table->char('currency', 3);
             $table->tinyInteger('status');
             $table->string('source');
@@ -36,6 +37,12 @@ return new class extends Migration {
                 ->references('id')
                 ->on('client_legals')
                 ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+
+            $table->foreign('invoice_id')
+                ->references('id')
+                ->on('client_invoices')
+                ->restrictOnDelete()
                 ->cascadeOnUpdate();
 
             $table->foreign('creator_id')

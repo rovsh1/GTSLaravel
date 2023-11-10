@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Adapters\Client;
 
-use Module\Client\Application\Admin\Dto\InvoiceDto;
-use Module\Client\Application\Admin\Request\CreateInvoiceRequestDto;
-use Module\Client\Application\Admin\UseCase\CreateInvoice;
+use Module\Client\Invoicing\Application\Dto\InvoiceDto;
+use Module\Client\Invoicing\Application\Request\CreateInvoiceRequestDto;
+use Module\Client\Invoicing\Application\UseCase\CreateInvoice;
 
 class InvoiceAdapter
 {
@@ -16,7 +16,6 @@ class InvoiceAdapter
             new CreateInvoiceRequestDto(
                 $clientId,
                 $orderIds,
-                null
             )
         );
     }

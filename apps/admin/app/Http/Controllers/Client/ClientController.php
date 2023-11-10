@@ -173,7 +173,7 @@ class ClientController extends AbstractPrototypeController
             ->text('city_name', 'Город')
             ->text('currency_name', 'Валюта')
             ->text('markup_group_name', 'Группа наценки')
-            ->text('rates', 'Тариф')
+            ->enum('residency', 'Тип цены', ResidencyEnum::class)
             ->text('administrator_name', 'Менеджер')
             ->data($this->model);
     }

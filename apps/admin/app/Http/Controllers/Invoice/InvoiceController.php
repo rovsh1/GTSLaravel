@@ -12,7 +12,7 @@ use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Grid\SearchForm;
 use Illuminate\Http\RedirectResponse;
-use Module\Client\Domain\Invoice\ValueObject\InvoiceStatusEnum;
+use Module\Client\Invoicing\Domain\Invoice\ValueObject\InvoiceStatusEnum;
 
 class InvoiceController extends AbstractPrototypeController
 {
@@ -43,7 +43,7 @@ class InvoiceController extends AbstractPrototypeController
 //            ->setSearchForm($this->searchForm())
             ->paginator(self::GRID_LIMIT)
             ->edit($this->prototype)
-            ->id('id', ['text' => '№', 'route' => $this->prototype->routeName('show'), 'order' => true])
+            ->id('id', ['text' => '№', 'order' => true])
             ->text('client_name', ['text' => 'Клиент', 'order' => true])
             ->enum('status', ['text' => 'Статус', 'enum' => InvoiceStatusEnum::class])
             ->date('created_at', ['text' => 'Создан', 'format' => 'datetime', 'order' => true])

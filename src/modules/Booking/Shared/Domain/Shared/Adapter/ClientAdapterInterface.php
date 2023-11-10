@@ -2,8 +2,8 @@
 
 namespace Module\Booking\Shared\Domain\Shared\Adapter;
 
-use Module\Client\Application\Admin\Dto\ClientDto;
-use Module\Client\Application\Admin\Dto\LegalDto;
+use Module\Client\Moderation\Application\Admin\Dto\ClientDto;
+use Module\Client\Moderation\Application\Admin\Dto\LegalDto;
 
 interface ClientAdapterInterface
 {
