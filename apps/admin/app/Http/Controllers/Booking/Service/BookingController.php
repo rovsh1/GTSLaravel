@@ -289,9 +289,6 @@ class BookingController extends Controller
     {
         $newBookingId = BookingAdapter::copyBooking($id);
 
-        $administrator = $this->administratorRepository->get($id);
-        $this->administratorRepository->create($newBookingId, $administrator->id);
-
         return redirect(
             route('service-booking.show', $newBookingId)
         );

@@ -6,7 +6,9 @@ namespace Module\Booking\Moderation\Application\UseCase;
 
 use Carbon\CarbonPeriod;
 use Module\Booking\Moderation\Application\Service\DetailsEditor\DetailsEditorFactory;
+use Module\Booking\Shared\Domain\Adapter\AdministratorAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
+use Module\Booking\Shared\Domain\Booking\Entity\ServiceDetailsInterface;
 use Module\Booking\Shared\Domain\Booking\Factory\DetailsRepositoryFactory;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
@@ -20,7 +22,8 @@ class CopyBooking implements UseCaseInterface
     public function __construct(
         private readonly BookingRepositoryInterface $repository,
         private readonly DetailsEditorFactory $detailsEditorFactory,
-        private readonly DetailsRepositoryFactory $detailsRepositoryFactory
+        private readonly DetailsRepositoryFactory $detailsRepositoryFactory,
+        private readonly AdministratorAdapterInterface $administratorAdapter,
     ) {}
 
     public function execute(int $id): int
@@ -40,18 +43,21 @@ class CopyBooking implements UseCaseInterface
             serviceType: $booking->serviceType(),
             note: $booking->note(),
         );
-        /** @var HotelBooking $details */
+        /** @var HotelBooking|ServiceDetailsInterface $details */
         $details = $this->detailsRepositoryFactory->build($booking)->find($booking->id());
-
         $editor = $this->detailsEditorFactory->build($newBooking);
-
-        if (method_exists($details, 'hotelInfo')) {
+        if ($details instanceof HotelBooking) {
             $editor->create($newBooking->id(), new ServiceId($details->hotelInfo()->id()), [
                 'period' => new CarbonPeriod($details->bookingPeriod()->dateFrom(), $details->bookingPeriod()->dateTo()),
                 'quota_processing_method' => $details->quotaProcessingMethod()->value,
             ]);
-        } elseif (method_exists($details, 'serviceInfo')) {
+        } else {
             $editor->create($newBooking->id(), new ServiceId($details->serviceInfo()->id()), []);
+        }
+
+        $administrator = $this->administratorAdapter->getBookingAdministrator($booking->id());
+        if ($administrator !== null) {
+            $this->administratorAdapter->setBookingAdministrator($newBooking->id(), $administrator->id);
         }
 
         return $newBooking->id()->value();
