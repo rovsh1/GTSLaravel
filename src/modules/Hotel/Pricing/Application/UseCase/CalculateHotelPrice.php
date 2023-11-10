@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Hotel\Pricing\Application\UseCase;
 
-use Module\Client\Application\Admin\UseCase\ConvertClientCurrencyRate;
+use Module\Client\Moderation\Application\Admin\UseCase\ConvertClientCurrencyRate;
 use Module\Hotel\Pricing\Application\Dto\CalculatedHotelRoomsPricesDto;
 use Module\Hotel\Pricing\Application\Dto\RoomCalculationParamsDto;
 use Module\Hotel\Pricing\Application\Dto\RoomCalculationResultDto;

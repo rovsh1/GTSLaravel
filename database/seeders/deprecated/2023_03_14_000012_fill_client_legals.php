@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Module\Client\Domain\ValueObject\BankRequisites;
+use Module\Client\Moderation\Domain\ValueObject\BankRequisites;
 
 return new class extends Migration {
     private static array $migrationAssoc = [

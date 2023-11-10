@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Module\Supplier\Domain\Payment;
 
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Client\Domain\Invoice\ValueObject\InvoiceId;
-use Module\Client\Domain\Invoice\ValueObject\PaymentMethodEnum;
-use Module\Client\Domain\Payment\ValueObject\InvoiceNumber;
-use Module\Client\Domain\Payment\ValueObject\PaymentAmount;
-use Module\Client\Domain\Payment\ValueObject\PaymentDocument;
+use Module\Client\Invoicing\Domain\Invoice\ValueObject\InvoiceId;
+use Module\Client\Invoicing\Domain\Invoice\ValueObject\PaymentMethodEnum;
+use Module\Client\Invoicing\Domain\Payment\ValueObject\InvoiceNumber;
+use Module\Client\Invoicing\Domain\Payment\ValueObject\PaymentAmount;
+use Module\Client\Invoicing\Domain\Payment\ValueObject\PaymentDocument;
 use Module\Supplier\Domain\Payment\ValueObject\SupplierPaymentId;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 use Sdk\Module\Support\DateTimeImmutable;

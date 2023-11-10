@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Admin\Support\Facades\Client;
 
 use Illuminate\Support\Facades\Facade;
-use Module\Client\Application\Admin\Dto\InvoiceDto;
+use Module\Client\Invoicing\Application\Dto\InvoiceDto;
 
 /**
  * @method static InvoiceDto create(int $clientId, int[] $orderIds)
