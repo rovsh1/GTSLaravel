@@ -49,14 +49,16 @@ const isFetchingMarkupSettings = computed(() => markupSettingsStore.isFetching)
 const modalSettings = {
   add: {
     title: 'Добавить новое условие',
-    handler: async (request: MaybeRef<HotelMarkupSettingsConditionAddProps>) => {
-      await addConditionHotelMarkupSettings(request)
+    handler: async (request: MaybeRef<HotelMarkupSettingsConditionAddProps>): Promise<boolean> => {
+      const response = await addConditionHotelMarkupSettings(request)
+      return response.data.value?.success || false
     },
   },
   edit: {
     title: 'Изменение условия',
-    handler: async (request: MaybeRef<HotelMarkupSettingsUpdateProps>) => {
-      await updateConditionHotelMarkupSettings(request)
+    handler: async (request: MaybeRef<HotelMarkupSettingsUpdateProps>): Promise<boolean> => {
+      const response = await updateConditionHotelMarkupSettings(request)
+      return response.data.value?.success || false
     },
   },
 }
@@ -97,14 +99,16 @@ const editablePeriodId = ref<number>()
 const dailyMarkupsModalSettings = {
   add: {
     title: 'Добавить новое условие',
-    handler: async (request: MaybeRef<HotelMarkupSettingsConditionAddProps>) => {
-      await addConditionHotelMarkupSettings(request)
+    handler: async (request: MaybeRef<HotelMarkupSettingsConditionAddProps>): Promise<boolean> => {
+      const response = await addConditionHotelMarkupSettings(request)
+      return response.data.value?.success || false
     },
   },
   edit: {
     title: 'Изменить условие',
-    handler: async (request: MaybeRef<HotelMarkupSettingsUpdateProps>) => {
-      await updateConditionHotelMarkupSettings(request)
+    handler: async (request: MaybeRef<HotelMarkupSettingsUpdateProps>): Promise<boolean> => {
+      const response = await updateConditionHotelMarkupSettings(request)
+      return response.data.value?.success || false
     },
   },
 }

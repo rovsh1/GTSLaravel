@@ -17,15 +17,17 @@ const props = withDefaults(defineProps<{
   disabled?: MaybeRef<boolean>
   loading?: MaybeRef<boolean>
   clickOutsideIgnore?: (MaybeElementRef | string)[]
+  watchOtsideClick?: boolean
 }>(), {
   disabled: false,
   loading: false,
   clickOutsideIgnore: undefined,
   autoWidth: false,
+  watchOtsideClick: false,
 })
 
-const close = () => {
-  if (props.disabled) return
+const close = (isOutsideClick?: boolean) => {
+  if (props.disabled || isOutsideClick) return
   emit('close')
 }
 
@@ -47,7 +49,7 @@ watch(() => props.opened, (value) => {
   <Teleport to="body">
     <BodyScrollLock :value="opened" class="dialog" :class="{ opened, 'auto-width': autoWidth }" v-bind="$attrs">
       <div class="inner">
-        <OnClickOutside class="body" :options="clickOutsideOptions" @trigger="close">
+        <OnClickOutside class="body" :options="clickOutsideOptions" @trigger="watchOtsideClick ? close() : close(true)">
           <template v-if="$slots['title']">
             <div class="title">
               <div class="titleLabel">

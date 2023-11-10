@@ -42,22 +42,24 @@ const carForm = ref<Partial<CarFormData>>(getDefaultCarForm())
 const modalSettings = {
   add: {
     title: 'Добавление автомобиля',
-    handler: async (request: MaybeRef<Required<CarFormData>>) => {
+    handler: async (request: MaybeRef<Required<CarFormData>>): Promise<boolean> => {
       const preparedRequest = unref(request)
       preparedRequest.baggageCount = preparedRequest.baggageCount || 0
       const payload = { bookingID, ...preparedRequest, babyCount: 0 }
-      await addBookingCar(payload)
+      const response = await addBookingCar(payload)
       await bookingStore.fetchBooking()
+      return response.data.value?.success || false
     },
   },
   edit: {
     title: 'Редактирование автомобиля',
-    handler: async (request: MaybeRef<Required<CarFormData>>) => {
+    handler: async (request: MaybeRef<Required<CarFormData>>): Promise<boolean> => {
       const preparedRequest = unref(request)
       preparedRequest.baggageCount = preparedRequest.baggageCount || 0
       const payload = { bookingID, ...preparedRequest, babyCount: 0 }
-      await updateBookingCar(payload)
+      const response = await updateBookingCar(payload)
       await bookingStore.fetchBooking()
+      return response.data.value?.success || false
     },
   },
 }

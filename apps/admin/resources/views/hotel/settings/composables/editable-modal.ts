@@ -2,8 +2,6 @@ import { readonly, Ref, ref } from 'vue'
 
 import { MaybeRef, useToggle } from '@vueuse/core'
 
-import { BaseResponse } from '~resources/api'
-
 export interface ModalTypeSettings<T> {
   title: string
   handler: (payload: MaybeRef<T>) => Promise<any>
@@ -62,9 +60,9 @@ export const useEditableModal = <A, E, T>(settings: ModalSettings<A, E>): UseEdi
       return
     }
     toggleLoading(true)
-    const response: BaseResponse = await settings.edit.handler(payload)
+    const isSuccesses = await settings.edit.handler(payload)
     toggleLoading(false)
-    if (response && response.success) {
+    if (isSuccesses) {
       close()
     }
   }
@@ -74,9 +72,9 @@ export const useEditableModal = <A, E, T>(settings: ModalSettings<A, E>): UseEdi
       return
     }
     toggleLoading(true)
-    const response: BaseResponse = await settings.add.handler(payload)
+    const isSuccesses = await settings.add.handler(payload)
     toggleLoading(false)
-    if (response && response.success) {
+    if (isSuccesses) {
       close()
     }
   }

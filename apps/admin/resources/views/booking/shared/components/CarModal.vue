@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import { computed, nextTick, ref, watchEffect } from 'vue'
+import { computed, nextTick, ref, watch, watchEffect } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
 
@@ -107,6 +107,12 @@ const closeModal = () => {
   emit('close')
   emit('clear')
 }
+
+watch(() => props.opened, () => {
+  if (!props.opened) {
+    resetForm()
+  }
+})
 
 </script>
 
