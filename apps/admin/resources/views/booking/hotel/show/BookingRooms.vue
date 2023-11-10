@@ -63,6 +63,8 @@ const bookingStore = useBookingStore()
 const { fetchBooking, fetchAvailableActions } = bookingStore
 const orderStore = useOrderStore()
 
+const isUpdateRoomPrice = ref(false)
+
 const bookingDetails = computed<HotelBookingDetails | undefined>(() => bookingStore.booking?.details)
 const markupSettings = computed<MarkupSettings | null>(() => bookingStore.markupSettings)
 const isEditableStatus = computed<boolean>(() => bookingStore.availableActions?.isEditable || false)
@@ -91,8 +93,8 @@ const canChangeRoomPrice = computed<boolean>(
 )
 
 const selectedRoomDetails = reactive({
-  roomDayPrices: <RoomBookingDayPrice[]> [],
-  roomInfo: <RoomInfo | null> null,
+  roomDayPrices: <RoomBookingDayPrice[]>[],
+  roomInfo: <RoomInfo | null>null,
 })
 
 const { execute: fetchPriceRates, data: priceRates } = useHotelRatesAPI({ hotelID })
@@ -208,12 +210,14 @@ const handleEditRoomPrice = (roomBookingId: number, roomPrice: RoomBookingPrice)
 
 const handleUpdateRoomPrice = async (boPrice: number | undefined | null, hoPrice: number | undefined | null) => {
   toggleRoomPriceModal(false)
+  isUpdateRoomPrice.value = true
   await updateRoomBookingPrice({
     bookingID,
     roomBookingId: editRoomBookingId.value as number,
     grossPrice: boPrice,
     netPrice: hoPrice,
   })
+  isUpdateRoomPrice.value = false
   await fetchBooking()
 }
 
@@ -291,6 +295,7 @@ onMounted(() => {
     :opened="isShowRoomPriceModal"
     :gross-currency="grossCurrency"
     :net-currency="netCurrency"
+    :loading="isUpdateRoomPrice"
     @close="toggleRoomPriceModal(false)"
     @submit="({ grossPrice, netPrice }) => handleUpdateRoomPrice(grossPrice, netPrice)"
     @clear="guestForm = {}"
@@ -368,7 +373,11 @@ onMounted(() => {
               >
                 <InlineIcon icon="info" class="prices-information-details-button-icon" />
               </button>
-              <span v-if="room.price.grossDayValue" v-tooltip="'Цена за номер выставлена вручную'" class="prices-information-details-info">
+              <span
+                v-if="room.price.grossDayValue"
+                v-tooltip="'Цена за номер выставлена вручную'"
+                class="prices-information-details-info"
+              >
                 <InlineIcon icon="touch_app" class="prices-information-details-info-icon" />
               </span>
             </strong>
@@ -462,7 +471,7 @@ onMounted(() => {
     font-weight: 400;
     font-style: italic;
 
-    & > * {
+    &>* {
       vertical-align: middle
     }
 

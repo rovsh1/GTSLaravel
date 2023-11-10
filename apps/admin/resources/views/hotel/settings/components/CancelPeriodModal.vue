@@ -43,6 +43,8 @@ const period = ref<[Date, Date]>()
 const markupPercent = ref<number>()
 const markupType = ref<number>()
 
+const isLoading = computed(() => Boolean(props.loading))
+
 watch(localValue, (cancelPeriod) => {
   if (!cancelPeriod) {
     return
@@ -128,8 +130,8 @@ const onModalSubmit = async () => {
     </form>
 
     <template #actions-end>
-      <button class="btn btn-primary" type="button" @click="onModalSubmit">Сохранить</button>
-      <button class="btn btn-cancel" type="button" @click="closeModal">Отмена</button>
+      <button class="btn btn-primary" type="button" :disabled="isLoading" @click="onModalSubmit">Сохранить</button>
+      <button class="btn btn-cancel" type="button" :disabled="isLoading" @click="closeModal">Отмена</button>
     </template>
   </BaseDialog>
 </template>

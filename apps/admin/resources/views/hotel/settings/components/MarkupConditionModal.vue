@@ -37,6 +37,8 @@ const from = ref<Time | null>(null)
 const to = ref<Time | null>(null)
 const percent = ref<number>()
 
+const isLoading = computed(() => Boolean(props.loading))
+
 watch(localValue, (markupCondition) => {
   if (!markupCondition) {
     return
@@ -109,8 +111,8 @@ const onModalSubmit = async () => {
     </form>
 
     <template #actions-end>
-      <button class="btn btn-primary" type="button" @click="onModalSubmit">Сохранить</button>
-      <button class="btn btn-cancel" type="button" @click="closeModal">Отмена</button>
+      <button class="btn btn-primary" type="button" :disabled="isLoading" @click="onModalSubmit">Сохранить</button>
+      <button class="btn btn-cancel" type="button" :disabled="isLoading" @click="closeModal">Отмена</button>
     </template>
   </BaseDialog>
 </template>

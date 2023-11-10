@@ -2,9 +2,11 @@ import { readonly, Ref, ref } from 'vue'
 
 import { MaybeRef, useToggle } from '@vueuse/core'
 
+import { BaseResponse } from '~resources/api'
+
 export interface ModalTypeSettings<T> {
   title: string
-  handler: (payload: MaybeRef<T>) => Promise<void>
+  handler: (payload: MaybeRef<T>) => Promise<any>
 }
 
 export interface ModalSettings<A, E> {
@@ -60,9 +62,11 @@ export const useEditableModal = <A, E, T>(settings: ModalSettings<A, E>): UseEdi
       return
     }
     toggleLoading(true)
-    await settings.edit.handler(payload)
+    const response: BaseResponse = await settings.edit.handler(payload)
     toggleLoading(false)
-    close()
+    if (response && response.success) {
+      close()
+    }
   }
 
   const handleAdd = async (payload: MaybeRef<A>): Promise<void> => {
@@ -70,9 +74,11 @@ export const useEditableModal = <A, E, T>(settings: ModalSettings<A, E>): UseEdi
       return
     }
     toggleLoading(true)
-    await settings.add.handler(payload)
+    const response: BaseResponse = await settings.add.handler(payload)
     toggleLoading(false)
-    close()
+    if (response && response.success) {
+      close()
+    }
   }
 
   const submit = async (payload: MaybeRef<A | E>): Promise<void> => {

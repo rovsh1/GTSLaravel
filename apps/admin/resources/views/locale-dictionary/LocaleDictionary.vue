@@ -4,6 +4,7 @@ import { computed, onMounted, reactive, ref } from 'vue'
 
 import { useDebounceFn, useToggle } from '@vueuse/core'
 
+import { BaseResponse } from '~resources/api'
 import { useUpdateLocaleDictionary } from '~resources/api/locale-dictionary/update'
 
 import { LocaleDictionary, useLocaleDictionaryAPI } from '~api/locale-dictionary/search'
@@ -80,8 +81,10 @@ const setActiveTab = (key: string) => {
 }
 
 const handleSubmitEditableLocale = async () => {
-  await executeUpdateLocaleDictionary()
-  toggleModal(false)
+  const response: BaseResponse = await executeUpdateLocaleDictionary()
+  if (response && response.success) {
+    toggleModal(false)
+  }
   await fetchLocales()
 }
 

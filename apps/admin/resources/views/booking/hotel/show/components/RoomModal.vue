@@ -85,14 +85,19 @@ const onModalSubmit = async () => {
     return
   }
   isFetching.value = true
+  let isRequestSuccess: undefined | boolean = false
   if (formData.value.roomBookingId !== undefined) {
-    await updateBookingRoom(formData)
+    const responseUpdate = await updateBookingRoom(formData)
+    isRequestSuccess = responseUpdate.data.value?.success
   } else {
-    await addRoomToBooking(formData)
+    const responseAdd = await addRoomToBooking(formData)
+    isRequestSuccess = responseAdd.data.value?.success
+  }
+  if (isRequestSuccess) {
+    emit('submit')
   }
   fetchAvailableRooms()
   isFetching.value = false
-  emit('submit')
 }
 
 const handleChangeRoomId = (value: any) => {
@@ -291,7 +296,7 @@ watch(() => props.opened, async (opened) => {
       </div>
     </form>
     <template v-if="formData.roomBookingId === undefined" #actions-start>
-      <button class="btn btn-default" type="button" @click="resetForm">
+      <button class="btn btn-default" type="button" :disabled="isFetching" @click="resetForm">
         Сбросить
       </button>
     </template>
@@ -299,12 +304,12 @@ watch(() => props.opened, async (opened) => {
       <button
         class="btn btn-primary"
         type="button"
-        :disabled="!validateRoomForm"
+        :disabled="!validateRoomForm || isFetching"
         @click="onModalSubmit"
       >
         Сохранить
       </button>
-      <button class="btn btn-cancel" type="button" @click="$emit('close')">Отмена</button>
+      <button class="btn btn-cancel" type="button" :disabled="isFetching" @click="$emit('close')">Отмена</button>
     </template>
   </BaseDialog>
 </template>

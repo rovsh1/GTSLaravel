@@ -470,7 +470,7 @@ onMounted(() => {
       </template>
     </BootstrapTabs>
     <template #actions-start>
-      <button class="btn btn-default" type="button" @click="resetForm">
+      <button class="btn btn-default" type="button" :disabled="waitCreatingClient" @click="resetForm">
         Сбросить
       </button>
     </template>
@@ -486,14 +486,22 @@ onMounted(() => {
       </button>
       <button
         v-else
-        :disabled="(basicData.type == 1 && !validateBaseDataForm) || (basicData.type == 2 && !validateLegalDataForm)"
+        :disabled="(basicData.type == 1 && !validateBaseDataForm)
+          || (basicData.type == 2 && !validateLegalDataForm) || waitCreatingClient"
         class="btn btn-primary"
         type="button"
         @click="onModalSubmit"
       >
         Сохранить
       </button>
-      <button class="btn btn-cancel" type="button" @click="toggleModal(false)">Отмена</button>
+      <button
+        class="btn btn-cancel"
+        type="button"
+        :disabled="waitCreatingClient"
+        @click="toggleModal(false)"
+      >
+        Отмена
+      </button>
     </template>
   </BaseDialog>
 

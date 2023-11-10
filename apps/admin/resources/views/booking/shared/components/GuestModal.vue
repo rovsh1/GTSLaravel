@@ -49,6 +49,8 @@ const setFormData = () => ({
 
 const formData = ref<Partial<GuestFormData>>(setFormData())
 
+const isSubmiting = computed(() => Boolean(props.isFetching))
+
 const localAgeType = ref<number>()
 const ageType = computed<number>({
   get: () => {
@@ -80,18 +82,18 @@ watchEffect(() => {
 })
 
 const ageValidate = (): boolean => ((formData.value.age !== undefined && formData.value.age !== null
-&& (formData.value?.age >= 0 && formData.value?.age <= 18)))
+  && (formData.value?.age >= 0 && formData.value?.age <= 18)))
 
 const validateCreateGuestForm = computed(() => (isDataValid(null, formData.value.countryId)
-&& isDataValid(null, formData.value.fullName) && isDataValid(null, formData.value.gender)
-&& (!!(ageType.value === 1 ? isDataValid(null, formData.value.age, ageValidate()) : true))))
+  && isDataValid(null, formData.value.fullName) && isDataValid(null, formData.value.gender)
+  && (!!(ageType.value === 1 ? isDataValid(null, formData.value.age, ageValidate()) : true))))
 
 const validateSelectGuestForm = computed(() => (isDataValid(null, formData.value.selectedGuestFromOrder)))
 
 const isFormValid = (): boolean => {
   if (
     ((validateCreateGuestForm.value || validateSelectGuestForm.value) && formData.value.id === undefined)
-        || (formData.value.id !== undefined && validateCreateGuestForm.value)
+    || (formData.value.id !== undefined && validateCreateGuestForm.value)
   ) {
     return true
   }
@@ -181,7 +183,10 @@ const onChangeSelectGuest = (value: any) => {
   >
     <template #title>{{ titleText }}</template>
     <form class="row g-3">
-      <div v-if="orderGuests && guestsOptions.length > 0 && formData.id === undefined" class="col-md-12 guest-select-wrapper">
+      <div
+        v-if="orderGuests && guestsOptions.length > 0 && formData.id === undefined"
+        class="col-md-12 guest-select-wrapper"
+      >
         <Select2BaseSelect
           id="guest-select"
           :label="inputSelectText"
@@ -271,7 +276,7 @@ const onChangeSelectGuest = (value: any) => {
       </div>
     </form>
     <template v-if="formData.id === undefined" #actions-start>
-      <button class="btn btn-default" type="button" @click="resetForm">
+      <button class="btn btn-default" type="button" :disabled="isSubmiting" @click="resetForm">
         Сбросить
       </button>
     </template>
@@ -279,12 +284,12 @@ const onChangeSelectGuest = (value: any) => {
       <button
         class="btn btn-primary"
         type="button"
-        :disabled="submitDisable"
+        :disabled="submitDisable || isSubmiting"
         @click="onModalSubmit"
       >
         Сохранить
       </button>
-      <button class="btn btn-cancel" type="button" @click="$emit('close')">Отмена</button>
+      <button class="btn btn-cancel" type="button" :disabled="isSubmiting" @click="$emit('close')">Отмена</button>
     </template>
   </BaseDialog>
 </template>

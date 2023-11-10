@@ -12,6 +12,7 @@ import BaseDialog from '~components/BaseDialog.vue'
 const props = defineProps<{
   bookingId: number
   opened: MaybeRef<boolean>
+  loading?: MaybeRef<boolean>
   roomPrice?: RoomBookingPrice
   netCurrency: Currency | undefined
   grossCurrency: Currency | undefined
@@ -31,6 +32,8 @@ const isGrossPriceChanged = ref<boolean>(false)
 const grossPrice = ref<number | null>()
 const isNetPriceChanged = ref<boolean>(false)
 const netPrice = ref<number | null>()
+
+const isLoading = computed(() => Boolean(props.loading))
 
 const localGrossPrice = computed({
   get: () => (!isGrossPriceChanged.value ? props.roomPrice?.grossDayValue : grossPrice.value),
@@ -57,6 +60,7 @@ const submit = () => {
 <template>
   <BaseDialog
     :opened="opened as boolean"
+    :loading="loading"
     @close="$emit('close')"
     @keydown.enter="submit"
   >
@@ -75,8 +79,8 @@ const submit = () => {
     </form>
 
     <template #actions-end>
-      <button class="btn btn-primary" type="button" @click="submit">Сохранить</button>
-      <button class="btn btn-cancel" type="button" @click="$emit('close')">Отмена</button>
+      <button class="btn btn-primary" type="button" :disabled="isLoading" @click="submit">Сохранить</button>
+      <button class="btn btn-cancel" type="button" :disabled="isLoading" @click="$emit('close')">Отмена</button>
     </template>
   </BaseDialog>
 </template>

@@ -28,6 +28,8 @@ const currenciesStore = useCurrenciesStore()
 const { getCurrencyChar, isDefaultCurrency, defaultCurrency } = currenciesStore
 const currencies = computed(() => currenciesStore.currencies)
 
+const isLoading = computed(() => Boolean(props.loading))
+
 const netPrice = ref<number>()
 const grossPrices = ref<Money[]>([])
 
@@ -110,8 +112,8 @@ const getGrossPriceAmountByCurrency = (currency: string) => (
     </form>
 
     <template #actions-end>
-      <button class="btn btn-primary" type="button" @click="submit">Сохранить</button>
-      <button class="btn btn-cancel" type="button" @click="$emit('close')">Отмена</button>
+      <button class="btn btn-primary" type="button" :disabled="isLoading" @click="submit">Сохранить</button>
+      <button class="btn btn-cancel" type="button" :disabled="isLoading" @click="$emit('close')">Отмена</button>
     </template>
   </BaseDialog>
 </template>

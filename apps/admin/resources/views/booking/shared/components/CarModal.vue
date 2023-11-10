@@ -40,6 +40,8 @@ const formData = ref<Partial<CarFormData>>(setFormData())
 
 const selectedCar = ref<Car>()
 
+const isSubmiting = computed(() => Boolean(props.isFetching))
+
 const setSelectedCar = (carId: number | undefined) => {
   if (carId !== undefined) {
     selectedCar.value = props.availableCars.find((car) => car.id === carId)
@@ -58,10 +60,10 @@ watchEffect(() => {
 })
 
 const carsCountValidate = (): boolean => ((formData.value.carsCount !== undefined && formData.value.carsCount !== null
-&& formData.value?.carsCount > 0))
+  && formData.value?.carsCount > 0))
 
 const validateCreateCarForm = computed(() => (isDataValid(null, formData.value.carId)
-&& isDataValid(null, formData.value.passengersCount) && isDataValid(null, formData.value.carsCount, carsCountValidate())))
+  && isDataValid(null, formData.value.passengersCount) && isDataValid(null, formData.value.carsCount, carsCountValidate())))
 
 const submitDisable = computed(() => !validateCreateCarForm.value)
 
@@ -176,20 +178,15 @@ const closeModal = () => {
       </div>
     </form>
     <template v-if="formData.id === undefined" #actions-start>
-      <button class="btn btn-default" type="button" @click="resetForm">
+      <button class="btn btn-default" type="button" :disabled="isSubmiting" @click="resetForm">
         Сбросить
       </button>
     </template>
     <template #actions-end>
-      <button
-        class="btn btn-primary"
-        type="button"
-        :disabled="submitDisable"
-        @click="onModalSubmit"
-      >
+      <button class="btn btn-primary" type="button" :disabled="submitDisable || isSubmiting" @click="onModalSubmit">
         Сохранить
       </button>
-      <button class="btn btn-cancel" type="button" @click="$emit('close')">Отмена</button>
+      <button class="btn btn-cancel" type="button" :disabled="isSubmiting" @click="$emit('close')">Отмена</button>
     </template>
   </BaseDialog>
 </template>
