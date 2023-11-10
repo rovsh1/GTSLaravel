@@ -24,7 +24,7 @@ defineEmits<{
 </script>
 
 <template>
-  <div class="w-50 rounded p-3">
+  <div class="w-50 rounded pt-3 pb-3">
     <h6>{{ title }}</h6>
     <hr>
     <div v-if="currency">
