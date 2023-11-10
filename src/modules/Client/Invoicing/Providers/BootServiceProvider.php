@@ -2,8 +2,10 @@
 
 namespace Module\Client\Invoicing\Providers;
 
+use Illuminate\Support\Facades\View;
 use Module\Client\Invoicing\Domain;
 use Module\Client\Invoicing\Infrastructure;
+use Module\Shared\Service\TemplateCompilerInterface;
 use Sdk\Module\Support\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
@@ -17,8 +19,9 @@ class BootServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        $this->registerInterfaces();
+        View::addLocation(base_path('resources/pdf-templates'));
+
+        $this->app->singleton(TemplateCompilerInterface::class, Infrastructure\Service\InvoiceTemplateCompiler::class);
     }
 
-    private function registerInterfaces() {}
 }

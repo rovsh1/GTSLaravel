@@ -6,6 +6,7 @@ namespace Module\Client\Invoicing\Application\UseCase;
 
 use Module\Client\Invoicing\Application\Dto\InvoiceDto;
 use Module\Client\Invoicing\Application\Request\CreateInvoiceRequestDto;
+use Module\Client\Invoicing\Domain\Invoice\Factory\InvoiceFactory;
 use Module\Client\Invoicing\Domain\Invoice\Invoice;
 use Module\Client\Invoicing\Domain\Invoice\Repository\InvoiceRepositoryInterface;
 use Module\Client\Invoicing\Domain\Invoice\ValueObject\OrderIdCollection;
@@ -20,57 +21,20 @@ use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 class CreateInvoice implements UseCaseInterface
 {
     public function __construct(
-        private readonly InvoiceRepositoryInterface $invoiceRepository,
-        private readonly OrderRepositoryInterface $orderRepository,
+        private readonly InvoiceFactory $invoiceFactory
     ) {}
 
-    public function execute(CreateInvoiceRequestDto $requestDto): InvoiceDto
+    public function execute(CreateInvoiceRequestDto $request): InvoiceDto
     {
-        $orderIdCollection = new OrderIdCollection(
-            array_map(fn(int $orderId) => new OrderId($orderId), $requestDto->orderIds)
+        $orderIds = new OrderIdCollection(
+            array_map(fn(int $orderId) => new OrderId($orderId), $request->orderIds)
         );
 
-        $orders = $this->prepareOrders($requestDto->clientId, $orderIdCollection);
-
-        $invoice = $this->invoiceRepository->create(
-            clientId: new ClientId($requestDto->clientId),
-            orders: $orderIdCollection,
-            document: new File('test')//@todo generate invoice document
-        );
-
-        $this->updateOrdersStatus($orders, $invoice);
+        $invoice = $this->invoiceFactory->generate(new ClientId($request->clientId), $orderIds);
 
         return new InvoiceDto(
             id: $invoice->id()->value(),
             status: StatusDto::createFromEnum($invoice->status())
         );
-    }
-
-    private function prepareOrders(int $clientId, OrderIdCollection $orderIdCollection): array
-    {
-        $orders = [];
-        foreach ($orderIdCollection as $orderId) {
-            $order = $this->orderRepository->find($orderId);
-
-            if (!$order->clientId()->isEqual($clientId)) {
-                throw new \Exception('Cant invoice order with different client');
-            }
-
-            $order->ensureInvoiceCreationAvailable();
-
-            $orders[] = $order;
-        }
-
-        return $orders;
-    }
-
-    private function updateOrdersStatus(array $orders, Invoice $invoice): void
-    {
-        /** @var Order $order */
-        foreach ($orders as $order) {
-            $order->setInvoiceId($invoice->id());
-
-            $this->orderRepository->store($order);
-        }
     }
 }

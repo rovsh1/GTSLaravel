@@ -1,10 +1,10 @@
-@extends('booking.layout.layout')
+@extends('layout.layout')
 @props(['guests' => []])
 
 @section('content')
     <table>
         <tbody>
-        @include('booking._partials.company_requisites_header')
+        @include('_partials.company_requisites_header')
         <tr>
             <td style="padding-top: 15px;" colspan="2" class="text-align-right">Директору</td>
         </tr>

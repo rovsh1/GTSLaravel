@@ -3,34 +3,32 @@
 namespace Module\Administrator\Infrastructure\Models;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Query\Builder as Query;
 use Sdk\Module\Database\Eloquent\Model;
 
 class Administrator extends Model
 {
-    use HasFactory;
+    protected $table = 'administrators';
 
-    protected $table = 'administrator_bookings';
+    protected $fillable = [];
 
-    protected $fillable = [
-        'booking_id',
-        'administrator_id',
-    ];
-
-    public static function booted()
+    public function scopeWhereBookingId(Builder $builder, int $bookingId): void
     {
-        static::addGlobalScope('default', function (Builder $builder) {
-            $builder
-                ->addSelect('administrator_bookings.*')
-                ->join('administrators', 'administrators.id', '=', 'administrator_bookings.administrator_id')
-                ->addSelect([
-                    'administrators.id',
-                    'administrators.presentation',
-                    'administrators.email',
-                    'administrators.name',
-                    'administrators.surname',
-                    'administrators.phone',
-                ]);
+        $builder->whereExists(function (Query $query) use ($bookingId) {
+            $query->selectRaw(1)
+                ->from('administrator_bookings')
+                ->whereColumn('administrator_bookings.administrator_id', 'administrators.id')
+                ->where('booking_id', $bookingId);
+        });
+    }
+
+    public function scopeWhereOrderId(Builder $builder, int $orderId): void
+    {
+        $builder->whereExists(function (Query $query) use ($orderId) {
+            $query->selectRaw(1)
+                ->from('administrator_orders')
+                ->whereColumn('administrator_orders.administrator_id', 'administrators.id')
+                ->where('order_id', $orderId);
         });
     }
 }

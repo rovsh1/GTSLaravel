@@ -6,12 +6,12 @@ use Illuminate\Support\Facades\View;
 use Module\Booking\Requesting\Domain\BookingRequest\Adapter\AdministratorAdapterInterface;
 use Module\Booking\Requesting\Domain\BookingRequest\Factory\RequestFactory;
 use Module\Booking\Requesting\Domain\BookingRequest\Repository\RequestRepositoryInterface;
-use Module\Booking\Requesting\Domain\BookingRequest\Service\TemplateCompilerInterface;
 use Module\Booking\Requesting\Infrastructure\Adapter\AdministratorAdapter;
 use Module\Booking\Requesting\Infrastructure\Repository\RequestRepository;
 use Module\Booking\Requesting\Infrastructure\Service\RequestTemplateCompiler;
-use Sdk\Module\Support\ServiceProvider;
 use Module\Booking\Shared\Providers\BootServiceProvider as SharedBookingServiceProvider;
+use Module\Shared\Service\TemplateCompilerInterface;
+use Sdk\Module\Support\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {

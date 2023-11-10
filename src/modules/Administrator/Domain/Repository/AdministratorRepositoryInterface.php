@@ -11,4 +11,6 @@ interface AdministratorRepositoryInterface
     public function find(int $id): ?Administrator;
 
     public function findByBookingId(int $bookingId): ?Administrator;
+
+    public function findByOrderId(int $orderId): ?Administrator;
 }

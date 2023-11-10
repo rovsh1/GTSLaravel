@@ -31,6 +31,17 @@ class AdministratorRepository implements AdministratorRepositoryInterface
         return $this->buildEntity($model);
     }
 
+    public function findByOrderId(int $orderId): ?Administrator
+    {
+        $model = Model::whereOrderId($orderId)->first();
+        if ($model === null) {
+            return null;
+        }
+
+        return $this->buildEntity($model);
+    }
+
+
     private function buildEntity(Model $model): Administrator
     {
         return new Administrator(

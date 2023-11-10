@@ -1,12 +1,12 @@
 <?php
 
-namespace Module\Booking\Requesting\Infrastructure\Service;
+namespace Module\Client\Invoicing\Infrastructure\Service;
 
 use Illuminate\Contracts\View\View;
 use Module\Shared\Service\TemplateCompilerInterface;
 use Mpdf\Mpdf;
 
-class RequestTemplateCompiler implements TemplateCompilerInterface
+class InvoiceTemplateCompiler implements TemplateCompilerInterface
 {
     private string $imagesPath;
 

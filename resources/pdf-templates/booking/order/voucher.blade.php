@@ -40,7 +40,7 @@
 <table>
     <tbody>
 
-    @include('booking._partials.company_requisites_header')
+    @include('_partials.company_requisites_header')
 
     <tr>
         <td class="title text-align-center" colspan="2">ВАУЧЕР № {{$number}}</td>

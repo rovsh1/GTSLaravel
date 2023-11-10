@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Booking\Requesting\Domain\BookingRequest\Service;
+namespace Module\Shared\Service;
 
 interface TemplateCompilerInterface
 {

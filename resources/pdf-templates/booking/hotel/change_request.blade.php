@@ -1,9 +1,9 @@
-@extends('booking.layout.layout')
+@extends('layout.layout')
 
 @section('content')
     <table>
         <tbody>
-        @include('booking._partials.company_requisites_header')
+        @include('_partials.company_requisites_header')
         <tr>
             <td class="title text-align-center" colspan="2">ИЗМЕНЕНИЕ БРОНИРОВАНИЯ</td>
         </tr>
@@ -93,7 +93,7 @@
                     <tbody>
                     <tr>
                         <td style="width: 500px;">
-                            @include('booking._partials.manager_requisites')
+                            @include('_partials.manager_requisites')
                         </td>
                     </tr>
                     </tbody>

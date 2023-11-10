@@ -14,5 +14,7 @@ interface AdministratorAdapterInterface
 
     public function setBookingAdministrator(BookingId $bookingId, int $administratorId): void;
 
+    public function getOrderAdministrator(OrderId $orderId): ?AdministratorDto;
+
     public function setOrderAdministrator(OrderId $orderId, int $administratorId): void;
 }

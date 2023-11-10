@@ -46,6 +46,7 @@ class OrderRepository implements OrderRepositoryInterface
             invoiceId: $model->invoice_id !== null
                 ? new InvoiceId($model->invoice_id)
                 : null,
+            currency: $model->currency
         );
     }
 }
