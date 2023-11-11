@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Domain\Booking\Service\AirportBooking;
 
 use Carbon\Carbon;
+use Module\Booking\Moderation\Domain\Booking\Event\GuestBinded;
+use Module\Booking\Moderation\Domain\Booking\Event\GuestUnbinded;
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Entity\CIPMeetingInAirport;
 use Module\Booking\Shared\Domain\Booking\Entity\CIPSendoffInAirport;
-use Module\Booking\Shared\Domain\Booking\Event\GuestBinded;
-use Module\Booking\Shared\Domain\Booking\Event\GuestUnbinded;
 use Module\Booking\Shared\Domain\Booking\Exception\NotFoundAirportServicePrice;
 use Module\Booking\Shared\Domain\Booking\Factory\DetailsRepositoryFactory;
 use Module\Booking\Shared\Domain\Booking\Repository\AirportBookingGuestRepositoryInterface;

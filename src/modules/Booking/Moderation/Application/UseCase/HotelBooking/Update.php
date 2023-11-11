@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Application\UseCase\HotelBooking;
 
 use Carbon\CarbonPeriod;
+use Module\Booking\Moderation\Domain\Booking\Event\HotelBooking\BookingPeriodChanged;
 use Module\Booking\Moderation\Domain\Booking\Service\BookingUpdater;
-use Module\Booking\Shared\Domain\Booking\Event\HotelBooking\BookingPeriodChanged;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\Details\HotelBookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;

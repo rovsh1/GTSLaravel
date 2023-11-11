@@ -7,9 +7,9 @@ namespace Module\Booking\Moderation\Application\UseCase\HotelBooking\Accommodati
 use Module\Booking\Moderation\Application\RequestDto\UpdateRoomRequestDto;
 use Module\Booking\Moderation\Application\Service\AccommodationChecker;
 use Module\Booking\Moderation\Application\Service\AccommodationFactory;
+use Module\Booking\Moderation\Domain\Booking\Event\HotelBooking\AccommodationEdited;
+use Module\Booking\Moderation\Domain\Booking\Event\HotelBooking\AccommodationReplaced;
 use Module\Booking\Shared\Domain\Booking\Entity\HotelAccommodation;
-use Module\Booking\Shared\Domain\Booking\Event\HotelBooking\AccommodationEdited;
-use Module\Booking\Shared\Domain\Booking\Event\HotelBooking\AccommodationReplaced;
 use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\HotelBooking\BookingGuestRepositoryInterface;

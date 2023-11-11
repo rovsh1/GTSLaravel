@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Application\UseCase\HotelBooking\Accommodation;
 
 use Module\Booking\Moderation\Application\Exception\TooManyRoomGuestsException;
+use Module\Booking\Moderation\Domain\Booking\Event\HotelBooking\GuestBinded;
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelRoomAdapterInterface;
-use Module\Booking\Shared\Domain\Booking\Event\HotelBooking\GuestBinded;
 use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\HotelBooking\BookingGuestRepositoryInterface;

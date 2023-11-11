@@ -11,7 +11,7 @@ use Module\Shared\Enum\Booking\BookingStatusEnum;
 use Module\Shared\Enum\SourceEnum;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
 
-class Booking extends \Module\Booking\Shared\Infrastructure\ServiceBooking\Models\Booking
+class Booking extends \Module\Booking\Shared\Infrastructure\Models\Booking
 {
     use HasQuicksearch;
 

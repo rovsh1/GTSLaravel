@@ -7,7 +7,7 @@ namespace Module\Booking\Moderation\Application\UseCase\HotelBooking\Accommodati
 use Module\Booking\Moderation\Application\RequestDto\AddAccommodationRequestDto;
 use Module\Booking\Moderation\Application\Service\AccommodationChecker;
 use Module\Booking\Moderation\Application\Service\AccommodationFactory;
-use Module\Booking\Shared\Domain\Booking\Event\HotelBooking\AccommodationAdded;
+use Module\Booking\Moderation\Domain\Booking\Event\HotelBooking\AccommodationAdded;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Shared\Contracts\Service\SafeExecutorInterface;
