@@ -106,6 +106,11 @@ class Quota extends Model
         }
     }
 
+    public function scopeWhereRoomId(Builder $builder, int $roomId = null): void
+    {
+        $builder->where('room_id', $roomId);
+    }
+
     public function scopeWhereSold(Builder $builder): void
     {
         $builder
@@ -136,11 +141,16 @@ class Quota extends Model
         $builder->selectRaw('(hotel_room_quota.count_total - (' . self::buildCountQuery() . ')) as count_available');
     }
 
+    public function room(): BelongsTo
+    {
+        return $this->belongsTo(Room::class);
+    }
+
     private static function selectCountColumn(Builder $builder, QuotaChangeTypeEnum $type): void
     {
         $builder->selectRaw(
             '(' . self::buildCountQuery(true) . ') as count_' . strtolower($type->name),
-            [QuotaChangeTypeEnum::RESERVED]
+            [$type->value]
         );
     }
 
@@ -150,11 +160,6 @@ class Quota extends Model
             . ' FROM hotel_room_quota_booking'
             . ' WHERE quota_id=hotel_room_quota.id'
             . ($typeWhere ? ' AND type=?' : '');
-    }
-
-    public function room(): BelongsTo
-    {
-        return $this->belongsTo(Room::class);
     }
 
 //    public function countAvailable(): Attribute
@@ -170,24 +175,5 @@ class Quota extends Model
 //    public function countReserved(): Attribute
 //    {
 //        return Attribute::get(fn(int|null $val, array $attributes) => (int)($attributes['count_reserved'] ?? 0));
-//    }
-
-//    public function recalculateCountColumns(): void
-//    {
-//        $this->update([
-//            'count_available' => $this->count_total
-//                - $this->calculateCount([QuotaChangeTypeEnum::RESERVED, QuotaChangeTypeEnum::BOOKED]),
-//            'count_reserved' => $this->calculateCount([QuotaChangeTypeEnum::RESERVED]),
-//            'count_booked' => $this->calculateCount([QuotaChangeTypeEnum::BOOKED]),
-//        ]);
-//    }
-//
-//    private function calculateCount(array $types): int
-//    {
-//        return DB::table('booking_quota_reservation')
-//            ->selectRaw('COALESCE(SUM(value), 0) as c')
-//            ->whereColumn('hotel_room_quota.id', '=', 'booking_quota_reservation.quota_id')
-//            ->whereIn('type', $types)
-//            ->value('c');
 //    }
 }

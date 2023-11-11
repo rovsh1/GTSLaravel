@@ -5,9 +5,10 @@ namespace Module\Booking\Moderation\Domain\Booking\Service\HotelBooking\QuotaMan
 use Carbon\CarbonPeriod;
 use Module\Booking\Moderation\Domain\Booking\Service\HotelBooking\QuotaManager\QuotaProcessingMethodInterface;
 use Module\Booking\Moderation\Domain\Booking\Service\StatusRules\AdministratorRules;
-use Module\Booking\Shared\Domain\Booking\Adapter\HotelRoomQuotaAdapterInterface;
+use Module\Booking\Shared\Domain\Booking\Adapter\HotelQuotaAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
+use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\BookingPeriod;
 use Module\Hotel\Quotation\Application\Dto\BookingRoomDto;
 use Module\Hotel\Quotation\Application\RequestDto\BookRequestDto;
@@ -18,7 +19,8 @@ class Quota implements QuotaProcessingMethodInterface
 {
     public function __construct(
         private readonly AdministratorRules $administratorRules,
-        private readonly HotelRoomQuotaAdapterInterface $quotaAdapter,
+        private readonly HotelQuotaAdapterInterface $quotaAdapter,
+        private readonly AccommodationRepositoryInterface $accommodationRepository,
     ) {
     }
 
@@ -70,7 +72,8 @@ class Quota implements QuotaProcessingMethodInterface
     private function buildRequestRooms(HotelBooking $details): array
     {
         $roomsCount = [];
-        foreach ($details->accommodations() as $accommodation) {
+        foreach ($details->accommodations() as $accommodationId) {
+            $accommodation = $this->accommodationRepository->findOrFail($accommodationId);
             $hotelRoomId = $accommodation->roomInfo()->id();
             if (array_key_exists($hotelRoomId, $roomsCount)) {
                 $roomsCount[$hotelRoomId]++;
