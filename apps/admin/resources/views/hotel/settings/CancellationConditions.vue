@@ -40,6 +40,7 @@ const { hotelID, contract } = requestInitialData(
   }),
 )
 
+const defaultDisabledDate = '1900-01-01'
 const markupSettingsStore = useMarkupSettingsStore()
 const cancelPeriods = computed(() => markupSettingsStore.markupSettings?.cancelPeriods)
 const { fetchMarkupSettings, updateCancelPeriodDailyMarkupField, deleteCancelPeriodDailyMarkup } = markupSettingsStore
@@ -173,10 +174,10 @@ const handleDeleteDailyMarkup = async (cancelPeriodIndex: number, dailyMarkupInd
     :opened="isOpened"
     :loading="isLoading"
     :title="title"
-    :cancel-periods="cancelPeriods"
+    :cancel-periods="contract ? cancelPeriods : undefined"
     :editable-id="editableId"
-    :min-date="contract?.date_start"
-    :max-date="contract?.date_end"
+    :min-date="contract?.date_start || defaultDisabledDate"
+    :max-date="contract?.date_end || defaultDisabledDate"
     @close="close"
     @submit="onModalSubmit"
   />
@@ -192,7 +193,7 @@ const handleDeleteDailyMarkup = async (cancelPeriodIndex: number, dailyMarkupInd
 
   <CollapsableBlock id="cancellation-conditions" title="Условия отмены" class="card-grid">
     <template #header-controls>
-      <button v-if="contract" type="button" class="btn btn-add" @click="openAdd">
+      <button type="button" class="btn btn-add" @click="openAdd">
         <i class="icon">add</i>
         Добавить период
       </button>

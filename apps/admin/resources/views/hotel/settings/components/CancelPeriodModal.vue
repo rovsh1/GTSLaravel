@@ -7,7 +7,7 @@ import { MaybeRef } from '@vueuse/core'
 import { cancelPeriodOptions } from '~resources/views/booking/shared/lib/constants'
 
 import { DateResponse } from '~api'
-import { CancelPeriod } from '~api/hotel/markup-settings'
+import { CancelPeriod, DatePeriod } from '~api/hotel/markup-settings'
 
 import BaseDialog from '~components/BaseDialog.vue'
 import BootstrapSelectBase from '~components/Bootstrap/BootstrapSelectBase.vue'
@@ -98,13 +98,15 @@ const onModalSubmit = async () => {
     @keydown.enter="onModalSubmit"
   >
     <template #title>{{ title }}</template>
-
     <form ref="cancelConditionForm" class="row g-3">
       <DateRangePicker
         id="period"
         label="Период"
         required
-        :lock-periods="cancelPeriods"
+        :lock-periods="cancelPeriods || [{
+          from: minDate,
+          to: maxDate,
+        }] as DatePeriod[]"
         :editable-id="editableId"
         :min-date="minDate"
         :max-date="maxDate"
