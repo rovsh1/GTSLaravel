@@ -130,6 +130,7 @@ class Quota extends Model
 
     public function scopeWithCountColumns(Builder $builder): void
     {
+        $builder->addSelect('hotel_room_quota.*');
         self::selectCountColumn($builder, QuotaChangeTypeEnum::RESERVED);
         self::selectCountColumn($builder, QuotaChangeTypeEnum::BOOKED);
         $builder->selectRaw('(hotel_room_quota.count_total - (' . self::buildCountQuery() . ')) as count_available');
