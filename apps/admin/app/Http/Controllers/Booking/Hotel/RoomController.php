@@ -58,7 +58,7 @@ class RoomController
         try {
             AccommodationAdapter::update(
                 bookingId: $id,
-                accommodationId: $request->getRoomBookingId(),
+                accommodationId: $request->getAccommodationId(),
                 roomId: $request->getRoomId(),
                 rateId: $request->getRateId(),
                 isResident: $request->getIsResident(),
@@ -77,7 +77,7 @@ class RoomController
     public function deleteRoom(DeleteRoomRequest $request, int $id): AjaxResponseInterface
     {
         try {
-            AccommodationAdapter::delete($id, $request->getRoomBookingId());
+            AccommodationAdapter::delete($id, $request->getAccommodationId());
         } catch (\Throwable $e) {
             //@todo отлов доменных эксепшнов
             dd($e);
@@ -89,7 +89,7 @@ class RoomController
     public function addRoomGuest(RoomGuestRequest $request, int $id): AjaxResponseInterface
     {
         try {
-            AccommodationAdapter::bindGuest($id, $request->getRoomBookingId(), $request->getGuestId());
+            AccommodationAdapter::bindGuest($id, $request->getAccommodationId(), $request->getGuestId());
         } catch (\Throwable $e) {
             //@todo отлов доменных эксепшнов
             return new AjaxErrorResponse($e->getMessage());
@@ -101,7 +101,7 @@ class RoomController
     public function deleteRoomGuest(RoomGuestRequest $request, int $id): AjaxResponseInterface
     {
         try {
-            AccommodationAdapter::unbindGuest($id, $request->getRoomBookingId(), $request->getGuestId(),);
+            AccommodationAdapter::unbindGuest($id, $request->getAccommodationId(), $request->getGuestId(),);
         } catch (\Throwable $e) {
             //@todo отлов доменных эксепшнов
             return new AjaxErrorResponse($e->getMessage());
@@ -110,12 +110,12 @@ class RoomController
         return new AjaxSuccessResponse();
     }
 
-    public function updatePrice(UpdatePriceRequest $request, int $id, int $roomBookingId): AjaxResponseInterface
+    public function updatePrice(UpdatePriceRequest $request, int $id, int $accommodationId): AjaxResponseInterface
     {
         try {
             AccommodationAdapter::updatePrice(
                 $id,
-                $roomBookingId,
+                $accommodationId,
                 $request->getSupplierPrice(),
                 $request->getClientPrice(),
             );

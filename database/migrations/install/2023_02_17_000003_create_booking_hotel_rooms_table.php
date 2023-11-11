@@ -5,12 +5,9 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('booking_hotel_rooms', function (Blueprint $table) {
+        Schema::create('booking_hotel_accommodations', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('booking_id');
             $table->unsignedInteger('hotel_room_id');
@@ -26,11 +23,8 @@ return new class extends Migration {
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('booking_hotel_rooms');
+        Schema::dropIfExists('booking_hotel_accommodations');
     }
 };

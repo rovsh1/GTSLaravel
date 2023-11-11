@@ -53,8 +53,8 @@ class Booking extends \Module\Booking\Shared\Infrastructure\ServiceBooking\Model
     {
         $builder->whereExists(function (Query $query) use ($roomId) {
             $query->selectRaw(1)
-                ->from('booking_hotel_rooms')
-                ->whereColumn('bookings.id', 'booking_hotel_rooms.booking_id')
+                ->from('booking_hotel_accommodations')
+                ->whereColumn('bookings.id', 'booking_hotel_accommodations.booking_id')
                 ->where('hotel_room_id', $roomId);
         });
     }

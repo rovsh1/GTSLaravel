@@ -2,13 +2,11 @@
 
 namespace Module\Booking\Shared\Domain\Booking\Entity;
 
-use Exception;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\DetailsId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\BookingPeriod;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\ExternalNumber;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\HotelInfo;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationIdCollection;
 use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 use Module\Shared\Enum\ServiceTypeEnum;
@@ -58,24 +56,6 @@ final class HotelBooking implements ServiceDetailsInterface
     public function accommodations(): AccommodationIdCollection
     {
         return $this->accommodations;
-    }
-
-    public function addRoomBooking(AccommodationId $id): void
-    {
-        if ($this->accommodations->has($id)) {
-            throw new Exception('Guest already exists');
-        }
-        $this->accommodations = new AccommodationIdCollection([...$this->accommodations->all(), $id]);
-    }
-
-    public function removeRoomBooking(AccommodationId $accommodationId): void
-    {
-        if (!$this->accommodations->has($accommodationId)) {
-            throw new Exception('Accommodation not found');
-        }
-        $this->accommodations = new AccommodationIdCollection(
-            array_filter($this->accommodations->all(), fn($id) => !$accommodationId->isEqual($id))
-        );
     }
 
     public function externalNumber(): ?ExternalNumber

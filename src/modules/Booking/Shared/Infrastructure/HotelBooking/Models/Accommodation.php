@@ -12,7 +12,7 @@ use Sdk\Module\Database\Eloquent\Model;
 
 class Accommodation extends Model
 {
-    protected $table = 'booking_hotel_rooms';
+    protected $table = 'booking_hotel_accommodations';
 
     protected $fillable = [
         'booking_id',
@@ -29,15 +29,15 @@ class Accommodation extends Model
     {
         static::addGlobalScope('default', function (Builder $builder) {
             $builder
-                ->addSelect('booking_hotel_rooms.*')
-                ->join('bookings', 'bookings.id', '=', 'booking_hotel_rooms.booking_id')
+                ->addSelect('booking_hotel_accommodations.*')
+                ->join('bookings', 'bookings.id', '=', 'booking_hotel_accommodations.booking_id')
                 ->addSelect('bookings.order_id as booking_order_id');
         });
     }
 
     public function scopeWhereId(Builder $builder, int $id): void
     {
-        $builder->where('booking_hotel_rooms.id', $id);
+        $builder->where('booking_hotel_accommodations.id', $id);
     }
 
     public function guests(): BelongsToMany
@@ -45,7 +45,7 @@ class Accommodation extends Model
         return $this->belongsToMany(
             Guest::class,
             'booking_hotel_room_guests',
-            'booking_hotel_room_id',
+            'accommodation_id',
             'guest_id'
         );
     }

@@ -543,19 +543,19 @@ class BookingController extends Controller
                     ->selectRaw('count(id)')
                     ->whereExists(function ($query) {
                         $query->selectRaw(1)
-                            ->from('booking_hotel_rooms')
-                            ->whereColumn('booking_hotel_rooms.booking_id', 'bookings.id')
-                            ->whereColumn('booking_hotel_room_guests.booking_hotel_room_id', 'booking_hotel_rooms.id');
+                            ->from('booking_hotel_accommodations')
+                            ->whereColumn('booking_hotel_accommodations.booking_id', 'bookings.id')
+                            ->whereColumn('booking_hotel_room_guests.accommodation_id', 'booking_hotel_accommodations.id');
                     }),
                 'guests_count'
             )
             ->addSelect(
                 DB::raw(
-                    '(SELECT GROUP_CONCAT(room_name) FROM booking_hotel_rooms WHERE booking_id=bookings.id) as room_names'
+                    '(SELECT GROUP_CONCAT(room_name) FROM booking_hotel_accommodations WHERE booking_id=bookings.id) as room_names'
                 )
             )
             ->addSelect(
-                DB::raw('(SELECT COUNT(id) FROM booking_hotel_rooms WHERE booking_id=bookings.id) as rooms_count')
+                DB::raw('(SELECT COUNT(id) FROM booking_hotel_accommodations WHERE booking_id=bookings.id) as rooms_count')
             )
             ->addSelect(
                 DB::raw('(SELECT bookings.status IN (' . implode(',', $requestableStatuses) . ')) as is_requestable'),

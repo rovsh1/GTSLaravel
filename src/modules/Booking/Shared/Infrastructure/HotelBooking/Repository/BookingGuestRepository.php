@@ -14,15 +14,15 @@ class BookingGuestRepository implements BookingGuestRepositoryInterface
     public function bind(AccommodationId $accommodationId, GuestId $guestId): void
     {
         DB::table('booking_hotel_room_guests')->updateOrInsert(
-            ['booking_hotel_room_id' => $accommodationId->value(), 'guest_id' => $guestId->value()],
-            ['booking_hotel_room_id' => $accommodationId->value(), 'guest_id' => $guestId->value()],
+            ['accommodation_id' => $accommodationId->value(), 'guest_id' => $guestId->value()],
+            ['accommodation_id' => $accommodationId->value(), 'guest_id' => $guestId->value()],
         );
     }
 
     public function unbind(AccommodationId $accommodationId, GuestId $guestId): void
     {
         DB::table('booking_hotel_room_guests')
-            ->where('booking_hotel_room_id', $accommodationId->value())
+            ->where('accommodation_id', $accommodationId->value())
             ->whereGuestId($guestId->value())
             ->delete();
     }

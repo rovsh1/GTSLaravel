@@ -44,7 +44,7 @@ class AccommodationRepository implements AccommodationRepositoryInterface
     {
         $ids = $accommodationIds->map(fn(AccommodationId $id) => $id->value());
         /** @var Collection<int, Model> $models */
-        $models = Model::whereIn('booking_hotel_rooms.id', $ids)->get();
+        $models = Model::whereIn('booking_hotel_accommodations.id', $ids)->get();
 
         return new AccommodationCollection($models->map(fn(Model $model) => $this->buildEntityFromModel($model))->all());
     }

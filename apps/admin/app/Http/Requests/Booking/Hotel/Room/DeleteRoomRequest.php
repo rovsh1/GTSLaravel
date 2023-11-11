@@ -11,7 +11,7 @@ class DeleteRoomRequest extends AddRoomRequest
         ];
     }
 
-    public function getRoomBookingId(): int
+    public function getAccommodationId(): int
     {
         return $this->post('room_booking_id');
     }

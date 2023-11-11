@@ -5,9 +5,6 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('order_guests', function (Blueprint $table) {
@@ -41,14 +38,14 @@ return new class extends Migration {
     {
         Schema::create('booking_hotel_room_guests', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('booking_hotel_room_id');
+            $table->unsignedInteger('accommodation_id');
             $table->unsignedInteger('guest_id');
 
-            $table->unique(['booking_hotel_room_id', 'guest_id'],'booking_hotel_room_guests_room_id_guest_id_unique');
+            $table->unique(['accommodation_id', 'guest_id']);
 
-            $table->foreign('booking_hotel_room_id')
+            $table->foreign('accommodation_id')
                 ->references('id')
-                ->on('booking_hotel_rooms')
+                ->on('booking_hotel_accommodations')
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
 
@@ -83,9 +80,6 @@ return new class extends Migration {
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('booking_hotel_room_guests');

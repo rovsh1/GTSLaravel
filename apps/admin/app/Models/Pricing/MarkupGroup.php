@@ -27,8 +27,8 @@ class MarkupGroup extends Model
     {
         static::addGlobalScope('default', function (Builder $builder) {
 //            $builder
-//                ->addSelect('booking_hotel_rooms.*')
-//                ->join('bookings', 'bookings.id', '=', 'booking_hotel_rooms.booking_id')
+//                ->addSelect('booking_hotel_accommodations.*')
+//                ->join('bookings', 'bookings.id', '=', 'booking_hotel_accommodations.booking_id')
 //                ->addSelect('bookings.order_id as booking_order_id');
         });
     }
