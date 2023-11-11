@@ -35,6 +35,11 @@ class Accommodation extends Model
         });
     }
 
+    public function scopeWhereBookingId(Builder $builder, int $id): void
+    {
+        $builder->where('booking_hotel_accommodations.booking_id', $id);
+    }
+
     public function scopeWhereId(Builder $builder, int $id): void
     {
         $builder->where('booking_hotel_accommodations.id', $id);

@@ -26,9 +26,7 @@ class AccommodationPriceStorage
         CalculatedHotelRoomsPricesDto $supplierPriceDto,
         CalculatedHotelRoomsPricesDto $clientPriceDto
     ): void {
-        foreach ($bookingDetails->accommodations() as $accommodationId) {
-            $accommodation = $this->accommodationRepository->findOrFail($accommodationId);
-
+        foreach ($this->accommodationRepository->getByBookingId($bookingDetails->bookingId()) as $accommodation) {
             $roomPrices = $this->buildRoomPrices($accommodation, $supplierPriceDto, $clientPriceDto);
             $accommodation->updatePrices($roomPrices);
 

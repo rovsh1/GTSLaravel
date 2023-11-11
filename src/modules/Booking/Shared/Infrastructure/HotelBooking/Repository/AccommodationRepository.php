@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Infrastructure\HotelBooking\Repository;
 
-use Illuminate\Database\Eloquent\Collection;
 use Module\Booking\Shared\Domain\Booking\Entity\HotelAccommodation;
 use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationCollection;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationDetails;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationIdCollection;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomInfo;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomPrices;
 use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
@@ -40,13 +38,13 @@ class AccommodationRepository implements AccommodationRepositoryInterface
         return $entity;
     }
 
-    public function get(AccommodationIdCollection $accommodationIds): AccommodationCollection
+    public function getByBookingId(BookingId $bookingId): AccommodationCollection
     {
-        $ids = $accommodationIds->map(fn(AccommodationId $id) => $id->value());
-        /** @var Collection<int, Model> $models */
-        $models = Model::whereIn('booking_hotel_accommodations.id', $ids)->get();
-
-        return new AccommodationCollection($models->map(fn(Model $model) => $this->buildEntityFromModel($model))->all());
+        return new AccommodationCollection(
+            Model::whereBookingId($bookingId->value())
+                ->get()
+                ->map(fn(Model $model) => $this->buildEntityFromModel($model))->all()
+        );
     }
 
     public function create(

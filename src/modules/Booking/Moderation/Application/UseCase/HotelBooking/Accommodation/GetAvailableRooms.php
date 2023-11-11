@@ -40,13 +40,6 @@ class GetAvailableRooms implements UseCaseInterface
             $details->bookingPeriod()->dateTo(),
             'P1D'
         );
-//        foreach ($rooms as $room) {
-//            dump($room, $this->roomQuotaAdapter->getAvailableCount($room->id, $period));
-//        }
-//        dd(array_filter(
-//            $rooms,
-//            fn($room) => $this->roomQuotaAdapter->getAvailableCount($room->id, $period) > 0
-//        ));
 
         return array_filter(
             $rooms,

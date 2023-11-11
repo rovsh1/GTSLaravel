@@ -7,7 +7,6 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\DetailsId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\BookingPeriod;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\ExternalNumber;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\HotelInfo;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationIdCollection;
 use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 use Module\Shared\Enum\ServiceTypeEnum;
 
@@ -18,7 +17,6 @@ final class HotelBooking implements ServiceDetailsInterface
         private readonly BookingId $bookingId,
         private readonly HotelInfo $hotelInfo,
         private BookingPeriod $bookingPeriod,
-        private AccommodationIdCollection $accommodations,
         private ?ExternalNumber $externalNumber,
         private readonly QuotaProcessingMethodEnum $quotaProcessingMethod,
     ) {}
@@ -51,11 +49,6 @@ final class HotelBooking implements ServiceDetailsInterface
     public function setBookingPeriod(BookingPeriod $period): void
     {
         $this->bookingPeriod = $period;
-    }
-
-    public function accommodations(): AccommodationIdCollection
-    {
-        return $this->accommodations;
     }
 
     public function externalNumber(): ?ExternalNumber

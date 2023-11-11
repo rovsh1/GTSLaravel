@@ -29,7 +29,7 @@ class DetailsDtoFactory
 
     public function build(HotelBooking $details): HotelBookingDto
     {
-        $accommodations = $this->accommodationRepository->get($details->accommodations());
+        $accommodations = $this->accommodationRepository->getByBookingId($details->bookingId());
         $roomDtos = $this->buildHotelRooms($accommodations);
 
         return new HotelBookingDto(

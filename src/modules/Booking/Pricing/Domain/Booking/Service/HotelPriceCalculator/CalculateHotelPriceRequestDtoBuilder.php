@@ -6,6 +6,7 @@ use Carbon\CarbonPeriod;
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
+use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
 use Module\Booking\Shared\Domain\Order\Order;
 use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
 use Module\Booking\Shared\Domain\Order\ValueObject\ClientId;
@@ -23,6 +24,7 @@ class CalculateHotelPriceRequestDtoBuilder
     private Order $order;
 
     public function __construct(
+        private readonly AccommodationRepositoryInterface $accommodationRepository,
         private readonly RoomCalculationParamsDtoBuilder $roomCalculationParamsDtoBuilder,
         private readonly OrderRepositoryInterface $orderRepository,
         private readonly HotelAdapterInterface $hotelAdapter,
@@ -63,8 +65,8 @@ class CalculateHotelPriceRequestDtoBuilder
     private function buildRooms(): array
     {
         $rooms = [];
-        foreach ($this->details->accommodations() as $roomId) {
-            $room = $this->roomCalculationParamsDtoBuilder->room($roomId);
+        foreach ($this->accommodationRepository->getByBookingId($this->booking->id()) as $accommodation) {
+            $room = $this->roomCalculationParamsDtoBuilder->accommodation($accommodation);
             if (isset($this->clientId)) {
                 $room->withClientMarkups();
             }

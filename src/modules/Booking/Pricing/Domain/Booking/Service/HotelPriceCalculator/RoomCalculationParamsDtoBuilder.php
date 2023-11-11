@@ -3,8 +3,6 @@
 namespace Module\Booking\Pricing\Domain\Booking\Service\HotelPriceCalculator;
 
 use Module\Booking\Shared\Domain\Booking\Entity\HotelAccommodation;
-use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationId;
 use Module\Hotel\Pricing\Application\Dto\RoomCalculationParamsDto;
 
 class RoomCalculationParamsDtoBuilder
@@ -13,13 +11,9 @@ class RoomCalculationParamsDtoBuilder
 
     private bool $isClientCalculation = false;
 
-    public function __construct(
-        private readonly AccommodationRepositoryInterface $accommodationRepository
-    ) {}
-
-    public function room(AccommodationId $accommodationId): static
+    public function accommodation(HotelAccommodation $accommodation): static
     {
-        $this->accommodation = $this->accommodationRepository->findOrFail($accommodationId);
+        $this->accommodation = $accommodation;
 
         return $this;
     }

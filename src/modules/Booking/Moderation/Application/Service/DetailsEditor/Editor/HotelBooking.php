@@ -11,7 +11,6 @@ use Module\Booking\Shared\Domain\Booking\Repository\Details\HotelBookingReposito
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\BookingPeriod;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\HotelInfo;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationIdCollection;
 use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceId;
 use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 use Module\Shared\ValueObject\Time;
@@ -43,7 +42,6 @@ class HotelBooking extends AbstractEditor implements EditorInterface
             $bookingId,
             $hotelInfo,
             $bookingPeriod,
-            new AccommodationIdCollection([]),
             QuotaProcessingMethodEnum::from((int)$detailsData['quota_processing_method']),
         );
     }

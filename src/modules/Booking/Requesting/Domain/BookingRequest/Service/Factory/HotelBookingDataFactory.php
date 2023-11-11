@@ -42,8 +42,8 @@ class HotelBookingDataFactory
     public function build(Booking $booking, RequestTypeEnum $requestType): TemplateDataInterface
     {
         $bookingDetails = $this->hotelBookingRepository->findOrFail($booking->id());
-        $rooms = $this->accommodationRepository->get($bookingDetails->accommodations());
-        $roomsDto = $this->buildRoomsDto($rooms, $bookingDetails);
+        $accommodations = $this->accommodationRepository->getByBookingId($booking->id());
+        $roomsDto = $this->buildRoomsDto($accommodations, $bookingDetails);
         $hotelInfoDto = $this->buildHotelInfo($bookingDetails);
         $bookingPeriodDto = $this->buildPeriodDto($bookingDetails);
 
