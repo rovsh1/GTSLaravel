@@ -14,9 +14,6 @@ return new class extends Migration {
             $table->unsignedTinyInteger('release_days')->default(0);
             $table->unsignedTinyInteger('status')->default(0);
             $table->unsignedSmallInteger('count_total')->default(0);
-            $table->unsignedSmallInteger('count_available')->default(0);
-            $table->unsignedSmallInteger('count_booked')->default(0);
-            $table->unsignedSmallInteger('count_reserved')->default(0);
 
             $table->unique(['date', 'room_id'], 'hotel_room_quota_uid');
 

@@ -9,12 +9,6 @@ use Module\Hotel\Quotation\Application\Dto\QuotaDto;
 use Module\Hotel\Quotation\Infrastructure\Model\Quota;
 use Module\Shared\Enum\Hotel\QuotaStatusEnum;
 
-/**
- * @method $this whereClosed()
- * @method $this whereOpened()
- * @method $this whereSold()
- * @method $this whereHasAvailable()
- */
 class QuotaFetcher
 {
     public function getAll(int $hotelId, CarbonPeriod $period, ?int $roomId): array
