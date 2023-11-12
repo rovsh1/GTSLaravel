@@ -2,8 +2,6 @@
 
 namespace Module\Booking\Shared\Providers;
 
-use Module\Booking\ChangeHistory\Domain\Repository\BookingChangesLogRepositoryInterface;
-use Module\Booking\ChangeHistory\Infrastructure\Repository\BookingChangesLogRepository;
 use Module\Booking\Shared\Domain\Booking\Repository\AirportBookingGuestRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Service\BookingStatusStorageInterface;
@@ -18,7 +16,6 @@ class BookingServiceProvider extends ServiceProvider
     {
         $this->app->singleton(BookingRepositoryInterface::class, BookingRepository::class);
         $this->app->singleton(BookingStatusStorageInterface::class, BookingStatusStorage::class);
-        $this->app->singleton(BookingChangesLogRepositoryInterface::class, BookingChangesLogRepository::class);
 
         $this->app->singleton(AirportBookingGuestRepositoryInterface::class, AirportBookingGuestRepository::class);
     }

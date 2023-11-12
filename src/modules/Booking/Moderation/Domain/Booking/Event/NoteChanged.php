@@ -2,9 +2,9 @@
 
 namespace Module\Booking\Moderation\Domain\Booking\Event;
 
-use Module\Booking\Moderation\Domain\Booking\Service\ChangeHistory\AttributeDiff;
-use Module\Booking\Moderation\Domain\Booking\Service\ChangeHistory\AttributeTypeEnum;
-use Module\Booking\Moderation\Domain\Booking\Service\ChangeHistory\ChangesInterface;
+use Module\Booking\EventSourcing\Domain\Service\AttributeDiff;
+use Module\Booking\EventSourcing\Domain\Service\AttributeTypeEnum;
+use Module\Booking\EventSourcing\Domain\Service\ChangesInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Event\HasChangesInterface;
 use Sdk\Module\Contracts\Event\DomainEventInterface;

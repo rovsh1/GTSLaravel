@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Application\UseCase\Order;
 
 use Module\Booking\Moderation\Application\Dto\OrderAvailableActionsDto;
-use Module\Booking\Moderation\Application\Dto\StatusDto;
 use Module\Booking\Moderation\Application\Factory\OrderStatusDtoFactory;
 use Module\Booking\Moderation\Domain\Order\Service\StatusRules\AdministratorRules;
+use Module\Booking\Shared\Application\Dto\StatusDto;
 use Module\Booking\Shared\Domain\Order\Order;
 use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
 use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;

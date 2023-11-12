@@ -4,7 +4,7 @@ namespace Sdk\Module\Event;
 
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\Event\DomainEventInterface;
-use Sdk\Module\Contracts\Event\IntegrationEventMapperInterface;
+use Sdk\Module\Contracts\Event\IntegrationEventInterface;
 use Sdk\Module\Contracts\Event\IntegrationEventPublisherInterface;
 use Sdk\Module\Contracts\Support\ContainerInterface;
 
@@ -12,17 +12,10 @@ class DomainEventDispatcher implements DomainEventDispatcherInterface
 {
     private array $listeners = [];
 
-    private IntegrationEventMapperInterface $integrationEventMapper;
-
     public function __construct(
         private readonly ContainerInterface $container,
         private readonly IntegrationEventPublisherInterface $integrationEventPublisher,
     ) {
-    }
-
-    public function registerMapper(IntegrationEventMapperInterface $integrationEventMapper): void
-    {
-        $this->integrationEventMapper = $integrationEventMapper;
     }
 
     public function listen(string $eventClass, string $listenerClass): void
@@ -79,17 +72,7 @@ class DomainEventDispatcher implements DomainEventDispatcherInterface
 
     private function publish(DomainEventInterface ...$events): void
     {
-        if (!isset($this->integrationEventMapper)) {
-            return;
-        }
-
-        foreach ($events as $event) {
-            $integrationEvents = $this->integrationEventMapper->map($event);
-            if (empty($integrationEvents)) {
-                continue;
-            }
-
-            $this->integrationEventPublisher->publish(...$integrationEvents);
-        }
+        $integrationEvents = array_filter($events, fn($e) => $e instanceof IntegrationEventInterface);
+        $this->integrationEventPublisher->publish(...$integrationEvents);
     }
 }

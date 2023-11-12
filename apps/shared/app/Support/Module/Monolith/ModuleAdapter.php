@@ -4,7 +4,7 @@ namespace App\Shared\Support\Module\Monolith;
 
 use App\Shared\Contracts\Module\ModuleAdapterInterface;
 use Sdk\Module\Contracts\Api\ApiInterface;
-use Sdk\Module\Contracts\Event\IntegrationEventInterface;
+use Sdk\Module\Contracts\Event\IntegrationEventMessage;
 use Sdk\Module\Contracts\Event\IntegrationEventSubscriberInterface;
 use Sdk\Module\Contracts\ModuleInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
@@ -65,8 +65,8 @@ class ModuleAdapter implements ModuleAdapterInterface
         return $this->module->make($abstract);
     }
 
-    public function dispatchEvent(IntegrationEventInterface $event): void
+    public function dispatchEvent(IntegrationEventMessage $message): void
     {
-        $this->module->get(IntegrationEventSubscriberInterface::class)->handle($event);
+        $this->module->get(IntegrationEventSubscriberInterface::class)->handle($message);
     }
 }

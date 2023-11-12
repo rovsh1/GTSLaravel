@@ -9,13 +9,10 @@ class DomainEventServiceProvider extends ServiceProvider
 {
     protected array $listen = [];
 
-    protected string $integrationEventMapper;
-
     public function register(): void
     {
         $this->app->resolving(DomainEventDispatcherInterface::class, function ($domainEventDispatcher) {
             $this->registerListeners($domainEventDispatcher);
-            $this->bootPublisher($domainEventDispatcher);
         });
     }
 
@@ -30,14 +27,5 @@ class DomainEventServiceProvider extends ServiceProvider
                 $domainEventDispatcher->listen($eventClass, $listeners);
             }
         }
-    }
-
-    protected function bootPublisher(DomainEventDispatcherInterface $domainEventDispatcher): void
-    {
-        if (!isset($this->integrationEventMapper)) {
-            return;
-        }
-
-        $domainEventDispatcher->registerMapper($this->app->make($this->integrationEventMapper));
     }
 }

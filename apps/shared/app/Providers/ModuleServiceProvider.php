@@ -6,6 +6,9 @@ use App\Shared\Support\Module\Monolith\ModuleAdapterFactory;
 use App\Shared\Support\Module\Monolith\SharedKernel;
 use Illuminate\Support\ServiceProvider;
 
+/**
+ * @see \Module\Support\IntegrationEventBus\Service\MessageSender
+ */
 class ModuleServiceProvider extends ServiceProvider
 {
     private array $modules = [
@@ -18,9 +21,9 @@ class ModuleServiceProvider extends ServiceProvider
         'BookingModeration' => 'Booking/Moderation',
         'BookingPricing' => 'Booking/Pricing',
         'BookingRequesting' => 'Booking/Requesting',
+        'BookingEventSourcing' => 'Booking/EventSourcing',
         'BookingShared' => 'Booking/Shared',
         'Supplier' => 'Supplier',
-        'Logging' => 'Generic/Logging',
         'CurrencyRate' => 'Generic/CurrencyRate',
         'Notification' => 'Generic/Notification',
         'FileStorage' => 'Support/FileStorage',

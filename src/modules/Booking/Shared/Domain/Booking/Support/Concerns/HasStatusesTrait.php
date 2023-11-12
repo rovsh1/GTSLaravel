@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Domain\Booking\Support\Concerns;
 
+use Module\Booking\Shared\Domain\Booking\Event\Status\BookingCancelled;
+use Module\Booking\Shared\Domain\Booking\Event\Status\BookingCancelledFee;
+use Module\Booking\Shared\Domain\Booking\Event\Status\BookingCancelledNoFee;
+use Module\Booking\Shared\Domain\Booking\Event\Status\BookingConfirmed;
+use Module\Booking\Shared\Domain\Booking\Event\Status\BookingNotConfirmed;
+use Module\Booking\Shared\Domain\Booking\Event\Status\BookingProcessing;
+use Module\Booking\Shared\Domain\Booking\Event\Status\BookingWaitingCancellation;
+use Module\Booking\Shared\Domain\Booking\Event\Status\BookingWaitingConfirmation;
+use Module\Booking\Shared\Domain\Booking\Event\Status\BookingWaitingProcessing;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPriceItem;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPrices;
-use Module\Booking\Shared\Domain\Shared\Event\Status\BookingCancelled;
-use Module\Booking\Shared\Domain\Shared\Event\Status\BookingCancelledFee;
-use Module\Booking\Shared\Domain\Shared\Event\Status\BookingCancelledNoFee;
-use Module\Booking\Shared\Domain\Shared\Event\Status\BookingConfirmed;
-use Module\Booking\Shared\Domain\Shared\Event\Status\BookingNotConfirmed;
-use Module\Booking\Shared\Domain\Shared\Event\Status\BookingProcessing;
-use Module\Booking\Shared\Domain\Shared\Event\Status\BookingWaitingCancellation;
-use Module\Booking\Shared\Domain\Shared\Event\Status\BookingWaitingConfirmation;
-use Module\Booking\Shared\Domain\Shared\Event\Status\BookingWaitingProcessing;
 use Module\Shared\Enum\Booking\BookingStatusEnum;
 
 trait HasStatusesTrait

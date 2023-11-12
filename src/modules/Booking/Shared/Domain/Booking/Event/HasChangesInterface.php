@@ -2,7 +2,7 @@
 
 namespace Module\Booking\Shared\Domain\Booking\Event;
 
-use Module\Booking\Moderation\Domain\Booking\Service\ChangeHistory\ChangesInterface;
+use Module\Booking\EventSourcing\Domain\Service\ChangesInterface;
 
 interface HasChangesInterface
 {

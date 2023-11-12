@@ -28,8 +28,9 @@ class IntegrationEventPublisher implements IntegrationEventPublisherInterface
                     'id' => Str::orderedUuid()->toString(),
                     'module' => $this->module->name(),
                     'status' => 0,
-                    'event' => $event::class,
-                    'eventPayload' => $event
+                    'event' => $event->integrationEvent(),
+                    'payload' => $event->integrationPayload(),
+                    'timestamp' => time()
                 ])
             );
         }

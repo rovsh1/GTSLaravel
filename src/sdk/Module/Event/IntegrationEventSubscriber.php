@@ -3,6 +3,7 @@
 namespace Sdk\Module\Event;
 
 use Sdk\Module\Contracts\Event\IntegrationEventInterface;
+use Sdk\Module\Contracts\Event\IntegrationEventMessage;
 use Sdk\Module\Contracts\Event\IntegrationEventSubscriberInterface;
 use Sdk\Module\Contracts\Support\ContainerInterface;
 
@@ -23,21 +24,26 @@ class IntegrationEventSubscriber implements IntegrationEventSubscriberInterface
         $this->listeners[$eventClass][] = $listenerClass;
     }
 
-    public function handle(IntegrationEventInterface $event): void
+    public function handle(IntegrationEventMessage $message): void
     {
         foreach ($this->listeners as $eventClass => $listeners) {
-            if ($event::class === $eventClass || is_subclass_of($event, $eventClass)) {
-                $this->dispatchListeners($event, $listeners);
+            if ($message->event === $eventClass) {
+                $this->dispatchListeners($message, $listeners);
             }
         }
     }
 
-    private function dispatchListeners(IntegrationEventInterface $event, array $listeners): void
+    private function dispatchListeners(IntegrationEventMessage $message, array $listeners): void
     {
         foreach ($listeners as $listenerClass) {
             $listener = $this->container->get($listenerClass);
 
-            $listener->handle($event);
+            //@todo debug mode
+            try {
+                $listener->handle($message);
+            } catch (\Throwable $e) {
+                dd($e);
+            }
         }
     }
 }

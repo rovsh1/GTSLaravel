@@ -7,7 +7,7 @@ namespace App\Admin\Support\Facades\Booking;
 use Illuminate\Support\Facades\Facade;
 use Module\Booking\Moderation\Application\Dto\OrderAvailableActionsDto;
 use Module\Booking\Moderation\Application\Dto\OrderDto;
-use Module\Booking\Moderation\Application\Dto\StatusDto;
+use Module\Booking\Shared\Application\Dto\StatusDto;
 
 /**
  * @method static array getActiveOrders(int|null $clientId = null, boolean $isOnlyWaitingInvoice = false)

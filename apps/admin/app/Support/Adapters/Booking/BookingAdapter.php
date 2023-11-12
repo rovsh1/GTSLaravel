@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Adapters\Booking;
 
+use Module\Booking\EventSourcing\Application\UseCase\GetStatusHistory;
 use Module\Booking\Moderation\Application\RequestDto\CreateBookingRequestDto;
 use Module\Booking\Moderation\Application\UseCase\BulkDeleteBookings;
 use Module\Booking\Moderation\Application\UseCase\CopyBooking;
@@ -12,10 +13,9 @@ use Module\Booking\Moderation\Application\UseCase\DeleteBooking;
 use Module\Booking\Moderation\Application\UseCase\GetAvailableActions;
 use Module\Booking\Moderation\Application\UseCase\GetBooking;
 use Module\Booking\Moderation\Application\UseCase\GetStatuses;
-use Module\Booking\Moderation\Application\UseCase\GetStatusHistory;
 use Module\Booking\Moderation\Application\UseCase\HotelBooking\CreateBooking as CreateHotelBooking;
-use Module\Booking\Moderation\Application\UseCase\UpdateBookingStatus;
 use Module\Booking\Moderation\Application\UseCase\UpdateNote;
+use Module\Booking\Moderation\Application\UseCase\UpdateStatus;
 use Module\Shared\Enum\CurrencyEnum;
 
 class BookingAdapter
@@ -94,7 +94,7 @@ class BookingAdapter
         float|null $supplierPenalty = null,
         float|null $clientPenalty = null,
     ): mixed {
-        return app(UpdateBookingStatus::class)->execute($id, $status, $notConfirmedReason, $supplierPenalty, $clientPenalty);
+        return app(UpdateStatus::class)->execute($id, $status, $notConfirmedReason, $supplierPenalty, $clientPenalty);
     }
 
     public function getStatusHistory(int $id): array

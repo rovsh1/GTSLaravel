@@ -11,7 +11,7 @@ class Message
         private MessageStatusEnum $status,
         private readonly string $module,
         private readonly string $event,
-        private readonly array $eventPayload
+        private readonly array $payload
     ) {
     }
 
@@ -30,9 +30,9 @@ class Message
         return $this->event;
     }
 
-    public function eventPayload(): array
+    public function payload(): array
     {
-        return $this->eventPayload;
+        return $this->payload;
     }
 
 //    public function fail
@@ -59,7 +59,7 @@ class Message
             'status' => $this->status->value,
             'module' => $this->module,
             'event' => $this->event,
-            'eventPayload' => $this->eventPayload
+            'payload' => $this->payload
         ];
     }
 
@@ -70,7 +70,7 @@ class Message
             status: MessageStatusEnum::from($payload['status']),
             module: $payload['module'],
             event: $payload['event'],
-            eventPayload: $payload['eventPayload'],
+            payload: $payload['payload'],
         );
     }
 }

@@ -6,7 +6,6 @@ namespace Module\Booking\Shared\Domain\Order\Event;
 
 use Module\Booking\Shared\Domain\Booking\Event\PriceBecomeDeprecatedEventInterface;
 use Module\Booking\Shared\Domain\Order\Order;
-use Module\Booking\Shared\Domain\Shared\Event\OrderEventInterface;
 
 class ClientChanged implements OrderEventInterface, PriceBecomeDeprecatedEventInterface
 {

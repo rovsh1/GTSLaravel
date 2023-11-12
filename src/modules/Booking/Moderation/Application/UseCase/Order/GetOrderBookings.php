@@ -8,7 +8,7 @@ use Module\Booking\Moderation\Application\Dto\Details\CancelConditionsDto;
 use Module\Booking\Moderation\Application\Dto\ServiceBooking\BookingDto;
 use Module\Booking\Moderation\Application\Dto\ServiceBooking\ServiceTypeDto;
 use Module\Booking\Moderation\Application\Factory\BookingPriceDtoFactory;
-use Module\Booking\Moderation\Application\Factory\BookingStatusDtoFactory;
+use Module\Booking\Shared\Application\Factory\BookingStatusDtoFactory;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
@@ -37,7 +37,7 @@ class GetOrderBookings implements UseCaseInterface
             id: $booking->id()->value(),
             status: $this->statusDtoFactory->get($booking->status()),
             orderId: $booking->orderId()->value(),
-            createdAt: $booking->timestamps()->createdDate(),
+            createdAt: $booking->timestamps()->createdAt(),
             creatorId: $booking->context()->creatorId()->value(),
             prices: $this->bookingPriceDtoFactory->createFromEntity($booking->prices()),
             cancelConditions: $booking->cancelConditions() !== null

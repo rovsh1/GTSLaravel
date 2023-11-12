@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Domain\Booking;
 
+use Module\Booking\Shared\Domain\Booking\Event\BookingDeleted;
 use Module\Booking\Shared\Domain\Booking\Support\Concerns\HasStatusesTrait;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPrices;
 use Module\Booking\Shared\Domain\Booking\ValueObject\Context;
 use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
-use Module\Booking\Shared\Domain\Shared\Event\BookingDeleted;
 use Module\Booking\Shared\Domain\Shared\ValueObject\CancelConditions;
+use Module\Shared\Contracts\Support\SerializableDataInterface;
 use Module\Shared\Enum\Booking\BookingStatusEnum;
 use Module\Shared\Enum\ServiceTypeEnum;
 use Module\Shared\ValueObject\Timestamps;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
-class Booking extends AbstractAggregateRoot
+class Booking extends AbstractAggregateRoot implements SerializableDataInterface
 {
     use HasStatusesTrait;
 
@@ -101,5 +102,35 @@ class Booking extends AbstractAggregateRoot
     public function setCancelConditions(?CancelConditions $cancelConditions): void
     {
         $this->cancelConditions = $cancelConditions;
+    }
+
+    public function toData(): array
+    {
+        return [
+            'id' => $this->id->value(),
+            'orderId' => $this->orderId->value(),
+            'serviceType' => $this->serviceType->value,
+            'status' => $this->status->value,
+            'prices' => $this->prices->toData(),
+            'cancelConditions' => $this->cancelConditions->toData(),
+            'note' => $this->note,
+            'context' => $this->context->toData(),
+            'timestamps' => $this->timestamps->toData(),
+        ];
+    }
+
+    public static function fromData(array $data): static
+    {
+        return new static(
+            id: new BookingId($data['id']),
+            orderId: new OrderId($data['orderId']),
+            serviceType: ServiceTypeEnum::from($data['serviceType']),
+            status: BookingStatusEnum::from($data['status']),
+            prices: BookingPrices::fromData($data['prices']),
+            cancelConditions: $data['cancelConditions'] ? CancelConditions::fromData($data['cancelConditions']) : null,
+            note: $data['note'],
+            context: Context::fromData($data['context']),
+            timestamps: Timestamps::fromData($data['timestamps'])
+        );
     }
 }

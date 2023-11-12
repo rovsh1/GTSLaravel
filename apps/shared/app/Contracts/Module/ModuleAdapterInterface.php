@@ -2,7 +2,7 @@
 
 namespace App\Shared\Contracts\Module;
 
-use Sdk\Module\Contracts\Event\IntegrationEventInterface;
+use Sdk\Module\Contracts\Event\IntegrationEventMessage;
 
 interface ModuleAdapterInterface
 {
@@ -16,5 +16,5 @@ interface ModuleAdapterInterface
 
     public function call(string $method, array $arguments = []): mixed;
 
-    public function dispatchEvent(IntegrationEventInterface $event): void;
+    public function dispatchEvent(IntegrationEventMessage $message): void;
 }

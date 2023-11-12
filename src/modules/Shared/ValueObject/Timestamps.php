@@ -5,22 +5,39 @@ declare(strict_types=1);
 namespace Module\Shared\ValueObject;
 
 use DateTimeImmutable;
+use Module\Shared\Contracts\Support\SerializableDataInterface;
 
-final class Timestamps
+final class Timestamps implements SerializableDataInterface
 {
     public function __construct(
-        private readonly DateTimeImmutable $createdDate,
-        private readonly DateTimeImmutable $updatedDate,
+        private readonly DateTimeImmutable $createdAt,
+        private readonly DateTimeImmutable $updatedAt,
     ) {
     }
 
-    public function createdDate(): DateTimeImmutable
+    public function createdAt(): DateTimeImmutable
     {
-        return $this->createdDate;
+        return $this->createdAt;
     }
 
-    public function updatedDate(): DateTimeImmutable
+    public function updatedAt(): DateTimeImmutable
     {
-        return $this->updatedDate;
+        return $this->updatedAt;
+    }
+
+    public function toData(): array
+    {
+        return [
+            'createdAt' => $this->createdAt->getTimestamp(),
+            'updatedAt' => $this->updatedAt->getTimestamp()
+        ];
+    }
+
+    public static function fromData(array $data): static
+    {
+        return new Timestamps(
+            (new DateTimeImmutable())->setTimestamp($data['createdAt']),
+            (new DateTimeImmutable())->setTimestamp($data['updatedAt']),
+        );
     }
 }

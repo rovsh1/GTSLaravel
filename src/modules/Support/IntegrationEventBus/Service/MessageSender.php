@@ -4,16 +4,12 @@ namespace Module\Support\IntegrationEventBus\Service;
 
 use App\Shared\Contracts\Module\ModuleAdapterInterface;
 use Module\Support\IntegrationEventBus\Entity\Message;
-use ReflectionClass;
-use Sdk\Module\Contracts\Event\IntegrationEventInterface;
+use Sdk\Module\Contracts\Event\IntegrationEventMessage;
 
 class MessageSender
 {
     private array $availableModules = [
-//        'Booking',
-//        'Hotel',
-        'Pricing',
-        'Logging'
+        'BookingEventSourcing'
     ];
 
     public function send(Message $message): void
@@ -33,11 +29,13 @@ class MessageSender
         }
     }
 
-    private function makeIntegrationEvent(Message $message): IntegrationEventInterface
+    private function makeIntegrationEvent(Message $message): IntegrationEventMessage
     {
-        $eventClass = $message->event();
-        $reflect = new ReflectionClass($eventClass);
-
-        return $reflect->newInstanceArgs($message->eventPayload());
+        return new IntegrationEventMessage(
+            module: $message->module(),
+            event: $message->event(),
+            payload: $message->payload(),
+            context: []
+        );
     }
 }
