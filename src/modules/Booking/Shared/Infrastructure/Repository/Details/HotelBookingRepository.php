@@ -9,12 +9,13 @@ use Module\Booking\Shared\Domain\Booking\Repository\Details\HotelBookingReposito
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\BookingPeriod;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\HotelInfo;
+use Module\Booking\Shared\Infrastructure\Factory\Details\HotelBookingFactory;
 use Module\Booking\Shared\Infrastructure\Models\Booking;
 use Module\Booking\Shared\Infrastructure\Models\Details\Hotel;
 use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
-class HotelBookingRepository extends AbstractDetailsRepository implements HotelBookingRepositoryInterface
+class HotelBookingRepository implements HotelBookingRepositoryInterface
 {
     public function find(BookingId $bookingId): HotelBooking
     {
@@ -23,7 +24,7 @@ class HotelBookingRepository extends AbstractDetailsRepository implements HotelB
             throw new EntityNotFoundException('Booking not found');
         }
 
-        return $this->detailsFactory->buildByBooking($booking);
+        return $this->build($booking->hotelDetails);
     }
 
     public function findOrFail(BookingId $bookingId): HotelBooking
@@ -55,7 +56,7 @@ class HotelBookingRepository extends AbstractDetailsRepository implements HotelB
             ]
         ]);
 
-        return $this->detailsFactory->build(Hotel::find($model->id));
+        return $this->build(Hotel::find($model->id));
     }
 
     public function store(HotelBooking $details): bool
@@ -70,5 +71,10 @@ class HotelBookingRepository extends AbstractDetailsRepository implements HotelB
                 'externalNumber' => $details->externalNumber()?->toData(),
             ]
         ]);
+    }
+
+    private function build(Hotel $data): HotelBooking
+    {
+        return (new HotelBookingFactory)->build($data);
     }
 }

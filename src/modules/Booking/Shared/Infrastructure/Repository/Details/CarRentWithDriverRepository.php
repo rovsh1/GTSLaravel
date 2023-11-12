@@ -10,11 +10,13 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPeriod;
 use Module\Booking\Shared\Domain\Booking\ValueObject\CarBidCollection;
 use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
+use Module\Booking\Shared\Infrastructure\Factory\Details\CarRentWithDriverFactory;
 use Module\Booking\Shared\Infrastructure\Models\Booking;
 use Module\Booking\Shared\Infrastructure\Models\Details\Transfer;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
-class CarRentWithDriverRepository extends AbstractDetailsRepository implements CarRentWithDriverRepositoryInterface
+class CarRentWithDriverRepository extends AbstractServiceDetailsRepository implements
+    CarRentWithDriverRepositoryInterface
 {
     public function find(BookingId $bookingId): ?CarRentWithDriver
     {
@@ -23,7 +25,7 @@ class CarRentWithDriverRepository extends AbstractDetailsRepository implements C
             throw new EntityNotFoundException('Booking not found');
         }
 
-        return $this->detailsFactory->buildByBooking($booking);
+        return $this->build($booking->transferDetails);
     }
 
     public function findOrFail(BookingId $bookingId): CarRentWithDriver
@@ -55,7 +57,7 @@ class CarRentWithDriverRepository extends AbstractDetailsRepository implements C
             ]
         ]);
 
-        return $this->detailsFactory->build(Transfer::find($model->id));
+        return $this->build(Transfer::find($model->id));
     }
 
     public function store(CarRentWithDriver $details): bool
@@ -71,5 +73,10 @@ class CarRentWithDriverRepository extends AbstractDetailsRepository implements C
                 'meetingAddress' => $details->meetingAddress(),
             ]
         ]);
+    }
+
+    private function build(Transfer $details): CarRentWithDriver
+    {
+        return (new CarRentWithDriverFactory())->build($details);
     }
 }

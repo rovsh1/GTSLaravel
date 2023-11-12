@@ -5,14 +5,9 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Infrastructure\Repository\Details;
 
 use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
-use Module\Booking\Shared\Infrastructure\Factory\DetailsFactory;
 
-abstract class AbstractDetailsRepository
+abstract class AbstractServiceDetailsRepository
 {
-    public function __construct(
-        protected readonly DetailsFactory $detailsFactory
-    ) {}
-
     protected function serializeServiceInfo(ServiceInfo $serviceInfo): array
     {
         return [

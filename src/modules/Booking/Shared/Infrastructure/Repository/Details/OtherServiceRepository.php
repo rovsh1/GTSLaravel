@@ -8,11 +8,12 @@ use Module\Booking\Shared\Domain\Booking\Entity\OtherService;
 use Module\Booking\Shared\Domain\Booking\Repository\Details\OtherServiceRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
+use Module\Booking\Shared\Infrastructure\Factory\Details\OtherServiceFactory;
 use Module\Booking\Shared\Infrastructure\Models\Booking;
 use Module\Booking\Shared\Infrastructure\Models\Details\Other;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
-class OtherServiceRepository extends AbstractDetailsRepository implements OtherServiceRepositoryInterface
+class OtherServiceRepository extends AbstractServiceDetailsRepository implements OtherServiceRepositoryInterface
 {
     public function find(BookingId $bookingId): ?OtherService
     {
@@ -21,7 +22,7 @@ class OtherServiceRepository extends AbstractDetailsRepository implements OtherS
             throw new EntityNotFoundException('Booking not found');
         }
 
-        return $this->detailsFactory->buildByBooking($booking);
+        return $this->build($booking->otherDetails);
     }
 
     public function findOrFail(BookingId $bookingId): OtherService
@@ -48,7 +49,7 @@ class OtherServiceRepository extends AbstractDetailsRepository implements OtherS
             ]
         ]);
 
-        return $this->detailsFactory->build(Other::find($model->id));
+        return $this->build(Other::find($model->id));
     }
 
     public function store(OtherService $details): bool
@@ -59,5 +60,10 @@ class OtherServiceRepository extends AbstractDetailsRepository implements OtherS
                 'description' => $details->description(),
             ]
         ]);
+    }
+
+    private function build(Other $details): OtherService
+    {
+        return (new OtherServiceFactory())->build($details);
     }
 }

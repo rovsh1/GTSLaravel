@@ -10,11 +10,13 @@ use Module\Booking\Shared\Domain\Booking\Repository\Details\TransferFromRailwayR
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\CarBidCollection;
 use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
+use Module\Booking\Shared\Infrastructure\Factory\Details\TransferFromRailwayFactory;
 use Module\Booking\Shared\Infrastructure\Models\Booking;
 use Module\Booking\Shared\Infrastructure\Models\Details\Transfer;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
-class TransferFromRailwayRepository extends AbstractDetailsRepository implements TransferFromRailwayRepositoryInterface
+class TransferFromRailwayRepository extends AbstractServiceDetailsRepository implements
+    TransferFromRailwayRepositoryInterface
 {
     public function find(BookingId $bookingId): ?TransferFromRailway
     {
@@ -23,7 +25,7 @@ class TransferFromRailwayRepository extends AbstractDetailsRepository implements
             throw new EntityNotFoundException('Booking not found');
         }
 
-        return $this->detailsFactory->buildByBooking($booking);
+        return $this->build($booking->transferDetails);
     }
 
     public function findOrFail(BookingId $bookingId): TransferFromRailway
@@ -60,7 +62,7 @@ class TransferFromRailwayRepository extends AbstractDetailsRepository implements
             ]
         ]);
 
-        return $this->detailsFactory->build(Transfer::find($model->id));
+        return $this->build(Transfer::find($model->id));
     }
 
     public function store(TransferFromRailway $details): bool
@@ -75,5 +77,10 @@ class TransferFromRailwayRepository extends AbstractDetailsRepository implements
                 'carBids' => $details->carBids()->toData(),
             ]
         ]);
+    }
+
+    private function build(Transfer $details): TransferFromRailway
+    {
+        return (new TransferFromRailwayFactory())->build($details);
     }
 }

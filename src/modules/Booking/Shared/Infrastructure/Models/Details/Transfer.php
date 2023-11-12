@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Infrastructure\Models\Details;
 
 use Illuminate\Database\Eloquent\Builder;
-use Module\Booking\Shared\Infrastructure\Factory\DetailsModelInterface;
 use Module\Shared\Enum\ServiceTypeEnum;
 use Sdk\Module\Database\Eloquent\Model;
 
-class Transfer extends Model implements DetailsModelInterface
+class Transfer extends Model
 {
     protected $table = 'booking_transfer_details';
 
@@ -40,15 +39,5 @@ class Transfer extends Model implements DetailsModelInterface
     public function scopeWhereId(Builder $builder, int $id): void
     {
         $builder->where('booking_transfer_details.id', $id);
-    }
-
-    public function bookingId(): int
-    {
-        return $this->booking_id;
-    }
-
-    public function serviceType(): ServiceTypeEnum
-    {
-        return $this->service_type;
     }
 }

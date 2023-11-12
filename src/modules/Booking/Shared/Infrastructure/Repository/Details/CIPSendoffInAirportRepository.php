@@ -10,11 +10,13 @@ use Module\Booking\Shared\Domain\Booking\Repository\Details\CIPSendoffInAirportR
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
+use Module\Booking\Shared\Infrastructure\Factory\Details\CIPSendoffInAirportFactory;
 use Module\Booking\Shared\Infrastructure\Models\Booking;
 use Module\Booking\Shared\Infrastructure\Models\Details\Airport;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
-class CIPSendoffInAirportRepository extends AbstractDetailsRepository implements CIPSendoffInAirportRepositoryInterface
+class CIPSendoffInAirportRepository extends AbstractServiceDetailsRepository implements
+    CIPSendoffInAirportRepositoryInterface
 {
     public function find(BookingId $bookingId): CIPSendoffInAirport
     {
@@ -23,7 +25,7 @@ class CIPSendoffInAirportRepository extends AbstractDetailsRepository implements
             throw new EntityNotFoundException('Booking not found');
         }
 
-        return $this->detailsFactory->buildByBooking($booking);
+        return $this->build($booking);
     }
 
     public function findOrFail(BookingId $bookingId): CIPSendoffInAirport
@@ -56,7 +58,7 @@ class CIPSendoffInAirportRepository extends AbstractDetailsRepository implements
             ]
         ]);
 
-        return $this->detailsFactory->build(Airport::find($model->id));
+        return $this->build(Airport::find($model->id));
     }
 
     public function store(CIPSendoffInAirport $details): bool
@@ -70,5 +72,10 @@ class CIPSendoffInAirportRepository extends AbstractDetailsRepository implements
                 'guestIds' => $details->guestIds()->toData(),
             ]
         ]);
+    }
+
+    private function build(Airport $details): CIPSendoffInAirport
+    {
+        return (new CIPSendoffInAirportFactory())->build($details);
     }
 }

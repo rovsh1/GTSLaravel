@@ -10,11 +10,13 @@ use Module\Booking\Shared\Domain\Booking\Repository\Details\IntercityTransferRep
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\CarBidCollection;
 use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
+use Module\Booking\Shared\Infrastructure\Factory\Details\IntercityTransferFactory;
 use Module\Booking\Shared\Infrastructure\Models\Booking;
 use Module\Booking\Shared\Infrastructure\Models\Details\Transfer;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
-class IntercityTransferRepository extends AbstractDetailsRepository implements IntercityTransferRepositoryInterface
+class IntercityTransferRepository extends AbstractServiceDetailsRepository implements
+    IntercityTransferRepositoryInterface
 {
     public function find(BookingId $bookingId): ?IntercityTransfer
     {
@@ -23,7 +25,7 @@ class IntercityTransferRepository extends AbstractDetailsRepository implements I
             throw new EntityNotFoundException('Booking not found');
         }
 
-        return $this->detailsFactory->buildByBooking($booking);
+        return $this->build($booking->transferDetails);
     }
 
     public function findOrFail(BookingId $bookingId): IntercityTransfer
@@ -58,7 +60,7 @@ class IntercityTransferRepository extends AbstractDetailsRepository implements I
             ]
         ]);
 
-        return $this->detailsFactory->build(Transfer::find($model->id));
+        return $this->build(Transfer::find($model->id));
     }
 
     public function store(IntercityTransfer $details): bool
@@ -73,5 +75,10 @@ class IntercityTransferRepository extends AbstractDetailsRepository implements I
                 'carBids' => $details->carBids()->toData(),
             ]
         ]);
+    }
+
+    private function build(Transfer $details): IntercityTransfer
+    {
+        return (new IntercityTransferFactory())->build($details);
     }
 }

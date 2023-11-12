@@ -10,11 +10,13 @@ use Module\Booking\Shared\Domain\Booking\Repository\Details\TransferFromAirportR
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\CarBidCollection;
 use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
+use Module\Booking\Shared\Infrastructure\Factory\Details\TransferFromAirportFactory;
 use Module\Booking\Shared\Infrastructure\Models\Booking;
 use Module\Booking\Shared\Infrastructure\Models\Details\Transfer;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
-class TransferFromAirportRepository extends AbstractDetailsRepository implements TransferFromAirportRepositoryInterface
+class TransferFromAirportRepository extends AbstractServiceDetailsRepository implements
+    TransferFromAirportRepositoryInterface
 {
     public function find(BookingId $bookingId): ?TransferFromAirport
     {
@@ -23,7 +25,7 @@ class TransferFromAirportRepository extends AbstractDetailsRepository implements
             throw new EntityNotFoundException('Booking not found');
         }
 
-        return $this->detailsFactory->buildByBooking($booking);
+        return $this->build($booking->transferDetails);
     }
 
     public function findOrFail(BookingId $bookingId): TransferFromAirport
@@ -58,7 +60,7 @@ class TransferFromAirportRepository extends AbstractDetailsRepository implements
             ]
         ]);
 
-        return $this->detailsFactory->build(Transfer::find($model->id));
+        return $this->build(Transfer::find($model->id));
     }
 
     public function store(TransferFromAirport $details): bool
@@ -73,5 +75,10 @@ class TransferFromAirportRepository extends AbstractDetailsRepository implements
                 'carBids' => $details->carBids()->toData(),
             ]
         ]);
+    }
+
+    private function build(Transfer $details): TransferFromAirport
+    {
+        return (new TransferFromAirportFactory())->build($details);
     }
 }

@@ -10,11 +10,12 @@ use Module\Booking\Shared\Domain\Booking\Repository\Details\DayCarTripRepository
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\CarBidCollection;
 use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
+use Module\Booking\Shared\Infrastructure\Factory\Details\DayCarTripFactory;
 use Module\Booking\Shared\Infrastructure\Models\Booking;
 use Module\Booking\Shared\Infrastructure\Models\Details\Transfer;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
-class DayCarTripRepository extends AbstractDetailsRepository implements DayCarTripRepositoryInterface
+class DayCarTripRepository extends AbstractServiceDetailsRepository implements DayCarTripRepositoryInterface
 {
     public function find(BookingId $bookingId): ?DayCarTrip
     {
@@ -23,7 +24,7 @@ class DayCarTripRepository extends AbstractDetailsRepository implements DayCarTr
             throw new EntityNotFoundException('Booking not found');
         }
 
-        return $this->detailsFactory->buildByBooking($booking);
+        return $this->build($booking->transferDetails);
     }
 
     public function findOrFail(BookingId $bookingId): DayCarTrip
@@ -56,7 +57,7 @@ class DayCarTripRepository extends AbstractDetailsRepository implements DayCarTr
             ]
         ]);
 
-        return $this->detailsFactory->build(Transfer::find($model->id));
+        return $this->build(Transfer::find($model->id));
     }
 
     public function store(DayCarTrip $details): bool
@@ -70,5 +71,10 @@ class DayCarTripRepository extends AbstractDetailsRepository implements DayCarTr
                 'destinationsDescription' => $details->destinationsDescription(),
             ]
         ]);
+    }
+
+    private function build(Transfer $details): DayCarTrip
+    {
+        return (new DayCarTripFactory())->build($details);
     }
 }
