@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Booking\EventSourcing\Domain\Service;
+namespace Module\Booking\EventSourcing\Domain\Service\BookingComparator;
 
 enum AttributeTypeEnum
 {

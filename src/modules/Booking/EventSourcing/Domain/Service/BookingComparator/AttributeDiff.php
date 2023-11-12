@@ -1,8 +1,8 @@
 <?php
 
-namespace Module\Booking\EventSourcing\Domain\Service;
+namespace Module\Booking\EventSourcing\Domain\Service\BookingComparator;
 
-class AttributeDiff implements ChangesInterface
+class AttributeDiff
 {
     public function __construct(
         private readonly string $name,

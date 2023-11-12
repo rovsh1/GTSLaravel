@@ -1,8 +1,8 @@
 <?php
 
-namespace Module\Booking\EventSourcing\Domain\Service;
+namespace Module\Booking\EventSourcing\Domain\Service\BookingComparator;
 
-class DataComparator
+class AttributesComparator
 {
     private array $diff = [];
 

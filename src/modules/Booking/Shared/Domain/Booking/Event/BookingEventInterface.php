@@ -11,6 +11,4 @@ interface BookingEventInterface extends DomainEventInterface
     public function bookingId(): BookingId;
 
     public function orderId(): OrderId;
-
-    public function payload(): ?array;
 }

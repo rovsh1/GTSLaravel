@@ -28,9 +28,4 @@ abstract class AbstractBookingEvent implements BookingEventInterface
     {
         return $this->booking->orderId();
     }
-
-    public function payload(): ?array
-    {
-        return null;
-    }
 }
