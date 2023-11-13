@@ -101,7 +101,7 @@ class BookingController extends Controller
         $orderId = $data['order_id'] ?? null;
         $currency = $data['currency'] ? CurrencyEnum::from($data['currency']) : null;
         if ($orderId !== null && $currency === null) {
-            $order = OrderAdapter::findOrder($orderId);
+            $order = OrderAdapter::getOrder($orderId);
             $currency = CurrencyEnum::from($order->currency->value);
         }
         if ($currency === null) {
@@ -172,7 +172,7 @@ class BookingController extends Controller
         $title = "Бронь №{$id}";
 
         $booking = BookingAdapter::getBooking($id);
-        $order = OrderAdapter::findOrder($booking->orderId);
+        $order = OrderAdapter::getOrder($booking->orderId);
         $client = Client::find($order->clientId);
 
         Breadcrumb::prototype($this->prototype)
@@ -394,7 +394,7 @@ class BookingController extends Controller
 
     private function prepareFormData(object $booking): array
     {
-        $order = OrderAdapter::findOrder($booking->orderId);
+        $order = OrderAdapter::getOrder($booking->orderId);
         $manager = $this->administratorRepository->get($booking->id);
 
         return [

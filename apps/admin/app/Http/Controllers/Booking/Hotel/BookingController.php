@@ -107,7 +107,7 @@ class BookingController extends Controller
         $orderId = $data['order_id'] ?? null;
         $currency = $data['currency'] ? CurrencyEnum::from($data['currency']) : null;
         if ($orderId !== null && $currency === null) {
-            $order = OrderAdapter::findOrder($orderId);
+            $order = OrderAdapter::getOrder($orderId);
             $currency = CurrencyEnum::from($order->currency->value);
         }
         if ($currency === null) {
@@ -138,7 +138,7 @@ class BookingController extends Controller
     public function show(int $id): LayoutContract
     {
         $booking = BookingAdapter::getBooking($id);
-        $order = OrderAdapter::findOrder($booking->orderId);
+        $order = OrderAdapter::getOrder($booking->orderId);
         $hotelId = $booking->details->hotelInfo->id;
         $client = Client::find($order->clientId);
         $hotel = Hotel::find($hotelId);
@@ -427,7 +427,7 @@ class BookingController extends Controller
     {
         $hotelId = $booking->details->hotelInfo->id;
         $cityId = Hotel::find($hotelId)->city_id;
-        $order = OrderAdapter::findOrder($booking->orderId);
+        $order = OrderAdapter::getOrder($booking->orderId);
         $manager = $this->administratorRepository->get($booking->id);
         $details = $booking->details;
 

@@ -87,7 +87,7 @@ class OrderController extends Controller
     public function show(int $id): LayoutContract
     {
         $booking = BookingAdapter::getBooking($id);
-        $order = OrderAdapter::findOrder($booking->orderId);
+        $order = OrderAdapter::getOrder($booking->orderId);
         $client = Client::find($order->clientId);
 
         $title = "Заказ №{$id}";
@@ -102,6 +102,13 @@ class OrderController extends Controller
                 'manager' => $this->administratorRepository->get($id),
                 'creator' => Administrator::find($booking->creatorId),
             ]);
+    }
+
+    public function get(int $id): JsonResponse
+    {
+        $order = OrderAdapter::getOrder($id);
+
+        return response()->json($order);
     }
 
     public function search(SearchRequest $request): JsonResponse

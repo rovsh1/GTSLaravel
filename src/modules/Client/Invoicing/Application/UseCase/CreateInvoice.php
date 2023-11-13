@@ -15,6 +15,7 @@ use Module\Client\Invoicing\Domain\Order\Repository\OrderRepositoryInterface;
 use Module\Client\Invoicing\Domain\Order\ValueObject\OrderId;
 use Module\Client\Shared\Domain\ValueObject\ClientId;
 use Module\Shared\Dto\StatusDto;
+use Module\Shared\Enum\Order\OrderStatusEnum;
 use Module\Shared\ValueObject\File;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 

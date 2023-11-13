@@ -6,14 +6,15 @@ use Module\Booking\Requesting\Domain\BookingRequest\Service\Dto\GuestDto;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\Dto\HotelBooking\BookingPeriodDto;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\Dto\HotelBooking\HotelInfoDto;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\Dto\HotelBooking\RoomDto;
+use Module\Booking\Requesting\Domain\BookingRequest\Service\TemplateData\HotelBooking\BookingRequest;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\TemplateDataInterface;
 use Module\Booking\Requesting\Domain\BookingRequest\ValueObject\RequestTypeEnum;
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
-use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking as DetailsEntity;
 use Module\Booking\Shared\Domain\Booking\Entity\HotelAccommodation;
-use Module\Booking\Shared\Domain\Booking\Repository\Details\HotelBookingRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking as DetailsEntity;
 use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Repository\Details\HotelBookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationCollection;
 use Module\Booking\Shared\Domain\Guest\Guest;
 use Module\Booking\Shared\Domain\Guest\Repository\GuestRepositoryInterface;
@@ -50,7 +51,7 @@ class HotelBookingDataFactory
         return match ($requestType) {
             RequestTypeEnum::BOOKING,
             RequestTypeEnum::CHANGE,
-            RequestTypeEnum::CANCEL => new \Module\Booking\Requesting\Domain\BookingRequest\Service\TemplateData\HotelBooking\BookingRequest($roomsDto, $hotelInfoDto, $bookingPeriodDto),
+            RequestTypeEnum::CANCEL => new BookingRequest($roomsDto, $hotelInfoDto, $bookingPeriodDto),
         };
     }
 

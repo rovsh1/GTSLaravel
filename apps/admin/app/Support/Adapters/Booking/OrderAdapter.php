@@ -22,14 +22,14 @@ use Module\Booking\Moderation\Application\UseCase\Order\UpdateStatus;
 
 class OrderAdapter
 {
+    public function getOrder(int $id): ?OrderDto
+    {
+        return app(GetOrder::class)->execute($id);
+    }
+
     public function getActiveOrders(int|null $clientId = null, bool $isOnlyWaitingInvoice = false): array
     {
         return app(GetActiveOrders::class)->execute($clientId, $isOnlyWaitingInvoice);
-    }
-
-    public function findOrder(int $id): ?OrderDto
-    {
-        return app(GetOrder::class)->execute($id);
     }
 
     public function addGuest(

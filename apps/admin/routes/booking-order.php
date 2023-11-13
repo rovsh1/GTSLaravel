@@ -4,6 +4,7 @@ use App\Admin\Http\Controllers;
 use App\Admin\Support\Facades\AclRoute;
 
 AclRoute::for('booking-order')
+    ->get('/{id}/get', Controllers\Booking\Order\OrderController::class . '@get', 'read', 'get')
     ->get('/search', Controllers\Booking\Order\OrderController::class . '@search', 'read', 'search')
 
     ->get('/{orderId}/bookings', Controllers\Booking\Order\OrderController::class . '@bookings', 'read', 'guests.list')

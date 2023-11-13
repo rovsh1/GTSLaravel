@@ -39,10 +39,10 @@ class InvoiceController extends AbstractPrototypeController
 
     protected function gridFactory(): GridContract
     {
+        //@todo добавить удаление инвоиса, после удаления заказы возвращаются в стаутс "Ожидает инвоиса"
         return Grid::enableQuicksearch()
 //            ->setSearchForm($this->searchForm())
             ->paginator(self::GRID_LIMIT)
-            ->edit($this->prototype)
             ->id('id', ['text' => '№', 'order' => true])
             ->text('client_name', ['text' => 'Клиент', 'order' => true])
             ->enum('status', ['text' => 'Статус', 'enum' => InvoiceStatusEnum::class])
@@ -52,6 +52,7 @@ class InvoiceController extends AbstractPrototypeController
 
     protected function formFactory(): FormContract
     {
+        //@todo отфильтровать клиентов у которых есть заказы
         return Form::client('client_id', ['label' => 'Клиент', 'required' => true, 'emptyItem' => ''])
             ->hiddenMultiSelect('order_ids', ['label' => 'Заказы', 'required' => true]);
     }

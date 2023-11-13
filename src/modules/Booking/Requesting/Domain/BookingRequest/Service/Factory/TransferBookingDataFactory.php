@@ -6,13 +6,14 @@ use Module\Booking\Requesting\Domain\BookingRequest\Service\Dto\ServiceDto;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\Dto\TransferBooking\BookingPeriodDto;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\Dto\TransferBooking\CarDto;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\Dto\TransferBooking\CarPriceDto;
-use Module\Booking\Requesting\Domain\BookingRequest\Service\Factory\TransferBooking\DetailOptionsDataFactory;
+use Module\Booking\Requesting\Domain\BookingRequest\Service\TemplateData\TransferBooking\BookingRequest;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\TemplateDataInterface;
 use Module\Booking\Requesting\Domain\BookingRequest\ValueObject\RequestTypeEnum;
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Entity\CarRentWithDriver;
 use Module\Booking\Shared\Domain\Booking\Factory\DetailsRepositoryFactory;
+use Module\Booking\Shared\Domain\Booking\Service\DetailOptionsDataFactory;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPeriod;
 use Module\Booking\Shared\Domain\Booking\ValueObject\CarBid;
 use Module\Booking\Shared\Domain\Booking\ValueObject\CarBidCollection;
@@ -47,7 +48,7 @@ class TransferBookingDataFactory
         return match ($requestType) {
             RequestTypeEnum::BOOKING,
             RequestTypeEnum::CHANGE,
-            RequestTypeEnum::CANCEL => new \Module\Booking\Requesting\Domain\BookingRequest\Service\TemplateData\TransferBooking\BookingRequest(
+            RequestTypeEnum::CANCEL => new BookingRequest(
                 $serviceDto,
                 $this->buildCars(
                     $bookingDetails->carBids(),

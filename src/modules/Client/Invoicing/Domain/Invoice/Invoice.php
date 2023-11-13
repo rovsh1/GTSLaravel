@@ -18,11 +18,10 @@ final class Invoice extends AbstractAggregateRoot
         private readonly ClientId $clientId,
         private InvoiceStatusEnum $status,
         private readonly OrderIdCollection $orders,
-        private readonly File $document,
+        private ?File $document,
 //        private readonly Timestamps $timestamps
-    )
-    {
-    }
+        //@todo добавить стоимость инвоисов
+    ) {}
 
     public function id(): InvoiceId
     {
@@ -44,7 +43,7 @@ final class Invoice extends AbstractAggregateRoot
         return $this->orders;
     }
 
-    public function document(): File
+    public function document(): ?File
     {
         return $this->document;
     }
@@ -57,6 +56,19 @@ final class Invoice extends AbstractAggregateRoot
     public function delete(): void
     {
         $this->updateStatus(InvoiceStatusEnum::DELETED);
+    }
+
+    /**
+     * @param File $file
+     * @return void
+     * @throws \Throwable
+     */
+    public function setDocument(File $file): void
+    {
+        if ($this->document !== null) {
+            throw new \RuntimeException('File already exists');
+        }
+        $this->document = $file;
     }
 
     private function updateStatus(InvoiceStatusEnum $status): void

@@ -11,7 +11,7 @@ use Module\Booking\Shared\Application\Dto\StatusDto;
 
 /**
  * @method static array getActiveOrders(int|null $clientId = null, boolean $isOnlyWaitingInvoice = false)
- * @method static OrderDto|null findOrder(int $id)
+ * @method static OrderDto|null getOrder(int $id)
  * @method static mixed getGuests(int $orderId)
  * @method static mixed addGuest(int $orderId, string $fullName, int $countryId, int $gender, bool $isAdult, int|null $age)
  * @method static bool updateGuest(int $guestId, string $fullName, int $countryId, int $gender, bool $isAdult, int|null $age)

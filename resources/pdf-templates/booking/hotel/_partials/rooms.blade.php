@@ -17,7 +17,7 @@
         <tr>
             <td></td>
             <td>
-                Тариф: без завтрака
+                Тариф: {{ $room->rate }}
             </td>
             <td>
                 Время выезда: {{ $room->checkOutTime }}

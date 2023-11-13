@@ -17,13 +17,13 @@ use Module\Shared\ValueObject\File;
 
 class InvoiceRepository implements InvoiceRepositoryInterface
 {
-    public function create(ClientId $clientId, OrderIdCollection $orders, File $document): Invoice
+    public function create(ClientId $clientId, OrderIdCollection $orders, ?File $document): Invoice
     {
         return DB::transaction(function () use ($clientId, $orders, $document) {
             $model = Model::create([
                 'client_id' => $clientId->value(),
-                'status' => InvoiceStatusEnum::NOT_PAID->value,
-                'file' => $document->guid()
+                'status' => InvoiceStatusEnum::NOT_PAID,
+                'document' => $document?->guid()
             ]);
 
             $orderIds = $orders->map(fn(OrderId $id) => $id->value());
@@ -57,6 +57,9 @@ class InvoiceRepository implements InvoiceRepositoryInterface
         if (!$model) {
             throw new \Exception();
         }
+        if ($model->document === null && $invoice->document() !== null) {
+            $model->document = $invoice->document()->guid();
+        }
 
         $model->touch();
         if ($invoice->status() === InvoiceStatusEnum::DELETED) {
@@ -79,9 +82,9 @@ class InvoiceRepository implements InvoiceRepositoryInterface
             new ClientId($model->client_id),
             $model->trashed()
                 ? InvoiceStatusEnum::DELETED
-                : InvoiceStatusEnum::from($model->status),
+                : $model->status,
             new OrderIdCollection($model->orderIds()->map(fn($id) => new OrderId($id))),
-            new File($model->document),
+            $model->document ? new File($model->document) : null,
         );
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Module\Booking\Requesting\Domain\BookingRequest\Service\TemplateData\HotelBooking;
 
-use Module\Booking\Requesting\Domain\BookingRequest\Service\Dto\HotelBooking\BookingPeriodDto;
+use Module\Booking\Invoicing\Domain\Service\Dto\Booking\BookingPeriodDto;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\Dto\HotelBooking\HotelInfoDto;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\TemplateDataInterface;
 

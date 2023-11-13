@@ -6,6 +6,7 @@ namespace Module\Client\Invoicing\Infrastructure\Models;
 
 use DateTime;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Module\Client\Invoicing\Domain\Invoice\ValueObject\InvoiceStatusEnum;
@@ -14,13 +15,15 @@ use Sdk\Module\Database\Eloquent\Model;
 /**
  * @property int $id
  * @property int $client_id
- * @property int $status
+ * @property InvoiceStatusEnum $status
  * @property string $document
  * @property DateTime $created_at
  * @property DateTime $updated_at
  */
 class Invoice extends Model
 {
+    use SoftDeletes;
+
     protected $table = 'client_invoices';
 
     protected $attributes = [

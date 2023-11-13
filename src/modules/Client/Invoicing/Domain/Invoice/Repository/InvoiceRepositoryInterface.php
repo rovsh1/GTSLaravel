@@ -11,7 +11,7 @@ use Module\Shared\ValueObject\File;
 
 interface InvoiceRepositoryInterface
 {
-    public function create(ClientId $clientId, OrderIdCollection $orders, File $document): Invoice;
+    public function create(ClientId $clientId, OrderIdCollection $orders, ?File $document): Invoice;
 
     public function find(InvoiceId $id): ?Invoice;
 

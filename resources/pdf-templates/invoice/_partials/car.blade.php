@@ -1,11 +1,11 @@
 <tr>
-    <td class="text-align-center" style="padding: 5px 0;">'. ++$this->servicesCount .'</td>
-    <td style="padding: 5px 0;">Модель авто: '.$entity->car_name.'</td>
-    <td class="text-align-center last" style="padding: 5px 0;">'.$car['count'].'</td>
+    <td class="text-align-center" style="padding: 5px 0;">{{ $index }}</td>
+    <td style="padding: 5px 0;">Модель авто: {{ $car->mark }} {{ $car->model }}</td>
+    <td class="text-align-center last" style="padding: 5px 0;">{{ $car->carsCount }}</td>
     <td class="text-align-center last" style="padding: 5px 0;">
-        '.\format\price($carsPrice[$entity->car_name]['brutto']).'
+        {{ Format::number($car->clientPrice->pricePerCar) }}
     </td>
     <td class="text-align-center" style="padding: 5px 0;">
-        '.\format\price($carsPrice[$entity->car_name]['total_gross']).'
+        {{ Format::number($car->clientPrice->allCarsAmount) }}
     </td>
 </tr>
