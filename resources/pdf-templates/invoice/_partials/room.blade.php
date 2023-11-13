@@ -1,5 +1,5 @@
 <tr>
-    <td class="text-align-center">1</td>
+    <td class="text-align-center">{{ ++$index }}</td>
     <td>{{ $room->name }}</td>
     <td class="text-align-center">1</td>
     <td class="text-align-center">-</td>

@@ -38,6 +38,7 @@ class InvoiceFactory
             $invoice->id(),
             $invoice->orders(),
             $invoice->clientId(),
+            $invoice->timestamps()->createdAt()
         );
         $invoice->setDocument(new File($fileDto->guid));
 

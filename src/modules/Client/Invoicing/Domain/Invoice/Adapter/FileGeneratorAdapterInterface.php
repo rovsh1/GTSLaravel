@@ -11,5 +11,5 @@ use Module\Shared\Dto\FileDto;
 
 interface FileGeneratorAdapterInterface
 {
-    public function generate(string $filename, InvoiceId $invoiceId, OrderIdCollection $orderIds, ClientId $clientId): FileDto;
+    public function generate(string $filename, InvoiceId $invoiceId, OrderIdCollection $orderIds, ClientId $clientId, \DateTimeInterface $createdAt): FileDto;
 }

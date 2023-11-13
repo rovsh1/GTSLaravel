@@ -9,6 +9,7 @@ use Module\Client\Invoicing\Domain\Invoice\ValueObject\InvoiceStatusEnum;
 use Module\Client\Invoicing\Domain\Invoice\ValueObject\OrderIdCollection;
 use Module\Client\Shared\Domain\ValueObject\ClientId;
 use Module\Shared\ValueObject\File;
+use Module\Shared\ValueObject\Timestamps;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
 final class Invoice extends AbstractAggregateRoot
@@ -19,7 +20,7 @@ final class Invoice extends AbstractAggregateRoot
         private InvoiceStatusEnum $status,
         private readonly OrderIdCollection $orders,
         private ?File $document,
-//        private readonly Timestamps $timestamps
+        private readonly Timestamps $timestamps
         //@todo добавить стоимость инвоисов
     ) {}
 
@@ -48,10 +49,10 @@ final class Invoice extends AbstractAggregateRoot
         return $this->document;
     }
 
-//    public function timestamps(): Timestamps
-//    {
-//        return $this->timestamps;
-//    }
+    public function timestamps(): Timestamps
+    {
+        return $this->timestamps;
+    }
 
     public function delete(): void
     {

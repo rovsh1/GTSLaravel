@@ -14,6 +14,7 @@ use Module\Client\Invoicing\Infrastructure\Models\Invoice as Model;
 use Module\Client\Invoicing\Infrastructure\Models\Order;
 use Module\Client\Shared\Domain\ValueObject\ClientId;
 use Module\Shared\ValueObject\File;
+use Module\Shared\ValueObject\Timestamps;
 
 class InvoiceRepository implements InvoiceRepositoryInterface
 {
@@ -35,6 +36,10 @@ class InvoiceRepository implements InvoiceRepositoryInterface
                 InvoiceStatusEnum::NOT_PAID,
                 $orders,
                 $document,
+                new Timestamps(
+                    \DateTimeImmutable::createFromInterface($model->created_at),
+                    \DateTimeImmutable::createFromInterface($model->updated_at),
+                )
             );
         });
     }
@@ -85,6 +90,10 @@ class InvoiceRepository implements InvoiceRepositoryInterface
                 : $model->status,
             new OrderIdCollection($model->orderIds()->map(fn($id) => new OrderId($id))),
             $model->document ? new File($model->document) : null,
+            new Timestamps(
+                createdAt: \DateTimeImmutable::createFromInterface($model->created_at),
+                updatedAt: \DateTimeImmutable::createFromInterface($model->updated_at),
+            )
         );
     }
 }

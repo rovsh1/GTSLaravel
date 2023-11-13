@@ -1,5 +1,22 @@
 @extends('layout.layout')
 
+@push('css')
+    <style>
+        td.first {
+            border-top: 2px solid;
+        }
+
+        td.hotel-name, td.service-name {
+            font-size: 16px;
+        }
+
+        td.hotel-name, td.hotel-period, td.service-name {
+            font-weight: bold;
+            color: #073763;
+        }
+    </style>
+@endpush
+
 @section('content')
     <table>
         <tbody>

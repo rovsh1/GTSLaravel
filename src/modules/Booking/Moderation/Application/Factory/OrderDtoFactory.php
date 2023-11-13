@@ -13,7 +13,8 @@ use Module\Shared\Dto\CurrencyDto;
 class OrderDtoFactory
 {
     public function __construct(
-        private readonly TranslatorInterface $translator
+        private readonly TranslatorInterface $translator,
+        private readonly OrderStatusDtoFactory $statusDtoFactory
     ) {}
 
     public function createFromEntity(Order $entity): OrderDto
@@ -21,6 +22,7 @@ class OrderDtoFactory
         return new OrderDto(
             $entity->id()->value(),
             CurrencyDto::fromEnum($entity->currency(), $this->translator),
+            $this->statusDtoFactory->get($entity->status()),
             $entity->clientId()->value(),
             $entity->legalId()?->value(),
             $entity->createdAt(),
