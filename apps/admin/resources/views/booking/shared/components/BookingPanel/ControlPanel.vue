@@ -1,6 +1,5 @@
 <script setup lang="ts">
 
-import BookingCancelConditions from '~resources/views/booking/shared/components/BookingPanel/components/BookingCancelConditions.vue'
 import BookingExternalNumberType from '~resources/views/booking/shared/components/BookingPanel/components/BookingExternalNumberType.vue'
 import BookingFinancialCost from '~resources/views/booking/shared/components/BookingPanel/components/BookingFinancialCost.vue'
 import BookingRequests from '~resources/views/booking/shared/components/BookingPanel/components/BookingRequests.vue'
@@ -49,9 +48,5 @@ const { recalculatePrice } = bookingStore
 
   <ControlPanelSection title="Запросы на бронирование услуги">
     <BookingRequests />
-  </ControlPanelSection>
-
-  <ControlPanelSection title="Условия отмены">
-    <BookingCancelConditions />
   </ControlPanelSection>
 </template>

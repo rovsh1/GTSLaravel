@@ -184,6 +184,7 @@ class BookingController extends Controller
                 'model' => $booking,
                 'client' => $client,
                 'order' => $order,
+                'cancelConditions' => $booking->cancelConditions,
                 'currencies' => Currency::get(),
                 'manager' => $this->administratorRepository->get($id),
                 'creator' => Administrator::find($booking->creatorId),

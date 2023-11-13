@@ -99,6 +99,8 @@
                             </tr>
                             </tbody>
                         </table>
+
+                        @include('booking.shared.cancel-conditions')
                     </div>
                     <div class="w-100">
                         <div id="booking-control-panel"></div>

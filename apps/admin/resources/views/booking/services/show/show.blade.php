@@ -50,7 +50,8 @@
                             <tr>
                                 <th>Клиент</th>
                                 <td>
-                                    <a href="{{ route('client.show', $client->id) }}" target="_blank">{{ $client->name }}</a>
+                                    <a href="{{ route('client.show', $client->id) }}"
+                                       target="_blank">{{ $client->name }}</a>
                                 </td>
                             </tr>
                             <tr>
@@ -83,6 +84,8 @@
                             </tr>
                             </tbody>
                         </table>
+
+                        @include('booking.shared.cancel-conditions')
                     </div>
                     <div class="w-100">
                         <div id="booking-control-panel"></div>

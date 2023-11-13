@@ -153,6 +153,7 @@ class BookingController extends Controller
                 'hotelId' => $hotelId,
                 'hotel' => $hotel,
                 'model' => $booking,
+                'cancelConditions' => $booking->cancelConditions,
                 'client' => $client,
                 'order' => $order,
                 'currencies' => Currency::get(),
