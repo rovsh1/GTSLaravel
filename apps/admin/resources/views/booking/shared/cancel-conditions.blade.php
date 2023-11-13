@@ -4,9 +4,9 @@
     };
 @endphp
 
-<div class="position-relative mt-3 rounded shadow-lg p-4">
+<div class="position-relative mt-3 rounded shadow-lg p-4 flex-grow-1">
     <div class="control-panel-section-title">
-        <span><h6>Условия отмены</h6></span>
+        <span><h6 class="mb-0">Условия отмены</h6></span>
     </div>
     <hr>
     <table class="table-params">

@@ -33,62 +33,63 @@
         <div class="card card-form mt-3 pt-3 disable-border">
             <div class="card-body">
                 <div class="d-flex flex-row gap-4">
-                    <div class="w-100 rounded shadow-lg p-4">
-                        <table class="table-params">
-                            <tbody>
-                            <tr>
-                                <th>Заказ (ID)</th>
-                                <td>
-                                    <a href="{{ route('booking-order.show', $model->orderId) }}"
-                                       target="_blank">{{ $model->orderId }}</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Источник</th>
-                                <td>{{ $model->source }}</td>
-                            </tr>
-                            <tr>
-                                <th>Клиент</th>
-                                <td>
-                                    <a href="{{ route('client.show', $client->id) }}"
-                                       target="_blank">{{ $client->name }}</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Тип карты оплаты</th>
-                                <td>-</td>
-                            </tr>
-                            <tr>
-                                <th>Услуга</th>
-                                <td>{{ $model->serviceType->name }}</td>
-                            </tr>
-                            <tr>
-                                <th>Менеджер</th>
-                                <td>
-                                    <div id="booking-editable-manager"></div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Автор</th>
-                                <td>{{ $creator->presentation }}</td>
-                            </tr>
-                            <tr>
-                                <th>Создана</th>
-                                <td>{{ $model->createdAt }}</td>
-                            </tr>
-                            <tr>
-                                <th>Примечание</th>
-                                <td>
-                                    <div id="booking-editable-note"></div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-
+                    <div class="w-100 d-flex flex-column">
+                        <div class="w-100 rounded shadow-lg p-4 flex-grow-1">
+                            <table class="table-params">
+                                <tbody>
+                                <tr>
+                                    <th>Заказ (ID)</th>
+                                    <td>
+                                        <a href="{{ route('booking-order.show', $model->orderId) }}"
+                                        target="_blank">{{ $model->orderId }}</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Источник</th>
+                                    <td>{{ $model->source }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Клиент</th>
+                                    <td>
+                                        <a href="{{ route('client.show', $client->id) }}"
+                                        target="_blank">{{ $client->name }}</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Тип карты оплаты</th>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <th>Услуга</th>
+                                    <td>{{ $model->serviceType->name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Менеджер</th>
+                                    <td>
+                                        <div id="booking-editable-manager"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Автор</th>
+                                    <td>{{ $creator->presentation }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Создана</th>
+                                    <td>{{ $model->createdAt }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Примечание</th>
+                                    <td>
+                                        <div id="booking-editable-note"></div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                         @include('booking.shared.cancel-conditions')
                     </div>
-                    <div class="w-100">
-                        <div id="booking-control-panel"></div>
+                    <div class="w-100 d-flex flex-column">
+                        <div id="booking-control-panel" class="flex-grow-1"></div>
                     </div>
                 </div>
             </div>
