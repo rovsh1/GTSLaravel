@@ -42,8 +42,9 @@ class ReviewController extends Controller
     {
         $this->hotel($hotel);
 
-        $query = Review::whereHotelId($hotel->id);
-        $grid = $this->gridFactory($hotel)->data($query);
+        $grid = $this->gridFactory($hotel);
+        $query = Review::whereHotelId($hotel->id)->applyCriteria($grid->getSearchCriteria());
+        $grid->data($query);
 
         return Layout::title('Отзывы')
             ->view('default.grid.grid', [
