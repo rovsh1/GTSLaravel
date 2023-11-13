@@ -4,6 +4,7 @@ namespace Module\Booking\Shared\Domain\Booking\Service;
 
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Entity\ServiceDetailsInterface;
+use Module\Booking\Shared\Domain\Booking\Event\BookingDetailsModified;
 use Module\Booking\Shared\Domain\Booking\Event\BookingModified;
 use Module\Booking\Shared\Domain\Booking\Factory\DetailsRepositoryFactory;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
@@ -83,7 +84,7 @@ class BookingUnitOfWork
         $detailsRepository->store($this->details);
 
         $this->integrationEventPublisher->publish(
-            new BookingModified($this->booking, $this->originalData)
+            new BookingDetailsModified($this->booking, $this->details, $this->originalDetailsData)
         );
     }
 
