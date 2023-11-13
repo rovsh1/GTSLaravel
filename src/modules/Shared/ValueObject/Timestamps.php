@@ -6,6 +6,7 @@ namespace Module\Shared\ValueObject;
 
 use DateTimeImmutable;
 use Module\Shared\Contracts\Support\SerializableDataInterface;
+use Module\Shared\Support\DateTimeImmutableFactory;
 
 final class Timestamps implements SerializableDataInterface
 {
@@ -36,8 +37,8 @@ final class Timestamps implements SerializableDataInterface
     public static function fromData(array $data): static
     {
         return new Timestamps(
-            (new DateTimeImmutable())->setTimestamp($data['createdAt']),
-            (new DateTimeImmutable())->setTimestamp($data['updatedAt']),
+            DateTimeImmutableFactory::createFromTimestamp($data['createdAt']),
+            DateTimeImmutableFactory::createFromTimestamp($data['updatedAt']),
         );
     }
 }

@@ -11,8 +11,9 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationI
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomInfo;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomPrices;
 use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
+use Module\Shared\Contracts\Support\SerializableDataInterface;
 
-final class HotelAccommodation
+final class HotelAccommodation implements SerializableDataInterface
 {
     use HasGuestIdCollectionTrait;
 
@@ -23,7 +24,8 @@ final class HotelAccommodation
         private GuestIdCollection $guestIds,
         private AccommodationDetails $details,
         private RoomPrices $prices,
-    ) {}
+    ) {
+    }
 
     public function id(): AccommodationId
     {
@@ -58,5 +60,29 @@ final class HotelAccommodation
     public function updatePrices(RoomPrices $prices): void
     {
         $this->prices = $prices;
+    }
+
+    public function toData(): array
+    {
+        return [
+            'id' => $this->id->value(),
+            'bookingId' => $this->bookingId->value(),
+            'roomInfo' => $this->roomInfo->toData(),
+            'guestIds' => $this->guestIds->toData(),
+            'details' => $this->details->toData(),
+            'prices' => $this->prices->toData(),
+        ];
+    }
+
+    public static function fromData(array $data): static
+    {
+        return new HotelAccommodation(
+            new AccommodationId($data['id']),
+            new BookingId($data['bookingId']),
+            RoomInfo::fromData($data['roomInfo']),
+            GuestIdCollection::fromData($data['guestIds']),
+            AccommodationDetails::fromData($data['details']),
+            RoomPrices::fromData($data['prices']),
+        );
     }
 }

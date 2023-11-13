@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Module\Booking\Shared\Domain\Booking\Entity;
 
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
@@ -19,7 +21,8 @@ final class HotelBooking implements ServiceDetailsInterface
         private BookingPeriod $bookingPeriod,
         private ?ExternalNumber $externalNumber,
         private readonly QuotaProcessingMethodEnum $quotaProcessingMethod,
-    ) {}
+    ) {
+    }
 
     public function serviceType(): ServiceTypeEnum
     {
@@ -64,5 +67,29 @@ final class HotelBooking implements ServiceDetailsInterface
     public function quotaProcessingMethod(): QuotaProcessingMethodEnum
     {
         return $this->quotaProcessingMethod;
+    }
+
+    public function toData(): array
+    {
+        return [
+            'id' => $this->id->value(),
+            'bookingId' => $this->bookingId->value(),
+            'hotelInfo' => $this->hotelInfo->toData(),
+            'bookingPeriod' => $this->bookingPeriod->toData(),
+            'externalNumber' => $this->externalNumber?->toData(),
+            'quotaProcessingMethod' => $this->quotaProcessingMethod->value,
+        ];
+    }
+
+    public static function fromData(array $data): static
+    {
+        return new HotelBooking(
+            new DetailsId($data['id']),
+            new BookingId($data['bookingId']),
+            HotelInfo::fromData($data['hotelInfo']),
+            BookingPeriod::fromData($data['bookingPeriod']),
+            $data['externalNumber'] ? ExternalNumber::fromData($data['externalNumber']) : null,
+            QuotaProcessingMethodEnum::from($data['quotaProcessingMethod'])
+        );
     }
 }

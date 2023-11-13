@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Module\Booking\Shared\Domain\Booking\Entity;
 
 use DateTimeInterface;
@@ -11,8 +13,9 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\CityId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\DetailsId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Shared\Enum\ServiceTypeEnum;
+use Module\Shared\Support\DateTimeImmutableFactory;
 
-class DayCarTrip implements ServiceDetailsInterface
+final class DayCarTrip implements ServiceDetailsInterface
 {
     use HasDepartureDateTrait;
     use HasCarBidCollectionTrait;
@@ -25,7 +28,8 @@ class DayCarTrip implements ServiceDetailsInterface
         private ?string $destinationsDescription,
         protected ?DateTimeInterface $departureDate,
         protected CarBidCollection $carBids
-    ) {}
+    ) {
+    }
 
     public function serviceType(): ServiceTypeEnum
     {
@@ -60,5 +64,31 @@ class DayCarTrip implements ServiceDetailsInterface
     public function setDestinationsDescription(?string $destinationsDescription): void
     {
         $this->destinationsDescription = $destinationsDescription;
+    }
+
+    public function toData(): array
+    {
+        return [
+            'id' => $this->id->value(),
+            'bookingId' => $this->bookingId->value(),
+            'serviceInfo' => $this->serviceInfo->toData(),
+            'cityId' => $this->cityId->value(),
+            'destinationsDescription' => $this->destinationsDescription,
+            'departureDate' => $this->departureDate?->getTimestamp(),
+            'carBids' => $this->carBids->toData(),
+        ];
+    }
+
+    public static function fromData(array $data): static
+    {
+        return new DayCarTrip(
+            new DetailsId($data['id']),
+            new BookingId($data['bookingId']),
+            ServiceInfo::fromData($data['serviceInfo']),
+            new CityId($data['cityId']),
+            $data['destinationsDescription'],
+            $data['departureDate'] ? DateTimeImmutableFactory::createFromTimestamp($data['departureDate']) : null,
+            CarBidCollection::fromData($data['guestIds'])
+        );
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Module\Booking\Shared\Domain\Booking\Entity;
 
 use DateTimeInterface;
@@ -12,8 +14,9 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\DetailsId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Shared\Enum\ServiceTypeEnum;
+use Module\Shared\Support\DateTimeImmutableFactory;
 
-class CIPMeetingInAirport implements ServiceDetailsInterface
+final class CIPMeetingInAirport implements ServiceDetailsInterface
 {
     use HasFlightNumberTrait;
     use HasGuestIdCollectionTrait;
@@ -27,7 +30,8 @@ class CIPMeetingInAirport implements ServiceDetailsInterface
         private ?string $flightNumber,
         private ?DateTimeInterface $arrivalDate,
         private GuestIdCollection $guestIds,
-    ) {}
+    ) {
+    }
 
     public function serviceType(): ServiceTypeEnum
     {
@@ -52,5 +56,31 @@ class CIPMeetingInAirport implements ServiceDetailsInterface
     public function airportId(): AirportId
     {
         return $this->airportId;
+    }
+
+    public function toData(): array
+    {
+        return [
+            'id' => $this->id->value(),
+            'bookingId' => $this->bookingId->value(),
+            'serviceInfo' => $this->serviceInfo->toData(),
+            'airportId' => $this->airportId->value(),
+            'flightNumber' => $this->flightNumber,
+            'arrivalDate' => $this->arrivalDate?->getTimestamp(),
+            'guestIds' => $this->guestIds->toData(),
+        ];
+    }
+
+    public static function fromData(array $data): static
+    {
+        return new CIPMeetingInAirport(
+            new DetailsId($data['id']),
+            new BookingId($data['bookingId']),
+            ServiceInfo::fromData($data['serviceInfo']),
+            new AirportId($data['airportId']),
+            $data['flightNumber'],
+            $data['arrivalDate'] ? DateTimeImmutableFactory::createFromTimestamp($data['arrivalDate']) : null,
+            GuestIdCollection::fromData($data['guestIds'])
+        );
     }
 }

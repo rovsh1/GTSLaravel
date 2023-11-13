@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Module\Booking\Shared\Domain\Booking\Entity;
 
 use DateTimeInterface;
@@ -11,8 +13,9 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\CityId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\DetailsId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Shared\Enum\ServiceTypeEnum;
+use Module\Shared\Support\DateTimeImmutableFactory;
 
-class IntercityTransfer implements ServiceDetailsInterface
+final class IntercityTransfer implements ServiceDetailsInterface
 {
     use HasDepartureDateTrait;
     use HasCarBidCollectionTrait;
@@ -26,7 +29,8 @@ class IntercityTransfer implements ServiceDetailsInterface
         private readonly bool $returnTripIncluded,
         protected ?DateTimeInterface $departureDate,
         protected CarBidCollection $carBids
-    ) {}
+    ) {
+    }
 
     public function serviceType(): ServiceTypeEnum
     {
@@ -56,5 +60,33 @@ class IntercityTransfer implements ServiceDetailsInterface
     public function isReturnTripIncluded(): bool
     {
         return $this->returnTripIncluded;
+    }
+
+    public function toData(): array
+    {
+        return [
+            'id' => $this->id->value(),
+            'bookingId' => $this->bookingId->value(),
+            'serviceInfo' => $this->serviceInfo->toData(),
+            'fromCityId' => $this->fromCityId->value(),
+            'toCityId' => $this->toCityId->value(),
+            'returnTripIncluded' => $this->returnTripIncluded,
+            'departureDate' => $this->departureDate?->getTimestamp(),
+            'carBids' => $this->carBids->toData(),
+        ];
+    }
+
+    public static function fromData(array $data): static
+    {
+        return new IntercityTransfer(
+            new DetailsId($data['id']),
+            new BookingId($data['bookingId']),
+            ServiceInfo::fromData($data['serviceInfo']),
+            new CityId($data['fromCityId']),
+            new CityId($data['toCityId']),
+            $data['returnTripIncluded'],
+            $data['departureDate'] ? DateTimeImmutableFactory::createFromTimestamp($data['departureDate']) : null,
+            CarBidCollection::fromData($data['guestIds'])
+        );
     }
 }

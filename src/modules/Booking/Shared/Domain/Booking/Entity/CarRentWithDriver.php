@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Module\Booking\Shared\Domain\Booking\Entity;
 
 use Module\Booking\Shared\Domain\Booking\Entity\Concerns\HasBookingPeriodTrait;
@@ -14,7 +16,7 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\DetailsId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Shared\Enum\ServiceTypeEnum;
 
-class CarRentWithDriver implements ServiceDetailsInterface
+final class CarRentWithDriver implements ServiceDetailsInterface
 {
     use HasBookingPeriodTrait;
     use HasCarBidCollectionTrait;
@@ -30,7 +32,8 @@ class CarRentWithDriver implements ServiceDetailsInterface
         private ?string $meetingTablet,
         protected ?BookingPeriod $bookingPeriod,
         protected CarBidCollection $carBids
-    ) {}
+    ) {
+    }
 
     public function serviceType(): ServiceTypeEnum
     {
@@ -50,5 +53,33 @@ class CarRentWithDriver implements ServiceDetailsInterface
     public function serviceInfo(): ServiceInfo
     {
         return $this->serviceInfo;
+    }
+
+    public function toData(): array
+    {
+        return [
+            'id' => $this->id->value(),
+            'bookingId' => $this->bookingId->value(),
+            'serviceInfo' => $this->serviceInfo->toData(),
+            'cityId' => $this->cityId->value(),
+            'meetingAddress' => $this->meetingAddress,
+            'meetingTablet' => $this->meetingTablet,
+            'bookingPeriod' => $this->bookingPeriod?->toData(),
+            'carBids' => $this->carBids->toData(),
+        ];
+    }
+
+    public static function fromData(array $data): static
+    {
+        return new CarRentWithDriver(
+            new DetailsId($data['id']),
+            new BookingId($data['bookingId']),
+            ServiceInfo::fromData($data['serviceInfo']),
+            new CityId($data['cityId']),
+            $data['meetingAddress'],
+            $data['meetingTablet'],
+            $data['bookingPeriod'] ? BookingPeriod::fromData($data['bookingPeriod']) : null,
+            CarBidCollection::fromData($data['guestIds'])
+        );
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Module\Booking\Shared\Domain\Booking\Entity;
 
 use DateTimeInterface;
@@ -13,8 +15,9 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\DetailsId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\RailwayStationId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Shared\Enum\ServiceTypeEnum;
+use Module\Shared\Support\DateTimeImmutableFactory;
 
-class TransferFromRailway implements ServiceDetailsInterface
+final class TransferFromRailway implements ServiceDetailsInterface
 {
     use HasTrainNumberTrait;
     use HasMeetingTabletTrait;
@@ -27,10 +30,11 @@ class TransferFromRailway implements ServiceDetailsInterface
         private readonly ServiceInfo $serviceInfo,
         private readonly RailwayStationId $railwayStationId,
         private ?string $trainNumber,
-        private ?DateTimeInterface $arrivalDate,
         private ?string $meetingTablet,
+        private ?DateTimeInterface $arrivalDate,
         private CarBidCollection $carBids
-    ) {}
+    ) {
+    }
 
     public function id(): DetailsId
     {
@@ -55,5 +59,33 @@ class TransferFromRailway implements ServiceDetailsInterface
     public function railwayStationId(): RailwayStationId
     {
         return $this->railwayStationId;
+    }
+
+    public function toData(): array
+    {
+        return [
+            'id' => $this->id->value(),
+            'bookingId' => $this->bookingId->value(),
+            'serviceInfo' => $this->serviceInfo->toData(),
+            'railwayStationId' => $this->railwayStationId->value(),
+            'trainNumber' => $this->trainNumber,
+            'meetingTablet' => $this->meetingTablet,
+            'arrivalDate' => $this->arrivalDate?->getTimestamp(),
+            'carBids' => $this->carBids->toData(),
+        ];
+    }
+
+    public static function fromData(array $data): static
+    {
+        return new TransferFromRailway(
+            new DetailsId($data['id']),
+            new BookingId($data['bookingId']),
+            ServiceInfo::fromData($data['serviceInfo']),
+            new RailwayStationId($data['railwayStationId']),
+            $data['trainNumber'],
+            $data['meetingTablet'],
+            $data['arrivalDate'] ? DateTimeImmutableFactory::createFromTimestamp($data['arrivalDate']) : null,
+            CarBidCollection::fromData($data['guestIds'])
+        );
     }
 }

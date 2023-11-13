@@ -3,6 +3,7 @@
 namespace Module\Booking\Shared\Providers;
 
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
+use Module\Booking\Shared\Domain\Booking\Factory\DetailsRepositoryFactory;
 use Module\Booking\Shared\Domain\Booking\Repository\Details\CarRentWithDriverRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\Details\CIPMeetingInAirportRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\Details\CIPSendoffInAirportRepositoryInterface;
@@ -32,6 +33,7 @@ class DetailsServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
+        $this->app->singleton(DetailsRepositoryFactory::class);
         $this->app->singleton(CIPMeetingInAirportRepositoryInterface::class, CIPMeetingInAirportRepository::class);
         $this->app->singleton(CIPSendoffInAirportRepositoryInterface::class, CIPSendoffInAirportRepository::class);
         $this->app->singleton(TransferToAirportRepositoryInterface::class, TransferToAirportRepository::class);
