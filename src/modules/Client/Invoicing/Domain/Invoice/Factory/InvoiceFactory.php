@@ -11,6 +11,7 @@ use Module\Client\Invoicing\Domain\Invoice\ValueObject\OrderIdCollection;
 use Module\Client\Invoicing\Domain\Order\Order;
 use Module\Client\Invoicing\Domain\Order\Repository\OrderRepositoryInterface;
 use Module\Client\Shared\Domain\ValueObject\ClientId;
+use Module\Shared\Contracts\Service\SafeExecutorInterface;
 use Module\Shared\ValueObject\File;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 
@@ -20,6 +21,7 @@ class InvoiceFactory
         private readonly FileGeneratorAdapterInterface $fileGeneratorAdapter,
         private readonly InvoiceRepositoryInterface $invoiceRepository,
         private readonly OrderRepositoryInterface $orderRepository,
+        private readonly SafeExecutorInterface $executor,
         private readonly DomainEventDispatcherInterface $eventDispatcher,
     ) {}
 
@@ -27,22 +29,29 @@ class InvoiceFactory
     {
         $orders = $this->prepareOrders($clientId, $orderIds);
 
-        $invoice = $this->invoiceRepository->create(
-            clientId: $clientId,
-            orders: $orderIds,
-            document: null
-        );
+        $handler = function () use ($clientId, $orderIds) {
+            $invoice = $this->invoiceRepository->create(
+                clientId: $clientId,
+                orders: $orderIds,
+                document: null
+            );
 
-        $fileDto = $this->fileGeneratorAdapter->generate(
-            $this->getFilename($invoice),
-            $invoice->id(),
-            $invoice->orders(),
-            $invoice->clientId(),
-            $invoice->timestamps()->createdAt()
-        );
-        $invoice->setDocument(new File($fileDto->guid));
+            $fileDto = $this->fileGeneratorAdapter->generate(
+                $this->getFilename($invoice),
+                $invoice->id(),
+                $invoice->orders(),
+                $invoice->clientId(),
+                $invoice->timestamps()->createdAt()
+            );
 
-        $this->invoiceRepository->store($invoice);
+            $invoice->setDocument(new File($fileDto->guid));
+
+            $this->invoiceRepository->store($invoice);
+
+            return $invoice;
+        };
+
+        $invoice = $this->executor->execute($handler);
 
         $this->updateOrdersStatus($orders, $invoice);
 

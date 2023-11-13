@@ -1,6 +1,15 @@
 <tr class="first padding-bottom">
-    <td class="text-align-center service-name"></td>
-    <td class="service-name" colspan="4">{{ $booking->serviceName }}</td>
+    <td class="text-align-center service-number">{{ ++$bookingIndex }}</td>
+    @if($booking->bookingPeriod !== null)
+        <td class="service-name">{{ $booking->serviceName }}</td>
+        <td colspan="3" class="booking-period">Период бронирования: {{ $booking->bookingPeriod->startDate }} - {{ $booking->bookingPeriod->startDate }}
+            @if($booking->bookingPeriod->countDays !== null)
+                ({{ $booking->bookingPeriod->countDays }})
+            @endif
+        </td>
+    @else
+        <td class="service-name" colspan="4">{{ $booking->serviceName }}</td>
+    @endif
 </tr>
 
 @foreach($booking->rooms ?? [] as $index =>  $room)

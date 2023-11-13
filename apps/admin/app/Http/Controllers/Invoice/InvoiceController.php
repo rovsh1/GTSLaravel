@@ -46,6 +46,7 @@ class InvoiceController extends AbstractPrototypeController
             ->id('id', ['text' => '№', 'order' => true])
             ->text('client_name', ['text' => 'Клиент', 'order' => true])
             ->enum('status', ['text' => 'Статус', 'enum' => InvoiceStatusEnum::class])
+            ->file('file', ['text' => 'Файл'])
             ->date('created_at', ['text' => 'Создан', 'format' => 'datetime', 'order' => true])
             ->orderBy('id', 'desc');
     }

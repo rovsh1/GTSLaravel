@@ -6,13 +6,13 @@
             border-top: 2px solid;
         }
 
-        td.hotel-name, td.service-name {
-            font-size: 16px;
-        }
-
-        td.hotel-name, td.hotel-period, td.service-name {
+        td.booking-period, td.service-name, td.service-number {
             font-weight: bold;
             color: #073763;
+        }
+
+        td.booking-period {
+            font-size: 16px;
         }
     </style>
 @endpush
@@ -76,7 +76,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($bookings as $booking)
+                    @foreach($bookings as $bookingIndex => $booking)
                         @include('invoice._partials.booking')
                     @endforeach
                     <tr class="first">

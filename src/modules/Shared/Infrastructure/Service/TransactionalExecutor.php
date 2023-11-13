@@ -9,8 +9,8 @@ use Module\Shared\Contracts\Service\SafeExecutorInterface;
 
 class TransactionalExecutor implements SafeExecutorInterface
 {
-    public function execute(\Closure $closure, int $attempts = 1): void
+    public function execute(\Closure $closure, int $attempts = 1): mixed
     {
-        DB::transaction($closure, $attempts);
+        return DB::transaction($closure, $attempts);
     }
 }

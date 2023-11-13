@@ -6,7 +6,9 @@ namespace App\Admin\Models\Invoice;
 
 use App\Admin\Models\Order\Order;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Module\Client\Invoicing\Application\UseCase\GetDocumentFile;
 
 class Invoice extends \Module\Client\Invoicing\Infrastructure\Models\Invoice
 {
@@ -34,6 +36,15 @@ class Invoice extends \Module\Client\Invoicing\Infrastructure\Models\Invoice
             ...$this->fillable,
             'order_ids',
         ];
+    }
+
+    public function file(): Attribute
+    {
+        return Attribute::get(
+            fn() => $this->document
+                ? app(GetDocumentFile::class)->execute($this->document)
+                : null
+        );
     }
 
     public function setOrderIdsAttribute(array $orderIds): void
