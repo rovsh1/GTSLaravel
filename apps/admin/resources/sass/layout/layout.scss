@@ -63,8 +63,12 @@ main {
 
 .content-body {
   padding: 0 2rem 2rem;
+
 }
 
+.card .card-body table tr th {
+  font-weight: normal;
+}
 
 .rating {
   display: inline-block;

@@ -5,6 +5,7 @@ import { z } from 'zod'
 
 import { showCancelFeeDialog, showNotConfirmedReasonDialog } from '~resources/views/booking/shared/lib/modals'
 
+import { useGetOrderGuestsAPI } from '~api/booking/order/guest'
 import {
   copyOrder,
   updateManager as executeUpdateManager,
@@ -26,6 +27,7 @@ const { orderID, manager } = requestInitialData('view-initial-data-booking-order
 
 export const useOrderStore = defineStore('booking-order', () => {
   const { data: order, execute: fetchOrder } = useGetOrderAPI({ orderID })
+  const { data: guests, execute: fetchGuests } = useGetOrderGuestsAPI({ orderId: orderID })
   const { data: availableActions, execute: fetchAvailableActions, isFetching: isAvailableActionsFetching } = useBookingAvailableActionsAPI({ orderID })
   const { data: statuses, execute: fetchStatuses } = useBookingStatusesAPI()
 
@@ -81,10 +83,12 @@ export const useOrderStore = defineStore('booking-order', () => {
     fetchOrder()
     fetchStatuses()
     fetchAvailableActions()
+    fetchGuests()
   })
 
   return {
     order,
+    guests,
     bookingManagerId,
     availableActions,
     fetchOrder,

@@ -8,9 +8,17 @@ import ControlPanel from '~resources/views/booking-order/show/components/OrderPa
 
 import { createVueInstance } from '~lib/vue'
 
+import OrderDetails from './OrderDetails.vue'
+
 import '~resources/views/main'
 
 const pinia = createPinia()
+
+createVueInstance({
+  rootComponent: OrderDetails,
+  rootContainer: '#order-details',
+  plugins: [pinia],
+})
 
 createVueInstance({
   rootComponent: ControlPanel,

@@ -26,8 +26,8 @@
     </div>
 
     <div class="content-body">
-        <div class="card card-form mt-3 pt-3">
-            <div class="card-body">
+        <div class="card card-form disable-border">
+            <div class="card-body pt-0">
                 <div class="d-flex flex-row gap-4">
                     <div class="w-100 rounded shadow-lg p-4">
                         <table class="table-params">
@@ -80,8 +80,8 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="w-100 rounded shadow-lg p-4">
-                        <div id="order-control-panel"></div>
+                    <div class="w-100 d-flex flex-column">
+                        <div id="order-control-panel" class="flex-grow-1"></div>
                     </div>
                 </div>
             </div>
