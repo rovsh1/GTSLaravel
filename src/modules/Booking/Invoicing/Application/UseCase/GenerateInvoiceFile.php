@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Invoicing\Application\UseCase;
 
-use Module\Booking\Invoicing\Application\Request\GenerateInvoiceFileRequestDto;
+use Module\Booking\Invoicing\Application\RequestDto\GenerateInvoiceFileRequestDto;
 use Module\Booking\Invoicing\Domain\Service\FileGenerator;
 use Module\Booking\Invoicing\Domain\ValueObject\InvoiceId;
 use Module\Booking\Invoicing\Domain\ValueObject\OrderIdCollection;

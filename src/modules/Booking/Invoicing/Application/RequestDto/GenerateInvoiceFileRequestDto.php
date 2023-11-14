@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Invoicing\Application\Request;
+namespace Module\Booking\Invoicing\Application\RequestDto;
 
 class GenerateInvoiceFileRequestDto
 {
