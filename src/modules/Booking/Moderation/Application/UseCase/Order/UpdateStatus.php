@@ -34,5 +34,6 @@ class UpdateStatus implements UseCaseInterface
 //                $this->statusUpdater->cancel($booking);
                 break;
         }
+        $this->repository->store($order);
     }
 }

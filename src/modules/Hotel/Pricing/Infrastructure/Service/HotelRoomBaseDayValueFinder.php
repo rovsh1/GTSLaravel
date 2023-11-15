@@ -7,6 +7,7 @@ namespace Module\Hotel\Pricing\Infrastructure\Service;
 use DateTimeInterface;
 use Module\Hotel\Moderation\Infrastructure\Models\DatePrice;
 use Module\Hotel\Moderation\Infrastructure\Models\SeasonPrice;
+use Module\Hotel\Pricing\Domain\Hotel\Exception\NotFoundHotelRoomPrice;
 use Module\Hotel\Pricing\Domain\Hotel\Repository\HotelRepositoryInterface;
 use Module\Hotel\Pricing\Domain\Hotel\Service\BaseDayValueFinderInterface;
 use Module\Hotel\Pricing\Domain\Hotel\ValueObject\RoomId;
@@ -32,7 +33,7 @@ class HotelRoomBaseDayValueFinder implements BaseDayValueFinderInterface
 
         $seasonId = $this->hotelRepository->findActiveSeasonId($hotel->id(), $date);
         if (null === $seasonId) {
-            throw new EntityNotFoundException("Price season for hotel[{$hotel->id()}] undefined");
+            return null;
         }
 
         $dayPrice = $this->getDateValue(
@@ -65,7 +66,7 @@ class HotelRoomBaseDayValueFinder implements BaseDayValueFinderInterface
     ): float {
         $value = $this->find($roomId, $rateId, $isResident, $guestsCount, $date);
         if (null === $value) {
-            throw new EntityNotFoundException('Hotel room base day price not found');
+            throw new NotFoundHotelRoomPrice('Hotel room base day price not found');
         }
 
         return $value;
