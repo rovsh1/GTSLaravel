@@ -2,6 +2,8 @@
 
 import { computed, MaybeRef, onMounted, ref, unref, watch } from 'vue'
 
+import { z } from 'zod'
+
 import GuestModal from '~resources/views/booking/shared/components/GuestModal.vue'
 import GuestsTable from '~resources/views/booking/shared/components/GuestsTable.vue'
 import InfoBlock from '~resources/views/booking/shared/components/InfoBlock/InfoBlock.vue'
@@ -11,11 +13,18 @@ import BookingsTable from '~resources/views/booking-order/show/components/Bookin
 import { useOrderStore } from '~resources/views/booking-order/show/store/order'
 import { useEditableModal } from '~resources/views/hotel/settings/composables/editable-modal'
 
-import { addOrderGuest, updateOrderGuest } from '~api/booking/order/guest'
 import { useCountrySearchAPI } from '~api/country'
+import { addOrderGuest, updateOrderGuest } from '~api/order/guest'
+
+import { requestInitialData } from '~lib/initial-data'
 
 import ActionsMenu, { Action } from '~components/ActionsMenu.vue'
 import IconButton from '~components/IconButton.vue'
+
+const { serviceBookingCreate, hotelBookingCreate } = requestInitialData('view-initial-data-booking-order', z.object({
+  serviceBookingCreate: z.string(),
+  hotelBookingCreate: z.string(),
+}))
 
 const orderStore = useOrderStore()
 
@@ -25,42 +34,47 @@ const orderId = computed(() => orderStore.order?.id)
 const orderGuests = computed(() => orderStore.guests)
 const orderGuestsIds = computed(() => orderStore.guests?.map((guest) => guest.id))
 
+const orderBookings = computed(() => orderStore.bookings)
+
 const { data: countries, execute: fetchCountries } = useCountrySearchAPI()
 
 const getDefaultGuestForm = () => ({ isAdult: true })
 
 const actionsMenuSettings: Action[] = [{
   title: 'Создать отельную бронь',
-  callback: () => {},
+  callback: () => { location.href = hotelBookingCreate },
 },
 {
   title: 'Создать бронь услуги',
-  callback: () => {},
+  callback: () => { location.href = serviceBookingCreate },
 }]
 
 const modalSettings = {
   add: {
     title: 'Добавление гостя',
     handler: async (request: MaybeRef<Required<GuestFormData>>): Promise<boolean> => {
+      if (!orderId.value) return false
       const preparedRequest = unref(request)
       let isSuccessesRequest = false
-      const payload = { hotelBookingId: 0, hotelBookingRoomId: 0, ...preparedRequest }
-      payload.orderId = orderId.value || 0
+      const payload = { ...preparedRequest }
+      payload.orderId = orderId.value
       const response = await addOrderGuest(payload)
       isSuccessesRequest = !!response.data.value?.id || false
       await orderStore.fetchOrder()
-      // await orderStore.fetchGuests()
+      await orderStore.fetchGuests()
       return isSuccessesRequest
     },
   },
   edit: {
     title: 'Редактирование гостя',
     handler: async (request: MaybeRef<Required<GuestFormData>>): Promise<boolean> => {
+      if (!orderId.value) return false
       const preparedRequest = unref(request)
       const payload = { guestId: preparedRequest.id, ...preparedRequest }
-      payload.orderId = orderId.value || 0
+      payload.orderId = orderId.value
       const response = await updateOrderGuest(payload)
-      // await orderStore.fetchGuests()
+      await orderStore.fetchOrder()
+      await orderStore.fetchGuests()
       return response.data.value?.success || false
     },
   },
@@ -101,7 +115,6 @@ onMounted(() => {
     :opened="isGuestModalOpened"
     :is-fetching="isGuestModalLoading"
     :form-data="guestForm"
-    :order-guests="orderGuests"
     :countries="countries"
     @close="closeGuestModal()"
     @submit="submitGuestModal"
@@ -124,7 +137,7 @@ onMounted(() => {
 
       <BookingsTable
         :can-edit="isEditableStatus"
-        :order-bookings="[]"
+        :order-bookings="orderBookings || []"
         @edit="(booking) => {}"
         @delete="(booking) => {}"
       />
@@ -147,13 +160,13 @@ onMounted(() => {
         <GuestsTable
           v-if="countries"
           :can-edit="isEditableStatus"
+          :can-delete-guest="false"
           :guest-ids="orderGuestsIds"
           :order-guests="orderGuests || []"
           :countries="countries"
           @edit="(guest) => {
             openEditGuestModal(guest.id, guest)
           }"
-          @delete="(guest) => {}"
         />
       </InfoBlock>
     </div>
@@ -161,43 +174,6 @@ onMounted(() => {
 </template>
 
 <style lang="scss" scoped>
-.prices-information {
-  .prices-information-details {
-    font-weight: 400;
-    font-style: italic;
-
-    &>* {
-      vertical-align: middle
-    }
-
-    .informationIcon {
-      width: auto;
-      height: 1.4em;
-    }
-
-    .prices-information-details-button {
-      margin-left: 0.4rem;
-      border: none;
-      background-color: transparent;
-      outline: none;
-      cursor: pointer;
-    }
-
-    .prices-information-details-info {
-      display: inline-block;
-
-      .prices-information-details-info-icon {
-        opacity: 0.5;
-      }
-    }
-
-    .prices-information-details-button-icon,
-    .prices-information-details-info-icon {
-      font-size: 1.25rem;
-    }
-  }
-}
-
 .pt-card-title {
   margin-top: 0.85rem;
   padding-top: 0;

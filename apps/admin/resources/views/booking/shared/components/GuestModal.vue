@@ -8,8 +8,8 @@ import { isDataValid } from '~resources/composables/form'
 import { genderOptions } from '~resources/views/booking/shared/lib/constants'
 import { GuestFormData } from '~resources/views/booking/shared/lib/data-types'
 
-import { Guest } from '~api/booking/order/guest'
 import { CountryResponse } from '~api/country'
+import { Guest } from '~api/order/guest'
 
 import BaseDialog from '~components/BaseDialog.vue'
 import BootstrapSelectBase from '~components/Bootstrap/BootstrapSelectBase.vue'

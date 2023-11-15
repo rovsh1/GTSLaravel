@@ -3,8 +3,8 @@ import { computed, onMounted } from 'vue'
 import { defineStore } from 'pinia'
 import { z } from 'zod'
 
-import { useGetOrderGuestsAPI } from '~api/booking/order/guest'
 import { Currency } from '~api/models'
+import { useGetOrderGuestsAPI } from '~api/order/guest'
 
 import { isInitialDataExists, requestInitialData, ViewInitialDataKey } from '~lib/initial-data'
 

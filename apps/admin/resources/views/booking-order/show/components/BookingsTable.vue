@@ -1,9 +1,9 @@
 <script setup lang="ts">
 
-import EditTableRowButton from '~resources/views/hotel/settings/components/EditTableRowButton.vue'
+import { OrderBooking } from '~api/order/booking'
 
 defineProps<{
-  orderBookings: any[]
+  orderBookings: OrderBooking[]
   canEdit: boolean
 }>()
 
@@ -24,29 +24,29 @@ defineEmits<{
         <th class="column-text">Стоимость</th>
         <th class="column-text">Статус</th>
         <th class="column-text">Отмена</th>
-        <th v-if="canEdit" />
+        <!-- <th v-if="canEdit" /> -->
       </tr>
     </thead>
     <tbody>
       <template v-if="orderBookings.length > 0">
         <tr v-for="(booking) in orderBookings" :key="booking.id">
+          <td>{{ booking.id }}</td>
+          <td>{{ booking.serviceType.id }}</td>
           <td />
+          <td>{{ booking.prices.clientPrice.calculatedValue }}</td>
+          <td>{{ booking.status.name }}</td>
           <td />
-          <td />
-          <td />
-          <td />
-          <td />
-          <td v-if="canEdit" class="column-edit">
+          <!-- <td v-if="canEdit" class="column-edit">
             <EditTableRowButton
               @edit="$emit('edit', booking)"
               @delete="$emit('delete', booking)"
             />
-          </td>
+          </td> -->
         </tr>
       </template>
       <template v-else>
         <tr>
-          <td colspan="7" class="text-center">Брони не добавлены</td>
+          <td colspan="6" class="text-center">Брони не добавлены</td>
         </tr>
       </template>
     </tbody>

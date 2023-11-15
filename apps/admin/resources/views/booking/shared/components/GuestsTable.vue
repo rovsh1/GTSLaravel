@@ -5,15 +5,21 @@ import { computed } from 'vue'
 import { getGenderName } from '~resources/views/booking/shared/lib/constants'
 import EditTableRowButton from '~resources/views/hotel/settings/components/EditTableRowButton.vue'
 
-import { Guest } from '~api/booking/order/guest'
 import { CountryResponse } from '~api/country'
+import { Guest } from '~api/order/guest'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   guestIds?: number[]
   countries: CountryResponse[]
   orderGuests: Guest[]
   canEdit: boolean
-}>()
+  canEditGuest?: boolean
+  canDeleteGuest?: boolean
+}>(), {
+  guestIds: undefined,
+  canEditGuest: true,
+  canDeleteGuest: true,
+})
 
 defineEmits<{
   (event: 'edit', guest: Guest): void
@@ -53,6 +59,8 @@ const guests = computed(
           <td>{{ guest.isAdult ? 'Взрослый' : 'Ребенок' }}</td>
           <td v-if="canEdit" class="column-edit">
             <EditTableRowButton
+              :can-edit="canEditGuest"
+              :can-delete="canDeleteGuest"
               @edit="$emit('edit', guest)"
               @delete="$emit('delete', guest)"
             />

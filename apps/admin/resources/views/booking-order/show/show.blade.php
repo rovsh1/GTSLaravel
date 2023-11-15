@@ -22,8 +22,6 @@
 @section('content')
     <div class="content-header">
         <div class="title">{{ $title }}</div>
-        <div id="order-actions-menu"></div>
-        <div id="order-copy-button"></div>
         <div class="flex-grow-1"></div>
     </div>
 
@@ -73,12 +71,12 @@
                                 <th>Создана</th>
                                 <td>{{ $model->createdAt }}</td>
                             </tr>
-                            <tr>
+                            <!-- <tr>
                                 <th>Примечание</th>
                                 <td>
                                     <div id="order-editable-note"></div>
                                 </td>
-                            </tr>
+                            </tr> -->
                             </tbody>
                         </table>
                     </div>

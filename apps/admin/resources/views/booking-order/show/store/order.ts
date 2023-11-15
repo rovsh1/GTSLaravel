@@ -3,9 +3,9 @@ import { onMounted, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { z } from 'zod'
 
+import { useGetOrderBookingsAPI } from '~resources/api/order/booking'
 import { showCancelFeeDialog, showNotConfirmedReasonDialog } from '~resources/views/booking/shared/lib/modals'
 
-import { useGetOrderGuestsAPI } from '~api/booking/order/guest'
 import {
   copyOrder,
   updateManager as executeUpdateManager,
@@ -14,6 +14,7 @@ import {
   UpdateOrderStatusPayload,
   useGetOrderAPI,
 } from '~api/order'
+import { useGetOrderGuestsAPI } from '~api/order/guest'
 import { useBookingAvailableActionsAPI, useBookingStatusesAPI } from '~api/order/status'
 
 import { requestInitialData } from '~lib/initial-data'
@@ -28,6 +29,7 @@ const { orderID, manager } = requestInitialData('view-initial-data-booking-order
 export const useOrderStore = defineStore('booking-order', () => {
   const { data: order, execute: fetchOrder } = useGetOrderAPI({ orderID })
   const { data: guests, execute: fetchGuests } = useGetOrderGuestsAPI({ orderId: orderID })
+  const { data: bookings, execute: fetchBookings } = useGetOrderBookingsAPI({ orderId: orderID })
   const { data: availableActions, execute: fetchAvailableActions, isFetching: isAvailableActionsFetching } = useBookingAvailableActionsAPI({ orderID })
   const { data: statuses, execute: fetchStatuses } = useBookingStatusesAPI()
 
@@ -84,13 +86,17 @@ export const useOrderStore = defineStore('booking-order', () => {
     fetchStatuses()
     fetchAvailableActions()
     fetchGuests()
+    fetchBookings()
   })
 
   return {
     order,
+    bookings,
     guests,
     bookingManagerId,
     availableActions,
+    fetchBookings,
+    fetchGuests,
     fetchOrder,
     fetchAvailableActions,
     isAvailableActionsFetching,
