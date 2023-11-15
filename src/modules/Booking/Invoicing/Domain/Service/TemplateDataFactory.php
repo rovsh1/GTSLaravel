@@ -47,6 +47,7 @@ use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Shared\Contracts\Adapter\CountryAdapterInterface;
 use Module\Shared\Contracts\Service\CompanyRequisitesInterface;
 use Module\Shared\Enum\GenderEnum;
+use Module\Shared\Enum\Order\OrderStatusEnum;
 
 class TemplateDataFactory
 {
@@ -257,7 +258,10 @@ class TemplateDataFactory
 
     private function buildOrderDto(Order $order): OrderDto
     {
-        $statusName = $this->orderStatusStorage->getName($order->status());
+        $status = $order->status() === OrderStatusEnum::WAITING_INVOICE
+            ? OrderStatusEnum::INVOICED
+            : $order->status();
+        $statusName = $this->orderStatusStorage->getName($status);
 
         return new OrderDto(
             (string)$order->id()->value(),
