@@ -21,7 +21,6 @@ use Illuminate\Database\Eloquent\Model;
  * @see \Gsdk\Format\FormatFactory;
  * @see \App\Admin\Providers\FormatServiceProvider;
  * @see \App\Admin\Support\Format\ContactRule;
- * @see \App\Admin\Support\Format\ContractNumberRule;
  * @see \App\Admin\Support\Format\PriceRule;
  * @see \App\Admin\Support\Format\EnumRule;
  * @see \App\Admin\Support\Format\TimeRule;

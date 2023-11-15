@@ -2,7 +2,7 @@
 
 import EditTableRowButton from '~resources/views/hotel/settings/components/EditTableRowButton.vue'
 
-const props = defineProps<{
+defineProps<{
   orderBookings: any[]
   canEdit: boolean
 }>()

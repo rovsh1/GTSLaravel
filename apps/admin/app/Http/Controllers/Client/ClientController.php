@@ -155,7 +155,7 @@ class ClientController extends AbstractPrototypeController
             'params' => $this->clientParams(),
             'contactsUrl' => $showUrl . '/contacts',
             'contactsEditable' => $isUpdateAllowed,
-            'contacts' => collect()
+            'contacts' => $this->model->contacts,
         ];
     }
 

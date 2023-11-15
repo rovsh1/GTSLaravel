@@ -25,4 +25,5 @@ AclRoute::for('client')
     ->get('/legals/search', Controllers\Client\LegalsController::class . '@search', 'read', 'legals.search')
     ->get('/industry/list', Controllers\Client\IndustryController::class . '@list', 'read', 'industry.list')
     ->get('/list', Controllers\Client\ClientController::class . '@list', 'read', 'list')
-    ->post('/create/dialog', Controllers\Client\ClientController::class . '@storeDialog', 'create', 'dialog.store');
+    ->post('/create/dialog', Controllers\Client\ClientController::class . '@storeDialog', 'create', 'dialog.store')
+    ->resource('contacts', Controllers\Client\ContactController::class, ['except' => ['show', 'index']]);

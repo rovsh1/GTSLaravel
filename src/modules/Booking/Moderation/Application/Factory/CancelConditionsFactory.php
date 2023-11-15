@@ -48,7 +48,7 @@ class CancelConditionsFactory
                 percent: new Percent($baseCancelConditions->noCheckInMarkup->percent),
                 cancelPeriodType: CancelPeriodTypeEnum::FULL_PERIOD
             ),
-            dailyMarkups: new DailyMarkupCollection($dailyMarkupOptions),
+            dailyMarkups: new DailyMarkupCollection($dailyMarkupOptions->all()),
             cancelNoFeeDate: $cancelNoFeeDate
         );
     }

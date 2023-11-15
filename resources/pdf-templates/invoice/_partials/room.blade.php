@@ -2,8 +2,8 @@
     <td class="text-align-center"></td>
     <td>{{ $room->name }}</td>
     <td class="text-align-center">1</td>
-    <td class="text-align-center">-</td>
-    <td class="text-align-center">-</td>
+    <td class="text-align-center">{{ $room->price }}</td>
+    <td class="text-align-center">{{ $room->price }}</td>
 </tr>
 <tr>
     <td></td>

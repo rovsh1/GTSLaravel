@@ -7,7 +7,8 @@ namespace Module\Booking\Invoicing\Domain\Service\Dto\Booking;
 class DailyMarkupDto
 {
     public function __construct(
-        public readonly string $percent,
-        public readonly string $daysCount,
+        public readonly int $percent,
+        public readonly int $daysCount,
+        public readonly string $markupType,
     ) {}
 }

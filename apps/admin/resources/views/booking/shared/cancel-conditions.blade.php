@@ -18,7 +18,7 @@
         </tr>
         @foreach($cancelConditions?->dailyMarkups ?? [] as $dailyMarkup)
             <tr>
-                <th>За {{ $dailyMarkup->daysCount }} дней</th>
+                <th>За {{ $dailyMarkup->daysCount }} {{ trans_choice('[1] день|[2,4] дня|[5,*] дней', $dailyMarkup->daysCount) }}</th>
                 <td>
                     {{ $dailyMarkup->percent }}
                     % {{ $getHumanPeriodType($dailyMarkup->cancelPeriodType) }}

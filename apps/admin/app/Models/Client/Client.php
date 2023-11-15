@@ -85,6 +85,11 @@ class Client extends Model
         return $this->hasMany(User::class);
     }
 
+    public function contacts(): HasMany
+    {
+        return $this->hasMany(Contact::class);
+    }
+
     public function __toString()
     {
         return (string)$this->name;

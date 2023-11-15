@@ -15,7 +15,7 @@ class UpdateStatus implements UseCaseInterface
         private readonly OrderRepositoryInterface $repository,
     ) {}
 
-    public function execute(int $orderId, int $statusId,): void
+    public function execute(int $orderId, int $statusId): void
     {
         $order = $this->repository->findOrFail(new OrderId($orderId));
         $statusEnum = OrderStatusEnum::from($statusId);

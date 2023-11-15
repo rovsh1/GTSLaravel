@@ -14,6 +14,10 @@
         td.booking-period {
             font-size: 16px;
         }
+
+        table tr.padding-bottom td {
+            padding-bottom: 10px;
+        }
     </style>
 @endpush
 
@@ -21,41 +25,36 @@
     <table>
         <tbody>
         @include('_partials.company_requisites_header')
+
         <tr>
-            <td class="title text-align-center" colspan="2">ИНВОЙС № {{ $invoice->number }}</td>
+            <td class="title text-align-center" colspan="5">ИНВОЙС № {{ $invoice->number }}</td>
         </tr>
         <tr>
-            <td class="text-align-right" colspan="2">{{ $invoice->createdAt }}</td>
+            <td class="text-align-right" colspan="5">Дата создания: {{ $invoice->createdAt }}</td>
         </tr>
+
         <tr>
-            <td colspan="2">
+            <td colspan="5">
                 <table>
                     <tbody>
                     <tr>
-                        <td style="width: 45%; text-align: left">
+                        <td>
                             <table>
-                                <tr>
-                                    <td style="font-size: 24px; font-weight: bold; color: red">Номер
-                                        заказа: {{ $order->number }}</td>
-                                </tr>
-                                <tr>
-                                    <td>Статус заказа: {{ $order->status }}</td>
-                                </tr>
+                                <tbody>
                                 <tr>
                                     <td>Клиент: {{ $client->name }}</td>
+                                    <td class="text-align-right" style="font-size: 24px; font-weight: bold; color: red">
+                                        Номер заказа: {{ $order->number }}
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td>Адрес: {{ $client->address }}</td>
+                                    <td>Адрес: {{ $client->address  }}</td>
+                                    <td class="text-align-right">Статус заказа: {{ $order->status }}</td>
                                 </tr>
                                 <tr>
                                     <td>Телефон: {{ $client->phone }}</td>
                                 </tr>
-                                <tr>
-                                    <td>&ensp;</td>
-                                </tr>
-                                <tr>
-                                    <td>&ensp;</td>
-                                </tr>
+                                </tbody>
                             </table>
                         </td>
                     </tr>
@@ -63,6 +62,7 @@
                 </table>
             </td>
         </tr>
+
         <tr>
             <td colspan="2" style="padding-top: 20px;">
                 <table>
@@ -81,7 +81,7 @@
                     @endforeach
                     <tr class="first">
                         <td class="text-align-right" colspan="5" style="padding-bottom: 20px">
-                            Общая сумма: {totalSum}
+                            Общая сумма: {{ $invoice->totalAmount }}
                         </td>
                     </tr>
                     <tr>

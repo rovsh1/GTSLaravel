@@ -12,8 +12,7 @@ final class RoomPriceItem implements SerializableDataInterface, CanEquate
     public function __construct(
         private readonly RoomPriceDayPartCollection $dayParts,
         private readonly ?float $manualDayValue,
-    ) {
-    }
+    ) {}
 
     public static function createEmpty(): RoomPriceItem
     {
@@ -25,6 +24,19 @@ final class RoomPriceItem implements SerializableDataInterface, CanEquate
         $sum = 0.0;
         foreach ($this->dayParts as $item) {
             $sum += $item->value();
+        }
+
+        return $sum;
+    }
+
+    public function manualValue(): ?float
+    {
+        if ($this->manualDayValue === null) {
+            return null;
+        }
+        $sum = 0.0;
+        foreach ($this->dayParts as $item) {
+            $sum += $this->manualDayValue;
         }
 
         return $sum;

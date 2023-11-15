@@ -14,5 +14,6 @@ class RoomDto
         /** @var GuestDto[] */
         public readonly array $guests,
         public readonly string|null $note,
+        public readonly string $price,
     ) {}
 }

@@ -6,12 +6,14 @@ namespace Module\Client\Moderation\Application\Admin\UseCase;
 
 use Module\Client\Moderation\Application\Admin\Dto\ClientDto;
 use Module\Client\Moderation\Domain\Repository\ClientRepositoryInterface;
+use Module\Client\Moderation\Domain\Repository\ClientRequisitesRepositoryInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class FindClient implements UseCaseInterface
 {
     public function __construct(
-        private readonly ClientRepositoryInterface $repository
+        private readonly ClientRepositoryInterface $repository,
+        private readonly ClientRequisitesRepositoryInterface $clientRequisitesRepository,
     ) {}
 
     public function execute(int $id): ?ClientDto
@@ -21,6 +23,13 @@ class FindClient implements UseCaseInterface
             return null;
         }
 
-        return ClientDto::fromDomain($client);
+        return new ClientDto(
+            $client->id()->value(),
+            $client->name(),
+            $client->type()->value,
+            $client->residency(),
+            $this->clientRequisitesRepository->getAddress($client->id()),
+            $this->clientRequisitesRepository->getPhone($client->id()),
+        );
     }
 }
