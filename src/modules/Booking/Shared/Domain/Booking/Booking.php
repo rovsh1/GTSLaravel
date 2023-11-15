@@ -108,6 +108,17 @@ class Booking extends AbstractAggregateRoot implements SerializableDataInterface
         return $this->status === BookingStatusEnum::CONFIRMED;
     }
 
+    public function isCancelled(): bool
+    {
+        return in_array($this->status, [
+            BookingStatusEnum::CANCELLED,
+            BookingStatusEnum::CANCELLED_FEE,
+            BookingStatusEnum::CANCELLED_NO_FEE,
+            BookingStatusEnum::DELETED,
+            BookingStatusEnum::WAITING_CANCELLATION,//@todo должно ли быть тут?
+        ]);
+    }
+
     public function toData(): array
     {
         return [

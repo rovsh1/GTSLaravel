@@ -98,4 +98,44 @@ final class Order extends AbstractAggregateRoot implements EntityInterface
     {
         return $this->context;
     }
+
+    public function toInProgress(): void
+    {
+        $this->status = OrderStatusEnum::IN_PROGRESS;
+    }
+
+    public function toWaitingInvoice(): void
+    {
+        $this->status = OrderStatusEnum::WAITING_INVOICE;
+    }
+
+    public function toInvoiced(): void
+    {
+        $this->status = OrderStatusEnum::INVOICED;
+    }
+
+    public function toPartialPaid(): void
+    {
+        $this->status = OrderStatusEnum::PARTIAL_PAID;
+    }
+
+    public function toPaid(): void
+    {
+        $this->status = OrderStatusEnum::PAID;
+    }
+
+    public function cancel(): void
+    {
+        $this->status = OrderStatusEnum::CANCELLED;
+    }
+
+    public function toRefundFee(): void
+    {
+        $this->status = OrderStatusEnum::REFUND_FEE;
+    }
+
+    public function toRefundNoFee(): void
+    {
+        $this->status = OrderStatusEnum::REFUND_NO_FEE;
+    }
 }

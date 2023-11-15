@@ -13,7 +13,6 @@ class StatusUpdater
 {
     public function __construct(
         private readonly AdministratorRules $statusRules,
-        private readonly BookingUpdater $bookingUpdater,
     ) {}
 
     public function toProcessing(Booking $booking): void
@@ -108,7 +107,6 @@ class StatusUpdater
     {
         $this->checkCanTransitToStatus($booking, $status);
         $callback($booking);
-        $this->bookingUpdater->store($booking);
     }
 
     /**

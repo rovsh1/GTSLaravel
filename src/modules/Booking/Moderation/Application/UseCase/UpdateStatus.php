@@ -6,7 +6,7 @@ namespace Module\Booking\Moderation\Application\UseCase;
 
 use Module\Booking\Moderation\Application\Dto\UpdateStatusResponseDto;
 use Module\Booking\Moderation\Domain\Booking\Service\StatusUpdater;
-use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Service\BookingUnitOfWork;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Shared\Enum\Booking\BookingStatusEnum;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
@@ -14,8 +14,8 @@ use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 class UpdateStatus implements UseCaseInterface
 {
     public function __construct(
-        private readonly BookingRepositoryInterface $repository,
-        private readonly StatusUpdater $statusUpdater
+        private readonly BookingUnitOfWork $bookingUnitOfWork,
+        private readonly StatusUpdater $statusUpdater,
     ) {}
 
     public function execute(
@@ -25,7 +25,7 @@ class UpdateStatus implements UseCaseInterface
         ?float $supplierPenalty = null,
         ?float $clientPenalty = null
     ): UpdateStatusResponseDto {
-        $booking = $this->repository->findOrFail(new BookingId($bookingId));
+        $booking = $this->bookingUnitOfWork->findOrFail(new BookingId($bookingId));
         $statusEnum = BookingStatusEnum::from($statusId);
 
         switch ($statusEnum) {
@@ -63,6 +63,7 @@ class UpdateStatus implements UseCaseInterface
                 $this->statusUpdater->toWaitingProcessing($booking);
                 break;
         }
+        $this->bookingUnitOfWork->commit();
 
         return new UpdateStatusResponseDto();
     }

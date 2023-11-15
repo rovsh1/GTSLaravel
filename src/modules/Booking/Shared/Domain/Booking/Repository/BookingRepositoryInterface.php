@@ -23,6 +23,10 @@ interface BookingRepositoryInterface
         ?string $note = null
     ): Booking;
 
+    /**
+     * @param OrderId $orderId
+     * @return Booking[]
+     */
     public function getByOrderId(OrderId $orderId): array;
 
     public function find(BookingId $id): ?Booking;

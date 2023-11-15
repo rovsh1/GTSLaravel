@@ -87,7 +87,7 @@ class OrderRepository implements OrderRepositoryInterface
     public function store(Order $order): bool
     {
         return (bool)Model::whereId($order->id()->value())->update([
-//            'status' => $order,//@todo тут пока непонятно что
+            'status' => $order->status(),
             'client_id' => $order->clientId()->value(),
             'legal_id' => $order->legalId()?->value(),
             'currency' => $order->currency(),
