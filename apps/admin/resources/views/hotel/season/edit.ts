@@ -1,10 +1,8 @@
 import { Litepicker } from 'litepicker'
-import { DateTime, Interval } from 'luxon'
 import { z } from 'zod'
 
 import { ContractID, useHotelContractGetAPI } from '~api/hotel/contract'
 
-import { parseAPIDate } from '~lib/date'
 import { useDateRangePicker } from '~lib/date-picker/date-picker'
 import { requestInitialData } from '~lib/initial-data'
 import { getNullableRef } from '~lib/vue'
@@ -27,26 +25,21 @@ const handleChangeContract = async (periodInput: HTMLInputElement, contractID: C
   const minDate = getContract?.dateStart
   const maxDate = getContract?.dateEnd
 
+  const blockedSeasons = contract.value?.seasons?.map((season) => {
+    const isSameContract = season.contractID === contractID
+    const isSameSeason = season.id === seasonID
+
+    const { dateStart, dateEnd } = season
+    if (isSameContract && !isSameSeason) {
+      return [dateStart, dateEnd]
+    }
+    return undefined
+  }) || []
   return useDateRangePicker(periodInput, {
     minDate,
     maxDate,
-    lockDaysFilter: (inputDate) => {
-      if (inputDate === null) {
-        return false
-      }
-      return contract.value?.seasons?.find((season): boolean => {
-        const isSameContract = season.contractID === contractID
-        const isSameSeason = season.id === seasonID
-
-        const { dateStart, dateEnd } = season
-        const start = parseAPIDate(dateStart).startOf('day')
-        const end = parseAPIDate(dateEnd).endOf('day')
-        const inputDateTime = DateTime.fromJSDate(inputDate.toJSDate())
-        const withinInterval = Interval.fromDateTimes(start, end).contains(inputDateTime)
-
-        return isSameContract && !isSameSeason && withinInterval
-      }) !== undefined
-    },
+    disallowLockDaysInRange: true,
+    lockDays: blockedSeasons,
   })
 }
 
