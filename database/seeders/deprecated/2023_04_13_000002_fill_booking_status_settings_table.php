@@ -144,7 +144,7 @@ return new class extends Migration {
                 'type' => OrderStatusEnum::class,
                 'name_ru' => 'Инвойс выставлен',
                 'name_en' => null,
-                'color' => 'secondary',
+                'color' => 'info',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
