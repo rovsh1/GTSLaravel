@@ -1,10 +1,10 @@
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 import { defineStore } from 'pinia'
 import { z } from 'zod'
 
 import { downloadDocument as downloadDocumentRequest } from '~api/booking/document'
-import { sendBookingRequest, useBookingRequestListAPI } from '~api/booking/request'
+import { BookingRequest, sendBookingRequest, useBookingRequestListAPI } from '~api/booking/request'
 
 import { showConfirmDialog } from '~lib/confirm-dialog'
 import { isInitialDataExists, requestInitialData, ViewInitialDataKey } from '~lib/initial-data'
@@ -21,6 +21,16 @@ const { bookingID } = requestInitialData(initialDataKey, z.object({
 export const useBookingRequestStore = defineStore('booking-requests', () => {
   const { data: requests, execute: fetchBookingRequests, isFetching } = useBookingRequestListAPI({ bookingID })
   const requestSendIsFetching = ref(false)
+
+  const groupedRequests = computed(() => (requests.value ? Object.values(
+    requests.value.reduce((acc, bookingRequest) => {
+      const { type, dateCreate } = bookingRequest
+      if (!acc[type] || dateCreate > acc[type].dateCreate) {
+        acc[type] = bookingRequest
+      }
+      return acc
+    }, {} as { [key: number]: BookingRequest }),
+  ) : null))
 
   const sendRequest = async () => {
     const { result: isConfirmed, toggleClose } = await showConfirmDialog('Отправить запрос?')
@@ -43,6 +53,7 @@ export const useBookingRequestStore = defineStore('booking-requests', () => {
 
   return {
     requests,
+    groupedRequests,
     isFetching,
     requestSendIsFetching,
     fetchBookingRequests,

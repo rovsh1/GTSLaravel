@@ -22,7 +22,7 @@ const availableActions = computed<BookingAvailableActionsResponse | null>(() => 
 const isRequestableStatus = computed<boolean>(() => availableActions.value?.isRequestable || false)
 
 const requestStore = useBookingRequestStore()
-const bookingRequests = computed<BookingRequest[] | null>(() => requestStore.requests)
+const bookingRequests = computed<BookingRequest[] | null>(() => requestStore.groupedRequests)
 
 const isRequestFetching = computed(() => requestStore.requestSendIsFetching)
 

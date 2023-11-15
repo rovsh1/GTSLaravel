@@ -69,7 +69,6 @@ export const useBookingStore = defineStore('booking', () => {
         updateStatusPayload.notConfirmedReason = reason
         toggleClose()
         await updateBookingStatus(updateStatusPayload)
-        return
       }
     }
     if (updateStatusResponse.value?.isCancelFeeAmountRequired) {
@@ -79,7 +78,6 @@ export const useBookingStore = defineStore('booking', () => {
         updateStatusPayload.clientCancelFeeAmount = clientCancelFeeAmount
         toggleClose()
         await updateBookingStatus(updateStatusPayload)
-        return
       }
     }
     await Promise.all([
