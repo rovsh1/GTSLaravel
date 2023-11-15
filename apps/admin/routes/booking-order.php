@@ -7,7 +7,7 @@ AclRoute::for('booking-order')
     ->get('/{id}/get', Controllers\Booking\Order\OrderController::class . '@get', 'read', 'get')
     ->get('/search', Controllers\Booking\Order\OrderController::class . '@search', 'read', 'search')
 
-    ->get('/{orderId}/bookings', Controllers\Booking\Order\OrderController::class . '@bookings', 'read', 'guests.list')
+    ->get('/{orderId}/bookings', Controllers\Booking\Order\OrderController::class . '@bookings', 'read', 'booking.list')
 
     ->get('/status/list', Controllers\Booking\Order\OrderController::class . '@getStatuses', 'read', 'status.list')
     ->put('/{orderId}/status/update', Controllers\Booking\Order\OrderController::class . '@updateStatus', 'update', 'status.update')
