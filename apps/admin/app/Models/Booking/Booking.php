@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Admin\Models\Booking;
 
+use App\Admin\Support\View\Form\ValueObject\NumRangeValue;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Builder as Query;
@@ -62,5 +63,30 @@ class Booking extends \Module\Booking\Shared\Infrastructure\Models\Booking
     public function scopeWhereSource(Builder $builder, string|SourceEnum $source): void
     {
         $builder->where('bookings.source', $source);
+    }
+
+    public function scopeWhereGuestsCount(Builder $builder, NumRangeValue $range): void
+    {
+        $builder->havingBetween('guests_count', [$range->from, $range->to]);
+    }
+
+    public function scopeWhereStartPeriod(Builder $builder, CarbonPeriod $period): void
+    {
+        $builder->whereBetween(
+            'booking_hotel_details.date_start', [
+                $period->getStartDate()->startOfDay(),
+                $period->getEndDate()->endOfDay()
+            ]
+        );
+    }
+
+    public function scopeWhereEndPeriod(Builder $builder, CarbonPeriod $period): void
+    {
+        $builder->whereBetween(
+            'booking_hotel_details.date_end', [
+                $period->getStartDate()->startOfDay(),
+                $period->getEndDate()->endOfDay()
+            ]
+        );
     }
 }
