@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Module\Shared\Enum\ServiceTypeEnum;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
 
-class Service extends \Module\Supplier\Infrastructure\Models\Service
+class Service extends \Module\Supplier\Moderation\Infrastructure\Models\Service
 {
     use HasQuicksearch;
 

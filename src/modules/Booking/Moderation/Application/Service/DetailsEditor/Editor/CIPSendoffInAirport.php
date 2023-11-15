@@ -11,7 +11,7 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
-use Module\Supplier\Infrastructure\Models\Service as InfrastructureSupplierService;
+use Module\Supplier\Moderation\Infrastructure\Models\Service as InfrastructureSupplierService;
 
 class CIPSendoffInAirport extends AbstractEditor implements EditorInterface
 {

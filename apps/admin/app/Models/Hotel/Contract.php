@@ -11,7 +11,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Module\Hotel\Moderation\Application\UseCase\GetContractDocuments;
+use Module\Hotel\Moderation\Application\UseCase\UploadContractDocuments;
 use Module\Shared\Dto\FileDto;
+use Module\Shared\Dto\UploadedFileDto;
 use Sdk\Module\Database\Eloquent\Model;
 use Sdk\Module\Support\DateTime;
 
@@ -52,7 +54,8 @@ class Contract extends Model
         'status',
         'date_start',
         'date_end',
-//        'documents'
+
+        'files',
     ];
 
     protected $casts = [
@@ -72,6 +75,14 @@ class Contract extends Model
                     ->whereStatus(StatusEnum::ACTIVE)
                     ->update(['status' => StatusEnum::INACTIVE]);
             }
+
+            if (count($model->savingFiles) === 0) {
+                return;
+            }
+            $fileDtos = array_map(fn(UploadedFile $file) => UploadedFileDto::fromUploadedFile($file),
+                $model->savingFiles);
+            app(UploadContractDocuments::class)->execute($model->id, $fileDtos);
+            $model->savingFiles = [];
         });
     }
 
@@ -80,9 +91,16 @@ class Contract extends Model
         $builder->whereStatus(StatusEnum::ACTIVE);
     }
 
-    public function documents(): Attribute
+    public function files(): Attribute
     {
-        return Attribute::make(get: fn() => app(GetContractDocuments::class)->execute($this->id));
+        return Attribute::make(
+            get: fn() => app(GetContractDocuments::class)->execute($this->id),
+            set: function ($files) {
+                $this->savingFiles = $files ?? [];
+
+                return [];
+            }
+        );
     }
 
     public function seasons(): HasMany

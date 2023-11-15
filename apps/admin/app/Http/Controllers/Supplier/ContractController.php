@@ -103,7 +103,7 @@ class ContractController extends Controller
                 'withoutHotel' => true
             ])
             ->hiddenMultiSelect('service_ids', ['label' => 'Услуги', 'required' => true])
-            ->file('documents', ['label' => 'Документы', 'multiple' => true]);
+            ->file('files', ['label' => 'Документы', 'multiple' => true]);
     }
 
     protected function gridFactory(Supplier $provider): GridContract
@@ -117,7 +117,7 @@ class ContractController extends Controller
             ->text('period', ['text' => 'Период', 'renderer' => fn($r, $t) => Format::period($t)])
             ->enum('status', ['text' => 'Статус', 'enum' => StatusEnum::class, 'order' => true])
             ->text('service_names', ['text' => 'Услуги', 'renderer' => fn($r, $val) => implode(', ', $val)])
-            ->file('documents', ['text' => 'Документы']);
+            ->file('files', ['text' => 'Документы']);
     }
 
     private function provider(Supplier $provider): void

@@ -7,12 +7,12 @@ namespace Module\Booking\Shared\Domain\Booking\Adapter;
 use Carbon\CarbonInterface;
 use Module\Hotel\Pricing\Application\Dto\ServicePriceDto;
 use Module\Shared\Enum\CurrencyEnum;
-use Module\Supplier\Application\Dto\AirportDto;
-use Module\Supplier\Application\Dto\CarDto;
-use Module\Supplier\Application\Response\CancelConditionsDto;
-use Module\Supplier\Application\Response\ServiceContractDto;
-use Module\Supplier\Application\Response\ServiceDto;
-use Module\Supplier\Application\Response\SupplierDto;
+use Module\Supplier\Moderation\Application\Dto\AirportDto;
+use Module\Supplier\Moderation\Application\Dto\CarDto;
+use Module\Supplier\Moderation\Application\Response\CancelConditionsDto;
+use Module\Supplier\Moderation\Application\Response\ServiceContractDto;
+use Module\Supplier\Moderation\Application\Response\ServiceDto;
+use Module\Supplier\Moderation\Application\Response\SupplierDto;
 
 interface SupplierAdapterInterface
 {

@@ -3,7 +3,7 @@
 namespace App\Admin\Support\Facades\Supplier;
 
 use Illuminate\Support\Facades\Facade;
-use Module\Supplier\Application\Dto\CarDto;
+use Module\Supplier\Moderation\Application\Dto\CarDto;
 
 /**
  * @method static CarDto[] getCars(int $supplierId)

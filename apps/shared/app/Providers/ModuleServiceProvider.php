@@ -24,7 +24,7 @@ class ModuleServiceProvider extends ServiceProvider
         'BookingEventSourcing' => 'Booking/EventSourcing',
         'BookingInvoicing' => 'Booking/Invoicing',
         'BookingShared' => 'Booking/Shared',
-        'Supplier' => 'Supplier',
+        'SupplierModeration' => 'Supplier/Moderation',
         'CurrencyRate' => 'Generic/CurrencyRate',
         'Notification' => 'Generic/Notification',
         'FileStorage' => 'Support/FileStorage',

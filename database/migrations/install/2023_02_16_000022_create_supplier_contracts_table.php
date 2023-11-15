@@ -45,6 +45,23 @@ return new class extends Migration
                 ->restrictOnDelete()
                 ->cascadeOnUpdate();
         });
+
+        Schema::create('supplier_contract_files', function (Blueprint $table) {
+            $table->char('guid', 32)->primary();
+            $table->unsignedInteger('contract_id');
+
+            $table->foreign('contract_id')
+                ->references('id')
+                ->on('supplier_contracts')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+
+            $table->foreign('guid')
+                ->references('guid')
+                ->on('files')
+                ->restrictOnDelete()
+                ->cascadeOnUpdate();
+        });
     }
 
     /**

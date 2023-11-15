@@ -10,21 +10,21 @@ use Module\Hotel\Pricing\Application\Dto\ServicePriceDto;
 use Module\Hotel\Pricing\Application\UseCase\GetAirportServicePrice;
 use Module\Hotel\Pricing\Application\UseCase\GetTransferServicePrice;
 use Module\Shared\Enum\CurrencyEnum;
-use Module\Supplier\Application\Dto\AirportDto;
-use Module\Supplier\Application\Dto\CarDto;
-use Module\Supplier\Application\Response\CancelConditionsDto;
-use Module\Supplier\Application\Response\ServiceContractDto;
-use Module\Supplier\Application\Response\ServiceDto;
-use Module\Supplier\Application\Response\SupplierDto;
-use Module\Supplier\Application\UseCase\Find;
-use Module\Supplier\Application\UseCase\FindAirport;
-use Module\Supplier\Application\UseCase\FindAirportServiceContract;
-use Module\Supplier\Application\UseCase\FindCar;
-use Module\Supplier\Application\UseCase\FindService;
-use Module\Supplier\Application\UseCase\FindTransferServiceContract;
-use Module\Supplier\Application\UseCase\GetAirportCancelConditions;
-use Module\Supplier\Application\UseCase\GetCars;
-use Module\Supplier\Application\UseCase\GetTransferCancelConditions;
+use Module\Supplier\Moderation\Application\Dto\AirportDto;
+use Module\Supplier\Moderation\Application\Dto\CarDto;
+use Module\Supplier\Moderation\Application\Response\CancelConditionsDto;
+use Module\Supplier\Moderation\Application\Response\ServiceContractDto;
+use Module\Supplier\Moderation\Application\Response\ServiceDto;
+use Module\Supplier\Moderation\Application\Response\SupplierDto;
+use Module\Supplier\Moderation\Application\UseCase\Find;
+use Module\Supplier\Moderation\Application\UseCase\FindAirport;
+use Module\Supplier\Moderation\Application\UseCase\FindAirportServiceContract;
+use Module\Supplier\Moderation\Application\UseCase\FindCar;
+use Module\Supplier\Moderation\Application\UseCase\FindService;
+use Module\Supplier\Moderation\Application\UseCase\FindTransferServiceContract;
+use Module\Supplier\Moderation\Application\UseCase\GetAirportCancelConditions;
+use Module\Supplier\Moderation\Application\UseCase\GetCars;
+use Module\Supplier\Moderation\Application\UseCase\GetTransferCancelConditions;
 
 class SupplierAdapter implements SupplierAdapterInterface
 {

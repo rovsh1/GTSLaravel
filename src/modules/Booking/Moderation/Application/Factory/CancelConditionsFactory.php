@@ -14,8 +14,8 @@ use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\DailyMarkupO
 use Module\Booking\Shared\Domain\Shared\ValueObject\CancelConditions;
 use Module\Shared\Enum\ServiceTypeEnum;
 use Module\Shared\ValueObject\Percent;
-use Module\Supplier\Application\Response\CancelConditionsDto;
-use Module\Supplier\Application\Response\DailyMarkupDto;
+use Module\Supplier\Moderation\Application\Response\CancelConditionsDto;
+use Module\Supplier\Moderation\Application\Response\DailyMarkupDto;
 
 class CancelConditionsFactory
 {

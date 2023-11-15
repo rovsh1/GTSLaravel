@@ -10,7 +10,7 @@ use Module\Booking\Shared\Domain\Booking\Repository\Details\OtherServiceReposito
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
-use Module\Supplier\Infrastructure\Models\Service as InfrastructureSupplierService;
+use Module\Supplier\Moderation\Infrastructure\Models\Service as InfrastructureSupplierService;
 
 class OtherService extends AbstractEditor implements EditorInterface
 {

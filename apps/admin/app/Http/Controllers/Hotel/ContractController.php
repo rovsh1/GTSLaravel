@@ -96,7 +96,7 @@ class ContractController extends Controller
             ->hidden('hotel_id', ['value' => $hotelId])
             ->dateRange('period', ['label' => 'Период', 'required' => true])
             ->enum('status', ['label' => 'Статус', 'emptyItem' => '', 'enum' => StatusEnum::class, 'required' => true])
-            ->file('documents', ['label' => 'Документы', 'multiple' => true]);
+            ->file('files', ['label' => 'Документы', 'multiple' => true]);
     }
 
     protected function gridFactory(int $hotelId): GridContract
@@ -114,7 +114,7 @@ class ContractController extends Controller
             )
             ->text('period', ['text' => 'Период', 'renderer' => fn($r, $t) => Format::period($t)])
             ->enum('status', ['text' => 'Статус', 'enum' => StatusEnum::class, 'order' => true])
-            ->file('documents', ['text' => 'Документы']);
+            ->file('files', ['text' => 'Документы']);
     }
 
     private function hotel(Hotel $hotel): void

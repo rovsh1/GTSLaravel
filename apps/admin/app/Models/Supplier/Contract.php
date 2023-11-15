@@ -6,7 +6,12 @@ use App\Admin\Enums\Contract\StatusEnum;
 use App\Admin\Support\Models\HasPeriod;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Collection;
+use Module\Shared\Dto\UploadedFileDto;
 use Module\Shared\Enum\ServiceTypeEnum;
+use Module\Supplier\Moderation\Application\UseCase\Contract\GetFiles;
+use Module\Supplier\Moderation\Application\UseCase\Contract\UploadFiles;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
 use Sdk\Module\Database\Eloquent\Model;
 
@@ -26,6 +31,7 @@ class Contract extends Model
         'service_type',
 
         'service_ids',
+        'files',
     ];
 
     protected $casts = [
@@ -37,6 +43,9 @@ class Contract extends Model
 
     private array $savingServiceIds;
 
+    /** @var UploadedFile[]|Collection<UploadedFile> $savingFiles */
+    private array|Collection $savingFiles = [];
+
     public static function booted()
     {
         static::saved(function (self $model) {
@@ -44,6 +53,13 @@ class Contract extends Model
                 $model->services()->sync($model->savingServiceIds);
                 unset($model->savingServiceIds);
             }
+
+            if (count($model->savingFiles) === 0) {
+                return;
+            }
+            $fileDtos = array_map(fn(UploadedFile $file) => UploadedFileDto::fromUploadedFile($file), $model->savingFiles);
+            app(UploadFiles::class)->execute($model->id, $fileDtos);
+            $model->savingFiles = [];
         });
     }
 
@@ -63,6 +79,18 @@ class Contract extends Model
             get: fn() => $this->services()->pluck('id')->toArray(),
             set: function (array $ids) {
                 $this->savingServiceIds = $ids;
+
+                return [];
+            }
+        );
+    }
+
+    public function files(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => app(GetFiles::class)->execute($this->id),
+            set: function ($files) {
+                $this->savingFiles = $files ?? [];
 
                 return [];
             }

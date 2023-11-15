@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Admin\Support\Adapters\Supplier;
 
-use Module\Supplier\Application\UseCase\GetCars;
+use Module\Supplier\Moderation\Application\UseCase\GetCars;
 
 class CarsAdapter
 {

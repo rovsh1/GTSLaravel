@@ -13,11 +13,17 @@ class UploadDocumentFiles implements UseCaseInterface
 {
     public function __construct(
         private readonly FileStorageAdapterInterface $fileStorageAdapter
-    ) {
-    }
+    ) {}
 
     public function execute(int $documentId, array $files): void
     {
+        $existFilesQuery = DB::table('client_document_files')->where('document_id', $documentId);
+        $guids = $existFilesQuery->get()->pluck('guid')->toArray();
+        $existFilesQuery->delete();
+        foreach ($guids as $guid) {
+            $this->fileStorageAdapter->delete($guid);
+        }
+
         $values = [];
         /** @var UploadedFileDto $uploadedFileDto */
         foreach ($files as $uploadedFileDto) {

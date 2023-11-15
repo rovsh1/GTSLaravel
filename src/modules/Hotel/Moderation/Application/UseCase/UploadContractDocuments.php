@@ -13,11 +13,17 @@ class UploadContractDocuments implements UseCaseInterface
 {
     public function __construct(
         private readonly FileStorageAdapterInterface $fileStorageAdapter
-    ) {
-    }
+    ) {}
 
     public function execute(int $contractId, array $files): void
     {
+        $existDocumentsQuery = DB::table('hotel_contract_documents')->where('contract_id', $contractId);
+        $guids = $existDocumentsQuery->get()->pluck('guid')->toArray();
+        $existDocumentsQuery->delete();
+        foreach ($guids as $guid) {
+            $this->fileStorageAdapter->delete($guid);
+        }
+
         $values = [];
         /** @var UploadedFileDto $uploadedFileDto */
         foreach ($files as $uploadedFileDto) {

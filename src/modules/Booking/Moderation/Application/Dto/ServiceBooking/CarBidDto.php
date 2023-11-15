@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\Dto\ServiceBooking;
 
-use Module\Supplier\Application\Dto\CarDto;
+use Module\Supplier\Moderation\Application\Dto\CarDto;
 
 class CarBidDto
 {
