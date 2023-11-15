@@ -25,6 +25,7 @@ class OrderDtoFactory
             $this->statusDtoFactory->get($entity->status()),
             $entity->clientId()->value(),
             $entity->legalId()?->value(),
+            $entity->invoiceId()?->value(),
             $entity->createdAt(),
             $entity->guestIds()->map(fn(GuestId $id) => $id->value()),
             $entity->context()->creatorId()->value(),

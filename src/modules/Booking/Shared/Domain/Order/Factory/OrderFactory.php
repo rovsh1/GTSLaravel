@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Domain\Order\Factory;
 
 use Carbon\CarbonImmutable;
+use Module\Booking\Invoicing\Domain\ValueObject\InvoiceId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\Context;
 use Module\Booking\Shared\Domain\Guest\ValueObject\GuestId;
 use Module\Booking\Shared\Domain\Order\Order;
@@ -25,6 +26,7 @@ class OrderFactory extends AbstractEntityFactory
     protected function fromArray(array $data): mixed
     {
         $legalId = $data['legal_id'] ?? null;
+        $invoiceId = $data['invoice_id'] ?? null;
         $guestIds = array_map(fn(int $id) => new GuestId($id), $data['guest_ids'] ?? []);
 
         return new $this->entity(
@@ -32,6 +34,7 @@ class OrderFactory extends AbstractEntityFactory
             CurrencyEnum::from($data['currency']),
             new ClientId($data['client_id']),
             $legalId !== null ? new LegalId($legalId) : null,
+            $invoiceId !== null ? new InvoiceId($invoiceId) : null,
             OrderStatusEnum::from($data['status']),
             new CarbonImmutable($data['created_at']),
             new GuestIdCollection($guestIds),

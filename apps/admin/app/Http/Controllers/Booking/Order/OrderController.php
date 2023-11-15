@@ -7,6 +7,7 @@ namespace App\Admin\Http\Controllers\Booking\Order;
 use App\Admin\Components\Factory\Prototype;
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Http\Requests\Order\SearchRequest;
+use App\Admin\Http\Requests\Order\UpdateStatusRequest;
 use App\Admin\Models\Administrator\Administrator;
 use App\Admin\Models\Client\Client;
 use App\Admin\Models\Order\Order;
@@ -101,6 +102,8 @@ class OrderController extends Controller
                 'client' => $client,
                 'manager' => $this->administratorRepository->get($id),
                 'creator' => Administrator::find($booking->creatorId),
+                'serviceBookingCreate' => route('service-booking.create'),
+                'hotelBookingCreate' => route('hotel-booking.create'),
             ]);
     }
 
@@ -139,7 +142,7 @@ class OrderController extends Controller
         );
     }
 
-    public function updateStatus(Request $request, int $id): JsonResponse
+    public function updateStatus(UpdateStatusRequest $request, int $id): JsonResponse
     {
         OrderAdapter::updateStatus($id, $request->getStatus());
 

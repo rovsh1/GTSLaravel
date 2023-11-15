@@ -9,6 +9,8 @@
       window['view-initial-data-booking-order'] = {{ Js::from([
             'orderID' => $orderId,
             'manager' => $manager,
+            'serviceBookingCreate' => $serviceBookingCreate,
+            'hotelBookingCreate' => $hotelBookingCreate,
         ]) }}
     </script>
 @endsection
@@ -40,7 +42,7 @@
                             </tr>
                             <tr>
                                 <th>Инвойс (ID)</th>
-                                <td>-</td>
+                                <td>{{ $model->invoiceId }}</td>
                             </tr>
                             <tr>
                                 <th>Источник</th>

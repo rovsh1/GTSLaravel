@@ -31,7 +31,7 @@ class GetAvailableActions implements UseCaseInterface
             $statuses,
             $this->statusRules->isEditableStatus($order->status()),
             true,
-            false,
+            true,
         );
     }
 

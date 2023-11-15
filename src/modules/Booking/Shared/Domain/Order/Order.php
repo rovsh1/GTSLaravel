@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Domain\Order;
 
 use Carbon\CarbonImmutable;
+use Module\Booking\Invoicing\Domain\ValueObject\InvoiceId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\Context;
 use Module\Booking\Shared\Domain\Order\Event\ClientChanged;
 use Module\Booking\Shared\Domain\Order\ValueObject\ClientId;
@@ -23,6 +24,7 @@ final class Order extends AbstractAggregateRoot implements EntityInterface
         private CurrencyEnum $currency,
         private ClientId $clientId,
         private ?LegalId $legalId,
+        private ?InvoiceId $invoiceId,
         private OrderStatusEnum $status,
         private readonly CarbonImmutable $createdAt,
         private readonly GuestIdCollection $guestIds,
@@ -70,6 +72,11 @@ final class Order extends AbstractAggregateRoot implements EntityInterface
     public function setLegalId(?LegalId $legalId): void
     {
         $this->legalId = $legalId;
+    }
+
+    public function invoiceId(): ?InvoiceId
+    {
+        return $this->invoiceId;
     }
 
     public function currency(): CurrencyEnum
