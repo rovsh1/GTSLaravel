@@ -112,7 +112,7 @@ class Booking extends AbstractAggregateRoot implements SerializableDataInterface
             'serviceType' => $this->serviceType->value,
             'status' => $this->status->value,
             'prices' => $this->prices->toData(),
-            'cancelConditions' => $this->cancelConditions->toData(),
+            'cancelConditions' => $this->cancelConditions?->toData(),
             'note' => $this->note,
             'context' => $this->context->toData(),
             'timestamps' => $this->timestamps->toData(),
