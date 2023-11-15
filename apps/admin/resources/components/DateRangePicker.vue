@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onMounted, onUnmounted, ref } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 
 import { onClickOutside } from '@vueuse/core'
 import { Litepicker } from 'litepicker'
@@ -64,10 +64,16 @@ const displayValue = computed(() => {
   return ''
 })
 
-const lockPeriods = computed(() => props.lockPeriods)
 const editableId = computed(() => props.editableId)
+const lockPeriods = computed(() => props.lockPeriods)
 const minDateTime = computed(() => props.minDate && parseAPIDate(props.minDate).startOf('day'))
 const maxDateTime = computed(() => props.maxDate && parseAPIDate(props.maxDate).endOf('day'))
+
+const setBlockPeriodsValue = () => props.lockPeriods?.map((lockPeriod, index) =>
+  (editableId.value !== index ? [parseAPIDate(lockPeriod.from).startOf('day').toFormat('yyyy-LL-dd'),
+    parseAPIDate(lockPeriod.to).startOf('day').toFormat('yyyy-LL-dd')] : undefined))
+
+const blockedPeriods = ref(setBlockPeriodsValue())
 
 const lockDaysFilter = (inputDate: any) => {
   if (inputDate === null) {
@@ -99,13 +105,36 @@ onClickOutside(inputRef, (event: MouseEvent) => {
 
 let picker: Litepicker
 
+watch([() => props.lockPeriods, () => props.editableId], () => {
+  blockedPeriods.value = setBlockPeriodsValue()
+  picker.setLockDays(blockedPeriods.value)
+})
+
+watch([() => props.minDate, () => props.maxDate], () => {
+  picker.setOptions({
+    minDate: props.minDate,
+  })
+  picker.setOptions({
+    maxDate: props.maxDate,
+  })
+})
+
 onMounted(() => {
   nextTick(() => {
     const periodInput = document.getElementById(props.id) as HTMLInputElement
     if (props.singleMode) {
-      picker = useSingleDatePicker(periodInput, { lockDaysFilter, singleMode: props.singleMode })
+      picker = useSingleDatePicker(periodInput, {
+        lockDaysFilter,
+        singleMode: props.singleMode,
+      })
     } else {
-      picker = useDateRangePicker(periodInput, { lockDaysFilter, singleMode: props.singleMode })
+      picker = useDateRangePicker(periodInput, {
+        disallowLockDaysInRange: true,
+        lockDays: blockedPeriods.value || [],
+        singleMode: false,
+        minDate: props.minDate,
+        maxDate: props.maxDate,
+      })
     }
     picker.on('before:show', () => {
       if (localValue.value) {

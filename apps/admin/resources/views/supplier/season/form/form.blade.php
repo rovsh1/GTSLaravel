@@ -11,6 +11,7 @@
 @section('head-end')
     <script>
       window['view-initial-data-supplier-seasons'] = {{ Js::from([
+            'seasonID' => $seasonId,
             'seasons' => $seasons,
         ]) }}
     </script>
