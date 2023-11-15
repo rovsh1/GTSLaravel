@@ -19,7 +19,7 @@ class DayCarTripFactory extends AbstractServiceDetailsFactory
 
         return new DayCarTrip(
             id: new DetailsId($details->id),
-            bookingId: new BookingId($details->bookingId()),
+            bookingId: new BookingId($details->booking_id),
             serviceInfo: $this->buildServiceInfo($detailsData['serviceInfo']),
             cityId: new CityId($detailsData['cityId']),
             destinationsDescription: $detailsData['destinationsDescription'],
