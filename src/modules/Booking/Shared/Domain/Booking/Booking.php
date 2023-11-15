@@ -31,8 +31,7 @@ class Booking extends AbstractAggregateRoot implements SerializableDataInterface
         private ?string $note,
         private readonly Context $context,
         private readonly Timestamps $timestamps,
-    ) {
-    }
+    ) {}
 
     public function id(): BookingId
     {
@@ -102,6 +101,11 @@ class Booking extends AbstractAggregateRoot implements SerializableDataInterface
     public function setCancelConditions(?CancelConditions $cancelConditions): void
     {
         $this->cancelConditions = $cancelConditions;
+    }
+
+    public function isConfirmed(): bool
+    {
+        return $this->status === BookingStatusEnum::CONFIRMED;
     }
 
     public function toData(): array

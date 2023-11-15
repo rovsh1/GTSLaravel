@@ -109,8 +109,9 @@ class TemplateDataFactory
     private function buildBookings(OrderId $orderId): array
     {
         $bookings = $this->bookingRepository->getByOrderId($orderId);
+        $confirmedBookings = array_filter($bookings, fn(Booking $booking) => $booking->isConfirmed());
 
-        return array_map(fn(Booking $booking) => $this->buildBooking($booking), $bookings);
+        return array_map(fn(Booking $booking) => $this->buildBooking($booking), $confirmedBookings);
     }
 
     private function buildBooking(Booking $booking): BookingDto
