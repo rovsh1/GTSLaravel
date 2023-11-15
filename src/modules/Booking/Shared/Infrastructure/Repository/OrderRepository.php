@@ -74,6 +74,8 @@ class OrderRepository implements OrderRepositoryInterface
                 }
                 if ($isOnlyWaitingInvoice) {
                     $builder->whereStatus(OrderStatusEnum::WAITING_INVOICE);
+                } else {
+                    $builder->whereStatus(OrderStatusEnum::IN_PROGRESS);
                 }
             })
             ->get()
