@@ -67,7 +67,12 @@ class Booking extends \Module\Booking\Shared\Infrastructure\Models\Booking
 
     public function scopeWhereGuestsCount(Builder $builder, NumRangeValue $range): void
     {
-        $builder->havingBetween('guests_count', [$range->from, $range->to]);
+        if ($range->from !== null) {
+            $builder->having('guests_count', '>=', $range->from);
+        }
+        if ($range->to !== null) {
+            $builder->having('guests_count', '<=', $range->to);
+        }
     }
 
     public function scopeWhereStartPeriod(Builder $builder, CarbonPeriod $period): void
