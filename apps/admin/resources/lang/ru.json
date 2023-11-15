@@ -138,6 +138,10 @@
     "Module\\Shared\\Enum\\Hotel\\ReviewStatusEnum::NOT_PUBLIC": "Не опубликовано",
     "Module\\Shared\\Enum\\Hotel\\ReviewStatusEnum::PUBLIC": "Опубликовано",
 
+    "Module\\Client\\Invoicing\\Domain\\Invoice\\ValueObject\\InvoiceStatusEnum::NOT_PAID": "Не оплачен",
+    "Module\\Client\\Invoicing\\Domain\\Invoice\\ValueObject\\InvoiceStatusEnum::PARTIAL_PAID": "Частично оплачен",
+    "Module\\Client\\Invoicing\\Domain\\Invoice\\ValueObject\\InvoiceStatusEnum::PAID": "Оплачен",
+
     "Module\\Booking\\Shared\\Domain\\Shared\\Event\\Status\\BookingCreated": "Новая",
     "Module\\Booking\\Shared\\Domain\\Shared\\Event\\Status\\BookingProcessing": "В работе",
     "Module\\Booking\\Shared\\Domain\\Shared\\Event\\Status\\BookingCancelled": "Отменена",

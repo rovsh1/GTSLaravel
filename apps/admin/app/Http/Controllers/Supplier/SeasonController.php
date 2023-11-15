@@ -57,7 +57,7 @@ class SeasonController extends Controller
         $this->provider($provider);
 
         return (new DefaultFormCreateAction($this->formFactory($provider->id)))
-            ->handle('Новый сезон', 'supplier.season.form.form', ['seasons' => $provider->seasons]);
+            ->handle('Новый сезон', 'supplier.season.form.form', ['seasons' => $provider->seasons, 'seasonId' => null]);
     }
 
     public function store(Request $request, Supplier $provider): RedirectResponse
@@ -72,7 +72,7 @@ class SeasonController extends Controller
 
         return (new DefaultFormEditAction($this->formFactory($provider->id)))
             ->deletable()
-            ->handle($season, 'supplier.season.form.form', ['seasons' => $provider->seasons]);
+            ->handle($season, 'supplier.season.form.form', ['seasons' => $provider->seasons, 'seasonId' => $season->id]);
     }
 
     public function update(Supplier $provider, Season $season): RedirectResponse
