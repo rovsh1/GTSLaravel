@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Client\Invoicing\Domain\Payment\ValueObject;
+namespace Module\Client\Payment\Domain\Payment\ValueObject;
 
 enum PaymentStatusEnum: int
 {

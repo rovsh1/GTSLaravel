@@ -1,11 +1,11 @@
 <?php
 
-namespace Module\Client\Invoicing\Domain\Payment\Repository;
+namespace Module\Client\Payment\Domain\Payment\Repository;
 
 use Module\Client\Invoicing\Domain\Invoice\ValueObject\InvoiceId;
 use Module\Client\Invoicing\Domain\Order\ValueObject\OrderId;
-use Module\Client\Invoicing\Domain\Payment\Entity\Plant;
-use Module\Client\Invoicing\Domain\Payment\ValueObject\PaymentId;
+use Module\Client\Payment\Domain\Payment\Entity\Plant;
+use Module\Client\Payment\Domain\Payment\ValueObject\PaymentId;
 
 interface PlantRepositoryInterface
 {

@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Module\Client\Invoicing\Infrastructure\Models;
+namespace Module\Client\Payment\Infrastructure\Models;
 
 use DateTime;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
-use Module\Client\Invoicing\Domain\Payment\ValueObject\PaymentStatusEnum;
+use Module\Client\Payment\Domain\Payment\ValueObject\PaymentStatusEnum;
 use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Database\Eloquent\Model;
 
 /**
- * @method static $this withPlantSum()
+ * @method static Builder|Payment withPlantSum()
  *
  * @property int $id
  * @property int $client_id
@@ -31,8 +31,6 @@ use Sdk\Module\Database\Eloquent\Model;
 class Payment extends Model
 {
     use SoftDeletes;
-
-    const UPDATED_AT = null;
 
     protected $table = 'client_payments';
 

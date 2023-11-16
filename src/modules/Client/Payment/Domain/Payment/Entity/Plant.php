@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Module\Client\Invoicing\Domain\Payment\Entity;
+namespace Module\Client\Payment\Domain\Payment\Entity;
 
 use Module\Client\Invoicing\Domain\Invoice\ValueObject\InvoiceId;
 use Module\Client\Invoicing\Domain\Order\ValueObject\OrderId;
-use Module\Client\Invoicing\Domain\Payment\ValueObject\PaymentId;
-use Module\Client\Invoicing\Domain\Payment\ValueObject\PlantId;
+use Module\Client\Payment\Domain\Payment\ValueObject\PaymentId;
+use Module\Client\Payment\Domain\Payment\ValueObject\PlantId;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
 final class Plant extends AbstractAggregateRoot

@@ -1,14 +1,14 @@
 <?php
 
-namespace Module\Client\Invoicing\Infrastructure\Repository;
+namespace Module\Client\Payment\Infrastructure\Repository;
 
 use Module\Client\Invoicing\Domain\Invoice\ValueObject\InvoiceId;
 use Module\Client\Invoicing\Domain\Order\ValueObject\OrderId;
-use Module\Client\Invoicing\Domain\Payment\Entity\Plant;
-use Module\Client\Invoicing\Domain\Payment\Repository\PlantRepositoryInterface;
-use Module\Client\Invoicing\Domain\Payment\ValueObject\PaymentId;
-use Module\Client\Invoicing\Domain\Payment\ValueObject\PlantId;
-use Module\Client\Invoicing\Infrastructure\Models\Plant as Model;
+use Module\Client\Payment\Domain\Payment\Entity\Plant;
+use Module\Client\Payment\Domain\Payment\Repository\PlantRepositoryInterface;
+use Module\Client\Payment\Domain\Payment\ValueObject\PaymentId;
+use Module\Client\Payment\Domain\Payment\ValueObject\PlantId;
+use Module\Client\Payment\Infrastructure\Models\Plant as Model;
 
 class PlantRepository implements PlantRepositoryInterface
 {

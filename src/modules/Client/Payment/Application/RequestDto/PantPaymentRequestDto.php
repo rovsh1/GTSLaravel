@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Client\Invoicing\Application\Request;
+namespace Module\Client\Payment\Application\RequestDto;
 
 final class PantPaymentRequestDto
 {

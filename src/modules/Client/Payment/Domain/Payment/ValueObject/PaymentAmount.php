@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Client\Invoicing\Domain\Payment\ValueObject;
+namespace Module\Client\Payment\Domain\Payment\ValueObject;
 
 use Module\Shared\Enum\CurrencyEnum;
 

@@ -18,6 +18,7 @@ class ModuleServiceProvider extends ServiceProvider
         'HotelPricing' => 'Hotel/Pricing',
         'ClientModeration' => 'Client/Moderation',
         'ClientInvoicing' => 'Client/Invoicing',
+        'ClientPayment' => 'Client/Payment',
         'BookingModeration' => 'Booking/Moderation',
         'BookingPricing' => 'Booking/Pricing',
         'BookingRequesting' => 'Booking/Requesting',

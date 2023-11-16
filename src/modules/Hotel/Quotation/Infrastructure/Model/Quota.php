@@ -4,10 +4,8 @@ namespace Module\Hotel\Quotation\Infrastructure\Model;
 
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
 use Module\Hotel\Moderation\Infrastructure\Models\Room;
 use Module\Shared\Enum\Booking\QuotaChangeTypeEnum;
 use Module\Shared\Enum\Hotel\QuotaStatusEnum;

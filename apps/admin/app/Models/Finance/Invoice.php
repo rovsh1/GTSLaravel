@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Admin\Models\Invoice;
+namespace App\Admin\Models\Finance;
 
 use App\Admin\Models\Order\Order;
 use Illuminate\Database\Eloquent\Builder;

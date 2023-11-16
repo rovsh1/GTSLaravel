@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Module\Client\Invoicing\Domain\Payment;
+namespace Module\Client\Payment\Domain\Payment;
 
 use DateTimeImmutable;
-use Module\Client\Invoicing\Domain\Payment\ValueObject\InvoiceNumber;
-use Module\Client\Invoicing\Domain\Payment\ValueObject\PaymentAmount;
-use Module\Client\Invoicing\Domain\Payment\ValueObject\PaymentDocument;
-use Module\Client\Invoicing\Domain\Payment\ValueObject\PaymentId;
-use Module\Client\Invoicing\Domain\Payment\ValueObject\PaymentStatusEnum;
+use Module\Client\Payment\Domain\Payment\ValueObject\InvoiceNumber;
+use Module\Client\Payment\Domain\Payment\ValueObject\PaymentAmount;
+use Module\Client\Payment\Domain\Payment\ValueObject\PaymentDocument;
+use Module\Client\Payment\Domain\Payment\ValueObject\PaymentId;
+use Module\Client\Payment\Domain\Payment\ValueObject\PaymentStatusEnum;
 use Module\Client\Shared\Domain\ValueObject\ClientId;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 

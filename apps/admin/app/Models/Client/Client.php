@@ -2,8 +2,10 @@
 
 namespace App\Admin\Models\Client;
 
+use App\Admin\Models\Order\Order;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Query\Builder as Query;
 use Module\Shared\Enum\Client\ResidencyEnum;
 use Module\Shared\Enum\Client\StatusEnum;
 use Module\Shared\Enum\Client\TypeEnum;
@@ -66,12 +68,19 @@ class Client extends Model
 
     public function scopeWhereLegalEntityType(Builder $builder, array $types): void
     {
-        $builder->whereExists(function (\Illuminate\Database\Query\Builder $query) use ($types) {
+        $builder->whereExists(function (Query $query) use ($types) {
             $legalsTable = with(new Legal)->getTable();
             $query->selectRaw(1)
                 ->from($legalsTable)
                 ->whereColumn("{$legalsTable}.client_id", 'clients.id')
                 ->whereIn('type', $types);
+        });
+    }
+
+    public function scopeWhereHasActiveOrders(Builder $builder): void
+    {
+        $builder->whereHas('orders', function (Builder $query) {
+            $query->whereIn('status', Order::getActiveStatuses());
         });
     }
 
@@ -88,6 +97,11 @@ class Client extends Model
     public function contacts(): HasMany
     {
         return $this->hasMany(Contact::class);
+    }
+
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
     }
 
     public function __toString()

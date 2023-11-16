@@ -9,6 +9,7 @@ return new class extends Migration {
     {
         Schema::create('client_payments', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedTinyInteger('status');
             $table->unsignedInteger('client_id');
             $table->string('invoice_number');
             $table->char('payment_currency', 3);

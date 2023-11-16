@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Client\Invoicing\Infrastructure\Models;
+namespace Module\Client\Payment\Infrastructure\Models;
 
 use DateTime;
 use Sdk\Module\Database\Eloquent\Model;

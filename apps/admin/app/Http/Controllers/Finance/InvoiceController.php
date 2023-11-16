@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Admin\Http\Controllers\Invoice;
+namespace App\Admin\Http\Controllers\Finance;
 
 use App\Admin\Support\Facades\Client\InvoiceAdapter;
 use App\Admin\Support\Facades\Form;
@@ -53,8 +53,10 @@ class InvoiceController extends AbstractPrototypeController
 
     protected function formFactory(): FormContract
     {
-        //@todo отфильтровать клиентов у которых есть заказы
-        return Form::client('client_id', ['label' => 'Клиент', 'required' => true, 'emptyItem' => ''])
+        return Form::client(
+            'client_id',
+            ['label' => 'Клиент', 'required' => true, 'emptyItem' => '', 'onlyWithOrders' => true]
+        )
             ->hiddenMultiSelect('order_ids', ['label' => 'Заказы', 'required' => true]);
     }
 

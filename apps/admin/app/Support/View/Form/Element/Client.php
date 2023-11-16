@@ -11,6 +11,12 @@ class Client extends Select
     {
         parent::__construct($name, $options);
 
-        $this->setItems(Model::orderBy('name')->get());
+        $clientsQuery = Model::orderBy('name');
+        $onlyWithOrders = $options['onlyWithOrders'] ?? false;
+        if ($onlyWithOrders) {
+            $clientsQuery->whereHasActiveOrders();
+        }
+
+        $this->setItems($clientsQuery->get());
     }
 }

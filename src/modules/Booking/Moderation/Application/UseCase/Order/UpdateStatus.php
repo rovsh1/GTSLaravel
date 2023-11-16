@@ -21,6 +21,25 @@ class UpdateStatus implements UseCaseInterface
         private readonly StatusUpdater $statusUpdater,
     ) {}
 
+    //@todo инвоисы
+    //Отменить/Удалить инвоис - и заказы вовзращаются в статус ожидает инвоиса
+
+    /**
+     * Статусы заказа для посадки оплаты
+     *
+     * self::INVOICED,
+     * self::PARTIAL_PAID,
+     * self::REFUND_FEE,
+     */
+
+    //@todo раздел оплаты от клиента
+    //Создаю оплату с полями (таблица)
+    //Статусы оплат: Не распределенная, Частично распределенная, Распределенная
+
+    //Отдельная форма: Список инвоисов / Заказов / Оплат (посадить оплату на заказ)
+
+    //@todo оплаты поставщикам
+
     public function execute(int $orderId, int $statusId): void
     {
         try {

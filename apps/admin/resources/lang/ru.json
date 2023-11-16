@@ -142,6 +142,11 @@
     "Module\\Client\\Invoicing\\Domain\\Invoice\\ValueObject\\InvoiceStatusEnum::PARTIAL_PAID": "Частично оплачен",
     "Module\\Client\\Invoicing\\Domain\\Invoice\\ValueObject\\InvoiceStatusEnum::PAID": "Оплачен",
 
+    "Module\\Client\\Payment\\Domain\\Payment\\ValueObject\\PaymentStatusEnum::NOT_PAID": "Не распределен",
+    "Module\\Client\\Payment\\Domain\\Payment\\ValueObject\\PaymentStatusEnum::PARTIAL_PAID": "Частично распределен",
+    "Module\\Client\\Payment\\Domain\\Payment\\ValueObject\\PaymentStatusEnum::PAID": "Распределен",
+    "Module\\Client\\Payment\\Domain\\Payment\\ValueObject\\PaymentStatusEnum::ARCHIVE": "Архив",
+
     "Module\\Booking\\Shared\\Domain\\Shared\\Event\\Status\\BookingCreated": "Новая",
     "Module\\Booking\\Shared\\Domain\\Shared\\Event\\Status\\BookingProcessing": "В работе",
     "Module\\Booking\\Shared\\Domain\\Shared\\Event\\Status\\BookingCancelled": "Отменена",
