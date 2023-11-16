@@ -39,7 +39,8 @@ class UpdateStatus implements UseCaseInterface
                 $this->statusUpdater->confirm($booking);
                 break;
             case BookingStatusEnum::NOT_CONFIRMED:
-                if ($notConfirmedReason === null) {
+                $isHotelBooking = true; //@todo заменить на реальную проверку, когда объединим детали с броней
+                if (empty($notConfirmedReason) && $isHotelBooking) {
                     return new UpdateStatusResponseDto(isNotConfirmedReasonRequired: true);
                 }
                 $this->statusUpdater->toNotConfirmed($booking, $notConfirmedReason);

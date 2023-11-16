@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Application\UseCase\Order;
 
 use Module\Booking\Moderation\Application\Dto\Details\CancelConditionsDto;
-use Module\Booking\Moderation\Application\Dto\ServiceBooking\ServiceInfoDto;
 use Module\Booking\Moderation\Application\Dto\ServiceBooking\ServiceTypeDto;
 use Module\Booking\Moderation\Application\Factory\BookingPriceDtoFactory;
 use Module\Booking\Moderation\Application\ResponseDto\OrderBookingDto;
