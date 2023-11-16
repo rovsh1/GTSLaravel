@@ -28,11 +28,11 @@ import {
 } from '~api/booking/hotel/details'
 import { updateRoomBookingPrice } from '~api/booking/hotel/price'
 import { addGuestToBooking, deleteBookingGuest, deleteBookingRoom } from '~api/booking/hotel/rooms'
-import { addOrderGuest, Guest, updateOrderGuest } from '~api/order/guest'
 import { useCountrySearchAPI } from '~api/country'
 import { MarkupSettings } from '~api/hotel/markup-settings'
 import { HotelRate, useHotelRatesAPI } from '~api/hotel/price-rate'
 import { Currency } from '~api/models'
+import { addOrderGuest, Guest, updateOrderGuest } from '~api/order/guest'
 
 import { showConfirmDialog } from '~lib/confirm-dialog'
 import { requestInitialData } from '~lib/initial-data'
@@ -321,7 +321,7 @@ onMounted(() => {
     <div class="d-flex flex-row gap-4">
       <InfoBlock>
         <template #header>
-          <InfoBlockTitle title="Параметры размещения" />
+          <InfoBlockTitle class="mb-3" title="Параметры размещения" />
         </template>
         <table class="table-params">
           <tbody>
@@ -395,7 +395,7 @@ onMounted(() => {
 
       <InfoBlock>
         <template #header>
-          <div class="d-flex gap-1 align-items-center">
+          <div class="d-flex gap-1 align-items-center mb-1">
             <InfoBlockTitle title="Список гостей" />
             <IconButton
               v-if="isEditableStatus && (room.roomInfo.guestsCount && room.guestIds.length < room.roomInfo.guestsCount)"

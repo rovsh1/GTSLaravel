@@ -212,7 +212,7 @@ const handleEditCarModal = async (id: number, object: CarBid) => {
 
     <InfoBlock>
       <template #header>
-        <div class="d-flex gap-1 align-items-center">
+        <div class="d-flex gap-1 align-items-center mb-1">
           <InfoBlockTitle title="Список автомобилей" />
           <IconButton v-if="isEditableStatus" icon="add" @click="handleOpenCarModal" />
         </div>

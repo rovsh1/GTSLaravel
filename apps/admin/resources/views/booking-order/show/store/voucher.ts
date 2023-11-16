@@ -3,18 +3,19 @@ import { onMounted, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { z } from 'zod'
 
-import { downloadDocument as downloadDocumentRequest } from '~api/booking/document'
-import { sendBookingVoucher, useBookingVoucherListAPI } from '~api/booking/hotel/voucher'
+import { sendOrderVoucher, useOrderVoucherListAPI } from '~resources/api/order/voucher'
+
+import { downloadDocument as downloadDocumentRequest } from '~api/order/document'
 
 import { showConfirmDialog } from '~lib/confirm-dialog'
 import { requestInitialData } from '~lib/initial-data'
 
-const { bookingID } = requestInitialData('view-initial-data-hotel-booking', z.object({
-  bookingID: z.number(),
+const { orderID } = requestInitialData('view-initial-data-booking-order', z.object({
+  orderID: z.number(),
 }))
 
-export const useBookingVoucherStore = defineStore('booking-vouchers', () => {
-  const { data: vouchers, execute: fetchBookingVouchers, isFetching } = useBookingVoucherListAPI({ bookingID })
+export const useBookingVoucherStore = defineStore('order-vouchers', () => {
+  const { data: vouchers, execute: fetchOrderVouchers, isFetching } = useOrderVoucherListAPI({ orderID })
   const voucherSendIsFetching = ref(false)
 
   const sendVoucher = async () => {
@@ -22,25 +23,25 @@ export const useBookingVoucherStore = defineStore('booking-vouchers', () => {
     if (isConfirmed) {
       voucherSendIsFetching.value = true
       setTimeout(toggleClose)
-      await sendBookingVoucher({ bookingID })
-      await fetchBookingVouchers()
+      await sendOrderVoucher({ orderID })
+      await fetchOrderVouchers()
     }
     voucherSendIsFetching.value = false
   }
 
   const downloadDocument = async (requestId: number): Promise<void> => {
-    await downloadDocumentRequest({ documentID: requestId, documentType: 'voucher', bookingID })
+    await downloadDocumentRequest({ documentID: requestId, documentType: 'voucher', orderID })
   }
 
   onMounted(() => {
-    fetchBookingVouchers()
+    fetchOrderVouchers()
   })
 
   return {
     vouchers,
     isFetching,
     voucherSendIsFetching,
-    fetchBookingVouchers,
+    fetchOrderVouchers,
     sendVoucher,
     downloadDocument,
   }

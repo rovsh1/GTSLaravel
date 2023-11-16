@@ -1,3 +1,5 @@
+import { PriceItem } from '~api/booking/models'
+
 const priceWithCurrency = (formattedPrice: string, currency?: string): string => {
   let result = formattedPrice
   if (currency && currency.length > 0) {
@@ -21,3 +23,7 @@ export const formatPrice = (price: number | undefined, currency?: string) : stri
   }
   return priceWithCurrency(formattedPrice, currency)
 }
+
+export const formatBookingPrice = (bookingPrice: PriceItem, currency?: string) : string =>
+  (bookingPrice.isManual ? formatPrice(bookingPrice.manualValue || undefined, currency)
+    : formatPrice(bookingPrice.calculatedValue, currency))

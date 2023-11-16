@@ -81,7 +81,7 @@
                         </table>
                     </div>
                     <div class="w-100 d-flex flex-column">
-                        <div id="order-control-panel" class="flex-grow-1"></div>
+                        <div id="order-control-panel" class="d-flex flex-column flex-grow-1"></div>
                     </div>
                 </div>
             </div>

@@ -2,7 +2,8 @@
 
 import { OrderBooking } from '~api/order/booking'
 
-import { formatPeriod } from '~lib/date'
+import { formatDate, formatPeriod } from '~lib/date'
+import { formatBookingPrice } from '~lib/price'
 
 defineProps<{
   orderBookings: OrderBooking[]
@@ -24,27 +25,40 @@ const formatBookingPeriod = (booking: OrderBooking): string | null => {
 </script>
 
 <template>
-  <table class="table table-striped">
+  <table class="table table-striped mb-0">
     <thead>
       <tr>
-        <th>№</th>
-        <th class="column-text">Название</th>
+        <th>№ брони</th>
+        <th class="column-text">Название услуги</th>
         <th class="column-text">Период</th>
-        <th class="column-text">Стоимость</th>
+        <th class="column-text">Стоимость (приход/расход)</th>
         <th class="column-text">Статус</th>
-        <th class="column-text">Отмена</th>
+        <th class="column-text">Отмена без штрафа (до.)</th>
         <!-- <th v-if="canEdit" /> -->
       </tr>
     </thead>
     <tbody>
       <template v-if="orderBookings.length > 0">
         <tr v-for="(booking) in orderBookings" :key="booking.id">
-          <td>{{ booking.id }}</td>
+          <td><a href="#">{{ booking.id }}</a></td>
           <td>{{ booking.serviceInfo.name }}</td>
           <td>{{ formatBookingPeriod(booking) }}</td>
-          <td>{{ booking.prices.clientPrice.calculatedValue }}</td>
-          <td>{{ booking.status.name }}</td>
-          <td />
+          <td>
+            {{ formatBookingPrice(booking.prices.clientPrice) }} /
+            {{ formatBookingPrice(booking.prices.supplierPrice) }}
+          </td>
+          <td>
+            <span
+              :class="`badge rounded-pill px-2
+            ${(booking.status.color ? `text-bg-${booking.status.color}` : 'text-bg-secondary')}`"
+            >
+              {{ booking.status.name }}
+            </span>
+          </td>
+          <td>
+            {{ booking.cancelConditions && booking.cancelConditions.cancelNoFeeDate
+              ? formatDate(booking.cancelConditions.cancelNoFeeDate) : '' }}
+          </td>
           <!-- <td v-if="canEdit" class="column-edit">
             <EditTableRowButton
               @edit="$emit('edit', booking)"

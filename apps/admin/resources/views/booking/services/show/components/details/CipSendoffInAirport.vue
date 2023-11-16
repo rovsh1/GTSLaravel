@@ -15,9 +15,9 @@ import { useBookingStore } from '~resources/views/booking/shared/store/booking'
 import { useOrderStore } from '~resources/views/booking/shared/store/order'
 import { useEditableModal } from '~resources/views/hotel/settings/composables/editable-modal'
 
-import { addOrderGuest, Guest, updateOrderGuest } from '~api/order/guest'
 import { addBookingGuest, deleteBookingGuest } from '~api/booking/service/guests'
 import { useCountrySearchAPI } from '~api/country'
+import { addOrderGuest, Guest, updateOrderGuest } from '~api/order/guest'
 
 import { showConfirmDialog } from '~lib/confirm-dialog'
 import { requestInitialData } from '~lib/initial-data'
@@ -182,7 +182,7 @@ const handleChangeDetails = async (field: string, value: any) => {
 
     <InfoBlock>
       <template #header>
-        <div class="d-flex gap-1 align-items-center">
+        <div class="d-flex gap-1 align-items-center mb-1">
           <InfoBlockTitle title="Список гостей" />
           <IconButton v-if="isEditableStatus" icon="add" @click="openAddGuestModal" />
         </div>

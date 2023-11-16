@@ -5,5 +5,5 @@ defineProps<{
 </script>
 
 <template>
-  <h6 class="mb-0">{{ title }}</h6>
+  <h6 v-bind="$attrs" class="mb-0">{{ title }}</h6>
 </template>

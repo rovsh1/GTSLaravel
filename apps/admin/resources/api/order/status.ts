@@ -7,12 +7,8 @@ export interface OrderAvailableActionsResponse {
   statuses: OrderStatusResponse[]
   isEditable: boolean
   isRequestable: boolean
-  canSendBookingRequest: boolean
-  canSendCancellationRequest: boolean
-  canSendChangeRequest: boolean
-  canEditExternalNumber: boolean
-  canChangeRoomPrice: boolean
-  canCopy: boolean
+  canSendVoucher: boolean
+  canSendInvoice: boolean
 }
 
 export interface BookingStatusHistoryData extends Record<string, any> {

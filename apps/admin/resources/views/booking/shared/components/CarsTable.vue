@@ -17,7 +17,7 @@ defineEmits<{
 </script>
 
 <template>
-  <table class="table table-striped">
+  <table class="table table-striped mb-0">
     <thead>
       <tr>
         <th>№</th>
