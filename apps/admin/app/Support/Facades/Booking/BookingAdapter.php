@@ -6,6 +6,7 @@ namespace App\Admin\Support\Facades\Booking;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Facade;
+use Module\Booking\Moderation\Application\Dto\ServiceBooking\BookingDto;
 use Module\Shared\Enum\CurrencyEnum;
 use Module\Shared\Enum\ServiceTypeEnum;
 
@@ -18,7 +19,7 @@ use Module\Shared\Enum\ServiceTypeEnum;
  * @method static mixed updateStatus(int $id, int $status, string|null $notConfirmedReason = null, float|null $supplierPenalty = null, float|null $clientPenalty = null)
  * @method static array getStatusHistory(int $id)
  * @method static void updateNote(int $bookingId, string|null $note)
- * @method static int copyBooking(int $id)
+ * @method static BookingDto copyBooking(int $id)
  * @method static void deleteBooking(int $id)
  * @method static void bulkDeleteBookings(int[] $id)
  **/

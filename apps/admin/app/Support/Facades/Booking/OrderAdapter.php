@@ -7,6 +7,7 @@ namespace App\Admin\Support\Facades\Booking;
 use Illuminate\Support\Facades\Facade;
 use Module\Booking\Moderation\Application\Dto\OrderAvailableActionsDto;
 use Module\Booking\Moderation\Application\Dto\OrderDto;
+use Module\Booking\Moderation\Application\ResponseDto\OrderBookingDto;
 use Module\Booking\Shared\Application\Dto\StatusDto;
 
 /**
@@ -18,7 +19,7 @@ use Module\Booking\Shared\Application\Dto\StatusDto;
  * @method static void deleteGuest(int $guestId)
  * @method static StatusDto[] getStatuses()
  * @method static OrderAvailableActionsDto getAvailableActions(int $orderId)
- * @method static array getBookings(int $orderId)
+ * @method static OrderBookingDto[] getBookings(int $orderId)
  * @method static void updateStatus(int $orderId, int $status)
  **/
 class OrderAdapter extends Facade

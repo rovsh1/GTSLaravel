@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Module\Booking\Invoicing\Domain\Service;
 
 use App\Admin\Support\Facades\Format;
-use Module\Booking\Invoicing\Domain\Invoice\Invoice;
 use Module\Booking\Invoicing\Domain\Service\Dto\Booking\BookingPeriodDto;
 use Module\Booking\Invoicing\Domain\Service\Dto\Booking\CancelConditionsDto;
 use Module\Booking\Invoicing\Domain\Service\Dto\Booking\CarDto;

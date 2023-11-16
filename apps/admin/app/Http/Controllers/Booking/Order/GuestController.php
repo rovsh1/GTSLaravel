@@ -14,6 +14,7 @@ use App\Shared\Http\Responses\AjaxErrorResponse;
 use App\Shared\Http\Responses\AjaxResponseInterface;
 use App\Shared\Http\Responses\AjaxSuccessResponse;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 use Module\Shared\Exception\ApplicationException;
 
 class GuestController extends Controller
@@ -28,21 +29,30 @@ class GuestController extends Controller
     public function addGuest(int $orderId, AddRequest $request): JsonResponse|AjaxResponseInterface
     {
         try {
-            $guest = OrderAdapter::addGuest(
-                orderId: $orderId,
-                fullName: $request->getFullName(),
-                countryId: $request->getCountryId(),
-                isAdult: $request->getIsAdult(),
-                gender: $request->getGender(),
-                age: $request->getAge()
-            );
-            if ($request->hotelBookingId() !== null) {
-                AccommodationAdapter::bindGuest($request->hotelBookingId(), $request->hotelBookingRoomId(), $guest->id);
-            }
+            $handler = function () use ($orderId, $request) {
+                $guest = OrderAdapter::addGuest(
+                    orderId: $orderId,
+                    fullName: $request->getFullName(),
+                    countryId: $request->getCountryId(),
+                    isAdult: $request->getIsAdult(),
+                    gender: $request->getGender(),
+                    age: $request->getAge()
+                );
+                if ($request->hotelBookingId() !== null) {
+                    AccommodationAdapter::bindGuest(
+                        $request->hotelBookingId(),
+                        $request->hotelBookingRoomId(),
+                        $guest->id
+                    );
+                }
 
-            if ($request->airportBookingId() !== null) {
-                DetailsAdapter::bindGuest($request->airportBookingId(), $guest->id);
-            }
+                if ($request->airportBookingId() !== null) {
+                    DetailsAdapter::bindGuest($request->airportBookingId(), $guest->id);
+                }
+
+                return $guest;
+            };
+            $guest = DB::transaction($handler);
         } catch (ApplicationException $e) {
             return new AjaxErrorResponse($e->getMessage());
         }

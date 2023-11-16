@@ -8,6 +8,6 @@ class AirportDto
 {
     public function __construct(
         public readonly string $name,
-        public readonly string $director,
+        public readonly ?string $director,
     ) {}
 }

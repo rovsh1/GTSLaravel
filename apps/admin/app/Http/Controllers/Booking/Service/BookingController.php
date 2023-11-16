@@ -288,11 +288,13 @@ class BookingController extends Controller
 
     public function copy(int $id): RedirectResponse
     {
-        $newBookingId = BookingAdapter::copyBooking($id);
+        $newBooking = BookingAdapter::copyBooking($id);
 
-        return redirect(
-            route('service-booking.show', $newBookingId)
-        );
+        $redirectUrl = $newBooking->serviceType->id === ServiceTypeEnum::HOTEL_BOOKING->value
+            ? route('hotel-booking.show', $newBooking->id)
+            : route('service-booking.show', $newBooking->id);
+
+        return redirect($redirectUrl);
     }
 
     protected function formFactory(bool $isEdit = false): FormContract

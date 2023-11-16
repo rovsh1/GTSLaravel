@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Admin\Support\Adapters\Booking;
 
 use Module\Booking\EventSourcing\Application\UseCase\GetStatusHistory;
+use Module\Booking\Moderation\Application\Dto\ServiceBooking\BookingDto;
 use Module\Booking\Moderation\Application\RequestDto\CreateBookingRequestDto;
 use Module\Booking\Moderation\Application\UseCase\BulkDeleteBookings;
 use Module\Booking\Moderation\Application\UseCase\CopyBooking;
@@ -107,7 +108,7 @@ class BookingAdapter
         app(UpdateNote::class)->execute($bookingId, $note);
     }
 
-    public function copyBooking(int $id): int
+    public function copyBooking(int $id): BookingDto
     {
         return app(CopyBooking::class)->execute($id);
     }

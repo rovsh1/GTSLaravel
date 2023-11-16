@@ -228,10 +228,10 @@ class BookingController extends Controller
 
     public function copy(int $id): RedirectResponse
     {
-        $newBookingId = BookingAdapter::copyBooking($id);
+        $newBooking = BookingAdapter::copyBooking($id);
 
         return redirect(
-            $this->prototype->route('show', $newBookingId)
+            $this->prototype->route('show', $newBooking->id)
         );
     }
 

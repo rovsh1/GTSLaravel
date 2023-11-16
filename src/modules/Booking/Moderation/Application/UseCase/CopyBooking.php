@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Application\UseCase;
 
 use Carbon\CarbonPeriod;
+use Module\Booking\Moderation\Application\Dto\ServiceBooking\BookingDto;
+use Module\Booking\Moderation\Application\Factory\BookingDtoFactory;
 use Module\Booking\Moderation\Application\Service\DetailsEditor\DetailsEditorFactory;
 use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
 use Module\Booking\Shared\Domain\Booking\Entity\ServiceDetailsInterface;
@@ -24,9 +26,10 @@ class CopyBooking implements UseCaseInterface
         private readonly DetailsEditorFactory $detailsEditorFactory,
         private readonly DetailsRepositoryFactory $detailsRepositoryFactory,
         private readonly AdministratorAdapterInterface $administratorAdapter,
+        private readonly BookingDtoFactory $bookingDtoFactory,
     ) {}
 
-    public function execute(int $id): int
+    public function execute(int $id): BookingDto
     {
         $booking = $this->repository->find(new BookingId($id));
         if ($booking === null) {
@@ -60,6 +63,6 @@ class CopyBooking implements UseCaseInterface
             $this->administratorAdapter->setBookingAdministrator($newBooking->id(), $administrator->id);
         }
 
-        return $newBooking->id()->value();
+        return $this->bookingDtoFactory->createFromEntity($newBooking);
     }
 }
