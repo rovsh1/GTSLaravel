@@ -14,6 +14,11 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomPrices;
 
 interface AccommodationRepositoryInterface
 {
+    /**
+     * @return HotelAccommodation[]
+     */
+    public function get(): array;
+
     public function find(AccommodationId $id): ?HotelAccommodation;
 
     public function findOrFail(AccommodationId $id): HotelAccommodation;

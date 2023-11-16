@@ -14,9 +14,9 @@ use Module\Booking\Shared\Application\Factory\BookingStatusDtoFactory;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Entity\CarRentWithDriver;
 use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
-use Module\Booking\Shared\Domain\Booking\Entity\ServiceDetailsInterface;
-use Module\Booking\Shared\Domain\Booking\Factory\DetailsRepositoryFactory;
+use Module\Booking\Shared\Domain\Booking\Entity\DetailsInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
 use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
 use Module\Shared\Contracts\Service\TranslatorInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
@@ -27,7 +27,7 @@ class GetOrderBookings implements UseCaseInterface
         private readonly BookingRepositoryInterface $bookingRepository,
         private readonly BookingStatusDtoFactory $statusDtoFactory,
         private readonly BookingPriceDtoFactory $bookingPriceDtoFactory,
-        private readonly DetailsRepositoryFactory $detailsRepositoryFactory,
+        private readonly DetailsRepositoryInterface $detailsRepository,
         private readonly TranslatorInterface $translator
     ) {}
 
@@ -41,8 +41,7 @@ class GetOrderBookings implements UseCaseInterface
     private function buildDTOs(array $bookings): array
     {
         return array_map(function (Booking $booking) {
-            $repository = $this->detailsRepositoryFactory->build($booking);
-            $details = $repository->find($booking->id());
+            $details = $this->detailsRepository->findOrFail($booking->id());
 
             return new OrderBookingDto(
                 id: $booking->id()->value(),
@@ -66,7 +65,7 @@ class GetOrderBookings implements UseCaseInterface
         }, $bookings);
     }
 
-    private function buildBookingPeriodDTO(ServiceDetailsInterface $details): ?OrderBookingPeriodDto
+    private function buildBookingPeriodDTO(DetailsInterface $details): ?OrderBookingPeriodDto
     {
         $dateFrom = null;
         $dateTo = null;
@@ -91,7 +90,7 @@ class GetOrderBookings implements UseCaseInterface
         return new OrderBookingPeriodDto($dateFrom, $dateTo);
     }
 
-    private function buildServiceInfoDTO(ServiceDetailsInterface $details): OrderBookingServiceInfoDto
+    private function buildServiceInfoDTO(DetailsInterface $details): OrderBookingServiceInfoDto
     {
         if ($details instanceof HotelBooking) {
             return new OrderBookingServiceInfoDto(

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Domain\Booking\Entity;
 
+use DateTimeInterface;
 use Module\Booking\Shared\Domain\Booking\Entity\Concerns\HasBookingPeriodTrait;
 use Module\Booking\Shared\Domain\Booking\Entity\Concerns\HasCarBidCollectionTrait;
 use Module\Booking\Shared\Domain\Booking\Entity\Concerns\HasMeetingAddressTrait;
@@ -16,7 +17,7 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\DetailsId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Shared\Enum\ServiceTypeEnum;
 
-final class CarRentWithDriver implements ServiceDetailsInterface
+final class CarRentWithDriver implements TransferDetailsInterface
 {
     use HasBookingPeriodTrait;
     use HasCarBidCollectionTrait;
@@ -81,5 +82,10 @@ final class CarRentWithDriver implements ServiceDetailsInterface
             $data['bookingPeriod'] ? BookingPeriod::fromData($data['bookingPeriod']) : null,
             CarBidCollection::fromData($data['guestIds'])
         );
+    }
+
+    public function serviceDate(): ?DateTimeInterface
+    {
+        return $this->bookingPeriod()?->dateFrom();
     }
 }

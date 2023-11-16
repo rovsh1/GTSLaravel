@@ -12,7 +12,7 @@ use Module\Booking\Requesting\Domain\BookingRequest\ValueObject\RequestTypeEnum;
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Entity\CarRentWithDriver;
-use Module\Booking\Shared\Domain\Booking\Factory\DetailsRepositoryFactory;
+use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Service\DetailOptionsDataFactory;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPeriod;
 use Module\Booking\Shared\Domain\Booking\ValueObject\CarBid;
@@ -22,7 +22,7 @@ use Module\Shared\Contracts\Service\TranslatorInterface;
 class TransferBookingDataFactory
 {
     public function __construct(
-        private readonly DetailsRepositoryFactory $detailsRepositoryFactory,
+        private readonly DetailsRepositoryInterface $detailsRepository,
         private readonly DetailOptionsDataFactory $detailOptionsFactory,
         private readonly SupplierAdapterInterface $supplierAdapter,
         private readonly TranslatorInterface $translator,
@@ -30,8 +30,7 @@ class TransferBookingDataFactory
 
     public function build(Booking $booking, RequestTypeEnum $requestType): TemplateDataInterface
     {
-        $repository = $this->detailsRepositoryFactory->build($booking);
-        $bookingDetails = $repository->findOrFail($booking->id());
+        $bookingDetails = $this->detailsRepository->findOrFail($booking->id());
 
         $serviceDto = new ServiceDto(
             $bookingDetails->serviceInfo()->title(),

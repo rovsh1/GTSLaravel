@@ -16,7 +16,7 @@ use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Shared\Enum\ServiceTypeEnum;
 use Module\Shared\Support\DateTimeImmutableFactory;
 
-final class CIPMeetingInAirport implements ServiceDetailsInterface
+final class CIPMeetingInAirport implements AirportDetailsInterface
 {
     use HasFlightNumberTrait;
     use HasGuestIdCollectionTrait;

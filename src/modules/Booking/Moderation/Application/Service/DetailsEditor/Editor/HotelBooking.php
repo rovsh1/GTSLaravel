@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\Service\DetailsEditor\Editor;
 
-use Module\Booking\Moderation\Application\Service\DetailsEditor\EditorInterface;
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking as Entity;
-use Module\Booking\Shared\Domain\Booking\Repository\Details\HotelBookingRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Factory\Details\HotelBookingFactoryInterface;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\BookingPeriod;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\HotelInfo;
@@ -19,9 +18,10 @@ use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 class HotelBooking extends AbstractEditor implements EditorInterface
 {
     public function __construct(
-        private readonly HotelBookingRepositoryInterface $detailsRepository,
+        private readonly HotelBookingFactoryInterface $detailsFactory,
         private readonly HotelAdapterInterface $hotelAdapter,
-    ) {}
+    ) {
+    }
 
     public function create(BookingId $bookingId, ServiceId $serviceId, array $detailsData): Entity
     {
@@ -38,20 +38,11 @@ class HotelBooking extends AbstractEditor implements EditorInterface
 
         $bookingPeriod = BookingPeriod::fromCarbon($detailsData['period']);
 
-        return $this->detailsRepository->create(
+        return $this->detailsFactory->create(
             $bookingId,
             $hotelInfo,
             $bookingPeriod,
             QuotaProcessingMethodEnum::from((int)$detailsData['quota_processing_method']),
         );
-    }
-
-    public function update(BookingId $bookingId, array $detailsData): void
-    {
-        $details = $this->detailsRepository->find($bookingId);
-        foreach ($detailsData as $field => $value) {
-            $this->setField($details, $field, $value);
-        }
-        $this->detailsRepository->store($details);
     }
 }

@@ -9,12 +9,12 @@ use Module\Booking\Moderation\Domain\Booking\Event\GuestBinded;
 use Module\Booking\Moderation\Domain\Booking\Event\GuestUnbinded;
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
+use Module\Booking\Shared\Domain\Booking\Entity\AirportDetailsInterface;
 use Module\Booking\Shared\Domain\Booking\Entity\CIPMeetingInAirport;
-use Module\Booking\Shared\Domain\Booking\Entity\CIPSendoffInAirport;
 use Module\Booking\Shared\Domain\Booking\Exception\NotFoundAirportServicePrice;
-use Module\Booking\Shared\Domain\Booking\Factory\DetailsRepositoryFactory;
 use Module\Booking\Shared\Domain\Booking\Repository\AirportBookingGuestRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Guest\ValueObject\GuestId;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
@@ -24,7 +24,7 @@ class GuestManager
 {
     public function __construct(
         private readonly BookingRepositoryInterface $bookingRepository,
-        private readonly DetailsRepositoryFactory $detailsRepositoryFactory,
+        private readonly DetailsRepositoryInterface $detailsRepository,
         private readonly AirportBookingGuestRepositoryInterface $bookingGuestRepository,
         private readonly SupplierAdapterInterface $supplierAdapter,
         private readonly DomainEventDispatcherInterface $eventDispatcher
@@ -40,13 +40,13 @@ class GuestManager
     public function bind(BookingId $bookingId, GuestId $guestId): void
     {
         $booking = $this->bookingRepository->findOrFail($bookingId);
-        $detailsRepository = $this->detailsRepositoryFactory->build($booking);
-        $details = $detailsRepository->find($bookingId);
+        $details = $this->detailsRepository->findOrFail($bookingId);
+        assert($details instanceof AirportDetailsInterface);
         $this->validateSupplier($booking, $details);
 
         $this->bookingGuestRepository->bind($bookingId, $guestId);
         $details->addGuest($guestId);
-        $detailsRepository->store($details);
+        $this->detailsRepository->store($details);
         $this->eventDispatcher->dispatch(
             new GuestBinded(
                 $booking->id(),
@@ -59,11 +59,10 @@ class GuestManager
     public function unbind(BookingId $bookingId, GuestId $guestId): void
     {
         $booking = $this->bookingRepository->findOrFail($bookingId);
-        $detailsRepository = $this->detailsRepositoryFactory->build($booking);
-        $details = $detailsRepository->find($bookingId);
+        $details = $this->detailsRepository->find($bookingId);
         $this->bookingGuestRepository->unbind($bookingId, $guestId);
         $details->removeGuest($guestId);
-        $detailsRepository->store($details);
+        $this->detailsRepository->store($details);
         $this->eventDispatcher->dispatch(
             new GuestUnbinded(
                 $booking->id(),
@@ -80,23 +79,19 @@ class GuestManager
      * @throws EntityNotFoundException
      * @throws NotFoundAirportServicePrice
      */
-    public function validateSupplier(Booking $booking, CIPMeetingInAirport|CIPSendoffInAirport $details): void
+    public function validateSupplier(Booking $booking, AirportDetailsInterface $details): void
     {
         $supplier = $this->supplierAdapter->find($details->serviceInfo()->supplierId());
-        if ($supplier === null) {
-            throw new EntityNotFoundException('Supplier not found');
-        }
-//        $contract = $this->supplierAdapter->findAirportServiceContract($booking->serviceInfo()->id());
+        //        $contract = $this->supplierAdapter->findAirportServiceContract($booking->serviceInfo()->id());
 //        if ($contract === null) {
 //            throw new EntityNotFoundException('Supplier\'s service contract not found');
 //        }
-        $date = $details instanceof CIPMeetingInAirport ? $details->arrivalDate() : $details->departureDate();
 
         $price = $this->supplierAdapter->getAirportServicePrice(
             $supplier->id,
             $details->serviceInfo()->id(),
             $booking->prices()->clientPrice()->currency(),
-            new Carbon($date)
+            new Carbon($details->serviceDate())
         );
         if ($price === null) {
             throw new NotFoundAirportServicePrice();

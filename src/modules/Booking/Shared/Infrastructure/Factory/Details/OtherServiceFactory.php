@@ -4,20 +4,33 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Infrastructure\Factory\Details;
 
-use Module\Booking\Shared\Domain\Booking\Entity\OtherService;
+use Module\Booking\Shared\Domain\Booking\Entity\Other;
+use Module\Booking\Shared\Domain\Booking\Factory\Details\OtherServiceFactoryInterface;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\DetailsId;
-use Module\Booking\Shared\Infrastructure\Models\Details\Other;
+use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
+use Module\Booking\Shared\Infrastructure\Builder\Details\OtherServiceBuilder;
+use Module\Booking\Shared\Infrastructure\Models\Details\Other as Model;
 
-class OtherServiceFactory extends AbstractServiceDetailsFactory
+class OtherServiceFactory extends AbstractServiceDetailsFactory implements OtherServiceFactoryInterface
 {
-    public function build(Other $details): OtherService
+    public function __construct(private readonly OtherServiceBuilder $builder)
     {
-        return new OtherService(
-            id: new DetailsId($details->id),
-            bookingId: new BookingId($details->booking_id),
-            serviceInfo: $this->buildServiceInfo($details->data['serviceInfo']),
-            description: $details->data['description']
-        );
+    }
+
+    public function create(
+        BookingId $bookingId,
+        ServiceInfo $serviceInfo,
+        ?string $description,
+    ): Other {
+        $model = Model::create([
+            'booking_id' => $bookingId->value(),
+            'service_id' => $serviceInfo->id(),
+            'data' => [
+                'serviceInfo' => $this->serializeServiceInfo($serviceInfo),
+                'description' => $description,
+            ]
+        ]);
+
+        return $this->builder->build(Model::find($model->id));
     }
 }

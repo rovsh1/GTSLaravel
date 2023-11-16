@@ -8,12 +8,12 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
 
 abstract class AbstractServiceDetailsFactory
 {
-    protected function buildServiceInfo(array $data): ServiceInfo
+    protected function serializeServiceInfo(ServiceInfo $serviceInfo): array
     {
-        return new ServiceInfo(
-            $data['serviceId'],
-            $data['title'],
-            $data['supplierId'],
-        );
+        return [
+            'serviceId' => $serviceInfo->id(),
+            'title' => $serviceInfo->title(),
+            'supplierId' => $serviceInfo->supplierId(),
+        ];
     }
 }

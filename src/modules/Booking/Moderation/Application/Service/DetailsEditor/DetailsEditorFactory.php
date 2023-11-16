@@ -8,6 +8,7 @@ use Module\Booking\Moderation\Application\Service\DetailsEditor\Editor\CarRentWi
 use Module\Booking\Moderation\Application\Service\DetailsEditor\Editor\CIPMeetingInAirport;
 use Module\Booking\Moderation\Application\Service\DetailsEditor\Editor\CIPSendoffInAirport;
 use Module\Booking\Moderation\Application\Service\DetailsEditor\Editor\DayCarTrip;
+use Module\Booking\Moderation\Application\Service\DetailsEditor\Editor\EditorInterface;
 use Module\Booking\Moderation\Application\Service\DetailsEditor\Editor\HotelBooking;
 use Module\Booking\Moderation\Application\Service\DetailsEditor\Editor\IntercityTransfer;
 use Module\Booking\Moderation\Application\Service\DetailsEditor\Editor\OtherService;
@@ -15,7 +16,6 @@ use Module\Booking\Moderation\Application\Service\DetailsEditor\Editor\TransferF
 use Module\Booking\Moderation\Application\Service\DetailsEditor\Editor\TransferFromRailway;
 use Module\Booking\Moderation\Application\Service\DetailsEditor\Editor\TransferToAirport;
 use Module\Booking\Moderation\Application\Service\DetailsEditor\Editor\TransferToRailway;
-use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Shared\Enum\ServiceTypeEnum;
 use Sdk\Module\Contracts\Support\ContainerInterface;
 
@@ -23,11 +23,12 @@ class DetailsEditorFactory
 {
     public function __construct(
         private readonly ContainerInterface $container,
-    ) {}
+    ) {
+    }
 
-    public function build(Booking $booking): EditorInterface
+    public function build(ServiceTypeEnum $serviceType): EditorInterface
     {
-        return match ($booking->serviceType()) {
+        return match ($serviceType) {
             ServiceTypeEnum::CAR_RENT_WITH_DRIVER => $this->container->make(CarRentWithDriver::class),
             ServiceTypeEnum::TRANSFER_TO_AIRPORT => $this->container->make(TransferToAirport::class),
             ServiceTypeEnum::TRANSFER_FROM_AIRPORT => $this->container->make(TransferFromAirport::class),

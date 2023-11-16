@@ -2,6 +2,7 @@
 
 namespace Module\Booking\Requesting\Domain\BookingRequest\Service\Factory;
 
+use Module\Booking\Moderation\Application\Exception\HotelDetailsExpectedException;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\Dto\GuestDto;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\Dto\HotelBooking\BookingPeriodDto;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\Dto\HotelBooking\HotelInfoDto;
@@ -12,9 +13,10 @@ use Module\Booking\Requesting\Domain\BookingRequest\ValueObject\RequestTypeEnum;
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Entity\HotelAccommodation;
+use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
 use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking as DetailsEntity;
 use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\Repository\Details\HotelBookingRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationCollection;
 use Module\Booking\Shared\Domain\Guest\Guest;
 use Module\Booking\Shared\Domain\Guest\Repository\GuestRepositoryInterface;
@@ -30,7 +32,7 @@ class HotelBookingDataFactory
     private array $countryNamesIndexedId;
 
     public function __construct(
-        private readonly HotelBookingRepositoryInterface $hotelBookingRepository,
+        private readonly DetailsRepositoryInterface $detailsRepository,
         private readonly AccommodationRepositoryInterface $accommodationRepository,
         private readonly HotelAdapterInterface $hotelAdapter,
         private readonly GuestRepositoryInterface $guestRepository,
@@ -42,7 +44,11 @@ class HotelBookingDataFactory
 
     public function build(Booking $booking, RequestTypeEnum $requestType): TemplateDataInterface
     {
-        $bookingDetails = $this->hotelBookingRepository->findOrFail($booking->id());
+        $bookingDetails = $this->detailsRepository->findOrFail($booking->id());
+        if (!$bookingDetails instanceof HotelBooking) {
+            throw new HotelDetailsExpectedException();
+        }
+
         $accommodations = $this->accommodationRepository->getByBookingId($booking->id());
         $roomsDto = $this->buildRoomsDto($accommodations, $bookingDetails);
         $hotelInfoDto = $this->buildHotelInfo($bookingDetails);

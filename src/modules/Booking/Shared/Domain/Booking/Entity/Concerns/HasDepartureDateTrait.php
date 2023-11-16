@@ -15,4 +15,9 @@ trait HasDepartureDateTrait
     {
         $this->departureDate = $departureDate;
     }
+
+    public function serviceDate(): ?DateTimeInterface
+    {
+        return $this->departureDate;
+    }
 }

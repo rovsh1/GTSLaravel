@@ -7,6 +7,7 @@ use Module\Booking\Shared\Domain\Booking\Adapter\HotelAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
 use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
 use Module\Booking\Shared\Domain\Order\Order;
 use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
 use Module\Booking\Shared\Domain\Order\ValueObject\ClientId;
@@ -28,10 +29,14 @@ class CalculateHotelPriceRequestDtoBuilder
         private readonly RoomCalculationParamsDtoBuilder $roomCalculationParamsDtoBuilder,
         private readonly OrderRepositoryInterface $orderRepository,
         private readonly HotelAdapterInterface $hotelAdapter,
-    ) {}
+        private readonly DetailsRepositoryInterface $detailsRepository,
+    ) {
+    }
 
-    public function booking(Booking $booking, HotelBooking $details): static
+    public function booking(Booking $booking): static
     {
+        $details = $this->detailsRepository->findOrFail($this->booking->id());
+        assert($details instanceof HotelBooking);
         $this->booking = $booking;
         $this->details = $details;
 
@@ -48,15 +53,13 @@ class CalculateHotelPriceRequestDtoBuilder
 
     public function build(): CalculateHotelPriceRequestDto
     {
-        $details = $this->details;
-
         return new CalculateHotelPriceRequestDto(
-            hotelId: $details->hotelInfo()->id(),
+            hotelId: $this->details->hotelInfo()->id(),
             rooms: $this->buildRooms(),
             outCurrency: $this->getOutCurrency(),
             period: new CarbonPeriod(
-                $details->bookingPeriod()->dateFrom(),
-                $details->bookingPeriod()->dateTo(),
+                $this->details->bookingPeriod()->dateFrom(),
+                $this->details->bookingPeriod()->dateTo(),
             ),
             clientId: isset($this->clientId) ? $this->clientId->value() : null,
         );
@@ -66,11 +69,11 @@ class CalculateHotelPriceRequestDtoBuilder
     {
         $rooms = [];
         foreach ($this->accommodationRepository->getByBookingId($this->booking->id()) as $accommodation) {
-            $room = $this->roomCalculationParamsDtoBuilder->accommodation($accommodation);
+            $this->roomCalculationParamsDtoBuilder->accommodation($accommodation);
             if (isset($this->clientId)) {
-                $room->withClientMarkups();
+                $this->roomCalculationParamsDtoBuilder->withClientMarkups();
             }
-            $rooms[] = $room->build();
+            $rooms[] = $this->roomCalculationParamsDtoBuilder->build();
         }
 
         return $rooms;

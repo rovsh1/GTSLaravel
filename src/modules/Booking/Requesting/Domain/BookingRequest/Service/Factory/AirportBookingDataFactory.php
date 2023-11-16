@@ -13,8 +13,7 @@ use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Entity\CIPMeetingInAirport;
 use Module\Booking\Shared\Domain\Booking\Entity\CIPSendoffInAirport;
-use Module\Booking\Shared\Domain\Booking\Factory\DetailsRepositoryFactory;
-use Module\Booking\Shared\Domain\Booking\Repository\Details\CIPMeetingInAirportRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
 use Module\Booking\Shared\Domain\Guest\Guest;
 use Module\Booking\Shared\Domain\Guest\Repository\GuestRepositoryInterface;
 use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
@@ -29,7 +28,7 @@ class AirportBookingDataFactory
     private array $countryNamesIndexedId;
 
     public function __construct(
-        private readonly DetailsRepositoryFactory $detailsRepositoryFactory,
+        private readonly DetailsRepositoryInterface $detailsRepository,
         private readonly GuestRepositoryInterface $guestRepository,
         private readonly SupplierAdapterInterface $supplierAdapter,
         private readonly TranslatorInterface $translator,
@@ -42,7 +41,7 @@ class AirportBookingDataFactory
     public function build(Booking $booking, RequestTypeEnum $requestType): TemplateDataInterface
     {
         /** @var CIPMeetingInAirport|CIPSendoffInAirport $bookingDetails */
-        $bookingDetails = $this->detailsRepositoryFactory->build($booking)->findOrFail($booking->id());
+        $bookingDetails = $this->detailsRepository->findOrFail($booking->id());
         $guests = $this->buildGuests($bookingDetails->guestIds());
 
         $supplier = $this->supplierAdapter->find($bookingDetails->serviceInfo()->supplierId());

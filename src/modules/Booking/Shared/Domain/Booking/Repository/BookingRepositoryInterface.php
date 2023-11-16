@@ -14,6 +14,13 @@ use Module\Shared\Enum\ServiceTypeEnum;
 
 interface BookingRepositoryInterface
 {
+    public function add(Booking $booking): void;
+
+    /**
+     * @return Booking[]
+     */
+    public function get(): array;
+
     public function create(
         OrderId $orderId,
         CreatorId $creatorId,
@@ -32,4 +39,8 @@ interface BookingRepositoryInterface
     public function find(BookingId $id): ?Booking;
 
     public function findOrFail(BookingId $id): Booking;
+
+    public function store(Booking $booking): void;
+
+    public function delete(Booking $booking): void;
 }

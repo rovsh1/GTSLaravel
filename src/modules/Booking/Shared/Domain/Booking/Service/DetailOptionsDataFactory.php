@@ -10,7 +10,7 @@ use Module\Booking\Shared\Domain\Booking\Entity\CIPMeetingInAirport;
 use Module\Booking\Shared\Domain\Booking\Entity\CIPSendoffInAirport;
 use Module\Booking\Shared\Domain\Booking\Entity\DayCarTrip;
 use Module\Booking\Shared\Domain\Booking\Entity\IntercityTransfer;
-use Module\Booking\Shared\Domain\Booking\Entity\ServiceDetailsInterface;
+use Module\Booking\Shared\Domain\Booking\Entity\DetailsInterface;
 use Module\Booking\Shared\Domain\Booking\Entity\TransferFromAirport;
 use Module\Booking\Shared\Domain\Booking\Entity\TransferFromRailway;
 use Module\Booking\Shared\Domain\Booking\Entity\TransferToAirport;
@@ -30,7 +30,7 @@ class DetailOptionsDataFactory
         private readonly CityAdapterInterface $cityAdapter,
     ) {}
 
-    public function build(ServiceDetailsInterface $details): Collection
+    public function build(DetailsInterface $details): Collection
     {
         if ($details instanceof CarRentWithDriver) {
             return $this->buildCarRentWithDriver($details);

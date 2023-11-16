@@ -14,12 +14,26 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomInfo;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomPrices;
 use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Booking\Shared\Infrastructure\Models\Accommodation as Model;
+use Module\Shared\Support\RepositoryInstances;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
 class AccommodationRepository implements AccommodationRepositoryInterface
 {
+    private RepositoryInstances $instances;
+
+    private array $bookingMapping = [];
+
+    public function __construct()
+    {
+        $this->instances = new RepositoryInstances();
+    }
+
     public function find(AccommodationId $id): ?HotelAccommodation
     {
+        if ($this->instances->has($id)) {
+            return $this->instances->get($id);
+        }
+
         $model = Model::find($id);
         if ($model === null) {
             return null;
@@ -30,21 +44,28 @@ class AccommodationRepository implements AccommodationRepositoryInterface
 
     public function findOrFail(AccommodationId $id): HotelAccommodation
     {
-        $entity = $this->find($id);
-        if ($entity === null) {
-            throw new EntityNotFoundException("Room booking [$id] not found");
-        }
-
-        return $entity;
+        return $this->find($id) ?? throw new EntityNotFoundException("Room booking [$id] not found");
     }
 
     public function getByBookingId(BookingId $bookingId): AccommodationCollection
     {
-        return new AccommodationCollection(
-            Model::whereBookingId($bookingId->value())
-                ->get()
-                ->map(fn(Model $model) => $this->buildEntityFromModel($model))->all()
-        );
+        if (isset($this->bookingMapping[$bookingId->value()])) {
+            return new AccommodationCollection(
+                array_map(fn($id) => $this->findOrFail(new AccommodationId($id)),
+                    $this->bookingMapping[$bookingId->value()])
+            );
+        }
+
+        $models = Model::whereBookingId($bookingId->value())->get()->all();
+
+        $this->bookingMapping[$bookingId->value()] = array_map(fn($r) => $r->id, $models);
+
+        return new AccommodationCollection(array_map(fn(Model $model) => $this->buildEntityFromModel($model), $models));
+    }
+
+    public function get(): array
+    {
+        return $this->instances->all();
     }
 
     public function create(
@@ -77,6 +98,8 @@ class AccommodationRepository implements AccommodationRepositoryInterface
 
     public function delete(AccommodationId $id): bool
     {
+        $this->instances->remove($id);
+
         return (bool)Model::whereId($id->value())->delete();
     }
 
@@ -105,7 +128,7 @@ class AccommodationRepository implements AccommodationRepositoryInterface
     {
         $data = $model->data;
 
-        return new HotelAccommodation(
+        $accommodation = new HotelAccommodation(
             id: new AccommodationId($model->id),
             bookingId: new BookingId($model->booking_id),
             roomInfo: RoomInfo::fromData($data['roomInfo']),
@@ -113,5 +136,9 @@ class AccommodationRepository implements AccommodationRepositoryInterface
             details: AccommodationDetails::fromData($data['details']),
             prices: RoomPrices::fromData($data['price'])
         );
+
+        $this->instances->add($accommodation->id(), $accommodation);
+
+        return $accommodation;
     }
 }

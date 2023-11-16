@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Domain\Booking\Adapter;
 
 use Carbon\CarbonInterface;
+use DateTimeInterface;
 use Module\Hotel\Pricing\Application\Dto\ServicePriceDto;
 use Module\Shared\Enum\CurrencyEnum;
 use Module\Supplier\Moderation\Application\Dto\AirportDto;
@@ -25,7 +26,7 @@ interface SupplierAdapterInterface
         int $serviceId,
         int $carId,
         CurrencyEnum $clientCurrency,
-        CarbonInterface $date
+        DateTimeInterface $date
     ): ?ServicePriceDto;
 
     public function findTransferServiceContract(int $serviceId): ?ServiceContractDto;

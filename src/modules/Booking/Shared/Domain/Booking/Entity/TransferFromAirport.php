@@ -17,7 +17,7 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Shared\Enum\ServiceTypeEnum;
 use Module\Shared\Support\DateTimeImmutableFactory;
 
-final class TransferFromAirport implements ServiceDetailsInterface
+final class TransferFromAirport implements TransferDetailsInterface
 {
     use HasMeetingTabletTrait;
     use HasFlightNumberTrait;

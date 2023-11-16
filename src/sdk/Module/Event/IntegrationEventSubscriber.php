@@ -2,7 +2,6 @@
 
 namespace Sdk\Module\Event;
 
-use Sdk\Module\Contracts\Event\IntegrationEventInterface;
 use Sdk\Module\Contracts\Event\IntegrationEventMessage;
 use Sdk\Module\Contracts\Event\IntegrationEventSubscriberInterface;
 use Sdk\Module\Contracts\Support\ContainerInterface;
@@ -38,12 +37,7 @@ class IntegrationEventSubscriber implements IntegrationEventSubscriberInterface
         foreach ($listeners as $listenerClass) {
             $listener = $this->container->get($listenerClass);
 
-            //@todo debug mode
-            try {
-                $listener->handle($message);
-            } catch (\Throwable $e) {
-                dd($e);
-            }
+            $listener->handle($message);
         }
     }
 }

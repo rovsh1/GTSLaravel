@@ -4,28 +4,45 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Infrastructure\Factory\Details;
 
+use DateTimeInterface;
 use Module\Booking\Shared\Domain\Booking\Entity\TransferFromRailway;
+use Module\Booking\Shared\Domain\Booking\Factory\Details\TransferFromRailwayFactoryInterface;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\CarBidCollection;
-use Module\Booking\Shared\Domain\Booking\ValueObject\DetailsId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\RailwayStationId;
+use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
+use Module\Booking\Shared\Infrastructure\Builder\Details\TransferFromRailwayBuilder;
 use Module\Booking\Shared\Infrastructure\Models\Details\Transfer;
 
-class TransferFromRailwayFactory extends AbstractServiceDetailsFactory
+class TransferFromRailwayFactory extends AbstractServiceDetailsFactory implements TransferFromRailwayFactoryInterface
 {
-    public function build(Transfer $details): TransferFromRailway
+    public function __construct(private readonly TransferFromRailwayBuilder $builder)
     {
-        $detailsData = $details->data;
+    }
 
-        return new TransferFromRailway(
-            id: new DetailsId($details->id),
-            bookingId: new BookingId($details->booking_id),
-            serviceInfo: $this->buildServiceInfo($detailsData['serviceInfo']),
-            railwayStationId: new RailwayStationId($detailsData['railwayStationId']),
-            trainNumber: $detailsData['trainNumber'],
-            arrivalDate: $details->date_start,
-            meetingTablet: $detailsData['meetingTablet'],
-            carBids: CarBidCollection::fromData($detailsData['carBids'])
-        );
+    public function create(
+        BookingId $bookingId,
+        ServiceInfo $serviceInfo,
+        int $railwayStationId,
+        int $cityId,
+        CarBidCollection $carBids,
+        ?string $trainNumber,
+        ?DateTimeInterface $arrivalDate,
+        ?string $meetingTablet
+    ): TransferFromRailway {
+        $model = Transfer::create([
+            'booking_id' => $bookingId->value(),
+            'date_start' => $arrivalDate,
+            'service_id' => $serviceInfo->id(),
+            'data' => [
+                'serviceInfo' => $this->serializeServiceInfo($serviceInfo),
+                'railwayStationId' => $railwayStationId,
+                'cityId' => $cityId,
+                'trainNumber' => $trainNumber,
+                'meetingTablet' => $meetingTablet,
+                'carBids' => $carBids->toData(),
+            ]
+        ]);
+
+        return $this->builder->build(Transfer::find($model->id));
     }
 }
