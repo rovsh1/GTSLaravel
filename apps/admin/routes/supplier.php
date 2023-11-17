@@ -43,6 +43,24 @@ AclRoute::for('supplier')
         'service.transfer.prices.index'
     )
     ->get(
+        '/{provider}/service-transfer/cancel-conditions',
+        Supplier\Service\CancelConditions\TransferCancelConditionsController::class . '@index',
+        'read',
+        'service.transfer.cancel-conditions.index'
+    )
+    ->get(
+        '/{provider}/service-transfer/{service}/cancel-conditions',
+        Supplier\Service\CancelConditions\TransferCancelConditionsController::class . '@get',
+        'read',
+        'service.transfer.cancel-conditions.get'
+    )
+    ->put(
+        '/{provider}/service-transfer/{service}/cancel-conditions',
+        Supplier\Service\CancelConditions\TransferCancelConditionsController::class . '@update',
+        'update',
+        'service.transfer.cancel-conditions.update'
+    )
+    ->get(
         '/{provider}/service-transfer/{service}/prices/get',
         Supplier\Service\Price\TransferPricesController::class . '@getPrices',
         'read',

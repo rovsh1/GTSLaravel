@@ -16,15 +16,15 @@ use Module\Supplier\Moderation\Application\Response\CancelConditionsDto;
 use Module\Supplier\Moderation\Application\Response\ServiceContractDto;
 use Module\Supplier\Moderation\Application\Response\ServiceDto;
 use Module\Supplier\Moderation\Application\Response\SupplierDto;
+use Module\Supplier\Moderation\Application\UseCase\CancelConditions\GetAirportCancelConditions;
+use Module\Supplier\Moderation\Application\UseCase\CancelConditions\GetTransferCancelConditions;
 use Module\Supplier\Moderation\Application\UseCase\Find;
 use Module\Supplier\Moderation\Application\UseCase\FindAirport;
 use Module\Supplier\Moderation\Application\UseCase\FindAirportServiceContract;
 use Module\Supplier\Moderation\Application\UseCase\FindCar;
 use Module\Supplier\Moderation\Application\UseCase\FindService;
 use Module\Supplier\Moderation\Application\UseCase\FindTransferServiceContract;
-use Module\Supplier\Moderation\Application\UseCase\GetAirportCancelConditions;
 use Module\Supplier\Moderation\Application\UseCase\GetCars;
-use Module\Supplier\Moderation\Application\UseCase\GetTransferCancelConditions;
 
 class SupplierAdapter implements SupplierAdapterInterface
 {

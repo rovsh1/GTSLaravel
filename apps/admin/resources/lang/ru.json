@@ -55,6 +55,7 @@
     "group.bookings": "По типам",
     "group.notification": "Уведомления",
     "group.services": "Услуги",
+    "group.cancel_conditions": "Условия отмены",
 
     "App\\Admin\\Models\\Client\\DocumentTypeEnum::CONTRACT": "Договор",
     "App\\Admin\\Models\\Client\\DocumentTypeEnum::OTHER": "Другие документы",

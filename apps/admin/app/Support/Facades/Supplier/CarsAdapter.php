@@ -4,9 +4,12 @@ namespace App\Admin\Support\Facades\Supplier;
 
 use Illuminate\Support\Facades\Facade;
 use Module\Supplier\Moderation\Application\Dto\CarDto;
+use Module\Supplier\Moderation\Application\Response\CancelConditionsDto;
 
 /**
  * @method static CarDto[] getCars(int $supplierId)
+ * @method static CancelConditionsDto getCancelConditions(int $supplierId, int $seasonId, int $serviceId, int $carId)
+ * @method static void updateCancelConditions(int $supplierId, int $seasonId, int $serviceId, int $carId, array $cancelConditions)
  */
 class CarsAdapter extends Facade
 {

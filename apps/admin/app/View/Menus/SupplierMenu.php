@@ -27,13 +27,16 @@ class SupplierMenu extends AbstractSubmenu
             ->addUrl('prices', route('supplier.service.transfer.prices.index', $this->model), 'Цены', ['icon' => 'currency_ruble'])
             ->addUrl('services', route('supplier.services.index', $this->model),'Услуги', ['icon' => 'airport_shuttle']);
 
+        $group = (new Group('cancel_conditions'))
+            ->addUrl('transfer', route('supplier.service.transfer.cancel-conditions.index', $this->model),'Транспорт', ['icon' => 'cancel']);
+        $this->addGroup($group);
+
         $group = (new Group('settings'))
             ->addUrl('contracts', route('supplier.contracts.index', $this->model), 'Договора', ['icon' => 'pending_actions'])
             ->addUrl('requisites', route('supplier.requisites.index', $this->model), 'Реквизиты', ['icon' => 'gavel'])
             ->addUrl('seasons', route('supplier.seasons.index', $this->model), 'Сезоны', ['icon' => 'trending_up'])
             ->addUrl('cars', route('supplier.cars.index', $this->model),'Автомобили', ['icon' => 'airport_shuttle'])
-            ->addUrl('airports', route('supplier.airports.index', $this->model),'Аэропорты', ['icon' => 'flight_land'])
-        ;
+            ->addUrl('airports', route('supplier.airports.index', $this->model),'Аэропорты', ['icon' => 'flight_land']);
 
         $this->addGroup($group);
     }
