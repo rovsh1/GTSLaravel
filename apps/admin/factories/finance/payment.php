@@ -10,4 +10,7 @@ return Factory::key('payment')
         'index' => 'Оплаты',
         'create' => 'Новый платеж'
     ])
+    ->views([
+        'index' => 'payment.main.main'
+    ])
     ->priority(15);

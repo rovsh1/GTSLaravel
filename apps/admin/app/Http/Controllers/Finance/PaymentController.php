@@ -26,6 +26,10 @@ class PaymentController extends AbstractPrototypeController
             ->id('id', ['text' => '№', 'order' => true])
             ->text('client_name', ['text' => 'Клиент', 'order' => true])
             ->enum('status', ['text' => 'Статус', 'enum' => PaymentStatusEnum::class])
+            ->text('order_ids', [
+                'text' => 'Заказы',
+                'renderer' => fn($row) => "<a href='#' class='js-order-pay-link' data-payment-id='{$row->id}'>Распределить</a>"
+            ])
             ->date('issue_date', ['text' => 'Дата выставления', 'order' => true])
             ->date('payment_date', ['text' => 'Дата оплаты', 'order' => true])
             ->file('file', ['text' => 'Файл'])
@@ -37,7 +41,8 @@ class PaymentController extends AbstractPrototypeController
     {
         return Form::name('data')
             ->setOption('enctype', 'multipart/form-data')
-            ->client('client_id', ['label' => 'Клиент', 'required' => true, 'emptyItem' => '', 'onlyWithOrders' => true])
+            ->client('client_id', ['label' => 'Клиент', 'required' => true, 'emptyItem' => '', 'onlyWithOrders' => true]
+            )
             ->text('invoice_number', ['label' => 'Номер счет-фактуры', 'required' => true])
             ->date('issue_date', ['label' => 'Дата выставления', 'required' => true])
             ->date('payment_date', ['label' => 'Дата оплаты', 'required' => true])
