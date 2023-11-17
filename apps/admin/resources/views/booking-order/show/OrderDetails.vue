@@ -26,11 +26,11 @@ const orderBookings = computed(() => orderStore.bookings)
 
 const actionsMenuSettings: Action[] = [{
   title: 'Создать отельную бронь',
-  callback: () => { location.href = hotelBookingCreate },
+  callback: () => { location.href = `${hotelBookingCreate}?order_id=${orderStore.order?.id}` },
 },
 {
   title: 'Создать бронь услуги',
-  callback: () => { location.href = serviceBookingCreate },
+  callback: () => { location.href = `${serviceBookingCreate}?order_id=${orderStore.order?.id}` },
 }]
 
 </script>
