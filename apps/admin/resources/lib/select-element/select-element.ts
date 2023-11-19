@@ -3,6 +3,13 @@ import { Options } from 'select2'
 
 import './style.scss'
 
+type SelectElementOptions = {
+  disabled?: boolean
+  disabledPlaceholder?: string
+  placeholder?: string
+  multiple?: boolean
+}
+
 class SelectElement {
   private element: JQuery<HTMLSelectElement>
 
@@ -16,11 +23,18 @@ class SelectElement {
   private initializeSelect2(options: Options): JQuery<HTMLElement> {
     return this.element.select2(options)
   }
+
+  public toogleDisabled(state: boolean): void {
+    this.select2Instance.select2('close')
+    this.select2Instance.prop('disabled', state)
+    this.select2Instance.val([]).trigger('change')
+  }
 }
 
-const initializeSelectElement = (element: HTMLSelectElement, options?: Options): Promise<JQuery<HTMLElement> | null> => new Promise((resolve) => {
+const initializeSelectElement = (element: HTMLSelectElement, options?: SelectElementOptions): Promise<SelectElement | null> => new Promise((resolve) => {
   let multipleOptions: Options = {}
   let select2: SelectElement | null = null
+  let existEmptyItem = false
   if (options?.multiple) {
     $.fn.select2.amd.require(
       [
@@ -38,20 +52,24 @@ const initializeSelectElement = (element: HTMLSelectElement, options?: Options):
         selectionAdapter = Utils.Decorate(selectionAdapter, EventRelay)
         selectionAdapter.prototype.render = function () {
           const $selection = SingleSelection.prototype.render.call(this)
+          const emptyItem = this.$element.find('option').toArray().find((option: HTMLElement) =>
+            $(option).attr('value') === '' && $(option).text().trim() === '')
+          existEmptyItem = !!emptyItem
+          if (existEmptyItem) {
+            $(emptyItem).prop('disabled', true).hide()
+          }
           return $selection
         }
-
         selectionAdapter.prototype.update = function (data: any) {
           this.clear()
-          const self = this
           const $rendered = this.$selection.find('.select2-selection__rendered')
           const noItemsSelected = data.length === 0
-          || (Array.isArray(this.$element.val()) && this.$element.val().length === 1 && this.$element.val()[0] === '')
+          || (Array.isArray(this.$element.val()) && data.length === 1 && data[0].id === '')
           const allItemSelected = data.length === (this.$element.find('option').length || [])
           let formatted = ''
-
+          console.log('noItemsSelected', noItemsSelected)
           if (noItemsSelected) {
-            formatted = this.options.get('placeholder') || '&nbsp;'
+            formatted = (options?.disabled || this.$element.prop('disabled')) ? options?.disabledPlaceholder || '&nbsp;' : options?.placeholder || '&nbsp;'
           } else {
             const itemsData = {
               selected: data || [],
@@ -68,7 +86,7 @@ const initializeSelectElement = (element: HTMLSelectElement, options?: Options):
           } else {
             $selectAll.hide()
           }
-
+          const self = this
           $rendered.empty().append(formatted)
           $rendered.append($selectAll)
           $selectAll.on('click', (e) => {
@@ -112,8 +130,7 @@ const initializeSelectElement = (element: HTMLSelectElement, options?: Options):
         multipleOptions = {
           multiple: true,
           closeOnSelect: false,
-          placeholder: options.placeholder || '',
-          disabled: options.disabled,
+          disabled: options?.disabled,
         }
         select2 = new SelectElement(element, {
           ...multipleOptions,
@@ -142,7 +159,7 @@ const initializeSelectElement = (element: HTMLSelectElement, options?: Options):
         select2.select2Instance.on('select2:closing', (e) => {
           $(e.target).next().find('.action-all').hide()
         })
-        resolve(select2.select2Instance)
+        resolve(select2)
       },
     )
   } else {
@@ -158,69 +175,65 @@ const initializeSelectElement = (element: HTMLSelectElement, options?: Options):
         selectionAdapter = Utils.Decorate(selectionAdapter, EventRelay)
         selectionAdapter.prototype.render = function () {
           const $selection = SingleSelection.prototype.render.call(this)
+          const emptyItem = this.$element.find('option').toArray().find((option: HTMLElement) =>
+            $(option).attr('value') === '' && $(option).text().trim() === '')
+          existEmptyItem = !!emptyItem
+          if (existEmptyItem) {
+            $(emptyItem).prop('disabled', true).hide()
+          }
           return $selection
         }
 
         selectionAdapter.prototype.update = function (data: any) {
-          console.log('data', data)
           this.clear()
           const self = this
           const $rendered = this.$selection.find('.select2-selection__rendered')
-          const noItemsSelected = data.length === 0
-          || (Array.isArray(this.$element.val()) && this.$element.val().length === 1 && this.$element.val()[0] === '')
-          const allItemSelected = data.length === (this.$element.find('option').length || [])
+          const noItemsSelected = data.length === 0 || (existEmptyItem && data.length === 1 && data[0].id === '')
           let formatted = ''
 
           if (noItemsSelected) {
-            formatted = this.options.get('placeholder') || '&nbsp;'
+            formatted = (options?.disabled || this.$element.prop('disabled')) ? options?.disabledPlaceholder || '&nbsp;' : options?.placeholder || '&nbsp;'
           } else {
-            const itemsData = {
-              selected: data || [],
-              all: this.$element.find('option') || [],
+            const itemData = {
+              selected: data[0] || null,
             }
-            formatted = this.display(itemsData, $rendered)
+            formatted = this.display(itemData, $rendered)
           }
-          const $selectAll = $(
-            `<a class="action-all" href="#">
-            ${allItemSelected ? 'Снять всё' : 'Выбрать всё'}</a>`,
+          const $clearSelectElemetny = $(
+            '<a class="clear-select-element" href="#">Очитстить</a>',
           )
-          if ($(this.$selection).attr('aria-expanded') === 'true') {
-            $selectAll.show()
+          if (!noItemsSelected) {
+            $clearSelectElemetny.show()
           } else {
-            $selectAll.hide()
+            $clearSelectElemetny.hide()
           }
-
-          $rendered.empty().append(formatted)
-          $rendered.append($selectAll)
-          $selectAll.on('click', (e) => {
-            e.preventDefault()
-            e.stopPropagation()
-            if (allItemSelected) {
+          if (existEmptyItem) {
+            $rendered.parent().parent().find('.clear-select-element').remove()
+            $rendered.parent().parent().append($clearSelectElemetny)
+            $clearSelectElemetny.on('click', (e) => {
+              e.stopPropagation()
+              $(e.target).hide()
               self.$element.val([]).trigger('change')
               self.$element.select2('close')
-              self.$element.select2('open')
-            } else {
-              const allItems = self.$element.find('option').toArray().map((option: any) => $(option).attr('value'))
-              self.$element.val(allItems).trigger('change.select2')
-              self.$element.select2('close')
-              self.$element.select2('open')
-            }
-          })
+            })
+          }
+          $rendered.empty().append(formatted)
           $rendered.prop('title', formatted === '&nbsp;' ? '' : formatted)
         }
 
         select2 = new SelectElement(element, {
           selectionAdapter,
-          ...options,
+          templateSelection: (data: any) => (data && data.selected ? data.selected.text : options?.placeholder),
+          disabled: options?.disabled,
         })
-        resolve(select2.select2Instance)
+        resolve(select2)
       },
     )
   }
 })
 
-export const useSelectElement = async (element: HTMLSelectElement | null, options?: Options): Promise<JQuery<HTMLElement> | null> => {
+export const useSelectElement = async (element: HTMLSelectElement | null, options?: SelectElementOptions): Promise<SelectElement | null> => {
   if (!element) return null
-  const select2Instance = await initializeSelectElement(element, options)
-  return select2Instance
+  const select2Element = await initializeSelectElement(element, options)
+  return select2Element
 }
