@@ -67,13 +67,15 @@ const initializeSelectElement = (element: HTMLSelectElement, options?: SelectEle
           || (Array.isArray(this.$element.val()) && data.length === 1 && data[0].id === '')
           const allItemSelected = data.length === (this.$element.find('option').length || [])
           let formatted = ''
-          console.log('noItemsSelected', noItemsSelected)
           if (noItemsSelected) {
             formatted = (options?.disabled || this.$element.prop('disabled')) ? options?.disabledPlaceholder || '&nbsp;' : options?.placeholder || '&nbsp;'
           } else {
+            const selectedElementsCount = data ? data.length : 0
+            const allElementsCount = this.$element.find('option').length
+            const existEmptyItemOnSelected = data?.some((item: any) => item.id === '')
             const itemsData = {
-              selected: data || [],
-              all: this.$element.find('option') || [],
+              selected: existEmptyItem && existEmptyItemOnSelected ? selectedElementsCount - 1 : selectedElementsCount,
+              all: existEmptyItem ? allElementsCount - 1 : allElementsCount,
             }
             formatted = this.display(itemsData, $rendered)
           }
@@ -135,19 +137,11 @@ const initializeSelectElement = (element: HTMLSelectElement, options?: SelectEle
         select2 = new SelectElement(element, {
           ...multipleOptions,
           selectionAdapter,
-          templateSelection: (data, elementInstance) => {
-            const selectElement = $(elementInstance).parent().parent().parent()
-              .prev()
-            const selectedElementCount = selectElement.val()
-            const selectElementOptionsCount = selectElement.find('option')
-              .toArray().map((option) => $(option).attr('value'))
-            const isArrayValue = Array.isArray(selectedElementCount)
-            if (isArrayValue) {
-              const existSelectedEmptyElement = selectedElementCount.some((item) => item === '')
-              const existEmptyElement = selectElementOptionsCount.some((item) => item === '')
+          templateSelection: (data: any) => {
+            if (data && data.selected && data.all) {
               return 'Выбрано '
-              + `${existSelectedEmptyElement ? selectedElementCount.length - 1 : selectedElementCount.length}`
-              + ` из ${existEmptyElement ? selectElementOptionsCount.length - 1 : selectElementOptionsCount.length}`
+              + `${data.selected}`
+              + ` из ${data.all}`
             }
             return ''
           },
@@ -211,6 +205,7 @@ const initializeSelectElement = (element: HTMLSelectElement, options?: SelectEle
             $rendered.parent().parent().find('.clear-select-element').remove()
             $rendered.parent().parent().append($clearSelectElemetny)
             $clearSelectElemetny.on('click', (e) => {
+              e.preventDefault()
               e.stopPropagation()
               $(e.target).hide()
               self.$element.val([]).trigger('change')
