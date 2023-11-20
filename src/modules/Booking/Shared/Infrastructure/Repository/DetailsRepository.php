@@ -58,6 +58,6 @@ class DetailsRepository implements DetailsRepositoryInterface
 
     private function build($details): DetailsInterface
     {
-        return $this->detailsBuilderFactory->build($details->service__type)->build($details);
+        return $this->detailsBuilderFactory->build($details->serviceType())->build($details);
     }
 }

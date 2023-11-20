@@ -72,22 +72,22 @@ class Booking extends Model
         };
     }
 
-    public function airportDetails(): HasOne
+    private function airportDetails(): HasOne
     {
         return $this->hasOne(Airport::class, 'booking_id');
     }
 
-    public function transferDetails(): HasOne
+    private function transferDetails(): HasOne
     {
         return $this->hasOne(Transfer::class, 'booking_id');
     }
 
-    public function otherDetails(): HasOne
+    private function otherDetails(): HasOne
     {
         return $this->hasOne(Other::class, 'booking_id');
     }
 
-    public function hotelDetails(): HasOne
+    private function hotelDetails(): HasOne
     {
         return $this->hasOne(Hotel::class, 'booking_id');
     }
