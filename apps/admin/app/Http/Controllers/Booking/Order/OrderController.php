@@ -8,6 +8,7 @@ use App\Admin\Components\Factory\Prototype;
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Http\Requests\Order\SearchRequest;
 use App\Admin\Http\Requests\Order\UpdateStatusRequest;
+use App\Admin\Http\Resources\Order\Booking;
 use App\Admin\Models\Administrator\Administrator;
 use App\Admin\Models\Client\Client;
 use App\Admin\Models\Order\Order;
@@ -26,7 +27,6 @@ use App\Admin\Support\View\Grid\SearchForm;
 use App\Admin\Support\View\Layout as LayoutContract;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Module\Shared\Enum\SourceEnum;
 
 class OrderController extends Controller
@@ -125,7 +125,9 @@ class OrderController extends Controller
     {
         $bookings = OrderAdapter::getBookings($orderId);
 
-        return response()->json($bookings);
+        return response()->json(
+            Booking::collection($bookings)
+        );
     }
 
     public function getAvailableActions(int $orderId): JsonResponse
