@@ -43,4 +43,9 @@ class Airport extends Model
     {
         $builder->where('booking_airport_details.id', $id);
     }
+
+    public function serviceType(): ServiceTypeEnum
+    {
+        return $this->service_type;
+    }
 }

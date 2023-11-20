@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Infrastructure\Models\Details;
 
 use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
+use Module\Shared\Enum\ServiceTypeEnum;
 use Sdk\Module\Database\Eloquent\Model;
 
 class Hotel extends Model
@@ -25,4 +26,9 @@ class Hotel extends Model
         'data' => 'array',
         'quota_processing_method' => QuotaProcessingMethodEnum::class
     ];
+
+    public function serviceType(): ServiceTypeEnum
+    {
+        return ServiceTypeEnum::HOTEL_BOOKING;
+    }
 }

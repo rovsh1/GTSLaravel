@@ -40,4 +40,9 @@ class Transfer extends Model
     {
         $builder->where('booking_transfer_details.id', $id);
     }
+
+    public function serviceType(): ServiceTypeEnum
+    {
+        return $this->service_type;
+    }
 }
