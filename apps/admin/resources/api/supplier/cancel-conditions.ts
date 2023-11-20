@@ -7,14 +7,22 @@ import { Percent } from '~api/hotel/markup-settings'
 
 import { getNullableRef } from '~lib/vue'
 
+type MaybeEmptyString<T> = T | ''
+
 export type DailyMarkup = {
-  percent: Percent
-  daysCount: number
+  percent: MaybeEmptyString<Percent>
+  daysCount: MaybeEmptyString<number>
 }
 
 export type ServiceCancelConditions = {
-  noCheckInMarkup: { percent: Percent }
+  noCheckInMarkup: { percent: MaybeEmptyString<Percent> }
   dailyMarkups: DailyMarkup[]
+}
+
+export type ExistCancelConditions = {
+  service_id: number
+  season_id: number
+  car_id: number
 }
 
 interface GetCancelConditionsPayload {
@@ -36,6 +44,14 @@ export const getCancelConditions = (payload: MaybeRef<GetCancelConditionsPayload
   )
     .get()
     .json<ServiceCancelConditions>()
+
+export const getExistsCancelConditions = (payload: MaybeRef<{ supplierId: number }>) =>
+  useAdminAPI(
+    payload,
+    ({ supplierId }) => `/supplier/${supplierId}/service-transfer/cancel-conditions/get`,
+  )
+    .get()
+    .json<ExistCancelConditions[]>()
 
 export const updateCancelConditions = (payload: MaybeRef<UpdateCancelConditionsPayload>) =>
   useAdminAPI(

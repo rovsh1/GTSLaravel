@@ -1,22 +1,24 @@
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 
 import {
-  getCancelConditions,
+  getCancelConditions, getExistsCancelConditions,
   ServiceCancelConditions,
   updateCancelConditions,
   UpdateCancelConditionsPayload,
 } from '~api/supplier/cancel-conditions'
 
-export const useCancelConditions = () => {
+export const useCancelConditions = (supplierId: number) => {
   const cancelConditions = ref<ServiceCancelConditions | null>(null)
   const isLoading = ref(false)
   const updatePayload = ref<UpdateCancelConditionsPayload>()
-  const defaultCancelConditions = {
-    noCheckInMarkup: { percent: 100 },
-    dailyMarkups: [{ percent: 100, daysCount: 2 }],
+  const defaultCancelConditions: ServiceCancelConditions = {
+    noCheckInMarkup: { percent: '' },
+    dailyMarkups: [{ percent: '', daysCount: '' }],
   }
 
-  const load = async (supplierId: number, serviceId: number, seasonId: number, carId: number): Promise<void> => {
+  const { data: existsCancelConditions, execute: fetchExistsCancelConditions } = getExistsCancelConditions({ supplierId })
+
+  const load = async (serviceId: number, seasonId: number, carId: number): Promise<void> => {
     isLoading.value = true
     const { data: response } = await getCancelConditions({ supplierId, seasonId, serviceId, carId })
 
@@ -34,12 +36,18 @@ export const useCancelConditions = () => {
     }
     isLoading.value = true
     await updateCancelConditions({ ...updatePayload.value, cancelConditions: cancelConditions.value })
+    fetchExistsCancelConditions()
     isLoading.value = false
   }
+
+  onMounted(() => {
+    fetchExistsCancelConditions()
+  })
 
   return {
     isLoading,
     cancelConditions,
+    existsCancelConditions,
     load,
     save,
   }

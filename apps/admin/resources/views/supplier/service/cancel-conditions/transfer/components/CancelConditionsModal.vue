@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
 
@@ -28,6 +28,15 @@ const localValue = computed<ServiceCancelConditions | null>({
   set: (val: ServiceCancelConditions | null) => emit('update:modelValue', val),
 })
 
+const cancelConditionsForm = ref()
+
+const handleSubmit = () => {
+  if (!cancelConditionsForm.value.reportValidity()) {
+    return
+  }
+  emit('submit')
+}
+
 </script>
 
 <template>
@@ -35,11 +44,11 @@ const localValue = computed<ServiceCancelConditions | null>({
     :opened="opened as boolean"
     :loading="loading"
     @close="$emit('close')"
-    @keydown.enter="$emit('submit')"
+    @keydown.enter="handleSubmit"
   >
     <template #title>{{ header || 'Условия отмены' }}</template>
 
-    <form v-if="localValue" ref="modalPricesForm" class="row g-3">
+    <form v-if="localValue" ref="cancelConditionsForm" class="row g-3">
       <div class="col-md-12 field-required">
         <label for="no-come-percent"><b>Неявка (% надбавки)</b></label>
         <input
@@ -75,7 +84,7 @@ const localValue = computed<ServiceCancelConditions | null>({
     </form>
 
     <template #actions-end>
-      <button class="btn btn-primary" type="button" :disabled="isLoading" @click="$emit('submit')">Сохранить</button>
+      <button class="btn btn-primary" type="button" :disabled="isLoading" @click="handleSubmit">Сохранить</button>
       <button class="btn btn-cancel" type="button" :disabled="isLoading" @click="$emit('close')">Отмена</button>
     </template>
   </BaseDialog>
