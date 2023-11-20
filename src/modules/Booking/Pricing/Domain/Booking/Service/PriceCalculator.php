@@ -13,6 +13,7 @@ use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Entity\CarRentWithDriver;
 use Module\Booking\Shared\Domain\Booking\Entity\CIPMeetingInAirport;
 use Module\Booking\Shared\Domain\Booking\Entity\CIPSendoffInAirport;
+use Module\Booking\Shared\Domain\Booking\Entity\OtherService;
 use Module\Booking\Shared\Domain\Booking\Entity\ServiceDetailsInterface;
 use Module\Booking\Shared\Domain\Booking\Factory\DetailsRepositoryFactory;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
@@ -30,7 +31,8 @@ class PriceCalculator
         private readonly SupplierAdapterInterface $supplierAdapter,
         private readonly DetailsRepositoryFactory $detailsRepositoryFactory,
         private readonly BookingUpdater $bookingUpdater
-    ) {}
+    ) {
+    }
 
     public function calculate(BookingId $bookingId): void
     {
@@ -41,6 +43,8 @@ class PriceCalculator
             $this->processTransferBooking($booking);
         } elseif ($booking->serviceType() === ServiceTypeEnum::HOTEL_BOOKING) {
             $this->hotelBookingPriceCalculator->calculate($booking);
+        } elseif ($booking->serviceType() === ServiceTypeEnum::OTHER_SERVICE) {
+            $this->processOtherBooking($booking);
         }
     }
 
@@ -80,7 +84,8 @@ class PriceCalculator
         $this->bookingUpdater->store($booking);
     }
 
-    private function processTransferBooking(Booking $booking): void {
+    private function processTransferBooking(Booking $booking): void
+    {
         $repository = $this->detailsRepositoryFactory->buildByBookingId($booking->id());
         /** @var ServiceDetailsInterface $details */
         $details = $repository->find($booking->id());
@@ -95,7 +100,9 @@ class PriceCalculator
 
             return $data;
         };
-        ['clientPriceAmount' => $clientPriceAmount, 'supplierPriceAmount' => $supplierPriceAmount] = collect($details->carBids()->all())
+        ['clientPriceAmount' => $clientPriceAmount, 'supplierPriceAmount' => $supplierPriceAmount] = collect(
+            $details->carBids()->all()
+        )
             ->reduce($reducer, ['clientPriceAmount' => 0, 'supplierPriceAmount' => 0]);
 
         $bookingPrice = new BookingPrices(
@@ -108,6 +115,41 @@ class PriceCalculator
             new BookingPriceItem(
                 currency: $booking->prices()->clientPrice()->currency(),
                 calculatedValue: $clientPriceAmount,
+                manualValue: $booking->prices()->clientPrice()->manualValue(),
+                penaltyValue: $booking->prices()->clientPrice()->penaltyValue()
+            )
+        );
+
+        $booking->updatePrice($bookingPrice);
+        //@todo сейчас не кидается ивент, в будущем заменить на storeIfHasEvents
+        $this->bookingUpdater->store($booking);
+    }
+
+    private function processOtherBooking(Booking $booking): void
+    {
+        $repository = $this->detailsRepositoryFactory->buildByBookingId($booking->id());
+        /** @var OtherService $details */
+        $details = $repository->find($booking->id());
+        $servicePrice = $this->supplierAdapter->getOtherServicePrice(
+            $details->serviceInfo()->supplierId(),
+            $details->serviceInfo()->id(),
+            $booking->prices()->clientPrice()->currency(),
+            now()//@todo какая дата услуги?
+        );
+        if ($servicePrice === null) {
+            throw new NotFoundServicePriceException();
+        }
+
+        $bookingPrice = new BookingPrices(
+            new BookingPriceItem(
+                currency: $servicePrice->supplierPrice->currency,
+                calculatedValue: $servicePrice->supplierPrice->amount,
+                manualValue: $booking->prices()->supplierPrice()->manualValue(),
+                penaltyValue: $booking->prices()->supplierPrice()->penaltyValue()
+            ),
+            new BookingPriceItem(
+                currency: $servicePrice->clientPrice->currency,
+                calculatedValue: $servicePrice->clientPrice->amount,
                 manualValue: $booking->prices()->clientPrice()->manualValue(),
                 penaltyValue: $booking->prices()->clientPrice()->penaltyValue()
             )
