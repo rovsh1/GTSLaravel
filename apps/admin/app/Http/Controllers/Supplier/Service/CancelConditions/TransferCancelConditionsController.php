@@ -6,8 +6,10 @@ use App\Admin\Components\Factory\Prototype;
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Http\Requests\Supplier\GetTransferCancelConditionsRequest;
 use App\Admin\Http\Requests\Supplier\UpdateTransferCancelConditionsRequest;
+use App\Admin\Http\Resources\Supplier\TransferCancelConditions as Resource;
 use App\Admin\Models\Supplier\Service;
 use App\Admin\Models\Supplier\Supplier;
+use App\Admin\Models\Supplier\TransferServiceCancelConditions;
 use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Facades\Layout;
@@ -42,6 +44,15 @@ class TransferCancelConditionsController extends Controller
                 'services' => $provider->transferServices,
                 'quicksearch' => Grid::enableQuicksearch()->getQuicksearch()
             ]);
+    }
+
+    public function getAll(Supplier $provider): JsonResponse
+    {
+        $cancelConditions = TransferServiceCancelConditions::whereSupplierId($provider->id)->get();
+
+        return response()->json(
+            Resource::collection($cancelConditions)
+        );
     }
 
     public function get(GetTransferCancelConditionsRequest $request, Supplier $provider, Service $service): JsonResponse

@@ -3,12 +3,14 @@
 import CollapsableBlock from '~resources/views/hotel/settings/components/CollapsableBlock.vue'
 
 import { Car, Season } from '~api/models'
+import { ExistCancelConditions } from '~api/supplier/cancel-conditions'
 
 import { formatPeriod } from '~lib/date'
 
 const props = defineProps<{
   header: string
   serviceId: number
+  cancelConditions: ExistCancelConditions[] | undefined
   seasons: Season[]
   cars: Car[]
 }>()
@@ -17,7 +19,16 @@ const emit = defineEmits<{
   (event: 'click', serviceId: number, seasonId: number, carId: number): void
 }>()
 
-const getPriceButtonText = (seasonId: number, carId: number): string => 'Не установлено'
+const getButtonText = (seasonId: number, carId: number): string => {
+  const existCondition = props.cancelConditions?.find(
+    (condition) => condition.car_id === carId && condition.season_id === seasonId,
+  )
+  if (!existCondition) {
+    return 'Не установлено'
+  }
+
+  return 'Изменить'
+}
 
 const handleClick = (seasonId: number, carId: number): void => {
   emit('click', props.serviceId, seasonId, carId)
@@ -45,7 +56,7 @@ const handleClick = (seasonId: number, carId: number): void => {
           <template v-for="season in seasons" :key="season.id">
             <td>
               <a href="#" @click.prevent="handleClick(season.id, car.id)">
-                {{ getPriceButtonText(season.id, car.id) }}
+                {{ getButtonText(season.id, car.id) }}
               </a>
             </td>
           </template>

@@ -49,17 +49,21 @@ const filteredServices = computed(() => {
 
 const [isModalOpened, toggleModal] = useToggle()
 
-const { cancelConditions, load, save, isLoading } = useCancelConditions()
+const { cancelConditions, load, save, isLoading, existsCancelConditions } = useCancelConditions(supplierId)
 
 const handleEdit = (serviceId: number, seasonId: number, carId: number): void => {
   toggleModal(true)
-  load(supplierId, serviceId, seasonId, carId)
+  load(serviceId, seasonId, carId)
 }
 
 const handleSave = async (): Promise<void> => {
   await save()
   toggleModal(false)
 }
+
+const getFilteredCancelConditions = (serviceId: number) => existsCancelConditions.value?.filter(
+  (condition) => condition.service_id === serviceId,
+)
 
 </script>
 
@@ -78,8 +82,8 @@ const handleSave = async (): Promise<void> => {
     :header="service.title"
     :cars="cars as Car[]"
     :seasons="seasons as Season[]"
-    :supplier-id="supplierId as number"
     :service-id="service.id"
+    :cancel-conditions="getFilteredCancelConditions(service.id)"
     @click="handleEdit"
   />
 </template>
