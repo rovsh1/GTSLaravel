@@ -23,11 +23,7 @@ const getButtonText = (seasonId: number, carId: number): string => {
   const existCondition = props.cancelConditions?.find(
     (condition) => condition.car_id === carId && condition.season_id === seasonId,
   )
-  if (!existCondition) {
-    return 'Не установлено'
-  }
-
-  return 'Изменить'
+  return !existCondition ? 'Не установлено' : 'Изменить'
 }
 
 const handleClick = (seasonId: number, carId: number): void => {
