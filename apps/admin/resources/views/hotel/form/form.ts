@@ -1,8 +1,11 @@
+import { useSelectElement } from '~lib/select-element/select-element'
+
 import '~resources/views/main'
 import '~resources/js/app/plugins/controls/coordinates-input'
 
 $(() => {
-  $('#form_data_supplier_id').select2()
+  const element = document.querySelector<HTMLSelectElement>('#form_data_supplier_id')
+  useSelectElement(element)
   $('#form_data_coordinates').coordinatesInput({
     addressInput: '#form_data_address',
   })
