@@ -9,7 +9,7 @@ use Module\Booking\Moderation\Application\Dto\ServiceBooking\BookingDto;
 use Module\Booking\Moderation\Application\Dto\ServiceBooking\ServiceTypeDto;
 use Module\Booking\Shared\Application\Factory\BookingStatusDtoFactory;
 use Module\Booking\Shared\Domain\Booking\Booking;
-use Module\Booking\Shared\Domain\Booking\Factory\DetailsRepositoryFactory;
+use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
 use Module\Shared\Contracts\Service\TranslatorInterface;
 
 class BookingDtoFactory
@@ -19,14 +19,12 @@ class BookingDtoFactory
         private readonly BookingPriceDtoFactory $bookingPriceDtoFactory,
         private readonly ServiceDetailsDtoFactory $detailsDtoFactory,
         private readonly TranslatorInterface $translator,
-        private readonly DetailsRepositoryFactory $detailsRepositoryFactory,
+        private readonly DetailsRepositoryInterface $detailsRepository,
     ) {}
 
     public function createFromEntity(Booking $booking): BookingDto
     {
-        assert($booking instanceof Booking);
-
-        $details = $this->detailsRepositoryFactory->build($booking)->find($booking->id());
+        $details = $this->detailsRepository->find($booking->id());
 
         return new BookingDto(
             id: $booking->id()->value(),

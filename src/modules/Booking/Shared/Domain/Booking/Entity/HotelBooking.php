@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Domain\Booking\Entity;
 
+use DateTimeInterface;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\DetailsId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\BookingPeriod;
@@ -12,7 +13,7 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\HotelInfo;
 use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 use Module\Shared\Enum\ServiceTypeEnum;
 
-final class HotelBooking implements ServiceDetailsInterface
+final class HotelBooking implements DetailsInterface
 {
     public function __construct(
         private readonly DetailsId $id,
@@ -51,7 +52,9 @@ final class HotelBooking implements ServiceDetailsInterface
 
     public function setBookingPeriod(BookingPeriod $period): void
     {
-        $this->bookingPeriod = $period;
+        if (!$this->bookingPeriod->isEqual($period)) {
+            $this->bookingPeriod = $period;
+        }
     }
 
     public function externalNumber(): ?ExternalNumber
@@ -91,5 +94,10 @@ final class HotelBooking implements ServiceDetailsInterface
             $data['externalNumber'] ? ExternalNumber::fromData($data['externalNumber']) : null,
             QuotaProcessingMethodEnum::from($data['quotaProcessingMethod'])
         );
+    }
+
+    public function serviceDate(): ?DateTimeInterface
+    {
+        return $this->bookingPeriod->dateFrom();
     }
 }

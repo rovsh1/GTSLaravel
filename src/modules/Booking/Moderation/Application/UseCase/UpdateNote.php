@@ -4,23 +4,24 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\UseCase;
 
-use Module\Booking\Shared\Domain\Booking\Service\BookingUnitOfWork;
+use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
+use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class UpdateNote implements UseCaseInterface
 {
     public function __construct(
-        private readonly BookingUnitOfWork $bookingUnitOfWork,
+        private readonly BookingRepositoryInterface $bookingRepository,
+        private readonly DomainEventDispatcherInterface $eventDispatcher,
     ) {
     }
 
     public function execute(int $id, ?string $note): void
     {
-        $booking = $this->bookingUnitOfWork->findOrFail(new BookingId($id));
-
+        $booking = $this->bookingRepository->findOrFail(new BookingId($id));
         $booking->setNote($note);
-
-        $this->bookingUnitOfWork->commit();
+        $this->bookingRepository->store($booking);
+        $this->eventDispatcher->dispatch(...$booking->pullEvents());
     }
 }

@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\Service\DetailsEditor\Editor;
 
-use Module\Booking\Moderation\Application\Service\DetailsEditor\EditorInterface;
-use Module\Booking\Shared\Domain\Booking\Entity\ServiceDetailsInterface;
-use Module\Booking\Shared\Domain\Booking\Repository\Details\OtherServiceRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Entity\DetailsInterface;
+use Module\Booking\Shared\Domain\Booking\Factory\Details\OtherServiceFactoryInterface;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
@@ -15,28 +14,20 @@ use Module\Supplier\Moderation\Infrastructure\Models\Service as InfrastructureSu
 class OtherService extends AbstractEditor implements EditorInterface
 {
     public function __construct(
-        private readonly OtherServiceRepositoryInterface $detailsRepository
-    ) {}
+        private readonly OtherServiceFactoryInterface $detailsFactory
+    ) {
+    }
 
-    public function create(BookingId $bookingId, ServiceId $serviceId, array $detailsData): ServiceDetailsInterface
+    public function create(BookingId $bookingId, ServiceId $serviceId, array $detailsData): DetailsInterface
     {
         $supplierService = InfrastructureSupplierService::find($serviceId->value());
 
         $serviceInfo = new ServiceInfo($serviceId->value(), $supplierService->title, $supplierService->supplier_id);
 
-        return $this->detailsRepository->create(
+        return $this->detailsFactory->create(
             $bookingId,
             $serviceInfo,
             $detailsData['description'] ?? null
         );
-    }
-
-    public function update(BookingId $bookingId, array $detailsData): void
-    {
-        $details = $this->detailsRepository->find($bookingId);
-        foreach ($detailsData as $field => $value) {
-            $this->setField($details, $field, $value);
-        }
-        $this->detailsRepository->store($details);
     }
 }

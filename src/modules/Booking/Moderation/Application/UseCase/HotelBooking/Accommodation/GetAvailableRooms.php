@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Application\UseCase\HotelBooking\Accommodation;
 
 use Carbon\CarbonPeriod;
+use Module\Booking\Moderation\Application\Exception\HotelDetailsExpectedException;
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelRoomAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelQuotaAdapterInterface;
-use Module\Booking\Shared\Domain\Booking\Repository\Details\HotelBookingRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
+use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Hotel\Moderation\Application\Dto\RoomDto;
 use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
@@ -16,7 +18,7 @@ use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 class GetAvailableRooms implements UseCaseInterface
 {
     public function __construct(
-        private readonly HotelBookingRepositoryInterface $detailsRepository,
+        private readonly DetailsRepositoryInterface $detailsRepository,
         private readonly HotelRoomAdapterInterface $hotelRoomAdapter,
         private readonly HotelQuotaAdapterInterface $roomQuotaAdapter
     ) {
@@ -29,6 +31,9 @@ class GetAvailableRooms implements UseCaseInterface
     public function execute(int $bookingId): array
     {
         $details = $this->detailsRepository->findOrFail(new BookingId($bookingId));
+        if (!$details instanceof HotelBooking) {
+            throw new HotelDetailsExpectedException();
+        }
         $hotelId = $details->hotelInfo()->id();
         $rooms = $this->hotelRoomAdapter->getByHotelId($hotelId);
         if ($details->quotaProcessingMethod() !== QuotaProcessingMethodEnum::QUOTA) {

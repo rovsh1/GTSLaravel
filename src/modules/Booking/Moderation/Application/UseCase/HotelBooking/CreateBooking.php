@@ -42,16 +42,19 @@ class CreateBooking extends AbstractCreateBooking
         if ($orderCurrency === null) {
             throw new EntityNotFoundException('Currency not found');
         }
+
         $markupSettings = $this->hotelAdapter->getMarkupSettings($request->serviceId);
         $bookingPeriod = $request->detailsData['period'] ?? null;
         if ($bookingPeriod === null) {
             throw new \RuntimeException('Undefined booking period');
         }
+
         try {
             $this->hotelValidator->validateByDto($markupSettings, $bookingPeriod);
         } catch (NotFoundHotelCancelPeriod $e) {
             throw new ApplicationNotFoundHotelCancelPeriod($e);
         }
+
         $booking = $this->repository->create(
             orderId: $orderId,
             creatorId: new CreatorId($request->creatorId),
@@ -60,8 +63,10 @@ class CreateBooking extends AbstractCreateBooking
             serviceType: ServiceTypeEnum::HOTEL_BOOKING,
             note: $request->note,//@todo netto валюта
         );
-        $editor = $this->detailsEditorFactory->build($booking);
+
+        $editor = $this->detailsEditorFactory->build($booking->serviceType());
         $editor->create($booking->id(), new ServiceId($request->serviceId), $request->detailsData);
+
         $this->administratorAdapter->setBookingAdministrator($booking->id(), $request->administratorId);
 
         return $booking->id()->value();

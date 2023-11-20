@@ -17,10 +17,10 @@ class BookingUpdater
 
     public function store(Booking $booking): bool
     {
-        $success = $this->repository->store($booking);
+        $this->repository->store($booking);
         $this->eventDispatcher->dispatch(...$booking->pullEvents());
 
-        return $success;
+        return true;
     }
 
     /**
@@ -34,9 +34,9 @@ class BookingUpdater
         if (count($events) === 0) {
             return true;
         }
-        $success = $this->repository->store($booking);
+        $this->repository->store($booking);
         $this->eventDispatcher->dispatch(...$events);
 
-        return $success;
+        return true;
     }
 }

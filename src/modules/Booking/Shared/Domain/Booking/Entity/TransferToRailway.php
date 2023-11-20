@@ -17,7 +17,7 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Shared\Enum\ServiceTypeEnum;
 use Module\Shared\Support\DateTimeImmutableFactory;
 
-final class TransferToRailway implements ServiceDetailsInterface
+final class TransferToRailway implements TransferDetailsInterface
 {
     use HasTrainNumberTrait;
     use HasDepartureDateTrait;

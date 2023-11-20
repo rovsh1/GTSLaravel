@@ -15,7 +15,7 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Shared\Enum\ServiceTypeEnum;
 use Module\Shared\Support\DateTimeImmutableFactory;
 
-final class IntercityTransfer implements ServiceDetailsInterface
+final class IntercityTransfer implements TransferDetailsInterface
 {
     use HasDepartureDateTrait;
     use HasCarBidCollectionTrait;

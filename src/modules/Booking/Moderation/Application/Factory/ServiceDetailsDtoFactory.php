@@ -24,8 +24,8 @@ use Module\Booking\Shared\Domain\Booking\Entity\CIPSendoffInAirport;
 use Module\Booking\Shared\Domain\Booking\Entity\DayCarTrip;
 use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
 use Module\Booking\Shared\Domain\Booking\Entity\IntercityTransfer;
-use Module\Booking\Shared\Domain\Booking\Entity\OtherService;
-use Module\Booking\Shared\Domain\Booking\Entity\ServiceDetailsInterface;
+use Module\Booking\Shared\Domain\Booking\Entity\Other;
+use Module\Booking\Shared\Domain\Booking\Entity\DetailsInterface;
 use Module\Booking\Shared\Domain\Booking\Entity\TransferFromAirport;
 use Module\Booking\Shared\Domain\Booking\Entity\TransferFromRailway;
 use Module\Booking\Shared\Domain\Booking\Entity\TransferToAirport;
@@ -49,7 +49,7 @@ class ServiceDetailsDtoFactory
         private readonly CityAdapterInterface $cityAdapter,
     ) {}
 
-    public function createFromEntity(ServiceDetailsInterface $details): ServiceDetailsDtoInterface
+    public function createFromEntity(DetailsInterface $details): ServiceDetailsDtoInterface
     {
         if ($details instanceof TransferToAirport) {
             return $this->buildTransferToAirport($details);
@@ -71,7 +71,7 @@ class ServiceDetailsDtoFactory
             return $this->buildTransferToRailway($details);
         } elseif ($details instanceof TransferFromRailway) {
             return $this->buildTransferFromRailway($details);
-        } elseif ($details instanceof OtherService) {
+        } elseif ($details instanceof Other) {
             return $this->buildOtherService($details);
         } else {
             throw new \Exception('Service details dto not implemented');
@@ -218,7 +218,7 @@ class ServiceDetailsDtoFactory
         );
     }
 
-    private function buildOtherService(OtherService $details): OtherServiceDto
+    private function buildOtherService(Other $details): OtherServiceDto
     {
         return new OtherServiceDto(
             $details->id()->value(),

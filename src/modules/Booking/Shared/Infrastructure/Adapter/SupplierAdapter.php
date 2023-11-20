@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Infrastructure\Adapter;
 
+use Carbon\Carbon;
 use Carbon\CarbonInterface;
+use DateTimeInterface;
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Hotel\Pricing\Application\Dto\ServicePriceDto;
 use Module\Shared\Enum\CurrencyEnum;
@@ -44,14 +46,14 @@ class SupplierAdapter implements SupplierAdapterInterface
         int $serviceId,
         int $carId,
         CurrencyEnum $clientCurrency,
-        CarbonInterface $date
+        DateTimeInterface $date
     ): ?ServicePriceDto {
         return app(GetTransferServicePrice::class)->execute(
             $supplierId,
             $serviceId,
             $carId,
             $clientCurrency,
-            $date
+            Carbon::createFromInterface($date)
         );
     }
 

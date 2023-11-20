@@ -3,48 +3,51 @@
 namespace Module\Booking\Shared\Providers;
 
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
-use Module\Booking\Shared\Domain\Booking\Factory\DetailsRepositoryFactory;
-use Module\Booking\Shared\Domain\Booking\Repository\Details\CarRentWithDriverRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\Repository\Details\CIPMeetingInAirportRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\Repository\Details\CIPSendoffInAirportRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\Repository\Details\DayCarTripRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\Repository\Details\HotelBookingRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\Repository\Details\IntercityTransferRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\Repository\Details\OtherServiceRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\Repository\Details\TransferFromAirportRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\Repository\Details\TransferFromRailwayRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\Repository\Details\TransferToAirportRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\Repository\Details\TransferToRailwayRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Factory\Details\CarRentWithDriverFactoryInterface;
+use Module\Booking\Shared\Domain\Booking\Factory\Details\CIPMeetingInAirportFactoryInterface;
+use Module\Booking\Shared\Domain\Booking\Factory\Details\CIPSendoffInAirportFactoryInterface;
+use Module\Booking\Shared\Domain\Booking\Factory\Details\DayCarTripFactoryInterface;
+use Module\Booking\Shared\Domain\Booking\Factory\Details\HotelBookingFactoryInterface;
+use Module\Booking\Shared\Domain\Booking\Factory\Details\IntercityTransferFactoryInterface;
+use Module\Booking\Shared\Domain\Booking\Factory\Details\OtherServiceFactoryInterface;
+use Module\Booking\Shared\Domain\Booking\Factory\Details\TransferFromAirportFactoryInterface;
+use Module\Booking\Shared\Domain\Booking\Factory\Details\TransferFromRailwayFactoryInterface;
+use Module\Booking\Shared\Domain\Booking\Factory\Details\TransferToAirportFactoryInterface;
+use Module\Booking\Shared\Domain\Booking\Factory\Details\TransferToRailwayFactoryInterface;
+use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
 use Module\Booking\Shared\Infrastructure\Adapter\SupplierAdapter;
-use Module\Booking\Shared\Infrastructure\Repository\Details\CarRentWithDriverRepository;
-use Module\Booking\Shared\Infrastructure\Repository\Details\CIPMeetingInAirportRepository;
-use Module\Booking\Shared\Infrastructure\Repository\Details\CIPSendoffInAirportRepository;
-use Module\Booking\Shared\Infrastructure\Repository\Details\DayCarTripRepository;
-use Module\Booking\Shared\Infrastructure\Repository\Details\HotelBookingRepository;
-use Module\Booking\Shared\Infrastructure\Repository\Details\IntercityTransferRepository;
-use Module\Booking\Shared\Infrastructure\Repository\Details\OtherServiceRepository;
-use Module\Booking\Shared\Infrastructure\Repository\Details\TransferFromAirportRepository;
-use Module\Booking\Shared\Infrastructure\Repository\Details\TransferFromRailwayRepository;
-use Module\Booking\Shared\Infrastructure\Repository\Details\TransferToAirportRepository;
-use Module\Booking\Shared\Infrastructure\Repository\Details\TransferToRailwayRepository;
+use Module\Booking\Shared\Infrastructure\Factory\Details\CarRentWithDriverFactory;
+use Module\Booking\Shared\Infrastructure\Factory\Details\CIPMeetingInAirportFactory;
+use Module\Booking\Shared\Infrastructure\Factory\Details\CIPSendoffInAirportFactory;
+use Module\Booking\Shared\Infrastructure\Factory\Details\DayCarTripFactory;
+use Module\Booking\Shared\Infrastructure\Factory\Details\HotelBookingFactory;
+use Module\Booking\Shared\Infrastructure\Factory\Details\IntercityTransferFactory;
+use Module\Booking\Shared\Infrastructure\Factory\Details\OtherServiceFactory;
+use Module\Booking\Shared\Infrastructure\Factory\Details\TransferFromAirportFactory;
+use Module\Booking\Shared\Infrastructure\Factory\Details\TransferFromRailwayFactory;
+use Module\Booking\Shared\Infrastructure\Factory\Details\TransferToAirportFactory;
+use Module\Booking\Shared\Infrastructure\Factory\Details\TransferToRailwayFactory;
+use Module\Booking\Shared\Infrastructure\Repository\DetailsRepository;
 use Sdk\Module\Support\ServiceProvider;
 
 class DetailsServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
-        $this->app->singleton(DetailsRepositoryFactory::class);
-        $this->app->singleton(CIPMeetingInAirportRepositoryInterface::class, CIPMeetingInAirportRepository::class);
-        $this->app->singleton(CIPSendoffInAirportRepositoryInterface::class, CIPSendoffInAirportRepository::class);
-        $this->app->singleton(TransferToAirportRepositoryInterface::class, TransferToAirportRepository::class);
-        $this->app->singleton(TransferFromAirportRepositoryInterface::class, TransferFromAirportRepository::class);
-        $this->app->singleton(TransferToRailwayRepositoryInterface::class, TransferToRailwayRepository::class);
-        $this->app->singleton(TransferFromRailwayRepositoryInterface::class, TransferFromRailwayRepository::class);
-        $this->app->singleton(HotelBookingRepositoryInterface::class, HotelBookingRepository::class);
-        $this->app->singleton(CarRentWithDriverRepositoryInterface::class, CarRentWithDriverRepository::class);
-        $this->app->singleton(IntercityTransferRepositoryInterface::class, IntercityTransferRepository::class);
-        $this->app->singleton(DayCarTripRepositoryInterface::class, DayCarTripRepository::class);
-        $this->app->singleton(OtherServiceRepositoryInterface::class, OtherServiceRepository::class);
+//        $this->app->singleton(DetailsRepositoryFactory::class);
+        $this->app->singleton(DetailsRepositoryInterface::class, DetailsRepository::class);
+        $this->app->singleton(CIPMeetingInAirportFactoryInterface::class, CIPMeetingInAirportFactory::class);
+        $this->app->singleton(CIPMeetingInAirportFactoryInterface::class, CIPMeetingInAirportFactory::class);
+        $this->app->singleton(CIPSendoffInAirportFactoryInterface::class, CIPSendoffInAirportFactory::class);
+        $this->app->singleton(TransferToAirportFactoryInterface::class, TransferToAirportFactory::class);
+        $this->app->singleton(TransferFromAirportFactoryInterface::class, TransferFromAirportFactory::class);
+        $this->app->singleton(TransferToRailwayFactoryInterface::class, TransferToRailwayFactory::class);
+        $this->app->singleton(TransferFromRailwayFactoryInterface::class, TransferFromRailwayFactory::class);
+        $this->app->singleton(HotelBookingFactoryInterface::class, HotelBookingFactory::class);
+        $this->app->singleton(CarRentWithDriverFactoryInterface::class, CarRentWithDriverFactory::class);
+        $this->app->singleton(IntercityTransferFactoryInterface::class, IntercityTransferFactory::class);
+        $this->app->singleton(DayCarTripFactoryInterface::class, DayCarTripFactory::class);
+        $this->app->singleton(OtherServiceFactoryInterface::class, OtherServiceFactory::class);
         $this->app->singleton(SupplierAdapterInterface::class, SupplierAdapter::class);
     }
 }

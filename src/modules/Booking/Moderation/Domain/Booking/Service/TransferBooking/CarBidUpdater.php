@@ -4,24 +4,16 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Domain\Booking\Service\TransferBooking;
 
-use Carbon\CarbonInterface;
+use DateTimeInterface;
 use Module\Booking\Moderation\Application\Dto\CarBidDataDto;
 use Module\Booking\Moderation\Domain\Booking\Event\CarBidAdded;
 use Module\Booking\Moderation\Domain\Booking\Event\CarBidRemoved;
 use Module\Booking\Moderation\Domain\Booking\Event\CarBidUpdated;
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
-use Module\Booking\Shared\Domain\Booking\Entity\CarRentWithDriver;
-use Module\Booking\Shared\Domain\Booking\Entity\DayCarTrip;
-use Module\Booking\Shared\Domain\Booking\Entity\IntercityTransfer;
-use Module\Booking\Shared\Domain\Booking\Entity\ServiceDetailsInterface;
-use Module\Booking\Shared\Domain\Booking\Entity\TransferFromAirport;
-use Module\Booking\Shared\Domain\Booking\Entity\TransferFromRailway;
-use Module\Booking\Shared\Domain\Booking\Entity\TransferToAirport;
-use Module\Booking\Shared\Domain\Booking\Entity\TransferToRailway;
 use Module\Booking\Shared\Domain\Booking\Exception\NotFoundTransferServicePrice;
 use Module\Booking\Shared\Domain\Booking\Exception\ServiceDateUndefined;
-use Module\Booking\Shared\Domain\Booking\Factory\DetailsRepositoryFactory;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\CarBid;
 use Module\Booking\Shared\Domain\Booking\ValueObject\CarBid\CarBidPriceItem;
@@ -36,9 +28,10 @@ class CarBidUpdater
     public function __construct(
         private readonly SupplierAdapterInterface $supplierAdapter,
         private readonly DomainEventDispatcherInterface $eventDispatcher,
-        private readonly DetailsRepositoryFactory $detailsRepositoryFactory,
+        private readonly DetailsRepositoryInterface $detailsRepository,
         private readonly BookingRepositoryInterface $bookingRepository,
-    ) {}
+    ) {
+    }
 
     public function add(BookingId $bookingId, CarBidDataDto $carData): void
     {
@@ -47,11 +40,9 @@ class CarBidUpdater
             throw new EntityNotFoundException('Car not found');
         }
         $booking = $this->bookingRepository->findOrFail($bookingId);
-        $repository = $this->detailsRepositoryFactory->buildByBookingId($bookingId);
-        /** @var ServiceDetailsInterface $details */
-        $details = $repository->find($bookingId);
+        $details = $this->detailsRepository->findOrFail($bookingId);
 
-        $serviceDate = $this->getServiceDate($details);
+        $serviceDate = $details->serviceDate();
         if ($serviceDate === null) {
             throw new ServiceDateUndefined();
         }
@@ -72,7 +63,7 @@ class CarBidUpdater
             $carBidPrices
         );
         $details->addCarBid($carBid);
-        $repository->store($details);
+        $this->detailsRepository->store($details);
         $this->eventDispatcher->dispatch(new CarBidAdded($bookingId, $booking->orderId()));
     }
 
@@ -83,10 +74,9 @@ class CarBidUpdater
             throw new EntityNotFoundException('Car not found');
         }
         $booking = $this->bookingRepository->findOrFail($bookingId);
-        $repository = $this->detailsRepositoryFactory->buildByBookingId($bookingId);
-        $details = $repository->find($bookingId);
+        $details = $this->detailsRepository->findOrFail($bookingId);
 
-        $serviceDate = $this->getServiceDate($details);
+        $serviceDate = $details->serviceDate();
         if ($serviceDate === null) {
             throw new ServiceDateUndefined();
         }
@@ -108,17 +98,16 @@ class CarBidUpdater
             $carBidPrices
         );
         $details->replaceCarBid($carBidId, $carBid);
-        $repository->store($details);
+        $this->detailsRepository->store($details);
         $this->eventDispatcher->dispatch(new CarBidUpdated($bookingId, $booking->orderId()));
     }
 
     public function remove(BookingId $bookingId, string $carBidId): void
     {
         $booking = $this->bookingRepository->findOrFail($bookingId);
-        $repository = $this->detailsRepositoryFactory->buildByBookingId($bookingId);
-        $details = $repository->find($bookingId);
+        $details = $this->detailsRepository->findOrFail($bookingId);
         $details->removeCarBid($carBidId);
-        $repository->store($details);
+        $this->detailsRepository->store($details);
         $this->eventDispatcher->dispatch(new CarBidRemoved($bookingId, $booking->orderId()));
     }
 
@@ -127,7 +116,7 @@ class CarBidUpdater
         int $serviceId,
         int $carId,
         CurrencyEnum $clientCurrency,
-        CarbonInterface $date
+        DateTimeInterface $date
     ): CarBidPrices {
         $price = $this->supplierAdapter->getTransferServicePrice(
             $supplierId,
@@ -147,25 +136,5 @@ class CarBidUpdater
             supplierPrice: new CarBidPriceItem($supplierPrice->currency, $supplierPrice->amount),
             clientPrice: new CarBidPriceItem($clientPrice->currency, $clientPrice->amount)
         );
-    }
-
-    private function getServiceDate(ServiceDetailsInterface $details): ?CarbonInterface
-    {
-        if ($details instanceof CarRentWithDriver) {
-            return $details->bookingPeriod()?->dateFrom();
-        } elseif ($details instanceof TransferToAirport) {
-            return $details->departureDate();
-        } elseif ($details instanceof TransferFromAirport) {
-            return $details->arrivalDate();
-        } elseif ($details instanceof TransferToRailway) {
-            return $details->departureDate();
-        } elseif ($details instanceof TransferFromRailway) {
-            return $details->arrivalDate();
-        } elseif ($details instanceof IntercityTransfer) {
-            return $details->departureDate();
-        } elseif ($details instanceof DayCarTrip) {
-            return $details->departureDate();
-        }
-        throw new \RuntimeException('Unknown transfer type');
     }
 }

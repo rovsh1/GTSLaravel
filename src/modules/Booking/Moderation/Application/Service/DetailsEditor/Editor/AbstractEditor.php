@@ -8,12 +8,12 @@ use Carbon\CarbonPeriod;
 use DateTime;
 use DateTimeInterface;
 use Illuminate\Support\Str;
-use Module\Booking\Shared\Domain\Booking\Entity\ServiceDetailsInterface;
+use Module\Booking\Shared\Domain\Booking\Entity\DetailsInterface;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPeriod;
 
 abstract class AbstractEditor
 {
-    protected function setField(ServiceDetailsInterface $details, string $field, mixed $value): void
+    protected function setField(DetailsInterface $details, string $field, mixed $value): void
     {
         $setterMethod = $this->getFieldSetter($field);
         if (!method_exists($details, $setterMethod)) {
@@ -38,5 +38,12 @@ abstract class AbstractEditor
     private function getFieldSetter(string $field): string
     {
         return 'set' . Str::ucfirst($field);
+    }
+
+    public function update(DetailsInterface $details, array $detailsData): void
+    {
+        foreach ($detailsData as $field => $value) {
+            $this->setField($details, $field, $value);
+        }
     }
 }

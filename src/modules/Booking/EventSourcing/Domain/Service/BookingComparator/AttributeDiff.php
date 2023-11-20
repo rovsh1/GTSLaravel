@@ -15,13 +15,14 @@ class AttributeDiff
     public function serialize(): array
     {
         return [
+            '@type' => strtolower($this->type->name),
             'name' => $this->name,
             'before' => $this->cast($this->valueBefore),
             'after' => $this->cast($this->valueAfter),
         ];
     }
 
-    private function cast($value)
+    private function cast($value): mixed
     {
         if ($value === null) {
             return null;

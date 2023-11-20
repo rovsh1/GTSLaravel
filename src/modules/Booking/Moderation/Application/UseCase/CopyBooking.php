@@ -9,9 +9,8 @@ use Module\Booking\Moderation\Application\Dto\ServiceBooking\BookingDto;
 use Module\Booking\Moderation\Application\Factory\BookingDtoFactory;
 use Module\Booking\Moderation\Application\Service\DetailsEditor\DetailsEditorFactory;
 use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
-use Module\Booking\Shared\Domain\Booking\Entity\ServiceDetailsInterface;
-use Module\Booking\Shared\Domain\Booking\Factory\DetailsRepositoryFactory;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPrices;
 use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceId;
@@ -24,10 +23,11 @@ class CopyBooking implements UseCaseInterface
     public function __construct(
         private readonly BookingRepositoryInterface $repository,
         private readonly DetailsEditorFactory $detailsEditorFactory,
-        private readonly DetailsRepositoryFactory $detailsRepositoryFactory,
+        private readonly DetailsRepositoryInterface $detailsRepository,
         private readonly AdministratorAdapterInterface $administratorAdapter,
         private readonly BookingDtoFactory $bookingDtoFactory,
-    ) {}
+    ) {
+    }
 
     public function execute(int $id): BookingDto
     {
@@ -46,12 +46,13 @@ class CopyBooking implements UseCaseInterface
             serviceType: $booking->serviceType(),
             note: $booking->note(),
         );
-        /** @var HotelBooking|ServiceDetailsInterface $details */
-        $details = $this->detailsRepositoryFactory->build($booking)->find($booking->id());
-        $editor = $this->detailsEditorFactory->build($newBooking);
+        $details = $this->detailsRepository->findOrFail($booking->id());
+        $editor = $this->detailsEditorFactory->build($newBooking->serviceType());
         if ($details instanceof HotelBooking) {
             $editor->create($newBooking->id(), new ServiceId($details->hotelInfo()->id()), [
-                'period' => new CarbonPeriod($details->bookingPeriod()->dateFrom(), $details->bookingPeriod()->dateTo()),
+                'period' => new CarbonPeriod(
+                    $details->bookingPeriod()->dateFrom(), $details->bookingPeriod()->dateTo()
+                ),
                 'quota_processing_method' => $details->quotaProcessingMethod()->value,
             ]);
         } else {

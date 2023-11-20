@@ -26,10 +26,9 @@ use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Entity\HotelAccommodation;
 use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking as DetailsEntity;
-use Module\Booking\Shared\Domain\Booking\Entity\ServiceDetailsInterface;
-use Module\Booking\Shared\Domain\Booking\Factory\DetailsRepositoryFactory;
 use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Service\DetailOptionsDataFactory;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPeriod;
 use Module\Booking\Shared\Domain\Booking\ValueObject\CarBid;
@@ -68,7 +67,7 @@ class TemplateDataFactory
         private readonly GuestRepositoryInterface $guestRepository,
         private readonly SupplierAdapterInterface $supplierAdapter,
         private readonly DetailOptionsDataFactory $detailOptionsDataFactory,
-        private readonly DetailsRepositoryFactory $detailsRepositoryFactory,
+        private readonly DetailsRepositoryInterface $detailsRepository,
         private readonly HotelAdapterInterface $hotelAdapter,
         private readonly AccommodationRepositoryInterface $accommodationRepository,
     ) {
@@ -135,9 +134,7 @@ class TemplateDataFactory
             $clientPrice->currency()->name
         );
 
-        $detailsRepository = $this->detailsRepositoryFactory->build($booking);
-        /** @var ServiceDetailsInterface $details */
-        $details = $detailsRepository->findOrFail($booking->id());
+        $details = $this->detailsRepository->findOrFail($booking->id());
         try {
             $detailOptions = $this->detailOptionsDataFactory->build($details);
         } catch (\Throwable $e) {

@@ -29,8 +29,6 @@ class AccommodationPriceStorage
         foreach ($this->accommodationRepository->getByBookingId($bookingDetails->bookingId()) as $accommodation) {
             $roomPrices = $this->buildRoomPrices($accommodation, $supplierPriceDto, $clientPriceDto);
             $accommodation->updatePrices($roomPrices);
-
-            $this->accommodationRepository->store($accommodation);
         }
     }
 

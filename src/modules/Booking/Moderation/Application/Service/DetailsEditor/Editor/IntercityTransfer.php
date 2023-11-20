@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\Service\DetailsEditor\Editor;
 
-use Module\Booking\Moderation\Application\Service\DetailsEditor\EditorInterface;
-use Module\Booking\Shared\Domain\Booking\Entity\ServiceDetailsInterface;
-use Module\Booking\Shared\Domain\Booking\Repository\Details\IntercityTransferRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Entity\DetailsInterface;
+use Module\Booking\Shared\Domain\Booking\Factory\Details\IntercityTransferFactoryInterface;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\CarBidCollection;
 use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceId;
@@ -16,16 +15,17 @@ use Module\Supplier\Moderation\Infrastructure\Models\Service as InfrastructureSu
 class IntercityTransfer extends AbstractEditor implements EditorInterface
 {
     public function __construct(
-        private readonly IntercityTransferRepositoryInterface $detailsRepository
-    ) {}
+        private readonly IntercityTransferFactoryInterface $detailsFactory
+    ) {
+    }
 
-    public function create(BookingId $bookingId, ServiceId $serviceId, array $detailsData): ServiceDetailsInterface
+    public function create(BookingId $bookingId, ServiceId $serviceId, array $detailsData): DetailsInterface
     {
         $supplierService = InfrastructureSupplierService::find($serviceId->value());
 
         $serviceInfo = new ServiceInfo($serviceId->value(), $supplierService->title, $supplierService->supplier_id);
 
-        return $this->detailsRepository->create(
+        return $this->detailsFactory->create(
             $bookingId,
             $serviceInfo,
             (int)$supplierService->data['fromCityId'],
@@ -34,14 +34,5 @@ class IntercityTransfer extends AbstractEditor implements EditorInterface
             (bool)$supplierService->data['returnTripIncluded'],
             $detailsData['departureDate'] ?? null,
         );
-    }
-
-    public function update(BookingId $bookingId, array $detailsData): void
-    {
-        $details = $this->detailsRepository->find($bookingId);
-        foreach ($detailsData as $field => $value) {
-            $this->setField($details, $field, $value);
-        }
-        $this->detailsRepository->store($details);
     }
 }

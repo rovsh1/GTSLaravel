@@ -4,34 +4,40 @@ declare(strict_types=1);
 
 namespace Module\Booking\Pricing\Application\UseCase;
 
-use Module\Booking\Moderation\Domain\Booking\Service\BookingUpdater;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPriceItem;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPrices;
+use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class SetManualClientPrice implements UseCaseInterface
 {
     public function __construct(
-        private readonly BookingRepositoryInterface $repository,
-        private readonly BookingUpdater $bookingUpdater,
-    ) {}
+        private readonly BookingRepositoryInterface $bookingRepository,
+        private readonly DomainEventDispatcherInterface $eventDispatcher,
+    ) {
+    }
 
     public function execute(int $bookingId, float|int|null $price): void
     {
-        $booking = $this->repository->findOrFail(new BookingId($bookingId));
+        $booking = $this->bookingRepository->findOrFail(new BookingId($bookingId));
+
         $clientPrice = new BookingPriceItem(
             $booking->prices()->clientPrice()->currency(),
             $booking->prices()->clientPrice()->calculatedValue(),
             $price,
             $booking->prices()->clientPrice()->penaltyValue(),
         );
-        $newPrices = new BookingPrices(
-            supplierPrice: $booking->prices()->supplierPrice(),
-            clientPrice: $clientPrice
+
+        $booking->updatePrice(
+            new BookingPrices(
+                supplierPrice: $booking->prices()->supplierPrice(),
+                clientPrice: $clientPrice
+            )
         );
-        $booking->updatePrice($newPrices);
-        $this->bookingUpdater->store($booking);
+
+        $this->bookingRepository->store($booking);
+        $this->eventDispatcher->dispatch(...$booking->pullEvents());
     }
 }

@@ -12,6 +12,7 @@ class IntegrationEventServiceProvider extends ServiceProvider
     protected array $listen = [
         IntegrationEventMessages::BOOKING_STATUS_UPDATED => StatusUpdatedListener::class,
 //        IntegrationEventMessages::BOOKING_REQUEST_SENT => StatusUpdatedListener::class,
-        IntegrationEventMessages::BOOKING_MODIFIED => BookingChangesListener::class
+        IntegrationEventMessages::BOOKING_MODIFIED => BookingChangesListener::class,
+//        IntegrationEventMessages::BOOKING_DETAILS_MODIFIED => BookingChangesListener::class,
     ];
 }

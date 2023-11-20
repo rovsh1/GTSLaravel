@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Domain\Booking;
 
 use Module\Booking\Shared\Domain\Booking\Event\BookingDeleted;
+use Module\Booking\Shared\Domain\Booking\Event\NoteChanged;
+use Module\Booking\Shared\Domain\Booking\Event\PriceUpdated;
 use Module\Booking\Shared\Domain\Booking\Support\Concerns\HasStatusesTrait;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPrices;
@@ -31,7 +33,8 @@ class Booking extends AbstractAggregateRoot implements SerializableDataInterface
         private ?string $note,
         private readonly Context $context,
         private readonly Timestamps $timestamps,
-    ) {}
+    ) {
+    }
 
     public function id(): BookingId
     {
@@ -61,8 +64,7 @@ class Booking extends AbstractAggregateRoot implements SerializableDataInterface
 
         $priceBefore = $this->prices;
         $this->prices = $price;
-        //@todo нужен ли ивент?
-//        $this->pushEvent(new BookingPriceChanged($this, $priceBefore));
+        $this->pushEvent(new PriceUpdated($this, $priceBefore));
     }
 
     public function context(): Context
@@ -90,6 +92,7 @@ class Booking extends AbstractAggregateRoot implements SerializableDataInterface
 
     public function setNote(string|null $note): void
     {
+        $this->pushEvent(new NoteChanged($this, $this->note));
         $this->note = $note;
     }
 

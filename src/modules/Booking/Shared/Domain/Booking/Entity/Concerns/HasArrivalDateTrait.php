@@ -15,4 +15,9 @@ trait HasArrivalDateTrait
     {
         $this->arrivalDate = $arrivalDate;
     }
+
+    public function serviceDate(): ?DateTimeInterface
+    {
+        return $this->arrivalDate;
+    }
 }
