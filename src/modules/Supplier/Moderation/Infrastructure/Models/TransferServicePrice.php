@@ -2,16 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Module\Hotel\Pricing\Infrastructure\Models;
+namespace Module\Supplier\Moderation\Infrastructure\Models;
 
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Module\Shared\Enum\CurrencyEnum;
 use Module\Shared\Infrastructure\Models\Model;
 
-class AirportServicePrice extends Model
+class TransferServicePrice extends Model
 {
-    protected $table = 'supplier_airport_prices';
+    public $timestamps = false;
+
+    protected $table = 'supplier_car_prices';
 
     protected $casts = [
         'currency' => CurrencyEnum::class,
@@ -21,8 +23,8 @@ class AirportServicePrice extends Model
 
     public function scopeWhereDate(Builder $builder, CarbonInterface $date): void
     {
-        $builder->join('supplier_seasons', 'supplier_seasons.id', 'supplier_airport_prices.season_id')
-            ->where('supplier_seasons.date_start', '<=', $date->clone()->startOfDay())
-            ->where('supplier_seasons.date_end', '>=', $date->clone()->endOfDay());
+        $builder->join('supplier_seasons', 'supplier_seasons.id', 'supplier_car_prices.season_id')
+            ->where('supplier_seasons.date_start', '<=', $date)
+            ->where('supplier_seasons.date_end', '>=', $date);
     }
 }

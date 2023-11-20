@@ -7,8 +7,6 @@ namespace Module\Booking\Shared\Infrastructure\Adapter;
 use Carbon\CarbonInterface;
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Hotel\Pricing\Application\Dto\ServicePriceDto;
-use Module\Hotel\Pricing\Application\UseCase\GetAirportServicePrice;
-use Module\Hotel\Pricing\Application\UseCase\GetTransferServicePrice;
 use Module\Shared\Enum\CurrencyEnum;
 use Module\Supplier\Moderation\Application\Dto\AirportDto;
 use Module\Supplier\Moderation\Application\Dto\CarDto;
@@ -24,7 +22,10 @@ use Module\Supplier\Moderation\Application\UseCase\FindAirportServiceContract;
 use Module\Supplier\Moderation\Application\UseCase\FindCar;
 use Module\Supplier\Moderation\Application\UseCase\FindService;
 use Module\Supplier\Moderation\Application\UseCase\FindTransferServiceContract;
+use Module\Supplier\Moderation\Application\UseCase\GetAirportServicePrice;
 use Module\Supplier\Moderation\Application\UseCase\GetCars;
+use Module\Supplier\Moderation\Application\UseCase\GetOtherServicePrice;
+use Module\Supplier\Moderation\Application\UseCase\GetTransferServicePrice;
 
 class SupplierAdapter implements SupplierAdapterInterface
 {
@@ -71,6 +72,20 @@ class SupplierAdapter implements SupplierAdapterInterface
         CarbonInterface $date
     ): ?ServicePriceDto {
         return app(GetAirportServicePrice::class)->execute(
+            $supplierId,
+            $serviceId,
+            $clientCurrency,
+            $date
+        );
+    }
+
+    public function getOtherServicePrice(
+        int $supplierId,
+        int $serviceId,
+        CurrencyEnum $clientCurrency,
+        CarbonInterface $date
+    ): ?ServicePriceDto {
+        return app(GetOtherServicePrice::class)->execute(
             $supplierId,
             $serviceId,
             $clientCurrency,

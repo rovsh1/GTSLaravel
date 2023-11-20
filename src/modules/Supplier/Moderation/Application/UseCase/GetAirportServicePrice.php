@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Module\Hotel\Pricing\Application\UseCase;
+namespace Module\Supplier\Moderation\Application\UseCase;
 
 use Carbon\CarbonInterface;
 use Module\Hotel\Pricing\Application\Dto\PriceDto;
 use Module\Hotel\Pricing\Application\Dto\ServicePriceDto;
-use Module\Hotel\Pricing\Infrastructure\Models\AirportServicePrice as Model;
 use Module\Shared\Enum\CurrencyEnum;
+use Module\Supplier\Moderation\Infrastructure\Models\AirportServicePrice as Model;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class GetAirportServicePrice implements UseCaseInterface

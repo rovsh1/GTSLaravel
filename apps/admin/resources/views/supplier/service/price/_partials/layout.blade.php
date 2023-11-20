@@ -24,6 +24,14 @@
                     Аэропорт
                 </a>
             </li>
+            <li class="nav-item">
+                <a
+                        class="nav-link {{ request()->routeIs('supplier.service.other.prices.index') ? 'active' : '' }}"
+                        href="{{ route('supplier.service.other.prices.index', $provider) }}"
+                >
+                    Прочие
+                </a>
+            </li>
         </ul>
 
         <div class="flex-grow-1"></div>

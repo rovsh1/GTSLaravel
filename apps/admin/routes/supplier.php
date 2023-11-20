@@ -90,6 +90,24 @@ AclRoute::for('supplier')
         'update',
         'service.airport.price.update'
     )
+    ->get(
+        '/{provider}/service-other/prices',
+        Supplier\Service\Price\OtherPricesController::class . '@index',
+        'read',
+        'service.other.prices.index'
+    )
+    ->get(
+        '/{provider}/service-other/{service}/prices/get',
+        Supplier\Service\Price\OtherPricesController::class . '@getPrices',
+        'read',
+        'service.other.prices.get'
+    )
+    ->put(
+        '/{provider}/service-other/{service}/price',
+        Supplier\Service\Price\OtherPricesController::class . '@update',
+        'update',
+        'service.other.price.update'
+    )
     ->resource('cars', Supplier\CarController::class, [
         'slug' => 'provider',
         'except' => ['show']

@@ -2,27 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Module\Hotel\Pricing\Application\UseCase;
+namespace Module\Supplier\Moderation\Application\UseCase;
 
 use Carbon\CarbonInterface;
 use Module\Hotel\Pricing\Application\Dto\PriceDto;
 use Module\Hotel\Pricing\Application\Dto\ServicePriceDto;
-use Module\Hotel\Pricing\Infrastructure\Models\TransferServicePrice as Model;
 use Module\Shared\Enum\CurrencyEnum;
+use Module\Supplier\Moderation\Infrastructure\Models\OtherServicePrice as Model;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
-class GetTransferServicePrice implements UseCaseInterface
+class GetOtherServicePrice implements UseCaseInterface
 {
     public function execute(
         int $supplierId,
         int $serviceId,
-        int $carId,
         CurrencyEnum $grossCurrency,
         CarbonInterface $date
     ): ?ServicePriceDto {
         $price = Model::whereSupplierId($supplierId)
             ->whereServiceId($serviceId)
-            ->whereCarId($carId)
 //            ->whereCurrency($supplier->currency()->id())
             ->whereCurrency(CurrencyEnum::UZS)//@hack т.к. сейчас нетто цены только в UZS
             ->whereDate($date)
@@ -37,7 +35,7 @@ class GetTransferServicePrice implements UseCaseInterface
     private function buildDtoFromModel(Model $servicePrice, CurrencyEnum $grossCurrency): ?ServicePriceDto
     {
         $grossPrice = collect($servicePrice->prices_gross)->first(
-            fn(array $priceData) => CurrencyEnum::from($priceData['currency']) === $grossCurrency
+            fn(array $priceData) => $priceData['currency'] === $grossCurrency->name
         );
         if ($grossPrice === null) {
             return null;

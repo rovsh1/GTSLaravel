@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Admin\Models\Supplier;
 
-use Module\Supplier\Moderation\Infrastructure\Models\AirportServicePrice;
+use Module\Supplier\Moderation\Infrastructure\Models\OtherServicePrice;
 
-class AirportPrice extends AirportServicePrice
+class OtherPrice extends OtherServicePrice
 {
     protected $fillable = [
         'service_id',

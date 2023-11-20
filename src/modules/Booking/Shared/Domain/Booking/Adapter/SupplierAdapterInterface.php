@@ -39,6 +39,13 @@ interface SupplierAdapterInterface
         CarbonInterface $date
     ): ?ServicePriceDto;
 
+    public function getOtherServicePrice(
+        int $supplierId,
+        int $serviceId,
+        CurrencyEnum $clientCurrency,
+        CarbonInterface $date
+    ): ?ServicePriceDto;
+
     public function findAirportServiceContract(int $serviceId): ?ServiceContractDto;
 
     public function getAirportCancelConditions(): ?CancelConditionsDto;

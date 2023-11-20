@@ -94,6 +94,11 @@ class Supplier extends Model
         return $this->services()->whereIn('type', ServiceTypeEnum::getAirportCases());
     }
 
+    public function otherServices(): HasMany
+    {
+        return $this->services()->where('type', ServiceTypeEnum::OTHER_SERVICE);
+    }
+
     public function getCitiesAttribute(): array
     {
         return $this->cities()->pluck('id')->toArray();
