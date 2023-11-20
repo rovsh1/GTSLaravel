@@ -17,7 +17,7 @@ const emit = defineEmits<{
   (event: 'click', serviceId: number, seasonId: number, carId: number): void
 }>()
 
-const getPriceButtonText = (seasonId: number, carId: number): string => 'Не установлена'
+const getPriceButtonText = (seasonId: number, carId: number): string => 'Не установлено'
 
 const handleClick = (seasonId: number, carId: number): void => {
   emit('click', props.serviceId, seasonId, carId)

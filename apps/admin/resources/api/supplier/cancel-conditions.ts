@@ -24,7 +24,7 @@ interface GetCancelConditionsPayload {
   carId: number
 }
 
-interface UpdateCancelConditionsPayload extends GetCancelConditionsPayload {
+export interface UpdateCancelConditionsPayload extends GetCancelConditionsPayload {
   cancelConditions: ServiceCancelConditions
 }
 

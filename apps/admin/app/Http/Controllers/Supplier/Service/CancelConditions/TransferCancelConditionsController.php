@@ -47,7 +47,6 @@ class TransferCancelConditionsController extends Controller
     public function get(GetTransferCancelConditionsRequest $request, Supplier $provider, Service $service): JsonResponse
     {
         $cancelConditions = CarsAdapter::getCancelConditions(
-            $provider->id,
             $request->getSeasonId(),
             $service->id,
             $request->getCarId()
@@ -62,7 +61,6 @@ class TransferCancelConditionsController extends Controller
         Service $service
     ): AjaxResponseInterface {
         CarsAdapter::updateCancelConditions(
-            $provider->id,
             $request->getSeasonId(),
             $service->id,
             $request->getCarId(),

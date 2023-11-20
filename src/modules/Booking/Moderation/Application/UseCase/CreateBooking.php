@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\UseCase;
 
+use Module\Booking\Moderation\Application\Exception\NotFoundHotelCancelPeriod;
+use Module\Booking\Moderation\Application\Exception\NotFoundServiceCancelConditions;
 use Module\Booking\Moderation\Application\Factory\CancelConditionsFactory;
 use Module\Booking\Moderation\Application\RequestDto\CreateBookingRequestDto;
 use Module\Booking\Moderation\Application\Service\DetailsEditor\DetailsEditorFactory;
@@ -43,6 +45,9 @@ class CreateBooking extends AbstractCreateBooking
             throw new EntityNotFoundException('Currency not found');
         }
         $cancelConditions = $this->cancelConditionsFactory->build($service->type);
+        if ($cancelConditions === null) {
+            throw new NotFoundServiceCancelConditions();
+        }
         $booking = $this->repository->create(
             orderId: $orderId,
             creatorId: new CreatorId($request->creatorId),

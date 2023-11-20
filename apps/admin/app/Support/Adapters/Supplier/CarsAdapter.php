@@ -17,13 +17,12 @@ class CarsAdapter
         return app(GetCars::class)->execute($supplierId);
     }
 
-    public function getCancelConditions(int $supplierId, int $seasonId, int $serviceId, int $carId): CancelConditionsDto
+    public function getCancelConditions(int $seasonId, int $serviceId, int $carId): ?CancelConditionsDto
     {
-        return app(GetTransferCancelConditions::class)->execute($supplierId, $seasonId, $serviceId, $carId);
+        return app(GetTransferCancelConditions::class)->execute($seasonId, $serviceId, $carId);
     }
 
     public function updateCancelConditions(
-        int $supplierId,
         int $seasonId,
         int $serviceId,
         int $carId,
@@ -31,7 +30,6 @@ class CarsAdapter
     ): void {
         app(UpdateTransferCancelConditions::class)->execute(
             new UpdateTransferCancelConditionsRequest(
-                supplierId: $supplierId,
                 seasonId: $seasonId,
                 carId: $carId,
                 serviceId: $serviceId,

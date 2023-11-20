@@ -30,7 +30,7 @@ interface SupplierAdapterInterface
 
     public function findTransferServiceContract(int $serviceId): ?ServiceContractDto;
 
-    public function getTransferCancelConditions(): CancelConditionsDto;
+    public function getTransferCancelConditions(): ?CancelConditionsDto;
 
     public function getAirportServicePrice(
         int $supplierId,
@@ -41,7 +41,7 @@ interface SupplierAdapterInterface
 
     public function findAirportServiceContract(int $serviceId): ?ServiceContractDto;
 
-    public function getAirportCancelConditions(): CancelConditionsDto;
+    public function getAirportCancelConditions(): ?CancelConditionsDto;
 
     /**
      * @param int $supplierId

@@ -59,7 +59,7 @@ class SupplierAdapter implements SupplierAdapterInterface
         return app(FindTransferServiceContract::class)->execute($serviceId);
     }
 
-    public function getTransferCancelConditions(): CancelConditionsDto
+    public function getTransferCancelConditions(): ?CancelConditionsDto
     {
         return app(GetTransferCancelConditions::class)->execute();
     }
@@ -83,7 +83,7 @@ class SupplierAdapter implements SupplierAdapterInterface
         return app(FindAirportServiceContract::class)->execute($serviceId);
     }
 
-    public function getAirportCancelConditions(): CancelConditionsDto
+    public function getAirportCancelConditions(): ?CancelConditionsDto
     {
         return app(GetAirportCancelConditions::class)->execute();
     }

@@ -18,6 +18,8 @@ class ApplicationException extends \RuntimeException
     public const BOOKING_AIRPORT_SERVICE_PRICE_NOT_FOUND = 1007;
     public const BOOKING_TRANSFER_SERVICE_PRICE_NOT_FOUND = 1008;
     public const BOOKING_TRANSFER_SERVICE_DATE_UNDEFINED = 1009;
+    public const BOOKING_NOT_FOUND_SERVICE_CANCEL_CONDITIONS = 1011;
+    //order errors
     public const ORDER_HAS_BOOKING_IN_PROGRESS = 1010;
 
     private const DEFAULT_MESSAGE = 'Неизвестная ошибка. Пожалуйста, обратитесь в техническую поддержку.';
