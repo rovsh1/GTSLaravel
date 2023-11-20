@@ -44,10 +44,10 @@ const { seasons, services, cars, supplierId, currencies } = requestInitialData('
 
 useCurrenciesStore().setCurrencies(currencies)
 
-const { quickSearch } = useQuickSearch()
+const { quickSearch, isEmpty } = useQuickSearch()
 
 const filteredServices = computed(() => {
-  if (quickSearch && quickSearch.trim().length > 0) {
+  if (quickSearch && !isEmpty) {
     return services.filter((service) => service.title.toLowerCase().includes(quickSearch.toLowerCase()))
   }
   return services
