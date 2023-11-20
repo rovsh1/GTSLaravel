@@ -17,6 +17,7 @@ export const useCancelConditions = () => {
     if (!cancelConditions.value) {
       throw new Error('Nothing to save. You should load before save.')
     }
+    // @todo взять данные для запроса: supplierId: number, serviceId: number, seasonId: number, carId: number
     // await updateCancelConditions({
     //   cancelConditions: cancelConditions.value,
     // })

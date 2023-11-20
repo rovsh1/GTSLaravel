@@ -26,7 +26,7 @@ const handleClick = (seasonId: number, carId: number): void => {
 </script>
 
 <template>
-  <CollapsableBlock :id="`airport-service-prices-${serviceId}`" :title="header" class="card-grid mb-3">
+  <CollapsableBlock :id="`transfer-service-cancel-conditions-${serviceId}`" :title="header" class="card-grid mb-3">
     <table class="table table-striped">
       <thead>
         <tr>

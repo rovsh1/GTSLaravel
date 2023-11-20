@@ -12,7 +12,7 @@ import { Car, Season } from '~api/models'
 import { requestInitialData } from '~lib/initial-data'
 
 import CancelConditionsModal from './CancelConditionsModal.vue'
-import ServiceTableRow from './ServiceTableRow.vue'
+import ServicePricesBlock from './ServicePricesBlock.vue'
 
 import { useCancelConditions } from '../composables/cancel-conditions'
 
@@ -72,7 +72,7 @@ const handleSave = async (): Promise<void> => {
     @close="toggleModal(false)"
   />
 
-  <ServiceTableRow
+  <ServicePricesBlock
     v-for="service in filteredServices"
     :key="service.id"
     :header="service.title"
