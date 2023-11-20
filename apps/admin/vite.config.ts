@@ -62,6 +62,7 @@ export default defineConfig(({ command }) => ({
         'resources/views/supplier/show.scss',
         'resources/views/supplier/service/price/airport/index.ts',
         'resources/views/supplier/service/price/transfer/index.ts',
+        'resources/views/supplier/service/price/other/index.ts',
         'resources/views/supplier/service/cancel-conditions/transfer/index.ts',
         'resources/views/supplier/service/form/form.ts',
         'resources/views/supplier/contract/form/form.ts',
