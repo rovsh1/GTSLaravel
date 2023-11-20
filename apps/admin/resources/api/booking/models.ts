@@ -40,6 +40,7 @@ export type BookingPrice = {
 
 export type BaseBooking = {
   id: BookingID
+  link: string
   orderId: OrderID
   status: BookingStatusResponse
   source: number

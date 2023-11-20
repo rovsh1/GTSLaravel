@@ -40,7 +40,7 @@ const formatBookingPeriod = (booking: OrderBooking): string | null => {
     <tbody>
       <template v-if="orderBookings.length > 0">
         <tr v-for="(booking) in orderBookings" :key="booking.id">
-          <td><a href="#">{{ booking.id }}</a></td>
+          <td><a :href="booking.link" target="_blank" rel="noopener noreferrer">{{ booking.id }}</a></td>
           <td>{{ booking.serviceInfo.name }}</td>
           <td>{{ formatBookingPeriod(booking) }}</td>
           <td>
