@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Domain\Order\Service;
 
+use Module\Booking\Moderation\Domain\Order\Adapter\InvoiceAdapterInterface;
 use Module\Booking\Moderation\Domain\Order\Exception\OrderHasBookingInProgress;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Order\Order;
@@ -12,6 +13,7 @@ class StatusUpdater
 {
     public function __construct(
         private readonly BookingRepositoryInterface $repository,
+        private readonly InvoiceAdapterInterface $invoiceAdapter
     ) {}
 
     public function toInProgress(Order $order): void
@@ -47,6 +49,7 @@ class StatusUpdater
 
     public function cancel(Order $order): void
     {
+        $this->invoiceAdapter->cancelInvoice($order->id());
         $order->cancel();
     }
 
