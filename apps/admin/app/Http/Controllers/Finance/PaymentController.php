@@ -32,6 +32,9 @@ class PaymentController extends AbstractPrototypeController
             ])
             ->date('issue_date', ['text' => 'Дата выставления', 'order' => true])
             ->date('payment_date', ['text' => 'Дата оплаты', 'order' => true])
+            ->price('payment_sum', ['text' => 'Сумма', 'currencyIndex' => 'payment_currency'])
+            ->price('lend_sum', ['text' => 'Распределено', 'currencyIndex' => 'payment_currency'])
+            ->price('remaining_sum', ['text' => 'Остаток', 'currencyIndex' => 'payment_currency'])
             ->file('file', ['text' => 'Файл'])
             ->date('created_at', ['text' => 'Создан', 'format' => 'datetime', 'order' => true])
             ->orderBy('id', 'desc');

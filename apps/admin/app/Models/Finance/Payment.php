@@ -7,7 +7,9 @@ namespace App\Admin\Models\Finance;
 use App\Shared\Support\Facades\FileStorage;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Query\Builder as Query;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 use Module\Client\Payment\Domain\Payment\ValueObject\PaymentStatusEnum;
 use Module\Shared\Dto\FileDto;
 use Module\Shared\Dto\UploadedFileDto;
@@ -31,7 +33,17 @@ class Payment extends \Module\Client\Payment\Infrastructure\Models\Payment
         static::addGlobalScope('default', function (Builder $builder) {
             $builder->addSelect('client_payments.*')
                 ->join('clients', 'clients.id', 'client_payments.client_id')
-                ->addSelect('clients.name as client_name');
+                ->addSelect('clients.name as client_name')
+                ->selectSub(function (Query $query) {
+                    $query->selectRaw('SUM(sum)')
+                        ->from('client_payment_plants')
+                        ->whereColumn('client_payment_plants.payment_id', 'client_payments.id');
+                }, 'lend_sum')
+                ->selectSub(function (Query $query) {
+                    $query->selectRaw('client_payments.payment_sum - SUM(sum)')
+                        ->from('client_payment_plants')
+                        ->whereColumn('client_payment_plants.payment_id', 'client_payments.id');
+                }, 'remaining_sum');
         });
     }
 

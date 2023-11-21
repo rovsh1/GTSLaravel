@@ -39,10 +39,6 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>Инвойс (ID)</th>
-                                <td>{{ $model->invoiceId }}</td>
-                            </tr>
-                            <tr>
                                 <th>Источник</th>
                                 <td>{{ $model->source }}</td>
                             </tr>

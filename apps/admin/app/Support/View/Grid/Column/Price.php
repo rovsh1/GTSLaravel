@@ -12,8 +12,6 @@ class Price extends Number
 
     public function renderer($row, $value)
     {
-        $priceFormatted = $this->formatValue($value);
-        dd($row, $priceFormatted);
         if (!$value) {
             return '';
         }
@@ -24,8 +22,8 @@ class Price extends Number
         } else {
             $cv = call_user_func(['\\' . $this->enum, 'getDefault']);
         }
-
-        return parent::render($value, $row)
-            . ' <span>' . call_user_func(['\\' . $this->enum, 'getLabel'], $cv) . '</span>';
+        $priceFormatted = $this->formatValue($value);
+//        return $priceFormatted . ' <span>' . call_user_func(['\\' . $this->enum, 'getLabel'], $cv) . '</span>';
+        return $priceFormatted . ' <span>' .  $cv->name . '</span>';
     }
 }

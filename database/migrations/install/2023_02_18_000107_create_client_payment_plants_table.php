@@ -10,7 +10,6 @@ return new class extends Migration {
         Schema::create('client_payment_plants', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('payment_id');
-            $table->unsignedInteger('invoice_id');
             $table->unsignedInteger('order_id');
             $table->unsignedDecimal('sum');
             $table->timestamp('created_at');
@@ -18,12 +17,6 @@ return new class extends Migration {
             $table->foreign('payment_id')
                 ->references('id')
                 ->on('client_payments')
-                ->cascadeOnDelete()
-                ->cascadeOnUpdate();
-
-            $table->foreign('invoice_id')
-                ->references('id')
-                ->on('client_invoices')
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
 

@@ -26,7 +26,6 @@ class OrderFactory extends AbstractEntityFactory
     protected function fromArray(array $data): mixed
     {
         $legalId = $data['legal_id'] ?? null;
-        $invoiceId = $data['invoice_id'] ?? null;
         $guestIds = array_map(fn(int $id) => new GuestId($id), $data['guest_ids'] ?? []);
 
         return new $this->entity(
@@ -34,7 +33,6 @@ class OrderFactory extends AbstractEntityFactory
             CurrencyEnum::from($data['currency']),
             new ClientId($data['client_id']),
             $legalId !== null ? new LegalId($legalId) : null,
-            $invoiceId !== null ? new InvoiceId($invoiceId) : null,
             OrderStatusEnum::from($data['status']),
             new CarbonImmutable($data['created_at']),
             new GuestIdCollection($guestIds),

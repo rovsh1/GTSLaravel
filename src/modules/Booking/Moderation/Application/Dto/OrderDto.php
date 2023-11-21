@@ -18,7 +18,6 @@ class OrderDto extends Dto
         public readonly StatusDto $status,
         public readonly int $clientId,
         public readonly ?int $legalId,
-        public readonly ?int $invoiceId,
         public readonly CarbonImmutable $createdAt,
         /** @var int[] $guestIds */
         public readonly array $guestIds,
