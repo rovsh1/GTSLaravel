@@ -35,7 +35,7 @@ class CalculateHotelPriceRequestDtoBuilder
 
     public function booking(Booking $booking): static
     {
-        $details = $this->detailsRepository->findOrFail($this->booking->id());
+        $details = $this->detailsRepository->findOrFail($booking->id());
         assert($details instanceof HotelBooking);
         $this->booking = $booking;
         $this->details = $details;

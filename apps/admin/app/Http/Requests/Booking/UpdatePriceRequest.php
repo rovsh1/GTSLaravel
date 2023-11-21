@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Admin\Http\Requests\Booking\Hotel;
+namespace App\Admin\Http\Requests\Booking;
 
 use Illuminate\Foundation\Http\FormRequest;
 

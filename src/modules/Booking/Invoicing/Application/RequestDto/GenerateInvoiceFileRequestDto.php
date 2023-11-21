@@ -8,9 +8,7 @@ class GenerateInvoiceFileRequestDto
 {
     public function __construct(
         public readonly string $filename,
-        public readonly int $invoiceId,
-        public readonly array $orderIds,
+        public readonly int $orderId,
         public readonly int $clientId,
-        public readonly \DateTimeInterface $createdAt
     ) {}
 }

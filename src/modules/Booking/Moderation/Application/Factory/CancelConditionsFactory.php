@@ -25,7 +25,9 @@ class CancelConditionsFactory
 
     public function build(ServiceTypeEnum $serviceType, CarbonInterface|null $bookingDate = null): ?CancelConditions
     {
-        $baseCancelConditions = $this->getSupplierCancelConditions($serviceType);
+//        $baseCancelConditions = $this->getSupplierCancelConditions($serviceType);
+        //@todo получение условий отмены
+        $baseCancelConditions = null;
         if ($baseCancelConditions === null) {
             return null;
         }

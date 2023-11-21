@@ -32,7 +32,6 @@ class OrderRepository implements OrderRepositoryInterface
     public function store(Order $order): void
     {
         Model::whereId($order->id()->value())->update([
-            'invoice_id' => $order->invoiceId(),
             'status' => $order->status(),
         ]);
     }
@@ -43,9 +42,6 @@ class OrderRepository implements OrderRepositoryInterface
             id: new OrderId($model->id),
             clientId: new ClientId($model->client_id),
             status: $model->status,
-            invoiceId: $model->invoice_id !== null
-                ? new InvoiceId($model->invoice_id)
-                : null,
             currency: $model->currency
         );
     }

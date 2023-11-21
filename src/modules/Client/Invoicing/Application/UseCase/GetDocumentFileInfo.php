@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Client\Invoicing\Application\UseCase;
 
 use Module\Client\Invoicing\Domain\Invoice\Repository\InvoiceRepositoryInterface;
-use Module\Client\Invoicing\Domain\Invoice\ValueObject\InvoiceId;
+use Module\Client\Invoicing\Domain\Order\ValueObject\OrderId;
 use Module\Shared\Contracts\Adapter\FileStorageAdapterInterface;
 use Module\Shared\Exception\ApplicationException;
 use Module\Support\FileStorage\Application\Dto\FileInfoDto;
@@ -18,11 +18,11 @@ class GetDocumentFileInfo implements UseCaseInterface
         private readonly FileStorageAdapterInterface $fileStorageAdapter
     ) {}
 
-    public function execute(int $invoiceId): ?FileInfoDto
+    public function execute(int $orderId): ?FileInfoDto
     {
-        $invoice = $this->invoiceRepository->find(new InvoiceId($invoiceId));
+        $invoice = $this->invoiceRepository->findByOrderId(new OrderId($orderId));
         if ($invoice?->document()?->guid() === null) {
-            throw new ApplicationException('Invoice or file not found',999);
+            throw new ApplicationException('Invoice or file not found', 404);
         }
 
         return $this->fileStorageAdapter->getInfo($invoice->document()->guid());

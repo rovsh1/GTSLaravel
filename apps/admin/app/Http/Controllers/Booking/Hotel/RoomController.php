@@ -8,7 +8,7 @@ use App\Admin\Http\Requests\Booking\Hotel\Room\AddRoomRequest;
 use App\Admin\Http\Requests\Booking\Hotel\Room\DeleteRoomRequest;
 use App\Admin\Http\Requests\Booking\Hotel\Room\Guest\RoomGuestRequest;
 use App\Admin\Http\Requests\Booking\Hotel\Room\UpdateRoomRequest;
-use App\Admin\Http\Requests\Booking\Hotel\UpdatePriceRequest;
+use App\Admin\Http\Requests\Booking\UpdatePriceRequest;
 use App\Admin\Support\Facades\Booking\Hotel\AccommodationAdapter;
 use App\Shared\Http\Responses\AjaxErrorResponse;
 use App\Shared\Http\Responses\AjaxResponseInterface;

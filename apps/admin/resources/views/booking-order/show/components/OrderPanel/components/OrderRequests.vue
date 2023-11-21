@@ -2,8 +2,9 @@
 import { computed } from 'vue'
 
 import RequestBlock from '~resources/views/booking/shared/components/RequestBlock.vue'
+import OrderInvoice from '~resources/views/booking-order/show/components/OrderPanel/components/OrderInvoice.vue'
 import { useOrderStore } from '~resources/views/booking-order/show/store/order'
-import { useBookingVoucherStore } from '~resources/views/booking-order/show/store/voucher'
+import { useOrderVoucherStore } from '~resources/views/booking-order/show/store/voucher'
 
 import { OrderAvailableActionsResponse } from '~api/order/status'
 import { OrderVoucher } from '~api/order/voucher'
@@ -11,11 +12,11 @@ import { OrderVoucher } from '~api/order/voucher'
 import { formatDateTime } from '~lib/date'
 
 const orderStore = useOrderStore()
-const { fetchOrder, fetchAvailableActions } = orderStore
+const { refreshOrder } = orderStore
 const availableActions = computed<OrderAvailableActionsResponse | null>(() => orderStore.availableActions)
 const isRequestableStatus = computed<boolean>(() => true) // availableActions.value?.isRequestable
 
-const voucherStore = useBookingVoucherStore()
+const voucherStore = useOrderVoucherStore()
 const orderVouchers = computed<OrderVoucher[] | null>(() => voucherStore.vouchers)
 
 const isVoucherFetching = computed(() => voucherStore.voucherSendIsFetching)
@@ -24,10 +25,7 @@ const canSendVoucher = computed<boolean>(() => availableActions.value?.canSendVo
 
 const handleVoucherSend = async () => {
   await voucherStore.sendVoucher()
-  await Promise.all([
-    fetchAvailableActions(),
-    fetchOrder(),
-  ])
+  await refreshOrder()
 }
 </script>
 
@@ -63,4 +61,6 @@ const handleVoucherSend = async () => {
       text="Ваучеры клиенту не отправлялись"
     />
   </div>
+
+  <OrderInvoice />
 </template>

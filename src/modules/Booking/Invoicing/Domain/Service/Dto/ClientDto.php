@@ -8,7 +8,7 @@ class ClientDto
 {
     public function __construct(
         public readonly string $name,
-        public readonly string $phone,
-        public readonly string $address,
+        public readonly ?string $phone,
+        public readonly ?string $address,
     ) {}
 }

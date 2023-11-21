@@ -10,6 +10,8 @@ final class OrderAvailableActionsDto
         public readonly array $statuses,
         public readonly bool $isEditable,
         public readonly bool $canSendVoucher,
+        public readonly bool $canCreateInvoice,
         public readonly bool $canSendInvoice,
+        public readonly bool $canCancelInvoice,
     ) {}
 }

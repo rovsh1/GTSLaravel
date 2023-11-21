@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Admin\Http\Controllers\Booking\Hotel;
+namespace App\Admin\Http\Controllers\Booking\Order;
 
 use App\Admin\Support\Facades\Booking\VoucherAdapter;
 use App\Shared\Http\Responses\AjaxResponseInterface;

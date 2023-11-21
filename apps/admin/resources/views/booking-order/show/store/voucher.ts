@@ -1,4 +1,4 @@
-import { onMounted, ref } from 'vue'
+import { nextTick, onMounted, ref } from 'vue'
 
 import { defineStore } from 'pinia'
 import { z } from 'zod'
@@ -14,7 +14,7 @@ const { orderID } = requestInitialData('view-initial-data-booking-order', z.obje
   orderID: z.number(),
 }))
 
-export const useBookingVoucherStore = defineStore('order-vouchers', () => {
+export const useOrderVoucherStore = defineStore('order-vouchers', () => {
   const { data: vouchers, execute: fetchOrderVouchers, isFetching } = useOrderVoucherListAPI({ orderID })
   const voucherSendIsFetching = ref(false)
 
@@ -22,7 +22,7 @@ export const useBookingVoucherStore = defineStore('order-vouchers', () => {
     const { result: isConfirmed, toggleClose } = await showConfirmDialog('Отправить ваучер?')
     if (isConfirmed) {
       voucherSendIsFetching.value = true
-      setTimeout(toggleClose)
+      nextTick(toggleClose)
       await sendOrderVoucher({ orderID })
       await fetchOrderVouchers()
     }

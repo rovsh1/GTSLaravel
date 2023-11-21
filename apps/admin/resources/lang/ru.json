@@ -139,10 +139,6 @@
     "Module\\Shared\\Enum\\Hotel\\ReviewStatusEnum::NOT_PUBLIC": "Не опубликовано",
     "Module\\Shared\\Enum\\Hotel\\ReviewStatusEnum::PUBLIC": "Опубликовано",
 
-    "Module\\Client\\Invoicing\\Domain\\Invoice\\ValueObject\\InvoiceStatusEnum::NOT_PAID": "Не оплачен",
-    "Module\\Client\\Invoicing\\Domain\\Invoice\\ValueObject\\InvoiceStatusEnum::PARTIAL_PAID": "Частично оплачен",
-    "Module\\Client\\Invoicing\\Domain\\Invoice\\ValueObject\\InvoiceStatusEnum::PAID": "Оплачен",
-
     "Module\\Client\\Payment\\Domain\\Payment\\ValueObject\\PaymentStatusEnum::NOT_PAID": "Не распределен",
     "Module\\Client\\Payment\\Domain\\Payment\\ValueObject\\PaymentStatusEnum::PARTIAL_PAID": "Частично распределен",
     "Module\\Client\\Payment\\Domain\\Payment\\ValueObject\\PaymentStatusEnum::PAID": "Распределен",

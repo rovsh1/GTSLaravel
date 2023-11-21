@@ -19,8 +19,6 @@ use Module\Booking\Invoicing\Domain\Service\Dto\CompanyRequisitesDto;
 use Module\Booking\Invoicing\Domain\Service\Dto\InvoiceDto;
 use Module\Booking\Invoicing\Domain\Service\Dto\ManagerDto;
 use Module\Booking\Invoicing\Domain\Service\Dto\OrderDto;
-use Module\Booking\Invoicing\Domain\ValueObject\InvoiceId;
-use Module\Booking\Invoicing\Domain\ValueObject\OrderIdCollection;
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
@@ -75,17 +73,8 @@ class TemplateDataFactory
         $this->countryNamesIndexedId = collect($countries)->keyBy('id')->map->name->all();
     }
 
-    public function build(
-        InvoiceId $invoiceId,
-        OrderIdCollection $orderIds,
-        ClientId $clientId,
-        \DateTimeInterface $createdAt
-    ): array {
-        $orderId = null;
-        foreach ($orderIds as $oId) {
-            $orderId = $oId;
-            break;
-        }
+    public function build(OrderId $orderId, ClientId $clientId): array
+    {
         $order = $this->orderRepository->findOrFail($orderId);
 
         $bookings = $this->buildBookings($orderId);
@@ -101,11 +90,11 @@ class TemplateDataFactory
             'company' => $this->getCompanyRequisites(),
             'manager' => $this->buildOrderManagerDto($order),
             'client' => $this->buildClientDto($clientId),
-            'invoice' => $this->buildInvoiceDto($invoiceId, $createdAt, $totalAmount),
+            'invoice' => $this->buildInvoiceDto($orderId, now(), $totalAmount),
         ];
     }
 
-    private function buildInvoiceDto(InvoiceId $id, \DateTimeInterface $createdAt, float $totalAmount): InvoiceDto
+    private function buildInvoiceDto(OrderId $id, \DateTimeInterface $createdAt, float $totalAmount): InvoiceDto
     {
         return new InvoiceDto(
             (string)$id->value(),

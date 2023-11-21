@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Module\Client\Invoicing\Domain\Invoice;
 
 use Module\Client\Invoicing\Domain\Invoice\ValueObject\InvoiceId;
-use Module\Client\Invoicing\Domain\Invoice\ValueObject\InvoiceStatusEnum;
-use Module\Client\Invoicing\Domain\Invoice\ValueObject\OrderIdCollection;
+use Module\Client\Invoicing\Domain\Order\ValueObject\OrderId;
 use Module\Client\Shared\Domain\ValueObject\ClientId;
 use Module\Shared\ValueObject\File;
 use Module\Shared\ValueObject\Timestamps;
@@ -14,12 +13,13 @@ use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
 final class Invoice extends AbstractAggregateRoot
 {
+    private bool $isDeleted = false;
+
     public function __construct(
         private readonly InvoiceId $id,
         private readonly ClientId $clientId,
-        private InvoiceStatusEnum $status,
-        private readonly OrderIdCollection $orders,
-        private ?File $document,
+        private readonly OrderId $orderId,
+        private readonly File $document,
         private readonly Timestamps $timestamps
         //@todo добавить стоимость инвоисов
     ) {}
@@ -34,17 +34,12 @@ final class Invoice extends AbstractAggregateRoot
         return $this->clientId;
     }
 
-    public function status(): InvoiceStatusEnum
+    public function orderId(): OrderId
     {
-        return $this->status;
+        return $this->orderId;
     }
 
-    public function orders(): OrderIdCollection
-    {
-        return $this->orders;
-    }
-
-    public function document(): ?File
+    public function document(): File
     {
         return $this->document;
     }
@@ -56,30 +51,11 @@ final class Invoice extends AbstractAggregateRoot
 
     public function delete(): void
     {
-        $this->updateStatus(InvoiceStatusEnum::DELETED);
+        $this->isDeleted = true;
     }
 
-    /**
-     * @param File $file
-     * @return void
-     * @throws \Throwable
-     */
-    public function setDocument(File $file): void
+    public function isDeleted(): bool
     {
-        if ($this->document !== null) {
-            throw new \RuntimeException('File already exists');
-        }
-        $this->document = $file;
-    }
-
-    private function updateStatus(InvoiceStatusEnum $status): void
-    {
-        if ($status === $this->status) {
-            return;
-        }
-
-//        $beforeStatus = $this->status;
-        $this->status = $status;
-//        $this->pushEvent(new InvoiceStatusChanged($this, $beforeStatus));
+        return $this->isDeleted;
     }
 }

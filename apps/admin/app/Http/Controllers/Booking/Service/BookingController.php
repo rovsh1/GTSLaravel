@@ -6,11 +6,11 @@ namespace App\Admin\Http\Controllers\Booking\Service;
 
 use App\Admin\Components\Factory\Prototype;
 use App\Admin\Http\Controllers\Controller;
-use App\Admin\Http\Requests\Booking\Hotel\BulkDeleteRequest;
-use App\Admin\Http\Requests\Booking\Hotel\UpdateManagerRequest;
-use App\Admin\Http\Requests\Booking\Hotel\UpdateNoteRequest;
-use App\Admin\Http\Requests\Booking\Hotel\UpdatePriceRequest;
-use App\Admin\Http\Requests\Booking\Hotel\UpdateStatusRequest;
+use App\Admin\Http\Requests\Booking\BulkDeleteRequest;
+use App\Admin\Http\Requests\Booking\UpdateManagerRequest;
+use App\Admin\Http\Requests\Booking\UpdateNoteRequest;
+use App\Admin\Http\Requests\Booking\UpdatePriceRequest;
+use App\Admin\Http\Requests\Booking\UpdateStatusRequest;
 use App\Admin\Models\Administrator\Administrator;
 use App\Admin\Models\Booking\Booking;
 use App\Admin\Models\Client\Client;
@@ -93,7 +93,8 @@ class BookingController extends Controller
         $form = $this->formFactory()
             ->method('post');
 
-        $form->trySubmit(route('service-booking.store'));
+        $redirectUrl = route('service-booking.create');
+        $form->trySubmit($redirectUrl);
 
         $data = $form->getData();
         $creatorId = request()->user()->id;
@@ -108,17 +109,21 @@ class BookingController extends Controller
             $client = Client::find($data['client_id']);
             $currency = $client->currency;
         }
-        $bookingId = BookingAdapter::createBooking(
-            clientId: $data['client_id'],
-            legalId: $data['legal_id'],
-            currency: $currency,
-            serviceId: $data['service_id'],
-            managerId: $managerId,
-            creatorId: $creatorId,
-            orderId: $data['order_id'] ?? null,
-            detailsData: $data,
-            note: $data['note'] ?? null,
-        );
+        try {
+            $bookingId = BookingAdapter::createBooking(
+                clientId: $data['client_id'],
+                legalId: $data['legal_id'],
+                currency: $currency,
+                serviceId: $data['service_id'],
+                managerId: $managerId,
+                creatorId: $creatorId,
+                orderId: $data['order_id'] ?? null,
+                detailsData: $data,
+                note: $data['note'] ?? null,
+            );
+        } catch (ApplicationException $e) {
+            $form->throwException($e, $redirectUrl);
+        }
 
         return redirect(
             route('service-booking.show', $bookingId)

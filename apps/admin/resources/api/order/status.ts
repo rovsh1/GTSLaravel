@@ -8,7 +8,9 @@ export interface OrderAvailableActionsResponse {
   isEditable: boolean
   isRequestable: boolean
   canSendVoucher: boolean
+  canCreateInvoice: boolean
   canSendInvoice: boolean
+  canCancelInvoice: boolean
 }
 
 export interface BookingStatusHistoryData extends Record<string, any> {

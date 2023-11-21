@@ -10,7 +10,7 @@ return new class extends Migration {
         Schema::create('client_invoices', function (Blueprint $table) {
             $table->increments('id')->from(100);
             $table->unsignedInteger('client_id');
-            $table->tinyInteger('status');
+            $table->unsignedInteger('order_id');
             $table->char('document', 32)->nullable();
             $table->timestamps();
             $table->softDeletes();
@@ -19,6 +19,12 @@ return new class extends Migration {
                 ->references('id')
                 ->on('clients')
                 ->restrictOnDelete()
+                ->cascadeOnUpdate();
+
+            $table->foreign('order_id')
+                ->references('id')
+                ->on('orders')
+                ->cascadeOnDelete()
                 ->cascadeOnUpdate();
 
             $table->foreign('document')

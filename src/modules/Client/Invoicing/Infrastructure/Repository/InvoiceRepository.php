@@ -7,34 +7,27 @@ use Illuminate\Support\Facades\DB;
 use Module\Client\Invoicing\Domain\Invoice\Invoice;
 use Module\Client\Invoicing\Domain\Invoice\Repository\InvoiceRepositoryInterface;
 use Module\Client\Invoicing\Domain\Invoice\ValueObject\InvoiceId;
-use Module\Client\Invoicing\Domain\Invoice\ValueObject\InvoiceStatusEnum;
-use Module\Client\Invoicing\Domain\Invoice\ValueObject\OrderIdCollection;
 use Module\Client\Invoicing\Domain\Order\ValueObject\OrderId;
 use Module\Client\Invoicing\Infrastructure\Models\Invoice as Model;
-use Module\Client\Invoicing\Infrastructure\Models\Order;
 use Module\Client\Shared\Domain\ValueObject\ClientId;
 use Module\Shared\ValueObject\File;
 use Module\Shared\ValueObject\Timestamps;
 
 class InvoiceRepository implements InvoiceRepositoryInterface
 {
-    public function create(ClientId $clientId, OrderIdCollection $orders, ?File $document): Invoice
+    public function create(ClientId $clientId, OrderId $orderId, ?File $document): Invoice
     {
-        return DB::transaction(function () use ($clientId, $orders, $document) {
+        return DB::transaction(function () use ($clientId, $orderId, $document) {
             $model = Model::create([
                 'client_id' => $clientId->value(),
-                'status' => InvoiceStatusEnum::NOT_PAID,
-                'document' => $document?->guid()
+                'document' => $document?->guid(),
+                'order_id' => $orderId->value()
             ]);
-
-            $orderIds = $orders->map(fn(OrderId $id) => $id->value());
-            Order::whereIn('id', $orderIds)->update(['invoice_id' => $model->id]);
 
             return new Invoice(
                 new InvoiceId($model->id),
                 $clientId,
-                InvoiceStatusEnum::NOT_PAID,
-                $orders,
+                $orderId,
                 $document,
                 new Timestamps(
                     \DateTimeImmutable::createFromInterface($model->created_at),
@@ -51,7 +44,7 @@ class InvoiceRepository implements InvoiceRepositoryInterface
 
     public function findByOrderId(OrderId $orderId): ?Invoice
     {
-        $model = Model::whereHasOrderId($orderId->value())->first();
+        $model = Model::whereOrderId($orderId->value())->first();
 
         return $model ? $this->fromModel($model) : null;
     }
@@ -67,12 +60,12 @@ class InvoiceRepository implements InvoiceRepositoryInterface
         }
 
         $model->touch();
-        if ($invoice->status() === InvoiceStatusEnum::DELETED) {
+        if ($invoice->isDeleted()) {
             $model->delete();
-        } else {
-            $model->status = $invoice->status()->value;
-            $model->save();
+
+            return;
         }
+        $model->save();
     }
 
     public function query(): Builder
@@ -85,10 +78,7 @@ class InvoiceRepository implements InvoiceRepositoryInterface
         return new Invoice(
             new InvoiceId($model->id),
             new ClientId($model->client_id),
-            $model->trashed()
-                ? InvoiceStatusEnum::DELETED
-                : $model->status,
-            new OrderIdCollection($model->orderIds()->map(fn($id) => new OrderId($id))),
+            new OrderId($model->order_id),
             $model->document ? new File($model->document) : null,
             new Timestamps(
                 createdAt: \DateTimeImmutable::createFromInterface($model->created_at),

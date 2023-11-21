@@ -21,16 +21,10 @@ class GenerateInvoiceFile implements UseCaseInterface
 
     public function execute(GenerateInvoiceFileRequestDto $request): FileDto
     {
-        $orderIds = new OrderIdCollection(
-            array_map(fn(int $orderId) => new OrderId($orderId), $request->orderIds)
-        );
-
         return $this->fileGenerator->generate(
             $request->filename,
-            new InvoiceId($request->invoiceId),
-            $orderIds,
+            new OrderId($request->orderId),
             new ClientId($request->clientId),
-            $request->createdAt
         );
     }
 }

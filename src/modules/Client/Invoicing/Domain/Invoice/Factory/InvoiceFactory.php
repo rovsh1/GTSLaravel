@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace Module\Client\Invoicing\Domain\Invoice\Factory;
 
+use Module\Client\Invoicing\Application\Exception\InvalidOrderStatusToCreateInvoiceException;
 use Module\Client\Invoicing\Domain\Invoice\Adapter\FileGeneratorAdapterInterface;
+use Module\Client\Invoicing\Domain\Invoice\Exception\InvalidOrderStatusToCreateInvoice;
+use Module\Client\Invoicing\Domain\Invoice\Exception\OrderAlreadyHasInvoice;
 use Module\Client\Invoicing\Domain\Invoice\Invoice;
 use Module\Client\Invoicing\Domain\Invoice\Repository\InvoiceRepositoryInterface;
-use Module\Client\Invoicing\Domain\Invoice\ValueObject\OrderIdCollection;
 use Module\Client\Invoicing\Domain\Order\Order;
 use Module\Client\Invoicing\Domain\Order\Repository\OrderRepositoryInterface;
-use Module\Client\Shared\Domain\ValueObject\ClientId;
+use Module\Client\Invoicing\Domain\Order\ValueObject\OrderId;
 use Module\Shared\Contracts\Service\SafeExecutorInterface;
 use Module\Shared\ValueObject\File;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
@@ -25,26 +27,22 @@ class InvoiceFactory
         private readonly DomainEventDispatcherInterface $eventDispatcher,
     ) {}
 
-    public function generate(ClientId $clientId, OrderIdCollection $orderIds): Invoice
+    public function generate(OrderId $orderId): Invoice
     {
-        $orders = $this->prepareOrders($clientId, $orderIds);
+        $order = $this->prepareOrder($orderId);
 
-        $handler = function () use ($clientId, $orderIds) {
-            $invoice = $this->invoiceRepository->create(
-                clientId: $clientId,
-                orders: $orderIds,
-                document: null
-            );
-
+        $handler = function () use ($order) {
             $fileDto = $this->fileGeneratorAdapter->generate(
-                $this->getFilename($invoice),
-                $invoice->id(),
-                $invoice->orders(),
-                $invoice->clientId(),
-                $invoice->timestamps()->createdAt()
+                $this->getFilename($order->id()),
+                $order->id(),
+                $order->clientId()
             );
 
-            $invoice->setDocument(new File($fileDto->guid));
+            $invoice = $this->invoiceRepository->create(
+                clientId: $order->clientId(),
+                orderId: $order->id(),
+                document: new File($fileDto->guid)
+            );
 
             $this->invoiceRepository->store($invoice);
 
@@ -53,41 +51,37 @@ class InvoiceFactory
 
         $invoice = $this->executor->execute($handler);
 
-        $this->updateOrdersStatus($orders, $invoice);
+        $this->updateOrderStatus($order);
 
         return $invoice;
     }
 
-    private function getFilename(Invoice $invoice): string
+    private function getFilename(OrderId $orderId): string
     {
-        return $invoice->id() . '-' . date('Ymd') . '.pdf';
+        return $orderId->value() . '-' . date('Ymd') . '.pdf';
     }
 
-    private function prepareOrders(ClientId $clientId, OrderIdCollection $orderIdCollection): array
+    private function prepareOrder(OrderId $orderId): Order
     {
-        $orders = [];
-        foreach ($orderIdCollection as $orderId) {
-            $order = $this->orderRepository->findOrFail($orderId);
+        $existOrderInvoice = $this->invoiceRepository->findByOrderId($orderId);
+        if ($existOrderInvoice !== null) {
+            throw new OrderAlreadyHasInvoice();
+        }
 
-            if (!$order->clientId()->isEqual($clientId)) {
-                throw new \Exception('Cant invoice order with different client');
-            }
+        $order = $this->orderRepository->findOrFail($orderId);
 
+        try {
             $order->ensureInvoiceCreationAvailable();
-
-            $orders[] = $order;
+        } catch (InvalidOrderStatusToCreateInvoice $e) {
+            throw new InvalidOrderStatusToCreateInvoiceException($e);
         }
 
-        return $orders;
+        return $order;
     }
 
-    private function updateOrdersStatus(array $orders, Invoice $invoice): void
+    private function updateOrderStatus(Order $order): void
     {
-        /** @var Order $order */
-        foreach ($orders as $order) {
-            $order->setInvoiceId($invoice->id());
-
-            $this->orderRepository->store($order);
-        }
+        $order->invoiced();
+        $this->orderRepository->store($order);
     }
 }

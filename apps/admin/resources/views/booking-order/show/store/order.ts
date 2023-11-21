@@ -36,6 +36,14 @@ export const useOrderStore = defineStore('booking-order', () => {
   const isStatusUpdateFetching = ref(false)
   const bookingManagerId = ref(manager.id)
 
+  const refreshOrder = async () => {
+    await Promise.all([
+      fetchAvailableActions(),
+      fetchOrder(),
+      fetchBookings(),
+    ])
+  }
+
   const changeStatus = async (status: number) => {
     const updateStatusPayload = { orderID, notConfirmedReason: '' } as UpdateOrderStatusPayload
     isStatusUpdateFetching.value = true
@@ -60,10 +68,7 @@ export const useOrderStore = defineStore('booking-order', () => {
         return
       }
     }
-    await Promise.all([
-      fetchAvailableActions(),
-      fetchOrder(),
-    ])
+    await refreshOrder()
     isStatusUpdateFetching.value = false
   }
 
@@ -99,6 +104,7 @@ export const useOrderStore = defineStore('booking-order', () => {
     fetchGuests,
     fetchOrder,
     fetchAvailableActions,
+    refreshOrder,
     isAvailableActionsFetching,
     isStatusUpdateFetching,
     statuses,

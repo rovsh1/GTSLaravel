@@ -4,12 +4,7 @@ namespace App\Admin\Http\Controllers\Booking\Hotel;
 
 use App\Admin\Components\Factory\Prototype;
 use App\Admin\Http\Controllers\Controller;
-use App\Admin\Http\Requests\Booking\Hotel\BulkDeleteRequest;
 use App\Admin\Http\Requests\Booking\Hotel\UpdateExternalNumberRequest;
-use App\Admin\Http\Requests\Booking\Hotel\UpdateManagerRequest;
-use App\Admin\Http\Requests\Booking\Hotel\UpdateNoteRequest;
-use App\Admin\Http\Requests\Booking\Hotel\UpdatePriceRequest;
-use App\Admin\Http\Requests\Booking\Hotel\UpdateStatusRequest;
 use App\Admin\Http\Resources\Room as RoomResource;
 use App\Admin\Models\Administrator\Administrator;
 use App\Admin\Models\Booking\Booking;
@@ -22,7 +17,6 @@ use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\Booking\BookingAdapter;
 use App\Admin\Support\Facades\Booking\Hotel\DetailsAdapter;
 use App\Admin\Support\Facades\Booking\OrderAdapter;
-use App\Admin\Support\Facades\Booking\PriceAdapter;
 use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Grid;
@@ -32,13 +26,11 @@ use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Grid\SearchForm;
 use App\Admin\Support\View\Layout as LayoutContract;
-use App\Shared\Http\Responses\AjaxErrorResponse;
 use App\Shared\Http\Responses\AjaxRedirectResponse;
 use App\Shared\Http\Responses\AjaxResponseInterface;
 use App\Shared\Http\Responses\AjaxSuccessResponse;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -219,13 +211,6 @@ class BookingController extends Controller
         return new AjaxRedirectResponse($this->prototype->route());
     }
 
-    public function get(int $id): JsonResponse
-    {
-        return response()->json(
-            BookingAdapter::getBooking($id)
-        );
-    }
-
     public function copy(int $id): RedirectResponse
     {
         $newBooking = BookingAdapter::copyBooking($id);
@@ -235,97 +220,11 @@ class BookingController extends Controller
         );
     }
 
-    public function getAvailableActions(int $id): JsonResponse
-    {
-        return response()->json(
-            BookingAdapter::getAvailableActions($id)
-        );
-    }
-
     public function updateExternalNumber(UpdateExternalNumberRequest $request, int $id): AjaxResponseInterface
     {
         DetailsAdapter::updateExternalNumber($id, $request->getType(), $request->getNumber());
 
         return new AjaxSuccessResponse();
-    }
-
-    public function updatePrice(UpdatePriceRequest $request, int $id): AjaxResponseInterface
-    {
-        switch ($request->getAction()) {
-            case UpdatePriceRequest::CLIENT_PRICE_ACTION:
-                PriceAdapter::setManualClientPrice($id, $request->getClientPrice());
-                break;
-            case UpdatePriceRequest::SUPPLIER_PRICE_ACTION:
-                PriceAdapter::setManualSupplierPrice($id, $request->getSupplierPrice());
-                break;
-            case UpdatePriceRequest::CLIENT_PENALTY_ACTION:
-                PriceAdapter::setClientPenalty($id, $request->getGrossPenalty());
-                break;
-            case UpdatePriceRequest::SUPPLIER_PENALTY_ACTION:
-                PriceAdapter::setSupplierPenalty($id, $request->getNetPenalty());
-                break;
-        }
-
-        return new AjaxSuccessResponse();
-    }
-
-    public function recalculatePrices(int $id): AjaxResponseInterface
-    {
-        try {
-            PriceAdapter::recalculatePrices($id);
-        } catch (ApplicationException $e) {
-            return new AjaxErrorResponse($e->getMessage());
-        }
-
-        return new AjaxSuccessResponse();
-    }
-
-    public function bulkDelete(BulkDeleteRequest $request): AjaxResponseInterface
-    {
-        BookingAdapter::bulkDeleteBookings($request->getIds());
-
-        return new AjaxSuccessResponse();
-    }
-
-    public function updateNote(int $id, UpdateNoteRequest $request): AjaxResponseInterface
-    {
-        BookingAdapter::updateNote($id, $request->getNote());
-
-        return new AjaxSuccessResponse();
-    }
-
-    public function updateManager(int $id, UpdateManagerRequest $request): AjaxResponseInterface
-    {
-        $this->administratorRepository->update($id, $request->getManagerId());
-
-        return new AjaxSuccessResponse();
-    }
-
-    public function getStatuses(): JsonResponse
-    {
-        return response()->json(
-            BookingAdapter::getStatuses()
-        );
-    }
-
-    public function updateStatus(UpdateStatusRequest $request, int $id): JsonResponse
-    {
-        return response()->json(
-            BookingAdapter::updateStatus(
-                $id,
-                $request->getStatus(),
-                $request->getNotConfirmedReason(),
-                $request->getSupplierPenalty(),
-                $request->getClientPenalty()
-            )
-        );
-    }
-
-    public function getStatusHistory(int $id): JsonResponse
-    {
-        return response()->json(
-            BookingAdapter::getStatusHistory($id)
-        );
     }
 
     protected function gridFactory(): GridContract
@@ -546,7 +445,10 @@ class BookingController extends Controller
                         $query->selectRaw(1)
                             ->from('booking_hotel_accommodations')
                             ->whereColumn('booking_hotel_accommodations.booking_id', 'bookings.id')
-                            ->whereColumn('booking_hotel_room_guests.accommodation_id', 'booking_hotel_accommodations.id');
+                            ->whereColumn(
+                                'booking_hotel_room_guests.accommodation_id',
+                                'booking_hotel_accommodations.id'
+                            );
                     }),
                 'guests_count'
             )
@@ -556,7 +458,9 @@ class BookingController extends Controller
                 )
             )
             ->addSelect(
-                DB::raw('(SELECT COUNT(id) FROM booking_hotel_accommodations WHERE booking_id=bookings.id) as rooms_count')
+                DB::raw(
+                    '(SELECT COUNT(id) FROM booking_hotel_accommodations WHERE booking_id=bookings.id) as rooms_count'
+                )
             )
             ->addSelect(
                 DB::raw('(SELECT bookings.status IN (' . implode(',', $requestableStatuses) . ')) as is_requestable'),

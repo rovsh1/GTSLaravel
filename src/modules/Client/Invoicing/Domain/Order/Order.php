@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Client\Invoicing\Domain\Order;
 
-use Module\Client\Invoicing\Domain\Invoice\ValueObject\InvoiceId;
+use Module\Client\Invoicing\Domain\Invoice\Exception\InvalidOrderStatusToCancelInvoice;
+use Module\Client\Invoicing\Domain\Invoice\Exception\InvalidOrderStatusToCreateInvoice;
 use Module\Client\Invoicing\Domain\Order\ValueObject\OrderId;
 use Module\Client\Shared\Domain\ValueObject\ClientId;
 use Module\Shared\Enum\CurrencyEnum;
@@ -17,7 +18,6 @@ final class Order extends AbstractAggregateRoot
         private readonly OrderId $id,
         private readonly ClientId $clientId,
         private readonly CurrencyEnum $currency,
-        private ?InvoiceId $invoiceId,
         private OrderStatusEnum $status,
     ) {}
 
@@ -36,30 +36,32 @@ final class Order extends AbstractAggregateRoot
         return $this->currency;
     }
 
-    public function invoiceId(): ?InvoiceId
-    {
-        return $this->invoiceId;
-    }
-
     public function status(): OrderStatusEnum
     {
         return $this->status;
     }
 
-    public function setInvoiceId(InvoiceId $invoiceId): void
+    public function invoiced(): void
     {
-        $this->invoiceId = $invoiceId;
         $this->status = OrderStatusEnum::INVOICED;
+    }
+
+    public function toInProgress(): void
+    {
+        $this->status = OrderStatusEnum::IN_PROGRESS;
     }
 
     public function ensureInvoiceCreationAvailable(): void
     {
         if ($this->status !== OrderStatusEnum::WAITING_INVOICE) {
-            throw new \Exception('Order status invalid for create invoice');
+            throw new InvalidOrderStatusToCreateInvoice();
         }
+    }
 
-        if (!empty($this->invoiceId)) {
-            throw new \Exception("Order [$this->id] already has invoice");
+    public function ensureInvoiceCanBeCancelled(): void
+    {
+        if ($this->status !== OrderStatusEnum::INVOICED) {
+            throw new InvalidOrderStatusToCancelInvoice();
         }
     }
 }
