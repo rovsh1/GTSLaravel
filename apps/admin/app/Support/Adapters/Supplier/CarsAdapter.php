@@ -19,7 +19,7 @@ class CarsAdapter
 
     public function getCancelConditions(int $seasonId, int $serviceId, int $carId): ?CancelConditionsDto
     {
-        return app(GetCarCancelConditions::class)->execute($seasonId, $serviceId, $carId);
+        return app(GetCarCancelConditions::class)->execute($serviceId, $carId, seasonId: $seasonId);
     }
 
     public function updateCancelConditions(
