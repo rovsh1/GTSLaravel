@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Admin\Models\Supplier;
 
 use Illuminate\Database\Eloquent\Builder;
-use Module\Supplier\Moderation\Infrastructure\Models\CarCancelConditions;
+use Module\Supplier\Moderation\Infrastructure\Models\CarCancelConditions as Base;
 
-class CarServiceCancelConditions extends CarCancelConditions
+class CarCancelConditions extends Base
 {
     public function scopeWhereSupplierId(Builder $builder, int $supplierId): void
     {

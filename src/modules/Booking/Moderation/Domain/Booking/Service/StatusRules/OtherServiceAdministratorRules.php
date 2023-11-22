@@ -12,6 +12,6 @@ class OtherServiceAdministratorRules extends AdministratorRules
     ) {
         parent::__construct($requestRules);
         $this->transitions = [];
-        $this->addTransition(BookingStatusEnum::PROCESSING, BookingStatusEnum::CANCELLED);
+        $this->addTransition(BookingStatusEnum::CONFIRMED, BookingStatusEnum::CANCELLED);
     }
 }

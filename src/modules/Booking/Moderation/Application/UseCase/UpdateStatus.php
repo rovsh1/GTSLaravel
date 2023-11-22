@@ -9,6 +9,7 @@ use Module\Booking\Moderation\Domain\Booking\Service\StatusUpdater;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Shared\Enum\Booking\BookingStatusEnum;
+use Module\Shared\Enum\ServiceTypeEnum;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
@@ -18,8 +19,7 @@ class UpdateStatus implements UseCaseInterface
         private readonly BookingRepositoryInterface $bookingRepository,
         private readonly StatusUpdater $statusUpdater,
         private readonly DomainEventDispatcherInterface $eventDispatcher,
-    ) {
-    }
+    ) {}
 
     public function execute(
         int $bookingId,
@@ -31,6 +31,7 @@ class UpdateStatus implements UseCaseInterface
         $booking = $this->bookingRepository->findOrFail(new BookingId($bookingId));
         $statusEnum = BookingStatusEnum::from($statusId);
 
+        $isHotelBooking = $booking->serviceType() === ServiceTypeEnum::HOTEL_BOOKING;
         switch ($statusEnum) {
             case BookingStatusEnum::PROCESSING:
                 $this->statusUpdater->toProcessing($booking);
@@ -42,8 +43,7 @@ class UpdateStatus implements UseCaseInterface
                 $this->statusUpdater->confirm($booking);
                 break;
             case BookingStatusEnum::NOT_CONFIRMED:
-                $isHotelBooking = true; //@todo заменить на реальную проверку, когда объединим детали с броней
-                if (empty($notConfirmedReason) && $isHotelBooking) {
+                if ($isHotelBooking && empty($notConfirmedReason)) {
                     return new UpdateStatusResponseDto(isNotConfirmedReasonRequired: true);
                 }
                 $this->statusUpdater->toNotConfirmed($booking, $notConfirmedReason);
@@ -52,7 +52,7 @@ class UpdateStatus implements UseCaseInterface
                 $this->statusUpdater->toCancelledNoFee($booking);
                 break;
             case BookingStatusEnum::CANCELLED_FEE:
-                if ($supplierPenalty === null) {
+                if ($isHotelBooking && empty($supplierPenalty)) {
                     return new UpdateStatusResponseDto(isCancelFeeAmountRequired: true);
                 }
                 $this->statusUpdater->toCancelledFee($booking, $supplierPenalty, $clientPenalty);

@@ -31,7 +31,8 @@ class GetAvailableActions implements UseCaseInterface
     {
         $booking = $this->repository->findOrFail(new BookingId($bookingId));
         $statusRules = $this->statusRules;
-        if ($booking->serviceType() === ServiceTypeEnum::OTHER_SERVICE) {
+        $isOtherService = $booking->serviceType() === ServiceTypeEnum::OTHER_SERVICE;
+        if ($isOtherService) {
             $statusRules = app(OtherServiceAdministratorRules::class);
         }
         $statuses = $this->getAvailableStatuses($statusRules, $booking);
@@ -41,7 +42,7 @@ class GetAvailableActions implements UseCaseInterface
             $statusRules->isEditableStatus($booking->status()),
             $this->requestRules->isRequestableStatus($booking->status()),
             $this->requestRules->canSendBookingRequest($booking->status()),
-            $this->requestRules->canSendCancellationRequest($booking->status()),
+            !$isOtherService ? $this->requestRules->canSendCancellationRequest($booking->status()) : false,
             $this->requestRules->canSendChangeRequest($booking->status()),
             $statusRules->canEditExternalNumber($booking->status()),
             //@todo прописать логику для этого флага (у отеля и админки она разная)

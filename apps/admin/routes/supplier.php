@@ -114,6 +114,30 @@ AclRoute::for('supplier')
         'update',
         'service.other.price.update'
     )
+    ->get(
+        '/{provider}/service-{type}/cancel-conditions',
+        Supplier\Service\CancelConditions\ServiceCancelConditionsController::class . '@index',
+        'read',
+        'service.cancel-conditions.index'
+    )
+    ->get(
+        '/{provider}/service-{type}/cancel-conditions/get',
+        Supplier\Service\CancelConditions\ServiceCancelConditionsController::class . '@getAll',
+        'read',
+        'service.cancel-conditions.get-all'
+    )
+    ->get(
+        '/{provider}/service-{type}/{service}/cancel-conditions',
+        Supplier\Service\CancelConditions\ServiceCancelConditionsController::class . '@get',
+        'read',
+        'service.cancel-conditions.get'
+    )
+    ->put(
+        '/{provider}/service-{type}/{service}/cancel-conditions',
+        Supplier\Service\CancelConditions\ServiceCancelConditionsController::class . '@update',
+        'update',
+        'service.cancel-conditions.update'
+    )
     ->resource('cars', Supplier\CarController::class, [
         'slug' => 'provider',
         'except' => ['show']

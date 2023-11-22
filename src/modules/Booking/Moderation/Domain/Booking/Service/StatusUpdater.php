@@ -6,8 +6,11 @@ namespace Module\Booking\Moderation\Domain\Booking\Service;
 
 use Module\Booking\Moderation\Domain\Booking\Exception\InvalidStatusTransition;
 use Module\Booking\Moderation\Domain\Booking\Service\StatusRules\AdministratorRules;
+use Module\Booking\Moderation\Domain\Booking\Service\StatusRules\OtherServiceAdministratorRules;
+use Module\Booking\Moderation\Domain\Booking\Service\StatusRules\StatusRulesInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Shared\Enum\Booking\BookingStatusEnum;
+use Module\Shared\Enum\ServiceTypeEnum;
 
 class StatusUpdater
 {
@@ -105,7 +108,11 @@ class StatusUpdater
      */
     public function handleUpdateStatus(Booking $booking, BookingStatusEnum $status, callable $callback): void
     {
-        $this->checkCanTransitToStatus($booking, $status);
+        $statusRules = $this->statusRules;
+        if ($booking->serviceType() === ServiceTypeEnum::OTHER_SERVICE) {
+            $statusRules = app(OtherServiceAdministratorRules::class);
+        }
+        $this->checkCanTransitToStatus($statusRules, $booking, $status);
         $callback($booking);
     }
 
@@ -115,9 +122,12 @@ class StatusUpdater
      * @return void
      * @throws InvalidStatusTransition
      */
-    private function checkCanTransitToStatus(Booking $booking, BookingStatusEnum $status): void
-    {
-        if (!$this->statusRules->canTransit($booking->status(), $status)) {
+    private function checkCanTransitToStatus(
+        StatusRulesInterface $statusRules,
+        Booking $booking,
+        BookingStatusEnum $status
+    ): void {
+        if (!$statusRules->canTransit($booking->status(), $status)) {
             throw new InvalidStatusTransition("Can't change status for booking [{$booking->id()->value()}]]");
         }
     }

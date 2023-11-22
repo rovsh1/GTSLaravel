@@ -28,7 +28,9 @@ class SupplierMenu extends AbstractSubmenu
             ->addUrl('services', route('supplier.services.index', $this->model),'Услуги', ['icon' => 'airport_shuttle']);
 
         $group = (new Group('cancel_conditions'))
-            ->addUrl('transfer', route('supplier.service.transfer.cancel-conditions.index', $this->model),'Транспорт', ['icon' => 'cancel']);
+            ->addUrl('transfer', route('supplier.service.transfer.cancel-conditions.index', $this->model), 'Транспорт')
+            ->addUrl('airport', route('supplier.service.cancel-conditions.index', [$this->model, 'airport']), 'Аэропорт')
+            ->addUrl('other', route('supplier.service.cancel-conditions.index', [$this->model, 'other']), 'Прочие');
         $this->addGroup($group);
 
         $group = (new Group('settings'))
