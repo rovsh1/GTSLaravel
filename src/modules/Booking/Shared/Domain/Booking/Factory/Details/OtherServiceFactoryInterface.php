@@ -14,5 +14,6 @@ interface OtherServiceFactoryInterface
         BookingId $bookingId,
         ServiceInfo $serviceInfo,
         ?string $description,
+        ?\DateTimeInterface $date
     ): Other;
 }

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Admin\Models\Supplier;
 
 use Illuminate\Database\Eloquent\Builder;
-use Module\Supplier\Moderation\Infrastructure\Models\TransferCancelConditions;
+use Module\Supplier\Moderation\Infrastructure\Models\CarCancelConditions;
 
-class TransferServiceCancelConditions extends TransferCancelConditions
+class CarServiceCancelConditions extends CarCancelConditions
 {
     public function scopeWhereSupplierId(Builder $builder, int $supplierId): void
     {

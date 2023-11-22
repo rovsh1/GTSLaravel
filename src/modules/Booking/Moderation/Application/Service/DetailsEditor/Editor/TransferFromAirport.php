@@ -31,7 +31,7 @@ class TransferFromAirport extends AbstractEditor implements EditorInterface
             (int)$supplierService->data['airportId'],
             new CarBidCollection([]),
             $detailsData['flightNumber'] ?? null,
-            $detailsData['arrivalDate'] ?? null,
+            $detailsData['date'] ?? null,
             $detailsData['meetingTablet'] ?? null,
         );
     }

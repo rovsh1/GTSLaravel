@@ -6,6 +6,8 @@ namespace Module\Booking\Moderation\Application\UseCase;
 
 use Module\Booking\Moderation\Application\Dto\AvailableActionsDto;
 use Module\Booking\Moderation\Domain\Booking\Service\StatusRules\AdministratorRules;
+use Module\Booking\Moderation\Domain\Booking\Service\StatusRules\OtherServiceAdministratorRules;
+use Module\Booking\Moderation\Domain\Booking\Service\StatusRules\StatusRulesInterface;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\RequestRules;
 use Module\Booking\Shared\Application\Dto\StatusDto;
 use Module\Booking\Shared\Application\Factory\BookingStatusDtoFactory;
@@ -13,6 +15,7 @@ use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Shared\Enum\Booking\BookingStatusEnum;
+use Module\Shared\Enum\ServiceTypeEnum;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class GetAvailableActions implements UseCaseInterface
@@ -27,19 +30,23 @@ class GetAvailableActions implements UseCaseInterface
     public function execute(int $bookingId): AvailableActionsDto
     {
         $booking = $this->repository->findOrFail(new BookingId($bookingId));
-        $statuses = $this->getAvailableStatuses($booking);
+        $statusRules = $this->statusRules;
+        if ($booking->serviceType() === ServiceTypeEnum::OTHER_SERVICE) {
+            $statusRules = app(OtherServiceAdministratorRules::class);
+        }
+        $statuses = $this->getAvailableStatuses($statusRules, $booking);
 
         return new AvailableActionsDto(
             $statuses,
-            $this->statusRules->isEditableStatus($booking->status()),
+            $statusRules->isEditableStatus($booking->status()),
             $this->requestRules->isRequestableStatus($booking->status()),
             $this->requestRules->canSendBookingRequest($booking->status()),
             $this->requestRules->canSendCancellationRequest($booking->status()),
             $this->requestRules->canSendChangeRequest($booking->status()),
-            $this->statusRules->canEditExternalNumber($booking->status()),
+            $statusRules->canEditExternalNumber($booking->status()),
             //@todo прописать логику для этого флага (у отеля и админки она разная)
-            $this->statusRules->canChangeRoomPrice($booking->status()) && !$booking->prices()->clientPrice()->manualValue(),
-            $this->statusRules->isCancelledStatus($booking->status()),
+            $statusRules->canChangeRoomPrice($booking->status()) && !$booking->prices()->clientPrice()->manualValue(),
+            $statusRules->isCancelledStatus($booking->status()),
         );
     }
 
@@ -47,9 +54,9 @@ class GetAvailableActions implements UseCaseInterface
      * @param Booking $booking
      * @return StatusDto[]
      */
-    private function getAvailableStatuses(Booking $booking): array
+    private function getAvailableStatuses(StatusRulesInterface $statusRules, Booking $booking): array
     {
-        $statuses = $this->statusRules->getStatusTransitions($booking->status());
+        $statuses = $statusRules->getStatusTransitions($booking->status());
         $statusIds = array_flip(array_map(fn(BookingStatusEnum $status) => $status->value, $statuses));
         $statusSettings = $this->statusDtoFactory->statuses();
 

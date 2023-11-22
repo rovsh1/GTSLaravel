@@ -32,7 +32,7 @@ class IntercityTransfer extends AbstractEditor implements EditorInterface
             (int)$supplierService->data['toCityId'],
             new CarBidCollection([]),
             (bool)$supplierService->data['returnTripIncluded'],
-            $detailsData['departureDate'] ?? null,
+            $detailsData['date'] ?? null,
         );
     }
 }

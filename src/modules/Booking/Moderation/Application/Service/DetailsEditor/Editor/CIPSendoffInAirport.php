@@ -30,7 +30,7 @@ class CIPSendoffInAirport extends AbstractEditor implements EditorInterface
             $serviceInfo,
             (int)$supplierService->data['airportId'],
             $detailsData['flightNumber'] ?? null,
-            $detailsData['departureDate'] ?? null,
+            $detailsData['date'] ?? null,
             new GuestIdCollection([])
         );
     }

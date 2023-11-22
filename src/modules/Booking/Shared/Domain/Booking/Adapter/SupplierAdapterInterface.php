@@ -31,7 +31,7 @@ interface SupplierAdapterInterface
 
     public function findTransferServiceContract(int $serviceId): ?ServiceContractDto;
 
-    public function getTransferCancelConditions(): ?CancelConditionsDto;
+    public function getCarCancelConditions(int $serviceId, int $carId, \DateTimeInterface $date): ?CancelConditionsDto;
 
     public function getAirportServicePrice(
         int $supplierId,
@@ -47,9 +47,11 @@ interface SupplierAdapterInterface
         CarbonInterface $date
     ): ?ServicePriceDto;
 
+    public function getOtherCancelConditions(int $serviceId, DateTimeInterface $date): ?CancelConditionsDto;
+
     public function findAirportServiceContract(int $serviceId): ?ServiceContractDto;
 
-    public function getAirportCancelConditions(): ?CancelConditionsDto;
+    public function getAirportCancelConditions(int $serviceId, DateTimeInterface $date): ?CancelConditionsDto;
 
     /**
      * @param int $supplierId

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Supplier\Moderation\Application\RequestDto;
 
-class UpdateTransferCancelConditionsRequest
+class UpdateCarCancelConditionsRequest
 {
     public function __construct(
         public readonly int $seasonId,

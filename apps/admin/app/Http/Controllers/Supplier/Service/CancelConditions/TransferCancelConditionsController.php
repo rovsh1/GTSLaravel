@@ -9,7 +9,7 @@ use App\Admin\Http\Requests\Supplier\UpdateTransferCancelConditionsRequest;
 use App\Admin\Http\Resources\Supplier\TransferCancelConditions as Resource;
 use App\Admin\Models\Supplier\Service;
 use App\Admin\Models\Supplier\Supplier;
-use App\Admin\Models\Supplier\TransferServiceCancelConditions;
+use App\Admin\Models\Supplier\CarServiceCancelConditions;
 use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Facades\Layout;
@@ -48,7 +48,7 @@ class TransferCancelConditionsController extends Controller
 
     public function getAll(Supplier $provider): JsonResponse
     {
-        $cancelConditions = TransferServiceCancelConditions::whereSupplierId($provider->id)->get();
+        $cancelConditions = CarServiceCancelConditions::whereSupplierId($provider->id)->get();
 
         return response()->json(
             Resource::collection($cancelConditions)

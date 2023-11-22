@@ -6,7 +6,7 @@ namespace Module\Booking\Moderation\Application\Exception;
 
 use Module\Shared\Exception\ApplicationException;
 
-class NotFoundServiceCancelConditions extends ApplicationException
+class NotFoundServiceCancelConditionsException extends ApplicationException
 {
     public function __construct(
         ?\Throwable $previous = null,

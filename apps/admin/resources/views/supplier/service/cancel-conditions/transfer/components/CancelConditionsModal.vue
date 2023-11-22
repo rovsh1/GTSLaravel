@@ -4,7 +4,7 @@ import { computed, ref } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
 
-import { ServiceCancelConditions } from '~api/supplier/cancel-conditions'
+import { ServiceCancelConditions } from '~api/supplier/cancel-conditions/transfer'
 
 import BaseDialog from '~components/BaseDialog.vue'
 

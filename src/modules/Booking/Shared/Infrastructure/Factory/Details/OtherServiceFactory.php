@@ -21,6 +21,7 @@ class OtherServiceFactory extends AbstractServiceDetailsFactory implements Other
         BookingId $bookingId,
         ServiceInfo $serviceInfo,
         ?string $description,
+        ?\DateTimeInterface $date,
     ): Other {
         $model = Model::create([
             'booking_id' => $bookingId->value(),
@@ -28,6 +29,7 @@ class OtherServiceFactory extends AbstractServiceDetailsFactory implements Other
             'data' => [
                 'serviceInfo' => $this->serializeServiceInfo($serviceInfo),
                 'description' => $description,
+                'date' => $date?->getTimestamp(),
             ]
         ]);
 

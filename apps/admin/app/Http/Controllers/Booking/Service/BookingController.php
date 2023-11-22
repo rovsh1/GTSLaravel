@@ -31,6 +31,7 @@ use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Grid\SearchForm;
 use App\Admin\Support\View\Layout as LayoutContract;
 use App\Shared\Http\Responses\AjaxErrorResponse;
+use App\Shared\Http\Responses\AjaxRedirectResponse;
 use App\Shared\Http\Responses\AjaxResponseInterface;
 use App\Shared\Http\Responses\AjaxSuccessResponse;
 use Illuminate\Database\Eloquent\Builder;
@@ -198,6 +199,13 @@ class BookingController extends Controller
             ]);
     }
 
+    public function destroy(int $id): AjaxResponseInterface
+    {
+        BookingAdapter::deleteBooking($id);
+
+        return new AjaxRedirectResponse($this->prototype->route());
+    }
+
     public function get(int $id): JsonResponse
     {
         return response()->json(
@@ -341,6 +349,7 @@ class BookingController extends Controller
                 ]
             )
             ->hidden('service_id', ['label' => 'Услуга', 'required' => !$isEdit, 'disabled' => $isEdit])
+            ->date('date', ['label' => 'Дата', 'required' => true])
             ->manager('manager_id', [
                 'label' => 'Менеджер',
                 'emptyItem' => '',

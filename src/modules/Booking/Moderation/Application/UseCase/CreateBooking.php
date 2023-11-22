@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\UseCase;
 
-use Module\Booking\Moderation\Application\Exception\NotFoundHotelCancelPeriod;
-use Module\Booking\Moderation\Application\Exception\NotFoundServiceCancelConditions;
+use Module\Booking\Moderation\Application\Exception\NotFoundServiceCancelConditionsException;
 use Module\Booking\Moderation\Application\Factory\CancelConditionsFactory;
 use Module\Booking\Moderation\Application\RequestDto\CreateBookingRequestDto;
 use Module\Booking\Moderation\Application\Service\DetailsEditor\DetailsEditorFactory;
@@ -17,7 +16,9 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceId;
 use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
 use Module\Booking\Shared\Domain\Shared\Adapter\AdministratorAdapterInterface;
 use Module\Booking\Shared\Domain\Shared\ValueObject\CreatorId;
+use Module\Shared\Enum\Booking\BookingStatusEnum;
 use Module\Shared\Enum\CurrencyEnum;
+use Module\Shared\Enum\ServiceTypeEnum;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
 class CreateBooking extends AbstractCreateBooking
@@ -44,9 +45,14 @@ class CreateBooking extends AbstractCreateBooking
         if ($orderCurrency === null) {
             throw new EntityNotFoundException('Currency not found');
         }
-        $cancelConditions = $this->cancelConditionsFactory->build($service->type);
-        if ($cancelConditions === null) {
-            throw new NotFoundServiceCancelConditions();
+        $cancelConditions = $this->cancelConditionsFactory->build(
+            new ServiceId($service->id),
+            $service->type,
+            $request->detailsData['date'] ?? null
+        );
+        $isTransferServiceBooking = in_array($service->type, ServiceTypeEnum::getTransferCases());
+        if ($cancelConditions === null && !$isTransferServiceBooking) {
+            throw new NotFoundServiceCancelConditionsException();
         }
         $booking = $this->repository->create(
             orderId: $orderId,
@@ -55,6 +61,7 @@ class CreateBooking extends AbstractCreateBooking
             cancelConditions: $cancelConditions,
             serviceType: $service->type,
             note: $request->note,//@todo netto валюта
+            status: $service->type === ServiceTypeEnum::OTHER_SERVICE ? BookingStatusEnum::CONFIRMED : BookingStatusEnum::CREATED,
         );
         $editor = $this->detailsEditorFactory->build($booking->serviceType());
         $editor->create($booking->id(), new ServiceId($request->serviceId), $request->detailsData);

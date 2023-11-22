@@ -94,12 +94,13 @@ class BookingRepository implements BookingRepositoryInterface
         BookingPrices $prices,
         ?CancelConditions $cancelConditions,
         ServiceTypeEnum $serviceType,
-        ?string $note = null
+        ?string $note = null,
+        BookingStatusEnum $status = BookingStatusEnum::CREATED
     ): Booking {
         $model = BookingModel::create([
             'order_id' => $orderId->value(),
             'service_type' => $serviceType,
-            'status' => BookingStatusEnum::CREATED,
+            'status' => $status,
             'source' => AppContext::source(),
             'creator_id' => $creatorId->value(),
             'prices' => $prices->toData(),

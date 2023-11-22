@@ -30,7 +30,7 @@ class CIPMeetingInAirport extends AbstractEditor implements EditorInterface
             $serviceInfo,
             (int)$supplierService->data['airportId'],
             $detailsData['flightNumber'] ?? null,
-            $detailsData['arrivalDate'] ?? null,
+            $detailsData['date'] ?? null,
             new GuestIdCollection([])
         );
     }

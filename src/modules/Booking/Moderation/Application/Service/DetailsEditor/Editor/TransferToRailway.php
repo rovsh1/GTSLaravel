@@ -33,7 +33,7 @@ class TransferToRailway extends AbstractEditor implements EditorInterface
             new CarBidCollection([]),
             $detailsData['trainNumber'] ?? null,
             $detailsData['meetingTablet'] ?? null,
-            $detailsData['departureDate'] ?? null,
+            $detailsData['date'] ?? null,
         );
     }
 }

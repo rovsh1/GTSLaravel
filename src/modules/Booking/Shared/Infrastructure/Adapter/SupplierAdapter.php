@@ -16,8 +16,8 @@ use Module\Supplier\Moderation\Application\Response\CancelConditionsDto;
 use Module\Supplier\Moderation\Application\Response\ServiceContractDto;
 use Module\Supplier\Moderation\Application\Response\ServiceDto;
 use Module\Supplier\Moderation\Application\Response\SupplierDto;
-use Module\Supplier\Moderation\Application\UseCase\CancelConditions\GetAirportCancelConditions;
-use Module\Supplier\Moderation\Application\UseCase\CancelConditions\GetTransferCancelConditions;
+use Module\Supplier\Moderation\Application\UseCase\CancelConditions\GetServiceCancelConditions;
+use Module\Supplier\Moderation\Application\UseCase\CancelConditions\GetCarCancelConditions;
 use Module\Supplier\Moderation\Application\UseCase\Find;
 use Module\Supplier\Moderation\Application\UseCase\FindAirport;
 use Module\Supplier\Moderation\Application\UseCase\FindAirportServiceContract;
@@ -62,9 +62,9 @@ class SupplierAdapter implements SupplierAdapterInterface
         return app(FindTransferServiceContract::class)->execute($serviceId);
     }
 
-    public function getTransferCancelConditions(): ?CancelConditionsDto
+    public function getCarCancelConditions(int $serviceId, int $carId, \DateTimeInterface $date): ?CancelConditionsDto
     {
-        return app(GetTransferCancelConditions::class)->execute();
+        return app(GetCarCancelConditions::class)->execute($serviceId, $carId, $date);
     }
 
     public function getAirportServicePrice(
@@ -95,14 +95,19 @@ class SupplierAdapter implements SupplierAdapterInterface
         );
     }
 
+    public function getOtherCancelConditions(int $serviceId, DateTimeInterface $date): ?CancelConditionsDto
+    {
+        return app(GetServiceCancelConditions::class)->execute($serviceId, $date);
+    }
+
     public function findAirportServiceContract(int $serviceId): ?ServiceContractDto
     {
         return app(FindAirportServiceContract::class)->execute($serviceId);
     }
 
-    public function getAirportCancelConditions(): ?CancelConditionsDto
+    public function getAirportCancelConditions(int $serviceId, DateTimeInterface $date): ?CancelConditionsDto
     {
-        return app(GetAirportCancelConditions::class)->execute();
+        return app(GetServiceCancelConditions::class)->execute($serviceId, $date);
     }
 
     /**

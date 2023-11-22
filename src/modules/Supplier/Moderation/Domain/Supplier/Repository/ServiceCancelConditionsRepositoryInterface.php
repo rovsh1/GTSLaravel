@@ -9,17 +9,15 @@ use Module\Supplier\Moderation\Domain\Supplier\ValueObject\CarId;
 use Module\Supplier\Moderation\Domain\Supplier\ValueObject\SeasonId;
 use Module\Supplier\Moderation\Domain\Supplier\ValueObject\ServiceId;
 
-interface TransferCancelConditionsRepositoryInterface
+interface ServiceCancelConditionsRepositoryInterface
 {
     public function get(
         ServiceId $serviceId,
-        CarId $carId,
         SeasonId $seasonId
     ): ?CancelConditions;
 
     public function store(
         ServiceId $serviceId,
-        CarId $carId,
         SeasonId $seasonId,
         CancelConditions $cancelConditions
     ): bool;

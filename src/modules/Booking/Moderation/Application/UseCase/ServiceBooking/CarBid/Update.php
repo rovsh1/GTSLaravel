@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Application\UseCase\ServiceBooking\CarBid;
 
 use Module\Booking\Moderation\Application\Dto\CarBidDataDto;
+use Module\Booking\Moderation\Application\Exception\NotFoundServiceCancelConditionsException;
 use Module\Booking\Moderation\Application\Exception\NotFoundServicePriceException as NotFoundApplicationException;
 use Module\Booking\Moderation\Application\Exception\ServiceDateUndefinedException;
+use Module\Booking\Moderation\Domain\Booking\Exception\NotFoundServiceCancelConditions;
 use Module\Booking\Moderation\Domain\Booking\Service\TransferBooking\CarBidUpdater;
 use Module\Booking\Shared\Domain\Booking\Exception\NotFoundTransferServicePrice;
 use Module\Booking\Shared\Domain\Booking\Exception\ServiceDateUndefined;
@@ -27,6 +29,8 @@ class Update implements UseCaseInterface
             throw new NotFoundApplicationException($e, NotFoundApplicationException::BOOKING_TRANSFER_SERVICE_PRICE_NOT_FOUND);
         } catch (ServiceDateUndefined $e) {
             throw new ServiceDateUndefinedException($e);
+        } catch (NotFoundServiceCancelConditions $e) {
+            throw new NotFoundServiceCancelConditionsException($e);
         }
     }
 }

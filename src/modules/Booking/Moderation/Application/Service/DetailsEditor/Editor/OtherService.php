@@ -27,7 +27,8 @@ class OtherService extends AbstractEditor implements EditorInterface
         return $this->detailsFactory->create(
             $bookingId,
             $serviceInfo,
-            $detailsData['description'] ?? null
+            $detailsData['description'] ?? null,
+            $detailsData['date'] ?? null
         );
     }
 }

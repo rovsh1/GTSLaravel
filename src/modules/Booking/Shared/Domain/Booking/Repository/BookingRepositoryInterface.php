@@ -10,6 +10,7 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPrices;
 use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
 use Module\Booking\Shared\Domain\Shared\ValueObject\CancelConditions;
 use Module\Booking\Shared\Domain\Shared\ValueObject\CreatorId;
+use Module\Shared\Enum\Booking\BookingStatusEnum;
 use Module\Shared\Enum\ServiceTypeEnum;
 
 interface BookingRepositoryInterface
@@ -27,7 +28,8 @@ interface BookingRepositoryInterface
         BookingPrices $prices,
         ?CancelConditions $cancelConditions,
         ServiceTypeEnum $serviceType,
-        ?string $note = null
+        ?string $note = null,
+        BookingStatusEnum $status = BookingStatusEnum::CREATED
     ): Booking;
 
     /**

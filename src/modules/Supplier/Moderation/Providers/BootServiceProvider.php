@@ -28,13 +28,23 @@ class BootServiceProvider extends ServiceProvider
         );
 
         $this->app->singleton(
-            Domain\Supplier\Repository\TransferCancelConditionsRepositoryInterface::class,
-            Infrastructure\Repository\TransferCancelConditionsRepository::class
+            Domain\Supplier\Repository\CarCancelConditionsRepositoryInterface::class,
+            Infrastructure\Repository\CarCancelConditionsRepository::class
         );
 
         $this->app->singleton(
-            Domain\Supplier\Repository\AirportCancelConditionsRepositoryInterface::class,
-            Infrastructure\Repository\AirportCancelConditionsRepository::class
+            Domain\Supplier\Repository\ServiceCancelConditionsRepositoryInterface::class,
+            Infrastructure\Repository\ServiceCancelConditionsRepository::class
+        );
+
+        $this->app->singleton(
+            Domain\Supplier\Repository\SeasonRepositoryInterface::class,
+            Infrastructure\Repository\SeasonRepository::class
+        );
+
+        $this->app->singleton(
+            Domain\Supplier\Repository\ServiceRepositoryInterface::class,
+            Infrastructure\Repository\ServiceRepository::class
         );
     }
 }

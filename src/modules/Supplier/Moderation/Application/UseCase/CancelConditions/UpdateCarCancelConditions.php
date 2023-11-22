@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace Module\Supplier\Moderation\Application\UseCase\CancelConditions;
 
-use Module\Supplier\Moderation\Application\RequestDto\UpdateTransferCancelConditionsRequest;
-use Module\Supplier\Moderation\Domain\Supplier\Repository\TransferCancelConditionsRepositoryInterface;
+use Module\Supplier\Moderation\Application\RequestDto\UpdateCarCancelConditionsRequest;
+use Module\Supplier\Moderation\Domain\Supplier\Repository\CarCancelConditionsRepositoryInterface;
 use Module\Supplier\Moderation\Domain\Supplier\ValueObject\CancelConditions;
 use Module\Supplier\Moderation\Domain\Supplier\ValueObject\CarId;
 use Module\Supplier\Moderation\Domain\Supplier\ValueObject\SeasonId;
 use Module\Supplier\Moderation\Domain\Supplier\ValueObject\ServiceId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
-class UpdateTransferCancelConditions implements UseCaseInterface
+class UpdateCarCancelConditions implements UseCaseInterface
 {
     public function __construct(
-        private readonly TransferCancelConditionsRepositoryInterface $cancelConditionsRepository
+        private readonly CarCancelConditionsRepositoryInterface $cancelConditionsRepository
     ) {
     }
 
-    public function execute(UpdateTransferCancelConditionsRequest $request): void
+    public function execute(UpdateCarCancelConditionsRequest $request): void
     {
         $cancelConditions = CancelConditions::fromData($request->cancelConditions);
 

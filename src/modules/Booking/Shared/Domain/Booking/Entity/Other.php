@@ -9,6 +9,7 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\DetailsId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Shared\Enum\ServiceTypeEnum;
+use Sdk\Module\Support\DateTimeImmutable;
 
 final class Other implements DetailsInterface
 {
@@ -17,8 +18,8 @@ final class Other implements DetailsInterface
         private readonly BookingId $bookingId,
         private readonly ServiceInfo $serviceInfo,
         private ?string $description,
-    ) {
-    }
+        private ?DateTimeInterface $date,
+    ) {}
 
     public function bookingId(): BookingId
     {
@@ -62,16 +63,20 @@ final class Other implements DetailsInterface
             'bookingId' => $this->bookingId->value(),
             'serviceInfo' => $this->serviceInfo->toData(),
             'description' => $this->description,
+            'date' => $this->date?->getTimestamp(),
         ];
     }
 
     public static function fromData(array $data): static
     {
+        $date = $data['date'] ?? null;
+
         return new Other(
             new DetailsId($data['id']),
             new BookingId($data['bookingId']),
             ServiceInfo::fromData($data['serviceInfo']),
             $data['description'],
+            $date !== null ? DateTimeImmutable::createFromTimestamp($date) : null
         );
     }
 }
