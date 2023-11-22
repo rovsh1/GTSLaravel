@@ -21,8 +21,6 @@ class UpdateStatus implements UseCaseInterface
         private readonly StatusUpdater $statusUpdater,
     ) {}
 
-    //3 колонки: сумма, распределено, не распределено + общая сумма всех нераспределенных
-
     /**
      * Статусы заказа для посадки оплаты
      *
@@ -30,8 +28,6 @@ class UpdateStatus implements UseCaseInterface
      * self::PARTIAL_PAID,
      * self::REFUND_FEE,
      */
-
-    //@todo оплаты поставщикам
 
     public function execute(int $orderId, int $statusId): void
     {

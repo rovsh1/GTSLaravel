@@ -9,5 +9,6 @@ class PriceDto
     public function __construct(
         public readonly float $amount,
         public readonly string $currency,
+        public readonly ?float $penalty,
     ) {}
 }

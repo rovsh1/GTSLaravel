@@ -81,6 +81,11 @@
                     @endforeach
                     <tr class="first">
                         <td class="text-align-right" colspan="5" style="padding-bottom: 20px">
+                            Сумма штрафа: {{ $invoice->totalPenalty }}
+                        </td>
+                    </tr>
+                    <tr class="first">
+                        <td class="text-align-right" colspan="5" style="padding-bottom: 20px">
                             Общая сумма: {{ $invoice->totalAmount }}
                         </td>
                     </tr>

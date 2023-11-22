@@ -83,6 +83,14 @@ class TemplateDataFactory
             fn(float $value, BookingDto $bookingDto) => $value + $bookingDto->price->amount,
             0
         );
+        /** @var float $totalPenalty */
+        $totalPenalty = collect($bookings)->reduce(
+            fn(float $value, BookingDto $bookingDto) => $value + $bookingDto->price->penalty,
+            0
+        );
+        if ($totalPenalty === 0) {
+            $totalPenalty = null;
+        }
 
         return [
             'order' => $this->buildOrderDto($order),
@@ -90,16 +98,21 @@ class TemplateDataFactory
             'company' => $this->getCompanyRequisites(),
             'manager' => $this->buildOrderManagerDto($order),
             'client' => $this->buildClientDto($clientId),
-            'invoice' => $this->buildInvoiceDto($orderId, now(), $totalAmount),
+            'invoice' => $this->buildInvoiceDto($orderId, now(), $totalAmount, $totalPenalty),
         ];
     }
 
-    private function buildInvoiceDto(OrderId $id, \DateTimeInterface $createdAt, float $totalAmount): InvoiceDto
-    {
+    private function buildInvoiceDto(
+        OrderId $id,
+        \DateTimeInterface $createdAt,
+        float $totalAmount,
+        ?float $totalPenalty
+    ): InvoiceDto {
         return new InvoiceDto(
             (string)$id->value(),
             $createdAt->format('d.m.Y H:i'),
-            Format::price($totalAmount)
+            Format::price($totalAmount),
+            Format::price($totalPenalty),
         );
     }
 
@@ -120,7 +133,8 @@ class TemplateDataFactory
         $clientPrice = $booking->prices()->clientPrice();
         $price = new PriceDto(
             $clientPrice->manualValue() ?? $clientPrice->calculatedValue(),
-            $clientPrice->currency()->name
+            $clientPrice->currency()->name,
+            $clientPrice->penaltyValue()
         );
 
         $details = $this->detailsRepository->findOrFail($booking->id());

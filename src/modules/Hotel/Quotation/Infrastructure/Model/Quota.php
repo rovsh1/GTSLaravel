@@ -35,8 +35,10 @@ use Sdk\Module\Database\Eloquent\Model;
  * @method static Builder|Quota whereRoomId($value)
  * @method static Builder|Quota whereHotelId(int $hotelId, int $roomId = null)
  * @method static Builder|Quota whereSold()
+ * @method static Builder|Quota whereOpened()
  * @method static Builder|Quota whereClosed()
  * @method static Builder|Quota whereHasAvailable(int $count = 0)
+ * @method static Builder|Quota whereReleaseDaysBelowOrEqual(int $releaseDays)
  * @method static Builder|Quota wherePeriod(CarbonPeriod $period)
  * @method static Builder|Quota withCountColumns()
  * @mixin \Illuminate\Database\Eloquent\Model
@@ -87,6 +89,11 @@ class Quota extends Model
         Quota::upsert($updateData, ['date', 'room_id'], ['status']);
     }
 
+    public function scopeWhereDate(Builder $builder, \DateTimeInterface $date): void
+    {
+        $builder->whereRaw('DATE(date) = ?', [$date->format('Y-m-d')]);
+    }
+
     public function scopeWherePeriod(Builder $builder, CarbonPeriod $period): void
     {
         $builder->where('date', '>=', $period->getStartDate())
@@ -129,6 +136,11 @@ class Quota extends Model
     public function scopeWhereHasAvailable(Builder $builder, int $count = 0): void
     {
         $builder->whereRaw('(count_total - (' . self::buildCountQuery() . ') >= ?)', [$count]);
+    }
+
+    public function scopeWhereReleaseDaysBelowOrEqual(Builder $builder, int $releaseDays): void
+    {
+        $builder->where('release_days', '<=', $releaseDays);
     }
 
     public function scopeWithCountColumns(Builder $builder): void
