@@ -55,6 +55,7 @@ class BindGuest implements UseCaseInterface
         } catch (NotFoundHotelRoomPrice $e) {
             throw new NotFoundHotelRoomPriceException($e);
         } catch (\Throwable $e) {
+            dd($e);
             throw new ApplicationException($e->getMessage(), $e->getCode(), $e);
         }
     }

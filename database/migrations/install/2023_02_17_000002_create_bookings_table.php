@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
@@ -18,7 +17,17 @@ return new class extends Migration {
             $table->unsignedTinyInteger('status');
             $table->string('source');
             $table->unsignedInteger('creator_id');
-            $table->json('prices');
+
+            $table->float('client_price', 14);
+            $table->char('client_currency', 3);
+            $table->float('client_manual_price', 14)->nullable();
+            $table->float('client_penalty', 14)->nullable();
+
+            $table->float('supplier_price', 14);
+            $table->char('supplier_currency', 3);
+            $table->float('supplier_manual_price', 14)->nullable();
+            $table->float('supplier_penalty', 14)->nullable();
+
             $table->json('cancel_conditions')->nullable();
             $table->string('note')->nullable();
             $table->timestamps();

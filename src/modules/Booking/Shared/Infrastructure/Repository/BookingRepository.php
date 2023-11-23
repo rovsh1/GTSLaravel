@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
+use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPriceItem;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPrices;
 use Module\Booking\Shared\Domain\Booking\ValueObject\Context;
 use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
@@ -80,10 +81,19 @@ class BookingRepository implements BookingRepositoryInterface
 
     public function store(Booking $booking): void
     {
+        $clientPrice = $booking->prices()->clientPrice();
+        $supplierPrice = $booking->prices()->supplierPrice();
         BookingModel::whereId($booking->id()->value())->update([
             'status' => $booking->status(),
             'note' => $booking->note(),
-            'prices' => $booking->prices()->toData(),
+            'client_price' => $clientPrice->calculatedValue(),
+            'client_manual_price' => $clientPrice->manualValue(),
+            'client_currency' => $clientPrice->currency(),
+            'client_penalty' => $clientPrice->penaltyValue(),
+            'supplier_price' => $supplierPrice->calculatedValue(),
+            'supplier_manual_price' => $supplierPrice->manualValue(),
+            'supplier_currency' => $supplierPrice->currency(),
+            'supplier_penalty' => $supplierPrice->penaltyValue(),
             'cancel_conditions' => $booking->cancelConditions()?->toData()
         ]);
     }
@@ -97,13 +107,23 @@ class BookingRepository implements BookingRepositoryInterface
         ?string $note = null,
         BookingStatusEnum $status = BookingStatusEnum::CREATED
     ): Booking {
+        $clientPrice = $prices->clientPrice();
+        $supplierPrice = $prices->supplierPrice();
+
         $model = BookingModel::create([
             'order_id' => $orderId->value(),
             'service_type' => $serviceType,
             'status' => $status,
             'source' => AppContext::source(),
             'creator_id' => $creatorId->value(),
-            'prices' => $prices->toData(),
+            'client_price' => $clientPrice->calculatedValue(),
+            'client_manual_price' => $clientPrice->manualValue(),
+            'client_currency' => $clientPrice->currency(),
+            'client_penalty' => $clientPrice->penaltyValue(),
+            'supplier_price' => $supplierPrice->calculatedValue(),
+            'supplier_manual_price' => $supplierPrice->manualValue(),
+            'supplier_currency' => $supplierPrice->currency(),
+            'supplier_penalty' => $supplierPrice->penaltyValue(),
             'cancel_conditions' => $cancelConditions?->toData(),
             'note' => $note
         ]);
@@ -126,7 +146,7 @@ class BookingRepository implements BookingRepositoryInterface
             orderId: new OrderId($booking->order_id),
             serviceType: $booking->service_type,
             status: $booking->status,
-            prices: BookingPrices::fromData($booking->prices),
+            prices: $this->buildBookingPrices($booking),
             cancelConditions: $booking->cancel_conditions !== null
                 ? CancelConditions::fromData($booking->cancel_conditions)
                 : null,
@@ -144,5 +164,23 @@ class BookingRepository implements BookingRepositoryInterface
         $this->instances->add($instance->id(), $instance);
 
         return $instance;
+    }
+
+    private function buildBookingPrices(BookingModel $booking): BookingPrices
+    {
+        return new BookingPrices(
+            clientPrice: new BookingPriceItem(
+                currency: $booking->client_currency,
+                calculatedValue: $booking->client_price,
+                manualValue: $booking->client_manual_price,
+                penaltyValue: $booking->client_penalty,
+            ),
+            supplierPrice: new BookingPriceItem(
+                currency: $booking->supplier_currency,
+                calculatedValue: $booking->supplier_price,
+                manualValue: $booking->supplier_manual_price,
+                penaltyValue: $booking->supplier_penalty,
+            ),
+        );
     }
 }

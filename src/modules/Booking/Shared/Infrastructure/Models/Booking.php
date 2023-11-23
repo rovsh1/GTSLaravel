@@ -11,6 +11,7 @@ use Module\Booking\Shared\Infrastructure\Models\Details\Hotel;
 use Module\Booking\Shared\Infrastructure\Models\Details\Other;
 use Module\Booking\Shared\Infrastructure\Models\Details\Transfer;
 use Module\Shared\Enum\Booking\BookingStatusEnum;
+use Module\Shared\Enum\CurrencyEnum;
 use Module\Shared\Enum\ServiceTypeEnum;
 use Module\Shared\Enum\SourceEnum;
 use Module\Shared\Infrastructure\Models\Model;
@@ -20,6 +21,14 @@ use Module\Shared\Infrastructure\Models\Model;
  *
  * @property int $id
  * @property ServiceTypeEnum $service_type
+ * @property float $client_price
+ * @property CurrencyEnum $client_currency
+ * @property float|null $client_manual_price
+ * @property float|null $client_penalty
+ * @property float $supplier_price
+ * @property CurrencyEnum $supplier_currency
+ * @property float|null $supplier_manual_price
+ * @property float|null $supplier_penalty
  * @property-read Hotel|Airport|Transfer|Other|null $details
  * @property-read Airport|null $airportDetails
  * @property-read Transfer|null $transferDetails
@@ -38,7 +47,14 @@ class Booking extends Model
         'status',
         'source',
         'creator_id',
-        'prices',
+        'client_price',
+        'client_manual_price',
+        'client_currency',
+        'client_penalty',
+        'supplier_price',
+        'supplier_manual_price',
+        'supplier_currency',
+        'supplier_penalty',
         'cancel_conditions',
         'note',
     ];
@@ -47,13 +63,12 @@ class Booking extends Model
         'status' => BookingStatusEnum::class,
         'service_type' => ServiceTypeEnum::class,
         'source' => SourceEnum::class,
-        'prices' => 'array',
+        'client_currency' => CurrencyEnum::class,
+        'supplier_currency' => CurrencyEnum::class,
         'cancel_conditions' => 'array',
     ];
 
-    protected static function booted()
-    {
-    }
+    protected static function booted() {}
 
     public function details(): HasOne
     {

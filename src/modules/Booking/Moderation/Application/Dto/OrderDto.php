@@ -14,7 +14,6 @@ class OrderDto extends Dto
 {
     public function __construct(
         public readonly int $id,
-        public readonly CurrencyDto $currency,
         public readonly StatusDto $status,
         public readonly int $clientId,
         public readonly ?int $legalId,
@@ -22,6 +21,7 @@ class OrderDto extends Dto
         /** @var int[] $guestIds */
         public readonly array $guestIds,
         public readonly int $creatorId,
+        public readonly OrderPriceDto $price,
         public readonly SourceEnum $source,
     ) {}
 }

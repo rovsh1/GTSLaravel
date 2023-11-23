@@ -6,12 +6,12 @@ namespace Module\Booking\Shared\Infrastructure\Repository;
 
 use App\Shared\Support\Facades\AppContext;
 use Illuminate\Database\Eloquent\Builder;
-use Module\Booking\Shared\Domain\Order\Factory\OrderFactory;
 use Module\Booking\Shared\Domain\Order\Order;
 use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
 use Module\Booking\Shared\Domain\Order\ValueObject\ClientId;
 use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
 use Module\Booking\Shared\Domain\Shared\ValueObject\CreatorId;
+use Module\Booking\Shared\Infrastructure\Factory\OrderFactory;
 use Module\Booking\Shared\Infrastructure\Models\Order as Model;
 use Module\Shared\Enum\CurrencyEnum;
 use Module\Shared\Enum\Order\OrderStatusEnum;
@@ -38,7 +38,7 @@ class OrderRepository implements OrderRepositoryInterface
             'creator_id' => $creatorId->value(),
         ]);
 
-        return $this->factory->createFrom($model);
+        return $this->factory->fromModel($model);
     }
 
     public function find(OrderId $id): ?Order
@@ -48,7 +48,7 @@ class OrderRepository implements OrderRepositoryInterface
             return null;
         }
 
-        return $this->factory->createFrom($model);
+        return $this->factory->fromModel($model);
     }
 
     /**
@@ -78,10 +78,9 @@ class OrderRepository implements OrderRepositoryInterface
                     $builder->whereStatus(OrderStatusEnum::IN_PROGRESS);
                 }
             })
-            ->get()
-            ->all();
+            ->get();
 
-        return $this->factory->createCollectionFrom($models);
+        return $this->factory->collectionFromModel($models);
     }
 
     public function store(Order $order): bool

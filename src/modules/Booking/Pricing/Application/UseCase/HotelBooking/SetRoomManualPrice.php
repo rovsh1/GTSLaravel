@@ -39,6 +39,7 @@ class SetRoomManualPrice implements UseCaseInterface
                 ),
             )
         );
+        $this->accommodationRepository->store($accommodation);
 
         $this->recalculatePriceService->recalculate(new BookingId($bookingId));
     }

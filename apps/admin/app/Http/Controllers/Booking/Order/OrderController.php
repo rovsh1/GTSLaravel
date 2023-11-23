@@ -14,7 +14,6 @@ use App\Admin\Models\Client\Client;
 use App\Admin\Models\Order\Order;
 use App\Admin\Repositories\OrderAdministratorRepository;
 use App\Admin\Support\Facades\Acl;
-use App\Admin\Support\Facades\Booking\BookingAdapter;
 use App\Admin\Support\Facades\Booking\OrderAdapter;
 use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Form;
@@ -32,6 +31,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Module\Shared\Enum\SourceEnum;
 use Module\Shared\Exception\ApplicationException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class OrderController extends Controller
 {
@@ -91,8 +91,10 @@ class OrderController extends Controller
 
     public function show(int $id): LayoutContract
     {
-        $booking = BookingAdapter::getBooking($id);
-        $order = OrderAdapter::getOrder($booking->orderId);
+        $order = OrderAdapter::getOrder($id);
+        if ($order === null) {
+            throw new NotFoundHttpException('Order not found');
+        }
         $client = Client::find($order->clientId);
 
         $title = "Заказ №{$id}";
@@ -105,7 +107,7 @@ class OrderController extends Controller
                 'model' => $order,
                 'client' => $client,
                 'manager' => $this->administratorRepository->get($id),
-                'creator' => Administrator::find($booking->creatorId),
+                'creator' => Administrator::find($order->creatorId),
                 'serviceBookingCreate' => route('service-booking.create'),
                 'hotelBookingCreate' => route('hotel-booking.create'),
             ]);
