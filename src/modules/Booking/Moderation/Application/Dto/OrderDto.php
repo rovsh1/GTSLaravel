@@ -6,7 +6,7 @@ namespace Module\Booking\Moderation\Application\Dto;
 
 use Carbon\CarbonImmutable;
 use Module\Booking\Shared\Application\Dto\StatusDto;
-use Module\Shared\Dto\CurrencyDto;
+use Module\Shared\Dto\MoneyDto;
 use Module\Shared\Enum\SourceEnum;
 use Sdk\Module\Foundation\Support\Dto\Dto;
 
@@ -21,7 +21,7 @@ class OrderDto extends Dto
         /** @var int[] $guestIds */
         public readonly array $guestIds,
         public readonly int $creatorId,
-        public readonly OrderPriceDto $price,
+        public readonly MoneyDto $clientPrice,
         public readonly SourceEnum $source,
     ) {}
 }

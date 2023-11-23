@@ -13,7 +13,7 @@ const { getCurrencyByCodeChar } = useCurrencyStore()
 
 const order = computed(() => orderStore.order)
 const grossCurrency = computed<Currency | undefined>(
-  () => getCurrencyByCodeChar(orderStore.order?.price.currency?.value),
+  () => getCurrencyByCodeChar(orderStore.order?.clientPrice.currency?.value),
 )
 
 </script>
@@ -22,7 +22,7 @@ const grossCurrency = computed<Currency | undefined>(
   <div v-if="order && grossCurrency" class="float-end total-sum">
     Общая сумма:
     <strong>
-      {{ formatPrice(order.price.value, grossCurrency.sign) }}
+      {{ formatPrice(order.clientPrice.value, grossCurrency.sign) }}
     </strong>
     <span v-if="false" class="text-muted"> (выставлена вручную)</span>
   </div>

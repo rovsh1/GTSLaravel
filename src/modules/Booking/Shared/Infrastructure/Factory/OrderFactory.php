@@ -33,7 +33,7 @@ class OrderFactory
             new GuestIdCollection($guestIds),
             new Money(
                 $model->currency,
-                $model->client_price,
+                $model->client_price ?? 0,
             ),
             new Context(
                 source: $model->source,

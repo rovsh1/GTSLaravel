@@ -8,8 +8,8 @@ use Module\Client\Invoicing\Domain\Invoice\Exception\InvalidOrderStatusToCancelI
 use Module\Client\Invoicing\Domain\Invoice\Exception\InvalidOrderStatusToCreateInvoice;
 use Module\Client\Invoicing\Domain\Order\ValueObject\OrderId;
 use Module\Client\Shared\Domain\ValueObject\ClientId;
-use Module\Shared\Enum\CurrencyEnum;
 use Module\Shared\Enum\Order\OrderStatusEnum;
+use Module\Shared\ValueObject\Money;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
 final class Order extends AbstractAggregateRoot
@@ -17,7 +17,8 @@ final class Order extends AbstractAggregateRoot
     public function __construct(
         private readonly OrderId $id,
         private readonly ClientId $clientId,
-        private readonly CurrencyEnum $currency,
+        private readonly Money $clientPrice,
+        private readonly Money $payedAmount,
         private OrderStatusEnum $status,
     ) {}
 
@@ -31,9 +32,14 @@ final class Order extends AbstractAggregateRoot
         return $this->clientId;
     }
 
-    public function currency(): CurrencyEnum
+    public function clientPrice(): Money
     {
-        return $this->currency;
+        return $this->clientPrice;
+    }
+
+    public function payedAmount(): Money
+    {
+        return $this->payedAmount;
     }
 
     public function status(): OrderStatusEnum

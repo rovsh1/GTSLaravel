@@ -122,7 +122,7 @@ class OrderController extends Controller
 
     public function search(SearchRequest $request): JsonResponse
     {
-        $orders = OrderAdapter::getActiveOrders($request->getClientId(), $request->isOnlyWaitingInvoice());
+        $orders = OrderAdapter::getActiveOrders($request->getClientId());
 
         return response()->json($orders);
     }

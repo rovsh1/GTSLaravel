@@ -27,7 +27,7 @@ interface OrderRepositoryInterface
     /**
      * @return Order[]
      */
-    public function getActiveOrders(int|null $clientId, bool $isOnlyWaitingInvoice = false): array;
+    public function getActiveOrders(int|null $clientId): array;
 
     public function store(Order $order): bool;
 }

@@ -65,18 +65,14 @@ class OrderRepository implements OrderRepositoryInterface
     /**
      * @return Order[]
      */
-    public function getActiveOrders(int|null $clientId, bool $isOnlyWaitingInvoice = false): array
+    public function getActiveOrders(int|null $clientId): array
     {
         $models = Model::query()
-            ->where(function (Builder $builder) use ($clientId, $isOnlyWaitingInvoice) {
+            ->where(function (Builder $builder) use ($clientId) {
                 if ($clientId !== null) {
                     $builder->whereClientId($clientId);
                 }
-                if ($isOnlyWaitingInvoice) {
-                    $builder->whereStatus(OrderStatusEnum::WAITING_INVOICE);
-                } else {
-                    $builder->whereStatus(OrderStatusEnum::IN_PROGRESS);
-                }
+                $builder->whereStatus(OrderStatusEnum::IN_PROGRESS);
             })
             ->get();
 

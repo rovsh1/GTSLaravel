@@ -24,3 +24,4 @@ Route::group([], __DIR__ . '/currency.php');
 Route::group([], __DIR__ . '/locale-dictionary.php');
 Route::group([], __DIR__ . '/markup-group.php');
 Route::group([], __DIR__ . '/railway-station.php');
+Route::group([], __DIR__ . '/payment.php');
