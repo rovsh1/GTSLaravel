@@ -11,7 +11,6 @@ use Module\Client\Payment\Domain\Payment\ValueObject\PaymentDocument;
 use Module\Client\Payment\Domain\Payment\ValueObject\PaymentId;
 use Module\Client\Payment\Domain\Payment\ValueObject\PaymentStatusEnum;
 use Module\Client\Shared\Domain\ValueObject\ClientId;
-use Module\Shared\ValueObject\Money;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
 final class Payment extends AbstractAggregateRoot
@@ -24,7 +23,7 @@ final class Payment extends AbstractAggregateRoot
         private readonly DateTimeImmutable $issueDate,
         private readonly DateTimeImmutable $paymentDate,
         private readonly PaymentAmount $paymentAmount,
-        private Money $plantedSum,
+        private float $plantedSum,
         private readonly ?PaymentDocument $document,
     ) {}
 
@@ -63,7 +62,7 @@ final class Payment extends AbstractAggregateRoot
         return $this->paymentAmount;
     }
 
-    public function plantedSum(): Money
+    public function plantedSum(): float
     {
         return $this->plantedSum;
     }
@@ -75,15 +74,13 @@ final class Payment extends AbstractAggregateRoot
 
     public function addPlantSum(float $sum): void
     {
-        $remainingSum = $this->paymentAmount->sum() - $this->plantedSum->value();
+        $remainingSum = $this->paymentAmount->sum() - $this->plantedSum;
         if ($remainingSum < $sum) {
-            throw new \Exception('Insufficient funds');
+            throw new \RuntimeException('Insufficient funds');
         }
 
-        $newPlantedSum = new Money($this->paymentAmount->currency(), ($this->plantedSum->value() + $sum));
-        $paymentAmount = new Money($this->paymentAmount->currency(), $this->paymentAmount->sum());
-
-        if ($paymentAmount->isEqual($newPlantedSum)) {
+        $this->plantedSum += $sum;
+        if (round($this->paymentAmount->sum()) === round($this->plantedSum)) {
             $this->updateStatus(PaymentStatusEnum::PAID);
         } else {
             $this->updateStatus(PaymentStatusEnum::PARTIAL_PAID);
@@ -93,11 +90,11 @@ final class Payment extends AbstractAggregateRoot
     public function removePlantSum(float $sum): void
     {
         if ($this->plantedSum < $sum) {
-            throw new \Exception('Planted sum not enough');
+            throw new \RuntimeException('Planted sum not enough');
         }
 
         //@todo нужно удалить все записи из таблицы client_payment_plants
-//        $this->plantedSum -= $sum;
+        $this->plantedSum -= $sum;
         if ($this->plantedSum === 0.0) {
             $this->updateStatus(PaymentStatusEnum::NOT_PAID);
         }

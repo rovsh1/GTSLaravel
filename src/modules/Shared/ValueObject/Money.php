@@ -34,9 +34,7 @@ final class Money implements CanEquate
             return $this === $b;
         }
 
-        $valueDiff = abs($b->value - $this->value);
-
-        return $valueDiff < 0.001
+        return $this->value === $b->value
             && $this->currency === $b->currency;
     }
 }
