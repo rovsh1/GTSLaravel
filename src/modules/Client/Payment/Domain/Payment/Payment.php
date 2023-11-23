@@ -96,7 +96,8 @@ final class Payment extends AbstractAggregateRoot
             throw new \Exception('Planted sum not enough');
         }
 
-        $this->plantedSum -= $sum;
+        //@todo нужно удалить все записи из таблицы client_payment_plants
+//        $this->plantedSum -= $sum;
         if ($this->plantedSum === 0.0) {
             $this->updateStatus(PaymentStatusEnum::NOT_PAID);
         }
