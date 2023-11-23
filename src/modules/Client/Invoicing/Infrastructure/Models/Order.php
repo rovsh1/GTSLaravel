@@ -50,13 +50,23 @@ class Order extends Model
         });
     }
 
-    public function scopeWherePaymentId(Builder $builder, int $paymentId): void
+    public function scopeForPaymentId(Builder $builder, int $paymentId): void
     {
         $builder->whereExists(function (Query $builder) use ($paymentId) {
             $builder->selectRaw(1)
                 ->from('client_payments')
                 ->whereColumn('client_payments.client_id', 'orders.client_id')
                 ->where('client_payments.id', $paymentId);
+        });
+    }
+
+    public function scopeWhereLendToPaymentId(Builder $builder, int $paymentId): void
+    {
+        $builder->whereExists(function (Query $builder) use ($paymentId) {
+            $builder->selectRaw(1)
+                ->from('client_payment_plants')
+                ->whereColumn('client_payment_plants.order_id', 'orders.id')
+                ->where('client_payment_plants.payment_id', $paymentId);
         });
     }
 }

@@ -22,6 +22,13 @@ class OrderController extends Controller
         return response()->json($orders);
     }
 
+    public function getPaymentOrders(int $paymentId): JsonResponse
+    {
+        $orders = OrderAdapter::getPaymentOrders($paymentId);
+
+        return response()->json($orders);
+    }
+
     public function lendOrders(int $paymentId, LendOrdersRequest $request): AjaxResponseInterface
     {
         try {

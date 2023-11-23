@@ -19,4 +19,10 @@ interface OrderRepositoryInterface
      * @return Order[]
      */
     public function getForWaitingPayment(PaymentId $paymentId): array;
+
+    /**
+     * @param PaymentId $paymentId
+     * @return Order[]
+     */
+    public function getPaymentOrders(PaymentId $paymentId): array;
 }

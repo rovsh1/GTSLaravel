@@ -9,6 +9,7 @@ use Module\Client\Invoicing\Application\Dto\OrderDto;
 
 /**
  * @method static OrderDto[] getWaitingPaymentOrders(int $paymentId)
+ * @method static OrderDto[] getPaymentOrders(int $paymentId)
  * @method static void lendOrders(int $paymentId, array $orders)
  **/
 class OrderAdapter extends Facade

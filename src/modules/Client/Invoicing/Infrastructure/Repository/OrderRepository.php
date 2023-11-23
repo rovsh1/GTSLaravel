@@ -44,13 +44,24 @@ class OrderRepository implements OrderRepositoryInterface
      */
     public function getForWaitingPayment(PaymentId $paymentId): array
     {
-        $models = Model::wherePaymentId($paymentId->value())
+        $models = Model::forPaymentId($paymentId->value())
             ->whereIn('status', [
                 OrderStatusEnum::INVOICED,
                 OrderStatusEnum::PARTIAL_PAID,
                 OrderStatusEnum::REFUND_FEE,
             ])
             ->get();
+
+        return $models->map(fn(Model $model) => $this->fromModel($model))->all();
+    }
+
+    /**
+     * @param PaymentId $paymentId
+     * @return Order[]
+     */
+    public function getPaymentOrders(PaymentId $paymentId): array
+    {
+        $models = Model::whereLendToPaymentId($paymentId->value())->get();
 
         return $models->map(fn(Model $model) => $this->fromModel($model))->all();
     }
