@@ -1,31 +1,42 @@
 <script setup lang="ts">
 
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 import { useToggle } from '@vueuse/core'
 
 import OrderPaymentsTable from '~resources/views/payment/main/components/OrderPaymentsTable.vue'
 
+import { usePaymentOrdersListAPI, usePaymentWaitingOrdersListAPI } from '~api/payment/payment'
+
 import { useApplicationEventBus } from '~lib/event-bus'
 
 import BaseDialog from '~components/BaseDialog.vue'
+import OverlayLoading from '~components/OverlayLoading.vue'
 
 const eventBus = useApplicationEventBus()
 const [isOpened, toggleModal] = useToggle()
-const paymentId = ref<number>()
+const paymentID = ref<number>()
+
+const paymentIdProps = computed(() => (paymentID.value ? { paymentID: paymentID.value } : null))
+
+const { isFetching: isFetchingWaitingOrders,
+  execute: fetchWaitingOrders, data: waitingOrders } = usePaymentWaitingOrdersListAPI(paymentIdProps)
+const { isFetching: isFetchingOrders, execute: fetchOrders, data: orders } = usePaymentOrdersListAPI(paymentIdProps)
 
 eventBus.on('openOrderPaymentModal', (event: { paymentId: number }) => {
-  paymentId.value = event.paymentId
+  paymentID.value = event.paymentId
   toggleModal(true)
+  fetchWaitingOrders()
+  fetchOrders()
 })
 
 const closeModal = () => {
-  paymentId.value = undefined
+  paymentID.value = undefined
   toggleModal(false)
 }
 
 const onSubmit = () => {
-  console.log('onSubmit', paymentId.value)
+  console.log('onSubmit', paymentID.value)
   closeModal()
   window.location.reload()
 }
@@ -35,15 +46,23 @@ const onSubmit = () => {
 <template>
   <BaseDialog :auto-width="true" :opened="isOpened as boolean" @close="toggleModal(false)">
     <template #title>Распределение оплат</template>
-
-    <OrderPaymentsTable
-      :payment-id="paymentId"
-      :orders="[]"
-      :loading="false"
-    />
-
+    <div class="position-relative">
+      <OverlayLoading v-if="isFetchingWaitingOrders || isFetchingOrders" />
+      <OrderPaymentsTable
+        :waiting-orders="waitingOrders || []"
+        :orders="orders || []"
+        :loading="isFetchingWaitingOrders || isFetchingOrders || (!waitingOrders?.length && !orders?.length)"
+        @orders="() => {}"
+      />
+    </div>
     <template #actions-end>
-      <button class="btn btn-primary" type="button" @click="onSubmit">
+      <button
+        class="btn btn-primary"
+        type="button"
+        :disabled="isFetchingWaitingOrders || isFetchingOrders
+          || (!waitingOrders?.length && !orders?.length)"
+        @click="onSubmit"
+      >
         Сохранить
       </button>
       <button class="btn btn-cancel" type="button" @click="closeModal">Отмена</button>

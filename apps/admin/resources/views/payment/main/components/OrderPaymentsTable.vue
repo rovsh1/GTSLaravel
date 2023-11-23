@@ -1,20 +1,28 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 
+import { PaymentOrder } from '~api/payment/payment'
+
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 import InlineIcon from '~components/InlineIcon.vue'
 
 const props = withDefaults(defineProps<{
-  paymentId: number | undefined
-  orders: any[]
+  waitingOrders: PaymentOrder[]
+  orders: PaymentOrder[]
   loading: boolean
 }>(), {
 
 })
 
-const localeOrders = ref<any[]>(props.orders)
+const emit = defineEmits<{
+  (event: 'orders', value: PaymentOrder[]): void
+}>()
 
-const selectedOrders = ref<any[]>([])
+const localeWaitingOrders = ref<PaymentOrder[]>(props.waitingOrders)
+const localeOrders = ref<PaymentOrder[]>(props.orders)
+
+const selectedWaitingOrders = ref<PaymentOrder[]>([])
+const selectedOrders = ref<PaymentOrder[]>([])
 
 const isSelectedItem = (item: any) => selectedOrders.value.includes(item)
 
@@ -36,7 +44,7 @@ watch(() => props.orders, (newValue) => {
   <div class="d-flex align-items-stretch">
     <div>
       <p class="h6">Не включены в платеж:</p>
-      <div class="height-fix height-fix--long">
+      <div class="height-fix height-fix--long" :class="{ 'height-fix--position': !loading }">
         <table class="table table-bordered mb-0 w-100 table-sm">
           <thead class="table-light">
             <tr>
@@ -47,17 +55,17 @@ watch(() => props.orders, (newValue) => {
             </tr>
           </thead>
           <tbody>
-            <template v-if="localeOrders.length">
+            <template v-if="localeWaitingOrders.length">
               <tr
-                v-for="order in localeOrders"
-                :key="order"
-                :class="{ 'table-active': isSelectedItem(order) }"
-                @click="toogleSelectOrder(order)"
+                v-for="waitingOrder in localeWaitingOrders"
+                :key="waitingOrder.id"
+                :class="{ 'table-active': isSelectedItem(waitingOrder) }"
+                @click="toogleSelectOrder(waitingOrder)"
               >
-                <td>{{ order }}</td>
-                <td>{{ order }}</td>
-                <td>{{ order }}</td>
-                <td>{{ order }}</td>
+                <td>{{ waitingOrder.id }}</td>
+                <td>{{ waitingOrder.id }}</td>
+                <td>{{ waitingOrder.id }}</td>
+                <td>{{ waitingOrder.id }}</td>
               </tr>
             </template>
             <template v-else>
@@ -77,7 +85,7 @@ watch(() => props.orders, (newValue) => {
           size="small"
           severity="secondary"
           variant="outline"
-          :disabled="false"
+          :disabled="loading"
           @click="() => { }"
         />
       </div>
@@ -88,7 +96,7 @@ watch(() => props.orders, (newValue) => {
           size="small"
           severity="secondary"
           variant="outline"
-          :disabled="false"
+          :disabled="loading"
           @click="() => { }"
         />
       </div>
@@ -99,7 +107,7 @@ watch(() => props.orders, (newValue) => {
           size="small"
           severity="secondary"
           variant="outline"
-          :disabled="false"
+          :disabled="loading"
           @click="() => { }"
         />
       </div>
@@ -110,7 +118,7 @@ watch(() => props.orders, (newValue) => {
           size="small"
           severity="secondary"
           variant="outline"
-          :disabled="false"
+          :disabled="loading"
           @click="() => { }"
         />
       </div>
@@ -118,7 +126,7 @@ watch(() => props.orders, (newValue) => {
     <div class="d-flex flex-column justify-content-between">
       <div>
         <p class="h6">Включены в платеж:</p>
-        <div class="height-fix">
+        <div class="height-fix" :class="{ 'height-fix--position': !loading }">
           <table class="table table-bordered mb-0 w-100 table-sm">
             <thead class="table-light">
               <tr>
@@ -130,13 +138,20 @@ watch(() => props.orders, (newValue) => {
               </tr>
             </thead>
             <tbody>
-              <tr v-for="order in 500" :key="order">
-                <td>{{ order }}</td>
-                <td>{{ order }}</td>
-                <td>{{ order }}</td>
-                <td>{{ order }}</td>
-                <td />
-              </tr>
+              <template v-if="localeOrders.length">
+                <tr v-for="order in localeOrders" :key="order.id">
+                  <td>{{ order.id }}</td>
+                  <td>{{ order.id }}</td>
+                  <td>{{ order.id }}</td>
+                  <td>{{ order.id }}</td>
+                  <td />
+                </tr>
+              </template>
+              <template v-else>
+                <tr>
+                  <td class="text-center" colspan="5">Нет данных</td>
+                </tr>
+              </template>
             </tbody>
           </table>
         </div>
@@ -155,6 +170,12 @@ watch(() => props.orders, (newValue) => {
 </template>
 
 <style lang="scss" scoped>
+.height-fix--position table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
 .height-fix {
   height: 21.875rem;
   overflow-y: auto;
@@ -168,9 +189,6 @@ watch(() => props.orders, (newValue) => {
       th {
         font-size: 0.8rem;
         font-weight: normal;
-        position: sticky;
-        top: 0;
-        z-index: 1;
         border-top: 1px solid #dee2e6;
         border-bottom: 1px solid #dee2e6;
         border-right: 1px solid #dee2e6;
