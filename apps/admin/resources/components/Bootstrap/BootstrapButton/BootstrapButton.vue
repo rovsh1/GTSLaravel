@@ -126,7 +126,7 @@ const buttonType = computed(() => {
     <template v-if="onlyIcon">
       <InlineIcon :icon="onlyIcon" class="buttonOnlyIcon" />
     </template>
-    <span v-else class="buttonLabel">
+    <span v-else-if="label" class="buttonLabel">
       {{ label }}
     </span>
     <template v-if="endIcon">

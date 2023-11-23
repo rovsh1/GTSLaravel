@@ -4,6 +4,8 @@ import { ref } from 'vue'
 
 import { useToggle } from '@vueuse/core'
 
+import OrderPaymentsTable from '~resources/views/payment/main/components/OrderPaymentsTable.vue'
+
 import { useApplicationEventBus } from '~lib/event-bus'
 
 import BaseDialog from '~components/BaseDialog.vue'
@@ -31,10 +33,14 @@ const onSubmit = () => {
 </script>
 
 <template>
-  <BaseDialog :opened="isOpened as boolean" @close="toggleModal(false)">
+  <BaseDialog :auto-width="true" :opened="isOpened as boolean" @close="toggleModal(false)">
     <template #title>Распределение оплат</template>
 
-    ...тут будет распределение оплат по заказам...
+    <OrderPaymentsTable
+      :payment-id="paymentId"
+      :orders="[]"
+      :loading="false"
+    />
 
     <template #actions-end>
       <button class="btn btn-primary" type="button" @click="onSubmit">
