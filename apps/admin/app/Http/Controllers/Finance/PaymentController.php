@@ -28,7 +28,8 @@ class PaymentController extends AbstractPrototypeController
             ->enum('status', ['text' => 'Статус', 'enum' => PaymentStatusEnum::class])
             ->text('order_ids', [
                 'text' => 'Заказы',
-                'renderer' => fn($row) => "<a href='#' class='js-order-pay-link' data-payment-id='{$row->id}'>Распределить</a>"
+                'renderer' => fn($row
+                ) => "<a href='#' class='js-order-pay-link' data-payment-id='{$row->id}'>Распределить</a>"
             ])
             ->date('issue_date', ['text' => 'Дата выставления', 'order' => true])
             ->date('payment_date', ['text' => 'Дата оплаты', 'order' => true])

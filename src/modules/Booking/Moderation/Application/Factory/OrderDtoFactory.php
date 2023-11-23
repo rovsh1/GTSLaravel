@@ -10,6 +10,7 @@ use Module\Booking\Shared\Domain\Guest\ValueObject\GuestId;
 use Module\Booking\Shared\Domain\Order\Order;
 use Module\Shared\Contracts\Service\TranslatorInterface;
 use Module\Shared\Dto\CurrencyDto;
+use Module\Shared\Dto\MoneyDto;
 
 class OrderDtoFactory
 {
@@ -28,9 +29,9 @@ class OrderDtoFactory
             $entity->createdAt(),
             $entity->guestIds()->map(fn(GuestId $id) => $id->value()),
             $entity->context()->creatorId()->value(),
-            new OrderPriceDto(
-                CurrencyDto::fromEnum($entity->price()->currency(), $this->translator),
-                $entity->price()->value()
+            new MoneyDto(
+                CurrencyDto::fromEnum($entity->clientPrice()->currency(), $this->translator),
+                $entity->clientPrice()->value()
             ),
             $entity->context()->source()
         );

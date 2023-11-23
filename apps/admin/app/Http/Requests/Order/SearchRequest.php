@@ -16,17 +16,11 @@ class SearchRequest extends FormRequest
     {
         return [
             'client_id' => ['nullable', 'numeric'],
-            'only_waiting_invoice' => ['nullable', 'boolean']
         ];
     }
 
     public function getClientId(): ?int
     {
         return $this->integer('client_id', null);
-    }
-
-    public function isOnlyWaitingInvoice(): bool
-    {
-        return $this->boolean('only_waiting_invoice');
     }
 }

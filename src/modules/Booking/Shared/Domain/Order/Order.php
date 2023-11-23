@@ -10,11 +10,11 @@ use Module\Booking\Shared\Domain\Order\Event\ClientChanged;
 use Module\Booking\Shared\Domain\Order\ValueObject\ClientId;
 use Module\Booking\Shared\Domain\Order\ValueObject\LegalId;
 use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
-use Module\Booking\Shared\Domain\Order\ValueObject\OrderPrice;
 use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Shared\Contracts\Domain\EntityInterface;
 use Module\Shared\Enum\CurrencyEnum;
 use Module\Shared\Enum\Order\OrderStatusEnum;
+use Module\Shared\ValueObject\Money;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
 final class Order extends AbstractAggregateRoot implements EntityInterface
@@ -27,7 +27,7 @@ final class Order extends AbstractAggregateRoot implements EntityInterface
         private OrderStatusEnum $status,
         private readonly CarbonImmutable $createdAt,
         private readonly GuestIdCollection $guestIds,
-        private readonly OrderPrice $price,
+        private readonly Money $clientPrice,
         private readonly Context $context
     ) {}
 
@@ -87,9 +87,9 @@ final class Order extends AbstractAggregateRoot implements EntityInterface
         return $this->context;
     }
 
-    public function price(): OrderPrice
+    public function clientPrice(): Money
     {
-        return $this->price;
+        return $this->clientPrice;
     }
 
     public function toInProgress(): void

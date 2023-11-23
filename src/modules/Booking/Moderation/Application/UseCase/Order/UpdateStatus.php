@@ -21,14 +21,6 @@ class UpdateStatus implements UseCaseInterface
         private readonly StatusUpdater $statusUpdater,
     ) {}
 
-    /**
-     * Статусы заказа для посадки оплаты
-     *
-     * self::INVOICED,
-     * self::PARTIAL_PAID,
-     * self::REFUND_FEE,
-     */
-
     public function execute(int $orderId, int $statusId): void
     {
         try {

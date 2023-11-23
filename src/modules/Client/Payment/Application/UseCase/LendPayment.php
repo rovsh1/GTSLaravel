@@ -7,13 +7,13 @@ namespace Module\Client\Payment\Application\UseCase;
 use Module\Client\Invoicing\Domain\Invoice\Repository\InvoiceRepositoryInterface;
 use Module\Client\Invoicing\Domain\Invoice\ValueObject\InvoiceId;
 use Module\Client\Invoicing\Domain\Order\ValueObject\OrderId;
-use Module\Client\Payment\Application\RequestDto\PantPaymentRequestDto;
+use Module\Client\Payment\Application\RequestDto\LendPaymentRequestDto;
 use Module\Client\Payment\Domain\Payment\Repository\PaymentRepositoryInterface;
 use Module\Client\Payment\Domain\Payment\Repository\PlantRepositoryInterface;
 use Module\Client\Payment\Domain\Payment\ValueObject\PaymentId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
-class PantPayment implements UseCaseInterface
+class LendPayment implements UseCaseInterface
 {
     public function __construct(
         private readonly PaymentRepositoryInterface $paymentRepository,
@@ -22,7 +22,7 @@ class PantPayment implements UseCaseInterface
     ) {
     }
 
-    public function execute(PantPaymentRequestDto $requestDto): void
+    public function execute(LendPaymentRequestDto $requestDto): void
     {
         $payment = $this->paymentRepository->findOrFail(new PaymentId($requestDto->paymentId));
         $invoice = $this->invoiceRepository->findByOrderId(new OrderId($requestDto->orderId))

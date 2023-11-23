@@ -7,7 +7,6 @@ namespace Module\Client\Payment\Infrastructure\Models;
 use DateTime;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\DB;
 use Module\Client\Payment\Domain\Payment\ValueObject\PaymentStatusEnum;
 use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Database\Eloquent\Model;
@@ -21,6 +20,7 @@ use Sdk\Module\Database\Eloquent\Model;
  * @property string $invoice_number
  * @property CurrencyEnum $payment_currency
  * @property float $payment_sum
+ * @property float $planted_sum
  * @property int $payment_method_id
  * @property DateTime $payment_date
  * @property DateTime $issue_date
@@ -55,12 +55,14 @@ class Payment extends Model
         'payment_method_id' => 'int',
         'issue_date' => 'datetime:Y-m-d',
         'payment_date' => 'datetime:Y-m-d',
+        'planted_sum' => 'float',
     ];
 
     public function scopeWithPlantSum(Builder $builder): void
     {
-        $builder->addSelect(
-            DB::raw('SELECT SUM(`sum`) FROM client_payment_plants WHERE payment_id=client_payments.id')
+        $builder->selectSub(
+            'SELECT COALESCE(SUM(sum), 0) FROM client_payment_plants WHERE payment_id=client_payments.id',
+            'planted_sum'
         );
     }
 }

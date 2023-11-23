@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Client\Payment\Application\RequestDto;
 
-final class PantPaymentRequestDto
+final class LendPaymentRequestDto
 {
     public function __construct(
         public readonly int $paymentId,

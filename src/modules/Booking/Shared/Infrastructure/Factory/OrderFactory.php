@@ -12,10 +12,10 @@ use Module\Booking\Shared\Domain\Order\Order;
 use Module\Booking\Shared\Domain\Order\ValueObject\ClientId;
 use Module\Booking\Shared\Domain\Order\ValueObject\LegalId;
 use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
-use Module\Booking\Shared\Domain\Order\ValueObject\OrderPrice;
 use Module\Booking\Shared\Domain\Shared\ValueObject\CreatorId;
 use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Booking\Shared\Infrastructure\Models\Order as Model;
+use Module\Shared\ValueObject\Money;
 
 class OrderFactory
 {
@@ -31,9 +31,9 @@ class OrderFactory
             $model->status,
             new CarbonImmutable($model->created_at),
             new GuestIdCollection($guestIds),
-            new OrderPrice(
+            new Money(
                 $model->currency,
-                $model->client_price,
+                $model->client_price ?? 0,
             ),
             new Context(
                 source: $model->source,
