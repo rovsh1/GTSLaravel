@@ -45,8 +45,9 @@ class Order extends Model
 
             $builder->selectSub(function (Query $query) {
                 $cancelledFeeStatus = BookingStatusEnum::CANCELLED_FEE->value;
+                $cancelledNoFeeStatus = BookingStatusEnum::CANCELLED_NO_FEE->value;
                 $query->selectRaw(
-                    "(SELECT SUM(client_price) FROM (SELECT order_id, IF(status = {$cancelledFeeStatus}, COALESCE(client_penalty, 0), COALESCE(client_manual_price, client_price)) as client_price FROM bookings) as t WHERE t.order_id=orders.id)"
+                    "(SELECT SUM(client_price) FROM (SELECT order_id, IF(status IN ({$cancelledFeeStatus}, {$cancelledNoFeeStatus}), COALESCE(client_penalty, 0), COALESCE(client_manual_price, client_price)) as client_price FROM bookings) as t WHERE t.order_id=orders.id)"
                 );
             }, 'client_price');
         });
