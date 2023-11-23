@@ -31,7 +31,8 @@ class Order extends Model
         'currency' => CurrencyEnum::class,
         'status' => OrderStatusEnum::class,
         'source' => SourceEnum::class,
-        'client_price' => 'float'
+        'client_price' => 'float',
+        'payed_amount' => 'float',
     ];
 
     protected $appends = [

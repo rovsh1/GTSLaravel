@@ -29,8 +29,8 @@ class OrderDtoFactory
             $entity->guestIds()->map(fn(GuestId $id) => $id->value()),
             $entity->context()->creatorId()->value(),
             new OrderPriceDto(
-                CurrencyDto::fromEnum($entity->price()->currency(), $this->translator),
-                $entity->price()->value()
+                CurrencyDto::fromEnum($entity->clientPrice()->currency(), $this->translator),
+                $entity->clientPrice()->value()
             ),
             $entity->context()->source()
         );
