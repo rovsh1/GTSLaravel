@@ -2,9 +2,11 @@ import axios from '~resources/js/app/api'
 import { Select2Option } from '~resources/views/booking/shared/lib/constants'
 import bootBeds from '~resources/views/hotel/_services/room-editor'
 
+import { useSelectElement } from '~lib/select-element/select-element'
+
 import '~resources/views/main'
 
-$(() => {
+$(async () => {
   const switchInputToSelect = async (inputsIDs: string, urlForGetData: string): Promise<void> => {
     const IDsinputsIDsList = inputsIDs.split(',')
     if (IDsinputsIDsList.length < 1) return
@@ -19,7 +21,7 @@ $(() => {
     roomsNameSelectOptions = roomsNameListData.map(
       (roomName: string) => ({ id: roomName, text: roomName }),
     )
-    IDsinputsIDsList.forEach((inputID) => {
+    IDsinputsIDsList.forEach(async (inputID) => {
       const replaceInput = $(`#${inputID ? inputID.trim() : ''}`)
       if (!replaceInput) return
 
@@ -39,14 +41,18 @@ $(() => {
       const parentElement = replaceInput.parent()
       replaceInput.remove()
       parentElement.append(selectElement)
-      selectElement.select2({ data: roomsNameSelectOptions, tags: true, selectOnClose: false })
+
+      const createdSelectElement = (await useSelectElement(selectElement[0] as HTMLSelectElement, {
+        data: roomsNameSelectOptions,
+        tags: true,
+      }))?.select2Instance
       const searchValueFromInput = roomsNameSelectOptions.filter((item) => item.text?.toLowerCase() === replaceInputAttrValue.toLowerCase())
-      selectElement.val(searchValueFromInput[0] ? searchValueFromInput[0].id : '').trigger('change')
+      createdSelectElement?.val(searchValueFromInput[0] ? searchValueFromInput[0].id : '').trigger('change')
     })
   }
 
-  switchInputToSelect('form_data_name_ru', '/hotels/rooms/names/ru/list')
-  switchInputToSelect('form_data_name_en', '/hotels/rooms/names/en/list')
-  switchInputToSelect('form_data_name_uz', '/hotels/rooms/names/uz/list')
+  await switchInputToSelect('form_data_name_ru', '/hotels/rooms/names/ru/list')
+  await switchInputToSelect('form_data_name_en', '/hotels/rooms/names/en/list')
+  await switchInputToSelect('form_data_name_uz', '/hotels/rooms/names/uz/list')
   bootBeds($('#room-beds'))
 })

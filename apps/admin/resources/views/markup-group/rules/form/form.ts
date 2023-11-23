@@ -1,7 +1,9 @@
+import { useSelectElement } from '~lib/select-element/select-element'
+
 import '~resources/views/main'
 
-$(() => {
-  const $hotelSelect = $('#form_data_hotel_id').select2()
+$(async () => {
+  const $hotelSelect = (await useSelectElement(document.querySelector<HTMLSelectElement>('#form_data_hotel_id')))?.select2Instance
 
   $('#form_data_room_id').childCombo({
     urlGetter: (hotelId: string) => `/hotels/${hotelId}/rooms/list`,

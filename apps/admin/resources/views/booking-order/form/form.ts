@@ -11,6 +11,7 @@ import { Client } from '~api/client'
 import { formatDate } from '~lib/date'
 import { useApplicationEventBus } from '~lib/event-bus'
 import { requestInitialData } from '~lib/initial-data'
+import { useSelectElement } from '~lib/select-element/select-element'
 import { createVueInstance } from '~lib/vue'
 
 import '~resources/views/main'
@@ -23,7 +24,7 @@ let clients = [] as Client[]
 
 const pinia = createPinia()
 
-$(() => {
+$(async () => {
   const toggleLegalIdInput = (required: boolean = true): void => {
     const $legalIdInput = $('#form_data_legal_id')
     const $legalIdField = $('div.field-legal_id')
@@ -60,10 +61,12 @@ $(() => {
 
     const $legalIdInput = $('#form_data_legal_id')
     if ($legalIdInput.is('input')) {
-      // еще не был инстанцирован, т.е. выведен как hidden input в html через php form
       $legalIdInput.childCombo({
         url: '/client/legals/search',
         disabledText: 'Выберите клиента',
+        allowEmpty: true,
+        emptyText: false,
+        emptyItem: 'Пусто',
         parent: $clientIdInput,
         dataIndex: 'client_id',
       })
@@ -81,9 +84,9 @@ $(() => {
     handleChangeClientId()
   }
 
-  $('#form_data_manager_id').select2()
+  await useSelectElement(document.querySelector<HTMLSelectElement>('#form_data_manager_id'))
 
-  const $clientIdSelect = $('#form_data_client_id').select2()
+  let $clientIdSelect = (await useSelectElement(document.querySelector<HTMLSelectElement>('#form_data_client_id')))?.select2Instance
     .change(() => handleChangeClientId())
     .ready(() => handleChangeClientId())
 
@@ -92,8 +95,11 @@ $(() => {
     const clientsListData = clientsList && clientsList.data ? clientsList.data : []
     clients = clientsListData
     const clientsSelectOptions: Select2Option[] = mapClientsToSelect2Options(clientsListData)
-    $clientIdSelect.select2('destroy').empty().select2({ data: clientsSelectOptions }).val('')
-      .trigger('change')
+    const selectedClientId = $clientIdSelect?.val()
+    $clientIdSelect = (await useSelectElement(document.querySelector<HTMLSelectElement>('#form_data_client_id'), {
+      data: clientsSelectOptions,
+    }))?.select2Instance
+    $clientIdSelect?.val(selectedClientId || '').trigger('change')
   }
 
   $('#form_data_order_id').childCombo({
@@ -104,19 +110,18 @@ $(() => {
     allowEmpty: true,
     emptyText: false,
     emptyItem: 'Создать новый заказ',
-    useSelect2: true,
     labelGetter: (order: Record<string, any>) => `№${order.id} от ${formatDate(order.createdAt)}`,
     childChange: toggleOrderFields,
   })
 
   if (orderId === null) {
-    const $clientIdSelectWrapper = $clientIdSelect.parent()
-    $clientIdSelectWrapper.removeClass('col-sm-7')
-    $clientIdSelectWrapper.addClass('col-sm-6')
+    const $clientIdSelectWrapper = $clientIdSelect?.parent()
+    $clientIdSelectWrapper?.removeClass('col-sm-7')
+    $clientIdSelectWrapper?.addClass('col-sm-5')
 
     const $createClientButton = $('<div />', { id: 'create-client-button' })
 
-    $clientIdSelectWrapper.after($('<div />', { class: 'col-sm-1' })
+    $clientIdSelectWrapper?.after($('<div />', { class: 'col-sm-2' })
       .append($createClientButton))
 
     createVueInstance({
@@ -128,8 +133,7 @@ $(() => {
     const eventBus = useApplicationEventBus()
     eventBus.on('client-created', async (event: { clientId: number }) => {
       await reloadClientsSelect()
-      $clientIdSelect.val(event.clientId).trigger('change')
-      // @todo доработать проброс клиента
+      $clientIdSelect?.val(event.clientId).trigger('change')
       handleChangeClientId()
     })
   }

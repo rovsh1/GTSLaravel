@@ -1,9 +1,10 @@
 import { formatDate } from '~lib/date'
+import { useSelectElement } from '~lib/select-element/select-element'
 
 import '~resources/views/main'
 
-$(() => {
-  const $clientIdField = $('#form_data_client_id').select2()
+$(async () => {
+  const $clientIdField = (await useSelectElement(document.querySelector<HTMLSelectElement>('#form_data_client_id')))?.select2Instance
 
   $('#form_data_order_ids').childCombo({
     url: '/booking-order/search',

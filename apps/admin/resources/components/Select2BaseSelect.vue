@@ -4,6 +4,8 @@ import { onMounted, ref, watch } from 'vue'
 
 import { MaybeRef } from '@vueuse/core'
 
+import { useSelectElement } from '~lib/select-element/select-element'
+
 import BootstrapSelectBase from '~components/Bootstrap/BootstrapSelectBase.vue'
 import { SelectOption } from '~components/Bootstrap/lib'
 
@@ -64,18 +66,20 @@ watch(() => props.value, (newValue) => {
   setValue(newValue)
 })
 
-onMounted(() => {
+onMounted(async () => {
+  $(`#${props.id}`).parent().addClass(`${props.id}-wrapper--init`)
   const options = {
-    dropdownParent: props.parent,
-    multiple: !!props.enableMultiple,
-    closeOnSelect: !props.enableMultiple,
+    dropdownParent: `${props.id}-wrapper--init`,
+    multiple: props.enableMultiple,
   }
-  select2 = $(`#${props.id}`)
-    .select2(options)
+  select2 = (await useSelectElement(document.querySelector<HTMLSelectElement>(`#${props.id}`), {
+    ...options,
+  }))?.select2Instance
 
   setValue(props.value)
 
   select2.change((val: any) => {
+    console.log('dddddddddddddd')
     if (options.multiple) {
       const values = $(`#${props.id}`).val() as string[]
       emit('input', values)

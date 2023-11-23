@@ -3,11 +3,17 @@ import { Options } from 'select2'
 
 import './style.scss'
 
+export const selectElementDropDownContainer = '.select2-container'
+
 type SelectElementOptions = {
   disabled?: boolean
   disabledPlaceholder?: string
   placeholder?: string
+  emptyText?: string
   multiple?: boolean
+  data?: any
+  tags?: boolean
+  dropdownParent?: string
 }
 
 class SelectElement {
@@ -17,6 +23,10 @@ class SelectElement {
 
   constructor(initElement: HTMLSelectElement, options: Options) {
     this.element = $(initElement)
+    if (this.element.data('select2')) {
+      this.element.select2('destroy')
+      this.element.off()
+    }
     this.select2Instance = this.initializeSelect2(options)
   }
 
@@ -25,9 +35,9 @@ class SelectElement {
   }
 
   public toogleDisabled(state: boolean): void {
-    this.select2Instance.select2('close')
     this.select2Instance.prop('disabled', state)
-    this.select2Instance.val([]).trigger('change')
+    this.select2Instance.select2('close')
+    this.select2Instance.trigger('change')
   }
 }
 
@@ -35,7 +45,8 @@ const initializeSelectElement = (element: HTMLSelectElement, options?: SelectEle
   let multipleOptions: Options = {}
   let select2: SelectElement | null = null
   let existEmptyItem = false
-  if (options?.multiple) {
+  const isMultipleElement = options?.multiple
+  if (isMultipleElement) {
     $.fn.select2.amd.require(
       [
         'select2/utils',
@@ -62,31 +73,39 @@ const initializeSelectElement = (element: HTMLSelectElement, options?: SelectEle
         }
         selectionAdapter.prototype.update = function (data: any) {
           this.clear()
+          this.$element.parent().addClass('select2-container-htight')
+          const isDisabled = this.$element.attr('disabled')
           const $rendered = this.$selection.find('.select2-selection__rendered')
           const noItemsSelected = data.length === 0
           || (Array.isArray(this.$element.val()) && data.length === 1 && data[0].id === '')
-          const allItemSelected = data.length === (this.$element.find('option').length || [])
+          const allOptionsElements = this.$element.find('option').toArray()
+            .filter((option: any) => !$(option).attr('disabled'))
+          const allSelectedOptions = data.filter((item: any) => !item.disabled)
+          const isAllOptionsSelected = allSelectedOptions.length === allOptionsElements.length
           let formatted = ''
           if (noItemsSelected) {
             formatted = (options?.disabled || this.$element.prop('disabled')) ? options?.disabledPlaceholder || '&nbsp;' : options?.placeholder || '&nbsp;'
           } else {
-            const selectedElementsCount = data ? data.length : 0
-            const allElementsCount = this.$element.find('option').length
-            const existEmptyItemOnSelected = data?.some((item: any) => item.id === '')
             const itemsData = {
-              selected: existEmptyItem && existEmptyItemOnSelected ? selectedElementsCount - 1 : selectedElementsCount,
-              all: existEmptyItem ? allElementsCount - 1 : allElementsCount,
+              selected: allSelectedOptions.length,
+              all: allOptionsElements.length,
             }
             formatted = this.display(itemsData, $rendered)
           }
           const $selectAll = $(
             `<a class="action-all" href="#">
-            ${allItemSelected ? 'Снять всё' : 'Выбрать всё'}</a>`,
+            ${isAllOptionsSelected ? 'Снять всё' : 'Выбрать всё'}</a>`,
           )
           if ($(this.$selection).attr('aria-expanded') === 'true') {
+            $rendered.removeClass('disabled-actions')
             $selectAll.show()
           } else {
             $selectAll.hide()
+            $rendered.addClass('disabled-actions')
+          }
+          if (isDisabled) {
+            $selectAll.hide()
+            $rendered.addClass('disabled-actions')
           }
           const self = this
           $rendered.empty().append(formatted)
@@ -94,13 +113,13 @@ const initializeSelectElement = (element: HTMLSelectElement, options?: SelectEle
           $selectAll.on('click', (e) => {
             e.preventDefault()
             e.stopPropagation()
-            if (allItemSelected) {
+            if (isAllOptionsSelected) {
               self.$element.val([]).trigger('change')
               self.$element.select2('close')
               self.$element.select2('open')
             } else {
               const allItems = self.$element.find('option').toArray().map((option: any) => $(option).attr('value'))
-              self.$element.val(allItems).trigger('change.select2')
+              self.$element.val(allItems).trigger('change')
               self.$element.select2('close')
               self.$element.select2('open')
             }
@@ -130,9 +149,13 @@ const initializeSelectElement = (element: HTMLSelectElement, options?: SelectEle
         const dropdownAdapter = Utils.Decorate(dropdownWithSearch, AttachBody)
 
         multipleOptions = {
+          width: '100%',
           multiple: true,
           closeOnSelect: false,
           disabled: options?.disabled,
+          data: options?.data,
+          tags: options?.tags,
+          dropdownParent: options?.dropdownParent,
         }
         select2 = new SelectElement(element, {
           ...multipleOptions,
@@ -148,10 +171,12 @@ const initializeSelectElement = (element: HTMLSelectElement, options?: SelectEle
           dropdownAdapter,
         })
         select2.select2Instance.on('select2:opening', (e) => {
+          $(e.target).next().find('.select2-selection__rendered').removeClass('disabled-actions')
           $(e.target).next().find('.action-all').show()
         })
         select2.select2Instance.on('select2:closing', (e) => {
           $(e.target).next().find('.action-all').hide()
+          $(e.target).next().find('.select2-selection__rendered').addClass('disabled-actions')
         })
         resolve(select2)
       },
@@ -180,12 +205,16 @@ const initializeSelectElement = (element: HTMLSelectElement, options?: SelectEle
 
         selectionAdapter.prototype.update = function (data: any) {
           this.clear()
+          const isDisabled = this.$element.attr('disabled')
           const self = this
           const $rendered = this.$selection.find('.select2-selection__rendered')
+          const allOptionsElements = this.$element.find('option').toArray()
+            .filter((option: any) => !$(option).attr('disabled'))
           const noItemsSelected = data.length === 0 || (existEmptyItem && data.length === 1 && data[0].id === '')
           let formatted = ''
-
-          if (noItemsSelected) {
+          if (allOptionsElements.length === 0 && !isDisabled) {
+            formatted = options?.emptyText || 'Пусто'
+          } else if (noItemsSelected) {
             formatted = (options?.disabled || this.$element.prop('disabled')) ? options?.disabledPlaceholder || '&nbsp;' : options?.placeholder || '&nbsp;'
           } else {
             const itemData = {
@@ -193,12 +222,19 @@ const initializeSelectElement = (element: HTMLSelectElement, options?: SelectEle
             }
             formatted = this.display(itemData, $rendered)
           }
+
           const $clearSelectElemetny = $(
             '<a class="clear-select-element" href="#">Очитстить</a>',
           )
           if (!noItemsSelected) {
+            $rendered.removeClass('disabled-actions')
             $clearSelectElemetny.show()
           } else {
+            $rendered.addClass('disabled-actions')
+            $clearSelectElemetny.hide()
+          }
+          if (isDisabled) {
+            $rendered.addClass('disabled-actions')
             $clearSelectElemetny.hide()
           }
           if (existEmptyItem) {
@@ -208,6 +244,7 @@ const initializeSelectElement = (element: HTMLSelectElement, options?: SelectEle
               e.preventDefault()
               e.stopPropagation()
               $(e.target).hide()
+              $(e.target).next().find('.select2-selection__rendered').addClass('disabled-actions')
               self.$element.val([]).trigger('change')
               self.$element.select2('close')
             })
@@ -217,9 +254,12 @@ const initializeSelectElement = (element: HTMLSelectElement, options?: SelectEle
         }
 
         select2 = new SelectElement(element, {
+          width: '100%',
           selectionAdapter,
           templateSelection: (data: any) => (data && data.selected ? data.selected.text : options?.placeholder),
           disabled: options?.disabled,
+          data: options?.data,
+          tags: options?.tags,
         })
         resolve(select2)
       },

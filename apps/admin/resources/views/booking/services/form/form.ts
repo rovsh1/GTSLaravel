@@ -11,6 +11,7 @@ import { Client } from '~api/client'
 import { formatDate } from '~lib/date'
 import { useApplicationEventBus } from '~lib/event-bus'
 import { requestInitialData } from '~lib/initial-data'
+import { useSelectElement } from '~lib/select-element/select-element'
 import { createVueInstance } from '~lib/vue'
 
 import '~resources/views/main'
@@ -23,7 +24,7 @@ let clients = [] as Client[]
 
 const pinia = createPinia()
 
-$(() => {
+$(async () => {
   const toggleLegalIdInput = (required: boolean = true): void => {
     const $legalIdInput = $('#form_data_legal_id')
     const $legalIdField = $('div.field-legal_id')
@@ -72,6 +73,9 @@ $(() => {
       $legalIdInput.childCombo({
         url: '/client/legals/search',
         disabledText: 'Выберите клиента',
+        allowEmpty: true,
+        emptyText: false,
+        emptyItem: 'Пусто',
         parent: $clientIdInput,
         dataIndex: 'client_id',
       })
@@ -91,30 +95,29 @@ $(() => {
     handleChangeClientId(Number(orderId))
   }
 
-  $('#form_data_manager_id').select2()
+  useSelectElement(document.querySelector<HTMLSelectElement>('#form_data_manager_id'))
 
   const $serviceTypeField = $('#form_data_service_type')
-  const $supplierField = $('#form_data_supplier_id').childCombo({
+
+  const $supplierField = await (async () => $('#form_data_supplier_id').childCombo({
     url: '/supplier/search',
     disabledText: 'Выберите тип услуги',
     parent: $serviceTypeField,
     dataIndex: 'service_type',
-    useSelect2: true,
     allowEmpty: true,
     emptyText: false,
-  })
+  }))()
 
   $('#form_data_service_id').childCombo({
     urlGetter: (supplierId: number) => `/supplier/${supplierId}/services/search?type=${$serviceTypeField.val()}`,
     disabledText: 'Выберите поставщика',
     parent: $supplierField,
-    useSelect2: true,
     data: {
       only_with_contract: 1,
     },
   })
 
-  const $clientIdSelect = $('#form_data_client_id').select2()
+  let $clientIdSelect = (await useSelectElement(document.querySelector<HTMLSelectElement>('#form_data_client_id')))?.select2Instance
     .change(() => handleChangeClientId(undefined))
     .ready(() => handleChangeClientId(undefined))
 
@@ -123,9 +126,11 @@ $(() => {
     const clientsListData = clientsList && clientsList.data ? clientsList.data : []
     clients = clientsListData
     const clientsSelectOptions: Select2Option[] = mapClientsToSelect2Options(clientsListData)
-    const selectedClientId = $clientIdSelect.val()
-    $clientIdSelect.select2('destroy').empty().select2({ data: clientsSelectOptions }).val(selectedClientId || '')
-      .trigger('change')
+    const selectedClientId = $clientIdSelect?.val()
+    $clientIdSelect = (await useSelectElement(document.querySelector<HTMLSelectElement>('#form_data_client_id'), {
+      data: clientsSelectOptions,
+    }))?.select2Instance
+    $clientIdSelect?.val(selectedClientId || '').trigger('change')
   }
 
   $('#form_data_order_id').childCombo({
@@ -136,19 +141,18 @@ $(() => {
     allowEmpty: true,
     emptyText: false,
     emptyItem: 'Создать новый заказ',
-    useSelect2: true,
     labelGetter: (order: Record<string, any>) => `№${order.id} от ${formatDate(order.createdAt)}`,
     childChange: toggleOrderFields,
   })
 
   if (bookingID === null) {
-    const $clientIdSelectWrapper = $clientIdSelect.parent()
-    $clientIdSelectWrapper.removeClass('col-sm-7')
-    $clientIdSelectWrapper.addClass('col-sm-6')
+    const $clientIdSelectWrapper = $clientIdSelect?.parent()
+    $clientIdSelectWrapper?.removeClass('col-sm-7')
+    $clientIdSelectWrapper?.addClass('col-sm-5')
 
     const $createClientButton = $('<div />', { id: 'create-client-button' })
 
-    $clientIdSelectWrapper.after($('<div />', { class: 'col-sm-1' })
+    $clientIdSelectWrapper?.after($('<div />', { class: 'col-sm-2' })
       .append($createClientButton))
 
     createVueInstance({
@@ -160,7 +164,7 @@ $(() => {
     const eventBus = useApplicationEventBus()
     eventBus.on('client-created', async (event: { clientId: number }) => {
       await reloadClientsSelect()
-      $clientIdSelect.val(event.clientId).trigger('change')
+      $clientIdSelect?.val(event.clientId).trigger('change')
       handleChangeClientId(event.clientId)
     })
   }

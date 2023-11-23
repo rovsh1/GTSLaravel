@@ -1,4 +1,5 @@
 import { datePickerRootAttributeName } from '~lib/date-picker/lib'
+import { selectElementDropDownContainer } from '~lib/select-element/select-element'
 
 const popupSelector = '#grid-filters-popup'
 
@@ -8,7 +9,7 @@ export default function bootGrid() {
   const close = (event: MouseEvent) => {
     if (event.target === null) return
     const target = event.target as HTMLElement
-    const parent = target.closest(`${popupSelector}, [${datePickerRootAttributeName}]`)
+    const parent = target.closest(`${popupSelector}, [${datePickerRootAttributeName}], ${selectElementDropDownContainer}`)
     if (parent !== null) return
     $popup.hide()
     document.removeEventListener('click', close)
@@ -27,7 +28,8 @@ export default function bootGrid() {
 
   $popup.find('button[type="reset"]').click((e) => {
     e.preventDefault()
-    $popup.find('input,select').val('')
+    $popup.find('input').val('')
+    $popup.find('select').val([])
     const selects = document.querySelectorAll(`${popupSelector} select`)
     const inputs = document.querySelectorAll(`${popupSelector} input`)
     const combinedElements = Array.from(selects).concat(Array.from(inputs))

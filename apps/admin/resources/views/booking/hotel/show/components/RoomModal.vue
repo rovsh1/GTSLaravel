@@ -15,7 +15,7 @@ import { RoomFormData } from '~resources/views/booking/shared/lib/data-types'
 
 import { addRoomToBooking, updateBookingRoom } from '~api/booking/hotel/rooms'
 import { MarkupCondition, MarkupSettings, useHotelRoomMarkupSettings } from '~api/hotel/markup-settings'
-import { HotelRate, useHotelRatesAPI } from '~api/hotel/price-rate'
+import { useHotelRatesAPI } from '~api/hotel/price-rate'
 import { HotelRoomResponse } from '~api/hotel/room'
 
 import { requestInitialData } from '~lib/initial-data'
@@ -23,6 +23,7 @@ import { requestInitialData } from '~lib/initial-data'
 import BaseDialog from '~components/BaseDialog.vue'
 import BootstrapSelectBase from '~components/Bootstrap/BootstrapSelectBase.vue'
 import { SelectOption } from '~components/Bootstrap/lib'
+import SelectComponent from '~components/SelectComponent.vue'
 
 const props = defineProps<{
   opened: MaybeRef<boolean>
@@ -67,8 +68,8 @@ watchEffect(() => {
 })
 
 const validateRoomForm = computed(() => (isDataValid(null, formData.value.id)
-&& isDataValid(null, formData.value.rateId)
-&& isDataValid(null, formData.value.residentType)))
+  && isDataValid(null, formData.value.rateId)
+  && isDataValid(null, formData.value.residentType)))
 
 const roomRatesPayload = ref<{
   hotelID: number
@@ -140,8 +141,12 @@ const setPreparedRooms = () => {
   preparedRooms.value = [...currentRoom, ...availableRoomsOptions]
 }
 
-const preparedRoomRates = computed<SelectOption[]>(
+/* const preparedRoomRates = computed<SelectOption[]>(
   () => roomRates.value?.map((rate: HotelRate) => ({ value: rate.id, label: rate.name })) || [],
+) */
+
+const preparedRoomRates = computed<SelectOption[]>(
+  () => [],
 )
 const earlyCheckIn = computed<SelectOption[]>(() => markupSettings.value?.earlyCheckIn.map(mapConditionToSelectOption) || [])
 const lateCheckOut = computed<SelectOption[]>(() => markupSettings.value?.lateCheckOut.map(mapConditionToSelectOption) || [])
@@ -207,40 +212,34 @@ watch(() => props.opened, async (opened) => {
 </script>
 
 <template>
-  <BaseDialog
-    :opened="opened as boolean"
-    :loading="isFetching"
-    @close="closeModal"
-    @keydown.enter="onModalSubmit"
-  >
+  <BaseDialog :opened="opened as boolean" :loading="isFetching" @close="closeModal" @keydown.enter="onModalSubmit">
     <form ref="modalForm" class="row g-3">
       <div class="col-md-12">
-        <BootstrapSelectBase
-          id="room_id"
+        formData.id {{ formData.id }}
+        <SelectComponent
           :options="preparedRooms"
-          label="Номер"
-          :value="formData.id as number"
           required
+          label="Номер"
           :disabled="preparedRooms.length === 0"
           disabled-placeholder="Нет доступных квот на заданный период"
-          @input="(value, event) => {
+          :allow-empty-item="true"
+          :value="formData.id"
+          @change="(value) => {
             handleChangeRoomId(value)
-            isDataValid(event, value)
           }"
         />
       </div>
       <div class="col-md-12">
-        <BootstrapSelectBase
-          id="rate_id"
+        <SelectComponent
           :options="preparedRoomRates"
-          label="Тариф"
-          :value="formData.rateId as number"
           required
+          label="Тариф"
           :disabled="!formData.id || isRoomDataFetching"
-          :disabled-placeholder="!formData.id ? 'Выберите номер' : ''"
-          @input="(value, event) => {
+          :disabled-placeholder="'Выберите номер'"
+          :allow-empty-item="true"
+          :value="formData.rateId"
+          @change="(value) => {
             formData.rateId = value as number
-            isDataValid(event, value)
           }"
         />
       </div>
@@ -288,11 +287,7 @@ watch(() => props.opened, async (opened) => {
       </div>
       <div class="col-md-12">
         <label for="note" class=" col-form-label">Примечание</label>
-        <textarea
-          id="note"
-          v-model="formData.note"
-          class="form-control"
-        />
+        <textarea id="note" v-model="formData.note" class="form-control" />
       </div>
     </form>
     <template v-if="formData.roomBookingId === undefined" #actions-start>
@@ -301,12 +296,7 @@ watch(() => props.opened, async (opened) => {
       </button>
     </template>
     <template #actions-end>
-      <button
-        class="btn btn-primary"
-        type="button"
-        :disabled="!validateRoomForm || isFetching"
-        @click="onModalSubmit"
-      >
+      <button class="btn btn-primary" type="button" :disabled="!validateRoomForm || isFetching" @click="onModalSubmit">
         Сохранить
       </button>
       <button class="btn btn-cancel" type="button" :disabled="isFetching" @click="$emit('close')">Отмена</button>

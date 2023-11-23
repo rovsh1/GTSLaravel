@@ -1,7 +1,7 @@
 import { Tab, Tooltip } from 'bootstrap'
 
 import { useDateRangePicker } from '~lib/date-picker/date-picker'
-import { observeDynamicElements } from '~lib/observe'
+import { useSelectElement } from '~lib/select-element/select-element'
 
 function bootDeleteButtons() {
   $('button.btn-delete')
@@ -12,9 +12,13 @@ function bootDeleteButtons() {
     .deleteButton()
 }
 
-function bootMultiselect() {
-  $('select[multiple]').multiselect({
-    popupCls: 'dropdown-menu',
+function bootSelect() {
+  const elements = document.querySelectorAll<HTMLSelectElement>('select')
+  elements.forEach(async (element) => {
+    const isMultiple = element.multiple
+    await useSelectElement(element, {
+      multiple: isMultiple,
+    })
   })
 }
 
@@ -114,7 +118,9 @@ function bootGridFilters() {
     gridFiltersFormInputsChangeEvent(event)
   })
 
-  observeDynamicElements(document.getElementById('grid-filters-popup'), 'select', 'change', (event) => { gridFiltersFormInputsChangeEvent(event) })
+  $('#grid-filters-popup').on('change', 'select', (event) => {
+    gridFiltersFormInputsChangeEvent(event)
+  })
 }
 
 function bootTooltips() {
@@ -124,7 +130,7 @@ function bootTooltips() {
 
 export default function bootForms() {
   bootDeleteButtons()
-  bootMultiselect()
+  bootSelect()
   bootDateRangePicker()
   bootFileFields()
   bootTabsAnchor()
