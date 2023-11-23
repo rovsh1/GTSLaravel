@@ -11,6 +11,7 @@ use Module\Client\Payment\Domain\Payment\ValueObject\PaymentDocument;
 use Module\Client\Payment\Domain\Payment\ValueObject\PaymentId;
 use Module\Client\Payment\Domain\Payment\ValueObject\PaymentStatusEnum;
 use Module\Client\Shared\Domain\ValueObject\ClientId;
+use Module\Shared\ValueObject\Money;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
 final class Payment extends AbstractAggregateRoot
@@ -23,10 +24,9 @@ final class Payment extends AbstractAggregateRoot
         private readonly DateTimeImmutable $issueDate,
         private readonly DateTimeImmutable $paymentDate,
         private readonly PaymentAmount $paymentAmount,
-        private float $plantedSum,
+        private Money $plantedSum,
         private readonly ?PaymentDocument $document,
-    ) {
-    }
+    ) {}
 
     public function id(): PaymentId
     {
@@ -63,7 +63,7 @@ final class Payment extends AbstractAggregateRoot
         return $this->paymentAmount;
     }
 
-    public function plantedSum(): float
+    public function plantedSum(): Money
     {
         return $this->plantedSum;
     }
@@ -75,14 +75,15 @@ final class Payment extends AbstractAggregateRoot
 
     public function addPlantSum(float $sum): void
     {
-        $remainingSum = $this->paymentAmount->sum() - $this->plantedSum;
+        $remainingSum = $this->paymentAmount->sum() - $this->plantedSum->value();
         if ($remainingSum < $sum) {
             throw new \Exception('Insufficient funds');
         }
 
-        $this->plantedSum += $sum;
+        $newPlantedSum = new Money($this->paymentAmount->currency(), ($this->plantedSum->value() + $sum));
+        $paymentAmount = new Money($this->paymentAmount->currency(), $this->paymentAmount->sum());
 
-        if ($this->paymentAmount->sum() === $sum) {
+        if ($paymentAmount->isEqual($newPlantedSum)) {
             $this->updateStatus(PaymentStatusEnum::PAID);
         } else {
             $this->updateStatus(PaymentStatusEnum::PARTIAL_PAID);

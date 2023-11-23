@@ -12,8 +12,7 @@ final class Money implements CanEquate
     public function __construct(
         private readonly CurrencyEnum $currency,
         private readonly float $value,
-    ) {
-    }
+    ) {}
 
     public function currency(): CurrencyEnum
     {
@@ -31,9 +30,13 @@ final class Money implements CanEquate
      */
     public function isEqual(mixed $b): bool
     {
-        assert($b instanceof Money);
+        if (!$b instanceof Money) {
+            return $this === $b;
+        }
 
-        return $this->value === $b->value
+        $valueDiff = abs($b->value - $this->value);
+
+        return $valueDiff < 0.001
             && $this->currency === $b->currency;
     }
 }
