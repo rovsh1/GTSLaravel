@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, nextTick, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 
 import $ from 'jquery'
 import { nanoid } from 'nanoid'
@@ -90,36 +90,29 @@ const setValue = (value: SelectValue) => {
 
 const initSelectElement = async () => {
   const element = document.querySelector<HTMLSelectElement>(`#${id}`)
-  const instance = (await useSelectElement(element, {
+  const instance = await useSelectElement(element, {
     multiple: props.multiple,
     disabled: props.disabled,
     disabledPlaceholder: props.disabledPlaceholder,
     placeholder: props.placeholder,
     emptyText: props.emptyText,
-  }))
+  })
   componentInstance.value = instance
   setValue(props.value)
   componentInstance.value?.select2Instance.on('change', (e: any) => {
     const selectedValues = $(e.target).val()
-    // if (props.disabled) return
     emit('change', selectedValues)
   })
 }
 
-onMounted(() => {
-  nextTick(async () => {
-    await initSelectElement()
-  })
+onMounted(async () => {
+  await initSelectElement()
 })
 
 watch(
   [() => props.options, () => props.disabled, () => props.disabledPlaceholder],
-  () => {
-    nextTick(async () => {
-      componentInstance.value?.select2Instance.select2('destroy')
-      componentInstance.value?.select2Instance.off()
-      await initSelectElement()
-    })
+  async () => {
+    await initSelectElement()
   },
 )
 

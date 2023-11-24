@@ -13,7 +13,7 @@ function bootDeleteButtons() {
 }
 
 function bootSelect() {
-  const elements = document.querySelectorAll<HTMLSelectElement>('select')
+  const elements = document.querySelectorAll<HTMLSelectElement>('.select-element-custom')
   elements.forEach(async (element) => {
     const isMultiple = element.multiple
     await useSelectElement(element, {

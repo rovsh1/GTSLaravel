@@ -15,7 +15,7 @@ import { RoomFormData } from '~resources/views/booking/shared/lib/data-types'
 
 import { addRoomToBooking, updateBookingRoom } from '~api/booking/hotel/rooms'
 import { MarkupCondition, MarkupSettings, useHotelRoomMarkupSettings } from '~api/hotel/markup-settings'
-import { useHotelRatesAPI } from '~api/hotel/price-rate'
+import { HotelRate, useHotelRatesAPI } from '~api/hotel/price-rate'
 import { HotelRoomResponse } from '~api/hotel/room'
 
 import { requestInitialData } from '~lib/initial-data'
@@ -141,13 +141,10 @@ const setPreparedRooms = () => {
   preparedRooms.value = [...currentRoom, ...availableRoomsOptions]
 }
 
-/* const preparedRoomRates = computed<SelectOption[]>(
-  () => roomRates.value?.map((rate: HotelRate) => ({ value: rate.id, label: rate.name })) || [],
-) */
-
 const preparedRoomRates = computed<SelectOption[]>(
-  () => [],
+  () => roomRates.value?.map((rate: HotelRate) => ({ value: rate.id, label: rate.name })) || [],
 )
+
 const earlyCheckIn = computed<SelectOption[]>(() => markupSettings.value?.earlyCheckIn.map(mapConditionToSelectOption) || [])
 const lateCheckOut = computed<SelectOption[]>(() => markupSettings.value?.lateCheckOut.map(mapConditionToSelectOption) || [])
 const discounts = computed<SelectOption[]>(() => {
@@ -215,7 +212,6 @@ watch(() => props.opened, async (opened) => {
   <BaseDialog :opened="opened as boolean" :loading="isFetching" @close="closeModal" @keydown.enter="onModalSubmit">
     <form ref="modalForm" class="row g-3">
       <div class="col-md-12">
-        formData.id {{ formData.id }}
         <SelectComponent
           :options="preparedRooms"
           required

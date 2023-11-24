@@ -109,7 +109,7 @@ $.fn.childCombo = async function (options) {
     if (preparedOptions.urlGetter) {
       url = preparedOptions.urlGetter(parent.val())
     }
-
+    console.log('tyt')
     axios.get(url, { params: data }).then(async (result) => {
       child.html('')
       await useSelectElement(child[0], {
