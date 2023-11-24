@@ -13,6 +13,7 @@ use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use Illuminate\Http\JsonResponse;
 use Module\Client\Payment\Domain\Payment\ValueObject\PaymentStatusEnum;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PaymentController extends AbstractPrototypeController
 {
@@ -24,6 +25,9 @@ class PaymentController extends AbstractPrototypeController
     public function get(int $id): JsonResponse
     {
         $payment = PaymentAdapter::get($id);
+        if ($payment === null) {
+            throw new NotFoundHttpException('Payment not found');
+        }
 
         return response()->json($payment);
     }
