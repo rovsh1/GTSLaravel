@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\Dto;
 
-use Sdk\Module\Foundation\Support\Dto\Dto;
-
-class BookingPriceDto extends Dto
+final class BookingPriceDto
 {
     public function __construct(
         public readonly PriceItemDto $supplierPrice,

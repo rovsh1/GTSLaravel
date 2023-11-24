@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Admin\Http\Requests\Client;
 
-use Sdk\Module\Foundation\Support\Dto\Dto;
-
-class LegalDto extends Dto
+final class LegalDto
 {
     public function __construct(
         public readonly string $name,
@@ -20,6 +18,5 @@ class LegalDto extends Dto
         public readonly ?string $kpp,
         public readonly ?string $bankName,
         public readonly ?string $currentAccount,
-    ) {
-    }
+    ) {}
 }

@@ -92,7 +92,7 @@ class CreateClientRequest extends FormRequest
             return null;
         }
 
-        return PhysicalDto::from($data);
+        return new PhysicalDto($data['gender']);
     }
 
     public function getLegal(): ?LegalDto
@@ -102,6 +102,18 @@ class CreateClientRequest extends FormRequest
             return null;
         }
 
-        return LegalDto::from($data);
+        return new LegalDto(
+            name: $data['name'],
+            industry: $data['industry'],
+            address: $data['address'],
+            bik: $data['bik'],
+            bankCity: $data['bankCity'],
+            inn: $data['inn'],
+            okpoCode: $data['okpoCode'],
+            corrAccount: $data['corrAccount'],
+            kpp: $data['kpp'],
+            bankName: $data['bankName'],
+            currentAccount: $data['currentAccount'],
+        );
     }
 }

@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Module\Hotel\Moderation\Application\Dto;
 
 use Carbon\CarbonInterface;
-use Sdk\Module\Foundation\Support\Dto\Dto;
 
-class PriceDto extends Dto
+final class PriceDto
 {
     public function __construct(
         public readonly int $seasonId,
