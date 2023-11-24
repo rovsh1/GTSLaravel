@@ -2,6 +2,7 @@
 
 namespace Module\Booking\Pricing\Domain\Booking\Service;
 
+use Carbon\Carbon;
 use Module\Booking\Moderation\Application\Exception\NotFoundServicePriceException;
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
@@ -26,7 +27,7 @@ class OtherServicePriceCalculator implements PriceCalculatorInterface
             $details->serviceInfo()->supplierId(),
             $details->serviceInfo()->id(),
             $booking->prices()->clientPrice()->currency(),
-            now()//@todo какая дата услуги?
+            new Carbon($details->serviceDate()),
         );
         if ($servicePrice === null) {
             throw new NotFoundServicePriceException();
