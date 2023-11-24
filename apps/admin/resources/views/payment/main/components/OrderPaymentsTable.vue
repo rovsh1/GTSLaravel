@@ -88,7 +88,7 @@ const moveOrderWaitingToOrders = async (allOrders?: boolean) => {
       localeRemainingAmount.value = subsctractSum
     } else {
       if (existLocaleOrder) {
-        existLocaleOrder.remainingAmount.value = Math.abs(subsctractSum)
+        existLocaleOrder.remainingAmount.value = Math.abs(subsctractSum) - existLocaleOrder.remainingAmount.value
       } else {
         source.remainingAmount.value = Math.abs(subsctractSum)
         localeOrders.value.push(selectedOrder)
