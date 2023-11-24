@@ -38,7 +38,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
-use Module\Booking\Requesting\Domain\BookingRequest\Service\RequestRules;
+use Module\Booking\Shared\Domain\Booking\Service\RequestingRules;
 use Module\Shared\Enum\Booking\BookingStatusEnum;
 use Module\Shared\Enum\CurrencyEnum;
 use Module\Shared\Enum\ServiceTypeEnum;
@@ -104,7 +104,7 @@ class BookingController extends Controller
         $currency = $data['currency'] ? CurrencyEnum::from($data['currency']) : null;
         if ($orderId !== null && $currency === null) {
             $order = OrderAdapter::getOrder($orderId);
-            $currency = CurrencyEnum::from($order->currency->value);
+            $currency = CurrencyEnum::from($order->clientPrice->currency->value);
         }
         if ($currency === null) {
             $client = Client::find($data['client_id']);
@@ -191,6 +191,7 @@ class BookingController extends Controller
                 'client' => $client,
                 'order' => $order,
                 'cancelConditions' => $booking->cancelConditions,
+                'isOtherServiceBooking' => $booking->serviceType->id === ServiceTypeEnum::OTHER_SERVICE->value,
                 'currencies' => Currency::get(),
                 'manager' => $this->administratorRepository->get($id),
                 'creator' => Administrator::find($booking->creatorId),
@@ -459,7 +460,7 @@ class BookingController extends Controller
     private function prepareGridQuery(Builder $query, array $searchCriteria): Builder
     {
         $requestableStatuses = array_map(fn(BookingStatusEnum $status) => $status->value,
-            RequestRules::getRequestableStatuses());
+            RequestingRules::getRequestableStatuses());
 
         return $query
             ->applyCriteria($searchCriteria)

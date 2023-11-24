@@ -29,7 +29,6 @@ interface BookingRepositoryInterface
         ?CancelConditions $cancelConditions,
         ServiceTypeEnum $serviceType,
         ?string $note = null,
-        BookingStatusEnum $status = BookingStatusEnum::CREATED
     ): Booking;
 
     /**

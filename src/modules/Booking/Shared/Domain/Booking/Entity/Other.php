@@ -53,7 +53,7 @@ final class Other implements DetailsInterface
 
     public function serviceDate(): ?DateTimeInterface
     {
-        return null;
+        return $this->date;
     }
 
     public function toData(): array

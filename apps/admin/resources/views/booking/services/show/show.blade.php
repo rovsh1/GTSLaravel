@@ -13,6 +13,7 @@
             'currencies' => $currencies,
             'editUrl' => $editUrl,
             'deleteUrl' => $deleteUrl,
+            'isOtherServiceBooking' => $isOtherServiceBooking,
         ]) }}
     </script>
 @endsection

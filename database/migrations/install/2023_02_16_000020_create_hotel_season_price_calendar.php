@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->unsignedInteger('season_id');
             $table->unsignedInteger('group_id');
             $table->unsignedInteger('room_id');
-            $table->unsignedDecimal('price', 11, 2);
+            $table->unsignedDecimal('price', 14);
 
             $table->unique(['date', 'season_id', 'group_id', 'room_id'],'hotel_season_price_calendar_unique');
 

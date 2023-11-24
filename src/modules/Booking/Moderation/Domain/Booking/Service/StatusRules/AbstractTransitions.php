@@ -4,12 +4,19 @@ namespace Module\Booking\Moderation\Domain\Booking\Service\StatusRules;
 
 use Module\Shared\Enum\Booking\BookingStatusEnum;
 
-class AbstractRules
+abstract class AbstractTransitions
 {
     /**
      * @var array<int, BookingStatusEnum[]> $transitions
      */
     protected array $transitions = [];
+
+    public function __construct()
+    {
+        $this->configure();
+    }
+
+    abstract protected function configure(): void;
 
     protected function addTransition(BookingStatusEnum $fromStatus, BookingStatusEnum $toStatus): void
     {
@@ -19,6 +26,18 @@ class AbstractRules
 
         $this->transitions[$fromStatus->value][] = $toStatus;
     }
+
+//    /**
+//     * @return BookingStatusEnum[]
+//     */
+//    public static function getCompletedStatuses(): array
+//    {
+//        return [
+//            BookingStatusEnum::CONFIRMED,
+//            BookingStatusEnum::CANCELLED_FEE,
+//            BookingStatusEnum::CANCELLED_NO_FEE
+//        ];
+//    }
 
     public function canTransit(BookingStatusEnum $fromStatus, BookingStatusEnum $toStatus): bool
     {
@@ -33,7 +52,7 @@ class AbstractRules
      * @param BookingStatusEnum $statusEnum
      * @return BookingStatusEnum[]
      */
-    public function getStatusTransitions(BookingStatusEnum $statusEnum): array
+    public function getAvailableTransitions(BookingStatusEnum $statusEnum): array
     {
         return $this->transitions[$statusEnum->value] ?? [];
     }

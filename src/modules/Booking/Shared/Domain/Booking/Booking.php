@@ -8,6 +8,7 @@ use Module\Booking\Shared\Domain\Booking\Event\BookingDeleted;
 use Module\Booking\Shared\Domain\Booking\Event\NoteChanged;
 use Module\Booking\Shared\Domain\Booking\Event\PriceUpdated;
 use Module\Booking\Shared\Domain\Booking\Support\Concerns\HasStatusesTrait;
+use Module\Booking\Shared\Domain\Booking\Support\Concerns\StatusesFlagsTrait;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPrices;
 use Module\Booking\Shared\Domain\Booking\ValueObject\Context;
@@ -22,6 +23,7 @@ use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 class Booking extends AbstractAggregateRoot implements SerializableDataInterface
 {
     use HasStatusesTrait;
+    use StatusesFlagsTrait;
 
     public function __construct(
         private readonly BookingId $id,
@@ -104,22 +106,6 @@ class Booking extends AbstractAggregateRoot implements SerializableDataInterface
     public function setCancelConditions(?CancelConditions $cancelConditions): void
     {
         $this->cancelConditions = $cancelConditions;
-    }
-
-    public function isConfirmed(): bool
-    {
-        return $this->status === BookingStatusEnum::CONFIRMED;
-    }
-
-    public function isCancelled(): bool
-    {
-        return in_array($this->status, [
-            BookingStatusEnum::CANCELLED,
-            BookingStatusEnum::CANCELLED_FEE,
-            BookingStatusEnum::CANCELLED_NO_FEE,
-            BookingStatusEnum::DELETED,
-            BookingStatusEnum::WAITING_CANCELLATION,//@todo должно ли быть тут?
-        ]);
     }
 
     public function toData(): array

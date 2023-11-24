@@ -13,7 +13,7 @@ return new class extends Migration {
             $table->unsignedInteger('client_id');
             $table->string('invoice_number');
             $table->char('payment_currency', 3);
-            $table->unsignedDecimal('payment_sum');
+            $table->unsignedDecimal('payment_sum',14);
             $table->unsignedSmallInteger('payment_method_id');
             $table->date('payment_date');
             $table->date('issue_date');

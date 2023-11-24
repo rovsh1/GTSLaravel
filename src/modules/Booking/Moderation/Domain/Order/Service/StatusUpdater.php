@@ -4,62 +4,66 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Domain\Order\Service;
 
-use Module\Booking\Moderation\Domain\Order\Adapter\InvoiceAdapterInterface;
 use Module\Booking\Moderation\Domain\Order\Exception\OrderHasBookingInProgress;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Order\Order;
+use Module\Shared\Enum\Order\OrderStatusEnum;
 
 class StatusUpdater
 {
     public function __construct(
         private readonly BookingRepositoryInterface $repository,
-        private readonly InvoiceAdapterInterface $invoiceAdapter
-    ) {}
-
-    public function toInProgress(Order $order): void
-    {
-        $order->toInProgress();
+        private readonly StatusTransitionRules $statusTransitionRules,
+    ) {
     }
 
-    public function toWaitingInvoice(Order $order): void
+    public function update(Order $order, OrderStatusEnum $status): void
+    {
+        $this->ensureCanTransitToStatus($order, $status);
+
+        switch ($status) {
+            case OrderStatusEnum::IN_PROGRESS:
+                $order->toInProgress();
+                break;
+            case OrderStatusEnum::WAITING_INVOICE:
+                $this->ensureAllBookingsCompleted($order);
+                $order->toWaitingInvoice();
+                break;
+            case OrderStatusEnum::INVOICED:
+                $order->toInvoiced();
+                break;
+            case OrderStatusEnum::PARTIAL_PAID:
+                $order->toPartialPaid();
+                break;
+            case OrderStatusEnum::PAID:
+                $order->toPaid();
+                break;
+            case OrderStatusEnum::CANCELLED:
+                $order->cancel();
+                break;
+            case OrderStatusEnum::REFUND_FEE:
+                $order->toRefundFee();
+                break;
+            case OrderStatusEnum::REFUND_NO_FEE:
+                $order->toRefundNoFee();
+                break;
+        }
+    }
+
+    private function ensureAllBookingsCompleted(Order $order): void
     {
         $bookings = $this->repository->getByOrderId($order->id());
         foreach ($bookings as $booking) {
-            if (!$booking->isConfirmed() && !$booking->isCancelled()) {
+            if ($booking->inModeration()) {
                 throw new OrderHasBookingInProgress();
             }
         }
-        $order->toWaitingInvoice();
     }
 
-    public function toInvoiced(Order $order): void
+    private function ensureCanTransitToStatus(Order $order, OrderStatusEnum $statusTo): void
     {
-        $order->toInvoiced();
-    }
-
-    public function toPartialPaid(Order $order): void
-    {
-        $order->toPartialPaid();
-    }
-
-    public function toPaid(Order $order): void
-    {
-        $order->toPaid();
-    }
-
-    public function cancel(Order $order): void
-    {
-        $this->invoiceAdapter->cancelInvoice($order->id());
-        $order->cancel();
-    }
-
-    public function toRefundFee(Order $order): void
-    {
-        $order->toRefundFee();
-    }
-
-    public function toRefundNoFee(Order $order): void
-    {
-        $order->toRefundNoFee();
+        if (!$this->statusTransitionRules->canTransit($order->status(), $statusTo)) {
+            throw new InvalidStatusTransition("Can't change status for booking [{$order->id()->value()}]]");
+        }
     }
 }

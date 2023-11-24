@@ -7,6 +7,7 @@ namespace Module\Booking\Shared\Domain\Order;
 use Carbon\CarbonImmutable;
 use Module\Booking\Shared\Domain\Booking\ValueObject\Context;
 use Module\Booking\Shared\Domain\Order\Event\ClientChanged;
+use Module\Booking\Shared\Domain\Order\Support\Concerns\HasStatusesTrait;
 use Module\Booking\Shared\Domain\Order\ValueObject\ClientId;
 use Module\Booking\Shared\Domain\Order\ValueObject\LegalId;
 use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
@@ -19,6 +20,8 @@ use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 
 final class Order extends AbstractAggregateRoot implements EntityInterface
 {
+    use HasStatusesTrait;
+
     public function __construct(
         private readonly OrderId $id,
         private CurrencyEnum $currency,
@@ -29,7 +32,8 @@ final class Order extends AbstractAggregateRoot implements EntityInterface
         private readonly GuestIdCollection $guestIds,
         private readonly Money $clientPrice,
         private readonly Context $context
-    ) {}
+    ) {
+    }
 
     public function id(): OrderId
     {
@@ -90,45 +94,5 @@ final class Order extends AbstractAggregateRoot implements EntityInterface
     public function clientPrice(): Money
     {
         return $this->clientPrice;
-    }
-
-    public function toInProgress(): void
-    {
-        $this->status = OrderStatusEnum::IN_PROGRESS;
-    }
-
-    public function toWaitingInvoice(): void
-    {
-        $this->status = OrderStatusEnum::WAITING_INVOICE;
-    }
-
-    public function toInvoiced(): void
-    {
-        $this->status = OrderStatusEnum::INVOICED;
-    }
-
-    public function toPartialPaid(): void
-    {
-        $this->status = OrderStatusEnum::PARTIAL_PAID;
-    }
-
-    public function toPaid(): void
-    {
-        $this->status = OrderStatusEnum::PAID;
-    }
-
-    public function cancel(): void
-    {
-        $this->status = OrderStatusEnum::CANCELLED;
-    }
-
-    public function toRefundFee(): void
-    {
-        $this->status = OrderStatusEnum::REFUND_FEE;
-    }
-
-    public function toRefundNoFee(): void
-    {
-        $this->status = OrderStatusEnum::REFUND_NO_FEE;
     }
 }

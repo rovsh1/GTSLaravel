@@ -4,7 +4,6 @@ namespace Module\Booking\Moderation\Domain\Booking\Service\HotelBooking\QuotaMan
 
 use Carbon\CarbonPeriod;
 use Module\Booking\Moderation\Domain\Booking\Service\HotelBooking\QuotaManager\QuotaProcessingMethodInterface;
-use Module\Booking\Moderation\Domain\Booking\Service\StatusRules\AdministratorRules;
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelQuotaAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
@@ -18,7 +17,6 @@ use Module\Shared\Enum\Booking\BookingStatusEnum;
 class Quota implements QuotaProcessingMethodInterface
 {
     public function __construct(
-        private readonly AdministratorRules $administratorRules,
         private readonly HotelQuotaAdapterInterface $quotaAdapter,
         private readonly AccommodationRepositoryInterface $accommodationRepository,
     ) {
@@ -26,15 +24,7 @@ class Quota implements QuotaProcessingMethodInterface
 
     public function process(Booking $booking, HotelBooking $details): void
     {
-        if ($this->isEditableBooking($booking)) {
-            $this->quotaAdapter->reserve(
-                new ReserveRequestDto(
-                    bookingId: $booking->id()->value(),
-                    bookingPeriod: $this->buildRequestPeriod($details->bookingPeriod()),
-                    bookingRooms: $this->buildRequestRooms($details)
-                )
-            );
-        } elseif ($this->isBookingConfirmed($booking)) {
+        if ($this->isBookingConfirmed($booking)) {
             $this->quotaAdapter->book(
                 new BookRequestDto(
                     bookingId: $booking->id()->value(),
@@ -44,12 +34,15 @@ class Quota implements QuotaProcessingMethodInterface
             );
         } elseif ($this->isBookingCancelled($booking)) {
             $this->quotaAdapter->cancel($booking->id()->value());
+        } else {
+            $this->quotaAdapter->reserve(
+                new ReserveRequestDto(
+                    bookingId: $booking->id()->value(),
+                    bookingPeriod: $this->buildRequestPeriod($details->bookingPeriod()),
+                    bookingRooms: $this->buildRequestRooms($details)
+                )
+            );
         }
-    }
-
-    private function isEditableBooking(Booking $booking): bool
-    {
-        return $this->administratorRules->isEditableStatus($booking->status());
     }
 
     private function isBookingConfirmed(Booking $booking): bool
@@ -60,8 +53,7 @@ class Quota implements QuotaProcessingMethodInterface
 
     private function isBookingCancelled(Booking $booking): bool
     {
-        return $this->administratorRules->isCancelledStatus($booking->status())
-            || $this->administratorRules->isDeletedStatus($booking->status());
+        return $booking->isCancelled() || $booking->isDeleted();
     }
 
     private function buildRequestPeriod(BookingPeriod $period): CarbonPeriod

@@ -19,6 +19,7 @@
             'editUrl' => $editUrl,
             'deleteUrl' => $deleteUrl,
             'manager' => $manager,
+            'isOtherServiceBooking' => false,
         ]) }}
     </script>
 @endsection

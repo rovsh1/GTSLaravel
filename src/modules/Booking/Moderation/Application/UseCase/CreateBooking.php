@@ -61,7 +61,6 @@ class CreateBooking extends AbstractCreateBooking
             cancelConditions: $cancelConditions,
             serviceType: $service->type,
             note: $request->note,//@todo netto валюта
-            status: $service->type === ServiceTypeEnum::OTHER_SERVICE ? BookingStatusEnum::CONFIRMED : BookingStatusEnum::CREATED,
         );
         $editor = $this->detailsEditorFactory->build($booking->serviceType());
         $editor->create($booking->id(), new ServiceId($request->serviceId), $request->detailsData);

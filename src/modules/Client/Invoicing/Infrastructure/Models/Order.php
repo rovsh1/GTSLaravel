@@ -56,6 +56,7 @@ class Order extends Model
             $builder->selectRaw(1)
                 ->from('client_payments')
                 ->whereColumn('client_payments.client_id', 'orders.client_id')
+                ->whereColumn('client_payments.payment_currency', 'orders.currency')
                 ->where('client_payments.id', $paymentId);
         });
     }
