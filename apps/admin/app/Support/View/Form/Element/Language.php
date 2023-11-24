@@ -4,9 +4,8 @@ namespace App\Admin\Support\View\Form\Element;
 
 use App\Admin\Support\Facades\Languages;
 use App\Shared\Components\Locale\Language as LanguageModel;
-use Gsdk\Form\Element\Select;
 
-class Language extends Select
+class Language extends BaseSelect
 {
     public function __construct(string $name, array $options = [])
     {
