@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Domain\Booking\ValueObject;
 
 use Module\Shared\Contracts\CanEquate;
-use Module\Shared\Contracts\Support\SerializableDataInterface;
+use Module\Shared\Contracts\Support\SerializableInterface;
 use Module\Shared\Enum\CurrencyEnum;
 
-final class BookingPriceItem implements SerializableDataInterface, CanEquate
+final class BookingPriceItem implements SerializableInterface, CanEquate
 {
     public function __construct(
         private readonly CurrencyEnum $currency,
@@ -43,7 +43,7 @@ final class BookingPriceItem implements SerializableDataInterface, CanEquate
         return $this->penaltyValue;
     }
 
-    public function toData(): array
+    public function serialize(): array
     {
         return [
             'calculatedValue' => $this->calculatedValue,
@@ -53,13 +53,13 @@ final class BookingPriceItem implements SerializableDataInterface, CanEquate
         ];
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
         return new BookingPriceItem(
-            CurrencyEnum::from($data['currency']),
-            $data['calculatedValue'],
-            $data['manualValue'],
-            $data['penaltyValue'],
+            CurrencyEnum::from($payload['currency']),
+            $payload['calculatedValue'],
+            $payload['manualValue'],
+            $payload['penaltyValue'],
         );
     }
 

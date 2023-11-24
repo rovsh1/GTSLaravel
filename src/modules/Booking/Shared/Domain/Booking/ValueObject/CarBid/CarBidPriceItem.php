@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Domain\Booking\ValueObject\CarBid;
 
 use Module\Shared\Contracts\CanEquate;
-use Module\Shared\Contracts\Support\SerializableDataInterface;
+use Module\Shared\Contracts\Support\SerializableInterface;
 use Module\Shared\Enum\CurrencyEnum;
 
-class CarBidPriceItem implements SerializableDataInterface, CanEquate
+class CarBidPriceItem implements SerializableInterface, CanEquate
 {
     public function __construct(
         private readonly CurrencyEnum $currency,
@@ -30,7 +30,7 @@ class CarBidPriceItem implements SerializableDataInterface, CanEquate
         return $this->valuePerCar;
     }
 
-    public function toData(): array
+    public function serialize(): array
     {
         return [
             'valuePerCar' => $this->valuePerCar,
@@ -38,11 +38,11 @@ class CarBidPriceItem implements SerializableDataInterface, CanEquate
         ];
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
         return new static(
-            CurrencyEnum::from($data['currency']),
-            $data['valuePerCar'],
+            CurrencyEnum::from($payload['currency']),
+            $payload['valuePerCar'],
         );
     }
 

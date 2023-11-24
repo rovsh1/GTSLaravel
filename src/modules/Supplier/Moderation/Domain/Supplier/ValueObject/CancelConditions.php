@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Module\Supplier\Moderation\Domain\Supplier\ValueObject;
 
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
-use Module\Shared\Contracts\Support\SerializableDataInterface;
+use Module\Shared\Contracts\Support\SerializableInterface;
 
-class CancelConditions implements ValueObjectInterface, SerializableDataInterface
+class CancelConditions implements ValueObjectInterface, SerializableInterface
 {
     public function __construct(
         private readonly CancelMarkupOption $noCheckInMarkup,
@@ -24,19 +24,19 @@ class CancelConditions implements ValueObjectInterface, SerializableDataInterfac
         return $this->dailyMarkups;
     }
 
-    public function toData(): array
+    public function serialize(): array
     {
         return [
-            'noCheckInMarkup' => $this->noCheckInMarkup->toData(),
-            'dailyMarkups' => $this->dailyMarkups->toData(),
+            'noCheckInMarkup' => $this->noCheckInMarkup->serialize(),
+            'dailyMarkups' => $this->dailyMarkups->serialize(),
         ];
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
         return new static(
-            CancelMarkupOption::fromData($data['noCheckInMarkup']),
-            DailyMarkupCollection::fromData($data['dailyMarkups']),
+            CancelMarkupOption::deserialize($payload['noCheckInMarkup']),
+            DailyMarkupCollection::deserialize($payload['dailyMarkups']),
         );
     }
 }

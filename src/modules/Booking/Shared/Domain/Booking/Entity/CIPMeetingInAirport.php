@@ -58,29 +58,29 @@ final class CIPMeetingInAirport implements AirportDetailsInterface
         return $this->airportId;
     }
 
-    public function toData(): array
+    public function serialize(): array
     {
         return [
             'id' => $this->id->value(),
             'bookingId' => $this->bookingId->value(),
-            'serviceInfo' => $this->serviceInfo->toData(),
+            'serviceInfo' => $this->serviceInfo->serialize(),
             'airportId' => $this->airportId->value(),
             'flightNumber' => $this->flightNumber,
             'arrivalDate' => $this->arrivalDate?->getTimestamp(),
-            'guestIds' => $this->guestIds->toData(),
+            'guestIds' => $this->guestIds->serialize(),
         ];
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
         return new CIPMeetingInAirport(
-            new DetailsId($data['id']),
-            new BookingId($data['bookingId']),
-            ServiceInfo::fromData($data['serviceInfo']),
-            new AirportId($data['airportId']),
-            $data['flightNumber'],
-            $data['arrivalDate'] ? DateTimeImmutableFactory::createFromTimestamp($data['arrivalDate']) : null,
-            GuestIdCollection::fromData($data['guestIds'])
+            new DetailsId($payload['id']),
+            new BookingId($payload['bookingId']),
+            ServiceInfo::deserialize($payload['serviceInfo']),
+            new AirportId($payload['airportId']),
+            $payload['flightNumber'],
+            $payload['arrivalDate'] ? DateTimeImmutableFactory::createFromTimestamp($payload['arrivalDate']) : null,
+            GuestIdCollection::deserialize($payload['guestIds'])
         );
     }
 }

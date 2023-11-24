@@ -6,10 +6,10 @@ namespace Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking;
 
 use Module\Shared\Contracts\CanEquate;
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
-use Module\Shared\Contracts\Support\SerializableDataInterface;
+use Module\Shared\Contracts\Support\SerializableInterface;
 use Module\Shared\ValueObject\Percent;
 
-class AccommodationDetails implements ValueObjectInterface, SerializableDataInterface, CanEquate
+class AccommodationDetails implements ValueObjectInterface, SerializableInterface, CanEquate
 {
     public function __construct(
         private readonly int $rateId,
@@ -50,30 +50,30 @@ class AccommodationDetails implements ValueObjectInterface, SerializableDataInte
         return $this->discount;
     }
 
-    public function toData(): array
+    public function serialize(): array
     {
         return [
             'rateId' => $this->rateId,
-            'lateCheckOut' => $this->lateCheckOut?->toData(),
-            'earlyCheckIn' => $this->earlyCheckIn?->toData(),
+            'lateCheckOut' => $this->lateCheckOut?->serialize(),
+            'earlyCheckIn' => $this->earlyCheckIn?->serialize(),
             'guestNote' => $this->guestNote,
             'isResident' => $this->isResident,
             'discount' => $this->discount->value()
         ];
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
-        $earlyCheckIn = $data['earlyCheckIn'] ?? null;
-        $lateCheckOut = $data['lateCheckOut'] ?? null;
+        $earlyCheckIn = $payload['earlyCheckIn'] ?? null;
+        $lateCheckOut = $payload['lateCheckOut'] ?? null;
 
         return new static(
-            $data['rateId'],
-            $data['isResident'],
-            $earlyCheckIn !== null ? Condition::fromData($data['earlyCheckIn']) : null,
-            $lateCheckOut !== null ? Condition::fromData($data['lateCheckOut']) : null,
-            $data['guestNote'],
-            new Percent($data['discount'])
+            $payload['rateId'],
+            $payload['isResident'],
+            $earlyCheckIn !== null ? Condition::deserialize($payload['earlyCheckIn']) : null,
+            $lateCheckOut !== null ? Condition::deserialize($payload['lateCheckOut']) : null,
+            $payload['guestNote'],
+            new Percent($payload['discount'])
         );
     }
 

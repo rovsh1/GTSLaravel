@@ -94,7 +94,7 @@ class BookingRepository implements BookingRepositoryInterface
             'supplier_manual_price' => $supplierPrice->manualValue(),
             'supplier_currency' => $supplierPrice->currency(),
             'supplier_penalty' => $supplierPrice->penaltyValue(),
-            'cancel_conditions' => $booking->cancelConditions()?->toData()
+            'cancel_conditions' => $booking->cancelConditions()?->serialize()
         ]);
     }
 
@@ -123,7 +123,7 @@ class BookingRepository implements BookingRepositoryInterface
             'supplier_manual_price' => $supplierPrice->manualValue(),
             'supplier_currency' => $supplierPrice->currency(),
             'supplier_penalty' => $supplierPrice->penaltyValue(),
-            'cancel_conditions' => $cancelConditions?->toData(),
+            'cancel_conditions' => $cancelConditions?->serialize(),
             'note' => $note
         ]);
 
@@ -147,7 +147,7 @@ class BookingRepository implements BookingRepositoryInterface
             status: $booking->status,
             prices: $this->buildBookingPrices($booking),
             cancelConditions: $booking->cancel_conditions !== null
-                ? CancelConditions::fromData($booking->cancel_conditions)
+                ? CancelConditions::deserialize($booking->cancel_conditions)
                 : null,
             note: $booking->note,
             context: new Context(

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Domain\Booking\ValueObject;
 
-use Module\Shared\Contracts\Support\SerializableDataInterface;
+use Module\Shared\Contracts\Support\SerializableInterface;
 
-final class ServiceInfo implements SerializableDataInterface
+final class ServiceInfo implements SerializableInterface
 {
     public function __construct(
         private readonly int $id,
@@ -30,7 +30,7 @@ final class ServiceInfo implements SerializableDataInterface
         return $this->supplierId;
     }
 
-    public function toData(): array
+    public function serialize(): array
     {
         return [
             'id' => $this->id,
@@ -39,12 +39,12 @@ final class ServiceInfo implements SerializableDataInterface
         ];
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
         return new ServiceInfo(
-            $data['id'],
-            $data['title'],
-            $data['supplierId'],
+            $payload['id'],
+            $payload['title'],
+            $payload['supplierId'],
         );
     }
 }

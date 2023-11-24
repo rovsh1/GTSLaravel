@@ -62,12 +62,12 @@ final class IntercityTransfer implements TransferDetailsInterface
         return $this->returnTripIncluded;
     }
 
-    public function toData(): array
+    public function serialize(): array
     {
         return [
             'id' => $this->id->value(),
             'bookingId' => $this->bookingId->value(),
-            'serviceInfo' => $this->serviceInfo->toData(),
+            'serviceInfo' => $this->serviceInfo->serialize(),
             'fromCityId' => $this->fromCityId->value(),
             'toCityId' => $this->toCityId->value(),
             'returnTripIncluded' => $this->returnTripIncluded,
@@ -76,17 +76,17 @@ final class IntercityTransfer implements TransferDetailsInterface
         ];
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
         return new IntercityTransfer(
-            new DetailsId($data['id']),
-            new BookingId($data['bookingId']),
-            ServiceInfo::fromData($data['serviceInfo']),
-            new CityId($data['fromCityId']),
-            new CityId($data['toCityId']),
-            $data['returnTripIncluded'],
-            $data['departureDate'] ? DateTimeImmutableFactory::createFromTimestamp($data['departureDate']) : null,
-            CarBidCollection::fromData($data['guestIds'])
+            new DetailsId($payload['id']),
+            new BookingId($payload['bookingId']),
+            ServiceInfo::deserialize($payload['serviceInfo']),
+            new CityId($payload['fromCityId']),
+            new CityId($payload['toCityId']),
+            $payload['returnTripIncluded'],
+            $payload['departureDate'] ? DateTimeImmutableFactory::createFromTimestamp($payload['departureDate']) : null,
+            CarBidCollection::fromData($payload['guestIds'])
         );
     }
 }

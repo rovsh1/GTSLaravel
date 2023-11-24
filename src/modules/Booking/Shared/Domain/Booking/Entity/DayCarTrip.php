@@ -66,12 +66,12 @@ final class DayCarTrip implements TransferDetailsInterface
         $this->destinationsDescription = $destinationsDescription;
     }
 
-    public function toData(): array
+    public function serialize(): array
     {
         return [
             'id' => $this->id->value(),
             'bookingId' => $this->bookingId->value(),
-            'serviceInfo' => $this->serviceInfo->toData(),
+            'serviceInfo' => $this->serviceInfo->serialize(),
             'cityId' => $this->cityId->value(),
             'destinationsDescription' => $this->destinationsDescription,
             'departureDate' => $this->departureDate?->getTimestamp(),
@@ -79,16 +79,16 @@ final class DayCarTrip implements TransferDetailsInterface
         ];
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
         return new DayCarTrip(
-            new DetailsId($data['id']),
-            new BookingId($data['bookingId']),
-            ServiceInfo::fromData($data['serviceInfo']),
-            new CityId($data['cityId']),
-            $data['destinationsDescription'],
-            $data['departureDate'] ? DateTimeImmutableFactory::createFromTimestamp($data['departureDate']) : null,
-            CarBidCollection::fromData($data['guestIds'])
+            new DetailsId($payload['id']),
+            new BookingId($payload['bookingId']),
+            ServiceInfo::deserialize($payload['serviceInfo']),
+            new CityId($payload['cityId']),
+            $payload['destinationsDescription'],
+            $payload['departureDate'] ? DateTimeImmutableFactory::createFromTimestamp($payload['departureDate']) : null,
+            CarBidCollection::fromData($payload['guestIds'])
         );
     }
 }

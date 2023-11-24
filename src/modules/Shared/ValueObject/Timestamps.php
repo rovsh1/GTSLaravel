@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Module\Shared\ValueObject;
 
 use DateTimeImmutable;
-use Module\Shared\Contracts\Support\SerializableDataInterface;
+use Module\Shared\Contracts\Support\SerializableInterface;
 use Module\Shared\Support\DateTimeImmutableFactory;
 
-final class Timestamps implements SerializableDataInterface
+final class Timestamps implements SerializableInterface
 {
     public function __construct(
         private readonly DateTimeImmutable $createdAt,
@@ -26,7 +26,7 @@ final class Timestamps implements SerializableDataInterface
         return $this->updatedAt;
     }
 
-    public function toData(): array
+    public function serialize(): array
     {
         return [
             'createdAt' => $this->createdAt->getTimestamp(),
@@ -34,11 +34,11 @@ final class Timestamps implements SerializableDataInterface
         ];
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
         return new Timestamps(
-            DateTimeImmutableFactory::createFromTimestamp($data['createdAt']),
-            DateTimeImmutableFactory::createFromTimestamp($data['updatedAt']),
+            DateTimeImmutableFactory::createFromTimestamp($payload['createdAt']),
+            DateTimeImmutableFactory::createFromTimestamp($payload['updatedAt']),
         );
     }
 }

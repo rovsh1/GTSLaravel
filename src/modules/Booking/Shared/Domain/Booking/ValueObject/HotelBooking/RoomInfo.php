@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking;
 
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
-use Module\Shared\Contracts\Support\SerializableDataInterface;
+use Module\Shared\Contracts\Support\SerializableInterface;
 
-class RoomInfo implements ValueObjectInterface, SerializableDataInterface
+class RoomInfo implements ValueObjectInterface, SerializableInterface
 {
     public function __construct(
         private readonly int $id,
@@ -30,7 +30,7 @@ class RoomInfo implements ValueObjectInterface, SerializableDataInterface
         return $this->guestsCount;
     }
 
-    public function toData(): array
+    public function serialize(): array
     {
         return [
             'id' => $this->id,
@@ -39,12 +39,12 @@ class RoomInfo implements ValueObjectInterface, SerializableDataInterface
         ];
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
         return new static(
-            $data['id'],
-            $data['name'],
-            $data['guestsCount'],
+            $payload['id'],
+            $payload['name'],
+            $payload['guestsCount'],
         );
     }
 }

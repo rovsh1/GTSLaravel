@@ -24,7 +24,7 @@ class CIPMeetingInAirportBuilder extends AbstractServiceDetailsBuilder
             airportId: new AirportId($detailsData['airportId']),
             flightNumber: $detailsData['flightNumber'],
             arrivalDate: $details->date,
-            guestIds: GuestIdCollection::fromData($detailsData['guestIds']),
+            guestIds: GuestIdCollection::deserialize($detailsData['guestIds']),
         );
     }
 }

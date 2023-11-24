@@ -56,26 +56,26 @@ final class Other implements DetailsInterface
         return $this->date;
     }
 
-    public function toData(): array
+    public function serialize(): array
     {
         return [
             'id' => $this->id->value(),
             'bookingId' => $this->bookingId->value(),
-            'serviceInfo' => $this->serviceInfo->toData(),
+            'serviceInfo' => $this->serviceInfo->serialize(),
             'description' => $this->description,
             'date' => $this->date?->getTimestamp(),
         ];
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
-        $date = $data['date'] ?? null;
+        $date = $payload['date'] ?? null;
 
         return new Other(
-            new DetailsId($data['id']),
-            new BookingId($data['bookingId']),
-            ServiceInfo::fromData($data['serviceInfo']),
-            $data['description'],
+            new DetailsId($payload['id']),
+            new BookingId($payload['bookingId']),
+            ServiceInfo::deserialize($payload['serviceInfo']),
+            $payload['description'],
             $date !== null ? DateTimeImmutable::createFromTimestamp($date) : null
         );
     }

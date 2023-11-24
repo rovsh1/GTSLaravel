@@ -23,9 +23,9 @@ class HotelBookingBuilder
         return new HotelBooking(
             id: new DetailsId($details->id),
             bookingId: new BookingId($details->booking_id),
-            hotelInfo: HotelInfo::fromData($detailsData['hotelInfo']),
-            bookingPeriod: HotelBookingPeriod::fromData($detailsData['period']),
-            externalNumber: $externalNumberData ? ExternalNumber::fromData($externalNumberData) : null,
+            hotelInfo: HotelInfo::deserialize($detailsData['hotelInfo']),
+            bookingPeriod: HotelBookingPeriod::deserialize($detailsData['period']),
+            externalNumber: $externalNumberData ? ExternalNumber::deserialize($externalNumberData) : null,
             quotaProcessingMethod: $details->quota_processing_method,
         );
     }

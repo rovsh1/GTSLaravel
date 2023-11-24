@@ -23,17 +23,17 @@ class DetailsDeserializer
     public function deserialize(ServiceTypeEnum $serviceType, array $payload): DetailsInterface
     {
         return match ($serviceType) {
-            ServiceTypeEnum::CAR_RENT_WITH_DRIVER => CarRentWithDriver::fromData($payload),
-            ServiceTypeEnum::CIP_MEETING_IN_AIRPORT => CIPMeetingInAirport::fromData($payload),
-            ServiceTypeEnum::CIP_SENDOFF_IN_AIRPORT => CIPSendoffInAirport::fromData($payload),
-            ServiceTypeEnum::DAY_CAR_TRIP => DayCarTrip::fromData($payload),
-            ServiceTypeEnum::HOTEL_BOOKING => HotelBooking::fromData($payload),
-            ServiceTypeEnum::INTERCITY_TRANSFER => IntercityTransfer::fromData($payload),
-            ServiceTypeEnum::OTHER_SERVICE => Other::fromData($payload),
-            ServiceTypeEnum::TRANSFER_TO_RAILWAY => TransferToRailway::fromData($payload),
-            ServiceTypeEnum::TRANSFER_FROM_RAILWAY => TransferFromRailway::fromData($payload),
-            ServiceTypeEnum::TRANSFER_FROM_AIRPORT => TransferFromAirport::fromData($payload),
-            ServiceTypeEnum::TRANSFER_TO_AIRPORT => TransferToAirport::fromData($payload),
+            ServiceTypeEnum::CAR_RENT_WITH_DRIVER => CarRentWithDriver::deserialize($payload),
+            ServiceTypeEnum::CIP_MEETING_IN_AIRPORT => CIPMeetingInAirport::deserialize($payload),
+            ServiceTypeEnum::CIP_SENDOFF_IN_AIRPORT => CIPSendoffInAirport::deserialize($payload),
+            ServiceTypeEnum::DAY_CAR_TRIP => DayCarTrip::deserialize($payload),
+            ServiceTypeEnum::HOTEL_BOOKING => HotelBooking::deserialize($payload),
+            ServiceTypeEnum::INTERCITY_TRANSFER => IntercityTransfer::deserialize($payload),
+            ServiceTypeEnum::OTHER_SERVICE => Other::deserialize($payload),
+            ServiceTypeEnum::TRANSFER_TO_RAILWAY => TransferToRailway::deserialize($payload),
+            ServiceTypeEnum::TRANSFER_FROM_RAILWAY => TransferFromRailway::deserialize($payload),
+            ServiceTypeEnum::TRANSFER_FROM_AIRPORT => TransferFromAirport::deserialize($payload),
+            ServiceTypeEnum::TRANSFER_TO_AIRPORT => TransferToAirport::deserialize($payload),
         };
     }
 }

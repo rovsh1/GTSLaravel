@@ -24,7 +24,7 @@ class HotelFactory extends AbstractEntityFactory
             id: new HotelId($data['id']),
             name: $data['name'],
             currency: CurrencyEnum::from($data['currency']),
-            timeSettings: TimeSettings::fromData(json_decode($data['time_settings'], true)),
+            timeSettings: TimeSettings::deserialize(json_decode($data['time_settings'], true)),
             address: new Address(
                 country: $data['country_name'],
                 city: $data['city_name'],

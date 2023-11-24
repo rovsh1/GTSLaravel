@@ -4,9 +4,9 @@ namespace Module\Booking\Shared\Domain\Booking\ValueObject;
 
 use Illuminate\Support\Str;
 use Module\Booking\Shared\Domain\Booking\ValueObject\CarBid\CarBidPrices;
-use Module\Shared\Contracts\Support\SerializableDataInterface;
+use Module\Shared\Contracts\Support\SerializableInterface;
 
-final class CarBid implements SerializableDataInterface
+final class CarBid implements SerializableInterface
 {
     public function __construct(
         private readonly string $id,
@@ -82,7 +82,7 @@ final class CarBid implements SerializableDataInterface
         return $this->prices->clientPrice()->valuePerCar() * $this->carsCount;
     }
 
-    public function toData(): array
+    public function serialize(): array
     {
         return [
             'id' => $this->id,
@@ -95,16 +95,16 @@ final class CarBid implements SerializableDataInterface
         ];
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
         return new static(
-            $data['id'],
-            new CarId($data['carId']),
-            $data['carsCount'],
-            $data['passengersCount'],
-            $data['baggageCount'],
-            $data['babyCount'],
-            CarBidPrices::fromData($data['prices'])
+            $payload['id'],
+            new CarId($payload['carId']),
+            $payload['carsCount'],
+            $payload['passengersCount'],
+            $payload['baggageCount'],
+            $payload['babyCount'],
+            CarBidPrices::fromData($payload['prices'])
         );
     }
 }

@@ -3,10 +3,10 @@
 namespace Module\Booking\Shared\Domain\Booking\ValueObject;
 
 use Module\Shared\Contracts\CanEquate;
-use Module\Shared\Contracts\Support\SerializableDataInterface;
+use Module\Shared\Contracts\Support\SerializableInterface;
 use Module\Shared\Enum\CurrencyEnum;
 
-final class BookingPrices implements SerializableDataInterface, CanEquate
+final class BookingPrices implements SerializableInterface, CanEquate
 {
     public function __construct(
         private readonly BookingPriceItem $supplierPrice,
@@ -32,19 +32,19 @@ final class BookingPrices implements SerializableDataInterface, CanEquate
         return $this->clientPrice;
     }
 
-    public function toData(): array
+    public function serialize(): array
     {
         return [
-            'supplierPrice' => $this->supplierPrice->toData(),
-            'clientPrice' => $this->clientPrice->toData(),
+            'supplierPrice' => $this->supplierPrice->serialize(),
+            'clientPrice' => $this->clientPrice->serialize(),
         ];
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
         return new BookingPrices(
-            supplierPrice: BookingPriceItem::fromData($data['supplierPrice']),
-            clientPrice: BookingPriceItem::fromData($data['clientPrice']),
+            supplierPrice: BookingPriceItem::deserialize($payload['supplierPrice']),
+            clientPrice: BookingPriceItem::deserialize($payload['clientPrice']),
         );
     }
 

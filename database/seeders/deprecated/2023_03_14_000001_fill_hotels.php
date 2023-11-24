@@ -183,8 +183,8 @@ return new class extends Migration {
                     'zipcode' => $r->zipcode,
                     'status' => $r->status,
                     'visibility' => $this->getVisibilityValue($r->visible_for),
-                    'markup_settings' => json_encode($markupSettings->toData()),
-                    'time_settings' => json_encode($timeSettings->toData()),
+                    'markup_settings' => json_encode($markupSettings->serialize()),
+                    'time_settings' => json_encode($timeSettings->serialize()),
                     'created_at' => $r->created,
                     'updated_at' => $r->updated,
                 ]);

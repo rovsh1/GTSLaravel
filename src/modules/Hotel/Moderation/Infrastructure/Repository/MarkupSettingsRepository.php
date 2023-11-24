@@ -26,6 +26,6 @@ class MarkupSettingsRepository implements MarkupSettingsRepositoryInterface
 
     private function deserializeSettings(Hotel $hotel): MarkupSettings
     {
-        return MarkupSettings::fromData(json_decode($hotel->markup_settings, true));
+        return MarkupSettings::deserialize(json_decode($hotel->markup_settings, true));
     }
 }

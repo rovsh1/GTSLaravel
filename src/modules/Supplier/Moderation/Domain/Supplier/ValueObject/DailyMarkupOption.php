@@ -6,10 +6,10 @@ namespace Module\Supplier\Moderation\Domain\Supplier\ValueObject;
 
 use Module\Shared\Contracts\CanEquate;
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
-use Module\Shared\Contracts\Support\SerializableDataInterface;
+use Module\Shared\Contracts\Support\SerializableInterface;
 use Module\Shared\ValueObject\Percent;
 
-final class DailyMarkupOption implements ValueObjectInterface, SerializableDataInterface, CanEquate
+final class DailyMarkupOption implements ValueObjectInterface, SerializableInterface, CanEquate
 {
     public function __construct(
         private readonly Percent $percent,
@@ -26,7 +26,7 @@ final class DailyMarkupOption implements ValueObjectInterface, SerializableDataI
         return $this->daysCount;
     }
 
-    public function toData(): array
+    public function serialize(): array
     {
         return [
             'percent' => $this->percent->value(),
@@ -34,11 +34,11 @@ final class DailyMarkupOption implements ValueObjectInterface, SerializableDataI
         ];
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
         return new static(
-            new Percent($data['percent']),
-            $data['daysCount'],
+            new Percent($payload['percent']),
+            $payload['daysCount'],
         );
     }
 

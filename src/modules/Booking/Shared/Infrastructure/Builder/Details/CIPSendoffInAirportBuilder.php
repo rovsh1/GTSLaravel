@@ -24,7 +24,7 @@ class CIPSendoffInAirportBuilder extends AbstractServiceDetailsBuilder
             airportId: new AirportId($detailsData['airportId']),
             flightNumber: $detailsData['flightNumber'],
             departureDate: $details->date,
-            guestIds: GuestIdCollection::fromData($detailsData['guestIds']),
+            guestIds: GuestIdCollection::deserialize($detailsData['guestIds']),
         );
     }
 }

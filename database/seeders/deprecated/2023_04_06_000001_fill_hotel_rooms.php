@@ -48,7 +48,7 @@ return new class extends Migration {
                     'guests_count' => $r->guests_number,
                     'square' => $r->size,
                     'position' => $r->index,
-                    'markup_settings' => json_encode($roomMarkup->toData()),
+                    'markup_settings' => json_encode($roomMarkup->serialize()),
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);

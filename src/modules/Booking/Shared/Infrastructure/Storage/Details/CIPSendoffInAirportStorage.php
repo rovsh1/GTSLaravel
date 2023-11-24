@@ -17,7 +17,7 @@ class CIPSendoffInAirportStorage extends AbstractStorage
                 'serviceInfo' => $this->serializeServiceInfo($details->serviceInfo()),
                 'airportId' => $details->airportId()->value(),
                 'flightNumber' => $details->flightNumber(),
-                'guestIds' => $details->guestIds()->toData(),
+                'guestIds' => $details->guestIds()->serialize(),
             ]
         ]);
     }

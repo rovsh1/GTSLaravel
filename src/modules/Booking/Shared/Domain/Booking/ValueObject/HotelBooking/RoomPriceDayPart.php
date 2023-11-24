@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking;
 
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
-use Module\Shared\Contracts\Support\SerializableDataInterface;
+use Module\Shared\Contracts\Support\SerializableInterface;
 use Module\Shared\ValueObject\Date;
 
-final class RoomPriceDayPart implements ValueObjectInterface, SerializableDataInterface
+final class RoomPriceDayPart implements ValueObjectInterface, SerializableInterface
 {
     public function __construct(
         private readonly Date $date,
@@ -32,7 +32,7 @@ final class RoomPriceDayPart implements ValueObjectInterface, SerializableDataIn
         return $this->formula;
     }
 
-    public function toData(): array
+    public function serialize(): array
     {
         return [
             'date' => $this->date->getTimestamp(),
@@ -41,12 +41,12 @@ final class RoomPriceDayPart implements ValueObjectInterface, SerializableDataIn
         ];
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
         return new RoomPriceDayPart(
-            Date::createFromTimestamp($data['date']),
-            $data['value'],
-            $data['formula'],
+            Date::createFromTimestamp($payload['date']),
+            $payload['value'],
+            $payload['formula'],
         );
     }
 }

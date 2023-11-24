@@ -26,14 +26,14 @@ class ServiceCancelConditionsRepository implements ServiceCancelConditionsReposi
             return null;
         }
 
-        return CancelConditions::fromData($conditions->data);
+        return CancelConditions::deserialize($conditions->data);
     }
 
     public function store(ServiceId $serviceId, SeasonId $seasonId, CancelConditions $cancelConditions): bool
     {
         return (bool)ServiceCancelConditions::updateOrCreate(
             ['season_id' => $seasonId->value(), 'service_id' => $serviceId->value()],
-            ['season_id' => $seasonId->value(), 'service_id' => $serviceId->value(), 'data' => $cancelConditions->toData()]
+            ['season_id' => $seasonId->value(), 'service_id' => $serviceId->value(), 'data' => $cancelConditions->serialize()]
         );
     }
 }

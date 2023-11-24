@@ -18,7 +18,7 @@ class LegalFactory extends AbstractEntityFactory
     {
         $bankRequisites = $data['requisites'] ?? null;
         if ($bankRequisites !== null) {
-            $bankRequisites = BankRequisites::fromData(json_decode($bankRequisites, true));
+            $bankRequisites = BankRequisites::deserialize(json_decode($bankRequisites, true));
         }
         $industryId = $data['industry_id'] ?? null;
 

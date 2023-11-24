@@ -4,10 +4,10 @@ namespace Module\Booking\Shared\Domain\Booking\Entity;
 
 use DateTimeInterface;
 use Module\Booking\Shared\Domain\Booking\ValueObject\DetailsId;
-use Module\Shared\Contracts\Support\SerializableDataInterface;
+use Module\Shared\Contracts\Support\SerializableInterface;
 use Module\Shared\Enum\ServiceTypeEnum;
 
-interface DetailsInterface extends SerializableDataInterface
+interface DetailsInterface extends SerializableInterface
 {
     public function id(): DetailsId;
 

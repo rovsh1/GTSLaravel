@@ -8,9 +8,9 @@ use Carbon\CarbonPeriod;
 use Carbon\CarbonPeriodImmutable;
 use Module\Shared\Contracts\CanEquate;
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
-use Module\Shared\Contracts\Support\SerializableDataInterface;
+use Module\Shared\Contracts\Support\SerializableInterface;
 
-final class BookingPeriod implements ValueObjectInterface, SerializableDataInterface, CanEquate
+final class BookingPeriod implements ValueObjectInterface, SerializableInterface, CanEquate
 {
     private int $nightsCount;
 
@@ -62,7 +62,7 @@ final class BookingPeriod implements ValueObjectInterface, SerializableDataInter
             ->toArray();
     }
 
-    public function toData(): array
+    public function serialize(): array
     {
         return [
             'dateFrom' => $this->dateFrom->getTimestamp(),
@@ -71,11 +71,11 @@ final class BookingPeriod implements ValueObjectInterface, SerializableDataInter
         ];
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
         return new static(
-            CarbonImmutable::createFromTimestamp($data['dateFrom']),
-            CarbonImmutable::createFromTimestamp($data['dateTo']),
+            CarbonImmutable::createFromTimestamp($payload['dateFrom']),
+            CarbonImmutable::createFromTimestamp($payload['dateTo']),
         );
     }
 

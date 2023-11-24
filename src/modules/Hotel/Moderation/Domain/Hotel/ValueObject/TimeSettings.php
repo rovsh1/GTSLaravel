@@ -6,10 +6,10 @@ namespace Module\Hotel\Moderation\Domain\Hotel\ValueObject;
 
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\TimeSettings\BreakfastPeriod;
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
-use Module\Shared\Contracts\Support\SerializableDataInterface;
+use Module\Shared\Contracts\Support\SerializableInterface;
 use Module\Shared\ValueObject\Time;
 
-class TimeSettings implements ValueObjectInterface, SerializableDataInterface
+class TimeSettings implements ValueObjectInterface, SerializableInterface
 {
     public function __construct(
         private Time $checkInAfter,
@@ -32,23 +32,23 @@ class TimeSettings implements ValueObjectInterface, SerializableDataInterface
         return $this->breakfastPeriod;
     }
 
-    public function toData(): array
+    public function serialize(): array
     {
         return [
             'checkInAfter' => $this->checkInAfter->value(),
             'checkOutBefore' => $this->checkOutBefore->value(),
-            'breakfastPeriod' => $this->breakfastPeriod?->toData()
+            'breakfastPeriod' => $this->breakfastPeriod?->serialize()
         ];
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
-        $breakfastPeriod = $data['breakfastPeriod'] ?? null;
+        $breakfastPeriod = $payload['breakfastPeriod'] ?? null;
 
         return new static(
-            new Time($data['checkInAfter']),
-            new Time($data['checkOutBefore']),
-            $breakfastPeriod !== null ? BreakfastPeriod::fromData($data['breakfastPeriod']) : null
+            new Time($payload['checkInAfter']),
+            new Time($payload['checkOutBefore']),
+            $breakfastPeriod !== null ? BreakfastPeriod::deserialize($payload['breakfastPeriod']) : null
         );
     }
 }

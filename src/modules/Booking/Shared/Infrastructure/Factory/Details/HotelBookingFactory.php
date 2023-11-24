@@ -33,8 +33,8 @@ class HotelBookingFactory implements HotelBookingFactoryInterface
             'nights_count' => $bookingPeriod->nightsCount(),
             'quota_processing_method' => $quotaProcessingMethod,
             'data' => [
-                'hotelInfo' => $hotelInfo->toData(),
-                'period' => $bookingPeriod->toData(),
+                'hotelInfo' => $hotelInfo->serialize(),
+                'period' => $bookingPeriod->serialize(),
             ]
         ]);
 

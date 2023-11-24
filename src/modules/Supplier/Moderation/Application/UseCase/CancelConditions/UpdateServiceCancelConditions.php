@@ -19,7 +19,7 @@ class UpdateServiceCancelConditions implements UseCaseInterface
 
     public function execute(UpdateServiceCancelConditionsRequest $request): void
     {
-        $cancelConditions = CancelConditions::fromData($request->cancelConditions);
+        $cancelConditions = CancelConditions::deserialize($request->cancelConditions);
 
         $this->cancelConditionsRepository->store(
             serviceId: new ServiceId($request->serviceId),

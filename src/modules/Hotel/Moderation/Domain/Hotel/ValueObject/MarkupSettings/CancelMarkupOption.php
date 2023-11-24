@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings;
 
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
-use Module\Shared\Contracts\Support\SerializableDataInterface;
+use Module\Shared\Contracts\Support\SerializableInterface;
 use Module\Shared\ValueObject\Percent;
 
-final class CancelMarkupOption implements ValueObjectInterface, SerializableDataInterface
+final class CancelMarkupOption implements ValueObjectInterface, SerializableInterface
 {
     public function __construct(
         private Percent $percent,
@@ -30,7 +30,7 @@ final class CancelMarkupOption implements ValueObjectInterface, SerializableData
         return $this->cancelPeriodType;
     }
 
-    public function toData(): array
+    public function serialize(): array
     {
         return [
             'percent' => $this->percent->value(),
@@ -38,11 +38,11 @@ final class CancelMarkupOption implements ValueObjectInterface, SerializableData
         ];
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
         return new static(
-            new Percent($data['percent']),
-            CancelPeriodTypeEnum::from($data['cancelPeriodType'])
+            new Percent($payload['percent']),
+            CancelPeriodTypeEnum::from($payload['cancelPeriodType'])
         );
     }
 }
