@@ -49,7 +49,7 @@ return new class extends Migration {
                         'industry_id' => $r->industry_id,
                         'name' => $r->name,
                         'address' => $r->address,
-                        'requisites' => json_encode($bankRequisites->toData()),
+                        'requisites' => json_encode($bankRequisites->serialize()),
                         'created_at' => now(),
                         'updated_at' => now()
                     ]);

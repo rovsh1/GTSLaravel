@@ -11,9 +11,9 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationI
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomInfo;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomPrices;
 use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
-use Module\Shared\Contracts\Support\SerializableDataInterface;
+use Module\Shared\Contracts\Support\SerializableInterface;
 
-final class HotelAccommodation implements SerializableDataInterface
+final class HotelAccommodation implements SerializableInterface
 {
     use HasGuestIdCollectionTrait;
 
@@ -62,27 +62,27 @@ final class HotelAccommodation implements SerializableDataInterface
         $this->prices = $prices;
     }
 
-    public function toData(): array
+    public function serialize(): array
     {
         return [
             'id' => $this->id->value(),
             'bookingId' => $this->bookingId->value(),
-            'roomInfo' => $this->roomInfo->toData(),
-            'guestIds' => $this->guestIds->toData(),
-            'details' => $this->details->toData(),
-            'prices' => $this->prices->toData(),
+            'roomInfo' => $this->roomInfo->serialize(),
+            'guestIds' => $this->guestIds->serialize(),
+            'details' => $this->details->serialize(),
+            'prices' => $this->prices->serialize(),
         ];
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
         return new HotelAccommodation(
-            new AccommodationId($data['id']),
-            new BookingId($data['bookingId']),
-            RoomInfo::fromData($data['roomInfo']),
-            GuestIdCollection::fromData($data['guestIds']),
-            AccommodationDetails::fromData($data['details']),
-            RoomPrices::fromData($data['prices']),
+            new AccommodationId($payload['id']),
+            new BookingId($payload['bookingId']),
+            RoomInfo::deserialize($payload['roomInfo']),
+            GuestIdCollection::deserialize($payload['guestIds']),
+            AccommodationDetails::deserialize($payload['details']),
+            RoomPrices::deserialize($payload['prices']),
         );
     }
 }

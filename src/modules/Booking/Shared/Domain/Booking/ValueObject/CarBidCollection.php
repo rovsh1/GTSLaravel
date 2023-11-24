@@ -29,12 +29,12 @@ class CarBidCollection extends AbstractValueObjectCollection
 
     public function toData(): array
     {
-        return $this->map(fn(CarBid $carBid) => $carBid->toData());
+        return $this->map(fn(CarBid $carBid) => $carBid->serialize());
     }
 
     public static function fromData(array $data): static
     {
-        $carBids = array_map(fn(array $item) => CarBid::fromData($item), $data);
+        $carBids = array_map(fn(array $item) => CarBid::deserialize($item), $data);
 
         return (new static($carBids));
     }

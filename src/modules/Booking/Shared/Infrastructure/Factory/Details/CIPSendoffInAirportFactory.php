@@ -35,7 +35,7 @@ class CIPSendoffInAirportFactory extends AbstractServiceDetailsFactory implement
                 'serviceInfo' => $this->serializeServiceInfo($serviceInfo),
                 'airportId' => $airportId,
                 'flightNumber' => $flightNumber,
-                'guestIds' => $guestIds->toData(),
+                'guestIds' => $guestIds->serialize(),
             ]
         ]);
 

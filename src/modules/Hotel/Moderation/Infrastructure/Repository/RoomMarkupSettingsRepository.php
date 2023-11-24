@@ -29,6 +29,6 @@ class RoomMarkupSettingsRepository implements RoomMarkupSettingsRepositoryInterf
 
     private function deserializeSettings(Room $room): RoomMarkups
     {
-        return RoomMarkups::fromData(json_decode($room->markup_settings, true));
+        return RoomMarkups::deserialize(json_decode($room->markup_settings, true));
     }
 }

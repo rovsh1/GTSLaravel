@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking;
 
 use Module\Shared\Contracts\CanEquate;
-use Module\Shared\Contracts\Support\SerializableDataInterface;
+use Module\Shared\Contracts\Support\SerializableInterface;
 
-final class RoomPriceItem implements SerializableDataInterface, CanEquate
+final class RoomPriceItem implements SerializableInterface, CanEquate
 {
     public function __construct(
         private readonly RoomPriceDayPartCollection $dayParts,
@@ -52,19 +52,19 @@ final class RoomPriceItem implements SerializableDataInterface, CanEquate
         return $this->dayParts;
     }
 
-    public function toData(): array
+    public function serialize(): array
     {
         return [
-            'dayParts' => $this->dayParts->toData(),
+            'dayParts' => $this->dayParts->serialize(),
             'manualDayValue' => $this->manualDayValue
         ];
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
         return new RoomPriceItem(
-            dayParts: RoomPriceDayPartCollection::fromData($data['dayParts']),
-            manualDayValue: $data['manualDayValue'],
+            dayParts: RoomPriceDayPartCollection::deserialize($payload['dayParts']),
+            manualDayValue: $payload['manualDayValue'],
         );
     }
 

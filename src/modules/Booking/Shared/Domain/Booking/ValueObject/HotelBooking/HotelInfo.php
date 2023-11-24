@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking;
 
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
-use Module\Shared\Contracts\Support\SerializableDataInterface;
+use Module\Shared\Contracts\Support\SerializableInterface;
 use Module\Shared\ValueObject\Time;
 
-class HotelInfo implements ValueObjectInterface, SerializableDataInterface
+class HotelInfo implements ValueObjectInterface, SerializableInterface
 {
     public function __construct(
         private readonly int $id,
@@ -37,7 +37,7 @@ class HotelInfo implements ValueObjectInterface, SerializableDataInterface
         return $this->checkOutTime;
     }
 
-    public function toData(): array
+    public function serialize(): array
     {
         return [
             'id' => $this->id,
@@ -47,13 +47,13 @@ class HotelInfo implements ValueObjectInterface, SerializableDataInterface
         ];
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
         return new static(
-            $data['id'],
-            $data['name'],
-            new Time($data['checkInTime']),
-            new Time($data['checkOutTime']),
+            $payload['id'],
+            $payload['name'],
+            new Time($payload['checkInTime']),
+            new Time($payload['checkOutTime']),
         );
     }
 }

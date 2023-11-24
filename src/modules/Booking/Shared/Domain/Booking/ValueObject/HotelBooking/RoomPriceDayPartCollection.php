@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking;
 
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
-use Module\Shared\Contracts\Support\SerializableDataInterface;
+use Module\Shared\Contracts\Support\SerializableInterface;
 use Sdk\Module\Support\AbstractValueObjectCollection;
 
 final class RoomPriceDayPartCollection extends AbstractValueObjectCollection implements ValueObjectInterface,
-                                                                                        SerializableDataInterface
+                                                                                        SerializableInterface
 {
     public function validateItem(mixed $item): void
     {
@@ -18,13 +18,13 @@ final class RoomPriceDayPartCollection extends AbstractValueObjectCollection imp
         }
     }
 
-    public function toData(): array
+    public function serialize(): array
     {
-        return array_map(fn(RoomPriceDayPart $p) => $p->toData(), $this->items);
+        return array_map(fn(RoomPriceDayPart $p) => $p->serialize(), $this->items);
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
-        return new RoomPriceDayPartCollection(array_map(fn(array $r) => RoomPriceDayPart::fromData($r), $data));
+        return new RoomPriceDayPartCollection(array_map(fn(array $r) => RoomPriceDayPart::deserialize($r), $payload));
     }
 }

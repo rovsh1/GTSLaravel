@@ -61,12 +61,12 @@ final class TransferFromRailway implements TransferDetailsInterface
         return $this->railwayStationId;
     }
 
-    public function toData(): array
+    public function serialize(): array
     {
         return [
             'id' => $this->id->value(),
             'bookingId' => $this->bookingId->value(),
-            'serviceInfo' => $this->serviceInfo->toData(),
+            'serviceInfo' => $this->serviceInfo->serialize(),
             'railwayStationId' => $this->railwayStationId->value(),
             'trainNumber' => $this->trainNumber,
             'meetingTablet' => $this->meetingTablet,
@@ -75,17 +75,17 @@ final class TransferFromRailway implements TransferDetailsInterface
         ];
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
         return new TransferFromRailway(
-            new DetailsId($data['id']),
-            new BookingId($data['bookingId']),
-            ServiceInfo::fromData($data['serviceInfo']),
-            new RailwayStationId($data['railwayStationId']),
-            $data['trainNumber'],
-            $data['meetingTablet'],
-            $data['arrivalDate'] ? DateTimeImmutableFactory::createFromTimestamp($data['arrivalDate']) : null,
-            CarBidCollection::fromData($data['guestIds'])
+            new DetailsId($payload['id']),
+            new BookingId($payload['bookingId']),
+            ServiceInfo::deserialize($payload['serviceInfo']),
+            new RailwayStationId($payload['railwayStationId']),
+            $payload['trainNumber'],
+            $payload['meetingTablet'],
+            $payload['arrivalDate'] ? DateTimeImmutableFactory::createFromTimestamp($payload['arrivalDate']) : null,
+            CarBidCollection::fromData($payload['guestIds'])
         );
     }
 }

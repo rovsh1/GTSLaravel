@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Domain\Booking\ValueObject;
 
 use Module\Booking\Shared\Domain\Shared\ValueObject\CreatorId;
-use Module\Shared\Contracts\Support\SerializableDataInterface;
+use Module\Shared\Contracts\Support\SerializableInterface;
 use Module\Shared\Enum\SourceEnum;
 
-class Context implements SerializableDataInterface
+class Context implements SerializableInterface
 {
     public function __construct(
         private readonly SourceEnum $source,
@@ -26,7 +26,7 @@ class Context implements SerializableDataInterface
         return $this->creatorId;
     }
 
-    public function toData(): array
+    public function serialize(): array
     {
         return [
             'source' => $this->source->value,
@@ -34,11 +34,11 @@ class Context implements SerializableDataInterface
         ];
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
         return new Context(
-            SourceEnum::from($data['source']),
-            new CreatorId($data['creatorId'])
+            SourceEnum::from($payload['source']),
+            new CreatorId($payload['creatorId'])
         );
     }
 }

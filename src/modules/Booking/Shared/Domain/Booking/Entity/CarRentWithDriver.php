@@ -56,31 +56,31 @@ final class CarRentWithDriver implements TransferDetailsInterface
         return $this->serviceInfo;
     }
 
-    public function toData(): array
+    public function serialize(): array
     {
         return [
             'id' => $this->id->value(),
             'bookingId' => $this->bookingId->value(),
-            'serviceInfo' => $this->serviceInfo->toData(),
+            'serviceInfo' => $this->serviceInfo->serialize(),
             'cityId' => $this->cityId->value(),
             'meetingAddress' => $this->meetingAddress,
             'meetingTablet' => $this->meetingTablet,
-            'bookingPeriod' => $this->bookingPeriod?->toData(),
+            'bookingPeriod' => $this->bookingPeriod?->serialize(),
             'carBids' => $this->carBids->toData(),
         ];
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
         return new CarRentWithDriver(
-            new DetailsId($data['id']),
-            new BookingId($data['bookingId']),
-            ServiceInfo::fromData($data['serviceInfo']),
-            new CityId($data['cityId']),
-            $data['meetingAddress'],
-            $data['meetingTablet'],
-            $data['bookingPeriod'] ? BookingPeriod::fromData($data['bookingPeriod']) : null,
-            CarBidCollection::fromData($data['guestIds'])
+            new DetailsId($payload['id']),
+            new BookingId($payload['bookingId']),
+            ServiceInfo::deserialize($payload['serviceInfo']),
+            new CityId($payload['cityId']),
+            $payload['meetingAddress'],
+            $payload['meetingTablet'],
+            $payload['bookingPeriod'] ? BookingPeriod::deserialize($payload['bookingPeriod']) : null,
+            CarBidCollection::fromData($payload['guestIds'])
         );
     }
 

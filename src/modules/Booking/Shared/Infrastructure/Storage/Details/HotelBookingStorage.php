@@ -16,9 +16,9 @@ class HotelBookingStorage
             'date_end' => $details->bookingPeriod()->dateTo(),
             'nights_count' => $details->bookingPeriod()->nightsCount(),
             'data' => [
-                'hotelInfo' => $details->hotelInfo()->toData(),
-                'period' => $details->bookingPeriod()->toData(),
-                'externalNumber' => $details->externalNumber()?->toData(),
+                'hotelInfo' => $details->hotelInfo()->serialize(),
+                'period' => $details->bookingPeriod()->serialize(),
+                'externalNumber' => $details->externalNumber()?->serialize(),
             ]
         ]);
     }

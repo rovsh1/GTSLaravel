@@ -72,27 +72,27 @@ final class HotelBooking implements DetailsInterface
         return $this->quotaProcessingMethod;
     }
 
-    public function toData(): array
+    public function serialize(): array
     {
         return [
             'id' => $this->id->value(),
             'bookingId' => $this->bookingId->value(),
-            'hotelInfo' => $this->hotelInfo->toData(),
-            'bookingPeriod' => $this->bookingPeriod->toData(),
-            'externalNumber' => $this->externalNumber?->toData(),
+            'hotelInfo' => $this->hotelInfo->serialize(),
+            'bookingPeriod' => $this->bookingPeriod->serialize(),
+            'externalNumber' => $this->externalNumber?->serialize(),
             'quotaProcessingMethod' => $this->quotaProcessingMethod->value,
         ];
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
         return new HotelBooking(
-            new DetailsId($data['id']),
-            new BookingId($data['bookingId']),
-            HotelInfo::fromData($data['hotelInfo']),
-            BookingPeriod::fromData($data['bookingPeriod']),
-            $data['externalNumber'] ? ExternalNumber::fromData($data['externalNumber']) : null,
-            QuotaProcessingMethodEnum::from($data['quotaProcessingMethod'])
+            new DetailsId($payload['id']),
+            new BookingId($payload['bookingId']),
+            HotelInfo::deserialize($payload['hotelInfo']),
+            BookingPeriod::deserialize($payload['bookingPeriod']),
+            $payload['externalNumber'] ? ExternalNumber::deserialize($payload['externalNumber']) : null,
+            QuotaProcessingMethodEnum::from($payload['quotaProcessingMethod'])
         );
     }
 

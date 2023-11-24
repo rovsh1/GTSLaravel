@@ -34,16 +34,16 @@ class CarBidPrices
     public function toData(): array
     {
         return [
-            'supplierPrice' => $this->supplierPrice->toData(),
-            'clientPrice' => $this->clientPrice->toData(),
+            'supplierPrice' => $this->supplierPrice->serialize(),
+            'clientPrice' => $this->clientPrice->serialize(),
         ];
     }
 
     public static function fromData(array $data): static
     {
         return new static(
-            supplierPrice: CarBidPriceItem::fromData($data['supplierPrice']),
-            clientPrice: CarBidPriceItem::fromData($data['clientPrice']),
+            supplierPrice: CarBidPriceItem::deserialize($data['supplierPrice']),
+            clientPrice: CarBidPriceItem::deserialize($data['clientPrice']),
         );
     }
 

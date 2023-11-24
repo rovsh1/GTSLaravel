@@ -30,7 +30,7 @@ class CarCancelConditionsRepository implements CarCancelConditionsRepositoryInte
             return null;
         }
 
-        return CancelConditions::fromData($conditions->data);
+        return CancelConditions::deserialize($conditions->data);
     }
 
     public function store(
@@ -41,7 +41,7 @@ class CarCancelConditionsRepository implements CarCancelConditionsRepositoryInte
     ): bool {
         return (bool)CarCancelConditions::updateOrCreate(
             ['season_id' => $seasonId->value(), 'service_id' => $serviceId->value(), 'car_id' => $carId->value()],
-            ['season_id' => $seasonId->value(), 'service_id' => $serviceId->value(), 'car_id' => $carId->value(), 'data' => $cancelConditions->toData()]
+            ['season_id' => $seasonId->value(), 'service_id' => $serviceId->value(), 'car_id' => $carId->value(), 'data' => $cancelConditions->serialize()]
         );
     }
 }

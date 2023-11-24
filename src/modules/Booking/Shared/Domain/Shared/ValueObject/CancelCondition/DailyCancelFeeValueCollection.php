@@ -13,12 +13,12 @@ final class DailyCancelFeeValueCollection extends AbstractValueObjectCollection
 {
     public function toData(): array
     {
-        return $this->map(fn(DailyCancelFeeValue $dailyMarkupPercent) => $dailyMarkupPercent->toData());
+        return $this->map(fn(DailyCancelFeeValue $dailyMarkupPercent) => $dailyMarkupPercent->serialize());
     }
 
     public static function fromData(array $data): static
     {
-        $items = array_map(fn(array $item) => DailyCancelFeeValue::fromData($item), $data);
+        $items = array_map(fn(array $item) => DailyCancelFeeValue::deserialize($item), $data);
 
         return (new static($items));
     }

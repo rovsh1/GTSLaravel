@@ -7,10 +7,10 @@ use Carbon\CarbonPeriodImmutable;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Module\Shared\Contracts\CanEquate;
-use Module\Shared\Contracts\Support\SerializableDataInterface;
+use Module\Shared\Contracts\Support\SerializableInterface;
 use Module\Shared\Support\DateTimeImmutableFactory;
 
-final class BookingPeriod implements CanEquate, SerializableDataInterface
+final class BookingPeriod implements CanEquate, SerializableInterface
 {
     private int $daysCount;
 
@@ -64,7 +64,7 @@ final class BookingPeriod implements CanEquate, SerializableDataInterface
             && $this->daysCount === $b->daysCount;
     }
 
-    public function toData(): array
+    public function serialize(): array
     {
         return [
             'dateFrom' => $this->dateFrom->getTimestamp(),
@@ -72,11 +72,11 @@ final class BookingPeriod implements CanEquate, SerializableDataInterface
         ];
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
         return new BookingPeriod(
-            DateTimeImmutableFactory::createFromTimestamp($data['dateFrom']),
-            DateTimeImmutableFactory::createFromTimestamp($data['dateTo']),
+            DateTimeImmutableFactory::createFromTimestamp($payload['dateFrom']),
+            DateTimeImmutableFactory::createFromTimestamp($payload['dateTo']),
         );
     }
 }

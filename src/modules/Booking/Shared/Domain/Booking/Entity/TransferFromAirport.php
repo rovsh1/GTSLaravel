@@ -61,12 +61,12 @@ final class TransferFromAirport implements TransferDetailsInterface
         return $this->airportId;
     }
 
-    public function toData(): array
+    public function serialize(): array
     {
         return [
             'id' => $this->id->value(),
             'bookingId' => $this->bookingId->value(),
-            'serviceInfo' => $this->serviceInfo->toData(),
+            'serviceInfo' => $this->serviceInfo->serialize(),
             'airportId' => $this->airportId->value(),
             'flightNumber' => $this->flightNumber,
             'arrivalDate' => $this->arrivalDate?->getTimestamp(),
@@ -75,17 +75,17 @@ final class TransferFromAirport implements TransferDetailsInterface
         ];
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
         return new TransferFromAirport(
-            new DetailsId($data['id']),
-            new BookingId($data['bookingId']),
-            ServiceInfo::fromData($data['serviceInfo']),
-            new AirportId($data['airportId']),
-            $data['flightNumber'],
-            $data['meetingTablet'],
-            $data['arrivalDate'] ? DateTimeImmutableFactory::createFromTimestamp($data['arrivalDate']) : null,
-            CarBidCollection::fromData($data['guestIds'])
+            new DetailsId($payload['id']),
+            new BookingId($payload['bookingId']),
+            ServiceInfo::deserialize($payload['serviceInfo']),
+            new AirportId($payload['airportId']),
+            $payload['flightNumber'],
+            $payload['meetingTablet'],
+            $payload['arrivalDate'] ? DateTimeImmutableFactory::createFromTimestamp($payload['arrivalDate']) : null,
+            CarBidCollection::fromData($payload['guestIds'])
         );
     }
 }

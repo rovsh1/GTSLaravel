@@ -2,9 +2,9 @@
 
 namespace Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking;
 
-use Module\Shared\Contracts\Support\SerializableDataInterface;
+use Module\Shared\Contracts\Support\SerializableInterface;
 
-final class RoomPrices implements SerializableDataInterface
+final class RoomPrices implements SerializableInterface
 {
     public static function buildEmpty(): RoomPrices
     {
@@ -30,19 +30,19 @@ final class RoomPrices implements SerializableDataInterface
         return $this->clientPrice;
     }
 
-    public function toData(): array
+    public function serialize(): array
     {
         return [
-            'supplierPrice' => $this->supplierPrice->toData(),
-            'clientPrice' => $this->clientPrice->toData(),
+            'supplierPrice' => $this->supplierPrice->serialize(),
+            'clientPrice' => $this->clientPrice->serialize(),
         ];
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
         return new RoomPrices(
-            supplierPrice: RoomPriceItem::fromData($data['supplierPrice']),
-            clientPrice: RoomPriceItem::fromData($data['clientPrice']),
+            supplierPrice: RoomPriceItem::deserialize($payload['supplierPrice']),
+            clientPrice: RoomPriceItem::deserialize($payload['clientPrice']),
         );
     }
 }

@@ -8,9 +8,9 @@ use Carbon\CarbonImmutable;
 use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\CancelFeeValue;
 use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\DailyCancelFeeValueCollection;
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
-use Module\Shared\Contracts\Support\SerializableDataInterface;
+use Module\Shared\Contracts\Support\SerializableInterface;
 
-class CancelConditions implements ValueObjectInterface, SerializableDataInterface
+class CancelConditions implements ValueObjectInterface, SerializableInterface
 {
     public function __construct(
         private readonly CancelFeeValue $noCheckInMarkup,
@@ -33,22 +33,22 @@ class CancelConditions implements ValueObjectInterface, SerializableDataInterfac
         return $this->dailyMarkups;
     }
 
-    public function toData(): array
+    public function serialize(): array
     {
         return [
             'cancelNoFeeDate' => $this->cancelNoFeeDate?->getTimestamp(),
-            'noCheckInMarkup' => $this->noCheckInMarkup->toData(),
+            'noCheckInMarkup' => $this->noCheckInMarkup->serialize(),
             'dailyMarkups' => $this->dailyMarkups->toData()
         ];
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
-        $cancelNoFeeDate = $data['cancelNoFeeDate'] ?? null;
+        $cancelNoFeeDate = $payload['cancelNoFeeDate'] ?? null;
 
         return new static(
-            CancelFeeValue::fromData($data['noCheckInMarkup']),
-            DailyCancelFeeValueCollection::fromData($data['dailyMarkups']),
+            CancelFeeValue::deserialize($payload['noCheckInMarkup']),
+            DailyCancelFeeValueCollection::fromData($payload['dailyMarkups']),
             $cancelNoFeeDate !== null ? CarbonImmutable::createFromTimestamp($cancelNoFeeDate) : null,
         );
     }

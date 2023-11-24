@@ -6,9 +6,9 @@ namespace Module\Shared\ValueObject;
 
 use Module\Shared\Contracts\CanEquate;
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
-use Module\Shared\Contracts\Support\SerializableDataInterface;
+use Module\Shared\Contracts\Support\SerializableInterface;
 
-class TimePeriod implements ValueObjectInterface, SerializableDataInterface, CanEquate
+class TimePeriod implements ValueObjectInterface, SerializableInterface, CanEquate
 {
     private readonly string $from;
     private readonly string $to;
@@ -32,7 +32,7 @@ class TimePeriod implements ValueObjectInterface, SerializableDataInterface, Can
         return $this->to;
     }
 
-    public function toData(): array
+    public function serialize(): array
     {
         return [
             'from' => $this->from,
@@ -40,9 +40,9 @@ class TimePeriod implements ValueObjectInterface, SerializableDataInterface, Can
         ];
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
-        return new static($data['from'], $data['to']);
+        return new static($payload['from'], $payload['to']);
     }
 
     /**

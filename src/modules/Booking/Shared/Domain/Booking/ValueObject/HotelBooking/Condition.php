@@ -6,14 +6,14 @@ namespace Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking;
 
 use Module\Shared\Contracts\CanEquate;
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
-use Module\Shared\Contracts\Support\SerializableDataInterface;
+use Module\Shared\Contracts\Support\SerializableInterface;
 use Module\Shared\ValueObject\Percent;
 use Module\Shared\ValueObject\TimePeriod;
 
 /**
  * @see \Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings\Condition
  */
-final class Condition implements ValueObjectInterface, SerializableDataInterface, CanEquate
+final class Condition implements ValueObjectInterface, SerializableInterface, CanEquate
 {
     public function __construct(
         private TimePeriod $timePeriod,
@@ -40,19 +40,19 @@ final class Condition implements ValueObjectInterface, SerializableDataInterface
         $this->priceMarkup = $priceMarkup;
     }
 
-    public function toData(): array
+    public function serialize(): array
     {
         return [
-            'timePeriod' => $this->timePeriod->toData(),
+            'timePeriod' => $this->timePeriod->serialize(),
             'priceMarkup' => $this->priceMarkup->value()
         ];
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
         return new static(
-            TimePeriod::fromData($data['timePeriod']),
-            new Percent($data['priceMarkup'])
+            TimePeriod::deserialize($payload['timePeriod']),
+            new Percent($payload['priceMarkup'])
         );
     }
 

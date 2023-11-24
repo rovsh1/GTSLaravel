@@ -118,9 +118,9 @@ class AccommodationRepository implements AccommodationRepositoryInterface
         RoomPrices $price
     ): array {
         return [
-            'roomInfo' => $roomInfo->toData(),
-            'details' => $details->toData(),
-            'price' => $price->toData()
+            'roomInfo' => $roomInfo->serialize(),
+            'details' => $details->serialize(),
+            'price' => $price->serialize()
         ];
     }
 
@@ -131,10 +131,10 @@ class AccommodationRepository implements AccommodationRepositoryInterface
         $accommodation = new HotelAccommodation(
             id: new AccommodationId($model->id),
             bookingId: new BookingId($model->booking_id),
-            roomInfo: RoomInfo::fromData($data['roomInfo']),
-            guestIds: GuestIdCollection::fromData($model->guest_ids),
-            details: AccommodationDetails::fromData($data['details']),
-            prices: RoomPrices::fromData($data['price'])
+            roomInfo: RoomInfo::deserialize($data['roomInfo']),
+            guestIds: GuestIdCollection::deserialize($model->guest_ids),
+            details: AccommodationDetails::deserialize($data['details']),
+            prices: RoomPrices::deserialize($data['price'])
         );
 
         $this->instances->add($accommodation->id(), $accommodation);

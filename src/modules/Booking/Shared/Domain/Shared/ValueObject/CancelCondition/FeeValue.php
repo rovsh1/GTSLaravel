@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition;
 
-use Module\Shared\Contracts\Support\SerializableDataInterface;
+use Module\Shared\Contracts\Support\SerializableInterface;
 use Module\Shared\Enum\Pricing\ValueTypeEnum;
 
-class FeeValue implements SerializableDataInterface
+class FeeValue implements SerializableInterface
 {
     public function __construct(
         private readonly int $value,
@@ -34,7 +34,7 @@ class FeeValue implements SerializableDataInterface
         return $this->type;
     }
 
-    public function toData(): array
+    public function serialize(): array
     {
         return [
             'value' => $this->value,
@@ -42,11 +42,11 @@ class FeeValue implements SerializableDataInterface
         ];
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
         return new static(
-            $data['value'],
-            ValueTypeEnum::from($data['type']),
+            $payload['value'],
+            ValueTypeEnum::from($payload['type']),
         );
     }
 }

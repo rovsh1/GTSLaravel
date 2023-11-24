@@ -6,20 +6,20 @@ namespace Module\Supplier\Moderation\Domain\Supplier\ValueObject;
 
 use Illuminate\Support\Collection;
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
-use Module\Shared\Contracts\Support\SerializableDataInterface;
+use Module\Shared\Contracts\Support\SerializableInterface;
 
 /**
  * @extends Collection<int, DailyMarkupOption>
  */
-final class DailyMarkupCollection extends Collection implements ValueObjectInterface, SerializableDataInterface
+final class DailyMarkupCollection extends Collection implements ValueObjectInterface, SerializableInterface
 {
-    public function toData(): array
+    public function serialize(): array
     {
-        return $this->map(fn(DailyMarkupOption $dailyMarkupPercent) => $dailyMarkupPercent->toData())->values()->all();
+        return $this->map(fn(DailyMarkupOption $dailyMarkupPercent) => $dailyMarkupPercent->serialize())->values()->all();
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
-        return (new static($data))->map(fn(array $item) => DailyMarkupOption::fromData($item));
+        return (new static($payload))->map(fn(array $item) => DailyMarkupOption::deserialize($item));
     }
 }

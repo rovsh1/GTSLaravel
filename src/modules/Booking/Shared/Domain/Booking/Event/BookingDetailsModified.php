@@ -26,7 +26,7 @@ final class BookingDetailsModified implements IntegrationEventInterface
         return [
             'bookingId' => $this->booking->id()->value(),
             'dataBefore' => $this->dataBefore,
-            'dataAfter' => $this->details->toData()
+            'dataAfter' => $this->details->serialize()
         ];
     }
 }

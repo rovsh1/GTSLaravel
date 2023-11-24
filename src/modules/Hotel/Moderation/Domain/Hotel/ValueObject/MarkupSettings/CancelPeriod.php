@@ -6,9 +6,9 @@ namespace Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings;
 
 use Carbon\CarbonPeriodImmutable;
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
-use Module\Shared\Contracts\Support\SerializableDataInterface;
+use Module\Shared\Contracts\Support\SerializableInterface;
 
-final class CancelPeriod implements ValueObjectInterface, SerializableDataInterface
+final class CancelPeriod implements ValueObjectInterface, SerializableInterface
 {
     public function __construct(
         private CarbonPeriodImmutable $period,
@@ -41,21 +41,21 @@ final class CancelPeriod implements ValueObjectInterface, SerializableDataInterf
         return $this->dailyMarkups;
     }
 
-    public function toData(): array
+    public function serialize(): array
     {
         return [
             'period' => $this->period->toIso8601String(),
-            'noCheckInMarkup' => $this->noCheckInMarkup->toData(),
-            'dailyMarkups' => $this->dailyMarkups->toData(),
+            'noCheckInMarkup' => $this->noCheckInMarkup->serialize(),
+            'dailyMarkups' => $this->dailyMarkups->serialize(),
         ];
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
         return new static(
-            CarbonPeriodImmutable::createFromIso($data['period']),
-            CancelMarkupOption::fromData($data['noCheckInMarkup']),
-            DailyMarkupCollection::fromData($data['dailyMarkups']),
+            CarbonPeriodImmutable::createFromIso($payload['period']),
+            CancelMarkupOption::deserialize($payload['noCheckInMarkup']),
+            DailyMarkupCollection::deserialize($payload['dailyMarkups']),
         );
     }
 }

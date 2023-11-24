@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition;
 
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
-use Module\Shared\Contracts\Support\SerializableDataInterface;
+use Module\Shared\Contracts\Support\SerializableInterface;
 use Module\Shared\ValueObject\Percent;
 
-final class CancelFeeValue implements ValueObjectInterface, SerializableDataInterface
+final class CancelFeeValue implements ValueObjectInterface, SerializableInterface
 {
     public function __construct(
         private readonly FeeValue $value,
@@ -25,19 +25,19 @@ final class CancelFeeValue implements ValueObjectInterface, SerializableDataInte
         return $this->cancelPeriodType;
     }
 
-    public function toData(): array
+    public function serialize(): array
     {
         return [
-            'value' => $this->value->toData(),
+            'value' => $this->value->serialize(),
             'cancelPeriodType' => $this->cancelPeriodType->value
         ];
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
         return new static(
-            FeeValue::fromData($data['value']),
-            CancelFeePeriodTypeEnum::from($data['cancelPeriodType'])
+            FeeValue::deserialize($payload['value']),
+            CancelFeePeriodTypeEnum::from($payload['cancelPeriodType'])
         );
     }
 }
