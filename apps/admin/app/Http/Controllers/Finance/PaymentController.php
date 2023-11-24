@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace App\Admin\Http\Controllers\Finance;
 
 use App\Admin\Models\Reference\PaymentMethod;
+use App\Admin\Support\Facades\Finance\PaymentAdapter;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
+use Illuminate\Http\JsonResponse;
 use Module\Client\Payment\Domain\Payment\ValueObject\PaymentStatusEnum;
 
 class PaymentController extends AbstractPrototypeController
@@ -17,6 +19,13 @@ class PaymentController extends AbstractPrototypeController
     protected function getPrototypeKey(): string
     {
         return 'payment';
+    }
+
+    public function get(int $id): JsonResponse
+    {
+        $payment = PaymentAdapter::get($id);
+
+        return response()->json($payment);
     }
 
     protected function gridFactory(): GridContract
