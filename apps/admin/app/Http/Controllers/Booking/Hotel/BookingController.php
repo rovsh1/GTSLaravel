@@ -100,7 +100,7 @@ class BookingController extends Controller
         $currency = $data['currency'] ? CurrencyEnum::from($data['currency']) : null;
         if ($orderId !== null && $currency === null) {
             $order = OrderAdapter::getOrder($orderId);
-            $currency = CurrencyEnum::from($order->currency->value);
+            $currency = CurrencyEnum::from($order->clientPrice->currency->value);
         }
         if ($currency === null) {
             $client = Client::find($data['client_id']);
@@ -335,7 +335,7 @@ class BookingController extends Controller
             'quota_processing_method' => $details->quotaProcessingMethod->value,
             'manager_id' => $manager->id,
             'order_id' => $booking->orderId,
-            'currency' => $order->currency->value,
+            'currency' => $order->clientPrice->currency->value,
             'hotel_id' => $hotelId,
             'city_id' => $cityId,
             'client_id' => $order->clientId,

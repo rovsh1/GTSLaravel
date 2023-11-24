@@ -104,7 +104,7 @@ class BookingController extends Controller
         $currency = $data['currency'] ? CurrencyEnum::from($data['currency']) : null;
         if ($orderId !== null && $currency === null) {
             $order = OrderAdapter::getOrder($orderId);
-            $currency = CurrencyEnum::from($order->currency->value);
+            $currency = CurrencyEnum::from($order->clientPrice->currency->value);
         }
         if ($currency === null) {
             $client = Client::find($data['client_id']);
@@ -191,6 +191,7 @@ class BookingController extends Controller
                 'client' => $client,
                 'order' => $order,
                 'cancelConditions' => $booking->cancelConditions,
+                'isOtherServiceBooking' => $booking->serviceType->id === ServiceTypeEnum::OTHER_SERVICE->value,
                 'currencies' => Currency::get(),
                 'manager' => $this->administratorRepository->get($id),
                 'creator' => Administrator::find($booking->creatorId),

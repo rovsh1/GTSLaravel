@@ -28,9 +28,10 @@ if (isInitialDataExists('view-initial-data-service-booking')) {
   initialDataKey = 'view-initial-data-service-booking'
 }
 
-const { bookingID, manager, hotelID } = requestInitialData(initialDataKey, z.object({
+const { bookingID, manager, hotelID, isOtherServiceBooking } = requestInitialData(initialDataKey, z.object({
   hotelID: z.number().optional(),
   bookingID: z.number(),
+  isOtherServiceBooking: z.boolean(),
   manager: z.object({
     id: z.number(),
   }),
@@ -129,6 +130,7 @@ export const useBookingStore = defineStore('booking', () => {
   return {
     booking,
     isHotelBooking,
+    isOtherServiceBooking,
     bookingManagerId,
     fetchBooking,
     markupSettings,
