@@ -7,11 +7,11 @@ namespace Module\Booking\Moderation\Application\UseCase;
 use Module\Booking\Moderation\Application\Dto\AvailableActionsDto;
 use Module\Booking\Moderation\Application\Service\EditRules;
 use Module\Booking\Moderation\Domain\Booking\Service\StatusRules\StatusTransitionsFactory;
-use Module\Booking\Requesting\Domain\BookingRequest\Service\RequestRules;
 use Module\Booking\Shared\Application\Dto\StatusDto;
 use Module\Booking\Shared\Application\Factory\BookingStatusDtoFactory;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Service\RequestingRules;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Shared\Enum\Booking\BookingStatusEnum;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
@@ -21,7 +21,7 @@ class GetAvailableActions implements UseCaseInterface
     public function __construct(
         private readonly StatusTransitionsFactory $statusTransitionsFactory,
         private readonly EditRules $editRules,
-        private readonly RequestRules $requestRules,
+        private readonly RequestingRules $requestRules,
         private readonly BookingRepositoryInterface $repository,
         private readonly BookingStatusDtoFactory $statusDtoFactory,
     ) {

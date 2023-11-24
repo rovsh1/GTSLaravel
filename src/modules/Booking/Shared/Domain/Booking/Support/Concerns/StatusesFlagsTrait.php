@@ -26,7 +26,7 @@ trait StatusesFlagsTrait
 
     public function inModeration(): bool
     {
-        return $this->isCancelled()
+        return !$this->isCancelled()
             && !$this->isConfirmed()
             && !$this->isDeleted();
     }

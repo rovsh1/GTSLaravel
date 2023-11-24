@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Requesting\Domain\BookingRequest\Service;
+namespace Module\Booking\Shared\Domain\Booking\Service;
 
 use Module\Booking\Requesting\Domain\BookingRequest\ValueObject\RequestTypeEnum;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Shared\Enum\Booking\BookingStatusEnum;
 use Module\Shared\Enum\ServiceTypeEnum;
 
-final class RequestRules
+final class RequestingRules
 {
     private Booking $booking;
 

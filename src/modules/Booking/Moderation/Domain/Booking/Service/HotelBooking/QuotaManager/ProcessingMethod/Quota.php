@@ -34,7 +34,7 @@ class Quota implements QuotaProcessingMethodInterface
             );
         } elseif ($this->isBookingCancelled($booking)) {
             $this->quotaAdapter->cancel($booking->id()->value());
-        } else {//if ($this->isEditingBooking($booking)) {
+        } else {
             $this->quotaAdapter->reserve(
                 new ReserveRequestDto(
                     bookingId: $booking->id()->value(),
@@ -43,15 +43,6 @@ class Quota implements QuotaProcessingMethodInterface
                 )
             );
         }
-    }
-
-    //@todo лишнее?
-    private function isEditingBooking(Booking $booking): bool
-    {
-        return in_array($booking->status(), [
-            BookingStatusEnum::CREATED,
-            BookingStatusEnum::PROCESSING,
-        ]);
     }
 
     private function isBookingConfirmed(Booking $booking): bool

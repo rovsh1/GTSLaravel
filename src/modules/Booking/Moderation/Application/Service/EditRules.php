@@ -15,26 +15,14 @@ final class EditRules
         $this->booking = $booking;
     }
 
-//    /**
-//     * @return BookingStatusEnum[]
-//     */
-//    public static function getCompletedStatuses(): array
-//    {
-//        return [
-//            BookingStatusEnum::CONFIRMED,
-//            BookingStatusEnum::CANCELLED_FEE,
-//            BookingStatusEnum::CANCELLED_NO_FEE
-//        ];
-//    }
-
     public function isEditable(): bool
     {
         return in_array($this->booking->status(), [
             BookingStatusEnum::CREATED,
             BookingStatusEnum::PROCESSING,
+            BookingStatusEnum::WAITING_PROCESSING,
+            BookingStatusEnum::NOT_CONFIRMED,
         ]);
-        //@todo зачем тут реквесты?
-        //|| ($this->requestRules->isRequestableStatus($status) && $status !== BookingStatusEnum::CONFIRMED);
     }
 
     public function canEditExternalNumber(): bool
