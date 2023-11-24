@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Application\Dto;
 
-use Sdk\Module\Foundation\Support\Dto\Dto;
-
-class StatusDto extends Dto
+final class StatusDto
 {
     public function __construct(
         public readonly int $id,

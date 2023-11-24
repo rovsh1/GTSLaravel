@@ -8,9 +8,8 @@ use Carbon\CarbonImmutable;
 use Module\Booking\Shared\Application\Dto\StatusDto;
 use Module\Shared\Dto\MoneyDto;
 use Module\Shared\Enum\SourceEnum;
-use Sdk\Module\Foundation\Support\Dto\Dto;
 
-class OrderDto extends Dto
+class OrderDto
 {
     public function __construct(
         public readonly int $id,

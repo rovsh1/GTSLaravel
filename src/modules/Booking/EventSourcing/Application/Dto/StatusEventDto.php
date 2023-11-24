@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Module\Booking\EventSourcing\Application\Dto;
 
 use Carbon\CarbonInterface;
-use Sdk\Module\Foundation\Support\Dto\Dto;
 
-final class StatusEventDto extends Dto
+final class StatusEventDto
 {
     public function __construct(
         public readonly string $event,

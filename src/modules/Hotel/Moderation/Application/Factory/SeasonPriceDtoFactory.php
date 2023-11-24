@@ -13,11 +13,11 @@ class SeasonPriceDtoFactory
     {
         return new SeasonPriceDto(
             seasonId: $price->season_id,
-            price: (float)$price->price,
+            roomId: $price->room_id,
             rateId: $price->rate_id,
             guestsCount: $price->guests_count,
-            roomId: $price->room_id,
             isResident: (bool)$price->is_resident,
+            price: (float)$price->price,
             hasDatePrices: $price->has_date_prices
         );
     }

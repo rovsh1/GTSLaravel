@@ -8,24 +8,17 @@ use Module\Client\Moderation\Domain\Entity\Legal;
 use Module\Client\Moderation\Domain\ValueObject\BankRequisites;
 use Module\Client\Moderation\Domain\ValueObject\IndustryId;
 use Module\Client\Moderation\Domain\ValueObject\LegalId;
-use Module\Shared\Contracts\Service\SerializerInterface;
 use Sdk\Module\Foundation\Support\EntityFactory\AbstractEntityFactory;
 
 class LegalFactory extends AbstractEntityFactory
 {
     protected string $entity = Legal::class;
 
-    public function __construct(
-        private readonly SerializerInterface $serializer
-    ) {
-        parent::__construct();
-    }
-
     protected function fromArray(array $data): mixed
     {
         $bankRequisites = $data['requisites'] ?? null;
         if ($bankRequisites !== null) {
-            $bankRequisites = $this->serializer->deserialize(BankRequisites::class, $bankRequisites);
+            $bankRequisites = BankRequisites::fromData(json_decode($bankRequisites, true));
         }
         $industryId = $data['industry_id'] ?? null;
 

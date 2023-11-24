@@ -2,14 +2,14 @@
 
 namespace Module\Support\MailManager\Domain\Entity;
 
-use Module\Shared\Contracts\Support\Serializable;
+use Module\Shared\Contracts\Support\SerializableInterface;
 use Module\Support\MailManager\Domain\ValueObject\AddressList;
 use Module\Support\MailManager\Domain\ValueObject\Attachments;
 use Module\Support\MailManager\Domain\ValueObject\MailBody;
 use Module\Support\MailManager\Domain\ValueObject\MailId;
 use Module\Support\MailManager\Domain\ValueObject\QueueMailStatusEnum;
 
-final class Mail implements Serializable
+final class Mail implements SerializableInterface
 {
     private AddressList $from;
 
