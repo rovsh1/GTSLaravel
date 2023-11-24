@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\Dto\Details\CancelConditions;
 
-use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\DailyMarkupOption;
+use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\DailyCancelFeeValue;
 use Module\Shared\Contracts\Domain\EntityInterface;
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Module\Shared\Support\Dto\AbstractDomainBasedDto;
@@ -17,10 +17,10 @@ class DailyMarkupDto extends AbstractDomainBasedDto
         public readonly int $daysCount
     ) {}
 
-    public static function fromDomain(EntityInterface|ValueObjectInterface|DailyMarkupOption $entity): static
+    public static function fromDomain(EntityInterface|ValueObjectInterface|DailyCancelFeeValue $entity): static
     {
         return new static(
-            $entity->percent()->value(),
+            $entity->value()->value(),
             $entity->cancelPeriodType()->value,
             $entity->daysCount()
         );

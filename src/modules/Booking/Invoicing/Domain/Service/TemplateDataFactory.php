@@ -42,13 +42,16 @@ use Module\Booking\Shared\Domain\Order\ValueObject\ClientId;
 use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
 use Module\Booking\Shared\Domain\Shared\Adapter\AdministratorAdapterInterface;
 use Module\Booking\Shared\Domain\Shared\Adapter\ClientAdapterInterface;
-use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\CancelPeriodTypeEnum;
-use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\DailyMarkupOption;
+use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\CancelFeePeriodTypeEnum;
+use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\DailyCancelFeeValue;
+use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\FeeValue;
 use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Shared\Contracts\Adapter\CountryAdapterInterface;
 use Module\Shared\Contracts\Service\CompanyRequisitesInterface;
+use Module\Shared\Enum\CurrencyEnum;
 use Module\Shared\Enum\GenderEnum;
 use Module\Shared\Enum\Order\OrderStatusEnum;
+use Module\Shared\Enum\Pricing\ValueTypeEnum;
 
 class TemplateDataFactory
 {
@@ -175,15 +178,16 @@ class TemplateDataFactory
         $cancelConditions = $booking->cancelConditions();
         if ($cancelConditions !== null) {
             $dailyMarkupsDto = $cancelConditions->dailyMarkups()->map(
-                fn(DailyMarkupOption $markupOption) => new DailyMarkupDto(
-                    $markupOption->percent()->value(),
+                fn(DailyCancelFeeValue $markupOption) => new DailyMarkupDto(
+                    $markupOption->value()->value(),
+                    $markupOption->value()->type(),
                     $markupOption->daysCount(),
                     $this->getHumanCancelPeriodType($markupOption->cancelPeriodType()),
                 )
             );
 
             $cancelConditionsDto = new CancelConditionsDto(
-                $cancelConditions->noCheckInMarkup()->percent()->value(),
+                $cancelConditions->noCheckInMarkup()->value()->value(),
                 $this->getHumanCancelPeriodType($cancelConditions->noCheckInMarkup()->cancelPeriodType()),
                 $dailyMarkupsDto
             );
@@ -202,9 +206,9 @@ class TemplateDataFactory
         );
     }
 
-    private function getHumanCancelPeriodType(CancelPeriodTypeEnum $periodType): string
+    private function getHumanCancelPeriodType(CancelFeePeriodTypeEnum $periodType): string
     {
-        return $periodType === CancelPeriodTypeEnum::FULL_PERIOD ? 'За весь период' : 'За первую ночь';
+        return $periodType === CancelFeePeriodTypeEnum::FULL_PERIOD ? 'За весь период' : 'За первую ночь';
     }
 
     /**

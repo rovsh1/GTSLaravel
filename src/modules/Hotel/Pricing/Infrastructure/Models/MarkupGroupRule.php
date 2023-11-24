@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Hotel\Pricing\Infrastructure\Models;
 
-use Module\Shared\Enum\Pricing\MarkupValueTypeEnum;
+use Module\Shared\Enum\Pricing\ValueTypeEnum;
 use Sdk\Module\Database\Eloquent\Model;
 
 class MarkupGroupRule extends Model
@@ -20,7 +20,7 @@ class MarkupGroupRule extends Model
     ];
 
     protected $casts = [
-        'type' => MarkupValueTypeEnum::class
+        'type' => ValueTypeEnum::class
     ];
 
     public static function findByRoomId(int $clientId, int $roomId)

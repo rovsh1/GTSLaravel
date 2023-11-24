@@ -6,7 +6,7 @@ namespace Module\Hotel\Pricing\Application\Dto;
 
 use Module\Shared\Contracts\Domain\EntityInterface;
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
-use Module\Shared\Enum\Pricing\MarkupValueTypeEnum;
+use Module\Shared\Enum\Pricing\ValueTypeEnum;
 use Module\Shared\Support\Dto\AbstractDomainBasedDto;
 use Module\Shared\ValueObject\MarkupValue;
 
@@ -14,7 +14,7 @@ class MarkupValueDto extends AbstractDomainBasedDto
 {
     public function __construct(
         public readonly int $value,
-        public readonly MarkupValueTypeEnum $type
+        public readonly ValueTypeEnum $type
     ) {}
 
     public static function fromDomain(EntityInterface|ValueObjectInterface $entity): static

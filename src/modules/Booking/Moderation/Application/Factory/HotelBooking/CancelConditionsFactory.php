@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Application\Factory\HotelBooking;
 
 use Carbon\CarbonPeriod;
-use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\CancelMarkupOption;
-use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\CancelPeriodTypeEnum;
-use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\DailyMarkupCollection;
-use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\DailyMarkupOption;
+use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\CancelFeeValue;
+use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\CancelFeePeriodTypeEnum;
+use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\DailyCancelFeeValueCollection;
+use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\DailyCancelFeeValue;
+use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\FeeValue;
 use Module\Booking\Shared\Domain\Shared\ValueObject\CancelConditions;
 use Module\Hotel\Moderation\Application\Dto\MarkupSettings\CancelPeriodDto;
 use Module\Shared\ValueObject\Percent;
@@ -29,15 +30,15 @@ class CancelConditionsFactory
         );
 
         $maxDaysCount = null;
-        $dailyMarkups = new DailyMarkupCollection();
+        $dailyMarkups = new DailyCancelFeeValueCollection();
         foreach ($availablePeriod->dailyMarkups as $dailyMarkup) {
             if ($dailyMarkup->daysCount > $maxDaysCount) {
                 $maxDaysCount = $dailyMarkup->daysCount;
             }
             $dailyMarkups->add(
-                new DailyMarkupOption(
-                    new Percent($dailyMarkup->percent),
-                    CancelPeriodTypeEnum::from($dailyMarkup->cancelPeriodType),
+                new DailyCancelFeeValue(
+                    FeeValue::createPercent($dailyMarkup->percent),
+                    CancelFeePeriodTypeEnum::from($dailyMarkup->cancelPeriodType),
                     $dailyMarkup->daysCount
                 )
             );
@@ -48,9 +49,9 @@ class CancelConditionsFactory
         }
 
         return new CancelConditions(
-            new CancelMarkupOption(
-                new Percent($availablePeriod->noCheckInMarkup->percent),
-                CancelPeriodTypeEnum::from($availablePeriod->noCheckInMarkup->cancelPeriodType)
+            new CancelFeeValue(
+                FeeValue::createPercent($availablePeriod->noCheckInMarkup->percent),
+                CancelFeePeriodTypeEnum::from($availablePeriod->noCheckInMarkup->cancelPeriodType)
             ),
             $dailyMarkups,
             $cancelNoFeeDate

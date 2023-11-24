@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Moderation\Application\Factory;
+namespace Module\Booking\Moderation\Domain\Booking\Factory;
 
 use Illuminate\Support\Arr;
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceId;
-use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\CancelMarkupOption;
-use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\CancelPeriodTypeEnum;
-use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\DailyMarkupCollection;
-use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\DailyMarkupOption;
+use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\CancelFeePeriodTypeEnum;
+use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\CancelFeeValue;
+use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\DailyCancelFeeValue;
+use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\DailyCancelFeeValueCollection;
+use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\FeeValue;
 use Module\Booking\Shared\Domain\Shared\ValueObject\CancelConditions;
 use Module\Shared\Enum\ServiceTypeEnum;
-use Module\Shared\ValueObject\Percent;
 use Module\Supplier\Moderation\Application\Response\CancelConditionsDto;
 use Module\Supplier\Moderation\Application\Response\DailyMarkupDto;
 
@@ -39,28 +39,30 @@ class CancelConditionsFactory
         return $this->fromDto($baseCancelConditions, $bookingDate);
     }
 
-    public function fromDto(CancelConditionsDto $cancelConditionsDto, \DateTimeInterface $bookingDate): CancelConditions
-    {
+    private function fromDto(
+        CancelConditionsDto $cancelConditionsDto,
+        \DateTimeInterface $bookingDate
+    ): CancelConditions {
         $cancelNoFeeDate = null;
         $dailyMarkupOptions = [];
         $maxDaysCount = Arr::first($cancelConditionsDto->dailyMarkups)?->daysCount;
         if ($maxDaysCount !== null && $bookingDate !== null) {
             $cancelNoFeeDate = $bookingDate->clone()->subDays($maxDaysCount)->toImmutable();
             $dailyMarkupOptions = collect($cancelConditionsDto->dailyMarkups)->map(
-                fn(DailyMarkupDto $dailyMarkupDto) => new DailyMarkupOption(
-                    percent: new Percent($dailyMarkupDto->percent),
-                    cancelPeriodType: CancelPeriodTypeEnum::FULL_PERIOD,
+                fn(DailyMarkupDto $dailyMarkupDto) => new DailyCancelFeeValue(
+                    value: FeeValue::createPercent($dailyMarkupDto->percent),
+                    cancelPeriodType: CancelFeePeriodTypeEnum::FULL_PERIOD,
                     daysCount: $dailyMarkupDto->daysCount
                 )
             );
         }
 
         return new CancelConditions(
-            noCheckInMarkup: new CancelMarkupOption(
-                percent: new Percent($cancelConditionsDto->noCheckInMarkup->percent),
-                cancelPeriodType: CancelPeriodTypeEnum::FULL_PERIOD
+            noCheckInMarkup: new CancelFeeValue(
+                value: FeeValue::createPercent($cancelConditionsDto->noCheckInMarkup->percent),
+                cancelPeriodType: CancelFeePeriodTypeEnum::FULL_PERIOD
             ),
-            dailyMarkups: new DailyMarkupCollection($dailyMarkupOptions),
+            dailyMarkups: new DailyCancelFeeValueCollection($dailyMarkupOptions),
             cancelNoFeeDate: $cancelNoFeeDate
         );
     }
@@ -72,7 +74,10 @@ class CancelConditionsFactory
     ): ?CancelConditionsDto {
         return match ($serviceType) {
             ServiceTypeEnum::CIP_MEETING_IN_AIRPORT,
-            ServiceTypeEnum::CIP_SENDOFF_IN_AIRPORT => $this->supplierAdapter->getAirportCancelConditions($serviceId->value(), $bookingDate),
+            ServiceTypeEnum::CIP_SENDOFF_IN_AIRPORT => $this->supplierAdapter->getAirportCancelConditions(
+                $serviceId->value(),
+                $bookingDate
+            ),
             ServiceTypeEnum::CAR_RENT_WITH_DRIVER,
             ServiceTypeEnum::TRANSFER_TO_RAILWAY,
             ServiceTypeEnum::TRANSFER_FROM_RAILWAY,

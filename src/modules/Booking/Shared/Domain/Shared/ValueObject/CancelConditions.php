@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Domain\Shared\ValueObject;
 
 use Carbon\CarbonImmutable;
-use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\CancelMarkupOption;
-use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\DailyMarkupCollection;
+use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\CancelFeeValue;
+use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\DailyCancelFeeValueCollection;
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Module\Shared\Contracts\Support\SerializableDataInterface;
 
 class CancelConditions implements ValueObjectInterface, SerializableDataInterface
 {
     public function __construct(
-        private readonly CancelMarkupOption $noCheckInMarkup,
-        private readonly DailyMarkupCollection $dailyMarkups,
+        private readonly CancelFeeValue $noCheckInMarkup,
+        private readonly DailyCancelFeeValueCollection $dailyMarkups,
         private readonly ?CarbonImmutable $cancelNoFeeDate = null,
     ) {}
 
@@ -23,12 +23,12 @@ class CancelConditions implements ValueObjectInterface, SerializableDataInterfac
         return $this->cancelNoFeeDate;
     }
 
-    public function noCheckInMarkup(): CancelMarkupOption
+    public function noCheckInMarkup(): CancelFeeValue
     {
         return $this->noCheckInMarkup;
     }
 
-    public function dailyMarkups(): DailyMarkupCollection
+    public function dailyMarkups(): DailyCancelFeeValueCollection
     {
         return $this->dailyMarkups;
     }
@@ -47,8 +47,8 @@ class CancelConditions implements ValueObjectInterface, SerializableDataInterfac
         $cancelNoFeeDate = $data['cancelNoFeeDate'] ?? null;
 
         return new static(
-            CancelMarkupOption::fromData($data['noCheckInMarkup']),
-            DailyMarkupCollection::fromData($data['dailyMarkups']),
+            CancelFeeValue::fromData($data['noCheckInMarkup']),
+            DailyCancelFeeValueCollection::fromData($data['dailyMarkups']),
             $cancelNoFeeDate !== null ? CarbonImmutable::createFromTimestamp($cancelNoFeeDate) : null,
         );
     }

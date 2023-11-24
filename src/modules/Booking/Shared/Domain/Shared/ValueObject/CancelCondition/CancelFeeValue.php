@@ -8,22 +8,19 @@ use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Module\Shared\Contracts\Support\SerializableDataInterface;
 use Module\Shared\ValueObject\Percent;
 
-/**
- * @see \Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings\CancelMarkupOption
- */
-final class CancelMarkupOption implements ValueObjectInterface, SerializableDataInterface
+final class CancelFeeValue implements ValueObjectInterface, SerializableDataInterface
 {
     public function __construct(
-        private readonly Percent $percent,
-        private readonly CancelPeriodTypeEnum $cancelPeriodType
+        private readonly FeeValue $value,
+        private readonly CancelFeePeriodTypeEnum $cancelPeriodType
     ) {}
 
-    public function percent(): Percent
+    public function value(): FeeValue
     {
-        return $this->percent;
+        return $this->value;
     }
 
-    public function cancelPeriodType(): CancelPeriodTypeEnum
+    public function cancelPeriodType(): CancelFeePeriodTypeEnum
     {
         return $this->cancelPeriodType;
     }
@@ -31,7 +28,7 @@ final class CancelMarkupOption implements ValueObjectInterface, SerializableData
     public function toData(): array
     {
         return [
-            'percent' => $this->percent->value(),
+            'value' => $this->value->toData(),
             'cancelPeriodType' => $this->cancelPeriodType->value
         ];
     }
@@ -39,8 +36,8 @@ final class CancelMarkupOption implements ValueObjectInterface, SerializableData
     public static function fromData(array $data): static
     {
         return new static(
-            new Percent($data['percent']),
-            CancelPeriodTypeEnum::from($data['cancelPeriodType'])
+            FeeValue::fromData($data['value']),
+            CancelFeePeriodTypeEnum::from($data['cancelPeriodType'])
         );
     }
 }

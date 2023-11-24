@@ -7,8 +7,8 @@ namespace Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition;
 /**
  * @see \Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings\CancelPeriodTypeEnum
  */
-enum CancelPeriodTypeEnum: int
+enum CancelFeePeriodTypeEnum: int
 {
-    case FIRST_NIGHT = 1;
+    case FIRST_DAY = 1;
     case FULL_PERIOD = 2;
 }
