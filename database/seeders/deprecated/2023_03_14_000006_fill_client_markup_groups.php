@@ -10,7 +10,7 @@ return new class extends Migration {
             ->insert([
                 'id' => 1,
                 'name' => 'Базовая наценка',
-                'type' => \Module\Shared\Enum\Pricing\MarkupValueTypeEnum::PERCENT,
+                'type' => \Module\Shared\Enum\Pricing\ValueTypeEnum::PERCENT,
                 'value' => 3,
                 'created_at' => now(),
                 'updated_at' => now(),

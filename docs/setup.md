@@ -15,7 +15,8 @@ Then, customize them.
 
 If you are on macOS, you can change `PHP_REMOTE_HOST` to `docker.for.mac.localhost` for PHP debugging.
 
-If you have something launched on ports `80`, `9000` or `3306`, change `HOST_APP_PORT`, `HOST_PHP_PORT` or `HOST_DB_PORT` accordingly.
+If you have something launched on ports `80`, `9000` or `3306`, change `HOST_APP_PORT`, `HOST_PHP_PORT`
+or `HOST_DB_PORT` accordingly.
 
 ## 2. Build and run containers
 
@@ -100,7 +101,31 @@ They can be found in `database/migrations/install/2023_03_12_000003_fill_default
 
 ## 9. Additional
 
-If you use MacOS, we recommended install docker-sync and apply `GTS_local_docker-sync_patch.patch`. For starting project use `docker-sync start` then `docker-compose up -d`.
+If you use MacOS, we recommended install docker-sync and apply `GTS_local_docker-sync_patch.patch`. For starting project
+use `docker-sync start` then `docker-compose up -d`.
+
+## 10. Services
+
+1. add supervisor conf
+
+    ```
+    # Conf Example /etc/supervisor/conf.d/gts.conf
+   
+    [program:gts-integrationEvents]
+    process_name=%(program_name)s_%(process_num)02d
+    command=/usr/bin/php8.1 -dxdebug.remote_autostart=1 /var/www/sites/gotostans.com/artisan queue:work integrationEvent
+    user=www-data
+    autostart=true
+    autorestart=true
+    redirect_stderr=true
+    stdout_logfile=/var/www/sites/gotostans.com/storage/logs/laravel.log
+    ```
+
+2. restart service
+
+    ```shell
+    sudo service supervisor restart
+    ```
 
 # Utilities
 

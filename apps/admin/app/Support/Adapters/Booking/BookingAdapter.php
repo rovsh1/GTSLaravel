@@ -11,12 +11,13 @@ use Module\Booking\Moderation\Application\UseCase\BulkDeleteBookings;
 use Module\Booking\Moderation\Application\UseCase\CopyBooking;
 use Module\Booking\Moderation\Application\UseCase\CreateBooking;
 use Module\Booking\Moderation\Application\UseCase\DeleteBooking;
-use Module\Booking\Moderation\Application\UseCase\GetAvailableActions;
+use Module\Booking\Moderation\Application\UseCase\GetAvailableActions as ModerationActions;
 use Module\Booking\Moderation\Application\UseCase\GetBooking;
 use Module\Booking\Moderation\Application\UseCase\GetStatuses;
 use Module\Booking\Moderation\Application\UseCase\HotelBooking\CreateBooking as CreateHotelBooking;
 use Module\Booking\Moderation\Application\UseCase\UpdateNote;
 use Module\Booking\Moderation\Application\UseCase\UpdateStatus;
+use Module\Booking\Requesting\Application\UseCase\GetAvailableActions as RequestingActions;
 use Module\Shared\Enum\CurrencyEnum;
 
 class BookingAdapter
@@ -85,7 +86,10 @@ class BookingAdapter
 
     public function getAvailableActions(int $id): mixed
     {
-        return app(GetAvailableActions::class)->execute($id);
+        $moderationAction = app(ModerationActions::class)->execute($id);
+        $requestingActions = app(RequestingActions::class)->execute($id);
+
+        return array_merge((array)$moderationAction, (array)$requestingActions);
     }
 
     public function updateStatus(

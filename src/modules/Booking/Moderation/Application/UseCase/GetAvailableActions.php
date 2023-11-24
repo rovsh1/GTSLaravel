@@ -11,7 +11,6 @@ use Module\Booking\Shared\Application\Dto\StatusDto;
 use Module\Booking\Shared\Application\Factory\BookingStatusDtoFactory;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\Service\RequestingRules;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Shared\Enum\Booking\BookingStatusEnum;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
@@ -21,7 +20,6 @@ class GetAvailableActions implements UseCaseInterface
     public function __construct(
         private readonly StatusTransitionsFactory $statusTransitionsFactory,
         private readonly EditRules $editRules,
-        private readonly RequestingRules $requestRules,
         private readonly BookingRepositoryInterface $repository,
         private readonly BookingStatusDtoFactory $statusDtoFactory,
     ) {
@@ -32,15 +30,10 @@ class GetAvailableActions implements UseCaseInterface
         $booking = $this->repository->findOrFail(new BookingId($bookingId));
 
         $this->editRules->booking($booking);
-        $this->requestRules->booking($booking);
 
         return new AvailableActionsDto(
             statuses: $this->buildAvailableStatuses($booking),
             isEditable: $this->editRules->isEditable(),
-            isRequestable: $this->requestRules->isBookingRequestable(),
-            canSendBookingRequest: $this->requestRules->canSendBookingRequest(),
-            canSendCancellationRequest: $this->requestRules->canSendCancellationRequest(),
-            canSendChangeRequest: $this->requestRules->canSendChangeRequest(),
             canEditExternalNumber: $this->editRules->canEditExternalNumber(),
             //@todo прописать логику для этого флага (у отеля и админки она разная)
             canChangeRoomPrice: $this->editRules->canChangeRoomPrice(),

@@ -15,14 +15,14 @@ class LendOrdersRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'orders' => ['required', 'array'],
+            'orders' => ['nullable', 'array'],
             'orders.*.id' => ['required', 'int'],
-            'orders.*.sum' => ['required', 'float'],
+            'orders.*.sum' => ['required', 'numeric'],
         ];
     }
 
     public function getOrders(): array
     {
-        return $this->post('orders');
+        return $this->post('orders', []);
     }
 }

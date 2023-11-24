@@ -12,7 +12,7 @@ class CarBidPriceItem implements SerializableDataInterface, CanEquate
 {
     public function __construct(
         private readonly CurrencyEnum $currency,
-        public readonly float $valuePerCar,
+        private readonly float $valuePerCar,
     ) {}
 
     public static function createEmpty(CurrencyEnum $currency): static

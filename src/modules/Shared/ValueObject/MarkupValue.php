@@ -6,24 +6,24 @@ namespace Module\Shared\ValueObject;
 
 use Module\Shared\Contracts\CanEquate;
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
-use Module\Shared\Enum\Pricing\MarkupValueTypeEnum;
+use Module\Shared\Enum\Pricing\ValueTypeEnum;
 
 final class MarkupValue implements ValueObjectInterface, CanEquate
 {
     public function __construct(
         private readonly int $value,
-        private readonly MarkupValueTypeEnum $type
+        private readonly ValueTypeEnum $type
     ) {
     }
 
     public static function createZero(): MarkupValue
     {
-        return new MarkupValue(0, MarkupValueTypeEnum::ABSOLUTE);
+        return new MarkupValue(0, ValueTypeEnum::ABSOLUTE);
     }
 
     public static function createPercent(int $percent): MarkupValue
     {
-        return new MarkupValue($percent, MarkupValueTypeEnum::PERCENT);
+        return new MarkupValue($percent, ValueTypeEnum::PERCENT);
     }
 
     public function value(): int
@@ -31,7 +31,7 @@ final class MarkupValue implements ValueObjectInterface, CanEquate
         return $this->value;
     }
 
-    public function type(): MarkupValueTypeEnum
+    public function type(): ValueTypeEnum
     {
         return $this->type;
     }
@@ -39,9 +39,9 @@ final class MarkupValue implements ValueObjectInterface, CanEquate
     public function calculate(int|float $price): float|int
     {
         switch ($this->type) {
-            case MarkupValueTypeEnum::ABSOLUTE:
+            case ValueTypeEnum::ABSOLUTE:
                 return $this->value;
-            case MarkupValueTypeEnum::PERCENT:
+            case ValueTypeEnum::PERCENT:
                 return $price * $this->value / 100;
         }
     }
@@ -56,9 +56,9 @@ final class MarkupValue implements ValueObjectInterface, CanEquate
     public function __toString(): string
     {
         switch ($this->type) {
-            case MarkupValueTypeEnum::ABSOLUTE:
+            case ValueTypeEnum::ABSOLUTE:
                 return (string)$this->value;
-            case MarkupValueTypeEnum::PERCENT:
+            case ValueTypeEnum::PERCENT:
                 return $this->value . '%';
         }
     }
