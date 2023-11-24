@@ -24,14 +24,15 @@ const paymentIdProps = computed(() => (paymentID.value ? { paymentID: paymentID.
 
 const { isFetching: isFetchingWaitingOrders,
   execute: fetchWaitingOrders, data: waitingOrders } = usePaymentWaitingOrdersListAPI(paymentIdProps)
-const { isFetching: isFetchingOrders, execute: fetchOrders, data: orders } = usePaymentOrdersListAPI(paymentIdProps)
+const { isFetching: isFetchingDistributedOrders,
+  execute: fetchDistributedOrders, data: distributedOrders } = usePaymentOrdersListAPI(paymentIdProps)
 const { isFetching: isFetchingPayment, execute: fetchPayment, data: payment } = useGetPaymentAPI(paymentIdProps)
 
 const isSendingOrders = ref<boolean>(false)
 
-const isFetching = computed(() => (isFetchingWaitingOrders.value || isFetchingOrders.value || isFetchingPayment.value))
+const isFetching = computed(() => (isFetchingWaitingOrders.value || isFetchingDistributedOrders.value || isFetchingPayment.value))
 
-const isDisabled = computed(() => (!waitingOrders.value?.length && !orders.value?.length)
+const isDisabled = computed(() => (!waitingOrders.value?.length && !distributedOrders.value?.length)
 || !payment.value?.remainingAmount)
 
 eventBus.on('openOrderPaymentModal', (event: { paymentId: number }) => {
@@ -39,7 +40,7 @@ eventBus.on('openOrderPaymentModal', (event: { paymentId: number }) => {
   toggleModal(true)
   fetchPayment()
   fetchWaitingOrders()
-  fetchOrders()
+  fetchDistributedOrders()
 })
 
 const closeModal = () => {
@@ -71,7 +72,7 @@ const onSubmit = async () => {
       <OverlayLoading v-if="isFetching || isSendingOrders" />
       <OrderPaymentsTable
         :waiting-orders="waitingOrders || []"
-        :orders="orders || []"
+        :distributed-orders="distributedOrders || []"
         :remaining-amount="payment?.remainingAmount"
         :loading="isFetching || isSendingOrders"
         :disabled="isDisabled"
