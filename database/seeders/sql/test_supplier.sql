@@ -20,7 +20,8 @@ VALUES (1, 555, 'Трансфер из аэропорта Ташкента', 7, 
        (6, 555, 'Трасфер Ташкент-Самарканд', 9, '{\"fromCityId\":1,\"toCityId\":4,\"returnTripIncluded\":true}', NULL, NULL),
        (7, 555, 'Однодневная поездка в горы', 10, '{\"cityId\":1}', NULL, NULL),
        (8, 555, 'CIP Встреча Аэропорт Ташкент', 2, '{\"airportId\":1}', NULL, NULL),
-       (9, 555, 'CIP Проводы Аэропорт Ташкент', 11, '{\"airportId\":1}', NULL, NULL);
+       (9, 555, 'CIP Проводы Аэропорт Ташкент', 11, '{\"airportId\":1}', NULL, NULL),
+       (10, 555, 'Прочая', 8, NULL, NULL, NULL);
 
 INSERT INTO `supplier_contracts` (`id`, `supplier_id`, `service_type`, `status`, `date_start`, `date_end`, `created_at`, `updated_at`)
 VALUES (1, 555, 7, 1,'2023-01-01', '2023-12-31', null, null),
@@ -31,7 +32,8 @@ VALUES (1, 555, 7, 1,'2023-01-01', '2023-12-31', null, null),
        (6, 555, 9, 1,'2023-01-01', '2023-12-31', null, null),
        (7, 555, 10, 1,'2023-01-01', '2023-12-31', null, null),
        (8, 555, 2, 1,'2023-01-01', '2023-12-31', null, null),
-       (9, 555, 11, 1,'2023-01-01', '2023-12-31', null, null);
+       (9, 555, 11, 1,'2023-01-01', '2023-12-31', null, null),
+       (10, 555, 8, 1,'2023-01-01', '2023-12-31', null, null);
 
 INSERT INTO `supplier_service_contracts` (`service_id`, `contract_id`)
 VALUES (1, 1),
@@ -42,7 +44,8 @@ VALUES (1, 1),
        (6, 6),
        (7, 7),
        (8, 8),
-       (9, 9);
+       (9, 9),
+       (10, 10);
 
 INSERT INTO `supplier_cars` (`id`, `supplier_id`, `car_id`)
 VALUES (1, 555, 1),
@@ -73,3 +76,13 @@ VALUES (1, 1, 1, 1, 'UZS', '20000.00', '[{\"amount\":30000,\"currency\":\"UZS\"}
        (22, 1, 6, 2, 'UZS', '300000.00', '[{\"amount\":350000,\"currency\":\"UZS\"},{\"amount\":35,\"currency\":\"USD\"}]'),
        (23, 2, 6, 1, 'UZS', '150000.00', '[{\"amount\":200000,\"currency\":\"UZS\"},{\"amount\":20,\"currency\":\"USD\"}]'),
        (24, 2, 6, 2, 'UZS', '200000.00', '[{\"amount\":240000,\"currency\":\"UZS\"},{\"amount\":24,\"currency\":\"USD\"}]');
+
+INSERT INTO `supplier_airport_prices` (`id`, `season_id`, `service_id`, `currency`, `price_net`, `prices_gross`)
+VALUES (1, 1, 8, 'UZS', '20000.00', '[{\"amount\":30000,\"currency\":\"UZS\"},{\"amount\":30,\"currency\":\"USD\"}]'),
+       (2, 2, 8, 'UZS', '30000.00', '[{\"amount\":40000,\"currency\":\"UZS\"},{\"amount\":40,\"currency\":\"USD\"}]'),
+       (3, 1, 9, 'UZS', '20000.00', '[{\"amount\":30000,\"currency\":\"UZS\"},{\"amount\":30,\"currency\":\"USD\"}]'),
+       (4, 2, 9, 'UZS', '30000.00', '[{\"amount\":40000,\"currency\":\"UZS\"},{\"amount\":40,\"currency\":\"USD\"}]');
+
+INSERT INTO `supplier_other_prices` (`id`, `season_id`, `service_id`, `currency`, `price_net`, `prices_gross`)
+VALUES (1, 1, 10, 'UZS', '20000.00', '[{\"amount\":30000,\"currency\":\"UZS\"},{\"amount\":30,\"currency\":\"USD\"}]'),
+       (2, 2, 10, 'UZS', '30000.00', '[{\"amount\":40000,\"currency\":\"UZS\"},{\"amount\":40,\"currency\":\"USD\"}]');
