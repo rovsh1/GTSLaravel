@@ -1,20 +1,20 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 
-import { PaymentOrder, PaymentOrderPayload } from '~api/payment/payment'
+import { PaymentOrder, PaymentOrderPayload, PaymentPrice } from '~api/payment/payment'
 
 import { formatPrice } from '~lib/price'
 
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
-import InlineIcon from '~components/InlineIcon.vue'
 
 const props = withDefaults(defineProps<{
-  remainingAmount: number | null
+  remainingAmount: PaymentPrice | undefined
   waitingOrders: PaymentOrder[]
   orders: PaymentOrder[]
   loading: boolean
+  disabled?: boolean
 }>(), {
-
+  disabled: false,
 })
 
 const emit = defineEmits<{
@@ -23,29 +23,112 @@ const emit = defineEmits<{
 
 const localeWaitingOrders = ref<PaymentOrder[]>(props.waitingOrders)
 const localeOrders = ref<PaymentOrder[]>(props.orders)
+const localeRemainingAmount = ref<number | undefined>(props.remainingAmount?.value)
 
 const selectedWaitingOrders = ref<PaymentOrder[]>([])
 const selectedOrders = ref<PaymentOrder[]>([])
 
-const isSelectedItem = (item: any) => selectedOrders.value.includes(item)
+const isSelectedWaitingOrdersItem = (item: PaymentOrder) => selectedWaitingOrders.value.some((order) => order.id === item.id)
 
-const toogleSelectOrder = (item: any) => {
-  if (!isSelectedItem(item)) {
-    selectedOrders.value.push(item)
+const isSelectedOrdersItem = (item: PaymentOrder) => selectedOrders.value.some((order) => order.id === item.id)
+
+const toogleSelectWaitingOrder = (item: PaymentOrder) => {
+  if (!isSelectedWaitingOrdersItem(item)) {
+    selectedWaitingOrders.value.push(item)
   } else {
-    selectedOrders.value = selectedOrders.value.filter((element) => element !== item)
+    selectedWaitingOrders.value = selectedWaitingOrders.value.filter((element) => element.id !== item.id)
   }
 }
 
-const getPaymentOrdersPayload = (): PaymentOrderPayload[] => selectedOrders.value.map((order) => ({
+const toogleSelectOrder = (item: PaymentOrder) => {
+  if (!isSelectedOrdersItem(item)) {
+    selectedOrders.value.push(item)
+  } else {
+    selectedOrders.value = selectedOrders.value.filter((element) => element.id !== item.id)
+  }
+}
+
+const getPaymentOrdersPayload = (): PaymentOrderPayload[] => localeOrders.value.map((order) => ({
   id: order.id,
-  sum: order.remainingAmount.value,
+  sum: order.clientPrice.value - order.remainingAmount.value,
 }))
 
-watch([() => props.orders, () => props.waitingOrders], () => {
+watch([() => props.orders, () => props.waitingOrders, () => props.remainingAmount], () => {
   localeWaitingOrders.value = props.waitingOrders
   localeOrders.value = props.orders
+  localeRemainingAmount.value = props.remainingAmount?.value
 })
+
+const getIndexToDelete = (array: PaymentOrder[], removedItem: PaymentOrder) => {
+  const indexToDelete = array.findIndex((item) => item.id === removedItem.id)
+  return indexToDelete
+}
+
+const moveOrderWaitingToOrders = async (allOrders?: boolean) => {
+  if (allOrders) {
+    selectedWaitingOrders.value = localeWaitingOrders.value
+  }
+  if (!selectedWaitingOrders.value.length
+  || localeRemainingAmount.value === undefined || localeRemainingAmount.value === 0) {
+    selectedWaitingOrders.value = []
+    return
+  }
+  selectedWaitingOrders.value.forEach((selectedOrder) => {
+    const source = selectedOrder
+    const subsctractSum = localeRemainingAmount.value as number - selectedOrder.remainingAmount.value
+    const existLocaleOrder = localeOrders.value.find((order) => order.id === source.id)
+    if (subsctractSum >= 0) {
+      if (existLocaleOrder) {
+        existLocaleOrder.remainingAmount.value = 0
+      } else {
+        source.remainingAmount.value = 0
+        localeOrders.value.push(selectedOrder)
+      }
+      localeWaitingOrders.value.splice(getIndexToDelete(localeWaitingOrders.value, selectedOrder))
+      localeRemainingAmount.value = subsctractSum
+    } else {
+      if (existLocaleOrder) {
+        existLocaleOrder.remainingAmount.value = Math.abs(subsctractSum)
+      } else {
+        source.remainingAmount.value = Math.abs(subsctractSum)
+        localeOrders.value.push(selectedOrder)
+      }
+      const localeWaitingOrder = localeWaitingOrders.value.find((order) => order.id === source.id)
+      if (localeWaitingOrder) {
+        localeWaitingOrder.remainingAmount.value = source.remainingAmount.value
+      }
+      localeRemainingAmount.value = 0
+    }
+  })
+  selectedWaitingOrders.value = []
+  emit('orders', getPaymentOrdersPayload())
+}
+
+const moveOrdersToOrderWaiting = async (allOrders?: boolean) => {
+  if (allOrders) {
+    selectedOrders.value = localeOrders.value
+  }
+  if (!selectedOrders.value.length
+  || localeRemainingAmount.value === undefined || localeRemainingAmount.value === props.remainingAmount?.value) {
+    selectedOrders.value = []
+    return
+  }
+  selectedOrders.value.forEach((selectedOrder) => {
+    const source = selectedOrder
+    const addedSum = selectedOrder.clientPrice.value - selectedOrder.remainingAmount.value
+    const existLocaleWaitingOrder = localeWaitingOrders.value.find((order) => order.id === source.id)
+    if (existLocaleWaitingOrder) {
+      existLocaleWaitingOrder.remainingAmount.value = existLocaleWaitingOrder.clientPrice.value
+    } else {
+      source.remainingAmount.value = selectedOrder.clientPrice.value
+      localeWaitingOrders.value.push(selectedOrder)
+    }
+    localeOrders.value.splice(getIndexToDelete(localeOrders.value, selectedOrder))
+    localeRemainingAmount.value = localeRemainingAmount.value as number + addedSum
+  })
+  selectedOrders.value = []
+  emit('orders', getPaymentOrdersPayload())
+}
 
 </script>
 
@@ -67,8 +150,8 @@ watch([() => props.orders, () => props.waitingOrders], () => {
               <tr
                 v-for="waitingOrder in localeWaitingOrders"
                 :key="waitingOrder.id"
-                :class="{ 'table-active': isSelectedItem(waitingOrder.id) }"
-                @click="toogleSelectOrder(waitingOrder.id)"
+                :class="{ 'table-active': isSelectedWaitingOrdersItem(waitingOrder) }"
+                @click="toogleSelectWaitingOrder(waitingOrder)"
               >
                 <td>{{ waitingOrder.id }}</td>
                 <td>{{ formatPrice(waitingOrder.clientPrice.value, waitingOrder.clientPrice.currency.value) }}</td>
@@ -92,8 +175,8 @@ watch([() => props.orders, () => props.waitingOrders], () => {
           size="small"
           severity="secondary"
           variant="outline"
-          :disabled="loading"
-          @click="() => { }"
+          :disabled="disabled"
+          @click="() => moveOrderWaitingToOrders()"
         />
       </div>
       <div class="mb-4">
@@ -103,8 +186,8 @@ watch([() => props.orders, () => props.waitingOrders], () => {
           size="small"
           severity="secondary"
           variant="outline"
-          :disabled="loading"
-          @click="() => { }"
+          :disabled="disabled"
+          @click="() => moveOrderWaitingToOrders(true)"
         />
       </div>
       <div class="mb-2">
@@ -114,8 +197,8 @@ watch([() => props.orders, () => props.waitingOrders], () => {
           size="small"
           severity="secondary"
           variant="outline"
-          :disabled="loading"
-          @click="() => { }"
+          :disabled="disabled"
+          @click="() => moveOrdersToOrderWaiting()"
         />
       </div>
       <div>
@@ -125,8 +208,8 @@ watch([() => props.orders, () => props.waitingOrders], () => {
           size="small"
           severity="secondary"
           variant="outline"
-          :disabled="loading"
-          @click="() => { }"
+          :disabled="disabled"
+          @click="() => moveOrdersToOrderWaiting(true)"
         />
       </div>
     </div>
@@ -147,8 +230,8 @@ watch([() => props.orders, () => props.waitingOrders], () => {
                 <tr
                   v-for="order in localeOrders"
                   :key="order.id"
-                  :class="{ 'table-active': isSelectedItem(order.id) }"
-                  @click="toogleSelectOrder(order.id)"
+                  :class="{ 'table-active': isSelectedOrdersItem(order) }"
+                  @click="toogleSelectOrder(order)"
                 >
                   <td>{{ order.id }}</td>
                   <td>{{ formatPrice(order.clientPrice.value, order.clientPrice.currency.value) }}</td>
@@ -168,12 +251,12 @@ watch([() => props.orders, () => props.waitingOrders], () => {
         <label for="total-amount" class="form-label fs-7">Нераспределенная сумма:</label>
         <div class="input-group">
           <span id="basic-addon3" class="input-group-text">
-            <InlineIcon icon="payments" />
+            {{ remainingAmount?.currency.value }}
           </span>
           <input
             id="total-amount"
             type="text"
-            :value="remainingAmount"
+            :value="formatPrice(localeRemainingAmount)"
             class="form-control text-right"
             disabled
             aria-describedby="basic-addon3"
@@ -193,6 +276,7 @@ watch([() => props.orders, () => props.waitingOrders], () => {
 
 .height-fix {
   height: 21.875rem;
+  min-width: 17rem;
   overflow-y: auto;
   padding-right: 6px;
 

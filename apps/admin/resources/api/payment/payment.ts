@@ -38,6 +38,11 @@ export type PaymentOrdersPayload = PaymentPayload & {
   orders: PaymentOrderPayload[]
 }
 
+export const useGetPaymentAPI = (props: MaybeRef<PaymentPayload | null>) =>
+  useAdminAPI(props, ({ paymentID }) => `/payment/${paymentID}`)
+    .get()
+    .json<PaymentOrder>()
+
 export const usePaymentWaitingOrdersListAPI = (props: MaybeRef<PaymentPayload | null>) =>
   useAdminAPI(props, ({ paymentID }) => `/payment/${paymentID}/waiting-orders`)
     .get()
