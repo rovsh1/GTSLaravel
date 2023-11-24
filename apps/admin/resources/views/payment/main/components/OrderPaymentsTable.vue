@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 
 import { PaymentOrder, PaymentOrderPayload, PaymentPrice } from '~api/payment/payment'
 
@@ -39,6 +39,7 @@ watch([() => props.distributedOrders, () => props.waitingOrders, () => props.rem
   localeWaitingOrders.value = props.waitingOrders
   localeDistributedOrders.value = props.distributedOrders
   localeRemainingAmount.value = props.remainingAmount?.value
+  getPaymentOrdersPayload()
 })
 
 const getIndexToDelete = (array: PaymentOrder[], removedItem: PaymentOrder) => {
@@ -47,21 +48,24 @@ const getIndexToDelete = (array: PaymentOrder[], removedItem: PaymentOrder) => {
 }
 
 const moveOrderWaitingToOrders = (allOrders?: boolean) => {
-  if (allOrders) {
-    waitingOrdersSelection.selected.value = [...localeWaitingOrders.value]
-  }
-  if (!waitingOrdersSelection.selected.value.length
-  || localeRemainingAmount.value === undefined || localeRemainingAmount.value === 0) {
+  if (localeRemainingAmount.value === undefined || localeRemainingAmount.value === 0) {
     waitingOrdersSelection.selected.value = []
     return
+  }
+  if (localeWaitingOrders.value.length && !waitingOrdersSelection.selected.value.length) {
+    if (allOrders) {
+      waitingOrdersSelection.selected.value = [...localeWaitingOrders.value]
+    } else {
+      waitingOrdersSelection.selected.value = [[...localeWaitingOrders.value][0]]
+    }
   }
   waitingOrdersSelection.selected.value.forEach((selectedOrder) => {
     const remainingAmount = localeRemainingAmount.value as number
     if (remainingAmount <= 0) return
     const source = selectedOrder
-    const subsctractSum = remainingAmount - selectedOrder.remainingAmount.value
+    const subtractSum = remainingAmount - selectedOrder.remainingAmount.value
     const existLocaleOrder = localeDistributedOrders.value.find((order) => order.id === source.id)
-    if (subsctractSum >= 0) {
+    if (subtractSum >= 0) {
       if (existLocaleOrder) {
         existLocaleOrder.remainingAmount.value = 0
       } else {
@@ -69,12 +73,12 @@ const moveOrderWaitingToOrders = (allOrders?: boolean) => {
         localeDistributedOrders.value.push(selectedOrder)
       }
       localeWaitingOrders.value.splice(getIndexToDelete(localeWaitingOrders.value, selectedOrder), 1)
-      localeRemainingAmount.value = subsctractSum
+      localeRemainingAmount.value = subtractSum
     } else {
       if (existLocaleOrder) {
-        existLocaleOrder.remainingAmount.value = Math.abs(subsctractSum)
+        existLocaleOrder.remainingAmount.value = Math.abs(subtractSum)
       } else {
-        source.remainingAmount.value = Math.abs(subsctractSum)
+        source.remainingAmount.value = Math.abs(subtractSum)
         localeDistributedOrders.value.push(selectedOrder)
       }
       const localeWaitingOrder = localeWaitingOrders.value.find((order) => order.id === source.id)
@@ -89,13 +93,16 @@ const moveOrderWaitingToOrders = (allOrders?: boolean) => {
 }
 
 const moveOrdersToOrderWaiting = (allOrders?: boolean) => {
-  if (allOrders) {
-    distributedOrdersSelection.selected.value = [...localeDistributedOrders.value]
-  }
-  if (!distributedOrdersSelection.selected.value.length
-  || localeRemainingAmount.value === undefined) {
+  if (localeRemainingAmount.value === undefined) {
     distributedOrdersSelection.selected.value = []
     return
+  }
+  if (localeDistributedOrders.value.length && !distributedOrdersSelection.selected.value.length) {
+    if (allOrders) {
+      distributedOrdersSelection.selected.value = [...localeDistributedOrders.value]
+    } else {
+      distributedOrdersSelection.selected.value = [[...localeDistributedOrders.value][0]]
+    }
   }
   distributedOrdersSelection.selected.value.forEach((selectedOrder) => {
     const source = selectedOrder
@@ -113,6 +120,10 @@ const moveOrdersToOrderWaiting = (allOrders?: boolean) => {
   distributedOrdersSelection.selected.value = []
   emit('orders', getPaymentOrdersPayload())
 }
+
+onMounted(() => {
+  getPaymentOrdersPayload()
+})
 
 </script>
 
@@ -264,22 +275,22 @@ const moveOrdersToOrderWaiting = (allOrders?: boolean) => {
 }
 
 .height-fix {
-  height: 21.875rem;
-  min-width: 17rem;
   overflow-y: auto;
+  min-width: 17rem;
+  height: 21.875rem;
   padding-right: 6px;
 
   table {
-    border-collapse: separate;
     border-spacing: 0;
+    border-collapse: separate;
 
     thead {
       th {
-        font-size: 0.8rem;
-        font-weight: normal;
         border-top: 1px solid #dee2e6;
-        border-bottom: 1px solid #dee2e6;
         border-right: 1px solid #dee2e6;
+        border-bottom: 1px solid #dee2e6;
+        font-weight: normal;
+        font-size: 0.8rem;
 
         &:first-child {
           border-left: 1px solid #dee2e6;
@@ -289,9 +300,9 @@ const moveOrdersToOrderWaiting = (allOrders?: boolean) => {
 
     tbody {
       td {
-        cursor: pointer;
-        border-bottom: 1px solid #dee2e6;
         border-right: 1px solid #dee2e6;
+        border-bottom: 1px solid #dee2e6;
+        cursor: pointer;
 
         &:first-child {
           border-left: 1px solid #dee2e6;
