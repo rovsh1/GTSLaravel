@@ -27,6 +27,8 @@ const { isFetching: isFetchingWaitingOrders,
 const { isFetching: isFetchingOrders, execute: fetchOrders, data: orders } = usePaymentOrdersListAPI(paymentIdProps)
 const { isFetching: isFetchingPayment, execute: fetchPayment, data: payment } = useGetPaymentAPI(paymentIdProps)
 
+const isSendingOrders = ref<boolean>(false)
+
 const isFetching = computed(() => (isFetchingWaitingOrders.value || isFetchingOrders.value || isFetchingPayment.value))
 
 const isDisabled = computed(() => (!waitingOrders.value?.length && !orders.value?.length)
@@ -48,12 +50,16 @@ const closeModal = () => {
 
 const onSubmit = async () => {
   if (!paymentID.value) return
-  await ordersLend({
+  isSendingOrders.value = true
+  const response = await ordersLend({
     paymentID: paymentID.value,
     orders: newDistributedOrders.value,
   })
-  closeModal()
-  // window.location.reload()
+  isSendingOrders.value = false
+  if (response.data.value?.success) {
+    closeModal()
+    window.location.reload()
+  }
 }
 
 </script>
@@ -62,12 +68,12 @@ const onSubmit = async () => {
   <BaseDialog :auto-width="true" :opened="isOpened as boolean" @close="toggleModal(false)">
     <template #title>Распределение оплат</template>
     <div class="position-relative">
-      <OverlayLoading v-if="isFetching" />
+      <OverlayLoading v-if="isFetching || isSendingOrders" />
       <OrderPaymentsTable
         :waiting-orders="waitingOrders || []"
         :orders="orders || []"
         :remaining-amount="payment?.remainingAmount"
-        :loading="isFetching"
+        :loading="isFetching || isSendingOrders"
         :disabled="isDisabled"
         @orders="(orders) => newDistributedOrders = orders"
       />
@@ -76,12 +82,19 @@ const onSubmit = async () => {
       <button
         class="btn btn-primary"
         type="button"
-        :disabled="isFetching || isDisabled"
+        :disabled="isFetching || isDisabled || isSendingOrders"
         @click="onSubmit"
       >
         Сохранить
       </button>
-      <button class="btn btn-cancel" type="button" @click="closeModal">Отмена</button>
+      <button
+        class="btn btn-cancel"
+        type="button"
+        :disabled="isSendingOrders"
+        @click="closeModal"
+      >
+        Отмена
+      </button>
     </template>
   </BaseDialog>
 </template>
