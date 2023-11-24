@@ -2,14 +2,12 @@
 
 namespace Module\Booking\Moderation\Domain\Booking\Service\StatusRules;
 
-use Module\Booking\Requesting\Domain\BookingRequest\Service\RequestRules;
 use Module\Shared\Enum\Booking\BookingStatusEnum;
 
-class AdministratorRules extends AbstractRules implements StatusRulesInterface
+final class DefaultTransitions extends AbstractTransitions implements StatusTransitionsInterface
 {
-    public function __construct(
-        private readonly RequestRules $requestRules
-    ) {
+    protected function configure(): void
+    {
         $this->addTransition(BookingStatusEnum::DRAFT, BookingStatusEnum::CREATED);
 
         $this->addTransition(BookingStatusEnum::CREATED, BookingStatusEnum::PROCESSING);
@@ -36,52 +34,5 @@ class AdministratorRules extends AbstractRules implements StatusRulesInterface
         $this->addTransition(BookingStatusEnum::WAITING_CANCELLATION, BookingStatusEnum::CANCELLED);
         $this->addTransition(BookingStatusEnum::WAITING_CANCELLATION, BookingStatusEnum::CANCELLED_FEE);
         $this->addTransition(BookingStatusEnum::WAITING_CANCELLATION, BookingStatusEnum::CANCELLED_NO_FEE);
-    }
-
-    public function isEditableStatus(BookingStatusEnum $status): bool
-    {
-        return $status === BookingStatusEnum::CREATED
-            || ($this->requestRules->isRequestableStatus($status) && $status !== BookingStatusEnum::CONFIRMED);
-    }
-
-    public function isCancelledStatus(BookingStatusEnum $status): bool
-    {
-        return in_array($status, [
-            BookingStatusEnum::CANCELLED,
-            BookingStatusEnum::CANCELLED_FEE,
-            BookingStatusEnum::CANCELLED_NO_FEE,
-        ]);
-    }
-
-    public function isDeletedStatus(BookingStatusEnum $status): bool
-    {
-        return $status == BookingStatusEnum::DELETED;
-    }
-
-    public function canEditExternalNumber(BookingStatusEnum $status): bool
-    {
-        return $status === BookingStatusEnum::CONFIRMED;
-    }
-
-    public function canChangeRoomPrice(BookingStatusEnum $status): bool
-    {
-        return in_array($status, [
-            BookingStatusEnum::CREATED,
-            BookingStatusEnum::PROCESSING,
-            BookingStatusEnum::WAITING_PROCESSING,
-            BookingStatusEnum::NOT_CONFIRMED,
-        ]);
-    }
-
-    /**
-     * @return BookingStatusEnum[]
-     */
-    public static function getCompletedStatuses(): array
-    {
-        return [
-            BookingStatusEnum::CONFIRMED,
-            BookingStatusEnum::CANCELLED_FEE,
-            BookingStatusEnum::CANCELLED_NO_FEE
-        ];
     }
 }

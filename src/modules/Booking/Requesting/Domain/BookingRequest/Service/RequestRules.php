@@ -5,10 +5,14 @@ declare(strict_types=1);
 namespace Module\Booking\Requesting\Domain\BookingRequest\Service;
 
 use Module\Booking\Requesting\Domain\BookingRequest\ValueObject\RequestTypeEnum;
+use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Shared\Enum\Booking\BookingStatusEnum;
+use Module\Shared\Enum\ServiceTypeEnum;
 
 final class RequestRules
 {
+    private Booking $booking;
+
     /**
      * @var array<int, BookingStatusEnum> $requestableStatuses
      */
@@ -19,41 +23,57 @@ final class RequestRules
         BookingStatusEnum::NOT_CONFIRMED,
     ];
 
+    public function booking(Booking $booking): void
+    {
+        $this->booking = $booking;
+    }
+
+    /**
+     * @return BookingStatusEnum[]
+     */
     public static function getRequestableStatuses(): array
     {
         return self::REQUESTABLE_STATUSES;
     }
 
-    public function isRequestableStatus(BookingStatusEnum $status): bool
+    public function isBookingRequestable(): bool
     {
-        return in_array($status, self::REQUESTABLE_STATUSES);
+        return !$this->isOtherService() && in_array($this->booking->status(), self::REQUESTABLE_STATUSES);
     }
 
-    public function canSendCancellationRequest(BookingStatusEnum $status): bool
+    public function canSendCancellationRequest(): bool
     {
-        return $status === BookingStatusEnum::CONFIRMED;
+        return !$this->isOtherService() && $this->booking->status() === BookingStatusEnum::CONFIRMED;
     }
 
-    public function canSendBookingRequest(BookingStatusEnum $status): bool
+    public function canSendBookingRequest(): bool
     {
-        return $status === BookingStatusEnum::PROCESSING;
+        return !$this->isOtherService() && $this->booking->status() === BookingStatusEnum::PROCESSING;
     }
 
-    public function canSendChangeRequest(BookingStatusEnum $status): bool
+    public function canSendChangeRequest(): bool
     {
-        return in_array($status, [BookingStatusEnum::WAITING_PROCESSING, BookingStatusEnum::NOT_CONFIRMED]);
+        return !$this->isOtherService() && in_array($this->booking->status(), [
+                BookingStatusEnum::WAITING_PROCESSING,
+                BookingStatusEnum::NOT_CONFIRMED
+            ]);
     }
 
-    public function getRequestTypeByStatus(BookingStatusEnum $status): RequestTypeEnum
+    public function getRequestType(): ?RequestTypeEnum
     {
-        $requestType = RequestTypeEnum::CHANGE;
-        if ($this->canSendBookingRequest($status)) {
-            $requestType = RequestTypeEnum::BOOKING;
+        if ($this->canSendBookingRequest()) {
+            return RequestTypeEnum::BOOKING;
+        } elseif ($this->canSendCancellationRequest()) {
+            return RequestTypeEnum::CANCEL;
+        } elseif ($this->canSendChangeRequest()) {
+            return RequestTypeEnum::CHANGE;
+        } else {
+            return null;
         }
-        if ($this->canSendCancellationRequest($status)) {
-            $requestType = RequestTypeEnum::CANCEL;
-        }
+    }
 
-        return $requestType;
+    private function isOtherService(): bool
+    {
+        return $this->booking->serviceType() === ServiceTypeEnum::OTHER_SERVICE;
     }
 }

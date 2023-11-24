@@ -23,8 +23,8 @@ class SendRequest implements UseCaseInterface
     {
         $booking = $this->bookingRepository->findOrFail(new BookingId($id));
 
-        $requestType = $this->requestRules->getRequestTypeByStatus($booking->status());
+        $this->requestRules->booking($booking);
 
-        $this->requestFactory->generate($booking, $requestType);
+        $this->requestFactory->generate($booking, $this->requestRules->getRequestType());
     }
 }

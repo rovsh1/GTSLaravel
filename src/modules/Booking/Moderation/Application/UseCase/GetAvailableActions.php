@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Application\UseCase;
 
 use Module\Booking\Moderation\Application\Dto\AvailableActionsDto;
-use Module\Booking\Moderation\Domain\Booking\Service\StatusRules\AdministratorRules;
-use Module\Booking\Moderation\Domain\Booking\Service\StatusRules\OtherServiceAdministratorRules;
-use Module\Booking\Moderation\Domain\Booking\Service\StatusRules\StatusRulesInterface;
+use Module\Booking\Moderation\Application\Service\EditRules;
+use Module\Booking\Moderation\Domain\Booking\Service\StatusRules\StatusTransitionsFactory;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\RequestRules;
 use Module\Booking\Shared\Application\Dto\StatusDto;
 use Module\Booking\Shared\Application\Factory\BookingStatusDtoFactory;
@@ -15,39 +14,37 @@ use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Shared\Enum\Booking\BookingStatusEnum;
-use Module\Shared\Enum\ServiceTypeEnum;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class GetAvailableActions implements UseCaseInterface
 {
     public function __construct(
-        private readonly AdministratorRules $statusRules,
+        private readonly StatusTransitionsFactory $statusTransitionsFactory,
+        private readonly EditRules $editRules,
         private readonly RequestRules $requestRules,
-        private BookingRepositoryInterface $repository,
+        private readonly BookingRepositoryInterface $repository,
         private readonly BookingStatusDtoFactory $statusDtoFactory,
-    ) {}
+    ) {
+    }
 
     public function execute(int $bookingId): AvailableActionsDto
     {
         $booking = $this->repository->findOrFail(new BookingId($bookingId));
-        $statusRules = $this->statusRules;
-        $isOtherService = $booking->serviceType() === ServiceTypeEnum::OTHER_SERVICE;
-        if ($isOtherService) {
-            $statusRules = app(OtherServiceAdministratorRules::class);
-        }
-        $statuses = $this->getAvailableStatuses($statusRules, $booking);
+
+        $this->editRules->booking($booking);
+        $this->requestRules->booking($booking);
 
         return new AvailableActionsDto(
-            $statuses,
-            $statusRules->isEditableStatus($booking->status()),
-            $this->requestRules->isRequestableStatus($booking->status()),
-            $this->requestRules->canSendBookingRequest($booking->status()),
-            !$isOtherService ? $this->requestRules->canSendCancellationRequest($booking->status()) : false,
-            $this->requestRules->canSendChangeRequest($booking->status()),
-            $statusRules->canEditExternalNumber($booking->status()),
+            statuses: $this->buildAvailableStatuses($booking),
+            isEditable: $this->editRules->isEditable(),
+            isRequestable: $this->requestRules->isBookingRequestable(),
+            canSendBookingRequest: $this->requestRules->canSendBookingRequest(),
+            canSendCancellationRequest: $this->requestRules->canSendCancellationRequest(),
+            canSendChangeRequest: $this->requestRules->canSendChangeRequest(),
+            canEditExternalNumber: $this->editRules->canEditExternalNumber(),
             //@todo прописать логику для этого флага (у отеля и админки она разная)
-            $statusRules->canChangeRoomPrice($booking->status()) && !$booking->prices()->clientPrice()->manualValue(),
-            $statusRules->isCancelledStatus($booking->status()),
+            canChangeRoomPrice: $this->editRules->canChangeRoomPrice(),
+            canCopy: $this->editRules->canCopy(),
         );
     }
 
@@ -55,14 +52,13 @@ class GetAvailableActions implements UseCaseInterface
      * @param Booking $booking
      * @return StatusDto[]
      */
-    private function getAvailableStatuses(StatusRulesInterface $statusRules, Booking $booking): array
+    private function buildAvailableStatuses(Booking $booking): array
     {
-        $statuses = $statusRules->getStatusTransitions($booking->status());
-        $statusIds = array_flip(array_map(fn(BookingStatusEnum $status) => $status->value, $statuses));
-        $statusSettings = $this->statusDtoFactory->statuses();
+        $statusTransitions = $this->statusTransitionsFactory->build($booking->serviceType());
 
-        return array_values(
-            array_filter($statusSettings, fn(StatusDto $statusDto) => array_key_exists($statusDto->id, $statusIds))
+        return array_map(
+            fn(BookingStatusEnum $s) => $this->statusDtoFactory->get($s),
+            $statusTransitions->getAvailableTransitions($booking->status())
         );
     }
 }

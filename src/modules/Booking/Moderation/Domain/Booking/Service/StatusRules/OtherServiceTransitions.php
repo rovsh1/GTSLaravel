@@ -2,16 +2,12 @@
 
 namespace Module\Booking\Moderation\Domain\Booking\Service\StatusRules;
 
-use Module\Booking\Requesting\Domain\BookingRequest\Service\RequestRules;
 use Module\Shared\Enum\Booking\BookingStatusEnum;
 
-class OtherServiceAdministratorRules extends AdministratorRules
+final class OtherServiceTransitions extends AbstractTransitions implements StatusTransitionsInterface
 {
-    public function __construct(
-        RequestRules $requestRules
-    ) {
-        parent::__construct($requestRules);
-        $this->transitions = [];
+    protected function configure(): void
+    {
         $this->addTransition(BookingStatusEnum::CREATED, BookingStatusEnum::CANCELLED);
         $this->addTransition(BookingStatusEnum::CREATED, BookingStatusEnum::PROCESSING);
         $this->addTransition(BookingStatusEnum::PROCESSING, BookingStatusEnum::CONFIRMED);

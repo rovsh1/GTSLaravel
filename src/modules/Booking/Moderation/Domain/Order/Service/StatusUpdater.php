@@ -14,7 +14,8 @@ class StatusUpdater
     public function __construct(
         private readonly BookingRepositoryInterface $repository,
         private readonly InvoiceAdapterInterface $invoiceAdapter
-    ) {}
+    ) {
+    }
 
     public function toInProgress(Order $order): void
     {
@@ -25,7 +26,7 @@ class StatusUpdater
     {
         $bookings = $this->repository->getByOrderId($order->id());
         foreach ($bookings as $booking) {
-            if (!$booking->isConfirmed() && !$booking->isCancelled()) {
+            if ($booking->inModeration()) {
                 throw new OrderHasBookingInProgress();
             }
         }
