@@ -8,7 +8,6 @@ use Module\Hotel\Moderation\Domain\Hotel\ValueObject\Contact;
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\ContactCollection;
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\HotelId;
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\TimeSettings;
-use Module\Shared\Contracts\Service\SerializerInterface;
 use Module\Shared\Enum\ContactTypeEnum;
 use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Foundation\Support\EntityFactory\AbstractEntityFactory;
@@ -16,11 +15,6 @@ use Sdk\Module\Foundation\Support\EntityFactory\AbstractEntityFactory;
 class HotelFactory extends AbstractEntityFactory
 {
     protected string $entity = Hotel::class;
-
-    public function __construct(private readonly SerializerInterface $serializer)
-    {
-        parent::__construct();
-    }
 
     protected function fromArray(array $data): mixed
     {
@@ -30,7 +24,7 @@ class HotelFactory extends AbstractEntityFactory
             id: new HotelId($data['id']),
             name: $data['name'],
             currency: CurrencyEnum::from($data['currency']),
-            timeSettings: $this->serializer->deserialize(TimeSettings::class, $data['time_settings']),
+            timeSettings: TimeSettings::fromData(json_decode($data['time_settings'], true)),
             address: new Address(
                 country: $data['country_name'],
                 city: $data['city_name'],
