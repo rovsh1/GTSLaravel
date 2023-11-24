@@ -3,7 +3,7 @@
 namespace Module\Booking\Invoicing\Infrastructure\Service;
 
 use Illuminate\Contracts\View\View;
-use Module\Shared\Service\TemplateCompilerInterface;
+use Module\Booking\Invoicing\Domain\Service\TemplateCompilerInterface;
 use Mpdf\Mpdf;
 
 class InvoiceTemplateCompiler implements TemplateCompilerInterface

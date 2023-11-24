@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Shared\Contracts;
+namespace Module\Shared\Contracts\Support;
 
 interface CanEquate
 {

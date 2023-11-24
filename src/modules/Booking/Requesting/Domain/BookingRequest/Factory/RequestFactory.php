@@ -7,12 +7,12 @@ use Module\Booking\Requesting\Domain\BookingRequest\Event\BookingRequestSent;
 use Module\Booking\Requesting\Domain\BookingRequest\Event\CancelRequestSent;
 use Module\Booking\Requesting\Domain\BookingRequest\Event\ChangeRequestSent;
 use Module\Booking\Requesting\Domain\BookingRequest\Repository\RequestRepositoryInterface;
+use Module\Booking\Requesting\Domain\BookingRequest\Service\TemplateCompilerInterface;
 use Module\Booking\Requesting\Domain\BookingRequest\Service\TemplateDataFactory;
 use Module\Booking\Requesting\Domain\BookingRequest\ValueObject\RequestTypeEnum;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Shared\Contracts\Adapter\FileStorageAdapterInterface;
 use Module\Shared\Enum\ServiceTypeEnum;
-use Module\Shared\Service\TemplateCompilerInterface;
 use Module\Shared\ValueObject\File;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 

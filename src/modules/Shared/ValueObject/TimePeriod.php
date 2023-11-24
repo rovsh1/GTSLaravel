@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Shared\ValueObject;
 
-use Module\Shared\Contracts\CanEquate;
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
+use Module\Shared\Contracts\Support\CanEquate;
 use Module\Shared\Contracts\Support\SerializableInterface;
 
 class TimePeriod implements ValueObjectInterface, SerializableInterface, CanEquate

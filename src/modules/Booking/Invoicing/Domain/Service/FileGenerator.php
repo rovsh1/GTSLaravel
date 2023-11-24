@@ -8,7 +8,6 @@ use Module\Booking\Shared\Domain\Order\ValueObject\ClientId;
 use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
 use Module\Shared\Contracts\Adapter\FileStorageAdapterInterface;
 use Module\Shared\Dto\FileDto;
-use Module\Shared\Service\TemplateCompilerInterface;
 
 class FileGenerator
 {

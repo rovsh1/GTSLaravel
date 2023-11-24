@@ -4,6 +4,9 @@ namespace Module\Shared\Support\Facade;
 
 use Spatie\LaravelData\Normalizers\Normalizer;
 
+/**
+ * @deprecated
+ */
 class DomainModelNormalizer implements Normalizer
 {
     public function normalize(mixed $value): ?array
@@ -27,6 +30,7 @@ class DomainModelNormalizer implements Normalizer
                 }
             }
         }
+
         return $data;
     }
 }

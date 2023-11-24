@@ -3,7 +3,7 @@
 namespace Module\Booking\Requesting\Infrastructure\Service;
 
 use Illuminate\Contracts\View\View;
-use Module\Shared\Service\TemplateCompilerInterface;
+use Module\Booking\Requesting\Domain\BookingRequest\Service\TemplateCompilerInterface;
 use Mpdf\Mpdf;
 
 class RequestTemplateCompiler implements TemplateCompilerInterface

@@ -4,9 +4,9 @@ namespace Module\Booking\Invoicing\Providers;
 
 use Illuminate\Support\Facades\View;
 use Module\Booking\Invoicing\Domain;
+use Module\Booking\Invoicing\Domain\Service\TemplateCompilerInterface;
 use Module\Booking\Invoicing\Infrastructure;
 use Module\Booking\Shared\Providers\BootServiceProvider as SharedBookingServiceProvider;
-use Module\Shared\Service\TemplateCompilerInterface;
 use Sdk\Module\Support\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider

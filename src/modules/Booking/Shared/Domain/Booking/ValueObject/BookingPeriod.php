@@ -6,7 +6,7 @@ use Carbon\CarbonPeriod;
 use Carbon\CarbonPeriodImmutable;
 use DateTimeImmutable;
 use DateTimeInterface;
-use Module\Shared\Contracts\CanEquate;
+use Module\Shared\Contracts\Support\CanEquate;
 use Module\Shared\Contracts\Support\SerializableInterface;
 use Module\Shared\Support\DateTimeImmutableFactory;
 

@@ -2,7 +2,7 @@
 
 namespace Module\Booking\Shared\Domain\Booking\ValueObject;
 
-use Module\Shared\Contracts\CanEquate;
+use Module\Shared\Contracts\Support\CanEquate;
 use Module\Shared\Contracts\Support\SerializableInterface;
 use Module\Shared\Enum\CurrencyEnum;
 

@@ -6,6 +6,9 @@ namespace Module\Shared\Support\Dto;
 
 use Module\Shared\Contracts\Service\TranslatorInterface;
 
+/**
+ * @deprecated
+ */
 abstract class AbstractEnumDto extends \Sdk\Module\Foundation\Support\Dto\Dto
 {
     public function __construct(

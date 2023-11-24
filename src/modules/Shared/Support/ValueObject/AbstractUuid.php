@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Module\Shared\Support\ValueObject;
 
 use Illuminate\Support\Str;
-use Module\Shared\Contracts\CanEquate;
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
+use Module\Shared\Contracts\Support\CanEquate;
 
 abstract class AbstractUuid implements CanEquate, ValueObjectInterface
 {
