@@ -6,6 +6,25 @@ import { BaseResponse, useAdminAPI } from '~api'
 
 import { getNullableRef } from '~lib/vue'
 
+export type PaymentCurrency = {
+  id: number
+  value: string
+  name: string
+}
+
+export type PaymentPrice = {
+  currency: PaymentCurrency
+  value: number
+}
+
+export type PaymentOrder = {
+  id: number
+  clientId: number
+  clientPrice: PaymentPrice
+  payedAmount: PaymentPrice
+  remainingAmount: PaymentPrice
+}
+
 export type PaymentPayload = {
   paymentID: number
 }
@@ -17,11 +36,6 @@ export type PaymentOrderPayload = {
 
 export type PaymentOrdersPayload = PaymentPayload & {
   orders: PaymentOrderPayload[]
-}
-
-export interface PaymentOrder {
-  id: number
-  name: string
 }
 
 export const usePaymentWaitingOrdersListAPI = (props: MaybeRef<PaymentPayload | null>) =>

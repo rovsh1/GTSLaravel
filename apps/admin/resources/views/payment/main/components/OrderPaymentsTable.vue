@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 
-import { PaymentOrder } from '~api/payment/payment'
+import { PaymentOrder, PaymentOrderPayload } from '~api/payment/payment'
+
+import { formatPrice } from '~lib/price'
 
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 import InlineIcon from '~components/InlineIcon.vue'
 
 const props = withDefaults(defineProps<{
+  remainingAmount: number | null
   waitingOrders: PaymentOrder[]
   orders: PaymentOrder[]
   loading: boolean
@@ -15,7 +18,7 @@ const props = withDefaults(defineProps<{
 })
 
 const emit = defineEmits<{
-  (event: 'orders', value: PaymentOrder[]): void
+  (event: 'orders', value: PaymentOrderPayload[]): void
 }>()
 
 const localeWaitingOrders = ref<PaymentOrder[]>(props.waitingOrders)
@@ -34,8 +37,14 @@ const toogleSelectOrder = (item: any) => {
   }
 }
 
-watch(() => props.orders, (newValue) => {
-  localeOrders.value = newValue
+const getPaymentOrdersPayload = (): PaymentOrderPayload[] => selectedOrders.value.map((order) => ({
+  id: order.id,
+  sum: order.remainingAmount.value,
+}))
+
+watch([() => props.orders, () => props.waitingOrders], () => {
+  localeWaitingOrders.value = props.waitingOrders
+  localeOrders.value = props.orders
 })
 
 </script>
@@ -50,7 +59,6 @@ watch(() => props.orders, (newValue) => {
             <tr>
               <th scope="col">№ Заказа</th>
               <th class="column-text">Цена продажи</th>
-              <th class="column-text">Валюта</th>
               <th class="column-text">Остаток</th>
             </tr>
           </thead>
@@ -59,18 +67,17 @@ watch(() => props.orders, (newValue) => {
               <tr
                 v-for="waitingOrder in localeWaitingOrders"
                 :key="waitingOrder.id"
-                :class="{ 'table-active': isSelectedItem(waitingOrder) }"
-                @click="toogleSelectOrder(waitingOrder)"
+                :class="{ 'table-active': isSelectedItem(waitingOrder.id) }"
+                @click="toogleSelectOrder(waitingOrder.id)"
               >
                 <td>{{ waitingOrder.id }}</td>
-                <td>{{ waitingOrder.id }}</td>
-                <td>{{ waitingOrder.id }}</td>
-                <td>{{ waitingOrder.id }}</td>
+                <td>{{ formatPrice(waitingOrder.clientPrice.value, waitingOrder.clientPrice.currency.value) }}</td>
+                <td>{{ formatPrice(waitingOrder.remainingAmount.value, waitingOrder.remainingAmount.currency.value) }}</td>
               </tr>
             </template>
             <template v-else>
               <tr>
-                <td class="text-center" colspan="4">Нет данных</td>
+                <td class="text-center" colspan="3">Нет данных</td>
               </tr>
             </template>
           </tbody>
@@ -131,25 +138,26 @@ watch(() => props.orders, (newValue) => {
             <thead class="table-light">
               <tr>
                 <th scope="col">№ Заказа</th>
-                <th scope="col" class="column-text">Цена продажи</th>
-                <th class="column-text">Валюта</th>
-                <th class="column-text">Сумма оплаты в валюте</th>
-                <th class="column-text">Курс</th>
+                <th class="column-text">Цена продажи</th>
+                <th class="column-text">Остаток</th>
               </tr>
             </thead>
             <tbody>
               <template v-if="localeOrders.length">
-                <tr v-for="order in localeOrders" :key="order.id">
+                <tr
+                  v-for="order in localeOrders"
+                  :key="order.id"
+                  :class="{ 'table-active': isSelectedItem(order.id) }"
+                  @click="toogleSelectOrder(order.id)"
+                >
                   <td>{{ order.id }}</td>
-                  <td>{{ order.id }}</td>
-                  <td>{{ order.id }}</td>
-                  <td>{{ order.id }}</td>
-                  <td />
+                  <td>{{ formatPrice(order.clientPrice.value, order.clientPrice.currency.value) }}</td>
+                  <td>{{ formatPrice(order.remainingAmount.value, order.remainingAmount.currency.value) }}</td>
                 </tr>
               </template>
               <template v-else>
                 <tr>
-                  <td class="text-center" colspan="5">Нет данных</td>
+                  <td class="text-center" colspan="3">Нет данных</td>
                 </tr>
               </template>
             </tbody>
@@ -162,7 +170,14 @@ watch(() => props.orders, (newValue) => {
           <span id="basic-addon3" class="input-group-text">
             <InlineIcon icon="payments" />
           </span>
-          <input id="total-amount" type="text" class="form-control text-right" disabled aria-describedby="basic-addon3">
+          <input
+            id="total-amount"
+            type="text"
+            :value="remainingAmount"
+            class="form-control text-right"
+            disabled
+            aria-describedby="basic-addon3"
+          >
         </div>
       </div>
     </div>

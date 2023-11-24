@@ -51,6 +51,7 @@ const onSubmit = () => {
       <OrderPaymentsTable
         :waiting-orders="waitingOrders || []"
         :orders="orders || []"
+        :remaining-amount="null"
         :loading="isFetchingWaitingOrders || isFetchingOrders || (!waitingOrders?.length && !orders?.length)"
         @orders="() => {}"
       />
