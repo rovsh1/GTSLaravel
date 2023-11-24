@@ -8,6 +8,7 @@ use Sdk\Module\Contracts\ModuleInterface;
 use Sdk\Module\Contracts\Support\ContainerInterface;
 use Sdk\Module\Foundation\Providers\BusServiceProvider;
 use Sdk\Module\Foundation\Providers\EventServiceProvider;
+use Sdk\Module\Foundation\Providers\SupportServiceProvider;
 use Sdk\Module\Foundation\Support\SharedContainer;
 
 class Module extends Container implements ModuleInterface, ContainerInterface
@@ -188,6 +189,7 @@ class Module extends Container implements ModuleInterface, ContainerInterface
     {
         $this->register(BusServiceProvider::class);
         $this->register(EventServiceProvider::class);
+        $this->register(SupportServiceProvider::class);
     }
 
     protected function bootProvider(ServiceProvider $provider)

@@ -11,7 +11,8 @@ class Message
         private MessageStatusEnum $status,
         private readonly string $module,
         private readonly string $event,
-        private readonly array $payload
+        private readonly array $payload,
+        private readonly array $context
     ) {
     }
 
@@ -33,6 +34,11 @@ class Message
     public function payload(): array
     {
         return $this->payload;
+    }
+
+    public function context(): array
+    {
+        return $this->context;
     }
 
 //    public function fail
@@ -71,6 +77,7 @@ class Message
             module: $payload['module'],
             event: $payload['event'],
             payload: $payload['payload'],
+            context: $payload['context'],
         );
     }
 }

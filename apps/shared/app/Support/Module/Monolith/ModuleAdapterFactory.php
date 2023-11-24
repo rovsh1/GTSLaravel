@@ -35,6 +35,7 @@ class ModuleAdapterFactory
 
         $module = new Module($name, $config, $this->sharedContainer);
         $module->register($bootServiceProvider);
+        $module->register(CommonServiceProvider::class);
 
         return new ModuleAdapter($name, $module);
     }
