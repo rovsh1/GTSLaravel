@@ -60,7 +60,9 @@ class Payment extends Model
 
     public function scopeWithPlantSum(Builder $builder): void
     {
-        $builder->selectSub(
+        $builder
+            ->select('client_payments.*')
+            ->selectSub(
             'SELECT COALESCE(SUM(sum), 0) FROM client_payment_plants WHERE payment_id=client_payments.id',
             'planted_sum'
         );

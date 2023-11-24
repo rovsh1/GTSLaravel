@@ -8,7 +8,8 @@ import CollapsableBlock from '~resources/views/hotel/settings/components/Collaps
 import PricesModal from '~resources/views/supplier/service/price/ components/PricesModal.vue'
 
 import { Money, Season } from '~api/models'
-import { ServicePriceResponse, updateAirportPrice, useServiceProviderAirportPricesAPI } from '~api/supplier/airport'
+import { ServicePriceResponse } from '~api/supplier/airport'
+import { updateOtherPrice, useServiceProviderOtherPricesAPI } from '~api/supplier/other'
 
 import { formatPeriod } from '~lib/date'
 
@@ -19,7 +20,7 @@ const props = defineProps<{
   seasons: Season[]
 }>()
 
-const { data: servicePrices, execute: fetchPrices } = useServiceProviderAirportPricesAPI({
+const { data: servicePrices, execute: fetchPrices } = useServiceProviderOtherPricesAPI({
   supplierId: props.supplierId,
   serviceId: props.serviceId,
 })
@@ -33,7 +34,7 @@ const handleChangePrice = async (priceNet?: number, pricesGross?: Money[]): Prom
     return
   }
   isModalLoading.value = true
-  await updateAirportPrice({
+  await updateOtherPrice({
     seasonId: editableServicePrice.value?.season_id as number,
     serviceId: props.serviceId,
     supplierId: props.supplierId,
