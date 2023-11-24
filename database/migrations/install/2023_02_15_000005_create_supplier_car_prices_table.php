@@ -13,7 +13,7 @@ return new class extends Migration {
             $table->unsignedInteger('service_id');
             $table->unsignedInteger('car_id');
             $table->char('currency', 3);
-            $table->unsignedDecimal('price_net');
+            $table->unsignedDecimal('price_net',14);
             $table->json('prices_gross');
 
 //            $table->unique(['car_id', 'city_id', 'service_id', 'currency'], 'uid');

@@ -57,7 +57,7 @@ return new class extends Migration {
             $table->date('date');
             $table->unsignedInteger('group_id');
             $table->unsignedInteger('room_id');
-            $table->unsignedDecimal('price', 11, 2);
+            $table->unsignedDecimal('price', 14);
             $table->unsignedTinyInteger('fill_type');
 
             $table->primary(['date', 'group_id', 'room_id']);

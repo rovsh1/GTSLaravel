@@ -12,7 +12,7 @@ return new class extends Migration {
             $table->unsignedInteger('service_id');
             $table->unsignedInteger('season_id');
             $table->char('currency', 3);
-            $table->unsignedDecimal('price_net');
+            $table->unsignedDecimal('price_net', 14);
             $table->json('prices_gross');
 
             $table->foreign('service_id')

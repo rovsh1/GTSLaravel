@@ -12,7 +12,7 @@ return new class extends Migration {
             $table->unsignedInteger('supplier_id');
             $table->unsignedInteger('booking_id');
             $table->string('invoice_number');
-            $table->unsignedDecimal('payment_sum');
+            $table->unsignedDecimal('payment_sum',14);
             $table->unsignedSmallInteger('payment_method_id');
             $table->string('document_name', 32)->nullable();
             $table->char('document', 32)->nullable();
