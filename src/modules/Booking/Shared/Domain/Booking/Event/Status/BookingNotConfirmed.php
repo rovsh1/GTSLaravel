@@ -13,10 +13,11 @@ class BookingNotConfirmed extends AbstractStatusEvent
         parent::__construct($booking);
     }
 
-    public function payload(): ?array
+    public function integrationPayload(): array
     {
         return [
-            'reason' => $this->reason
+            ...parent::integrationPayload(),
+            'reason' => $this->reason,
         ];
     }
 }

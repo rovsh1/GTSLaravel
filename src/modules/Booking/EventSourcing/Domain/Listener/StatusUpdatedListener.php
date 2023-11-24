@@ -17,10 +17,12 @@ class StatusUpdatedListener implements IntegrationEventListenerInterface
 
     public function handle(IntegrationEventMessage $message): void
     {
+        $data = $message->payload;
+        unset($data['bookingId']);
         $this->changesLogRepository->register(
             new BookingId($message->payload['bookingId']),
             BookingEventEnum::STATUS_UPDATED,
-            ['status' => $message->payload['status']],
+            $data,
             $message->context
         );
     }

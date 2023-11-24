@@ -11,6 +11,11 @@ abstract class AbstractTransitions
      */
     protected array $transitions = [];
 
+    public function __construct()
+    {
+        $this->configure();
+    }
+
     abstract protected function configure(): void;
 
     protected function addTransition(BookingStatusEnum $fromStatus, BookingStatusEnum $toStatus): void
