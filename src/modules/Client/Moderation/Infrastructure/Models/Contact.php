@@ -3,8 +3,8 @@
 namespace Module\Client\Moderation\Infrastructure\Models;
 
 use Illuminate\Database\Eloquent\Builder;
-use Module\Shared\Enum\ContactTypeEnum;
 use Sdk\Module\Database\Eloquent\Model;
+use Sdk\Shared\Enum\ContactTypeEnum;
 
 class Contact extends Model
 {

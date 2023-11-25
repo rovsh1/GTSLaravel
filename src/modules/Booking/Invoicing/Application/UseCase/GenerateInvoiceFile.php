@@ -6,12 +6,10 @@ namespace Module\Booking\Invoicing\Application\UseCase;
 
 use Module\Booking\Invoicing\Application\RequestDto\GenerateInvoiceFileRequestDto;
 use Module\Booking\Invoicing\Domain\Service\FileGenerator;
-use Module\Booking\Invoicing\Domain\ValueObject\InvoiceId;
-use Module\Booking\Invoicing\Domain\ValueObject\OrderIdCollection;
-use Module\Booking\Shared\Domain\Order\ValueObject\ClientId;
-use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
-use Module\Shared\Dto\FileDto;
+use Sdk\Booking\ValueObject\ClientId;
+use Sdk\Booking\ValueObject\OrderId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
+use Sdk\Shared\Dto\FileDto;
 
 class GenerateInvoiceFile implements UseCaseInterface
 {

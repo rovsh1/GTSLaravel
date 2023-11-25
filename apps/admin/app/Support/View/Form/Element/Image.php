@@ -5,7 +5,7 @@ namespace App\Admin\Support\View\Form\Element;
 use App\Admin\View\Components\FileImage;
 use Gsdk\Form\Element\File;
 use Illuminate\Http\UploadedFile;
-use Module\Shared\Dto\FileDto;
+use Sdk\Shared\Dto\FileDto;
 
 /**
  * @property string fileType

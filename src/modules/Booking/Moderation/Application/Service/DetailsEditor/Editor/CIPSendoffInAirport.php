@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\Service\DetailsEditor\Editor;
 
-use Module\Booking\Shared\Domain\Booking\Entity\CIPSendoffInAirport as Entity;
 use Module\Booking\Shared\Domain\Booking\Factory\Details\CIPSendoffInAirportFactoryInterface;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
-use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Supplier\Moderation\Infrastructure\Models\Service as InfrastructureSupplierService;
+use Sdk\Booking\Entity\BookingDetails\CIPSendoffInAirport as Entity;
+use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\GuestIdCollection;
+use Sdk\Booking\ValueObject\ServiceId;
+use Sdk\Booking\ValueObject\ServiceInfo;
 
 class CIPSendoffInAirport extends AbstractEditor implements EditorInterface
 {
@@ -30,7 +30,7 @@ class CIPSendoffInAirport extends AbstractEditor implements EditorInterface
             $serviceInfo,
             (int)$supplierService->data['airportId'],
             $detailsData['flightNumber'] ?? null,
-            $detailsData['departureDate'] ?? null,
+            $detailsData['date'] ?? null,
             new GuestIdCollection([])
         );
     }

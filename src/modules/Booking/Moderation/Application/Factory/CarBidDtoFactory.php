@@ -6,8 +6,8 @@ namespace Module\Booking\Moderation\Application\Factory;
 
 use Module\Booking\Moderation\Application\Dto\ServiceBooking\CarBidDto;
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
-use Module\Booking\Shared\Domain\Booking\ValueObject\CarBid;
-use Module\Booking\Shared\Domain\Booking\ValueObject\CarBidCollection;
+use Sdk\Booking\ValueObject\CarBid;
+use Sdk\Booking\ValueObject\CarBidCollection;
 
 class CarBidDtoFactory
 {

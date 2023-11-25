@@ -2,8 +2,6 @@
 
 namespace Module\Shared\Infrastructure\Adapter;
 
-use Module\Shared\Contracts\Adapter\FileStorageAdapterInterface;
-use Module\Shared\Dto\FileDto;
 use Module\Support\FileStorage\Application\Dto\CreateFileRequestDto;
 use Module\Support\FileStorage\Application\Dto\FileInfoDto;
 use Module\Support\FileStorage\Application\Dto\UpdateFileRequestDto;
@@ -12,6 +10,8 @@ use Module\Support\FileStorage\Application\UseCase\DeleteFile;
 use Module\Support\FileStorage\Application\UseCase\FindFile;
 use Module\Support\FileStorage\Application\UseCase\GetFileInfo;
 use Module\Support\FileStorage\Application\UseCase\UpdateFile;
+use Sdk\Shared\Contracts\Adapter\FileStorageAdapterInterface;
+use Sdk\Shared\Dto\FileDto;
 
 class FileStorageAdapter implements FileStorageAdapterInterface
 {

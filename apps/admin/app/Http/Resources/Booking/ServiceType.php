@@ -6,8 +6,8 @@ namespace App\Admin\Http\Resources\Booking;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Module\Shared\Contracts\Service\TranslatorInterface;
-use Module\Shared\Enum\ServiceTypeEnum;
+use Sdk\Shared\Contracts\Service\TranslatorInterface;
+use Sdk\Shared\Enum\ServiceTypeEnum;
 
 class ServiceType extends JsonResource
 {

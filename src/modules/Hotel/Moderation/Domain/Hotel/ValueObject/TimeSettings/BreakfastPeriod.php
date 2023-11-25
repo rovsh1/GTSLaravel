@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Module\Hotel\Moderation\Domain\Hotel\ValueObject\TimeSettings;
 
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
-use Module\Shared\Contracts\Support\SerializableDataInterface;
+use Sdk\Shared\Contracts\Support\SerializableInterface;
 
-class BreakfastPeriod implements ValueObjectInterface, SerializableDataInterface
+class BreakfastPeriod implements ValueObjectInterface, SerializableInterface
 {
     private readonly string $from;
     private readonly string $to;
@@ -31,7 +31,7 @@ class BreakfastPeriod implements ValueObjectInterface, SerializableDataInterface
         return $this->to;
     }
 
-    public function toData(): array
+    public function serialize(): array
     {
         return [
             'from' => $this->from,
@@ -39,9 +39,9 @@ class BreakfastPeriod implements ValueObjectInterface, SerializableDataInterface
         ];
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
-        return new static($data['from'], $data['to']);
+        return new static($payload['from'], $payload['to']);
     }
 
     /**

@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace Module\Client\Invoicing\Infrastructure\Repository;
 
-use Module\Client\Invoicing\Domain\Invoice\ValueObject\InvoiceId;
 use Module\Client\Invoicing\Domain\Order\Exception\OrderNotFoundException;
 use Module\Client\Invoicing\Domain\Order\Order;
 use Module\Client\Invoicing\Domain\Order\Repository\OrderRepositoryInterface;
 use Module\Client\Invoicing\Domain\Order\ValueObject\OrderId;
+use Module\Client\Invoicing\Domain\Order\ValueObject\PaymentId;
 use Module\Client\Invoicing\Infrastructure\Models\Order as Model;
 use Module\Client\Shared\Domain\ValueObject\ClientId;
+use Sdk\Shared\Enum\Order\OrderStatusEnum;
+use Sdk\Shared\ValueObject\Money;
 
 class OrderRepository implements OrderRepositoryInterface
 {
@@ -36,13 +38,48 @@ class OrderRepository implements OrderRepositoryInterface
         ]);
     }
 
+    /**
+     * @param PaymentId $paymentId
+     * @return Order[]
+     */
+    public function getForWaitingPayment(PaymentId $paymentId): array
+    {
+        $models = Model::forPaymentId($paymentId->value())
+            ->whereIn('status', [
+                OrderStatusEnum::INVOICED,
+                OrderStatusEnum::PARTIAL_PAID,
+                OrderStatusEnum::REFUND_FEE,
+            ])
+            ->get();
+
+        return $models->map(fn(Model $model) => $this->fromModel($model))->all();
+    }
+
+    /**
+     * @param PaymentId $paymentId
+     * @return Order[]
+     */
+    public function getPaymentOrders(PaymentId $paymentId): array
+    {
+        $models = Model::whereLendToPaymentId($paymentId->value())->get();
+
+        return $models->map(fn(Model $model) => $this->fromModel($model))->all();
+    }
+
     private function fromModel(Model $model): Order
     {
         return new Order(
             id: new OrderId($model->id),
             clientId: new ClientId($model->client_id),
             status: $model->status,
-            currency: $model->currency
+            clientPrice: new Money(
+                $model->currency,
+                $model->client_price,
+            ),
+            payedAmount: new Money(
+                $model->currency,
+                $model->payed_amount,
+            )
         );
     }
 }

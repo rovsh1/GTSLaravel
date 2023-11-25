@@ -19,7 +19,7 @@ class MessageSender
 
         /** @var ModuleAdapterInterface $module */
         foreach (app()->modules() as $module) {
-            if ($module->is($triggerModule) || !in_array($module->name(), $this->availableModules)) {
+            if ($module->is($triggerModule) || !$this->isDispatchableModule($module)) {
                 continue;
             }
 
@@ -29,13 +29,18 @@ class MessageSender
         }
     }
 
+    private function isDispatchableModule(ModuleAdapterInterface $moduleAdapter): bool
+    {
+        return in_array($moduleAdapter->name(), $this->availableModules);
+    }
+
     private function makeIntegrationEvent(Message $message): IntegrationEventMessage
     {
         return new IntegrationEventMessage(
             module: $message->module(),
             event: $message->event(),
             payload: $message->payload(),
-            context: []
+            context: $message->context()
         );
     }
 }

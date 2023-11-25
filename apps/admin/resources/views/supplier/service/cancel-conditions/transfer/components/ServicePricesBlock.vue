@@ -3,7 +3,7 @@
 import CollapsableBlock from '~resources/views/hotel/settings/components/CollapsableBlock.vue'
 
 import { Car, Season } from '~api/models'
-import { ExistCancelConditions } from '~api/supplier/cancel-conditions'
+import { ExistCancelConditions } from '~api/supplier/cancel-conditions/transfer'
 
 import { formatPeriod } from '~lib/date'
 

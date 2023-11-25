@@ -3,15 +3,15 @@
 namespace App\Admin\Support\Http\Controllers;
 
 use App\Admin\Components\Factory\Prototype;
+use App\Admin\Exceptions\FrontException;
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Support\Facades\Acl;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\Facades\Prototypes;
 use App\Admin\Support\View\Form\Form as FormContract;
-use App\Shared\Http\Responses\AjaxErrorResponse;
 use App\Shared\Http\Responses\AjaxReloadResponse;
 use Illuminate\Contracts\View\View;
-use Module\Shared\Enum\ContactTypeEnum;
+use Sdk\Shared\Enum\ContactTypeEnum;
 
 abstract class AbstractContactController extends Controller
 {
@@ -39,13 +39,13 @@ abstract class AbstractContactController extends Controller
         ]);
     }
 
-    public function store(int $supplierId): AjaxErrorResponse|AjaxReloadResponse
+    public function store(int $supplierId): AjaxReloadResponse
     {
         $form = $this->formFactory()
             ->method('post');
 
         if (!$form->submit()) {
-            return new AjaxErrorResponse('');
+            throw new FrontException('');
 //            return redirect($this->prototype->route('create'))
 //                ->withErrors($form->errors())
 //                ->withInput();
@@ -70,7 +70,7 @@ abstract class AbstractContactController extends Controller
         ]);
     }
 
-    public function update(int $parentId, int $id): AjaxErrorResponse|AjaxReloadResponse
+    public function update(int $parentId, int $id): AjaxReloadResponse
     {
         $contact = $this->findContact($id);
 
@@ -78,7 +78,7 @@ abstract class AbstractContactController extends Controller
             ->method('put');
 
         if (!$form->submit()) {
-            return new AjaxErrorResponse('');
+            throw new FrontException('');
 //            return redirect($this->prototype->route('create'))
 //                ->withErrors($form->errors())
 //                ->withInput();

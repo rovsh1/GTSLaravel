@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\Service\DetailsEditor\Editor;
 
-use Module\Booking\Shared\Domain\Booking\Entity\DetailsInterface;
 use Module\Booking\Shared\Domain\Booking\Factory\Details\OtherServiceFactoryInterface;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Supplier\Moderation\Infrastructure\Models\Service as InfrastructureSupplierService;
+use Sdk\Booking\Contracts\Entity\DetailsInterface;
+use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\ServiceId;
+use Sdk\Booking\ValueObject\ServiceInfo;
 
 class OtherService extends AbstractEditor implements EditorInterface
 {
@@ -27,7 +27,8 @@ class OtherService extends AbstractEditor implements EditorInterface
         return $this->detailsFactory->create(
             $bookingId,
             $serviceInfo,
-            $detailsData['description'] ?? null
+            $detailsData['description'] ?? null,
+            $detailsData['date'] ?? null
         );
     }
 }

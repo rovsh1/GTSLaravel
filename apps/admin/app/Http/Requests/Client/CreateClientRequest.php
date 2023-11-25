@@ -4,8 +4,8 @@ namespace App\Admin\Http\Requests\Client;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
-use Module\Shared\Enum\Client\ResidencyEnum;
-use Module\Shared\Enum\CurrencyEnum;
+use Sdk\Shared\Enum\Client\ResidencyEnum;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 class CreateClientRequest extends FormRequest
 {
@@ -92,7 +92,7 @@ class CreateClientRequest extends FormRequest
             return null;
         }
 
-        return PhysicalDto::from($data);
+        return new PhysicalDto($data['gender']);
     }
 
     public function getLegal(): ?LegalDto
@@ -102,6 +102,18 @@ class CreateClientRequest extends FormRequest
             return null;
         }
 
-        return LegalDto::from($data);
+        return new LegalDto(
+            name: $data['name'],
+            industry: $data['industry'],
+            address: $data['address'],
+            bik: $data['bik'],
+            bankCity: $data['bankCity'],
+            inn: $data['inn'],
+            okpoCode: $data['okpoCode'],
+            corrAccount: $data['corrAccount'],
+            kpp: $data['kpp'],
+            bankName: $data['bankName'],
+            currentAccount: $data['currentAccount'],
+        );
     }
 }

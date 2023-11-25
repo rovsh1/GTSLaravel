@@ -30,19 +30,19 @@ use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Grid\SearchForm;
 use App\Admin\Support\View\Layout as LayoutContract;
-use App\Shared\Http\Responses\AjaxErrorResponse;
+use App\Shared\Http\Responses\AjaxRedirectResponse;
 use App\Shared\Http\Responses\AjaxResponseInterface;
 use App\Shared\Http\Responses\AjaxSuccessResponse;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
-use Module\Booking\Requesting\Domain\BookingRequest\Service\RequestRules;
-use Module\Shared\Enum\Booking\BookingStatusEnum;
-use Module\Shared\Enum\CurrencyEnum;
-use Module\Shared\Enum\ServiceTypeEnum;
-use Module\Shared\Enum\SourceEnum;
-use Module\Shared\Exception\ApplicationException;
+use Module\Booking\Requesting\Domain\Booking\Service\RequestingRules;
+use Sdk\Shared\Enum\Booking\BookingStatusEnum;
+use Sdk\Shared\Enum\CurrencyEnum;
+use Sdk\Shared\Enum\ServiceTypeEnum;
+use Sdk\Shared\Enum\SourceEnum;
+use Sdk\Shared\Exception\ApplicationException;
 
 class BookingController extends Controller
 {
@@ -91,10 +91,10 @@ class BookingController extends Controller
     public function store(): RedirectResponse
     {
         $form = $this->formFactory()
-            ->method('post');
+            ->method('post')
+            ->failUrl(route('service-booking.create'));
 
-        $redirectUrl = route('service-booking.create');
-        $form->trySubmit($redirectUrl);
+        $form->submitOrFail();
 
         $data = $form->getData();
         $creatorId = request()->user()->id;
@@ -103,7 +103,7 @@ class BookingController extends Controller
         $currency = $data['currency'] ? CurrencyEnum::from($data['currency']) : null;
         if ($orderId !== null && $currency === null) {
             $order = OrderAdapter::getOrder($orderId);
-            $currency = CurrencyEnum::from($order->currency->value);
+            $currency = CurrencyEnum::from($order->clientPrice->currency->value);
         }
         if ($currency === null) {
             $client = Client::find($data['client_id']);
@@ -122,7 +122,7 @@ class BookingController extends Controller
                 note: $data['note'] ?? null,
             );
         } catch (ApplicationException $e) {
-            $form->throwException($e, $redirectUrl);
+            $form->throwException($e);
         }
 
         return redirect(
@@ -160,7 +160,7 @@ class BookingController extends Controller
             ->method('put')
             ->failUrl($this->prototype->route('edit', $id));
 
-        $form->trySubmit();
+        $form->submitOrFail();
 
         $data = $form->getData();
         try {
@@ -190,12 +190,20 @@ class BookingController extends Controller
                 'client' => $client,
                 'order' => $order,
                 'cancelConditions' => $booking->cancelConditions,
+                'isOtherServiceBooking' => $booking->serviceType->id === ServiceTypeEnum::OTHER_SERVICE->value,
                 'currencies' => Currency::get(),
                 'manager' => $this->administratorRepository->get($id),
                 'creator' => Administrator::find($booking->creatorId),
                 'editUrl' => $this->isAllowed('update') ? $this->prototype->route('edit', $id) : null,
                 'deleteUrl' => $this->isAllowed('delete') ? $this->prototype->route('destroy', $id) : null,
             ]);
+    }
+
+    public function destroy(int $id): AjaxResponseInterface
+    {
+        BookingAdapter::deleteBooking($id);
+
+        return new AjaxRedirectResponse($this->prototype->route());
     }
 
     public function get(int $id): JsonResponse
@@ -268,11 +276,7 @@ class BookingController extends Controller
 
     public function recalculatePrices(int $id): AjaxResponseInterface
     {
-        try {
-            PriceAdapter::recalculatePrices($id);
-        } catch (ApplicationException $e) {
-            return new AjaxErrorResponse($e->getMessage());
-        }
+        PriceAdapter::recalculatePrices($id);
 
         return new AjaxSuccessResponse();
     }
@@ -341,6 +345,7 @@ class BookingController extends Controller
                 ]
             )
             ->hidden('service_id', ['label' => 'Услуга', 'required' => !$isEdit, 'disabled' => $isEdit])
+            ->date('date', ['label' => 'Дата', 'required' => true])
             ->manager('manager_id', [
                 'label' => 'Менеджер',
                 'emptyItem' => '',
@@ -450,7 +455,7 @@ class BookingController extends Controller
     private function prepareGridQuery(Builder $query, array $searchCriteria): Builder
     {
         $requestableStatuses = array_map(fn(BookingStatusEnum $status) => $status->value,
-            RequestRules::getRequestableStatuses());
+            RequestingRules::getRequestableStatuses());
 
         return $query
             ->applyCriteria($searchCriteria)

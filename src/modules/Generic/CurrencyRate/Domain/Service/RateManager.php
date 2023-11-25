@@ -9,7 +9,7 @@ use Module\Generic\CurrencyRate\Domain\Repository\CacheRepositoryInterface;
 use Module\Generic\CurrencyRate\Domain\Repository\DatabaseRepositoryInterface;
 use Module\Generic\CurrencyRate\Domain\ValueObject\CountryEnum;
 use Module\Generic\CurrencyRate\Domain\ValueObject\CurrencyRate;
-use Module\Shared\Enum\CurrencyEnum;
+use Sdk\Shared\Enum\CurrencyEnum;
 use Throwable;
 
 class RateManager

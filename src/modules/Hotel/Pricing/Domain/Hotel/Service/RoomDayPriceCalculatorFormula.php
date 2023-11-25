@@ -4,7 +4,7 @@ namespace Module\Hotel\Pricing\Domain\Hotel\Service;
 
 use Module\Hotel\Pricing\Domain\Hotel\Dto\CalculationDto;
 use Module\Hotel\Pricing\Domain\Hotel\Support\CalculationBuilder;
-use Module\Shared\ValueObject\MarkupValue;
+use Sdk\Shared\ValueObject\MarkupValue;
 
 class RoomDayPriceCalculatorFormula
 {

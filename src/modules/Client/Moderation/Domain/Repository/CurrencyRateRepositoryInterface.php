@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Client\Moderation\Domain\Repository;
 
 use Module\Client\Shared\Domain\ValueObject\ClientId;
-use Module\Shared\Enum\CurrencyEnum;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 interface CurrencyRateRepositoryInterface
 {

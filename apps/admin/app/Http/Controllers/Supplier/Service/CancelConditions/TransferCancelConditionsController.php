@@ -9,7 +9,7 @@ use App\Admin\Http\Requests\Supplier\UpdateTransferCancelConditionsRequest;
 use App\Admin\Http\Resources\Supplier\TransferCancelConditions as Resource;
 use App\Admin\Models\Supplier\Service;
 use App\Admin\Models\Supplier\Supplier;
-use App\Admin\Models\Supplier\TransferServiceCancelConditions;
+use App\Admin\Models\Supplier\CarCancelConditions;
 use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Facades\Layout;
@@ -36,7 +36,7 @@ class TransferCancelConditionsController extends Controller
     {
         $this->provider($provider);
 
-        return Layout::title('Условия отмены транспорт')
+        return Layout::title('Транспорт')
             ->view('supplier.service.cancel-conditions.transfer.index', [
                 'provider' => $provider,
                 'cars' => $provider->cars()->get(),
@@ -48,7 +48,7 @@ class TransferCancelConditionsController extends Controller
 
     public function getAll(Supplier $provider): JsonResponse
     {
-        $cancelConditions = TransferServiceCancelConditions::whereSupplierId($provider->id)->get();
+        $cancelConditions = CarCancelConditions::whereSupplierId($provider->id)->get();
 
         return response()->json(
             Resource::collection($cancelConditions)
@@ -88,8 +88,8 @@ class TransferCancelConditionsController extends Controller
                 $this->prototype->route('show', $provider),
                 (string)$provider
             );
-        Breadcrumb::add('Условия отмены транспорт');
+        Breadcrumb::add('Транспорт');
 
-        Sidebar::submenu(new SupplierMenu($provider, 'cancel_conditions'));
+        Sidebar::submenu(new SupplierMenu($provider, 'transfer'));
     }
 }

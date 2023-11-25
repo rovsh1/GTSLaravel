@@ -12,10 +12,10 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Module\Hotel\Moderation\Application\UseCase\GetContractDocuments;
 use Module\Hotel\Moderation\Application\UseCase\UploadContractDocuments;
-use Module\Shared\Dto\FileDto;
-use Module\Shared\Dto\UploadedFileDto;
 use Sdk\Module\Database\Eloquent\Model;
 use Sdk\Module\Support\DateTime;
+use Sdk\Shared\Dto\FileDto;
+use Sdk\Shared\Dto\UploadedFileDto;
 
 /**
  * App\Admin\Models\Hotel\Contract

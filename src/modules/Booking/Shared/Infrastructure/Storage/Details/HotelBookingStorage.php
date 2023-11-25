@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Infrastructure\Storage\Details;
 
-use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
 use Module\Booking\Shared\Infrastructure\Models\Details\Hotel;
+use Sdk\Booking\Entity\BookingDetails\HotelBooking;
 
 class HotelBookingStorage
 {
@@ -16,9 +16,9 @@ class HotelBookingStorage
             'date_end' => $details->bookingPeriod()->dateTo(),
             'nights_count' => $details->bookingPeriod()->nightsCount(),
             'data' => [
-                'hotelInfo' => $details->hotelInfo()->toData(),
-                'period' => $details->bookingPeriod()->toData(),
-                'externalNumber' => $details->externalNumber()?->toData(),
+                'hotelInfo' => $details->hotelInfo()->serialize(),
+                'period' => $details->bookingPeriod()->serialize(),
+                'externalNumber' => $details->externalNumber()?->serialize(),
             ]
         ]);
     }

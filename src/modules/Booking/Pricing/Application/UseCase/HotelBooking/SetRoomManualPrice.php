@@ -6,10 +6,10 @@ namespace Module\Booking\Pricing\Application\UseCase\HotelBooking;
 
 use Module\Booking\Pricing\Domain\Booking\Service\RecalculatePriceService;
 use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomPriceItem;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomPrices;
+use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\HotelBooking\AccommodationId;
+use Sdk\Booking\ValueObject\HotelBooking\RoomPriceItem;
+use Sdk\Booking\ValueObject\HotelBooking\RoomPrices;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class SetRoomManualPrice implements UseCaseInterface
@@ -39,6 +39,7 @@ class SetRoomManualPrice implements UseCaseInterface
                 ),
             )
         );
+        $this->accommodationRepository->store($accommodation);
 
         $this->recalculatePriceService->recalculate(new BookingId($bookingId));
     }

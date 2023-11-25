@@ -6,10 +6,10 @@ namespace Module\Booking\Moderation\Application\Support\UseCase;
 
 use Module\Booking\Moderation\Application\RequestDto\CreateBookingRequestDto;
 use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
-use Module\Booking\Shared\Domain\Order\ValueObject\ClientId;
-use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
 use Module\Booking\Shared\Domain\Shared\Adapter\AdministratorAdapterInterface;
-use Module\Booking\Shared\Domain\Shared\ValueObject\CreatorId;
+use Sdk\Booking\ValueObject\ClientId;
+use Sdk\Booking\ValueObject\CreatorId;
+use Sdk\Booking\ValueObject\OrderId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 abstract class AbstractCreateBooking implements UseCaseInterface

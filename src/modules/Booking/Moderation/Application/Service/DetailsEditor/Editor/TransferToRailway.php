@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\Service\DetailsEditor\Editor;
 
-use Module\Booking\Shared\Domain\Booking\Entity\TransferToRailway as Entity;
 use Module\Booking\Shared\Domain\Booking\Factory\Details\TransferToRailwayFactoryInterface;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\CarBidCollection;
-use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Supplier\Moderation\Infrastructure\Models\Service as InfrastructureSupplierService;
+use Sdk\Booking\Entity\BookingDetails\TransferToRailway as Entity;
+use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\CarBidCollection;
+use Sdk\Booking\ValueObject\ServiceId;
+use Sdk\Booking\ValueObject\ServiceInfo;
 
 class TransferToRailway extends AbstractEditor implements EditorInterface
 {
@@ -33,7 +33,7 @@ class TransferToRailway extends AbstractEditor implements EditorInterface
             new CarBidCollection([]),
             $detailsData['trainNumber'] ?? null,
             $detailsData['meetingTablet'] ?? null,
-            $detailsData['departureDate'] ?? null,
+            $detailsData['date'] ?? null,
         );
     }
 }

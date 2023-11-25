@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'BOOKING_SERVICE_PRICE_NOT_FOUND' => 'Не заполнены цены на выбранную услугу в валюте клиента.',
+    'BOOKING_NOT_FOUND_HOTEL_CANCEL_PERIOD' => 'У отеля не заполнены условия отмены на период брони.',
+    'BOOKING_INVALID_ROOM_CLIENT_RESIDENCY' => 'Клиент не поддерживает выбранный тип стоимости.',
+    'BOOKING_NOT_FOUND_ROOM_DATE_QUOTA' => 'Нет доступных квот на период бронирования.',
+    'BOOKING_NOT_FOUND_SERVICE_CANCEL_CONDITIONS' => 'Не заполнены условия отмены на период брони для услуги.',
+    'BOOKING_ROOM_TOO_MANY_GUESTS' => 'Превышено допустимое количество гостей в номере.',
+    'BOOKING_TRANSFER_SERVICE_DATE_UNDEFINED' => 'Не заполнена дата или период бронирования услуги.',
+    'ORDER_HAS_BOOKING_IN_PROGRESS' => 'У заказа есть брони в активных статусах. Брони должны быть подтверждены или отменены.',
+    'ORDER_INVOICE_NOT_FOUND' => 'Not found invoice for order',
+    'ORDER_INVOICE_CANCELLATION_FORBIDDEN' => 'Невозможно отменить инвойс для заказа в текущем статусе.',
+    'ORDER_INVOICE_CREATING_FORBIDDEN' => 'Невозможно создать инвойс для заказа в текущем статусе.',
+    'HOTEL_ROOM_NOT_FOUND' => 'Room [:roomId] not found',
+    'HOTEL_ROOM_PRICE_NOT_FOUND' => 'В отеле не заполнены цены на период.',
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
+    '' => '',
+];

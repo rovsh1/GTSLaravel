@@ -31,9 +31,8 @@ export type ProfitItem = {
 }
 
 export type OrderPrice = {
-  clientPrice: PriceItem
-  supplierPrice: PriceItem
-  profit: ProfitItem
+  currency: CurrencyDto
+  value: number
 }
 
 export type BaseOrder = {
@@ -42,7 +41,6 @@ export type BaseOrder = {
   source: number
   creatorId: number
   createdAt: DateResponse
-  currency?: CurrencyDto
-  prices?: OrderPrice
+  clientPrice: OrderPrice
   note?: string | null
 }

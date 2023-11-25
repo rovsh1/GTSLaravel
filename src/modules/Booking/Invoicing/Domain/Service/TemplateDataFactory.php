@@ -22,33 +22,33 @@ use Module\Booking\Invoicing\Domain\Service\Dto\OrderDto;
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
-use Module\Booking\Shared\Domain\Booking\Entity\HotelAccommodation;
-use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking as DetailsEntity;
 use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Service\DetailOptionsDataFactory;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPeriod;
-use Module\Booking\Shared\Domain\Booking\ValueObject\CarBid;
-use Module\Booking\Shared\Domain\Booking\ValueObject\CarBidCollection;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationCollection;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\BookingPeriod as HotelBookingPeriod;
 use Module\Booking\Shared\Domain\Guest\Guest;
 use Module\Booking\Shared\Domain\Guest\Repository\GuestRepositoryInterface;
 use Module\Booking\Shared\Domain\Order\Order;
 use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
 use Module\Booking\Shared\Domain\Order\Service\OrderStatusStorageInterface;
-use Module\Booking\Shared\Domain\Order\ValueObject\ClientId;
-use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
 use Module\Booking\Shared\Domain\Shared\Adapter\AdministratorAdapterInterface;
 use Module\Booking\Shared\Domain\Shared\Adapter\ClientAdapterInterface;
-use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\CancelPeriodTypeEnum;
-use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\DailyMarkupOption;
-use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
-use Module\Shared\Contracts\Adapter\CountryAdapterInterface;
-use Module\Shared\Contracts\Service\CompanyRequisitesInterface;
-use Module\Shared\Enum\GenderEnum;
-use Module\Shared\Enum\Order\OrderStatusEnum;
+use Sdk\Booking\Entity\BookingDetails\HotelAccommodation;
+use Sdk\Booking\Entity\BookingDetails\HotelBooking as DetailsEntity;
+use Sdk\Booking\ValueObject\BookingPeriod;
+use Sdk\Booking\ValueObject\CancelCondition\CancelFeePeriodTypeEnum;
+use Sdk\Booking\ValueObject\CancelCondition\DailyCancelFeeValue;
+use Sdk\Booking\ValueObject\CarBid;
+use Sdk\Booking\ValueObject\CarBidCollection;
+use Sdk\Booking\ValueObject\ClientId;
+use Sdk\Booking\ValueObject\GuestIdCollection;
+use Sdk\Booking\ValueObject\HotelBooking\AccommodationCollection;
+use Sdk\Booking\ValueObject\HotelBooking\BookingPeriod as HotelBookingPeriod;
+use Sdk\Booking\ValueObject\OrderId;
+use Sdk\Shared\Contracts\Adapter\CountryAdapterInterface;
+use Sdk\Shared\Contracts\Service\CompanyRequisitesInterface;
+use Sdk\Shared\Enum\GenderEnum;
+use Sdk\Shared\Enum\Order\OrderStatusEnum;
 
 class TemplateDataFactory
 {
@@ -83,6 +83,14 @@ class TemplateDataFactory
             fn(float $value, BookingDto $bookingDto) => $value + $bookingDto->price->amount,
             0
         );
+        /** @var float $totalPenalty */
+        $totalPenalty = collect($bookings)->reduce(
+            fn(float $value, BookingDto $bookingDto) => $value + $bookingDto->price->penalty,
+            0
+        );
+        if ($totalPenalty === 0) {
+            $totalPenalty = null;
+        }
 
         return [
             'order' => $this->buildOrderDto($order),
@@ -90,16 +98,21 @@ class TemplateDataFactory
             'company' => $this->getCompanyRequisites(),
             'manager' => $this->buildOrderManagerDto($order),
             'client' => $this->buildClientDto($clientId),
-            'invoice' => $this->buildInvoiceDto($orderId, now(), $totalAmount),
+            'invoice' => $this->buildInvoiceDto($orderId, now(), $totalAmount, $totalPenalty),
         ];
     }
 
-    private function buildInvoiceDto(OrderId $id, \DateTimeInterface $createdAt, float $totalAmount): InvoiceDto
-    {
+    private function buildInvoiceDto(
+        OrderId $id,
+        \DateTimeInterface $createdAt,
+        float $totalAmount,
+        ?float $totalPenalty
+    ): InvoiceDto {
         return new InvoiceDto(
             (string)$id->value(),
             $createdAt->format('d.m.Y H:i'),
-            Format::price($totalAmount)
+            Format::price($totalAmount),
+            Format::price($totalPenalty),
         );
     }
 
@@ -120,7 +133,8 @@ class TemplateDataFactory
         $clientPrice = $booking->prices()->clientPrice();
         $price = new PriceDto(
             $clientPrice->manualValue() ?? $clientPrice->calculatedValue(),
-            $clientPrice->currency()->name
+            $clientPrice->currency()->name,
+            $clientPrice->penaltyValue()
         );
 
         $details = $this->detailsRepository->findOrFail($booking->id());
@@ -161,15 +175,16 @@ class TemplateDataFactory
         $cancelConditions = $booking->cancelConditions();
         if ($cancelConditions !== null) {
             $dailyMarkupsDto = $cancelConditions->dailyMarkups()->map(
-                fn(DailyMarkupOption $markupOption) => new DailyMarkupDto(
-                    $markupOption->percent()->value(),
+                fn(DailyCancelFeeValue $markupOption) => new DailyMarkupDto(
+                    $markupOption->value()->value(),
+                    $markupOption->value()->type(),
                     $markupOption->daysCount(),
                     $this->getHumanCancelPeriodType($markupOption->cancelPeriodType()),
                 )
             );
 
             $cancelConditionsDto = new CancelConditionsDto(
-                $cancelConditions->noCheckInMarkup()->percent()->value(),
+                $cancelConditions->noCheckInMarkup()->value()->value(),
                 $this->getHumanCancelPeriodType($cancelConditions->noCheckInMarkup()->cancelPeriodType()),
                 $dailyMarkupsDto
             );
@@ -188,9 +203,9 @@ class TemplateDataFactory
         );
     }
 
-    private function getHumanCancelPeriodType(CancelPeriodTypeEnum $periodType): string
+    private function getHumanCancelPeriodType(CancelFeePeriodTypeEnum $periodType): string
     {
-        return $periodType === CancelPeriodTypeEnum::FULL_PERIOD ? 'За весь период' : 'За первую ночь';
+        return $periodType === CancelFeePeriodTypeEnum::FULL_PERIOD ? 'За весь период' : 'За первую ночь';
     }
 
     /**

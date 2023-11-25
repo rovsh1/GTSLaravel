@@ -9,14 +9,14 @@ use Module\Booking\Moderation\Domain\Booking\Event\GuestBinded;
 use Module\Booking\Moderation\Domain\Booking\Event\GuestUnbinded;
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
-use Module\Booking\Shared\Domain\Booking\Entity\AirportDetailsInterface;
-use Module\Booking\Shared\Domain\Booking\Entity\CIPMeetingInAirport;
 use Module\Booking\Shared\Domain\Booking\Exception\NotFoundAirportServicePrice;
 use Module\Booking\Shared\Domain\Booking\Repository\AirportBookingGuestRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Shared\Domain\Guest\ValueObject\GuestId;
+use Sdk\Booking\Contracts\Entity\AirportDetailsInterface;
+use Sdk\Booking\Entity\BookingDetails\CIPMeetingInAirport;
+use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\GuestId;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 

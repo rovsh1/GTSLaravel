@@ -34,12 +34,12 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Module\Booking\Requesting\Domain\BookingRequest\Service\RequestRules;
-use Module\Shared\Enum\Booking\BookingStatusEnum;
-use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
-use Module\Shared\Enum\CurrencyEnum;
-use Module\Shared\Enum\SourceEnum;
-use Module\Shared\Exception\ApplicationException;
+use Module\Booking\Requesting\Domain\Booking\Service\RequestingRules;
+use Sdk\Shared\Enum\Booking\BookingStatusEnum;
+use Sdk\Shared\Enum\Booking\QuotaProcessingMethodEnum;
+use Sdk\Shared\Enum\CurrencyEnum;
+use Sdk\Shared\Enum\SourceEnum;
+use Sdk\Shared\Exception\ApplicationException;
 
 class BookingController extends Controller
 {
@@ -91,7 +91,7 @@ class BookingController extends Controller
             ->method('post')
             ->failUrl($this->prototype->route('create'));
 
-        $form->trySubmit();
+        $form->submitOrFail();
 
         $data = $form->getData();
         $creatorId = request()->user()->id;
@@ -100,7 +100,7 @@ class BookingController extends Controller
         $currency = $data['currency'] ? CurrencyEnum::from($data['currency']) : null;
         if ($orderId !== null && $currency === null) {
             $order = OrderAdapter::getOrder($orderId);
-            $currency = CurrencyEnum::from($order->currency->value);
+            $currency = CurrencyEnum::from($order->clientPrice->currency->value);
         }
         if ($currency === null) {
             $client = Client::find($data['client_id']);
@@ -187,7 +187,7 @@ class BookingController extends Controller
             ->method('put')
             ->failUrl($this->prototype->route('edit', $id));
 
-        $form->trySubmit();
+        $form->submitOrFail();
 
         $data = $form->getData();
         try {
@@ -335,7 +335,7 @@ class BookingController extends Controller
             'quota_processing_method' => $details->quotaProcessingMethod->value,
             'manager_id' => $manager->id,
             'order_id' => $booking->orderId,
-            'currency' => $order->currency->value,
+            'currency' => $order->clientPrice->currency->value,
             'hotel_id' => $hotelId,
             'city_id' => $cityId,
             'client_id' => $order->clientId,
@@ -419,7 +419,7 @@ class BookingController extends Controller
     private function prepareGridQuery(Builder $query, array $searchCriteria): Builder
     {
         $requestableStatuses = array_map(fn(BookingStatusEnum $status) => $status->value,
-            RequestRules::getRequestableStatuses());
+            RequestingRules::getRequestableStatuses());
 
         return $query
             ->applyCriteria($searchCriteria)

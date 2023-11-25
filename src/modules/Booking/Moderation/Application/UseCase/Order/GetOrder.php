@@ -7,7 +7,7 @@ namespace Module\Booking\Moderation\Application\UseCase\Order;
 use Module\Booking\Moderation\Application\Dto\OrderDto;
 use Module\Booking\Moderation\Application\Factory\OrderDtoFactory;
 use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
-use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
+use Sdk\Booking\ValueObject\OrderId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class GetOrder implements UseCaseInterface

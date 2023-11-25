@@ -1,0 +1,334 @@
+<script setup lang="ts">
+import { onMounted, ref, watch } from 'vue'
+
+import { PaymentOrder, PaymentOrderPayload, PaymentPrice } from '~api/payment/payment'
+
+import { formatPrice } from '~lib/price'
+
+import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
+
+import { createSelectionState } from '../lib/selected-item'
+
+const props = withDefaults(defineProps<{
+  remainingAmount: PaymentPrice | undefined
+  waitingOrders: PaymentOrder[]
+  distributedOrders: PaymentOrder[]
+  loading: boolean
+  disabled?: boolean
+}>(), {
+  disabled: false,
+})
+
+const emit = defineEmits<{
+  (event: 'orders', value: PaymentOrderPayload[]): void
+}>()
+
+const localeWaitingOrders = ref<PaymentOrder[]>(props.waitingOrders)
+const localeDistributedOrders = ref<PaymentOrder[]>(props.distributedOrders)
+const localeRemainingAmount = ref<number | undefined>(props.remainingAmount?.value)
+
+const waitingOrdersSelection = createSelectionState()
+const distributedOrdersSelection = createSelectionState()
+
+const getPaymentOrdersPayload = (): PaymentOrderPayload[] => localeDistributedOrders.value.map((order) => ({
+  id: order.id,
+  sum: order.clientPrice.value - order.remainingAmount.value,
+}))
+
+watch([() => props.distributedOrders, () => props.waitingOrders, () => props.remainingAmount], () => {
+  localeWaitingOrders.value = props.waitingOrders
+  localeDistributedOrders.value = props.distributedOrders
+  localeRemainingAmount.value = props.remainingAmount?.value
+  getPaymentOrdersPayload()
+})
+
+const getIndexToDelete = (array: PaymentOrder[], removedItem: PaymentOrder) => {
+  const indexToDelete = array.findIndex((item) => item.id === removedItem.id)
+  return indexToDelete
+}
+
+const moveOrderWaitingToOrders = (allOrders?: boolean) => {
+  if (localeRemainingAmount.value === undefined || localeRemainingAmount.value === 0) {
+    waitingOrdersSelection.selected.value = []
+    return
+  }
+  if (localeWaitingOrders.value.length && !waitingOrdersSelection.selected.value.length) {
+    if (allOrders) {
+      waitingOrdersSelection.selected.value = [...localeWaitingOrders.value]
+    } else {
+      waitingOrdersSelection.selected.value = [[...localeWaitingOrders.value][0]]
+    }
+  }
+  waitingOrdersSelection.selected.value.forEach((selectedOrder) => {
+    const remainingAmount = localeRemainingAmount.value as number
+    if (remainingAmount <= 0) return
+    const source = selectedOrder
+    const subtractSum = remainingAmount - selectedOrder.remainingAmount.value
+    const existLocaleOrder = localeDistributedOrders.value.find((order) => order.id === source.id)
+    if (subtractSum >= 0) {
+      if (existLocaleOrder) {
+        existLocaleOrder.remainingAmount.value = 0
+      } else {
+        source.remainingAmount.value = 0
+        localeDistributedOrders.value.push(selectedOrder)
+      }
+      localeWaitingOrders.value.splice(getIndexToDelete(localeWaitingOrders.value, selectedOrder), 1)
+      localeRemainingAmount.value = subtractSum
+    } else {
+      if (existLocaleOrder) {
+        existLocaleOrder.remainingAmount.value = Math.abs(subtractSum)
+      } else {
+        source.remainingAmount.value = Math.abs(subtractSum)
+        localeDistributedOrders.value.push(selectedOrder)
+      }
+      const localeWaitingOrder = localeWaitingOrders.value.find((order) => order.id === source.id)
+      if (localeWaitingOrder) {
+        localeWaitingOrder.remainingAmount.value = source.remainingAmount.value
+      }
+      localeRemainingAmount.value = 0
+    }
+  })
+  waitingOrdersSelection.selected.value = []
+  emit('orders', getPaymentOrdersPayload())
+}
+
+const moveOrdersToOrderWaiting = (allOrders?: boolean) => {
+  if (localeRemainingAmount.value === undefined) {
+    distributedOrdersSelection.selected.value = []
+    return
+  }
+  if (localeDistributedOrders.value.length && !distributedOrdersSelection.selected.value.length) {
+    if (allOrders) {
+      distributedOrdersSelection.selected.value = [...localeDistributedOrders.value]
+    } else {
+      distributedOrdersSelection.selected.value = [[...localeDistributedOrders.value][0]]
+    }
+  }
+  distributedOrdersSelection.selected.value.forEach((selectedOrder) => {
+    const source = selectedOrder
+    const addedSum = selectedOrder.clientPrice.value - selectedOrder.remainingAmount.value
+    const existLocaleWaitingOrder = localeWaitingOrders.value.find((order) => order.id === source.id)
+    if (existLocaleWaitingOrder) {
+      existLocaleWaitingOrder.remainingAmount.value = existLocaleWaitingOrder.clientPrice.value
+    } else {
+      source.remainingAmount.value = selectedOrder.clientPrice.value
+      localeWaitingOrders.value.push(selectedOrder)
+    }
+    localeDistributedOrders.value.splice(getIndexToDelete(localeDistributedOrders.value, selectedOrder), 1)
+    localeRemainingAmount.value = localeRemainingAmount.value as number + addedSum
+  })
+  distributedOrdersSelection.selected.value = []
+  emit('orders', getPaymentOrdersPayload())
+}
+
+onMounted(() => {
+  getPaymentOrdersPayload()
+})
+
+</script>
+
+<template>
+  <div class="d-flex align-items-stretch">
+    <div>
+      <p class="h6">Не включены в платеж:</p>
+      <div class="height-fix height-fix--long" :class="{ 'height-fix--position': !loading }">
+        <table class="table table-bordered mb-0 w-100 table-sm">
+          <thead class="table-light">
+            <tr>
+              <th scope="col">№ Заказа</th>
+              <th class="column-text">Цена продажи</th>
+              <th class="column-text">Остаток</th>
+            </tr>
+          </thead>
+          <tbody>
+            <template v-if="localeWaitingOrders.length">
+              <tr
+                v-for="waitingOrder in localeWaitingOrders"
+                :key="waitingOrder.id"
+                :class="{ 'table-active': waitingOrdersSelection.isSelectedItem(waitingOrder) }"
+                @click="waitingOrdersSelection.toggleSelectItem(waitingOrder)"
+              >
+                <td>{{ waitingOrder.id }}</td>
+                <td>{{ formatPrice(waitingOrder.clientPrice.value, waitingOrder.clientPrice.currency.value) }}</td>
+                <td>{{ formatPrice(waitingOrder.remainingAmount.value, waitingOrder.remainingAmount.currency.value) }}</td>
+              </tr>
+            </template>
+            <template v-else>
+              <tr>
+                <td class="text-center" colspan="3">Нет данных</td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="d-flex flex-column justify-content-center align-items-center p-4">
+      <div class="mb-2">
+        <BootstrapButton
+          label=""
+          start-icon="keyboard_arrow_right"
+          size="small"
+          severity="secondary"
+          variant="outline"
+          :disabled="disabled"
+          @click="() => moveOrderWaitingToOrders()"
+        />
+      </div>
+      <div class="mb-4">
+        <BootstrapButton
+          label=""
+          start-icon="keyboard_double_arrow_right"
+          size="small"
+          severity="secondary"
+          variant="outline"
+          :disabled="disabled"
+          @click="() => moveOrderWaitingToOrders(true)"
+        />
+      </div>
+      <div class="mb-2">
+        <BootstrapButton
+          label=""
+          start-icon="keyboard_arrow_left"
+          size="small"
+          severity="secondary"
+          variant="outline"
+          :disabled="disabled"
+          @click="() => moveOrdersToOrderWaiting()"
+        />
+      </div>
+      <div>
+        <BootstrapButton
+          label=""
+          start-icon="keyboard_double_arrow_left"
+          size="small"
+          severity="secondary"
+          variant="outline"
+          :disabled="disabled"
+          @click="() => moveOrdersToOrderWaiting(true)"
+        />
+      </div>
+    </div>
+    <div class="d-flex flex-column justify-content-between">
+      <div>
+        <p class="h6">Включены в платеж:</p>
+        <div class="height-fix" :class="{ 'height-fix--position': !loading }">
+          <table class="table table-bordered mb-0 w-100 table-sm">
+            <thead class="table-light">
+              <tr>
+                <th scope="col">№ Заказа</th>
+                <th class="column-text">Цена продажи</th>
+                <th class="column-text">Распределено</th>
+                <th class="column-text">Остаток</th>
+              </tr>
+            </thead>
+            <tbody>
+              <template v-if="localeDistributedOrders.length">
+                <tr
+                  v-for="order in localeDistributedOrders"
+                  :key="order.id"
+                  :class="{ 'table-active': distributedOrdersSelection.isSelectedItem(order) }"
+                  @click="distributedOrdersSelection.toggleSelectItem(order)"
+                >
+                  <td>{{ order.id }}</td>
+                  <td>{{ formatPrice(order.clientPrice.value, order.clientPrice.currency.value) }}</td>
+                  <td>
+                    {{ formatPrice((order.clientPrice.value
+                      - order.remainingAmount.value), order.clientPrice.currency.value) }}
+                  </td>
+                  <td>{{ formatPrice(order.remainingAmount.value, order.remainingAmount.currency.value) }}</td>
+                </tr>
+              </template>
+              <template v-else>
+                <tr>
+                  <td class="text-center" colspan="4">Нет данных</td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="mt-3 input-group--small">
+        <label for="total-amount" class="form-label fs-7">Нераспределенная сумма:</label>
+        <div class="input-group">
+          <span id="basic-addon3" class="input-group-text">
+            {{ remainingAmount?.currency.value }}
+          </span>
+          <input
+            id="total-amount"
+            type="text"
+            :value="formatPrice(localeRemainingAmount)"
+            class="form-control text-right"
+            disabled
+            aria-describedby="basic-addon3"
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+.height-fix--position table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.height-fix {
+  overflow-y: auto;
+  min-width: 17rem;
+  height: 21.875rem;
+  padding-right: 6px;
+
+  table {
+    border-spacing: 0;
+    border-collapse: separate;
+
+    thead {
+      th {
+        border-top: 1px solid #dee2e6;
+        border-right: 1px solid #dee2e6;
+        border-bottom: 1px solid #dee2e6;
+        font-weight: normal;
+        font-size: 0.8rem;
+
+        &:first-child {
+          border-left: 1px solid #dee2e6;
+        }
+      }
+    }
+
+    tbody {
+      td {
+        border-right: 1px solid #dee2e6;
+        border-bottom: 1px solid #dee2e6;
+        cursor: pointer;
+
+        &:first-child {
+          border-left: 1px solid #dee2e6;
+        }
+      }
+    }
+  }
+}
+
+.height-fix--long {
+  height: 26.875rem;
+}
+
+.input-group--small {
+  font-size: 0.7rem;
+
+  .input-group {
+    width: 9.5rem;
+  }
+
+  label {
+    margin-bottom: 0.2rem;
+  }
+
+  i {
+    font-size: 1.2rem;
+  }
+}
+</style>

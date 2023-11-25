@@ -5,18 +5,21 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Application\UseCase;
 
 use Module\Booking\Moderation\Application\Dto\UpdateStatusResponseDto;
-use Module\Booking\Moderation\Domain\Booking\Service\StatusUpdater;
+use Module\Booking\Moderation\Domain\Booking\Exception\InvalidStatusTransition;
+use Module\Booking\Moderation\Domain\Booking\Service\StatusRules\StatusTransitionsFactory;
+use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Shared\Enum\Booking\BookingStatusEnum;
+use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
+use Sdk\Shared\Enum\Booking\BookingStatusEnum;
+use Sdk\Shared\Enum\ServiceTypeEnum;
 
 class UpdateStatus implements UseCaseInterface
 {
     public function __construct(
         private readonly BookingRepositoryInterface $bookingRepository,
-        private readonly StatusUpdater $statusUpdater,
+        private readonly StatusTransitionsFactory $statusTransitionsFactory,
         private readonly DomainEventDispatcherInterface $eventDispatcher,
     ) {
     }
@@ -28,49 +31,62 @@ class UpdateStatus implements UseCaseInterface
         ?float $supplierPenalty = null,
         ?float $clientPenalty = null
     ): UpdateStatusResponseDto {
-        $booking = $this->bookingRepository->findOrFail(new BookingId($bookingId));
         $statusEnum = BookingStatusEnum::from($statusId);
+        $booking = $this->bookingRepository->findOrFail(new BookingId($bookingId));
 
+        $this->ensureCanTransitToStatus($booking, $statusEnum);
+
+        $isHotelBooking = $booking->serviceType() === ServiceTypeEnum::HOTEL_BOOKING;
         switch ($statusEnum) {
             case BookingStatusEnum::PROCESSING:
-                $this->statusUpdater->toProcessing($booking);
+                $booking->toProcessing();
                 break;
             case BookingStatusEnum::CANCELLED:
-                $this->statusUpdater->cancel($booking);
+                $booking->cancel();
                 break;
             case BookingStatusEnum::CONFIRMED:
-                $this->statusUpdater->confirm($booking);
+                $booking->confirm();
                 break;
             case BookingStatusEnum::NOT_CONFIRMED:
-                $isHotelBooking = true; //@todo заменить на реальную проверку, когда объединим детали с броней
-                if (empty($notConfirmedReason) && $isHotelBooking) {
+                if ($isHotelBooking && empty($notConfirmedReason)) {
                     return new UpdateStatusResponseDto(isNotConfirmedReasonRequired: true);
                 }
-                $this->statusUpdater->toNotConfirmed($booking, $notConfirmedReason);
+                $booking->toNotConfirmed($notConfirmedReason);
                 break;
             case BookingStatusEnum::CANCELLED_NO_FEE:
-                $this->statusUpdater->toCancelledNoFee($booking);
+                $booking->toCancelledNoFee();
                 break;
             case BookingStatusEnum::CANCELLED_FEE:
-                if ($supplierPenalty === null) {
+                if ($isHotelBooking && empty($supplierPenalty)) {
                     return new UpdateStatusResponseDto(isCancelFeeAmountRequired: true);
                 }
-                $this->statusUpdater->toCancelledFee($booking, $supplierPenalty, $clientPenalty);
+                $booking->toCancelledFee($supplierPenalty, $clientPenalty);
                 break;
             case BookingStatusEnum::WAITING_CONFIRMATION:
-                $this->statusUpdater->toWaitingConfirmation($booking);
+                $booking->toWaitingConfirmation();
                 break;
             case BookingStatusEnum::WAITING_CANCELLATION:
-                $this->statusUpdater->toWaitingCancellation($booking);
+                $booking->toWaitingCancellation();
                 break;
             case BookingStatusEnum::WAITING_PROCESSING:
-                $this->statusUpdater->toWaitingProcessing($booking);
+                $booking->toWaitingProcessing();
                 break;
+            default:
+                throw new \LogicException('Status change not implemented');
         }
 
         $this->bookingRepository->store($booking);
         $this->eventDispatcher->dispatch(...$booking->pullEvents());
 
         return new UpdateStatusResponseDto();
+    }
+
+    private function ensureCanTransitToStatus(Booking $booking, BookingStatusEnum $statusTo): void
+    {
+        $statusTransitions = $this->statusTransitionsFactory->build($booking->serviceType());
+
+        if (!$statusTransitions->canTransit($booking->status(), $statusTo)) {
+            throw new InvalidStatusTransition("Can't change status for booking [{$booking->id()->value()}]]");
+        }
     }
 }

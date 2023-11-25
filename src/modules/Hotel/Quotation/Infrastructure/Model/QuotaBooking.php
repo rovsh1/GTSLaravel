@@ -4,8 +4,8 @@ namespace Module\Hotel\Quotation\Infrastructure\Model;
 
 use Carbon\CarbonPeriod;
 use Illuminate\Support\Facades\DB;
-use Module\Shared\Enum\Booking\QuotaChangeTypeEnum;
 use Sdk\Module\Database\Eloquent\Model;
+use Sdk\Shared\Enum\Booking\QuotaChangeTypeEnum;
 
 class QuotaBooking extends Model
 {

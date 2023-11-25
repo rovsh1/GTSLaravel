@@ -2,8 +2,8 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
-use Module\Shared\Enum\Client\ResidencyEnum;
-use Module\Shared\Enum\CurrencyEnum;
+use Sdk\Shared\Enum\Client\ResidencyEnum;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 return new class extends Migration {
     private const BASE_MARKUP_GROUP_ID = 1;

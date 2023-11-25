@@ -8,20 +8,22 @@ use Module\Booking\Shared\Domain\Booking\Event\BookingDeleted;
 use Module\Booking\Shared\Domain\Booking\Event\NoteChanged;
 use Module\Booking\Shared\Domain\Booking\Event\PriceUpdated;
 use Module\Booking\Shared\Domain\Booking\Support\Concerns\HasStatusesTrait;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPrices;
-use Module\Booking\Shared\Domain\Booking\ValueObject\Context;
-use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
-use Module\Booking\Shared\Domain\Shared\ValueObject\CancelConditions;
-use Module\Shared\Contracts\Support\SerializableDataInterface;
-use Module\Shared\Enum\Booking\BookingStatusEnum;
-use Module\Shared\Enum\ServiceTypeEnum;
-use Module\Shared\ValueObject\Timestamps;
+use Module\Booking\Shared\Domain\Booking\Support\Concerns\StatusesFlagsTrait;
+use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\BookingPrices;
+use Sdk\Booking\ValueObject\CancelConditions;
+use Sdk\Booking\ValueObject\Context;
+use Sdk\Booking\ValueObject\OrderId;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
+use Sdk\Shared\Contracts\Support\SerializableInterface;
+use Sdk\Shared\Enum\Booking\BookingStatusEnum;
+use Sdk\Shared\Enum\ServiceTypeEnum;
+use Sdk\Shared\ValueObject\Timestamps;
 
-class Booking extends AbstractAggregateRoot implements SerializableDataInterface
+class Booking extends AbstractAggregateRoot implements SerializableInterface
 {
     use HasStatusesTrait;
+    use StatusesFlagsTrait;
 
     public function __construct(
         private readonly BookingId $id,
@@ -106,49 +108,33 @@ class Booking extends AbstractAggregateRoot implements SerializableDataInterface
         $this->cancelConditions = $cancelConditions;
     }
 
-    public function isConfirmed(): bool
-    {
-        return $this->status === BookingStatusEnum::CONFIRMED;
-    }
-
-    public function isCancelled(): bool
-    {
-        return in_array($this->status, [
-            BookingStatusEnum::CANCELLED,
-            BookingStatusEnum::CANCELLED_FEE,
-            BookingStatusEnum::CANCELLED_NO_FEE,
-            BookingStatusEnum::DELETED,
-            BookingStatusEnum::WAITING_CANCELLATION,//@todo должно ли быть тут?
-        ]);
-    }
-
-    public function toData(): array
+    public function serialize(): array
     {
         return [
             'id' => $this->id->value(),
             'orderId' => $this->orderId->value(),
             'serviceType' => $this->serviceType->value,
             'status' => $this->status->value,
-            'prices' => $this->prices->toData(),
-            'cancelConditions' => $this->cancelConditions?->toData(),
+            'prices' => $this->prices->serialize(),
+            'cancelConditions' => $this->cancelConditions?->serialize(),
             'note' => $this->note,
-            'context' => $this->context->toData(),
-            'timestamps' => $this->timestamps->toData(),
+            'context' => $this->context->serialize(),
+            'timestamps' => $this->timestamps->serialize(),
         ];
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
         return new static(
-            id: new BookingId($data['id']),
-            orderId: new OrderId($data['orderId']),
-            serviceType: ServiceTypeEnum::from($data['serviceType']),
-            status: BookingStatusEnum::from($data['status']),
-            prices: BookingPrices::fromData($data['prices']),
-            cancelConditions: $data['cancelConditions'] ? CancelConditions::fromData($data['cancelConditions']) : null,
-            note: $data['note'],
-            context: Context::fromData($data['context']),
-            timestamps: Timestamps::fromData($data['timestamps'])
+            id: new BookingId($payload['id']),
+            orderId: new OrderId($payload['orderId']),
+            serviceType: ServiceTypeEnum::from($payload['serviceType']),
+            status: BookingStatusEnum::from($payload['status']),
+            prices: BookingPrices::deserialize($payload['prices']),
+            cancelConditions: $payload['cancelConditions'] ? CancelConditions::deserialize($payload['cancelConditions']) : null,
+            note: $payload['note'],
+            context: Context::deserialize($payload['context']),
+            timestamps: Timestamps::deserialize($payload['timestamps'])
         );
     }
 }

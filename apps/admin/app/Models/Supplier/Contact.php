@@ -2,8 +2,8 @@
 
 namespace App\Admin\Models\Supplier;
 
-use Module\Shared\Enum\ContactTypeEnum;
 use Sdk\Module\Database\Eloquent\Model;
+use Sdk\Shared\Enum\ContactTypeEnum;
 
 class Contact extends Model
 {

@@ -27,7 +27,6 @@ use App\Admin\View\Menus\SupplierMenu;
 use App\Shared\Http\Responses\AjaxResponseInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Module\Shared\Enum\ServiceTypeEnum;
 
 class ContractController extends Controller
 {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Domain\Order\Service;
 
-use Module\Shared\Enum\Order\OrderStatusEnum;
+use Sdk\Shared\Enum\Order\OrderStatusEnum;
 
 interface OrderStatusStorageInterface
 {

@@ -6,12 +6,10 @@ use Module\Hotel\Moderation\Domain\Hotel\Factory\HotelFactory;
 use Module\Hotel\Moderation\Domain\Hotel\Hotel;
 use Module\Hotel\Moderation\Domain\Hotel\Repository\HotelRepositoryInterface;
 use Module\Hotel\Moderation\Infrastructure\Models\Hotel as HotelEloquent;
-use Module\Shared\Contracts\Service\SerializerInterface;
 
 class HotelRepository implements HotelRepositoryInterface
 {
     public function __construct(
-        private readonly SerializerInterface $serializer,
         private readonly HotelFactory $factory
     ) {}
 
@@ -25,7 +23,7 @@ class HotelRepository implements HotelRepositoryInterface
     public function store(Hotel $hotel): bool
     {
         return (bool)HotelEloquent::whereId($hotel->id()->value())->update([
-            'time_settings' => $this->serializer->serialize($hotel->timeSettings()),
+            'time_settings' => json_encode($hotel->timeSettings()),
         ]);
     }
 }

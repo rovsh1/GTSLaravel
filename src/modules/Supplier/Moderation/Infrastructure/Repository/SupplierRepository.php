@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Module\Supplier\Moderation\Infrastructure\Repository;
 
-use Module\Shared\Enum\CurrencyEnum;
 use Module\Supplier\Moderation\Domain\Supplier\Repository\SupplierRepositoryInterface;
 use Module\Supplier\Moderation\Domain\Supplier\Supplier;
 use Module\Supplier\Moderation\Domain\Supplier\ValueObject\Requisites;
 use Module\Supplier\Moderation\Domain\Supplier\ValueObject\SupplierId;
 use Module\Supplier\Moderation\Infrastructure\Models\Supplier as Model;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 class SupplierRepository implements SupplierRepositoryInterface
 {

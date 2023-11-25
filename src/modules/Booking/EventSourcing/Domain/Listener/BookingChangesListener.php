@@ -5,7 +5,7 @@ namespace Module\Booking\EventSourcing\Domain\Listener;
 use Module\Booking\EventSourcing\Domain\Repository\BookingLogRepositoryInterface;
 use Module\Booking\EventSourcing\Domain\Service\BookingComparator\AttributesComparator;
 use Module\Booking\EventSourcing\Domain\ValueObject\BookingEventEnum;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Module\Contracts\Event\IntegrationEventListenerInterface;
 use Sdk\Module\Contracts\Event\IntegrationEventMessage;
 

@@ -6,20 +6,20 @@ namespace Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings;
 
 use Illuminate\Support\Collection;
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
-use Module\Shared\Contracts\Support\SerializableDataInterface;
+use Sdk\Shared\Contracts\Support\SerializableInterface;
 
 /**
  * @extends Collection<int, CancelPeriod>
  */
-final class CancelPeriodCollection extends Collection implements ValueObjectInterface, SerializableDataInterface
+final class CancelPeriodCollection extends Collection implements ValueObjectInterface, SerializableInterface
 {
-    public function toData(): array
+    public function serialize(): array
     {
-        return $this->map(fn(CancelPeriod $cancelPeriod) => $cancelPeriod->toData())->values()->all();
+        return $this->map(fn(CancelPeriod $cancelPeriod) => $cancelPeriod->serialize())->values()->all();
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
-        return (new static($data))->map(fn(array $item) => CancelPeriod::fromData($item));
+        return (new static($payload))->map(fn(array $item) => CancelPeriod::deserialize($item));
     }
 }

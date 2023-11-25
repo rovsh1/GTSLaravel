@@ -1,11 +1,12 @@
 import { onMounted, ref } from 'vue'
 
 import {
-  getCancelConditions, getExistsCancelConditions,
+  getCancelConditions,
+  getExistsCancelConditions,
   ServiceCancelConditions,
   updateCancelConditions,
   UpdateCancelConditionsPayload,
-} from '~api/supplier/cancel-conditions'
+} from '~api/supplier/cancel-conditions/transfer'
 
 export const useCancelConditions = (supplierId: number) => {
   const cancelConditions = ref<ServiceCancelConditions | null>(null)

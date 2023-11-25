@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Infrastructure\Models\Details;
 
 use Illuminate\Database\Eloquent\Builder;
-use Module\Shared\Enum\ServiceTypeEnum;
 use Sdk\Module\Database\Eloquent\Model;
+use Sdk\Shared\Enum\ServiceTypeEnum;
 
 class Airport extends Model
 {

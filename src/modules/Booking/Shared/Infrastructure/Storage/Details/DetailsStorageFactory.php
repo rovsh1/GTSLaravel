@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Infrastructure\Storage\Details;
 
-use Module\Shared\Enum\ServiceTypeEnum;
 use Sdk\Module\Contracts\Support\ContainerInterface;
+use Sdk\Shared\Enum\ServiceTypeEnum;
 
 class DetailsStorageFactory
 {

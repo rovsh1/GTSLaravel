@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Domain\Booking\Factory\Details;
 
-use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\BookingPeriod;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\HotelInfo;
-use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
+use Sdk\Booking\Entity\BookingDetails\HotelBooking;
+use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\HotelBooking\BookingPeriod;
+use Sdk\Booking\ValueObject\HotelBooking\HotelInfo;
+use Sdk\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 
 interface HotelBookingFactoryInterface
 {

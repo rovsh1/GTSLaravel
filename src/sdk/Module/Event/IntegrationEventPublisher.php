@@ -5,6 +5,7 @@ namespace Sdk\Module\Event;
 use Illuminate\Redis\Connections\Connection;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Str;
+use Sdk\Module\Contracts\ContextInterface;
 use Sdk\Module\Contracts\Event\IntegrationEventInterface;
 use Sdk\Module\Contracts\Event\IntegrationEventPublisherInterface;
 use Sdk\Module\Contracts\ModuleInterface;
@@ -15,8 +16,10 @@ class IntegrationEventPublisher implements IntegrationEventPublisherInterface
 
     private Connection $connection;
 
-    public function __construct(private readonly ModuleInterface $module)
-    {
+    public function __construct(
+        private readonly ModuleInterface $module,
+        private readonly ContextInterface $context,
+    ) {
     }
 
     public function publish(IntegrationEventInterface ...$events): void
@@ -30,6 +33,7 @@ class IntegrationEventPublisher implements IntegrationEventPublisherInterface
                     'status' => 0,
                     'event' => $event->integrationEvent(),
                     'payload' => $event->integrationPayload(),
+                    'context' => $this->context->toArray(),
                     'timestamp' => time()
                 ])
             );

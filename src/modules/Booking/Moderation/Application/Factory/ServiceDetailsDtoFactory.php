@@ -18,26 +18,26 @@ use Module\Booking\Moderation\Application\Dto\ServiceBooking\TransferFromRailway
 use Module\Booking\Moderation\Application\Dto\ServiceBooking\TransferToAirportDto;
 use Module\Booking\Moderation\Application\Dto\ServiceBooking\TransferToRailwayDto;
 use Module\Booking\Moderation\Application\Factory\HotelBooking\DetailsDtoFactory as HotelDetailsDtoFactory;
-use Module\Booking\Shared\Domain\Booking\Entity\CarRentWithDriver;
-use Module\Booking\Shared\Domain\Booking\Entity\CIPMeetingInAirport;
-use Module\Booking\Shared\Domain\Booking\Entity\CIPSendoffInAirport;
-use Module\Booking\Shared\Domain\Booking\Entity\DayCarTrip;
-use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
-use Module\Booking\Shared\Domain\Booking\Entity\IntercityTransfer;
-use Module\Booking\Shared\Domain\Booking\Entity\Other;
-use Module\Booking\Shared\Domain\Booking\Entity\DetailsInterface;
-use Module\Booking\Shared\Domain\Booking\Entity\TransferFromAirport;
-use Module\Booking\Shared\Domain\Booking\Entity\TransferFromRailway;
-use Module\Booking\Shared\Domain\Booking\Entity\TransferToAirport;
-use Module\Booking\Shared\Domain\Booking\Entity\TransferToRailway;
-use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
-use Module\Booking\Shared\Domain\Guest\ValueObject\GuestId;
-use Module\Shared\Contracts\Adapter\AirportAdapterInterface;
-use Module\Shared\Contracts\Adapter\CityAdapterInterface;
-use Module\Shared\Contracts\Adapter\RailwayStationAdapterInterface;
-use Module\Shared\Dto\AirportInfoDto;
-use Module\Shared\Dto\CityInfoDto;
-use Module\Shared\Dto\RailwayStationInfoDto;
+use Sdk\Booking\Contracts\Entity\DetailsInterface;
+use Sdk\Booking\Entity\BookingDetails\CarRentWithDriver;
+use Sdk\Booking\Entity\BookingDetails\CIPMeetingInAirport;
+use Sdk\Booking\Entity\BookingDetails\CIPSendoffInAirport;
+use Sdk\Booking\Entity\BookingDetails\DayCarTrip;
+use Sdk\Booking\Entity\BookingDetails\HotelBooking;
+use Sdk\Booking\Entity\BookingDetails\IntercityTransfer;
+use Sdk\Booking\Entity\BookingDetails\Other;
+use Sdk\Booking\Entity\BookingDetails\TransferFromAirport;
+use Sdk\Booking\Entity\BookingDetails\TransferFromRailway;
+use Sdk\Booking\Entity\BookingDetails\TransferToAirport;
+use Sdk\Booking\Entity\BookingDetails\TransferToRailway;
+use Sdk\Booking\ValueObject\GuestId;
+use Sdk\Booking\ValueObject\ServiceInfo;
+use Sdk\Shared\Contracts\Adapter\AirportAdapterInterface;
+use Sdk\Shared\Contracts\Adapter\CityAdapterInterface;
+use Sdk\Shared\Contracts\Adapter\RailwayStationAdapterInterface;
+use Sdk\Shared\Dto\AirportInfoDto;
+use Sdk\Shared\Dto\CityInfoDto;
+use Sdk\Shared\Dto\RailwayStationInfoDto;
 
 class ServiceDetailsDtoFactory
 {

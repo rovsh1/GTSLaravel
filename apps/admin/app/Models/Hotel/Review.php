@@ -4,9 +4,9 @@ namespace App\Admin\Models\Hotel;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Module\Shared\Enum\Hotel\ReviewStatusEnum;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
 use Sdk\Module\Database\Eloquent\Model;
+use Sdk\Shared\Enum\Hotel\ReviewStatusEnum;
 
 /**
  * App\Admin\Models\Hotel\Review

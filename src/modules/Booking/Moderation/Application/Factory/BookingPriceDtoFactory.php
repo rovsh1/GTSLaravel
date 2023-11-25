@@ -7,12 +7,12 @@ namespace Module\Booking\Moderation\Application\Factory;
 use Module\Booking\Moderation\Application\Dto\BookingPriceDto;
 use Module\Booking\Moderation\Application\Dto\PriceItemDto;
 use Module\Booking\Moderation\Application\Dto\ProfitItemDto;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPriceItem;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPrices;
-use Module\Shared\Contracts\Adapter\CurrencyRateAdapterInterface;
-use Module\Shared\Contracts\Service\TranslatorInterface;
-use Module\Shared\Dto\CurrencyDto;
-use Module\Shared\Enum\CurrencyEnum;
+use Sdk\Booking\ValueObject\BookingPriceItem;
+use Sdk\Booking\ValueObject\BookingPrices;
+use Sdk\Shared\Contracts\Adapter\CurrencyRateAdapterInterface;
+use Sdk\Shared\Contracts\Service\TranslatorInterface;
+use Sdk\Shared\Dto\CurrencyDto;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 class BookingPriceDtoFactory
 {

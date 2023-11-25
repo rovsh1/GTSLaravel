@@ -5,8 +5,8 @@ namespace App\Admin\Support\View\Grid\Column;
 use Gsdk\Grid\Support\AbstractColumn;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Collection;
-use Module\Shared\Dto\FileDto;
 use Sdk\Module\Database\Eloquent\Model;
+use Sdk\Shared\Dto\FileDto;
 
 class File extends AbstractColumn
 {

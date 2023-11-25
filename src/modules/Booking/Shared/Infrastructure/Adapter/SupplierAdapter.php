@@ -9,15 +9,14 @@ use Carbon\CarbonInterface;
 use DateTimeInterface;
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Hotel\Pricing\Application\Dto\ServicePriceDto;
-use Module\Shared\Enum\CurrencyEnum;
 use Module\Supplier\Moderation\Application\Dto\AirportDto;
 use Module\Supplier\Moderation\Application\Dto\CarDto;
 use Module\Supplier\Moderation\Application\Response\CancelConditionsDto;
 use Module\Supplier\Moderation\Application\Response\ServiceContractDto;
 use Module\Supplier\Moderation\Application\Response\ServiceDto;
 use Module\Supplier\Moderation\Application\Response\SupplierDto;
-use Module\Supplier\Moderation\Application\UseCase\CancelConditions\GetAirportCancelConditions;
-use Module\Supplier\Moderation\Application\UseCase\CancelConditions\GetTransferCancelConditions;
+use Module\Supplier\Moderation\Application\UseCase\CancelConditions\GetCarCancelConditions;
+use Module\Supplier\Moderation\Application\UseCase\CancelConditions\GetServiceCancelConditions;
 use Module\Supplier\Moderation\Application\UseCase\Find;
 use Module\Supplier\Moderation\Application\UseCase\FindAirport;
 use Module\Supplier\Moderation\Application\UseCase\FindAirportServiceContract;
@@ -28,6 +27,7 @@ use Module\Supplier\Moderation\Application\UseCase\GetAirportServicePrice;
 use Module\Supplier\Moderation\Application\UseCase\GetCars;
 use Module\Supplier\Moderation\Application\UseCase\GetOtherServicePrice;
 use Module\Supplier\Moderation\Application\UseCase\GetTransferServicePrice;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 class SupplierAdapter implements SupplierAdapterInterface
 {
@@ -62,9 +62,9 @@ class SupplierAdapter implements SupplierAdapterInterface
         return app(FindTransferServiceContract::class)->execute($serviceId);
     }
 
-    public function getTransferCancelConditions(): ?CancelConditionsDto
+    public function getCarCancelConditions(int $serviceId, int $carId, \DateTimeInterface $date): ?CancelConditionsDto
     {
-        return app(GetTransferCancelConditions::class)->execute();
+        return app(GetCarCancelConditions::class)->execute($serviceId, $carId, $date);
     }
 
     public function getAirportServicePrice(
@@ -95,14 +95,19 @@ class SupplierAdapter implements SupplierAdapterInterface
         );
     }
 
+    public function getOtherCancelConditions(int $serviceId, DateTimeInterface $date): ?CancelConditionsDto
+    {
+        return app(GetServiceCancelConditions::class)->execute($serviceId, $date);
+    }
+
     public function findAirportServiceContract(int $serviceId): ?ServiceContractDto
     {
         return app(FindAirportServiceContract::class)->execute($serviceId);
     }
 
-    public function getAirportCancelConditions(): ?CancelConditionsDto
+    public function getAirportCancelConditions(int $serviceId, DateTimeInterface $date): ?CancelConditionsDto
     {
-        return app(GetAirportCancelConditions::class)->execute();
+        return app(GetServiceCancelConditions::class)->execute($serviceId, $date);
     }
 
     /**

@@ -19,6 +19,7 @@
             'editUrl' => $editUrl,
             'deleteUrl' => $deleteUrl,
             'manager' => $manager,
+            'isOtherServiceBooking' => false,
         ]) }}
     </script>
 @endsection
@@ -42,7 +43,8 @@
                                 <tr>
                                     <th>Заказ (ID)</th>
                                     <td>
-                                        <a href="{{ route('booking-order.show', $model->orderId) }}" target="_blank">{{ $model->orderId }}</a>
+                                        <a href="{{ route('booking-order.show', $model->orderId) }}"
+                                           target="_blank">{{ $model->orderId }}</a>
                                     </td>
                                 </tr>
                                 <tr>
@@ -55,7 +57,7 @@
                                 </tr>
                                 <tr>
                                     <th>Тип брони</th>
-                                    <td>{{$model->details->quotaProcessingMethod === \Module\Shared\Enum\Booking\QuotaProcessingMethodEnum::REQUEST ? 'По запросу' : 'По квоте'}}</td>
+                                    <td>{{$model->details->quotaProcessingMethod === \Sdk\Shared\Enum\Booking\QuotaProcessingMethodEnum::REQUEST ? 'По запросу' : 'По квоте'}}</td>
                                 </tr>
                                 <tr>
                                     <th>Тип карты оплаты</th>
@@ -68,13 +70,15 @@
                                 <tr>
                                     <th>Клиент</th>
                                     <td>
-                                        <a href="{{ route('client.show', $client->id) }}" target="_blank">{{ $client->name }}</a>
+                                        <a href="{{ route('client.show', $client->id) }}"
+                                           target="_blank">{{ $client->name }}</a>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>Отель</th>
                                     <td>
-                                        <a href="{{ route('hotels.show', $hotel->id) }}" target="_blank">{{ $hotel->name }}</a>
+                                        <a href="{{ route('hotels.show', $hotel->id) }}"
+                                           target="_blank">{{ $hotel->name }}</a>
                                     </td>
                                 </tr>
                                 <tr>

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Domain\Guest;
 
-use Module\Booking\Shared\Domain\Guest\ValueObject\GuestId;
-use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
 use Module\Shared\Contracts\Domain\EntityInterface;
-use Module\Shared\Enum\GenderEnum;
+use Sdk\Booking\ValueObject\GuestId;
+use Sdk\Booking\ValueObject\OrderId;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
+use Sdk\Shared\Enum\GenderEnum;
 
 class Guest extends AbstractAggregateRoot implements EntityInterface
 {

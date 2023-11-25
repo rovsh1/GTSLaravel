@@ -3,8 +3,8 @@
 namespace Module\Booking\Shared\Domain\Booking\Event;
 
 use Module\Booking\Shared\Domain\Booking\Booking;
-use Module\Shared\Support\Event\IntegrationEventMessages;
 use Sdk\Module\Contracts\Event\IntegrationEventInterface;
+use Sdk\Shared\Event\IntegrationEventMessages;
 
 final class BookingModified implements IntegrationEventInterface
 {
@@ -24,7 +24,7 @@ final class BookingModified implements IntegrationEventInterface
         return [
             'bookingId' => $this->booking->id()->value(),
             'dataBefore' => $this->dataBefore,
-            'dataAfter' => $this->booking->toData()
+            'dataAfter' => $this->booking->serialize()
         ];
     }
 }

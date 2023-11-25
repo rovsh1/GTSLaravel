@@ -4,8 +4,8 @@ namespace Module\Booking\Moderation\Application\Service;
 
 use Module\Booking\Moderation\Application\Exception\InvalidRoomClientResidencyException;
 use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
-use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
 use Module\Booking\Shared\Domain\Shared\Adapter\ClientAdapterInterface;
+use Sdk\Booking\ValueObject\OrderId;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 
 class AccommodationChecker

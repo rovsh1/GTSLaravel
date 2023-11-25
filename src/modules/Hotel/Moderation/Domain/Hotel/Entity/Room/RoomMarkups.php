@@ -6,10 +6,10 @@ namespace Module\Hotel\Moderation\Domain\Hotel\Entity\Room;
 
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\RoomId;
 use Module\Shared\Contracts\Domain\EntityInterface;
-use Module\Shared\Contracts\Support\SerializableDataInterface;
-use Module\Shared\ValueObject\Percent;
+use Sdk\Shared\Contracts\Support\SerializableInterface;
+use Sdk\Shared\ValueObject\Percent;
 
-final class RoomMarkups implements EntityInterface, SerializableDataInterface
+final class RoomMarkups implements EntityInterface, SerializableInterface
 {
     public function __construct(
         private readonly RoomId $roomId,
@@ -44,7 +44,7 @@ final class RoomMarkups implements EntityInterface, SerializableDataInterface
         $this->discount = $discount;
     }
 
-    public function toData(): array
+    public function serialize(): array
     {
         return [
             'id' => $this->roomId->value(),
@@ -52,11 +52,11 @@ final class RoomMarkups implements EntityInterface, SerializableDataInterface
         ];
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
         return new static(
-            roomId: new RoomId($data['id']),
-            discount: new Percent($data['discount']),
+            roomId: new RoomId($payload['id']),
+            discount: new Percent($payload['discount']),
         );
     }
 }

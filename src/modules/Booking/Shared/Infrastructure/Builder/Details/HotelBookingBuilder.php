@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Infrastructure\Builder\Details;
 
-use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\DetailsId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\BookingPeriod as HotelBookingPeriod;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\ExternalNumber;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\HotelInfo;
 use Module\Booking\Shared\Infrastructure\Models\Details\Hotel;
+use Sdk\Booking\Entity\BookingDetails\HotelBooking;
+use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\DetailsId;
+use Sdk\Booking\ValueObject\HotelBooking\BookingPeriod as HotelBookingPeriod;
+use Sdk\Booking\ValueObject\HotelBooking\ExternalNumber;
+use Sdk\Booking\ValueObject\HotelBooking\HotelInfo;
 
 class HotelBookingBuilder
 {
@@ -23,9 +23,9 @@ class HotelBookingBuilder
         return new HotelBooking(
             id: new DetailsId($details->id),
             bookingId: new BookingId($details->booking_id),
-            hotelInfo: HotelInfo::fromData($detailsData['hotelInfo']),
-            bookingPeriod: HotelBookingPeriod::fromData($detailsData['period']),
-            externalNumber: $externalNumberData ? ExternalNumber::fromData($externalNumberData) : null,
+            hotelInfo: HotelInfo::deserialize($detailsData['hotelInfo']),
+            bookingPeriod: HotelBookingPeriod::deserialize($detailsData['period']),
+            externalNumber: $externalNumberData ? ExternalNumber::deserialize($externalNumberData) : null,
             quotaProcessingMethod: $details->quota_processing_method,
         );
     }

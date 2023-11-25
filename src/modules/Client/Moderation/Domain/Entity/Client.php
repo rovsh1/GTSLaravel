@@ -6,9 +6,9 @@ namespace Module\Client\Moderation\Domain\Entity;
 
 use Module\Client\Shared\Domain\ValueObject\ClientId;
 use Module\Shared\Contracts\Domain\EntityInterface;
-use Module\Shared\Enum\Client\ResidencyEnum;
-use Module\Shared\Enum\Client\TypeEnum;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
+use Sdk\Shared\Enum\Client\ResidencyEnum;
+use Sdk\Shared\Enum\Client\TypeEnum;
 
 class Client extends AbstractAggregateRoot implements EntityInterface
 {

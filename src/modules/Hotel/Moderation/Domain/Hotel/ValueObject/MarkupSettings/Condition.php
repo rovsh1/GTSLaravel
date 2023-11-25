@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings;
 
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
-use Module\Shared\Contracts\Support\SerializableDataInterface;
-use Module\Shared\ValueObject\Percent;
-use Module\Shared\ValueObject\TimePeriod;
+use Sdk\Shared\Contracts\Support\SerializableInterface;
+use Sdk\Shared\ValueObject\Percent;
+use Sdk\Shared\ValueObject\TimePeriod;
 
-final class Condition implements ValueObjectInterface, SerializableDataInterface
+final class Condition implements ValueObjectInterface, SerializableInterface
 {
     public function __construct(
         private TimePeriod $timePeriod,
@@ -36,19 +36,19 @@ final class Condition implements ValueObjectInterface, SerializableDataInterface
         $this->priceMarkup = $priceMarkup;
     }
 
-    public function toData(): array
+    public function serialize(): array
     {
         return [
-            'timePeriod' => $this->timePeriod->toData(),
+            'timePeriod' => $this->timePeriod->serialize(),
             'priceMarkup' => $this->priceMarkup->value()
         ];
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
         return new static(
-            TimePeriod::fromData($data['timePeriod']),
-            new Percent($data['priceMarkup'])
+            TimePeriod::deserialize($payload['timePeriod']),
+            new Percent($payload['priceMarkup'])
         );
     }
 }

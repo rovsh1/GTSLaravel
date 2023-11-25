@@ -6,7 +6,7 @@ use Module\Generic\CurrencyRate\Application\Request\GetRateDto;
 use Module\Generic\CurrencyRate\Application\UseCase\GetNetRate;
 use Module\Generic\CurrencyRate\Application\UseCase\UpdateRates;
 use Module\Generic\CurrencyRate\Domain\ValueObject\CountryEnum;
-use Module\Shared\Enum\CurrencyEnum;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 class CurrencyAdapter
 {

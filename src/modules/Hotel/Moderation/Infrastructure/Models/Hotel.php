@@ -4,8 +4,8 @@ namespace Module\Hotel\Moderation\Infrastructure\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Database\Eloquent\Model;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 class Hotel extends Model
 {

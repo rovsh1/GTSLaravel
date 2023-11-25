@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\UseCase;
 
-use Module\Booking\Shared\Application\Dto\StatusDto;
 use Module\Booking\Shared\Application\Factory\BookingStatusDtoFactory;
+use Sdk\Booking\Dto\StatusDto;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class GetStatuses implements UseCaseInterface

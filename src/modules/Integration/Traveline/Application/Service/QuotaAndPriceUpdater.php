@@ -14,8 +14,6 @@ use Module\Integration\Traveline\Domain\Exception\HotelNotConnectedException;
 use Module\Integration\Traveline\Domain\Exception\InvalidHotelRoomCode;
 use Module\Integration\Traveline\Domain\Repository\HotelRepositoryInterface;
 use Module\Integration\Traveline\Domain\Service\HotelRoomCodeGeneratorInterface;
-use Module\Shared\Contracts\Domain\DomainEntityExceptionInterface;
-use Module\Shared\Enum\ErrorCodeEnum;
 
 class QuotaAndPriceUpdater
 {
@@ -54,10 +52,10 @@ class QuotaAndPriceUpdater
             try {
                 $this->handleRequest($updateRequest);
             } catch (\Throwable $e) {
-                if (!$e->getPrevious() instanceof DomainEntityExceptionInterface) {
-                    throw $e;
-                }
-                $this->errors[] = $this->convertExternalDomainCodeToApiError($e->getPrevious()->domainCode());
+//                if (!$e->getPrevious() instanceof DomainEntityExceptionInterface) {
+//                    throw $e;
+//                }
+//                $this->errors[] = $this->convertExternalDomainCodeToApiError($e->getPrevious()->domainCode());
             }
         }
 
@@ -117,13 +115,13 @@ class QuotaAndPriceUpdater
         }
     }
 
-    private function convertExternalDomainCodeToApiError(ErrorCodeEnum $domainCode): TravelineResponseErrorInterface
-    {
-        return match ($domainCode) {
-            ErrorCodeEnum::ROOM_NOT_FOUND => new InvalidRoomType(),
-            ErrorCodeEnum::PRICE_RATE_NOT_FOUND => new InvalidRatePlan(),
-            ErrorCodeEnum::UNSUPPORTED_ROOM_GUESTS_NUMBER => new InvalidRateAccomodation(),
-        };
-    }
+//    private function convertExternalDomainCodeToApiError(ErrorCodeEnum $domainCode): TravelineResponseErrorInterface
+//    {
+//        return match ($domainCode) {
+//            ErrorCodeEnum::ROOM_NOT_FOUND => new InvalidRoomType(),
+//            ErrorCodeEnum::PRICE_RATE_NOT_FOUND => new InvalidRatePlan(),
+//            ErrorCodeEnum::UNSUPPORTED_ROOM_GUESTS_NUMBER => new InvalidRateAccomodation(),
+//        };
+//    }
 
 }

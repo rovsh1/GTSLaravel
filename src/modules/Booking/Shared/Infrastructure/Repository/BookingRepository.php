@@ -4,28 +4,31 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Infrastructure\Repository;
 
-use App\Shared\Support\Facades\AppContext;
 use Illuminate\Database\Eloquent\Builder;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPrices;
-use Module\Booking\Shared\Domain\Booking\ValueObject\Context;
-use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
-use Module\Booking\Shared\Domain\Shared\ValueObject\CancelConditions;
-use Module\Booking\Shared\Domain\Shared\ValueObject\CreatorId;
 use Module\Booking\Shared\Infrastructure\Models\Booking as BookingModel;
-use Module\Shared\Enum\Booking\BookingStatusEnum;
-use Module\Shared\Enum\ServiceTypeEnum;
-use Module\Shared\Support\RepositoryInstances;
-use Module\Shared\ValueObject\Timestamps;
+use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\BookingPriceItem;
+use Sdk\Booking\ValueObject\BookingPrices;
+use Sdk\Booking\ValueObject\CancelConditions;
+use Sdk\Booking\ValueObject\Context;
+use Sdk\Booking\ValueObject\CreatorId;
+use Sdk\Booking\ValueObject\OrderId;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
+use Sdk\Shared\Contracts\Service\ApplicationContextInterface;
+use Sdk\Shared\Enum\Booking\BookingStatusEnum;
+use Sdk\Shared\Enum\ServiceTypeEnum;
+use Sdk\Shared\Support\RepositoryInstances;
+use Sdk\Shared\ValueObject\Timestamps;
 
 class BookingRepository implements BookingRepositoryInterface
 {
     private RepositoryInstances $instances;
 
-    public function __construct()
+    public function __construct(
+        private readonly ApplicationContextInterface $context
+    )
     {
         $this->instances = new RepositoryInstances();
     }
@@ -80,11 +83,20 @@ class BookingRepository implements BookingRepositoryInterface
 
     public function store(Booking $booking): void
     {
+        $clientPrice = $booking->prices()->clientPrice();
+        $supplierPrice = $booking->prices()->supplierPrice();
         BookingModel::whereId($booking->id()->value())->update([
             'status' => $booking->status(),
             'note' => $booking->note(),
-            'prices' => $booking->prices()->toData(),
-            'cancel_conditions' => $booking->cancelConditions()?->toData()
+            'client_price' => $clientPrice->calculatedValue(),
+            'client_manual_price' => $clientPrice->manualValue(),
+            'client_currency' => $clientPrice->currency(),
+            'client_penalty' => $clientPrice->penaltyValue(),
+            'supplier_price' => $supplierPrice->calculatedValue(),
+            'supplier_manual_price' => $supplierPrice->manualValue(),
+            'supplier_currency' => $supplierPrice->currency(),
+            'supplier_penalty' => $supplierPrice->penaltyValue(),
+            'cancel_conditions' => $booking->cancelConditions()?->serialize()
         ]);
     }
 
@@ -94,16 +106,26 @@ class BookingRepository implements BookingRepositoryInterface
         BookingPrices $prices,
         ?CancelConditions $cancelConditions,
         ServiceTypeEnum $serviceType,
-        ?string $note = null
+        ?string $note = null,
     ): Booking {
+        $clientPrice = $prices->clientPrice();
+        $supplierPrice = $prices->supplierPrice();
+
         $model = BookingModel::create([
             'order_id' => $orderId->value(),
             'service_type' => $serviceType,
             'status' => BookingStatusEnum::CREATED,
-            'source' => AppContext::source(),
+            'source' => $this->context->source(),
             'creator_id' => $creatorId->value(),
-            'prices' => $prices->toData(),
-            'cancel_conditions' => $cancelConditions?->toData(),
+            'client_price' => $clientPrice->calculatedValue(),
+            'client_manual_price' => $clientPrice->manualValue(),
+            'client_currency' => $clientPrice->currency(),
+            'client_penalty' => $clientPrice->penaltyValue(),
+            'supplier_price' => $supplierPrice->calculatedValue(),
+            'supplier_manual_price' => $supplierPrice->manualValue(),
+            'supplier_currency' => $supplierPrice->currency(),
+            'supplier_penalty' => $supplierPrice->penaltyValue(),
+            'cancel_conditions' => $cancelConditions?->serialize(),
             'note' => $note
         ]);
 
@@ -125,9 +147,9 @@ class BookingRepository implements BookingRepositoryInterface
             orderId: new OrderId($booking->order_id),
             serviceType: $booking->service_type,
             status: $booking->status,
-            prices: BookingPrices::fromData($booking->prices),
+            prices: $this->buildBookingPrices($booking),
             cancelConditions: $booking->cancel_conditions !== null
-                ? CancelConditions::fromData($booking->cancel_conditions)
+                ? CancelConditions::deserialize($booking->cancel_conditions)
                 : null,
             note: $booking->note,
             context: new Context(
@@ -143,5 +165,23 @@ class BookingRepository implements BookingRepositoryInterface
         $this->instances->add($instance->id(), $instance);
 
         return $instance;
+    }
+
+    private function buildBookingPrices(BookingModel $booking): BookingPrices
+    {
+        return new BookingPrices(
+            clientPrice: new BookingPriceItem(
+                currency: $booking->client_currency,
+                calculatedValue: $booking->client_price,
+                manualValue: $booking->client_manual_price,
+                penaltyValue: $booking->client_penalty,
+            ),
+            supplierPrice: new BookingPriceItem(
+                currency: $booking->supplier_currency,
+                calculatedValue: $booking->supplier_price,
+                manualValue: $booking->supplier_manual_price,
+                penaltyValue: $booking->supplier_penalty,
+            ),
+        );
     }
 }

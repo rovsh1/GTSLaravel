@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\Dto\Details;
 
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\Condition;
 use Module\Shared\Contracts\Domain\EntityInterface;
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Module\Shared\Support\Dto\AbstractDomainBasedDto;
+use Sdk\Booking\ValueObject\HotelBooking\Condition;
 
 class ConditionDto extends AbstractDomainBasedDto
 {

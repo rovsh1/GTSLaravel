@@ -6,11 +6,11 @@ use Module\Booking\Pricing\Domain\Booking\Adapter\HotelPricingAdapterInterface;
 use Module\Booking\Pricing\Domain\Booking\Service\HotelPriceCalculator\AccommodationPriceStorage;
 use Module\Booking\Pricing\Domain\Booking\Service\HotelPriceCalculator\CalculateHotelPriceRequestDtoBuilder;
 use Module\Booking\Shared\Domain\Booking\Booking;
-use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPriceItem;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPrices;
 use Module\Hotel\Pricing\Application\Dto\CalculatedHotelRoomsPricesDto;
+use Sdk\Booking\Entity\BookingDetails\HotelBooking;
+use Sdk\Booking\ValueObject\BookingPriceItem;
+use Sdk\Booking\ValueObject\BookingPrices;
 
 class HotelPriceCalculator implements PriceCalculatorInterface
 {

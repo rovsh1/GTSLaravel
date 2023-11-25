@@ -3,8 +3,8 @@
 namespace Module\Hotel\Moderation\Application\Service\MarkupSettingsSetter;
 
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings\Condition;
-use Module\Shared\ValueObject\Percent;
-use Module\Shared\ValueObject\TimePeriod;
+use Sdk\Shared\ValueObject\Percent;
+use Sdk\Shared\ValueObject\TimePeriod;
 
 class ConditionUpdater
 {

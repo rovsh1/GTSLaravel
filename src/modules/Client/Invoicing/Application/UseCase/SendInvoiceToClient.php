@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Client\Invoicing\Application\UseCase;
 
+use Module\Client\Invoicing\Application\Exception\InvoiceNotFoundException;
 use Module\Client\Invoicing\Domain\Invoice\Repository\InvoiceRepositoryInterface;
 use Module\Client\Invoicing\Domain\Order\ValueObject\OrderId;
-use Module\Shared\Exception\ApplicationException;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class SendInvoiceToClient implements UseCaseInterface
@@ -19,7 +19,7 @@ class SendInvoiceToClient implements UseCaseInterface
     {
         $invoice = $this->invoiceRepository->findByOrderId(new OrderId($orderId));
         if ($invoice === null) {
-            throw new ApplicationException('Not found invoice for order', 404);
+            throw new InvoiceNotFoundException();
         }
     }
 }

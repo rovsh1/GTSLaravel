@@ -6,7 +6,7 @@ namespace Module\Hotel\Pricing\Application\RequestDto;
 
 use Carbon\CarbonPeriod;
 use Module\Hotel\Pricing\Application\Dto\RoomCalculationParamsDto;
-use Module\Shared\Enum\CurrencyEnum;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 class CalculateHotelPriceRequestDto
 {

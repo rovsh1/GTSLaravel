@@ -6,12 +6,12 @@ use App\Admin\Models\Order\Order;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Query\Builder as Query;
-use Module\Shared\Enum\Client\ResidencyEnum;
-use Module\Shared\Enum\Client\StatusEnum;
-use Module\Shared\Enum\Client\TypeEnum;
-use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
 use Sdk\Module\Database\Eloquent\Model;
+use Sdk\Shared\Enum\Client\ResidencyEnum;
+use Sdk\Shared\Enum\Client\StatusEnum;
+use Sdk\Shared\Enum\Client\TypeEnum;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 class Client extends Model
 {

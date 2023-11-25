@@ -7,8 +7,8 @@ namespace Module\Booking\Moderation\Application\Dto\ServiceBooking;
 use DateTimeInterface;
 use Module\Booking\Moderation\Application\Dto\BookingPriceDto;
 use Module\Booking\Moderation\Application\Dto\Details\CancelConditionsDto;
-use Module\Booking\Shared\Application\Dto\StatusDto;
-use Module\Shared\Enum\SourceEnum;
+use Sdk\Booking\Dto\StatusDto;
+use Sdk\Shared\Enum\SourceEnum;
 
 class BookingDto
 {

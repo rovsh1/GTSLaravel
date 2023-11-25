@@ -3,7 +3,7 @@
 namespace App\Admin\Http\Middleware;
 
 use App\Admin\Models\Administrator\Administrator;
-use App\Shared\Support\Facades\AppContext;
+use App\Admin\Support\Facades\AppContext;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 use Illuminate\Http\Request;
 
@@ -27,7 +27,7 @@ class Authenticate extends Middleware
      * @param Request $request
      * @return string|null
      */
-    protected function redirectTo($request)
+    protected function redirectTo(Request $request)
     {
         if (!$request->expectsJson()) {
             $query = ($q = $request->query())
@@ -37,5 +37,7 @@ class Authenticate extends Middleware
                 'url' => "/{$request->path()}$query"
             ]);
         }
+
+        return null;
     }
 }

@@ -9,8 +9,8 @@ use Module\Hotel\Quotation\Domain\ValueObject\BookingPeriod;
 use Module\Hotel\Quotation\Domain\ValueObject\RoomId;
 use Module\Hotel\Quotation\Infrastructure\Model\Quota;
 use Module\Hotel\Quotation\Infrastructure\Model\QuotaBooking;
-use Module\Shared\Enum\Booking\QuotaChangeTypeEnum;
-use Module\Shared\Enum\Hotel\QuotaStatusEnum;
+use Sdk\Shared\Enum\Booking\QuotaChangeTypeEnum;
+use Sdk\Shared\Enum\Hotel\QuotaStatusEnum;
 
 class QuotaRepository implements QuotaRepositoryInterface
 {
@@ -47,6 +47,18 @@ class QuotaRepository implements QuotaRepositoryInterface
 
     public function hasAvailable(RoomId $roomId, BookingPeriod $period, int $count): bool
     {
+        $releaseDays = now()->diffInDays($period->dateFrom());
+        $isReleaseDaysAvailable = Quota::whereDate($period->dateFrom())
+            ->whereRoomId($roomId->value())
+            ->whereOpened()
+            ->whereHasAvailable($count)
+            ->whereReleaseDaysBelowOrEqual($releaseDays)
+            ->exists();
+
+        if (!$isReleaseDaysAvailable) {
+            return false;
+        }
+
         return Quota::wherePeriod($this->convertBookingPeriod($period))
             ->whereRoomId($roomId->value())
             ->whereOpened()

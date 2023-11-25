@@ -11,7 +11,6 @@ use Module\Hotel\Quotation\Domain\Repository\QuotaRepositoryInterface;
 use Module\Hotel\Quotation\Domain\ValueObject\BookingId;
 use Module\Hotel\Quotation\Domain\ValueObject\BookingPeriod;
 use Module\Hotel\Quotation\Domain\ValueObject\RoomId;
-use Module\Shared\Exception\ApplicationException;
 
 class QuotaBooker
 {
@@ -68,7 +67,7 @@ class QuotaBooker
                 $bookingPeriod,
                 $roomDto->count
             )) {
-                throw new BookingQuotaException(ApplicationException::BOOKING_NOT_FOUND_ROOM_DATE_QUOTA);
+                throw new BookingQuotaException();
 //                throw new Exception("Room [$roomDto->roomId] quota not found");
             }
         }

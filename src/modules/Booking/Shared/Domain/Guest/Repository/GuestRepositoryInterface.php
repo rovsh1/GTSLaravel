@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Domain\Guest\Repository;
 
 use Module\Booking\Shared\Domain\Guest\Guest;
-use Module\Booking\Shared\Domain\Guest\ValueObject\GuestId;
-use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
-use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
-use Module\Shared\Enum\GenderEnum;
+use Sdk\Booking\ValueObject\GuestId;
+use Sdk\Booking\ValueObject\GuestIdCollection;
+use Sdk\Booking\ValueObject\OrderId;
+use Sdk\Shared\Enum\GenderEnum;
 
 interface GuestRepositoryInterface
 {

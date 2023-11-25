@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Module\Supplier\Moderation\Application\UseCase\Contract;
 
 use Illuminate\Support\Facades\DB;
-use Module\Shared\Contracts\Adapter\FileStorageAdapterInterface;
-use Module\Shared\Dto\UploadedFileDto;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
+use Sdk\Shared\Contracts\Adapter\FileStorageAdapterInterface;
+use Sdk\Shared\Dto\UploadedFileDto;
 
 class UploadFiles implements UseCaseInterface
 {

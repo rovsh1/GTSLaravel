@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\Dto;
 
-use Sdk\Module\Foundation\Support\Dto\Dto;
-
-class UpdateStatusResponseDto extends Dto
+final class UpdateStatusResponseDto
 {
     public function __construct(
         public readonly bool $isNotConfirmedReasonRequired = false,

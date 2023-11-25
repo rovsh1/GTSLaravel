@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Domain\Booking\Repository;
 
-use Module\Booking\Shared\Domain\Booking\Entity\HotelAccommodation;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationCollection;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationDetails;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomInfo;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomPrices;
+use Sdk\Booking\Entity\BookingDetails\HotelAccommodation;
+use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\HotelBooking\AccommodationCollection;
+use Sdk\Booking\ValueObject\HotelBooking\AccommodationDetails;
+use Sdk\Booking\ValueObject\HotelBooking\AccommodationId;
+use Sdk\Booking\ValueObject\HotelBooking\RoomInfo;
+use Sdk\Booking\ValueObject\HotelBooking\RoomPrices;
 
 interface AccommodationRepositoryInterface
 {

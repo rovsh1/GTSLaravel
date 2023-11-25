@@ -14,7 +14,6 @@ use App\Admin\Models\Client\Client;
 use App\Admin\Models\Order\Order;
 use App\Admin\Repositories\OrderAdministratorRepository;
 use App\Admin\Support\Facades\Acl;
-use App\Admin\Support\Facades\Booking\BookingAdapter;
 use App\Admin\Support\Facades\Booking\OrderAdapter;
 use App\Admin\Support\Facades\Breadcrumb;
 use App\Admin\Support\Facades\Form;
@@ -25,13 +24,12 @@ use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Grid\SearchForm;
 use App\Admin\Support\View\Layout as LayoutContract;
-use App\Shared\Http\Responses\AjaxErrorResponse;
 use App\Shared\Http\Responses\AjaxResponseInterface;
 use App\Shared\Http\Responses\AjaxSuccessResponse;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
-use Module\Shared\Enum\SourceEnum;
-use Module\Shared\Exception\ApplicationException;
+use Sdk\Shared\Enum\SourceEnum;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class OrderController extends Controller
 {
@@ -91,8 +89,10 @@ class OrderController extends Controller
 
     public function show(int $id): LayoutContract
     {
-        $booking = BookingAdapter::getBooking($id);
-        $order = OrderAdapter::getOrder($booking->orderId);
+        $order = OrderAdapter::getOrder($id);
+        if ($order === null) {
+            throw new NotFoundHttpException('Order not found');
+        }
         $client = Client::find($order->clientId);
 
         $title = "Заказ №{$id}";
@@ -105,7 +105,7 @@ class OrderController extends Controller
                 'model' => $order,
                 'client' => $client,
                 'manager' => $this->administratorRepository->get($id),
-                'creator' => Administrator::find($booking->creatorId),
+                'creator' => Administrator::find($order->creatorId),
                 'serviceBookingCreate' => route('service-booking.create'),
                 'hotelBookingCreate' => route('hotel-booking.create'),
             ]);
@@ -120,7 +120,7 @@ class OrderController extends Controller
 
     public function search(SearchRequest $request): JsonResponse
     {
-        $orders = OrderAdapter::getActiveOrders($request->getClientId(), $request->isOnlyWaitingInvoice());
+        $orders = OrderAdapter::getActiveOrders($request->getClientId());
 
         return response()->json($orders);
     }
@@ -150,11 +150,7 @@ class OrderController extends Controller
 
     public function updateStatus(UpdateStatusRequest $request, int $id): AjaxResponseInterface
     {
-        try {
-            OrderAdapter::updateStatus($id, $request->getStatus());
-        } catch (ApplicationException $e) {
-            return new AjaxErrorResponse($e->getMessage());
-        }
+        OrderAdapter::updateStatus($id, $request->getStatus());
 
         return new AjaxSuccessResponse();
     }

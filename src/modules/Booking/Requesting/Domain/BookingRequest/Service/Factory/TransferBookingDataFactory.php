@@ -11,13 +11,13 @@ use Module\Booking\Requesting\Domain\BookingRequest\Service\TemplateDataInterfac
 use Module\Booking\Requesting\Domain\BookingRequest\ValueObject\RequestTypeEnum;
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
-use Module\Booking\Shared\Domain\Booking\Entity\CarRentWithDriver;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Service\DetailOptionsDataFactory;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPeriod;
-use Module\Booking\Shared\Domain\Booking\ValueObject\CarBid;
-use Module\Booking\Shared\Domain\Booking\ValueObject\CarBidCollection;
-use Module\Shared\Contracts\Service\TranslatorInterface;
+use Sdk\Booking\Entity\BookingDetails\CarRentWithDriver;
+use Sdk\Booking\ValueObject\BookingPeriod;
+use Sdk\Booking\ValueObject\CarBid;
+use Sdk\Booking\ValueObject\CarBidCollection;
+use Sdk\Shared\Contracts\Service\TranslatorInterface;
 
 class TransferBookingDataFactory
 {

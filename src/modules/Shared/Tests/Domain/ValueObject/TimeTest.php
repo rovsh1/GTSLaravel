@@ -2,8 +2,8 @@
 
 namespace Module\Shared\Tests\Domain\ValueObject;
 
-use Module\Shared\ValueObject\Time;
 use PHPUnit\Framework\TestCase;
+use Sdk\Shared\ValueObject\Time;
 
 class TimeTest extends TestCase
 {

@@ -16,10 +16,10 @@ use Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings\DailyMarkupO
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings\EarlyCheckInCollection;
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings\LateCheckOutCollection;
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\TimeSettings;
-use Module\Shared\Enum\CurrencyEnum;
-use Module\Shared\ValueObject\Percent;
-use Module\Shared\ValueObject\Time;
-use Module\Shared\ValueObject\TimePeriod;
+use Sdk\Shared\Enum\CurrencyEnum;
+use Sdk\Shared\ValueObject\Percent;
+use Sdk\Shared\ValueObject\Time;
+use Sdk\Shared\ValueObject\TimePeriod;
 
 return new class extends Migration {
 
@@ -183,8 +183,8 @@ return new class extends Migration {
                     'zipcode' => $r->zipcode,
                     'status' => $r->status,
                     'visibility' => $this->getVisibilityValue($r->visible_for),
-                    'markup_settings' => json_encode($markupSettings->toData()),
-                    'time_settings' => json_encode($timeSettings->toData()),
+                    'markup_settings' => json_encode($markupSettings->serialize()),
+                    'time_settings' => json_encode($timeSettings->serialize()),
                     'created_at' => $r->created,
                     'updated_at' => $r->updated,
                 ]);

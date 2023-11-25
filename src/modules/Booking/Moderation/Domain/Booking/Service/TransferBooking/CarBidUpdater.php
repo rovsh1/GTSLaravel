@@ -9,19 +9,21 @@ use Module\Booking\Moderation\Application\Dto\CarBidDataDto;
 use Module\Booking\Moderation\Domain\Booking\Event\CarBidAdded;
 use Module\Booking\Moderation\Domain\Booking\Event\CarBidRemoved;
 use Module\Booking\Moderation\Domain\Booking\Event\CarBidUpdated;
+use Module\Booking\Moderation\Domain\Booking\Exception\NotFoundServiceCancelConditions;
+use Module\Booking\Moderation\Domain\Booking\Factory\TransferCancelConditionsFactory;
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Exception\NotFoundTransferServicePrice;
 use Module\Booking\Shared\Domain\Booking\Exception\ServiceDateUndefined;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\CarBid;
-use Module\Booking\Shared\Domain\Booking\ValueObject\CarBid\CarBidPriceItem;
-use Module\Booking\Shared\Domain\Booking\ValueObject\CarBid\CarBidPrices;
-use Module\Booking\Shared\Domain\Booking\ValueObject\CarId;
-use Module\Shared\Enum\CurrencyEnum;
+use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\CarBid;
+use Sdk\Booking\ValueObject\CarBid\CarBidPriceItem;
+use Sdk\Booking\ValueObject\CarBid\CarBidPrices;
+use Sdk\Booking\ValueObject\CarId;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 class CarBidUpdater
 {
@@ -30,8 +32,8 @@ class CarBidUpdater
         private readonly DomainEventDispatcherInterface $eventDispatcher,
         private readonly DetailsRepositoryInterface $detailsRepository,
         private readonly BookingRepositoryInterface $bookingRepository,
-    ) {
-    }
+        private readonly TransferCancelConditionsFactory $cancelConditionsFactory,
+    ) {}
 
     public function add(BookingId $bookingId, CarBidDataDto $carData): void
     {
@@ -46,6 +48,16 @@ class CarBidUpdater
         if ($serviceDate === null) {
             throw new ServiceDateUndefined();
         }
+        $cancelConditions = $this->supplierAdapter->getCarCancelConditions(
+            $details->serviceInfo()->id(),
+            $carData->carId,
+            $serviceDate
+        );
+        if ($cancelConditions === null) {
+            throw new NotFoundServiceCancelConditions();
+        }
+        $cancelConditions = $this->cancelConditionsFactory->fromDto($cancelConditions, $serviceDate);
+        $booking->setCancelConditions($cancelConditions);
 
         $carBidPrices = $this->buildCarBidPrices(
             $details->serviceInfo()->supplierId(),
@@ -63,6 +75,8 @@ class CarBidUpdater
             $carBidPrices
         );
         $details->addCarBid($carBid);
+
+        $this->bookingRepository->store($booking);
         $this->detailsRepository->store($details);
         $this->eventDispatcher->dispatch(new CarBidAdded($bookingId, $booking->orderId()));
     }
@@ -80,7 +94,6 @@ class CarBidUpdater
         if ($serviceDate === null) {
             throw new ServiceDateUndefined();
         }
-
         $carBidPrices = $this->buildCarBidPrices(
             $details->serviceInfo()->supplierId(),
             $details->serviceInfo()->id(),
@@ -88,6 +101,17 @@ class CarBidUpdater
             $booking->prices()->clientPrice()->currency(),
             $serviceDate,
         );
+
+        $cancelConditions = $this->cancelConditionsFactory->build(
+            $booking->cancelConditions(),
+            $details->serviceInfo()->id(),
+            $carData->carId,
+            $carBidPrices->clientPrice()->valuePerCar(),
+            $carData->carsCount,
+            $serviceDate
+        );
+        $booking->setCancelConditions($cancelConditions);
+
         $carBid = new CarBid(
             $carBidId,
             new CarId($carData->carId),
@@ -98,6 +122,8 @@ class CarBidUpdater
             $carBidPrices
         );
         $details->replaceCarBid($carBidId, $carBid);
+
+        $this->bookingRepository->store($booking);
         $this->detailsRepository->store($details);
         $this->eventDispatcher->dispatch(new CarBidUpdated($bookingId, $booking->orderId()));
     }
@@ -107,6 +133,11 @@ class CarBidUpdater
         $booking = $this->bookingRepository->findOrFail($bookingId);
         $details = $this->detailsRepository->findOrFail($bookingId);
         $details->removeCarBid($carBidId);
+        if ($details->carBids()->count() === 0) {
+            $booking->setCancelConditions(null);
+        }
+
+        $this->bookingRepository->store($booking);
         $this->detailsRepository->store($details);
         $this->eventDispatcher->dispatch(new CarBidRemoved($bookingId, $booking->orderId()));
     }

@@ -5,14 +5,14 @@ namespace Module\Booking\Pricing\Domain\Booking\Service\HotelPriceCalculator;
 use Carbon\CarbonPeriod;
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
-use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
 use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
 use Module\Booking\Shared\Domain\Order\Order;
 use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
-use Module\Booking\Shared\Domain\Order\ValueObject\ClientId;
 use Module\Hotel\Pricing\Application\RequestDto\CalculateHotelPriceRequestDto;
-use Module\Shared\Enum\CurrencyEnum;
+use Sdk\Booking\Entity\BookingDetails\HotelBooking;
+use Sdk\Booking\ValueObject\ClientId;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 class CalculateHotelPriceRequestDtoBuilder
 {

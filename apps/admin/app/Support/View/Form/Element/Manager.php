@@ -3,9 +3,8 @@
 namespace App\Admin\Support\View\Form\Element;
 
 use App\Admin\Models\Administrator\Administrator as Model;
-use Gsdk\Form\Element\Select;
 
-class Manager extends Select
+class Manager extends BaseSelect
 {
     public function __construct(string $name, array $options = [])
     {

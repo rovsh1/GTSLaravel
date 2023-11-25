@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Infrastructure\Factory\Details;
 
 use DateTimeInterface;
-use Module\Booking\Shared\Domain\Booking\Entity\IntercityTransfer;
 use Module\Booking\Shared\Domain\Booking\Factory\Details\IntercityTransferFactoryInterface;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\CarBidCollection;
-use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Booking\Shared\Infrastructure\Builder\Details\IntercityTransferBuilder;
 use Module\Booking\Shared\Infrastructure\Models\Details\Transfer;
+use Sdk\Booking\Entity\BookingDetails\IntercityTransfer;
+use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\CarBidCollection;
+use Sdk\Booking\ValueObject\ServiceInfo;
 
 class IntercityTransferFactory extends AbstractServiceDetailsFactory implements IntercityTransferFactoryInterface
 {

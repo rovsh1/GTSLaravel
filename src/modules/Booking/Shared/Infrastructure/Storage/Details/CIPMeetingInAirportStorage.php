@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Infrastructure\Storage\Details;
 
-use Module\Booking\Shared\Domain\Booking\Entity\CIPMeetingInAirport;
 use Module\Booking\Shared\Infrastructure\Models\Details\Airport;
+use Sdk\Booking\Entity\BookingDetails\CIPMeetingInAirport;
 
 class CIPMeetingInAirportStorage extends AbstractStorage
 {
@@ -17,7 +17,7 @@ class CIPMeetingInAirportStorage extends AbstractStorage
                 'serviceInfo' => $this->serializeServiceInfo($details->serviceInfo()),
                 'airportId' => $details->airportId()->value(),
                 'flightNumber' => $details->flightNumber(),
-                'guestIds' => $details->guestIds()->toData(),
+                'guestIds' => $details->guestIds()->serialize(),
             ]
         ]);
     }

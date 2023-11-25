@@ -8,9 +8,9 @@ use App\Admin\Support\View\Form\ValueObject\NumRangeValue;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Builder as Query;
-use Module\Shared\Enum\Booking\BookingStatusEnum;
-use Module\Shared\Enum\SourceEnum;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
+use Sdk\Shared\Enum\Booking\BookingStatusEnum;
+use Sdk\Shared\Enum\SourceEnum;
 
 class Booking extends \Module\Booking\Shared\Infrastructure\Models\Booking
 {

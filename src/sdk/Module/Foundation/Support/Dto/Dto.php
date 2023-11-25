@@ -12,6 +12,9 @@ use Spatie\LaravelData\DataPipes\FillRouteParameterPropertiesDataPipe;
 use Spatie\LaravelData\DataPipes\MapPropertiesDataPipe;
 use Spatie\LaravelData\DataPipes\ValidatePropertiesDataPipe;
 
+/**
+ * @deprecated
+ */
 class Dto extends Data
 {
     protected static string $_collectionClass = DtoCollection::class;

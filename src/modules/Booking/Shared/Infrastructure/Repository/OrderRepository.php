@@ -4,23 +4,24 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Infrastructure\Repository;
 
-use App\Shared\Support\Facades\AppContext;
 use Illuminate\Database\Eloquent\Builder;
-use Module\Booking\Shared\Domain\Order\Factory\OrderFactory;
 use Module\Booking\Shared\Domain\Order\Order;
 use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
-use Module\Booking\Shared\Domain\Order\ValueObject\ClientId;
-use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
-use Module\Booking\Shared\Domain\Shared\ValueObject\CreatorId;
+use Module\Booking\Shared\Infrastructure\Factory\OrderFactory;
 use Module\Booking\Shared\Infrastructure\Models\Order as Model;
-use Module\Shared\Enum\CurrencyEnum;
-use Module\Shared\Enum\Order\OrderStatusEnum;
+use Sdk\Booking\ValueObject\ClientId;
+use Sdk\Booking\ValueObject\CreatorId;
+use Sdk\Booking\ValueObject\OrderId;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
+use Sdk\Shared\Contracts\Service\ApplicationContextInterface;
+use Sdk\Shared\Enum\CurrencyEnum;
+use Sdk\Shared\Enum\Order\OrderStatusEnum;
 
 class OrderRepository implements OrderRepositoryInterface
 {
     public function __construct(
-        private readonly OrderFactory $factory
+        private readonly OrderFactory $factory,
+        private readonly ApplicationContextInterface $context
     ) {}
 
     public function create(
@@ -34,11 +35,11 @@ class OrderRepository implements OrderRepositoryInterface
             'client_id' => $clientId->value(),
             'legal_id' => $legalId,
             'currency' => $currency,
-            'source' => AppContext::source(),
+            'source' => $this->context->source(),
             'creator_id' => $creatorId->value(),
         ]);
 
-        return $this->factory->createFrom($model);
+        return $this->factory->fromModel($model);
     }
 
     public function find(OrderId $id): ?Order
@@ -48,7 +49,7 @@ class OrderRepository implements OrderRepositoryInterface
             return null;
         }
 
-        return $this->factory->createFrom($model);
+        return $this->factory->fromModel($model);
     }
 
     /**
@@ -65,23 +66,18 @@ class OrderRepository implements OrderRepositoryInterface
     /**
      * @return Order[]
      */
-    public function getActiveOrders(int|null $clientId, bool $isOnlyWaitingInvoice = false): array
+    public function getActiveOrders(int|null $clientId): array
     {
         $models = Model::query()
-            ->where(function (Builder $builder) use ($clientId, $isOnlyWaitingInvoice) {
+            ->where(function (Builder $builder) use ($clientId) {
                 if ($clientId !== null) {
                     $builder->whereClientId($clientId);
                 }
-                if ($isOnlyWaitingInvoice) {
-                    $builder->whereStatus(OrderStatusEnum::WAITING_INVOICE);
-                } else {
-                    $builder->whereStatus(OrderStatusEnum::IN_PROGRESS);
-                }
+                $builder->whereStatus(OrderStatusEnum::IN_PROGRESS);
             })
-            ->get()
-            ->all();
+            ->get();
 
-        return $this->factory->createCollectionFrom($models);
+        return $this->factory->collectionFromModel($models);
     }
 
     public function store(Order $order): bool

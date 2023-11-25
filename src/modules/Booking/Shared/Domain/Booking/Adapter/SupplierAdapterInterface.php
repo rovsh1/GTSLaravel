@@ -7,13 +7,13 @@ namespace Module\Booking\Shared\Domain\Booking\Adapter;
 use Carbon\CarbonInterface;
 use DateTimeInterface;
 use Module\Hotel\Pricing\Application\Dto\ServicePriceDto;
-use Module\Shared\Enum\CurrencyEnum;
 use Module\Supplier\Moderation\Application\Dto\AirportDto;
 use Module\Supplier\Moderation\Application\Dto\CarDto;
 use Module\Supplier\Moderation\Application\Response\CancelConditionsDto;
 use Module\Supplier\Moderation\Application\Response\ServiceContractDto;
 use Module\Supplier\Moderation\Application\Response\ServiceDto;
 use Module\Supplier\Moderation\Application\Response\SupplierDto;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 interface SupplierAdapterInterface
 {
@@ -31,7 +31,7 @@ interface SupplierAdapterInterface
 
     public function findTransferServiceContract(int $serviceId): ?ServiceContractDto;
 
-    public function getTransferCancelConditions(): ?CancelConditionsDto;
+    public function getCarCancelConditions(int $serviceId, int $carId, \DateTimeInterface $date): ?CancelConditionsDto;
 
     public function getAirportServicePrice(
         int $supplierId,
@@ -47,9 +47,11 @@ interface SupplierAdapterInterface
         CarbonInterface $date
     ): ?ServicePriceDto;
 
+    public function getOtherCancelConditions(int $serviceId, DateTimeInterface $date): ?CancelConditionsDto;
+
     public function findAirportServiceContract(int $serviceId): ?ServiceContractDto;
 
-    public function getAirportCancelConditions(): ?CancelConditionsDto;
+    public function getAirportCancelConditions(int $serviceId, DateTimeInterface $date): ?CancelConditionsDto;
 
     /**
      * @param int $supplierId

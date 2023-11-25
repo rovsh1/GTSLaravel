@@ -7,7 +7,7 @@ namespace Module\Client\Moderation\Infrastructure\Repository;
 use Module\Client\Moderation\Domain\Repository\CurrencyRateRepositoryInterface;
 use Module\Client\Moderation\Infrastructure\Models\CurrencyRate;
 use Module\Client\Shared\Domain\ValueObject\ClientId;
-use Module\Shared\Enum\CurrencyEnum;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 class CurrencyRateRepository implements CurrencyRateRepositoryInterface
 {

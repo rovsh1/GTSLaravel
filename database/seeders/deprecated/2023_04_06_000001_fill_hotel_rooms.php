@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 use Module\Hotel\Moderation\Domain\Hotel\Entity\Room\RoomMarkups;
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\RoomId;
-use Module\Shared\ValueObject\Percent;
+use Sdk\Shared\ValueObject\Percent;
 
 return new class extends Migration {
 
@@ -48,7 +48,7 @@ return new class extends Migration {
                     'guests_count' => $r->guests_number,
                     'square' => $r->size,
                     'position' => $r->index,
-                    'markup_settings' => json_encode($roomMarkup->toData()),
+                    'markup_settings' => json_encode($roomMarkup->serialize()),
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);

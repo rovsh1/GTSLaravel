@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Hotel\Moderation\Domain\Hotel\ValueObject;
 
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
-use Module\Shared\Enum\ContactTypeEnum;
+use Sdk\Shared\Enum\ContactTypeEnum;
 
 class Contact implements ValueObjectInterface
 {

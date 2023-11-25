@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Infrastructure\Repository;
 
-use Module\Booking\Shared\Domain\Booking\Entity\HotelAccommodation;
 use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationCollection;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationDetails;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomInfo;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomPrices;
-use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Booking\Shared\Infrastructure\Models\Accommodation as Model;
-use Module\Shared\Support\RepositoryInstances;
+use Sdk\Booking\Entity\BookingDetails\HotelAccommodation;
+use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\GuestIdCollection;
+use Sdk\Booking\ValueObject\HotelBooking\AccommodationCollection;
+use Sdk\Booking\ValueObject\HotelBooking\AccommodationDetails;
+use Sdk\Booking\ValueObject\HotelBooking\AccommodationId;
+use Sdk\Booking\ValueObject\HotelBooking\RoomInfo;
+use Sdk\Booking\ValueObject\HotelBooking\RoomPrices;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
+use Sdk\Shared\Support\RepositoryInstances;
 
 class AccommodationRepository implements AccommodationRepositoryInterface
 {
@@ -118,9 +118,9 @@ class AccommodationRepository implements AccommodationRepositoryInterface
         RoomPrices $price
     ): array {
         return [
-            'roomInfo' => $roomInfo->toData(),
-            'details' => $details->toData(),
-            'price' => $price->toData()
+            'roomInfo' => $roomInfo->serialize(),
+            'details' => $details->serialize(),
+            'price' => $price->serialize()
         ];
     }
 
@@ -131,10 +131,10 @@ class AccommodationRepository implements AccommodationRepositoryInterface
         $accommodation = new HotelAccommodation(
             id: new AccommodationId($model->id),
             bookingId: new BookingId($model->booking_id),
-            roomInfo: RoomInfo::fromData($data['roomInfo']),
-            guestIds: GuestIdCollection::fromData($model->guest_ids),
-            details: AccommodationDetails::fromData($data['details']),
-            prices: RoomPrices::fromData($data['price'])
+            roomInfo: RoomInfo::deserialize($data['roomInfo']),
+            guestIds: GuestIdCollection::deserialize($model->guest_ids),
+            details: AccommodationDetails::deserialize($data['details']),
+            prices: RoomPrices::deserialize($data['price'])
         );
 
         $this->instances->add($accommodation->id(), $accommodation);

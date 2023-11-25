@@ -5,8 +5,8 @@ namespace Module\Shared\Infrastructure\Adapter;
 use DateTimeInterface;
 use Module\Generic\CurrencyRate\Application\UseCase\ConvertNetRate;
 use Module\Generic\CurrencyRate\Application\UseCase\GetNetRate;
-use Module\Shared\Contracts\Adapter\CurrencyRateAdapterInterface;
-use Module\Shared\Enum\CurrencyEnum;
+use Sdk\Shared\Contracts\Adapter\CurrencyRateAdapterInterface;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 class CurrencyRateAdapter implements CurrencyRateAdapterInterface
 {

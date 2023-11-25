@@ -7,7 +7,7 @@ use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
 use Module\Hotel\Quotation\Application\Dto\QuotaDto;
 use Module\Hotel\Quotation\Infrastructure\Model\Quota;
-use Module\Shared\Enum\Hotel\QuotaStatusEnum;
+use Sdk\Shared\Enum\Hotel\QuotaStatusEnum;
 
 class QuotaFetcher
 {
@@ -43,7 +43,7 @@ class QuotaFetcher
         );
     }
 
-    private function bootQuery(int $hotelId, CarbonPeriod $period, ?int $roomId): Builder
+    private function bootQuery(int $hotelId, CarbonPeriod $period, ?int $roomId): Builder|Quota
     {
         return Quota::query()
             ->whereHotelId($hotelId, $roomId)
@@ -52,10 +52,10 @@ class QuotaFetcher
     }
 
     /**
-     * @param $query
+     * @param Builder|Quota $query
      * @return QuotaDto[]
      */
-    private function mapQuery($query): array
+    private function mapQuery(Builder|Quota $query): array
     {
         return $query
             ->get()

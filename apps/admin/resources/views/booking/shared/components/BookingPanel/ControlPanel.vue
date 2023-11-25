@@ -46,7 +46,7 @@ const { recalculatePrice } = bookingStore
     <BookingFinancialCost />
   </ControlPanelSection>
 
-  <ControlPanelSection title="Запросы на бронирование услуги">
+  <ControlPanelSection v-if="!bookingStore.isOtherServiceBooking" title="Запросы на бронирование услуги">
     <BookingRequests />
   </ControlPanelSection>
 </template>

@@ -13,9 +13,9 @@ use Module\Booking\Shared\Domain\Booking\Event\Status\BookingProcessing;
 use Module\Booking\Shared\Domain\Booking\Event\Status\BookingWaitingCancellation;
 use Module\Booking\Shared\Domain\Booking\Event\Status\BookingWaitingConfirmation;
 use Module\Booking\Shared\Domain\Booking\Event\Status\BookingWaitingProcessing;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPriceItem;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPrices;
-use Module\Shared\Enum\Booking\BookingStatusEnum;
+use Sdk\Booking\ValueObject\BookingPriceItem;
+use Sdk\Booking\ValueObject\BookingPrices;
+use Sdk\Shared\Enum\Booking\BookingStatusEnum;
 
 trait HasStatusesTrait
 {

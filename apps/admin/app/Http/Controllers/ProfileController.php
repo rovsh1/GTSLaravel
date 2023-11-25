@@ -9,7 +9,7 @@ use App\Shared\Http\Responses\AjaxReloadResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
-use Module\Shared\Contracts\Adapter\FileStorageAdapterInterface;
+use Sdk\Shared\Contracts\Adapter\FileStorageAdapterInterface;
 
 class ProfileController extends Controller
 {

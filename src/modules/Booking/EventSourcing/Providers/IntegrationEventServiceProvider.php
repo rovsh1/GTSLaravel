@@ -4,8 +4,8 @@ namespace Module\Booking\EventSourcing\Providers;
 
 use Module\Booking\EventSourcing\Domain\Listener\BookingChangesListener;
 use Module\Booking\EventSourcing\Domain\Listener\StatusUpdatedListener;
-use Module\Shared\Support\Event\IntegrationEventMessages;
 use Sdk\Module\Support\Providers\IntegrationEventServiceProvider as ServiceProvider;
+use Sdk\Shared\Event\IntegrationEventMessages;
 
 class IntegrationEventServiceProvider extends ServiceProvider
 {

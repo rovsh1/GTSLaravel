@@ -40,7 +40,7 @@ class RuleController extends Controller
         $form = $this->formFactory($hotel->id)
             ->method('post');
 
-        $form->trySubmit(route('hotels.rules.create', $hotel));
+        $form->submitOrFail(route('hotels.rules.create', $hotel));
 
         Rule::create($form->getData());
 

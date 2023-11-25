@@ -9,9 +9,9 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
-use Module\Shared\Dto\FileDto;
 use Sdk\Module\Database\Eloquent\HasTranslations;
 use Sdk\Module\Database\Eloquent\Model;
+use Sdk\Shared\Dto\FileDto;
 
 /**
  * @property int id

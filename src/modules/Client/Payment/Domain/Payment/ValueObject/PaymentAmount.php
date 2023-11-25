@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Client\Payment\Domain\Payment\ValueObject;
 
-use Module\Shared\Enum\CurrencyEnum;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 final class PaymentAmount
 {

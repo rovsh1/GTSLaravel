@@ -9,7 +9,9 @@ use Module\Hotel\Pricing\Application\Dto\CalculatedHotelRoomsPricesDto;
 use Module\Hotel\Pricing\Application\Dto\RoomCalculationParamsDto;
 use Module\Hotel\Pricing\Application\Dto\RoomCalculationResultDto;
 use Module\Hotel\Pricing\Application\Dto\RoomDayCalculationResultDto;
+use Module\Hotel\Pricing\Application\Exception\RoomPriceNotFoundException;
 use Module\Hotel\Pricing\Application\RequestDto\CalculateHotelPriceRequestDto;
+use Module\Hotel\Pricing\Domain\Hotel\Exception\NotFoundHotelRoomPrice;
 use Module\Hotel\Pricing\Domain\Hotel\Hotel;
 use Module\Hotel\Pricing\Domain\Hotel\Repository\HotelRepositoryInterface;
 use Module\Hotel\Pricing\Domain\Hotel\Service\RoomDayPriceCalculatorFormula;
@@ -18,11 +20,11 @@ use Module\Hotel\Pricing\Domain\Hotel\ValueObject\RoomId;
 use Module\Hotel\Pricing\Domain\Markup\Service\HotelMarkupFinderInterface;
 use Module\Hotel\Pricing\Domain\Shared\ValueObject\ClientId;
 use Module\Hotel\Pricing\Infrastructure\Service\HotelRoomBaseDayValueFinder;
-use Module\Shared\Contracts\Adapter\CurrencyRateAdapterInterface;
-use Module\Shared\Contracts\Service\ApplicationConstantsInterface;
-use Module\Shared\Enum\CurrencyEnum;
-use Module\Shared\ValueObject\MarkupValue;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
+use Sdk\Shared\Contracts\Adapter\CurrencyRateAdapterInterface;
+use Sdk\Shared\Contracts\Service\ApplicationConstantsInterface;
+use Sdk\Shared\Enum\CurrencyEnum;
+use Sdk\Shared\ValueObject\MarkupValue;
 
 class CalculateHotelPrice implements UseCaseInterface
 {
@@ -42,7 +44,12 @@ class CalculateHotelPrice implements UseCaseInterface
         $total = 0.0;
         $roomItems = [];
         foreach ($request->rooms as $room) {
-            $roomItems[] = $dto = $this->calculateRoomPrice($hotel, $room, $request);
+            try {
+                $roomItems[] = $dto = $this->calculateRoomPrice($hotel, $room, $request);
+            } catch (NotFoundHotelRoomPrice $e) {
+                throw new RoomPriceNotFoundException($e);
+            }
+
             $total += $dto->price;
         }
 

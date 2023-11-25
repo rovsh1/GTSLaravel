@@ -2,9 +2,9 @@
 
 namespace Module\Support\FileStorage\Application\Mapper;
 
-use Module\Shared\Dto\FileDto;
 use Module\Support\FileStorage\Domain\Entity\File;
 use Module\Support\FileStorage\Domain\Service\UrlGeneratorInterface;
+use Sdk\Shared\Dto\FileDto;
 
 class DataMapper
 {

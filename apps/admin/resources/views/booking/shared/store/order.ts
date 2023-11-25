@@ -18,10 +18,13 @@ const { order, currencies } = requestInitialData(
   z.object({
     order: z.object({
       id: z.number(),
-      currency: z.object({
-        id: z.number(),
-        value: z.string(),
-        name: z.string(),
+      clientPrice: z.object({
+        currency: z.object({
+          id: z.number(),
+          value: z.string(),
+          name: z.string(),
+        }),
+        value: z.number(),
       }),
       clientId: z.number(),
       legalId: z.number().nullable(),
@@ -38,7 +41,7 @@ const { order, currencies } = requestInitialData(
 
 export const useOrderStore = defineStore('booking-order', () => {
   const currency = computed<Currency | undefined>(
-    () => currencies.find((cur) => order.currency.value === cur.code_char),
+    () => currencies.find((cur) => order.clientPrice.currency.value === cur.code_char),
   )
   const { data: guests, execute: fetchGuests } = useGetOrderGuestsAPI({ orderId: order.id })
 

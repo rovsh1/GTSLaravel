@@ -60,11 +60,11 @@ class LegalsController extends Controller
      */
     public function store(Request $request, Client $client): RedirectResponse
     {
-        $form = $this->formFactory()->method('post');
+        $form = $this->formFactory()
+            ->method('post')
+            ->failUrl(route('client.legals.create', ['client' => $client]));
 
-        $form->trySubmit(
-            route('client.legals.create', ['client' => $client])
-        );
+        $form->submitOrFail();
 
         $formData = $form->getData();
         $legal = Legal::create($this->prepareLegalData($client->id, $formData));
@@ -93,10 +93,12 @@ class LegalsController extends Controller
 
     public function update(Client $client, Legal $legal): RedirectResponse
     {
-        $form = $this->formFactory()->method('put');
-
         $failUrl = route('client.legals.edit', ['client' => $client, 'legal' => $legal]);
-        $form->trySubmit($failUrl);
+        $form = $this->formFactory()
+            ->method('put')
+            ->failUrl($failUrl);
+
+        $form->submitOrFail();
 
         $formData = $form->getData();
         $legal->update($this->prepareLegalData($client->id, $formData));

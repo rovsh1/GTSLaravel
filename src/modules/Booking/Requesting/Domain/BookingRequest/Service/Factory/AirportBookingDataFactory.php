@@ -11,15 +11,15 @@ use Module\Booking\Requesting\Domain\BookingRequest\Service\TemplateDataInterfac
 use Module\Booking\Requesting\Domain\BookingRequest\ValueObject\RequestTypeEnum;
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
-use Module\Booking\Shared\Domain\Booking\Entity\CIPMeetingInAirport;
-use Module\Booking\Shared\Domain\Booking\Entity\CIPSendoffInAirport;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
 use Module\Booking\Shared\Domain\Guest\Guest;
 use Module\Booking\Shared\Domain\Guest\Repository\GuestRepositoryInterface;
-use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
-use Module\Shared\Contracts\Adapter\CountryAdapterInterface;
-use Module\Shared\Contracts\Service\TranslatorInterface;
-use Module\Shared\Enum\GenderEnum;
+use Sdk\Booking\Entity\BookingDetails\CIPMeetingInAirport;
+use Sdk\Booking\Entity\BookingDetails\CIPSendoffInAirport;
+use Sdk\Booking\ValueObject\GuestIdCollection;
+use Sdk\Shared\Contracts\Adapter\CountryAdapterInterface;
+use Sdk\Shared\Contracts\Service\TranslatorInterface;
+use Sdk\Shared\Enum\GenderEnum;
 
 class AirportBookingDataFactory
 {

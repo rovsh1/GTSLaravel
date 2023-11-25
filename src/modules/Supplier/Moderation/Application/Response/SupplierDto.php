@@ -6,9 +6,9 @@ namespace Module\Supplier\Moderation\Application\Response;
 
 use Module\Shared\Contracts\Domain\EntityInterface;
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
-use Module\Shared\Enum\CurrencyEnum;
 use Module\Shared\Support\Dto\AbstractDomainBasedDto;
 use Module\Supplier\Moderation\Domain\Supplier\Supplier;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 class SupplierDto extends AbstractDomainBasedDto
 {

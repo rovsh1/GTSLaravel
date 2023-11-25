@@ -7,10 +7,10 @@ namespace Module\Booking\Requesting\Domain\BookingRequest;
 use Carbon\CarbonImmutable;
 use Module\Booking\Requesting\Domain\BookingRequest\ValueObject\RequestId;
 use Module\Booking\Requesting\Domain\BookingRequest\ValueObject\RequestTypeEnum;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Shared\Contracts\Domain\EntityInterface;
-use Module\Shared\ValueObject\File;
+use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
+use Sdk\Shared\ValueObject\File;
 
 class BookingRequest extends AbstractAggregateRoot implements EntityInterface
 {

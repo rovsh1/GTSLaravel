@@ -77,7 +77,7 @@ return new class extends Migration {
             $table->unsignedInteger('season_id');
             $table->unsignedInteger('group_id');
             $table->unsignedInteger('room_id');
-            $table->unsignedDecimal('price', 11, 2);
+            $table->unsignedDecimal('price', 14);
             $table->comment('Таблица цен по сезонам по умолчанию, для заполнения календаря цен');
 
             $table->unique(['group_id', 'season_id', 'room_id']);

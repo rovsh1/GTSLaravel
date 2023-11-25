@@ -7,73 +7,32 @@ namespace Module\Booking\Moderation\Application\UseCase\Order;
 use Module\Booking\Moderation\Application\Exception\OrderHasBookingInProgressException;
 use Module\Booking\Moderation\Domain\Order\Exception\OrderHasBookingInProgress;
 use Module\Booking\Moderation\Domain\Order\Service\StatusUpdater;
-use Module\Booking\Shared\Domain\Order\Order;
 use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
-use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
-use Module\Shared\Enum\Order\OrderStatusEnum;
-use Module\Shared\Exception\ApplicationException;
+use Sdk\Booking\ValueObject\OrderId;
+use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
+use Sdk\Shared\Enum\Order\OrderStatusEnum;
 
 class UpdateStatus implements UseCaseInterface
 {
     public function __construct(
         private readonly OrderRepositoryInterface $repository,
         private readonly StatusUpdater $statusUpdater,
+        private readonly DomainEventDispatcherInterface $eventDispatcher,
     ) {}
-
-    //3 колонки: сумма, распределено, не распределено + общая сумма всех нераспределенных
-
-    /**
-     * Статусы заказа для посадки оплаты
-     *
-     * self::INVOICED,
-     * self::PARTIAL_PAID,
-     * self::REFUND_FEE,
-     */
-
-    //@todo оплаты поставщикам
 
     public function execute(int $orderId, int $statusId): void
     {
+        $statusEnum = OrderStatusEnum::from($statusId);
+        $order = $this->repository->findOrFail(new OrderId($orderId));
+
         try {
-            $order = $this->repository->findOrFail(new OrderId($orderId));
-            $statusEnum = OrderStatusEnum::from($statusId);
-            $this->updateStatus($order, $statusEnum);
-            $this->repository->store($order);
+            $this->statusUpdater->update($order, $statusEnum);
         } catch (OrderHasBookingInProgress $e) {
             throw new OrderHasBookingInProgressException($e);
-        } catch (\Throwable $e) {
-            throw new ApplicationException($e->getMessage(), $e->getCode(), $e);
         }
-    }
 
-    private function updateStatus(Order $order, OrderStatusEnum $status): void
-    {
-        switch ($status) {
-            case OrderStatusEnum::IN_PROGRESS:
-                $this->statusUpdater->toInProgress($order);
-                break;
-            case OrderStatusEnum::WAITING_INVOICE:
-                $this->statusUpdater->toWaitingInvoice($order);
-                break;
-            case OrderStatusEnum::INVOICED:
-                $this->statusUpdater->toInvoiced($order);
-                break;
-            case OrderStatusEnum::PARTIAL_PAID:
-                $this->statusUpdater->toPartialPaid($order);
-                break;
-            case OrderStatusEnum::PAID:
-                $this->statusUpdater->toPaid($order);
-                break;
-            case OrderStatusEnum::CANCELLED:
-                $this->statusUpdater->cancel($order);
-                break;
-            case OrderStatusEnum::REFUND_FEE:
-                $this->statusUpdater->toRefundFee($order);
-                break;
-            case OrderStatusEnum::REFUND_NO_FEE:
-                $this->statusUpdater->toRefundNoFee($order);
-                break;
-        }
+        $this->repository->store($order);
+        $this->eventDispatcher->dispatch(...$order->pullEvents());
     }
 }

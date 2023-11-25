@@ -65,7 +65,7 @@ class RoomController extends Controller
         $form = $this->formFactory()
             ->method('post');
 
-        $form->trySubmit(route('hotels.rooms.create', $hotel));
+        $form->submitOrFail(route('hotels.rooms.create', $hotel));
 
         $data = $form->getData();
         $data['hotel_id'] = $hotel->id;
@@ -101,7 +101,7 @@ class RoomController extends Controller
         $form = $this->formFactory()
             ->method('put');
 
-        $form->trySubmit(route('hotels.rooms.edit', [$hotel, $room]));
+        $form->submitOrFail(route('hotels.rooms.edit', [$hotel, $room]));
 
         $data = $form->getData();
         $room->update($data);

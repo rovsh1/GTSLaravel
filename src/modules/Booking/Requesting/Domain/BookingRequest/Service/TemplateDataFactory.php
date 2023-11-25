@@ -8,8 +8,8 @@ use Module\Booking\Requesting\Domain\BookingRequest\Service\Factory\HotelBooking
 use Module\Booking\Requesting\Domain\BookingRequest\Service\Factory\TransferBookingDataFactory;
 use Module\Booking\Requesting\Domain\BookingRequest\ValueObject\RequestTypeEnum;
 use Module\Booking\Shared\Domain\Booking\Booking;
-use Module\Shared\Enum\ServiceTypeEnum;
 use Sdk\Module\Contracts\Support\ContainerInterface;
+use Sdk\Shared\Enum\ServiceTypeEnum;
 
 class TemplateDataFactory
 {

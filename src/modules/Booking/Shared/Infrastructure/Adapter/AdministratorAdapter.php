@@ -9,9 +9,9 @@ use Module\Administrator\Application\UseCase\GetManagerByBookingId;
 use Module\Administrator\Application\UseCase\GetManagerByOrderId;
 use Module\Administrator\Application\UseCase\SetBookingAdministrator;
 use Module\Administrator\Application\UseCase\SetOrderAdministrator;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
 use Module\Booking\Shared\Domain\Shared\Adapter\AdministratorAdapterInterface;
+use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\OrderId;
 
 class AdministratorAdapter implements AdministratorAdapterInterface
 {

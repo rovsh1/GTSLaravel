@@ -16,7 +16,7 @@ use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Service\BookingStatusStorageInterface;
 use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
 use Module\Booking\Shared\Domain\Shared\Adapter\ClientAdapterInterface;
-use Module\Shared\Contracts\Service\CompanyRequisitesInterface;
+use Sdk\Shared\Contracts\Service\CompanyRequisitesInterface;
 
 class CommonDataFactory
 {

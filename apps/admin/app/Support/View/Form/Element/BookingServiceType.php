@@ -3,7 +3,7 @@
 namespace App\Admin\Support\View\Form\Element;
 
 use App\Admin\Support\Facades\Format;
-use Module\Shared\Enum\ServiceTypeEnum;
+use Sdk\Shared\Enum\ServiceTypeEnum;
 
 class BookingServiceType extends Enum
 {

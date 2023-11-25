@@ -1,8 +1,9 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Module\Shared\Enum\Booking\BookingStatusEnum;
-use Module\Shared\Enum\Order\OrderStatusEnum;
+use Illuminate\Support\Facades\DB;
+use Sdk\Shared\Enum\Booking\BookingStatusEnum;
+use Sdk\Shared\Enum\Order\OrderStatusEnum;
 
 return new class extends Migration {
     /**
@@ -10,190 +11,123 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        \DB::table('booking_status_settings')->insert([
-            [
-                'value' => BookingStatusEnum::DRAFT,
-                'type' => BookingStatusEnum::class,
+        DB::table('booking_status_settings')->insert([
+            $this->wrap(BookingStatusEnum::DRAFT, [
                 'name_ru' => 'Черновик',
                 'name_en' => null,
                 'color' => 'secondary',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'value' => BookingStatusEnum::CREATED,
-                'type' => BookingStatusEnum::class,
+            ]),
+            $this->wrap(BookingStatusEnum::CREATED, [
                 'name_ru' => 'Новая',
                 'name_en' => null,
                 'color' => 'danger',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'value' => BookingStatusEnum::PROCESSING,
-                'type' => BookingStatusEnum::class,
+            ]),
+            $this->wrap(BookingStatusEnum::PROCESSING, [
                 'name_ru' => 'В работе',
                 'name_en' => null,
                 'color' => 'warning',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'value' => BookingStatusEnum::CANCELLED,
-                'type' => BookingStatusEnum::class,
+            ]),
+            $this->wrap(BookingStatusEnum::CANCELLED, [
                 'name_ru' => 'Отменена',
                 'name_en' => 'Cancelled',
                 'color' => 'dark',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'value' => BookingStatusEnum::CONFIRMED,
-                'type' => BookingStatusEnum::class,
+            ]),
+            $this->wrap(BookingStatusEnum::CONFIRMED, [
                 'name_ru' => 'Подтверждена',
                 'name_en' => null,
                 'color' => 'success',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'value' => BookingStatusEnum::NOT_CONFIRMED,
-                'type' => BookingStatusEnum::class,
+            ]),
+            $this->wrap(BookingStatusEnum::NOT_CONFIRMED, [
                 'name_ru' => 'Не подтверждена',
                 'name_en' => null,
                 'color' => 'secondary',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'value' => BookingStatusEnum::CANCELLED_NO_FEE,
-                'type' => BookingStatusEnum::class,
+            ]),
+            $this->wrap(BookingStatusEnum::CANCELLED_NO_FEE, [
                 'name_ru' => 'Отмена без штрафа',
                 'name_en' => 'Cancelled no fee',
                 'color' => 'dark',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'value' => BookingStatusEnum::CANCELLED_FEE,
-                'type' => BookingStatusEnum::class,
+            ]),
+            $this->wrap(BookingStatusEnum::CANCELLED_FEE, [
                 'name_ru' => 'Отмена со штрафом',
                 'name_en' => 'Cancelled fee',
                 'color' => 'dark',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'value' => BookingStatusEnum::WAITING_CONFIRMATION,
-                'type' => BookingStatusEnum::class,
+            ]),
+            $this->wrap(BookingStatusEnum::WAITING_CONFIRMATION, [
                 'name_ru' => 'Ожидает подтверждения',
                 'name_en' => 'Waiting confirmation',
                 'color' => 'secondary',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'value' => BookingStatusEnum::WAITING_CANCELLATION,
-                'type' => BookingStatusEnum::class,
+            ]),
+            $this->wrap(BookingStatusEnum::WAITING_CANCELLATION, [
                 'name_ru' => 'Ожидает аннулирования',
                 'name_en' => 'Waiting cancellation',
                 'color' => 'secondary',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'value' => BookingStatusEnum::WAITING_PROCESSING,
-                'type' => BookingStatusEnum::class,
+            ]),
+            $this->wrap(BookingStatusEnum::WAITING_PROCESSING, [
                 'name_ru' => 'Ожидает обработки',
                 'name_en' => 'Waiting processing',
                 'color' => 'secondary',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'value' => BookingStatusEnum::DELETED,
-                'type' => BookingStatusEnum::class,
+            ]),
+            $this->wrap(BookingStatusEnum::DELETED, [
                 'name_ru' => 'Удалена',
                 'name_en' => 'Deleted',
                 'color' => 'secondary',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
+            ]),
 
             //order statuses
-            [
-                'value' => OrderStatusEnum::IN_PROGRESS,
-                'type' => OrderStatusEnum::class,
+            $this->wrap(OrderStatusEnum::IN_PROGRESS, [
                 'name_ru' => 'В работе',
                 'name_en' => null,
                 'color' => 'danger',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'value' => OrderStatusEnum::WAITING_INVOICE,
-                'type' => OrderStatusEnum::class,
+            ]),
+            $this->wrap(OrderStatusEnum::WAITING_INVOICE, [
                 'name_ru' => 'Ожидание инвойса',
                 'name_en' => null,
                 'color' => 'warning',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'value' => OrderStatusEnum::INVOICED,
-                'type' => OrderStatusEnum::class,
+            ]),
+            $this->wrap(OrderStatusEnum::INVOICED, [
                 'name_ru' => 'Инвойс выставлен',
                 'name_en' => null,
                 'color' => 'info',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'value' => OrderStatusEnum::PARTIAL_PAID,
-                'type' => OrderStatusEnum::class,
+            ]),
+            $this->wrap(OrderStatusEnum::PARTIAL_PAID, [
                 'name_ru' => 'Частично оплачен',
                 'name_en' => null,
                 'color' => 'success',
                 'created_at' => now(),
                 'updated_at' => now(),
-            ],
-            [
-                'value' => OrderStatusEnum::PAID,
-                'type' => OrderStatusEnum::class,
+            ]),
+            $this->wrap(OrderStatusEnum::PAID, [
                 'name_ru' => 'Оплачен',
                 'name_en' => null,
                 'color' => 'success',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'value' => OrderStatusEnum::CANCELLED,
-                'type' => OrderStatusEnum::class,
+            ]),
+            $this->wrap(OrderStatusEnum::CANCELLED, [
                 'name_ru' => 'Отменен без оплаты',
                 'name_en' => null,
                 'color' => 'secondary',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'value' => OrderStatusEnum::REFUND_FEE,
-                'type' => OrderStatusEnum::class,
+            ]),
+            $this->wrap(OrderStatusEnum::REFUND_FEE, [
                 'name_ru' => 'Возврат со штрафом',
                 'name_en' => null,
                 'color' => 'secondary',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'value' => OrderStatusEnum::REFUND_NO_FEE,
-                'type' => OrderStatusEnum::class,
+            ]),
+            $this->wrap(OrderStatusEnum::REFUND_NO_FEE, [
                 'name_ru' => 'Возврат без штрафа',
                 'name_en' => null,
                 'color' => 'secondary',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
+            ]),
         ]);
+    }
+
+    private function wrap(BackedEnum $enum, array $data): array
+    {
+        return [
+            ...$data,
+            'value' => $enum,
+            'type' => $enum::class,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ];
     }
 
     /**
@@ -201,6 +135,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        \DB::table('booking_status_settings')->truncate();
+        DB::table('booking_status_settings')->truncate();
     }
 };

@@ -10,5 +10,6 @@ class InvoiceDto
         public readonly string $number,
         public readonly string $createdAt,
         public readonly string $totalAmount,
+        public readonly string $totalPenalty,
     ) {}
 }

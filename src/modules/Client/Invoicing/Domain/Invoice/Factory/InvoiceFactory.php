@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Client\Invoicing\Domain\Invoice\Factory;
 
-use Module\Client\Invoicing\Application\Exception\InvalidOrderStatusToCreateInvoiceException;
+use Module\Client\Invoicing\Application\Exception\InvoiceCreatingForbiddenException;
 use Module\Client\Invoicing\Domain\Invoice\Adapter\FileGeneratorAdapterInterface;
 use Module\Client\Invoicing\Domain\Invoice\Exception\InvalidOrderStatusToCreateInvoice;
 use Module\Client\Invoicing\Domain\Invoice\Exception\OrderAlreadyHasInvoice;
@@ -14,8 +14,8 @@ use Module\Client\Invoicing\Domain\Order\Order;
 use Module\Client\Invoicing\Domain\Order\Repository\OrderRepositoryInterface;
 use Module\Client\Invoicing\Domain\Order\ValueObject\OrderId;
 use Module\Shared\Contracts\Service\SafeExecutorInterface;
-use Module\Shared\ValueObject\File;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
+use Sdk\Shared\ValueObject\File;
 
 class InvoiceFactory
 {
@@ -73,7 +73,7 @@ class InvoiceFactory
         try {
             $order->ensureInvoiceCreationAvailable();
         } catch (InvalidOrderStatusToCreateInvoice $e) {
-            throw new InvalidOrderStatusToCreateInvoiceException($e);
+            throw new InvoiceCreatingForbiddenException($e);
         }
 
         return $order;

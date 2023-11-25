@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Invoicing\Domain\ValueObject;
 
-use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
+use Sdk\Booking\ValueObject\OrderId;
 use Sdk\Module\Support\AbstractValueObjectCollection;
 
 final class OrderIdCollection extends AbstractValueObjectCollection

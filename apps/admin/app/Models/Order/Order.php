@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Admin\Models\Order;
 
-use Module\Shared\Enum\Order\OrderStatusEnum;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
+use Sdk\Shared\Enum\Order\OrderStatusEnum;
 
 class Order extends \Module\Booking\Shared\Infrastructure\Models\Order
 {

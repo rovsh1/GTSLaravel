@@ -8,9 +8,9 @@ use Carbon\CarbonImmutable;
 use Module\Booking\Requesting\Domain\BookingRequest\BookingRequest;
 use Module\Booking\Requesting\Domain\BookingRequest\ValueObject\RequestId;
 use Module\Booking\Requesting\Domain\BookingRequest\ValueObject\RequestTypeEnum;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Shared\ValueObject\File;
+use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Module\Foundation\Support\EntityFactory\AbstractEntityFactory;
+use Sdk\Shared\ValueObject\File;
 
 class RequestFactory extends AbstractEntityFactory
 {

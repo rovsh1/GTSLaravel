@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Domain\Booking\Repository\HotelBooking;
 
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationId;
-use Module\Booking\Shared\Domain\Guest\ValueObject\GuestId;
+use Sdk\Booking\ValueObject\GuestId;
+use Sdk\Booking\ValueObject\HotelBooking\AccommodationId;
 
 interface BookingGuestRepositoryInterface
 {

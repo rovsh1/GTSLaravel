@@ -4,9 +4,8 @@ namespace App\Admin\Support\View\Form\Element;
 
 use App\Admin\Models\Reference\City as Model;
 use App\Admin\Models\Reference\Country;
-use Gsdk\Form\Element\Select;
 
-class City extends Select
+class City extends BaseSelect
 {
     public function __construct(string $name, array $options = [])
     {

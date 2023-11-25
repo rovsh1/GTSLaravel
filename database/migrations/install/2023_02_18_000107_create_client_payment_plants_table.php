@@ -11,7 +11,7 @@ return new class extends Migration {
             $table->increments('id');
             $table->unsignedInteger('payment_id');
             $table->unsignedInteger('order_id');
-            $table->unsignedDecimal('sum');
+            $table->unsignedDecimal('sum', 14);
             $table->timestamp('created_at');
 
             $table->foreign('payment_id')

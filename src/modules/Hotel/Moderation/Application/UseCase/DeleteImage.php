@@ -6,8 +6,8 @@ namespace Module\Hotel\Moderation\Application\UseCase;
 
 use App\Admin\Models\Hotel\Image;
 use Illuminate\Support\Facades\DB;
-use Module\Shared\Contracts\Adapter\FileStorageAdapterInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
+use Sdk\Shared\Contracts\Adapter\FileStorageAdapterInterface;
 
 class DeleteImage implements UseCaseInterface
 {

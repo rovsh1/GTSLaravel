@@ -27,9 +27,9 @@ class OrderAdapter
         return app(GetOrder::class)->execute($id);
     }
 
-    public function getActiveOrders(int|null $clientId = null, bool $isOnlyWaitingInvoice = false): array
+    public function getActiveOrders(int|null $clientId = null): array
     {
-        return app(GetActiveOrders::class)->execute($clientId, $isOnlyWaitingInvoice);
+        return app(GetActiveOrders::class)->execute($clientId);
     }
 
     public function addGuest(

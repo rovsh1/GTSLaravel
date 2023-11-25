@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Infrastructure\Factory\Details;
 
-use Module\Booking\Shared\Domain\Booking\Entity\CarRentWithDriver;
 use Module\Booking\Shared\Domain\Booking\Factory\Details\CarRentWithDriverFactoryInterface;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPeriod;
-use Module\Booking\Shared\Domain\Booking\ValueObject\CarBidCollection;
-use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Booking\Shared\Infrastructure\Builder\Details\CarRentWithDriverBuilder;
 use Module\Booking\Shared\Infrastructure\Models\Details\Transfer;
+use Sdk\Booking\Entity\BookingDetails\CarRentWithDriver;
+use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\BookingPeriod;
+use Sdk\Booking\ValueObject\CarBidCollection;
+use Sdk\Booking\ValueObject\ServiceInfo;
 
 class CarRentWithDriverFactory extends AbstractServiceDetailsFactory implements CarRentWithDriverFactoryInterface
 {

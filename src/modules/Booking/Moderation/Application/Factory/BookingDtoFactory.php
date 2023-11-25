@@ -10,7 +10,7 @@ use Module\Booking\Moderation\Application\Dto\ServiceBooking\ServiceTypeDto;
 use Module\Booking\Shared\Application\Factory\BookingStatusDtoFactory;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
-use Module\Shared\Contracts\Service\TranslatorInterface;
+use Sdk\Shared\Contracts\Service\TranslatorInterface;
 
 class BookingDtoFactory
 {

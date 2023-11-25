@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Module\Client\Moderation\Domain\ValueObject;
 
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
-use Module\Shared\Contracts\Support\SerializableDataInterface;
+use Sdk\Shared\Contracts\Support\SerializableInterface;
 
-class BankRequisites implements ValueObjectInterface, SerializableDataInterface
+class BankRequisites implements ValueObjectInterface, SerializableInterface
 {
     public function __construct(
         public readonly string $bik,
@@ -20,21 +20,21 @@ class BankRequisites implements ValueObjectInterface, SerializableDataInterface
         public readonly string $currentAccount,
     ) {}
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
         return new static(
-            bik: $data['bik'],
-            cityName: $data['cityName'],
-            inn: $data['inn'],
-            okpo: $data['okpo'],
-            correspondentAccount: $data['correspondentAccount'],
-            kpp: $data['kpp'],
-            bankName: $data['bankName'],
-            currentAccount: $data['currentAccount'],
+            bik: $payload['bik'],
+            cityName: $payload['cityName'],
+            inn: $payload['inn'],
+            okpo: $payload['okpo'],
+            correspondentAccount: $payload['correspondentAccount'],
+            kpp: $payload['kpp'],
+            bankName: $payload['bankName'],
+            currentAccount: $payload['currentAccount'],
         );
     }
 
-    public function toData(): array
+    public function serialize(): array
     {
         return [
             'bik' => $this->bik,

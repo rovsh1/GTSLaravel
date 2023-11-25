@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\Dto;
 
-use Module\Shared\Dto\CurrencyDto;
-use Sdk\Module\Foundation\Support\Dto\Dto;
+use Sdk\Shared\Dto\CurrencyDto;
 
-class PriceItemDto extends Dto
+final class PriceItemDto
 {
     public function __construct(
         public readonly CurrencyDto $currency,

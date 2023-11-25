@@ -9,10 +9,10 @@ use Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings\CancelPeriod
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings\EarlyCheckInCollection;
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings\LateCheckOutCollection;
 use Module\Shared\Contracts\Domain\EntityInterface;
-use Module\Shared\Contracts\Support\SerializableDataInterface;
-use Module\Shared\ValueObject\Percent;
+use Sdk\Shared\Contracts\Support\SerializableInterface;
+use Sdk\Shared\ValueObject\Percent;
 
-final class MarkupSettings implements EntityInterface, SerializableDataInterface
+final class MarkupSettings implements EntityInterface, SerializableInterface
 {
     public function __construct(
         private readonly HotelId $id,
@@ -63,27 +63,27 @@ final class MarkupSettings implements EntityInterface, SerializableDataInterface
         return $this->cancelPeriods;
     }
 
-    public function toData(): array
+    public function serialize(): array
     {
         return [
             'id' => $this->id->value(),
             'vat' => $this->vat->value(),
             'touristTax' => $this->touristTax->value(),
-            'earlyCheckIn' => $this->earlyCheckIn->toData(),
-            'lateCheckOut' => $this->lateCheckOut->toData(),
-            'cancelPeriods' => $this->cancelPeriods->toData(),
+            'earlyCheckIn' => $this->earlyCheckIn->serialize(),
+            'lateCheckOut' => $this->lateCheckOut->serialize(),
+            'cancelPeriods' => $this->cancelPeriods->serialize(),
         ];
     }
 
-    public static function fromData(array $data): static
+    public static function deserialize(array $payload): static
     {
         return new static(
-            id: new HotelId($data['id']),
-            vat: new Percent($data['vat']),
-            touristTax: new Percent($data['touristTax']),
-            earlyCheckIn: EarlyCheckInCollection::fromData($data['earlyCheckIn']),
-            lateCheckOut: LateCheckOutCollection::fromData($data['lateCheckOut']),
-            cancelPeriods: CancelPeriodCollection::fromData($data['cancelPeriods']),
+            id: new HotelId($payload['id']),
+            vat: new Percent($payload['vat']),
+            touristTax: new Percent($payload['touristTax']),
+            earlyCheckIn: EarlyCheckInCollection::deserialize($payload['earlyCheckIn']),
+            lateCheckOut: LateCheckOutCollection::deserialize($payload['lateCheckOut']),
+            cancelPeriods: CancelPeriodCollection::deserialize($payload['cancelPeriods']),
         );
     }
 }

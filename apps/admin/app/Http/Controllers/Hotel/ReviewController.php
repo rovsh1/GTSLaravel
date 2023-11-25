@@ -24,9 +24,9 @@ use App\Shared\Http\Responses\AjaxResponseInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Module\Shared\Contracts\Service\TranslatorInterface;
-use Module\Shared\Enum\Hotel\ReviewRatingTypeEnum;
-use Module\Shared\Enum\Hotel\ReviewStatusEnum;
+use Sdk\Shared\Contracts\Service\TranslatorInterface;
+use Sdk\Shared\Enum\Hotel\ReviewRatingTypeEnum;
+use Sdk\Shared\Enum\Hotel\ReviewStatusEnum;
 
 class ReviewController extends Controller
 {
@@ -68,7 +68,7 @@ class ReviewController extends Controller
     {
         $form = $this->formFactory($hotel);
 
-        $form->trySubmit($this->prototype->route('reviews.create', $hotel));
+        $form->submitOrFail($this->prototype->route('reviews.create', $hotel));
 
         $data = $form->getData();
         $ratingFields = $this->getOnlyRatingFields($data);
@@ -112,7 +112,7 @@ class ReviewController extends Controller
     {
         $form = $this->formFactory($hotel)->method('put');
 
-        $form->trySubmit($this->prototype->route('reviews.update', [$hotel, $review]));
+        $form->submitOrFail($this->prototype->route('reviews.update', [$hotel, $review]));
 
         $data = $form->getData();
         $ratingFields = $this->getOnlyRatingFields($data);

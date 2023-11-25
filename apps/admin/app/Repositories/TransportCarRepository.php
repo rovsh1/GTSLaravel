@@ -6,7 +6,7 @@ use App\Admin\Components\Factory\Support\DefaultRepository;
 use App\Admin\Models\Reference\TransportCar;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
-use Module\Shared\Contracts\Adapter\FileStorageAdapterInterface;
+use Sdk\Shared\Contracts\Adapter\FileStorageAdapterInterface;
 
 class TransportCarRepository extends DefaultRepository
 {

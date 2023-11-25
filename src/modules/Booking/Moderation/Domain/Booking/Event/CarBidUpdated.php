@@ -2,10 +2,10 @@
 
 namespace Module\Booking\Moderation\Domain\Booking\Event;
 
-use Module\Booking\Shared\Domain\Booking\Event\BookingEventInterface;
 use Module\Booking\Shared\Domain\Booking\Event\PriceBecomeDeprecatedEventInterface;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
+use Sdk\Booking\Contracts\Event\BookingEventInterface;
+use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\OrderId;
 
 class CarBidUpdated implements BookingEventInterface, PriceBecomeDeprecatedEventInterface
 {

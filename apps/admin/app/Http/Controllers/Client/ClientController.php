@@ -26,11 +26,11 @@ use Gsdk\Format\View\ParamsTable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Module\Shared\Enum\Client\ResidencyEnum;
-use Module\Shared\Enum\Client\StatusEnum;
-use Module\Shared\Enum\Client\TypeEnum;
-use Module\Shared\Enum\Client\User\RoleEnum;
-use Module\Shared\Enum\Client\User\StatusEnum as UserStatusEnum;
+use Sdk\Shared\Enum\Client\ResidencyEnum;
+use Sdk\Shared\Enum\Client\StatusEnum;
+use Sdk\Shared\Enum\Client\TypeEnum;
+use Sdk\Shared\Enum\Client\User\RoleEnum;
+use Sdk\Shared\Enum\Client\User\StatusEnum as UserStatusEnum;
 
 class ClientController extends AbstractPrototypeController
 {
@@ -50,7 +50,7 @@ class ClientController extends AbstractPrototypeController
         $form = $this->formFactory()
             ->method('post');
 
-        $form->trySubmit($this->prototype->route('create'));
+        $form->submitOrFail($this->prototype->route('create'));
 
         $preparedData = $this->saving($form->getData());
         $this->model = $this->repository->create($preparedData);

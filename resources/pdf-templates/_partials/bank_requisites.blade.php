@@ -1,4 +1,4 @@
-@props(['currency' => \Module\Shared\Enum\CurrencyEnum::UZS])
+@props(['currency' => \Sdk\Shared\Enum\CurrencyEnum::UZS])
 
 <tr>
     <td colspan="4">
@@ -73,7 +73,7 @@
                 </td>
             </tr>
 
-            @if($currency === \Module\Shared\Enum\CurrencyEnum::UZS)
+            @if($currency === \Sdk\Shared\Enum\CurrencyEnum::UZS)
                 <tr>
                     <td colspan="2" width="717">
                         <p><strong>для оплат в UZS (узбекский сум)</strong></p>
@@ -113,7 +113,7 @@
                 </tr>
             @endif
 
-            @if($currency === \Module\Shared\Enum\CurrencyEnum::USD)
+            @if($currency === \Sdk\Shared\Enum\CurrencyEnum::USD)
                 <tr>
                     <td colspan="2" width="717">
                         <p><strong>для оплат в USD (доллар США)</strong></p>

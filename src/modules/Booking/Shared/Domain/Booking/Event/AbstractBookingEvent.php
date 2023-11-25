@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Domain\Booking\Event;
 
 use Module\Booking\Shared\Domain\Booking\Booking;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
+use Sdk\Booking\Contracts\Event\BookingEventInterface;
+use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\OrderId;
 
 abstract class AbstractBookingEvent implements BookingEventInterface
 {

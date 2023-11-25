@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Infrastructure\Storage\Details;
 
-use Module\Booking\Shared\Domain\Booking\Entity\DayCarTrip;
 use Module\Booking\Shared\Infrastructure\Models\Details\Transfer;
+use Sdk\Booking\Entity\BookingDetails\DayCarTrip;
 
 class DayCarTripStorage extends AbstractStorage
 {

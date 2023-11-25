@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Application\Factory;
 
 use Module\Booking\Moderation\Application\Dto\OrderDto;
-use Module\Booking\Shared\Domain\Guest\ValueObject\GuestId;
 use Module\Booking\Shared\Domain\Order\Order;
-use Module\Shared\Contracts\Service\TranslatorInterface;
-use Module\Shared\Dto\CurrencyDto;
+use Sdk\Booking\ValueObject\GuestId;
+use Sdk\Shared\Contracts\Service\TranslatorInterface;
+use Sdk\Shared\Dto\CurrencyDto;
+use Sdk\Shared\Dto\MoneyDto;
 
 class OrderDtoFactory
 {
@@ -21,13 +22,16 @@ class OrderDtoFactory
     {
         return new OrderDto(
             $entity->id()->value(),
-            CurrencyDto::fromEnum($entity->currency(), $this->translator),
             $this->statusDtoFactory->get($entity->status()),
             $entity->clientId()->value(),
             $entity->legalId()?->value(),
             $entity->createdAt(),
             $entity->guestIds()->map(fn(GuestId $id) => $id->value()),
             $entity->context()->creatorId()->value(),
+            new MoneyDto(
+                CurrencyDto::fromEnum($entity->clientPrice()->currency(), $this->translator),
+                $entity->clientPrice()->value()
+            ),
             $entity->context()->source()
         );
     }
