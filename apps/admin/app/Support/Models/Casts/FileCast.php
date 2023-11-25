@@ -5,7 +5,7 @@ namespace App\Admin\Support\Models\Casts;
 use App\Shared\Support\Facades\FileStorage;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
-use Module\Shared\Dto\FileDto;
+use Sdk\Shared\Dto\FileDto;
 
 class FileCast implements CastsAttributes
 {

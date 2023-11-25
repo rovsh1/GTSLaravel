@@ -8,7 +8,7 @@ use Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings\CancelMarkup
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings\CancelPeriod;
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings\CancelPeriodTypeEnum;
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings\DailyMarkupCollection;
-use Module\Shared\ValueObject\Percent;
+use Sdk\Shared\ValueObject\Percent;
 
 class CancelPeriodBuilder
 {

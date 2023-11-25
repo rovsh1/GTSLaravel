@@ -8,7 +8,7 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use Module\Shared\Contracts\Support\CanEquate;
 use Module\Shared\Contracts\Support\SerializableInterface;
-use Module\Shared\Support\DateTimeImmutableFactory;
+use Sdk\Shared\Support\DateTimeImmutableFactory;
 
 final class BookingPeriod implements CanEquate, SerializableInterface
 {

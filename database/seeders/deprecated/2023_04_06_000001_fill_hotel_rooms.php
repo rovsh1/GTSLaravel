@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 use Module\Hotel\Moderation\Domain\Hotel\Entity\Room\RoomMarkups;
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\RoomId;
-use Module\Shared\ValueObject\Percent;
+use Sdk\Shared\ValueObject\Percent;
 
 return new class extends Migration {
 

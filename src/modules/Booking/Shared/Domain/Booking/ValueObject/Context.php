@@ -6,7 +6,7 @@ namespace Module\Booking\Shared\Domain\Booking\ValueObject;
 
 use Module\Booking\Shared\Domain\Shared\ValueObject\CreatorId;
 use Module\Shared\Contracts\Support\SerializableInterface;
-use Module\Shared\Enum\SourceEnum;
+use Sdk\Shared\Enum\SourceEnum;
 
 class Context implements SerializableInterface
 {

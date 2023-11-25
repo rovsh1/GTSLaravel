@@ -4,8 +4,8 @@ namespace App\Admin\Http\Requests\Client;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
-use Module\Shared\Enum\Client\ResidencyEnum;
-use Module\Shared\Enum\CurrencyEnum;
+use Sdk\Shared\Enum\Client\ResidencyEnum;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 class CreateClientRequest extends FormRequest
 {

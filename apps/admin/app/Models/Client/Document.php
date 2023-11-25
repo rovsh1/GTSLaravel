@@ -11,10 +11,10 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Module\Client\Moderation\Application\Admin\UseCase\Document\GetDocumentFiles;
 use Module\Client\Moderation\Application\Admin\UseCase\Document\UploadDocumentFiles;
-use Module\Shared\Dto\FileDto;
-use Module\Shared\Dto\UploadedFileDto;
 use Sdk\Module\Database\Eloquent\Model;
 use Sdk\Module\Support\DateTime;
+use Sdk\Shared\Dto\FileDto;
+use Sdk\Shared\Dto\UploadedFileDto;
 
 /**
  * App\Admin\Models\Client\Document

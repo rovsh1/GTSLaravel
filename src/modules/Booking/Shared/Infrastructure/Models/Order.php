@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Query\Builder as Query;
-use Module\Shared\Enum\Booking\BookingStatusEnum;
-use Module\Shared\Enum\CurrencyEnum;
-use Module\Shared\Enum\Order\OrderStatusEnum;
-use Module\Shared\Enum\SourceEnum;
 use Sdk\Module\Database\Eloquent\Model;
+use Sdk\Shared\Enum\Booking\BookingStatusEnum;
+use Sdk\Shared\Enum\CurrencyEnum;
+use Sdk\Shared\Enum\Order\OrderStatusEnum;
+use Sdk\Shared\Enum\SourceEnum;
 
 class Order extends Model
 {

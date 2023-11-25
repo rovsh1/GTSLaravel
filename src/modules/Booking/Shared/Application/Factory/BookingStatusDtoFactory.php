@@ -6,7 +6,7 @@ namespace Module\Booking\Shared\Application\Factory;
 
 use Module\Booking\Shared\Application\Dto\StatusDto;
 use Module\Booking\Shared\Domain\Booking\Service\BookingStatusStorageInterface;
-use Module\Shared\Enum\Booking\BookingStatusEnum;
+use Sdk\Shared\Enum\Booking\BookingStatusEnum;
 
 class BookingStatusDtoFactory
 {

@@ -2,8 +2,8 @@
 
 namespace Module\Booking\Pricing\Domain\Booking\Service\HotelPriceCalculator;
 
-use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
 use Module\Booking\Shared\Domain\Booking\Entity\HotelAccommodation;
+use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
 use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomPriceDayPart;
@@ -12,7 +12,7 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomPriceItem;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomPrices;
 use Module\Hotel\Pricing\Application\Dto\CalculatedHotelRoomsPricesDto;
 use Module\Hotel\Pricing\Application\Dto\RoomCalculationResultDto;
-use Module\Shared\ValueObject\Date;
+use Sdk\Shared\ValueObject\Date;
 
 class AccommodationPriceStorage
 {

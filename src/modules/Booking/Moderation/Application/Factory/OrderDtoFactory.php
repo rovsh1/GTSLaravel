@@ -9,8 +9,8 @@ use Module\Booking\Moderation\Application\Dto\OrderPriceDto;
 use Module\Booking\Shared\Domain\Guest\ValueObject\GuestId;
 use Module\Booking\Shared\Domain\Order\Order;
 use Module\Shared\Contracts\Service\TranslatorInterface;
-use Module\Shared\Dto\CurrencyDto;
-use Module\Shared\Dto\MoneyDto;
+use Sdk\Shared\Dto\CurrencyDto;
+use Sdk\Shared\Dto\MoneyDto;
 
 class OrderDtoFactory
 {

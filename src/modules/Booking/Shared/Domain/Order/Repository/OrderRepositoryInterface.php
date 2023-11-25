@@ -8,8 +8,8 @@ use Module\Booking\Shared\Domain\Order\Order;
 use Module\Booking\Shared\Domain\Order\ValueObject\ClientId;
 use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
 use Module\Booking\Shared\Domain\Shared\ValueObject\CreatorId;
-use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 interface OrderRepositoryInterface
 {

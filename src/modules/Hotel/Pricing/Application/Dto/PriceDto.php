@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Hotel\Pricing\Application\Dto;
 
-use Module\Shared\Enum\CurrencyEnum;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 final class PriceDto
 {

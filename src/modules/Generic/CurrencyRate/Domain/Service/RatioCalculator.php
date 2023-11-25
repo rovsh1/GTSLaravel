@@ -7,7 +7,7 @@ namespace Module\Generic\CurrencyRate\Domain\Service;
 use DateTime;
 use DateTimeInterface;
 use Module\Generic\CurrencyRate\Domain\ValueObject\CountryEnum;
-use Module\Shared\Enum\CurrencyEnum;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 class RatioCalculator
 {

@@ -44,14 +44,11 @@ use Module\Booking\Shared\Domain\Shared\Adapter\AdministratorAdapterInterface;
 use Module\Booking\Shared\Domain\Shared\Adapter\ClientAdapterInterface;
 use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\CancelFeePeriodTypeEnum;
 use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\DailyCancelFeeValue;
-use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\FeeValue;
 use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Shared\Contracts\Adapter\CountryAdapterInterface;
 use Module\Shared\Contracts\Service\CompanyRequisitesInterface;
-use Module\Shared\Enum\CurrencyEnum;
-use Module\Shared\Enum\GenderEnum;
-use Module\Shared\Enum\Order\OrderStatusEnum;
-use Module\Shared\Enum\Pricing\ValueTypeEnum;
+use Sdk\Shared\Enum\GenderEnum;
+use Sdk\Shared\Enum\Order\OrderStatusEnum;
 
 class TemplateDataFactory
 {

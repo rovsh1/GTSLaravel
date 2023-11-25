@@ -22,9 +22,9 @@ use Module\Hotel\Pricing\Domain\Shared\ValueObject\ClientId;
 use Module\Hotel\Pricing\Infrastructure\Service\HotelRoomBaseDayValueFinder;
 use Module\Shared\Contracts\Adapter\CurrencyRateAdapterInterface;
 use Module\Shared\Contracts\Service\ApplicationConstantsInterface;
-use Module\Shared\Enum\CurrencyEnum;
-use Module\Shared\ValueObject\MarkupValue;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
+use Sdk\Shared\Enum\CurrencyEnum;
+use Sdk\Shared\ValueObject\MarkupValue;
 
 class CalculateHotelPrice implements UseCaseInterface
 {

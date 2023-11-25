@@ -3,8 +3,8 @@
 namespace Module\Booking\Shared\Domain\Booking\Event;
 
 use Module\Booking\Shared\Domain\Booking\Booking;
-use Module\Shared\Support\Event\IntegrationEventMessages;
 use Sdk\Module\Contracts\Event\IntegrationEventInterface;
+use Sdk\Shared\Support\Event\IntegrationEventMessages;
 
 final class BookingModified implements IntegrationEventInterface
 {

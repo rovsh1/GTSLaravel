@@ -16,9 +16,9 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceId;
 use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
 use Module\Booking\Shared\Domain\Shared\Adapter\AdministratorAdapterInterface;
 use Module\Booking\Shared\Domain\Shared\ValueObject\CreatorId;
-use Module\Shared\Enum\CurrencyEnum;
-use Module\Shared\Enum\ServiceTypeEnum;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
+use Sdk\Shared\Enum\CurrencyEnum;
+use Sdk\Shared\Enum\ServiceTypeEnum;
 
 class CreateBooking extends AbstractCreateBooking
 {

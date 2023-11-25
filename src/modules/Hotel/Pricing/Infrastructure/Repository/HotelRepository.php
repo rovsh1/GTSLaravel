@@ -12,7 +12,7 @@ use Module\Hotel\Pricing\Domain\Hotel\ValueObject\RoomId;
 use Module\Hotel\Pricing\Domain\Hotel\ValueObject\SeasonId;
 use Module\Hotel\Pricing\Infrastructure\Models\Hotel as Model;
 use Module\Hotel\Pricing\Infrastructure\Models\Season;
-use Module\Shared\ValueObject\Percent;
+use Sdk\Shared\ValueObject\Percent;
 
 class HotelRepository implements HotelRepositoryInterface
 {

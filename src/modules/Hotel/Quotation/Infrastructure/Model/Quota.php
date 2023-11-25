@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 use Module\Hotel\Moderation\Infrastructure\Models\Room;
-use Module\Shared\Enum\Booking\QuotaChangeTypeEnum;
-use Module\Shared\Enum\Hotel\QuotaStatusEnum;
 use Sdk\Module\Database\Eloquent\Model;
+use Sdk\Shared\Enum\Booking\QuotaChangeTypeEnum;
+use Sdk\Shared\Enum\Hotel\QuotaStatusEnum;
 
 /**
  * Module\Hotel\Infrastructure\Models\Room\Quota

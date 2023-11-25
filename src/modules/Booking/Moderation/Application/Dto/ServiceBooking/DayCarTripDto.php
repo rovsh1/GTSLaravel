@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\Dto\ServiceBooking;
 
-use Module\Shared\Dto\CityInfoDto;
+use Sdk\Shared\Dto\CityInfoDto;
 
 class DayCarTripDto implements ServiceDetailsDtoInterface
 {

@@ -15,7 +15,7 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\CarBidCollection;
 use Module\Booking\Shared\Domain\Booking\ValueObject\CityId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\DetailsId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
-use Module\Shared\Enum\ServiceTypeEnum;
+use Sdk\Shared\Enum\ServiceTypeEnum;
 
 final class CarRentWithDriver implements TransferDetailsInterface
 {

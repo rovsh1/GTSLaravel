@@ -2,8 +2,8 @@
 
 namespace Module\Hotel\Quotation\Application\Exception;
 
-use Module\Shared\Exception\ApplicationException;
 use Sdk\Module\Foundation\Exception\NotFoundExceptionInterface;
+use Sdk\Shared\Exception\ApplicationException;
 use Throwable;
 
 final class RoomNotFound extends ApplicationException implements NotFoundExceptionInterface

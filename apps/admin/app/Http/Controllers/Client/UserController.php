@@ -14,9 +14,9 @@ use App\Admin\Support\View\Grid\SearchForm;
 use App\Admin\Support\View\Layout as LayoutContract;
 use Gsdk\Format\View\ParamsTable;
 use Illuminate\Http\RedirectResponse;
-use Module\Shared\Enum\Client\User\RoleEnum;
-use Module\Shared\Enum\Client\User\StatusEnum;
-use Module\Shared\Enum\GenderEnum;
+use Sdk\Shared\Enum\Client\User\RoleEnum;
+use Sdk\Shared\Enum\Client\User\StatusEnum;
+use Sdk\Shared\Enum\GenderEnum;
 
 class UserController extends AbstractPrototypeController
 {

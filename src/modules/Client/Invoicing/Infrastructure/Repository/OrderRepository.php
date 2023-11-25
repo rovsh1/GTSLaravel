@@ -11,8 +11,8 @@ use Module\Client\Invoicing\Domain\Order\ValueObject\OrderId;
 use Module\Client\Invoicing\Domain\Order\ValueObject\PaymentId;
 use Module\Client\Invoicing\Infrastructure\Models\Order as Model;
 use Module\Client\Shared\Domain\ValueObject\ClientId;
-use Module\Shared\Enum\Order\OrderStatusEnum;
-use Module\Shared\ValueObject\Money;
+use Sdk\Shared\Enum\Order\OrderStatusEnum;
+use Sdk\Shared\ValueObject\Money;
 
 class OrderRepository implements OrderRepositoryInterface
 {

@@ -11,7 +11,7 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\BookingPeriod;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\HotelInfo;
 use Module\Booking\Shared\Infrastructure\Builder\Details\HotelBookingBuilder;
 use Module\Booking\Shared\Infrastructure\Models\Details\Hotel;
-use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
+use Sdk\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 
 class HotelBookingFactory implements HotelBookingFactoryInterface
 {

@@ -6,7 +6,7 @@ namespace Module\Booking\Shared\Domain\Booking\ValueObject\CarBid;
 
 use Module\Shared\Contracts\Support\CanEquate;
 use Module\Shared\Contracts\Support\SerializableInterface;
-use Module\Shared\Enum\CurrencyEnum;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 class CarBidPriceItem implements SerializableInterface, CanEquate
 {

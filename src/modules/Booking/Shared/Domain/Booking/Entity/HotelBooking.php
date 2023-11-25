@@ -10,8 +10,8 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\DetailsId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\BookingPeriod;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\ExternalNumber;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\HotelInfo;
-use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
-use Module\Shared\Enum\ServiceTypeEnum;
+use Sdk\Shared\Enum\Booking\QuotaProcessingMethodEnum;
+use Sdk\Shared\Enum\ServiceTypeEnum;
 
 final class HotelBooking implements DetailsInterface
 {

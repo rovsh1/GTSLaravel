@@ -3,9 +3,9 @@
 namespace Module\Hotel\Pricing\Domain\Hotel;
 
 use Module\Hotel\Pricing\Domain\Hotel\ValueObject\HotelId;
-use Module\Shared\Enum\CurrencyEnum;
-use Module\Shared\ValueObject\Percent;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
+use Sdk\Shared\Enum\CurrencyEnum;
+use Sdk\Shared\ValueObject\Percent;
 
 final class Hotel extends AbstractAggregateRoot
 {

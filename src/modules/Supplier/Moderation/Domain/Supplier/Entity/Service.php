@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Supplier\Moderation\Domain\Supplier\Entity;
 
-use Module\Shared\Enum\ServiceTypeEnum;
 use Module\Supplier\Moderation\Domain\Supplier\ValueObject\ServiceId;
 use Module\Supplier\Moderation\Domain\Supplier\ValueObject\SupplierId;
+use Sdk\Shared\Enum\ServiceTypeEnum;
 
 class Service
 {

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Client\Moderation\Application\Admin\Dto;
 
-use Module\Shared\Enum\Client\ResidencyEnum;
-use Module\Shared\Enum\Client\TypeEnum;
+use Sdk\Shared\Enum\Client\ResidencyEnum;
+use Sdk\Shared\Enum\Client\TypeEnum;
 
 final class ClientDto
 {

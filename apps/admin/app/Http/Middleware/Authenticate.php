@@ -27,7 +27,7 @@ class Authenticate extends Middleware
      * @param Request $request
      * @return string|null
      */
-    protected function redirectTo($request)
+    protected function redirectTo(Request $request)
     {
         if (!$request->expectsJson()) {
             $query = ($q = $request->query())
@@ -37,5 +37,7 @@ class Authenticate extends Middleware
                 'url' => "/{$request->path()}$query"
             ]);
         }
+
+        return null;
     }
 }

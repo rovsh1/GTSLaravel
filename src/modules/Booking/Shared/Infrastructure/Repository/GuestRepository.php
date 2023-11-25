@@ -10,7 +10,7 @@ use Module\Booking\Shared\Domain\Guest\ValueObject\GuestId;
 use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
 use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Booking\Shared\Infrastructure\Models\Guest as Model;
-use Module\Shared\Enum\GenderEnum;
+use Sdk\Shared\Enum\GenderEnum;
 
 class GuestRepository implements GuestRepositoryInterface
 {

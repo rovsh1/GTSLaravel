@@ -15,7 +15,7 @@ use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
 use Module\Booking\Shared\Domain\Shared\ValueObject\CreatorId;
 use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Booking\Shared\Infrastructure\Models\Order as Model;
-use Module\Shared\ValueObject\Money;
+use Sdk\Shared\ValueObject\Money;
 
 class OrderFactory
 {

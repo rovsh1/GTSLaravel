@@ -7,8 +7,8 @@ namespace Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking;
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Module\Shared\Contracts\Support\CanEquate;
 use Module\Shared\Contracts\Support\SerializableInterface;
-use Module\Shared\ValueObject\Percent;
-use Module\Shared\ValueObject\TimePeriod;
+use Sdk\Shared\ValueObject\Percent;
+use Sdk\Shared\ValueObject\TimePeriod;
 
 /**
  * @see \Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings\Condition

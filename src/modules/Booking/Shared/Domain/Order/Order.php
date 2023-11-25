@@ -13,10 +13,10 @@ use Module\Booking\Shared\Domain\Order\ValueObject\LegalId;
 use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
 use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Shared\Contracts\Domain\EntityInterface;
-use Module\Shared\Enum\CurrencyEnum;
-use Module\Shared\Enum\Order\OrderStatusEnum;
-use Module\Shared\ValueObject\Money;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
+use Sdk\Shared\Enum\CurrencyEnum;
+use Sdk\Shared\Enum\Order\OrderStatusEnum;
+use Sdk\Shared\ValueObject\Money;
 
 final class Order extends AbstractAggregateRoot implements EntityInterface
 {

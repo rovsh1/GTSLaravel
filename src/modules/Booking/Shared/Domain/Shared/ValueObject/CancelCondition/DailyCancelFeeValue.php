@@ -6,7 +6,6 @@ namespace Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition;
 
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Module\Shared\Contracts\Support\SerializableInterface;
-use Module\Shared\ValueObject\Percent;
 
 final class DailyCancelFeeValue implements ValueObjectInterface, SerializableInterface
 {

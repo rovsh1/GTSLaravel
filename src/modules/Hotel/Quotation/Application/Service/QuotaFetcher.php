@@ -7,7 +7,7 @@ use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
 use Module\Hotel\Quotation\Application\Dto\QuotaDto;
 use Module\Hotel\Quotation\Infrastructure\Model\Quota;
-use Module\Shared\Enum\Hotel\QuotaStatusEnum;
+use Sdk\Shared\Enum\Hotel\QuotaStatusEnum;
 
 class QuotaFetcher
 {

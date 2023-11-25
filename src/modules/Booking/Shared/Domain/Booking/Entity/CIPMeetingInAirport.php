@@ -13,8 +13,8 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\DetailsId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
-use Module\Shared\Enum\ServiceTypeEnum;
-use Module\Shared\Support\DateTimeImmutableFactory;
+use Sdk\Shared\Enum\ServiceTypeEnum;
+use Sdk\Shared\Support\DateTimeImmutableFactory;
 
 final class CIPMeetingInAirport implements AirportDetailsInterface
 {

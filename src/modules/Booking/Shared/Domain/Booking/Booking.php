@@ -15,10 +15,10 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\Context;
 use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
 use Module\Booking\Shared\Domain\Shared\ValueObject\CancelConditions;
 use Module\Shared\Contracts\Support\SerializableInterface;
-use Module\Shared\Enum\Booking\BookingStatusEnum;
-use Module\Shared\Enum\ServiceTypeEnum;
-use Module\Shared\ValueObject\Timestamps;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
+use Sdk\Shared\Enum\Booking\BookingStatusEnum;
+use Sdk\Shared\Enum\ServiceTypeEnum;
+use Sdk\Shared\ValueObject\Timestamps;
 
 class Booking extends AbstractAggregateRoot implements SerializableInterface
 {

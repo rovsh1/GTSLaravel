@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\Exception;
 
-use Module\Shared\Exception\ApplicationException;
+use Sdk\Shared\Exception\ApplicationException;
 
 final class OrderHasBookingInProgressException extends ApplicationException
 {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\Dto;
 
-use Module\Shared\Dto\CurrencyDto;
+use Sdk\Shared\Dto\CurrencyDto;
 
 final class PriceItemDto
 {

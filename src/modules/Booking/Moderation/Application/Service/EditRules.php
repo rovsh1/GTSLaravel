@@ -3,8 +3,8 @@
 namespace Module\Booking\Moderation\Application\Service;
 
 use Module\Booking\Shared\Domain\Booking\Booking;
-use Module\Shared\Enum\Booking\BookingStatusEnum;
-use Module\Shared\Enum\ServiceTypeEnum;
+use Sdk\Shared\Enum\Booking\BookingStatusEnum;
+use Sdk\Shared\Enum\ServiceTypeEnum;
 
 final class EditRules
 {

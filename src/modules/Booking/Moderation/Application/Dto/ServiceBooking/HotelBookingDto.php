@@ -7,7 +7,7 @@ namespace Module\Booking\Moderation\Application\Dto\ServiceBooking;
 use Module\Booking\Moderation\Application\Dto\Details\BookingPeriodDto;
 use Module\Booking\Moderation\Application\Dto\Details\ExternalNumberDto;
 use Module\Booking\Moderation\Application\Dto\Details\HotelInfoDto;
-use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
+use Sdk\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 
 class HotelBookingDto implements ServiceDetailsDtoInterface
 {

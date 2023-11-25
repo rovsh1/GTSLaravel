@@ -14,8 +14,8 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomInfo;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomPrices;
 use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Booking\Shared\Infrastructure\Models\Accommodation as Model;
-use Module\Shared\Support\RepositoryInstances;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
+use Sdk\Shared\Support\RepositoryInstances;
 
 class AccommodationRepository implements AccommodationRepositoryInterface
 {

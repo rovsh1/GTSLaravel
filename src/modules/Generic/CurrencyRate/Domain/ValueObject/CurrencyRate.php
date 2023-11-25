@@ -3,7 +3,7 @@
 namespace Module\Generic\CurrencyRate\Domain\ValueObject;
 
 use Exception;
-use Module\Shared\Enum\CurrencyEnum;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 class CurrencyRate
 {

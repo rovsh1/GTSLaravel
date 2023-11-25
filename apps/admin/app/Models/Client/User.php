@@ -4,11 +4,11 @@ namespace App\Admin\Models\Client;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Module\Shared\Enum\Client\User\RoleEnum;
-use Module\Shared\Enum\Client\User\StatusEnum;
-use Module\Shared\Enum\GenderEnum;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
 use Sdk\Module\Database\Eloquent\Model;
+use Sdk\Shared\Enum\Client\User\RoleEnum;
+use Sdk\Shared\Enum\Client\User\StatusEnum;
+use Sdk\Shared\Enum\GenderEnum;
 
 class User extends Model
 {

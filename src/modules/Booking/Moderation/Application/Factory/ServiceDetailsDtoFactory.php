@@ -22,10 +22,10 @@ use Module\Booking\Shared\Domain\Booking\Entity\CarRentWithDriver;
 use Module\Booking\Shared\Domain\Booking\Entity\CIPMeetingInAirport;
 use Module\Booking\Shared\Domain\Booking\Entity\CIPSendoffInAirport;
 use Module\Booking\Shared\Domain\Booking\Entity\DayCarTrip;
+use Module\Booking\Shared\Domain\Booking\Entity\DetailsInterface;
 use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
 use Module\Booking\Shared\Domain\Booking\Entity\IntercityTransfer;
 use Module\Booking\Shared\Domain\Booking\Entity\Other;
-use Module\Booking\Shared\Domain\Booking\Entity\DetailsInterface;
 use Module\Booking\Shared\Domain\Booking\Entity\TransferFromAirport;
 use Module\Booking\Shared\Domain\Booking\Entity\TransferFromRailway;
 use Module\Booking\Shared\Domain\Booking\Entity\TransferToAirport;
@@ -35,9 +35,9 @@ use Module\Booking\Shared\Domain\Guest\ValueObject\GuestId;
 use Module\Shared\Contracts\Adapter\AirportAdapterInterface;
 use Module\Shared\Contracts\Adapter\CityAdapterInterface;
 use Module\Shared\Contracts\Adapter\RailwayStationAdapterInterface;
-use Module\Shared\Dto\AirportInfoDto;
-use Module\Shared\Dto\CityInfoDto;
-use Module\Shared\Dto\RailwayStationInfoDto;
+use Sdk\Shared\Dto\AirportInfoDto;
+use Sdk\Shared\Dto\CityInfoDto;
+use Sdk\Shared\Dto\RailwayStationInfoDto;
 
 class ServiceDetailsDtoFactory
 {

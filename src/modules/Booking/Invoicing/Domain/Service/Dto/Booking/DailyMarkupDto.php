@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Invoicing\Domain\Service\Dto\Booking;
 
-use Module\Shared\Enum\Pricing\ValueTypeEnum;
+use Sdk\Shared\Enum\Pricing\ValueTypeEnum;
 
 class DailyMarkupDto
 {

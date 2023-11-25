@@ -4,7 +4,7 @@ namespace App\Admin\Providers;
 
 use App\Admin\Support\Facades\AppContext;
 use Illuminate\Support\ServiceProvider;
-use Module\Shared\Enum\SourceEnum;
+use Sdk\Shared\Enum\SourceEnum;
 
 class BootServiceProvider extends ServiceProvider
 {

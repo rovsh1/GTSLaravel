@@ -6,7 +6,7 @@ namespace Module\Hotel\Pricing\Domain\Markup\Service;
 
 use Module\Hotel\Pricing\Domain\Hotel\ValueObject\RoomId;
 use Module\Hotel\Pricing\Domain\Shared\ValueObject\ClientId;
-use Module\Shared\ValueObject\MarkupValue;
+use Sdk\Shared\ValueObject\MarkupValue;
 
 interface HotelMarkupFinderInterface
 {

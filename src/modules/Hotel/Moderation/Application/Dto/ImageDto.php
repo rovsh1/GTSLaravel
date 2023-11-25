@@ -2,7 +2,7 @@
 
 namespace Module\Hotel\Moderation\Application\Dto;
 
-use Module\Shared\Dto\FileDto;
+use Sdk\Shared\Dto\FileDto;
 
 final class ImageDto
 {

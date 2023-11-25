@@ -23,7 +23,7 @@ use Module\Hotel\Moderation\Application\RequestDto\AddImageRequestDto;
 use Module\Hotel\Moderation\Application\UseCase\AddImage;
 use Module\Hotel\Moderation\Application\UseCase\DeleteImage;
 use Module\Hotel\Moderation\Application\UseCase\GetImages;
-use Module\Shared\Dto\UploadedFileDto;
+use Sdk\Shared\Dto\UploadedFileDto;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ImageController extends Controller

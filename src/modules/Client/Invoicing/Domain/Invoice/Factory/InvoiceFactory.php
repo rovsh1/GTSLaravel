@@ -14,8 +14,8 @@ use Module\Client\Invoicing\Domain\Order\Order;
 use Module\Client\Invoicing\Domain\Order\Repository\OrderRepositoryInterface;
 use Module\Client\Invoicing\Domain\Order\ValueObject\OrderId;
 use Module\Shared\Contracts\Service\SafeExecutorInterface;
-use Module\Shared\ValueObject\File;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
+use Sdk\Shared\ValueObject\File;
 
 class InvoiceFactory
 {

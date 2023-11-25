@@ -25,8 +25,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Module\Shared\Contracts\Service\TranslatorInterface;
-use Module\Shared\Enum\Hotel\ReviewRatingTypeEnum;
-use Module\Shared\Enum\Hotel\ReviewStatusEnum;
+use Sdk\Shared\Enum\Hotel\ReviewRatingTypeEnum;
+use Sdk\Shared\Enum\Hotel\ReviewStatusEnum;
 
 class ReviewController extends Controller
 {

@@ -9,7 +9,7 @@ use App\Admin\Support\View\Form\Form as FormContract;
 use App\Shared\Http\Responses\AjaxRedirectResponse;
 use App\Shared\Http\Responses\AjaxResponseInterface;
 use Illuminate\Contracts\View\View;
-use Module\Shared\Enum\ContactTypeEnum;
+use Sdk\Shared\Enum\ContactTypeEnum;
 
 class EmployeeContactController
 {

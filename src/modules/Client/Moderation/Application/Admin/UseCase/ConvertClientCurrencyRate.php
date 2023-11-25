@@ -7,8 +7,8 @@ namespace Module\Client\Moderation\Application\Admin\UseCase;
 use Module\Client\Moderation\Domain\Repository\CurrencyRateRepositoryInterface;
 use Module\Client\Shared\Domain\ValueObject\ClientId;
 use Module\Shared\Contracts\Adapter\CurrencyRateAdapterInterface;
-use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 class ConvertClientCurrencyRate implements UseCaseInterface
 {

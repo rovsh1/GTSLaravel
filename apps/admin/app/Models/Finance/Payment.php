@@ -9,10 +9,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Query\Builder as Query;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\DB;
 use Module\Client\Payment\Domain\Payment\ValueObject\PaymentStatusEnum;
-use Module\Shared\Dto\FileDto;
-use Module\Shared\Dto\UploadedFileDto;
+use Sdk\Shared\Dto\FileDto;
+use Sdk\Shared\Dto\UploadedFileDto;
 
 class Payment extends \Module\Client\Payment\Infrastructure\Models\Payment
 {

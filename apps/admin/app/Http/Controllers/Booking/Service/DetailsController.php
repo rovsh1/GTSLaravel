@@ -12,7 +12,7 @@ use App\Shared\Http\Responses\AjaxResponseInterface;
 use App\Shared\Http\Responses\AjaxSuccessResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Module\Shared\Enum\ServiceTypeEnum;
+use Sdk\Shared\Enum\ServiceTypeEnum;
 
 class DetailsController
 {

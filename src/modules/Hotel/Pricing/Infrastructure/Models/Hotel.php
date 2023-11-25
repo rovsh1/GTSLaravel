@@ -2,8 +2,8 @@
 
 namespace Module\Hotel\Pricing\Infrastructure\Models;
 
-use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Database\Eloquent\Model;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 class Hotel extends Model
 {

@@ -4,7 +4,7 @@ namespace Module\Booking\Shared\Domain\Booking\ValueObject;
 
 use Module\Shared\Contracts\Support\CanEquate;
 use Module\Shared\Contracts\Support\SerializableInterface;
-use Module\Shared\Enum\CurrencyEnum;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 final class BookingPrices implements SerializableInterface, CanEquate
 {

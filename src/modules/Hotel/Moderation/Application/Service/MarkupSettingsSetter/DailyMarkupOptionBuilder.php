@@ -5,7 +5,7 @@ namespace Module\Hotel\Moderation\Application\Service\MarkupSettingsSetter;
 use Illuminate\Support\Arr;
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings\CancelPeriodTypeEnum;
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings\DailyMarkupOption;
-use Module\Shared\ValueObject\Percent;
+use Sdk\Shared\ValueObject\Percent;
 
 class DailyMarkupOptionBuilder
 {

@@ -12,8 +12,8 @@ use Module\Booking\Shared\Application\Factory\BookingStatusDtoFactory;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Shared\Enum\Booking\BookingStatusEnum;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
+use Sdk\Shared\Enum\Booking\BookingStatusEnum;
 
 class GetAvailableActions implements UseCaseInterface
 {

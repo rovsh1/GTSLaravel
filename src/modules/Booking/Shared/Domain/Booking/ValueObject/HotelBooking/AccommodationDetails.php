@@ -7,7 +7,7 @@ namespace Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking;
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Module\Shared\Contracts\Support\CanEquate;
 use Module\Shared\Contracts\Support\SerializableInterface;
-use Module\Shared\ValueObject\Percent;
+use Sdk\Shared\ValueObject\Percent;
 
 class AccommodationDetails implements ValueObjectInterface, SerializableInterface, CanEquate
 {

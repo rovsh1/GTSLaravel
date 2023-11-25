@@ -14,8 +14,8 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\CarBidCollection;
 use Module\Booking\Shared\Domain\Booking\ValueObject\DetailsId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
-use Module\Shared\Enum\ServiceTypeEnum;
-use Module\Shared\Support\DateTimeImmutableFactory;
+use Sdk\Shared\Enum\ServiceTypeEnum;
+use Sdk\Shared\Support\DateTimeImmutableFactory;
 
 final class TransferFromAirport implements TransferDetailsInterface
 {

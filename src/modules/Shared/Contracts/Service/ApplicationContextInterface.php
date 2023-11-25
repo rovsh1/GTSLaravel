@@ -2,8 +2,8 @@
 
 namespace Module\Shared\Contracts\Service;
 
-use Module\Shared\Enum\Context\ContextChannelEnum;
-use Module\Shared\Enum\SourceEnum;
+use Sdk\Shared\Enum\Context\ContextChannelEnum;
+use Sdk\Shared\Enum\SourceEnum;
 
 interface ApplicationContextInterface
 {

@@ -5,8 +5,8 @@ namespace Module\Booking\Moderation\Domain\Booking\Service\HotelBooking\QuotaMan
 use Module\Booking\Moderation\Domain\Booking\Service\HotelBooking\QuotaManager\ProcessingMethod\Quota;
 use Module\Booking\Moderation\Domain\Booking\Service\HotelBooking\QuotaManager\ProcessingMethod\Request;
 use Module\Booking\Moderation\Domain\Booking\Service\HotelBooking\QuotaManager\ProcessingMethod\Site;
-use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 use Sdk\Module\Contracts\Support\ContainerInterface;
+use Sdk\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 
 class QuotaProcessingMethodFactory
 {

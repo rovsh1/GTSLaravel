@@ -8,8 +8,8 @@ use Module\Booking\EventSourcing\Application\Dto\StatusEventDto;
 use Module\Booking\EventSourcing\Domain\Repository\BookingLogRepositoryInterface;
 use Module\Booking\EventSourcing\Infrastructure\Model\BookingEventLog;
 use Module\Booking\Shared\Application\Factory\BookingStatusDtoFactory;
-use Module\Shared\Enum\Booking\BookingStatusEnum;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
+use Sdk\Shared\Enum\Booking\BookingStatusEnum;
 
 class GetStatusHistory implements UseCaseInterface
 {

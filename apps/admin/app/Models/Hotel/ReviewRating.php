@@ -3,8 +3,8 @@
 namespace App\Admin\Models\Hotel;
 
 use Illuminate\Database\Eloquent\Builder;
-use Module\Shared\Enum\Hotel\ReviewRatingTypeEnum;
 use Sdk\Module\Database\Eloquent\Model;
+use Sdk\Shared\Enum\Hotel\ReviewRatingTypeEnum;
 
 /**
  * App\Admin\Models\Hotel\ReviewRating

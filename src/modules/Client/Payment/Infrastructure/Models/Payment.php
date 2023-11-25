@@ -8,8 +8,8 @@ use DateTime;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Module\Client\Payment\Domain\Payment\ValueObject\PaymentStatusEnum;
-use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Database\Eloquent\Model;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 /**
  * @method static Builder|Payment withPlantSum()

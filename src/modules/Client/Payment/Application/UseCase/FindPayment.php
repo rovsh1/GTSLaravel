@@ -8,9 +8,9 @@ use Module\Client\Payment\Application\Dto\PaymentDto;
 use Module\Client\Payment\Domain\Payment\Repository\PaymentRepositoryInterface;
 use Module\Client\Payment\Domain\Payment\ValueObject\PaymentId;
 use Module\Shared\Contracts\Service\TranslatorInterface;
-use Module\Shared\Dto\CurrencyDto;
-use Module\Shared\Dto\MoneyDto;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
+use Sdk\Shared\Dto\CurrencyDto;
+use Sdk\Shared\Dto\MoneyDto;
 
 class FindPayment implements UseCaseInterface
 {

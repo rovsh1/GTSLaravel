@@ -6,8 +6,8 @@ namespace Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings;
 
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Module\Shared\Contracts\Support\SerializableInterface;
-use Module\Shared\ValueObject\Percent;
-use Module\Shared\ValueObject\TimePeriod;
+use Sdk\Shared\ValueObject\Percent;
+use Sdk\Shared\ValueObject\TimePeriod;
 
 final class Condition implements ValueObjectInterface, SerializableInterface
 {

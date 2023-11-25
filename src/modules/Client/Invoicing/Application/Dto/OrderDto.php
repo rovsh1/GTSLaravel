@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Client\Invoicing\Application\Dto;
 
-use Module\Shared\Dto\MoneyDto;
+use Sdk\Shared\Dto\MoneyDto;
 
 class OrderDto
 {

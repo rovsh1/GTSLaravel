@@ -6,7 +6,7 @@ use Module\Hotel\Moderation\Domain\Hotel\ValueObject\Address;
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\ContactCollection;
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\HotelId;
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\TimeSettings;
-use Module\Shared\Enum\CurrencyEnum;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 class Hotel
 {

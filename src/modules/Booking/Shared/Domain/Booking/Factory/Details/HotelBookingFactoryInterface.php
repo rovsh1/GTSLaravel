@@ -8,7 +8,7 @@ use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\BookingPeriod;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\HotelInfo;
-use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
+use Sdk\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 
 interface HotelBookingFactoryInterface
 {

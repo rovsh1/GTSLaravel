@@ -8,8 +8,8 @@ use DateTimeInterface;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\DetailsId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
-use Module\Shared\Enum\ServiceTypeEnum;
 use Sdk\Module\Support\DateTimeImmutable;
+use Sdk\Shared\Enum\ServiceTypeEnum;
 
 final class Other implements DetailsInterface
 {

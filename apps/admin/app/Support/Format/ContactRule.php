@@ -3,7 +3,7 @@
 namespace App\Admin\Support\Format;
 
 use Gsdk\Format\Rules\RuleInterface;
-use Module\Shared\Enum\ContactTypeEnum;
+use Sdk\Shared\Enum\ContactTypeEnum;
 
 class ContactRule implements RuleInterface
 {

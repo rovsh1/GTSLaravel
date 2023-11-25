@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Client\Invoicing\Application\Exception;
 
-use Module\Shared\Exception\ApplicationException;
 use Sdk\Module\Foundation\Exception\NotFoundExceptionInterface;
+use Sdk\Shared\Exception\ApplicationException;
 
 final class InvoiceNotFoundException extends ApplicationException implements NotFoundExceptionInterface
 {

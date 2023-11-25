@@ -10,10 +10,10 @@ use Module\Booking\Moderation\Domain\Booking\Service\StatusRules\StatusTransitio
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Shared\Enum\Booking\BookingStatusEnum;
-use Module\Shared\Enum\ServiceTypeEnum;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
+use Sdk\Shared\Enum\Booking\BookingStatusEnum;
+use Sdk\Shared\Enum\ServiceTypeEnum;
 
 class UpdateStatus implements UseCaseInterface
 {

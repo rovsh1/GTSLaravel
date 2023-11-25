@@ -8,9 +8,9 @@ use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
 use Sdk\Module\Database\Eloquent\Model;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 /**
  * App\Admin\Models\Client\CurrencyRate

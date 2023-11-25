@@ -3,7 +3,7 @@
 namespace Module\Shared\Contracts\Adapter;
 
 use DateTimeInterface;
-use Module\Shared\Enum\CurrencyEnum;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 interface CurrencyRateAdapterInterface
 {

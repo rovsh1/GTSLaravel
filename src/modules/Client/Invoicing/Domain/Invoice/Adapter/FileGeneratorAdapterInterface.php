@@ -6,7 +6,7 @@ namespace Module\Client\Invoicing\Domain\Invoice\Adapter;
 
 use Module\Client\Invoicing\Domain\Order\ValueObject\OrderId;
 use Module\Client\Shared\Domain\ValueObject\ClientId;
-use Module\Shared\Dto\FileDto;
+use Sdk\Shared\Dto\FileDto;
 
 interface FileGeneratorAdapterInterface
 {

@@ -23,8 +23,8 @@ use Module\Booking\Shared\Domain\Guest\Repository\GuestRepositoryInterface;
 use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Hotel\Moderation\Application\Dto\ContactDto;
 use Module\Shared\Contracts\Adapter\CountryAdapterInterface;
-use Module\Shared\Enum\ContactTypeEnum;
-use Module\Shared\Enum\GenderEnum;
+use Sdk\Shared\Enum\ContactTypeEnum;
+use Sdk\Shared\Enum\GenderEnum;
 
 class HotelBookingDataFactory
 {

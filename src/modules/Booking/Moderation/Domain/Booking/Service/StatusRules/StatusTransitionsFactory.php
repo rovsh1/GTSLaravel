@@ -2,8 +2,8 @@
 
 namespace Module\Booking\Moderation\Domain\Booking\Service\StatusRules;
 
-use Module\Shared\Enum\ServiceTypeEnum;
 use Sdk\Module\Contracts\Support\ContainerInterface;
+use Sdk\Shared\Enum\ServiceTypeEnum;
 
 class StatusTransitionsFactory
 {

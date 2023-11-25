@@ -11,7 +11,7 @@ use App\Admin\Support\Facades\Prototypes;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Shared\Http\Responses\AjaxReloadResponse;
 use Illuminate\Contracts\View\View;
-use Module\Shared\Enum\ContactTypeEnum;
+use Sdk\Shared\Enum\ContactTypeEnum;
 
 abstract class AbstractContactController extends Controller
 {

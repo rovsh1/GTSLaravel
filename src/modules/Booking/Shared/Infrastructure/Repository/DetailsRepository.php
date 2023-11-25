@@ -10,8 +10,8 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Infrastructure\Builder\Details\DetailsBuilderFactory;
 use Module\Booking\Shared\Infrastructure\Models\Booking as Model;
 use Module\Booking\Shared\Infrastructure\Storage\Details\DetailsStorageFactory;
-use Module\Shared\Support\RepositoryInstances;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
+use Sdk\Shared\Support\RepositoryInstances;
 
 class DetailsRepository implements DetailsRepositoryInterface
 {

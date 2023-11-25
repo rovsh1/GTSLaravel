@@ -2,7 +2,7 @@
 
 namespace Module\Booking\Moderation\Domain\Order\Service;
 
-use Module\Shared\Enum\Order\OrderStatusEnum;
+use Sdk\Shared\Enum\Order\OrderStatusEnum;
 
 class StatusTransitionRules
 {

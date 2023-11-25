@@ -9,7 +9,7 @@ use Module\Booking\Invoicing\Application\UseCase\GenerateInvoiceFile;
 use Module\Client\Invoicing\Domain\Invoice\Adapter\FileGeneratorAdapterInterface;
 use Module\Client\Invoicing\Domain\Order\ValueObject\OrderId;
 use Module\Client\Shared\Domain\ValueObject\ClientId;
-use Module\Shared\Dto\FileDto;
+use Sdk\Shared\Dto\FileDto;
 
 class FileGeneratorAdapter implements FileGeneratorAdapterInterface
 {

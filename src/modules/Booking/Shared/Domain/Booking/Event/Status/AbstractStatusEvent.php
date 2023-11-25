@@ -6,7 +6,7 @@ namespace Module\Booking\Shared\Domain\Booking\Event\Status;
 
 use Module\Booking\Shared\Domain\Booking\Event\AbstractBookingEvent;
 use Module\Booking\Shared\Domain\Booking\Event\BookingStatusEventInterface;
-use Module\Shared\Support\Event\IntegrationEventMessages;
+use Sdk\Shared\Support\Event\IntegrationEventMessages;
 
 abstract class AbstractStatusEvent extends AbstractBookingEvent implements BookingStatusEventInterface
 {

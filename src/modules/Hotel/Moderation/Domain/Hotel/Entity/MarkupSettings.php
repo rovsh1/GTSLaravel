@@ -10,7 +10,7 @@ use Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings\EarlyCheckIn
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings\LateCheckOutCollection;
 use Module\Shared\Contracts\Domain\EntityInterface;
 use Module\Shared\Contracts\Support\SerializableInterface;
-use Module\Shared\ValueObject\Percent;
+use Sdk\Shared\ValueObject\Percent;
 
 final class MarkupSettings implements EntityInterface, SerializableInterface
 {

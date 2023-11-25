@@ -6,7 +6,7 @@ namespace Module\Shared\Infrastructure\Adapter;
 
 use App\Admin\Models\Reference\RailwayStation;
 use Module\Shared\Contracts\Adapter\RailwayStationAdapterInterface;
-use Module\Shared\Dto\RailwayStationInfoDto;
+use Sdk\Shared\Dto\RailwayStationInfoDto;
 
 class RailwayStationAdapter implements RailwayStationAdapterInterface
 {

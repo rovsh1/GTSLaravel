@@ -6,8 +6,8 @@ namespace Module\Booking\Requesting\Domain\Booking\Service;
 
 use Module\Booking\Requesting\Domain\BookingRequest\ValueObject\RequestTypeEnum;
 use Module\Booking\Shared\Domain\Booking\Booking;
-use Module\Shared\Enum\Booking\BookingStatusEnum;
-use Module\Shared\Enum\ServiceTypeEnum;
+use Sdk\Shared\Enum\Booking\BookingStatusEnum;
+use Sdk\Shared\Enum\ServiceTypeEnum;
 
 final class RequestingRules
 {

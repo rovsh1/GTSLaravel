@@ -7,7 +7,7 @@ namespace Module\Hotel\Moderation\Domain\Hotel\Entity\Room;
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\RoomId;
 use Module\Shared\Contracts\Domain\EntityInterface;
 use Module\Shared\Contracts\Support\SerializableInterface;
-use Module\Shared\ValueObject\Percent;
+use Sdk\Shared\ValueObject\Percent;
 
 final class RoomMarkups implements EntityInterface, SerializableInterface
 {

@@ -3,7 +3,7 @@
 namespace App\Admin\View\Menus;
 
 use App\Admin\Support\View\Sidebar\AbstractSubmenu;
-use Module\Shared\Enum\Client\TypeEnum;
+use Sdk\Shared\Enum\Client\TypeEnum;
 
 class ClientMenu extends AbstractSubmenu
 {

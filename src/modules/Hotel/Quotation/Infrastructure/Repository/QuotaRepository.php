@@ -9,8 +9,8 @@ use Module\Hotel\Quotation\Domain\ValueObject\BookingPeriod;
 use Module\Hotel\Quotation\Domain\ValueObject\RoomId;
 use Module\Hotel\Quotation\Infrastructure\Model\Quota;
 use Module\Hotel\Quotation\Infrastructure\Model\QuotaBooking;
-use Module\Shared\Enum\Booking\QuotaChangeTypeEnum;
-use Module\Shared\Enum\Hotel\QuotaStatusEnum;
+use Sdk\Shared\Enum\Booking\QuotaChangeTypeEnum;
+use Sdk\Shared\Enum\Hotel\QuotaStatusEnum;
 
 class QuotaRepository implements QuotaRepositoryInterface
 {

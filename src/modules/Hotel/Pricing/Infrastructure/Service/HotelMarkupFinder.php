@@ -7,7 +7,7 @@ use Module\Hotel\Pricing\Domain\Markup\Service\HotelMarkupFinderInterface;
 use Module\Hotel\Pricing\Domain\Shared\ValueObject\ClientId;
 use Module\Hotel\Pricing\Infrastructure\Models\MarkupGroup;
 use Module\Hotel\Pricing\Infrastructure\Models\MarkupGroupRule;
-use Module\Shared\ValueObject\MarkupValue;
+use Sdk\Shared\ValueObject\MarkupValue;
 
 class HotelMarkupFinder implements HotelMarkupFinderInterface
 {

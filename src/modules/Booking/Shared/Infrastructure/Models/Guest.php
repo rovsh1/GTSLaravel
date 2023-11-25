@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Infrastructure\Models;
 
-use Module\Shared\Enum\GenderEnum;
 use Sdk\Module\Database\Eloquent\Model;
+use Sdk\Shared\Enum\GenderEnum;
 
 class Guest extends Model
 {

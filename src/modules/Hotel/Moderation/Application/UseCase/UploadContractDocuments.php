@@ -6,8 +6,8 @@ namespace Module\Hotel\Moderation\Application\UseCase;
 
 use Illuminate\Support\Facades\DB;
 use Module\Shared\Contracts\Adapter\FileStorageAdapterInterface;
-use Module\Shared\Dto\UploadedFileDto;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
+use Sdk\Shared\Dto\UploadedFileDto;
 
 class UploadContractDocuments implements UseCaseInterface
 {

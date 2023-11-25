@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Client\Payment\Domain\Payment\ValueObject;
 
-use Module\Shared\ValueObject\File;
+use Sdk\Shared\ValueObject\File;
 
 final class PaymentDocument
 {

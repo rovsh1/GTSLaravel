@@ -7,7 +7,7 @@ namespace Module\Hotel\Moderation\Domain\Hotel\ValueObject;
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\TimeSettings\BreakfastPeriod;
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Module\Shared\Contracts\Support\SerializableInterface;
-use Module\Shared\ValueObject\Time;
+use Sdk\Shared\ValueObject\Time;
 
 class TimeSettings implements ValueObjectInterface, SerializableInterface
 {

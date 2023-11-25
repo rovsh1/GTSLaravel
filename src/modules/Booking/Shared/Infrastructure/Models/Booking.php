@@ -10,11 +10,11 @@ use Module\Booking\Shared\Infrastructure\Models\Details\Airport;
 use Module\Booking\Shared\Infrastructure\Models\Details\Hotel;
 use Module\Booking\Shared\Infrastructure\Models\Details\Other;
 use Module\Booking\Shared\Infrastructure\Models\Details\Transfer;
-use Module\Shared\Enum\Booking\BookingStatusEnum;
-use Module\Shared\Enum\CurrencyEnum;
-use Module\Shared\Enum\ServiceTypeEnum;
-use Module\Shared\Enum\SourceEnum;
 use Module\Shared\Infrastructure\Models\Model;
+use Sdk\Shared\Enum\Booking\BookingStatusEnum;
+use Sdk\Shared\Enum\CurrencyEnum;
+use Sdk\Shared\Enum\ServiceTypeEnum;
+use Sdk\Shared\Enum\SourceEnum;
 
 /**
  * Module\Booking\Transfer\Infrastructure\Models\Booking

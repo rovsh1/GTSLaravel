@@ -3,7 +3,7 @@
 namespace App\Admin\View\Components;
 
 use Illuminate\View\Component;
-use Module\Shared\Dto\FileDto;
+use Sdk\Shared\Dto\FileDto;
 
 class FileImage extends Component
 {

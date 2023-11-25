@@ -11,9 +11,9 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\BookingPeriod;
 use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\HotelInfo;
 use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceId;
-use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
-use Module\Shared\ValueObject\Time;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
+use Sdk\Shared\Enum\Booking\QuotaProcessingMethodEnum;
+use Sdk\Shared\ValueObject\Time;
 
 class HotelBooking extends AbstractEditor implements EditorInterface
 {

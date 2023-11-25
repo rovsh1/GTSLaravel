@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Domain\Booking\Service\StatusRules;
 
-use Module\Shared\Enum\Booking\BookingStatusEnum;
+use Sdk\Shared\Enum\Booking\BookingStatusEnum;
 
 interface StatusTransitionsInterface
 {

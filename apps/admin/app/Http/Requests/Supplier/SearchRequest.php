@@ -6,7 +6,7 @@ namespace App\Admin\Http\Requests\Supplier;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
-use Module\Shared\Enum\ServiceTypeEnum;
+use Sdk\Shared\Enum\ServiceTypeEnum;
 
 class SearchRequest extends FormRequest
 {

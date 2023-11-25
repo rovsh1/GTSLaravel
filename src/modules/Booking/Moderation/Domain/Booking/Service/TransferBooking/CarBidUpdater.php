@@ -21,9 +21,9 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\CarBid;
 use Module\Booking\Shared\Domain\Booking\ValueObject\CarBid\CarBidPriceItem;
 use Module\Booking\Shared\Domain\Booking\ValueObject\CarBid\CarBidPrices;
 use Module\Booking\Shared\Domain\Booking\ValueObject\CarId;
-use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 class CarBidUpdater
 {

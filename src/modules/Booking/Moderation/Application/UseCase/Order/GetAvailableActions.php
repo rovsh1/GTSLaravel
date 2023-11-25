@@ -11,8 +11,8 @@ use Module\Booking\Shared\Application\Dto\StatusDto;
 use Module\Booking\Shared\Domain\Order\Order;
 use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
 use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
-use Module\Shared\Enum\Order\OrderStatusEnum;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
+use Sdk\Shared\Enum\Order\OrderStatusEnum;
 
 class GetAvailableActions implements UseCaseInterface
 {

@@ -7,7 +7,7 @@ namespace Module\Booking\Invoicing\Domain\Service;
 use Module\Booking\Shared\Domain\Order\ValueObject\ClientId;
 use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
 use Module\Shared\Contracts\Adapter\FileStorageAdapterInterface;
-use Module\Shared\Dto\FileDto;
+use Sdk\Shared\Dto\FileDto;
 
 class FileGenerator
 {

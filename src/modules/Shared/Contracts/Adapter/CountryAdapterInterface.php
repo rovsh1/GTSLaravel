@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Shared\Contracts\Adapter;
 
-use Module\Shared\Dto\CountryDto;
+use Sdk\Shared\Dto\CountryDto;
 
 interface CountryAdapterInterface
 {

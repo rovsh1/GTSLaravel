@@ -5,7 +5,7 @@ namespace Module\Generic\CurrencyRate\Infrastructure\Api;
 use Exception;
 use Module\Generic\CurrencyRate\Domain\ValueObject\CurrencyRate;
 use Module\Generic\CurrencyRate\Domain\ValueObject\CurrencyRatesCollection;
-use Module\Shared\Enum\CurrencyEnum;
+use Sdk\Shared\Enum\CurrencyEnum;
 use SimpleXMLElement;
 
 abstract class AbstractApi implements ApiInterface

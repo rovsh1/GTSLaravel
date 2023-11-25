@@ -2,7 +2,7 @@
 
 namespace Module\Booking\Moderation\Domain\Booking\Service\StatusRules;
 
-use Module\Shared\Enum\Booking\BookingStatusEnum;
+use Sdk\Shared\Enum\Booking\BookingStatusEnum;
 
 abstract class AbstractTransitions
 {

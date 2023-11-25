@@ -2,7 +2,7 @@
 
 namespace Module\Hotel\Moderation\Application\RequestDto;
 
-use Module\Shared\Dto\UploadedFileDto;
+use Sdk\Shared\Dto\UploadedFileDto;
 
 final class AddImageRequestDto
 {

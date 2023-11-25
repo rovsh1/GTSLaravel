@@ -6,8 +6,8 @@ namespace Module\Booking\Moderation\Application\Dto;
 
 use Carbon\CarbonImmutable;
 use Module\Booking\Shared\Application\Dto\StatusDto;
-use Module\Shared\Dto\MoneyDto;
-use Module\Shared\Enum\SourceEnum;
+use Sdk\Shared\Dto\MoneyDto;
+use Sdk\Shared\Enum\SourceEnum;
 
 class OrderDto
 {

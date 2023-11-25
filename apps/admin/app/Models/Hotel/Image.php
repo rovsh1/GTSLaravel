@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use Module\Shared\Dto\FileDto;
 use Sdk\Module\Support\DateTime;
+use Sdk\Shared\Dto\FileDto;
 
 /**
  * App\Admin\Models\Hotel\Image

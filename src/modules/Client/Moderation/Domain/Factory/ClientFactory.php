@@ -6,9 +6,9 @@ namespace Module\Client\Moderation\Domain\Factory;
 
 use Module\Client\Moderation\Domain\Entity\Client;
 use Module\Client\Shared\Domain\ValueObject\ClientId;
-use Module\Shared\Enum\Client\ResidencyEnum;
-use Module\Shared\Enum\Client\TypeEnum;
 use Sdk\Module\Foundation\Support\EntityFactory\AbstractEntityFactory;
+use Sdk\Shared\Enum\Client\ResidencyEnum;
+use Sdk\Shared\Enum\Client\TypeEnum;
 
 class ClientFactory extends AbstractEntityFactory
 {

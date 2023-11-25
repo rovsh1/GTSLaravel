@@ -7,7 +7,7 @@ namespace Module\Booking\Moderation\Domain\Order\Service;
 use Module\Booking\Moderation\Domain\Order\Exception\OrderHasBookingInProgress;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Order\Order;
-use Module\Shared\Enum\Order\OrderStatusEnum;
+use Sdk\Shared\Enum\Order\OrderStatusEnum;
 
 class StatusUpdater
 {

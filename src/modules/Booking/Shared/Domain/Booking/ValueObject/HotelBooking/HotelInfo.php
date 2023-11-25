@@ -6,7 +6,7 @@ namespace Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking;
 
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Module\Shared\Contracts\Support\SerializableInterface;
-use Module\Shared\ValueObject\Time;
+use Sdk\Shared\ValueObject\Time;
 
 class HotelInfo implements ValueObjectInterface, SerializableInterface
 {

@@ -13,9 +13,9 @@ use Module\Booking\Shared\Domain\Shared\ValueObject\CreatorId;
 use Module\Booking\Shared\Infrastructure\Factory\OrderFactory;
 use Module\Booking\Shared\Infrastructure\Models\Order as Model;
 use Module\Shared\Contracts\Service\ApplicationContextInterface;
-use Module\Shared\Enum\CurrencyEnum;
-use Module\Shared\Enum\Order\OrderStatusEnum;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
+use Sdk\Shared\Enum\CurrencyEnum;
+use Sdk\Shared\Enum\Order\OrderStatusEnum;
 
 class OrderRepository implements OrderRepositoryInterface
 {

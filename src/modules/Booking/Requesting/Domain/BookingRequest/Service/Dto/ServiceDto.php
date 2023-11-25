@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Requesting\Domain\BookingRequest\Service\Dto;
 
-use Module\Shared\Enum\ServiceTypeEnum;
+use Sdk\Shared\Enum\ServiceTypeEnum;
 
 class ServiceDto
 {

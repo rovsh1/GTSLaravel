@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Infrastructure\Models\Details;
 
-use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
-use Module\Shared\Enum\ServiceTypeEnum;
 use Sdk\Module\Database\Eloquent\Model;
+use Sdk\Shared\Enum\Booking\QuotaProcessingMethodEnum;
+use Sdk\Shared\Enum\ServiceTypeEnum;
 
 class Hotel extends Model
 {

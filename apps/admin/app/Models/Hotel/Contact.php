@@ -4,8 +4,8 @@ namespace App\Admin\Models\Hotel;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Module\Shared\Enum\ContactTypeEnum;
 use Sdk\Module\Database\Eloquent\Model;
+use Sdk\Shared\Enum\ContactTypeEnum;
 
 class Contact extends Model
 {

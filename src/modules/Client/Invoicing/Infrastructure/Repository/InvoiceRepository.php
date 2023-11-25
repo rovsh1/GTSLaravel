@@ -10,8 +10,8 @@ use Module\Client\Invoicing\Domain\Invoice\ValueObject\InvoiceId;
 use Module\Client\Invoicing\Domain\Order\ValueObject\OrderId;
 use Module\Client\Invoicing\Infrastructure\Models\Invoice as Model;
 use Module\Client\Shared\Domain\ValueObject\ClientId;
-use Module\Shared\ValueObject\File;
-use Module\Shared\ValueObject\Timestamps;
+use Sdk\Shared\ValueObject\File;
+use Sdk\Shared\ValueObject\Timestamps;
 
 class InvoiceRepository implements InvoiceRepositoryInterface
 {

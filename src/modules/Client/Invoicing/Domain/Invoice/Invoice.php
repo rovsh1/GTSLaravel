@@ -7,9 +7,9 @@ namespace Module\Client\Invoicing\Domain\Invoice;
 use Module\Client\Invoicing\Domain\Invoice\ValueObject\InvoiceId;
 use Module\Client\Invoicing\Domain\Order\ValueObject\OrderId;
 use Module\Client\Shared\Domain\ValueObject\ClientId;
-use Module\Shared\ValueObject\File;
-use Module\Shared\ValueObject\Timestamps;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
+use Sdk\Shared\ValueObject\File;
+use Sdk\Shared\ValueObject\Timestamps;
 
 final class Invoice extends AbstractAggregateRoot
 {

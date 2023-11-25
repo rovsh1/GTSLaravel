@@ -5,8 +5,8 @@ namespace Module\Client\Moderation\Infrastructure\Models;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Builder as Query;
-use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Database\Eloquent\Model;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 class CurrencyRate extends Model
 {

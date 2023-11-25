@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Hotel\Pricing\Infrastructure\Models;
 
-use Module\Shared\Enum\Pricing\ValueTypeEnum;
 use Sdk\Module\Database\Eloquent\Model;
+use Sdk\Shared\Enum\Pricing\ValueTypeEnum;
 
 class MarkupGroupRule extends Model
 {

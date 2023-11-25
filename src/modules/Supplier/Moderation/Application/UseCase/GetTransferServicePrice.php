@@ -7,9 +7,9 @@ namespace Module\Supplier\Moderation\Application\UseCase;
 use Carbon\CarbonInterface;
 use Module\Hotel\Pricing\Application\Dto\PriceDto;
 use Module\Hotel\Pricing\Application\Dto\ServicePriceDto;
-use Module\Shared\Enum\CurrencyEnum;
 use Module\Supplier\Moderation\Infrastructure\Models\TransferServicePrice as Model;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 class GetTransferServicePrice implements UseCaseInterface
 {

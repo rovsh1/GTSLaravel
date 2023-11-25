@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Module\Shared\Infrastructure\Adapter;
 
 use Module\Shared\Contracts\Adapter\AirportAdapterInterface;
-use Module\Shared\Dto\AirportInfoDto;
 use Module\Shared\Infrastructure\Models\Airport;
+use Sdk\Shared\Dto\AirportInfoDto;
 
 class AirportAdapter implements AirportAdapterInterface
 {

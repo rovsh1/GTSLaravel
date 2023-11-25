@@ -6,8 +6,8 @@ namespace Module\Supplier\Moderation\Infrastructure\Models;
 
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
-use Module\Shared\Enum\CurrencyEnum;
 use Module\Shared\Infrastructure\Models\Model;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 class AirportServicePrice extends Model
 {

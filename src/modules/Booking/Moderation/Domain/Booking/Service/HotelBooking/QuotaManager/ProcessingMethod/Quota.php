@@ -12,7 +12,7 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\BookingPeriod;
 use Module\Hotel\Quotation\Application\Dto\BookingRoomDto;
 use Module\Hotel\Quotation\Application\RequestDto\BookRequestDto;
 use Module\Hotel\Quotation\Application\RequestDto\ReserveRequestDto;
-use Module\Shared\Enum\Booking\BookingStatusEnum;
+use Sdk\Shared\Enum\Booking\BookingStatusEnum;
 
 class Quota implements QuotaProcessingMethodInterface
 {

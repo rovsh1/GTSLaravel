@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition;
 
 use Module\Shared\Contracts\Support\SerializableInterface;
-use Module\Shared\Enum\Pricing\ValueTypeEnum;
+use Sdk\Shared\Enum\Pricing\ValueTypeEnum;
 
 class FeeValue implements SerializableInterface
 {

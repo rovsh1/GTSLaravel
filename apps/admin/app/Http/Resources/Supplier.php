@@ -4,7 +4,6 @@ namespace App\Admin\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Module\Shared\Enum\Client\TypeEnum;
 
 class Supplier extends JsonResource
 {

@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\DB;
-use Module\Shared\Enum\CurrencyEnum;
 use Module\Shared\Infrastructure\Models\Model;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 class SeasonPrice extends Model
 {

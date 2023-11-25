@@ -6,8 +6,8 @@ use App\Admin\Enums\Contract\StatusEnum;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Module\Booking\Moderation\Application\UseCase\HotelBooking\System\FillCalculatedPriceCalendar;
-use Module\Shared\Enum\CurrencyEnum;
-use Module\Shared\Enum\ServiceTypeEnum;
+use Sdk\Shared\Enum\CurrencyEnum;
+use Sdk\Shared\Enum\ServiceTypeEnum;
 
 class TestDataSeeder extends Seeder
 {

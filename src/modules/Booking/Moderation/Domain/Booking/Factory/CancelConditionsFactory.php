@@ -13,9 +13,9 @@ use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\DailyCancelF
 use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\DailyCancelFeeValueCollection;
 use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\FeeValue;
 use Module\Booking\Shared\Domain\Shared\ValueObject\CancelConditions;
-use Module\Shared\Enum\ServiceTypeEnum;
 use Module\Supplier\Moderation\Application\Response\CancelConditionsDto;
 use Module\Supplier\Moderation\Application\Response\DailyMarkupDto;
+use Sdk\Shared\Enum\ServiceTypeEnum;
 
 class CancelConditionsFactory
 {

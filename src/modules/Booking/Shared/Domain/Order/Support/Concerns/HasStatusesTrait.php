@@ -3,7 +3,7 @@
 namespace Module\Booking\Shared\Domain\Order\Support\Concerns;
 
 use Module\Booking\Shared\Domain\Order\Event\OrderCancelled;
-use Module\Shared\Enum\Order\OrderStatusEnum;
+use Sdk\Shared\Enum\Order\OrderStatusEnum;
 
 trait HasStatusesTrait
 {

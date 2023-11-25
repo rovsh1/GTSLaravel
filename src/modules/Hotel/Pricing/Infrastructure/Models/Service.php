@@ -2,8 +2,8 @@
 
 namespace Module\Hotel\Pricing\Infrastructure\Models;
 
-use Module\Shared\Enum\ServiceTypeEnum;
 use Sdk\Module\Database\Eloquent\Model;
+use Sdk\Shared\Enum\ServiceTypeEnum;
 
 class Service extends Model
 {

@@ -8,12 +8,12 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
-use Module\Shared\Dto\UploadedFileDto;
-use Module\Shared\Enum\ServiceTypeEnum;
 use Module\Supplier\Moderation\Application\UseCase\Contract\GetFiles;
 use Module\Supplier\Moderation\Application\UseCase\Contract\UploadFiles;
 use Sdk\Module\Database\Eloquent\HasQuicksearch;
 use Sdk\Module\Database\Eloquent\Model;
+use Sdk\Shared\Dto\UploadedFileDto;
+use Sdk\Shared\Enum\ServiceTypeEnum;
 
 class Contract extends Model
 {

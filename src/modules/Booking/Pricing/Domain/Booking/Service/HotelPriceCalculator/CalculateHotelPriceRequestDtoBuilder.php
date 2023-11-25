@@ -12,7 +12,7 @@ use Module\Booking\Shared\Domain\Order\Order;
 use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
 use Module\Booking\Shared\Domain\Order\ValueObject\ClientId;
 use Module\Hotel\Pricing\Application\RequestDto\CalculateHotelPriceRequestDto;
-use Module\Shared\Enum\CurrencyEnum;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 class CalculateHotelPriceRequestDtoBuilder
 {

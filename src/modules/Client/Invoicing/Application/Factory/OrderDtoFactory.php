@@ -7,8 +7,8 @@ namespace Module\Client\Invoicing\Application\Factory;
 use Module\Client\Invoicing\Application\Dto\OrderDto;
 use Module\Client\Invoicing\Domain\Order\Order;
 use Module\Shared\Contracts\Service\TranslatorInterface;
-use Module\Shared\Dto\CurrencyDto;
-use Module\Shared\Dto\MoneyDto;
+use Sdk\Shared\Dto\CurrencyDto;
+use Sdk\Shared\Dto\MoneyDto;
 
 class OrderDtoFactory
 {

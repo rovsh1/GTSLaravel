@@ -8,9 +8,9 @@ use Module\Hotel\Moderation\Domain\Hotel\ValueObject\Contact;
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\ContactCollection;
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\HotelId;
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\TimeSettings;
-use Module\Shared\Enum\ContactTypeEnum;
-use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Foundation\Support\EntityFactory\AbstractEntityFactory;
+use Sdk\Shared\Enum\ContactTypeEnum;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 class HotelFactory extends AbstractEntityFactory
 {

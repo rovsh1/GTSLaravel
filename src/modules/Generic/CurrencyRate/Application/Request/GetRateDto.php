@@ -4,7 +4,7 @@ namespace Module\Generic\CurrencyRate\Application\Request;
 
 use DateTime;
 use Module\Generic\CurrencyRate\Domain\ValueObject\CountryEnum;
-use Module\Shared\Enum\CurrencyEnum;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 class GetRateDto
 {

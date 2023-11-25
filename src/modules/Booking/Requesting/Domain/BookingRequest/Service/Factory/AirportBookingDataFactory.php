@@ -19,7 +19,7 @@ use Module\Booking\Shared\Domain\Guest\Repository\GuestRepositoryInterface;
 use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Shared\Contracts\Adapter\CountryAdapterInterface;
 use Module\Shared\Contracts\Service\TranslatorInterface;
-use Module\Shared\Enum\GenderEnum;
+use Sdk\Shared\Enum\GenderEnum;
 
 class AirportBookingDataFactory
 {

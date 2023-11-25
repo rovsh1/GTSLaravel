@@ -11,8 +11,8 @@ use Module\Client\Payment\Domain\Payment\ValueObject\PaymentId;
 use Module\Client\Payment\Domain\Payment\ValueObject\PaymentStatusEnum;
 use Module\Client\Payment\Infrastructure\Models\Payment as Model;
 use Module\Client\Shared\Domain\ValueObject\ClientId;
-use Module\Shared\ValueObject\File;
 use Sdk\Module\Support\DateTimeImmutable;
+use Sdk\Shared\ValueObject\File;
 
 class PaymentRepository implements PaymentRepositoryInterface
 {

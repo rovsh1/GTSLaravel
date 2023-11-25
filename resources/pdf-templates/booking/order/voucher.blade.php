@@ -81,7 +81,8 @@
                     <td style="width: 45%; text-align: left">
                         <table>
                             <tr>
-                                <td style="font-size: 24px; font-weight: bold; color: red">Номер брони: {{$reservNumber}}</td>
+                                <td style="font-size: 24px; font-weight: bold; color: red">Номер
+                                    брони: {{$reservNumber}}</td>
                             </tr>
                             <tr>
                                 <td>Статус брони: {{$reservStatus}}</td>
@@ -125,7 +126,7 @@
                         <tr class="first">
                     @else
                         <tr>
-                    @endif
+                            @endif
                             <td>
                                 <b>{{++$roomIndex}}</b>
                             </td>
@@ -154,7 +155,9 @@
                             <tr>
                                 <td></td>
                                 <td>
-                                    {{++$index}}. {{$guest->fullName()}}, {{$guest->gender() === \Module\Shared\Enum\GenderEnum::MALE ? 'Мужской' : 'Женский' }}, {{$countryNamesById[$guest->countryId()] ?? ''}}
+                                    {{++$index}}. {{$guest->fullName()}}
+                                    , {{$guest->gender() === \Sdk\Shared\Enum\GenderEnum::MALE ? 'Мужской' : 'Женский' }}
+                                    , {{$countryNamesById[$guest->countryId()] ?? ''}}
                                 </td>
                                 <td></td>
                             </tr>
@@ -162,7 +165,8 @@
                         <tr>
                             <td></td>
                             <td>
-                                Время заезда: {{$room->details()->earlyCheckIn()?->timePeriod()->from() ?? $hotelDefaultCheckInTime}}
+                                Время
+                                заезда: {{$room->details()->earlyCheckIn()?->timePeriod()->from() ?? $hotelDefaultCheckInTime}}
                             </td>
                             <td></td>
                         </tr>
@@ -170,7 +174,8 @@
                         <tr>
                             <td></td>
                             <td>
-                                Время выезда: {{$room->details()->lateCheckOut()?->timePeriod()->to() ?? $hotelDefaultCheckOutTime}}
+                                Время
+                                выезда: {{$room->details()->lateCheckOut()?->timePeriod()->to() ?? $hotelDefaultCheckOutTime}}
                             </td>
                             <td></td>
                         </tr>
@@ -182,32 +187,32 @@
                             </td>
                             <td></td>
                         </tr>
-                @endforeach
+                        @endforeach
 
-                <tr>
-                    <td></td>
-                    <td>
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td style="width: 25%">Условия отмены:</td>
-                                    <td style="width: 75%">{hotelCancelPeriod}</td>
-                                </tr>
-                            {cancelPeriods}
-                            </tbody>
-                        </table>
-                    </td>
-                    <td>&ensp;</td>
-                </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <table>
+                                    <tbody>
+                                    <tr>
+                                        <td style="width: 25%">Условия отмены:</td>
+                                        <td style="width: 75%">{hotelCancelPeriod}</td>
+                                    </tr>
+                                    {cancelPeriods}
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td>&ensp;</td>
+                        </tr>
 
-                <tr class="first">
-                    <td>&ensp;</td>
-                    <td>
-                        <p>Внимание! Полная оплата должна быть произведена до прибытия.</p>
-                        <p>Ваучер недействителен в случае не полной оплаты.</p>
-                    </td>
-                    <td>&ensp;</td>
-                </tr>
+                        <tr class="first">
+                            <td>&ensp;</td>
+                            <td>
+                                <p>Внимание! Полная оплата должна быть произведена до прибытия.</p>
+                                <p>Ваучер недействителен в случае не полной оплаты.</p>
+                            </td>
+                            <td>&ensp;</td>
+                        </tr>
                 </tbody>
             </table>
         </td>

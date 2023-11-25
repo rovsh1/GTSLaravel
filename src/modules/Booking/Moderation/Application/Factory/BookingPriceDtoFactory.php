@@ -11,8 +11,8 @@ use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPriceItem;
 use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPrices;
 use Module\Shared\Contracts\Adapter\CurrencyRateAdapterInterface;
 use Module\Shared\Contracts\Service\TranslatorInterface;
-use Module\Shared\Dto\CurrencyDto;
-use Module\Shared\Enum\CurrencyEnum;
+use Sdk\Shared\Dto\CurrencyDto;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 class BookingPriceDtoFactory
 {

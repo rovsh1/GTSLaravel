@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Module\Shared\Enum\Booking\BookingStatusEnum;
-use Module\Shared\Enum\Order\OrderStatusEnum;
+use Sdk\Shared\Enum\Booking\BookingStatusEnum;
+use Sdk\Shared\Enum\Order\OrderStatusEnum;
 
 return new class extends Migration {
     /**

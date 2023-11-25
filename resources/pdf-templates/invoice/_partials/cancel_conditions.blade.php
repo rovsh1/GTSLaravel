@@ -16,9 +16,10 @@
                         <br/>
 
                         @foreach($booking->cancelConditions->dailyMarkups ?? [] as $dailyMarkup)
-                            За {{ $dailyMarkup->daysCount }} {{ trans_choice('[1] день|[2,4] дня|[5,*] дней', $dailyMarkup->daysCount) }}:
+                            За {{ $dailyMarkup->daysCount }} {{ trans_choice('[1] день|[2,4] дня|[5,*] дней', $dailyMarkup->daysCount) }}
+                            :
 
-                            @if($dailyMarkup->valueType === \Module\Shared\Enum\Pricing\ValueTypeEnum::PERCENT)
+                            @if($dailyMarkup->valueType === \Sdk\Shared\Enum\Pricing\ValueTypeEnum::PERCENT)
                                 {{ $dailyMarkup->value }}% {{ $dailyMarkup->markupType }}
                             @else
                                 {{ $dailyMarkup->value }} {{$booking->price->currency}}

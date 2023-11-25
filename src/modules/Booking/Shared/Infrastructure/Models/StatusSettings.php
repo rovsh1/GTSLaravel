@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Infrastructure\Models;
 
 use Illuminate\Database\Eloquent\Builder;
-use Module\Shared\Enum\Booking\BookingStatusEnum;
-use Module\Shared\Enum\Order\OrderStatusEnum;
 use Sdk\Module\Database\Eloquent\Model;
+use Sdk\Shared\Enum\Booking\BookingStatusEnum;
+use Sdk\Shared\Enum\Order\OrderStatusEnum;
 
 class StatusSettings extends Model
 {

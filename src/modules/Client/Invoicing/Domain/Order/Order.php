@@ -8,9 +8,9 @@ use Module\Client\Invoicing\Domain\Invoice\Exception\InvalidOrderStatusToCancelI
 use Module\Client\Invoicing\Domain\Invoice\Exception\InvalidOrderStatusToCreateInvoice;
 use Module\Client\Invoicing\Domain\Order\ValueObject\OrderId;
 use Module\Client\Shared\Domain\ValueObject\ClientId;
-use Module\Shared\Enum\Order\OrderStatusEnum;
-use Module\Shared\ValueObject\Money;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
+use Sdk\Shared\Enum\Order\OrderStatusEnum;
+use Sdk\Shared\ValueObject\Money;
 
 final class Order extends AbstractAggregateRoot
 {

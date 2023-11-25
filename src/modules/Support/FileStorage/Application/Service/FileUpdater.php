@@ -2,7 +2,6 @@
 
 namespace Module\Support\FileStorage\Application\Service;
 
-use Module\Shared\Dto\FileDto;
 use Module\Support\FileStorage\Application\Mapper\DataMapper;
 use Module\Support\FileStorage\Domain\Entity\File;
 use Module\Support\FileStorage\Domain\Exception\FileNotFoundException;
@@ -10,6 +9,7 @@ use Module\Support\FileStorage\Domain\Repository\CacheRepositoryInterface;
 use Module\Support\FileStorage\Domain\Repository\DatabaseRepositoryInterface;
 use Module\Support\FileStorage\Domain\Repository\StorageRepositoryInterface;
 use Module\Support\FileStorage\Domain\ValueObject\Guid;
+use Sdk\Shared\Dto\FileDto;
 
 class FileUpdater
 {

@@ -8,7 +8,7 @@ use Module\Generic\CurrencyRate\Domain\Repository\CacheRepositoryInterface;
 use Module\Generic\CurrencyRate\Domain\ValueObject\CountryEnum;
 use Module\Generic\CurrencyRate\Domain\ValueObject\CurrencyRate;
 use Module\Generic\CurrencyRate\Domain\ValueObject\CurrencyRatesCollection;
-use Module\Shared\Enum\CurrencyEnum;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 class CacheRepository implements CacheRepositoryInterface
 {

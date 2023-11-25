@@ -2,10 +2,10 @@
 
 namespace Module\Support\FileStorage\Application\UseCase;
 
-use Module\Shared\Dto\FileDto;
 use Module\Support\FileStorage\Application\Mapper\DataMapper;
 use Module\Support\FileStorage\Application\Service\FileReader;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
+use Sdk\Shared\Dto\FileDto;
 
 class FindFile implements UseCaseInterface
 {

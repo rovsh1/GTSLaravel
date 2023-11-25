@@ -35,11 +35,11 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Module\Booking\Requesting\Domain\Booking\Service\RequestingRules;
-use Module\Shared\Enum\Booking\BookingStatusEnum;
-use Module\Shared\Enum\Booking\QuotaProcessingMethodEnum;
-use Module\Shared\Enum\CurrencyEnum;
-use Module\Shared\Enum\SourceEnum;
-use Module\Shared\Exception\ApplicationException;
+use Sdk\Shared\Enum\Booking\BookingStatusEnum;
+use Sdk\Shared\Enum\Booking\QuotaProcessingMethodEnum;
+use Sdk\Shared\Enum\CurrencyEnum;
+use Sdk\Shared\Enum\SourceEnum;
+use Sdk\Shared\Exception\ApplicationException;
 
 class BookingController extends Controller
 {

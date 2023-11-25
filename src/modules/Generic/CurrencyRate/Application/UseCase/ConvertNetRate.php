@@ -5,8 +5,8 @@ namespace Module\Generic\CurrencyRate\Application\UseCase;
 use DateTimeInterface;
 use Module\Generic\CurrencyRate\Domain\Service\RatioCalculator;
 use Module\Generic\CurrencyRate\Domain\ValueObject\CountryEnum;
-use Module\Shared\Enum\CurrencyEnum;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
+use Sdk\Shared\Enum\CurrencyEnum;
 
 class ConvertNetRate implements UseCaseInterface
 {
