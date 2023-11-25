@@ -7,31 +7,21 @@ namespace App\Admin\Http\Controllers\Booking\Airport;
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Http\Requests\Booking\Airport\GuestRequest;
 use App\Admin\Support\Facades\Booking\AirportAdapter;
-use App\Shared\Http\Responses\AjaxErrorResponse;
 use App\Shared\Http\Responses\AjaxResponseInterface;
 use App\Shared\Http\Responses\AjaxSuccessResponse;
-use Module\Shared\Exception\ApplicationException;
 
 class GuestController extends Controller
 {
     public function addGuest(int $bookingId, GuestRequest $request): AjaxResponseInterface
     {
-        try {
-            AirportAdapter::bindGuest($bookingId, $request->getGuestId());
-        } catch (ApplicationException $e) {
-            return new AjaxErrorResponse($e->getMessage());
-        }
+        AirportAdapter::bindGuest($bookingId, $request->getGuestId());
 
         return new AjaxSuccessResponse();
     }
 
     public function deleteGuest(int $bookingId, GuestRequest $request): AjaxResponseInterface
     {
-        try {
-            AirportAdapter::unbindGuest($bookingId, $request->getGuestId());
-        } catch (ApplicationException $e) {
-            return new AjaxErrorResponse($e->getMessage());
-        }
+        AirportAdapter::unbindGuest($bookingId, $request->getGuestId());
 
         return new AjaxSuccessResponse();
     }

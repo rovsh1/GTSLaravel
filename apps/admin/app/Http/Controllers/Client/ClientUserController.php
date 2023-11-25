@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Admin\Http\Controllers\Client;
 
 use App\Admin\Components\Factory\Prototype;
+use App\Admin\Exceptions\FrontException;
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Http\Requests\Client\SearchUserRequest;
 use App\Admin\Models\Client\Client;
@@ -20,7 +21,6 @@ use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Layout as LayoutContract;
 use App\Admin\View\Menus\ClientMenu;
-use App\Shared\Http\Responses\AjaxErrorResponse;
 use App\Shared\Http\Responses\AjaxReloadResponse;
 use App\Shared\Http\Responses\AjaxResponseInterface;
 use App\Shared\Http\Responses\AjaxSuccessResponse;
@@ -78,12 +78,12 @@ class ClientUserController extends Controller
             ->method('post');
 
         if (!$form->submit()) {
-            return new AjaxErrorResponse('Неизвестная ошибка');
+            throw new FrontException('Неизвестная ошибка');
         }
 
         $userId = $form->getData()['user_id'] ?? null;
         if ($userId === null) {
-            return new AjaxErrorResponse('Необходимо выбрать пользователя');
+            throw new FrontException('Необходимо выбрать пользователя');
         }
         User::find($userId)->update(['client_id' => $client->id]);
 

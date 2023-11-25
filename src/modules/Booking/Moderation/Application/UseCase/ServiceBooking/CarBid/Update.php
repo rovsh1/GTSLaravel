@@ -26,7 +26,7 @@ class Update implements UseCaseInterface
         try {
             $this->carBidUpdater->update(new BookingId($bookingId), $carBidId, $carData);
         } catch (NotFoundTransferServicePrice $e) {
-            throw new NotFoundApplicationException($e, NotFoundApplicationException::BOOKING_TRANSFER_SERVICE_PRICE_NOT_FOUND);
+            throw new NotFoundApplicationException($e);
         } catch (ServiceDateUndefined $e) {
             throw new ServiceDateUndefinedException($e);
         } catch (NotFoundServiceCancelConditions $e) {

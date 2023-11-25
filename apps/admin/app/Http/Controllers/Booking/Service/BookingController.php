@@ -30,7 +30,6 @@ use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Grid\SearchForm;
 use App\Admin\Support\View\Layout as LayoutContract;
-use App\Shared\Http\Responses\AjaxErrorResponse;
 use App\Shared\Http\Responses\AjaxRedirectResponse;
 use App\Shared\Http\Responses\AjaxResponseInterface;
 use App\Shared\Http\Responses\AjaxSuccessResponse;
@@ -277,11 +276,7 @@ class BookingController extends Controller
 
     public function recalculatePrices(int $id): AjaxResponseInterface
     {
-        try {
             PriceAdapter::recalculatePrices($id);
-        } catch (ApplicationException $e) {
-            return new AjaxErrorResponse($e->getMessage());
-        }
 
         return new AjaxSuccessResponse();
     }

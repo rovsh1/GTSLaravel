@@ -9,6 +9,8 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Module\Shared\Contracts\Service\ApplicationContextInterface;
+use Module\Shared\Exception\ApplicationException;
+use Sdk\Module\Foundation\Exception\NotFoundExceptionInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -31,7 +33,8 @@ class Handler extends ExceptionHandler
      * @var array<int, class-string<\Throwable>>
      */
     protected $dontReport = [
-        //
+        ApplicationException::class,
+        NotFoundExceptionInterface::class
     ];
 
     /**
@@ -68,8 +71,7 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        $this->reportable(function (Throwable $e) {
-        });
+        $this->reportable(function (Throwable $e) {});
     }
 
     private function _renderNotFound($e): Response
@@ -85,22 +87,20 @@ class Handler extends ExceptionHandler
 
     private function _renderJsonException(\Throwable $e): JsonResponse
     {
-        $httpCode = match (true) {
-            $e instanceof NotFoundHttpException => 404,
-            $e instanceof HttpException => $e->getStatusCode(),
-            default => $e->status ?? 500
-        };
-
         return new JsonResponse([
-            'error' => $e->getCode(),
-            'message' => $e->getMessage(),
-            'trace' => $e->getTraceAsString()
-        ], $httpCode);
+            'success' => false,
+            'error' => $e->getMessage(),
+            'code' => $e->getCode()
+//            'error' => $e->getCode(),
+//            'message' => $e->getMessage(),
+//            'trace' => $e->getTraceAsString()
+        ], $this->getExceptionHttpCode($e));
     }
 
-    protected function isNotFoundException(Throwable $e)
+    protected function isNotFoundException(Throwable $e): bool
     {
-        return $e instanceof NotFoundHttpException
+        return $e instanceof NotFoundExceptionInterface
+            || $e instanceof NotFoundHttpException
             || $e instanceof ModelNotFoundException
             || $e instanceof MethodNotAllowedHttpException;
     }
@@ -112,5 +112,14 @@ class Handler extends ExceptionHandler
         } else {
             return [];
         }
+    }
+
+    protected function getExceptionHttpCode(Throwable $e): int
+    {
+        return match (true) {
+            $e instanceof NotFoundHttpException, $e instanceof NotFoundExceptionInterface => 404,
+            $e instanceof HttpException => $e->getStatusCode(),
+            default => $e->status ?? 500
+        };
     }
 }

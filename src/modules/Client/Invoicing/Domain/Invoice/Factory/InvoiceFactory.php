@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Client\Invoicing\Domain\Invoice\Factory;
 
-use Module\Client\Invoicing\Application\Exception\InvalidOrderStatusToCreateInvoiceException;
+use Module\Client\Invoicing\Application\Exception\InvoiceCreatingForbiddenException;
 use Module\Client\Invoicing\Domain\Invoice\Adapter\FileGeneratorAdapterInterface;
 use Module\Client\Invoicing\Domain\Invoice\Exception\InvalidOrderStatusToCreateInvoice;
 use Module\Client\Invoicing\Domain\Invoice\Exception\OrderAlreadyHasInvoice;
@@ -73,7 +73,7 @@ class InvoiceFactory
         try {
             $order->ensureInvoiceCreationAvailable();
         } catch (InvalidOrderStatusToCreateInvoice $e) {
-            throw new InvalidOrderStatusToCreateInvoiceException($e);
+            throw new InvoiceCreatingForbiddenException($e);
         }
 
         return $order;

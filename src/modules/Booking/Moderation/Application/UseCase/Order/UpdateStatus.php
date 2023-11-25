@@ -10,7 +10,6 @@ use Module\Booking\Moderation\Domain\Order\Service\StatusUpdater;
 use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
 use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
 use Module\Shared\Enum\Order\OrderStatusEnum;
-use Module\Shared\Exception\ApplicationException;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
@@ -20,8 +19,7 @@ class UpdateStatus implements UseCaseInterface
         private readonly OrderRepositoryInterface $repository,
         private readonly StatusUpdater $statusUpdater,
         private readonly DomainEventDispatcherInterface $eventDispatcher,
-    ) {
-    }
+    ) {}
 
     public function execute(int $orderId, int $statusId): void
     {
@@ -32,8 +30,6 @@ class UpdateStatus implements UseCaseInterface
             $this->statusUpdater->update($order, $statusEnum);
         } catch (OrderHasBookingInProgress $e) {
             throw new OrderHasBookingInProgressException($e);
-        } catch (\Throwable $e) {
-            throw new ApplicationException($e->getMessage(), $e->getCode(), $e);
         }
 
         $this->repository->store($order);

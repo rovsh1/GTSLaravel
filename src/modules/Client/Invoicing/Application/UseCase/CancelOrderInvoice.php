@@ -2,13 +2,13 @@
 
 namespace Module\Client\Invoicing\Application\UseCase;
 
-use Module\Client\Invoicing\Application\Exception\InvalidOrderStatusToCancelInvoiceException;
+use Module\Client\Invoicing\Application\Exception\CancellationForbiddenException;
+use Module\Client\Invoicing\Application\Exception\InvoiceNotFoundException;
 use Module\Client\Invoicing\Domain\Invoice\Exception\InvalidOrderStatusToCancelInvoice;
 use Module\Client\Invoicing\Domain\Invoice\Repository\InvoiceRepositoryInterface;
 use Module\Client\Invoicing\Domain\Order\Order;
 use Module\Client\Invoicing\Domain\Order\Repository\OrderRepositoryInterface;
 use Module\Client\Invoicing\Domain\Order\ValueObject\OrderId;
-use Module\Shared\Exception\ApplicationException;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class CancelOrderInvoice implements UseCaseInterface
@@ -25,12 +25,12 @@ class CancelOrderInvoice implements UseCaseInterface
         try {
             $order->ensureInvoiceCanBeCancelled();
         } catch (InvalidOrderStatusToCancelInvoice $e) {
-            throw new InvalidOrderStatusToCancelInvoiceException($e);
+            throw new CancellationForbiddenException($e);
         }
 
         $invoice = $this->invoiceRepository->findByOrderId($order->id());
         if ($invoice === null) {
-            throw new ApplicationException('Not found invoice for order', 404);
+            throw new InvoiceNotFoundException();
         }
         $invoice->delete();
         $this->invoiceRepository->store($invoice);

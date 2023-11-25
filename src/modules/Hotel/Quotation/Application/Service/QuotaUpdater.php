@@ -13,8 +13,7 @@ class QuotaUpdater
     public function __construct(
         private readonly QuotaRepositoryInterface $quotaRepository,
         private readonly HotelAdapterInterface $hotelAdapter
-    ) {
-    }
+    ) {}
 
     public function update(int $roomId, CarbonPeriod $period, ?int $quota, ?int $releaseDays = null): void
     {
@@ -43,7 +42,7 @@ class QuotaUpdater
     private function ensure(int $roomId): void
     {
         if (!$this->hotelAdapter->isRoomExists($roomId)) {
-            throw new RoomNotFound("Room with id $roomId not found");
+            throw new RoomNotFound($roomId);
         }
     }
 }

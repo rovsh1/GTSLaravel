@@ -12,7 +12,6 @@ use App\Admin\Support\Repository\RepositoryInterface;
 use App\Admin\Support\View\Form\Form;
 use App\Admin\Support\View\Grid\Grid;
 use App\Admin\Support\View\Layout as LayoutContract;
-use App\Shared\Http\Responses\AjaxErrorResponse;
 use App\Shared\Http\Responses\AjaxRedirectResponse;
 use App\Shared\Http\Responses\AjaxResponseInterface;
 use Illuminate\Database\Eloquent\Builder;
@@ -172,11 +171,7 @@ abstract class AbstractPrototypeController extends Controller
 
     public function destroy(int $id): AjaxResponseInterface
     {
-        try {
-            $this->repository->delete($id);
-        } catch (\Throwable $e) {
-            return new AjaxErrorResponse($e->getMessage());
-        }
+        $this->repository->delete($id);
 
         return new AjaxRedirectResponse($this->prototype->route('index'));
     }
@@ -191,7 +186,8 @@ abstract class AbstractPrototypeController extends Controller
         throw new \LogicException('Please implement the formFactory method on your controller.');
     }
 
-    protected function formFill(Form $form, Model $model):void {
+    protected function formFill(Form $form, Model $model): void
+    {
         $form->data($model);
     }
 
@@ -205,17 +201,11 @@ abstract class AbstractPrototypeController extends Controller
         throw new \LogicException('Please implement the getShowViewData method on your controller.');
     }
 
-    protected function prepareGridQuery(Builder $query)
-    {
-    }
+    protected function prepareGridQuery(Builder $query) {}
 
-    protected function prepareShowMenu(Model $model)
-    {
-    }
+    protected function prepareShowMenu(Model $model) {}
 
-    protected function prepareEditMenu(Model $model)
-    {
-    }
+    protected function prepareEditMenu(Model $model) {}
 
     protected function saving(array $data): array
     {

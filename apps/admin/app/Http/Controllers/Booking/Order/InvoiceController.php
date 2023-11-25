@@ -6,32 +6,22 @@ namespace App\Admin\Http\Controllers\Booking\Order;
 
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Support\Facades\Client\InvoiceAdapter;
-use App\Shared\Http\Responses\AjaxErrorResponse;
 use App\Shared\Http\Responses\AjaxResponseInterface;
 use App\Shared\Http\Responses\AjaxSuccessResponse;
 use Illuminate\Http\JsonResponse;
-use Module\Shared\Exception\ApplicationException;
 
 class InvoiceController extends Controller
 {
     public function create(int $orderId): AjaxResponseInterface
     {
-        try {
-            InvoiceAdapter::create($orderId);
-        } catch (ApplicationException $e) {
-            return new AjaxErrorResponse($e->getMessage());
-        }
+        InvoiceAdapter::create($orderId);
 
         return new AjaxSuccessResponse();
     }
 
     public function cancel(int $orderId): AjaxResponseInterface
     {
-        try {
-            InvoiceAdapter::cancel($orderId);
-        } catch (ApplicationException $e) {
-            return new AjaxErrorResponse($e->getMessage());
-        }
+        InvoiceAdapter::cancel($orderId);
 
         return new AjaxSuccessResponse();
     }
@@ -52,11 +42,7 @@ class InvoiceController extends Controller
 
     public function send(int $orderId): AjaxResponseInterface
     {
-        try {
-            InvoiceAdapter::send($orderId);
-        } catch (ApplicationException $e) {
-            return new AjaxErrorResponse($e->getMessage());
-        }
+        InvoiceAdapter::send($orderId);
 
         return new AjaxSuccessResponse();
     }

@@ -6,13 +6,7 @@ namespace Module\Booking\Moderation\Application\Exception;
 
 use Module\Shared\Exception\ApplicationException;
 
-class NotFoundServicePriceException extends ApplicationException
+final class NotFoundServicePriceException extends ApplicationException
 {
-    public function __construct(
-        ?\Throwable $previous = null,
-        int $code = self::BOOKING_AIRPORT_SERVICE_PRICE_NOT_FOUND,
-        ?string $message = 'Не заполнены цены на выбранную услугу в валюте клиента.',
-    ) {
-        parent::__construct($message, $code, $previous);
-    }
+    protected $code = self::BOOKING_SERVICE_PRICE_NOT_FOUND;
 }

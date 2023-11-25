@@ -6,13 +6,7 @@ namespace Module\Hotel\Quotation\Application\Exception;
 
 use Module\Shared\Exception\ApplicationException;
 
-class BookingQuotaException extends ApplicationException
+final class BookingQuotaException extends ApplicationException
 {
-    public function __construct(
-        int $code,
-        ?\Throwable $previous = null,
-        ?string $message = 'Нет доступных квот на период бронирования.',
-    ) {
-        parent::__construct($message, $code, $previous);
-    }
+    protected $code = self::BOOKING_NOT_FOUND_ROOM_DATE_QUOTA;
 }

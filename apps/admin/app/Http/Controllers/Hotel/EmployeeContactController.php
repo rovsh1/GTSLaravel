@@ -2,10 +2,10 @@
 
 namespace App\Admin\Http\Controllers\Hotel;
 
+use App\Admin\Exceptions\FrontException;
 use App\Admin\Models\Hotel\Contact;
 use App\Admin\Support\Facades\Form;
 use App\Admin\Support\View\Form\Form as FormContract;
-use App\Shared\Http\Responses\AjaxErrorResponse;
 use App\Shared\Http\Responses\AjaxRedirectResponse;
 use App\Shared\Http\Responses\AjaxResponseInterface;
 use Illuminate\Contracts\View\View;
@@ -27,7 +27,7 @@ class EmployeeContactController
             ->method('post');
 
         if (!$form->submit()) {
-            return new AjaxErrorResponse('');
+            throw new FrontException('');
         }
 
         $data = $form->getData();
@@ -59,7 +59,7 @@ class EmployeeContactController
             ->method('put');
 
         if (!$form->submit()) {
-            return new AjaxErrorResponse('');
+            throw new FrontException('');
         }
 
         Contact::whereHotelId($hotelId)
@@ -78,7 +78,7 @@ class EmployeeContactController
                 ->whereId($contactId)
                 ->delete();
         } catch (\Throwable $e) {
-            return new AjaxErrorResponse('');
+            throw new FrontException('');
         }
 
         return new AjaxRedirectResponse('#contacts');

@@ -10,11 +10,9 @@ use App\Admin\Http\Requests\Booking\Hotel\Room\Guest\RoomGuestRequest;
 use App\Admin\Http\Requests\Booking\Hotel\Room\UpdateRoomRequest;
 use App\Admin\Http\Requests\Booking\UpdatePriceRequest;
 use App\Admin\Support\Facades\Booking\Hotel\AccommodationAdapter;
-use App\Shared\Http\Responses\AjaxErrorResponse;
 use App\Shared\Http\Responses\AjaxResponseInterface;
 use App\Shared\Http\Responses\AjaxSuccessResponse;
 use Illuminate\Http\JsonResponse;
-use Module\Shared\Exception\ApplicationException;
 
 class RoomController
 {
@@ -35,41 +33,33 @@ class RoomController
 
     public function addRoom(AddRoomRequest $request, int $id): AjaxResponseInterface
     {
-        try {
-            AccommodationAdapter::add(
-                bookingId: $id,
-                roomId: $request->getRoomId(),
-                rateId: $request->getRateId(),
-                isResident: $request->getIsResident(),
-                earlyCheckIn: $request->getEarlyCheckIn(),
-                lateCheckOut: $request->getLateCheckOut(),
-                note: $request->getNote(),
-                discount: $request->getDiscount()
-            );
-        } catch (ApplicationException $e) {
-            return new AjaxErrorResponse($e->getMessage());
-        }
+        AccommodationAdapter::add(
+            bookingId: $id,
+            roomId: $request->getRoomId(),
+            rateId: $request->getRateId(),
+            isResident: $request->getIsResident(),
+            earlyCheckIn: $request->getEarlyCheckIn(),
+            lateCheckOut: $request->getLateCheckOut(),
+            note: $request->getNote(),
+            discount: $request->getDiscount()
+        );
 
         return new AjaxSuccessResponse();
     }
 
     public function updateRoom(UpdateRoomRequest $request, int $id): AjaxResponseInterface
     {
-        try {
-            AccommodationAdapter::update(
-                bookingId: $id,
-                accommodationId: $request->getAccommodationId(),
-                roomId: $request->getRoomId(),
-                rateId: $request->getRateId(),
-                isResident: $request->getIsResident(),
-                earlyCheckIn: $request->getEarlyCheckIn(),
-                lateCheckOut: $request->getLateCheckOut(),
-                note: $request->getNote(),
-                discount: $request->getDiscount()
-            );
-        } catch (ApplicationException $e) {
-            return new AjaxErrorResponse($e->getMessage());
-        }
+        AccommodationAdapter::update(
+            bookingId: $id,
+            accommodationId: $request->getAccommodationId(),
+            roomId: $request->getRoomId(),
+            rateId: $request->getRateId(),
+            isResident: $request->getIsResident(),
+            earlyCheckIn: $request->getEarlyCheckIn(),
+            lateCheckOut: $request->getLateCheckOut(),
+            note: $request->getNote(),
+            discount: $request->getDiscount()
+        );
 
         return new AjaxSuccessResponse();
     }
@@ -92,7 +82,7 @@ class RoomController
             AccommodationAdapter::bindGuest($id, $request->getAccommodationId(), $request->getGuestId());
         } catch (\Throwable $e) {
             //@todo отлов доменных эксепшнов
-            return new AjaxErrorResponse($e->getMessage());
+            throw $e;
         }
 
         return new AjaxSuccessResponse();
@@ -104,7 +94,8 @@ class RoomController
             AccommodationAdapter::unbindGuest($id, $request->getAccommodationId(), $request->getGuestId(),);
         } catch (\Throwable $e) {
             //@todo отлов доменных эксепшнов
-            return new AjaxErrorResponse($e->getMessage());
+            throw $e;
+            //return new AjaxErrorResponse($e->getMessage());
         }
 
         return new AjaxSuccessResponse();
@@ -112,16 +103,12 @@ class RoomController
 
     public function updatePrice(UpdatePriceRequest $request, int $id, int $accommodationId): AjaxResponseInterface
     {
-        try {
-            AccommodationAdapter::updatePrice(
-                $id,
-                $accommodationId,
-                $request->getSupplierPrice(),
-                $request->getClientPrice(),
-            );
-        } catch (ApplicationException $e) {
-            return new AjaxErrorResponse($e->getMessage());
-        }
+        AccommodationAdapter::updatePrice(
+            $id,
+            $accommodationId,
+            $request->getSupplierPrice(),
+            $request->getClientPrice(),
+        );
 
         return new AjaxSuccessResponse();
     }

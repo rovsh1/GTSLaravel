@@ -2,4 +2,6 @@
 
 namespace Sdk\Module\Foundation\Exception;
 
-class EntityNotFoundException extends \RuntimeException { }
+class EntityNotFoundException extends \RuntimeException implements NotFoundExceptionInterface
+{
+}

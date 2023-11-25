@@ -24,13 +24,11 @@ use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\Support\View\Grid\SearchForm;
 use App\Admin\Support\View\Layout as LayoutContract;
-use App\Shared\Http\Responses\AjaxErrorResponse;
 use App\Shared\Http\Responses\AjaxResponseInterface;
 use App\Shared\Http\Responses\AjaxSuccessResponse;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Module\Shared\Enum\SourceEnum;
-use Module\Shared\Exception\ApplicationException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class OrderController extends Controller
@@ -152,11 +150,7 @@ class OrderController extends Controller
 
     public function updateStatus(UpdateStatusRequest $request, int $id): AjaxResponseInterface
     {
-        try {
-            OrderAdapter::updateStatus($id, $request->getStatus());
-        } catch (ApplicationException $e) {
-            return new AjaxErrorResponse($e->getMessage());
-        }
+        OrderAdapter::updateStatus($id, $request->getStatus());
 
         return new AjaxSuccessResponse();
     }

@@ -2,7 +2,6 @@
 
 namespace Module\Support\FileStorage\Application\UseCase;
 
-use Module\Shared\Exception\ApplicationException;
 use Module\Support\FileStorage\Application\Dto\FileInfoDto;
 use Module\Support\FileStorage\Application\Service\FileReader;
 use Module\Support\FileStorage\Domain\Service\PathGeneratorInterface;

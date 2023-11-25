@@ -4,10 +4,7 @@ namespace Module\Integration\Traveline\Application\Service;
 
 use Module\Integration\Traveline\Domain\Adapter\ReservationAdapterInterface;
 use Module\Integration\Traveline\Domain\Api\Request\Reservation;
-use Module\Integration\Traveline\Domain\Api\Response\Error\ReservationNotFound;
 use Module\Integration\Traveline\Domain\Api\Response\Error\TravelineResponseErrorInterface;
-use Module\Shared\Contracts\Domain\DomainEntityExceptionInterface;
-use Module\Shared\Enum\ErrorCodeEnum;
 
 class Booking
 {
@@ -29,12 +26,12 @@ class Booking
             try {
                 $this->adapter->confirmReservation($reservationRequest->number, $reservationRequest->status->value);
             } catch (\Throwable $e) {
-                if (!$e->getPrevious() instanceof DomainEntityExceptionInterface) {
-                    throw $e;
-                }
-                if ($e->getPrevious()->domainCode() === ErrorCodeEnum::RESERVATION_NOT_FOUND) {
-                    $this->errors[] = new ReservationNotFound($reservationRequest->number);
-                }
+//                if (!$e->getPrevious() instanceof DomainEntityExceptionInterface) {
+//                    throw $e;
+//                }
+//                if ($e->getPrevious()->domainCode() === ErrorCodeEnum::RESERVATION_NOT_FOUND) {
+//                    $this->errors[] = new ReservationNotFound($reservationRequest->number);
+//                }
                 //@todo отлов других ошибок (пока непонятно какие могут быть ошибки)
             }
         }
