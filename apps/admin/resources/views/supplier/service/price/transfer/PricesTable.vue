@@ -1,14 +1,11 @@
 <script setup lang="ts">
 
-import { onMounted, ref } from 'vue'
-
-import { useToggle } from '@vueuse/core'
+import { onMounted, ref, watch } from 'vue'
 
 import CollapsableBlock from '~resources/views/hotel/settings/components/CollapsableBlock.vue'
-import PricesModal from '~resources/views/supplier/service/price/ components/PricesModal.vue'
 
-import { Car, Money, Season } from '~api/models'
-import { ServicePriceResponse, updateCarPrice, useServiceProviderTransferPricesAPI } from '~api/supplier/transfer'
+import { Car, Season } from '~api/models'
+import { ServicePriceResponse, useServiceProviderTransferPricesAPI } from '~api/supplier/transfer'
 
 import { formatPeriod } from '~lib/date'
 
@@ -17,7 +14,12 @@ const props = defineProps<{
   supplierId: number
   serviceId: number
   seasons: Season[]
+  reFetchPrices: boolean
   cars: Car[]
+}>()
+
+const emit = defineEmits<{
+  (event: 'editableServicePrice', servicePrice: ServicePriceResponse, serviceId: number): void
 }>()
 
 const { data: servicePrices, execute: fetchPrices } = useServiceProviderTransferPricesAPI({
@@ -26,27 +28,6 @@ const { data: servicePrices, execute: fetchPrices } = useServiceProviderTransfer
 })
 
 const editableServicePrice = ref<ServicePriceResponse>()
-const [isOpenedModal, toggleModal] = useToggle()
-const isModalLoading = ref<boolean>(false)
-
-const handleChangePrice = async (priceNet?: number, pricesGross?: Money[]): Promise<void> => {
-  if (!pricesGross && !priceNet) {
-    return
-  }
-  isModalLoading.value = true
-  await updateCarPrice({
-    seasonId: editableServicePrice.value?.season_id as number,
-    carId: editableServicePrice.value?.car_id as number,
-    serviceId: props.serviceId,
-    supplierId: props.supplierId,
-    priceNet,
-    pricesGross,
-    currency: 'UZS', // @todo валюта поставщика,
-  })
-  fetchPrices()
-  isModalLoading.value = false
-  toggleModal()
-}
 
 const getServicePrice = (seasonId: number, carId: number): ServicePriceResponse | undefined =>
   servicePrices.value?.find((servicePrice) => servicePrice.car_id === carId && servicePrice.season_id === seasonId)
@@ -71,8 +52,14 @@ const handleEditServicePrice = (seasonId: number, carId: number) => {
       service_id: props.serviceId,
     } as unknown as ServicePriceResponse
   }
-  toggleModal(true)
+  emit('editableServicePrice', editableServicePrice.value, props.serviceId)
 }
+
+watch(() => props.reFetchPrices, () => {
+  if (props.reFetchPrices) {
+    fetchPrices()
+  }
+})
 
 onMounted(() => {
   fetchPrices()
@@ -81,14 +68,6 @@ onMounted(() => {
 </script>
 
 <template>
-  <PricesModal
-    :opened="isOpenedModal"
-    :loading="isModalLoading"
-    :service-price="editableServicePrice"
-    @close="toggleModal(false)"
-    @submit="handleChangePrice"
-  />
-
   <CollapsableBlock :id="`airport-service-prices-${serviceId}`" :title="header" class="card-grid mb-3">
     <table class="table table-striped">
       <thead>
