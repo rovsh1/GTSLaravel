@@ -4,8 +4,8 @@ namespace Module\Generic\Notification\Application\UseCase;
 
 use Module\Generic\Notification\Application\Dto\NotificationDto;
 use Module\Generic\Notification\Domain\Shared\Enum\NotificationTypeEnum;
-use Module\Shared\Contracts\Service\TranslatorInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
+use Sdk\Shared\Contracts\Service\TranslatorInterface;
 
 class GatAvailableNotifications implements UseCaseInterface
 {

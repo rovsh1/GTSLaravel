@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Application\Factory;
 
 use Module\Booking\Moderation\Application\Dto\OrderDto;
-use Module\Booking\Moderation\Application\Dto\OrderPriceDto;
 use Module\Booking\Shared\Domain\Order\Order;
-use Module\Shared\Contracts\Service\TranslatorInterface;
 use Sdk\Booking\ValueObject\GuestId;
+use Sdk\Shared\Contracts\Service\TranslatorInterface;
 use Sdk\Shared\Dto\CurrencyDto;
 use Sdk\Shared\Dto\MoneyDto;
 

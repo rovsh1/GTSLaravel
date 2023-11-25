@@ -7,9 +7,9 @@ namespace Module\Client\Invoicing\Application\UseCase;
 use Module\Client\Invoicing\Application\Exception\InvoiceNotFoundException;
 use Module\Client\Invoicing\Domain\Invoice\Repository\InvoiceRepositoryInterface;
 use Module\Client\Invoicing\Domain\Order\ValueObject\OrderId;
-use Module\Shared\Contracts\Adapter\FileStorageAdapterInterface;
 use Module\Support\FileStorage\Application\Dto\FileInfoDto;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
+use Sdk\Shared\Contracts\Adapter\FileStorageAdapterInterface;
 
 class GetDocumentFileInfo implements UseCaseInterface
 {

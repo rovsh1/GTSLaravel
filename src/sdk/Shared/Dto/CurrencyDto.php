@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Sdk\Shared\Dto;
 
-use Module\Shared\Contracts\Service\TranslatorInterface;
 use Module\Shared\Support\Dto\AbstractEnumDto;
+use Sdk\Shared\Contracts\Service\TranslatorInterface;
 use Sdk\Shared\Enum\CurrencyEnum;
 
 class CurrencyDto extends AbstractEnumDto

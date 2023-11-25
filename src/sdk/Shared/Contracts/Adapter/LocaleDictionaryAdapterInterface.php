@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Shared\Contracts\Adapter;
+namespace Sdk\Shared\Contracts\Adapter;
 
 interface LocaleDictionaryAdapterInterface
 {

@@ -6,7 +6,7 @@ namespace Module\Client\Invoicing\Application\Factory;
 
 use Module\Client\Invoicing\Application\Dto\OrderDto;
 use Module\Client\Invoicing\Domain\Order\Order;
-use Module\Shared\Contracts\Service\TranslatorInterface;
+use Sdk\Shared\Contracts\Service\TranslatorInterface;
 use Sdk\Shared\Dto\CurrencyDto;
 use Sdk\Shared\Dto\MoneyDto;
 

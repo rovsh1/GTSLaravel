@@ -2,9 +2,9 @@
 
 namespace Module\Shared\Providers;
 
-use Module\Shared\Contracts\Service\ApplicationContextInterface;
-use Module\Shared\Infrastructure\Service\ApplicationContext\ApplicationContextManager;
 use Sdk\Module\Support\ServiceProvider;
+use Sdk\Shared\Contracts\Service\ApplicationContextInterface;
+use Sdk\Shared\Support\ApplicationContext\ApplicationContextManager;
 
 class BootServiceProvider extends ServiceProvider
 {

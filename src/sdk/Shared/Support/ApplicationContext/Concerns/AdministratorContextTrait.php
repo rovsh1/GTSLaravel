@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Shared\Infrastructure\Service\ApplicationContext\Concerns;
+namespace Sdk\Shared\Support\ApplicationContext\Concerns;
 
 trait AdministratorContextTrait
 {

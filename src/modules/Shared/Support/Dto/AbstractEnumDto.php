@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Shared\Support\Dto;
 
-use Module\Shared\Contracts\Service\TranslatorInterface;
+use Sdk\Shared\Contracts\Service\TranslatorInterface;
 
 /**
  * @deprecated

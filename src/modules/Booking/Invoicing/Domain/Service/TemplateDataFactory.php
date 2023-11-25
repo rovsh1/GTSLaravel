@@ -33,8 +33,6 @@ use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
 use Module\Booking\Shared\Domain\Order\Service\OrderStatusStorageInterface;
 use Module\Booking\Shared\Domain\Shared\Adapter\AdministratorAdapterInterface;
 use Module\Booking\Shared\Domain\Shared\Adapter\ClientAdapterInterface;
-use Module\Shared\Contracts\Adapter\CountryAdapterInterface;
-use Module\Shared\Contracts\Service\CompanyRequisitesInterface;
 use Sdk\Booking\Entity\BookingDetails\HotelAccommodation;
 use Sdk\Booking\Entity\BookingDetails\HotelBooking as DetailsEntity;
 use Sdk\Booking\ValueObject\BookingPeriod;
@@ -47,6 +45,8 @@ use Sdk\Booking\ValueObject\GuestIdCollection;
 use Sdk\Booking\ValueObject\HotelBooking\AccommodationCollection;
 use Sdk\Booking\ValueObject\HotelBooking\BookingPeriod as HotelBookingPeriod;
 use Sdk\Booking\ValueObject\OrderId;
+use Sdk\Shared\Contracts\Adapter\CountryAdapterInterface;
+use Sdk\Shared\Contracts\Service\CompanyRequisitesInterface;
 use Sdk\Shared\Enum\GenderEnum;
 use Sdk\Shared\Enum\Order\OrderStatusEnum;
 

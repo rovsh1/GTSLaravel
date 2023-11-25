@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Shared\Contracts\Service;
+namespace Sdk\Shared\Contracts\Service;
 
 interface TranslatorInterface
 {

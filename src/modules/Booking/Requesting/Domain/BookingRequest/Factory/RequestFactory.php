@@ -11,8 +11,8 @@ use Module\Booking\Requesting\Domain\BookingRequest\Service\TemplateCompilerInte
 use Module\Booking\Requesting\Domain\BookingRequest\Service\TemplateDataFactory;
 use Module\Booking\Requesting\Domain\BookingRequest\ValueObject\RequestTypeEnum;
 use Module\Booking\Shared\Domain\Booking\Booking;
-use Module\Shared\Contracts\Adapter\FileStorageAdapterInterface;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
+use Sdk\Shared\Contracts\Adapter\FileStorageAdapterInterface;
 use Sdk\Shared\Enum\ServiceTypeEnum;
 use Sdk\Shared\ValueObject\File;
 

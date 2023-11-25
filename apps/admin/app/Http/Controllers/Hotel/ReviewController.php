@@ -24,7 +24,7 @@ use App\Shared\Http\Responses\AjaxResponseInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Module\Shared\Contracts\Service\TranslatorInterface;
+use Sdk\Shared\Contracts\Service\TranslatorInterface;
 use Sdk\Shared\Enum\Hotel\ReviewRatingTypeEnum;
 use Sdk\Shared\Enum\Hotel\ReviewStatusEnum;
 

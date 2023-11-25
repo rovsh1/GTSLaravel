@@ -1,21 +1,21 @@
 <?php
 
-namespace Module\Shared\Infrastructure\Service\ApplicationContext;
+namespace Sdk\Shared\Support\ApplicationContext;
 
 use Illuminate\Support\Str;
-use Module\Shared\Contracts\Service\ApplicationContextInterface;
+use Sdk\Shared\Contracts\Service\ApplicationContextInterface;
 
 class ApplicationContextManager implements ApplicationContextInterface
 {
-    use Concerns\CommonContextTrait;
-    use Concerns\AdministratorContextTrait;
-    use Concerns\EntityContextTrait;
-    use Concerns\ErrorContextTrait;
-    use Concerns\EventContextTrait;
-    use Concerns\HttpRequestContextTrait;
-    use Concerns\ModuleContextTrait;
-    use Concerns\UserContextTrait;
-    use Concerns\TagContextTrait;
+    use \Sdk\Shared\Support\ApplicationContext\Concerns\CommonContextTrait;
+    use \Sdk\Shared\Support\ApplicationContext\Concerns\AdministratorContextTrait;
+    use \Sdk\Shared\Support\ApplicationContext\Concerns\EntityContextTrait;
+    use \Sdk\Shared\Support\ApplicationContext\Concerns\ErrorContextTrait;
+    use \Sdk\Shared\Support\ApplicationContext\Concerns\EventContextTrait;
+    use \Sdk\Shared\Support\ApplicationContext\Concerns\HttpRequestContextTrait;
+    use \Sdk\Shared\Support\ApplicationContext\Concerns\ModuleContextTrait;
+    use \Sdk\Shared\Support\ApplicationContext\Concerns\UserContextTrait;
+    use \Sdk\Shared\Support\ApplicationContext\Concerns\TagContextTrait;
 
     protected array $data = [];
 

@@ -3,14 +3,14 @@
 namespace Module\Shared\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Module\Shared\Contracts\Service\ApplicationConstantsInterface;
-use Module\Shared\Contracts\Service\CompanyRequisitesInterface;
 use Module\Shared\Contracts\Service\SafeExecutorInterface;
-use Module\Shared\Contracts\Service\TranslatorInterface;
 use Module\Shared\Infrastructure\Service\ApplicationsConstants\ApplicationConstantManager;
 use Module\Shared\Infrastructure\Service\CompanyRequisites\CompanyRequisiteManager;
 use Module\Shared\Infrastructure\Service\TransactionalExecutor;
 use Module\Support\LocaleTranslator\Translator;
+use Sdk\Shared\Contracts\Service\ApplicationConstantsInterface;
+use Sdk\Shared\Contracts\Service\CompanyRequisitesInterface;
+use Sdk\Shared\Contracts\Service\TranslatorInterface;
 
 class ServicesServiceProvider extends ServiceProvider
 {

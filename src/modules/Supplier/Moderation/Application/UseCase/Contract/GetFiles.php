@@ -6,8 +6,8 @@ namespace Module\Supplier\Moderation\Application\UseCase\Contract;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Module\Shared\Contracts\Adapter\FileStorageAdapterInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
+use Sdk\Shared\Contracts\Adapter\FileStorageAdapterInterface;
 
 class GetFiles implements UseCaseInterface
 {

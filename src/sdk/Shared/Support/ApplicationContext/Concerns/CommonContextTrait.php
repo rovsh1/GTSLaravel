@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Shared\Infrastructure\Service\ApplicationContext\Concerns;
+namespace Sdk\Shared\Support\ApplicationContext\Concerns;
 
 use Sdk\Shared\Enum\Context\ContextChannelEnum;
 use Sdk\Shared\Enum\SourceEnum;

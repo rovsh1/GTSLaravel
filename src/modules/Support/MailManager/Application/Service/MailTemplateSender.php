@@ -2,7 +2,6 @@
 
 namespace Module\Support\MailManager\Application\Service;
 
-use Module\Shared\Contracts\Service\CompanyRequisitesInterface;
 use Module\Support\MailManager\Domain\Entity\Mail;
 use Module\Support\MailManager\Domain\Service\DataBuilder\DataBuilderInterface;
 use Module\Support\MailManager\Domain\Service\DataBuilder\DataDto\RecipientDataDto;
@@ -18,6 +17,7 @@ use Module\Support\MailManager\Domain\ValueObject\AddressList;
 use Module\Support\MailManager\Domain\ValueObject\MailBody;
 use Module\Support\MailManager\Domain\ValueObject\MailId;
 use Module\Support\MailManager\Domain\ValueObject\QueueMailStatusEnum;
+use Sdk\Shared\Contracts\Service\CompanyRequisitesInterface;
 
 class MailTemplateSender
 {

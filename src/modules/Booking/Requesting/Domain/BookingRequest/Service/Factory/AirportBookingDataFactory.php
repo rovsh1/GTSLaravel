@@ -14,11 +14,11 @@ use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
 use Module\Booking\Shared\Domain\Guest\Guest;
 use Module\Booking\Shared\Domain\Guest\Repository\GuestRepositoryInterface;
-use Module\Shared\Contracts\Adapter\CountryAdapterInterface;
-use Module\Shared\Contracts\Service\TranslatorInterface;
 use Sdk\Booking\Entity\BookingDetails\CIPMeetingInAirport;
 use Sdk\Booking\Entity\BookingDetails\CIPSendoffInAirport;
 use Sdk\Booking\ValueObject\GuestIdCollection;
+use Sdk\Shared\Contracts\Adapter\CountryAdapterInterface;
+use Sdk\Shared\Contracts\Service\TranslatorInterface;
 use Sdk\Shared\Enum\GenderEnum;
 
 class AirportBookingDataFactory

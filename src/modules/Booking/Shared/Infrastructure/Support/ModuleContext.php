@@ -2,9 +2,9 @@
 
 namespace Module\Booking\Shared\Infrastructure\Support;
 
-use Module\Shared\Contracts\Service\ApplicationContextInterface;
 use Sdk\Module\Contracts\ModuleInterface;
 use Sdk\Module\Support\Context;
+use Sdk\Shared\Contracts\Service\ApplicationContextInterface;
 
 class ModuleContext extends Context
 {

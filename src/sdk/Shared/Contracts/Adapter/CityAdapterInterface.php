@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Shared\Contracts\Adapter;
+namespace Sdk\Shared\Contracts\Adapter;
 
 use Sdk\Shared\Dto\CityInfoDto;
 

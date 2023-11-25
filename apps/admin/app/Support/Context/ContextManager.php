@@ -3,7 +3,7 @@
 namespace App\Admin\Support\Context;
 
 use App\Admin\Support\View\Form\Form;
-use Module\Shared\Contracts\Service\ApplicationContextInterface;
+use Sdk\Shared\Contracts\Service\ApplicationContextInterface;
 
 class ContextManager
 {

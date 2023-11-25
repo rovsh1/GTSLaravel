@@ -2,9 +2,9 @@
 
 namespace Module\Shared\Infrastructure\Service\CompanyRequisites;
 
-use Module\Shared\Contracts\Service\CompanyRequisitesInterface;
 use Module\Shared\Infrastructure\Service\CompanyRequisites\Entity\CompanyRequisiteInterface;
 use Sdk\Module\Support\ItemCollectionIteratorTrait;
+use Sdk\Shared\Contracts\Service\CompanyRequisitesInterface;
 
 class CompanyRequisiteManager implements CompanyRequisitesInterface, \Iterator, \Countable
 {

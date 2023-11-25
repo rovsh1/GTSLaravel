@@ -3,9 +3,9 @@
 namespace App\Shared\Support\Facades;
 
 use Illuminate\Support\Facades\Facade;
-use Module\Shared\Contracts\Adapter\FileStorageAdapterInterface;
 use Module\Shared\Infrastructure\Adapter\FileStorageAdapter;
 use Module\Support\FileStorage\Application\Dto\FileInfoDto;
+use Sdk\Shared\Contracts\Adapter\FileStorageAdapterInterface;
 use Sdk\Shared\Dto\FileDto;
 
 /**

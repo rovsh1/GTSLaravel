@@ -14,12 +14,12 @@ use Module\Booking\Shared\Application\Factory\BookingStatusDtoFactory;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
-use Module\Shared\Contracts\Service\TranslatorInterface;
 use Sdk\Booking\Contracts\Entity\DetailsInterface;
 use Sdk\Booking\Entity\BookingDetails\CarRentWithDriver;
 use Sdk\Booking\Entity\BookingDetails\HotelBooking;
 use Sdk\Booking\ValueObject\OrderId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
+use Sdk\Shared\Contracts\Service\TranslatorInterface;
 
 class GetOrderBookings implements UseCaseInterface
 {

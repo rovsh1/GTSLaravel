@@ -20,9 +20,9 @@ use Module\Hotel\Pricing\Domain\Hotel\ValueObject\RoomId;
 use Module\Hotel\Pricing\Domain\Markup\Service\HotelMarkupFinderInterface;
 use Module\Hotel\Pricing\Domain\Shared\ValueObject\ClientId;
 use Module\Hotel\Pricing\Infrastructure\Service\HotelRoomBaseDayValueFinder;
-use Module\Shared\Contracts\Adapter\CurrencyRateAdapterInterface;
-use Module\Shared\Contracts\Service\ApplicationConstantsInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
+use Sdk\Shared\Contracts\Adapter\CurrencyRateAdapterInterface;
+use Sdk\Shared\Contracts\Service\ApplicationConstantsInterface;
 use Sdk\Shared\Enum\CurrencyEnum;
 use Sdk\Shared\ValueObject\MarkupValue;
 

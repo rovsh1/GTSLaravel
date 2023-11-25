@@ -7,8 +7,8 @@ use App\Admin\Support\Facades\Grid;
 use App\Admin\Support\Http\Controllers\AbstractPrototypeController;
 use App\Admin\Support\View\Form\Form as FormContract;
 use App\Admin\Support\View\Grid\Grid as GridContract;
-use Module\Shared\Contracts\Service\CompanyRequisitesInterface;
 use Module\Shared\Infrastructure\Service\CompanyRequisites\Entity\CompanyRequisiteInterface;
+use Sdk\Shared\Contracts\Service\CompanyRequisitesInterface;
 
 class CompanyRequisiteController extends AbstractPrototypeController
 {

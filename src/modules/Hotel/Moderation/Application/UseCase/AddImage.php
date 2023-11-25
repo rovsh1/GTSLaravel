@@ -8,8 +8,8 @@ use App\Admin\Models\Hotel\Image;
 use App\Admin\Models\Hotel\RoomImage;
 use Illuminate\Support\Facades\DB;
 use Module\Hotel\Moderation\Application\RequestDto\AddImageRequestDto;
-use Module\Shared\Contracts\Adapter\FileStorageAdapterInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
+use Sdk\Shared\Contracts\Adapter\FileStorageAdapterInterface;
 
 class AddImage implements UseCaseInterface
 {

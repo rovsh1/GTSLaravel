@@ -1,6 +1,6 @@
 <?php
 
-namespace Module\Shared\Contracts\Service;
+namespace Sdk\Shared\Contracts\Service;
 
 interface ApplicationConstantsInterface extends \Iterator, \Countable
 {

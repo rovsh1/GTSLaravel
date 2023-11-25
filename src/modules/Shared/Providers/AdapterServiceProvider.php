@@ -3,18 +3,18 @@
 namespace Module\Shared\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Module\Shared\Contracts\Adapter\AirportAdapterInterface;
-use Module\Shared\Contracts\Adapter\CityAdapterInterface;
-use Module\Shared\Contracts\Adapter\CountryAdapterInterface;
-use Module\Shared\Contracts\Adapter\CurrencyRateAdapterInterface;
-use Module\Shared\Contracts\Adapter\FileStorageAdapterInterface;
-use Module\Shared\Contracts\Adapter\RailwayStationAdapterInterface;
 use Module\Shared\Infrastructure\Adapter\AirportAdapter;
 use Module\Shared\Infrastructure\Adapter\CityAdapter;
 use Module\Shared\Infrastructure\Adapter\CountryAdapter;
 use Module\Shared\Infrastructure\Adapter\CurrencyRateAdapter;
 use Module\Shared\Infrastructure\Adapter\FileStorageAdapter;
 use Module\Shared\Infrastructure\Adapter\RailwayStationAdapter;
+use Sdk\Shared\Contracts\Adapter\AirportAdapterInterface;
+use Sdk\Shared\Contracts\Adapter\CityAdapterInterface;
+use Sdk\Shared\Contracts\Adapter\CountryAdapterInterface;
+use Sdk\Shared\Contracts\Adapter\CurrencyRateAdapterInterface;
+use Sdk\Shared\Contracts\Adapter\FileStorageAdapterInterface;
+use Sdk\Shared\Contracts\Adapter\RailwayStationAdapterInterface;
 
 class AdapterServiceProvider extends ServiceProvider
 {

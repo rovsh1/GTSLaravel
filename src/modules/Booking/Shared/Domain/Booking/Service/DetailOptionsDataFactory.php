@@ -6,9 +6,6 @@ namespace Module\Booking\Shared\Domain\Booking\Service;
 
 use Illuminate\Support\Collection;
 use Module\Booking\Shared\Domain\Booking\Service\Dto\DetailOptionDto;
-use Module\Shared\Contracts\Adapter\AirportAdapterInterface;
-use Module\Shared\Contracts\Adapter\CityAdapterInterface;
-use Module\Shared\Contracts\Adapter\RailwayStationAdapterInterface;
 use Sdk\Booking\Contracts\Entity\DetailsInterface;
 use Sdk\Booking\Entity\BookingDetails\CarRentWithDriver;
 use Sdk\Booking\Entity\BookingDetails\CIPMeetingInAirport;
@@ -21,6 +18,9 @@ use Sdk\Booking\Entity\BookingDetails\TransferToAirport;
 use Sdk\Booking\Entity\BookingDetails\TransferToRailway;
 use Sdk\Booking\ValueObject\AirportId;
 use Sdk\Booking\ValueObject\RailwayStationId;
+use Sdk\Shared\Contracts\Adapter\AirportAdapterInterface;
+use Sdk\Shared\Contracts\Adapter\CityAdapterInterface;
+use Sdk\Shared\Contracts\Adapter\RailwayStationAdapterInterface;
 
 class DetailOptionsDataFactory
 {
