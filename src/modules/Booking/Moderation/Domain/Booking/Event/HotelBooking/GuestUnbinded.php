@@ -2,12 +2,12 @@
 
 namespace Module\Booking\Moderation\Domain\Booking\Event\HotelBooking;
 
-use Module\Booking\Shared\Domain\Booking\Event\BookingEventInterface;
 use Module\Booking\Shared\Domain\Booking\Event\PriceBecomeDeprecatedEventInterface;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationId;
-use Module\Booking\Shared\Domain\Guest\ValueObject\GuestId;
-use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
+use Sdk\Booking\Contracts\Event\BookingEventInterface;
+use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\GuestId;
+use Sdk\Booking\ValueObject\HotelBooking\AccommodationId;
+use Sdk\Booking\ValueObject\OrderId;
 
 class GuestUnbinded implements BookingEventInterface, PriceBecomeDeprecatedEventInterface
 {

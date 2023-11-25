@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Infrastructure\Builder\Details;
 
-use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\DetailsId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\BookingPeriod as HotelBookingPeriod;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\ExternalNumber;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\HotelInfo;
 use Module\Booking\Shared\Infrastructure\Models\Details\Hotel;
+use Sdk\Booking\Entity\BookingDetails\HotelBooking;
+use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\DetailsId;
+use Sdk\Booking\ValueObject\HotelBooking\BookingPeriod as HotelBookingPeriod;
+use Sdk\Booking\ValueObject\HotelBooking\ExternalNumber;
+use Sdk\Booking\ValueObject\HotelBooking\HotelInfo;
 
 class HotelBookingBuilder
 {

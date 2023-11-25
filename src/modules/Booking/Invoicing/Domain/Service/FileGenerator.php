@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Booking\Invoicing\Domain\Service;
 
-use Module\Booking\Shared\Domain\Order\ValueObject\ClientId;
-use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
 use Module\Shared\Contracts\Adapter\FileStorageAdapterInterface;
+use Sdk\Booking\ValueObject\ClientId;
+use Sdk\Booking\ValueObject\OrderId;
 use Sdk\Shared\Dto\FileDto;
 
 class FileGenerator

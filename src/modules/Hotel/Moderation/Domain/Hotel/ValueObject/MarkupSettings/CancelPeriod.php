@@ -6,7 +6,7 @@ namespace Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings;
 
 use Carbon\CarbonPeriodImmutable;
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
-use Module\Shared\Contracts\Support\SerializableInterface;
+use Sdk\Shared\Contracts\Support\SerializableInterface;
 
 final class CancelPeriod implements ValueObjectInterface, SerializableInterface
 {

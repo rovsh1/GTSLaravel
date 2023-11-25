@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Module\Supplier\Moderation\Domain\Supplier\ValueObject;
 
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
-use Module\Shared\Contracts\Support\CanEquate;
-use Module\Shared\Contracts\Support\SerializableInterface;
+use Sdk\Shared\Contracts\Support\CanEquate;
+use Sdk\Shared\Contracts\Support\SerializableInterface;
 use Sdk\Shared\ValueObject\Percent;
 
 final class DailyMarkupOption implements ValueObjectInterface, SerializableInterface, CanEquate

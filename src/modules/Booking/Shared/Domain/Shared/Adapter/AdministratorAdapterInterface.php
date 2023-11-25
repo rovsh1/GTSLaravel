@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Domain\Shared\Adapter;
 
 use Module\Administrator\Application\Response\AdministratorDto;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
+use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\OrderId;
 
 interface AdministratorAdapterInterface
 {

@@ -5,22 +5,22 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Domain\Booking\Service;
 
 use Illuminate\Support\Collection;
-use Module\Booking\Shared\Domain\Booking\Entity\CarRentWithDriver;
-use Module\Booking\Shared\Domain\Booking\Entity\CIPMeetingInAirport;
-use Module\Booking\Shared\Domain\Booking\Entity\CIPSendoffInAirport;
-use Module\Booking\Shared\Domain\Booking\Entity\DayCarTrip;
-use Module\Booking\Shared\Domain\Booking\Entity\IntercityTransfer;
-use Module\Booking\Shared\Domain\Booking\Entity\DetailsInterface;
-use Module\Booking\Shared\Domain\Booking\Entity\TransferFromAirport;
-use Module\Booking\Shared\Domain\Booking\Entity\TransferFromRailway;
-use Module\Booking\Shared\Domain\Booking\Entity\TransferToAirport;
-use Module\Booking\Shared\Domain\Booking\Entity\TransferToRailway;
 use Module\Booking\Shared\Domain\Booking\Service\Dto\DetailOptionDto;
-use Module\Booking\Shared\Domain\Booking\ValueObject\AirportId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\RailwayStationId;
 use Module\Shared\Contracts\Adapter\AirportAdapterInterface;
 use Module\Shared\Contracts\Adapter\CityAdapterInterface;
 use Module\Shared\Contracts\Adapter\RailwayStationAdapterInterface;
+use Sdk\Booking\Contracts\Entity\DetailsInterface;
+use Sdk\Booking\Entity\BookingDetails\CarRentWithDriver;
+use Sdk\Booking\Entity\BookingDetails\CIPMeetingInAirport;
+use Sdk\Booking\Entity\BookingDetails\CIPSendoffInAirport;
+use Sdk\Booking\Entity\BookingDetails\DayCarTrip;
+use Sdk\Booking\Entity\BookingDetails\IntercityTransfer;
+use Sdk\Booking\Entity\BookingDetails\TransferFromAirport;
+use Sdk\Booking\Entity\BookingDetails\TransferFromRailway;
+use Sdk\Booking\Entity\BookingDetails\TransferToAirport;
+use Sdk\Booking\Entity\BookingDetails\TransferToRailway;
+use Sdk\Booking\ValueObject\AirportId;
+use Sdk\Booking\ValueObject\RailwayStationId;
 
 class DetailOptionsDataFactory
 {

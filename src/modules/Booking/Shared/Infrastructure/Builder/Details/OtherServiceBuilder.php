@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Infrastructure\Builder\Details;
 
-use Module\Booking\Shared\Domain\Booking\Entity\Other;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\DetailsId;
 use Module\Booking\Shared\Infrastructure\Models\Details\Other as Model;
+use Sdk\Booking\Entity\BookingDetails\Other;
+use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\DetailsId;
 use Sdk\Module\Support\DateTimeImmutable;
 
 class OtherServiceBuilder extends AbstractServiceDetailsBuilder

@@ -8,10 +8,10 @@ use Carbon\CarbonPeriod;
 use Module\Booking\Moderation\Application\Exception\HotelDetailsExpectedException;
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelQuotaAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelRoomAdapterInterface;
-use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Hotel\Moderation\Application\Dto\RoomDto;
+use Sdk\Booking\Entity\BookingDetails\HotelBooking;
+use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 use Sdk\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 

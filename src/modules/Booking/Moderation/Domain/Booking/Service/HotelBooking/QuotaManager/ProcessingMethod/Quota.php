@@ -6,12 +6,12 @@ use Carbon\CarbonPeriod;
 use Module\Booking\Moderation\Domain\Booking\Service\HotelBooking\QuotaManager\QuotaProcessingMethodInterface;
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelQuotaAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
-use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
 use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\BookingPeriod;
 use Module\Hotel\Quotation\Application\Dto\BookingRoomDto;
 use Module\Hotel\Quotation\Application\RequestDto\BookRequestDto;
 use Module\Hotel\Quotation\Application\RequestDto\ReserveRequestDto;
+use Sdk\Booking\Entity\BookingDetails\HotelBooking;
+use Sdk\Booking\ValueObject\HotelBooking\BookingPeriod;
 use Sdk\Shared\Enum\Booking\BookingStatusEnum;
 
 class Quota implements QuotaProcessingMethodInterface

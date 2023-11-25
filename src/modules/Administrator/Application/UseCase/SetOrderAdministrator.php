@@ -6,7 +6,7 @@ namespace Module\Administrator\Application\UseCase;
 
 use Module\Administrator\Domain\Repository\OrderAdministratorRepositoryInterface;
 use Module\Administrator\Domain\ValueObject\AdministratorId;
-use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
+use Sdk\Booking\ValueObject\OrderId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class SetOrderAdministrator implements UseCaseInterface

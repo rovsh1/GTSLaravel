@@ -9,8 +9,8 @@ use Module\Booking\Moderation\Application\Service\AccommodationChecker;
 use Module\Booking\Moderation\Application\Service\AccommodationFactory;
 use Module\Booking\Moderation\Domain\Booking\Event\HotelBooking\AccommodationAdded;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Shared\Contracts\Service\SafeExecutorInterface;
+use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 

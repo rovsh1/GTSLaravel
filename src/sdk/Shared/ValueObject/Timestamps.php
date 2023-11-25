@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Sdk\Shared\ValueObject;
 
 use DateTimeImmutable;
-use Module\Shared\Contracts\Support\SerializableInterface;
+use Sdk\Shared\Contracts\Support\SerializableInterface;
 use Sdk\Shared\Support\DateTimeImmutableFactory;
 
 final class Timestamps implements SerializableInterface

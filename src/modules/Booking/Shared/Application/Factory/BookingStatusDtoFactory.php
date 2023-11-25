@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Application\Factory;
 
-use Module\Booking\Shared\Application\Dto\StatusDto;
 use Module\Booking\Shared\Domain\Booking\Service\BookingStatusStorageInterface;
+use Sdk\Booking\Dto\StatusDto;
 use Sdk\Shared\Enum\Booking\BookingStatusEnum;
 
 class BookingStatusDtoFactory

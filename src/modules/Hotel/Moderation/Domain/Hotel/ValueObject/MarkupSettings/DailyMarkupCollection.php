@@ -6,7 +6,7 @@ namespace Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings;
 
 use Illuminate\Support\Collection;
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
-use Module\Shared\Contracts\Support\SerializableInterface;
+use Sdk\Shared\Contracts\Support\SerializableInterface;
 
 /**
  * @extends Collection<int, DailyMarkupOption>

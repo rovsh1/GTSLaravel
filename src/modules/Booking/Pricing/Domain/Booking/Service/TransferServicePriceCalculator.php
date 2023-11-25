@@ -3,11 +3,11 @@
 namespace Module\Booking\Pricing\Domain\Booking\Service;
 
 use Module\Booking\Shared\Domain\Booking\Booking;
-use Module\Booking\Shared\Domain\Booking\Entity\CarRentWithDriver;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPriceItem;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPrices;
-use Module\Booking\Shared\Domain\Booking\ValueObject\CarBid;
+use Sdk\Booking\Entity\BookingDetails\CarRentWithDriver;
+use Sdk\Booking\ValueObject\BookingPriceItem;
+use Sdk\Booking\ValueObject\BookingPrices;
+use Sdk\Booking\ValueObject\CarBid;
 
 class TransferServicePriceCalculator implements PriceCalculatorInterface
 {

@@ -6,7 +6,7 @@ namespace Module\Administrator\Application\UseCase;
 
 use Module\Administrator\Domain\Repository\BookingAdministratorRepositoryInterface;
 use Module\Administrator\Domain\ValueObject\AdministratorId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class SetBookingAdministrator implements UseCaseInterface

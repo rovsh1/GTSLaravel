@@ -4,9 +4,9 @@ namespace Module\Booking\Shared\Domain\Booking\Listener;
 
 use Module\Booking\Moderation\Application\Exception\HotelDetailsExpectedException;
 use Module\Booking\Moderation\Domain\Booking\Service\HotelBooking\QuotaManager\QuotaProcessingMethodFactory;
-use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
 use Module\Booking\Shared\Domain\Booking\Event\HotelBooking\QuotaChangedEventInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
+use Sdk\Booking\Entity\BookingDetails\HotelBooking;
 use Sdk\Module\Contracts\Event\DomainEventInterface;
 use Sdk\Module\Contracts\Event\DomainEventListenerInterface;
 

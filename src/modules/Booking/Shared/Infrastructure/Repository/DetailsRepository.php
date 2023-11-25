@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Infrastructure\Repository;
 
-use Module\Booking\Shared\Domain\Booking\Entity\DetailsInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
 use Module\Booking\Shared\Infrastructure\Builder\Details\DetailsBuilderFactory;
 use Module\Booking\Shared\Infrastructure\Models\Booking as Model;
 use Module\Booking\Shared\Infrastructure\Storage\Details\DetailsStorageFactory;
+use Sdk\Booking\Contracts\Entity\DetailsInterface;
+use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 use Sdk\Shared\Support\RepositoryInstances;
 

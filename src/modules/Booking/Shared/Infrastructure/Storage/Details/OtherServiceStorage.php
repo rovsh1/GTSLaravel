@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Infrastructure\Storage\Details;
 
-use Module\Booking\Shared\Domain\Booking\Entity\Other;
 use Module\Booking\Shared\Infrastructure\Models\Details\Other as Model;
+use Sdk\Booking\Entity\BookingDetails\Other;
 
 class OtherServiceStorage extends AbstractStorage
 {

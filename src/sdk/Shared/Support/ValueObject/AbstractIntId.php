@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Sdk\Shared\Support\ValueObject;
 
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
-use Module\Shared\Contracts\Support\CanEquate;
+use Sdk\Shared\Contracts\Support\CanEquate;
 
 abstract class AbstractIntId implements CanEquate, ValueObjectInterface
 {

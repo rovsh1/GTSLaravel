@@ -7,10 +7,10 @@ namespace Module\Booking\Moderation\Application\UseCase\Order;
 use Module\Booking\Moderation\Application\Dto\OrderAvailableActionsDto;
 use Module\Booking\Moderation\Application\Factory\OrderStatusDtoFactory;
 use Module\Booking\Moderation\Domain\Order\Service\StatusTransitionRules;
-use Module\Booking\Shared\Application\Dto\StatusDto;
 use Module\Booking\Shared\Domain\Order\Order;
 use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
-use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
+use Sdk\Booking\Dto\StatusDto;
+use Sdk\Booking\ValueObject\OrderId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 use Sdk\Shared\Enum\Order\OrderStatusEnum;
 

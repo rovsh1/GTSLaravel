@@ -13,12 +13,12 @@ use Module\Booking\Moderation\Application\Dto\Details\BookingPeriodDto;
 use Module\Booking\Moderation\Application\Dto\Details\ExternalNumberDto;
 use Module\Booking\Moderation\Application\Dto\Details\HotelInfoDto;
 use Module\Booking\Moderation\Application\Dto\ServiceBooking\HotelBookingDto;
-use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
 use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationCollection;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomPriceDayPart;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomPrices;
-use Module\Booking\Shared\Domain\Guest\ValueObject\GuestId;
+use Sdk\Booking\Entity\BookingDetails\HotelBooking;
+use Sdk\Booking\ValueObject\GuestId;
+use Sdk\Booking\ValueObject\HotelBooking\AccommodationCollection;
+use Sdk\Booking\ValueObject\HotelBooking\RoomPriceDayPart;
+use Sdk\Booking\ValueObject\HotelBooking\RoomPrices;
 
 class DetailsDtoFactory
 {

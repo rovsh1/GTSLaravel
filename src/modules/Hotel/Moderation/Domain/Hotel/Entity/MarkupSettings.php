@@ -9,7 +9,7 @@ use Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings\CancelPeriod
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings\EarlyCheckInCollection;
 use Module\Hotel\Moderation\Domain\Hotel\ValueObject\MarkupSettings\LateCheckOutCollection;
 use Module\Shared\Contracts\Domain\EntityInterface;
-use Module\Shared\Contracts\Support\SerializableInterface;
+use Sdk\Shared\Contracts\Support\SerializableInterface;
 use Sdk\Shared\ValueObject\Percent;
 
 final class MarkupSettings implements EntityInterface, SerializableInterface

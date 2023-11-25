@@ -9,7 +9,7 @@ use Module\Booking\Moderation\Domain\Booking\Exception\InvalidStatusTransition;
 use Module\Booking\Moderation\Domain\Booking\Service\StatusRules\StatusTransitionsFactory;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 use Sdk\Shared\Enum\Booking\BookingStatusEnum;

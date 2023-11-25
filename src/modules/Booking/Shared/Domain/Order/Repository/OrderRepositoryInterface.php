@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Domain\Order\Repository;
 
 use Module\Booking\Shared\Domain\Order\Order;
-use Module\Booking\Shared\Domain\Order\ValueObject\ClientId;
-use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
-use Module\Booking\Shared\Domain\Shared\ValueObject\CreatorId;
+use Sdk\Booking\ValueObject\ClientId;
+use Sdk\Booking\ValueObject\CreatorId;
+use Sdk\Booking\ValueObject\OrderId;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 use Sdk\Shared\Enum\CurrencyEnum;
 

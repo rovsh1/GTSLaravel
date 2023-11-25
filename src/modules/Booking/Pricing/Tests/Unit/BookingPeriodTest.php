@@ -2,8 +2,8 @@
 
 namespace Module\Booking\Pricing\Tests\Unit;
 
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPeriod;
 use PHPUnit\Framework\TestCase;
+use Sdk\Booking\ValueObject\BookingPeriod;
 
 class BookingPeriodTest extends TestCase
 {

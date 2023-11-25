@@ -15,6 +15,7 @@ class CurrencyDto extends AbstractEnumDto
         parent::__construct($value, $name);
     }
 
+    //@todo remove from here
     public static function fromEnum(\BackedEnum $enum, TranslatorInterface $translator): static
     {
         assert($enum instanceof CurrencyEnum);

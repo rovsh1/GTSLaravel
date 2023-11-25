@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Infrastructure\Storage\Details;
 
-use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
+use Sdk\Booking\ValueObject\ServiceInfo;
 
 abstract class AbstractStorage
 {

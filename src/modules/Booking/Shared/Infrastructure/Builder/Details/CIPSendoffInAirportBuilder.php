@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Infrastructure\Builder\Details;
 
-use Module\Booking\Shared\Domain\Booking\Entity\CIPSendoffInAirport;
-use Module\Booking\Shared\Domain\Booking\ValueObject\AirportId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\DetailsId;
-use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Booking\Shared\Infrastructure\Models\Details\Airport;
+use Sdk\Booking\Entity\BookingDetails\CIPSendoffInAirport;
+use Sdk\Booking\ValueObject\AirportId;
+use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\DetailsId;
+use Sdk\Booking\ValueObject\GuestIdCollection;
 
 class CIPSendoffInAirportBuilder extends AbstractServiceDetailsBuilder
 {

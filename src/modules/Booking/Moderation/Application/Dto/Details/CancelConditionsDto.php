@@ -7,10 +7,10 @@ namespace Module\Booking\Moderation\Application\Dto\Details;
 use Carbon\CarbonInterface;
 use Module\Booking\Moderation\Application\Dto\Details\CancelConditions\CancelMarkupOptionDto;
 use Module\Booking\Moderation\Application\Dto\Details\CancelConditions\DailyMarkupDto;
-use Module\Booking\Shared\Domain\Shared\ValueObject\CancelConditions;
 use Module\Shared\Contracts\Domain\EntityInterface;
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Module\Shared\Support\Dto\AbstractDomainBasedDto;
+use Sdk\Booking\ValueObject\CancelConditions;
 
 class CancelConditionsDto extends AbstractDomainBasedDto
 {

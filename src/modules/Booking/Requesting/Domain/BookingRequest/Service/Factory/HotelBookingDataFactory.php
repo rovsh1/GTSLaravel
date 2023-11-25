@@ -12,17 +12,17 @@ use Module\Booking\Requesting\Domain\BookingRequest\Service\TemplateDataInterfac
 use Module\Booking\Requesting\Domain\BookingRequest\ValueObject\RequestTypeEnum;
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
-use Module\Booking\Shared\Domain\Booking\Entity\HotelAccommodation;
-use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
-use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking as DetailsEntity;
 use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationCollection;
 use Module\Booking\Shared\Domain\Guest\Guest;
 use Module\Booking\Shared\Domain\Guest\Repository\GuestRepositoryInterface;
-use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Hotel\Moderation\Application\Dto\ContactDto;
 use Module\Shared\Contracts\Adapter\CountryAdapterInterface;
+use Sdk\Booking\Entity\BookingDetails\HotelAccommodation;
+use Sdk\Booking\Entity\BookingDetails\HotelBooking;
+use Sdk\Booking\Entity\BookingDetails\HotelBooking as DetailsEntity;
+use Sdk\Booking\ValueObject\GuestIdCollection;
+use Sdk\Booking\ValueObject\HotelBooking\AccommodationCollection;
 use Sdk\Shared\Enum\ContactTypeEnum;
 use Sdk\Shared\Enum\GenderEnum;
 

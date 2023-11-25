@@ -12,13 +12,13 @@ use Module\Booking\Moderation\Application\ResponseDto\OrderBookingPeriodDto;
 use Module\Booking\Moderation\Application\ResponseDto\OrderBookingServiceInfoDto;
 use Module\Booking\Shared\Application\Factory\BookingStatusDtoFactory;
 use Module\Booking\Shared\Domain\Booking\Booking;
-use Module\Booking\Shared\Domain\Booking\Entity\CarRentWithDriver;
-use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
-use Module\Booking\Shared\Domain\Booking\Entity\DetailsInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
-use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
 use Module\Shared\Contracts\Service\TranslatorInterface;
+use Sdk\Booking\Contracts\Entity\DetailsInterface;
+use Sdk\Booking\Entity\BookingDetails\CarRentWithDriver;
+use Sdk\Booking\Entity\BookingDetails\HotelBooking;
+use Sdk\Booking\ValueObject\OrderId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class GetOrderBookings implements UseCaseInterface

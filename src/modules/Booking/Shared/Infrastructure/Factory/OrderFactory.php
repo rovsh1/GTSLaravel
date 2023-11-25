@@ -6,15 +6,15 @@ namespace Module\Booking\Shared\Infrastructure\Factory;
 
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Collection;
-use Module\Booking\Shared\Domain\Booking\ValueObject\Context;
-use Module\Booking\Shared\Domain\Guest\ValueObject\GuestId;
 use Module\Booking\Shared\Domain\Order\Order;
-use Module\Booking\Shared\Domain\Order\ValueObject\ClientId;
-use Module\Booking\Shared\Domain\Order\ValueObject\LegalId;
-use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
-use Module\Booking\Shared\Domain\Shared\ValueObject\CreatorId;
-use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Booking\Shared\Infrastructure\Models\Order as Model;
+use Sdk\Booking\ValueObject\ClientId;
+use Sdk\Booking\ValueObject\Context;
+use Sdk\Booking\ValueObject\CreatorId;
+use Sdk\Booking\ValueObject\GuestId;
+use Sdk\Booking\ValueObject\GuestIdCollection;
+use Sdk\Booking\ValueObject\LegalId;
+use Sdk\Booking\ValueObject\OrderId;
 use Sdk\Shared\ValueObject\Money;
 
 class OrderFactory

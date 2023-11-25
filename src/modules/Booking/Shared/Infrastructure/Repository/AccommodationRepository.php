@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Infrastructure\Repository;
 
-use Module\Booking\Shared\Domain\Booking\Entity\HotelAccommodation;
 use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationCollection;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationDetails;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomInfo;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\RoomPrices;
-use Module\Booking\Shared\Domain\Shared\ValueObject\GuestIdCollection;
 use Module\Booking\Shared\Infrastructure\Models\Accommodation as Model;
+use Sdk\Booking\Entity\BookingDetails\HotelAccommodation;
+use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\GuestIdCollection;
+use Sdk\Booking\ValueObject\HotelBooking\AccommodationCollection;
+use Sdk\Booking\ValueObject\HotelBooking\AccommodationDetails;
+use Sdk\Booking\ValueObject\HotelBooking\AccommodationId;
+use Sdk\Booking\ValueObject\HotelBooking\RoomInfo;
+use Sdk\Booking\ValueObject\HotelBooking\RoomPrices;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 use Sdk\Shared\Support\RepositoryInstances;
 

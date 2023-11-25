@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Application\Factory\HotelBooking;
 
 use Carbon\CarbonPeriod;
-use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\CancelFeePeriodTypeEnum;
-use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\CancelFeeValue;
-use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\DailyCancelFeeValue;
-use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\DailyCancelFeeValueCollection;
-use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\FeeValue;
-use Module\Booking\Shared\Domain\Shared\ValueObject\CancelConditions;
 use Module\Hotel\Moderation\Application\Dto\MarkupSettings\CancelPeriodDto;
+use Sdk\Booking\ValueObject\CancelCondition\CancelFeePeriodTypeEnum;
+use Sdk\Booking\ValueObject\CancelCondition\CancelFeeValue;
+use Sdk\Booking\ValueObject\CancelCondition\DailyCancelFeeValue;
+use Sdk\Booking\ValueObject\CancelCondition\DailyCancelFeeValueCollection;
+use Sdk\Booking\ValueObject\CancelCondition\FeeValue;
+use Sdk\Booking\ValueObject\CancelConditions;
 
 class CancelConditionsFactory
 {

@@ -12,7 +12,7 @@ use Module\Booking\Moderation\Domain\Booking\Exception\NotFoundServiceCancelCond
 use Module\Booking\Moderation\Domain\Booking\Service\TransferBooking\CarBidUpdater;
 use Module\Booking\Shared\Domain\Booking\Exception\NotFoundTransferServicePrice;
 use Module\Booking\Shared\Domain\Booking\Exception\ServiceDateUndefined;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class Add implements UseCaseInterface

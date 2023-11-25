@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Application\Service\DetailsEditor\Editor;
 
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelAdapterInterface;
-use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking as Entity;
 use Module\Booking\Shared\Domain\Booking\Factory\Details\HotelBookingFactoryInterface;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\BookingPeriod;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\HotelInfo;
-use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceId;
+use Sdk\Booking\Entity\BookingDetails\HotelBooking as Entity;
+use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\HotelBooking\BookingPeriod;
+use Sdk\Booking\ValueObject\HotelBooking\HotelInfo;
+use Sdk\Booking\ValueObject\ServiceId;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 use Sdk\Shared\Enum\Booking\QuotaProcessingMethodEnum;
 use Sdk\Shared\ValueObject\Time;

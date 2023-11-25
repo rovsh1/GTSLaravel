@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Application\Dto\Details;
 
 use Carbon\Carbon;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\BookingPeriod;
 use Module\Shared\Contracts\Domain\EntityInterface;
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Module\Shared\Support\Dto\AbstractDomainBasedDto;
+use Sdk\Booking\ValueObject\HotelBooking\BookingPeriod;
 
 class BookingPeriodDto extends AbstractDomainBasedDto
 {

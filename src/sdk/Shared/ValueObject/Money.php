@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Sdk\Shared\ValueObject;
 
-use Module\Shared\Contracts\Support\CanEquate;
+use Sdk\Shared\Contracts\Support\CanEquate;
 use Sdk\Shared\Enum\CurrencyEnum;
 
 final class Money implements CanEquate

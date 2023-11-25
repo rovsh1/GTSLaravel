@@ -3,7 +3,7 @@
 namespace Module\Booking\Pricing\Domain\Booking\Service;
 
 use Module\Booking\Shared\Domain\Booking\Service\BookingUnitOfWorkInterface;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\BookingId;
 
 class RecalculatePriceService
 {

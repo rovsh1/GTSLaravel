@@ -8,7 +8,7 @@ use Module\Booking\Moderation\Application\Dto\GuestDto;
 use Module\Booking\Moderation\Application\RequestDto\AddGuestRequestDto;
 use Module\Booking\Shared\Domain\Guest\Event\GuestCreated;
 use Module\Booking\Shared\Domain\Guest\Repository\GuestRepositoryInterface;
-use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
+use Sdk\Booking\ValueObject\OrderId;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 use Sdk\Shared\Enum\GenderEnum;

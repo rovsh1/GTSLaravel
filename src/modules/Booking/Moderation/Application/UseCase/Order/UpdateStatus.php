@@ -8,7 +8,7 @@ use Module\Booking\Moderation\Application\Exception\OrderHasBookingInProgressExc
 use Module\Booking\Moderation\Domain\Order\Exception\OrderHasBookingInProgress;
 use Module\Booking\Moderation\Domain\Order\Service\StatusUpdater;
 use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
-use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
+use Sdk\Booking\ValueObject\OrderId;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 use Sdk\Shared\Enum\Order\OrderStatusEnum;

@@ -8,13 +8,13 @@ use Carbon\CarbonPeriod;
 use Module\Booking\Moderation\Application\Dto\ServiceBooking\BookingDto;
 use Module\Booking\Moderation\Application\Factory\BookingDtoFactory;
 use Module\Booking\Moderation\Application\Service\DetailsEditor\DetailsEditorFactory;
-use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPrices;
-use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceId;
 use Module\Booking\Shared\Domain\Shared\Adapter\AdministratorAdapterInterface;
+use Sdk\Booking\Entity\BookingDetails\HotelBooking;
+use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\BookingPrices;
+use Sdk\Booking\ValueObject\ServiceId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 

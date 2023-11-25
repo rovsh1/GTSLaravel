@@ -6,10 +6,10 @@ use Carbon\Carbon;
 use Module\Booking\Moderation\Application\Exception\NotFoundServicePriceException;
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Booking;
-use Module\Booking\Shared\Domain\Booking\Entity\AirportDetailsInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\DetailsRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPriceItem;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPrices;
+use Sdk\Booking\Contracts\Entity\AirportDetailsInterface;
+use Sdk\Booking\ValueObject\BookingPriceItem;
+use Sdk\Booking\ValueObject\BookingPrices;
 
 class AirportServicePriceCalculator implements PriceCalculatorInterface
 {

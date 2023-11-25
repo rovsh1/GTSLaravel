@@ -6,8 +6,8 @@ namespace Module\Booking\Shared\Infrastructure\Repository;
 
 use Illuminate\Support\Facades\DB;
 use Module\Booking\Shared\Domain\Booking\Repository\AirportBookingGuestRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Shared\Domain\Guest\ValueObject\GuestId;
+use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\GuestId;
 
 class AirportBookingGuestRepository implements AirportBookingGuestRepositoryInterface
 {

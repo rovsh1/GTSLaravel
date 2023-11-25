@@ -6,7 +6,7 @@ use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Event\AbstractBookingEvent;
 use Module\Booking\Shared\Domain\Booking\Event\HotelBooking\QuotaChangedEventInterface;
 use Module\Booking\Shared\Domain\Booking\Event\PriceBecomeDeprecatedEventInterface;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationId;
+use Sdk\Booking\ValueObject\HotelBooking\AccommodationId;
 
 class AccommodationDeleted extends AbstractBookingEvent implements PriceBecomeDeprecatedEventInterface, QuotaChangedEventInterface
 {

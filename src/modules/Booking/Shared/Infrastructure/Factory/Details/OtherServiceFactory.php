@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Infrastructure\Factory\Details;
 
-use Module\Booking\Shared\Domain\Booking\Entity\Other;
 use Module\Booking\Shared\Domain\Booking\Factory\Details\OtherServiceFactoryInterface;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Booking\Shared\Infrastructure\Builder\Details\OtherServiceBuilder;
 use Module\Booking\Shared\Infrastructure\Models\Details\Other as Model;
+use Sdk\Booking\Entity\BookingDetails\Other;
+use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\ServiceInfo;
 
 class OtherServiceFactory extends AbstractServiceDetailsFactory implements OtherServiceFactoryInterface
 {

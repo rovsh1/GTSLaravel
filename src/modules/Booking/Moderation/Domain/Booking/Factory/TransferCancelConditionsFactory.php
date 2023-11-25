@@ -7,14 +7,13 @@ namespace Module\Booking\Moderation\Domain\Booking\Factory;
 use Illuminate\Support\Arr;
 use Module\Booking\Moderation\Domain\Booking\Exception\NotFoundServiceCancelConditions;
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
-use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\CancelFeePeriodTypeEnum;
-use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\CancelFeeValue;
-use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\DailyCancelFeeValue;
-use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\DailyCancelFeeValueCollection;
-use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\FeeValue;
-use Module\Booking\Shared\Domain\Shared\ValueObject\CancelConditions;
-use Module\Supplier\Moderation\Application\Response\CancelConditionsDto;
 use Module\Supplier\Moderation\Application\Response\DailyMarkupDto;
+use Sdk\Booking\ValueObject\CancelCondition\CancelFeePeriodTypeEnum;
+use Sdk\Booking\ValueObject\CancelCondition\CancelFeeValue;
+use Sdk\Booking\ValueObject\CancelCondition\DailyCancelFeeValue;
+use Sdk\Booking\ValueObject\CancelCondition\DailyCancelFeeValueCollection;
+use Sdk\Booking\ValueObject\CancelCondition\FeeValue;
+use Sdk\Booking\ValueObject\CancelConditions;
 
 class TransferCancelConditionsFactory
 {

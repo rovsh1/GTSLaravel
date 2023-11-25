@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Support\MailManager\Domain\ValueObject;
 
-use Module\Shared\Contracts\Support\SerializableInterface;
+use Sdk\Shared\Contracts\Support\SerializableInterface;
 
 final class AddressList implements \Iterator, SerializableInterface
 {

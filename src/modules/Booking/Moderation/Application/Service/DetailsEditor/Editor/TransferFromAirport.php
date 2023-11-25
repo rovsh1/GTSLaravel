@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\Service\DetailsEditor\Editor;
 
-use Module\Booking\Shared\Domain\Booking\Entity\TransferFromAirport as Entity;
 use Module\Booking\Shared\Domain\Booking\Factory\Details\TransferFromAirportFactoryInterface;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\CarBidCollection;
-use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\ServiceInfo;
 use Module\Supplier\Moderation\Infrastructure\Models\Service as InfrastructureSupplierService;
+use Sdk\Booking\Entity\BookingDetails\TransferFromAirport as Entity;
+use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\CarBidCollection;
+use Sdk\Booking\ValueObject\ServiceId;
+use Sdk\Booking\ValueObject\ServiceInfo;
 
 class TransferFromAirport extends AbstractEditor implements EditorInterface
 {

@@ -8,8 +8,8 @@ use Carbon\CarbonPeriod;
 use DateTime;
 use DateTimeInterface;
 use Illuminate\Support\Str;
-use Module\Booking\Shared\Domain\Booking\Entity\DetailsInterface;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPeriod;
+use Sdk\Booking\Contracts\Entity\DetailsInterface;
+use Sdk\Booking\ValueObject\BookingPeriod;
 
 abstract class AbstractEditor
 {

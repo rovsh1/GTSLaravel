@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Application\UseCase\HotelBooking;
 
 use Carbon\CarbonPeriod;
-use Module\Booking\Shared\Domain\Booking\Entity\HotelBooking;
 use Module\Booking\Shared\Domain\Booking\Service\BookingUnitOfWorkInterface;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\BookingPeriod;
+use Sdk\Booking\Entity\BookingDetails\HotelBooking;
+use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\HotelBooking\BookingPeriod;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class Update implements UseCaseInterface

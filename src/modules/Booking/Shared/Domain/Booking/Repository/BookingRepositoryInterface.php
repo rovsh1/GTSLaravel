@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Domain\Booking\Repository;
 
 use Module\Booking\Shared\Domain\Booking\Booking;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingPrices;
-use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
-use Module\Booking\Shared\Domain\Shared\ValueObject\CancelConditions;
-use Module\Booking\Shared\Domain\Shared\ValueObject\CreatorId;
+use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\BookingPrices;
+use Sdk\Booking\ValueObject\CancelConditions;
+use Sdk\Booking\ValueObject\CreatorId;
+use Sdk\Booking\ValueObject\OrderId;
 use Sdk\Shared\Enum\ServiceTypeEnum;
 
 interface BookingRepositoryInterface

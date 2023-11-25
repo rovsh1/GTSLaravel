@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Client\Moderation\Domain\ValueObject;
 
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
-use Module\Shared\Contracts\Support\SerializableInterface;
+use Sdk\Shared\Contracts\Support\SerializableInterface;
 
 class BankRequisites implements ValueObjectInterface, SerializableInterface
 {

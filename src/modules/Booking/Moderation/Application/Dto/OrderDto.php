@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Application\Dto;
 
 use Carbon\CarbonImmutable;
-use Module\Booking\Shared\Application\Dto\StatusDto;
+use Sdk\Booking\Dto\StatusDto;
 use Sdk\Shared\Dto\MoneyDto;
 use Sdk\Shared\Enum\SourceEnum;
 

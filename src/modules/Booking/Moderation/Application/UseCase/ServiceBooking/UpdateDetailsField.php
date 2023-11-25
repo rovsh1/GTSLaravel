@@ -6,7 +6,7 @@ namespace Module\Booking\Moderation\Application\UseCase\ServiceBooking;
 
 use Module\Booking\Moderation\Application\Service\DetailsEditor\DetailsEditorFactory;
 use Module\Booking\Shared\Domain\Booking\Service\BookingUnitOfWorkInterface;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class UpdateDetailsField implements UseCaseInterface

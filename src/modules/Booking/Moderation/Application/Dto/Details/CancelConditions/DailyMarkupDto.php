@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Module\Booking\Moderation\Application\Dto\Details\CancelConditions;
 
-use Module\Booking\Shared\Domain\Shared\ValueObject\CancelCondition\DailyCancelFeeValue;
 use Module\Shared\Contracts\Domain\EntityInterface;
 use Module\Shared\Contracts\Domain\ValueObjectInterface;
 use Module\Shared\Support\Dto\AbstractDomainBasedDto;
+use Sdk\Booking\ValueObject\CancelCondition\DailyCancelFeeValue;
 
 class DailyMarkupDto extends AbstractDomainBasedDto
 {

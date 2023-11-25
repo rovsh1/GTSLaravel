@@ -9,13 +9,13 @@ use Module\Booking\Moderation\Application\Service\AccommodationChecker;
 use Module\Booking\Moderation\Application\Service\AccommodationFactory;
 use Module\Booking\Moderation\Domain\Booking\Event\HotelBooking\AccommodationEdited;
 use Module\Booking\Moderation\Domain\Booking\Event\HotelBooking\AccommodationReplaced;
-use Module\Booking\Shared\Domain\Booking\Entity\HotelAccommodation;
 use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\HotelBooking\BookingGuestRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\ValueObject\BookingId;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\AccommodationId;
 use Module\Shared\Contracts\Service\SafeExecutorInterface;
+use Sdk\Booking\Entity\BookingDetails\HotelAccommodation;
+use Sdk\Booking\ValueObject\BookingId;
+use Sdk\Booking\ValueObject\HotelBooking\AccommodationId;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 

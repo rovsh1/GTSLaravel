@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Module\Supplier\Moderation\Domain\Supplier\Entity;
 
-use Module\Booking\Shared\Domain\Shared\ValueObject\ContractId;
 use Module\Shared\Contracts\Domain\EntityInterface;
 use Module\Supplier\Moderation\Domain\Supplier\ValueObject\ServiceIdCollection;
 use Module\Supplier\Moderation\Domain\Supplier\ValueObject\SupplierId;
+use Sdk\Booking\ValueObject\ContractId;
 use Sdk\Shared\ValueObject\Date;
 
 class Contract implements EntityInterface

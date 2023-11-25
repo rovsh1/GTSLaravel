@@ -2,8 +2,8 @@
 
 namespace Sdk\Shared\ValueObject;
 
-use Module\Shared\Contracts\Support\CanCompare;
 use Sdk\Module\Foundation\Exception\ValidationException;
+use Sdk\Shared\Contracts\Support\CanCompare;
 
 class Price implements CanCompare
 {

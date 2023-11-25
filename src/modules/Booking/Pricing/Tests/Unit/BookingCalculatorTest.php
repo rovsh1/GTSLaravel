@@ -9,8 +9,8 @@ use Module\Booking\PriceCalculator\Domain\Service\HotelBooking\Formula\MarkupVar
 use Module\Booking\PriceCalculator\Domain\Service\HotelBooking\Formula\RoomVariables;
 use Module\Booking\PriceCalculator\Domain\Service\HotelBooking\RoomCalculator;
 use Module\Booking\PriceCalculator\Domain\Service\HotelBooking\VariablesBuilder;
-use Module\Booking\Shared\Domain\Booking\ValueObject\HotelBooking\BookingPeriod;
 use Module\Shared\Support\Testing\TestCase;
+use Sdk\Booking\ValueObject\HotelBooking\BookingPeriod;
 
 class BookingCalculatorTest extends TestCase
 {
