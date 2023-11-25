@@ -2,8 +2,8 @@
 
 namespace App\Admin\Exceptions;
 
+use App\Admin\Support\Facades\AppContext;
 use App\Admin\Support\Facades\Layout;
-use App\Shared\Support\Facades\AppContext;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;

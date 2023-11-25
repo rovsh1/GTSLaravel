@@ -45,7 +45,7 @@ class LandmarkController extends Controller
         $form = $this->formFactory($hotel->id, $hotel->city_id)
             ->method('post');
 
-        $form->trySubmit(route('hotels.landmark.create', $hotel));
+        $form->submitOrFail(route('hotels.landmark.create', $hotel));
 
         $data = $form->getData();
         $landmarkId = $data['landmark_id'];

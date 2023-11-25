@@ -3,9 +3,11 @@
 namespace App\Admin\Support\View\Form;
 
 use App\Admin\Exceptions\FormSubmitFailedException;
+use App\Admin\Support\Facades\AppContext;
 use Gsdk\Form\ElementInterface;
 use Gsdk\Form\FormBuilder as Base;
 use Illuminate\Database\Eloquent\Model;
+use Throwable;
 
 /**
  * @method self method(string $method)
@@ -58,17 +60,30 @@ class Form extends Base
         return parent::data($data);
     }
 
+    public function submit(): bool
+    {
+        if (!parent::submit()) {
+            return false;
+        }
+
+        AppContext::setSubmittedForm($this);
+
+        return true;
+    }
+
     /**
      * @throws FormSubmitFailedException
      */
-    public function trySubmit(?string $redirectUrl = null): void
+    public function submitOrFail(?string $redirectUrl = null): void
     {
         if ($this->submit()) {
             return;
         }
+
         if ($redirectUrl !== null) {
             $this->failUrl($redirectUrl);
         }
+
         $this->throwError();
     }
 
@@ -79,11 +94,8 @@ class Form extends Base
         return $this;
     }
 
-    public function throwException(\Throwable $error, ?string $redirectUrl = null): void
+    public function throwException(Throwable $error): void
     {
-        if ($redirectUrl !== null) {
-            $this->failUrl($redirectUrl);
-        }
         $this->error($error->getMessage());
         $this->throwError();
     }

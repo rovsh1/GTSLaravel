@@ -2,7 +2,7 @@
 
 namespace App\Admin\Providers;
 
-use App\Shared\Support\Facades\AppContext;
+use App\Admin\Support\Facades\AppContext;
 use Illuminate\Support\ServiceProvider;
 use Module\Shared\Enum\SourceEnum;
 

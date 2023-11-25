@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Infrastructure\Repository;
 
-use App\Shared\Support\Facades\AppContext;
 use Illuminate\Database\Eloquent\Builder;
 use Module\Booking\Shared\Domain\Order\Order;
 use Module\Booking\Shared\Domain\Order\Repository\OrderRepositoryInterface;
@@ -13,6 +12,7 @@ use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
 use Module\Booking\Shared\Domain\Shared\ValueObject\CreatorId;
 use Module\Booking\Shared\Infrastructure\Factory\OrderFactory;
 use Module\Booking\Shared\Infrastructure\Models\Order as Model;
+use Module\Shared\Contracts\Service\ApplicationContextInterface;
 use Module\Shared\Enum\CurrencyEnum;
 use Module\Shared\Enum\Order\OrderStatusEnum;
 use Sdk\Module\Foundation\Exception\EntityNotFoundException;
@@ -20,7 +20,8 @@ use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 class OrderRepository implements OrderRepositoryInterface
 {
     public function __construct(
-        private readonly OrderFactory $factory
+        private readonly OrderFactory $factory,
+        private readonly ApplicationContextInterface $context
     ) {}
 
     public function create(
@@ -34,7 +35,7 @@ class OrderRepository implements OrderRepositoryInterface
             'client_id' => $clientId->value(),
             'legal_id' => $legalId,
             'currency' => $currency,
-            'source' => AppContext::source(),
+            'source' => $this->context->source(),
             'creator_id' => $creatorId->value(),
         ]);
 

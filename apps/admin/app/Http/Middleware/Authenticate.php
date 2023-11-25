@@ -3,7 +3,7 @@
 namespace App\Admin\Http\Middleware;
 
 use App\Admin\Models\Administrator\Administrator;
-use App\Shared\Support\Facades\AppContext;
+use App\Admin\Support\Facades\AppContext;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 use Illuminate\Http\Request;
 

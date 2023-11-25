@@ -26,11 +26,12 @@ class CurrencyRateController extends AbstractPrototypeController
 
     public function store(): RedirectResponse
     {
-        $form = $this->formFactory()
-            ->method('post');
-
         $redirectUrl = $this->prototype->route('create');
-        $form->trySubmit($redirectUrl);
+        $form = $this->formFactory()
+            ->method('post')
+            ->failUrl($redirectUrl);
+
+        $form->submitOrFail();
         $this->validatePeriodIntersections($form, $redirectUrl);
 
         $preparedData = $this->saving($form->getData());
@@ -40,6 +41,7 @@ class CurrencyRateController extends AbstractPrototypeController
         if ($this->hasShowAction()) {
             $redirectUrl = $this->prototype->route('show', $this->model);
         }
+
         return redirect($redirectUrl);
     }
 
@@ -47,11 +49,12 @@ class CurrencyRateController extends AbstractPrototypeController
     {
         $this->model = $this->repository->findOrFail($id);
 
-        $form = $this->formFactory()
-            ->method('put');
-
         $redirectUrl = $this->prototype->route('edit', $this->model);
-        $form->trySubmit($redirectUrl);
+        $form = $this->formFactory()
+            ->method('put')
+            ->failUrl($redirectUrl);
+
+        $form->submitOrFail();
         $this->validatePeriodIntersections($form, $redirectUrl, $id);
 
         $preparedData = $this->saving($form->getData());
@@ -61,6 +64,7 @@ class CurrencyRateController extends AbstractPrototypeController
         if ($this->hasShowAction()) {
             $redirectUrl = $this->prototype->route('show', $this->model);
         }
+
         return redirect($redirectUrl);
     }
 
@@ -108,7 +112,11 @@ class CurrencyRateController extends AbstractPrototypeController
      * @return void
      * @throws FormSubmitFailedException
      */
-    private function validatePeriodIntersections(FormRequest $form, string $redirectUrl, ?int $toSkipCurrencyRateId = null): void {
+    private function validatePeriodIntersections(
+        FormRequest $form,
+        string $redirectUrl,
+        ?int $toSkipCurrencyRateId = null
+    ): void {
         $clientId = $form->getData()['client_id'];
         $clientRates = CurrencyRate::whereClientId($clientId)->get();
 
@@ -120,7 +128,9 @@ class CurrencyRateController extends AbstractPrototypeController
             }
             if ($period->overlaps($clientRate->period)) {
                 $exception = new FormSubmitFailedException();
-                $exception->setErrors(['period' => 'Невозможно создать несколько курсов валют с пересекающимися датами для одного клиента.']);
+                $exception->setErrors(
+                    ['period' => 'Невозможно создать несколько курсов валют с пересекающимися датами для одного клиента.']
+                );
                 $exception->setRedirectUrl($redirectUrl);
                 throw $exception;
             }

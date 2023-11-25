@@ -68,7 +68,7 @@ class ReviewController extends Controller
     {
         $form = $this->formFactory($hotel);
 
-        $form->trySubmit($this->prototype->route('reviews.create', $hotel));
+        $form->submitOrFail($this->prototype->route('reviews.create', $hotel));
 
         $data = $form->getData();
         $ratingFields = $this->getOnlyRatingFields($data);
@@ -112,7 +112,7 @@ class ReviewController extends Controller
     {
         $form = $this->formFactory($hotel)->method('put');
 
-        $form->trySubmit($this->prototype->route('reviews.update', [$hotel, $review]));
+        $form->submitOrFail($this->prototype->route('reviews.update', [$hotel, $review]));
 
         $data = $form->getData();
         $ratingFields = $this->getOnlyRatingFields($data);

@@ -53,7 +53,7 @@ class DefaultFormUpdateAction
     {
         [$failUrl, $successUrl] = $this->bootDefaultUrls();
 
-        $this->form->trySubmit($failUrl);
+        $this->form->submitOrFail($failUrl);
 
         $this->update($model, $this->form->getData());
 

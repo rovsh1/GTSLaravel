@@ -50,7 +50,7 @@ class ClientController extends AbstractPrototypeController
         $form = $this->formFactory()
             ->method('post');
 
-        $form->trySubmit($this->prototype->route('create'));
+        $form->submitOrFail($this->prototype->route('create'));
 
         $preparedData = $this->saving($form->getData());
         $this->model = $this->repository->create($preparedData);

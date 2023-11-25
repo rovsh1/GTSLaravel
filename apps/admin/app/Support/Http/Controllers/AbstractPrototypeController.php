@@ -100,9 +100,10 @@ abstract class AbstractPrototypeController extends Controller
     public function store(): RedirectResponse
     {
         $form = $this->formFactory()
-            ->method('post');
+            ->method('post')
+            ->failUrl($this->prototype->route('create'));
 
-        $form->trySubmit($this->prototype->route('create'));
+        $form->submitOrFail();
 
         $preparedData = $this->saving($form->getData());
         $this->model = $this->repository->create($preparedData);
@@ -154,9 +155,10 @@ abstract class AbstractPrototypeController extends Controller
         $this->model = $this->repository->findOrFail($id);
 
         $form = $this->formFactory()
-            ->method('put');
+            ->method('put')
+            ->failUrl($this->prototype->route('edit', $this->model));
 
-        $form->trySubmit($this->prototype->route('edit', $this->model));
+        $form->submitOrFail();
 
         $preparedData = $this->saving($form->getData());
         $this->repository->update($this->model->id, $preparedData);

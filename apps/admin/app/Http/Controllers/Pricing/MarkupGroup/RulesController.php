@@ -65,11 +65,12 @@ class RulesController extends Controller
 
     public function store(MarkupGroup $markupGroup): RedirectResponse
     {
-        $form = $this->formFactory($markupGroup)
-            ->method('post');
-
         $fallbackUrl = $this->prototype->route('rules.create', $markupGroup);
-        $form->trySubmit($fallbackUrl);
+        $form = $this->formFactory($markupGroup)
+            ->method('post')
+            ->failUrl($fallbackUrl);
+
+        $form->submitOrFail();
 
         $data = $form->getData();
         $hotelId = $data['hotel_id'] ?? null;
@@ -79,7 +80,7 @@ class RulesController extends Controller
             $existRuleQuery->whereRoomId($roomId);
         }
         if ($existRuleQuery->exists()) {
-            $form->throwException(new \RuntimeException('Наценка уже существует. Обновите её вместо создания новой.'), $fallbackUrl);
+            $form->throwException(new \RuntimeException('Наценка уже существует. Обновите её вместо создания новой.'));
         }
 
         $this->model = MarkupGroupRule::create($form->getData());
@@ -115,7 +116,7 @@ class RulesController extends Controller
         $form = $this->formFactory($markupGroup)
             ->method('put');
 
-        $form->trySubmit($this->prototype->route('rules.edit', [$markupGroup, $this->model]));
+        $form->submitOrFail($this->prototype->route('rules.edit', [$markupGroup, $this->model]));
 
         MarkupGroupRule::whereId($id)->update($form->getData());
 

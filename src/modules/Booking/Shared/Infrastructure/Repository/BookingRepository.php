@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Infrastructure\Repository;
 
-use App\Shared\Support\Facades\AppContext;
 use Illuminate\Database\Eloquent\Builder;
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
@@ -16,6 +15,7 @@ use Module\Booking\Shared\Domain\Order\ValueObject\OrderId;
 use Module\Booking\Shared\Domain\Shared\ValueObject\CancelConditions;
 use Module\Booking\Shared\Domain\Shared\ValueObject\CreatorId;
 use Module\Booking\Shared\Infrastructure\Models\Booking as BookingModel;
+use Module\Shared\Contracts\Service\ApplicationContextInterface;
 use Module\Shared\Enum\Booking\BookingStatusEnum;
 use Module\Shared\Enum\ServiceTypeEnum;
 use Module\Shared\Support\RepositoryInstances;
@@ -26,7 +26,9 @@ class BookingRepository implements BookingRepositoryInterface
 {
     private RepositoryInstances $instances;
 
-    public function __construct()
+    public function __construct(
+        private readonly ApplicationContextInterface $context
+    )
     {
         $this->instances = new RepositoryInstances();
     }
@@ -113,7 +115,7 @@ class BookingRepository implements BookingRepositoryInterface
             'order_id' => $orderId->value(),
             'service_type' => $serviceType,
             'status' => BookingStatusEnum::CREATED,
-            'source' => AppContext::source(),
+            'source' => $this->context->source(),
             'creator_id' => $creatorId->value(),
             'client_price' => $clientPrice->calculatedValue(),
             'client_manual_price' => $clientPrice->manualValue(),

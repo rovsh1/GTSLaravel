@@ -18,7 +18,7 @@ class DefaultFormStoreAction
      */
     public function handle(string $model): RedirectResponse
     {
-        $this->form->trySubmit($this->getDefaultFailUrl());
+        $this->form->submitOrFail($this->getDefaultFailUrl());
 
         $model::create($this->form->getData());
 

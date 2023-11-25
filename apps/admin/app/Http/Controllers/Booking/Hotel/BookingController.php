@@ -91,7 +91,7 @@ class BookingController extends Controller
             ->method('post')
             ->failUrl($this->prototype->route('create'));
 
-        $form->trySubmit();
+        $form->submitOrFail();
 
         $data = $form->getData();
         $creatorId = request()->user()->id;
@@ -187,7 +187,7 @@ class BookingController extends Controller
             ->method('put')
             ->failUrl($this->prototype->route('edit', $id));
 
-        $form->trySubmit();
+        $form->submitOrFail();
 
         $data = $form->getData();
         try {

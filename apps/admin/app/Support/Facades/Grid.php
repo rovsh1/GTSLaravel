@@ -8,7 +8,7 @@ use Gsdk\Grid\Paginator;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static \App\Admin\Support\View\Grid\Grid edit(Prototype|string|array $options)
+ * @method static \App\Admin\Support\View\Grid\Grid edit(Prototype|string|array|callable $options)
  * @method static \App\Admin\Support\View\Grid\Grid enableQuicksearch()
  * @method static \App\Admin\Support\View\Grid\Grid setSearchForm(Form $form)
  * @method static \App\Admin\Support\View\Grid\Grid data(mixed $data)

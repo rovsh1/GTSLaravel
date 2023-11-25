@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Shared\Support\Facades;
+namespace App\Admin\Support\Facades;
 
+use App\Admin\Support\Context\ContextManager;
+use App\Admin\Support\View\Form\Form;
 use Illuminate\Support\Facades\Facade;
 use Module\Shared\Contracts\Service\ApplicationContextInterface;
 use Module\Shared\Enum\Context\ContextChannelEnum;
@@ -23,12 +25,17 @@ use Module\Shared\Enum\SourceEnum;
  * @method static void addTag(string $tag)
  * @method static void setException(\Throwable $exception)
  * @method static void setErrorCode(int $code)
+ * @method static Form|null submittedForm()
+ * @method static void setSubmittedForm(Form $form)
  * @method static array toArray(array $extra = [])
+ *
+ * @see ApplicationContextInterface
+ * @see ContextManager
  */
 class AppContext extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return ApplicationContextInterface::class;
+        return ContextManager::class;
     }
 }

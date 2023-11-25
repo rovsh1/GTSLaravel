@@ -91,10 +91,10 @@ class BookingController extends Controller
     public function store(): RedirectResponse
     {
         $form = $this->formFactory()
-            ->method('post');
+            ->method('post')
+            ->failUrl(route('service-booking.create'));
 
-        $redirectUrl = route('service-booking.create');
-        $form->trySubmit($redirectUrl);
+        $form->submitOrFail();
 
         $data = $form->getData();
         $creatorId = request()->user()->id;
@@ -122,7 +122,7 @@ class BookingController extends Controller
                 note: $data['note'] ?? null,
             );
         } catch (ApplicationException $e) {
-            $form->throwException($e, $redirectUrl);
+            $form->throwException($e);
         }
 
         return redirect(
@@ -160,7 +160,7 @@ class BookingController extends Controller
             ->method('put')
             ->failUrl($this->prototype->route('edit', $id));
 
-        $form->trySubmit();
+        $form->submitOrFail();
 
         $data = $form->getData();
         try {
@@ -276,7 +276,7 @@ class BookingController extends Controller
 
     public function recalculatePrices(int $id): AjaxResponseInterface
     {
-            PriceAdapter::recalculatePrices($id);
+        PriceAdapter::recalculatePrices($id);
 
         return new AjaxSuccessResponse();
     }
