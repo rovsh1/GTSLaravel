@@ -77,10 +77,10 @@ const handleChangePrice = async (priceNet?: number, pricesGross?: Money[]): Prom
     supplierId,
     priceNet,
     pricesGross,
-    currency: 'UZS', // @todo валюта поставщика,
+    currency: 'UZS',
   })
   isReFetchPrices.value = true
-  isModalLoading.value = true
+  isModalLoading.value = false
   toggleModal()
 }
 
