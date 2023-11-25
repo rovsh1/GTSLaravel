@@ -10,9 +10,12 @@ import { OrderAvailableActionsResponse } from '~api/order/status'
 
 import { formatDateTime } from '~lib/date'
 
+import { showToast } from '~components/Bootstrap/BootstrapToast'
+import InlineIcon from '~components/InlineIcon.vue'
+
 const orderStore = useOrderStore()
 const availableActions = computed<OrderAvailableActionsResponse | null>(() => orderStore.availableActions)
-const isRequestableStatus = computed<boolean>(() => true) // availableActions.value?.isRequestable
+const isRequestableStatus = computed(() => true) // availableActions.value?.isRequestable
 
 const invoiceStore = useOrderInvoiceStore()
 
@@ -32,7 +35,15 @@ const handleCancelInvoice = async () => {
 }
 
 const handleInvoiceSend = async () => {
-  await invoiceStore.sendInvoice()
+  try {
+    await invoiceStore.sendInvoice()
+    showToast({ title: 'Инвойс успешно отправлен' }, {
+      type: 'success',
+    })
+  } catch (error) {
+    await orderStore.refreshOrder()
+    return
+  }
   await orderStore.refreshOrder()
 }
 </script>
@@ -40,19 +51,47 @@ const handleInvoiceSend = async () => {
 <template>
   <div class="order-invoice">
     <div v-if="orderInvoice" class="d-flex flex-row justify-content-between w-100 py-1">
-      <div>
-        Инвойс
-        <span class="date align-left ml-1"> от {{ formatDateTime(orderInvoice.createdAt) }}</span>
+      <div class="d-flex align-items-center">
+        <div>
+          Инвойс
+          <span class="date align-left ml-1"> от {{ formatDateTime(orderInvoice.createdAt) }}</span>
+        </div>
       </div>
-      <div class="flex gap-2">
-        <a href="#" class="btn-download" @click.prevent="invoiceStore.downloadFile()">Скачать</a>
-        <a v-if="availableActions?.canSendInvoice" href="#" class="btn-download" @click.prevent="handleInvoiceSend">Отправить</a>
-        <a v-if="availableActions?.canCancelInvoice" href="#" class="btn-download" @click.prevent="handleCancelInvoice">Удалить</a>
+      <div class="d-flex gap-2">
+        <a
+          v-if="availableActions?.canSendInvoice"
+          v-tooltip="'Отправить'"
+          href="#"
+          class="btn-download"
+          aria-label="Отправить"
+          @click.prevent="handleInvoiceSend"
+        >
+          <InlineIcon icon="mail" />
+        </a>
+        <a
+          v-tooltip="'Скачать'"
+          href="#"
+          class="btn-download"
+          aria-label="Скачать"
+          @click.prevent="invoiceStore.downloadFile()"
+        >
+          <InlineIcon icon="download" />
+        </a>
+        <a
+          v-if="availableActions?.canCancelInvoice"
+          v-tooltip="'Отменить'"
+          href="#"
+          class="btn-download"
+          aria-label="Отменить"
+          @click.prevent="handleCancelInvoice"
+        >
+          <InlineIcon icon="delete" />
+        </a>
       </div>
     </div>
   </div>
 
-  <div v-if="isRequestableStatus && !orderInvoice" class="mt-2">
+  <div v-if="isRequestableStatus && !orderInvoice">
     <RequestBlock
       v-if="availableActions?.canCreateInvoice"
       text="При необходимости клиенту можно сформировать инвойс"
@@ -65,7 +104,7 @@ const handleInvoiceSend = async () => {
   <div v-if="!isRequestableStatus && !orderInvoice">
     <RequestBlock
       :show-button="false"
-      text="Инвоисов нет"
+      text="Нет сформированных инвойсов"
     />
   </div>
 </template>

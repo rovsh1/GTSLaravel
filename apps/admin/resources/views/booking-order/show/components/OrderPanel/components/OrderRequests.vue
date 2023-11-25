@@ -45,7 +45,7 @@ const handleVoucherSend = async () => {
     </div>
   </div>
 
-  <div v-if="isRequestableStatus" :class="{ 'mt-2': orderVouchers?.length }">
+  <div v-if="isRequestableStatus" class="mb-2">
     <RequestBlock
       v-if="canSendVoucher"
       text="При необходимости клиенту можно отправить ваучер"
@@ -55,7 +55,7 @@ const handleVoucherSend = async () => {
       @click="handleVoucherSend"
     />
   </div>
-  <div v-if="!isRequestableStatus && !orderVouchers?.length">
+  <div v-if="!isRequestableStatus && !orderVouchers?.length" class="mb-2">
     <RequestBlock
       :show-button="false"
       text="Ваучеры клиенту не отправлялись"
