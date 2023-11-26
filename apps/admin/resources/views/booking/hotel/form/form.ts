@@ -75,9 +75,6 @@ $(async () => {
         disabledText: 'Выберите клиента',
         parent: $clientIdInput,
         dataIndex: 'client_id',
-        allowEmpty: true,
-        emptyText: false,
-        emptyItem: 'Пусто',
       })
     }
   }
@@ -149,7 +146,6 @@ $(async () => {
     parent: $clientIdSelect,
     dataIndex: 'client_id',
     allowEmpty: true,
-    emptyText: false,
     emptyItem: 'Создать новый заказ',
     labelGetter: (order: Record<string, any>) => `№${order.id} от ${formatDate(order.createdAt)}`,
     childChange: toggleOrderFields,

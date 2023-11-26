@@ -184,6 +184,7 @@ const handleAddRoom = (): void => {
 
 const handleEditRoom = (roomBookingId: number, room: HotelRoomBooking): void => {
   editRoomBookingId.value = roomBookingId
+
   roomForm.value = {
     id: room.roomInfo.id,
     discount: room.details.discount,

@@ -4,6 +4,7 @@ import { Options } from 'select2'
 import './style.scss'
 
 export const selectElementDropDownContainer = '.select2-container'
+const parentElementClass = 'child-combo-parent-element'
 
 type SelectElementOptions = {
   disabled?: boolean
@@ -25,19 +26,15 @@ class SelectElement {
     this.element = $(initElement)
     if (this.element.data('select2')) {
       this.element.select2('destroy')
-      this.element.off()
+      if (!this.element.hasClass(parentElementClass)) {
+        this.element.off()
+      }
     }
     this.select2Instance = this.initializeSelect2(options)
   }
 
   private initializeSelect2(options: Options): JQuery<HTMLElement> {
     return this.element.select2(options)
-  }
-
-  public toogleDisabled(state: boolean): void {
-    this.select2Instance.prop('disabled', state)
-    this.select2Instance.select2('close')
-    this.select2Instance.trigger('change')
   }
 }
 
@@ -115,11 +112,13 @@ const initializeSelectElement = (element: HTMLSelectElement, options?: SelectEle
             e.stopPropagation()
             if (isAllOptionsSelected) {
               self.$element.val([]).trigger('change')
+              self.$element.trigger('select2:unselect')
               self.$element.select2('close')
               self.$element.select2('open')
             } else {
               const allItems = self.$element.find('option').toArray().map((option: any) => $(option).attr('value'))
               self.$element.val(allItems).trigger('change')
+              self.$element.trigger('select2:select')
               self.$element.select2('close')
               self.$element.select2('open')
             }
@@ -246,6 +245,7 @@ const initializeSelectElement = (element: HTMLSelectElement, options?: SelectEle
               $(e.target).hide()
               $(e.target).next().find('.select2-selection__rendered').addClass('disabled-actions')
               self.$element.val([]).trigger('change')
+              self.$element.trigger('select2:select')
               self.$element.select2('close')
             })
           }

@@ -64,9 +64,6 @@ $(async () => {
       $legalIdInput.childCombo({
         url: '/client/legals/search',
         disabledText: 'Выберите клиента',
-        allowEmpty: true,
-        emptyText: false,
-        emptyItem: 'Пусто',
         parent: $clientIdInput,
         dataIndex: 'client_id',
       })
@@ -108,7 +105,6 @@ $(async () => {
     parent: $clientIdSelect,
     dataIndex: 'client_id',
     allowEmpty: true,
-    emptyText: false,
     emptyItem: 'Создать новый заказ',
     labelGetter: (order: Record<string, any>) => `№${order.id} от ${formatDate(order.createdAt)}`,
     childChange: toggleOrderFields,

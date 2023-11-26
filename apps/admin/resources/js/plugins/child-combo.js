@@ -18,7 +18,7 @@ $.fn.childCombo = async function (options) {
   if (!parent.length) {
     return $(this).attr('id')
   }
-
+  parent.addClass('child-combo-parent-element')
   let child = $(this)
   const isMultiple = child.attr('multiple')
   const value = preparedOptions.value || child.val()
@@ -36,6 +36,7 @@ $.fn.childCombo = async function (options) {
         class: 'form-select',
         id: child.attr('id'),
         name: child.attr('name'),
+        required: child.attr('required'),
         multiple: 'multiple',
         disabled: childDisabled
       })
@@ -44,6 +45,7 @@ $.fn.childCombo = async function (options) {
         class: 'form-select',
         id: child.attr('id'),
         name: child.attr('name'),
+        required: child.attr('required'),
         disabled: childDisabled
       })
     }
@@ -72,7 +74,6 @@ $.fn.childCombo = async function (options) {
     if (preparedOptions.dateRange && parent.val().length < 14) {
       return
     }
-
     trigger('change')
 
     child.prop('disabled', true)
@@ -109,12 +110,8 @@ $.fn.childCombo = async function (options) {
     if (preparedOptions.urlGetter) {
       url = preparedOptions.urlGetter(parent.val())
     }
-    console.log('tyt')
     axios.get(url, { params: data }).then(async (result) => {
       child.html('')
-      await useSelectElement(child[0], {
-        multiple: isMultiple,
-      })
       const items = result[preparedOptions.resultIndex]
       const val = [];
       let i;
@@ -125,30 +122,19 @@ $.fn.childCombo = async function (options) {
           child.parent().hide()
         }
         if (preparedOptions.allowEmpty) {
-          if (preparedOptions.emptyItem !== false) {
-            child.append(`<option value=''>${preparedOptions.emptyItem}</option>`)
-            child.prop('disabled', false)
-          }
+          child.append(`<option value=''>${preparedOptions.emptyItem}</option>`)
         }
-        if (preparedOptions.emptyText !== false) {
-          setSelect2PlaceholderValue(preparedOptions.emptyText)
-        }
+        child.prop('disabled', false)
+        await useSelectElement(child[0], {
+          multiple: isMultiple,
+        })
+        setSelect2PlaceholderValue(preparedOptions.emptyText)
         trigger('load', items)
         return
       }
 
-      if (preparedOptions.emptyItem !== false) {
-        setSelect2PlaceholderValue(preparedOptions.emptyItem)
-      }
-
       if (preparedOptions.allowEmpty) {
-        if (preparedOptions.emptyItem !== false) {
-          child.append(`<option selected value=''>${preparedOptions.emptyItem}</option>`)
-        }
-      }
-
-      if (preparedOptions.emptyText !== false) {
-        setSelect2PlaceholderValue(preparedOptions.emptyText)
+        child.append(`<option value=''>${preparedOptions.emptyItem}</option>`)
       }
 
       for (i = 0; i < l; i++) {
@@ -173,7 +159,7 @@ $.fn.childCombo = async function (options) {
       if (val.length) {
         child.val(isMultiple ? val : val[0])
       } else {
-        if (preparedOptions.allowEmpty && preparedOptions.emptyItem !== false) {
+        if (preparedOptions.allowEmpty && preparedOptions.emptyItem !== '') {
           child.val('')
         } else {
           child.val([])

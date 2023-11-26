@@ -13,6 +13,5 @@ $(() => {
     disabledText: 'Выберите тип услуги',
     parent: $('#form_data_service_type'),
     dataIndex: 'type',
-    useSelect2: true,
   })
 })

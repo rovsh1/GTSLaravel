@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 
 import $ from 'jquery'
 import { nanoid } from 'nanoid'
@@ -10,7 +10,7 @@ import { SelectOption } from '~components/Bootstrap/lib'
 
 type LabelStyle = 'default' | 'outline'
 
-type SelectValue = Array<string | number> | string | number | null | undefined
+type SelectValue = Array<string | number> | string | number | undefined
 
 const props = withDefaults(defineProps<{
   value: SelectValue
@@ -44,7 +44,7 @@ const props = withDefaults(defineProps<{
 })
 
 const emit = defineEmits<{
-  (event: 'change', value: any): void
+  (event: 'change', value: any, element: any): void
 }>()
 
 const id = `select-element-${nanoid()}`
@@ -77,7 +77,7 @@ const isSameValues = (oldValue: SelectValue, newValue: SelectValue): boolean => 
   if (Array.isArray(oldValue) && Array.isArray(newValue)) {
     return oldValue.length === newValue.length && oldValue.every((value, index) =>
       value.toString().trim() === newValue[index].toString().trim())
-  } if (oldValue === newValue) {
+  } if (oldValue?.toString() === newValue?.toString()) {
     return true
   }
   return false
@@ -99,27 +99,33 @@ const initSelectElement = async () => {
   })
   componentInstance.value = instance
   setValue(props.value)
-  componentInstance.value?.select2Instance.on('change', (e: any) => {
+  componentInstance.value?.select2Instance.on(`select2:select ${props.multiple ? 'select2:unselect' : ''}`, (e: any) => {
     const selectedValues = $(e.target).val()
-    emit('change', selectedValues)
+    if (!isSameValues(props.value, selectedValues)) {
+      emit('change', selectedValues || undefined, e.target)
+    }
   })
 }
 
 onMounted(async () => {
-  await initSelectElement()
+  await nextTick(async () => {
+    await initSelectElement()
+  })
 })
 
 watch(
   [() => props.options, () => props.disabled, () => props.disabledPlaceholder],
-  async () => {
-    await initSelectElement()
+  () => {
+    nextTick(async () => {
+      await initSelectElement()
+    })
   },
 )
 
 watch(
   () => props.value,
-  (newValue) => {
-    if (!isSameValues(props.value, newValue)) {
+  (newValue, oldValue) => {
+    if (!isSameValues(oldValue, newValue)) {
       setValue(newValue)
     }
   },
@@ -166,7 +172,7 @@ watch(
 }
 
 .select-height-control,
-.select2  {
+.select2 {
   min-height: 34px;
 }
 

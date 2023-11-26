@@ -21,7 +21,6 @@ import { HotelRoomResponse } from '~api/hotel/room'
 import { requestInitialData } from '~lib/initial-data'
 
 import BaseDialog from '~components/BaseDialog.vue'
-import BootstrapSelectBase from '~components/Bootstrap/BootstrapSelectBase.vue'
 import { SelectOption } from '~components/Bootstrap/lib'
 import SelectComponent from '~components/SelectComponent.vue'
 
@@ -202,7 +201,7 @@ const resetForm = () => {
 watch(() => props.opened, async (opened) => {
   if (opened) {
     await fetchAvailableRooms()
-    setPreparedRooms()
+    await setPreparedRooms()
   }
 })
 
@@ -218,10 +217,10 @@ watch(() => props.opened, async (opened) => {
           label="Номер"
           :disabled="preparedRooms.length === 0"
           disabled-placeholder="Нет доступных квот на заданный период"
-          :allow-empty-item="true"
           :value="formData.id"
-          @change="(value) => {
+          @change="(value, event) => {
             handleChangeRoomId(value)
+            isDataValid(event, value)
           }"
         />
       </div>
@@ -232,53 +231,55 @@ watch(() => props.opened, async (opened) => {
           label="Тариф"
           :disabled="!formData.id || isRoomDataFetching"
           :disabled-placeholder="'Выберите номер'"
-          :allow-empty-item="true"
           :value="formData.rateId"
-          @change="(value) => {
+          @change="(value, event) => {
             formData.rateId = value as number
+            isDataValid(event, value)
           }"
         />
       </div>
       <div class="col-md-6">
-        <BootstrapSelectBase
-          id="resident_type"
-          label="Тип стоимости"
+        <SelectComponent
           :options="residentTypeOptions"
-          :value="formData.residentType as number"
           required
-          @input="(value, event) => {
+          label="Тип стоимости"
+          :value="formData.residentType"
+          @change="(value, event) => {
             formData.residentType = value as number
             isDataValid(event, value)
           }"
         />
       </div>
       <div class="col-md-6">
-        <BootstrapSelectBase
-          id="discount"
-          label="Скидка"
+        <SelectComponent
           :options="discounts"
-          :value="formData.discount as number"
+          label="Скидка"
+          :value="formData.discount"
           :disabled="!formData.id || isRoomDataFetching || discounts.length === 0"
           :disabled-placeholder="!formData.id ? 'Выберите номер' : ''"
-          @input="value => formData.discount = value as number"
+          @change="(value) => {
+            formData.discount = value as number
+          }"
         />
       </div>
       <div class="col-md-6">
-        <BootstrapSelectBase
-          id="early_checkin"
+        <SelectComponent
           :options="earlyCheckIn"
           label="Ранний заезд"
           :value="earlyCheckInValue"
-          @input="value => earlyCheckInValue = value as string"
+          @change="(value) => {
+            earlyCheckInValue = value as string
+          }"
         />
       </div>
       <div class="col-md-6">
-        <BootstrapSelectBase
-          id="late_checkout"
+        <SelectComponent
           :options="lateCheckOut"
           label="Поздний выезд"
           :value="lateCheckOutValue"
-          @input="value => lateCheckOutValue = value as string"
+          @change="(value) => {
+            lateCheckOutValue = value as string
+          }"
         />
       </div>
       <div class="col-md-12">
