@@ -29,7 +29,6 @@ const emit = defineEmits<{
 }>()
 
 const periodElementID = `${nanoid()}_period`
-const priceTypesElementID = `${nanoid()}_price-types`
 const priceElementID = `${nanoid()}_price-filter`
 
 const seasonFormData = reactive<SeasonUpdateFormData>({

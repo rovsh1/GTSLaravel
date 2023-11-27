@@ -76,7 +76,7 @@ const roomRatesPayload = ref<{
 }>({ hotelID, roomID: formData.value.id as number })
 
 const { execute: fetchRoomRates, data: roomRates, isFetching: isRoomDataFetching } = useHotelRatesAPI(roomRatesPayload)
-const { data: roomMarkupSettings, execute: fetchRoomMarkupSettings } = useHotelRoomMarkupSettings(roomRatesPayload)
+const { data: roomMarkupSettings } = useHotelRoomMarkupSettings(roomRatesPayload) // execute: fetchRoomMarkupSettings
 
 const isFetching = ref<boolean>(false)
 const modalForm = ref<HTMLFormElement>()

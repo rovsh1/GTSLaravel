@@ -34,8 +34,6 @@ const actionsOptions: ActionsOption[] = [
 ]
 
 const periodElementID = `${nanoid()}_period`
-const priceTypesElementID = `${nanoid()}_price-types`
-const roomsElementID = `${nanoid()}_rooms`
 
 const updateQuotasFormData = reactive<QuotasStatusUpdateFormData>({
   period: props.initialPeriod,

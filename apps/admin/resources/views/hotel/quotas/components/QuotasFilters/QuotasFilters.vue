@@ -41,7 +41,6 @@ const defaultState = {
 const periodError = ref<boolean>(false)
 
 const periodElementID = `${nanoid()}_period`
-const roomsElementID = `${nanoid()}_rooms`
 
 const selectedPeriod = ref<[Date, Date]>([defaultState.dateFrom, defaultState.dateTo])
 
