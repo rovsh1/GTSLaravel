@@ -28,7 +28,6 @@ class Module extends Container implements ModuleInterface, ContainerInterface
         $this->instance(ContainerInterface::class, $this);
         $this->registerBaseBindings();
         $this->registerBaseServiceProviders();
-        $this->register($this->namespace('Providers\BootServiceProvider'));
     }
 
     public function config(string $name = null)
