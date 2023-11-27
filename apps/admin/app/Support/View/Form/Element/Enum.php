@@ -3,8 +3,9 @@
 namespace App\Admin\Support\View\Form\Element;
 
 use App\Admin\Support\Facades\Format;
+use Gsdk\Form\Element\Select;
 
-class Enum extends BaseSelect
+class Enum extends Select
 {
     protected array $options = [
         'enum'

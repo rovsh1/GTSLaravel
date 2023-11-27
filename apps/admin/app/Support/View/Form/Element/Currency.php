@@ -3,8 +3,9 @@
 namespace App\Admin\Support\View\Form\Element;
 
 use App\Admin\Models\Reference\Currency as Model;
+use Gsdk\Form\Element\Select;
 
-class Currency extends BaseSelect
+class Currency extends Select
 {
     public function __construct(string $name, array $options = [])
     {
