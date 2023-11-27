@@ -26,6 +26,10 @@
         top: 50%;
         transform: translateY(-50%);
         background-color: #fff;
+        height: 80%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
         &:hover {
             text-decoration: none;
@@ -54,5 +58,26 @@
 .select2-container--bootstrap4 .select2-results__option--disabled {
     display: none;
 }
+
+
+.select2-minimize {
+    .select2-selection--single {
+        font-size: 0.68rem !important;
+
+        .select2-selection__rendered a {
+            font-size: 0.68rem !important;
+            top: 50%;
+        }
+
+        .select2-results {
+            font-size: 0.68rem !important;
+        }
+    }
+
+    .select2 {
+        min-height: auto !important;
+    }
+}
+
 
 /* stylelint-enable */

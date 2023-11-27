@@ -10,8 +10,8 @@ import { CarFormData } from '~resources/views/booking/shared/lib/data-types'
 import { Car } from '~api/supplier/cars'
 
 import BaseDialog from '~components/BaseDialog.vue'
-import BootstrapSelectBase from '~components/Bootstrap/BootstrapSelectBase.vue'
 import { SelectOption } from '~components/Bootstrap/lib'
+import SelectComponent from '~components/SelectComponent.vue'
 
 const props = withDefaults(defineProps<{
   opened: MaybeRef<boolean>
@@ -126,16 +126,15 @@ watch(() => props.opened, () => {
     <template #title>{{ titleText }}</template>
     <form class="row g-3">
       <div class="col-md-12">
-        <BootstrapSelectBase
-          id="car_id"
+        <SelectComponent
           :options="carsOptions"
           label="Модель автомобиля"
-          :value="formData.carId as number"
           required
-          @input="(value: any, event: any) => {
-            formData.carId = value as number
+          :value="formData.carId"
+          @change="(value, event) => {
+            formData.carId = value ? Number(value) : value
             isDataValid(event, value)
-            setSelectedCar(value)
+            setSelectedCar(formData.carId)
           }"
         />
       </div>
@@ -155,30 +154,29 @@ watch(() => props.opened, () => {
         </div>
       </div>
       <div class="col-md-12">
-        <BootstrapSelectBase
-          id="passenger_count"
+        <SelectComponent
           :options="passengersOptions"
           label="Количествово пассажиров"
           :disabled="!formData.carId"
-          :value="formData.passengersCount as number"
           required
-          @input="(value: any, event: any) => {
-            formData.passengersCount = value as number
+          :value="formData.passengersCount"
+          @change="(value, event) => {
+            formData.passengersCount = value ? Number(value) : value
             isDataValid(event, value)
           }"
         />
       </div>
       <div class="col-md-12">
-        <BootstrapSelectBase
-          id="baggage_count"
+        <SelectComponent
           :options="baggageOptions"
           label="Количествово багажа"
           :disabled="!formData.carId"
-          :value="formData.baggageCount as number || undefined"
-          :show-empty-item="true"
-          empty-item-text="Нет"
-          @input="(value: any, event: any) => {
-            formData.baggageCount = value as number
+          :value="formData.baggageCount || undefined"
+          :allow-empty-item="true"
+          empty-item="Нет"
+          @change="(value, event) => {
+            formData.passengersCount = value ? Number(value) : value
+            formData.baggageCount = value ? Number(value) : value
           }"
         />
       </div>

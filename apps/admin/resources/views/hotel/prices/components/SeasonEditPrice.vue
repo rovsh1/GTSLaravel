@@ -11,7 +11,7 @@ import { daysOfWeekOptions } from '~lib/constants'
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
 import { showToast } from '~components/Bootstrap/BootstrapToast'
 import DateRangePicker from '~components/DateRangePicker.vue'
-import MultiSelect from '~components/MultiSelect.vue'
+import SelectComponent from '~components/SelectComponent.vue'
 
 import { stringToNumber } from '../lib/convert'
 import { PricesAccumulationData, SeasonPeriod, SeasonUpdateFormData } from '../lib/types'
@@ -78,14 +78,17 @@ const onSubmitUpdateData = async () => {
       />
     </div>
     <div class="form-field field-select field-days field-required">
-      <MultiSelect
-        :id="priceTypesElementID"
-        label="Выберите дни недели"
-        :label-margin="false"
-        required
-        :value="seasonFormData.daysWeekSelected"
+      <SelectComponent
         :options="daysOfWeekOptions"
-        @input="value => seasonFormData.daysWeekSelected = value"
+        label="Выберите дни недели"
+        :value="seasonFormData.daysWeekSelected"
+        required
+        multiple
+        placeholder="Не выбрано"
+        :minimize="true"
+        @change="(value) => {
+          seasonFormData.daysWeekSelected = value
+        }"
       />
     </div>
     <div class="form-field field-price field-required">
@@ -93,7 +96,13 @@ const onSubmitUpdateData = async () => {
       <input :id="priceElementID" v-model="seasonFormData.price" required type="text" class="form-control">
     </div>
     <div class="form-field form-button">
-      <BootstrapButton label="Обновить" size="small" severity="primary" :disabled="!isValidForm" @click="onSubmitUpdateData" />
+      <BootstrapButton
+        label="Обновить"
+        size="small"
+        severity="primary"
+        :disabled="!isValidForm"
+        @click="onSubmitUpdateData"
+      />
     </div>
   </div>
 </template>

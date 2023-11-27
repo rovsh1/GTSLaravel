@@ -7,10 +7,9 @@ import { HotelRoom } from '~api/hotel/room'
 
 import { daysOfWeekOptions } from '~lib/constants'
 
-import CompactSelect from '~components/Bootstrap/CompactSelect.vue'
 import DateRangePicker from '~components/DateRangePicker.vue'
-import MultiSelect from '~components/MultiSelect.vue'
 import OverlayLoading from '~components/OverlayLoading.vue'
+import SelectComponent from '~components/SelectComponent.vue'
 
 import { Action, ActionsOption, QuotasStatusUpdateFormData, QuotasStatusUpdatePayload } from './lib/types'
 
@@ -94,42 +93,47 @@ watch(() => props.reInitForm, (newValue) => {
       />
     </div>
     <div class="form-field field-select field-required mb-4">
-      <MultiSelect
-        :id="priceTypesElementID"
-        label="Выберите дни недели"
-        :label-margin="false"
-        :label-outline="false"
-        required
-        :disabled="disabled"
-        :value="updateQuotasFormData.daysWeekSelected"
+      <SelectComponent
         :options="daysOfWeekOptions"
-        :close-after-click-select-all="true"
-        @input="value => updateQuotasFormData.daysWeekSelected = value"
+        label="Выберите дни недели"
+        label-style="outline"
+        :value="updateQuotasFormData.daysWeekSelected"
+        required
+        multiple
+        placeholder="Не выбрано"
+        :disabled="disabled"
+        @change="(value) => {
+          updateQuotasFormData.daysWeekSelected = value
+        }"
       />
     </div>
     <div class="form-field field-select field-required mb-4">
-      <MultiSelect
-        :id="roomsElementID"
-        label="Выберите номер(а)"
-        :label-outline="false"
-        required
-        :disabled="disabled"
-        :label-margin="false"
-        :value="updateQuotasFormData.selectedRoomsID"
+      <SelectComponent
         :options="rooms"
-        :close-after-click-select-all="true"
-        @input="value => updateQuotasFormData.selectedRoomsID = value"
+        label="Выберите номер(а)"
+        label-style="outline"
+        :value="updateQuotasFormData.selectedRoomsID"
+        required
+        multiple
+        placeholder="Не выбрано"
+        :disabled="disabled"
+        @change="(value) => {
+          updateQuotasFormData.selectedRoomsID = value
+        }"
       />
     </div>
     <div class="form-field field-select field-required">
-      <CompactSelect
+      <SelectComponent
         :options="actionsOptions"
         label="Действие"
+        label-style="outline"
         required
         :disabled="disabled"
-        :value="updateQuotasFormData.action || ''"
-        allow-deselect
-        @input="(value) => {
+        :value="updateQuotasFormData.action"
+        :allow-empty-item="true"
+        empty-item="Не выбрано"
+        :returned-empty-value="''"
+        @change="(value) => {
           updateQuotasFormData.action = value.toString() as unknown as Action
         }"
       />

@@ -24,7 +24,6 @@ import { createClient, useIndustryListAPI } from '~api/client'
 import { useApplicationEventBus } from '~lib/event-bus'
 
 import BaseDialog from '~components/BaseDialog.vue'
-import BootstrapSelectBase from '~components/Bootstrap/BootstrapSelectBase.vue'
 import BootstrapTabs from '~components/Bootstrap/BootstrapTabs/BootstrapTabs.vue'
 import BootstrapTabsLink from '~components/Bootstrap/BootstrapTabs/components/BootstrapTabsLink.vue'
 import BootstrapTabsTabContent from '~components/Bootstrap/BootstrapTabs/components/BootstrapTabsTabContent.vue'
@@ -33,10 +32,7 @@ import { showToast } from '~components/Bootstrap/BootstrapToast'
 import { SelectOption } from '~components/Bootstrap/lib'
 import IconButton from '~components/IconButton.vue'
 import OverlayLoading from '~components/OverlayLoading.vue'
-import Select2BaseSelect from '~components/Select2BaseSelect.vue'
-
-const clientCitySelect2 = ref()
-const clientManagerSelect2 = ref()
+import SelectComponent from '~components/SelectComponent.vue'
 
 const { cities } = storeToRefs(useCityStore())
 const cityOptions = computed(() => {
@@ -171,8 +167,6 @@ const resetForm = () => {
   legalEntityData.bankName = null
   legalEntityData.currentAccount = null
   physicalEntityData.gender = null
-  clientCitySelect2.value.clearComponentValue()
-  clientManagerSelect2.value.clearManagerComponentValue()
   switchTab(tabsItems.value[0])
   nextTick(() => {
     $('.is-invalid').removeClass('is-invalid')
@@ -261,54 +255,54 @@ onMounted(() => {
             </div>
 
             <div class="col-md-12 mt-2">
-              <BootstrapSelectBase
-                id="type"
-                label="Тип"
+              <SelectComponent
                 :options="clientTypeOptions"
-                :value="basicData.type"
                 required
-                @input="(value: any, event: any) => {
-                  basicData.type = value as number
+                label="Тип"
+                :returned-empty-value="null"
+                :value="basicData.type"
+                @change="(value, event) => {
+                  basicData.type = Number(value)
                   isDataValid(event, value)
                 }"
               />
             </div>
 
             <div class="col-md-12 mt-2 city-wrapper">
-              <Select2BaseSelect
-                id="client-city"
-                ref="clientCitySelect2"
-                label="Город"
+              <SelectComponent
                 :options="cityOptions"
+                required
+                label="Город"
+                :returned-empty-value="null"
                 :value="basicData.cityId"
-                parent=".city-wrapper"
                 :enable-tags="true"
-                required
-                :show-empty-item="false"
-                @blur="isDataValid($event.target, basicData.cityId)"
-                @input="(value: any) => basicData.cityId = value as number"
+                @change="(value, event) => {
+                  basicData.cityId = Number(value)
+                  isDataValid(event, value)
+                }"
               />
             </div>
 
             <div class="col-md-12 mt-2">
-              <BootstrapSelectBase
-                id="status"
-                label="Статус"
+              <SelectComponent
                 :options="statusOptions"
+                label="Статус"
+                :returned-empty-value="null"
                 :value="basicData.status"
-                :show-empty-item="false"
-                @input="(value: any) => basicData.status = value as number"
+                @change="(value, event) => {
+                  basicData.status = value ? Number(value) : value
+                }"
               />
             </div>
 
             <div class="col-md-12 mt-2">
-              <BootstrapSelectBase
-                id="currency"
-                label="Валюта"
+              <SelectComponent
                 :options="currencyOptions"
-                :value="basicData.currency"
                 required
-                @input="(value: any, event: any) => {
+                label="Валюта"
+                :returned-empty-value="null"
+                :value="basicData.currency"
+                @change="(value, event) => {
                   basicData.currency = value as string
                   isDataValid(event, value)
                 }"
@@ -316,28 +310,28 @@ onMounted(() => {
             </div>
 
             <div class="col-md-12 mt-2 price-types-wrapper">
-              <BootstrapSelectBase
-                id="price-types"
-                label="Тариф"
-                required
-                :value="basicData.residency"
+              <SelectComponent
                 :options="residentTypeOptions"
-                @input="(value: any, event: any) => {
-                  basicData.residency = value as number
+                required
+                label="Тариф"
+                :returned-empty-value="null"
+                :value="basicData.residency"
+                @change="(value, event) => {
+                  basicData.residency = value ? Number(value) : value
                   isDataValid(event, value)
                 }"
               />
             </div>
 
             <div class="col-md-12 mt-2">
-              <BootstrapSelectBase
-                id="type"
-                label="Группа наценки"
+              <SelectComponent
                 :options="markupGroupOptions"
-                :value="basicData.markupGroupId"
                 required
-                @input="(value: any, event: any) => {
-                  basicData.markupGroupId = value as number
+                label="Группа наценки"
+                :returned-empty-value="null"
+                :value="basicData.markupGroupId"
+                @change="(value, event) => {
+                  basicData.markupGroupId = value ? Number(value) : value
                   isDataValid(event, value)
                 }"
               />
@@ -345,9 +339,7 @@ onMounted(() => {
 
             <div class="col-md-12 mt-2 manager-wrapper">
               <ManagerSelect
-                ref="clientManagerSelect2"
                 :value="basicData.managerId"
-                parent=".manager-wrapper"
                 @input="(value: any) => basicData.managerId = value"
               />
             </div>
@@ -370,12 +362,14 @@ onMounted(() => {
             </div>
 
             <div class="col-md-12 mt-2">
-              <BootstrapSelectBase
-                id="industry"
-                label="Индустрия"
+              <SelectComponent
                 :options="legalIndustryOptions"
+                label="Индустрия"
+                :returned-empty-value="null"
                 :value="legalEntityData.industry"
-                @input="(value: any) => legalEntityData.industry = value as number"
+                @change="(value, event) => {
+                  legalEntityData.industry = value ? Number(value) : value
+                }"
               />
             </div>
 
@@ -457,12 +451,14 @@ onMounted(() => {
         >
           <form ref="clientPhysicalForm" class="tab-content">
             <div class="col-md-12 mt-2">
-              <BootstrapSelectBase
-                id="gender"
-                label="Пол"
+              <SelectComponent
                 :options="genderOptions"
+                label="Пол"
+                :returned-empty-value="null"
                 :value="physicalEntityData.gender"
-                @input="(value: any) => physicalEntityData.gender = value as number"
+                @change="(value, event) => {
+                  physicalEntityData.gender = value ? Number(value) : value
+                }"
               />
             </div>
           </form>

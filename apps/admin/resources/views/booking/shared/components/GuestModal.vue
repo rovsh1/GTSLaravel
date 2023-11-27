@@ -12,9 +12,8 @@ import { CountryResponse } from '~api/country'
 import { Guest } from '~api/order/guest'
 
 import BaseDialog from '~components/BaseDialog.vue'
-import BootstrapSelectBase from '~components/Bootstrap/BootstrapSelectBase.vue'
 import { SelectOption } from '~components/Bootstrap/lib'
-import Select2BaseSelect from '~components/Select2BaseSelect.vue'
+import SelectComponent from '~components/SelectComponent.vue'
 
 const props = withDefaults(defineProps<{
   opened: MaybeRef<boolean>
@@ -193,28 +192,26 @@ watch(() => props.opened, () => {
         v-if="orderGuests && guestsOptions.length > 0 && formData.id === undefined"
         class="col-md-12 guest-select-wrapper"
       >
-        <Select2BaseSelect
-          id="guest-select"
-          :label="inputSelectText"
+        <SelectComponent
           :options="guestsOptions"
+          :label="inputSelectText"
           :value="formData.selectedGuestFromOrder"
-          parent=".guest-select-wrapper"
-          :enable-tags="false"
-          :show-empty-item="true"
-          empty-item-text="Создать нового гостя"
-          @input="onChangeSelectGuest"
+          :allow-empty-item="true"
+          empty-item="Создать нового гостя"
+          @change="(value) => {
+            onChangeSelectGuest(value)
+          }"
         />
       </div>
       <div class="col-md-12">
-        <BootstrapSelectBase
-          id="nationality_id"
+        <SelectComponent
           :options="countryOptions"
           label="Гражданство"
           :disabled="!!formData.selectedGuestFromOrder"
-          :value="formData.countryId as number"
+          :value="formData.countryId"
           required
-          @input="(value: any, event: any) => {
-            formData.countryId = value as number
+          @change="(value, event) => {
+            formData.countryId = value ? Number(value) : value
             isDataValid(event, value)
           }"
         />
@@ -234,28 +231,25 @@ watch(() => props.opened, () => {
         </div>
       </div>
       <div class="col-md-12">
-        <BootstrapSelectBase
-          id="gender"
+        <SelectComponent
           :options="genderOptions"
           label="Пол"
           :disabled="!!formData.selectedGuestFromOrder"
-          :value="formData.gender as number"
+          :value="formData.gender"
           required
-          @input="(value: any, event: any) => {
-            formData.gender = value as number
+          @change="(value, event) => {
+            formData.gender = value ? Number(value) : value
             isDataValid(event, value)
           }"
         />
       </div>
       <div class="col-md-12">
-        <BootstrapSelectBase
-          id="age_type"
+        <SelectComponent
           :options="ageTypeOptions"
           label="Тип"
           :disabled="!!formData.selectedGuestFromOrder"
           :value="ageType"
-          :show-empty-item="false"
-          @input="(value: any, event: any) => {
+          @change="(value, event) => {
             handleChangeAgeType(Number(value))
             isDataValid(event, value)
           }"

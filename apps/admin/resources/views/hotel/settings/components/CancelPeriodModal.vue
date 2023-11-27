@@ -10,8 +10,8 @@ import { DateResponse } from '~api'
 import { CancelPeriod, DatePeriod } from '~api/hotel/markup-settings'
 
 import BaseDialog from '~components/BaseDialog.vue'
-import BootstrapSelectBase from '~components/Bootstrap/BootstrapSelectBase.vue'
 import DateRangePicker from '~components/DateRangePicker.vue'
+import SelectComponent from '~components/SelectComponent.vue'
 
 const props = withDefaults(defineProps<{
   value?: CancelPeriod
@@ -120,13 +120,14 @@ const onModalSubmit = async () => {
       </div>
 
       <div class="col-md-12">
-        <BootstrapSelectBase
-          id="type"
-          label="Процент от стоимости"
+        <SelectComponent
           :options="cancelPeriodOptions"
+          label="Процент от стоимости"
           :value="markupType"
           required
-          @input="val => markupType = Number(val)"
+          @change="(value) => {
+            markupType = value ? Number(value) : value
+          }"
         />
       </div>
     </form>

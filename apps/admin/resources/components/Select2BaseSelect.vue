@@ -79,7 +79,6 @@ onMounted(async () => {
   setValue(props.value)
 
   select2.change((val: any) => {
-    console.log('dddddddddddddd')
     if (options.multiple) {
       const values = $(`#${props.id}`).val() as string[]
       emit('input', values)

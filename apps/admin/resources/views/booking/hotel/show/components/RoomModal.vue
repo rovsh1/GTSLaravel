@@ -87,9 +87,13 @@ const onModalSubmit = async () => {
   isFetching.value = true
   let isRequestSuccess: undefined | boolean = false
   if (formData.value.roomBookingId !== undefined) {
+    formData.value.earlyCheckIn = formData.value.earlyCheckIn || null
+    formData.value.lateCheckOut = formData.value.lateCheckOut || null
     const responseUpdate = await updateBookingRoom(formData)
     isRequestSuccess = responseUpdate.data.value?.success
   } else {
+    formData.value.earlyCheckIn = formData.value.earlyCheckIn || null
+    formData.value.lateCheckOut = formData.value.lateCheckOut || null
     const responseAdd = await addRoomToBooking(formData)
     isRequestSuccess = responseAdd.data.value?.success
   }
@@ -257,6 +261,7 @@ watch(() => props.opened, async (opened) => {
           :value="formData.discount"
           :disabled="!formData.id || isRoomDataFetching || discounts.length === 0"
           :disabled-placeholder="!formData.id ? 'Выберите номер' : ''"
+          :returned-empty-value="null"
           @change="(value) => {
             formData.discount = value as number
           }"
@@ -267,6 +272,7 @@ watch(() => props.opened, async (opened) => {
           :options="earlyCheckIn"
           label="Ранний заезд"
           :value="earlyCheckInValue"
+          :allow-empty-item="true"
           @change="(value) => {
             earlyCheckInValue = value as string
           }"
@@ -277,6 +283,7 @@ watch(() => props.opened, async (opened) => {
           :options="lateCheckOut"
           label="Поздний выезд"
           :value="lateCheckOutValue"
+          :allow-empty-item="true"
           @change="(value) => {
             lateCheckOutValue = value as string
           }"

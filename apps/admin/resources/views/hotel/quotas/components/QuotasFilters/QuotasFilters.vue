@@ -11,9 +11,8 @@ import { compareJSDate } from '~resources/lib/date'
 import { HotelRoom } from '~api/hotel/room'
 
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
-import CompactSelect from '~components/Bootstrap/CompactSelect.vue'
 import DateRangePicker from '~components/DateRangePicker.vue'
-import MultiSelect from '~components/MultiSelect.vue'
+import SelectComponent from '~components/SelectComponent.vue'
 
 import {
   AvailabilityValue,
@@ -141,27 +140,34 @@ const isStateChanged = computed<boolean>(() =>
       :disabled="(loading as boolean)"
       @input="(dates) => handlePeriodChanges(dates as [Date, Date])"
     />
-    <CompactSelect
-      :options="availabilityOptions"
-      label="Доступность"
-      :value="selectedAvailabilityOption"
-      allow-deselect
-      :disabled="loading"
-      @input="(value) => {
-        selectedAvailabilityOption = value.toString() as unknown as AvailabilityValue
-      }"
-    />
+    <div class="availability-wrapper">
+      <SelectComponent
+        :options="availabilityOptions"
+        label="Доступность"
+        label-style="outline"
+        :value="selectedAvailabilityOption"
+        :disabled="(loading as boolean)"
+        :allow-empty-item="true"
+        empty-item="Не выбрано"
+        :returned-empty-value="''"
+        @change="(value) => {
+          selectedAvailabilityOption = value.toString() as unknown as AvailabilityValue
+        }"
+      />
+    </div>
+
     <div class="quotasFilters-rooms">
-      <MultiSelect
-        :id="roomsElementID"
-        label="Выберите номер(а)"
-        :label-outline="false"
-        :disabled="false"
-        :label-margin="false"
-        :value="selectedRoomID"
+      <SelectComponent
         :options="rooms"
-        :close-after-click-select-all="true"
-        @input="handleRoomInput"
+        label="Выберите номер(а)"
+        label-style="outline"
+        :value="selectedRoomID"
+        required
+        multiple
+        placeholder="Не выбрано"
+        @change="(value) => {
+          handleRoomInput(value)
+        }"
       />
       <div v-if="loading" class="quotasFilters-rooms-disable" />
     </div>
@@ -177,7 +183,7 @@ const isStateChanged = computed<boolean>(() =>
     </div>
   </div>
 </template>
-<style lang="scss" scoped>
+<style lang="scss">
 %flow {
   display: flex;
   gap: 1em;
@@ -187,11 +193,15 @@ const isStateChanged = computed<boolean>(() =>
   @extend %flow;
 
   flex-wrap: wrap;
-  align-items: flex-end;
+  align-items: flex-start;
 
   .quotasFilters-rooms {
     position: relative;
     width: 245px;
+  }
+
+  input {
+    height: 34px;
   }
 }
 
@@ -214,5 +224,9 @@ const isStateChanged = computed<boolean>(() =>
   border-radius: var(--bs-border-radius);
   background-color: var(--bs-secondary-bg);
   opacity: 0.4;
+}
+
+.availability-wrapper {
+  min-width: 9.375rem;
 }
 </style>

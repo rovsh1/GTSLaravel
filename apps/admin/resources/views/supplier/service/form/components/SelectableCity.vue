@@ -7,7 +7,7 @@ import { mapEntitiesToSelectOptions } from '~resources/views/booking/shared/lib/
 
 import { requestInitialData } from '~lib/initial-data'
 
-import Select2BaseSelect from '~components/Select2BaseSelect.vue'
+import SelectComponent from '~components/SelectComponent.vue'
 
 const { cities } = requestInitialData('view-initial-data-supplier-service', z.object({
   cities: z.array(z.object({
@@ -40,17 +40,14 @@ defineEmits<{
 </script>
 
 <template>
-  <Select2BaseSelect
-    :id="id"
+  <SelectComponent
     :name="name"
     :options="citiesOptions"
-    :value="selectedCityID"
-    :parent="parentElementClass"
-    :enable-tags="true"
     required
+    :value="selectedCityID"
+    :enable-tags="true"
     :disabled="disabled"
-    :show-empty-item="false"
-    @input="(value: any) => {
+    @change="(value) => {
       $emit('change', value ? Number(value) : undefined)
     }"
   />

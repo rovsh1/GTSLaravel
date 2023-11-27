@@ -15,9 +15,9 @@ import { showConfirmDialog } from '~lib/confirm-dialog'
 import { requestInitialData } from '~lib/initial-data'
 
 import BootstrapButton from '~components/Bootstrap/BootstrapButton/BootstrapButton.vue'
-import BootstrapSelectBase from '~components/Bootstrap/BootstrapSelectBase.vue'
 import { SelectOption } from '~components/Bootstrap/lib'
 import OverlayLoading from '~components/OverlayLoading.vue'
+import SelectComponent from '~components/SelectComponent.vue'
 
 function intTransformator(value: any) {
   return parseInt(value, 10)
@@ -147,15 +147,14 @@ onMounted(async () => {
       <div class="row form-field field-bookingservicetype field-type field-required">
         <label for="form_data_type" class="col-sm-5 col-form-label">Тип услуги</label>
         <div class="col-sm-7 d-flex align-items-center">
-          <BootstrapSelectBase
-            id="form_data_type"
+          <SelectComponent
             name="data[type]"
             :options="serviceTypesOptions"
             :value="serviceFormData.type"
             required
-            @input="(value: any, event: any) => {
+            @change="(value) => {
               serviceFormData.details = undefined
-              setDetailsComponentByServiceType(value as number)
+              setDetailsComponentByServiceType(value ? Number(value) : value)
             }"
           />
         </div>

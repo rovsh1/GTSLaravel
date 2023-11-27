@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted } from 'vue'
 
 import { useAdministratorGetAPI } from '~api/administrator'
 
-import Select2BaseSelect from '~components/Select2BaseSelect.vue'
+import SelectComponent from '~components/SelectComponent.vue'
 
 const props = defineProps<{
   value?: any
@@ -22,28 +22,19 @@ const selectOptions = computed(
   () => administrators.value?.map(({ id, presentation }) => ({ value: id, label: presentation })) || [],
 )
 
-const clientManagerSelect2 = ref()
-
-const clearManagerComponentValue = () => {
-  clientManagerSelect2.value.clearComponentValue()
-}
-
 onMounted(() => fetchAdministrators())
-
-defineExpose({
-  clearManagerComponentValue,
-})
 
 </script>
 
 <template>
-  <Select2BaseSelect
-    id="client-manager"
-    ref="clientManagerSelect2"
-    label="Менеджер"
+  <SelectComponent
     :options="selectOptions"
+    label="Менеджер"
+    :returned-empty-value="null"
     :value="localValue"
-    :parent="parent"
-    @input="val => $emit('input', val)"
+    :allow-empty-item="true"
+    @change="(value, event) => {
+      $emit('input', value)
+    }"
   />
 </template>

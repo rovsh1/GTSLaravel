@@ -15,6 +15,7 @@ type SelectElementOptions = {
   data?: any
   tags?: boolean
   dropdownParent?: string
+  minimize?: boolean
 }
 
 class SelectElement {
@@ -70,6 +71,9 @@ const initializeSelectElement = (element: HTMLSelectElement, options?: SelectEle
         }
         selectionAdapter.prototype.update = function (data: any) {
           this.clear()
+          if (options.minimize) {
+            this.$element.parent().addClass('select2-minimize')
+          }
           this.$element.parent().addClass('select2-container-htight')
           const isDisabled = this.$element.attr('disabled')
           const $rendered = this.$selection.find('.select2-selection__rendered')
@@ -205,11 +209,13 @@ const initializeSelectElement = (element: HTMLSelectElement, options?: SelectEle
         selectionAdapter.prototype.update = function (data: any) {
           this.clear()
           const isDisabled = this.$element.attr('disabled')
+          const isRequired = this.$element.attr('required')
           const self = this
           const $rendered = this.$selection.find('.select2-selection__rendered')
           const allOptionsElements = this.$element.find('option').toArray()
             .filter((option: any) => !$(option).attr('disabled'))
           const noItemsSelected = data.length === 0 || (existEmptyItem && data.length === 1 && data[0].id === '')
+
           let formatted = ''
           if (allOptionsElements.length === 0 && !isDisabled) {
             formatted = options?.emptyText || 'Пусто'
@@ -232,7 +238,7 @@ const initializeSelectElement = (element: HTMLSelectElement, options?: SelectEle
             $rendered.addClass('disabled-actions')
             $clearSelectElemetny.hide()
           }
-          if (isDisabled) {
+          if (isDisabled || isRequired || !existEmptyItem) {
             $rendered.addClass('disabled-actions')
             $clearSelectElemetny.hide()
           }

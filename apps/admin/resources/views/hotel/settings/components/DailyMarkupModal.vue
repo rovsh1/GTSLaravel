@@ -9,7 +9,7 @@ import { cancelPeriodOptions } from '~resources/views/booking/shared/lib/constan
 import { DailyMarkup } from '~api/hotel/markup-settings'
 
 import BaseDialog from '~components/BaseDialog.vue'
-import BootstrapSelectBase from '~components/Bootstrap/BootstrapSelectBase.vue'
+import SelectComponent from '~components/SelectComponent.vue'
 
 const props = withDefaults(defineProps<{
   value?: DailyMarkup
@@ -97,13 +97,14 @@ const onModalSubmit = async () => {
       </div>
 
       <div class="col-md-12">
-        <BootstrapSelectBase
-          id="type"
-          label="Процент от стоимости"
+        <SelectComponent
           :options="cancelPeriodOptions"
+          label="Процент от стоимости"
           :value="markupType"
           required
-          @input="value => markupType = Number(value)"
+          @change="(value) => {
+            markupType = value ? Number(value) : value
+          }"
         />
       </div>
     </form>

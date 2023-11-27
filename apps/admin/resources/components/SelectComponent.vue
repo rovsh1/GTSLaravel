@@ -10,7 +10,7 @@ import { SelectOption } from '~components/Bootstrap/lib'
 
 type LabelStyle = 'default' | 'outline'
 
-type SelectValue = Array<string | number> | string | number | undefined
+type SelectValue = Array<string | number> | string | number | undefined | null
 
 const props = withDefaults(defineProps<{
   value: SelectValue
@@ -27,6 +27,8 @@ const props = withDefaults(defineProps<{
   emptyItem?: string
   emptyText?: string
   enableTags?: boolean
+  returnedEmptyValue?: any
+  minimize?: boolean
 
 }>(), {
   name: undefined,
@@ -41,6 +43,8 @@ const props = withDefaults(defineProps<{
   emptyItem: '',
   emptyText: 'Пусто',
   enableTags: false,
+  returnedEmptyValue: undefined,
+  minimize: false,
 })
 
 const emit = defineEmits<{
@@ -85,7 +89,12 @@ const isSameValues = (oldValue: SelectValue, newValue: SelectValue): boolean => 
 
 const setValue = (value: SelectValue) => {
   const val = convertValueToSelectType(value)
-  componentInstance.value?.select2Instance.val(val).trigger('change')
+  if (props.allowEmptyItem && !!props.emptyItem
+    && !props.multiple && !value) {
+    componentInstance.value?.select2Instance.val(null).trigger('change')
+  } else {
+    componentInstance.value?.select2Instance.val(val).trigger('change')
+  }
 }
 
 const initSelectElement = async () => {
@@ -96,13 +105,14 @@ const initSelectElement = async () => {
     disabledPlaceholder: props.disabledPlaceholder,
     placeholder: props.placeholder,
     emptyText: props.emptyText,
+    minimize: props.minimize,
   })
   componentInstance.value = instance
   setValue(props.value)
   componentInstance.value?.select2Instance.on(`select2:select ${props.multiple ? 'select2:unselect' : ''}`, (e: any) => {
     const selectedValues = $(e.target).val()
     if (!isSameValues(props.value, selectedValues)) {
-      emit('change', selectedValues || undefined, e.target)
+      emit('change', selectedValues || props.returnedEmptyValue, e.target)
     }
   })
 }
@@ -134,9 +144,13 @@ watch(
 </script>
 
 <template>
-  <div class="select-element" :class="{ 'field-required': required }">
-    <label :for="id" :class="[labelStyle === 'outline' ? 'label a1' : 'form-label']">{{ label }}</label>
-    <div style="height: 35px">
+  <div class="select-element" :class="{ 'field-required': required && label !== '' }">
+    <label v-if="label !== ''" :for="id" :class="[labelStyle === 'outline' ? 'label a1' : 'form-label']">{{ label
+    }}</label>
+    <div
+      :class="[labelStyle === 'outline' ? 'outline-style' : '',
+               minimize ? 'select-element-minimize' : 'select-element-normal']"
+    >
       <select
         :id="id"
         class="form-select form-control select-height-control"
@@ -146,7 +160,8 @@ watch(
         :multiple="multiple"
       >
         <template v-if="!enableTags">
-          <option v-if="allowEmptyItem" value="">{{ emptyItem }}</option>
+          <option v-if="allowEmptyItem && !!emptyItem" value="">{{ emptyItem }}</option>
+          <option v-else-if="allowEmptyItem" value="">{{ emptyItem }}</option>
           <option v-for="option in options" :key="option.value" :value="option.value">
             {{ option.label }}
           </option>
@@ -164,19 +179,20 @@ watch(
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @use '~resources/sass/vendor/bootstrap/configuration' as bs;
 
 .select-element {
   position: relative;
+  width: 100%;
 }
 
-.select-height-control,
-.select2 {
-  min-height: 34px;
+.select-element .select-height-control,
+.select-element .select2 {
+  min-height: 2.125rem;
 }
 
-.label {
+.select-element .label {
   --padding-block: 0.1em;
   --padding-inline: 0.5em;
   --left: calc(#{bs.$form-select-padding-x} - var(--padding-inline) + 0.1em);
@@ -195,7 +211,19 @@ watch(
   white-space: nowrap;
 }
 
-.field-required {
+.select-element .outline-style .select2-selection {
+  border-radius: 0.375rem;
+}
+
+.select-element .field-required {
   width: 100%;
+}
+
+.select-element-minimize {
+  height: auto;
+}
+
+.select-element-normal {
+  height: 2.188rem;
 }
 </style>

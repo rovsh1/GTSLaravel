@@ -12,7 +12,7 @@ import { BookingAvailableActionsResponse } from '~api/booking/status'
 
 import { requestInitialData } from '~lib/initial-data'
 
-import BootstrapSelectBase from '~components/Bootstrap/BootstrapSelectBase.vue'
+import SelectComponent from '~components/SelectComponent.vue'
 
 const { bookingID } = requestInitialData(
   'view-initial-data-hotel-booking',
@@ -48,13 +48,16 @@ const handleUpdateExternalNumber = async () => {
 <template>
   <div class="d-flex flex-row gap-2" :class="{ loading: isUpdateExternalNumberFetching }">
     <div class="w-50">
-      <BootstrapSelectBase
-        id="external_number_type"
+      <SelectComponent
+        :options="externalNumberTypeOptions"
         :disabled="!canEditExternalNumber"
         disabled-placeholder="Номер подтверждения брони в отеля"
-        :value="externalNumberType as number"
-        :options="externalNumberTypeOptions"
-        @input="value => externalNumberType = value as ExternalNumberType"
+        :value="externalNumberType"
+        required
+        @change="(value) => {
+          console.log('ExternalNumberType', value)
+          externalNumberType = value as ExternalNumberType
+        }"
       />
     </div>
     <div class="d-flex flex-row gap-2">

@@ -5,7 +5,7 @@ import { mapEntitiesToSelectOptions } from '~resources/views/booking/shared/lib/
 
 import { useRailwayStationSearchAPI } from '~api/railway-station'
 
-import Select2BaseSelect from '~components/Select2BaseSelect.vue'
+import SelectComponent from '~components/SelectComponent.vue'
 
 import SelectableCity from '../SelectableCity.vue'
 
@@ -78,17 +78,14 @@ onMounted(async () => {
   <div class="row form-field field-bookingservicetype field-type field-required">
     <label for="form_data_railway_station" class="col-sm-5 col-form-label">Жд станция</label>
     <div class="col-sm-7 d-flex align-items-center selected-railway-station-wrapper">
-      <Select2BaseSelect
-        id="form_data_railway_station"
+      <SelectComponent
         name="data[data][railwayStationId]"
         :options="railwayStationOptions"
-        :value="formData.railwayStationId"
-        parent=".selected-railway-station-wrapper"
         required
+        :value="formData.railwayStationId"
         :disabled-placeholder="isFetchingRailwayStation ? 'Загрузка' : 'Выберите город'"
         :disabled="!formData.cityId || isFetchingRailwayStation"
-        :show-empty-item="false"
-        @input="(value: any) => {
+        @change="(value) => {
           formData.railwayStationId = value ? Number(value) : undefined
         }"
       />

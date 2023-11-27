@@ -5,7 +5,7 @@ import { computed, ref } from 'vue'
 import { onClickOutside, useToggle } from '@vueuse/core'
 
 import { SelectedValue, SelectOption } from '~components/Bootstrap/lib'
-import Select2BaseSelect from '~components/Select2BaseSelect.vue'
+import SelectComponent from '~components/SelectComponent.vue'
 
 const props = withDefaults(defineProps<{
   id: string
@@ -77,16 +77,16 @@ const onPressEsc = () => {
       {{ displayValue }}
     </span>
 
-    <Select2BaseSelect
+    <SelectComponent
       v-else
-      :id="id"
       ref="selectRef"
       :options="items"
       :value="value"
       :required="required"
-      :show-empty-item="showEmptyItem"
       @keyup.esc="onPressEsc"
-      @input="applyEditable"
+      @change="(value, event) => {
+        applyEditable(value)
+      }"
     />
   </div>
 </template>
