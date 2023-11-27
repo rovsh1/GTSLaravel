@@ -12,10 +12,11 @@ export const useCancelConditions = (supplierId: number) => {
   const cancelConditions = ref<ServiceCancelConditions | null>(null)
   const isLoading = ref(false)
   const updatePayload = ref<UpdateCancelConditionsPayload>()
-  const defaultCancelConditions: ServiceCancelConditions = {
+
+  const getDefaultCancelConditions = (): ServiceCancelConditions => ({
     noCheckInMarkup: { percent: '' },
     dailyMarkups: [{ percent: '', daysCount: '' }],
-  }
+  })
 
   const { data: existsCancelConditions, execute: fetchExistsCancelConditions } = getExistsCancelConditions({ supplierId })
 
@@ -25,7 +26,7 @@ export const useCancelConditions = (supplierId: number) => {
 
     cancelConditions.value = response.value && Object.keys(response.value).length > 0
       ? response.value
-      : { ...defaultCancelConditions }
+      : getDefaultCancelConditions()
 
     updatePayload.value = { cancelConditions: cancelConditions.value, supplierId, seasonId, serviceId }
     isLoading.value = false

@@ -6,10 +6,10 @@ namespace Module\Booking\Invoicing\Domain\Service\Dto\Booking;
 
 use Sdk\Shared\Enum\Pricing\ValueTypeEnum;
 
-class DailyMarkupDto
+class DailyCancelFeeValueDto
 {
     public function __construct(
-        public readonly int $value,
+        public readonly float $value,
         public readonly ValueTypeEnum $valueType,
         public readonly int $daysCount,
         public readonly string $markupType,

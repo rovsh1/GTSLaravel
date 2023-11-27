@@ -23,7 +23,7 @@ class OrderAdapter
 
     public function lendOrders(int $paymentId, array $orders): void
     {
-        //@todo переделать на разовый вызов
+        //@todo переделать на разовый вызов + удаление всех привязанных, т.к. можно отменять платежи
         foreach ($orders as $order) {
             $orderId = $order['id'];
             $sum = $order['sum'];
