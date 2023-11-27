@@ -49,6 +49,9 @@ class ViewServiceProvider extends ServiceProvider
         FormNamespace\Element\Checkbox::setDefaults([
             'class' => 'form-check-input'
         ]);
+        FormNamespace\Element\Select::setDefaults([
+            'class' => 'form-select-element'
+        ]);
         FormNamespace\Element\Radio::setDefaults([
             'itemClass' => 'form-check form-check-inline',
             'inputClass' => 'form-check-input',
