@@ -13,7 +13,7 @@ use App\Admin\Support\View\Grid\Grid as GridContract;
 use App\Admin\View\Menus\MarkupGroupMenu;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
-use Module\Shared\Enum\Pricing\MarkupValueTypeEnum;
+use Sdk\Shared\Enum\Pricing\ValueTypeEnum;
 
 class MarkupGroupController extends AbstractPrototypeController
 {
@@ -36,7 +36,7 @@ class MarkupGroupController extends AbstractPrototypeController
         return Form::text('name', ['label' => 'Наименование', 'required' => true])
             ->enum(
                 'type',
-                ['label' => 'Тип значения', 'emptyItem' => '', 'enum' => MarkupValueTypeEnum::class, 'required' => true]
+                ['label' => 'Тип значения', 'emptyItem' => '', 'enum' => ValueTypeEnum::class, 'required' => true]
             )
             ->number('value', ['label' => 'Значение', 'required' => true]);
     }
@@ -53,7 +53,7 @@ class MarkupGroupController extends AbstractPrototypeController
             ])
             ->text('value', [
                 'text' => 'Наценка',
-                'renderer' => fn($r, $v) => $r->type === MarkupValueTypeEnum::PERCENT ? "{$v}%" : $v
+                'renderer' => fn($r, $v) => $r->type === ValueTypeEnum::PERCENT ? "{$v}%" : $v
             ]);
     }
 

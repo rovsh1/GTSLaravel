@@ -9,7 +9,6 @@ use Module\Booking\Moderation\Application\Dto\CarBidDataDto;
 use Module\Booking\Moderation\Domain\Booking\Event\CarBidAdded;
 use Module\Booking\Moderation\Domain\Booking\Event\CarBidRemoved;
 use Module\Booking\Moderation\Domain\Booking\Event\CarBidUpdated;
-use Module\Booking\Moderation\Domain\Booking\Exception\NotFoundServiceCancelConditions;
 use Module\Booking\Moderation\Domain\Booking\Factory\TransferCancelConditionsFactory;
 use Module\Booking\Shared\Domain\Booking\Adapter\SupplierAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Exception\NotFoundTransferServicePrice;
@@ -48,17 +47,6 @@ class CarBidUpdater
         if ($serviceDate === null) {
             throw new ServiceDateUndefined();
         }
-        $cancelConditions = $this->supplierAdapter->getCarCancelConditions(
-            $details->serviceInfo()->id(),
-            $carData->carId,
-            $serviceDate
-        );
-        if ($cancelConditions === null) {
-            throw new NotFoundServiceCancelConditions();
-        }
-        $cancelConditions = $this->cancelConditionsFactory->fromDto($cancelConditions, $serviceDate);
-        $booking->setCancelConditions($cancelConditions);
-
         $carBidPrices = $this->buildCarBidPrices(
             $details->serviceInfo()->supplierId(),
             $details->serviceInfo()->id(),
@@ -66,6 +54,17 @@ class CarBidUpdater
             $booking->prices()->clientPrice()->currency(),
             $serviceDate
         );
+
+        $cancelConditions = $this->cancelConditionsFactory->build(
+            $booking->cancelConditions(),
+            $details->serviceInfo()->id(),
+            $carData->carId,
+            $carBidPrices->clientPrice()->valuePerCar(),
+            $carData->carsCount,
+            $serviceDate
+        );
+        $booking->setCancelConditions($cancelConditions);
+
         $carBid = CarBid::create(
             new CarId($carData->carId),
             $carData->carsCount,

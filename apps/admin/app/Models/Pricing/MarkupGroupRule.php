@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Admin\Models\Pricing;
 
 use Illuminate\Database\Eloquent\Builder;
-use Module\Shared\Enum\Pricing\MarkupValueTypeEnum;
 use Sdk\Module\Database\Eloquent\Model;
+use Sdk\Shared\Enum\Pricing\ValueTypeEnum;
 
 class MarkupGroupRule extends Model
 {
@@ -21,7 +21,7 @@ class MarkupGroupRule extends Model
     ];
 
     protected $casts = [
-        'type' => MarkupValueTypeEnum::class
+        'type' => ValueTypeEnum::class
     ];
 
     public function scopeWithDetails(Builder $builder): void

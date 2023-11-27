@@ -9,7 +9,7 @@ use Module\Booking\Invoicing\Domain\Service\Dto\Booking\BookingPeriodDto;
 use Module\Booking\Invoicing\Domain\Service\Dto\Booking\CancelConditionsDto;
 use Module\Booking\Invoicing\Domain\Service\Dto\Booking\CarDto;
 use Module\Booking\Invoicing\Domain\Service\Dto\Booking\CarPriceDto;
-use Module\Booking\Invoicing\Domain\Service\Dto\Booking\DailyMarkupDto;
+use Module\Booking\Invoicing\Domain\Service\Dto\Booking\DailyCancelFeeValueDto;
 use Module\Booking\Invoicing\Domain\Service\Dto\Booking\GuestDto;
 use Module\Booking\Invoicing\Domain\Service\Dto\Booking\PriceDto;
 use Module\Booking\Invoicing\Domain\Service\Dto\Booking\RoomDto;
@@ -175,7 +175,7 @@ class TemplateDataFactory
         $cancelConditions = $booking->cancelConditions();
         if ($cancelConditions !== null) {
             $dailyMarkupsDto = $cancelConditions->dailyMarkups()->map(
-                fn(DailyCancelFeeValue $markupOption) => new DailyMarkupDto(
+                fn(DailyCancelFeeValue $markupOption) => new DailyCancelFeeValueDto(
                     $markupOption->value()->value(),
                     $markupOption->value()->type(),
                     $markupOption->daysCount(),

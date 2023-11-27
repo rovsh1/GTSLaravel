@@ -22,7 +22,7 @@ use App\Shared\Http\Responses\AjaxRedirectResponse;
 use App\Shared\Http\Responses\AjaxResponseInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Module\Shared\Enum\Pricing\MarkupValueTypeEnum;
+use Sdk\Shared\Enum\Pricing\ValueTypeEnum;
 
 class RulesController extends Controller
 {
@@ -139,7 +139,7 @@ class RulesController extends Controller
             ->hidden('room_id', ['label' => 'Номер'])
             ->enum(
                 'type',
-                ['label' => 'Тип значения', 'emptyItem' => '', 'enum' => MarkupValueTypeEnum::class, 'required' => true]
+                ['label' => 'Тип значения', 'emptyItem' => '', 'enum' => ValueTypeEnum::class, 'required' => true]
             )
             ->number('value', ['label' => 'Значение', 'required' => true]);
     }
@@ -152,7 +152,7 @@ class RulesController extends Controller
             ->text('hotel_room_name', ['text' => 'Номер'])
             ->text('value', [
                 'text' => 'Наценка',
-                'renderer' => fn($r, $v) => $r->type === MarkupValueTypeEnum::PERCENT ? "{$v}%" : $v
+                'renderer' => fn($r, $v) => $r->type === ValueTypeEnum::PERCENT ? "{$v}%" : $v
             ]);
     }
 
