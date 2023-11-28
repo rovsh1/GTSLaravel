@@ -16,17 +16,6 @@
             <td>
                 до {{ $cancelConditions?->cancelNoFeeDate ? Format::date($cancelConditions?->cancelNoFeeDate) : '-' }}</td>
         </tr>
-        @foreach($booking->cancelConditions->dailyMarkups ?? [] as $dailyMarkup)
-            За {{ $dailyMarkup->daysCount }} {{ trans_choice('[1] день|[2,4] дня|[5,*] дней', $dailyMarkup->daysCount) }}
-            :
-
-            @if($dailyMarkup->valueType === \Sdk\Shared\Enum\Pricing\ValueTypeEnum::PERCENT)
-                {{ $dailyMarkup->value }}% {{ $dailyMarkup->markupType }}
-            @else
-                {{ $dailyMarkup->value }} {{$booking->clientPrice->currency}}
-            @endif
-            <br/>
-        @endforeach
 
         <tr>
             <th>Незаезд</th>
@@ -36,11 +25,28 @@
                         {{ $cancelConditions->noCheckInMarkup->value }}%
                         {{ $getHumanPeriodType($cancelConditions->noCheckInMarkup->cancelPeriodType) }}
                     @else
-                        {{ $cancelConditions->noCheckInMarkup->value }} {{$booking->clientPrice->currency}}
+                        {{ $cancelConditions->noCheckInMarkup->value }} {{ $model->prices->clientPrice->currency->value }}
                     @endif
                 </td>
             @endif
         </tr>
+
+        @foreach($model->cancelConditions->dailyMarkups ?? [] as $dailyMarkup)
+            <tr>
+                <th>
+                    За {{ $dailyMarkup->daysCount }} {{ trans_choice('[1] день|[2,4] дня|[5,*] дней', $dailyMarkup->daysCount) }}
+                </th>
+
+                <td>
+                    @if($dailyMarkup->valueType === \Sdk\Shared\Enum\Pricing\ValueTypeEnum::PERCENT)
+                        {{ $dailyMarkup->value }}% {{ $getHumanPeriodType($dailyMarkup->cancelPeriodType) }}
+                    @else
+                        {{ $dailyMarkup->value }} {{ $model->prices->clientPrice->currency->value }}
+                    @endif
+                </td>
+            </tr>
+        @endforeach
+
         </tbody>
     </table>
 </div>

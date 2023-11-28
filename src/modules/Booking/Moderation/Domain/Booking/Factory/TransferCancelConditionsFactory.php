@@ -15,6 +15,7 @@ use Sdk\Booking\ValueObject\CancelCondition\DailyCancelFeeValue;
 use Sdk\Booking\ValueObject\CancelCondition\DailyCancelFeeValueCollection;
 use Sdk\Booking\ValueObject\CancelCondition\FeeValue;
 use Sdk\Booking\ValueObject\CancelConditions;
+use Sdk\Booking\ValueObject\CarBidCollection;
 
 class TransferCancelConditionsFactory
 {
@@ -23,43 +24,50 @@ class TransferCancelConditionsFactory
     ) {}
 
     public function build(
-        ?CancelConditions $cancelConditions,
         int $serviceId,
-        int $carId,
-        float $pricePerCar,
-        int $countCars,
+        CarBidCollection $carBids,
         \DateTimeInterface $bookingDate
     ): CancelConditions {
-        $carCancelConditions = $this->supplierAdapter->getCarCancelConditions($serviceId, $carId, $bookingDate);
-        if ($carCancelConditions === null) {
-            throw new NotFoundServiceCancelConditions();
+        $cancelConditions = null;
+        foreach ($carBids as $carBid) {
+            $carCancelConditions = $this->supplierAdapter->getCarCancelConditions(
+                $serviceId,
+                $carBid->carId()->value(),
+                $bookingDate
+            );
+            if ($carCancelConditions === null) {
+                throw new NotFoundServiceCancelConditions();
+            }
+            $carCancelConditions = $this->buildCarCancelConditions(
+                $carCancelConditions,
+                $carBid->clientPriceValue(),
+                $bookingDate
+            );
+            if ($cancelConditions === null) {
+                $cancelConditions = $carCancelConditions;
+                continue;
+            }
+            $cancelConditions = $this->mergeCancelConditions($cancelConditions, $carCancelConditions, $bookingDate);
         }
 
-        $newCancelConditions = $this->buildCarCancelConditions($carCancelConditions, $pricePerCar, $countCars, $bookingDate);
-        if ($cancelConditions === null) {
-            return $newCancelConditions;
-        }
-
-        return $this->mergeCancelConditions($cancelConditions, $newCancelConditions);
+        return $cancelConditions;
     }
 
     private function buildCarCancelConditions(
         CancelConditionsDto $carCancelConditions,
-        float $pricePerCar,
-        int $countCars,
+        float $price,
         \DateTimeInterface $bookingDate
     ): CancelConditions {
         $cancelNoFeeDate = null;
         $dailyMarkupOptions = [];
         $maxDaysCount = Arr::first($carCancelConditions->dailyMarkups)?->daysCount;
 
-        $allCarsPrice = $pricePerCar * $countCars;
         if ($maxDaysCount !== null && $bookingDate !== null) {
             $cancelNoFeeDate = $bookingDate->clone()->subDays($maxDaysCount)->toImmutable();
             $dailyMarkupOptions = collect($carCancelConditions->dailyMarkups)->map(
                 fn(DailyMarkupDto $dailyMarkupDto) => new DailyCancelFeeValue(
                     value: FeeValue::createAbsolute(
-                        $this->calculatePercentValue($dailyMarkupDto->percent, $allCarsPrice)
+                        $this->calculatePercentValue($dailyMarkupDto->percent, $price)
                     ),
                     cancelPeriodType: CancelFeePeriodTypeEnum::FULL_PERIOD,
                     daysCount: $dailyMarkupDto->daysCount
@@ -70,7 +78,7 @@ class TransferCancelConditionsFactory
         return new CancelConditions(
             noCheckInMarkup: new CancelFeeValue(
                 value: FeeValue::createAbsolute(
-                    $this->calculatePercentValue($carCancelConditions->noCheckInMarkup->percent, $allCarsPrice)
+                    $this->calculatePercentValue($carCancelConditions->noCheckInMarkup->percent, $price)
                 ),
                 cancelPeriodType: CancelFeePeriodTypeEnum::FULL_PERIOD
             ),
@@ -81,13 +89,67 @@ class TransferCancelConditionsFactory
 
     private function mergeCancelConditions(
         CancelConditions $baseCancelConditions,
-        CancelConditions $carCancelConditions
+        CancelConditions $carCancelConditions,
+        \DateTimeInterface $bookingDate
     ): CancelConditions {
-        //@todo merge cancelConditions
+        $noCheckInMarkupValue = $baseCancelConditions->noCheckInMarkup()->value()->value() + $carCancelConditions->noCheckInMarkup()->value()->value();
+        $noCheckInMarkup = new CancelFeeValue(
+            value: FeeValue::createAbsolute($noCheckInMarkupValue),
+            cancelPeriodType: CancelFeePeriodTypeEnum::FULL_PERIOD,
+        );
+
+        /** @var DailyCancelFeeValue[] $dailyCancelFeeValues */
+        $dailyCancelFeeValues = [
+            ...$baseCancelConditions->dailyMarkups()->all(),
+            ...$carCancelConditions->dailyMarkups()->all(),
+        ];
+
+        $sumByDays = [];
+        foreach ($dailyCancelFeeValues as $dailyCancelFeeValue) {
+            $daysCountKey = $dailyCancelFeeValue->daysCount();
+            if (!array_key_exists($daysCountKey, $sumByDays)) {
+                $sumByDays[$daysCountKey] = 0;
+            }
+            $sumByDays[$daysCountKey] += $dailyCancelFeeValue->value()->value();
+        }
+
+        //сортируем массив по убыванию дней, чтобы просуммировать сумму всех предыдущих дней
+        krsort($sumByDays);
+        foreach ($sumByDays as $daysCount => $sum) {
+            $daysCountKey = $daysCount - 1;
+            if (!array_key_exists($daysCountKey, $sumByDays)) {
+                break;
+            }
+            $sumByDays[$daysCountKey] += $sum;
+        }
+
+        $dailyCancelFeeValues = [];
+        foreach ($sumByDays as $daysCount => $value) {
+            $dailyCancelFeeValues[] = new DailyCancelFeeValue(
+                value: FeeValue::createAbsolute($value),
+                cancelPeriodType: CancelFeePeriodTypeEnum::FULL_PERIOD,
+                daysCount: $daysCount,
+            );
+        }
+
+        $cancelNoFeeDate = null;
+        $maxDaysCount = max(
+            Arr::first($carCancelConditions->dailyMarkups()->all())?->daysCount(),
+            Arr::first($baseCancelConditions->dailyMarkups()->all())?->daysCount(),
+        );
+        if ($maxDaysCount !== null) {
+            $cancelNoFeeDate = $bookingDate->clone()->subDays($maxDaysCount)->toImmutable();
+        }
+
+        return new CancelConditions(
+            noCheckInMarkup: $noCheckInMarkup,
+            dailyMarkups: new DailyCancelFeeValueCollection($dailyCancelFeeValues),
+            cancelNoFeeDate: $cancelNoFeeDate,
+        );
     }
 
-    private function calculatePercentValue(int $percent, float $value): float
+    private function calculatePercentValue(int $percent, float $value): int
     {
-        return $value * $percent / 100;
+        return (int)($value * $percent / 100);
     }
 }

@@ -55,16 +55,6 @@ class CarBidUpdater
             $serviceDate
         );
 
-        $cancelConditions = $this->cancelConditionsFactory->build(
-            $booking->cancelConditions(),
-            $details->serviceInfo()->id(),
-            $carData->carId,
-            $carBidPrices->clientPrice()->valuePerCar(),
-            $carData->carsCount,
-            $serviceDate
-        );
-        $booking->setCancelConditions($cancelConditions);
-
         $carBid = CarBid::create(
             new CarId($carData->carId),
             $carData->carsCount,
@@ -74,6 +64,9 @@ class CarBidUpdater
             $carBidPrices
         );
         $details->addCarBid($carBid);
+
+        $cancelConditions = $this->cancelConditionsFactory->build($details->serviceInfo()->id(), $details->carBids(), $serviceDate);
+        $booking->setCancelConditions($cancelConditions);
 
         $this->bookingRepository->store($booking);
         $this->detailsRepository->store($details);
@@ -101,16 +94,6 @@ class CarBidUpdater
             $serviceDate,
         );
 
-        $cancelConditions = $this->cancelConditionsFactory->build(
-            $booking->cancelConditions(),
-            $details->serviceInfo()->id(),
-            $carData->carId,
-            $carBidPrices->clientPrice()->valuePerCar(),
-            $carData->carsCount,
-            $serviceDate
-        );
-        $booking->setCancelConditions($cancelConditions);
-
         $carBid = new CarBid(
             $carBidId,
             new CarId($carData->carId),
@@ -121,6 +104,9 @@ class CarBidUpdater
             $carBidPrices
         );
         $details->replaceCarBid($carBidId, $carBid);
+
+        $cancelConditions = $this->cancelConditionsFactory->build($details->serviceInfo()->id(), $details->carBids(), $serviceDate);
+        $booking->setCancelConditions($cancelConditions);
 
         $this->bookingRepository->store($booking);
         $this->detailsRepository->store($details);
@@ -134,6 +120,9 @@ class CarBidUpdater
         $details->removeCarBid($carBidId);
         if ($details->carBids()->count() === 0) {
             $booking->setCancelConditions(null);
+        } else {
+            $cancelConditions = $this->cancelConditionsFactory->build($details->serviceInfo()->id(), $details->carBids(), $details->serviceDate());
+            $booking->setCancelConditions($cancelConditions);
         }
 
         $this->bookingRepository->store($booking);
