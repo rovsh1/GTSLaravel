@@ -30,19 +30,11 @@ class TransferCancelConditionsFactory
     ): CancelConditions {
         $cancelConditions = null;
         foreach ($carBids as $carBid) {
-            $carCancelConditions = $this->supplierAdapter->getCarCancelConditions(
-                $serviceId,
-                $carBid->carId()->value(),
-                $bookingDate
-            );
+            $carCancelConditions = $this->supplierAdapter->getCarCancelConditions($serviceId, $carBid->carId()->value(), $bookingDate);
             if ($carCancelConditions === null) {
                 throw new NotFoundServiceCancelConditions();
             }
-            $carCancelConditions = $this->buildCarCancelConditions(
-                $carCancelConditions,
-                $carBid->clientPriceValue(),
-                $bookingDate
-            );
+            $carCancelConditions = $this->buildCarCancelConditions($carCancelConditions, $carBid->clientPriceValue(), $bookingDate);
             if ($cancelConditions === null) {
                 $cancelConditions = $carCancelConditions;
                 continue;
