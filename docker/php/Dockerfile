@@ -25,6 +25,7 @@ RUN apt-get install -y --force-yes --no-install-recommends \
         libreadline-dev \
         libgmp-dev \
         mariadb-client \
+        supervisor \
         unzip
 
 # Install soap extention
@@ -141,6 +142,8 @@ RUN rm -r /var/lib/apt/lists/*
 
 RUN usermod -u 1000 www-data
 
+COPY ./supervisor/gts.conf /etc/supervisor/conf.d/
+RUN service supervisor start all
 
 COPY ./docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh

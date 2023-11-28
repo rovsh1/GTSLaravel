@@ -99,12 +99,7 @@ Login with developer credentials:
 
 They can be found in `database/migrations/install/2023_03_12_000003_fill_default_data.php` file
 
-## 9. Additional
-
-If you use MacOS, we recommended install docker-sync and apply `GTS_local_docker-sync_patch.patch`. For starting project
-use `docker-sync start` then `docker-compose up -d`.
-
-## 10. Services
+## 9. Services
 
 1. add supervisor conf
 
@@ -113,7 +108,7 @@ use `docker-sync start` then `docker-compose up -d`.
    
     [program:gts-integrationEvents]
     process_name=%(program_name)s_%(process_num)02d
-    command=/usr/bin/php8.1 -dxdebug.remote_autostart=1 /var/www/sites/gotostans.com/artisan queue:work integrationEvent
+    command=/usr/bin/php8.1 -dxdebug.remote_autostart=1 /var/www/sites/gotostans.com/artisan queue:work --queue=integrationEvent
     user=www-data
     autostart=true
     autorestart=true

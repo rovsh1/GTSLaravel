@@ -11,12 +11,14 @@ use Module\Client\Payment\Domain\Payment\Repository\PaymentRepositoryInterface;
 use Module\Client\Payment\Domain\Payment\ValueObject\Landing;
 use Module\Client\Payment\Domain\Payment\ValueObject\LandingCollection;
 use Module\Client\Payment\Domain\Payment\ValueObject\PaymentId;
+use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class OrdersLandingToPayment implements UseCaseInterface
 {
     public function __construct(
         private readonly PaymentRepositoryInterface $paymentRepository,
+        private readonly DomainEventDispatcherInterface $eventDispatcher
     ) {}
 
     /**
@@ -36,10 +38,9 @@ class OrdersLandingToPayment implements UseCaseInterface
         try {
             $payment->setLandings($landings);
             $this->paymentRepository->store($payment);
+            $this->eventDispatcher->dispatch(...$payment->pullEvents());
         } catch (\Throwable $e) {
             throw new LendOrderToPaymentUnknownError($e);
-        } finally {
-            //@todo если заказ полностью оплачен или оплата с него снята - изменить статус (скорее всего ивент)
         }
     }
 }

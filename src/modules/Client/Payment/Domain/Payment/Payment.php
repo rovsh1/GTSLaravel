@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Module\Client\Payment\Domain\Payment;
 
 use DateTimeImmutable;
+use Module\Client\Payment\Domain\Payment\Event\PaymentModified;
 use Module\Client\Payment\Domain\Payment\ValueObject\InvoiceNumber;
 use Module\Client\Payment\Domain\Payment\ValueObject\LandingCollection;
 use Module\Client\Payment\Domain\Payment\ValueObject\PaymentAmount;
@@ -109,6 +110,6 @@ final class Payment extends AbstractAggregateRoot
         }
 
         $this->status = $status;
-//        $this->pushEvent(new PaymentUpdated);
+        $this->pushEvent(new PaymentModified($this));
     }
 }

@@ -8,6 +8,8 @@ use Sdk\Module\Support\ServiceProvider;
 
 class BootServiceProvider extends ServiceProvider
 {
+    public function register() {}
+
     public function boot()
     {
         $this->app->singleton(PaymentRepositoryInterface::class, PaymentRepository::class);
