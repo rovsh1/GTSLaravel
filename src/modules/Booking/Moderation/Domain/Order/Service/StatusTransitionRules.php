@@ -13,10 +13,10 @@ class StatusTransitionRules
 
     public function __construct()
     {
-        $this->addTransition(OrderStatusEnum::IN_PROGRESS, OrderStatusEnum::CANCELLED);
-        $this->addTransition(OrderStatusEnum::INVOICED, OrderStatusEnum::CANCELLED);
-
         $this->addTransition(OrderStatusEnum::IN_PROGRESS, OrderStatusEnum::WAITING_INVOICE);
+        $this->addTransition(OrderStatusEnum::IN_PROGRESS, OrderStatusEnum::CANCELLED);
+
+        $this->addTransition(OrderStatusEnum::INVOICED, OrderStatusEnum::CANCELLED);
     }
 
     public function canTransit(OrderStatusEnum $fromStatus, OrderStatusEnum $toStatus): bool
