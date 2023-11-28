@@ -1,0 +1,45 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Module\Client\Payment\Application\UseCase;
+
+use Module\Client\Invoicing\Domain\Order\ValueObject\OrderId;
+use Module\Client\Payment\Application\Exception\LendOrderToPaymentUnknownError;
+use Module\Client\Payment\Application\RequestDto\LendOrderToPaymentRequestDto;
+use Module\Client\Payment\Domain\Payment\Repository\PaymentRepositoryInterface;
+use Module\Client\Payment\Domain\Payment\ValueObject\Landing;
+use Module\Client\Payment\Domain\Payment\ValueObject\LandingCollection;
+use Module\Client\Payment\Domain\Payment\ValueObject\PaymentId;
+use Sdk\Module\Contracts\UseCase\UseCaseInterface;
+
+class OrdersLandingToPayment implements UseCaseInterface
+{
+    public function __construct(
+        private readonly PaymentRepositoryInterface $paymentRepository,
+    ) {}
+
+    /**
+     * @param int $paymentId
+     * @param LendOrderToPaymentRequestDto[] $orders
+     * @return void
+     * @throws \Exception
+     */
+    public function execute(int $paymentId, array $orders): void
+    {
+        $payment = $this->paymentRepository->findOrFail(new PaymentId($paymentId));
+        $landings = array_map(
+            fn(LendOrderToPaymentRequestDto $dto) => new Landing(new OrderId($dto->orderId), $dto->sum),
+            $orders
+        );
+        $landings = new LandingCollection($landings);
+        try {
+            $payment->setLandings($landings);
+            $this->paymentRepository->store($payment);
+        } catch (\Throwable $e) {
+            throw new LendOrderToPaymentUnknownError($e);
+        } finally {
+            //@todo если заказ полностью оплачен или оплата с него снята - изменить статус (скорее всего ивент)
+        }
+    }
+}

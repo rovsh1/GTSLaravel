@@ -6,6 +6,7 @@ namespace Module\Client\Payment\Domain\Payment;
 
 use DateTimeImmutable;
 use Module\Client\Payment\Domain\Payment\ValueObject\InvoiceNumber;
+use Module\Client\Payment\Domain\Payment\ValueObject\LandingCollection;
 use Module\Client\Payment\Domain\Payment\ValueObject\PaymentAmount;
 use Module\Client\Payment\Domain\Payment\ValueObject\PaymentDocument;
 use Module\Client\Payment\Domain\Payment\ValueObject\PaymentId;
@@ -23,7 +24,7 @@ final class Payment extends AbstractAggregateRoot
         private readonly DateTimeImmutable $issueDate,
         private readonly DateTimeImmutable $paymentDate,
         private readonly PaymentAmount $paymentAmount,
-        private float $plantedSum,
+        private LandingCollection $landings,
         private readonly ?PaymentDocument $document,
     ) {}
 
@@ -62,9 +63,9 @@ final class Payment extends AbstractAggregateRoot
         return $this->paymentAmount;
     }
 
-    public function plantedSum(): float
+    public function lendedSum(): float
     {
-        return $this->plantedSum;
+        return $this->landings->sum();
     }
 
     public function document(): ?PaymentDocument
@@ -72,31 +73,32 @@ final class Payment extends AbstractAggregateRoot
         return $this->document;
     }
 
-    public function addPlantSum(float $sum): void
+    public function landings(): LandingCollection
     {
-        $remainingSum = $this->paymentAmount->sum() - $this->plantedSum;
-        if ($remainingSum < $sum) {
+        return $this->landings;
+    }
+
+    public function setLandings(LandingCollection $landings): void
+    {
+        $landingsSum = $landings->sum();
+        $remainingSum = $this->paymentAmount->sum() - $landingsSum;
+        if ($remainingSum < 0) {
             throw new \RuntimeException('Insufficient funds');
         }
 
-        $this->plantedSum += $sum;
-        if (round($this->paymentAmount->sum()) === round($this->plantedSum)) {
+        $this->landings = $landings;
+
+        $roundedLandingsSum = (int)round($landingsSum);
+        if ($roundedLandingsSum === 0) {
+            $this->updateStatus(PaymentStatusEnum::NOT_PAID);
+            return;
+        }
+
+        $roundedPaymentAmount = (int)round($this->paymentAmount->sum());
+        if ($roundedPaymentAmount === $roundedLandingsSum) {
             $this->updateStatus(PaymentStatusEnum::PAID);
         } else {
             $this->updateStatus(PaymentStatusEnum::PARTIAL_PAID);
-        }
-    }
-
-    public function removePlantSum(float $sum): void
-    {
-        if ($this->plantedSum < $sum) {
-            throw new \RuntimeException('Planted sum not enough');
-        }
-
-        //@todo нужно удалить все записи из таблицы client_payment_plants
-        $this->plantedSum -= $sum;
-        if ($this->plantedSum === 0.0) {
-            $this->updateStatus(PaymentStatusEnum::NOT_PAID);
         }
     }
 

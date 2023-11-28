@@ -9,7 +9,6 @@ use Module\Client\Payment\Application\Dto\PaymentDto;
 
 /**
  * @method static PaymentDto|null get(int $paymentId)
- * @method static void lendPayment(int $paymentId, int $orderId, float $sum)
  **/
 class PaymentAdapter extends Facade
 {

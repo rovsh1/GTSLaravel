@@ -6,13 +6,15 @@ namespace Module\Client\Payment\Infrastructure\Models;
 
 use DateTime;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Module\Client\Payment\Domain\Payment\ValueObject\PaymentStatusEnum;
 use Sdk\Module\Database\Eloquent\Model;
 use Sdk\Shared\Enum\CurrencyEnum;
 
 /**
- * @method static Builder|Payment withPlantSum()
+ * @method static Builder|Payment withLandings()
  *
  * @property int $id
  * @property int $client_id
@@ -20,13 +22,13 @@ use Sdk\Shared\Enum\CurrencyEnum;
  * @property string $invoice_number
  * @property CurrencyEnum $payment_currency
  * @property float $payment_sum
- * @property float $planted_sum
  * @property int $payment_method_id
  * @property DateTime $payment_date
  * @property DateTime $issue_date
  * @property string $document_name
  * @property string $document
  * @property DateTime $created_at
+ * @property-read Collection<int, Landing> $landings
  */
 class Payment extends Model
 {
@@ -55,16 +57,15 @@ class Payment extends Model
         'payment_method_id' => 'int',
         'issue_date' => 'datetime:Y-m-d',
         'payment_date' => 'datetime:Y-m-d',
-        'planted_sum' => 'float',
     ];
 
-    public function scopeWithPlantSum(Builder $builder): void
+    public function scopeWithLandings(Builder $builder): void
     {
-        $builder
-            ->select('client_payments.*')
-            ->selectSub(
-            'SELECT COALESCE(SUM(sum), 0) FROM client_payment_plants WHERE payment_id=client_payments.id',
-            'planted_sum'
-        );
+        $builder->with(['landings']);
+    }
+
+    public function landings(): HasMany
+    {
+        return $this->hasMany(Landing::class, 'payment_id');
     }
 }

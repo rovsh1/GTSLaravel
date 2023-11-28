@@ -6,8 +6,8 @@ namespace App\Admin\Support\Adapters\Finance;
 
 use Module\Client\Invoicing\Application\UseCase\GetPaymentOrders;
 use Module\Client\Invoicing\Application\UseCase\GetWaitingPaymentOrders;
-use Module\Client\Payment\Application\RequestDto\LendPaymentRequestDto;
-use Module\Client\Payment\Application\UseCase\LendPayment;
+use Module\Client\Payment\Application\RequestDto\LendOrderToPaymentRequestDto;
+use Module\Client\Payment\Application\UseCase\OrdersLandingToPayment;
 
 class OrderAdapter
 {
@@ -23,11 +23,11 @@ class OrderAdapter
 
     public function lendOrders(int $paymentId, array $orders): void
     {
-        //@todo переделать на разовый вызов + удаление всех привязанных, т.к. можно отменять платежи
-        foreach ($orders as $order) {
-            $orderId = $order['id'];
-            $sum = $order['sum'];
-            app(LendPayment::class)->execute(new LendPaymentRequestDto($paymentId, $orderId, $sum));
-        }
+        $ordersDto = array_map(fn(array $data) => new LendOrderToPaymentRequestDto(
+            $data['id'],
+            $data['sum'],
+        ), $orders);
+
+        app(OrdersLandingToPayment::class)->execute($paymentId, $ordersDto);
     }
 }

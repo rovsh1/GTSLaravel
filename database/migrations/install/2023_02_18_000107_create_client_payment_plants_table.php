@@ -7,12 +7,13 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('client_payment_plants', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create('client_payment_landings', function (Blueprint $table) {
             $table->unsignedInteger('payment_id');
             $table->unsignedInteger('order_id');
             $table->unsignedDecimal('sum', 14);
             $table->timestamp('created_at');
+
+            $table->unique(['payment_id', 'order_id']);
 
             $table->foreign('payment_id')
                 ->references('id')
@@ -30,6 +31,6 @@ return new class extends Migration {
 
     public function down(): void
     {
-        Schema::dropIfExists('client_payment_plants');
+        Schema::dropIfExists('client_payment_landings');
     }
 };

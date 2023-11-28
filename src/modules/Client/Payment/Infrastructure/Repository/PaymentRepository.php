@@ -2,13 +2,18 @@
 
 namespace Module\Client\Payment\Infrastructure\Repository;
 
+use Illuminate\Database\Eloquent\Collection;
+use Module\Client\Invoicing\Domain\Order\ValueObject\OrderId;
 use Module\Client\Payment\Domain\Payment\Payment;
 use Module\Client\Payment\Domain\Payment\Repository\PaymentRepositoryInterface;
 use Module\Client\Payment\Domain\Payment\ValueObject\InvoiceNumber;
+use Module\Client\Payment\Domain\Payment\ValueObject\Landing;
+use Module\Client\Payment\Domain\Payment\ValueObject\LandingCollection;
 use Module\Client\Payment\Domain\Payment\ValueObject\PaymentAmount;
 use Module\Client\Payment\Domain\Payment\ValueObject\PaymentDocument;
 use Module\Client\Payment\Domain\Payment\ValueObject\PaymentId;
 use Module\Client\Payment\Domain\Payment\ValueObject\PaymentStatusEnum;
+use Module\Client\Payment\Infrastructure\Models\Landing as LandingModel;
 use Module\Client\Payment\Infrastructure\Models\Payment as Model;
 use Module\Client\Shared\Domain\ValueObject\ClientId;
 use Sdk\Module\Support\DateTimeImmutable;
@@ -48,7 +53,7 @@ class PaymentRepository implements PaymentRepositoryInterface
 
     public function find(PaymentId $id): ?Payment
     {
-        $model = Model::withPlantSum()
+        $model = Model::withLandings()
             ->where('id', $id->value())
             ->first();
 
@@ -57,10 +62,27 @@ class PaymentRepository implements PaymentRepositoryInterface
 
     public function store(Payment $payment): void
     {
-        $model = Model::find($payment->id()->value());
+        $paymentId = $payment->id()->value();
+        $model = Model::find($paymentId);
         $model->status = $payment->status()->value;
         $model->touch();
         $model->save();
+
+        if ($payment->landings()->count() === 0) {
+            LandingModel::wherePaymentId($paymentId)->delete();
+            return;
+        }
+
+        $orderIds = $payment->landings()->map(fn(Landing $landing) => $landing->orderId()->value());
+        LandingModel::wherePaymentId($paymentId)->whereNotIn('order_id', $orderIds)->delete();
+
+        $landingModels = $payment->landings()->map(fn(Landing $landing) => [
+            'payment_id' => $paymentId,
+            'order_id' => $landing->orderId()->value(),
+            'sum' => $landing->sum(),
+            'created_at' => now(),
+        ]);
+        LandingModel::upsert($landingModels, ['payment_id', 'order_id'], ['sum', 'created_at']);
     }
 
     private function fromModel(Model $model): Payment
@@ -77,11 +99,21 @@ class PaymentRepository implements PaymentRepositoryInterface
                 $model->payment_sum,
                 $model->payment_method_id
             ),
-            plantedSum: $model->planted_sum ?? 0.0,
+            landings: $this->buildLandings($model->landings),
             document: $model->document ? new PaymentDocument(
                 $model->document_name,
                 new File($model->document)
             ) : null,
         );
+    }
+
+    private function buildLandings(Collection $landings): LandingCollection
+    {
+        $entities = $landings->map(fn(LandingModel $landing) => new Landing(
+            new OrderId($landing->order_id),
+            $landing->sum,
+        ));
+
+        return new LandingCollection($entities);
     }
 }

@@ -50,6 +50,7 @@ class OrderRepository implements OrderRepositoryInterface
                 OrderStatusEnum::PARTIAL_PAID,
                 OrderStatusEnum::REFUND_FEE,
             ])
+            ->whereNotPaid()
             ->get();
 
         return $models->map(fn(Model $model) => $this->fromModel($model))->all();
@@ -61,7 +62,7 @@ class OrderRepository implements OrderRepositoryInterface
      */
     public function getPaymentOrders(PaymentId $paymentId): array
     {
-        $models = Model::whereLendToPaymentId($paymentId->value())->get();
+        $models = Model::forLandingToPaymentId($paymentId->value())->get();
 
         return $models->map(fn(Model $model) => $this->fromModel($model))->all();
     }

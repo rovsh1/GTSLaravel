@@ -25,6 +25,7 @@ abstract class ApplicationException extends \RuntimeException
     public const ORDER_INVOICE_CANCELLATION_FORBIDDEN        = 1014;
     public const HOTEL_ROOM_NOT_FOUND                        = 1015;
     public const HOTEL_ROOM_PRICE_NOT_FOUND                  = 1016;
+    public const LEND_ORDER_TO_PAYMENT_UNKNOWN_ERROR         = 1017;
 
     private static array $errorsArray;
 

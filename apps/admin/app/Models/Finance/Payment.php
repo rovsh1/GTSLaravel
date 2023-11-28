@@ -35,13 +35,13 @@ class Payment extends \Module\Client\Payment\Infrastructure\Models\Payment
                 ->addSelect('clients.name as client_name')
                 ->selectSub(function (Query $query) {
                     $query->selectRaw('SUM(sum)')
-                        ->from('client_payment_plants')
-                        ->whereColumn('client_payment_plants.payment_id', 'client_payments.id');
+                        ->from('client_payment_landings')
+                        ->whereColumn('client_payment_landings.payment_id', 'client_payments.id');
                 }, 'lend_sum')
                 ->selectSub(function (Query $query) {
                     $query->selectRaw('client_payments.payment_sum - SUM(sum)')
-                        ->from('client_payment_plants')
-                        ->whereColumn('client_payment_plants.payment_id', 'client_payments.id');
+                        ->from('client_payment_landings')
+                        ->whereColumn('client_payment_landings.payment_id', 'client_payments.id');
                 }, 'remaining_sum');
         });
     }

@@ -12,6 +12,16 @@ trait HasStatusesTrait
         return $this->status === OrderStatusEnum::IN_PROGRESS;
     }
 
+    public function isWaitingInvoice(): bool
+    {
+        return $this->status === OrderStatusEnum::WAITING_INVOICE;
+    }
+
+    public function isInvoiced(): bool
+    {
+        return $this->status === OrderStatusEnum::INVOICED;
+    }
+
     public function toInProgress(): void
     {
         $this->status = OrderStatusEnum::IN_PROGRESS;

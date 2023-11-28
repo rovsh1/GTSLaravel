@@ -31,9 +31,9 @@ class GetAvailableActions implements UseCaseInterface
             statuses: $this->buildAvailableStatuses($order),
             isEditable: $order->inModeration(),
             canSendVoucher: true,
-            canCreateInvoice: true,
-            canSendInvoice: true,
-            canCancelInvoice: true,
+            canCreateInvoice: $order->isWaitingInvoice(),
+            canSendInvoice: $order->isInvoiced(),
+            canCancelInvoice: $order->isInvoiced(),
         );
     }
 
