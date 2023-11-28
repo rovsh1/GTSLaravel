@@ -62,7 +62,11 @@ const rooms = computed(() => props.rooms.map(({ id, name }) => ({
   label: name,
 })))
 
-const setDefaultRooms = () => rooms.value.map((day) => day.value.toString()) as string[]
+const setDefaultRooms = () => {
+  const defaultRooms = rooms.value.map((day) => day.value.toString()) as string[]
+  emit('switchRoom', defaultRooms.length ? defaultRooms.map((str) => parseInt(str, 10)) : [])
+  return defaultRooms
+}
 
 const selectedRoomID = ref<string[]>(setDefaultRooms())
 
