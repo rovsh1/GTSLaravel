@@ -229,7 +229,7 @@ const initializeSelectElement = (element: HTMLSelectElement, options?: SelectEle
           }
 
           const $clearSelectElemetny = $(
-            '<a class="clear-select-element" href="#">Очитстить</a>',
+            '<a class="clear-select-element" href="#">Очистить</a>',
           )
           if (!noItemsSelected) {
             $rendered.removeClass('disabled-actions')

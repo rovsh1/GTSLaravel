@@ -128,7 +128,9 @@ $.fn.childCombo = async function (options) {
         await useSelectElement(child[0], {
           multiple: isMultiple,
         })
-        setSelect2PlaceholderValue(preparedOptions.emptyText)
+        if (!preparedOptions.allowEmpty) {
+          setSelect2PlaceholderValue(preparedOptions.emptyText)
+        }
         trigger('load', items)
         return
       }
