@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Admin\Services\ChangeLogger\Changes;
+namespace App\Admin\Services\JournalLogger\Changes;
 
-use App\Admin\Services\ChangeLogger\EventTypeEnum;
+use App\Admin\Services\JournalLogger\EventTypeEnum;
 use Sdk\Module\Database\Eloquent\Model;
 
-class ModelCreated implements ChangesInterface
+class ModelDeleted implements ChangesInterface
 {
     public function __construct(private readonly Model $model) {}
 
     public function event(): EventTypeEnum
     {
-        return EventTypeEnum::CREATED;
+        return EventTypeEnum::DELETED;
     }
 
     public function payload(): array

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Services\ChangeLogger;
+namespace App\Admin\Services\JournalLogger;
 
 enum EventTypeEnum
 {

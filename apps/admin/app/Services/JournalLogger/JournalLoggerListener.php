@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Admin\Services\ChangeLogger;
+namespace App\Admin\Services\JournalLogger;
 
-use App\Admin\Services\ChangeLogger\Changes\ModelChanged;
-use App\Admin\Services\ChangeLogger\Changes\ModelCreated;
-use App\Admin\Services\ChangeLogger\Changes\ModelDeleted;
+use App\Admin\Services\JournalLogger\Changes\ModelChanged;
+use App\Admin\Services\JournalLogger\Changes\ModelCreated;
+use App\Admin\Services\JournalLogger\Changes\ModelDeleted;
 
-class ChangeLoggerListener
+class JournalLoggerListener
 {
     public function __construct(
         public readonly ChangesRegistrator $changesRegistrator

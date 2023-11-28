@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Admin\Services\ChangeLogger;
+namespace App\Admin\Services\JournalLogger;
 
-use App\Admin\Services\ChangeLogger\Changes\ChangesInterface;
+use App\Admin\Services\JournalLogger\Changes\ChangesInterface;
 use App\Admin\Support\Facades\AppContext;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;

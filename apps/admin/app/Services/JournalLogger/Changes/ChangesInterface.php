@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Admin\Services\ChangeLogger\Changes;
+namespace App\Admin\Services\JournalLogger\Changes;
 
-use App\Admin\Services\ChangeLogger\EventTypeEnum;
+use App\Admin\Services\JournalLogger\EventTypeEnum;
 
 interface ChangesInterface
 {

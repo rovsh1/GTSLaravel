@@ -10,17 +10,21 @@ class ClearJournalLog extends Command
     private const DEFAULT_TTL = '2 weeks';
 
     protected $signature = 'system:clear-journal-log
-    {--from=}';
+    {--truncate}';
 
     protected $description = '';
 
     public function handle(): void
     {
-        $from = now();
-        $from->modify('-' . self::DEFAULT_TTL);
+        if ($this->hasOption('truncate')) {
+            DB::table('administrator_journal_log')->truncate();
+        } else {
+            $from = now();
+            $from->modify('-' . self::DEFAULT_TTL);
 
-        DB::table('administrator_journal_log')
-            ->where('created_at', '<=', $from->format('Y-m-d H:i:s'))
-            ->detete();
+            DB::table('administrator_journal_log')
+                ->where('created_at', '<=', $from->format('Y-m-d H:i:s'))
+                ->detete();
+        }
     }
 }

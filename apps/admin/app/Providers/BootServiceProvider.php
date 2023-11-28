@@ -2,7 +2,7 @@
 
 namespace App\Admin\Providers;
 
-use App\Admin\Services\ChangeLogger\ChangeLoggerServiceProvider;
+use App\Admin\Services\JournalLogger\JournalLoggerServiceProvider;
 use App\Admin\Support\Facades\AppContext;
 use Illuminate\Support\ServiceProvider;
 use Sdk\Shared\Enum\SourceEnum;
@@ -20,7 +20,7 @@ class BootServiceProvider extends ServiceProvider
         $this->app->register(RouteServiceProvider::class);
         $this->app->register(FormatServiceProvider::class);
         $this->app->register(ViewServiceProvider::class);
-        $this->app->register(ChangeLoggerServiceProvider::class);
+        $this->app->register(JournalLoggerServiceProvider::class);
     }
 
     /**
