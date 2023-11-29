@@ -22,6 +22,21 @@ trait HasStatusesTrait
         return $this->status === OrderStatusEnum::INVOICED;
     }
 
+    public function canCreateVoucher(): bool
+    {
+        return in_array($this->status, [
+            OrderStatusEnum::WAITING_INVOICE,
+            OrderStatusEnum::INVOICED,
+            OrderStatusEnum::PARTIAL_PAID,
+            OrderStatusEnum::PAID,
+        ]);
+    }
+
+    public function canSendVoucher(): bool
+    {
+        return $this->canCreateVoucher();
+    }
+
     public function toInProgress(): void
     {
         $this->status = OrderStatusEnum::IN_PROGRESS;

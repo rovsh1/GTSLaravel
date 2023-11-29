@@ -30,9 +30,10 @@ class GetAvailableActions implements UseCaseInterface
         return new OrderAvailableActionsDto(
             statuses: $this->buildAvailableStatuses($order),
             isEditable: $order->inModeration(),
-            canSendVoucher: true,
+            canCreateVoucher: $order->canCreateVoucher(),
+            canSendVoucher: $order->canSendVoucher(),
             canCreateInvoice: $order->isWaitingInvoice(),
-            canSendInvoice: $order->isInvoiced(),//@todo false если уже отправлен
+            canSendInvoice: $order->isInvoiced(),
             canCancelInvoice: $order->isInvoiced(),
         );
     }

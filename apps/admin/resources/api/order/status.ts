@@ -7,6 +7,7 @@ export interface OrderAvailableActionsResponse {
   statuses: OrderStatusResponse[]
   isEditable: boolean
   isRequestable: boolean
+  canCreateVoucher: boolean
   canSendVoucher: boolean
   canCreateInvoice: boolean
   canSendInvoice: boolean

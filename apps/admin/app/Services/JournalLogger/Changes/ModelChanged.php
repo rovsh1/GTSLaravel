@@ -3,7 +3,7 @@
 namespace App\Admin\Services\JournalLogger\Changes;
 
 use App\Admin\Services\JournalLogger\EventTypeEnum;
-use Sdk\Module\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 
 class ModelChanged implements ChangesInterface
 {
