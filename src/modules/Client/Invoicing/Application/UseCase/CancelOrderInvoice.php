@@ -8,7 +8,7 @@ use Module\Client\Invoicing\Domain\Invoice\Exception\InvalidOrderStatusToCancelI
 use Module\Client\Invoicing\Domain\Invoice\Repository\InvoiceRepositoryInterface;
 use Module\Client\Invoicing\Domain\Order\Order;
 use Module\Client\Invoicing\Domain\Order\Repository\OrderRepositoryInterface;
-use Module\Client\Invoicing\Domain\Order\ValueObject\OrderId;
+use Module\Client\Shared\Domain\ValueObject\OrderId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class CancelOrderInvoice implements UseCaseInterface

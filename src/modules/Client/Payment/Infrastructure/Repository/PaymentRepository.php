@@ -3,7 +3,6 @@
 namespace Module\Client\Payment\Infrastructure\Repository;
 
 use Illuminate\Database\Eloquent\Collection;
-use Module\Client\Invoicing\Domain\Order\ValueObject\OrderId;
 use Module\Client\Payment\Domain\Payment\Payment;
 use Module\Client\Payment\Domain\Payment\Repository\PaymentRepositoryInterface;
 use Module\Client\Payment\Domain\Payment\ValueObject\InvoiceNumber;
@@ -11,11 +10,12 @@ use Module\Client\Payment\Domain\Payment\ValueObject\Landing;
 use Module\Client\Payment\Domain\Payment\ValueObject\LandingCollection;
 use Module\Client\Payment\Domain\Payment\ValueObject\PaymentAmount;
 use Module\Client\Payment\Domain\Payment\ValueObject\PaymentDocument;
-use Module\Client\Payment\Domain\Payment\ValueObject\PaymentId;
 use Module\Client\Payment\Domain\Payment\ValueObject\PaymentStatusEnum;
 use Module\Client\Payment\Infrastructure\Models\Landing as LandingModel;
 use Module\Client\Payment\Infrastructure\Models\Payment as Model;
 use Module\Client\Shared\Domain\ValueObject\ClientId;
+use Module\Client\Shared\Domain\ValueObject\OrderId;
+use Module\Client\Shared\Domain\ValueObject\PaymentId;
 use Sdk\Module\Support\DateTimeImmutable;
 use Sdk\Shared\ValueObject\File;
 

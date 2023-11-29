@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Client\Payment\Domain\Payment\ValueObject;
 
-use Module\Client\Invoicing\Domain\Order\ValueObject\OrderId;
+use Module\Client\Shared\Domain\ValueObject\OrderId;
 
 final class Landing
 {

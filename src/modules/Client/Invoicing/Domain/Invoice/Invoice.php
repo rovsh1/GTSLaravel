@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Module\Client\Invoicing\Domain\Invoice;
 
 use Module\Client\Invoicing\Domain\Invoice\ValueObject\InvoiceId;
-use Module\Client\Invoicing\Domain\Order\ValueObject\OrderId;
 use Module\Client\Shared\Domain\ValueObject\ClientId;
+use Module\Client\Shared\Domain\ValueObject\OrderId;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
 use Sdk\Shared\ValueObject\File;
 use Sdk\Shared\ValueObject\Timestamps;

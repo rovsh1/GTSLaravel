@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Module\Client\Payment\Application\UseCase;
 
-use Module\Client\Invoicing\Domain\Order\ValueObject\OrderId;
-use Module\Client\Payment\Application\Exception\LendOrderToPaymentUnknownError;
+use Module\Client\Payment\Application\Exception\LendOrderToPaymentInsufficientFundsException;
 use Module\Client\Payment\Application\RequestDto\LendOrderToPaymentRequestDto;
+use Module\Client\Payment\Domain\Payment\Exception\PaymentInsufficientFunds;
 use Module\Client\Payment\Domain\Payment\Repository\PaymentRepositoryInterface;
 use Module\Client\Payment\Domain\Payment\ValueObject\Landing;
 use Module\Client\Payment\Domain\Payment\ValueObject\LandingCollection;
-use Module\Client\Payment\Domain\Payment\ValueObject\PaymentId;
+use Module\Client\Shared\Domain\ValueObject\OrderId;
+use Module\Client\Shared\Domain\ValueObject\PaymentId;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
@@ -39,8 +40,8 @@ class OrdersLandingToPayment implements UseCaseInterface
             $payment->setLandings($landings);
             $this->paymentRepository->store($payment);
             $this->eventDispatcher->dispatch(...$payment->pullEvents());
-        } catch (\Throwable $e) {
-            throw new LendOrderToPaymentUnknownError($e);
+        } catch (PaymentInsufficientFunds $e) {
+            throw new LendOrderToPaymentInsufficientFundsException($e);
         }
     }
 }

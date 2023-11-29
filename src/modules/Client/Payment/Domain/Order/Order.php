@@ -2,10 +2,8 @@
 
 declare(strict_types=1);
 
-namespace Module\Client\Invoicing\Domain\Order;
+namespace Module\Client\Payment\Domain\Order;
 
-use Module\Client\Invoicing\Domain\Invoice\Exception\InvalidOrderStatusToCancelInvoice;
-use Module\Client\Invoicing\Domain\Invoice\Exception\InvalidOrderStatusToCreateInvoice;
 use Module\Client\Shared\Domain\ValueObject\ClientId;
 use Module\Client\Shared\Domain\ValueObject\OrderId;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
@@ -32,6 +30,11 @@ final class Order extends AbstractAggregateRoot
         return $this->clientId;
     }
 
+    public function status(): OrderStatusEnum
+    {
+        return $this->status;
+    }
+
     public function clientPrice(): Money
     {
         return $this->clientPrice;
@@ -42,32 +45,18 @@ final class Order extends AbstractAggregateRoot
         return $this->payedAmount;
     }
 
-    public function status(): OrderStatusEnum
-    {
-        return $this->status;
-    }
-
     public function invoiced(): void
     {
         $this->status = OrderStatusEnum::INVOICED;
     }
 
-    public function toInProgress(): void
+    public function paid(): void
     {
-        $this->status = OrderStatusEnum::IN_PROGRESS;
+        $this->status = OrderStatusEnum::PAID;
     }
 
-    public function ensureInvoiceCreationAvailable(): void
+    public function partialPaid(): void
     {
-        if ($this->status !== OrderStatusEnum::WAITING_INVOICE) {
-            throw new InvalidOrderStatusToCreateInvoice();
-        }
-    }
-
-    public function ensureInvoiceCanBeCancelled(): void
-    {
-        if ($this->status !== OrderStatusEnum::INVOICED) {
-            throw new InvalidOrderStatusToCancelInvoice();
-        }
+        $this->status = OrderStatusEnum::PARTIAL_PAID;
     }
 }

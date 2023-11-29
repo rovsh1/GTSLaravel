@@ -6,7 +6,7 @@ namespace Module\Client\Payment\Application\UseCase;
 
 use Module\Client\Payment\Application\Dto\PaymentDto;
 use Module\Client\Payment\Domain\Payment\Repository\PaymentRepositoryInterface;
-use Module\Client\Payment\Domain\Payment\ValueObject\PaymentId;
+use Module\Client\Shared\Domain\ValueObject\PaymentId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 use Sdk\Shared\Contracts\Service\TranslatorInterface;
 use Sdk\Shared\Dto\CurrencyDto;

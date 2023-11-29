@@ -6,7 +6,7 @@ namespace Module\Client\Invoicing\Application\UseCase;
 
 use Module\Client\Invoicing\Application\Factory\OrderDtoFactory;
 use Module\Client\Invoicing\Domain\Order\Repository\OrderRepositoryInterface;
-use Module\Client\Invoicing\Domain\Order\ValueObject\PaymentId;
+use Module\Client\Shared\Domain\ValueObject\PaymentId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class GetWaitingPaymentOrders implements UseCaseInterface

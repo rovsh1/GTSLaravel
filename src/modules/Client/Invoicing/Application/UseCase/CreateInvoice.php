@@ -6,7 +6,7 @@ namespace Module\Client\Invoicing\Application\UseCase;
 
 use Module\Client\Invoicing\Application\Dto\InvoiceDto;
 use Module\Client\Invoicing\Domain\Invoice\Factory\InvoiceFactory;
-use Module\Client\Invoicing\Domain\Order\ValueObject\OrderId;
+use Module\Client\Shared\Domain\ValueObject\OrderId;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class CreateInvoice implements UseCaseInterface

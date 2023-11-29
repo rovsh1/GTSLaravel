@@ -6,9 +6,9 @@ use Module\Client\Payment\Domain\Payment\Payment;
 use Module\Client\Payment\Domain\Payment\ValueObject\InvoiceNumber;
 use Module\Client\Payment\Domain\Payment\ValueObject\PaymentAmount;
 use Module\Client\Payment\Domain\Payment\ValueObject\PaymentDocument;
-use Module\Client\Payment\Domain\Payment\ValueObject\PaymentId;
 use Module\Client\Payment\Domain\Payment\ValueObject\PaymentStatusEnum;
 use Module\Client\Shared\Domain\ValueObject\ClientId;
+use Module\Client\Shared\Domain\ValueObject\PaymentId;
 use Sdk\Module\Support\DateTimeImmutable;
 
 interface PaymentRepositoryInterface

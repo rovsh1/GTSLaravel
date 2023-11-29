@@ -7,8 +7,8 @@ namespace Module\Client\Invoicing\Infrastructure\Adapter;
 use Module\Booking\Invoicing\Application\RequestDto\GenerateInvoiceFileRequestDto;
 use Module\Booking\Invoicing\Application\UseCase\GenerateInvoiceFile;
 use Module\Client\Invoicing\Domain\Invoice\Adapter\FileGeneratorAdapterInterface;
-use Module\Client\Invoicing\Domain\Order\ValueObject\OrderId;
 use Module\Client\Shared\Domain\ValueObject\ClientId;
+use Module\Client\Shared\Domain\ValueObject\OrderId;
 use Sdk\Shared\Dto\FileDto;
 
 class FileGeneratorAdapter implements FileGeneratorAdapterInterface

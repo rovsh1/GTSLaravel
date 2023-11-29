@@ -12,7 +12,7 @@ use Module\Client\Invoicing\Domain\Invoice\Invoice;
 use Module\Client\Invoicing\Domain\Invoice\Repository\InvoiceRepositoryInterface;
 use Module\Client\Invoicing\Domain\Order\Order;
 use Module\Client\Invoicing\Domain\Order\Repository\OrderRepositoryInterface;
-use Module\Client\Invoicing\Domain\Order\ValueObject\OrderId;
+use Module\Client\Shared\Domain\ValueObject\OrderId;
 use Module\Shared\Contracts\Service\SafeExecutorInterface;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Shared\ValueObject\File;

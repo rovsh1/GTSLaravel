@@ -3,8 +3,8 @@
 namespace Module\Client\Invoicing\Domain\Order\Repository;
 
 use Module\Client\Invoicing\Domain\Order\Order;
-use Module\Client\Invoicing\Domain\Order\ValueObject\OrderId;
-use Module\Client\Invoicing\Domain\Order\ValueObject\PaymentId;
+use Module\Client\Shared\Domain\ValueObject\OrderId;
+use Module\Client\Shared\Domain\ValueObject\PaymentId;
 
 interface OrderRepositoryInterface
 {

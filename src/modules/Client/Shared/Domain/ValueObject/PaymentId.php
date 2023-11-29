@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Client\Payment\Domain\Payment\ValueObject;
+namespace Module\Client\Shared\Domain\ValueObject;
 
 use Sdk\Shared\Support\ValueObject\AbstractIntId;
 
