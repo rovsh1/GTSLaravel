@@ -46,9 +46,9 @@ class GetAvailableRooms implements UseCaseInterface
             'P1D'
         );
 
-        return array_filter(
+        return array_values(array_filter(
             $rooms,
-            fn($room) => $this->roomQuotaAdapter->getAvailableCount($room->id, $period) > 0
-        );
+            fn($room) => $this->roomQuotaAdapter->getAvailableCount($room->id, $period) > 0,
+        ));
     }
 }
