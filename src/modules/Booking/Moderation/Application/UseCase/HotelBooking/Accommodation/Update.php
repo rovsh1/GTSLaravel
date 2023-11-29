@@ -7,11 +7,10 @@ namespace Module\Booking\Moderation\Application\UseCase\HotelBooking\Accommodati
 use Module\Booking\Moderation\Application\RequestDto\UpdateRoomRequestDto;
 use Module\Booking\Moderation\Application\Service\AccommodationChecker;
 use Module\Booking\Moderation\Application\Service\AccommodationFactory;
-use Module\Booking\Moderation\Domain\Booking\Event\HotelBooking\AccommodationEdited;
+use Module\Booking\Moderation\Domain\Booking\Event\HotelBooking\AccommodationDetailsEdited;
 use Module\Booking\Moderation\Domain\Booking\Event\HotelBooking\AccommodationReplaced;
 use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\Repository\HotelBooking\BookingGuestRepositoryInterface;
 use Module\Shared\Contracts\Service\SafeExecutorInterface;
 use Sdk\Booking\Entity\BookingDetails\HotelAccommodation;
 use Sdk\Booking\ValueObject\BookingId;
@@ -26,7 +25,6 @@ final class Update implements UseCaseInterface
         private readonly AccommodationFactory $accommodationFactory,
         private readonly AccommodationChecker $accommodationChecker,
         private readonly AccommodationRepositoryInterface $accommodationRepository,
-        private readonly BookingGuestRepositoryInterface $bookingGuestRepository,
         private readonly DomainEventDispatcherInterface $eventDispatcher,
         private readonly SafeExecutorInterface $executor,
     ) {}
@@ -62,10 +60,12 @@ final class Update implements UseCaseInterface
             return;
         }
 
+        $detailsBefore = $currentAccommodation->details();
         $currentAccommodation->updateDetails($accommodationDetails);
 
-        $this->accommodationRepository->store($currentAccommodation);
-        $this->eventDispatcher->dispatch(new AccommodationEdited($booking, $currentAccommodation));
+        $this->eventDispatcher->dispatch(
+            new AccommodationDetailsEdited($booking, $currentAccommodation, $detailsBefore)
+        );
     }
 
     private function doReplace($booking, HotelAccommodation $beforeAccommodation): void
@@ -78,8 +78,9 @@ final class Update implements UseCaseInterface
                 if ($index + 1 > $maxGuestCount) {
                     break;
                 }
-                $this->bookingGuestRepository->bind($newAccommodation->id(), $guestId);
+                $newAccommodation->addGuest($guestId);
             }
+            $this->accommodationRepository->store($newAccommodation);
 
             $this->eventDispatcher->dispatch(
                 new AccommodationReplaced($booking, $newAccommodation, $beforeAccommodation)

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Module\Booking\Shared\Infrastructure\Models\Details;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 use Sdk\Module\Database\Eloquent\Model;
 use Sdk\Shared\Enum\ServiceTypeEnum;
 
@@ -38,6 +39,12 @@ class Airport extends Model
                 ->addSelect('supplier_services.type as service_type');
         });
     }
+
+    //@todo Дубль хранения?
+//DB::table('booking_airport_guests')->updateOrInsert(
+//['booking_airport_id' => $bookingId->value(), 'guest_id' => $guestId->value()],
+//['booking_airport_id' => $bookingId->value(), 'guest_id' => $guestId->value()]
+//);
 
     public function scopeWhereId(Builder $builder, int $id): void
     {
