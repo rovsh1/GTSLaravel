@@ -2,7 +2,7 @@
 
 namespace Module\Booking\EventSourcing\Providers;
 
-use Module\Booking\EventSourcing\Domain\Listener\RegisterChangesListener;
+use Module\Booking\EventSourcing\Domain\Listener\RegisterEventListener;
 use Sdk\Module\Contracts\Event\IntegrationEventSubscriberInterface;
 use Sdk\Module\Support\Providers\IntegrationEventServiceProvider as ServiceProvider;
 use Sdk\Shared\Event\IntegrationEventMessages;
@@ -26,7 +26,7 @@ class IntegrationEventServiceProvider extends ServiceProvider
         IntegrationEventMessages::HOTEL_BOOKING_GUEST_REMOVED,
     ];
 
-    protected string $changesListener = RegisterChangesListener::class;
+    protected string $changesListener = RegisterEventListener::class;
 
     protected function registerListeners(IntegrationEventSubscriberInterface $integrationEventSubscriber): void
     {
