@@ -14,6 +14,7 @@ $.fn.childCombo = async function (options) {
     dateRange: false,
     ...options,
   }
+  let currentParentValue = undefined
   const parent = $(preparedOptions.parent)
   if (!parent.length) {
     return $(this).attr('id')
@@ -71,9 +72,10 @@ $.fn.childCombo = async function (options) {
   }
 
   const onchange = async function () {
-    if (preparedOptions.dateRange && parent.val().length < 14) {
+    if ((preparedOptions.dateRange && parent.val().length < 14) || currentParentValue === parent.val()) {
       return
     }
+    currentParentValue = parent.val()
     trigger('change')
 
     child.prop('disabled', true)
@@ -118,7 +120,6 @@ $.fn.childCombo = async function (options) {
       let i;
       const l = items.length
       if (l === 0) {
-
         if (preparedOptions.hideEmpty) {
           child.parent().hide()
         }
@@ -131,6 +132,11 @@ $.fn.childCombo = async function (options) {
         })
         if (!preparedOptions.allowEmpty) {
           setSelect2PlaceholderValue(preparedOptions.emptyText)
+        }
+        if (preparedOptions.allowEmpty && preparedOptions.emptyItem !== '' && !isMultiple) {
+          setTimeout(() => {
+            child.val('').change()
+          }, 0)
         }
         trigger('load', items)
         return
