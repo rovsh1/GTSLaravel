@@ -101,6 +101,7 @@ $.fn.childCombo = async function (options) {
     } else {
       child.val([])
       child.change()
+      trigger('load', [])
       return
     }
 

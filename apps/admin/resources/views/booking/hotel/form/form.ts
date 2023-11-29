@@ -25,6 +25,12 @@ let clients = [] as Client[]
 const pinia = createPinia()
 
 $(async () => {
+  const urlParams = new URLSearchParams(window.location.search)
+  const clientIdParam = urlParams.get('client_id')
+  const orderIdParam = urlParams.get('order_id')
+
+  let $orderIdSelect: JQuery<HTMLElement> | null = null
+
   const toggleLegalIdInput = (required: boolean = true): void => {
     const $legalIdInput = $('#form_data_legal_id')
     const $legalIdField = $('div.field-legal_id')
@@ -95,6 +101,7 @@ $(async () => {
 
   await useSelectElement(document.querySelector<HTMLSelectElement>('#form_data_city_id'))
   await useSelectElement(document.querySelector<HTMLSelectElement>('#form_data_manager_id'))
+
   $('#form_data_hotel_id').childCombo({
     url: '/hotels/search',
     disabledText: 'Выберите город',
@@ -111,7 +118,11 @@ $(async () => {
     $clientIdSelect = (await useSelectElement(document.querySelector<HTMLSelectElement>('#form_data_client_id'), {
       data: clientsSelectOptions,
     }))?.select2Instance
-    $clientIdSelect?.val(selectedClientId || '').trigger('change')
+    if (bookingID === null && clientIdParam && orderIdParam) {
+      $clientIdSelect?.val(clientIdParam).trigger('change')
+    } else {
+      $clientIdSelect?.val(selectedClientId || '').trigger('change')
+    }
   }
 
   if (bookingID === null) {
@@ -140,7 +151,7 @@ $(async () => {
   $clientIdSelect?.change(() => handleChangeClientId(undefined))
     .ready(() => handleChangeClientId(undefined))
 
-  await (async () => $('#form_data_order_id').childCombo({
+  $orderIdSelect = await (async () => $('#form_data_order_id').childCombo({
     url: '/booking-order/search',
     disabledText: 'Выберите клиента',
     parent: $clientIdSelect,
@@ -149,6 +160,14 @@ $(async () => {
     emptyItem: 'Создать новый заказ',
     labelGetter: (order: Record<string, any>) => `№${order.id} от ${formatDate(order.createdAt)}`,
     childChange: toggleOrderFields,
+    load: () => {
+      if (bookingID === null && clientIdParam && orderIdParam) {
+        $orderIdSelect?.val(orderIdParam).trigger('change')
+      } else if (bookingID === null) {
+        $orderIdSelect?.val('').trigger('change')
+      }
+    },
   }))()
+
   reloadClientsSelect()
 })
