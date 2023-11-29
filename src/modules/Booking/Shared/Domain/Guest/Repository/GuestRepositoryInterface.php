@@ -23,6 +23,8 @@ interface GuestRepositoryInterface
 
     public function find(GuestId $id): ?Guest;
 
+    public function findOrFail(GuestId $id): Guest;
+
     /**
      * @param GuestIdCollection $ids
      * @return array<int, Guest>

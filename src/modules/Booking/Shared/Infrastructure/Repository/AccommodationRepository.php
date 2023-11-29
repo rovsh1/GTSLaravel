@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Infrastructure\Repository;
 
+use Illuminate\Support\Facades\DB;
 use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
 use Module\Booking\Shared\Infrastructure\Models\Accommodation as Model;
 use Sdk\Booking\Entity\BookingDetails\HotelAccommodation;
@@ -86,14 +87,23 @@ class AccommodationRepository implements AccommodationRepositoryInterface
         return $this->buildEntityFromModel($model);
     }
 
-    public function store(HotelAccommodation $booking): bool
+    public function store(HotelAccommodation $accommodation): bool
     {
-        return (bool)Model::whereId($booking->id()->value())
-            ->update([
-                'hotel_room_id' => $booking->roomInfo()->id(),
-                'room_name' => $booking->roomInfo()->name(),
-                'data' => $this->serializeEntity($booking)
-            ]);
+        DB::transaction(function () use ($accommodation) {
+            Model::whereId($accommodation->id()->value())
+                ->update([
+                    'hotel_room_id' => $accommodation->roomInfo()->id(),
+                    'room_name' => $accommodation->roomInfo()->name(),
+                    'data' => $this->serializeEntity($accommodation)
+                ]);
+
+            Model::setGuests(
+                $accommodation->id()->value(),
+                $accommodation->guestIds()->map(fn($id) => $id->value())
+            );
+        });
+
+        return true;
     }
 
     public function delete(AccommodationId $id): bool

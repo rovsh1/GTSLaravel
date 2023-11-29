@@ -25,7 +25,7 @@ interface AccommodationRepositoryInterface
 
     public function getByBookingId(BookingId $bookingId): AccommodationCollection;
 
-    public function store(HotelAccommodation $booking): bool;
+    public function store(HotelAccommodation $accommodation): bool;
 
     public function delete(AccommodationId $id): bool;
 

@@ -9,8 +9,8 @@ use Module\Booking\Moderation\Domain\Booking\Event\HotelBooking\GuestBinded;
 use Module\Booking\Shared\Domain\Booking\Adapter\HotelRoomAdapterInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\Repository\HotelBooking\BookingGuestRepositoryInterface;
-use Module\Shared\Contracts\Service\SafeExecutorInterface;
+use Module\Booking\Shared\Domain\Guest\Repository\GuestRepositoryInterface;
+use Sdk\Booking\Entity\BookingDetails\HotelAccommodation;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\GuestId;
 use Sdk\Booking\ValueObject\HotelBooking\AccommodationId;
@@ -20,11 +20,10 @@ use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 class BindGuest implements UseCaseInterface
 {
     public function __construct(
-        private readonly BookingGuestRepositoryInterface $bookingGuestRepository,
         private readonly BookingRepositoryInterface $bookingRepository,
         private readonly AccommodationRepositoryInterface $accommodationRepository,
+        private readonly GuestRepositoryInterface $guestRepository,
         private readonly HotelRoomAdapterInterface $hotelRoomAdapter,
-        private readonly SafeExecutorInterface $executor,
         private readonly DomainEventDispatcherInterface $eventDispatcher
     ) {}
 
@@ -32,21 +31,23 @@ class BindGuest implements UseCaseInterface
     {
         $booking = $this->bookingRepository->findOrFail(new BookingId($bookingId));
         $accommodation = $this->accommodationRepository->findOrFail(new AccommodationId($accommodationId));
+        $guest = $this->guestRepository->findOrFail(new GuestId($guestId));
+
+        $this->ensureGuestsCountAllowed($accommodation);
+
+        $accommodation->addGuest($guest->id());
+        $this->accommodationRepository->store($accommodation);
+
+        $this->eventDispatcher->dispatch(new GuestBinded($booking, $accommodation->id(), $guest));
+    }
+
+    private function ensureGuestsCountAllowed(HotelAccommodation $accommodation): void
+    {
         $hotelRoomSettings = $this->hotelRoomAdapter->findById($accommodation->roomInfo()->id());
         $expectedGuestCount = $accommodation->guestsCount() + 1;
         //@todo перенести валидацию в сервис
         if ($expectedGuestCount > $hotelRoomSettings->guestsCount) {
             throw new TooManyRoomGuestsException();
         }
-
-        $this->executor->execute(function () use ($booking, $accommodation, $guestId) {
-            $newGuestId = new GuestId($guestId);
-            $this->bookingGuestRepository->bind($accommodation->id(), $newGuestId);
-            $accommodation->addGuest($newGuestId);
-            $this->accommodationRepository->store($accommodation);
-            $this->eventDispatcher->dispatch(
-                new GuestBinded($booking->id(), $booking->orderId(), $accommodation->id(), $newGuestId)
-            );
-        });
     }
 }

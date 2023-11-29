@@ -10,6 +10,7 @@ use Module\Booking\Shared\Infrastructure\Models\Guest as Model;
 use Sdk\Booking\ValueObject\GuestId;
 use Sdk\Booking\ValueObject\GuestIdCollection;
 use Sdk\Booking\ValueObject\OrderId;
+use Sdk\Module\Foundation\Exception\EntityNotFoundException;
 use Sdk\Shared\Enum\GenderEnum;
 
 class GuestRepository implements GuestRepositoryInterface
@@ -42,6 +43,11 @@ class GuestRepository implements GuestRepositoryInterface
         }
 
         return $this->buildEntity($model);
+    }
+
+    public function findOrFail(GuestId $id): Guest
+    {
+        return $this->find($id) ?? throw new EntityNotFoundException("Guest [$id] not found");
     }
 
     /**

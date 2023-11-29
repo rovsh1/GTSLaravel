@@ -7,7 +7,7 @@ namespace Module\Booking\Moderation\Application\UseCase\HotelBooking\Accommodati
 use Module\Booking\Moderation\Domain\Booking\Event\HotelBooking\GuestUnbinded;
 use Module\Booking\Shared\Domain\Booking\Repository\AccommodationRepositoryInterface;
 use Module\Booking\Shared\Domain\Booking\Repository\BookingRepositoryInterface;
-use Module\Booking\Shared\Domain\Booking\Repository\HotelBooking\BookingGuestRepositoryInterface;
+use Module\Booking\Shared\Domain\Guest\Repository\GuestRepositoryInterface;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\GuestId;
 use Sdk\Booking\ValueObject\HotelBooking\AccommodationId;
@@ -18,28 +18,18 @@ class UnbindGuest implements UseCaseInterface
 {
     public function __construct(
         private readonly BookingRepositoryInterface $bookingRepository,
+        private readonly GuestRepositoryInterface $guestRepository,
         private readonly AccommodationRepositoryInterface $accommodationRepository,
-        private readonly BookingGuestRepositoryInterface $bookingGuestRepository,
         private readonly DomainEventDispatcherInterface $eventDispatcher
-    ) {
-    }
+    ) {}
 
     public function execute(int $bookingId, int $accommodationId, int $guestId): void
     {
         $booking = $this->bookingRepository->findOrFail(new BookingId($bookingId));
-        $accommodationId = new AccommodationId($accommodationId);
-        $accommodation = $this->accommodationRepository->findOrFail($accommodationId);
-        $newGuestId = new GuestId($guestId);
-        $this->bookingGuestRepository->unbind($accommodationId, $newGuestId);
-        $accommodation->removeGuest($newGuestId);
+        $accommodation = $this->accommodationRepository->findOrFail(new AccommodationId($accommodationId));
+        $guest = $this->guestRepository->findOrFail(new GuestId($guestId));
+        $accommodation->removeGuest($guest->id());
         $this->accommodationRepository->store($accommodation);
-        $this->eventDispatcher->dispatch(
-            new GuestUnbinded(
-                $booking->id(),
-                $booking->orderId(),
-                $accommodationId,
-                $newGuestId,
-            )
-        );
+        $this->eventDispatcher->dispatch(new GuestUnbinded($booking, $accommodation->id(), $guest));
     }
 }
