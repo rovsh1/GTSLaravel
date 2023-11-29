@@ -42,18 +42,17 @@ class UpdateOrderStatus implements DomainEventListenerInterface
 
     private function processOrder(Order $order): void
     {
-        $payedAmount = (int)$order->payedAmount()->value();
-        if ($payedAmount === 0) {
+        if ($order->payedAmount()->isZero()) {
             $order->invoiced();
             $this->orderRepository->store($order);
 
             return;
         }
 
-        if ($payedAmount < (int)$order->clientPrice()->value()) {
-            $order->partialPaid();
-        } else {
+        if ($order->payedAmount()->isEqual($order->clientPrice())) {
             $order->paid();
+        } else {
+            $order->partialPaid();
         }
 
         $this->orderRepository->store($order);

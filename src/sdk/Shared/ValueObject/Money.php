@@ -9,10 +9,15 @@ use Sdk\Shared\Enum\CurrencyEnum;
 
 final class Money implements CanEquate
 {
+    private readonly float $value;
+
     public function __construct(
         private readonly CurrencyEnum $currency,
-        private readonly float $value,
-    ) {}
+        float $value,
+    ) {
+        $this->validateValue($value);
+        $this->value = $value;
+    }
 
     public function currency(): CurrencyEnum
     {
@@ -36,5 +41,17 @@ final class Money implements CanEquate
 
         return $this->value === $b->value
             && $this->currency === $b->currency;
+    }
+
+    public function isZero(): bool
+    {
+        return $this->value === 0.0;
+    }
+
+    private function validateValue(float $value): void
+    {
+        if ($value <= 0) {
+            throw new \InvalidArgumentException();
+        }
     }
 }

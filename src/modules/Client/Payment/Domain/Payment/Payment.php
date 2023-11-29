@@ -10,12 +10,12 @@ use Module\Client\Payment\Domain\Payment\Event\PaymentModified;
 use Module\Client\Payment\Domain\Payment\Exception\PaymentInsufficientFunds;
 use Module\Client\Payment\Domain\Payment\ValueObject\InvoiceNumber;
 use Module\Client\Payment\Domain\Payment\ValueObject\LandingCollection;
-use Module\Client\Payment\Domain\Payment\ValueObject\PaymentAmount;
 use Module\Client\Payment\Domain\Payment\ValueObject\PaymentDocument;
 use Module\Client\Payment\Domain\Payment\ValueObject\PaymentStatusEnum;
 use Module\Client\Shared\Domain\ValueObject\ClientId;
 use Module\Client\Shared\Domain\ValueObject\PaymentId;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
+use Sdk\Shared\ValueObject\Money;
 
 final class Payment extends AbstractAggregateRoot
 {
@@ -26,7 +26,7 @@ final class Payment extends AbstractAggregateRoot
         private readonly InvoiceNumber $invoiceNumber,
         private readonly DateTimeImmutable $issueDate,
         private readonly DateTimeImmutable $paymentDate,
-        private readonly PaymentAmount $paymentAmount,
+        private readonly Money $paymentAmount,
         private LandingCollection $landings,
         private readonly ?PaymentDocument $document,
     ) {}
@@ -61,7 +61,7 @@ final class Payment extends AbstractAggregateRoot
         return $this->paymentDate;
     }
 
-    public function paymentAmount(): PaymentAmount
+    public function paymentAmount(): Money
     {
         return $this->paymentAmount;
     }
@@ -100,6 +100,7 @@ final class Payment extends AbstractAggregateRoot
         $roundedLandingsSum = $landingsSum;
         if ($roundedLandingsSum === 0) {
             $this->updateStatus(PaymentStatusEnum::NOT_PAID);
+
             return;
         }
 
