@@ -10,9 +10,8 @@ class BootServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->register(SharedBookingServiceProvider::class);
+        $this->app->register(DomainEventServiceProvider::class);
     }
 
-    public function boot(): void
-    {
-    }
+    public function boot(): void {}
 }

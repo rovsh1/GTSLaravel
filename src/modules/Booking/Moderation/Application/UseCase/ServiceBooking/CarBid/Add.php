@@ -5,32 +5,34 @@ declare(strict_types=1);
 namespace Module\Booking\Moderation\Application\UseCase\ServiceBooking\CarBid;
 
 use Module\Booking\Moderation\Application\Dto\CarBidDataDto;
-use Module\Booking\Moderation\Application\Exception\NotFoundServiceCancelConditionsException;
-use Module\Booking\Moderation\Application\Exception\NotFoundServicePriceException as NotFoundApplicationException;
-use Module\Booking\Moderation\Application\Exception\ServiceDateUndefinedException;
-use Module\Booking\Moderation\Domain\Booking\Exception\NotFoundServiceCancelConditions;
-use Module\Booking\Moderation\Domain\Booking\Service\TransferBooking\CarBidUpdater;
-use Module\Booking\Shared\Domain\Booking\Exception\NotFoundTransferServicePrice;
-use Module\Booking\Shared\Domain\Booking\Exception\ServiceDateUndefined;
-use Sdk\Booking\ValueObject\BookingId;
+use Module\Booking\Moderation\Application\Service\CarBidUpdateHelper;
+use Module\Booking\Moderation\Domain\Booking\Event\CarBidAdded;
+use Sdk\Booking\ValueObject\CarBid;
+use Sdk\Booking\ValueObject\CarId;
+use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 
 class Add implements UseCaseInterface
 {
     public function __construct(
-        private readonly CarBidUpdater $carBidUpdater,
+        private readonly CarBidUpdateHelper $carBidUpdateHelper,
+        private readonly DomainEventDispatcherInterface $eventDispatcher,
     ) {}
 
     public function execute(int $bookingId, CarBidDataDto $carData): void
     {
-        try {
-            $this->carBidUpdater->add(new BookingId($bookingId), $carData);
-        } catch (NotFoundTransferServicePrice $e) {
-            throw new NotFoundApplicationException($e);
-        } catch (ServiceDateUndefined $e) {
-            throw new ServiceDateUndefinedException($e);
-        } catch (NotFoundServiceCancelConditions $e) {
-            throw new NotFoundServiceCancelConditionsException($e);
-        }
+        $this->carBidUpdateHelper->boot($bookingId, $carData->carId);
+
+        $carBid = CarBid::create(
+            new CarId($carData->carId),
+            $carData->carsCount,
+            $carData->passengersCount,
+            $carData->baggageCount,
+            $carData->babyCount,
+            $this->carBidUpdateHelper->prices()
+        );
+        $this->carBidUpdateHelper->details()->addCarBid($carBid);
+        $this->carBidUpdateHelper->store();
+        $this->eventDispatcher->dispatch(new CarBidAdded($this->carBidUpdateHelper->booking(), $carBid));
     }
 }
