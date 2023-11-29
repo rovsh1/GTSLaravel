@@ -11,7 +11,6 @@ class PaymentDto
     public function __construct(
         public readonly int $id,
         public readonly int $clientId,
-        public readonly int $paymentMethodId,
         public readonly MoneyDto $totalAmount,
         public readonly MoneyDto $payedAmount,
         public readonly MoneyDto $remainingAmount,

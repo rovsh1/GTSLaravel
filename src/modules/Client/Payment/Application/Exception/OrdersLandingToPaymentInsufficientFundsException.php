@@ -6,7 +6,7 @@ namespace Module\Client\Payment\Application\Exception;
 
 use Sdk\Shared\Exception\ApplicationException;
 
-class LendOrderToPaymentInsufficientFundsException extends ApplicationException
+class OrdersLandingToPaymentInsufficientFundsException extends ApplicationException
 {
     protected $code = self::LEND_ORDER_TO_PAYMENT_INSUFFICIENT_FUNDS;
 }

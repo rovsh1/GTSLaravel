@@ -19,6 +19,39 @@ final class Money implements CanEquate
         $this->value = $value;
     }
 
+    public static function round(CurrencyEnum $currency, float|int $value): float
+    {
+        return round($value, self::getDecimalsCount($currency));
+    }
+
+    public static function getDecimalsCount(CurrencyEnum $currency): int
+    {
+        return match ($currency) {
+            CurrencyEnum::UZS,
+            CurrencyEnum::KZT,
+            CurrencyEnum::RUB => 0,
+            CurrencyEnum::USD,
+            CurrencyEnum::EUR => 2,
+        };
+    }
+
+    public static function countDecimals(float $number): int
+    {
+        if ((int)$number == $number) {
+            // Если число целое, то знаков после запятой нет
+            return 0;
+        }
+
+        $numberAsString = (string)$number;
+        $decimalPosition = strpos($numberAsString, '.');
+
+        if ($decimalPosition === false) {
+            return 0;
+        }
+
+        return strlen($numberAsString) - $decimalPosition - 1;
+    }
+
     public function currency(): CurrencyEnum
     {
         return $this->currency;
@@ -36,7 +69,7 @@ final class Money implements CanEquate
     public function isEqual(mixed $b): bool
     {
         if (!$b instanceof Money) {
-            return $this === $b;
+            return false;
         }
 
         return $this->value === $b->value
@@ -50,8 +83,12 @@ final class Money implements CanEquate
 
     private function validateValue(float $value): void
     {
-        if ($value <= 0) {
-            throw new \InvalidArgumentException();
+        if ($value < 0.0) {
+            throw new \InvalidArgumentException('Money can\'t be negative');
+        }
+        $decimalsCount = self::countDecimals($value);
+        if ($decimalsCount > self::getDecimalsCount($this->currency)) {
+            throw new \InvalidArgumentException('Invalid decimals');
         }
     }
 }

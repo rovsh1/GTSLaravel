@@ -7,6 +7,7 @@ namespace Module\Client\Payment\Domain\Payment;
 use DateTimeImmutable;
 use Module\Client\Payment\Domain\Payment\Event\PaymentLandingsModified;
 use Module\Client\Payment\Domain\Payment\Event\PaymentModified;
+use Module\Client\Payment\Domain\Payment\Exception\InvalidLandingSumDecimals;
 use Module\Client\Payment\Domain\Payment\Exception\PaymentInsufficientFunds;
 use Module\Client\Payment\Domain\Payment\ValueObject\InvoiceNumber;
 use Module\Client\Payment\Domain\Payment\ValueObject\LandingCollection;
@@ -81,14 +82,28 @@ final class Payment extends AbstractAggregateRoot
         return $this->landings;
     }
 
+    /**
+     * @param LandingCollection $landings
+     * @return void
+     * @throws PaymentInsufficientFunds
+     * @throws InvalidLandingSumDecimals
+     */
     public function setLandings(LandingCollection $landings): void
     {
         if ($this->landings->isEqual($landings)) {
             return;
         }
 
-        $landingsSum = (int)$landings->sum();
-        $remainingSum = (int)$this->paymentAmount->sum() - $landingsSum;
+        $paymentCurrencyDecimalsCount = Money::getDecimalsCount($this->paymentAmount->currency());
+        foreach ($landings as $landing) {
+            $decimalsCount = Money::countDecimals($landing->sum());
+            if ($decimalsCount > $paymentCurrencyDecimalsCount) {
+                throw new InvalidLandingSumDecimals('Invalid landing decimals');
+            }
+        }
+
+        $landingsSum = $landings->sum();
+        $remainingSum = $this->paymentAmount->value() - $landingsSum;
         if ($remainingSum < 0) {
             throw new PaymentInsufficientFunds();
         }
@@ -97,18 +112,16 @@ final class Payment extends AbstractAggregateRoot
         $this->landings = $landings;
         $this->pushEvent(new PaymentLandingsModified($this, $landings, $oldLandings));
 
-        $roundedLandingsSum = $landingsSum;
-        if ($roundedLandingsSum === 0) {
-            $this->updateStatus(PaymentStatusEnum::NOT_PAID);
-
-            return;
-        }
-
-        $roundedPaymentAmount = (int)$this->paymentAmount->sum();
-        if ($roundedPaymentAmount === $roundedLandingsSum) {
-            $this->updateStatus(PaymentStatusEnum::PAID);
-        } else {
-            $this->updateStatus(PaymentStatusEnum::PARTIAL_PAID);
+        switch (true) {
+            case $landingsSum === 0.0:
+                $this->updateStatus(PaymentStatusEnum::NOT_PAID);
+                break;
+            case $this->paymentAmount->value() === $landingsSum:
+                $this->updateStatus(PaymentStatusEnum::PAID);
+                break;
+            default:
+                $this->updateStatus(PaymentStatusEnum::PARTIAL_PAID);
+                break;
         }
     }
 

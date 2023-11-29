@@ -29,10 +29,9 @@ class FindPayment implements UseCaseInterface
         return new PaymentDto(
             $payment->id()->value(),
             $payment->clientId()->value(),
-            $payment->paymentAmount()->methodId(),
             new MoneyDto(
                 CurrencyDto::fromEnum($payment->paymentAmount()->currency(), $this->translator),
-                $payment->paymentAmount()->sum()
+                $payment->paymentAmount()->value()
             ),
             new MoneyDto(
                 CurrencyDto::fromEnum($payment->paymentAmount()->currency(), $this->translator),
@@ -40,7 +39,7 @@ class FindPayment implements UseCaseInterface
             ),
             new MoneyDto(
                 CurrencyDto::fromEnum($payment->paymentAmount()->currency(), $this->translator),
-                ($payment->paymentAmount()->sum() - $payment->lendedSum()),
+                ($payment->paymentAmount()->value() - $payment->lendedSum()),
             ),
         );
     }

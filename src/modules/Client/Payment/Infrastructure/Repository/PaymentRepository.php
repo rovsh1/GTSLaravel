@@ -8,9 +8,7 @@ use Module\Client\Payment\Domain\Payment\Repository\PaymentRepositoryInterface;
 use Module\Client\Payment\Domain\Payment\ValueObject\InvoiceNumber;
 use Module\Client\Payment\Domain\Payment\ValueObject\Landing;
 use Module\Client\Payment\Domain\Payment\ValueObject\LandingCollection;
-use Module\Client\Payment\Domain\Payment\ValueObject\PaymentAmount;
 use Module\Client\Payment\Domain\Payment\ValueObject\PaymentDocument;
-use Module\Client\Payment\Domain\Payment\ValueObject\PaymentStatusEnum;
 use Module\Client\Payment\Infrastructure\Models\Landing as LandingModel;
 use Module\Client\Payment\Infrastructure\Models\Payment as Model;
 use Module\Client\Shared\Domain\ValueObject\ClientId;
@@ -18,34 +16,10 @@ use Module\Client\Shared\Domain\ValueObject\OrderId;
 use Module\Client\Shared\Domain\ValueObject\PaymentId;
 use Sdk\Module\Support\DateTimeImmutable;
 use Sdk\Shared\ValueObject\File;
+use Sdk\Shared\ValueObject\Money;
 
 class PaymentRepository implements PaymentRepositoryInterface
 {
-    public function create(
-        ClientId $clientId,
-        PaymentStatusEnum $status,
-        InvoiceNumber $invoiceNumber,
-        PaymentAmount $paymentAmount,
-        DateTimeImmutable $paymentDate,
-        DateTimeImmutable $issuedDate,
-        ?PaymentDocument $document,
-    ): Payment {
-        $model = Model::create([
-            'client_id' => $clientId->value(),
-            'status' => $status->value,
-            'invoice_number' => $invoiceNumber->value(),
-            'payment_currency' => $paymentAmount->currency()->value,
-            'payment_sum' => $paymentAmount->sum(),
-            'payment_method_id' => $paymentAmount->methodId(),
-            'payment_date' => $paymentDate->format('Y-m-d'),
-            'issue_date' => $issuedDate->format('Y-m-d'),
-            'document_name' => $document?->name(),
-            'document' => $document?->file()->guid(),
-        ]);
-
-        return $this->fromModel($model);
-    }
-
     public function findOrFail(PaymentId $id): Payment
     {
         return $this->find($id) ?? throw new \Exception('Payment not found');
@@ -94,10 +68,9 @@ class PaymentRepository implements PaymentRepositoryInterface
             invoiceNumber: new InvoiceNumber($model->invoice_number),
             issueDate: DateTimeImmutable::createFromMutable($model->issue_date),
             paymentDate: DateTimeImmutable::createFromMutable($model->payment_date),
-            paymentAmount: new PaymentAmount(
+            paymentAmount: new Money(
                 $model->payment_currency,
                 $model->payment_sum,
-                $model->payment_method_id
             ),
             landings: $this->buildLandings($model->landings),
             document: $model->document ? new PaymentDocument(

@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Module\Client\Payment\Application\UseCase;
 
-use Module\Client\Payment\Application\Exception\LendOrderToPaymentInsufficientFundsException;
+use Module\Client\Payment\Application\Exception\InvalidOrderLandingSumDecimalsException;
+use Module\Client\Payment\Application\Exception\OrdersLandingToPaymentInsufficientFundsException;
 use Module\Client\Payment\Application\RequestDto\LendOrderToPaymentRequestDto;
+use Module\Client\Payment\Domain\Payment\Exception\InvalidLandingSumDecimals;
 use Module\Client\Payment\Domain\Payment\Exception\PaymentInsufficientFunds;
 use Module\Client\Payment\Domain\Payment\Repository\PaymentRepositoryInterface;
 use Module\Client\Payment\Domain\Payment\ValueObject\Landing;
@@ -14,6 +16,7 @@ use Module\Client\Shared\Domain\ValueObject\OrderId;
 use Module\Client\Shared\Domain\ValueObject\PaymentId;
 use Sdk\Module\Contracts\Event\DomainEventDispatcherInterface;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
+use Sdk\Shared\Exception\ApplicationException;
 
 class OrdersLandingToPayment implements UseCaseInterface
 {
@@ -26,7 +29,7 @@ class OrdersLandingToPayment implements UseCaseInterface
      * @param int $paymentId
      * @param LendOrderToPaymentRequestDto[] $orders
      * @return void
-     * @throws \Exception
+     * @throws ApplicationException
      */
     public function execute(int $paymentId, array $orders): void
     {
@@ -41,7 +44,9 @@ class OrdersLandingToPayment implements UseCaseInterface
             $this->paymentRepository->store($payment);
             $this->eventDispatcher->dispatch(...$payment->pullEvents());
         } catch (PaymentInsufficientFunds $e) {
-            throw new LendOrderToPaymentInsufficientFundsException($e);
+            throw new OrdersLandingToPaymentInsufficientFundsException($e);
+        } catch (InvalidLandingSumDecimals $e) {
+            throw new InvalidOrderLandingSumDecimalsException($e);
         }
     }
 }

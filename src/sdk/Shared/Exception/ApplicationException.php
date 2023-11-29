@@ -26,6 +26,7 @@ abstract class ApplicationException extends \RuntimeException
     public const HOTEL_ROOM_NOT_FOUND                        = 1015;
     public const HOTEL_ROOM_PRICE_NOT_FOUND                  = 1016;
     public const LEND_ORDER_TO_PAYMENT_INSUFFICIENT_FUNDS    = 1017;
+    public const LEND_ORDER_INVALID_SUM_DECIMALS             = 1018;
 
     private static array $errorsArray;
 
