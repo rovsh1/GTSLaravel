@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Module\Booking\EventSourcing\Application\UseCase;
 
 use Module\Booking\EventSourcing\Application\Dto\StatusEventDto;
-use Module\Booking\EventSourcing\Domain\Repository\BookingLogRepositoryInterface;
-use Module\Booking\EventSourcing\Infrastructure\Model\BookingEventLog;
+use Module\Booking\EventSourcing\Domain\Repository\HistoryRepositoryInterface;
+use Module\Booking\EventSourcing\Infrastructure\Model\BookingHistory;
 use Module\Booking\Shared\Application\Factory\BookingStatusDtoFactory;
 use Sdk\Module\Contracts\UseCase\UseCaseInterface;
 use Sdk\Shared\Enum\Booking\BookingStatusEnum;
@@ -14,7 +14,7 @@ use Sdk\Shared\Enum\Booking\BookingStatusEnum;
 class GetStatusHistory implements UseCaseInterface
 {
     public function __construct(
-        private readonly BookingLogRepositoryInterface $changesLogRepository,
+        private readonly HistoryRepositoryInterface $changesLogRepository,
         private readonly BookingStatusDtoFactory $statusDtoFactory
     ) {
     }
@@ -29,7 +29,7 @@ class GetStatusHistory implements UseCaseInterface
         $statusesSettings = $this->statusDtoFactory->statuses();
         $statusColorsIndexedByStatusId = collect($statusesSettings)->keyBy('id')->map->color;
 
-        return $statusEvents->map(fn(BookingEventLog $changesLog) => new StatusEventDto(
+        return $statusEvents->map(fn(BookingHistory $changesLog) => new StatusEventDto(
             $this->getEvent($changesLog->payload['status']),
             $statusColorsIndexedByStatusId[$changesLog->payload['status']] ?? null,
             $changesLog->payload,

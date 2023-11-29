@@ -5,7 +5,7 @@ namespace Module\Booking\Shared\Domain\Booking\Event\Status;
 
 use Module\Booking\Shared\Domain\Booking\Booking;
 
-class BookingCancelledFee extends AbstractStatusEvent
+final class BookingCancelledFee extends AbstractStatusEvent
 {
     public function __construct(
         Booking $booking,

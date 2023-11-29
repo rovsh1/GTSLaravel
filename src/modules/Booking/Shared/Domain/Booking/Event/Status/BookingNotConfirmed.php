@@ -4,7 +4,7 @@ namespace Module\Booking\Shared\Domain\Booking\Event\Status;
 
 use Module\Booking\Shared\Domain\Booking\Booking;
 
-class BookingNotConfirmed extends AbstractStatusEvent
+final class BookingNotConfirmed extends AbstractStatusEvent
 {
     public function __construct(
         Booking $booking,

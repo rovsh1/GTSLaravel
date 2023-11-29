@@ -2,7 +2,8 @@
 
 namespace Module\Booking\Shared\Domain\Booking\Event;
 
-class BookingCreated extends AbstractBookingEvent
-{
+use Sdk\Booking\Support\AbstractBookingEvent;
 
+final class BookingCreated extends AbstractBookingEvent
+{
 }

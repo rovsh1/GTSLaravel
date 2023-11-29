@@ -2,7 +2,8 @@
 
 namespace Module\Booking\Shared\Domain\Booking\Event;
 
-class BookingDeleted extends AbstractBookingEvent
-{
+use Sdk\Booking\Support\AbstractBookingEvent;
 
+final class BookingDeleted extends AbstractBookingEvent
+{
 }

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Shared\Infrastructure\Repository;
+namespace Module\Booking\Shared\Infrastructure\Storage;
 
 use Illuminate\Support\Facades\DB;
-use Module\Booking\Shared\Domain\Booking\Repository\AirportBookingGuestRepositoryInterface;
+use Module\Booking\Shared\Domain\Booking\Storage\AirportBookingGuestStorageInterface;
 use Sdk\Booking\ValueObject\BookingId;
 use Sdk\Booking\ValueObject\GuestId;
 
-class AirportBookingGuestRepository implements AirportBookingGuestRepositoryInterface
+class AirportBookingGuestStorage implements AirportBookingGuestStorageInterface
 {
     public function bind(BookingId $bookingId, GuestId $guestId): void
     {

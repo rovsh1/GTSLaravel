@@ -4,34 +4,32 @@ namespace Module\Booking\Moderation\Domain\Booking\Event\HotelBooking;
 
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Event\PriceBecomeDeprecatedEventInterface;
-use Module\Booking\Shared\Domain\Guest\Guest;
+use Sdk\Booking\Entity\BookingDetails\HotelAccommodation;
 use Sdk\Booking\Support\AbstractBookingEvent;
-use Sdk\Booking\ValueObject\HotelBooking\AccommodationId;
-use Sdk\Module\Contracts\Event\IntegrationEventInterface;
+use Sdk\Booking\ValueObject\HotelBooking\AccommodationDetails;
 use Sdk\Shared\Event\IntegrationEventMessages;
 
-class GuestBinded extends AbstractBookingEvent implements PriceBecomeDeprecatedEventInterface,
-                                                          IntegrationEventInterface
+class AccommodationDetailsEdited extends AbstractBookingEvent implements PriceBecomeDeprecatedEventInterface
 {
     public function __construct(
         Booking $booking,
-        public readonly AccommodationId $accommodationId,
-        public readonly Guest $guest
+        public readonly HotelAccommodation $accommodation,
+        public readonly AccommodationDetails $detailsBefore,
     ) {
         parent::__construct($booking);
     }
 
     public function integrationEvent(): string
     {
-        return IntegrationEventMessages::HOTEL_BOOKING_GUEST_ADDED;
+        return IntegrationEventMessages::HOTEL_BOOKING_ACCOMMODATION_DETAILS_EDITED;
     }
 
     public function integrationPayload(): array
     {
         return [
             'bookingId' => $this->booking->id()->value(),
-            'accommodationId' => $this->accommodationId,
-            'guest' => $this->guest->serialize()
+            'detailsBefore' => $this->detailsBefore->serialize(),
+            'detailsAfter' => $this->accommodation->details()->serialize()
         ];
     }
 }

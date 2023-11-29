@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Booking\Shared\Domain\Booking\Event\Status;
 
-use Module\Booking\Shared\Domain\Booking\Event\AbstractBookingEvent;
 use Sdk\Booking\Contracts\Event\BookingStatusEventInterface;
+use Sdk\Booking\Support\AbstractBookingEvent;
 use Sdk\Shared\Event\IntegrationEventMessages;
 
 abstract class AbstractStatusEvent extends AbstractBookingEvent implements BookingStatusEventInterface

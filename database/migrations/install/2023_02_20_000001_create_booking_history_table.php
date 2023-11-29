@@ -9,7 +9,7 @@ return new class extends Migration {
     {
         Schema::create('booking_history', function (Blueprint $table) {
             $table->unsignedInteger('booking_id');
-            $table->string('event');
+            $table->string('group');
             $table->json('payload')->nullable();
             $table->json('context');
             $table->timestamp('created_at')->useCurrent();

@@ -16,15 +16,20 @@ class CarBidCollection extends AbstractValueObjectCollection
         }
     }
 
-    public function hasCar(CarId $id): bool
+    public function find(CarId $id): ?CarBid
     {
         foreach ($this->items as $carBid) {
             if ($carBid->carId()->isEqual($id)) {
-                return true;
+                return $carBid;
             }
         }
 
-        return false;
+        return null;
+    }
+
+    public function hasCar(CarId $id): bool
+    {
+        return (bool)$this->find($id);
     }
 
     public function toData(): array

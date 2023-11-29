@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Booking\Shared\Domain\Booking\Event;
+namespace Sdk\Booking\Support;
 
 use Module\Booking\Shared\Domain\Booking\Booking;
 use Sdk\Booking\Contracts\Event\BookingEventInterface;

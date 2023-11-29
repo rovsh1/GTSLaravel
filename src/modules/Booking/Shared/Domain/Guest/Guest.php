@@ -8,9 +8,10 @@ use Module\Shared\Contracts\Domain\EntityInterface;
 use Sdk\Booking\ValueObject\GuestId;
 use Sdk\Booking\ValueObject\OrderId;
 use Sdk\Module\Foundation\Domain\Entity\AbstractAggregateRoot;
+use Sdk\Shared\Contracts\Support\SerializableInterface;
 use Sdk\Shared\Enum\GenderEnum;
 
-class Guest extends AbstractAggregateRoot implements EntityInterface
+final class Guest extends AbstractAggregateRoot implements EntityInterface, SerializableInterface
 {
     public function __construct(
         private readonly GuestId $id,
@@ -80,5 +81,31 @@ class Guest extends AbstractAggregateRoot implements EntityInterface
     public function setAge(?int $age): void
     {
         $this->age = $age;
+    }
+
+    public function serialize(): array
+    {
+        return [
+            'id' => $this->id->value(),
+            'orderId' => $this->orderId->value(),
+            'fullName' => $this->fullName,
+            'countryId' => $this->countryId,
+            'gender' => $this->gender->value,
+            'isAdult' => $this->isAdult,
+            'age' => $this->age
+        ];
+    }
+
+    public static function deserialize(array $payload): static
+    {
+        return new Guest(
+            new GuestId($payload['id']),
+            new OrderId($payload['orderId']),
+            $payload['fullName'],
+            $payload['countryId'],
+            GenderEnum::from($payload['gender']),
+            $payload['isAdult'],
+            $payload['age'],
+        );
     }
 }

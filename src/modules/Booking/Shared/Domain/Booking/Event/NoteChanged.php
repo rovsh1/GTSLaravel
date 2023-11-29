@@ -3,6 +3,7 @@
 namespace Module\Booking\Shared\Domain\Booking\Event;
 
 use Module\Booking\Shared\Domain\Booking\Booking;
+use Sdk\Booking\Support\AbstractBookingEvent;
 
 final class NoteChanged extends AbstractBookingEvent
 {

@@ -2,32 +2,33 @@
 
 namespace Module\Booking\Moderation\Domain\Booking\Event;
 
+use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Event\PriceBecomeDeprecatedEventInterface;
-use Sdk\Booking\Contracts\Event\BookingEventInterface;
-use Sdk\Booking\ValueObject\BookingId;
-use Sdk\Booking\ValueObject\GuestId;
-use Sdk\Booking\ValueObject\OrderId;
+use Module\Booking\Shared\Domain\Guest\Guest;
+use Sdk\Booking\Support\AbstractBookingEvent;
+use Sdk\Module\Contracts\Event\IntegrationEventInterface;
+use Sdk\Shared\Event\IntegrationEventMessages;
 
-class GuestBinded implements BookingEventInterface, PriceBecomeDeprecatedEventInterface
+class GuestBinded extends AbstractBookingEvent implements PriceBecomeDeprecatedEventInterface,
+                                                          IntegrationEventInterface
 {
     public function __construct(
-        public readonly BookingId $bookingId,
-        public readonly OrderId $orderId,
-        public readonly GuestId $guestId
-    ) {}
-
-    public function bookingId(): BookingId
-    {
-        return $this->bookingId;
+        Booking $booking,
+        public readonly Guest $guest
+    ) {
+        parent::__construct($booking);
     }
 
-    public function orderId(): OrderId
+    public function integrationEvent(): string
     {
-        return $this->orderId;
+        return IntegrationEventMessages::AIRPORT_BOOKING_GUEST_ADDED;
     }
 
-    public function payload(): ?array
+    public function integrationPayload(): array
     {
-        return null;
+        return [
+            'bookingId' => $this->booking->id()->value(),
+            'guest' => $this->guest->serialize()
+        ];
     }
 }

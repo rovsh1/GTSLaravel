@@ -2,30 +2,35 @@
 
 namespace Module\Booking\Moderation\Domain\Booking\Event;
 
+use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Event\PriceBecomeDeprecatedEventInterface;
-use Sdk\Booking\Contracts\Event\BookingEventInterface;
-use Sdk\Booking\ValueObject\BookingId;
-use Sdk\Booking\ValueObject\OrderId;
+use Sdk\Booking\Support\AbstractBookingEvent;
+use Sdk\Booking\ValueObject\CarBid;
+use Sdk\Module\Contracts\Event\IntegrationEventInterface;
+use Sdk\Shared\Event\IntegrationEventMessages;
 
-class CarBidUpdated implements BookingEventInterface, PriceBecomeDeprecatedEventInterface
+class CarBidUpdated extends AbstractBookingEvent implements PriceBecomeDeprecatedEventInterface,
+                                                            IntegrationEventInterface
 {
     public function __construct(
-        public readonly BookingId $bookingId,
-        public readonly OrderId $orderId,
-    ) {}
-
-    public function bookingId(): BookingId
-    {
-        return $this->bookingId;
+        Booking $booking,
+        public readonly CarBid $carBidBefore,
+        public readonly CarBid $carBidAfter,
+    ) {
+        parent::__construct($booking);
     }
 
-    public function orderId(): OrderId
+    public function integrationEvent(): string
     {
-        return $this->orderId;
+        return IntegrationEventMessages::TRANSFER_BOOKING_CAR_BID_UPDATED;
     }
 
-    public function payload(): ?array
+    public function integrationPayload(): array
     {
-        return null;
+        return [
+            'bookingId' => $this->booking->id()->value(),
+            'before' => $this->carBidBefore->serialize(),
+            'after' => $this->carBidAfter->serialize()
+        ];
     }
 }

@@ -2,35 +2,36 @@
 
 namespace Module\Booking\Moderation\Domain\Booking\Event\HotelBooking;
 
+use Module\Booking\Shared\Domain\Booking\Booking;
 use Module\Booking\Shared\Domain\Booking\Event\PriceBecomeDeprecatedEventInterface;
-use Sdk\Booking\Contracts\Event\BookingEventInterface;
-use Sdk\Booking\ValueObject\BookingId;
-use Sdk\Booking\ValueObject\GuestId;
+use Module\Booking\Shared\Domain\Guest\Guest;
+use Sdk\Booking\Support\AbstractBookingEvent;
 use Sdk\Booking\ValueObject\HotelBooking\AccommodationId;
-use Sdk\Booking\ValueObject\OrderId;
+use Sdk\Module\Contracts\Event\IntegrationEventInterface;
+use Sdk\Shared\Event\IntegrationEventMessages;
 
-class GuestUnbinded implements BookingEventInterface, PriceBecomeDeprecatedEventInterface
+class GuestUnbinded extends AbstractBookingEvent implements PriceBecomeDeprecatedEventInterface,
+                                                            IntegrationEventInterface
 {
     public function __construct(
-        public readonly BookingId $bookingId,
-        public readonly OrderId $orderId,
+        Booking $booking,
         public readonly AccommodationId $accommodationId,
-        public readonly GuestId $guestId,
+        public readonly Guest $guest,
     ) {
+        parent::__construct($booking);
     }
 
-    public function bookingId(): BookingId
+    public function integrationEvent(): string
     {
-        return $this->bookingId;
+        return IntegrationEventMessages::HOTEL_BOOKING_GUEST_REMOVED;
     }
 
-    public function orderId(): OrderId
+    public function integrationPayload(): array
     {
-        return $this->orderId;
-    }
-
-    public function payload(): ?array
-    {
-        return null;
+        return [
+            'bookingId' => $this->booking->id()->value(),
+            'accommodationId' => $this->accommodationId,
+            'guestId' => $this->guest->serialize()
+        ];
     }
 }

@@ -5,20 +5,20 @@ declare(strict_types=1);
 namespace Module\Booking\EventSourcing\Infrastructure\Repository;
 
 use Illuminate\Database\Eloquent\Collection;
-use Module\Booking\EventSourcing\Domain\Repository\BookingLogRepositoryInterface;
-use Module\Booking\EventSourcing\Domain\ValueObject\BookingEventEnum;
-use Module\Booking\EventSourcing\Infrastructure\Model\BookingEventLog;
+use Module\Booking\EventSourcing\Domain\Repository\HistoryRepositoryInterface;
+use Module\Booking\EventSourcing\Domain\ValueObject\EventGroupEnum;
+use Module\Booking\EventSourcing\Infrastructure\Model\BookingHistory;
 use Sdk\Booking\ValueObject\BookingId;
 
-class BookingLogRepository implements BookingLogRepositoryInterface
+class HistoryRepository implements HistoryRepositoryInterface
 {
     public function register(
         BookingId $bookingId,
-        BookingEventEnum $event,
+        EventGroupEnum $event,
         array|null $payload,
         array $context = []
     ): void {
-        BookingEventLog::create([
+        BookingHistory::create([
             'booking_id' => $bookingId->value(),
             'event' => $event->name,
             'payload' => $payload,
@@ -29,12 +29,12 @@ class BookingLogRepository implements BookingLogRepositoryInterface
 
     /**
      * @param int $bookingId
-     * @return Collection<int, BookingEventLog>
+     * @return Collection<int, BookingHistory>
      */
     public function getStatusHistory(int $bookingId): Collection
     {
-        return BookingEventLog::whereBookingId($bookingId)
-            ->whereEvent(BookingEventEnum::STATUS_UPDATED->name)
+        return BookingHistory::whereBookingId($bookingId)
+            ->whereGroup(EventGroupEnum::STATUS_UPDATED->name)
             ->get();
     }
 }

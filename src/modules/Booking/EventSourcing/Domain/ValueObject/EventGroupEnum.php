@@ -2,12 +2,13 @@
 
 namespace Module\Booking\EventSourcing\Domain\ValueObject;
 
-enum BookingEventEnum
+enum EventGroupEnum
 {
     case STATUS_UPDATED;
-    case ATTRIBUTE_MODIFIED;
+    case PRICE_CHANGED;
+    case DETAILS_MODIFIED;
 
-    public static function fromName(string $name): BookingEventEnum
+    public static function fromName(string $name): EventGroupEnum
     {
         foreach (self::cases() as $case) {
             if ($case->name === $name) {

@@ -2,5 +2,6 @@
 
 namespace Module\Booking\Shared\Domain\Booking\Event\Status;
 
-class BookingConfirmed extends AbstractStatusEvent {
+final class BookingConfirmed extends AbstractStatusEvent
+{
 }

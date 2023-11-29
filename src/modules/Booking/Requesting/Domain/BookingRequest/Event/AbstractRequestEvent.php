@@ -4,18 +4,24 @@ declare(strict_types=1);
 
 namespace Module\Booking\Requesting\Domain\BookingRequest\Event;
 
+use Module\Booking\Requesting\Domain\BookingRequest\BookingRequest;
 use Module\Booking\Requesting\Domain\BookingRequest\ValueObject\RequestId;
 use Module\Booking\Shared\Domain\Booking\Booking;
-use Module\Booking\Shared\Domain\Booking\Event\AbstractBookingEvent;
+use Sdk\Booking\Support\AbstractBookingEvent;
 use Sdk\Shared\Event\IntegrationEventMessages;
 
 abstract class AbstractRequestEvent extends AbstractBookingEvent implements BookingRequestEventInterface
 {
     public function __construct(
         Booking $booking,
-        public readonly RequestId $requestId,
+        public readonly BookingRequest $request,
     ) {
         parent::__construct($booking);
+    }
+
+    public function requestId(): RequestId
+    {
+        return $this->request->id();
     }
 
     public function integrationEvent(): string
@@ -27,7 +33,7 @@ abstract class AbstractRequestEvent extends AbstractBookingEvent implements Book
     {
         return [
             'bookingId' => $this->booking->id()->value(),
-            'requestId' => $this->requestId->value()
+            'request' => $this->request->serialize()
         ];
     }
 }

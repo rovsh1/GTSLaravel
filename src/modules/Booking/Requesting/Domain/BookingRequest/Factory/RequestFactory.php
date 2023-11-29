@@ -44,9 +44,9 @@ class RequestFactory
     private function dispatchEvent(BookingRequest $request, Booking $booking): void
     {
         $event = match ($request->type()) {
-            RequestTypeEnum::BOOKING => new BookingRequestSent($booking, $request->id()),
-            RequestTypeEnum::CHANGE => new ChangeRequestSent($booking, $request->id()),
-            RequestTypeEnum::CANCEL => new CancelRequestSent($booking, $request->id()),
+            RequestTypeEnum::BOOKING => new BookingRequestSent($booking, $request),
+            RequestTypeEnum::CHANGE => new ChangeRequestSent($booking, $request),
+            RequestTypeEnum::CANCEL => new CancelRequestSent($booking, $request),
         };
         $this->eventDispatcher->dispatch($event);
     }
