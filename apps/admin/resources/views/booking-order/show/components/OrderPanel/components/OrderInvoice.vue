@@ -15,7 +15,6 @@ import InlineIcon from '~components/InlineIcon.vue'
 
 const orderStore = useOrderStore()
 const availableActions = computed<OrderAvailableActionsResponse | null>(() => orderStore.availableActions)
-const isRequestableStatus = computed(() => true) // availableActions.value?.isRequestable
 
 const invoiceStore = useOrderInvoiceStore()
 
@@ -91,7 +90,7 @@ const handleInvoiceSend = async () => {
     </div>
   </div>
 
-  <div v-if="isRequestableStatus && !orderInvoice">
+  <div v-if="!orderInvoice">
     <RequestBlock
       v-if="availableActions?.canCreateInvoice"
       text="При необходимости клиенту можно сформировать инвойс"
@@ -100,9 +99,8 @@ const handleInvoiceSend = async () => {
       :loading="isFetching"
       @click="handleInvoiceCreate"
     />
-  </div>
-  <div v-if="!isRequestableStatus && !orderInvoice">
     <RequestBlock
+      v-else
       :show-button="false"
       text="Нет сформированных инвойсов"
     />

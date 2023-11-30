@@ -21,7 +21,9 @@ const orderVouchers = computed<OrderVoucher[] | null>(() => voucherStore.voucher
 
 const isVoucherFetching = computed(() => voucherStore.voucherSendIsFetching)
 
-const canSendVoucher = computed<boolean>(() => availableActions.value?.canSendVoucher || false)
+const handleVoucherCreate = async () => {
+  await orderStore.refreshOrder()
+}
 
 const handleVoucherSend = async () => {
   await voucherStore.sendVoucher()
@@ -45,20 +47,21 @@ const handleVoucherSend = async () => {
     </div>
   </div>
 
-  <div v-if="isRequestableStatus" class="mb-2">
+  <div v-if="!orderVouchers?.length" class="mb-2">
     <RequestBlock
-      v-if="canSendVoucher"
-      text="При необходимости клиенту можно отправить ваучер"
-      button-text="Отправить ваучер"
+      :show-button="false"
+      text="Нет сформированных ваучеров"
+    />
+  </div>
+
+  <div class="mb-2">
+    <RequestBlock
+      v-if="availableActions?.canCreateVoucher"
+      text="При необходимости клиенту можно сформировать ваучер"
+      button-text="Сформировать ваучер"
       variant="success"
       :loading="isVoucherFetching"
       @click="handleVoucherSend"
-    />
-  </div>
-  <div v-if="!isRequestableStatus && !orderVouchers?.length" class="mb-2">
-    <RequestBlock
-      :show-button="false"
-      text="Ваучеры клиенту не отправлялись"
     />
   </div>
 

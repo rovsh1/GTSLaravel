@@ -69,6 +69,8 @@ $(async () => {
         $('#form_data_order_id').removeAttr('disabled')
         toggleCurrencyIdField(!client.currency)
       }
+    } else {
+      toggleCurrencyIdField((!client?.currency === null || client?.currency === undefined))
     }
 
     toggleLegalIdInput(orderId === undefined ? Boolean(client?.is_legal) : false)

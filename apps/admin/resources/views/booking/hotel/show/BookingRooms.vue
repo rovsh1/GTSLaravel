@@ -308,9 +308,9 @@ onMounted(() => {
   />
 
   <div class="mt-3" />
-  <BootstrapCard v-for="room in bookingDetails?.roomBookings" :key="room.id">
+  <BootstrapCard v-for="(room, index) in bookingDetails?.roomBookings" :key="room.id">
     <div class="d-flex align-items-start">
-      <BootstrapCardTitle class="mr-4" :title="room.roomInfo.name" />
+      <BootstrapCardTitle class="mr-4" :title="`#${index + 1} ${room.roomInfo.name}`" />
       <div class="pt-card-title">
         <EditTableRowButton
           v-if="isEditableStatus"
