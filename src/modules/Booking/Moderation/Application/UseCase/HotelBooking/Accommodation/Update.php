@@ -29,13 +29,14 @@ final class Update implements UseCaseInterface
         private readonly BookingGuestRepositoryInterface $bookingGuestRepository,
         private readonly DomainEventDispatcherInterface $eventDispatcher,
         private readonly SafeExecutorInterface $executor,
-    ) {
-    }
+    ) {}
 
     public function execute(UpdateRoomRequestDto $requestDto): void
     {
         $booking = $this->bookingRepository->findOrFail(new BookingId($requestDto->bookingId));
-        $currentAccommodation = $this->accommodationRepository->findOrFail(new AccommodationId($requestDto->accommodationId));
+        $currentAccommodation = $this->accommodationRepository->findOrFail(
+            new AccommodationId($requestDto->accommodationId)
+        );
 
         $this->accommodationChecker->validate(
             orderId: $booking->orderId()->value(),
@@ -63,6 +64,7 @@ final class Update implements UseCaseInterface
 
         $currentAccommodation->updateDetails($accommodationDetails);
 
+        $this->accommodationRepository->store($currentAccommodation);
         $this->eventDispatcher->dispatch(new AccommodationEdited($booking, $currentAccommodation));
     }
 
@@ -79,7 +81,9 @@ final class Update implements UseCaseInterface
                 $this->bookingGuestRepository->bind($newAccommodation->id(), $guestId);
             }
 
-            $this->eventDispatcher->dispatch(new AccommodationReplaced($booking, $newAccommodation, $beforeAccommodation));
+            $this->eventDispatcher->dispatch(
+                new AccommodationReplaced($booking, $newAccommodation, $beforeAccommodation)
+            );
         });
     }
 }

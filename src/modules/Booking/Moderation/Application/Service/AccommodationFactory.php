@@ -23,8 +23,7 @@ class AccommodationFactory
     public function __construct(
         private readonly HotelRoomAdapterInterface $hotelRoomAdapter,
         private readonly AccommodationRepositoryInterface $accommodationRepository,
-    ) {
-    }
+    ) {}
 
     public function fromRequest(AddAccommodationRequestDto|UpdateRoomRequestDto $requestDto): void
     {
