@@ -11,6 +11,7 @@
             'manager' => $manager,
             'serviceBookingCreate' => $serviceBookingCreate,
             'hotelBookingCreate' => $hotelBookingCreate,
+            'clientID' => $client->id,
         ]) }}
     </script>
 @endsection

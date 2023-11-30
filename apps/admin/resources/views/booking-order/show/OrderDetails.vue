@@ -13,9 +13,10 @@ import { requestInitialData } from '~lib/initial-data'
 
 import ActionsMenu, { Action } from '~components/ActionsMenu.vue'
 
-const { serviceBookingCreate, hotelBookingCreate } = requestInitialData('view-initial-data-booking-order', z.object({
+const { serviceBookingCreate, hotelBookingCreate, clientID } = requestInitialData('view-initial-data-booking-order', z.object({
   serviceBookingCreate: z.string(),
   hotelBookingCreate: z.string(),
+  clientID: z.number(),
 }))
 
 const orderStore = useOrderStore()
@@ -26,11 +27,11 @@ const orderBookings = computed(() => orderStore.bookings)
 
 const actionsMenuSettings: Action[] = [{
   title: 'Создать отельную бронь',
-  callback: () => { location.href = `${hotelBookingCreate}?order_id=${orderStore.order?.id}` },
+  callback: () => { location.href = `${hotelBookingCreate}?client_id=${clientID}&order_id=${orderStore.order?.id}` },
 },
 {
   title: 'Создать бронь услуги',
-  callback: () => { location.href = `${serviceBookingCreate}?order_id=${orderStore.order?.id}` },
+  callback: () => { location.href = `${serviceBookingCreate}?client_id=${clientID}&order_id=${orderStore.order?.id}` },
 }]
 
 </script>

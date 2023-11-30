@@ -4,6 +4,7 @@ import { defineStore } from 'pinia'
 import { z } from 'zod'
 
 import { showCancelFeeDialog, showNotConfirmedReasonDialog } from '~resources/views/booking/shared/lib/modals'
+import { useBookingStatusHistoryStore } from '~resources/views/booking/shared/store/status-history'
 
 import { HotelRoomBooking } from '~api/booking/hotel/details'
 import {
@@ -43,6 +44,7 @@ export const useBookingStore = defineStore('booking', () => {
   const { data: availableActions, execute: fetchAvailableActions, isFetching: isAvailableActionsFetching } = useBookingAvailableActionsAPI({ bookingID })
   const { data: statuses, execute: fetchStatuses } = useBookingStatusesAPI()
   const { isFetching: isRecalculatePrice, execute: recalculateBookingPrice } = useRecalculateBookingPriceAPI({ bookingID })
+  const { fetchStatusHistory } = useBookingStatusHistoryStore()
 
   const isStatusUpdateFetching = ref(false)
   const bookingManagerId = ref(manager.id)
@@ -125,6 +127,7 @@ export const useBookingStore = defineStore('booking', () => {
     fetchStatuses()
     fetchBooking()
     fetchAvailableActions()
+    fetchStatusHistory()
   })
 
   return {

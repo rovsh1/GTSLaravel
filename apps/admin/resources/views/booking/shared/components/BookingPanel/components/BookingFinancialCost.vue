@@ -74,6 +74,7 @@ const handleSaveHoPenalty = async (value: number | undefined) => {
     netPenalty: value,
   })
 }
+
 </script>
 
 <template>
@@ -149,8 +150,18 @@ const handleSaveHoPenalty = async (value: number | undefined) => {
       }}
     </div>
 
-    <div v-if="lastHistoryItem && lastHistoryItem?.payload?.reason" class="mt-2 alert alert-warning" role="alert">
+    <div v-if="lastHistoryItem && lastHistoryItem?.payload?.reason" class="mt-2 alert-warning" role="alert">
       {{ lastHistoryItem.payload.reason }}
     </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.alert-warning {
+  padding: 0.438rem 9.75rem 0.438rem 1rem;
+  border-radius: 4px;
+  background: #fff4de;
+  color: black;
+}
+
+</style>

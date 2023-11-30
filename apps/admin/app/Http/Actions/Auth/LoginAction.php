@@ -9,9 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginAction
 {
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function handle(Request $request)
     {
