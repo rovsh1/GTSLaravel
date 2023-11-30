@@ -63,6 +63,7 @@ final class Update implements UseCaseInterface
         $detailsBefore = $currentAccommodation->details();
         $currentAccommodation->updateDetails($accommodationDetails);
 
+        $this->accommodationRepository->store($currentAccommodation);
         $this->eventDispatcher->dispatch(
             new AccommodationDetailsEdited($booking, $currentAccommodation, $detailsBefore)
         );
